@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fotosintese — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#86efac;text-align:center}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .rate-readout{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+    .rate-num{font-weight:900;font-size:30px;letter-spacing:-0.03em;flex-shrink:0;color:#86efac}
+    .rate-bar-wrap{flex:1}
+    .rate-bar-track{height:10px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:8px}
+    .rate-bar-fill{height:100%;border-radius:99px;transition:width 200ms,background 300ms;background:#22c55e}
+    .rate-status{font-size:12.5px;color:var(--muted);line-height:1.6}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Lewensprosesse in Plante en Diere · Les 1</div>
+  <h1 class="lesson-title">Fotosintese</h1>
+  <p class="lesson-sub">Fotosintese vang ligenergie op en skakel dit om in gestoorde chemiese energie — die proses wat byna alle lewe op Aarde onderhou. Verken hoe lig, CO₂, en temperatuur elk die tempo daarvan beïnvloed.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="sun" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Energie opvang om lewe te onderhou</h2>
+    <p>Fotosintese is die proses waardeur plante (en ander produsente) rou materiale opneem — ligenergie, water, en koolstofdioksied — en daardie energie as voedsel in die chloroplaste vang en stoor. Dit is die grondslag van byna elke voedselketting op Aarde.</p>
+    <div class="formula">koolstofdioksied + water --(ligenergie, chlorofil)--&gt; glukose (stysel) + suurstof</div>
+
+    <h2>Wat fotosintese benodig</h2>
+    <ul>
+      <li><strong>Lig</strong> — verskaf die energie wat die reaksie aandryf.</li>
+      <li><strong>Chlorofil</strong> — die groen pigment in chloroplaste wat ligenergie absorbeer.</li>
+      <li><strong>Koolstofdioksied</strong> — uit die atmosfeer opgeneem, verskaf die koolstof wat gebruik word om glukose te bou.</li>
+      <li><strong>Water</strong> — deur die wortels opgeneem.</li>
+    </ul>
+    <p>Die proses vind plaas in twee gekoppelde fases — 'n ligfase en 'n donker (lig-onafhanklike) fase — maar die biochemiese besonderhede van elkeen word nie op hierdie vlak benodig nie; dit is genoeg om te weet dat albei nodig is.</p>
+
+    <h2>Wat fotosintese produseer</h2>
+    <ul>
+      <li><strong>Suurstof</strong> — vrygestel as 'n newe-produk, noodsaaklik vir die meeste lewe op Aarde.</li>
+      <li><strong>Stysel</strong> — glukose word dikwels na stysel omgeskakel vir stoor in die plant.</li>
+    </ul>
+    <div class="callout">Probeer die <strong>Tempo-van-Fotosintese-Simulator</strong> in die Verken-oortjie om te ondersoek hoe ligintensiteit, CO₂-konsentrasie, en temperatuur elk die tempo beïnvloed.</div>
+
+    <h2>Waarom fotosintese belangrik is</h2>
+    <p>Fotosintese stel die suurstof vry wat byna alle organismes vir respirasie nodig het, verwyder koolstofdioksied uit die atmosfeer, en produseer die voedsel wat direk of indirek byna elke ander organisme op Aarde voed.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Tempo-van-Fotosintese-Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel ligintensiteit, CO₂-konsentrasie, en temperatuur, en kyk hoe suurstofborrels vinniger of stadiger vorm — 'n klassieke manier waarop wetenskaplikes die tempo van fotosintese met pondkruid meet.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Pondkruid-suurstofborreltoets</h3>
+      <canvas id="photoCanvas" height="260"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Ligintensiteit <span class="val" id="lightVal">Matig</span></div>
+        <input type="range" id="lightSlider" min="0" max="100" value="50">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">CO₂-konsentrasie <span class="val" id="co2Val">Matig</span></div>
+        <input type="range" id="co2Slider" min="0" max="100" value="50">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Temperatuur <span class="val" id="tempVal">25°C</span></div>
+        <input type="range" id="tempSlider" min="0" max="45" value="25">
+      </div>
+    </div>
+    <div class="rate-readout">
+      <div class="rate-num" id="rateNum">50%</div>
+      <div class="rate-bar-wrap">
+        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:50%"></div></div>
+        <div class="rate-status" id="rateStatus">Matige tempo van fotosintese.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Skryf 'n woordvergelyking vir fotosintese, en noem die VIER rou materiale/toestande wat benodig word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Noem die TWEE produkte van fotosintese.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Verduidelik hoe jy die effek van ligintensiteit op die tempo van fotosintese met pondkruid sou ondersoek.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Verduidelik waarom chlorofil noodsaaklik is vir fotosintese.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Verduidelik DRIE redes waarom fotosintese belangrik is vir lewe op Aarde.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">'n Lamp is op verskillende afstande van 'n stukkie pondkruid geplaas, en die aantal suurstofborrels wat vrygestel is, is oor een minuut by elke afstand getel:<br><br>
+    <table class="compare-table" style="max-width:480px">
+      <thead><tr><th>Afstand van lamp (cm)</th><th>Borrels per minuut</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td>48</td></tr>
+        <tr><td>20</td><td>12</td></tr>
+        <tr><td>30</td><td>5</td></tr>
+        <tr><td>40</td><td>3</td></tr>
+      </tbody>
+    </table><br>
+    (a) Beskryf die tendens in borreltelling namate die afstand van die lamp toeneem. (1 punt)<br>
+    (b) Die afstand van 40 cm is vier keer die afstand van 10 cm. Bereken die verhouding van borreltellings tussen 10 cm en 40 cm, en toon dat dit ooreenstem met die omgekeerde-kwadraatwet-verhouding tussen ligintensiteit en afstand van 'n ligbron (intensiteit &prop; 1&divide;afstand&sup2;). (3 punte)<br>
+    (c) Verduidelik waarom die telling van suurstofborrels hier as 'n indirekte maatstaf van die tempo van fotosintese gebruik word. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The pondweed canvas has offsetWidth 0 while its tab panel is display:none,
+  // so the initial resizeCanvas() call falls back to a hardcoded width.
+  // Re-measure now that the Explore panel is actually visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   RATE OF PHOTOSYNTHESIS SIMULATOR
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('photoCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+let light=50, co2=50, temp=25;
+let bubbles = [];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600; H = 260;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function tempFactor(T){
+  const opt = 30;
+  if (T <= opt) return Math.max(0, T/opt);
+  return Math.exp(-Math.pow((T-opt)/14, 2));
+}
+function computeRate(){
+  const lightF = light/100;
+  const co2F = co2/100;
+  const tF = tempFactor(temp);
+  return Math.max(0.02, Math.min(1, lightF*0.4 + co2F*0.35 + tF*0.25));
+}
+function updateReadout(){
+  const rate = computeRate();
+  const pct = Math.round(rate*100);
+  document.getElementById('rateNum').textContent = pct+'%';
+  const color = pct>=65?'#22c55e':pct>=35?'#fbbf24':'#60a5fa';
+  document.getElementById('rateBar').style.width = pct+'%';
+  document.getElementById('rateBar').style.background = color;
+  document.getElementById('rateNum').style.color = color;
+  document.getElementById('rateStatus').textContent =
+    pct>=80 ? "Uitstekende toestande — helder lig, volop CO₂, en 'n goeie temperatuur gee 'n vinnige tempo." :
+    pct>=50 ? "Goeie tempo van fotosintese." :
+    pct>=25 ? "Stadige tempo — een of meer faktore beperk fotosintese." :
+    "Baie stadig — toestande is ver van ideaal (bv. te donker, te min CO₂, of te warm/koud).";
+}
+document.getElementById('lightSlider').addEventListener('input', e=>{ light=+e.target.value; document.getElementById('lightVal').textContent=light<33?'Laag':light<66?'Matig':'Hoog'; updateReadout(); });
+document.getElementById('co2Slider').addEventListener('input', e=>{ co2=+e.target.value; document.getElementById('co2Val').textContent=co2<33?'Laag':co2<66?'Matig':'Hoog'; updateReadout(); });
+document.getElementById('tempSlider').addEventListener('input', e=>{ temp=+e.target.value; document.getElementById('tempVal').textContent=temp+'°C'; updateReadout(); });
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const rate = computeRate();
+
+  // pondweed stem
+  const stemX = W*0.5;
+  ctx.strokeStyle = 'rgba(74,222,128,0.55)'; ctx.lineWidth = 10;
+  ctx.beginPath(); ctx.moveTo(stemX,H-10); ctx.lineTo(stemX,H*0.15); ctx.stroke();
+  // leaves
+  for(let y=H*0.25; y<H-20; y+=34){
+    ctx.beginPath(); ctx.ellipse(stemX-18,y,16,7,0.3,0,Math.PI*2);
+    ctx.fillStyle='rgba(74,222,128,0.3)'; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(stemX+18,y+15,16,7,-0.3,0,Math.PI*2);
+    ctx.fillStyle='rgba(74,222,128,0.3)'; ctx.fill();
+  }
+
+  // spawn bubbles proportional to rate
+  if (Math.random() < rate*0.35){
+    bubbles.push({ x: stemX + (Math.random()-0.5)*20, y: H*0.15, r: 2+Math.random()*2 });
+  }
+  bubbles.forEach(b=>{ b.y -= 1.2 + rate*1.5; b.x += Math.sin(b.y*0.05)*0.4; });
+  bubbles = bubbles.filter(b=>b.y > -10);
+  bubbles.forEach(b=>{
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle='rgba(224,242,254,0.8)'; ctx.lineWidth=1; ctx.stroke();
+  });
+
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('O₂-BORRELS STYG', stemX, H*0.08);
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+updateReadout();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:"Watter gas word tydens fotosintese opgeneem?",opts:["Suurstof","Stikstof","Koolstofdioksied","Waterstof"],ans:2,exp:"Koolstofdioksied word uit die atmosfeer opgeneem en, saam met water en ligenergie, gebruik om glukose te produseer."},
+  {text:"Watter pigment absorbeer ligenergie vir fotosintese?",opts:["Hemoglobien","Chlorofil","Melanien","Keratien"],ans:1,exp:"Chlorofil, wat in chloroplaste voorkom, absorbeer ligenergie en is noodsaaklik vir fotosintese om plaas te vind."},
+  {text:"Wat is die twee hoofprodukte van fotosintese?",opts:["Koolstofdioksied en water","Suurstof en glukose (stysel)","Stikstof en glukose","Suurstof en koolstofdioksied"],ans:1,exp:"Fotosintese produseer glukose (dikwels as stysel gestoor) en stel suurstof as 'n newe-produk vry."},
+  {text:"Watter van hierdie sou jy verwag om die tempo van fotosintese te verhoog, tot op 'n punt?",opts:["Afname in ligintensiteit","Toename in CO₂-konsentrasie","Verwydering van alle water","Volledige bedekking van die plant"],ans:1,exp:"'n Toename in CO₂-konsentrasie (tot op 'n punt) verhoog die tempo van fotosintese, aangesien koolstofdioksied 'n benodigde rou materiaal is."},
+  {text:"Wat gebeur met die tempo van fotosintese by baie hoë temperature?",opts:["Dit hou aan om onbepaald toe te neem","Dit neem af, namate die betrokke ensieme begin denatureer","Dit bly presies dieselfde","Fotosintese vind slegs by hoë temperature plaas"],ans:1,exp:"Soos ander ensiem-gedrewe prosesse, vertraag fotosintese by baie hoë temperature namate die betrokke ensieme begin denatureer."},
+  {text:"Waarom is fotosintese belangrik vir lewe op Aarde?",opts:["Dit maak slegs saak vir die plant self","Dit stel suurstof vry en produseer voedsel wat die meeste voedselkettings onderhou","Dit verwyder suurstof uit die atmosfeer","Dit het geen effek op ander organismes nie"],ans:1,exp:"Fotosintese stel die suurstof vry wat die meeste organismes vir respirasie nodig het, en produseer die voedselbasis vir byna elke voedselketting op Aarde."},
+  {text:"'n Navorser hou 'n plant by 'n konstante, LAE CO₂-konsentrasie en verhoog die ligintensiteit wat daarop skyn geleidelik, maar die tempo van fotosintese neem glad nie toe nie. Wat toon dit, volgens die beginsel van beperkende faktore?",opts:["Ligintensiteit beïnvloed nooit die tempo van fotosintese nie","CO₂-konsentrasie — nie ligintensiteit nie — is nou die faktor wat die tempo beperk; slegs 'n toename in die CO₂-toevoer sal die tempo verder verhoog","Die plant het permanent opgehou om te fotosintetiseer","Temperatuur is altyd die enigste beperkende faktor, ongeag die eksperiment"],ans:1,exp:"Die beginsel van beperkende faktore stel dat die tempo van 'n proses afhang van watter benodigde faktor ook al op daardie oomblik die skaarsste is — 'n toename in enige ANDER faktor sal die proses nie versnel nie. Aangesien die verhoging van die ligintensiteit hier geen verandering in tempo veroorsaak het nie, kan lig nie meer wees wat fotosintese terughou nie; die lae, vaste CO₂-konsentrasie moet nou eerder die tempo beperk. Om die tempo verder te verhoog, sou die navorser die CO₂-konsentrasie moes verhoog, nie die ligintensiteit nie."},
+  {text:"'n Student versamel die suurstofgas wat deur pondkruid vrygestel word in 'n gegradueerde buis, en teken die totale volume elke 2 minute aan: 0 cm³ (0 min), 1.2 cm³ (2 min), 2.4 cm³ (4 min), 3.6 cm³ (6 min), 4.8 cm³ (8 min). Bereken die tempo van suurstofproduksie.",opts:["0.6 cm³/min","4.8 cm³/min","1.2 cm³/min","0.15 cm³/min"],ans:0,exp:"Tempo is die gradiënt van volume teenoor tyd: totale verandering in volume ÷ totale verandering in tyd = 4.8 cm³ ÷ 8 min = 0.6 cm³/min. (Toets teen die intervalle: 0.6 cm³/min × 2 min = 1.2 cm³ per interval, wat ooreenstem met die stabiele, eweredig-verspreide lesings — wat bevestig dat dit 'n konstante tempo van suurstofproduksie, en dus van fotosintese, onder hierdie konstante toestande is.)"},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

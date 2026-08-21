@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uitskeiding — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .kingdom-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:900px;margin-bottom:18px}
+    .kingdom-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;transition:all 150ms}
+    .kingdom-card:hover{background:rgba(255,255,255,.06)}
+    .kingdom-card.active{border-color:var(--kc);background:color-mix(in srgb, var(--kc) 16%, transparent)}
+    .kingdom-icon{font-size:24px}
+    .kingdom-label{font-size:11px;font-weight:700;color:#fff;text-align:center;line-height:1.3}
+    .kingdom-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:900px}
+    .ki-title{font-weight:800;font-size:19px;color:#fff;margin-bottom:4px}
+    .ki-sub{font-family:var(--fm);font-size:10.5px;color:var(--muted);margin-bottom:10px;text-transform:uppercase}
+    .ki-desc{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.78)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.kingdom-grid{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .kingdom-grid,.kingdom-info{margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .kingdom-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Lewensprosesse in Plante &amp; Diere · Les 5</div>
+  <h1 class="lesson-title">Uitskeiding</h1>
+  <p class="lesson-sub">Uitskeiding verwyder die afvalprodukte van metabolisme uit die liggaam. Verken die vyf menslike uitskeidingsorgane, en die nefron — die nier se filtereenheid.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplet" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Uitskeiding — die verwydering van metaboliese afval</h2>
+    <p><strong>Uitskeiding</strong> is die verwydering van afvalprodukte wat deur die liggaam se eie metabolisme geproduseer word (nie dieselfde as egestie nie, wat onverteerde kos verwyder). Verskeie organe deel hierdie taak — verken elkeen in die Verken-oortjie.</p>
+
+    <h2>Die urienstelsel en die nier</h2>
+    <p>Die urienstelsel bestaan uit twee <strong>niere</strong>, twee <strong>uretere</strong>, 'n <strong>blaas</strong>, en 'n <strong>uretra</strong>. Elke nier het 'n buitenste <strong>korteks</strong>, 'n binneste <strong>medulla</strong> (gerangskik in piramides), en 'n sentrale <strong>pelvis</strong> wat by die hilum met die ureter verbind.</p>
+
+    <h2>Die nefron — die nier se filtereenheid</h2>
+    <p>Elke nier bevat ongeveer 'n miljoen piepklein filtereenhede genaamd <strong>nefrone</strong>. Elke nefron:</p>
+    <ul>
+      <li>Voer <strong>ultrafiltrasie</strong> uit — filtreer bloed onder druk om klein molekules (water, soute, glukose, en ureum) vanaf die bloed na die nefron te verwyder.</li>
+      <li>Voer <strong>reabsorpsie</strong> uit — herwin nuttige stowwe (glukose, meeste water en soute) terug in die bloed.</li>
+      <li>Skei afval uit — die oorblywende vloeistof (wat <strong>ureum</strong> en oortollige water en soute bevat) word urine.</li>
+    </ul>
+    <div class="callout"><strong>Homeostatiese beheer van water en soute</strong> word deur hormone bestuur — <strong>ADH</strong> (antidiuretiese hormoon) beheer hoeveel water geherabsorbeer word, en <strong>aldosteroon</strong> reguleer soutreabsorpsie.</div>
+
+    <h2>Niersiekte en behandeling</h2>
+    <p>Nierfunksie kan beskadig word deur toestande soos nierstene, of nierversaking (soms gekoppel aan oormatige gebruik van sekere pynstillers) of infeksies soos bilharzia. Ernstige nierversaking word behandel met <strong>dialise</strong> (kunsmatige filtrering van die bloed) of 'n <strong>nier-oorplanting</strong>.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Uitskeidingsorgane-verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik op elke orgaan om te sien wat dit uit die liggaam uitskei.</p>
+  <div class="kingdom-grid" id="kingdomGrid"></div>
+  <div class="kingdom-info" id="kingdomInfo"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Onderskei tussen uitskeiding en egestie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (5 punte)</div><div class="wb-qtext">Noem die vyf menslike uitskeidingsorgane en die stof wat elkeen uit die liggaam verwyder.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Beskryf die prosesse van ultrafiltrasie en reabsorpsie in die nefron.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Noem die hormone verantwoordelik vir die regulering van onderskeidelik water- en soutreabsorpsie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Noem TWEE behandelings vir ernstige nierversaking.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   EXCRETORY ORGANS EXPLORER
+═══════════════════════════════════════════════ */
+const KINGDOMS = [
+  {id:'kidneys', name:'Niere', icon:'🫘', color:'#f87171',
+   desc:'Filtreer die bloed via nefrone (ultrafiltrasie + reabsorpsie), en skei ureum, oortollige water, en oortollige soute as urine uit. Die vernaamste uitskeidingsorgane in soogdiere.'},
+  {id:'lungs', name:'Longe', icon:'🫁', color:'#60a5fa',
+   desc:"Skei koolstofdioksied uit, die afvalgas wat tydens sellulêre respirasie geproduseer word, saam met 'n klein hoeveelheid waterdamp, elke keer wat jy uitasem."},
+  {id:'skin', name:'Vel', icon:'💧', color:'#fbbf24',
+   desc:'Skei klein hoeveelhede water, soute, en ureum in sweet uit, geproduseer deur sweetkliere — dit help ook met temperatuurregulering.'},
+  {id:'liver', name:'Lewer', icon:'🫀', color:'#c084fc',
+   desc:'Deamineer oortollige aminosure, en omskep die afval-stikstofbevattende deel na ureum, wat dan na die niere vir uitskeiding gestuur word. Breek ook ander afvalstowwe af, soos alkohol.'},
+  {id:'gut', name:'Spysverteringskanaal', icon:'🧫', color:'#4ade80',
+   desc:'Skei sommige afvalstowwe uit (soos galpigmente, wat deur die lewer uit ou rooibloedselle afgebreek word) via die derm, benewens die egestie van onverteerde kos.'},
+];
+let activeKingdom = null;
+
+function buildKingdoms(){
+  document.getElementById('kingdomGrid').innerHTML = KINGDOMS.map(k=>`
+    <div class="kingdom-card" id="kc_${k.id}" style="--kc:${k.color}" onclick="selectKingdom('${k.id}')">
+      <span class="kingdom-icon">${k.icon}</span>
+      <span class="kingdom-label">${k.name}</span>
+    </div>`).join('');
+  selectKingdom('kidneys');
+}
+function selectKingdom(id){
+  activeKingdom = KINGDOMS.find(k=>k.id===id);
+  document.querySelectorAll('.kingdom-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('kc_'+id).classList.add('active');
+  document.getElementById('kingdomInfo').innerHTML = `
+    <div class="ki-title" style="color:${activeKingdom.color}">${activeKingdom.icon} ${activeKingdom.name}</div>
+    <p class="ki-desc">${activeKingdom.desc}</p>`;
+}
+buildKingdoms();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:"Wat is uitskeiding?",opts:["Die verwydering van onverteerde kos","Die verwydering van afvalprodukte van metabolisme uit die liggaam","Die inname van kos","Slegs die produksie van urine"],ans:1,exp:"Uitskeiding is die verwydering van afvalprodukte wat deur die liggaam se eie metabolisme geproduseer word, soos ureum en koolstofdioksied — dit verskil van egestie, wat onverteerde kos verwyder."},
+  {text:"Watter afvalproduk skei die longe uit?",opts:["Ureum","Koolstofdioksied","Gal","Oortollige soute"],ans:1,exp:"Die longe skei koolstofdioksied uit, 'n afvalproduk van sellulêre respirasie, elke keer wat jy uitasem."},
+  {text:"Watter proses filtreer die bloed onder druk in die nefron?",opts:["Reabsorpsie","Ultrafiltrasie","Assimilasie","Egestie"],ans:1,exp:"Ultrafiltrasie is die proses wat bloed onder druk in die nefron filtreer, en verwyder klein molekules soos water, soute, glukose, en ureum."},
+  {text:"Wat gebeur tydens reabsorpsie in die nefron?",opts:["Alle gefiltreerde stowwe word uitgeskei","Nuttige stowwe soos glukose en meeste water word terug in die bloed herwin","Ureum word by die bloed gevoeg","Bloedselle word uitgefiltreer"],ans:1,exp:"Reabsorpsie herwin nuttige stowwe — glukose en meeste water en soute — terug in die bloed, en laat die afval (ureum, oortollige water en soute) oor om urine te vorm."},
+  {text:"Watter orgaan omskep oortollige aminosure in ureum?",opts:["Nier","Lewer","Longe","Vel"],ans:1,exp:"Die lewer deamineer oortollige aminosure, en omskep die afval-stikstofbevattende deel na ureum, wat dan deur die niere uitgeskei word."},
+  {text:"Watter hormoon beheer hoeveel water deur die nier geherabsorbeer word?",opts:["Insulien","ADH (antidiuretiese hormoon)","Adrenalien","Slegs aldosteroon"],ans:1,exp:"ADH (antidiuretiese hormoon) beheer hoeveel water in die nier geherabsorbeer word, terwyl aldosteroon soutreabsorpsie reguleer."},
+  {text:"Die glukosekonsentrasie in die glomerulêre filtraat is dieselfde as in bloedplasma, maar glukose is normaalweg AFWESIG in urine. Wat vertel dit ons?",opts:["Glukose word glad nie deur die nefron gefiltreer nie","Glukose word volledig terug in die bloed geherabsorbeer tydens reabsorpsie","Glukose word deur bakterieë in die blaas afgebreek","Glukosemolekules is te groot om oorspronklik gefiltreer te word"],ans:1,exp:"Aangesien die glukosekonsentrasies van plasma en filtraat gelyk is, is glukose duidelik klein genoeg om vrylik in die filtraat in te beweeg tydens ultrafiltrasie. Aangesien geen glukose in die urine verskyn nie, beteken dit dat al die gefiltreerde glukose herwin moes gewees het — volledig terug in die bloed geherabsorbeer — tydens die reabsorpsiestap in die nefron. Enige glukose wat in urine verskyn (glukosurie) dui daarop dat hierdie reabsorpsieproses oorweldig of belemmer is."},
+  {text:"'n Persoon raak erg gedehidreer na 'n lang staptog sonder om water te drink. Watter effek sal dit op ADH-afskeiding en die urine wat geproduseer word, hê?",opts:["ADH-afskeiding neem af, en produseer meer verdunde urine","ADH-afskeiding neem toe, sodat meer water uit die nefron geherabsorbeer word, wat 'n kleiner volume meer gekonsentreerde urine produseer","ADH-afskeiding neem toe, sodat minder water geherabsorbeer word, wat 'n groter volume verdunde urine produseer","ADH het geen effek op urienkonsentrasie nie"],ans:1,exp:"Dehidrasie maak die bloed meer gekonsentreerd (minder water, dieselfde opgeloste stowwe). Dit word waargeneem en veroorsaak verhoogde vrystelling van ADH. Hoër ADH-vlakke maak die versamelbuis meer deurlaatbaar vir water, sodat meer water terug in die bloed geherabsorbeer word. Die gevolg is 'n kleiner volume meer gekonsentreerde urine — die liggaam bespaar water wanneer inname laag is."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

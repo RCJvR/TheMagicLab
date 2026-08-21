@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stoïgiometrie — Science Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#c084fc;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+/* Gas calculator styles */
+.gas-calc{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:24px;max-width:560px}
+.gas-calc h3{font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.gas-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.gas-field{display:flex;flex-direction:column;gap:6px}
+.gas-field label{font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gas-field input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;color:var(--text);font-family:var(--fm);font-size:13px;outline:none;transition:border 150ms}
+.gas-field input:focus{border-color:rgba(192,132,252,.5)}
+.gas-field input::placeholder{color:rgba(210,218,245,.3)}
+.gas-calc-btn{font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;border:1px solid rgba(192,132,252,.35);background:rgba(192,132,252,.12);color:#e9d5ff;cursor:pointer;transition:all 150ms;margin-bottom:16px}
+.gas-calc-btn:hover{background:rgba(192,132,252,.22)}
+.gas-result{background:rgba(192,132,252,.06);border:1px solid rgba(192,132,252,.18);border-radius:12px;padding:14px 18px;font-family:var(--fm);font-size:12px;color:rgba(210,218,245,.80);line-height:2;display:none}
+.gas-result.show{display:block}
+.gas-result .res-val{font-size:20px;font-weight:800;color:#c084fc;letter-spacing:-0.02em}
+.gas-hint{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<!-- LESSON HEADER -->
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Chemie · Les 2</div>
+  <div class="lesson-title">Stoïgiometrie &amp; Kwantitatiewe Aspekte</div>
+  <div class="lesson-sub">Bemeester gevorderde stoïgiometrie: konsentrasieberekeninge, titrasies, gravimetriese analise, gasstoïgiometrie met die ideale gaswet, en beperkende reagens in oplossing.</div>
+</div>
+
+<!-- CURRICULUM TOGGLE -->
+<div class="curr-toggle">
+  <span class="curr-label">Kurrikulum:</span>
+  <div class="curr-wrap">
+    <button class="curr-btn active" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson')">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore')">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice')">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook')">📓 Werkboek</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     LESSON TAB
+════════════════════════════════════════════════════════ -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Hersiening: Die Mol en Sleutelformules</h2>
+    <p>Die <strong style="color:#e9d5ff">mol (mol)</strong> is die SI-eenheid vir hoeveelheid stof. Een mol bevat presies <strong style="color:#e9d5ff">6,022 × 10²³ deeltjies</strong> — dit is Avogadro se getal (Nₐ). Dit verbind die makroskopiese wêreld (gram, liter) met die mikroskopiese wêreld (atome, molekules).</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Formule</th>
+          <th>Veranderlikes</th>
+          <th>Gebruik wanneer…</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>n = m / M</td>
+          <td>n in mol, m in g, M in g·mol⁻¹ (molêre massa vanaf die periodieke tabel)</td>
+          <td>Om tussen massa en mol van 'n suiwer stof om te skakel</td>
+        </tr>
+        <tr>
+          <td>n = c × V</td>
+          <td>c in mol·L⁻¹, V in L</td>
+          <td>Om met oplossings te werk (titrasies, verdunnings)</td>
+        </tr>
+        <tr>
+          <td>n = V / Vm</td>
+          <td>Vm = 22,4 L·mol⁻¹ by STD (0°C, 101,3 kPa)</td>
+          <td>Slegs gasvolumes by standaardtemperatuur en -druk</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="formula">n = m / M</div>
+    <div class="formula">n = c × V</div>
+    <div class="formula">n = V / Vm</div>
+
+    <!-- ─── Concentration ─── -->
+    <h2>Konsentrasie en Standaardoplossings</h2>
+    <p>Konsentrasie (c) dui aan hoeveel opgeloste stof per liter oplossing opgelos is:</p>
+    <div class="formula">c = n / V &nbsp;&nbsp; (mol·L⁻¹, ook geskryf as mol·dm⁻³)</div>
+
+    <p><strong style="color:#e9d5ff">Voorbereiding van 'n standaardoplossing:</strong> Weeg die presiese massa van suiwer opgeloste stof (primêre standaard), los dit op in 'n klein volume gedistilleerde water in 'n beker, en skink dit dan kwantitatief oor in 'n maatkolf en vul tot by die kalibrasiemerk aan. Dit gee 'n presies bekende konsentrasie.</p>
+
+    <p><strong style="color:#e9d5ff">Verdunning:</strong> Wanneer meer oplosmiddel bygevoeg word, bly die aantal mol opgeloste stof konstant, maar die volume vermeerder, sodat die konsentrasie afneem. Gebruik:</p>
+    <div class="formula">c₁V₁ = c₂V₂</div>
+    <p>Vir baie lae konsentrasies, voer 'n <em>reeksverdunning</em> uit — verdun 'n verdunning — om die verlangde konsentrasie sonder groot foute te bereik.</p>
+
+    <div class="callout">
+      <strong>Onthou — eenheidsomskakeling:</strong> 1 L = 1 000 cm³ = 1 000 mL. Titrasievolumes word gewoonlik in cm³ gegee — deel deur 1 000 om liter te kry voordat jy n = cV gebruik. Byvoorbeeld, 25,00 cm³ = 0,02500 L.
+    </div>
+
+    <!-- ─── Titration ─── -->
+    <h2>Volumetriese Analise — Titrasie</h2>
+    <p>'n Titrasie bepaal die onbekende konsentrasie van een oplossing (die <em>analiet</em>) deur gebruik te maak van 'n oplossing met bekende konsentrasie (die <em>titreermiddel</em> of standaardoplossing).</p>
+
+    <p><strong style="color:#e9d5ff">Toerusting en rolle:</strong></p>
+    <ul>
+      <li><strong>Buret</strong> — hou die titreermiddel; lewer presiese, wisselende volumes; lees tot ±0,05 cm³</li>
+      <li><strong>Pipet</strong> — dra 'n presiese, vaste volume analiet oor na die fles</li>
+      <li><strong>Keëlfles (Erlenmeyer-fles)</strong> — reaksiehouer; maklik om te swaai sonder om te mors</li>
+      <li><strong>Indikator</strong> — word druppelsgewys bygevoeg om te bepaal wanneer die reaksie voltooi is (die eindpunt)</li>
+    </ul>
+
+    <p><strong style="color:#e9d5ff">Suur-basis-titrasieprosedure:</strong></p>
+    <ul>
+      <li>1. Spoel die buret met 'n klein volume titreermiddel; spoel die pipet met analiet</li>
+      <li>2. Gebruik die pipet om die presiese volume analiet na die keëlfles oor te dra</li>
+      <li>3. Voeg 2–3 druppels indikator by die fles</li>
+      <li>4. Vul die buret met titreermiddel en noteer die aanvangslesing</li>
+      <li>5. Voeg die titreermiddel stadig by terwyl jy voortdurend swaai; vertraag tot een druppel op 'n slag naby die eindpunt</li>
+      <li>6. Stop wanneer die kleur permanent verander; noteer die finale buretlesing</li>
+      <li>7. Titervolume = V<sub>finaal</sub> − V<sub>aanvang</sub>; herhaal totdat konkordante resultate verkry word (binne 0,10 cm³)</li>
+    </ul>
+
+    <p><strong style="color:#e9d5ff">Ekwivalensiepunt</strong> — die presiese stoïgiometriese punt waar mol H⁺ = mol OH⁻ (of meer algemeen, waar die reagerende spesies in die presiese stoïgiometriese verhouding is). <strong style="color:#e9d5ff">Eindpunt</strong> — wanneer die indikator van kleur verander. Hierdie twee behoort so na as moontlik aan mekaar te wees.</p>
+
+    <p><strong style="color:#e9d5ff">Keuse van indikator:</strong></p>
+    <ul>
+      <li>Sterk suur + sterk basis: ekwivalensie-pH = 7; fenolftaleïen of metieloranje is albei aanvaarbaar</li>
+      <li>Sterk basis + swak suur: ekwivalensie-pH &gt; 7; gebruik <strong>fenolftaleïen</strong> (verander pH 8,2–10,0)</li>
+      <li>Sterk suur + swak basis: ekwivalensie-pH &lt; 7; gebruik <strong>metieloranje</strong> (verander pH 3,1–4,4)</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Uitgewerkte Voorbeeld — Bepaling van konsentrasie deur titrasie:</strong><br><br>
+      25,00 cm³ HCl(aq) word met 0,100 mol·L⁻¹ NaOH(aq) getitreer. 22,50 cm³ NaOH was nodig om die eindpunt te bereik.<br><br>
+      <strong>Stap 1:</strong> n(NaOH) = c × V = 0,100 × 0,02250 = <strong>2,25 × 10⁻³ mol</strong><br>
+      <strong>Stap 2:</strong> HCl + NaOH → NaCl + H₂O; molverhouding 1:1 → n(HCl) = 2,25 × 10⁻³ mol<br>
+      <strong>Stap 3:</strong> c(HCl) = n / V = 2,25 × 10⁻³ / 0,02500 = <strong>0,0900 mol·L⁻¹</strong>
+    </div>
+
+    <!-- ─── Back Titration ─── -->
+    <h2>Terugtitrasie</h2>
+    <p>Word gebruik wanneer die analiet stadig met die titreermiddel reageer, nie direk reageer nie, of wanneer die eindpunt moeilik is om te bepaal. Die analiet word met 'n bekende <em>oormaat</em> van reagens A laat reageer, waarna die onreageerde oormaat A met standaardoplossing C getitreer word.</p>
+    <div class="key-fact">n(gereageer met analiet) = n(totale A bygevoeg) − n(oormaat A getitreer)</div>
+
+    <div class="callout">
+      <strong>Uitgewerkte Voorbeeld — Suiwerheid van CaCO₃ in kalksteen:</strong><br><br>
+      <strong>Stap 1:</strong> Voeg 'n oormaat HCl (gemete volume en konsentrasie) by die kalksteenmonster.<br>
+      CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂<br><br>
+      <strong>Stap 2:</strong> Titreer die oormaat HCl met gestandaardiseerde NaOH; bepaal n(oormaat HCl).<br><br>
+      <strong>Stap 3:</strong> n(HCl wat met CaCO₃ gereageer het) = n(HCl totaal) − n(oormaat HCl)<br><br>
+      <strong>Stap 4:</strong> Vanuit die vergelyking, n(CaCO₃) = ½ × n(HCl gereageer)<br><br>
+      <strong>Stap 5:</strong> massa(CaCO₃) = n × 100,09 g·mol⁻¹; %suiwerheid = massa(CaCO₃)/massa(monster) × 100
+    </div>
+
+    <!-- ─── Gravimetric ─── -->
+    <h2>Gravimetriese Analise</h2>
+    <p>Gravimetriese analise bepaal die hoeveelheid analiet deur dit om te skakel in 'n onoplosbare neerslag met bekende samestelling, wat dan gefiltreer, gedroog en presies geweeg word.</p>
+    <ul>
+      <li>Voeg 'n reagens by wat met die analiet reageer om 'n onoplosbare neerslag te vorm</li>
+      <li>Filtreer met kwantitatiewe filtreerpapier of 'n gesinterde glaskroesie</li>
+      <li>Droog tot konstante massa (dikwels verhit/ontsteek in 'n oond)</li>
+      <li>Weeg die neerslag; bereken mol met n = m/M</li>
+      <li>Gebruik stoïgiometrie om die mol (en dus massa) van die analiet te bepaal</li>
+    </ul>
+    <div class="callout">
+      <strong>Voorbeeld:</strong> Om sulfaat (SO₄²⁻) in 'n oplossing te bepaal, voeg 'n oormaat BaCl₂ by:<br>
+      Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s) ↓<br>
+      Weeg die gedroogde BaSO₄-neerslag. Aangesien die verhouding 1:1 is, is n(SO₄²⁻) = n(BaSO₄) = massa(BaSO₄) / 233,4 g·mol⁻¹
+    </div>
+
+    <!-- ─── Gas Stoichiometry ─── -->
+    <h2>Gasstoïgiometrie</h2>
+    <p>By STD (0°C = 273,15 K, 101,325 kPa) beslaan een mol van enige ideale gas <strong style="color:#e9d5ff">22,4 L·mol⁻¹</strong> (die molêre volume, V<sub>m</sub>). Vir toestande wat nie STD is nie, gebruik die <strong style="color:#e9d5ff">Ideale Gaswet</strong>:</p>
+
+    <div class="formula">PV = nRT &nbsp;&nbsp;&nbsp; R = 8,314 J·mol⁻¹·K⁻¹ &nbsp;&nbsp;&nbsp; T(K) = T(°C) + 273</div>
+
+    <p>Herrangskikkings:</p>
+    <ul>
+      <li>n = PV / RT (bepaal mol vanaf druk, volume, temperatuur)</li>
+      <li>P = nRT / V (bepaal druk)</li>
+      <li>V = nRT / P (bepaal volume)</li>
+    </ul>
+
+    <div class="callout">
+      <strong>BELANGRIKE eenheidsvereistes vir PV = nRT:</strong><br>
+      P moet in <strong>Pascal (Pa)</strong> wees: 1 kPa = 1 000 Pa; 1 atm = 101 325 Pa<br>
+      V moet in <strong>kubieke meter (m³)</strong> wees: 1 L = 0,001 m³ = 1 × 10⁻³ m³<br>
+      T moet in <strong>Kelvin (K)</strong> wees: T(K) = T(°C) + 273<br>
+      n in mol, R = 8,314 J·mol⁻¹·K⁻¹ (= Pa·m³·mol⁻¹·K⁻¹)
+    </div>
+
+    <p>Vir 'n vaste hoeveelheid gas met veranderende toestande, gebruik die <strong style="color:#e9d5ff">Gekombineerde Gaswet</strong>:</p>
+    <div class="formula">P₁V₁ / T₁ = P₂V₂ / T₂ &nbsp;&nbsp; (n konstant)</div>
+
+    <div class="callout">
+      <strong>Uitgewerkte Voorbeeld — Gas geproduseer in 'n reaksie:</strong><br><br>
+      2,50 g CaCO₃ word verhit: CaCO₃(s) → CaO(s) + CO₂(g)<br>
+      Watter volume CO₂ word geproduseer by 25°C en 100 kPa? (M(CaCO₃) = 100,09 g·mol⁻¹)<br><br>
+      <strong>Stap 1:</strong> n(CaCO₃) = 2,50 / 100,09 = 0,02498 mol<br>
+      <strong>Stap 2:</strong> Molverhouding 1:1 → n(CO₂) = 0,02498 mol<br>
+      <strong>Stap 3:</strong> Skakel om: T = 25 + 273 = 298 K; P = 100 000 Pa<br>
+      <strong>Stap 4:</strong> V = nRT / P = (0,02498 × 8,314 × 298) / 100 000 = 6,19 × 10⁻⁴ m³ = <strong>0,619 L</strong>
+    </div>
+
+    <!-- ─── Percentage Purity ─── -->
+    <h2>Persentasie Suiwerheid</h2>
+    <p>Werklike monsters is selde 100% suiwer. Persentasie suiwerheid dui aan watter fraksie van 'n monster die verlangde stof is:</p>
+    <div class="formula">% suiwerheid = (massa van suiwer stof / totale massa van monster) × 100</div>
+    <p>Die massa van die suiwer stof word gewoonlik eers deur titrasie (terug- of direkte titrasie) of gravimetriese analise bepaal. Persentasie suiwerheid is altyd ≤ 100% en verwys na <em>massa</em>-persentasie, nie molpersentasie nie.</p>
+
+    <!-- ─── IEB Block ─── -->
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension: Potentiometric Titrations &amp; Buffers</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Potentiometric titration:</strong> A pH electrode measures the pH continuously as titrant is added. The data is plotted as a titration curve (pH vs. volume added).</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.70);line-height:1.85;margin:0 0 10px 18px">
+        <li><strong style="color:#fcd34d">Buffer region</strong> — flat part of curve where pH changes slowly; mixture of weak acid and conjugate base</li>
+        <li><strong style="color:#fcd34d">Half-equivalence point</strong> — halfway to equivalence; [A⁻] = [HA]; pH = pKa</li>
+        <li><strong style="color:#fcd34d">Equivalence point</strong> — steepest part / inflection point of the curve</li>
+      </ul>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Buffer solutions:</strong> A mixture of a weak acid (HA) and its conjugate base (A⁻) in similar amounts. They resist large pH changes on addition of small amounts of acid or base. Described by the <strong style="color:#fcd34d">Henderson-Hasselbalch equation:</strong></p>
+      <div class="formula" style="border-color:rgba(251,191,36,.25);color:#fcd34d">pH = pKa + log([A⁻] / [HA])</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8"><strong style="color:#fcd34d">EDTA complexometric titrations:</strong> EDTA (ethylenediaminetetraacetic acid) forms stable 1:1 complexes with metal ions regardless of charge. Used extensively to determine <em>water hardness</em> (Ca²⁺ and Mg²⁺ concentrations) with a metallochromic indicator such as Eriochrome Black T.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     EXPLORE TAB
+════════════════════════════════════════════════════════ -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+
+    <!-- Mode buttons -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="mode-btn active" id="modeBtn1" onclick="setSimMode(1)">Virtual Titration</button>
+      <button class="mode-btn" id="modeBtn2" onclick="setSimMode(2)">Ideal Gas Calculator</button>
+    </div>
+
+    <!-- MODE 1: Virtual Titration Canvas -->
+    <div id="simMode1">
+      <div class="sim-canvas-wrap">
+        <h3>Virtual Titration — HCl(aq) vs NaOH(aq)</h3>
+        <canvas id="titrationCanvas"></canvas>
+      </div>
+
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">NaOH Volume Added</div>
+          <div class="slider-row">
+            <label>Volume (mL)</label>
+            <input type="range" id="naohSlider" min="0" max="40" step="0.1" value="0" oninput="onSliderChange()">
+            <span class="slider-val" id="naohVal">0.0 mL</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">HCl: 25.00 mL of 0.0900 mol·L⁻¹ &nbsp;|&nbsp; NaOH: 0.100 mol·L⁻¹</div>
+        </div>
+        <div class="ctrl-card">
+          <div class="ctrl-label">Indicator</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="mode-btn active" id="indPP" onclick="setIndicator('phenolphthalein')">Phenolphthalein</button>
+            <button class="mode-btn" id="indMO" onclick="setIndicator('methylorange')">Methyl Orange</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="readout-grid">
+        <div class="readout">
+          <div class="readout-label">Volume NaOH</div>
+          <div class="readout-val" id="roVol">0.0<span>mL</span></div>
+        </div>
+        <div class="readout">
+          <div class="readout-label">pH</div>
+          <div class="readout-val" id="roPH">1.05</div>
+        </div>
+        <div class="readout">
+          <div class="readout-label">Stage</div>
+          <div class="readout-val" id="roStage" style="font-size:11px;padding-top:4px">Before EQ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODE 2: Ideal Gas Calculator -->
+    <div id="simMode2" style="display:none">
+      <div class="gas-calc">
+        <h3>Ideal Gas Law Calculator — PV = nRT</h3>
+        <p class="gas-hint">Leave <strong style="color:#c084fc">one field blank</strong> — the calculator will solve for it. Enter P in kPa, V in litres, T in °C.</p>
+        <div class="gas-inputs">
+          <div class="gas-field">
+            <label>P — Pressure (kPa)</label>
+            <input type="number" id="gasP" placeholder="e.g. 101.325" step="any">
+          </div>
+          <div class="gas-field">
+            <label>V — Volume (L)</label>
+            <input type="number" id="gasV" placeholder="e.g. 22.4" step="any">
+          </div>
+          <div class="gas-field">
+            <label>n — Moles (mol)</label>
+            <input type="number" id="gasN" placeholder="e.g. 1.00" step="any">
+          </div>
+          <div class="gas-field">
+            <label>T — Temperature (°C)</label>
+            <input type="number" id="gasT" placeholder="e.g. 25" step="any">
+          </div>
+        </div>
+        <button class="gas-calc-btn" onclick="calcGas()">Calculate</button>
+        <div class="gas-result" id="gasResult"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PRACTICE TAB
+════════════════════════════════════════════════════════ -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
+        <div style="font-size:13px;color:var(--muted)" id="scoreMsg"></div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card" id="qcard-1">
+      <div class="q-num">Question 1 — NSC</div>
+      <div class="q-text">25.00 cm³ of 0.200 mol·L⁻¹ HCl is titrated with 0.100 mol·L⁻¹ NaOH. What volume of NaOH is needed to reach the equivalence point?</div>
+      <div class="mc-options" id="mc-1">
+        <button class="mc-opt" onclick="answer(1,'A','C')"><span class="opt-letter">A</span>12.50 cm³</button>
+        <button class="mc-opt" onclick="answer(1,'B','C')"><span class="opt-letter">B</span>25.00 cm³</button>
+        <button class="mc-opt" onclick="answer(1,'C','C')"><span class="opt-letter">C</span>50.00 cm³</button>
+        <button class="mc-opt" onclick="answer(1,'D','C')"><span class="opt-letter">D</span>100.0 cm³</button>
+      </div>
+      <div class="feedback" id="fb-1">n(HCl) = 0.200 × 0.02500 = 5.00 × 10⁻³ mol. Mole ratio 1:1. n(NaOH) needed = 5.00 × 10⁻³ mol. V = n/c = 5.00 × 10⁻³ / 0.100 = 0.0500 L = <strong>50.00 cm³</strong>.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="qcard-2">
+      <div class="q-num">Question 2 — NSC</div>
+      <div class="q-text">In a back titration, excess HCl is used to dissolve a CaCO₃ sample (molar mass 100 g·mol⁻¹). The excess HCl requires 18.00 cm³ of 0.500 mol·L⁻¹ NaOH to neutralise. If 40.00 cm³ of 0.500 mol·L⁻¹ HCl was originally added, what is n(CaCO₃)?</div>
+      <div class="mc-options" id="mc-2">
+        <button class="mc-opt" onclick="answer(2,'A','B')"><span class="opt-letter">A</span>0.005 mol</button>
+        <button class="mc-opt" onclick="answer(2,'B','B')"><span class="opt-letter">B</span>0.0055 mol</button>
+        <button class="mc-opt" onclick="answer(2,'C','B')"><span class="opt-letter">C</span>0.011 mol</button>
+        <button class="mc-opt" onclick="answer(2,'D','B')"><span class="opt-letter">D</span>0.020 mol</button>
+      </div>
+      <div class="feedback" id="fb-2">n(HCl total) = 0.500 × 0.040 = 0.020 mol. n(excess HCl) = 0.500 × 0.018 = 0.009 mol. n(HCl reacted with CaCO₃) = 0.020 − 0.009 = 0.011 mol. Since CaCO₃ + 2HCl → …, n(CaCO₃) = 0.011/2 = <strong>0.0055 mol</strong>.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="qcard-3">
+      <div class="q-num">Question 3 — NSC</div>
+      <div class="q-text">A gas occupies 2.00 L at 300 K and 150 kPa. How many moles of gas are present? (R = 8.314 J·mol⁻¹·K⁻¹)</div>
+      <div class="mc-options" id="mc-3">
+        <button class="mc-opt" onclick="answer(3,'A','A')"><span class="opt-letter">A</span>0.120 mol</button>
+        <button class="mc-opt" onclick="answer(3,'B','A')"><span class="opt-letter">B</span>1.20 mol</button>
+        <button class="mc-opt" onclick="answer(3,'C','A')"><span class="opt-letter">C</span>0.0120 mol</button>
+        <button class="mc-opt" onclick="answer(3,'D','A')"><span class="opt-letter">D</span>12.0 mol</button>
+      </div>
+      <div class="feedback" id="fb-3">PV = nRT → n = PV/RT = (150 000 × 0.002) / (8.314 × 300) = 300 / 2494.2 = <strong>0.120 mol</strong>. Remember: P in Pa (150 kPa = 150 000 Pa), V in m³ (2.00 L = 0.002 m³).</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" id="qcard-4">
+      <div class="q-num">Question 4 — NSC</div>
+      <div class="q-text">A sample of impure iron ore contains 3.00 g of Fe₂O₃ in 5.00 g total. What is the percentage purity? (M(Fe₂O₃) = 160 g·mol⁻¹)</div>
+      <div class="mc-options" id="mc-4">
+        <button class="mc-opt" onclick="answer(4,'A','A')"><span class="opt-letter">A</span>60.0%</button>
+        <button class="mc-opt" onclick="answer(4,'B','A')"><span class="opt-letter">B</span>30.0%</button>
+        <button class="mc-opt" onclick="answer(4,'C','A')"><span class="opt-letter">C</span>53.3%</button>
+        <button class="mc-opt" onclick="answer(4,'D','A')"><span class="opt-letter">D</span>6.00%</button>
+      </div>
+      <div class="feedback" id="fb-4">%purity = (3.00/5.00) × 100 = <strong>60.0%</strong>. No molar mass calculation is needed here — percentage purity by mass is simply mass of pure compound ÷ total mass × 100.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" id="qcard-5">
+      <div class="q-num">Question 5 — NSC</div>
+      <div class="q-text">In a gravimetric analysis, BaSO₄ precipitate (M = 233.4 g·mol⁻¹) weighing 0.4668 g is obtained. How many moles of SO₄²⁻ were in the original solution?</div>
+      <div class="mc-options" id="mc-5">
+        <button class="mc-opt" onclick="answer(5,'A','B')"><span class="opt-letter">A</span>1.00 × 10⁻³ mol</button>
+        <button class="mc-opt" onclick="answer(5,'B','B')"><span class="opt-letter">B</span>2.00 × 10⁻³ mol</button>
+        <button class="mc-opt" onclick="answer(5,'C','B')"><span class="opt-letter">C</span>0.0100 mol</button>
+        <button class="mc-opt" onclick="answer(5,'D','B')"><span class="opt-letter">D</span>0.233 mol</button>
+      </div>
+      <div class="feedback" id="fb-5">n(BaSO₄) = 0.4668/233.4 = <strong>2.00 × 10⁻³ mol</strong>. Stoichiometry: Ba²⁺ + SO₄²⁻ → BaSO₄ (1:1 ratio), so n(SO₄²⁻) = n(BaSO₄) = 2.00 × 10⁻³ mol.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" id="qcard-6">
+      <div class="q-num">Question 6 — NSC</div>
+      <div class="q-text">Which indicator is most suitable for a titration between a strong acid and a weak base (where the equivalence point is at pH ≈ 5)?</div>
+      <div class="mc-options" id="mc-6">
+        <button class="mc-opt" onclick="answer(6,'A','D')"><span class="opt-letter">A</span>Phenolphthalein (pH range 8.2–10.0)</button>
+        <button class="mc-opt" onclick="answer(6,'B','D')"><span class="opt-letter">B</span>Litmus (pH range 4.5–8.3)</button>
+        <button class="mc-opt" onclick="answer(6,'C','D')"><span class="opt-letter">C</span>Methyl orange (pH range 3.1–4.4)</button>
+        <button class="mc-opt" onclick="answer(6,'D','D')"><span class="opt-letter">D</span>Bromocresol green (pH range 3.8–5.4)</button>
+      </div>
+      <div class="feedback" id="fb-6">The indicator must change colour within the steep part of the titration curve near pH 5. Methyl orange changes too early (pH 3.1–4.4), phenolphthalein too late (pH 8.2–10.0), and litmus is not sharp enough. <strong>Bromocresol green (pH 3.8–5.4)</strong> spans the equivalence point well.</div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card" id="qcard-9">
+      <div class="q-num">Question 7 — NSC</div>
+      <div class="q-text">In the thermite reaction 2Al(s) + Fe₂O₃(s) → Al₂O₃(s) + 2Fe(l), 54.0 g of Al is reacted with 96.0 g of Fe₂O₃. (M(Al) = 27 g·mol⁻¹, M(Fe₂O₃) = 160 g·mol⁻¹, M(Fe) = 55.8 g·mol⁻¹) What mass of Fe is produced?</div>
+      <div class="mc-options" id="mc-9">
+        <button class="mc-opt" onclick="answer(9,'A','A')"><span class="opt-letter">A</span>67.0 g</button>
+        <button class="mc-opt" onclick="answer(9,'B','A')"><span class="opt-letter">B</span>111.6 g</button>
+        <button class="mc-opt" onclick="answer(9,'C','A')"><span class="opt-letter">C</span>33.5 g</button>
+        <button class="mc-opt" onclick="answer(9,'D','A')"><span class="opt-letter">D</span>192 g</button>
+      </div>
+      <div class="feedback" id="fb-9">n(Al) = 54.0/27 = 2.00 mol. n(Fe₂O₃) = 96.0/160 = 0.600 mol. The equation requires 2 mol Al per 1 mol Fe₂O₃, so 0.600 mol Fe₂O₃ would need only 1.200 mol Al — we have 2.00 mol Al available (excess), so <strong>Fe₂O₃ is the limiting reagent</strong>. Using the 1:2 ratio of Fe₂O₃:Fe, n(Fe) = 2 × 0.600 = 1.200 mol. Mass = 1.200 × 55.8 = <strong>67.0 g</strong>. (Wrongly assuming Al is limiting gives 111.6 g; forgetting the 1:2 ratio gives 33.5 g.)</div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card" id="qcard-10">
+      <div class="q-num">Question 8 — NSC</div>
+      <div class="q-text">In the Haber process: N₂(g) + 3H₂(g) → 2NH₃(g). 28.0 g of N₂ reacts with excess H₂. Only 28.9 g of NH₃ is actually obtained. What is the percentage yield? (M(N₂) = 28 g·mol⁻¹, M(NH₃) = 17 g·mol⁻¹)</div>
+      <div class="mc-options" id="mc-10">
+        <button class="mc-opt" onclick="answer(10,'A','A')"><span class="opt-letter">A</span>85.0%</button>
+        <button class="mc-opt" onclick="answer(10,'B','A')"><span class="opt-letter">B</span>56.7%</button>
+        <button class="mc-opt" onclick="answer(10,'C','A')"><span class="opt-letter">C</span>100%</button>
+        <button class="mc-opt" onclick="answer(10,'D','A')"><span class="opt-letter">D</span>42.5%</button>
+      </div>
+      <div class="feedback" id="fb-10">n(N₂) = 28.0/28 = 1.00 mol. The mole ratio N₂:NH₃ = 1:2, so the theoretical n(NH₃) = 2.00 mol, giving a theoretical mass = 2.00 × 17 = 34.0 g. Percentage yield = (actual/theoretical) × 100 = (28.9/34.0) × 100 = <strong>85.0%</strong>. Percentage yield always compares the actual mass obtained to the theoretical maximum calculated from the limiting reagent — since H₂ is in excess here, N₂ determines the theoretical yield.</div>
+    </div>
+
+    <!-- IEB Practice Section -->
+    <div class="ieb-practice" id="ieb-practice-section" style="flex-direction:column">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:16px 0 12px;padding:8px 14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:8px;display:inline-block">IEB Extension Questions</div>
+
+      <!-- Q7 -->
+      <div class="q-card" id="qcard-7">
+        <div class="q-num">Question 7 — IEB</div>
+        <div class="q-text">A buffer solution contains 0.10 mol·L⁻¹ acetic acid (pKa = 4.74) and 0.20 mol·L⁻¹ sodium acetate. What is the pH? (Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA]))</div>
+        <div class="mc-options" id="mc-7">
+          <button class="mc-opt" onclick="answer(7,'A','C')"><span class="opt-letter">A</span>4.44</button>
+          <button class="mc-opt" onclick="answer(7,'B','C')"><span class="opt-letter">B</span>4.74</button>
+          <button class="mc-opt" onclick="answer(7,'C','C')"><span class="opt-letter">C</span>5.04</button>
+          <button class="mc-opt" onclick="answer(7,'D','C')"><span class="opt-letter">D</span>5.44</button>
+        </div>
+        <div class="feedback" id="fb-7">pH = 4.74 + log(0.20/0.10) = 4.74 + log(2) = 4.74 + 0.301 = <strong>5.04</strong>. When [A⁻] &gt; [HA], pH &gt; pKa — the solution is more basic than the pure acid.</div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-card" id="qcard-8">
+        <div class="q-num">Question 8 — IEB</div>
+        <div class="q-text">A potentiometric titration of a weak acid with strong base shows the half-equivalence point at pH = 4.2. This means the pKa of the weak acid is:</div>
+        <div class="mc-options" id="mc-8">
+          <button class="mc-opt" onclick="answer(8,'A','A')"><span class="opt-letter">A</span>4.2</button>
+          <button class="mc-opt" onclick="answer(8,'B','A')"><span class="opt-letter">B</span>8.4</button>
+          <button class="mc-opt" onclick="answer(8,'C','A')"><span class="opt-letter">C</span>9.8</button>
+          <button class="mc-opt" onclick="answer(8,'D','A')"><span class="opt-letter">D</span>2.1</button>
+        </div>
+        <div class="feedback" id="fb-8">At the half-equivalence point, exactly half the acid has been neutralised, so [A⁻] = [HA]. Therefore pH = pKa + log(1) = pKa + 0 = <strong>pKa = 4.2</strong>.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     WORKBOOK TAB
+════════════════════════════════════════════════════════ -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
+    <div class="wb-intro">These questions require full working. Show all steps: write the formula, substitute values with units, calculate the answer, and include the unit in your final answer. Concordant titration results should agree to within 0.10 cm³.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 [4 marks]</div>
+      <div class="wb-qtext">In a titration, 20.00 cm³ of H₂SO₄ of unknown concentration reacts exactly with 32.00 cm³ of 0.150 mol·L⁻¹ NaOH solution. The equation is:<br><br>H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O<br><br>Calculate the concentration of the H₂SO₄. Show all working.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 [6 marks]</div>
+      <div class="wb-qtext">A limestone sample of mass 2.000 g is treated with 50.0 cm³ of 1.00 mol·L⁻¹ HCl (excess). The excess acid requires 22.0 cm³ of 0.500 mol·L⁻¹ NaOH to neutralise.<br><br>Calculate:<br>(a) n(HCl total)<br>(b) n(excess HCl)<br>(c) n(HCl that reacted with limestone)<br>(d) n(CaCO₃) [CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂]<br>(e) Mass of CaCO₃ (M = 100.09 g·mol⁻¹)<br>(f) Percentage purity of the limestone sample</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 [4 marks]</div>
+      <div class="wb-qtext">0.500 mol of nitrogen gas (N₂) is sealed in a container at 27°C and 200 kPa. (R = 8.314 J·mol⁻¹·K⁻¹)<br><br>(a) What volume does it occupy? (Express answer in litres.)<br>(b) If the gas is heated to 127°C at constant volume, what is the new pressure?</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 [3 marks]</div>
+      <div class="wb-qtext">An iron ore sample is analysed by gravimetric analysis. Fe²⁺ ions in solution are precipitated as Fe(OH)₂. The dried precipitate has a mass of 0.810 g.<br>(M(Fe(OH)₂) = 89.86 g·mol⁻¹; M(Fe) = 55.85 g·mol⁻¹)<br><br>(a) Calculate n(Fe(OH)₂)<br>(b) State n(Fe²⁺) with reasoning<br>(c) Calculate the mass of Fe in the sample</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 [4 marks]</div>
+      <div class="wb-qtext">Explain the difference between the <em>equivalence point</em> and the <em>endpoint</em> of a titration. Why should these be as close as possible, and how does the choice of indicator affect this? In your answer, refer to the pH ranges of at least two named indicators.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 [7 marks]</div>
+      <div class="wb-qtext">25.00 cm³ of NaOH solution of unknown concentration is titrated against 0.100 mol·L⁻¹ HCl. A rough run is done first, followed by two accurate runs. The burette readings are recorded below:<br><br>
+      <table class="symbols-table" style="max-width:520px">
+        <thead><tr><th>Run</th><th>Initial reading (cm³)</th><th>Final reading (cm³)</th><th>Titre (cm³)</th></tr></thead>
+        <tbody>
+          <tr><td>1 (rough)</td><td>0.00</td><td>27.80</td><td>?</td></tr>
+          <tr><td>2</td><td>0.50</td><td>27.85</td><td>?</td></tr>
+          <tr><td>3</td><td>0.30</td><td>27.65</td><td>?</td></tr>
+        </tbody>
+      </table><br>
+      (a) Complete the table by calculating the titre (final − initial reading) for each run. (2 marks)<br>
+      (b) Two of the three titres are <em>concordant</em> (agree to within 0.10 cm³). Identify which two runs these are, and explain why the rough run (Run 1) should be excluded from the average. (2 marks)<br>
+      (c) Calculate the average titre using only the concordant runs. (1 mark)<br>
+      (d) Using the equation HCl + NaOH → NaCl + H₂O, calculate the concentration of the NaOH solution. (2 marks)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+// ── Tab switching ──────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const map = { lesson: 0, explore: 1, practice: 2, workbook: 3 };
+  btns[map[id]].classList.add('active');
+  if (id === 'explore') {
+    requestAnimationFrame(() => initSim());
+  }
+}
+
+// ── Curriculum toggle ──────────────────────────────────
+function setCurriculum(mode) {
+  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (mode === 'ieb') {
+    document.body.classList.add('ieb-mode');
+  } else {
+    document.body.classList.remove('ieb-mode');
+  }
+}
+
+// ── Sim mode toggle ────────────────────────────────────
+function setSimMode(m) {
+  document.getElementById('simMode1').style.display = m === 1 ? '' : 'none';
+  document.getElementById('simMode2').style.display = m === 2 ? '' : 'none';
+  document.getElementById('modeBtn1').classList.toggle('active', m === 1);
+  document.getElementById('modeBtn2').classList.toggle('active', m === 2);
+  if (m === 1) initSim();
+}
+
+// ── TITRATION SIMULATION ───────────────────────────────
+const cv = document.getElementById('titrationCanvas');
+const ctx = cv.getContext('2d');
+let raf = null;
+let currentIndicator = 'phenolphthalein';
+let drips = [];
+let lastSliderVal = 0;
+let animDrip = false;
+let dripTimer = 0;
+
+function setIndicator(ind) {
+  currentIndicator = ind;
+  document.getElementById('indPP').classList.toggle('active', ind === 'phenolphthalein');
+  document.getElementById('indMO').classList.toggle('active', ind === 'methylorange');
+}
+
+function calcPH(vNaOHmL) {
+  const nHCl = 0.0900 * 0.025; // 0.00225 mol
+  const cNaOH = 0.100;
+  const vNaOH = vNaOHmL / 1000;
+  const nNaOH = cNaOH * vNaOH;
+  const vTotal = 0.025 + vNaOH;
+
+  if (vNaOH === 0) return -Math.log10(0.0900);
+
+  if (nNaOH < nHCl) {
+    const cH = (nHCl - nNaOH) / vTotal;
+    return -Math.log10(cH);
+  } else if (Math.abs(nNaOH - nHCl) < 1e-7) {
+    return 7.0;
+  } else {
+    const cOH = (nNaOH - nHCl) / vTotal;
+    const pOH = -Math.log10(cOH);
+    return 14 - pOH;
+  }
+}
+
+function flaskColor(pH) {
+  if (currentIndicator === 'phenolphthalein') {
+    // colourless below ~8.2, pink above
+    if (pH < 7) {
+      const t = Math.min(1, (7 - pH) / 6);
+      // red-orange for acidic
+      const r = Math.round(200 + 40 * t);
+      const g = Math.round(60 - 40 * t);
+      const b = 60;
+      return `rgba(${r},${g},${b},0.55)`;
+    } else if (pH < 8.2) {
+      return 'rgba(180,200,210,0.35)';
+    } else {
+      // pink/magenta
+      const t = Math.min(1, (pH - 8.2) / 2);
+      const r = Math.round(200 + 30 * t);
+      const g = Math.round(80 - 50 * t);
+      const b = Math.round(140 + 80 * t);
+      return `rgba(${r},${g},${b},0.60)`;
+    }
+  } else {
+    // methyl orange: red below 3.1, orange 3.1–4.4, yellow above
+    if (pH < 3.1) return 'rgba(220,50,50,0.55)';
+    if (pH < 4.4) {
+      const t = (pH - 3.1) / 1.3;
+      return `rgba(${Math.round(220-60*t)},${Math.round(50+110*t)},30,0.55)`;
+    }
+    return 'rgba(210,180,40,0.55)';
+  }
+}
+
+function initSim() {
+  if (raf) cancelAnimationFrame(raf);
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = cv.offsetWidth * dpr;
+  cv.height = 380 * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  loop();
+}
+
+function loop() {
+  const W = cv.offsetWidth;
+  const H = 380;
+  ctx.clearRect(0, 0, W, H);
+  drawScene(W, H);
+  raf = requestAnimationFrame(loop);
+}
+
+function drawScene(W, H) {
+  const vNaOHmL = parseFloat(document.getElementById('naohSlider').value);
+  const pH = calcPH(vNaOHmL);
+  const eqV = 22.5; // mL of NaOH at equivalence
+
+  // ── Background ──
+  ctx.fillStyle = '#040710';
+  ctx.fillRect(0, 0, W, H);
+
+  // ── Grid lines ──
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 40) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // ── Titration curve (background guide) ──
+  ctx.save();
+  const curveX = W * 0.55;
+  const curveW = W * 0.40;
+  const curveTop = 30;
+  const curveBot = H - 30;
+  const maxV = 40;
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(192,132,252,0.18)';
+  ctx.lineWidth = 2;
+  for (let i = 0; i <= 200; i++) {
+    const v = (i / 200) * maxV;
+    const p = calcPH(v);
+    const px = curveX + (v / maxV) * curveW;
+    const py = curveBot - ((p / 14) * (curveBot - curveTop));
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Current point on curve
+  const cpx = curveX + (vNaOHmL / maxV) * curveW;
+  const cpy = curveBot - ((pH / 14) * (curveBot - curveTop));
+  ctx.beginPath();
+  ctx.arc(cpx, cpy, 5, 0, Math.PI * 2);
+  ctx.fillStyle = '#c084fc';
+  ctx.fill();
+
+  // Equivalence line on curve
+  const eqpx = curveX + (eqV / maxV) * curveW;
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = 'rgba(251,191,36,0.45)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(eqpx, curveTop); ctx.lineTo(eqpx, curveBot); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Curve axis labels
+  ctx.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx.font = '9px "JetBrains Mono"';
+  ctx.textAlign = 'center';
+  ctx.fillText('0', curveX, curveBot + 14);
+  ctx.fillText('22.5', eqpx, curveBot + 14);
+  ctx.fillText('40', curveX + curveW, curveBot + 14);
+  ctx.fillText('V(NaOH) mL', curveX + curveW / 2, H - 4);
+  ctx.textAlign = 'right';
+  ctx.fillText('14', curveX - 4, curveTop + 4);
+  ctx.fillText('7', curveX - 4, curveBot - (7/14)*(curveBot-curveTop) + 4);
+  ctx.fillText('0', curveX - 4, curveBot + 4);
+
+  // EQ label
+  ctx.fillStyle = 'rgba(251,191,36,0.65)';
+  ctx.font = '8px "JetBrains Mono"';
+  ctx.textAlign = 'center';
+  ctx.fillText('EQ', eqpx, curveTop - 6);
+  ctx.restore();
+
+  // ── Burette ──
+  const burX = W * 0.15;
+  const burTop = 20;
+  const burH = 160;
+  const burW = 18;
+  const fillFrac = 1 - (vNaOHmL / 40);
+
+  // Burette body (glass)
+  ctx.strokeStyle = 'rgba(150,180,220,0.6)';
+  ctx.lineWidth = 2;
+  ctx.fillStyle = 'rgba(150,180,220,0.06)';
+  ctx.beginPath();
+  ctx.rect(burX - burW/2, burTop, burW, burH);
+  ctx.fill(); ctx.stroke();
+
+  // NaOH liquid in burette
+  const liquidH = burH * fillFrac;
+  const liquidTop = burTop + burH - liquidH;
+  ctx.fillStyle = 'rgba(96,165,250,0.35)';
+  ctx.fillRect(burX - burW/2 + 2, liquidTop, burW - 4, liquidH);
+
+  // Burette tip
+  ctx.strokeStyle = 'rgba(150,180,220,0.5)';
+  ctx.beginPath();
+  ctx.moveTo(burX - 4, burTop + burH);
+  ctx.lineTo(burX, burTop + burH + 20);
+  ctx.lineTo(burX + 4, burTop + burH);
+  ctx.stroke();
+
+  // Graduation marks
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.font = '8px "JetBrains Mono"';
+  ctx.textAlign = 'right';
+  for (let ml = 0; ml <= 40; ml += 10) {
+    const gy = burTop + (ml / 40) * burH;
+    ctx.fillStyle = 'rgba(210,218,245,0.3)';
+    ctx.fillRect(burX + burW/2, gy, 6, 1);
+    ctx.fillStyle = 'rgba(210,218,245,0.4)';
+    ctx.fillText(ml, burX - burW/2 - 4, gy + 3);
+  }
+
+  // ── Drip animation ──
+  drips = drips.filter(d => {
+    d.y += d.vy;
+    d.vy += 0.5;
+    d.alpha -= 0.03;
+    if (d.alpha > 0) {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(96,165,250,${d.alpha})`;
+      ctx.fill();
+    }
+    return d.alpha > 0 && d.y < H;
+  });
+
+  if (animDrip) {
+    dripTimer++;
+    if (dripTimer % 8 === 0) {
+      drips.push({ x: burX + (Math.random()-0.5)*3, y: burTop + burH + 20, vy: 2, r: 2.5, alpha: 0.9 });
+    }
+    if (dripTimer > 30) { animDrip = false; dripTimer = 0; }
+  }
+
+  // ── Conical Flask ──
+  const flaskX = W * 0.15;
+  const flaskY = H - 130;
+  const flaskBaseW = 70;
+  const flaskNeckW = 22;
+  const flaskH = 110;
+  const neckH = 35;
+
+  const color = flaskColor(pH);
+
+  // Flask body path
+  ctx.beginPath();
+  ctx.moveTo(flaskX - flaskNeckW/2, flaskY);
+  ctx.lineTo(flaskX - flaskNeckW/2, flaskY + neckH);
+  ctx.lineTo(flaskX - flaskBaseW/2, flaskY + flaskH);
+  ctx.lineTo(flaskX + flaskBaseW/2, flaskY + flaskH);
+  ctx.lineTo(flaskX + flaskNeckW/2, flaskY + neckH);
+  ctx.lineTo(flaskX + flaskNeckW/2, flaskY);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(150,180,220,0.55)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Flask label
+  ctx.fillStyle = 'rgba(210,218,245,0.55)';
+  ctx.font = '9px "JetBrains Mono"';
+  ctx.textAlign = 'center';
+  ctx.fillText('HCl(aq)', flaskX, flaskY + flaskH/2 + 22);
+
+  // ── pH Display ──
+  const pHStr = pH.toFixed(2);
+  ctx.save();
+  ctx.font = 'bold 28px "Cabinet Grotesk"';
+  ctx.textAlign = 'left';
+
+  let phColor = '#c084fc';
+  if (pH < 4) phColor = '#f87171';
+  else if (pH < 7) phColor = '#fb923c';
+  else if (pH < 7.5) phColor = '#86efac';
+  else phColor = '#60a5fa';
+
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(W * 0.04, H * 0.04, 100, 44);
+  ctx.strokeStyle = 'rgba(192,132,252,0.25)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(W * 0.04, H * 0.04, 100, 44);
+
+  ctx.font = '9px "JetBrains Mono"';
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.fillText('pH', W * 0.04 + 10, H * 0.04 + 14);
+
+  ctx.font = 'bold 22px "JetBrains Mono"';
+  ctx.fillStyle = phColor;
+  ctx.fillText(pHStr, W * 0.04 + 10, H * 0.04 + 36);
+  ctx.restore();
+
+  // ── Stage label ──
+  let stage = '';
+  if (vNaOHmL < eqV - 0.5) stage = 'Before EQ';
+  else if (vNaOHmL < eqV + 0.5) stage = 'At EQ ≈ 7';
+  else stage = 'After EQ';
+  document.getElementById('roStage').textContent = stage;
+
+  // Update readouts
+  document.getElementById('roVol').innerHTML = vNaOHmL.toFixed(1) + '<span>mL</span>';
+  document.getElementById('roPH').textContent = pH.toFixed(2);
+}
+
+function onSliderChange() {
+  const v = parseFloat(document.getElementById('naohSlider').value);
+  document.getElementById('naohVal').textContent = v.toFixed(1) + ' mL';
+  if (Math.abs(v - lastSliderVal) > 0.05) {
+    animDrip = true;
+    dripTimer = 0;
+  }
+  lastSliderVal = v;
+}
+
+// ── IDEAL GAS CALCULATOR ───────────────────────────────
+function calcGas() {
+  const pIn = document.getElementById('gasP').value.trim();
+  const vIn = document.getElementById('gasV').value.trim();
+  const nIn = document.getElementById('gasN').value.trim();
+  const tIn = document.getElementById('gasT').value.trim();
+  const R = 8.314;
+  const resDiv = document.getElementById('gasResult');
+
+  const blanks = [pIn, vIn, nIn, tIn].filter(x => x === '').length;
+  if (blanks !== 1) {
+    resDiv.className = 'gas-result show';
+    resDiv.innerHTML = '<span style="color:#f87171">Please leave exactly ONE field blank to solve for it.</span>';
+    return;
+  }
+
+  let P, V, n, T, result, label, unit, formula;
+
+  if (pIn === '') {
+    V = parseFloat(vIn) * 0.001; // L to m³
+    n = parseFloat(nIn);
+    T = parseFloat(tIn) + 273;
+    P = (n * R * T) / V;
+    result = P / 1000; label = 'P'; unit = 'kPa';
+    formula = `P = nRT / V = (${n} × 8.314 × ${T}) / ${V} = ${P.toFixed(1)} Pa`;
+  } else if (vIn === '') {
+    P = parseFloat(pIn) * 1000; // kPa to Pa
+    n = parseFloat(nIn);
+    T = parseFloat(tIn) + 273;
+    V = (n * R * T) / P;
+    result = V * 1000; label = 'V'; unit = 'L';
+    formula = `V = nRT / P = (${n} × 8.314 × ${T}) / ${P} = ${(V).toExponential(3)} m³`;
+  } else if (nIn === '') {
+    P = parseFloat(pIn) * 1000;
+    V = parseFloat(vIn) * 0.001;
+    T = parseFloat(tIn) + 273;
+    n = (P * V) / (R * T);
+    result = n; label = 'n'; unit = 'mol';
+    formula = `n = PV / RT = (${P} × ${V}) / (8.314 × ${T}) = ${n.toFixed(4)} mol`;
+  } else {
+    P = parseFloat(pIn) * 1000;
+    V = parseFloat(vIn) * 0.001;
+    n = parseFloat(nIn);
+    T = (P * V) / (n * R);
+    result = T - 273; label = 'T'; unit = '°C';
+    formula = `T = PV / nR = (${P} × ${V}) / (${n} × 8.314) = ${T.toFixed(2)} K`;
+  }
+
+  // STP equivalent volume
+  let stpVol = '';
+  if (label !== 'n') {
+    const nMol = nIn !== '' ? parseFloat(nIn) : n;
+    stpVol = `<br>Equivalent volume at STP (0°C, 101.325 kPa): <strong style="color:#86efac">${(nMol * 22.4).toFixed(3)} L</strong>`;
+  }
+
+  resDiv.className = 'gas-result show';
+  resDiv.innerHTML = `
+    <div style="margin-bottom:6px;color:var(--muted);font-size:10px">FORMULA USED</div>
+    <div style="margin-bottom:12px;color:rgba(210,218,245,0.7)">${formula}</div>
+    <div style="margin-bottom:4px;font-size:10px;color:var(--muted)">RESULT</div>
+    <span class="res-val">${label} = ${result.toFixed(4)}</span> <span style="color:var(--muted)">${unit}</span>
+    ${stpVol}
+  `;
+}
+
+// ── PRACTICE / MCQ ─────────────────────────────────────
+let scores = {};
+let answered = {};
+
+function answer(qNum, chosen, correct) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+
+  const opts = document.querySelectorAll(`#mc-${qNum} .mc-opt`);
+  opts.forEach(o => {
+    o.disabled = true;
+    const letter = o.querySelector('.opt-letter').textContent;
+    if (letter === correct) o.classList.add('correct');
+    else if (letter === chosen) o.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qNum}`);
+  fb.classList.add('show');
+  fb.classList.add(chosen === correct ? 'ok' : 'bad');
+
+  if (chosen === correct) scores[qNum] = 1;
+  else scores[qNum] = 0;
+
+  updateScore();
+}
+
+function updateScore() {
+  const total = Object.keys(scores).length;
+  const correct = Object.values(scores).reduce((a, b) => a + b, 0);
+  const maxQ = document.body.classList.contains('ieb-mode') ? 10 : 8;
+
+  if (total >= maxQ) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + maxQ;
+    const pct = Math.round((correct / maxQ) * 100);
+    let msg = pct >= 80 ? 'Excellent work — you have mastered this topic!' : pct >= 60 ? 'Good effort. Review the questions you got wrong.' : 'Keep practising — revisit the Lesson tab and try again.';
+    document.getElementById('scoreMsg').textContent = msg;
+  }
+}
+
+// ── Init on load ───────────────────────────────────────
+window.addEventListener('load', () => {
+  // Canvas init will happen when Explore tab is opened
+  // Pre-calc initial pH display
+  const initPH = calcPH(0);
+  document.getElementById('roPH').textContent = initPH.toFixed(2);
+});
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    initSim();
+  }
+});
+</script>
+
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
+

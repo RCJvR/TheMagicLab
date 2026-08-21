@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dierevoeding — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .diet-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+    .diet-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .diet-btn.active{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.40);color:#86efac}
+    .diet-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:24px;max-width:820px;display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center}
+    .diet-canvas-wrap{background:#05070f;border-radius:14px;padding:10px}
+    canvas{display:block;border-radius:8px;width:100%}
+    .diet-name{font-weight:800;font-size:19px;color:#fff;margin-bottom:6px}
+    .diet-desc{font-size:13px;line-height:1.75;color:rgba(210,218,245,.78);margin-bottom:10px}
+    .diet-example{font-family:var(--fm);font-size:11px;color:var(--muted)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.diet-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .diet-card,.diet-tabs{max-width:900px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .diet-card{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Lewensprosesse in Plante &amp; Diere · Les 2</div>
+  <h1 class="lesson-title">Dierevoeding</h1>
+  <p class="lesson-sub">Van inname tot egestie: volg voedsel deur die spysverteringstelsel van soogdiere, en sien hoe gebitte openbaar of 'n dier 'n herbivoor, karnivoor, of omnivoor is.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="drama" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Vyf stadiums van voedselverwerking</h2>
+    <table class="compare-table">
+      <thead><tr><th>Proses</th><th>Beskrywing</th></tr></thead>
+      <tbody>
+        <tr><td>Inname</td><td>Neem voedsel in die mond in</td></tr>
+        <tr><td>Vertering</td><td>Voedsel word afgebreek — meganies (kou, peristaltiek) en chemies (ensieme)</td></tr>
+        <tr><td>Absorpsie</td><td>Verteerde voedselmolekules beweeg in die bloed in, hoofsaaklik oor die wand van die dunderm</td></tr>
+        <tr><td>Assimilasie</td><td>Geabsorbeerde voedingstowwe word in liggaamselle opgeneem en gebruik (hoofsaaklik via die lewer)</td></tr>
+        <tr><td>Egestie</td><td>Verwydering van onverteerde afval uit die liggaam as feses</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Meganiese en chemiese vertering</h2>
+    <p><strong>Meganiese vertering</strong> breek voedsel fisies in kleiner stukke — kou, en <strong>peristaltiek</strong> (ritmiese spiersametrekkings wat voedsel deur die derm stoot). <strong>Chemiese vertering</strong> gebruik ensieme om groot molekules in klein, absorbeerbare molekules af te breek: <strong>koolhidrase</strong> breek koolhidrate af, <strong>protease</strong> breek proteïene af, en <strong>lipase</strong> breek vette af.</p>
+
+    <h2>Absorpsie en die rol van die lewer</h2>
+    <p>Die <strong>dunderm</strong> is die hoofplek van absorpsie — die binnewand daarvan is bedek met piepklein vingeragtige uitsteeksels genaamd <strong>villi</strong>, wat die oppervlakarea vir die absorpsie van voedingstowwe aansienlik vergroot. Geabsorbeerde voedsel beweeg via die hepatiese poortstelsel na die <strong>lewer</strong>, wat glukose en aminosure assimileer, en oortollige aminosure sowel as alkohol en ander dwelms afbreek (deamineer).</p>
+
+    <h2>Gebit weerspieël dieet</h2>
+    <p>'n Soogdier se tande is aangepas by sy dieet. Vergelyk herbivore, karnivore, en omnivore in die Verken-oortjie.</p>
+    <div class="callout"><strong>Dieetverwante gesondheid:</strong> wanvoeding kan die gevolg wees van 'n onewewigtige dieet — te min (bv. marasmus, kwashiorkor) of 'n onewewig wat lei tot toestande soos vetsug, hartsiekte, of diabetes. Dieet verskil ook om kulturele, godsdienstige, en persoonlike redes (bv. halaal, koosjer, veganisties, vegetaries).</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Gebitvergelyking</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik elke dieettipe om die tande te vergelyk en te sien hoe dit by daardie voedingswyse pas.</p>
+  <div class="diet-tabs" id="dietTabs"></div>
+  <div class="diet-card">
+    <div class="diet-canvas-wrap"><canvas id="dietCanvas" height="160"></canvas></div>
+    <div>
+      <div class="diet-name" id="dName">Herbivoor</div>
+      <div class="diet-example" id="dExample">VOORBEELD: BEES</div>
+      <p class="diet-desc" id="dDesc"></p>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (5 punte)</div><div class="wb-qtext">Noem die vyf prosesse van dierevoeding, in die volgorde waarin voedsel daardeur beweeg.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Noem die drie tipes verteringsensieme en die voedselgroep wat elkeen afbreek.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik hoe villi in die dunderm aangepas is vir absorpsie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die rol van die lewer in assimilasie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Beskryf die verskille in gebit tussen herbivore, karnivore, en omnivore.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Die tabel toon die gemiddelde liggaamslengte en totale dermlengte (ingewande) vir drie soogdiere:<br><br>
+    <table class="compare-table" style="max-width:480px">
+      <thead><tr><th>Dier</th><th>Liggaamslengte (m)</th><th>Dermlengte (m)</th></tr></thead>
+      <tbody>
+        <tr><td>Kat (karnivoor)</td><td>0.60</td><td>1.80</td></tr>
+        <tr><td>Mens (omnivoor)</td><td>1.70</td><td>8.50</td></tr>
+        <tr><td>Skaap (herbivoor)</td><td>1.20</td><td>30.0</td></tr>
+      </tbody>
+    </table><br>
+    (a) Bereken die verhouding van dermlengte tot liggaamslengte (dermlengte &divide; liggaamslengte) vir elke dier. Wys jou berekeninge. (3 punte)<br>
+    (b) Rangskik die drie diere van KORTSTE na LANGSTE relatiewe dermlengte. (1 punt)<br>
+    (c) Verduidelik, in terme van dieet en vertering, waarom hierdie rangskikking ooreenstem met elke dier se dieettipe. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The dentition canvas has offsetWidth 0 while its tab panel is display:none,
+  // so the initial resizeCanvas() call falls back to a hardcoded width.
+  // Re-measure now that the Explore panel is actually visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   DENTITION COMPARISON
+═══════════════════════════════════════════════ */
+const DIETS = [
+  {id:'herbivore', name:'Herbivoor', example:'Bees', color:'#4ade80',
+   desc:"Breë, plat kiestande en premolare vir die maal van taai plantmateriaal. Snytande (dikwels slegs op die onderkaak, teen 'n harde blok) vir die afknyp van plantegroei. Hoektande is klein of afwesig.",
+   teeth:{incisor:0.5,canine:0.1,molar:1}},
+  {id:'carnivore', name:'Karnivoor', example:'Leeu', color:'#f87171',
+   desc:'Groot, skerp, spits hoektande vir die steek en vasgryp van prooi. Skerp, lemagtige premolare en kiestande (karnassiale) vir die sny van vleis en die deursny van vleis en senings.',
+   teeth:{incisor:0.4,canine:1,molar:0.6}},
+  {id:'omnivore', name:'Omnivoor', example:'Mens', color:'#60a5fa',
+   desc:"'n Mengsel van tandtipes: skerp snytande vir sny, matige hoektande, en breë kiestande vir maal — wat 'n dieet van beide plant- en diermateriaal weerspieël.",
+   teeth:{incisor:0.7,canine:0.5,molar:0.8}},
+];
+let activeDiet = null;
+
+function buildDietTabs(){
+  document.getElementById('dietTabs').innerHTML = DIETS.map(d=>`
+    <button class="diet-btn" id="db_${d.id}" onclick="selectDiet('${d.id}')">${d.name}</button>`).join('');
+}
+function selectDiet(id){
+  activeDiet = DIETS.find(d=>d.id===id);
+  document.querySelectorAll('.diet-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('db_'+id).classList.add('active');
+  document.getElementById('dName').textContent = activeDiet.name;
+  document.getElementById('dExample').textContent = 'VOORBEELD: '+activeDiet.example.toUpperCase();
+  document.getElementById('dDesc').textContent = activeDiet.desc;
+  drawTeeth();
+}
+
+const canvas = document.getElementById('dietCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 300; H = 160;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  drawTeeth();
+}
+function drawTeeth(){
+  if (!activeDiet) return;
+  ctx.clearRect(0,0,W,H);
+  const t = activeDiet.teeth;
+  const baseY = H*0.75, toothW = W/9;
+  const pattern = ['incisor','incisor','canine','molar','molar','molar','canine','incisor','incisor'];
+  pattern.forEach((type,i)=>{
+    const h = 20 + t[type]*40;
+    const x = i*toothW + toothW*0.15;
+    ctx.beginPath();
+    if (type==='canine'){
+      ctx.moveTo(x, baseY);
+      ctx.lineTo(x+toothW*0.35, baseY-h);
+      ctx.lineTo(x+toothW*0.7, baseY);
+      ctx.closePath();
+    } else {
+      ctx.roundRect ? ctx.roundRect(x, baseY-h, toothW*0.7, h, 4) : ctx.rect(x, baseY-h, toothW*0.7, h);
+    }
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fill();
+    ctx.strokeStyle = activeDiet.color; ctx.lineWidth = 1.5; ctx.stroke();
+  });
+  // gum line
+  ctx.strokeStyle = 'rgba(244,114,182,0.4)'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(0,baseY); ctx.lineTo(W,baseY); ctx.stroke();
+}
+window.addEventListener('resize', resizeCanvas);
+buildDietTabs();
+selectDiet('herbivore');
+resizeCanvas();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Wat is die korrekte volgorde van die vyf prosesse van dierevoeding?',opts:['Vertering, inname, absorpsie, egestie, assimilasie','Inname, vertering, absorpsie, assimilasie, egestie','Absorpsie, inname, vertering, egestie, assimilasie','Egestie, absorpsie, vertering, inname, assimilasie'],ans:1,exp:'Voedsel word eers ingeneem, dan verteer (afgebreek), in die bloed geabsorbeer, in liggaamselle geassimileer, met enige onverteerde afval wat uitgeskei word (egestie).'},
+  {text:'Watter ensiemtipe breek proteïene af?',opts:['Koolhidrase','Lipase','Protease','Slegs amilase'],ans:2,exp:'Protease breek proteïene af in aminosure. Koolhidrase breek koolhidrate af, en lipase breek vette af.'},
+  {text:'Wat is die hooffunksie van villi in die dunderm?',opts:['Om slegs ensieme te produseer','Om die oppervlakarea vir absorpsie te vergroot','Om onverteerde voedsel te stoor','Om voedsel meganies te roer'],ans:1,exp:'Villi is piepklein vingeragtige uitsteeksels wat die oppervlakarea van die dunderm aansienlik vergroot, wat die absorpsie van voedingstowwe maksimeer.'},
+  {text:'Wat doen die lewer met oortollige aminosure?',opts:['Stoor dit permanent onveranderd','Deamineer dit','Skei dit direk uit sonder verwerking','Omskep dit almal na vet'],ans:1,exp:'Die lewer deamineer oortollige aminosure, deur die stikstofbevattende deel te verwyder sodat die res vir energie gebruik kan word; die afvalstikstof word ureum.'},
+  {text:'Watter tipe gebit is die geskikste vir die maal van taai plantmateriaal?',opts:['Skerp, spits hoektande','Breë, plat kiestande','Glad geen tande nie','Slegs klein snytande'],ans:1,exp:'Herbivore het breë, plat kiestande en premolare wat aangepas is vir die maal van taai plantmateriaal.'},
+  {text:"Watter soogdier word beskryf as een met 'n mengsel van skerp snytande, matige hoektande, en breë kiestande?",opts:["'n Streng herbivoor","'n Streng karnivoor","'n Omnivoor",'Geeneen van hierdie het tande nie'],ans:2,exp:"Omnivore het 'n mengsel van tandtipes wat 'n dieet van beide plant- en diermateriaal weerspieël."},
+  {text:'Die benaderde verhouding van dermlengte (ingewande) tot liggaamslengte is: kat (karnivoor) 3:1, mens (omnivoor) 5:1, skaap (herbivoor) 25:1. Wat verduidelik die beste waarom die skaap se relatiewe dermlengte verreweg die langste is?',opts:["Skape eet 'n groter totale massa voedsel per dag as katte","Plantmateriaal bevat sellulose, wat moeilik is om te verteer en 'n baie langer derm vereis om verlengde retensietyd vir mikrobiese fermentasie moontlik te maak",'Skape het kleiner mae as katte, sodat die derm moet vergoed',"'n Langer derm laat skape vinniger hardloop om roofdiere te ontsnap"],ans:1,exp:"Herbivore eet plantmateriaal, wat sellulose in sy selwande bevat. Soogdiere kan nie self sellulase produseer nie, sodat herbivore staatmaak op 'n baie langer derm (en, by herkouers soos skape, ekstra fermentasiekamers) om dermikro-organismes genoeg tyd en ruimte te gee om sellulose af te breek. Karnivore eet vleis, wat baie makliker en vinniger verteer word, sodat 'n kort derm voldoende is — dit is waarom dermlengte met dieettipe korreleer, en nie bloot met die hoeveelheid voedsel wat geëet word nie."},
+  {text:"'n Student wil bepaal of 'n monster maagsap 'n aktiewe protease-ensiem bevat. Watter eksperimentele opstelling toets dit die beste?",opts:["Voeg die maagsap by 'n stysel-suspensie en toets met jodiumoplossing","Voeg die maagsap by 'n eierwit (albumien) suspensie en let op of dit met verloop van tyd helder word, in vergelyking met 'n gekookte (gedenatureerde) monster van dieselfde maagsap as kontrole","Voeg die maagsap by 'n glukose-oplossing en toets met Benedict se oplossing",'Meet slegs die pH van die maagsap, sonder enige substraat'],ans:1,exp:"'n Protease breek PROTEÏEN af, dus moet die substraat wat gebruik word om dit te toets 'n proteïen wees — eierwit (albumien) is die korrekte keuse; stysel (toets koolhidrase) en glukose met Benedict se oplossing (toets vir bestaande reduserende suiker, nie proteïenvertering nie) toets die heeltemal verkeerde voedselgroep. Die insluiting van 'n gekookte monster as kontrole is noodsaaklik: kook denatureer die ensiem, sodat as die gekookte monster NIE die albumien helder maak nie terwyl die aktiewe monster dit wel doen, dit bevestig dat die vertering aan die ensiem self te wyte is en nie aan een of ander ander faktor nie."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

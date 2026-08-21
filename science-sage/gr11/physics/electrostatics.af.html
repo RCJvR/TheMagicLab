@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektrostatika — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Fisika · Les 5</div>
+  <h1 class="lesson-title">Elektrostatika</h1>
+  <p class="lesson-sub">Pas die wet van Coulomb toe op verskeie ladings, karteer elektriese velde met veldlyne en veldvektore, en bereken die elektriese veld en potensiaal by 'n punt weens puntladings.</p>
+</div>
+
+<div class="curr-toggle">
+  <span class="curr-label">Kurrikulum:</span>
+  <div class="curr-wrap">
+    <button class="curr-btn active" onclick="setCurriculum('nsc',this)">NSC / CAPS</button>
+    <button class="curr-btn" onclick="setCurriculum('ieb',this)">IEB</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">⚡ Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Hersiening: Lading en die Elementêre Lading</h2>
+    <p>Elektriese lading is 'n fundamentele eienskap van materie. Protone dra 'n positiewe lading en elektrone dra 'n negatiewe lading. Die kleinste eenheid van lading wat vrylik bestaan, is die <strong>elementêre lading</strong>:</p>
+    <div class="formula">e = 1.6 × 10⁻¹⁹ C</div>
+    <p>Behoud van lading: die totale lading in 'n geïsoleerde stelsel bly konstant. Lading kan oorgedra word, maar nooit geskep of vernietig word nie. Geleiers laat lading vrylik vloei; isolators weerstaan die vloei van lading.</p>
+
+    <h2>Wet van Coulomb</h2>
+    <p>Die elektrostatiese krag tussen twee puntladings Q₁ en Q₂, r uitmekaar, word gegee deur <strong>die Wet van Coulomb</strong>:</p>
+    <div class="formula">F = kQ₁Q₂ / r²<br>k = 9 × 10⁹ N·m²·C⁻²</div>
+    <table class="symbols-table">
+      <tr><th>Simbool</th><th>Grootheid</th><th>Eenheid</th></tr>
+      <tr><td>F</td><td>Elektrostatiese krag</td><td>Newton (N)</td></tr>
+      <tr><td>k</td><td>Coulomb se konstante</td><td>N·m²·C⁻²</td></tr>
+      <tr><td>Q₁, Q₂</td><td>Ladings</td><td>Coulomb (C)</td></tr>
+      <tr><td>r</td><td>Afstand tussen ladings</td><td>Meter (m)</td></tr>
+    </table>
+    <div class="callout"><strong>Tekenkonvensie:</strong> As F positief is, is die krag afstotend (soortgelyke ladings). As F negatief is, is die krag aantreklik (teenoorgestelde ladings). Wanneer probleme opgelos word, bepaal die rigting afsonderlik met die reël: teenoorgestelde ladings trek mekaar aan, soortgelyke ladings stoot mekaar af.</div>
+
+    <h2>Superposisie van Kragte</h2>
+    <p>Wanneer meer as twee ladings teenwoordig is, is die <strong>netto krag</strong> op enige een lading die vektorsom van die individuele kragte uitgeoefen deur elke ander lading. Dit is die beginsel van superposisie.</p>
+    <p><strong>Uitgewerkte voorbeeld — 3 ladings in 'n lyn:</strong><br>
+    Q₁ = +4 µC by x = 0; Q₂ = −3 µC by x = 0.3 m; Q₃ = +2 µC by x = 0.5 m.<br>
+    Vind die netto krag op Q₂.</p>
+    <ul>
+      <li>F₁₂ = k|Q₁||Q₂|/r₁₂² = (9×10⁹)(4×10⁻⁶)(3×10⁻⁶)/(0.3)² = <strong>1.2 N</strong> (aantreklik, dus gerig na Q₁ toe, d.w.s. na links, negatiewe x)</li>
+      <li>F₃₂ = k|Q₃||Q₂|/r₃₂² = (9×10⁹)(2×10⁻⁶)(3×10⁻⁶)/(0.2)² = <strong>1.35 N</strong> (aantreklik, dus gerig na Q₃ toe, d.w.s. na regs, positiewe x)</li>
+      <li>F_net = F₃₂ − F₁₂ = 1.35 − 1.2 = <strong>0.15 N na regs</strong></li>
+    </ul>
+
+    <h2>Elektriese Veld (E)</h2>
+    <p>Die elektriese veld by 'n punt is die elektrostatiese krag per eenheid positiewe toetslading wat by daardie punt geplaas word:</p>
+    <div class="formula">E = F / q &nbsp;&nbsp;&nbsp; (eenheid: N·C⁻¹)<br>E = kQ / r² &nbsp;&nbsp;&nbsp; (veld weens 'n puntlading Q)</div>
+    <ul>
+      <li>Die elektriese veld is 'n <strong>vektor</strong>grootheid — dit het beide grootte en rigting.</li>
+      <li>Rigting: <strong>weg</strong> van 'n positiewe lading, <strong>na</strong> 'n negatiewe lading toe.</li>
+      <li>Velde van veelvuldige ladings tel op deur vektorsuperposisie.</li>
+    </ul>
+
+    <h2>Eenvormige Veld Tussen Parallelle Plate</h2>
+    <p>Wanneer 'n potensiaalverskil V oor twee parallelle plate, d uitmekaar, toegepas word, is die veld tussen die plate eenvormig:</p>
+    <div class="formula">E = V / d</div>
+    <p>Dit beteken die veldsterkte is dieselfde by elke punt tussen die plate (rand-effekte word geïgnoreer).</p>
+
+    <h2>Elektriese Veldlyne</h2>
+    <ul>
+      <li>Begin by positiewe ladings; eindig by negatiewe ladings</li>
+      <li>Kruis nooit mekaar nie</li>
+      <li>Digtheid van lyne is eweredig aan veldsterkte</li>
+      <li>Altyd loodreg op die oppervlak van 'n geleier</li>
+      <li>Die raaklyn aan 'n veldlyn by enige punt gee die rigting van E by daardie punt</li>
+    </ul>
+
+    <h2>Potensiaalverskil en Arbeid</h2>
+    <p>Arbeid word verrig om 'n lading deur 'n potensiaalverskil te beweeg:</p>
+    <div class="formula">W = qV &nbsp;&nbsp;&nbsp; V = W / q<br>W = qEd &nbsp;&nbsp;&nbsp; (eenvormige veld, afstand d langs die veld)</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Elektriese Potensiaal &amp; Gevorderde Konsepte</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong>Elektriese potensiaal V</strong> by 'n punt weens 'n puntlading Q:</p>
+      <div class="formula">V = kQ / r</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong>Ekwipotensiale oppervlakke</strong> is oppervlakke waarop elke punt op dieselfde elektriese potensiaal is. Hulle is altyd loodreg op elektriese veldlyne. Geen arbeid word verrig om 'n lading langs 'n ekwipotensiale oppervlak te beweeg nie.</p>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8"><strong>Wet van Gauss (kwalitatief):</strong> Die totale elektriese fluks deur enige geslote oppervlak is gelyk aan die ingeslote lading gedeel deur ε₀. Fluks Φ_E = E·A vir 'n eenvormige veld loodreg op oppervlakte A. Hierdie kragtige wet maak dit moontlik om E te bepaal vir simmetriese ladingsverspreidings sonder om die wet van Coulomb direk te integreer.</p>
+    </div>
+
+    <h2>Kapasitansie</h2>
+    <p>'n Kondensator stoor lading. Kapasitansie C is die lading gestoor per volt potensiaalverskil:</p>
+    <div class="formula">C = Q / V &nbsp;&nbsp;&nbsp; (eenheid: Farad, F)<br>Energie gestoor: U = ½CV²<br>Parallelle plaat: C = ε₀A / d</div>
+    <ul>
+      <li>Vermeerdering van plaatoppervlakte A → vermeerder C</li>
+      <li>Vermeerdering van afstand d → verminder C</li>
+      <li>Invoeging van 'n diëlektrikum → vermeerder C (diëlektrikum verminder die effektiewe veld)</li>
+    </ul>
+    <div class="key-fact">Kernfeit: ε₀ = 8.85 × 10⁻¹² F·m⁻¹ (permittiwiteit van vrye ruimte)</div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="mode-btn active" id="btn-coulomb" onclick="setSimMode('coulomb',this)">⚡ Coulomb-berekenaar</button>
+      <button class="mode-btn" id="btn-fieldmap" onclick="setSimMode('fieldmap',this)">🗺️ Veldkaart</button>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Coulomb-berekenaar — Superposisie van 3 Ladings</h3>
+      <canvas id="simCanvas" height="420"></canvas>
+    </div>
+    <div class="sim-controls-row" id="coulomb-controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Ladingswaardes</div>
+        <div class="slider-row"><label>Q₁ (µC)</label><input type="range" id="q1" min="-10" max="10" value="4" step="0.5" oninput="updateSim()"><span class="slider-val" id="q1v">+4.0</span></div>
+        <div class="slider-row"><label>Q₂ (µC)</label><input type="range" id="q2" min="-10" max="10" value="-3" step="0.5" oninput="updateSim()"><span class="slider-val" id="q2v">-3.0</span></div>
+        <div class="slider-row"><label>Q₃ (µC)</label><input type="range" id="q3" min="-10" max="10" value="2" step="0.5" oninput="updateSim()"><span class="slider-val" id="q3v">+2.0</span></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Posisies</div>
+        <div class="slider-row"><label>r₁₂ (m)</label><input type="range" id="r12" min="0.1" max="0.8" value="0.3" step="0.05" oninput="updateSim()"><span class="slider-val" id="r12v">0.30 m</span></div>
+        <div class="slider-row"><label>r₂₃ (m)</label><input type="range" id="r23" min="0.1" max="0.8" value="0.2" step="0.05" oninput="updateSim()"><span class="slider-val" id="r23v">0.20 m</span></div>
+      </div>
+    </div>
+    <div class="readout-grid" id="coulomb-readouts">
+      <div class="readout"><div class="readout-label">F op Q₂ vanaf Q₁</div><div class="readout-val" id="ro-f12">—</div></div>
+      <div class="readout"><div class="readout-label">F op Q₂ vanaf Q₃</div><div class="readout-val" id="ro-f23">—</div></div>
+      <div class="readout"><div class="readout-label">Netto Krag op Q₂</div><div class="readout-val" id="ro-fnet">—</div></div>
+    </div>
+    <div id="fieldmap-controls" style="display:none">
+      <div class="ctrl-card" style="max-width:500px">
+        <div class="ctrl-label">Veldkaart — Klik op canvas om lading te wissel (+/−/geen)</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">Klik enige plek op die canvas om 'n lading te plaas. Klik weer op dieselfde plek om te wissel: positief → negatief → verwyder. Die rooster van pyle wys die elektriese veldrigting en -grootte by elke punt.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner show" id="score-banner">
+      <div class="score-big" id="score-big">0/8</div>
+      <div style="font-size:13px;color:var(--muted)">NSC-vrae korrek beantwoord</div>
+    </div>
+    <div id="nsc-qs"></div>
+    <div class="ieb-practice" id="ieb-qs">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:16px;padding:10px 14px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:10px">IEB Addisionele Vrae</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae. Wys volledige berekeninge. Sluit eenhede by elke antwoord in.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1</div><div class="wb-qtext">Drie ladings word in 'n lyn geplaas: Q₁ = +6 µC by x = 0, Q₂ = −4 µC by x = 0.4 m, Q₃ = +5 µC by x = 0.7 m. Bereken die grootte en rigting van die netto elektrostatiese krag op Q₂.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2</div><div class="wb-qtext">Teken en merk die elektriese veldlynpatroon vir (a) 'n geïsoleerde positiewe lading, (b) twee gelyke en teenoorgestelde ladings (elektriese dipool), en (c) twee parallelle plate met teenoorgestelde ladings. Beskryf twee eienskappe van elektriese veldlyne.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3</div><div class="wb-qtext">Twee parallelle plate is 0.02 m uitmekaar en aan 'n 120 V-toevoer gekoppel. (a) Bereken die elektriese veldsterkte tussen die plate. (b) 'n Proton (lading = 1.6 × 10⁻¹⁹ C, massa = 1.67 × 10⁻²⁷ kg) word vanuit rus naby die positiewe plaat vrygestel. Bereken die krag op die proton en sy versnelling.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4</div><div class="wb-qtext">Hoeveel arbeid word verrig om 'n elektron (lading = −1.6 × 10⁻¹⁹ C) deur 'n potensiaalverskil van 500 V te beweeg? Noem of energie deur die elektron verkry of verloor word, en verduidelik waarom.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5</div><div class="wb-qtext">'n Parallelleplaatkondensator het plate met 'n oppervlakte van 0.04 m² wat 0.005 m uitmekaar is. (a) Bereken die kapasitansie deur C = ε₀A/d te gebruik (ε₀ = 8.85 × 10⁻¹² F·m⁻¹). (b) As dit aan 'n 12 V-battery gekoppel word, bereken die lading wat gestoor word en die energie wat in die kondensator gestoor word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6</div><div class="wb-qtext">'n Klein toetslading q = 2 × 10⁻⁶ C word by toenemende afstande van 'n vaste puntlading Q geplaas, en die elektrostatiese krag wat dit ervaar, word gemeet:<br><br>
+    <table class="symbols-table" style="max-width:480px">
+      <tr><th>Afstand, r (m)</th><th>Krag, F (N)</th></tr>
+      <tr><td>0.1</td><td>3.6</td></tr>
+      <tr><td>0.2</td><td>0.9</td></tr>
+      <tr><td>0.3</td><td>0.4</td></tr>
+      <tr><td>0.4</td><td>0.225</td></tr>
+    </table><br>
+    (a) Bereken die waarde van F × r² vir elke ry van die tabel. Wat merk jy op oor hierdie waardes, en wat bevestig dit oor die verhouding tussen F en r? (2 punte)<br>
+    (b) Gebruik k = 9 × 10⁹ N·m²·C⁻², jou antwoord op (a), en die Wet van Coulomb F = kQq/r², om die grootte van die vaste lading Q te bereken. (3 punte)<br>
+    (c) Voorspel die krag wat hierdie toetslading by r = 0.5 m sou ervaar. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+// ── Curriculum toggle ──────────────────────────────────────────────
+function setCurriculum(mode, btn) {
+  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (mode === 'ieb') document.body.classList.add('ieb-mode');
+  else document.body.classList.remove('ieb-mode');
+}
+
+// ── Tab switching ──────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'explore') { initSim(); }
+}
+
+// ── Simulation ─────────────────────────────────────────────────────
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+let simMode = 'coulomb';
+let fieldCharges = []; // {x,y,sign}
+let raf = null;
+const k = 9e9;
+
+function setSimMode(m, btn) {
+  simMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('coulomb-controls').style.display = m === 'coulomb' ? 'grid' : 'none';
+  document.getElementById('fieldmap-controls').style.display = m === 'fieldmap' ? 'block' : 'none';
+  document.getElementById('coulomb-readouts').style.display = m === 'coulomb' ? 'grid' : 'none';
+  document.getElementById('sim-title').textContent = m === 'coulomb' ? 'Coulomb-berekenaar — Superposisie van 3 Ladings' : 'Elektriese Veldkaart — Klik om Ladings te Plaas';
+  if (m === 'fieldmap') { fieldCharges = [{x: 0.3, y: 0.5, sign: 1}, {x: 0.7, y: 0.5, sign: -1}]; }
+  initSim();
+}
+
+function resizeCanvas() {
+  const W = canvas.parentElement.clientWidth - 32;
+  const H = 420;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  return {W, H};
+}
+
+function initSim() {
+  if (raf) cancelAnimationFrame(raf);
+  if (simMode === 'coulomb') { drawCoulomb(); }
+  else { drawFieldMap(); canvas.onclick = handleFieldMapClick; }
+}
+
+function drawCoulomb() {
+  const {W, H} = resizeCanvas();
+  const q1 = parseFloat(document.getElementById('q1').value) * 1e-6;
+  const q2 = parseFloat(document.getElementById('q2').value) * 1e-6;
+  const q3 = parseFloat(document.getElementById('q3').value) * 1e-6;
+  const r12 = parseFloat(document.getElementById('r12').value);
+  const r23 = parseFloat(document.getElementById('r23').value);
+
+  document.getElementById('q1v').textContent = (q1*1e6 >= 0 ? '+' : '') + (q1*1e6).toFixed(1);
+  document.getElementById('q2v').textContent = (q2*1e6 >= 0 ? '+' : '') + (q2*1e6).toFixed(1);
+  document.getElementById('q3v').textContent = (q3*1e6 >= 0 ? '+' : '') + (q3*1e6).toFixed(1);
+  document.getElementById('r12v').textContent = r12.toFixed(2) + ' m';
+  document.getElementById('r23v').textContent = r23.toFixed(2) + ' m';
+
+  // Coulomb forces on Q2
+  const F12mag = k * Math.abs(q1) * Math.abs(q2) / (r12 * r12);
+  const F23mag = k * Math.abs(q3) * Math.abs(q2) / (r23 * r23);
+
+  // Direction: if Q1 and Q2 same sign, repulsive (Q1 pushes Q2 right, +x); opposite → attractive (-x)
+  const F12x = (q1 * q2 < 0) ? -F12mag : F12mag; // attractive means toward Q1 (left = negative)
+  const F23x = (q3 * q2 < 0) ? F23mag : -F23mag;  // attractive means toward Q3 (right = positive)
+  const Fnet = F12x + F23x;
+
+  document.getElementById('ro-f12').innerHTML = fmtN(F12mag) + ' <span>' + (F12x < 0 ? '← links' : '→ regs') + '</span>';
+  document.getElementById('ro-f23').innerHTML = fmtN(F23mag) + ' <span>' + (F23x > 0 ? '→ regs' : '← links') + '</span>';
+  document.getElementById('ro-fnet').innerHTML = fmtN(Math.abs(Fnet)) + ' <span>' + (Fnet >= 0 ? '→ regs' : '← links') + '</span>';
+
+  // Draw
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#040710'; ctx.fillRect(0, 0, W, H);
+
+  const pad = 80;
+  const lineY = H / 2;
+  const totalSpan = r12 + r23;
+  const scale = (W - 2 * pad) / totalSpan;
+
+  const x1 = pad;
+  const x2 = pad + r12 * scale;
+  const x3 = pad + (r12 + r23) * scale;
+
+  // axis line
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(pad - 20, lineY); ctx.lineTo(W - pad + 20, lineY); ctx.stroke();
+
+  // Draw charges
+  drawChargeBall(x1, lineY, q1, 'Q₁', ctx);
+  drawChargeBall(x2, lineY, q2, 'Q₂', ctx);
+  drawChargeBall(x3, lineY, q3, 'Q₃', ctx);
+
+  // Force arrows on Q2
+  const arrowScale = Math.min(120, 40 / (Math.max(Math.abs(F12x), Math.abs(F23x), 0.001)));
+  drawArrow(ctx, x2, lineY - 50, x2 + F12x * arrowScale, lineY - 50, '#60a5fa', 'F₁₂');
+  drawArrow(ctx, x2, lineY - 80, x2 + F23x * arrowScale, lineY - 80, '#a78bfa', 'F₃₂');
+  drawArrow(ctx, x2, lineY - 110, x2 + Fnet * arrowScale, lineY - 110, '#34d399', 'F_net');
+
+  // distance labels
+  ctx.fillStyle = 'rgba(210,218,245,0.45)'; ctx.font = '11px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('r₁₂ = ' + r12.toFixed(2) + ' m', (x1 + x2) / 2, lineY + 30);
+  ctx.fillText('r₂₃ = ' + r23.toFixed(2) + ' m', (x2 + x3) / 2, lineY + 30);
+}
+
+function fmtN(v) {
+  if (v >= 1) return v.toFixed(2) + ' N';
+  if (v >= 1e-3) return (v * 1e3).toFixed(2) + ' mN';
+  return (v * 1e6).toFixed(2) + ' µN';
+}
+
+function drawChargeBall(x, y, q, label, ctx) {
+  const r = 22;
+  const col = q > 0 ? '#ef4444' : q < 0 ? '#3b82f6' : '#6b7280';
+  const grd = ctx.createRadialGradient(x - 5, y - 5, 2, x, y, r);
+  grd.addColorStop(0, col + 'cc'); grd.addColorStop(1, col + '44');
+  ctx.fillStyle = grd;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = col + '88'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px var(--fd)'; ctx.textAlign = 'center';
+  ctx.fillText(label, x, y + 4);
+  ctx.fillStyle = col; ctx.font = '10px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText((q >= 0 ? '+' : '') + (q * 1e6).toFixed(1) + 'µC', x, y + r + 16);
+}
+
+function drawArrow(ctx, x1, y1, x2, y2, color, label) {
+  const dx = x2 - x1, dy = y2 - y1;
+  if (Math.abs(dx) < 2) return;
+  ctx.strokeStyle = color; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  const ang = Math.atan2(dy, dx);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 10 * Math.cos(ang - 0.4), y2 - 10 * Math.sin(ang - 0.4));
+  ctx.lineTo(x2 - 10 * Math.cos(ang + 0.4), y2 - 10 * Math.sin(ang + 0.4));
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = color; ctx.font = 'bold 10px var(--fm)'; ctx.textAlign = dx > 0 ? 'right' : 'left';
+  ctx.fillText(label, dx > 0 ? x2 + 6 : x2 - 6, y1 + 4);
+}
+
+function updateSim() { drawCoulomb(); }
+
+function drawFieldMap() {
+  const {W, H} = resizeCanvas();
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#040710'; ctx.fillRect(0, 0, W, H);
+
+  const gridN = 18;
+  const gx = W / gridN, gy = H / gridN;
+
+  for (let i = 0; i < gridN; i++) {
+    for (let j = 0; j < gridN; j++) {
+      const px = (i + 0.5) * gx, py = (j + 0.5) * gy;
+      let Ex = 0, Ey = 0;
+      for (const ch of fieldCharges) {
+        const cx = ch.x * W, cy = ch.y * H;
+        const dx = px - cx, dy = py - cy;
+        const r2 = dx * dx + dy * dy;
+        if (r2 < 400) continue;
+        const r = Math.sqrt(r2);
+        const E = k * 1e-8 / r2; // scaled
+        Ex += ch.sign * E * dx / r;
+        Ey += ch.sign * E * dy / r;
+      }
+      const mag = Math.sqrt(Ex * Ex + Ey * Ey);
+      if (mag < 1e-10) continue;
+      const len = Math.min(gx * 0.45, mag * 3e5);
+      const ux = Ex / mag, uy = Ey / mag;
+      const alpha = Math.min(1, mag * 2e5);
+      ctx.globalAlpha = 0.3 + 0.7 * alpha;
+      ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(px - ux * len * 0.5, py - uy * len * 0.5);
+      ctx.lineTo(px + ux * len * 0.5, py + uy * len * 0.5);
+      ctx.stroke();
+      // arrowhead
+      const ax = px + ux * len * 0.5, ay = py + uy * len * 0.5;
+      const ang = Math.atan2(uy, ux);
+      ctx.fillStyle = '#93c5fd';
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(ax - 5 * Math.cos(ang - 0.5), ay - 5 * Math.sin(ang - 0.5));
+      ctx.lineTo(ax - 5 * Math.cos(ang + 0.5), ay - 5 * Math.sin(ang + 0.5));
+      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // Draw placed charges
+  for (const ch of fieldCharges) {
+    const cx = ch.x * W, cy = ch.y * H;
+    ctx.fillStyle = ch.sign > 0 ? '#ef4444' : '#3b82f6';
+    ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(ch.sign > 0 ? '+' : '−', cx, cy + 6);
+  }
+}
+
+function handleFieldMapClick(e) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top) / rect.height;
+  const W = canvas.parentElement.clientWidth - 32;
+  const H = 420;
+  // Check if near existing charge
+  for (let i = 0; i < fieldCharges.length; i++) {
+    const ch = fieldCharges[i];
+    const dx = (x - ch.x) * W, dy = (y - ch.y) * H;
+    if (Math.sqrt(dx * dx + dy * dy) < 20) {
+      if (ch.sign === 1) ch.sign = -1;
+      else fieldCharges.splice(i, 1);
+      drawFieldMap(); return;
+    }
+  }
+  if (fieldCharges.length < 4) fieldCharges.push({x, y, sign: 1});
+  drawFieldMap();
+}
+
+// ── Practice questions ─────────────────────────────────────────────
+const NSC_QS = [
+  {q: "Twee ladings Q₁ = +3 µC en Q₂ = +3 µC is 0.3 m uitmekaar. Wat is die elektrostatiese krag tussen hulle?", opts: ["0.3 N","0.9 N","2.7 N","9.0 N"], ans: 1, fb: "F = kQ₁Q₂/r² = (9×10⁹)(3×10⁻⁶)(3×10⁻⁶)/(0.3)² = 81×10⁻³/0.09 = 0.9 N."},
+  {q: "Drie ladings is in 'n lyn: Q₁ = +2 µC, Q₂ = +2 µC, Q₃ = −2 µC. Die krag op Q₂ vanaf Q₁ is 0.5 N na regs, en die krag op Q₂ vanaf Q₃ is 0.5 N na regs. Wat is die netto krag op Q₂?", opts: ["0 N","0.5 N na regs","1.0 N na regs","0.5 N na links"], ans: 2, fb: "Albei kragte werk in dieselfde rigting (na regs), so hulle tel op: 0.5 + 0.5 = 1.0 N na regs."},
+  {q: "'n Positiewe toetslading word tussen 'n positiewe lading aan die linkerkant en 'n negatiewe lading aan die regterkant geplaas. In watter rigting wys die elektriese veld by die toetslading se posisie?", opts: ["Na links","Na regs","Opwaarts","Die veld is nul"], ans: 1, fb: "Die veld vanaf die positiewe lading (links) wys weg daarvan — na regs. Die veld vanaf die negatiewe lading (regs) wys daarheen — ook na regs. Albei bydraes wys na regs."},
+  {q: "Twee parallelle plate is 0.05 m uitmekaar en het 'n potensiaalverskil van 200 V tussen hulle. Wat is die elektriese veldsterkte tussen die plate?", opts: ["10 N·C⁻¹","40 N·C⁻¹","400 N·C⁻¹","4 000 N·C⁻¹"], ans: 3, fb: "E = V/d = 200/0.05 = 4 000 N·C⁻¹."},
+  {q: "Hoeveel arbeid word verrig om 'n lading van +2 µC deur 'n potensiaalverskil van 50 V te beweeg?", opts: ["25 µJ","100 µJ","1 mJ","2.5 mJ"], ans: 1, fb: "W = qV = (2×10⁻⁶)(50) = 100×10⁻⁶ J = 100 µJ."},
+  {q: "Watter stelling beskryf elektriese veldlyne korrek?", opts: ["Hulle kan mekaar kruis by punte van hoë veldsterkte","Hulle begin by negatiewe ladings en eindig by positiewe ladings","Hulle digtheid by 'n punt is eweredig aan die elektriese veldsterkte","Hulle is parallel aan die oppervlak van 'n geleier"], ans: 2, fb: "Veldlyne kruis nooit nie. Hulle begin by positiewe ladings en eindig by negatiewe ladings. Die digtheid (naasheid) van veldlyne verteenwoordig veldsterkte. Veldlyne is altyd loodreg (nie parallel nie) op geleieroppervlakke."},
+  {q: "Twee puntladings lê op die x-as: Q₁ = +8 µC by x = 0, en Q₂ = +2 µC by x = 0.6 m. By watter punt tussen hulle sal die netto elektriese veld nul wees?", opts: ["0.4 m vanaf Q₁ (0.2 m vanaf Q₂)","0.3 m vanaf Q₁ (die middelpunt)","0.2 m vanaf Q₁ (0.4 m vanaf Q₂)","0.6 m vanaf Q₁ (by Q₂ self)"], ans: 0, fb: "Vir die velde om te kanselleer by afstand x vanaf Q₁ (dus 0.6−x vanaf Q₂), moet die grootes gelyk wees: kQ₁/x² = kQ₂/(0.6−x)². Deur te vervang: 8/x² = 2/(0.6−x)², dus 4(0.6−x)² = x², wat gee 2(0.6−x) = x, dus 1.2 = 3x, en x = 0.4 m. Kontrole: E vanaf Q₁ = (9×10⁹)(8×10⁻⁶)/(0.4)² = 450 000 N·C⁻¹, en E vanaf Q₂ = (9×10⁹)(2×10⁻⁶)/(0.2)² = 450 000 N·C⁻¹ — gelyk, wat die punt bevestig. Omdat Q₁ vier keer groter as Q₂ is, lê die ewewigspunt nader aan die KLEINER lading (Q₂), nie by die middelpunt nie — 'n algemene fout is om aan te neem dat gelyke ladings nodig is vir die punt om presies in die middel te wees."},
+  {q: "'n Parallelleplaatkondensator met 'n kapasitansie van 4 µF word deur 'n 12 V-battery gelaai, dan ontkoppel en in plaas daarvan aan 'n 6 V-battery gekoppel (die kapasitansie bly dieselfde). Met watter faktor verander die energie wat in die kondensator gestoor word?", opts: ["Dit verminder tot 1/4 van die oorspronklike waarde","Dit verminder tot 1/2 van die oorspronklike waarde","Dit bly presies dieselfde","Dit vermeerder tot 2 keer die oorspronklike waarde"], ans: 0, fb: "Lading gestoor is Q = CV, dus halveer die halvering van V (van 12 V na 6 V) Q: van (4×10⁻⁶)(12) = 48 µC af na (4×10⁻⁶)(6) = 24 µC. Maar energie gestoor is U = ½CV² — dit hang af van V IN DIE KWADRAAT, nie V nie. Dus beteken die halvering van V dat die energie verander met 'n faktor van (1/2)² = 1/4: van ½(4×10⁻⁶)(12)² = 288 µJ af na ½(4×10⁻⁶)(6)² = 72 µJ, en inderdaad is 72 ÷ 288 = 1/4. Dit is 'n algemene fout om aan te neem dat energie eenvoudig saam met die spanning halveer — weens die kwadratiese verhouding daal dit eintlik baie verder."}
+];
+
+const IEB_QS = [
+  {q: "Die elektriese potensiaal by 'n punt 0.3 m vanaf 'n +5 µC-lading is:", opts: ["150 V","15 000 V","150 000 V","1.5 MV"], ans: 2, fb: "V = kQ/r = (9×10⁹)(5×10⁻⁶)/0.3 = 45 000/0.3 = 150 000 V."},
+  {q: "Watter stelling oor ekwipotensiale oppervlakke is korrek?", opts: ["Hulle is parallel aan elektriese veldlyne","'n Lading wat langs 'n ekwipotensiale oppervlak beweeg, verrig geen arbeid nie","Ekwipotensiale oppervlakke kan slegs naby positiewe ladings bestaan","Hulle het altyd dieselfde spasiëring"], ans: 1, fb: "Per definisie is alle punte op 'n ekwipotensiale oppervlak op dieselfde potensiaal, dus word geen arbeid verrig nie (W = qΔV = 0) om 'n lading daarlangs te beweeg. Hulle is loodreg (nie parallel nie) op veldlyne."}
+];
+
+let nscScores = new Array(NSC_QS.length).fill(null);
+let iebScores = new Array(IEB_QS.length).fill(null);
+
+function renderPractice() {
+  const nc = document.getElementById('nsc-qs');
+  nc.innerHTML = '';
+  NSC_QS.forEach((q, i) => nc.appendChild(buildQCard(q, i, 'nsc')));
+  const ic = document.getElementById('ieb-qs');
+  // keep the header div, append after
+  IEB_QS.forEach((q, i) => ic.appendChild(buildQCard(q, i, 'ieb')));
+}
+
+function buildQCard(q, i, prefix) {
+  const div = document.createElement('div');
+  div.className = 'q-card';
+  div.innerHTML = `<div class="q-num">Vraag ${i + 1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="mc-options">${q.opts.map((o, j) => `<button class="mc-opt" onclick="answer('${prefix}',${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div>
+    <div class="feedback" id="fb-${prefix}-${i}"></div>`;
+  return div;
+}
+
+function answer(prefix, qi, oi, btn) {
+  const qs = prefix === 'nsc' ? NSC_QS : IEB_QS;
+  const q = qs[qi];
+  const opts = btn.closest('.mc-options').querySelectorAll('.mc-opt');
+  opts.forEach(b => b.disabled = true);
+  const fb = document.getElementById('fb-' + prefix + '-' + qi);
+  if (oi === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback ok show';
+    fb.textContent = '✓ Korrek! ' + q.fb;
+    if (prefix === 'nsc' && nscScores[qi] === null) { nscScores[qi] = 1; updateScore(); }
+    if (prefix === 'ieb' && iebScores[qi] === null) iebScores[qi] = 1;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback bad show';
+    fb.textContent = '✗ Nie heeltemal reg nie. ' + q.fb;
+    if (prefix === 'nsc' && nscScores[qi] === null) { nscScores[qi] = 0; updateScore(); }
+    if (prefix === 'ieb' && iebScores[qi] === null) iebScores[qi] = 0;
+  }
+}
+
+function updateScore() {
+  const s = nscScores.filter(x => x === 1).length;
+  document.getElementById('score-big').textContent = s + '/' + NSC_QS.length;
+}
+
+renderPractice();
+window.addEventListener('resize', () => { if (simMode) initSim(); });
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

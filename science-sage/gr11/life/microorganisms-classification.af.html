@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klassifikasie van Mikro-organismes — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .kingdom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:760px;margin-bottom:18px}
+    .kingdom-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;transition:all 150ms}
+    .kingdom-card:hover{background:rgba(255,255,255,.06)}
+    .kingdom-card.active{border-color:var(--kc);background:color-mix(in srgb, var(--kc) 16%, transparent)}
+    .kingdom-icon{font-size:26px}
+    .kingdom-label{font-size:12px;font-weight:700;color:#fff;text-align:center}
+    .kingdom-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:820px}
+    .ki-title{font-weight:800;font-size:19px;color:#fff;margin-bottom:4px}
+    .ki-sub{font-family:var(--fm);font-size:10.5px;color:var(--muted);margin-bottom:10px;text-transform:uppercase}
+    .ki-desc{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.78);margin-bottom:10px}
+    .ki-row{display:flex;gap:8px;font-size:12px;margin-bottom:6px}
+    .ki-row .h{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:90px;flex-shrink:0;padding-top:2px}
+    .ki-row .v{color:rgba(210,218,245,.80)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.kingdom-grid{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .kingdom-grid,.kingdom-info{margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .kingdom-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Diversiteit, Verandering en Kontinuïteit · Les 1</div>
+  <h1 class="lesson-title">Klassifikasie van Mikro-organismes</h1>
+  <p class="lesson-sub">Voortbouend op Graad 9 en 10: verken bakterieë, protista, swamme, en virusse in meer diepte — hul struktuur, hul rol in die handhawing van balans in die omgewing, en die siektes wat sommige van hulle veroorsaak.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="microscope" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>'n Enorme, grotendeels onsigbare wêreld</h2>
+    <p>Lewe bestaan in 'n groot verskeidenheid vorme wat in verskillende nisse leef — van makroskopiese plante en diere tot mikroskopiese organismes. Hierdie les fokus op vier groepe mikro-organismes: <strong>bakterieë, protista, swamme,</strong> en <strong>virusse</strong>, en bou voort op die klassifikasiebeginsels van Graad 10.</p>
+
+    <h2>Mikro-organismes speel 'n noodsaaklike rol in ekosisteme</h2>
+    <p>Verre van bloot skadelik te wees, help die meeste mikro-organismes om balans in die omgewing en die wyer web van lewe te handhaaf:</p>
+    <ul>
+      <li><strong>Stikstofbindende bakterieë</strong> leef in simbiotiese verhoudings in die wortelknoppies van sekere plante, en skakel atmosferiese stikstof om in 'n bruikbare vorm.</li>
+      <li><strong><em>E. coli</em></strong>-bakterieë leef in die mens se derm, en help met vertering in 'n wedersyds voordelige verhouding.</li>
+      <li>Baie bakterieë en swamme tree op as <strong>ontbinders</strong>, en herwin voedingstowwe terug in ekosisteme.</li>
+    </ul>
+
+    <h2>Mikro-organismes wat siektes veroorsaak</h2>
+    <p>Sommige mikro-organismes is patogene — hulle veroorsaak siektes in plante, diere, en mense:</p>
+    <table class="compare-table">
+      <thead><tr><th>Groep</th><th>Voorbeeldsiektes</th></tr></thead>
+      <tbody>
+        <tr><td>Swamme</td><td>Roes (in plante), spruw, douwurm, atleetvoet</td></tr>
+        <tr><td>Protista</td><td>Malaria</td></tr>
+        <tr><td>Bakterieë</td><td>Brand (in plante), cholera, tuberkulose, miltsiekte</td></tr>
+        <tr><td>Virusse</td><td>Hondsdolheid, MIV/vigs, griep</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Immuniteit en siektebeheer</h2>
+    <p>Plante en diere het <strong>immuunreaksies</strong> wat help om teen infekterende mikro-organismes te verdedig. <strong>Entstowwe</strong> werk deur die immuunstelsel voor te berei om 'n spesifieke patogeen te herken en te beveg voordat 'n werklike infeksie plaasvind. <strong>Middels</strong>, soos antibiotika, word ook gebruik om infeksies wat deur bakterieë veroorsaak word, te behandel.</p>
+
+    <h2>Mikro-organismes wat vir ons werk</h2>
+    <p>Mense gebruik mikro-organismes al vir 'n lang tyd tot hul voordeel:</p>
+    <ul>
+      <li><strong>Medisynevervaardiging</strong> — bv. insulien en antibiotika word met behulp van mikro-organismes vervaardig.</li>
+      <li><strong>Tradisionele voedseltegnologie</strong> — bv. gis ('n swam) word gebruik om bier, wyn, en brood te vervaardig; bakterieë word gebruik om kaas te vervaardig.</li>
+    </ul>
+    <div class="callout">Probeer die <strong>Mikro-organisme-verkenner</strong> in die Verken-oortjie om die struktuur, voorbeelde, siektes, en voordele van elke groep te vergelyk.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Mikro-organisme-verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik op elke groep om hul seltipe, struktuur, siektes wat hulle kan veroorsaak, en nuttige rolle te vergelyk.</p>
+  <div class="kingdom-grid" id="kingdomGrid"></div>
+  <div class="kingdom-info" id="kingdomInfo"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Noem die vier groepe mikro-organismes wat in hierdie les bestudeer is, en gee EEN voorbeeld van 'n siekte wat deur elkeen veroorsaak word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Beskryf TWEE voorbeelde van simbiotiese verhoudings tussen bakterieë en ander organismes.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik hoe 'n entstof help om die liggaam teen siekte te beskerm.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Gee DRIE voorbeelde van hoe mense mikro-organismes tot voordeel gebruik.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Verduidelik waarom virusse dikwels afsonderlik van die ander drie mikrobiese groepe in klassifikasie hanteer word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">In 'n skyfie-diffusietoets word papierskyfies wat in verskillende antibiotika geweek is, op 'n agarplaat geplaas wat met bakterieë geënt is. Na inkubasie vorm 'n duidelike "inhibisiesone" (geen bakteriese groei nie) rondom elke skyfie. Die tabel toon die resultate:<br><br>
+    <table class="compare-table" style="max-width:480px">
+      <thead><tr><th>Antibiotikum</th><th>Sonedeursnee (mm)</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>22</td></tr>
+        <tr><td>B</td><td>8</td></tr>
+        <tr><td>C</td><td>15</td></tr>
+        <tr><td>D</td><td>0</td></tr>
+      </tbody>
+    </table><br>
+    (a) Bereken die radius, en dan die oppervlakte, van die inhibisiesone wat deur Antibiotikum A geproduseer word. Gebruik Oppervlakte = &pi;r&sup2; en wys jou berekeninge. (3 punte)<br>
+    (b) Rangskik die vier antibiotika van MEES tot MINS effektief teen hierdie bakterium, gebaseer op die data. (1 punt)<br>
+    (c) Verduidelik wat 'n sonedeursnee van 0 mm vir Antibiotikum D aandui oor hierdie bakterium se reaksie op daardie antibiotikum. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   MICRO-ORGANISM EXPLORER
+═══════════════════════════════════════════════ */
+const KINGDOMS = [
+  {id:"bacteria", name:"Bakterieë", icon:"🦠", color:"#f87171", cellType:"Prokariont",
+   structure:"Eensellig, geen ware kern nie; genetiese materiaal dryf vrylik in die sitoplasma.",
+   diseases:"Brand (plante), cholera, tuberkulose, miltsiekte",
+   benefits:"Stikstofbindende bakterieë in plantwortels; E. coli in die mens se derm; word gebruik om kaas te vervaardig"},
+  {id:"protista", name:"Protista", icon:"🔵", color:"#60a5fa", cellType:"Eukariont",
+   structure:"Eenvoudige, meestal eensellige organismes met 'n ware kern; 'n baie uiteenlopende groep.",
+   diseases:"Malaria",
+   benefits:"Baie protiste (bv. alge) is produsente, wat die basis van akwatiese voedselkettings vorm"},
+  {id:"fungi", name:"Swamme", icon:"🍄", color:"#fbbf24", cellType:"Eukariont",
+   structure:"Selle met 'n kern en selwand; absorbeer voedingstowwe uit hul omgewing eerder as om voedsel te maak of in te neem.",
+   diseases:"Roes (plante), spruw, douwurm, atleetvoet",
+   benefits:"Gis word gebruik om bier, wyn, en brood te vervaardig; ontbinders wat voedingstowwe herwin; bron van sommige antibiotika"},
+  {id:"virus", name:"Virusse", icon:"🧬", color:"#c084fc", cellType:"Nie-sellulêr",
+   structure:"Bestaan glad nie uit selle nie — net genetiese materiaal in 'n proteïenmantel. Kan slegs binne 'n lewende gasheersel voortplant.",
+   diseases:"Hondsdolheid, MIV/vigs, griep",
+   benefits:"Word gebruik in mediese navorsing en in die ontwikkeling van sommige entstowwe en genetiese terapieë"},
+];
+let activeKingdom = null;
+
+function buildKingdoms(){
+  document.getElementById('kingdomGrid').innerHTML = KINGDOMS.map(k=>`
+    <div class="kingdom-card" id="kc_${k.id}" style="--kc:${k.color}" onclick="selectKingdom('${k.id}')">
+      <span class="kingdom-icon">${k.icon}</span>
+      <span class="kingdom-label">${k.name}</span>
+    </div>`).join('');
+  selectKingdom('bacteria');
+}
+function selectKingdom(id){
+  activeKingdom = KINGDOMS.find(k=>k.id===id);
+  document.querySelectorAll('.kingdom-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('kc_'+id).classList.add('active');
+  document.getElementById('kingdomInfo').innerHTML = `
+    <div class="ki-title" style="color:${activeKingdom.color}">${activeKingdom.icon} ${activeKingdom.name}</div>
+    <div class="ki-sub">${activeKingdom.cellType}</div>
+    <p class="ki-desc">${activeKingdom.structure}</p>
+    <div class="ki-row"><span class="h">Siektes</span><span class="v">${activeKingdom.diseases}</span></div>
+    <div class="ki-row"><span class="h">Nuttige rolle</span><span class="v">${activeKingdom.benefits}</span></div>`;
+}
+buildKingdoms();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:"Watter groep mikro-organismes is prokariote (geen ware kern nie)?",opts:["Protista","Swamme","Bakterieë","Virusse"],ans:2,exp:"Bakterieë is prokarioties — hul genetiese materiaal dryf vrylik in die sitoplasma eerder as om in 'n kern ingesluit te wees."},
+  {text:"Watter mikro-organisme-groep veroorsaak malaria?",opts:["Bakterieë","Protista","Swamme","Virusse"],ans:1,exp:"Malaria word deur 'n protis (Plasmodium) veroorsaak, wat deur muskiete oorgedra word."},
+  {text:"Wat is die verhouding tussen stikstofbindende bakterieë en sekere plante?",opts:["Parasities — die bakterieë benadeel die plant","Simbioties — beide die plant en die bakterieë trek voordeel","Daar bestaan geen verhouding nie","Die bakterieë leef slegs in diere se dermkanale"],ans:1,exp:"Stikstofbindende bakterieë leef in 'n simbiotiese (wedersyds voordelige) verhouding in die wortelknoppies van sekere plante, en skakel atmosferiese stikstof om in 'n bruikbare vorm vir die plant."},
+  {text:"Waarom word virusse dikwels afsonderlik van bakterieë, protista, en swamme geklassifiseer?",opts:["Hulle is baie groter","Hulle bestaan glad nie uit selle nie","Hulle raak slegs plante","Hulle is altyd voordelig"],ans:1,exp:"Anders as die ander drie groepe, bestaan virusse nie uit selle nie — hulle bestaan uit genetiese materiaal in 'n proteïenmantel, en kan slegs binne 'n gasheersel voortplant."},
+  {text:"Watter van hierdie is 'n voordelige gebruik van mikro-organismes deur mense?",opts:["Veroorsaak tuberkulose","Vervaardig insulien en antibiotika","Veroorsaak atleetvoet","Veroorsaak hondsdolheid"],ans:1,exp:"Mikro-organismes word gebruik om medisyne soos insulien en antibiotika te vervaardig, sowel as voedsel soos kaas, bier, en brood."},
+  {text:"Wat is die doel van 'n entstof?",opts:["Om 'n infeksie onmiddellik te genees","Om die immuunstelsel voor te berei om 'n spesifieke patogeen te herken en te beveg voor infeksie","Om alle bakterieë in die liggaam dood te maak","Om antibiotika te vervang"],ans:1,exp:"'n Entstof lei die immuunstelsel op om 'n spesifieke patogeen te herken, sodat dit vinnig en doeltreffend kan reageer as 'n werklike infeksie later voorkom."},
+  {text:"'n Bakteriese kultuur begin met 'n enkele sel en vermenigvuldig deur binêre splyting, en verdubbel elke 20 minute in getal. Neem aan ideale groeitoestande geld die hele tyd deur — hoeveel bakterieë sal na 2 uur teenwoordig wees?",opts:["12","64","120","720"],ans:1,exp:"2 uur = 120 minute, en die populasie verdubbel elke 20 minute, sodat dit 120 ÷ 20 = 6 keer verdubbel. Vanaf 1 sel gee dit 1 × 2⁶ = 1 × 64 = 64 bakterieë. Hierdie soort herhaalde verdubbeling word eksponensiële groei genoem — dit is waarom 'n bakteriese infeksie, indien onbeheer gelaat, binne 'n paar uur van 'n handjievol selle tot miljoene kan groei."},
+  {text:"'n Dokter skryf antibiotika voor vir 'n pasiënt wat later met griep ('n virusinfeksie) gediagnoseer word, en die pasiënt se simptome verbeter nie. Watter verduideliking verklaar dit die BESTE?",opts:["Antibiotika teiken strukture en prosesse wat in bakteriese selle voorkom (soos selwande); aangesien virusse glad nie uit selle bestaan nie, is daar niks vir 'n antibiotikum om op in te werk nie","Die pasiënt het nie 'n voldoende hoë dosis van die antibiotikum ingeneem nie","Griep is eintlik 'n soort bakterium, nie 'n virus nie","Antibiotika is ewe effektief teen alle patogene, insluitend virusse"],ans:0,exp:"Antibiotika werk deur strukture of prosesse wat spesifiek is aan bakteriese selle te ontwrig — byvoorbeeld bakteriese selwande of proteïensintesemasjinerie. Virusse is nie-sellulêr (net genetiese materiaal in 'n proteïenmantel) en kaap 'n gasheersel se eie masjinerie om voort te plant, sodat hulle geen van die bakteriese teikens het waarop antibiotika staatmaak nie. Dit is waarom antibiotika oneffektief is teen virale siektes soos griep, en waarom dit ontmoedig word om dit onnodig vir virale infeksies voor te skryf — dit help nie die pasiënt nie en dra by tot die ontwikkeling van antibiotikaweerstand in ongerelateerde bakterieë."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

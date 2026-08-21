@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respirasie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#86efac;text-align:center}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .mode-readout{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+    .mode-badge{font-family:var(--fm);font-weight:800;font-size:16px;padding:8px 16px;border-radius:10px;flex-shrink:0}
+    .mode-desc{font-size:12.5px;color:var(--muted);line-height:1.6}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .mode-readout{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Lewensprosesse by Plante en Diere · Les 3</div>
+  <h1 class="lesson-title">Respirasie</h1>
+  <p class="lesson-sub">Sellulêre respirasie stel die energie vry wat in voedsel gestoor is. Sien hoe die liggaam van aërobiese na anaërobiese respirasie oorskakel namate oefenintensiteit toeneem — en waarom dit tot spiervermoeidheid lei.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="activity" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Energie uit voedsel vrystel</h2>
+    <p><strong>Sellulêre respirasie</strong> is die proses wat die chemiese energie wat in voedsel (glukose) gestoor is, vrystel sodat selle dit kan gebruik. Koolstofdioksied word deur alle lewende organismes as 'n afvalproduk tydens respirasie geproduseer.</p>
+
+    <h2>Aërobiese respirasie</h2>
+    <p>Aërobiese respirasie het suurstof nodig en vind in twee stadiums plaas: <strong>glikolise</strong> (in die sitoplasma) gevolg deur die <strong>Krebs-siklus</strong> en oksidatiewe fosforilering (in die mitochondria). Dit is baie doeltreffender as anaërobiese respirasie, en stel baie meer energie per glukosemolekule vry.</p>
+    <div class="formula">glukose + suurstof → koolstofdioksied + water + energie (groot hoeveelheid)</div>
+
+    <h2>Anaërobiese respirasie</h2>
+    <p>Wanneer die liggaam nie vinnig genoeg suurstof kan voorsien nie — soos tydens intensiewe oefening — skakel spierselle oor na <strong>anaërobiese respirasie</strong>, en produseer in plaas daarvan <strong>melksuur</strong>. Dit stel energie baie vinniger vry, maar veel minder doeltreffend, en die opbou van melksuur dra by tot spiervermoeidheid.</p>
+    <div class="formula">glukose → melksuur + energie (klein hoeveelheid)</div>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Aërobies</th><th>Anaërobies</th></tr></thead>
+      <tbody>
+        <tr><td>Suurstof nodig?</td><td>Ja</td><td>Nee</td></tr>
+        <tr><td>Produk</td><td>Koolstofdioksied + water</td><td>Melksuur</td></tr>
+        <tr><td>Energie vrygestel</td><td>Groot hoeveelheid</td><td>Klein hoeveelheid</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">Anaërobiese respirasie deur gis (fermentasie) word industrieel gebruik in <strong>bierbrouery</strong> en <strong>broodbakkery</strong>.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Oefening- en Respirasiesimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verhoog die oefenintensiteit en kyk hoe die liggaam van aërobiese na anaërobiese respirasie oorskakel namate suurstofaanvraag die voorraad oortref.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Spiersel se energiebron</h3>
+      <canvas id="respCanvas" height="240"></canvas>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Oefenintensiteit <span class="val" id="intensityVal">Rustend</span></div>
+      <input type="range" id="intensitySlider" min="0" max="100" value="0">
+    </div>
+    <div class="mode-readout">
+      <div class="mode-badge" id="modeBadge">AËROBIES</div>
+      <div class="mode-desc" id="modeDesc">Volop suurstof beskikbaar — spiere respireer aërobies, en stel energie doeltreffend vry.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefenboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Definieer sellulêre respirasie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Noem die twee plekke in 'n sel waar aërobiese respirasie plaasvind.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Vergelyk aërobiese en anaërobiese respirasie in terme van suurstofbehoefte, gevormde produk, en relatiewe energie vrygestel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom spiere tydens intensiewe oefening melksuur produseer, en hoe dit met spiervermoeidheid verband hou.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Gee EEN industriële gebruik van anaërobiese respirasie (fermentasie) deur gis.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Twee leerders, A en B, het dieselfde veeleisende oefening gedoen. Hul polsslag is toe elke minuut tydens herstel aangeteken:<br><br>
+    <table class="compare-table" style="max-width:520px">
+      <thead><tr><th>Tyd na oefening gestop het (min)</th><th>Leerder A polsslag (bpm)</th><th>Leerder B polsslag (bpm)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>160</td><td>165</td></tr>
+        <tr><td>1</td><td>140</td><td>150</td></tr>
+        <tr><td>2</td><td>120</td><td>138</td></tr>
+        <tr><td>3</td><td>100</td><td>128</td></tr>
+        <tr><td>4</td><td>85</td><td>120</td></tr>
+        <tr><td>5</td><td>72</td><td>112</td></tr>
+      </tbody>
+    </table><br>
+    (a) Bereken die totale afname in polsslag, van 0 tot 5 minute, vir elke leerder. (2 punte)<br>
+    (b) Bereken elke leerder se gemiddelde hersteltempo (afname in bpm per minuut) oor hierdie 5-minuut-periode. Wys al jou berekeninge. (2 punte)<br>
+    (c) Gebaseer op die data, watter leerder is waarskynlik fisiek fikser? Verduidelik jou antwoord. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The respCanvas has offsetWidth 0 while its tab panel is display:none,
+  // so the very first resizeCanvas() call (at page load, before any tab
+  // switch) falls back to a hardcoded default width instead of the real
+  // one. Re-measure now that the Explore panel is actually visible.
+  if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   EXERCISE & RESPIRATION SIMULATOR
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('respCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+let intensity = 0;
+let lacticAcid = 0;
+let particles = [];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600; H = 240;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+document.getElementById('intensitySlider').addEventListener('input', e=>{
+  intensity = +e.target.value;
+  document.getElementById('intensityVal').textContent = intensity<20?'Rustend':intensity<60?'Matige oefening':'Intensiewe oefening';
+  const anaerobic = intensity > 65;
+  const badge = document.getElementById('modeBadge');
+  badge.textContent = anaerobic ? 'ANAËROBIES' : 'AËROBIES';
+  badge.style.background = anaerobic ? 'rgba(239,68,68,0.18)' : 'rgba(34,197,94,0.18)';
+  badge.style.color = anaerobic ? '#fca5a5' : '#86efac';
+  document.getElementById('modeDesc').textContent = anaerobic
+    ? 'Suurstofaanvraag het die voorraad oortref — spiere skakel oor na anaërobiese respirasie, produseer melksuur en stel energie minder doeltreffend vry.'
+    : 'Volop suurstof beskikbaar — spiere respireer aërobies, en stel energie doeltreffend vry.';
+});
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const anaerobic = intensity > 65;
+  lacticAcid += anaerobic ? 0.012 : -0.02;
+  lacticAcid = Math.max(0, Math.min(1, lacticAcid));
+
+  // muscle cell (rounded rect)
+  const cx = W/2, cy = H/2;
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect ? ctx.roundRect(cx-90,cy-60,180,120,20) : ctx.rect(cx-90,cy-60,180,120);
+  const muscleColor = anaerobic ? `rgba(239,68,68,${0.15+lacticAcid*0.25})` : 'rgba(34,197,94,0.15)';
+  ctx.fillStyle = muscleColor; ctx.fill();
+  ctx.strokeStyle = anaerobic ? 'rgba(239,68,68,0.6)' : 'rgba(34,197,94,0.6)';
+  ctx.lineWidth = 2; ctx.stroke();
+  ctx.restore();
+
+  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('SPIERSEL', cx, cy-70);
+
+  // spawn particles: O2 in when aerobic, lactic acid dots accumulate when anaerobic
+  if (!anaerobic && Math.random()<0.3){
+    particles.push({x:cx+(Math.random()-0.5)*160, y:cy+70, vy:-1.2-Math.random(), type:'o2'});
+  }
+  if (anaerobic && Math.random()<0.4){
+    particles.push({x:cx+(Math.random()-0.5)*140, y:cy+(Math.random()-0.5)*100, vy:0, type:'lactic', life:60});
+  }
+  particles.forEach(p=>{
+    if (p.type==='o2'){
+      p.y += p.vy;
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.fill();
+    } else {
+      p.life--;
+      ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(248,113,113,0.7)'; ctx.fill();
+    }
+  });
+  particles = particles.filter(p => p.type==='o2' ? p.y > cy-70 : p.life > 0);
+
+  // lactic acid meter
+  const meterX = W-50, meterY = 20, meterH = H-40;
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+  ctx.strokeRect(meterX, meterY, 24, meterH);
+  const fillH = meterH*lacticAcid;
+  ctx.fillStyle='rgba(239,68,68,0.75)';
+  ctx.fillRect(meterX, meterY+meterH-fillH, 24, fillH);
+  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='9px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('MELK', meterX+12, meterY-6);
+  ctx.fillText('SUUR', meterX+12, meterY+8);
+
+  requestAnimationFrame(draw);
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Waar vind aërobiese respirasie in \'n sel plaas?',opts:['Slegs die kern','Sitoplasma en mitochondria','Slegs die selmembraan','Slegs ribosome'],ans:1,exp:'Aërobiese respirasie begin met glikolise in die sitoplasma, gevolg deur die Krebs-siklus en oksidatiewe fosforilering in die mitochondria.'},
+  {text:'Watter produk word tydens anaërobiese respirasie in spierselle gevorm?',opts:['Slegs koolstofdioksied','Melksuur','Suurstof','Slegs water'],ans:1,exp:'Anaërobiese respirasie in spierselle produseer melksuur, en stel energie vinnig vry, maar veel minder doeltreffend as aërobiese respirasie.'},
+  {text:'Watter tipe respirasie stel meer energie per glukosemolekule vry?',opts:['Anaërobiese respirasie','Aërobiese respirasie','Albei stel gelyke energie vry','Geen van die twee stel energie vry nie'],ans:1,exp:'Aërobiese respirasie stel baie meer energie per glukosemolekule vry as anaërobiese respirasie.'},
+  {text:'Waarom skakel die liggaam tydens intensiewe oefening oor na anaërobiese respirasie?',opts:['Omdat dit anaërobiese respirasie verkies','Omdat die suurstofvoorraad nie by die spiere se aanvraag kan bybly nie','Omdat glukose opraak','Omdat koolstofdioksiedvlakke te laag is'],ans:1,exp:'Tydens intensiewe oefening het die spiere energie vinniger nodig as wat die bloed suurstof kan lewer, sodat selle oorskakel na anaërobiese respirasie.'},
+  {text:'Watter newe-produk van respirasie word deur ALLE lewende organismes geproduseer?',opts:['Suurstof','Koolstofdioksied','Slegs melksuur','Stysel'],ans:1,exp:'Koolstofdioksied word as \'n afvalproduk van respirasie deur alle lewende organismes geproduseer, of hulle nou aërobies of anaërobies respireer.'},
+  {text:'Watter industriële prosesse steun op anaërobiese respirasie (fermentasie) deur gis?',opts:['Fotosintese en respirasie','Bierbrouery en broodbakkery','Watersuiwering','Antibiotikaweerstandtoetsing'],ans:1,exp:'Gis voer anaërobiese respirasie (fermentasie) uit, wat industrieel in bierbrouery en broodbakkery gebruik word.'},
+  {text:'Aërobiese respirasie van een glukosemolekule lewer ongeveer 36 ATP-molekules, terwyl anaërobiese respirasie (melksuurfermentasie) slegs ongeveer 2 ATP-molekules per glukose lewer. Bereken ongeveer hoeveel keer meer ATP aërobiese respirasie per glukosemolekule produseer in vergelyking met anaërobiese respirasie.',opts:['Ongeveer 18 keer meer','Ongeveer 2 keer meer','Ongeveer 36 keer meer','Ongeveer 0.06 keer meer (d.w.s. minder)'],ans:0,exp:'Deur die ATP-opbrengste te deel, kry ons die verhouding: 36 ÷ 2 = 18. Aërobiese respirasie onttrek dus ongeveer 18 keer meer bruikbare energie (as ATP) uit elke glukosemolekule as wat anaërobiese respirasie doen. Hierdie groot verskil bestaan omdat aërobiese respirasie glukose volledig oksideer, heeltemal tot koolstofdioksied en water, via die Krebs-siklus en oksidatiewe fosforilering in die mitochondria, terwyl anaërobiese respirasie glukose slegs gedeeltelik tot melksuur afbreek, en \'n baie kleiner fraksie van die energie wat in die glukosemolekule gestoor is, vrystel.'},
+  {text:'\'n Hardloper se asemhalingstempo word aangeteken: 15 asemhalings/min in rus, wat tydens \'n naelloop tot 32 asemhalings/min styg, en STEEDS 26 asemhalings/min is twee minute nadat die naelloop eindig, en eers na verskeie verdere minute na 15 asemhalings/min terugkeer. Wat weerspieël hierdie verhoogde asemhalingstempo nadat oefening gestop het, hoofsaaklik?',opts:['Die longe wat permanent groter word weens die oefening','Die liggaam wat \'n "suurstofskuld" terugbetaal — ekstra suurstof word benodig om die melksuur wat tydens anaërobiese respirasie opgebou het, af te breek, en om die suurstof- en energiereserwes wat tydens die naelloop gebruik is, aan te vul','\'n Ewekansige verandering sonder enige verband met die oefening wat sopas gedoen is','Die hart wat minder bloed pomp as tydens rus'],ans:1,exp:'Tydens die naelloop kon die suurstofvoorraad aan die spiere nie by die aanvraag bybly nie, sodat spierselle anaërobies gerespireer het en melksuur opgebou het. Sodra oefening stop, het die liggaam ekstra suurstof nodig — bo die normale rustende behoefte — om te help om hierdie opgehoopte melksuur af te breek/om te skakel en die suurstof- en energiereserwes in die spiere te herstel. Hierdie voortgesette behoefte aan ekstra suurstof word die "suurstofskuld" genoem, en verduidelik waarom die asemhalingstempo vir \'n rukkie verhoog bly nadat oefening eindig, en eers geleidelik na die rustempo terugkeer namate die skuld terugbetaal word.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
