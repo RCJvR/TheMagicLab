@@ -452,8 +452,9 @@
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
+  <!-- Hero — landing pitch for signed-out visitors only; hidden once
+       signed in so returning users go straight to the tools/Arena. -->
+  <section class="hero" id="hero">
     <div class="hero-tag">
       <span class="hero-tag-dot"></span>
       STEM Learning Platform
@@ -864,6 +865,17 @@
     document.addEventListener('magiclab:auth:ready', _syncUpgradeBtn);
     document.addEventListener('magiclab:auth:change', _syncUpgradeBtn);
     document.addEventListener('magiclab:nav:rendered', _syncUpgradeBtn);
+
+    // Hero pitch is for signed-out visitors only — once signed in, drop
+    // straight into the tools/Arena instead of re-showing the landing copy.
+    function _syncHeroVisibility() {
+      const hero = document.getElementById('hero');
+      if (!hero) return;
+      const signedIn = !!window.MagicLabAuth?.getProfile();
+      hero.style.display = signedIn ? 'none' : '';
+    }
+    document.addEventListener('magiclab:auth:ready', _syncHeroVisibility);
+    document.addEventListener('magiclab:auth:change', _syncHeroVisibility);
 
     async function _syncAssignmentsBell() {
       const btn = document.getElementById('nav-assignments-btn');
