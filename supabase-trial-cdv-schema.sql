@@ -40,14 +40,31 @@ alter table profiles add column if not exists trial_ends_at timestamptz;
 alter table profiles add column if not exists cdv_status text not null default 'none'
   check (cdv_status in ('none', 'pending', 'verified', 'rejected'));
 
+-- Column-level default as a backstop: even if the trigger below somehow
+-- doesn't fire for a given insert path, new rows still get a real trial
+-- window rather than silently landing on NULL (which is what actually
+-- happened before this fix — see the is_service NULL-handling note below).
+alter table profiles alter column trial_ends_at set default (now() + interval '30 days');
+
 -- Backfill: existing users (trial_ends_at still null) get a fresh
 -- 30-day trial starting now, per the "start the clock now" decision.
+-- Safe/idempotent to re-run — this also repairs any accounts created
+-- between the original migration and this fixed version, which got
+-- NULL trial_ends_at due to the bug described below.
 update profiles set trial_ends_at = now() + interval '30 days' where trial_ends_at is null;
 
 create or replace function _profile_privileged_columns_guard() returns trigger
 language plpgsql as $$
 declare
-  is_service   boolean := auth.role() = 'service_role';
+  -- auth.role() can return SQL NULL (not just 'authenticated'/'anon') in
+  -- contexts with no live PostgREST/JWT request — e.g. a row inserted by
+  -- a database-level cascade rather than a direct API call. `NULL =
+  -- 'service_role'` is itself NULL, and `if not NULL` is treated as
+  -- false by plpgsql, which would silently skip this whole guard —
+  -- exactly backwards from what's intended. coalesce(...) collapses
+  -- that ambiguity to "not the service role", so the defaults/lock
+  -- always apply unless we're certain it's really the service role.
+  is_service   boolean := coalesce(auth.role(), '') = 'service_role';
   is_cdv_school boolean;
 begin
   is_cdv_school := new.school is not null and (
