@@ -54,6 +54,8 @@ async function _initAuth() {
     isTeacher:     () => _profile?.role === 'teacher',
     isStudent:     () => _profile?.role === 'student',
     hasAccess,
+    hasFullAccess,
+    trialDaysLeft,
     updateProfile,
     joinClass,
     // ── Teacher functions ──
@@ -112,7 +114,13 @@ function _fallbackProfile(user) {
     package:      'free',
     school:       null,
     province:     null,
-    subjects:     null
+    subjects:     null,
+    // No real trial_ends_at is known here (this profile was assembled
+    // client-side after a fetch error, not read from the DB) — leave
+    // it null rather than guessing, so hasFullAccess() fails open
+    // instead of locking someone out because of a transient glitch.
+    trial_ends_at: null,
+    cdv_status:    'none'
   };
 }
 
@@ -182,6 +190,33 @@ function hasAccess(requiredPackage) {
   if (!_profile) return requiredPackage === 'free';
   const tiers = { free: 0, basic: 1, pro: 2, school: 3 };
   return (tiers[_profile.package] ?? 0) >= (tiers[requiredPackage] ?? 0);
+}
+
+/**
+ * Does the current user get full site access right now? True if
+ * they're on a paid tier, verified as a Curro Durbanville user, or
+ * still inside their free trial window. Everyone else (trial expired,
+ * not paid, not verified) should be sent to pricing.html.
+ *
+ * Fails open (returns true) when trial_ends_at is unknown — that only
+ * happens on a fallback profile assembled after a fetch error, and a
+ * transient glitch shouldn't lock a legitimate user out.
+ */
+function hasFullAccess() {
+  if (!_profile) return false;
+  if (_profile.package === 'pro' || _profile.package === 'school') return true;
+  if (_profile.cdv_status === 'verified') return true;
+  if (!_profile.trial_ends_at) return true;
+  return new Date(_profile.trial_ends_at) > new Date();
+}
+
+/**
+ * Whole days remaining in the free trial (0 if expired or n/a).
+ */
+function trialDaysLeft() {
+  if (!_profile?.trial_ends_at) return 0;
+  const ms = new Date(_profile.trial_ends_at) - new Date();
+  return Math.max(0, Math.ceil(ms / 86400000));
 }
 
 /**
