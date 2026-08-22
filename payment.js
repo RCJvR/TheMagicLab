@@ -11,11 +11,9 @@
 
 (function () {
   // ── Feature flag ───────────────────────────────────────────
-  // Payments aren't open to the public yet. While false, every
-  // upgrade entry point (nav pill, account-page link, pricing-page
-  // button) hides or disables itself, and upgrade() refuses to run.
-  // Flip to true when the live PayFast credentials are in place.
-  const PAYMENTS_LIVE = false;
+  // Live PayFast credentials are configured and the checkout/notify
+  // Edge Functions are deployed — payments are open to the public.
+  const PAYMENTS_LIVE = true;
 
   async function upgrade() {
     if (!PAYMENTS_LIVE) {
