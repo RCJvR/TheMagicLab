@@ -118,6 +118,68 @@ window.WRO_PROGRAM = (function() {
     }
     return { x, y, heading };
   }
+  // 'lineFollowPath' replays a path traced with the PATH tool (see SAVE
+  // PATH) as a RELATIVE sequence of motions from wherever the robot
+  // currently is -- consistent with every other step type here being a
+  // relative primitive (drive N mm forward, turn N degrees) rather than a
+  // jump to an absolute mat position. The path's own first-to-second-point
+  // bearing is treated as "the heading the robot was facing when it
+  // started following this line", so the whole traced shape rotates to
+  // match the robot's actual current heading before being walked -- the
+  // same traced path can then be reused anywhere in the route regardless
+  // of the heading you approach it from. This is an IDEALISED follow (the
+  // robot tracks the traced line exactly, no sensor/wobble simulation),
+  // and heading snaps at each traced vertex rather than curving smoothly
+  // through it, same as a polyline would.
+  function pathLocalPoints(step) {
+    const M = window.WRO_TOOLS.math;
+    const raw = step.points;
+    const p0 = raw[0];
+    return {
+      local: raw.map(p => ({ x: p.x - p0.x, y: p.y - p0.y })),
+      startBearing: M.bearing(raw[0], raw[1]),
+    };
+  }
+  function pathTotalLength(points) {
+    const M = window.WRO_TOOLS.math;
+    let total = 0;
+    for (let i = 1; i < points.length; i++) total += M.dist(points[i - 1], points[i]);
+    return total;
+  }
+  // frac 0..1 by arc-length (not by point index, since segments vary in
+  // length) along an already-rotated local point list.
+  function pointAlongLocalPath(pts, frac) {
+    const M = window.WRO_TOOLS.math;
+    const total = pathTotalLength(pts);
+    const target = total * Math.max(0, Math.min(1, frac));
+    let acc = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const segLen = M.dist(pts[i - 1], pts[i]);
+      if (acc + segLen >= target || i === pts.length - 1) {
+        const segFrac = segLen > 0 ? (target - acc) / segLen : 0;
+        return {
+          x: pts[i - 1].x + (pts[i].x - pts[i - 1].x) * segFrac,
+          y: pts[i - 1].y + (pts[i].y - pts[i - 1].y) * segFrac,
+          heading: M.bearing(pts[i - 1], pts[i]),
+        };
+      }
+      acc += segLen;
+    }
+    const last = pts[pts.length - 1];
+    return { x: last.x, y: last.y, heading: 0 };
+  }
+  function applyLineFollowPathStep(pose, step, frac) {
+    if (!step.points || step.points.length < 2) return pose;
+    const { local, startBearing } = pathLocalPoints(step);
+    const rotationDelta = pose.heading - startBearing;
+    const rotated = local.map(p => rotateVec(p, rotationDelta));
+    const sample = pointAlongLocalPath(rotated, frac);
+    return {
+      x: pose.x + sample.x,
+      y: pose.y + sample.y,
+      heading: ((sample.heading % 360) + 360) % 360,
+    };
+  }
   function applyStep(pose, step, footprint) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
@@ -133,6 +195,9 @@ window.WRO_PROGRAM = (function() {
     }
     if (step.type === 'squareToWall') {
       return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+    }
+    if (step.type === 'lineFollowPath') {
+      return applyLineFollowPathStep(pose, step, 1);
     }
     return pose;
   }
@@ -176,6 +241,9 @@ window.WRO_PROGRAM = (function() {
         heading: ((pose.heading + dh * frac) % 360 + 360) % 360,
       };
     }
+    if (step.type === 'lineFollowPath') {
+      return applyLineFollowPathStep(pose, step, frac);
+    }
     return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
   }
   // How long a step takes to "play" in seconds, from the actual configured
@@ -206,6 +274,10 @@ window.WRO_PROGRAM = (function() {
         return Math.max(0, step.seconds || 0);
       case 'squareToWall':
         return 1.2; // a deliberately slower dwell -- physically a drive-to-stall against the wall, not instantaneous
+      case 'lineFollowPath': {
+        const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : (config.straightSpeed || 200);
+        return pathTotalLength(step.points || []) / Math.max(1, speed);
+      }
       default:
         return DEFAULT_ACTION_DWELL_S;
     }
@@ -233,6 +305,20 @@ window.WRO_PROGRAM = (function() {
         for (let s = 1; s <= ARC_TRAIL_SAMPLES; s++) {
           const p = applyArcStep(pose, step.radius, step.degrees * s / ARC_TRAIL_SAMPLES);
           pts.push({ x: p.x, y: p.y });
+        }
+      }
+      // A traced path is an arbitrary polyline -- sample along it the same
+      // way an arc does, rather than drawing a single straight chord from
+      // start to end. Pushes its own endpoint, so it's deliberately left
+      // out of the drive/lineFollow/squareToWall endpoint-push below.
+      if (step.type === 'lineFollowPath' && step.points && step.points.length >= 2) {
+        const { local, startBearing } = pathLocalPoints(step);
+        const rotationDelta = pose.heading - startBearing;
+        const rotated = local.map(p => rotateVec(p, rotationDelta));
+        const samples = 20;
+        for (let s = 1; s <= samples; s++) {
+          const p = pointAlongLocalPath(rotated, s / samples);
+          pts.push({ x: pose.x + p.x, y: pose.y + p.y });
         }
       }
       pose = applyStep(pose, step, footprint);
@@ -273,6 +359,10 @@ window.WRO_PROGRAM = (function() {
         return `Arc ${step.degrees >= 0 ? 'right' : 'left'} ${Math.abs(step.degrees)}° (radius ${step.radius} mm)`;
       case 'squareToWall':
         return 'Drive into wall to square (snap heading to nearest cardinal, edge stops at wall)';
+      case 'lineFollowPath': {
+        const len = pathTotalLength(step.points || []);
+        return `Follow traced path "${step.label || 'path'}" (${(step.points || []).length} pts, ${len.toFixed(0)} mm)${step.reversed ? ' [reversed]' : ''}`;
+      }
       case 'unfold':
         return 'Unfold to open size';
       case 'frontMotor':
@@ -436,6 +526,9 @@ window.WRO_PROGRAM = (function() {
           break;
         case 'squareToWall':
           L.push(`# --- ${note}: add your wall-squaring drive call here ---`);
+          break;
+        case 'lineFollowPath':
+          L.push(`# --- ${note}: add your line-following drive here (uses your reflectance sensor(s) -- the traced shape only exists in the planner, it isn't exported as data) ---`);
           break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
@@ -1016,11 +1109,41 @@ window.WRO_PROGRAM = (function() {
     // ---- add-step row ----
     const typeSel = document.getElementById('stepType');
     const fields = Array.from(document.querySelectorAll('.program-field'));
+    // 'lineFollowPath' draws its options from paths saved via the SAVE PATH
+    // button (tools.js measurements, not this file's own state) -- shares
+    // localStorage's 'wro2026-saved-paths' key with app.js's own
+    // loadSavedPaths() rather than importing it, same loose-coupling
+    // pattern already used for the scoring panel handoff.
+    const SAVED_PATHS_KEY = 'wro2026-saved-paths';
+    function loadSavedPathsForStep() {
+      try {
+        const raw = localStorage.getItem(SAVED_PATHS_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+    const stepPathSelect = document.getElementById('stepPathSelect');
+    function refreshPathSelect() {
+      if (!stepPathSelect) return;
+      const paths = loadSavedPathsForStep();
+      const prev = stepPathSelect.value;
+      stepPathSelect.innerHTML = '';
+      if (!paths.length) {
+        h('option', { value: '', text: '— no saved paths yet: draw+SAVE PATH first —' }, stepPathSelect);
+        stepPathSelect.disabled = true;
+        return;
+      }
+      stepPathSelect.disabled = false;
+      paths.forEach(p => {
+        h('option', { value: String(p.id), text: `${p.name} · ${p.totalMm.toFixed(0)} mm, ${p.points.length} pts` }, stepPathSelect);
+      });
+      if (paths.some(p => String(p.id) === prev)) stepPathSelect.value = prev;
+    }
     function syncFields() {
       const t = typeSel.value;
       fields.forEach(f => {
         f.style.display = f.dataset.for.split(',').includes(t) ? '' : 'none';
       });
+      if (t === 'lineFollowPath') refreshPathSelect();
     }
     typeSel.addEventListener('change', syncFields);
     syncFields();
@@ -1033,6 +1156,7 @@ window.WRO_PROGRAM = (function() {
     const motorActionSel = document.getElementById('stepMotorAction');
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
+    const stepPathReverse = document.getElementById('stepPathReverse');
     // These only exist on the Senior page (index.html) -- null here on
     // Elementary, which is fine, since the dropdown there has no options
     // that reach the branches below that read them.
@@ -1100,6 +1224,15 @@ window.WRO_PROGRAM = (function() {
         if (!isNaN(rate) && rate > 0) step.turnRateDegS = rate;
       } else if (t === 'unfold' || t === 'squareToWall') {
         // no parameters
+      } else if (t === 'lineFollowPath') {
+        const paths = loadSavedPathsForStep();
+        const chosen = paths.find(p => String(p.id) === stepPathSelect.value);
+        if (!chosen) return; // nothing saved / selected yet
+        const pts = chosen.points.map(p => ({ x: p.x, y: p.y }));
+        const reversed = !!(stepPathReverse && stepPathReverse.checked);
+        step.points = reversed ? pts.slice().reverse() : pts;
+        step.label = chosen.name;
+        step.reversed = reversed;
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
         step.action = motorActionSel.value;
@@ -1460,7 +1593,7 @@ window.WRO_PROGRAM = (function() {
           // live interpolated position instead of only jumping once the
           // whole step finishes, so the path visibly draws itself.
           const curStep = state.steps[idx];
-          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc' || curStep.type === 'squareToWall')) {
+          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc' || curStep.type === 'squareToWall' || curStep.type === 'lineFollowPath')) {
             pts.push({ x: pose.x, y: pose.y });
           }
           if (pts.length > 1) {
