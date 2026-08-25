@@ -421,6 +421,37 @@
     .net-link { color: var(--muted); font-size: 18px; font-weight: 700; flex-shrink: 0; }
     .net-link.wireless { color: var(--muted); font-size: 11px; font-weight: 700; font-family: var(--font-mono); }
 
+    /* ── GUI elements reference (icon, toolbar, radio, checkbox, dialog, combo) ── */
+    .gui-ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .gui-ref-card { background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 118px; text-align: center; }
+    .gui-ref-label { font-size: 11px; color: var(--muted); line-height: 1.45; }
+    .gui-ref-label strong { color: var(--text2); }
+    .gui-ref-icon-tile { width: 42px; height: 42px; border-radius: 10px; background: rgba(59,130,246,0.14); border: 1px solid rgba(59,130,246,0.3); display: flex; align-items: center; justify-content: center; color: #93c5fd; }
+    .gui-ref-toolbar { width: 100%; background: #1e2030; border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; overflow: hidden; }
+    .gui-ref-menu { display: flex; gap: 9px; padding: 5px 8px; background: #171a2b; color: var(--text2); font-size: 10px; }
+    .gui-ref-tools { display: flex; gap: 5px; padding: 6px 8px; }
+    .gui-ref-tool-btn { width: 20px; height: 20px; border-radius: 4px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+    .gui-ref-row { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text2); text-align: left; }
+    .gui-ref-row + .gui-ref-row { margin-top: 5px; }
+    .gui-ref-radio { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--muted); flex-shrink: 0; position: relative; }
+    .gui-ref-radio.checked { border-color: #3b82f6; }
+    .gui-ref-radio.checked::after { content: ''; position: absolute; inset: 2px; border-radius: 50%; background: #3b82f6; }
+    .gui-ref-checkbox { width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--muted); flex-shrink: 0; position: relative; }
+    .gui-ref-checkbox.checked { border-color: #11d98f; background: #11d98f; }
+    .gui-ref-checkbox.checked::after { content: '✓'; position: absolute; top: -4px; left: 0px; font-size: 12px; line-height: 1; color: #04150f; font-weight: 900; }
+    .gui-ref-dialog { width: 100%; background: #1e2030; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; overflow: hidden; text-align: left; }
+    .gui-ref-dialog-title { background: #2d3148; padding: 5px 10px; color: var(--text2); font-size: 10px; display: flex; justify-content: space-between; }
+    .gui-ref-dialog-body { padding: 9px 10px 0; color: var(--text2); font-size: 10.5px; line-height: 1.4; }
+    .gui-ref-dialog-actions { display: flex; justify-content: flex-end; gap: 6px; padding: 8px 10px 10px; }
+    .gui-ref-dialog-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; padding: 3px 9px; font-size: 10px; color: var(--text2); }
+    .gui-ref-dialog-btn.primary { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+    .gui-ref-combo { width: 100%; text-align: left; }
+    .gui-ref-combo-head { background: #1e2030; border: 1px solid rgba(255,255,255,0.14); border-radius: 6px; padding: 5px 8px; display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text2); }
+    .gui-ref-combo-list { margin-top: 3px; background: #171a2b; border: 1px solid rgba(255,255,255,0.10); border-radius: 6px; overflow: hidden; }
+    .gui-ref-combo-item { padding: 4px 8px; font-size: 10.5px; color: var(--text2); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .gui-ref-combo-item:last-child { border-bottom: none; }
+    .gui-ref-combo-item.active { background: rgba(59,130,246,0.15); color: #93c5fd; }
+
     /* ── Database object mockups (table view + form view) ── */
     .db-table-mock { background: #fff; color: #1f2430; border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; overflow: hidden; margin-bottom: 4px; font-size: 12px; }
     .db-table-mock table { width: 100%; border-collapse: collapse; }
@@ -4584,6 +4615,67 @@ const CODING_ROBOTICS_LESSONS = LESSONS;   // the 27 lessons defined above
 // Populate these arrays (same lesson-object shape as CODING_ROBOTICS_LESSONS
 // above) once that content is ready; the empty-state UI disappears on its own
 // the moment an array is non-empty.
+
+// Shared GUI-elements reference diagram — built as real HTML/CSS (see
+// .gui-ref-* rules) rather than a screenshot or generated image, so it can't
+// go stale or mislabel a component. Reused by both the CAPS and IEB Grade 10
+// lessons that introduce GUI vocabulary.
+const GUI_REF_DIAGRAM = `
+<div class="visual-box">
+  <div class="visual-box-title">GUI Elements Reference</div>
+  <div class="gui-ref-grid">
+    <div class="gui-ref-card">
+      <div class="gui-ref-icon-tile"><i data-lucide="file-text" style="width:20px;height:20px;"></i></div>
+      <div class="gui-ref-label"><strong>Icon</strong><br>A small picture representing a program or file</div>
+    </div>
+    <div class="gui-ref-card">
+      <div class="gui-ref-toolbar">
+        <div class="gui-ref-menu"><span>File</span><span>Edit</span><span>View</span></div>
+        <div class="gui-ref-tools">
+          <div class="gui-ref-tool-btn"><i data-lucide="scissors" style="width:11px;height:11px;"></i></div>
+          <div class="gui-ref-tool-btn"><i data-lucide="copy" style="width:11px;height:11px;"></i></div>
+          <div class="gui-ref-tool-btn"><i data-lucide="search" style="width:11px;height:11px;"></i></div>
+        </div>
+      </div>
+      <div class="gui-ref-label"><strong>Toolbar &amp; Menu</strong><br>Rows of commands and options</div>
+    </div>
+    <div class="gui-ref-card">
+      <div>
+        <div class="gui-ref-row"><div class="gui-ref-radio checked"></div>Option A</div>
+        <div class="gui-ref-row"><div class="gui-ref-radio"></div>Option B</div>
+      </div>
+      <div class="gui-ref-label"><strong>Radio Buttons</strong><br>Round — only ONE choice in the group</div>
+    </div>
+    <div class="gui-ref-card">
+      <div>
+        <div class="gui-ref-row"><div class="gui-ref-checkbox checked"></div>Bold</div>
+        <div class="gui-ref-row"><div class="gui-ref-checkbox checked"></div>Italic</div>
+        <div class="gui-ref-row"><div class="gui-ref-checkbox"></div>Underline</div>
+      </div>
+      <div class="gui-ref-label"><strong>Checkboxes</strong><br>Square — MULTIPLE choices allowed</div>
+    </div>
+    <div class="gui-ref-card">
+      <div class="gui-ref-dialog">
+        <div class="gui-ref-dialog-title"><span>Confirm Delete</span><span>✕</span></div>
+        <div class="gui-ref-dialog-body">Are you sure you want to delete this file?</div>
+        <div class="gui-ref-dialog-actions"><div class="gui-ref-dialog-btn">Cancel</div><div class="gui-ref-dialog-btn primary">OK</div></div>
+      </div>
+      <div class="gui-ref-label"><strong>Dialog Box</strong><br>Pops up to gather input or confirm an action</div>
+    </div>
+    <div class="gui-ref-card">
+      <div class="gui-ref-combo">
+        <div class="gui-ref-combo-head"><span>Times New Roman</span><span>▾</span></div>
+        <div class="gui-ref-combo-list">
+          <div class="gui-ref-combo-item active">Times New Roman</div>
+          <div class="gui-ref-combo-item">Arial</div>
+          <div class="gui-ref-combo-item">Calibri</div>
+        </div>
+      </div>
+      <div class="gui-ref-label"><strong>Combo Box / List</strong><br>Click to choose one item from a list</div>
+    </div>
+  </div>
+</div>`;
+
 const CAT_CAPS_LESSONS = [
 
 {
@@ -4858,6 +4950,7 @@ const CAT_CAPS_LESSONS = [
   <li><strong>Checkboxes</strong> — square; multiple options can be selected</li>
   <li><strong>Dialog boxes, lists and combo boxes</strong> — used to gather input or show choices</li>
 </ul>
+${GUI_REF_DIAGRAM}
 <p>You should also be able to minimise, restore, resize, move and close a window.</p>
 
 <h3><i data-lucide="settings" style="width:14px;height:14px;"></i> The Operating System</h3>
@@ -7838,6 +7931,7 @@ const CAT_IEB_LESSONS = [
 
 <h3><i data-lucide="layout" style="width:14px;height:14px;"></i> The Graphical User Interface (GUI)</h3>
 <p>Recognise and use typical GUI components: icons, toolbars, menus, radio buttons, checkboxes, dialog boxes, lists and combo boxes. You should also be able to minimise, restore, resize, move and close windows.</p>
+${GUI_REF_DIAGRAM}
 
 <h3><i data-lucide="key" style="width:14px;height:14px;"></i> Licensing Models</h3>
 <table class="ext-table">
