@@ -421,6 +421,16 @@
     .net-link { color: var(--muted); font-size: 18px; font-weight: 700; flex-shrink: 0; }
     .net-link.wireless { color: var(--muted); font-size: 11px; font-weight: 700; font-family: var(--font-mono); }
 
+    /* ── Network scale diagram (PAN → HAN → LAN → MAN → WAN → GAN) — circle
+       diameter grows with scale, all sitting on a common baseline, so the
+       size difference itself carries the meaning rather than just a label. ── */
+    .scale-diagram { display: flex; align-items: flex-end; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding: 10px 4px 4px; }
+    .scale-step { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 7px; text-align: center; flex-shrink: 0; width: 92px; }
+    .scale-circle { border-radius: 50%; background: rgba(59,130,246,0.16); border: 1px solid rgba(59,130,246,0.4); display: flex; align-items: center; justify-content: center; color: #93c5fd; font-family: var(--font-mono); font-weight: 700; font-size: 11px; flex-shrink: 0; }
+    .scale-name { font-size: 11.5px; font-weight: 600; color: var(--text2); }
+    .scale-desc { font-size: 10px; color: var(--muted); line-height: 1.35; }
+    .scale-arrow { color: var(--muted); font-size: 15px; flex-shrink: 0; margin-bottom: 22px; }
+
     /* ── GUI elements reference (icon, toolbar, radio, checkbox, dialog, combo) ── */
     .gui-ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
     .gui-ref-card { background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 118px; text-align: center; }
@@ -4676,6 +4686,51 @@ const GUI_REF_DIAGRAM = `
   </div>
 </div>`;
 
+// Shared network-scale diagram (PAN → HAN → LAN → MAN → WAN → GAN). Circle
+// size grows with each step so the scale difference is visual, not just a
+// label — same reuse pattern as GUI_REF_DIAGRAM above.
+const NETWORK_SCALE_DIAGRAM = `
+<div class="visual-box">
+  <div class="visual-box-title">Network Scale, Smallest to Largest</div>
+  <div class="scale-diagram">
+    <div class="scale-step">
+      <div class="scale-circle" style="width:30px;height:30px;">PAN</div>
+      <div class="scale-name">PAN</div>
+      <div class="scale-desc">One person's devices — phone to earbuds</div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="scale-step">
+      <div class="scale-circle" style="width:40px;height:40px;">HAN</div>
+      <div class="scale-name">HAN</div>
+      <div class="scale-desc">Devices in one home</div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="scale-step">
+      <div class="scale-circle" style="width:52px;height:52px;">LAN</div>
+      <div class="scale-name">LAN</div>
+      <div class="scale-desc">One building — a school or office</div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="scale-step">
+      <div class="scale-circle" style="width:66px;height:66px;font-size:10px;">MAN</div>
+      <div class="scale-name">MAN</div>
+      <div class="scale-desc">A city or town</div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="scale-step">
+      <div class="scale-circle" style="width:82px;height:82px;font-size:10px;">WAN</div>
+      <div class="scale-name">WAN</div>
+      <div class="scale-desc">A country or continent</div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="scale-step">
+      <div class="scale-circle" style="width:100px;height:100px;font-size:10px;">GAN</div>
+      <div class="scale-name">GAN</div>
+      <div class="scale-desc">Worldwide — the Internet</div>
+    </div>
+  </div>
+</div>`;
+
 const CAT_CAPS_LESSONS = [
 
 {
@@ -8120,6 +8175,7 @@ ${GUI_REF_DIAGRAM}
   <tr><td>WAN</td><td>Wide Area Network</td><td>Across a country or continent</td></tr>
   <tr><td>GAN</td><td>Global Area Network</td><td>Worldwide — the Internet is the classic example</td></tr>
 </table>
+${NETWORK_SCALE_DIAGRAM}
 
 <h3><i data-lucide="router" style="width:14px;height:14px;"></i> Basic Components of a Network</h3>
 <ul>
