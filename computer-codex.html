@@ -110,22 +110,42 @@
     }
     #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 14px; }
 
-    /* ── Subject / track selector ── */
-    .subject-toggle {
-      display: flex; flex-direction: column; gap: 4px; margin-top: 10px;
-    }
-    .subject-pill {
-      display: flex; align-items: center; gap: 8px;
-      width: 100%; text-align: left; font-family: var(--font-body);
-      font-size: 12.5px; font-weight: 700; color: var(--text2);
+    /* ── Subject / grade selector — single dropdown, mirrors Math Magician's
+       "Quick jump" pattern instead of stacked pill rows. ── */
+    .cc-track-select { position: relative; margin-top: 10px; }
+    .cc-track-trigger {
+      width: 100%; display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 12.5px; font-weight: 700; color: #fff;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; padding: 9px 11px; cursor: pointer; transition: all 140ms;
+      text-align: left;
     }
-    .subject-pill-icon { font-size: 14px; flex-shrink: 0; }
-    .subject-pill:hover { background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
-    .subject-pill.active {
-      color: #fff; background: rgba(59,130,246,0.16); border-color: rgba(59,130,246,0.45);
+    .cc-track-trigger:hover { background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
+    .cc-track-icon { font-size: 14px; flex-shrink: 0; }
+    .cc-track-current { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cc-track-chevron { flex-shrink: 0; color: var(--muted); transition: transform 160ms; }
+    .cc-track-select.open .cc-track-chevron { transform: rotate(180deg); }
+    .cc-track-menu {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 40;
+      background: #12172a; border: 1px solid rgba(255,255,255,0.10); border-radius: 12px;
+      padding: 6px; max-height: 340px; overflow-y: auto;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+      opacity: 0; visibility: hidden; transform: translateY(-6px);
+      transition: opacity 150ms, transform 150ms, visibility 150ms;
     }
+    .cc-track-select.open .cc-track-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .cc-track-group-label {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); padding: 8px 10px 4px;
+    }
+    .cc-track-item {
+      display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+      font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--text2);
+      background: none; border: none; border-radius: 8px; padding: 7px 10px; cursor: pointer;
+      transition: background 120ms;
+    }
+    .cc-track-item:hover { background: rgba(255,255,255,0.06); }
+    .cc-track-item.active { background: rgba(59,130,246,0.16); color: #93c5fd; }
 
     /* ── "Coming soon" empty-track state ── */
     .track-empty-sidebar {
@@ -154,36 +174,6 @@
       transition: box-shadow 140ms;
     }
     .track-empty-back:hover { box-shadow: 0 5px 18px rgba(59,130,246,0.44); }
-
-    /* ── CAPS / IEB curriculum toggle (shown for CAT and IT only) ── */
-    .curriculum-toggle {
-      display: flex; gap: 4px; margin-top: 8px;
-      background: rgba(255,255,255,0.035); border: 1px solid var(--border2);
-      border-radius: 10px; padding: 3px;
-    }
-    .cur-pill {
-      flex: 1; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 8px;
-      border-radius: 7px; border: none; background: none; color: var(--muted);
-      cursor: pointer; transition: all 140ms;
-    }
-    .cur-pill.active { background: rgba(59,130,246,0.18); color: #93c5fd; }
-    .cur-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text2); }
-
-    /* ── Grade filter (shown for CAT and IT only — filters the sidebar to one grade) ── */
-    .grade-toggle {
-      display: flex; gap: 4px; margin-top: 8px;
-      background: rgba(255,255,255,0.035); border: 1px solid var(--border2);
-      border-radius: 10px; padding: 3px;
-    }
-    .grade-pill {
-      flex: 1; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
-      letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 4px;
-      border-radius: 7px; border: none; background: none; color: var(--muted);
-      cursor: pointer; transition: all 140ms;
-    }
-    .grade-pill.active { background: rgba(17,217,143,0.18); color: #6ee7b7; }
-    .grade-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text2); }
 
     /* ── Collapsible unit groups ── */
     .unit-group { }
@@ -622,27 +612,41 @@
     <!-- Sidebar -->
     <nav id="sidebar">
       <div id="sidebarHeader">
-        <div class="sidebar-title">Subject</div>
-        <div class="subject-toggle" id="subjectToggle">
-          <button class="subject-pill active" id="pillSubjectCoding" onclick="onSubjectChange('coding')">
-            <span class="subject-pill-icon">💻</span> Coding &amp; Robotics · Gr 8–9
+        <div class="sidebar-title">Subject &amp; Grade</div>
+        <div class="cc-track-select" id="ccTrackSelect">
+          <button class="cc-track-trigger" onclick="toggleTrackMenu(event)">
+            <span class="cc-track-icon" id="ccTrackIcon">💻</span>
+            <span class="cc-track-current" id="ccTrackCurrent">Coding &amp; Robotics · Gr 8–9</span>
+            <i data-lucide="chevron-down" class="cc-track-chevron" style="width:14px;height:14px;"></i>
           </button>
-          <button class="subject-pill" id="pillSubjectCat" onclick="onSubjectChange('cat')">
-            <span class="subject-pill-icon">🖥</span> CAT · Gr 10–12
-          </button>
-          <button class="subject-pill" id="pillSubjectIt" onclick="onSubjectChange('it')">
-            <span class="subject-pill-icon">⌨️</span> IT · Gr 10–12
-          </button>
-        </div>
-        <div class="curriculum-toggle" id="curriculumToggle" style="display:none;">
-          <button class="cur-pill active" id="pillCaps" onclick="setCurriculum('caps')">CAPS</button>
-          <button class="cur-pill" id="pillIeb" onclick="setCurriculum('ieb')">IEB</button>
-        </div>
-        <div class="grade-toggle" id="gradeToggle" style="display:none;">
-          <button class="grade-pill active" id="pillGradeAll" onclick="setGradeFilter('all')">All</button>
-          <button class="grade-pill" id="pillGrade10" onclick="setGradeFilter('10')">Gr 10</button>
-          <button class="grade-pill" id="pillGrade11" onclick="setGradeFilter('11')">Gr 11</button>
-          <button class="grade-pill" id="pillGrade12" onclick="setGradeFilter('12')">Gr 12</button>
+          <div class="cc-track-menu" id="ccTrackMenu">
+            <div class="cc-track-group-label">Coding &amp; Robotics</div>
+            <button class="cc-track-item active" data-subject="coding" data-curriculum="" data-grade="all" onclick="selectTrackItem(this)">💻 Grade 8–9</button>
+
+            <div class="cc-track-group-label">CAT — CAPS</div>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="caps" data-grade="all" onclick="selectTrackItem(this)">🖥 All grades</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="caps" data-grade="10" onclick="selectTrackItem(this)">🖥 Grade 10</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="caps" data-grade="11" onclick="selectTrackItem(this)">🖥 Grade 11</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="caps" data-grade="12" onclick="selectTrackItem(this)">🖥 Grade 12</button>
+
+            <div class="cc-track-group-label">CAT — IEB</div>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="ieb" data-grade="all" onclick="selectTrackItem(this)">🖥 All grades</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="ieb" data-grade="10" onclick="selectTrackItem(this)">🖥 Grade 10</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="ieb" data-grade="11" onclick="selectTrackItem(this)">🖥 Grade 11</button>
+            <button class="cc-track-item" data-subject="cat" data-curriculum="ieb" data-grade="12" onclick="selectTrackItem(this)">🖥 Grade 12</button>
+
+            <div class="cc-track-group-label">IT — CAPS</div>
+            <button class="cc-track-item" data-subject="it" data-curriculum="caps" data-grade="all" onclick="selectTrackItem(this)">⌨️ All grades</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="caps" data-grade="10" onclick="selectTrackItem(this)">⌨️ Grade 10</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="caps" data-grade="11" onclick="selectTrackItem(this)">⌨️ Grade 11</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="caps" data-grade="12" onclick="selectTrackItem(this)">⌨️ Grade 12</button>
+
+            <div class="cc-track-group-label">IT — IEB</div>
+            <button class="cc-track-item" data-subject="it" data-curriculum="ieb" data-grade="all" onclick="selectTrackItem(this)">⌨️ All grades</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="ieb" data-grade="10" onclick="selectTrackItem(this)">⌨️ Grade 10</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="ieb" data-grade="11" onclick="selectTrackItem(this)">⌨️ Grade 11</button>
+            <button class="cc-track-item" data-subject="it" data-curriculum="ieb" data-grade="12" onclick="selectTrackItem(this)">⌨️ Grade 12</button>
+          </div>
         </div>
       </div>
       <div id="sidebarList"></div>
@@ -17946,7 +17950,6 @@ function switchTrack(track) {
   activeTrack = track;
   LESSONS = TRACKS[track].lessons;
   activeGrade = 'all';
-  document.querySelectorAll('.grade-pill').forEach(b => b.classList.toggle('active', b.id === 'pillGradeAll'));
   _unitGroups = computeUnitGroups();
   _collapsedGroups = new Set(_unitGroups.map((_, gi) => gi));
   currentLesson = 0;
@@ -17954,6 +17957,8 @@ function switchTrack(track) {
   if (badge) badge.textContent = TRACKS[track].grade;
   buildSidebar();
   renderLesson();
+  updateTrackTriggerLabel();
+  updateTrackMenuActiveItem();
 }
 
 // ── Mobile sidebar drawer ───────────────────────────────────────────────
@@ -17969,37 +17974,17 @@ document.getElementById('sidebarList')?.addEventListener('click', function (e) {
   if (e.target.closest('.lesson-item') && window.innerWidth <= 720) closeMobileSidebar();
 });
 
-// Subject pill clicked (Coding & Robotics / CAT / IT).
+// Called when the subject changes (via the track dropdown, or programmatically
+// from restoreTrack()/backToCoding()).
 function onSubjectChange(subject) {
   activeSubject = subject;
-  document.getElementById('pillSubjectCoding').classList.toggle('active', subject === 'coding');
-  document.getElementById('pillSubjectCat').classList.toggle('active', subject === 'cat');
-  document.getElementById('pillSubjectIt').classList.toggle('active', subject === 'it');
-  const toggle = document.getElementById('curriculumToggle');
-  if (toggle) toggle.style.display = subject === 'coding' ? 'none' : 'flex';
-  const gradeToggle = document.getElementById('gradeToggle');
-  if (gradeToggle) gradeToggle.style.display = subject === 'coding' ? 'none' : 'flex';
   switchTrack(trackKeyFor(subject, activeCurriculum));
 }
 
-// CAPS/IEB pill clicked (only visible when subject is CAT or IT).
-function setCurriculum(curriculum) {
-  activeCurriculum = curriculum;
-  const capsPill = document.getElementById('pillCaps');
-  const iebPill  = document.getElementById('pillIeb');
-  if (capsPill) capsPill.classList.toggle('active', curriculum === 'caps');
-  if (iebPill)  iebPill.classList.toggle('active', curriculum === 'ieb');
-  switchTrack(trackKeyFor(activeSubject, curriculum));
-}
-
-// Grade pill clicked (All / Gr 10 / Gr 11 / Gr 12) — filters the sidebar to
+// Grade filter change (All / Gr 10 / Gr 11 / Gr 12) — filters the sidebar to
 // one grade band without touching Next/Prev, which still walks the full track.
 function setGradeFilter(grade) {
   activeGrade = grade;
-  document.getElementById('pillGradeAll').classList.toggle('active', grade === 'all');
-  document.getElementById('pillGrade10').classList.toggle('active', grade === '10');
-  document.getElementById('pillGrade11').classList.toggle('active', grade === '11');
-  document.getElementById('pillGrade12').classList.toggle('active', grade === '12');
 
   // If the current lesson falls outside the newly selected grade, jump to
   // the first lesson that matches so the reader lands somewhere sensible.
@@ -18024,26 +18009,66 @@ function setGradeFilter(grade) {
   buildSidebar();
   renderLesson();
   updateSidebarActive();
+  updateTrackTriggerLabel();
+  updateTrackMenuActiveItem();
 }
 
 // "Back to Coding & Robotics" button inside the empty-track panel.
 function backToCoding() {
   activeSubject = 'coding';
-  document.getElementById('pillSubjectCoding').classList.add('active');
-  document.getElementById('pillSubjectCat').classList.remove('active');
-  document.getElementById('pillSubjectIt').classList.remove('active');
-  const toggle = document.getElementById('curriculumToggle');
-  if (toggle) toggle.style.display = 'none';
-  const gradeToggle = document.getElementById('gradeToggle');
-  if (gradeToggle) gradeToggle.style.display = 'none';
   switchTrack('coding');
+}
+
+// ── Subject/grade dropdown (trigger + menu) ──────────────────────────────
+const SUBJECT_ICON  = { coding: '💻', cat: '🖥', it: '⌨️' };
+const SUBJECT_LABEL = { coding: 'Coding & Robotics', cat: 'CAT', it: 'IT' };
+
+function updateTrackTriggerLabel() {
+  const iconEl = document.getElementById('ccTrackIcon');
+  const textEl = document.getElementById('ccTrackCurrent');
+  if (!iconEl || !textEl) return;
+  iconEl.textContent = SUBJECT_ICON[activeSubject] || '📘';
+  let label = SUBJECT_LABEL[activeSubject] || activeSubject;
+  if (activeSubject !== 'coding') label += ` — ${activeCurriculum.toUpperCase()}`;
+  label += activeSubject === 'coding' ? ' · Gr 8–9' : (activeGrade === 'all' ? ' · All grades' : ` · Gr ${activeGrade}`);
+  textEl.textContent = label;
+}
+
+function updateTrackMenuActiveItem() {
+  document.querySelectorAll('.cc-track-item').forEach(btn => {
+    const matches = btn.dataset.subject === activeSubject &&
+      (activeSubject === 'coding' || btn.dataset.curriculum === activeCurriculum) &&
+      btn.dataset.grade === activeGrade;
+    btn.classList.toggle('active', matches);
+  });
+}
+
+function toggleTrackMenu(e) {
+  e.stopPropagation();
+  document.getElementById('ccTrackSelect')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const dd = document.getElementById('ccTrackSelect');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+
+// Dropdown item clicked — applies subject + curriculum + grade in one go
+// instead of the three separate pill clicks this replaced.
+function selectTrackItem(btn) {
+  const subject = btn.dataset.subject;
+  if (subject !== 'coding' && btn.dataset.curriculum) activeCurriculum = btn.dataset.curriculum;
+  activeSubject = subject;
+  switchTrack(trackKeyFor(subject, activeCurriculum));
+  if (btn.dataset.grade !== 'all') setGradeFilter(btn.dataset.grade);
+  document.getElementById('ccTrackSelect')?.classList.remove('open');
 }
 
 window.switchTrack = switchTrack;
 window.onSubjectChange = onSubjectChange;
-window.setCurriculum = setCurriculum;
 window.setGradeFilter = setGradeFilter;
 window.backToCoding = backToCoding;
+window.toggleTrackMenu = toggleTrackMenu;
+window.selectTrackItem = selectTrackItem;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // APP LOGIC
@@ -18547,16 +18572,15 @@ function saveLastLesson() {
     }));
   } catch (e) {}
 }
-// Switches track while also syncing the subject/curriculum pill UI —
-// switchTrack() alone only swaps LESSONS, it doesn't touch the pills.
+// Switches track while also syncing activeCurriculum — switchTrack() alone
+// only swaps LESSONS, it doesn't know which curriculum a combined track key
+// like 'cat-ieb' implies.
 function restoreTrack(track) {
   if (!TRACKS[track]) return;
   if (track === 'coding') { onSubjectChange('coding'); return; }
   const [subject, curriculum] = track.split('-'); // e.g. 'cat-ieb' -> ['cat','ieb']
   activeCurriculum = curriculum;
-  document.getElementById('pillCaps')?.classList.toggle('active', curriculum === 'caps');
-  document.getElementById('pillIeb')?.classList.toggle('active', curriculum === 'ieb');
-  onSubjectChange(subject); // sets activeSubject, syncs subject pills, calls switchTrack once
+  onSubjectChange(subject); // sets activeSubject, calls switchTrack once
 }
 function resumeLastLesson(saved) {
   if (saved.track !== activeTrack) restoreTrack(saved.track);
