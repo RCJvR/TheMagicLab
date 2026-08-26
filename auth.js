@@ -110,11 +110,11 @@ function _fallbackProfile(user) {
     email:        user.email,
     display_name: user.user_metadata?.display_name || user.email.split('@')[0],
     role:         user.user_metadata?.role || 'student',
-    grade:        null,
+    grade:        user.user_metadata?.grade || null,
     package:      'free',
-    school:       null,
-    province:     null,
-    subjects:     null,
+    school:       user.user_metadata?.school || null,
+    province:     user.user_metadata?.province || null,
+    subjects:     user.user_metadata?.subjects || null,
     // No real trial_ends_at is known here (this profile was assembled
     // client-side after a fetch error, not read from the DB) — leave
     // it null rather than guessing, so hasFullAccess() fails open
@@ -133,15 +133,22 @@ function _fallbackProfile(user) {
  * @param {string} displayName
  * @param {'student'|'teacher'} role
  * @param {number|null} grade  — required for students
- * @param {{school?: string, province?: string, subjects?: string}} extra
- *   — all optional. `subjects` only applies to teachers.
+ * @param {{school: string, province?: string, subjects?: string}} extra
+ *   — `school` is required for every account. `subjects` only applies to teachers.
  */
 async function signUp(email, password, displayName, role = 'student', grade = null, extra = {}) {
+  // school/grade/province/subjects are passed into user_metadata here, not
+  // just written via the .update() below, so the very first profile row
+  // (inserted by _handleSession's fallback-insert path once the SIGNED_IN
+  // event fires — see _fallbackProfile) already carries the real values.
+  // That insert and this function's .update() race against each other with
+  // no guaranteed order; without metadata, whichever finishes last could
+  // silently overwrite a typed-in school with null.
   const { data, error } = await _supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { display_name: displayName, role }
+      data: { display_name: displayName, role, grade, ...extra }
     }
   });
   if (error) return { error };
