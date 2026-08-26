@@ -310,10 +310,16 @@
         err.classList.add('ml-show');
         return;
       }
+      const school = document.getElementById('edit-school').value.trim();
+      if (!school) {
+        err.textContent = 'School can\'t be empty.';
+        err.classList.add('ml-show');
+        return;
+      }
 
       const updates = {
         display_name: name,
-        school:   document.getElementById('edit-school').value.trim() || null,
+        school:   school,
         province: document.getElementById('edit-province').value || null
       };
       if (profile.role === 'student' && _selectedGrade) updates.grade = _selectedGrade;

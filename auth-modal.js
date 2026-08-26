@@ -81,7 +81,7 @@
       </div>
 
       <div class="ml-field">
-        <label class="ml-label" for="ml-signup-school">School <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+        <label class="ml-label" for="ml-signup-school">School</label>
         <input class="ml-input" id="ml-signup-school" type="text" placeholder="e.g. Westerford High School" autocomplete="organization">
       </div>
 
@@ -227,6 +227,7 @@
 
     if (!name || !email || !password) { _showErr(signupErr(), 'Please fill in all fields.'); return; }
     if (password.length < 8)          { _showErr(signupErr(), 'Password must be at least 8 characters.'); return; }
+    if (!school) { _showErr(signupErr(), 'Please enter your school.'); return; }
     if (_selectedRole === 'student' && !_selectedGrade) {
       _showErr(signupErr(), 'Please select your grade.'); return;
     }
