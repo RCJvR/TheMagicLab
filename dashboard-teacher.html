@@ -830,6 +830,13 @@
             <span class="training-tool-tab-prog" data-tool="code-conjurer" id="cj-prog">0 / 5 modules</span>
           </div>
         </div>
+        <div class="training-tool-tab" onclick="switchTrainingTool('tech-tower', this)">
+          <span class="training-tool-tab-icon"><i data-lucide="wrench" style="width:20px;height:20px;"></i></span>
+          <div class="training-tool-tab-info">
+            <span class="training-tool-tab-name">Tech Tower</span>
+            <span class="training-tool-tab-prog" data-tool="tech-tower" id="tt-prog">0 / 7 modules</span>
+          </div>
+        </div>
       </div>
 
       <!-- Progress bar -->
@@ -2346,6 +2353,215 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting super() must be the first line of a child constructor.</strong> Java requires this — any code before the super() call is a compile error, not a warning.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming the parent's method runs when a parent-type reference holds a child object.</strong> It's the opposite — the child's overridden version always runs. This exact misunderstanding is what most polymorphism output-tracing questions are designed to catch.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing finally is skipped if an exception is thrown or a return happens first.</strong> finally runs in both cases, no exceptions (so to speak) — this is precisely the property IEB likes to test with a tricky trace question.</div>
+        </div>
+      `
+    },
+  ],
+  'tech-tower': [
+    {
+      id: 'tt-1',
+      title: 'Orientation: how Tech Tower is structured',
+      level: 'foundational',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="layout-grid" style="width:15px;height:15px;flex-shrink:0"></i>Four CAPS strands, Grades 8 and 9</h4>
+            <p>Tech Tower covers the CAPS Technology strands for Grades 8 and 9: <strong>Structures</strong> (frame structures, forces, technical drawing), <strong>Mechanical Systems &amp; Control</strong> (simple machines, gears, pulleys, hydraulics/pneumatics), <strong>Electrical Systems &amp; Control</strong> (circuits, Ohm's Law, electronic components, logic gates), and <strong>Processing</strong> (materials, packaging, the impact and bias of technology). Every lesson file is tagged with its strand, grade, term and lesson number in the header — for example "Grade 8 · Structures · Term 1 · Lesson 1" — so you can map a lesson directly onto your own CAPS pacing document.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="mouse-pointer-click" style="width:15px;height:15px;flex-shrink:0"></i>The same four-tab lesson shape, every time</h4>
+            <p>Every Tech Tower lesson follows the identical <strong>Lesson / Explore / Practice / Workbook</strong> tab pattern used across every other Magic Lab tool: Lesson is the readable content with callouts and key-fact boxes; Explore is a hands-on interactive simulator specific to that topic (a circuit builder, a gear train, a hydraulic press calculator); Practice is an auto-marked multiple-choice quiz with worked explanations; Workbook is a printable set of exam-style written questions with mark allocations, for offline/exercise-book work.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Send learners straight to the Explore tab before you explain the theory.</strong> Tech Tower's simulators are built to be discovered by trial and error — the Circuit Builder lights a lamp or warns of a short circuit instantly, the Gear Train Simulator spins two meshed gears live. Let learners break something in the simulator first, then use the Lesson tab to explain why it broke — this order sticks far better than lecturing first.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the Workbook tab as your formal written assessment.</strong> Every Workbook question carries a CAPS-style mark allocation (e.g. "Question 4 · (5 marks)") and is designed to be printed and answered in an exercise book — this is your ready-made formal task or homework, matched exactly to that lesson's content.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assigning a Grade 9 lesson before its Grade 8 prerequisite.</strong> Tech Tower's Grade 9 lessons explicitly revise Grade 8 concepts first (e.g. the Ohm's Law lesson opens by revising series/parallel cells and switches from Grade 8's circuits lesson) — check the "Revision:" heading at the top of a Grade 9 lesson body to confirm which prior lesson it assumes.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating Practice and Workbook as interchangeable.</strong> Practice is instant, auto-marked, and meant for self-check repetition; Workbook is a fixed, printable, marked task. Assigning only Practice for a formal assessment leaves you without a paper trail or mark allocations.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-2',
+      title: 'Structures: forces, frames and failure',
+      level: 'foundational',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="triangle" style="width:15px;height:15px;flex-shrink:0"></i>Four forces, and why triangulation matters</h4>
+            <p>Every structural member experiences <strong>tension</strong> (pulling), <strong>compression</strong> (pushing), <strong>torsion</strong> (twisting) or <strong>shear</strong> (sliding past). A king post roof truss puts the tie beam and king post in tension while the rafters and struts are in compression — the naming isn't arbitrary: "struts" are, by definition, always in compression. Pylons and bridge trusses use <strong>triangulation</strong> (diagonal cross-bracing) because a triangle is the one shape that can't change shape without a side changing length, making it far more rigid than an open square.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="alert-triangle" style="width:15px;height:15px;flex-shrink:0"></i>Three distinct ways a structure fails</h4>
+            <p>A structure can fail by <strong>fracture</strong> (a member snaps — not strong enough), <strong>bending/buckling</strong> (a member flexes — not stiff enough), or <strong>toppling over</strong> (the whole structure falls — not stable enough, usually too top-heavy or too narrow a base). These are three genuinely different material/design properties, and Grade 9 extends this into comparing material properties directly: density, hardness, stiffness, flexibility and corrosion resistance, none of which automatically imply each other.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the Truss Force Explorer's two truss sets to contrast a roof and a bridge.</strong> Click through the king post roof truss members, then switch to the cross-braced bridge truss — the same tension/compression logic (ties pull, struts push) applies to both, but the different geometry, and different pattern of which chords are in tension vs compression, makes the underlying rule concrete rather than memorised.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Bend a ruler to teach beam bending in ten seconds.</strong> The outer curved surface of a bent ruler stretches (tension) while the inner curved surface is squeezed (compression) — this single physical demonstration is exactly why beams are shaped like an "I", with material concentrated at the top and bottom edges where those forces are greatest.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the Material Properties Comparison Tool to settle "which material is best" debates.</strong> Learners often assume denser automatically means stronger, or stiffer means tougher — picking two materials in the comparison tool and reading the bar chart side by side (density vs hardness vs stiffness vs corrosion resistance) shows directly that these properties don't move together.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Calling every diagonal member a "support" without naming its actual force.</strong> CAPS exam markers want the specific term — tension or compression — with a reason, not a vague description like "it holds it up".</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing strength, stiffness and stability as one property.</strong> A member can be strong enough not to snap yet not stiff enough to stop it visibly bending, in a structure that is still perfectly stable overall — these are three separate marking points, and mixing them costs marks in the Workbook's structure-failure questions.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming galvanising and electroplating are the same process.</strong> Both coat steel with zinc, but galvanising typically dips the object in molten zinc while electroplating uses an electric current to deposit a thinner, more even layer — this distinction shows up in both the Structures and Processing strands.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-3',
+      title: 'Graphic communication: drawing to communicate a design',
+      level: 'foundational',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="pencil-ruler" style="width:15px;height:15px;flex-shrink:0"></i>Line types carry meaning, not just style</h4>
+            <p>A technical drawing uses a fixed vocabulary of line types so anyone can read it the same way: <strong>outline</strong> lines are thick and solid (visible edges), <strong>construction/feint</strong> lines are thin and light (setting-out guides, not part of the final shape), <strong>hidden detail</strong> lines are dashed (an edge that exists but is hidden in that view), and <strong>centre/chain</strong> lines alternate long and short dashes (marking the centre of a symmetrical feature, like a hole). Drawings are also <strong>scaled</strong> (e.g. 1:20) and fully <strong>dimensioned</strong> in millimetres so nothing is left ambiguous.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="box" style="width:15px;height:15px;flex-shrink:0"></i>Isometric for speed, first-angle orthographic for building</h4>
+            <p><strong>Isometric drawing</strong> uses a grid where every line runs vertically or at 30° to the horizontal, letting you sketch an accurate-looking 3D idea quickly without instruments — used early in the design process to communicate an idea fast. <strong>First-angle orthographic projection</strong> (the system used in South Africa) breaks the same object into three flat, true-to-length views — front, top (drawn directly beneath the front view) and side — accurate and to-scale enough for someone to actually build from. The most realistic option, <strong>double vanishing point perspective</strong>, is used last, purely for an eye-catching artistic impression, with shading and shadow added for realism.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the 3-View Explorer's toggle between a stepped block and a notched (U) block.</strong> Clicking Front, Top, Side and Complete Sketch on two differently-shaped objects makes the "every corner must be traceable to at least two of the three views" rule concrete — learners can literally watch a notch appear as a dashed hidden-detail line in the view where it's out of sight.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Anchor scale and dimensioning to the stair-and-ramp worked example.</strong> A 600 mm rise split into four 150 mm risers, versus a wheelchair ramp needing a 1:12 to 1:15 gradient (so 7.2–9 m of horizontal run for the same rise), turns an abstract "what is scale" question into a real accessibility design brief with a right and wrong answer.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Drawing the top view above the front view instead of below it.</strong> First-angle projection (South Africa's standard) fixes the top view directly underneath the front view — this is the single most common orthographic-drawing marking error, since third-angle projection (used in the USA) places it the opposite way round.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using a solid line for a hidden edge, or vice versa.</strong> Mixing up outline and hidden-detail line types is graded as a technical error, not a style choice — reinforce the "thick+solid = visible, thin+dashed = hidden" rule every time a drawing is marked.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Skipping straight to orthographic projection without an isometric idea sketch first.</strong> CAPS expects the design process itself to be visible: a rough isometric sketch to settle the idea, then an accurate, to-scale orthographic plan — jumping straight to the formal plan loses marks for process, even if the final drawing is correct.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-4',
+      title: 'Mechanical systems 1: simple machines and gears',
+      level: 'core',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="settings" style="width:15px;height:15px;flex-shrink:0"></i>Mechanical advantage: force traded for distance, never both for free</h4>
+            <p>A machine never creates energy — it trades force for distance, or the reverse. Levers are classified by which of Load/Fulcrum/Effort sits in the middle: <strong>first-class</strong> (fulcrum in the middle — a see-saw) can go either way; <strong>second-class</strong> (load in the middle — a wheelbarrow) always gives MA &gt; 1; <strong>third-class</strong> (effort in the middle — tweezers) always gives MA &lt; 1. For levers, MA = Load ÷ Effort = Effort arm ÷ Load arm. For gears, MA = Driven teeth ÷ Driver teeth, while velocity ratio runs the opposite way: VR = Driver teeth ÷ Driven teeth.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="git-commit" style="width:15px;height:15px;flex-shrink:0"></i>Gear families beyond the basic spur gear</h4>
+            <p>Two meshing <strong>spur gears</strong> always counter-rotate (opposite directions); an <strong>idler gear</strong> placed between them synchronises direction without changing the overall speed or force ratio. <strong>Bevel gears</strong> (conical teeth) change the axis of rotation by 90° — the classic example is a car differential taking drive from the driveshaft to the side-to-side wheel axles. <strong>Rack-and-pinion</strong> converts rotary motion into straight-line motion (steering racks, sliding gates). A <strong>worm gear</strong> produces a huge speed reduction and force increase, and is usually self-locking (the worm wheel can't drive the worm backwards) — which is exactly why it needs no separate brake in a garage door opener.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Run the Gear Train Simulator's idler toggle live, side by side.</strong> With the idler off, the driven gear visibly spins opposite to the driver; switch it on and the direction flips to match, while the live velocity-ratio readout proves the idler changed nothing about speed or force — this single toggle answers the most commonly confused CAPS question about idler gears.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Work the wheelbarrow MA calculation on the board, then verify it in the Mechanical Advantage Calculator.</strong> Effort arm 900 mm ÷ load arm 300 mm = MA of 3 is a standard CAPS worked example — having learners predict the answer before checking the calculator's live diagram builds the habit of estimating before calculating, which pays off under exam time pressure.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the Gear System Explorer to contrast all four gear families in one sitting.</strong> Clicking through spur, bevel, rack-and-pinion and worm side by side (rather than across separate lessons weeks apart) makes the "does it change the axis? does it convert rotary to linear? is it self-locking?" comparison table stick as one coherent decision tree instead of four disconnected facts.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using "moments about a point" to calculate lever MA at Grade 8 level.</strong> CAPS Grade 8 explicitly wants the simple ratio methods (Load÷Effort or Effort arm÷Load arm) — moments come later in higher grades, and using them prematurely doesn't match what's being assessed.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing a bigger idler gear changes the final drive ratio.</strong> An idler's size is irrelevant to the overall speed/force relationship between the first and last gear in the train — it only ever flips direction back to match the driver.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Mixing up velocity ratio and mechanical advantage as the same number the same way round.</strong> MA = Driven ÷ Driver, but VR = Driver ÷ Driven — they are reciprocals of each other, and swapping them is one of the most common calculation errors on gear-ratio questions.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-5',
+      title: 'Mechanical systems 2: pulleys, hydraulics and integrated systems',
+      level: 'core',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="anchor" style="width:15px;height:15px;flex-shrink:0"></i>Pulleys: fixed changes direction, moveable multiplies force</h4>
+            <p>A <strong>single fixed pulley</strong> has MA = 1 — it only changes the direction of the pull (down instead of up), which is still genuinely useful (a flagpole). A <strong>single moveable pulley</strong>, attached to the load itself, is supported by two rope sections, giving MA ≈ 2 at the cost of pulling the rope twice as far. A <strong>block and tackle</strong> generalises this: MA is approximately the number of rope sections directly supporting the moveable block — more supporting ropes, more force multiplied, more rope you must pull through.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="droplet" style="width:15px;height:15px;flex-shrink:0"></i>Pascal's principle and hydraulic force multiplication</h4>
+            <p>Pascal's principle: pressure applied anywhere in an enclosed fluid transfers equally in all directions, without loss. Because liquids are <strong>incompressible</strong> (unlike compressible gases in a pneumatic system), a hydraulic system transfers a push almost instantly and precisely. Two different-sized cylinders connected by fluid trade force for distance exactly like a lever: <code>Force out = Force in × (Area out ÷ Area in)</code> — a small input piston and large output piston (a hydraulic jack) multiplies force hugely, at the cost of the small piston having to move much further than the large one.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Drag the Pulley System Builder's rope-count slider from 1 through to 6 in front of the class.</strong> Watching the effort force drop and the rope-pulled distance rise together as more supporting rope sections are added makes the trade-off (more force needs more rope pulled) self-evident, rather than a rule to memorise.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use two real syringes and a length of tube as a five-minute hydraulics demo before opening the Hydraulic Press Calculator.</strong> Filling the syringes with water and pushing one plunger to move the other is the exact device the lesson describes — doing it physically first, then tuning the calculator's input/output piston diameters to match, connects the abstract force equation to something learners just held in their hands.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the input → process → output systems diagram as the default way to describe ANY integrated system.</strong> Whether it's a hydraulic jack, an electric car jack (switch → motor → worm gear → screw thread), or a pet-feeder combining electrical and mechanical parts, sketching input/process/output first is what CAPS rewards in integrated-systems questions, and it forces learners to identify which sub-system (mechanical, electrical, hydraulic, pneumatic) is doing which job.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Saying a fixed pulley "makes lifting easier" and calling that mechanical advantage.</strong> A single fixed pulley genuinely feels easier to use (pulling down uses body weight), but its MA is exactly 1 — it changes direction only, and conflating "feels easier" with "MA &gt; 1" is a common exam misconception.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing pneumatic and hydraulic as interchangeable terms.</strong> Pneumatic systems use compressible gas (a springy, spongy feel); hydraulic systems use incompressible liquid (a solid, precise feel) — this distinction is a direct exam question, not just vocabulary.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting a control device in an integrated-systems answer.</strong> A working system needs something to start, stop, or hold it in place (a switch, a ratchet and pawl, a cleat) — describing only the force-multiplying mechanism without naming a control device is an incomplete systems-diagram answer.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-6',
+      title: "Electrical systems: circuits, Ohm's Law and logic",
+      level: 'core',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="zap" style="width:15px;height:15px;flex-shrink:0"></i>From symbols to Ohm's Law</h4>
+            <p>Every circuit device is an input (cell, generator, solar panel), output (lamp, resistor, buzzer, motor) or control device (switch) — some devices, like a hand-cranked motor, can switch roles depending on the job they're doing. A short circuit is a low-resistance shortcut that bypasses the output device entirely — dangerous, not just "wrong". Grade 9 turns this qualitative picture quantitative with <strong>Ohm's Law</strong> (V = I × R, rearranged as needed) and <strong>resistor colour codes</strong>, where the first two bands are significant digits, the third is a multiplier, and the fourth is a tolerance rating.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="cpu" style="width:15px;height:15px;flex-shrink:0"></i>Components, sensors, and switch logic</h4>
+            <p>Diodes and LEDs conduct in one direction only; an NPN transistor switches or amplifies a small current into a larger one — essential because a sensor (LDR, thermistor) usually can't supply enough current to drive a buzzer directly, but can supply enough to switch a transistor that then drives it. Switches in series behave as <strong>AND logic</strong> (all must close); switches in parallel behave as <strong>OR logic</strong> (any one closing is enough) — this is the same logic used to design a panic-button alarm with buttons in every room (OR) versus a two-key vault system (AND).</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Let the Circuit Builder's short-circuit toggle do the explaining.</strong> Closing the switch lights the lamp; adding the short-circuit wire keeps the switch closed but the lamp goes dark while the status box explicitly warns about overheating wires — this single toggle communicates "a short circuit bypasses the output device" more convincingly than any diagram.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the Ohm's Law Triangle Calculator to build the "cover the unknown" habit.</strong> Typing in any two of Voltage, Current or Resistance and watching the third calculate live reinforces the three rearranged forms (R=V÷I, V=I×R, I=V÷R) without learners needing to re-derive the algebra under exam pressure — then hand-check the calculator's answer against the classic mnemonic triangle on the board.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Run the Logic Gate Truth-Table Builder in AND mode, then OR mode, on the same two switches.</strong> Toggling switch A and B while the truth table fills in live, and the lamp only lights under the correct combination, makes the AND-is-series / OR-is-parallel mapping concrete rather than a fact to memorise — pair it directly with the panic-button (OR) vs bank-vault (AND) real-world framing.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Drawing a lamp's short-circuit "shortcut" wire going through the lamp instead of around it.</strong> A short circuit specifically bypasses the output device — a wire drawn in series with the lamp isn't a short circuit at all, it's just another correctly connected component.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Reading resistor colour bands in the wrong direction.</strong> The tolerance band (often gold or silver) is always read last/rightmost — starting from the wrong end of the resistor gives a completely different (and wrong) resistance value.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Wiring an LED directly to a battery with no series resistor.</strong> An LED has very little resistance of its own, so without a limiting resistor in series, too much current flows and destroys it — this is a standard "explain the fault" CAPS question, not just a practical safety tip.</div>
+        </div>
+      `
+    },
+    {
+      id: 'tt-7',
+      title: 'Processing: materials, packaging and the impact of technology',
+      level: 'core',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="recycle" style="width:15px;height:15px;flex-shrink:0"></i>Preserving materials and closing the plastics loop</h4>
+            <p>Metals are protected from corrosion by painting (a sealing coat), galvanising (a sacrificial zinc coating, usually dipped in molten zinc) or electroplating (a thinner, current-deposited metal layer). Plastics carry a 1–7 identification code (PET, HDPE, PVC, LDPE, PP, PS, other) so recyclers can sort by type before melting — mixing codes produces a weak, unreliable material. The recycling loop runs sort → clean → shred → melt → pelletise → re-mould into new products, following the reduce-reuse-recycle priority order.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="scale" style="width:15px;height:15px;flex-shrink:0"></i>Weighing impact — and bias — honestly</h4>
+            <p>Almost no technology is purely good or purely bad: bio-degradable shopping bags reduce harm but still take a long time to break down in an oxygen-poor landfill; a life-saving portable ultrasound scanner has real cost and maintenance trade-offs but is still strongly positive overall. <strong>Bias in technology</strong> means asking who benefits and who is harmed unfairly by a technology — South Africa's mining industry is the CAPS case study, covering acid mine drainage, dust pollution's unequal burden on nearby poorer communities, and the historical (and still lingering) gender bias that barred women from underground work.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Run the Positive-or-Negative scenario classifier and insist learners read the verdict even when they get it right.</strong> Every scenario (illegal mining, an attention-engineered app, rooftop solar) is written to have real nuance — the verdict text, not just the correct/incorrect flag, is where the actual CAPS-level reasoning about trade-offs lives.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Anchor material selection to real shapes, not abstractions.</strong> Bring (or sketch) an I-beam, angle iron and T-bar cross-section and ask why a solid bar isn't used instead — the answer (bending stress is highest at the outer edges, so material is wasted in a solid bar's low-stress centre) links directly back to the Structures strand's beam-bending explanation.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the mining case study to teach "bias" as a specific technical term, not just "something bad happened".</strong> Ask learners to name who benefits and who bears the cost for each mining impact (acid mine drainage, dust pollution, historical exclusion of women) — this "who benefits, who is harmed, is that fair" framing is exactly what CAPS wants in a bias-in-technology answer, and it transfers directly to any other bias scenario in an exam.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating a positive-impact technology as having zero downside (or vice versa).</strong> CAPS answers expect nuance — bio-degradable bags are a genuine improvement AND still an incomplete solution to littering; a good answer names both sides rather than picking one extreme.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing "bias in technology" as just "something unfair happened" without naming who benefits and who is harmed.</strong> A full-mark answer identifies the specific groups on each side of the imbalance, not just that an imbalance exists.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming all plastics can be recycled together.</strong> Different plastic codes melt at different temperatures and have different properties — this is precisely why the 1–7 identification code exists, and mixing codes during recycling is a named cause of poor-quality recycled product.</div>
         </div>
       `
     },
