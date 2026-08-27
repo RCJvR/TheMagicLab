@@ -547,6 +547,35 @@
     }
     .mistake-block strong{font-weight:700;}
 
+    /* Lesson plans (Robot Realm) */
+    .lp-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .lp-meta-item{
+      font-family:var(--mono);font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;
+      background:var(--surface2);border:1px solid var(--border2);color:var(--muted);
+      display:flex;align-items:center;gap:6px;
+    }
+    .lp-objectives{
+      background:var(--surface2);border:1px solid var(--border2);
+      border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px;
+    }
+    .lp-objectives ul{padding-left:18px;margin:0;}
+    .lp-objectives li{font-size:13.5px;color:var(--text2);line-height:1.75;margin-bottom:5px;}
+    .lp-step{
+      background:var(--surface2);border:1px solid var(--border2);border-left:3px solid #67e8f9;
+      border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:10px;
+    }
+    .lp-step-label{
+      font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+      color:#67e8f9;margin-bottom:6px;display:flex;align-items:center;gap:8px;
+    }
+    .lp-step-time{font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;}
+    .lp-step p{font-size:13.5px;color:var(--text2);line-height:1.75;margin-bottom:6px;}
+    .lp-step p:last-child{margin-bottom:0;}
+    .lp-step code{
+      font-family:var(--mono);font-size:12px;background:rgba(0,0,0,0.35);border-radius:5px;
+      padding:1px 6px;color:#c4baff;
+    }
+
     /* Complete button */
     .module-complete-btn{
       display:flex;align-items:center;gap:7px;
@@ -835,6 +864,13 @@
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">Tech Tower</span>
             <span class="training-tool-tab-prog" data-tool="tech-tower" id="tt-prog">0 / 7 modules</span>
+          </div>
+        </div>
+        <div class="training-tool-tab" onclick="switchTrainingTool('robot-realm', this)">
+          <span class="training-tool-tab-icon"><i data-lucide="bot" style="width:20px;height:20px;"></i></span>
+          <div class="training-tool-tab-info">
+            <span class="training-tool-tab-name">Robot Realm</span>
+            <span class="training-tool-tab-prog" data-tool="robot-realm" id="rr-prog">0 / 6 modules</span>
           </div>
         </div>
       </div>
@@ -2562,6 +2598,296 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating a positive-impact technology as having zero downside (or vice versa).</strong> CAPS answers expect nuance — bio-degradable bags are a genuine improvement AND still an incomplete solution to littering; a good answer names both sides rather than picking one extreme.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing "bias in technology" as just "something unfair happened" without naming who benefits and who is harmed.</strong> A full-mark answer identifies the specific groups on each side of the imbalance, not just that an imbalance exists.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming all plastics can be recycled together.</strong> Different plastic codes melt at different temperatures and have different properties — this is precisely why the 1–7 identification code exists, and mixing codes during recycling is a named cause of poor-quality recycled product.</div>
+        </div>
+      `
+    },
+  ],
+  'robot-realm': [
+    {
+      id: 'rr-1',
+      title: 'Lesson: Your First Robot Program — Sequencing',
+      level: 'foundational',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 7–9</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>35–40 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Empty Arena</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>API: moveForward, turnRight, turnLeft, moveBackward</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Explain that a robot only does exactly what its program's instructions say, in the exact order they're written (sequencing).</li>
+            <li>Write a program using <code>robot.moveForward(px)</code>, <code>robot.turnRight(deg)</code> and <code>robot.turnLeft(deg)</code> to drive a specific path.</li>
+            <li>Predict, before running, what shape a sequence of moves and turns will draw.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Give a learner a set of spoken directions ("take three steps forward, turn 90° right, take three steps forward...") and have them walk it out literally, exaggerating any ambiguity ("forward" — forward from where they're now facing, not the room's front). Ask: what would happen if I gave the instructions in the wrong order? This is exactly what a robot program is — an exact, ordered sequence.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 10 min</span></div>
+            <p>Open Robot Realm on the Empty Arena map and show the starter program on the projector. Read it aloud line by line, pointing out that <code>robot.moveForward(100)</code> then <code>robot.turnRight(90)</code>, repeated four times, draws a square — but only because each step assumes the heading left over from the step before it. Turn on the "🐢 slow" speed and Run it once uninterrupted so the class watches the square trace out.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 10 min</span></div>
+            <p>As a class, edit the code together to change 100→150 and 90→60 (six turns instead of four) and predict the resulting shape before running it. Use the ⏭ Step button to advance one instruction at a time so the class can match each code line to the exact movement it causes on screen, and read the live x / y / heading readout in the status bar after each step.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 10 min</span></div>
+            <p>Learners write their own program from scratch to drive the robot in a triangle, then a pentagon, using only <code>moveForward</code> and <code>turnRight</code>/<code>turnLeft</code> — no sensors yet. Fast finishers try to park the robot back exactly where it started, facing the same direction it began in.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 5 min</span></div>
+            <p>Cold-call a learner to explain, in their own words, why swapping the order of two lines in their program changes where the robot ends up. A correct answer must reference that each move/turn depends on the robot's position and heading left over from the previous instruction — this is the core idea of sequencing.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Struggling learners:</strong> switch their editor to Blocks mode (the JS/Blocks toggle above the code panel) so they snap together <code>move forward</code> and <code>turn</code> blocks visually instead of typing exact function names and punctuation — the underlying sequencing concept is identical either way.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"Turn right 90°" means turning to face the room's right, not the robot's right.</strong> Learners very commonly picture an absolute direction rather than a rotation relative to the robot's own current heading — the Step-through in guided practice, watching the heading value in the status bar actually change, is the fastest way to correct this.</div>
+        </div>
+      `
+    },
+    {
+      id: 'rr-2',
+      title: 'Lesson: Obstacle Avoidance with Distance Sensors',
+      level: 'core',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>40–45 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Asteroid Field / Tight Squeeze</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>API: getDistance(dir), if/else</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Explain what <code>robot.getDistance(dir)</code> returns and how a real ultrasonic distance sensor works by the same principle.</li>
+            <li>Write an <code>if</code> statement that changes the robot's behaviour based on a sensor reading, instead of a fixed sequence of moves.</li>
+            <li>Distinguish a reactive (sensor-driven) program from a purely sequential one.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Ask: "if I write a fixed sequence of forward-moves and turns to cross this room blindfolded, and someone moves a chair into my path, what happens?" A pre-planned sequence can't react to a changed world — a robot needs sensors to know what's actually in front of it right now.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 12 min</span></div>
+            <p>Load the Asteroid Field map. Point out the "Distance (front)" sensor readout and bar in the right panel, and run the starter square-drawing program from Lesson 1 to show it crashing straight into an obstacle — sequencing alone isn't enough here. Introduce <code>const d = robot.getDistance('front');</code> and an <code>if (d &lt; 60) { ... } else { ... }</code> pattern: if something is close ahead, turn; otherwise, keep driving forward.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 12 min</span></div>
+            <p>Build a simple obstacle-avoider together: a loop that checks <code>getDistance('front')</code> each cycle, turns right 30° whenever it's below a threshold, and otherwise moves forward a short distance. Run it at 🐢 slow speed on Asteroid Field and watch the "💥 hits" collision counter in the status bar — a good program should keep that counter low or at zero.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 12 min</span></div>
+            <p>Switch to the Tight Squeeze map, which has three narrow gates at different heights. Learners extend their program to also check <code>getDistance('left')</code> and <code>getDistance('right')</code>, steering toward whichever side has more open space, and try to reach the goal zone with as few collisions as possible.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 5 min</span></div>
+            <p>Each learner explains their threshold value choice (why 60 px and not 10 or 200) and what happens to the robot's behaviour if the threshold is set too low. Look for the reasoning that too low a threshold means the robot only reacts once it's already about to collide.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Extension:</strong> challenge fast finishers to make the turn direction depend on comparing left and right distance readings (turn toward whichever side reads a larger distance) rather than always turning the same way — this is a first taste of comparative decision-making.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Checking the sensor only once, at the start of the program.</strong> A very common learner bug is reading <code>getDistance()</code> a single time before the loop begins, so the robot's decision never updates as it actually moves closer to or further from an obstacle — the sensor must be re-read inside the loop, every cycle.</div>
+        </div>
+      `
+    },
+    {
+      id: 'rr-3',
+      title: 'Lesson: Solving a Maze with Conditional Logic',
+      level: 'core',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>45 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Maze</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>API: getDistance('left'/'right'/'front'), while loop</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Describe the "wall-following" algorithm (e.g. keep a wall on your right) as a strategy for solving an unknown maze.</li>
+            <li>Combine <code>if/else if/else</code> branches with a loop to repeat a decide-then-act cycle until a goal condition is met.</li>
+            <li>Recognise that the same simple rule, applied consistently, can solve a maze without ever "seeing" the whole layout at once.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Blindfold a volunteer (or just have them close their eyes) in a simple classroom-furniture "maze" and tell them one rule only: keep your right hand on the wall at all times and keep walking. Ask the class to predict whether this gets them out — it's the same right-hand-rule algorithm the robot will run.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 12 min</span></div>
+            <p>Load the Maze map and show the 4×4 labyrinth with its goal zone in the bottom-right corner. Explain the wall-following rule as pseudocode first: "if there's no wall on my right, turn right and move forward; else if there's no wall ahead, move forward; else turn left." Map each English clause onto <code>robot.getDistance('right')</code>, <code>robot.getDistance('front')</code> and the matching <code>turnRight</code>/<code>turnLeft</code>/<code>moveForward</code> calls.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 15 min</span></div>
+            <p>Build the wall-follower together inside a <code>while</code> loop that keeps running until the robot reaches the goal zone (watch for the "🏁 Goal Reached!" overlay). Run it at 🐢 slow speed first so learners can watch each decision play out against the maze walls, then switch to ⚡ fast once it's working correctly.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 10 min</span></div>
+            <p>The maze has a known dead-end trap (the right-hand column) — ask learners to trace on paper which route their specific if/else-if/else ordering will take, predict whether it hits the dead end, then run it to check. Learners who predict correctly should explain why in one sentence before moving on.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 3 min</span></div>
+            <p>Ask: "would keep-a-wall-on-your-LEFT also solve this particular maze?" (Yes — both wall-following variants solve any maze where the goal is reachable along the maze's outer wall path.) This checks whether learners understood the algorithm's logic rather than just copying a working program.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Struggling learners:</strong> have them physically walk the wall-following rule around classroom-furniture "walls" before writing a single line of code — translating a rule they've already executed with their own feet into <code>if/else if/else</code> branches is far easier than inventing the logic from scratch on screen.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Writing the three conditions as independent <code>if</code> statements instead of <code>if/else if/else</code>.</strong> With three separate <code>if</code>s, more than one branch can fire in the same loop cycle (e.g. both "turn right" and "move forward" in one pass), producing a robot that jerks unpredictably rather than making one clear decision per cycle — this is the single most common bug in this lesson.</div>
+        </div>
+      `
+    },
+    {
+      id: 'rr-4',
+      title: 'Lesson: Line Following and Closed-Loop Control',
+      level: 'core',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 9–10</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>45 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Line Follow</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>API: getLine('left'/'centre'/'right')</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Explain how three line sensors (left, centre, right) let a robot detect when it has drifted off a track.</li>
+            <li>Write a correction loop that steers the robot back toward the line whenever it strays, rather than following one single fixed path.</li>
+            <li>Connect this "sense → compare → correct → repeat" pattern to the general idea of closed-loop (feedback) control, used in real line-following robots and self-driving systems alike.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Ask a learner to walk along a line of tape on the floor with their eyes shut, and a second learner to call out "drifting left" or "drifting right" as a spotter — the walker corrects course based only on that feedback. This spotter-and-corrector loop is exactly what the robot's line sensors will do for itself, continuously.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 12 min</span></div>
+            <p>Load the Line Follow map (a closed rectangular track) and point out the three "Line (left/centre/right)" readouts in the sensor panel. Explain the basic rule: while centred over the line, drive straight; if the left sensor loses the line (drifting right), turn slightly left to correct; if the right sensor loses it, turn slightly right. Emphasise that this check must run continuously in a loop — one single correction isn't enough, the robot must keep re-sensing and re-correcting the whole way round.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 15 min</span></div>
+            <p>Build the correction loop together: <code>if (robot.getLine('centre')) { moveForward(small step) } else if (robot.getLine('left')) { turnLeft(small angle) } else if (robot.getLine('right')) { turnRight(small angle) }</code>, wrapped in a loop that keeps running. Run at ⚡ fast speed once working, and use the timer display to see how long a full lap takes.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 10 min</span></div>
+            <p>Learners tune their step size and turn angle to complete a lap as quickly as possible without the robot losing the line entirely (all three sensors reading no-line at once). This introduces the real engineering trade-off in line-following: bigger corrections are faster but overshoot more easily.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 3 min</span></div>
+            <p>Ask learners to describe, in their own words, what "closed-loop control" means, using their own program as the example. A correct answer identifies the repeating sense → compare → correct cycle, not just "the robot follows the line".</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Extension:</strong> challenge advanced learners to make the turn angle proportional to how far off-centre the robot appears to be (a bigger correction when only the outer sensor sees the line, a smaller one when it's a near-miss) — this is a first taste of proportional control, the same principle behind real PID line-following algorithms.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Making the correction turn angle too large.</strong> A common learner bug is overcorrecting — the robot swings so far that it crosses straight over the line and immediately needs the opposite correction, producing a zig-zag "drunk" path instead of a smooth one. Smaller, more frequent corrections almost always outperform large, rare ones.</div>
+        </div>
+      `
+    },
+    {
+      id: 'rr-5',
+      title: 'Lesson: Colour Sensing and Event-Driven Behaviour',
+      level: 'core',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>40 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Colour Zones</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>API: getColour(), switch/if-chains</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Explain what <code>robot.getColour()</code> returns and how a real colour sensor distinguishes surfaces by reflected light.</li>
+            <li>Write a program that performs a different, named action for each of five distinct colour zones.</li>
+            <li>Understand event-driven behaviour: the robot's next action depends on what it currently senses, not on a step count.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Ask: "how does a traffic light control a car, and how is that different from a fixed timetable telling the car when to stop?" A traffic light is event-driven — the car's action depends on what colour it currently sees, not on a pre-planned schedule. Today's robot works the same way.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 10 min</span></div>
+            <p>Load the Colour Zones map, showing five overlapping coloured regions (red, blue, green, yellow, purple) plus the "Colour" sensor readout. Show <code>const c = robot.getColour();</code> and an <code>if/else if</code> chain that logs a different message for each colour, running it once so learners see the log panel update as the robot crosses zone boundaries.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 12 min</span></div>
+            <p>As a class, extend the colour-checking loop so each zone triggers a distinct physical action instead of just a log message — e.g. red = stop and reverse, blue = spin 360°, green = beep (log a message) and continue, yellow = pause 1 second, purple (the overlap zone) = a special combined action. This reinforces that a program can branch into many distinct behaviours, not just two.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 10 min</span></div>
+            <p>Learners design and code their own five-colour "reaction rulebook" from scratch (their own choice of action per colour) and test it by driving the robot manually through all five zones, checking every rule fires correctly — including the tricky overlap zone in the centre where two colour regions meet.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 3 min</span></div>
+            <p>Ask what would happen if two colour checks in the chain could both be true at the same time for the overlap zone, and which one the program would actually execute. Look for the answer that an if/else-if chain always runs only the first matching branch, top to bottom — order matters.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Struggling learners:</strong> start them with just two colours and two actions (e.g. red = stop, everything else = go) before scaling up to all five — the branching logic is the same, just with fewer cases to track at once.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming <code>getColour()</code> reports every colour zone the robot is anywhere near.</strong> It reports only the colour directly under the robot at that instant — learners sometimes expect it to "see ahead" to an upcoming zone the way a distance sensor does, but colour sensing is purely about what's underneath right now.</div>
+        </div>
+      `
+    },
+    {
+      id: 'rr-6',
+      title: 'Lesson: From Blocks to Code — Bridging Visual and Text Programming',
+      level: 'core',
+      content: `
+        <div class="lp-meta">
+          <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 7–9</span>
+          <span class="lp-meta-item"><i data-lucide="clock" style="width:12px;height:12px"></i>40 min</span>
+          <span class="lp-meta-item"><i data-lucide="map" style="width:12px;height:12px"></i>Map: Chicane</span>
+          <span class="lp-meta-item"><i data-lucide="terminal" style="width:12px;height:12px"></i>Mode: Blocks ⇄ JS toggle</span>
+        </div>
+        <div class="lp-objectives">
+          <ul>
+            <li>Build a working robot program entirely in drag-and-drop Blocks mode.</li>
+            <li>Read the equivalent JavaScript that the same blocks generate, and identify the matching syntax for each block.</li>
+            <li>Recognise that "block programming" and "text programming" describe the exact same logic in two different notations — one is not a simplified toy version of the other.</li>
+          </ul>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Lesson flow</div>
+          <div class="lp-step">
+            <div class="lp-step-label">Hook <span class="lp-step-time">· 5 min</span></div>
+            <p>Show the same recipe written two ways: as a numbered list of instructions, and as the exact same steps drawn as a flowchart of connected boxes. Ask which one is "the real recipe" — the answer is both, it's just notation. Blocks and code are the same relationship.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Direct instruction <span class="lp-step-time">· 10 min</span></div>
+            <p>Load the Chicane map (an S-bend challenge) with the mode toggle set to Blocks. Snap together a short program — move forward, turn, move forward, turn — using only drag-and-drop blocks, then click the JS toggle to reveal the identical program as generated text code, and read through it line by line matching each block to its JS statement.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Guided practice <span class="lp-step-time">· 12 min</span></div>
+            <p>Build a distance-sensor "if" block together in Blocks mode to steer the robot through the chicane's S-bend gaps, then flip to JS mode and have learners find and read aloud the matching <code>if (robot.getDistance('front') &lt; ...) { ... }</code> text — reinforcing that an <code>if</code> block and an <code>if</code> statement are the identical instruction to the robot.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Independent challenge <span class="lp-step-time">· 10 min</span></div>
+            <p>Learners complete the Chicane challenge in whichever mode they're most comfortable with, then must translate their own finished program into the other mode (Blocks learners write out the equivalent JS by hand; JS learners rebuild their program using blocks) and confirm it still reaches the goal.</p>
+          </div>
+          <div class="lp-step">
+            <div class="lp-step-label">Assessment / debrief <span class="lp-step-time">· 3 min</span></div>
+            <p>Ask: "is a program written in Blocks mode a 'real' program?" Look for learners rejecting any framing of Blocks as a lesser or toy version — it produces the exact same robot behaviour as the generated JS, just in a different, visually-constrained notation that prevents certain typing errors.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation &amp; misconceptions to watch for</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use this lesson as a bridge, not a one-off.</strong> Learners who are anxious about typing exact JavaScript syntax often gain real confidence once they see that a Blocks program they already understand generates the "scary" text code automatically — introduce the JS toggle early and often across all six earlier lessons, not just this one.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Telling learners that "real" programmers only use text code.</strong> Blocks mode isn't training wheels to be discarded — it exists in Robot Realm (and in professional tools like Blockly-based robotics IDEs) because it eliminates syntax errors (missing brackets, semicolons) so learners can focus entirely on logic. Frame the Blocks/JS toggle as two equally valid views of the same program, chosen based on what's most useful for the task at hand.</div>
         </div>
       `
     },
