@@ -1867,6 +1867,55 @@ window.WRO_PROGRAM = (function() {
       // open/closed footprint at that point in the route.
       function footprintForState(sizeState) { return tools.getRobotFootprint(sizeState); }
 
+      // Drive wheels, front/back attachment motors, and both line-follow
+      // sensors have no visual representation at all otherwise -- drawn
+      // inside the robot's own rotated <g>, so they turn with it. Wheels
+      // sit at the configured axle track; the attachment motors have no
+      // configurable offset (only a port letter), so their position is
+      // just the footprint's own front/back edge centre, a convention not
+      // a measurement. Sensor A/B are drawn at their real configured
+      // offsets from Robot config, so this doubles as a sanity check that
+      // those numbers put the sensor somewhere sensible.
+      function drawRobotMarkers(g, footprint) {
+        const halfW = footprint.w / 2, halfL = footprint.l / 2;
+        const cfg = state.config || {};
+        const axleHalf = Math.min(halfW * 1.15, (cfg.axleTrack || 114) / 2);
+        const wheelH = Math.min(36, halfL * 0.7);
+        [-1, 1].forEach(side => {
+          const wheel = svg('rect', {
+            x: side * axleHalf - 5, y: -wheelH / 2, width: 10, height: wheelH,
+            class: 'walker-wheel',
+          }, g);
+          svg('title', {}, wheel).textContent = `${side < 0 ? 'Left' : 'Right'} wheel (port ${side < 0 ? cfg.portLeft : cfg.portRight})`;
+        });
+
+        const motor = (cy, port, label) => {
+          const m = svg('circle', { cx: 0, cy, r: 8, class: 'walker-motor-marker' }, g);
+          svg('title', {}, m).textContent = `${label} motor (port ${port})`;
+          const t = svg('text', { x: 11, y: cy + 5, class: 'walker-marker-label' }, g);
+          t.textContent = label === 'Front' ? 'FM' : 'BM';
+        };
+        motor(-halfL, cfg.portFront, 'Front');
+        motor(halfL, cfg.portBack, 'Back');
+
+        const sensor = (fwd, lat, cls, label, title) => {
+          const s = svg('circle', { cx: lat, cy: -fwd, r: 7, class: `walker-sensor-marker ${cls}` }, g);
+          svg('title', {}, s).textContent = title;
+          const t = svg('text', { x: lat + 10, y: -fwd + 5, class: 'walker-marker-label' }, g);
+          t.textContent = label;
+        };
+        sensor(
+          cfg.lineSensorForwardMm != null ? cfg.lineSensorForwardMm : DEFAULT_LINE_CONFIG.lineSensorForwardMm,
+          cfg.lineSensorLateralMm != null ? cfg.lineSensorLateralMm : DEFAULT_LINE_CONFIG.lineSensorLateralMm,
+          'walker-sensor-a', 'A', 'Line sensor A (used in single-sensor mode, and as one side of two-sensor)'
+        );
+        sensor(
+          cfg.lineSensor2ForwardMm != null ? cfg.lineSensor2ForwardMm : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm,
+          cfg.lineSensor2LateralMm != null ? cfg.lineSensor2LateralMm : DEFAULT_LINE_CONFIG.lineSensor2LateralMm,
+          'walker-sensor-b', 'B', 'Line sensor B (two-sensor mode only)'
+        );
+      }
+
       function drawRobotAt(pose, sizeState) {
         clearWalkerLayer();
         const fp = tools.getRobotFootprint(sizeState || 'closed');
@@ -1877,6 +1926,7 @@ window.WRO_PROGRAM = (function() {
         g.addEventListener('touchstart', onRobotMouseDown, { passive: false });
         svg('rect', { x: -halfW, y: -halfL, width: fp.w, height: fp.l, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
         svg('polygon', { points: `0,${-halfL + 10} ${-18},${-halfL + arrowLen} ${18},${-halfL + arrowLen}`, class: 'walker-arrow' }, g);
+        drawRobotMarkers(g, fp);
 
         // trail so far — skipped during placement (drawRobotAt(pendingStart)
         // is called before state.walker.start exists, on the "click again to
@@ -1920,6 +1970,7 @@ window.WRO_PROGRAM = (function() {
         }, walkerLayer);
         svg('rect', { x: -halfW, y: -halfL, width: fp.w, height: fp.l, class: `walker-footprint walker-footprint-${sizeState}` }, g);
         svg('polygon', { points: `0,${-halfL + 10} ${-18},${-halfL + arrowLen} ${18},${-halfL + arrowLen}`, class: 'walker-arrow' }, g);
+        drawRobotMarkers(g, fp);
       }
 
       // The live pose: fully-applied steps up to stepIndex, plus however far
