@@ -18653,10 +18653,28 @@ document.addEventListener('magiclab:progress:ready', _restoreProgress);
 // Also handle the case where the SDK was already ready before this ran
 if (window.MagicLabProgress) _restoreProgress();
 
+// Deep link from the Teacher Training / Lesson Planning tool-link mapping:
+// ?track=<track-key>&lesson=<url-encoded lesson title>. Takes priority over
+// the auto-resume-last-lesson behaviour below, since an explicit link means
+// the teacher wants that exact lesson, not wherever they left off.
+function _tryDeepLinkFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const track = params.get('track');
+  const lessonTitle = params.get('lesson');
+  if (!track || !TRACKS[track]) return false;
+  if (track !== activeTrack) restoreTrack(track);
+  if (lessonTitle) {
+    const idx = LESSONS.findIndex(l => l.title.toLowerCase() === lessonTitle.toLowerCase());
+    if (idx !== -1) goTo(idx);
+  }
+  return true;
+}
+
 // Automatically resume the last lesson viewed, if it's not the one already
 // showing — matches Math Magician / Science Sage, which jump straight back
 // in rather than asking first.
 (() => {
+  if (_tryDeepLinkFromURL()) return;
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(CC_LAST_KEY)); } catch (e) {}
   if (!saved || !TRACKS[saved.track] || !Number.isInteger(saved.lessonIndex)) return;
