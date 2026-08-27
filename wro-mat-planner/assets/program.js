@@ -31,12 +31,16 @@ window.WRO_PROGRAM = (function() {
     return {
       wheelDiameter: 56, axleTrack: 114, portLeft: 'A', portRight: 'B', portFront: 'C', portBack: 'D',
       straightSpeed: 200, straightAcceleration: 400, turnRate: 100, turnAcceleration: 300,
-      // Where the line-following sensor sits relative to the robot's centre
-      // (forward = along heading, lateral = +right/-left), and a tunable
+      // Where each line-following sensor sits relative to the robot's
+      // centre (forward = along heading, lateral = +right/-left). Sensor A
+      // is the only one used in single-sensor mode; both are used for a
+      // two-sensor differential follower. lineFollowSteerGain is a tunable
       // conversion from PID correction to steering rate -- see
       // simulateLineFollow() for why this is a calibrated constant rather
       // than derived motor physics.
-      lineSensorForwardMm: 80, lineSensorLateralMm: 0, lineFollowSteerGain: 2.0,
+      lineSensorForwardMm: 80, lineSensorLateralMm: 0,
+      lineSensor2ForwardMm: 80, lineSensor2LateralMm: 40,
+      lineFollowSteerGain: 2.0,
     };
   }
   function defaultWalker() {
@@ -168,7 +172,11 @@ window.WRO_PROGRAM = (function() {
   // A robot with no footprint info yet (e.g. a call site that hasn't been
   // taught to pass one) falls back to this rather than crashing.
   const DEFAULT_FOOTPRINT = { w: 220, l: 220 };
-  const DEFAULT_LINE_CONFIG = { lineSensorForwardMm: 80, lineSensorLateralMm: 0, lineFollowSteerGain: 2.0 };
+  const DEFAULT_LINE_CONFIG = {
+    lineSensorForwardMm: 80, lineSensorLateralMm: 0,
+    lineSensor2ForwardMm: 80, lineSensor2LateralMm: 40,
+    lineFollowSteerGain: 2.0,
+  };
   // 'squareToWall' models driving into the mat's outer wall to hard-reset
   // drift -- a common real technique this tool otherwise has no way to
   // represent. Two things a plain 'drive' can't capture: (1) the ROBOT'S
@@ -284,11 +292,14 @@ window.WRO_PROGRAM = (function() {
     const kd = step.kd != null ? step.kd : 3;
     const target = step.targetReflection != null ? step.targetReflection : 50;
     const sideSign = step.side === 'right' ? -1 : 1;
+    const twoSensor = step.mode === 'twoSensor';
     const maxDist = Math.max(0, step.maxDistanceMm || 0);
     const minTravel = step.minTravelDistMm || 0;
     const steerGain = cfg.lineFollowSteerGain != null ? cfg.lineFollowSteerGain : DEFAULT_LINE_CONFIG.lineFollowSteerGain;
-    const fwdOffset = cfg.lineSensorForwardMm != null ? cfg.lineSensorForwardMm : DEFAULT_LINE_CONFIG.lineSensorForwardMm;
-    const latOffset = cfg.lineSensorLateralMm != null ? cfg.lineSensorLateralMm : DEFAULT_LINE_CONFIG.lineSensorLateralMm;
+    const fwdA = cfg.lineSensorForwardMm != null ? cfg.lineSensorForwardMm : DEFAULT_LINE_CONFIG.lineSensorForwardMm;
+    const latA = cfg.lineSensorLateralMm != null ? cfg.lineSensorLateralMm : DEFAULT_LINE_CONFIG.lineSensorLateralMm;
+    const fwdB = cfg.lineSensor2ForwardMm != null ? cfg.lineSensor2ForwardMm : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm;
+    const latB = cfg.lineSensor2LateralMm != null ? cfg.lineSensor2LateralMm : DEFAULT_LINE_CONFIG.lineSensor2LateralMm;
     const distPerTick = Math.max(0.25, speed * LINE_FOLLOW_DT);
 
     let pose = { x: startPose.x, y: startPose.y, heading: startPose.heading };
@@ -296,9 +307,20 @@ window.WRO_PROGRAM = (function() {
     let travelled = 0, lastError = 0, stoppedEarly = false;
 
     while (travelled < maxDist) {
-      const sensor = sensorWorldPos(pose, fwdOffset, latOffset);
-      const { reflect } = sampleMatPixel(sensor.x, sensor.y);
-      const error = (reflect - target) * sideSign;
+      // Single-sensor: track a target reflectance with one sensor (an edge
+      // follower -- `side` just flips which way "too bright" steers).
+      // Two-sensor: balance two sensors straddling the line, the same
+      // differential approach https://www.aposteriori.com.sg/Ev3devSim's
+      // own demo code uses (error = left - right, no target needed).
+      let error;
+      if (twoSensor) {
+        const posA = sensorWorldPos(pose, fwdA, latA);
+        const posB = sensorWorldPos(pose, fwdB, latB);
+        error = sampleMatPixel(posA.x, posA.y).reflect - sampleMatPixel(posB.x, posB.y).reflect;
+      } else {
+        const sensor = sensorWorldPos(pose, fwdA, latA);
+        error = (sampleMatPixel(sensor.x, sensor.y).reflect - target) * sideSign;
+      }
       const derivative = error - lastError;
       lastError = error;
       let correction = kp * error + kd * derivative;
@@ -316,7 +338,9 @@ window.WRO_PROGRAM = (function() {
       samples.push({ x: pose.x, y: pose.y, heading: pose.heading });
 
       if (step.stopColour && travelled >= minTravel) {
-        const stopSensor = sensorWorldPos(pose, fwdOffset, latOffset);
+        // Checked at sensor A's position regardless of mode -- a discrete
+        // stop condition, not part of the steering itself.
+        const stopSensor = sensorWorldPos(pose, fwdA, latA);
         const matched = reflectMatchesTarget(sampleMatPixel(stopSensor.x, stopSensor.y).reflect, step.stopColour);
         if (step.stopOnLoss ? !matched : matched) { stoppedEarly = true; break; }
       }
@@ -543,7 +567,10 @@ window.WRO_PROGRAM = (function() {
       }
       case 'lineFollowSim': {
         const stop = step.stopColour ? ` · stop on ${step.stopOnLoss ? 'losing' : 'seeing'} ${step.stopColour}` : '';
-        return `Follow line (simulated) up to ${step.maxDistanceMm} mm, target reflect ${step.targetReflection}, ${step.side || 'left'} side${stop}`;
+        const track = step.mode === 'twoSensor'
+          ? 'two-sensor differential'
+          : `target reflect ${step.targetReflection}, ${step.side || 'left'} side`;
+        return `Follow line (simulated) up to ${step.maxDistanceMm} mm, ${track}${stop}`;
       }
       case 'unfold':
         return 'Unfold to open size';
@@ -712,9 +739,13 @@ window.WRO_PROGRAM = (function() {
         case 'lineFollowPath':
           L.push(`# --- ${note}: add your line-following drive here (uses your reflectance sensor(s) -- the traced shape only exists in the planner, it isn't exported as data) ---`);
           break;
-        case 'lineFollowSim':
-          L.push(`# --- ${note}: add your line-following drive here (params: max ${step.maxDistanceMm} mm, target_reflection=${step.targetReflection}, side="${step.side || 'left'}", kp=${step.kp}, kd=${step.kd}) ---`);
+        case 'lineFollowSim': {
+          const params = step.mode === 'twoSensor'
+            ? `max ${step.maxDistanceMm} mm, two-sensor differential, kp=${step.kp}, kd=${step.kd}`
+            : `max ${step.maxDistanceMm} mm, target_reflection=${step.targetReflection}, side="${step.side || 'left'}", kp=${step.kp}, kd=${step.kd}`;
+          L.push(`# --- ${note}: add your line-following drive here (params: ${params}) ---`);
           break;
+        }
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
           L.push(`front_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
@@ -1238,6 +1269,8 @@ window.WRO_PROGRAM = (function() {
     const turnAccelInput = document.getElementById('cfgTurnAccel');
     const lineSensorForwardInput = document.getElementById('cfgLineSensorForward');
     const lineSensorLateralInput = document.getElementById('cfgLineSensorLateral');
+    const lineSensor2ForwardInput = document.getElementById('cfgLineSensor2Forward');
+    const lineSensor2LateralInput = document.getElementById('cfgLineSensor2Lateral');
     const lineSteerGainInput = document.getElementById('cfgLineSteerGain');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
@@ -1259,6 +1292,8 @@ window.WRO_PROGRAM = (function() {
     turnAccelInput.value = state.config.turnAcceleration;
     if (lineSensorForwardInput) lineSensorForwardInput.value = state.config.lineSensorForwardMm;
     if (lineSensorLateralInput) lineSensorLateralInput.value = state.config.lineSensorLateralMm;
+    if (lineSensor2ForwardInput) lineSensor2ForwardInput.value = state.config.lineSensor2ForwardMm;
+    if (lineSensor2LateralInput) lineSensor2LateralInput.value = state.config.lineSensor2LateralMm;
     if (lineSteerGainInput) lineSteerGainInput.value = state.config.lineFollowSteerGain;
 
     function syncConfig() {
@@ -1273,13 +1308,15 @@ window.WRO_PROGRAM = (function() {
         turnAcceleration: parseFloat(turnAccelInput.value) || 300,
         lineSensorForwardMm: lineSensorForwardInput ? (parseFloat(lineSensorForwardInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensorForwardMm,
         lineSensorLateralMm: lineSensorLateralInput ? (parseFloat(lineSensorLateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensorLateralMm,
+        lineSensor2ForwardMm: lineSensor2ForwardInput ? (parseFloat(lineSensor2ForwardInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm,
+        lineSensor2LateralMm: lineSensor2LateralInput ? (parseFloat(lineSensor2LateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2LateralMm,
         lineFollowSteerGain: lineSteerGainInput ? (parseFloat(lineSteerGainInput.value) || DEFAULT_LINE_CONFIG.lineFollowSteerGain) : DEFAULT_LINE_CONFIG.lineFollowSteerGain,
       };
       persist(state);
     }
     [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
      straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput,
-     lineSensorForwardInput, lineSensorLateralInput, lineSteerGainInput].filter(Boolean).forEach(el => {
+     lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput].filter(Boolean).forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
@@ -1392,12 +1429,19 @@ window.WRO_PROGRAM = (function() {
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
     const stepPathReverse = document.getElementById('stepPathReverse');
+    const stepLineMode = document.getElementById('stepLineMode');
+    const stepLineSingleFields = document.getElementById('stepLineSingleFields');
     const stepLineMaxDist = document.getElementById('stepLineMaxDist');
     const stepLineTarget = document.getElementById('stepLineTarget');
     const stepLineSide = document.getElementById('stepLineSide');
     const stepLineKp = document.getElementById('stepLineKp');
     const stepLineKd = document.getElementById('stepLineKd');
     const stepLineStopColour = document.getElementById('stepLineStopColour');
+    if (stepLineMode && stepLineSingleFields) {
+      const syncLineMode = () => { stepLineSingleFields.style.display = stepLineMode.value === 'twoSensor' ? 'none' : ''; };
+      stepLineMode.addEventListener('change', syncLineMode);
+      syncLineMode();
+    }
     // These only exist on the Senior page (index.html) -- null here on
     // Elementary, which is fine, since the dropdown there has no options
     // that reach the branches below that read them.
@@ -1475,11 +1519,14 @@ window.WRO_PROGRAM = (function() {
         step.label = chosen.name;
         step.reversed = reversed;
       } else if (t === 'lineFollowSim') {
+        step.mode = (stepLineMode && stepLineMode.value === 'twoSensor') ? 'twoSensor' : 'single';
         step.maxDistanceMm = parseFloat(stepLineMaxDist.value) || 0;
-        step.targetReflection = parseFloat(stepLineTarget.value) || 50;
-        step.side = stepLineSide.value;
         step.kp = parseFloat(stepLineKp.value) || 0;
         step.kd = parseFloat(stepLineKd.value) || 0;
+        if (step.mode === 'single') {
+          step.targetReflection = parseFloat(stepLineTarget.value) || 50;
+          step.side = stepLineSide.value;
+        }
         if (stepLineStopColour.value) step.stopColour = stepLineStopColour.value;
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
