@@ -48,6 +48,8 @@ async function _initAuth() {
     signUp,
     signIn,
     signOut,
+    sendPasswordReset,
+    updatePassword,
     getSession:    () => _session,
     getProfile:    () => _profile,
     isLoggedIn:    () => !!_session,
@@ -178,6 +180,31 @@ async function signIn(email, password) {
     password
   });
   return { data, error };
+}
+
+/**
+ * Send a password-reset email. Supabase emails the user a link with a
+ * short-lived recovery token; clicking it lands them on
+ * reset-password.html with a temporary "recovery" session already
+ * established (no sign-in needed), where updatePassword() below sets
+ * their new password.
+ */
+async function sendPasswordReset(email) {
+  const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+  return { error };
+}
+
+/**
+ * Set a new password. Only works with an active session — either a
+ * normal signed-in session, or the temporary "recovery" session
+ * Supabase establishes automatically when a user clicks a password-
+ * reset email link.
+ */
+async function updatePassword(newPassword) {
+  const { error } = await _supabase.auth.updateUser({ password: newPassword });
+  return { error };
 }
 
 /**
