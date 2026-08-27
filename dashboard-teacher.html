@@ -576,6 +576,36 @@
       padding:1px 6px;color:#c4baff;
     }
 
+    /* Module quizzes */
+    .quiz-q-card{
+      background:var(--surface2);border:1px solid var(--border2);
+      border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:12px;
+    }
+    .quiz-q-num{
+      font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.08em;
+      text-transform:uppercase;color:#67e8f9;margin-bottom:8px;
+    }
+    .quiz-q-text{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:12px;}
+    .quiz-opts{display:flex;flex-direction:column;gap:7px;}
+    .quiz-opt{
+      display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;
+      border:1px solid var(--border2);background:rgba(255,255,255,0.02);color:var(--text2);
+      font-size:13px;cursor:pointer;text-align:left;transition:all 140ms;font-family:var(--font);
+    }
+    .quiz-opt:hover:not(:disabled){background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.28);color:var(--text);}
+    .quiz-opt:disabled{cursor:default;}
+    .quiz-opt.correct{background:rgba(17,217,143,0.14);border-color:rgba(17,217,143,0.35);color:#6ee7b7;}
+    .quiz-opt.wrong{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.32);color:#fca5a5;}
+    .quiz-opt-letter{
+      font-family:var(--mono);font-size:10px;font-weight:700;width:20px;height:20px;border-radius:6px;
+      background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;color:var(--muted);
+    }
+    .quiz-feedback{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:12.5px;line-height:1.7;display:none;}
+    .quiz-feedback.show{display:block;}
+    .quiz-feedback.ok{background:rgba(17,217,143,0.08);border:1px solid rgba(17,217,143,0.22);color:#6ee7b7;}
+    .quiz-feedback.bad{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.22);color:#fca5a5;}
+
     /* Complete button */
     .module-complete-btn{
       display:flex;align-items:center;gap:7px;
@@ -1043,6 +1073,7 @@ const TRAINING_MODULES = {
       id: 'jg-1',
       title: 'What is Java and why do we teach it?',
       level: 'beginner',
+      quiz: [{"q":"Why does Java Genie use turtle graphics rather than starting with console text output?","opts":["Because CAPS requires it","Immediate visual feedback keeps learners motivated and makes abstract concepts (variables, loops) concrete","Turtle graphics is a separate language from Java","It's the only way to teach loops"],"ans":1,"exp":"Turtle graphics gives instant visual feedback and lets abstract concepts like loops and variables map onto something learners can see change on screen — that's the pedagogical point, not a CAPS requirement."},{"q":"A learner types Forward(100) and nothing happens. What's the most likely cause?","opts":["They forgot to click Run","Java is case-sensitive, so Forward is not the same as forward","Both of the above are common causes","100 is too large a distance"],"ans":2,"exp":"Both are the two most common first-session errors — check capitalisation first (Java is case-sensitive), and confirm Run was actually clicked."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1077,6 +1108,7 @@ const TRAINING_MODULES = {
       id: 'jg-2',
       title: 'Variables and data types',
       level: 'beginner',
+      quiz: [{"q":"A learner writes int name = \"Java\"; and gets an error. What should you tell them?","opts":["int can hold any value","The type must match what's being stored — text needs String, not int","They forgot a semicolon","Variable names can't be \"name\""],"ans":1,"exp":"int only holds whole numbers — text belongs in a String variable. Matching the type to the kind of value being stored is the core rule here."},{"q":"What's wrong with writing forward(size); before int size = 100; ?","opts":["Nothing — Java reads bottom to top","size is used before it's declared — Java reads top to bottom, so this fails","forward() can't take a variable","size needs to be a double"],"ans":1,"exp":"Java executes top to bottom — a variable must be declared before it's used, so calling forward(size) before declaring size fails."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1118,6 +1150,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'jg-3',
       title: 'Loops — for and while',
       level: 'beginner',
+      quiz: [{"q":"A learner's for loop uses for (int i = 0; i <= 4; i++). How many times does the loop body run?","opts":["4 times","5 times (0,1,2,3,4)","3 times","Infinite"],"ans":1,"exp":"<= 4 includes i=4, so the loop runs for i=0,1,2,3,4 — five iterations. This off-by-one error is common; the fix is usually to use < instead of <=."},{"q":"A learner's while loop never stops and the browser freezes. What's the most likely bug?","opts":["The condition is spelled wrong","They forgot to update the loop variable, so the condition never becomes false","while loops always run forever","forward() is broken"],"ans":1,"exp":"A while loop only stops once its condition becomes false — forgetting to update the counter variable inside the loop body means the condition never changes, producing an infinite loop."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1167,6 +1200,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'jg-4',
       title: 'Methods — writing reusable code',
       level: 'intermediate',
+      quiz: [{"q":"What's the difference between a parameter and an argument?","opts":["They're the same thing","A parameter is the placeholder in the method definition; an argument is the actual value passed when calling it","A parameter is used only in loops","An argument must always be a String"],"ans":1,"exp":"int size in the method definition is the parameter (a placeholder); the 100 you pass when calling drawSquare(100) is the argument (the actual value)."},{"q":"Why introduce methods after loops and variables, rather than before?","opts":["Methods are less important","Methods build on the code-duplication problem learners have already felt after writing repeated code — the motivation is stronger once they've felt the pain point","CAPS requires this order","Methods can't use loops"],"ans":1,"exp":"Showing learners the duplication problem first (copy-pasting square code three times) makes the value of a reusable method obvious once they've experienced the problem it solves."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1207,6 +1241,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'jg-5',
       title: 'Structuring a lesson with Java Genie',
       level: 'intermediate',
+      quiz: [{"q":"In the suggested 60-minute lesson structure, what comes right after the 10-minute hook?","opts":["Assessment","Teach the concept (10-25 min), introducing the new idea with a live example","Learner practice","Share and reflect"],"ans":1,"exp":"The structure runs Hook then Teach the concept then Learner practice then Share and reflect — direct instruction follows immediately after the hook, before independent practice begins."},{"q":"When a learner is stuck during practice time, what does the module recommend?","opts":["Give them the exact code to copy","Ask a guiding question like \"What does i < 4 control?\" rather than handing over the answer","Move on to the next learner","Pair them with your strongest programmer"],"ans":1,"exp":"Guiding questions build understanding; handing over the fix short-circuits the learning. The module also recommends pairing stuck learners with someone who just finished, not necessarily the strongest programmer."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">A suggested 60-minute lesson structure</div>
@@ -1239,6 +1274,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'jg-6',
       title: 'Assessment ideas and rubrics',
       level: 'advanced',
+      quiz: [{"q":"A learner draws a correct square using four separate forward/turn calls instead of a for loop. How should this be marked?","opts":["Zero marks — loops are required","Award marks for the correct output, then teach the loop approach as a better way to do the same thing","Half marks automatically","Ask them to redo it before marking"],"ans":1,"exp":"The unconventional-but-working solution should be credited for its output; the loop is then taught as a smarter way to achieve the same result, not retroactively required for credit already earned."},{"q":"A learner understands the loop concept perfectly but types \"Forwrd\" instead of \"forward\" under time pressure. What's the recommended approach?","opts":["Zero marks — syntax must be perfect","Award partial credit — understanding the concept matters more than a typo under time pressure","This can't be assessed","Deduct marks only if it happens twice"],"ans":1,"exp":"Syntax slips happen to professional developers too; a learner who clearly understands the underlying concept deserves partial credit rather than being penalised purely for a typo."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">Assessment approaches for Java Genie work</div>
@@ -1274,6 +1310,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ww-1',
       title: 'What is HTML and how does the web work?',
       level: 'beginner',
+      quiz: [{"q":"A learner writes their name inside <head> instead of <body> and wonders why nothing shows on the page. What's the explanation?","opts":["<head> content is always invisible and never appears anywhere","Everything visible must go in <body> — <head> holds invisible settings like the title","They need to add a </head> tag","The browser is broken"],"ans":1,"exp":"<head> contains invisible page settings (title, metadata); everything the visitor actually sees must be placed inside <body>."},{"q":"Why is \"View Source\" on a real website a good teaching tool for this lesson?","opts":["It shows the finished visual design only","It lets learners match a familiar visible heading to its actual <h1> tag in real code, grounding the abstract tag concept","It's required by CAPS","It only works with Web Wizard"],"ans":1,"exp":"Seeing a real website's raw HTML and matching a tag like <h1> to the heading they already recognise on screen is what makes the abstract idea of \"a tag\" click for learners."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1323,6 +1360,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ww-2',
       title: 'CSS — styling your page',
       level: 'beginner',
+      quiz: [{"q":"A learner's CSS rule h1 { color: blue } doesn't work, and none of the styles after it apply either. What's the likely cause?","opts":["blue isn't a valid CSS colour","A missing semicolon after the declaration — this can break every style rule that follows","h1 can't be styled","CSS requires American spelling for \"blue\""],"ans":1,"exp":"CSS declarations follow property: value; — a missing semicolon (or colon) is a common syntax break that can cascade and break subsequent styling."},{"q":"Why do South African learners specifically often write colour: red; in a CSS file and get an error?","opts":["CSS doesn't support the colour red","CSS uses American spelling — it must be \"color\", not the British \"colour\"","They need to declare a variable first","Red must be written as a hex code only"],"ans":1,"exp":"CSS property names use American spelling conventions (\"color\"), which trips up South African learners used to British spelling — worth flagging explicitly rather than assuming it's obvious."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1375,6 +1413,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ww-3',
       title: 'Links, images and page structure',
       level: 'intermediate',
+      quiz: [{"q":"A learner's <img src=\"myphoto.jpg\"> doesn't display in Web Wizard. What's the simplest fix?","opts":["img tags need a closing tag","A local file path only works if the image is in the same folder — using a full https:// URL avoids this entirely in Web Wizard","alt text is missing","width must be specified"],"ans":1,"exp":"Relative local paths depend on file location, which Web Wizard's environment doesn't support the same way a real file system does — using a direct image URL (e.g. from Unsplash) sidesteps the whole problem."},{"q":"What's wrong with <b><i>text</b></i> ?","opts":["Nothing, tags can close in any order","Tags must be closed in the reverse order they were opened — the most recently opened tag closes first","b and i can't be nested","Only one tag can wrap text at a time"],"ans":1,"exp":"HTML tags nest like brackets — the most recently opened tag must be closed first, so the correct order is <b><i>text</i></b>."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1419,6 +1458,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ww-4',
       title: 'Structuring a lesson with Web Wizard',
       level: 'intermediate',
+      quiz: [{"q":"Why does the suggested lesson give a very specific deliverable (a heading, a paragraph, 3 CSS styles, one image or link) rather than an open-ended \"build a webpage\"?","opts":["CAPS requires an exact word count","Specific requirements reduce the \"I don't know what to do\" stall that open-ended tasks often cause","It makes marking impossible otherwise","Open-ended tasks are against school policy"],"ans":1,"exp":"A vague brief often stalls learners who don't know where to start — naming concrete, checkable requirements gives them a clear target without limiting creativity in how they meet it."},{"q":"What's the recommended way to reduce the skill gap between stronger and weaker learners during HTML/CSS practice time?","opts":["Give weaker learners less work","Pair programming, switching who types every 10 minutes","Separate them into different classrooms","Only assess the stronger learners"],"ans":1,"exp":"Pair programming with a regular switch of who's typing spreads both the typing practice and the thinking process across both partners, closing the gap faster than working alone."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">A suggested 60-minute lesson structure</div>
@@ -1450,6 +1490,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ww-5',
       title: 'Assessment and portfolio ideas',
       level: 'advanced',
+      quiz: [{"q":"What's the main benefit of a portfolio approach (one page built per week across a term) over a single end-of-term assessment?","opts":["It requires less marking overall","It rewards growth across the term rather than judging a learner on a single performance","It's required by CAPS for IT","It eliminates the need for a written brief"],"ans":1,"exp":"A portfolio captures a learner's progress over time, so one bad day doesn't define their whole mark the way a single high-stakes assessment can."},{"q":"A learner loses their Web Wizard file before submission. What's an acceptable alternative form of evidence?","opts":["None — the file is mandatory","A screenshot of the rendered preview, taken at the end of a lesson","A verbal description of what they built","Redoing the whole project from memory"],"ans":1,"exp":"A screenshot of the rendered page is accepted as valid evidence for most rubrics — encouraging learners to screenshot their work at the end of every lesson protects against exactly this situation."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">Assessment approaches for Web Wizard work</div>
@@ -1487,6 +1528,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ao-1',
       title: 'How AI actually works — what your learners need to understand',
       level: 'beginner',
+      quiz: [{"q":"A learner says \"the AI searched the internet and found this fact.\" What's the correction?","opts":["That's correct — all AI assistants browse the web by default","Most AI assistants (without plugins/tools) generate text from training data with a knowledge cutoff — they don't browse live","AI never uses any data at all","Only paid AI tools can access facts"],"ans":1,"exp":"This is the root misconception behind learners over-trusting AI-generated \"facts\" — without an explicit browsing tool, the model generates a plausible continuation from what it learned during training, not a live lookup."},{"q":"In the neuron visualiser demo, what happens if both weights are set to zero?","opts":["The neuron always fires at maximum","The neuron stays silent — no signal gets through, since the weighted sum is zero","The demo crashes","The output becomes random"],"ans":1,"exp":"With output = max(0, x1*w1 + x2*w2), setting both weights to zero makes the weighted sum zero regardless of the inputs, so ReLU outputs zero — the neuron stays silent."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1518,6 +1560,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ao-2',
       title: 'Teaching the art of prompting',
       level: 'beginner',
+      quiz: [{"q":"In the Role-Context-Task-Format framework, which part is \"I'm a Grade 10 learner who just covered the light reactions\"?","opts":["Role","Context","Task","Format"],"ans":1,"exp":"Context gives the AI the background information it needs — here, what the learner already knows — distinct from Role (the persona) and Task (the specific request)."},{"q":"Why does the prompt builder's star-rating system help motivate learners to write better prompts?","opts":["It's required for a mark","It makes the quality gap between a vague one-line prompt and a structured prompt visible and immediate, creating intrinsic motivation to improve","It corrects grammar automatically","It only works with paid AI tools"],"ans":1,"exp":"Seeing a one-line prompt score 0-1 stars versus a well-structured prompt scoring 3-4 gives learners immediate, visible feedback that motivates them to add the missing components themselves."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1550,6 +1593,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ao-3',
       title: 'AI ethics in education — the classroom conversation',
       level: 'intermediate',
+      quiz: [{"q":"Why does the module teach a \"spectrum\" (clearly fine, depends on context, academic dishonesty) rather than a simple allowed/not-allowed rule?","opts":["It's easier to remember","Context genuinely determines the ethics of most AI use cases — the same action can be fine under one teacher's policy and dishonest under another's","CAPS requires a spectrum","A binary rule is too strict to enforce"],"ans":1,"exp":"The same action can be ethical under a teacher who explicitly allowed it and dishonest under one who explicitly banned it. A spectrum reflects this honestly rather than pretending there's one universal rule."},{"q":"A learner who submitted AI-hallucinated content becomes defensive when confronted. What's the recommended approach?","opts":["Treat it as a serious disciplinary case immediately","Frame the conversation as \"going forward\" rather than a witch-hunt — shame closes the conversation, curiosity opens it","Ignore it to avoid conflict","Publicly discuss the case as a warning to others"],"ans":1,"exp":"A defensive, ashamed learner shuts down and stops engaging; framing the conversation around what to do differently going forward keeps the door open for actual behaviour change."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1583,6 +1627,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ao-4',
       title: 'Assessing AI literacy — what good looks like',
       level: 'intermediate',
+      quiz: [{"q":"Why is a \"hallucination hunt\" (an AI paragraph with 1-2 planted errors) a good assessment task for AI literacy?","opts":["It tests only recall of facts","It assesses critical evaluation — identifying and verifying a claim — which is a core, hard-to-fake AI literacy skill","It's the only way to test AI use","It requires no marking rubric"],"ans":1,"exp":"The task rewards the process of spotting and verifying a questionable claim, not just recalling a fact — this directly assesses critical evaluation, one of the four observable AI-literacy skills the module names."},{"q":"Why does the module suggest running AI Oracle content in Life Orientation or English rather than treating it as IT-only?","opts":["IT teachers aren't qualified to teach it","The skills it builds (critical evaluation, structured communication, ethical reasoning) are valuable across every subject, not just IT","CAPS bans AI content from IT","It requires more computer lab time than IT allows"],"ans":1,"exp":"AI literacy skills are genuinely cross-curricular — critical evaluation and ethical reasoning matter as much in Life Orientation or English as in IT, so the module is designed to travel across subjects."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">What to assess</div>
@@ -1616,6 +1661,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-1',
       title: 'Getting the most out of Math Magician',
       level: 'beginner',
+      quiz: [{"q":"What's the recommended order for using a Math Magician calculator/explorer with a class?","opts":["Let learners guess values into the calculator first, before any worked example","Work the example by hand first, then use the calculator to verify","Skip straight to the quiz","Show only the calculator's final answer, never its derivation"],"ans":1,"exp":"The calculators are for checking and exploring \"what if,\" not for solving the first problem of a lesson — reversing that order teaches learners to treat maths as a black box that just gives them the answer."},{"q":"Why does the module recommend assigning specific named topics via the Assignments tab, rather than whole chapters?","opts":["Whole chapters can't be assigned at all","It lets you target exactly what a class is behind on, rather than re-assigning content already partly covered","It's required for CAPS compliance","Chapters take longer to load"],"ans":1,"exp":"Picking individual topics by name lets a teacher target precisely what a class needs, instead of assigning an entire chapter learners may have partly covered already."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1646,6 +1692,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-2',
       title: 'Foundations — integers and algebraic expressions (Gr 8–9)',
       level: 'beginner',
+      quiz: [{"q":"What is the single most common error when distributing a negative sign through brackets, e.g. -(3x - 5)?","opts":["Writing -3x - 5 instead of the correct -3x + 5","Writing -3x + 5 instead of -3x - 5","Forgetting to simplify at all","Adding an extra term"],"ans":0,"exp":"The negative must distribute to both terms inside the bracket: -(3x - 5) = -3x + 5. Rewriting it as -1 x (3x - 5) first and distributing explicitly helps prevent the common -3x - 5 error."},{"q":"Why is 3x + 2x^2 = 5x^2 wrong?","opts":["Because 3 + 2 should equal 6, not 5","Terms are only \"like\" if the variable AND its power match exactly — x and x^2 are different powers, so they can't be combined","Because x^2 can never appear in an expression","Because the coefficients must be equal first"],"ans":1,"exp":"3x and 2x^2 have different powers of x, so they are unlike terms and cannot be combined at all — the correct simplified form is just 3x + 2x^2, left as is."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1676,6 +1723,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-3',
       title: 'Exponents and surds (Gr 8–11)',
       level: 'intermediate',
+      quiz: [{"q":"What is (x^2)^3 equal to, and what's the most common wrong answer learners give?","opts":["Correct: x^6; common wrong answer: x^5 (adding instead of multiplying the exponents)","Correct: x^5; common wrong answer: x^6","Correct: x^9; common wrong answer: x^6","Correct: x^6; common wrong answer: x^8"],"ans":0,"exp":"A power of a power multiplies exponents: (x^2)^3 = x^(2x3) = x^6. Learners very commonly add instead, confusing it with x^2 * x^3 = x^5 (which does add)."},{"q":"Why is sqrt(x) described as \"just an exponent in disguise\"?","opts":["Because square roots are unrelated to exponents","Because sqrt(x) is identical to x^(1/2), so every exponent law already known applies directly to surds too","Because surds cannot be simplified using exponent laws","Because square roots only apply to perfect squares"],"ans":1,"exp":"Once learners see sqrt(x) = x^(1/2), the exponent laws they already know (power of a power, multiplying powers) apply directly to surds, rather than surds being a separate set of rules to memorise."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1706,6 +1754,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-4',
       title: 'Trigonometry (Gr 10–11)',
       level: 'intermediate',
+      quiz: [{"q":"A learner gets a trig answer wildly outside the expected range (e.g. sin value greater than 1). What's the first troubleshooting step?","opts":["Recheck their arithmetic only","Check whether the calculator is in the correct mode — degrees vs radians is the single most common cause","Assume the question itself is wrong","Round the answer down to 1"],"ans":1,"exp":"Calculator mode (degrees vs radians) is the single most common cause of a wildly wrong trig answer — this should be the very first thing checked whenever an answer looks absurd."},{"q":"Where do all the \"no calculator\" special-angle trig values (0 degrees, 30 degrees, 45 degrees, 60 degrees, 90 degrees) come from?","opts":["They must simply be memorised as a table with no underlying structure","Exactly two triangles: the 30-60-90 triangle and the 45-45-90 triangle","A single universal triangle that covers all five angles","Long division of pi"],"ans":1,"exp":"Every special-angle value derives from just two triangles — the 30-60-90 (sides 1, sqrt(3), 2) and the 45-45-90 (sides 1, 1, sqrt(2)). Being able to reconstruct these two triangles is more durable than memorising six numbers."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1736,6 +1785,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-5',
       title: 'Functions and graphs (Gr 10–12)',
       level: 'intermediate',
+      quiz: [{"q":"Across the linear, quadratic, hyperbolic and exponential function families in Grade 10, what do the parameters a and q generally control?","opts":["a shifts the graph vertically, q controls steepness/shape","a controls steepness/shape (stretch or flip), q shifts the graph vertically","Both a and q always shift the graph horizontally","a and q have no consistent meaning across function families"],"ans":1,"exp":"Across every function family in this syllabus, a controls steepness/shape and q shifts the whole graph vertically — stating this as one general principle lets the reasoning transfer between families."},{"q":"A learner believes a's sign shifts a parabola up or down. What's the correction?","opts":["That's correct — a always controls vertical position","a's sign controls flipping/reflecting the graph, not vertical position — that's q's job","Only q's magnitude matters, not its sign","Neither a nor q affects the graph's position"],"ans":1,"exp":"a's sign determines whether the graph is flipped/reflected (and its magnitude affects steepness); q is responsible for shifting the graph vertically. Keeping these two roles verbally distinct prevents this common mix-up."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1766,6 +1816,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-6',
       title: 'Euclidean geometry and proof (Gr 10–12)',
       level: 'advanced',
+      quiz: [{"q":"Why does a numerically correct geometry answer still lose most or all marks in CAPS/IEB marking?","opts":["Numeric answers are never required in geometry","Every step of a proof needs a stated reason on the same line — a conclusion without a named reason isn't credited","Only the final answer is ever checked","Geometry answers are marked purely on neatness"],"ans":1,"exp":"Geometry proofs are marked as statement/reason pairs — a correct conclusion with no named geometric reason attached loses most or all of the marks for that step."},{"q":"What's the key difference between \"congruent\" and \"similar\" triangles?","opts":["They mean exactly the same thing","Congruent means identical in shape and size; similar means the same shape but scaled, with proportional (not necessarily equal) sides","Similar means identical in size only","Congruent only applies to circles"],"ans":1,"exp":"Congruent triangles are identical in both shape and size; similar triangles share the same shape and matching angles but scaled, proportional sides — nearly every geometry proof depends on correctly identifying which relationship applies before choosing a theorem."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1796,6 +1847,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'mm-7',
       title: 'Financial mathematics (Gr 9–12)',
       level: 'intermediate',
+      quiz: [{"q":"For the same principal, rate and time (more than one period), which grows to a larger amount: simple or compound interest?","opts":["Simple interest, because it's calculated more often","Compound interest, because it recalculates on the growing balance each period, and the gap widens the longer the money is invested","They always produce the same final amount","It depends only on the interest rate, not the interest type"],"ans":1,"exp":"Compound interest recalculates on the growing balance every period, so it always ends up higher than simple interest (calculated only on the original principal) once more than one period has passed."},{"q":"Why does hire purchase (HP) end up costing more than a reducing-balance loan at the same quoted rate?","opts":["HP interest is charged only on the final balance, not the full amount","HP interest is charged on the full original amount for the whole term, unlike a reducing balance loan","HP always uses a higher advertised interest rate","HP doesn't actually charge any interest"],"ans":1,"exp":"Hire purchase charges interest on the full original amount throughout the whole term, rather than a shrinking balance — this is exactly why applying the ordinary compound-interest formula to HP understates the true repayment."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1828,6 +1880,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-1',
       title: 'Getting the most out of Science Sage',
       level: 'beginner',
+      quiz: [{"q":"What's the recommended way to use the Explore tab in a Science Sage lesson?","opts":["Skip it since it \"looks like a game\"","Use it as a live class demo first, letting learners predict outcomes before you change a variable","Assign it only as extra credit","Use it only after the Workbook tab"],"ans":1,"exp":"The simulations are built to isolate exactly one variable at a time — deliberate pedagogy, not decoration. Projecting it as a live demo and asking learners to predict first is the recommended approach."},{"q":"Why must the CAPS/IEB toggle be set correctly before planning a Science Sage lesson?","opts":["It only changes the colour scheme","Where CAPS and IEB genuinely diverge on a topic, the toggle reveals curriculum-specific content — teaching the wrong one risks covering content your learners aren't assessed on","It has no real effect on lesson content","It only matters for the Workbook tab"],"ans":1,"exp":"CAPS and IEB genuinely diverge in places, not just in wording — confirming the correct curriculum once, then always using the matching toggle setting, avoids teaching content that isn't assessed for that class."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1858,6 +1911,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-2',
       title: 'Electric circuits (Gr 9–12 Physics)',
       level: 'intermediate',
+      quiz: [{"q":"A learner believes adding more resistors to a circuit always increases total resistance. When is this actually false?","opts":["It's always true, in both series and parallel","In parallel circuits — adding more branches decreases total resistance while increasing total current drawn","In series circuits only","It's never true in any circuit type"],"ans":1,"exp":"True for series (resistances simply add), but false for parallel — adding more parallel branches decreases total resistance, which is the single most counterintuitive result in this topic."},{"q":"What stays constant in a series circuit, versus a parallel circuit?","opts":["Voltage is constant in series; current is constant in parallel","Current is constant throughout a series circuit; voltage is constant across parallel branches","Both current and voltage are always constant in both circuit types","Neither current nor voltage is ever constant"],"ans":1,"exp":"Current is the same everywhere in a series circuit; voltage is the same across every branch in a parallel circuit. Learners routinely apply the wrong \"constant\" quantity when solving mixed circuits."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1888,6 +1942,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-3',
       title: "Forces and Newton's laws (Gr 9–12 Physics)",
       level: 'intermediate',
+      quiz: [{"q":"Why don't Newton's third law action-reaction force pairs ever cancel each other out?","opts":["Because they aren't actually equal in size","Because they act on two different objects, so neither object's own free body diagram ever contains both forces of the pair","Because one force is always delayed in time","Because friction cancels them instead"],"ans":1,"exp":"Action-reaction pairs are equal and opposite, but they act on two different objects (e.g. you and a wall) — since each object's free body diagram only shows forces acting ON that object, the pair never appears together to cancel."},{"q":"On an inclined plane, what is the normal force equal to?","opts":["Always exactly mg, the same as on a flat surface","mg cos(theta), not simply mg — using mg directly is a very common substitution error","mg sin(theta) only","Zero, since the surface is sloped"],"ans":1,"exp":"On a slope, gravity must be resolved into components — the normal force equals mg cos(theta), not the full weight mg. Using mg directly then throws off any friction calculation too, since friction depends on the normal force."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1918,6 +1973,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-4',
       title: 'Balancing chemical equations (Gr 8–11 Chemistry)',
       level: 'beginner',
+      quiz: [{"q":"A learner changes H2O to H2O2 to try to \"balance\" an equation. What's wrong with this?","opts":["Nothing — subscripts can be changed freely to balance an equation","Changing a subscript changes the actual substance (water becomes hydrogen peroxide) — only coefficients may be changed to balance, never subscripts","H2O2 isn't a real compound","The equation was already balanced before the change"],"ans":1,"exp":"A subscript is fixed by the actual compound's formula — changing it describes a completely different substance. Only the coefficient (the number in front of a formula) may be adjusted to balance an equation."},{"q":"When is a chemical equation confirmed to be fully balanced?","opts":["As soon as the most obvious element matches on both sides","Only once every single element present has been recounted and matches on both sides","Once the coefficients are all equal to each other","As soon as the state symbols are added"],"ans":1,"exp":"A common shortcut error is stopping as soon as one obvious element matches — every element present must be individually recounted and confirmed equal on both sides."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1948,6 +2004,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-5',
       title: 'Redox reactions (Gr 11–12 Chemistry)',
       level: 'advanced',
+      quiz: [{"q":"If a species' oxidation number increases during a reaction, what has happened to it?","opts":["It has been reduced, and is the oxidising agent","It has been oxidised, and is acting as the reducing agent (it gave electrons away, so its own number rose)","Nothing — oxidation numbers only decrease in real reactions","It has gained electrons"],"ans":1,"exp":"An increasing oxidation number means the species lost electrons — it has been oxidised, and because it donates electrons to something else, it acts as the reducing agent."},{"q":"What's the relationship between the \"oxidising agent\" and the species that gets oxidised?","opts":["They are the same species","The oxidising agent is a different species — it is the one that itself gets reduced (gains electrons) while causing the other species to be oxidised","The oxidising agent never changes oxidation number","The oxidising agent is always a metal"],"ans":1,"exp":"This naming reversal is one of the most persistent sources of lost marks: the oxidising agent is the species that gets reduced (gains electrons) — it causes oxidation in the other species while being reduced itself."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -1978,6 +2035,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-6',
       title: 'Genetics and inheritance (Gr 9 &amp; Gr 12 Life Sciences)',
       level: 'intermediate',
+      quiz: [{"q":"Two brown-eyed parents have a blue-eyed child (blue being recessive). Is this possible?","opts":["No — two brown-eyed parents can never produce a blue-eyed child","Yes — if both parents are heterozygous (Bb x Bb), the recessive phenotype can reappear even though neither parent shows it","Only if one parent is secretly blue-eyed","Only in Grade 12, not Grade 9"],"ans":1,"exp":"This is a direct Workbook-style question: Bb x Bb parents (both showing the dominant brown phenotype) can still produce a bb (blue-eyed) child, since each parent carries a hidden recessive allele."},{"q":"A Bb x Bb cross gives a 3:1 phenotype ratio. If this couple has exactly 4 children, are exactly 3 guaranteed to show the dominant trait?","opts":["Yes, the ratio guarantees exactly 3 out of 4","No — the ratio expresses a probability for each individual child (3 in 4 chance), not a guaranteed outcome for any specific small family","Yes, but only if the children are all the same sex","No, because Punnett squares are never accurate"],"ans":1,"exp":"A Punnett square shows probability, not a guarantee — each child independently has a 3-in-4 chance of the dominant phenotype, which is not the same as an exact 3-out-of-4 split occurring in any specific family."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2008,6 +2066,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'ss-7',
       title: 'Human body systems — nervous and endocrine (Gr 10–12 Life Sciences)',
       level: 'intermediate',
+      quiz: [{"q":"What is the correct order of the reflex arc?","opts":["Stimulus, receptor, motor neuron, relay neuron, sensory neuron, effector, response","Stimulus, receptor, sensory neuron, relay neuron, motor neuron, effector, response","Stimulus, effector, receptor, sensory neuron, response","Receptor, stimulus, sensory neuron, motor neuron, response"],"ans":1,"exp":"The correct fixed sequence is stimulus, receptor, sensory neuron, relay neuron, motor neuron, effector, response — nearly every reflex-arc exam question is really testing whether this exact order is secure."},{"q":"Why is the pancreas a good example for teaching the endocrine vs exocrine distinction?","opts":["It is purely endocrine and has no other function","It is genuinely both — an endocrine gland (insulin/glucagon into the blood) and an exocrine gland (digestive enzymes via a duct)","It is purely exocrine and produces no hormones","It has nothing to do with either system"],"ans":1,"exp":"The pancreas is one organ that is genuinely both endocrine (hormones released directly into the blood) and exocrine (enzymes released via a duct) — a concrete anchor for a distinction that's otherwise easy to state but hard to apply."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2040,6 +2099,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-1',
       title: 'Getting the most out of Computer Codex',
       level: 'beginner',
+      quiz: [{"q":"Why does Computer Codex have a single \"Subject & Grade\" dropdown at the top of the sidebar?","opts":["It only controls the colour theme","It switches between Coding & Robotics, CAT and IT (each with CAPS/IEB variants) in one selection, rather than hunting through a long combined list","It has no functional purpose","It only appears for Grade 12 classes"],"ans":1,"exp":"Computer Codex covers three subjects and multiple curriculum variants — the dropdown lets a teacher pick the correct combination once at the start of a lesson rather than navigating a long combined list."},{"q":"Why shouldn't the practice quiz at the end of a lesson be skipped just because it's marked \"optional\"?","opts":["It isn't actually optional, that's a labelling error","\"Optional\" means learners aren't blocked from moving on without it, not that it's low value — it's still the fastest check that a lesson actually landed","It's only relevant for IEB classes","It replaces the need for the Lesson tab entirely"],"ans":1,"exp":"Optional only refers to not being a blocking gate — the quiz remains the fastest available check that the lesson's content actually landed with learners."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2070,6 +2130,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-2',
       title: 'Computational thinking (Gr 8–9)',
       level: 'beginner',
+      quiz: [{"q":"What is the key difference between decomposition and abstraction in computational thinking?","opts":["They are the same skill with two different names","Decomposition splits a problem into smaller parts; abstraction decides which details matter at all and ignores the rest","Abstraction only applies to numbers","Decomposition only applies to computer programs, not general problems"],"ans":1,"exp":"Decomposition breaks a big problem into smaller ones; abstraction is about deciding which details are relevant and ignoring the irrelevant ones. Asking \"are we splitting this up, or ignoring something?\" helps learners tell the two apart."},{"q":"Why does the lesson deliberately use non-computing examples like engineers, doctors and chefs?","opts":["Because computational thinking is unrelated to computers entirely","To make the point explicit that computational thinking is a general problem-solving approach that doesn't require a computer, and that later coding content builds on these same habits","Because CAPS forbids computing examples in this lesson","Because learners find computing examples too easy"],"ans":1,"exp":"Using engineers, doctors and chefs as examples reinforces that decomposition, pattern recognition, abstraction and algorithm design are general thinking habits — coding is simply one place they get applied later."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2096,6 +2157,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-3',
       title: 'Pseudocode and flow diagrams (Gr 8–9)',
       level: 'beginner',
+      quiz: [{"q":"In a standard flow diagram, what shape represents a decision with YES/NO exits?","opts":["A rectangle","A diamond","An oval","A parallelogram"],"ans":1,"exp":"A diamond represents a decision point, always with two labelled exits (YES and NO) — using a rectangle instead is one of the most heavily penalised flow diagram errors."},{"q":"Why does \"Then it checks if the number is big enough\" not count as valid pseudocode?","opts":["It's too short","It's plain English prose rather than using the required structured keywords like IF...THEN","It doesn't mention a variable name","Pseudocode must always be written in full sentences"],"ans":1,"exp":"Pseudocode requires consistent structured keywords (IF/THEN/ELSE, WHILE, FOR, and so on) rather than free-form English description — prose like \"then it checks\" isn't pseudocode even if the logic described is correct."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2126,6 +2188,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-4',
       title: 'Hardware, software and networks (CAT/IT Gr 10–12)',
       level: 'intermediate',
+      quiz: [{"q":"Why is a touchscreen a good example for teaching hardware classification by IPO role rather than appearance?","opts":["It is purely an input device and nothing else","It is both an input and an output device at once — classifying by appearance alone misses this dual role","It is purely an output device","Touchscreens can't be classified using the IPO model"],"ans":1,"exp":"A touchscreen both receives input (touch) and displays output (the screen), so classifying by IPO role rather than by what a device \"looks like\" is essential to correctly categorise it."},{"q":"What actually distinguishes freeware from open source software?","opts":["They mean exactly the same thing","Freeware is free but closed-source; open source is about the code being publicly viewable and modifiable, independent of price","Open source software is always free, and freeware never is","Freeware only applies to mobile apps"],"ans":1,"exp":"Freeware refers to price (free to use, but the code is closed); open source refers to the code being publicly available and modifiable, regardless of whether it costs money — these get mixed up constantly."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2156,6 +2219,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-5',
       title: 'Programming fundamentals (IT Gr 10–12)',
       level: 'intermediate',
+      quiz: [{"q":"A learner correctly used Grade 10's graphical programming tool but is now struggling with Grade 11 syntax. What's the likely underlying issue?","opts":["They simply forgot the Grade 11 syntax rules and need more syntax drills","If they mastered the Grade 10 concepts, this is usually a syntax gap; if they didn't, it's a concepts gap that syntax drills alone won't fix","Grade 10 and Grade 11 content are entirely unrelated","The tool itself must be broken"],"ans":1,"exp":"Grade 10 is designed to secure variables/conditionals/loops as ideas before Grade 11 adds strict syntax — a learner who struggled with Grade 10 has a concepts gap, not just a \"forgot the syntax\" problem, and needs to revisit the concept, not just correct the code."},{"q":"What does 10 mod 3 actually return, and what is it commonly confused with?","opts":["3 (the quotient) — commonly confused with the remainder","1 (the remainder) — commonly confused with regular division, which would give the quotient 3","10 (unchanged) — commonly confused with addition","0 — commonly confused with multiplication"],"ans":1,"exp":"The modulus operator returns the remainder (1), not the quotient (3) — this single operator underlies tasks like even/odd checks and cycling through a fixed set of values."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2186,6 +2250,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-6',
       title: 'AI and machine learning literacy (Gr 8–9)',
       level: 'beginner',
+      quiz: [{"q":"What is the key difference between Narrow AI and General AI?","opts":["They are the same thing with different names","Narrow AI is exceptional at one specific task only (all AI tools that exist today); General AI, capable of any intellectual task a human can do, is still hypothetical","General AI already exists in tools like spam filters","Narrow AI can only run on smartphones"],"ans":1,"exp":"Every AI tool learners have actually used, including ChatGPT, is Narrow AI — excellent at one kind of task. General AI and Superintelligence remain hypothetical, which corrects a lot of science-fiction-influenced misconceptions."},{"q":"How does the module describe the fundamental difference between traditional programs and AI systems?","opts":["Traditional programs learn patterns from data; AI systems execute hand-written rules","Traditional programs execute exact hand-written instructions; AI systems learn patterns from large amounts of example data and apply them to new situations","There is no real difference between the two","AI systems are just faster versions of traditional programs"],"ans":1,"exp":"Traditional programs follow exact instructions a programmer wrote; AI instead learns patterns from training data and applies them to new inputs — \"mathematics and data working together at enormous scale,\" not hand-written rules."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2215,6 +2280,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cc-7',
       title: 'Databases and SQL (IT Gr 10–12)',
       level: 'intermediate',
+      quiz: [{"q":"Why is Surname a poor choice for a primary key?","opts":["Surnames can't be stored as text fields","Two learners can share the same surname, so it isn't guaranteed unique for every record","Surname fields are always too long for a database","Primary keys must always be numbers"],"ans":1,"exp":"A primary key must be guaranteed unique for every possible record — surname is a tempting but wrong choice since two learners can easily share one, which is exactly why autonumber keys are so common."},{"q":"What is the correct fixed order of clauses in a basic SQL query?","opts":["WHERE, SELECT, FROM, ORDER BY","SELECT, FROM, WHERE, ORDER BY","FROM, SELECT, ORDER BY, WHERE","ORDER BY, SELECT, FROM, WHERE"],"ans":1,"exp":"Every basic query follows SELECT (which fields), FROM (which table), WHERE (a filter condition), ORDER BY (a sort order) — writing clauses out of this order is a common early mistake and a syntax requirement, not just a style choice."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2247,6 +2313,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cj-1',
       title: 'Getting the most out of Code Conjurer',
       level: 'beginner',
+      quiz: [{"q":"Why does Code Conjurer running a real Java interpreter matter for teaching, compared to a scripted simulation?","opts":["It doesn't matter, the experience is identical either way","Errors, correct output and runtime crashes are all genuinely real, exactly like a professional IDE — not scripted responses","It only matters for advanced learners","Real interpreters are slower than simulations"],"ans":1,"exp":"Because the code genuinely executes, learners get authentic console output and real errors — exactly like a professional IDE, just self-contained and safe to experiment in."},{"q":"What's the recommended first step before a learner attempts a lesson's challenge task?","opts":["Skip straight to the challenge to save time","Run the worked example first, unedited, so learners see correct code and output before touching anything","Read only the callout boxes","Rewrite the entire worked example from scratch"],"ans":1,"exp":"Running the worked example unedited establishes what \"working\" looks like as a reference point before learners attempt to extend it in the challenge — skipping this often means they can't tell whether their own change broke something."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2276,6 +2343,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cj-2',
       title: 'Java fundamentals — variables, types and operators',
       level: 'beginner',
+      quiz: [{"q":"What does 7 / 2 evaluate to in Java, when both 7 and 2 are int values?","opts":["3.5, because Java automatically rounds","4, because Java rounds to the nearest whole number","3, because integer division truncates rather than rounds","An error, since 7 doesn't divide evenly by 2"],"ans":2,"exp":"Integer division in Java truncates (cuts off the decimal) rather than rounding — 7 / 2 gives 3, not 3.5 or 4. This is one of the most common IEB output-tracing errors."},{"q":"What is the difference between 'A' and \"A\" in Java?","opts":["They are identical and interchangeable","'A' (single quotes) is a char; \"A\" (double quotes) is a one-character String — these are different types, and mixing them up is a compile error","'A' is always invalid syntax","\"A\" can only be used for numbers"],"ans":1,"exp":"Single quotes create a char; double quotes create a String, even if it holds only one character. These are genuinely different types in Java, and using the wrong one produces a compile error, not just a style issue."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2306,6 +2374,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cj-3',
       title: 'Control structures — conditionals and switch',
       level: 'intermediate',
+      quiz: [{"q":"In an if / else if / else chain built to classify marks into grades, why must conditions be ordered from highest to lowest (e.g. checking >= 80 before >= 70)?","opts":["Order doesn't matter, Java checks all conditions regardless","Conditions are checked top to bottom and the first true one wins — ordering low to high means a high mark could incorrectly match a lower-threshold condition first","Because Java requires alphabetical ordering of conditions","Because else if statements execute in random order"],"ans":1,"exp":"The first condition that evaluates true wins and later ones are never checked — ordering from highest to lowest ensures a mark of 95 is correctly caught by the >= 80 check rather than falling through to a lower threshold first."},{"q":"What happens if a break is omitted from a case inside a switch statement?","opts":["Java automatically inserts an implicit break","Execution \"falls through\" and continues executing every case below it until a break is found or the switch ends","The switch statement fails to compile","Only the matching case executes, exactly as if break were present"],"ans":1,"exp":"Without break, Java falls through and keeps executing subsequent cases regardless of whether they match — almost always an unintended bug, and a pattern IEB output-tracing questions test directly and often."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2336,6 +2405,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cj-4',
       title: 'Arrays and encapsulation',
       level: 'intermediate',
+      quiz: [{"q":"What is the standard approach for finding the object with the highest value of some field in an array of objects?","opts":["Sort the array alphabetically by name first","Loop through the array, comparing each element to a running \"best so far\" value","Use only the first and last elements of the array","This can only be done using a separate database"],"ans":1,"exp":"The classic IEB pattern for this task is a simple loop comparing each element against a running best-so-far value, updating it whenever a better match is found — no sorting is required."},{"q":"What is the most standard exam question built around encapsulation with private fields and setters?","opts":["Simply writing a getter and setter with no validation logic","A setter that validates its input before accepting it (e.g. rejecting a negative balance)","Removing all setters entirely","Making every field public instead of private"],"ans":1,"exp":"Encapsulation is tested through validation logic inside a setter (e.g. rejecting an invalid value like a negative balance), not just the getter/setter syntax itself — this is one of the most standard exam patterns in this topic."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2366,6 +2436,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'cj-5',
       title: 'Advanced OOP and exception handling (Gr 12)',
       level: 'advanced',
+      quiz: [{"q":"When a parent-type array or reference holds a child object and calls an overridden method, which version of the method actually runs?","opts":["The parent's version always runs","The child's overridden version always runs — this is called dynamic dispatch, and is heavily tested in output-tracing questions","It depends on the order the objects were created in","Neither version runs without an explicit cast"],"ans":1,"exp":"Polymorphism means Java always calls the correctly overridden (child) version at runtime, regardless of the reference's declared type — this is dynamic dispatch, the most-tested output-tracing concept at Grade 12 level."},{"q":"In a try/catch/finally block, does the finally block still run if an exception is thrown, or if a return statement executes first?","opts":["No, finally is skipped in both cases","Yes, finally always runs in both cases — exactly the property IEB likes to test with a tricky trace question","Only if there's no catch block","Only if the exception is caught successfully"],"ans":1,"exp":"The finally block always runs, even after a thrown exception or an executed return statement — this reliable-execution property is precisely why IEB likes to test it in output-tracing questions."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2398,6 +2469,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-1',
       title: 'Orientation: how Tech Tower is structured',
       level: 'foundational',
+      quiz: [{"q":"Every Tech Tower lesson follows which four-tab structure?","opts":["Intro/Theory/Test/Homework","Lesson/Explore/Practice/Workbook","Read/Watch/Quiz/Certificate","Plan/Build/Test/Present"],"ans":1,"exp":"Every lesson uses the identical Lesson/Explore/Practice/Workbook pattern, matching the structure used across other Magic Lab tools."},{"q":"What's the recommended order for introducing a new Tech Tower topic to a class?","opts":["Explain the theory fully first, then let learners try the simulator","Send learners to Explore first to discover by trial and error, then use Lesson to explain why","Start with the Workbook as a pre-test","Skip Explore entirely and go straight to Practice"],"ans":1,"exp":"The module recommends letting learners break something in the simulator first (e.g. short-circuit the Circuit Builder), then using the Lesson tab to explain the underlying reason — this order builds stronger understanding than lecturing first."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2426,6 +2498,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-2',
       title: 'Structures: forces, frames and failure',
       level: 'foundational',
+      quiz: [{"q":"In a king post roof truss, why is the king post in tension rather than compression?","opts":["It's always compression, like the rafters","It hangs from the apex and pulls up on the tie beam's centre, resisting sag — a pulling force is tension","Tension and compression are the same thing","The king post carries no force at all"],"ans":1,"exp":"The king post hangs from the truss peak and pulls upward on the tie beam's middle to stop it sagging — a pulling force is, by definition, tension."},{"q":"Why does triangulation (cross-bracing) make a pylon frame more rigid than a lattice of plain squares?","opts":["Triangles use more material, making the structure heavier and stiffer","A triangle can't change shape without one of its sides changing length, unlike a square which can rack into a parallelogram","Triangles are only used for decoration","Squares are structurally identical to triangles"],"ans":1,"exp":"A square can distort into a parallelogram without any side changing length; a triangle physically cannot deform that way — exactly why cross-bracing converts unstable squares into rigid triangles."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2456,6 +2529,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-3',
       title: 'Graphic communication: drawing to communicate a design',
       level: 'foundational',
+      quiz: [{"q":"In South Africa's first-angle orthographic projection system, where is the top view drawn relative to the front view?","opts":["Above the front view","Directly underneath the front view","To the right of the front view only","Anywhere, position doesn't matter"],"ans":1,"exp":"First-angle projection (the South African/CAPS standard) always places the top view directly beneath the front view — third-angle projection (used in the USA) places it above instead, the most common orthographic drawing error to watch for."},{"q":"What line type is used to show an edge that exists on the object but is hidden from view in a particular drawing?","opts":["A thick solid line","A thin, dashed line","A wavy freehand line","A chain (dash-dot) line"],"ans":1,"exp":"Hidden detail is always shown as a dashed line — thick solid lines are outlines (visible edges), and chain lines mark centres of symmetrical features."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2485,6 +2559,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-4',
       title: 'Mechanical systems 1: simple machines and gears',
       level: 'core',
+      quiz: [{"q":"A driver gear with 10 teeth meshes directly with a driven gear with 40 teeth (no idler). What is the mechanical advantage, and which direction does the driven gear turn?","opts":["MA = 0.25, same direction as the driver","MA = 4, opposite direction to the driver","MA = 4, same direction as the driver","MA = 10, opposite direction"],"ans":1,"exp":"MA = Driven teeth / Driver teeth = 40/10 = 4. Two meshing spur gears with no idler always counter-rotate, so the driven gear turns opposite to the driver."},{"q":"What does adding an idler gear between a driver and driven gear actually change?","opts":["It increases the overall mechanical advantage","It only reverses direction a second time, so the final gear matches the driver's direction — speed and force stay the same","It doubles the speed of the driven gear","It removes the need for the driven gear entirely"],"ans":1,"exp":"An idler's size doesn't affect the overall speed/force relationship between the first and last gear — it only synchronises direction by flipping it back to match the driver."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2515,6 +2590,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-5',
       title: 'Mechanical systems 2: pulleys, hydraulics and integrated systems',
       level: 'core',
+      quiz: [{"q":"Why does a single fixed pulley have a mechanical advantage of exactly 1, even though using one genuinely feels easier?","opts":["It doesn't — a fixed pulley always multiplies force","It only changes the direction of the pull (e.g. down instead of up) — the effort needed still equals the load","Fixed pulleys are never used in real applications","MA depends only on rope thickness"],"ans":1,"exp":"A single fixed pulley redirects the pulling force but supports the load with only one rope section, so effort equals load — MA = 1. It feels easier because pulling down can use body weight, not any real force multiplication."},{"q":"In a hydraulic system, why does a small input piston moving a large distance produce a large force at a much larger output piston?","opts":["Because gas is compressible","Because the same volume of incompressible fluid must move through both cylinders, so Force out = Force in x (Area out / Area in), trading distance for force","Because hydraulic fluid creates its own energy","Because Pascal's principle only applies to gases"],"ans":1,"exp":"Since liquid is incompressible, the same volume must pass through both cylinders — a small-area piston must travel further, and per Pascal's principle the pressure transfers equally, producing Force out = Force in x (Area out / Area in)."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2545,6 +2621,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-6',
       title: "Electrical systems: circuits, Ohm's Law and logic",
       level: 'core',
+      quiz: [{"q":"What makes a short circuit dangerous, specifically?","opts":["It increases the circuit's total resistance","Current finds a low-resistance path that bypasses the output device, so most current rushes through the shortcut, overheating wires","It only affects switches, not lamps","It happens only when the switch is open"],"ans":1,"exp":"A short circuit provides a low-resistance bypass around the intended output device — nearly all current takes that shortcut, so wires can overheat and the output device doesn't function, all while the switch is closed."},{"q":"On a standard four-band resistor, what does the fourth band represent?","opts":["A second significant digit","A multiplier for the resistance value","A tolerance rating (how accurate the resistor is, as a percentage)","The resistor's maximum voltage rating"],"ans":2,"exp":"The first two bands are significant digits and the third is a multiplier — the fourth band (often gold or silver) gives the tolerance, e.g. gold = plus or minus 5%."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2575,6 +2652,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'tt-7',
       title: 'Processing: materials, packaging and the impact of technology',
       level: 'core',
+      quiz: [{"q":"Why is sorting plastic by its 1-7 identification code essential before recycling?","opts":["It's only a legal requirement, not a technical one","Different plastic types melt at different temperatures and have different properties, so mixing codes produces a weak, unreliable recycled material","All plastic codes are actually identical","Sorting is only needed for glass, not plastic"],"ans":1,"exp":"Each plastic code has distinct melting behaviour and properties — mixing them during recycling directly causes the poor-quality, unreliable material that correct sorting is designed to prevent."},{"q":"What does \"bias in technology\" mean in the CAPS mining case study, and what does a full-mark answer require?","opts":["Simply stating something bad happened","Naming specifically who benefits and who is harmed unfairly by the technology, not just that an imbalance exists","Listing only positive impacts of mining","Describing the technical specifications of mining equipment"],"ans":1,"exp":"A full-mark bias answer identifies the specific groups on each side of an imbalance (e.g. who benefits from mining vs who bears the pollution/exclusion cost) — simply noting unfairness exists isn't enough."}],
       content: `
         <div class="module-section">
           <div class="module-section-title">The concept</div>
@@ -2607,6 +2685,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-1',
       title: 'Lesson: Your First Robot Program — Sequencing',
       level: 'foundational',
+      quiz: [{"q":"Why does swapping the order of two lines in a robot program change where the robot ends up?","opts":["It doesn't — order never matters in programming","Each move or turn depends on the position and heading left over from the previous instruction, so sequencing matters","Only turnRight is affected by order","The simulator randomises execution order"],"ans":1,"exp":"This is the core idea of sequencing — every instruction builds on the exact state (position, heading) the previous instruction left behind, so reordering instructions changes the outcome."},{"q":"What does \"turn right 90 degrees\" actually mean for the robot?","opts":["Turn to face the room's right-hand wall, regardless of current heading","Rotate 90 degrees relative to the robot's own current heading, not an absolute room direction","Move 90 pixels to the right","Reverse direction completely"],"ans":1,"exp":"A very common learner misconception is picturing an absolute room direction — turnRight/turnLeft always rotate relative to the robot's own current heading, which is why the heading value in the status bar is worth watching closely."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 7–9</span>
@@ -2655,6 +2734,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-2',
       title: 'Lesson: Obstacle Avoidance with Distance Sensors',
       level: 'core',
+      quiz: [{"q":"Why must a distance sensor be checked repeatedly inside a loop, rather than once before the loop starts?","opts":["It doesn't matter, one reading is always enough","The robot's surroundings change as it moves, so a single reading taken before the loop never updates as it approaches or moves away from an obstacle","getDistance() only works once per program","Loops automatically re-check sensors without being told to"],"ans":1,"exp":"A common learner bug is reading the sensor once outside the loop — since the reading never updates, the robot's decision becomes frozen and it can't react to the world changing as it moves."},{"q":"If an obstacle-avoidance threshold is set too low (e.g. 5 px instead of 60 px), what happens?","opts":["The robot turns much earlier than necessary","The robot only reacts once it's already about to collide, since it doesn't detect the obstacle until it's very close","The robot ignores all obstacles","The sensor stops working entirely"],"ans":1,"exp":"A very small threshold means the robot only begins reacting when an obstacle is nearly touching it, which usually isn't in time to avoid a collision — the threshold needs enough margin for the robot to actually turn away."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
@@ -2703,6 +2783,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-3',
       title: 'Lesson: Solving a Maze with Conditional Logic',
       level: 'core',
+      quiz: [{"q":"In the wall-following (right-hand rule) algorithm, why must the three distance conditions be written as if/else if/else, not as three separate if statements?","opts":["It's just a style preference","Separate ifs let more than one branch fire in the same cycle, producing jerky, unpredictable movement instead of one clear decision per cycle","Separate ifs are actually faster to execute","JavaScript doesn't allow chained else-if with distance sensors"],"ans":1,"exp":"With independent if statements, multiple conditions can be true at once and all their actions fire together in the same loop pass — if/else if/else guarantees exactly one decision is made each cycle."},{"q":"Would a \"keep a wall on your LEFT\" strategy also solve the same maze that a \"keep a wall on your RIGHT\" strategy solves?","opts":["No, only one direction can ever work for a given maze","Yes — both wall-following variants solve any maze where the goal is reachable along the maze's outer wall path","Only if the maze has no dead ends","Only in mazes with an odd number of rows"],"ans":1,"exp":"Both directions of the wall-following rule are equally valid solving strategies for a maze reachable along its boundary wall — checking this understanding confirms the learner grasped the algorithm's logic, not just a memorised program."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
@@ -2751,6 +2832,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-4',
       title: 'Lesson: Line Following and Closed-Loop Control',
       level: 'core',
+      quiz: [{"q":"What is \"closed-loop control\", using the line-following program as the example?","opts":["A program that runs exactly once and stops","A repeating cycle of sensing the line position, comparing it to centred, and correcting course, over and over","A loop that never checks any sensor","Turning the robot in a complete circle"],"ans":1,"exp":"Closed-loop control is the continuous sense, compare, correct cycle — the robot must keep re-sensing and re-correcting the whole way around the track, not make one single correction."},{"q":"A learner's line-following robot zig-zags wildly across the line instead of tracking it smoothly. What's the most likely cause?","opts":["The line sensors are broken","The correction turn angle is too large, causing the robot to overcorrect and cross straight over the line each time","The robot is going too slowly","There are too many line sensors"],"ans":1,"exp":"Overly large correction angles cause the robot to swing past the line entirely, immediately triggering the opposite correction — smaller, more frequent corrections produce a smoother path than large, rare ones."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 9–10</span>
@@ -2799,6 +2881,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-5',
       title: 'Lesson: Colour Sensing and Event-Driven Behaviour',
       level: 'core',
+      quiz: [{"q":"What does robot.getColour() actually report?","opts":["Every colour zone anywhere near the robot","Only the colour directly underneath the robot at that instant","The colour of the nearest wall","A prediction of the next colour zone ahead"],"ans":1,"exp":"Unlike a distance sensor that senses ahead, getColour() only reports what's directly under the robot right now — it doesn't \"see ahead\" to an upcoming zone."},{"q":"In an if/else-if chain checking five colour zones, what happens in the overlap zone where two colour regions genuinely coincide?","opts":["Both matching branches execute together","Only the first matching branch in the chain executes, top to bottom — order matters","The program crashes","Neither branch executes"],"ans":1,"exp":"An if/else-if chain always runs only the first condition that matches, evaluated top to bottom — this is exactly why the order branches are written in matters for an overlap case."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 8–10</span>
@@ -2847,6 +2930,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
       id: 'rr-6',
       title: 'Lesson: From Blocks to Code — Bridging Visual and Text Programming',
       level: 'core',
+      quiz: [{"q":"Is a robot program built entirely in Blocks mode a \"real\" program, functionally speaking?","opts":["No — only typed JavaScript counts as a real program","Yes — Blocks mode generates the exact same JavaScript and produces identical robot behaviour, just in a different, visually-constrained notation","Blocks mode is only for demonstration and can't actually run","Blocks and JS modes control different robots"],"ans":1,"exp":"Blocks and JS are two notations for the identical underlying logic — Blocks mode isn't a simplified toy version, it produces the exact same generated JavaScript and robot behaviour."},{"q":"What is the main pedagogical advantage of Blocks mode over typed code for learners anxious about syntax?","opts":["It teaches a completely different programming language","It eliminates syntax errors (missing brackets, semicolons) so learners can focus entirely on logic","It runs faster than JavaScript","It removes the need to understand loops or conditionals"],"ans":1,"exp":"Because blocks snap together in only valid ways, learners can't make a bracket or semicolon typo — this removes a whole category of frustration so they can focus purely on the underlying logic."}],
       content: `
         <div class="lp-meta">
           <span class="lp-meta-item"><i data-lucide="graduation-cap" style="width:12px;height:12px"></i>Gr 7–9</span>
@@ -3670,6 +3754,7 @@ function _renderTrainingModules() {
       </div>
       <div class="module-body">
         ${mod.content}
+        ${_renderModuleQuiz(mod)}
         <button class="module-complete-btn ${done?'done':''}" id="btn-${mod.id}"
           onclick="markModuleComplete('${mod.id}', '${_currentTrainTool}')">
           ${done ? '✓ Completed' : '✓ Mark as complete'}
@@ -3679,6 +3764,52 @@ function _renderTrainingModules() {
     grid.appendChild(div);
   });
   window.lucide?.createIcons();
+}
+
+function _renderModuleQuiz(mod) {
+  if (!mod.quiz || !mod.quiz.length) return '';
+  const letters = ['A','B','C','D','E'];
+  const cards = mod.quiz.map((q, qi) => `
+    <div class="quiz-q-card" id="quiz-${mod.id}-${qi}">
+      <div class="quiz-q-num">Question ${qi + 1} of ${mod.quiz.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o, oi) => `
+          <button class="quiz-opt" onclick="answerQuizQuestion('${mod.id}',${qi},${oi})">
+            <span class="quiz-opt-letter">${letters[oi]}</span>${o}
+          </button>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="quiz-fb-${mod.id}-${qi}"></div>
+    </div>
+  `).join('');
+  return `
+    <div class="module-section">
+      <div class="module-section-title">Check your understanding</div>
+      ${cards}
+    </div>
+  `;
+}
+
+function answerQuizQuestion(modId, qi, oi) {
+  const mod = (TRAINING_MODULES[_currentTrainTool] || []).find(m => m.id === modId);
+  if (!mod || !mod.quiz || !mod.quiz[qi]) return;
+  const q = mod.quiz[qi];
+  const card = document.getElementById(`quiz-${modId}-${qi}`);
+  if (!card || card.dataset.answered) return;
+  card.dataset.answered = 'true';
+
+  const opts = card.querySelectorAll('.quiz-opt');
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`quiz-fb-${modId}-${qi}`);
+  const isCorrect = oi === q.ans;
+  fb.className = `quiz-feedback show ${isCorrect ? 'ok' : 'bad'}`;
+  fb.innerHTML = `${isCorrect ? '✓ Correct.' : '✗ Not quite.'} ${q.exp}`;
 }
 
 function toggleModule(modId) {
