@@ -31,6 +31,12 @@ window.WRO_PROGRAM = (function() {
     return {
       wheelDiameter: 56, axleTrack: 114, portLeft: 'A', portRight: 'B', portFront: 'C', portBack: 'D',
       straightSpeed: 200, straightAcceleration: 400, turnRate: 100, turnAcceleration: 300,
+      // Where the line-following sensor sits relative to the robot's centre
+      // (forward = along heading, lateral = +right/-left), and a tunable
+      // conversion from PID correction to steering rate -- see
+      // simulateLineFollow() for why this is a calibrated constant rather
+      // than derived motor physics.
+      lineSensorForwardMm: 80, lineSensorLateralMm: 0, lineFollowSteerGain: 2.0,
     };
   }
   function defaultWalker() {
@@ -61,6 +67,73 @@ window.WRO_PROGRAM = (function() {
   }
   function persist(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  // ---- mat pixel sampling: a simulated reflectance/colour sensor reads
+  // the SAME mat photo the page already displays, the same way
+  // https://www.aposteriori.com.sg/Ev3devSim represents its track (a
+  // raster image, not vector line data) -- draw the <img class="mat"> to
+  // an offscreen canvas once and cache its ImageData, so each sample
+  // during a simulation is just array indexing, not a canvas readback.
+  let matImageDataCache = null; // { data, width, height, mmToPxX, mmToPxY } | null
+  function getMatImageData() {
+    if (matImageDataCache) return matImageDataCache;
+    const img = document.querySelector('.stage img.mat');
+    if (!img || !img.complete || !img.naturalWidth) return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0);
+    let imageData;
+    try {
+      imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    } catch {
+      return null; // e.g. tainted canvas if ever served cross-origin
+    }
+    matImageDataCache = {
+      data: imageData.data, width: canvas.width, height: canvas.height,
+      mmToPxX: canvas.width / window.WRO_MAT.width,
+      mmToPxY: canvas.height / window.WRO_MAT.height,
+    };
+    return matImageDataCache;
+  }
+  // Reads the pixel at (xMm, yMm) and returns { reflect, r, g, b }, where
+  // reflect is a 0-100 luminance value in the same rough scale a real
+  // reflected_light_intensity/reflection() reading uses. Off the mat (or
+  // before the image has loaded) returns a neutral mid-grey rather than
+  // throwing, since a route can legitimately be edited before the mat
+  // image finishes loading.
+  function sampleMatPixel(xMm, yMm) {
+    const img = getMatImageData();
+    if (!img) return { reflect: 50, r: 128, g: 128, b: 128 };
+    const px = Math.max(0, Math.min(img.width - 1, Math.round(xMm * img.mmToPxX)));
+    const py = Math.max(0, Math.min(img.height - 1, Math.round(yMm * img.mmToPxY)));
+    const i = (py * img.width + px) * 4;
+    const r = img.data[i], g = img.data[i + 1], b = img.data[i + 2];
+    const reflect = (0.299 * r + 0.587 * g + 0.114 * b) / 255 * 100;
+    return { reflect, r, g, b };
+  }
+  // A sensor's world position, given the robot's pose and its offset from
+  // centre (forwardMm along heading, lateralMm to the +right).
+  function sensorWorldPos(pose, forwardMm, lateralMm) {
+    const rad = pose.heading * Math.PI / 180;
+    const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+    const right = { x: Math.cos(rad), y: Math.sin(rad) };
+    return {
+      x: pose.x + fwd.x * forwardMm + right.x * lateralMm,
+      y: pose.y + fwd.y * forwardMm + right.y * lateralMm,
+    };
+  }
+  // Real robot code calibrates Color.BLACK/WHITE/etc to its own sensor
+  // under its own lighting -- there's no exact equivalent for a printed
+  // mat photo, so a target colour is approximated as a reflectance
+  // threshold instead of trying to match the exact calibrated value.
+  function reflectMatchesTarget(reflect, targetColourName) {
+    const name = (targetColourName || '').toLowerCase();
+    if (name.includes('black')) return reflect < 30;
+    if (name.includes('white') || name.includes('gray') || name.includes('grey')) return reflect > 70;
+    return false; // an unrecognised colour name can't be matched -- caller should skip the stop-condition instead of guessing
   }
 
   // ---- kinematics: 0deg = up/north, positive = clockwise (matches the
@@ -95,6 +168,7 @@ window.WRO_PROGRAM = (function() {
   // A robot with no footprint info yet (e.g. a call site that hasn't been
   // taught to pass one) falls back to this rather than crashing.
   const DEFAULT_FOOTPRINT = { w: 220, l: 220 };
+  const DEFAULT_LINE_CONFIG = { lineSensorForwardMm: 80, lineSensorLateralMm: 0, lineFollowSteerGain: 2.0 };
   // 'squareToWall' models driving into the mat's outer wall to hard-reset
   // drift -- a common real technique this tool otherwise has no way to
   // represent. Two things a plain 'drive' can't capture: (1) the ROBOT'S
@@ -180,7 +254,89 @@ window.WRO_PROGRAM = (function() {
       heading: ((sample.heading % 360) + 360) % 360,
     };
   }
-  function applyStep(pose, step, footprint) {
+  // 'lineFollowSim' is a REAL simulated reflectance-tracking PID loop, not
+  // a closed-form transform like every other step here -- it numerically
+  // steps forward at a fixed tick (10ms, matching the wait(10) most
+  // EV3/SPIKE line-follow loops use per iteration) and samples the actual
+  // mat photo under a configured sensor offset at each tick, mirroring
+  // https://www.aposteriori.com.sg/Ev3devSim's own raster-image approach
+  // rather than needing separately-authored vector line geometry.
+  // Simplifications, clearly not a full physical replica:
+  // - Only ONE sensor position is modelled (this tool's reference code
+  //   always reads a single centre sensor for steering regardless of the
+  //   `side` argument, which only flips the error's sign).
+  // - Real driver code tunes 3 separate accel/cruise/decel gain zones;
+  //   only one (steady-state) kp/kd pair is used for the whole segment,
+  //   since the zone-boundary ratios are hardcoded inside function bodies
+  //   this parser deliberately doesn't trace into.
+  // - PID output -> steering rate is a tunable calibration constant
+  //   (config.lineFollowSteerGain), not derived motor-duty-cycle physics
+  //   (that needs a real motor's speed-per-duty curve, which isn't known
+  //   here) -- adjust it in Robot config if the wobble looks off.
+  // - A target Color.X can't be matched to its exact original calibration
+  //   (that was tuned to a real sensor under real lighting); it's
+  //   approximated as a reflectance threshold instead (reflectMatchesTarget).
+  const LINE_FOLLOW_DT = 0.01;
+  function simulateLineFollow(startPose, step, config) {
+    const cfg = config || DEFAULT_LINE_CONFIG;
+    const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+    const kp = step.kp != null ? step.kp : 1;
+    const kd = step.kd != null ? step.kd : 3;
+    const target = step.targetReflection != null ? step.targetReflection : 50;
+    const sideSign = step.side === 'right' ? -1 : 1;
+    const maxDist = Math.max(0, step.maxDistanceMm || 0);
+    const minTravel = step.minTravelDistMm || 0;
+    const steerGain = cfg.lineFollowSteerGain != null ? cfg.lineFollowSteerGain : DEFAULT_LINE_CONFIG.lineFollowSteerGain;
+    const fwdOffset = cfg.lineSensorForwardMm != null ? cfg.lineSensorForwardMm : DEFAULT_LINE_CONFIG.lineSensorForwardMm;
+    const latOffset = cfg.lineSensorLateralMm != null ? cfg.lineSensorLateralMm : DEFAULT_LINE_CONFIG.lineSensorLateralMm;
+    const distPerTick = Math.max(0.25, speed * LINE_FOLLOW_DT);
+
+    let pose = { x: startPose.x, y: startPose.y, heading: startPose.heading };
+    const samples = [{ x: pose.x, y: pose.y, heading: pose.heading }];
+    let travelled = 0, lastError = 0, stoppedEarly = false;
+
+    while (travelled < maxDist) {
+      const sensor = sensorWorldPos(pose, fwdOffset, latOffset);
+      const { reflect } = sampleMatPixel(sensor.x, sensor.y);
+      const error = (reflect - target) * sideSign;
+      const derivative = error - lastError;
+      lastError = error;
+      let correction = kp * error + kd * derivative;
+      correction = Math.max(-80, Math.min(80, correction));
+      const headingDelta = correction * steerGain * LINE_FOLLOW_DT;
+
+      const tickDist = Math.min(distPerTick, maxDist - travelled);
+      const rad = pose.heading * Math.PI / 180;
+      pose = {
+        x: pose.x + tickDist * Math.sin(rad),
+        y: pose.y - tickDist * Math.cos(rad),
+        heading: ((pose.heading + headingDelta) % 360 + 360) % 360,
+      };
+      travelled += tickDist;
+      samples.push({ x: pose.x, y: pose.y, heading: pose.heading });
+
+      if (step.stopColour && travelled >= minTravel) {
+        const stopSensor = sensorWorldPos(pose, fwdOffset, latOffset);
+        const matched = reflectMatchesTarget(sampleMatPixel(stopSensor.x, stopSensor.y).reflect, step.stopColour);
+        if (step.stopOnLoss ? !matched : matched) { stoppedEarly = true; break; }
+      }
+    }
+    return { finalPose: pose, samples, distanceTravelled: travelled, stoppedEarly };
+  }
+  // Mid-animation (frac 0..1) pose: runs the FULL simulation (including
+  // any colour-triggered early stop) once to find the true distance
+  // travelled, then re-runs truncated to that fraction of the TRUE
+  // distance -- not a fraction of maxDistanceMm, which would visibly
+  // overshoot past a colour stop. The first pass's early ticks are
+  // identical to the second's (same start pose, deterministic), so this
+  // is consistent with the final pose applyStep returns, just ~2x the
+  // (still cheap, a few hundred ticks) simulation cost.
+  function simulateLineFollowPartial(startPose, step, config, frac) {
+    const full = simulateLineFollow(startPose, step, config);
+    const target = full.distanceTravelled * Math.max(0, Math.min(1, frac));
+    return simulateLineFollow(startPose, Object.assign({}, step, { maxDistanceMm: target, stopColour: null }), config);
+  }
+  function applyStep(pose, step, footprint, config) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
       const dist = step.distanceMm;
@@ -199,18 +355,21 @@ window.WRO_PROGRAM = (function() {
     if (step.type === 'lineFollowPath') {
       return applyLineFollowPathStep(pose, step, 1);
     }
+    if (step.type === 'lineFollowSim') {
+      return simulateLineFollow(pose, step, config).finalPose;
+    }
     return pose;
   }
   // getFootprint(sizeState) -> { w, l }, so the wall-square's edge math
   // uses the robot's real open/closed size at that point in the route
   // instead of a fixed guess. Optional -- callers that never touch
   // 'squareToWall' steps (or don't have a robot profile handy) can omit it.
-  function poseAtIndex(steps, start, idx, getFootprint) {
+  function poseAtIndex(steps, start, idx, getFootprint, config) {
     let pose = { x: start.x, y: start.y, heading: start.heading };
     let sizeState = 'closed';
     for (let i = 0; i < idx; i++) {
       const footprint = getFootprint ? getFootprint(sizeState) : DEFAULT_FOOTPRINT;
-      pose = applyStep(pose, steps[i], footprint);
+      pose = applyStep(pose, steps[i], footprint, config);
       if (steps[i].type === 'unfold') sizeState = 'open';
     }
     return pose;
@@ -218,7 +377,7 @@ window.WRO_PROGRAM = (function() {
   // Same as applyStep, but partway through (frac 0..1) -- used to animate
   // the robot smoothly moving/turning during Play instead of jumping
   // straight to each step's endpoint.
-  function applyStepPartial(pose, step, frac, footprint) {
+  function applyStepPartial(pose, step, frac, footprint, config) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
       const dist = step.distanceMm * frac;
@@ -243,6 +402,9 @@ window.WRO_PROGRAM = (function() {
     }
     if (step.type === 'lineFollowPath') {
       return applyLineFollowPathStep(pose, step, frac);
+    }
+    if (step.type === 'lineFollowSim') {
+      return simulateLineFollowPartial(pose, step, config, frac).finalPose;
     }
     return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
   }
@@ -278,6 +440,15 @@ window.WRO_PROGRAM = (function() {
         const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : (config.straightSpeed || 200);
         return pathTotalLength(step.points || []) / Math.max(1, speed);
       }
+      case 'lineFollowSim': {
+        // Nominal (full maxDistanceMm) duration -- if a colour-stop cuts it
+        // short in practice, playback shows a brief pause at the end
+        // rather than a wrong total length; computing the real stopped
+        // distance here would need the step's starting pose, which this
+        // function isn't given.
+        const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+        return (step.maxDistanceMm || 0) / Math.max(1, speed);
+      }
       default:
         return DEFAULT_ACTION_DWELL_S;
     }
@@ -291,7 +462,7 @@ window.WRO_PROGRAM = (function() {
     return 'closed';
   }
   const ARC_TRAIL_SAMPLES = 12;
-  function trailPoints(steps, start, uptoIdx, getFootprint) {
+  function trailPoints(steps, start, uptoIdx, getFootprint, config) {
     const pts = [{ x: start.x, y: start.y }];
     let pose = { x: start.x, y: start.y, heading: start.heading };
     let sizeState = 'closed';
@@ -321,7 +492,14 @@ window.WRO_PROGRAM = (function() {
           pts.push({ x: pose.x + p.x, y: pose.y + p.y });
         }
       }
-      pose = applyStep(pose, step, footprint);
+      // The wobble the simulated PID loop actually produced -- reuse its
+      // own tick samples directly rather than re-deriving points some
+      // other way, so the drawn trail is exactly what was simulated.
+      if (step.type === 'lineFollowSim') {
+        const result = simulateLineFollow(pose, step, config);
+        result.samples.slice(1).forEach(p => pts.push({ x: p.x, y: p.y }));
+      }
+      pose = applyStep(pose, step, footprint, config);
       if (step.type === 'unfold') sizeState = 'open';
       if (step.type === 'drive' || step.type === 'lineFollow' || step.type === 'squareToWall') pts.push({ x: pose.x, y: pose.y });
     }
@@ -362,6 +540,10 @@ window.WRO_PROGRAM = (function() {
       case 'lineFollowPath': {
         const len = pathTotalLength(step.points || []);
         return `Follow traced path "${step.label || 'path'}" (${(step.points || []).length} pts, ${len.toFixed(0)} mm)${step.reversed ? ' [reversed]' : ''}`;
+      }
+      case 'lineFollowSim': {
+        const stop = step.stopColour ? ` · stop on ${step.stopOnLoss ? 'losing' : 'seeing'} ${step.stopColour}` : '';
+        return `Follow line (simulated) up to ${step.maxDistanceMm} mm, target reflect ${step.targetReflection}, ${step.side || 'left'} side${stop}`;
       }
       case 'unfold':
         return 'Unfold to open size';
@@ -530,6 +712,9 @@ window.WRO_PROGRAM = (function() {
         case 'lineFollowPath':
           L.push(`# --- ${note}: add your line-following drive here (uses your reflectance sensor(s) -- the traced shape only exists in the planner, it isn't exported as data) ---`);
           break;
+        case 'lineFollowSim':
+          L.push(`# --- ${note}: add your line-following drive here (params: max ${step.maxDistanceMm} mm, target_reflection=${step.targetReflection}, side="${step.side || 'left'}", kp=${step.kp}, kd=${step.kd}) ---`);
+          break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
           L.push(`front_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
@@ -616,6 +801,13 @@ window.WRO_PROGRAM = (function() {
   function unquote(s) {
     const m = s && s.match(/^["'](.*)["']$/);
     return m ? m[1] : s;
+  }
+  // Pulls a plain colour name out of a PyBricks Color reference
+  // (Color.BLACK -> "black") or a bare quoted/unquoted name, lowercased.
+  function colourNameFromArg(arg) {
+    if (!arg) return '';
+    const m = arg.match(/Color\.(\w+)/);
+    return (m ? m[1] : unquote(arg)).toLowerCase();
   }
 
   function parsePyBricksCode(code) {
@@ -795,10 +987,21 @@ window.WRO_PROGRAM = (function() {
         if (args[1] !== undefined) step.speedMmS = parseFloat(args[1]);
         return step; // target_heading (args[2], if any) is a gyro-lock target, not a path change
       }
+      // lineFollowPid(distance_mm, speed, target_reflection, side, kp_start,
+      // kd_start, kp_cruise, kd_cruise, kp_end, kd_end) -- args[6]/[7]
+      // (kp_cruise/kd_cruise) are used as a single steady-state gain for
+      // the whole segment; see simulateLineFollow's own comment for why
+      // the 3-zone accel/cruise/decel profile isn't replicated exactly.
       if ((args = matchCall(codePart, 'lineFollowPid'))) {
-        const step = { type: 'drive', distanceMm: parseFloat(args[0]) };
-        if (args[1] !== undefined) step.speedMmS = parseFloat(args[1]);
-        return step; // modelled as a straight drive of the given distance
+        return {
+          type: 'lineFollowSim',
+          maxDistanceMm: parseFloat(args[0]),
+          speedMmS: args[1] !== undefined ? parseFloat(args[1]) : undefined,
+          targetReflection: args[2] !== undefined ? parseFloat(args[2]) : 50,
+          side: args[3] !== undefined ? unquote(args[3]) : 'left',
+          kp: parseFloat(args[6] !== undefined ? args[6] : (args[4] !== undefined ? args[4] : 1)),
+          kd: parseFloat(args[7] !== undefined ? args[7] : (args[5] !== undefined ? args[5] : 3)),
+        };
       }
       if ((args = matchCall(codePart, 'turnPid'))) {
         const v = parseFloat(args[0]);
@@ -817,11 +1020,33 @@ window.WRO_PROGRAM = (function() {
         notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger -- simulated using its max_distance_mm=${distanceMm} mm, real stopping point may differ`);
         return step;
       }
+      // lineFollowColorStopPid(target_color, max_distance_mm, speed,
+      // target_reflection, side, min_travel_dist, stop_sensor,
+      // stop_on_loss, kp_start, kd_start, kp_cruise, kd_cruise, kp_end,
+      // kd_end) -- steers on reflectance like lineFollowPid, but stops
+      // early on a real simulated colour match instead of only a coded
+      // distance cap (max_distance_mm becomes a safety bound, not the
+      // usual target).
       if ((args = matchCall(codePart, 'lineFollowColorStopPid'))) {
-        const distanceMm = parseFloat(args[1]);
-        const step = { type: 'drive', distanceMm };
-        if (args[2] !== undefined) step.speedMmS = parseFloat(args[2]);
-        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger -- simulated using its max_distance_mm=${distanceMm} mm, real stopping point may differ`);
+        const colourName = args[0] !== undefined ? colourNameFromArg(args[0]) : null;
+        const step = {
+          type: 'lineFollowSim',
+          maxDistanceMm: parseFloat(args[1]),
+          speedMmS: args[2] !== undefined ? parseFloat(args[2]) : undefined,
+          targetReflection: args[3] !== undefined ? parseFloat(args[3]) : 50,
+          side: args[4] !== undefined ? unquote(args[4]) : 'left',
+          minTravelDistMm: args[5] !== undefined ? parseFloat(args[5]) : 0,
+          stopOnLoss: args[7] !== undefined ? unquote(args[7]) === 'True' : false,
+          kp: parseFloat(args[10] !== undefined ? args[10] : (args[8] !== undefined ? args[8] : 1)),
+          kd: parseFloat(args[11] !== undefined ? args[11] : (args[9] !== undefined ? args[9] : 3)),
+        };
+        if (colourName && (colourName.includes('black') || colourName.includes('white') || colourName.includes('gray') || colourName.includes('grey'))) {
+          step.stopColour = colourName;
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- colour match is a reflectance threshold (see simulateLineFollow), not this file's exact Color.${colourName.toUpperCase()} calibration`);
+        } else {
+          // no matchable target colour -- maxDistanceMm (already set above) is just a hard cap, no early stop
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger that couldn't be matched to a reflectance threshold -- simulated using its max_distance_mm=${step.maxDistanceMm} mm as a hard cap instead`);
+        }
         return step;
       }
 
@@ -1011,6 +1236,9 @@ window.WRO_PROGRAM = (function() {
     const straightAccelInput = document.getElementById('cfgStraightAccel');
     const turnRateInput = document.getElementById('cfgTurnRate');
     const turnAccelInput = document.getElementById('cfgTurnAccel');
+    const lineSensorForwardInput = document.getElementById('cfgLineSensorForward');
+    const lineSensorLateralInput = document.getElementById('cfgLineSensorLateral');
+    const lineSteerGainInput = document.getElementById('cfgLineSteerGain');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
       PORTS.forEach(p => {
@@ -1029,6 +1257,9 @@ window.WRO_PROGRAM = (function() {
     straightAccelInput.value = state.config.straightAcceleration;
     turnRateInput.value = state.config.turnRate;
     turnAccelInput.value = state.config.turnAcceleration;
+    if (lineSensorForwardInput) lineSensorForwardInput.value = state.config.lineSensorForwardMm;
+    if (lineSensorLateralInput) lineSensorLateralInput.value = state.config.lineSensorLateralMm;
+    if (lineSteerGainInput) lineSteerGainInput.value = state.config.lineFollowSteerGain;
 
     function syncConfig() {
       state.config = {
@@ -1040,11 +1271,15 @@ window.WRO_PROGRAM = (function() {
         straightAcceleration: parseFloat(straightAccelInput.value) || 400,
         turnRate: parseFloat(turnRateInput.value) || 100,
         turnAcceleration: parseFloat(turnAccelInput.value) || 300,
+        lineSensorForwardMm: lineSensorForwardInput ? (parseFloat(lineSensorForwardInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensorForwardMm,
+        lineSensorLateralMm: lineSensorLateralInput ? (parseFloat(lineSensorLateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensorLateralMm,
+        lineFollowSteerGain: lineSteerGainInput ? (parseFloat(lineSteerGainInput.value) || DEFAULT_LINE_CONFIG.lineFollowSteerGain) : DEFAULT_LINE_CONFIG.lineFollowSteerGain,
       };
       persist(state);
     }
     [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
-     straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput].forEach(el => {
+     straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput,
+     lineSensorForwardInput, lineSensorLateralInput, lineSteerGainInput].filter(Boolean).forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
@@ -1157,6 +1392,12 @@ window.WRO_PROGRAM = (function() {
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
     const stepPathReverse = document.getElementById('stepPathReverse');
+    const stepLineMaxDist = document.getElementById('stepLineMaxDist');
+    const stepLineTarget = document.getElementById('stepLineTarget');
+    const stepLineSide = document.getElementById('stepLineSide');
+    const stepLineKp = document.getElementById('stepLineKp');
+    const stepLineKd = document.getElementById('stepLineKd');
+    const stepLineStopColour = document.getElementById('stepLineStopColour');
     // These only exist on the Senior page (index.html) -- null here on
     // Elementary, which is fine, since the dropdown there has no options
     // that reach the branches below that read them.
@@ -1233,6 +1474,13 @@ window.WRO_PROGRAM = (function() {
         step.points = reversed ? pts.slice().reverse() : pts;
         step.label = chosen.name;
         step.reversed = reversed;
+      } else if (t === 'lineFollowSim') {
+        step.maxDistanceMm = parseFloat(stepLineMaxDist.value) || 0;
+        step.targetReflection = parseFloat(stepLineTarget.value) || 50;
+        step.side = stepLineSide.value;
+        step.kp = parseFloat(stepLineKp.value) || 0;
+        step.kd = parseFloat(stepLineKd.value) || 0;
+        if (stepLineStopColour.value) step.stopColour = stepLineStopColour.value;
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
         step.action = motorActionSel.value;
@@ -1588,12 +1836,12 @@ window.WRO_PROGRAM = (function() {
         // set heading" step)
         if (state.walker.start) {
           const idx = Math.min(state.walker.stepIndex, state.steps.length);
-          const pts = trailPoints(state.steps, state.walker.start, idx, footprintForState);
+          const pts = trailPoints(state.steps, state.walker.start, idx, footprintForState, state.config);
           // Mid-drive during Play: extend the trail's leading edge to the
           // live interpolated position instead of only jumping once the
           // whole step finishes, so the path visibly draws itself.
           const curStep = state.steps[idx];
-          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc' || curStep.type === 'squareToWall' || curStep.type === 'lineFollowPath')) {
+          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc' || curStep.type === 'squareToWall' || curStep.type === 'lineFollowPath' || curStep.type === 'lineFollowSim')) {
             pts.push({ x: pose.x, y: pose.y });
           }
           if (pts.length > 1) {
@@ -1632,10 +1880,10 @@ window.WRO_PROGRAM = (function() {
       // (playFrac 0) this is identical to poseAtIndex(..., stepIndex).
       function currentPose() {
         const idx = Math.min(state.walker.stepIndex, state.steps.length);
-        let pose = poseAtIndex(state.steps, state.walker.start, idx, footprintForState);
+        let pose = poseAtIndex(state.steps, state.walker.start, idx, footprintForState, state.config);
         if (playFrac > 0 && idx < state.steps.length) {
           const sizeState = sizeStateAtIndex(state.steps, idx);
-          pose = applyStepPartial(pose, state.steps[idx], playFrac, footprintForState(sizeState));
+          pose = applyStepPartial(pose, state.steps[idx], playFrac, footprintForState(sizeState), state.config);
         }
         return pose;
       }
