@@ -979,14 +979,14 @@
           <span class="training-tool-tab-icon"><i data-lucide="calculator" style="width:20px;height:20px;"></i></span>
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">Math Magician</span>
-            <span class="training-tool-tab-prog" data-tool="math-magician" id="mm-prog">0 / 7 modules</span>
+            <span class="training-tool-tab-prog" data-tool="math-magician" id="mm-prog">0 / 14 modules</span>
           </div>
         </div>
         <div class="training-tool-tab" onclick="switchTrainingTool('science-sage', this)">
           <span class="training-tool-tab-icon"><i data-lucide="flask-conical" style="width:20px;height:20px;"></i></span>
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">Science Sage</span>
-            <span class="training-tool-tab-prog" data-tool="science-sage" id="ss-prog">0 / 7 modules</span>
+            <span class="training-tool-tab-prog" data-tool="science-sage" id="ss-prog">0 / 19 modules</span>
           </div>
         </div>
         <div class="training-tool-tab" onclick="switchTrainingTool('computer-codex', this)">
@@ -2013,6 +2013,247 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
       `
     },
+    {
+      id: 'mm-8',
+      title: 'Number patterns and sequences (Gr 8–12)',
+      level: 'intermediate',
+      quiz: [{"q":"A sequence has first differences 3, 5, 7, 9, ... (not constant, but the second differences are constant at 2). What kind of sequence is this?","opts":["Linear (arithmetic) — d is just changing slowly","Quadratic — a constant second difference always signals Tn = an²+bn+c","Geometric — the differences are growing","Not analysable with CAPS methods"],"ans":1,"exp":"A constant common difference (first differences equal) means linear; a constant SECOND difference (as here) is the defining test for a quadratic sequence, where a = (2nd difference)/2."},{"q":"Solving a quadratic-sequence \"which term equals...\" problem gives n = 8 and n = -3. What do you do with n = -3?","opts":["Report both as valid answers","Reject it — a term number must be a positive integer, so only n = 8 is valid","Round it up to n = 0","Use whichever root is smaller"],"ans":1,"exp":"Term numbers are always positive integers (n = 1, 2, 3, ...), so any negative or non-integer root from the quadratic formula must be rejected, even though it solved the equation correctly."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="repeat" style="width:15px;height:15px;flex-shrink:0"></i>Linear sequences run right through Gr 8–10</h4>
+            <p>Grade 8 Chapter 4 (Numeric and Geometric Patterns) and Grade 10 Chapter 3 (Number Patterns) both build the same core idea from opposite ends: a <strong>linear (arithmetic) sequence</strong> has a constant difference <code>d</code> between consecutive terms, and its general term is <code>Tₙ = a + (n−1)d</code>. Grade 10 sharpens this into the "zeroth term" shortcut &mdash; write <code>Tₙ = dn + (a−d)</code> directly, since the coefficient of <code>n</code> is always <code>d</code>.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="trending-up" style="width:15px;height:15px;flex-shrink:0"></i>Quadratic sequences (Gr 11) — the second-difference test</h4>
+            <p>When first differences are <em>not</em> constant but the <strong>second</strong> differences are, the sequence is quadratic: <code>Tₙ = an²+bn+c</code>, found from <code>2a = 2nd difference</code>, <code>b = 1st difference − 3a</code>, <code>c = T₁ − a − b</code>. Grade 11 Chapter 3 grounds this in real contexts &mdash; round-robin tournament matches (<code>Tₙ = n(n−1)/2</code>) and polygon diagonals (<code>D(n) = n(n−3)/2</code>) &mdash; so learners see why a quadratic pattern, not a linear one, is the right model.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="sigma" style="width:15px;height:15px;flex-shrink:0"></i>Series and sigma notation (Gr 12)</h4>
+            <p>Grade 12 Chapter 1 moves from individual terms to their <strong>sums</strong>: arithmetic series <code>Sₙ = n/2(2a+(n−1)d)</code>, geometric series <code>Sₙ = a(rⁿ−1)/(r−1)</code>, and infinite geometric series <code>S∞ = a/(1−r)</code> (only valid for <code>|r| &lt; 1</code>). Sigma notation is taught as shorthand for these same sums &mdash; and the same infinite-series formula reappears in a genuinely surprising place: proving <code>0.999... = 1</code> by treating the recurring decimal as an infinite geometric series.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always start with differences, in order: first, then second.</strong> Before reaching for any formula, get learners into the habit of listing several terms and computing first differences, then (if those aren't constant) second differences. This single habit correctly routes a learner to "linear," "quadratic," or "investigate further" without needing to recognise the pattern by sight.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Ground quadratic sequences in a context before the algebra.</strong> Round-robin fixtures and polygon diagonals (Gr 11 Ch 3) give learners a reason the pattern is quadratic, not just a formula to memorise. Have them build the table of values from the real scenario first, then apply the 2nd-difference method to it.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Derive the series formulae, don't just hand them over.</strong> Grade 12's forwards-backwards-add trick for arithmetic series, and the multiply-by-r-and-subtract trick for geometric series, are short enough to do live on the board. Learners who've seen the derivation once are far less likely to misremember which formula uses <code>(rⁿ−1)</code> versus <code>(1−rⁿ)</code>.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Applying the linear formula to a non-linear pattern.</strong> If a learner computes one difference, sees it's not obviously matching, and forces <code>Tₙ = a+(n−1)d</code> anyway, the answer will be wrong for every term past the first two. Insist first differences are checked for ALL given terms, not just the first pair.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Not rejecting invalid roots when solving for term number.</strong> Solving a quadratic sequence's "which term is X" question via the quadratic formula can produce a negative or non-integer root &mdash; that root must be discarded, since term numbers are always positive integers.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Off-by-one errors in repeating-cycle problems.</strong> For "the 267th letter of MATHSMATHS..." style problems, when the remainder of <code>n ÷ L</code> is 0, the answer is the <em>last</em> element of the cycle, not a non-existent "0th" one &mdash; a very common slip.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-9',
+      title: 'Statistics (Gr 9–12)',
+      level: 'intermediate',
+      quiz: [{"q":"Two classes wrote the same test with the same mean, but Class A has a much smaller IQR than Class B. What does that tell you?","opts":["Class A's marks are more consistent — the middle 50% is less spread out","Class A definitely has fewer learners than Class B","Class B's mean must be wrong","IQR has no relationship to consistency"],"ans":0,"exp":"IQR measures the spread of the middle 50% of the data; a smaller IQR at the same mean means those marks cluster more tightly — more consistent performance, not necessarily a different average."},{"q":"A data set has a mean noticeably higher than its median. What does that usually indicate?","opts":["The data is perfectly symmetric","A few unusually high values (outliers) are pulling the mean upward — positively skewed data","The median was calculated incorrectly","The data has no mode"],"ans":1,"exp":"The median is resistant to outliers but the mean is not, so mean > median is the classic signature of positively skewed (right-skewed) data with some high outliers pulling the average up — the median is then the more reliable 'typical value.'"}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="bar-chart-3" style="width:15px;height:15px;flex-shrink:0"></i>The spine: centre, spread, shape</h4>
+            <p>Statistics content scales from Grade 10 to 12 along one consistent spine. Grade 10 Chapter 10 covers <strong>central tendency</strong> (mean, median, mode; grouped-data midpoints) and the <strong>five-number summary</strong> (min, Q1, median, Q3, max) used to draw box-and-whisker plots and read skewness. Grade 11 Chapter 11 adds <strong>standard deviation</strong> (<code>σ = √(Σ(xᵢ−x̄)²/n)</code>) as a more precise spread measure, plus histograms and ogives. Grade 12 Chapter 9 extends to <strong>bivariate data</strong> &mdash; scatter plots, the least-squares regression line, and the correlation coefficient <code>r</code>.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="square-dashed-bottom-code" style="width:15px;height:15px;flex-shrink:0"></i>Box plots and skewness</h4>
+            <p>The box stretches from Q1 to Q3 (the IQR, the middle 50%); whiskers run to the min and max. If the median sits closer to Q1 and the right whisker is longer, the data is <strong>positively skewed</strong>; closer to Q3 with a longer left whisker means <strong>negatively skewed</strong>. The <strong>1.5 × IQR rule</strong> (outside <code>Q1−1.5×IQR</code> or <code>Q3+1.5×IQR</code>) is the standard test for outliers at every grade from 10 up.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="line-chart" style="width:15px;height:15px;flex-shrink:0"></i>Correlation is not causation (Gr 12)</h4>
+            <p>The regression line <code>ŷ = a+bx</code> always passes through the mean point <code>(x̄,ŷ̄)</code>; predicting inside the data range is <strong>interpolation</strong> (reliable), outside it is <strong>extrapolation</strong> (unreliable). The correlation coefficient <code>r</code> (−1 to 1) measures the strength and direction of a linear relationship &mdash; but a high <code>|r|</code>, however strong, never proves that one variable causes the other.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always sort the data first.</strong> Median, quartiles and outlier fences all depend on ordered data — make sorting the very first, non-negotiable step on any statistics question, before any other calculation is attempted.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Make "comment on the data" answers concrete, not vague.</strong> CAPS explicitly wants interpretation, not just computation: "Class A's marks (IQR = 8) are more consistent than Class B's (IQR = 22)" is a markable comment; "the data is different" is not. Model this exact sentence structure — statistic, comparison, real-world meaning — from the first lesson.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the ice-cream/drowning example for correlation vs causation.</strong> Both rise in summer and correlate strongly, but ice cream doesn't cause drowning — heat (a confounding variable) drives both. This one memorable example prevents learners from over-claiming causation whenever they see a strong <code>r</code>.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using the mean when the median is more appropriate.</strong> With outliers present (e.g. one very high salary skewing a small dataset), the mean is misleading and the median is the fairer "typical value" — learners default to the mean out of habit even when the context calls for the median.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Reporting a prediction as reliable without checking interpolation vs extrapolation.</strong> Predicting well outside the original x-range and presenting it with the same confidence as an interpolated value is a common exam-mark loss — always state which one a prediction is.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Claiming causation from a strong r-value.</strong> "r = 0.9, so x causes y" is never an acceptable conclusion in CAPS/IEB marking — correlation only ever describes a linear association, not a cause.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-10',
+      title: 'Probability (Gr 8–12)',
+      level: 'intermediate',
+      quiz: [{"q":"A bag has 3 red and 2 blue counters. Two are drawn WITHOUT replacement. What must change in the tree diagram between the first and second draw?","opts":["Nothing — the probabilities stay identical for both draws","Both the counts remaining AND the total remaining change, since one counter is now gone","Only the total changes; the counts of each colour stay the same","Tree diagrams cannot be used without replacement"],"ans":1,"exp":"Without replacement, removing one counter changes both that colour's remaining count and the total remaining counters — so the second-draw branch probabilities are conditional on what was drawn first, e.g. P(second red | first red) = 2/4, not 3/5."},{"q":"P(A) = 0.4, P(B) = 0.3, and P(A and B) = 0.12. What does this tell you about A and B?","opts":["They are mutually exclusive","They are independent, since P(A)×P(B) = 0.12 = P(A and B)","They are dependent","Not enough information to tell"],"ans":1,"exp":"The formal test for independence is P(A∩B) = P(A)×P(B). Here 0.4×0.3 = 0.12, which matches the given P(A and B), confirming A and B are independent."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="dices" style="width:15px;height:15px;flex-shrink:0"></i>From counting to conditional probability</h4>
+            <p>Probability starts in Grade 8 (Chapter 17) with basic relative-frequency and theoretical-probability ideas, and by Grade 11 (Chapter 10) formalises into <strong>independent events</strong> (<code>P(A∩B)=P(A)×P(B)</code>) versus <strong>dependent events</strong>, where the conditional probability <code>P(A∩B)=P(A)×P(B|A)</code> applies instead. The clearest teaching model throughout is <strong>drawing without replacement</strong>: a bag of 3 red, 2 blue counters, drawn twice without replacement, gives P(RR)=3/5×2/4, since the second draw's probabilities depend on what happened first.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="git-branch" style="width:15px;height:15px;flex-shrink:0"></i>Tree diagrams as the universal tool</h4>
+            <p>A probability tree makes dependence visible: branch probabilities on the second draw literally change based on the first draw's outcome, and every complete set of end-branch probabilities across the tree must sum to 1 &mdash; a quick, reliable self-check learners can apply to any tree they build.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="grid-3x3" style="width:15px;height:15px;flex-shrink:0"></i>Counting principles (Gr 12)</h4>
+            <p>Grade 12 Chapter 10 adds the <strong>fundamental counting principle</strong> and permutations/combinations for counting arrangements without listing every outcome &mdash; the natural extension once probability problems involve too many outcomes to enumerate by hand.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always test independence with the formula, never intuition.</strong> "Feels unrelated" is not a valid justification in CAPS marking &mdash; learners must show <code>P(A)×P(B)</code> equals (or doesn't equal) the given <code>P(A∩B)</code> explicitly, every time.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Draw the tree even when it feels unnecessary.</strong> For "with vs without replacement" problems specifically, insist learners draw out the full tree at least once per new scenario type &mdash; it's the fastest way to catch a probability that should have changed between branches but didn't.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the sum-to-1 check as a built-in habit.</strong> After completing any tree diagram, add up all end-branch probabilities. If they don't sum to 1, there's an error somewhere in the tree &mdash; teach this as the first thing to check, before hunting line by line.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using the same denominator for both draws in a "without replacement" problem.</strong> Writing P(second red)=3/5 again instead of 2/4 (after one red was already removed) is the single most common error in this whole topic.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing P(A|B) with P(B|A).</strong> These are generally different values (<code>P(A|B)=P(A∩B)/P(B)</code> vs <code>P(B|A)=P(A∩B)/P(A)</code>) &mdash; learners often swap them when a question is phrased less directly than "given that...".</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming independence without checking.</strong> Some learners assume two events are independent simply because the question doesn't explicitly say "without replacement" &mdash; always require the <code>P(A)×P(B)=P(A∩B)</code> test rather than an assumption either way.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-11',
+      title: 'Geometry of shapes and straight lines (Gr 8–9)',
+      level: 'beginner',
+      quiz: [{"q":"A learner writes an angle as ∠ABC = 65°. Which letter is the vertex of the angle?","opts":["A","B — the middle letter in three-point angle notation is always the vertex","C","All three equally"],"ans":1,"exp":"In three-point angle notation like ∠ABC, the middle letter (B) is always the vertex where the two rays meet — A and C mark points along each ray."},{"q":"Why does CAPS require a stated reason for every angle calculation (e.g. \"angles on a straight line\"), not just the numeric answer?","opts":["It's just a formatting preference with no mark value","Because reasons are what actually earn the marks in geometry — a numerically correct answer with no reason is not fully credited","Reasons are only needed for grade 12","Numeric answers are never checked"],"ans":1,"exp":"Geometry marking in CAPS/IEB is reason-driven: a correct numeric angle with no valid geometric reason stated on the same line loses most or all of the marks for that step — this habit needs to start as early as Gr 8–9 straight-line geometry."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="move-diagonal" style="width:15px;height:15px;flex-shrink:0"></i>Vocabulary and notation come first</h4>
+            <p>Grade 8 Chapter 9 (Geometry of Straight Lines) starts from the vocabulary every later geometry topic depends on: a <strong>line</strong> extends infinitely both ways; a <strong>line segment</strong> has two endpoints; a <strong>ray</strong> extends infinitely one way. Angles are named with the vertex as the <em>middle</em> letter (<code>∠ABC</code>, vertex B) and classified by size: acute (0°&ndash;90°), right (90°), obtuse (90°&ndash;180°), straight (180°), reflex (180°&ndash;360°), and revolution (360°).</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="shapes" style="width:15px;height:15px;flex-shrink:0"></i>2D shapes and Pythagoras (Gr 8) build on the same base</h4>
+            <p>Chapters 10 (Geometry of 2D Shapes) and 13 (Theorem of Pythagoras) extend straight-line and angle vocabulary into properties of polygons and right-angled triangles &mdash; the same "state the reason" discipline established in Chapter 9 carries through every one of these later chapters, all the way to full Euclidean proofs in Grade 10&ndash;12.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="ruler" style="width:15px;height:15px;flex-shrink:0"></i>Measuring with a protractor</h4>
+            <p>A protractor is placed with its centre on the vertex and its base line aligned with one arm of the angle; the angle is then read from 0° along the direction of the other arm. This is a physical, hands-on skill that's easy to assume learners already have &mdash; it's worth confirming directly rather than assuming.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Drill correct angle notation before any calculation.</strong> Have learners practise naming angles from a diagram (identifying the vertex as the middle letter) as its own short exercise, separate from any numeric problem &mdash; this prevents a habit of sloppy notation that causes real confusion once diagrams get more complex in later grades.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Require a stated reason for every angle answer, starting now.</strong> Even at Gr 8&ndash;9 level, get learners writing "= 40° (angles on a straight line)" rather than just "= 40°" &mdash; this is the exact habit Euclidean geometry proofs in Gr 10–12 will demand, and it's far easier to build early than to retrofit later.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Physically check protractor use, don't assume it.</strong> A quick "measure this angle and show me your protractor placement" check catches misalignment errors (reading from the wrong 0° mark) that otherwise silently produce wrong answers for weeks.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Misidentifying the vertex in angle notation.</strong> Learners sometimes read <code>∠ABC</code> as "the angle at A" instead of at B &mdash; a small notation slip that causes real confusion once diagrams have several labelled angles.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Reading a reflex angle as if it were the smaller angle at that vertex.</strong> Without a reason stated for which angle is meant, learners often default to the acute/obtuse angle even when a reflex angle (180°&ndash;360°) was actually intended by the diagram.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Giving a numeric answer with no reason.</strong> This is the exact habit that costs marks at every grade from here through matric &mdash; correct now, and it stays correct; left uncorrected, it compounds into much bigger losses once full proofs are required.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-12',
+      title: 'Measurement (Gr 8–11)',
+      level: 'intermediate',
+      quiz: [{"q":"For a cone with radius r and height h, what must be calculated before the surface area formula SA = πr² + πrl can be applied?","opts":["Nothing extra — r and h are enough on their own","The slant height l, using l = √(r²+h²) (Pythagoras)","The volume of the cone first","The diameter instead of the radius"],"ans":1,"exp":"The cone's surface area formula needs the slant height l, not the vertical height h directly — l is found from the right triangle formed by r, h and l, via Pythagoras: l = √(r²+h²)."},{"q":"Why is it worth deriving the surface-area formula for a cylinder (SA = 2πr² + 2πrh) by unrolling a physical net, rather than just handing learners the formula?","opts":["It isn't worth the classroom time","Seeing the net makes clear WHY there are two circles (top and bottom) plus a rectangle (the unrolled curved side), so the formula is understood, not just memorised","Nets are only relevant for cubes","The formula only works if a net is drawn every time"],"ans":1,"exp":"A cylinder's net physically shows two circular ends plus one rectangle (the unrolled curved surface, width = circumference = 2πr) — seeing this concretely is what makes the abstract formula 2πr²+2πrh make sense, rather than being an arbitrary string of symbols to memorise."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="box" style="width:15px;height:15px;flex-shrink:0"></i>Area, then surface area, then volume</h4>
+            <p>Measurement builds in a clear order across the grades: Grade 8&ndash;9 (Chapters 14&ndash;15) establish 2D area formulas (rectangle <code>A=lw</code>, triangle <code>A=½bh</code>, trapezium <code>A=½(a+b)h</code>, circle <code>A=πr²</code>) and basic surface area/volume of prisms. Grade 10 Chapter 13 extends this to the full set of 3D solids: cylinders (<code>SA=2πr²+2πrh</code>), cones (<code>SA=πr²+πrl</code>, with slant height <code>l=√(r²+h²)</code>), spheres (<code>SA=4πr²</code>), and pyramids.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="triangle" style="width:15px;height:15px;flex-shrink:0"></i>Slant height is the recurring trap</h4>
+            <p>Cone and pyramid surface-area formulas both need a <strong>slant height</strong>, not the vertical height directly &mdash; and slant height itself is found via Pythagoras from the radius/base and the vertical height. This two-step dependency (Pythagoras first, then the surface-area formula) is the single most error-prone part of 3D measurement.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="unfold-horizontal" style="width:15px;height:15px;flex-shrink:0"></i>Nets make the formulas concrete</h4>
+            <p>Every surface-area formula corresponds to a physical net: a cylinder's net is two circles plus one rectangle (width = circumference); a cone's net is one circle plus one sector. Building or sketching the net before applying the formula turns an abstract sum of terms into something a learner can actually see and count.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Physically unfold a net before teaching any 3D surface-area formula.</strong> Even a quick paper model of a cylinder or cone, unfolded flat, shows learners exactly which 2D shapes the formula is adding together &mdash; this single demonstration prevents formulas from feeling arbitrary.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always calculate slant height as its own explicit first step.</strong> For any cone or pyramid problem, have learners write "Step 1: find l" as a separate line before touching the surface-area formula &mdash; treating it as a required sub-step, not something to compute inline, prevents the most common error in this topic.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Keep a single reference sheet of every 2D and 3D formula, grouped by shape.</strong> With this many formulas active in Grades 8&ndash;11 simultaneously, a clearly organised reference (not a jumbled list) helps learners select the right one quickly rather than guessing from memory under exam pressure.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using the vertical height instead of slant height in cone/pyramid surface area.</strong> Since both are just called "height" colloquially, learners frequently plug the vertical height directly into a formula that actually needs the slant height &mdash; always requiring the explicit Pythagoras sub-step above prevents this.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting one surface in composite/compound shapes.</strong> When a shape is built from two solids joined together (e.g. a cone on top of a cylinder), the joined faces are internal and must be excluded from the total surface area &mdash; a very common one-term omission.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Mixing units before calculating.</strong> Measurements given in a mix of cm and m must be converted to the same unit before any area/volume formula is applied &mdash; skipping this produces answers that are wrong by a large, easily-missed factor.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-13',
+      title: 'Transformation and analytical geometry (Gr 8–12)',
+      level: 'intermediate',
+      quiz: [{"q":"Points A(1,3) and B(5,-1) are given. What is the correct first step to find the distance AB?","opts":["Add the coordinates directly: 1+5 and 3+(-1)","Find Δx = 5-1 = 4 and Δy = -1-3 = -4, then apply AB = √(Δx²+Δy²)","Just subtract the y-coordinates","Average the x and y coordinates"],"ans":1,"exp":"The distance formula is the Pythagorean theorem applied to the Cartesian plane: find Δx and Δy between the two points first, then AB = √(Δx²+Δy²) — skipping straight to a formula without finding Δx/Δy first is where most errors creep in."},{"q":"A transformation maps every point (x,y) to (x,-y). What single transformation is this?","opts":["A reflection in the x-axis","A reflection in the y-axis","A translation upward","A rotation of 180°"],"ans":0,"exp":"Reflecting in the x-axis keeps every x-coordinate the same and negates the y-coordinate, i.e. (x,y)→(x,-y) — confusing this with reflection in the y-axis, which instead negates x and keeps y, (x,y)→(-x,y), is one of the most common mix-ups in transformation geometry."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="flip-horizontal" style="width:15px;height:15px;flex-shrink:0"></i>Transformation geometry starts simple, in Gr 8–9</h4>
+            <p>Transformation Geometry (Gr 8 Chapter 18, Gr 9 Chapter 16) covers translations, reflections and rotations as coordinate rules: reflection in the x-axis maps <code>(x,y)→(x,−y)</code>; reflection in the y-axis maps <code>(x,y)→(−x,y)</code>; a translation shifts every point by a fixed <code>(Δx,Δy)</code>. These rules are simple to state but very easy to swap by accident.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="axis-3d" style="width:15px;height:15px;flex-shrink:0"></i>Analytical geometry (Gr 10–12) puts algebra on the plane</h4>
+            <p>Grade 10 Chapter 8 introduces the two foundational tools: the <strong>distance formula</strong> <code>AB=√((x₂−x₁)²+(y₂−y₁)²)</code> (Pythagoras applied to coordinates) and the <strong>midpoint formula</strong> <code>M=((x₁+x₂)/2,(y₁+y₂)/2)</code>. Both use the same two differences, <code>Δx</code> and <code>Δy</code> &mdash; distance squares and adds them; midpoint simply averages them. Grade 11 Chapter 4 and Grade 12 Chapter 7 build on this with gradient, parallel/perpendicular line conditions, and the equation of a circle.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always find Δx and Δy explicitly, as a written first step.</strong> Whether the task is distance, midpoint, or gradient, get learners into the habit of writing out <code>Δx = x₂−x₁</code> and <code>Δy = y₂−y₁</code> as its own line before touching any formula &mdash; this single habit unifies three formulas that otherwise feel unrelated, and catches sign errors early.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Physically demonstrate reflections with tracing paper or a mirror.</strong> Rather than memorising "(x,y)→(x,−y) is the x-axis," have learners fold a sheet along the x-axis and trace a point &mdash; seeing which coordinate flips makes the rule something they can reconstruct rather than only recall.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Link every analytical geometry formula back to its geometric meaning.</strong> Distance is "how far apart," midpoint is "exactly halfway," gradient is "steepness" &mdash; naming what each formula physically represents before using it symbolically helps learners catch a nonsensical answer (e.g. a negative distance) immediately.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Swapping x-axis and y-axis reflection rules.</strong> "(x,y)→(x,−y)" (x-axis) and "(x,y)→(−x,y)" (y-axis) are frequently mixed up &mdash; the tracing-paper demonstration above is the most reliable fix.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Subtracting coordinates in the wrong order inconsistently.</strong> As long as <code>x₂−x₁</code> and <code>y₂−y₁</code> use points in the SAME order, the answer for distance is unaffected by squaring &mdash; but for gradient and for direction it is not, so consistent ordering must be drilled from the start.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Leaving a distance answer as an unsimplified surd, or as a decimal when an exact surd was required.</strong> CAPS/IEB marking frequently expects the exact simplified surd form (e.g. <code>4√2</code>) rather than a rounded decimal &mdash; always check what the question is asking for before rounding.</div>
+        </div>
+      `
+    },
+    {
+      id: 'mm-14',
+      title: 'Differential calculus and polynomials (Gr 12)',
+      level: 'advanced',
+      quiz: [{"q":"Why must a first-principles differentiation question show the full limit process, rather than jumping straight to the power rule answer?","opts":["Because the power rule doesn't actually work","Because \"first principles\" specifically means deriving f'(x) from the definition f'(x) = lim[h→0] [f(x+h)-f(x)]/h — that IS the question being asked","Because the power rule is only for Grade 11","There's no real difference between the two approaches"],"ans":1,"exp":"A first-principles question is explicitly asking the learner to derive the result from the limit definition itself — arriving at the correct derivative via the power rule, while mathematically valid in general, does not answer what a first-principles question is actually testing and is marked accordingly."},{"q":"To differentiate y = 2/x + √x using the power rule, what must be done first?","opts":["Nothing — differentiate it exactly as written","Rewrite both terms with fractional/negative exponents first: 2x⁻¹ + x^(½), then apply the power rule to each","Multiply through by x first","Only the √x term needs rewriting"],"ans":1,"exp":"The power rule (d/dx[xⁿ]=nxⁿ⁻¹) only applies directly to terms already in xⁿ form — 2/x and √x must first be rewritten as 2x⁻¹ and x^(½) respectively before differentiating, a rewriting step learners very often skip."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="function-square" style="width:15px;height:15px;flex-shrink:0"></i>The derivative, from first principles</h4>
+            <p>Grade 12 Chapter 6 defines the derivative as the limit <code>f'(x) = lim[h→0] [f(x+h)−f(x)]/h</code> &mdash; the gradient of the tangent to a curve at any point. First-principles questions require this full limit process shown explicitly (e.g. for <code>f(x)=x²</code>: expand, cancel the <code>h</code>, then let <code>h→0</code> to get <code>f'(x)=2x</code>) &mdash; not just the power-rule shortcut answer.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="chevrons-right" style="width:15px;height:15px;flex-shrink:0"></i>The rules, once first principles is established</h4>
+            <p>Once the definition is understood, the working rules take over: <strong>power rule</strong> <code>d/dx[xⁿ]=nxⁿ⁻¹</code>, constants differentiate to 0, and sums/differences/constant multiples differentiate term by term. Terms not already in <code>xⁿ</code> form &mdash; like <code>2/x</code> or <code>√x</code> &mdash; must first be rewritten as <code>2x⁻¹</code> and <code>x^(½)</code> before the power rule can be applied.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="waves" style="width:15px;height:15px;flex-shrink:0"></i>Applications: tangents, curve sketching, optimisation</h4>
+            <p>The derivative's applications &mdash; equations of tangent lines, using the second derivative and stationary points to sketch cubic curves, and optimisation problems (maximising/minimising a real quantity) &mdash; all depend entirely on being able to differentiate correctly and reliably first. Grade 12 Chapter 5 (Polynomials, remainder and factor theorems) is the algebraic prerequisite most of this curve-sketching work leans on, for factorising the cubic being analysed.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Do at least one first-principles derivation fully, on the board, before any power-rule shortcut is introduced.</strong> Learners who see the algebra of "expand, simplify, cancel h, take the limit" once understand why the power rule works, rather than experiencing it as an arbitrary shortcut that appeared from nowhere.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Insist on the rewriting step for non-polynomial-looking terms.</strong> Before differentiating anything with a root or a variable in the denominator, require learners to first rewrite it in <code>xⁿ</code> form as its own explicit line &mdash; this single habit prevents most Grade 12 differentiation errors.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Connect factor theorem work directly to curve sketching.</strong> Before sketching a cubic, its x-intercepts need to be found by factorising &mdash; explicitly link the Chapter 5 polynomial-factorising skill to the Chapter 6 curve-sketching task, since learners often treat them as unrelated chapters rather than one connected skill.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Skipping the limit process on a first-principles question.</strong> Writing only the final power-rule-derived answer, with no limit expression shown at all, earns little to no credit on a question that specifically says "from first principles."</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Differentiating 2/x or √x without first rewriting it.</strong> Applying the power rule directly to a term still in fraction or root form (rather than rewriting it as a negative/fractional exponent first) is one of the most frequent Grade 12 differentiation errors.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting to factorise before finding x-intercepts for curve sketching.</strong> Setting <code>f(x)=0</code> and attempting to solve a cubic without first factorising it (often via the factor theorem from Chapter 5) leaves learners stuck on a step that should have been routine.</div>
+        </div>
+      `
+    },
   ],
   'science-sage': [
     {
@@ -2229,6 +2470,426 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Mixing up the order of neurons in the reflex arc.</strong> Sensory and motor neurons are frequently swapped, and the relay neuron (in the spinal cord) is often omitted entirely. Insist on the full, correctly ordered chain for full marks.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating the endocrine and nervous systems as unrelated.</strong> A question about hormone release triggered by a nervous signal (or vice versa) trips up learners who've studied the two systems in isolation without grasping the hypothalamus-pituitary link between them.</div>
           <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing accommodation as the eye having one fixed focusing setting.</strong> The lens genuinely changes shape to focus on near vs far objects — both directions of adjustment end with a clear image on the retina, but the mechanism is an active, continuous adjustment, not a switch between two fixed states.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-8',
+      title: 'Vectors and motion in 1D and 2D (Gr 10–11 Physics)',
+      level: 'intermediate',
+      quiz: [{"q":"What is the fundamental difference between a scalar and a vector quantity?","opts":["Vectors are always bigger than scalars","A scalar has magnitude only; a vector has both magnitude AND direction","Scalars can be negative, vectors cannot","There is no real difference in Physics"],"ans":1,"exp":"A scalar quantity (like distance, speed, or mass) is fully described by a number and a unit. A vector quantity (like displacement, velocity, or force) additionally requires a stated direction to be complete — leaving off the direction on a vector answer is an incomplete answer in CAPS marking."},{"q":"Two forces act on an object at an angle to each other. What must be done before their components can be summed to find the resultant?","opts":["Nothing — components can be summed directly regardless of angle","Each force must first be resolved into perpendicular (x and y) components using its angle","Only the larger force needs to be considered","The forces must first be converted to scalars"],"ans":1,"exp":"To add 2D vectors algebraically, each one must first be resolved into its x-component and y-component (using trigonometry and the given angle), then the x-components are summed separately from the y-components, before the resultant magnitude R = √((ΣFx)²+(ΣFy)²) can be found."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="move-3d" style="width:15px;height:15px;flex-shrink:0"></i>Scalars vs vectors — the distinction everything else depends on</h4>
+            <p>Grade 10's Vectors &amp; Scalars lesson establishes the foundation: a <strong>scalar</strong> quantity (distance, speed, mass) has magnitude only; a <strong>vector</strong> quantity (displacement, velocity, force) has both magnitude AND direction, and both must always be stated. Vectors are drawn as arrows — length represents magnitude (to scale), direction is where the arrow points — and added using the tail-to-head method, where a closed polygon of vectors gives a resultant of zero.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="grid-2x2" style="width:15px;height:15px;flex-shrink:0"></i>Resolving into components (Gr 10–11)</h4>
+            <p>Any vector at angle θ to the horizontal can be split into perpendicular x- and y-components. Grade 11's Vectors in 2D extends this to multiple vectors: resolve each into components, sum ΣFx and ΣFy separately, then find the resultant magnitude <code>R = √((ΣFx)²+(ΣFy)²)</code>. The <strong>equilibrant</strong> is the single force that would exactly cancel a resultant — equal in magnitude, opposite in direction.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="gauge" style="width:15px;height:15px;flex-shrink:0"></i>Motion in one dimension (Gr 10)</h4>
+            <p>The four equations of motion (<code>v=u+at</code>, <code>s=ut+½at²</code>, <code>v²=u²+2as</code>, <code>s=½(u+v)t</code>) apply only under <strong>uniform (constant) acceleration</strong>, and every problem starts by defining a positive direction. Free fall uses <code>g=9.8 m·s⁻²</code>, with the sign of g flipping depending on which direction was chosen as positive — a discipline that must be applied consistently throughout a single calculation.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Require a stated direction on every vector answer, from the very first lesson.</strong> "15 m·s⁻¹" is an incomplete answer for a velocity; "15 m·s⁻¹ east" or "15 m·s⁻¹ upward" is complete. Mark this consistently from day one so it becomes automatic well before Grade 11's 2D work raises the stakes.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always define the positive direction as an explicit written first step.</strong> Before any equation of motion is applied, have learners write "let up = positive" (or equivalent) on paper — this single habit prevents the sign errors that dominate free-fall and projectile problems.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Sketch the quadrant before resolving any 2D vector.</strong> A quick sketch showing which quadrant the angle θ falls in prevents learners from assigning the wrong sign to a component — a very fast, very effective check before any calculation begins.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Reporting a vector answer with no direction.</strong> A numerically correct magnitude with no stated direction is treated as an incomplete answer for any vector quantity — velocity, displacement, force, acceleration.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Choosing which equation of motion to use by trial and error.</strong> Each of the four equations of motion omits exactly one variable (e.g. <code>v²=u²+2as</code> has no <code>t</code>) — teach learners to first list what's given and what's required, then select the one equation that fits, rather than guessing.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Switching sign convention partway through a calculation.</strong> Once "up = positive" is chosen for a free-fall or projectile problem, every velocity, displacement and g value in that same calculation must use that same convention consistently — switching partway through is the single most common source of wrong answers in this topic.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-9',
+      title: 'Energy, momentum and projectile motion (Gr 11–12 Physics)',
+      level: 'advanced',
+      quiz: [{"q":"A box is pushed 10 m along a flat, horizontal floor by a force applied at 60° above the horizontal. Why is the work done NOT simply force × distance?","opts":["Work is never force times distance","Work done is W = FΔx cos θ — only the component of force in the direction of displacement does work, so the angle must be included","The floor being flat means no work is done at all","Distance should be squared in this formula"],"ans":1,"exp":"The general work formula is W = FΔx cos θ. When a force acts at an angle to the displacement, only the component of the force along the direction of motion contributes to the work done — ignoring the angle overstates the work done whenever the force isn't perfectly aligned with the displacement."},{"q":"In a perfectly inelastic collision, what is conserved and what is NOT?","opts":["Both momentum and kinetic energy are conserved","Momentum is conserved; kinetic energy is NOT conserved (some is lost, typically to heat/sound/deformation)","Kinetic energy is conserved; momentum is not","Neither is conserved"],"ans":1,"exp":"Conservation of momentum holds for every collision type — elastic, inelastic, and perfectly inelastic. Kinetic energy, however, is only conserved in an elastic collision; in a perfectly inelastic collision (where objects stick together), kinetic energy is lost, converted mostly to heat, sound, and deformation."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="zap" style="width:15px;height:15px;flex-shrink:0"></i>Work, energy and the work-energy theorem</h4>
+            <p>Grade 11's Work-Energy-Power lesson defines work as <code>W = FΔx cos θ</code> — only the force component along the displacement direction counts, so <code>W = 0</code> whenever a force is perpendicular to motion (e.g. a normal force on a horizontal surface). The <strong>work-energy theorem</strong> states that net work done on an object equals its change in kinetic energy. <strong>Conservative forces</strong> (gravity, spring/elastic force) do work independent of the path taken and have an associated potential energy; energy conservation then links kinetic energy, gravitational PE, and (where relevant) elastic PE <code>Ep = ½kx²</code>.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="shuffle" style="width:15px;height:15px;flex-shrink:0"></i>Momentum, impulse, and collisions</h4>
+            <p>Momentum <code>p = mv</code> changes when a net force (impulse) acts over time: impulse equals the change in momentum. In a closed (isolated) system, total momentum is <strong>always</strong> conserved — for elastic, inelastic, AND perfectly inelastic collisions alike — but kinetic energy is only conserved in an elastic collision. In a perfectly inelastic collision, objects stick together (<code>v₁f = v₂f</code>) and kinetic energy is lost to heat, sound, and deformation.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="arrow-up-right" style="width:15px;height:15px;flex-shrink:0"></i>Vertical projectile motion (Gr 12)</h4>
+            <p>Grade 12's vertical projectile work applies the same equations of motion from Grade 10 to objects thrown straight up or down, tracking sign carefully across the full flight: at maximum height, velocity is momentarily zero (but acceleration is still <code>g</code>, never zero); total time of flight for an object returning to its start height is <code>2vᵢ/g</code>.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always ask "what angle is the force at, relative to the displacement?" before computing work.</strong> Making this an explicit question learners must answer first — rather than defaulting to force × distance — prevents the most common error in this topic.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach momentum conservation as universal, and kinetic energy conservation as conditional.</strong> Drill the distinction explicitly: momentum is ALWAYS conserved in a closed system regardless of collision type; kinetic energy is only conserved if the collision is elastic. Conflating the two is one of the most persistent misconceptions in this topic.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use "velocity is zero, acceleration is not" as a standing correction for projectile motion.</strong> At the peak of a vertical throw, learners very reliably (and incorrectly) assume acceleration must also be zero since velocity is zero — address this directly and repeatedly, since it undermines the entire equations-of-motion approach if left uncorrected.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting the cos θ term in the work formula.</strong> Using W = F × distance directly, without checking whether the force acts at an angle to the displacement, silently overstates the work done in any problem where the force is not perfectly aligned with motion.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming kinetic energy is conserved in every collision.</strong> Only elastic collisions conserve KE — applying "KE before = KE after" to an inelastic or perfectly inelastic collision gives a wrong answer, even though momentum conservation would have worked correctly there.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing acceleration is zero at the top of a projectile's flight.</strong> Acceleration due to gravity is constant (g) throughout the entire flight, including the instant velocity passes through zero at maximum height — this is a genuinely different fact from velocity being momentarily zero, and needs to be taught as such.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-10',
+      title: 'Waves, sound, light and the Doppler effect (Gr 10 & Gr 12 Physics)',
+      level: 'intermediate',
+      quiz: [{"q":"An ambulance siren sounds higher-pitched as it approaches and lower-pitched as it moves away. What causes this Doppler shift?","opts":["The siren's actual frequency changes as the ambulance moves","The relative motion between source and observer changes how many wavefronts reach the observer per second, even though the siren's own emitted frequency never changes","Sound only travels faster when a vehicle is moving","The observer's ears adjust their sensitivity based on distance"],"ans":1,"exp":"The Doppler effect is a perceived (apparent) frequency shift due to relative motion — an approaching source compresses wavefronts (shorter wavelength, higher observed frequency); a receding source stretches them (longer wavelength, lower observed frequency). The source's actual emitted frequency never changes at all."},{"q":"Light travelling from a denser medium into a less dense one hits the boundary at an angle greater than the critical angle. What happens?","opts":["The light refracts as normal and exits the medium","Total internal reflection occurs — all the light is reflected back into the denser medium, with none refracting out","The light is absorbed completely","The light travels straight through, ignoring the boundary"],"ans":1,"exp":"When light travels from a denser to a less dense medium at an angle of incidence greater than the critical angle, total internal reflection occurs: no refraction happens at all, and all the light reflects back into the denser medium — the principle behind optical fibres."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="audio-waveform" style="width:15px;height:15px;flex-shrink:0"></i>Wave basics and sound (Gr 10)</h4>
+            <p>The core wave relationship <code>v = fλ</code> (and <code>T = 1/f</code>) underlies everything from sound to light. For sound specifically, <strong>pitch</strong> is determined by frequency (higher f → higher pitch); an <strong>echo</strong> is the reflection of sound off a hard surface, the principle behind sonar and medical ultrasound (typically 1–20 MHz, well above the human hearing range of 20–20,000 Hz).</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="sun" style="width:15px;height:15px;flex-shrink:0"></i>Light: reflection, refraction, and total internal reflection (Gr 10)</h4>
+            <p>Light is a transverse EM wave travelling at <code>c = 3×10⁸ m/s</code> in a vacuum, needing no medium. The law of reflection (angle of incidence = angle of reflection, both from the normal) governs mirrors; refraction bends light at a boundary between media of different density. When light travels from a denser to a less dense medium at an angle exceeding the <strong>critical angle</strong>, <strong>total internal reflection</strong> occurs — no light refracts out at all, which is the principle behind optical fibres.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="radio" style="width:15px;height:15px;flex-shrink:0"></i>The Doppler effect (Gr 12)</h4>
+            <p>The <strong>Doppler effect</strong> is the apparent change in observed frequency caused by relative motion between source and observer — the source's own emitted frequency never actually changes. A source approaching compresses wavefronts (higher observed frequency/pitch); a source receding stretches them (lower observed frequency/pitch). Real applications include radar speed guns, medical Doppler ultrasound (measuring blood flow), and bat echolocation.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Anchor v = fλ with a concrete, everyday example before any calculation.</strong> Water waves, or a slinky spring, let learners physically see wavelength and frequency as independent, measurable things before the abstract formula is introduced.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the ambulance-siren example to introduce the Doppler effect, before any formula.</strong> Nearly every learner has experienced this directly — building the qualitative "approaching = higher pitch, receding = lower pitch" understanding first makes the formal formula (with its source/observer velocity signs) far easier to apply correctly.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Demonstrate total internal reflection with a real optical fibre or a laser-in-water demo if possible.</strong> This is one of the more visually striking phenomena in the syllabus, and a live demonstration cements the "no light escapes past the critical angle" idea far better than the formula alone.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing the source's own frequency changes during the Doppler effect.</strong> It is the OBSERVED frequency that changes, due to relative motion — the emitting source's actual frequency never changes at all. This distinction is worth stating explicitly every time.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Mixing up which direction of motion increases vs decreases observed frequency.</strong> Approaching → compressed wavefronts → higher frequency; receding → stretched wavefronts → lower frequency. Getting the sign convention backward in the Doppler formula is the most common calculation error in this topic.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Applying total internal reflection in the wrong direction.</strong> TIR can only occur when light travels from a denser medium toward a LESS dense one — applying the concept to light entering a denser medium is a conceptual error, not just a calculation slip.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-11',
+      title: 'Electrostatics, circuits and electromagnetism (Gr 10–11 Physics)',
+      level: 'advanced',
+      quiz: [{"q":"A charged object is brought near (but not touching) a neutral conductor, which is then earthed while the charged object stays close, and the earth connection is removed before the charged object is taken away. What is the conductor left with?","opts":["No net charge at all","A net charge OPPOSITE in sign to the inducing charge","A net charge the SAME sign as the inducing charge","The conductor becomes an insulator"],"ans":1,"exp":"This is charging by induction: while earthed, electrons flow to/from earth on the far side, and when the earth connection is broken (before the inducing charge is removed) the conductor is left with a net charge opposite in sign to the charge that induced it."},{"q":"A bar magnet's North pole is pushed toward a coil, increasing the magnetic flux through it. By Lenz's Law, what must the induced current's magnetic effect do?","opts":["Assist the increasing flux, speeding up the change","Oppose the increasing flux — the induced current creates a field that resists the change, consistent with conservation of energy","Have no magnetic effect at all","Only affect the coil's temperature, not its magnetic field"],"ans":1,"exp":"Lenz's Law states the induced current always opposes the change in flux that caused it — this is why work must be done to push the magnet toward the coil, consistent with the conservation of energy: if the induced current assisted the change instead, energy would be created from nothing."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="sparkles" style="width:15px;height:15px;flex-shrink:0"></i>Charging methods and Coulomb's Law (Gr 10–11)</h4>
+            <p>Objects charge by three methods: <strong>friction</strong> (electrons transfer between rubbed materials), <strong>conduction</strong> (direct contact, both objects end with the same sign), and <strong>induction</strong> (no contact — the near side of a conductor develops the opposite charge; if earthed and then disconnected while the inducing charge is still near, the conductor is left with a net charge opposite to the inducing charge). Coulomb's Law, <code>F = kQ₁Q₂/r²</code> (<code>k = 9×10⁹ N·m²·C⁻²</code>), quantifies the force between point charges; Grade 11 extends this to electric fields (<code>E = F/q = kQ/r²</code>) and potential.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="circuit-board" style="width:15px;height:15px;flex-shrink:0"></i>Circuits, Ohm's Law, and EMF (Gr 10–11)</h4>
+            <p>Grade 10 establishes current, voltage and resistance, and Ohm's Law for ohmic conductors (a straight-line V-I graph through the origin; non-ohmic conductors like a light bulb filament curve instead, since resistance rises with temperature). Grade 11 adds real batteries: <code>ε = V_terminal + Ir</code>, where a battery's EMF (ε) and internal resistance (r) mean terminal voltage drops as more current is drawn — plotting V_terminal vs I gives a straight line whose y-intercept is ε and whose gradient is −r.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="magnet" style="width:15px;height:15px;flex-shrink:0"></i>Electromagnetic induction (Gr 11)</h4>
+            <p>An EMF is induced whenever the <strong>magnetic flux</strong> through a conductor changes (Faraday's Law, <code>|ε| = NΔΦ/Δt</code>), and <strong>Lenz's Law</strong> states the induced current always flows in a direction that opposes the change in flux causing it — a direct consequence of energy conservation, since a current that assisted the change would create energy from nothing.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the "A-O, C-R" memory aid for anode/cathode from the very first lesson on cells, and keep reusing it.</strong> Anode = Oxidation, Cathode = Reduction — both letter pairs match, and this holds true regardless of circuit type, so it's worth introducing early and referring back to consistently.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Physically demonstrate charging by induction with a simple electroscope or pith-ball setup if available.</strong> The three-step process (approach, earth, disconnect, then remove the charge) is genuinely hard to hold in the head abstractly — seeing it happen removes most of the confusion around which sign of charge is left behind.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the magnet-and-coil demonstration to make Lenz's Law concrete, not just a stated rule.</strong> Physically pushing a magnet toward a coil and feeling the resistance (or showing a galvanometer deflect) grounds "opposes the change" as an observable fact, not an arbitrary rule to memorise.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing charging by conduction with charging by induction.</strong> Conduction requires direct contact and leaves both objects with the SAME sign of charge; induction requires no contact and (with the earth-then-disconnect sequence) leaves the conductor with the OPPOSITE sign — these are frequently mixed up.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating EMF and terminal voltage as the same thing.</strong> They are only equal when no current flows (open circuit); under load, terminal voltage is always less than EMF by the "lost volts" <code>Ir</code> — a common conceptual gap once internal resistance is introduced in Grade 11.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Getting the direction of an induced current backward.</strong> Learners often apply the right-hand rule correctly but then forget to check the result against Lenz's Law (opposing the change) — always sanity-check a derived induced-current direction against what it should be opposing.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-12',
+      title: 'Atomic structure, the periodic table, and chemical bonding (Gr 10 Physical Sciences)',
+      level: 'beginner',
+      quiz: [{"q":"Two atoms of the same element have different mass numbers. What are they called, and why do they have identical chemical properties?","opts":["Isomers — they have different molecular structures","Isotopes — same number of protons (same Z) and same electron configuration, so identical chemical properties, but different numbers of neutrons","Ions — they have gained or lost electrons","Allotropes — different physical forms of the same element"],"ans":1,"exp":"Isotopes are atoms of the same element (identical atomic number Z, so identical electron configuration and chemical properties) that differ only in neutron number (and therefore mass number A) — chemical behaviour depends on electron configuration, not on the nucleus's neutron count."},{"q":"Sodium chloride (NaCl) forms an ionic bond, while a bond between two chlorine atoms is covalent. What determines which type of bond forms?","opts":["The size of the atoms alone","The electronegativity difference (ΔEN) between the two atoms — a large ΔEN (>1.7) gives an ionic bond, while a small or zero ΔEN gives a covalent bond","Whichever bond type the atoms 'prefer'","Only the group number of each element"],"ans":1,"exp":"The electronegativity difference (ΔEN) between two bonding atoms is the deciding factor: ΔEN > 1.7 typically gives an ionic bond (as in NaCl, ΔEN = 2.1); ΔEN between 0.4 and 1.7 gives a polar covalent bond; ΔEN < 0.4 gives a non-polar covalent bond (as between two identical chlorine atoms, ΔEN = 0)."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="atom" style="width:15px;height:15px;flex-shrink:0"></i>Atomic structure and isotopes</h4>
+            <p>The atom's nucleus (protons + neutrons, together called nucleons) is extremely small and dense; electrons occupy the surrounding space. <strong>Atomic number (Z)</strong> = number of protons = number of electrons in a neutral atom; <strong>mass number (A)</strong> = protons + neutrons. <strong>Isotopes</strong> are atoms of the same element (same Z) with different neutron counts (different A) — since chemical behaviour depends on electron configuration, isotopes have identical chemical properties despite differing in mass.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="table-2" style="width:15px;height:15px;flex-shrink:0"></i>The periodic table and periodicity</h4>
+            <p>The modern periodic table is arranged by increasing atomic number (Moseley, 1913, corrected Mendeleev's earlier mass-based ordering). The <strong>period number</strong> equals the number of electron shells; the <strong>group number</strong> (main-group elements) equals the number of valence electrons. Moving left to right across a period, nuclear charge increases while shielding stays roughly constant, pulling electrons in more tightly; moving down a group, each element has an extra shell, so outer electrons are further away and more shielded — these two trends explain nearly every periodicity pattern (atomic radius, ionisation energy, electronegativity) at once.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="link" style="width:15px;height:15px;flex-shrink:0"></i>Chemical bonding — driven by electronegativity difference</h4>
+            <p>Atoms bond to reach a more stable (lower-energy) electron configuration, typically a full outer shell (the octet rule). Which bond type forms depends on the electronegativity difference (ΔEN) between the atoms: <code>ΔEN &gt; 1.7 → ionic</code>; <code>0.4 ≤ ΔEN ≤ 1.7 → polar covalent</code>; <code>ΔEN &lt; 0.4 → non-polar covalent</code>. Ionic bonding (metal + non-metal) transfers electrons to form oppositely charged ions held by electrostatic attraction; covalent bonding shares electron pairs, shown in Lewis dot structures.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the two periodicity trends (across a period, down a group) as ONE underlying cause, not a list of separate facts to memorise.</strong> Every trend in this topic (radius, ionisation energy, electronegativity) follows from the same two ideas: increasing nuclear charge with constant shielding across a period, and increasing distance/shielding down a group. Anchoring every specific trend back to these two causes turns a long memorisation list into one reusable piece of reasoning.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use successive ionisation energies as direct, calculable evidence for shell structure.</strong> Sodium's dramatic jump between its 1st and 2nd ionisation energy (easy to remove the lone valence electron, much harder to break into a full inner shell) is a concrete, numeric demonstration of something otherwise abstract.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always calculate ΔEN explicitly before naming a bond type.</strong> Rather than having learners guess "ionic" or "covalent" from a compound's appearance or reputation, drill the habit of finding the actual electronegativity difference and applying the numeric cutoffs every time.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing mass number with atomic number.</strong> Z (atomic number, defines the element) and A (mass number, protons + neutrons) are frequently swapped — always confirm which one a question is actually asking for.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming isotopes have different chemical properties.</strong> Since isotopes share the same electron configuration, their chemical behaviour is identical — only physical properties tied to mass (like density or reaction rate in some cases) can differ.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Naming a bond type from memory/reputation rather than calculating ΔEN.</strong> A learner who "knows" a compound is ionic without checking the actual electronegativity difference will get borderline cases wrong — always require the calculation, not a recalled label.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-13',
+      title: 'Stoichiometry — the mole concept in practice (Gr 10–11 Physical Sciences)',
+      level: 'intermediate',
+      quiz: [{"q":"1 mole of any substance always contains exactly how many particles?",   "opts":["1000 particles", "6.022 × 10²³ particles (Avogadro's number)", "It varies depending on the substance", "12 particles, like a dozen"],"ans":1,"exp":"Just as 'a dozen' always means 12 regardless of what's being counted, 'a mole' always means 6.022×10²³ particles (atoms, molecules, ions, or formula units) — Avogadro's number — regardless of which substance is involved."},{"q":"2.00 mol of aluminium (Al) is reacted with 0.600 mol of Fe2O3 in the thermite reaction (2Al + Fe2O3 → 2Fe + Al2O3, a 2:1 Al:Fe2O3 ratio). Which reactant is limiting?","opts":["Al is limiting, since there is less of it by mass","Fe2O3 is limiting — 0.600 mol Fe2O3 would only need 1.200 mol Al, and 2.00 mol Al is available in excess","Neither is limiting — both are fully consumed exactly","It cannot be determined without the molar masses"],"ans":1,"exp":"Using the 2:1 mole ratio, 0.600 mol Fe2O3 requires only 1.200 mol Al to react completely — since 2.00 mol Al is available (more than needed), Fe2O3 runs out first and is the limiting reagent, even though there appears to be 'more' Al present by simple inspection."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="hash" style="width:15px;height:15px;flex-shrink:0"></i>The mole — chemistry's counting unit</h4>
+            <p>Atoms and molecules are far too small to count individually, so chemists use the <strong>mole</strong>: 1 mole always equals <code>6.022×10²³</code> particles (Avogadro's number, Nₐ) — just as "a dozen" always means 12. The three core mole equations connect moles (n) to mass, particle count, and gas volume: <code>n=m/M</code>, <code>n=N/Nₐ</code>, <code>n=V/Vₘ</code> (Vₘ = 22.4 L·mol⁻¹ at STP), plus <code>c=n/V</code> for concentration in solution.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="scale" style="width:15px;height:15px;flex-shrink:0"></i>Limiting reagents (Gr 10–11)</h4>
+            <p>In a reaction with two reactants, one is usually consumed first — the <strong>limiting reagent</strong> — which caps the amount of product that can form, regardless of how much excess of the other reactant remains. Finding it requires converting both reactants to moles, then comparing against the balanced equation's mole ratio — not simply comparing masses or volumes directly, since "more of it by mass" doesn't mean "not limiting."</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="flask-conical" style="width:15px;height:15px;flex-shrink:0"></i>Titrations, dilution and gas stoichiometry (Gr 11)</h4>
+            <p>Grade 11 extends stoichiometry to solutions: a <strong>titration</strong> finds an unknown concentration using a solution of known concentration; <strong>dilution</strong> keeps moles of solute constant while increasing volume, so concentration drops proportionally. For gases away from STP, the <strong>Ideal Gas Law</strong> replaces the fixed 22.4 L·mol⁻¹ molar volume.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Always convert to moles FIRST, before comparing any two reactants.</strong> The instinct to compare reactants by raw mass or volume is exactly backward — insist on converting both to moles, then comparing against the balanced equation's ratio, every single time.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the "dozen" analogy explicitly when first introducing the mole.</strong> Learners already understand that a dozen always means 12 regardless of what's counted — mapping "mole" onto that same idea (always 6.022×10²³, regardless of substance) makes an abstract number concrete immediately.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Practise limiting-reagent problems where the "obvious" reactant (more mass, more volume) is actually the excess one.</strong> Deliberately including at least one such counter-intuitive example per lesson breaks the habit of guessing the limiting reagent by inspection rather than calculating it.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming the reactant with the larger mass or volume is automatically in excess.</strong> Only a mole-ratio comparison against the balanced equation reveals the true limiting reagent — mass/volume comparisons alone are frequently misleading.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting to use the balanced equation's mole ratio when converting from one substance to another.</strong> Calculating moles of a reactant correctly but then applying a 1:1 ratio to find moles of product (when the equation actually requires 1:2 or 2:1) is one of the most frequent stoichiometry errors.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using 22.4 L·mol⁻¹ for a gas NOT at STP.</strong> The molar volume of 22.4 L·mol⁻¹ only applies at standard temperature and pressure — any other condition requires the Ideal Gas Law instead, a distinction Grade 11 introduces and expects to be applied correctly.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-14',
+      title: 'Intermolecular forces, and acids and bases (Gr 11 Physical Sciences)',
+      level: 'intermediate',
+      quiz: [{"q":"HF has a surprisingly higher boiling point than HCl, HBr, or HI, even though it has the LOWEST molar mass in that group. Why?","opts":["HF is actually heavier than the others — this is a common misconception","HF molecules form hydrogen bonds (a much stronger intermolecular force than the London dispersion forces dominating the others), requiring far more energy to overcome","Boiling point has nothing to do with molar mass or intermolecular forces","HF doesn't actually have a higher boiling point"],"ans":1,"exp":"While boiling point generally increases with molar mass (via stronger London dispersion forces) down the HCl-HBr-HI series, HF is the exception: its H-F bond lets it form hydrogen bonds, a much stronger intermolecular force, which requires far more energy to break — giving it an anomalously high boiling point despite its low molar mass."},{"q":"Why can the Brønsted-Lowry theory explain NH3 acting as a base, when the Arrhenius theory cannot?","opts":["NH3 releases OH- ions directly, satisfying the Arrhenius definition","Brønsted-Lowry defines a base as a proton (H+) ACCEPTOR, which NH3 does by bonding with an H+ from water — no OH- release is required, unlike the stricter Arrhenius definition","NH3 isn't actually a base under either theory","Both theories give the exact same explanation"],"ans":1,"exp":"The Arrhenius theory requires a base to produce OH- ions in water, which NH3 does not do directly. The Brønsted-Lowry theory instead defines a base as a proton (H+) acceptor — NH3 accepts an H+ from water to form NH4+ and OH-, which the broader Brønsted-Lowry framework correctly classifies as basic behaviour even without a direct OH- release."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="thermometer" style="width:15px;height:15px;flex-shrink:0"></i>Intermolecular forces determine physical properties</h4>
+            <p>Intermolecular forces (IMFs) act <em>between</em> molecules (unlike covalent bonds, which act within them), and their strength directly determines boiling point, viscosity, and solubility: <strong>stronger IMFs → higher boiling point, higher viscosity</strong>. Larger, non-polar molecules have more electrons and therefore stronger London dispersion forces, even without permanent dipoles. The classic anomaly: HF's boiling point is far higher than HCl, HBr or HI despite having the lowest molar mass, because HF forms <strong>hydrogen bonds</strong> — a much stronger IMF than the dispersion forces dominating the rest of that series.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="droplets" style="width:15px;height:15px;flex-shrink:0"></i>Acids and bases — two theories, one more general</h4>
+            <p><strong>Arrhenius theory</strong> (1884): an acid produces H⁺/H₃O⁺ in water, a base produces OH⁻ — but this only works in aqueous solution and can't explain why NH₃ (no OH⁻) behaves as a base. The <strong>Brønsted-Lowry theory</strong> generalises this: an acid is a proton (H⁺) donor, a base is a proton acceptor — covering ALL Arrhenius acids/bases plus reactions in non-aqueous solvents. NH₃ accepts H⁺ from water, correctly classifying it as basic under Brønsted-Lowry even though it releases no OH⁻ directly.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="git-fork" style="width:15px;height:15px;flex-shrink:0"></i>Acid strength and Ka</h4>
+            <p>A weak acid only partially ionises in water; its equilibrium constant <strong>Ka</strong> (<code>Ka = [H₃O⁺][A⁻]/[HA]</code>) measures the extent — the larger Ka, the stronger the weak acid. Water itself is <strong>amphiprotic</strong>: it can act as either an acid (donating H⁺ to a strong base) or a base (accepting H⁺ from a strong acid), depending on what it reacts with.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the HF boiling point anomaly as the anchor example for hydrogen bonding.</strong> Its genuine surprise value ("shouldn't the heavier molecule have the higher boiling point?") makes the exception memorable in a way that a plain rule statement never is.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Introduce Brønsted-Lowry explicitly as "what Arrhenius can't explain."</strong> Leading with NH₃ as a base that has no OH⁻ to release creates a genuine gap that only the Brønsted-Lowry (proton donor/acceptor) framework fills — this motivates the more general theory rather than presenting it as an arbitrary alternative.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Have learners identify conjugate acid-base pairs directly from real reaction equations.</strong> Rather than teaching the definition in isolation, work through several real acid-base reactions and have learners label which species is the acid, the base, and each one's conjugate — this is the actual skill CAPS/IEB questions require.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assuming boiling point always increases smoothly with molar mass.</strong> The HF anomaly (and similar cases for NH₃ and H₂O among period-2 hydrides) shows that hydrogen bonding can override the general molar-mass trend — learners who apply the trend blindly miss these well-known exceptions.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Requiring OH⁻ release for something to be classified as a base.</strong> This is the Arrhenius definition only — under Brønsted-Lowry, a substance is a base if it accepts a proton, whether or not OH⁻ is ever released.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing acid STRENGTH (Ka, how much a weak acid ionises) with acid CONCENTRATION.</strong> A concentrated weak acid can still be a weak acid; strength and concentration are independent properties, and learners frequently conflate the two when discussing pH.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-15',
+      title: 'Rate of reaction, equilibrium and electrochemistry (Gr 11–12 Physical Sciences)',
+      level: 'advanced',
+      quiz: [{"q":"According to collision theory, why does increasing the concentration of a reactant increase the reaction rate?","opts":["It increases the activation energy needed for a reaction","More particles per unit volume leads to more frequent collisions, and therefore more frequent EFFECTIVE collisions (sufficient energy + correct orientation) per second","It changes the products formed by the reaction","Concentration has no real effect on rate, only temperature does"],"ans":1,"exp":"Collision theory states only effective collisions (with both sufficient energy ≥ activation energy AND correct orientation) lead to a reaction. Increasing concentration increases the number of particles per unit volume, which increases how often particles collide — and therefore increases how often effective collisions happen per second, raising the rate."},{"q":"In a galvanic cell, why is a salt bridge essential?","opts":["It provides the electrons that flow through the external circuit","It allows ion migration between the two half-cells to maintain electrical neutrality — without it, charge would build up and the cell would stop working","It only serves a decorative purpose in a lab diagram","It converts the cell from galvanic to electrolytic"],"ans":1,"exp":"Electrons flow through the external wire, not through the solutions. The salt bridge allows ions to migrate between the two half-cells (cations toward the cathode, anions toward the anode) to maintain electrical neutrality in each half-cell as the reaction proceeds — without it, charge would build up and stop the reaction almost immediately."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="timer" style="width:15px;height:15px;flex-shrink:0"></i>Collision theory and reaction rate (Gr 11)</h4>
+            <p>Only <strong>effective collisions</strong> — with sufficient energy (≥ activation energy, Ea) AND correct orientation — lead to a reaction. Rate is proportional to how often effective collisions occur. Increasing concentration or pressure raises particle density, increasing collision frequency; a <strong>catalyst</strong> increases rate by providing an alternative pathway with lower Ea, without being consumed itself.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="scale" style="width:15px;height:15px;flex-shrink:0"></i>Chemical equilibrium and Le Chatelier's Principle (Gr 11)</h4>
+            <p>Reversible reactions (⇌) reach <strong>dynamic equilibrium</strong> when forward and reverse rates are equal. <strong>Le Chatelier's Principle</strong>: if a stress (concentration, temperature, pressure change) is applied to a system at equilibrium, the system shifts in the direction that opposes that stress, re-establishing equilibrium. The equilibrium constant <strong>Kc</strong> is the ratio of product to reactant concentrations (each raised to its stoichiometric power) at equilibrium.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="battery" style="width:15px;height:15px;flex-shrink:0"></i>Electrochemistry (Gr 12) — built entirely on redox</h4>
+            <p>Remember <strong>OIL RIG</strong> (Oxidation Is Loss, Reduction Is Gain of electrons) and <strong>A-O, C-R</strong> (Anode-Oxidation, Cathode-Reduction — true for both cell types). A <strong>galvanic cell</strong> converts a spontaneous redox reaction into electrical energy; the <strong>salt bridge</strong> allows ion migration to maintain electrical neutrality in each half-cell, without which the reaction would stop almost immediately. Standard electrode potentials (E°, measured against the standard hydrogen electrode) allow <code>E°cell = E°cathode − E°anode</code> to predict cell voltage and spontaneity.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach "effective collision" as requiring BOTH conditions, every time.</strong> Sufficient energy alone is not enough — orientation matters too. Reinforcing both conditions together prevents learners from treating collision theory as purely about energy/speed.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Frame Le Chatelier's Principle as "the system fights back against the stress," not as an arbitrary shift rule.</strong> Once learners see every shift as the system actively opposing whatever changed, predicting the direction of a shift under any given stress becomes reasoning rather than memorisation.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Introduce A-O, C-R (anode-oxidation, cathode-reduction) before anything else in electrochemistry, and reuse it constantly.</strong> Since this single mnemonic holds true for BOTH galvanic and electrolytic cells, anchoring it first prevents a large share of the confusion that otherwise builds up across this whole topic.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing a catalyst changes the position of equilibrium or the products formed.</strong> A catalyst only speeds up how quickly equilibrium is reached (by lowering Ea for both forward and reverse reactions equally) — it does NOT shift the equilibrium position or change Kc.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Predicting a Le Chatelier shift in the wrong direction.</strong> A very common error is describing the shift as reinforcing the stress rather than opposing it — always state explicitly which direction opposes the specific change applied.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Mixing up anode and cathode between galvanic and electrolytic cells.</strong> The A-O/C-R identity (anode=oxidation, cathode=reduction) holds for both cell types, but WHICH electrode is positive/negative swaps between them — this reversal is a frequent source of error unless taught as its own explicit point.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-16',
+      title: 'Organic chemistry (Gr 12 Physical Sciences)',
+      level: 'advanced',
+      quiz: [{"q":"Why can carbon form such a huge variety of organic compounds compared to most other elements?","opts":["Carbon is the most abundant element on Earth","Carbon is tetravalent (forms 4 covalent bonds) and can form stable single, double, and triple bonds with itself, creating long chains, branches, and rings","Carbon only forms ionic bonds, which are more stable","Carbon cannot bond with itself at all"],"ans":1,"exp":"Carbon's tetravalency (4 bonds) combined with its ability to form stable C-C single, double, and triple bonds lets it build an enormous variety of chains, branches, and rings — the structural basis for the huge diversity of organic compounds, none of which would be possible with an element limited to one or two bonds."},{"q":"Butane and 2-methylpropane share the molecular formula C4H10 but have different structures. What are they called?","opts":["Allotropes","Structural (chain) isomers — same molecular formula, different arrangement of the carbon skeleton","Isotopes","Homologous series members"],"ans":1,"exp":"Structural isomers share the same molecular formula but differ in how the atoms are arranged. Butane and 2-methylpropane are specifically chain isomers — same formula (C4H10), but one has a straight carbon chain and the other has a branched one."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="link-2" style="width:15px;height:15px;flex-shrink:0"></i>Why carbon is unique</h4>
+            <p>Carbon is <strong>tetravalent</strong> (always forms 4 covalent bonds) and forms stable C–C single, C=C double, and C≡C triple bonds — enabling long chains, branches, and rings that no other common element can match. Non-polar C–H bonds give organic compounds a generally hydrophobic character, unless a polar functional group is present to change that.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="tag" style="width:15px;height:15px;flex-shrink:0"></i>IUPAC naming — a systematic, learnable process</h4>
+            <p>Naming follows three explicit steps: find the longest continuous carbon chain containing the principal functional group (giving the stem: meth-1, eth-2, prop-3, but-4, pent-5, hex-6); apply the suffix matching the functional group (alkane -ane, alkene -ene, alkyne -yne, alcohol -ol, aldehyde -al, ketone -one, carboxylic acid -oic acid, ester -oate); then number the chain to give the functional group or branch the lowest possible locant.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="shuffle" style="width:15px;height:15px;flex-shrink:0"></i>Structural isomers</h4>
+            <p><strong>Structural isomers</strong> share the same molecular formula but differ in atomic arrangement. <strong>Chain isomers</strong> differ in the carbon skeleton itself (e.g. butane vs 2-methylpropane, both C₄H₁₀) — the same formula can correspond to genuinely different compounds with different physical properties, which is why the systematic IUPAC naming process above matters so much: it uniquely identifies which specific isomer is meant.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Drill the IUPAC naming steps as a fixed, ordered procedure, not a set of rules to apply in any order.</strong> Parent chain first, then suffix, then lowest-locant numbering — learners who skip straight to numbering before correctly identifying the parent chain very reliably get the wrong name.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Build physical or drawn models of isomer pairs side by side.</strong> Seeing butane and 2-methylpropane drawn out (or built with molecular model kits) next to each other makes "same formula, different compound" a visible fact rather than an abstract claim.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Connect functional groups directly to real, familiar substances.</strong> Alcohols (ethanol), carboxylic acids (vinegar/acetic acid), and esters (fruity smells/flavourings) give learners a sensory anchor for what would otherwise be abstract suffix rules.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Numbering the chain before identifying the correct parent chain and functional group.</strong> Numbering must always follow — and be based on — a correctly identified parent chain and its principal functional group, not be done independently first.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing structural isomers with different compounds that happen to share some properties.</strong> True structural isomers share the EXACT SAME molecular formula — if the formulas differ at all, the compounds are not isomers of each other, just different substances.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Choosing a numbering direction that doesn't give the lowest locant.</strong> When there's a choice of which end of the chain to number from, the direction giving the smaller number to the functional group (or branch) is always the correct one — picking arbitrarily produces an incorrect IUPAC name even if every other part of the name is right.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-17',
+      title: 'Cells, tissues and transport systems (Gr 10 Life Sciences)',
+      level: 'beginner',
+      quiz: [{"q":"What does the 'fluid mosaic model' describe about the cell membrane?","opts":["A rigid, solid wall of protein that never changes shape","A flexible double layer of phospholipids with proteins floating within it, like tiles in a mosaic — controlling what moves in and out of the cell","A single layer of carbohydrate molecules only","A structure found only in plant cells, never animal cells"],"ans":1,"exp":"The fluid mosaic model describes the cell membrane as a flexible ('fluid') phospholipid bilayer with proteins embedded and floating within it (like tiles in a 'mosaic') — this flexible, dynamic structure is what controls what substances can move into and out of the cell."},{"q":"In a plant, water travels from the roots to the leaves through the xylem, pulled upward by transpiration. What role does the phloem play instead?","opts":["Phloem also transports water from roots to leaves, identically to xylem","Phloem transports manufactured food (sugars) via translocation, generally from the leaves to other parts of the plant","Phloem only transports oxygen","Phloem has no transport function at all"],"ans":1,"exp":"Xylem transports water (and dissolved minerals) upward from the roots, driven by transpiration pull. Phloem instead transports manufactured food (sugars produced by photosynthesis) via a process called translocation, generally moving from the leaves (where sugars are made) to other parts of the plant that need it."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="circle-dot" style="width:15px;height:15px;flex-shrink:0"></i>The cell membrane — a fluid mosaic</h4>
+            <p>Grade 10 goes deeper than the basic organelle list learnt in Grade 9, describing the cell membrane via the <strong>fluid mosaic model</strong>: a flexible double layer of phospholipids with proteins floating within it like tiles in a mosaic, controlling what moves into and out of the cell. New organelles beyond the Grade 9 basics include <strong>plastids</strong> (plants only — chloroplasts and other food/pigment-related organelles) and the rigid <strong>cell wall</strong> (plants only, outside the cell membrane).</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="layers" style="width:15px;height:15px;flex-shrink:0"></i>Plant tissues: xylem and phloem have opposite jobs</h4>
+            <p><strong>Xylem</strong> transports water (and dissolved minerals) from the roots upward to the leaves; <strong>phloem</strong> transports manufactured food (sugars) via <strong>translocation</strong>, generally from the leaves (where photosynthesis makes them) to other parts of the plant. <strong>Transpiration</strong> — water vapour loss through leaf stomata — is what creates the "pull" drawing water up through the xylem in the first place; temperature, light intensity, and humidity all affect its rate.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="heart-pulse" style="width:15px;height:15px;flex-shrink:0"></i>The mammalian circulatory system — double and closed</h4>
+            <p>Mammals have a <strong>double</strong> circulatory system (blood passes through the heart twice per complete circuit: pulmonary circulation to the lungs, systemic circulation to the rest of the body) and a <strong>closed</strong> system (blood always stays inside vessels). Arteries carry blood away from the heart with thick, muscular walls for high pressure; veins carry blood back with thinner walls and valves to prevent backflow at lower pressure.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the "straw" analogy for transpiration pull.</strong> Comparing the continuous xylem water column being drawn up as water evaporates from the leaves to sucking on a straw gives learners a physical, intuitive mental model for what is otherwise an abstract, invisible process.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Contrast xylem and phloem side by side, not sequentially.</strong> Directly comparing "what moves, which direction, driven by what" for both tissues at once (in a table format) prevents the two from blurring together in learners' minds, since they're structurally adjacent in the plant and easy to conflate.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Trace one blood cell's full double-circuit journey as a story, not a diagram to memorise.</strong> "Starting at the heart, through the lungs, back to the heart, out to the body, back to the heart again" as a narrated loop is more memorable than a labelled diagram alone.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing xylem and phloem both carry water.</strong> Only xylem carries water (and minerals); phloem carries manufactured food (sugars) — this is a very frequent mix-up, given how similar the two tissue names sound.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing the human circulatory system as a single loop.</strong> It is a DOUBLE circuit (pulmonary + systemic), both passing through the heart — describing blood as flowing in one continuous circle without returning through the heart twice is a common but significant error.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusing artery/vein structure with which type of blood (oxygenated/deoxygenated) each carries.</strong> Arteries carry blood AWAY from the heart and veins carry blood TOWARD it — this is a structural/directional distinction, independent of oxygen content (the pulmonary artery, for instance, carries deoxygenated blood).</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-18',
+      title: 'Biodiversity, photosynthesis and respiration (Gr 11 Life Sciences)',
+      level: 'intermediate',
+      quiz: [{"q":"Moving from bryophytes to angiosperms across the four plant divisions, what is the clear evolutionary trend?","opts":["Increasing dependence on water for reproduction","Decreasing dependence on water for reproduction, alongside increasing structural complexity (e.g. the development of vascular tissue, then seeds)","No trend at all — the four divisions are unrelated","Decreasing size and complexity"],"ans":1,"exp":"Across bryophytes, pteridophytes, gymnosperms and angiosperms, there is a clear evolutionary trend of decreasing dependence on water for reproduction (bryophytes need water for fertilisation; seed plants do not), alongside increasing structural complexity such as the development of vascular tissue and then seeds."},{"q":"During intense exercise, muscle cells switch from aerobic to anaerobic respiration. What is produced, and why does this happen?","opts":["Carbon dioxide is produced, because oxygen becomes toxic during exercise","Lactic acid is produced, because the body can't supply oxygen fast enough to meet demand, so cells switch to anaerobic respiration to release energy faster (though less efficiently)","Oxygen is produced as a by-product of intense exercise","Nothing changes — respiration stays aerobic throughout"],"ans":1,"exp":"When oxygen demand outpaces supply during intense exercise, muscle cells switch to anaerobic respiration, producing lactic acid. This releases energy much faster than aerobic respiration can, but far less efficiently per glucose molecule — and the resulting lactic acid build-up contributes to muscle fatigue."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="sprout" style="width:15px;height:15px;flex-shrink:0"></i>Plant biodiversity: one clear evolutionary trend</h4>
+            <p>Plants (Kingdom Plantae) are grouped into four divisions — bryophytes, pteridophytes, gymnosperms, angiosperms — showing a clear evolutionary trend: <strong>decreasing dependence on water for reproduction</strong>, alongside increasing structural complexity. Bryophytes lack vascular tissue (xylem/phloem), limiting their size and tying them to damp habitats; the other three groups all have vascular tissue. Gymnosperms and angiosperms produce seeds (a protected embryo with a food store) rather than spores — angiosperm seeds are additionally enclosed in a fruit, while gymnosperm seeds (e.g. in a pine cone) are not.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="bug" style="width:15px;height:15px;flex-shrink:0"></i>Animal biodiversity: the phylum concept, and invertebrates' real-world role</h4>
+            <p>A <strong>phylum</strong> groups animals by shared body-plan features (symmetry, tissue layers, gut structure, coelom); of roughly 30 animal phyla, six are studied at this level (Porifera, Cnidaria, Platyhelminthes, Annelida, Arthropoda, Chordata). Invertebrates (five of these six phyla) are easy to underrate but essential — e.g. annelids like earthworms drive decomposition and soil aeration, both critical to agriculture and ecosystems.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="leaf" style="width:15px;height:15px;flex-shrink:0"></i>Photosynthesis and respiration — energy in, energy out</h4>
+            <p>Photosynthesis (<code>CO₂ + H₂O + light energy + chlorophyll → glucose + O₂</code>) happens via a light phase and a light-independent (dark) phase, both required. Aerobic respiration (glycolysis in the cytoplasm, then the Krebs cycle/oxidative phosphorylation in the mitochondria) is far more efficient than <strong>anaerobic respiration</strong>, which the body switches to under oxygen shortage (e.g. intense exercise), producing lactic acid — faster energy release, but far less efficient, and the lactic acid build-up drives muscle fatigue.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the four plant divisions as one continuous story, not four unrelated groups.</strong> Framing bryophytes → pteridophytes → gymnosperms → angiosperms as a single trend (less water dependence, more complexity) each step of the way is far more memorable and far more defensible in an exam answer than four separate descriptions.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Ground invertebrate phyla in their practical relevance, not just their body-plan features.</strong> Earthworms improving soil for agriculture is a concrete, memorable hook that a list of "symmetry type, tissue layers, coelom" for six phyla in the abstract is not.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the exercise-intensity switch as the anchor example for aerobic vs anaerobic respiration.</strong> Nearly every learner has felt muscle fatigue from exercise — connecting that lived experience directly to lactic acid build-up under anaerobic respiration makes the biochemistry concrete rather than abstract.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing the four plant divisions with no reference to the underlying trend.</strong> Simply listing features of each division separately, without connecting them via the water-dependence/complexity trend, misses the actual concept CAPS/IEB questions are testing.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Underestimating invertebrates as "less important" than vertebrates.</strong> Learners often treat invertebrate phyla as a lesser topic — their genuine ecological and agricultural importance (decomposition, soil aeration, pollination in other contexts) needs to be taught explicitly, not left implicit.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Believing anaerobic respiration only happens when oxygen is completely absent.</strong> It happens whenever oxygen SUPPLY can't keep up with DEMAND (a rate mismatch), not only in a total absence of oxygen — this distinction matters for correctly explaining the exercise example.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ss-19',
+      title: 'Human reproduction, plant responses and evolution (Gr 12 Life Sciences)',
+      level: 'advanced',
+      quiz: [{"q":"A shoot bends toward light coming from one side. What is the underlying hormonal mechanism?","opts":["Auxin is destroyed on the illuminated side, causing that side to shrink","Auxin migrates to the shaded side, causing greater cell elongation there than on the illuminated side, which bends the shoot toward the light","Light directly triggers cell division only on the shaded side","The shoot has no hormonal control — it grows toward light purely by chance"],"ans":1,"exp":"This is positive phototropism: auxin (produced in the shoot's growing tip) migrates toward the shaded side when light comes from one direction. Since auxin promotes cell elongation, the shaded-side cells elongate more than the illuminated-side cells, causing the shoot to curve toward the light — the same unequal-auxin-distribution mechanism also explains geotropism, just responding to gravity instead of light."},{"q":"According to Darwin's theory of natural selection, what are the necessary starting conditions for the process to operate on a population?","opts":["All individuals in a population must be genetically identical", "There must be heritable variation among individuals in a population, since natural selection acts on existing variation rather than creating it","Natural selection requires no variation at all","Every individual must reproduce at exactly the same rate"],"ans":1,"exp":"Darwin's theory requires heritable variation already existing within a population — natural selection does not create new variation, it acts on variation that is already present, favouring individuals whose heritable traits make them better suited to their environment, who then leave more offspring."}],
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4><i data-lucide="baby" style="width:15px;height:15px;flex-shrink:0"></i>Human reproduction — organs and hormones together</h4>
+            <p>The male and female reproductive systems each produce gametes and, in the female system, support a developing pregnancy. The <strong>menstrual cycle</strong> is a roughly monthly, hormonally-controlled cycle: <strong>FSH</strong> (from the pituitary) stimulates a follicle to mature, which produces <strong>oestrogen</strong>; the cycle continues through ovulation (triggered by an LH surge) and, if fertilisation doesn't occur, menstruation. Fertilisation normally occurs in the oviducts (Fallopian tubes), with the fertilised egg then travelling to the uterus for implantation.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="flower-2" style="width:15px;height:15px;flex-shrink:0"></i>Plant responses — one mechanism, several tropisms</h4>
+            <p>A <strong>tropism</strong> is directional growth toward (positive) or away from (negative) a stimulus: <strong>phototropism</strong> (light — shoots positive, roots usually negative), <strong>geotropism</strong> (gravity — roots positive, shoots negative), <strong>hydrotropism</strong> (water — roots positive). All are driven by the SAME underlying mechanism: the hormone <strong>auxin</strong>, produced at growing tips, migrates unevenly toward the shaded/lower side under a directional stimulus, causing greater cell elongation there and curving the plant toward (or away from) the stimulus.</p>
+          </div>
+          <div class="concept-block">
+            <h4><i data-lucide="dna" style="width:15px;height:15px;flex-shrink:0"></i>Darwin, variation, and natural selection</h4>
+            <p>Darwin's observations of Galápagos finches showed real variation between individuals and populations (different beak shapes suited to different food sources). <strong>Natural selection</strong> requires: heritable <strong>variation</strong> already existing within a population (selection acts on it, doesn't create it); a struggle for survival given limited resources; individuals whose traits suit the environment surviving and reproducing more; and those favourable traits becoming more common over generations.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the menstrual cycle as a hormone feedback loop/timeline, not a list of isolated hormone facts.</strong> Walking through FSH → follicle maturation → oestrogen → LH surge → ovulation as one continuous causal chain is far more retainable than presenting each hormone's role independently.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach ALL tropisms through the single auxin mechanism, not as separate topics.</strong> Once learners understand "auxin migrates to the shaded/lower side, that side elongates more, the plant bends" for phototropism, the exact same explanation (substituting gravity for light) covers geotropism — teaching them together, explicitly pointing out the shared mechanism, halves the actual amount to learn.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Emphasise that natural selection acts on EXISTING variation, not new variation it creates.</strong> This single, precise point resolves the most common misconception in evolution teaching (that organisms "develop" traits they need) — state it explicitly and return to it whenever a new example is introduced.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common mistakes to watch for</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing the menstrual cycle's hormones in isolation rather than as a connected sequence.</strong> Exam questions typically test the causal chain (which hormone triggers which event next) — memorising isolated facts about FSH, LH, oestrogen and progesterone without their sequence and interactions doesn't answer this kind of question.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Explaining tropisms as four unrelated phenomena rather than one shared auxin mechanism.</strong> Learners taught this way often can't transfer their phototropism explanation to a geotropism question, even though the underlying mechanism is identical.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Describing evolution as organisms actively "developing" traits they need (Lamarckian misconception).</strong> This is a persistent and serious misconception — natural selection selects among variation that ALREADY EXISTS in a population; it does not cause individual organisms to acquire new traits in response to need.</div>
         </div>
       `
     },
