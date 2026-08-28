@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Chemiese Nywerheid — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#2dd4bf;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back">&#8592; Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 &middot; Chemie &middot; Les 5</div>
+  <h1 class="lesson-title">Die Chemiese Nywerheid</h1>
+  <p class="lesson-sub">Verduidelik die industriële vervaardiging van ammoniak (Haber-proses) en swaelsuur (Kontakproses), en evalueer die toestande wat gebruik word in terme van opbrengs en tempo.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Skakel om IEB-uitbreidingsinhoud te wys</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Werkboek</button>
+</div>
+
+<!-- LEER-OORTJIE -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Die Haber-proses &mdash; Sintese van Ammoniak</h2>
+    <p>Die Haber-proses (ontwikkel deur Fritz Haber en Carl Bosch, vroeg in die 1900's) is een van die belangrikste industriële reaksies &mdash; dit maak grootskaalse sintese van ammoniak vir kunsmis moontlik, wat ongeveer die helfte van die wêreld se bevolking voed.</p>
+    <div class="formula">N<sub>2</sub>(g) + 3H<sub>2</sub>(g) &#x21CC; 2NH<sub>3</sub>(g) &nbsp;&nbsp;&nbsp;&nbsp; &Delta;H = &minus;92 kJ&middot;mol<sup>&minus;1</sup></div>
+
+    <h2 style="font-size:17px">Bronne van Grondstowwe</h2>
+    <ul>
+      <li><strong>Stikstof (N<sub>2</sub>):</strong> Verkry deur fraksionele distillasie van vervloeide lug (N<sub>2</sub> kook by &minus;196&deg;C, O<sub>2</sub> by &minus;183&deg;C).</li>
+      <li><strong>Waterstof (H<sub>2</sub>):</strong> Verkry uit aardgas (metaan) deur stoomhervorming: CH<sub>4</sub> + H<sub>2</sub>O &rarr; CO + 3H<sub>2</sub> (by ~800&deg;C met Ni-katalisator), gevolg deur CO + H<sub>2</sub>O &rarr; CO<sub>2</sub> + H<sub>2</sub> (water-gas-verskuiwingsreaksie). H<sub>2</sub> kan ook uit elektrolise van water kom (duurder).</li>
+    </ul>
+
+    <h2 style="font-size:17px">Industriële Toestande &amp; Regverdiging</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Toestand</th><th>Waarde gebruik</th><th>Le Chatelier-regverdiging</th><th>Kompromie</th></tr></thead>
+      <tbody>
+        <tr><td>Temperatuur</td><td>~450&deg;C</td><td>Reaksie is eksotermies (&Delta;H &lt; 0): laer T bevoordeel produk (verskuif regs), wat 'n hoër K en opbrengs gee</td><td>Te lae T &rarr; tempo te stadig. 450&deg;C is die kompromie wat 'n aanvaarbare tempo met katalisator gee</td></tr>
+        <tr><td>Druk</td><td>150&ndash;200 atm</td><td>Linkerkant: 4 mol gas (1+3); regterkant: 2 mol gas. Hoë P verskuif die ewewig REGS (minder mol), wat opbrengs verhoog</td><td>Baie hoë P is duur (sterk houers) en gevaarlik. 200 atm is die ekonomiese optimum</td></tr>
+        <tr><td>Katalisator</td><td>Yster (Fe) met K<sub>2</sub>O- en Al<sub>2</sub>O<sub>3</sub>-promotors</td><td>Verskuif NIE die ewewig nie; verander NIE K<sub>c</sub> nie</td><td>Laat die ewewig vinniger bereik word by 'n laer temperatuur. Sonder dit sou 450&deg;C te stadig wees</td></tr>
+        <tr><td>Ongereageerde gasse</td><td>Herwin terug na die reaktor</td><td>Verhoog effektief die reagenskonsentrasie, wat die ewewig regs verskuif (Le Chatelier)</td><td>Verbeter die algehele opbrengs al is die enkeldeurgang-omsetting slegs ~15&ndash;25%</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Sleutelinsig &mdash; Kompromie tussen tempo en opbrengs:</strong> Lae temperatuur maksimeer opbrengs (K<sub>c</sub> neem toe soos T daal vir 'n eksotermiese reaksie) maar die tempo word onaanvaarbaar stadig. Hoë temperatuur verhoog tempo maar verlaag opbrengs. 'n <em>Kompromie</em>-temperatuur van ~450&deg;C met 'n ysterkatalisator gee 'n industrieel aanvaarbare tempo met 'n redelike opbrengs (&sim;15&ndash;25% per deurgang, verbeter deur herwinning).</div>
+
+    <h2 style="font-size:17px">Gebruike van Ammoniak</h2>
+    <ul>
+      <li><strong>Kunsmis</strong> (80% van produksie): ammoniumnitraat (NH<sub>4</sub>NO<sub>3</sub>), ammoniumsulfaat ((NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub>), ureum (CO(NH<sub>2</sub>)<sub>2</sub>), watervrye ammoniak wat direk op grond toegedien word.</li>
+      <li><strong>Salpetersuur</strong>-produksie (Ostwald-proses): NH<sub>3</sub> &rarr; NO &rarr; NO<sub>2</sub> &rarr; HNO<sub>3</sub>.</li>
+      <li><strong>Plofstowwe:</strong> ammoniumnitraat word in ANFO gebruik (mynbou en groefwerk).</li>
+      <li><strong>Skoonmaakprodukte</strong> en verkoeling.</li>
+    </ul>
+
+    <h2>Die Kontakproses &mdash; Sintese van Swaelsuur</h2>
+    <p>Swaelsuur is die wêreld se mees geproduseerde industriële chemikalie. Die Kontakproses vervaardig dit in drie hoofstappe:</p>
+
+    <p><strong>Stap 1 &mdash; Verbranding van swael</strong> (of die rooster van sulfied-ertse soos FeS<sub>2</sub>):</p>
+    <div class="formula">S(s) + O<sub>2</sub>(g) &rarr; SO<sub>2</sub>(g) &nbsp;&nbsp;&nbsp;&nbsp; (&Delta;H &lt; 0)</div>
+
+    <p><strong>Stap 2 &mdash; Oksidasie van SO<sub>2</sub> na SO<sub>3</sub></strong> (die ewewigstap &mdash; kompromie tussen tempo en opbrengs):</p>
+    <div class="formula">2SO<sub>2</sub>(g) + O<sub>2</sub>(g) &#x21CC; 2SO<sub>3</sub>(g) &nbsp;&nbsp;&nbsp;&nbsp; &Delta;H = &minus;196 kJ&middot;mol<sup>&minus;1</sup></div>
+    <table class="symbols-table">
+      <thead><tr><th>Toestand</th><th>Waarde</th><th>Regverdiging</th></tr></thead>
+      <tbody>
+        <tr><td>Temperatuur</td><td>~450&deg;C</td><td>Dieselfde kompromie as by Haber: eksotermiese reaksie, laer T gee beter opbrengs maar stadiger tempo; 450&deg;C met katalisator is optimaal</td></tr>
+        <tr><td>Druk</td><td>1&ndash;2 atm (naby atmosferies)</td><td>3 mol gas &rarr; 2 mol gas: hoë P sou SO<sub>3</sub> bevoordeel, maar opbrengs by 450&deg;C is reeds ~98%, dus is die ekstra koste van hoë P nie geregverdig nie</td></tr>
+        <tr><td>Katalisator</td><td>V<sub>2</sub>O<sub>5</sub> (vanadium(V)-oksied)</td><td>Verhoog tempo; laat reaksie by laer temperatuur toe; V<sub>2</sub>O<sub>5</sub> word geregenereer ('n ware katalisator)</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Stap 3 &mdash; Absorpsie van SO<sub>3</sub></strong> (NIE direk in water nie):</p>
+    <div class="formula">
+      SO<sub>3</sub>(g) + H<sub>2</sub>SO<sub>4</sub>(l) &rarr; H<sub>2</sub>S<sub>2</sub>O<sub>7</sub>(l) &nbsp;&nbsp; (oleum / rokende H<sub>2</sub>SO<sub>4</sub>)<br>
+      H<sub>2</sub>S<sub>2</sub>O<sub>7</sub>(l) + H<sub>2</sub>O(l) &rarr; 2H<sub>2</sub>SO<sub>4</sub>(l)
+    </div>
+    <div class="callout"><strong>Waarom nie SO<sub>3</sub> direk by water voeg nie?</strong> Die reaksie SO<sub>3</sub> + H<sub>2</sub>O &rarr; H<sub>2</sub>SO<sub>4</sub> is hewig eksotermies en produseer 'n digte, hoogs korrosiewe suurmis wat baie moeilik is om te bevat. In plaas daarvan word SO<sub>3</sub> eers in gekonsentreerde H<sub>2</sub>SO<sub>4</sub> opgelos om oleum te vorm, wat dan versigtig met water verdun word.</div>
+
+    <h2 style="font-size:17px">Gebruike van Swaelsuur</h2>
+    <ul>
+      <li><strong>Kunsmisvervaardiging:</strong> reageer met fosfaatrots om superfosfaat te maak; reageer met NH<sub>3</sub> om ammoniumsulfaat te maak.</li>
+      <li><strong>Lood-suurbatterye</strong> (motorbatterye): 30&ndash;38% H<sub>2</sub>SO<sub>4</sub>-elektroliet.</li>
+      <li><strong>Metaalbeitsing:</strong> die verwydering van roes-/oksiedlae van staal voor galvanisering of plattering.</li>
+      <li><strong>Chemiese sintese:</strong> kleurstowwe, farmaseutiese produkte, skoonmaakmiddels, plofstowwe (TNT-sintese).</li>
+    </ul>
+
+    <h2>Groen-chemie-beginsels</h2>
+    <p>Albei prosesse weerspieël pogings om industriële doeltreffendheid met omgewingsverantwoordelikheid te balanseer:</p>
+    <ul>
+      <li><strong>Atoomekonomie:</strong> die ontwerp van reaksies waar die meeste atome in reagense in die gewenste produk beland, wat afval minimeer.</li>
+      <li><strong>Katalisators:</strong> laat reaksies by laer temperature/drukke toe, wat energieverbruik verminder.</li>
+      <li><strong>Herwinning van ongereageerde gasse:</strong> beide die Haber-proses (ongereageerde N<sub>2</sub> en H<sub>2</sub>) en die Kontakproses (ongereageerde SO<sub>2</sub>) herwin grondstof, wat die algehele opbrengs verbeter en afval verminder.</li>
+      <li><strong>Afvalminimering:</strong> SO<sub>2</sub>-stertgas van die Kontakproses word behandel (dubbelabsorpsie) om SO<sub>2</sub>-vrystellings te verminder &mdash; 'n oorsaak van suurreën.</li>
+      <li><strong>Hernubare grondstowwe:</strong> navorsing na groen waterstof (uit elektrolise met hernubare elektrisiteit) om fossielbrandstof-gebaseerde H<sub>2</sub> in die Haber-proses te vervang.</li>
+      <li><strong>Ekonomiese teenoor omgewingskompromieë:</strong> hoër temperatuur en druk verhoog tempo (ekonomiese voordeel) maar verbruik meer energie (omgewingskoste). Die kompromietoestande poog om hierdie faktore te balanseer.</li>
+    </ul>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB-uitbreiding &mdash; Atoomekonomie &amp; Persentasie-opbrengs</div>
+      <p><strong>Atoomekonomie</strong> meet hoe doeltreffend atome in reagense omgeskakel word na gewenste produk(te):</p>
+      <div class="formula" style="color:#fcd34d">% Atoomekonomie = (M<sub>r</sub> van gewenste produk / totale M<sub>r</sub> van alle produkte) &times; 100%</div>
+      <p>Voorbeeld &mdash; Haber-proses: N<sub>2</sub> + 3H<sub>2</sub> &rarr; 2NH<sub>3</sub>. Die enigste produk is NH<sub>3</sub>.</p>
+      <div class="formula" style="color:#fcd34d">% Atoomekonomie = (2 &times; 17) / (2 &times; 17) &times; 100% = <strong>100%</strong></div>
+      <p>Die Haber-proses het 100% atoomekonomie &mdash; alle atome in die reagense beland in die gewenste produk. Dit maak dit ideaal vanuit 'n groen-chemie-oogpunt, ondanks die energiekoste.</p>
+      <p><strong>Persentasie-opbrengs</strong> vergelyk werklike opbrengs met teoretiese opbrengs:</p>
+      <div class="formula" style="color:#fcd34d">% opbrengs = (werklike opbrengs / teoretiese opbrengs) &times; 100%</div>
+      <p>Voorbeeld: As 15.0 g NH<sub>3</sub> geproduseer word terwyl die teoretiese opbrengs 34.0 g was: % opbrengs = (15.0/34.0) &times; 100% = 44.1%.</p>
+      <p><strong>Let wel:</strong> Die Haber-proses het 100% atoomekonomie maar slegs ~15&ndash;25% opbrengs per deurgang (weens ewewigsbeperkings). Herwinning van ongereageerde gasse verhoog die algehele opbrengs tot ~97%. Beide hoë atoomekonomie en hoë opbrengs is wenslik.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VERKEN-OORTJIE -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Le Chatelier-simulator &mdash; Haber-proses: N&#x2082; + 3H&#x2082; &#x21CC; 2NH&#x2083;</h3>
+      <canvas id="haberCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Pas Industriële Toestande Aan</div>
+        <div class="slider-row">
+          <label>Temperatuur (&deg;C)</label>
+          <input type="range" id="tempSlider" min="200" max="700" step="25" value="450" oninput="updateHaber()">
+          <span class="slider-val" id="tempVal">450&deg;C</span>
+        </div>
+        <div class="slider-row">
+          <label>Druk (atm)</label>
+          <input type="range" id="presSlider" min="10" max="500" step="10" value="200" oninput="updateHaber()">
+          <span class="slider-val" id="presVal">200 atm</span>
+        </div>
+        <div id="haberComment" style="margin-top:10px;font-size:11.5px;color:rgba(210,218,245,0.60);line-height:1.75;min-height:60px"></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Voorspelde Uitkomste</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">NH&#x2083;-opbrengs</div><div class="readout-val" id="roYield">--<span>%</span></div></div>
+          <div class="readout"><div class="readout-label">Tempo</div><div class="readout-val" id="roRate" style="font-size:12px">--</div></div>
+          <div class="readout"><div class="readout-label">Uitspraak</div><div class="readout-val" id="roVerdict" style="font-size:11px">--</div></div>
+          <div class="readout"><div class="readout-label">K<sub>c</sub>-neiging</div><div class="readout-val" id="roKc" style="font-size:11px">--</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OEFENING-OORTJIE -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Gaan die verduidelikings na om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-uitbreidingsvrae</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WERKBOEK-OORTJIE -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae in volledige sinne waar vereis. Vir Le Chatelier-vrae moet jy altyd die rigting van die verskuiwing noem EN die beginsel by naam noem. Skryf altyd gebalanseerde vergelykings met toestandsimbole.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 &mdash; Toestande van die Haber-proses</div>
+      <div class="wb-qtext">Die Haber-proses: N<sub>2</sub>(g) + 3H<sub>2</sub>(g) &#x21CC; 2NH<sub>3</sub>(g) &nbsp;&nbsp; &Delta;H = &minus;92 kJ&middot;mol<sup>&minus;1</sup><br><br>
+      (a) Verduidelik waarom 'n hoë druk van 200 atm gebruik word. Tel in jou antwoord die mol gas aan elke kant en pas Le Chatelier se beginsel toe.<br><br>
+      (b) Die reaksie is eksotermies. Verduidelik die temperatuurkompromie: waarom nie 200&deg;C (beter opbrengs) of 700&deg;C (vinniger tempo) gebruik nie? Watter rol speel die ysterkatalisator?<br><br>
+      (c) Ongereageerde N<sub>2</sub> en H<sub>2</sub> word van NH<sub>3</sub> geskei deur vervloeiing en herwin. Verduidelik met behulp van Le Chatelier se beginsel hoe herwinning die algehele opbrengs verbeter.<br><br>
+      (d) Noem TWEE grootskaalse gebruike van ammoniak.<br><br>
+      <em>(10 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 &mdash; Kontakproses</div>
+      <div class="wb-qtext">Die sleutel-ewewigstap in die Kontakproses is: 2SO<sub>2</sub>(g) + O<sub>2</sub>(g) &#x21CC; 2SO<sub>3</sub>(g) &nbsp;&nbsp; &Delta;H = &minus;196 kJ&middot;mol<sup>&minus;1</sup><br><br>
+      (a) Skryf die vergelyking vir Stap 1 (verbranding van swael in lug).<br><br>
+      (b) Vir die ewewigstap hierbo:<br>
+      &nbsp;&nbsp;&nbsp;(i) Pas Le Chatelier se beginsel toe om te verduidelik waarom 'n hoë druk SO<sub>3</sub>-produksie sou bevoordeel.<br>
+      &nbsp;&nbsp;&nbsp;(ii) Ondanks dit word atmosferiese druk industrieel gebruik. Verduidelik waarom.<br>
+      &nbsp;&nbsp;&nbsp;(iii) Die katalisator wat gebruik word, is V<sub>2</sub>O<sub>5</sub>. Watter effek het dit op die ewewigsposisie en op K<sub>c</sub>?<br><br>
+      (c) Verduidelik waarom SO<sub>3</sub> in gekonsentreerde H<sub>2</sub>SO<sub>4</sub> geabsorbeer word (om oleum te vorm) eerder as om direk in water op te los.<br><br>
+      (d) Noem TWEE gebruike van swaelsuur in die industrie of alledaagse lewe.<br><br>
+      <em>(10 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 &mdash; Vergelyking van die Twee Prosesse</div>
+      <div class="wb-qtext">Voltooi die vergelykingstabel vir die Haber- en Kontakprosesse:<br><br>
+      Teken 'n tabel met kolomme: Eienskap | Haber-proses | Kontakproses<br>
+      Rye om te voltooi: (a) Vergelyking vir sleutel-ewewigstap &nbsp; (b) Temperatuur gebruik &nbsp; (c) Katalisator &nbsp; (d) Effek van toenemende druk op opbrengs &nbsp; (e) Teken van &Delta;H &nbsp; (f) Een belangrike gebruik van produk<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 &mdash; Groen Chemie &amp; Volhoubaarheid</div>
+      <div class="wb-qtext">(a) Definieer &ldquo;atoomekonomie&rdquo; en verduidelik waarom die Haber-proses 'n hoë atoomekonomie het.<br><br>
+      (b) Die Kontakproses produseer SO<sub>2</sub>-stertgas as 'n newe-produk. Verduidelik waarom dit 'n omgewingskwessie is en beskryf EEN maatreël wat geneem word om SO<sub>2</sub>-vrystellings te verminder.<br><br>
+      (c) Stel EEN verandering aan die Haber-proses voor wat dit meer omgewingsvolhoubaar sou maak. Verduidelik die voordeel van hierdie verandering.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 &mdash; Lees van Opbrengs-/Tempodata by Verskillende Temperature</div>
+      <div class="wb-qtext">'n Aanlegtegnikus teken die NH<sub>3</sub>-persentasie-opbrengs en relatiewe reaksietempo vir die Haber-proses aan teen 'n konstante druk van 200 atm, by verskillende reaktortemperature:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Temperatuur (&deg;C)</th><th>350</th><th>400</th><th>450</th><th>500</th><th>550</th></tr></thead>
+        <tbody>
+          <tr><td>NH<sub>3</sub>-opbrengs (%)</td><td>37</td><td>25</td><td>16</td><td>10</td><td>6.0</td></tr>
+          <tr><td>Relatiewe tempo (a.e.)</td><td>1</td><td>4</td><td>10</td><td>22</td><td>45</td></tr>
+        </tbody>
+      </table>
+      (a) Beskryf die neiging in NH<sub>3</sub>-opbrengs soos temperatuur toeneem van 350&deg;C tot 550&deg;C. Gebruik Le Chatelier se beginsel om te verduidelik waarom hierdie neiging vir 'n eksotermiese reaksie voorkom.<br>
+      (b) Beskryf die neiging in relatiewe tempo oor dieselfde temperatuuromvang. Verduidelik waarom tempo toeneem met temperatuur, in terme van deeltjiebotsings en aktiveringsenergie.<br>
+      (c) Verduidelik, deur BEIDE kolomme van die tabel te gebruik, waarom 450&deg;C (nie 350&deg;C of 550&deg;C nie) as die industriële kompromietemperatuur gekies word.<br>
+      (d) 'n Reaktor voer 500 kg N<sub>2</sub>-gas in (M = 28 g&middot;mol<sup>&minus;1</sup>). Bereken die teoretiese massa NH<sub>3</sub> (M = 17 g&middot;mol<sup>&minus;1</sup>) as al die N<sub>2</sub> volledig gereageer het. Gebruik dan die 450&deg;C-opbrengs (16%) uit die tabel om die werklike massa NH<sub>3</sub> geproduseer te bereken.<br><br>
+      <em>(10 punte)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { updateHaber(); }, 50);
+}
+
+// ─── Haber-simulator ──────────────────────────────────────────────────────────
+function updateHaber() {
+  const T = parseInt(document.getElementById('tempSlider').value);
+  const P = parseInt(document.getElementById('presSlider').value);
+  document.getElementById('tempVal').textContent = T + '°C';
+  document.getElementById('presVal').textContent = P + ' atm';
+
+  // Benaderde NH3-opbrengs % (Haber-ewewigsmodel)
+  const tFactor = Math.max(0.05, 1.35 - (T - 200) / 620);
+  const pFactor = 0.20 + 0.65 * Math.pow((P - 10) / 490, 0.55);
+  const yieldPct = Math.max(3, Math.min(97, tFactor * pFactor * 100));
+
+  const rateLabels = ['Baie Stadig', 'Stadig', 'Matig', 'Vinnig', 'Baie Vinnig'];
+  const rateIdx = Math.min(4, Math.floor((T - 200) / 110));
+  const rateLabel = rateLabels[Math.max(0, rateIdx)];
+
+  document.getElementById('roYield').innerHTML = yieldPct.toFixed(0) + '<span>%</span>';
+  document.getElementById('roRate').textContent = rateLabel;
+
+  let verdict = '', kcTrend = '';
+  if (T < 350) { verdict = 'Hoë opbrengs, te stadig'; kcTrend = 'Hoë Kc'; }
+  else if (T <= 500) { verdict = 'Industriële optimum'; kcTrend = 'Matige Kc'; }
+  else { verdict = 'Vinnig maar lae opbrengs'; kcTrend = 'Lae Kc'; }
+  document.getElementById('roVerdict').textContent = verdict;
+  document.getElementById('roKc').textContent = kcTrend;
+
+  let comments = [];
+  if (T < 350) comments.push('Baie lae temperatuur: Kc is hoog (bevoordeel NH₃) maar tempo is te stadig selfs met katalisator.');
+  else if (T <= 500) comments.push('Industriële omvang (~400–500°C): aanvaarbare tempo met Fe-katalisator; goeie kompromie.');
+  else comments.push('Hoë temperatuur: vinnige tempo maar Kc neem af (eksotermiese ewewig verskuif LINKS) — opbrengs daal aansienlik.');
+  if (P < 50) comments.push('Lae druk: opbrengs verminder (4 mol gas → 2 mol; hoë P bevoordeel produkte). Ekonomies goedkoper maar minder doeltreffend.');
+  else if (P <= 300) comments.push('Industriële drukomvang (150–300 atm): goeie opbrengs; praktiese balans tussen koste, veiligheid en toerustingspanning.');
+  else comments.push('Baie hoë druk: maksimum opbrengs maar uiters duur houers en ernstige veiligheidsrisiko\'s.');
+  document.getElementById('haberComment').textContent = comments.join(' ');
+
+  drawHaberCanvas(T, P, yieldPct);
+}
+
+function drawHaberCanvas(T, P, yieldPct) {
+  const canvas = document.getElementById('haberCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 340;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  const padL = 55, padR = 40, padT = 30, padB = 48;
+  const gw = W - padL - padR, gh = H - padT - padB;
+
+  // Roosterlyne
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = padT + (i/5)*gh;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+gw, y); ctx.stroke();
+  }
+
+  // Asse
+  ctx.strokeStyle = 'rgba(210,218,245,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+gh); ctx.lineTo(padL+gw, padT+gh); ctx.stroke();
+
+  // As-etikette
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    ctx.fillText((i*20) + '%', padL - 6, padT + gh - (i/5)*gh + 4);
+  }
+  ctx.textAlign = 'center';
+  [200,300,400,500,600,700].forEach(tt => {
+    const x = padL + ((tt-200)/500)*gw;
+    ctx.fillText(tt, x, padT + gh + 16);
+  });
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.font = '11px "Cabinet Grotesk",sans-serif';
+  ctx.fillText('Temperatuur (°C)', padL + gw/2, H - 6);
+  ctx.save(); ctx.translate(14, padT + gh/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('NH₃-opbrengs (%)', 0, 0); ctx.restore();
+
+  // Teken opbrengskurwes vir verskeie drukke
+  const pressures = [50, 150, 300, 500];
+  const pColors = ['rgba(96,165,250,0.55)', 'rgba(45,212,191,0.65)', 'rgba(34,197,94,0.55)', 'rgba(250,204,21,0.55)'];
+  pressures.forEach((pp, pi) => {
+    const isActive = Math.abs(pp - P) < 80;
+    ctx.strokeStyle = pColors[pi];
+    ctx.lineWidth = isActive ? 2.5 : 1.2;
+    ctx.beginPath();
+    for (let tt = 200; tt <= 700; tt += 5) {
+      const tf = Math.max(0.05, 1.35 - (tt-200)/620);
+      const pf = 0.20 + 0.65 * Math.pow((pp-10)/490, 0.55);
+      const y_pct = Math.max(3, Math.min(97, tf*pf*100));
+      const x = padL + ((tt-200)/500)*gw;
+      const y = padT + gh - (y_pct/100)*gh;
+      if (tt === 200) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    // Endetiket
+    const tf2 = Math.max(0.05, 1.35 - 500/620);
+    const pf2 = 0.20 + 0.65 * Math.pow((pp-10)/490, 0.55);
+    const endPct = Math.max(3, Math.min(97, tf2*pf2*100));
+    ctx.fillStyle = pColors[pi];
+    ctx.font = '9px "JetBrains Mono",monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(pp + ' atm', padL + gw + 4, padT + gh - (endPct/100)*gh + 3);
+  });
+
+  // Industriële optimum-sone
+  const zx1 = padL + (200/500)*gw, zx2 = padL + (300/500)*gw;
+  ctx.fillStyle = 'rgba(34,197,94,0.05)';
+  ctx.fillRect(zx1, padT, zx2-zx1, gh);
+  ctx.strokeStyle = 'rgba(34,197,94,0.25)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.strokeRect(zx1, padT, zx2-zx1, gh);
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(34,197,94,0.55)';
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('Industriële', (zx1+zx2)/2, padT + 12);
+  ctx.fillText('omvang', (zx1+zx2)/2, padT + 23);
+
+  // Huidige bedryfspunt
+  const curX = padL + ((T-200)/500)*gw;
+  const curY = padT + gh - (yieldPct/100)*gh;
+  ctx.fillStyle = '#f87171';
+  ctx.beginPath(); ctx.arc(curX, curY, 8, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(yieldPct.toFixed(0) + '%', curX, curY - 13);
+
+  // Staafgrafieke vir N2, H2, NH3 aan die regterkant
+  const barX = padL + gw * 0.82;
+  const barAreaW = gw * 0.18;
+  const bars = [
+    { label: 'N₂', frac: (1 - yieldPct/100) * 0.5, color: '#60a5fa' },
+    { label: 'H₂', frac: (1 - yieldPct/100) * 0.5, color: '#a78bfa' },
+    { label: 'NH₃', frac: yieldPct/100, color: '#2dd4bf' }
+  ];
+  const bw = 18, gap = 8;
+  const totalBW = bars.length * bw + (bars.length-1)*gap;
+  const bStartX = barX + (barAreaW - totalBW)/2;
+  const maxBarH = gh * 0.7;
+  const baseY = padT + gh;
+  bars.forEach((bar, i) => {
+    const bh = Math.max(3, bar.frac * maxBarH);
+    const bx = bStartX + i*(bw+gap);
+    const by = baseY - bh;
+    ctx.fillStyle = bar.color + '55';
+    ctx.fillRect(bx, by, bw, bh);
+    ctx.strokeStyle = bar.color;
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(bx, by, bw, bh);
+    ctx.fillStyle = bar.color;
+    ctx.font = '9px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(bar.label, bx + bw/2, baseY + 14);
+  });
+  ctx.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('Samestelling', bStartX + totalBW/2, padT + 14);
+}
+
+// ─── Oefeningsvrae ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: "In die Haber-proses N₂ + 3H₂ ⇌ 2NH₃ (ΔH = −92 kJ/mol), waarom word 'n temperatuur van ongeveer 450°C gebruik eerder as 'n baie laer temperatuur soos 200°C?",
+    opts: ["By 200°C werk die katalisator glad nie","By 200°C sou die opbrengs beter wees, maar die tempo sou onaanvaarbaar stadig wees selfs met die ysterkatalisator","By 200°C reageer stikstof en waterstof glad nie","By 200°C sou die druk daal, wat opbrengs verminder"],
+    ans: 1,
+    exp: "Die reaksie is eksotermies — laer T verhoog Kc en verbeter opbrengs (Le Chatelier: verskuif regs). By 200°C sou die opbrengs inderdaad hoër wees, MAAR die tempo is so laag dat die reaksie onprakties stadig sou wees. Selfs met die Fe-katalisator sou onvoldoende NH₃ per tydseenheid geproduseer word. 450°C bied 'n aanvaarbare kompromie: 'n goed genoeg tempo met die katalisator, en 'n redelike opbrengs van ~15–25% per deurgang."
+  },
+  {
+    q: "In die Haber-proses word 'n hoë druk (200 atm) gebruik. Watter stelling verduidelik korrek waarom?",
+    opts: ["Hoë druk verhoog slegs die tempo van die reaksie; dit het geen effek op opbrengs nie","Hoë druk verskuif die ewewig regs omdat daar minder mol gas aan die produkkant (2 mol) as aan die reagenskant (4 mol) is","Hoë druk verskuif die ewewig links omdat stikstof en waterstof digter as ammoniak is","Hoë druk verhoog Kc vir die reaksie"],
+    ans: 1,
+    exp: "Le Chatelier se beginsel: toenemende druk verskuif die ewewig na die kant met MINDER mol gas. Linkerkant: 1 mol N₂ + 3 mol H₂ = 4 mol gas. Regterkant: 2 mol NH₃ = 2 mol gas. Hoë druk verskuif REGS → meer NH₃ geproduseer → hoër opbrengs. Kc verander NIE (slegs temperatuur verander Kc)."
+  },
+  {
+    q: "Waarom word SO₃ in gekonsentreerde H₂SO₄ geabsorbeer (om oleum te vorm) eerder as direk by water gevoeg in die Kontakproses?",
+    opts: ["SO₃ is onoplosbaar in water sodat dit nie kan reageer nie","Om SO₃ direk by water te voeg, produseer 'n gevaarlike suurmis wat moeilik is om te beheer","Water sou die SO₃ terug na SO₂ ontbind","SO₃ reageer met water om SO₂ te vorm in plaas van H₂SO₄"],
+    ans: 1,
+    exp: "Die direkte reaksie SO₃ + H₂O → H₂SO₄ is hewig eksotermies en produseer 'n digte, korrosiewe suurmis (fyn druppels H₂SO₄) wat nie maklik gekondenseer of bevat kan word nie. In plaas daarvan word SO₃ in gekonsentreerde H₂SO₄ opgelos om oleum (H₂S₂O₇) te vorm, wat dan versigtig met beheerde hoeveelhede water verdun word om die gewenste konsentrasie H₂SO₄ te produseer."
+  },
+  {
+    q: "'n Ysterkatalisator word in die Haber-proses gebruik. Watter stelling oor die katalisator is korrek?",
+    opts: ["Dit verhoog die ewewigsopbrengs van NH₃ deur die ewewig regs te verskuif","Dit verhoog Kc vir die reaksie by 'n gegewe temperatuur","Dit het geen effek op die ewewigsposisie of Kc nie, maar laat die ewewig vinniger bereik word","Dit verlaag die aktiveringsenergie van slegs die voorwaartse reaksie, wat die opbrengs verhoog"],
+    ans: 2,
+    exp: "'n Katalisator (yster met K₂O- en Al₂O₃-promotors) bied 'n alternatiewe reaksieweg met 'n LAER aktiveringsenergie vir BEIDE die voorwaartse en terugwaartse reaksies gelykop. Dit beteken die ewewig word vinniger bereik, maar die ewewigsposisie (relatiewe hoeveelhede reagense en produkte) en Kc bly ONVERANDERD. Die katalisator laat industriële gebruik van 'n laer temperatuur (450°C) toe terwyl 'n bruikbare reaksietempo steeds bereik word."
+  },
+  {
+    q: "In die Kontakproses-stap 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) (ΔH = −196 kJ/mol), wat sou met die opbrengs van SO₃ gebeur as die temperatuur na 700°C verhoog word?",
+    opts: ["Opbrengs neem toe omdat hoër temperatuur altyd meer produk gee","Opbrengs neem toe omdat die reaksietempo vinniger is","Opbrengs neem af omdat die voorwaartse reaksie eksotermies is en hoër temperatuur die ewewig LINKS verskuif","Opbrengs bly dieselfde omdat Kc onafhanklik van temperatuur is"],
+    ans: 2,
+    exp: "Die reaksie is eksotermies (ΔH < 0). Behandel hitte as 'n produk. Om temperatuur te verhoog is gelykstaande aan die byvoeging van 'n produk → die ewewig verskuif LINKS (Le Chatelier) om die spanning teen te werk → minder SO₃ geproduseer → laer opbrengs. Kc NEEM AF. Dit is waarom beide die Haber- en Kontakprosesse 'n matige kompromietemperatuur (~450°C) gebruik eerder as baie hoë temperature."
+  },
+  {
+    q: "Waterstof wat in die Haber-proses gebruik word, word hoofsaaklik verkry uit:",
+    opts: ["Elektrolise van water (die splitsing van H₂O met elektrisiteit)","Stoomhervorming van aardgas (metaan) om CO + H₂ te gee, gevolg deur water-gas-verskuiwing om CO₂ + H₂ te gee","Fraksionele distillasie van lug","Reduksie van metaaloksiede met koolstof"],
+    ans: 1,
+    exp: "Die mees ekonomiese bron van H₂ vir die Haber-proses is stoomhervorming van aardgas: CH₄ + H₂O → CO + 3H₂ (by ~800°C met Ni-katalisator), gevolg deur die water-gas-verskuiwingsreaksie: CO + H₂O → CO₂ + H₂. Dit is goedkoper as elektrolise van water. N₂ word verkry deur fraksionele distillasie van vervloeide lug (nie H₂ nie). Navorsing na \"groen waterstof\" uit hernubare-aangedrewe elektrolise is aan die gang."
+  },
+  {
+    q: "Beide die Haber-proses (N₂ + 3H₂ ⇌ 2NH₃, 4 mol gas → 2 mol gas) en die Kontakproses-stap (2SO₂ + O₂ ⇌ 2SO₃, 3 mol gas → 2 mol gas) is eksotermies en sou albei, in teorie, baat by hoër druk. Tog gebruik die Haber-proses industrieel ~200 atm terwyl die Kontakproses slegs ~1–2 atm gebruik. Wat verduidelik hierdie verskil die beste?",
+    opts: [
+      "Die groter afname in mol gas (4→2) in die Haber-proses beteken druk het 'n groter effek op sy opbrengs, en Haber se enkeldeurgang-opbrengs is tot begin met baie laer; die Kontakproses bereik reeds ~98% opbrengs by 450°C, so om vir hoëdruk-houers te betaal, bring min ekstra voordeel",
+      "SO₃ is 'n vloeistof by reaksietemperatuur sodat druk sy ewewig glad nie kan beïnvloed nie",
+      "Ammoniak is baie digter as swaweltrioksied, sodat slegs die Haber-proses deur Le Chatelier se beginsel beïnvloed word",
+      "Die Kontakproses is endotermies, sodat drukveranderinge sy ewewig nie verskuif nie"
+    ],
+    ans: 0,
+    exp: "Le Chatelier se beginsel geld vir albei reaksies, maar die EKONOMIESE saak vir ekstra druk verskil. Die Haber-proses het 'n groter afname in mol gas (4→2, Δn=2) as die Kontakproses (3→2, Δn=1), sodat druk sy ewewig verder beweeg; en anders as die Kontakproses (reeds ~98% opbrengs by atmosferiese druk en 450°C), is Haber se enkeldeurgang-opbrengs slegs ~15–25%, sodat die ekstra opbrengs van hoë druk die koste van versterkte houers werd is. Albei reaksies is eksotermies (SO₃ is nie 'n vloeistof by 450°C nie, en NH₃ is 'n gas by reaktortoestande) — die verskil is 'n koste-voordeel-oordeel, nie 'n verskil in of Le Chatelier van toepassing is nie."
+  },
+  {
+    q: "'n Aanleg verhoog die druk in die Haber-proses-reaktor van 200 atm na 350 atm terwyl temperatuur op 450°C gehou word. Watter stelling beskryf korrek die effek op opbrengs en op Kc?",
+    opts: [
+      "Opbrengs van NH₃ neem toe (minder mol gas bevoordeel, Le Chatelier), maar Kc bly dieselfde omdat Kc slegs van temperatuur afhang, nie van druk nie",
+      "Opbrengs van NH₃ neem toe en Kc neem ook toe, omdat meer produk gevorm word",
+      "Nóg opbrengs nóg Kc verander — druk beïnvloed slegs die reaksietempo",
+      "Opbrengs neem af omdat hoër druk die gasse saampers en molekulêre botsings vertraag"
+    ],
+    ans: 0,
+    exp: "Toenemende druk verskuif die ewewigsPOSISIE na die kant met minder mol gas (hier vorm meer NH₃) — dit verhoog die opbrengs. Kc is egter 'n funksie van SLEGS temperatuur. Aangesien temperatuur onveranderd bly (450°C), bly Kc presies dieselfde al bestaan daar nou meer produk by die nuwe ewewig. Dit is 'n belangrike onderskeid: die verandering van konsentrasie of druk verskuif WAAR die ewewig lê, maar slegs die verandering van temperatuur verander die WAARDE van Kc self."
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: "Vir die reaksie N₂ + 3H₂ → 2NH₃: bereken die %-atoomekonomie. As 8.50 g NH₃ werklik geproduseer word terwyl die teoretiese opbrengs 17.0 g is, wat is die %-opbrengs?",
+    opts: ["Atoomekonomie = 100%; %-opbrengs = 50%","Atoomekonomie = 85%; %-opbrengs = 50%","Atoomekonomie = 100%; %-opbrengs = 75%","Atoomekonomie = 50%; %-opbrengs = 100%"],
+    ans: 0,
+    exp: "% Atoomekonomie = (molêre massa gewenste produk / totale molêre massa alle produkte) × 100%. Aangesien NH₃ die ENIGSTE produk is: al die atome beland in NH₃. % AE = (2×17)/(2×17) × 100% = 100%. % Opbrengs = (werklik/teoreties) × 100% = (8.50/17.0) × 100% = 50%. Die Haber-proses het volmaakte atoomekonomie maar ewewig beperk die enkeldeurgang-opbrengs tot ~15–25%."
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    document.getElementById('scoreBanner').classList.add('show');
+    document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+updateHaber();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{updateHaber();window.dispatchEvent(new Event('resize'));},60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

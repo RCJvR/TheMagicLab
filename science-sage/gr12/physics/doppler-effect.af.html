@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Doppler-effek — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:70px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}.sim-controls-row{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 · Fisika · Les 2</div>
+  <h1 class="lesson-title">Die Doppler-effek</h1>
+  <p class="lesson-sub">Verduidelik die Doppler-effek vir klank en lig, bereken die waargenome frekwensie, en pas dit toe op werklike toepassings soos radar en mediese beeldvorming.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Definisie en Oorsaak</h2>
+    <p>Die <strong style="color:#93c5fd">Doppler-effek</strong> is die skynbare verandering in frekwensie (en golflengte) van 'n golf soos waargeneem deur 'n waarnemer wanneer daar relatiewe beweging tussen die bron en die waarnemer is.</p>
+    <p>Die effek vind plaas omdat die relatiewe beweging die aantal golffronte wat die waarnemer per sekonde bereik, verander:</p>
+    <ul>
+      <li><strong style="color:#93c5fd">Bron nader die waarnemer:</strong> golffronte word saamgepers (korter golflengte) → waarnemer hoor 'n hoër frekwensie (hoër toonhoogte)</li>
+      <li><strong style="color:#93c5fd">Bron beweeg weg van die waarnemer:</strong> golffronte word uitgerek (langer golflengte) → waarnemer hoor 'n laer frekwensie (laer toonhoogte)</li>
+    </ul>
+    <div class="key-fact">Die frekwensie van die bron verander NIE — slegs die waargenome (geobserveerde) frekwensie verander weens relatiewe beweging.</div>
+
+    <h2>Die Doppler-formule</h2>
+    <p>Die waargenome (luisteraar-)frekwensie f<sub>L</sub> word gegee deur:</p>
+    <div class="formula">
+      f<sub>L</sub> = ((v ± v<sub>L</sub>) / (v ∓ v<sub>S</sub>)) × f<sub>S</sub>
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Simbool</th><th>Betekenis</th><th>Eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>f<sub>L</sub></td><td>Frekwensie wat deur die luisteraar (waarnemer) gehoor word</td><td>Hz</td></tr>
+        <tr><td>f<sub>S</sub></td><td>Frekwensie wat deur die bron uitgestraal word</td><td>Hz</td></tr>
+        <tr><td>v</td><td>Spoed van klank in die medium</td><td>m·s⁻¹</td></tr>
+        <tr><td>v<sub>L</sub></td><td>Spoed van die luisteraar</td><td>m·s⁻¹</td></tr>
+        <tr><td>v<sub>S</sub></td><td>Spoed van die bron</td><td>m·s⁻¹</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Tekenkonvensie vir die Formule</h2>
+    <div class="callout">
+      <strong>Teller (v ± v<sub>L</sub>):</strong><br>
+      • Gebruik <strong>+v<sub>L</sub></strong> as die luisteraar <strong>na</strong> die bron toe beweeg<br>
+      • Gebruik <strong>−v<sub>L</sub></strong> as die luisteraar <strong>weg van</strong> die bron af beweeg<br><br>
+      <strong>Noemer (v ∓ v<sub>S</sub>):</strong><br>
+      • Gebruik <strong>−v<sub>S</sub></strong> as die bron <strong>na</strong> die luisteraar toe beweeg<br>
+      • Gebruik <strong>+v<sub>S</sub></strong> as die bron <strong>weg van</strong> die luisteraar af beweeg<br><br>
+      <strong>Geheue-wenk:</strong> Beweging wat die bron en luisteraar nader aan mekaar bring → f<sub>L</sub> neem toe. Beweging wat hulle verder van mekaar af beweeg → f<sub>L</sub> neem af.
+    </div>
+    <p>Standaardwaarde: <strong style="color:#93c5fd">spoed van klank in lug = 340 m·s⁻¹</strong> (by ongeveer 20°C).</p>
+
+    <h2>Slegs Bewegende Bron (Luisteraar Stilstaande)</h2>
+    <p>As die luisteraar stilstaan (v<sub>L</sub> = 0):</p>
+    <div class="formula">
+      Bron nader: f<sub>L</sub> = v / (v − v<sub>S</sub>) × f<sub>S</sub><br>
+      Bron beweeg weg: f<sub>L</sub> = v / (v + v<sub>S</sub>) × f<sub>S</sub>
+    </div>
+
+    <h2>Slegs Bewegende Luisteraar (Bron Stilstaande)</h2>
+    <p>As die bron stilstaan (v<sub>S</sub> = 0):</p>
+    <div class="formula">
+      Luisteraar nader: f<sub>L</sub> = (v + v<sub>L</sub>) / v × f<sub>S</sub><br>
+      Luisteraar beweeg weg: f<sub>L</sub> = (v − v<sub>L</sub>) / v × f<sub>S</sub>
+    </div>
+
+    <h2>Werklike Toepassings</h2>
+    <ul>
+      <li><strong style="color:#93c5fd">Noodsirenes:</strong> 'n ambulans- of polisiesirene klink hoër in toon soos dit nader, en laer soos dit weg beweeg</li>
+      <li><strong style="color:#93c5fd">Ekolokasie (vlermuise):</strong> vlermuise stuur ultraklankpulse uit; die weerkaatste Doppler-verskuiwing gee die spoed en rigting van die prooi</li>
+      <li><strong style="color:#93c5fd">Radar-spoedgewere:</strong> stuur radiogolwe teen 'n bekende frekwensie uit; die weerkaatste golf het 'n Doppler-verskuifde frekwensie; die verskuiwing gee die voertuig se spoed</li>
+      <li><strong style="color:#93c5fd">Mediese Doppler-ultraklank:</strong> meet bloedvloeispoed in arteries en are vanaf die frekwensieverskuiwing van weerkaatste ultraklank</li>
+      <li><strong style="color:#93c5fd">Rooiverskuiwing / blouverskuiwing (lig):</strong> lig van sterre/sterrestelsels wat wegbeweeg, is rooiverskuif (laer f); lig van naderende bronne is blouverskuif (hoër f)</li>
+    </ul>
+
+    <h2>Uitgewerkte Voorbeeld 1 — Bewegende Bron</h2>
+    <div class="callout">
+      <strong>Probleem:</strong> 'n Ambulans stuur 'n sirene teen 800 Hz uit en beweeg na 'n stilstaande waarnemer toe teen 30 m·s⁻¹. Spoed van klank = 340 m·s⁻¹. Vind die frekwensie wat deur die waarnemer gehoor word.<br><br>
+      <strong>Gegee:</strong> f<sub>S</sub> = 800 Hz, v<sub>S</sub> = 30 m·s⁻¹ (nader), v<sub>L</sub> = 0, v = 340 m·s⁻¹<br>
+      f<sub>L</sub> = v / (v − v<sub>S</sub>) × f<sub>S</sub> = 340 / (340 − 30) × 800 = 340/310 × 800 = <strong>876.9 Hz</strong>
+    </div>
+
+    <h2>Uitgewerkte Voorbeeld 2 — Albei Beweeg</h2>
+    <div class="callout">
+      <strong>Probleem:</strong> 'n Trein (f<sub>S</sub> = 500 Hz) beweeg van 'n waarnemer af weg teen 20 m·s⁻¹. Die waarnemer hardloop na die trein toe teen 5 m·s⁻¹. v = 340 m·s⁻¹.<br><br>
+      <strong>Bron beweeg weg:</strong> noemer gebruik +v<sub>S</sub><br>
+      <strong>Luisteraar beweeg na die bron toe:</strong> teller gebruik +v<sub>L</sub><br>
+      f<sub>L</sub> = (340 + 5) / (340 + 20) × 500 = 345/360 × 500 = <strong>479.2 Hz</strong>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-Uitbreiding — Rooiverskuiwing en die Wet van Hubble</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">Vir lig veroorsaak die Doppler-effek rooiverskuiwing (wegbeweeg) of blouverskuiwing (nader). Edwin Hubble het ontdek dat verre sterrestelsels rooiverskuif is, en dat die wegbeweeg-spoed eweredig is aan afstand:</p>
+      <div class="formula">v = H₀ × d &nbsp;&nbsp; (Wet van Hubble)</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">H₀ ≈ 70 km·s⁻¹·Mpc⁻¹ (Hubble-konstante). Dit verskaf bewyse vir die uitdyende heelal. Die breukdeel-verskuiwing in golflengte: Δλ/λ = v/c vir v ≪ c. IEB-vrae kan van jou vra om die wegbeweeg-spoed te bereken vanaf waargenome en uitgestraalde golflengtes, en dan die afstand af te lei met behulp van die Wet van Hubble.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Doppler-golffront-simulator</h3>
+      <canvas id="doppCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bronbeheer</div>
+        <div class="slider-row">
+          <label>Bronspoed</label>
+          <input type="range" min="0" max="280" value="80" id="sl-vs" oninput="updateDopp()">
+          <span class="slider-val" id="sv-vs">80 m·s⁻¹</span>
+        </div>
+        <div class="slider-row">
+          <label>Bronfrekwensie</label>
+          <input type="range" min="100" max="1000" value="400" id="sl-fs" oninput="updateDopp()">
+          <span class="slider-val" id="sv-fs">400 Hz</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="mode-btn active" id="doppPlayBtn" onclick="toggleDopp()">▶ Speel</button>
+          <button class="mode-btn" onclick="resetDopp()">Herstel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Berekende Frekwensies</div>
+        <div class="readout-grid" style="margin-top:0">
+          <div class="readout"><div class="readout-label">f bron</div><div class="readout-val" id="ro-fs2">400<span>Hz</span></div></div>
+          <div class="readout"><div class="readout-label">f (voor)</div><div class="readout-val" id="ro-fahead">—<span>Hz</span></div></div>
+          <div class="readout"><div class="readout-label">f (agter)</div><div class="readout-val" id="ro-fbehind">—<span>Hz</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/8</div>
+      <div style="font-size:14px;color:var(--muted)">NSC-oefening voltooi. Gaan die verkeerde antwoorde hierbo na.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 1 van 8</div>
+      <div class="q-text">'n Bron stuur klank teen 600 Hz uit en beweeg na 'n stilstaande luisteraar toe teen 34 m·s⁻¹. Spoed van klank = 340 m·s⁻¹. Die frekwensie wat gehoor word, is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>540 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">B</span>600 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">C</span>660 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>720 Hz</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 2 van 8</div>
+      <div class="q-text">'n Stilstaande bron stuur klank teen 500 Hz uit. 'n Luisteraar beweeg van die bron af weg teen 34 m·s⁻¹. Spoed van klank = 340 m·s⁻¹. Die frekwensie wat gehoor word, is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">A</span>450 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">B</span>500 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">C</span>550 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>475 Hz</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 3 van 8</div>
+      <div class="q-text">Watter van die volgende verduidelik korrek waarom 'n verbygaande ambulans hoër klink terwyl dit nader as wanneer dit weg beweeg?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>Die ambulans se sirene verhoog sy frekwensie soos dit nader</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">B</span>Klank beweeg vinniger wanneer die bron na jou toe beweeg</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">C</span>Golffronte word voor die bron saamgepers, wat die waargenome frekwensie verhoog</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>Die waarnemer se oor word meer sensitief wanneer klank nader</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 4 van 8</div>
+      <div class="q-text">'n Vlermuis stuur ultraklank teen 80 000 Hz uit terwyl dit na 'n muur toe vlieg teen 10 m·s⁻¹. Spoed van klank = 340 m·s⁻¹. Die frekwensie van die eggo wat van die muur af weerkaats word (die muur tree op as 'n stilstaande weerkaatser) terug na die vlermuis, is ongeveer:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>80 000 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>82 353 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>84 848 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>77 647 Hz</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 5 van 8</div>
+      <div class="q-text">In watter situasie sal die Doppler-formule f<sub>L</sub> = f<sub>S</sub> gee?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>Bron en luisteraar beweeg albei in dieselfde rigting teen dieselfde spoed</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">B</span>Bron stilstaande, luisteraar stilstaande</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">C</span>Beide A en B</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>Bron en luisteraar beweeg na mekaar toe</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 6 van 8</div>
+      <div class="q-text">Die Doppler-effek vir lig van 'n verre sterrestelsel wat van die Aarde af weg beweeg, lei tot:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>Blouverskuiwing — korter golflengtes word waargeneem</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">B</span>Rooiverskuiwing — langer golflengtes word waargeneem</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">C</span>Geen verskuiwing nie — lig word nie deur relatiewe beweging beïnvloed nie</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>Rooiverskuiwing — hoër frekwensies word waargeneem</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 7 van 8</div>
+      <div class="q-text">'n Motor blaas sy toeter teen 500 Hz terwyl dit na 'n fietsryer toe beweeg teen 20 m·s⁻¹. Die fietsryer ry na die motor toe teen 5 m·s⁻¹. Gebruik v(klank) = 340 m·s⁻¹, watter frekwensie hoor die fietsryer?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'correct','Q7')"><span class="opt-letter">A</span>539 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">B</span>531 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">C</span>507 Hz</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">D</span>500 Hz</button>
+      </div>
+      <div class="feedback" id="fb-Q7"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 8 van 8</div>
+      <div class="q-text">Twee verre sterre, A en B, straal albei lig teen dieselfde rustende golflengte uit. Ster A se spektraallyne word waargeneem verskuif na die BLOU-kant van die spektrum; Ster B s'n word verskuif na die ROOI-kant. Wat kan jy aflei?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'correct','Q8')"><span class="opt-letter">A</span>Ster A beweeg na die Aarde toe (golffronte saamgepers → korter golflengte → blouverskuiwing); Ster B beweeg van die Aarde af weg (golffronte uitgerek → langer golflengte → rooiverskuiwing)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">B</span>Ster A beweeg van die Aarde af weg, aangesien blou lig vinniger deur die ruimte beweeg as rooi lig</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">C</span>Ster A is bloot warmer as Ster B, wat niks met enige van die twee sterre se beweging te doen het nie</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">D</span>Beide sterre moet stilstaan, aangesien slegs klankgolwe 'n ware Doppler-effek toon, en nie lig nie</button>
+      </div>
+      <div class="feedback" id="fb-Q8"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-Uitgebreide Vrae</div>
+      <div class="q-card">
+        <div class="q-num">IEB-Vraag 1</div>
+        <div class="q-text">'n Sterrestelsel straal lig uit teen 'n golflengte van 656 nm (waterstof-alfa-lyn). 'n Sterrekundige op Aarde neem dieselfde lyn waar teen 689 nm. Deur Δλ/λ ≈ v/c te gebruik, is die wegbeweeg-spoed van die sterrestelsel ongeveer (c = 3×10⁸ m·s⁻¹):</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">A</span>1.5 × 10⁷ m·s⁻¹</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">B</span>1.51 × 10⁷ m·s⁻¹</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>3.0 × 10⁸ m·s⁻¹</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>4.8 × 10⁶ m·s⁻¹</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Wys alle formules, vervangings en eenhede. Gebruik v = 340 m·s⁻¹ vir klank in lug, tensy anders vermeld. Identifiseer watter grootheid die bron is en watter die luisteraar in elke probleem.</div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 — Bewegende Bron (6 punte)</div>
+      <div class="wb-qtext">'n Trein blaas sy toeter teen 480 Hz terwyl dit 'n stasie nader teen 25 m·s⁻¹. 'n Passasier staan op die platform. (a) Gee die Doppler-formule en identifiseer al die veranderlikes. (b) Bereken die frekwensie wat die passasier hoor terwyl die trein nader. (c) Bereken die frekwensie wat gehoor word terwyl die trein weg beweeg. (d) Verduidelik waarom die waargenome frekwensie verander, al bly die bronfrekwensie konstant. (e) Bereken die verandering in waargenome frekwensie tussen nadering en wegbeweeg.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 — Bewegende Luisteraar (5 punte)</div>
+      <div class="wb-qtext">'n Luidspreker straal 'n konstante toon van 700 Hz uit. 'n Student op 'n fiets ry na die luidspreker toe teen 8 m·s⁻¹, draai dan om en ry weg teen 8 m·s⁻¹. (a) Bereken die frekwensie wat gehoor word terwyl die student nader. (b) Bereken die frekwensie wat gehoor word terwyl die student weg beweeg. (c) Verduidelik hoe hierdie situasie fisies verskil van 'n bewegende bron met 'n stilstaande luisteraar. (d) Sou die frekwensieverandering groter wees as die student teen 16 m·s⁻¹ beweeg het? Regverdig kwantitatief.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 — Radar en Spoedmeting (6 punte)</div>
+      <div class="wb-qtext">'n Verkeersspoedgeweer stuur radiogolwe teen 24 GHz (2.4 × 10¹⁰ Hz) uit. 'n Motor beweeg na die geweer toe. Die weerkaatste sein word waargeneem teen 24.002 GHz. (a) Is dit 'n voorbeeld van die Doppler-effek? Verduidelik. (b) Bereken die verandering in frekwensie (Δf). (c) Gebruik Δf/f = 2v/c (vir 'n weerkaatser), waar c = 3×10⁸ m·s⁻¹, bereken die spoed van die motor. (d) Skakel hierdie spoed om na km·h⁻¹. (e) Die spoedgrens is 120 km·h⁻¹. Moet die bestuurder beboet word?</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 — Mediese Doppler (5 punte)</div>
+      <div class="wb-qtext">'n Mediese ultraklank-sonde stuur klank teen 5 × 10⁶ Hz uit, gerig na bloed wat in 'n arterie vloei. Die spoed van klank in weefsel is 1540 m·s⁻¹. Bloed vloei na die sonde toe teen 0.5 m·s⁻¹. (a) Gebruik die Doppler-formule om die frekwensie van die weerkaatste sein wat deur die sonde waargeneem word, te bereken. (b) Bereken die frekwensieverskuiwing (Δf). (c) Verduidelik waarom die Doppler-effek nuttig is om geblokkeerde arteries te diagnoseer. (d) Wat sou 'n nul-Doppler-verskuiwing aandui oor die bloedvloei op daardie plek?</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 — Kruiskontrole van Rooiverskuiwing met Veelvuldige Spektraallyne (7 punte)</div>
+      <div class="wb-qtext">'n Sterrestelsel se spektrum word ontleed met behulp van drie verskillende spektraallyne. Vir elke lyn word die laboratorium- (rus-)golflengte en die waargenome golflengte van die sterrestelsel gemeet:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Spektraallyn</th><th>Rus-golflengte &lambda;&#8320; (nm)</th><th>Waargenome golflengte &lambda; (nm)</th></tr></thead>
+        <tbody>
+          <tr><td>Waterstof-alfa</td><td>656.3</td><td>660.7</td></tr>
+          <tr><td>Waterstof-beta</td><td>486.1</td><td>489.3</td></tr>
+          <tr><td>Natrium D</td><td>589.0</td><td>592.9</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken vir ELKE lyn &Delta;&lambda; = &lambda; &minus; &lambda;&#8320;, en gebruik dan v = (&Delta;&lambda;/&lambda;&#8320;) &times; c om die wegbeweeg-spoed van die sterrestelsel te bereken wat deur daardie lyn geïmpliseer word (c = 3 &times; 10&sup8; m&middot;s&minus;1).<br>
+      (b) Bereken die gemiddelde van jou drie spoedwaardes.<br>
+      (c) Die drie lyne gee effens verskillende individuele waardes vir v. Verduidelik waarom die gebruik van drie lyne (en die neem van 'n gemiddelde) 'n betroubaarder skatting van die sterrestelsel se spoed gee as om net een lyn te gebruik.<br>
+      (d) Beweeg hierdie sterrestelsel na die Aarde toe of daarvan af weg? Verduidelik hoe jy dit direk uit die golflengtedata kan aflei, sonder om enige berekening te doen.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initDopp();
+  }
+
+  const feedbacks={
+    Q1:{ok:"Reg! f_L = v/(v−v_S)×f_S = 340/(340−34)×600 = 340/306×600 = 666.7 Hz ≈ 660 Hz.",bad:"f_L = 340/(340−34) × 600 = 340/306 × 600 ≈ 666.7 Hz. Bron nader → noemer word kleiner → hoër frekwensie."},
+    Q2:{ok:"Reg! Luisteraar beweeg weg: f_L = (v−v_L)/v × f_S = (340−34)/340 × 500 = 306/340 × 500 = 450 Hz.",bad:"Luisteraar beweeg weg: f_L = (v−v_L)/v × f_S = 306/340 × 500 = 450 Hz."},
+    Q3:{ok:"Reg! Soos die bron na die luisteraar toe beweeg, hoop golffronte voor dit op — hulle word saamgepers, wat 'n korter golflengte en hoër frekwensie gee.",bad:"Die bron se frekwensie bly onveranderd. Golffronte word voor die naderende bron saamgepers (korter λ → hoër f) en word agter dit uitgerek (langer λ → laer f)."},
+    Q4:{ok:"Reg! Stap 1: Frekwensie wat die muur tref = 340/(340−10)×80000 = 340/330×80000 ≈ 82 424 Hz. Stap 2: Die vlermuis (wat na die muur toe beweeg) tree nou op as 'n bewegende luisteraar wat weerkaatste klank van die stilstaande \"bron\" (die muur) ontvang: f = (340+10)/340 × 82424 ≈ 84 848 Hz.",bad:"Twee Doppler-verskuiwings: (1) die vlermuis nader die muur as bron: f_muur = 340/330×80000 ≈ 82424 Hz. (2) Die vlermuis, as luisteraar, nader die weerkaatste klank: f_vlermuis = (340+10)/340×82424 ≈ 84848 Hz."},
+    Q5:{ok:"Reg! Albei gevalle het geen netto relatiewe beweging nie, dus f_L = f_S. Wanneer albei teen dieselfde spoed in dieselfde rigting beweeg, is dit ekwivalent aan geen relatiewe beweging nie — presies soos wanneer beide stilstaan.",bad:"Beide 'n stilstaande paar (v_L=v_S=0 gee vanselfsprekend f_L=f_S) en albei wat in dieselfde rigting teen dieselfde spoed beweeg (netto nul relatiewe beweging) gee f_L = f_S."},
+    Q6:{ok:"Reg! 'n Sterrestelsel wat wegbeweeg → liggolffronte word uitgerek → langer golflengte → rooiverskuiwing (verskuiwing na die rooi-kant van die spektrum, laer frekwensie).",bad:"Bron beweeg weg → golflengtes word uitgerek → waargenome golflengte langer as die uitgestraalde golflengte → rooiverskuiwing. Langer golflengte = laer frekwensie."},
+    IQ1:{ok:"Reg! Δλ = 689−656 = 33 nm. v = (Δλ/λ)×c = (33/656)×3×10⁸ = 0.0503×3×10⁸ ≈ 1.51×10⁷ m·s⁻¹.",bad:"Δλ/λ = 33/656 = 0.0503. v = 0.0503 × 3×10⁸ ≈ 1.51×10⁷ m·s⁻¹."},
+    Q7:{ok:"Reg! Beide die bron ÉN die luisteraar beweeg na mekaar toe, dus geld BEIDE effekte saam: f_L = (v+v_L)/(v−v_S) × f_S = (340+5)/(340−20) × 500 = 345/320 × 500 = 539.1 Hz ≈ 539 Hz.",bad:"Hiervoor is die ALGEMENE Doppler-formule nodig, aangesien beide die motor (bron) en die fietsryer (luisteraar) gelyktydig na mekaar toe beweeg: f_L = (v+v_L)/(v−v_S) × f_S = 345/320 × 500 ≈ 539 Hz. Om net een bewegende voorwerp te gebruik en die ander te ignoreer (531 Hz of 507 Hz), mis die helfte van die effek — albei bewegings verhoog hier die waargenome frekwensie, aangesien albei na mekaar toe beweeg."},
+    Q8:{ok:"Reg! Blouverskuiwing beteken die waargenome golflengte is KORTER as die uitgestraalde golflengte — dit gebeur wanneer die bron nader, wat golffronte saampers. Rooiverskuiwing beteken die waargenome golflengte is LANGER — dit gebeur wanneer die bron weg beweeg, wat golffronte uitrek. Dus beweeg Ster A na die Aarde toe, en Ster B weg van die Aarde af.",bad:"Pas dieselfde saampers/uitrek-idee wat vir klank gebruik word, toe op lig: 'n bron wat NA 'n waarnemer toe beweeg, pers sy golffronte saam (korter golflengte → blouverskuiwing); 'n bron wat WEG beweeg, rek sy golffronte uit (langer golflengte → rooiverskuiwing). Dus is Ster A (blouverskuif) besig om te nader, en Ster B (rooiverskuif) besig om weg te beweeg."},
+  };
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=8){document.getElementById('score-big').textContent=scoreCount+'/8';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  // SIMULATION
+  let doppRunning=false,doppRaf=null,doppInited=false;
+  let doppT=0,doppLastT=null;
+  let waves=[];
+  let srcX=50;
+
+  function updateDopp(){
+    const vs=+document.getElementById('sl-vs').value;
+    const fs=+document.getElementById('sl-fs').value;
+    document.getElementById('sv-vs').textContent=vs+' m·s⁻¹';
+    document.getElementById('sv-fs').textContent=fs+' Hz';
+    const v=340;
+    const fahead=(v/(v-Math.min(vs,v-1)))*fs;
+    const fbehind=(v/(v+vs))*fs;
+    document.getElementById('ro-fs2').innerHTML=fs+'<span>Hz</span>';
+    document.getElementById('ro-fahead').innerHTML=(vs<v?fahead.toFixed(0):'∞')+'<span>Hz</span>';
+    document.getElementById('ro-fbehind').innerHTML=fbehind.toFixed(0)+'<span>Hz</span>';
+    if(doppInited) drawDopp();
+  }
+
+  function initDopp(){
+    if(!doppInited){doppInited=true;waves=[];srcX=50;updateDopp();}
+  }
+
+  function resetDopp(){
+    if(doppRaf){cancelAnimationFrame(doppRaf);doppRaf=null;}
+    doppRunning=false;doppT=0;doppLastT=null;waves=[];srcX=50;
+    document.getElementById('doppPlayBtn').textContent='▶ Speel';
+    updateDopp();
+  }
+
+  function toggleDopp(){
+    if(doppRunning){cancelAnimationFrame(doppRaf);doppRunning=false;document.getElementById('doppPlayBtn').textContent='▶ Speel';return;}
+    doppRunning=true;doppLastT=null;document.getElementById('doppPlayBtn').textContent='⏸ Pouseer';
+    doppRaf=requestAnimationFrame(doppStep);
+  }
+
+  let waveTimer=0;
+  function doppStep(ts){
+    if(!doppRunning) return;
+    if(doppLastT===null){doppLastT=ts;doppRaf=requestAnimationFrame(doppStep);return;}
+    const dt=Math.min((ts-doppLastT)/1000,0.05);doppLastT=ts;
+    const canvas=document.getElementById('doppCanvas');
+    const W=canvas.clientWidth||800;
+    const vs=+document.getElementById('sl-vs').value;
+    const fs=+document.getElementById('sl-fs').value;
+    const vSound=340;
+    const displayScale=W/680;
+    const srcSpeed=vs*displayScale*0.8;
+
+    srcX+=srcSpeed*dt;
+    if(srcX>W+30) srcX=0;
+
+    waveTimer+=dt;
+    const period=1/fs*4;
+    if(waveTimer>=period){
+      waveTimer=0;
+      waves.push({cx:srcX,cy:160,r:2,speed:vSound*displayScale*0.8});
+    }
+    waves.forEach(w=>{w.r+=w.speed*dt;});
+    waves=waves.filter(w=>w.r<W*1.5);
+
+    drawDopp();
+    doppRaf=requestAnimationFrame(doppStep);
+  }
+
+  function drawDopp(){
+    const canvas=document.getElementById('doppCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth||800,H=320;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    // Background
+    ctx.fillStyle='rgba(96,165,250,0.03)';ctx.fillRect(0,0,W,H);
+
+    // Draw wavefronts
+    waves.forEach(w=>{
+      ctx.beginPath();ctx.arc(w.cx,w.cy,w.r,0,Math.PI*2);
+      ctx.strokeStyle='rgba(96,165,250,0.30)';ctx.lineWidth=1.5;ctx.stroke();
+    });
+
+    // Draw source
+    const sy=160;
+    ctx.beginPath();ctx.arc(srcX,sy,12,0,Math.PI*2);
+    ctx.fillStyle='rgba(248,113,113,0.4)';ctx.fill();
+    ctx.strokeStyle='#f87171';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('BRON',srcX,sy+3);
+
+    // Arrow indicating motion
+    const vs=+document.getElementById('sl-vs').value;
+    if(vs>0){
+      ctx.strokeStyle='rgba(248,113,113,0.6)';ctx.fillStyle='rgba(248,113,113,0.6)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(srcX+14,sy);ctx.lineTo(srcX+30,sy);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(srcX+30,sy);ctx.lineTo(srcX+23,sy-4);ctx.lineTo(srcX+23,sy+4);ctx.closePath();ctx.fill();
+    }
+
+    // Observer dot (stationary, right side)
+    const obsX=W-40;
+    ctx.beginPath();ctx.arc(obsX,sy,8,0,Math.PI*2);
+    ctx.fillStyle='rgba(134,239,172,0.4)';ctx.fill();
+    ctx.strokeStyle='#86efac';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('👂',obsX,sy+3);
+
+    // Labels
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('→ rigting van beweging',W/2,H-10);
+  }
+
+  window.addEventListener('resize',()=>{if(doppInited)drawDopp();});
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

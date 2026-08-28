@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sure en Basisse — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#2dd4bf;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back">&#8592; Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 &middot; Chemie &middot; Les 4</div>
+  <h1 class="lesson-title">Sure en Basisse &mdash; Kwantitatief</h1>
+  <p class="lesson-sub">Bereken pH, pOH en K<sub>a</sub> van swak sure, voer suur-basis-titrasieberekeninge uit, en interpreteer titrasiekurwes.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Skakel om IEB-uitbreidingsinhoud te wys</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Werkboek</button>
+</div>
+
+<!-- LEER-OORTJIE -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Brønsted-Lowry-teorie (Opsomming)</h2>
+    <p>'n <strong>Suur</strong> is 'n proton (H<sup>+</sup>)-donor; 'n <strong>basis</strong> is 'n protonaanvaarder. Wanneer 'n suur 'n proton afstaan, word dit sy <strong>gekonjugeerde basis</strong>. Wanneer 'n basis 'n proton aanvaar, word dit sy <strong>gekonjugeerde suur</strong>.</p>
+    <div class="formula">HA + H<sub>2</sub>O &#x21CC; H<sub>3</sub>O<sup>+</sup> + A<sup>&minus;</sup><br>(suur + basis &#x21CC; gekonjugeerde suur + gekonjugeerde basis)</div>
+    <p>Gekonjugeerde pare verskil met presies een H<sup>+</sup>: HA / A<sup>&minus;</sup> en H<sub>3</sub>O<sup>+</sup> / H<sub>2</sub>O is die twee gekonjugeerde pare in bostaande ewewig.</p>
+
+    <h2>Self-ionisasie van Water &amp; K<sub>w</sub></h2>
+    <p>Water ondergaan self-ionisasie (outoprotolise):</p>
+    <div class="formula">H<sub>2</sub>O + H<sub>2</sub>O &#x21CC; H<sub>3</sub>O<sup>+</sup> + OH<sup>&minus;</sup></div>
+    <div class="formula">K<sub>w</sub> = [H<sub>3</sub>O<sup>+</sup>][OH<sup>&minus;</sup>] = 1.0 &times; 10<sup>&minus;14</sup> by 25&deg;C</div>
+    <p>In suiwer water by 25&deg;C: [H<sub>3</sub>O<sup>+</sup>] = [OH<sup>&minus;</sup>] = 1.0 &times; 10<sup>&minus;7</sup> mol&middot;dm<sup>&minus;3</sup>. K<sub>w</sub> neem toe met temperatuur (self-ionisasie van water is endotermies).</p>
+
+    <h2>pH en pOH</h2>
+    <div class="formula">
+      pH = &minus;log[H<sub>3</sub>O<sup>+</sup>] &nbsp;&nbsp;&nbsp;&nbsp; [H<sub>3</sub>O<sup>+</sup>] = 10<sup>&minus;pH</sup><br>
+      pOH = &minus;log[OH<sup>&minus;</sup>] &nbsp;&nbsp;&nbsp;&nbsp; [OH<sup>&minus;</sup>] = 10<sup>&minus;pOH</sup><br>
+      pH + pOH = 14 &nbsp; (by 25&deg;C)
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe oplossing</th><th>[H<sub>3</sub>O<sup>+</sup>]</th><th>pH</th></tr></thead>
+      <tbody>
+        <tr><td>Suur</td><td>&gt; 1.0 &times; 10<sup>&minus;7</sup></td><td>&lt; 7</td></tr>
+        <tr><td>Neutraal</td><td>= 1.0 &times; 10<sup>&minus;7</sup></td><td>= 7</td></tr>
+        <tr><td>Basies (alkalies)</td><td>&lt; 1.0 &times; 10<sup>&minus;7</sup></td><td>&gt; 7</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Sterk vs. Swak Sure</h2>
+    <p><strong>Sterk sure</strong> (HCl, H<sub>2</sub>SO<sub>4</sub>, HNO<sub>3</sub>) dissosieer <em>volledig</em> in water. [H<sub>3</sub>O<sup>+</sup>] = konsentrasie van die suur.</p>
+    <div class="formula">0.10 mol&middot;dm<sup>&minus;3</sup> HCl: [H<sub>3</sub>O<sup>+</sup>] = 0.10 &rarr; pH = &minus;log(0.10) = 1.00</div>
+    <p><strong>Swak sure</strong> (CH<sub>3</sub>COOH, HF, H<sub>2</sub>CO<sub>3</sub>) dissosieer <em>gedeeltelik</em>. Die suurdissosiasiekonstante K<sub>a</sub> beskryf die ewewig:</p>
+    <div class="formula">
+      HA &#x21CC; H<sup>+</sup> + A<sup>&minus;</sup><br>
+      K<sub>a</sub> = [H<sup>+</sup>][A<sup>&minus;</sup>] / [HA]
+    </div>
+    <p><strong>Uitgewerkte voorbeeld &mdash; pH van 'n swak suur:</strong> Bereken die pH van 0.10 mol&middot;dm<sup>&minus;3</sup> etanoësuur. K<sub>a</sub>(CH<sub>3</sub>COOH) = 1.8 &times; 10<sup>&minus;5</sup>.</p>
+    <div class="formula">
+      Laat x = [H<sup>+</sup>] = [CH<sub>3</sub>COO<sup>&minus;</sup>]<br>
+      K<sub>a</sub> = x<sup>2</sup> / (0.10 &minus; x) &approx; x<sup>2</sup> / 0.10 &nbsp; (x &lt;&lt; 0.10)<br>
+      x<sup>2</sup> = 1.8 &times; 10<sup>&minus;5</sup> &times; 0.10 = 1.8 &times; 10<sup>&minus;6</sup><br>
+      x = [H<sup>+</sup>] = 1.34 &times; 10<sup>&minus;3</sup> mol&middot;dm<sup>&minus;3</sup><br>
+      pH = &minus;log(1.34 &times; 10<sup>&minus;3</sup>) = <strong>2.87</strong>
+    </div>
+
+    <h2>Suur-Basis-indikators</h2>
+    <p>'n Indikator is 'n swak suur (HIn) waarvan die gekonjugeerde basis (In<sup>&minus;</sup>) 'n ander kleur het:</p>
+    <div class="formula">HIn &#x21CC; H<sup>+</sup> + In<sup>&minus;</sup> &nbsp;&nbsp; (kleur 1 &#x21CC; kleur 2)</div>
+    <ul>
+      <li>In suur: ewewig verskuif links &rarr; HIn-vorm (kleur 1) oorheers.</li>
+      <li>In basis: ewewig verskuif regs &rarr; In<sup>&minus;</sup>-vorm (kleur 2) oorheers.</li>
+      <li>Kleurverandering vind plaas oor ongeveer 2 pH-eenhede gesentreer op pK<sub>a</sub>(indikator).</li>
+      <li>Kies 'n indikator waarvan die kleurveranderingsomvang die ekwivalentiepunt-pH insluit.</li>
+    </ul>
+    <table class="symbols-table">
+      <thead><tr><th>Indikator</th><th>Kleur in suur</th><th>Kleur in basis</th><th>Omvang (pH)</th></tr></thead>
+      <tbody>
+        <tr><td>Metieloranje</td><td>Rooi</td><td>Geel</td><td>3.1 &ndash; 4.4</td></tr>
+        <tr><td>Fenolftaleïen</td><td>Kleurloos</td><td>Pienk</td><td>8.2 &ndash; 10.0</td></tr>
+        <tr><td>Universele indikator</td><td>Rooi &rarr; oranje</td><td>Groen &rarr; blou/pers</td><td>1 &ndash; 14</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Titrasies &amp; Berekeninge</h2>
+    <p>In 'n titrasie word 'n oplossing van bekende konsentrasie (<strong>titrant</strong> in die buret) bygevoeg by 'n gemete volume analiet in die keëlkolf totdat die <strong>ekwivalentiepunt</strong> bereik word (stoïgiometriese hoeveelhede het gereageer).</p>
+    <div class="formula">
+      By die ekwivalentiepunt: n(suur) = n(basis) &nbsp;&nbsp; (vir 1:1-reaksies)<br>
+      c<sub>a</sub>V<sub>a</sub> = c<sub>b</sub>V<sub>b</sub> &nbsp;&nbsp;&nbsp;&nbsp; (vir 'n monoprotiese suur en 'n monobasiese basis)
+    </div>
+    <p><strong>Uitgewerkte voorbeeld:</strong> 25.0 cm<sup>3</sup> NaOH-oplossing word geneutraliseer deur 20.0 cm<sup>3</sup> 0.100 mol&middot;dm<sup>&minus;3</sup> HCl. Bepaal c(NaOH).</p>
+    <div class="formula">
+      n(HCl) = c &times; V = 0.100 &times; 0.0200 = 2.00 &times; 10<sup>&minus;3</sup> mol<br>
+      n(NaOH) = n(HCl) = 2.00 &times; 10<sup>&minus;3</sup> mol &nbsp;&nbsp; (1:1-verhouding)<br>
+      c(NaOH) = n / V = 2.00 &times; 10<sup>&minus;3</sup> / 0.0250 = <strong>0.0800 mol&middot;dm<sup>&minus;3</sup></strong>
+    </div>
+
+    <h2>Titrasiekurwes</h2>
+    <p>'n Titrasiekurwe is 'n grafiek van pH (y-as) teenoor die volume titrant bygevoeg (x-as). Die vorm hang af van die sterkte van die suur en die basis:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe titrasie</th><th>pH by ekwivalentiepunt</th><th>Beste indikator</th><th>Kurwevorm</th></tr></thead>
+      <tbody>
+        <tr><td>Sterk suur + sterk basis</td><td>~7.0</td><td>Fenolftaleïen of metieloranje</td><td>Skerp vertikale sprong by EP</td></tr>
+        <tr><td>Swak suur + sterk basis</td><td>&gt; 7 (basies)</td><td>Fenolftaleïen (8.2&ndash;10)</td><td>Bufferstreek voor EP; geleideliker sprong</td></tr>
+        <tr><td>Sterk suur + swak basis</td><td>&lt; 7 (suur)</td><td>Metieloranje (3.1&ndash;4.4)</td><td>Skerp sprong laer op die kurwe</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Half-ekwivalentiepunt:</strong> Wanneer presies die helfte van die swak suur geneutraliseer is, is [HA] = [A<sup>&minus;</sup>]. Deur dit in K<sub>a</sub> = [H<sup>+</sup>][A<sup>&minus;</sup>]/[HA] te substitueer, kry mens [H<sup>+</sup>] = K<sub>a</sub>, dus <strong>pH = pK<sub>a</sub></strong> by die half-ekwivalentiepunt. Dit is die middelpunt van die bufferstreek.</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB-uitbreiding &mdash; Buffer-oplossings &amp; Henderson-Hasselbalch</div>
+      <p>'n <strong>Buffer-oplossing</strong> weerstaan veranderinge in pH wanneer klein hoeveelhede suur of basis bygevoeg word. Dit bestaan uit 'n swak suur en sy gekonjugeerde basis (of 'n swak basis en sy gekonjugeerde suur) in vergelykbare konsentrasies.</p>
+      <p><strong>Hoe dit werk:</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 10px 20px">
+        <li>Voeg sterk suur by (H<sup>+</sup>): reageer met A<sup>&minus;</sup> &rarr; HA. pH verander skaars.</li>
+        <li>Voeg sterk basis by (OH<sup>&minus;</sup>): reageer met HA &rarr; A<sup>&minus;</sup> + H<sub>2</sub>O. pH verander skaars.</li>
+        <li>Bufferkapasiteit is die grootste wanneer [HA] = [A<sup>&minus;</sup>] (d.w.s. by die half-ekwivalentiepunt, pH = pK<sub>a</sub>).</li>
+      </ul>
+      <p><strong>Henderson-Hasselbalch-vergelyking:</strong></p>
+      <div class="formula" style="color:#fcd34d">pH = pK<sub>a</sub> + log([A<sup>&minus;</sup>] / [HA])</div>
+      <p>Voorbeeld: 'n Buffer bevat 0.10 mol CH<sub>3</sub>COOH en 0.15 mol CH<sub>3</sub>COO<sup>&minus;</sup> in 1 L. K<sub>a</sub> = 1.8&times;10<sup>&minus;5</sup>, pK<sub>a</sub> = 4.74.</p>
+      <div class="formula" style="color:#fcd34d">pH = 4.74 + log(0.15/0.10) = 4.74 + 0.176 = <strong>4.92</strong></div>
+      <p>Biologiese buffers: bloed-pH word gehandhaaf tussen 7.35&ndash;7.45 deur die CO<sub>2</sub>/HCO<sub>3</sub><sup>&minus;</sup>-buffersisteem (pK<sub>a</sub> = 6.1) tesame met die hemoglobienbuffer en nierregulering.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VERKEN-OORTJIE -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Interaktiewe Titrasiekurwe</h3>
+      <canvas id="titCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Titrasie-opstelling</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Suur in die kolf</label>
+        <select class="sim-select" id="acidType" onchange="redrawCurve()">
+          <option value="strong">Sterk suur (HCl, 0.10 M, 25 mL)</option>
+          <option value="weak">Swak suur (CH₃COOH, 0.10 M, 25 mL, pKa=4.74)</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Titrant (buret)</label>
+        <select class="sim-select" id="baseType" onchange="redrawCurve()">
+          <option value="strong">Sterk basis (NaOH, 0.10 M)</option>
+        </select>
+        <div class="slider-row" style="margin-top:12px">
+          <label>Volume NaOH bygevoeg</label>
+          <input type="range" id="volSlider" min="0" max="60" step="0.5" value="0" oninput="sliderChange()">
+          <span class="slider-val" id="volVal">0 mL</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Huidige pH-lesing</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Volume bygevoeg</div><div class="readout-val" id="roVol">0.0 mL</div></div>
+          <div class="readout"><div class="readout-label">pH</div><div class="readout-val" id="roPH" style="color:#2dd4bf">--</div></div>
+          <div class="readout"><div class="readout-label">Fase</div><div class="readout-val" id="roStage" style="font-size:11px">--</div></div>
+          <div class="readout"><div class="readout-label">Ekwivalensie</div><div class="readout-val" id="roEP" style="font-size:11px">25.0 mL</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OEFENING-OORTJIE -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Gaan die verduidelikings na om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-uitbreidingsvrae</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WERKBOEK-OORTJIE -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Druk Werkboek</button>
+    <div class="wb-intro">Wys alle berekeninge met eenhede. Vir pH-vraagstukke moet jy altyd jou aanname stel (sterk = volledige dissosiasie; swak = gebruik Ka). Vir titrasievrae moet jy noem wat in die kolf en wat in die buret is.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 &mdash; pH-berekeninge</div>
+      <div class="wb-qtext">Bereken die pH van die volgende oplossings by 25&deg;C:<br><br>
+      (a) 0.050 mol&middot;dm<sup>&minus;3</sup> HCl (sterk suur)<br>
+      (b) 0.20 mol&middot;dm<sup>&minus;3</sup> NaOH (sterk basis) &mdash; bepaal eers pOH, dan pH<br>
+      (c) 0.050 mol&middot;dm<sup>&minus;3</sup> metanoësuur (HCOOH); K<sub>a</sub> = 1.8 &times; 10<sup>&minus;4</sup><br>
+      (d) 'n Oplossing waar [H<sub>3</sub>O<sup>+</sup>] = 3.5 &times; 10<sup>&minus;9</sup> mol&middot;dm<sup>&minus;3</sup>. Is dit suur, neutraal, of basies?<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 &mdash; Titrasieberekening</div>
+      <div class="wb-qtext">In 'n titrasie word 25.0 cm<sup>3</sup> H<sub>2</sub>SO<sub>4</sub>-oplossing in 'n keëlkolf geplaas. Dit word teen 0.200 mol&middot;dm<sup>&minus;3</sup> NaOH-oplossing getitreer. Die gemiddelde volume NaOH gebruik is 30.0 cm<sup>3</sup>.<br><br>
+      Die reaksie is: H<sub>2</sub>SO<sub>4</sub> + 2NaOH &rarr; Na<sub>2</sub>SO<sub>4</sub> + 2H<sub>2</sub>O<br><br>
+      (a) Bereken die mol NaOH gebruik.<br>
+      (b) Bepaal die mol H<sub>2</sub>SO<sub>4</sub> in die kolf. (Let op die 1:2-verhouding.)<br>
+      (c) Bereken die konsentrasie van die H<sub>2</sub>SO<sub>4</sub>-oplossing.<br>
+      (d) Bereken die pH van die H<sub>2</sub>SO<sub>4</sub>-oplossing, met die aanname van volledige dissosiasie van albei H<sup>+</sup>-ione.<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 &mdash; Titrasiekurwes</div>
+      <div class="wb-qtext">(a) Skets (of beskryf) die titrasiekurwe vir die titrasie van 25 cm<sup>3</sup> 0.10 M CH<sub>3</sub>COOH met 0.10 M NaOH. Merk: aanvanklike pH, bufferstreek, half-ekwivalentiepunt, ekwivalentiepunt-pH, en die streek na die ekwivalentiepunt.<br><br>
+      (b) Verduidelik waarom die ekwivalentiepunt-pH groter as 7 is vir hierdie titrasie.<br>
+      (c) Watter indikator &mdash; metieloranje of fenolftaleïen &mdash; sou meer geskik wees vir hierdie titrasie? Motiveer jou antwoord.<br>
+      (d) As pK<sub>a</sub>(CH<sub>3</sub>COOH) = 4.74, wat is die pH by die half-ekwivalentiepunt?<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 &mdash; Indikators &amp; Gekonjugeerde Pare</div>
+      <div class="wb-qtext">(a) Skryf die gekonjugeerde basis van elk van die volgende sure neer: HNO<sub>3</sub>; H<sub>2</sub>PO<sub>4</sub><sup>&minus;</sup>; NH<sub>4</sub><sup>+</sup>; H<sub>2</sub>O.<br><br>
+      (b) Verduidelik waarom water amfoteries is (kan as beide suur en basis optree) deur gebruik te maak van die Brønsted-Lowry-teorie.<br><br>
+      (c) Fenolftaleïen (pK<sub>a</sub> = 9.1) word by 'n oplossing met pH = 7 gevoeg. Watter kleur sal dit vertoon? Verduidelik deur gebruik te maak van die HIn-ewewig.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 &mdash; Lees van 'n Titrasiedatatabel</div>
+      <div class="wb-qtext">'n Monster van 25.0 cm<sup>3</sup> van 'n swak monoprotiese suur HA met onbekende konsentrasie word getitreer met 0.100 mol&middot;dm<sup>&minus;3</sup> NaOH. Die pH word na elke toevoeging aangeteken:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>V(NaOH) / cm&sup3;</th><th>0.0</th><th>5.0</th><th>10.0</th><th>15.0</th><th>20.0</th><th>25.0</th><th>30.0</th><th>35.0</th><th>40.0</th></tr></thead>
+        <tbody><tr><td>pH</td><td>2.83</td><td>4.05</td><td>4.44</td><td>4.74</td><td>5.05</td><td>5.44</td><td>8.74</td><td>11.92</td><td>12.19</td></tr></tbody>
+      </table>
+      (a) Gebruik die tabel om die ekwivalentiepunt-volume te identifiseer. Motiveer jou keuse deur te verwys na hoe die pH tussen opeenvolgende lesings rondom daardie volume verander.<br>
+      (b) By V = 15.0 cm<sup>3</sup> is presies die helfte van die suur geneutraliseer, dus is [HA] = [A<sup>&minus;</sup>] op hierdie punt. Gebruik die pH-lesing by V = 15.0 cm<sup>3</sup> en K<sub>a</sub> = [H<sup>+</sup>][A<sup>&minus;</sup>]/[HA] om K<sub>a</sub> vir hierdie suur te bereken.<br>
+      (c) Gebruik jou ekwivalentiepunt-volume uit (a) en c(NaOH) = 0.100 mol&middot;dm<sup>&minus;3</sup> om n(NaOH) gebruik te bereken, dan n(HA) oorspronklik teenwoordig, dan c(HA) in die oorspronklike 25.0 cm<sup>3</sup>-monster.<br>
+      (d) Verduidelik, deur gebruik te maak van die grootte van die pH-sprong tussen V = 25.0 cm<sup>3</sup> en V = 35.0 cm<sup>3</sup> in die tabel, waarom fenolftaleïen (omvang 8.2&ndash;10.0) 'n geskikte indikator vir hierdie titrasie is, terwyl metieloranje (omvang 3.1&ndash;4.4) nie is nie.<br><br>
+      <em>(9 punte)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { redrawCurve(); }, 50);
+}
+
+// ─── Titrasiekurwe ──────────────────────────────────────────────────────────
+function calcPH(volAdded, acidType) {
+  const Va = 25.0, ca = 0.10, cb = 0.10;
+  const na = ca * Va; // mmol
+  const nb = cb * volAdded; // mmol
+  const pKa = 4.74;
+  const Ka = Math.pow(10, -pKa);
+
+  if (acidType === 'strong') {
+    if (volAdded === 0) return 1.00;
+    if (volAdded < Va) {
+      const excessAcid = (na - nb) / (Va + volAdded);
+      return -Math.log10(excessAcid);
+    }
+    if (Math.abs(volAdded - Va) < 0.1) return 7.00;
+    const excessBase = (nb - na) / (Va + volAdded);
+    return 14 + Math.log10(excessBase);
+  } else {
+    // swak suur + sterk basis
+    if (volAdded === 0) {
+      const h = Math.sqrt(Ka * ca);
+      return -Math.log10(h);
+    }
+    if (volAdded < Va) {
+      const nHA = na - nb;
+      const nA = nb;
+      return pKa + Math.log10(nA / nHA);
+    }
+    if (Math.abs(volAdded - Va) < 0.1) {
+      // hidrolise van CH3COO-
+      const cb2 = na / (Va + volAdded);
+      const Kb = 1e-14 / Ka;
+      const oh = Math.sqrt(Kb * cb2);
+      return 14 + Math.log10(oh);
+    }
+    const excessBase = (nb - na) / (Va + volAdded);
+    return 14 + Math.log10(excessBase);
+  }
+}
+
+function sliderChange() {
+  const v = parseFloat(document.getElementById('volSlider').value);
+  document.getElementById('volVal').textContent = v.toFixed(1) + ' mL';
+  redrawCurve();
+}
+
+function redrawCurve() {
+  const acidType = document.getElementById('acidType').value;
+  const vol = parseFloat(document.getElementById('volSlider').value);
+  const canvas = document.getElementById('titCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 360;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  const padL = 55, padR = 20, padT = 20, padB = 45;
+  const gw = W - padL - padR, gh = H - padT - padB;
+  const maxVol = 60, minPH = 0, maxPH = 14;
+
+  // Rooster
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 7; i++) {
+    const y = padT + (i/7)*gh;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+gw, y); ctx.stroke();
+  }
+
+  // Asse
+  ctx.strokeStyle = 'rgba(210,218,245,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+gh); ctx.lineTo(padL+gw, padT+gh); ctx.stroke();
+
+  // Y-as-etikette (pH)
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'right';
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const y = padT + gh - (pH/14)*gh;
+    ctx.fillText(pH, padL - 6, y + 4);
+  }
+  // X-as-etikette (volume)
+  ctx.textAlign = 'center';
+  [0,10,20,25,30,40,50,60].forEach(v2 => {
+    const x = padL + (v2/maxVol)*gw;
+    ctx.fillText(v2, x, padT + gh + 16);
+  });
+
+  // Astitels
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.font = '11px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Volume NaOH bygevoeg (mL)', padL + gw/2, H - 6);
+  ctx.save(); ctx.translate(12, padT + gh/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('pH', 0, 0); ctx.restore();
+
+  // Teken titrasiekurwe
+  const curveColor = acidType === 'strong' ? '#2dd4bf' : '#a78bfa';
+  ctx.strokeStyle = curveColor;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  let first = true;
+  for (let v2 = 0; v2 <= 60; v2 += 0.3) {
+    let pH;
+    try { pH = calcPH(v2, acidType); } catch(e) { continue; }
+    if (pH < 0 || pH > 14 || isNaN(pH) || !isFinite(pH)) continue;
+    const x = padL + (v2/maxVol)*gw;
+    const y = padT + gh - (pH/14)*gh;
+    if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Ekwivalentiepunt-lyn (v=25)
+  const epX = padL + (25/maxVol)*gw;
+  ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(epX, padT); ctx.lineTo(epX, padT+gh); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('EP', epX, padT + 12);
+
+  // Half-ekwivalensie vir swak suur
+  if (acidType === 'weak') {
+    const hepX = padL + (12.5/maxVol)*gw;
+    const hepPH = 4.74;
+    const hepY = padT + gh - (hepPH/14)*gh;
+    ctx.strokeStyle = 'rgba(167,139,250,0.4)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(hepX, padT); ctx.lineTo(hepX, padT+gh); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#a78bfa';
+    ctx.font = '9px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('½EP pH=pKa', hepX, padT + 24);
+    // Merk die punt
+    ctx.beginPath(); ctx.arc(hepX, hepY, 5, 0, Math.PI*2);
+    ctx.fillStyle = '#a78bfa'; ctx.fill();
+  }
+
+  // Huidige posisie-kolletjie
+  let curPH;
+  try { curPH = calcPH(vol, acidType); } catch(e) { curPH = null; }
+  if (curPH !== null && curPH >= 0 && curPH <= 14) {
+    const curX = padL + (vol/maxVol)*gw;
+    const curY = padT + gh - (curPH/14)*gh;
+    ctx.beginPath(); ctx.arc(curX, curY, 7, 0, Math.PI*2);
+    ctx.fillStyle = '#f87171'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // pH + H lyne
+    ctx.strokeStyle = 'rgba(248,113,113,0.3)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(padL, curY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(curX, padT+gh); ctx.stroke();
+    ctx.setLineDash([]);
+
+    document.getElementById('roPH').textContent = curPH.toFixed(2);
+    document.getElementById('roVol').textContent = vol.toFixed(1) + ' mL';
+    const stage = vol < 25 ? 'Voor EP' : vol > 25 ? 'Na EP' : 'By EP';
+    document.getElementById('roStage').textContent = stage;
+  }
+}
+
+// ─── Oefeningsvrae ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: "Bereken die pH van 'n 0.025 mol·dm⁻³ HNO₃-oplossing (sterk suur).",
+    opts: ['pH = 1.60','pH = 2.40','pH = 0.40','pH = 3.60'],
+    ans: 0,
+    exp: "HNO₃ is 'n sterk suur — volledige dissosiasie. [H₃O⁺] = 0.025 mol·dm⁻³. pH = −log(0.025) = −log(2.5 × 10⁻²) = 2 − log(2.5) = 2 − 0.398 = 1.60."
+  },
+  {
+    q: "By 25°C is Kw = 1.0 × 10⁻¹⁴. As [H₃O⁺] = 2.0 × 10⁻³ mol·dm⁻³, wat is [OH⁻]?",
+    opts: ['2.0 × 10⁻³ mol·dm⁻³','5.0 × 10⁻¹² mol·dm⁻³','1.0 × 10⁻¹¹ mol·dm⁻³','5.0 × 10⁻³ mol·dm⁻³'],
+    ans: 1,
+    exp: "[OH⁻] = Kw / [H₃O⁺] = (1.0 × 10⁻¹⁴) / (2.0 × 10⁻³) = 5.0 × 10⁻¹² mol·dm⁻³. Die oplossing is suur (pH = −log(2.0×10⁻³) = 2.70 < 7)."
+  },
+  {
+    q: "In 'n titrasie van 20.0 cm³ 0.150 mol·dm⁻³ HCl met 0.100 mol·dm⁻³ NaOH, watter volume NaOH word benodig om die ekwivalentiepunt te bereik?",
+    opts: ['13.3 mL','20.0 mL','30.0 mL','40.0 mL'],
+    ans: 2,
+    exp: "n(HCl) = 0.150 × 0.0200 = 3.00 × 10⁻³ mol. By die ekwivalentiepunt: n(NaOH) = n(HCl) = 3.00 × 10⁻³ mol (1:1-verhouding). V(NaOH) = n/c = 3.00×10⁻³ / 0.100 = 0.0300 dm³ = 30.0 mL."
+  },
+  {
+    q: "Die ekwivalentiepunt van 'n swak suur wat met NaOH getitreer word, het 'n pH > 7. Dit is omdat:",
+    opts: ["Die suur is nie volledig geneutraliseer nie","Die gekonjugeerde basis (A⁻) ondergaan hidrolise met water om OH⁻-ione te vorm","Die NaOH was in oormaat","Fenolftaleïen verander kleur bo pH 7, nie by die ware ekwivalentiepunt nie"],
+    ans: 1,
+    exp: "By die ekwivalentiepunt van 'n swak suur + sterk basis-titrasie is al die swak suur omgeskakel na sy gekonjugeerde basis A⁻. A⁻ is 'n basis — dit ondergaan hidrolise: A⁻ + H₂O ⇌ HA + OH⁻, wat oortollige OH⁻ vorm en die pH bo 7 verhoog. Hoe swakker die suur, hoe sterker die gekonjugeerde basis, en hoe hoër die ekwivalentiepunt-pH."
+  },
+  {
+    q: "Watter indikator is die geskikste vir 'n sterk suur + sterk basis-titrasie?",
+    opts: ["Beide fenolftaleïen (omvang 8.2–10.0) en metieloranje (3.1–4.4) is geskik","Slegs metieloranje is geskik omdat die ekwivalentiepunt suur is","Slegs fenolftaleïen is geskik","Geeneen is geskik nie — slegs universele indikator werk"],
+    ans: 0,
+    exp: "Vir sterk suur + sterk basis is die ekwivalentiepunt by pH 7, maar die pH-sprong naby die ekwivalentiepunt is baie skerp — tipies van ongeveer pH 3 tot pH 11 met net een of twee druppels titrant. Beide fenolftaleïen (verander 8.2–10) en metieloranje (verander 3.1–4.4) val binne hierdie sprongomvang, wat enigeen geskik maak."
+  },
+  {
+    q: "Vir etanoësuur met Ka = 1.8 × 10⁻⁵, wat is die pH van 0.100 mol·dm⁻³ CH₃COOH?",
+    opts: ['pH = 1.00','pH = 2.87','pH = 4.74','pH = 5.00'],
+    ans: 1,
+    exp: "Vir 'n swak suur: Ka = x²/c (benadering). x² = Ka × c = 1.8×10⁻⁵ × 0.100 = 1.8×10⁻⁶. x = √(1.8×10⁻⁶) = 1.34×10⁻³ mol·dm⁻³. pH = −log(1.34×10⁻³) = 2.87. (pKa = 4.74 is die pH by die half-ekwivalentiepunt, nie die aanvanklike pH van die suuroplossing nie.)"
+  },
+  {
+    q: "'n Monster van 20.0 cm³ H₂SO₄ met onbekende konsentrasie word getitreer teen 0.150 mol·dm⁻³ NaOH: H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O. Die gemiddelde titer is 35.0 cm³ NaOH. Met die aanname van volledige dissosiasie van albei H⁺-ione, wat is die pH van die oorspronklike H₂SO₄-oplossing?",
+    opts: ['pH = 0.58','pH = 0.88','pH = 1.16','pH = 1.76'],
+    ans: 0,
+    exp: "n(NaOH) = 0.150 × 0.0350 = 5.25×10⁻³ mol. Uit die 1:2-verhouding is n(H₂SO₄) = 5.25×10⁻³/2 = 2.625×10⁻³ mol. c(H₂SO₄) = 2.625×10⁻³/0.0200 = 0.13125 mol·dm⁻³. Aangesien H₂SO₄ diproties is en albei protone as volledig gedissosieer beskou word, is [H⁺] = 2 × 0.13125 = 0.2625 mol·dm⁻³. pH = −log(0.2625) = 0.58. (Om die ×2 vir die tweede proton te vergeet — 'n algemene fout — gee die verkeerde afleikeuse pH = 0.88.)"
+  },
+  {
+    q: "'n Monster van 50.0 cm³ 0.400 mol·dm⁻³ CH₃COOH (Ka = 1.8×10⁻⁵) word met gedistilleerde water verdun tot 'n totale volume van 250 cm³. Wat is die pH van die verdunde oplossing?",
+    opts: ["pH = 2.87 (onveranderd, aangesien dit steeds etanoësuur is)",'pH = 2.92','pH = 1.40','pH = 3.64'],
+    ans: 1,
+    exp: "Bepaal eers die verdunde konsentrasie: c₁V₁ = c₂V₂, dus c₂ = (0.400 × 50.0)/250 = 0.0800 mol·dm⁻³. Pas dan die swak-suur-benadering toe op die NUWE konsentrasie: x² = Ka × c₂ = 1.8×10⁻⁵ × 0.0800 = 1.44×10⁻⁶, dus x = [H⁺] = 1.20×10⁻³ mol·dm⁻³. pH = −log(1.20×10⁻³) = 2.92. Verdunning van 'n swak suur verhoog sy pH (maak dit minder suur) — maar omdat dissosiasie effens toeneem met verdunning, verskuif die pH NIE met dieselfde hoeveelheid as 'n sterk-suur-verdunning nie."
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: "'n Buffer bevat 0.20 mol CH₃COOH en 0.20 mol CH₃COO⁻ in 1 L. pKa = 4.74. Wat is die pH? As 0.05 mol NaOH bygevoeg word, wat is die nuwe pH?",
+    opts: ["pH = 4.74; nuwe pH = 4.92","pH = 5.00; nuwe pH = 5.20","pH = 4.74; nuwe pH = 5.74","pH = 7.00; nuwe pH = 7.18"],
+    ans: 0,
+    exp: "Aanvanklik: [A⁻]/[HA] = 0.20/0.20 = 1. pH = 4.74 + log(1) = 4.74 + 0 = 4.74. Na toevoeging van 0.05 mol NaOH: OH⁻ reageer met HA → A⁻ + H₂O. Nuwe [HA] = 0.15, [A⁻] = 0.25. pH = 4.74 + log(0.25/0.15) = 4.74 + log(1.667) = 4.74 + 0.222 = 4.96 ≈ 4.92 (afronding). Die pH verander baie min — bufferwerking gedemonstreer."
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    document.getElementById('scoreBanner').classList.add('show');
+    document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{redrawCurve();window.dispatchEvent(new Event('resize'));},60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
