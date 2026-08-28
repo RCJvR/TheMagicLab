@@ -1510,6 +1510,13 @@ async function init() {
   buildAnswerKey();
   renderWorkbook();
   if (TOPICS.length) selectTopic(TOPICS[0].id);
+  // Deep link from Lesson Planning (dashboard-teacher.html) — ?ch=N opens
+  // straight into that chapter's first topic instead of always Chapter 1.
+  const _deepLinkCh = parseInt(new URLSearchParams(location.search).get('ch'), 10);
+  if (_deepLinkCh) {
+    const _deepLinkTopic = TOPICS.find(t => t.chapter === _deepLinkCh);
+    if (_deepLinkTopic) selectTopic(_deepLinkTopic.id);
+  }
   lucide.createIcons();
 }
 init();
