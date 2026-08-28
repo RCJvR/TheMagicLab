@@ -67,7 +67,7 @@ MathMagician.registerChapter(7, {
                 if([D,E,F].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Voer D, E, F in.</span>';return;}
                 const a=-D/2,b=-E/2;
                 const r2=a*a+b*b-F;
-                if(r2<=0){out.innerHTML='<span style="color:#fca5a5;">Nie 'n geldige sirkel nie (r² = '+f4(r2)+' ≤ 0).</span>';return;}
+                if(r2<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Nie 'n geldige sirkel nie (r² = "+f4(r2)+" ≤ 0).</span>";return;}
                 const r=Math.sqrt(r2);
                 let html='<span style="color:rgba(221,225,240,0.50);">x²+y²+('+D+')x+('+E+')y+('+F+') = 0</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">(x+('+D+'/2))²−'+(D/2)*(D/2)+' + (y+('+E+'/2))²−'+(E/2)*(E/2)+' + '+F+' = 0</span><br>';
@@ -262,7 +262,7 @@ MathMagician.registerChapter(7, {
               function calc(){
                 const r=gv('g12c7t3r'),m=gv('g12c7t3m'),k=gv('g12c7t3k');
                 const out=document.getElementById('g12c7t3Out');
-                if([r,m,k].some(isNaN)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Voer 'n positiewe radius en geldige m, k in.</span>';return;}
+                if([r,m,k].some(isNaN)||r<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe radius en geldige m, k in.</span>";return;}
                 // x² + (mx+k)² = r² → (1+m²)x² + 2mk x + (k²-r²) = 0
                 const A=1+m*m,B=2*m*k,C=k*k-r*r;
                 const disc=B*B-4*A*C;
@@ -271,7 +271,7 @@ MathMagician.registerChapter(7, {
                   html+='<span style="color:#fca5a5;">Δ &lt; 0 → die lyn mis die sirkel heeltemal.</span>';
                 } else if(Math.abs(disc)<1e-9){
                   const x0=-B/(2*A),y0=m*x0+k;
-                  html+='<span style="color:#6ee7b7;">Δ = 0 → lyn is 'n RAAKLYN, wat raak by ('+f4(x0)+'; '+f4(y0)+')</span>';
+                  html+="<span style=\"color:#6ee7b7;\">Δ = 0 → lyn is 'n RAAKLYN, wat raak by ("+f4(x0)+"; "+f4(y0)+")</span>";
                 } else {
                   const x1=(-B+Math.sqrt(disc))/(2*A),x2=(-B-Math.sqrt(disc))/(2*A);
                   const y1=m*x1+k,y2=m*x2+k;
@@ -356,7 +356,7 @@ MathMagician.registerChapter(7, {
               function calc(){
                 const r=gv('g12c7t4r'),m=gv('g12c7t4m');
                 const out=document.getElementById('g12c7t4Out');
-                if([r,m].some(isNaN)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Voer 'n positiewe radius en 'n gradiënt m in.</span>';return;}
+                if([r,m].some(isNaN)||r<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe radius en 'n gradiënt m in.</span>";return;}
                 // x²+(mx+c)²=r² → (1+m²)x²+2mcx+(c²-r²)=0; Δ=0 → 4m²c²-4(1+m²)(c²-r²)=0 → c² = r²(1+m²)
                 const c2=r*r*(1+m*m);
                 const c=Math.sqrt(c2);
