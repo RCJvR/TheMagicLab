@@ -279,8 +279,8 @@ MathMagician.registerChapter(3, {
         {
           type: "input",
           text: "'n Kwadratiese ry het Tₙ = n² − 8n + 15. Bepaal watter termnommer(s) van die ry gelyk is aan nul.",
-          answer: "3 and 5",
-          altAnswers: ["n = 3 and n = 5", "5 and 3", "n=3 and n=5", "3 en 5", "n = 3 en n = 5", "n=3 en n=5"],
+          answer: "3 en 5",
+          altAnswers: ["3 and 5", "n = 3 and n = 5", "5 and 3", "n=3 and n=5", "n = 3 en n = 5", "n=3 en n=5"],
           topic: "Werk met kwadratiese rye"
         },
         {

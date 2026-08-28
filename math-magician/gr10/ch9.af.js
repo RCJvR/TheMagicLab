@@ -464,7 +464,7 @@ MathMagician.registerChapter(9, {
           <div class="def-box">
             <div class="def-box-title">📖 Oplos vir die tydperk n (Graad 10-metode)</div>
             <p>
-              Op Graad 10-vlak (voordat logaritmes formeel behandel word), word n gewoonlik gevind deur <strong>trial and error / stelselmatige skattings</strong>, of deur die sakrekenaar te gebruik om waardes van n te toets totdat <span class="math">P(1+i)ⁿ</span> naby aan A pas.
+              Op Graad 10-vlak (voordat logaritmes formeel behandel word), word n gewoonlik gevind deur <strong>toets-en-verbeter / stelselmatige skattings</strong>, of deur die sakrekenaar te gebruik om waardes van n te toets totdat <span class="math">P(1+i)ⁿ</span> naby aan A pas.
             </p>
           </div>
 
@@ -551,7 +551,7 @@ MathMagician.registerChapter(9, {
             </script>
           </div>
 
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Om n deur trial and error op te los is 'n geldige Graad 10-metode — logaritmes word eers formeel in Graad 12 bekendgestel. Toets net stelselmatig heelgetal-waardes van n.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Om n deur toets-en-verbeter op te los is 'n geldige Graad 10-metode — logaritmes word eers formeel in Graad 12 bekendgestel. Toets net stelselmatig heelgetal-waardes van n.</span></div>
         `
       },
       questions: [
@@ -571,7 +571,7 @@ MathMagician.registerChapter(9, {
         {
           type: "mc",
           text: "Op Graad 10-vlak word die tydperk n in A = P(1+i)ⁿ tipies gevind deur:",
-          options: ["Logaritmes direk te gebruik", "Trial and error met heelgetal-skattings", "A deur P te deel", "Dit kan nie gevind word nie"],
+          options: ["Logaritmes direk te gebruik", "Toets-en-verbeter met heelgetal-skattings", "A deur P te deel", "Dit kan nie gevind word nie"],
           answer: 1,
           topic: "Oplos vir koers of tydperk"
         },
