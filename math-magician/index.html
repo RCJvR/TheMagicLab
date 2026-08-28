@@ -203,7 +203,7 @@
         grid: 'Grid', quickJump: 'Quick jump', jumpToGrade: 'Jump to grade', selectGrade: 'Select a grade',
         startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
         topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
-        continueWhere: 'Continue where you left off', gradeWord: 'Grade',
+        continueWhere: 'Continue where you left off', gradeWord: 'Grade', mathsWord: 'Maths',
         footer: 'Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Phase', desc: 'Foundations for the Senior Phase — numbers, algebra, geometry and data.' },
@@ -220,7 +220,7 @@
         grid: 'Rooster', quickJump: 'Vinnige keuse', jumpToGrade: 'Spring na graad', selectGrade: 'Kies \'n graad',
         startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
         topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
-        continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad',
+        continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad', mathsWord: 'Wiskunde',
         footer: 'Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Fase', desc: 'Grondslag vir die Senior Fase — getalle, algebra, meetkunde en data.' },
@@ -252,10 +252,15 @@
         const c = t.cards[g];
         if (!c) return;
         card.querySelector('.strand-tag').textContent = c.tag;
+        card.querySelector('.strand-title').textContent = `${t.gradeWord} ${g}`;
         card.querySelector('.strand-desc').textContent = c.desc;
         const cta = card.querySelector('.strand-topic');
         if (!card.dataset.progressState) cta.textContent = t.startLearning;
         else cta.textContent = card.dataset.progressState === 'done' ? t.reviewAgain : t.continueLink;
+      });
+      document.querySelectorAll('.path-item-title').forEach((el, i) => {
+        const g = [8,9,10,11,12][i];
+        el.textContent = `${t.gradeWord} ${g}`;
       });
       document.querySelectorAll('.path-item-sub').forEach((el, i) => {
         const g = [8,9,10,11,12][i];
@@ -340,7 +345,7 @@
       label.textContent = PT().continueWhere;
       const title = document.createElement('div');
       title.className = 'continue-title';
-      title.textContent = `${PT().gradeWord} ${last.grade}` + (last.topic ? ` · ${last.topic}` : ' Maths');
+      title.textContent = `${PT().gradeWord} ${last.grade}` + (last.topic ? ` · ${last.topic}` : ` ${PT().mathsWord}`);
       text.appendChild(label);
       text.appendChild(title);
       const arrow = document.createElement('span');
