@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organiese Chemie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;--acc:rgba(20,184,166,1);--acc2:rgba(52,211,153,1)}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.30);color:#5eead4}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back">&#8592; Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 &middot; Chemie &middot; Les 1</div>
+  <h1 class="lesson-title">Organiese Chemie &mdash; Struktuur &amp; Benoeming</h1>
+  <p class="lesson-sub">Identifiseer en benoem organiese verbindings met IUPAC-nomenklatuur, klassifiseer funksionele groepe, en beskryf die fisiese eienskappe van homoloë reekse.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Skakel om IEB-uitbreidingsinhoud te wys</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Werkboek</button>
+</div>
+
+<!-- LEER-OORTJIE -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Wat is Organiese Chemie?</h2>
+    <p>Organiese chemie is die studie van verbindings wat koolstof bevat. Koolstof is uniek: dit vorm vier kovalente bindings, kan met homself in kettings of ringe verbind, en produseer miljoene verskillende verbindings. Byna alle biologiese molekules &mdash; proteïene, DNS, vette, suikers &mdash; is organies.</p>
+    <div class="callout"><strong>Sleuteleienskappe van koolstof:</strong> Tetravalent (4 bindings); vorm C&ndash;C-enkelbindings, C=C-dubbelbindings, C&equiv;C-drievoudige bindings; bindings is kovalent (nie ioonies nie); nie-polêre C&ndash;H-bindings gee organiese verbindings hidrofobiese karakter, tensy &rsquo;n polêre funksionele groep teenwoordig is.</div>
+
+    <h2>Koolwaterstowwe</h2>
+    <p>Koolwaterstowwe bevat slegs koolstof en waterstof. Hulle word geklassifiseer volgens die tipe C&ndash;C-binding:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Reeks</th><th>Algemene Formule</th><th>Bindingstipe</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td>Alkane</td><td>C<sub>n</sub>H<sub>2n+2</sub></td><td>Slegs enkelbindings (versadig)</td><td>CH<sub>4</sub>, C<sub>2</sub>H<sub>6</sub>, C<sub>3</sub>H<sub>8</sub></td></tr>
+        <tr><td>Alkene</td><td>C<sub>n</sub>H<sub>2n</sub></td><td>Ten minste een C=C-dubbelbinding</td><td>C<sub>2</sub>H<sub>4</sub>, C<sub>3</sub>H<sub>6</sub></td></tr>
+        <tr><td>Alkiene</td><td>C<sub>n</sub>H<sub>2n&minus;2</sub></td><td>Ten minste een C&equiv;C-drievoudige binding</td><td>C<sub>2</sub>H<sub>2</sub></td></tr>
+      </tbody>
+    </table>
+
+    <h2>IUPAC-benoemingsreëls</h2>
+    <p>IUPAC (International Union of Pure and Applied Chemistry) verskaf &rsquo;n sistematiese benoemingstelsel:</p>
+    <ul>
+      <li><strong>Stap 1 &mdash; Ouerketting:</strong> Vind die langste aaneenlopende koolstofketting wat die hoof funksionele groep bevat. Die kettinglengte gee die stam: met(1), et(2), prop(3), but(4), pent(5), heks(6).</li>
+      <li><strong>Stap 2 &mdash; Agtervoegsel:</strong> Alkaan &rarr; -aan; alkeen &rarr; -een; alkien &rarr; -ien; alkohol &rarr; -ol; aldehied &rarr; -al; ketoon &rarr; -oon; karboksielsuur &rarr; -aansuur; ester &rarr; -oaat.</li>
+      <li><strong>Stap 3 &mdash; Nommer die ketting:</strong> Nommer vanaf die punt wat die funksionele groep of tak die <em>laagste lokant</em> (kleinste nommer) gee.</li>
+      <li><strong>Stap 4 &mdash; Benoem takke:</strong> Substituente word as voorvoegsels benoem: metiel(-CH<sub>3</sub>), etiel(-C<sub>2</sub>H<sub>5</sub>), chloor-, broom-, ens. Lys alfabeties.</li>
+      <li><strong>Stap 5 &mdash; Stel saam:</strong> lokant(e)-voorvoegsel(s)-stam-lokant-agtervoegsel. Bv. 2-metielpropan-1-ol.</li>
+    </ul>
+    <div class="formula">but-2-een &rarr; 4-koolstofketting, dubbelbinding begin by C2<br>2-metielpropaan &rarr; propaan met &rsquo;n metielgroep op C2<br>3-chloorbutan-1-ol &rarr; 4-koolstofketting, Cl op C3, OH op C1</div>
+
+    <h2>Funksionele Groepe</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Funksionele Groep</th><th>Struktuur</th><th>Klas</th><th>Agtervoegsel</th></tr></thead>
+      <tbody>
+        <tr><td>Hidroksiel</td><td>&ndash;OH</td><td>Alkohole</td><td>-ol</td></tr>
+        <tr><td>Karboksiel</td><td>&ndash;COOH</td><td>Karboksielsure</td><td>-aansuur</td></tr>
+        <tr><td>Amino</td><td>&ndash;NH<sub>2</sub></td><td>Amiene</td><td>-amien</td></tr>
+        <tr><td>Esterbinding</td><td>&ndash;COO&ndash;</td><td>Esters</td><td>-oaat</td></tr>
+        <tr><td>Halogeen</td><td>&ndash;X (F, Cl, Br, I)</td><td>Haloalkane</td><td>halo- voorvoegsel</td></tr>
+        <tr><td>Karbonyl (aldehied)</td><td>&ndash;CHO (punt)</td><td>Aldehiede</td><td>-al</td></tr>
+        <tr><td>Karbonyl (ketoon)</td><td>&ndash;C(=O)&ndash; (middel)</td><td>Ketone</td><td>-oon</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Struktuurformules</h2>
+    <ul>
+      <li><strong>Uitgebreide (vertoonde) formule:</strong> Wys elke binding eksplisiet &mdash; elke C&ndash;H- en C&ndash;C-binding word uitgeteken. Mees gedetailleerd; gebruik om bindings duidelik te wys.</li>
+      <li><strong>Verkorte formule:</strong> Atome word lineêr geskryf sonder om bindings te wys; H-atome word geïmpliseer: CH<sub>3</sub>CH<sub>2</sub>OH.</li>
+      <li><strong>Skeletformule:</strong> Lyne verteenwoordig C&ndash;C-bindings; elke hoekpunt/punt is &rsquo;n koolstof; H-atome word nie gewys nie (aanvaar om aan valensie te voldoen). Mees kompak; gebruik in komplekse molekules.</li>
+    </ul>
+
+    <h2>Isomere</h2>
+    <p><strong>Struktuurisomere</strong> het dieselfde molekulêre formule maar verskillende struktuurrangskikkings:</p>
+    <ul>
+      <li><strong>Kettingisomere:</strong> Verskillende rangskikking van die koolstofskelet (bv. butaan teenoor 2-metielpropaan &mdash; albei C<sub>4</sub>H<sub>10</sub>).</li>
+      <li><strong>Posisie-isomere:</strong> Dieselfde funksionele groep in verskillende posisies (bv. propan-1-ol teenoor propan-2-ol).</li>
+      <li><strong>Funksionele-groep-isomere:</strong> Verskillende funksionele groepe met dieselfde formule (bv. etanol CH<sub>3</sub>CH<sub>2</sub>OH teenoor metoksiemetaan CH<sub>3</sub>OCH<sub>3</sub>).</li>
+    </ul>
+    <p><strong>Geometriese isomere</strong> ontstaan uit beperkte rotasie om &rsquo;n C=C-dubbelbinding. Wanneer albei koolstowwe van &rsquo;n dubbelbinding twee verskillende groepe dra:</p>
+    <ul>
+      <li><strong>cis-</strong>isomeer: dieselfde groepe aan dieselfde kant van die dubbelbinding.</li>
+      <li><strong>trans-</strong>isomeer: dieselfde groepe aan teenoorgestelde kante.</li>
+    </ul>
+    <div class="callout"><strong>Voorwaarde vir geometriese isomerie:</strong> Elke koolstof van die C=C moet twee <em>verskillende</em> substituente dra. As enige van die koolstowwe twee identiese groepe het, bestaan daar geen cis/trans-isomere nie.</div>
+
+    <h2>Fisiese Eienskappe van Homoloë Reekse</h2>
+    <p>&rsquo;n <strong>Homoloë reeks</strong> is &rsquo;n familie van verbindings met dieselfde funksionele groep en algemene formule, wat met &ndash;CH<sub>2</sub>&ndash;-eenhede verskil. Eienskappe verander <em>geleidelik</em> oor die reeks:</p>
+    <ul>
+      <li><strong>Kookpunt neem toe</strong> met kettinglengte &mdash; meer koolstowwe beteken groter molekules, sterker London-(dispersie-)kragte, meer energie nodig om molekules te skei.</li>
+      <li><strong>Vertakking verlaag kookpunt</strong> &mdash; vertakte molekules is meer kompak (sferies), wat die oppervlakarea vir intermolekulêre kontak verminder en dispersiekragte verswak.</li>
+      <li><strong>Hidroksiel-(&ndash;OH)-groepe verhoog kookpunt dramaties</strong> deur waterstofbinding (H-bindings is baie sterker as dispersiekragte). Vergelyk etanol (kookpunt 78&deg;C) met propaan (kookpunt &minus;42&deg;C) &mdash; albei het ~3 koolstowwe.</li>
+      <li><strong>Oplosbaarheid in water:</strong> korttak-alkohole en karboksielsure los goed op (H-binding met water); lang kettings word toenemend hidrofobies &rarr; onoplosbaar.</li>
+    </ul>
+    <table class="symbols-table">
+      <thead><tr><th>Faktor</th><th>Effek op Kookpunt</th><th>Rede</th></tr></thead>
+      <tbody>
+        <tr><td>Langer ketting</td><td>Neem toe</td><td>Meer oppervlakarea, sterker London-kragte</td></tr>
+        <tr><td>Meer vertakking</td><td>Neem af</td><td>Meer kompakte vorm, minder oppervlakkontak</td></tr>
+        <tr><td>&ndash;OH-groep</td><td>Neem sterk toe</td><td>Waterstofbinding (sterk intermolekulêre krag)</td></tr>
+        <tr><td>&ndash;COOH-groep</td><td>Selfs groter toename</td><td>Dimerisasie via 2 H-bindings; ook polêre C=O</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Uitgewerkte Benoemingsvoorbeelde</h2>
+    <div class="formula">
+      CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub> &rarr; butaan (4-koolstofketting, geen funksionele groep, alkaan-agtervoegsel -aan)<br><br>
+      CH<sub>3</sub>CH=CHCH<sub>3</sub> &rarr; but-2-een (4C-ketting, dubbelbinding by C2)<br><br>
+      CH<sub>3</sub>CH(OH)CH<sub>3</sub> &rarr; propan-2-ol (3C-ketting, OH op C2)<br><br>
+      CH<sub>3</sub>COOH &rarr; etaansuur (2C-ketting, karboksielgroep: agtervoegsel -aansuur)<br><br>
+      CH<sub>3</sub>CH(CH<sub>3</sub>)CH<sub>2</sub>CH<sub>3</sub> &rarr; 2-metielbutaan (4C-ouerketting + metieltak op C2)
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB-uitbreiding &mdash; Stereo-isomere &amp; Optiese Isomere</div>
+      <p>Benewens geometriese isomere kan molekules ook <strong>optiese isomerie</strong> vertoon. &rsquo;n Koolstofatoom wat aan vier <em>verskillende</em> groepe gebind is, word &rsquo;n <strong>chirale sentrum</strong> (of stereosentrum) genoem. Die twee nie-oordekbare spieëlbeeldstrukture word <strong>enantiomere</strong> genoem.</p>
+      <p>Enantiomere draai vlakgepolariseerde lig in teenoorgestelde rigtings: die (+) of R-enantiomeer en die (&minus;) of S-enantiomeer. Die R/S-aanduiding gebruik die Cahn&ndash;Ingold&ndash;Prelog-(CIP-)prioriteitsreëls:</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 10px 20px">
+        <li>Ken prioriteite 1&ndash;4 toe aan die vier substituente volgens atoomgetal (hoogste = 1).</li>
+        <li>Bekyk die molekule met die laagste-prioriteitgroep (4) van jou af weg wysend.</li>
+        <li>As 1&rarr;2&rarr;3 <em>kloksgewys</em> is &rarr; R-konfigurasie; <em>anti-kloksgewys</em> &rarr; S.</li>
+      </ul>
+      <p>&rsquo;n Rasemiese mengsel (50:50-mengsel van enantiomere) toon geen netto optiese rotasie nie. Enantiomere het identiese fisiese eienskappe behalwe optiese rotasie, maar kan baie verskillende biologiese aktiwiteit hê (bv. talidomied, ibuprofen).</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VERKEN-OORTJIE -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Molekuulbouer &mdash; Teken Struktuurformules</h3>
+      <canvas id="molCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bou Jou Molekule</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Kettinglengte (koolstowwe)</label>
+        <select class="sim-select" id="chainLen" onchange="drawMolecule()">
+          <option value="1">1 &mdash; Met-</option>
+          <option value="2" selected>2 &mdash; Et-</option>
+          <option value="3">3 &mdash; Prop-</option>
+          <option value="4">4 &mdash; But-</option>
+          <option value="5">5 &mdash; Pent-</option>
+          <option value="6">6 &mdash; Heks-</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Funksionele groep</label>
+        <select class="sim-select" id="funcGroup" onchange="drawMolecule()">
+          <option value="alkane">Geen (Alkaan)</option>
+          <option value="alkene">C=C dubbelbinding (Alkeen)</option>
+          <option value="alcohol">-OH (Alkohol)</option>
+          <option value="carboxylic">-COOH (Karboksielsuur)</option>
+          <option value="halo">-Cl (Chlooralkaan)</option>
+          <option value="aldehyde">-CHO (Aldehied)</option>
+          <option value="ketone">C=O (Ketoon)</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">IUPAC-naam &amp; Formule</div>
+        <div class="readout-grid">
+          <div class="readout" style="grid-column:1/-1"><div class="readout-label">IUPAC-naam</div><div class="readout-val" id="iupacName" style="font-size:13px;letter-spacing:0">--</div></div>
+          <div class="readout"><div class="readout-label">Molekulêre Formule</div><div class="readout-val" id="molFormula" style="font-size:13px">--</div></div>
+          <div class="readout"><div class="readout-label">Reeks</div><div class="readout-val" id="seriesName" style="font-size:13px">--</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OEFENING-OORTJIE -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Gaan die verduidelikings na om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-uitbreidingsvrae</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WERKBOEK-OORTJIE -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae in jou skrif. Wys al jou redenasie duidelik. Vir benoemingsvrae, identifiseer die ouerketting en funksionele-groep-posisie stap vir stap.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 &mdash; IUPAC-benoeming</div>
+      <div class="wb-qtext">Benoem die volgende verbindings met IUPAC-nomenklatuur. Wys jou redenasie (identifiseer ouerketting, funksionele groep, lokant):<br><br>
+      (a) CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>OH<br>
+      (b) CH<sub>3</sub>CHCH<sub>2</sub>CH<sub>3</sub> met &rsquo;n Cl op die tweede koolstof<br>
+      (c) CH<sub>3</sub>CH<sub>2</sub>COOH<br>
+      (d) CH<sub>3</sub>CH=CHCH<sub>2</sub>CH<sub>3</sub><br><br>
+      <em>(8 punte &mdash; 2 per verbinding)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 &mdash; Funksionele Groepe &amp; Klassifikasie</div>
+      <div class="wb-qtext">Vir elke verbinding hieronder, (i) identifiseer die funksionele groep teenwoordig, (ii) benoem die homoloë reeks waaraan dit behoort, en (iii) teken die struktuurformule:<br><br>
+      (a) heksan-1-ol &nbsp;&nbsp; (b) propaansuur &nbsp;&nbsp; (c) 2-chloorpropaan &nbsp;&nbsp; (d) pentan-3-oon<br><br>
+      <em>(8 punte &mdash; 2 per verbinding)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 &mdash; Isomere</div>
+      <div class="wb-qtext">Die molekulêre formule C<sub>4</sub>H<sub>8</sub>O kan verskeie verskillende verbindings verteenwoordig.<br><br>
+      (a) Teken TWEE struktuurisomere wat aldehiede is met hierdie formule.<br>
+      (b) Teken EEN struktuurisomeer wat &rsquo;n ketoon is met hierdie formule.<br>
+      (c) Teken en merk, vir but-2-een (C<sub>4</sub>H<sub>8</sub>), die cis- en trans-isomere. Verduidelik waarom geometriese isomere vir hierdie verbinding moontlik is.<br><br>
+      <em>(7 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 &mdash; Fisiese Eienskappe</div>
+      <div class="wb-qtext">Beskou die volgende verbindings: butaan (C<sub>4</sub>H<sub>10</sub>), butan-1-ol (C<sub>4</sub>H<sub>9</sub>OH), en 2-metielpropan-1-ol (C<sub>4</sub>H<sub>9</sub>OH).<br><br>
+      (a) Watter verbinding het die hoogste kookpunt? Verduidelik volledig deur intermolekulêre kragte te gebruik.<br>
+      (b) Watter van die twee C<sub>4</sub>-alkohole het die hoër kookpunt? Verduidelik die effek van vertakking.<br>
+      (c) Watter van hierdie drie verbindings is die mees oplosbaar in water? Verduidelik.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 &mdash; Kookpunttendens in &rsquo;n Homoloë Reeks</div>
+      <div class="wb-qtext">Die tabel toon die kookpunte van die eerste vyf reguitketting-primêre alkohole:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Alkohol</th><th>Metanol</th><th>Etanol</th><th>Propan-1-ol</th><th>Butan-1-ol</th><th>Pentan-1-ol</th></tr></thead>
+        <tbody>
+          <tr><td>Formule</td><td>CH<sub>3</sub>OH</td><td>C<sub>2</sub>H<sub>5</sub>OH</td><td>C<sub>3</sub>H<sub>7</sub>OH</td><td>C<sub>4</sub>H<sub>9</sub>OH</td><td>C<sub>5</sub>H<sub>11</sub>OH</td></tr>
+          <tr><td>Kookpunt (&deg;C)</td><td>65</td><td>78</td><td>97</td><td>118</td><td>138</td></tr>
+        </tbody>
+      </table>
+      (a) Beskryf die tendens in kookpunt namate kettinglengte in hierdie tabel toeneem.<br>
+      (b) Bereken die toename in kookpunt tussen elke opeenvolgende paar alkohole. Is die toename per bygevoegde &minus;CH<sub>2</sub>&minus;-groep presies konstant?<br>
+      (c) Gebruik die toename tussen butan-1-ol en pentan-1-ol om die kookpunt van heksan-1-ol (die volgende lid van die reeks) te voorspel.<br>
+      (d) Elke alkohol in hierdie tabel kan waterstofbinding vorm. Verduidelik, in terme van intermolekulêre kragte, waarom die kookpunt steeds gestadig toeneem oor die reeks, al het al vyf dieselfde STERKSTE tipe intermolekulêre krag.<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(drawMolecule, 50);
+}
+
+// ─── Molekuulbouer ─────────────────────────────────────────────────────────
+const stemNames = ['','met','et','prop','but','pent','heks'];
+
+function drawMolecule() {
+  const n = parseInt(document.getElementById('chainLen').value);
+  const fg = document.getElementById('funcGroup').value;
+  const canvas = document.getElementById('molCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 360;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  // Bereken naam & formule
+  let name = '', formula = '', series = '';
+  const carbons = fg === 'carboxylic' ? n : n;
+  if (fg === 'alkane') {
+    name = stemNames[n] + 'aan';
+    formula = 'C' + n + 'H' + (2*n+2);
+    series = 'Alkaan';
+  } else if (fg === 'alkene') {
+    name = n >= 3 ? stemNames[n] + '-1-een' : stemNames[n] + 'een';
+    formula = 'C' + n + 'H' + (2*n);
+    series = 'Alkeen';
+  } else if (fg === 'alcohol') {
+    name = stemNames[n] + 'an-1-ol';
+    formula = 'C' + n + 'H' + (2*n+1) + 'OH';
+    series = 'Alkohol';
+  } else if (fg === 'carboxylic') {
+    name = stemNames[n] + 'aansuur';
+    formula = 'C' + n + 'H' + (2*n-1) + 'COOH';
+    series = 'Karboksielsuur';
+  } else if (fg === 'halo') {
+    name = '1-chloor' + stemNames[n] + 'aan';
+    formula = 'C' + n + 'H' + (2*n+1) + 'Cl';
+    series = 'Haloalkaan';
+  } else if (fg === 'aldehyde') {
+    name = stemNames[n] + 'anal';
+    formula = 'C' + n + 'H' + (2*n) + 'O';
+    series = 'Aldehied';
+  } else if (fg === 'ketone') {
+    name = n >= 3 ? stemNames[n] + 'an-' + Math.floor(n/2) + '-oon' : stemNames[n] + 'oon';
+    formula = 'C' + n + 'H' + (2*n) + 'O';
+    series = 'Ketoon';
+  }
+  document.getElementById('iupacName').textContent = name || '--';
+  document.getElementById('molFormula').textContent = formula || '--';
+  document.getElementById('seriesName').textContent = series || '--';
+
+  // Tekenparameters
+  const totalC = n;
+  const cRadius = 16;
+  const bondLen = Math.min(80, (W - 120) / Math.max(1, totalC));
+  const startX = (W - bondLen * (totalC - 1)) / 2;
+  const cY = H / 2;
+  const hGap = 28;
+  const carbonColor = '#2dd4bf';
+  const hColor = '#94a3b8';
+  const bondColor = 'rgba(255,255,255,0.35)';
+
+  // Teken C-C-bindings
+  ctx.strokeStyle = bondColor;
+  ctx.lineWidth = 2;
+  for (let i = 0; i < totalC - 1; i++) {
+    const x1 = startX + i * bondLen;
+    const x2 = x1 + bondLen;
+    if (fg === 'alkene' && i === 0 && totalC >= 2) {
+      // dubbelbinding
+      ctx.beginPath(); ctx.moveTo(x1, cY - 4); ctx.lineTo(x2, cY - 4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x1, cY + 4); ctx.lineTo(x2, cY + 4); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.moveTo(x1, cY); ctx.lineTo(x2, cY); ctx.stroke();
+    }
+  }
+
+  // Teken koolstowwe en hul H-atome
+  for (let i = 0; i < totalC; i++) {
+    const cx = startX + i * bondLen;
+    let hCount = 0;
+    // Bepaal H-telling
+    let bonds = 0;
+    if (i === 0 || i === totalC - 1) bonds = 1; else bonds = 2;
+    if (fg === 'alkene' && (i === 0 || i === 1) && totalC >= 2) bonds++;
+    // funksionele-groep-bindings
+    if (i === 0 && (fg === 'alcohol' || fg === 'halo' || fg === 'aldehyde')) bonds++;
+    if (i === totalC - 1 && fg === 'carboxylic') bonds += 2;
+    if (i === Math.floor((totalC-1)/2) && fg === 'ketone' && totalC >= 3) bonds++;
+    hCount = 4 - bonds;
+    hCount = Math.max(0, hCount);
+
+    // H-bindings bo
+    for (let h = 0; h < Math.ceil(hCount/2); h++) {
+      const hx = cx - (Math.ceil(hCount/2)-1)*10/2 + h*10;
+      ctx.strokeStyle = bondColor; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(hx, cY - cRadius); ctx.lineTo(hx, cY - cRadius - hGap); ctx.stroke();
+      ctx.fillStyle = hColor; ctx.font = 'bold 11px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      ctx.fillText('H', hx, cY - cRadius - hGap - 5);
+    }
+    // H-bindings onder
+    for (let h = 0; h < Math.floor(hCount/2); h++) {
+      const hx = cx - (Math.floor(hCount/2)-1)*10/2 + h*10;
+      ctx.strokeStyle = bondColor; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(hx, cY + cRadius); ctx.lineTo(hx, cY + cRadius + hGap); ctx.stroke();
+      ctx.fillStyle = hColor; ctx.font = 'bold 11px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      ctx.fillText('H', hx, cY + cRadius + hGap + 13);
+    }
+
+    // Koolstofatoom-sirkel
+    ctx.beginPath(); ctx.arc(cx, cY, cRadius, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(20,184,166,0.18)'; ctx.fill();
+    ctx.strokeStyle = carbonColor; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 12px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+    ctx.fillText('C', cx, cY + 4);
+  }
+
+  // Teken funksionele groep by punt/posisie
+  const lastX = startX + (totalC - 1) * bondLen;
+  const firstX = startX;
+  ctx.font = 'bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  if (fg === 'alcohol') {
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(firstX - cRadius, cY); ctx.lineTo(firstX - cRadius - 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillText('OH', firstX - cRadius - 42, cY + 4);
+  } else if (fg === 'halo') {
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(firstX - cRadius, cY); ctx.lineTo(firstX - cRadius - 30, cY); ctx.stroke();
+    ctx.fillStyle = '#c4b5fd';
+    ctx.fillText('Cl', firstX - cRadius - 42, cY + 4);
+  } else if (fg === 'carboxylic') {
+    ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(lastX + cRadius, cY); ctx.lineTo(lastX + cRadius + 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fca5a5';
+    ctx.fillText('COOH', lastX + cRadius + 55, cY + 4);
+  } else if (fg === 'aldehyde') {
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(lastX + cRadius, cY); ctx.lineTo(lastX + cRadius + 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillText('CHO', lastX + cRadius + 48, cY + 4);
+  } else if (fg === 'ketone' && totalC >= 3) {
+    const kx = startX + Math.floor((totalC-1)/2) * bondLen;
+    ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(kx, cY - cRadius); ctx.lineTo(kx, cY - cRadius - 30); ctx.stroke();
+    ctx.fillStyle = '#fca5a5'; ctx.font = 'bold 11px "JetBrains Mono",monospace';
+    ctx.fillText('=O', kx, cY - cRadius - 36);
+  }
+
+  // IUPAC-naam-etiket onderaan
+  ctx.fillStyle = 'rgba(45,212,191,0.8)';
+  ctx.font = '600 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(name, W/2, H - 14);
+}
+
+// ─── Oefeningsvrae ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'Wat is die IUPAC-naam vir CH₃CH₂CH(OH)CH₃?',
+    opts: ['butan-1-ol','butan-3-ol','butan-2-ol','2-metielpropan-1-ol'],
+    ans: 2,
+    exp: 'Die langste ketting het 4 koolstowwe (butaan-stam). Die –OH-groep is op die tweede koolstof vanaf albei kante. Nommering vanaf die punt naaste aan die OH-groep gee posisie 2. Naam: butan-2-ol.'
+  },
+  {
+    q: 'Watter funksionele groep is teenwoordig in etaansuur (CH₃COOH)?',
+    opts: ['Hidroksiel (–OH)','Karbonyl (C=O in die middel)','Karboksiel (–COOH)','Amino (–NH₂)'],
+    ans: 2,
+    exp: "Etaansuur bevat 'n –COOH-(karboksiel-)groep. Dit is die bepalende funksionele groep van karboksielsure. Dit bestaan uit 'n karbonyl (C=O) en 'n hidroksiel (–OH) op dieselfde koolstof, maar saam vorm hulle die afsonderlike karboksielgroep."
+  },
+  {
+    q: 'But-1-een en siklobutaan het albei die molekulêre formule C₄H₈. Hulle is voorbeelde van:',
+    opts: ['Geometriese isomere','Kettingisomere','Funksionele-groep-isomere','Posisie-isomere'],
+    ans: 2,
+    exp: "But-1-een ('n alkeen met 'n C=C) en siklobutaan ('n sikliese alkaan) het dieselfde molekulêre formule C₄H₈ maar behoort aan verskillende homoloë reekse. Hulle het verskillende funksionele-groep-tipes (C=C teenoor ring) — dit is funksionele-groep-isomere."
+  },
+  {
+    q: 'Waarom het butan-1-ol \'n baie hoër kookpunt as butaan, al het albei 4 koolstofatome?',
+    opts: [
+      'Butan-1-ol het sterker London-dispersiekragte',
+      'Butan-1-ol-molekules vorm waterstofbindings via die –OH-groep',
+      "Butan-1-ol het 'n hoër molêre massa wat sterker kragte veroorsaak",
+      "Butaan is 'n gas, dus kook dit altyd by 'n laer temperatuur"
+    ],
+    ans: 1,
+    exp: 'Die –OH-groep in butan-1-ol vorm waterstofbindings tussen molekules. Waterstofbindings is baie sterker as die London-dispersiekragte tussen butaan-molekules. Meer energie word dus benodig om butan-1-ol-molekules te skei — daarom is sy kookpunt (118°C) baie hoër as butaan (−10°C).'
+  },
+  {
+    q: "Vir geometriese (cis/trans-)isomere om rondom 'n C=C-dubbelbinding te bestaan:",
+    opts: [
+      'Die molekule moet ten minste 4 koolstowwe hê',
+      'Elke koolstof van die C=C moet twee verskillende substituente dra',
+      'Die molekule moet sikliese wees',
+      'Die dubbelbinding moet in die middel van die ketting wees'
+    ],
+    ans: 1,
+    exp: "Geometriese isomerie vereis beperkte rotasie (verskaf deur die C=C) EN elke koolstof van die dubbelbinding moet twee VERSKILLENDE groepe dra. As enige koolstof twee identiese groepe het, is die cis- en trans-vorms identies — geen isomere bestaan nie. But-2-een toon byvoorbeeld cis/trans-isomerie; propeen nie ('n C=C-koolstof het twee H-atome)."
+  },
+  {
+    q: 'Watter verbinding het die hoogste kookpunt: pentaan, 2-metielbutaan, of pentan-1-ol? Al drie is C₅-verbindings.',
+    opts: [
+      'Pentaan — langste reguit ketting',
+      '2-metielbutaan — vertakking verhoog kookpunt',
+      'Pentan-1-ol — waterstofbinding vanaf die –OH-groep',
+      'Al drie het dieselfde kookpunt omdat hulle dieselfde molekulêre formule het'
+    ],
+    ans: 2,
+    exp: "Pentan-1-ol het 'n kookpunt van 138°C, baie hoër as pentaan (36°C) of 2-metielbutaan (28°C). Die –OH-groep in pentan-1-ol skep waterstofbindings, wat baie sterker intermolekulêre kragte is as die London-dispersiekragte in pentaan of 2-metielbutaan. Vertakking (2-metielbutaan) VERLAAG eintlik die kookpunt relatief tot reguitketting-pentaan."
+  },
+  {
+    q: 'Hoeveel kettingisomere bestaan vir die molekulêre formule C₅H₁₂, en wat is hulle?',
+    opts: [
+      '2 — pentaan en 2-metielbutaan',
+      '3 — pentaan, 2-metielbutaan, en 2,2-dimetielpropaan',
+      '4 — pentaan, 2-metielbutaan, 3-metielbutaan, en 2,2-dimetielpropaan',
+      '1 — slegs pentaan; vertakking verander nie die molekulêre formule nie'
+    ],
+    ans: 1,
+    exp: "C₅H₁₂ het presies DRIE struktuur-(ketting-)isomere: pentaan (reguit ketting), 2-metielbutaan (een metieltak), en 2,2-dimetielpropaan/neopentaan (twee metieltakke op dieselfde koolstof). \"3-metielbutaan\" is NIE 'n vierde isomeer nie — nommering moet die tak die LAAGSTE moontlike lokant gee, en die nommering van die 4-koolstofketting vanaf die ander kant maak \"3-metielbutaan\" in \"2-metielbutaan\". Dit is dieselfde molekule verkeerd benoem, nie 'n afsonderlike isomeer nie — 'n algemene benoemingsvalstrik."
+  },
+  {
+    q: 'Rangskik butaan, butan-1-ol, en butaansuur van LAAGSTE na HOOGSTE kookpunt, en identifiseer die korrekte rede vir die volgorde.',
+    opts: [
+      "Butaan < butan-1-ol < butaansuur — slegs London-dispersiekragte, dan waterstofbinding via een –OH, dan 'n selfs sterker effektiewe aantrekking omdat karboksielsure TWEE waterstofbindings per paar molekules kan vorm (dimerisasie)",
+      'Butaansuur < butan-1-ol < butaan — groter, meer komplekse molekules het altyd laer kookpunte',
+      'Butan-1-ol < butaan < butaansuur — alkohole het altyd die laagste kookpunt onder organiese verbindings',
+      'Al drie het baie soortgelyke kookpunte aangesien hulle almal 4 koolstofatome bevat'
+    ],
+    ans: 0,
+    exp: "Butaan (slegs C–H- en C–C-bindings) het slegs London-dispersiekragte — laagste kookpunt. Butan-1-ol het 'n –OH-groep, dus vorm sy molekules waterstofbindings met mekaar — 'n baie hoër kookpunt. Butaansuur het 'n –COOH-groep, wat TWEE waterstofbindings tussen 'n paar molekules kan vorm (dimerisasie), bo en behalwe meer polêr te wees — wat dit die hoogste kookpunt van die drie gee. Al drie het 4 koolstowwe, wat wys dat funksionele groep (nie net kettinglengte nie) dikwels die dominante faktor is wat kookpunt beheer."
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: "'n Molekule van melksuur het die struktuur CH₃CH(OH)COOH. Watter koolstofatoom is 'n chirale sentrum?",
+    opts: ['C1 (die CH₃-koolstof)','C2 (die CH(OH)-koolstof)','C3 (die COOH-koolstof)','Geen chirale sentrum bestaan nie'],
+    ans: 1,
+    exp: "C2 is gebind aan vier verskillende groepe: –CH₃, –OH, –COOH, en –H. Aangesien al vier groepe verskillend is, is C2 'n chirale sentrum (stereosentrum). Melksuur bestaan dus as twee enantiomere: L-melksuur (in spiere) en D-melksuur."
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})" id="${prefix}-opt-${qi}-${oi}"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+drawMolecule();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{drawMolecule();window.dispatchEvent(new Event('resize'));},60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

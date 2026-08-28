@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektrochemie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.30);color:#5eead4}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back">&#8592; Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 &middot; Chemie &middot; Les 3</div>
+  <h1 class="lesson-title">Elektrochemie</h1>
+  <p class="lesson-sub">Ontleed galvaniese en elektrolitiese selle, gebruik die standaardelektrodepotensiaaltabel om selpotensiaal en spontaneïteit te voorspel, en pas Faraday se wette toe.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Skakel om IEB-uitbreidingsinhoud te wys</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Werkboek</button>
+</div>
+
+<!-- LEER-OORTJIE -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Oksidasie &amp; Reduksie-opsomming</h2>
+    <p>Elektrochemie is gebou op redoksreaksies. Onthou die Engelse geheue-ezel <strong>OIL RIG</strong>: <strong>O</strong>xidation <strong>I</strong>s <strong>L</strong>oss of electrons (oksidasie is verlies van elektrone); <strong>R</strong>eduction <strong>I</strong>s <strong>G</strong>ain of electrons (reduksie is wins van elektrone). In elektrochemie word elektronoorplasing ingespan om elektriese werk te verrig (galvaniese sel) of aangedryf deur elektriese werk (elektrolitiese sel).</p>
+    <div class="key-fact">Anode = Oksidasie. Katode = Reduksie. (Engelse geheuehulp: Anode&ndash;Oxidation, Cathode&ndash;Reduction &mdash; &ldquo;A&ndash;O&rdquo; en &ldquo;C&ndash;R&rdquo; deel dieselfde beginletter in Engels.) Dit geld vir BEIDE galvaniese en elektrolitiese selle.</div>
+
+    <h2>Galvaniese (Voltaïese) Selle</h2>
+    <p>&rsquo;n <strong>Galvaniese sel</strong> skakel die chemiese energie van &rsquo;n spontane redoksreaksie om in elektriese energie. Die Daniell-sel (Zn&ndash;Cu) is die klassieke voorbeeld:</p>
+    <ul>
+      <li><strong>Anode (negatiewe elektrode):</strong> Sinkelektrode in ZnSO<sub>4</sub>-oplossing. Oksidasie: Zn &rarr; Zn<sup>2+</sup> + 2e<sup>&minus;</sup>. Zn los op; die elektrode word ligter.</li>
+      <li><strong>Katode (positiewe elektrode):</strong> Koperelektrode in CuSO<sub>4</sub>-oplossing. Reduksie: Cu<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Cu. Cu word neergeslaan; die elektrode word swaarder.</li>
+      <li><strong>Eksterne stroombaan:</strong> Elektrone vloei van die anode (Zn) deur die draad na die katode (Cu).</li>
+      <li><strong>Soutbrug:</strong> Bevat KNO<sub>3</sub> of KCl in agar. Laat ioonmigrasie toe om elektriese neutraliteit in beide halfselle te handhaaf. Sonder dit hou die sel op werk. Katione migreer na die katode-halfsel; anione migreer na die anode-halfsel.</li>
+    </ul>
+    <div class="formula">
+      Anode: Zn(s) &rarr; Zn<sup>2+</sup>(aq) + 2e<sup>&minus;</sup><br>
+      Katode: Cu<sup>2+</sup>(aq) + 2e<sup>&minus;</sup> &rarr; Cu(s)<br>
+      Totaal: Zn(s) + Cu<sup>2+</sup>(aq) &rarr; Zn<sup>2+</sup>(aq) + Cu(s)
+    </div>
+    <p><strong>Selnotasie (lynnotasie):</strong> Anode links; katode regs; dubbele vertikale lyn (||) verteenwoordig die soutbrug; enkele vertikale lyn (|) verteenwoordig &rsquo;n fasegrens.</p>
+    <div class="formula">Zn(s) | Zn<sup>2+</sup>(aq) || Cu<sup>2+</sup>(aq) | Cu(s)</div>
+
+    <h2>Standaardelektrodepotensiale (E&deg;)</h2>
+    <p>Die <strong>standaardelektrodepotensiaal</strong> (E&deg;) is die potensiaal van &rsquo;n halfsel gemeet teenoor die <strong>standaardwaterstofelektrode</strong> (SWE, E&deg; = 0.00 V) onder standaardtoestande: 25&deg;C, 1 mol&middot;dm<sup>&minus;3</sup>, 1 atm. Alle waardes word geskryf as <em>reduksie</em>potensiale.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Halfreaksie (reduksie)</th><th>E&deg; (V)</th><th>Karakter</th></tr></thead>
+      <tbody>
+        <tr><td>F<sub>2</sub> + 2e<sup>&minus;</sup> &rarr; 2F<sup>&minus;</sup></td><td>+2.87</td><td>Sterkste OM</td></tr>
+        <tr><td>MnO<sub>4</sub><sup>&minus;</sup> + 8H<sup>+</sup> + 5e<sup>&minus;</sup> &rarr; Mn<sup>2+</sup> + 4H<sub>2</sub>O</td><td>+1.51</td><td>Sterk OM</td></tr>
+        <tr><td>Cl<sub>2</sub> + 2e<sup>&minus;</sup> &rarr; 2Cl<sup>&minus;</sup></td><td>+1.36</td><td>Sterk OM</td></tr>
+        <tr><td>O<sub>2</sub> + 4H<sup>+</sup> + 4e<sup>&minus;</sup> &rarr; 2H<sub>2</sub>O</td><td>+1.23</td><td></td></tr>
+        <tr><td>Ag<sup>+</sup> + e<sup>&minus;</sup> &rarr; Ag</td><td>+0.80</td><td></td></tr>
+        <tr><td>Fe<sup>3+</sup> + e<sup>&minus;</sup> &rarr; Fe<sup>2+</sup></td><td>+0.77</td><td></td></tr>
+        <tr><td>Cu<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Cu</td><td>+0.34</td><td></td></tr>
+        <tr><td>2H<sup>+</sup> + 2e<sup>&minus;</sup> &rarr; H<sub>2</sub></td><td>0.00</td><td>SWE (verwysing)</td></tr>
+        <tr><td>Fe<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Fe</td><td>&minus;0.44</td><td></td></tr>
+        <tr><td>Zn<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Zn</td><td>&minus;0.76</td><td>Sterk RM</td></tr>
+        <tr><td>Na<sup>+</sup> + e<sup>&minus;</sup> &rarr; Na</td><td>&minus;2.71</td><td>Sterk RM</td></tr>
+        <tr><td>Li<sup>+</sup> + e<sup>&minus;</sup> &rarr; Li</td><td>&minus;3.04</td><td>Sterkste RM</td></tr>
+      </tbody>
+    </table>
+    <div class="formula">E&deg;<sub>sel</sub> = E&deg;<sub>katode</sub> &minus; E&deg;<sub>anode</sub></div>
+    <div class="callout"><strong>Reël:</strong> As E&deg;<sub>sel</sub> &gt; 0, is die reaksie <strong>spontaan</strong> onder standaardtoestande (galvaniese sel). As E&deg;<sub>sel</sub> &lt; 0, is die reaksie nie-spontaan (benodig elektriese toevoer &rarr; elektrolitiese sel). Vir die Zn-Cu-sel: E&deg;<sub>sel</sub> = +0.34 &minus; (&minus;0.76) = +1.10 V.</div>
+
+    <h2>Elektrolitiese Selle</h2>
+    <p>&rsquo;n <strong>Elektrolitiese sel</strong> gebruik &rsquo;n eksterne kragbron (battery/GS-bron) om &rsquo;n <em>nie-spontane</em> redoksreaksie aan te dryf. Die positiewe terminaal van die battery is aan die anode gekoppel; die negatiewe terminaal aan die katode.</p>
+    <ul>
+      <li><strong>Anode:</strong> Oksidasie vind plaas (gekoppel aan die +-terminaal van die kragbron).</li>
+      <li><strong>Katode:</strong> Reduksie vind plaas (gekoppel aan die &minus;-terminaal van die kragbron).</li>
+    </ul>
+    <p><strong>Elektrolise van gesmelte NaCl (Chlooralkali-proses):</strong></p>
+    <div class="formula">
+      Katode (&minus;): Na<sup>+</sup> + e<sup>&minus;</sup> &rarr; Na &nbsp;&nbsp; (natriummetaal)<br>
+      Anode (+): 2Cl<sup>&minus;</sup> &rarr; Cl<sub>2</sub> + 2e<sup>&minus;</sup> &nbsp;&nbsp; (chloorgas)
+    </div>
+    <p><strong>Elektrolise van water</strong> (verdunde H<sub>2</sub>SO<sub>4</sub> as elektroliet):</p>
+    <div class="formula">
+      Katode: 4H<sup>+</sup> + 4e<sup>&minus;</sup> &rarr; 2H<sub>2</sub>(g) &nbsp;&nbsp; (waterstofgas, 2 volumes)<br>
+      Anode: 2H<sub>2</sub>O &rarr; O<sub>2</sub>(g) + 4H<sup>+</sup> + 4e<sup>&minus;</sup> &nbsp;&nbsp; (suurstofgas, 1 volume)
+    </div>
+    <p><strong>Elektroplatering:</strong> &rsquo;n Metaalvoorwerp (katode) word met &rsquo;n ander metaal bedek. Die plateringsmetaal is die anode. Voorbeeld &mdash; silwerplatering van &rsquo;n lepel: silweranode, lepel as katode, silwernitraatoplossing as elektroliet. Ag<sup>+</sup>-ione slaan by die katode op die lepel neer: Ag<sup>+</sup> + e<sup>&minus;</sup> &rarr; Ag.</p>
+
+    <h2>Wette van Faraday oor Elektrolise</h2>
+    <p><strong>Faraday se Eerste Wet:</strong> Die massa stof wat by &rsquo;n elektrode neergeslaan word, is eweredig aan die hoeveelheid lading wat deurgevoer word.</p>
+    <p><strong>Faraday se Tweede Wet:</strong> Vir dieselfde hoeveelheid lading is die massa neergeslaan eweredig aan die molêre massa en omgekeerd eweredig aan die aantal elektrone oorgedra (n).</p>
+    <div class="formula">
+      Q = It &nbsp;&nbsp;&nbsp;&nbsp; (lading = stroom &times; tyd, in coulomb)<br>
+      n<sub>stof</sub> = Q / (n<sub>e</sub> &times; F) &nbsp;&nbsp;&nbsp;&nbsp; (mol neergeslaan)<br>
+      F = 96 485 C&middot;mol<sup>&minus;1</sup> &nbsp;&nbsp;&nbsp;&nbsp; (Faraday-konstante)
+    </div>
+    <p><strong>Uitgewerkte voorbeeld:</strong> Hoeveel gram koper word neergeslaan wanneer &rsquo;n stroom van 2.00 A vir 30 minute deur &rsquo;n CuSO<sub>4</sub>-oplossing vloei?</p>
+    <div class="formula">
+      Q = It = 2.00 &times; (30 &times; 60) = 3 600 C<br>
+      Cu<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Cu &nbsp;&nbsp; (n<sub>e</sub> = 2)<br>
+      n(Cu) = Q / (n<sub>e</sub> &times; F) = 3600 / (2 &times; 96485) = 0.01865 mol<br>
+      m(Cu) = 0.01865 &times; 63.5 = <strong>1.18 g</strong>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB-uitbreiding &mdash; Nernst-vergelyking &amp; Konsentrasieselle</div>
+      <p>Die standaard selpotensiaal E&deg; geld slegs onder standaardtoestande. Die <strong>Nernst-vergelyking</strong> bereken die werklike selpotensiaal by nie-standaardkonsentrasies:</p>
+      <div class="formula" style="color:#fcd34d">E = E&deg; &minus; (RT/nF) ln Q &nbsp;&nbsp;&approx;&nbsp; E&deg; &minus; (0.0592/n) log Q &nbsp;&nbsp; (by 25&deg;C)</div>
+      <p>Waar R = 8.314 J&middot;mol<sup>&minus;1</sup>&middot;K<sup>&minus;1</sup>, T = temperatuur (K), n = mol elektrone oorgedra, F = 96 485 C&middot;mol<sup>&minus;1</sup>, Q = reaksiekwosiënt.</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 10px 20px">
+        <li>As Q &lt; 1 (produkte laag, reaktante hoog): E &gt; E&deg; &mdash; selpotensiaal word verhoog.</li>
+        <li>As Q &gt; 1 (produkte hoog): E &lt; E&deg; &mdash; selpotensiaal word verlaag.</li>
+        <li>By ewewig: E = 0 en Q = K. Die battery is &ldquo;pap&rdquo;.</li>
+      </ul>
+      <p><strong>Konsentrasieselle:</strong> Beide halfselle gebruik dieselfde elektrode en ioon, maar teen verskillende konsentrasies. E&deg;<sub>sel</sub> = 0, maar E<sub>sel</sub> &ne; 0 omdat die Nernst-vergelyking &rsquo;n nie-nul waarde gee. Stroom vloei van die verdunde na die gekonsentreerde halfsel totdat konsentrasies gelyk word.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VERKEN-OORTJIE -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="cellTitle">Daniell-sel (Galvanies) &mdash; Zn | Zn&sup2;&spades; || Cu&sup2;&spades; | Cu</h3>
+      <canvas id="cellCanvas" height="380"></canvas>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="mode-btn active" id="btnGalvanic" onclick="setCellMode('galvanic')">Galvaniese Sel</button>
+      <button class="mode-btn" id="btnElectrolytic" onclick="setCellMode('electrolytic')">Elektrolitiese Sel</button>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Selinligting</div>
+        <div id="cellInfo" style="font-size:12px;color:rgba(210,218,245,0.65);line-height:1.8"></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lesings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">E&deg;sel</div><div class="readout-val" id="roEcell">+1.10 V</div></div>
+          <div class="readout"><div class="readout-label">Spontaan?</div><div class="readout-val" id="roSpont" style="font-size:12px">Ja</div></div>
+          <div class="readout"><div class="readout-label">Anode</div><div class="readout-val" id="roAnode" style="font-size:12px">Zn (oksidasie)</div></div>
+          <div class="readout"><div class="readout-label">Katode</div><div class="readout-val" id="roCathode" style="font-size:12px">Cu (reduksie)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OEFENING-OORTJIE -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Gaan die verduidelikings na om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-uitbreidingsvrae</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WERKBOEK-OORTJIE -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae in jou skrif. Wys volledige berekeninge met eenhede. Vir seldiagramme moet jy alle dele merk: anode, katode, rigting van elektronvloei, soutbrug, en ioonmigrasierigtings.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 &mdash; Galvaniese Selontleding</div>
+      <div class="wb-qtext">&rsquo;n Galvaniese sel word gebou met Fe- en Ag-elektrodes in hul onderskeie ioonoplossings.<br>
+      Gegee: E&deg;(Ag<sup>+</sup>/Ag) = +0.80 V; E&deg;(Fe<sup>2+</sup>/Fe) = &minus;0.44 V<br><br>
+      (a) Identifiseer die anode en katode. Motiveer jou antwoord met E&deg;-waardes.<br>
+      (b) Skryf die halfreaksie by elke elektrode en die algehele gebalanseerde selreaksie.<br>
+      (c) Bereken E&deg;<sub>sel</sub>. Is die reaksie spontaan? Verduidelik.<br>
+      (d) Skryf die selnotasie (lynnotasie) vir hierdie sel.<br>
+      (e) Beskryf die rigting van elektronvloei en ioonmigrasie deur die soutbrug.<br><br>
+      <em>(10 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 &mdash; Elektrolise-berekeninge (Faraday)</div>
+      <div class="wb-qtext">&rsquo;n Stroom van 3.00 A word vir 45 minute deur &rsquo;n oplossing van silwernitraat (AgNO<sub>3</sub>) gevoer.<br>
+      Gegee: Ag<sup>+</sup> + e<sup>&minus;</sup> &rarr; Ag; M(Ag) = 108 g&middot;mol<sup>&minus;1</sup>; F = 96 485 C&middot;mol<sup>&minus;1</sup><br><br>
+      (a) Bereken die totale lading Q wat deurgevoer is.<br>
+      (b) Bereken die mol Ag wat neergeslaan is.<br>
+      (c) Bereken die massa Ag wat neergeslaan is.<br>
+      (d) By watter elektrode (anode of katode) slaan die silwer neer? Skryf die halfreaksie.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 &mdash; Voorspel Reaksies met E&deg;</div>
+      <div class="wb-qtext">Gebruik die tabel van standaardelektrodepotensiale om die volgende te beantwoord:<br><br>
+      (a) Kan Cl<sub>2</sub> Fe<sup>2+</sup> na Fe<sup>3+</sup> oksideer? Toon jou berekening van E&deg;<sub>sel</sub>.<br>
+      (b) Sal sink in &rsquo;n oplossing van CuSO<sub>4</sub> oplos? Skryf die selreaksie en bereken E&deg;<sub>sel</sub>.<br>
+      (c) Verduidelik waarom koper nie in verdunde HCl oplos nie, maar sink wel. Gebruik E&deg;-waardes.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 &mdash; Elektroplatering</div>
+      <div class="wb-qtext">&rsquo;n Juwelier wil &rsquo;n silwerarmband met goud (Au) elektroplateer. Die elektroliet wat gebruik word, is goud(III)chloriedoplossing (AuCl<sub>3</sub>).<br><br>
+      (a) Identifiseer die anode, katode en elektroliet in hierdie elektroplateringsel.<br>
+      (b) Skryf die halfreaksie wat by die katode plaasvind.<br>
+      (c) Hoeveel lading sou nodig wees om 0.500 g goud neer te slaan? (M(Au) = 197 g&middot;mol<sup>&minus;1</sup>; Au<sup>3+</sup> + 3e<sup>&minus;</sup> &rarr; Au)<br>
+      (d) As &rsquo;n stroom van 0.250 A gebruik word, hoe lank (in minute) sal die platering neem?<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 &mdash; Lees van Elektroplateringsdata</div>
+      <div class="wb-qtext">&rsquo;n Leerder elektroplateer koper vanuit &rsquo;n CuSO<sub>4</sub>-oplossing (Cu<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Cu; M(Cu) = 64 g&middot;mol<sup>&minus;1</sup>) vir &rsquo;n vaste tyd van 25 minute, met verskillende strome:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Stroom I (A)</th><th>0.5</th><th>1.0</th><th>1.5</th><th>2.0</th></tr></thead>
+        <tbody><tr><td>Massa Cu neergeslaan (g)</td><td>0.25</td><td>0.50</td><td>0.75</td><td>1.00</td></tr></tbody>
+      </table>
+      (a) Bereken massa &divide; I vir elke kolom. Wat bevestig hierdie (ongeveer konstante) waarde oor die verband tussen massa neergeslaan en stroom, by &rsquo;n vaste tyd?<br>
+      (b) Gebruik F = 96 485 C&middot;mol<sup>&minus;1</sup> en die I = 1.0 A-datapunt om n(Cu) neergeslaan te bereken, dan n(e<sup>&minus;</sup>) deurgevoer, dan die lading Q. Toon dat hierdie lading ooreenstem met &rsquo;n plateringstyd van ongeveer 25 minute by 1.0 A.<br>
+      (c) Gebruik die patroon in die tabel (nie &rsquo;n nuwe berekening vanaf F nie) om die massa koper te voorspel wat deur &rsquo;n stroom van 3.0 A oor dieselfde 25 minute neergeslaan sou word.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { initCell(); }, 50);
+}
+
+// ─── Selsimulasie ──────────────────────────────────────────────────────────
+let cellMode = 'galvanic';
+let animT = 0;
+let rafId = null;
+
+function setCellMode(mode) {
+  cellMode = mode;
+  document.getElementById('btnGalvanic').classList.toggle('active', mode === 'galvanic');
+  document.getElementById('btnElectrolytic').classList.toggle('active', mode === 'electrolytic');
+  updateCellInfo();
+  if (rafId) cancelAnimationFrame(rafId);
+  initCell();
+}
+
+function updateCellInfo() {
+  if (cellMode === 'galvanic') {
+    document.getElementById('cellTitle').textContent = 'Daniell-sel (Galvanies) — Zn | Zn²⁺ || Cu²⁺ | Cu';
+    document.getElementById('roEcell').textContent = '+1.10 V';
+    document.getElementById('roSpont').textContent = 'Ja';
+    document.getElementById('roAnode').textContent = 'Zn (oksidasie)';
+    document.getElementById('roCathode').textContent = 'Cu (reduksie)';
+    document.getElementById('cellInfo').innerHTML =
+      '• <b>Anode (–):</b> Zn → Zn²⁺ + 2e⁻ (Zn los op)<br>' +
+      '• <b>Katode (+):</b> Cu²⁺ + 2e⁻ → Cu (Cu word neergeslaan)<br>' +
+      '• <b>Elektrone</b> vloei van die Zn-anode → Cu-katode deur die draad<br>' +
+      '• <b>Soutbrug:</b> SO₄²⁻ vloei na die anode; K⁺ vloei na die katode<br>' +
+      '• <b>E°sel</b> = +0.34 − (−0.76) = +1.10 V (spontaan)';
+  } else {
+    document.getElementById('cellTitle').textContent = 'Elektrolitiese Sel — Elektrolise van CuSO₄-oplossing';
+    document.getElementById('roEcell').textContent = 'Ekstern';
+    document.getElementById('roSpont').textContent = 'Nee (aangedryf)';
+    document.getElementById('roAnode').textContent = 'Cu (oksidasie)';
+    document.getElementById('roCathode').textContent = 'Cu (reduksie)';
+    document.getElementById('cellInfo').innerHTML =
+      "• Eksterne kragbron dryf 'n nie-spontane reaksie aan<br>" +
+      '• <b>Anode (+):</b> Cu → Cu²⁺ + 2e⁻ (anode los op)<br>' +
+      '• <b>Katode (–):</b> Cu²⁺ + 2e⁻ → Cu (Cu plateer uit)<br>' +
+      '• Netto resultaat: Cu word van die anode na die katode oorgedra<br>' +
+      '• Gebruik in elektroplatering en elektroraffinering van koper';
+  }
+}
+
+function initCell() {
+  updateCellInfo();
+  const canvas = document.getElementById('cellCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 380;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  animT = 0;
+  if (rafId) cancelAnimationFrame(rafId);
+  loop(ctx, cssW, cssH);
+}
+
+function loop(ctx, W, H) {
+  animT += 0.02;
+  drawCell(ctx, W, H);
+  rafId = requestAnimationFrame(() => loop(ctx, W, H));
+}
+
+function drawCell(ctx, W, H) {
+  ctx.clearRect(0, 0, W, H);
+  const isGalv = cellMode === 'galvanic';
+
+  // Agtergrond subtiele gloed
+  const bg = ctx.createRadialGradient(W/2, H/2, 20, W/2, H/2, 300);
+  bg.addColorStop(0, isGalv ? 'rgba(20,184,166,0.04)' : 'rgba(239,68,68,0.04)');
+  bg.addColorStop(1, 'transparent');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,W,H);
+
+  const beakerW = 130, beakerH = 180;
+  const beaker1X = W * 0.12, beaker2X = W * 0.88 - beakerW;
+  const beakerY = H * 0.30;
+  const liquidH = beakerH * 0.75;
+  const liquidY = beakerY + beakerH - liquidH;
+
+  // ── Linker halfsel (anode) ──
+  const anodeColor = isGalv ? '#a3e635' : '#f87171';
+  const anodeLabel = isGalv ? 'Zn' : 'Cu';
+  const anodeSolLabel = isGalv ? 'ZnSO₄(aq)' : 'CuSO₄(aq)';
+  const anodeSign = '−';
+
+  // Linker beker vloeistof
+  ctx.fillStyle = isGalv ? 'rgba(163,230,53,0.12)' : 'rgba(248,113,113,0.12)';
+  ctx.fillRect(beaker1X, liquidY, beakerW, liquidH);
+  ctx.strokeStyle = isGalv ? 'rgba(163,230,53,0.4)' : 'rgba(248,113,113,0.4)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(beaker1X, beakerY, beakerW, beakerH);
+
+  // Linker elektrode
+  const elecW = 20, elecH = 120;
+  const el1X = beaker1X + beakerW/2 - elecW/2;
+  const el1Y = beakerY - 30;
+  ctx.fillStyle = anodeColor + 'cc';
+  ctx.fillRect(el1X, el1Y, elecW, elecH);
+  ctx.strokeStyle = anodeColor;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(el1X, el1Y, elecW, elecH);
+
+  // Etikette
+  ctx.fillStyle = anodeColor;
+  ctx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(anodeLabel, beaker1X + beakerW/2, el1Y - 10);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText(anodeSolLabel, beaker1X + beakerW/2, beakerY + beakerH + 16);
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = 'bold 11px "JetBrains Mono",monospace';
+  ctx.fillText('ANODE (' + anodeSign + ')', beaker1X + beakerW/2, beakerY + beakerH + 30);
+  ctx.fillStyle = '#f97316';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText('Oksidasie', beaker1X + beakerW/2, beakerY + beakerH + 44);
+
+  // ── Regter halfsel (katode) ──
+  const cathodeColor = isGalv ? '#f59e0b' : '#f59e0b';
+  const cathodeLabel = isGalv ? 'Cu' : 'Cu';
+  const cathodeSolLabel = isGalv ? 'CuSO₄(aq)' : 'CuSO₄(aq)';
+  const cathodeSign = '+';
+
+  ctx.fillStyle = isGalv ? 'rgba(245,158,11,0.12)' : 'rgba(245,158,11,0.12)';
+  ctx.fillRect(beaker2X, liquidY, beakerW, liquidH);
+  ctx.strokeStyle = 'rgba(245,158,11,0.4)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(beaker2X, beakerY, beakerW, beakerH);
+
+  const el2X = beaker2X + beakerW/2 - elecW/2;
+  const el2Y = beakerY - 30;
+  ctx.fillStyle = cathodeColor + 'cc';
+  ctx.fillRect(el2X, el2Y, elecW, elecH);
+  ctx.strokeStyle = cathodeColor;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(el2X, el2Y, elecW, elecH);
+
+  ctx.fillStyle = cathodeColor;
+  ctx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(cathodeLabel, beaker2X + beakerW/2, el2Y - 10);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText(cathodeSolLabel, beaker2X + beakerW/2, beakerY + beakerH + 16);
+  ctx.fillStyle = '#34d399';
+  ctx.font = 'bold 11px "JetBrains Mono",monospace';
+  ctx.fillText('KATODE (' + cathodeSign + ')', beaker2X + beakerW/2, beakerY + beakerH + 30);
+  ctx.fillStyle = '#60a5fa';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText('Reduksie', beaker2X + beakerW/2, beakerY + beakerH + 44);
+
+  // ── Draad / Eksterne stroombaan ──
+  const wireY = beakerY - 50;
+  const leftWireX = el1X + elecW/2;
+  const rightWireX = el2X + elecW/2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(leftWireX, el1Y);
+  ctx.lineTo(leftWireX, wireY);
+  ctx.lineTo(rightWireX, wireY);
+  ctx.lineTo(rightWireX, el2Y);
+  ctx.stroke();
+
+  if (isGalv) {
+    // Voltmeter-simbool
+    const vmX = W/2, vmY = wireY;
+    ctx.beginPath(); ctx.arc(vmX, vmY, 20, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = '#2dd4bf';
+    ctx.font = 'bold 11px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('V', vmX, vmY + 4);
+    ctx.fillStyle = '#2dd4bf';
+    ctx.font = 'bold 10px "JetBrains Mono",monospace';
+    ctx.fillText('+1.10 V', vmX, vmY - 26);
+  } else {
+    // Battery-simbool
+    const batX = W/2;
+    ctx.fillStyle = 'rgba(239,68,68,0.15)';
+    ctx.strokeStyle = '#f87171';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(batX - 24, wireY - 14, 48, 28);
+    ctx.fillRect(batX - 24, wireY - 14, 48, 28);
+    ctx.fillStyle = '#fca5a5';
+    ctx.font = 'bold 12px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('DC', batX, wireY + 5);
+    ctx.fillStyle = '#f87171';
+    ctx.font = '10px "JetBrains Mono",monospace';
+    ctx.fillText('Kragbron', batX, wireY - 22);
+  }
+
+  // Elektronvloei-animasie
+  const eCount = 4;
+  for (let i = 0; i < eCount; i++) {
+    const prog = ((animT * 0.4 + i / eCount) % 1);
+    // links op → regs → af
+    let ex, ey;
+    const seg1 = (el1Y - wireY) / ((el1Y - wireY) + (rightWireX - leftWireX) + (el2Y - wireY));
+    const seg2 = (rightWireX - leftWireX) / ((el1Y - wireY) + (rightWireX - leftWireX) + (el2Y - wireY));
+    if (prog < seg1) {
+      const p = prog / seg1;
+      ex = leftWireX; ey = el1Y - p * (el1Y - wireY);
+    } else if (prog < seg1 + seg2) {
+      const p = (prog - seg1) / seg2;
+      ex = leftWireX + p * (rightWireX - leftWireX);
+      ey = wireY;
+    } else {
+      const p = (prog - seg1 - seg2) / (1 - seg1 - seg2);
+      ex = rightWireX; ey = wireY + p * (el2Y - wireY);
+    }
+
+    const eg = ctx.createRadialGradient(ex, ey, 0, ex, ey, 7);
+    eg.addColorStop(0, 'rgba(147,197,253,0.9)');
+    eg.addColorStop(1, 'rgba(96,165,250,0)');
+    ctx.fillStyle = eg;
+    ctx.beginPath(); ctx.arc(ex, ey, 7, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex, ey, 3, 0, Math.PI*2);
+    ctx.fillStyle = '#bfdbfe'; ctx.fill();
+  }
+  // e- etiket
+  ctx.fillStyle = '#93c5fd';
+  ctx.font = '700 10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('e⁻ →', leftWireX + 8, wireY - 8);
+
+  // ── Soutbrug ──
+  const sbW = beaker2X - (beaker1X + beakerW);
+  const sbX = beaker1X + beakerW;
+  const sbY = beakerY + beakerH * 0.3;
+  const sbH = 28;
+  ctx.fillStyle = 'rgba(251,191,36,0.12)';
+  ctx.strokeStyle = 'rgba(251,191,36,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.fillRect(sbX, sbY, sbW, sbH);
+  ctx.strokeRect(sbX, sbY, sbW, sbH);
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('SOUTBRUG', sbX + sbW/2, sbY + sbH/2 + 3);
+
+  // Ioonmigrasie in soutbrug
+  const ionCount = 3;
+  for (let i = 0; i < ionCount; i++) {
+    const prog = ((animT * 0.3 + i / ionCount) % 1);
+    // Katione regs → katode; Anione links → anode
+    const ionX = sbX + prog * sbW;
+    const ionY2 = sbY + sbH * 0.3;
+    ctx.beginPath(); ctx.arc(ionX, ionY2, 4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(96,165,250,0.75)'; ctx.fill();
+    // Anioon gaan links
+    const ion2X = sbX + (1 - prog) * sbW;
+    ctx.beginPath(); ctx.arc(ion2X, sbY + sbH * 0.7, 4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(239,68,68,0.75)'; ctx.fill();
+  }
+}
+
+// ─── Oefeningsvrae ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: "In 'n galvaniese sel, by watter elektrode vind OKSIDASIE plaas, en wat is die teken van daardie elektrode?",
+    opts: ['Katode; positief (+)','Anode; negatief (−)','Katode; negatief (−)','Anode; positief (+)'],
+    ans: 1,
+    exp: "In 'n galvaniese (voltaïese) sel: ANODE = oksidasie = negatiewe elektrode. KATODE = reduksie = positiewe elektrode. Geheuehulp (Engels): A-O (Anode-Oxidation) en C-R (Cathode-Reduction) — dieselfde beginletter in Engels. Die anode is negatief omdat dit elektrone in die eksterne stroombaan vrystel."
+  },
+  {
+    q: 'Met E°(Zn²⁺/Zn) = −0.76 V en E°(Cu²⁺/Cu) = +0.34 V, wat is E°sel vir die Daniell-sel (Zn-Cu)?',
+    opts: ['+0.42 V','−1.10 V','+1.10 V','−0.42 V'],
+    ans: 2,
+    exp: 'E°sel = E°katode − E°anode. In die Daniell-sel is Cu die katode en Zn die anode. E°sel = +0.34 − (−0.76) = +0.34 + 0.76 = +1.10 V. Die positiewe waarde bevestig dat die reaksie spontaan is — die sel sal elektrisiteit opwek.'
+  },
+  {
+    q: "Wat is die doel van die soutbrug in 'n galvaniese sel?",
+    opts: ['Om elektrone tussen die twee halfselle te laat vloei','Om elektriese neutraliteit in beide halfselle te handhaaf deur ioonmigrasie toe te laat','Om die selspanning te verhoog deur elektroliete by te voeg','Om te voorkom dat die twee oplossings heeltemal meng'],
+    ans: 1,
+    exp: 'Die soutbrug handhaaf elektriese neutraliteit. Namate Zn²⁺-ione in die anode-halfsel vorm, migreer negatiewe ione vanaf die soutbrug in om die lading te balanseer. Namate Cu²⁺-ione uit die katode-halfsel verwyder word, migreer positiewe ione in. Sonder die soutbrug sal ladingopbou die sel laat stop. Die elektrone vloei deur die EKSTERNE DRAAD — nie die soutbrug nie.'
+  },
+  {
+    q: 'Wat word tydens die elektrolise van gesmelte NaCl by die katode geproduseer?',
+    opts: ['Cl₂-gas','NaOH-oplossing','Na-metaal','O₂-gas'],
+    ans: 2,
+    exp: 'By die katode (reduksie): Na⁺ + e⁻ → Na. Natriummetaal word neergeslaan. By die anode (oksidasie): 2Cl⁻ → Cl₂ + 2e⁻, wat chloorgas produseer. Let wel: dit is vir GESMELTE NaCl. In waterige NaCl (pekelwater) word water eerder by die katode gereduseer om H₂-gas te vorm.'
+  },
+  {
+    q: "'n Stroom van 5.00 A vloei vir 10 minute deur 'n AgNO₃-oplossing. Met Ag⁺ + e⁻ → Ag en F = 96 485 C/mol: hoeveel mol Ag word neergeslaan?",
+    opts: ['0.0311 mol','0.156 mol','0.0052 mol','3.00 mol'],
+    ans: 0,
+    exp: 'Q = It = 5.00 × (10 × 60) = 3000 C. n(Ag) = Q/(n_e × F) = 3000/(1 × 96485) = 0.0311 mol. Aangesien Ag⁺ + e⁻ → Ag, slaan een mol elektrone een mol Ag neer (n_e = 1). Massa = 0.0311 × 108 = 3.36 g.'
+  },
+  {
+    q: 'Watter stelling vergelyk galvaniese en elektrolitiese selle korrek?',
+    opts: [
+      'Albei skakel elektriese energie om na chemiese energie',
+      'Galvaniese selle produseer elektriese energie uit spontane reaksies; elektrolitiese selle gebruik elektriese energie om nie-spontane reaksies aan te dryf',
+      "Albei benodig 'n eksterne kragbron",
+      'Elektrolitiese selle is altyd doeltreffender as galvaniese selle'
+    ],
+    ans: 1,
+    exp: "Galvaniese (voltaïese) selle: spontane redoksreaksie → elektriese energie (E°sel > 0). Voorbeelde: batterye, brandstofselle. Elektrolitiese selle: eksterne elektriese energie → dryf 'n nie-spontane reaksie aan (E°sel < 0). Voorbeelde: elektrolise, elektroplatering, elektroraffinering. Die sleutelverskil is spontane teenoor nie-spontane reaksie."
+  },
+  {
+    q: 'Met E°(Ag⁺/Ag) = +0.80 V en E°(Cu²⁺/Cu) = +0.34 V, is die reaksie Ag(s) + Cu²⁺(aq) → Ag⁺(aq) + Cu(s) spontaan soos geskryf?',
+    opts: [
+      'Nee — soos geskryf word Ag geoksideer (anode) en Cu²⁺ gereduseer (katode), dus E°sel = E°katode − E°anode = 0.34 − 0.80 = −0.46 V; hierdie rigting is nie-spontaan. Die omgekeerde reaksie, Cu(s) + 2Ag⁺(aq) → Cu²⁺(aq) + 2Ag(s), is die spontane een',
+      'Ja — E°sel = 0.80 − 0.34 = +0.46 V, dus verloop die reaksie soos geskryf',
+      "Ja, omdat Ag 'n hoër standaardreduksiepotensiaal as Cu het, reageer dit altyd spontaan",
+      'Geen reaksie vind in enige rigting plaas nie, omdat albei spesies metale is'
+    ],
+    ans: 0,
+    exp: "Jy moet identifiseer watter spesie geoksideer en watter gereduseer word in die vergelyking SOOS GESKRYF. Hier is Ag(s) → Ag⁺ + e⁻ oksidasie (Ag is die anode), en Cu²⁺ + 2e⁻ → Cu(s) is reduksie (Cu is die katode). E°sel = E°katode − E°anode = 0.34 − 0.80 = −0.46 V — negatief, dus is hierdie reaksie NIE spontaan nie. 'n Hoër reduksiepotensiaal beteken slegs dat 'n spesie makliker gereduseer word ('n beter oksideermiddel is); dit beteken nie dat daardie spesie outomaties as oksideermiddel (gereduseer word) in elke vergelyking optree nie — jy moet nagaan watter halfreaksie as oksidasie teenoor reduksie geskryf is. Die spontane rigting hier is eintlik die omgekeerde: Cu reduseer Ag⁺."
+  },
+  {
+    q: "Dieselfde hoeveelheid lading word deur twee afsonderlike elektrolitiese selle gevoer: een met AgNO₃ (Ag⁺ + e⁻ → Ag, M = 108 g·mol⁻¹) en een met CuSO₄ (Cu²⁺ + 2e⁻ → Cu, M = 64 g·mol⁻¹). Watter sel slaan 'n GROTER massa metaal neer, en waarom?",
+    opts: [
+      'Die AgNO₃-sel — elke mol Ag benodig slegs 1 mol elektrone (teenoor 2 vir Cu), dus per mol elektrone slaan Ag 108 g neer terwyl Cu slegs 64/2 = 32 g neerslaan',
+      'Die CuSO₄-sel — koper slaan altyd meer massa neer omdat sy molêre massa-tot-elektron-verhouding doeltreffender is',
+      'Albei selle slaan presies gelyke massas neer, aangesien dieselfde lading (en dus dieselfde aantal elektrone) deur albei vloei',
+      'Die AgNO₃-sel slaan minder massa neer omdat silwer-ione meer energie benodig om te reduseer'
+    ],
+    ans: 0,
+    exp: "Vir 'n gegewe lading Q is mol elektrone n(e⁻) = Q/F DIESELFDE in albei selle. Maar mol metaal neergeslaan = n(e⁻)/(elektrone benodig per ioon). Vir Ag (1 e⁻ per ioon): n(Ag) = n(e⁻); massa = n(e⁻) × 108. Vir Cu (2 e⁻ per ioon): n(Cu) = n(e⁻)/2; massa = (n(e⁻)/2) × 64 = n(e⁻) × 32. Aangesien 108 > 32, slaan dieselfde lading amper 3.4× meer massa silwer as koper neer — 'n kleiner molêre massa beteken NIE outomaties meer massa neergeslaan nie, want die aantal elektrone benodig per ioon speel ook 'n rol."
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: 'Vir die sel Zn|Zn²⁺(0.010 M)||Cu²⁺(1.00 M)|Cu, E°sel = +1.10 V. Met die Nernst-vergelyking by 25°C: E = E° − (0.0592/n)log Q, wat is die werklike selpotensiaal?',
+    opts: ['+1.10 V (onveranderd)','Hoër as +1.10 V','Laer as +1.10 V','Gelyk aan nul'],
+    ans: 1,
+    exp: 'Q = [Zn²⁺]/[Cu²⁺] = 0.010/1.00 = 0.010. Aangesien Q < 1, is log Q negatief, dus −(0.0592/2)log(0.010) = −(0.0296)(−2) = +0.059 V. E = 1.10 + 0.059 = +1.159 V. Wanneer produkte laag en reaktante hoog is (Q < 1), OORSKRY die werklike potensiaal die standaardpotensiaal.'
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    document.getElementById('scoreBanner').classList.add('show');
+    document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{initCell();window.dispatchEvent(new Event('resize'));},60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

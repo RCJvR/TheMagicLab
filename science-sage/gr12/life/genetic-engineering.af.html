@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genetiese Manipulasie &amp; Biotegnologie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul,.lesson-body ol{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .callout.warn{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.20)}
+    .callout.warn strong{color:#fcd34d}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    .step-list{counter-reset:step;list-style:none;margin:14px 0;padding:0}
+    .step-list li{counter-increment:step;position:relative;padding:8px 0 8px 34px;font-size:14px;color:rgba(210,218,245,.78);line-height:1.7}
+    .step-list li::before{content:counter(step);position:absolute;left:0;top:7px;width:22px;height:22px;border-radius:6px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.30);color:#86efac;font-family:var(--fm);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+    .mode-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms}
+    .mode-btn.active,.mode-btn:hover{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.30);color:#86efac}
+    .verdict-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7;min-height:24px}
+    .verdict-box strong{color:#86efac}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 12</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 · Molekulêre, Sellulêre &amp; Weefselvlak · Les 3</div>
+  <h1 class="lesson-title">Genetiese Manipulasie &amp; Biotegnologie</h1>
+  <p class="lesson-sub">Hoe wetenskaplikes DNS sny, kopieer en lees — en dié vermoë gebruik om insulien te maak, gewasse te verander, en vaderskap- en forensiese sake op te los. Laat 'n virtuele jel loop en interpreteer self 'n werklike DNS-profileringsaak.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is genetiese manipulasie?</h2>
+    <p><strong>Genetiese manipulasie</strong> is die doelbewuste verandering van 'n organisme se DNS deur middel van biotegnologie — deur 'n geen uit een organisme te sny en dit in 'n ander in te voeg, sodat die tweede organisme nou 'n nuwe eienskap uitdruk. Dit verskil van selektiewe teling: in plaas daarvan om generasies te wag vir 'n gewenste kombinasie van gene om natuurlik te verskyn, verskuif wetenskaplikes 'n spesifieke, bekende geen direk.</p>
+
+    <h2>Die molekulêre gereedskapstel</h2>
+    <table class="compare-table">
+      <thead><tr><th>Gereedskap</th><th>Wat dit doen</th></tr></thead>
+      <tbody>
+        <tr><td>Restriksie-ensiem</td><td>'n Bakteriese ensiem wat DNS by 'n spesifieke, kort herkenningsvolgorde sny, wat fragmente met passende "kleefpunte" produseer</td></tr>
+        <tr><td>Vektor (bv. plasmied)</td><td>'n Klein sirkelvormige stuk DNS (dikwels van bakterieë) wat gebruik word om 'n vreemde geen na 'n gasheersel te dra</td></tr>
+        <tr><td>DNS-ligase</td><td>'n Ensiem wat DNS-fragmente aanmekaar bind, wat die vreemde geen in die vektor toeseël om <strong>rekombinante DNS</strong> te vorm</td></tr>
+        <tr><td>PKR (polimerase-kettingreaksie)</td><td>'n Tegniek wat vinnig miljoene kopieë van 'n gekose DNS-volgorde uit 'n baie klein aanvangsmonster maak</td></tr>
+        <tr><td>Jelektroforese</td><td>Skei DNS-fragmente volgens grootte deur hulle deur 'n jel te trek met behulp van 'n elektriese stroom</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Kleefpunte:</strong> Die meeste restriksie-ensieme sny DNS in 'n gestaggerde patroon, wat kort enkelstring-oorhange laat. As DIESELFDE restriksie-ensiem gebruik word om beide die vreemde geen en die plasmiedvektor te sny, is hul kleefpunte komplementêr en sal hulle basispaar — dit is wat DNS-ligase in staat stel om hulle tot een deurlopende rekombinante molekule saam te voeg.</div>
+
+    <h2>Rekombinante DNS maak — die insulien-voorbeeld</h2>
+    <p>Voor genetiese manipulasie is insulien vir diabete uit die pankreas van beeste en varke onttrek — duur, beperk in voorraad, en effens anders as menslike insulien. Vandag vervaardig geneties-gemodifiseerde bakterieë menslike insulien direk:</p>
+    <ol class="step-list">
+      <li>Die menslike geen vir insulien word geïdentifiseer en met 'n restriksie-ensiem uitgesny.</li>
+      <li>'n Bakteriese plasmied word met <em>dieselfde</em> restriksie-ensiem oopgesny, wat passende kleefpunte skep.</li>
+      <li>Die menslike insuliengeen word in die plasmied ingevoeg en met DNS-ligase vasgeseël, wat rekombinante DNS vorm.</li>
+      <li>Die rekombinante plasmied word in 'n bakterium ingevoeg (algemeen <em>E. coli</em>) — hierdie stap word <strong>transformasie</strong> genoem.</li>
+      <li>Die bakterium word in groot fermentasietenks gekweek. Soos dit voortplant, kopieer elke nakomeling ook die plasmied, en elke sel lees die menslike geen en produseer menslike insulien.</li>
+      <li>Die insulien word onttrek, gesuiwer, en vir mediese gebruik verpak.</li>
+    </ol>
+    <div class="key-fact">Omdat die insulien wat op hierdie manier geproduseer word identies aan menslike insulien is, veroorsaak dit veel minder allergiese reaksies as die ouer dier-onttrekte weergawes — en bakterieë kan in onbeperkte, goedkoop, vinnig-vermenigvuldigende bondels gekweek word.</div>
+
+    <h2>Jelektroforese en DNS-profilering</h2>
+    <p>DNS is negatief gelaai, sodat dit wanneer dit in 'n jel geplaas en aan 'n elektriese stroom blootgestel word, na die positiewe elektrode migreer. Die jel tree op soos 'n molekulêre sif: <strong>kleiner DNS-fragmente beweeg vinniger deur die jelmatriks en beweeg verder</strong>, terwyl groter fragmente nader aan die laaiputjie teruggehou word. Dit produseer 'n patroon van bande, gesorteer volgens grootte.</p>
+    <p><strong>DNS-profilering (DNS-"vingerafdrukke")</strong> maak gebruik van gebiede van DNS wat baie tussen individue verskil (kort herhalende volgordes wat in aantal van persoon tot persoon verskil). Die tipiese proses is:</p>
+    <ol class="step-list">
+      <li>Versamel 'n DNS-monster (bloed, wangswap, haarwortel, of misdaadtoneelbewys).</li>
+      <li>Gebruik PKR om die veranderlike gebiede van belang te vermeerder, aangesien misdaadtoneel- of forensiese monsters dikwels te klein is om direk te ontleed.</li>
+      <li>Sny die vermeerderde DNS met restriksie-ensieme (of skei die vermeerderde gebiede direk volgens grootte).</li>
+      <li>Laat die fragmente deur jelektroforese loop, wat 'n unieke bandpatroon vir elke individu produseer.</li>
+      <li>Vergelyk bandpatrone tussen monsters — bv. 'n kind se patroon behoort een band te wys wat met die moeder ooreenstem en een wat met die biologiese vader ooreenstem.</li>
+    </ol>
+    <div class="callout"><strong>Toepassings:</strong> vaderskaptoetsing, forensiese ondersoek (om misdaadtoneel-DNS met 'n verdagte te vergelyk), die identifisering van rampslagoffers, en die bevestiging van familiebande in immigrasiesake.</div>
+
+    <h2>Toepassings: GMO's in landbou en medisyne</h2>
+    <table class="compare-table">
+      <thead><tr><th>Voorbeeld</th><th>Wat gemanipuleer is, en waarom</th></tr></thead>
+      <tbody>
+        <tr><td>Bt-mielies / Bt-katoen</td><td>'n Geen van die bakterium <em>Bacillus thuringiensis</em> word ingevoeg, sodat die plant 'n proteïen produseer wat giftig is vir spesifieke insekplae — wat die behoefte aan chemiese plaagdoderbespuiting verminder</td></tr>
+        <tr><td>Onkruiddoder-bestande gewasse</td><td>Gemanipuleer om 'n spesifieke onkruiddoder te oorleef, sodat boere kan spuit om onkruid te verwyder sonder om die gewas te beskadig</td></tr>
+        <tr><td>Goue Rys</td><td>Gemanipuleer om beta-karoteen ('n vitamien A-voorloper) in die graan te produseer, om vitamien A-tekort te help aanspreek in streke waar rys 'n stapelvoedsel is</td></tr>
+        <tr><td>Rekombinante menslike insulien</td><td>Bakterieë wat met die menslike insuliengeen gemanipuleer is, massaproduseer insulien vir diabetesbehandeling (sien hierbo)</td></tr>
+        <tr><td>Geenterapie</td><td>'n Funksionele kopie van 'n geen word in 'n pasiënt se selle ingebring om 'n foutiewe geen reg te stel of te vergoed (bv. proewe vir sistiese fibrose en sommige immuunafwykings)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Voordele, nadele en etiese kwessies</h2>
+    <p>KABV verwag van jou om genetiese manipulasie te kan <strong>bespreek en evalueer</strong>, nie net beskryf nie — weeg dus altwee kante op:</p>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Punte geopper</th></tr></thead>
+      <tbody>
+        <tr><td>Voordele</td><td>Hoër gewasopbrengste; minder gebruik van chemiese plaagdoders (Bt-gewasse); verbeterde voeding (Goue Rys); goedkoper, veiliger, onbeperkte-voorraad mediese produkte (insulien); potensiële genesings deur geenterapie; die oplos van misdade en die onskuldigverklaring van verkeerdelik beskuldigdes deur DNS-profilering</td></tr>
+        <tr><td>Nadele / bekommernisse</td><td>Onbekende langtermyn-gesondheidseffekte van GM-voedsel word steeds gedebatteer; gemanipuleerde gene kan deur kruisbestuiwing na wilde populasies versprei (bv. onkruiddoderweerstand wat na onkruid oorspring); verminderde genetiese diversiteit weens monokultuurboerdery; saadpatentering kan klein boere benadeel; etiese bekommernisse oor "ontwerper"-genetiese verandering by mense; privaatheids- en misbruikbekommernisse oor DNS-profileringsdatabasisse</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><strong>Eksamenwenk:</strong> "Bespreek"- of "evalueer"-vrae oor genetiese manipulasie vereis dat jy punte oor BEIDE kante aanbied en, waar gevra, 'n gemotiveerde mening — 'n eensydige antwoord verloor punte, selfs al is elke punt wat jy gee korrek.</div>
+
+    <h2>CRISPR-Cas9: presisie-geenredigering</h2>
+    <p><strong>CRISPR-Cas9</strong> is 'n nuwer, meer presiese genetiese manipulasiemiddel in vergelyking met tradisionele restriksie-ensiemmetodes. <strong>Cas9</strong> is 'n ensiem wat soos programmeerbare "molekulêre skêr" optree: gelei deur 'n kort stukkie RNS wat met 'n spesifieke teiken-DNS-volgorde ooreenstem, sny Cas9 die DNS by daardie presiese ligging. Sodra dit gesny is, kan die sel se eie herstelmeganisme gebruik word om 'n geen te deaktiveer, of om 'n nuwe stuk DNS by daardie presiese plek in te voeg.</p>
+    <div class="callout"><strong>CRISPR teenoor kunsmatige seleksie:</strong> albei behels dat mense doelbewus 'n eienskap kies om in 'n organisme te versterk of te verwyder, tot voordeel van die mens — maar CRISPR redigeer die DNS-volgorde self direk, terwyl kunsmatige seleksie werk deur te kies watter bestaande organismes oor baie generasies teel, sonder om hul DNS direk aan te raak.</div>
+    <p>Omdat CRISPR vinnig, relatief goedkoop, en hoogs presies is, word dit ondersoek vir geenterapie by mense, siekte-bestande gewasse, en die uitwissing van siekte-dravende insekpopulasies — maar enige nuwe mediese toepassing (soos 'n CRISPR-gebaseerde behandeling) moet eers deur uitgebreide kliniese proewe gaan, om te bevestig dat dit veilig en doeltreffend is, vry van skadelike "buite-teiken"-snye elders in die genoom, en dat die voordele daarvan die risiko's oortref.</p>
+
+    <h2>Die genoom</h2>
+    <p>'n Organisme se <strong>genoom</strong> is sy volledige stel genetiese materiaal — al die DNS/gene wat dit besit. Die vergelyking van genome tussen individue toon dat die meeste DNS-volgorde gedeel word, maar sekere nie-koderende gebiede verskil aansienlik tussen individue — hierdie veranderlike gebiede is presies wat DNS-profilering (jelektroforese) benut om een persoon se DNS van 'n ander s'n te onderskei.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Jelektroforese-simulator — 'n vaderskapsaak</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">'n Moeder, haar kind, en 'n beweerde vader word by een veranderlike gebied DNS-geprofileer. Laat die jel loop en besluit: kan hierdie man die biologiese vader wees?</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Jelresultaat</h3>
+      <canvas id="gelCanvas" height="320"></canvas>
+    </div>
+    <div class="mode-row">
+      <button class="mode-btn active" id="btnRun" onclick="runGel()">▶ Laat jel loop</button>
+      <button class="mode-btn" onclick="resetGel()">↺ Herstel</button>
+    </div>
+    <div class="verdict-box" id="verdictBox">Klik "Laat jel loop" om die monsters te laai en kyk hoe die DNS-fragmente volgens grootte skei.</div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek. Wys alle redenasie vir "bespreek"/"verduidelik"-vrae.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Definieer genetiese manipulasie, en noem TWEE ensieme wat in die proses gebruik word, met vermelding van die funksie van elk.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (5 punte)</div><div class="wb-qtext">Beskryf, in die korrekte volgorde, die stappe wat gebruik word om bakterieë geneties te manipuleer om menslike insulien te produseer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom DNS-fragmente van verskillende groottes tydens jelektroforese skei, en gee aan watter fragmente (groot of klein) die verste beweeg.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Bespreek TWEE voordele en TWEE nadele van geneties-gemodifiseerde gewasse.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · 'n DNS-profiel Interpreteer (8 punte)</div><div class="wb-qtext">In 'n betwiste vaderskapsaak het DNS-profilering by een veranderlike gebied die volgende fragmentgroottes (in basispare, bp) vir elke persoon opgelewer:
+      <table class="compare-table" style="margin:10px 0">
+        <thead><tr><th>Persoon</th><th>Fragmentgroottes (bp)</th></tr></thead>
+        <tbody>
+          <tr><td>Moeder</td><td>600 en 200</td></tr>
+          <tr><td>Kind</td><td>600 en 450</td></tr>
+          <tr><td>Beweerde Vader 1</td><td>450 en 300</td></tr>
+          <tr><td>Beweerde Vader 2</td><td>350 en 200</td></tr>
+        </tbody>
+      </table>
+      (a) 'n Kind erf een DNS-fragment van elke biologiese ouer. Watter een van die kind se TWEE fragmente moes van die moeder gekom het? Verduidelik met behulp van die data. (2)<br>
+      (b) Die kind se ander fragment moes van die biologiese vader gekom het. Gebruik die data om te bepaal watter van die twee beweerde vaders meer waarskynlik die biologiese vader is. Verduidelik. (3)<br>
+      (c) Sou die 200 bp-fragment op 'n jel nader aan die putjie, of verder van die putjie af, as die 600 bp-fragment beweeg? Verduidelik. (2)<br>
+      (d) Verduidelik waarom PKR dikwels op 'n DNS-monster uitgevoer word VOORDAT jelektroforese in werklike forensiese of vaderskapsake gedoen word. (1)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='explore') setTimeout(resizeGel,30);
+}
+
+/* ═══════════════════════════════════════════════
+   GEL ELECTROPHORESIS SIMULATOR
+═══════════════════════════════════════════════ */
+const gelCanvas = document.getElementById('gelCanvas');
+const gctx = gelCanvas.getContext('2d');
+let gW,gH;
+let gelRun = false;
+let gelProgress = 0;
+let gelAnim = null;
+
+// Lanes: DNA ladder (reference marker) + Mother, Child, Alleged Father 1, Alleged Father 2
+const LADDER = [800,600,450,300,200];
+const LANES = [
+  {label:"Merker", bands:LADDER, isLadder:true},
+  {label:"Moeder", bands:[600,200]},
+  {label:"Kind", bands:[600,450]},
+  {label:"Vader 1", bands:[450,300]},
+  {label:"Vader 2", bands:[350,200]},
+];
+const MIN_SIZE=150, MAX_SIZE=850;
+
+function sizeToDepth(size){
+  // Larger fragments migrate LESS (stay near the well); smaller fragments migrate farther.
+  // Linear mapping is a simplification of the true (roughly logarithmic) relationship,
+  // but preserves the correct order: bigger = less migration, smaller = more migration.
+  return (MAX_SIZE-size)/(MAX_SIZE-MIN_SIZE);
+}
+
+function resizeGel(){
+  gW = gelCanvas.offsetWidth || 640; gH = 320;
+  gelCanvas.width = gW*devicePixelRatio; gelCanvas.height = gH*devicePixelRatio;
+  gctx.setTransform(1,0,0,1,0,0);
+  gctx.scale(devicePixelRatio,devicePixelRatio);
+  drawGel();
+}
+
+function drawGel(){
+  gctx.clearRect(0,0,gW,gH);
+  gctx.fillStyle='#040710'; gctx.fillRect(0,0,gW,gH);
+  const padTop=44, padBottom=20, padSide=20;
+  const laneW = (gW-2*padSide)/LANES.length;
+  const plotH = gH-padTop-padBottom;
+
+  LANES.forEach((lane,li)=>{
+    const cx = padSide + laneW*li + laneW/2;
+    // well
+    gctx.fillStyle='rgba(255,255,255,.10)';
+    gctx.fillRect(cx-laneW*0.32, padTop-10, laneW*0.64, 8);
+    // lane label
+    gctx.fillStyle='rgba(210,218,245,.55)'; gctx.font='10px "JetBrains Mono",monospace'; gctx.textAlign='center';
+    gctx.fillText(lane.label, cx, gH-6);
+    // bands
+    const p = Math.min(1, gelProgress);
+    lane.bands.forEach(size=>{
+      const depth = sizeToDepth(size)*p;
+      const y = padTop + depth*plotH;
+      gctx.fillStyle = lane.isLadder ? 'rgba(148,163,184,.75)' : 'rgba(134,239,172,.85)';
+      gctx.fillRect(cx-laneW*0.30, y-3, laneW*0.60, 6);
+      if(p>0.98){
+        gctx.fillStyle='rgba(210,218,245,.55)'; gctx.font='9px "JetBrains Mono",monospace'; gctx.textAlign='center';
+        gctx.fillText(size+'bp', cx, y-7);
+      }
+    });
+  });
+
+  // electrode labels
+  gctx.fillStyle='rgba(210,218,245,.35)'; gctx.font='9px "JetBrains Mono",monospace'; gctx.textAlign='left';
+  gctx.fillText('− putjie (begin)', padSide, padTop-16);
+  gctx.textAlign='right';
+  gctx.fillText('+ (DNS migreer hierdie rigting)', gW-padSide, gH-padBottom+14);
+}
+
+function runGel(){
+  if(gelAnim) return;
+  gelRun = true;
+  gelProgress = 0;
+  document.getElementById('verdictBox').innerHTML = "Jel loop tans — kleiner fragmente word vinniger deur die jelmatriks getrek...";
+  const step = ()=>{
+    gelProgress += 0.02;
+    drawGel();
+    if(gelProgress < 1){
+      gelAnim = requestAnimationFrame(step);
+    } else {
+      gelAnim = null;
+      showVerdict();
+    }
+  };
+  gelAnim = requestAnimationFrame(step);
+}
+
+function resetGel(){
+  if(gelAnim){ cancelAnimationFrame(gelAnim); gelAnim=null; }
+  gelProgress = 0;
+  drawGel();
+  document.getElementById('verdictBox').innerHTML = "Klik \"Laat jel loop\" om die monsters te laai en kyk hoe die DNS-fragmente volgens grootte skei.";
+}
+
+function showVerdict(){
+  document.getElementById('verdictBox').innerHTML =
+    "<strong>Die jel lees:</strong> Die kind deel 'n 600 bp-band met die Moeder (die moederlike fragment) en 'n 450 bp-band wat NIE in die Moeder se baan verskyn nie — dit moes van die biologiese vader gekom het. "+
+    "<strong>Vader 1</strong> het 'n passende 450 bp-band, so hy kan die biologiese vader wees. "+
+    "<strong>Vader 2</strong> het glad geen 450 bp-band nie, so hy word as die biologiese vader uitgesluit.";
+}
+
+window.addEventListener('resize', ()=>{ if(document.getElementById('tab-explore').classList.contains('active')) resizeGel(); });
+resizeGel();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:"Wat is die funksie van 'n restriksie-ensiem in genetiese manipulasie?",opts:["Dit voeg twee DNS-fragmente aanmekaar","Dit sny DNS by 'n spesifieke herkenningsvolgorde","Dit kopieer 'n geen miljoene kere","Dit dra 'n vreemde geen na 'n gasheersel"],ans:1,exp:"Restriksie-ensieme sny DNS by spesifieke herkenningsvolgordes, wat fragmente met \"kleefpunte\" produseer wat later aan ander DNS wat met dieselfde ensiem gesny is, verbind kan word."},
+  {text:"Wat is 'n \"vektor\" in genetiese manipulasie, en gee 'n voorbeeld?",opts:["'n Ensiem wat DNS sny; bv. 'n restriksie-ensiem","'n Struktuur wat gebruik word om 'n vreemde geen na 'n gasheersel te dra; bv. 'n bakteriese plasmied","'n Masjien wat DNS volgens grootte skei; bv. 'n jelektroforesetenk","'n Tegniek om DNS te kopieer; bv. PKR"],ans:1,exp:"'n Vektor (algemeen 'n bakteriese plasmied) word gebruik om 'n vreemde geen na 'n gasheersel te dra, waar die gasheer se eie meganisme dan daardie geen sal lees en uitdruk."},
+  {text:"Waarom moet DIESELFDE restriksie-ensiem gebruik word om beide die geen van belang en die plasmiedvektor te sny?",opts:["Sodat albei stukke DNS presies dieselfde lengte is","Sodat hulle komplementêre \"kleefpunte\" produseer wat kan basispaar en deur ligase verbind word","Sodat die plasmied bestand word teen verdere snyding","Dit maak nie saak watter ensiem gebruik word nie, solank een gebruik word"],ans:1,exp:"Dieselfde restriksie-ensiem sny by dieselfde herkenningsvolgorde, wat passende komplementêre kleefpunte op beide die geen en die vektor laat — dit stel hulle in staat om saam te basispaar voordat DNS-ligase die verbinding toeseël."},
+  {text:"Tydens jelektroforese, watter DNS-fragmente beweeg die VERSTE van die putjie af?",opts:["Die grootste fragmente","Die kleinste fragmente","Alle fragmente beweeg dieselfde afstand","Slegs fragmente met die meeste gene"],ans:1,exp:"DNS is negatief gelaai en migreer na die positiewe elektrode. Kleiner fragmente beweeg makliker deur die jelmatriks en beweeg dus verder as groter fragmente in dieselfde tyd."},
+  {text:"In werklike forensiese en vaderskapsake, waarom word PKR gewoonlik VOOR jelektroforese uitgevoer?",opts:["PKR verwyder besmettende DNS van ander mense","PKR vermeerder die piepklein hoeveelheid DNS in die monster tot miljoene kopieë, sodat daar genoeg is om te ontleed","PKR sorteer DNS-fragmente volgens grootte, wat die behoefte aan 'n jel vervang","PKR skakel DNS om na RNS vir makliker skeiding"],ans:1,exp:"Misdaadtoneel- of vaderskapmonsters is dikwels uiters klein ('n haarwortel, 'n druppel bloed). PKR vermeerder die spesifieke gebied van belang vinnig tot miljoene kopieë, wat genoeg DNS verskaf om 'n duidelike, leesbare bandpatroon op die jel te produseer."},
+  {text:"'n Geneties-gemodifiseerde mielievariëteit dra 'n geen van Bacillus thuringiensis. Wat is die hoofdoel van hierdie verandering?",opts:["Om die mielies droogtebestand te maak","Om die mielies 'n proteïen te laat produseer wat giftig is vir spesifieke insekplae, wat plaagdodergebruik verminder","Om die mielies se vitamien A-inhoud te verhoog","Om die mielies vinniger in koue klimate te laat groei"],ans:1,exp:"\"Bt\"-gewasse dra 'n bakteriese geen wat die plant 'n proteïen laat produseer wat giftig is vir spesifieke insekplae, wat boere in staat stel om die hoeveelheid chemiese plaagdoder wat hulle spuit, te verminder."},
+  {text:"Watter van die volgende is 'n ware, algemeen geopperde BEKOMMERNIS oor geneties-gemodifiseerde gewasse (in teenstelling met 'n voordeel)?",opts:["Hulle kan hoër gewasopbrengste lewer","Gemanipuleerde gene (bv. onkruiddoderweerstand) kan deur kruisbestuiwing na wilde plantpopulasies versprei","Hulle vereis altyd meer plaagdoder as nie-GM-gewasse","Hulle kan glad nie op boerderygrond gekweek word nie"],ans:1,exp:"'n Wyd geopperde bekommernis is \"geenvloei\" — die moontlikheid dat 'n gemanipuleerde geen, soos onkruiddoderweerstand, van 'n GM-gewas na verwante wilde plante of onkruid kan versprei deur kruisbestuiwing, met onvoorspelbare ekologiese gevolge."},
+  {text:"'n Student beweer: \"DNS-profilering bewys dat twee mense WEL verwant is as hulle enige DNS-bande deel.\" Waarom is hierdie bewering te simplisties?",opts:["DNS-profilering lewer nooit betroubare resultate nie","Onverwante mense deel toevallig soms 'n band, so profilering kyk na 'n PASSENDE PATROON oor die spesifieke bande wat van elke ouer verwag word, nie net enige enkele gedeelde band nie","DNS-profilering werk slegs op identiese tweelinge","Om enige band te deel bewys altyd 'n presiese ooreenstemming, so die bewering is korrek"],ans:1,exp:"'n Betroubare vaderskap- of forensiese gevolgtrekking hang af van die spesifieke verwagte patroon — bv. een ouer-passende band van die moeder en een van die vader by elke ontleedde gebied, dikwels oor verskeie gebiede. 'n Enkele toevallig gedeelde band is nie, op sy eie, sterk bewys van 'n verwantskap nie."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=3?'Hou so aan — gaan die les weer deur!':score<=6?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

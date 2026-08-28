@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vertikale Projektielbeweging — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:70px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-controls-row{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 · Fisika · Les 1</div>
+  <h1 class="lesson-title">Vertikale Projektielbeweging</h1>
+  <p class="lesson-sub">Ontleed die beweging van voorwerpe wat vertikaal geprojekteer word deur bewegingsvergelykings, snelheid-tyd-grafieke, en vrye val onder swaartekrag te gebruik.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Bewegingsvergelykings onder Swaartekrag</h2>
+    <p>Wanneer 'n voorwerp slegs onder swaartekrag vertikaal beweeg (lugweerstand geïgnoreer), is dit in <strong style="color:#93c5fd">vrye val</strong>. Die enigste versnelling wat inwerk, is die swaartekragversnelling <strong style="color:#93c5fd">g = 9.8 m·s⁻²</strong> afwaarts gerig.</p>
+    <p>Deur opwaarts as positief te neem, vervang ons <strong>a = −9.8 m·s⁻²</strong> in die standaard bewegingsvergelykings:</p>
+    <div class="formula">
+      v<sub>f</sub> = v<sub>i</sub> + aΔt<br>
+      Δy = v<sub>i</sub>Δt + ½aΔt²<br>
+      v<sub>f</sub>² = v<sub>i</sub>² + 2aΔy
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Simbool</th><th>Betekenis</th><th>Eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>v<sub>i</sub></td><td>Aanvangsnelheid</td><td>m·s⁻¹</td></tr>
+        <tr><td>v<sub>f</sub></td><td>Finale snelheid</td><td>m·s⁻¹</td></tr>
+        <tr><td>Δy</td><td>Verplasing (vertikaal)</td><td>m</td></tr>
+        <tr><td>a</td><td>Versnelling (= −9.8 m·s⁻²)</td><td>m·s⁻²</td></tr>
+        <tr><td>Δt</td><td>Tydinterval</td><td>s</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Tekenkonvensie</h2>
+    <p>Die mees algemene keuse in vertikale-projektiel-probleme is:</p>
+    <ul>
+      <li><strong style="color:#93c5fd">Opwaarts = positiewe</strong> rigting</li>
+      <li><strong style="color:#93c5fd">Afwaarts = negatiewe</strong> rigting</li>
+      <li>Daarom a = −9.8 m·s⁻² (versnelling is altyd afwaarts)</li>
+    </ul>
+    <div class="key-fact">Jy mag afwaarts as positief kies — maar wees deurgaans konsekwent. In alle CAPS-voorbeelde word opwaarts as positief geneem, tensy anders aangedui.</div>
+
+    <h2>Voorwerp Opwaarts Gegooi</h2>
+    <p>Wanneer 'n voorwerp opwaarts gegooi word met aanvangsnelheid v<sub>i</sub> > 0:</p>
+    <ul>
+      <li>Dit vertraag teen 9.8 m·s⁻² (swaartekrag werk teen die beweging in)</li>
+      <li>By die hoogste punt is <strong style="color:#93c5fd">v<sub>f</sub> = 0</strong> (oomblikke lank stil)</li>
+      <li>Dit val dan terug, en versnel teen 9.8 m·s⁻² afwaarts</li>
+      <li>As dit na dieselfde vlak terugkeer, is sy spoed op daardie punt gelyk aan v<sub>i</sub> (deur simmetrie)</li>
+    </ul>
+    <div class="formula">
+      Maksimum hoogte: v<sub>f</sub>² = v<sub>i</sub>² + 2aΔy → 0 = v<sub>i</sub>² − 2(9.8)Δy<sub>maks</sub><br>
+      Δy<sub>maks</sub> = v<sub>i</sub>² / (2 × 9.8)
+    </div>
+
+    <h2>Vrye Val uit Rus</h2>
+    <p>'n Voorwerp wat uit rus vrygestel word, het v<sub>i</sub> = 0. Deur afwaarts as positief te neem (a = +9.8 m·s⁻²):</p>
+    <div class="formula">
+      Δy = ½gΔt² &nbsp;&nbsp; (afstand geval vanuit rus)<br>
+      v<sub>f</sub> = gΔt &nbsp;&nbsp; (spoed na tyd t)
+    </div>
+    <p>Of deur opwaarts as positief te gebruik met a = −9.8 m·s⁻²: Δy is negatief (verplasing is afwaarts).</p>
+
+    <h2>Voorwerpe wat van 'n Hoogte Laat Val Word / Afwaarts Gegooi Word</h2>
+    <p>As dit afwaarts gegooi word: v<sub>i</sub> is negatief (met die opwaarts-positief-konvensie). Die voorwerp versnel verder afwaarts.</p>
+    <div class="callout">
+      <strong>Strategie vir alle probleme:</strong><br>
+      1. Definieer 'n positiewe rigting (gewoonlik op).<br>
+      2. Skryf bekende waardes neer — ken korrekte tekens toe.<br>
+      3. Identifiseer die onbekende.<br>
+      4. Kies die vergelyking wat slegs een onbekende bevat.<br>
+      5. Vervang en los op. Kontroleer die teken van die antwoord vir rigting.
+    </div>
+
+    <h2>Vlugtyd en Snelheid met Impak</h2>
+    <p>Vir 'n voorwerp wat opwaarts vanaf die grond gegooi word en op dieselfde vlak land:</p>
+    <div class="formula">
+      Totale vlugtyd: Δt<sub>totaal</sub> = 2v<sub>i</sub> / 9.8<br>
+      Spoed met impak = v<sub>i</sub> (deur simmetrie is die spoed afwaarts gelyk aan die spoed opwaarts by dieselfde hoogte)
+    </div>
+
+    <h2>Snelheid-Tyd-Grafiek vir Vertikale Projektiel</h2>
+    <p>Die v-t-grafiek vir 'n voorwerp in vrye val is altyd 'n <strong style="color:#93c5fd">reguit lyn</strong> met gradiënt = a = −9.8 m·s⁻².</p>
+    <ul>
+      <li>Voorwerp opwaarts gegooi: begin by +v<sub>i</sub>, neem lineêr af tot 0 by maksimum hoogte, gaan voort na negatiewe waardes soos dit val</li>
+      <li>Wanneer v = 0: maksimum hoogte bereik</li>
+      <li>Die <strong>oppervlakte onder die v-t-grafiek</strong> gee die verplasing (Δy)</li>
+      <li>Die <strong>gradiënt</strong> by enige punt = −9.8 m·s⁻² (deurgaans konstant)</li>
+    </ul>
+    <div class="key-fact">Die gradiënt van 'n v-t-grafiek = versnelling. Vir vrye val is gradiënt = −9.8 m·s⁻² (met opwaarts as positief).</div>
+
+    <h2>Uitgewerkte Voorbeeld 1 — Bal Opwaarts Gegooi</h2>
+    <div class="callout">
+      <strong>Probleem:</strong> 'n Bal word vanaf die grond teen 20 m·s⁻¹ opwaarts gegooi. Bereken: (a) maksimum hoogte, (b) tyd om maksimum hoogte te bereik, (c) totale vlugtyd, (d) spoed wanneer dit na die grond terugkeer.<br><br>
+      <strong>Gegee:</strong> v<sub>i</sub> = +20 m·s⁻¹, a = −9.8 m·s⁻², by maksimum hoogte v<sub>f</sub> = 0<br><br>
+      <strong>(a)</strong> v<sub>f</sub>² = v<sub>i</sub>² + 2aΔy → 0 = 400 + 2(−9.8)Δy → Δy = 400/19.6 = <strong>20.4 m</strong><br>
+      <strong>(b)</strong> v<sub>f</sub> = v<sub>i</sub> + aΔt → 0 = 20 + (−9.8)Δt → Δt = 20/9.8 = <strong>2.04 s</strong><br>
+      <strong>(c)</strong> Deur simmetrie: totale tyd = 2 × 2.04 = <strong>4.08 s</strong><br>
+      <strong>(d)</strong> Deur simmetrie: spoed by die grond = <strong>20 m·s⁻¹</strong> (afwaarts, dus v<sub>f</sub> = −20 m·s⁻¹)
+    </div>
+
+    <h2>Uitgewerkte Voorbeeld 2 — Laat Val vanaf 'n Hoogte</h2>
+    <div class="callout">
+      <strong>Probleem:</strong> 'n Klip word van 'n brug 45 m bo 'n rivier laat val. Hoe lank neem dit om die water te tref en wat is sy spoed met impak?<br><br>
+      <strong>Konvensie:</strong> Af = positief, dus a = +9.8 m·s⁻², v<sub>i</sub> = 0, Δy = +45 m<br><br>
+      <strong>Tyd:</strong> Δy = v<sub>i</sub>Δt + ½aΔt² → 45 = 0 + ½(9.8)Δt² → Δt² = 9.18 → Δt = <strong>3.03 s</strong><br>
+      <strong>Spoed:</strong> v<sub>f</sub> = v<sub>i</sub> + aΔt = 0 + 9.8 × 3.03 = <strong>29.7 m·s⁻¹</strong>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Nie-eenvormige Velde en Multi-stadium-probleme</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">IEB-vraestelle sluit dikwels multi-stadium-probleme in waar 'n voorwerp gelanseer word, 'n hoogte bereik, en dan deur 'n tweede krag geraak word of op 'n ander vlak land. Hanteer elke stadium afsonderlik:</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.70);line-height:1.85;margin-left:18px">
+        <li>Gebruik die finale toestande van een stadium as die aanvangstoestande van die volgende</li>
+        <li>Vertraagde lanserings: twee voorwerpe op verskillende tye gelanseer — stel vergelykings vir albei op en los gelyktydig op</li>
+        <li>Voorwerpe wat bo/onder die lanseerpunt land: Δy ≠ 0 wanneer die kwadratiese vergelyking gebruik word</li>
+      </ul>
+      <div class="formula">Δy = v<sub>i</sub>Δt + ½aΔt² &nbsp;→ kwadraties in Δt → gebruik die kwadratiese formule</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">Vir vertraagde lanserings: as voorwerp A t₀ sekondes voor voorwerp B gelanseer word, is voorwerp A vir (t + t₀) in die lug terwyl voorwerp B vir t sekondes in die lug is op dieselfde kloktyd. Stel hul posisies gelyk om te vind wanneer/waar hulle ontmoet.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Vertikale Projektiel-simulator</h3>
+      <canvas id="projCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lanseerbeheer</div>
+        <div class="slider-row">
+          <label>Aanvangsnelheid</label>
+          <input type="range" min="5" max="30" value="15" id="sl-vi" oninput="updateVi()">
+          <span class="slider-val" id="sv-vi">15 m·s⁻¹</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="mode-btn active" id="playProjBtn" onclick="toggleProj()">▶ Lanseer</button>
+          <button class="mode-btn" onclick="resetProj()">Herstel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lewendige Lesings</div>
+        <div class="readout-grid" style="margin-top:0">
+          <div class="readout"><div class="readout-label">Hoogte</div><div class="readout-val" id="ro-h">0.0<span>m</span></div></div>
+          <div class="readout"><div class="readout-label">Snelheid</div><div class="readout-val" id="ro-v">0.0<span>m·s⁻¹</span></div></div>
+          <div class="readout"><div class="readout-label">Tyd</div><div class="readout-val" id="ro-t">0.0<span>s</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/8</div>
+      <div style="font-size:14px;color:var(--muted)">NSC-oefening voltooi. Gaan die verkeerde antwoorde hierbo na.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 1 van 8</div>
+      <div class="q-text">'n Bal word opwaarts gegooi met aanvangsnelheid 14.7 m·s⁻¹. Deur g = 9.8 m·s⁻² te gebruik, is die maksimum hoogte wat bereik word:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>7.35 m</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">B</span>11.025 m</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">C</span>14.7 m</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>22.05 m</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 2 van 8</div>
+      <div class="q-text">'n Klip word uit rus laat val. Na 3 s van vrye val, is sy spoed (g = 9.8 m·s⁻²):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>9.8 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">B</span>19.6 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">C</span>29.4 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>44.1 m·s⁻¹</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 3 van 8</div>
+      <div class="q-text">Die gradiënt van 'n snelheid-tyd-grafiek vir 'n voorwerp in vertikale vrye val (op = positief) is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>+9.8 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">B</span>−9.8 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">C</span>0 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>Wissel na gelang van posisie</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 4 van 8</div>
+      <div class="q-text">'n Bal word opwaarts gegooi en keer na sy beginpunt terug. Watter stelling is korrek?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>Die bal vertraag terwyl dit opgaan en versnel terwyl dit afgaan, teen verskillende tempo's</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>Die bal se versnelling is nul by die maksimum hoogte</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>Die bal se spoed by terugkeer is gelyk aan sy aanvangspoed</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>Die tyd om op te gaan is langer as die tyd om af te kom</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 5 van 8</div>
+      <div class="q-text">'n Voorwerp word afwaarts teen 5 m·s⁻¹ gegooi vanaf 'n hoogte van 20 m. Deur af as positief te neem (g = 9.8 m·s⁻²), watter vergelyking gee die korrekte tyd om die grond te tref?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>20 = −5t + ½(9.8)t²</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">B</span>20 = 5t + ½(9.8)t²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">C</span>20 = 5t − ½(9.8)t²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>20 = −5t − ½(9.8)t²</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 6 van 8</div>
+      <div class="q-text">'n Bal wat opwaarts gegooi word, neem 4 s om sy maksimum hoogte te bereik. Die aanvangsnelheid van die bal was (g = 9.8 m·s⁻²):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>9.8 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">B</span>19.6 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">C</span>39.2 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>78.4 m·s⁻¹</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 7 van 8</div>
+      <div class="q-text">'n Bal word opwaarts teen 15 m·s⁻¹ gegooi vanaf die rand van 'n krans, 20 m bo die grond daaronder. Deur g = 9.8 m·s⁻² te gebruik en op as positief te neem, wat is die bal se snelheid net voordat dit die grond tref?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'correct','Q7')"><span class="opt-letter">A</span>24.8 m·s⁻¹ afwaarts</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">B</span>15.0 m·s⁻¹ afwaarts</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">C</span>19.8 m·s⁻¹ afwaarts</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q7')"><span class="opt-letter">D</span>34.8 m·s⁻¹ afwaarts</button>
+      </div>
+      <div class="feedback" id="fb-Q7"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 8 van 8</div>
+      <div class="q-text">Bal X word opwaarts teen 10 m·s⁻¹ gegooi, en Bal Y word opwaarts teen 20 m·s⁻¹ gegooi (dubbel X se spoed), albei vanaf die grond op presies dieselfde oomblik. Watter stelling vergelyk hul beweging korrek?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">A</span>Bal Y bereik DUBBEL die maksimum hoogte van Bal X, en neem DUBBEL so lank om dit te bereik</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q8')"><span class="opt-letter">B</span>Bal Y bereik VIER KEER die maksimum hoogte van Bal X, maar neem slegs DUBBEL so lank om dit te bereik</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">C</span>Bal Y bereik DUBBEL die maksimum hoogte van Bal X, en neem VIER KEER so lank om dit te bereik</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q8')"><span class="opt-letter">D</span>Bal Y bereik DIESELFDE maksimum hoogte as Bal X, aangesien albei dieselfde versnelling ondervind</button>
+      </div>
+      <div class="feedback" id="fb-Q8"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-Uitgebreide Vrae</div>
+      <div class="q-card">
+        <div class="q-num">IEB-Vraag 1</div>
+        <div class="q-text">Bal A word opwaarts teen 20 m·s⁻¹ vanaf die grond gegooi. Bal B word uit rus laat val vanaf 'n hoogte van 30 m op presies dieselfde oomblik. By watter hoogte bo die grond ontmoet hulle mekaar? (g = 9.8 m·s⁻², neem op as positief)</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">A</span>10.4 m</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">B</span>17.8 m</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>22.5 m</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>15.0 m</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Definieer altyd eers 'n positiewe rigting. Wys alle formules, vervangings, eenhede, en die rigting van vektorgroothede. Gebruik g = 9.8 m·s⁻² tensy anders aangedui.</div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 — Bal Opwaarts Gegooi (7 punte)</div>
+      <div class="wb-qtext">'n Krieketbal word vanaf die grond vertikaal opwaarts gegooi met 'n aanvangsnelheid van 25 m·s⁻¹. (a) Definieer 'n positiewe rigting. (b) Bereken die maksimum hoogte wat die bal bereik. (c) Bereken die tyd wat dit neem om maksimum hoogte te bereik. (d) Bereken die totale vlugtyd. (e) Skets 'n v-t-grafiek vir die hele vlug, en merk asse en sleutelwaardes.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 — Voorwerp uit Rus Laat Val (6 punte)</div>
+      <div class="wb-qtext">'n Student laat 'n bal val van die bopunt van 'n gebou 80 m bo die grond. (a) Gee die aanvangsnelheid van die bal aan. (b) Bereken die tyd wat dit neem om die grond te bereik. (c) Bereken die spoed van die bal net voordat dit die grond tref. (d) Bereken die afstand wat die bal in die eerste 2 s val. (e) Watter fraksie van die totale hoogte het die bal na 2 s geval?</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 — Twee-fase-probleem (8 punte)</div>
+      <div class="wb-qtext">'n Bal word opwaarts teen 18 m·s⁻¹ gegooi vanaf die rand van 'n krans wat 30 m bo die grond is. Neem opwaarts as positief. (a) Bereken die maksimum hoogte bo die kransrand. (b) Bereken die tyd vir die bal om na die vlak van die kransrand terug te keer. (c) Bereken die totale verplasing van die bal wanneer dit die grond (onder) tref. (d) Stel die vergelyking op en los dit op om die totale tyd van lansering tot die grond te vind. (e) Bereken die spoed van die bal met impak op die grond.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 — v-t-Grafiekontleding (5 punte)</div>
+      <div class="wb-qtext">'n v-t-grafiek vir 'n vertikaal geprojekteerde bal toon: die bal begin by v = +30 m·s⁻¹, kruis die tyd-as by t = 3.06 s, en gaan voort na negatiewe waardes. (a) Wat beteken dit wanneer die snelheid op hierdie grafiek negatief is? (b) Bereken die versnelling van die bal deur die grafiek te gebruik. (c) Bereken die maksimum hoogte bereik. (d) Bereken die verplasing van t = 0 tot t = 5 s. (e) Skets, op dieselfde asse, die v-t-grafiek as die bal eerder afwaarts teen 10 m·s⁻¹ gegooi is.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 — Snelheidsdata Lees (7 punte)</div>
+      <div class="wb-qtext">'n Bal word vertikaal opwaarts gegooi teen 20 m·s⁻¹ (op = positief). Sy snelheid is by 1-sekonde-intervalle gemeet:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Tyd t (s)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody><tr><td>Snelheid v (m&middot;s&minus;1)</td><td>20.0</td><td>10.2</td><td>0.4</td><td>&minus;9.4</td><td>&minus;19.2</td></tr></tbody>
+      </table>
+      (a) Gebruik enige twee rye van die tabel om die versnelling wat deur hierdie data getoon word, te bereken. Stem dit ooreen met die versnelling weens swaartekrag?<br>
+      (b) Tussen watter twee gelyste tye bereik die bal sy maksimum hoogte? Verduidelik hoe jy dit direk uit die tabel kan aflei, sonder om verdere berekeninge te doen.<br>
+      (c) Deur liniêre interpolasie tussen daardie twee rye te gebruik (nie die kinematika-vergelykings direk nie), beraam die presiese tyd waarby v = 0.<br>
+      (d) Gebruik jou antwoord op (c) om die maksimum hoogte wat die bal bereik, te bereken.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initProj();
+  }
+
+  // Practice
+  const feedbacks={
+    Q1:{ok:"Reg! v²f = v²i + 2aΔy → 0 = 14.7² − 2(9.8)Δy → Δy = 216.09/19.6 = 11.025 m.",bad:"Gebruik v²f = v²i + 2aΔy met vf=0: Δy = 14.7²/(2×9.8) = 216.09/19.6 = 11.025 m."},
+    Q2:{ok:"Reg! v = u + at = 0 + 9.8×3 = 29.4 m·s⁻¹.",bad:"v = u + at = 0 + 9.8×3 = 29.4 m·s⁻¹."},
+    Q3:{ok:"Reg! Die gradiënt van 'n v-t-grafiek is gelyk aan versnelling. Met op as positief, gee swaartekrag a = −9.8 m·s⁻².",bad:"Gradiënt van v-t-grafiek = versnelling = g = −9.8 m·s⁻² (afwaarts, dus negatief wanneer op positief is)."},
+    Q4:{ok:"Reg! Deur simmetrie van projektielbeweging is die spoed by terugkeer = aanvangspoed (dieselfde verplasing, dieselfde grootte van versnelling deurgaans).",bad:"Die versnelling is altyd 9.8 m·s⁻² afwaarts — selfs by maksimum hoogte. Tyd op = tyd af. Spoed by terugkeer = aanvangspoed deur simmetrie."},
+    Q5:{ok:"Reg! Af positief: vi = +5 m·s⁻¹, a = +9.8 m·s⁻², Δy = +20 m → 20 = 5t + ½(9.8)t².",bad:"Deur af as positief te neem: vi = +5, a = +9.8, Δy = +20 → Δy = vit + ½at² → 20 = 5t + ½(9.8)t²."},
+    Q6:{ok:"Reg! By maksimum hoogte vf = 0: vf = vi + at → 0 = vi − 9.8×4 → vi = 39.2 m·s⁻¹.",bad:"By maksimum hoogte vf = 0: 0 = vi + (−9.8)(4) → vi = 39.2 m·s⁻¹."},
+    IQ1:{ok:"Reg! Posisie van A: yA = 20t − 4.9t². Posisie van B: yB = 30 − 4.9t². Stel gelyk: 20t = 30 → t = 1.5 s. Hoogte = yA = 20(1.5) − 4.9(2.25) = 30 − 11.025 ≈ 17.8 m.",bad:"Stel yA = yB: 20t − 4.9t² = 30 − 4.9t² → 20t = 30 → t = 1.5 s → hoogte = 20(1.5) − 4.9(1.5²) ≈ 17.8 m."},
+    Q7:{ok:"Reg! Hanteer die HELE reis (op en terug af verby die lanseerpunt tot by die grond) in een enkele vergelyking — geen behoefte om in fases te verdeel nie. v² = u² + 2as met u = 15, a = −9.8, s = −20 (die grond is 20 m ONDER die lanseerpunt): v² = 15² + 2(−9.8)(−20) = 225 + 392 = 617, dus v = −24.8 m·s⁻¹ (24.8 m·s⁻¹ afwaarts).",bad:"Jy hoef nie dit in 'op'- en 'af'-fases te verdeel nie — gebruik v² = u² + 2as vir die HELE verplasing op een slag. Hier is s = −20 m (die grond is 20 m onder die lanseerpunt, so verplasing is negatief al gaan die bal eers op). v² = 15² + 2(−9.8)(−20) = 225 + 392 = 617 → v = 24.8 m·s⁻¹ afwaarts. (Om net na die lanseerspoed van 15 m/s terug te keer, ignoreer dat die bal nog 20 m verder val onder waar dit begin het.)"},
+    Q8:{ok:"Reg! Tyd tot maksimum hoogte: t = u/g — dit is EWEREDIG aan u, dus verdubbel t as u verdubbel. Maksimum hoogte: h = u²/(2g) — dit hang af van u IN DIE KWADRAAT, dus gee verdubbeling van u VIER KEER die hoogte, nie dubbel nie.",bad:"Vergelyk die twee formules: t = u/g (lineêr in u, dus verdubbeling van u → dubbel t) en h = u²/(2g) (kwadraties in u, dus verdubbeling van u → 4× die hoogte). Dit is verskillende verhoudings — hoogte groei veel vinniger as tyd soos lanseerspoed toeneem. Bal Y (20 m/s): t ≈ 2.04 s, h ≈ 20.4 m. Bal X (10 m/s): t ≈ 1.02 s, h ≈ 5.1 m. Kontroleer: 20.4/5.1 = 4, en 2.04/1.02 = 2."},
+  };
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=8){document.getElementById('score-big').textContent=scoreCount+'/8';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  // SIMULATION
+  let projRunning=false,projRaf=null,projT=0,projLastT=null,projInited=false;
+  let vtPoints=[];
+  const G=9.8;
+
+  function updateVi(){
+    const v=+document.getElementById('sl-vi').value;
+    document.getElementById('sv-vi').textContent=v+' m·s⁻¹';
+    resetProj();
+  }
+
+  function initProj(){if(!projInited){projInited=true;resetProj();}}
+
+  function resetProj(){
+    if(projRaf){cancelAnimationFrame(projRaf);projRaf=null;}
+    projRunning=false;projT=0;projLastT=null;vtPoints=[];
+    document.getElementById('playProjBtn').textContent='▶ Lanseer';
+    document.getElementById('ro-h').innerHTML='0.0<span>m</span>';
+    document.getElementById('ro-v').innerHTML=document.getElementById('sl-vi').value+'<span>m·s⁻¹</span>';
+    document.getElementById('ro-t').innerHTML='0.0<span>s</span>';
+    if(projInited) drawProj(0,+document.getElementById('sl-vi').value);
+  }
+
+  function toggleProj(){
+    if(projRunning){
+      cancelAnimationFrame(projRaf);projRunning=false;
+      document.getElementById('playProjBtn').textContent='▶ Lanseer';
+      return;
+    }
+    resetProj();
+    projRunning=true;projLastT=null;
+    document.getElementById('playProjBtn').textContent='⏸ Pouseer';
+    projRaf=requestAnimationFrame(projStep);
+  }
+
+  function projStep(ts){
+    if(!projRunning) return;
+    if(projLastT===null){projLastT=ts;projRaf=requestAnimationFrame(projStep);return;}
+    const dt=Math.min((ts-projLastT)/1000,0.03);
+    projLastT=ts;
+    projT+=dt;
+    const vi=+document.getElementById('sl-vi').value;
+    const y=vi*projT - 0.5*G*projT*projT;
+    const v=vi - G*projT;
+    vtPoints.push({t:projT,v:v});
+    document.getElementById('ro-h').innerHTML=Math.max(0,y).toFixed(1)+'<span>m</span>';
+    document.getElementById('ro-v').innerHTML=v.toFixed(1)+'<span>m·s⁻¹</span>';
+    document.getElementById('ro-t').innerHTML=projT.toFixed(2)+'<span>s</span>';
+    drawProj(y,v);
+    if(y<-0.5&&projT>0.5){
+      projRunning=false;
+      document.getElementById('playProjBtn').textContent='▶ Lanseer';
+      document.getElementById('ro-h').innerHTML='0.0<span>m</span>';
+      return;
+    }
+    projRaf=requestAnimationFrame(projStep);
+  }
+
+  function drawProj(curY,curV){
+    const canvas=document.getElementById('projCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth||800,H=360;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    const vi=+document.getElementById('sl-vi').value;
+    const yMax=vi*vi/(2*G);
+    const tTotal=2*vi/G;
+
+    // Split: left = ball animation, right = v-t graph
+    const split=Math.floor(W*0.45);
+
+    // LEFT: Ball scene
+    const groundY=H-30;
+    const scaleY=(groundY-40)/Math.max(yMax*1.2,5);
+
+    // Ground
+    ctx.fillStyle='rgba(96,165,250,0.06)';ctx.fillRect(0,groundY,split,H-groundY);
+    ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(split,groundY);ctx.stroke();
+
+    // Height marker
+    ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    const maxPxY=groundY-yMax*scaleY;
+    ctx.beginPath();ctx.moveTo(split*0.7,maxPxY);ctx.lineTo(split*0.9,maxPxY);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(yMax.toFixed(1)+'m',split*0.72,maxPxY-3);
+
+    // Ball
+    const ballX=split*0.55;
+    const ballY=groundY-Math.max(0,curY)*scaleY;
+    const ballR=10;
+    ctx.beginPath();ctx.arc(ballX,ballY,ballR,0,Math.PI*2);
+    ctx.fillStyle='rgba(96,165,250,0.35)';ctx.fill();
+    ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;ctx.stroke();
+
+    // Velocity arrow on ball
+    if(Math.abs(curV)>0.2){
+      const arLen=curV*3;
+      ctx.strokeStyle=curV>0?'#86efac':'#fca5a5';ctx.lineWidth=2;ctx.fillStyle=curV>0?'#86efac':'#fca5a5';
+      ctx.beginPath();ctx.moveTo(ballX,ballY);ctx.lineTo(ballX,ballY-arLen);ctx.stroke();
+      const tip=ballY-arLen;
+      ctx.beginPath();ctx.moveTo(ballX,tip);
+      ctx.lineTo(ballX-5,tip+(curV>0?8:-8));ctx.lineTo(ballX+5,tip+(curV>0?8:-8));ctx.closePath();ctx.fill();
+    }
+
+    // Labels
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('Bal',ballX,H-8);
+    ctx.fillText('+ ↑',12,groundY-8);
+
+    // RIGHT: v-t graph
+    const gLeft=split+30,gRight=W-15,gTop=20,gBot=H-30;
+    const gW=gRight-gLeft,gH=gBot-gTop;
+
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(split+1,0);ctx.lineTo(split+1,H);ctx.stroke();
+
+    // Axes
+    const zeroVY=gTop+gH/2;
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(gLeft,gTop);ctx.lineTo(gLeft,gBot);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(gLeft,zeroVY);ctx.lineTo(gRight,zeroVY);ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle='rgba(255,255,255,0.30)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('v-t-grafiek',gLeft+gW/2,gTop-6);
+    ctx.fillText('t (s)',gRight,zeroVY+12);
+    ctx.textAlign='right';
+    ctx.fillText('+v',gLeft-3,gTop+10);
+    ctx.fillText('−v',gLeft-3,gBot);
+
+    // Scale
+    const tScale=gW/Math.max(tTotal*1.1,1);
+    const vScale=gH/(vi*2.2);
+
+    // Grid
+    ctx.strokeStyle='rgba(255,255,255,0.04)';
+    for(let tt=0;tt<=tTotal*1.1;tt+=0.5){
+      const xx=gLeft+tt*tScale;
+      ctx.beginPath();ctx.moveTo(xx,gTop);ctx.lineTo(xx,gBot);ctx.stroke();
+    }
+
+    // Plot v-t line
+    if(vtPoints.length>1){
+      ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
+      ctx.beginPath();
+      vtPoints.forEach((p,i)=>{
+        const px=gLeft+p.t*tScale;
+        const py=zeroVY-p.v*vScale;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      });
+      ctx.stroke();
+    }
+
+    // Current point dot
+    if(projT>0){
+      const cx=gLeft+projT*tScale;
+      const cy=zeroVY-curV*vScale;
+      ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);
+      ctx.fillStyle='#f87171';ctx.fill();
+    }
+  }
+
+  window.addEventListener('resize',()=>{if(projInited)drawProj(0,+document.getElementById('sl-vi').value);});
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
+

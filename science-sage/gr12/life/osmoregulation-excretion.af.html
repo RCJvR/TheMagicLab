@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Osmoregulasie &amp; Uitskeiding — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul,.lesson-body ol{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    .diagram-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:18px;margin:16px 0;max-width:500px}
+    .diagram-wrap svg{width:100%;height:auto;display:block}
+    .diagram-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:12px;font-size:12px;color:rgba(210,218,245,.70)}
+    .diagram-legend b{color:#86efac;font-family:var(--fm);margin-right:4px}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:16px;color:#fff}
+    .status-line{font-family:var(--fm);font-size:12px;color:var(--muted);text-align:center;padding:10px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid var(--border)}
+    .status-line .n{color:#86efac;font-weight:700}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .readout-grid{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 12</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 · Lewensprosesse in Plante en Diere · Les 6</div>
+  <h1 class="lesson-title">Osmoregulasie &amp; Uitskeiding</h1>
+  <p class="lesson-sub">Hoe jou niere jou hele bloedvoorraad tientalle kere per dag filter — en hoe een enkele hormoon bepaal of jou urine gekonsentreerd of verdun uitkom.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplets" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Uitskeiding teenoor egestie</h2>
+    <p><strong>Uitskeiding</strong> is die verwydering van metaboliese afvalprodukte wat deur die liggaam se eie selle gemaak word (bv. koolstofdioksied, ureum, oormatige water en soute). Dit verskil van <strong>egestie</strong> — die verwydering van onverteerde voedsel (feses) wat nooit die liggaam se selle binnegegaan het nie. Die vernaamste uitskeidingsorgane is die longe (CO₂), die vel (sommige ureum, soute en water in sweet), en die niere (ureum, oormatige water en soute, as urine).</p>
+
+    <h2>Die nefron — die nier se funksionele eenheid</h2>
+    <p>Elke nier bevat ongeveer 'n miljoen klein filtreereenhede genaamd <strong>nefrone</strong>. Urienvorming vind in drie stadiums plaas terwyl vloeistof deur elke nefron beweeg:</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="90" cy="70" r="26" fill="none" stroke="#f87171" stroke-width="3"/>
+        <circle cx="82" cy="64" r="6" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <circle cx="96" cy="62" r="6" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <circle cx="90" cy="78" r="6" fill="none" stroke="#fca5a5" stroke-width="2"/>
+        <path d="M40 70 L64 70" stroke="#f87171" stroke-width="3" fill="none"/>
+        <path d="M116 70 L140 70" stroke="#f87171" stroke-width="3" fill="none"/>
+        <path d="M116 60 Q160 40 175 55 L175 95 Q160 115 130 100 Q108 90 116 80" fill="none" stroke="#86efac" stroke-width="3"/>
+        <path d="M175 75 L230 75" stroke="#86efac" stroke-width="3" fill="none"/>
+        <path d="M230 75 Q250 75 250 100 L250 180 Q250 200 270 200" fill="none" stroke="#86efac" stroke-width="3"/>
+        <path d="M270 200 Q290 200 290 180 L290 100 Q290 80 310 80" fill="none" stroke="#93c5fd" stroke-width="3"/>
+        <path d="M310 80 Q345 60 360 70 L360 100 Q345 118 320 105 Q305 98 310 90" fill="none" stroke="#fcd34d" stroke-width="3"/>
+        <path d="M360 85 L420 85 L420 260 L360 260" fill="none" stroke="#c4b5fd" stroke-width="3"/>
+        <text x="90" y="35" font-size="11" fill="#fca5a5" text-anchor="middle" font-family="JetBrains Mono, monospace">A</text>
+        <text x="150" y="30" font-size="11" fill="#86efac" text-anchor="middle" font-family="JetBrains Mono, monospace">B</text>
+        <text x="255" y="140" font-size="11" fill="#86efac" text-anchor="middle" font-family="JetBrains Mono, monospace">C</text>
+        <text x="335" y="55" font-size="11" fill="#fcd34d" text-anchor="middle" font-family="JetBrains Mono, monospace">D</text>
+        <text x="335" y="105" font-size="11" fill="#93c5fd" text-anchor="middle" font-family="JetBrains Mono, monospace">E</text>
+        <text x="400" y="150" font-size="11" fill="#c4b5fd" text-anchor="middle" font-family="JetBrains Mono, monospace">F</text>
+      </svg>
+      <div class="diagram-legend">
+        <div><b>A</b> Glomerulus (in Bowman-kapsule)</div>
+        <div><b>B</b> Proksimale gekronkelde buisie (PKB)</div>
+        <div><b>C</b> Lus van Henle — afgaande arm</div>
+        <div><b>D</b> Lus van Henle — opgaande arm</div>
+        <div><b>E</b> Distale gekronkelde buisie (DKB)</div>
+        <div><b>F</b> Versamelbuis</div>
+      </div>
+    </div>
+
+    <h2>Stadium 1: Ultrafiltrasie</h2>
+    <p>Bloed kom die <strong>glomerulus</strong> binne — 'n digte klomp haarvate binne die bekervormige <strong>Bowman-kapsule</strong> — onder hoë druk. Hierdie druk dwing water, glukose, aminosure, ureum en soute (klein molekules) uit die bloed en in die kapsule in as <strong>filtraat</strong>. Bloedselle en groot plasmaproteïene is te groot om deurgedwing te word en bly in die bloed agter.</p>
+
+    <h2>Stadium 2: Selektiewe reabsorpsie</h2>
+    <p>Terwyl die filtraat deur die PKB, die lus van Henle, en die DKB vloei, word nuttige stowwe terug in die bloed geherabsorbeer via omliggende haarvate:</p>
+    <ul>
+      <li><strong>Glukose en aminosure</strong> — word normaalweg volledig in die PKB geherabsorbeer. (Glukose wat in urine verskyn, is 'n waarskuwingsteken van diabetes mellitus, waar bloedglukose so hoog is dat die PKB se reabsorpsievermoë oorskry word.)</li>
+      <li><strong>Die meeste water en baie soute</strong> — word regdeur die buisie geherabsorbeer, met die HOEVEELHEID water wat in die DKB en versamelbuis geherabsorbeer word fyn afgestel deur die hormoon ADH (sien hieronder).</li>
+    </ul>
+    <div class="key-fact">Ongeveer 180 L filtraat word per dag deur die niere geproduseer — tog is die daaglikse urienuitset slegs sowat 1–1,5 L. Dit beteken sowat 99% van die filtraat word terug in die bloed geherabsorbeer.</div>
+
+    <h2>Stadium 3: Tubulêre sekresie</h2>
+    <p>Sommige addisionele afvalstowwe (bv. oormatige waterstof- en kaliumione, en sommige middels) word aktief direk vanaf die bloed in die buisievloeistof afgeskei, hoofsaaklik in die DKB. Wat oorbly na al drie stadiums — water, ureum, oormatige soute en ander afval — is <strong>urine</strong>, wat na die versamelbuis beweeg, dan die nierbekken, ureter, blaas, en uiteindelik uit deur die uretra.</p>
+
+    <h2>Osmoregulasie — beheer van waterbalans</h2>
+    <p><strong>Osmoregulasie</strong> is die regulering van die water- en soutbalans (osmotiese konsentrasie) van die bloed, en dit werk volgens dieselfde negatiewe-terugvoerpatroon as ander homeostatiese meganismes:</p>
+    <table class="compare-table">
+      <thead><tr><th>Komponent</th><th>Rol in osmoregulasie</th></tr></thead>
+      <tbody>
+        <tr><td>Reseptor</td><td>Osmoreseptore in die hipotalamus bespeur die waterpotensiaal (konsentrasie) van die bloed</td></tr>
+        <tr><td>Beheersentrum</td><td>Die hipotalamus stuur seine na die posterior hipofise om hormoonvrystelling aan te pas</td></tr>
+        <tr><td>Hormoon / effektor</td><td><strong>ADH (antidiuretiese hormoon)</strong> reis in die bloed na die nierbuisies, en verander hoe deurlaatbaar vir water die DKB- en versamelbuiswande is</td></tr>
+        <tr><td>Reaksie</td><td>Die volume en konsentrasie van geproduseerde urine verander, en herstel die oorspronklike wanbalans</td></tr>
+      </tbody>
+    </table>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Gedehidreer (bloed te gekonsentreerd)</th><th>Oorgehidreer (bloed te verdun)</th></tr></thead>
+      <tbody>
+        <tr><td>ADH vrygestel</td><td>MEER ADH vrygestel</td><td>MINDER ADH vrygestel</td></tr>
+        <tr><td>Buiswand se deurlaatbaarheid vir water</td><td>Neem toe — DKB-/versamelbuiswande word meer deurlaatbaar</td><td>Neem af — DKB-/versamelbuiswande word minder deurlaatbaar</td></tr>
+        <tr><td>Waterreabsorpsie</td><td>Neem toe — meer water word terug in die bloed geherabsorbeer</td><td>Neem af — minder water word geherabsorbeer</td></tr>
+        <tr><td>Urine geproduseer</td><td>Klein volume, gekonsentreerde urine</td><td>Groot volume, verdunde urine</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Algemene eksamenvalstrik:</strong> Meer ADH beteken MEER water word geherabsorbeer (in die bloed behou), wat beteken MINDER urine word geproduseer, en daardie urine is MEER gekonsentreerd — nie minder nie. Leerders verwar hierdie verhouding dikwels, kontroleer dus die rigting noukeurig in elke vraag.</div>
+
+    <h2>Nierversaking &amp; dialise</h2>
+    <p>As die niere faal, bou ureum en ander afval tot giftige vlakke in die bloed op. <strong>Dialise</strong> is 'n mediese behandeling wat die nier se filterrol kunsmatig verrig: die pasiënt se bloed word langs 'n dialisevloeistof oor 'n selektief-deurlaatbare membraan gepomp, wat ureum en oormatige stowwe toelaat om uit die bloed te diffundeer, terwyl nuttige stowwe soos glukose op die korrekte konsentrasie gehou en nie verloor word nie.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Osmoregulasie- (ADH-) Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Sleep die skuifknoppie om die liggaam se hidrasietoestand te verander en kyk hoe ADH-vrystelling, buisiedeurlaatbaarheid en urienuitset reageer.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Versamelbuis se waterdeurlaatbaarheid</h3>
+      <canvas id="adhCanvas" height="200"></canvas>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">Hidrasietoestand <span class="val" id="hydVal">Normaal</span></div>
+      <input type="range" id="hydSlider" min="-10" max="10" value="0" step="1">
+      <div class="readout-grid">
+        <div class="readout"><div class="readout-label">ADH-vlak</div><div class="readout-val" id="adhVal">Normaal</div></div>
+        <div class="readout"><div class="readout-label">Urienvolume</div><div class="readout-val" id="volVal">Normaal</div></div>
+        <div class="readout"><div class="readout-label">Urienkonsentrasie</div><div class="readout-val" id="concVal">Normaal</div></div>
+      </div>
+    </div>
+    <div class="status-line" id="adhStatus">Liggaamswater is op die normale stelpunt — ADH-vrystelling is matig.</div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek. Gebruik presiese struktuurname, nie net "die buisie" nie.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Onderskei tussen uitskeiding en egestie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Noem, in volgorde, die VIER hoofstrukture waardeur vloeistof in 'n nefron beweeg, vanaf die Bowman-kapsule tot die versamelbuis.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (5 punte)</div><div class="wb-qtext">Beskryf ultrafiltrasie: waar dit plaasvind, wat dit dryf, en watter stowwe deurgaan (en watter nie, en waarom).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">'n Leerder se urine toets positief vir glukose. Gebruik jou kennis van selektiewe reabsorpsie om 'n verduideliking voor te stel, en noem die toestand wat dit mag aandui.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (6 punte)</div><div class="wb-qtext">Verduidelik, met gebruik van die terme ADH, osmoreseptore, en versamelbuis, wat in die liggaam van 'n persoon gebeur wat NIE vir baie ure iets gedrink het nie, om water te bespaar.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · Filtraat- en Reabsorpsiedata (5 punte)</div><div class="wb-qtext">Die niere van 'n gesonde volwassene produseer ongeveer 180 L filtraat per dag, waarvan sowat 1,5 L die liggaam as urine verlaat.<br>
+      (a) Bereken watter persentasie van die filtraat per dag terug in die bloed geherabsorbeer word. Wys jou berekeninge. (2)<br>
+      (b) Verduidelik waarom dit uiters gevaarlik sou wees vir die liggaam om al 180 L as urine uit te skei in plaas daarvan om die meeste daarvan te herabsorbeer. (2)<br>
+      (c) Sou jy op 'n baie warm dag met hewige sweet en geen ekstra vloeistofinname verwag dat die daaglikse urienvolume hoër of laer as 1,5 L sal wees? Verduidelik met gebruik van ADH. (1)</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · Merk 'n Nefron (6 punte)</div><div class="wb-qtext">Verwys na die gemerkte nefrondiagram (A–F) in die Les-oortjie. Noem vir ELKE letter die struktuur EN gee een funksie van daardie struktuur.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='explore') setTimeout(resizeADH,30);
+}
+
+/* ═══════════════════════════════════════════════
+   ADH / OSMOREGULATION SIMULATOR
+═══════════════════════════════════════════════ */
+const adhCanvas = document.getElementById('adhCanvas');
+const actx = adhCanvas.getContext('2d');
+let aW,aH;
+let hyd = 0; // -10 (very dehydrated) .. 0 (normal) .. +10 (very overhydrated)
+
+function resizeADH(){
+  aW = adhCanvas.offsetWidth || 600; aH = 200;
+  adhCanvas.width = aW*devicePixelRatio; adhCanvas.height = aH*devicePixelRatio;
+  actx.setTransform(1,0,0,1,0,0);
+  actx.scale(devicePixelRatio, devicePixelRatio);
+  drawADH();
+}
+
+const hydSlider = document.getElementById('hydSlider');
+hydSlider.addEventListener('input', e=>{
+  hyd = +e.target.value;
+  updateADH();
+  drawADH();
+});
+
+function updateADH(){
+  // hyd: -10 (dehydrated) .. 0 (normal) .. +10 (overhydrated)
+  // ADH level: high when dehydrated, low when overhydrated
+  const adhLevel = Math.max(0, Math.min(100, 50 - hyd*5));
+  const permeability = adhLevel; // % permeability of collecting duct to water, driven by ADH
+  const urineVolFactor = 100 - permeability; // low permeability => more water lost => more urine
+  const hydLabel = hyd <= -6 ? 'Baie gedehidreer' : hyd <= -2 ? 'Gedehidreer' : hyd < 2 ? 'Normaal' : hyd < 6 ? 'Oorgehidreer' : 'Baie oorgehidreer';
+  document.getElementById('hydVal').textContent = hydLabel;
+  document.getElementById('adhVal').textContent = adhLevel>=70?'Hoog':adhLevel>=35?'Normaal':'Laag';
+  document.getElementById('volVal').textContent = urineVolFactor>=65?'Hoog (verdun)':urineVolFactor>=35?'Normaal':'Laag (gekonsentreerd)';
+  document.getElementById('concVal').textContent = permeability>=65?'Gekonsentreerd':permeability>=35?'Normaal':'Verdun';
+
+  const status = document.getElementById('adhStatus');
+  if (hyd <= -2){
+    status.innerHTML = `Bloed is <span class="n">meer gekonsentreerd</span> as normaal — osmoreseptore bespeur dit, en die hipofise vrystel <span class="n">meer ADH</span>. Die versamelbuis word meer deurlaatbaar vir water, sodat meer water geherabsorbeer word en 'n klein volume gekonsentreerde urine geproduseer word.`;
+  } else if (hyd >= 2){
+    status.innerHTML = `Bloed is <span class="n">meer verdun</span> as normaal — <span class="n">minder ADH</span> word vrygestel. Die versamelbuis word minder deurlaatbaar vir water, sodat minder water geherabsorbeer word en 'n groot volume verdunde urine geproduseer word.`;
+  } else {
+    status.innerHTML = `Liggaamswater is op die normale stelpunt — ADH-vrystelling is matig, wat waterreabsorpsie en urienuitset gebalanseerd hou.`;
+  }
+}
+
+function drawADH(){
+  actx.clearRect(0,0,aW,aH);
+  actx.fillStyle='#040710'; actx.fillRect(0,0,aW,aH);
+  const adhLevel = Math.max(0, Math.min(100, 50 - hyd*5));
+
+  // Draw a simple collecting duct tube whose wall "openness" (permeability) reflects ADH level
+  const tubeX=60, tubeY=40, tubeW=aW-160, tubeH=110;
+  actx.strokeStyle='rgba(255,255,255,.18)'; actx.lineWidth=2;
+  actx.strokeRect(tubeX,tubeY,tubeW,tubeH);
+
+  // pores along the tube wall, more/bigger pores = higher permeability
+  const nPores = 10;
+  for(let i=0;i<nPores;i++){
+    const px = tubeX + tubeW*(i+0.5)/nPores;
+    const poreR = 2 + (adhLevel/100)*7;
+    actx.beginPath(); actx.arc(px, tubeY, poreR, 0, Math.PI*2);
+    actx.fillStyle='rgba(134,239,172,'+(0.30+0.5*adhLevel/100)+')'; actx.fill();
+    actx.beginPath(); actx.arc(px, tubeY+tubeH, poreR, 0, Math.PI*2);
+    actx.fill();
+  }
+
+  // water droplets leaving through the wall, more droplets = more water reabsorbed
+  const nDrops = Math.round((adhLevel/100)*8);
+  actx.fillStyle='#60a5fa';
+  for(let i=0;i<nDrops;i++){
+    const dx = tubeX + tubeW*((i+0.5)/8);
+    actx.beginPath(); actx.arc(dx, tubeY-14, 4, 0, Math.PI*2); actx.fill();
+    actx.beginPath(); actx.arc(dx, tubeY+tubeH+14, 4, 0, Math.PI*2); actx.fill();
+  }
+
+  actx.fillStyle='rgba(210,218,245,.55)'; actx.font='11px "JetBrains Mono",monospace'; actx.textAlign='center';
+  actx.fillText('Versamelbuis — ADH-vlak: '+Math.round(adhLevel)+'%  (hoër = meer deurlaatbaar = meer water geherabsorbeer)', aW/2, tubeY+tubeH+34);
+  actx.fillText('Buisievloeistof vloei links → regs', aW/2, tubeY-24);
+}
+
+window.addEventListener('resize', ()=>{ if(document.getElementById('tab-explore').classList.contains('active')) resizeADH(); });
+resizeADH();
+updateADH();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Wat is die sleutelverskil tussen uitskeiding en egestie?',opts:['Hulle is dieselfde proses',"Uitskeiding verwyder metaboliese afval wat deur liggaamselle gemaak word; egestie verwyder onverteerde voedsel wat nooit die selle binnegegaan het nie","Uitskeiding vind slegs in plante plaas",'Egestie verwyder slegs water'],ans:1,exp:"Uitskeiding verwyder afvalprodukte van metabolisme (bv. ureum, CO2, oormatige water/soute) wat deur die liggaam se eie selle gegenereer word. Egestie verwyder onverteerde voedsel (feses) wat nooit ooit in die liggaam se selle geabsorbeer is nie."},
+  {text:'In watter struktuur vind ultrafiltrasie plaas?',opts:['Die lus van Henle',"Die glomerulus en Bowman-kapsule",'Die versamelbuis','Die blaas'],ans:1,exp:"Hoë bloeddruk in die glomerulus dwing klein molekules (water, glukose, aminosure, ureum, soute) uit die bloed en in die Bowman-kapsule in as filtraat, terwyl bloedselle en groot proteïene te groot is om deur te gaan."},
+  {text:'Waarom verskyn glukose en aminosure normaalweg NIE in urine nie?',opts:['Hulle is te groot om in die eerste plek uit die bloed gefiltreer te word',"Hulle word volledig terug in die bloed geherabsorbeer in die proksimale gekronkelde buisie",'Hulle word deur die nier vernietig','Hulle verdamp voordat hulle die blaas bereik'],ans:1,exp:"Glukose en aminosure IS klein genoeg om in die filtraat by die glomerulus gefiltreer te word, maar onder normale toestande word hulle daarna volledig terug in die bloed geherabsorbeer in die proksimale gekronkelde buisie (PKB), sodat geeneen in die finale urine verskyn nie."},
+  {text:"'n Persoon is gedehidreer. Wat gebeur met ADH-vrystelling, en watter effek het dit op urine?",opts:["ADH neem toe; meer water word geherabsorbeer, wat 'n klein volume gekonsentreerde urine produseer","ADH neem toe; minder water word geherabsorbeer, wat 'n groot volume verdunde urine produseer",'ADH neem af; meer water word geherabsorbeer, wat gekonsentreerde urine produseer',"ADH neem af; 'n klein volume gekonsentreerde urine word geproduseer"],ans:0,exp:"Wanneer gedehidreer, bespeur osmoreseptore dat die bloed te gekonsentreerd is, sodat MEER ADH vrygestel word. Dit verhoog die deurlaatbaarheid van die versamelbuis vir water, sodat MEER water terug in die bloed geherabsorbeer word, wat 'n KLEIN volume GEKONSENTREERDE urine agterlaat."},
+  {text:'Watter struktuur bespeur direk veranderinge in die waterpotensiaal (konsentrasie) van die bloed, en veroorsaak die ADH-respons?',opts:['Osmoreseptore in die hipotalamus',"Nefrone in die blaas",'Reseptore in die lus van Henle','Chemoreseptore in die longe'],ans:0,exp:"Osmoreseptore in die hipotalamus monitor die waterpotensiaal van die bloed. As die bloed te gekonsentreerd raak, veroorsaak hulle die vrystelling van meer ADH vanaf die posterior hipofise."},
+  {text:'\'n Pasiënt met beskadigde niere ondergaan dialise. Wat is die basiese beginsel agter hoe dialise werk?',opts:["Die pasiënt se bloed word heeltemal met skenkerbloed vervang","Die pasiënt se bloed word langs 'n dialisevloeistof oor 'n selektief-deurlaatbare membraan gepomp, wat afvalstowwe soos ureum toelaat om uit te diffundeer terwyl nuttige stowwe behou word",'Dialise verwyder chirurgies die beskadigde nier en vervang dit met \'n kunsmatige pomp','Dialise werk deur ekstra ADH in die bloedstroom in te spuit'],ans:1,exp:"Dialisemasjiene laat die pasiënt se bloed langs 'n dialisevloeistof oor 'n selektief-deurlaatbare membraan vloei. Afvalprodukte soos ureum diffundeer uit die bloed (af hul konsentrasiegradiënt) in die dialisevloeistof, terwyl glukose en ander nuttige stowwe op die korrekte konsentrasie gehou en nie verloor word nie."},
+  {text:'Op \'n warm dag sweet \'n persoon hewig en drink geen ekstra water nie. Wat sou jy verwag om met hulle urine oor die volgende paar ure te gebeur?',opts:['Urienvolume neem toe en word meer verdun',"Urienvolume neem af en word meer gekonsentreerd, aangesien ADH-vrystelling toeneem om water te bespaar",'Urienproduksie stop heeltemal','ADH-vrystelling neem af, wat meer urine produseer'],ans:1,exp:"Hewige sweet sonder om vloeistof te vervang, veroorsaak dat die bloed meer gekonsentreerd word (meer gedehidreer). Osmoreseptore bespeur dit, ADH-vrystelling neem toe, meer water word in die versamelbuis geherabsorbeer, en 'n kleiner volume meer gekonsentreerde urine word geproduseer om liggaamswater te bespaar."},
+  {text:'\'n Leerder skryf: "Meer ADH beteken meer urine word geproduseer, aangesien ADH die nier sê om meer urine te maak." Wat is verkeerd met hierdie stelling?',opts:['Niks is verkeerd nie; die stelling is korrek',"Dit het die verhouding omgekeerd — meer ADH verhoog waterreabsorpsie, wat urienvolume VERMINDER (en die konsentrasie daarvan verhoog)",'ADH het glad geen effek op urine nie','ADH beïnvloed slegs bloeddruk, nie urine nie'],ans:1,exp:"Dit is 'n algemene en belangrike deurmekaarspul. MEER ADH maak die versamelbuis MEER deurlaatbaar vir water, sodat MEER water terug in die bloed geherabsorbeer word — wat beteken MINDER urine (en meer gekonsentreerde urine) word geproduseer, nie meer nie."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=3?'Hou so aan — gaan die les weer deur!':score<=6?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
