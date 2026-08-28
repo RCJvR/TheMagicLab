@@ -412,30 +412,30 @@ MathMagician.registerChapter(6, {
                 const fn=document.getElementById('g11c6t3fn').value;
                 const val=parseFloat(document.getElementById('g11c6t3val').value);
                 const out=document.getElementById('g11c6t3Out');
-                if(isNaN(val)){out.innerHTML='<span style="color:#fca5a5;">Enter a valid value.</span>';return;}
-                if(fn!=='tan'&&(val<-1||val>1)){out.innerHTML='<span style="color:#fca5a5;">'+fn+'θ must be between −1 and 1.</span>';return;}
+                if(isNaN(val)){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige waarde in.</span>';return;}
+                if(fn!=='tan'&&(val<-1||val>1)){out.innerHTML='<span style="color:#fca5a5;">'+fn+'θ moet tussen −1 en 1 wees.</span>';return;}
                 let html='';
                 if(fn==='sin'){
                   const alpha=Math.asin(val)*180/Math.PI;
-                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = sin⁻¹('+val+') = '+f(alpha)+'°</span><br>';
-                  html+='<span style="color:#6ee7b7;">General solution: θ = '+f(alpha)+'° + 360°n &nbsp;or&nbsp; θ = '+f(180-alpha)+'° + 360°n, &nbsp;n ∈ ℤ</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Verwysingshoek: α = sin⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">Algemene oplossing: θ = '+f(alpha)+'° + 360°n &nbsp;of&nbsp; θ = '+f(180-alpha)+'° + 360°n, &nbsp;n ∈ ℤ</span><br>';
                   const sols=new Set();
                   [alpha,180-alpha].forEach(a=>{let s=a;while(s<0)s+=360;s=s%360;sols.add(f(s));let s2=s+360;if(s2<=360)sols.add(f(s2%360===0?360:s2));});
-                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Oplossings in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
                 } else if(fn==='cos'){
                   const alpha=Math.acos(val)*180/Math.PI;
-                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = cos⁻¹('+val+') = '+f(alpha)+'°</span><br>';
-                  html+='<span style="color:#6ee7b7;">General solution: θ = 360°n ± '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Verwysingshoek: α = cos⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">Algemene oplossing: θ = 360°n ± '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
                   const sols=new Set();
                   [alpha,360-alpha].forEach(a=>{let s=((a%360)+360)%360;sols.add(f(s));});
-                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Oplossings in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
                 } else {
                   const alpha=Math.atan(val)*180/Math.PI;
-                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = tan⁻¹('+val+') = '+f(alpha)+'°</span><br>';
-                  html+='<span style="color:#6ee7b7;">General solution: θ = 180°n + '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Verwysingshoek: α = tan⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">Algemene oplossing: θ = 180°n + '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
                   const sols=new Set();
                   for(let n=-1;n<=2;n++){let s=180*n+alpha;s=((s%360)+360)%360;if(s>=0&&s<=360)sols.add(f(s));}
-                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Oplossings in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
                 }
                 out.innerHTML=html;
               }
@@ -446,65 +446,65 @@ MathMagician.registerChapter(6, {
             </script>
           </div>
 
-          <div class="tip-box"><span class="tip-icon">💡</span><span>The ± in the cosine general solution and the (−1)ⁿ trick for sine both come from the fact that cos is positive/negative symmetrically about 0°/180°, while sin is symmetric about 90°. Tan only ever needs +180°n, since tan repeats every 180°.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Die ± in die kosinus se algemene oplossing en die (−1)ⁿ-truuk vir sinus kom albei van die feit dat cos positief/negatief simmetries is om 0°/180°, terwyl sin simmetries is om 90°. Tan het net ooit +180°n nodig, aangesien tan elke 180° herhaal.</span></div>
         `
       },
       questions: [
         {
           type: "mc",
-          text: "The general solution of cosθ = cos40° is:",
-          options: ["θ = 360°n ± 40°", "θ = 180°n + 40°", "θ = 40° + 360°n only", "θ = 90°n + 40°"],
+          text: "Die algemene oplossing van cosθ = cos40° is:",
+          options: ["θ = 360°n ± 40°", "θ = 180°n + 40°", "θ = 40° + 360°n slegs", "θ = 90°n + 40°"],
           answer: 0,
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "mc",
-          text: "Solve sinθ = 1 for θ ∈ [0°; 360°]:",
-          options: ["θ = 90°", "θ = 90° and 270°", "θ = 0° and 180°", "θ = 270°"],
+          text: "Los sinθ = 1 op vir θ ∈ [0°; 360°]:",
+          options: ["θ = 90°", "θ = 90° en 270°", "θ = 0° en 180°", "θ = 270°"],
           answer: 0,
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "input",
-          text: "Solve tanθ = 1 for the smallest positive θ (in degrees).",
+          text: "Los tanθ = 1 op vir die kleinste positiewe θ (in grade).",
           answer: "45",
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "mc",
-          text: "2sin²θ − sinθ − 1 = 0 factorises to:",
+          text: "2sin²θ − sinθ − 1 = 0 faktoriseer na:",
           options: ["(2sinθ + 1)(sinθ − 1) = 0", "(2sinθ − 1)(sinθ + 1) = 0", "(sinθ − 1)(sinθ + 1) = 0", "(2sinθ + 1)(sinθ + 1) = 0"],
           answer: 0,
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "mc",
-          text: "For which value(s) of θ ∈ [0°; 360°] is 1/(cosθ) undefined?",
-          options: ["90° and 270°", "0° and 180°", "180° only", "None"],
+          text: "Vir watter waarde(s) van θ ∈ [0°; 360°] is 1/(cosθ) onbepaald?",
+          options: ["90° en 270°", "0° en 180°", "180° slegs", "Geen"],
           answer: 0,
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "input",
-          text: "Solve cosθ = 0,5 for the smallest positive θ in [0°; 360°] (in degrees).",
+          text: "Los cosθ = 0,5 op vir die kleinste positiewe θ in [0°; 360°] (in grade).",
           answer: "60",
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         },
         {
           type: "input",
-          text: "Solve for θ: 2cos²θ − 3cosθ + 1 = 0. Give the smallest positive solution in (0°; 360°), in degrees.",
+          text: "Los op vir θ: 2cos²θ − 3cosθ + 1 = 0. Gee die kleinste positiewe oplossing in (0°; 360°), in grade.",
           answer: "60",
-          topic: "Solving trigonometric equations"
+          topic: "Oplos van trigonometriese vergelykings"
         }
       ]
     }
   ],
   workbook: {
-    title: "Chapter 6 Workbook — Trigonometry",
+    title: "Hoofstuk 6 Werkboek — Trigonometrie",
     questions: [
       {
         number: 1,
-        text: "Simplify without a calculator:",
+        text: "Vereenvoudig sonder 'n sakrekenaar:",
         parts: [
           { label: "a", text: "sin(180°+x)·cos(360°−x)−cos(180°−x)·sin(−x)", marks: 4 },
           { label: "b", text: "sin²(90°−x) + sin²x", marks: 3 },
@@ -513,7 +513,7 @@ MathMagician.registerChapter(6, {
       },
       {
         number: 2,
-        text: "Prove the following identities:",
+        text: "Bewys die volgende identiteite:",
         parts: [
           { label: "a", text: "(sinθ + cosθ)² = 1 + 2sinθ·cosθ", marks: 3 },
           { label: "b", text: "1/(1−sinθ) − 1/(1+sinθ) = 2tanθ·secθ", marks: 5 }
@@ -521,20 +521,20 @@ MathMagician.registerChapter(6, {
       },
       {
         number: 3,
-        text: "In △ABC, AB = 9 cm, BC = 7 cm, and B̂ = 110°.",
+        text: "In △ABC, AB = 9 cm, BC = 7 cm, en B̂ = 110°.",
         parts: [
-          { label: "a", text: "Calculate the area of △ABC.", marks: 3 },
-          { label: "b", text: "Calculate AC using the cosine rule.", marks: 3 },
-          { label: "c", text: "Find angle A using the sine rule.", marks: 3 }
+          { label: "a", text: "Bereken die oppervlakte van △ABC.", marks: 3 },
+          { label: "b", text: "Bereken AC met behulp van die kosinusreël.", marks: 3 },
+          { label: "c", text: "Vind hoek A met behulp van die sinusreël.", marks: 3 }
         ]
       },
       {
         number: 4,
-        text: "Two surveyors stand at points A and B, 120 m apart along a straight riverbank. Both sight a tree T on the opposite bank. The measured angles from the baseline AB are recorded below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Point</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Angle to T (from AB)</th></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>A</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>52°</td></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>B</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>61°</td></tr></table>",
+        text: "Twee landmeters staan by punte A en B, 120 m uitmekaar langs 'n reguit rivieroewer. Altwee sien 'n boom T op die teenoorgestelde oewer. Die gemete hoeke vanaf die basislyn AB word hieronder aangeteken:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Punt</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Hoek na T (vanaf AB)</th></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>A</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>52°</td></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>B</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>61°</td></tr></table>",
         parts: [
-          { label: "a", text: "Calculate the size of angle ATB (the angle at the tree).", marks: 2 },
-          { label: "b", text: "Use the sine rule to calculate the distance AT (to 2 decimal places).", marks: 4 },
-          { label: "c", text: "Hence calculate the perpendicular distance from the tree to the baseline AB — the width of the river (to 2 decimal places).", marks: 3 }
+          { label: "a", text: "Bereken die grootte van hoek ATB (die hoek by die boom).", marks: 2 },
+          { label: "b", text: "Gebruik die sinusreël om die afstand AT te bereken (tot 2 desimale plekke).", marks: 4 },
+          { label: "c", text: "Bereken dus die loodregte afstand vanaf die boom tot die basislyn AB — die breedte van die rivier (tot 2 desimale plekke).", marks: 3 }
         ]
       }
     ],
@@ -542,7 +542,7 @@ MathMagician.registerChapter(6, {
       1: {
         a: "(−sinx)(cosx) − (−cosx)(−sinx) = −sinxcosx − sinxcosx = −2sinxcosx",
         b: "cos²x + sin²x = 1",
-        c: "(tanx)(cosx)/(−sinx) ... simplify: (sinx/cosx)(cosx)/(−sinx) = −1"
+        c: "(tanx)(cosx)/(−sinx) ... vereenvoudig: (sinx/cosx)(cosx)/(−sinx) = −1"
       },
       2: {
         a: "LHS = sin²θ + 2sinθcosθ + cos²θ = 1 + 2sinθcosθ = RHS",
@@ -556,7 +556,7 @@ MathMagician.registerChapter(6, {
       4: {
         a: "T̂ = 180° − 52° − 61° = 67°",
         b: "AT/sinB = AB/sinT → AT = 120×sin61°/sin67° ≈ 120×0,8746/0,9205 ≈ 114,02 m",
-        c: "width = AT×sin52° ≈ 114,02×0,7880 ≈ 89,85 m"
+        c: "breedte = AT×sin52° ≈ 114,02×0,7880 ≈ 89,85 m"
       }
     }
   }
