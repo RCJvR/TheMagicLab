@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organiese Reaksies — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:13px;letter-spacing:-0.02em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back">&#8592; Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 12 &middot; Chemie &middot; Les 2</div>
+  <h1 class="lesson-title">Organiese Reaksies</h1>
+  <p class="lesson-sub">Skryf vergelykings vir addisie-, eliminasie-, substitusie-, veresterings- en hidrolisereaksies, en verduidelik die toestande wat vir elkeen benodig word.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Skakel om IEB-uitbreidingsinhoud te wys</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Leer</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Werkboek</button>
+</div>
+
+<!-- LEER-OORTJIE -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Addisiereaksies (Slegs Alkene)</h2>
+    <p>Addisiereaksies vind oor die C=C-dubbelbinding plaas. Die dubbelbinding breek en atome word by albei koolstowwe gevoeg. Alkene is <strong>onversadig</strong> &mdash; hulle kan bykomende atome huisves deur C=C na C&ndash;C om te skakel.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Reagens</th><th>Reaksietipe</th><th>Toestande</th><th>Produkte</th></tr></thead>
+      <tbody>
+        <tr><td>H<sub>2</sub></td><td>Hidrogenering</td><td>Ni/Pt-katalisator, hitte</td><td>Alkaan (versadig)</td></tr>
+        <tr><td>HX (HBr, HCl)</td><td>Hidrohalogenering</td><td>Kamertemperatuur, geen katalisator</td><td>Haloalkaan</td></tr>
+        <tr><td>H<sub>2</sub>O</td><td>Hidrasie</td><td>H<sub>3</sub>PO<sub>4</sub>/H<sub>2</sub>SO<sub>4</sub>-katalisator, hitte</td><td>Alkohol</td></tr>
+        <tr><td>X<sub>2</sub> (Br<sub>2</sub>, Cl<sub>2</sub>)</td><td>Halogenering</td><td>Kamertemperatuur (toets: broomwater ontkleur)</td><td>Dihaloalkaan</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Markovnikov se Reël:</strong> Wanneer HX by &rsquo;n onsimmetriese alkeen addeer, voeg die H-atoom by die koolstof met méér waterstofatome reeds daaraan geheg (die minder gesubstitueerde koolstof), en X voeg by die koolstof met minder H-atome (die meer gesubstitueerde koolstof). &ldquo;Die rykes word ryker.&rdquo;</div>
+    <div class="formula">
+      CH<sub>2</sub>=CH<sub>2</sub> + Br<sub>2</sub> &rarr; CH<sub>2</sub>BrCH<sub>2</sub>Br &nbsp;&nbsp; (1,2-dibroometaan)<br>
+      CH<sub>2</sub>=CHCH<sub>3</sub> + HBr &rarr; CH<sub>3</sub>CHBrCH<sub>3</sub> &nbsp;&nbsp; (Markovnikov &mdash; Br op C2)
+    </div>
+
+    <h2>Eliminasiereaksies</h2>
+    <p>Eliminasie is die <strong>teenoorgestelde</strong> van addisie. Atome word verwyder om &rsquo;n dubbelbinding te vorm (of te verleng), wat &rsquo;n onversadigde verbinding produseer. Twee hooftipes:</p>
+    <ul>
+      <li><strong>Dehidrasie van alkohole:</strong> Alkohol + gekonsentreerde H<sub>2</sub>SO<sub>4</sub>, hitte &rarr; Alkeen + H<sub>2</sub>O. &rsquo;n OH en &rsquo;n aangrensende H word geëlimineer. (As die dubbelbinding-posisie dubbelsinnig is, gee Zaitsev se reël die meer gesubstitueerde alkeen.)</li>
+      <li><strong>Dehidrohalogenering:</strong> Haloalkaan + KOH opgelos in etanol, hitte &rarr; Alkeen + KX + H<sub>2</sub>O. &rsquo;n H en &rsquo;n halogeen op aangrensende koolstowwe word geëlimineer.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>CH<sub>2</sub>OH &xrarr;[gekons. H<sub>2</sub>SO<sub>4</sub>, 180&deg;C] CH<sub>2</sub>=CH<sub>2</sub> + H<sub>2</sub>O &nbsp;&nbsp; (dehidrasie)<br>
+      CH<sub>3</sub>CHBrCH<sub>3</sub> + KOH(etanol) &xrarr;[hitte] CH<sub>3</sub>CH=CH<sub>2</sub> + KBr + H<sub>2</sub>O &nbsp;&nbsp; (dehidrohalogenering)
+    </div>
+
+    <h2>Substitusiereaksies</h2>
+    <p>In substitusie word een atoom of groep deur &rsquo;n ander vervang sonder om die koolstofskelet se konnektiwiteit te verander.</p>
+    <ul>
+      <li><strong>Vrye-radikaal-halogenering van alkane:</strong> CH<sub>4</sub> + Cl<sub>2</sub> &xrarr;[UV-lig] CH<sub>3</sub>Cl + HCl. UV-lig inisieer die reaksie deur Cl<sub>2</sub> homolities in Cl&bull;-radikale te splits. Alkane is onreaktief onder meeste toestande &mdash; UV-lig verskaf die aktiveringsenergie.</li>
+      <li><strong>Nukleofiliese substitusie van haloalkane:</strong> R&ndash;X + NaOH(aq) &xrarr;[hitte] R&ndash;OH + NaX. Die OH<sup>&minus;</sup>-nukleofiel val aan en vervang die halogeen.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>Br + NaOH(aq) &rarr; CH<sub>3</sub>OH + NaBr &nbsp;&nbsp; (nukleofiliese substitusie)
+    </div>
+
+    <h2>Verestering</h2>
+    <p>&rsquo;n <strong>Ester</strong> word gevorm wanneer &rsquo;n karboksielsuur met &rsquo;n alkohol reageer in die teenwoordigheid van &rsquo;n suurkatalisator. Die reaksie is <strong>omkeerbaar</strong>:</p>
+    <div class="formula">
+      Karboksielsuur + Alkohol &#x21CC; Ester + Water &nbsp;&nbsp; (H<sub>2</sub>SO<sub>4</sub>-katalisator, terugvloei)
+    </div>
+    <div class="formula">
+      CH<sub>3</sub>COOH + CH<sub>3</sub>CH<sub>2</sub>OH &#x21CC; CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub> + H<sub>2</sub>O<br>
+      (etaansuur + etanol &#x21CC; etielethanoaat + water)
+    </div>
+    <p>Esters het vrugtige reuke en word gebruik in geursels, parfuums, en oplosmiddels. Benoeming: die alkoholdeel benoem die alkielgroep (etiel), en die suurdeel word -oaat (etanoaat).</p>
+
+    <h2>Hidrolise van Esters</h2>
+    <p><strong>Hidrolise</strong> is die teenoorgestelde van verestering &mdash; water breek die esterbinding. Twee tipes:</p>
+    <ul>
+      <li><strong>Suurhidrolise:</strong> Ester + H<sub>2</sub>O + verdunde H<sub>2</sub>SO<sub>4</sub> &rarr; Karboksielsuur + Alkohol (stadig, omkeerbaar).</li>
+      <li><strong>Basishidrolise (Versaping):</strong> Ester + NaOH(aq) &rarr; Natriumkarboksilaatsout + Alkohol. Dit is die basis van <strong>seepmaak</strong> &mdash; vette (trigliseriede) word versaap om vetsuursoute (seep) en gliserol te gee.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub> + NaOH(aq) &rarr; CH<sub>3</sub>COO<sup>&minus;</sup>Na<sup>+</sup> + CH<sub>3</sub>CH<sub>2</sub>OH &nbsp;&nbsp; (versaping)
+    </div>
+
+    <h2>Kraking</h2>
+    <p>Groot alkaanmolekules vanaf ru-olie word in kleiner, meer bruikbare alkene en alkane opgebreek deur energie toe te dien:</p>
+    <ul>
+      <li><strong>Termiese kraking:</strong> Baie hoë temperatuur (500&ndash;900&deg;C), hoë druk, geen katalisator. Gee &rsquo;n mengsel van produkte insluitend alkene.</li>
+      <li><strong>Katalitiese kraking:</strong> Matige temperatuur (~500&deg;C), zeolietkatalisator, laer druk. Meer beheerd; gebruik in raffinaderye om petrol-reeks koolwaterstowwe en grondstowwe te produseer.</li>
+    </ul>
+    <div class="formula">C<sub>10</sub>H<sub>22</sub> &rarr; C<sub>5</sub>H<sub>12</sub> + C<sub>5</sub>H<sub>10</sub> &nbsp;&nbsp; (&rsquo;n moontlike krakingsproduk-mengsel)</div>
+
+    <h2>Verbranding</h2>
+    <ul>
+      <li><strong>Volledige verbranding</strong> (oormaat O<sub>2</sub>): Koolwaterstof + O<sub>2</sub> &rarr; CO<sub>2</sub> + H<sub>2</sub>O. Skoon verbranding; stel maksimum energie vry.</li>
+      <li><strong>Onvolledige verbranding</strong> (beperkte O<sub>2</sub>): Produseer CO (giftig) en/of C (roet) benewens H<sub>2</sub>O. CO is gevaarlik omdat dit aan hemoglobien bind; roet veroorsaak lugbesoedeling.</li>
+    </ul>
+    <div class="formula">
+      C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> &rarr; 3CO<sub>2</sub> + 4H<sub>2</sub>O &nbsp;&nbsp; (volledig)<br>
+      2C<sub>3</sub>H<sub>8</sub> + 7O<sub>2</sub> &rarr; 6CO + 8H<sub>2</sub>O &nbsp;&nbsp; (onvolledig)
+    </div>
+
+    <h2>Polimerisasie</h2>
+    <ul>
+      <li><strong>Addisiepolimerisasie:</strong> Baie alkeenmonomere verbind saam &mdash; die dubbelbinding open en die monomere skakel in &rsquo;n lang ketting. Geen newe-produk word geproduseer nie. Voorbeeld: n CH<sub>2</sub>=CH<sub>2</sub> &rarr; (&ndash;CH<sub>2</sub>&ndash;CH<sub>2</sub>&ndash;)<sub>n</sub> (poli-etileen).</li>
+      <li><strong>Kondensasiepolimerisasie:</strong> Monomere met twee funksionele groepe reageer herhaaldelik, en stel by elke stap &rsquo;n klein molekule (water of HCl) vry. Voorbeelde: nylon (poliamied uit diamien + dikarboksielsuur), poliëster (uit diol + dikarboksielsuur), soos PET.</li>
+    </ul>
+
+    <h2>Opsommingstabel van Organiese Reaksies</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Reaksietipe</th><th>Reagens</th><th>Sleuteltoestande</th><th>Produk</th></tr></thead>
+      <tbody>
+        <tr><td>Addisie (hidrogenering)</td><td>Alkeen + H<sub>2</sub></td><td>Ni-katalisator, hitte</td><td>Alkaan</td></tr>
+        <tr><td>Addisie (hidrasie)</td><td>Alkeen + H<sub>2</sub>O</td><td>H<sub>3</sub>PO<sub>4</sub>, hitte</td><td>Alkohol</td></tr>
+        <tr><td>Addisie (halogenering)</td><td>Alkeen + Br<sub>2</sub></td><td>Kamertemperatuur</td><td>Dihaloalkaan</td></tr>
+        <tr><td>Eliminasie (dehidrasie)</td><td>Alkohol</td><td>Gekons. H<sub>2</sub>SO<sub>4</sub>, hitte</td><td>Alkeen + H<sub>2</sub>O</td></tr>
+        <tr><td>Substitusie (vrye radikaal)</td><td>Alkaan + X<sub>2</sub></td><td>UV-lig</td><td>Haloalkaan + HX</td></tr>
+        <tr><td>Substitusie (nukleofilies)</td><td>Haloalkaan + NaOH(aq)</td><td>Hitte</td><td>Alkohol + NaX</td></tr>
+        <tr><td>Verestering</td><td>Karboksielsuur + Alkohol</td><td>H<sub>2</sub>SO<sub>4</sub>, terugvloei</td><td>Ester + H<sub>2</sub>O</td></tr>
+        <tr><td>Hidrolise (basis)</td><td>Ester + NaOH(aq)</td><td>Hitte</td><td>Sout + Alkohol</td></tr>
+        <tr><td>Verbranding (volledig)</td><td>Koolwaterstof + oormaat O<sub>2</sub></td><td>Ontsteking</td><td>CO<sub>2</sub> + H<sub>2</sub>O</td></tr>
+        <tr><td>Kraking</td><td>Langketting-alkaan</td><td>Hoë T of katalisator</td><td>Kort alkaan + alkeen</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB-uitbreiding &mdash; Reaksiemeganismes &amp; Regioselektiwiteit</div>
+      <p><strong>SN1 teenoor SN2 (Nukleofiliese Substitusie):</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 12px 20px;line-height:1.85">
+        <li><strong>SN2 (bimolekulêr):</strong> Een stap; nukleofiel val aan terwyl die vertrekkende groep gelyktydig vertrek. Word begunstig deur primêre (1&deg;) haloalkane en sterk nukleofiele. Veroorsaak inversie van konfigurasie (Walden-inversie).</li>
+        <li><strong>SN1 (unimolekulêr):</strong> Twee stappe; vorm eers &rsquo;n karbokatioon-intermediêr, dan val die nukleofiel aan. Word begunstig deur tersiêre (3&deg;) haloalkane in polêre protiese oplosmiddels. Gee rasemisasie by chirale sentrums.</li>
+      </ul>
+      <p><strong>E1 teenoor E2 (Eliminasie):</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 12px 20px;line-height:1.85">
+        <li><strong>E2 (bimolekulêr):</strong> Gekoördineerd; basis verwyder H terwyl die halogeen gelyktydig vertrek. Vereis anti-periplanêre geometrie. Word begunstig deur sterk basisse (KOH in etanol), primêre en sekondêre substrate.</li>
+        <li><strong>E1 (unimolekulêr):</strong> Twee stappe via &rsquo;n karbokatioon; word begunstig deur tersiêre substrate, swak basisse, polêre protiese oplosmiddels.</li>
+      </ul>
+      <p><strong>Regioselektiwiteit:</strong> Wanneer verskeie produkte moontlik is (bv. verskillende alkeen-posisies in eliminasie), volg die hoofproduk <strong>Zaitsev se reël</strong> &mdash; die meer gesubstitueerde (meer stabiele) alkeen is die hoofproduk.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- VERKEN-OORTJIE -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Reaksiebouer &mdash; Kies reagens en reaksietipe om die gebalanseerde vergelyking te sien</h3>
+      <canvas id="rxnCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bou &rsquo;n Reaksie</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Reagenstipe</label>
+        <select class="sim-select" id="reactantType" onchange="updateReaction()">
+          <option value="alkene">Alkeen (eteen, CH₂=CH₂)</option>
+          <option value="alkane">Alkaan (metaan, CH₄)</option>
+          <option value="alcohol">Alkohol (etanol)</option>
+          <option value="haloalkane">Haloalkaan (broometaan)</option>
+          <option value="ester">Ester (etielethanoaat)</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Reaksietipe</label>
+        <select class="sim-select" id="reactionType" onchange="updateReaction()">
+          <option value="">-- Kies reaksie --</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Vergelyking &amp; Toestande</div>
+        <div class="readout-grid" style="grid-template-columns:1fr">
+          <div class="readout"><div class="readout-label">Gebalanseerde Vergelyking</div><div class="readout-val" id="rxnEquation" style="font-size:11px;line-height:1.6;white-space:pre-line">Kies &rsquo;n reagens en reaksietipe.</div></div>
+          <div class="readout"><div class="readout-label">Toestande</div><div class="readout-val" id="rxnConditions" style="font-size:11px">--</div></div>
+          <div class="readout"><div class="readout-label">Reaksieklas</div><div class="readout-val" id="rxnClass" style="font-size:11px">--</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OEFENING-OORTJIE -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Gaan die verduidelikings na om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB-uitbreidingsvrae</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WERKBOEK-OORTJIE -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae in jou skrif. Skryf gebalanseerde vergelykings met toestandsimbole waar nodig. Noem altyd die toestande (katalisator, temperatuur, oplosmiddel) langs elke vergelyking.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 &mdash; Addisiereaksies</div>
+      <div class="wb-qtext">Skryf gebalanseerde vergelykings vir die volgende addisiereaksies. Noem die toestande wat vir elkeen benodig word:<br><br>
+      (a) but-2-een + H<sub>2</sub> &rarr; ?<br>
+      (b) propeen + HBr &rarr; ? (pas Markovnikov se reël toe en benoem die produk)<br>
+      (c) eteen + Br<sub>2</sub>(aq) &rarr; ? (verduidelik waarom broomwater as &rsquo;n toets vir onversadigdheid gebruik word)<br>
+      (d) eteen + H<sub>2</sub>O &rarr; ? (benoem die produk)<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 &mdash; Eliminasie teenoor Substitusie</div>
+      <div class="wb-qtext">2-broompropaan kan twee verskillende reaksies met NaOH ondergaan:<br><br>
+      (a) Skryf die vergelyking vir die <strong>substitusie</strong>reaksie met NaOH(aq). Noem die toestande en benoem die organiese produk.<br>
+      (b) Skryf die vergelyking vir die <strong>eliminasie</strong>reaksie met NaOH in etanol. Noem die toestande en benoem die organiese produk.<br>
+      (c) Noem EEN verskil in toestande wat bepaal of substitusie of eliminasie plaasvind.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 &mdash; Verestering</div>
+      <div class="wb-qtext">(a) Skryf die gebalanseerde vergelyking vir die verestering van propan-1-ol met metanoësuur. Benoem die ester wat geproduseer word.<br>
+      (b) Die reaksie is omkeerbaar. Noem TWEE maniere om die opbrengs van ester by ewewig te verhoog.<br>
+      (c) Verduidelik hoe versaping (basishidrolise) van suurhidrolise van &rsquo;n ester verskil.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 &mdash; Polimerisasie</div>
+      <div class="wb-qtext">(a) Teken die struktuur-herhalende eenheid van die polimeer wat uit propeen (CH<sub>2</sub>=CHCH<sub>3</sub>) deur addisiepolimerisasie gevorm word. Benoem die polimeer.<br>
+      (b) Verduidelik die verskil tussen addisiepolimerisasie en kondensasiepolimerisasie. Sluit die tipe monomeer benodig vir elkeen in.<br>
+      (c) Nylon-6,6 is &rsquo;n kondensasiepolimeer gevorm uit 1,6-diaminoheksaan en heksaandiosuur. Skryf die vergelyking vir die eerste stap en identifiseer die klein molekule wat vrygestel word.<br><br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 &mdash; Lees van Veresteringsvorderingsdata</div>
+      <div class="wb-qtext">Etaansuur en etanol word gemeng met &rsquo;n paar druppels gekonsentreerde H<sub>2</sub>SO<sub>4</sub>-katalisator by &rsquo;n konstante temperatuur. Die aantal mol ester gevorm word oor tyd aangeteken:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Tyd (min)</th><th>0</th><th>20</th><th>40</th><th>60</th><th>80</th><th>100</th></tr></thead>
+        <tbody><tr><td>Mol ester gevorm (mol)</td><td>0</td><td>0.20</td><td>0.32</td><td>0.38</td><td>0.40</td><td>0.40</td></tr></tbody>
+      </table>
+      (a) Bereken die gemiddelde tempo van estervorming (in mol&middot;min<sup>&minus;1</sup>) tussen t = 0 en t = 20 min, en tussen t = 80 en t = 100 min.<br>
+      (b) Verduidelik, in terme van reagens- en produkkonsentrasies, waarom die tempo bereken in (a) soveel laer is in die tweede interval as in die eerste.<br>
+      (c) Die hoeveelheid ester gevorm plato by 0.40 mol na t = 80 min eerder as om voort te gaan om na die teoretiese maksimum te styg. Verduidelik waarom, met verwysing na die aard van die veresteringsreaksie.<br>
+      (d) Stel EEN verandering aan die eksperimentele opstelling voor (nie &rsquo;n verandering in temperatuur nie) wat die aantal mol ester teenwoordig sou verhoog sodra die stelsel weer tot rus kom, en regverdig dit met behulp van Le Chatelier se Beginsel.<br><br>
+      <em>(8 punte)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { updateReaction(); }, 50);
+}
+
+// ─── Reaksiebouer ─────────────────────────────────────────────────────────
+const REACTIONS = {
+  alkene: {
+    label: 'Alkeen (eteen)',
+    types: {
+      add_h2: { label: 'Hidrogenering (+ H₂)', eq: 'CH₂=CH₂ + H₂ → CH₃CH₃\n(eteen → etaan)', cond: 'Ni-katalisator, ~150°C', cls: 'Addisie' },
+      add_hbr: { label: 'Hidrohalogenering (+ HBr)', eq: 'CH₂=CH₂ + HBr → CH₃CH₂Br\n(eteen → broometaan)', cond: 'Kamertemperatuur, geen katalisator', cls: 'Addisie (Markovnikov)' },
+      add_h2o: { label: 'Hidrasie (+ H₂O)', eq: 'CH₂=CH₂ + H₂O → CH₃CH₂OH\n(eteen → etanol)', cond: 'H₃PO₄-katalisator, 300°C, 60 atm', cls: 'Addisie' },
+      add_br2: { label: 'Halogenering (+ Br₂)', eq: 'CH₂=CH₂ + Br₂ → CH₂BrCH₂Br\n(eteen → 1,2-dibroometaan)', cond: 'Kamertemperatuur, broomwater', cls: 'Addisie (toets vir onversadigdheid)' }
+    }
+  },
+  alkane: {
+    label: 'Alkaan (metaan)',
+    types: {
+      sub_cl2: { label: 'Vrye-radikaal-chlorering', eq: 'CH₄ + Cl₂ → CH₃Cl + HCl\n(metaan → chloormetaan)', cond: 'UV-lig (hν)', cls: 'Substitusie (vrye radikaal)' },
+      combustion_c: { label: 'Volledige verbranding', eq: 'CH₄ + 2O₂ → CO₂ + 2H₂O\n(volledig, oormaat suurstof)', cond: 'Ontstekingsbron, oormaat O₂', cls: 'Verbranding' },
+      combustion_i: { label: 'Onvolledige verbranding', eq: '2CH₄ + 3O₂ → 2CO + 4H₂O\n(onvolledig, beperkte suurstof)', cond: 'Ontsteking, beperkte O₂', cls: 'Verbranding (onvolledig)' }
+    }
+  },
+  alcohol: {
+    label: 'Alkohol (etanol)',
+    types: {
+      elim: { label: 'Dehidrasie → alkeen', eq: 'CH₃CH₂OH → CH₂=CH₂ + H₂O\n(etanol → eteen)', cond: 'Gekons. H₂SO₄, 180°C', cls: 'Eliminasie (dehidrasie)' },
+      ester: { label: 'Verestering met etaansuur', eq: 'CH₃COOH + CH₃CH₂OH ⇌ CH₃COOCH₂CH₃ + H₂O\n(→ etielethanoaat)', cond: 'Gekons. H₂SO₄-katalisator, terugvloei', cls: 'Verestering (omkeerbaar)' },
+      oxidation: { label: 'Oksidasie na aldehied/suur', eq: 'CH₃CH₂OH → [O] → CH₃CHO → [O] → CH₃COOH\n(etanol → etanal → etaansuur)', cond: 'K₂Cr₂O₇/H₂SO₄ (aangesuurde dichromaat)', cls: 'Oksidasie' }
+    }
+  },
+  haloalkane: {
+    label: 'Haloalkaan (broometaan)',
+    types: {
+      sub_oh: { label: 'Substitusie met NaOH(aq)', eq: 'CH₃CH₂Br + NaOH(aq) → CH₃CH₂OH + NaBr\n(→ etanol)', cond: 'NaOH waterig, terugvloei', cls: 'Nukleofiliese substitusie (SN2)' },
+      elim_koh: { label: 'Eliminasie met KOH/etanol', eq: 'CH₃CH₂Br + KOH(etanol) → CH₂=CH₂ + KBr + H₂O\n(→ eteen)', cond: 'KOH in etanol, terugvloei', cls: 'Eliminasie (E2)' }
+    }
+  },
+  ester: {
+    label: 'Ester (etielethanoaat)',
+    types: {
+      acid_hyd: { label: 'Suurhidrolise', eq: 'CH₃COOC₂H₅ + H₂O ⇌ CH₃COOH + C₂H₅OH\n(omkeerbaar)', cond: 'Verdunde H₂SO₄, terugvloei', cls: 'Hidrolise (suur)' },
+      base_hyd: { label: 'Basishidrolise (versaping)', eq: 'CH₃COOC₂H₅ + NaOH → CH₃COO⁻Na⁺ + C₂H₅OH\n(onomkeerbaar)', cond: 'NaOH(aq), terugvloei', cls: 'Hidrolise (basis / versaping)' }
+    }
+  }
+};
+
+function updateReaction() {
+  const rt = document.getElementById('reactantType').value;
+  const rxnSel = document.getElementById('reactionType');
+  // Werk reaksie-opsies by
+  const data = REACTIONS[rt];
+  rxnSel.innerHTML = '<option value="">-- Kies reaksie --</option>';
+  if (data) {
+    Object.entries(data.types).forEach(([key, val]) => {
+      const opt = document.createElement('option');
+      opt.value = key; opt.textContent = val.label;
+      rxnSel.appendChild(opt);
+    });
+  }
+  showReaction();
+}
+
+function showReaction() {
+  const rt = document.getElementById('reactantType').value;
+  const rxnKey = document.getElementById('reactionType').value;
+  if (!rt || !rxnKey || !REACTIONS[rt] || !REACTIONS[rt].types[rxnKey]) {
+    document.getElementById('rxnEquation').textContent = 'Kies \'n reagens en reaksietipe hierbo.';
+    document.getElementById('rxnConditions').textContent = '--';
+    document.getElementById('rxnClass').textContent = '--';
+    drawRxnCanvas('Kies \'n reaksie hierbo.');
+    return;
+  }
+  const rxn = REACTIONS[rt].types[rxnKey];
+  document.getElementById('rxnEquation').textContent = rxn.eq;
+  document.getElementById('rxnConditions').textContent = rxn.cond;
+  document.getElementById('rxnClass').textContent = rxn.cls;
+  drawRxnCanvas(rxn.eq, rxn.cls, rxn.cond);
+}
+
+document.getElementById('reactionType').addEventListener('change', showReaction);
+
+function drawRxnCanvas(eq, cls, cond) {
+  const canvas = document.getElementById('rxnCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 340;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  // Agtergrondgradiënt
+  const grd = ctx.createRadialGradient(W/2, H/2, 10, W/2, H/2, W*0.6);
+  grd.addColorStop(0, 'rgba(20,184,166,0.04)');
+  grd.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,W,H);
+
+  if (!cls) {
+    ctx.fillStyle = 'rgba(210,218,245,0.3)';
+    ctx.font = '14px "Cabinet Grotesk",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(eq, W/2, H/2);
+    return;
+  }
+
+  // Teken reaksiediagram: reaktante → produkte
+  const lines = eq.split('\n');
+  const mainEq = lines[0];
+  const parts = mainEq.split(/→|⇌/);
+  const arrow = mainEq.includes('⇌') ? '⇌' : '→';
+
+  const lhs = parts[0] ? parts[0].trim() : '';
+  const rhs = parts[1] ? parts[1].trim() : '';
+
+  // Klas-kenteken
+  ctx.fillStyle = 'rgba(20,184,166,0.12)';
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(W/2 - 120, 16, 240, 28, 8);
+  else ctx.rect(W/2-120, 16, 240, 28);
+  ctx.fill();
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = '700 11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(cls, W/2, 35);
+
+  // Reaktante-blokkie
+  const boxH = 60, boxW = Math.min(260, W * 0.35);
+  const lbx = W * 0.12, rbx = W * 0.88 - boxW;
+  const bY = H * 0.42;
+
+  drawBox(ctx, lbx, bY, boxW, boxH, '#f97316', lhs, 'REAKTANT(E)');
+  drawBox(ctx, rbx, bY, boxW, boxH, '#34d399', rhs, 'PRODUK(TE)');
+
+  // Pyl
+  const ax1 = lbx + boxW + 10, ax2 = rbx - 10;
+  const aY = bY + boxH/2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ax1, aY); ctx.lineTo(ax2, aY); ctx.stroke();
+  // Pylkop
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath(); ctx.moveTo(ax2, aY); ctx.lineTo(ax2-10, aY-5); ctx.lineTo(ax2-10, aY+5); ctx.closePath(); ctx.fill();
+  if (arrow === '⇌') {
+    ctx.beginPath(); ctx.moveTo(ax1, aY+4); ctx.lineTo(ax1+10, aY-1); ctx.lineTo(ax1+10, aY+9); ctx.closePath(); ctx.fill();
+  }
+
+  // Toestande-etiket op pyl
+  if (cond) {
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = '10px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(cond, (ax1+ax2)/2, aY - 14);
+  }
+
+  // Pyl-etiket
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '700 16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(arrow, (ax1+ax2)/2, aY + 5);
+
+  // Volledige vergelyking onderaan
+  if (lines[1]) {
+    ctx.fillStyle = 'rgba(210,218,245,0.45)';
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(lines[1], W/2, H - 18);
+  }
+}
+
+function drawBox(ctx, x, y, w, h, color, label, title) {
+  ctx.fillStyle = color + '18';
+  ctx.strokeStyle = color + 'aa';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w, h, 10);
+  else ctx.rect(x, y, w, h);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.font = '700 9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(title, x + w/2, y + 14);
+  ctx.fillStyle = '#fff';
+  ctx.font = '600 11px "JetBrains Mono",monospace';
+  const maxW = w - 16;
+  const words = label.split(' ');
+  let line = '', lines2 = [], lineY = y + 30;
+  words.forEach(w2 => {
+    const test = line ? line + ' ' + w2 : w2;
+    if (ctx.measureText(test).width > maxW && line) { lines2.push(line); line = w2; }
+    else line = test;
+  });
+  if (line) lines2.push(line);
+  lines2.forEach((l, i) => ctx.fillText(l, x + w/2, lineY + i * 14));
+}
+
+// ─── Oefeningsvrae ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'Watter reagens en toestande word benodig om propeen (CH₃CH=CH₂) na propan-2-ol om te skakel?',
+    opts: ['H₂ met Ni-katalisator by 150°C','HBr by kamertemperatuur','H₂O met H₃PO₄-katalisator by 300°C','NaOH(aq) met hitte'],
+    ans: 2,
+    exp: "Hidrasie van 'n alkeen (addisie van water oor C=C) vereis stoom en 'n suurkatalisator (H₃PO₄ of H₂SO₄) by verhoogde temperatuur en druk. Die water voeg by die dubbelbinding: CH₃CH=CH₂ + H₂O → CH₃CH(OH)CH₃ (propan-2-ol, volgens Markovnikov se reël)."
+  },
+  {
+    q: "Broomwater (Br₂ in water) word as 'n chemiese toets gebruik. As broomwater ONTKLEUR wanneer dit by 'n onbekende verbinding gevoeg word, dui dit aan dat:",
+    opts: [
+      "Die verbinding is 'n alkaan",
+      "Die verbinding bevat 'n C=C-dubbelbinding (is onversadig)",
+      "Die verbinding is 'n alkohol",
+      "Die verbinding is 'n karboksielsuur"
+    ],
+    ans: 1,
+    exp: 'Alkene ontkleur broomwater omdat Br₂ addisie oor die C=C-dubbelbinding ondergaan: alkeen + Br₂ → dibroomalkaan (kleurloos). Alkane reageer NIE met broomwater by kamertemperatuur nie — hulle bly geel/oranje. Dit is die klassieke toets vir onversadigdheid.'
+  },
+  {
+    q: 'Watter tipe reaksie vind plaas wanneer etanol met gekonsentreerde H₂SO₄ by 180°C reageer?',
+    opts: [
+      "Addisie — water voeg by oor 'n dubbelbinding",
+      "Substitusie — die OH word deur 'n waterstof vervang",
+      "Eliminasie — water word verwyder om 'n alkeen te vorm",
+      "Verestering — 'n ester word met H₂SO₄ gevorm"
+    ],
+    ans: 2,
+    exp: 'Die verhitting van etanol met gekonsentreerde H₂SO₄ by 180°C veroorsaak DEHIDRASIE (eliminasie). Die –OH vanaf een koolstof en \'n H vanaf \'n aangrensende koolstof word as water verwyder, wat \'n C=C-dubbelbinding laat: CH₃CH₂OH → CH₂=CH₂ + H₂O. Dit is \'n ELIMINASIEreaksie.'
+  },
+  {
+    q: 'Propan-1-ol reageer met propaansuur in die teenwoordigheid van gekonsentreerde H₂SO₄. Watter stelling oor hierdie reaksie is korrek?',
+    opts: [
+      'Dit is onomkeerbaar en produseer slegs propielpropanoaat as produk',
+      'Dit produseer propielpropanoaat en water en is omkeerbaar',
+      'Dit vereis UV-lig om die reaksie te inisieer',
+      "Dit is 'n eliminasiereaksie wat 'n alkeen produseer"
+    ],
+    ans: 1,
+    exp: "Verestering is 'n omkeerbare reaksie: karboksielsuur + alkohol ⇌ ester + water. Propaansuur + propan-1-ol ⇌ propielpropanoaat + H₂O. H₂SO₄ tree op as katalisator. Die reaksie loop nie tot voltooiing nie — dit bereik ewewig. Water word ook geproduseer (nie net die ester nie)."
+  },
+  {
+    q: 'Tydens vrye-radikaal-halogenering van metaan met chloor vereis die eerste stap UV-lig. Hierdie UV-lig veroorsaak:',
+    opts: [
+      'Cl₂ los op in die metaanmengsel',
+      'Cl₂-molekules splits homolities in twee Cl•-radikale (kettinginisiëring)',
+      'Metaanmolekules ontbind in koolstof en waterstof',
+      'Die reaksie word omgekeer (ontbinding van HCl)'
+    ],
+    ans: 1,
+    exp: 'In die inisiëringstap van vrye-radikaal-halogenering verskaf UV-lig genoeg energie om die Cl–Cl-binding homolities te breek (een elektron na elke atoom): Cl₂ → 2Cl•. Hierdie chloorradikale inisieer dan die kettingvoortplantingstappe. Sonder UV-lig is alkane feitlik onreaktief met chloor by kamertemperatuur.'
+  },
+  {
+    q: 'In die polimerisasie van eteen om poli-etileen te vorm, watter tipe polimerisasie vind plaas en wat is die herhalende eenheid?',
+    opts: [
+      'Kondensasiepolimerisasie; herhalende eenheid is –CH₂–CH₂– met water as newe-produk',
+      'Addisiepolimerisasie; herhalende eenheid is –CH₂–CH₂– sonder newe-produk',
+      'Addisiepolimerisasie; herhalende eenheid is –CH=CH– (dubbelbinding behou)',
+      'Kondensasiepolimerisasie; herhalende eenheid is –CH₂–CH₂–O– met H₂O vrygestel'
+    ],
+    ans: 1,
+    exp: 'Eteen ondergaan addisiepolimerisasie: die C=C-dubbelbinding open en monomere skakel saam. Geen atome gaan verlore nie — die herhalende eenheid (–CH₂–CH₂–) het dieselfde samestelling as die monomeer. Geen newe-produk word gevorm nie. Dit staan in kontras met kondensasiepolimerisasie, wat by elke stap klein molekules (H₂O, HCl) vrystel.'
+  },
+  {
+    q: 'But-1-een (CH₂=CHCH₂CH₃) word na butan-2-ol omgeskakel met behulp van \'n twee-stap-sintese: Stap 1 — reageer met HBr by kamertemperatuur; Stap 2 — reageer die produk van Stap 1 met NaOH(aq), hitte. Wat is die intermediêr wat in Stap 1 gevorm word, en waarom gee hierdie roete butan-2-ol eerder as butan-1-ol?',
+    opts: [
+      "2-broombutaan; Markovnikov se reël plaas Br op C2 (die koolstof met minder H-atome reeds daaraan geheg) tydens HBr-addisie, en die latere substitusie met OH⁻ vervang Br by dieselfde koolstof",
+      "1-broombutaan; Br voeg altyd by die terminale (eind-)koolstof van 'n alkeen tydens addisie",
+      "2-broombutaan; dit is anti-Markovnikov-addisie, wat gebeur omdat HBr 'n sterk suur is",
+      "But-2-een; die dubbelbinding skuif na C2 voordat Br of OH ingebring word"
+    ],
+    ans: 0,
+    exp: "Stap 1 is addisie van HBr oor die C=C-binding. Volgens Markovnikov se reël voeg H by die koolstof wat reeds MEER waterstowwe het (C1, wat 2 H in die =CH₂-groep het) en Br voeg by die koolstof met MINDER waterstowwe (C2, die meer gesubstitueerde koolstof) — wat CH₃–CHBr–CH₂–CH₃ (2-broombutaan) gee. Stap 2 is nukleofiliese substitusie: OH⁻ vervang Br⁻ by DIESELFDE koolstof (C2) sonder om die koolstofskelet te beweeg, wat CH₃–CH(OH)–CH₂–CH₃ (butan-2-ol) gee. Die regiochemie wat in Stap 1 (Markovnikov-addisie) vasgestel word, bepaal die posisie van die OH-groep in die finale produk."
+  },
+  {
+    q: '\'n Monster dekaan (C₁₀H₂₂) ondergaan katalitiese kraking om oktaan (C₈H₁₈) en een ander organiese produk, X, te produseer. Wat is X, en watter vergelyking verteenwoordig sy volledige verbranding korrek?',
+    opts: [
+      'X = C₂H₄ (eteen); C₂H₄ + 3O₂ → 2CO₂ + 2H₂O',
+      'X = C₂H₆ (etaan); C₂H₆ + 3O₂ → 2CO₂ + 2H₂O',
+      'X = CH₄ (metaan); CH₄ + 3O₂ → CO₂ + 2H₂O',
+      'X = C₂H₄ (eteen); C₂H₄ + 2O₂ → 2CO + 2H₂O'
+    ],
+    ans: 0,
+    exp: "Kraking moet atome behou: C₁₀H₂₂ → C₈H₁₈ + X. Trek oktaan se formule van dekaan s'n af: C(10−8)=C2, H(22−18)=H4, dus X = C₂H₄ (eteen) — dit maak sin, aangesien die kraking van 'n lang alkaan 'n korter alkaan plus 'n alkeen produseer. Vir volledige verbranding van C₂H₄, balanseer eers C (2 CO₂), dan H (2 H₂O, met die 4 H), dan O: die regterkant benodig 2×2 + 2×1 = 6 O-atome = 3 O₂-molekules. Gebalanseerde vergelyking: C₂H₄ + 3O₂ → 2CO₂ + 2H₂O. (Etaan, C₂H₆, sou die verkeerde produk wees — dit balanseer nie die waterstoftelling van dekaan minus oktaan nie.)"
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: '2-broom-2-metielpropaan reageer met NaOH. Watter meganisme is die waarskynlikste, en waarom?',
+    opts: [
+      'SN2 — tersiêre substraat reageer die vinnigste met nukleofiele',
+      'SN1 — die tersiêre karbokatioon-intermediêr word deur drie alkielgroepe gestabiliseer',
+      'E2 — eliminasie is altyd vinniger as substitusie',
+      'SN2 — die reaksie is altyd bimolekulêr'
+    ],
+    ans: 1,
+    exp: "Tersiêre substrate begunstig SN1 omdat die tersiêre karbokatioon ((CH₃)₃C⁺) deur drie elektronskenkende alkielgroepe gestabiliseer word (hiperkonjugasie/induksie). SN2 word by tersiêre koolstowwe benadeel weens ernstige steriese hindering — die nukleofiel kan nie die koolstof van agter nader nie. SN1 verloop via 'n stabiele tersiêre karbokatioon-intermediêr."
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})" id="${prefix}-opt-${qi}-${oi}"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+updateReaction();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
