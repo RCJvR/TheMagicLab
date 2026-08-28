@@ -198,6 +198,8 @@
     const PICKER_T = {
       en: {
         back: 'Back to Magic Lab', heroTag: 'Mathematics · CAPS / IEB · Gr 8–12',
+        heading: 'Choose your <em>grade.</em>',
+        heroSub: 'Interactive lessons, guided practice, and workbook exercises aligned to the South African mathematics curriculum.',
         grid: 'Grid', quickJump: 'Quick jump', jumpToGrade: 'Jump to grade', selectGrade: 'Select a grade',
         startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
         topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
@@ -213,6 +215,8 @@
       },
       af: {
         back: 'Terug na Magic Lab', heroTag: 'Wiskunde · CAPS / IEB · Gr 8–12',
+        heading: 'Kies jou <em>graad.</em>',
+        heroSub: 'Interaktiewe lesse, begeleide oefening, en werkboekoefeninge belyn met die Suid-Afrikaanse wiskunde-kurrikulum.',
         grid: 'Rooster', quickJump: 'Vinnige keuse', jumpToGrade: 'Spring na graad', selectGrade: 'Kies \'n graad',
         startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
         topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
@@ -235,6 +239,9 @@
       const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
       set('lblBack', t.back);
       set('lblHeroTag', t.heroTag);
+      const headingEl = document.getElementById('lblHeading');
+      if (headingEl) headingEl.innerHTML = t.heading;
+      set('lblHeroSub', t.heroSub);
       set('lblGrid', t.grid);
       set('lblQuickJump', t.quickJump);
       document.querySelector('.path-trigger-label').textContent = t.jumpToGrade;
