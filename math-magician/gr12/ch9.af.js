@@ -180,7 +180,7 @@ MathMagician.registerChapter(9, {
                 let html='<span style="color:#6ee7b7;">r = '+f(r)+'</span>';
                 html+='<span style="color:rgba(221,225,240,0.50);"> → '+strength+' '+dir+' lineêre korrelasie</span><br>';
                 html+='<span style="color:#fcd34d;">r² = '+f(r2)+' → '+f(r2*100,2)+'% van variasie in y word deur x verklaar</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">⚠ Korrelasie ≠ kousaliteit. 'n Hoë |r| beteken nie dat x veroorsaak y nie.</span>';
+                html+='<span style="color:rgba(221,225,240,0.50);">⚠ Korrelasie ≠ kousaliteit. \\'n Hoë |r| beteken nie dat x veroorsaak y nie.</span>';
                 out.innerHTML=html;
               }
               document.getElementById('g12c9t2Btn').addEventListener('click',calc);
@@ -266,7 +266,7 @@ MathMagician.registerChapter(9, {
                 if(Math.abs(mean-med)<0.001&&Math.abs(med-mode)<0.001){shape='Simmetries (gemiddelde ≈ mediaan ≈ modus)';color='#6ee7b7';}
                 else if(mean>med&&med>mode){shape='Positief skeef (regs-skeef) — stert na regs, gemiddelde &gt; mediaan &gt; modus';color='#fcd34d';}
                 else if(mean<med&&med<mode){shape='Negatief skeef (links-skeef) — stert na links, gemiddelde &lt; mediaan &lt; modus';color='#fcd34d';}
-                else {shape='Gemengde patroon — nie 'n netjiese handboek-skeefheid nie, maar vergelyk gemiddelde met mediaan om die rigting te bepaal';color='rgba(221,225,240,0.70);'}
+                else {shape='Gemengde patroon — nie \\'n netjiese handboek-skeefheid nie, maar vergelyk gemiddelde met mediaan om die rigting te bepaal';color='rgba(221,225,240,0.70);'}
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Gemiddelde='+mean+'  Mediaan='+med+'  Modus='+mode+'</span><br><span style="color:'+color+';">'+shape+'</span>';
               }
               ['g12c9t3mean','g12c9t3med','g12c9t3mode'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});

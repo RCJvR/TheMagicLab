@@ -284,7 +284,7 @@ MathMagician.registerChapter(2, {
               function calc(){
                 const fn=gs('g12c2t3fn'),lo=gv('g12c2t3lo'),hi=gv('g12c2t3hi');
                 const out=document.getElementById('g12c2t3Out');
-                if(isNaN(lo)||isNaN(hi)||lo>=hi){out.innerHTML='<span style="color:#fca5a5;">Voer 'n geldige domein in (vanaf < tot).</span>';return;}
+                if(isNaN(lo)||isNaN(hi)||lo>=hi){out.innerHTML='<span style="color:#fca5a5;">Voer \\'n geldige domein in (vanaf < tot).</span>';return;}
                 const f=x=>fn==='x2'?x*x:fn==='negx2'?-x*x:x*x*x;
                 const label=fn==='x2'?'x²':fn==='negx2'?'−x²':'x³';
                 let oneToOne=true,samples=200;
