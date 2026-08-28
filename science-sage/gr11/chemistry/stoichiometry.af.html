@@ -343,16 +343,16 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 
     <!-- ─── IEB Block ─── -->
     <div class="ieb-block">
-      <div class="ieb-block-title">IEB Extension: Potentiometric Titrations &amp; Buffers</div>
-      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Potentiometric titration:</strong> A pH electrode measures the pH continuously as titrant is added. The data is plotted as a titration curve (pH vs. volume added).</p>
+      <div class="ieb-block-title">IEB-uitbreiding: Potensiometriese Titrasies en Buffers</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Potensiometriese titrasie:</strong> 'n pH-elektrode meet die pH deurlopend terwyl titreermiddel bygevoeg word. Die data word as 'n titrasiekurwe uitgestip (pH teenoor volume bygevoeg).</p>
       <ul style="font-size:13.5px;color:rgba(210,218,245,.70);line-height:1.85;margin:0 0 10px 18px">
-        <li><strong style="color:#fcd34d">Buffer region</strong> — flat part of curve where pH changes slowly; mixture of weak acid and conjugate base</li>
-        <li><strong style="color:#fcd34d">Half-equivalence point</strong> — halfway to equivalence; [A⁻] = [HA]; pH = pKa</li>
-        <li><strong style="color:#fcd34d">Equivalence point</strong> — steepest part / inflection point of the curve</li>
+        <li><strong style="color:#fcd34d">Buffersone</strong> — plat deel van die kurwe waar pH stadig verander; mengsel van 'n swak suur en gekonjugeerde basis</li>
+        <li><strong style="color:#fcd34d">Half-ekwivalensiepunt</strong> — halfpad na ekwivalensie; [A⁻] = [HA]; pH = pKa</li>
+        <li><strong style="color:#fcd34d">Ekwivalensiepunt</strong> — steilste deel / infleksiepunt van die kurwe</li>
       </ul>
-      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Buffer solutions:</strong> A mixture of a weak acid (HA) and its conjugate base (A⁻) in similar amounts. They resist large pH changes on addition of small amounts of acid or base. Described by the <strong style="color:#fcd34d">Henderson-Hasselbalch equation:</strong></p>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong style="color:#fcd34d">Bufferoplossings:</strong> 'n Mengsel van 'n swak suur (HA) en sy gekonjugeerde basis (A⁻) in soortgelyke hoeveelhede. Dit weerstaan groot pH-veranderinge by die toevoeging van klein hoeveelhede suur of basis. Beskryf deur die <strong style="color:#fcd34d">Henderson-Hasselbalch-vergelyking:</strong></p>
       <div class="formula" style="border-color:rgba(251,191,36,.25);color:#fcd34d">pH = pKa + log([A⁻] / [HA])</div>
-      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8"><strong style="color:#fcd34d">EDTA complexometric titrations:</strong> EDTA (ethylenediaminetetraacetic acid) forms stable 1:1 complexes with metal ions regardless of charge. Used extensively to determine <em>water hardness</em> (Ca²⁺ and Mg²⁺ concentrations) with a metallochromic indicator such as Eriochrome Black T.</p>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8"><strong style="color:#fcd34d">EDTA-kompleksometriese titrasies:</strong> EDTA (etileendiamientetra-asynsuur) vorm stabiele 1:1-komplekse met metaalione ongeag lading. Word wyd gebruik om <em>waterhardheid</em> (Ca²⁺- en Mg²⁺-konsentrasies) te bepaal met 'n metallochromiese indikator soos Eriochrome Black T.</p>
     </div>
 
   </div>
@@ -366,32 +366,32 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 
     <!-- Mode buttons -->
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="mode-btn active" id="modeBtn1" onclick="setSimMode(1)">Virtual Titration</button>
-      <button class="mode-btn" id="modeBtn2" onclick="setSimMode(2)">Ideal Gas Calculator</button>
+      <button class="mode-btn active" id="modeBtn1" onclick="setSimMode(1)">Virtuele Titrasie</button>
+      <button class="mode-btn" id="modeBtn2" onclick="setSimMode(2)">Ideale Gas-sakrekenaar</button>
     </div>
 
     <!-- MODE 1: Virtual Titration Canvas -->
     <div id="simMode1">
       <div class="sim-canvas-wrap">
-        <h3>Virtual Titration — HCl(aq) vs NaOH(aq)</h3>
+        <h3>Virtuele Titrasie — HCl(aq) teenoor NaOH(aq)</h3>
         <canvas id="titrationCanvas"></canvas>
       </div>
 
       <div class="sim-controls-row">
         <div class="ctrl-card">
-          <div class="ctrl-label">NaOH Volume Added</div>
+          <div class="ctrl-label">NaOH-volume Bygevoeg</div>
           <div class="slider-row">
             <label>Volume (mL)</label>
             <input type="range" id="naohSlider" min="0" max="40" step="0.1" value="0" oninput="onSliderChange()">
             <span class="slider-val" id="naohVal">0.0 mL</span>
           </div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">HCl: 25.00 mL of 0.0900 mol·L⁻¹ &nbsp;|&nbsp; NaOH: 0.100 mol·L⁻¹</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">HCl: 25.00 mL van 0.0900 mol·L⁻¹ &nbsp;|&nbsp; NaOH: 0.100 mol·L⁻¹</div>
         </div>
         <div class="ctrl-card">
-          <div class="ctrl-label">Indicator</div>
+          <div class="ctrl-label">Indikator</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="mode-btn active" id="indPP" onclick="setIndicator('phenolphthalein')">Phenolphthalein</button>
-            <button class="mode-btn" id="indMO" onclick="setIndicator('methylorange')">Methyl Orange</button>
+            <button class="mode-btn active" id="indPP" onclick="setIndicator('phenolphthalein')">Fenolftaleïen</button>
+            <button class="mode-btn" id="indMO" onclick="setIndicator('methylorange')">Metieloranje</button>
           </div>
         </div>
       </div>
@@ -406,8 +406,8 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
           <div class="readout-val" id="roPH">1.05</div>
         </div>
         <div class="readout">
-          <div class="readout-label">Stage</div>
-          <div class="readout-val" id="roStage" style="font-size:11px;padding-top:4px">Before EQ</div>
+          <div class="readout-label">Fase</div>
+          <div class="readout-val" id="roStage" style="font-size:11px;padding-top:4px">Voor EP</div>
         </div>
       </div>
     </div>
@@ -415,27 +415,27 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
     <!-- MODE 2: Ideal Gas Calculator -->
     <div id="simMode2" style="display:none">
       <div class="gas-calc">
-        <h3>Ideal Gas Law Calculator — PV = nRT</h3>
-        <p class="gas-hint">Leave <strong style="color:#c084fc">one field blank</strong> — the calculator will solve for it. Enter P in kPa, V in litres, T in °C.</p>
+        <h3>Ideale Gaswet-sakrekenaar — PV = nRT</h3>
+        <p class="gas-hint">Laat <strong style="color:#c084fc">een veld leeg</strong> — die sakrekenaar sal dit vir jou bereken. Voer P in kPa, V in liter, T in °C in.</p>
         <div class="gas-inputs">
           <div class="gas-field">
-            <label>P — Pressure (kPa)</label>
-            <input type="number" id="gasP" placeholder="e.g. 101.325" step="any">
+            <label>P — Druk (kPa)</label>
+            <input type="number" id="gasP" placeholder="bv. 101.325" step="any">
           </div>
           <div class="gas-field">
             <label>V — Volume (L)</label>
-            <input type="number" id="gasV" placeholder="e.g. 22.4" step="any">
+            <input type="number" id="gasV" placeholder="bv. 22.4" step="any">
           </div>
           <div class="gas-field">
-            <label>n — Moles (mol)</label>
-            <input type="number" id="gasN" placeholder="e.g. 1.00" step="any">
+            <label>n — Mol (mol)</label>
+            <input type="number" id="gasN" placeholder="bv. 1.00" step="any">
           </div>
           <div class="gas-field">
-            <label>T — Temperature (°C)</label>
-            <input type="number" id="gasT" placeholder="e.g. 25" step="any">
+            <label>T — Temperatuur (°C)</label>
+            <input type="number" id="gasT" placeholder="bv. 25" step="any">
           </div>
         </div>
-        <button class="gas-calc-btn" onclick="calcGas()">Calculate</button>
+        <button class="gas-calc-btn" onclick="calcGas()">Bereken</button>
         <div class="gas-result" id="gasResult"></div>
       </div>
     </div>
@@ -452,143 +452,143 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
     <div class="score-banner" id="scoreBanner">
       <div class="score-big" id="scoreNum">0/8</div>
       <div>
-        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Vasvra voltooi</div>
         <div style="font-size:13px;color:var(--muted)" id="scoreMsg"></div>
       </div>
     </div>
 
     <!-- Q1 -->
     <div class="q-card" id="qcard-1">
-      <div class="q-num">Question 1 — NSC</div>
-      <div class="q-text">25.00 cm³ of 0.200 mol·L⁻¹ HCl is titrated with 0.100 mol·L⁻¹ NaOH. What volume of NaOH is needed to reach the equivalence point?</div>
+      <div class="q-num">Vraag 1 — NSC</div>
+      <div class="q-text">25.00 cm³ van 0.200 mol·L⁻¹ HCl word getitreer met 0.100 mol·L⁻¹ NaOH. Watter volume NaOH word benodig om die ekwivalensiepunt te bereik?</div>
       <div class="mc-options" id="mc-1">
         <button class="mc-opt" onclick="answer(1,'A','C')"><span class="opt-letter">A</span>12.50 cm³</button>
         <button class="mc-opt" onclick="answer(1,'B','C')"><span class="opt-letter">B</span>25.00 cm³</button>
         <button class="mc-opt" onclick="answer(1,'C','C')"><span class="opt-letter">C</span>50.00 cm³</button>
         <button class="mc-opt" onclick="answer(1,'D','C')"><span class="opt-letter">D</span>100.0 cm³</button>
       </div>
-      <div class="feedback" id="fb-1">n(HCl) = 0.200 × 0.02500 = 5.00 × 10⁻³ mol. Mole ratio 1:1. n(NaOH) needed = 5.00 × 10⁻³ mol. V = n/c = 5.00 × 10⁻³ / 0.100 = 0.0500 L = <strong>50.00 cm³</strong>.</div>
+      <div class="feedback" id="fb-1">n(HCl) = 0.200 × 0.02500 = 5.00 × 10⁻³ mol. Molverhouding 1:1. n(NaOH) benodig = 5.00 × 10⁻³ mol. V = n/c = 5.00 × 10⁻³ / 0.100 = 0.0500 L = <strong>50.00 cm³</strong>.</div>
     </div>
 
     <!-- Q2 -->
     <div class="q-card" id="qcard-2">
-      <div class="q-num">Question 2 — NSC</div>
-      <div class="q-text">In a back titration, excess HCl is used to dissolve a CaCO₃ sample (molar mass 100 g·mol⁻¹). The excess HCl requires 18.00 cm³ of 0.500 mol·L⁻¹ NaOH to neutralise. If 40.00 cm³ of 0.500 mol·L⁻¹ HCl was originally added, what is n(CaCO₃)?</div>
+      <div class="q-num">Vraag 2 — NSC</div>
+      <div class="q-text">In 'n terugtitrasie word 'n oormaat HCl gebruik om 'n CaCO₃-monster op te los (molêre massa 100 g·mol⁻¹). Die oormaat HCl vereis 18.00 cm³ van 0.500 mol·L⁻¹ NaOH om te neutraliseer. Indien 40.00 cm³ van 0.500 mol·L⁻¹ HCl oorspronklik bygevoeg is, wat is n(CaCO₃)?</div>
       <div class="mc-options" id="mc-2">
         <button class="mc-opt" onclick="answer(2,'A','B')"><span class="opt-letter">A</span>0.005 mol</button>
         <button class="mc-opt" onclick="answer(2,'B','B')"><span class="opt-letter">B</span>0.0055 mol</button>
         <button class="mc-opt" onclick="answer(2,'C','B')"><span class="opt-letter">C</span>0.011 mol</button>
         <button class="mc-opt" onclick="answer(2,'D','B')"><span class="opt-letter">D</span>0.020 mol</button>
       </div>
-      <div class="feedback" id="fb-2">n(HCl total) = 0.500 × 0.040 = 0.020 mol. n(excess HCl) = 0.500 × 0.018 = 0.009 mol. n(HCl reacted with CaCO₃) = 0.020 − 0.009 = 0.011 mol. Since CaCO₃ + 2HCl → …, n(CaCO₃) = 0.011/2 = <strong>0.0055 mol</strong>.</div>
+      <div class="feedback" id="fb-2">n(HCl totaal) = 0.500 × 0.040 = 0.020 mol. n(oormaat HCl) = 0.500 × 0.018 = 0.009 mol. n(HCl wat met CaCO₃ gereageer het) = 0.020 − 0.009 = 0.011 mol. Aangesien CaCO₃ + 2HCl → …, is n(CaCO₃) = 0.011/2 = <strong>0.0055 mol</strong>.</div>
     </div>
 
     <!-- Q3 -->
     <div class="q-card" id="qcard-3">
-      <div class="q-num">Question 3 — NSC</div>
-      <div class="q-text">A gas occupies 2.00 L at 300 K and 150 kPa. How many moles of gas are present? (R = 8.314 J·mol⁻¹·K⁻¹)</div>
+      <div class="q-num">Vraag 3 — NSC</div>
+      <div class="q-text">'n Gas beslaan 2.00 L by 300 K en 150 kPa. Hoeveel mol gas is teenwoordig? (R = 8.314 J·mol⁻¹·K⁻¹)</div>
       <div class="mc-options" id="mc-3">
         <button class="mc-opt" onclick="answer(3,'A','A')"><span class="opt-letter">A</span>0.120 mol</button>
         <button class="mc-opt" onclick="answer(3,'B','A')"><span class="opt-letter">B</span>1.20 mol</button>
         <button class="mc-opt" onclick="answer(3,'C','A')"><span class="opt-letter">C</span>0.0120 mol</button>
         <button class="mc-opt" onclick="answer(3,'D','A')"><span class="opt-letter">D</span>12.0 mol</button>
       </div>
-      <div class="feedback" id="fb-3">PV = nRT → n = PV/RT = (150 000 × 0.002) / (8.314 × 300) = 300 / 2494.2 = <strong>0.120 mol</strong>. Remember: P in Pa (150 kPa = 150 000 Pa), V in m³ (2.00 L = 0.002 m³).</div>
+      <div class="feedback" id="fb-3">PV = nRT → n = PV/RT = (150 000 × 0.002) / (8.314 × 300) = 300 / 2494.2 = <strong>0.120 mol</strong>. Onthou: P in Pa (150 kPa = 150 000 Pa), V in m³ (2.00 L = 0.002 m³).</div>
     </div>
 
     <!-- Q4 -->
     <div class="q-card" id="qcard-4">
-      <div class="q-num">Question 4 — NSC</div>
-      <div class="q-text">A sample of impure iron ore contains 3.00 g of Fe₂O₃ in 5.00 g total. What is the percentage purity? (M(Fe₂O₃) = 160 g·mol⁻¹)</div>
+      <div class="q-num">Vraag 4 — NSC</div>
+      <div class="q-text">'n Monster onsuiwer ystererts bevat 3.00 g Fe₂O₃ uit 'n totaal van 5.00 g. Wat is die persentasie suiwerheid? (M(Fe₂O₃) = 160 g·mol⁻¹)</div>
       <div class="mc-options" id="mc-4">
         <button class="mc-opt" onclick="answer(4,'A','A')"><span class="opt-letter">A</span>60.0%</button>
         <button class="mc-opt" onclick="answer(4,'B','A')"><span class="opt-letter">B</span>30.0%</button>
         <button class="mc-opt" onclick="answer(4,'C','A')"><span class="opt-letter">C</span>53.3%</button>
         <button class="mc-opt" onclick="answer(4,'D','A')"><span class="opt-letter">D</span>6.00%</button>
       </div>
-      <div class="feedback" id="fb-4">%purity = (3.00/5.00) × 100 = <strong>60.0%</strong>. No molar mass calculation is needed here — percentage purity by mass is simply mass of pure compound ÷ total mass × 100.</div>
+      <div class="feedback" id="fb-4">%suiwerheid = (3.00/5.00) × 100 = <strong>60.0%</strong>. Geen molêre massa-berekening is hier nodig nie — persentasie suiwerheid volgens massa is bloot massa suiwer verbinding ÷ totale massa × 100.</div>
     </div>
 
     <!-- Q5 -->
     <div class="q-card" id="qcard-5">
-      <div class="q-num">Question 5 — NSC</div>
-      <div class="q-text">In a gravimetric analysis, BaSO₄ precipitate (M = 233.4 g·mol⁻¹) weighing 0.4668 g is obtained. How many moles of SO₄²⁻ were in the original solution?</div>
+      <div class="q-num">Vraag 5 — NSC</div>
+      <div class="q-text">In 'n gravimetriese analise word 'n BaSO₄-presipitaat (M = 233.4 g·mol⁻¹) met 'n massa van 0.4668 g verkry. Hoeveel mol SO₄²⁻ was in die oorspronklike oplossing?</div>
       <div class="mc-options" id="mc-5">
         <button class="mc-opt" onclick="answer(5,'A','B')"><span class="opt-letter">A</span>1.00 × 10⁻³ mol</button>
         <button class="mc-opt" onclick="answer(5,'B','B')"><span class="opt-letter">B</span>2.00 × 10⁻³ mol</button>
         <button class="mc-opt" onclick="answer(5,'C','B')"><span class="opt-letter">C</span>0.0100 mol</button>
         <button class="mc-opt" onclick="answer(5,'D','B')"><span class="opt-letter">D</span>0.233 mol</button>
       </div>
-      <div class="feedback" id="fb-5">n(BaSO₄) = 0.4668/233.4 = <strong>2.00 × 10⁻³ mol</strong>. Stoichiometry: Ba²⁺ + SO₄²⁻ → BaSO₄ (1:1 ratio), so n(SO₄²⁻) = n(BaSO₄) = 2.00 × 10⁻³ mol.</div>
+      <div class="feedback" id="fb-5">n(BaSO₄) = 0.4668/233.4 = <strong>2.00 × 10⁻³ mol</strong>. Stoïgiometrie: Ba²⁺ + SO₄²⁻ → BaSO₄ (1:1-verhouding), dus n(SO₄²⁻) = n(BaSO₄) = 2.00 × 10⁻³ mol.</div>
     </div>
 
     <!-- Q6 -->
     <div class="q-card" id="qcard-6">
-      <div class="q-num">Question 6 — NSC</div>
-      <div class="q-text">Which indicator is most suitable for a titration between a strong acid and a weak base (where the equivalence point is at pH ≈ 5)?</div>
+      <div class="q-num">Vraag 6 — NSC</div>
+      <div class="q-text">Watter indikator is die geskikste vir 'n titrasie tussen 'n sterk suur en 'n swak basis (waar die ekwivalensiepunt by pH ≈ 5 is)?</div>
       <div class="mc-options" id="mc-6">
-        <button class="mc-opt" onclick="answer(6,'A','D')"><span class="opt-letter">A</span>Phenolphthalein (pH range 8.2–10.0)</button>
-        <button class="mc-opt" onclick="answer(6,'B','D')"><span class="opt-letter">B</span>Litmus (pH range 4.5–8.3)</button>
-        <button class="mc-opt" onclick="answer(6,'C','D')"><span class="opt-letter">C</span>Methyl orange (pH range 3.1–4.4)</button>
-        <button class="mc-opt" onclick="answer(6,'D','D')"><span class="opt-letter">D</span>Bromocresol green (pH range 3.8–5.4)</button>
+        <button class="mc-opt" onclick="answer(6,'A','D')"><span class="opt-letter">A</span>Fenolftaleïen (pH-strook 8.2–10.0)</button>
+        <button class="mc-opt" onclick="answer(6,'B','D')"><span class="opt-letter">B</span>Lakmoes (pH-strook 4.5–8.3)</button>
+        <button class="mc-opt" onclick="answer(6,'C','D')"><span class="opt-letter">C</span>Metieloranje (pH-strook 3.1–4.4)</button>
+        <button class="mc-opt" onclick="answer(6,'D','D')"><span class="opt-letter">D</span>Bromokresolgroen (pH-strook 3.8–5.4)</button>
       </div>
-      <div class="feedback" id="fb-6">The indicator must change colour within the steep part of the titration curve near pH 5. Methyl orange changes too early (pH 3.1–4.4), phenolphthalein too late (pH 8.2–10.0), and litmus is not sharp enough. <strong>Bromocresol green (pH 3.8–5.4)</strong> spans the equivalence point well.</div>
+      <div class="feedback" id="fb-6">Die indikator moet van kleur verander binne die steil gedeelte van die titrasiekurwe naby pH 5. Metieloranje verander te vroeg (pH 3.1–4.4), fenolftaleïen te laat (pH 8.2–10.0), en lakmoes is nie skerp genoeg nie. <strong>Bromokresolgroen (pH 3.8–5.4)</strong> oorspan die ekwivalensiepunt goed.</div>
     </div>
 
     <!-- Q9 -->
     <div class="q-card" id="qcard-9">
-      <div class="q-num">Question 7 — NSC</div>
-      <div class="q-text">In the thermite reaction 2Al(s) + Fe₂O₃(s) → Al₂O₃(s) + 2Fe(l), 54.0 g of Al is reacted with 96.0 g of Fe₂O₃. (M(Al) = 27 g·mol⁻¹, M(Fe₂O₃) = 160 g·mol⁻¹, M(Fe) = 55.8 g·mol⁻¹) What mass of Fe is produced?</div>
+      <div class="q-num">Vraag 7 — NSC</div>
+      <div class="q-text">In die termietreaksie 2Al(s) + Fe₂O₃(s) → Al₂O₃(s) + 2Fe(l) word 54.0 g Al met 96.0 g Fe₂O₃ laat reageer. (M(Al) = 27 g·mol⁻¹, M(Fe₂O₃) = 160 g·mol⁻¹, M(Fe) = 55.8 g·mol⁻¹) Watter massa Fe word geproduseer?</div>
       <div class="mc-options" id="mc-9">
         <button class="mc-opt" onclick="answer(9,'A','A')"><span class="opt-letter">A</span>67.0 g</button>
         <button class="mc-opt" onclick="answer(9,'B','A')"><span class="opt-letter">B</span>111.6 g</button>
         <button class="mc-opt" onclick="answer(9,'C','A')"><span class="opt-letter">C</span>33.5 g</button>
         <button class="mc-opt" onclick="answer(9,'D','A')"><span class="opt-letter">D</span>192 g</button>
       </div>
-      <div class="feedback" id="fb-9">n(Al) = 54.0/27 = 2.00 mol. n(Fe₂O₃) = 96.0/160 = 0.600 mol. The equation requires 2 mol Al per 1 mol Fe₂O₃, so 0.600 mol Fe₂O₃ would need only 1.200 mol Al — we have 2.00 mol Al available (excess), so <strong>Fe₂O₃ is the limiting reagent</strong>. Using the 1:2 ratio of Fe₂O₃:Fe, n(Fe) = 2 × 0.600 = 1.200 mol. Mass = 1.200 × 55.8 = <strong>67.0 g</strong>. (Wrongly assuming Al is limiting gives 111.6 g; forgetting the 1:2 ratio gives 33.5 g.)</div>
+      <div class="feedback" id="fb-9">n(Al) = 54.0/27 = 2.00 mol. n(Fe₂O₃) = 96.0/160 = 0.600 mol. Die vergelyking vereis 2 mol Al per 1 mol Fe₂O₃, dus sal 0.600 mol Fe₂O₃ slegs 1.200 mol Al benodig — ons het 2.00 mol Al beskikbaar (oormaat), dus is <strong>Fe₂O₃ die beperkende reagens</strong>. Deur die 1:2-verhouding van Fe₂O₃:Fe te gebruik, is n(Fe) = 2 × 0.600 = 1.200 mol. Massa = 1.200 × 55.8 = <strong>67.0 g</strong>. (Om verkeerdelik aan te neem dat Al beperkend is, gee 111.6 g; om die 1:2-verhouding te vergeet, gee 33.5 g.)</div>
     </div>
 
     <!-- Q10 -->
     <div class="q-card" id="qcard-10">
-      <div class="q-num">Question 8 — NSC</div>
-      <div class="q-text">In the Haber process: N₂(g) + 3H₂(g) → 2NH₃(g). 28.0 g of N₂ reacts with excess H₂. Only 28.9 g of NH₃ is actually obtained. What is the percentage yield? (M(N₂) = 28 g·mol⁻¹, M(NH₃) = 17 g·mol⁻¹)</div>
+      <div class="q-num">Vraag 8 — NSC</div>
+      <div class="q-text">In die Haber-proses: N₂(g) + 3H₂(g) → 2NH₃(g). 28.0 g N₂ reageer met 'n oormaat H₂. Slegs 28.9 g NH₃ word werklik verkry. Wat is die persentasie-opbrengs? (M(N₂) = 28 g·mol⁻¹, M(NH₃) = 17 g·mol⁻¹)</div>
       <div class="mc-options" id="mc-10">
         <button class="mc-opt" onclick="answer(10,'A','A')"><span class="opt-letter">A</span>85.0%</button>
         <button class="mc-opt" onclick="answer(10,'B','A')"><span class="opt-letter">B</span>56.7%</button>
         <button class="mc-opt" onclick="answer(10,'C','A')"><span class="opt-letter">C</span>100%</button>
         <button class="mc-opt" onclick="answer(10,'D','A')"><span class="opt-letter">D</span>42.5%</button>
       </div>
-      <div class="feedback" id="fb-10">n(N₂) = 28.0/28 = 1.00 mol. The mole ratio N₂:NH₃ = 1:2, so the theoretical n(NH₃) = 2.00 mol, giving a theoretical mass = 2.00 × 17 = 34.0 g. Percentage yield = (actual/theoretical) × 100 = (28.9/34.0) × 100 = <strong>85.0%</strong>. Percentage yield always compares the actual mass obtained to the theoretical maximum calculated from the limiting reagent — since H₂ is in excess here, N₂ determines the theoretical yield.</div>
+      <div class="feedback" id="fb-10">n(N₂) = 28.0/28 = 1.00 mol. Die molverhouding N₂:NH₃ = 1:2, dus is die teoretiese n(NH₃) = 2.00 mol, wat 'n teoretiese massa = 2.00 × 17 = 34.0 g gee. Persentasie-opbrengs = (werklik/teoreties) × 100 = (28.9/34.0) × 100 = <strong>85.0%</strong>. Persentasie-opbrengs vergelyk altyd die werklike massa verkry met die teoretiese maksimum bereken vanaf die beperkende reagens — aangesien H₂ hier in oormaat is, bepaal N₂ die teoretiese opbrengs.</div>
     </div>
 
     <!-- IEB Practice Section -->
     <div class="ieb-practice" id="ieb-practice-section" style="flex-direction:column">
-      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:16px 0 12px;padding:8px 14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:8px;display:inline-block">IEB Extension Questions</div>
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:16px 0 12px;padding:8px 14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:8px;display:inline-block">IEB-uitbreidingsvrae</div>
 
       <!-- Q7 -->
       <div class="q-card" id="qcard-7">
-        <div class="q-num">Question 7 — IEB</div>
-        <div class="q-text">A buffer solution contains 0.10 mol·L⁻¹ acetic acid (pKa = 4.74) and 0.20 mol·L⁻¹ sodium acetate. What is the pH? (Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA]))</div>
+        <div class="q-num">Vraag 7 — IEB</div>
+        <div class="q-text">'n Buffer-oplossing bevat 0.10 mol·L⁻¹ asynsuur (pKa = 4.74) en 0.20 mol·L⁻¹ natriumasetaat. Wat is die pH? (Henderson-Hasselbalch: pH = pKa + log([A⁻]/[HA]))</div>
         <div class="mc-options" id="mc-7">
           <button class="mc-opt" onclick="answer(7,'A','C')"><span class="opt-letter">A</span>4.44</button>
           <button class="mc-opt" onclick="answer(7,'B','C')"><span class="opt-letter">B</span>4.74</button>
           <button class="mc-opt" onclick="answer(7,'C','C')"><span class="opt-letter">C</span>5.04</button>
           <button class="mc-opt" onclick="answer(7,'D','C')"><span class="opt-letter">D</span>5.44</button>
         </div>
-        <div class="feedback" id="fb-7">pH = 4.74 + log(0.20/0.10) = 4.74 + log(2) = 4.74 + 0.301 = <strong>5.04</strong>. When [A⁻] &gt; [HA], pH &gt; pKa — the solution is more basic than the pure acid.</div>
+        <div class="feedback" id="fb-7">pH = 4.74 + log(0.20/0.10) = 4.74 + log(2) = 4.74 + 0.301 = <strong>5.04</strong>. Wanneer [A⁻] &gt; [HA], is pH &gt; pKa — die oplossing is meer basies as die suiwer suur.</div>
       </div>
 
       <!-- Q8 -->
       <div class="q-card" id="qcard-8">
-        <div class="q-num">Question 8 — IEB</div>
-        <div class="q-text">A potentiometric titration of a weak acid with strong base shows the half-equivalence point at pH = 4.2. This means the pKa of the weak acid is:</div>
+        <div class="q-num">Vraag 8 — IEB</div>
+        <div class="q-text">'n Potensiometriese titrasie van 'n swak suur met 'n sterk basis toon die half-ekwivalensiepunt by pH = 4.2. Dit beteken die pKa van die swak suur is:</div>
         <div class="mc-options" id="mc-8">
           <button class="mc-opt" onclick="answer(8,'A','A')"><span class="opt-letter">A</span>4.2</button>
           <button class="mc-opt" onclick="answer(8,'B','A')"><span class="opt-letter">B</span>8.4</button>
           <button class="mc-opt" onclick="answer(8,'C','A')"><span class="opt-letter">C</span>9.8</button>
           <button class="mc-opt" onclick="answer(8,'D','A')"><span class="opt-letter">D</span>2.1</button>
         </div>
-        <div class="feedback" id="fb-8">At the half-equivalence point, exactly half the acid has been neutralised, so [A⁻] = [HA]. Therefore pH = pKa + log(1) = pKa + 0 = <strong>pKa = 4.2</strong>.</div>
+        <div class="feedback" id="fb-8">By die half-ekwivalensiepunt is presies die helfte van die suur geneutraliseer, dus [A⁻] = [HA]. Daarom is pH = pKa + log(1) = pKa + 0 = <strong>pKa = 4.2</strong>.</div>
       </div>
     </div>
 
@@ -600,49 +600,49 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 ════════════════════════════════════════════════════════ -->
 <div id="tab-workbook" class="tab-panel">
   <div class="wb-wrap">
-    <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
-    <div class="wb-intro">These questions require full working. Show all steps: write the formula, substitute values with units, calculate the answer, and include the unit in your final answer. Concordant titration results should agree to within 0.10 cm³.</div>
+    <button class="print-btn" onclick="window.print()">🖨 Druk Werkboek</button>
+    <div class="wb-intro">Hierdie vrae vereis volledige berekeninge. Wys alle stappe: skryf die formule neer, vervang waardes met eenhede, bereken die antwoord, en sluit die eenheid in jou finale antwoord in. Konkordante titrasie-uitslae behoort tot binne 0.10 cm³ ooreen te stem.</div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 1 [4 marks]</div>
-      <div class="wb-qtext">In a titration, 20.00 cm³ of H₂SO₄ of unknown concentration reacts exactly with 32.00 cm³ of 0.150 mol·L⁻¹ NaOH solution. The equation is:<br><br>H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O<br><br>Calculate the concentration of the H₂SO₄. Show all working.</div>
+      <div class="wb-qnum">Vraag 1 [4 punte]</div>
+      <div class="wb-qtext">In 'n titrasie reageer 20.00 cm³ H₂SO₄ van onbekende konsentrasie presies met 32.00 cm³ van 0.150 mol·L⁻¹ NaOH-oplossing. Die vergelyking is:<br><br>H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O<br><br>Bereken die konsentrasie van die H₂SO₄. Wys alle berekeninge.</div>
     </div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 2 [6 marks]</div>
-      <div class="wb-qtext">A limestone sample of mass 2.000 g is treated with 50.0 cm³ of 1.00 mol·L⁻¹ HCl (excess). The excess acid requires 22.0 cm³ of 0.500 mol·L⁻¹ NaOH to neutralise.<br><br>Calculate:<br>(a) n(HCl total)<br>(b) n(excess HCl)<br>(c) n(HCl that reacted with limestone)<br>(d) n(CaCO₃) [CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂]<br>(e) Mass of CaCO₃ (M = 100.09 g·mol⁻¹)<br>(f) Percentage purity of the limestone sample</div>
+      <div class="wb-qnum">Vraag 2 [6 punte]</div>
+      <div class="wb-qtext">'n Kalksteenmonster met 'n massa van 2.000 g word behandel met 50.0 cm³ van 1.00 mol·L⁻¹ HCl (oormaat). Die oormaat suur vereis 22.0 cm³ van 0.500 mol·L⁻¹ NaOH om te neutraliseer.<br><br>Bereken:<br>(a) n(HCl totaal)<br>(b) n(oormaat HCl)<br>(c) n(HCl wat met die kalksteen gereageer het)<br>(d) n(CaCO₃) [CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂]<br>(e) Massa van CaCO₃ (M = 100.09 g·mol⁻¹)<br>(f) Persentasie suiwerheid van die kalksteenmonster</div>
     </div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 3 [4 marks]</div>
-      <div class="wb-qtext">0.500 mol of nitrogen gas (N₂) is sealed in a container at 27°C and 200 kPa. (R = 8.314 J·mol⁻¹·K⁻¹)<br><br>(a) What volume does it occupy? (Express answer in litres.)<br>(b) If the gas is heated to 127°C at constant volume, what is the new pressure?</div>
+      <div class="wb-qnum">Vraag 3 [4 punte]</div>
+      <div class="wb-qtext">0.500 mol stikstofgas (N₂) word in 'n houer verseël by 27°C en 200 kPa. (R = 8.314 J·mol⁻¹·K⁻¹)<br><br>(a) Watter volume beslaan dit? (Druk die antwoord in liter uit.)<br>(b) Indien die gas tot 127°C by konstante volume verhit word, wat is die nuwe druk?</div>
     </div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 4 [3 marks]</div>
-      <div class="wb-qtext">An iron ore sample is analysed by gravimetric analysis. Fe²⁺ ions in solution are precipitated as Fe(OH)₂. The dried precipitate has a mass of 0.810 g.<br>(M(Fe(OH)₂) = 89.86 g·mol⁻¹; M(Fe) = 55.85 g·mol⁻¹)<br><br>(a) Calculate n(Fe(OH)₂)<br>(b) State n(Fe²⁺) with reasoning<br>(c) Calculate the mass of Fe in the sample</div>
+      <div class="wb-qnum">Vraag 4 [3 punte]</div>
+      <div class="wb-qtext">'n Ystererts-monster word deur gravimetriese analise ontleed. Fe²⁺-ione in oplossing word as Fe(OH)₂ neergeslaan. Die gedroogde presipitaat het 'n massa van 0.810 g.<br>(M(Fe(OH)₂) = 89.86 g·mol⁻¹; M(Fe) = 55.85 g·mol⁻¹)<br><br>(a) Bereken n(Fe(OH)₂)<br>(b) Gee n(Fe²⁺) met redegewing<br>(c) Bereken die massa Fe in die monster</div>
     </div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 5 [4 marks]</div>
-      <div class="wb-qtext">Explain the difference between the <em>equivalence point</em> and the <em>endpoint</em> of a titration. Why should these be as close as possible, and how does the choice of indicator affect this? In your answer, refer to the pH ranges of at least two named indicators.</div>
+      <div class="wb-qnum">Vraag 5 [4 punte]</div>
+      <div class="wb-qtext">Verduidelik die verskil tussen die <em>ekwivalensiepunt</em> en die <em>eindpunt</em> van 'n titrasie. Waarom behoort hierdie twee so na as moontlik aan mekaar te wees, en hoe beïnvloed die keuse van indikator dit? Verwys in jou antwoord na die pH-strooke van ten minste twee benoemde indikators.</div>
     </div>
 
     <div class="wb-q">
-      <div class="wb-qnum">Question 6 [7 marks]</div>
-      <div class="wb-qtext">25.00 cm³ of NaOH solution of unknown concentration is titrated against 0.100 mol·L⁻¹ HCl. A rough run is done first, followed by two accurate runs. The burette readings are recorded below:<br><br>
+      <div class="wb-qnum">Vraag 6 [7 punte]</div>
+      <div class="wb-qtext">25.00 cm³ NaOH-oplossing van onbekende konsentrasie word teen 0.100 mol·L⁻¹ HCl getitreer. 'n Growwe loop word eerste gedoen, gevolg deur twee akkurate lopies. Die buretlesings word hieronder aangeteken:<br><br>
       <table class="symbols-table" style="max-width:520px">
-        <thead><tr><th>Run</th><th>Initial reading (cm³)</th><th>Final reading (cm³)</th><th>Titre (cm³)</th></tr></thead>
+        <thead><tr><th>Lopie</th><th>Aanvangslesing (cm³)</th><th>Finale lesing (cm³)</th><th>Titer (cm³)</th></tr></thead>
         <tbody>
-          <tr><td>1 (rough)</td><td>0.00</td><td>27.80</td><td>?</td></tr>
+          <tr><td>1 (grof)</td><td>0.00</td><td>27.80</td><td>?</td></tr>
           <tr><td>2</td><td>0.50</td><td>27.85</td><td>?</td></tr>
           <tr><td>3</td><td>0.30</td><td>27.65</td><td>?</td></tr>
         </tbody>
       </table><br>
-      (a) Complete the table by calculating the titre (final − initial reading) for each run. (2 marks)<br>
-      (b) Two of the three titres are <em>concordant</em> (agree to within 0.10 cm³). Identify which two runs these are, and explain why the rough run (Run 1) should be excluded from the average. (2 marks)<br>
-      (c) Calculate the average titre using only the concordant runs. (1 mark)<br>
-      (d) Using the equation HCl + NaOH → NaCl + H₂O, calculate the concentration of the NaOH solution. (2 marks)</div>
+      (a) Voltooi die tabel deur die titer (finale − aanvangslesing) vir elke lopie te bereken. (2 punte)<br>
+      (b) Twee van die drie titers is <em>konkordant</em> (stem tot binne 0.10 cm³ ooreen). Identifiseer watter twee lopies dit is, en verduidelik waarom die growwe lopie (Lopie 1) van die gemiddelde uitgesluit behoort te word. (2 punte)<br>
+      (c) Bereken die gemiddelde titer deur slegs die konkordante lopies te gebruik. (1 punt)<br>
+      (d) Gebruik die vergelyking HCl + NaOH → NaCl + H₂O om die konsentrasie van die NaOH-oplossing te bereken. (2 punte)</div>
     </div>
   </div>
 </div>
@@ -968,9 +968,9 @@ function drawScene(W, H) {
 
   // ── Stage label ──
   let stage = '';
-  if (vNaOHmL < eqV - 0.5) stage = 'Before EQ';
-  else if (vNaOHmL < eqV + 0.5) stage = 'At EQ ≈ 7';
-  else stage = 'After EQ';
+  if (vNaOHmL < eqV - 0.5) stage = 'Voor EP';
+  else if (vNaOHmL < eqV + 0.5) stage = 'By EP ≈ 7';
+  else stage = 'Na EP';
   document.getElementById('roStage').textContent = stage;
 
   // Update readouts
@@ -1000,7 +1000,7 @@ function calcGas() {
   const blanks = [pIn, vIn, nIn, tIn].filter(x => x === '').length;
   if (blanks !== 1) {
     resDiv.className = 'gas-result show';
-    resDiv.innerHTML = '<span style="color:#f87171">Please leave exactly ONE field blank to solve for it.</span>';
+    resDiv.innerHTML = '<span style="color:#f87171">Laat presies EEN veld leeg sodat dit bereken kan word.</span>';
     return;
   }
 
@@ -1040,14 +1040,14 @@ function calcGas() {
   let stpVol = '';
   if (label !== 'n') {
     const nMol = nIn !== '' ? parseFloat(nIn) : n;
-    stpVol = `<br>Equivalent volume at STP (0°C, 101.325 kPa): <strong style="color:#86efac">${(nMol * 22.4).toFixed(3)} L</strong>`;
+    stpVol = `<br>Ekwivalente volume by STD (0°C, 101.325 kPa): <strong style="color:#86efac">${(nMol * 22.4).toFixed(3)} L</strong>`;
   }
 
   resDiv.className = 'gas-result show';
   resDiv.innerHTML = `
-    <div style="margin-bottom:6px;color:var(--muted);font-size:10px">FORMULA USED</div>
+    <div style="margin-bottom:6px;color:var(--muted);font-size:10px">FORMULE GEBRUIK</div>
     <div style="margin-bottom:12px;color:rgba(210,218,245,0.7)">${formula}</div>
-    <div style="margin-bottom:4px;font-size:10px;color:var(--muted)">RESULT</div>
+    <div style="margin-bottom:4px;font-size:10px;color:var(--muted)">RESULTAAT</div>
     <span class="res-val">${label} = ${result.toFixed(4)}</span> <span style="color:var(--muted)">${unit}</span>
     ${stpVol}
   `;
@@ -1089,7 +1089,7 @@ function updateScore() {
     banner.classList.add('show');
     document.getElementById('scoreNum').textContent = correct + '/' + maxQ;
     const pct = Math.round((correct / maxQ) * 100);
-    let msg = pct >= 80 ? 'Excellent work — you have mastered this topic!' : pct >= 60 ? 'Good effort. Review the questions you got wrong.' : 'Keep practising — revisit the Lesson tab and try again.';
+    let msg = pct >= 80 ? "Uitstekende werk — jy het hierdie onderwerp bemeester!" : pct >= 60 ? 'Goeie poging. Hersien die vrae wat jy verkeerd gehad het.' : 'Bly oefen — gaan terug na die Les-oortjie en probeer weer.';
     document.getElementById('scoreMsg').textContent = msg;
   }
 }
