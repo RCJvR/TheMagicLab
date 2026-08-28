@@ -670,6 +670,12 @@
     }
     .atp-form-select option{background:#0d1226;color:var(--text);}
     .atp-form-textarea{min-height:80px;resize:vertical;}
+    .atp-coverage-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;}
+    .atp-covered-check{
+      display:flex;align-items:center;gap:8px;cursor:pointer;
+      font-size:13.5px;color:var(--text);padding:10px 12px 10px 0;user-select:none;
+    }
+    .atp-covered-check input[type="checkbox"]{width:17px;height:17px;cursor:pointer;accent-color:#67e8f9;}
     .atp-cycle-days{display:flex;gap:8px;flex-wrap:wrap;}
     .atp-cycle-day-btn{
       font-family:var(--mono);font-size:12px;font-weight:700;width:36px;height:36px;border-radius:var(--radius-sm);
@@ -8135,6 +8141,16 @@ async function _selectATPLessonTopic(idxStr) {
       <label class="atp-form-label">Differentiation</label>
       <textarea class="atp-form-textarea" id="atpLessonDifferentiation">${_escapeHtml(topic.differentiation || '')}</textarea>
     </div>
+    <div class="atp-form-row atp-coverage-row">
+      <div style="flex:1;min-width:200px">
+        <label class="atp-form-label">Date(s) taught</label>
+        <input class="atp-form-input" type="text" id="atpLessonDatesTaught" placeholder="e.g. 12 Feb, 14 Feb, 19 Feb">
+      </div>
+      <label class="atp-covered-check">
+        <input type="checkbox" id="atpLessonCovered">
+        <span>Content covered</span>
+      </label>
+    </div>
     <div>
       <button class="atp-save-btn" onclick="_saveATPLessonNote()"><i data-lucide="save" style="width:13px;height:13px;vertical-align:-2px;margin-right:5px"></i>Save lesson plan</button>
       <span class="atp-save-status" id="atpLessonSaveStatus"></span>
@@ -8172,6 +8188,9 @@ async function _loadATPLessonNote() {
     set('atpLessonActivity', _atpLessonNote.activity);
     set('atpLessonAssessment', _atpLessonNote.assessment);
     set('atpLessonDifferentiation', _atpLessonNote.differentiation);
+    set('atpLessonDatesTaught', _atpLessonNote.dates_taught);
+    const coveredEl = document.getElementById('atpLessonCovered');
+    if (coveredEl) coveredEl.checked = !!_atpLessonNote.covered;
   }
 }
 
@@ -8187,6 +8206,8 @@ async function _saveATPLessonNote() {
       teacher_id: userId, class_id: null, subject_key: _atpKey, topic_index: _atpLessonTopicIdx,
       objective: get('atpLessonObjective'), activity: get('atpLessonActivity'),
       assessment: get('atpLessonAssessment'), differentiation: get('atpLessonDifferentiation'),
+      dates_taught: get('atpLessonDatesTaught'),
+      covered: document.getElementById('atpLessonCovered')?.checked || false,
       updated_at: new Date().toISOString(),
     }, { onConflict: 'teacher_id,subject_key,topic_index,class_id' });
     if (status) { status.textContent = '✓ Saved'; setTimeout(() => { if (status) status.textContent = ''; }, 2500); }
