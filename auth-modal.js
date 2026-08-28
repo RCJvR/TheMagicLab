@@ -38,9 +38,27 @@
         <label class="ml-label" for="ml-signin-password">Password</label>
         <input class="ml-input" id="ml-signin-password" type="password" placeholder="••••••••" autocomplete="current-password">
       </div>
+      <div style="text-align:right;margin:-8px 0 14px;">
+        <button type="button" class="ml-forgot-link" id="ml-forgot-link">Forgot password?</button>
+      </div>
       <button class="ml-submit" id="ml-btn-signin">Sign In</button>
       <div class="ml-msg ml-msg-error"  id="ml-signin-err"></div>
       <div class="ml-msg ml-msg-success" id="ml-signin-ok"></div>
+    </div>
+
+    <!-- Forgot password form -->
+    <div id="ml-form-forgot" style="display:none;">
+      <p style="font-size:13px;color:rgba(221,225,240,0.60);line-height:1.5;margin-bottom:16px;">Enter the email you signed up with — we'll send you a link to reset your password.</p>
+      <div class="ml-field">
+        <label class="ml-label" for="ml-forgot-email">Email</label>
+        <input class="ml-input" id="ml-forgot-email" type="email" placeholder="you@school.co.za" autocomplete="email">
+      </div>
+      <button class="ml-submit" id="ml-btn-forgot">Send reset link</button>
+      <div class="ml-msg ml-msg-error"  id="ml-forgot-err"></div>
+      <div class="ml-msg ml-msg-success" id="ml-forgot-ok"></div>
+      <div style="text-align:center;margin-top:14px;">
+        <button type="button" class="ml-forgot-link" id="ml-forgot-back">← Back to sign in</button>
+      </div>
     </div>
 
     <!-- Sign Up form -->
@@ -81,7 +99,7 @@
       </div>
 
       <div class="ml-field">
-        <label class="ml-label" for="ml-signup-school">School <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+        <label class="ml-label" for="ml-signup-school">School</label>
         <input class="ml-input" id="ml-signup-school" type="text" placeholder="e.g. Westerford High School" autocomplete="organization">
       </div>
 
@@ -120,12 +138,15 @@
   const overlay       = () => document.getElementById('ml-overlay');
   const formSignin    = () => document.getElementById('ml-form-signin');
   const formSignup    = () => document.getElementById('ml-form-signup');
+  const formForgot    = () => document.getElementById('ml-form-forgot');
   const gradeSection  = () => document.getElementById('ml-grade-section');
   const subjectsSection = () => document.getElementById('ml-subjects-section');
   const signinErr     = () => document.getElementById('ml-signin-err');
   const signinOk      = () => document.getElementById('ml-signin-ok');
   const signupErr     = () => document.getElementById('ml-signup-err');
   const signupOk      = () => document.getElementById('ml-signup-ok');
+  const forgotErr     = () => document.getElementById('ml-forgot-err');
+  const forgotOk      = () => document.getElementById('ml-forgot-ok');
 
   // ── 4. Open / close ────────────────────────────────────────
   function openModal(tab = 'signin') {
@@ -143,10 +164,12 @@
   // ── 5. Tab switching ───────────────────────────────────────
   function _switchTab(tab) {
     _activeTab = tab;
+    document.querySelector('.ml-tabs').style.display = '';
     document.getElementById('ml-tab-signin').classList.toggle('ml-active', tab === 'signin');
     document.getElementById('ml-tab-signup').classList.toggle('ml-active', tab === 'signup');
     formSignin().style.display = tab === 'signin' ? '' : 'none';
     formSignup().style.display = tab === 'signup' ? '' : 'none';
+    formForgot().style.display = 'none';
     document.getElementById('ml-modal-title').textContent =
       tab === 'signin' ? 'Welcome back' : 'Create your account';
     document.getElementById('ml-modal-sub').textContent =
@@ -156,6 +179,46 @@
 
   document.getElementById('ml-tab-signin').addEventListener('click', () => _switchTab('signin'));
   document.getElementById('ml-tab-signup').addEventListener('click', () => _switchTab('signup'));
+
+  // ── 5b. Forgot password sub-view ───────────────────────────
+  // Not a third tab — it's reached only from "Forgot password?" under
+  // the sign-in form, and always returns to sign-in, so the tab row
+  // itself hides while it's showing rather than gaining a third tab.
+  function _showForgot() {
+    _activeTab = 'forgot';
+    document.querySelector('.ml-tabs').style.display = 'none';
+    formSignin().style.display = 'none';
+    formSignup().style.display = 'none';
+    formForgot().style.display = '';
+    document.getElementById('ml-modal-title').textContent = 'Reset your password';
+    document.getElementById('ml-modal-sub').textContent = "We'll email you a link";
+    _clearMessages();
+    const prefill = document.getElementById('ml-signin-email').value.trim();
+    if (prefill) document.getElementById('ml-forgot-email').value = prefill;
+  }
+
+  document.getElementById('ml-forgot-link').addEventListener('click', _showForgot);
+  document.getElementById('ml-forgot-back').addEventListener('click', () => _switchTab('signin'));
+
+  document.getElementById('ml-btn-forgot').addEventListener('click', async () => {
+    const btn   = document.getElementById('ml-btn-forgot');
+    const email = document.getElementById('ml-forgot-email').value.trim();
+    if (!email) { _showErr(forgotErr(), 'Please enter your email.'); return; }
+
+    _clearMessages();
+    btn.disabled = true; btn.textContent = 'Sending…';
+    const { error } = await window.MagicLabAuth.sendPasswordReset(email);
+    btn.disabled = false; btn.textContent = 'Send reset link';
+
+    if (error) {
+      _showErr(forgotErr(), _friendlyError(error.message));
+    } else {
+      // Supabase returns success here even for an unregistered email
+      // (so the form can't be used to probe which emails have
+      // accounts) — the message reflects that honestly.
+      _showOk(forgotOk(), "✓ If that email has an account, a reset link is on its way.");
+    }
+  });
 
   // ── 6. Role selector ───────────────────────────────────────
   document.querySelectorAll('#ml-role-row .ml-role-btn').forEach(btn => {
@@ -227,6 +290,7 @@
 
     if (!name || !email || !password) { _showErr(signupErr(), 'Please fill in all fields.'); return; }
     if (password.length < 8)          { _showErr(signupErr(), 'Password must be at least 8 characters.'); return; }
+    if (!school) { _showErr(signupErr(), 'Please enter your school.'); return; }
     if (_selectedRole === 'student' && !_selectedGrade) {
       _showErr(signupErr(), 'Please select your grade.'); return;
     }
@@ -278,6 +342,8 @@
     e.preventDefault();
     if (_activeTab === 'signin') {
       document.getElementById('ml-btn-signin').click();
+    } else if (_activeTab === 'forgot') {
+      document.getElementById('ml-btn-forgot').click();
     } else {
       document.getElementById('ml-btn-signup').click();
     }
@@ -348,7 +414,7 @@
   function _showErr(el, msg) { el.textContent = msg; el.className = 'ml-msg ml-msg-error ml-show'; }
   function _showOk(el, msg)  { el.textContent = msg; el.className = 'ml-msg ml-msg-success ml-show'; }
   function _clearMessages()  {
-    [signinErr(), signinOk(), signupErr(), signupOk()].forEach(el => {
+    [signinErr(), signinOk(), signupErr(), signupOk(), forgotErr(), forgotOk()].forEach(el => {
       if (el) el.classList.remove('ml-show');
     });
   }

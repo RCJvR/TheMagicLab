@@ -125,6 +125,11 @@
       <label title="Default straight-line acceleration">Straight accel <input type="number" id="cfgStraightAccel" value="400" min="10" max="4000" step="10"> mm/s²</label>
       <label title="Default turn rate, used when a Turn step doesn't set its own">Turn rate <input type="number" id="cfgTurnRate" value="100" min="10" max="1000" step="10"> °/s</label>
       <label title="Default turn acceleration">Turn accel <input type="number" id="cfgTurnAccel" value="300" min="10" max="2000" step="10"> °/s²</label>
+      <label title="Sensor A's forward offset from the robot's centre, along its heading. Used in single-sensor mode, and as one side of a two-sensor differential follower.">Sensor A fwd <input type="number" id="cfgLineSensorForward" value="80" min="-400" max="400" step="5"> mm</label>
+      <label title="Sensor A's sideways offset from the robot's centre (+ = right, - = left)">Sensor A lateral <input type="number" id="cfgLineSensorLateral" value="0" min="-200" max="200" step="5"> mm</label>
+      <label title="Sensor B's forward offset from the robot's centre -- only used by a two-sensor differential follower">Sensor B fwd <input type="number" id="cfgLineSensor2Forward" value="80" min="-400" max="400" step="5"> mm</label>
+      <label title="Sensor B's sideways offset from the robot's centre (+ = right, - = left) -- only used by a two-sensor differential follower">Sensor B lateral <input type="number" id="cfgLineSensor2Lateral" value="40" min="-200" max="200" step="5"> mm</label>
+      <label title="Calibration constant: how strongly a simulated line-follow step's PID correction steers the robot. Raise if the simulated wobble looks too mild, lower if it looks too wild.">Line steer gain <input type="number" id="cfgLineSteerGain" value="2" min="0.1" max="20" step="0.1"></label>
     </div>
 
     <div class="program-add-row">
@@ -135,7 +140,9 @@
         <option value="unfold">Unfold to open size</option>
         <option value="frontMotor">Front motor</option>
         <option value="backMotor">Back motor</option>
-        <option value="lineFollow">Line follow</option>
+        <option value="lineFollow">Line follow (straight distance)</option>
+        <option value="lineFollowPath">Follow traced path</option>
+        <option value="lineFollowSim">Follow line (simulated sensor)</option>
         <option value="wait">Wait</option>
         <option value="comment">Comment</option>
       </select>
@@ -156,6 +163,24 @@
       </span>
       <span class="program-field" data-for="frontMotor,backMotor">
         <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>
+      </span>
+      <span class="program-field" data-for="lineFollowPath">
+        <select id="stepPathSelect"></select>
+        <label class="mini-label"><input type="checkbox" id="stepPathReverse"> reverse</label>
+      </span>
+      <span class="program-field" data-for="lineFollowSim">
+        <select id="stepLineMode" title="Single sensor tracks a target reflectance (an edge follower); two-sensor balances Sensor A and Sensor B (see Robot config for their positions)">
+          <option value="single">Single sensor</option>
+          <option value="twoSensor">Two sensors</option>
+        </select>
+        <label class="mini-label">max <input type="number" id="stepLineMaxDist" value="500" min="0" step="10"> mm</label>
+        <span id="stepLineSingleFields">
+          <label class="mini-label">target <input type="number" id="stepLineTarget" value="50" min="0" max="100" step="1"></label>
+          <select id="stepLineSide"><option value="left">Left side</option><option value="right">Right side</option></select>
+        </span>
+        <label class="mini-label">kp <input type="number" id="stepLineKp" value="1" min="0" step="0.1"></label>
+        <label class="mini-label">kd <input type="number" id="stepLineKd" value="3" min="0" step="0.1"></label>
+        <select id="stepLineStopColour"><option value="">no colour stop</option><option value="black">stop on black</option><option value="white">stop on white</option></select>
       </span>
       <span class="program-field" data-for="wait">
         <input type="number" id="stepSeconds" value="1" min="0" step="0.1"> s

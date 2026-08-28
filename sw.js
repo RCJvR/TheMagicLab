@@ -2,7 +2,21 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v63'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v64'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+// v64: free trial + Curro Durbanville verification. profiles gains
+// trial_ends_at (30 days from signup, backfilled for existing users) and
+// cdv_status ('none'/'pending'/'verified'/'rejected', auto-flagged
+// 'pending' by a DB trigger when `school` matches Curro Durbanville —
+// only a manual dashboard edit can move it to 'verified'); a second
+// trigger locks package/trial_ends_at/cdv_status against being set by
+// anything but server-side/service-role code. auth.js gains
+// hasFullAccess()/trialDaysLeft(); require-auth.js now redirects to
+// pricing.html (not just the sign-in page) once trial has lapsed and
+// the user isn't paid or CDV-verified — account.html/payment-success/
+// payment-cancelled opt out via window.MLSkipPaywall so a lapsed user
+// can still see why and fix it. PayFast billing switched from monthly
+// (frequency 3) to quarterly (frequency 4) at the same R45, matching
+// the "R45/term" pricing already on pitch.html/pitch-deck.html.
 // v63: Model Mage is now a landing page choosing between two workshops —
 // the existing parametric CAD tool (moved to model-mage-cad.html) and a
 // new Circuit Simulator (model-mage-circuits.html): a breadboard editor

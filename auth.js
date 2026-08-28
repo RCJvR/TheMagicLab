@@ -48,12 +48,16 @@ async function _initAuth() {
     signUp,
     signIn,
     signOut,
+    sendPasswordReset,
+    updatePassword,
     getSession:    () => _session,
     getProfile:    () => _profile,
     isLoggedIn:    () => !!_session,
     isTeacher:     () => _profile?.role === 'teacher',
     isStudent:     () => _profile?.role === 'student',
     hasAccess,
+    hasFullAccess,
+    trialDaysLeft,
     updateProfile,
     joinClass,
     // ── Teacher functions ──
@@ -108,11 +112,17 @@ function _fallbackProfile(user) {
     email:        user.email,
     display_name: user.user_metadata?.display_name || user.email.split('@')[0],
     role:         user.user_metadata?.role || 'student',
-    grade:        null,
+    grade:        user.user_metadata?.grade || null,
     package:      'free',
-    school:       null,
-    province:     null,
-    subjects:     null
+    school:       user.user_metadata?.school || null,
+    province:     user.user_metadata?.province || null,
+    subjects:     user.user_metadata?.subjects || null,
+    // No real trial_ends_at is known here (this profile was assembled
+    // client-side after a fetch error, not read from the DB) — leave
+    // it null rather than guessing, so hasFullAccess() fails open
+    // instead of locking someone out because of a transient glitch.
+    trial_ends_at: null,
+    cdv_status:    'none'
   };
 }
 
@@ -125,15 +135,22 @@ function _fallbackProfile(user) {
  * @param {string} displayName
  * @param {'student'|'teacher'} role
  * @param {number|null} grade  — required for students
- * @param {{school?: string, province?: string, subjects?: string}} extra
- *   — all optional. `subjects` only applies to teachers.
+ * @param {{school: string, province?: string, subjects?: string}} extra
+ *   — `school` is required for every account. `subjects` only applies to teachers.
  */
 async function signUp(email, password, displayName, role = 'student', grade = null, extra = {}) {
+  // school/grade/province/subjects are passed into user_metadata here, not
+  // just written via the .update() below, so the very first profile row
+  // (inserted by _handleSession's fallback-insert path once the SIGNED_IN
+  // event fires — see _fallbackProfile) already carries the real values.
+  // That insert and this function's .update() race against each other with
+  // no guaranteed order; without metadata, whichever finishes last could
+  // silently overwrite a typed-in school with null.
   const { data, error } = await _supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { display_name: displayName, role }
+      data: { display_name: displayName, role, grade, ...extra }
     }
   });
   if (error) return { error };
@@ -166,6 +183,31 @@ async function signIn(email, password) {
 }
 
 /**
+ * Send a password-reset email. Supabase emails the user a link with a
+ * short-lived recovery token; clicking it lands them on
+ * reset-password.html with a temporary "recovery" session already
+ * established (no sign-in needed), where updatePassword() below sets
+ * their new password.
+ */
+async function sendPasswordReset(email) {
+  const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+  return { error };
+}
+
+/**
+ * Set a new password. Only works with an active session — either a
+ * normal signed-in session, or the temporary "recovery" session
+ * Supabase establishes automatically when a user clicks a password-
+ * reset email link.
+ */
+async function updatePassword(newPassword) {
+  const { error } = await _supabase.auth.updateUser({ password: newPassword });
+  return { error };
+}
+
+/**
  * Sign out current user.
  */
 async function signOut() {
@@ -182,6 +224,33 @@ function hasAccess(requiredPackage) {
   if (!_profile) return requiredPackage === 'free';
   const tiers = { free: 0, basic: 1, pro: 2, school: 3 };
   return (tiers[_profile.package] ?? 0) >= (tiers[requiredPackage] ?? 0);
+}
+
+/**
+ * Does the current user get full site access right now? True if
+ * they're on a paid tier, verified as a Curro Durbanville user, or
+ * still inside their free trial window. Everyone else (trial expired,
+ * not paid, not verified) should be sent to pricing.html.
+ *
+ * Fails open (returns true) when trial_ends_at is unknown — that only
+ * happens on a fallback profile assembled after a fetch error, and a
+ * transient glitch shouldn't lock a legitimate user out.
+ */
+function hasFullAccess() {
+  if (!_profile) return false;
+  if (_profile.package === 'pro' || _profile.package === 'school') return true;
+  if (_profile.cdv_status === 'verified') return true;
+  if (!_profile.trial_ends_at) return true;
+  return new Date(_profile.trial_ends_at) > new Date();
+}
+
+/**
+ * Whole days remaining in the free trial (0 if expired or n/a).
+ */
+function trialDaysLeft() {
+  if (!_profile?.trial_ends_at) return 0;
+  const ms = new Date(_profile.trial_ends_at) - new Date();
+  return Math.max(0, Math.ceil(ms / 86400000));
 }
 
 /**

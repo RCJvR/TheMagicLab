@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <script>document.documentElement.style.visibility='hidden';</script>
+<script>window.MLSkipPaywall = true;</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080c1a">
@@ -133,6 +134,7 @@
       <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value" id="acc-email">—</span></div>
       <div class="detail-row"><span class="detail-label">Role</span><span class="detail-value" id="acc-role">—</span></div>
       <div class="detail-row"><span class="detail-label">Plan</span><span class="detail-value" id="acc-plan">—</span></div>
+      <div class="detail-row" id="acc-access-row" style="display:none;"><span class="detail-label">Access</span><span class="detail-value" id="acc-access">—</span></div>
       <div class="detail-row"><span class="detail-label">Member since</span><span class="detail-value" id="acc-since">—</span></div>
     </div>
 
@@ -190,7 +192,7 @@
       <p class="cancel-note" id="cancel-note" style="display:none;">
         To cancel or change your subscription, email
         <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a>
-        and we'll sort it out — cancellations take effect at the end of the paid month.
+        and we'll sort it out — cancellations take effect at the end of the paid term.
       </p>
     </div>
   </main>
@@ -207,8 +209,27 @@
       const planEl = document.getElementById('acc-plan');
       const pkg = profile.package || 'free';
       const isPaid = pkg === 'pro' || pkg === 'school';
+      const isCdvVerified = profile.cdv_status === 'verified';
       planEl.innerHTML = `<span class="plan-badge ${isPaid ? 'plan-paid' : 'plan-free'}">${isPaid ? '✓ ' : ''}${pkg.charAt(0).toUpperCase() + pkg.slice(1)}</span>` +
-        (isPaid || !window.MagicLabPayments?.live ? '' : '<a class="upgrade-link" href="pricing.html">Upgrade →</a>');
+        (isPaid || isCdvVerified || !window.MagicLabPayments?.live ? '' : '<a class="upgrade-link" href="pricing.html">Upgrade →</a>');
+
+      const accessRow = document.getElementById('acc-access-row');
+      const accessEl  = document.getElementById('acc-access');
+      if (!isPaid) {
+        accessRow.style.display = '';
+        if (isCdvVerified) {
+          accessEl.textContent = '✓ Free access — Curro Durbanville';
+        } else if (profile.cdv_status === 'pending') {
+          accessEl.textContent = 'Curro Durbanville access pending confirmation';
+        } else {
+          const days = window.MagicLabAuth.trialDaysLeft();
+          accessEl.innerHTML = days > 0
+            ? `${days} day${days === 1 ? '' : 's'} left in free trial`
+            : '<a class="upgrade-link" href="pricing.html" style="margin-left:0;">Trial ended — subscribe →</a>';
+        }
+      } else {
+        accessRow.style.display = 'none';
+      }
 
       const created = session?.user?.created_at;
       document.getElementById('acc-since').textContent = created
@@ -289,10 +310,16 @@
         err.classList.add('ml-show');
         return;
       }
+      const school = document.getElementById('edit-school').value.trim();
+      if (!school) {
+        err.textContent = 'School can\'t be empty.';
+        err.classList.add('ml-show');
+        return;
+      }
 
       const updates = {
         display_name: name,
-        school:   document.getElementById('edit-school').value.trim() || null,
+        school:   school,
         province: document.getElementById('edit-province').value || null
       };
       if (profile.role === 'student' && _selectedGrade) updates.grade = _selectedGrade;

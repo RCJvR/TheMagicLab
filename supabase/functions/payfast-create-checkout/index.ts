@@ -92,11 +92,11 @@ Deno.serve(async (req) => {
     ["email_address", profile?.email || user.email],
     ["m_payment_id", mPaymentId],
     ["amount", PRO_PRICE],
-    ["item_name", "The Magic Lab - Pro (Monthly)"],
-    ["item_description", "Monthly subscription to The Magic Lab Pro tier"],
+    ["item_name", "The Magic Lab - Pro (Quarterly)"],
+    ["item_description", "Quarterly subscription to The Magic Lab Pro tier"],
     ["subscription_type", "1"],
     ["recurring_amount", PRO_PRICE],
-    ["frequency", "3"], // 3 = monthly
+    ["frequency", "4"], // 4 = quarterly (per PayFast's recurring-billing frequency codes)
     ["cycles", "0"],    // 0 = indefinite, until cancelled
   ];
 

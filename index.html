@@ -257,6 +257,16 @@
       color: var(--muted); margin-bottom: 6px; text-transform: uppercase;
     }
 
+    .card-free-badge {
+      position: absolute; top: 14px; right: 14px;
+      display: flex; align-items: center; gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 4px 9px; border-radius: 99px; text-transform: uppercase;
+      background: rgba(17,217,143,0.14); border: 1px solid rgba(17,217,143,0.35);
+      color: var(--accent-2);
+    }
+
     .card-head {
       display: flex; align-items: center; gap: var(--space-3);
       margin-bottom: var(--space-3);
@@ -452,8 +462,9 @@
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
+  <!-- Hero — landing pitch for signed-out visitors only; hidden once
+       signed in so returning users go straight to the tools/Arena. -->
+  <section class="hero" id="hero">
     <div class="hero-tag">
       <span class="hero-tag-dot"></span>
       STEM Learning Platform
@@ -469,6 +480,7 @@
 
         <!-- Code Conjurer — rose/red (RED) -->
         <a href="code-conjurer.html" class="card card-conjurer">
+          <div class="card-free-badge">✦ Free forever</div>
           <div class="card-grade">Grade 10 – 12</div>
           <div class="card-head">
             <div class="card-icon"><i data-lucide="wand-2" style="width:22px;height:22px;"></i></div>
@@ -864,6 +876,17 @@
     document.addEventListener('magiclab:auth:ready', _syncUpgradeBtn);
     document.addEventListener('magiclab:auth:change', _syncUpgradeBtn);
     document.addEventListener('magiclab:nav:rendered', _syncUpgradeBtn);
+
+    // Hero pitch is for signed-out visitors only — once signed in, drop
+    // straight into the tools/Arena instead of re-showing the landing copy.
+    function _syncHeroVisibility() {
+      const hero = document.getElementById('hero');
+      if (!hero) return;
+      const signedIn = !!window.MagicLabAuth?.getProfile();
+      hero.style.display = signedIn ? 'none' : '';
+    }
+    document.addEventListener('magiclab:auth:ready', _syncHeroVisibility);
+    document.addEventListener('magiclab:auth:change', _syncHeroVisibility);
 
     async function _syncAssignmentsBell() {
       const btn = document.getElementById('nav-assignments-btn');

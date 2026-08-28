@@ -103,24 +103,25 @@
   <main>
     <h1>Simple, honest pricing</h1>
     <p class="sub">One plan. Every tool. Cancel anytime.</p>
+    <p class="sub" id="trialNote">New here? Every account starts with a free 30-day trial — full access, no card required.</p>
 
     <div class="plan-card">
       <div class="plan-name">Pro</div>
-      <div class="plan-price">R45<span>/month</span></div>
+      <div class="plan-price">R45<span>/term</span></div>
       <ul class="plan-features">
         <li>Full access to every subject tool</li>
         <li>Progress tracking across all tools</li>
         <li>Priority access to new tools as they launch</li>
-        <li>Cancel anytime, no lock-in</li>
+        <li>Billed quarterly, cancel anytime, no lock-in</li>
       </ul>
-      <button class="upgrade-btn" id="upgradeBtn">Upgrade to Pro — R45/month</button>
+      <button class="upgrade-btn" id="upgradeBtn">Upgrade to Pro — R45/term</button>
       <div class="plan-msg" id="planMsg"></div>
     </div>
 
     <div class="school-note">
       <strong style="color:#fff;">Teaching a whole class or school?</strong><br>
       Bulk access for schools is arranged directly — get in touch at
-      <a href="mailto:ruhanjvr@gmail.com">ruhanjvr@gmail.com</a> and we'll set your students up.
+      <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a> and we'll set your students up.
     </div>
   </main>
 
@@ -130,17 +131,47 @@
     document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
 
     function _syncPlanCard() {
-      const profile = window.MagicLabAuth?.getProfile();
+      const auth = window.MagicLabAuth;
+      const profile = auth?.getProfile();
       const btn = document.getElementById('upgradeBtn');
       const msg = document.getElementById('planMsg');
+      const trialNote = document.getElementById('trialNote');
       if (!btn) return;
-      if (profile?.package === 'pro' || profile?.package === 'school') {
+
+      if (!profile) return; // signed-out visitor — leave the default copy as-is
+
+      if (profile.package === 'pro' || profile.package === 'school') {
         btn.outerHTML = '<div class="already-badge">✓ You already have full access</div>';
         if (msg) msg.textContent = '';
+        if (trialNote) trialNote.remove();
+        return;
+      }
+      if (profile.cdv_status === 'verified') {
+        btn.outerHTML = '<div class="already-badge">✓ Free access — Curro Durbanville</div>';
+        if (msg) msg.textContent = '';
+        if (trialNote) trialNote.remove();
+        return;
+      }
+
+      // Signed-in, not paid, not CDV-verified — show real trial status.
+      if (trialNote) {
+        const days = auth.trialDaysLeft();
+        if (profile.cdv_status === 'pending') {
+          trialNote.textContent = "We've noted your school as Curro Durbanville — you'll get free access once that's confirmed. Until then, your trial below still applies.";
+        } else if (days > 0) {
+          trialNote.textContent = `You have ${days} day${days === 1 ? '' : 's'} left in your free trial.`;
+        } else {
+          trialNote.textContent = 'Your free trial has ended — subscribe below to keep full access.';
+        }
       }
     }
     document.addEventListener('magiclab:auth:ready', _syncPlanCard);
     document.addEventListener('magiclab:auth:change', _syncPlanCard);
+
+    if (new URLSearchParams(location.search).get('trial') === 'expired') {
+      const msg = document.getElementById('planMsg');
+      if (msg) { msg.className = 'plan-msg error'; msg.textContent = 'Your free trial has ended — subscribe to keep going.'; }
+    }
 
     document.getElementById('upgradeBtn')?.addEventListener('click', async () => {
       const btn = document.getElementById('upgradeBtn');
@@ -152,7 +183,7 @@
       const result = await window.MagicLabPayments.upgrade();
       if (result?.error) {
         btn.disabled = false;
-        btn.textContent = 'Upgrade to Pro — R45/month';
+        btn.textContent = 'Upgrade to Pro — R45/term';
         msg.className = 'plan-msg error';
         msg.textContent = result.error;
       }
