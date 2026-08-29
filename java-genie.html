@@ -1114,6 +1114,9 @@
 
   <!-- Mobile-only bottom nav: shown/hidden entirely by CSS media query -->
   <nav id="mobileTabBar">
+    <button class="mobile-tab-btn" id="mtLesson" data-mtab="lesson">
+      <i data-lucide="book-open" style="width:18px;height:18px;"></i> Lesson
+    </button>
     <button class="mobile-tab-btn active" id="mtCode" data-mtab="code">
       <i data-lucide="code-2" style="width:18px;height:18px;"></i> Code
     </button>
@@ -3612,15 +3615,24 @@ const directionReadout  = document.getElementById("directionReadout");
 const penReadout        = document.getElementById("penReadout");
 const speedSlider       = document.getElementById("speedSlider");
 
-// ── Mobile bottom tab bar (Code / Canvas) — same pattern as Code Conjurer's
-// Lesson/Code/Output bar, so a phone shows one full-height panel at a time
-// instead of the whole editor + canvas stacked and scrolled past.
+// ── Mobile bottom tab bar (Lesson / Code / Canvas) — same pattern as Code
+// Conjurer's Lesson/Code/Output bar, so a phone shows one full-height panel
+// at a time instead of the whole editor + canvas stacked and scrolled past.
+// "Lesson" reuses the existing Learn Java tutorial overlay (via its header
+// button) rather than a new panel — Advanced and Challenges stay
+// header-only, unchanged.
 const appShellEl    = document.getElementById("appShell");
 const mobileTabBtns = document.querySelectorAll(".mobile-tab-btn");
+let mobileTab = "code"; // last non-lesson tab, so closing the tutorial lands back here
 function setMobileTab(tab) {
   mobileTabBtns.forEach(b => b.classList.toggle("active", b.dataset.mtab === tab));
-  appShellEl.classList.toggle("mobile-view-code",   tab === "code");
-  appShellEl.classList.toggle("mobile-view-canvas", tab === "canvas");
+  if (tab === "lesson") {
+    document.getElementById("learnBtn")?.click();
+  } else {
+    mobileTab = tab;
+    appShellEl.classList.toggle("mobile-view-code",   tab === "code");
+    appShellEl.classList.toggle("mobile-view-canvas", tab === "canvas");
+  }
 }
 mobileTabBtns.forEach(btn => btn.addEventListener("click", () => setMobileTab(btn.dataset.mtab)));
 setMobileTab("code");
@@ -5073,6 +5085,7 @@ fileInput.addEventListener("change", e => {
   function closeTutorial() {
     overlay.classList.add('hidden');
     document.body.style.overflow = '';
+    setMobileTab(mobileTab); // back to whichever mobile tab was active before Lesson
     if (cur === total - 1) {
       resumeAt = null; // finished → restart next time
       if (window.MagicLabProgress) {
@@ -5107,6 +5120,7 @@ fileInput.addEventListener("change", e => {
     btn.style.color = '#6ee7b7';
     switchTab('editor');
     closeTutorial();
+    setMobileTab('code'); // this button's whole point is to show the code it just loaded
     setTimeout(() => {
       btn.innerHTML = label;
       btn.style.color = '';
@@ -5119,6 +5133,7 @@ fileInput.addEventListener("change", e => {
     e.preventDefault();
     if (loadExampleIntoEditor(btn.dataset.example, 'Tutorial example loaded — press Run code.')) {
       closeTutorial();
+      setMobileTab('code');
     }
   });
 
@@ -5136,6 +5151,7 @@ fileInput.addEventListener("change", e => {
       updateLineNumbers();
       updateHighlight();
       closeTutorial();
+      setMobileTab('code');
       switchTab('editor');
       codeEditor.focus();
     });
