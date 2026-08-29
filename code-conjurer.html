@@ -297,8 +297,17 @@
       font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 16px;
       background: linear-gradient(125deg, #fff 0%, #fda4af 50%, #fb923c 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      /* flex items refuse to shrink below their content width unless told
+         to — without this the title pushes .les-close off-screen on narrow
+         viewports, making the lesson overlay impossible to close */
+      min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     #lessonGradeToggle { display: flex; gap: 4px; margin-left: 0; }
+    #lesSidebarToggle {
+      display: none; width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #b0b8d8; cursor: pointer; align-items: center; justify-content: center;
+    }
     .les-grade-btn {
       font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 99px;
       border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
@@ -309,7 +318,7 @@
     .les-grade-btn.gr11.active { background: rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.45); color: #fdba74; }
     .les-grade-btn.gr12.active { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.45); color: #d8b4fe; }
     .les-close {
-      margin-left: auto; width: 30px; height: 30px; border-radius: 8px;
+      margin-left: auto; width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
       background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
       color: #b0b8d8; font-size: 16px; cursor: pointer;
       display: flex; align-items: center; justify-content: center; transition: background 130ms;
@@ -430,9 +439,59 @@
     .hidden { display: none !important; }
     .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
+    /* ── Mobile bottom tab bar (Lesson / Code / Output) ── */
+    #mobileTabBar { display: none; }
+
     @media (max-width: 860px) {
-      #mainGrid { grid-template-columns: 1fr; overflow-y: auto; }
-      html, body, #appShell { height: auto; overflow: visible; }
+      html, body, #appShell { height: 100%; overflow: hidden; }
+      #mainGrid { grid-template-columns: 1fr; overflow: hidden; padding-bottom: 8px; }
+
+      /* Left/right columns become full-height, one-at-a-time "screens" —
+         which one is visible is driven by a class on #appShell so this
+         entire mechanism stays completely inert at desktop widths. */
+      #leftCol, #rightCol { overflow-y: auto; min-height: 0; }
+      #appShell.mobile-view-code #rightCol,
+      #appShell.mobile-view-output #leftCol { display: none; }
+
+      #mobileTabBar {
+        display: flex; flex-shrink: 0; align-items: stretch;
+        border-top: 1px solid rgba(255,255,255,0.09);
+        background: rgba(8,12,26,0.97); backdrop-filter: blur(10px);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      .mobile-tab-btn {
+        flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 4px 7px; border: none; background: none; cursor: pointer;
+        font-family: "Cabinet Grotesk", sans-serif; font-size: 10.5px; font-weight: 700;
+        color: rgba(221,225,240,0.40); transition: color 130ms; position: relative;
+      }
+      .mobile-tab-btn.active { color: #fda4af; }
+
+      /* Lesson overlay — collapse the always-visible 240px sidebar into a
+         toggleable drawer so lesson content isn't squeezed on a phone. */
+      #lessonSidebar {
+        position: fixed; inset: 0 18% 0 0; z-index: 10;
+        transform: translateX(-100%); transition: transform 180ms ease;
+        box-shadow: 8px 0 24px rgba(0,0,0,0.40);
+        background: #0a0f1e;
+      }
+      #lessonBody { position: relative; }
+      #lessonBody.sidebar-open #lessonSidebar { transform: translateX(0); }
+      #lessonBody.sidebar-open::after {
+        /* absolute, not fixed — must stay below #lessonHeader, not cover
+           the whole viewport, or the close/back controls become unreachable */
+        content: ''; position: absolute; inset: 0; background: rgba(3,5,14,0.82); z-index: 9;
+      }
+      #lesSidebarToggle { display: flex; }
+
+      /* Superseded by the dedicated Lesson tab below */
+      #gradeSelectorBar { display: none; }
+
+      /* The sitewide contact FAB (contact-button.js) otherwise sits in the
+         same bottom-right corner as the new tab bar and blocks the Output
+         tab from being tapped. Push it up above the bar instead of
+         touching the shared script. */
+      .ml-contact-fab { bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
     }
     @media (max-width: 640px) {
       #appHeader { grid-template-columns: 1fr; justify-items: center; padding: 8px 12px; gap: 6px; }
@@ -440,6 +499,13 @@
       h1.app-title { font-size: 16px; }
       .grade-badge { font-size: 9px; padding: 2px 7px; }
       .hdr-btn, .home-btn { font-size: 10px; padding: 4px 9px; }
+
+      /* Lesson header — same overflow risk as #appHeader above; the title
+         is the least essential piece once the app-icon + grade toggle are
+         visible, so drop it first to guarantee .les-close stays reachable. */
+      #lessonHeader h2 { display: none; }
+      #lessonHeader { padding: 8px 10px; gap: 8px; }
+      .les-grade-btn { font-size: 10px; padding: 4px 9px; }
     }
   </style>
 
@@ -652,10 +718,25 @@ public class HelloWorld {
 
     </div><!-- /rightCol -->
   </div>
+
+  <!-- Mobile-only bottom nav: shown/hidden entirely by CSS media query -->
+  <nav id="mobileTabBar">
+    <button class="mobile-tab-btn" id="mtLesson" data-mtab="lesson">
+      <i data-lucide="book-open" style="width:18px;height:18px;"></i> Lesson
+    </button>
+    <button class="mobile-tab-btn active" id="mtCode" data-mtab="code">
+      <i data-lucide="code-2" style="width:18px;height:18px;"></i> Code
+    </button>
+    <button class="mobile-tab-btn" id="mtOutput" data-mtab="output">
+      <i data-lucide="terminal-square" style="width:18px;height:18px;"></i> Output
+    </button>
+  </nav>
+
   <!-- ══ LESSON OVERLAY ══ -->
   <div id="lessonOverlay" class="hidden">
     <div id="lessonShell">
       <div id="lessonHeader">
+        <button id="lesSidebarToggle" title="Lesson list"><i data-lucide="list" style="width:15px;height:15px;"></i></button>
         <div class="app-icon" style="width:28px;height:28px;font-size:14px;">📜</div>
         <h2>IEB/CAPS Java Curriculum</h2>
         <div id="lessonGradeToggle">
@@ -1265,6 +1346,7 @@ let currentInterpreter = null;
 async function runCode() {
   if (isRunning) return;
   isRunning = true; stopRequested = false;
+  setMobileTab('output');
   clearConsole();
   runButton.disabled = true;
   inputRow.classList.add('hidden');
@@ -1928,7 +2010,7 @@ function renderLesson() {
     updateHighlight();
     completedLessons[lessonGrade].add(lessonIndex);
     buildSidebar();
-    lessonOverlay.classList.add('hidden');
+    setMobileTab('code');
     editorTab.click();
     clearConsole();
     conPrint(`Loaded: ${les.title} — press Run!`, 'con-info');
@@ -1990,8 +2072,43 @@ lesGradeBtns.forEach(btn => {
   });
 });
 
-lesClose.addEventListener('click', () => lessonOverlay.classList.add('hidden'));
-lessonOverlay.addEventListener('click', e => { if (e.target === lessonOverlay) lessonOverlay.classList.add('hidden'); });
+// ── Mobile bottom tab bar (Lesson / Code / Output) ──────────────────────
+// Purely additive: the CSS classes this drives only mean anything inside
+// the max-width:860px media query, so none of this affects desktop, where
+// leftCol/rightCol/lessonOverlay are already all reachable at once.
+const appShellEl       = document.getElementById('appShell');
+const mobileTabBtns    = document.querySelectorAll('.mobile-tab-btn');
+const lessonBody       = document.getElementById('lessonBody');
+const lesSidebarToggle = document.getElementById('lesSidebarToggle');
+let mobileTab = 'code'; // last non-lesson tab, so closing a lesson lands back here
+
+function setMobileTab(tab) {
+  mobileTabBtns.forEach(b => b.classList.toggle('active', b.dataset.mtab === tab));
+  if (tab === 'lesson') {
+    openLessons(lessonGrade);
+  } else {
+    mobileTab = tab;
+    lessonOverlay.classList.add('hidden');
+    lessonBody.classList.remove('sidebar-open');
+    appShellEl.classList.toggle('mobile-view-code', tab === 'code');
+    appShellEl.classList.toggle('mobile-view-output', tab === 'output');
+  }
+}
+mobileTabBtns.forEach(btn => btn.addEventListener('click', () => setMobileTab(btn.dataset.mtab)));
+setMobileTab('code');
+
+lesClose.addEventListener('click', () => setMobileTab(mobileTab));
+lessonOverlay.addEventListener('click', e => { if (e.target === lessonOverlay) setMobileTab(mobileTab); });
+
+// Lesson sidebar drawer toggle (mobile only — inert elsewhere)
+lesSidebarToggle.addEventListener('click', () => lessonBody.classList.toggle('sidebar-open'));
+lessonBody.addEventListener('click', e => {
+  if (lessonBody.classList.contains('sidebar-open') &&
+      !lessonSidebar.contains(e.target) && !lesSidebarToggle.contains(e.target)) {
+    lessonBody.classList.remove('sidebar-open');
+  }
+});
+lessonSidebar.addEventListener('click', () => lessonBody.classList.remove('sidebar-open'));
 
 lesPrev.addEventListener('click', () => {
   if (lessonIndex > 0) { lessonIndex--; renderLesson(); }
@@ -2012,14 +2129,14 @@ lesNext.addEventListener('click', () => {
     lessonIndex++;
     renderLesson();
   } else {
-    lessonOverlay.classList.add('hidden');
+    setMobileTab(mobileTab);
     conPrint(`✓ All Grade ${lessonGrade} lessons complete!`, 'con-info');
   }
 });
 
 document.addEventListener('keydown', e => {
   if (lessonOverlay.classList.contains('hidden')) return;
-  if (e.key === 'Escape')      lessonOverlay.classList.add('hidden');
+  if (e.key === 'Escape')      setMobileTab(mobileTab);
   if (e.key === 'ArrowRight')  lesNext.click();
   if (e.key === 'ArrowLeft')   lesPrev.click();
 });
@@ -2029,7 +2146,7 @@ document.addEventListener('keydown', e => {
 if (ccAutosave.tryRestore()) ccAutosave.showToast();
 updateLineNumbers();
 updateHighlight();
-lucide.createIcons();
+try { lucide.createIcons(); } catch (_) { /* icon CDN slow/blocked — non-fatal, must not stop init below */ }
 
 // ── Restore completed lessons from Supabase ────────────────────────────────
 // Code Conjurer has lessons per grade (10, 11, 12).
