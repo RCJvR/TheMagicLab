@@ -373,6 +373,25 @@
     existing.forEach(el => _wireAuthTrigger(el));
   });
 
+  // Registered once, not per-render (_renderNavAuth can fire many times
+  // across a page's life as auth state changes) — closes whichever user
+  // menu is open on an outside click or Escape, regardless of how many
+  // [data-ml-auth] targets exist on the page.
+  function _closeUserMenu(menu) {
+    menu.classList.remove('ml-open');
+    const btn = menu.previousElementSibling;
+    if (btn && btn.id === 'ml-user-chip-btn') btn.setAttribute('aria-expanded', 'false');
+  }
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.ml-user-menu.ml-open').forEach(menu => {
+      if (!menu.parentElement.contains(e.target)) _closeUserMenu(menu);
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.ml-user-menu.ml-open').forEach(_closeUserMenu);
+  });
+
   function _renderNavAuth(profile) {
     // Use a stable wrapper approach instead of outerHTML replacement.
     // outerHTML destroys the element reference, making subsequent
@@ -383,15 +402,43 @@
         const initials = profile.display_name
           ? profile.display_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
           : profile.email[0].toUpperCase();
-        // Replace content in-place rather than swapping the element itself
-        target.className = 'ml-user-chip';
+        const isTeacher = profile.role === 'teacher';
+        // Replace content in-place rather than swapping the element itself.
+        // target is now the positioning wrapper for a trigger button + a
+        // dropdown menu that replaces what used to be a permanently-visible
+        // name + separate "Sign out" text sitting in the header, plus the
+        // "My Progress" button every tool page repeated in its own header.
+        target.className = 'ml-user-chip-wrap';
         target.onclick = null;
         target.innerHTML = `
-          <a href="/account.html" title="My Account" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;">
+          <div class="ml-user-chip" id="ml-user-chip-btn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
             <div class="ml-user-avatar">${initials}</div>
             <span class="ml-user-name">${profile.display_name || profile.email.split('@')[0]}</span>
-          </a>
-          <button class="ml-signout-btn" id="ml-signout-btn">Sign out</button>`;
+            <svg class="ml-user-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="ml-user-menu" id="ml-user-menu">
+            <a href="/account.html" class="ml-user-menu-item"><span class="ml-umi-icon">👤</span> My Account</a>
+            <a href="/dashboard-student.html" class="ml-user-menu-item"><span class="ml-umi-icon">📊</span> My Progress</a>
+            ${isTeacher ? '<a href="/dashboard-teacher.html" class="ml-user-menu-item"><span class="ml-umi-icon">🎓</span> Teacher Dashboard</a>' : ''}
+            <div class="ml-user-menu-sep"></div>
+            <button class="ml-user-menu-item ml-user-menu-signout" id="ml-signout-btn" type="button"><span class="ml-umi-icon">🚪</span> Sign out</button>
+          </div>`;
+
+        const chipBtn = target.querySelector('#ml-user-chip-btn');
+        const menu    = target.querySelector('#ml-user-menu');
+        const toggleMenu = () => {
+          document.querySelectorAll('.ml-user-menu.ml-open').forEach(m => { if (m !== menu) _closeUserMenu(m); });
+          const open = menu.classList.toggle('ml-open');
+          chipBtn.setAttribute('aria-expanded', String(open));
+        };
+        chipBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+        // chipBtn is a div[role="button"] (a real <button> can't nest inside
+        // the <button data-ml-auth> this replaces), so Enter/Space activation
+        // has to be wired manually — a native button gets this for free.
+        chipBtn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); }
+        });
+
         // Wire sign-out separately so it doesn't rely on inline onclick
         const soBtn = target.querySelector('#ml-signout-btn');
         if (soBtn) {

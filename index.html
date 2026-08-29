@@ -130,12 +130,6 @@
     }
     .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); border-color: rgba(255,255,255,0.18); }
     .nav-pill:active { transform: scale(0.97); }
-    .nav-pill-accent {
-      border-color: rgba(124,109,250,0.45);
-      background: rgba(124,109,250,0.12);
-      color: #c4baff;
-    }
-    .nav-pill-accent:hover { background: rgba(124,109,250,0.22); color: #ddd6fe; }
 
     /* Slightly larger header buttons on desktop only — mobile keeps the compact size */
     @media (min-width: 641px) {
@@ -437,7 +431,7 @@
       nav { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 14px 16px; }
       .nav-logo { font-size: 17px; }
       .nav-right { flex-wrap: wrap; justify-content: center; }
-      .nav-right .nav-pill:not(.ml-auth-btn):not(.nav-pill-accent):not(#nav-assignments-btn) { display: none; }
+      .nav-right .nav-pill:not(.ml-auth-btn):not(#nav-assignments-btn) { display: none; }
       .hero { padding: 56px 20px 40px; }
       .section-row { padding: 0 20px; }
       .cards-scroll { padding: 8px 20px 32px; }
@@ -454,9 +448,7 @@
     </a>
     <div class="nav-right">
       <a href="pitch.html" class="nav-pill" style="border-color:rgba(245,166,35,0.35);background:rgba(245,166,35,0.10);color:#f5a623;">About</a>
-      <a href="dashboard-student.html" class="nav-pill nav-pill-accent"><i data-lucide="bar-chart-3" style="width:13px;height:13px;margin-right:6px;"></i>My Progress</a>
       <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;"><i data-lucide="bell" style="width:13px;height:13px;margin-right:6px;"></i>Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
-      <a id="nav-teachers-btn" href="dashboard-teacher.html" class="nav-pill" style="display:none;border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.10);color:#67e8f9;"><i data-lucide="graduation-cap" style="width:13px;height:13px;margin-right:6px;"></i>Teachers</a>
       <a id="nav-upgrade-btn" href="pricing.html" class="nav-pill" style="display:none;border-color:rgba(124,109,250,0.35);background:rgba(124,109,250,0.10);color:#c4baff;"><i data-lucide="zap" style="width:13px;height:13px;margin-right:6px;"></i>Upgrade to Pro</a>
       <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;margin-right:6px;"></i>Sign In</button>
     </div>
@@ -857,14 +849,6 @@
   </script>
 
   <script>
-    function _syncTeachersBtn() {
-      const btn = document.getElementById('nav-teachers-btn');
-      if (btn) btn.style.display = window.MagicLabAuth?.isTeacher() ? '' : 'none';
-    }
-    document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
-    document.addEventListener('magiclab:auth:change', _syncTeachersBtn);
-    document.addEventListener('magiclab:nav:rendered', _syncTeachersBtn);
-
     function _syncUpgradeBtn() {
       const btn = document.getElementById('nav-upgrade-btn');
       if (!btn) return;
