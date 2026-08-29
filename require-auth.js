@@ -36,7 +36,8 @@
     reveal();
   }
 
-  document.addEventListener('magiclab:auth:ready', (e) => onAuthResolved(e.detail.profile));
+  let resolved = false;
+  document.addEventListener('magiclab:auth:ready', (e) => { resolved = true; onAuthResolved(e.detail.profile); });
 
   // Signed out (or trial-expired) while already on a gated page (e.g.
   // clicked "Sign out" in another tab) — kick them out immediately
@@ -46,12 +47,20 @@
     if (!window.MLSkipPaywall && !window.MagicLabAuth.hasFullAccess()) redirectToPricing();
   });
 
-  // Safety net: if auth.js fails to load (CDN hiccup, offline, etc.)
-  // the 'ready' event never fires and the page would stay hidden
-  // forever. Fall back to a hard check after a few seconds.
-  setTimeout(() => {
-    if (!window.MagicLabAuth?.isLoggedIn()) { redirectToSignIn(); return; }
-    if (!window.MLSkipPaywall && !window.MagicLabAuth.hasFullAccess()) { redirectToPricing(); return; }
-    reveal();
-  }, 6000);
+  // Safety net: if auth.js fails to load entirely (CDN hiccup, offline,
+  // etc.) the 'ready' event never fires and the page would stay hidden
+  // forever. auth.js's own init chain — load the Supabase script from its
+  // CDN, restore the session, fetch the profile row — is several network
+  // round trips, which can genuinely take longer than a few seconds on a
+  // slow/cold mobile connection (first visit, nothing cached yet). Treating
+  // "hasn't finished initializing" the same as "not logged in" was bouncing
+  // real signed-in users to the sign-in page on exactly that kind of load —
+  // so poll instead of assuming failure at a fixed short timeout, and only
+  // give up once window.MagicLabAuth genuinely never shows up.
+  (function pollFallback(waited) {
+    if (resolved) return;
+    if (window.MagicLabAuth) { onAuthResolved(window.MagicLabAuth.getProfile()); return; }
+    if (waited >= 20000) { redirectToSignIn(); return; }
+    setTimeout(() => pollFallback(waited + 500), 500);
+  })(0);
 })();
