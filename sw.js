@@ -2,7 +2,20 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v64'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v65'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+// v65: require-auth.js — the 6s "auth not resolved yet" safety-net fallback
+// was indistinguishable from "not logged in" on a slow/cold mobile
+// connection (auth.js's init chain is several network round trips), so a
+// genuinely signed-in user could get bounced to the sign-in page; replaced
+// with a poll that only gives up after 20s of window.MagicLabAuth never
+// appearing. auth-modal.css/js — signed-in user pill is now just the
+// initials avatar + chevron on desktop too (previously full name), and the
+// dropdown menu's stacking/positioning bugs on index.html (translucent,
+// mispositioned on mobile) are fixed. model-mage.html/model-mage-circuits.html
+// — Circuit Simulator hidden from the picker and direct-link-guarded until
+// its bugs are fixed. code-conjurer.html/java-genie.html/web-wizard.html —
+// mobile layouts rebuilt around a bottom Lesson/Code/Output(or Canvas/
+// Preview) tab bar instead of stacking everything into one scrolling page.
 // v64: free trial + Curro Durbanville verification. profiles gains
 // trial_ends_at (30 days from signup, backfilled for existing users) and
 // cdv_status ('none'/'pending'/'verified'/'rejected', auto-flagged
