@@ -793,19 +793,15 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       MOBILE LAYOUT  ≤ 700px
-       Switch from locked-viewport two-column to scrollable single-column
+       MOBILE LAYOUT  ≤ 860px — same pattern as Code Conjurer: one
+       full-height "screen" at a time (Code / Canvas), switched with a
+       bottom tab bar, instead of stacking both panels and scrolling
+       past the whole editor to reach the drawing board.
     ══════════════════════════════════════════════════════════════ */
-    @media (max-width: 700px) {
+    #mobileTabBar { display: none; }
 
-      /* Let the whole page scroll naturally */
-      html, body { height: auto; overflow: auto; }
-
-      #appShell {
-        height: auto;
-        overflow: visible;
-        min-height: 100vh;
-      }
+    @media (max-width: 860px) {
+      html, body, #appShell { height: 100%; overflow: hidden; }
 
       /* Header: stack into centred rows instead of overlapping */
       #appHeader {
@@ -818,53 +814,33 @@
       h1.app-title { font-size: 18px; }
       .hdr-btn, .home-btn { font-size: 10px; padding: 4px 8px; }
 
-      /* Stack columns vertically, no fixed height */
+      /* Single column, full remaining height — whichever of leftCol/
+         rightCol is active fills the screen above the tab bar. */
       #mainGrid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        height: auto;
-        min-height: 0;
-        overflow: visible;
-        padding: 8px 10px 16px;
-        gap: 12px;
+        grid-template-rows: 1fr;
+        overflow: hidden;
+        padding: 8px 10px;
+        gap: 0;
       }
 
-      /* Left column: natural height */
-      #leftCol {
-        overflow: visible;
-        min-height: 0;
-        height: auto;
-      }
+      #leftCol, #rightCol { overflow-y: auto; min-height: 0; }
+      #appShell.mobile-view-code #rightCol,
+      #appShell.mobile-view-canvas #leftCol { display: none; }
 
       /* Editor panel: tall enough to write comfortably */
-      #editorPanel { height: auto; min-height: 0; }
+      .editor-wrap { height: 280px; min-height: 0; flex: none; }
 
-      .editor-wrap {
-        height: 280px;
-        min-height: 0;
-        flex: none;
-      }
-
-      /* Output panel: shorter on mobile */
+      /* Output panel: shorter on mobile, under the editor in the Code tab */
       #outputWindow { height: 110px; }
 
-      /* Right column: natural height */
-      #rightCol {
-        overflow: visible;
-        height: auto;
-        min-height: 0;
-      }
-
-      /* Canvas: use aspect-ratio to size itself, not flex-fill */
-      #canvasPanel {
-        height: auto;
-        flex: none;
-      }
-      .canvas-outer {
-        max-height: none;
-        width: calc(100% - 24px);
-        aspect-ratio: 76 / 48;
-      }
+      /* Canvas panel keeps its desktop flex-fill + aspect-ratio sizing —
+         #rightCol now has the full screen height to itself in the Canvas
+         tab, same as it does on desktop. A narrow portrait screen can't
+         fill that height with a landscape-ratio canvas, so auto-margin it
+         to center in the leftover space below the header, instead of
+         leaving it pinned to the top with dead space underneath. */
+      .canvas-outer { margin-top: auto; margin-bottom: auto; }
 
       /* Cheat sheet: allow more height on mobile */
       .cheat-list { max-height: 200px; }
@@ -872,6 +848,26 @@
       /* Tutorial and challenges overlays already use fixed + 95vw — fine on mobile */
       #tutorialBox { border-radius: 12px; }
       .chal-grid { grid-template-columns: 1fr; }
+
+      #mobileTabBar {
+        display: flex; flex-shrink: 0; align-items: stretch;
+        border-top: 1px solid rgba(255,255,255,0.09);
+        background: rgba(8,12,26,0.97); backdrop-filter: blur(10px);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      .mobile-tab-btn {
+        flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 4px 7px; border: none; background: none; cursor: pointer;
+        font-family: "Cabinet Grotesk", sans-serif; font-size: 10.5px; font-weight: 700;
+        color: rgba(221,225,240,0.40); transition: color 130ms; position: relative;
+      }
+      .mobile-tab-btn.active { color: #a5b4fc; }
+
+      .ml-contact-fab { bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
+    }
+    @media (max-width: 640px) {
+      #appHeader { padding: 8px 10px; }
+      h1.app-title { font-size: 16px; }
     }
 
 
@@ -1115,6 +1111,17 @@
 
     </div><!-- /rightCol -->
   </div><!-- /mainGrid -->
+
+  <!-- Mobile-only bottom nav: shown/hidden entirely by CSS media query -->
+  <nav id="mobileTabBar">
+    <button class="mobile-tab-btn active" id="mtCode" data-mtab="code">
+      <i data-lucide="code-2" style="width:18px;height:18px;"></i> Code
+    </button>
+    <button class="mobile-tab-btn" id="mtCanvas" data-mtab="canvas">
+      <i data-lucide="pencil-ruler" style="width:18px;height:18px;"></i> Canvas
+    </button>
+  </nav>
+
   <!-- ══ CHALLENGES OVERLAY ══ -->
   <div id="challengesOverlay" class="hidden">
     <div id="challengesBox">
@@ -3604,6 +3611,19 @@ const positionReadout   = document.getElementById("positionReadout");
 const directionReadout  = document.getElementById("directionReadout");
 const penReadout        = document.getElementById("penReadout");
 const speedSlider       = document.getElementById("speedSlider");
+
+// ── Mobile bottom tab bar (Code / Canvas) — same pattern as Code Conjurer's
+// Lesson/Code/Output bar, so a phone shows one full-height panel at a time
+// instead of the whole editor + canvas stacked and scrolled past.
+const appShellEl    = document.getElementById("appShell");
+const mobileTabBtns = document.querySelectorAll(".mobile-tab-btn");
+function setMobileTab(tab) {
+  mobileTabBtns.forEach(b => b.classList.toggle("active", b.dataset.mtab === tab));
+  appShellEl.classList.toggle("mobile-view-code",   tab === "code");
+  appShellEl.classList.toggle("mobile-view-canvas", tab === "canvas");
+}
+mobileTabBtns.forEach(btn => btn.addEventListener("click", () => setMobileTab(btn.dataset.mtab)));
+setMobileTab("code");
 const speedValue        = document.getElementById("speedValue");
 const canvasOuter       = document.getElementById("canvasOuter");
 const drawingSvg        = document.getElementById("drawingSvg");
@@ -4614,6 +4634,7 @@ async function executeCommands(commands) {
 // ── Run / Reset ───────────────────────────────────────────────────────────────
 function runCode() {
   if (isRunning) return;
+  setMobileTab('canvas');
   resetTurtle(true);
   clearOutput("Checking your code…");
   const parsed = parseCommands(codeEditor.value);
