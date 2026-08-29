@@ -2,7 +2,32 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v66'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v67'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+// v67: site-wide account-button consistency audit across every tool/hub
+// page. Two distinct bugs: (1) Code Conjurer, Java Genie, Web Wizard,
+// AI Oracle, Computer Codex all placed the button in the header's CENTER
+// column instead of the right column, alongside every other page's
+// top-right placement — moved it into .hdr-right (last item) on all five.
+// (2) 10 pages never had it at all: Drawing Druid, Math Magician's grade-
+// picker hub, Robot Realm, Science Sage, Spike Spellcaster, Tech Tower, and
+// all four Model Mage pages loaded auth.js/require-auth.js but never
+// auth-modal.css/auth-modal.js, so there was no [data-ml-auth] element and
+// no way for a signed-in user to see their account or reach the dropdown
+// menu on any of them — added the includes and a button matching each
+// page's own nav pattern (nav-right, hdr-right, or a small inline wrapper
+// where neither existed, using a flex spacer where one was already present
+// for a trailing-content element). Also fixed a mobile-only regression the
+// audit surfaced: Science Sage's nav-right had 4 items in an unwrapped row,
+// which on a phone pushed the new account button off-screen entirely —
+// hardest-hit page, fixed by hiding the least-essential item (Resources)
+// under 640px, matching the same "drop the extra pill, keep the account
+// button reachable" pattern already used on the main landing page. wro-mat-
+// planner/index.html and elementary.html are NOT in this pass — they load
+// no auth infrastructure at all and aren't linked from the site's own
+// navigation, so adding a full auth stack there needs a decision first,
+// not just a fix pass. Verified with Playwright (geometry checks, not just
+// visual) across all 15 changed pages at both 1440px and 390px — every one
+// now renders on-screen, top-right, with a working dropdown.
 // v66: web-wizard.html — the Live Preview's Tablet/Mobile size buttons set a
 // fixed device-width pixel size on the iframe with no way to scale or scroll
 // it into view, so on a phone Tablet was unusable (clipped, no scrolling)

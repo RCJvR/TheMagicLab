@@ -125,10 +125,18 @@
     .cur-pill.active{background:rgba(255,255,255,0.09);color:#fff}
     footer{margin-top:auto;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
     .footer-copy{font-size:13px;color:rgba(210,218,245,0.28)}
-    @media(max-width:640px){nav{padding:16px 20px}.hero{padding:48px 20px 36px}.pathway{margin:0 20px 36px}.section-row{padding:0 20px}.strands{padding:0 20px 40px;grid-template-columns:1fr}.continue-wrap{padding:0 20px}.path-dropdown{margin:0 20px 36px}footer{padding:20px}}
+    @media(max-width:640px){nav{padding:16px 20px}.hero{padding:48px 20px 36px}.pathway{margin:0 20px 36px}.section-row{padding:0 20px}.strands{padding:0 20px 40px;grid-template-columns:1fr}.continue-wrap{padding:0 20px}.path-dropdown{margin:0 20px 36px}footer{padding:20px}
+      /* .nav-right was overflowing off-screen on a phone with 4 items
+         (language toggle, Resources, Back, account button) all in one
+         un-wrapped row — Resources is the least essential of the four, so
+         drop it first to guarantee the account button stays reachable. */
+      .nav-right a.nav-link { display: none; }
+    }
   </style>
+<link rel="stylesheet" href="../auth-modal.css">
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
 <script src="../lang-toggle.js"></script>
 </head>
 <body>
@@ -138,6 +146,7 @@
       <span id="mlLangToggle"></span>
       <a href="resources.html" class="nav-link" data-af-html='<i data-lucide="library" style="width:13px;height:13px;"></i> Hulpbronne'><i data-lucide="library" style="width:13px;height:13px;"></i> Resources</a>
       <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px;"></i> Terug na Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px;"></i> Back to Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;"></i> Sign In</button>
     </div>
   </nav>
 
