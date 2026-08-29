@@ -75,20 +75,12 @@
 .ml-user-menu-sep { height: 1px; margin: 5px 6px; background: rgba(255,255,255,0.08); }
 .ml-user-menu-signout:hover { background: rgba(244,63,94,0.14); color: #fda4af; }
 
-/* On desktop there's room for the name, so drop the avatar circle instead
-   and keep the pill down to just the name + chevron — one less visual
-   element in the header without losing the "who am I signed in as" cue. */
-@media (min-width: 641px) {
-  .ml-user-avatar { display: none; }
-}
+/* Just the avatar initials + chevron everywhere — same compact pill on
+   desktop and mobile, no full display name shown in the header at all. */
+.ml-user-name { display: none; }
 
-/* On a phone the full display name can eat most of the header's width.
-   Here the avatar circle earns its keep as a compact stand-in for the
-   name, so keep it and drop the name text instead — the menu still
-   opens from it exactly the same way. */
 @media (max-width: 640px) {
   .ml-user-chip { padding: 3px 6px; gap: 4px; }
-  .ml-user-name { display: none; }
   .ml-user-menu { right: -4px; }
 }
 
