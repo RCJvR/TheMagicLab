@@ -519,6 +519,9 @@
       <div class="app-icon"><i data-lucide="wand-2" style="width:17px;height:17px;"></i></div>
       <h1 class="app-title">Code Conjurer</h1>
       <span class="grade-badge">Grade 10–12 IT</span>
+      <button id="showWelcomeBtn" class="icon-btn" title="How this page works">
+        <i data-lucide="help-circle" style="width:14px;height:14px;"></i>
+      </button>
     </div>
     <div class="hdr-center">
       <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#fda4af;border-color:rgba(190,18,60,0.30);background:rgba(190,18,60,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
@@ -2076,6 +2079,10 @@ lesGradeBtns.forEach(btn => {
 // Purely additive: the CSS classes this drives only mean anything inside
 // the max-width:860px media query, so none of this affects desktop, where
 // leftCol/rightCol/lessonOverlay are already all reachable at once.
+document.getElementById('showWelcomeBtn')?.addEventListener('click', () => {
+  window.MagicLabWelcome?.show('code-conjurer');
+});
+
 const appShellEl       = document.getElementById('appShell');
 const mobileTabBtns    = document.querySelectorAll('.mobile-tab-btn');
 const lessonBody       = document.getElementById('lessonBody');

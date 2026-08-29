@@ -84,7 +84,7 @@
         { icon: '🧩', label: 'Predict the output & spot the bug quizzes' },
       ],
       cta: 'Open Code Conjurer',
-      tip: 'Click "Lessons" in the toolbar to open the Grade 10 lesson panel.'
+      tip: 'Three modes: Lesson, Code, and Output — switch with the tabs at the bottom (or the panels side-by-side on desktop). Pressing Run always jumps you straight to Output.'
     },
     'math-magician': {
       icon:    '🔢',
