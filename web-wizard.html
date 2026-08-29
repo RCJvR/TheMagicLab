@@ -272,7 +272,12 @@
     }
 
     #previewFrame {
-      flex: 1; width: 100%; border: none; background: #fff;
+      /* min-height:0 matters in a short viewport (e.g. a phone in landscape):
+         an <iframe> with no height attribute has a default intrinsic height
+         (~150px in most browsers) that otherwise floors its flex-computed
+         size, overflowing .preview-outer whenever less than ~150px is
+         actually available. */
+      flex: 1; width: 100%; min-height: 0; border: none; background: #fff;
       display: block;
     }
 
@@ -439,12 +444,20 @@
       /* Hide the resize handle — not useful on mobile */
       #resizeHandle { display: none; }
 
-      #leftCol, #rightCol { min-height: 0; }
+      /* min-width:0 matters here: the Tablet/Mobile preview iframe below is
+         explicitly sized to its real device width (768px/375px) and only
+         visually shrunk with a CSS transform, which does NOT shrink its
+         contribution to min-content sizing — without min-width:0 somewhere
+         in this chain, that 768px iframe forces #rightCol (and the whole
+         page) to grow wide enough to fit it un-scaled, causing horizontal
+         overflow of the entire app on a narrow phone screen even though
+         the iframe itself renders at the intended smaller visual size. */
+      #leftCol, #rightCol { min-height: 0; min-width: 0; }
       #appShell.mobile-view-code #rightCol,
       #appShell.mobile-view-preview #leftCol { display: none; }
 
       .editor-wrap { flex: 1; height: auto; }
-      .preview-outer { flex: 1; height: auto; }
+      .preview-outer { flex: 1; height: auto; min-width: 0; }
 
       /* Status bar: truncate on small screens */
       #statusBar { font-size: 9px; gap: 10px; padding: 4px 10px; }
@@ -1409,7 +1422,7 @@ function setMobileTab(tab) {
     mobileTab = tab;
     appShellEl.classList.toggle("mobile-view-code",    tab === "code");
     appShellEl.classList.toggle("mobile-view-preview", tab === "preview");
-    if (tab === "preview") refreshPreview();
+    if (tab === "preview") { refreshPreview(); applyPreviewSize(); }
   }
 }
 mobileTabBtns.forEach(btn => btn.addEventListener("click", () => setMobileTab(btn.dataset.mtab)));
@@ -1610,23 +1623,61 @@ resetButton.addEventListener('click', () => {
 });
 
 // ── Preview size buttons ──────────────────────────────────────────────────────
-const sizeBtns = document.querySelectorAll('.size-btn');
+// Tablet/Mobile render the iframe at its real device width (so the student's
+// own responsive CSS breakpoints trigger correctly) then scale the whole
+// thing down with a CSS transform to fit whatever room is actually
+// available — the same technique browser dev tools use — instead of a fixed
+// pixel width that just got clipped by .preview-outer's overflow:hidden on
+// any screen narrower than the preset. That was unusable on a phone: Tablet
+// had no way to scroll to the clipped-off part, and even Mobile's 375px
+// could be wider than the visible preview panel.
+const sizeBtns    = document.querySelectorAll('.size-btn');
+const browserBar  = previewOuter.querySelector('.browser-bar');
 const sizeMap = {
-  desktop: { width: '100%',  label: 'Desktop' },
-  tablet:  { width: '768px', label: 'Tablet (768px)' },
-  mobile:  { width: '375px', label: 'Mobile (375px)' },
+  desktop: { width: null, label: 'Desktop' },
+  tablet:  { width: 768,  label: 'Tablet (768px)' },
+  mobile:  { width: 375,  label: 'Mobile (375px)' },
 };
+let currentSize = 'desktop';
+
+function applyPreviewSize() {
+  const cfg = sizeMap[currentSize];
+  if (!cfg.width) {
+    previewFrame.style.flex      = '';   // back to the CSS default (flex:1 — fills .preview-outer)
+    previewFrame.style.transform = 'none';
+    previewFrame.style.width     = '100%';
+    previewFrame.style.height    = '';
+    previewSizeLabel.textContent = cfg.label;
+    return;
+  }
+  const availW = previewOuter.clientWidth;
+  const availH = previewOuter.clientHeight - browserBar.offsetHeight;
+  if (availW <= 0 || availH <= 0) return; // panel not visible right now (e.g. mobile Code tab) — reapplied on switching back to Preview
+  const scale = Math.min(1, availW / cfg.width);
+  // flex:1's flex-basis:0% would otherwise force the iframe's actual (pre-
+  // transform) height to fill .preview-outer regardless of the explicit
+  // height set below, since flex-grow ignores an item's own height when
+  // distributing space — opt out of flex sizing so the explicit width/
+  // height (and therefore the scale math) actually takes effect.
+  previewFrame.style.flex      = 'none';
+  previewFrame.style.width     = cfg.width + 'px';
+  previewFrame.style.height    = (availH / scale) + 'px';
+  previewFrame.style.transform = `scale(${scale})`;
+  previewFrame.style.transformOrigin = 'top left';
+  previewSizeLabel.textContent = scale < 1 ? `${cfg.label} · ${Math.round(scale * 100)}%` : cfg.label;
+}
 
 sizeBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     sizeBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const cfg = sizeMap[btn.dataset.size];
-    previewFrame.style.width    = cfg.width;
-    previewFrame.style.maxWidth = cfg.width;
-    previewSizeLabel.textContent = cfg.label;
+    currentSize = btn.dataset.size;
+    applyPreviewSize();
   });
 });
+
+window.addEventListener('resize', applyPreviewSize);
+window.addEventListener('orientationchange', () => setTimeout(applyPreviewSize, 100));
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
 editorTab.addEventListener('click', () => {
@@ -1699,6 +1750,7 @@ document.addEventListener('mousemove', e => {
   const delta   = e.clientX - dragStartX;
   const newW    = Math.max(280, Math.min(800, dragStartW + delta));
   mainGrid.style.gridTemplateColumns = `${newW}px 4px 1fr`;
+  applyPreviewSize();
 });
 document.addEventListener('mouseup', () => {
   if (!dragging) return;

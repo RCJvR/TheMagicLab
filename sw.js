@@ -2,7 +2,21 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v65'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v66'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+// v66: web-wizard.html — the Live Preview's Tablet/Mobile size buttons set a
+// fixed device-width pixel size on the iframe with no way to scale or scroll
+// it into view, so on a phone Tablet was unusable (clipped, no scrolling)
+// and Mobile was slightly wider than the visible panel. Now the iframe
+// renders at its real device width (so the previewed page's own responsive
+// breakpoints still trigger correctly) and is scaled down with a CSS
+// transform to fit whatever room is actually available, recalculated on
+// resize/rotation and on switching to the mobile Preview tab. Fixed two
+// underlying layout bugs surfaced by that change: the un-scaled iframe
+// width was still forcing #rightCol's min-content size wider than the
+// screen (missing min-width:0 up the flex/grid chain), and an unstyled
+// <iframe>'s ~150px default intrinsic height was flooring its size in a
+// very short viewport (a phone in landscape), overflowing the preview
+// panel even at the default Desktop size.
 // v65: require-auth.js — the 6s "auth not resolved yet" safety-net fallback
 // was indistinguishable from "not logged in" on a slow/cold mobile
 // connection (auth.js's init chain is several network round trips), so a
