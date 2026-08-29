@@ -100,6 +100,12 @@
 
     /* ── Navigation ── */
     nav {
+      /* `body > *` above gives every top-level section the same z-index:1,
+         so with equal stacking the section right after nav (.hero) paints
+         OVER nav in DOM order — including the user menu dropdown, which
+         hangs below the nav bar into the hero's space. Bump nav above its
+         siblings so its dropdown always stays on top. */
+      position: relative; z-index: 20;
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 52px;
       border-bottom: 1px solid var(--border);
