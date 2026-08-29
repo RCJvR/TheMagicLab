@@ -380,8 +380,8 @@
     const existing = document.getElementById('ml-xp-nav-chip');
     if (existing) { existing.remove(); }
 
-    // Find the user chip to insert after
-    const userChip = document.querySelector('.ml-user-chip, [data-ml-auth]');
+    // Find the user chip/menu wrapper to insert next to.
+    const userChip = document.querySelector('.ml-user-chip-wrap, [data-ml-auth]');
     if (!userChip) return;
 
     const chip = document.createElement('div');
@@ -413,7 +413,12 @@
       </span>` : ''}
     `;
 
-    userChip.parentNode.insertBefore(chip, userChip.nextSibling);
+    // Insert BEFORE the user chip/menu, not after: the account menu's dropdown
+    // is anchored right:0 off the user chip itself, so the chip needs to stay
+    // the last (rightmost) item in nav-right. Putting the wider XP/streak pill
+    // after it used to push the user chip left of center on a wrapped mobile
+    // nav row, sending its right-anchored dropdown menu off the left edge.
+    userChip.parentNode.insertBefore(chip, userChip);
   }
 
   // ── TOAST NOTIFICATION ───────────────────────────────────
