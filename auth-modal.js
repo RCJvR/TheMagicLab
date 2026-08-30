@@ -403,6 +403,14 @@
           ? profile.display_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
           : profile.email[0].toUpperCase();
         const isTeacher = profile.role === 'teacher';
+        // Hardcoded to the one admin account, matching the same UUID check
+        // the admin_list_cdv/admin_set_cdv_status SQL functions use
+        // server-side — this link is just a navigation convenience, not a
+        // security boundary; admin.html's actual protection is those RPC
+        // calls checking auth.uid() themselves, so showing/hiding this link
+        // client-side can't grant access to anyone the server wouldn't
+        // already allow in.
+        const isAdmin = profile.id === '31a201b0-f426-455a-973a-b1862001b748';
         // Replace content in-place rather than swapping the element itself.
         // target is now the positioning wrapper for a trigger button + a
         // dropdown menu that replaces what used to be a permanently-visible
@@ -420,6 +428,7 @@
             <a href="/account.html" class="ml-user-menu-item"><span class="ml-umi-icon">👤</span> My Account</a>
             <a href="/dashboard-student.html" class="ml-user-menu-item"><span class="ml-umi-icon">📊</span> My Progress</a>
             ${isTeacher ? '<a href="/dashboard-teacher.html" class="ml-user-menu-item"><span class="ml-umi-icon">🎓</span> Teacher Dashboard</a>' : ''}
+            ${isAdmin ? '<a href="/admin.html" class="ml-user-menu-item"><span class="ml-umi-icon">🛡️</span> CDV Verification</a>' : ''}
             <div class="ml-user-menu-sep"></div>
             <button class="ml-user-menu-item ml-user-menu-signout" id="ml-signout-btn" type="button"><span class="ml-umi-icon">🚪</span> Sign out</button>
           </div>`;
