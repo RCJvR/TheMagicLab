@@ -1004,6 +1004,12 @@ window.WRO_PROGRAM = (function() {
     const definedFunctions = new Set(); // `def NAME(...):` names seen, so later bare NAME() calls can be
                                          // recognised as "known helper, presumably no motion" instead of
                                          // an unparseable line
+    const capturedFunctionBodies = {};  // NAME -> { startIdx, baseIndent } for every def/async def seen --
+                                         // lets a later run_task(NAME()) or multitask(..., NAME(), ...)
+                                         // call re-parse that body FOR REAL instead of treating it as a
+                                         // no-op helper call, since this file's own async/multitask
+                                         // pattern is how it runs a drive alongside an attachment-motor
+                                         // move (e.g. drive forward while lifting an arm).
 
     function attachmentMotorSlot(name) {
       let idx = motorSlots.indexOf(name);
@@ -1027,7 +1033,10 @@ window.WRO_PROGRAM = (function() {
       // Code with any trailing "# comment" stripped, for matching calls by
       // their full argument list ($-anchored) -- comments themselves are
       // still matched against `trimmed` below, unaffected by this.
-      const codePart = trimmed.replace(/\s*#.*$/, '').trim();
+      // A leading "await " (this file's async helpers use it on every
+      // motor/drive call inside a multitask()) carries no motion meaning
+      // of its own -- stripped so every recognizer below still matches.
+      const codePart = trimmed.replace(/\s*#.*$/, '').trim().replace(/^await\s+/, '');
 
       const prevArc = pendingArc; pendingArc = null;
       const prevOpenLoopDrive = pendingOpenLoopDrive; pendingOpenLoopDrive = null;
@@ -1451,6 +1460,41 @@ window.WRO_PROGRAM = (function() {
       return i;
     }
 
+    // Gathers a (possibly multi-line) multitask(...) call's raw text
+    // starting at startIdx by tracking paren depth across lines until it
+    // returns to 0, then splits the inside on top-level commas -- same
+    // idea as splitArgs, just spanning several physical lines first.
+    function collectMultitaskArgs(startIdx) {
+      let text = '';
+      let depth = 0, started = false, i = startIdx;
+      for (; i < lines.length; i++) {
+        const line = lines[i];
+        for (const ch of line) {
+          if (ch === '(') { depth++; started = true; }
+          else if (ch === ')') depth--;
+        }
+        text += line + '\n';
+        if (started && depth === 0) { i++; break; }
+      }
+      const m = text.match(/multitask\(([\s\S]*)\)\s*$/);
+      return { args: m ? splitArgs(m[1].trim()) : [], nextIdx: i };
+    }
+    // A bare zero-arg call to a captured def/async def -- resolves to that
+    // function's own steps by re-parsing its captured body, instead of a
+    // no-op or an unparseable-line warning. Depth-guarded against runaway
+    // recursion on a pathological/circular input file.
+    let inlineDepth = 0;
+    function tryInlineUserFunctionCall(cleanedExpr) {
+      const m = cleanedExpr.match(/^(\w+)\(\)$/);
+      if (!m) return null;
+      const body = capturedFunctionBodies[m[1]];
+      if (!body || inlineDepth > 8) return null;
+      inlineDepth++;
+      const { steps } = parseBlock(body.startIdx, body.baseIndent);
+      inlineDepth--;
+      return steps;
+    }
+
     function parseBlock(startIdx, baseIndent) {
       const steps = [];
       let i = startIdx;
@@ -1482,6 +1526,7 @@ window.WRO_PROGRAM = (function() {
           let j = i + 1;
           while (j < lines.length && lines[j].trim() === '') j++;
           if (j < lines.length && countIndent(lines[j]) > indent) {
+            if (defMatch) capturedFunctionBodies[defMatch[1]] = { startIdx: j, baseIndent: countIndent(lines[j]) };
             const nextIdx = skipBlockBody(j, countIndent(lines[j]));
             if (blockMatch[1] !== 'def') {
               warnings.push(`Skipped block (not traced): "${trimmed}" -- ${nextIdx - i - 1} line(s) inside`);
@@ -1491,6 +1536,46 @@ window.WRO_PROGRAM = (function() {
           }
           // no indented body followed (e.g. file/scope ends right after) --
           // just skip the header line itself
+          i++;
+          continue;
+        }
+
+        // multitask(a, b, ...): this file's own convention for running an
+        // attachment-motor move alongside a drive (e.g. lift the arm WHILE
+        // driving forward) -- can't truly overlap two steps here, so each
+        // argument becomes its own sequential step instead. Each argument
+        // is itself a call, possibly to another captured async helper
+        // (open_grab_lift_move() nests open_grab_lift() this way), so it's
+        // resolved the same way run_task() below resolves its target.
+        const multitaskMatch = trimmed.match(/^(?:await\s+)?multitask\(/);
+        if (multitaskMatch) {
+          const { args: rawArgs, nextIdx } = collectMultitaskArgs(i);
+          rawArgs.forEach((argExpr) => {
+            const cleaned = argExpr.replace(/\s+/g, ' ').trim();
+            if (!cleaned) return;
+            const inlined = tryInlineUserFunctionCall(cleaned);
+            if (inlined) { steps.push(...inlined); return; }
+            // A null result here is treated exactly like a null result from
+            // a top-level statement (silently skipped, no warning) -- it's
+            // very often a legitimate no-op, e.g. an attachment motor
+            // already sitting at its target angle from an earlier call
+            // (delta === 0), not an unparseable line.
+            const step = parseSingle(cleaned);
+            if (step) steps.push(step);
+          });
+          i = nextIdx;
+          continue;
+        }
+
+        // run_task(NAME()): actually runs the named async function -- if
+        // its body was captured above, re-parse it for real (recursively
+        // resolving any multitask()/nested run_task-style calls inside)
+        // instead of leaving it as an unparseable line.
+        const runTaskMatch = trimmed.match(/^run_task\((\w+)\(\)\)$/);
+        if (runTaskMatch) {
+          const inlined = tryInlineUserFunctionCall(`${runTaskMatch[1]}()`);
+          if (inlined) steps.push(...inlined);
+          else warnings.push(`Could not parse line: "${trimmed}" -- run_task() target function body wasn't found`);
           i++;
           continue;
         }
