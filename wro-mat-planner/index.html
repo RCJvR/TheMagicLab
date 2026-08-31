@@ -124,6 +124,7 @@
     <div class="program-config" id="programConfig" style="display:none;">
       <label>Wheel Ø <input type="number" id="cfgWheelDiameter" value="56" min="10" max="300" step="1"> mm</label>
       <label>Axle track <input type="number" id="cfgAxleTrack" value="114" min="10" max="500" step="1"> mm</label>
+      <label title="Where the drive wheels sit along the robot's length, relative to its centre (+ = toward the front, - = toward the back). Purely for the wheel markers drawn on the robot -- turns still rotate about the footprint's own centre.">Wheel fwd offset <input type="number" id="cfgWheelForwardOffset" value="0" min="-200" max="200" step="5"> mm</label>
       <label>Left motor <select id="cfgPortLeft"></select></label>
       <label>Right motor <select id="cfgPortRight"></select></label>
       <label>Front motor <select id="cfgPortFront"></select></label>
@@ -155,6 +156,7 @@
       <select id="stepType">
         <option value="drive">Drive fwd/back</option>
         <option value="turn">Turn</option>
+        <option value="arc">Pivot / arc turn</option>
         <option value="squareToWall">Drive into wall to square</option>
         <option value="unfold">Unfold to open size</option>
         <option value="frontMotor">Front motor</option>
@@ -176,14 +178,24 @@
       <span class="program-field" data-for="drive">
         <input type="number" id="stepSpeed" placeholder="default" min="0" step="10"> mm/s
       </span>
-      <span class="program-field" data-for="turn,frontMotor,backMotor">
+      <span class="program-field" data-for="turn,arc,frontMotor,backMotor">
         <input type="number" id="stepDegrees" value="90" min="0" max="3600" step="5"> °
       </span>
-      <span class="program-field" data-for="turn">
+      <span class="program-field" data-for="turn,arc">
         <select id="stepDirection"><option value="right">Right (CW)</option><option value="left">Left (CCW)</option></select>
       </span>
       <span class="program-field" data-for="turn">
         <input type="number" id="stepTurnRate" placeholder="default" min="0" step="10"> °/s
+      </span>
+      <span class="program-field" data-for="arc">
+        <select id="stepArcPivot" title="Which wheel stays put -- the OTHER wheel drives, sweeping the robot's centre around it. Independent of turn direction: either wheel can pivot either way.">
+          <option value="left">Pivot on left wheel</option>
+          <option value="right">Pivot on right wheel</option>
+          <option value="custom">Custom radius</option>
+        </select>
+        <span id="stepArcRadiusField" style="display:none;">
+          <input type="number" id="stepArcRadius" value="150" step="5" title="Signed radius, mm -- matches drive_base.arc()'s own convention. Positive/negative controls which side the curve bows toward; verify against your build."> mm radius
+        </span>
       </span>
       <span class="program-field" data-for="frontMotor,backMotor">
         <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>

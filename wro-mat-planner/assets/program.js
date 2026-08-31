@@ -41,6 +41,10 @@ window.WRO_PROGRAM = (function() {
       lineSensorForwardMm: 80, lineSensorLateralMm: 0,
       lineSensor2ForwardMm: 80, lineSensor2LateralMm: 40,
       lineFollowSteerGain: 2.0,
+      // Where the drive wheels sit along the robot's length, for the wheel
+      // markers drawn on it -- purely visual, doesn't change turn kinematics
+      // (those still rotate about the footprint's own centre).
+      wheelForwardOffsetMm: 0,
     };
   }
   function defaultWalker() {
@@ -1272,6 +1276,7 @@ window.WRO_PROGRAM = (function() {
     const lineSensor2ForwardInput = document.getElementById('cfgLineSensor2Forward');
     const lineSensor2LateralInput = document.getElementById('cfgLineSensor2Lateral');
     const lineSteerGainInput = document.getElementById('cfgLineSteerGain');
+    const wheelForwardOffsetInput = document.getElementById('cfgWheelForwardOffset');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
       PORTS.forEach(p => {
@@ -1295,6 +1300,7 @@ window.WRO_PROGRAM = (function() {
     if (lineSensor2ForwardInput) lineSensor2ForwardInput.value = state.config.lineSensor2ForwardMm;
     if (lineSensor2LateralInput) lineSensor2LateralInput.value = state.config.lineSensor2LateralMm;
     if (lineSteerGainInput) lineSteerGainInput.value = state.config.lineFollowSteerGain;
+    if (wheelForwardOffsetInput) wheelForwardOffsetInput.value = state.config.wheelForwardOffsetMm;
 
     function syncConfig() {
       state.config = {
@@ -1311,12 +1317,14 @@ window.WRO_PROGRAM = (function() {
         lineSensor2ForwardMm: lineSensor2ForwardInput ? (parseFloat(lineSensor2ForwardInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm,
         lineSensor2LateralMm: lineSensor2LateralInput ? (parseFloat(lineSensor2LateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2LateralMm,
         lineFollowSteerGain: lineSteerGainInput ? (parseFloat(lineSteerGainInput.value) || DEFAULT_LINE_CONFIG.lineFollowSteerGain) : DEFAULT_LINE_CONFIG.lineFollowSteerGain,
+        wheelForwardOffsetMm: wheelForwardOffsetInput ? (parseFloat(wheelForwardOffsetInput.value) || 0) : 0,
       };
       persist(state);
     }
     [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
      straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput,
-     lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput].filter(Boolean).forEach(el => {
+     lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput,
+     wheelForwardOffsetInput].filter(Boolean).forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
@@ -1429,6 +1437,14 @@ window.WRO_PROGRAM = (function() {
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
     const stepPathReverse = document.getElementById('stepPathReverse');
+    const stepArcPivot = document.getElementById('stepArcPivot');
+    const stepArcRadiusField = document.getElementById('stepArcRadiusField');
+    const stepArcRadius = document.getElementById('stepArcRadius');
+    if (stepArcPivot && stepArcRadiusField) {
+      const syncArcPivot = () => { stepArcRadiusField.style.display = stepArcPivot.value === 'custom' ? '' : 'none'; };
+      stepArcPivot.addEventListener('change', syncArcPivot);
+      syncArcPivot();
+    }
     const stepLineMode = document.getElementById('stepLineMode');
     const stepLineSingleFields = document.getElementById('stepLineSingleFields');
     const stepLineMaxDist = document.getElementById('stepLineMaxDist');
@@ -1507,6 +1523,18 @@ window.WRO_PROGRAM = (function() {
         step.direction = directionSel.value;
         const rate = parseFloat(stepTurnRateInput.value);
         if (!isNaN(rate) && rate > 0) step.turnRateDegS = rate;
+      } else if (t === 'arc') {
+        // 'arc' steps store a single SIGNED degrees (positive = right/CW),
+        // not a separate direction field like 'turn' -- fold the shared
+        // direction select into that sign here.
+        const angle = Math.abs(parseFloat(degreesInput.value) || 0);
+        step.degrees = directionSel.value === 'left' ? -angle : angle;
+        if (stepArcPivot.value === 'custom') {
+          step.radius = parseFloat(stepArcRadius.value) || 0;
+        } else {
+          const halfAxle = (state.config.axleTrack || 114) / 2;
+          step.radius = stepArcPivot.value === 'right' ? halfAxle : -halfAxle;
+        }
       } else if (t === 'unfold' || t === 'squareToWall') {
         // no parameters
       } else if (t === 'lineFollowPath') {
@@ -1881,9 +1909,14 @@ window.WRO_PROGRAM = (function() {
         const cfg = state.config || {};
         const axleHalf = Math.min(halfW * 1.15, (cfg.axleTrack || 114) / 2);
         const wheelH = Math.min(36, halfL * 0.7);
+        // Forward offset is a local -Y shift (forward = -Y in this
+        // unrotated frame, same convention as the direction arrow) --
+        // clamped loosely so an extreme value can't draw the wheel way
+        // outside even a short footprint.
+        const wheelY = Math.max(-halfL * 1.1, Math.min(halfL * 1.1, -(cfg.wheelForwardOffsetMm || 0)));
         [-1, 1].forEach(side => {
           const wheel = svg('rect', {
-            x: side * axleHalf - 5, y: -wheelH / 2, width: 10, height: wheelH,
+            x: side * axleHalf - 5, y: wheelY - wheelH / 2, width: 10, height: wheelH,
             class: 'walker-wheel',
           }, g);
           svg('title', {}, wheel).textContent = `${side < 0 ? 'Left' : 'Right'} wheel (port ${side < 0 ? cfg.portLeft : cfg.portRight})`;
