@@ -135,13 +135,53 @@ window.WRO_PROGRAM = (function() {
   }
   // Real robot code calibrates Color.BLACK/WHITE/etc to its own sensor
   // under its own lighting -- there's no exact equivalent for a printed
-  // mat photo, so a target colour is approximated as a reflectance
-  // threshold instead of trying to match the exact calibrated value.
-  function reflectMatchesTarget(reflect, targetColourName) {
+  // mat photo, so black/white/gray are approximated as a reflectance
+  // (brightness) threshold instead of trying to match the exact
+  // calibrated value. Hue colours (red/yellow/green/blue) can't be told
+  // apart by brightness at all, so those go through an HSV hue check on
+  // the mat image's own RGB pixel instead.
+  function rgbToHsv(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+    let h = 0;
+    if (d !== 0) {
+      if (max === r) h = ((g - b) / d) % 6;
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
+    return { h, s: max === 0 ? 0 : d / max, v: max };
+  }
+  // Hue ranges (degrees) for the mat's own game-piece colours -- wide
+  // enough to tolerate print/lighting variation, narrow enough that
+  // adjacent colours (e.g. green vs blue) don't overlap.
+  const STOP_HUE_RANGES = {
+    red: [[0, 12], [348, 360]],
+    yellow: [[38, 68]],
+    green: [[85, 165]],
+    blue: [[195, 255]],
+  };
+  function pixelMatchesTarget(pixel, targetColourName) {
     const name = (targetColourName || '').toLowerCase();
-    if (name.includes('black')) return reflect < 30;
-    if (name.includes('white') || name.includes('gray') || name.includes('grey')) return reflect > 70;
-    return false; // an unrecognised colour name can't be matched -- caller should skip the stop-condition instead of guessing
+    if (name.includes('black')) return pixel.reflect < 30;
+    const { h, s, v } = rgbToHsv(pixel.r, pixel.g, pixel.b);
+    if (name.includes('white') || name.includes('gray') || name.includes('grey')) {
+      // Saturation-gated, not just brightness -- real code here checks the
+      // CLASSIFIED .color(), not raw reflection(), and a vivid colour like
+      // yellow can be just as bright as white (both near-100 reflectance)
+      // while still being clearly a different colour by hue/saturation.
+      return pixel.reflect > 70 && s < 0.35;
+    }
+    const ranges = STOP_HUE_RANGES[name];
+    if (!ranges) return false; // an unrecognised colour name can't be matched -- caller should skip the stop-condition instead of guessing
+    if (s < 0.25 || v < 0.15) return false; // too washed-out/dark for hue to mean anything
+    return ranges.some(([lo, hi]) => h >= lo && h <= hi);
+  }
+  function isRecognisedStopColour(name) {
+    if (!name) return false;
+    const n = name.toLowerCase();
+    return n.includes('black') || n.includes('white') || n.includes('gray') || n.includes('grey') || !!STOP_HUE_RANGES[n];
   }
 
   // ---- kinematics: 0deg = up/north, positive = clockwise (matches the
@@ -287,7 +327,7 @@ window.WRO_PROGRAM = (function() {
   //   here) -- adjust it in Robot config if the wobble looks off.
   // - A target Color.X can't be matched to its exact original calibration
   //   (that was tuned to a real sensor under real lighting); it's
-  //   approximated as a reflectance threshold instead (reflectMatchesTarget).
+  //   approximated as a brightness/hue threshold instead (pixelMatchesTarget).
   const LINE_FOLLOW_DT = 0.01;
   function simulateLineFollow(startPose, step, config) {
     const cfg = config || DEFAULT_LINE_CONFIG;
@@ -364,12 +404,12 @@ window.WRO_PROGRAM = (function() {
         // on sensor A, but stop when the OPPOSITE sensor crosses a cross-line).
         const sampleAt = (fwd, lat) => {
           const p = sensorWorldPos(pose, fwd, lat);
-          return sampleMatPixel(p.x, p.y).reflect;
+          return sampleMatPixel(p.x, p.y);
         };
-        const matchesAt = (reflect) => {
-          if (step.stopReflectBelow != null) return reflect < step.stopReflectBelow;
-          if (step.stopReflectAbove != null) return reflect > step.stopReflectAbove;
-          return reflectMatchesTarget(reflect, step.stopColour);
+        const matchesAt = (pixel) => {
+          if (step.stopReflectBelow != null) return pixel.reflect < step.stopReflectBelow;
+          if (step.stopReflectAbove != null) return pixel.reflect > step.stopReflectAbove;
+          return pixelMatchesTarget(pixel, step.stopColour);
         };
         const which = step.stopSensorCheck || 'A';
         const matched = which === 'both'
@@ -1199,12 +1239,12 @@ window.WRO_PROGRAM = (function() {
           kp: parseFloat(args[10] !== undefined ? args[10] : (args[8] !== undefined ? args[8] : 1)),
           kd: parseFloat(args[11] !== undefined ? args[11] : (args[9] !== undefined ? args[9] : 3)),
         };
-        if (colourName && (colourName.includes('black') || colourName.includes('white') || colourName.includes('gray') || colourName.includes('grey'))) {
+        if (colourName && isRecognisedStopColour(colourName)) {
           step.stopColour = colourName;
-          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- colour match is a reflectance threshold (see simulateLineFollow), not this file's exact Color.${colourName.toUpperCase()} calibration`);
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- colour match is a brightness/hue approximation (see simulateLineFollow), not this file's exact Color.${colourName.toUpperCase()} calibration`);
         } else {
           // no matchable target colour -- maxDistanceMm (already set above) is just a hard cap, no early stop
-          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger that couldn't be matched to a reflectance threshold -- simulated using its max_distance_mm=${step.maxDistanceMm} mm as a hard cap instead`);
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger that couldn't be matched to a recognised colour -- simulated using its max_distance_mm=${step.maxDistanceMm} mm as a hard cap instead`);
         }
         return step;
       }
@@ -1276,7 +1316,7 @@ window.WRO_PROGRAM = (function() {
           stopSensorCheck: sensorCheckFromArg(a[3], 'A'),
           maxDistanceMm: noLimitSafetyCapMm,
         };
-        if (colourName && (colourName.includes('black') || colourName.includes('white') || colourName.includes('gray') || colourName.includes('grey'))) {
+        if (colourName && isRecognisedStopColour(colourName)) {
           step.stopColour = colourName;
         }
         notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- no source distance bound, drives straight (gyro heading-lock simplified to holding current heading) until its colour trigger, capped at ${noLimitSafetyCapMm} mm as a simulator safety limit`);
@@ -1293,7 +1333,7 @@ window.WRO_PROGRAM = (function() {
           stopSensorCheck: sensorCheckFromArg(a[3], 'A'),
           maxDistanceMm: noLimitSafetyCapMm,
         };
-        if (colourName && (colourName.includes('black') || colourName.includes('white') || colourName.includes('gray') || colourName.includes('grey'))) {
+        if (colourName && isRecognisedStopColour(colourName)) {
           step.stopColour = colourName;
         }
         notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- no source distance bound, drives straight until its colour trigger, capped at ${noLimitSafetyCapMm} mm as a simulator safety limit`);
