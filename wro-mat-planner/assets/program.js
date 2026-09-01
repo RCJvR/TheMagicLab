@@ -230,11 +230,17 @@ window.WRO_PROGRAM = (function() {
   // with a flat wall squares the chassis flush, so heading snaps to
   // whichever cardinal direction (0/90/180/270) it was already closest to,
   // correcting any accumulated drift rather than preserving it.
-  function applySquareToWall(pose, footprint) {
+  function applySquareToWall(pose, footprint, reverse) {
     const MAT_W = window.WRO_MAT.width, MAT_H = window.WRO_MAT.height;
     const heading = ((Math.round(pose.heading / 90) * 90) % 360 + 360) % 360;
     const rad = heading * Math.PI / 180;
-    const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+    // A recognised open-loop drive_base.drive(speed, 0) can have a NEGATIVE
+    // speed (driving backward into the wall behind the robot's heading,
+    // e.g. a reversing "starting square"), not just forward -- reverse
+    // flips which wall the robot's rear actually contacts, since fwd below
+    // otherwise always assumes forward travel in the current heading.
+    const dir = reverse ? -1 : 1;
+    const fwd = { x: dir * Math.sin(rad), y: dir * -Math.cos(rad) };
     const halfL = footprint.l / 2;
     let x = pose.x, y = pose.y;
     if (Math.abs(fwd.y) > 0.5) { // heading 0 or 180 -- driving toward the top/bottom wall
@@ -458,7 +464,7 @@ window.WRO_PROGRAM = (function() {
       return applyArcStep(pose, step.radius, step.degrees);
     }
     if (step.type === 'squareToWall') {
-      return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+      return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT, step.reverse);
     }
     if (step.type === 'lineFollowPath') {
       return applyLineFollowPathStep(pose, step, 1);
@@ -502,7 +508,7 @@ window.WRO_PROGRAM = (function() {
       return applyArcStep(pose, step.radius, step.degrees * frac);
     }
     if (step.type === 'squareToWall') {
-      const target = applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+      const target = applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT, step.reverse);
       let dh = target.heading - pose.heading;
       dh = ((dh + 540) % 360) - 180; // shortest-path heading delta, handles the 0/360 wrap
       return {
@@ -655,7 +661,7 @@ window.WRO_PROGRAM = (function() {
       case 'arc':
         return `Arc ${step.degrees >= 0 ? 'right' : 'left'} ${Math.abs(step.degrees)}° (radius ${step.radius} mm)`;
       case 'squareToWall':
-        return 'Drive into wall to square (snap heading to nearest cardinal, edge stops at wall)';
+        return `Drive into wall to square${step.reverse ? ' (reverse)' : ''} (snap heading to nearest cardinal, edge stops at wall)`;
       case 'lineFollowPath': {
         const len = pathTotalLength(step.points || []);
         return `Follow traced path "${step.label || 'path'}" (${(step.points || []).length} pts, ${len.toFixed(0)} mm)${step.reversed ? ' [reversed]' : ''}`;
@@ -1106,8 +1112,9 @@ window.WRO_PROGRAM = (function() {
       // heading to square -- so this is trusted MORE than a plain
       // speed x time estimate would be, not treated as a rough guess.
       if (prevOpenLoopDrive && (m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
-        notes.push(`Recognised as a wall-square: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${parseFloat(m[1])} ms -- simulated as driving to the wall in the current heading's direction and snapping heading to the nearest cardinal, not a distance estimate`);
-        return { type: 'squareToWall' };
+        const reverse = prevOpenLoopDrive.speed < 0;
+        notes.push(`Recognised as a wall-square: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${parseFloat(m[1])} ms -- simulated as driving ${reverse ? 'backward' : 'forward'} to the wall ${reverse ? 'behind' : 'in front of'} the current heading and snapping heading to the nearest cardinal, not a distance estimate`);
+        return { type: 'squareToWall', reverse };
       }
 
       if ((m = codePart.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
@@ -1439,7 +1446,7 @@ window.WRO_PROGRAM = (function() {
         const note = m[1];
         let n;
         if (note === 'Unfold to open size') return { type: 'unfold' };
-        if (note.startsWith('Drive into wall to square')) return { type: 'squareToWall' };
+        if (note.startsWith('Drive into wall to square')) return { type: 'squareToWall', reverse: note.startsWith('Drive into wall to square (reverse)') };
         if ((n = note.match(new RegExp(`^Pick up (${colourAlt}) tile$`)))) return { type: 'pickupTile', colour: n[1] };
         if ((n = note.match(/^Place tile in frame slot (\d+)$/))) return { type: 'placeTile', slot: parseInt(n[1], 10) - 1 };
         if ((n = note.match(new RegExp(`^Settle (\\d+)\\u00d7 (${colourAlt}) cement$`)))) return { type: 'settleCement', count: parseInt(n[1], 10), colour: n[2] };
