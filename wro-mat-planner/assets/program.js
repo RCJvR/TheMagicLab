@@ -539,7 +539,7 @@ window.WRO_PROGRAM = (function() {
   // comments, ...) get a short fixed dwell so they're visible in the
   // animation instead of vanishing instantly.
   const DEFAULT_ACTION_DWELL_S = 0.6;
-  function stepDuration(step, config) {
+  function stepDuration(step, config, startPose) {
     switch (step.type) {
       case 'drive':
       case 'lineFollow': {
@@ -564,12 +564,20 @@ window.WRO_PROGRAM = (function() {
         return pathTotalLength(step.points || []) / Math.max(1, speed);
       }
       case 'lineFollowSim': {
-        // Nominal (full maxDistanceMm) duration -- if a colour-stop cuts it
-        // short in practice, playback shows a brief pause at the end
-        // rather than a wrong total length; computing the real stopped
-        // distance here would need the step's starting pose, which this
-        // function isn't given.
         const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+        // An open-ended colour-stop call (drive_until_color2,
+        // dualLineFollowToIntersection) has no real source distance, so it
+        // gets parsed with a generous maxDistanceMm safety cap (e.g.
+        // 3000mm) rather than its real, usually much shorter, stopping
+        // distance. Using that cap as the nominal duration made these
+        // steps play back at their full worst-case length even when the
+        // simulated colour trigger fires almost immediately -- given the
+        // step's actual starting pose, run the same simulation once here
+        // and time it by the real distance travelled instead.
+        if (startPose) {
+          const result = simulateLineFollow(startPose, step, config);
+          return result.distanceTravelled / Math.max(1, speed);
+        }
         return (step.maxDistanceMm || 0) / Math.max(1, speed);
       }
       case 'setHeading':
@@ -2263,6 +2271,11 @@ window.WRO_PROGRAM = (function() {
       let playFrac = 0;
       let playRAF = null;
       let playLastT = null;
+      // stepDuration re-simulates a lineFollowSim step's real stopping
+      // distance from its starting pose (see stepDuration's own comment) --
+      // memoised by step index so playTick's per-frame (~60/s) calls reuse
+      // one simulation per step instead of re-running it every frame.
+      let lineFollowDurCache = { idx: -1, dur: 0 };
 
       function clientToMM(e) {
         const r = stage.getBoundingClientRect();
@@ -2524,7 +2537,17 @@ window.WRO_PROGRAM = (function() {
         let idx = state.walker.stepIndex;
         let remaining = dtSeconds * speed;
         while (remaining > 0 && idx < state.steps.length) {
-          const dur = Math.max(0.001, stepDuration(state.steps[idx], state.config));
+          const curStep = state.steps[idx];
+          let dur;
+          if (curStep.type === 'lineFollowSim' && state.walker.start) {
+            if (lineFollowDurCache.idx !== idx) {
+              const startPose = poseAtIndex(state.steps, state.walker.start, idx, footprintForState, state.config);
+              lineFollowDurCache = { idx, dur: Math.max(0.001, stepDuration(curStep, state.config, startPose)) };
+            }
+            dur = lineFollowDurCache.dur;
+          } else {
+            dur = Math.max(0.001, stepDuration(curStep, state.config));
+          }
           const newElapsed = playFrac * dur + remaining;
           if (newElapsed >= dur) {
             remaining = newElapsed - dur;
