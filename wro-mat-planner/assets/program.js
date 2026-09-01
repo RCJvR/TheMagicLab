@@ -45,7 +45,39 @@ window.WRO_PROGRAM = (function() {
       // markers drawn on it -- purely visual, doesn't change turn kinematics
       // (those still rotate about the footprint's own centre).
       wheelForwardOffsetMm: 0,
+      // Free-running speed of ONE drive motor at 100% duty cycle. Only used
+      // to convert a duty-cycle-driven helper's speed into mm/s (see
+      // dutyPctToMmS) -- a line follower written against motor.dc() states
+      // its speed as a 0-100 duty percentage, not mm/s, so without this the
+      // two can't be compared at all. ~1000 deg/s suits a SPIKE Prime
+      // large/medium motor under light load; lower it for a geared-down or
+      // heavily-loaded build.
+      motorMaxSpeedDegS: 1000,
     };
+  }
+  // duty% -> mm/s along the ground, via the wheel's own circumference.
+  // Deliberately a straight-line (no load curve) conversion: the point is to
+  // get these steps into the right ballpark and the same UNITS as every
+  // other speed here, not to model motor torque.
+  function dutyPctToMmS(dutyPct, config) {
+    const wheelDia = (config && config.wheelDiameter) || 56;
+    const maxDegS = (config && config.motorMaxSpeedDegS) || 1000;
+    return (dutyPct / 100) * maxDegS * (Math.PI * wheelDia) / 360;
+  }
+  // A lineFollowSim step's travel speed in mm/s. A step parsed from a
+  // duty-cycle helper keeps its raw source `dutyPct`, and the duty -> mm/s
+  // conversion is resolved HERE against the live config rather than being
+  // baked in at parse time -- so retuning wheel size or motor max speed in
+  // Robot config re-times an already-imported route instead of needing a
+  // re-import. speedMmS (already mm/s at the source) wins when there's no
+  // duty figure. Sign is meaningful: negative = driving in reverse.
+  function lineFollowSpeedMmS(step, config) {
+    if (step.dutyPct != null && isFinite(step.dutyPct) && step.dutyPct !== 0) {
+      const mag = dutyPctToMmS(Math.abs(step.dutyPct), config);
+      return step.dutyPct < 0 ? -mag : mag;
+    }
+    if (step.speedMmS != null && step.speedMmS !== 0) return step.speedMmS;
+    return 100;
   }
   function defaultWalker() {
     return { ref: 'center', start: null, stepIndex: 0 };
@@ -341,7 +373,7 @@ window.WRO_PROGRAM = (function() {
     // some reference code (e.g. approaching a colour target in reverse) --
     // magnitude sets the tick size, sign sets travel direction, same split
     // a plain 'drive' step's signed distanceMm already implies.
-    const speedSigned = (step.speedMmS != null && step.speedMmS !== 0) ? step.speedMmS : 100;
+    const speedSigned = lineFollowSpeedMmS(step, cfg);
     const speed = Math.abs(speedSigned);
     const driveDir = speedSigned < 0 ? -1 : 1;
     const kp = step.kp != null ? step.kp : 1;
@@ -564,7 +596,10 @@ window.WRO_PROGRAM = (function() {
         return pathTotalLength(step.points || []) / Math.max(1, speed);
       }
       case 'lineFollowSim': {
-        const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+        // Magnitude only -- a reverse (negative-speed) follow still takes
+        // positive time. Reading step.speedMmS raw here used to miss that
+        // and fall back to 100 mm/s for every reverse colour-stop step.
+        const speed = Math.abs(lineFollowSpeedMmS(step, config));
         // An open-ended colour-stop call (drive_until_color2,
         // dualLineFollowToIntersection) has no real source distance, so it
         // gets parsed with a generous maxDistanceMm safety cap (e.g.
@@ -1037,6 +1072,24 @@ window.WRO_PROGRAM = (function() {
     // trigger with no source distance argument at all -- generous enough
     // to not truncate a real run, just a simulator infinite-loop guard.
     const noLimitSafetyCapMm = 3000;
+    // The line-following helpers below steer with motor.dc(), so their
+    // `speed` argument is a 0-100 DUTY CYCLE PERCENTAGE, not mm/s (the
+    // drive_base.drive()-based helpers' speed genuinely is mm/s). Taking a
+    // duty figure as mm/s simulates e.g. "70" as a 70 mm/s crawl instead of
+    // the ~380 mm/s it really produces, so convert here, at parse time,
+    // the same way pivot radii are derived from axleTrack above. Sign is
+    // preserved: a negative duty means driving in reverse.
+    let dutyConvNoted = false;
+    function dutySpeedToMmS(rawArg) {
+      const duty = parseFloat(rawArg);
+      if (!isFinite(duty)) return undefined;
+      const mmS = dutyPctToMmS(Math.abs(duty), config) * (duty < 0 ? -1 : 1);
+      if (!dutyConvNoted) {
+        dutyConvNoted = true;
+        notes.push(`Line-follow helpers steer with motor.dc(), so their speed argument is a duty-cycle percentage, not mm/s -- simulated by converting duty to ground speed against a ${(config.wheelDiameter || 56)} mm wheel at ${((config.motorMaxSpeedDegS) || 1000)} deg/s per 100% duty (e.g. ${duty}% -> ${Math.round(Math.abs(mmS))} mm/s). Tune "motor max speed" in Robot config if these segments run fast or slow against a real run.`);
+      }
+      return mmS;
+    }
 
     // A full export carries this exact marker right before the real route --
     // skip straight past the docstring/imports/hub/motor boilerplate to the
@@ -1374,7 +1427,8 @@ window.WRO_PROGRAM = (function() {
         const a = namedCallArgs(args, ['speed', 'intersection', 'black_threshold', 'min_distance_mm', 'accel_distance_mm', 'kp', 'kd', 'stop_mode']);
         const step = {
           type: 'lineFollowSim', mode: 'twoSensor',
-          speedMmS: a[0] !== undefined ? parseFloat(a[0]) : undefined,
+          speedMmS: a[0] !== undefined ? dutySpeedToMmS(a[0]) : undefined,
+          dutyPct: a[0] !== undefined ? parseFloat(a[0]) : undefined,
           stopSensorCheck: sensorCheckFromArg(a[1], 'both'),
           stopReflectBelow: a[2] !== undefined ? parseFloat(a[2]) : 15,
           minTravelDistMm: a[3] !== undefined ? parseFloat(a[3]) : 0,
@@ -1392,7 +1446,8 @@ window.WRO_PROGRAM = (function() {
         return {
           type: 'lineFollowSim', mode: 'twoSensor',
           maxDistanceMm: parseFloat(a[0]),
-          speedMmS: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
           kp: parseFloat(a[2] !== undefined ? a[2] : 0.8),
           kd: parseFloat(a[3] !== undefined ? a[3] : 2.0),
         };
@@ -1410,7 +1465,8 @@ window.WRO_PROGRAM = (function() {
         return {
           type: 'lineFollowSim', mode: 'single',
           maxDistanceMm: parseFloat(a[0]),
-          speedMmS: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
           targetReflection: a[2] !== undefined ? parseFloat(a[2]) : 50,
           side: a[3] !== undefined ? unquote(a[3]) : 'left',
           sensorChoice: trackChoice,
@@ -1426,7 +1482,8 @@ window.WRO_PROGRAM = (function() {
         return {
           type: 'lineFollowSim', mode: 'single',
           maxDistanceMm: parseFloat(a[0]),
-          speedMmS: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
           targetReflection: a[2] !== undefined ? parseFloat(a[2]) : 50,
           side: a[3] !== undefined ? unquote(a[3]) : 'left',
           sensorChoice: sensorChoiceFromArg(a[4], 'A'),
@@ -1714,6 +1771,7 @@ window.WRO_PROGRAM = (function() {
     const lineSensor2LateralInput = document.getElementById('cfgLineSensor2Lateral');
     const lineSteerGainInput = document.getElementById('cfgLineSteerGain');
     const wheelForwardOffsetInput = document.getElementById('cfgWheelForwardOffset');
+    const motorMaxSpeedInput = document.getElementById('cfgMotorMaxSpeed');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
       PORTS.forEach(p => {
@@ -1738,6 +1796,7 @@ window.WRO_PROGRAM = (function() {
     if (lineSensor2LateralInput) lineSensor2LateralInput.value = state.config.lineSensor2LateralMm;
     if (lineSteerGainInput) lineSteerGainInput.value = state.config.lineFollowSteerGain;
     if (wheelForwardOffsetInput) wheelForwardOffsetInput.value = state.config.wheelForwardOffsetMm;
+    if (motorMaxSpeedInput) motorMaxSpeedInput.value = state.config.motorMaxSpeedDegS;
 
     function syncConfig() {
       state.config = {
@@ -1755,13 +1814,14 @@ window.WRO_PROGRAM = (function() {
         lineSensor2LateralMm: lineSensor2LateralInput ? (parseFloat(lineSensor2LateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2LateralMm,
         lineFollowSteerGain: lineSteerGainInput ? (parseFloat(lineSteerGainInput.value) || DEFAULT_LINE_CONFIG.lineFollowSteerGain) : DEFAULT_LINE_CONFIG.lineFollowSteerGain,
         wheelForwardOffsetMm: wheelForwardOffsetInput ? (parseFloat(wheelForwardOffsetInput.value) || 0) : 0,
+        motorMaxSpeedDegS: motorMaxSpeedInput ? (parseFloat(motorMaxSpeedInput.value) || 1000) : (state.config.motorMaxSpeedDegS || 1000),
       };
       persist(state);
     }
     [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
      straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput,
      lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput,
-     wheelForwardOffsetInput].filter(Boolean).forEach(el => {
+     wheelForwardOffsetInput, motorMaxSpeedInput].filter(Boolean).forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
