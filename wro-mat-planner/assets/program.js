@@ -574,6 +574,16 @@ window.WRO_PROGRAM = (function() {
       }
       case 'setHeading':
         return 0.3; // near-instant -- re-anchoring the gyro reference doesn't move the robot
+      case 'frontMotor':
+      case 'backMotor': {
+        // Real attachment-motor moves scale with their own commanded speed
+        // and angle just like drive/turn -- falling back to the flat dwell
+        // below for these would make a fast, tiny correctional move (a few
+        // degrees at high speed) play back exactly as slowly as a large
+        // one, which reads as the sim "randomly slowing down" at pickups.
+        const speed = (step.speedDegS && step.speedDegS > 0) ? step.speedDegS : 200;
+        return Math.abs(step.degrees) / Math.max(1, speed);
+      }
       default:
         return DEFAULT_ACTION_DWELL_S;
     }
@@ -854,12 +864,12 @@ window.WRO_PROGRAM = (function() {
           break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
-          L.push(`front_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
+          L.push(`front_motor.run_angle(${step.speedDegS || 200}, ${signed}, then=Stop.HOLD)  # ${note}`);
           break;
         }
         case 'backMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
-          L.push(`back_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
+          L.push(`back_motor.run_angle(${step.speedDegS || 200}, ${signed}, then=Stop.HOLD)  # ${note}`);
           break;
         }
         case 'lineFollow':
@@ -1168,13 +1178,15 @@ window.WRO_PROGRAM = (function() {
       }
       if (/^drive_base\.(stop|hold|brake)\(\)/.test(codePart)) return null; // no motion info on its own
 
-      if ((m = codePart.match(/^front_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
-        const v = parseFloat(m[1]);
-        return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      if ((m = codePart.match(/^front_motor\.run_angle\(([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const speedDegS = parseFloat(m[1]);
+        const v = parseFloat(m[2]);
+        return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v), speedDegS };
       }
-      if ((m = codePart.match(/^back_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
-        const v = parseFloat(m[1]);
-        return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      if ((m = codePart.match(/^back_motor\.run_angle\(([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const speedDegS = parseFloat(m[1]);
+        const v = parseFloat(m[2]);
+        return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v), speedDegS };
       }
       if ((m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
         return { type: 'wait', seconds: parseFloat(m[1]) / 1000 };
@@ -1421,8 +1433,8 @@ window.WRO_PROGRAM = (function() {
       // relative lift/drop step. The first 2 distinct motor variable
       // names seen (that aren't the drive wheels) claim the simulator's
       // 2 generic front/back slots. ----
-      if ((m = codePart.match(/^(\w+)\.run_target\(\s*[\d.]+\s*,\s*(-?[\d.]+)/))) {
-        const [, motorVar, angleStr] = m;
+      if ((m = codePart.match(/^(\w+)\.run_target\(\s*([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const [, motorVar, speedStr, angleStr] = m;
         if (motorVar === 'left_motor' || motorVar === 'right_motor') return null; // drive wheels, not an attachment
         const targetAngle = parseFloat(angleStr);
         const prevAngle = motorAngle[motorVar] || 0;
@@ -1431,7 +1443,8 @@ window.WRO_PROGRAM = (function() {
         if (delta === 0) return null;
         const slot = attachmentMotorSlot(motorVar);
         if (!slot) return null; // warned once already, above
-        return { type: slot === 'front' ? 'frontMotor' : 'backMotor', action: delta < 0 ? 'drop' : 'lift', degrees: Math.abs(delta) };
+        const speedDegS = parseFloat(speedStr);
+        return { type: slot === 'front' ? 'frontMotor' : 'backMotor', action: delta < 0 ? 'drop' : 'lift', degrees: Math.abs(delta), speedDegS };
       }
       if ((m = codePart.match(/^(\w+)\.(run_until_stalled|dc)\(/))) {
         if (m[1] !== 'left_motor' && m[1] !== 'right_motor') {
