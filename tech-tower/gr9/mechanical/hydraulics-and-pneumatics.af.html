@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hidroulika &amp; Pneumatika — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    /* Systems diagram: input -> process -> output */
+    .sys-diagram{display:flex;align-items:stretch;gap:10px;margin:16px 0 20px;flex-wrap:wrap}
+    .sys-box{flex:1;min-width:150px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 16px}
+    .sys-box-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:8px}
+    .sys-box-text{font-size:13px;line-height:1.6;color:rgba(210,218,245,.85)}
+    .sys-arrow{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);flex-shrink:0}
+    @media(max-width:640px){
+      .sys-diagram{flex-direction:column}
+      .sys-arrow{transform:rotate(90deg);padding:2px 0}
+    }
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%}
+    .parts-list{display:flex;flex-direction:column;gap:5px}
+    .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .part-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px;background:rgba(249,115,22,.15);color:var(--accent-light);border:1px solid rgba(249,115,22,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.30);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    /* Hydraulic calculator */
+    .slider-row{margin-bottom:18px}
+    .slider-row label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:rgba(210,218,245,.78);margin-bottom:8px}
+    .slider-row label span{font-family:var(--fm);color:var(--accent-light)}
+    .slider-row input[type=range]{width:100%;accent-color:var(--accent)}
+    .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+    .result-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+    .result-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .result-value{font-weight:800;font-size:19px;color:var(--accent-light)}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .result-grid{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Meganiese Stelsels · Gr 9</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Meganiese Stelsels · Kwartaal 2 · Les 1</div>
+  <h1 class="lesson-title">Hidroulika &amp; Pneumatika</h1>
+  <p class="lesson-sub">Twee spuite en 'n buis kan 'n motor optel. Ontdek hoe vloeistowwe en gasse krag oordra, en hoe silindergrootte krag vir afstand verruil.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="sliders" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Kragoordrag met spuite</h2>
+    <p>Neem twee spuite van dieselfde grootte, verbind hulle met 'n buis, en vul die stelsel met 'n vloeistof. Deur die suier van een spuit (die "dryf-" of "meester-") in te druk, word die vloeistof deur die buis gedwing en druk dit die suier van die ander spuit (die "gedrewe" of "slaaf-") uit. Dit is die eenvoudigste moontlike manier om <strong>krag oor te dra</strong> van een plek na 'n ander sonder enige direkte meganiese skakel.</p>
+    <div class="callout"><strong>Pneumaties teenoor hidroulies:</strong> as die stelsel met <strong>saamgeperste lug</strong> gevul is, is dit 'n <strong>pneumatiese</strong> stelsel — gasse is <strong>saampersbaar</strong>, so 'n deel van jou stoot word "opgeslurp" om die lug kleiner saam te pers voordat dit die ander suier beweeg, wat 'n effens veerkragtige, sponserige gevoel gee. As die stelsel met <strong>water</strong> (of olie) gevul is, is dit 'n <strong>hidrouliese</strong> stelsel — vloeistowwe is <strong>onsaampersbaar</strong>, so 'n stoot op een suier word byna onmiddellik en presies na die ander oorgedra, met 'n stewige, direkte gevoel.</div>
+
+    <h2>Pascal se beginsel</h2>
+    <p><strong>Pascal se beginsel</strong> bepaal dat druk wat op een deel van 'n geslote vloeistof uitgeoefen word, eweredig en sonder verlies na elke ander deel van die stelsel oorgedra word. Dit is die rede waarom hidrouliese stelsels betroubaar werk: watter druk jy ook al by die dryfsuier toepas, word eweredig deur die vloeistof gevoel en werk op elke oppervlak wat dit raak, insluitend die gedrewe suier.</p>
+
+    <h2>Kragvermenigvuldiging en kragverdeling</h2>
+    <p>As die twee spuite (silinders) <strong>dieselfde grootte</strong> is, druk een suier oor 'n sekere afstand die ander suier oor dieselfde afstand uit, met dieselfde krag — niks word gewen of verloor nie. Maar as die silinders <strong>verskillende groottes</strong> is, gebeur iets interessants: omdat dieselfde <em>volume</em> vloeistof deur albei silinders beweeg, moet 'n klein silinder baie verder beweeg as 'n groot silinder om dieselfde volume te verskuif.</p>
+    <ul>
+      <li><strong>Klein dryfsilinder, groot gedrewe silinder → kragvermenigvuldiging (MV &gt; 1):</strong> deur 'n klein suier 'n lang afstand te druk, word 'n groot krag oor 'n kort afstand aan die ander kant geproduseer. Dit is hoe 'n hidrouliese domkrag 'n swaar motor optel met 'n klein, met die hand bediende pomp.</li>
+      <li><strong>Groot dryfsilinder, klein gedrewe silinder → kragverdeling (MV &lt; 1):</strong> deur 'n groot suier 'n kort afstand te druk, word 'n kleiner krag oor 'n langer afstand aan die ander kant geproduseer. Nuttig wanneer jy meer beweging eerder as meer krag nodig het.</li>
+    </ul>
+    <div class="key-fact">Jy kan nooit meer krag ÉN meer afstand gratis kry nie — 'n hidrouliese stelsel ruil altyd een vir die ander. Krag-uit × afstand-uit ≈ Krag-in × afstand-in.</div>
+
+    <h2>Die hidrouliese pers en hidrouliese domkrag</h2>
+    <p>'n <strong>Hidrouliese pers</strong> gebruik 'n intreesuier met 'n klein deursnee en 'n uittreesuier met 'n groot deursnee om krag te vermenigvuldig, sodat 'n matige stoot 'n enorme drukkrag kan opwek — gebruik om motors te verpletter, metaalpanele te pers, of afval saam te pers. 'n <strong>Hidrouliese domkrag</strong> werk op dieselfde manier: deur herhaaldelik 'n klein hefboomsuier te pomp, word klein hoeveelhede olie in 'n baie groter suier onder die motor gedruk, wat geleidelik 'n swaar las met matige handkrag optel. 'n Eenrigtingklep laat meer olie met elke pompslag in, terwyl dit verhoed dat dit terugvloei, sodat die las tussen slae opgetel bly.</p>
+    <div class="callout"><strong>Eenvoudige berekening:</strong> Krag-uit = Krag-in × (Oppervlakte van uittreesuier ÷ Oppervlakte van intreesuier). Byvoorbeeld, as die intreesuier 'n oppervlakte van 2 cm² het en die uittreesuier 'n oppervlakte van 20 cm² (10 keer groter) het, produseer 'n stoot van 50 N op die intreesuier 50 N × (20 ÷ 2) = <strong>500 N</strong> by die uittreesuier.</div>
+
+    <h2>Stelseldiagramme</h2>
+    <p>'n <strong>Stelseldiagram</strong> beskryf hoe 'n toestel werk deur INSET (wat ingaan — bv. 'n persoon wat 'n hefboom pomp), PROSES (wat binne gebeur — bv. olie word van 'n klein silinder deur 'n eenrigtingklep in 'n groot silinder gedruk) en UITSET (die resultaat — bv. 'n swaar las word gelig) te wys. Deur 'n hidrouliese domkrag as 'n stelseldiagram te teken, kan jy die proses duidelik verduidelik sonder om volledige ingenieurstekeninge nodig te hê.</p>
+    <div class="sys-diagram">
+      <div class="sys-box">
+        <div class="sys-box-label">Inset</div>
+        <div class="sys-box-text">'n Persoon pomp die klein handhefboom op en af</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Proses</div>
+        <div class="sys-box-text">Olie word van die klein suier, deur 'n eenrigtingklep, in die groot suier gedruk</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Uitset</div>
+        <div class="sys-box-text">Die groot suier styg, en lig die swaar las (bv. 'n motor)</div>
+      </div>
+    </div>
+
+    <h2>Ontwerpevaluering: geskiktheid vir doel</h2>
+    <p>Sodra 'n oplossing (soos 'n hidrouliese domkrag) ontwerp of gekies is, moet dit teen 'n standaardstel vrae geëvalueer word:</p>
+    <ul>
+      <li>Vir wie is dit?</li>
+      <li>Waarvoor is dit?</li>
+      <li>Sal dit die werk doen?</li>
+      <li>Waarvan behoort dit gemaak te word?</li>
+      <li>Wat behoort dit te kos, en is dit koste-effektief?</li>
+      <li>Lyk dit goed (estetika)?</li>
+      <li>Is dit veilig en maklik vir die eindgebruiker om te gebruik (ergonomie)?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Hidrouliese-persberekenaar</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Stel die deursnee van die intree- (dryf-) en uittree- (gedrewe) suiers in om die kragvermenigvuldigingsverhouding te sien, en hoe ver elke suier beweeg.</p>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap">
+      <canvas id="pressCanvas" height="260"></canvas>
+      <div class="slider-row" style="margin-top:14px">
+        <label>Intreesuier-deursnee <span id="dInVal">20 mm</span></label>
+        <input type="range" id="dIn" min="10" max="60" value="20" step="1" oninput="updatePress()">
+      </div>
+      <div class="slider-row">
+        <label>Uittreesuier-deursnee <span id="dOutVal">80 mm</span></label>
+        <input type="range" id="dOut" min="10" max="120" value="80" step="1" oninput="updatePress()">
+      </div>
+      <div class="slider-row">
+        <label>Krag toegepas by intree <span id="fInVal">50 N</span></label>
+        <input type="range" id="fIn" min="10" max="200" value="50" step="5" oninput="updatePress()">
+      </div>
+    </div>
+    <div>
+      <div class="result-grid">
+        <div class="result-card"><div class="result-label">Area-verhouding (MV)</div><div class="result-value" id="maOut">16.0×</div></div>
+        <div class="result-card"><div class="result-label">Krag-uit</div><div class="result-value" id="forceOut">800 N</div></div>
+        <div class="result-card"><div class="result-label">Intree beweeg</div><div class="result-value" id="distIn">160 mm</div></div>
+        <div class="result-card"><div class="result-label">Uittree beweeg</div><div class="result-value" id="distOut">10 mm</div></div>
+      </div>
+      <div class="part-info" id="pressExplain" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek. Wys alle berekeninge volledig.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Verduidelik die verskil tussen 'n pneumatiese stelsel en 'n hidrouliese stelsel, met verwysing na saampersbaarheid.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Stel Pascal se beginsel in jou eie woorde.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">'n Hidrouliese domkrag het 'n intreesuier met 'n oppervlakte van 4 cm² en 'n uittreesuier met 'n oppervlakte van 40 cm². (a) Bereken die meganiese voordeel (area-verhouding). (b) As 'n krag van 60 N op die intreesuier toegepas word, bereken die krag wat by die uittreesuier geproduseer word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Teken 'n eenvoudige stelseldiagram (Inset → Proses → Uitset) wat beskryf hoe 'n hidrouliese domkrag 'n motor optel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (5 punte)</div><div class="wb-qtext">Lys vyf vrae wat jy moet vra wanneer jy evalueer of 'n hidrouliese-domkrag-ontwerp geskik is vir sy doel.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // pressCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizePress() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizePress==='function') resizePress();
+}
+
+/* ═══════════════════════════════════════════════
+   HYDRAULIC PRESS CALCULATOR
+═══════════════════════════════════════════════ */
+const pressCanvas = document.getElementById('pressCanvas');
+const pressCtx = pressCanvas.getContext('2d');
+let pW, pH;
+function resizePress(){
+  pW = pressCanvas.offsetWidth || 500; pH = 260;
+  pressCanvas.width = pW*devicePixelRatio; pressCanvas.height = pH*devicePixelRatio;
+  pressCtx.setTransform(1,0,0,1,0,0);
+  pressCtx.scale(devicePixelRatio, devicePixelRatio);
+  updatePress();
+}
+
+function drawPress(dIn,dOut,pushFrac){
+  pressCtx.clearRect(0,0,pW,pH);
+  const baseY = pH*0.82;
+  const maxD = Math.max(dIn,dOut,40);
+  const scale = Math.min((pW*0.32)/maxD, 2.6);
+  const rIn = (dIn/2)*scale, rOut = (dOut/2)*scale;
+  const cxIn = pW*0.26, cxOut = pW*0.72;
+  const cylH = 90;
+
+  // tube connecting bases
+  pressCtx.strokeStyle = 'rgba(253,186,116,0.5)';
+  pressCtx.lineWidth = 8;
+  pressCtx.beginPath();
+  pressCtx.moveTo(cxIn, baseY+6);
+  pressCtx.lineTo(cxOut, baseY+6);
+  pressCtx.stroke();
+
+  // fluid fill colour
+  const fluidColor = 'rgba(96,165,250,0.35)';
+  const fluidEdge = 'rgba(147,197,253,0.8)';
+
+  function cylinder(cx, r, pistonTravelFrac){
+    // cylinder body (fixed housing)
+    pressCtx.strokeStyle = 'rgba(253,186,116,0.7)';
+    pressCtx.lineWidth = 3;
+    pressCtx.strokeRect(cx-r, baseY-cylH, r*2, cylH);
+    // fluid level rises as piston pushed in more (for input) or is pushed out (for output) - just show fixed fluid band for clarity
+    const fluidTop = baseY - cylH*0.35;
+    pressCtx.fillStyle = fluidColor;
+    pressCtx.fillRect(cx-r+2, fluidTop, r*2-4, baseY-fluidTop-2);
+    pressCtx.strokeStyle = fluidEdge;
+    pressCtx.lineWidth = 1;
+    pressCtx.strokeRect(cx-r+2, fluidTop, r*2-4, baseY-fluidTop-2);
+    // piston (plunger) position - moves within top portion of cylinder.
+    // A higher pistonTravelFrac means "pushed further in", so it should
+    // move the piston DOWN, toward the fluid — the old formula subtracted
+    // more as the fraction rose, moving it UP and out instead, so the
+    // input piston looked like it was retracting as more force was
+    // dialled in (and the output piston looked like it was sinking as it
+    // should have been rising).
+    const pistonY = baseY - cylH*0.85 + pistonTravelFrac*(cylH*0.5);
+    pressCtx.fillStyle = '#fdba74';
+    pressCtx.fillRect(cx-r-4, pistonY, r*2+8, 10);
+    // rod above piston
+    pressCtx.strokeStyle = '#fdba74';
+    pressCtx.lineWidth = 5;
+    pressCtx.beginPath();
+    pressCtx.moveTo(cx, pistonY);
+    pressCtx.lineTo(cx, pistonY-30);
+    pressCtx.stroke();
+  }
+  cylinder(cxIn, rIn, pushFrac);
+  cylinder(cxOut, rOut, 1-pushFrac*0.3);
+
+  pressCtx.fillStyle = 'rgba(210,218,245,.6)';
+  pressCtx.font = '11px "JetBrains Mono",monospace';
+  pressCtx.textAlign = 'center';
+  pressCtx.fillText('INSET', cxIn, baseY+28);
+  pressCtx.fillText('UITSET', cxOut, baseY+28);
+  pressCtx.textAlign = 'left';
+}
+
+function updatePress(){
+  const dIn = parseFloat(document.getElementById('dIn').value);
+  const dOut = parseFloat(document.getElementById('dOut').value);
+  const fIn = parseFloat(document.getElementById('fIn').value);
+  document.getElementById('dInVal').textContent = dIn+' mm';
+  document.getElementById('dOutVal').textContent = dOut+' mm';
+  document.getElementById('fInVal').textContent = fIn+' N';
+
+  const areaIn = Math.PI*(dIn/2)*(dIn/2);
+  const areaOut = Math.PI*(dOut/2)*(dOut/2);
+  const ma = areaOut/areaIn;
+  const forceOut = fIn*ma;
+  // assume output moves a fixed reference distance of 10mm, input must move ma times further (equal volume)
+  const distOutRef = 10;
+  const distIn = distOutRef*ma;
+
+  document.getElementById('maOut').textContent = ma.toFixed(1)+'×';
+  document.getElementById('forceOut').textContent = Math.round(forceOut)+' N';
+  document.getElementById('distOut').textContent = distOutRef+' mm';
+  document.getElementById('distIn').textContent = Math.round(distIn)+' mm';
+
+  const mode = ma>1 ? 'kragvermenigvuldiging' : ma<1 ? 'kragverdeling' : 'geen verandering';
+  document.getElementById('pressExplain').innerHTML = `
+    <div class="part-name">${mode.charAt(0).toUpperCase()+mode.slice(1)}</div>
+    <div class="part-desc">Deur die intreesuier met ${fIn} N te druk, word ${Math.round(forceOut)} N by die uittree geproduseer. Die uittreesuier se oppervlakte is ${ma.toFixed(1)} keer die intreesuier se oppervlakte, so die krag word ${ma.toFixed(1)}× vermenigvuldig — maar omdat dieselfde volume vloeistof deur albei silinders beweeg, moet die intreesuier ${ma.toFixed(1)}× verder beweeg as wat die uittreesuier beweeg. ${ma>1 ? 'Dit is hoe ’n hidrouliese domkrag ’n swaar las met ’n klein handkrag optel.' : ma<1 ? 'Hier beweeg die klein uittreesuier verder, maar met minder krag as die intree.' : 'Suiers van gelyke grootte dra krag en afstand onveranderd oor.'}</div>`;
+
+  // Push the input piston further down as more force is dialled in, so the
+  // "Force applied at input" slider visibly does something in the diagram
+  // instead of only changing the numbers on the right.
+  const fMin = 10, fMax = 200;
+  const pushFrac = 0.15 + 0.7*((fIn-fMin)/(fMax-fMin));
+  drawPress(dIn, dOut, pushFrac);
+}
+window.addEventListener('resize', resizePress);
+resizePress();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'’n Kragoordragstelsel wat met saamgeperste lug gevul is, staan bekend as ’n:',opts:['Hidrouliese stelsel','Pneumatiese stelsel','Meganiese stelsel','Elektriese stelsel'],ans:1,exp:'’n Pneumatiese stelsel gebruik ’n gas (soos saamgeperste lug), wat saampersbaar is. ’n Hidrouliese stelsel gebruik ’n vloeistof (soos water of olie), wat onsaampersbaar is.'},
+  {text:'Pascal se beginsel bepaal dat druk wat op ’n geslote vloeistof toegepas word:',opts:['As hitte verlore voordat dit ander dele van die stelsel bereik','Eweredig en sonder verlies in alle rigtings na elke deel van die stelsel oorgedra','Slegs oorgedra in die rigting van die toegepaste stoot','Slegs nuttig in pneumatiese, nie hidrouliese, stelsels nie'],ans:1,exp:'Pascal se beginsel: druk wat enige plek in ’n geslote vloeistof uitgeoefen word, word eweredig en onverminderd in alle rigtings deur die vloeistof oorgedra.'},
+  {text:'In ’n hidrouliese domkrag gee ’n klein intreesuier en ’n groot uittreesuier:',opts:['Kragverdeling (MV < 1)','Geen meganiese voordeel hoegenaamd nie','Kragvermenigvuldiging (MV > 1)','Slegs ’n verandering in die rigting van die krag'],ans:2,exp:'’n Groot uittreesuier relatief tot die intreesuier vermenigvuldig krag (MV > 1) — maar die kleiner intreesuier moet ’n baie groter afstand beweeg as die groot uittreesuier.'},
+  {text:'’n Hidrouliese pers het ’n intreesuier-oppervlakte van 5 cm² en ’n uittreesuier-oppervlakte van 50 cm². As 20 N by die intree toegepas word, watter krag word by die uittree geproduseer?',opts:['20 N','100 N','200 N','2 N'],ans:2,exp:'Krag-uit = Krag-in × (Area-uit ÷ Area-in) = 20 N × (50 ÷ 5) = 20 N × 10 = 200 N.'},
+  {text:'Waarom moet die intreesuier in ’n kragvermenigvuldigende hidrouliese stelsel verder beweeg as die uittreesuier?',opts:['Omdat vloeistowwe tydens kragoordrag lek','Omdat dieselfde volume vloeistof deur silinders van verskillende groottes verplaas moet word','Omdat gasse meer as vloeistowwe uitsit','Omdat wrywing die uittreesuier vertraag'],ans:1,exp:'Die volume vloeistof wat uit die intreesilinder gedruk word, moet gelyk wees aan die volume wat die uittreesilinder binnegaan. Aangesien die uittreesilinder ’n groter oppervlakte het, hoef dit slegs ’n kort afstand te beweeg om daardie volume te ontvang, terwyl die nouer intreesuier baie verder moet beweeg.'},
+  {text:'Watter een van hierdie is NIE een van die standaard geskiktheid-vir-doel-evalueringsvrae vir ’n ontwerp nie?',opts:['Sal dit die werk doen?','Wat behoort dit te kos?','Is dit veilig en maklik om te gebruik?','Watter kleur is die verpakkingsboks?'],ans:3,exp:'Standaardevalueringsvrae sluit in vir wie/waarvoor dit is, of dit werk, materiale, koste, estetika, en veiligheid/ergonomie — nie irrelevante besonderhede soos die kleur van die verpakkingsboks nie.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
