@@ -66,28 +66,30 @@
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
 <script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
 </head>
 <body>
   <nav>
     <a href="../index.html" class="nav-logo"><i data-lucide="wrench" style="width:18px;height:18px;flex-shrink:0"></i> The Tech Tower</a>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back to Magic Lab</a>
+      <span id="mlLangToggle"></span>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug na Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back to Magic Lab</a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-tag"><span class="hero-tag-dot"></span>Technology · CAPS · Gr 8–9</div>
-    <h1>Design it. Build it.<br>Make it <em>work.</em></h1>
-    <p class="hero-sub">CAPS-aligned Technology for Grades 8 and 9 — Structures, Mechanical, Electrical &amp; Processing.</p>
-    <div class="hero-features"><span><i data-lucide="book-open" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Theory</span><span><i data-lucide="flask-conical" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Simulation</span><span><i data-lucide="check-circle-2" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Practice</span><span><i data-lucide="pencil" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Workbook</span></div>
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Tegnologie · CAPS · Gr 8–9">Technology · CAPS · Gr 8–9</span></div>
+    <h1 data-af-html="Ontwerp dit. Bou dit.<br>Laat dit <em>werk.</em>">Design it. Build it.<br>Make it <em>work.</em></h1>
+    <p class="hero-sub" data-af="CAPS-belynde Tegnologie vir Grade 8 en 9 — Strukture, Meganies, Elektries &amp; Verwerking.">CAPS-aligned Technology for Grades 8 and 9 — Structures, Mechanical, Electrical &amp; Processing.</p>
+    <div class="hero-features"><span data-af-html='<i data-lucide="book-open" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Teorie'><i data-lucide="book-open" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Theory</span><span data-af-html='<i data-lucide="flask-conical" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Simulasie'><i data-lucide="flask-conical" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Simulation</span><span data-af-html='<i data-lucide="check-circle-2" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Oefening'><i data-lucide="check-circle-2" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Practice</span><span data-af-html='<i data-lucide="pencil" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Werkboek'><i data-lucide="pencil" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Workbook</span></div>
   </section>
 
   <div class="continue-wrap" data-continue-slot></div>
 
   <div class="grade-filter" id="gradeFilter">
-    <button class="grade-filter-btn active" id="gfb_8" onclick="selectGrade('8')"><i data-lucide="graduation-cap" style="width:15px;height:15px;"></i> Grade 8</button>
-    <button class="grade-filter-btn" id="gfb_9" onclick="selectGrade('9')"><i data-lucide="graduation-cap" style="width:15px;height:15px;"></i> Grade 9</button>
+    <button class="grade-filter-btn active" id="gfb_8" onclick="selectGrade('8')"><i data-lucide="graduation-cap" style="width:15px;height:15px;"></i> <span data-af="Graad 8">Grade 8</span></button>
+    <button class="grade-filter-btn" id="gfb_9" onclick="selectGrade('9')"><i data-lucide="graduation-cap" style="width:15px;height:15px;"></i> <span data-af="Graad 9">Grade 9</span></button>
   </div>
 
   <div id="gradeSection8">
@@ -95,7 +97,7 @@
   <div class="section-row" id="grade8">
     <span class="section-label" style="color:var(--accent-light)">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
-      Grade 8 · Technology
+      <span data-af="Graad 8 · Tegnologie">Grade 8 · Technology</span>
     </span>
     <div class="section-line"></div>
   </div>
@@ -103,43 +105,43 @@
   <div class="strands">
     <div class="strand-card" id="grade8-structures">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="construction" style="width:19px;height:19px;"></i></div><span class="strand-tag">Structures · Term 1</span>
+        <div class="strand-icon"><i data-lucide="construction" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Strukture · Kwartaal 1">Structures · Term 1</span>
       </div>
-      <div><div class="strand-title">Frame Structures &amp; Forces</div><p class="strand-desc">Why bridges stand up, how forces act on frames — and why structures fail.</p></div>
+      <div><div class="strand-title" data-af="Raamstrukture &amp; Kragte">Frame Structures &amp; Forces</div><p class="strand-desc" data-af="Waarom brûe staan, hoe kragte op rame inwerk — en waarom strukture faal.">Why bridges stand up, how forces act on frames — and why structures fail.</p></div>
       <div class="strand-topics">
-        <a href="gr8/structures/frame-structures-and-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Frame structures &amp; forces</a>
+        <a href="gr8/structures/frame-structures-and-forces.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Raamstrukture &amp; kragte'><span class="strand-topic-dot"></span>Frame structures &amp; forces</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade8-mechanical">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="settings" style="width:19px;height:19px;"></i></div><span class="strand-tag">Mechanical Systems · Term 3</span>
+        <div class="strand-icon"><i data-lucide="settings" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Meganiese Stelsels · Kwartaal 3">Mechanical Systems · Term 3</span>
       </div>
-      <div><div class="strand-title">Simple Machines, Gears &amp; Mechanical Advantage</div><p class="strand-desc">How simple machines multiply force — and how to calculate the advantage.</p></div>
+      <div><div class="strand-title" data-af="Eenvoudige Masjiene, Ratte &amp; Meganiese Voordeel">Simple Machines, Gears &amp; Mechanical Advantage</div><p class="strand-desc" data-af="Hoe eenvoudige masjiene krag vermenigvuldig — en hoe om die voordeel te bereken.">How simple machines multiply force — and how to calculate the advantage.</p></div>
       <div class="strand-topics">
-        <a href="gr8/mechanical/simple-machines-and-gears.html" class="strand-topic"><span class="strand-topic-dot"></span>Simple machines &amp; gears</a>
-        <a href="gr8/mechanical/mechanical-advantage-calculations.html" class="strand-topic"><span class="strand-topic-dot"></span>Mechanical advantage calculations</a>
+        <a href="gr8/mechanical/simple-machines-and-gears.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Eenvoudige masjiene &amp; ratte'><span class="strand-topic-dot"></span>Simple machines &amp; gears</a>
+        <a href="gr8/mechanical/mechanical-advantage-calculations.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Meganiese voordeel-berekeninge'><span class="strand-topic-dot"></span>Mechanical advantage calculations</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade8-processing">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="recycle" style="width:19px;height:19px;"></i></div><span class="strand-tag">Processing · Term 2</span>
+        <div class="strand-icon"><i data-lucide="recycle" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Verwerking · Kwartaal 2">Processing · Term 2</span>
       </div>
-      <div><div class="strand-title">The Impact of Technology</div><p class="strand-desc">Weighing technology's positive and negative impacts on people and the planet.</p></div>
+      <div><div class="strand-title" data-af="Die Impak van Tegnologie">The Impact of Technology</div><p class="strand-desc" data-af="Weeg tegnologie se positiewe en negatiewe impak op mense en die planeet op.">Weighing technology's positive and negative impacts on people and the planet.</p></div>
       <div class="strand-topics">
-        <a href="gr8/processing/impact-of-technology.html" class="strand-topic"><span class="strand-topic-dot"></span>The impact of technology</a>
+        <a href="gr8/processing/impact-of-technology.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Die impak van tegnologie'><span class="strand-topic-dot"></span>The impact of technology</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade8-electrical">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="plug" style="width:19px;height:19px;"></i></div><span class="strand-tag">Electrical Systems · Term 4</span>
+        <div class="strand-icon"><i data-lucide="plug" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Elektriese Stelsels · Kwartaal 4">Electrical Systems · Term 4</span>
       </div>
-      <div><div class="strand-title">Circuits, Electricity Generation &amp; Logic Gates</div><p class="strand-desc">From circuit symbols to the national grid — and your first logic gates.</p></div>
+      <div><div class="strand-title" data-af="Stroombane, Kragopwekking &amp; Logika-hekke">Circuits, Electricity Generation &amp; Logic Gates</div><p class="strand-desc" data-af="Van stroombaansimbole tot die nasionale kragnetwerk — en jou eerste logika-hekke.">From circuit symbols to the national grid — and your first logic gates.</p></div>
       <div class="strand-topics">
-        <a href="gr8/electrical/circuits-and-cells.html" class="strand-topic"><span class="strand-topic-dot"></span>Circuits &amp; electrochemical cells</a>
-        <a href="gr8/electrical/generating-electricity-and-logic-gates.html" class="strand-topic"><span class="strand-topic-dot"></span>Generating electricity &amp; logic gates</a>
+        <a href="gr8/electrical/circuits-and-cells.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Stroombane &amp; elektrochemiese selle'><span class="strand-topic-dot"></span>Circuits &amp; electrochemical cells</a>
+        <a href="gr8/electrical/generating-electricity-and-logic-gates.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Kragopwekking &amp; logika-hekke'><span class="strand-topic-dot"></span>Generating electricity &amp; logic gates</a>
       </div>
     </div>
   </div>
@@ -150,7 +152,7 @@
   <div class="section-row" id="grade9">
     <span class="section-label" style="color:var(--accent-light)">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
-      Grade 9 · Technology
+      <span data-af="Graad 9 · Tegnologie">Grade 9 · Technology</span>
     </span>
     <div class="section-line"></div>
   </div>
@@ -158,52 +160,52 @@
   <div class="strands" style="padding-bottom:56px;">
     <div class="strand-card" id="grade9-structures">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="construction" style="width:19px;height:19px;"></i></div><span class="strand-tag">Structures · Term 1</span>
+        <div class="strand-icon"><i data-lucide="construction" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Strukture · Kwartaal 1">Structures · Term 1</span>
       </div>
-      <div><div class="strand-title">Orthographic Projection, Forces &amp; Materials</div><p class="strand-desc">Draw like an engineer, and choose materials that can take the load.</p></div>
+      <div><div class="strand-title" data-af="Ortografiese Projeksie, Kragte &amp; Materiale">Orthographic Projection, Forces &amp; Materials</div><p class="strand-desc" data-af="Teken soos 'n ingenieur, en kies materiale wat die las kan dra.">Draw like an engineer, and choose materials that can take the load.</p></div>
       <div class="strand-topics">
-        <a href="gr9/structures/orthographic-projection.html" class="strand-topic"><span class="strand-topic-dot"></span>First-angle orthographic projection</a>
-        <a href="gr9/structures/forces-and-materials.html" class="strand-topic"><span class="strand-topic-dot"></span>Forces &amp; material properties</a>
+        <a href="gr9/structures/orthographic-projection.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Eerstehoek-ortografiese projeksie'><span class="strand-topic-dot"></span>First-angle orthographic projection</a>
+        <a href="gr9/structures/forces-and-materials.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Kragte &amp; materiaaleienskappe'><span class="strand-topic-dot"></span>Forces &amp; material properties</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade9-mechanical">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="settings" style="width:19px;height:19px;"></i></div><span class="strand-tag">Mechanical Systems · Term 2</span>
+        <div class="strand-icon"><i data-lucide="settings" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Meganiese Stelsels · Kwartaal 2">Mechanical Systems · Term 2</span>
       </div>
-      <div><div class="strand-title">Hydraulics, Pulleys &amp; Advanced Gears</div><p class="strand-desc">Fluid power and clever gearing — the systems that move heavy things.</p></div>
+      <div><div class="strand-title" data-af="Hidroulika, Katrolle &amp; Gevorderde Ratte">Hydraulics, Pulleys &amp; Advanced Gears</div><p class="strand-desc" data-af="Vloeistofkrag en slim ratwerk — die stelsels wat swaar dinge beweeg.">Fluid power and clever gearing — the systems that move heavy things.</p></div>
       <div class="strand-topics">
-        <a href="gr9/mechanical/hydraulics-and-pneumatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Hydraulics &amp; pneumatics</a>
-        <a href="gr9/mechanical/pulleys-and-control-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Pulleys &amp; control systems</a>
-        <a href="gr9/mechanical/advanced-gear-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Advanced gear systems</a>
+        <a href="gr9/mechanical/hydraulics-and-pneumatics.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Hidroulika &amp; pneumatika'><span class="strand-topic-dot"></span>Hydraulics &amp; pneumatics</a>
+        <a href="gr9/mechanical/pulleys-and-control-systems.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Katrolle &amp; beheerstelsels'><span class="strand-topic-dot"></span>Pulleys &amp; control systems</a>
+        <a href="gr9/mechanical/advanced-gear-systems.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Gevorderde ratstelsels'><span class="strand-topic-dot"></span>Advanced gear systems</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade9-electrical">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="plug" style="width:19px;height:19px;"></i></div><span class="strand-tag">Electrical/Electronic Systems · Term 3</span>
+        <div class="strand-icon"><i data-lucide="plug" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Elektriese/Elektroniese Stelsels · Kwartaal 3">Electrical/Electronic Systems · Term 3</span>
       </div>
-      <div><div class="strand-title">Ohm's Law, Resistors &amp; Electronic Sensors</div><p class="strand-desc">Ohm's Law in numbers, and the components that let circuits sense the world.</p></div>
+      <div><div class="strand-title" data-af="Ohm se Wet, Weerstande &amp; Elektroniese Sensors">Ohm's Law, Resistors &amp; Electronic Sensors</div><p class="strand-desc" data-af="Ohm se Wet in syfers, en die komponente wat stroombane die wêreld laat waarneem.">Ohm's Law in numbers, and the components that let circuits sense the world.</p></div>
       <div class="strand-topics">
-        <a href="gr9/electrical/ohms-law-and-resistors.html" class="strand-topic"><span class="strand-topic-dot"></span>Ohm's Law &amp; resistor colour codes</a>
-        <a href="gr9/electrical/electronic-components-and-sensors.html" class="strand-topic"><span class="strand-topic-dot"></span>Electronic components &amp; sensors</a>
+        <a href="gr9/electrical/ohms-law-and-resistors.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Ohm se Wet &amp; weerstand-kleurkodes'><span class="strand-topic-dot"></span>Ohm's Law &amp; resistor colour codes</a>
+        <a href="gr9/electrical/electronic-components-and-sensors.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Elektroniese komponente &amp; sensors'><span class="strand-topic-dot"></span>Electronic components &amp; sensors</a>
       </div>
     </div>
 
     <div class="strand-card" id="grade9-processing">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div class="strand-icon"><i data-lucide="recycle" style="width:19px;height:19px;"></i></div><span class="strand-tag">Processing · Term 4</span>
+        <div class="strand-icon"><i data-lucide="recycle" style="width:19px;height:19px;"></i></div><span class="strand-tag" data-af="Verwerking · Kwartaal 4">Processing · Term 4</span>
       </div>
-      <div><div class="strand-title">Preserving Materials &amp; Working with Plastics</div><p class="strand-desc">Keeping materials useful for longer — from galvanising steel to recycling plastics.</p></div>
+      <div><div class="strand-title" data-af="Bewaring van Materiale &amp; Werk met Plastiek">Preserving Materials &amp; Working with Plastics</div><p class="strand-desc" data-af="Hou materiale langer bruikbaar — van die galvanisering van staal tot die herwinning van plastiek.">Keeping materials useful for longer — from galvanising steel to recycling plastics.</p></div>
       <div class="strand-topics">
-        <a href="gr9/processing/preserving-materials-and-plastics.html" class="strand-topic"><span class="strand-topic-dot"></span>Preserving materials &amp; plastics</a>
+        <a href="gr9/processing/preserving-materials-and-plastics.html" class="strand-topic" data-af-html='<span class="strand-topic-dot"></span>Bewaring van materiale &amp; plastiek'><span class="strand-topic-dot"></span>Preserving materials &amp; plastics</a>
       </div>
     </div>
   </div>
   </div>
 
   <footer>
-    <span class="footer-copy"><i data-lucide="wrench" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"></i>The Tech Tower · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+    <span class="footer-copy" data-af-html='<i data-lucide="wrench" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"></i>The Tech Tower · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg'><i data-lucide="wrench" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"></i>The Tech Tower · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
   </footer>
 
   <script src="../topic-memory.js"></script>
@@ -221,6 +223,49 @@
     if(localStorage.getItem('techTowerGrade')==='9') selectGrade('9');
 
     TopicMemory.init({key:'tech-tower'});
+
+    // ── Language toggle: generic data-af / data-af-html swapper ─────────
+    let currentLang = (window.MLLang && MLLang.getLang()) || 'en';
+    // Lesson pages that have a translated .af.html sibling.
+    const AF_AVAILABLE_LESSONS = new Set([
+      'gr8/structures/frame-structures-and-forces.html',
+      'gr8/mechanical/simple-machines-and-gears.html','gr8/mechanical/mechanical-advantage-calculations.html',
+      'gr8/processing/impact-of-technology.html',
+      'gr8/electrical/circuits-and-cells.html','gr8/electrical/generating-electricity-and-logic-gates.html',
+      'gr9/structures/orthographic-projection.html','gr9/structures/forces-and-materials.html',
+      'gr9/mechanical/hydraulics-and-pneumatics.html','gr9/mechanical/pulleys-and-control-systems.html','gr9/mechanical/advanced-gear-systems.html',
+      'gr9/electrical/ohms-law-and-resistors.html','gr9/electrical/electronic-components-and-sensors.html',
+      'gr9/processing/preserving-materials-and-plastics.html',
+    ]);
+    function applyDataAf(lang) {
+      document.querySelectorAll('[data-af-html]').forEach(el => {
+        if (el.dataset.enHtml === undefined) el.dataset.enHtml = el.innerHTML;
+        el.innerHTML = lang === 'af' ? el.dataset.afHtml : el.dataset.enHtml;
+      });
+      document.querySelectorAll('[data-af]:not([data-af-html])').forEach(el => {
+        if (el.dataset.en === undefined) el.dataset.en = el.textContent;
+        el.textContent = lang === 'af' ? el.dataset.af : el.dataset.en;
+      });
+      document.querySelectorAll('a.strand-topic[href]').forEach(a => {
+        if (a.dataset.enHref === undefined) a.dataset.enHref = a.getAttribute('href');
+        const enHref = a.dataset.enHref;
+        if (AF_AVAILABLE_LESSONS.has(enHref)) {
+          a.setAttribute('href', lang === 'af' ? enHref.replace(/\.html$/, '.af.html') : enHref);
+        }
+      });
+      document.documentElement.lang = lang;
+    }
+    applyDataAf(currentLang);
+    refreshIcons();
+    if (window.MLLang) {
+      MLLang.mount('mlLangToggle', {
+        onChange(next) {
+          currentLang = next;
+          applyDataAf(currentLang);
+          refreshIcons();
+        }
+      });
+    }
   </script>
   <script src="/contact-button.js" defer></script>
 </body>
