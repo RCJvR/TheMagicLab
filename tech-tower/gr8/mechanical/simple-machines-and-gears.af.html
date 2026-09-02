@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eenvoudige Masjiene &amp; Ratte — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%;cursor:pointer}
+    .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left;width:100%}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .control-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .control-label{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+    .btn-row{display:flex;gap:6px}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px}
+    .part-force.tension{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.30)}
+    .part-force.compression{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    .readout{font-family:var(--fm);font-size:12px;color:var(--accent-light);background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 14px;margin-top:4px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Meganiese Stelsels · Gr 8</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Meganiese Stelsels &amp; Beheer · Kwartaal 3 · Les 1</div>
+  <h1 class="lesson-title">Eenvoudige Masjiene &amp; Ratte</h1>
+  <p class="lesson-sub">Wigge, wiele en asse, ratte en nokke — elke komplekse masjien is eintlik net 'n kombinasie van eenvoudige meganismes. Leer hoe hulle krag vermenigvuldig, spoed verander, of rigting van beweging verander.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-commit" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Hersiening: meganiese voordeel</h2>
+    <p>'n Goed-ontwerpte masjien gee ons <strong>meganiese voordeel (MV)</strong> — dit laat 'n kleiner inspanningskrag toe om 'n groter las te beweeg of te oorkom. 'n Masjien skep nie energie uit niks nie; dit verander bloot die grootte of rigting van 'n krag, gewoonlik deur krag vir afstand te verruil (of andersom). Elke komplekse masjien — 'n motorenjin, 'n robotarm, 'n fiets — is opgebou uit kombinasies van net 'n handjievol eenvoudige meganismes.</p>
+
+    <h2>Die wig</h2>
+    <p>'n <strong>Wig</strong> is eintlik twee skuinsvlakke (hellings) wat rug-aan-rug saamgevoeg is, en wat afsmal na 'n dun rand. Om 'n wig 'n lang afstand sywaarts te stoot, forseer voorwerpe uitmekaar met 'n baie groter krag oor 'n kort afstand — dis meganiese voordeel in werking.</p>
+    <ul>
+      <li><strong>Skuinsvlak / helling</strong> — laat jou toe om 'n las met minder krag op te lig as om dit reguit op te tel, ten koste daarvan dat jy dit 'n langer afstand moet stoot.</li>
+      <li><strong>Deurwig</strong> — met 'n klein krag onder 'n deur ingestoot, klem dit styf vas en weerstaan 'n baie groter krag wat probeer om die deur toe te maak.</li>
+      <li><strong>Meslem</strong> — 'n dun wigvorm konsentreer jou stootkrag in 'n baie klein area, en sny deur materiaal.</li>
+    </ul>
+    <div class="key-fact">'n Wig ruil 'n klein krag oor 'n lang stoot om vir 'n groot krag oor 'n kort (splitsende) afstand.</div>
+
+    <h2>Die wiel en as</h2>
+    <p>'n <strong>Wiel en as</strong> is 'n meganisme waar 'n groot wiel aan 'n kleiner as (of skag) vas is sodat hulle saam draai. Om die wiel met 'n klein inspanning aan sy rand te draai, lewer 'n baie groter draaikrag by die as — hoe groter die wiel is in vergelyking met die as, hoe groter die meganiese voordeel.</p>
+    <div class="callout"><strong>Van fiets tot inkopietrollie:</strong> 'n fiets se pedaal-en-kruk-stel draai 'n klein kettingwiel (soos 'n wiel-en-as-stelsel wat omgekeerd werk, en krag vir spoed verruil), terwyl 'n skroewedraaierhandvatsel, 'n deurknop, en 'n inkopietrollie se wiele almal alledaagse wiel-en-as-stelsels is wat draai of rol makliker maak.</div>
+
+    <h2>Ratte: wiele met wiggies as tande</h2>
+    <p>'n <strong>Rat</strong> is bloot 'n wiel met tande wat in sy rand gesny is — en elke tand is 'n klein wiggie. Wanneer twee <strong>reguittandratte</strong> (ratte met reguit tande wat parallel aan die as gesny is) inmekaar hak, stoot hul tande teen mekaar.</p>
+    <div class="key-fact">Wanneer twee reguittandratte inmekaar hak, veroorsaak dit altyd teendraaiing — die gedrewe rat draai in die TEENOORGESTELDE rigting as die dryfrat.</div>
+    <p>Soms wil ons hê die gedrewe rat moet in <strong>dieselfde</strong> rigting as die dryfrat draai. Om dit te doen, plaas ons 'n derde rat — 'n <strong>tussenrat</strong> — tussen die dryfrat en die gedrewe rat. Die tussenrat verander nie die spoedverhouding tussen die dryfrat en die gedrewe rat nie; dit keer net die rigting 'n tweede keer om, sodat die gedrewe rat op dieselfde manier as die dryfrat eindig om te draai (gesinkroniseerde rotasie).</p>
+    <div class="callout"><strong>Waarom die tussenrat taai moet wees:</strong> 'n klein tussenrat wat met twee groter ratte inmekaar hak, moet baie meer kere per minuut ronddraai as wat die groter ratte doen. Omdat dit harder werk en meer slytasie ervaar, moet die tussenrat van 'n harder materiaal as die ander ratte gemaak word.</div>
+
+    <h2>Ratverhoudings</h2>
+    <p>Wanneer twee ratte van verskillende groottes inmekaar hak, verander die grootteverskil beide die <strong>spoedverhouding</strong> (hoe vinnig een draai in vergelyking met die ander) en die <strong>kragverhouding</strong> (hoeveel die draaikrag vermenigvuldig word) — en hierdie twee verhoudings verander altyd in teenoorgestelde rigtings.</p>
+    <table class="compare-table">
+      <thead><tr><th>Dryfrat → Gedrewe rat</th><th>Effek op spoed</th><th>Effek op krag</th></tr></thead>
+      <tbody>
+        <tr><td>Klein rat dryf 'n groot rat</td><td>Gedrewe rat draai stadiger</td><td>Draaikrag neem toe (MV &gt; 1)</td></tr>
+        <tr><td>Groot rat dryf 'n klein rat</td><td>Gedrewe rat draai vinniger</td><td>Draaikrag neem af (MV &lt; 1)</td></tr>
+        <tr><td>Gelykgrootte-ratte</td><td>Dieselfde spoed</td><td>Dieselfde krag (MV = 1)</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">As krag toeneem, neem spoed af — en andersom. Jy kry nooit altwee gratis nie.</div>
+
+    <h2>Meganismes wat rigting van beweging verander</h2>
+    <p>Sommige meganismes word spesifiek gebruik om <strong>rotasiebeweging</strong> (deurlopende sirkelbeweging, soos 'n draaiende as) in <strong>wisselbeweging</strong> (herhaalde heen-en-weer-beweging, soos 'n naaimasjiennaald) om te sit.</p>
+    <p><strong>Die nok:</strong> 'n nok is 'n spesiaal-gevormde draaiende deel wat 'n volger op en af (of van kant tot kant) stoot terwyl dit draai.</p>
+    <table class="compare-table">
+      <thead><tr><th>Noktipe</th><th>Vorm</th><th>Beweging geproduseer</th></tr></thead>
+      <tbody>
+        <tr><td>Eksentriese wiel</td><td>'n Sirkelvormige skyf wat van-die-middelpunt-af op sy as gemonteer is</td><td>Gladde, geleidelike styging en daling van die volger</td></tr>
+        <tr><td>Slaknok</td><td>'n Spiraalvormige, slakdop-gevormde profiel</td><td>Stadige geleidelike styging, gevolg deur 'n skielike val terug na die begin</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Die kruk:</strong> 'n kruk is 'n aanpassing van 'n tweedeklas-hefboom, gebuig in 'n regte-hoek-handvatsel wat aan 'n draaiende as vasgemaak is. Net soos 'n nok, verander 'n kruk rotasiebeweging in wisselbeweging (of andersom) — dit is presies hoe die op-en-af-beweging van 'n suier in 'n motorenjin omgeskakel word in die rotasiebeweging wat die wiele draai.</p>
+    <div class="callout"><strong>Onthou:</strong> nokke en krukke koppel altwee rotasiebeweging aan wisselbeweging, maar 'n nok se volgerbeweging hang heeltemal af van die vorm van die nokprofiel, terwyl 'n kruk gladde, eweredig-gespasieerde wisselbeweging lewer omdat dit bloot 'n verplaaste draaipunt is.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Rattreinsimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Kies die grootte van die dryfrat en die gedrewe rat, en skakel die tussenrat aan of af. Kyk na die rigting van rotasie en lees die lewendige spoedverhouding.</p>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap"><canvas id="gearCanvas" height="360"></canvas></div>
+    <div>
+      <div class="control-group">
+        <div class="control-label">Dryfrat-grootte (tande)</div>
+        <div class="btn-row">
+          <button class="part-btn" id="drv_small" onclick="setDriver(10)">Klein (10)</button>
+          <button class="part-btn" id="drv_med" onclick="setDriver(16)">Medium (16)</button>
+          <button class="part-btn" id="drv_large" onclick="setDriver(24)">Groot (24)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">Gedrewe-rat-grootte (tande)</div>
+        <div class="btn-row">
+          <button class="part-btn" id="drn_small" onclick="setDriven(10)">Klein (10)</button>
+          <button class="part-btn" id="drn_med" onclick="setDriven(16)">Medium (16)</button>
+          <button class="part-btn" id="drn_large" onclick="setDriven(24)">Groot (24)</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="control-label">Tussenrat</div>
+        <div class="btn-row">
+          <button class="part-btn" id="idler_off" onclick="setIdler(false)">Sonder tussenrat</button>
+          <button class="part-btn" id="idler_on" onclick="setIdler(true)">Met tussenrat</button>
+        </div>
+      </div>
+      <div class="part-info" id="partInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Gee een alledaagse voorbeeld elk van 'n wig, 'n wiel en as, en 'n nok, en verduidelik kortliks wat elke voorbeeld doen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Twee reguittandratte hak direk inmekaar sonder 'n tussenrat. (a) In watter rigting draai die gedrewe rat relatief tot die dryfrat? (b) Verduidelik, deur die idee van rattande as klein wiggies te gebruik, waarom dit gebeur.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom 'n tussenrat wat tussen 'n dryfrat en 'n gedrewe rat geplaas word, van 'n harder materiaal as die ander twee ratte gemaak moet word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">'n Klein dryfrat hak inmekaar met 'n baie groter gedrewe rat. (a) Draai die gedrewe rat vinniger of stadiger as die dryfrat? (b) Neem die kragverhouding toe of af? (c) Verduidelik die verband tussen jou antwoorde op (a) en (b).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">Vergelyk 'n nok en 'n kruk: watter tipe beweging skakel elkeen rotasiebeweging in om, en hoe verskil 'n eksentriese-wiel-nok van 'n slaknok in die beweging wat dit produseer?</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The gear canvas has offsetWidth 0 while its tab panel is display:none,
+  // so the very first resizeCanvas() call (at page load, before any tab
+  // switch) falls back to a hardcoded default width instead of the real
+  // one. Re-measure now that the Explore panel is actually visible.
+  if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   GEAR TRAIN SIMULATOR
+═══════════════════════════════════════════════ */
+let driverTeeth = 16, drivenTeeth = 16, idlerOn = false;
+let driverAngle = 0;
+
+function setDriver(t){ driverTeeth = t; updateControlUI(); updateInfo(); }
+function setDriven(t){ drivenTeeth = t; updateControlUI(); updateInfo(); }
+function setIdler(on){ idlerOn = on; updateControlUI(); updateInfo(); }
+
+function updateControlUI(){
+  const map = {10:'small',16:'med',24:'large'};
+  ['drv_small','drv_med','drv_large','drn_small','drn_med','drn_large'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('drv_'+map[driverTeeth]).classList.add('active');
+  document.getElementById('drn_'+map[drivenTeeth]).classList.add('active');
+  document.getElementById('idler_off').classList.toggle('active', !idlerOn);
+  document.getElementById('idler_on').classList.toggle('active', idlerOn);
+}
+
+function updateInfo(){
+  const vRatio = driverTeeth/drivenTeeth;
+  const speedWord = vRatio>1 ? 'vinniger as' : vRatio<1 ? 'stadiger as' : 'teen dieselfde spoed as';
+  const forceWord = vRatio>1 ? 'NEEM AF (MV < 1)' : vRatio<1 ? 'NEEM TOE (MV > 1)' : 'bly dieselfde (MV = 1)';
+  const dirWord = idlerOn ? 'dieselfde rigting as' : 'die teenoorgestelde rigting as';
+  document.getElementById('partInfo').innerHTML = `
+    <div class="part-name">Dryfrat: ${driverTeeth}T &rarr; Gedrewe: ${drivenTeeth}T</div>
+    <span class="part-force ${idlerOn?'tension':'compression'}">${idlerOn?'gesinkroniseerde rotasie':'teendraaiing'}</span>
+    <div class="part-desc">Die gedrewe rat draai in ${dirWord} die dryfrat (tussenrat ${idlerOn?'gemonteer':'nie gemonteer nie'}). Dit draai ${speedWord} die dryfrat, en die draaikrag ${forceWord}.</div>
+    <div class="readout">Spoedverhouding (dryfrat:gedrewe) = ${driverTeeth}:${drivenTeeth}<br>Vereenvoudig &asymp; ${vRatio.toFixed(2)} : 1</div>`;
+}
+
+const canvas = document.getElementById('gearCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 360;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+// Radius must be directly proportional to tooth count (no constant offset) —
+// otherwise the radius ratio between two gears doesn't match their tooth
+// ratio, and the rolling-contact rotation speed (based on tooth ratio) no
+// longer agrees with the actual pitch-circle geometry, so teeth drift out
+// of mesh as the gears turn (worse the more the sizes differ).
+// renderScale is recomputed once per frame in drawGearTrain() to shrink
+// every gear by the same factor when the driver/idler/driven combination
+// would otherwise be wider than the canvas — scaling everything uniformly
+// keeps the tooth-ratio-to-radius-ratio relationship intact (see above),
+// unlike clamping radii individually, which would break the mesh geometry.
+let renderScale = 1;
+function gearRadius(teeth){ return teeth * 5.2 * renderScale; }
+
+function drawGear(cx, cy, teeth, angle, color){
+  // rBase is the PITCH circle radius — the circle that's tangent to the
+  // mating gear's pitch circle at the mesh point (see drawGearTrain). Teeth
+  // must straddle that line (root below it, tip above it), not sit entirely
+  // outside it: a tooth's tip needs to reach all the way down to the mating
+  // gear's ROOT circle for the teeth to actually interlock, not just poke a
+  // sliver past the tangent point.
+  const rBase = gearRadius(teeth);
+  const toothH = 9 * renderScale;
+  const rootR = rBase - toothH, tipR = rBase + toothH;
+  const period = (Math.PI*2)/teeth;
+  const halfToothW = period*0.25; // symmetric tooth: half the period is tooth, half is gap
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  for(let i=0;i<teeth;i++){
+    const c = i*period;
+    const l = c-halfToothW, r = c+halfToothW;
+    ctx.lineTo(Math.cos(l)*rootR, Math.sin(l)*rootR);
+    ctx.lineTo(Math.cos(l)*tipR, Math.sin(l)*tipR);
+    ctx.lineTo(Math.cos(r)*tipR, Math.sin(r)*tipR);
+    ctx.lineTo(Math.cos(r)*rootR, Math.sin(r)*rootR);
+  }
+  ctx.closePath();
+  ctx.fillStyle = color+'22';
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.fill();
+  ctx.stroke();
+  ctx.beginPath(); ctx.arc(0,0,rootR*0.28,0,Math.PI*2);
+  ctx.fillStyle = '#05070f'; ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(rootR*0.28,0); ctx.strokeStyle=color; ctx.lineWidth=3; ctx.stroke();
+  ctx.restore();
+}
+
+function drawGearTrain(){
+  ctx.clearRect(0,0,W,H);
+  // Check whether the train fits the canvas at full size; if not, shrink
+  // every gear by the same factor instead of overflowing the canvas edge
+  // (see renderScale comment on gearRadius above).
+  renderScale = 1;
+  const naturalDriver = gearRadius(driverTeeth), naturalDriven = gearRadius(drivenTeeth);
+  const naturalIdler = idlerOn ? gearRadius(12) : 0;
+  const naturalToothH = 9;
+  const naturalSpan = 2*(naturalDriver+naturalDriven+naturalIdler+naturalToothH);
+  const available = W - 40; // side margin so teeth/labels don't touch the edge
+  if(available > 0 && naturalSpan > available) renderScale = available/naturalSpan;
+
+  const rDriver = gearRadius(driverTeeth), rDriven = gearRadius(drivenTeeth);
+  const cy = H/2;
+  let driverX, drivenX, idlerX, rIdler;
+  if(idlerOn){
+    rIdler = gearRadius(12);
+    // Pitch circles exactly tangent — since each gear's teeth straddle its
+    // own pitch circle (root below it, tip above it), a tooth tip reaches
+    // exactly to the mating gear's root circle at the contact point instead
+    // of just grazing its pitch line.
+    //
+    // Centering: the visual assembly runs from (driverX - rDriver) on the
+    // left to (drivenX + rDriven) on the right. Centering driverX/drivenX
+    // around W/2 (as this used to) only centers the train when rDriver
+    // equals rDriven — with unequal gear sizes that leaves the wider gear's
+    // side overhanging the canvas edge. Solving for the driverX that puts
+    // the actual left/right extremes' midpoint at W/2 gives driverX =
+    // W/2 - rIdler - rDriven (the sum of every OTHER gear's radius),
+    // regardless of how the three sizes compare.
+    driverX = W/2 - rIdler - rDriven;
+    idlerX = driverX + rDriver + rIdler;
+    drivenX = idlerX + rIdler + rDriven;
+  } else {
+    // Same reasoning as above without the idler: driverX = W/2 - rDriven
+    // centers the train's true visual extent regardless of size mismatch.
+    driverX = W/2 - rDriven;
+    drivenX = driverX + rDriver + rDriven;
+  }
+  const driverSpeed = 0.014;
+  const drivenDir = idlerOn ? 1 : -1;
+
+  // Giving every gear the SAME half-tooth-pitch phase offset puts a GAP at
+  // world-angle-0 on every gear's own axis — so at each mesh point, both
+  // partners present a gap to each other (tangential root-to-root, no
+  // interlock) instead of one presenting a tooth into the other's gap.
+  // The offset must instead ALTERNATE along the chain: the driver has it,
+  // the next gear in the train (idler if fitted, else driven) must not, and
+  // the gear after that (driven, only when an idler is fitted) has it again
+  // — so a tooth always meets a gap at every contact point. Because all
+  // preset tooth counts are even and the three gears sit on one line, this
+  // alternating pattern keeps every contact point aligned continuously as
+  // the train turns (not just at the start).
+  drawGear(driverX, cy, driverTeeth, driverAngle + Math.PI/driverTeeth, '#fdba74');
+  if(idlerOn){
+    const idlerAngle = driverAngle*(driverTeeth/12)*-1;
+    drawGear(idlerX, cy, 12, idlerAngle, '#93c5fd');
+  }
+  const drivenAngle = driverAngle*(driverTeeth/drivenTeeth)*drivenDir;
+  const drivenPhase = idlerOn ? Math.PI/drivenTeeth : 0;
+  drawGear(drivenX, cy, drivenTeeth, drivenAngle + drivenPhase, '#fca5a5');
+
+  ctx.fillStyle='rgba(210,218,245,.6)';
+  ctx.font='11px "JetBrains Mono",monospace';
+  ctx.textAlign='center';
+  ctx.fillText('DRYFRAT',driverX,cy+rDriver+22);
+  if(idlerOn) ctx.fillText('TUSSENRAT',idlerX,cy+rIdler+22);
+  ctx.fillText('GEDREWE',drivenX,cy+rDriven+22);
+
+  driverAngle += driverSpeed;
+  requestAnimationFrame(drawGearTrain);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+updateControlUI();
+updateInfo();
+drawGearTrain();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'’n Wig word die beste beskryf as:',opts:['’n Enkele hefboom','Twee skuinsvlakke wat rug-aan-rug saamgevoeg is','’n Wiel sonder ’n as','Net ’n tipe rattand'],ans:1,exp:'’n Wig bestaan uit twee skuinsvlakke (hellings) wat rug-aan-rug saamgevoeg is, en wat afsmal na ’n dun rand, wat ’n klein stootkrag omskep in ’n groot splitskrag.'},
+  {text:'Wanneer twee reguittandratte direk inmekaar hak (geen tussenrat nie), doen die gedrewe rat die volgende:',opts:['Draai in dieselfde rigting as die dryfrat','Draai in die teenoorgestelde rigting as die dryfrat','Hou op draai','Draai teen ’n vaste spoed ongeag grootte'],ans:1,exp:'Wanneer twee reguittandratte inmekaar hak, veroorsaak dit altyd teendraaiing — die gedrewe rat draai in die teenoorgestelde rigting as die dryfrat omdat hul tande teen mekaar stoot, soos twee mense wat skouer-aan-skouer in teenoorgestelde rigtings verbyloop.'},
+  {text:'Waarom moet ’n tussenrat dikwels van ’n harder materiaal as die dryfrat en die gedrewe rat gemaak word?',opts:['Dit is dekoratief en moet blink lyk','Dit draai meer kere as die groter ratte en slyt vinniger','Dit raak nooit werklik die ander ratte aan nie','Dit is altyd die grootste rat in die trein'],ans:1,exp:'’n Klein tussenrat moet baie meer kere ronddraai as die groter ratte wat dit koppel, dus ervaar dit meer slytasie — dit moet van ’n harder materiaal gemaak word om hiermee klaar te kom.'},
+  {text:'’n Klein dryfrat hak inmekaar met ’n baie groter gedrewe rat. Wat gebeur met spoed en krag?',opts:['Spoed neem toe, krag neem toe','Spoed neem af, krag neem toe (MV > 1)','Spoed neem toe, krag neem af (MV < 1)','Nòg spoed nòg krag verander'],ans:1,exp:'Wanneer ’n klein rat ’n groot rat dryf, draai die groot rat stadiger, maar met groter draaikrag — die spoedverhouding en die kragverhouding verander altyd in teenoorgestelde rigtings.'},
+  {text:'Watter meganisme skakel rotasiebeweging in wisselbeweging om deur van ’n spesiaal-gevormde draaiende profiel gebruik te maak?',opts:['Die wiel en as','Die wig','Die nok','Die tussenrat'],ans:2,exp:'’n Nok is ’n spesiaal-gevormde draaiende deel waarvan die profiel ’n volger op en af (of van kant tot kant) stoot terwyl dit draai, en so rotasiebeweging in wisselbeweging omskakel.'},
+  {text:'Die kruk word die beste beskryf as:',opts:['’n Tipe reguittandrat','’n Aanpassing van ’n tweedeklas-hefboom wat rotasiebeweging in wisselbeweging omskakel','’n Wig wat gebruik word om hout te splits','’n Rat wat net van harde materiaal gemaak is'],ans:1,exp:'’n Kruk is ’n aanpassing van ’n tweedeklas-hefboom, gebuig in ’n verplaaste handvatsel op ’n draaiende as — soos ’n nok, skakel dit rotasiebeweging in wisselbeweging om (of andersom), soos gesien in ’n fiets se pedaalkruk of ’n motorenjin.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
