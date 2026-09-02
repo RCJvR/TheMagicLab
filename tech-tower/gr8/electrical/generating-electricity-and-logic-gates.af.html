@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektrisiteit Opwek &amp; Logika-hekke — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 320px;gap:22px;max-width:980px}
+    .logic-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%}
+    .mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:12px}
+    .mode-btn{flex:1;font-family:var(--fd);font-size:12px;font-weight:700;padding:8px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 140ms}
+    .mode-btn.active{background:rgba(249,115,22,.16);color:var(--accent-light)}
+    .switch-row{display:flex;gap:10px;margin-bottom:14px}
+    .switch-toggle{flex:1;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-family:var(--fd);font-weight:700;font-size:13px;cursor:pointer;transition:all 140ms;text-align:center}
+    .switch-toggle.on{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4);color:#86efac}
+    .lamp-status{text-align:center;padding:12px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-weight:800;font-size:14px;margin-bottom:14px;color:var(--muted)}
+    .lamp-status.lit{background:rgba(253,224,71,.10);border-color:rgba(253,224,71,.35);color:#fde047}
+    .truth-table{width:100%;border-collapse:collapse;font-size:13px}
+    .truth-table th{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:7px 10px;text-align:center;border-bottom:1px solid var(--border)}
+    .truth-table td{padding:8px 10px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(210,218,245,.6)}
+    .truth-table tr.filled td{color:#fff;font-weight:700}
+    .truth-table tr.current{background:rgba(249,115,22,.10)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.logic-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1020px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Elektriese Stelsels · Gr 8</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Elektriese Stelsels · Kwartaal 4 · Les 2</div>
+  <h1 class="lesson-title">Elektrisiteit Opwek &amp; Logika-hekke</h1>
+  <p class="lesson-sub">Van vrugtebatterye tot nasionale kragstasies en die transformators wat elektrisiteit dwarsoor die land beweeg — plus AND/OR-logika-hekke vir 'n paniekknoppie-alarm.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-merge" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Elektrochemiese selle</h2>
+    <p>'n <strong>Elektrochemiese sel</strong> produseer elektrisiteit uit 'n chemiese reaksie tussen twee verskillende metale (elektrodes) in 'n suur of soutoplossing (elektroliet). Jy kan 'n eenvoudige sel bou met 'n suurlemoen, aartappel, of soutwater met 'n sink- en 'n koperelektrode wat daarin gedruk is — die chemiese reaksie tussen die twee verskillende metale produseer 'n klein spanning.</p>
+    <div class="callout"><strong>Prakties:</strong> 'n enkele vrugte- of groente-sel produseer slegs 'n klein spanning (ongeveer 0.9 V), te min om die meeste lampe te laat brand. Om 'n bruikbare spanning te kry, moet verskeie vrugte-/groente-selle in serie gekoppel word, net soos flitsbatterye.</div>
+
+    <h2>Serie- teenoor parallelbatterye</h2>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Seriekoppeling</th><th>Parallelkoppeling</th></tr></thead>
+      <tbody>
+        <tr><td>Spanning</td><td>Tel op (hoër totale spanning)</td><td>Bly dieselfde as een sel</td></tr>
+        <tr><td>Stroomkapasiteit / leeftyd</td><td>Neem nie toe nie</td><td>Neem toe (selle deel die las, batterye hou langer)</td></tr>
+        <tr><td>Voordeel</td><td>Hoër spanning vir toestelle wat meer "stoot" nodig het</td><td>Langer batterylewe vir dieselfde spanning</td></tr>
+        <tr><td>Nadeel</td><td>As een sel faal/verwyder word, breek die hele stroombaan</td><td>Verhoog nie spanning nie, slegs stroomkapasiteit</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Fotovoltaïese (son-) selle</h2>
+    <p>'n Fotovoltaïese sel skakel ligenergie direk om in elektriese energie. <strong>Voordele:</strong> gratis en hernubare brandstof (sonlig), geen bewegende dele nie, geen uitlaatgasse tydens werking nie, nuttig in afgeleë gebiede sonder toegang tot die kragnetwerk. <strong>Nadele:</strong> genereer slegs elektrisiteit in daglig, opbrengs val in bewolkte weer, benodig batterye of rugsteun vir gebruik in die nag, en panele is relatief duur en hulpbron-intensief om te vervaardig en uiteindelik te herwin.</p>
+
+    <h2>Elektrisiteit opwek vir die land</h2>
+    <p>Suid-Afrika (en die meeste lande) genereer grootskaalse elektrisiteit met verskeie verskillende metodes, elk met sy eie afruilings:</p>
+    <ul>
+      <li><strong>Termiese kragstasies:</strong> hitte (van steenkool- of gasverbranding, kernreaksies, of gekonsentreerde sonhitte) kook water tot stoom, wat 'n <strong>stoomturbine</strong> wat aan 'n generator gekoppel is, laat draai. Voordeel: betroubaar, konstante opbrengs. Nadeel: steenkool en gas stel kweekhuisgasse en besoedelingstowwe vry; kernafval moet vir eeue veilig gestoor word.</li>
+      <li><strong>Hidro-elektriese kragstasies:</strong> vallende of vloeiende water laat turbines direk draai. <strong>Pomp-bergingskemas</strong> pomp water opdraande na 'n opgaardam wanneer die vraag (en elektrisiteitspryse) laag is, en laat dit dan afdraande deur turbines loop om vinnig krag op te wek wanneer die vraag hoog is — dit "berg" elektrisiteit in werklikheid. Voordeel: hernubaar, vinnig om aan te skakel. Nadeel: benodig 'n geskikte rivier-/damterrein, kan ekostelsels en gemeenskappe ontwrig.</li>
+      <li><strong>Windgedrewe turbines:</strong> wind laat groot lemme wat aan 'n generator gekoppel is, draai. Voordeel: hernubaar, geen brandstofkoste nie. Nadeel: werk net wanneer die wind waai, kan voëls en landskappe beïnvloed, opbrengs is wisselvallig.</li>
+    </ul>
+
+    <h2>Toegang tot energie, etiek &amp; billikheid</h2>
+    <p>Nie almal in Suid-Afrika het gelyke, betroubare toegang tot die nasionale kragnetwerk nie. Baie landelike gebiede en informele nedersettings is nog nie aangesluit nie, en inwoners daar staat dikwels op die verbranding van hout, paraffien of steenkool vir verhitting, beligting en kook — opsies wat baie gevaarliker (brand- en vergiftigingsrisiko) en minder gerieflik is as hoofstroom-elektrisiteit.</p>
+    <p>Waar 'n wettige aansluiting nie beskikbaar is nie, maak sommige mense <strong>onwettige aansluitings</strong> aan nabygeleë kraglyne. Dit skep ernstige etiese en veiligheidskwessies: onwettige aansluitings is uiters gevaarlik ('n groot oorsaak van elektrokusie en informele-nedersetting-brande), en hulle plaas ook ekstra, onberekende las op die kragnetwerk, wat kragonderbrekings kan veroorsaak wat die hele gebied raak, insluitend huise wat wettiglik aangesluit is.</p>
+    <div class="callout"><strong>Billike deling van hulpbronne:</strong> om te besluit hoe 'n beperkte elektrisiteitstoevoer gedeel moet word, is nie net 'n tegniese probleem nie, dis 'n regverdigheidsprobleem. Nywerhede benodig 'n betroubare kragtoevoer om fabrieke aan die gang te hou en werk te skep; skole benodig krag vir beligting, rekenaars en internettoegang om leerders op te voed; huishoudings benodig krag vir basiese veiligheid en waardigheid. Tegnoloë en beleidmakers moet hierdie mededingende, en dikwels ewe dringende, behoeftes teen mekaar opweeg.</div>
+
+    <h2>Wisselstroom en die nasionale kragnetwerk</h2>
+    <p>Kragstasies genereer <strong>wisselstroom (WS)</strong> — stroom wat gereeld van rigting verander — omdat WS doeltreffend na 'n ander spanning verander kan word deur 'n <strong>transformator</strong> te gebruik. 'n <strong>Op-transformator</strong> verhoog die spanning tot baie hoë vlakke (honderde duisende volt) vir oordrag oor langafstand-kraglyne, aangesien 'n hoër spanning laer stroom vir dieselfde krag beteken, wat beteken dat minder energie as hitte in die kabels vermors word. 'n <strong>Af-transformator</strong> verlaag hierdie hoë spanning dan weer na veilige vlakke vir huise, skole en fabrieke. Hierdie netwerk van kragstasies, transformators en kraglyne wat elektrisiteit dwarsoor die hele land beweeg, word die <strong>nasionale kragnetwerk</strong> genoem.</p>
+    <div class="key-fact">Op-transformator = hoër spanning vir doeltreffende langafstand-oordrag. Af-transformator = laer, veiliger spanning vir alledaagse gebruik.</div>
+
+    <h2>Ohm se Wet — 'n kwalitatiewe inleiding</h2>
+    <p>Op Graad 8-vlak word geen berekeninge vereis nie — slegs die algemene verhouding. As jy een sel, dan twee selle, dan drie selle in serie aan dieselfde lamp koppel (terwyl die weerstand van die stroombaan dieselfde bly), word die lamp geleidelik helderder. Dit is omdat <strong>meer selle in serie meer spanning beteken</strong>, en as die weerstand in die stroombaan dieselfde bly, <strong>veroorsaak meer spanning meer stroom</strong> wat vloei. Meer stroom deur die lamp se gloeidraad beteken 'n helderder lig.</p>
+
+    <h2>AND- en OR-logika-hekke</h2>
+    <p>Logika-hekke beskryf hoe skakelaars kombineer om 'n afvoer te beheer. Twee skakelaars kan op twee verskillende maniere gerangskik word:</p>
+    <ul>
+      <li><strong>AND-logika — skakelaars in serie:</strong> die lamp/gonser skakel net aan as skakelaar A <em>en</em> skakelaar B albei gesluit is. As enige skakelaar oop is, word die stroombaan gebreek en gebeur niks. Dit is nuttig wanneer jy wil hê twee afsonderlike toestande moet albei waar wees voordat iets geaktiveer word — soos 'n paniekknoppie wat beide 'n sleutelskakelaar en 'n drukknoppie saam geaktiveer nodig het om vals alarms te verminder.</li>
+      <li><strong>OR-logika — skakelaars in parallel:</strong> die lamp/gonser skakel aan as skakelaar A <em>of</em> skakelaar B (of albei) gesluit is, omdat stroom deur enige tak kan vloei. Dit is nuttig wanneer enige een van verskeie toestande dieselfde resultaat behoort te veroorsaak — soos 'n paniekknoppie-alarmstelsel met knoppies in die slaapkamer, gang en kombuis: om enige een daarvan te druk behoort die alarm te laat afgaan.</li>
+    </ul>
+    <table class="compare-table">
+      <thead><tr><th>A</th><th>B</th><th>AND-afvoer</th><th>OR-afvoer</th></tr></thead>
+      <tbody>
+        <tr><td>Af</td><td>Af</td><td>Af</td><td>Af</td></tr>
+        <tr><td>Af</td><td>Aan</td><td>Af</td><td>Aan</td></tr>
+        <tr><td>Aan</td><td>Af</td><td>Af</td><td>Aan</td></tr>
+        <tr><td>Aan</td><td>Aan</td><td>Aan</td><td>Aan</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Konteks:</strong> 'n huisalarm-paniekknoppiestelsel gebruik tipies OR-logika (enige knoppie enige plek in die huis laat die alarm afgaan), terwyl 'n sekuriteitstelsel wat vereis dat twee mense gelyktydig 'n sleutel draai (bv. 'n bankkluis) AND-logika gebruik.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Logika-hek Waarheidstabel-bouer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Skakel skakelaars A en B, kies AND- of OR-logika, en kyk hoe die lamp — en die waarheidstabel hieronder — lewendig reageer.</p>
+  <div class="explore-layout">
+    <div class="logic-canvas-wrap"><canvas id="logicCanvas" height="320"></canvas></div>
+    <div>
+      <div class="mode-switch">
+        <button class="mode-btn active" id="gateAndBtn" onclick="setGate('AND')">AND (serie)</button>
+        <button class="mode-btn" id="gateOrBtn" onclick="setGate('OR')">OR (parallel)</button>
+      </div>
+      <div class="switch-row">
+        <button class="switch-toggle" id="swA" onclick="toggleSwitch('A')">Skakelaar A: AF</button>
+        <button class="switch-toggle" id="swB" onclick="toggleSwitch('B')">Skakelaar B: AF</button>
+      </div>
+      <div class="lamp-status" id="lampStatus">💡 Lamp: AF</div>
+      <table class="truth-table" id="truthTable">
+        <thead><tr><th>A</th><th>B</th><th>Afvoer</th></tr></thead>
+        <tbody id="truthBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Verduidelik hoe 'n eenvoudige vrugte- of groentebattery elektrisiteit opwek, en gee een rede waarom verskeie selle gewoonlik in serie gekoppel word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Gee een voordeel en een nadeel van batterye wat in serie gekoppel word, en een voordeel en een nadeel van batterye wat in parallel gekoppel word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Noem TWEE metodes wat Suid-Afrika gebruik om elektrisiteit vir die nasionale kragnetwerk op te wek, en gee vir elkeen EEN voordeel en EEN nadeel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik die verskil tussen 'n op-transformator en 'n af-transformator, en waarom elkeen in die nasionale kragnetwerk nodig is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">Teken die waarheidstabel vir 'n AND-logika-hek met twee toevoere, A en B. Beskryf dan 'n werklike-lewe-voorbeeld waar AND-logika 'n beter veiligheidskeuse sou wees as OR-logika.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (4 punte)</div><div class="wb-qtext">Baie landelike gebiede en informele nedersettings is nie aan die nasionale kragnetwerk gekoppel nie. (a) Noem TWEE risiko's van die alternatiewe brandstowwe of onwettige aansluitings wat mense in plaas daarvan mag gebruik. (b) Verduidelik wat bedoel word met die "billike deling" van 'n beperkte elektrisiteitstoevoer, met nywerhede en skole as jou twee voorbeelde.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The logicCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizeCanvas() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   LOGIC GATE TRUTH-TABLE BUILDER
+═══════════════════════════════════════════════ */
+let gate = 'AND';
+let swA = false, swB = false;
+const triedCombos = new Set();
+
+function setGate(g){
+  gate = g;
+  document.getElementById('gateAndBtn').classList.toggle('active', g==='AND');
+  document.getElementById('gateOrBtn').classList.toggle('active', g==='OR');
+  triedCombos.clear();
+  update();
+}
+function toggleSwitch(which){
+  if(which==='A') swA = !swA; else swB = !swB;
+  update();
+}
+function computeOutput(){
+  return gate==='AND' ? (swA && swB) : (swA || swB);
+}
+function update(){
+  document.getElementById('swA').classList.toggle('on', swA);
+  document.getElementById('swA').textContent = 'Skakelaar A: ' + (swA?'AAN':'AF');
+  document.getElementById('swB').classList.toggle('on', swB);
+  document.getElementById('swB').textContent = 'Skakelaar B: ' + (swB?'AAN':'AF');
+  const lit = computeOutput();
+  const lampEl = document.getElementById('lampStatus');
+  lampEl.classList.toggle('lit', lit);
+  lampEl.textContent = lit ? '💡 Lamp: AAN' : '💡 Lamp: AF';
+  triedCombos.add((swA?1:0)+''+(swB?1:0));
+  buildTruthTable();
+  drawLogicCircuit();
+}
+function buildTruthTable(){
+  const rows = [[false,false],[false,true],[true,false],[true,true]];
+  const body = document.getElementById('truthBody');
+  body.innerHTML = rows.map(([a,b])=>{
+    const out = gate==='AND' ? (a&&b) : (a||b);
+    const key = (a?1:0)+''+(b?1:0);
+    const isCurrent = (a===swA && b===swB);
+    const filled = triedCombos.has(key);
+    return `<tr class="${filled?'filled':''} ${isCurrent?'current':''}"><td>${a?'AAN':'AF'}</td><td>${b?'AAN':'AF'}</td><td>${out?'AAN':'AF'}</td></tr>`;
+  }).join('');
+}
+
+const canvas = document.getElementById('logicCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 320;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  drawLogicCircuit();
+}
+function drawSwitchSymbol(x,y,closed,color){
+  ctx.strokeStyle=color; ctx.lineWidth=3; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x-18,y);
+  if(closed){ ctx.lineTo(x+18,y); } else { ctx.lineTo(x+13,y-14); }
+  ctx.stroke();
+  ctx.fillStyle=color;
+  ctx.beginPath(); ctx.arc(x-18,y,3,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+18,y,3,0,Math.PI*2); ctx.fill();
+}
+function drawLogicCircuit(){
+  ctx.clearRect(0,0,W,H);
+  const lit = computeOutput();
+  const wireOn = 'rgba(253,186,116,0.9)', wireOff = 'rgba(210,218,245,.30)';
+  const left=60, right=W-90, top=90, bottom=H-90;
+
+  if(gate==='AND'){
+    // series: left -> switch A -> switch B -> right, single path
+    const midY = (top+bottom)/2;
+    ctx.strokeStyle = swA? wireOn:wireOff; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(left, midY); ctx.lineTo(left+70, midY); ctx.stroke();
+    drawSwitchSymbol(left+90, midY, swA, swA?wireOn:wireOff);
+    ctx.strokeStyle = (swA&&true)? (swA?wireOn:wireOff): wireOff; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(left+108, midY); ctx.lineTo(left+180, midY); ctx.stroke();
+    drawSwitchSymbol(left+200, midY, swB, (swA&&swB)?wireOn:wireOff);
+    ctx.strokeStyle = lit? wireOn:wireOff;
+    ctx.beginPath(); ctx.moveTo(left+218, midY); ctx.lineTo(right, midY); ctx.stroke();
+    ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif';
+    ctx.fillText('A', left+90, midY-24);
+    ctx.fillText('B', left+200, midY-24);
+  } else {
+    // parallel: two branches, top (A) and bottom (B), joined left and right
+    ctx.strokeStyle = wireOff; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left, bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(right, top); ctx.lineTo(right, bottom); ctx.stroke();
+    // branch A (top)
+    ctx.strokeStyle = swA? wireOn:wireOff;
+    ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left+60, top); ctx.stroke();
+    drawSwitchSymbol(left+80, top, swA, swA?wireOn:wireOff);
+    ctx.strokeStyle = swA? wireOn:wireOff;
+    ctx.beginPath(); ctx.moveTo(left+98, top); ctx.lineTo(right, top); ctx.stroke();
+    // branch B (bottom)
+    ctx.strokeStyle = swB? wireOn:wireOff;
+    ctx.beginPath(); ctx.moveTo(left, bottom); ctx.lineTo(left+60, bottom); ctx.stroke();
+    drawSwitchSymbol(left+80, bottom, swB, swB?wireOn:wireOff);
+    ctx.strokeStyle = swB? wireOn:wireOff;
+    ctx.beginPath(); ctx.moveTo(left+98, bottom); ctx.lineTo(right, bottom); ctx.stroke();
+    ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif';
+    ctx.fillText('A', left+80, top-16);
+    ctx.fillText('B', left+80, bottom+28);
+  }
+
+  // Cell — drawn INLINE in the left wire (which already runs from top to
+  // bottom), as one long thin plate (positive) and one short thick plate
+  // (negative), the standard symbol, instead of a disconnected stub.
+  const midY2 = (top+bottom)/2;
+  ctx.strokeStyle = 'rgba(210,218,245,.30)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left, bottom); ctx.stroke();
+  ctx.strokeStyle = '#fdba74'; ctx.lineCap = 'round';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(left-15,midY2-9); ctx.lineTo(left+15,midY2-9); ctx.stroke(); // long, thin = +
+  ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(left-8,midY2+9); ctx.lineTo(left+8,midY2+9); ctx.stroke(); // short, thick = −
+
+  // lamp on the right
+  const lampY=(top+bottom)/2;
+  ctx.beginPath(); ctx.arc(right+25, lampY, 20, 0, Math.PI*2);
+  ctx.fillStyle = lit ? 'rgba(253,224,71,0.35)' : '#05070f';
+  ctx.fill();
+  ctx.strokeStyle = lit ? '#fde047' : 'rgba(210,218,245,.30)'; ctx.lineWidth=3;
+  ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(right+11,lampY-11); ctx.lineTo(right+39,lampY+11);
+  ctx.moveTo(right+39,lampY-11); ctx.lineTo(right+11,lampY+11); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(right, top); ctx.lineTo(right+25, top); ctx.lineTo(right+25, lampY-20); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(right, bottom); ctx.lineTo(right+25, bottom); ctx.lineTo(right+25, lampY+20); ctx.stroke();
+  if(lit){
+    ctx.save();
+    ctx.shadowColor='#fde047'; ctx.shadowBlur=25;
+    ctx.beginPath(); ctx.arc(right+25, lampY, 20, 0, Math.PI*2); ctx.strokeStyle='#fde047'; ctx.stroke();
+    ctx.restore();
+  }
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif'; ctx.fillText('lamp', right+8, lampY+42);
+  ctx.fillText(gate+'-hek', left-10, top-30);
+}
+
+window.addEventListener('resize', resizeCanvas);
+update();
+resizeCanvas();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Om verskeie selle in serie te koppel, verhoog hoofsaaklik:',opts:['Die totale spanning','Slegs die selle se leeftyd','Die kleur van die lig wat geproduseer word','Niks verander nie'],ans:0,exp:'Om selle in serie te koppel tel hul spannings bymekaar, wat ’n hoër totale spanning gee — nuttig vir toestelle wat meer elektriese "stoot" nodig het.'},
+  {text:'Wat is die hoofvoordeel daarvan om batterye in parallel eerder as in serie te koppel?',opts:['’n Hoër spanning','Die batterye hou langer omdat die stroomlas gedeel word','Die lamp gloei ’n ander kleur','Dit voorkom kortsluitings'],ans:1,exp:'Parallelkoppeling hou die spanning dieselfde as een sel, maar deel die stroomlas tussen selle, sodat die batterye langer hou.'},
+  {text:'In ’n hidro-elektriese pomp-bergingskema word water opdraande gepomp wanneer die vraag na elektrisiteit laag is, sodat:',opts:['Dit later afdraande deur turbines vrygestel kan word om vinnig krag op te wek wanneer die vraag hoog is','Die dam voller lyk','Vis makliker kan migreer','Die turbines skoongemaak kan word'],ans:0,exp:'Pomp-berging "berg" elektriese energie in werklikheid as swaartekrag-potensiële energie in die verhoogde water, gereed om vinnig krag op te wek wanneer die vraag styg.'},
+  {text:'Waarom word elektrisiteit as wisselstroom (WS) eerder as gelykstroom (GS) opgewek en oorgedra?',opts:['WS is net goedkoper om by die kragstasie te produseer','WS kan doeltreffend na verskillende spannings verander word deur transformators te gebruik','GS kan nie lampe laat brand nie','WS benodig geen drade nie'],ans:1,exp:'WS laat transformators toe om spanning te verhoog (vir doeltreffende langafstand-oordrag) en te verlaag (vir veilige huisgebruik) — iets wat GS nie so maklik kan doen nie.'},
+  {text:'Volgens die kwalitatiewe weergawe van Ohm se Wet wat in Graad 8 geleer word, as jy meer selle in serie byvoeg (en die weerstand dieselfde bly), sal die stroom:',opts:['Afneem','Presies dieselfde bly','Toeneem, omdat die spanning toegeneem het','Wisselstroom word'],ans:2,exp:'Meer selle in serie beteken meer spanning. As die weerstand nie verander nie, veroorsaak meer spanning meer stroom wat vloei — dis waarom die lamp helderder word met meer selle.'},
+  {text:'Twee paniekknoppies is bedraad sodat om ENIGE een te druk, die alarm laat afgaan. Hierdie stroombaan gebruik:',opts:['AND-logika, skakelaars in serie','OR-logika, skakelaars in parallel','Nòg AND- nòg OR-logika nie','’n Kortsluiting'],ans:1,exp:'Wanneer enige een van verskeie skakelaars dieselfde afvoer moet veroorsaak, word die skakelaars in parallel bedraad — dit is OR-logika, aangesien die afvoer AAN is as A OR B (of albei) AAN is.'},
+  {text:'Waarom word onwettige elektriese aansluitings in informele nedersettings as ’n ernstige veiligheids- en etiese kwessie beskou?',opts:['Hulle maak elektrisiteit goedkoper vir almal','Hulle kan elektrokusie en brande veroorsaak, en plaas onberekende ekstra las op die kragnetwerk','Hulle is net ’n probleem omdat dit teen die wet is','Hulle raak slegs die huishouding wat die aansluiting maak'],ans:1,exp:'Onwettige aansluitings is ’n groot oorsaak van elektrokusie en informele-nedersetting-brande, en hulle plaas las op die kragnetwerk sonder dat dit in ag geneem word, wat kragonderbrekings kan veroorsaak wat ook wettig-gekoppelde bure raak.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
