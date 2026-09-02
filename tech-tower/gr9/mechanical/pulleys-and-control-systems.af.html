@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katrolle &amp; Meganiese Beheerstelsels — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    /* Lesson-tab illustrative figures (static, non-interactive) */
+    .fig-wrap{background:#05070f;border:1px solid var(--border);border-radius:16px;padding:12px;margin:14px 0 20px;max-width:340px}
+    .fig-canvas{display:block;width:100%;border-radius:8px}
+    .fig-caption{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%;cursor:pointer}
+    .parts-list{display:flex;flex-direction:column;gap:5px}
+    .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .part-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px;background:rgba(249,115,22,.15);color:var(--accent-light);border:1px solid rgba(249,115,22,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    .ma-readout{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .ma-box{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 12px;text-align:center}
+    .ma-box .ma-label{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+    .ma-box .ma-val{font-weight:800;font-size:20px;color:var(--accent-light)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .ma-readout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Meganiese Stelsels · Gr 9</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Meganiese Stelsels &amp; Beheer · Kwartaal 2 · Les 2</div>
+  <h1 class="lesson-title">Katrolle &amp; Meganiese Beheerstelsels</h1>
+  <p class="lesson-sub">Katrolle laat ons toe om 'n trekkrag te herlei of te vermenigvuldig. Beheerstelsels soos palratte, remme en meerklampe laat ons beweging beheer — deur dit toe te laat, te stop, of op sy plek vas te grendel.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-commit" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Die enkele vaste katrol</h2>
+    <p>'n <strong>Enkele vaste katrol</strong> is 'n wiel met 'n gegroefde rand, in 'n vaste posisie gemonteer (byvoorbeeld aan 'n balk vasgebout), met 'n tou wat daaroor loop. Om aan een kant van die tou af te trek, lig die las aan die ander kant op.</p>
+    <p>'n Vaste katrol vermenigvuldig <strong>nie</strong> krag nie — die inspanning wat jy toepas is gelyk aan die las wat jy optel. Sy enigste taak is om die <strong>rigting</strong> van die trekkrag te verander, en dis waarom 'n vlagpaal jou toelaat om 'n vlag op te trek deur af te trek in plaas daarvan om op te klim.</p>
+    <div class="key-fact">Enkele vaste katrol: Meganiese Voordeel (MV) = 1. Rigting verander, krag nie.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figFixed" height="260"></canvas><div class="fig-caption">Enkele vaste katrol — een tou-gedeelte dra die las</div></div>
+
+    <h2>Die enkele beweegbare katrol</h2>
+    <p>'n <strong>Enkele beweegbare katrol</strong> is direk aan die las geheg, sodat die katrol self beweeg soos die las opgetel word. Een kant van die tou is vas (dikwels aan dieselfde balk of raam), die tou loop onder die beweegbare katrol deur, en jy trek aan die los kant.</p>
+    <p>Omdat die las nou deur <strong>twee</strong> tou-gedeeltes ondersteun word in plaas van een, hoef jy net met ongeveer die helfte van die krag te trek om dit op te tel — wat <strong>MV &gt; 1</strong> gee. Die kompromie is dat jy die tou twee keer so ver moet trek om die las dieselfde afstand op te lig.</p>
+    <div class="key-fact">Enkele beweegbare katrol: MV = 2 (ongeveer). Inspanning ≈ helfte van die las, maar tou beweeg twee keer so ver.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figMoveable" height="260"></canvas><div class="fig-caption">Enkele beweegbare katrol — twee tou-gedeeltes dra die las</div></div>
+
+    <h2>Katrolblok-stelsels (katrolstelsel)</h2>
+    <p>'n <strong>Katrolstelsel (takelblok)</strong> kombineer verskeie vaste en beweegbare katrolle (in "blokke" gemonteer) met een aaneenlopende tou wat daardeur ryg. Hoe meer <strong>lasdraende tou-gedeeltes</strong> die beweegbare blok ondersteun, hoe groter die meganiese voordeel — elke ekstra tou-gedeelte deel die las tussen meer stringe.</p>
+    <div class="callout"><strong>Vuistreël:</strong> Meganiese Voordeel ≈ die aantal tou-gedeeltes wat die beweegbare katrolblok direk ondersteun. Twee ondersteunende toue gee MV ≈ 2; drie ondersteunende toue gee MV ≈ 3, en so meer. Dis hoe hyskrane en enjinhystoestelle laste optel wat veel swaarder is as wat 'n persoon direk sou kon trek.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figBlock" height="260"></canvas><div class="fig-caption">2-katrol-blok-en-takel — vier tou-gedeeltes dra die beweegbare blok</div></div>
+    <table class="compare-table">
+      <thead><tr><th>Stelsel</th><th>Lasdraende toue</th><th>Ong. MV</th></tr></thead>
+      <tbody>
+        <tr><td>Enkele vaste katrol</td><td>1</td><td>1 (slegs rigtingverandering)</td></tr>
+        <tr><td>Enkele beweegbare katrol</td><td>2</td><td>2</td></tr>
+        <tr><td>2-katrol-blok-en-takel</td><td>3</td><td>3</td></tr>
+        <tr><td>3-katrol-blok-en-takel</td><td>4</td><td>4</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Meganiese beheerstelsels</h2>
+    <p>'n Beheerstelsel skep nie beweging nie — dit bestuur dit: deur beweging in slegs een rigting toe te laat, dit te vertraag, of dit op sy plek vas te grendel.</p>
+    <ul>
+      <li><strong>Palrat en pal</strong> — 'n getande wiel (die palrat) skakel met 'n veerbelaaide arm (die pal) wat tussen die tande inpas. Die wiel kan vrylik in een rigting draai, maar die pal vang die tande en blokkeer rotasie die ander kant toe. Word in ratelsleutels, vissenshaspels en handliere gebruik om terugbeweging te stop.</li>
+      <li><strong>Skyfrem</strong> — 'n plat metaalskyf (rotor) draai saam met die wiel; deur remblokkies teen albei kante van die skyf vas te druk, gebruik wrywing om die rotasie te vertraag of te stop. Algemeen op motors, motorfietse en fietse.</li>
+      <li><strong>Fietsrem</strong> — rubber remblokkies word teen die wielvelg vasgedruk (velgrem) deur 'n handhefboom en kabel, wat wrywing gebruik om die fiets te vertraag. Sommige fietse gebruik eerder 'n klein skyfrem by die naaf.</li>
+      <li><strong>Meerklamp</strong> — 'n aanhegting (dikwels op 'n boot) waarom 'n tou in 'n agt-patroon gedraai word. Wrywing tussen die tou en die meerklamp se horings wig die tou vas, wat dit onder las beveilig sonder om 'n knoop nodig te hê.</li>
+    </ul>
+    <div class="callout"><strong>Gemeenskaplike draad:</strong> palratte beheer <em>rigting</em>, remme en meerklampe beheer beweging deur <strong>wrywing</strong> — een oppervlak teen 'n ander druk om beweging in hitte om te sit en die stelsel vas te hou of te vertraag.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Katrolstelselbouer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Sleep die skuifknop om die aantal tou-gedeeltes wat die las ondersteun te verander, en sien hoe meer katrolle minder inspanning beteken — maar meer tou om te trek.</p>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap"><canvas id="pulleyCanvas" height="340"></canvas></div>
+    <div>
+      <div class="slider-row" style="margin-bottom:14px">
+        <label style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:rgba(210,218,245,.78);margin-bottom:8px">Ondersteunende tou-gedeeltes <span id="ropeCountVal" style="font-family:var(--fm);color:var(--accent-light)">1</span></label>
+        <input type="range" id="ropeCount" min="1" max="6" value="1" step="1" oninput="selectRopeCount(this.value)" style="width:100%;accent-color:var(--accent)">
+      </div>
+      <div class="part-info" id="partInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Verduidelik waarom 'n enkele vaste katrol 'n meganiese voordeel van 1 het, al voel dit asof dit makliker is om 'n vlag op te trek.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">'n Enkele beweegbare katrol word gebruik om 'n las van 60 N op te lig. (a) Watter inspanningskrag word teoreties benodig? (b) As die las 1 m moet styg, hoe ver moet die tou getrek word? (c) Verduidelik die kompromie wat deur jou antwoorde getoon word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">'n Katrolstelsel het 4 tou-gedeeltes wat die beweegbare katrolblok ondersteun. (a) Gee die benaderde meganiese voordeel. (b) Bereken die inspanningskrag wat nodig is om 'n las van 400 N op te lig. (c) Noem een werklike masjien wat hierdie tipe stelsel gebruik.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Noem die vier meganiese beheerstelsels wat in hierdie les bestudeer is en dui vir elkeen aan of die hoofdoel daarvan is om rigting te beheer, of om beweging deur wrywing te beheer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Beskryf hoe 'n meerklamp 'n tou op 'n seilboot vashou, sonder om 'n knoop vas te maak.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The pulleyCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizeCanvas() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   PULLEY SYSTEM BUILDER — N supporting rope sections
+   Generalised model: ceil(N/2) pulleys in the fixed
+   (top) block, floor(N/2) pulleys in the moveable
+   block attached to the load. N=1 is a single fixed
+   pulley (0 moveable pulleys); N=2 is a single
+   moveable pulley; N>=3 is a block-and-tackle.
+═══════════════════════════════════════════════ */
+const LOAD_N = 100;
+const COLOR = '#fb923c';
+let ropeCount = 1;
+
+function nameFor(n){
+  if(n===1) return 'Enkele vaste katrol';
+  if(n===2) return 'Enkele beweegbare katrol';
+  return `Katrolstelsel (${n} tou-gedeeltes)`;
+}
+function descFor(n){
+  if(n===1) return 'Een katrol wat in ’n vaste posisie vasgebout is. Die tou gaan een keer daaroor. Om af te trek lig die las op — rigting verander maar die benodigde inspanning is gelyk aan die las.';
+  if(n===2) return 'Die katrol is aan die las geheg en beweeg saam daarmee. Twee tou-gedeeltes ondersteun die las, sodat die benodigde inspanning ongeveer die helfte van die las is. Jy moet die tou twee keer so ver trek.';
+  return `'n Vaste blok (${Math.ceil(n/2)} katrol${Math.ceil(n/2)>1?'le':''}) en 'n beweegbare blok (${Math.floor(n/2)} katrol${Math.floor(n/2)>1?'le':''}) aan die las geheg, met ${n} tou-gedeeltes wat die beweegbare blok ondersteun. MV ≈ ${n} — slegs 1/${n} van die inspanning word benodig, maar die tou moet ${n}× so ver getrek word.`;
+}
+function selectRopeCount(n){
+  ropeCount = parseInt(n,10);
+  document.getElementById('ropeCountVal').textContent = ropeCount;
+  const effort = (LOAD_N/ropeCount).toFixed(1);
+  document.getElementById('partInfo').innerHTML = `
+    <div class="part-name">${nameFor(ropeCount)}</div>
+    <span class="part-force">MV ≈ ${ropeCount}</span>
+    <div class="part-desc">${descFor(ropeCount)}</div>
+    <div class="ma-readout">
+      <div class="ma-box"><div class="ma-label">Las</div><div class="ma-val">${LOAD_N} N</div></div>
+      <div class="ma-box"><div class="ma-label">Inspanning benodig</div><div class="ma-val">${effort} N</div></div>
+    </div>
+    <div class="ma-readout">
+      <div class="ma-box"><div class="ma-label">Tou getrek om 1&nbsp;m op te lig</div><div class="ma-val">${ropeCount} m</div></div>
+      <div class="ma-box"><div class="ma-label">Las styg</div><div class="ma-val">1 m</div></div>
+    </div>`;
+  drawPulleys(ctx, W, H, ropeCount);
+}
+
+const canvas = document.getElementById('pulleyCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 340;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  drawPulleys(ctx, W, H, ropeCount);
+}
+
+function drawPulley(c,cx,cy,r,color){
+  c.beginPath();
+  c.arc(cx,cy,r,0,Math.PI*2);
+  c.strokeStyle = color;
+  c.lineWidth = 3;
+  c.stroke();
+  c.beginPath();
+  c.arc(cx,cy,3,0,Math.PI*2);
+  c.fillStyle = color;
+  c.fill();
+}
+function drawRope(c,x1,y1,x2,y2,color){
+  c.beginPath();
+  c.moveTo(x1,y1);
+  c.lineTo(x2,y2);
+  c.strokeStyle = color;
+  c.lineWidth = 2;
+  c.stroke();
+}
+function drawBeam(c,cx,topY){
+  c.fillStyle = 'rgba(255,255,255,.14)';
+  c.fillRect(cx-90, topY-10, 180, 10);
+}
+function drawLoadBox(c,cx,cy,color){
+  c.fillStyle = color+'33';
+  c.strokeStyle = color;
+  c.lineWidth = 2;
+  c.fillRect(cx-26,cy,52,34);
+  c.strokeRect(cx-26,cy,52,34);
+  c.fillStyle = '#fff';
+  c.font = '11px "JetBrains Mono",monospace';
+  c.textAlign = 'center';
+  c.fillText('100 N', cx, cy+21);
+}
+
+// Generic block-and-tackle renderer — used both by the live explorer canvas
+// and by the small static figures in the Lesson tab (same tested geometry).
+function drawPulleys(c,cw,ch,n){
+  c.clearRect(0,0,cw,ch);
+  const color = COLOR;
+  const cx = cw/2, topY = 40, r = 13, spacing = 26;
+  drawBeam(c,cx, topY);
+
+  const fixedCount = Math.ceil(n/2), moveableCount = Math.floor(n/2);
+  const fixedY = topY + r + 6;
+  const moveableY = fixedY + 130;
+  const xAt = (count,i,centerX) => count<=1 ? centerX : centerX - ((count-1)*spacing)/2 + i*spacing;
+
+  const fixedXs = [];
+  for(let i=0;i<fixedCount;i++){ const x=xAt(fixedCount,i,cx); fixedXs.push(x); drawPulley(c,x, fixedY, r, color); }
+  const moveXs = [];
+  for(let i=0;i<moveableCount;i++){ const x=xAt(moveableCount,i,cx); moveXs.push(x); drawPulley(c,x, moveableY, r, color); }
+
+  const loadY = (moveableCount>0 ? moveableY : fixedY) + 26;
+  const bottomY = moveableCount>0 ? moveableY : (loadY-6);
+
+  // N supporting strands, fanned out slightly so repeated wraps over the
+  // same pulley are still visible as distinct lines rather than overlapping.
+  for(let k=0;k<n;k++){
+    const jitter = (k - (n-1)/2) * 3;
+    const fx = fixedXs[k % fixedCount] + jitter;
+    const mx = (moveableCount>0 ? moveXs[k % moveableCount] : cx) + jitter;
+    drawRope(c,fx, fixedY, mx, bottomY, color);
+  }
+  drawLoadBox(c,cx, loadY, color);
+
+  // Effort rope: exits the last fixed pulley down to the pull point.
+  const exitX = fixedXs[fixedXs.length-1];
+  const pullX = cx + 90, pullY = ch-40;
+  drawRope(c,exitX, fixedY, pullX, pullY, color);
+  c.fillStyle = 'rgba(210,218,245,.6)'; c.font='11px "JetBrains Mono",monospace'; c.textAlign='center';
+  c.fillText('Trek hier (inspanning)', pullX, pullY+18);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+selectRopeCount(1);
+
+// Static illustrative figures in the Lesson tab, using the same tested
+// drawPulleys() geometry as the interactive explorer above.
+function renderFigure(id, n){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const fw = el.offsetWidth || 300, fh = 260;
+  el.width = fw*devicePixelRatio; el.height = fh*devicePixelRatio;
+  const fctx = el.getContext('2d');
+  fctx.setTransform(1,0,0,1,0,0);
+  fctx.scale(devicePixelRatio, devicePixelRatio);
+  drawPulleys(fctx, fw, fh, n);
+}
+function renderAllFigures(){
+  renderFigure('figFixed', 1);
+  renderFigure('figMoveable', 2);
+  renderFigure('figBlock', 4);
+}
+window.addEventListener('resize', renderAllFigures);
+renderAllFigures();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Wat is die meganiese voordeel van ’n enkele vaste katrol?',opts:['0','1','2','Dit hang af van die las'],ans:1,exp:'’n Enkele vaste katrol verander net die rigting van die trekkrag — dit vermenigvuldig dit nie, dus MV = 1.'},
+  {text:'’n Enkele beweegbare katrol word gebruik om ’n las op te lig. Ongeveer hoe vergelyk die inspanningskrag met die las?',opts:['Inspanning is gelyk aan die las','Inspanning is ongeveer dubbel die las','Inspanning is ongeveer die helfte van die las','Inspanning is nul'],ans:2,exp:'Omdat twee tou-gedeeltes ’n enkele beweegbare katrol ondersteun, is die benodigde inspanning ongeveer die helfte van die las — MV ≈ 2 — al moet jy die tou twee keer so ver trek.'},
+  {text:'In ’n katrolstelsel, wat bepaal die meganiese voordeel?',opts:['Die kleur van die tou','Die aantal lasdraende tou-gedeeltes wat die beweegbare blok ondersteun','Die hoogte van die vaste blok','Die materiaal waarvan die katrolle gemaak is'],ans:1,exp:'Hoe meer tou-gedeeltes die beweegbare katrolblok direk ondersteun, hoe groter die meganiese voordeel — elke gedeelte deel ’n deel van die las.'},
+  {text:'Watter meganiese beheerstelsel laat rotasie in slegs een rigting toe?',opts:['Skyfrem','Meerklamp','Palrat en pal','Fietsrem'],ans:2,exp:'’n Palrat en pal gebruik ’n getande wiel en ’n veerbelaaide arm om vrye rotasie een kant toe toe te laat, terwyl rotasie die ander kant toe geblokkeer word.'},
+  {text:'’n Skyfrem en ’n fiets-velgrem vertraag albei beweging hoofsaaklik deur gebruik te maak van:',opts:['Magnetisme','Swaartekrag','Wrywing','Ratoorbrenging'],ans:2,exp:'Albei druk ’n blokkie teen ’n draaiende oppervlak (’n skyf of ’n wielvelg), en sit beweging deur wrywing in hitte om, om die stelsel te vertraag.'},
+  {text:'Hoe beveilig ’n meerklamp ’n tou op ’n seilboot?',opts:['Dit maak ’n permanente knoop in die tou vas','Dit klem die tou vas met ’n elektriese motor','Wrywing van die tou wat om die meerklamp se horings gedraai word, wig dit vas','Dit smelt die tou se vesels aanmekaar'],ans:2,exp:'’n Meerklamp is ’n aanhegting met horings waarom die tou in ’n agt-patroon gedraai word; wrywing tussen die tou en die horings wig die tou vas sodat dit vinnig sonder ’n knoop beveilig of losgemaak kan word.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
