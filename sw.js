@@ -2,11 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v69'; // no longer load-bearing for freshness (fetch handler is network-first) — bump only to prune old/removed cached files
-// v69: added Theme Weaver (theme-weaver.html/.js) — the theme-based
-// learning hub: a combined cross-subject assessment calendar plus a
-// Grade 8 "new here" onboarding guide. Added its two files to the
-// precache list.
+const CACHE_NAME = 'magic-lab-v68'; // no longer load-bearing for freshness (fetch handler is network-first) — bump only to prune old/removed cached files
 // v68: math-magician/gr9 — fixed character-encoding corruption (garbled
 // ×, ÷, π, √, arrows, emoji, etc.) across all 15 affected Grade 9 chapter
 // files (ch1-8, ch10-12, ch14-17), reconstructed against the byte-clean
@@ -438,8 +434,6 @@ const urlsToCache = [
   '/games.js',
   '/arena-host.html',
   '/arena.html',
-  '/theme-weaver.html',
-  '/theme-weaver.js',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
