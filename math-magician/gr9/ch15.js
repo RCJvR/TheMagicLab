@@ -1,4 +1,4 @@
-// Math Magician � Grade 9, Chapter 15 data
+// Math Magician — Grade 9, Chapter 15 data
 // Surface Area and Volume
 
 MathMagician.registerChapter(15, {
@@ -10,29 +10,66 @@ MathMagician.registerChapter(15, {
       fullName: "Surface area of prisms and cylinders",
       lesson: {
         heading: "Surface area of 3D objects",
-        sub: "Chapter 15 � Topic 1",
+        sub: "Chapter 15 · Topic 1",
         body: `
           <p><strong>Surface area</strong> is the total area of all faces of a 3D object. Imagine unfolding the shape into a net.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Surface area formulas</div>
+            <div class="def-box-title">📖 Surface area formulas</div>
             <p>
               <strong>Rectangular prism (cuboid):</strong><br>
               SA = 2(lw + lh + wh)<br><br>
-              <strong>Cube:</strong> SA = 6s�<br><br>
+              <strong>Cube:</strong> SA = 6s²<br><br>
               <strong>Triangular prism:</strong><br>
-              SA = 2 � (area of triangle) + 3 � (area of rectangles)<br><br>
+              SA = 2 × (area of triangle) + 3 × (area of rectangles)<br><br>
               <strong>Cylinder:</strong><br>
-              SA = 2pr� + 2prh = 2pr(r + h)<br><br>
-              <strong>Cone:</strong> SA = pr� + prl (l = slant height)<br><br>
-              <strong>Sphere:</strong> SA = 4pr�
+              SA = 2πr² + 2πrh = 2πr(r + h)<br><br>
+              <strong>Cone:</strong> SA = πr² + πrl (l = slant height)<br><br>
+              <strong>Sphere:</strong> SA = 4πr²
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Cylinder example</div>
+            <div class="example-box-title">✏️ Cylinder example</div>
             <div class="example-step"><span class="step-num">1</span><span>r = 4 cm, h = 10 cm</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>SA = 2p(4)� + 2p(4)(10) = 32p + 80p = 112p � 351,86 cm�</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>SA = 2π(4)² + 2π(4)(10) = 32π + 80π = 112π ≈ 351,86 cm²</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>Surface area is the total area of all faces of a 3D shape � think of it as the amount of wrapping paper needed to cover it.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Surface area is the total area of all faces of a 3D shape — think of it as the amount of wrapping paper needed to cover it.</span></div>
+
+          <div style="margin:26px 0 14px;">
+            <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;">&#128208; Nets of each solid</div>
+            <p style="font-size:11.5px;color:rgba(221,225,240,0.40);margin:4px 0 0;">Unfold each solid into a flat net to see every face and where its dimensions come from.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:6px;">
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Cube</div>
+              <svg viewBox="-22 -26 204 172" width="200" height="168" fill="none"><path d="M40,0 L80,0 L80,40 L160,40 L160,80 L80,80 L80,120 L40,120 L40,80 L0,80 L0,40 L40,40 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><line x1="40" y1="40" x2="80" y2="40" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="40" y1="40" x2="40" y2="80" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="80" y1="40" x2="80" y2="80" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="120" y1="40" x2="120" y2="80" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="40" y1="80" x2="80" y2="80" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="40" y1="-5" x2="40" y2="5" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="80" y1="-5" x2="80" y2="5" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="40" y1="-14" x2="80" y2="-14" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="60.0" y="-16" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">s</text><line x1="-5" y1="40" x2="5" y2="40" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-5" y1="80" x2="5" y2="80" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-14" y1="40" x2="-14" y2="80" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="-18" y="64.0" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">s</text></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">6 squares, all side s</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Rectangular prism</div>
+              <svg viewBox="-26 -71 290 174" width="280" height="180" fill="none"><path d="M45,-45 L120,-45 L120,0 L240,0 L240,32 L120,32 L120,77 L45,77 L45,32 L0,32 L0,0 L45,0 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><line x1="45" y1="0" x2="45" y2="32" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="120" y1="0" x2="120" y2="32" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="165" y1="0" x2="165" y2="32" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="45" y1="0" x2="120" y2="0" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="45" y1="32" x2="120" y2="32" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="0" y1="37" x2="0" y2="27" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="45" y1="37" x2="45" y2="27" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="0" y1="44" x2="45" y2="44" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="22.5" y="56" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">w</text><line x1="45" y1="37" x2="45" y2="27" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="120" y1="37" x2="120" y2="27" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="45" y1="44" x2="120" y2="44" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="82.5" y="56" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">l</text><line x1="-5" y1="0" x2="5" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-5" y1="32" x2="5" y2="32" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-14" y1="0" x2="-14" y2="32" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="-18" y="20.0" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">h</text></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">2 pairs of rectangles + 2 end rectangles (l, w, h)</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Triangular prism</div>
+              <svg viewBox="-40 -78 238 246" width="300" height="220" fill="none"><path d="M0,0 L168,0 L168,90 L0,90 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><path d="M0,0 L42,0 L0,-56 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><path d="M0,90 L42,90 L0,146 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><line x1="42" y1="0" x2="42" y2="90" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="98" y1="0" x2="98" y2="90" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="0" y1="0" x2="42" y2="0" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="0" y1="90" x2="42" y2="90" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="0" y1="95" x2="0" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="42" y1="95" x2="42" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="0" y1="102" x2="42" y2="102" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="21.0" y="114" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">a</text><line x1="42" y1="95" x2="42" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="98" y1="95" x2="98" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="42" y1="102" x2="98" y2="102" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="70.0" y="114" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">b</text><line x1="98" y1="95" x2="98" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="168" y1="95" x2="168" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="98" y1="102" x2="168" y2="102" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="133.0" y="114" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">c</text><line x1="173" y1="0" x2="163" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="173" y1="90" x2="163" y2="90" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="180" y1="0" x2="180" y2="90" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="184" y="49.0" text-anchor="start" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">L</text><text x="-6" y="-28.0" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">h</text><line x1="-4" y1="-56" x2="-4" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-8" y1="-56" x2="0" y2="-56" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-8" y1="0" x2="0" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">2 triangles (sides a, b, c) + 3 rectangles, length L</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Cylinder</div>
+              <svg viewBox="-40 -88.0 281.1 266.0" width="320" height="260" fill="none"><path d="M0,0 L201.1,0 L201.1,90 L0,90 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><circle cx="100.5" cy="-32" r="32" stroke="#a5b4fc" stroke-width="1.6"/><circle cx="100.5" cy="122" r="32" stroke="#a5b4fc" stroke-width="1.6"/><line x1="0" y1="0" x2="201.1" y2="0" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="0" y1="90" x2="201.1" y2="90" stroke="rgba(165,180,252,0.45)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="-5" y1="0" x2="5" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-5" y1="90" x2="5" y2="90" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="-14" y1="0" x2="-14" y2="90" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="-18" y="49.0" text-anchor="end" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">h</text><line x1="0" y1="95" x2="0" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="201.06192982974676" y1="95" x2="201.06192982974676" y2="85" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><line x1="0" y1="102" x2="201.06192982974676" y2="102" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="100.53096491487338" y="114" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">2&pi;r</text><line x1="100.5" y1="-32" x2="100.5" y2="-64" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="106.5" y="-48.0" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">r</text></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">2 circles (radius r) + 1 rectangle, width = 2&pi;r</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Cone</div>
+              <svg viewBox="-91.4 -20.0 182.8 195.0" width="220" height="300" fill="none"><path d="M0,0 L-71.42,76.97 A105,105 0 0 1 71.42,76.97 Z" stroke="#a5b4fc" stroke-width="1.6" stroke-linejoin="round"/><circle cx="0" cy="130.00" r="25" stroke="#a5b4fc" stroke-width="1.6"/><line x1="0" y1="130.00" x2="25" y2="130.00" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="12.5" y="126.0" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">r</text><line x1="0" y1="0" x2="71.42" y2="76.97" stroke="rgba(221,225,240,0.55)" stroke-width="1" stroke-dasharray="2 2"/><text x="43.7" y="38.5" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">l</text></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">1 circle (radius r) + 1 sector, radius = slant height l</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;text-align:center;">
+              <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#e8eaf4;margin-bottom:10px;">Sphere</div>
+              <svg viewBox="-75 -75 150 150" width="220" height="220" fill="none"><circle cx="0" cy="0" r="55" stroke="#a5b4fc" stroke-width="1.6"/><ellipse cx="0" cy="0" rx="55" ry="18.7" stroke="#a5b4fc" stroke-width="1.1" stroke-dasharray="3 3" opacity="0.55"/><line x1="0" y1="0" x2="55" y2="0" stroke="rgba(221,225,240,0.55)" stroke-width="1"/><text x="27.5" y="-6" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:11px;fill:#fbbf24;">r</text></svg>
+              <p style="margin:8px 0 0;font-size:11px;color:rgba(221,225,240,0.45);">No flat net exists &mdash; a sphere can't be unfolded without stretching or tearing</p>
+            </div>
+          </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Surface Area Calculator</div>
@@ -55,14 +92,14 @@ MathMagician.registerChapter(15, {
           <script>
           (function(){
             var solids={
-              cube:{labels:['Side (s)'],defaults:[5],formula:'SA = 6s�',
-                calc:function(v){var s=v[0];return {total:6*s*s,faces:['6 squares: 6 � '+s+'� = '+6*s*s]};} },
+              cube:{labels:['Side (s)'],defaults:[5],formula:'SA = 6s²',
+                calc:function(v){var s=v[0];return {total:6*s*s,faces:['6 squares: 6 × '+s+'² = '+6*s*s]};} },
               rect:{labels:['Length (l)','Width (w)','Height (h)'],defaults:[8,5,4],formula:'SA = 2(lw + lh + wh)',
-                calc:function(v){var l=v[0],w=v[1],h=v[2];var lw=l*w,lh=l*h,wh=w*h;return{total:2*(lw+lh+wh),faces:['2 � lw = 2�'+lw+' = '+2*lw,'2 � lh = 2�'+lh+' = '+2*lh,'2 � wh = 2�'+wh+' = '+2*wh]};} },
+                calc:function(v){var l=v[0],w=v[1],h=v[2];var lw=l*w,lh=l*h,wh=w*h;return{total:2*(lw+lh+wh),faces:['2 × lw = 2×'+lw+' = '+2*lw,'2 × lh = 2×'+lh+' = '+2*lh,'2 × wh = 2×'+wh+' = '+2*wh]};} },
               tri:{labels:['Base (b)','Height of tri (h)','Length (l)','Slant sides (s1, s2)','s2'],defaults:[6,4,10,5,5],formula:'SA = bh + l(b + s1 + s2)',
-                calc:function(v){var b=v[0],h=v[1],l=v[2],s1=v[3],s2=v[4];var bases=b*h,rect1=l*b,rect2=l*s1,rect3=l*s2;return{total:bases+rect1+rect2+rect3,faces:['2 triangular faces: '+b+'�'+h+' = '+bases,'Rectangular base: '+l+'�'+b+' = '+rect1,'Side face 1: '+l+'�'+s1+' = '+rect2,'Side face 2: '+l+'�'+s2+' = '+rect3]};} },
-              cyl:{labels:['Radius (r)','Height (h)'],defaults:[4,10],formula:'SA = 2pr� + 2prh',
-                calc:function(v){var r=v[0],h=v[1];var circles=2*Math.PI*r*r,lateral=2*Math.PI*r*h;return{total:circles+lateral,faces:['2 circles: 2p('+r+')� = '+circles.toFixed(3),'Curved surface: 2p('+r+')('+h+') = '+lateral.toFixed(3)]};} },
+                calc:function(v){var b=v[0],h=v[1],l=v[2],s1=v[3],s2=v[4];var bases=b*h,rect1=l*b,rect2=l*s1,rect3=l*s2;return{total:bases+rect1+rect2+rect3,faces:['2 triangular faces: '+b+'×'+h+' = '+bases,'Rectangular base: '+l+'×'+b+' = '+rect1,'Side face 1: '+l+'×'+s1+' = '+rect2,'Side face 2: '+l+'×'+s2+' = '+rect3]};} },
+              cyl:{labels:['Radius (r)','Height (h)'],defaults:[4,10],formula:'SA = 2πr² + 2πrh',
+                calc:function(v){var r=v[0],h=v[1];var circles=2*Math.PI*r*r,lateral=2*Math.PI*r*h;return{total:circles+lateral,faces:['2 circles: 2π('+r+')² = '+circles.toFixed(3),'Curved surface: 2π('+r+')('+h+') = '+lateral.toFixed(3)]};} },
             };
             function setShape(){
               var key=document.getElementById('saShape').value;var s=solids[key];
@@ -76,8 +113,8 @@ MathMagician.registerChapter(15, {
               var res=s.calc(vals);
               document.getElementById('saOut').innerHTML=[
                 '<div><span style="color:rgba(221,225,240,0.45);">Formula: </span><span style="color:#fbbf24;">'+s.formula+'</span></div>',
-                res.faces.map(function(f){return '<div style="color:rgba(221,225,240,0.50);font-size:11px;">? '+f+'</div>';}).join(''),
-                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Total SA: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(typeof res.total==='number'&&res.total%1!==0?res.total.toFixed(3):res.total)+'</span> <span style="color:rgba(221,225,240,0.35);">units�</span></div>',
+                res.faces.map(function(f){return '<div style="color:rgba(221,225,240,0.50);font-size:11px;">• '+f+'</div>';}).join(''),
+                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Total SA: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(typeof res.total==='number'&&res.total%1!==0?res.total.toFixed(3):res.total)+'</span> <span style="color:rgba(221,225,240,0.35);">units²</span></div>',
               ].join('');
             }
             document.getElementById('saShape').addEventListener('change',function(){setShape();});
@@ -90,12 +127,12 @@ MathMagician.registerChapter(15, {
       },
       questions: [
         { type: "input", text: "Find the surface area of a cube with side 5 cm.", answer: "150", topic: "Surface Area" },
-        { type: "mc", text: "A cylinder has r = 3 cm and h = 7 cm. Its surface area (using p � 3,14) is approximately:", options: ["188,4 cm�", "94,2 cm�", "56,52 cm�", "376,8 cm�"], answer: 0, topic: "Surface Area" },
+        { type: "mc", text: "A cylinder has r = 3 cm and h = 7 cm. Its surface area (using π ≈ 3,14) is approximately:", options: ["188,4 cm²", "94,2 cm²", "56,52 cm²", "376,8 cm²"], answer: 0, topic: "Surface Area" },
         { type: "input", text: "A rectangular prism has l = 8, w = 5, h = 3 cm. Find the surface area.", answer: "158", topic: "Surface Area" },
-        { type: "mc", text: "The lateral surface area of a cylinder (just the curved side, not the ends) with r = 4 cm, h = 6 cm is:", options: ["150,72 cm�", "100,48 cm�", "50,24 cm�", "75,36 cm�"], answer: 0, topic: "Surface Area" },
-        { type: "input", text: "Find the surface area of a sphere with radius 6 cm. (Use p � 3,14; give to nearest whole number)", answer: "452", topic: "Surface Area" },
+        { type: "mc", text: "The lateral surface area of a cylinder (just the curved side, not the ends) with r = 4 cm, h = 6 cm is:", options: ["150,72 cm²", "100,48 cm²", "50,24 cm²", "75,36 cm²"], answer: 0, topic: "Surface Area" },
+        { type: "input", text: "Find the surface area of a sphere with radius 6 cm. (Use π ≈ 3,14; give to nearest whole number)", answer: "452", topic: "Surface Area" },
         { type: "input", text: "The surface area of a cube is 216 cm². Find the side length (in cm).", answer: "6", topic: "Surface Area" },
-        { type: "input", text: "A cylinder has surface area 314 cm² and radius 5 cm. Using p ≈ 3,14, find its height (in cm).", answer: "5", topic: "Surface Area" },
+        { type: "input", text: "A cylinder has surface area 314 cm² and radius 5 cm. Using π ≈ 3,14, find its height (in cm).", answer: "5", topic: "Surface Area" },
       ]
     },
     {
@@ -105,29 +142,29 @@ MathMagician.registerChapter(15, {
       fullName: "Volume of prisms, cylinders and spheres",
       lesson: {
         heading: "Volume of 3D objects",
-        sub: "Chapter 15 � Topic 2",
+        sub: "Chapter 15 · Topic 2",
         body: `
-          <p><strong>Volume</strong> is the amount of 3D space a solid occupies, measured in cubic units (cm�, m�, etc.).</p>
+          <p><strong>Volume</strong> is the amount of 3D space a solid occupies, measured in cubic units (cm³, m³, etc.).</p>
           <div class="def-box">
-            <div class="def-box-title">?? Volume formulas</div>
+            <div class="def-box-title">📖 Volume formulas</div>
             <p>
-              <strong>Prism/Cylinder:</strong> V = area of base � height<br>
-              ? Rectangular prism: V = l � w � h<br>
-              ? Triangular prism: V = �bh � length<br>
-              ? Cylinder: V = pr�h<br><br>
-              <strong>Pyramid/Cone:</strong> V = ? � base area � height<br>
-              ? Square pyramid: V = ?s�h<br>
-              ? Cone: V = ?pr�h<br><br>
-              <strong>Sphere:</strong> V = 4/3 pr�
+              <strong>Prism/Cylinder:</strong> V = area of base × height<br>
+              • Rectangular prism: V = l × w × h<br>
+              • Triangular prism: V = ½bh × length<br>
+              • Cylinder: V = πr²h<br><br>
+              <strong>Pyramid/Cone:</strong> V = ⅓ × base area × height<br>
+              • Square pyramid: V = ⅓s²h<br>
+              • Cone: V = ⅓πr²h<br><br>
+              <strong>Sphere:</strong> V = 4/3 πr³
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Worked examples</div>
-            <div class="example-step"><span class="step-num">1</span><span>Cylinder r = 5, h = 12: V = p(25)(12) = 300p � 942,48 cm�</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Cone r = 6, h = 8: V = ?p(36)(8) = 96p � 301,59 cm�</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>Sphere r = 3: V = 4/3p(27) = 36p � 113,10 cm�</span></div>
+            <div class="example-box-title">✏️ Worked examples</div>
+            <div class="example-step"><span class="step-num">1</span><span>Cylinder r = 5, h = 12: V = π(25)(12) = 300π ≈ 942,48 cm³</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Cone r = 6, h = 8: V = ⅓π(36)(8) = 96π ≈ 301,59 cm³</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Sphere r = 3: V = 4/3π(27) = 36π ≈ 113,10 cm³</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>Pyramid/cone volume = ? � (
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Pyramid/cone volume = ⅓ × (
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; 3D Volume & Surface Area</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select a solid, enter dimensions, and get V and SA instantly.</p>
@@ -167,16 +204,120 @@ MathMagician.registerChapter(15, {
           })();
           </script>
         volume of the corresponding prism/cylinder). A useful check!</span></div>
+
+          <div style="margin:26px 0 14px;">
+            <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;">&#128209; Quick reference &mdash; all 6 solids</div>
+            <p style="font-size:11.5px;color:rgba(221,225,240,0.40);margin:4px 0 0;">Surface area and volume formulas for every shape in this chapter, with one worked example each.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:6px;">
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M10 18 L24 10 L38 18 L38 32 L24 40 L10 32 Z"/><path d="M10 18 L24 26 L38 18"/><path d="M24 26 L24 40"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Cube</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">side = s</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 6s&sup2;</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = s&sup3;</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">s = 4 cm &rarr; SA = 96 cm&sup2;, V = 64 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M4 20 L24 10 L44 20 L44 32 L24 42 L4 32 Z"/><path d="M4 20 L24 28 L44 20"/><path d="M24 28 L24 42"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Rectangular prism</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">l, w, h</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 2(lw + lh + wh)</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = l &times; w &times; h</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">l=8, w=5, h=3 cm &rarr; SA = 158 cm&sup2;, V = 120 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M8 38 L8 16 L24 38 Z"/><path d="M20 28 L20 6 L36 28 Z"/><path d="M8 38 L20 28 M8 16 L20 6 M24 38 L36 28"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Triangular prism</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">tri. base b, height h &middot; length L</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:12px;line-height:1.5;">SA = 2&times;(&#9651; area) + (perimeter &times; L)</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = (&frac12;bh) &times; L</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">3-4-5 triangle, L=10 cm &rarr; SA = 132 cm&sup2;, V = 60 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="24" cy="12" rx="14" ry="6"/><ellipse cx="24" cy="36" rx="14" ry="6"/><path d="M10 12 L10 36 M38 12 L38 36"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Cylinder</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">radius r, height h</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 2&pi;r&sup2; + 2&pi;rh</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = &pi;r&sup2;h</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked examples</div>
+                <p style="margin:0;font-size:11.5px;line-height:1.6;">r=4, h=10 cm &rarr; SA &asymp; 351,86 cm&sup2;<br>r=5, h=12 cm &rarr; V &asymp; 942,48 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="24" cy="36" rx="14" ry="6"/><path d="M24 8 L10 36 M24 8 L38 36"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Cone</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">radius r, height h, slant l</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = &pi;r&sup2; + &pi;rl</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = &#8531;&pi;r&sup2;h</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">r=6, h=8 cm &rarr; V = &#8531;&pi;(36)(8) = 96&pi; &asymp; 301,59 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><circle cx="24" cy="24" r="16"/><ellipse cx="24" cy="24" rx="16" ry="5.5"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Sphere</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">radius r</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 4&pi;r&sup2;</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = &#8532;&pi;r&sup3;</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">r=3 cm &rarr; V = &#8532;&pi;(27) = 36&pi; &asymp; 113,10 cm&sup3;</p>
+              </div>
+            </div>
+
+          </div>
         `
       },
       questions: [
-        { type: "input", text: "Find the volume of a rectangular prism with dimensions 6 cm � 4 cm � 9 cm.", answer: "216", topic: "Volume" },
-        { type: "mc", text: "Find the volume of a cylinder with r = 5 cm and h = 8 cm. (p � 3,14)", options: ["628 cm�", "251,2 cm�", "502,4 cm�", "1256 cm�"], answer: 0, topic: "Volume" },
-        { type: "input", text: "Find the volume of a cone with r = 6 cm and h = 9 cm. (Use p � 3,14; give to nearest whole number)", answer: "339", topic: "Volume" },
-        { type: "mc", text: "A sphere has radius 4 cm. Its volume (p � 3,14) is approximately:", options: ["200,96 cm�", "267,95 cm�", "803,84 cm�", "134,04 cm�"], answer: 1, topic: "Volume" },
+        { type: "input", text: "Find the volume of a rectangular prism with dimensions 6 cm × 4 cm × 9 cm.", answer: "216", topic: "Volume" },
+        { type: "mc", text: "Find the volume of a cylinder with r = 5 cm and h = 8 cm. (π ≈ 3,14)", options: ["628 cm³", "251,2 cm³", "502,4 cm³", "1256 cm³"], answer: 0, topic: "Volume" },
+        { type: "input", text: "Find the volume of a cone with r = 6 cm and h = 9 cm. (Use π ≈ 3,14; give to nearest whole number)", answer: "339", topic: "Volume" },
+        { type: "mc", text: "A sphere has radius 4 cm. Its volume (π ≈ 3,14) is approximately:", options: ["200,96 cm³", "267,95 cm³", "803,84 cm³", "134,04 cm³"], answer: 1, topic: "Volume" },
         { type: "input", text: "A triangular prism has a right-triangle base with legs 6 cm and 8 cm. Its length is 15 cm. Find the volume.", answer: "360", topic: "Volume" },
         { type: "input", text: "A rectangular prism has a volume of 480 cm³. Its length is 10 cm and its width is 6 cm. Find its height (in cm).", answer: "8", topic: "Volume" },
-        { type: "input", text: "A cylindrical tank has a volume of 6 280 cm³ and a height of 20 cm. Using p ≈ 3,14, find its radius (in cm).", answer: "10", topic: "Volume" },
+        { type: "input", text: "A cylindrical tank has a volume of 6 280 cm³ and a height of 20 cm. Using π ≈ 3,14, find its radius (in cm).", answer: "10", topic: "Volume" },
       ]
     },
   ],
@@ -188,7 +329,7 @@ MathMagician.registerChapter(15, {
         questions: [
           {
             num: "1",
-            text: "Calculate the surface area of each solid. (Use p = 3,14 where needed)",
+            text: "Calculate the surface area of each solid. (Use π = 3,14 where needed)",
             parts: [
               { label: "a)", text: "A rectangular prism with l = 12 cm, w = 8 cm and h = 5 cm.", marks: 4 },
               { label: "b)", text: "A cylinder with r = 6 cm and h = 10 cm.", marks: 4 },
@@ -202,7 +343,7 @@ MathMagician.registerChapter(15, {
         questions: [
           {
             num: "2",
-            text: "Calculate the volume of each solid. (Use p = 3,14 where needed)",
+            text: "Calculate the volume of each solid. (Use π = 3,14 where needed)",
             parts: [
               { label: "a)", text: "A cylinder with r = 7 cm and h = 15 cm.", marks: 3 },
               { label: "b)", text: "A cone with r = 9 cm and h = 12 cm.", marks: 3 },
@@ -213,8 +354,8 @@ MathMagician.registerChapter(15, {
             num: "3",
             text: "A cylindrical water tank has a radius of 1,2 m and a height of 2,5 m.",
             parts: [
-              { label: "a)", text: "Calculate the volume of water it can hold (in m�).", marks: 3 },
-              { label: "b)", text: "Convert your answer to litres (1 m� = 1 000 litres).", marks: 1 },
+              { label: "a)", text: "Calculate the volume of water it can hold (in m³).", marks: 3 },
+              { label: "b)", text: "Convert your answer to litres (1 m³ = 1 000 litres).", marks: 1 },
             ]
           },
         ]
@@ -222,24 +363,24 @@ MathMagician.registerChapter(15, {
     ]
   },
   answerKey: {
-    chapter: 15, chapterName: "Chapter 15 � Surface Area and Volume",
+    chapter: 15, chapterName: "Chapter 15 — Surface Area and Volume",
     topics: [
       {
         name: "Surface Area",
         answers: [
-          { num: "Q1a", ans: "392 cm�", note: "2(96+60+40) = 2�196 = 392" },
-          { num: "Q1b", ans: "603,19 cm�", note: "2�3,14�36 + 2�3,14�6�10 = 226,08+376,8 = 602,88 � 603 cm�" },
-          { num: "Q1c", ans: "314 cm�", note: "4�3,14�25 = 314" },
+          { num: "Q1a", ans: "392 cm²", note: "2(96+60+40) = 2×196 = 392" },
+          { num: "Q1b", ans: "603,19 cm²", note: "2×3,14×36 + 2×3,14×6×10 = 226,08+376,8 = 602,88 ≈ 603 cm²" },
+          { num: "Q1c", ans: "314 cm²", note: "4×3,14×25 = 314" },
         ]
       },
       {
         name: "Volume",
         answers: [
-          { num: "Q2a", ans: "2 307,9 cm�", note: "3,14�49�15 = 2 307,9" },
-          { num: "Q2b", ans: "1 017,36 cm�", note: "?�3,14�81�12 = 1 017,36" },
-          { num: "Q2c", ans: "523,33 cm�", note: "r=5; 4/3�3,14�125 = 523,33" },
-          { num: "Q3a", ans: "� 11,31 m�", note: "3,14�1,44�2,5 = 11,304" },
-          { num: "Q3b", ans: "� 11 304 litres", note: "11,304 � 1 000" },
+          { num: "Q2a", ans: "2 307,9 cm³", note: "3,14×49×15 = 2 307,9" },
+          { num: "Q2b", ans: "1 017,36 cm³", note: "⅓×3,14×81×12 = 1 017,36" },
+          { num: "Q2c", ans: "523,33 cm³", note: "r=5; 4/3×3,14×125 = 523,33" },
+          { num: "Q3a", ans: "≈ 11,31 m³", note: "3,14×1,44×2,5 = 11,304" },
+          { num: "Q3b", ans: "≈ 11 304 litres", note: "11,304 × 1 000" },
         ]
       },
     ]
