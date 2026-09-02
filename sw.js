@@ -2,7 +2,25 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v67'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v68'; // no longer load-bearing for freshness (fetch handler is network-first) — bump only to prune old/removed cached files
+// v68: math-magician/gr9 — fixed character-encoding corruption (garbled
+// ×, ÷, π, √, arrows, emoji, etc.) across all 15 affected Grade 9 chapter
+// files (ch1-8, ch10-12, ch14-17), reconstructed against the byte-clean
+// Afrikaans .af.js twins. Also added a native "Nets of each solid" section
+// (labeled SVG nets for cube/rect. prism/tri. prism/cylinder/cone/sphere)
+// and a "Quick reference — all 6 solids" formula/example card grid to
+// gr9/ch15.js's Surface Area and Volume lessons, plus an equivalent
+// 3-solid quick-reference grid to gr8/ch15.js — replacing the earlier
+// AI-generated infographics, which had no actual formulas.
+// Also: the fetch handler was cache-first for every same-origin request,
+// so once a page/file was fetched once it was served from cache forever
+// until a human remembered to bump CACHE_NAME on every deploy — the exact
+// bug this changelog has hit and fixed before (see v.. "today's fixes
+// weren't reaching returning visitors"). Same-origin HTML/JS/CSS is now
+// network-first (falls back to cache only when the network request fails,
+// e.g. offline) so a deploy is visible immediately with no version bump
+// required; only version-pinned CDN libraries (their URL never changes
+// for a given version) stay cache-first.
 // v67: site-wide account-button consistency audit across every tool/hub
 // page. Two distinct bugs: (1) Code Conjurer, Java Genie, Web Wizard,
 // AI Oracle, Computer Codex all placed the button in the header's CENTER
@@ -458,21 +476,39 @@ self.addEventListener('fetch', event => {
     return; // let it go to the network
   }
 
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) return response;
-      return fetch(event.request).then(response => {
-        if (!response || response.status !== 200 || response.type === 'error') {
+  // CDN libraries are version-pinned in their URL (e.g. @2, @0.263.0) —
+  // the URL itself never changes for a given version, so cache-first is
+  // safe and saves a network round trip on every load.
+  const isVersionedCDN = url.startsWith('https://cdn.jsdelivr.net/') || url.startsWith('https://fonts.googleapis.com/');
+  if (isVersionedCDN) {
+    event.respondWith(
+      caches.match(event.request).then(response => {
+        if (response) return response;
+        return fetch(event.request).then(response => {
+          if (response && response.status === 200 && response.type !== 'error') {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
+          }
           return response;
-        }
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
         });
-        return response;
-      }).catch(() => {
-        return caches.match('/index.html');
-      });
+      })
+    );
+    return;
+  }
+
+  // Everything same-origin (HTML/JS/CSS content) is network-first: always
+  // try the live network so a deploy is visible immediately, with no
+  // dependency on remembering to bump CACHE_NAME above. The cache is only
+  // a fallback for when the network request fails (offline / no signal).
+  event.respondWith(
+    fetch(event.request).then(response => {
+      if (response && response.status === 200 && response.type !== 'error') {
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
+      }
+      return response;
+    }).catch(() => {
+      return caches.match(event.request).then(cached => cached || caches.match('/index.html'));
     })
   );
 });
