@@ -1,4 +1,4 @@
-// Math Magician � Grade 9, Chapter 17 data
+// Math Magician — Grade 9, Chapter 17 data
 // Geometry of 3D Shapes
 
 MathMagician.registerChapter(17, {
@@ -10,11 +10,11 @@ MathMagician.registerChapter(17, {
       fullName: "Properties of polyhedra and Euler's formula",
       lesson: {
         heading: "Properties of polyhedra",
-        sub: "Chapter 17 � Topic 1",
+        sub: "Chapter 17 · Topic 1",
         body: `
           <p>A <strong>polyhedron</strong> is a 3D solid with flat polygonal faces. Understanding their properties helps with nets, surface area and volume.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Key definitions</div>
+            <div class="def-box-title">📖 Key definitions</div>
             <p>
               <strong>Face:</strong> flat polygonal surface of a polyhedron<br>
               <strong>Edge:</strong> line segment where two faces meet<br>
@@ -22,28 +22,28 @@ MathMagician.registerChapter(17, {
               <strong>Euler's formula:</strong> F + V - E = 2<br>
               (faces + vertices - edges = 2 for any convex polyhedron)<br><br>
               <strong>Platonic solids:</strong> all faces are identical regular polygons<br>
-              � Tetrahedron: 4 triangular faces (F=4, V=4, E=6)<br>
-              � Cube: 6 square faces (F=6, V=8, E=12)<br>
-              � Octahedron: 8 triangular faces (F=8, V=6, E=12)<br>
-              � Dodecahedron: 12 pentagonal faces<br>
-              � Icosahedron: 20 triangular faces
+              • Tetrahedron: 4 triangular faces (F=4, V=4, E=6)<br>
+              • Cube: 6 square faces (F=6, V=8, E=12)<br>
+              • Octahedron: 8 triangular faces (F=8, V=6, E=12)<br>
+              • Dodecahedron: 12 pentagonal faces<br>
+              • Icosahedron: 20 triangular faces
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Verify Euler's formula for a cube</div>
+            <div class="example-box-title">📝 Verify Euler's formula for a cube</div>
             <div class="example-step"><span class="step-num">1</span><span>F = 6 (top, bottom, front, back, left, right)</span></div>
             <div class="example-step"><span class="step-num">2</span><span>V = 8 (corners)</span></div>
             <div class="example-step"><span class="step-num">3</span><span>E = 12 (edges)</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>F + V - E = 6 + 8 - 12 = 2 ?</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>F + V - E = 6 + 8 - 12 = 2 ✓</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Euler's Formula Checker</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two of F, V, E and the third is calculated using F + V &#8722; E = 2.</p>
             <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Faces (F)</label><input id="efF" type="number" placeholder="\u2014" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Vertices (V)</label><input id="efV" type="number" placeholder="\u2014" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Edges (E)</label><input id="efE" type="number" placeholder="\u2014" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Faces (F)</label><input id="efF" type="number" placeholder="—" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Vertices (V)</label><input id="efV" type="number" placeholder="—" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Edges (E)</label><input id="efE" type="number" placeholder="—" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
               <button id="efBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Check / Solve</button>
             </div>
             <div id="efOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
@@ -85,11 +85,11 @@ MathMagician.registerChapter(17, {
       fullName: "Nets of 3D shapes and cross-sections",
       lesson: {
         heading: "Nets and cross-sections of 3D shapes",
-        sub: "Chapter 17 � Topic 2",
+        sub: "Chapter 17 · Topic 2",
         body: `
           <p>A <strong>net</strong> is a 2D flat pattern that folds up to form a 3D shape. A <strong>cross-section</strong> is the shape you get when you cut through a 3D solid.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Nets</div>
+            <div class="def-box-title">📖 Nets</div>
             <p>
               <strong>Cube:</strong> 6 squares arranged in a cross pattern (many valid arrangements)<br>
               <strong>Rectangular prism:</strong> 2 pairs of rectangles + 2 end rectangles<br>
@@ -100,7 +100,7 @@ MathMagician.registerChapter(17, {
             </p>
           </div>
           <div class="def-box">
-            <div class="def-box-title">?? Cross-sections</div>
+            <div class="def-box-title">📖 Cross-sections</div>
             <p>
               <strong>Cylinder cut parallel to base:</strong> circle<br>
               <strong>Cylinder cut perpendicular to base:</strong> rectangle<br>
@@ -109,7 +109,7 @@ MathMagician.registerChapter(17, {
               <strong>Sphere cut through centre:</strong> circle (great circle)
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>The net of a solid must fold without overlap or gaps to form the complete surface. Practice by mentally folding each face.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The net of a solid must fold without overlap or gaps to form the complete surface. Practice by mentally folding each face.</span></div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; 3D Shape Properties Explorer</div>
@@ -149,7 +149,7 @@ MathMagician.registerChapter(17, {
                 '<div><span style="color:rgba(221,225,240,0.45);min-width:200px;display:inline-block;">Faces (F):</span><span style="color:#6ee7b7;">'+s.F+' &nbsp; ('+s.faces+')</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);min-width:200px;display:inline-block;">Vertices (V):</span><span style="color:#6ee7b7;">'+s.V+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);min-width:200px;display:inline-block;">Edges (E):</span><span style="color:#6ee7b7;">'+s.E+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);min-width:200px;display:inline-block;">Euler: F + V - E:</span><span style="color:#'+(euler===2?'6ee7b7':'fca5a5')+';font-weight:700;">'+s.F+' + '+s.V+' - '+s.E+' = '+euler+(euler===2?' ?':' ?')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:200px;display:inline-block;">Euler: F + V - E:</span><span style="color:#'+(euler===2?'6ee7b7':'fca5a5')+';font-weight:700;">'+s.F+' + '+s.V+' - '+s.E+' = '+euler+(euler===2?' ✓':' ✗')+'</span></div>',
                 '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Cross-section: </span><span style="color:#a5b4fc;font-size:11px;">'+s.cross+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);">Net description: </span><span style="color:#a5b4fc;font-size:11px;">'+s.net+'</span></div>',
               ].join('');
@@ -167,7 +167,7 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "A horizontal cross-section of a cone (parallel to base) produces:", options: ["Triangle", "Rectangle", "Circle", "Ellipse"], answer: 2, topic: "3D Shapes" },
         { type: "mc", text: "The net of a square pyramid has:", options: ["4 squares + 1 triangle", "1 square + 4 triangles", "5 triangles", "4 triangles + 2 squares"], answer: 1, topic: "3D Shapes" },
         { type: "mc", text: "If you cut a sphere through its centre, the cross-section is:", options: ["An ellipse", "A great circle", "A hemisphere", "A semicircle"], answer: 1, topic: "3D Shapes" },
-        { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "pr", "2pr", "pr�"], answer: 2, topic: "3D Shapes" },
+        { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "pr", "2pr", "pr²"], answer: 2, topic: "3D Shapes" },
         { type: "input", text: "A cylinder's net has a rectangle whose width equals the circumference of the circular base. The base has radius 7 cm (use p ≈ 22/7) and the cylinder's height is 12 cm. Find the area of the rectangular part of the net (in cm²).", answer: "528", topic: "3D Shapes" },
         { type: "input", text: "A square pyramid's net consists of a square base of side 8 cm and 4 congruent triangles, each with base 8 cm and slant height 10 cm. Find the total area of the net (in cm²).", answer: "224", topic: "3D Shapes" },
       ]
@@ -215,24 +215,24 @@ MathMagician.registerChapter(17, {
     ]
   },
   answerKey: {
-    chapter: 17, chapterName: "Chapter 17 � Geometry of 3D Shapes",
+    chapter: 17, chapterName: "Chapter 17 — Geometry of 3D Shapes",
     topics: [
       {
         name: "Polyhedra and Euler's Formula",
         answers: [
-          { num: "Q1a", ans: "F=5, V=6, E=9; 5+6-9=2 ?", note: "2 triangles + 3 rectangles = 5 faces" },
-          { num: "Q1b", ans: "F=8, V=12, E=18; 8+12-18=2 ?", note: "2 hexagons + 6 rectangles = 8 faces; 12 vertices (6 on each hexagon)" },
-          { num: "Q1c", ans: "E = 18", note: "F+V-E=2 ? 12+8-E=2 ? E=18" },
+          { num: "Q1a", ans: "F=5, V=6, E=9; 5+6-9=2 ✓", note: "2 triangles + 3 rectangles = 5 faces" },
+          { num: "Q1b", ans: "F=8, V=12, E=18; 8+12-18=2 ✓", note: "2 hexagons + 6 rectangles = 8 faces; 12 vertices (6 on each hexagon)" },
+          { num: "Q1c", ans: "E = 18", note: "F+V-E=2 → 12+8-E=2 → E=18" },
         ]
       },
       {
         name: "Nets and Cross-sections",
         answers: [
-          { num: "Q2a", ans: "Net: 2 equilateral triangles (side 6cm) + 3 rectangles (6cm � 10cm)", note: "All dimensions labelled" },
-          { num: "Q2b", ans: "SA = 2�(��6�5,196) + 3�(6�10) = 31,18 + 180 � 211,18 cm�", note: "Height of equilateral triangle = 6�v3/2 = 3v3 � 5,196 cm" },
+          { num: "Q2a", ans: "Net: 2 equilateral triangles (side 6cm) + 3 rectangles (6cm × 10cm)", note: "All dimensions labelled" },
+          { num: "Q2b", ans: "SA = 2×(½×6×5,196) + 3×(6×10) = 31,18 + 180 ≈ 211,18 cm²", note: "Height of equilateral triangle = 6×√3/2 = 3√3 ≈ 5,196 cm" },
           { num: "Q3a", ans: "Rectangle (same dimensions as the base)", note: "Parallel cut preserves cross-section shape" },
           { num: "Q3b", ans: "Rectangle (width = diameter, height = length of cylinder)", note: "Axial cross-section" },
-          { num: "Q3c", ans: "Square (half the size of the base, scaled by �)", note: "At midheight, similar cross-section with half the base dimensions" },
+          { num: "Q3c", ans: "Square (half the size of the base, scaled by ½)", note: "At midheight, similar cross-section with half the base dimensions" },
         ]
       },
     ]
