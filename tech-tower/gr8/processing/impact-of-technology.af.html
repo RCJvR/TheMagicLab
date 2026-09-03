@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Impak van Tegnologie — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{max-width:920px}
+    .scenario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:22px}
+    .scenario-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;transition:all 150ms}
+    .scenario-card.done{opacity:.55}
+    .scenario-title{font-weight:800;font-size:14px;color:#fff;margin-bottom:8px}
+    .scenario-desc{font-size:12.5px;color:rgba(210,218,245,.70);line-height:1.6;margin-bottom:12px}
+    .scenario-btns{display:flex;gap:8px}
+    .sc-btn{flex:1;font-family:var(--fd);font-size:12px;font-weight:700;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all 140ms;border:1px solid rgba(255,255,255,.08)}
+    .sc-btn.pos{background:rgba(34,197,94,.08);color:#86efac;border-color:rgba(34,197,94,.25)}
+    .sc-btn.pos:hover:not(:disabled){background:rgba(34,197,94,.18)}
+    .sc-btn.neg{background:rgba(239,68,68,.08);color:#fca5a5;border-color:rgba(239,68,68,.25)}
+    .sc-btn.neg:hover:not(:disabled){background:rgba(239,68,68,.18)}
+    .sc-btn:disabled{cursor:default;opacity:.5}
+    .sc-verdict{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.65;display:none}
+    .sc-verdict.show{display:block}
+    .sc-verdict.correct{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .sc-verdict.incorrect{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .explore-score{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:14px 20px;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .scenario-grid{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Verwerking · Gr 8</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Verwerking · Kwartaal 2 · Les 1</div>
+  <h1 class="lesson-title">Die Impak van Tegnologie</h1>
+  <p class="lesson-sub">Nuwe materiale, verpakkingsontwerp, en die kompromieë wat tegnologie na die samelewing en die omgewing bring — insluitend 'n eerlike kyk na vooroordeel in die mynbedryf.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="scale" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Die positiewe impak van tegnologie</h2>
+    <p>Oor die afgelope eeu is baie natuurlike materiale vervang deur nuwe of verbeterde materiale wat beter presteer, minder kos, of langer hou. Sommige van hierdie nuwe materiale is ook <strong>omgewingsvriendelik</strong> omdat hulle <strong>bio-afbreekbaar</strong> is — hulle breek natuurlik af in plaas daarvan om eeue lank op vullisterreine te lê.</p>
+    <div class="callout"><strong>Gevallestudie — plastieksakke:</strong> gewone dun plastieksakke is goedkoop en gerieflik, maar hulle waai in riviere en oseane in, verwurg wild, en neem honderde jare om af te breek. Suid-Afrika het gereageer deur winkels te verplig om <strong>dikker, bio-afbreekbare</strong> plastieksakke teen 'n fooi te verkoop. Dikker sakke word meer dikwels hergebruik (minder sakke word in totaal benodig), en bio-afbreekbare byvoegmiddels help die plastiek vinniger afbreek sodra dit weggegooi word. 'n Regverdige evaluering moet dit teen die nadeel opweeg: bio-afbreekbare sakke neem steeds lank om af te breek in 'n vullisterrein sonder sonlig of suurstof, en om vir sakke te vra keer nie op sy eie strooiery nie.</div>
+
+    <h2>Herwinning as 'n positiewe tegnologie</h2>
+    <p>Afvalpapier en karton hoef nie vullis te word nie. Herwinningstegnologie verpulp gebruikte papier en karton, verwyder ink en besoedelingstowwe, en vorm dit weer in nuwe velle — wat dan gebruik word om nuwe verpakkingsprodukte soos graankosbokse, eierrakkies, en gegolfde bokse te maak. Dit verminder die aantal bome wat afgekap moet word, verminder die volume vullisterrein-afval, en gebruik minder energie as om papier van rou houtpulp te maak.</p>
+    <div class="key-fact">Om afvalpapier in nuwe verpakking te herwin, is 'n duidelike voorbeeld van tegnologie wat 'n positiewe impak op beide die omgewing en die bedryf het.</div>
+
+    <h2>Verpakking ontwerp en maak</h2>
+    <p>Byna elke produk het verpakking nodig — om dit te beskerm, om dit skoon te hou, om dit maklik te vervoer, en om die kliënt in te lig en aan te trek. Die <strong>aard van die produk</strong> bepaal watter eienskappe die verpakkingsmateriaal moet hê:</p>
+    <ul>
+      <li>'n Bros produk (soos glas of eiers) het 'n <strong>opvullende</strong>, rigiede verpakkingsmateriaal nodig.</li>
+      <li>'n Vloeibare produk het 'n <strong>waterdigte, verseëlde</strong> houer nodig.</li>
+      <li>'n Bederfbare voedselproduk mag verpakking nodig hê wat lug en vog uithou.</li>
+      <li>'n Swaar produk het sterk, lasdraende verpakking nodig (soos gegolfde karton).</li>
+    </ul>
+    <p>Wanneer verpakking ontwerp word, teken tegnoloë eers 'n <strong>ontvouing</strong> ('n plat, uitgevoude net) van die houer, sodat die presiese vorm akkuraat gesny, gevou, en gelym kan word voordat die werklike produk gemaak word.</p>
+
+    <h2>Die negatiewe impak van tegnologie</h2>
+    <p>Nie alle tegnologie is goed vir die samelewing nie. 'n Tegnologiese produk kan een probleem oplos terwyl dit 'n ander skep — byvoorbeeld, 'n gerieflike produk kan skadelike afval skep, skaars hulpbronne opgebruik, of werkers aan gevaar blootstel. Wanneer 'n negatiewe impak geïdentifiseer word, laat ontwerpers nie noodwendig die tegnologie vaar nie — inteendeel, hulle soek maniere om die negatiewe effek deur herontwerp <strong>teen te werk of te vergoed</strong>: deur 'n veiliger materiaal te gebruik, 'n filter by te voeg, 'n proses te verander, of wegdoening te verbeter.</p>
+    <div class="callout"><strong>Voorbeeld:</strong> selfone bring groot voordele (kommunikasie, veiligheid, leer) maar veroorsaak ook 'n negatiewe impak deur giftige e-afval en verslawende skermtyd. Ontwerpers werk dit teen deur terugneem-herwinningskemas, langer-lewende batterye, en "skermtyd"-sagtewarebeheer te skep.</div>
+
+    <h2>Materiale aanpas om kragte te weerstaan</h2>
+    <p>Onthou die kragte wat op materiale inwerk: <strong>spanning</strong> (trek/rek), <strong>druk</strong> (stoot/plat druk), <strong>buiging</strong>, <strong>wringing</strong> (draai) en <strong>skuifspanning</strong> (gly). 'n Belangrike deel van die ontwerp van enige produk of struktuur is om 'n materiaal te kies of aan te pas sodat dit die spesifieke kragte kan weerstaan wat dit sal ervaar — sonder om meer materiaal (en koste) as nodig te gebruik.</p>
+    <ul>
+      <li><strong>Beton versterk:</strong> gewone beton is sterk in druk maar baie swak in spanning — dit kraak maklik wanneer dit gerek of gebuig word. Om staal <strong>wapeningstawe (rebar)</strong> binne die beton in te bed voordat dit stol, gee die gekombineerde materiaal, <strong>gewapende beton</strong>, die trekspanningsterkte van staal saam met die druksterkte van beton.</li>
+      <li><strong>Multiplekshout versterk:</strong> multiplekshout word gemaak van dun houtfineer wat aanmekaar gelym word, met die houtnerf van elke laag 90° gedraai teenoor die een daaronder. Hierdie kruisnerwing versprei spannings- en drukkragte in verskeie rigtings, sodat multiplekshout weerstand bied teen splyting en sterker en stabieler is as 'n soliede stuk hout van dieselfde dikte.</li>
+      <li><strong>Doeltreffende metaalsnitte kies:</strong> in plaas daarvan om 'n soliede metaalstaaf te gebruik (wat materiaal in die middel vermors, waar buigspanning die laagste is), kies ingenieurs deursnitvorms wat materiaal presies daar plaas waar dit die meeste nodig is:
+        <ul>
+          <li><strong>I-balk (draer):</strong> die meeste van die materiaal is gekonsentreer in die boonste en onderste flense, wat die hoogste buigspannings weerstaan, terwyl die dun sentrale web gewig en koste bespaar.</li>
+          <li><strong>Hoekyster:</strong> 'n L-vormige snit wat buiging in twee rigtings gelyktydig weerstaan — goedkoop en algemeen vir raamwerke en beslag.</li>
+          <li><strong>T-staaf:</strong> 'n T-vormige snit wat gebruik word waar 'n plat montering-oppervlak aan een kant nodig is terwyl dit steeds buiging weerstaan.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="key-fact">Goeie materiaalkeuse beteken om die vorm en materiaal by die krag te pas — om maksimum sterkte vir minimum materiaal en koste te kry.</div>
+
+    <h2>Vooroordeel in tegnologie: die mynbedryf</h2>
+    <p>Suid-Afrika is uitsonderlik ryk aan minerale hulpbronne — goud, platinum, chroom, steenkool, yster, mangaan en meer word in byna elke provinsie ontgin. Mynbou bring werk en nasionale rykdom, maar dra ook ernstige koste en ongelyke impakte, en daarom word dit bestudeer as 'n geval van <strong>vooroordeel in tegnologie</strong> — tegnologie wat sommige mense of groepe bevoordeel terwyl ander benadeel word.</p>
+    <ul>
+      <li><strong>Suur mynwater:</strong> wanneer myne gegrawe word, word sulfiedhoudende rots aan lug en water blootgestel, wat swaelsuur produseer wat gifmetale in riviere en grondwater uitloog — wat drinkwater, plaasgrond, en waterlewe skaad, lank nadat 'n myn gesluit het.</li>
+      <li><strong>Stofbesoedeling van mynhope:</strong> ou mynhope (mynafval) laat fyn stof vry in winderige, droë toestande. Gemeenskappe wat naby mynhope woon — dikwels armer nedersettings — ly meer aan asemhalingssiektes, wat 'n ongelyke, bevooroordeelde las van skade toon.</li>
+      <li><strong>Inheemse ystertydperk-tegnologie:</strong> lank voor moderne mynbou het ystertydperk-gemeenskappe in Suider-Afrika ystererts in kleiovens ontgin en gesmelt om gereedskap en wapens te maak. Hierdie inheemse tegnologie was gesofistikeerd vir sy tyd en toon dat mynbou en metaalwerk in Suid-Afrika 'n geskiedenis het wat meer as 'n duisend jaar terugstrek.</li>
+      <li><strong>Geslagsvooroordeel in mynboulewe:</strong> mynbou is tradisioneel as "mansewerk" beskou, en vir dekades het Suid-Afrikaanse wetgewing selfs verbied dat vroue ondergronds werk. Alhoewel dit verander het, bly vroue 'n klein minderheid van die mynbou-arbeidsmag, en ervaar dikwels ongelyke geleenthede, fasiliteite, en veiligheidsvoorsienings — 'n duidelike geval van vooroordeel wat in 'n bedryf se tegnologie en kultuur ingebou is.</li>
+    </ul>
+    <div class="key-fact">Om vooroordeel in tegnologie te bestudeer, beteken om te vra: wie bevoordeel, wie word benadeel, en is dit regverdig?</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Positief of Negatief? Klassifiseer die Impak</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Lees elke werklike-wêreld tegnologie-scenario en besluit of die algehele impak Positief of Negatief is. Die meeste antwoorde het nuanse — lees die terugvoer noukeurig, selfs wanneer jy dit reg het.</p>
+  <div class="explore-layout">
+    <div class="scenario-grid" id="scenarioGrid"></div>
+    <div class="explore-score" id="exploreScore">Geklassifiseer 0 / 6</div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Verduidelik waarom dikker, bio-afbreekbare plastieksakke in Suid-Afrika ingestel is. Gee een voordeel en een beperking van hierdie oplossing.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Beskryf hoe afvalpapier en karton in nuwe verpakkingsprodukte herwin word, en verduidelik een omgewingsvoordeel van hierdie proses.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">'n Maatskappy moet 'n dosyn bros glasbottels vir vervoer verpak. Verduidelik hoe die aard van hierdie produk (bros, swaar, glas) die eienskappe van die gekose verpakkingsmateriaal behoort te bepaal.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Kies EEN tegnologiese produk wat 'n negatiewe impak op die samelewing het. Beskryf die negatiewe impak, en stel EEN manier voor waarop 'n ontwerper dit kan teenwerk of daarvoor kan vergoed.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (6 punte)</div><div class="wb-qtext">Mynbou is belangrik vir Suid-Afrika se ekonomie, maar wek ook vrae oor vooroordeel. Beskryf TWEE negatiewe omgewingsimpakte van mynbou, EN verduidelik wat bedoel word met "geslagsvooroordeel in loopbaankeuse" in die mynbedryf.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (4 punte)</div><div class="wb-qtext">Verduidelik waarom gewone beton staal-wapeningstawe nodig het om in strukture gebruik te word wat spanning of buiging ervaar, en noem die materiaal wat daaruit ontstaan.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · (3 punte)</div><div class="wb-qtext">Verduidelik hoe die lym van houtfineer met afwisselende nerfrigting multiplekshout sterker maak as 'n soliede stuk hout van dieselfde dikte.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 8 · (5 punte)</div><div class="wb-qtext">Noem DRIE metaalsnitvorms wat in konstruksie gebruik word (behalwe 'n soliede staaf), en verduidelik kortliks vir elkeen waarom daardie vorm bo 'n soliede staaf van dieselfde materiaal gekies word.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   CLASSIFY THE IMPACT — explorer
+═══════════════════════════════════════════════ */
+const SCENARIOS=[
+  {id:'bag', title:'Bio-afbreekbare verpakking', desc:'’n Winkel wissel van dun plastieksakke na dikker, bio-afbreekbare sakke wat teen ’n klein fooi verkoop word.', ans:'pos',
+   verdict:'Meestal POSITIEF: dikker sakke word meer hergebruik, en bio-afbreekbare byvoegmiddels help hulle vinniger afbreek as gewone plastiek. Maar hulle neem steeds lank om af te breek in ’n suurstofarm vullisterrein, so strooiery is steeds ’n probleem — die verpakkingsontwerp verminder net skade, dit verwyder dit nie.'},
+  {id:'illegal', title:'Onwettige / informele mynbou', desc:'Ongereguleerde delwers herwerk ’n verlate mynhoop vir stukkies goud, sonder enige veiligheidstoerusting en sonder omgewingsbeheer.', ans:'neg',
+   verdict:'Meestal NEGATIEF: informele mynbou veroorsaak tonnelinstortings, kwik- en chemiese besoedeling, en stel onopgeleide werkers aan ernstige gevaar bloot — sonder enige veiligheidsnet of omgewingsrehabilitasie. Sommige individue verdien wel ’n inkomste, en dis waarom dit voortduur, maar die netto impak op mense en die omgewing is skadelik.'},
+  {id:'recycle', title:'Papierherwinningsprogram', desc:'’n Munisipaliteit versamel afvalpapier en karton en verwerk dit in pulp vir nuwe verpakking.', ans:'pos',
+   verdict:'POSITIEF: die herwinning van papier en karton verminder ontbossing, bespaar energie in vergelyking met suiwer pulp, en verminder vullisterrein-afval — ’n sterk voorbeeld van tegnologie wat ’n omgewingsprobleem oplos.'},
+  {id:'medical', title:'Nuwe mediese toestel', desc:'’n Lae-koste draagbare ultraklank-skandeerder laat landelike klinieke toe om swangerskapskomplikasies vroeg te diagnoseer.', ans:'pos',
+   verdict:'POSITIEF: dit brei lewensreddende diagnose uit na gemeenskappe wat voorheen geen toegang daartoe gehad het nie. Selfs uitstekende tegnologie soos hierdie het kompromieë (koste van opleiding, onderhoud, elektrisiteitstoevoer) maar die algehele impak op gesondheidsuitkomste is sterk positief.'},
+  {id:'app', title:'Aandaggrypende app', desc:'’n Sosiale media-app gebruik oneindige-rol en kennisgewingontwerpe wat spesifiek ontwerp is om die tyd wat gebruikers daarop spandeer, te maksimeer.', ans:'neg',
+   verdict:'Meestal NEGATIEF: alhoewel die app mense verbind, kan ontwerpkenmerke wat doelbewus verslawende gebruik aanmoedig, geestesgesondheid, slaap, en produktiwiteit skaad — veral vir kinders en tieners. Dit is ’n geval waar tegnologie se negatiewe impak deur beter ontwerp (skermtydgrense) of regulering teengewerk moet word.'},
+  {id:'solar', title:'Dak-sonpanele', desc:'’n Huishouding installeer fotovoltaïese panele om sy eie elektrisiteit uit sonlig op te wek.', ans:'pos',
+   verdict:'POSITIEF: sonpanele verminder afhanklikheid van fossielbrandstof-kragstasies en verlaag huishoudelike uitlatings. Die kompromie is die voorafkoste en die hulpbronne wat nodig is om die panele te vervaardig en uiteindelik weg te doen, maar oor hul werkende leeftyd is die impak sterk positief.'},
+];
+let classified = 0;
+function buildScenarios(){
+  const grid=document.getElementById('scenarioGrid');
+  grid.innerHTML = SCENARIOS.map(s=>`
+    <div class="scenario-card" id="sc_${s.id}">
+      <div class="scenario-title">${s.title}</div>
+      <div class="scenario-desc">${s.desc}</div>
+      <div class="scenario-btns">
+        <button class="sc-btn pos" onclick="classify('${s.id}','pos')">Positief</button>
+        <button class="sc-btn neg" onclick="classify('${s.id}','neg')">Negatief</button>
+      </div>
+      <div class="sc-verdict" id="scv_${s.id}"></div>
+    </div>`).join('');
+}
+function classify(id,choice){
+  const s = SCENARIOS.find(x=>x.id===id);
+  const card = document.getElementById('sc_'+id);
+  const btns = card.querySelectorAll('.sc-btn');
+  if(btns[0].disabled) return;
+  btns.forEach(b=>b.disabled=true);
+  card.classList.add('done');
+  const v = document.getElementById('scv_'+id);
+  const correct = choice===s.ans;
+  v.className = 'sc-verdict show ' + (correct?'correct':'incorrect');
+  v.innerHTML = (correct?'✓ ':'~ ') + s.verdict;
+  classified++;
+  document.getElementById('exploreScore').textContent = `Geklassifiseer ${classified} / ${SCENARIOS.length}`;
+}
+buildScenarios();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Waarom word sommige nuwe materiale as omgewingsvriendelik beskou in vergelyking met die natuurlike materiale wat hulle vervang het?',opts:['Hulle is altyd goedkoper om te vervaardig','Sommige is bio-afbreekbaar en breek natuurlik af','Hulle hoef nooit weggedoen te word nie','Hulle is altyd helder gekleur'],ans:1,exp:'Baie nuwe/verbeterde materiale is bio-afbreekbaar, wat beteken hulle breek natuurlik af eerder as om eeue lank in die omgewing te bly soos gewone plastiek.'},
+  {text:'Wat bepaal die ontwerp en materiaaleienskappe wat vir ’n produk se verpakking benodig word?',opts:['Net die koste van karton','Die kleur wat die kliënt verkies','Die aard van die produk self (bv. bros, vloeibaar, swaar)','Die grootte van die winkel wat dit verkoop'],ans:2,exp:'Die aard van die produk — of dit bros, vloeibaar, bederfbaar of swaar is — bepaal watter eienskappe (opvulling, waterdigtheid, sterkte) die verpakkingsmateriaal moet hê.'},
+  {text:'Om afvalpapier en karton in nuwe verpakking te herwin, is ’n voorbeeld van:',opts:['’n Negatiewe impak van tegnologie','’n Positiewe impak van tegnologie','Vooroordeel in tegnologie','’n Kortsluiting'],ans:1,exp:'Die herwinning van papier en karton verminder ontbossing en vullisterrein-afval, en hergebruik materiale doeltreffend — ’n positiewe impak van tegnologie op die omgewing.'},
+  {text:'Wanneer ’n tegnologiese produk gevind word om ’n negatiewe impak op die samelewing te hê, reageer ontwerpers tipies deur:',opts:['Die probleem heeltemal te ignoreer','Alle tegnologie te verbied','Te herontwerp om die negatiewe impak teen te werk of daarvoor te vergoed','Net die produk uit stede te verwyder'],ans:2,exp:'In plaas daarvan om nuttige tegnologie te laat vaar, soek ontwerpers maniere om die negatiewe effekte daarvan teen te werk of daarvoor te vergoed — byvoorbeeld deur veiliger materiale of verbeterde prosesse.'},
+  {text:'Suur mynwater is ’n negatiewe omgewingsimpak van mynbou wat veroorsaak word deur:',opts:['Sulfiedhoudende rots wat met lug en water reageer om suur te vorm wat waterbronne besoedel','Mynwerkers wat te veel elektrisiteit gebruik','Goud wat ’n te sagte metaal is','Ystertydperk-smeltovens'],ans:0,exp:'Wanneer mynbou sulfiedhoudende rots aan lug en water blootstel, produseer ’n chemiese reaksie swaelsuur, wat gifmetale in riviere en grondwater uitloog.'},
+  {text:'"Geslagsvooroordeel in loopbaankeuse" in die mynbedryf verwys na die feit dat:',opts:['Vroue is natuurlik ongeïnteresseerd in mynbou','Mynbou het histories vroue uitgesluit en onderverteenwoordig, wat hul geleenthede beperk het','Slegs mans is fisies in staat tot mynbouwerk','Mynmaatskappye huur nie meer mans nie'],ans:1,exp:'Mynbou is tradisioneel as mans-alleen-werk behandel — vroue is selfs vir dekades wetlik verbied om ondergronds te werk — en bly vandag steeds ’n klein, dikwels benadeelde, minderheid in die bedryf.'},
+  {text:'Waarom word staal-wapeningstawe (rebar) binne beton ingebed?',opts:['Om die beton goedkoper te maak','Om kleur by die beton te voeg','Omdat gewone beton swak is in spanning, en staal gee dit trekspanningsterkte','Om die beton ligter te maak'],ans:2,exp:'Gewone beton is sterk in druk maar swak in spanning — dit kraak wanneer dit gerek of gebuig word. Staal-wapeningstawe is baie sterk in spanning, so die kombinasie van die twee gee gewapende beton sterkte onder albei tipes kragte.'},
+  {text:'Waarom word ’n I-balkvorm gebruik in plaas van ’n soliede reghoekige staaf vir ’n staaldraer?',opts:['Dit lyk meer modern','Dit konsentreer materiaal in die flense waar buigspanning die hoogste is, wat gewig en koste bespaar','Dit is makliker om te verf','Dit gelei elektrisiteit beter'],ans:1,exp:'’n Soliede staaf vermors materiaal naby sy middelpunt, waar buigspanning die laagste is. ’n I-balk plaas die meeste van sy materiaal in die boonste en onderste flense, waar dit buiging die doeltreffendste weerstaan, en gebruik minder materiaal in totaal.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
