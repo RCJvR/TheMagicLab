@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eerstehoek-Ortografiese Projeksie — The Tech Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%;cursor:pointer}
+    .parts-list{display:flex;flex-direction:column;gap:5px}
+    .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .part-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px;background:rgba(249,115,22,.15);color:var(--accent-light);border:1px solid rgba(249,115,22,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    /* View explorer specific */
+    .view-btns{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .view-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:10px 18px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);cursor:pointer;transition:all 140ms;display:flex;align-items:center;gap:7px}
+    .view-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .view-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .view-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .line-legend{display:flex;flex-direction:column;gap:8px}
+    .line-item{display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(210,218,245,.75)}
+    .line-swatch{width:34px;height:0;flex-shrink:0}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+<script src="../../../lang-toggle.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 The Tech Tower</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Strukture · Gr 9</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Strukture · Kwartaal 1 · Les 1</div>
+  <h1 class="lesson-title">Eerstehoek-Ortografiese Projeksie</h1>
+  <p class="lesson-sub">Elke werktekening wat 'n ingenieur of argitek gebruik, begin hier: om 'n 3D-voorwerp in akkurate, tot-skaal, plat 2D-aansigte te verander waarvan enigeen kan bou.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="box" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Waarom ons ortografiese projeksie nodig het</h2>
+    <p>'n Foto of 'n 3D-skets van 'n voorwerp lyk realisties, maar dit is byna onbruikbaar om iets akkuraat te bou — hoeke word verwring en verskuilde oppervlaktes is moeilik om te meet. <strong>Eerstehoek-ortografiese projeksie</strong> los dit op deur 'n voorwerp as verskeie aparte plat aansigte te teken, elkeen reguit langs een as bekyk, sodat elke lyn tot ware lengte geteken word en met vertroue gemeet en geskaleer kan word.</p>
+    <div class="callout"><strong>Drie aansigte is gewoonlik genoeg:</strong> die <strong>vooraansig</strong> (die voorwerp van voor bekyk), die <strong>bo-aansig</strong> / planaansig (reguit van bo af bekyk), en die <strong>sy-aansig</strong> / endaansig (die voorwerp van die kant bekyk, gewoonlik die linkerkant). Saam beskryf hierdie drie plat tekeninge die volle 3D-vorm sonder enige verwringing.</div>
+    <p>In <strong>eerstehoek-projeksie</strong> (die stelsel wat in Suid-Afrika en die meeste van die wêreld buite die VSA gebruik word), word die voorwerp voorgestel asof dit tussen die kyker en die vlak waarop dit geprojekteer word, sit. Dit bepaal die rangskikking van aansigte op die bladsy: die bo-aansig word direk <em>onder</em> die vooraansig geteken, en die sy-aansig word aan die <em>kant</em> van die vooraansig geteken — altyd so belyn dat kenmerke oor aansigte heen in lyn bly.</p>
+
+    <h2>Lyntipes</h2>
+    <p>'n Werktekening gebruik verskillende lyntipes sodat 'n leser onmiddellik kan sien wat elke lyn beteken:</p>
+    <ul>
+      <li><strong>Donker (buitelyn) lyne</strong> — dik, soliede lyne wat die sigbare rande en buitelyn van die voorwerp wys.</li>
+      <li><strong>Flou (konstruksie-) lyne</strong> — baie dun, lig lyne wat gebruik word terwyl 'n tekening uitgelê word, of om punte tussen aansigte te projekteer. Hulle is nie deel van die finale buitelyn nie.</li>
+      <li><strong>Kort-kortlyne (verskuilde besonderhede)</strong> — kort strepies wat 'n rand wys wat agter ander materiaal in daardie spesifieke aansig weggesteek is.</li>
+      <li><strong>Golwende (breek-) lyne</strong> — vryehand golwende lyne wat wys dat 'n lang voorwerp op die bladsy verkort is om spasie te bespaar.</li>
+      <li><strong>Ketting- (middel-) lyne</strong> — afwisselende lang en kort strepies wat die middelpunt van 'n simmetriese kenmerk aandui, soos die middel van 'n sirkelvormige gat.</li>
+    </ul>
+    <div class="key-fact">Buitelyn = dik en soliede. Verskuilde besonderhede = dun en kort-kort. Middellyn = lang-kort-lang-strepie.</div>
+
+    <h2>Skaal en dimensionering</h2>
+    <p>Baie groot of baie klein voorwerpe kan nie in hul werklike grootte op 'n vel papier geteken word nie, dus word tekeninge tot 'n <strong>skaal</strong> gemaak — 'n vaste verhouding tussen die tekening en die werklike voorwerp, soos 1:20 (1 eenheid op papier verteenwoordig 20 eenhede in werklikheid) of 2:1 vir 'n klein voorwerp wat groter as werklike grootte geteken word. Die skaal wat gebruik word, moet altyd duidelik op die tekening geskryf word.</p>
+    <p><strong>Dimensionering</strong> volg konvensies sodat metings ondubbelsinnig is: dimensielyne loop parallel met die kenmerk wat gemeet word, met pyltjiepunte wat dun uitbreidingslyne raak wat vanaf die voorwerp projekteer, en die meting self word bo-op of binne 'n breuk in die dimensielyn geskryf. Dimensies word gewoonlik in millimeter gegee, en elke meting behoort net een keer op 'n volledige stel tekeninge te verskyn.</p>
+
+    <h2>Uitgewerkte voorbeeld: 'n trap- en hellingbaan-ontwerp</h2>
+    <p>Verbeel jou 'n ontwerpbrief: <em>"Ontwerp 'n stel trappe en 'n rolstoelhellingbaan wat toegang gee tot 'n gemeenskapsaal 600 mm bo grondvlak."</em> 'n Brief soos hierdie spesifiseer beperkings waaraan die ontwerp moet voldoen — byvoorbeeld die aantal trappe, stootjiehoogte, gaande (trapdiepte), en vir die hellingbaan sy wydte en gradiënt (helling), plus 'n handleuning vir veiligheid.</p>
+    <ul>
+      <li><strong>Trappe:</strong> 'n totale styging van 600 mm verdeel in stootjies van ongeveer 150 mm gee 4 trappe; 'n gemaklike gaande (trapdiepte) is ongeveer 280–300 mm.</li>
+      <li><strong>Hellingbaan:</strong> 'n veilige gradiënt vir 'n rolstoelhellingbaan is ongeveer 1:12 tot 1:15 (vir elke 1 eenheid styging, 12–15 eenhede horisontale afstand) — dus benodig 'n styging van 600 mm 'n hellingbaan van minstens 7.2–9 m lank, met 'n wydte van minstens 900 mm–1 m en handleunings aan beide kante.</li>
+    </ul>
+    <div class="callout"><strong>Ontwerpproses:</strong> skets eers die idee rofweg in <strong>isometriese projeksie</strong> ('n realisties-lykende 3D-skets met alle asse teen 120° tot mekaar) om die algehele idee vinnig oor te dra. Eers wanneer die idee vasgestel is, teken jy die akkurate, tot-skaal <strong>eerstehoek-ortografiese</strong> plan — met korrekte aansigte, lyntipes en dimensies — waarvan 'n bouer werklik kan werk.</div>
+    <div class="key-fact">Isometries = vinnige 3D-idee-skets. Ortografies = akkurate, tot-skaal, boubare werktekening.</div>
+
+    <h2>Lees en opbou van komplekse voorwerpe</h2>
+    <p>Sodra jy 'n eenvoudige kubus kan lees, kan meer komplekse 3D-voorwerpe — soos 'n L-vormige beuel, of 'n getrapte blok — kenmerk vir kenmerk ontleed word. Elke keep, trap of gat in die 3D-voorwerp moet ooreenstem met 'n sigbare of verskuilde lyn in elk van die drie 2D-aansigte. 'n Nuttige toets: elke hoek van die voorwerp behoort na 'n punt in minstens twee van die drie aansigte opgespoor te kan word, en punte moet akkuraat oor die vooraansig en die aansig direk daaronder of daarnaas projekteer.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">3-Aansig-Verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Kies 'n voorwerp hieronder — dit word in isometries aan die linkerkant gewys. Klik Voor, Bo of Sy om die ooreenstemmende eerstehoek-ortografiese aansig aan die regterkant te sien verskyn.</p>
+  <div class="view-btns" id="objectBtns" style="margin-bottom:16px">
+    <button class="view-btn active" id="ob_stepped" onclick="selectObject('stepped')"><i data-lucide="box" style="width:13px;height:13px"></i> Getrapte blok</button>
+    <button class="view-btn" id="ob_notched" onclick="selectObject('notched')"><i data-lucide="box" style="width:13px;height:13px"></i> Gekeepte (U) blok</button>
+  </div>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap"><canvas id="isoCanvas" height="320"></canvas></div>
+    <div>
+      <div class="view-label">Kies 'n aansig</div>
+      <div class="view-btns">
+        <button class="view-btn active" id="vb_front" onclick="selectView('front')"><i data-lucide="square" style="width:13px;height:13px"></i> Voor</button>
+        <button class="view-btn" id="vb_top" onclick="selectView('top')"><i data-lucide="square" style="width:13px;height:13px"></i> Bo</button>
+        <button class="view-btn" id="vb_side" onclick="selectView('side')"><i data-lucide="square" style="width:13px;height:13px"></i> Sy</button>
+        <button class="view-btn" id="vb_all" onclick="selectView('all')"><i data-lucide="layout-grid" style="width:13px;height:13px"></i> Volledige Skets</button>
+      </div>
+      <div class="truss-canvas-wrap" style="padding:10px"><canvas id="viewCanvas" height="200"></canvas></div>
+      <div class="part-info" id="viewInfo" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek. Gebruik instrumente (liniaal, winkelhaak) waar 'n vraag jou vra om te teken.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Noem die drie standaardaansigte wat in eerstehoek-ortografiese projeksie gebruik word, en gee aan waar die bo-aansig relatief tot die vooraansig geposisioneer is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (5 punte)</div><div class="wb-qtext">Noem die vyf lyntipes wat in ingenieurstekening gebruik word en gee een gebruik vir elkeen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">'n Tekening word teen 'n skaal van 1:20 gemaak. (a) Wat beteken hierdie skaal? (b) As 'n muur 3 400 mm in werklikheid meet, hoe lank moet dit op papier geteken word, in mm?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (6 punte)</div><div class="wb-qtext">'n Gemeenskapsaal se ingang is 600 mm bo grondvlak. (a) Bereken 'n geskikte aantal trappe as elke stootjie 150 mm is. (b) Deur 'n minimum hellingbaan-gradiënt van 1:12 te gebruik, bereken die minimum horisontale lengte wat benodig word vir 'n rolstoelhellingbaan wat dieselfde 600 mm styging dek. (c) Noem een veiligheidskenmerk wat op die hellingbaan ingesluit moet word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Verduidelik, in een of twee sinne, waarom 'n ontwerper 'n idee in isometriese projeksie skets voordat die formele ortografiese plan geteken word.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // isoCanvas and viewCanvas both have offsetWidth 0 while the Explore tab
+  // panel is display:none, so the initial resizeIso()/resizeView() calls
+  // (at page load) fall back to hardcoded default widths instead of the
+  // real ones. Re-measure now that the panel is actually visible.
+  if(id==='explore'){
+    if(typeof resizeIso==='function') resizeIso();
+    if(typeof resizeView==='function') resizeView();
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   3-VIEW EXPLORER — stepped L-shaped block
+   Block: base 6x4x2 (W x D x H units), with a raised
+   step of 3x4x2 sitting on the back-left of the base,
+   giving an overall L-profile when viewed from the side.
+═══════════════════════════════════════════════ */
+let U = 26; // unit size in px for iso drawing (auto-fitted to canvas + object — see drawIso)
+const isoCanvas = document.getElementById('isoCanvas');
+const isoCtx = isoCanvas.getContext('2d');
+let isoW, isoH;
+
+function resizeIso(){
+  isoW = isoCanvas.offsetWidth || 500; isoH = 320;
+  isoCanvas.width = isoW*devicePixelRatio; isoCanvas.height = isoH*devicePixelRatio;
+  isoCtx.setTransform(1,0,0,1,0,0);
+  isoCtx.scale(devicePixelRatio, devicePixelRatio);
+  drawIso();
+}
+
+// isometric projection helper: (x right, y depth, z up) -> screen
+function isoProject(x,y,z,ox,oy){
+  const px = ox + (x-y)*Math.cos(Math.PI/6)*U;
+  const py = oy + (x+y)*Math.sin(Math.PI/6)*U - z*U;
+  return [px,py];
+}
+// Sutherland-Hodgman clip of a convex 2D polygon against a single half-plane.
+// insideFn(point) says which side to keep; intersectFn(a,b) finds where
+// edge a->b crosses the boundary. Used to cut away the part of a top face
+// that a taller, later segment hides from the isometric viewing angle.
+function clipPolygonHalfPlane(poly, insideFn, intersectFn){
+  const out = [];
+  for(let i=0;i<poly.length;i++){
+    const cur = poly[i], prev = poly[(i-1+poly.length)%poly.length];
+    const curIn = insideFn(cur), prevIn = insideFn(prev);
+    if(curIn){
+      if(!prevIn) out.push(intersectFn(prev,cur));
+      out.push(cur);
+    } else if(prevIn){
+      out.push(intersectFn(prev,cur));
+    }
+  }
+  return out;
+}
+function isoFace(pts3d, ox, oy, fill, shade, edge){
+  const pts = pts3d.map(([x,y,z])=>isoProject(x,y,z,ox,oy));
+  isoCtx.beginPath();
+  pts.forEach((p,i)=> i===0?isoCtx.moveTo(p[0],p[1]):isoCtx.lineTo(p[0],p[1]));
+  isoCtx.closePath();
+  isoCtx.fillStyle = fill(shade);
+  isoCtx.fill();
+  isoCtx.strokeStyle = edge;
+  isoCtx.lineWidth = 1.5;
+  isoCtx.stroke();
+}
+function drawIso(){
+  isoCtx.clearRect(0,0,isoW,isoH);
+  const obj = OBJECTS[currentObject];
+  const boxes = obj.boxes;
+  let maxX=0, maxY=0, maxZ=0;
+  boxes.forEach(b=>{ maxX=Math.max(maxX,b[1]); maxY=Math.max(maxY,b[3]); maxZ=Math.max(maxZ,b[5]); });
+  // Auto-fit: scale the unit size so the object's isometric footprint fills
+  // the canvas (with margin), whatever the canvas's real size turns out to
+  // be and whichever object is selected. A fixed unit size + fixed origin
+  // ratio left it small and off-centre on a wide canvas.
+  const cos30 = Math.cos(Math.PI/6), sin30 = Math.sin(Math.PI/6);
+  const wProj = (maxX+maxY)*cos30, hProj = (maxX+maxY)*sin30 + maxZ;
+  const marginX = 24, marginTop = 20, marginBottom = 34; // marginBottom leaves room for the caption
+  const availW = isoW - marginX*2, availH = isoH - marginTop - marginBottom;
+  U = Math.max(10, Math.min(availW/wProj, availH/hProj));
+  const drawnW = wProj*U, drawnH = hProj*U;
+  const ox = (isoW-drawnW)/2 + maxY*cos30*U;
+  const oy = marginTop + (availH-drawnH)/2 + maxZ*U;
+  const fill = s => `rgba(253,186,116,${0.10+0.55*s})`;
+  const edge = 'rgba(253,186,116,0.9)';
+
+  // Draw as ONE solid, not a pile of separate boxes: merge the (possibly
+  // overlapping — e.g. the step's box sits on top of the FULL base slab's
+  // box, not beside it) boxes into a non-overlapping height "skyline" by
+  // taking the tallest box covering each x-range, then draw exactly the
+  // faces a real solid would actually show from this angle — no internal
+  // seams at the box joins.
+  const xs = Array.from(new Set(boxes.flatMap(b=>[b[0],b[1]]))).sort((a,b)=>a-b);
+  const segs = [];
+  for(let i=0;i<xs.length-1;i++){
+    const xa=xs[i], xb=xs[i+1];
+    let z=0;
+    boxes.forEach(b=>{ if(b[0]<=xa && b[1]>=xb) z=Math.max(z,b[5]); });
+    const last = segs[segs.length-1];
+    if(last && last.z===z) last.x1=xb; // merge flush with the previous segment if the height didn't actually change
+    else segs.push({x0:xa,x1:xb,z});
+  }
+
+  // TOP faces — one per segment, clipped to the part actually visible from
+  // this angle. A LATER (higher-x), TALLER segment can hide part of an
+  // earlier one: along the isometric view direction (roughly (1,1,1) —
+  // increasing x, y and z together), a point (x,y) on this face is
+  // occluded once y - x drops to or below maxY - (that later segment's
+  // start x), i.e. it's close enough, in depth, for the taller segment's
+  // own material to sit in front of it. (Assumes the taller segment is
+  // near enough that x-distance to it never exceeds its height
+  // difference, true for both example objects — a fully general solution
+  // would need a second clip for that case.)
+  segs.forEach((seg,i)=>{
+    let poly = [[seg.x0,0],[seg.x1,0],[seg.x1,maxY],[seg.x0,maxY]];
+    segs.slice(i+1).filter(s=>s.z>seg.z).forEach(occluder=>{
+      const threshold = maxY - occluder.x0;
+      poly = clipPolygonHalfPlane(poly, p=>(p[1]-p[0])>threshold, (a,b)=>{
+        const fa=a[1]-a[0]-threshold, fb=b[1]-b[0]-threshold, t=fa/(fa-fb);
+        return [a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1])];
+      });
+    });
+    if(poly.length>=3) isoFace(poly.map(([x,y])=>[x,y,seg.z]), ox, oy, fill, 1.0, edge);
+  });
+
+  // WALL faces — only where the profile steps DOWN moving left to right.
+  // An upward step (e.g. the notch floor rising to meet the right tower)
+  // faces back toward -x, the same orientation as the object's own left
+  // end, which is never drawn either — both are back-facing from this
+  // angle. It briefly looked like skipping it left a gap, but that was a
+  // symptom of the top faces not being occluded/clipped correctly yet
+  // (see above): once the notch floor is properly clipped down to its
+  // true visible sliver, the merged front face's own boundary already
+  // closes the silhouette there — no separate wall needed. The object's
+  // right end falls out of this same "step down" rule as a drop to the
+  // ground, so it needs no special case. Assumes the segments are
+  // contiguous, which holds for both example objects.
+  segs.forEach((seg,i)=>{
+    const heightAfter = i+1<segs.length ? segs[i+1].z : 0;
+    if(heightAfter < seg.z){
+      isoFace([[seg.x1,0,heightAfter],[seg.x1,maxY,heightAfter],[seg.x1,maxY,seg.z],[seg.x1,0,seg.z]], ox, oy, fill, 0.55, edge);
+    }
+  });
+
+  // FRONT face — ONE merged polygon for the whole profile, reusing the
+  // exact outline already used for the front orthographic view, so it
+  // reads as a single solid instead of one front face per box.
+  const frontOutline = obj.views.front.draw(0,0).map(([px,py])=>[px/VU, -py/VU]);
+  isoFace(frontOutline.map(([x,z])=>[x,maxY,z]), ox, oy, fill, 0.75, edge);
+
+  isoCtx.fillStyle='rgba(210,218,245,.55)';
+  isoCtx.font='11px "JetBrains Mono",monospace';
+  isoCtx.fillText('Isometriese skets (nie op skaal nie)', 14, isoH-14);
+}
+window.addEventListener('resize', resizeIso);
+
+// Orthographic views drawn on a 2D grid (units -> px)
+const viewCanvas = document.getElementById('viewCanvas');
+const viewCtx = viewCanvas.getContext('2d');
+let vW, vH;
+function resizeView(){
+  vW = viewCanvas.offsetWidth || 260; vH = 200;
+  viewCanvas.width = vW*devicePixelRatio; viewCanvas.height = vH*devicePixelRatio;
+  viewCtx.setTransform(1,0,0,1,0,0);
+  viewCtx.scale(devicePixelRatio, devicePixelRatio);
+  drawSelectedView();
+}
+let VU = 22; // scaled up temporarily for the combined "Complete Sketch" layout — see drawAllViews
+// Two objects to explore, each built from axis-aligned boxes (matching the
+// isometric drawIsoBox calls) plus the matching hand-worked 2D outline for
+// each of the three orthographic views.
+const OBJECTS = {
+  stepped:{
+    label:'Getrapte L-vormige blok',
+    // base slab 6 wide x 4 deep x 2 high; raised step 3 wide x 4 deep sits
+    // on top from z2-4, spanning x 0-3 (the LEFT/low-x side).
+    boxes:[[0,6,0,4,0,2],[0,3,0,4,2,4]],
+    views:{
+      front:{
+        label:'VOORAANSIG',
+        desc:'Kyk reguit na die voorwerp van voor (langs die y-as). Wys die ware wydte (6 eenhede) en die getrapte hoogteprofiel: die LINKERKANT (0–3 eenhede) is hoog — ’n 2-eenheid-basis plus ’n 2-eenheid-trap, 4 eenhede in totaal — en die REGTERKANT (3–6 eenhede) is net die 2-eenheid-basis.',
+        draw:(cx,cy)=>{
+          // x 0-3 tall (4 units, base+step); x 3-6 short (2 units, base only)
+          const pts=[[0,0],[0,-4],[3,-4],[3,-2],[6,-2],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      },
+      top:{
+        label:'BO-AANSIG (PLAN)',
+        desc:'Kyk reguit van bo af. Wys die ware wydte (6) en diepte (4). Die lyn by x=3 dui aan waar die verhoogde trap se rand die laer basis ontmoet. Dit word SOLIED geteken, nie kort-kort nie — niks oorhang hierdie rand nie, dus is dit direk sigbaar wanneer reguit van bo af gekyk word, anders as ’n werklik verskuilde lyn.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[6,-4],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        visibleLine:(cx,cy)=>[[cx+3*VU,cy],[cx+3*VU,cy-4*VU]]
+      },
+      side:{
+        label:'SY-AANSIG (ENDAANSIG)',
+        desc:'Kyk na die voorwerp van die kant (langs die x-as). Die buitelyn is ’n eenvoudige 4-eenheid-hoë reghoek. Die lyn by 2 eenhede dui aan waar die laer basisvlak agter die trap voortgaan — dit word SOLIED geteken, nie kort-kort nie, omdat dit ’n ware eksterne hoek van die voorwerp is: van die teenoorgestelde end af sou jy dit direk sien, dus is dit nie agter soliede materiaal weggesteek soos ’n werklik verskuilde kenmerk nie.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[4,-4],[4,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        visibleLine:(cx,cy)=>[[cx,cy-2*VU],[cx+4*VU,cy-2*VU]]
+      }
+    }
+  },
+  notched:{
+    label:'Gekeepte (U) blok',
+    // Two towers (3 units tall) at x 0-2 and x 4-6, joined by a 1-unit-tall
+    // base — leaves a gap/notch in the middle top. The connecting base box
+    // only spans x 2-4 (the gap): each tower's own box already covers its
+    // own 0-1 unit base height, so a base box spanning the full 0-6 width
+    // would overlap both towers and cause z-fighting-style rendering glitches
+    // in the isometric view (double-drawn faces/edges where boxes coincide).
+    boxes:[[0,2,0,4,0,3],[4,6,0,4,0,3],[2,4,0,4,0,1]],
+    views:{
+      front:{
+        label:'VOORAANSIG',
+        desc:'Kyk reguit na die voorwerp van voor. Twee hoë torings (3 eenhede, by 0–2 en 4–6 eenhede) word deur ’n lae 1-eenheid-hoë basis verbind, wat ’n keep/gaping tussen hulle bo-aan laat — wat ’n "U"-buitelyn gee wanneer van bo die gaping af gelees.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-3],[2,-3],[2,-1],[4,-1],[4,-3],[6,-3],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      },
+      top:{
+        label:'BO-AANSIG (PLAN)',
+        desc:'Kyk reguit van bo af. Wys die ware wydte (6) en diepte (4) van die basis-voetspoor. Twee SOLIEDE lyne (by x=2 en x=4) dui aan waar die torings se rande die laer verbindende basis ontmoet — sigbaar, nie verskuil nie, aangesien niks hulle oorhang wanneer reguit van bo af bekyk word nie.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[6,-4],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        visibleLine:(cx,cy)=>[[cx+2*VU,cy],[cx+2*VU,cy-4*VU]],
+        visibleLine2:(cx,cy)=>[[cx+4*VU,cy],[cx+4*VU,cy-4*VU]]
+      },
+      side:{
+        label:'SY-AANSIG (ENDAANSIG)',
+        desc:'Kyk na die voorwerp van die kant. Die buitelyn is ’n eenvoudige 3-eenheid-hoë reghoek. Die kort-kortlyn by 1 eenheid wys waar die laer verbindende basis sit — en hier IS dit werklik verskuil: ’n volhoogte-toring staan gelyk aan BEIDE ente, dus is daar geen rigting langs hierdie as waarvandaan jy die keepvloer direk sou kon sien nie. Dit is die ware toets vir ’n verskuilde lyn — agter soliede materiaal weggesteek vanuit elke hoek, nie net die een waaruit jy toevallig kyk nie.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-3],[4,-3],[4,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        extraLine:(cx,cy)=>[[cx,cy-1*VU],[cx+4*VU,cy-1*VU]]
+      }
+    }
+  }
+};
+let currentObject = 'stepped';
+let currentView = 'front';
+function selectObject(id){
+  currentObject = id;
+  document.querySelectorAll('#objectBtns .view-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ob_'+id).classList.add('active');
+  drawIso();
+  drawSelectedView();
+}
+function selectView(id){
+  currentView = id;
+  document.querySelectorAll('.view-btns:not(#objectBtns) .view-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('vb_'+id).classList.add('active');
+  drawSelectedView();
+}
+// Draws one view's outline + hidden/visible interior lines at the given
+// origin. Shared by the single-view mode and the combined "Complete
+// Sketch" layout so both stay in sync with the same view data.
+function drawViewShape(v, cx, cy){
+  const pts = v.draw(cx,cy);
+  viewCtx.beginPath();
+  pts.forEach((p,i)=> i===0?viewCtx.moveTo(p[0],p[1]):viewCtx.lineTo(p[0],p[1]));
+  viewCtx.closePath();
+  viewCtx.fillStyle='rgba(249,115,22,0.14)';
+  viewCtx.fill();
+  viewCtx.strokeStyle='#fdba74';
+  viewCtx.lineWidth=2.5;
+  viewCtx.stroke();
+  // Hidden edges: exist in 3D but are occluded from this particular
+  // viewing direction — drawn dashed, per the lesson's own line-type key.
+  [v.extraLine, v.extraLine2].filter(Boolean).forEach(fn=>{
+    const [a,b] = fn(cx,cy);
+    viewCtx.save();
+    viewCtx.setLineDash([6,4]);
+    viewCtx.strokeStyle='rgba(253,186,116,0.6)';
+    viewCtx.lineWidth=1.5;
+    viewCtx.beginPath();
+    viewCtx.moveTo(a[0],a[1]);
+    viewCtx.lineTo(b[0],b[1]);
+    viewCtx.stroke();
+    viewCtx.restore();
+  });
+  // Visible interior edges: a genuine change of surface (e.g. a step's
+  // top edge seen from directly above) that nothing occludes from this
+  // view, so it's drawn solid — same weight as the outline, not dashed.
+  [v.visibleLine, v.visibleLine2].filter(Boolean).forEach(fn=>{
+    const [a,b] = fn(cx,cy);
+    viewCtx.beginPath();
+    viewCtx.moveTo(a[0],a[1]);
+    viewCtx.lineTo(b[0],b[1]);
+    viewCtx.strokeStyle='#fdba74';
+    viewCtx.lineWidth=2.5;
+    viewCtx.stroke();
+  });
+}
+
+function drawSelectedView(){
+  if(currentView==='all'){ drawAllViews(); return; }
+  // Coming back from "Complete Sketch" mode, which grows the canvas taller
+  // — restore the normal single-view height so it doesn't stay stretched.
+  if(vH !== 200){
+    vH = 200;
+    viewCanvas.height = vH*devicePixelRatio;
+    viewCtx.setTransform(1,0,0,1,0,0);
+    viewCtx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  viewCtx.clearRect(0,0,vW,vH);
+  const v = OBJECTS[currentObject].views[currentView];
+  const cx = vW*0.28, cy = vH*0.80;
+  drawViewShape(v, cx, cy);
+  viewCtx.fillStyle='rgba(210,218,245,.55)';
+  viewCtx.font='10px "JetBrains Mono",monospace';
+  viewCtx.fillText(v.label, 12, 16);
+
+  document.getElementById('viewInfo').innerHTML = `
+    <div class="part-name">${v.label}</div>
+    <div class="part-desc">${v.desc}</div>`;
+}
+
+// The "Complete Sketch" layout: all three views on one canvas, arranged
+// exactly as the lesson's own first-angle convention describes — top view
+// directly underneath the front view, side view directly beside it, with
+// features aligned across views by construction (they share cx/cy origins
+// on the matching axis).
+function drawAllViews(){
+  const obj = OBJECTS[currentObject];
+  const boxes = obj.boxes;
+  let maxX=0, maxY=0, maxZ=0;
+  boxes.forEach(b=>{ maxX=Math.max(maxX,b[1]); maxY=Math.max(maxY,b[3]); maxZ=Math.max(maxZ,b[5]); });
+
+  const marginLeft=36, marginTop=28, marginRight=20, marginBottom=20, gap=34;
+  const savedVU = VU;
+  const availW = vW - marginLeft - marginRight - gap;
+  VU = Math.max(8, Math.min(24, availW/(maxX+maxY)));
+
+  vH = marginTop + maxZ*VU + gap + maxY*VU + marginBottom;
+  viewCanvas.height = vH*devicePixelRatio;
+  viewCtx.setTransform(1,0,0,1,0,0);
+  viewCtx.scale(devicePixelRatio, devicePixelRatio);
+  viewCtx.clearRect(0,0,vW,vH);
+
+  const cxF = marginLeft, cyF = marginTop + maxZ*VU;       // front: shares its x-axis with top, its z-axis with side
+  const cxT = cxF,        cyT = cyF + gap + maxY*VU;       // top: directly below front
+  const cxS = cxF + maxX*VU + gap, cyS = cyF;              // side: directly beside front
+
+  drawViewShape(obj.views.front, cxF, cyF);
+  drawViewShape(obj.views.top,   cxT, cyT);
+  drawViewShape(obj.views.side,  cxS, cyS);
+
+  viewCtx.fillStyle='rgba(210,218,245,.55)';
+  viewCtx.font='9px "JetBrains Mono",monospace';
+  viewCtx.fillText('VOOR', cxF, cyF-maxZ*VU-8);
+  viewCtx.fillText('BO (PLAN)', cxT, cyT-maxY*VU-8);
+  viewCtx.fillText('SY', cxS, cyS-maxZ*VU-8);
+
+  VU = savedVU; // restore the fixed scale used by the single-view mode
+
+  document.getElementById('viewInfo').innerHTML = `
+    <div class="part-name">Volledige Ortografiese Skets</div>
+    <div class="part-desc">Al drie aansigte uitgelê presies soos eerstehoek-projeksie vereis: die bo-aansig direk onder die vooraansig, en die sy-aansig direk daarnaas. Omdat hulle dieselfde belynde asse deel, kom ’n kenmerk se posisie ooreen oor elke aansig — dis wat ’n volledige ortografiese tekening leesbaar maak as een saamhangende beskrywing van die voorwerp, nie drie ongerelateerde prente nie.</div>`;
+}
+window.addEventListener('resize', resizeView);
+resizeIso();
+resizeView();
+selectView('front');
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'In eerstehoek-ortografiese projeksie, waar word die bo-aansig relatief tot die vooraansig geteken?',opts:['Bo die vooraansig','Direk onder die vooraansig','Regs van die vooraansig','Dit word glad nie geteken nie'],ans:1,exp:'In eerstehoek-projeksie sit die voorwerp tussen die kyker en die projeksievlak, wat die uitleg bepaal: die bo-aansig (plan) word altyd direk onder die vooraansig geteken.'},
+  {text:'Watter lyntipe word gebruik om ’n rand te wys wat agter ander materiaal in ’n bepaalde aansig weggesteek is?',opts:['Kettinglyn','Flou lyn','Kort-kortlyn','Golwende lyn'],ans:2,exp:'Kort-kortlyne (verskuilde besonderhede) bestaan uit kort strepies en wys rande wat bestaan, maar wat werklik nie vanuit daardie kykrigting gesien kan word nie.'},
+  {text:'’n Tekening word teen ’n skaal van 1:20 gemaak. ’n Werklike muur is 4 000 mm lank. Hoe lank moet dit op papier geteken word?',opts:['20 mm','200 mm','2 000 mm','80 000 mm'],ans:1,exp:'Teen 1:20 word elke 20 mm van die werklike voorwerp 1 mm op papier, dus is 4 000 mm ÷ 20 = 200 mm op die tekening.'},
+  {text:'Watter lyntipe dui die middelpunt van ’n simmetriese kenmerk aan, soos ’n sirkelvormige gat?',opts:['Donker buitelyn','Ketting- (middel-) lyn','Golwende (breek-) lyn','Flou (konstruksie-) lyn'],ans:1,exp:'Kettinglyne wissel lang en kort strepies af en word spesifiek gebruik om middelpunte en simmetrielyne aan te dui.'},
+  {text:'Waarom skets ’n ontwerper ’n nuwe idee in isometriese projeksie voordat die formele ortografiese plan geteken word?',opts:['Isometriese tekeninge is akkurater as ortografiese tekeninge','Isometriese sketse dra die algehele 3D-idee vinnig oor voordat tyd aan ’n akkurate, geskaleerde plan bestee word','Ortografiese projeksie kan glad nie 3D-voorwerpe wys nie','Isometriese projeksie word wetlik vereis vir alle tegniese tekeninge'],ans:1,exp:'Isometriese sketse is vinnig en lyk realisties, wat ideaal is om ’n idee vroeg oor te dra en te toets. Eers wanneer die idee vasgestel is, word tyd in ’n akkurate, tot-skaal ortografiese werktekening belê.'},
+  {text:'’n Rolstoelhellingbaan moet in totaal 600 mm styg. Met ’n gradiënt van 1:12, wat is die minimum horisontale lengte van die hellingbaan?',opts:['600 mm','1 200 mm','7 200 mm','12 000 mm'],ans:2,exp:'’n Gradiënt van 1:12 beteken 12 eenhede horisontale afstand vir elke 1 eenheid styging, dus is 600 mm × 12 = 7 200 mm (7.2 m) horisontale lengte die minimum wat benodig word.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Korrek! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+    <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
