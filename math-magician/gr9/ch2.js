@@ -1,4 +1,4 @@
-// Math Magician � Grade 9, Chapter 2 data
+// Math Magician — Grade 9, Chapter 2 data
 // Integers
 
 MathMagician.registerChapter(2, {
@@ -10,28 +10,28 @@ MathMagician.registerChapter(2, {
       fullName: "Operations with integers",
       lesson: {
         heading: "Operations with integers",
-        sub: "Chapter 2 � Topic 1",
+        sub: "Chapter 2 · Topic 1",
         body: `
           <p><strong>Integers</strong> include all whole numbers and their negatives. The four operations all apply, with sign rules governing results.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Sign rules for multiplication and division</div>
+            <div class="def-box-title">📖 Sign rules for multiplication and division</div>
             <p>
-              <strong>+ � + = +</strong> &nbsp;&nbsp; e.g. 3 � 4 = 12<br>
-              <strong>- � - = +</strong> &nbsp;&nbsp; e.g. (-3)(-4) = 12<br>
-              <strong>+ � - = -</strong> &nbsp;&nbsp; e.g. 3 � (-4) = -12<br>
-              <strong>- � + = -</strong> &nbsp;&nbsp; e.g. (-3) � 4 = -12<br><br>
+              <strong>+ × + = +</strong> &nbsp;&nbsp; e.g. 3 × 4 = 12<br>
+              <strong>- × - = +</strong> &nbsp;&nbsp; e.g. (-3)(-4) = 12<br>
+              <strong>+ × - = -</strong> &nbsp;&nbsp; e.g. 3 × (-4) = -12<br>
+              <strong>- × + = -</strong> &nbsp;&nbsp; e.g. (-3) × 4 = -12<br><br>
               Same rules apply for division.
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Worked examples</div>
+            <div class="example-box-title">✏️ Worked examples</div>
             <div class="example-step"><span class="step-num">1</span><span>(-8) + 3 = -5 (move 3 right on number line from -8)</span></div>
             <div class="example-step"><span class="step-num">2</span><span>(-4) - (-7) = -4 + 7 = 3 (subtracting a negative = adding)</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>(-6) � (-5) = 30</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>(-36) � 4 = -9</span></div>
-            <div class="example-step"><span class="step-num">5</span><span>-3� = -9 (square first, then negate) vs (-3)� = 9</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>(-6) × (-5) = 30</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>(-36) ÷ 4 = -9</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>-3² = -9 (square first, then negate) vs (-3)² = 9</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>Note: -3� ? (-3)�. The exponent applies only to 3 in the first case. This is a very common exam trap!</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Note: -3² ≠ (-3)². The exponent applies only to 3 in the first case. This is a very common exam trap!</span></div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Integer Number Line &amp; Operations Drill</div>
@@ -46,8 +46,8 @@ MathMagician.registerChapter(2, {
                 <select id="intOp" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
                   <option value="+">+</option>
                   <option value="-">-</option>
-                  <option value="*">�</option>
-                  <option value="/">�</option>
+                  <option value="*">×</option>
+                  <option value="/">÷</option>
                 </select>
               </div>
               <div style="display:flex;flex-direction:column;gap:4px;">
@@ -88,13 +88,13 @@ MathMagician.registerChapter(2, {
               var result,expr,rule='';
               if(op==='+'){result=a+b;expr=a+' + ('+b+') = '+result;}
               else if(op==='-'){result=a-b;expr=a+' - ('+b+') = '+a+' + ('+(- b)+') = '+result;rule='Subtracting a negative = adding its positive';}
-              else if(op==='*'){result=a*b;expr='('+a+') � ('+b+') = '+result;
+              else if(op==='*'){result=a*b;expr='('+a+') × ('+b+') = '+result;
                 var sa=a>=0?'+':'-',sb=b>=0?'+':'-',sr=result>=0?'+':'-';
-                rule=sa+' � '+sb+' = '+sr+(result>=0?' (same signs ? positive)':' (different signs ? negative)');}
+                rule=sa+' × '+sb+' = '+sr+(result>=0?' (same signs → positive)':' (different signs → negative)');}
               else{if(b===0){document.getElementById('intOut').innerHTML='<span style="color:#fca5a5;">Division by zero is undefined.</span>';return;}
-                result=a/b;expr='('+a+') � ('+b+') = '+result;
+                result=a/b;expr='('+a+') ÷ ('+b+') = '+result;
                 var sa=a>=0?'+':'-',sb=b>=0?'+':'-',sr=result>=0?'+':'-';
-                rule=sa+' � '+sb+' = '+sr+(result>=0?' (same signs ? positive)':' (different signs ? negative)');}
+                rule=sa+' ÷ '+sb+' = '+sr+(result>=0?' (same signs → positive)':' (different signs → negative)');}
               draw(a,result);
               document.getElementById('intOut').innerHTML=[
                 '<div><span style="color:rgba(221,225,240,0.45);">Expression: </span><span style="color:#fbbf24;">'+expr+'</span></div>',
@@ -112,11 +112,11 @@ MathMagician.registerChapter(2, {
       },
       questions: [
         { type: "input", text: "Calculate: (-7) - (-12)", answer: "5", topic: "Integers" },
-        { type: "mc", text: "What is (-5) � (-4) � (-2)?", options: ["-40", "40", "-20", "20"], answer: 0, topic: "Integers" },
-        { type: "input", text: "Calculate: (-48) � (-6)", answer: "8", topic: "Integers" },
-        { type: "mc", text: "Which is greater: -3� or (-3)�?", options: ["-3�", "(-3)�", "They are equal", "Cannot compare"], answer: 1, topic: "Integers" },
-        { type: "input", text: "Calculate: -2 + (-5) � 3 - (-4)", answer: "-13", topic: "Integers" },
-        { type: "input", text: "Calculate: [(-3)� - (-2)�] � [(-5) + 6]", answer: "17", topic: "Integers" },
+        { type: "mc", text: "What is (-5) × (-4) × (-2)?", options: ["-40", "40", "-20", "20"], answer: 0, topic: "Integers" },
+        { type: "input", text: "Calculate: (-48) ÷ (-6)", answer: "8", topic: "Integers" },
+        { type: "mc", text: "Which is greater: -3² or (-3)²?", options: ["-3²", "(-3)²", "They are equal", "Cannot compare"], answer: 1, topic: "Integers" },
+        { type: "input", text: "Calculate: -2 + (-5) × 3 - (-4)", answer: "-13", topic: "Integers" },
+        { type: "input", text: "Calculate: [(-3)² - (-2)³] × [(-5) + 6]", answer: "17", topic: "Integers" },
         { type: "input", text: "The temperature at midnight was -4°C. It fell by 3°C every hour for the next 5 hours, then rose by 2°C every hour for the next 3 hours. What was the temperature (in °C) at the end of this period?", answer: "-13", topic: "Integers" },
       ]
     },
@@ -127,30 +127,30 @@ MathMagician.registerChapter(2, {
       fullName: "Properties of integers and square/cube roots",
       lesson: {
         heading: "Properties and roots of integers",
-        sub: "Chapter 2 � Topic 2",
+        sub: "Chapter 2 · Topic 2",
         body: `
           <p>Integers obey the same properties as whole numbers. We also extend square and cube roots to perfect squares and cubes.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Roots and squares</div>
+            <div class="def-box-title">📖 Roots and squares</div>
             <p>
               <strong>Perfect square:</strong> integer that is the square of another integer. e.g. 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225.<br>
               <strong>Perfect cube:</strong> integer that is the cube of another integer. e.g. 1, 8, 27, 64, 125, 216.<br>
-              <span class="math">v(-n)</span> is not real for any positive n.<br>
-              <span class="math">?(-8) = -2</span> (cube roots of negatives are real and negative).
+              <span class="math">√(-n)</span> is not real for any positive n.<br>
+              <span class="math">∛(-8) = -2</span> (cube roots of negatives are real and negative).
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Worked examples</div>
-            <div class="example-step"><span class="step-num">1</span><span>v144 = 12 (since 12� = 144)</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>?(-27) = -3 (since (-3)� = -27)</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>v(-16) = undefined (not real)</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>-v25 = -5 (take root then negate)</span></div>
+            <div class="example-box-title">✏️ Worked examples</div>
+            <div class="example-step"><span class="step-num">1</span><span>√144 = 12 (since 12² = 144)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>∛(-27) = -3 (since (-3)³ = -27)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>√(-16) = undefined (not real)</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>-√25 = -5 (take root then negate)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>v always gives a non-negative answer (the principal root). So v25 = 5, not �5.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>√ always gives a non-negative answer (the principal root). So √25 = 5, not ±5.</span></div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Squares, Cubes &amp; Roots Explorer</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter any integer (positive or negative). Explore its square, cube, square root, and cube root � with real/not-real classification.</p>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter any integer (positive or negative). Explore its square, cube, square root, and cube root — with real/not-real classification.</p>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
               <div style="display:flex;flex-direction:column;gap:4px;">
                 <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Integer n</label>
@@ -189,11 +189,11 @@ MathMagician.registerChapter(2, {
         `
       },
       questions: [
-        { type: "input", text: "Calculate: v196", answer: "14", topic: "Integers" },
-        { type: "mc", text: "Calculate ?(-125):", options: ["-5", "5", "-25", "undefined"], answer: 0, topic: "Integers" },
+        { type: "input", text: "Calculate: √196", answer: "14", topic: "Integers" },
+        { type: "mc", text: "Calculate ∛(-125):", options: ["-5", "5", "-25", "undefined"], answer: 0, topic: "Integers" },
         { type: "mc", text: "Which of these is NOT a perfect square?", options: ["81", "100", "150", "144"], answer: 2, topic: "Integers" },
-        { type: "input", text: "Calculate: -v169", answer: "-13", topic: "Integers" },
-        { type: "mc", text: "v(-9) is:", options: ["-3", "3", "undefined (not real)", "�3"], answer: 2, topic: "Integers" },
+        { type: "input", text: "Calculate: -√169", answer: "-13", topic: "Integers" },
+        { type: "mc", text: "√(-9) is:", options: ["-3", "3", "undefined (not real)", "±3"], answer: 2, topic: "Integers" },
         { type: "input", text: "Calculate: ∛(-64) + √225 - (-3)²", answer: "2", topic: "Integers" },
         { type: "input", text: "A cube-shaped box has a volume of 512 cm³. Calculate the length of one side of the box (in cm).", answer: "8", topic: "Integers" },
       ]
@@ -210,17 +210,17 @@ MathMagician.registerChapter(2, {
             text: "Calculate each of the following:",
             parts: [
               { label: "a)", text: "(-15) + (-8) - (-23)", marks: 2 },
-              { label: "b)", text: "(-6) � (-7) � (-2)", marks: 2 },
-              { label: "c)", text: "(-72) � (-9) + (-4) � 3", marks: 3 },
-              { label: "d)", text: "-5� - (-3)�", marks: 3 },
+              { label: "b)", text: "(-6) × (-7) × (-2)", marks: 2 },
+              { label: "c)", text: "(-72) ÷ (-9) + (-4) × 3", marks: 3 },
+              { label: "d)", text: "-5² - (-3)²", marks: 3 },
             ]
           },
           {
             num: "2",
             text: "Use the order of operations (BODMAS) to calculate:",
             parts: [
-              { label: "a)", text: "(-3)� - (-4)(5) + (-2)�", marks: 4 },
-              { label: "b)", text: "[(-18) � 3] - [(-4) � (-5)]", marks: 4 },
+              { label: "a)", text: "(-3)² - (-4)(5) + (-2)³", marks: 4 },
+              { label: "b)", text: "[(-18) ÷ 3] - [(-4) × (-5)]", marks: 4 },
             ]
           },
         ]
@@ -232,11 +232,11 @@ MathMagician.registerChapter(2, {
             num: "3",
             text: "Calculate each of the following, or state if it is not real:",
             parts: [
-              { label: "a)", text: "v225", marks: 1 },
-              { label: "b)", text: "-v81", marks: 1 },
-              { label: "c)", text: "?216", marks: 1 },
-              { label: "d)", text: "?(-64)", marks: 2 },
-              { label: "e)", text: "v(-49)", marks: 1 },
+              { label: "a)", text: "√225", marks: 1 },
+              { label: "b)", text: "-√81", marks: 1 },
+              { label: "c)", text: "∛216", marks: 1 },
+              { label: "d)", text: "∛(-64)", marks: 2 },
+              { label: "e)", text: "√(-49)", marks: 1 },
             ]
           },
         ]
@@ -244,15 +244,15 @@ MathMagician.registerChapter(2, {
     ]
   },
   answerKey: {
-    chapter: 2, chapterName: "Chapter 2 � Integers",
+    chapter: 2, chapterName: "Chapter 2 — Integers",
     topics: [
       {
         name: "Operations with Integers",
         answers: [
           { num: "Q1a", ans: "0", note: "-15 - 8 + 23 = 0" },
-          { num: "Q1b", ans: "-84", note: "42 � (-2) = -84 (three negatives ? negative)" },
+          { num: "Q1b", ans: "-84", note: "42 × (-2) = -84 (three negatives → negative)" },
           { num: "Q1c", ans: "-4", note: "8 + (-12) = -4" },
-          { num: "Q1d", ans: "-34", note: "-25 - 9 = -34; note -5� = -25, (-3)� = 9" },
+          { num: "Q1d", ans: "-34", note: "-25 - 9 = -34; note -5² = -25, (-3)² = 9" },
           { num: "Q2a", ans: "21", note: "9 + 20 - 8 = 21" },
           { num: "Q2b", ans: "-26", note: "[-6] - [20] = -26" },
         ]
@@ -260,10 +260,10 @@ MathMagician.registerChapter(2, {
       {
         name: "Squares, Cubes and Roots",
         answers: [
-          { num: "Q3a", ans: "15", note: "15� = 225" },
-          { num: "Q3b", ans: "-9", note: "v81 = 9; negate" },
-          { num: "Q3c", ans: "6", note: "6� = 216" },
-          { num: "Q3d", ans: "-4", note: "(-4)� = -64" },
+          { num: "Q3a", ans: "15", note: "15² = 225" },
+          { num: "Q3b", ans: "-9", note: "√81 = 9; negate" },
+          { num: "Q3c", ans: "6", note: "6³ = 216" },
+          { num: "Q3d", ans: "-4", note: "(-4)³ = -64" },
           { num: "Q3e", ans: "Not real", note: "Cannot take square root of a negative" },
         ]
       },
