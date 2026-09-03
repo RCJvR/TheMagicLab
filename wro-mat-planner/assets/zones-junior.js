@@ -24,13 +24,12 @@
 //   pink outline, not a precise geometric shape, on page 13) -- treat its
 //   edges as close, not exact. The rules only need dirt particles fully
 //   OUTSIDE this area, so approximate accuracy is enough for planning.
-// - The PARROT (rules §3.5 p.14, 10 pts if not damaged/moved) is
-//   deliberately NOT included below. Its reference photo (rules p.7) shows
-//   it next to a small orange-roofed hut and a black exhibition-style
-//   square, and that combination doesn't match anywhere I could find on
-//   this printing file with real confidence -- rather than ship a guessed
-//   coordinate dressed up as verified, this is left for you to pin down
-//   (or send a clearer reference photo/crop and I'll place it properly).
+// - 'parrot': located from the user's own visual ID of two dark-teal LEGO
+//   footprint blocks on the mat (right of the lower yellow tower-base
+//   target) -- confirmed by colour-blob analysis (R<75 in a G~105-130,
+//   B~45-75 band, isolating them from the similarly-dark shadow around
+//   them), not my own guess from the rules photo alone. Feet go in the
+//   wider/bigger block (top), tail in the narrower one (bottom).
 // - Section/page numbers cite the Junior rules PDF as supplied for this
 //   season -- re-verify against whatever version you're actually scored on.
 
@@ -372,8 +371,17 @@ window.WRO_ZONES = [
     label: { x: 2340, y: 420, anchor: 'middle', text: 'BARRIER · RED' },
     centre: { x: 2309, y: 569 }
   },
-  // Parrot (rules §3.5 p.14) intentionally omitted -- see the confidence
-  // note at the top of this file.
+  {
+    id: 'parrot',
+    name: 'Parrot',
+    desc: 'Two dark-teal footprint blocks in a shadow pad, right of the lower yellow tower-base target. Feet go in the wider block (north/top), tail in the narrower one (south/bottom).',
+    rule: 'Rules §3.5 p.14 -- 10 pts if not damaged or moved. Max 10 pts.',
+    klass: 'barrier',
+    type: 'rect',
+    x: 1932.1, y: 878.5, w: 31.9, h: 47.2,
+    label: { x: 1948, y: 865, anchor: 'middle', text: 'PARROT' },
+    centre: { x: 1948, y: 902 }
+  },
 ];
 
 // Robot size presets for the ROBOT/POSE tools and the route walker's
