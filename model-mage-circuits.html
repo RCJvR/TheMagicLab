@@ -215,7 +215,8 @@
     .bb-col-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;pointer-events:none;}
     .bb-row-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;font-weight:700;pointer-events:none;}
     .bb-rail-sym{font-family:'JetBrains Mono',monospace;font-weight:800;text-anchor:middle;pointer-events:none;}
-    .wire-line{stroke:#fbbf24;stroke-width:3.5;fill:none;cursor:pointer;}
+    .wire-line{stroke:#fbbf24;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;fill:none;cursor:pointer;
+              filter:drop-shadow(0 1px 1.5px rgba(0,0,0,0.5));}
     .wire-line:hover{stroke:#fff;stroke-width:4.5;}
     .wire-line.selected{stroke:#fff!important;stroke-width:4.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
     .wire-preview{stroke:var(--accent2);stroke-width:2;stroke-dasharray:5,4;opacity:0.65;fill:none;pointer-events:none;}
@@ -612,16 +613,23 @@ const COMPONENT_DEFS = {
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.5, dy:0.5}],
     defaultProps:{closed:false},
     render(g,c){
-      const on = c.props.closed, midY=0.5*GRID;
-      g.appendChild(line(0,midY,0.35*GRID,midY,'url(#metalGrad)',2));
-      g.appendChild(line(2.15*GRID,midY,2.5*GRID,midY,'url(#metalGrad)',2));
-      const base = rect(0.3*GRID,midY-8,1.9*GRID,16,4,'url(#darkPlasticGrad)','#000');
-      g.appendChild(base);
-      g.appendChild(circleShape(0.55*GRID,midY,4,'url(#metalKnob)'));
-      g.appendChild(circleShape(1.95*GRID,midY,4,'url(#metalKnob)'));
-      const lever = line(0.55*GRID,midY, on?1.95*GRID:1.0*GRID, on?midY-2:midY-11, on?'#34d399':'#f87171',3.5);
-      g.appendChild(lever);
-      g.appendChild(circleShape(0.55*GRID,midY,2.5,'url(#metalKnob)'));
+      const on = c.props.closed, midY=0.5*GRID, cx=1.25*GRID;
+      g.appendChild(line(0,midY,0.55*GRID,midY,'url(#metalGrad)',2));
+      g.appendChild(line(1.95*GRID,midY,2.5*GRID,midY,'url(#metalGrad)',2));
+      // moulded housing — a real toggle switch's base, not a bare wire
+      // standing in for the whole part
+      const housing = rect(0.5*GRID,midY-7,1.5*GRID,14,3,'url(#darkPlasticGrad)','#000');
+      g.appendChild(housing);
+      g.appendChild(rect(0.5*GRID,midY-7,1.5*GRID,5,3,'url(#sheenGrad)'));
+      // threaded bushing the paddle actually pivots through
+      g.appendChild(circleShape(cx,midY-1,5.5,'url(#metalKnob)'));
+      g.appendChild(el('circle',{cx,cy:midY-1,r:5.5,fill:'none',stroke:'#1e293b','stroke-width':1}));
+      // the paddle: flips left (off) / right (on), like a real bat-handle
+      // toggle — not a line that just connects the two terminals
+      const tilt = (on ? 24 : -24) * Math.PI/180;
+      const tipX = cx + Math.sin(tilt)*13, tipY = midY-1 - Math.cos(tilt)*13;
+      g.appendChild(line(cx,midY-1,tipX,tipY, on?'#34d399':'#f87171',4));
+      g.appendChild(circleShape(tipX,tipY,2.6, on?'#34d399':'#f87171'));
       g.appendChild(text(2.5*GRID/2,-6, on?'Switch: ON':'Switch: OFF','comp-label'));
     },
     onClick(c){ c.props.closed = !c.props.closed; },
@@ -634,7 +642,14 @@ const COMPONENT_DEFS = {
       const pressed = c.props.pressed;
       g.appendChild(line(0,GRID/2,0.3*GRID,GRID/2,'url(#metalGrad)',1.6));
       g.appendChild(line(1.7*GRID,GRID/2,2*GRID,GRID/2,'url(#metalGrad)',1.6));
+      // a real 4-leg tactile button's other two legs — not separately
+      // wired (only these two nodes are electrically meaningful), but
+      // drawn short so the part doesn't look like it's missing hardware
+      g.appendChild(line(0.2*GRID,0.05*GRID,0.06*GRID,-3,'#94a3b8',1.3));
+      g.appendChild(line(1.8*GRID,0.05*GRID,1.94*GRID,-3,'#94a3b8',1.3));
       g.appendChild(rect(0.15*GRID,0.05*GRID,1.7*GRID,0.9*GRID,3,'url(#darkPlasticGrad)','#000'));
+      // cap seam — the ring where a real button's cap meets its base
+      g.appendChild(el('circle',{cx:GRID,cy:GRID/2,r:(pressed?7:8.5)+1.5,fill:'none',stroke:'#000','stroke-width':1.2,opacity:0.5}));
       const cap = circleShape(GRID,GRID/2, pressed?7:8.5, pressed?'#164e3a':'#2f3846');
       cap.setAttribute('filter','url(#softShadow)');
       g.appendChild(cap);
@@ -759,14 +774,17 @@ const COMPONENT_DEFS = {
       {key:'temp', label:'Temperature (°C)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      const cx=1.1*GRID, cy=0.5*GRID, r=0.7*GRID;
-      g.appendChild(line(0,cy,cx-r,cy,'url(#metalGrad)',2));
-      g.appendChild(line(cx+r,cy,2.2*GRID,cy,'url(#metalGrad)',2));
-      const bead = circleShape(cx,cy,r,'#1e3a8a');
+      const cx=1.1*GRID, cy=0.5*GRID, rx=0.52*GRID, ry=0.64*GRID;
+      g.appendChild(line(0,cy,cx-rx*0.85,cy,'url(#metalGrad)',1.8));
+      g.appendChild(line(cx+rx*0.85,cy,2.2*GRID,cy,'url(#metalGrad)',1.8));
+      // epoxy-dipped bead — taller than wide, unlike the LDR's flat disc,
+      // with the dip-moulding seam where the two lead wires were sealed in
+      const bead = el('ellipse',{cx,cy,rx,ry,fill:'#1e3a8a'});
       bead.setAttribute('filter','url(#softShadow)');
       g.appendChild(bead);
-      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#0f2050','stroke-width':1.5}));
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(el('ellipse',{cx,cy,rx,ry,fill:'none',stroke:'#0f2050','stroke-width':1.5}));
+      g.appendChild(el('line',{x1:cx-rx*0.8,y1:cy,x2:cx+rx*0.8,y2:cy,stroke:'#0f2050','stroke-width':1,opacity:0.6}));
+      g.appendChild(el('ellipse',{cx,cy:cy-ry*0.35,rx:rx*0.6,ry:ry*0.3,fill:'url(#domeShine)'}));
       g.appendChild(text(cx,-6,`${c.props.type} Thermistor (${Math.round(c.props.temp)}°C)`,'comp-label'));
     },
     resistanceFn(c){
@@ -775,45 +793,80 @@ const COMPONENT_DEFS = {
     },
   },
   potentiometer: {
-    label:'Potentiometer', icon:'🎛', w:2.4, h:1.4, category:'input',
-    pins:[{id:'a', dx:0, dy:1.4},{id:'wiper', dx:1.2, dy:0},{id:'b', dx:2.4, dy:1.4}],
+    label:'Potentiometer', icon:'🎛', w:2.4, h:1.8, category:'input',
+    pins:[{id:'a', dx:0, dy:1.8},{id:'wiper', dx:1.2, dy:0},{id:'b', dx:2.4, dy:1.8}],
     defaultProps:{maxOhms:10000, wiperPos:50},
     props:[
       {key:'maxOhms', label:'Max resistance (Ω)', type:'select', options:[1000,5000,10000,20000,100000]},
       {key:'wiperPos', label:'Wiper position (%)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      g.appendChild(line(0,1.4*GRID,0.2*GRID,1.4*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(2.4*GRID,1.4*GRID,2.2*GRID,1.4*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.4*GRID,'url(#metalGradV)',2));
-      const body = rect(0.2*GRID,0.4*GRID,2*GRID,GRID,3,'url(#darkPlasticGrad)','#000');
+      const bodyY=0.5*GRID, bodyH=1.1*GRID, knobCx=1.2*GRID, knobCy=bodyY+bodyH/2, knobR=13;
+      g.appendChild(line(0,1.8*GRID,0.2*GRID,1.8*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(2.4*GRID,1.8*GRID,2.2*GRID,1.8*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(1.2*GRID,0,1.2*GRID,bodyY,'url(#metalGradV)',2));
+      const body = rect(0.2*GRID,bodyY,2*GRID,bodyH,3,'url(#darkPlasticGrad)','#000');
       body.setAttribute('filter','url(#softShadow)');
       g.appendChild(body);
-      g.appendChild(rect(0.2*GRID,0.4*GRID,2*GRID,GRID*0.35,3,'url(#sheenGrad)'));
-      const knobCx=1.2*GRID, knobCy=0.9*GRID, knobR=8;
+      g.appendChild(rect(0.2*GRID,bodyY,2*GRID,bodyH*0.35,3,'url(#sheenGrad)'));
+      // a bigger dial, easier to read the setting on at a glance — the
+      // knob used to be barely wider than its own leads
       g.appendChild(circleShape(knobCx,knobCy,knobR,'url(#metalKnob)'));
       g.appendChild(el('circle',{cx:knobCx,cy:knobCy,r:knobR,fill:'none',stroke:'#334155','stroke-width':1}));
+      // knurled rim — the machined grip ridges a real pot/trimmer knob
+      // has, not a bare disc
+      for (let i=0;i<18;i++){
+        const a = i/18*Math.PI*2;
+        g.appendChild(el('line',{
+          x1:knobCx+Math.cos(a)*knobR*0.82, y1:knobCy+Math.sin(a)*knobR*0.82,
+          x2:knobCx+Math.cos(a)*knobR*0.98, y2:knobCy+Math.sin(a)*knobR*0.98,
+          stroke:'#1e293b','stroke-width':1, opacity:0.55,
+        }));
+      }
+      // dimly mark the two ends of travel so the pointer's position reads
+      // against the full sweep, not just in isolation
+      [-135, 135].forEach(deg=>{
+        const a = deg*Math.PI/180;
+        g.appendChild(el('line',{
+          x1:knobCx+Math.cos(a)*knobR*1.08, y1:knobCy+Math.sin(a)*knobR*1.08,
+          x2:knobCx+Math.cos(a)*knobR*1.28, y2:knobCy+Math.sin(a)*knobR*1.28,
+          stroke:'#64748b','stroke-width':1.4, opacity:0.6,
+        }));
+      });
       const ang = (-135 + (c.props.wiperPos/100)*270) * Math.PI/180;
-      g.appendChild(line(knobCx,knobCy,knobCx+Math.cos(ang)*knobR*0.85,knobCy+Math.sin(ang)*knobR*0.85,'#1e293b',1.6));
+      // a bright, high-contrast pointer (not a dark slot barely visible
+      // against a metal knob) so the current setting is legible at a glance
+      g.appendChild(line(knobCx,knobCy, knobCx+Math.cos(ang)*knobR*0.85, knobCy+Math.sin(ang)*knobR*0.85, '#fbbf24',3));
+      g.appendChild(circleShape(knobCx+Math.cos(ang)*knobR*0.85, knobCy+Math.sin(ang)*knobR*0.85, 2.6, '#fbbf24'));
+      g.appendChild(circleShape(knobCx,knobCy,3,'#1e293b'));
       g.appendChild(text(1.2*GRID,-6,`Pot ${Math.round(c.props.wiperPos)}%`,'comp-label'));
     },
     isPot:true,
   },
   capacitor: {
     label:'Capacitor', icon:'⏸', w:1.2, h:1.4, category:'passive',
-    pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:1.2, dy:0.7}],
+    // radial layout — both legs close together on the bottom — instead of
+    // one lead per side: real electrolytics in this µF range are almost
+    // always a can standing on two close-set legs, not an axial part.
+    pins:[{id:'+', dx:0, dy:1.4},{id:'-', dx:1.2, dy:1.4}],
     defaultProps:{uf:100},
     props:[{key:'uf', label:'Capacitance (µF)', type:'select', options:[1,10,100,470,1000,4700]}],
     render(g,c){
-      const cx=0.6*GRID, cy=0.7*GRID, rx=0.55*GRID, ry=0.65*GRID;
-      g.appendChild(line(0,cy,cx-rx*0.75,cy,'url(#metalGrad)',2));
-      g.appendChild(line(cx+rx*0.75,cy,1.2*GRID,cy,'url(#metalGrad)',2));
-      const body = el('ellipse',{cx,cy,rx,ry,fill:'#2563eb'});
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(el('ellipse',{cx,cy,rx,ry,fill:'none',stroke:'#0f2a6b','stroke-width':1.5}));
-      g.appendChild(el('ellipse',{cx,cy:cy-ry*0.4,rx:rx*0.7,ry:ry*0.35,fill:'url(#domeShine)'}));
-      g.appendChild(text(cx,-6,`${c.props.uf}µF`,'comp-label'));
+      const W=1.2*GRID, legTop=1.12*GRID, bodyH=0.92*GRID, bodyY=legTop-bodyH;
+      g.appendChild(line(0,legTop,0,1.4*GRID,'url(#metalGrad)',1.8));
+      g.appendChild(line(W,legTop,W,1.4*GRID,'url(#metalGrad)',1.8));
+      // the can itself, seen from the front — not a flat disc
+      const can = rect(0,bodyY,W,bodyH,W*0.22,'#1d4ed8','#0f2a6b');
+      can.setAttribute('filter','url(#softShadow)');
+      g.appendChild(can);
+      g.appendChild(rect(0,bodyY,W,bodyH*0.3,W*0.22,'url(#sheenGrad)'));
+      // printed negative-polarity stripe, on the '-' lead's side
+      g.appendChild(rect(W*0.6,bodyY+2,W*0.32,bodyH-4,2,'#0b0d11'));
+      g.appendChild(text(W*0.76,bodyY+bodyH*0.58,'–','comp-value',8));
+      // vent-notch score lines embossed into the top, like a real can
+      g.appendChild(line(W*0.32,bodyY+3,W*0.32,bodyY+bodyH*0.24,'#0f2a6b',1.4));
+      g.appendChild(line(W*0.47,bodyY+3,W*0.47,bodyY+bodyH*0.24,'#0f2a6b',1.4));
+      g.appendChild(text(W/2,-6,`${c.props.uf}µF`,'comp-label'));
     },
     isCapacitor:true,
   },
@@ -853,30 +906,52 @@ const COMPONENT_DEFS = {
     })(),
     defaultProps:{},
     render(g,c){
-      const board = rect(0,0,8*GRID,5*GRID,6,'url(#pcbGrad)','#062019');
+      const W=8*GRID, H=5*GRID;
+      // PCB substrate — recognisable "dev board" blue rather than a plain
+      // generic-green rectangle, with mounting holes at each corner like a
+      // real board's screw holes.
+      const board = rect(0,0,W,H,7,'url(#pcbBlueGrad)','#08153d');
       board.setAttribute('filter','url(#softShadow)');
       g.appendChild(board);
-      g.appendChild(rect(0,0,8*GRID,5*GRID*0.3,6,'url(#sheenGrad)'));
-      // header-pin strips along the top (digital) and bottom (analog/power) edges
-      for (let i=0;i<=13;i++) g.appendChild(rect((7-i*0.5)*GRID-2.5,1,5,5,1,'url(#metalGradV)'));
-      for (let i=0;i<=5;i++) g.appendChild(rect((0.5+i*0.6)*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
-      g.appendChild(rect(6*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
-      g.appendChild(rect(7*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
-      // main IC chip
-      const chip = rect(2.9*GRID,1.5*GRID,2.2*GRID,1.2*GRID,2,'#0b0d11','#000');
+      g.appendChild(rect(0,0,W,H*0.3,7,'url(#sheenGrad)'));
+      [[9,9],[W-9,9],[9,H-9],[W-9,H-9]].forEach(([mx,my])=>{
+        g.appendChild(el('circle',{cx:mx,cy:my,r:3.4,fill:'#08153d'}));
+        g.appendChild(el('circle',{cx:mx,cy:my,r:3.4,fill:'none',stroke:'#5b7fe0','stroke-width':0.8}));
+      });
+      // USB-B port, protruding off the left edge
+      g.appendChild(rect(-9,0.25*GRID,15,1.05*GRID,2,'url(#metalGrad)','#4b5563'));
+      g.appendChild(rect(-5,0.42*GRID,9,0.7*GRID,1,'#1f2937'));
+      // barrel power jack, protruding off the left edge below the USB port
+      g.appendChild(rect(-7,3.15*GRID,13,0.95*GRID,3,'#0f172a','#000'));
+      g.appendChild(el('circle',{cx:-0.5,cy:3.6*GRID,r:5,fill:'url(#metalKnob)'}));
+      // header-pin strips: black plastic connector blocks along the top
+      // (digital) and bottom (analog/power) edges, with the actual pin
+      // holes poking through — not just bare metal ticks.
+      g.appendChild(rect(0.15*GRID,-5,6.95*GRID,10,2,'url(#darkPlasticGrad)','#000'));
+      g.appendChild(rect(0.15*GRID,H-5,6.95*GRID,10,2,'url(#darkPlasticGrad)','#000'));
+      for (let i=0;i<=13;i++) g.appendChild(el('circle',{cx:(7-i*0.5)*GRID,cy:0,r:2,fill:'url(#metalGradV)'}));
+      for (let i=0;i<=5;i++) g.appendChild(el('circle',{cx:(0.5+i*0.6)*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
+      g.appendChild(el('circle',{cx:6*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
+      g.appendChild(el('circle',{cx:7*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
+      // main IC chip (DIP package) in the centre
+      const chip = rect(2.75*GRID,1.55*GRID,2.5*GRID,1.35*GRID,2,'#0b0d11','#000');
       g.appendChild(chip);
-      for (let i=0;i<6;i++){
-        g.appendChild(rect(2.9*GRID+i*0.37*GRID,1.35*GRID,0.12*GRID,0.15*GRID,0,'url(#metalGrad)'));
-        g.appendChild(rect(2.9*GRID+i*0.37*GRID,2.7*GRID,0.12*GRID,0.15*GRID,0,'url(#metalGrad)'));
+      g.appendChild(el('circle',{cx:2.95*GRID,cy:1.75*GRID,r:2.2,fill:'#374151'})); // pin-1 dimple
+      for (let i=0;i<7;i++){
+        g.appendChild(rect(2.85*GRID+i*0.33*GRID,1.45*GRID,0.1*GRID,0.14*GRID,0,'url(#metalGrad)'));
+        g.appendChild(rect(2.85*GRID+i*0.33*GRID,2.86*GRID,0.1*GRID,0.14*GRID,0,'url(#metalGrad)'));
       }
-      g.appendChild(circleShape(3.1*GRID,1.7*GRID,2,'#374151'));
-      g.appendChild(circleShape(4*GRID,3.6*GRID,3,'#22c55e'));
-      g.appendChild(text(4*GRID,3.35*GRID,'MICROCONTROLLER','comp-label',9));
-      g.appendChild(text(4*GRID,4.3*GRID,'D0–D13 · A0–A5 · 5V · GND','comp-value',7.5));
-      for (let i=0;i<=13;i++) g.appendChild(text((7-i*0.5)*GRID,-4,'D'+i,'comp-value',6.5));
-      for (let i=0;i<=5;i++) g.appendChild(text((0.5+i*0.6)*GRID,5*GRID+13,'A'+i,'comp-value',6.5));
-      g.appendChild(text(6*GRID,5*GRID+13,'5V','comp-value',6.5));
-      g.appendChild(text(7*GRID,5*GRID+13,'GND','comp-value',6.5));
+      // reset button + power LED, like a real board's silkscreen extras
+      const resetBtn = circleShape(7.55*GRID,0.85*GRID,4.3,'#dc2626');
+      g.appendChild(resetBtn);
+      g.appendChild(el('circle',{cx:7.55*GRID,cy:0.85*GRID,r:4.3,fill:'url(#domeShine)'}));
+      g.appendChild(circleShape(1.0*GRID,3.65*GRID,2.2,'#22c55e'));
+      g.appendChild(text(4*GRID,-16,'MICROCONTROLLER','comp-label',9));
+      g.appendChild(text(4.05*GRID,2.38*GRID,'MCU','comp-value',9));
+      for (let i=0;i<=13;i++) g.appendChild(text((7-i*0.5)*GRID,-8,'D'+i,'comp-value',6.5));
+      for (let i=0;i<=5;i++) g.appendChild(text((0.5+i*0.6)*GRID,H+15,'A'+i,'comp-value',6.5));
+      g.appendChild(text(6*GRID,H+15,'5V','comp-value',6.5));
+      g.appendChild(text(7*GRID,H+15,'GND','comp-value',6.5));
     },
     isMcu:true,
   },
@@ -938,10 +1013,15 @@ const COMPONENT_DEFS = {
       g.appendChild(line(0,1.6*GRID,0,2*GRID,'#dc2626',1.8));
       g.appendChild(line(1.2*GRID,1.6*GRID,1.2*GRID,2*GRID,'#57534e',1.8));
       g.appendChild(line(2.4*GRID,1.6*GRID,2.4*GRID,2*GRID,'#f97316',1.8));
-      const body = rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'url(#pcbBlueGrad)','#0a1a4a');
+      // moulded plastic case — not the same glossy laminate a PCB uses
+      const body = rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'url(#servoCaseGrad)','#0a0e1c');
       body.setAttribute('filter','url(#softShadow)');
       g.appendChild(body);
       g.appendChild(rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID*0.35,4,'url(#sheenGrad)'));
+      // case seam — the top-cover/bottom-case split every moulded servo
+      // shell has — and its spec sticker
+      g.appendChild(line(0.3*GRID,0.2*GRID+1.4*GRID*0.6,2.1*GRID,0.2*GRID+1.4*GRID*0.6,'#0a0e1c',1));
+      g.appendChild(rect(0.55*GRID,0.2*GRID+1.4*GRID*0.68,1.3*GRID,1.4*GRID*0.2,1,'#e5e7eb'));
       // mounting flange tabs, like a real micro-servo's ears
       g.appendChild(rect(-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
       g.appendChild(rect(2.4*GRID-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
@@ -1072,6 +1152,9 @@ function componentDefs(){
     </linearGradient>
     <linearGradient id="pcbBlueGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#0f2a6b"/>
+    </linearGradient>
+    <linearGradient id="servoCaseGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b4a6b"/><stop offset="55%" stop-color="#232d47"/><stop offset="100%" stop-color="#141a2c"/>
     </linearGradient>
     <linearGradient id="battGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#57606f"/><stop offset="50%" stop-color="#262c38"/><stop offset="100%" stop-color="#12151c"/>
@@ -1219,6 +1302,10 @@ let selected = null;
 let selectedWireId = null;
 let running = false;
 let simTimer = null;
+// Rotation used to auto-colour new wires (see finishWire) — ordered so
+// neighbouring wires in a typical build read as distinct at a glance
+// against both the cream breadboard and the dark canvas.
+const DEFAULT_WIRE_PALETTE = ['#ef4444','#3b82f6','#22c55e','#f97316','#a855f7','#eab308','#f8fafc','#9ca3af'];
 let wiringFrom = null; // {kind:'pin'|'hole', compId, pinId, x, y}
 let wiringWaypoints = []; // confirmed bend points {x,y} for the wire in progress
 let liveMousePos = null;  // current mouse position (SVG space) while wiring, for the rubber-band preview
@@ -1551,7 +1638,12 @@ function finishWire(to){
   if (wiringFrom.kind===to.kind && wiringFrom.kind==='pin' && wiringFrom.compId===to.compId && wiringFrom.pinId===to.pinId){
     cancelWiring(); return;
   }
-  wires.push({ id:newId(), from:wiringFrom, to, waypoints:wiringWaypoints });
+  // Auto-assign a colour from a fixed rotation rather than leaving every
+  // wire the same amber — real breadboard cabling uses different colours
+  // per net so you can trace a path by eye; a same-coloured tangle is one
+  // of the biggest things that made this look unlike a real circuit.
+  const color = DEFAULT_WIRE_PALETTE[wires.length % DEFAULT_WIRE_PALETTE.length];
+  wires.push({ id:newId(), from:wiringFrom, to, waypoints:wiringWaypoints, color });
   wiringFrom = null; wiringWaypoints = []; liveMousePos = null;
   scheduleRender();
 }
@@ -2137,10 +2229,17 @@ document.getElementById('btn-run').addEventListener('click', ()=>{
     btn.innerHTML = '<i data-lucide="square"></i> Stop';
     btn.classList.remove('go'); btn.classList.add('stop');
     simTimer = setInterval(simTick, 20);
+    // The big toolbar Run button is the one thing every student reaches
+    // for first — a circuit with a microcontroller on it does nothing at
+    // all until its setup()/loop() code is also running, so start that
+    // here too rather than leaving it stranded behind a second "Run code"
+    // button students have to already know exists.
+    if (components.some(c=>c.type==='mcu')) runUserCode();
   } else {
     btn.innerHTML = '<i data-lucide="play"></i> Run';
     btn.classList.remove('stop'); btn.classList.add('go');
     clearInterval(simTimer);
+    codeRunning = false;
   }
   if (window.lucide) lucide.createIcons();
 });
@@ -2923,6 +3022,7 @@ function loadCircuitData(data){
   components.forEach(c=>{ const n=parseInt(c.id.slice(1)); if(n>maxId) maxId=n; });
   nextId = maxId+1;
   wires = data.wires||[];
+  wires.forEach((w,i)=>{ if (!w.color) w.color = DEFAULT_WIRE_PALETTE[i % DEFAULT_WIRE_PALETTE.length]; });
   document.getElementById('code-editor').value = data.code || '';
   blockProgram = data.blockProgram || defaultBlockProgram();
   const st = {max:0}; scanMaxBlockId(blockProgram.setup, st); scanMaxBlockId(blockProgram.loop, st);

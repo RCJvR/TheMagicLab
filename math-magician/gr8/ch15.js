@@ -178,6 +178,62 @@ MathMagician.registerChapter(15, {
             <div class="example-step"><span class="step-num">3</span><span><span class="math">V = 20 × 12 = 240 cm³ = 240 ml = 0.24 litres</span></span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>The "length" of a prism is the dimension that goes through the shape — it is perpendicular to the cross-sectional face. Don't confuse it with the sides of the triangle.</span></div>
+
+          <div style="margin:26px 0 14px;">
+            <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;">&#128209; Quick reference &mdash; all 3 solids</div>
+            <p style="font-size:11.5px;color:rgba(221,225,240,0.40);margin:4px 0 0;">Surface area and volume formulas for every shape in this chapter, with one worked example each.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:6px;">
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M10 18 L24 10 L38 18 L38 32 L24 40 L10 32 Z"/><path d="M10 18 L24 26 L38 18"/><path d="M24 26 L24 40"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Cube</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">side = s</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 6s&sup2;</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = s&sup3;</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">s = 4 cm &rarr; SA = 96 cm&sup2;, V = 64 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M4 20 L24 10 L44 20 L44 32 L24 42 L4 32 Z"/><path d="M4 20 L24 28 L44 20"/><path d="M24 28 L24 42"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Rectangular prism</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">l, b, h</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:13px;">SA = 2(lb + lh + bh)</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = l &times; b &times; h</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">l=8, b=5, h=3 cm &rarr; SA = 158 cm&sup2;, V = 120 cm&sup3;</p>
+              </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#a5b4fc" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M8 38 L8 16 L24 38 Z"/><path d="M20 28 L20 6 L36 28 Z"/><path d="M8 38 L20 28 M8 16 L20 6 M24 38 L36 28"/></svg>
+                <div><div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#e8eaf4;">Triangular prism</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.40);">tri. base b, height h &middot; length L</div></div>
+              </div>
+              <div class="def-box" style="padding:10px 12px;margin:0 0 8px;">
+                <div class="def-box-title" style="margin-bottom:6px;">Formulas</div>
+                <div class="math-block" style="margin:0 0 5px;padding:7px 10px;font-size:12px;line-height:1.5;">SA = 2&times;(&#9651; area) + (perimeter &times; L)</div>
+                <div class="math-block" style="margin:0;padding:7px 10px;font-size:13px;">V = (&frac12;bh) &times; L</div>
+              </div>
+              <div class="example-box" style="padding:9px 12px;margin:0;">
+                <div class="example-box-title" style="margin-bottom:5px;">Worked example</div>
+                <p style="margin:0;font-size:11.5px;">3-4-5 triangle, L=10 cm &rarr; SA = 132 cm&sup2;, V = 60 cm&sup3;</p>
+              </div>
+            </div>
+
+          </div>
         `
       },
       questions: [

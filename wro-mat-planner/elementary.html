@@ -117,6 +117,7 @@
     <div class="program-config" id="programConfig" style="display:none;">
       <label>Wheel Ø <input type="number" id="cfgWheelDiameter" value="56" min="10" max="300" step="1"> mm</label>
       <label>Axle track <input type="number" id="cfgAxleTrack" value="114" min="10" max="500" step="1"> mm</label>
+      <label title="Where the drive wheels sit along the robot's length, relative to its centre (+ = toward the front, - = toward the back). Purely for the wheel markers drawn on the robot -- turns still rotate about the footprint's own centre.">Wheel fwd offset <input type="number" id="cfgWheelForwardOffset" value="0" min="-200" max="200" step="5"> mm</label>
       <label>Left motor <select id="cfgPortLeft"></select></label>
       <label>Right motor <select id="cfgPortRight"></select></label>
       <label>Front motor <select id="cfgPortFront"></select></label>
@@ -130,12 +131,14 @@
       <label title="Sensor B's forward offset from the robot's centre -- only used by a two-sensor differential follower">Sensor B fwd <input type="number" id="cfgLineSensor2Forward" value="80" min="-400" max="400" step="5"> mm</label>
       <label title="Sensor B's sideways offset from the robot's centre (+ = right, - = left) -- only used by a two-sensor differential follower">Sensor B lateral <input type="number" id="cfgLineSensor2Lateral" value="40" min="-200" max="200" step="5"> mm</label>
       <label title="Calibration constant: how strongly a simulated line-follow step's PID correction steers the robot. Raise if the simulated wobble looks too mild, lower if it looks too wild.">Line steer gain <input type="number" id="cfgLineSteerGain" value="2" min="0.1" max="20" step="0.1"></label>
+      <label title="Free-running speed of one drive motor at 100% duty cycle. Used to convert a duty-cycle line follower's speed (motor.dc(), 0-100%) into mm/s. Lower it if line-follow segments run faster in the sim than on the real robot; raise it if they run slower.">Motor max speed <input type="number" id="cfgMotorMaxSpeed" value="1000" min="100" max="2000" step="25"> °/s</label>
     </div>
 
     <div class="program-add-row">
       <select id="stepType">
         <option value="drive">Drive fwd/back</option>
         <option value="turn">Turn</option>
+        <option value="arc">Pivot / arc turn</option>
         <option value="squareToWall">Drive into wall to square</option>
         <option value="unfold">Unfold to open size</option>
         <option value="frontMotor">Front motor</option>
@@ -152,14 +155,24 @@
       <span class="program-field" data-for="drive">
         <input type="number" id="stepSpeed" placeholder="default" min="0" step="10"> mm/s
       </span>
-      <span class="program-field" data-for="turn,frontMotor,backMotor">
+      <span class="program-field" data-for="turn,arc,frontMotor,backMotor">
         <input type="number" id="stepDegrees" value="90" min="0" max="3600" step="5"> °
       </span>
-      <span class="program-field" data-for="turn">
+      <span class="program-field" data-for="turn,arc">
         <select id="stepDirection"><option value="right">Right (CW)</option><option value="left">Left (CCW)</option></select>
       </span>
       <span class="program-field" data-for="turn">
         <input type="number" id="stepTurnRate" placeholder="default" min="0" step="10"> °/s
+      </span>
+      <span class="program-field" data-for="arc">
+        <select id="stepArcPivot" title="Which wheel stays put -- the OTHER wheel drives, sweeping the robot's centre around it. Independent of turn direction: either wheel can pivot either way.">
+          <option value="left">Pivot on left wheel</option>
+          <option value="right">Pivot on right wheel</option>
+          <option value="custom">Custom radius</option>
+        </select>
+        <span id="stepArcRadiusField" style="display:none;">
+          <input type="number" id="stepArcRadius" value="150" step="5" title="Signed radius, mm -- matches drive_base.arc()'s own convention. Positive/negative controls which side the curve bows toward; verify against your build."> mm radius
+        </span>
       </span>
       <span class="program-field" data-for="frontMotor,backMotor">
         <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>
@@ -180,7 +193,7 @@
         </span>
         <label class="mini-label">kp <input type="number" id="stepLineKp" value="1" min="0" step="0.1"></label>
         <label class="mini-label">kd <input type="number" id="stepLineKd" value="3" min="0" step="0.1"></label>
-        <select id="stepLineStopColour"><option value="">no colour stop</option><option value="black">stop on black</option><option value="white">stop on white</option></select>
+        <select id="stepLineStopColour"><option value="">no colour stop</option><option value="black">stop on black</option><option value="white">stop on white</option><option value="red">stop on red</option><option value="yellow">stop on yellow</option><option value="green">stop on green</option><option value="blue">stop on blue</option></select>
       </span>
       <span class="program-field" data-for="wait">
         <input type="number" id="stepSeconds" value="1" min="0" step="0.1"> s

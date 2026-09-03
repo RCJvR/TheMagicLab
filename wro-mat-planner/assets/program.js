@@ -41,7 +41,43 @@ window.WRO_PROGRAM = (function() {
       lineSensorForwardMm: 80, lineSensorLateralMm: 0,
       lineSensor2ForwardMm: 80, lineSensor2LateralMm: 40,
       lineFollowSteerGain: 2.0,
+      // Where the drive wheels sit along the robot's length, for the wheel
+      // markers drawn on it -- purely visual, doesn't change turn kinematics
+      // (those still rotate about the footprint's own centre).
+      wheelForwardOffsetMm: 0,
+      // Free-running speed of ONE drive motor at 100% duty cycle. Only used
+      // to convert a duty-cycle-driven helper's speed into mm/s (see
+      // dutyPctToMmS) -- a line follower written against motor.dc() states
+      // its speed as a 0-100 duty percentage, not mm/s, so without this the
+      // two can't be compared at all. ~1000 deg/s suits a SPIKE Prime
+      // large/medium motor under light load; lower it for a geared-down or
+      // heavily-loaded build.
+      motorMaxSpeedDegS: 1000,
     };
+  }
+  // duty% -> mm/s along the ground, via the wheel's own circumference.
+  // Deliberately a straight-line (no load curve) conversion: the point is to
+  // get these steps into the right ballpark and the same UNITS as every
+  // other speed here, not to model motor torque.
+  function dutyPctToMmS(dutyPct, config) {
+    const wheelDia = (config && config.wheelDiameter) || 56;
+    const maxDegS = (config && config.motorMaxSpeedDegS) || 1000;
+    return (dutyPct / 100) * maxDegS * (Math.PI * wheelDia) / 360;
+  }
+  // A lineFollowSim step's travel speed in mm/s. A step parsed from a
+  // duty-cycle helper keeps its raw source `dutyPct`, and the duty -> mm/s
+  // conversion is resolved HERE against the live config rather than being
+  // baked in at parse time -- so retuning wheel size or motor max speed in
+  // Robot config re-times an already-imported route instead of needing a
+  // re-import. speedMmS (already mm/s at the source) wins when there's no
+  // duty figure. Sign is meaningful: negative = driving in reverse.
+  function lineFollowSpeedMmS(step, config) {
+    if (step.dutyPct != null && isFinite(step.dutyPct) && step.dutyPct !== 0) {
+      const mag = dutyPctToMmS(Math.abs(step.dutyPct), config);
+      return step.dutyPct < 0 ? -mag : mag;
+    }
+    if (step.speedMmS != null && step.speedMmS !== 0) return step.speedMmS;
+    return 100;
   }
   function defaultWalker() {
     return { ref: 'center', start: null, stepIndex: 0 };
@@ -131,13 +167,53 @@ window.WRO_PROGRAM = (function() {
   }
   // Real robot code calibrates Color.BLACK/WHITE/etc to its own sensor
   // under its own lighting -- there's no exact equivalent for a printed
-  // mat photo, so a target colour is approximated as a reflectance
-  // threshold instead of trying to match the exact calibrated value.
-  function reflectMatchesTarget(reflect, targetColourName) {
+  // mat photo, so black/white/gray are approximated as a reflectance
+  // (brightness) threshold instead of trying to match the exact
+  // calibrated value. Hue colours (red/yellow/green/blue) can't be told
+  // apart by brightness at all, so those go through an HSV hue check on
+  // the mat image's own RGB pixel instead.
+  function rgbToHsv(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+    let h = 0;
+    if (d !== 0) {
+      if (max === r) h = ((g - b) / d) % 6;
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
+    return { h, s: max === 0 ? 0 : d / max, v: max };
+  }
+  // Hue ranges (degrees) for the mat's own game-piece colours -- wide
+  // enough to tolerate print/lighting variation, narrow enough that
+  // adjacent colours (e.g. green vs blue) don't overlap.
+  const STOP_HUE_RANGES = {
+    red: [[0, 12], [348, 360]],
+    yellow: [[38, 68]],
+    green: [[85, 165]],
+    blue: [[195, 255]],
+  };
+  function pixelMatchesTarget(pixel, targetColourName) {
     const name = (targetColourName || '').toLowerCase();
-    if (name.includes('black')) return reflect < 30;
-    if (name.includes('white') || name.includes('gray') || name.includes('grey')) return reflect > 70;
-    return false; // an unrecognised colour name can't be matched -- caller should skip the stop-condition instead of guessing
+    if (name.includes('black')) return pixel.reflect < 30;
+    const { h, s, v } = rgbToHsv(pixel.r, pixel.g, pixel.b);
+    if (name.includes('white') || name.includes('gray') || name.includes('grey')) {
+      // Saturation-gated, not just brightness -- real code here checks the
+      // CLASSIFIED .color(), not raw reflection(), and a vivid colour like
+      // yellow can be just as bright as white (both near-100 reflectance)
+      // while still being clearly a different colour by hue/saturation.
+      return pixel.reflect > 70 && s < 0.35;
+    }
+    const ranges = STOP_HUE_RANGES[name];
+    if (!ranges) return false; // an unrecognised colour name can't be matched -- caller should skip the stop-condition instead of guessing
+    if (s < 0.25 || v < 0.15) return false; // too washed-out/dark for hue to mean anything
+    return ranges.some(([lo, hi]) => h >= lo && h <= hi);
+  }
+  function isRecognisedStopColour(name) {
+    if (!name) return false;
+    const n = name.toLowerCase();
+    return n.includes('black') || n.includes('white') || n.includes('gray') || n.includes('grey') || !!STOP_HUE_RANGES[n];
   }
 
   // ---- kinematics: 0deg = up/north, positive = clockwise (matches the
@@ -186,11 +262,17 @@ window.WRO_PROGRAM = (function() {
   // with a flat wall squares the chassis flush, so heading snaps to
   // whichever cardinal direction (0/90/180/270) it was already closest to,
   // correcting any accumulated drift rather than preserving it.
-  function applySquareToWall(pose, footprint) {
+  function applySquareToWall(pose, footprint, reverse) {
     const MAT_W = window.WRO_MAT.width, MAT_H = window.WRO_MAT.height;
     const heading = ((Math.round(pose.heading / 90) * 90) % 360 + 360) % 360;
     const rad = heading * Math.PI / 180;
-    const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+    // A recognised open-loop drive_base.drive(speed, 0) can have a NEGATIVE
+    // speed (driving backward into the wall behind the robot's heading,
+    // e.g. a reversing "starting square"), not just forward -- reverse
+    // flips which wall the robot's rear actually contacts, since fwd below
+    // otherwise always assumes forward travel in the current heading.
+    const dir = reverse ? -1 : 1;
+    const fwd = { x: dir * Math.sin(rad), y: dir * -Math.cos(rad) };
     const halfL = footprint.l / 2;
     let x = pose.x, y = pose.y;
     if (Math.abs(fwd.y) > 0.5) { // heading 0 or 180 -- driving toward the top/bottom wall
@@ -283,11 +365,17 @@ window.WRO_PROGRAM = (function() {
   //   here) -- adjust it in Robot config if the wobble looks off.
   // - A target Color.X can't be matched to its exact original calibration
   //   (that was tuned to a real sensor under real lighting); it's
-  //   approximated as a reflectance threshold instead (reflectMatchesTarget).
+  //   approximated as a brightness/hue threshold instead (pixelMatchesTarget).
   const LINE_FOLLOW_DT = 0.01;
   function simulateLineFollow(startPose, step, config) {
     const cfg = config || DEFAULT_LINE_CONFIG;
-    const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+    // speedMmS's SIGN is a real, meaningful "drive backward" instruction in
+    // some reference code (e.g. approaching a colour target in reverse) --
+    // magnitude sets the tick size, sign sets travel direction, same split
+    // a plain 'drive' step's signed distanceMm already implies.
+    const speedSigned = lineFollowSpeedMmS(step, cfg);
+    const speed = Math.abs(speedSigned);
+    const driveDir = speedSigned < 0 ? -1 : 1;
     const kp = step.kp != null ? step.kp : 1;
     const kd = step.kd != null ? step.kd : 3;
     const target = step.targetReflection != null ? step.targetReflection : 50;
@@ -300,7 +388,15 @@ window.WRO_PROGRAM = (function() {
     const latA = cfg.lineSensorLateralMm != null ? cfg.lineSensorLateralMm : DEFAULT_LINE_CONFIG.lineSensorLateralMm;
     const fwdB = cfg.lineSensor2ForwardMm != null ? cfg.lineSensor2ForwardMm : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm;
     const latB = cfg.lineSensor2LateralMm != null ? cfg.lineSensor2LateralMm : DEFAULT_LINE_CONFIG.lineSensor2LateralMm;
-    const distPerTick = Math.max(0.25, speed * LINE_FOLLOW_DT);
+    const distPerTickMag = Math.max(0.25, speed * LINE_FOLLOW_DT);
+
+    // Which physical sensor position is used for single-sensor TRACKING --
+    // independent of which sensor(s) a stop condition checks below. Some
+    // reference code lets you pick either sensor for line-following
+    // (sensor="left"/"right"), mapped onto this tool's generic A/B slots.
+    const trackFwd = step.sensorChoice === 'B' ? fwdB : fwdA;
+    const trackLat = step.sensorChoice === 'B' ? latB : latA;
+    const hasStop = step.stopColour || step.stopReflectBelow != null || step.stopReflectAbove != null;
 
     let pose = { x: startPose.x, y: startPose.y, heading: startPose.heading };
     const samples = [{ x: pose.x, y: pose.y, heading: pose.heading }];
@@ -318,7 +414,7 @@ window.WRO_PROGRAM = (function() {
         const posB = sensorWorldPos(pose, fwdB, latB);
         error = sampleMatPixel(posA.x, posA.y).reflect - sampleMatPixel(posB.x, posB.y).reflect;
       } else {
-        const sensor = sensorWorldPos(pose, fwdA, latA);
+        const sensor = sensorWorldPos(pose, trackFwd, trackLat);
         error = (sampleMatPixel(sensor.x, sensor.y).reflect - target) * sideSign;
       }
       const derivative = error - lastError;
@@ -327,21 +423,38 @@ window.WRO_PROGRAM = (function() {
       correction = Math.max(-80, Math.min(80, correction));
       const headingDelta = correction * steerGain * LINE_FOLLOW_DT;
 
-      const tickDist = Math.min(distPerTick, maxDist - travelled);
+      // tickMag (always >= 0) drives the maxDist/travelled bookkeeping;
+      // driveDir flips the actual position delta for reverse driving.
+      const tickMag = Math.min(distPerTickMag, maxDist - travelled);
+      const tickDist = tickMag * driveDir;
       const rad = pose.heading * Math.PI / 180;
       pose = {
         x: pose.x + tickDist * Math.sin(rad),
         y: pose.y - tickDist * Math.cos(rad),
         heading: ((pose.heading + headingDelta) % 360 + 360) % 360,
       };
-      travelled += tickDist;
+      travelled += tickMag;
       samples.push({ x: pose.x, y: pose.y, heading: pose.heading });
 
-      if (step.stopColour && travelled >= minTravel) {
-        // Checked at sensor A's position regardless of mode -- a discrete
-        // stop condition, not part of the steering itself.
-        const stopSensor = sensorWorldPos(pose, fwdA, latA);
-        const matched = reflectMatchesTarget(sampleMatPixel(stopSensor.x, stopSensor.y).reflect, step.stopColour);
+      if (hasStop && travelled >= minTravel) {
+        // stopSensorCheck picks which sensor position(s) the stop condition
+        // reads -- may differ from the tracking sensor entirely (e.g. line
+        // on sensor A, but stop when the OPPOSITE sensor crosses a cross-line).
+        const sampleAt = (fwd, lat) => {
+          const p = sensorWorldPos(pose, fwd, lat);
+          return sampleMatPixel(p.x, p.y);
+        };
+        const matchesAt = (pixel) => {
+          if (step.stopReflectBelow != null) return pixel.reflect < step.stopReflectBelow;
+          if (step.stopReflectAbove != null) return pixel.reflect > step.stopReflectAbove;
+          return pixelMatchesTarget(pixel, step.stopColour);
+        };
+        const which = step.stopSensorCheck || 'A';
+        const matched = which === 'both'
+          ? (matchesAt(sampleAt(fwdA, latA)) && matchesAt(sampleAt(fwdB, latB)))
+          : which === 'either'
+          ? (matchesAt(sampleAt(fwdA, latA)) || matchesAt(sampleAt(fwdB, latB)))
+          : matchesAt(sampleAt(which === 'B' ? fwdB : fwdA, which === 'B' ? latB : latA));
         if (step.stopOnLoss ? !matched : matched) { stoppedEarly = true; break; }
       }
     }
@@ -360,6 +473,15 @@ window.WRO_PROGRAM = (function() {
     const target = full.distanceTravelled * Math.max(0, Math.min(1, frac));
     return simulateLineFollow(startPose, Object.assign({}, step, { maxDistanceMm: target, stopColour: null }), config);
   }
+  // 'setHeading' is hub.imu.reset_heading(X) -- re-anchors the gyro's
+  // absolute reference to a specific value without moving. Unlike
+  // squareToWall (snap to nearest cardinal, position also changes), this
+  // sets an EXACT arbitrary heading at the robot's current position, and
+  // maps directly onto a real PyBricks call, so it round-trips exactly
+  // instead of exporting as a comment stub like the other approximated types.
+  function applySetHeading(pose, heading) {
+    return { x: pose.x, y: pose.y, heading: ((heading % 360) + 360) % 360 };
+  }
   function applyStep(pose, step, footprint, config) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
@@ -374,13 +496,16 @@ window.WRO_PROGRAM = (function() {
       return applyArcStep(pose, step.radius, step.degrees);
     }
     if (step.type === 'squareToWall') {
-      return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+      return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT, step.reverse);
     }
     if (step.type === 'lineFollowPath') {
       return applyLineFollowPathStep(pose, step, 1);
     }
     if (step.type === 'lineFollowSim') {
       return simulateLineFollow(pose, step, config).finalPose;
+    }
+    if (step.type === 'setHeading') {
+      return applySetHeading(pose, step.heading);
     }
     return pose;
   }
@@ -415,7 +540,7 @@ window.WRO_PROGRAM = (function() {
       return applyArcStep(pose, step.radius, step.degrees * frac);
     }
     if (step.type === 'squareToWall') {
-      const target = applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+      const target = applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT, step.reverse);
       let dh = target.heading - pose.heading;
       dh = ((dh + 540) % 360) - 180; // shortest-path heading delta, handles the 0/360 wrap
       return {
@@ -430,6 +555,12 @@ window.WRO_PROGRAM = (function() {
     if (step.type === 'lineFollowSim') {
       return simulateLineFollowPartial(pose, step, config, frac).finalPose;
     }
+    if (step.type === 'setHeading') {
+      const target = applySetHeading(pose, step.heading);
+      let dh = target.heading - pose.heading;
+      dh = ((dh + 540) % 360) - 180; // shortest-path heading delta, handles the 0/360 wrap
+      return { x: pose.x, y: pose.y, heading: ((pose.heading + dh * frac) % 360 + 360) % 360 };
+    }
     return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
   }
   // How long a step takes to "play" in seconds, from the actual configured
@@ -440,7 +571,7 @@ window.WRO_PROGRAM = (function() {
   // comments, ...) get a short fixed dwell so they're visible in the
   // animation instead of vanishing instantly.
   const DEFAULT_ACTION_DWELL_S = 0.6;
-  function stepDuration(step, config) {
+  function stepDuration(step, config, startPose) {
     switch (step.type) {
       case 'drive':
       case 'lineFollow': {
@@ -465,13 +596,36 @@ window.WRO_PROGRAM = (function() {
         return pathTotalLength(step.points || []) / Math.max(1, speed);
       }
       case 'lineFollowSim': {
-        // Nominal (full maxDistanceMm) duration -- if a colour-stop cuts it
-        // short in practice, playback shows a brief pause at the end
-        // rather than a wrong total length; computing the real stopped
-        // distance here would need the step's starting pose, which this
-        // function isn't given.
-        const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : 100;
+        // Magnitude only -- a reverse (negative-speed) follow still takes
+        // positive time. Reading step.speedMmS raw here used to miss that
+        // and fall back to 100 mm/s for every reverse colour-stop step.
+        const speed = Math.abs(lineFollowSpeedMmS(step, config));
+        // An open-ended colour-stop call (drive_until_color2,
+        // dualLineFollowToIntersection) has no real source distance, so it
+        // gets parsed with a generous maxDistanceMm safety cap (e.g.
+        // 3000mm) rather than its real, usually much shorter, stopping
+        // distance. Using that cap as the nominal duration made these
+        // steps play back at their full worst-case length even when the
+        // simulated colour trigger fires almost immediately -- given the
+        // step's actual starting pose, run the same simulation once here
+        // and time it by the real distance travelled instead.
+        if (startPose) {
+          const result = simulateLineFollow(startPose, step, config);
+          return result.distanceTravelled / Math.max(1, speed);
+        }
         return (step.maxDistanceMm || 0) / Math.max(1, speed);
+      }
+      case 'setHeading':
+        return 0.3; // near-instant -- re-anchoring the gyro reference doesn't move the robot
+      case 'frontMotor':
+      case 'backMotor': {
+        // Real attachment-motor moves scale with their own commanded speed
+        // and angle just like drive/turn -- falling back to the flat dwell
+        // below for these would make a fast, tiny correctional move (a few
+        // degrees at high speed) play back exactly as slowly as a large
+        // one, which reads as the sim "randomly slowing down" at pickups.
+        const speed = (step.speedDegS && step.speedDegS > 0) ? step.speedDegS : 200;
+        return Math.abs(step.degrees) / Math.max(1, speed);
       }
       default:
         return DEFAULT_ACTION_DWELL_S;
@@ -560,7 +714,7 @@ window.WRO_PROGRAM = (function() {
       case 'arc':
         return `Arc ${step.degrees >= 0 ? 'right' : 'left'} ${Math.abs(step.degrees)}° (radius ${step.radius} mm)`;
       case 'squareToWall':
-        return 'Drive into wall to square (snap heading to nearest cardinal, edge stops at wall)';
+        return `Drive into wall to square${step.reverse ? ' (reverse)' : ''} (snap heading to nearest cardinal, edge stops at wall)`;
       case 'lineFollowPath': {
         const len = pathTotalLength(step.points || []);
         return `Follow traced path "${step.label || 'path'}" (${(step.points || []).length} pts, ${len.toFixed(0)} mm)${step.reversed ? ' [reversed]' : ''}`;
@@ -572,6 +726,8 @@ window.WRO_PROGRAM = (function() {
           : `target reflect ${step.targetReflection}, ${step.side || 'left'} side`;
         return `Follow line (simulated) up to ${step.maxDistanceMm} mm, ${track}${stop}`;
       }
+      case 'setHeading':
+        return `Reset gyro heading to ${step.heading}°`;
       case 'unfold':
         return 'Unfold to open size';
       case 'frontMotor':
@@ -746,14 +902,17 @@ window.WRO_PROGRAM = (function() {
           L.push(`# --- ${note}: add your line-following drive here (params: ${params}) ---`);
           break;
         }
+        case 'setHeading':
+          L.push(`hub.imu.reset_heading(${step.heading})  # ${note}`);
+          break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
-          L.push(`front_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
+          L.push(`front_motor.run_angle(${step.speedDegS || 200}, ${signed}, then=Stop.HOLD)  # ${note}`);
           break;
         }
         case 'backMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
-          L.push(`back_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
+          L.push(`back_motor.run_angle(${step.speedDegS || 200}, ${signed}, then=Stop.HOLD)  # ${note}`);
           break;
         }
         case 'lineFollow':
@@ -840,6 +999,27 @@ window.WRO_PROGRAM = (function() {
     const m = arg.match(/Color\.(\w+)/);
     return (m ? m[1] : unquote(arg)).toLowerCase();
   }
+  // Maps a "left"/"right" physical-sensor-name argument to which of this
+  // simulator's two configurable sensor positions (A or B) it represents --
+  // 'left' is always sensor A, 'right' is always sensor B, matching the
+  // robot-config panel's own labelling.
+  function sensorChoiceFromArg(arg, fallback) {
+    if (arg === undefined) return fallback;
+    const v = unquote(arg).toLowerCase();
+    return v === 'right' ? 'B' : v === 'left' ? 'A' : fallback;
+  }
+  // Same idea but for a STOP-CONDITION sensor argument, which can also be
+  // "both" or "either" (only "either" -- an OR of the two sensors -- needs
+  // its own simulateLineFollow branch; "both" was already supported).
+  function sensorCheckFromArg(arg, fallback) {
+    if (arg === undefined) return fallback;
+    const v = unquote(arg).toLowerCase();
+    if (v === 'right') return 'B';
+    if (v === 'left') return 'A';
+    if (v === 'both') return 'both';
+    if (v === 'either') return 'either';
+    return fallback;
+  }
 
   function parsePyBricksCode(code) {
     const TILE_COLOURS = (window.WRO_ELEMENTS && window.WRO_ELEMENTS.TILE_COLOURS) || ['white', 'green', 'blue', 'yellow'];
@@ -858,12 +1038,58 @@ window.WRO_PROGRAM = (function() {
       const m = codePart.match(new RegExp(`^${fnName}\\((.*)\\)$`));
       return m ? splitArgs(m[1]) : null;
     }
+    // Resolves a raw splitArgs() list against the callee's OWN parameter
+    // names, Python call semantics: positional args fill by order until
+    // the first name=value keyword arg, then every remaining arg (in any
+    // order) is a keyword filling that named slot -- needed because real
+    // code freely skips optional params via keyword args instead of
+    // always spelling every earlier one out positionally (e.g. this
+    // file's own `dualLineFollowToIntersection(70, "right", 15, 100, 100,
+    // stop_mode=Stop.HOLD)`, which leaves kp/kd at their defaults via a
+    // gap, not by passing them explicitly).
+    function namedCallArgs(rawArgs, paramNames) {
+      const out = new Array(paramNames.length).fill(undefined);
+      let i = 0;
+      for (; i < rawArgs.length; i++) {
+        if (/^\w+\s*=/.test(rawArgs[i])) break;
+        if (i < paramNames.length) out[i] = rawArgs[i];
+      }
+      for (; i < rawArgs.length; i++) {
+        const kw = rawArgs[i].match(/^(\w+)\s*=\s*([\s\S]*)$/);
+        if (!kw) continue;
+        const idx = paramNames.indexOf(kw[1]);
+        if (idx !== -1) out[idx] = kw[2];
+      }
+      return out;
+    }
 
     const allLines = code.replace(/\r\n/g, '\n').split('\n');
     const config = extractConfigFromCode(allLines);
     const warnings = []; // lines that produced no step -- unrecognised, or a call skipped outright
     const notes = [];    // lines that DID produce a step, but only an approximation of the real motion
     const halfAxleTrack = (config.axleTrack || 114) / 2;
+    // Fallback distance bound for helpers that drive/follow until a sensor
+    // trigger with no source distance argument at all -- generous enough
+    // to not truncate a real run, just a simulator infinite-loop guard.
+    const noLimitSafetyCapMm = 3000;
+    // The line-following helpers below steer with motor.dc(), so their
+    // `speed` argument is a 0-100 DUTY CYCLE PERCENTAGE, not mm/s (the
+    // drive_base.drive()-based helpers' speed genuinely is mm/s). Taking a
+    // duty figure as mm/s simulates e.g. "70" as a 70 mm/s crawl instead of
+    // the ~380 mm/s it really produces, so convert here, at parse time,
+    // the same way pivot radii are derived from axleTrack above. Sign is
+    // preserved: a negative duty means driving in reverse.
+    let dutyConvNoted = false;
+    function dutySpeedToMmS(rawArg) {
+      const duty = parseFloat(rawArg);
+      if (!isFinite(duty)) return undefined;
+      const mmS = dutyPctToMmS(Math.abs(duty), config) * (duty < 0 ? -1 : 1);
+      if (!dutyConvNoted) {
+        dutyConvNoted = true;
+        notes.push(`Line-follow helpers steer with motor.dc(), so their speed argument is a duty-cycle percentage, not mm/s -- simulated by converting duty to ground speed against a ${(config.wheelDiameter || 56)} mm wheel at ${((config.motorMaxSpeedDegS) || 1000)} deg/s per 100% duty (e.g. ${duty}% -> ${Math.round(Math.abs(mmS))} mm/s). Tune "motor max speed" in Robot config if these segments run fast or slow against a real run.`);
+      }
+      return mmS;
+    }
 
     // A full export carries this exact marker right before the real route --
     // skip straight past the docstring/imports/hub/motor boilerplate to the
@@ -895,6 +1121,12 @@ window.WRO_PROGRAM = (function() {
     const definedFunctions = new Set(); // `def NAME(...):` names seen, so later bare NAME() calls can be
                                          // recognised as "known helper, presumably no motion" instead of
                                          // an unparseable line
+    const capturedFunctionBodies = {};  // NAME -> { startIdx, baseIndent } for every def/async def seen --
+                                         // lets a later run_task(NAME()) or multitask(..., NAME(), ...)
+                                         // call re-parse that body FOR REAL instead of treating it as a
+                                         // no-op helper call, since this file's own async/multitask
+                                         // pattern is how it runs a drive alongside an attachment-motor
+                                         // move (e.g. drive forward while lifting an arm).
 
     function attachmentMotorSlot(name) {
       let idx = motorSlots.indexOf(name);
@@ -918,7 +1150,10 @@ window.WRO_PROGRAM = (function() {
       // Code with any trailing "# comment" stripped, for matching calls by
       // their full argument list ($-anchored) -- comments themselves are
       // still matched against `trimmed` below, unaffected by this.
-      const codePart = trimmed.replace(/\s*#.*$/, '').trim();
+      // A leading "await " (this file's async helpers use it on every
+      // motor/drive call inside a multitask()) carries no motion meaning
+      // of its own -- stripped so every recognizer below still matches.
+      const codePart = trimmed.replace(/\s*#.*$/, '').trim().replace(/^await\s+/, '');
 
       const prevArc = pendingArc; pendingArc = null;
       const prevOpenLoopDrive = pendingOpenLoopDrive; pendingOpenLoopDrive = null;
@@ -948,13 +1183,24 @@ window.WRO_PROGRAM = (function() {
       // heading to square -- so this is trusted MORE than a plain
       // speed x time estimate would be, not treated as a rough guess.
       if (prevOpenLoopDrive && (m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
-        notes.push(`Recognised as a wall-square: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${parseFloat(m[1])} ms -- simulated as driving to the wall in the current heading's direction and snapping heading to the nearest cardinal, not a distance estimate`);
-        return { type: 'squareToWall' };
+        const reverse = prevOpenLoopDrive.speed < 0;
+        notes.push(`Recognised as a wall-square: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${parseFloat(m[1])} ms -- simulated as driving ${reverse ? 'backward' : 'forward'} to the wall ${reverse ? 'behind' : 'in front of'} the current heading and snapping heading to the nearest cardinal, not a distance estimate`);
+        return { type: 'squareToWall', reverse };
       }
 
       if ((m = codePart.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
       if ((m = codePart.match(/^drive_base\.settings\(turn_rate=(-?[\d.]+)\)/))) { activeTurnRate = parseFloat(m[1]); return null; }
       if (/^drive_base\.settings\(/.test(codePart)) return null; // combined header call, already read separately
+
+      // hub.imu.reset_heading(X): re-anchors the gyro's absolute reference
+      // to X without moving. Maps directly to a real callable, unlike most
+      // of the stubs below, so it's recognised as a genuine step rather
+      // than absorbed as harmless setup -- skipping it would let the
+      // simulated heading silently drift out of sync with every relative
+      // turn from this point on.
+      if ((m = codePart.match(/^hub\.imu\.reset_heading\((-?[\d.]+)\)/))) {
+        return { type: 'setHeading', heading: parseFloat(m[1]) };
+      }
 
       if ((m = codePart.match(/^drive_base\.straight\((-?[\d.]+)\)/))) {
         const step = { type: 'drive', distanceMm: parseFloat(m[1]) };
@@ -993,13 +1239,15 @@ window.WRO_PROGRAM = (function() {
       }
       if (/^drive_base\.(stop|hold|brake)\(\)/.test(codePart)) return null; // no motion info on its own
 
-      if ((m = codePart.match(/^front_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
-        const v = parseFloat(m[1]);
-        return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      if ((m = codePart.match(/^front_motor\.run_angle\(([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const speedDegS = parseFloat(m[1]);
+        const v = parseFloat(m[2]);
+        return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v), speedDegS };
       }
-      if ((m = codePart.match(/^back_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
-        const v = parseFloat(m[1]);
-        return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      if ((m = codePart.match(/^back_motor\.run_angle\(([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const speedDegS = parseFloat(m[1]);
+        const v = parseFloat(m[2]);
+        return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v), speedDegS };
       }
       if ((m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
         return { type: 'wait', seconds: parseFloat(m[1]) / 1000 };
@@ -1071,14 +1319,177 @@ window.WRO_PROGRAM = (function() {
           kp: parseFloat(args[10] !== undefined ? args[10] : (args[8] !== undefined ? args[8] : 1)),
           kd: parseFloat(args[11] !== undefined ? args[11] : (args[9] !== undefined ? args[9] : 3)),
         };
-        if (colourName && (colourName.includes('black') || colourName.includes('white') || colourName.includes('gray') || colourName.includes('grey'))) {
+        if (colourName && isRecognisedStopColour(colourName)) {
           step.stopColour = colourName;
-          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- colour match is a reflectance threshold (see simulateLineFollow), not this file's exact Color.${colourName.toUpperCase()} calibration`);
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- colour match is a brightness/hue approximation (see simulateLineFollow), not this file's exact Color.${colourName.toUpperCase()} calibration`);
         } else {
           // no matchable target colour -- maxDistanceMm (already set above) is just a hard cap, no early stop
-          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger that couldn't be matched to a reflectance threshold -- simulated using its max_distance_mm=${step.maxDistanceMm} mm as a hard cap instead`);
+          notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger that couldn't be matched to a recognised colour -- simulated using its max_distance_mm=${step.maxDistanceMm} mm as a hard cap instead`);
         }
         return step;
+      }
+
+      // ---- A second driver's own custom helper library -- same idea as
+      // the block above, but this one additionally distinguishes WHICH
+      // physical colour sensor position does the reading (`sensor`, mapped
+      // to sensorChoice/stopSensorCheck below) from `side`, the steering
+      // polarity (which edge of tape to track) -- two genuinely separate
+      // concepts this file's functions keep apart. ----
+      // Every recognizer below resolves its raw args through
+      // namedCallArgs() against the callee's real parameter names (taken
+      // straight from this driver's source), not bare positional indices --
+      // real call sites here mix positional args with trailing name=value
+      // keywords that skip earlier optional params (see namedCallArgs's own
+      // comment), so positional-only indexing silently misreads those.
+      if ((args = matchCall(codePart, 'drive_straightMulti'))) {
+        const a = namedCallArgs(args, ['distance', 'speed', 'acceleration']);
+        const step = { type: 'drive', distanceMm: parseFloat(a[0]) };
+        if (a[1] !== undefined) step.speedMmS = parseFloat(a[1]);
+        return step;
+      }
+      if ((args = matchCall(codePart, 'drive_straight'))) {
+        const a = namedCallArgs(args, ['distance', 'speed', 'acceleration']);
+        const step = { type: 'drive', distanceMm: parseFloat(a[0]) };
+        if (a[1] !== undefined) step.speedMmS = parseFloat(a[1]);
+        return step;
+      }
+      if ((args = matchCall(codePart, 'turn_angle'))) {
+        const a = namedCallArgs(args, ['angle', 'turn_rate', 'turn_acceleration']);
+        const v = parseFloat(a[0]);
+        const step = { type: 'turn', direction: v < 0 ? 'left' : 'right', degrees: Math.abs(v) };
+        if (a[1] !== undefined) step.turnRateDegS = parseFloat(a[1]);
+        return step;
+      }
+      // pivot_turn/pivot_turn2 both lock one wheel and drive the other to
+      // sweep a fixed angle -- an exact single-wheel-pivot arc regardless
+      // of which control loop (gyro-wait vs trapezoidal profile) gets it
+      // there, same as pivotTurnPid above.
+      if ((args = matchCall(codePart, 'pivot_turn2'))) {
+        const a = namedCallArgs(args, ['angle', 'speed', 'accel', 'pivot_side', 'stop_mode', 'tolerance', 'timeout']);
+        const angle = parseFloat(a[0]);
+        const pivotWheel = a[3] !== undefined ? unquote(a[3]).toLowerCase() : 'left';
+        const radius = pivotWheel === 'right' ? halfAxleTrack : -halfAxleTrack;
+        return { type: 'arc', radius, degrees: angle };
+      }
+      if ((args = matchCall(codePart, 'pivot_turn'))) {
+        const a = namedCallArgs(args, ['angle', 'speed', 'pivot_side', 'stop_mode']);
+        const angle = parseFloat(a[0]);
+        const pivotWheel = a[2] !== undefined ? unquote(a[2]).toLowerCase() : 'left';
+        const radius = pivotWheel === 'right' ? halfAxleTrack : -halfAxleTrack;
+        return { type: 'arc', radius, degrees: angle };
+      }
+      // drive_until_color/drive_until_color2: drive dead straight (open-loop
+      // turn_rate=0, or gyro-held at a locked heading -- both amount to no
+      // net turn) until a colour sensor trips. Modelled as a zero-gain
+      // "line follow" so it reuses the same pixel-based colour-stop logic
+      // (and negative-speed support) as every other stop-on-colour helper,
+      // while never actually steering. Neither function has a source
+      // distance bound, so both get a generous simulator safety cap.
+      if ((args = matchCall(codePart, 'drive_until_color2'))) {
+        const a = namedCallArgs(args, ['target_color', 'speed', 'min_distance_mm', 'sensor', 'stop_mode', 'target_heading', 'kp_gyro', 'timeout']);
+        const colourName = a[0] !== undefined ? colourNameFromArg(a[0]) : null;
+        const step = {
+          type: 'lineFollowSim', mode: 'single', kp: 0, kd: 0, targetReflection: 50, side: 'left',
+          sensorChoice: sensorChoiceFromArg(a[3], 'A'),
+          speedMmS: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          minTravelDistMm: a[2] !== undefined ? parseFloat(a[2]) : 0,
+          stopSensorCheck: sensorCheckFromArg(a[3], 'A'),
+          maxDistanceMm: noLimitSafetyCapMm,
+        };
+        if (colourName && isRecognisedStopColour(colourName)) {
+          step.stopColour = colourName;
+        }
+        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- no source distance bound, drives straight (gyro heading-lock simplified to holding current heading) until its colour trigger, capped at ${noLimitSafetyCapMm} mm as a simulator safety limit`);
+        return step;
+      }
+      if ((args = matchCall(codePart, 'drive_until_color'))) {
+        const a = namedCallArgs(args, ['target_color', 'speed', 'min_distance_mm', 'sensor', 'stop_mode']);
+        const colourName = a[0] !== undefined ? colourNameFromArg(a[0]) : null;
+        const step = {
+          type: 'lineFollowSim', mode: 'single', kp: 0, kd: 0, targetReflection: 50, side: 'left',
+          sensorChoice: sensorChoiceFromArg(a[3], 'A'),
+          speedMmS: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          minTravelDistMm: a[2] !== undefined ? parseFloat(a[2]) : 0,
+          stopSensorCheck: sensorCheckFromArg(a[3], 'A'),
+          maxDistanceMm: noLimitSafetyCapMm,
+        };
+        if (colourName && isRecognisedStopColour(colourName)) {
+          step.stopColour = colourName;
+        }
+        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- no source distance bound, drives straight until its colour trigger, capped at ${noLimitSafetyCapMm} mm as a simulator safety limit`);
+        return step;
+      }
+      // dualLineFollowToIntersection: two-sensor differential line following
+      // (see simulateLineFollow's twoSensor mode) that stops when the named
+      // sensor(s) cross a reflectance threshold (e.g. a perpendicular black
+      // line) -- no source distance bound either, same safety cap.
+      if ((args = matchCall(codePart, 'dualLineFollowToIntersection'))) {
+        const a = namedCallArgs(args, ['speed', 'intersection', 'black_threshold', 'min_distance_mm', 'accel_distance_mm', 'kp', 'kd', 'stop_mode']);
+        const step = {
+          type: 'lineFollowSim', mode: 'twoSensor',
+          speedMmS: a[0] !== undefined ? dutySpeedToMmS(a[0]) : undefined,
+          dutyPct: a[0] !== undefined ? parseFloat(a[0]) : undefined,
+          stopSensorCheck: sensorCheckFromArg(a[1], 'both'),
+          stopReflectBelow: a[2] !== undefined ? parseFloat(a[2]) : 15,
+          minTravelDistMm: a[3] !== undefined ? parseFloat(a[3]) : 0,
+          kp: parseFloat(a[5] !== undefined ? a[5] : 0.8),
+          kd: parseFloat(a[6] !== undefined ? a[6] : 2.0),
+          maxDistanceMm: noLimitSafetyCapMm,
+        };
+        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" -- no source distance bound, follows the line until its cross-line trigger, capped at ${noLimitSafetyCapMm} mm as a simulator safety limit`);
+        return step;
+      }
+      // dualLineFollow: two-sensor differential line following for a fixed
+      // distance, no stop trigger -- a real bound, no safety cap needed.
+      if ((args = matchCall(codePart, 'dualLineFollow'))) {
+        const a = namedCallArgs(args, ['distance_mm', 'speed', 'kp', 'kd', 'stop_mode']);
+        return {
+          type: 'lineFollowSim', mode: 'twoSensor',
+          maxDistanceMm: parseFloat(a[0]),
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          kp: parseFloat(a[2] !== undefined ? a[2] : 0.8),
+          kd: parseFloat(a[3] !== undefined ? a[3] : 2.0),
+        };
+      }
+      // singleLineFollowToIntersection/singleLineFollowPid: single-sensor
+      // edge following for a fixed (safety-bound) distance -- `side` is
+      // steering polarity, `sensor` is WHICH physical sensor position does
+      // the reading, mapped to sensorChoice. ToIntersection additionally
+      // stops when the OPPOSITE sensor crosses a reflectance threshold.
+      // Neither function's integral gain (ki) has an equivalent in the
+      // simulator's PD-only loop.
+      if ((args = matchCall(codePart, 'singleLineFollowToIntersection'))) {
+        const a = namedCallArgs(args, ['distance_mm', 'speed', 'target_reflection', 'side', 'sensor', 'black_threshold', 'min_distance_mm', 'stop_mode', 'kp', 'kd', 'ki']);
+        const trackChoice = sensorChoiceFromArg(a[4], 'A');
+        return {
+          type: 'lineFollowSim', mode: 'single',
+          maxDistanceMm: parseFloat(a[0]),
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          targetReflection: a[2] !== undefined ? parseFloat(a[2]) : 50,
+          side: a[3] !== undefined ? unquote(a[3]) : 'left',
+          sensorChoice: trackChoice,
+          stopReflectBelow: a[5] !== undefined ? parseFloat(a[5]) : 18,
+          minTravelDistMm: a[6] !== undefined ? parseFloat(a[6]) : 0,
+          stopSensorCheck: trackChoice === 'B' ? 'A' : 'B',
+          kp: parseFloat(a[8] !== undefined ? a[8] : 1.0),
+          kd: parseFloat(a[9] !== undefined ? a[9] : 4.0),
+        };
+      }
+      if ((args = matchCall(codePart, 'singleLineFollowPid'))) {
+        const a = namedCallArgs(args, ['distance_mm', 'speed', 'target_reflection', 'side', 'sensor', 'stop_mode', 'kp', 'kd', 'ki']);
+        return {
+          type: 'lineFollowSim', mode: 'single',
+          maxDistanceMm: parseFloat(a[0]),
+          speedMmS: a[1] !== undefined ? dutySpeedToMmS(a[1]) : undefined,
+          dutyPct: a[1] !== undefined ? parseFloat(a[1]) : undefined,
+          targetReflection: a[2] !== undefined ? parseFloat(a[2]) : 50,
+          side: a[3] !== undefined ? unquote(a[3]) : 'left',
+          sensorChoice: sensorChoiceFromArg(a[4], 'A'),
+          kp: parseFloat(a[6] !== undefined ? a[6] : 1.0),
+          kd: parseFloat(a[7] !== undefined ? a[7] : 4.0),
+        };
       }
 
       // ---- Attachment motors driven by absolute-angle run_target() calls
@@ -1087,8 +1498,8 @@ window.WRO_PROGRAM = (function() {
       // relative lift/drop step. The first 2 distinct motor variable
       // names seen (that aren't the drive wheels) claim the simulator's
       // 2 generic front/back slots. ----
-      if ((m = codePart.match(/^(\w+)\.run_target\(\s*[\d.]+\s*,\s*(-?[\d.]+)/))) {
-        const [, motorVar, angleStr] = m;
+      if ((m = codePart.match(/^(\w+)\.run_target\(\s*([\d.]+)\s*,\s*(-?[\d.]+)/))) {
+        const [, motorVar, speedStr, angleStr] = m;
         if (motorVar === 'left_motor' || motorVar === 'right_motor') return null; // drive wheels, not an attachment
         const targetAngle = parseFloat(angleStr);
         const prevAngle = motorAngle[motorVar] || 0;
@@ -1097,7 +1508,8 @@ window.WRO_PROGRAM = (function() {
         if (delta === 0) return null;
         const slot = attachmentMotorSlot(motorVar);
         if (!slot) return null; // warned once already, above
-        return { type: slot === 'front' ? 'frontMotor' : 'backMotor', action: delta < 0 ? 'drop' : 'lift', degrees: Math.abs(delta) };
+        const speedDegS = parseFloat(speedStr);
+        return { type: slot === 'front' ? 'frontMotor' : 'backMotor', action: delta < 0 ? 'drop' : 'lift', degrees: Math.abs(delta), speedDegS };
       }
       if ((m = codePart.match(/^(\w+)\.(run_until_stalled|dc)\(/))) {
         if (m[1] !== 'left_motor' && m[1] !== 'right_motor') {
@@ -1112,7 +1524,7 @@ window.WRO_PROGRAM = (function() {
         const note = m[1];
         let n;
         if (note === 'Unfold to open size') return { type: 'unfold' };
-        if (note.startsWith('Drive into wall to square')) return { type: 'squareToWall' };
+        if (note.startsWith('Drive into wall to square')) return { type: 'squareToWall', reverse: note.startsWith('Drive into wall to square (reverse)') };
         if ((n = note.match(new RegExp(`^Pick up (${colourAlt}) tile$`)))) return { type: 'pickupTile', colour: n[1] };
         if ((n = note.match(/^Place tile in frame slot (\d+)$/))) return { type: 'placeTile', slot: parseInt(n[1], 10) - 1 };
         if ((n = note.match(new RegExp(`^Settle (\\d+)\\u00d7 (${colourAlt}) cement$`)))) return { type: 'settleCement', count: parseInt(n[1], 10), colour: n[2] };
@@ -1126,6 +1538,16 @@ window.WRO_PROGRAM = (function() {
         if (trimmed.startsWith('#')) return { type: 'comment', text: trimmed.replace(/^#\s?/, '') };
         return null;
       }
+
+      // A lone closing paren/bracket -- the tail end of a multi-line call
+      // this line-based parser can't reconstruct (e.g. a settings(...)
+      // call spread over several lines). Deliberately narrow: only a bare
+      // ")"/"]" line is silenced here, not anything ending in "," or "(" --
+      // those still fall through to a warning below if nothing else claims
+      // them, since silently swallowing an unrecognised multi-line MOTION
+      // call would lose a real step with no signal at all, which is worse
+      // than one extra warning for a multi-line settings() header.
+      if (/^[)\]]+$/.test(codePart)) return null;
 
       // A bare call to a function this file defines itself (e.g. a debug
       // print helper like HeadingCheck()) -- its body was intentionally
@@ -1163,6 +1585,41 @@ window.WRO_PROGRAM = (function() {
       return i;
     }
 
+    // Gathers a (possibly multi-line) multitask(...) call's raw text
+    // starting at startIdx by tracking paren depth across lines until it
+    // returns to 0, then splits the inside on top-level commas -- same
+    // idea as splitArgs, just spanning several physical lines first.
+    function collectMultitaskArgs(startIdx) {
+      let text = '';
+      let depth = 0, started = false, i = startIdx;
+      for (; i < lines.length; i++) {
+        const line = lines[i];
+        for (const ch of line) {
+          if (ch === '(') { depth++; started = true; }
+          else if (ch === ')') depth--;
+        }
+        text += line + '\n';
+        if (started && depth === 0) { i++; break; }
+      }
+      const m = text.match(/multitask\(([\s\S]*)\)\s*$/);
+      return { args: m ? splitArgs(m[1].trim()) : [], nextIdx: i };
+    }
+    // A bare zero-arg call to a captured def/async def -- resolves to that
+    // function's own steps by re-parsing its captured body, instead of a
+    // no-op or an unparseable-line warning. Depth-guarded against runaway
+    // recursion on a pathological/circular input file.
+    let inlineDepth = 0;
+    function tryInlineUserFunctionCall(cleanedExpr) {
+      const m = cleanedExpr.match(/^(\w+)\(\)$/);
+      if (!m) return null;
+      const body = capturedFunctionBodies[m[1]];
+      if (!body || inlineDepth > 8) return null;
+      inlineDepth++;
+      const { steps } = parseBlock(body.startIdx, body.baseIndent);
+      inlineDepth--;
+      return steps;
+    }
+
     function parseBlock(startIdx, baseIndent) {
       const steps = [];
       let i = startIdx;
@@ -1186,14 +1643,15 @@ window.WRO_PROGRAM = (function() {
           continue;
         }
 
-        const defMatch = trimmed.match(/^def\s+(\w+)\s*\(/);
+        const defMatch = trimmed.match(/^(?:async\s+)?def\s+(\w+)\s*\(/);
         if (defMatch) definedFunctions.add(defMatch[1]);
 
-        const blockMatch = trimmed.match(/^(def|class|while|if|elif|else|try|except|finally|with)\b.*:\s*(#.*)?$/);
+        const blockMatch = trimmed.match(/^(?:async\s+)?(def|class|while|if|elif|else|try|except|finally|with)\b.*:\s*(#.*)?$/);
         if (blockMatch) {
           let j = i + 1;
           while (j < lines.length && lines[j].trim() === '') j++;
           if (j < lines.length && countIndent(lines[j]) > indent) {
+            if (defMatch) capturedFunctionBodies[defMatch[1]] = { startIdx: j, baseIndent: countIndent(lines[j]) };
             const nextIdx = skipBlockBody(j, countIndent(lines[j]));
             if (blockMatch[1] !== 'def') {
               warnings.push(`Skipped block (not traced): "${trimmed}" -- ${nextIdx - i - 1} line(s) inside`);
@@ -1203,6 +1661,46 @@ window.WRO_PROGRAM = (function() {
           }
           // no indented body followed (e.g. file/scope ends right after) --
           // just skip the header line itself
+          i++;
+          continue;
+        }
+
+        // multitask(a, b, ...): this file's own convention for running an
+        // attachment-motor move alongside a drive (e.g. lift the arm WHILE
+        // driving forward) -- can't truly overlap two steps here, so each
+        // argument becomes its own sequential step instead. Each argument
+        // is itself a call, possibly to another captured async helper
+        // (open_grab_lift_move() nests open_grab_lift() this way), so it's
+        // resolved the same way run_task() below resolves its target.
+        const multitaskMatch = trimmed.match(/^(?:await\s+)?multitask\(/);
+        if (multitaskMatch) {
+          const { args: rawArgs, nextIdx } = collectMultitaskArgs(i);
+          rawArgs.forEach((argExpr) => {
+            const cleaned = argExpr.replace(/\s+/g, ' ').trim();
+            if (!cleaned) return;
+            const inlined = tryInlineUserFunctionCall(cleaned);
+            if (inlined) { steps.push(...inlined); return; }
+            // A null result here is treated exactly like a null result from
+            // a top-level statement (silently skipped, no warning) -- it's
+            // very often a legitimate no-op, e.g. an attachment motor
+            // already sitting at its target angle from an earlier call
+            // (delta === 0), not an unparseable line.
+            const step = parseSingle(cleaned);
+            if (step) steps.push(step);
+          });
+          i = nextIdx;
+          continue;
+        }
+
+        // run_task(NAME()): actually runs the named async function -- if
+        // its body was captured above, re-parse it for real (recursively
+        // resolving any multitask()/nested run_task-style calls inside)
+        // instead of leaving it as an unparseable line.
+        const runTaskMatch = trimmed.match(/^run_task\((\w+)\(\)\)$/);
+        if (runTaskMatch) {
+          const inlined = tryInlineUserFunctionCall(`${runTaskMatch[1]}()`);
+          if (inlined) steps.push(...inlined);
+          else warnings.push(`Could not parse line: "${trimmed}" -- run_task() target function body wasn't found`);
           i++;
           continue;
         }
@@ -1272,6 +1770,8 @@ window.WRO_PROGRAM = (function() {
     const lineSensor2ForwardInput = document.getElementById('cfgLineSensor2Forward');
     const lineSensor2LateralInput = document.getElementById('cfgLineSensor2Lateral');
     const lineSteerGainInput = document.getElementById('cfgLineSteerGain');
+    const wheelForwardOffsetInput = document.getElementById('cfgWheelForwardOffset');
+    const motorMaxSpeedInput = document.getElementById('cfgMotorMaxSpeed');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
       PORTS.forEach(p => {
@@ -1295,6 +1795,8 @@ window.WRO_PROGRAM = (function() {
     if (lineSensor2ForwardInput) lineSensor2ForwardInput.value = state.config.lineSensor2ForwardMm;
     if (lineSensor2LateralInput) lineSensor2LateralInput.value = state.config.lineSensor2LateralMm;
     if (lineSteerGainInput) lineSteerGainInput.value = state.config.lineFollowSteerGain;
+    if (wheelForwardOffsetInput) wheelForwardOffsetInput.value = state.config.wheelForwardOffsetMm;
+    if (motorMaxSpeedInput) motorMaxSpeedInput.value = state.config.motorMaxSpeedDegS;
 
     function syncConfig() {
       state.config = {
@@ -1311,12 +1813,15 @@ window.WRO_PROGRAM = (function() {
         lineSensor2ForwardMm: lineSensor2ForwardInput ? (parseFloat(lineSensor2ForwardInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2ForwardMm,
         lineSensor2LateralMm: lineSensor2LateralInput ? (parseFloat(lineSensor2LateralInput.value) || 0) : DEFAULT_LINE_CONFIG.lineSensor2LateralMm,
         lineFollowSteerGain: lineSteerGainInput ? (parseFloat(lineSteerGainInput.value) || DEFAULT_LINE_CONFIG.lineFollowSteerGain) : DEFAULT_LINE_CONFIG.lineFollowSteerGain,
+        wheelForwardOffsetMm: wheelForwardOffsetInput ? (parseFloat(wheelForwardOffsetInput.value) || 0) : 0,
+        motorMaxSpeedDegS: motorMaxSpeedInput ? (parseFloat(motorMaxSpeedInput.value) || 1000) : (state.config.motorMaxSpeedDegS || 1000),
       };
       persist(state);
     }
     [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
      straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput,
-     lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput].filter(Boolean).forEach(el => {
+     lineSensorForwardInput, lineSensorLateralInput, lineSensor2ForwardInput, lineSensor2LateralInput, lineSteerGainInput,
+     wheelForwardOffsetInput, motorMaxSpeedInput].filter(Boolean).forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
@@ -1429,6 +1934,14 @@ window.WRO_PROGRAM = (function() {
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
     const stepPathReverse = document.getElementById('stepPathReverse');
+    const stepArcPivot = document.getElementById('stepArcPivot');
+    const stepArcRadiusField = document.getElementById('stepArcRadiusField');
+    const stepArcRadius = document.getElementById('stepArcRadius');
+    if (stepArcPivot && stepArcRadiusField) {
+      const syncArcPivot = () => { stepArcRadiusField.style.display = stepArcPivot.value === 'custom' ? '' : 'none'; };
+      stepArcPivot.addEventListener('change', syncArcPivot);
+      syncArcPivot();
+    }
     const stepLineMode = document.getElementById('stepLineMode');
     const stepLineSingleFields = document.getElementById('stepLineSingleFields');
     const stepLineMaxDist = document.getElementById('stepLineMaxDist');
@@ -1507,6 +2020,18 @@ window.WRO_PROGRAM = (function() {
         step.direction = directionSel.value;
         const rate = parseFloat(stepTurnRateInput.value);
         if (!isNaN(rate) && rate > 0) step.turnRateDegS = rate;
+      } else if (t === 'arc') {
+        // 'arc' steps store a single SIGNED degrees (positive = right/CW),
+        // not a separate direction field like 'turn' -- fold the shared
+        // direction select into that sign here.
+        const angle = Math.abs(parseFloat(degreesInput.value) || 0);
+        step.degrees = directionSel.value === 'left' ? -angle : angle;
+        if (stepArcPivot.value === 'custom') {
+          step.radius = parseFloat(stepArcRadius.value) || 0;
+        } else {
+          const halfAxle = (state.config.axleTrack || 114) / 2;
+          step.radius = stepArcPivot.value === 'right' ? halfAxle : -halfAxle;
+        }
       } else if (t === 'unfold' || t === 'squareToWall') {
         // no parameters
       } else if (t === 'lineFollowPath') {
@@ -1806,6 +2331,11 @@ window.WRO_PROGRAM = (function() {
       let playFrac = 0;
       let playRAF = null;
       let playLastT = null;
+      // stepDuration re-simulates a lineFollowSim step's real stopping
+      // distance from its starting pose (see stepDuration's own comment) --
+      // memoised by step index so playTick's per-frame (~60/s) calls reuse
+      // one simulation per step instead of re-running it every frame.
+      let lineFollowDurCache = { idx: -1, dur: 0 };
 
       function clientToMM(e) {
         const r = stage.getBoundingClientRect();
@@ -1881,9 +2411,14 @@ window.WRO_PROGRAM = (function() {
         const cfg = state.config || {};
         const axleHalf = Math.min(halfW * 1.15, (cfg.axleTrack || 114) / 2);
         const wheelH = Math.min(36, halfL * 0.7);
+        // Forward offset is a local -Y shift (forward = -Y in this
+        // unrotated frame, same convention as the direction arrow) --
+        // clamped loosely so an extreme value can't draw the wheel way
+        // outside even a short footprint.
+        const wheelY = Math.max(-halfL * 1.1, Math.min(halfL * 1.1, -(cfg.wheelForwardOffsetMm || 0)));
         [-1, 1].forEach(side => {
           const wheel = svg('rect', {
-            x: side * axleHalf - 5, y: -wheelH / 2, width: 10, height: wheelH,
+            x: side * axleHalf - 5, y: wheelY - wheelH / 2, width: 10, height: wheelH,
             class: 'walker-wheel',
           }, g);
           svg('title', {}, wheel).textContent = `${side < 0 ? 'Left' : 'Right'} wheel (port ${side < 0 ? cfg.portLeft : cfg.portRight})`;
@@ -2062,7 +2597,17 @@ window.WRO_PROGRAM = (function() {
         let idx = state.walker.stepIndex;
         let remaining = dtSeconds * speed;
         while (remaining > 0 && idx < state.steps.length) {
-          const dur = Math.max(0.001, stepDuration(state.steps[idx], state.config));
+          const curStep = state.steps[idx];
+          let dur;
+          if (curStep.type === 'lineFollowSim' && state.walker.start) {
+            if (lineFollowDurCache.idx !== idx) {
+              const startPose = poseAtIndex(state.steps, state.walker.start, idx, footprintForState, state.config);
+              lineFollowDurCache = { idx, dur: Math.max(0.001, stepDuration(curStep, state.config, startPose)) };
+            }
+            dur = lineFollowDurCache.dur;
+          } else {
+            dur = Math.max(0.001, stepDuration(curStep, state.config));
+          }
           const newElapsed = playFrac * dur + remaining;
           if (newElapsed >= dur) {
             remaining = newElapsed - dur;
