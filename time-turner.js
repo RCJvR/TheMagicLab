@@ -124,6 +124,11 @@
   function fmtRecurrence(entry) {
     return entry.recurrence === 'cycle' ? fmtCycleDays(entry.cycleDays) : fmtWeekdays(entry.weekdays);
   }
+  function fmtPeriodInfo(info) {
+    const dayLabel = info.dayType === 'friday' ? 'Friday' : 'Regular';
+    const range = info.from === info.to ? `P${info.from}` : `P${info.from}–P${info.to}`;
+    return `${range} (${dayLabel})`;
+  }
   function esc(s) {
     return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
@@ -332,11 +337,12 @@
     box.innerHTML = sorted.map(e => {
       const cat = CATEGORIES[e.category] || CATEGORIES.other;
       const recurTag = e.recurrence === 'cycle' ? ' · timetable' : '';
+      const timeLabel = e.periodInfo ? fmtPeriodInfo(e.periodInfo) : `${fmtTime(e.start)}–${fmtTime(e.end)}`;
       return `<div class="entry-row" data-id="${e.id}">
         <div class="entry-emoji">${cat.emoji}</div>
         <div class="entry-body">
           <div class="entry-title">${esc(e.title || cat.label)}</div>
-          <div class="entry-meta">${esc(fmtRecurrence(e))}${recurTag} · ${fmtTime(e.start)}–${fmtTime(e.end)}</div>
+          <div class="entry-meta">${esc(fmtRecurrence(e))}${recurTag} · ${esc(timeLabel)}</div>
         </div>
         <button class="entry-del" data-del="${e.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
       </div>`;
@@ -402,6 +408,20 @@
     document.getElementById('cycleday-picker').classList.toggle('hidden', mode !== 'cycle');
   }
 
+  let timeMode = 'clock';
+  function setTimeMode(mode) {
+    timeMode = mode;
+    document.querySelectorAll('.timemode-btn').forEach(b => b.classList.toggle('active', b.dataset.timemode === mode));
+    document.getElementById('clock-time-picker').classList.toggle('hidden', mode !== 'clock');
+    document.getElementById('period-time-picker').classList.toggle('hidden', mode !== 'period');
+  }
+  function populatePeriodSelects() {
+    const count = window.TimeTurnerPeriods?.PERIOD_COUNT || 6;
+    const options = Array.from({ length: count }, (_, i) => i + 1).map(p => `<option value="${p}">Period ${p}</option>`).join('');
+    document.getElementById('af-period-from').innerHTML = options;
+    document.getElementById('af-period-to').innerHTML = options;
+  }
+
   function wireForm() {
     const catSelect = document.getElementById('af-category');
     catSelect.innerHTML = Object.entries(CATEGORIES).map(([key, c]) => `<option value="${key}">${c.emoji} ${esc(c.label)}</option>`).join('');
@@ -409,9 +429,15 @@
     renderWeekdayPicker();
     renderCycleDayPicker();
     setRecurrenceMode('weekly');
+    populatePeriodSelects();
+    setTimeMode('clock');
 
     document.querySelectorAll('.recur-btn').forEach(btn => {
       btn.addEventListener('click', () => setRecurrenceMode(btn.dataset.recur));
+    });
+
+    document.querySelectorAll('.timemode-btn').forEach(btn => {
+      btn.addEventListener('click', () => setTimeMode(btn.dataset.timemode));
     });
 
     document.querySelectorAll('#weekday-picker .day-quick [data-preset]').forEach(btn => {
@@ -442,15 +468,30 @@
       const msg = document.getElementById('af-msg');
       const category = catSelect.value;
       const title = document.getElementById('af-title').value.trim();
-      const start = document.getElementById('af-start').value;
-      const end = document.getElementById('af-end').value;
 
       const daySet = recurrence === 'cycle' ? selectedCycleDays : selectedWeekdays;
       if (!daySet.size) { msg.textContent = recurrence === 'cycle' ? 'Pick at least one timetable day.' : 'Pick at least one day.'; msg.className = 'msg err'; return; }
-      if (!start || !end) { msg.textContent = 'Set a start and end time.'; msg.className = 'msg err'; return; }
-      if (start === end) { msg.textContent = 'Start and end time can’t be the same.'; msg.className = 'msg err'; return; }
+
+      let start, end, periodInfo = null;
+      if (timeMode === 'period') {
+        const dayType = document.getElementById('af-daytype').value;
+        const from = Number(document.getElementById('af-period-from').value);
+        const to = Number(document.getElementById('af-period-to').value);
+        if (to < from) { msg.textContent = '"To period" can’t be before "From period".'; msg.className = 'msg err'; return; }
+        const daySchedule = window.TimeTurnerPeriods?.getCached()?.[dayType] || {};
+        if (!daySchedule[from] || !daySchedule[to]) { msg.textContent = 'Those period times haven’t been set up yet — ask your teacher, or switch to clock time.'; msg.className = 'msg err'; return; }
+        start = daySchedule[from].start;
+        end = daySchedule[to].end;
+        periodInfo = { dayType, from, to };
+      } else {
+        start = document.getElementById('af-start').value;
+        end = document.getElementById('af-end').value;
+        if (!start || !end) { msg.textContent = 'Set a start and end time.'; msg.className = 'msg err'; return; }
+        if (start === end) { msg.textContent = 'Start and end time can’t be the same.'; msg.className = 'msg err'; return; }
+      }
 
       const entry = { category, title: title || null, recurrence, start, end };
+      if (periodInfo) entry.periodInfo = periodInfo;
       if (recurrence === 'cycle') entry.cycleDays = [...selectedCycleDays];
       else entry.weekdays = [...selectedWeekdays];
 
