@@ -31,11 +31,12 @@
   const CATEGORIES = {
     school:          { label: 'School / Academics',      emoji: '🎓', color: '#60a5fa' },
     homework:        { label: 'Homework / Study',        emoji: '📚', color: '#a78bfa' },
-    extracurricular: { label: 'Extracurricular / Sport',  emoji: '🏅', color: '#fb923c' },
+    extracurricular: { label: 'Extracurricular / Exercise', emoji: '🏅', color: '#fb923c' },
+    family:          { label: 'Family time',              emoji: '❤️', color: '#e879f9' },
     meals:           { label: 'Meals',                    emoji: '🍽️', color: '#fbbf24' },
     chores:          { label: 'Chores / Cleaning up',     emoji: '🧹', color: '#2dd4bf' },
     rest:            { label: 'Rest / Sleep',             emoji: '😴', color: '#818cf8' },
-    free:            { label: 'Free time',                emoji: '🎮', color: '#4ade80' },
+    free:            { label: 'Free time / Recreation',   emoji: '🎮', color: '#4ade80' },
     other:           { label: 'Other',                    emoji: '⭐', color: '#94a3b8' }
   };
 
@@ -290,6 +291,9 @@
     }
     if (totals.meals === 0) {
       insights.push({ level: 'info', icon: '🍽️', text: 'No meal times blocked yet — scheduling them (not just "whenever") makes it easier to protect study time around them.' });
+    }
+    if (totals.family === 0) {
+      insights.push({ level: 'info', icon: '❤️', text: 'No family time blocked yet — even a shared dinner or a fixed evening slot keeps it from getting crowded out by everything else.' });
     }
 
     if (!insights.length) {
