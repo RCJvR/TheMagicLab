@@ -1,0 +1,349 @@
+// ============================================================
+// THE MAGIC LAB — time-turner-assessments.js
+// The school-wide assessment calendar for Time Turner. Requires the
+// `assessments` table (and profiles.elective_subjects column) from
+// time-turner-assessments-schema.sql. Include after auth.js.
+//
+// Grade 8-9 take every subject, so they see every assessment for their
+// grade with no filtering. Grade 10-12 pick their own subjects first
+// (stored on their profile), then only see assessments matching both
+// their grade and one of those subjects.
+// ============================================================
+
+(function () {
+  const TYPE_LABELS = {
+    test: 'Test', exam: 'Exam', assignment: 'Assignment',
+    project: 'Project', practical: 'Practical', other: 'Other'
+  };
+
+  let profile = null;
+  let mySubjects = [];        // grade 10-12 only
+  let availableSubjects = []; // distinct subjects on record for this grade
+
+  function supabase() { return window.MagicLabAuth._supabase(); }
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function fmtDate(d) {
+    if (!d) return null;
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function daysUntil(d) {
+    if (!d) return null;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const due = new Date(d + 'T00:00:00');
+    return Math.round((due - today) / 86400000);
+  }
+
+  // ── Data access ──────────────────────────────────────────────
+  async function fetchAssessmentsForMe() {
+    if (!profile?.grade) return [];
+    let query = supabase().from('assessments').select('*').eq('grade', profile.grade);
+    if (profile.grade >= 10) {
+      if (!mySubjects.length) return [];
+      query = query.in('subject', mySubjects);
+    }
+    const { data, error } = await query.order('due_date', { ascending: true, nullsFirst: false });
+    if (error) { console.warn('[MagicLab] fetchAssessmentsForMe error:', error.message); return []; }
+    return data || [];
+  }
+
+  async function fetchDistinctSubjects(grade) {
+    const { data, error } = await supabase().from('assessments').select('subject').eq('grade', grade);
+    if (error) { console.warn('[MagicLab] fetchDistinctSubjects error:', error.message); return []; }
+    return [...new Set((data || []).map(r => r.subject))].sort();
+  }
+
+  async function saveMySubjects(subjects) {
+    const { error } = await window.MagicLabAuth.updateProfile({ elective_subjects: subjects });
+    if (!error) mySubjects = subjects;
+    return { error };
+  }
+
+  function requireTeacher() {
+    if (!window.MagicLabAuth.isTeacher()) return { error: { message: 'Only teachers can do that' } };
+    return null;
+  }
+
+  async function addAssessment(row) {
+    const denied = requireTeacher();
+    if (denied) return denied;
+    return supabase().from('assessments').insert({ ...row, created_by: profile.id }).select().single();
+  }
+
+  async function bulkAddAssessments(rows) {
+    const denied = requireTeacher();
+    if (denied) return denied;
+    return supabase().from('assessments').insert(rows.map(r => ({ ...r, created_by: profile.id })));
+  }
+
+  async function getAllAssessments(grade) {
+    let query = supabase().from('assessments').select('*');
+    if (grade) query = query.eq('grade', grade);
+    const { data, error } = await query.order('grade', { ascending: true }).order('due_date', { ascending: true, nullsFirst: false });
+    if (error) { console.warn('[MagicLab] getAllAssessments error:', error.message); return []; }
+    return data || [];
+  }
+
+  async function deleteAssessment(id) {
+    const denied = requireTeacher();
+    if (denied) return denied;
+    return supabase().from('assessments').delete().eq('id', id);
+  }
+
+  // ── CSV / pasted-table parsing ───────────────────────────────
+  // Columns: Grade, Subject, Type, Title, Due Date, Term, Description
+  const VALID_TYPES = Object.keys(TYPE_LABELS);
+
+  function parseCSVLine(line) {
+    const cells = [];
+    let cur = '', inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (inQuotes) {
+        if (c === '"') { if (line[i + 1] === '"') { cur += '"'; i++; } else inQuotes = false; }
+        else cur += c;
+      } else if (c === '"') inQuotes = true;
+      else if (c === ',') { cells.push(cur); cur = ''; }
+      else cur += c;
+    }
+    cells.push(cur);
+    return cells.map(c => c.trim());
+  }
+
+  function parseDateCell(raw) {
+    if (!raw) return null;
+    raw = raw.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+    const m = raw.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/); // DD/MM/YYYY
+    if (m) { const [, d, mo, y] = m; return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`; }
+    return null;
+  }
+
+  function normType(raw) {
+    const t = (raw || '').trim().toLowerCase();
+    return VALID_TYPES.includes(t) ? t : 'test';
+  }
+
+  function parseAssessmentText(text) {
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const rows = [], errors = [];
+    lines.forEach((line, idx) => {
+      const cells = parseCSVLine(line);
+      if (idx === 0 && /^grade$/i.test(cells[0] || '')) return; // skip header row
+      const [gradeRaw, subject, typeRaw, title, dueRaw, termRaw, description] = cells;
+      const lineNo = idx + 1;
+      const grade = parseInt(gradeRaw, 10);
+      if (!grade || grade < 8 || grade > 12) { errors.push(`Line ${lineNo}: grade must be 8-12 (got "${gradeRaw || ''}")`); return; }
+      if (!subject) { errors.push(`Line ${lineNo}: subject is required`); return; }
+      if (!title) { errors.push(`Line ${lineNo}: title is required`); return; }
+      const due_date = dueRaw ? parseDateCell(dueRaw) : null;
+      if (dueRaw && !due_date) { errors.push(`Line ${lineNo}: couldn't read date "${dueRaw}" — use YYYY-MM-DD or DD/MM/YYYY`); return; }
+      rows.push({ grade, subject, type: normType(typeRaw), title, due_date, term: termRaw ? (parseInt(termRaw, 10) || null) : null, description: description || null });
+    });
+    return { rows, errors };
+  }
+
+  // ── Rendering: student-facing calendar ──────────────────────
+  function renderSubjectPicker() {
+    const wrap = document.getElementById('assess-subjects-wrap');
+    if (!wrap) return;
+
+    if (profile.grade < 10) {
+      wrap.innerHTML = `<div class="section-sub" style="margin:0 0 12px;">Grade ${profile.grade} takes every subject, so every Grade ${profile.grade} assessment below applies to you.</div>`;
+      return;
+    }
+
+    if (mySubjects.length) {
+      wrap.innerHTML = `
+        <div class="assess-tags">${mySubjects.map(s => `<span class="subject-tag">${esc(s)}</span>`).join('')}</div>
+        <button class="btn-ghost" id="assess-edit-subjects" style="margin-top:10px;">Change my subjects</button>`;
+      document.getElementById('assess-edit-subjects').addEventListener('click', () => renderSubjectChooser(wrap));
+      return;
+    }
+
+    renderSubjectChooser(wrap);
+  }
+
+  function renderSubjectChooser(wrap) {
+    if (!availableSubjects.length) {
+      wrap.innerHTML = `<div class="empty-hint">No Grade ${profile.grade} assessments have been uploaded yet — once your teachers add some, pick your subjects here.</div>`;
+      return;
+    }
+    wrap.innerHTML = `
+      <div class="section-sub" style="margin:0 0 10px;">Pick every subject you take this year — the calendar below will only show assessments for these.</div>
+      <div class="day-toggles" id="assess-subject-checks">${availableSubjects.map(s => `<button type="button" class="day-btn" data-subject="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+      <button class="btn-primary" id="assess-save-subjects" style="margin-top:12px;">Save my subjects</button>
+      <div class="msg" id="assess-subjects-msg"></div>`;
+
+    const chosen = new Set(mySubjects);
+    wrap.querySelectorAll('#assess-subject-checks .day-btn').forEach(btn => {
+      btn.classList.toggle('active', chosen.has(btn.dataset.subject));
+      btn.addEventListener('click', () => {
+        const s = btn.dataset.subject;
+        if (chosen.has(s)) chosen.delete(s); else chosen.add(s);
+        btn.classList.toggle('active');
+      });
+    });
+    document.getElementById('assess-save-subjects').addEventListener('click', async () => {
+      const msg = document.getElementById('assess-subjects-msg');
+      if (!chosen.size) { msg.textContent = 'Pick at least one subject.'; msg.className = 'msg err'; return; }
+      const { error } = await saveMySubjects([...chosen]);
+      if (error) { msg.textContent = error.message; msg.className = 'msg err'; return; }
+      await renderAll();
+    });
+  }
+
+  function renderAssessmentList() {
+    const box = document.getElementById('assess-list');
+    if (!box) return;
+    if (profile.grade >= 10 && !mySubjects.length) {
+      box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
+      return;
+    }
+    if (!_myAssessments.length) {
+      box.innerHTML = '<div class="empty-hint">Nothing on the calendar yet — check back once your teachers add assessments.</div>';
+      return;
+    }
+    box.innerHTML = _myAssessments.map(a => {
+      const days = daysUntil(a.due_date);
+      const dateClass = days === null ? 'none' : days < 0 ? 'overdue' : '';
+      return `
+      <div class="upcoming-item">
+        <div class="upcoming-date ${dateClass}">${fmtDate(a.due_date) || 'No date'}</div>
+        <div class="upcoming-body">
+          <div class="upcoming-title">${esc(a.title)}</div>
+          <div class="upcoming-meta">
+            <span class="subject-tag">${esc(a.subject)}</span>
+            <span class="type-tag subject-tag">${esc(TYPE_LABELS[a.type] || a.type)}</span>
+            ${days !== null && days >= 0 && days <= 7 ? `<span class="type-tag subject-tag" style="color:#fca5a5;border-color:rgba(248,113,113,0.3);">${days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `In ${days} days`}</span>` : ''}
+          </div>
+          ${a.description ? `<div class="upcoming-meta" style="margin-top:4px;">${esc(a.description)}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  let _myAssessments = [];
+
+  async function renderAll() {
+    document.getElementById('assess-list').classList.remove('hidden');
+    availableSubjects = profile.grade >= 10 ? await fetchDistinctSubjects(profile.grade) : [];
+    renderSubjectPicker();
+    _myAssessments = await fetchAssessmentsForMe();
+    renderAssessmentList();
+    window.lucide?.createIcons();
+  }
+
+  // ── Teacher admin panel ──────────────────────────────────────
+  function renderAdminPanel() {
+    const panel = document.getElementById('assess-admin');
+    if (!panel) return;
+    if (!window.MagicLabAuth.isTeacher()) { panel.classList.add('hidden'); return; }
+    panel.classList.remove('hidden');
+    wireAdminForms();
+    refreshManageList();
+  }
+
+  function wireAdminForms() {
+    document.getElementById('aa-submit').addEventListener('click', async () => {
+      const msg = document.getElementById('aa-msg');
+      const grade = parseInt(document.getElementById('aa-grade').value, 10);
+      const subject = document.getElementById('aa-subject').value.trim();
+      const type = document.getElementById('aa-type').value;
+      const title = document.getElementById('aa-title').value.trim();
+      const due_date = document.getElementById('aa-due').value || null;
+      const term = document.getElementById('aa-term').value ? parseInt(document.getElementById('aa-term').value, 10) : null;
+      const description = document.getElementById('aa-desc').value.trim() || null;
+      if (!subject || !title) { msg.textContent = 'Subject and title are required.'; msg.className = 'msg err'; return; }
+
+      const { error } = await addAssessment({ grade, subject, type, title, due_date, term, description });
+      if (error) { msg.textContent = error.message; msg.className = 'msg err'; return; }
+      msg.textContent = 'Added.'; msg.className = 'msg ok';
+      ['aa-subject', 'aa-title', 'aa-due', 'aa-term', 'aa-desc'].forEach(id => { document.getElementById(id).value = ''; });
+      refreshManageList();
+    });
+
+    document.getElementById('aa-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => { document.getElementById('aa-bulk-text').value = reader.result; };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('aa-preview').addEventListener('click', () => {
+      const text = document.getElementById('aa-bulk-text').value;
+      const { rows, errors } = parseAssessmentText(text);
+      _pendingBulkRows = rows;
+      const box = document.getElementById('aa-bulk-preview');
+      const parts = [];
+      if (rows.length) parts.push(`<div class="msg ok">${rows.length} row${rows.length === 1 ? '' : 's'} ready to upload.</div>`);
+      if (errors.length) parts.push(`<div class="msg err">${errors.length} problem${errors.length === 1 ? '' : 's'}:<br>${errors.map(esc).join('<br>')}</div>`);
+      if (!rows.length && !errors.length) parts.push('<div class="msg err">Nothing to upload — paste rows or choose a file first.</div>');
+      box.innerHTML = parts.join('');
+      document.getElementById('aa-bulk-submit').classList.toggle('hidden', !rows.length);
+    });
+
+    document.getElementById('aa-bulk-submit').addEventListener('click', async () => {
+      const msg = document.getElementById('aa-bulk-preview');
+      if (!_pendingBulkRows.length) return;
+      const { error } = await bulkAddAssessments(_pendingBulkRows);
+      if (error) { msg.innerHTML = `<div class="msg err">${esc(error.message)}</div>`; return; }
+      msg.innerHTML = `<div class="msg ok">Uploaded ${_pendingBulkRows.length} assessments.</div>`;
+      document.getElementById('aa-bulk-text').value = '';
+      document.getElementById('aa-file').value = '';
+      document.getElementById('aa-bulk-submit').classList.add('hidden');
+      _pendingBulkRows = [];
+      refreshManageList();
+    });
+
+    document.getElementById('aa-manage-grade').addEventListener('change', refreshManageList);
+  }
+
+  let _pendingBulkRows = [];
+
+  async function refreshManageList() {
+    const gradeVal = document.getElementById('aa-manage-grade').value;
+    const list = await getAllAssessments(gradeVal ? parseInt(gradeVal, 10) : null);
+    const box = document.getElementById('aa-manage-list');
+    if (!list.length) { box.innerHTML = '<div class="empty-hint">No assessments yet.</div>'; return; }
+    box.innerHTML = list.map(a => `
+      <div class="admin-list-row">
+        <div>
+          <div class="admin-list-title">Gr ${a.grade} · ${esc(a.subject)} · ${esc(TYPE_LABELS[a.type] || a.type)} — ${esc(a.title)}</div>
+          <div class="admin-list-meta">${fmtDate(a.due_date) || 'No date'}${a.term ? ` · Term ${a.term}` : ''}</div>
+        </div>
+        <button class="btn-ghost danger" data-del-assess="${a.id}" title="Delete"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+      </div>`).join('');
+    box.querySelectorAll('[data-del-assess]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Delete this assessment?')) return;
+        await deleteAssessment(btn.dataset.delAssess);
+        refreshManageList();
+      });
+    });
+    window.lucide?.createIcons();
+  }
+
+  async function init() {
+    profile = window.MagicLabAuth.getProfile();
+    renderAdminPanel();
+
+    if (!profile?.grade) {
+      // Teachers (and any account with no grade on file) have nothing
+      // personal to show here — the admin tools above are their view.
+      const note = window.MagicLabAuth.isTeacher()
+        ? 'Use the teacher tools below to manage the calendar.'
+        : 'Add your grade in My Account to see your assessment calendar.';
+      document.getElementById('assess-subjects-wrap').innerHTML = `<div class="empty-hint">${note}</div>`;
+      document.getElementById('assess-list').classList.add('hidden');
+      return;
+    }
+
+    mySubjects = profile.elective_subjects || [];
+    await renderAll();
+  }
+
+  window.TimeTurnerAssessments = { init };
+})();
