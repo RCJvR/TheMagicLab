@@ -19,6 +19,7 @@
   let profile = null;
   let mySubjects = [];        // grade 10-12 only
   let availableSubjects = []; // distinct subjects on record for this grade
+  let viewMode = 'mine';      // 'mine' | 'all'
 
   function supabase() { return window.MagicLabAuth._supabase(); }
   function esc(s) {
@@ -45,6 +46,12 @@
     }
     const { data, error } = await query.order('due_date', { ascending: true, nullsFirst: false });
     if (error) { console.warn('[MagicLab] fetchAssessmentsForMe error:', error.message); return []; }
+    return data || [];
+  }
+
+  async function fetchAllAssessments() {
+    const { data, error } = await supabase().from('assessments').select('*').order('due_date', { ascending: true, nullsFirst: false });
+    if (error) { console.warn('[MagicLab] fetchAllAssessments error:', error.message); return []; }
     return data || [];
   }
 
@@ -194,18 +201,16 @@
     });
   }
 
-  function renderAssessmentList() {
+  function renderAssessmentItems(list, { showGrade = false } = {}) {
     const box = document.getElementById('assess-list');
     if (!box) return;
-    if (profile.grade >= 10 && !mySubjects.length) {
-      box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
+    if (!list.length) {
+      box.innerHTML = viewMode === 'all'
+        ? '<div class="empty-hint">Nothing on the calendar yet — check back once teachers add assessments.</div>'
+        : '<div class="empty-hint">Nothing on the calendar yet — check back once your teachers add assessments.</div>';
       return;
     }
-    if (!_myAssessments.length) {
-      box.innerHTML = '<div class="empty-hint">Nothing on the calendar yet — check back once your teachers add assessments.</div>';
-      return;
-    }
-    box.innerHTML = _myAssessments.map(a => {
+    box.innerHTML = list.map(a => {
       const days = daysUntil(a.due_date);
       const dateClass = days === null ? 'none' : days < 0 ? 'overdue' : '';
       return `
@@ -214,6 +219,7 @@
         <div class="upcoming-body">
           <div class="upcoming-title">${esc(a.title)}</div>
           <div class="upcoming-meta">
+            ${showGrade ? `<span class="subject-tag">Gr ${a.grade}</span>` : ''}
             <span class="subject-tag">${esc(a.subject)}</span>
             <span class="type-tag subject-tag">${esc(TYPE_LABELS[a.type] || a.type)}</span>
             ${days !== null && days >= 0 && days <= 7 ? `<span class="type-tag subject-tag" style="color:#fca5a5;border-color:rgba(248,113,113,0.3);">${days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `In ${days} days`}</span>` : ''}
@@ -224,14 +230,31 @@
     }).join('');
   }
 
-  let _myAssessments = [];
+  async function renderList() {
+    const box = document.getElementById('assess-list');
+    if (viewMode === 'all') {
+      renderAssessmentItems(await fetchAllAssessments(), { showGrade: true });
+      return;
+    }
+    if (profile.grade >= 10 && !mySubjects.length) {
+      box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
+      return;
+    }
+    renderAssessmentItems(await fetchAssessmentsForMe(), { showGrade: false });
+  }
+
+  function setViewMode(mode) {
+    viewMode = mode;
+    document.querySelectorAll('#assess-view-toggle .timemode-btn').forEach(b => b.classList.toggle('active', b.dataset.assessview === mode));
+    renderList();
+  }
 
   async function renderAll() {
     document.getElementById('assess-list').classList.remove('hidden');
+    document.getElementById('assess-view-toggle').classList.remove('hidden');
     availableSubjects = profile.grade >= 10 ? await fetchDistinctSubjects(profile.grade) : [];
     renderSubjectPicker();
-    _myAssessments = await fetchAssessmentsForMe();
-    renderAssessmentList();
+    await renderList();
     window.lucide?.createIcons();
   }
 
@@ -329,6 +352,10 @@
   async function init() {
     profile = window.MagicLabAuth.getProfile();
     renderAdminPanel();
+
+    document.querySelectorAll('#assess-view-toggle .timemode-btn').forEach(btn => {
+      btn.addEventListener('click', () => setViewMode(btn.dataset.assessview));
+    });
 
     if (!profile?.grade) {
       // Teachers (and any account with no grade on file) have nothing
