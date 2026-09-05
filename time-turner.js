@@ -237,6 +237,33 @@
     return sorted;
   }
 
+  /** School bell times shift day to day in practice (assemblies, guardian
+   * sessions, connect periods) — closer to "period 1-6" than to any one
+   * fixed clock time. Rather than fight that, each school day's column
+   * gets its own faint period/break bands (using that weekday's real
+   * period_schedule day-type) layered under the blocks, so the period
+   * number is visible right where it applies, in addition to the
+   * always-on hour gutter that still covers the non-school parts of
+   * the day (sleep, evening activities, weekends). */
+  function renderPeriodBands(dayType) {
+    const periods = window.TimeTurnerPeriods?.getCached()?.[dayType];
+    if (!periods) return '';
+    const nums = Object.keys(periods).map(Number).sort((a, b) => a - b);
+    if (!nums.length) return '';
+    let html = '';
+    nums.forEach((p, i) => {
+      const { start, end } = periods[p];
+      html += `<div class="period-band-line" style="top:${toMinutes(start) * PX_PER_MIN}px;"><span class="period-band-label">P${p}</span></div>`;
+      const next = periods[nums[i + 1]];
+      if (next && toMinutes(next.start) > toMinutes(end)) {
+        html += `<div class="period-band-line break" style="top:${toMinutes(end) * PX_PER_MIN}px;"><span class="period-band-label">Break</span></div>`;
+      }
+    });
+    const lastEnd = periods[nums[nums.length - 1]].end;
+    html += `<div class="period-band-line" style="top:${toMinutes(lastEnd) * PX_PER_MIN}px;"></div>`;
+    return html;
+  }
+
   function renderWeekGrid(elId, weekIndex, bySlot, ghostsBySlot) {
     const todayIdx = (new Date().getDay() + 6) % 7; // JS 0=Sun -> our 0=Mon
 
@@ -250,6 +277,8 @@
       const slot = weekIndex * 7 + weekday;
       const pieces = packLanes(bySlot[slot]);
       const cycleDay = slotCycleDay(slot);
+      const dayType = weekday === 4 ? 'friday' : weekday < 5 ? 'regular' : null;
+      const periodBands = dayType ? renderPeriodBands(dayType) : '';
       const blocks = pieces.map(p => {
         const cat = CATEGORIES[p.entry.category] || CATEGORIES.other;
         const top = p.start * PX_PER_MIN;
@@ -270,7 +299,7 @@
       }).join('');
       return `<div class="grid-day">
         <div class="grid-day-head${weekday === todayIdx ? ' today' : ''}">${name}${cycleDay ? `<div class="grid-day-cycle">Day ${cycleDay}</div>` : ''}</div>
-        <div class="grid-day-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${blocks}${ghosts}</div>
+        <div class="grid-day-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${periodBands}${blocks}${ghosts}</div>
       </div>`;
     }).join('');
 
