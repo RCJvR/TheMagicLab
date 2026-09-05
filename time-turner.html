@@ -355,13 +355,12 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
       <a class="btn-ghost" href="time-turner-checkin.html" style="text-decoration:none;"><i data-lucide="search" style="width:14px;height:14px;"></i>Open Check on a Learner</a>
     </div>
 
-    <div class="section-title">🗓️ Upload a class/grade timetable</div>
-    <div class="section-sub">One timetable per grade — students in that grade can then import it into their own plan in one click instead of adding it by hand. One row per timetable day (1–10): the day number, then each period's subject, separated by commas — leave a period blank for a free period or break. For Grade 10-12 this can only cover the compulsory/core periods — electives vary by subject choice, so those students add their elective periods themselves after importing.</div>
+    <div class="section-title">🗓️ Upload a class timetable</div>
+    <div class="section-sub">One timetable per class you own — a different register class in the same grade (8A1, 8A2, ...) can have a completely different daily rotation, so this is per class, not per grade. Students who've joined that class can then import it into their own plan in one click instead of adding it by hand. One row per timetable day (1–10): the day number, then each period's subject, separated by commas — leave a period blank for a free period or break.</div>
     <div class="card">
-      <label class="form-label" for="tt-admin-grade">Grade</label>
-      <select class="form-select" id="tt-admin-grade" style="margin-bottom:12px;max-width:200px;">
-        <option value="8">Grade 8</option><option value="9">Grade 9</option>
-        <option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option>
+      <label class="form-label" for="tt-admin-class">Class</label>
+      <select class="form-select" id="tt-admin-class" style="margin-bottom:12px;max-width:260px;">
+        <option value="">Loading…</option>
       </select>
       <input type="file" id="tt-admin-file" accept=".csv,text/csv" style="margin-bottom:10px;">
       <textarea class="form-textarea" id="tt-admin-text" placeholder="1, Mathematics, English HL, Life Orientation, Natural Sciences, , Afrikaans FAL&#10;2, Mathematics, Life Sciences, , English HL, Technology, Afrikaans FAL&#10;..." style="min-height:130px;"></textarea>
@@ -372,7 +371,7 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
       <div id="tt-admin-preview-box" style="margin-top:8px;"></div>
     </div>
 
-    <div class="section-title">Grade timetables on file</div>
+    <div class="section-title">Class timetables on file</div>
     <div class="card">
       <div id="tt-admin-list"><div class="empty-hint">Loading…</div></div>
     </div>
@@ -468,10 +467,10 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
     <div class="section-title">📆 Upload your timetable</div>
     <div class="section-sub">Paste your school's 10-day, 6-period timetable once instead of adding each class by hand — this works the same whether it's your class timetable or your own teaching timetable. One row per timetable day (1–10): the day number, then each period's subject, separated by commas — leave a period blank for a free period or break. Uses the period times set up above, so set those first.</div>
     <div class="card" id="timetable-personal-card">
-      <div class="hidden" id="tt-import-grade-box" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--border2);">
-        <div class="section-sub" style="margin:0 0 10px;">Your teacher has already uploaded a timetable for your grade.</div>
-        <button class="btn-primary" id="tt-import-grade-btn" type="button"><i data-lucide="download" style="width:14px;height:14px;"></i>Import my grade's timetable</button>
-        <div class="msg" id="tt-import-grade-msg"></div>
+      <div class="hidden" id="tt-import-class-box" style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--border2);">
+        <div class="section-sub" style="margin:0 0 10px;">Your teacher has already uploaded a timetable for a class you've joined.</div>
+        <div id="tt-import-class-list"></div>
+        <div class="msg" id="tt-import-class-msg"></div>
       </div>
       <input type="file" id="tt-file" accept=".csv,text/csv" style="margin-bottom:10px;">
       <textarea class="form-textarea" id="tt-text" placeholder="1, Mathematics, English HL, Life Orientation, Natural Sciences, , Afrikaans FAL&#10;2, Mathematics, Life Sciences, , English HL, Technology, Afrikaans FAL&#10;..." style="min-height:130px;"></textarea>
