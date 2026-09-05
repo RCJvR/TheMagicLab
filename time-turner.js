@@ -168,6 +168,45 @@
     saveEntries();
   }
 
+  /** Bulk-fills the plan from an uploaded timetable grid instead of 60
+   * manual "Add a block" submissions — used for both a student's own
+   * upload and a teacher's own teaching timetable, and for a student
+   * importing their grade's shared timetable (see time-turner-timetable.js,
+   * which owns parsing the upload and the grade_timetables table; this
+   * only turns an already-parsed grid into entries).
+   * grid: { "1": [p1Subject, ..., p6Subject], ... } keyed by cycle day
+   * 1-10; a blank subject means a free period that day.
+   * Re-running this replaces only entries from a previous import
+   * (tagged _fromTimetable) — anything added by hand stays untouched. */
+  function importScheduleFromGrid(grid) {
+    entries = entries.filter(e => !e._fromTimetable);
+    const periods = window.TimeTurnerPeriods?.getCached() || { regular: {}, friday: {} };
+    let imported = 0, skipped = 0;
+    Object.keys(grid || {}).forEach(dayStr => {
+      const day = Number(dayStr);
+      if (!day || day < 1 || day > 10) return;
+      const dayType = day % 5 === 0 ? 'friday' : 'regular';
+      (grid[dayStr] || []).forEach((subject, i) => {
+        const period = i + 1;
+        const title = (subject || '').trim();
+        if (!title) return;
+        const times = periods[dayType]?.[period];
+        if (!times) { skipped++; return; }
+        entries.push({
+          id: 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+          category: 'school', title, recurrence: 'cycle', cycleDays: [day],
+          start: times.start, end: times.end,
+          periodInfo: { dayType, from: period, to: period },
+          _fromTimetable: true
+        });
+        imported++;
+      });
+    });
+    saveEntries();
+    renderAll();
+    return { imported, skipped };
+  }
+
   // ── Two-week grid ────────────────────────────────────────────
   function blocksForEntry(entry) {
     const s = toMinutes(entry.start), e = toMinutes(entry.end);
@@ -1156,5 +1195,5 @@
     }
   }
 
-  window.TimeTurner = { init };
+  window.TimeTurner = { init, importScheduleFromGrid };
 })();
