@@ -20,6 +20,7 @@
   let mySubjects = [];        // grade 10-12 only
   let availableSubjects = []; // distinct subjects on record for this grade
   let viewMode = 'mine';      // 'mine' | 'all'
+  let subjectFilter = '';    // '' = all subjects
 
   function supabase() { return window.MagicLabAuth._supabase(); }
   function esc(s) {
@@ -230,17 +231,34 @@
     }).join('');
   }
 
+  function populateSubjectFilter(list) {
+    const select = document.getElementById('assess-subject-filter');
+    if (!select) return;
+    const subjects = [...new Set(list.map(a => a.subject))].sort();
+    const previous = subjectFilter;
+    select.innerHTML = '<option value="">All subjects</option>' + subjects.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    if (previous && subjects.includes(previous)) { select.value = previous; subjectFilter = previous; }
+    else { select.value = ''; subjectFilter = ''; }
+  }
+
   async function renderList() {
     const box = document.getElementById('assess-list');
     if (viewMode === 'all') {
-      renderAssessmentItems(await fetchAllAssessments(), { showGrade: true });
+      const list = await fetchAllAssessments();
+      populateSubjectFilter(list);
+      const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
+      renderAssessmentItems(filtered, { showGrade: true });
       return;
     }
     if (profile.grade >= 10 && !mySubjects.length) {
       box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
+      populateSubjectFilter([]);
       return;
     }
-    renderAssessmentItems(await fetchAssessmentsForMe(), { showGrade: false });
+    const list = await fetchAssessmentsForMe();
+    populateSubjectFilter(list);
+    const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
+    renderAssessmentItems(filtered, { showGrade: false });
   }
 
   function setViewMode(mode) {
@@ -251,7 +269,7 @@
 
   async function renderAll() {
     document.getElementById('assess-list').classList.remove('hidden');
-    document.getElementById('assess-view-toggle').classList.remove('hidden');
+    document.getElementById('assess-controls-row').classList.remove('hidden');
     availableSubjects = profile.grade >= 10 ? await fetchDistinctSubjects(profile.grade) : [];
     renderSubjectPicker();
     await renderList();
@@ -355,6 +373,11 @@
 
     document.querySelectorAll('#assess-view-toggle .timemode-btn').forEach(btn => {
       btn.addEventListener('click', () => setViewMode(btn.dataset.assessview));
+    });
+
+    document.getElementById('assess-subject-filter').addEventListener('change', (e) => {
+      subjectFilter = e.target.value;
+      renderList();
     });
 
     if (!profile?.grade) {
