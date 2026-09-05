@@ -197,7 +197,7 @@
     return sorted;
   }
 
-  function renderWeekGrid(elId, weekIndex, bySlot) {
+  function renderWeekGrid(elId, weekIndex, bySlot, ghostsBySlot) {
     const todayIdx = (new Date().getDay() + 6) % 7; // JS 0=Sun -> our 0=Mon
 
     const gutter = `<div class="grid-gutter">${
@@ -220,9 +220,17 @@
         const showText = height >= 16;
         return `<div class="grid-block" style="top:${top}px;height:${height}px;left:${leftPct}%;width:calc(${widthPct}% - 2px);background:${cat.color}33;border-left-color:${cat.color};" title="${esc(label)} (${fmtTime(p.entry.start)}–${fmtTime(p.entry.end)})">${showText ? `<div class="gb-title">${cat.emoji} ${esc(label)}</div>` : ''}</div>`;
       }).join('');
+      const ghosts = (ghostsBySlot[slot] || []).map(s => {
+        const cat = CATEGORIES[s.category] || CATEGORIES.other;
+        const top = s.start * PX_PER_MIN;
+        const height = Math.max((s.end - s.start) * PX_PER_MIN, 10);
+        const showText = height >= 16;
+        const tooltip = `${s.title} (${fmtTime(minToHHMM(s.start))}–${fmtTime(minToHHMM(s.end))})${s.reason ? ' — ' + s.reason : ''}`;
+        return `<div class="grid-ghost" data-ghost="${esc(s.key)}" style="top:${top}px;height:${height}px;border-color:${cat.color};color:${cat.color};" title="${esc(tooltip)}">${showText ? `<span class="gg-title">${cat.emoji} ${esc(s.title)}</span>` : '<span></span>'}<span class="gg-dismiss" data-dismiss="${esc(s.key)}" title="Dismiss">×</span></div>`;
+      }).join('');
       return `<div class="grid-day">
         <div class="grid-day-head${weekday === todayIdx ? ' today' : ''}">${name}${cycleDay ? `<div class="grid-day-cycle">Day ${cycleDay}</div>` : ''}</div>
-        <div class="grid-day-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${blocks}</div>
+        <div class="grid-day-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${blocks}${ghosts}</div>
       </div>`;
     }).join('');
 
@@ -235,15 +243,47 @@
     return bySlot;
   }
 
+  function addSuggestionAsEntry(s) {
+    const cycleDay = slotCycleDay(s.slot);
+    const entry = { category: s.category, title: s.title, start: minToHHMM(s.start), end: minToHHMM(s.end) };
+    if (cycleDay) { entry.recurrence = 'cycle'; entry.cycleDays = [cycleDay]; }
+    else { entry.recurrence = 'weekly'; entry.weekdays = [s.slot % 7]; }
+    addEntry(entry);
+  }
+
+  function wireGhostHandlers(suggestions) {
+    document.querySelectorAll('.grid-ghost').forEach(el => {
+      el.addEventListener('click', () => {
+        const s = suggestions.find(x => x.key === el.dataset.ghost);
+        if (!s) return;
+        addSuggestionAsEntry(s);
+        renderAll();
+      });
+    });
+    document.querySelectorAll('.gg-dismiss').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dismissedSuggestionKeys.add(btn.dataset.dismiss);
+        saveDismissed();
+        renderGrid();
+      });
+    });
+  }
+
   function renderGrid() {
     const bySlot = computeBySlot();
+    const suggestions = computeSuggestions();
+    const ghostsBySlot = Array.from({ length: SLOT_COUNT }, () => []);
+    suggestions.forEach(s => ghostsBySlot[s.slot].push(s));
 
-    renderWeekGrid('week-grid-1', 0, bySlot);
-    renderWeekGrid('week-grid-2', 1, bySlot);
+    renderWeekGrid('week-grid-1', 0, bySlot, ghostsBySlot);
+    renderWeekGrid('week-grid-2', 1, bySlot, ghostsBySlot);
 
     document.getElementById('legend').innerHTML = Object.entries(CATEGORIES).map(([key, c]) =>
       `<div class="legend-item"><span class="legend-swatch" style="background:${c.color};"></span>${c.emoji} ${esc(c.label)}</div>`
     ).join('');
+
+    wireGhostHandlers(suggestions);
   }
 
   // ── Totals ───────────────────────────────────────────────────
@@ -327,11 +367,29 @@
     return insights;
   }
 
+  // One sentence up front — the thing most worth changing right now —
+  // with anything else tucked behind a toggle instead of a full dashboard
+  // of tips to read through every time.
+  const INSIGHT_LEVEL_PRIORITY = { warn: 0, info: 1, ok: 2 };
   function renderInsights() {
-    const insights = computeInsights();
-    document.getElementById('insights').innerHTML = insights.map(i =>
-      `<div class="tip ${i.level}"><span class="tip-icon">${i.icon}</span><span>${esc(i.text)}</span></div>`
-    ).join('');
+    const insights = [...computeInsights()].sort((a, b) => (INSIGHT_LEVEL_PRIORITY[a.level] ?? 1) - (INSIGHT_LEVEL_PRIORITY[b.level] ?? 1));
+    const [lead, ...rest] = insights;
+    const box = document.getElementById('insights');
+
+    const leadHtml = `<div class="insight-lead ${lead.level}"><span class="insight-lead-icon">${lead.icon}</span><span>${esc(lead.text)}</span></div>`;
+    if (!rest.length) { box.innerHTML = leadHtml; return; }
+
+    box.innerHTML = `${leadHtml}
+      <button type="button" class="insight-more-toggle" id="insight-more-toggle">+${rest.length} more insight${rest.length === 1 ? '' : 's'}</button>
+      <div class="insight-more hidden" id="insight-more">${rest.map(i =>
+        `<div class="tip ${i.level}"><span class="tip-icon">${i.icon}</span><span>${esc(i.text)}</span></div>`
+      ).join('')}</div>`;
+
+    const toggle = document.getElementById('insight-more-toggle');
+    toggle.addEventListener('click', () => {
+      const nowHidden = document.getElementById('insight-more').classList.toggle('hidden');
+      toggle.textContent = nowHidden ? `+${rest.length} more insight${rest.length === 1 ? '' : 's'}` : 'Show less';
+    });
   }
 
   // ── Fill-your-open-time suggestions (rule-based, no AI) ───────
@@ -548,52 +606,6 @@
     return all;
   }
 
-  function renderSuggestions() {
-    const box = document.getElementById('suggestions-list');
-    if (!box) return;
-    if (!entries.length) { box.innerHTML = '<div class="empty-hint">Add a few blocks above, then check back here for gaps worth filling.</div>'; return; }
-
-    const suggestions = computeSuggestions();
-    if (!suggestions.length) { box.innerHTML = '<div class="empty-hint">Nothing obvious left to fill — your week already covers the basics.</div>'; return; }
-
-    box.innerHTML = suggestions.map(s => {
-      const cat = CATEGORIES[s.category];
-      return `<div class="suggestion-row">
-        <div class="suggestion-emoji">${cat.emoji}</div>
-        <div class="suggestion-body">
-          <div class="suggestion-title">${esc(s.title)}</div>
-          <div class="suggestion-meta">${esc(slotLabel(s.slot))} · ${fmtTime(minToHHMM(s.start))}–${fmtTime(minToHHMM(s.end))}</div>
-          ${s.reason ? `<div class="suggestion-reason">${esc(s.reason)}</div>` : ''}
-        </div>
-        <div class="suggestion-actions">
-          <button class="btn-primary small" data-add="${esc(s.key)}">Add</button>
-          <button class="suggestion-dismiss" data-dismiss="${esc(s.key)}" title="Dismiss"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
-        </div>
-      </div>`;
-    }).join('');
-
-    box.querySelectorAll('[data-add]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const s = suggestions.find(x => x.key === btn.dataset.add);
-        if (!s) return;
-        const cycleDay = slotCycleDay(s.slot);
-        const entry = { category: s.category, title: s.title, start: minToHHMM(s.start), end: minToHHMM(s.end) };
-        if (cycleDay) { entry.recurrence = 'cycle'; entry.cycleDays = [cycleDay]; }
-        else { entry.recurrence = 'weekly'; entry.weekdays = [s.slot % 7]; }
-        addEntry(entry);
-        renderAll();
-      });
-    });
-    box.querySelectorAll('[data-dismiss]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        dismissedSuggestionKeys.add(btn.dataset.dismiss);
-        saveDismissed();
-        renderSuggestions();
-      });
-    });
-    window.lucide?.createIcons();
-  }
-
   const GENERAL_TIPS = [
     { icon: '🎯', text: 'Do your hardest or most disliked subject first, while your energy and focus are highest.' },
     { icon: '⏲️', text: 'Study in focused blocks of 25–45 minutes with a 5–10 minute break between them — it beats one long unbroken session.' },
@@ -671,15 +683,45 @@
 
   function renderAll() {
     renderGrid();
-    renderSuggestions();
     renderTotals();
     renderInsights();
     renderGeneralTips();
     renderEntriesList();
     renderOnceOffList();
     renderPrintHeader();
+    renderQuickstart();
     syncPlannerSummary();
     window.lucide?.createIcons();
+  }
+
+  // ── Quick start ──────────────────────────────────────────────
+  // The blank grid is the biggest drop-off point for a first-time user —
+  // offer sensible defaults for the two things almost everyone has
+  // (sleep, meals) instead of an empty form. Shown only while the plan
+  // is empty, or until explicitly skipped.
+  const QUICKSTART_SKIP_KEY = 'ml-time-turner-quickstart-skip';
+  const QUICKSTART_DEFAULTS = [
+    { category: 'rest', title: 'Sleep', recurrence: 'weekly', weekdays: [0, 1, 2, 3, 4, 5, 6], start: '22:00', end: '06:30' },
+    { category: 'meals', title: 'Breakfast', recurrence: 'weekly', weekdays: [0, 1, 2, 3, 4, 5, 6], start: '06:30', end: '07:00' },
+    { category: 'meals', title: 'Lunch', recurrence: 'weekly', weekdays: [0, 1, 2, 3, 4, 5, 6], start: '12:30', end: '13:00' },
+    { category: 'meals', title: 'Dinner', recurrence: 'weekly', weekdays: [0, 1, 2, 3, 4, 5, 6], start: '18:30', end: '19:15' }
+  ];
+  function renderQuickstart() {
+    const wrap = document.getElementById('quickstart-wrap');
+    if (!wrap) return;
+    let skipped = false;
+    try { skipped = localStorage.getItem(QUICKSTART_SKIP_KEY) === '1'; } catch (e) {}
+    wrap.classList.toggle('hidden', entries.length > 0 || skipped);
+  }
+  function wireQuickstart() {
+    document.getElementById('quickstart-btn').addEventListener('click', () => {
+      QUICKSTART_DEFAULTS.forEach(addEntry);
+      renderAll();
+    });
+    document.getElementById('quickstart-skip').addEventListener('click', () => {
+      try { localStorage.setItem(QUICKSTART_SKIP_KEY, '1'); } catch (e) {}
+      renderQuickstart();
+    });
   }
 
   // ── Wellbeing summary sync ─────────────────────────────────────
@@ -806,8 +848,10 @@
 
     const { ics, skippedCycle } = buildICS(anchorDateStr);
     if (skippedCycle > 0) {
-      msg.textContent = `Exported without ${skippedCycle} timetable-day block${skippedCycle === 1 ? '' : 's'} — enter the real date for Day 1 above to include ${skippedCycle === 1 ? 'it' : 'them'}.`;
+      msg.textContent = `Exported without ${skippedCycle} timetable-day block${skippedCycle === 1 ? '' : 's'} — enter the real date for Day 1 below to include ${skippedCycle === 1 ? 'it' : 'them'}.`;
       msg.className = 'msg';
+      document.getElementById('ics-advanced-box').classList.remove('hidden');
+      document.getElementById('ics-advanced-toggle').textContent = 'Hide advanced options';
     } else {
       msg.textContent = 'Exported.';
       msg.className = 'msg ok';
@@ -876,7 +920,28 @@
     document.getElementById('af-period-to').innerHTML = options;
   }
 
+  // One primary action at rest: the add-block form stays collapsed
+  // behind a single button until the student actually wants to add
+  // something, then folds back up once they've submitted.
+  function collapseAddBlockForm() {
+    document.getElementById('add-block-form').classList.add('hidden');
+    document.getElementById('add-block-toggle').innerHTML = '<i data-lucide="plus" style="width:14px;height:14px;"></i>Add a block';
+    window.lucide?.createIcons();
+  }
+  function wireAddBlockToggle() {
+    const toggle = document.getElementById('add-block-toggle');
+    const form = document.getElementById('add-block-form');
+    toggle.addEventListener('click', () => {
+      const nowHidden = form.classList.toggle('hidden');
+      toggle.innerHTML = nowHidden
+        ? '<i data-lucide="plus" style="width:14px;height:14px;"></i>Add a block'
+        : '<i data-lucide="minus" style="width:14px;height:14px;"></i>Close';
+      window.lucide?.createIcons();
+    });
+  }
+
   function wireForm() {
+    wireAddBlockToggle();
     const catSelect = document.getElementById('af-category');
     catSelect.innerHTML = Object.entries(CATEGORIES).map(([key, c]) => `<option value="${key}">${c.emoji} ${esc(c.label)}</option>`).join('');
 
@@ -961,6 +1026,7 @@
       msg.textContent = '';
       document.getElementById('af-title').value = '';
       document.getElementById('af-reminder').checked = false;
+      collapseAddBlockForm();
       renderAll();
     });
 
@@ -973,6 +1039,11 @@
     });
 
     document.getElementById('ics-export-btn').addEventListener('click', exportICS);
+    document.getElementById('ics-advanced-toggle').addEventListener('click', () => {
+      const toggle = document.getElementById('ics-advanced-toggle');
+      const nowHidden = document.getElementById('ics-advanced-box').classList.toggle('hidden');
+      toggle.textContent = nowHidden ? 'Advanced: set Day 1 date' : 'Hide advanced options';
+    });
     document.getElementById('print-btn').addEventListener('click', () => window.print());
     document.getElementById('clear-btn').addEventListener('click', () => {
       if (!entries.length) return;
@@ -984,6 +1055,7 @@
     loadEntries();
     loadDismissed();
     wireForm();
+    wireQuickstart();
     renderAll();
     const gotCloud = await pullCloudState();
     if (gotCloud) renderAll();

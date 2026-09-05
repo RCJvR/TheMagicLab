@@ -213,18 +213,34 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
 .tip-icon{flex-shrink:0;font-size:15px;}
 .tip.warn .tip-icon{filter:none;}
 
-/* Suggestions */
-.suggestion-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
-.suggestion-row:last-child{border-bottom:none;}
-.suggestion-emoji{font-size:16px;flex-shrink:0;}
-.suggestion-body{flex:1;min-width:0;}
-.suggestion-title{font-weight:700;font-size:13px;}
-.suggestion-meta{font-size:11.5px;color:var(--muted);margin-top:2px;}
-.suggestion-reason{font-size:10.5px;color:var(--muted);opacity:0.75;font-style:italic;margin-top:2px;}
-.suggestion-actions{display:flex;gap:6px;flex-shrink:0;}
-.btn-primary.small{padding:7px 13px;font-size:11.5px;border-radius:9px;}
-.suggestion-dismiss{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px;color:var(--muted);cursor:pointer;flex-shrink:0;}
-.suggestion-dismiss:hover{color:#fca5a5;border-color:rgba(248,113,113,0.3);}
+/* Ghost (suggested) blocks — tap in the grid to add, × to dismiss */
+.grid-ghost{
+  position:absolute;left:2%;width:96%;border-radius:5px;border:1.5px dashed;padding:2px 4px;
+  overflow:hidden;font-size:9px;line-height:1.25;font-weight:600;cursor:pointer;
+  background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:space-between;gap:4px;
+  transition:background 150ms;
+}
+.grid-ghost:hover{background:rgba(255,255,255,0.08);}
+.grid-ghost .gg-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.grid-ghost .gg-dismiss{flex-shrink:0;opacity:0.55;font-size:11px;line-height:1;padding:0 2px;}
+.grid-ghost .gg-dismiss:hover{opacity:1;}
+
+/* Insights — one lead sentence, rest tucked away */
+.insight-lead{display:flex;gap:10px;align-items:flex-start;padding:4px 0 12px;font-size:14px;line-height:1.55;font-weight:600;color:var(--text);}
+.insight-lead-icon{font-size:20px;flex-shrink:0;}
+.insight-more-toggle{
+  background:transparent;border:none;color:var(--muted);font-family:var(--font);font-size:11.5px;font-weight:700;
+  cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;
+}
+.insight-more-toggle:hover{color:var(--text2);}
+.insight-more{margin-top:10px;padding-top:4px;border-top:1px solid var(--border);}
+
+/* Collapsible secondary controls (add-block form, export advanced options) */
+.ics-advanced-toggle{
+  display:inline-block;margin-top:10px;background:transparent;border:none;color:var(--muted);font-family:var(--font);
+  font-size:11.5px;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;
+}
+.ics-advanced-toggle:hover{color:var(--text2);}
 
 /* Entries list */
 .entry-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
@@ -401,11 +417,23 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
     <input class="form-input" id="plan-name" placeholder="e.g. Thabo M.">
   </div>
 
+  <!-- ── Quick start ── -->
+  <div class="no-print" id="quickstart-wrap">
+    <div class="section-title">⚡ Quick start</div>
+    <div class="section-sub">Set up the basics in one tap — sleep and meals — then add the rest as you go, or build your whole week yourself below.</div>
+    <div class="card" id="quickstart-card">
+      <button class="btn-primary" id="quickstart-btn" type="button"><i data-lucide="zap" style="width:14px;height:14px;"></i>Set up my week</button>
+      <button class="btn-ghost" id="quickstart-skip" type="button" style="margin-left:8px;">Skip, I'll build my own</button>
+    </div>
+  </div>
+
   <!-- ── Add entry ── -->
   <div class="no-print">
     <div class="section-title">🪄 Add a block</div>
     <div class="section-sub">Use <strong>Timetable days</strong> for the things that rotate with your school's 10-day cycle — usually just class/school hours. Use <strong>Every week</strong> for everything else: practices, tests, meals, chores, sleep — they happen on the same real day each week, not by cycle day.</div>
     <div class="card" id="add-card">
+      <button class="btn-primary" id="add-block-toggle" type="button"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add a block</button>
+      <div id="add-block-form" class="hidden" style="margin-top:16px;">
       <div class="form-row">
         <div>
           <label class="form-label" for="af-category">Category</label>
@@ -499,12 +527,13 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
 
       <div class="msg" id="af-msg"></div>
       <button class="btn-primary" id="af-submit"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add block</button>
+      </div>
     </div>
   </div>
 
   <!-- ── Two-week grid ── -->
   <div class="section-title">📅 Your two weeks at a glance</div>
-  <div class="section-sub">Day 1–5 fall in Week 1, Day 6–10 in Week 2 — the whole thing repeats from there.</div>
+  <div class="section-sub">Day 1–5 fall in Week 1, Day 6–10 in Week 2 — the whole thing repeats from there. Dashed outlines are open-time suggestions, built from your own schedule (no AI) — tap one to add it, or the × to dismiss it.</div>
   <div class="card">
     <div class="week-label">Week 1 · Timetable days 1–5</div>
     <div class="grid-wrap">
@@ -517,13 +546,6 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
       <div class="grid-inner" id="week-grid-2"></div>
     </div>
     <div class="legend" id="legend"></div>
-  </div>
-
-  <!-- ── Suggestions ── -->
-  <div class="section-title">✨ Fill your open time</div>
-  <div class="section-sub">Rule-based, not AI — built from your own schedule: open gaps, meal and wind-down habits, and how much study time is already blocked.</div>
-  <div class="card no-print" id="suggestions-card">
-    <div id="suggestions-list"><div class="empty-hint">Add a few blocks above, then check back here for gaps worth filling.</div></div>
   </div>
 
   <!-- ── Totals ── -->
@@ -559,12 +581,13 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
     <div class="section-title">📤 Export to your calendar</div>
     <div class="section-sub">Weekly items (practices, meals, sleep) export as recurring events with no setup. Timetable-day blocks need the real date of Day 1 to know which calendar dates they fall on. Anything you ticked "🔔 Remind me the evening before" on comes through as a real alarm — once imported, your phone's own calendar app handles the notification, on iPhone or Android, with nothing else to set up.</div>
     <div class="card" id="ics-card">
-      <label class="form-label" for="ics-anchor-date">Day 1 date <span class="section-title-note">(only needed for timetable-day blocks)</span></label>
-      <input class="form-input" type="date" id="ics-anchor-date" style="max-width:220px;">
-      <div style="margin-top:12px;">
-        <button class="btn-primary" id="ics-export-btn"><i data-lucide="calendar" style="width:14px;height:14px;"></i>Export to calendar (.ics)</button>
-      </div>
+      <button class="btn-primary" id="ics-export-btn"><i data-lucide="calendar" style="width:14px;height:14px;"></i>Export to calendar (.ics)</button>
       <div class="msg" id="ics-msg"></div>
+      <button type="button" class="ics-advanced-toggle" id="ics-advanced-toggle">Advanced: set Day 1 date</button>
+      <div class="hidden" id="ics-advanced-box" style="margin-top:10px;">
+        <label class="form-label" for="ics-anchor-date">Day 1 date <span class="section-title-note">(only needed for timetable-day blocks)</span></label>
+        <input class="form-input" type="date" id="ics-anchor-date" style="max-width:220px;">
+      </div>
     </div>
   </div>
 
