@@ -231,6 +231,25 @@
     }).join('');
   }
 
+  /** A quick "due today" highlight, scoped to the learner's own subjects
+   * regardless of the subject-filter dropdown — that filter is for
+   * browsing, this is meant to always show everything relevant today. */
+  function renderTodayBanner(list) {
+    const box = document.getElementById('assess-today');
+    if (!box) return;
+    const todayItems = list.filter(a => daysUntil(a.due_date) === 0);
+    if (!todayItems.length) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+    box.classList.remove('hidden');
+    box.innerHTML = `
+      <div class="today-banner-title">📌 Due today</div>
+      ${todayItems.map(a => `
+        <div class="today-banner-item">
+          <span class="subject-tag">${esc(a.subject)}</span>
+          <span class="type-tag subject-tag">${esc(TYPE_LABELS[a.type] || a.type)}</span>
+          <span class="today-banner-text">${esc(a.title)}</span>
+        </div>`).join('')}`;
+  }
+
   function populateSubjectFilter(list) {
     const select = document.getElementById('assess-subject-filter');
     if (!select) return;
@@ -244,6 +263,7 @@
   async function renderList() {
     const box = document.getElementById('assess-list');
     if (viewMode === 'all') {
+      document.getElementById('assess-today').classList.add('hidden');
       const list = await fetchAllAssessments();
       populateSubjectFilter(list);
       const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
@@ -253,9 +273,11 @@
     if (profile.grade >= 10 && !mySubjects.length) {
       box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
       populateSubjectFilter([]);
+      document.getElementById('assess-today').classList.add('hidden');
       return;
     }
     const list = await fetchAssessmentsForMe();
+    renderTodayBanner(list);
     populateSubjectFilter(list);
     const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
     renderAssessmentItems(filtered, { showGrade: false });
