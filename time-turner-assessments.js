@@ -4,10 +4,11 @@
 // `assessments` table (and profiles.elective_subjects column) from
 // time-turner-assessments-schema.sql. Include after auth.js.
 //
-// Grade 8-9 take every subject, so they see every assessment for their
-// grade with no filtering. Grade 10-12 pick their own subjects first
-// (stored on their profile), then only see assessments matching both
-// their grade and one of those subjects.
+// Grade 8-9 take every subject except one home-language pair, so they
+// pick that pair (stored on their profile like Grade 10-12's electives)
+// and see every assessment for their grade minus the other pair's.
+// Grade 10-12 pick their own subjects first, then only see assessments
+// matching both their grade and one of those subjects.
 // ============================================================
 
 (function () {
@@ -16,8 +17,14 @@
     project: 'Project', practical: 'Practical', other: 'Other'
   };
 
+  const LANGUAGE_SUBJECTS = ['English Home Language', 'English First Additional Language', 'Afrikaans Home Language', 'Afrikaans First Additional Language'];
+  const LANGUAGE_COMBOS = [
+    { subjects: ['English Home Language', 'Afrikaans First Additional Language'], label: 'English HL + Afrikaans FAL' },
+    { subjects: ['Afrikaans Home Language', 'English First Additional Language'], label: 'Afrikaans HL + English FAL' }
+  ];
+
   let profile = null;
-  let mySubjects = [];        // grade 10-12 only
+  let mySubjects = [];        // grade 10-12: elective subjects. grade 8-9: chosen language pair.
   let availableSubjects = []; // distinct subjects on record for this grade
   let viewMode = 'mine';      // 'mine' | 'all'
   let subjectFilter = '';    // '' = all subjects
@@ -96,14 +103,17 @@
   // ── Data access ──────────────────────────────────────────────
   async function fetchAssessmentsForMe() {
     if (!profile?.grade) return [];
+    if (!mySubjects.length) return [];
     let query = supabase().from('assessments').select('*').eq('grade', profile.grade);
-    if (profile.grade >= 10) {
-      if (!mySubjects.length) return [];
-      query = query.in('subject', mySubjects);
-    }
+    if (profile.grade >= 10) query = query.in('subject', mySubjects);
     const { data, error } = await query.order('due_date', { ascending: true, nullsFirst: false });
     if (error) { console.warn('[MagicLab] fetchAssessmentsForMe error:', error.message); return []; }
-    return data || [];
+    let list = data || [];
+    if (profile.grade < 10) {
+      const excludedLanguages = LANGUAGE_SUBJECTS.filter(s => !mySubjects.includes(s));
+      list = list.filter(a => !excludedLanguages.includes(a.subject));
+    }
+    return list;
   }
 
   async function fetchAllAssessments() {
@@ -214,7 +224,7 @@
     if (!wrap) return;
 
     if (profile.grade < 10) {
-      wrap.innerHTML = `<div class="section-sub" style="margin:0 0 12px;">Grade ${profile.grade} takes every subject, so every Grade ${profile.grade} assessment below applies to you.</div>`;
+      renderLanguageChooser(wrap);
       return;
     }
 
@@ -255,6 +265,35 @@
       const { error } = await saveMySubjects([...chosen]);
       if (error) { msg.textContent = error.message; msg.className = 'msg err'; return; }
       await renderAll();
+    });
+  }
+
+  function renderLanguageChooser(wrap) {
+    const chosenCombo = LANGUAGE_COMBOS.find(c => c.subjects.every(s => mySubjects.includes(s)));
+    if (chosenCombo) {
+      wrap.innerHTML = `
+        <div class="section-sub" style="margin:0 0 10px;">Grade ${profile.grade} takes every subject except one home-language pair. Yours:</div>
+        <div class="assess-tags">${chosenCombo.subjects.map(s => `<span class="subject-tag">${esc(s)}</span>`).join('')}</div>
+        <button class="btn-ghost" id="assess-edit-language" style="margin-top:10px;">Change my language pair</button>`;
+      document.getElementById('assess-edit-language').addEventListener('click', () => renderLanguagePicker(wrap));
+      return;
+    }
+    renderLanguagePicker(wrap);
+  }
+
+  function renderLanguagePicker(wrap) {
+    wrap.innerHTML = `
+      <div class="section-sub" style="margin:0 0 10px;">Grade ${profile.grade} takes every subject except one home-language pair — pick yours so your calendar doesn't double up on the other language.</div>
+      <div class="day-toggles" id="assess-language-combo">${LANGUAGE_COMBOS.map((c, i) => `<button type="button" class="day-btn" data-combo="${i}">${esc(c.label)}</button>`).join('')}</div>
+      <div class="msg" id="assess-language-msg"></div>`;
+    wrap.querySelectorAll('#assess-language-combo .day-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const msg = document.getElementById('assess-language-msg');
+        const combo = LANGUAGE_COMBOS[parseInt(btn.dataset.combo, 10)];
+        const { error } = await saveMySubjects(combo.subjects);
+        if (error) { msg.textContent = error.message; msg.className = 'msg err'; return; }
+        await renderAll();
+      });
     });
   }
 
@@ -333,8 +372,10 @@
       renderAssessmentItems(filtered, { showGrade: true });
       return;
     }
-    if (profile.grade >= 10 && !mySubjects.length) {
-      box.innerHTML = '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>';
+    if (!mySubjects.length) {
+      box.innerHTML = profile.grade >= 10
+        ? '<div class="empty-hint">Choose your subjects above to see your assessment calendar.</div>'
+        : '<div class="empty-hint">Choose your home-language pair above to see your assessment calendar.</div>';
       populateSubjectFilter([]);
       document.getElementById('assess-today').classList.add('hidden');
       return;
