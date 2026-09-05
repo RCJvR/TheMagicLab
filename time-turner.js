@@ -124,8 +124,13 @@
     }
     return 'Day ' + runs.join(', ');
   }
+  function fmtOnceDate(dateStr) {
+    return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  }
   function fmtRecurrence(entry) {
-    return entry.recurrence === 'cycle' ? fmtCycleDays(entry.cycleDays) : fmtWeekdays(entry.weekdays);
+    if (entry.recurrence === 'cycle') return fmtCycleDays(entry.cycleDays);
+    if (entry.recurrence === 'once') return fmtOnceDate(entry.date);
+    return fmtWeekdays(entry.weekdays);
   }
   function fmtPeriodInfo(info) {
     const dayLabel = info.dayType === 'friday' ? 'Friday' : 'Regular';
@@ -136,10 +141,16 @@
     return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  /** One-off (dated) entries aren't part of the repeating two-week
+   * template at all — the grid has no anchor to real calendar dates
+   * for weekly/cycle entries either, so there's no slot to place a
+   * specific date into. They live in their own list instead, and
+   * this keeps them out of the grid, totals, insights and suggestions,
+   * all of which model a *typical* recurring week. */
   function slotsForEntry(entry) {
-    return entry.recurrence === 'cycle'
-      ? entry.cycleDays.map(cycleDayToSlot)
-      : entry.weekdays.flatMap(w => [w, w + 7]);
+    if (entry.recurrence === 'cycle') return entry.cycleDays.map(cycleDayToSlot);
+    if (entry.recurrence === 'once') return [];
+    return entry.weekdays.flatMap(w => [w, w + 7]);
   }
 
   function addEntry(entry) {
@@ -538,9 +549,10 @@
   // ── Entries list ─────────────────────────────────────────────
   function renderEntriesList() {
     const box = document.getElementById('entries-list');
-    if (!entries.length) { box.innerHTML = '<div class="empty-hint">Nothing added yet.</div>'; return; }
+    const recurring = entries.filter(e => e.recurrence !== 'once');
+    if (!recurring.length) { box.innerHTML = '<div class="empty-hint">Nothing added yet.</div>'; return; }
 
-    const sorted = [...entries].sort((a, b) => a.category.localeCompare(b.category) || toMinutes(a.start) - toMinutes(b.start));
+    const sorted = [...recurring].sort((a, b) => a.category.localeCompare(b.category) || toMinutes(a.start) - toMinutes(b.start));
     box.innerHTML = sorted.map(e => {
       const cat = CATEGORIES[e.category] || CATEGORIES.other;
       const recurTag = e.recurrence === 'cycle' ? ' · timetable' : '';
@@ -550,6 +562,33 @@
         <div class="entry-body">
           <div class="entry-title">${esc(e.title || cat.label)}</div>
           <div class="entry-meta">${esc(fmtRecurrence(e))}${recurTag} · ${esc(timeLabel)}</div>
+        </div>
+        <button class="entry-del" data-del="${e.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
+      </div>`;
+    }).join('');
+
+    box.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => { deleteEntry(btn.dataset.del); renderAll(); });
+    });
+    window.lucide?.createIcons();
+  }
+
+  function renderOnceOffList() {
+    const box = document.getElementById('onceoff-list');
+    if (!box) return;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const onceOff = entries.filter(e => e.recurrence === 'once')
+      .sort((a, b) => a.date.localeCompare(b.date) || toMinutes(a.start) - toMinutes(b.start));
+    if (!onceOff.length) { box.innerHTML = '<div class="empty-hint">Nothing added yet.</div>'; return; }
+
+    box.innerHTML = onceOff.map(e => {
+      const cat = CATEGORIES[e.category] || CATEGORIES.other;
+      const isPast = new Date(e.date + 'T00:00:00') < today;
+      return `<div class="entry-row" data-id="${e.id}" style="${isPast ? 'opacity:0.5;' : ''}">
+        <div class="entry-emoji">${cat.emoji}</div>
+        <div class="entry-body">
+          <div class="entry-title">${esc(e.title || cat.label)}</div>
+          <div class="entry-meta">${esc(fmtOnceDate(e.date))} · ${esc(fmtTime(e.start))}–${esc(fmtTime(e.end))}${isPast ? ' · past' : ''}</div>
         </div>
         <button class="entry-del" data-del="${e.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
       </div>`;
@@ -575,8 +614,33 @@
     renderInsights();
     renderGeneralTips();
     renderEntriesList();
+    renderOnceOffList();
     renderPrintHeader();
+    syncPlannerSummary();
     window.lucide?.createIcons();
+  }
+
+  // ── Wellbeing summary sync ─────────────────────────────────────
+  // The planner itself stays entirely local — this pushes only the
+  // weekly category TOTALS (same numbers already shown in "Weekly
+  // totals" above) up to Supabase, never the underlying schedule, so a
+  // teacher who already has this student in one of their classes can
+  // see "low rest, no free time" without seeing the actual day-by-day
+  // plan. No entries yet means no row at all — absence of data, not a
+  // flag saying something's wrong.
+  let plannerSyncTimer = null;
+  function syncPlannerSummary() {
+    if (!entries.length || !window.MagicLabAuth?._supabase) return;
+    clearTimeout(plannerSyncTimer);
+    plannerSyncTimer = setTimeout(() => {
+      try {
+        const profile = window.MagicLabAuth.getProfile?.();
+        if (!profile?.id) return;
+        window.MagicLabAuth._supabase().from('planner_summaries')
+          .upsert({ student_id: profile.id, weekly_minutes: weeklyAverages(), updated_at: new Date().toISOString() })
+          .then(({ error }) => { if (error) console.warn('[MagicLab] planner sync error:', error.message); });
+      } catch (e) {}
+    }, 1500);
   }
 
   // ── Calendar export (.ics) ────────────────────────────────────
@@ -644,6 +708,11 @@
           const endDate = crosses ? icsAddDays(date, 1) : date;
           pushEvent(`tt-${entry.id}-d${day}`, date, endDate, sh, sm, eh, em, title, cat.label, null);
         });
+      } else if (entry.recurrence === 'once') {
+        const [y, mo, d] = entry.date.split('-').map(Number);
+        const date = new Date(y, mo - 1, d);
+        const endDate = crosses ? icsAddDays(date, 1) : date;
+        pushEvent(`tt-${entry.id}`, date, endDate, sh, sm, eh, em, title, cat.label, null);
       }
     });
 
@@ -711,6 +780,7 @@
     document.querySelectorAll('.recur-btn').forEach(b => b.classList.toggle('active', b.dataset.recur === mode));
     document.getElementById('weekday-picker').classList.toggle('hidden', mode !== 'weekly');
     document.getElementById('cycleday-picker').classList.toggle('hidden', mode !== 'cycle');
+    document.getElementById('once-date-picker').classList.toggle('hidden', mode !== 'once');
   }
 
   let timeMode = 'clock';
@@ -774,8 +844,14 @@
       const category = catSelect.value;
       const title = document.getElementById('af-title').value.trim();
 
-      const daySet = recurrence === 'cycle' ? selectedCycleDays : selectedWeekdays;
-      if (!daySet.size) { msg.textContent = recurrence === 'cycle' ? 'Pick at least one timetable day.' : 'Pick at least one day.'; msg.className = 'msg err'; return; }
+      let onceDate = null;
+      if (recurrence === 'once') {
+        onceDate = document.getElementById('af-once-date').value;
+        if (!onceDate) { msg.textContent = 'Pick a date.'; msg.className = 'msg err'; return; }
+      } else {
+        const daySet = recurrence === 'cycle' ? selectedCycleDays : selectedWeekdays;
+        if (!daySet.size) { msg.textContent = recurrence === 'cycle' ? 'Pick at least one timetable day.' : 'Pick at least one day.'; msg.className = 'msg err'; return; }
+      }
 
       let start, end, periodInfo = null;
       if (timeMode === 'period') {
@@ -798,6 +874,7 @@
       const entry = { category, title: title || null, recurrence, start, end };
       if (periodInfo) entry.periodInfo = periodInfo;
       if (recurrence === 'cycle') entry.cycleDays = [...selectedCycleDays];
+      else if (recurrence === 'once') entry.date = onceDate;
       else entry.weekdays = [...selectedWeekdays];
 
       addEntry(entry);
