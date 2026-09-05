@@ -279,7 +279,7 @@
 
     const sleepPerNight = totals.rest / 7 / 60;
     if (totals.rest === 0) {
-      insights.push({ level: 'warn', icon: '😴', text: "No sleep/rest blocks scheduled yet — add your usual bedtime and wake time so the plan accounts for it." });
+      insights.push({ level: 'warn', icon: '😴', text: "No sleep/rest blocks scheduled yet — add your usual bedtime and wake time so the plan accounts for it. \"Fill your open time\" below can suggest a wind-down slot." });
     } else if (sleepPerNight < 7.5) {
       insights.push({ level: 'warn', icon: '😴', text: `Sleep averages about ${sleepPerNight.toFixed(1)} h/night in this plan. Teenagers need roughly 8–10 hours a night — try moving bedtime earlier.` });
     }
@@ -300,13 +300,13 @@
     }
 
     if (totals.chores === 0) {
-      insights.push({ level: 'info', icon: '🧹', text: 'No time set aside for chores/cleaning up yet — even 15 minutes a day keeps it from piling up into a whole afternoon later.' });
+      insights.push({ level: 'info', icon: '🧹', text: 'No time set aside for chores/cleaning up yet — even 15 minutes a day keeps it from piling up into a whole afternoon later. See "Fill your open time" below for a suggested slot.' });
     }
     if (totals.meals === 0) {
-      insights.push({ level: 'info', icon: '🍽️', text: 'No meal times blocked yet — scheduling them (not just "whenever") makes it easier to protect study time around them.' });
+      insights.push({ level: 'info', icon: '🍽️', text: 'No meal times blocked yet — scheduling them (not just "whenever") makes it easier to protect study time around them. "Fill your open time" below can suggest lunch and dinner slots.' });
     }
     if (totals.family === 0) {
-      insights.push({ level: 'info', icon: '❤️', text: 'No family time blocked yet — even a shared dinner or a fixed evening slot keeps it from getting crowded out by everything else.' });
+      insights.push({ level: 'info', icon: '❤️', text: 'No family time blocked yet — even a shared dinner or a fixed evening slot keeps it from getting crowded out by everything else. See "Fill your open time" below for a suggested slot.' });
     }
 
     if (!insights.length) {
@@ -330,7 +330,15 @@
   // already on this page (entries + categories); nothing is guessed
   // beyond what a reasonable default schedule would do.
   const SUGGEST_START = 6 * 60, SUGGEST_END = 21 * 60, MIN_GAP = 20;
+  const DISMISSED_KEY = 'ml-time-turner-dismissed-v1';
   let dismissedSuggestionKeys = new Set();
+
+  function loadDismissed() {
+    try { dismissedSuggestionKeys = new Set(JSON.parse(localStorage.getItem(DISMISSED_KEY)) || []); } catch (e) { dismissedSuggestionKeys = new Set(); }
+  }
+  function saveDismissed() {
+    try { localStorage.setItem(DISMISSED_KEY, JSON.stringify([...dismissedSuggestionKeys])); } catch (e) {}
+  }
 
   function freeGapsForSlot(pieces) {
     const merged = [];
@@ -357,8 +365,8 @@
   function categoryMinutes(pieces, category) {
     return pieces.filter(p => p.entry.category === category).reduce((sum, p) => sum + (p.end - p.start), 0);
   }
-  function mkSuggestion(slot, category, title, start, end) {
-    return { slot, category, title, start, end, key: `${slot}|${category}|${start}` };
+  function mkSuggestion(slot, category, title, start, end, reason) {
+    return { slot, category, title, start, end, reason, key: `${slot}|${category}|${start}` };
   }
 
   /** Within one contiguous free gap, carve out suggestions in priority
@@ -373,11 +381,11 @@
     freeGapsForSlot(pieces).forEach(gap => {
       let remaining = [{ start: gap.start, end: gap.end }];
 
-      function take(from, to, category, title) {
+      function take(from, to, category, title, reason) {
         for (let i = 0; i < remaining.length; i++) {
           const r = remaining[i];
           if (r.start <= from && r.end >= to) {
-            out.push(mkSuggestion(slot, category, title, from, to));
+            out.push(mkSuggestion(slot, category, title, from, to, reason));
             const pieces2 = [];
             if (from - r.start > 0) pieces2.push({ start: r.start, end: from });
             if (r.end - to > 0) pieces2.push({ start: to, end: r.end });
@@ -390,11 +398,11 @@
 
       if (!hasCategoryNear(pieces, 'meals', 11 * 60, 15 * 60)) {
         const from = Math.max(gap.start, 12 * 60), to = Math.min(from + 45, 14 * 60);
-        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Lunch');
+        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Lunch', 'No lunch logged around midday');
       }
       if (!hasCategoryNear(pieces, 'meals', 17 * 60 + 30, 20 * 60)) {
         const from = Math.max(gap.start, 18 * 60), to = Math.min(from + 45, 19 * 60 + 30);
-        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Dinner');
+        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Dinner', 'No dinner logged in the evening');
       }
       if (hasSchool && categoryMinutes(pieces, 'homework') < 60) {
         let best = null;
@@ -402,21 +410,54 @@
           const s = Math.max(r.start, 14 * 60), e = r.end;
           if (e - s >= 30 && (!best || (e - s) > (best.end - best.start))) best = { start: s, end: e };
         });
-        if (best) take(best.start, Math.min(best.start + 60, best.end), 'homework', 'Study block');
+        if (best) take(best.start, Math.min(best.start + 60, best.end), 'homework', 'Study block', 'Less than 1h of study blocked today');
       }
       if (!hasCategoryNear(pieces, 'rest', 19 * 60, SUGGEST_END)) {
         const tail = remaining.find(r => r.end >= SUGGEST_END - 15 && r.start >= 19 * 60 - 30);
         if (tail) {
           const s = Math.max(tail.start, 20 * 60), e = tail.end;
-          if (e - s >= MIN_GAP) take(s, e, 'rest', 'Wind down');
+          if (e - s >= MIN_GAP) take(s, e, 'rest', 'Wind down', 'No rest/wind-down block yet this evening');
         }
       }
       remaining.forEach(r => {
-        if (r.end - r.start >= 90) out.push(mkSuggestion(slot, 'free', 'Free time', r.start, Math.min(r.start + 60, r.end)));
+        if (r.end - r.start >= 90) out.push(mkSuggestion(slot, 'free', 'Free time', r.start, Math.min(r.start + 60, r.end), 'Open time with nothing planned'));
       });
     });
 
     return out.slice(0, 4);
+  }
+
+  /** Habits that matter over a whole week (chores, family time, exercise)
+   * shouldn't get suggested on every single day — that's noise, not help.
+   * Each gets at most one suggestion across the whole two-week view,
+   * placed on the first day with room for it, and only while the habit
+   * has essentially no time logged anywhere in the plan yet. */
+  function addWeeklyHabitOnce(all, bySlot, category, title, minDuration, reason, preferAfternoon) {
+    for (let slot = 0; slot < SLOT_COUNT; slot++) {
+      const pieces = bySlot[slot];
+      if (categoryMinutes(pieces, category) > 0) continue;
+      const claimed = all.filter(s => s.slot === slot);
+      const candidates = [];
+      freeGapsForSlot(pieces).forEach(gap => {
+        let segs = [{ start: gap.start, end: gap.end }];
+        claimed.forEach(c => {
+          segs = segs.flatMap(sg => {
+            if (c.start >= sg.end || c.end <= sg.start) return [sg];
+            const pieces2 = [];
+            if (c.start > sg.start) pieces2.push({ start: sg.start, end: c.start });
+            if (c.end < sg.end) pieces2.push({ start: c.end, end: sg.end });
+            return pieces2;
+          });
+        });
+        segs.filter(sg => sg.end - sg.start >= minDuration).forEach(sg => candidates.push(sg));
+      });
+      if (!candidates.length) continue;
+      const afternoon = candidates.find(sg => sg.start >= 14 * 60);
+      const seg = (preferAfternoon && afternoon) ? afternoon : candidates[0];
+      const s = mkSuggestion(slot, category, title, seg.start, seg.start + minDuration, reason);
+      if (!dismissedSuggestionKeys.has(s.key)) all.push(s);
+      return;
+    }
   }
 
   function computeSuggestions() {
@@ -425,6 +466,12 @@
     for (let slot = 0; slot < SLOT_COUNT; slot++) {
       suggestionsForSlot(slot, bySlot[slot]).forEach(s => { if (!dismissedSuggestionKeys.has(s.key)) all.push(s); });
     }
+
+    const totals = weeklyAverages();
+    if (totals.chores === 0) addWeeklyHabitOnce(all, bySlot, 'chores', 'Chores', 15, 'No chores time logged this week', true);
+    if (totals.family === 0) addWeeklyHabitOnce(all, bySlot, 'family', 'Family time', 30, 'No family time logged this week', true);
+    if (totals.extracurricular / 60 < 3) addWeeklyHabitOnce(all, bySlot, 'extracurricular', 'Exercise / activity', 45, 'Less than 3h of exercise logged this week', false);
+
     return all;
   }
 
@@ -443,6 +490,7 @@
         <div class="suggestion-body">
           <div class="suggestion-title">${esc(s.title)}</div>
           <div class="suggestion-meta">${esc(slotLabel(s.slot))} · ${fmtTime(minToHHMM(s.start))}–${fmtTime(minToHHMM(s.end))}</div>
+          ${s.reason ? `<div class="suggestion-reason">${esc(s.reason)}</div>` : ''}
         </div>
         <div class="suggestion-actions">
           <button class="btn-primary small" data-add="${esc(s.key)}">Add</button>
@@ -466,6 +514,7 @@
     box.querySelectorAll('[data-dismiss]').forEach(btn => {
       btn.addEventListener('click', () => {
         dismissedSuggestionKeys.add(btn.dataset.dismiss);
+        saveDismissed();
         renderSuggestions();
       });
     });
@@ -676,6 +725,7 @@
 
   function init() {
     loadEntries();
+    loadDismissed();
     wireForm();
     renderAll();
   }
