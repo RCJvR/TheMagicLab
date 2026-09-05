@@ -29,3 +29,19 @@ create policy "Students manage their own planner entries" on planner_entries
   for all
   using (student_id = auth.uid())
   with check (student_id = auth.uid());
+
+-- ── Live .ics subscription (see supabase/functions/ics-feed) ──────────
+-- feed_token is an opaque, unguessable per-student token generated
+-- client-side (time-turner.js's ensureFeedToken()) — it authorizes the
+-- public ics-feed Edge Function to hand back this student's calendar to
+-- a plain, unauthenticated GET from a calendar app, since a webcal://
+-- subscription can never carry a Supabase session. It grants no other
+-- access; RLS above is unchanged, so a browser session still only ever
+-- reads/writes its own row.
+-- anchor_date is the real calendar date of "Day 1" of the school's
+-- 10-day timetable cycle — the same value the static .ics export in
+-- time-turner.js already asks for, stored here so the live feed can
+-- place timetable-day blocks on real dates too.
+alter table planner_entries add column if not exists feed_token uuid;
+alter table planner_entries add column if not exists anchor_date date;
+create unique index if not exists planner_entries_feed_token_key on planner_entries(feed_token);

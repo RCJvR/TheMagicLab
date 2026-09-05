@@ -22,6 +22,7 @@
   const STORAGE_KEY = 'ml-time-turner-entries-v2';
   const OLD_STORAGE_KEY = 'ml-time-turner-entries-v1';
   const NAME_KEY = 'ml-time-turner-name';
+  const ANCHOR_KEY = 'ml-time-turner-anchor-date';
   const DAY_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const DAY_FULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const DAY_MIN = 1440;
@@ -424,6 +425,10 @@
   const CLOUD_DEBOUNCE_MS = 1200;
   let cloudSyncTimer = null;
   let cloudReady = false;
+  // feedToken addresses this student's row for the public live-.ics Edge
+  // Function (see ics-feed) — it carries no other privilege, so it's
+  // fine to hold in a plain module variable and hand out in a URL.
+  let feedToken = null;
 
   function pushCloudState() {
     if (!cloudReady || !window.MagicLabAuth?._supabase) return;
@@ -431,12 +436,14 @@
     if (!profile?.id) return;
     clearTimeout(cloudSyncTimer);
     cloudSyncTimer = setTimeout(() => {
-      let planName = '';
+      let planName = '', anchorDate = '';
       try { planName = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
+      try { anchorDate = localStorage.getItem(ANCHOR_KEY) || ''; } catch (e) {}
       window.MagicLabAuth._supabase().from('planner_entries')
         .upsert({
           student_id: profile.id,
           plan_name: planName,
+          anchor_date: anchorDate || null,
           entries,
           dismissed_suggestions: [...dismissedSuggestionKeys],
           updated_at: new Date().toISOString()
@@ -462,6 +469,8 @@
       saveEntries();   // cloudReady is still false here, so this only writes the local cache
       saveDismissed(); // same
       if (data.plan_name != null) { try { localStorage.setItem(NAME_KEY, data.plan_name); } catch (e) {} }
+      if (data.anchor_date) { try { localStorage.setItem(ANCHOR_KEY, data.anchor_date); } catch (e) {} }
+      feedToken = data.feed_token || null;
       return true;
     } catch (e) {
       console.warn('[MagicLab] planner cloud pull error:', e.message);
@@ -469,6 +478,77 @@
     } finally {
       cloudReady = true;
     }
+  }
+
+  // ── Live calendar subscription (ics-feed Edge Function) ────────────
+  // A subscribed webcal:// URL updates itself as the plan changes,
+  // unlike the static export below — the Edge Function has no session
+  // to authenticate a calendar app's plain GET request with, so it
+  // trusts this opaque per-student token instead. Generated on demand
+  // (not at signup) since most students will only ever use the
+  // one-off .ics download.
+  const ICS_FEED_BASE = 'https://hrnodxqvyxzhfexkzeji.supabase.co/functions/v1/ics-feed';
+  function feedUrlFor(token) { return `${ICS_FEED_BASE}/${token}.ics`; }
+
+  async function ensureFeedToken() {
+    if (feedToken) return feedToken;
+    if (!window.MagicLabAuth?._supabase) return null;
+    const profile = window.MagicLabAuth.getProfile?.();
+    if (!profile?.id) return null;
+    const token = crypto.randomUUID();
+    const { error } = await window.MagicLabAuth._supabase().from('planner_entries')
+      .upsert({ student_id: profile.id, feed_token: token, updated_at: new Date().toISOString() });
+    if (error) { console.warn('[MagicLab] feed token error:', error.message); return null; }
+    feedToken = token;
+    return token;
+  }
+
+  async function regenerateFeedToken() {
+    feedToken = null;
+    return ensureFeedToken();
+  }
+
+  function renderSubscribe() {
+    const box = document.getElementById('subscribe-card');
+    if (!box) return;
+    const signedIn = !!window.MagicLabAuth?.getProfile?.()?.id;
+    document.getElementById('subscribe-signedout').classList.toggle('hidden', signedIn);
+    document.getElementById('subscribe-getlink').classList.toggle('hidden', !signedIn || !!feedToken);
+    document.getElementById('subscribe-linkbox').classList.toggle('hidden', !signedIn || !feedToken);
+    if (feedToken) {
+      const url = feedUrlFor(feedToken);
+      document.getElementById('subscribe-webcal-link').href = url.replace(/^https?:\/\//, 'webcal://');
+      document.getElementById('subscribe-url').value = url;
+    }
+  }
+
+  function wireSubscribe() {
+    const msg = document.getElementById('subscribe-msg');
+    document.getElementById('subscribe-get-btn').addEventListener('click', async () => {
+      msg.textContent = 'Setting up…'; msg.className = 'msg';
+      const token = await ensureFeedToken();
+      msg.textContent = token ? '' : 'Something went wrong — try again.';
+      msg.className = token ? 'msg' : 'msg err';
+      renderSubscribe();
+    });
+    document.getElementById('subscribe-copy-btn').addEventListener('click', async () => {
+      const input = document.getElementById('subscribe-url');
+      try {
+        await navigator.clipboard.writeText(input.value);
+        msg.textContent = 'Copied.'; msg.className = 'msg ok';
+      } catch (e) {
+        input.select();
+        msg.textContent = 'Select the link above and copy it manually.'; msg.className = 'msg';
+      }
+    });
+    document.getElementById('subscribe-regenerate-btn').addEventListener('click', async () => {
+      if (!confirm('Old subscription links will stop working immediately. Continue?')) return;
+      msg.textContent = 'Regenerating…'; msg.className = 'msg';
+      const token = await regenerateFeedToken();
+      msg.textContent = token ? 'New link ready.' : 'Something went wrong — try again.';
+      msg.className = token ? 'msg ok' : 'msg err';
+      renderSubscribe();
+    });
   }
 
   function freeGapsForSlot(pieces) {
@@ -690,6 +770,7 @@
     renderOnceOffList();
     renderPrintHeader();
     renderQuickstart();
+    renderSubscribe();
     syncPlannerSummary();
     window.lucide?.createIcons();
   }
@@ -1044,6 +1125,14 @@
       const nowHidden = document.getElementById('ics-advanced-box').classList.toggle('hidden');
       toggle.textContent = nowHidden ? 'Advanced: set Day 1 date' : 'Hide advanced options';
     });
+
+    const anchorInput = document.getElementById('ics-anchor-date');
+    try { anchorInput.value = localStorage.getItem(ANCHOR_KEY) || ''; } catch (e) {}
+    anchorInput.addEventListener('input', () => {
+      try { localStorage.setItem(ANCHOR_KEY, anchorInput.value); } catch (e) {}
+      pushCloudState();
+    });
+
     document.getElementById('print-btn').addEventListener('click', () => window.print());
     document.getElementById('clear-btn').addEventListener('click', () => {
       if (!entries.length) return;
@@ -1056,10 +1145,15 @@
     loadDismissed();
     wireForm();
     wireQuickstart();
+    wireSubscribe();
     renderAll();
     const gotCloud = await pullCloudState();
-    if (gotCloud) renderAll();
-    else pushCloudState();
+    if (gotCloud) {
+      try { document.getElementById('ics-anchor-date').value = localStorage.getItem(ANCHOR_KEY) || ''; } catch (e) {}
+      renderAll();
+    } else {
+      pushCloudState();
+    }
   }
 
   window.TimeTurner = { init };
