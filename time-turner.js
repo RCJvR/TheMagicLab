@@ -80,6 +80,7 @@
   }
   function saveEntries() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); } catch (e) {}
+    pushCloudState();
   }
 
   function toMinutes(hhmm) {
@@ -349,6 +350,57 @@
   }
   function saveDismissed() {
     try { localStorage.setItem(DISMISSED_KEY, JSON.stringify([...dismissedSuggestionKeys])); } catch (e) {}
+    pushCloudState();
+  }
+
+  // ── Cross-device sync ──────────────────────────────────────────
+  // localStorage is instant and works offline, so it stays the local
+  // cache and the thing every render reads from. Supabase is the
+  // cross-device copy: on load, whatever's already in the cloud wins
+  // (so switching devices doesn't strand your plan on the old one);
+  // after that, every local change is pushed up. cloudReady guards
+  // against a real race — without it, a brand-new browser with empty
+  // localStorage could push that emptiness to the cloud before the
+  // initial pull even finishes, clobbering a plan built on another
+  // device before it ever got read back.
+  const CLOUD_DEBOUNCE_MS = 1200;
+  let cloudSyncTimer = null;
+  let cloudReady = false;
+
+  function pushCloudState() {
+    if (!cloudReady || !window.MagicLabAuth?._supabase) return;
+    const profile = window.MagicLabAuth.getProfile?.();
+    if (!profile?.id) return;
+    clearTimeout(cloudSyncTimer);
+    cloudSyncTimer = setTimeout(() => {
+      let planName = '';
+      try { planName = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
+      window.MagicLabAuth._supabase().from('planner_entries')
+        .upsert({
+          student_id: profile.id,
+          plan_name: planName,
+          entries,
+          dismissed_suggestions: [...dismissedSuggestionKeys],
+          updated_at: new Date().toISOString()
+        })
+        .then(({ error }) => { if (error) console.warn('[MagicLab] planner cloud sync error:', error.message); });
+    }, CLOUD_DEBOUNCE_MS);
+  }
+
+  async function pullCloudState() {
+    if (!window.MagicLabAuth?._supabase) { cloudReady = true; return false; }
+    const profile = window.MagicLabAuth.getProfile?.();
+    if (!profile?.id) { cloudReady = true; return false; }
+    const { data, error } = await window.MagicLabAuth._supabase().from('planner_entries').select('*').eq('student_id', profile.id).maybeSingle();
+    if (error || !data) { cloudReady = true; return false; }
+
+    entries = Array.isArray(data.entries) ? data.entries : [];
+    dismissedSuggestionKeys = new Set(Array.isArray(data.dismissed_suggestions) ? data.dismissed_suggestions : []);
+    saveEntries();   // cloudReady is still false here, so this only writes the local cache
+    saveDismissed(); // same
+    if (data.plan_name != null) { try { localStorage.setItem(NAME_KEY, data.plan_name); } catch (e) {} }
+    cloudReady = true;
+    return true;
   }
 
   function freeGapsForSlot(pieces) {
@@ -630,7 +682,7 @@
   // flag saying something's wrong.
   let plannerSyncTimer = null;
   function syncPlannerSummary() {
-    if (!entries.length || !window.MagicLabAuth?._supabase) return;
+    if (!cloudReady || !entries.length || !window.MagicLabAuth?._supabase) return;
     clearTimeout(plannerSyncTimer);
     plannerSyncTimer = setTimeout(() => {
       try {
@@ -888,6 +940,7 @@
     nameInput.addEventListener('input', () => {
       try { localStorage.setItem(NAME_KEY, nameInput.value); } catch (e) {}
       renderPrintHeader();
+      pushCloudState();
     });
 
     document.getElementById('ics-export-btn').addEventListener('click', exportICS);
@@ -898,11 +951,14 @@
     });
   }
 
-  function init() {
+  async function init() {
     loadEntries();
     loadDismissed();
     wireForm();
     renderAll();
+    const gotCloud = await pullCloudState();
+    if (gotCloud) renderAll();
+    else pushCloudState();
   }
 
   window.TimeTurner = { init };
