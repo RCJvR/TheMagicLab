@@ -172,6 +172,8 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
 .btn-ghost:hover{color:var(--text);border-color:var(--border2);}
 .btn-ghost.danger:hover{color:#fca5a5;border-color:rgba(248,113,113,0.3);}
 .msg{font-size:12.5px;font-weight:600;margin-top:8px;}
+.checkbox-row{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--text2);line-height:1.5;cursor:pointer;}
+.checkbox-row input{margin-top:2px;flex-shrink:0;accent-color:var(--accent-1);width:15px;height:15px;cursor:pointer;}
 .msg.err{color:#fca5a5;}
 
 /* Weekly grid */
@@ -490,6 +492,11 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
           </div>
         </div>
       </div>
+      <label class="checkbox-row" style="margin-top:12px;">
+        <input type="checkbox" id="af-reminder">
+        <span>🔔 Remind me the evening before (19:00) — via the calendar export below, once it's imported into your phone's calendar app</span>
+      </label>
+
       <div class="msg" id="af-msg"></div>
       <button class="btn-primary" id="af-submit"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add block</button>
     </div>
@@ -550,7 +557,7 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
   <!-- ── Calendar export ── -->
   <div class="no-print">
     <div class="section-title">📤 Export to your calendar</div>
-    <div class="section-sub">Weekly items (practices, meals, sleep) export as recurring events with no setup. Timetable-day blocks need the real date of Day 1 to know which calendar dates they fall on.</div>
+    <div class="section-sub">Weekly items (practices, meals, sleep) export as recurring events with no setup. Timetable-day blocks need the real date of Day 1 to know which calendar dates they fall on. Anything you ticked "🔔 Remind me the evening before" on comes through as a real alarm — once imported, your phone's own calendar app handles the notification, on iPhone or Android, with nothing else to set up.</div>
     <div class="card" id="ics-card">
       <label class="form-label" for="ics-anchor-date">Day 1 date <span class="section-title-note">(only needed for timetable-day blocks)</span></label>
       <input class="form-input" type="date" id="ics-anchor-date" style="max-width:220px;">

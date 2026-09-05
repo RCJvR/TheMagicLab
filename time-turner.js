@@ -388,19 +388,29 @@
   }
 
   async function pullCloudState() {
-    if (!window.MagicLabAuth?._supabase) { cloudReady = true; return false; }
-    const profile = window.MagicLabAuth.getProfile?.();
-    if (!profile?.id) { cloudReady = true; return false; }
-    const { data, error } = await window.MagicLabAuth._supabase().from('planner_entries').select('*').eq('student_id', profile.id).maybeSingle();
-    if (error || !data) { cloudReady = true; return false; }
+    // cloudReady must end up true no matter what happens below — a
+    // thrown error here (bad network, a malformed response) must not
+    // permanently wedge the app into "never sync" for the rest of the
+    // page's life, since every future save gates on this flag.
+    try {
+      if (!window.MagicLabAuth?._supabase) return false;
+      const profile = window.MagicLabAuth.getProfile?.();
+      if (!profile?.id) return false;
+      const { data, error } = await window.MagicLabAuth._supabase().from('planner_entries').select('*').eq('student_id', profile.id).maybeSingle();
+      if (error || !data) return false;
 
-    entries = Array.isArray(data.entries) ? data.entries : [];
-    dismissedSuggestionKeys = new Set(Array.isArray(data.dismissed_suggestions) ? data.dismissed_suggestions : []);
-    saveEntries();   // cloudReady is still false here, so this only writes the local cache
-    saveDismissed(); // same
-    if (data.plan_name != null) { try { localStorage.setItem(NAME_KEY, data.plan_name); } catch (e) {} }
-    cloudReady = true;
-    return true;
+      entries = Array.isArray(data.entries) ? data.entries : [];
+      dismissedSuggestionKeys = new Set(Array.isArray(data.dismissed_suggestions) ? data.dismissed_suggestions : []);
+      saveEntries();   // cloudReady is still false here, so this only writes the local cache
+      saveDismissed(); // same
+      if (data.plan_name != null) { try { localStorage.setItem(NAME_KEY, data.plan_name); } catch (e) {} }
+      return true;
+    } catch (e) {
+      console.warn('[MagicLab] planner cloud pull error:', e.message);
+      return false;
+    } finally {
+      cloudReady = true;
+    }
   }
 
   function freeGapsForSlot(pieces) {
@@ -612,7 +622,7 @@
       return `<div class="entry-row" data-id="${e.id}">
         <div class="entry-emoji">${cat.emoji}</div>
         <div class="entry-body">
-          <div class="entry-title">${esc(e.title || cat.label)}</div>
+          <div class="entry-title">${esc(e.title || cat.label)}${e.reminder ? ' 🔔' : ''}</div>
           <div class="entry-meta">${esc(fmtRecurrence(e))}${recurTag} · ${esc(timeLabel)}</div>
         </div>
         <button class="entry-del" data-del="${e.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
@@ -639,7 +649,7 @@
       return `<div class="entry-row" data-id="${e.id}" style="${isPast ? 'opacity:0.5;' : ''}">
         <div class="entry-emoji">${cat.emoji}</div>
         <div class="entry-body">
-          <div class="entry-title">${esc(e.title || cat.label)}</div>
+          <div class="entry-title">${esc(e.title || cat.label)}${e.reminder ? ' 🔔' : ''}</div>
           <div class="entry-meta">${esc(fmtOnceDate(e.date))} · ${esc(fmtTime(e.start))}–${esc(fmtTime(e.end))}${isPast ? ' · past' : ''}</div>
         </div>
         <button class="entry-del" data-del="${e.id}" title="Delete"><i data-lucide="trash-2" style="width:14px;height:14px;"></i></button>
@@ -706,6 +716,16 @@
   function icsDateTime(y, mo, d, hh, mm) { return `${y}${icsPad2(mo)}${icsPad2(d)}T${icsPad2(hh)}${icsPad2(mm)}00`; }
   function icsEscape(s) { return String(s || '').replace(/([\\,;])/g, '\\$1').replace(/\n/g, '\\n'); }
   function icsAddDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  /** "Remind me the evening before at 19:00" regardless of what time the
+   * event itself starts — expressed as a duration before DTSTART so it
+   * still lands correctly on every occurrence of a recurring event. */
+  function icsAlarmTrigger(startMinutes) {
+    const minutesBefore = startMinutes + (24 * 60 - 19 * 60);
+    const h = Math.floor(minutesBefore / 60), m = minutesBefore % 60;
+    if (h > 0 && m > 0) return `-PT${h}H${m}M`;
+    if (h > 0) return `-PT${h}H`;
+    return `-PT${m}M`;
+  }
   function icsNextDateForWeekday(weekday) {
     // weekday: 0=Mon..6=Sun (this app's convention) -> JS getDay(): 0=Sun..6=Sat
     const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -726,7 +746,7 @@
 
     const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Magic Lab//Time Turner//EN', 'CALSCALE:GREGORIAN'];
 
-    function pushEvent(uid, startDate, endDate, sh, sm, eh, em, title, catLabel, rrule) {
+    function pushEvent(uid, startDate, endDate, sh, sm, eh, em, title, catLabel, rrule, reminder) {
       lines.push('BEGIN:VEVENT');
       lines.push(`UID:${uid}@themagiclab.co.za`);
       lines.push(`DTSTAMP:${stamp}`);
@@ -735,6 +755,13 @@
       if (rrule) lines.push(`RRULE:${rrule}`);
       lines.push(`SUMMARY:${icsEscape(title)}`);
       lines.push(`CATEGORIES:${icsEscape(catLabel)}`);
+      if (reminder) {
+        lines.push('BEGIN:VALARM');
+        lines.push('ACTION:DISPLAY');
+        lines.push(`DESCRIPTION:${icsEscape(title)}`);
+        lines.push(`TRIGGER:${icsAlarmTrigger(sh * 60 + sm)}`);
+        lines.push('END:VALARM');
+      }
       lines.push('END:VEVENT');
     }
 
@@ -750,7 +777,7 @@
         if (!days.length) return;
         const first = days.map(icsNextDateForWeekday).reduce((a, b) => (a < b ? a : b));
         const endDate = crosses ? icsAddDays(first, 1) : first;
-        pushEvent(`tt-${entry.id}`, first, endDate, sh, sm, eh, em, title, cat.label, `FREQ=WEEKLY;BYDAY=${days.map(d => ICS_BYDAY[d]).join(',')}`);
+        pushEvent(`tt-${entry.id}`, first, endDate, sh, sm, eh, em, title, cat.label, `FREQ=WEEKLY;BYDAY=${days.map(d => ICS_BYDAY[d]).join(',')}`, entry.reminder);
       } else if (entry.recurrence === 'cycle') {
         if (!anchor) { skippedCycle++; return; }
         entry.cycleDays.forEach(day => {
@@ -758,13 +785,13 @@
           const weekday = (day - 1) % 5;
           const date = icsAddDays(anchor, week * 7 + weekday);
           const endDate = crosses ? icsAddDays(date, 1) : date;
-          pushEvent(`tt-${entry.id}-d${day}`, date, endDate, sh, sm, eh, em, title, cat.label, null);
+          pushEvent(`tt-${entry.id}-d${day}`, date, endDate, sh, sm, eh, em, title, cat.label, null, entry.reminder);
         });
       } else if (entry.recurrence === 'once') {
         const [y, mo, d] = entry.date.split('-').map(Number);
         const date = new Date(y, mo - 1, d);
         const endDate = crosses ? icsAddDays(date, 1) : date;
-        pushEvent(`tt-${entry.id}`, date, endDate, sh, sm, eh, em, title, cat.label, null);
+        pushEvent(`tt-${entry.id}`, date, endDate, sh, sm, eh, em, title, cat.label, null, entry.reminder);
       }
     });
 
@@ -928,10 +955,12 @@
       if (recurrence === 'cycle') entry.cycleDays = [...selectedCycleDays];
       else if (recurrence === 'once') entry.date = onceDate;
       else entry.weekdays = [...selectedWeekdays];
+      if (document.getElementById('af-reminder').checked) entry.reminder = true;
 
       addEntry(entry);
       msg.textContent = '';
       document.getElementById('af-title').value = '';
+      document.getElementById('af-reminder').checked = false;
       renderAll();
     });
 
