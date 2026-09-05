@@ -512,19 +512,81 @@
 
   let _pendingBulkRows = [];
 
+  // Which month groups are expanded in the manage-assessments list.
+  // Seeded with the real current month so a teacher lands on "what's
+  // due soon" instead of scrolling a flat list back to the top of the
+  // year; toggles persist across refreshes (adding/deleting an
+  // assessment shouldn't collapse whatever the teacher had open).
+  function currentMonthKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  }
+  const expandedMonths = new Set([currentMonthKey()]);
+  function monthLabel(key) {
+    const [y, m] = key.split('-').map(Number);
+    return new Date(y, m - 1, 1).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+  }
+
   async function refreshManageList() {
     const gradeVal = document.getElementById('aa-manage-grade').value;
     const list = await getAllAssessments(gradeVal ? parseInt(gradeVal, 10) : null);
     const box = document.getElementById('aa-manage-list');
     if (!list.length) { box.innerHTML = '<div class="empty-hint">No assessments yet.</div>'; return; }
-    box.innerHTML = list.map(a => `
-      <div class="admin-list-row">
-        <div>
-          <div class="admin-list-title">Gr ${a.grade} · ${esc(a.subject)} · ${esc(TYPE_LABELS[a.type] || a.type)} — ${esc(a.title)}</div>
-          <div class="admin-list-meta">${fmtDate(a.due_date) || 'No date'}${a.term ? ` · Term ${a.term}` : ''}</div>
-        </div>
-        <button class="btn-ghost danger" data-del-assess="${a.id}" title="Delete"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
-      </div>`).join('');
+
+    const dated = list.filter(a => a.due_date).sort((a, b) => a.due_date.localeCompare(b.due_date) || a.grade - b.grade);
+    const undated = list.filter(a => !a.due_date);
+
+    const byMonth = new Map();
+    dated.forEach(a => {
+      const key = a.due_date.slice(0, 7);
+      if (!byMonth.has(key)) byMonth.set(key, []);
+      byMonth.get(key).push(a);
+    });
+    const monthKeys = [...byMonth.keys()].sort();
+
+    // If nothing currently expanded still exists in this (possibly
+    // grade-filtered) list, fall back to the nearest month ahead, or
+    // else the most recent one — better than everything defaulting shut.
+    const stillValid = [...expandedMonths].some(k => byMonth.has(k) || (k === 'no-date' && undated.length));
+    if (!stillValid) {
+      const nowKey = currentMonthKey();
+      const fallback = monthKeys.find(k => k >= nowKey) || monthKeys[monthKeys.length - 1];
+      if (fallback) expandedMonths.add(fallback);
+    }
+
+    function renderRow(a) {
+      return `
+        <div class="admin-list-row">
+          <div>
+            <div class="admin-list-title">Gr ${a.grade} · ${esc(a.subject)} · ${esc(TYPE_LABELS[a.type] || a.type)} — ${esc(a.title)}</div>
+            <div class="admin-list-meta">${fmtDate(a.due_date) || 'No date'}${a.term ? ` · Term ${a.term}` : ''}</div>
+          </div>
+          <button class="btn-ghost danger" data-del-assess="${a.id}" title="Delete"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+        </div>`;
+    }
+    function renderGroup(key, label, items) {
+      const open = expandedMonths.has(key);
+      return `
+        <div class="admin-month-group">
+          <button type="button" class="admin-month-header" data-month-toggle="${key}">
+            <i data-lucide="chevron-${open ? 'down' : 'right'}" style="width:14px;height:14px;flex-shrink:0;"></i>
+            <span>${esc(label)}</span>
+            <span class="admin-month-count">${items.length}</span>
+          </button>
+          <div class="admin-month-body${open ? '' : ' hidden'}">${items.map(renderRow).join('')}</div>
+        </div>`;
+    }
+
+    box.innerHTML = monthKeys.map(key => renderGroup(key, monthLabel(key), byMonth.get(key))).join('')
+      + (undated.length ? renderGroup('no-date', 'No date', undated) : '');
+
+    box.querySelectorAll('[data-month-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.monthToggle;
+        if (expandedMonths.has(key)) expandedMonths.delete(key); else expandedMonths.add(key);
+        refreshManageList();
+      });
+    });
     box.querySelectorAll('[data-del-assess]').forEach(btn => {
       btn.addEventListener('click', async () => {
         if (!confirm('Delete this assessment?')) return;
