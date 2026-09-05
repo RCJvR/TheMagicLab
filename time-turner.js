@@ -579,6 +579,103 @@
     window.lucide?.createIcons();
   }
 
+  // ── Calendar export (.ics) ────────────────────────────────────
+  // Weekly entries export as real recurring events — no setup needed,
+  // since "every Monday" doesn't depend on any external date. Cycle
+  // (timetable-day) entries have no anchor to a real calendar date
+  // anywhere in this app, so they need the student to supply the real
+  // date of Day 1; without it they're skipped rather than guessed.
+  const ICS_BYDAY = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'];
+  function icsPad2(n) { return String(n).padStart(2, '0'); }
+  function icsDateTime(y, mo, d, hh, mm) { return `${y}${icsPad2(mo)}${icsPad2(d)}T${icsPad2(hh)}${icsPad2(mm)}00`; }
+  function icsEscape(s) { return String(s || '').replace(/([\\,;])/g, '\\$1').replace(/\n/g, '\\n'); }
+  function icsAddDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function icsNextDateForWeekday(weekday) {
+    // weekday: 0=Mon..6=Sun (this app's convention) -> JS getDay(): 0=Sun..6=Sat
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const jsTarget = (weekday + 1) % 7;
+    const diff = (jsTarget - today.getDay() + 7) % 7;
+    return icsAddDays(today, diff);
+  }
+
+  function buildICS(anchorDateStr) {
+    let anchor = null;
+    if (anchorDateStr) {
+      const [y, mo, d] = anchorDateStr.split('-').map(Number);
+      anchor = new Date(y, mo - 1, d);
+    }
+    let skippedCycle = 0;
+    const stampNow = new Date();
+    const stamp = `${stampNow.getUTCFullYear()}${icsPad2(stampNow.getUTCMonth() + 1)}${icsPad2(stampNow.getUTCDate())}T${icsPad2(stampNow.getUTCHours())}${icsPad2(stampNow.getUTCMinutes())}${icsPad2(stampNow.getUTCSeconds())}Z`;
+
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Magic Lab//Time Turner//EN', 'CALSCALE:GREGORIAN'];
+
+    function pushEvent(uid, startDate, endDate, sh, sm, eh, em, title, catLabel, rrule) {
+      lines.push('BEGIN:VEVENT');
+      lines.push(`UID:${uid}@themagiclab.co.za`);
+      lines.push(`DTSTAMP:${stamp}`);
+      lines.push(`DTSTART:${icsDateTime(startDate.getFullYear(), startDate.getMonth() + 1, startDate.getDate(), sh, sm)}`);
+      lines.push(`DTEND:${icsDateTime(endDate.getFullYear(), endDate.getMonth() + 1, endDate.getDate(), eh, em)}`);
+      if (rrule) lines.push(`RRULE:${rrule}`);
+      lines.push(`SUMMARY:${icsEscape(title)}`);
+      lines.push(`CATEGORIES:${icsEscape(catLabel)}`);
+      lines.push('END:VEVENT');
+    }
+
+    entries.forEach(entry => {
+      const cat = CATEGORIES[entry.category] || CATEGORIES.other;
+      const title = entry.title || cat.label;
+      const [sh, sm] = entry.start.split(':').map(Number);
+      const [eh, em] = entry.end.split(':').map(Number);
+      const crosses = toMinutes(entry.end) <= toMinutes(entry.start);
+
+      if (entry.recurrence === 'weekly') {
+        const days = [...entry.weekdays].sort((a, b) => a - b);
+        if (!days.length) return;
+        const first = days.map(icsNextDateForWeekday).reduce((a, b) => (a < b ? a : b));
+        const endDate = crosses ? icsAddDays(first, 1) : first;
+        pushEvent(`tt-${entry.id}`, first, endDate, sh, sm, eh, em, title, cat.label, `FREQ=WEEKLY;BYDAY=${days.map(d => ICS_BYDAY[d]).join(',')}`);
+      } else if (entry.recurrence === 'cycle') {
+        if (!anchor) { skippedCycle++; return; }
+        entry.cycleDays.forEach(day => {
+          const week = day <= 5 ? 0 : 1;
+          const weekday = (day - 1) % 5;
+          const date = icsAddDays(anchor, week * 7 + weekday);
+          const endDate = crosses ? icsAddDays(date, 1) : date;
+          pushEvent(`tt-${entry.id}-d${day}`, date, endDate, sh, sm, eh, em, title, cat.label, null);
+        });
+      }
+    });
+
+    lines.push('END:VCALENDAR');
+    return { ics: lines.join('\r\n'), skippedCycle };
+  }
+
+  function exportICS() {
+    const msg = document.getElementById('ics-msg');
+    const anchorDateStr = document.getElementById('ics-anchor-date').value || null;
+    if (!entries.length) { msg.textContent = 'Add a few blocks first.'; msg.className = 'msg err'; return; }
+
+    const { ics, skippedCycle } = buildICS(anchorDateStr);
+    if (skippedCycle > 0) {
+      msg.textContent = `Exported without ${skippedCycle} timetable-day block${skippedCycle === 1 ? '' : 's'} — enter the real date for Day 1 above to include ${skippedCycle === 1 ? 'it' : 'them'}.`;
+      msg.className = 'msg';
+    } else {
+      msg.textContent = 'Exported.';
+      msg.className = 'msg ok';
+    }
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'time-turner-plan.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   // ── Add-entry form ───────────────────────────────────────────
   function renderWeekdayPicker() {
     const box = document.getElementById('af-weekdays');
@@ -716,6 +813,7 @@
       renderPrintHeader();
     });
 
+    document.getElementById('ics-export-btn').addEventListener('click', exportICS);
     document.getElementById('print-btn').addEventListener('click', () => window.print());
     document.getElementById('clear-btn').addEventListener('click', () => {
       if (!entries.length) return;
