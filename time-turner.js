@@ -86,6 +86,9 @@
     const [h, m] = hhmm.split(':').map(Number);
     return h * 60 + m;
   }
+  function minToHHMM(mins) {
+    return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+  }
   function duration(start, end) {
     const s = toMinutes(start), e = toMinutes(end);
     return e > s ? e - s : (DAY_MIN - s) + e;
@@ -214,9 +217,14 @@
     document.getElementById(elId).innerHTML = `${gutter}<div class="grid-days">${days}</div>`;
   }
 
-  function renderGrid() {
+  function computeBySlot() {
     const bySlot = Array.from({ length: SLOT_COUNT }, () => []);
     entries.flatMap(blocksForEntry).forEach(p => bySlot[p.slot].push(p));
+    return bySlot;
+  }
+
+  function renderGrid() {
+    const bySlot = computeBySlot();
 
     renderWeekGrid('week-grid-1', 0, bySlot);
     renderWeekGrid('week-grid-2', 1, bySlot);
@@ -314,6 +322,156 @@
     ).join('');
   }
 
+  // ── Fill-your-open-time suggestions (rule-based, no AI) ───────
+  // Looks at the gaps left in each slot after existing entries and the
+  // school timetable, and proposes specific blocks — meals, a homework
+  // session, a wind-down before bed, or just free time — for the
+  // student to accept or dismiss. Every rule reads only from the data
+  // already on this page (entries + categories); nothing is guessed
+  // beyond what a reasonable default schedule would do.
+  const SUGGEST_START = 6 * 60, SUGGEST_END = 21 * 60, MIN_GAP = 20;
+  let dismissedSuggestionKeys = new Set();
+
+  function freeGapsForSlot(pieces) {
+    const merged = [];
+    [...pieces].sort((a, b) => a.start - b.start).forEach(p => {
+      if (merged.length && p.start <= merged[merged.length - 1].end) {
+        merged[merged.length - 1].end = Math.max(merged[merged.length - 1].end, p.end);
+      } else {
+        merged.push({ start: p.start, end: p.end });
+      }
+    });
+    const gaps = [];
+    let cursor = SUGGEST_START;
+    merged.forEach(m => {
+      if (m.start > cursor) gaps.push({ start: cursor, end: Math.min(m.start, SUGGEST_END) });
+      cursor = Math.max(cursor, m.end);
+    });
+    if (cursor < SUGGEST_END) gaps.push({ start: cursor, end: SUGGEST_END });
+    return gaps.filter(g => g.end - g.start >= MIN_GAP);
+  }
+
+  function hasCategoryNear(pieces, category, from, to) {
+    return pieces.some(p => p.entry.category === category && p.start < to && p.end > from);
+  }
+  function categoryMinutes(pieces, category) {
+    return pieces.filter(p => p.entry.category === category).reduce((sum, p) => sum + (p.end - p.start), 0);
+  }
+  function mkSuggestion(slot, category, title, start, end) {
+    return { slot, category, title, start, end, key: `${slot}|${category}|${start}` };
+  }
+
+  /** Within one contiguous free gap, carve out suggestions in priority
+   * order (lunch, dinner, homework, wind-down, then whatever's left),
+   * shrinking the remaining free window as each is claimed — so a
+   * single long afternoon-to-evening gap can yield dinner AND a study
+   * block AND a wind-down, instead of just the first thing that fits. */
+  function suggestionsForSlot(slot, pieces) {
+    const hasSchool = pieces.some(p => p.entry.category === 'school');
+    const out = [];
+
+    freeGapsForSlot(pieces).forEach(gap => {
+      let remaining = [{ start: gap.start, end: gap.end }];
+
+      function take(from, to, category, title) {
+        for (let i = 0; i < remaining.length; i++) {
+          const r = remaining[i];
+          if (r.start <= from && r.end >= to) {
+            out.push(mkSuggestion(slot, category, title, from, to));
+            const pieces2 = [];
+            if (from - r.start > 0) pieces2.push({ start: r.start, end: from });
+            if (r.end - to > 0) pieces2.push({ start: to, end: r.end });
+            remaining.splice(i, 1, ...pieces2);
+            return true;
+          }
+        }
+        return false;
+      }
+
+      if (!hasCategoryNear(pieces, 'meals', 11 * 60, 15 * 60)) {
+        const from = Math.max(gap.start, 12 * 60), to = Math.min(from + 45, 14 * 60);
+        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Lunch');
+      }
+      if (!hasCategoryNear(pieces, 'meals', 17 * 60 + 30, 20 * 60)) {
+        const from = Math.max(gap.start, 18 * 60), to = Math.min(from + 45, 19 * 60 + 30);
+        if (to - from >= MIN_GAP) take(from, to, 'meals', 'Dinner');
+      }
+      if (hasSchool && categoryMinutes(pieces, 'homework') < 60) {
+        let best = null;
+        remaining.filter(r => r.end > 14 * 60).forEach(r => {
+          const s = Math.max(r.start, 14 * 60), e = r.end;
+          if (e - s >= 30 && (!best || (e - s) > (best.end - best.start))) best = { start: s, end: e };
+        });
+        if (best) take(best.start, Math.min(best.start + 60, best.end), 'homework', 'Study block');
+      }
+      if (!hasCategoryNear(pieces, 'rest', 19 * 60, SUGGEST_END)) {
+        const tail = remaining.find(r => r.end >= SUGGEST_END - 15 && r.start >= 19 * 60 - 30);
+        if (tail) {
+          const s = Math.max(tail.start, 20 * 60), e = tail.end;
+          if (e - s >= MIN_GAP) take(s, e, 'rest', 'Wind down');
+        }
+      }
+      remaining.forEach(r => {
+        if (r.end - r.start >= 90) out.push(mkSuggestion(slot, 'free', 'Free time', r.start, Math.min(r.start + 60, r.end)));
+      });
+    });
+
+    return out.slice(0, 4);
+  }
+
+  function computeSuggestions() {
+    const bySlot = computeBySlot();
+    const all = [];
+    for (let slot = 0; slot < SLOT_COUNT; slot++) {
+      suggestionsForSlot(slot, bySlot[slot]).forEach(s => { if (!dismissedSuggestionKeys.has(s.key)) all.push(s); });
+    }
+    return all;
+  }
+
+  function renderSuggestions() {
+    const box = document.getElementById('suggestions-list');
+    if (!box) return;
+    if (!entries.length) { box.innerHTML = '<div class="empty-hint">Add a few blocks above, then check back here for gaps worth filling.</div>'; return; }
+
+    const suggestions = computeSuggestions();
+    if (!suggestions.length) { box.innerHTML = '<div class="empty-hint">Nothing obvious left to fill — your week already covers the basics.</div>'; return; }
+
+    box.innerHTML = suggestions.map(s => {
+      const cat = CATEGORIES[s.category];
+      return `<div class="suggestion-row">
+        <div class="suggestion-emoji">${cat.emoji}</div>
+        <div class="suggestion-body">
+          <div class="suggestion-title">${esc(s.title)}</div>
+          <div class="suggestion-meta">${esc(slotLabel(s.slot))} · ${fmtTime(minToHHMM(s.start))}–${fmtTime(minToHHMM(s.end))}</div>
+        </div>
+        <div class="suggestion-actions">
+          <button class="btn-primary small" data-add="${esc(s.key)}">Add</button>
+          <button class="suggestion-dismiss" data-dismiss="${esc(s.key)}" title="Dismiss"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+
+    box.querySelectorAll('[data-add]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const s = suggestions.find(x => x.key === btn.dataset.add);
+        if (!s) return;
+        const cycleDay = slotCycleDay(s.slot);
+        const entry = { category: s.category, title: s.title, start: minToHHMM(s.start), end: minToHHMM(s.end) };
+        if (cycleDay) { entry.recurrence = 'cycle'; entry.cycleDays = [cycleDay]; }
+        else { entry.recurrence = 'weekly'; entry.weekdays = [s.slot % 7]; }
+        addEntry(entry);
+        renderAll();
+      });
+    });
+    box.querySelectorAll('[data-dismiss]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        dismissedSuggestionKeys.add(btn.dataset.dismiss);
+        renderSuggestions();
+      });
+    });
+    window.lucide?.createIcons();
+  }
+
   const GENERAL_TIPS = [
     { icon: '🎯', text: 'Do your hardest or most disliked subject first, while your energy and focus are highest.' },
     { icon: '⏲️', text: 'Study in focused blocks of 25–45 minutes with a 5–10 minute break between them — it beats one long unbroken session.' },
@@ -363,6 +521,7 @@
 
   function renderAll() {
     renderGrid();
+    renderSuggestions();
     renderTotals();
     renderInsights();
     renderGeneralTips();
