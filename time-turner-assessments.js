@@ -37,6 +37,62 @@
     return Math.round((due - today) / 86400000);
   }
 
+  /** Teachers often upload the same task once per day of a multi-day
+   * window (a practical rotation, an "assessment week", staggered
+   * hand-ins) rather than as one row with a date range. Collapse runs
+   * of same grade+subject+type+title landing within 4 days of each
+   * other (enough to bridge a weekend) into a single window item, so
+   * the student-facing list reads as "one task, several days" instead
+   * of counting each day as its own assessment. */
+  function groupWindows(list) {
+    const dated = list.filter(a => a.due_date);
+    const undated = list.filter(a => !a.due_date);
+    const groups = new Map();
+    dated.forEach(a => {
+      const key = `${a.grade}|${a.subject}|${a.type}|${a.title}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(a);
+    });
+    const result = [];
+    groups.forEach(items => {
+      items.sort((a, b) => a.due_date.localeCompare(b.due_date));
+      let chain = [items[0]];
+      for (let i = 1; i < items.length; i++) {
+        const gapDays = (new Date(items[i].due_date) - new Date(chain[chain.length - 1].due_date)) / 86400000;
+        if (gapDays <= 4) chain.push(items[i]);
+        else { result.push(mergeWindow(chain)); chain = [items[i]]; }
+      }
+      result.push(mergeWindow(chain));
+    });
+    result.sort((a, b) => a.due_date.localeCompare(b.due_date));
+    return [...result, ...undated];
+  }
+
+  function mergeWindow(chain) {
+    if (chain.length === 1) return chain[0];
+    return { ...chain[0], due_date: chain[0].due_date, due_date_end: chain[chain.length - 1].due_date, _windowCount: chain.length };
+  }
+
+  function isDueToday(a) {
+    if (!a.due_date) return false;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const start = new Date(a.due_date + 'T00:00:00');
+    const end = new Date((a.due_date_end || a.due_date) + 'T00:00:00');
+    return today >= start && today <= end;
+  }
+
+  function fmtDateRange(a) {
+    if (!a.due_date) return 'No date';
+    const start = new Date(a.due_date + 'T00:00:00');
+    if (!a.due_date_end || a.due_date_end === a.due_date) {
+      return start.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+    const end = new Date(a.due_date_end + 'T00:00:00');
+    const startStr = start.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' });
+    const endStr = end.toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `${startStr} – ${endStr}`;
+  }
+
   // ── Data access ──────────────────────────────────────────────
   async function fetchAssessmentsForMe() {
     if (!profile?.grade) return [];
@@ -212,18 +268,25 @@
       return;
     }
     box.innerHTML = list.map(a => {
-      const days = daysUntil(a.due_date);
-      const dateClass = days === null ? 'none' : days < 0 ? 'overdue' : '';
+      const ranged = a.due_date_end && a.due_date_end !== a.due_date;
+      const today = isDueToday(a);
+      const startDays = daysUntil(a.due_date);
+      const endDays = daysUntil(a.due_date_end || a.due_date);
+      const overdue = endDays !== null && endDays < 0;
+      const dateClass = startDays === null ? 'none' : overdue ? 'overdue' : '';
+      const badge = today ? (ranged ? 'Due now' : 'Today')
+        : (startDays !== null && startDays > 0 && startDays <= 7 ? (startDays === 1 ? 'Tomorrow' : `In ${startDays} days`) : '');
       return `
       <div class="upcoming-item">
-        <div class="upcoming-date ${dateClass}">${fmtDate(a.due_date) || 'No date'}</div>
+        <div class="upcoming-date ${dateClass}">${fmtDateRange(a)}</div>
         <div class="upcoming-body">
           <div class="upcoming-title">${esc(a.title)}</div>
           <div class="upcoming-meta">
             ${showGrade ? `<span class="subject-tag">Gr ${a.grade}</span>` : ''}
             <span class="subject-tag">${esc(a.subject)}</span>
             <span class="type-tag subject-tag">${esc(TYPE_LABELS[a.type] || a.type)}</span>
-            ${days !== null && days >= 0 && days <= 7 ? `<span class="type-tag subject-tag" style="color:#fca5a5;border-color:rgba(248,113,113,0.3);">${days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `In ${days} days`}</span>` : ''}
+            ${ranged ? `<span class="type-tag subject-tag">${a._windowCount}-day window</span>` : ''}
+            ${badge ? `<span class="type-tag subject-tag" style="color:#fca5a5;border-color:rgba(248,113,113,0.3);">${esc(badge)}</span>` : ''}
           </div>
           ${a.description ? `<div class="upcoming-meta" style="margin-top:4px;">${esc(a.description)}</div>` : ''}
         </div>
@@ -237,7 +300,7 @@
   function renderTodayBanner(list) {
     const box = document.getElementById('assess-today');
     if (!box) return;
-    const todayItems = list.filter(a => daysUntil(a.due_date) === 0);
+    const todayItems = list.filter(a => isDueToday(a));
     if (!todayItems.length) { box.classList.add('hidden'); box.innerHTML = ''; return; }
     box.classList.remove('hidden');
     box.innerHTML = `
@@ -264,7 +327,7 @@
     const box = document.getElementById('assess-list');
     if (viewMode === 'all') {
       document.getElementById('assess-today').classList.add('hidden');
-      const list = await fetchAllAssessments();
+      const list = groupWindows(await fetchAllAssessments());
       populateSubjectFilter(list);
       const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
       renderAssessmentItems(filtered, { showGrade: true });
@@ -276,7 +339,7 @@
       document.getElementById('assess-today').classList.add('hidden');
       return;
     }
-    const list = await fetchAssessmentsForMe();
+    const list = groupWindows(await fetchAssessmentsForMe());
     renderTodayBanner(list);
     populateSubjectFilter(list);
     const filtered = subjectFilter ? list.filter(a => a.subject === subjectFilter) : list;
