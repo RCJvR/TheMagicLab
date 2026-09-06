@@ -135,8 +135,10 @@
     return fmtWeekdays(entry.weekdays);
   }
   function fmtPeriodInfo(info) {
-    const dayLabel = info.dayType === 'friday' ? 'Friday' : 'Regular';
-    const range = info.from === info.to ? `P${info.from}` : `P${info.from}–P${info.to}`;
+    const dayLabel = window.TimeTurnerPeriods?.DAY_TYPES?.find(dt => dt.key === info.dayType)?.label
+      || (info.dayType === 'friday' ? 'Friday' : 'Regular');
+    const label = p => info.dayType === 'test' && p === 7 ? 'Test' : `P${p}`;
+    const range = info.from === info.to ? label(info.from) : `${label(info.from)}–${label(info.to)}`;
     return `${range} (${dayLabel})`;
   }
   function esc(s) {
@@ -1063,8 +1065,10 @@
     document.getElementById('period-time-picker').classList.toggle('hidden', mode !== 'period');
   }
   function populatePeriodSelects() {
-    const count = window.TimeTurnerPeriods?.PERIOD_COUNT || 6;
-    const options = Array.from({ length: count }, (_, i) => i + 1).map(p => `<option value="${p}">Period ${p}</option>`).join('');
+    const dayType = document.getElementById('af-daytype').value;
+    const count = window.TimeTurnerPeriods?.periodCountFor?.(dayType) || 6;
+    const options = Array.from({ length: count }, (_, i) => i + 1)
+      .map(p => `<option value="${p}">${dayType === 'test' && p === 7 ? 'Test period' : `Period ${p}`}</option>`).join('');
     document.getElementById('af-period-from').innerHTML = options;
     document.getElementById('af-period-to').innerHTML = options;
   }
@@ -1107,6 +1111,8 @@
     document.querySelectorAll('.timemode-btn').forEach(btn => {
       btn.addEventListener('click', () => setTimeMode(btn.dataset.timemode));
     });
+
+    document.getElementById('af-daytype').addEventListener('change', populatePeriodSelects);
 
     document.querySelectorAll('#weekday-picker .day-quick [data-preset]').forEach(btn => {
       btn.addEventListener('click', () => {

@@ -1,24 +1,34 @@
 // ============================================================
 // THE MAGIC LAB — time-turner-periods.js
-// The school's shared period schedule (up to 6 periods/day, a "regular"
-// day and an early-finish "friday" variant). Requires the
-// period_schedule table from time-turner-periods-schema.sql.
-// Teachers edit it; every student's planner reads the same schedule —
-// exactly like the assessment calendar, this is a fact about the
-// school, not something each student should have to re-enter.
+// The school's shared period schedule: a "regular" day (Mon-Thu), an
+// early-finish "friday", and a "test" day for test-series Tuesdays/
+// Thursdays (3 periods, break, 3 periods, break, then a 7th "test
+// period" slot). Requires the period_schedule table from
+// time-turner-periods-schema.sql. Teachers edit it; every student's
+// planner reads the same schedule — exactly like the assessment
+// calendar, this is a fact about the school, not something each
+// student should have to re-enter.
+//
+// Which specific upcoming Tuesdays/Thursdays are actually "in a test
+// series" is a temporary, per-grade fact that changes week to week —
+// deliberately NOT tracked here. A teacher or student just picks "Test
+// day" for the blocks that need it, same as picking Regular vs Friday.
 // Include after auth.js.
 // ============================================================
 
 (function () {
-  const PERIOD_COUNT = 6;
   const DAY_TYPES = [
-    { key: 'regular', label: 'Regular day' },
-    { key: 'friday', label: 'Friday' }
+    { key: 'regular', label: 'Regular day', periodCount: 6 },
+    { key: 'friday', label: 'Friday', periodCount: 6 },
+    { key: 'test', label: 'Test day (Tue/Thu)', periodCount: 7 }
   ];
+  const PERIOD_COUNT = 6; // kept for callers that only ever offer regular/friday
+  function periodCountFor(dayType) { return DAY_TYPES.find(dt => dt.key === dayType)?.periodCount || PERIOD_COUNT; }
+  function periodLabel(dayType, p) { return dayType === 'test' && p === 7 ? 'Test' : `P${p}`; }
 
   let profile = null;
-  // { regular: { 1: {start,end}, ... }, friday: { ... } }
-  let schedule = { regular: {}, friday: {} };
+  // { regular: { 1: {start,end}, ... }, friday: { ... }, test: { ... } }
+  let schedule = { regular: {}, friday: {}, test: {} };
 
   function supabase() { return window.MagicLabAuth._supabase(); }
   function esc(s) {
@@ -40,7 +50,7 @@
   async function fetchSchedule() {
     const { data, error } = await supabase().from('period_schedule').select('*');
     if (error) { console.warn('[MagicLab] fetchSchedule error:', error.message); return; }
-    schedule = { regular: {}, friday: {} };
+    schedule = { regular: {}, friday: {}, test: {} };
     (data || []).forEach(row => {
       schedule[row.day_type][row.period] = { start: row.start_time.slice(0, 5), end: row.end_time.slice(0, 5) };
     });
@@ -58,7 +68,7 @@
   /** Every consumer (e.g. time-turner.js's add-block form) reads through this. */
   function getCached() { return schedule; }
   function isComplete(dayType) {
-    return Array.from({ length: PERIOD_COUNT }, (_, i) => i + 1).every(p => schedule[dayType]?.[p]);
+    return Array.from({ length: periodCountFor(dayType) }, (_, i) => i + 1).every(p => schedule[dayType]?.[p]);
   }
 
   // ── Rendering ────────────────────────────────────────────────
@@ -71,17 +81,17 @@
       <div class="period-table-wrap">
         <div class="week-label">${esc(dt.label)}</div>
         <div class="period-table">
-          ${Array.from({ length: PERIOD_COUNT }, (_, i) => i + 1).map(p => {
+          ${Array.from({ length: dt.periodCount }, (_, i) => i + 1).map(p => {
             const row = schedule[dt.key][p];
             return isTeacher
               ? `<div class="period-row">
-                  <span class="period-num">P${p}</span>
+                  <span class="period-num">${esc(periodLabel(dt.key, p))}</span>
                   <input class="form-input period-time-input" type="time" data-day="${dt.key}" data-period="${p}" data-field="start" value="${row?.start || ''}">
                   <span class="period-sep">–</span>
                   <input class="form-input period-time-input" type="time" data-day="${dt.key}" data-period="${p}" data-field="end" value="${row?.end || ''}">
                 </div>`
               : `<div class="period-row">
-                  <span class="period-num">P${p}</span>
+                  <span class="period-num">${esc(periodLabel(dt.key, p))}</span>
                   <span class="period-time-display">${row ? `${fmtTime(row.start)} – ${fmtTime(row.end)}` : 'Not set yet'}</span>
                 </div>`;
           }).join('')}
@@ -118,5 +128,5 @@
     document.dispatchEvent(new CustomEvent('magiclab:periods:ready'));
   }
 
-  window.TimeTurnerPeriods = { init, getCached, isComplete, PERIOD_COUNT, DAY_TYPES };
+  window.TimeTurnerPeriods = { init, getCached, isComplete, periodCountFor, PERIOD_COUNT, DAY_TYPES };
 })();

@@ -3,17 +3,23 @@
 -- Run this once in the Supabase SQL editor (Project > SQL Editor > New query).
 -- Depends on the existing profiles table.
 --
--- The school's period times (up to 6 periods/day) are a fact about the
--- school, not a personal preference, so — like the assessment calendar —
--- a teacher sets them once and every student's planner reads the same
--- schedule. Two day types cover a normal day and an early-finish Friday;
--- both still run all 6 periods, just at different times.
+-- The school's period times are a fact about the school, not a personal
+-- preference, so — like the assessment calendar — a teacher sets them
+-- once and every student's planner reads the same schedule. Three day
+-- types: a normal day and an early-finish Friday (6 periods each), and
+-- a "test" day for test-series Tuesdays/Thursdays — 3 periods, break,
+-- 3 periods, break, then a 7th "test period" slot (not a substitute for
+-- period 6, an addition after it). Which specific upcoming Tuesdays/
+-- Thursdays are actually in a test series is a temporary, per-grade
+-- fact that changes week to week — deliberately not tracked here; a
+-- teacher or student just picks "Test day" for the blocks that need
+-- it, same as picking Regular vs Friday.
 -- ============================================================
 
 create table if not exists period_schedule (
   id         uuid primary key default gen_random_uuid(),
-  day_type   text not null check (day_type in ('regular', 'friday')),
-  period     int not null check (period between 1 and 6),
+  day_type   text not null check (day_type in ('regular', 'friday', 'test')),
+  period     int not null check (period between 1 and 7),
   start_time time not null,
   end_time   time not null,
   updated_by uuid references profiles(id) on delete set null,
