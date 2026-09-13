@@ -74,6 +74,35 @@
     .btn-reject:hover { background: rgba(248,113,113,0.20); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .empty-state { color: var(--muted); font-size: 14px; padding: 40px 0; text-align: center; }
+    .section-nav {
+      display: flex; gap: 8px; margin-bottom: 26px;
+      border-bottom: 1px solid var(--border); padding-bottom: 16px;
+    }
+    .section-btn {
+      padding: 9px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface);
+      color: var(--muted); font-family: var(--fd); font-size: 13.5px; font-weight: 700; cursor: pointer;
+    }
+    .section-btn.active { background: rgba(124,109,250,0.18); border-color: rgba(124,109,250,0.45); color: #c4baff; }
+    .stat-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .stat {
+      flex: 1; min-width: 108px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px 16px;
+    }
+    .stat-num { font-size: 22px; font-weight: 800; line-height: 1.1; }
+    .stat-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); margin-top: 4px;
+    }
+    .days-badge {
+      flex-shrink: 0; text-align: center; min-width: 78px;
+      padding: 9px 12px; border-radius: 12px; font-family: var(--fm);
+    }
+    .days-num { font-size: 17px; font-weight: 700; line-height: 1.1; }
+    .days-word { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.75; margin-top: 3px; }
+    .days-ok   { background: rgba(17,217,143,0.12);  border: 1px solid rgba(17,217,143,0.35);  color: #6ee7b7; }
+    .days-warn { background: rgba(245,166,35,0.12);  border: 1px solid rgba(245,166,35,0.38);  color: #fcd34d; }
+    .days-crit { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.38); color: var(--accent-red); }
+    .days-none { background: var(--surface2);        border: 1px solid var(--border);          color: var(--muted); }
     .denied {
       max-width: 460px; margin: 120px auto; text-align: center; padding: 32px;
       background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
@@ -97,16 +126,39 @@
 </main>
 
 <main id="adminView" hidden>
-  <div class="page-title">CDV Verification</div>
-  <div class="page-sub">Approve or reject learners/teachers who typed a Curro Durbanville school name at sign-up.</div>
-
-  <div class="tabs">
-    <button class="tab-btn active" data-status="pending">Pending</button>
-    <button class="tab-btn" data-status="verified">Verified</button>
-    <button class="tab-btn" data-status="rejected">Rejected</button>
+  <div class="section-nav">
+    <button class="section-btn active" data-section="cdv">CDV Verification</button>
+    <button class="section-btn" data-section="trials">Trials</button>
   </div>
 
-  <div id="list"></div>
+  <section id="cdvSection">
+    <div class="page-title">CDV Verification</div>
+    <div class="page-sub">Approve or reject learners/teachers who typed a Curro Durbanville school name at sign-up.</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-status="pending">Pending</button>
+      <button class="tab-btn" data-status="verified">Verified</button>
+      <button class="tab-btn" data-status="rejected">Rejected</button>
+    </div>
+
+    <div id="list"></div>
+  </section>
+
+  <section id="trialSection" hidden>
+    <div class="page-title">Trials</div>
+    <div class="page-sub">How much free trial each account has left. Read-only &mdash; nothing on this tab changes anyone's access.</div>
+
+    <div class="stat-row" id="trialStats"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-filter="soon">Expiring in 7 days</button>
+      <button class="tab-btn" data-filter="trial">All trials</button>
+      <button class="tab-btn" data-filter="expired">Expired</button>
+      <button class="tab-btn" data-filter="all">Everyone</button>
+    </div>
+
+    <div id="trialList"></div>
+  </section>
 </main>
 
 <script>
@@ -178,12 +230,108 @@ document.getElementById('list').addEventListener('click', async (e) => {
   if (!listEl.children.length) listEl.innerHTML = '<div class="empty-state">Nothing here.</div>';
 });
 
-document.querySelectorAll('.tab-btn').forEach(btn => {
+document.querySelectorAll('#cdvSection .tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#cdvSection .tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentStatus = btn.dataset.status;
     loadList();
+  });
+});
+
+// ── Trials tab ───────────────────────────────────────────────
+// Read-only. Everything here comes from admin_list_trials(), which
+// applies the same hardcoded-admin check as the CDV functions.
+let trialRows = null;          // null until first load
+let trialFilter = 'soon';
+
+function daysBadge(d) {
+  if (d === null || d === undefined) {
+    return '<div class="days-badge days-none"><div class="days-num">&mdash;</div><div class="days-word">n/a</div></div>';
+  }
+  const cls  = d <= 3 ? 'days-crit' : d <= 7 ? 'days-warn' : 'days-ok';
+  const n    = Math.abs(d);
+  const word = d < 0 ? (n === 1 ? 'day ago' : 'days ago') : (d === 1 ? 'day left' : 'days left');
+  return `<div class="days-badge ${cls}"><div class="days-num">${n}</div><div class="days-word">${word}</div></div>`;
+}
+
+function renderTrialRow(p) {
+  const name  = p.display_name || p.email || '(no name)';
+  const role  = p.role === 'teacher' ? 'Teacher' : 'Student';
+  const grade = p.grade ? `Grade ${p.grade}` : '';
+  const ends  = p.trial_ends_at
+    ? new Date(p.trial_ends_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })
+    : '';
+  const when  = (p.account_status === 'Trial' || p.account_status === 'Expired') && ends
+    ? `${p.account_status === 'Expired' ? 'ended' : 'ends'} ${ends}`
+    : p.account_status;
+  const meta  = [p.email, role, grade, p.school, when].filter(Boolean).join(' \u00b7 ');
+  return `
+    <div class="card">
+      <div class="card-info">
+        <div class="card-name">${escapeHtml(name)}</div>
+        <div class="card-meta">${escapeHtml(meta)}</div>
+      </div>
+      ${daysBadge(p.trial_days_left)}
+    </div>`;
+}
+
+function filteredTrialRows() {
+  if (trialFilter === 'all')     return trialRows;
+  if (trialFilter === 'expired') return trialRows.filter(p => p.account_status === 'Expired');
+  if (trialFilter === 'trial')   return trialRows.filter(p => p.account_status === 'Trial');
+  return trialRows.filter(p =>
+    p.account_status === 'Trial' && p.trial_days_left !== null && p.trial_days_left <= 7);
+}
+
+function renderTrialStats() {
+  const counts = {};
+  trialRows.forEach(p => { counts[p.account_status] = (counts[p.account_status] || 0) + 1; });
+  document.getElementById('trialStats').innerHTML = ['Trial', 'Expired', 'Pro', 'School', 'CDV']
+    .filter(k => counts[k])
+    .map(k => `<div class="stat"><div class="stat-num">${counts[k]}</div><div class="stat-label">${k}</div></div>`)
+    .join('');
+}
+
+function renderTrialList() {
+  const el = document.getElementById('trialList');
+  const rows = filteredTrialRows();
+  el.innerHTML = rows.length
+    ? rows.map(renderTrialRow).join('')
+    : '<div class="empty-state">Nobody in this group.</div>';
+}
+
+async function loadTrials() {
+  const el = document.getElementById('trialList');
+  el.innerHTML = '<div class="empty-state">Loading&hellip;</div>';
+  const supabase = window.MagicLabAuth._supabase();
+  const { data, error } = await supabase.rpc('admin_list_trials');
+  if (error) {
+    el.innerHTML = `<div class="empty-state">Error: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  trialRows = data || [];
+  renderTrialStats();
+  renderTrialList();
+}
+
+document.querySelectorAll('#trialSection .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#trialSection .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    trialFilter = btn.dataset.filter;
+    renderTrialList();
+  });
+});
+
+document.querySelectorAll('.section-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.section-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const section = btn.dataset.section;
+    document.getElementById('cdvSection').hidden   = section !== 'cdv';
+    document.getElementById('trialSection').hidden = section !== 'trials';
+    if (section === 'trials' && trialRows === null) loadTrials();  // fetch once, then filter client-side
   });
 });
 
