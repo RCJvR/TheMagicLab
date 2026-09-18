@@ -1,6 +1,8 @@
 /* ============================================================
    THE MAGIC LAB — auth-modal.css
-   Drop-in auth UI — matches your existing dark theme exactly
+   Drop-in auth UI, styled from the tokens in assets/magic-lab.css.
+   Every value carries a literal fallback so it still looks right on the
+   pages that have not adopted that stylesheet yet.
    Include after your Google Fonts link on every page
    ============================================================ */
 
@@ -36,23 +38,23 @@
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px 4px 6px;
   border-radius: 99px; border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.05); color: #dde1f0;
+  background: rgba(255,255,255,0.05); color: var(--text, #e3e8ef);
   font-size: 12px; font-weight: 600;
-  font-family: "DM Sans", sans-serif;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
   cursor: pointer; transition: all 130ms;
 }
 .ml-user-chip:hover, .ml-user-chip[aria-expanded="true"] {
   background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.16);
 }
-.ml-user-chip:focus-visible { outline: 2px solid rgba(165,180,252,0.65); outline-offset: 2px; }
+.ml-user-chip:focus-visible { outline: 2px solid rgba(91,156,255,0.75); outline-offset: 2px; }
 .ml-user-avatar {
   width: 24px; height: 24px; border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #10b981);
+  background: rgba(91,156,255,0.16); border: 1px solid rgba(91,156,255,0.32);
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+  font-size: 11px; font-weight: 800; color: var(--fam-computing, #5b9cff); flex-shrink: 0;
 }
 .ml-user-chevron {
-  color: rgba(221,225,240,0.35); flex-shrink: 0; transition: transform 160ms;
+  color: rgba(226,232,240,0.35); flex-shrink: 0; transition: transform 160ms;
 }
 .ml-user-chip[aria-expanded="true"] .ml-user-chevron { transform: rotate(180deg); }
 
@@ -60,7 +62,7 @@
 .ml-user-menu {
   position: absolute; top: calc(100% + 8px); right: 0; z-index: 300;
   min-width: 200px;
-  background: #0e1428; border: 1px solid rgba(255,255,255,0.10);
+  background: var(--ink-850, #0c0e11); border: 1px solid rgba(255,255,255,0.10);
   border-radius: 14px; padding: 6px;
   box-shadow: 0 18px 44px rgba(0,0,0,0.55);
   opacity: 0; transform: translateY(-6px) scale(0.98);
@@ -70,14 +72,14 @@
 .ml-user-menu-item {
   display: flex; align-items: center; gap: 10px; width: 100%;
   padding: 9px 10px; border-radius: 9px; border: none; background: none;
-  color: rgba(221,225,240,0.80); text-decoration: none;
-  font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 600;
+  color: rgba(226,232,240,0.80); text-decoration: none;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 13px; font-weight: 600;
   cursor: pointer; transition: background 120ms; text-align: left;
 }
 .ml-user-menu-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
 .ml-umi-icon { font-size: 14px; flex-shrink: 0; }
 .ml-user-menu-sep { height: 1px; margin: 5px 6px; background: rgba(255,255,255,0.08); }
-.ml-user-menu-signout:hover { background: rgba(244,63,94,0.14); color: #fda4af; }
+.ml-user-menu-signout:hover { background: rgba(239,91,91,0.14); color: #f5a3ab; }
 
 /* Just the avatar initials + chevron everywhere — same compact pill on
    desktop and mobile, no full display name shown in the header at all. */
@@ -91,7 +93,7 @@
 /* ── Overlay ────────────────────────────────────────────────── */
 .ml-modal-overlay {
   position: fixed; inset: 0; z-index: 9999;
-  background: rgba(6, 8, 20, 0.80);
+  background: rgba(4, 5, 7, 0.82);
   backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
@@ -105,9 +107,9 @@
 
 /* ── Modal box ──────────────────────────────────────────────── */
 .ml-modal {
-  background: #0e1428;
+  background: var(--ink-850, #0c0e11);
   border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 24px;
+  border-radius: 22px;
   padding: 36px 32px 32px;
   width: 100%; max-width: 420px;
   max-height: calc(100vh - 40px);
@@ -127,25 +129,24 @@
   width: 30px; height: 30px; border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.05);
-  color: rgba(221,225,240,0.50); cursor: pointer;
+  color: rgba(226,232,240,0.50); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; transition: all 130ms;
 }
-.ml-modal-close:hover { color: #dde1f0; background: rgba(255,255,255,0.09); }
+.ml-modal-close:hover { color: var(--text, #e3e8ef); background: rgba(255,255,255,0.09); }
 
 /* ── Modal header ───────────────────────────────────────────── */
 .ml-modal-logo {
-  font-family: "Syne", sans-serif; font-weight: 800; font-size: 18px;
-  background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-weight: 800; font-size: 18px;
+  color: var(--paper, #f2f5f9);
   margin-bottom: 6px;
 }
 .ml-modal-title {
-  font-family: "Syne", sans-serif; font-weight: 700; font-size: 22px;
-  color: #e8eaf4; margin-bottom: 6px;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-weight: 700; font-size: 22px;
+  color: var(--text, #e3e8ef); margin-bottom: 6px;
 }
 .ml-modal-sub {
-  font-size: 13px; color: rgba(221,225,240,0.45); margin-bottom: 26px;
+  font-size: 13px; color: rgba(226,232,240,0.45); margin-bottom: 26px;
 }
 
 /* ── Tabs ───────────────────────────────────────────────────── */
@@ -157,14 +158,14 @@
 .ml-tab {
   flex: 1; padding: 7px; border-radius: 8px;
   border: none; background: none;
-  font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 600;
-  color: rgba(221,225,240,0.45); cursor: pointer;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 13px; font-weight: 600;
+  color: rgba(226,232,240,0.45); cursor: pointer;
   transition: all 150ms;
 }
 .ml-tab.ml-active {
-  background: rgba(99,102,241,0.20);
-  color: #c7d2fe;
-  border: 1px solid rgba(99,102,241,0.30);
+  background: rgba(91,156,255,0.18);
+  color: #cfe0ff;
+  border: 1px solid rgba(91,156,255,0.34);
 }
 
 /* ── Form fields ────────────────────────────────────────────── */
@@ -172,21 +173,21 @@
 .ml-label {
   display: block; font-size: 11px; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase;
-  color: rgba(221,225,240,0.50); margin-bottom: 6px;
+  color: rgba(226,232,240,0.50); margin-bottom: 6px;
 }
 .ml-input {
   width: 100%; padding: 11px 14px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 10px; color: #e8eaf4;
-  font-family: "DM Sans", sans-serif; font-size: 14px;
+  border-radius: 10px; color: var(--text, #e3e8ef);
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 14px;
   outline: none; transition: border-color 150ms;
 }
-.ml-input::placeholder { color: rgba(221,225,240,0.28); }
-.ml-input:focus { border-color: rgba(99,102,241,0.50); }
+.ml-input::placeholder { color: rgba(226,232,240,0.28); }
+.ml-input:focus { border-color: rgba(91,156,255,0.55); }
 /* Native <select> popup ignores the dark theme by default (white
    background, near-white text) unless the <option>s are styled directly. */
-.ml-input option { background: #0d1226; color: #e8eaf4; }
+.ml-input option { background: #111418; color: #e3e8ef; }
 
 /* Role selector */
 .ml-role-row { display: flex; gap: 8px; margin-bottom: 14px; }
@@ -194,15 +195,15 @@
   flex: 1; padding: 9px; border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.04);
-  font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 600;
-  color: rgba(221,225,240,0.50); cursor: pointer;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 13px; font-weight: 600;
+  color: rgba(226,232,240,0.50); cursor: pointer;
   transition: all 150ms;
   display: flex; align-items: center; justify-content: center; gap: 5px;
 }
 .ml-role-btn.ml-selected {
-  border-color: rgba(99,102,241,0.45);
-  background: rgba(99,102,241,0.14);
-  color: #c7d2fe;
+  border-color: rgba(91,156,255,0.45);
+  background: rgba(91,156,255,0.13);
+  color: #cfe0ff;
 }
 
 /* Grade selector (student only) */
@@ -213,37 +214,36 @@
   padding: 5px 11px; border-radius: 7px;
   border: 1px solid rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.04);
-  font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
-  color: rgba(221,225,240,0.45); cursor: pointer;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 12px; font-weight: 600;
+  color: rgba(226,232,240,0.45); cursor: pointer;
   transition: all 140ms;
 }
 .ml-grade-btn.ml-selected {
-  border-color: rgba(16,185,129,0.45);
-  background: rgba(16,185,129,0.12);
-  color: #6ee7b7;
+  border-color: rgba(74,207,127,0.45);
+  background: rgba(74,207,127,0.12);
+  color: var(--good, #4acf7f);
 }
 
 /* ── Submit button ──────────────────────────────────────────── */
 .ml-submit {
   width: 100%; padding: 13px;
   border-radius: 12px; border: none;
-  background: linear-gradient(135deg, #4f46e5, #10b981);
-  color: #fff; font-family: "DM Sans", sans-serif;
+  background: var(--paper, #f2f5f9);
+  color: var(--ink-900, #08090b); font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
   font-size: 14px; font-weight: 700; cursor: pointer;
-  transition: all 160ms; margin-top: 6px;
-  box-shadow: 0 4px 18px rgba(79,70,229,0.30);
+  transition: background 160ms, transform 160ms; margin-top: 6px;
 }
-.ml-submit:hover { box-shadow: 0 6px 24px rgba(79,70,229,0.45); transform: translateY(-1px); }
+.ml-submit:hover { background: #fff; transform: translateY(-1px); }
 .ml-submit:active { transform: translateY(0); }
 .ml-submit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 /* ── Forgot-password link ───────────────────────────────────── */
 .ml-forgot-link {
   background: none; border: none; padding: 0; cursor: pointer;
-  font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
-  color: #a5b4fc; transition: color 140ms;
+  font-family: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-2, rgba(226,232,240,0.64)); transition: color 140ms;
 }
-.ml-forgot-link:hover { color: #c7d2fe; text-decoration: underline; }
+.ml-forgot-link:hover { color: var(--paper, #f2f5f9); text-decoration: underline; }
 
 /* ── Error / success messages ───────────────────────────────── */
 .ml-msg {
@@ -258,9 +258,9 @@
   color: #fca5a5;
 }
 .ml-msg-success {
-  background: rgba(16,185,129,0.12);
-  border: 1px solid rgba(16,185,129,0.25);
-  color: #6ee7b7;
+  background: rgba(74,207,127,0.12);
+  border: 1px solid rgba(74,207,127,0.28);
+  color: var(--good, #4acf7f);
 }
 
 /* ── Progress badge in nav (shows streak/xp when logged in) ── */
@@ -268,7 +268,7 @@
   font-family: "JetBrains Mono", monospace;
   font-size: 10px; font-weight: 600;
   padding: 2px 8px; border-radius: 99px;
-  background: rgba(245,158,11,0.12);
-  border: 1px solid rgba(245,158,11,0.25);
-  color: #fbbf24; margin-left: 2px;
+  background: rgba(245,178,61,0.12);
+  border: 1px solid rgba(245,178,61,0.28);
+  color: var(--warn, #f5b23d); margin-left: 2px;
 }
