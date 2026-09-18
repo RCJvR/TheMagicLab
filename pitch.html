@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Magic Lab — Reimagining STEM Education in South Africa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@300,400,500,700,800,900&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -25,20 +29,24 @@
   --rose:#be123c;
   --cyan:#0891b2;
   --accent:#5b21b6;
-  --fs:Sora,sans-serif;
-  --fd:"Fraunces",serif;
+  --fs:"Cabinet Grotesk","Segoe UI",system-ui,sans-serif;
+  --fd:"Cabinet Grotesk","Segoe UI",system-ui,sans-serif;
+  --fserif:"Instrument Serif",Georgia,serif;
   --fm:"JetBrains Mono",monospace;
 }
 html{scroll-behavior:smooth;}
 body{font-family:var(--fs);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 
 /* ── Scroll-reveal ── */
-.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.reveal.visible{opacity:1;transform:none;}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.reveal-left.visible{opacity:1;transform:none;}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.reveal-right.visible{opacity:1;transform:none;}
+.js .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.js .reveal.visible{opacity:1;transform:none;}
+.js .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.js .reveal-left.visible{opacity:1;transform:none;}
+.js .reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.js .reveal-right.visible{opacity:1;transform:none;}
+@media (prefers-reduced-motion: reduce){
+  .js .reveal,.js .reveal-left,.js .reveal-right{opacity:1;transform:none;transition:none;}
+}
 .delay-1{transition-delay:0.1s;}.delay-2{transition-delay:0.2s;}.delay-3{transition-delay:0.3s;}.delay-4{transition-delay:0.4s;}.delay-5{transition-delay:0.5s;}
 
 /* ═══════════════════════════════
@@ -63,7 +71,7 @@ nav{
 }
 .nav-links{display:flex;align-items:center;gap:6px;}
 .nav-link{
-  font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;
+  font-size:13px;font-weight:700;padding:6px 14px;border-radius:99px;
   color:var(--text2);text-decoration:none;transition:all 130ms;
   border:1px solid transparent;
 }
@@ -106,7 +114,7 @@ nav{
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(67,56,202,0.08);border:1px solid rgba(67,56,202,0.20);
   border-radius:99px;padding:6px 18px;
-  font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
   color:var(--indigo);margin-bottom:28px;position:relative;z-index:1;
 }
 .hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--indigo);animation:blink 2s ease-in-out infinite;}
@@ -120,7 +128,7 @@ nav{
   max-width:900px;
 }
 .hero-h1 em{
-  font-style:italic;font-weight:300;
+  font-family:var(--fserif);font-style:italic;font-weight:400;
   color:transparent;
   background:linear-gradient(120deg,var(--indigo) 0%,var(--violet) 50%,var(--emerald) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -144,7 +152,7 @@ nav{
 .btn-primary:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,33,182,0.30);}
 .btn-outline{
   background:transparent;color:var(--ink);padding:13px 28px;border-radius:14px;
-  font-size:15px;font-weight:600;text-decoration:none;border:1.5px solid rgba(26,28,48,0.25);
+  font-size:15px;font-weight:700;text-decoration:none;border:1.5px solid rgba(26,28,48,0.25);
   transition:all 150ms;display:flex;align-items:center;gap:8px;
 }
 .btn-outline:hover{background:rgba(26,28,48,0.06);border-color:rgba(26,28,48,0.40);}
@@ -168,7 +176,7 @@ nav{
 .section-paper2{background:var(--paper2);}
 
 .section-tag{
-  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
   color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:16px;
 }
 .section-tag-line{flex:1;height:1px;background:rgba(26,28,48,0.12);}
@@ -208,7 +216,7 @@ nav{
 .problem-stat-num.amber{color:#fbbf24;}
 .problem-stat-num.violet{color:#c4baff;}
 .problem-stat-text{padding-top:4px;}
-.problem-stat-label{font-size:15px;font-weight:600;color:#e8eaf8;margin-bottom:4px;}
+.problem-stat-label{font-size:15px;font-weight:700;color:#e8eaf8;margin-bottom:4px;}
 .problem-stat-sub{font-size:13px;color:rgba(232,234,248,0.50);line-height:1.5;}
 
 .problem-callout{
@@ -216,7 +224,7 @@ nav{
   border-radius:20px;padding:32px;
 }
 .problem-callout-q{
-  font-family:var(--fd);font-weight:700;font-style:italic;
+  font-family:var(--fserif);font-weight:400;font-style:italic;
   font-size:clamp(20px,2vw,26px);color:#c4baff;line-height:1.4;margin-bottom:16px;
 }
 .problem-callout-a{font-size:15px;color:rgba(232,234,248,0.65);line-height:1.7;}
@@ -268,7 +276,7 @@ nav{
   width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
   font-size:24px;margin-bottom:16px;position:relative;z-index:1;
 }
-.tc-grade{font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;position:relative;z-index:1;}
+.tc-grade{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;position:relative;z-index:1;}
 .tc-name{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:10px;position:relative;z-index:1;}
 .tc-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:18px;position:relative;z-index:1;}
 .tc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;position:relative;z-index:1;}
@@ -309,13 +317,13 @@ nav{
 .bento-icon{font-size:28px;margin-bottom:14px;display:block;}
 .bento-h3{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-0.02em;color:#fff;margin-bottom:8px;}
 .bento-p{font-size:13px;color:rgba(232,234,248,0.55);line-height:1.65;}
-.bento-highlight{color:rgba(196,186,255,0.90);font-weight:600;}
+.bento-highlight{color:rgba(196,186,255,0.90);font-weight:700;}
 
 /* Mini XP bar in bento */
 .bento-xp-demo{margin-top:16px;}
 .bento-level-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .bento-level-name{font-family:var(--fm);font-size:11px;color:rgba(232,234,248,0.50);}
-.bento-level-val{font-family:var(--fm);font-size:11px;color:#c4baff;font-weight:600;}
+.bento-level-val{font-family:var(--fm);font-size:11px;color:#c4baff;font-weight:700;}
 .bento-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
 .bento-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#7c3aed,#059669);transition:width 1.2s cubic-bezier(0.34,1.1,0.64,1);}
 
@@ -335,7 +343,7 @@ nav{
 
 /* Interactive quiz demo in bento */
 .bento-quiz{margin-top:14px;}
-.bento-q{font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:10px;}
+.bento-q{font-size:13px;font-weight:700;color:rgba(232,234,248,0.80);margin-bottom:10px;}
 .bento-opts{display:flex;flex-direction:column;gap:6px;}
 .bento-opt{
   padding:8px 12px;border-radius:8px;font-size:12px;
@@ -352,7 +360,7 @@ nav{
   font-family:var(--fm);font-size:11px;line-height:1.8;color:rgba(232,234,248,0.70);
   margin-top:12px;overflow:hidden;position:relative;
 }
-.bento-code .kw{color:#c4baff;font-weight:600;}
+.bento-code .kw{color:#c4baff;font-weight:700;}
 .bento-code .str{color:#86efac;}
 .bento-code .num{color:#fbbf24;}
 .bento-code .cmt{color:#4b5563;font-style:italic;}
@@ -389,7 +397,7 @@ nav{
 }
 .curriculum-col{display:flex;flex-direction:column;gap:8px;}
 .curriculum-header{
-  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
   color:var(--muted);padding-bottom:8px;border-bottom:1px solid rgba(26,28,48,0.10);margin-bottom:4px;
 }
 .curriculum-item{
@@ -422,11 +430,11 @@ nav{
   box-shadow:0 0 0 4px rgba(124,109,250,0.08);
 }
 .gamif-level-num{
-  font-family:var(--fm);font-size:10px;font-weight:600;
+  font-family:var(--fm);font-size:10px;font-weight:700;
   width:32px;text-align:center;color:rgba(232,234,248,0.35);
 }
 .gamif-level.current .gamif-level-num{color:#c4baff;}
-.gamif-level-name{font-size:13px;font-weight:600;color:rgba(232,234,248,0.60);flex:1;}
+.gamif-level-name{font-size:13px;font-weight:700;color:rgba(232,234,248,0.60);flex:1;}
 .gamif-level.current .gamif-level-name{color:#e8eaf8;}
 .gamif-level-xp{font-family:var(--fm);font-size:10px;color:rgba(232,234,248,0.30);}
 .gamif-level.current .gamif-level-xp{color:rgba(196,186,255,0.65);}
@@ -436,7 +444,7 @@ nav{
 ═══════════════════════════════ */
 .vision-wrap{max-width:800px;margin:0 auto;text-align:center;}
 .vision-quote{
-  font-family:var(--fd);font-weight:300;font-style:italic;
+  font-family:var(--fserif);font-weight:400;font-style:italic;
   font-size:clamp(22px,2.5vw,34px);line-height:1.5;
   color:#fff;letter-spacing:-0.01em;margin-bottom:28px;
 }
@@ -454,7 +462,7 @@ nav{
 }
 .roadmap-item:last-child{border-bottom:none;}
 .roadmap-phase{
-  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.10em;
+  font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:0.10em;
   text-transform:uppercase;padding-top:3px;
 }
 .roadmap-phase.done{color:var(--emerald);}
@@ -489,7 +497,7 @@ nav{
 }
 .plan-badge{
   position:absolute;top:16px;right:16px;
-  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
   padding:3px 10px;border-radius:99px;
   background:rgba(67,56,202,0.15);border:1px solid rgba(67,56,202,0.30);color:#c4baff;
 }
@@ -608,7 +616,7 @@ footer{
     STEM education<br>that <em>actually works</em>
   </h1>
   <p class="hero-sub reveal delay-2">
-    Twelve browser-based learning tools covering coding, robotics, mathematics, science, engineering graphics, technology, web design, digital literacy, and AI — all aligned to the South African school curriculum. No app downloads. No setup. Just learning.
+    Thirteen browser-based learning tools covering coding, robotics, mathematics, science, engineering graphics, technology, web design, digital literacy, and AI — all aligned to the South African school curriculum. No app downloads. No setup. Just learning.
   </p>
   <div class="hero-actions reveal delay-3">
     <a href="index.html" class="btn-primary">
@@ -617,9 +625,9 @@ footer{
     <a href="#tools" class="btn-outline">See what's inside</a>
   </div>
   <div class="hero-proof reveal delay-4">
-    <div class="proof-stat"><div class="proof-num">12</div><div class="proof-label">Learning tools live</div></div>
+    <div class="proof-stat"><div class="proof-num">13</div><div class="proof-label">Learning tools live</div></div>
     <div class="proof-divider"></div>
-    <div class="proof-stat"><div class="proof-num">Gr 8–12</div><div class="proof-label">Full curriculum span</div></div>
+    <div class="proof-stat"><div class="proof-num">Gr 4–12</div><div class="proof-label">Full curriculum span</div></div>
     <div class="proof-divider"></div>
     <div class="proof-stat"><div class="proof-num">15</div><div class="proof-label">XP levels to earn</div></div>
     <div class="proof-divider"></div>
@@ -676,7 +684,7 @@ footer{
 <section class="section section-paper" id="tools">
   <div class="section-tag reveal"><span>The platform</span><div class="section-tag-line"></div></div>
   <div class="tools-intro">
-    <h2 class="section-h2 reveal delay-1" style="margin:0 auto;">Twelve tools. One platform. One login.</h2>
+    <h2 class="section-h2 reveal delay-1" style="margin:0 auto;">Thirteen tools. One platform. One login.</h2>
     <p class="section-lead reveal delay-2" style="margin:14px auto 0;">Each tool is purpose-built for the South African curriculum — from Gr 7 Natural Sciences to Gr 12 IT. Students use the same account, XP, and badge shelf across all of them.</p>
   </div>
 
@@ -812,6 +820,17 @@ footer{
         <span class="tc-tag">EGD</span><span class="tc-tag">Loci</span><span class="tc-tag">Cams</span>
       </div>
       <a href="drawing-druid/index.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card tc-rose reveal delay-2">
+      <div class="tc-icon" style="background:rgba(190,18,60,0.12);border:1px solid rgba(190,18,60,0.20);"><i data-lucide="hourglass" style="width:22px;height:22px;"></i></div>
+      <div class="tc-grade">Every grade</div>
+      <div class="tc-name">Time Turner</div>
+      <div class="tc-desc">A weekly time-management planner. Learners map out school, homework, activities, meals, chores and rest, then print a plan built around what the week is actually missing — the study-skills half of doing well that no subject tool covers. Free forever.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">Planning</span><span class="tc-tag">Study Habits</span><span class="tc-tag">Printable</span><span class="tc-tag">Free forever</span>
+      </div>
+      <a href="time-turner.html" class="tc-link">Try it →</a>
     </div>
 
   </div>
@@ -1027,15 +1046,15 @@ footer{
     <div class="gamif-text reveal-left">
       <div style="display:flex;flex-direction:column;gap:14px;margin-top:32px;">
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
-          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">XP is earned, never lost</div>
+          <div style="font-size:13px;font-weight:700;color:rgba(232,234,248,0.80);margin-bottom:6px;">XP is earned, never lost</div>
           <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">Every lesson, correct quiz answer, code run, and perfect score adds permanent XP. Rebalancing only ever adjusts thresholds upward — students never lose earned progress.</div>
         </div>
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
-          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">Encouragement, not punishment</div>
+          <div style="font-size:13px;font-weight:700;color:rgba(232,234,248,0.80);margin-bottom:6px;">Encouragement, not punishment</div>
           <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">A missed streak shows "Your streak paused — restart today!" rather than punishment. One automatic grace period per week prevents weekend discouragement.</div>
         </div>
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
-          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">Pilot-friendly design</div>
+          <div style="font-size:13px;font-weight:700;color:rgba(232,234,248,0.80);margin-bottom:6px;">Pilot-friendly design</div>
           <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">Level thresholds and XP rates live in a single config object. After a pilot, rebalancing is a one-line change per threshold — no database migrations, no student data changes.</div>
         </div>
       </div>
@@ -1169,7 +1188,7 @@ footer{
       <div class="plan-price">R45<span class="plan-period"> / learner / term</span></div>
       <div class="plan-desc">Curriculum-aligned coverage with teacher oversight — free for the first 30 days.</div>
       <div class="plan-features">
-        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>All 12 learning tools</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>All 13 learning tools</div>
         <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>XP, levels &amp; badges</div>
         <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>AI Oracle literacy course</div>
         <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Teacher dashboard &amp; class management</div>
