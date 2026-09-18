@@ -10,56 +10,228 @@
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#08090b;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.075);--text:#e3e8ef;--muted:rgba(226,232,240,0.40);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
-    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-    body{background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
-    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
-    body>*{position:relative;z-index:1}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 52px;border-bottom:1px solid var(--border)}
-    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;/* gradient-clip only recolors TEXT — without this, the injected icon's currentColor falls back to link-blue */color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
-    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
-    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
-    .hero{padding:56px 52px 32px;max-width:900px}
-    .hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light);background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);padding:6px 14px;border-radius:99px;margin-bottom:20px}
-    .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-    .hero h1{font-weight:900;font-size:clamp(32px,5vw,52px);letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:16px}
-    .hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent-light) 0%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-sub{font-size:15px;color:var(--muted);max-width:640px;line-height:1.8}
-    .grade-filter{display:flex;gap:8px;margin:0 52px 48px}
-    .grade-filter-btn{display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all 150ms}
-    .grade-filter-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
-    .grade-filter-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
-    .section-row{display:flex;align-items:center;gap:14px;padding:0 52px;margin-bottom:20px}
-    .section-label{font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;display:flex;align-items:center;gap:8px;white-space:nowrap}
-    .section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(249,115,22,0.18),var(--border) 60%,transparent)}
-    .strands{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;padding:0 52px;margin-bottom:56px}
-    .strand-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:all 200ms}
-    .strand-card:hover{border-color:rgba(249,115,22,.28);background:rgba(255,255,255,.055)}
-    .strand-icon{width:40px;height:40px;border-radius:12px;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.24);display:flex;align-items:center;justify-content:center;font-size:19px}
-    .strand-tag{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light);align-self:flex-start;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.18)}
-    .strand-title{font-weight:800;font-size:17px;color:#fff;margin-bottom:4px}
-    .strand-desc{font-size:12.5px;color:var(--muted);line-height:1.7}
-    .strand-topics{display:flex;flex-direction:column;gap:4px;margin-top:4px}
-    .strand-topic{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:12.5px;color:rgba(210,218,245,.75);text-decoration:none;transition:all 140ms}
-    .strand-topic:hover{background:rgba(249,115,22,.08);color:var(--text)}
-    .strand-topic-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-    .topic-visited{margin-left:auto;flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent-light)}
-    .hero-features{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-family:var(--fm);font-size:11px;letter-spacing:.04em;color:rgba(210,218,245,.55)}
-    .continue-wrap{padding:0 52px;margin:0 0 24px}
-    .continue-wrap:empty{display:none}
-    .continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);text-decoration:none;transition:all 150ms}
-    .continue-card:hover{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.40)}
-    .continue-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:2px}
-    .continue-title{font-weight:700;font-size:14px;color:#fff}
-    .continue-arrow{margin-left:auto;color:var(--accent-light);font-size:16px}
-    footer{padding:32px 52px;border-top:1px solid var(--border);text-align:center}
-    .footer-copy{font-size:12px;color:var(--muted)}
-    @media(max-width:640px){
-      nav,.hero,.grade-filter,.section-row,.strands,.continue-wrap{padding-left:20px;padding-right:20px}
-      .grade-filter{margin-left:20px;margin-right:20px}
+    /* ══════════════════════════════════════════════════════════════════════
+       The Tech Tower — tool landing page.
+
+       Only the stylesheet changed here. Every element, id, class, onclick and
+       data-af / data-af-html attribute is exactly as it was, because the grade
+       filter, the topic-memory markers and the whole English/Afrikaans swap
+       are wired through this markup — restyling in place is the change that
+       cannot break them.
+
+       Tokens come from assets/magic-lab.css. --accent is remapped to the amber
+       this tool wears in the catalogue, so the inline styles still sitting in
+       the markup resolve to the new hue without being edited.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --accent: var(--t-tech);
+      --accent-light: #f3bd6e;
+      --fd: var(--font-display);
+      --fm: var(--font-mono);
+    }
+
+    /* The markup carries inline animation:blink on two status dots. Rather
+       than edit the markup to remove them, the keyframe itself is retired —
+       a pulsing dot on a page you read for ten minutes is a distraction. */
+    @keyframes blink { from, to { opacity: 1; } }
+
+    /* ── Nav ────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-4);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+    }
+    /* The tool mark carries the colour; the wordmark stays paper. */
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper);
+      text-decoration: none; display: flex; align-items: center; gap: 9px;
+    }
+    .nav-logo i, .nav-logo svg { color: var(--accent); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent;
+      color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: clamp(40px, 6vw, 72px) var(--gutter) clamp(24px, 3vw, 36px);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-bottom: var(--space-4);
+      padding: 0; border: none; background: none;
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .hero-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(34px, 5vw, 60px); line-height: 1.0;
+      letter-spacing: -0.042em; color: var(--paper); margin-bottom: var(--space-4);
+      text-wrap: balance;
+    }
+    /* Was a gradient-clipped fill. One serif line carries the promise instead. */
+    .hero h1 em {
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: 1.04em; letter-spacing: -0.02em; color: var(--text);
+    }
+    .hero-sub { font-size: clamp(15px, 1.3vw, 17px); line-height: 1.65; color: var(--text-2); max-width: 58ch; }
+
+    .hero-features {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6);
+      margin-top: var(--space-6); padding-top: var(--space-4);
+      border-top: 1px solid var(--line);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+
+    /* ── Grade filter ───────────────────────────────────────────────────── */
+    .grade-filter {
+      display: flex; gap: var(--space-2);
+      width: 100%; max-width: var(--measure); margin: 0 auto var(--space-7);
+      padding-inline: var(--gutter);
+    }
+    .grade-filter-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent;
+      color: var(--text-2);
+      font-family: var(--font-body); font-size: 13.5px; font-weight: 700; line-height: 1;
+      cursor: pointer;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .grade-filter-btn:hover { color: var(--paper); border-color: var(--line-hard); }
+    /* The selected grade is the one place the tool hue does real work here. */
+    .grade-filter-btn.active {
+      background: color-mix(in srgb, var(--accent) 15%, transparent);
+      border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+      color: var(--accent);
+    }
+
+    /* ── Section rule ───────────────────────────────────────────────────── */
+    .section-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin: 0 auto var(--space-5);
+      padding-inline: var(--gutter);
+    }
+    .section-label {
+      display: flex; align-items: center; gap: 9px; white-space: nowrap;
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--line); }
+
+    /* ── Strand cards ───────────────────────────────────────────────────── */
+    .strands {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin: 0 auto var(--space-8);
+      padding-inline: var(--gutter);
+    }
+    .strand-card {
+      display: flex; flex-direction: column; gap: var(--space-3);
+      padding: var(--space-5);
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      transition: background var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard);
+    }
+    .strand-card:hover {
+      background: var(--ink-800);
+      border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+    }
+    .strand-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .strand-tag {
+      align-self: flex-start;
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 9px; border-radius: var(--radius-2xs);
+      background: transparent; border: 1px solid var(--line);
+      color: var(--text-3);
+    }
+    .strand-title {
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.024em; line-height: 1.25; color: var(--paper);
+      margin-bottom: 5px;
+    }
+    .strand-desc { font-size: 13.5px; line-height: 1.6; color: var(--text-2); }
+
+    .strand-topics { display: flex; flex-direction: column; gap: 2px; margin-top: var(--space-2); }
+    .strand-topic {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: var(--radius-2xs);
+      font-size: 13px; color: var(--text-2); text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-standard),
+                  color var(--dur-fast) var(--ease-standard);
+    }
+    .strand-topic:hover {
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      color: var(--paper);
+    }
+    .strand-topic-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .topic-visited {
+      margin-left: auto; flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--accent);
+    }
+
+    /* ── Continue where you left off ────────────────────────────────────── */
+    .continue-wrap { width: 100%; max-width: var(--measure); margin: 0 auto var(--space-5); padding-inline: var(--gutter); }
+    .continue-wrap:empty { display: none; }
+    .continue-card {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: 14px 20px; border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--accent) 9%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-standard);
+    }
+    .continue-card:hover { background: color-mix(in srgb, var(--accent) 15%, transparent); }
+    .continue-label {
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px;
+    }
+    .continue-title { font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--paper); }
+    .continue-arrow { margin-left: auto; color: var(--accent); }
+
+    /* ── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      margin-top: auto; padding: var(--space-7) var(--gutter);
+      border-top: 1px solid var(--line); text-align: center;
+    }
+    .footer-copy { font-size: 13px; color: var(--text-3); }
+
+    @media (max-width: 640px) {
+      nav { min-height: 60px; }
+      .grade-filter { flex-wrap: wrap; }
     }
   </style>
 <link rel="stylesheet" href="../auth-modal.css">
