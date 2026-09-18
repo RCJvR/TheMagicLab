@@ -2,17 +2,22 @@
   function init() {
     var style = document.createElement('style');
     style.textContent =
-      '.ml-contact-fab{position:fixed;bottom:28px;right:28px;z-index:9998;width:54px;height:54px;border-radius:16px;border:none;' +
-      'background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;font-size:22px;cursor:pointer;box-shadow:0 8px 28px rgba(8,145,178,.50);' +
-      'display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:all 180ms;' +
-      'animation:mlFabPop .4s cubic-bezier(.34,1.56,.64,1) both}' +
-      '.ml-contact-fab:hover{transform:scale(1.10);box-shadow:0 12px 36px rgba(8,145,178,.60)}' +
+      // A quiet utility control, not a second call to action: the glowing
+      // cyan gradient competed with the page's own accents on every screen.
+      // Values carry fallbacks so pages that have not adopted
+      // assets/magic-lab.css yet still get the same treatment.
+      '.ml-contact-fab{position:fixed;bottom:24px;right:24px;z-index:9998;width:46px;height:46px;border-radius:14px;' +
+      'border:1px solid var(--line-hard,rgba(255,255,255,.16));background:var(--ink-800,#111418);' +
+      'color:var(--text,#e3e8ef);font-size:17px;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.70);' +
+      'display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;' +
+      'transition:background 140ms,border-color 140ms,transform 140ms}' +
+      '.ml-contact-fab:hover{background:var(--ink-750,#171b20);border-color:var(--paper,#f2f5f9);transform:translateY(-2px)}' +
       '.ml-contact-fab .ml-contact-label{display:none}' +
-      '@keyframes mlFabPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}' +
       '@media (max-width:640px){' +
-      '.ml-contact-fab{bottom:18px;right:16px;width:auto;height:36px;padding:0 14px 0 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 14px rgba(8,145,178,.45)}' +
-      '.ml-contact-fab .ml-contact-icon{font-size:14px}' +
-      '.ml-contact-fab .ml-contact-label{display:inline;font-weight:600}' +
+      '.ml-contact-fab{bottom:16px;right:16px;width:auto;height:34px;padding:0 13px 0 11px;border-radius:999px;font-size:12px}' +
+      '.ml-contact-fab .ml-contact-icon{font-size:13px}' +
+      '.ml-contact-fab .ml-contact-label{display:inline;font-weight:700;' +
+      'font-family:"Cabinet Grotesk","Segoe UI",system-ui,sans-serif}' +
       '}';
     document.head.appendChild(style);
 

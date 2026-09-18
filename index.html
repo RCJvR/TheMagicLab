@@ -1,21 +1,24 @@
-<!-- File updated on 17/6/2026-->
+<!-- File updated on 18/9/2026-->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080c1a">
+  <meta name="theme-color" content="#08090b">
   <title>The Magic Lab — STEM Learning Tools</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="assets/logo-prism.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.fontshare.com">
   <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — it must be
        loaded from Fontshare's own CDN, and kept in its own <link> so a problem with
-       one font family can never take the others down with it. -->
+       one font family can never take the others down with it. Cabinet has no 600,
+       so every weight used on the site is one of the ones requested here. -->
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
@@ -24,742 +27,926 @@
   <script defer src="auth-modal.js"></script>
   <script defer src="payment.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ══════════════════════════════════════════════════════════════════════
+       Home — page-specific layout.
 
-    :root {
-      --bg:        #080c1a;
-      --bg2:       #0d1226;
-      --surface:   rgba(255,255,255,0.045);
-      --border:    rgba(255,255,255,0.08);
-      --text:      #e4e8f8;
-      --muted:     rgba(210,218,245,0.45);
-      --accent-1:  #7c6dfa;   /* indigo */
-      --accent-2:  #11d98f;   /* emerald */
-      --accent-3:  #f5a623;   /* amber */
-      --font-display: "Cabinet Grotesk", sans-serif;
-      --font-body:    "Cabinet Grotesk", sans-serif;
-      --font-mono:    "JetBrains Mono", monospace;
-      --font-serif:   "Instrument Serif", serif;
+       Shared tokens, chrome and primitives live in assets/magic-lab.css.
+       What is here is only what this page alone needs: the prism hero, the
+       catalogue sections, the tool card, and the Arena band.
 
-      /* ── Spacing scale (4px base grid) ── */
-      --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
-      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+       The thesis of the page is the logo taken literally. White light enters
+       a prism and leaves as a spectrum, and the catalogue below IS that
+       spectrum: thirteen tools, thirteen hues, running violet to rose from
+       the first card to the last. The order was already in the old markup as
+       comments (RED, ORANGE, YELLOW, GREEN, CYAN, BLUE) — this just makes it
+       visible instead of implied.
 
-      /* ── Radius scale — every border-radius on the page maps onto one
-         of these, instead of the 13 unrelated one-off values it used to. ── */
-      --radius-2xs: 6px;   /* micro elements: badges, tags */
-      --radius-xs:  8px;   /* tiny controls: chat message icons */
-      --radius-sm:  12px;  /* buttons, inputs, icon chips */
-      --radius-md:  16px;  /* medium panels: banner buttons, chat bubbles */
-      --radius-lg:  20px;  /* cards */
-      --radius-xl:  24px;  /* large panels: arena banner, tutor modal */
-      --radius-full: 99px; /* pills */
+       The hues are arranged so each subject family owns a contiguous slice
+       of the run, which is what lets the page be one unbroken spectrum and
+       still group by subject. Section breaks annotate the run; they do not
+       interrupt it.
 
-      /* ── Elevation scale — resting / hover / modal ── */
-      --elevation-sm: 0 4px 18px rgba(124,109,250,0.30);
-      --elevation-md: 0 6px 26px rgba(124,109,250,0.46);
-      --elevation-lg: 0 28px 60px rgba(0,0,0,0.50);
-      --elevation-xl: 0 32px 90px rgba(0,0,0,0.70);
+       Each hue is spent ONCE per card, on the icon. That restraint is what
+       separates thirteen colours reading as light from thirteen colours
+       reading as a paint box — the old page spent each one three times over
+       (coloured title, tinted icon, and a full-width gradient button).
+       ══════════════════════════════════════════════════════════════════════ */
 
-      /* ── Motion — one duration/easing for ordinary hover feedback.
-         The card's springier lift keeps its own bounce curve on purpose;
-         everything else (pills, links, small buttons) now shares this. ── */
-      --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --dur-fast: 150ms;
-      --dur-med:  220ms;
+    html { scroll-behavior: smooth; }
+
+    /* ── Skip link ──────────────────────────────────────────────────────── */
+    .skip-link {
+      position: absolute; left: var(--gutter); top: 10px; z-index: 100;
+      padding: 10px 16px; border-radius: var(--radius-sm);
+      background: var(--paper); color: var(--ink-900);
+      font-size: 13px; font-weight: 700; text-decoration: none;
+      transform: translateY(-160%);
+      transition: transform var(--dur-fast) var(--ease-standard);
     }
+    .skip-link:focus { transform: translateY(0); }
 
-    html, body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+    /* ══ HERO ═══════════════════════════════════════════════════════════ */
 
-    body {
-      display: flex;
-      flex-direction: column;
+    /* Engineering-paper grid instead of the usual trio of coloured radial
+       blooms. It reads as a lab bench rather than a template, and it keeps
+       the background neutral so the prism colours stay true. */
+    .hero-wrap { position: relative; }
+    .hero-wrap::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
       background-image:
-        radial-gradient(ellipse 70% 50% at 0% 0%,   rgba(124,109,250,0.14) 0%, transparent 60%),
-        radial-gradient(ellipse 55% 40% at 100% 0%,  rgba(17,217,143,0.09) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 35% at 50% 100%, rgba(245,166,35,0.07)  0%, transparent 55%);
+        linear-gradient(to right,  rgba(255,255,255,0.032) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.032) 1px, transparent 1px);
+      background-size: 34px 34px;
+      -webkit-mask-image: radial-gradient(ellipse 85% 75% at 28% 40%, #000 0%, transparent 72%);
+              mask-image: radial-gradient(ellipse 85% 75% at 28% 40%, #000 0%, transparent 72%);
     }
 
-    /* ── Noise grain overlay ── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.35;
-    }
-
-    body > * { position: relative; z-index: 1; }
-
-    /* ── Navigation ── */
-    nav {
-      /* `body > *` above gives every top-level section the same z-index:1,
-         so with equal stacking the section right after nav (.hero) paints
-         OVER nav in DOM order — including the user menu dropdown, which
-         hangs below the nav bar into the hero's space. Bump nav above its
-         siblings so its dropdown always stays on top. */
-      position: relative; z-index: 20;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 52px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--font-display);
-      font-weight: 900; font-size: 22px; letter-spacing: -0.03em;
-      background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      /* The gradient-clip trick above only recolors TEXT — it leaves the logo
-         icon's currentColor unset, so without this it falls back to the
-         browser's default link-blue instead of white. */
-      color: #fff;
-      text-decoration: none; display: flex; align-items: center; gap: 10px;
-    }
-    .nav-logo img { width: 30px; height: 30px; border-radius: var(--radius-2xs); }
-
-    .nav-right { display: flex; align-items: center; gap: 8px; }
-
-    .nav-pill {
-      font-size: 12px; font-weight: 600; padding: 7px 16px;
-      border-radius: var(--radius-full); border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted);
-      text-decoration: none; transition: all var(--dur-fast) var(--ease-standard); cursor: pointer;
-      font-family: var(--font-body);
-      display: inline-flex; align-items: center; line-height: 1;
-    }
-    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); border-color: rgba(255,255,255,0.18); }
-    .nav-pill:active { transform: scale(0.97); }
-
-    /* Slightly larger header buttons on desktop only — mobile keeps the compact size */
-    @media (min-width: 641px) {
-      .nav-pill { font-size: 13px; padding: 9px 19px; }
-    }
-    .nav-badge {
-      display: none; align-items: center; justify-content: center;
-      min-width: 16px; height: 16px; padding: 0 4px; margin-left: 7px;
-      border-radius: var(--radius-full); background: #f59e0b; color: #1a1206;
-      font-size: 10px; font-weight: 800; line-height: 1;
-    }
-    .nav-badge.overdue { background: #ef4444; color: #fff; }
-
-    /* ── Hero ── */
     .hero {
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center;
-      padding: var(--space-7) var(--space-5) var(--space-6);
-      gap: 0;
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+      align-items: center;
+      gap: clamp(32px, 5vw, 72px);
+      padding-block: clamp(44px, 7vw, 92px) clamp(48px, 7vw, 88px);
     }
 
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 6px 16px; border-radius: var(--radius-full); margin-bottom: var(--space-6);
-      background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.28);
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-      color: #a89ffc;
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: var(--space-5);
     }
-    .hero-tag-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: #a89ffc;
-      animation: blink 2s ease-in-out infinite;
+    .hero-eyebrow .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--fam-sciences);
+      box-shadow: 0 0 0 3px rgba(74,207,127,0.16);
     }
-    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 
     .hero h1 {
       font-family: var(--font-display);
-      font-weight: 900; font-size: clamp(40px, 6.5vw, 80px);
-      letter-spacing: -0.04em; line-height: 1.0;
-      margin-bottom: 10px;
-      color: #fff;
+      font-weight: 900;
+      font-size: clamp(44px, 6.2vw, 84px);
+      line-height: 0.94;
+      letter-spacing: -0.045em;
+      color: var(--paper);
+      text-wrap: balance;
     }
-
+    /* The serif line is the one typographic flourish on the page. It earns
+       its place by carrying the actual promise — the rest is Cabinet. */
     .hero h1 em {
-      font-style: normal;
+      display: block;
       font-family: var(--font-serif);
-      font-weight: 400;
-      background: linear-gradient(110deg, #c4baff 0%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-style: italic; font-weight: 400;
+      font-size: 1.04em; line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-top: 0.06em;
     }
 
     .hero-sub {
-      font-size: clamp(15px, 1.8vw, 18px);
-      color: var(--muted); max-width: 480px;
-      margin-top: 20px; line-height: 1.7;
+      margin-top: var(--space-5);
+      max-width: 46ch;
+      font-size: clamp(15px, 1.4vw, 17px);
+      line-height: 1.65;
+      color: var(--text-2);
     }
 
-    /* ── Section label ── */
+    .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 
-    /* ── Cards grid ── */
-    .cards-outer { width: 100%; }
-    .cards-scroll { padding: var(--space-2) 52px var(--space-6); }
-
-    .cards-track {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
+    /* Hard facts, set in the mono face so data always looks like data. */
+    .hero-specs {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6);
+      margin-top: var(--space-7);
+      border-top: 1px solid var(--line);
+      padding-top: var(--space-4);
     }
 
-    @media (max-width: 1100px) { .cards-track { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 800px)  { .cards-track { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 500px)  { .cards-track { grid-template-columns: 1fr; } }
+    /* ── The prism ──────────────────────────────────────────────────────────
+       Not an illustration of the logo — the page legend. One white beam goes
+       in; thirteen wedges of colour come out, one per tool, in the same order
+       the catalogue below runs. The five brackets on the outer edge are the
+       subject families, and each is a link to its section.
 
-    /* ── Card ── */
-    .card {
-      width: auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: var(--space-5);
-      display: flex; flex-direction: column;
+       Drawn as solid wedges rather than thin rays because that is what
+       dispersion actually looks like: a continuous band of light that
+       separates as it travels, not a bundle of wires.
+       ─────────────────────────────────────────────────────────────────── */
+
+    /* The drawing and the legend are one object. The fan spans the full
+       height of the viewBox and each legend row is flexed to its tool count,
+       so a family's label always sits exactly beside its own band of light —
+       no hand-tuned offsets, and it stays true at any width. */
+    .prism-fig { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4); align-items: stretch; }
+    .prism { width: 100%; height: auto; }
+
+    .pz-beam {
+      fill: none; stroke: var(--paper); stroke-width: 2.5; stroke-linecap: round;
+      stroke-dasharray: 190; stroke-dashoffset: 190;
+      animation: pzDraw 560ms var(--ease-standard) 100ms forwards;
+    }
+    .pz-halo { fill: none; stroke: #fff; stroke-width: 9; opacity: 0.09; stroke-linecap: round; }
+
+    .pz-glass { stroke: rgba(255,255,255,0.46); stroke-width: 1.7; stroke-linejoin: round; }
+    .pz-facet { stroke: rgba(255,255,255,0.62); stroke-width: 1.7; stroke-linecap: round; fill: none; }
+    .pz-inner { stroke: rgba(255,255,255,0.60); stroke-width: 2; stroke-linecap: round; fill: none; }
+    .pz-body  { opacity: 0; animation: pzFade 340ms var(--ease-standard) 380ms forwards; }
+
+    /* The fan sweeps open from the exit face, so the light reads as leaving
+       the glass rather than as a shape that fades in. */
+    .pz-fan {
+      transform-box: view-box; transform-origin: 251px 232px;
+      transform: scaleX(0);
+      animation: pzOpen 620ms var(--ease-standard) 420ms forwards;
+    }
+    .pz-wedge { stroke: none; }
+
+    @keyframes pzDraw { to { stroke-dashoffset: 0; } }
+    @keyframes pzFade { to { opacity: 1; } }
+    @keyframes pzOpen { to { transform: scaleX(1); } }
+
+    /* The legend is real HTML, not SVG text — it stays sharp, it is
+       selectable and announced properly, and it never shrinks to 8px the way
+       text baked into a scaling viewBox does. */
+    .prism-legend { display: flex; flex-direction: column; min-width: 0; }
+    .prism-legend a {
+      flex: var(--n) 1 0; min-height: 0;
+      display: flex; align-items: center; gap: 13px;
       text-decoration: none; color: inherit;
-      position: relative; overflow: hidden;
-      /* The card lift keeps its own springy bounce curve on purpose — it's
-         a deliberate signature motion, not part of the "12 mismatched
-         durations" problem. Everything else on the card standardizes on
-         --dur-med / --ease-standard. */
-      transition: transform 260ms cubic-bezier(0.34,1.3,0.64,1),
+      transition: color var(--dur-fast) var(--ease-standard);
+    }
+    /* The family's own stretch of the spectrum, continuing out of the fan.
+       Its height is its share of the thirteen, so the bar and the band of
+       light beside it are always the same size. */
+    .prism-legend .swatch {
+      width: 5px; align-self: stretch; margin-block: 4px;
+      border-radius: 3px; flex-shrink: 0;
+    }
+    .prism-legend .name {
+      font-family: var(--font-display); font-weight: 700; font-size: 15px;
+      letter-spacing: -0.02em; color: var(--text); white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard);
+    }
+    .prism-legend .count { margin-left: auto; padding-left: var(--space-4); }
+    .prism-legend a:hover .name,
+    .prism-legend a:focus-visible .name { color: var(--paper); }
+
+    @media (max-width: 560px) {
+      .prism-fig { grid-template-columns: 1fr; gap: var(--space-5); }
+      .prism-legend a { flex: 0 0 auto; padding-block: 9px; border-top: 1px solid var(--line-soft); }
+      .prism-legend a:first-child { border-top: none; }
+      .prism-legend .swatch { width: 30px; height: 5px; align-self: center; margin-block: 0; }
+    }
+
+    /* ══ CATALOGUE ══════════════════════════════════════════════════════ */
+
+    .family { padding-block: clamp(36px, 5vw, 60px); scroll-margin-top: 88px; }
+
+    .family-head {
+      position: relative;
+      display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--space-4);
+      padding-bottom: var(--space-4);
+      margin-bottom: var(--space-6);
+      border-bottom: 1px solid var(--line);
+    }
+    /* Each section rule draws its own family's stretch of the spectrum, so
+       the run visibly continues across the section break rather than being
+       interrupted by it — and the rule doubles as the key for the hues on
+       the cards below it. */
+    .family-head::after {
+      content: ''; position: absolute; left: 0; bottom: -1px;
+      width: 104px; height: 2px; background: var(--fam-grad, var(--fam));
+    }
+    .family-name {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(21px, 2.3vw, 29px); letter-spacing: -0.032em;
+      color: var(--paper); line-height: 1.1;
+    }
+    .family-note { font-size: 14px; color: var(--text-3); }
+    .family-meta { margin-left: auto; }
+
+    /* Each family gets the column count that makes its tools fill exactly one
+       row — five across for Computing, three for Engineering, two for the
+       pairs, full width for the single. No section ends on a half-empty row,
+       and the row length itself tells you how big the family is before you
+       read a word. Card widths differ between sections but never within a
+       row, which is where matching edges actually matter. */
+    .tool-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .tool-grid[data-cols="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .tool-grid[data-cols="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .tool-grid[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tool-grid[data-cols="1"] { grid-template-columns: 1fr; }
+
+    /* Below full width the native counts get too narrow to read, so they step
+       down. The perfect fill is a desktop luxury; legibility is not. */
+    @media (max-width: 1180px) { .tool-grid[data-cols="5"] { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 880px)  {
+      .tool-grid[data-cols="5"],
+      .tool-grid[data-cols="3"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px)  {
+      .tool-grid[data-cols="5"],
+      .tool-grid[data-cols="3"],
+      .tool-grid[data-cols="2"] { grid-template-columns: 1fr; }
+    }
+
+    /* ── Tool card ──────────────────────────────────────────────────────── */
+
+    .tool {
+      position: relative;
+      display: flex; flex-direction: column;
+      padding: var(--space-5);
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      text-decoration: none; color: inherit;
+      transition: background var(--dur-med) var(--ease-standard),
                   border-color var(--dur-med) var(--ease-standard),
-                  box-shadow var(--dur-med) var(--ease-standard),
-                  opacity var(--dur-med) var(--ease-standard);
+                  transform var(--dur-med) var(--ease-standard),
+                  box-shadow var(--dur-med) var(--ease-standard);
+    }
+    .tool:hover {
+      background: var(--ink-800);
+      border-color: rgba(255,255,255,0.18);
+      border-color: color-mix(in srgb, var(--fam) 42%, transparent);
+      transform: translateY(-3px);
+      box-shadow: var(--elevation-md);
+    }
+    .tool:active { transform: translateY(-1px); }
+
+    .tool-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: var(--space-3); margin-bottom: var(--space-4);
     }
 
-    /* Ambient glow top-left */
-    .card::before {
-      content: ''; position: absolute; inset: 0; border-radius: var(--radius-xl);
-      opacity: 0; transition: opacity var(--dur-med) var(--ease-standard);
-      pointer-events: none;
+    /* The family colour appears on each card exactly once, on the icon.
+       Titles stay paper white, so thirteen cards read as one catalogue
+       instead of thirteen competing brands. */
+    .tool-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--fam);
+      background: rgba(255,255,255,0.05);
+      background: color-mix(in srgb, var(--fam) 13%, transparent);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-color: color-mix(in srgb, var(--fam) 28%, transparent);
+      transition: background var(--dur-med) var(--ease-standard);
     }
+    .tool:hover .tool-icon { background: color-mix(in srgb, var(--fam) 22%, transparent); }
+    .tool--lead .tool-icon { width: 50px; height: 50px; }
 
-    /* Dim siblings on hover */
-    .cards-track:has(.card:hover) .card:not(:hover) { opacity: 0.55; }
+    .tool-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; text-align: right; }
 
-    .card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: var(--elevation-lg);
-      opacity: 1 !important;
-    }
-    .card:hover::before { opacity: 1; }
-
-    /* ── Card internals ── */
-    .card-icon {
-      width: 44px; height: 44px; border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
-    }
-
-    .card-grade {
-      font-family: var(--font-mono);
-      font-size: 9px; font-weight: 500; letter-spacing: 0.08em;
-      color: var(--muted); margin-bottom: 6px; text-transform: uppercase;
-    }
-
-    .card-free-badge {
-      position: absolute; top: 14px; right: 14px;
-      display: flex; align-items: center; gap: 4px;
-      font-family: var(--font-mono);
-      font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
-      padding: 4px 9px; border-radius: 99px; text-transform: uppercase;
-      background: rgba(17,217,143,0.14); border: 1px solid rgba(17,217,143,0.35);
-      color: var(--accent-2);
-    }
-
-    .card-head {
-      display: flex; align-items: center; gap: var(--space-3);
-      margin-bottom: var(--space-3);
-    }
-
-    .card-title {
-      font-family: var(--font-display);
-      font-weight: 800; font-size: 26px; letter-spacing: -0.02em;
-      color: #fff; line-height: 1.15;
-    }
-
-    .card-desc {
-      font-size: 15px; line-height: 1.6;
-      color: rgba(210,218,245,0.62);
-      flex: 1; margin-bottom: var(--space-4);
-    }
-
-    .card-tags {
-      display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-4);
-    }
-    .tag {
-      font-family: var(--font-mono);
-      font-size: 9px; font-weight: 500; letter-spacing: 0.06em;
+    /* A printed stamp rather than another coloured pill — it is a commercial
+       fact, not a subject, so it deliberately sits outside the spectrum. */
+    .tool-free {
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
       padding: 3px 7px; border-radius: var(--radius-2xs);
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
-      color: rgba(210,218,245,0.50);
+      background: var(--paper); color: var(--ink-900);
+      white-space: nowrap;
     }
 
-    .card-btn {
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 10px var(--space-4); border-radius: var(--radius-sm);
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      text-decoration: none; border: none; cursor: pointer; width: 100%;
-      transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
-      letter-spacing: -0.01em;
-      background: rgba(255,255,255,0.10);
-      color: #fff;
-      box-shadow: var(--elevation-sm);
+    .tool-body { display: flex; flex-direction: column; flex: 1; }
+
+    .tool-name {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 19px; letter-spacing: -0.025em; line-height: 1.2;
+      color: var(--paper);
     }
-    .card-btn:hover { transform: translateY(-1px); box-shadow: var(--elevation-md); }
-    .card-btn:active { transform: scale(0.98); }
+    .tool--lead .tool-name { font-size: clamp(22px, 2vw, 26px); }
 
-    /* ═══ ARENA BANNER ═══ */
-    .arena-banner { max-width: 1100px; margin: 0 auto var(--space-8); padding: 0 var(--space-5); }
-    .arena-banner-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap;
-      background: linear-gradient(135deg, rgba(124,109,250,0.14), rgba(17,217,143,0.08));
-      border: 1px solid rgba(124,109,250,0.30); border-radius: var(--radius-xl); padding: var(--space-6) 40px;
-    }
-    .arena-banner-icon { font-size: 34px; margin-bottom: 8px; }
-    .arena-banner-title {
-      font-family: var(--font-display); font-weight: 900; font-size: 22px; letter-spacing: -0.02em;
-      color: #fff; margin-bottom: 6px;
-    }
-    .arena-banner-desc { font-size: 14px; color: rgba(210,218,245,0.65); line-height: 1.6; max-width: 480px; }
-    .arena-banner-btn {
-      flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-2);
-      padding: 14px 28px; border-radius: var(--radius-md); text-decoration: none;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #0a0e1c;
-      font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: -0.01em;
-      box-shadow: var(--elevation-sm); transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
-    }
-    .arena-banner-btn:hover { transform: translateY(-2px); box-shadow: var(--elevation-md); }
-    .arena-banner-btn:active { transform: scale(0.98); }
+    .tool-desc { margin-top: var(--space-2); font-size: 14px; line-height: 1.6; color: var(--text-2); }
+    .tool--lead .tool-desc { font-size: 15px; max-width: 54ch; }
 
-
-    /* ═══ PER-TOOL THEMES ═══ */
-
-    /* Java Genie — indigo */
-    .card-java::before   { background: radial-gradient(ellipse at 0% 0%, rgba(124,109,250,0.15), transparent 65%); }
-    .card-java:hover     { border-color: rgba(124,109,250,0.50); }
-    .card-java .card-icon{ background: linear-gradient(135deg,rgba(124,109,250,0.30),rgba(17,217,143,0.12)); border:1px solid rgba(124,109,250,0.28); }
-    .btn-java { background: linear-gradient(135deg,#6d28d9,#4f46e5); color: #fff; }
-
-    /* Web Wizard — cyan */
-    .card-web::before   { background: radial-gradient(ellipse at 0% 0%, rgba(6,182,212,0.14), transparent 65%); }
-    .card-web:hover     { border-color: rgba(6,182,212,0.50); }
-    .card-web .card-icon{ background: linear-gradient(135deg,rgba(6,182,212,0.28),rgba(124,58,237,0.14)); border:1px solid rgba(6,182,212,0.28); }
-    .btn-web { background: linear-gradient(135deg,#0891b2,#0e7490); color: #fff; }
-
-    /* Computer Codex — blue */
-    .card-codex::before  { background: radial-gradient(ellipse at 0% 0%, rgba(59,130,246,0.15), transparent 65%); }
-    .card-codex:hover    { border-color: rgba(59,130,246,0.50); }
-    .card-codex .card-icon{ background: linear-gradient(135deg,rgba(59,130,246,0.30),rgba(6,182,212,0.14)); border:1px solid rgba(59,130,246,0.28); }
-    .btn-codex { background: linear-gradient(135deg,#2563eb,#1d4ed8); color: #fff; }
-
-    /* Code Conjurer — rose */
-    .card-conjurer::before  { background: radial-gradient(ellipse at 0% 0%, rgba(244,63,94,0.12), transparent 65%); }
-    .card-conjurer:hover    { border-color: rgba(244,63,94,0.45); }
-    .card-conjurer .card-icon{ background: linear-gradient(135deg,rgba(244,63,94,0.26),rgba(249,115,22,0.14)); border:1px solid rgba(244,63,94,0.28); }
-    .btn-conjurer { background: linear-gradient(135deg,#e11d48,#f97316); color: #fff; }
-
-    /* Math Magician — amber */
-    .card-math::before  { background: radial-gradient(ellipse at 0% 0%, rgba(245,166,35,0.12), transparent 65%); }
-    .card-math:hover    { border-color: rgba(245,166,35,0.45); }
-    .card-math .card-icon{ background: linear-gradient(135deg,rgba(245,166,35,0.28),rgba(234,179,8,0.14)); border:1px solid rgba(245,166,35,0.28); }
-    .btn-math { background: linear-gradient(135deg,#d97706,#f59e0b); color: #1a1206; }
-    .card-conjurer .card-title { color: #fda4af; }
-    .card-web .card-title { color: #67e8f9; }
-    .card-codex .card-title { color: #93c5fd; }
-    .card-java .card-title { color: #c4baff; }
-    .card-math .card-title { color: #fcd34d; }
-
-    /* AI Oracle — violet/fuchsia */
-    .card-oracle::before  { background: radial-gradient(ellipse at 0% 0%, rgba(168,85,247,0.15), transparent 65%); }
-    .card-oracle:hover    { border-color: rgba(168,85,247,0.50); }
-    .card-oracle .card-icon{ background: linear-gradient(135deg,rgba(168,85,247,0.30),rgba(236,72,153,0.16)); border:1px solid rgba(168,85,247,0.30); }
-    .card-oracle .card-title { color: #e4bcff; }
-    .btn-oracle { background: linear-gradient(135deg,#9333ea,#c026d3); color: #fff; }
-
-    /* Time Turner — pink */
-    .card-turner::before  { background: radial-gradient(ellipse at 0% 0%, rgba(236,72,153,0.15), transparent 65%); }
-    .card-turner:hover    { border-color: rgba(236,72,153,0.50); }
-    .card-turner .card-icon{ background: linear-gradient(135deg,rgba(236,72,153,0.30),rgba(17,217,143,0.14)); border:1px solid rgba(236,72,153,0.30); }
-    .card-turner .card-title { color: #f9a8d4; }
-    .btn-turner { background: linear-gradient(135deg,#db2777,#ec4899); color: #fff; }
-
-    /* Model Mage — teal */
-    .card-model::before  { background: radial-gradient(ellipse at 0% 0%, rgba(20,184,166,0.15), transparent 65%); }
-    .card-model:hover    { border-color: rgba(20,184,166,0.50); }
-    .card-model .card-icon{ background: linear-gradient(135deg,rgba(20,184,166,0.22),rgba(132,204,22,0.10)); border:1px solid rgba(20,184,166,0.18); }
-    .card-model .card-title { color: #99f6e4; }
-    .btn-model { background: linear-gradient(135deg,#0d9488,#0f766e); color: #fff; }
-
-    /* Science Sage — emerald/lime */
-    .card-science::before  { background: radial-gradient(ellipse at 0% 0%, rgba(34,197,94,0.15), transparent 65%); }
-    .card-science:hover    { border-color: rgba(34,197,94,0.50); }
-    .card-science .card-icon{ background: linear-gradient(135deg,rgba(34,197,94,0.28),rgba(132,204,22,0.16)); border:1px solid rgba(34,197,94,0.28); }
-    .card-science .card-title { color: #86efac; }
-    .btn-science { background: linear-gradient(135deg,#16a34a,#059669); color: #fff; }
-
-    /* Robot Realm — orange/red */
-    .card-robot::before  { background: radial-gradient(ellipse at 0% 0%, rgba(249,115,22,0.15), transparent 65%); }
-    .card-robot:hover    { border-color: rgba(249,115,22,0.50); }
-    .card-robot .card-icon{ background: linear-gradient(135deg,rgba(249,115,22,0.28),rgba(239,68,68,0.16)); border:1px solid rgba(249,115,22,0.28); }
-    .card-robot .card-title { color: #fdba74; }
-    .btn-robot { background: linear-gradient(135deg,#ea580c,#dc2626); color: #fff; }
-
-    /* Drawing Druid — sky blue (sits between Web Wizard's cyan and Computer Codex's blue) */
-    .card-drawing::before  { background: radial-gradient(ellipse at 0% 0%, rgba(14,165,233,0.16), transparent 65%); }
-    .card-drawing:hover    { border-color: rgba(14,165,233,0.50); }
-    .card-drawing .card-icon{ background: linear-gradient(135deg,rgba(14,165,233,0.28),rgba(56,189,248,0.14)); border:1px solid rgba(14,165,233,0.28); }
-    .card-drawing .card-title { color: #7dd3fc; }
-    .btn-drawing { background: linear-gradient(135deg,#0284c7,#0369a1); color: #fff; }
-
-    /* The Tech Tower — copper/amber */
-    .card-tech::before  { background: radial-gradient(ellipse at 0% 0%, rgba(180,83,9,0.20), transparent 65%); }
-    .card-tech:hover     { border-color: rgba(217,119,6,0.50); }
-    .card-tech .card-icon{ background: linear-gradient(135deg,rgba(217,119,6,0.30),rgba(253,186,116,0.14)); border:1px solid rgba(217,119,6,0.30); }
-    .card-tech .card-title { color: #e3b378; }
-    .btn-tech { background: linear-gradient(135deg,#b45309,#92400e); color: #fff; }
-
-    /* Spike Spellcaster — LEGO yellow */
-    .card-spike::before  { background: radial-gradient(ellipse at 0% 0%, rgba(250,204,21,0.16), transparent 65%); }
-    .card-spike:hover    { border-color: rgba(250,204,21,0.50); }
-    .card-spike .card-icon{ background: linear-gradient(135deg,rgba(250,204,21,0.30),rgba(245,158,11,0.16)); border:1px solid rgba(250,204,21,0.30); }
-    .card-spike .card-title { color: #fde047; }
-    .btn-spike { background: linear-gradient(135deg,#eab308,#ca8a04); color: #1a1206; }
-
-    /* ── Footer ── */
-    footer {
-      margin-top: auto; padding: var(--space-6) 52px;
-      border-top: 1px solid var(--border);
+    .tool-foot {
       display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-3);
+      margin-top: var(--space-5); padding-top: var(--space-4);
+      border-top: 1px solid var(--line-soft);
     }
-    .footer-copy { font-size: 13px; color: rgba(210,218,245,0.28); }
-    .footer-links { display: flex; gap: 20px; }
-    .footer-link {
-      font-size: 12px; color: rgba(210,218,245,0.30);
-      text-decoration: none; transition: color var(--dur-fast) var(--ease-standard);
+    .tool-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    .tool-go {
+      display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-4);
+      transition: color var(--dur-med) var(--ease-standard);
     }
-    .footer-link:hover { color: rgba(210,218,245,0.70); }
+    .tool-go svg { width: 13px; height: 13px; transition: transform var(--dur-med) var(--ease-standard); }
+    .tool:hover .tool-go { color: var(--fam); }
+    .tool:hover .tool-go svg { transform: translateX(3px); }
+
+    /* The single full-width card, for the family that has one tool. A change
+       of rhythm at the end of the catalogue rather than a lonely quarter-row. */
+    .tool--wide {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center; gap: var(--space-4) var(--space-7);
+      padding: var(--space-6);
+    }
+    .tool--wide .tool-top  { grid-column: 1; margin-bottom: var(--space-3); }
+    .tool--wide .tool-body { grid-column: 1; }
+    .tool--wide .tool-foot {
+      grid-column: 2; grid-row: 1 / span 2;
+      flex-direction: column; align-items: flex-end; gap: var(--space-4);
+      margin-top: 0; padding-top: 0; border-top: none;
+    }
+    .tool--wide .tool-name { font-size: clamp(22px, 2vw, 26px); }
+    .tool--wide .tool-icon { width: 50px; height: 50px; }
+
+    @media (max-width: 760px) {
+      .tool--wide { display: flex; flex-direction: column; padding: var(--space-5); }
+      .tool--wide .tool-foot {
+        flex-direction: row; align-items: center; justify-content: space-between;
+        margin-top: var(--space-5); padding-top: var(--space-4);
+        border-top: 1px solid var(--line-soft);
+      }
+    }
+
+    /* ══ ARENA ══════════════════════════════════════════════════════════ */
+
+    .arena { padding-block: clamp(32px, 4vw, 48px) clamp(56px, 8vw, 104px); }
+
+    .arena-panel {
+      position: relative; overflow: hidden;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: var(--space-6);
+      padding: clamp(28px, 4vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(ellipse 70% 130% at 92% 50%, rgba(255,255,255,0.05), transparent 70%),
+        var(--ink-850);
+    }
+    /* The full spectrum, reassembled — hard segments rather than a blend, so
+       it reads as the five families indexed, not as decoration. */
+    .arena-panel::before {
+      content: ''; position: absolute; inset: 0 0 auto 0; height: 2px;
+      background: linear-gradient(90deg,
+        var(--fam-computing)   0 20%,
+        var(--fam-design)     20% 40%,
+        var(--fam-sciences)   40% 60%,
+        var(--fam-engineering) 60% 80%,
+        var(--fam-planning)   80% 100%);
+    }
+
+    .arena-copy { max-width: 56ch; }
+    .arena-title {
+      margin-top: var(--space-3);
+      font-family: var(--font-serif); font-weight: 400; font-style: normal;
+      font-size: clamp(28px, 3.4vw, 42px); line-height: 1.08; letter-spacing: -0.015em;
+      color: var(--paper);
+    }
+    .arena-desc { margin-top: var(--space-3); font-size: 15px; line-height: 1.65; color: var(--text-2); }
+
+    /* ══ RESPONSIVE ═════════════════════════════════════════════════════ */
+
+    /* Below this the two hero columns squeeze the drawing to a thumbnail,
+       so the hero stacks and the figure gets a full-width row of its own. */
+    @media (max-width: 1180px) {
+      .hero { grid-template-columns: 1fr; gap: var(--space-7); }
+      .prism-fig { max-width: 640px; }
+    }
 
     @media (max-width: 640px) {
-      nav { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 14px 16px; }
-      .nav-logo { font-size: 17px; }
-      .nav-right { flex-wrap: wrap; justify-content: center; }
-      .nav-right .nav-pill:not(.ml-auth-btn):not(#nav-assignments-btn) { display: none; }
-      .hero { padding: 56px 20px 40px; }
-      .section-row { padding: 0 20px; }
-      .cards-scroll { padding: 8px 20px 32px; }
-      footer { padding: 20px; flex-direction: column; gap: 14px; text-align: center; }
+      .ml-nav-inner { min-height: 60px; }
+      .ml-nav-right .ml-pill.is-secondary { display: none; }
+      /* Rule separators only work while the row is a single line. Once it
+         wraps, the first item of the second line keeps a divider with
+         nothing to its left, so below this width the specs become a plain
+         wrapped list instead. */
+      .family-meta { margin-left: 0; width: 100%; }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo">
-      <img src="assets/logo-prism.svg" alt="" style="width:32px;height:32px;flex-shrink:0;">
-      The Magic Lab
-    </a>
-    <div class="nav-right">
-      <a href="pitch.html" class="nav-pill" style="border-color:rgba(245,166,35,0.35);background:rgba(245,166,35,0.10);color:#f5a623;">About</a>
-      <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;"><i data-lucide="bell" style="width:13px;height:13px;margin-right:6px;"></i>Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
-      <a id="nav-upgrade-btn" href="pricing.html" class="nav-pill" style="display:none;border-color:rgba(124,109,250,0.35);background:rgba(124,109,250,0.10);color:#c4baff;"><i data-lucide="zap" style="width:13px;height:13px;margin-right:6px;"></i>Upgrade to Pro</a>
-      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;margin-right:6px;"></i>Sign In</button>
+  <a class="skip-link" href="#catalogue">Skip to the tools</a>
+
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a href="index.html" class="ml-brand">
+        <img src="assets/logo-prism.svg" alt="">
+        The Magic Lab
+      </a>
+      <div class="ml-nav-right">
+        <a href="pitch.html" class="ml-pill is-secondary">About</a>
+        <a href="pricing.html" class="ml-pill is-secondary">Pricing</a>
+        <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="ml-pill" style="display:none;"><i data-lucide="bell"></i>Homework<span id="nav-assignments-badge" class="ml-badge"></span></a>
+        <a id="nav-upgrade-btn" href="pricing.html" class="ml-pill" style="display:none;"><i data-lucide="zap"></i>Upgrade to Pro</a>
+        <button class="ml-pill ml-pill--solid ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">Sign in</button>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero — landing pitch for signed-out visitors only; hidden once
-       signed in so returning users go straight to the tools/Arena. -->
-  <section class="hero" id="hero">
-    <div class="hero-tag">
-      <span class="hero-tag-dot"></span>
-      STEM Learning Platform
+  <!-- ══ HERO ══════════════════════════════════════════════════════════════
+       Landing pitch for signed-out visitors only; hidden once signed in so
+       returning users go straight to the catalogue.
+
+       The prism is not an illustration — it is the page legend. Each ray is a
+       link to the family it colours, so the reader learns the colour code by
+       using it.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="hero-wrap" id="hero">
+    <div class="ml-shell hero">
+
+      <div class="hero-copy">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          <span class="ml-label">CAPS &amp; IEB aligned · Grades 4–12</span>
+        </div>
+
+        <h1>Thirteen labs.<em>One browser tab.</em></h1>
+
+        <p class="hero-sub">Interactive STEM tools built for South African classrooms — computing, design, sciences, engineering and the planning that holds a term together. Nothing to install, nothing to configure.</p>
+
+        <div class="hero-actions">
+          <a href="#catalogue" class="ml-btn ml-btn--primary">Browse the tools</a>
+          <a href="pitch.html" class="ml-btn ml-btn--ghost">About the project</a>
+        </div>
+
+        <div class="hero-specs ml-label">
+          <span>13 tools</span>
+          <span>Grades 4–12</span>
+          <span>CAPS &amp; IEB</span>
+          <span>Made in South Africa</span>
+        </div>
+      </div>
+
+      <figure class="prism-fig">
+        <svg class="prism" viewBox="0 0 500 420" role="img" aria-labelledby="prism-title">
+          <title id="prism-title">A prism splitting one beam of white light into thirteen bands of colour, one for each tool in the catalogue, grouped into five subject families.</title>
+
+          <defs>
+            <!-- Mostly solid, the way the logo's bands are, with just enough
+                 lift at the exit face to read as light rather than as paint. -->
+            <linearGradient id="fanFade" x1="251" y1="0" x2="500" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0"    stop-color="#fff" stop-opacity="0.50"/>
+              <stop offset="0.18" stop-color="#fff" stop-opacity="1"/>
+              <stop offset="1"    stop-color="#fff" stop-opacity="0.92"/>
+            </linearGradient>
+            <mask id="fanMask">
+              <rect x="251" y="0" width="249" height="420" fill="url(#fanFade)"/>
+            </mask>
+            <!-- The logo's prism is an unfilled outline. This keeps that, with
+                 only a breath of fill so it reads as a solid with volume. -->
+            <linearGradient id="glass" x1="0" y1="100" x2="0" y2="308" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff" stop-opacity="0.10"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0.02"/>
+            </linearGradient>
+            <radialGradient id="hotspot">
+              <stop offset="0" stop-color="#fff" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- White light in, meeting the left face at y=200 -->
+          <path class="pz-halo" d="M 0 200 L 117.3 200"/>
+          <path class="pz-beam" d="M 0 200 L 117.3 200"/>
+
+          <!-- Thirteen bands out, in catalogue order, violet through rose.
+               The hairline gaps between them taper to nothing at the exit
+               face, exactly as they do in the logo, and they make the
+               thirteen countable instead of a smear.
+
+               Decorative: the tools are named in full in the catalogue, and
+               the five families beside the fan are the links. -->
+          <g class="pz-fan" mask="url(#fanMask)" aria-hidden="true">
+            <path class="pz-wedge" fill="var(--t-conjurer)" d="M 251 232 L 500 1.3   L 500 31.0  Z"/>
+            <path class="pz-wedge" fill="var(--t-oracle)"   d="M 251 232 L 500 33.6  L 500 63.3  Z"/>
+            <path class="pz-wedge" fill="var(--t-java)"     d="M 251 232 L 500 65.9  L 500 95.6  Z"/>
+            <path class="pz-wedge" fill="var(--t-codex)"    d="M 251 232 L 500 98.2  L 500 127.9 Z"/>
+            <path class="pz-wedge" fill="var(--t-web)"      d="M 251 232 L 500 130.5 L 500 160.2 Z"/>
+            <path class="pz-wedge" fill="var(--t-model)"    d="M 251 232 L 500 162.8 L 500 192.5 Z"/>
+            <path class="pz-wedge" fill="var(--t-drawing)"  d="M 251 232 L 500 195.1 L 500 224.8 Z"/>
+            <path class="pz-wedge" fill="var(--t-science)"  d="M 251 232 L 500 227.4 L 500 257.1 Z"/>
+            <path class="pz-wedge" fill="var(--t-math)"     d="M 251 232 L 500 259.7 L 500 289.4 Z"/>
+            <path class="pz-wedge" fill="var(--t-spike)"    d="M 251 232 L 500 292.0 L 500 321.7 Z"/>
+            <path class="pz-wedge" fill="var(--t-tech)"     d="M 251 232 L 500 324.3 L 500 354.0 Z"/>
+            <path class="pz-wedge" fill="var(--t-robot)"    d="M 251 232 L 500 356.6 L 500 386.3 Z"/>
+            <path class="pz-wedge" fill="var(--t-turner)"   d="M 251 232 L 500 388.9 L 500 418.7 Z"/>
+          </g>
+
+          <!-- The glass sits over the fan so the bands emerge from behind its
+               exit face. Equilateral, 240 a side, sitting level on its base —
+               the proportions of the mark in assets/logo-prism.svg, which the
+               earlier tall narrow wedge read as an arrowhead instead. -->
+          <g class="pz-body">
+            <path class="pz-glass" fill="url(#glass)" d="M 175 100 L 295 307.85 L 55 307.85 Z"/>
+            <path class="pz-facet" d="M 175 100 L 55 307.85"/>
+            <path class="pz-inner" d="M 117.3 200 L 251 232"/>
+            <circle class="pz-hot" cx="251" cy="232" r="19" fill="url(#hotspot)"/>
+          </g>
+        </svg>
+
+        <nav class="prism-legend" aria-label="Tool catalogue by subject">
+          <a href="#catalogue" style="--n:5">
+            <span class="swatch" style="background:linear-gradient(180deg,var(--t-conjurer),var(--t-oracle),var(--t-java),var(--t-codex),var(--t-web))"></span>
+            <span class="name">Computing &amp; IT</span>
+            <span class="count ml-label">5</span>
+          </a>
+          <a href="#design" style="--n:2">
+            <span class="swatch" style="background:linear-gradient(180deg,var(--t-model),var(--t-drawing))"></span>
+            <span class="name">Design &amp; Graphics</span>
+            <span class="count ml-label">2</span>
+          </a>
+          <a href="#sciences" style="--n:2">
+            <span class="swatch" style="background:linear-gradient(180deg,var(--t-science),var(--t-math))"></span>
+            <span class="name">Sciences &amp; Maths</span>
+            <span class="count ml-label">2</span>
+          </a>
+          <a href="#engineering" style="--n:3">
+            <span class="swatch" style="background:linear-gradient(180deg,var(--t-spike),var(--t-tech),var(--t-robot))"></span>
+            <span class="name">Engineering &amp; Robotics</span>
+            <span class="count ml-label">3</span>
+          </a>
+          <a href="#planning" style="--n:1">
+            <span class="swatch" style="background:var(--t-turner)"></span>
+            <span class="name">Study &amp; Planning</span>
+            <span class="count ml-label">1</span>
+          </a>
+        </nav>
+      </figure>
+
+
     </div>
-    <h1>A complete STEM ecosystem.<br><em>Built for browsers.</em></h1>
-    <p class="hero-sub">Hands-on, browser-based tools designed for South African students. Develop STEM skills and see real results — no setup, no downloads.</p>
   </section>
 
-  <!-- Cards -->
-  <div class="cards-outer">
-    <div class="cards-scroll">
-      <div class="cards-track">
+  <!-- ══ CATALOGUE ═══════════════════════════════════════════════════════ -->
+  <main>
 
-        <!-- Code Conjurer — rose/red (RED) -->
-        <a href="code-conjurer.html" class="card card-conjurer">
-          <div class="card-free-badge">✦ Free forever</div>
-          <div class="card-grade">Grade 10 – 12</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="wand-2" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Code Conjurer</div>
-          </div>
-          <p class="card-desc">Advanced Java for IT learners. Classes, arrays, algorithms, exception handling, and full OOP — aligned to IEB/CAPS Gr 10–12 IT.</p>
-          <div class="card-tags">
-            <span class="tag">Java</span>
-            <span class="tag">OOP</span>
-            <span class="tag">Algorithms</span>
-          </div>
-          <div class="card-btn btn-conjurer">
-            <i data-lucide="play" style="width:15px;height:15px;"></i>
-            Launch Code Conjurer
-          </div>
-        </a>
+  <!-- ── Computing & IT ─────────────────────────────────────────────────── -->
+  <section class="family ml-shell" id="catalogue" style="--fam-grad: var(--grad-computing); --fam: var(--fam-computing);">
+    <header class="family-head">
+      <h2 class="family-name">Computing &amp; IT</h2>
+      <p class="family-note">From first login to full object-oriented Java.</p>
+      <span class="family-meta ml-label">5 tools · Gr 8–12</span>
+    </header>
 
-        <!-- Robot Realm — orange (ORANGE) -->
-        <a href="robot-realm/index.html" class="card card-robot">
-          <div class="card-grade">Grade 8 – 12</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="cpu" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Robot Realm</div>
-          </div>
-          <p class="card-desc">Program and simulate robots in a 2D arena. Write code to control motors, read sensors, navigate obstacles, and follow lines — no hardware needed.</p>
-          <div class="card-tags">
-            <span class="tag">Robotics</span>
-            <span class="tag">Simulation</span>
-            <span class="tag">Coding</span>
-          </div>
-          <div class="card-btn btn-robot">
-            <i data-lucide="cpu" style="width:15px;height:15px;"></i>
-            Enter Robot Realm
-          </div>
-        </a>
+    <div class="tool-grid" data-cols="5">
 
-        <!-- The Tech Tower — copper/amber (ORANGE) -->
-        <a href="tech-tower/index.html" class="card card-tech">
-          <div class="card-grade">Grade 8 – 9</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="wrench" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">The Tech Tower</div>
+      <a href="code-conjurer.html" class="tool" style="--fam: var(--t-conjurer)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="wand-2" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta">
+            <span class="tool-free">Free forever</span>
+            <span class="ml-label">Gr 10–12</span>
+          </span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Code Conjurer</h3>
+          <p class="tool-desc">Advanced Java for IT learners. Classes, arrays, algorithms, exception handling and full OOP — aligned to IEB/CAPS Gr 10–12 IT.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Java</span><span class="ml-tag">OOP</span><span class="ml-tag">Algorithms</span>
           </div>
-          <p class="card-desc">CAPS Technology, hands-on. Frame structures, gears &amp; mechanical advantage, hydraulics, circuits, logic gates, and processing &amp; materials — with interactive simulations for every lesson.</p>
-          <div class="card-tags">
-            <span class="tag">Structures</span>
-            <span class="tag">Mechanical Systems</span>
-            <span class="tag">Electrical Systems</span>
-          </div>
-          <div class="card-btn btn-tech">
-            <i data-lucide="wrench" style="width:14px;height:14px;"></i>
-            Enter The Tech Tower
-          </div>
-        </a>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Math Magician — amber (YELLOW) -->
-        <a href="math-magician/index.html" class="card card-math">
-          <div class="card-grade">Grade 8 – 12</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="calculator" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Math Magician</div>
+      <a href="ai-oracle.html" class="tool" style="--fam: var(--t-oracle)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="sparkles" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–12</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">AI Oracle</h3>
+          <p class="tool-desc">Understand how AI actually works, master the art of prompting, and learn to use AI ethically for studying, research and assignments.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">How AI works</span><span class="ml-tag">Prompt craft</span><span class="ml-tag">AI ethics</span>
           </div>
-          <p class="card-desc">Interactive mathematics across the full school curriculum. Algebra, geometry, trigonometry, and statistics with visual tools and worked examples.</p>
-          <div class="card-tags">
-            <span class="tag">Algebra</span>
-            <span class="tag">Geometry</span>
-            <span class="tag">Statistics</span>
-          </div>
-          <div class="card-btn btn-math">
-            <i data-lucide="sparkles" style="width:15px;height:15px;"></i>
-            Launch Math Magician
-          </div>
-        </a>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Spike Spellcaster — LEGO yellow (YELLOW) -->
-        <a href="spike-spellcaster/index.html" class="card card-spike">
-          <div class="card-grade">Grade 4 – 9</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="bot" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Spike Spellcaster</div>
+      <a href="java-genie.html" class="tool" style="--fam: var(--t-java)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="code-2" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–9</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Java Genie</h3>
+          <p class="tool-desc">Learn Java visually with turtle graphics, loops and interactive tutorials. Write real programs from day one and watch them draw on screen.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Java</span><span class="ml-tag">Turtle graphics</span><span class="ml-tag">Loops &amp; OOP</span>
           </div>
-          <p class="card-desc">Code a LEGO® SPIKE Prime in Python or blocks. Practise in the built-in simulator, then connect your own hub over Bluetooth and run your code on the real robot. Built for WRO RoboMission.</p>
-          <div class="card-tags">
-            <span class="tag">Robotics</span>
-            <span class="tag">Python</span>
-            <span class="tag">Bluetooth</span>
-          </div>
-          <div class="card-btn btn-spike">
-            <i data-lucide="bot" style="width:15px;height:15px;"></i>
-            Enter Spike Spellcaster
-          </div>
-        </a>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Science Sage — green (GREEN) -->
-        <a href="science-sage/index.html" class="card card-science">
-          <div class="card-grade">Grade 8 – 12</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="microscope" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Science Sage</div>
+      <a href="computer-codex.html" class="tool" style="--fam: var(--t-codex)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="book-open" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–10</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Computer Codex</h3>
+          <p class="tool-desc">Digital literacy essentials — Windows, Office, file management, Excel and Word, plus a unit on AI, LLMs and ethical AI use.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Windows OS</span><span class="ml-tag">Excel</span><span class="ml-tag">AI &amp; Ethics</span>
           </div>
-          <p class="card-desc">Natural Sciences for Gr 8–9, branching into Life Sciences and Physical Sciences for Gr 10–12. Experiments, concepts, and CAPS-aligned content.</p>
-          <div class="card-tags">
-            <span class="tag">Natural Sciences</span>
-            <span class="tag">Life Sciences</span>
-            <span class="tag">Physical Sciences</span>
-          </div>
-          <div class="card-btn btn-science">
-            <i data-lucide="flask-conical" style="width:14px;height:14px;"></i>
-            Enter Science Sage
-          </div>
-        </a>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Model Mage — teal (GREEN-BLUE) -->
-        <a href="model-mage.html" class="card card-model">
-          <div class="card-grade">Grade 9 – 12</div>
-          <div class="card-head">
-            <div class="card-icon">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
-                <line x1="14" y1="3"    x2="14" y2="14"   stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/>
-                <line x1="14" y1="14"   x2="24" y2="8.5"  stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/>
-                <line x1="14" y1="14"   x2="4"  y2="8.5"  stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/>
-                <circle cx="14" cy="14" r="2" fill="rgba(245,158,11,0.90)"/>
-              </svg>
-            </div>
-            <div class="card-title">Model Mage</div>
-          </div>
-          <p class="card-desc">Browser-based parametric CAD. Sketch a 2D profile, extrude it into a solid, cut holes, and fillet edges — all powered by OpenCascade in the browser.</p>
-          <div class="card-tags">
-            <span class="tag">3D modelling</span>
-            <span class="tag">CAD</span>
-            <span class="tag">Design</span>
-          </div>
-          <div class="card-btn btn-model">
-            <i data-lucide="play" style="width:15px;height:15px;"></i>
-            Launch Model Mage
-          </div>
-        </a>
 
-        <!-- Web Wizard — cyan (CYAN) -->
-        <a href="web-wizard.html" class="card card-web">
-          <div class="card-grade">Grade 8 – 9</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="globe" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Web Wizard</div>
+      <a href="web-wizard.html" class="tool" style="--fam: var(--t-web)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="globe" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–9</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Web Wizard</h3>
+          <p class="tool-desc">Design websites live in HTML and CSS. Every change appears instantly in a live preview — no server, no setup required.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">HTML</span><span class="ml-tag">CSS</span><span class="ml-tag">Live preview</span>
           </div>
-          <p class="card-desc">Design websites live using HTML and CSS. Every change appears instantly in a live preview — no server, no setup required.</p>
-          <div class="card-tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">Live preview</span>
-          </div>
-          <div class="card-btn btn-web">
-            <i data-lucide="globe" style="width:15px;height:15px;"></i>
-            Open Web Wizard
-          </div>
-        </a>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
 
-        <!-- Drawing Druid — sky blue (proof of concept) -->
-        <a href="drawing-druid/index.html" class="card card-drawing">
-          <div class="card-grade">Grade 10 – 12 · Preview</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="compass" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Drawing Druid</div>
-          </div>
-          <p class="card-desc">Engineering Graphics &amp; Design, visualised. Starting with an interactive cam &amp; loci simulator — displacement diagrams and cam profiles built and animated live.</p>
-          <div class="card-tags">
-            <span class="tag">EGD</span>
-            <span class="tag">Loci</span>
-            <span class="tag">Cams</span>
-          </div>
-          <div class="card-btn btn-drawing">
-            <i data-lucide="compass" style="width:15px;height:15px;"></i>
-            Try Drawing Druid
-          </div>
-        </a>
 
-        <!-- Computer Codex — blue (BLUE) -->
-        <a href="computer-codex.html" class="card card-codex">
-          <div class="card-grade">Grade 8 – 10</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="book-open" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Computer Codex</div>
-          </div>
-          <p class="card-desc">Digital literacy essentials. Windows, Office, file management, Excel, Word — and a brand new unit on AI, LLMs, and ethical AI use.</p>
-          <div class="card-tags">
-            <span class="tag">Windows OS</span>
-            <span class="tag">Excel</span>
-            <span class="tag">AI &amp; Ethics</span>
-          </div>
-          <div class="card-btn btn-codex">
-            <i data-lucide="book-open" style="width:15px;height:15px;"></i>
-            Open Computer Codex
-          </div>
-        </a>
-
-        <!-- Java Genie — indigo (INDIGO) -->
-        <a href="java-genie.html" class="card card-java">
-          <div class="card-grade">Grade 8 – 9</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="code-2" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">Java Genie</div>
-          </div>
-          <p class="card-desc">Learn Java visually with turtle graphics, loops, and interactive tutorials. Write real programs from day one and watch them draw on screen.</p>
-          <div class="card-tags">
-            <span class="tag">Java</span>
-            <span class="tag">Turtle graphics</span>
-            <span class="tag">Loops &amp; OOP</span>
-          </div>
-          <div class="card-btn btn-java">
-            <i data-lucide="play" style="width:15px;height:15px;"></i>
-            Launch Java Genie
-          </div>
-        </a>
-
-        <!-- AI Oracle — purple (VIOLET) -->
-        <a href="ai-oracle.html" class="card card-oracle">
-          <div class="card-grade">Grade 8 – 12</div>
-          <div class="card-head">
-            <div class="card-icon"><i data-lucide="sparkles" style="width:22px;height:22px;"></i></div>
-            <div class="card-title">AI Oracle</div>
-          </div>
-          <p class="card-desc">Understand how AI actually works, master the art of prompting, and learn to use AI ethically for studying, research, and assignments.</p>
-          <div class="card-tags">
-            <span class="tag">How AI works</span>
-            <span class="tag">Prompt craft</span>
-            <span class="tag">AI ethics</span>
-          </div>
-          <div class="card-btn btn-oracle">
-            <i data-lucide="sparkles" style="width:15px;height:15px;"></i>
-            Enter AI Oracle
-          </div>
-        </a>
-
-        <!-- Time Turner — pink (utility, not a subject) -->
-        <a href="time-turner.html" class="card card-turner">
-          <div class="card-free-badge">✦ Free forever</div>
-          <div class="card-grade">Every grade</div>
-          <div class="card-head">
-            <div class="card-icon" style="font-size:22px;line-height:1;">⏳</div>
-            <div class="card-title">Time Turner</div>
-          </div>
-          <p class="card-desc">A weekly time-management planner. Map out school, homework, activities, meals, chores and rest, then print a plan built around what the week's actually missing.</p>
-          <div class="card-tags">
-            <span class="tag">Planning</span>
-            <span class="tag">Study habits</span>
-            <span class="tag">Printable</span>
-          </div>
-          <div class="card-btn btn-turner">
-            <i data-lucide="calendar-clock" style="width:15px;height:15px;"></i>
-            Open Time Turner
-          </div>
-        </a>
-
-      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- The Arena -->
-  <div class="arena-banner">
-    <div class="arena-banner-inner">
+  <!-- ── Design & Graphics ──────────────────────────────────────────────── -->
+  <section class="family ml-shell" id="design" style="--fam-grad: var(--grad-design); --fam: var(--fam-design);">
+    <header class="family-head">
+      <h2 class="family-name">Design &amp; Graphics</h2>
+      <p class="family-note">Drawing and modelling to drawing-office convention.</p>
+      <span class="family-meta ml-label">2 tools · Gr 9–12</span>
+    </header>
+
+    <div class="tool-grid" data-cols="2">
+
+      <a href="model-mage.html" class="tool" style="--fam: var(--t-model)">
+        <div class="tool-top">
+          <span class="tool-icon">
+            <!-- Drawn rather than borrowed: an extruded solid with its
+                 construction lines, in the family colour via currentColor. -->
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+              <path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="currentColor" stroke-opacity="0.85" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+              <line x1="14" y1="3"  x2="14" y2="14"  stroke="currentColor" stroke-opacity="0.55" stroke-width="1.4" stroke-linecap="round"/>
+              <line x1="14" y1="14" x2="24" y2="8.5" stroke="currentColor" stroke-opacity="0.40" stroke-width="1.4" stroke-linecap="round"/>
+              <line x1="14" y1="14" x2="4"  y2="8.5" stroke="currentColor" stroke-opacity="0.40" stroke-width="1.4" stroke-linecap="round"/>
+              <circle cx="14" cy="14" r="2" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="tool-meta"><span class="ml-label">Gr 9–12</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Model Mage</h3>
+          <p class="tool-desc">Browser-based parametric CAD. Sketch a 2D profile, extrude it into a solid, cut holes and fillet edges — all powered by OpenCascade in the browser.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">3D modelling</span><span class="ml-tag">CAD</span><span class="ml-tag">Design</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+      <a href="drawing-druid/index.html" class="tool" style="--fam: var(--t-drawing)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="compass" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 10–12 · Preview</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Drawing Druid</h3>
+          <p class="tool-desc">Engineering Graphics &amp; Design, visualised. Starting with an interactive cam &amp; loci simulator — displacement diagrams and cam profiles built and animated live.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">EGD</span><span class="ml-tag">Loci</span><span class="ml-tag">Cams</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── Sciences & Mathematics ─────────────────────────────────────────── -->
+  <section class="family ml-shell" id="sciences" style="--fam-grad: var(--grad-sciences); --fam: var(--fam-sciences);">
+    <header class="family-head">
+      <h2 class="family-name">Sciences &amp; Mathematics</h2>
+      <p class="family-note">Concepts you can take apart and put back together.</p>
+      <span class="family-meta ml-label">2 tools · Gr 8–12</span>
+    </header>
+
+    <div class="tool-grid" data-cols="2">
+
+      <a href="science-sage/index.html" class="tool" style="--fam: var(--t-science)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="microscope" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–12</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Science Sage</h3>
+          <p class="tool-desc">Natural Sciences for Gr 8–9, branching into Life Sciences and Physical Sciences for Gr 10–12. Experiments, concepts and CAPS-aligned content.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Natural Sciences</span><span class="ml-tag">Life Sciences</span><span class="ml-tag">Physical Sciences</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+      <a href="math-magician/index.html" class="tool" style="--fam: var(--t-math)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="calculator" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–12</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Math Magician</h3>
+          <p class="tool-desc">Interactive mathematics across the full school curriculum. Algebra, geometry, trigonometry and statistics with visual tools and worked examples.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Algebra</span><span class="ml-tag">Geometry</span><span class="ml-tag">Statistics</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── Engineering & Robotics ─────────────────────────────────────────── -->
+  <section class="family ml-shell" id="engineering" style="--fam-grad: var(--grad-engineering); --fam: var(--fam-engineering);">
+    <header class="family-head">
+      <h2 class="family-name">Engineering &amp; Robotics</h2>
+      <p class="family-note">Build it, simulate it, then run it on real hardware.</p>
+      <span class="family-meta ml-label">3 tools · Gr 4–12</span>
+    </header>
+
+    <div class="tool-grid" data-cols="3">
+
+      <a href="spike-spellcaster/index.html" class="tool" style="--fam: var(--t-spike)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="bot" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 4–9</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Spike Spellcaster</h3>
+          <p class="tool-desc">Code a LEGO® SPIKE Prime in Python or blocks. Practise in the built-in simulator, then connect your own hub over Bluetooth and run your code on the real robot. Built for WRO RoboMission.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Robotics</span><span class="ml-tag">Python</span><span class="ml-tag">Bluetooth</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+      <a href="tech-tower/index.html" class="tool" style="--fam: var(--t-tech)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="wrench" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–9</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">The Tech Tower</h3>
+          <p class="tool-desc">CAPS Technology, hands-on. Frame structures, gears and mechanical advantage, hydraulics, circuits, logic gates, and processing and materials — with an interactive simulation for every lesson.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Structures</span><span class="ml-tag">Mechanical Systems</span><span class="ml-tag">Electrical Systems</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+      <a href="robot-realm/index.html" class="tool" style="--fam: var(--t-robot)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="cpu" style="width:21px;height:21px;"></i></span>
+          <span class="tool-meta"><span class="ml-label">Gr 8–12</span></span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Robot Realm</h3>
+          <p class="tool-desc">Program and simulate robots in a 2D arena. Write code to control motors, read sensors, navigate obstacles and follow lines — no hardware needed.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Robotics</span><span class="ml-tag">Simulation</span><span class="ml-tag">Coding</span>
+          </div>
+          <span class="tool-go"><i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+
+    </div>
+  </section>
+
+  <!-- ── Study & Planning ───────────────────────────────────────────────── -->
+  <section class="family ml-shell" id="planning" style="--fam-grad: var(--grad-planning); --fam: var(--fam-planning);">
+    <header class="family-head">
+      <h2 class="family-name">Study &amp; Planning</h2>
+      <p class="family-note">The week around the work.</p>
+      <span class="family-meta ml-label">1 tool · Every grade</span>
+    </header>
+
+    <div class="tool-grid" data-cols="1">
+
+      <a href="time-turner.html" class="tool tool--wide" style="--fam: var(--t-turner)">
+        <div class="tool-top">
+          <span class="tool-icon"><i data-lucide="hourglass" style="width:24px;height:24px;"></i></span>
+          <span class="tool-meta">
+            <span class="tool-free">Free forever</span>
+            <span class="ml-label">Every grade</span>
+          </span>
+        </div>
+        <div class="tool-body">
+          <h3 class="tool-name">Time Turner</h3>
+          <p class="tool-desc">A weekly time-management planner. Map out school, homework, activities, meals, chores and rest, then print a plan built around what the week is actually missing.</p>
+        </div>
+        <div class="tool-foot">
+          <div class="tool-tags">
+            <span class="ml-tag">Planning</span><span class="ml-tag">Study habits</span><span class="ml-tag">Printable</span>
+          </div>
+          <span class="tool-go">Open<i data-lucide="arrow-right"></i></span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ THE ARENA ══════════════════════════════════════════════════════ -->
+  <section class="arena ml-shell">
+    <div class="arena-panel">
+      <div class="arena-copy">
+        <span class="ml-label">The Arena · Live quiz battles</span>
+        <h2 class="arena-title">Then put the whole class to the test.</h2>
+        <p class="arena-desc">Compete head-to-head on real lesson content. Teachers host a round from their dashboard; learners join instantly with a code, right from their own device.</p>
+      </div>
+      <a href="arena.html" class="ml-btn ml-btn--primary">Enter The Arena<i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════════════════════ -->
+  <footer class="ml-footer">
+    <div class="ml-shell ml-footer-inner">
       <div>
-        <div class="arena-banner-icon"><i data-lucide="trophy" style="width:30px;height:30px;"></i></div>
-        <div class="arena-banner-title">The Arena — live quiz battles</div>
-        <div class="arena-banner-desc">Compete head-to-head on real lesson content. Teachers host a round from their dashboard; learners join instantly with a code, right from their own device.</div>
+        <div class="ml-footer-brand">
+          <img src="assets/logo-prism.svg" alt="">
+          The Magic Lab
+        </div>
+        <p class="ml-footer-line">Thirteen browser-based STEM tools for South African schools, built and maintained by one teacher.</p>
       </div>
-      <a href="arena.html" class="arena-banner-btn">Enter The Arena →</a>
+      <div class="ml-footer-links">
+        <a href="pitch.html">About</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="arena.html">The Arena</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20Suggestion%2FQuestion">Contact</a>
+      </div>
+      <div class="ml-footer-legal ml-label">© 2026 Ruhan Janse van Rensburg · All rights reserved</div>
     </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <span class="footer-copy"><img src="assets/logo-prism.svg" alt="" style="width:18px;height:18px;vertical-align:-4px;margin-right:4px;">The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved. · <a href="terms.html" style="color:inherit;">Terms</a> · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20Suggestion%2FQuestion" style="color:inherit;">Contact Developer</a></span>
   </footer>
+
+  <script>
+    /* The nav is transparent over the hero and only grows a background once
+       the page has actually scrolled, so there is no seam across the hero. */
+    (function () {
+      const nav = document.getElementById('site-nav');
+      if (!nav) return;
+      const sync = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
+      sync();
+      window.addEventListener('scroll', sync, { passive: true });
+    })();
+  </script>
+
 
   <script>
     // Run after the full document (including the AI tutor widget markup
@@ -768,45 +955,48 @@
     document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
   </script>
 
-  <!-- ── AI TUTOR (carried over from previous build) ── -->
+  <!-- ── AI TUTOR ──────────────────────────────────────────────────────────
+       Restyled onto the shared design system: no gradient fills, no gradient
+       text, and the one accent it uses is the Computing family azure, since
+       that is the family the tutor answers for.
+       ─────────────────────────────────────────────────────────────────── -->
   <style>
-    .tutor-overlay{position:fixed;inset:0;z-index:10000;background:rgba(4,6,18,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 220ms}
+    .tutor-overlay{position:fixed;inset:0;z-index:10000;background:rgba(4,5,7,.80);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity var(--dur-med) var(--ease-standard)}
     .tutor-overlay.open{opacity:1;pointer-events:all}
-    .tutor-modal{width:100%;max-width:520px;height:min(660px,90vh);background:#0b0f23;border:1px solid rgba(255,255,255,.10);border-radius:var(--radius-xl);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elevation-xl);transform:translateY(14px);transition:transform var(--dur-med) var(--ease-standard)}
+    .tutor-modal{width:100%;max-width:520px;height:min(660px,90vh);background:var(--ink-850);border:1px solid var(--line-hard);border-radius:var(--radius-xl);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elevation-xl);transform:translateY(14px);transition:transform var(--dur-med) var(--ease-standard)}
     .tutor-overlay.open .tutor-modal{transform:translateY(0)}
-    .tutor-header{flex-shrink:0;padding:14px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
-    .tutor-avatar{width:36px;height:36px;border-radius:var(--radius-sm);flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);display:flex;align-items:center;justify-content:center;font-size:18px}
-    .tutor-header-text h3{font-family:"Cabinet Grotesk",sans-serif;font-weight:800;font-size:14px;background:linear-gradient(125deg,#fff 0%,#a5b4fc 55%,#6ee7b7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .tutor-header-text p{font-size:11px;color:rgba(221,225,240,.40);margin-top:1px}
-    .tutor-close{margin-left:auto;width:28px;height:28px;border-radius:var(--radius-2xs);border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:rgba(221,225,240,.50);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all var(--dur-fast) var(--ease-standard);flex-shrink:0}
-    .tutor-close:hover{color:#dde1f0;background:rgba(255,255,255,.10)}
-    .tutor-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.10) transparent}
+    .tutor-header{flex-shrink:0;padding:14px 18px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+    .tutor-avatar{width:36px;height:36px;border-radius:var(--radius-sm);flex-shrink:0;background:rgba(91,156,255,.14);border:1px solid rgba(91,156,255,.30);color:var(--fam-computing);display:flex;align-items:center;justify-content:center}
+    .tutor-header-text h3{font-family:var(--font-display);font-weight:800;font-size:14px;letter-spacing:-.02em;color:var(--paper)}
+    .tutor-header-text p{font-size:11px;color:var(--text-3);margin-top:1px}
+    .tutor-close{margin-left:auto;width:28px;height:28px;border-radius:var(--radius-2xs);border:1px solid var(--line);background:transparent;color:var(--text-3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color var(--dur-fast) var(--ease-standard),background var(--dur-fast) var(--ease-standard);flex-shrink:0}
+    .tutor-close:hover{color:var(--paper);background:rgba(255,255,255,.06)}
+    .tutor-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
     .tutor-msg{display:flex;gap:10px;align-items:flex-start}
     .tutor-msg.user{flex-direction:row-reverse}
     .tutor-bubble{max-width:80%;padding:10px 14px;border-radius:var(--radius-md);font-size:13px;line-height:1.65}
-    .tutor-msg.ai .tutor-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:#dde1f0;border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md)}
-    .tutor-msg.user .tutor-bubble{background:linear-gradient(135deg,rgba(79,70,229,.30),rgba(16,185,129,.20));border:1px solid rgba(99,102,241,.30);color:#e8eaf4;border-radius:var(--radius-md) var(--radius-2xs) var(--radius-md) var(--radius-md)}
-    .tutor-msg-icon{width:28px;height:28px;border-radius:var(--radius-xs);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
-    .tutor-msg.ai .tutor-msg-icon{background:linear-gradient(135deg,#4f46e5,#10b981)}
-    .tutor-msg.user .tutor-msg-icon{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
-    .tutor-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md);width:fit-content}
-    .tutor-typing span{width:6px;height:6px;border-radius:50%;background:#818cf8;animation:tutorDot 1.2s infinite}
+    .tutor-msg.ai .tutor-bubble{background:var(--ink-800);border:1px solid var(--line);color:var(--text);border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md)}
+    .tutor-msg.user .tutor-bubble{background:rgba(91,156,255,.13);border:1px solid rgba(91,156,255,.28);color:var(--text);border-radius:var(--radius-md) var(--radius-2xs) var(--radius-md) var(--radius-md)}
+    .tutor-msg-icon{width:28px;height:28px;border-radius:var(--radius-xs);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .tutor-msg.ai .tutor-msg-icon{background:rgba(91,156,255,.14);border:1px solid rgba(91,156,255,.28);color:var(--fam-computing)}
+    .tutor-msg.user .tutor-msg-icon{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text-2)}
+    .tutor-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;background:var(--ink-800);border:1px solid var(--line);border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md);width:fit-content}
+    .tutor-typing span{width:6px;height:6px;border-radius:50%;background:var(--fam-computing);animation:tutorDot 1.2s infinite}
     .tutor-typing span:nth-child(2){animation-delay:.2s}.tutor-typing span:nth-child(3){animation-delay:.4s}
     @keyframes tutorDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-    .tutor-suggestions{flex-shrink:0;padding:8px 18px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.05)}
-    .tutor-suggestion{padding:5px 11px;border-radius:var(--radius-full);font-size:11px;font-weight:600;border:1px solid rgba(99,102,241,.30);background:rgba(99,102,241,.10);color:#a5b4fc;cursor:pointer;transition:all 130ms;white-space:nowrap}
-    .tutor-suggestion:hover{background:rgba(99,102,241,.22);color:#c7d2fe}
-    .tutor-input-row{flex-shrink:0;padding:12px 18px 14px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;align-items:flex-end}
-    .tutor-input{flex:1;resize:none;padding:10px 14px;min-height:42px;max-height:120px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);color:#e8eaf4;font-family:"Cabinet Grotesk",sans-serif;font-size:13px;outline:none;transition:border-color 150ms;line-height:1.5}
-    .tutor-input::placeholder{color:rgba(221,225,240,.28)}
-    .tutor-input:focus{border-color:rgba(99,102,241,.50)}
-    .tutor-send{width:40px;height:40px;border-radius:var(--radius-sm);border:none;flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all 150ms}
-    .tutor-send:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,70,229,.40)}
-    .tutor-send:active{transform:scale(0.94)}
-    .tutor-send:disabled{opacity:.45;cursor:not-allowed;transform:none}
-    .tutor-fab{position:fixed;bottom:28px;right:28px;z-index:9998;width:54px;height:54px;border-radius:var(--radius-md);border:none;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;font-size:24px;cursor:pointer;box-shadow:0 8px 28px rgba(79,70,229,.50);display:flex;align-items:center;justify-content:center;transition:all 180ms;animation:fabPop .4s cubic-bezier(.34,1.56,.64,1) both}
-    .tutor-fab:hover{transform:scale(1.10);box-shadow:0 12px 36px rgba(79,70,229,.60)}
-    @keyframes fabPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+    .tutor-suggestions{flex-shrink:0;padding:8px 18px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--line-soft)}
+    .tutor-suggestion{padding:5px 11px;border-radius:var(--radius-full);font-family:var(--font-body);font-size:11px;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--text-2);cursor:pointer;transition:color var(--dur-fast) var(--ease-standard),border-color var(--dur-fast) var(--ease-standard);white-space:nowrap}
+    .tutor-suggestion:hover{color:var(--paper);border-color:var(--line-hard)}
+    .tutor-input-row{flex-shrink:0;padding:12px 18px 14px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:flex-end}
+    .tutor-input{flex:1;resize:none;padding:10px 14px;min-height:42px;max-height:120px;background:var(--ink-750);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color var(--dur-fast) var(--ease-standard);line-height:1.5}
+    .tutor-input::placeholder{color:var(--text-4)}
+    .tutor-input:focus{border-color:rgba(91,156,255,.55)}
+    .tutor-send{width:40px;height:40px;border-radius:var(--radius-sm);border:none;flex-shrink:0;background:var(--paper);color:var(--ink-900);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-standard),transform var(--dur-fast) var(--ease-standard)}
+    .tutor-send:hover{background:#fff;transform:translateY(-1px)}
+    .tutor-send:active{transform:translateY(0)}
+    .tutor-send:disabled{opacity:.40;cursor:not-allowed;transform:none}
+    .tutor-fab{position:fixed;bottom:28px;right:28px;z-index:9998;width:52px;height:52px;border-radius:var(--radius-md);border:1px solid var(--line-hard);background:var(--ink-800);color:var(--paper);cursor:pointer;box-shadow:var(--elevation-lg);display:flex;align-items:center;justify-content:center;transition:background var(--dur-fast) var(--ease-standard),transform var(--dur-fast) var(--ease-standard)}
+    .tutor-fab:hover{background:var(--ink-750);transform:translateY(-2px)}
   </style>
 
   <script src="/contact-button.js" defer></script>

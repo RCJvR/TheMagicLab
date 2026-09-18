@@ -1,0 +1,317 @@
+/* ============================================================================
+   The Magic Lab — design system
+   ----------------------------------------------------------------------------
+   One source of truth for colour, type, spacing and the chrome (nav, footer,
+   pills, buttons) that every page shares. Page-specific layout still lives in
+   each page's own <style>; everything here is meant to be linked, not copied.
+
+   The organising idea is the prism in the logo: white light in, spectrum out.
+   So the page ground is a true neutral — any hue bias in the background would
+   tint the dispersed colours and break the code — and each accent belongs to
+   one subject family rather than one tool. Five hues carrying meaning, instead
+   of thirteen carrying none.
+   ========================================================================== */
+
+:root {
+  /* ── Ground: neutral ink, not navy. A blue-black would make every accent
+     read as a variation of the background; a true neutral lets all five
+     family hues sit at their own temperature. ── */
+  --ink-900:  #08090b;   /* page */
+  --ink-850:  #0c0e11;   /* resting card */
+  --ink-800:  #111418;   /* raised / hovered card */
+  --ink-750:  #171b20;   /* pressed, inputs */
+
+  --line:      rgba(255,255,255,0.075);
+  --line-soft: rgba(255,255,255,0.045);
+  --line-hard: rgba(255,255,255,0.16);
+
+  --paper:    #f2f5f9;   /* headings, and the one solid CTA */
+  --text:     #e3e8ef;
+  --text-2:   rgba(226,232,240,0.64);
+  --text-3:   rgba(226,232,240,0.40);
+  --text-4:   rgba(226,232,240,0.24);
+
+  /* ══ The spectrum ═══════════════════════════════════════════════════════
+     Every tool keeps its own hue. They are ordered the way a prism disperses
+     light, short wavelength to long, and — the part that makes the whole
+     thing work — the order is arranged so each subject family owns a
+     CONTIGUOUS slice of the run. That is what lets the page be a single
+     unbroken spectrum top to bottom and still group by subject: the section
+     breaks annotate the run instead of interrupting it.
+
+     Reading down is also reading along the spectrum, so a tool's colour
+     tells you both which tool it is and roughly where in the catalogue it
+     lives. Spend it once per card (the icon) and it reads as light; spend it
+     three times (title + icon + a full-width gradient button, as it used to)
+     and the same thirteen hues read as noise.
+     ════════════════════════════════════════════════════════════════════ */
+
+  --t-conjurer: #9b6bff;  /* violet      */
+  --t-oracle:   #7a7dff;  /* indigo      */
+  --t-java:     #5b93ff;  /* cornflower  */
+  --t-codex:    #35a6f0;  /* blue        */
+  --t-web:      #1fb8dc;  /* sky         */
+  --t-model:    #17c4c0;  /* cyan-teal   */
+  --t-drawing:  #1fc98e;  /* teal-green  */
+  --t-science:  #4acf6b;  /* green       */
+  --t-math:     #9ed43c;  /* lime        */
+  --t-spike:    #e8c63a;  /* yellow      */
+  --t-tech:     #eda13c;  /* amber       */
+  --t-robot:    #ee7544;  /* orange      */
+  --t-turner:   #ed5c86;  /* rose        */
+
+  /* Family anchors — the midpoint of each family's slice, used for the rule
+     under a section heading and for anything that needs one hue to stand
+     for the group. */
+  --fam-computing:   #5b93ff;
+  --fam-design:      #1bc6a7;
+  --fam-sciences:    #74d154;
+  --fam-engineering: #eda13c;
+  --fam-planning:    #ed5c86;
+
+  /* Each family's slice, as a gradient — the section rule draws its own
+     stretch of the spectrum rather than a single flat colour. */
+  --grad-computing:   linear-gradient(90deg, var(--t-conjurer), var(--t-oracle), var(--t-java), var(--t-codex), var(--t-web));
+  --grad-design:      linear-gradient(90deg, var(--t-model), var(--t-drawing));
+  --grad-sciences:    linear-gradient(90deg, var(--t-science), var(--t-math));
+  --grad-engineering: linear-gradient(90deg, var(--t-spike), var(--t-tech), var(--t-robot));
+  --grad-planning:    linear-gradient(90deg, var(--t-turner), var(--t-turner));
+
+  /* Semantic state, deliberately kept separate from the family accents so a
+     warning is never mistaken for a subject. */
+  --good: #4acf7f;
+  --warn: #f5b23d;
+  --crit: #ef5b5b;
+
+  /* ── Type ── */
+  --font-display: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body:    "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif:   "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  /* ── Spacing (4px grid) ── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px;
+
+  /* One page gutter, used by nav, sections and footer alike, so every left
+     edge on the page lines up down the full scroll. */
+  --gutter:  clamp(20px, 5vw, 64px);
+  --measure: 1360px;
+
+  /* ── Radius, spent by role rather than stamped on everything: tool cards,
+     panels and chips differ on purpose so the hierarchy survives. ── */
+  --radius-2xs: 5px;
+  --radius-xs:  8px;
+  --radius-sm:  10px;
+  --radius-md:  14px;
+  --radius-lg:  18px;
+  --radius-xl:  22px;
+  --radius-full: 999px;
+
+  /* ── Elevation: neutral black, never a coloured glow. A purple halo under
+     every card is the clearest tell of a templated dark page. ── */
+  --elevation-sm: 0 1px 2px rgba(0,0,0,0.40);
+  --elevation-md: 0 8px 24px -8px rgba(0,0,0,0.70);
+  --elevation-lg: 0 24px 60px -20px rgba(0,0,0,0.85);
+  --elevation-xl: 0 40px 90px -24px rgba(0,0,0,0.90);
+
+  /* ── Motion ── */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 140ms;
+  --dur-med:  240ms;
+  --dur-slow: 480ms;
+
+  /* ── Legacy aliases. The tutor widget and the older tool pages still
+     reference these names; retuning the values here re-skins them for
+     free, without touching their markup. ── */
+  --bg:       var(--ink-900);
+  --bg2:      var(--ink-850);
+  --surface:  var(--ink-850);
+  --border:   var(--line);
+  --muted:    var(--text-3);
+  --accent-1: var(--fam-computing);
+  --accent-2: var(--fam-sciences);
+  --accent-3: var(--fam-engineering);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+html, body {
+  min-height: 100%;
+  background: var(--ink-900);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body { display: flex; flex-direction: column; }
+
+::selection { background: rgba(91,156,255,0.28); color: #fff; }
+
+/* One visible focus ring for the whole site. Keyboard users get it, pointer
+   users do not, which is exactly the distinction :focus-visible draws. */
+:focus-visible {
+  outline: 2px solid var(--fam-computing);
+  outline-offset: 3px;
+  border-radius: var(--radius-2xs);
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+
+.ml-shell {
+  width: 100%; max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Real text for assistive tech, no visual footprint. */
+.ml-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Mono micro-label, used for every piece of hard data on the site — grade
+   ranges, counts, curriculum codes — so that data always looks like data. */
+.ml-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Nav ───────────────────────────────────────────────────────────────── */
+
+.ml-nav {
+  position: sticky; top: 0; z-index: 60;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition: background var(--dur-med) var(--ease-standard),
+              border-color var(--dur-med) var(--ease-standard);
+}
+
+/* Chrome only appears once the page has actually moved, so at rest the nav
+   sits on the hero without a seam across it. Toggled by the page script. */
+.ml-nav.is-stuck {
+  background: rgba(8,9,11,0.82);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom-color: var(--line);
+}
+
+.ml-nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-4); min-height: 68px;
+}
+
+/* The logo already carries the full spectrum. A gradient-filled wordmark
+   beside a full-colour mark is noise, so the text stays plain. */
+.ml-brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 18px; letter-spacing: -0.025em;
+}
+.ml-brand img { width: 28px; height: 28px; flex-shrink: 0; }
+
+.ml-nav-right { display: flex; align-items: center; gap: var(--space-2); }
+
+.ml-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 15px; border-radius: var(--radius-full);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-2);
+  font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              background var(--dur-fast) var(--ease-standard);
+}
+.ml-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+.ml-pill svg { width: 13px; height: 13px; }
+
+/* The one solid control in the chrome. Paper on ink reads as primary without
+   adding a sixth hue to a page that already runs five. */
+.ml-pill--solid { background: var(--paper); border-color: var(--paper); color: var(--ink-900); font-weight: 700; }
+.ml-pill--solid:hover { background: #fff; border-color: #fff; color: var(--ink-900); }
+
+.ml-badge {
+  display: none; align-items: center; justify-content: center;
+  min-width: 17px; height: 17px; padding: 0 5px; margin-left: 2px;
+  border-radius: var(--radius-full);
+  background: var(--warn); color: #1a1206;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; line-height: 1;
+}
+.ml-badge.overdue { background: var(--crit); color: #fff; }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+
+.ml-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 13px 24px; border: 1px solid transparent; border-radius: var(--radius-sm);
+  font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              transform var(--dur-fast) var(--ease-standard);
+}
+.ml-btn--primary { background: var(--paper); color: var(--ink-900); }
+.ml-btn--primary:hover { background: #fff; transform: translateY(-1px); }
+.ml-btn--primary:active { transform: translateY(0); }
+.ml-btn--ghost { border-color: var(--line-hard); color: var(--text); }
+.ml-btn--ghost:hover { border-color: var(--paper); color: var(--paper); background: rgba(255,255,255,0.04); }
+
+/* ── Tag ───────────────────────────────────────────────────────────────── */
+
+.ml-tag {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+  padding: 3px 8px; border-radius: var(--radius-2xs);
+  border: 1px solid var(--line);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+
+.ml-footer { margin-top: auto; border-top: 1px solid var(--line); padding-block: var(--space-7) var(--space-6); }
+.ml-footer-inner {
+  display: flex; flex-wrap: wrap; gap: var(--space-6);
+  justify-content: space-between; align-items: flex-start;
+}
+.ml-footer-brand {
+  display: flex; align-items: center; gap: 9px; color: var(--paper);
+  font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: -0.02em;
+}
+.ml-footer-brand img { width: 22px; height: 22px; }
+.ml-footer-line { margin-top: 10px; font-size: 13px; color: var(--text-3); max-width: 42ch; }
+.ml-footer-links { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+.ml-footer-links a {
+  font-size: 13px; color: var(--text-3); text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.ml-footer-links a:hover { color: var(--paper); }
+.ml-footer-legal {
+  width: 100%; margin-top: var(--space-6); padding-top: var(--space-4);
+  border-top: 1px solid var(--line-soft);
+}
+
+/* ── Motion preference ─────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
