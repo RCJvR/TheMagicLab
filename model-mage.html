@@ -5,106 +5,230 @@
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
   <title>Model Mage — Design &amp; Build</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d4f4a'/%3E%3Cpath d='M32 10 L52 20 L52 44 L32 54 L12 44 L12 20 Z' fill='none' stroke='rgba(153%2C246%2C228%2C0.80)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='32' y1='10' x2='32' y2='32' stroke='rgba(153%2C246%2C228%2C0.55)' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='52' y2='20' stroke='rgba(153%2C246%2C228%2C0.40)' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='12' y2='20' stroke='rgba(153%2C246%2C228%2C0.40)' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4' fill='rgba(245%2C158%2C11%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a1f1e'/%3E%3Cpath d='M32 10 L52 20 L52 44 L32 54 L12 44 L12 20 Z' fill='none' stroke='%2317c4c0' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='32' y1='10' x2='32' y2='32' stroke='%2317c4c0' stroke-opacity='0.6' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='52' y2='20' stroke='%2317c4c0' stroke-opacity='0.45' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='12' y2='20' stroke='%2317c4c0' stroke-opacity='0.45' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%2317c4c0'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.fontshare.com">
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
+  <link rel="stylesheet" href="auth-modal.css">
   <style>
-    :root {
-      --bg:#080c1a; --bg2:#0d1226;
-      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085);
-      --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.45);
-      --accent:#14b8a6; --accent2:#2dd4bf;
-      --circ-accent:#f59e0b; --circ-accent2:#fbbf24;
+    /* ══════════════════════════════════════════════════════════════════════
+       Model Mage — tool landing page.
+
+       Tokens, nav, footer and primitives come from assets/magic-lab.css.
+       The page sets --fam to its own hue from the catalogue spectrum, and
+       everything tool-coloured on the page reads from that one variable —
+       so this file is the template for the other tool landings: change the
+       hue, the copy and the cards, and nothing else.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    :root { --fam: var(--t-model); }
+
+    /* ── Tool header ────────────────────────────────────────────────────── */
+    .tool-brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--paper);
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 17px; letter-spacing: -0.025em;
     }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;}
-    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(245,158,11,0.06) 0%,transparent 55%)}
+    .tool-brand svg { color: var(--fam); flex-shrink: 0; }
 
-    header{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border);}
-    .logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--accent2);display:flex;align-items:center;gap:8px;text-decoration:none;}
-    .nav-link{background:var(--surface);border:1px solid var(--border);color:var(--text2);
-              font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;
-              text-decoration:none;transition:all 150ms;display:flex;align-items:center;gap:6px;}
-    .nav-link:hover{color:var(--text);background:rgba(255,255,255,.09);}
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    /* Left-aligned, like the catalogue it came from. A centred hero on every
+       tool page is the pattern the homepage deliberately moved away from. */
+    .lead { padding-block: clamp(40px, 6vw, 72px) clamp(28px, 4vw, 44px); }
 
-    .hero{padding:56px 40px 12px;text-align:center;}
-    .hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:14px;}
-    .hero-title{font-weight:900;font-size:clamp(30px,4.5vw,48px);letter-spacing:-0.04em;color:#fff;line-height:1.08;margin-bottom:14px;}
-    .hero-sub{font-size:15px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.7;}
+    .lead-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-4); }
+    .lead-eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--fam); }
 
-    .picker{max-width:920px;margin:48px auto 64px;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-    .pick-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;
-               display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:all 200ms;position:relative;overflow:hidden;}
-    .pick-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06);}
-    .pick-card.cad:hover{box-shadow:0 16px 40px rgba(20,184,166,.15);}
-    .pick-card.circ:hover{box-shadow:0 16px 40px rgba(245,158,11,.15);}
-    .pick-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px;}
-    .pick-card.cad .pick-icon{background:rgba(20,184,166,.14);border:1px solid rgba(20,184,166,.30);}
-    .pick-card.circ .pick-icon{background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.30);}
-    .pick-title{font-weight:800;font-size:21px;letter-spacing:-0.02em;color:#fff;margin-bottom:10px;}
-    .pick-desc{font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:22px;flex:1;}
-    .pick-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px;}
-    .pick-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);}
-    .pick-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:700;font-size:13.5px;color:#04120f;}
-    .pick-card.cad .pick-btn{background:linear-gradient(120deg,var(--accent),var(--accent2));}
-    .pick-card.circ .pick-btn{background:linear-gradient(120deg,var(--circ-accent),var(--circ-accent2));}
-    .pick-btn i{width:15px;height:15px;}
+    .lead h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(34px, 5vw, 60px); line-height: 1.0;
+      letter-spacing: -0.042em; color: var(--paper); text-wrap: balance;
+    }
+    .lead p {
+      margin-top: var(--space-4); max-width: 54ch;
+      font-size: clamp(15px, 1.3vw, 17px); line-height: 1.65; color: var(--text-2);
+    }
+    .lead-specs {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6);
+      margin-top: var(--space-6); padding-top: var(--space-4);
+      border-top: 1px solid var(--line);
+    }
 
-    .footer-note{max-width:920px;margin:0 auto 56px;padding:0 40px;text-align:center;font-size:12.5px;color:var(--muted);}
+    /* ── Picker ─────────────────────────────────────────────────────────── */
+    .picker { display: grid; gap: var(--space-4); padding-bottom: clamp(48px, 8vw, 96px); }
+    /* One workshop today, so it runs full width rather than sitting alone in
+       half a row. Add a second and this becomes repeat(2, 1fr). */
+    .picker[data-cols="1"] { grid-template-columns: 1fr; }
+    .picker[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 760px) { .picker[data-cols="2"] { grid-template-columns: 1fr; } }
 
-    @media (max-width:760px){
-      header{padding:14px 20px;}
-      .hero{padding:40px 20px 8px;}
-      .picker{grid-template-columns:1fr;padding:0 20px;margin:36px auto 48px;}
-      .footer-note{padding:0 20px;}
+    .pick {
+      position: relative;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center; gap: var(--space-4) var(--space-7);
+      padding: var(--space-6);
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      text-decoration: none; color: inherit;
+      transition: background var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard),
+                  transform var(--dur-med) var(--ease-standard),
+                  box-shadow var(--dur-med) var(--ease-standard);
+    }
+    .pick:hover {
+      background: var(--ink-800);
+      border-color: rgba(255,255,255,0.18);
+      border-color: color-mix(in srgb, var(--fam) 42%, transparent);
+      transform: translateY(-3px);
+      box-shadow: var(--elevation-md);
+    }
+    .pick:active { transform: translateY(-1px); }
+
+    .pick-head { grid-column: 1; display: flex; align-items: center; gap: var(--space-4); }
+    .pick-icon {
+      width: 50px; height: 50px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--fam);
+      background: rgba(255,255,255,0.05);
+      background: color-mix(in srgb, var(--fam) 13%, transparent);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-color: color-mix(in srgb, var(--fam) 28%, transparent);
+      transition: background var(--dur-med) var(--ease-standard);
+    }
+    .pick:hover .pick-icon { background: color-mix(in srgb, var(--fam) 22%, transparent); }
+    .pick-title {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(20px, 2vw, 25px); letter-spacing: -0.028em;
+      line-height: 1.15; color: var(--paper);
+    }
+    .pick-body { grid-column: 1; }
+    .pick-desc { font-size: 15px; line-height: 1.65; color: var(--text-2); max-width: 58ch; }
+    .pick-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: var(--space-4); }
+
+    .pick-go {
+      grid-column: 2; grid-row: 1 / span 2;
+      display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-4);
+      transition: color var(--dur-med) var(--ease-standard);
+    }
+    .pick-go svg { width: 13px; height: 13px; transition: transform var(--dur-med) var(--ease-standard); }
+    .pick:hover .pick-go { color: var(--fam); }
+    .pick:hover .pick-go svg { transform: translateX(3px); }
+
+    @media (max-width: 760px) {
+      .pick { display: flex; flex-direction: column; align-items: stretch; padding: var(--space-5); }
+      .pick-go { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--line-soft); }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a class="logo" href="index.html"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><line x1="14" y1="3" x2="14" y2="14" stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="24" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="4" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="rgba(20,184,166,0.90)"/></svg> Model Mage</a>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <a class="nav-link" href="index.html">← Home</a>
-    <button class="nav-link" data-ml-auth onclick="window.MagicLabModal?.open()" style="cursor:pointer;">🔐 Sign In</button>
-  </div>
-</header>
-
-<div class="hero">
-  <div class="hero-tag">Design &amp; Build</div>
-  <div class="hero-title">The CAD workshop.</div>
-  <p class="hero-sub">Sketch and 3D-print physical parts in the browser.</p>
-</div>
-
-<!-- Circuit Simulator is hidden until its bugs are fixed — see model-mage-circuits.html,
-     which redirects back here so a bookmarked/old link can't reach it either. -->
-<div class="picker" style="grid-template-columns:1fr;max-width:460px;">
-  <a class="pick-card cad" href="model-mage-cad.html">
-    <div class="pick-icon"><i data-lucide="hexagon" style="width:26px;height:26px;"></i></div>
-    <div class="pick-title">Computer-Aided Design</div>
-    <p class="pick-desc">Sketch a 2D profile, extrude it into a solid, cut holes, and fillet edges — real parametric CAD running in the browser, powered by OpenCascade. Design a chassis, bracket, or enclosure and export it for 3D printing.</p>
-    <div class="pick-tags">
-      <span class="pick-tag">2D sketch</span>
-      <span class="pick-tag">Extrude &amp; cut</span>
-      <span class="pick-tag">Fillets</span>
-      <span class="pick-tag">STL export</span>
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="tool-brand" href="model-mage.html">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="currentColor" stroke-opacity="0.85" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+          <line x1="14" y1="3"  x2="14" y2="14"  stroke="currentColor" stroke-opacity="0.55" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="24" y2="8.5" stroke="currentColor" stroke-opacity="0.40" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="4"  y2="8.5" stroke="currentColor" stroke-opacity="0.40" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="14" cy="14" r="2" fill="currentColor"/>
+        </svg>
+        Model Mage
+      </a>
+      <div class="ml-nav-right">
+        <a class="ml-pill" href="index.html"><i data-lucide="arrow-left"></i>All tools</a>
+        <button class="ml-pill ml-pill--solid ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">Sign in</button>
+      </div>
     </div>
-    <div class="pick-btn">Open CAD Workshop <i data-lucide="arrow-right"></i></div>
-  </a>
-</div>
+  </nav>
 
-<div class="footer-note">Grade 8–9 Coding &amp; Robotics</div>
+  <main>
+    <section class="ml-shell lead">
+      <div class="lead-eyebrow">
+        <span class="dot"></span>
+        <span class="ml-label">Design &amp; Graphics · Grade 9–12</span>
+      </div>
+      <h1>The CAD workshop.</h1>
+      <p>Sketch and 3D-print real physical parts, without installing anything. Parametric modelling running on OpenCascade, in a browser tab.</p>
+      <div class="lead-specs ml-label">
+        <span>Parametric CAD</span>
+        <span>STL export</span>
+        <span>Runs in the browser</span>
+      </div>
+    </section>
 
-<link rel="stylesheet" href="auth-modal.css">
+    <!-- Circuit Simulator is hidden until its bugs are fixed — see
+         model-mage-circuits.html, which redirects back here so a bookmarked
+         or old link cannot reach it either. When it returns, set
+         data-cols="2" above and add its card back here. -->
+    <section class="ml-shell">
+      <div class="picker" data-cols="1">
+        <a class="pick" href="model-mage-cad.html">
+          <div class="pick-head">
+            <span class="pick-icon"><i data-lucide="hexagon" style="width:24px;height:24px;"></i></span>
+            <h2 class="pick-title">Computer-Aided Design</h2>
+          </div>
+          <div class="pick-body">
+            <p class="pick-desc">Sketch a 2D profile, extrude it into a solid, cut holes and fillet edges — real parametric CAD powered by OpenCascade. Design a chassis, bracket or enclosure and export it for 3D printing.</p>
+            <div class="pick-tags">
+              <span class="ml-tag">2D sketch</span>
+              <span class="ml-tag">Extrude &amp; cut</span>
+              <span class="ml-tag">Fillets</span>
+              <span class="ml-tag">STL export</span>
+            </div>
+          </div>
+          <span class="pick-go">Open<i data-lucide="arrow-right"></i></span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ml-footer">
+    <div class="ml-shell ml-footer-inner">
+      <div>
+        <div class="ml-footer-brand">
+          <img src="assets/logo-prism.svg" alt="">
+          The Magic Lab
+        </div>
+        <p class="ml-footer-line">Model Mage is one of thirteen browser-based STEM tools for South African schools.</p>
+      </div>
+      <div class="ml-footer-links">
+        <a href="index.html">All tools</a>
+        <a href="pitch.html">About</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+      </div>
+      <div class="ml-footer-legal ml-label">© 2026 Ruhan Janse van Rensburg · All rights reserved</div>
+    </div>
+  </footer>
+
 <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
 <script defer src="auth-modal.js"></script>
 <script defer src="progress.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); });
+  /* The nav is transparent over the hero and only grows a background once the
+     page has scrolled, so there is no seam across the top of the page. */
+  (function () {
+    const nav = document.getElementById('site-nav');
+    if (!nav) return;
+    const sync = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+  })();
 </script>
 <script src="/contact-button.js" defer></script>
 </body>
