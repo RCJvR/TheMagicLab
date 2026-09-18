@@ -9,83 +9,252 @@
 <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="../assets/magic-lab.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0a0c12;--bg2:#10131c;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.09);
-  --text:#e8eaf2;--muted:rgba(214,218,235,0.48);
-  --accent:#eab308;--accent2:#64748b;
-  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
-}
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-body{display:flex;flex-direction:column;
-  background-image:
-    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(234,179,8,0.10) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(100,116,139,0.14) 0%,transparent 55%);
-}
-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 40px;border-bottom:1px solid var(--border);}
-.nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
-.app-icon{width:36px;height:36px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:18px;}
-.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(16px,2vw,22px);letter-spacing:-0.03em;line-height:1.15;background:linear-gradient(125deg,#fff 0%,#fde68a 50%,#cbd5e1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.app-sub{font-size:10.5px;color:var(--muted);font-family:var(--fm);margin-top:1px;}
-.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
-.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+    /* ══════════════════════════════════════════════════════════════════════
+       Drawing Druid — tool landing page.
 
-.hero{padding:48px 40px 36px;}
-.hero-tag{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fde047;margin-bottom:12px;}
-.hero h1{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.06;margin-bottom:10px;}
-.hero p{font-size:14px;color:var(--muted);max-width:640px;line-height:1.75;}
+       Stylesheet only: every element, id and class is untouched, because the
+       topic-memory visited markers and the chapter lock states are wired
+       through this markup.
 
-.section-row{display:flex;align-items:center;gap:14px;padding:0 40px;margin:0 0 20px;}
-.section-label{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#fde047;white-space:nowrap;}
-.section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(234,179,8,0.25),var(--border) 60%,transparent);}
+       The tool accent moves to the teal-green Drawing Druid wears in the
+       catalogue. It was yellow, which collided head-on with the gr11-12 grade
+       band — the page had two different meanings on one hue. The four grade
+       bands stay four distinct colours, because that is a real code inside
+       this tool, and they now have the accent to themselves.
+       ══════════════════════════════════════════════════════════════════════ */
 
-.chapters{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 40px 44px;}
-.chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;position:relative;transition:transform 200ms cubic-bezier(0.34,1.3,0.64,1),border-color 200ms,box-shadow 200ms;}
-.chapter-card:not(.locked):hover{transform:translateY(-4px);border-color:rgba(234,179,8,0.40);box-shadow:0 20px 44px rgba(0,0,0,0.40);}
-.chapter-card.locked{opacity:.45;cursor:default;}
-.chapter-num{font-family:var(--fm);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;}
-.chapter-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,rgba(234,179,8,0.26),rgba(100,116,139,0.16));border:1px solid rgba(234,179,8,0.28);display:flex;align-items:center;justify-content:center;font-size:19px;}
-.chapter-title{font-weight:800;font-size:15.5px;letter-spacing:-0.02em;color:#fff;line-height:1.25;}
-.chapter-desc{font-size:12.5px;line-height:1.6;color:rgba(214,218,235,.55);flex:1;}
-.chapter-btn{font-size:12px;font-weight:700;color:#fde047;display:flex;align-items:center;gap:5px;}
-.topic-visited{position:absolute;bottom:16px;right:18px;font-size:13px;font-weight:700;color:#fde047;}
-.continue-wrap{padding:0 40px 24px;}
-.continue-wrap:empty{display:none;}
-.continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.25);text-decoration:none;transition:all 150ms;max-width:640px;}
-.continue-card:hover{background:rgba(234,179,8,0.14);border-color:rgba(234,179,8,0.40);}
-.continue-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:#fde047;margin-bottom:2px;}
-.continue-title{font-weight:700;font-size:14px;color:#fff;}
-.continue-arrow{margin-left:auto;color:#fde047;font-size:16px;}
-.soon-pill{position:absolute;top:16px;right:16px;font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(148,163,184,0.14);border:1px solid rgba(148,163,184,0.28);color:#cbd5e1;}
-.grade-pill{position:absolute;top:16px;right:16px;font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;white-space:nowrap;}
-.grade-pill.gr10{background:rgba(100,116,139,0.18);border:1px solid rgba(100,116,139,0.42);color:#cbd5e1;}
-.grade-pill.gr10-12{background:rgba(96,165,250,0.14);border:1px solid rgba(96,165,250,0.38);color:#93c5fd;}
-.grade-pill.gr11-12{background:rgba(234,179,8,0.14);border:1px solid rgba(234,179,8,0.38);color:#fde047;}
-.grade-pill.gr12{background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.38);color:#fdba74;}
-.grade-legend{display:flex;flex-wrap:wrap;gap:14px;padding:0 40px 22px;margin-top:-8px;}
-.grade-legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);}
-.grade-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.grade-legend-dot.gr10{background:#cbd5e1;}
-.grade-legend-dot.gr10-12{background:#93c5fd;}
-.grade-legend-dot.gr11-12{background:#fde047;}
-.grade-legend-dot.gr12{background:#fdba74;}
+    :root {
+      --accent: var(--t-drawing);
+      --accent2: #64748b;
+      --fd: var(--font-display);
+      --fm: var(--font-mono);
+    }
 
-.tools-wrap{padding:0 40px 56px;}
-.tool-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;max-width:520px;transition:all 200ms;}
-.tool-card:hover{border-color:rgba(234,179,8,0.40);background:rgba(255,255,255,.06);}
-.tool-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.tool-title{font-weight:800;font-size:14.5px;color:#fff;margin-bottom:3px;}
-.tool-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+    /* ── Nav ────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-left { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .app-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    /* Was a gradient-clipped fill. The icon beside it already carries colour. */
+    .app-title {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(16px, 2vw, 20px); letter-spacing: -0.028em; line-height: 1.15;
+      color: var(--paper);
+    }
+    .app-sub {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-3); margin-top: 2px;
+    }
+    .nav-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent;
+      color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
 
-@media (max-width:640px){
-  nav{padding:12px 16px;}
-  .hero{padding:28px 16px 24px;}
-  .section-row{padding:0 16px;}
-  .chapters{padding:0 16px 32px;grid-template-columns:1fr;}
-  .tools-wrap{padding:0 16px 40px;}
-  .app-sub{display:none;}
-}
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: clamp(40px, 6vw, 72px) var(--gutter) clamp(24px, 3vw, 36px);
+    }
+    .hero-tag {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: var(--space-4);
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(32px, 4.6vw, 54px); line-height: 1.0;
+      letter-spacing: -0.042em; color: var(--paper);
+      margin-bottom: var(--space-4); text-wrap: balance;
+    }
+    .hero p { font-size: clamp(15px, 1.3vw, 17px); line-height: 1.65; color: var(--text-2); max-width: 60ch; }
+
+    /* ── Section rule ───────────────────────────────────────────────────── */
+    .section-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin: 0 auto var(--space-5);
+      padding-inline: var(--gutter);
+    }
+    .section-label {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); white-space: nowrap;
+    }
+    .section-line { flex: 1; height: 1px; background: var(--line); }
+
+    /* ── Chapter cards ──────────────────────────────────────────────────── */
+    .chapters {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-8);
+    }
+    .chapter-card {
+      position: relative;
+      display: flex; flex-direction: column; gap: var(--space-3);
+      padding: var(--space-5);
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      text-decoration: none; color: inherit;
+      transition: background var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard),
+                  transform var(--dur-med) var(--ease-standard),
+                  box-shadow var(--dur-med) var(--ease-standard);
+    }
+    .chapter-card:not(.locked):hover {
+      background: var(--ink-800);
+      border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+      transform: translateY(-3px);
+      box-shadow: var(--elevation-md);
+    }
+    .chapter-card.locked { opacity: 0.42; cursor: default; }
+    .chapter-num {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-4);
+      font-variant-numeric: tabular-nums;
+    }
+    .chapter-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .chapter-title {
+      font-family: var(--font-display); font-weight: 800; font-size: 16px;
+      letter-spacing: -0.024em; line-height: 1.25; color: var(--paper);
+    }
+    .chapter-desc { font-size: 13px; line-height: 1.6; color: var(--text-2); flex: 1; }
+    .chapter-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-4);
+      transition: color var(--dur-med) var(--ease-standard);
+    }
+    .chapter-card:not(.locked):hover .chapter-btn { color: var(--accent); }
+    .topic-visited {
+      position: absolute; bottom: 16px; right: 18px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--accent);
+    }
+
+    /* ── Continue where you left off ────────────────────────────────────── */
+    .continue-wrap {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-5);
+    }
+    .continue-wrap:empty { display: none; }
+    .continue-card {
+      display: flex; align-items: center; gap: var(--space-4);
+      max-width: 640px; padding: 14px 20px;
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--accent) 9%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-standard);
+    }
+    .continue-card:hover { background: color-mix(in srgb, var(--accent) 15%, transparent); }
+    .continue-label {
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px;
+    }
+    .continue-title { font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--paper); }
+    .continue-arrow { margin-left: auto; color: var(--accent); }
+
+    /* ── Status and grade pills ─────────────────────────────────────────── */
+    .soon-pill {
+      position: absolute; top: 16px; right: 16px;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: var(--radius-2xs);
+      background: transparent; border: 1px solid var(--line-hard); color: var(--text-3);
+    }
+    /* Four grade bands, four hues. A real code inside this tool, and now the
+       only coded colour on the page that is not the tool accent. */
+    .grade-pill {
+      position: absolute; top: 16px; right: 16px;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: var(--radius-2xs); white-space: nowrap;
+    }
+    .grade-pill.gr10    { background: rgba(203,213,225,0.10); border: 1px solid rgba(203,213,225,0.34); color: #cbd5e1; }
+    .grade-pill.gr10-12 { background: rgba(147,197,253,0.10); border: 1px solid rgba(147,197,253,0.34); color: #93c5fd; }
+    .grade-pill.gr11-12 { background: rgba(245,207,106,0.10); border: 1px solid rgba(245,207,106,0.34); color: #f5cf6a; }
+    .grade-pill.gr12    { background: rgba(253,186,116,0.10); border: 1px solid rgba(253,186,116,0.34); color: #fdba74; }
+
+    .grade-legend {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5);
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-5);
+    }
+    .grade-legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-3); }
+    .grade-legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .grade-legend-dot.gr10    { background: #cbd5e1; }
+    .grade-legend-dot.gr10-12 { background: #93c5fd; }
+    .grade-legend-dot.gr11-12 { background: #f5cf6a; }
+    .grade-legend-dot.gr12    { background: #fdba74; }
+
+    /* ── Tools ──────────────────────────────────────────────────────────── */
+    .tools-wrap {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-9);
+    }
+    .tool-card {
+      display: flex; align-items: center; gap: var(--space-4);
+      max-width: 560px; padding: 18px 22px;
+      background: var(--ink-850);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      text-decoration: none; color: inherit;
+      transition: background var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard);
+    }
+    .tool-card:hover {
+      background: var(--ink-800);
+      border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+    }
+    .tool-icon {
+      width: 42px; height: 42px; flex-shrink: 0;
+      display: grid; place-items: center;
+      border-radius: var(--radius-sm);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .tool-title { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--paper); margin-bottom: 3px; }
+    .tool-desc { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+
+    @media (max-width: 640px) {
+      nav { min-height: 60px; }
+      .chapters { grid-template-columns: 1fr; }
+      .app-sub { display: none; }
+    }
 </style>
 <link rel="stylesheet" href="../auth-modal.css">
 <script defer src="../auth.js"></script>
