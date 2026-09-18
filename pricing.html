@@ -3,132 +3,257 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080c1a">
+  <meta name="theme-color" content="#08090b">
   <title>Pricing — The Magic Lab</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-prism.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://api.fontshare.com">
   <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — it must be
        loaded from Fontshare's own CDN, and kept in its own <link> so a problem with
        one font family can never take the others down with it. -->
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="auth-modal.js"></script>
   <script defer src="payment.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #080c1a; --surface: rgba(255,255,255,0.045); --border: rgba(255,255,255,0.08);
-      --text: #e4e8f8; --muted: rgba(210,218,245,0.45);
-      --accent-1: #7c6dfa; --accent-2: #11d98f;
-      --fd: "Cabinet Grotesk", sans-serif; --fm: "JetBrains Mono", monospace;
+    /* ══════════════════════════════════════════════════════════════════════
+       Pricing.
 
-      /* Same token scale as index.html, so both pages share one system. */
-      --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
-      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+       Tokens, nav, footer and primitives come from assets/magic-lab.css.
 
-      --radius-2xs: 6px; --radius-xs: 8px; --radius-sm: 12px; --radius-md: 16px;
-      --radius-lg: 20px; --radius-xl: 24px; --radius-full: 99px;
+       There is one plan, so the page is a claim and a card rather than a
+       comparison table: the argument sits on the left and the thing you buy
+       sits on the right. A lone centred plan card under a centred headline is
+       the layout every pricing template ships with, and it makes one plan
+       look like a plan with its options missing.
+       ══════════════════════════════════════════════════════════════════════ */
 
-      --elevation-sm: 0 4px 18px rgba(124,109,250,0.30);
-      --elevation-md: 0 6px 26px rgba(124,109,250,0.46);
-      --elevation-card: 0 20px 60px rgba(0,0,0,0.35);
+    .price-wrap { flex: 1; }
 
-      --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --dur-fast: 150ms;
-      --dur-med:  220ms;
+    .price-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: start;
+      gap: clamp(32px, 5vw, 72px);
+      padding-block: clamp(44px, 7vw, 88px) clamp(40px, 6vw, 72px);
     }
-    html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--fd); font-size: 16px; line-height: 1.6; }
-    body { display: flex; flex-direction: column; }
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 52px; border-bottom: 1px solid var(--border); }
-    .nav-logo { font-weight: 900; font-size: 20px; letter-spacing: -0.03em; color: #fff; text-decoration: none; display: flex; align-items: center; gap: var(--space-2); }
-    .nav-pill {
-      font-size: 12px; font-weight: 600; padding: 7px 16px;
-      border-radius: var(--radius-full); border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted); text-decoration: none; cursor: pointer;
-      font-family: var(--fd); display: inline-flex; align-items: center; gap: 6px;
-      transition: all var(--dur-fast) var(--ease-standard);
+    @media (max-width: 940px) { .price-grid { grid-template-columns: 1fr; gap: var(--space-7); } }
+
+    /* ── The claim ──────────────────────────────────────────────────────── */
+    .claim-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: var(--space-4); }
+    .claim-eyebrow .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--good); }
+
+    .price-grid h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(38px, 5.4vw, 66px); line-height: 0.96;
+      letter-spacing: -0.045em; color: var(--paper); text-wrap: balance;
     }
-    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); border-color: rgba(255,255,255,0.18); }
-    .nav-pill:active { transform: scale(0.97); }
-    main { max-width: 760px; margin: 0 auto; padding: var(--space-8) var(--space-5); text-align: center; flex: 1; width: 100%; }
-    h1 { font-weight: 900; font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.03em; margin-bottom: var(--space-3); }
-    .sub { color: var(--muted); max-width: 460px; margin: 0 auto var(--space-7); }
+    .price-grid h1 em {
+      display: block; font-family: var(--font-serif);
+      font-style: italic; font-weight: 400;
+      font-size: 1.04em; line-height: 1.0; letter-spacing: -0.02em;
+      color: var(--text); margin-top: 0.06em;
+    }
+    .claim-sub {
+      margin-top: var(--space-5); max-width: 46ch;
+      font-size: clamp(15px, 1.3vw, 17px); line-height: 1.65; color: var(--text-2);
+    }
+    .claim-specs {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6);
+      margin-top: var(--space-6); padding-top: var(--space-4);
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── The plan ───────────────────────────────────────────────────────── */
     .plan-card {
-      background: var(--surface); border: 1px solid rgba(124,109,250,0.35); border-radius: var(--radius-xl);
-      padding: 40px; max-width: 380px; margin: 0 auto 40px;
-      box-shadow: var(--elevation-card);
+      position: relative; overflow: hidden;
+      background: var(--ink-850);
+      border: 1px solid var(--line-hard);
+      border-radius: var(--radius-xl);
+      padding: clamp(26px, 3vw, 36px);
+      box-shadow: var(--elevation-lg);
     }
-    .plan-name { font-family: var(--fm); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #a89ffc; margin-bottom: var(--space-3); }
-    .plan-price { font-weight: 900; font-size: 48px; letter-spacing: -0.03em; color: #fff; margin-bottom: var(--space-1); }
-    .plan-price span { font-size: 16px; font-weight: 500; color: var(--muted); }
-    .plan-features { list-style: none; text-align: left; margin: var(--space-6) 0; display: flex; flex-direction: column; gap: var(--space-3); }
-    .plan-features li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 14px; color: rgba(210,218,245,0.75); }
-    .plan-features li::before { content: '✓'; color: var(--accent-2); font-weight: 800; flex-shrink: 0; }
+    /* The full spectrum along the top edge — the plan buys all thirteen, so
+       the same hard-segment rule the Arena band uses says so without copy. */
+    .plan-card::before {
+      content: ''; position: absolute; inset: 0 0 auto 0; height: 2px;
+      background: linear-gradient(90deg,
+        var(--t-conjurer) 0 7.7%,   var(--t-oracle)  7.7% 15.4%,
+        var(--t-java)  15.4% 23.1%, var(--t-codex)  23.1% 30.8%,
+        var(--t-web)   30.8% 38.5%, var(--t-model)  38.5% 46.2%,
+        var(--t-drawing) 46.2% 53.8%, var(--t-science) 53.8% 61.5%,
+        var(--t-math)  61.5% 69.2%, var(--t-spike)  69.2% 76.9%,
+        var(--t-tech)  76.9% 84.6%, var(--t-robot)  84.6% 92.3%,
+        var(--t-turner) 92.3% 100%);
+    }
+
+    .plan-name { margin-bottom: var(--space-3); }
+    .plan-price {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(44px, 5vw, 58px); letter-spacing: -0.04em;
+      line-height: 1; color: var(--paper);
+      font-variant-numeric: tabular-nums;
+    }
+    .plan-price span {
+      font-family: var(--font-body); font-size: 16px; font-weight: 500;
+      letter-spacing: -0.01em; color: var(--text-3);
+    }
+    .plan-note { margin-top: var(--space-2); font-size: 13.5px; color: var(--text-3); }
+
+    .plan-features {
+      list-style: none; display: flex; flex-direction: column; gap: var(--space-3);
+      margin: var(--space-6) 0;
+      padding-top: var(--space-5); border-top: 1px solid var(--line);
+    }
+    .plan-features li {
+      display: flex; gap: var(--space-3); align-items: flex-start;
+      font-size: 14.5px; line-height: 1.55; color: var(--text-2);
+    }
+    .plan-features li::before {
+      content: '✓'; color: var(--good); font-weight: 800; flex-shrink: 0; line-height: 1.5;
+    }
+
+    /* The one solid control on the page. */
     .upgrade-btn {
-      width: 100%; padding: 14px; border-radius: var(--radius-md); border: none; cursor: pointer;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #0a0e1c;
-      font-family: var(--fd); font-weight: 800; font-size: 15px; letter-spacing: -0.01em;
-      transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
+      width: 100%; padding: 14px; cursor: pointer;
+      border: 1px solid var(--paper); border-radius: var(--radius-sm);
+      background: var(--paper); color: var(--ink-900);
+      font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -0.01em;
+      transition: background var(--dur-fast) var(--ease-standard),
+                  transform var(--dur-fast) var(--ease-standard);
     }
-    .upgrade-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,109,250,0.42); }
-    .upgrade-btn:active:not(:disabled) { transform: scale(0.98); }
-    .upgrade-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-    .plan-msg { margin-top: var(--space-4); font-size: 13px; }
-    .plan-msg.error { color: #fca5a5; }
-    .plan-msg.ok { color: #86efac; }
+    .upgrade-btn:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+    .upgrade-btn:active:not(:disabled) { transform: translateY(0); }
+    .upgrade-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .plan-msg { margin-top: var(--space-4); font-size: 13.5px; line-height: 1.5; }
+    .plan-msg.error { color: #f5a3a3; }
+    .plan-msg.ok { color: var(--good); }
+
+    /* Swapped in by script for people who already have access. */
     .already-badge {
-      display: inline-flex; align-items: center; gap: var(--space-2); padding: 10px 20px; border-radius: var(--radius-sm);
-      background: rgba(17,217,143,0.14); border: 1px solid rgba(17,217,143,0.35); color: #86efac;
-      font-weight: 700; font-size: 14px; width: 100%; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+      width: 100%; padding: 13px 20px;
+      border-radius: var(--radius-sm);
+      background: rgba(74,207,127,0.12); border: 1px solid rgba(74,207,127,0.35);
+      color: var(--good); font-family: var(--font-display); font-weight: 700; font-size: 14.5px;
     }
+
+    /* ── Schools ────────────────────────────────────────────────────────── */
     .school-note {
-      max-width: 500px; margin: 0 auto; padding: var(--space-5); border-radius: var(--radius-md);
-      background: var(--surface); border: 1px solid var(--border); font-size: 14px; color: var(--muted);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: var(--space-5);
+      margin-bottom: clamp(48px, 8vw, 96px);
+      padding: clamp(24px, 3vw, 36px);
+      border: 1px solid var(--line); border-radius: var(--radius-lg);
+      background: var(--ink-850);
     }
-    .school-note a { color: #a89ffc; font-weight: 600; text-decoration: none; }
-    .school-note a:hover { text-decoration: underline; }
-    footer { padding: var(--space-5); text-align: center; font-size: 12px; color: rgba(210,218,245,0.28); display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .school-note h2 {
+      font-family: var(--font-display); font-weight: 800; font-size: 20px;
+      letter-spacing: -0.028em; color: var(--paper);
+    }
+    .school-note p { margin-top: 6px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); max-width: 54ch; }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo"><img src="assets/logo-prism.svg" alt="" style="width:30px;height:30px;"> The Magic Lab</a>
-    <button class="nav-pill" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;"></i>Sign In</button>
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a href="index.html" class="ml-brand">
+        <img src="assets/logo-prism.svg" alt="">
+        The Magic Lab
+      </a>
+      <div class="ml-nav-right">
+        <a href="index.html" class="ml-pill is-secondary">All tools</a>
+        <a href="pitch.html" class="ml-pill is-secondary">About</a>
+        <button class="ml-pill ml-pill--solid ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">Sign in</button>
+      </div>
+    </div>
   </nav>
 
-  <main>
-    <h1>Simple, honest pricing</h1>
-    <p class="sub">One plan. Every tool. Cancel anytime.</p>
-    <p class="sub" id="trialNote">New here? Every account starts with a free 30-day trial — full access, no card required.</p>
+  <main class="price-wrap">
+    <div class="ml-shell price-grid">
 
-    <div class="plan-card">
-      <div class="plan-name">Pro</div>
-      <div class="plan-price">R45<span>/term</span></div>
-      <ul class="plan-features">
-        <li>Full access to every subject tool</li>
-        <li>Progress tracking across all tools</li>
-        <li>Priority access to new tools as they launch</li>
-        <li>Billed quarterly, cancel anytime, no lock-in</li>
-      </ul>
-      <button class="upgrade-btn" id="upgradeBtn">Upgrade to Pro — R45/term</button>
-      <div class="plan-msg" id="planMsg"></div>
+      <div>
+        <div class="claim-eyebrow">
+          <span class="dot"></span>
+          <span class="ml-label">Pricing · One plan</span>
+        </div>
+        <h1>One plan.<em>All thirteen tools.</em></h1>
+        <p class="claim-sub">No tiers, no per-tool pricing, no feature you have to upgrade again to reach. Every subject tool on the site, for every grade it covers.</p>
+        <p class="claim-sub" id="trialNote">New here? Every account starts with a free 30-day trial — full access, no card required.</p>
+
+        <div class="claim-specs ml-label">
+          <span>13 tools</span>
+          <span>Grades 4–12</span>
+          <span>CAPS &amp; IEB</span>
+          <span>Cancel anytime</span>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name ml-label">Pro</div>
+        <div class="plan-price">R45<span> / term</span></div>
+        <p class="plan-note">Billed quarterly. No lock-in.</p>
+        <ul class="plan-features">
+          <li>Full access to every subject tool</li>
+          <li>Progress tracking across all tools</li>
+          <li>Priority access to new tools as they launch</li>
+          <li>Billed quarterly, cancel anytime, no lock-in</li>
+        </ul>
+        <button class="upgrade-btn" id="upgradeBtn">Upgrade to Pro — R45/term</button>
+        <div class="plan-msg" id="planMsg"></div>
+      </div>
+
     </div>
 
-    <div class="school-note">
-      <strong style="color:#fff;">Teaching a whole class or school?</strong><br>
-      Bulk access for schools is arranged directly — get in touch at
-      <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a> and we'll set your students up.
+    <div class="ml-shell">
+      <div class="school-note">
+        <div>
+          <h2>Teaching a whole class or school?</h2>
+          <p>Bulk access for schools is arranged directly. Get in touch and we will set your students up.</p>
+        </div>
+        <a class="ml-btn ml-btn--ghost" href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20School%20access">ruhan@themagiclab.co.za</a>
+      </div>
     </div>
   </main>
 
-  <footer><img src="assets/logo-prism.svg" alt="" style="width:18px;height:18px;vertical-align:-4px;">The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
+  <footer class="ml-footer">
+    <div class="ml-shell ml-footer-inner">
+      <div>
+        <div class="ml-footer-brand">
+          <img src="assets/logo-prism.svg" alt="">
+          The Magic Lab
+        </div>
+        <p class="ml-footer-line">Thirteen browser-based STEM tools for South African schools, built and maintained by one teacher.</p>
+      </div>
+      <div class="ml-footer-links">
+        <a href="index.html">All tools</a>
+        <a href="pitch.html">About</a>
+        <a href="arena.html">The Arena</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20Suggestion%2FQuestion">Contact</a>
+      </div>
+      <div class="ml-footer-legal ml-label">© 2026 Ruhan Janse van Rensburg · All rights reserved</div>
+    </div>
+  </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
+
+    (function () {
+      const nav = document.getElementById('site-nav');
+      if (!nav) return;
+      const sync = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
+      sync();
+      window.addEventListener('scroll', sync, { passive: true });
+    })();
 
     function _syncPlanCard() {
       const auth = window.MagicLabAuth;
