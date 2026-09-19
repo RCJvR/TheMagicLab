@@ -9,111 +9,157 @@
 <title>The Arena — Host — The Magic Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/magic-lab.css">
 <style>
-:root{
-  --bg:#080c1a; --bg2:#0d1226;
-  --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-  --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-  --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
-  --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{
-  font-family:var(--font);background:var(--bg);color:var(--text);
-  min-height:100vh;-webkit-font-smoothing:antialiased;
-  background-image:
-    radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
-  display:flex;flex-direction:column;
-}
-.wrap{flex:1;display:flex;flex-direction:column;max-width:1100px;margin:0 auto;padding:28px 32px 40px;width:100%;}
-.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-.logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;}
-.game-title{font-weight:800;font-size:15px;color:var(--muted);}
-.top-row-right{display:flex;align-items:center;gap:14px;}
-.btn-end-quiz{
-  padding:8px 16px;border-radius:10px;border:1px solid rgba(248,113,113,0.35);
-  background:rgba(248,113,113,0.10);color:#fca5a5;cursor:pointer;
-  font-family:var(--font);font-size:12px;font-weight:700;transition:all 140ms;
-}
-.btn-end-quiz:hover{background:rgba(248,113,113,0.20);}
+/* ══════════════════════════════════════════════════════════════════════════
+   The Arena — host view.
 
-.state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
-.hidden{display:none !important;}
+   Stylesheet only; every class and id the game script drives is untouched.
 
-/* ── Lobby ── */
-.join-code{
-  font-family:var(--mono);font-weight:800;font-size:clamp(56px,10vw,96px);letter-spacing:0.08em;
-  background:linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin:12px 0 4px;
-}
-.join-hint{font-size:14px;color:var(--muted);margin-bottom:28px;}
-.join-hint b{color:var(--text2);}
-.lobby-count{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:14px;}
-.lobby-players{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:700px;margin-bottom:32px;}
-.lobby-chip{
-  background:var(--surface);border:1px solid var(--border);border-radius:99px;
-  padding:8px 18px;font-size:14px;font-weight:700;color:var(--text2);
-}
-.btn-primary{
-  padding:14px 36px;border-radius:14px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#7c6dfa,#11d98f);color:#0a0e1c;
-  font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:-0.01em;
-  box-shadow:0 6px 24px rgba(124,109,250,0.30);transition:all 160ms;
-}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(124,109,250,0.42);}
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
-.btn-ghost{
-  padding:10px 22px;border-radius:12px;border:1px solid var(--border);
-  background:var(--surface);color:var(--text2);cursor:pointer;font-family:var(--font);
-  font-size:13px;font-weight:700;transition:all 140ms;
-}
-.btn-ghost:hover{background:rgba(255,255,255,0.09);}
+   This one is projected. It is read from the back of a classroom, through a
+   projector that crushes mid-tones and washes out colour, so it breaks two
+   habits the rest of the site keeps: nothing important is set in a faint
+   grey, and the join code is solid rather than gradient-filled. A
+   gradient-clipped numeral is the worst possible treatment for the single
+   thing thirty people are trying to read from four metres away.
 
-/* ── Question ── */
-.q-progress{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:10px;}
-.q-timer-track{width:100%;max-width:480px;height:8px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;margin-bottom:20px;}
-.q-timer-fill{height:100%;background:linear-gradient(90deg,#7c6dfa,#11d98f);border-radius:99px;transition:width 200ms linear;}
-.q-text{font-weight:800;font-size:clamp(24px,3.4vw,38px);letter-spacing:-0.02em;line-height:1.25;max-width:820px;margin-bottom:32px;}
-.q-answered{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:20px;}
-.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:820px;}
-.opt-tile{
-  border-radius:16px;padding:22px 24px;font-size:16px;font-weight:700;color:#fff;text-align:left;
-  display:flex;align-items:center;gap:12px;min-height:76px;position:relative;overflow:hidden;
+   The four answer hues are byte-identical to arena.html on purpose. A learner
+   sees a red triangle on their phone and has to find the red triangle on the
+   wall; if the two drift apart the whole colour code stops working.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --surface2: rgba(255,255,255,0.03);
+  --border2:  var(--line-soft);
+  --text2:    var(--text-2);
+  --font:     var(--font-display);
+  --mono:     var(--font-mono);
 }
-.opt-tile .opt-shape{font-size:20px;flex-shrink:0;}
-.opt-tile.c0{background:linear-gradient(135deg,#dc2626,#ef4444);}
-.opt-tile.c1{background:linear-gradient(135deg,#2563eb,#3b82f6);}
-.opt-tile.c2{background:linear-gradient(135deg,#ca8a04,#eab308);}
-.opt-tile.c3{background:linear-gradient(135deg,#16a34a,#22c55e);}
-.opt-tile.dimmed{opacity:0.35;}
-.opt-tile .opt-bar{position:absolute;inset:0;background:rgba(255,255,255,0.16);width:0%;transition:width 500ms ease;}
-.opt-tile .opt-count{margin-left:auto;font-family:var(--mono);font-size:14px;flex-shrink:0;position:relative;}
-.opt-tile.correct{outline:3px solid #fff;}
-.opt-tile .opt-label{position:relative;}
 
-/* ── Leaderboard / podium ── */
-.podium{display:flex;align-items:flex-end;gap:18px;margin-bottom:32px;}
-.podium-spot{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.podium-name{font-weight:800;font-size:15px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.podium-score{font-family:var(--mono);font-size:12px;color:var(--muted);}
-.podium-bar{width:110px;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-weight:900;font-size:22px;}
-.podium-spot.p1 .podium-bar{height:150px;background:linear-gradient(180deg,#fbbf24,#d97706);}
-.podium-spot.p2 .podium-bar{height:110px;background:linear-gradient(180deg,#cbd5e1,#94a3b8);}
-.podium-spot.p3 .podium-bar{height:80px;background:linear-gradient(180deg,#fb923c,#c2410c);}
-
-.leaderboard-list{width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
-.lb-row{
-  display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;padding:10px 16px;
+html, body { height: 100%; }
+body {
+  font-family: var(--font); background: var(--ink-900); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
 }
-.lb-rank{font-family:var(--mono);font-size:13px;color:var(--muted);width:24px;flex-shrink:0;}
-.lb-name{flex:1;text-align:left;font-weight:700;font-size:14px;}
-.lb-score{font-family:var(--mono);font-size:13px;color:#6ee7b7;font-weight:700;}
 
-.btn-row{display:flex;gap:10px;margin-top:8px;}
+.wrap { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 1100px; margin: 0 auto; padding: 28px 32px 40px; }
+.top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+.logo { font-family: var(--font-display); font-weight: 800; font-size: 17px; letter-spacing: -0.025em; color: var(--text-2); text-decoration: none; }
+.game-title { font-weight: 700; font-size: 15px; color: var(--text-2); }
+.top-row-right { display: flex; align-items: center; gap: var(--space-4); }
+
+/* Ending the quiz for everyone in the room is destructive, so it stays red. */
+.btn-end-quiz {
+  padding: 9px 16px; border-radius: var(--radius-2xs);
+  border: 1px solid rgba(239,91,91,0.38); background: rgba(239,91,91,0.10); color: #f5a3a3;
+  cursor: pointer; font-family: var(--font); font-size: 12.5px; font-weight: 700;
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+.btn-end-quiz:hover { background: rgba(239,91,91,0.20); }
+
+.state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.hidden { display: none !important; }
+
+/* ── Lobby ────────────────────────────────────────────────────────────── */
+/* The join code is the whole screen. Solid paper, tabular figures so the
+   characters do not jitter as it is typed out, and no gradient. */
+.join-code {
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(56px, 10vw, 104px); letter-spacing: 0.1em;
+  color: var(--paper); margin: 12px 0 6px;
+  font-variant-numeric: tabular-nums;
+}
+.join-hint { font-size: 15px; color: var(--text-2); margin-bottom: var(--space-7); }
+.join-hint b { color: var(--paper); }
+.lobby-count { font-family: var(--mono); font-size: 13px; color: var(--text-2); margin-bottom: var(--space-4); font-variant-numeric: tabular-nums; }
+.lobby-players { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 700px; margin-bottom: var(--space-8); }
+.lobby-chip {
+  padding: 8px 18px; border-radius: var(--radius-full);
+  background: var(--ink-850); border: 1px solid var(--line);
+  font-size: 14.5px; font-weight: 700; color: var(--text);
+}
+
+.btn-primary {
+  padding: 15px 36px; border-radius: var(--radius-sm); cursor: pointer;
+  border: 1px solid var(--paper); background: var(--paper); color: var(--ink-900);
+  font-family: var(--font); font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  transition: background var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
+}
+.btn-primary:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-ghost {
+  padding: 11px 22px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line-hard); background: transparent; color: var(--text);
+  cursor: pointer; font-family: var(--font); font-size: 13.5px; font-weight: 700;
+  transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.05); border-color: var(--paper); }
+
+/* ── Question ─────────────────────────────────────────────────────────── */
+.q-progress { font-family: var(--mono); font-size: 12.5px; color: var(--text-2); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+.q-timer-track { width: 100%; max-width: 480px; height: 8px; margin-bottom: var(--space-5); border-radius: var(--radius-full); background: rgba(255,255,255,0.10); overflow: hidden; }
+/* Solid, not a gradient: a bar that changes hue as it drains reads as a
+   second signal that is not actually saying anything. */
+.q-timer-fill { height: 100%; border-radius: var(--radius-full); background: var(--paper); transition: width 200ms linear; }
+.q-text {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(24px, 3.4vw, 40px); letter-spacing: -0.03em; line-height: 1.22;
+  max-width: 820px; margin-bottom: var(--space-8); color: var(--paper);
+  text-wrap: balance;
+}
+.q-answered { font-family: var(--mono); font-size: 13.5px; color: var(--text-2); margin-bottom: var(--space-5); font-variant-numeric: tabular-nums; }
+
+.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; max-width: 820px; }
+.opt-tile {
+  position: relative; overflow: hidden;
+  min-height: 78px; padding: 22px 24px; border-radius: var(--radius-md);
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  font-family: var(--font); font-size: 16px; font-weight: 700; color: #fff;
+}
+.opt-tile .opt-shape { font-size: 20px; flex-shrink: 0; }
+/* Identical to arena.html. All four clear WCAG AA against their own text
+   colour; the amber takes ink text because white on yellow cannot. */
+.opt-tile.c0 { background: #d24141; }
+.opt-tile.c1 { background: #2f6fe0; }
+.opt-tile.c2 { background: #e5a828; color: var(--ink-900); }
+.opt-tile.c3 { background: #19853e; }
+.opt-tile.dimmed { opacity: 0.32; }
+/* The response-distribution bar. On the amber tile a white wash would wreck
+   the ink text it sits under, so that one darkens instead of lightening. */
+.opt-tile .opt-bar { position: absolute; inset: 0; width: 0%; background: rgba(255,255,255,0.18); transition: width 500ms ease; }
+.opt-tile.c2 .opt-bar { background: rgba(0,0,0,0.16); }
+.opt-tile .opt-count { position: relative; margin-left: auto; flex-shrink: 0; font-family: var(--mono); font-size: 14px; font-variant-numeric: tabular-nums; }
+.opt-tile .opt-label { position: relative; }
+.opt-tile.correct { outline: 3px solid var(--paper); outline-offset: 2px; }
+
+/* ── Leaderboard and podium ───────────────────────────────────────────── */
+.podium { display: flex; align-items: flex-end; gap: 18px; margin-bottom: var(--space-8); }
+.podium-spot { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.podium-name { font-family: var(--font-display); font-weight: 800; font-size: 15px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--paper); }
+.podium-score { font-family: var(--mono); font-size: 12.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.podium-bar {
+  width: 110px; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
+  font-family: var(--font-display); font-weight: 900; font-size: 22px; color: var(--ink-900);
+}
+/* Gold, silver and bronze are the one place a literal metaphor beats the
+   palette — everyone in the room already knows what they mean. Flat fills so
+   they survive a projector. */
+.podium-spot.p1 .podium-bar { height: 150px; background: #e8b93c; }
+.podium-spot.p2 .podium-bar { height: 110px; background: #b8c2cf; }
+.podium-spot.p3 .podium-bar { height:  80px; background: #cd7f45; }
+
+.leaderboard-list { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--space-7); }
+.lb-row {
+  display: flex; align-items: center; gap: 12px; padding: 11px 16px;
+  background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.lb-rank { width: 24px; flex-shrink: 0; font-family: var(--mono); font-size: 13px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.lb-name { flex: 1; text-align: left; font-weight: 700; font-size: 14.5px; color: var(--text); }
+.lb-score { font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--good); font-variant-numeric: tabular-nums; }
+
+.btn-row { display: flex; gap: 10px; margin-top: var(--space-2); }
 </style>
 </head>
 <body>
