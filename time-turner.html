@@ -354,8 +354,17 @@ main { max-width: 960px; margin-inline: auto; padding: clamp(28px,3.5vw,44px) va
 }
 .grid-ghost:hover { background: rgba(255,255,255,0.08); }
 .grid-ghost .gg-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.grid-ghost .gg-dismiss { flex-shrink: 0; opacity: 0.55; font-size: 11px; line-height: 1; padding: 0 2px; }
-.grid-ghost .gg-dismiss:hover { opacity: 1; }
+/* Was opacity 0.55, which put this control between 2.68 and 4.04 : 1
+   depending on which category colour it inherited - every one of the nine
+   under the floor. At full strength the worst is 5.96. It stays subordinate
+   to the title by size rather than by fading, and hover now gives its
+   feedback with a background instead of an opacity it needed to keep. */
+.grid-ghost .gg-dismiss {
+  flex-shrink: 0; font-size: 11px; line-height: 1;
+  padding: 0 3px; border-radius: 3px;
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+.grid-ghost .gg-dismiss:hover { background: rgba(255,255,255,0.16); }
 
 /* ── Totals ─────────────────────────────────────────────────────────────── */
 .total-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); }
