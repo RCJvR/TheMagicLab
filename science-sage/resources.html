@@ -11,175 +11,322 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
   <style>
+    /* ══════════════════════════════════════════════════════════════════════
+       Science Sage — Resources.
+
+       Stylesheet only; markup untouched. Every id, class, filter hook and
+       data attribute is exactly as it was, so the category filtering and the
+       language toggle keep working.
+
+       Written to match science-sage/index.html rather than to be its own
+       thing: same nav, same left-aligned hero, same flat section rule, same
+       --accent alias. These are two pages of one tool and should read that
+       way.
+
+       Two colour systems survive here on purpose. The five resource
+       categories say what kind of thing a card is, and the eleven periodic
+       -table groups are a scientific convention, not a palette. What changed
+       is how hard they are spent: a flat tint on an icon instead of a
+       gradient, and a border that only lights up on hover.
+       ══════════════════════════════════════════════════════════════════════ */
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg:#08090b;--bg2:#0c0e11;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.075);
-      --text:#e3e8ef;--muted:rgba(226,232,240,0.40);--green:#22c55e;--green-dim:rgba(34,197,94,0.18);
-      --font-display:"Cabinet Grotesk",sans-serif;--font-body:"Cabinet Grotesk",sans-serif;
-      --font-mono:"JetBrains Mono",monospace;--font-serif:"Instrument Serif",serif;
+      --accent:    var(--t-science);
+      --green:     var(--t-science);
+      --green-dim: rgba(74,207,127,0.18);
+      /* The page's own older names, pointed at the system so no rule below
+         has to be hunted down. */
+      --bg:      var(--ink-900);
+      --bg2:     var(--ink-850);
+      --surface: rgba(255,255,255,0.045);
+      --border:  var(--line);
+      --muted:   var(--text-3);
+
+      /* The five resource categories. One place to read them all. */
+      --c-gen:   var(--t-science);
+      --c-phys:  var(--t-java);
+      --c-chem:  var(--t-conjurer);
+      --c-tools: var(--t-spike);
+      --c-data:  var(--t-robot);
     }
-    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 0%,rgba(132,204,22,0.07) 0%,transparent 55%),radial-gradient(ellipse 50% 35% at 50% 100%,rgba(20,184,166,0.06) 0%,transparent 55%)}
-    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
-    body>*{position:relative;z-index:1}
 
-    nav{display:flex;align-items:center;justify-content:space-between;padding:20px 52px;border-bottom:1px solid var(--border)}
-    .nav-logo{font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;display:flex;align-items:center;gap:10px}
-    .nav-right{display:flex;align-items:center;gap:8px}
-    .nav-link{font-size:12px;font-weight:600;padding:7px 16px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;display:inline-flex;align-items:center;gap:6px;line-height:1}
-    .nav-link:hover{background:rgba(255,255,255,0.09);color:var(--text);border-color:rgba(255,255,255,0.18)}
-    .nav-link.active{border-color:rgba(34,197,94,0.30);background:rgba(34,197,94,0.08);color:#86efac}
-    .nav-back{font-size:12px;font-weight:600;padding:7px 16px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;display:inline-flex;align-items:center;gap:6px;line-height:1}
-    .nav-back:hover{background:rgba(255,255,255,0.09);color:var(--text);border-color:rgba(255,255,255,0.18)}
-
-    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 24px 44px}
-    .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 16px;border-radius:99px;margin-bottom:20px;background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.28);font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#86efac}
-    .hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(32px,4.5vw,58px);letter-spacing:-0.04em;line-height:1.05;margin-bottom:8px;color:#fff}
-    .hero h1 em{font-style:normal;font-family:var(--font-serif);font-weight:400;background:linear-gradient(110deg,#86efac 0%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-sub{font-size:clamp(13px,1.5vw,16px);color:var(--muted);max-width:480px;margin-top:14px;line-height:1.7}
-
-    /* Filter pills */
-    .filter-bar{display:flex;align-items:center;gap:8px;padding:0 52px 36px;flex-wrap:wrap}
-    .filter-pill{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:7px 16px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 150ms}
-    .filter-pill:hover{color:var(--text);border-color:rgba(255,255,255,0.18)}
-    .filter-pill.active{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.35);color:#86efac}
-    .filter-pill.f-phys.active{background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.35);color:#93c5fd}
-    .filter-pill.f-chem.active{background:rgba(192,132,252,0.12);border-color:rgba(192,132,252,0.35);color:#e9d5ff}
-    .filter-pill.f-tools.active{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.35);color:#fcd34d}
-    .filter-pill.f-data.active{background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.35);color:#fdba74}
-
-    /* Section headers */
-    .section-row{display:flex;align-items:center;gap:16px;padding:0 52px;margin:8px 0 24px}
-    .section-label{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:8px}
-    .section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(34,197,94,0.15),var(--border) 60%,transparent)}
-
-    /* Resource grid */
-    .resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:0 52px 56px}
-
-    /* Resource card */
-    .res-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform 240ms cubic-bezier(0.34,1.3,0.64,1),border-color 200ms,box-shadow 200ms;position:relative}
-    .res-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 20px 48px rgba(0,0,0,0.40)}
-    .res-card-header{padding:20px 20px 16px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
-    .res-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-    .res-meta{flex:1;min-width:0}
-    .res-category{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;margin-bottom:4px}
-    .res-title{font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:-0.02em;color:#fff;line-height:1.2}
-    .res-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:4px}
-    .res-body{padding:16px 20px;flex:1;display:flex;flex-direction:column;gap:10px}
-    .res-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;flex-wrap:wrap}
-
-    .res-btn{font-family:var(--font-display);font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 150ms;border:1px solid transparent}
-    .res-btn-primary{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.30);color:#86efac}
-    .res-btn-primary:hover{background:rgba(34,197,94,0.25);color:#a7f3d0}
-    .res-btn-ghost{background:rgba(255,255,255,0.05);border-color:var(--border);color:var(--muted)}
-    .res-btn-ghost:hover{background:rgba(255,255,255,0.09);color:var(--text)}
-
-    /* Color variants */
-    .res-card.c-phys .res-card-header{border-bottom-color:rgba(96,165,250,0.10)}
-    .res-card.c-phys:hover{border-color:rgba(96,165,250,0.40)}
-    .res-card.c-phys .res-icon{background:linear-gradient(135deg,rgba(96,165,250,0.28),rgba(168,85,247,0.14));border:1px solid rgba(96,165,250,0.28)}
-    .res-card.c-phys .res-category{color:#93c5fd}
-    .res-card.c-phys .res-btn-primary{background:rgba(96,165,250,0.15);border-color:rgba(96,165,250,0.30);color:#93c5fd}
-    .res-card.c-phys .res-btn-primary:hover{background:rgba(96,165,250,0.25);color:#bfdbfe}
-
-    .res-card.c-chem .res-card-header{border-bottom-color:rgba(192,132,252,0.10)}
-    .res-card.c-chem:hover{border-color:rgba(192,132,252,0.40)}
-    .res-card.c-chem .res-icon{background:linear-gradient(135deg,rgba(192,132,252,0.28),rgba(96,165,250,0.14));border:1px solid rgba(192,132,252,0.28)}
-    .res-card.c-chem .res-category{color:#e9d5ff}
-    .res-card.c-chem .res-btn-primary{background:rgba(192,132,252,0.15);border-color:rgba(192,132,252,0.30);color:#e9d5ff}
-    .res-card.c-chem .res-btn-primary:hover{background:rgba(192,132,252,0.25);color:#f3e8ff}
-
-    .res-card.c-tools .res-card-header{border-bottom-color:rgba(251,191,36,0.10)}
-    .res-card.c-tools:hover{border-color:rgba(251,191,36,0.40)}
-    .res-card.c-tools .res-icon{background:linear-gradient(135deg,rgba(251,191,36,0.28),rgba(245,166,35,0.14));border:1px solid rgba(251,191,36,0.28)}
-    .res-card.c-tools .res-category{color:#fcd34d}
-    .res-card.c-tools .res-btn-primary{background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.30);color:#fcd34d}
-    .res-card.c-tools .res-btn-primary:hover{background:rgba(251,191,36,0.25);color:#fde68a}
-
-    .res-card.c-data .res-card-header{border-bottom-color:rgba(251,146,60,0.10)}
-    .res-card.c-data:hover{border-color:rgba(251,146,60,0.40)}
-    .res-card.c-data .res-icon{background:linear-gradient(135deg,rgba(251,146,60,0.26),rgba(34,197,94,0.14));border:1px solid rgba(251,146,60,0.28)}
-    .res-card.c-data .res-category{color:#fdba74}
-    .res-card.c-data .res-btn-primary{background:rgba(251,146,60,0.15);border-color:rgba(251,146,60,0.30);color:#fdba74}
-    .res-card.c-data .res-btn-primary:hover{background:rgba(251,146,60,0.25);color:#fed7aa}
-
-    /* Inline formula tables inside cards */
-    .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-    .formula-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 10px}
-    .formula-name{font-size:10px;color:var(--muted);margin-bottom:3px;line-height:1.3}
-    .formula-eq{font-family:var(--font-mono);font-size:11px;color:#e4e8f8;line-height:1.4}
-    .formula-item.full{grid-column:1/-1}
-
-    /* Constant table */
-    .const-table{width:100%;border-collapse:collapse}
-    .const-table td{padding:6px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05)}
-    .const-table tr:last-child td{border-bottom:none}
-    .const-table td:first-child{color:var(--muted);padding-right:10px;width:50%}
-    .const-table td:last-child{font-family:var(--font-mono);font-size:11px;color:#c4b5fd}
-
-    /* Electrochemical series snippet */
-    .echem-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
-    .echem-row:last-child{border-bottom:none}
-    .echem-half{font-family:var(--font-mono);font-size:11px;color:#e4e8f8}
-    .echem-val{font-family:var(--font-mono);font-size:11px;font-weight:600}
-
-    /* Grade badge */
-    .grade-badge{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--muted);white-space:nowrap}
-
-    /* Full-width card */
-    .res-card.wide{grid-column:1/-1}
-
-    /* Organic table */
-    .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
-    .org-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 10px}
-    .org-name{font-size:11px;font-weight:700;color:#e9d5ff;margin-bottom:2px}
-    .org-suffix{font-family:var(--font-mono);font-size:10px;color:#c084fc}
-    .org-group{font-size:10px;color:var(--muted);margin-top:2px}
-
-    footer{margin-top:auto;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-    .footer-copy{font-size:13px;color:rgba(210,218,245,0.28)}
-
-    /* Mini periodic table preview */
-    .pt-preview{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;width:100%}
-    .pt-cell{border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:default;position:relative;min-width:0;aspect-ratio:1}
-    .pt-cell .pt-num{font-family:var(--font-mono);font-size:5.5px;color:rgba(255,255,255,0.45);line-height:1;margin-bottom:2px}
-    .pt-cell .pt-sym{font-family:var(--font-display);font-weight:800;font-size:10px;line-height:1;color:#fff}
-    .pt-cell.empty{background:transparent}
-    .pt-cell.alkali{background:rgba(239,68,68,0.30);border:1px solid rgba(239,68,68,0.40)}
-    .pt-cell.alkaline{background:rgba(251,146,60,0.30);border:1px solid rgba(251,146,60,0.40)}
-    .pt-cell.transition{background:rgba(251,191,36,0.22);border:1px solid rgba(251,191,36,0.32)}
-    .pt-cell.post{background:rgba(163,230,53,0.22);border:1px solid rgba(163,230,53,0.35)}
-    .pt-cell.metalloid{background:rgba(20,184,166,0.22);border:1px solid rgba(20,184,166,0.35)}
-    .pt-cell.nonmetal{background:rgba(96,165,250,0.28);border:1px solid rgba(96,165,250,0.40)}
-    .pt-cell.halogen{background:rgba(96,165,250,0.20);border:1px solid rgba(96,165,250,0.32)}
-    .pt-cell.noble{background:rgba(168,85,247,0.28);border:1px solid rgba(168,85,247,0.40)}
-    .pt-cell.lanthanide{background:rgba(236,72,153,0.22);border:1px solid rgba(236,72,153,0.32)}
-    .pt-cell.actinide{background:rgba(168,85,247,0.22);border:1px solid rgba(168,85,247,0.32)}
-    .pt-cell.hydrogen{background:rgba(56,189,248,0.28);border:1px solid rgba(56,189,248,0.40)}
-    .pt-spacer{grid-column:span 18;height:4px}
-    .pt-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-    .pt-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
-    .pt-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-
-    /* hide/show filtering */
-    .res-section{transition:opacity 200ms}
-
-    @media(min-width:1100px){
-      .lesson-body{max-width:860px;margin:0 auto}
-      .practice-wrap{max-width:780px;margin:0 auto}
-      .wb-wrap{max-width:820px;margin:0 auto}
-      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    html, body {
+      min-height: 100%;
+      background: var(--ink-900); color: var(--text);
+      font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    @media(max-width:640px){
-      nav{padding:16px 20px}
-      .filter-bar{padding:0 20px 28px}
-      .section-row{padding:0 20px}
-      .resources-grid{padding:0 20px 40px;grid-template-columns:1fr}
-      footer{padding:20px}
-      .res-card.wide{grid-column:auto}
-      .formula-grid{grid-template-columns:1fr}
-      .formula-item.full{grid-column:auto}
+    /* Was three radial glows plus a fractal-noise overlay. A neutral ground
+       is what lets the category colours read as categories. */
+    body { display: flex; flex-direction: column; }
+
+    /* ── Nav ────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+    }
+    /* The mark carries the colour; the wordmark stays paper. */
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper);
+      text-decoration: none; display: flex; align-items: center; gap: 9px;
+    }
+    .nav-logo i, .nav-logo svg { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: var(--space-2); }
+    .nav-link, .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent;
+      color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .nav-link:hover, .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+    .nav-link.active { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: clamp(40px, 6vw, 72px) var(--gutter) clamp(24px, 3vw, 36px);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-bottom: var(--space-4);
+      padding: 0; border: none; background: none;
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(34px, 5vw, 62px); line-height: 1.0;
+      letter-spacing: -0.042em; color: var(--paper); margin-bottom: 0;
+      text-wrap: balance;
+    }
+    /* Was a gradient-clipped fill over the serif. The serif alone carries it. */
+    .hero h1 em {
+      font-family: var(--font-serif); font-style: italic; font-weight: 400;
+      font-size: 1.04em; letter-spacing: -0.02em; color: var(--text);
+    }
+    .hero-sub {
+      margin-top: var(--space-4); max-width: 58ch;
+      font-size: clamp(15px, 1.3vw, 17px); line-height: 1.65; color: var(--text-2);
+    }
+
+    /* ── Filters ────────────────────────────────────────────────────────── */
+    /* Resting pills are neutral; the active one takes its own category hue,
+       so the filter bar tells you what is on and what it means at once. */
+    .filter-bar {
+      display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-6);
+    }
+    .filter-pill {
+      padding: 7px 16px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent; color: var(--text-2);
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .filter-pill:hover { color: var(--paper); border-color: var(--line-hard); }
+    .filter-pill.active         { background: rgba(74,207,107,0.13); border-color: rgba(74,207,107,0.40); color: var(--c-gen); }
+    .filter-pill.f-phys.active  { background: rgba(91,147,255,0.13); border-color: rgba(91,147,255,0.40); color: #a6c4ff; }
+    .filter-pill.f-chem.active  { background: rgba(155,107,255,0.13); border-color: rgba(155,107,255,0.40); color: #c9b0ff; }
+    .filter-pill.f-tools.active { background: rgba(232,198,58,0.13); border-color: rgba(232,198,58,0.40); color: #f0dc86; }
+    .filter-pill.f-data.active  { background: rgba(238,117,68,0.13); border-color: rgba(238,117,68,0.40); color: #f7ab8a; }
+
+    /* ── Section headers ────────────────────────────────────────────────── */
+    .section-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin: var(--space-2) auto var(--space-5);
+      padding: 0 var(--gutter);
+    }
+    .section-label {
+      display: flex; align-items: center; gap: var(--space-2); white-space: nowrap;
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    /* Each section rule carries its own category tint from an inline style
+       in the markup, the same way the homepage tints its family rules. This
+       is the fallback for any section that has none. */
+    .section-line { flex: 1; height: 1px; background: var(--line); }
+
+    /* ── Cards ──────────────────────────────────────────────────────────── */
+    .resources-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-5);
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-8);
+    }
+    .res-card {
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
+      background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-lg);
+      transition: transform var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard),
+                  box-shadow var(--dur-med) var(--ease-standard);
+    }
+    /* Was translateY(-4px) scale(1.01) on a spring curve. A card that grows
+       on hover nudges everything beside it; lifting is enough. */
+    .res-card:hover { transform: translateY(-3px); border-color: var(--line-hard); box-shadow: var(--elevation-md); }
+    .res-card-header {
+      display: flex; align-items: flex-start; gap: var(--space-3);
+      padding: var(--space-5) var(--space-5) var(--space-4);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .res-icon {
+      width: 44px; height: 44px; flex-shrink: 0; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+      background: rgba(74,207,107,0.13); border: 1px solid rgba(74,207,107,0.30);
+    }
+    .res-meta { flex: 1; min-width: 0; }
+    .res-category {
+      margin-bottom: 4px; color: var(--c-gen);
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .res-title { font-family: var(--font-display); font-weight: 800; font-size: 16px; letter-spacing: -0.02em; color: var(--paper); line-height: 1.2; }
+    .res-desc { margin-top: 4px; font-size: 13px; line-height: 1.6; color: var(--text-2); }
+    .res-body { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: var(--space-4) var(--space-5); }
+    .res-footer { display: flex; gap: var(--space-2); flex-wrap: wrap; padding: var(--space-3) var(--space-5); border-top: 1px solid var(--line-soft); }
+
+    .res-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: var(--radius-xs);
+      border: 1px solid transparent; text-decoration: none;
+      font-family: var(--font-display); font-size: 12.5px; font-weight: 700;
+      transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+    }
+    .res-btn-primary { background: rgba(74,207,107,0.14); border-color: rgba(74,207,107,0.32); color: var(--c-gen); }
+    .res-btn-primary:hover { background: rgba(74,207,107,0.24); }
+    .res-btn-ghost { background: transparent; border-color: var(--line-hard); color: var(--text-2); }
+    .res-btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--paper); }
+
+    /* ── The four non-default categories ────────────────────────────────── */
+    /* Icons are flat tints now, not gradients. The rest of each block is the
+       same three places the hue is spent: header rule, hover border, label
+       and the primary button. */
+    .res-card.c-phys .res-card-header { border-bottom-color: rgba(91,147,255,0.14); }
+    .res-card.c-phys:hover            { border-color: rgba(91,147,255,0.42); }
+    .res-card.c-phys .res-icon        { background: rgba(91,147,255,0.14); border-color: rgba(91,147,255,0.30); }
+    .res-card.c-phys .res-category    { color: #a6c4ff; }
+    .res-card.c-phys .res-btn-primary { background: rgba(91,147,255,0.14); border-color: rgba(91,147,255,0.32); color: #a6c4ff; }
+    .res-card.c-phys .res-btn-primary:hover { background: rgba(91,147,255,0.24); }
+
+    .res-card.c-chem .res-card-header { border-bottom-color: rgba(155,107,255,0.14); }
+    .res-card.c-chem:hover            { border-color: rgba(155,107,255,0.42); }
+    .res-card.c-chem .res-icon        { background: rgba(155,107,255,0.14); border-color: rgba(155,107,255,0.30); }
+    .res-card.c-chem .res-category    { color: #c9b0ff; }
+    .res-card.c-chem .res-btn-primary { background: rgba(155,107,255,0.14); border-color: rgba(155,107,255,0.32); color: #c9b0ff; }
+    .res-card.c-chem .res-btn-primary:hover { background: rgba(155,107,255,0.24); }
+
+    .res-card.c-tools .res-card-header { border-bottom-color: rgba(232,198,58,0.14); }
+    .res-card.c-tools:hover            { border-color: rgba(232,198,58,0.42); }
+    .res-card.c-tools .res-icon        { background: rgba(232,198,58,0.14); border-color: rgba(232,198,58,0.30); }
+    .res-card.c-tools .res-category    { color: #f0dc86; }
+    .res-card.c-tools .res-btn-primary { background: rgba(232,198,58,0.14); border-color: rgba(232,198,58,0.32); color: #f0dc86; }
+    .res-card.c-tools .res-btn-primary:hover { background: rgba(232,198,58,0.24); }
+
+    .res-card.c-data .res-card-header { border-bottom-color: rgba(238,117,68,0.14); }
+    .res-card.c-data:hover            { border-color: rgba(238,117,68,0.42); }
+    .res-card.c-data .res-icon        { background: rgba(238,117,68,0.14); border-color: rgba(238,117,68,0.30); }
+    .res-card.c-data .res-category    { color: #f7ab8a; }
+    .res-card.c-data .res-btn-primary { background: rgba(238,117,68,0.14); border-color: rgba(238,117,68,0.32); color: #f7ab8a; }
+    .res-card.c-data .res-btn-primary:hover { background: rgba(238,117,68,0.24); }
+
+    /* ── Formula / constant / reaction tables ───────────────────────────── */
+    .formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .formula-item { padding: 8px 10px; border-radius: var(--radius-xs); background: var(--ink-800); border: 1px solid var(--line); }
+    .formula-item.full { grid-column: 1 / -1; }
+    .formula-name { margin-bottom: 3px; font-size: 10.5px; line-height: 1.35; color: var(--text-3); }
+    .formula-eq { font-family: var(--font-mono); font-size: 11.5px; line-height: 1.4; color: var(--text); }
+
+    .const-table { width: 100%; border-collapse: collapse; }
+    .const-table td { padding: 6px 0; font-size: 12.5px; border-bottom: 1px solid var(--line-soft); }
+    .const-table tr:last-child td { border-bottom: none; }
+    .const-table td:first-child { width: 50%; padding-right: 10px; color: var(--text-3); }
+    .const-table td:last-child { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); font-variant-numeric: tabular-nums; }
+
+    .echem-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 5px 0; border-bottom: 1px solid var(--line-soft); font-size: 12.5px;
+    }
+    .echem-row:last-child { border-bottom: none; }
+    .echem-half { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
+    .echem-val { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+    .grade-badge {
+      padding: 2px 7px; border-radius: var(--radius-full); white-space: nowrap;
+      background: transparent; border: 1px solid var(--line-hard); color: var(--text-2);
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.04em;
+    }
+
+    .res-card.wide { grid-column: 1 / -1; }
+
+    .org-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+    .org-item { padding: 8px 10px; border-radius: var(--radius-xs); background: var(--ink-800); border: 1px solid var(--line); }
+    .org-name { margin-bottom: 2px; font-size: 11.5px; font-weight: 700; color: #c9b0ff; }
+    .org-suffix { font-family: var(--font-mono); font-size: 10.5px; color: var(--c-chem); }
+    .org-group { margin-top: 2px; font-size: 10.5px; color: var(--text-3); }
+
+    /* ══ Periodic table ═══════════════════════════════════════════════════
+       Eleven group colours, and they stay. Alkali metals, halogens and noble
+       gases are a convention older than this site — recolouring them to
+       match a brand would make the table wrong, not on-brand.
+       ═══════════════════════════════════════════════════════════════════ */
+    .pt-preview { display: grid; grid-template-columns: repeat(18, 1fr); gap: 2px; width: 100%; }
+    .pt-cell {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0; border-radius: 3px; cursor: default; position: relative; min-width: 0; aspect-ratio: 1;
+    }
+    .pt-cell .pt-num { font-family: var(--font-mono); font-size: 5.5px; line-height: 1; margin-bottom: 2px; color: rgba(255,255,255,0.55); }
+    .pt-cell .pt-sym { font-family: var(--font-display); font-weight: 800; font-size: 10px; line-height: 1; color: #fff; }
+    .pt-cell.empty      { background: transparent; }
+    .pt-cell.alkali     { background: rgba(239,68,68,0.30);  border: 1px solid rgba(239,68,68,0.40); }
+    .pt-cell.alkaline   { background: rgba(251,146,60,0.30); border: 1px solid rgba(251,146,60,0.40); }
+    .pt-cell.transition { background: rgba(251,191,36,0.22); border: 1px solid rgba(251,191,36,0.32); }
+    .pt-cell.post       { background: rgba(163,230,53,0.22); border: 1px solid rgba(163,230,53,0.35); }
+    .pt-cell.metalloid  { background: rgba(20,184,166,0.22); border: 1px solid rgba(20,184,166,0.35); }
+    .pt-cell.nonmetal   { background: rgba(96,165,250,0.28); border: 1px solid rgba(96,165,250,0.40); }
+    .pt-cell.halogen    { background: rgba(96,165,250,0.20); border: 1px solid rgba(96,165,250,0.32); }
+    .pt-cell.noble      { background: rgba(168,85,247,0.28); border: 1px solid rgba(168,85,247,0.40); }
+    .pt-cell.lanthanide { background: rgba(236,72,153,0.22); border: 1px solid rgba(236,72,153,0.32); }
+    .pt-cell.actinide   { background: rgba(168,85,247,0.22); border: 1px solid rgba(168,85,247,0.32); }
+    .pt-cell.hydrogen   { background: rgba(56,189,248,0.28); border: 1px solid rgba(56,189,248,0.40); }
+    .pt-spacer { grid-column: span 18; height: 4px; }
+    .pt-legend { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+    .pt-leg-item { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--text-2); }
+    .pt-leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      margin-top: auto; border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: var(--space-6) var(--gutter);
+    }
+    .footer-copy { font-size: 13px; color: var(--text-3); }
+
+    .res-section { transition: opacity var(--dur-med) var(--ease-standard); }
+
+    @media (max-width: 640px) {
+      nav { min-height: 60px; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .res-card.wide { grid-column: auto; }
+      .formula-grid { grid-template-columns: 1fr; }
+      .formula-item.full { grid-column: auto; }
     }
   </style>
 <script defer src="../auth.js"></script>
@@ -219,7 +366,7 @@
       <span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;box-shadow:0 0 0 3px rgba(251,191,36,0.20);display:inline-block"></span>
       Interactive Tools
     </span>
-    <div class="section-line" style="background:linear-gradient(to right,rgba(251,191,36,0.18),var(--border) 60%,transparent)"></div>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(232,198,58,0.18),var(--border) 60%,transparent)"></div>
   </div>
 
   <div class="resources-grid">
@@ -257,7 +404,7 @@
       <span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,0.20);display:inline-block"></span>
       Physics Reference
     </span>
-    <div class="section-line" style="background:linear-gradient(to right,rgba(96,165,250,0.18),var(--border) 60%,transparent)"></div>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(91,147,255,0.18),var(--border) 60%,transparent)"></div>
   </div>
 
   <div class="resources-grid">
@@ -563,7 +710,7 @@
       <span style="width:6px;height:6px;border-radius:50%;background:#c084fc;box-shadow:0 0 0 3px rgba(192,132,252,0.20);display:inline-block"></span>
       Chemistry Reference
     </span>
-    <div class="section-line" style="background:linear-gradient(to right,rgba(192,132,252,0.18),var(--border) 60%,transparent)"></div>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(155,107,255,0.18),var(--border) 60%,transparent)"></div>
   </div>
 
   <div class="resources-grid">
@@ -834,7 +981,7 @@
       <span style="width:6px;height:6px;border-radius:50%;background:#fb923c;box-shadow:0 0 0 3px rgba(251,146,60,0.20);display:inline-block"></span>
       Data &amp; Constants
     </span>
-    <div class="section-line" style="background:linear-gradient(to right,rgba(251,146,60,0.18),var(--border) 60%,transparent)"></div>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(238,117,68,0.18),var(--border) 60%,transparent)"></div>
   </div>
 
   <div class="resources-grid">
