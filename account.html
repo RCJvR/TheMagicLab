@@ -14,102 +14,137 @@
 <script defer src="require-auth.js"></script>
   <script defer src="auth-modal.js"></script>
   <script defer src="payment.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
-    :root {
-      --bg:#080c1a; --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-      --border:rgba(255,255,255,0.085); --text:#e4e8f8; --text2:rgba(210,218,245,0.65);
-      --muted:rgba(210,218,245,0.38); --accent-1:#7c6dfa; --accent-2:#11d98f;
-      --fd:"Cabinet Grotesk",sans-serif; --fm:"JetBrains Mono",monospace;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; }
-    body {
-      font-family: var(--fd); font-size: 15px; background: var(--bg); color: var(--text);
-      min-height: 100vh; -webkit-font-smoothing: antialiased;
-      background-image:
-        radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
-    }
-    nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 52px; border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-weight: 900; font-size: 22px; letter-spacing: -0.03em;
-      background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      text-decoration: none;
-    }
-    .nav-right { display: flex; align-items: center; gap: 8px; }
-    .nav-pill {
-      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 99px;
-      border: 1px solid var(--border); background: var(--surface); color: var(--muted);
-      text-decoration: none; transition: all 140ms; cursor: pointer; font-family: var(--fd);
-    }
-    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+    /* ══════════════════════════════════════════════════════════════════════
+       Account.
 
-    main { max-width: 680px; margin: 0 auto; padding: 44px 24px 80px; }
-    h1 { font-weight: 900; font-size: 30px; letter-spacing: -0.03em; margin-bottom: 6px; }
-    .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+       Stylesheet only; markup untouched. The form controls (.ml-field,
+       .ml-input, .ml-label, .ml-grade-btn, .ml-msg) come from auth-modal.css,
+       which is already on the system, so they are not restated here.
+
+       This is a settings page: read once, changed rarely, and the things on
+       it are facts about you and your money. So it is set as a record —
+       label left, value right, hairline between — rather than as a series of
+       decorated panels. The only colour is payment status, which is the one
+       thing on the page you might need to spot in a hurry.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    body { font-size: 15px; }
+
+    /* ── Chrome ─────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+    }
+    /* Was a gradient-clipped wordmark. */
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .nav-right { display: flex; align-items: center; gap: var(--space-2); }
+    .nav-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent; color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+
+    /* ── Page ───────────────────────────────────────────────────────────── */
+    main { width: 100%; max-width: 720px; margin-inline: auto; padding: clamp(36px,5vw,56px) var(--gutter) var(--space-9); }
+    h1 {
+      font-family: var(--font-display); font-weight: 900; font-size: clamp(30px,3.6vw,40px);
+      letter-spacing: -0.04em; line-height: 1.05; color: var(--paper); margin-bottom: 8px;
+    }
+    .page-sub { font-size: 15px; color: var(--text-2); margin-bottom: var(--space-7); }
 
     .card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
-      padding: 28px; margin-bottom: 24px;
+      padding: var(--space-6); margin-bottom: var(--space-5);
+      background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md);
     }
     .card h2 {
-      font-weight: 800; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 20px;
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: var(--space-2);
+      margin-bottom: var(--space-5); padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--line-soft);
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper);
     }
 
-    /* Read-only detail rows */
+    /* ── Record rows ────────────────────────────────────────────────────── */
     .detail-row {
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
-      padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      padding: 12px 0; border-bottom: 1px solid var(--line-soft); font-size: 14.5px;
     }
     .detail-row:last-child { border-bottom: none; }
-    .detail-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
-    .detail-value { color: var(--text2); text-align: right; word-break: break-all; }
+    .detail-label {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .detail-value { text-align: right; word-break: break-all; color: var(--text); }
+
     .plan-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 700;
+      padding: 4px 11px; border-radius: var(--radius-2xs);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
     }
-    .plan-free { background: rgba(210,218,245,0.10); border: 1px solid rgba(210,218,245,0.20); color: var(--text2); }
-    .plan-paid { background: rgba(17,217,143,0.13); border: 1px solid rgba(17,217,143,0.35); color: #6ee7b7; }
-    .upgrade-link { font-size: 12px; color: #c4baff; text-decoration: none; font-weight: 700; margin-left: 10px; }
-    .upgrade-link:hover { text-decoration: underline; }
+    .plan-free { background: transparent; border: 1px solid var(--line-hard); color: var(--text-2); }
+    .plan-paid { background: rgba(74,207,127,0.12); border: 1px solid rgba(74,207,127,0.36); color: var(--good); }
+    .upgrade-link {
+      margin-left: 10px; font-size: 13px; font-weight: 700;
+      color: var(--paper); text-decoration: underline; text-underline-offset: 3px;
+    }
 
-    /* Payment history */
+    /* ── Payment history ────────────────────────────────────────────────── */
     .pay-row {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+      padding: 11px 0; border-bottom: 1px solid var(--line-soft); font-size: 13.5px;
     }
     .pay-row:last-child { border-bottom: none; }
-    .pay-date { font-family: var(--fm); font-size: 12px; color: var(--muted); }
-    .pay-amount { font-weight: 700; }
-    .pay-status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 6px; }
-    .pay-status.complete  { background: rgba(17,217,143,0.13);  color: #6ee7b7; }
-    .pay-status.pending   { background: rgba(245,166,35,0.13);  color: #fcd34d; }
-    .pay-status.cancelled { background: rgba(210,218,245,0.10); color: var(--muted); }
-    .pay-status.failed    { background: rgba(239,68,68,0.13);   color: #fca5a5; }
-    .pay-empty { color: var(--muted); font-size: 13px; }
-
-    .cancel-note { margin-top: 16px; font-size: 12px; color: var(--muted); line-height: 1.6; }
-    .cancel-note a { color: #a89ffc; text-decoration: none; }
-    .cancel-note a:hover { text-decoration: underline; }
-
-    .save-btn {
-      width: 100%; padding: 13px; border-radius: 12px; border: none; cursor: pointer;
-      background: linear-gradient(135deg, #5b50d6, #0fa874); color: #fff;
-      font-family: var(--fd); font-size: 14px; font-weight: 700; margin-top: 6px;
-      box-shadow: 0 4px 18px rgba(91,80,214,0.32); transition: all 160ms;
+    .pay-date { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+    .pay-amount { font-family: var(--font-mono); font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+    /* The one place colour earns its keep here: a failed payment should be
+       findable without reading the row. */
+    .pay-status {
+      padding: 3px 9px; border-radius: var(--radius-2xs);
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
     }
-    .save-btn:hover { box-shadow: 0 6px 26px rgba(91,80,214,0.48); transform: translateY(-1px); }
-    .save-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .pay-status.complete  { background: rgba(74,207,127,0.12); border: 1px solid rgba(74,207,127,0.32); color: var(--good); }
+    .pay-status.pending   { background: rgba(245,178,61,0.12); border: 1px solid rgba(245,178,61,0.32); color: var(--warn); }
+    .pay-status.cancelled { background: transparent;           border: 1px solid var(--line-hard);      color: var(--text-3); }
+    .pay-status.failed    { background: rgba(239,91,91,0.12);  border: 1px solid rgba(239,91,91,0.34);  color: #f5a3a3; }
+    .pay-empty { font-size: 13.5px; color: var(--text-3); }
+
+    .cancel-note { margin-top: var(--space-4); font-size: 13px; line-height: 1.65; color: var(--text-3); }
+    .cancel-note a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Save ───────────────────────────────────────────────────────────── */
+    .save-btn {
+      width: 100%; margin-top: var(--space-2); padding: 13px;
+      border: 1px solid var(--paper); border-radius: var(--radius-sm); cursor: pointer;
+      background: var(--paper); color: var(--ink-900);
+      font-family: var(--font-display); font-size: 14.5px; font-weight: 700;
+      transition: background var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
+    }
+    .save-btn:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+    .save-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
     @media (max-width: 600px) {
-      nav { padding: 14px 16px; }
-      main { padding: 24px 16px 60px; }
+      nav { min-height: 60px; }
+      .detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .detail-value { text-align: left; }
     }
   </style>
 </head>
