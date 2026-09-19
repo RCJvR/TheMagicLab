@@ -12,156 +12,293 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://unpkg.com/blockly/blockly.min.js"></script>
 <script src="../work-autosave.js"></script>
+<link rel="stylesheet" href="../assets/magic-lab.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080c1a;--bg2:#0d1226;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
-  --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
-  --accent:#f97316;--accent2:#ef4444;
-  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
-}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);-webkit-font-smoothing:antialiased;}
-body{display:flex;flex-direction:column;overflow:hidden;
-  background-image:
-    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(249,115,22,0.12) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(239,68,68,0.08) 0%,transparent 55%);
+/* ══════════════════════════════════════════════════════════════════════════
+   Robot Realm.
+
+   Stylesheet only; markup untouched.
+
+   Three-panel app shell — code on the left, arena in the middle, sensors on
+   the right — built to the same rules as Model Mage's shapes app: the chrome
+   goes quiet, the tool hue marks state and never a surface, and there is
+   exactly one solid button.
+
+   The Blockly block colours are deliberately NOT on this system. They are
+   the Scratch palette, which a student already knows; see the toolbox
+   definition further down. Only Blockly's chrome follows the site.
+   ══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent:      var(--t-robot);
+  --accent-soft: rgba(238,117,68,0.11);
+  --accent-mid:  rgba(238,117,68,0.20);
+  --accent-line: rgba(238,117,68,0.40);
+  /* Older names the rules below and a few inline styles still ask for. */
+  --bg: var(--ink-900); --bg2: var(--ink-850);
+  --surface: rgba(255,255,255,0.045);
+  --border: var(--line);
+  --muted: var(--text-3);
+  --fd: var(--font-display);
+  --fm: var(--font-mono);
 }
 
-/* ── Nav ── */
-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
-.nav-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
-.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(249,115,22,0.28),rgba(239,68,68,0.16));border:1px solid rgba(249,115,22,0.28);display:flex;align-items:center;justify-content:center;font-size:17px;}
-.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;background:linear-gradient(125deg,#fff 0%,#fdba74 50%,#fca5a5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-center{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
-.nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;flex-wrap:wrap;}
-.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
-.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
-.map-pill{border-color:rgba(249,115,22,0.35);background:rgba(249,115,22,0.08);color:#fdba74;}
-.map-pill.active{background:rgba(249,115,22,0.20);color:#fb923c;}
-.nav-filename-input{height:28px;padding:0 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fm);font-size:11px;width:120px;}
-.nav-filename-input:focus{outline:none;border-color:rgba(249,115,22,0.45);}
-.nav-filename-ext{font-size:11px;color:var(--muted);margin-right:2px;}
+html, body {
+  height: 100%; background: var(--ink-900); color: var(--text);
+  font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+}
+/* Was two radial glows. */
+body { display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Nav ────────────────────────────────────────────────────────────────── */
+nav {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-3);
+  flex-shrink: 0; padding: 10px var(--space-5);
+  background: var(--ink-850); border-bottom: 1px solid var(--line);
+}
+.nav-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; }
+/* Was a gradient tile. */
+.app-icon {
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+}
+/* Was gradient-clipped. */
+.app-title {
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(17px,2vw,24px);
+  letter-spacing: -0.035em; line-height: 1; color: var(--paper);
+}
+.nav-center { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.nav-right { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-2); min-width: 0; flex-wrap: wrap; }
+.nav-pill {
+  display: inline-flex; align-items: center; gap: 5px; line-height: 1;
+  padding: 7px 14px; border-radius: var(--radius-full);
+  border: 1px solid var(--line); background: transparent; color: var(--text-2);
+  font-family: var(--font-body); font-size: 11.5px; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              background var(--dur-fast) var(--ease-standard);
+}
+.nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.05); }
+/* The map pill reflects which arena is loaded, so it is state and takes the
+   hue. */
+.map-pill { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent); }
+.map-pill.active { background: var(--accent-mid); }
+.nav-filename-input {
+  height: 28px; width: 120px; padding: 0 11px; border-radius: var(--radius-full);
+  border: 1px solid var(--line-hard); background: var(--ink-750); color: var(--text);
+  font-family: var(--font-mono); font-size: 11px;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.nav-filename-input:focus { outline: none; border-color: var(--paper); }
+.nav-filename-ext { margin-right: 2px; font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
 
 @media (max-width: 640px) {
-  nav{grid-template-columns:1fr;justify-items:center;padding:8px 12px;gap:6px;}
-  .nav-left,.nav-center,.nav-right{justify-content:center;}
-  .app-title{font-size:16px;}
-  .nav-pill{font-size:10px;padding:5px 11px;}
-  .nav-filename-input{width:100px;}
+  nav { grid-template-columns: 1fr; justify-items: center; padding: 8px 12px; gap: 6px; }
+  .nav-left, .nav-center, .nav-right { justify-content: center; }
+  .app-title { font-size: 16px; }
+  .nav-pill { font-size: 10.5px; padding: 5px 11px; }
+  .nav-filename-input { width: 100px; }
 }
 
-/* ── Layout ── */
-.workspace{display:flex;flex:1;overflow:hidden;min-height:0;}
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.workspace { display: flex; flex: 1; overflow: hidden; min-height: 0; }
 
-/* ── Left panel: code editor ── */
-.panel-code{width:580px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--border);}
-.panel-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.panel-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
-.code-area{flex:1;padding:0;position:relative;overflow:hidden;}
-textarea.code-input{width:100%;height:100%;background:#060912;color:#e2e8f0;font-family:var(--fm);font-size:12.5px;line-height:1.7;padding:14px;border:none;outline:none;resize:none;tab-size:2;}
-textarea.code-input::placeholder{color:rgba(210,218,245,0.20);}
-
-/* ── Control bar ── */
-.ctrl-bar{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
-.btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 140ms;letter-spacing:-0.01em;}
-.btn:active{transform:scale(0.97);}
-.btn-run{background:linear-gradient(135deg,#c2410c,#991b1b);color:#fff;box-shadow:0 2px 10px rgba(194,65,12,0.4);}
-.btn-run:hover{box-shadow:0 4px 16px rgba(194,65,12,0.55);}
-.btn-step{background:rgba(249,115,22,0.15);color:#fdba74;border:1px solid rgba(249,115,22,0.30);}
-.btn-step:hover{background:rgba(249,115,22,0.25);}
-.btn-reset{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border);}
-.btn-reset:hover{background:rgba(255,255,255,0.10);color:var(--text);}
-.btn-speed{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border);font-size:11px;padding:6px 10px;}
-.btn-speed.active{background:rgba(249,115,22,0.15);color:#fdba74;border-color:rgba(249,115,22,0.30);}
-
-/* ── Log panel ── */
-.log-panel{flex-shrink:0;height:120px;border-top:1px solid var(--border);overflow-y:auto;background:#040710;padding:8px 12px;font-family:var(--fm);font-size:11px;line-height:1.6;color:rgba(210,218,245,0.55);}
-.log-panel .log-line{margin-bottom:1px;}
-.log-panel .log-err{color:#f87171;}
-.log-panel .log-ok{color:#34d399;}
-.log-panel .log-info{color:#94a3b8;}
-
-/* ── Centre: arena ── */
-.panel-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.arena-wrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:16px;}
-canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f20;cursor:crosshair;max-width:100%;max-height:100%;}
-
-/* ── Right panel: sensors + map selector ── */
-.panel-right{width:220px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid var(--border);overflow-y:auto;}
-.sensor-section{padding:12px 14px;border-bottom:1px solid var(--border);}
-.sensor-title{font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
-.sensor-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
-.sensor-label{font-size:11px;color:var(--muted);}
-.sensor-val{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--text);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:3px 8px;min-width:54px;text-align:right;}
-.sensor-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
-.sensor-bar{height:100%;border-radius:3px;transition:width 120ms;background:var(--accent);}
-
-.map-section{padding:12px 14px;}
-.map-btn{width:100%;text-align:left;font-family:var(--fd);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;margin-bottom:6px;transition:all 140ms;display:flex;align-items:center;gap:8px;}
-.map-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);}
-.map-btn.active{border-color:rgba(249,115,22,0.40);background:rgba(249,115,22,0.10);color:#fdba74;}
-.map-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-
-/* ── API Reference ── */
-.api-section{padding:12px 14px;border-top:1px solid var(--border);}
-.api-item{margin-bottom:10px;}
-.api-fn{font-family:var(--fm);font-size:10px;color:#fb923c;margin-bottom:2px;}
-.api-desc{font-size:10px;color:var(--muted);line-height:1.5;}
-
-/* ── Block/JS toggle ── */
-.mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
-.mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
-.mode-btn.active{background:rgba(249,115,22,0.20);color:#fdba74;}
-
-/* ── 2D/3D view slider ── */
-.view-slider{position:relative;display:flex;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.35);border-radius:99px;padding:2px;}
-.view-slider-thumb{position:absolute;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);background:rgba(99,102,241,0.45);border-radius:99px;transition:transform 220ms cubic-bezier(.4,0,.2,1);z-index:0;}
-.view-slider.is-3d .view-slider-thumb{transform:translateX(100%);}
-.view-slider-opt{position:relative;z-index:1;flex:1;border:none;background:transparent;cursor:pointer;font-family:var(--fd);font-size:11px;font-weight:700;padding:6px 14px;border-radius:99px;color:#a5b4fc;transition:color 150ms;line-height:1;white-space:nowrap;}
-.view-slider-opt.active{color:#fff;}
-#codeArea{display:none;}
-#blocklyDiv{flex:1;display:flex;flex-direction:column;}
-#blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
-
-/* ── Blockly toolbox contrast fixes (Blockly 13's real class names). Selected/hover
-     backgrounds are Blockly's own inline styles driven by each category's `colour` in
-     the toolbox definition below — matched to that category's block colour — so no
-     override is needed here beyond layout polish. ── */
-.blocklyToolboxCategory{border-radius:7px;margin:1px 5px;}
-.blocklyToolboxCategoryLabel{font-weight:700 !important;font-size:12.5px !important;}
-
-/* ── Status bar ── */
-.status-bar{flex-shrink:0;display:flex;align-items:center;gap:16px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#6b7280;flex-shrink:0;}
-.status-dot.running{background:#f97316;animation:pulse 1s ease-in-out infinite;}
-.status-dot.done{background:#34d399;}
-.status-dot.error{background:#f87171;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}.arena-wrap{position:relative;}
-canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1px solid var(--border);display:none;}
-
-/* ── Score overlay ── */
-.score-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:10;}
-.score-card{background:rgba(8,12,26,0.92);border:1px solid rgba(249,115,22,0.40);border-radius:20px;padding:28px 40px;text-align:center;pointer-events:all;backdrop-filter:blur(12px);}
-.score-card h2{font-size:22px;font-weight:900;letter-spacing:-0.02em;color:#fdba74;margin-bottom:4px;}
-.score-card .score-num{font-family:var(--fm);font-size:48px;font-weight:700;color:#f97316;line-height:1;margin:10px 0;}
-.score-card .score-detail{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.8;}
-.score-card button{font-family:var(--fd);font-size:13px;font-weight:700;padding:9px 22px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#c2410c,#991b1b);color:#fff;}
-
-/* ── Mobile: stack the three panels vertically ── */
-@media (max-width:768px){
-  .workspace{flex-direction:column;overflow-y:auto;}
-
-  .panel-code{width:100%;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border);}
-  .code-area{height:320px;flex:none;}
-  #blocklyDiv{height:320px;flex:none;}
-  .log-panel{height:90px;}
-
-  .panel-arena{width:100%;flex:none;flex-shrink:0;}
-  .arena-wrap{flex:none;padding:10px;aspect-ratio:1/1;max-height:80vw;}
-
-  .panel-right{width:100%;flex:none;flex-shrink:0;border-left:none;border-top:1px solid var(--border);overflow-y:visible;}
+/* ── Left: code ─────────────────────────────────────────────────────────── */
+.panel-code { width: 580px; flex-shrink: 0; display: flex; flex-direction: column; border-right: 1px solid var(--line); }
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  padding: 10px var(--space-4); border-bottom: 1px solid var(--line);
 }
+.panel-title {
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+}
+.code-area { flex: 1; padding: 0; position: relative; overflow: hidden; }
+textarea.code-input {
+  width: 100%; height: 100%; padding: var(--space-4);
+  background: var(--ink-900); color: var(--text);
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7;
+  border: none; outline: none; resize: none; tab-size: 2;
+}
+textarea.code-input::placeholder { color: var(--text-4); }
 
+/* ── Controls ───────────────────────────────────────────────────────────── */
+.ctrl-bar { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; padding: 10px var(--space-3); border-top: 1px solid var(--line); }
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 8px 15px; border-radius: var(--radius-xs); border: 1px solid transparent; cursor: pointer;
+  font-family: var(--font-body); font-size: 12px; font-weight: 700;
+  transition: background var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard);
+}
+.btn:active { transform: scale(0.97); }
+/* Run is the one thing you press to make something happen, so it is the one
+   solid button. Was a dark-red gradient with a coloured glow. */
+.btn-run { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.btn-run:hover { background: #fff; }
+.btn-step { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent); }
+.btn-step:hover { background: var(--accent-mid); }
+.btn-reset { background: transparent; border-color: var(--line); color: var(--text-2); }
+.btn-reset:hover { background: rgba(255,255,255,0.05); color: var(--paper); }
+.btn-speed { padding: 7px 11px; font-size: 11px; background: transparent; border-color: var(--line); color: var(--text-2); }
+.btn-speed:hover { color: var(--paper); border-color: var(--line-hard); }
+.btn-speed.active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent); }
+
+/* ── Log ────────────────────────────────────────────────────────────────── */
+.log-panel {
+  flex-shrink: 0; height: 120px; overflow-y: auto;
+  padding: var(--space-2) var(--space-3); border-top: 1px solid var(--line);
+  background: var(--ink-900);
+  font-family: var(--font-mono); font-size: 11px; line-height: 1.65; color: var(--text-2);
+}
+.log-panel .log-line { margin-bottom: 1px; }
+.log-panel .log-err  { color: #f5a3a3; }
+.log-panel .log-ok   { color: var(--good); }
+.log-panel .log-info { color: var(--text-3); }
+
+/* ── Centre: arena ──────────────────────────────────────────────────────── */
+.panel-arena { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.arena-wrap { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: var(--space-4); }
+canvas#arena {
+  max-width: 100%; max-height: 100%; cursor: crosshair;
+  border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--ink-850);
+}
+canvas#arena3d { position: absolute; inset: 0; margin: auto; display: none; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+
+/* ── Right: sensors & maps ──────────────────────────────────────────────── */
+.panel-right { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; border-left: 1px solid var(--line); overflow-y: auto; }
+.sensor-section { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--line); }
+.sensor-title {
+  margin-bottom: 10px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+}
+.sensor-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-2); }
+.sensor-label { font-size: 11.5px; color: var(--text-2); }
+.sensor-val {
+  min-width: 54px; text-align: right; padding: 3px 8px; border-radius: var(--radius-2xs);
+  background: var(--ink-800); border: 1px solid var(--line); color: var(--text);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums;
+}
+.sensor-bar-wrap { flex: 1; height: 5px; overflow: hidden; border-radius: 3px; background: rgba(255,255,255,0.06); }
+/* A live reading — state, so it takes the hue. */
+.sensor-bar { height: 100%; border-radius: 3px; background: var(--accent); transition: width 120ms linear; }
+
+.map-section { padding: var(--space-3) var(--space-4); }
+.map-btn {
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%; text-align: left; margin-bottom: 6px;
+  padding: 9px var(--space-3); border-radius: var(--radius-xs); cursor: pointer;
+  border: 1px solid var(--line); background: transparent; color: var(--text-2);
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  transition: color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              background var(--dur-fast) var(--ease-standard);
+}
+.map-btn:hover { background: rgba(255,255,255,0.05); color: var(--paper); }
+.map-btn.active { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent); }
+.map-dot { width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; }
+
+/* ── API reference ──────────────────────────────────────────────────────── */
+.api-section { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--line); }
+.api-item { margin-bottom: 10px; }
+.api-fn { margin-bottom: 2px; font-family: var(--font-mono); font-size: 10.5px; color: var(--accent); }
+.api-desc { font-size: 10.5px; line-height: 1.55; color: var(--text-3); }
+
+/* ── Blocks / JS toggle ─────────────────────────────────────────────────── */
+.mode-toggle { display: flex; gap: 3px; padding: 2px; border-radius: var(--radius-xs); background: transparent; border: 1px solid var(--line); }
+.mode-btn {
+  padding: 5px 11px; border-radius: var(--radius-2xs); border: none; cursor: pointer;
+  background: transparent; color: var(--text-2);
+  font-family: var(--font-body); font-size: 10.5px; font-weight: 700;
+  transition: color var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard);
+}
+.mode-btn:hover { color: var(--paper); }
+.mode-btn.active { background: var(--paper); color: var(--ink-900); }
+
+/* ── 2D / 3D slider ─────────────────────────────────────────────────────── */
+/* Was indigo — a hue that belongs to nothing on this site. It is a view
+   switch, not a subject, so it is neutral like every other selected pill. */
+.view-slider {
+  position: relative; display: flex; padding: 2px;
+  border-radius: var(--radius-full); background: transparent; border: 1px solid var(--line);
+}
+.view-slider-thumb {
+  position: absolute; top: 2px; left: 2px; z-index: 0;
+  width: calc(50% - 2px); height: calc(100% - 4px);
+  border-radius: var(--radius-full); background: var(--paper);
+  transition: transform var(--dur-med) var(--ease-standard);
+}
+.view-slider.is-3d .view-slider-thumb { transform: translateX(100%); }
+@media (prefers-reduced-motion: reduce) { .view-slider-thumb { transition: none; } }
+.view-slider-opt {
+  position: relative; z-index: 1; flex: 1; line-height: 1; white-space: nowrap;
+  padding: 7px 14px; border: none; background: transparent; cursor: pointer;
+  border-radius: var(--radius-full); color: var(--text-2);
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.view-slider-opt.active { color: var(--ink-900); }
+
+#codeArea { display: none; }
+#blocklyDiv { flex: 1; display: flex; flex-direction: column; }
+#blocklyDiv .blocklyMainBackground { fill: #08090b !important; }
+
+/* Blockly's own selected/hover backgrounds come from each category's colour
+   in the toolbox definition — which is the Scratch palette and stays that
+   way — so nothing here overrides them. Layout only. */
+.blocklyToolboxCategory { border-radius: 7px; margin: 1px 5px; }
+.blocklyToolboxCategoryLabel { font-weight: 700 !important; font-size: 12.5px !important; }
+
+/* ── Status bar ─────────────────────────────────────────────────────────── */
+.status-bar {
+  display: flex; align-items: center; gap: var(--space-4); flex-shrink: 0;
+  padding: 7px var(--space-4); border-top: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+}
+.status-dot { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: var(--text-4); }
+.status-dot.running { background: var(--accent); animation: pulse 1s ease-in-out infinite; }
+.status-dot.done    { background: var(--good); }
+.status-dot.error   { background: var(--crit); }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) { .status-dot.running { animation: none; } }
+
+/* ── Score ──────────────────────────────────────────────────────────────── */
+.score-overlay { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.score-card {
+  pointer-events: all; text-align: center;
+  padding: var(--space-6) var(--space-7); border-radius: var(--radius-lg);
+  background: rgba(8,9,11,0.92); border: 1px solid var(--line-hard);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.score-card h2 { margin-bottom: 4px; font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: var(--paper); }
+/* The score is the result — the one number worth the tool's hue. */
+.score-card .score-num { margin: 10px 0; font-family: var(--font-mono); font-size: 48px; font-weight: 700; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.score-card .score-detail { margin-bottom: var(--space-4); font-size: 12.5px; line-height: 1.8; color: var(--text-2); }
+.score-card button {
+  padding: 10px 22px; border-radius: var(--radius-xs); border: 1px solid var(--paper); cursor: pointer;
+  background: var(--paper); color: var(--ink-900);
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  transition: background var(--dur-fast) var(--ease-standard);
+}
+.score-card button:hover { background: #fff; }
+
+/* ── Mobile: stack the three panels ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .workspace { flex-direction: column; overflow-y: auto; }
+  .panel-code { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--line); }
+  .code-area { height: 320px; flex: none; }
+  #blocklyDiv { height: 320px; flex: none; }
+  .log-panel { height: 90px; }
+  .panel-arena { width: 100%; flex: none; flex-shrink: 0; }
+  .arena-wrap { flex: none; padding: 10px; aspect-ratio: 1/1; max-height: 80vw; }
+  .panel-right { width: 100%; flex: none; flex-shrink: 0; border-left: none; border-top: 1px solid var(--line); overflow-y: visible; }
+}
 </style>
 <link rel="stylesheet" href="../auth-modal.css">
 <script defer src="../auth.js"></script>
@@ -542,7 +679,7 @@ function draw() {
   ctx.clearRect(0, 0, W, H);
 
   // Floor
-  ctx.fillStyle = '#0a0f20';
+  ctx.fillStyle = '#0c0e11';
   ctx.fillRect(0, 0, W, H);
 
   // Grid dots
@@ -604,9 +741,9 @@ function draw() {
 
   // Walls
   walls.forEach(w => {
-    ctx.fillStyle = 'rgba(249,115,22,0.18)';
+    ctx.fillStyle = 'rgba(226,232,240,0.10)';
     ctx.fillRect(w.x, w.y, w.w, w.h);
-    ctx.strokeStyle = 'rgba(249,115,22,0.55)';
+    ctx.strokeStyle = 'rgba(226,232,240,0.32)';
     ctx.lineWidth = 1;
     ctx.strokeRect(w.x, w.y, w.w, w.h);
   });
@@ -628,9 +765,9 @@ function drawRobot() {
   // Body
   ctx.beginPath();
   ctx.arc(0, 0, R, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(249,115,22,0.20)';
+  ctx.fillStyle = 'rgba(238,117,68,0.20)';
   ctx.fill();
-  ctx.strokeStyle = '#f97316';
+  ctx.strokeStyle = '#ee7544';
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
@@ -638,7 +775,7 @@ function drawRobot() {
   ctx.beginPath();
   ctx.moveTo(0, 0);
   ctx.lineTo(R+4, 0);
-  ctx.strokeStyle = '#fb923c';
+  ctx.strokeStyle = '#f29a74';
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.beginPath();
@@ -1411,17 +1548,17 @@ function initBlockly() {
   const magicLabTheme = Blockly.Theme.defineTheme('magiclab-dark', {
     base: Blockly.Themes.Zelos,
     componentStyles: {
-      workspaceBackgroundColour: '#060912',
-      toolboxBackgroundColour: '#0d1226',
-      toolboxForegroundColour: '#dde1f0',
-      flyoutBackgroundColour: '#0d1226',
-      flyoutForegroundColour: '#dde1f0',
+      workspaceBackgroundColour: '#08090b',
+      toolboxBackgroundColour: '#0c0e11',
+      toolboxForegroundColour: '#e3e8ef',
+      flyoutBackgroundColour: '#0c0e11',
+      flyoutForegroundColour: '#e3e8ef',
       flyoutOpacity: 1,
-      scrollbarColour: '#3a4066',
+      scrollbarColour: '#3b3f46',
       scrollbarOpacity: 0.7,
-      insertionMarkerColour: '#f97316',
+      insertionMarkerColour: '#ee7544',
       insertionMarkerOpacity: 0.4,
-      cursorColour: '#f97316',
+      cursorColour: '#ee7544',
     },
   });
 
@@ -1707,7 +1844,7 @@ function build3DScene() {
   scene3.children.filter(c => c.userData.isZone).forEach(c => scene3.remove(c));
 
   // Walls
-  const wallMat = new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.6, metalness: 0.3, emissive: 0xf97316, emissiveIntensity: 0.08 });
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x585e68, roughness: 0.6, metalness: 0.3, emissive: 0x2a2e35, emissiveIntensity: 0.08 });
   walls.forEach(w => {
     const h3 = 4;
     const geo = new THREE.BoxGeometry(w.w*S3, h3, w.h*S3);
