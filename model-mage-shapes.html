@@ -20,202 +20,274 @@
   }
   </script>
 
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
-    :root {
-      --bg:      #080c1a;
-      --bg2:     #0d1226;
-      --surface: rgba(255,255,255,0.048);
-      --surface2:rgba(255,255,255,0.032);
-      --border:  rgba(255,255,255,0.085);
-      --border2: rgba(255,255,255,0.055);
-      --text:    #e4e8f8;
-      --text2:   rgba(210,218,245,0.65);
-      --muted:   rgba(210,218,245,0.38);
-      --amber:   #f59e0b;
-      --amber2:  #d97706;
-      --font:    "Cabinet Grotesk", system-ui, sans-serif;
-      --mono:    "JetBrains Mono", monospace;
-      --sb:      278px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; overflow: hidden; font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+    /* ══════════════════════════════════════════════════════════════════════
+       Model Mage — 3D Shapes.
 
-    /* ── Shell ── */
+       Stylesheet only; markup untouched.
+
+       An app shell, not a page: fixed header, fixed sidebar, a viewport that
+       owns the rest and never scrolls. The rules that follow from that are
+       different from a landing page's, and this is the first of the tool
+       apps to be migrated, so they are written to be reused:
+
+         · The chrome is quiet to the point of disappearing. The subject of
+           this screen is a 3D object, and every panel around it is in
+           service of that.
+         · The tool hue (--t-model) marks STATE and nothing else: the
+           selected shape, a live parameter value, an engaged toggle, the
+           thing currently recomputing. Never a surface, never a button fill.
+         · The six material swatches are the user's own colours and are the
+           only saturated thing in the sidebar.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* The tool's hue, and the tints derived from it. One place to change. */
+      --fam:      var(--t-model);
+      --fam-soft: rgba(23,196,192,0.10);
+      --fam-mid:  rgba(23,196,192,0.22);
+      --fam-line: rgba(23,196,192,0.42);
+      --sb: 278px;
+      /* Older names the markup still asks for. */
+      --border: var(--line);
+      --mono:   var(--font-mono);
+    }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: var(--font-body); background: var(--ink-900); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Shell ──────────────────────────────────────────────────────────── */
     #shell { display: flex; flex-direction: column; height: 100%; }
 
-    /* ── Header ── */
+    /* ── Header ─────────────────────────────────────────────────────────── */
     #hdr {
-      flex-shrink: 0; height: 48px;
-      display: flex; align-items: center; gap: 10px; padding: 0 16px;
-      background: var(--bg2); border-bottom: 1px solid var(--border);
+      flex-shrink: 0; height: 52px;
+      display: flex; align-items: center; gap: 10px; padding: 0 var(--space-4);
+      background: var(--ink-850); border-bottom: 1px solid var(--line);
     }
     .home-btn {
-      display: flex; align-items: center; gap: 5px; padding: 4px 10px;
-      border-radius: 7px; background: var(--surface); border: 1px solid var(--border);
-      color: var(--text2); font-size: 12px; font-weight: 600; text-decoration: none; transition: all 120ms;
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 11px; border-radius: var(--radius-2xs);
+      background: transparent; border: 1px solid var(--line); color: var(--text-2);
+      font-family: var(--font-body); font-size: 12.5px; font-weight: 700; text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
     }
-    .home-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+    .home-btn:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.05); }
     .hdr-icon { font-size: 18px; }
-    .hdr-name { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; }
+    .hdr-name { font-family: var(--font-display); font-weight: 800; font-size: 15.5px; letter-spacing: -0.025em; color: var(--paper); }
     .hdr-sep  { flex: 1; }
+    /* A running log of what the model is doing — reference text, so it is set
+       in the data face and steps back. */
     .hdr-hist {
-      font-family: var(--mono); font-size: 10px; color: var(--muted);
-      background: rgba(0,0,0,0.30); border: 1px solid var(--border2);
-      padding: 3px 10px; border-radius: 6px; max-width: 420px;
+      max-width: 420px; padding: 4px 11px; border-radius: var(--radius-2xs);
+      background: var(--ink-800); border: 1px solid var(--line);
+      font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .hdr-hist b { color: var(--amber); font-weight: 600; }
+    .hdr-hist b { color: var(--fam); font-weight: 500; }
 
-    /* ── Body ── */
+    /* ── Body ───────────────────────────────────────────────────────────── */
     #body { flex: 1; display: flex; overflow: hidden; }
 
-    /* ── Sidebar ── */
+    /* ── Sidebar ────────────────────────────────────────────────────────── */
     #sb {
       width: var(--sb); flex-shrink: 0; display: flex; flex-direction: column;
-      background: var(--bg2); border-right: 1px solid var(--border);
+      background: var(--ink-850); border-right: 1px solid var(--line);
       overflow-y: auto; overflow-x: hidden;
     }
     #sb::-webkit-scrollbar { width: 3px; }
-    #sb::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 99px; }
+    #sb::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: var(--radius-full); }
 
-    .sb-sec { padding: 13px 15px; border-bottom: 1px solid var(--border2); }
+    .sb-sec { padding: var(--space-3) 15px; border-bottom: 1px solid var(--line-soft); }
     .sec-lbl {
-      font-family: var(--mono); font-size: 9px; font-weight: 700;
-      letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+      margin-bottom: 10px;
+      font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
     }
 
-    /* Shape tabs */
+    /* ── Shape picker ───────────────────────────────────────────────────── */
+    /* Selected is the tool hue, not paper: this is state inside a tool, and a
+       solid white tile here would outshout the model. */
     .shape-tabs { display: flex; gap: 5px; }
     .shape-tab {
-      flex: 1; padding: 7px 3px; border-radius: 9px; text-align: center; line-height: 1.1;
-      border: 1px solid var(--border); background: var(--surface);
-      color: var(--text2); font-family: var(--font); font-size: 11px; font-weight: 700;
-      cursor: pointer; transition: all 120ms;
+      flex: 1; padding: 8px 3px; border-radius: var(--radius-xs); text-align: center; line-height: 1.1;
+      background: transparent; border: 1px solid var(--line); color: var(--text-2);
+      font-family: var(--font-body); font-size: 11px; font-weight: 700; cursor: pointer;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
     }
-    .shape-tab .si { font-size: 17px; display: block; margin-bottom: 3px; }
-    .shape-tab:hover { border-color: rgba(245,158,11,0.30); }
-    .shape-tab.active { border-color: rgba(245,158,11,0.50); background: rgba(245,158,11,0.10); color: #fbbf24; }
+    .shape-tab .si { display: block; margin-bottom: 3px; font-size: 17px; }
+    .shape-tab:hover { color: var(--paper); border-color: var(--line-hard); }
+    .shape-tab.active { border-color: var(--fam-line); background: var(--fam-soft); color: var(--fam); }
 
-    /* Param row */
-    .pr { margin-bottom: 12px; }
+    /* ── Parameters ─────────────────────────────────────────────────────── */
+    .pr { margin-bottom: var(--space-3); }
     .pr:last-child { margin-bottom: 0; }
     .pr-lbl {
       display: flex; justify-content: space-between; align-items: center;
-      font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px;
+      margin-bottom: 5px; font-size: 12.5px; font-weight: 600; color: var(--text-2);
     }
+    /* The live value — the one number that changes as you drag, so it is the
+       one thing in the row that carries the hue. */
     .pv {
-      font-family: var(--mono); font-size: 10px; font-weight: 600; color: #fbbf24;
-      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.18);
-      border-radius: 5px; padding: 1px 7px; min-width: 46px; text-align: right;
+      min-width: 46px; padding: 2px 8px; text-align: right; border-radius: var(--radius-2xs);
+      background: var(--fam-soft); border: 1px solid rgba(23,196,192,0.24); color: var(--fam);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; font-variant-numeric: tabular-nums;
     }
     input[type=range] {
-      width: 100%; height: 4px; border-radius: 99px; cursor: pointer;
+      width: 100%; height: 4px; border-radius: var(--radius-full); cursor: pointer;
       background: rgba(255,255,255,0.12); outline: none;
       -webkit-appearance: none; appearance: none;
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
-      background: var(--amber); border: 2px solid rgba(255,255,255,0.9); cursor: grab;
+      background: var(--fam); border: 2px solid var(--ink-850); cursor: grab;
     }
+    input[type=range]::-moz-range-thumb {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--fam); border: 2px solid var(--ink-850); cursor: grab;
+    }
+    input[type=range]:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
     input[type=range]:disabled { opacity: 0.35; pointer-events: none; }
 
-    /* Toggle */
+    /* ── Toggles ────────────────────────────────────────────────────────── */
     .tog-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .tog-lbl { font-size: 13px; font-weight: 600; color: var(--text2); }
+    .tog-lbl { font-size: 13px; font-weight: 600; color: var(--text-2); }
     .tog-sw  { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
-    .tog-sw input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .tog-tr  { position: absolute; inset: 0; border-radius: 99px; background: rgba(255,255,255,0.12); cursor: pointer; transition: background 180ms; }
-    .tog-tr::after { content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 180ms; }
-    .tog-sw input:checked + .tog-tr { background: var(--amber); }
+    .tog-sw input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .tog-tr {
+      position: absolute; inset: 0; border-radius: var(--radius-full); cursor: pointer;
+      background: rgba(255,255,255,0.12);
+      transition: background var(--dur-med) var(--ease-standard);
+    }
+    .tog-tr::after {
+      content: ''; position: absolute; left: 3px; top: 3px;
+      width: 14px; height: 14px; border-radius: 50%; background: #fff;
+      transition: transform var(--dur-med) var(--ease-standard);
+    }
+    .tog-sw input:checked + .tog-tr { background: var(--fam); }
     .tog-sw input:checked + .tog-tr::after { transform: translateX(16px); }
+    .tog-sw input:focus-visible + .tog-tr { outline: 2px solid var(--paper); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { .tog-tr, .tog-tr::after { transition: none; } }
     .tog-body { display: none; }
     .tog-body.open { display: block; }
 
-    /* Colour swatches */
+    /* ── Material swatches ──────────────────────────────────────────────── */
+    /* The user's own colours. Untouched, and the only saturated thing in the
+       sidebar — which is why the ring that marks the chosen one is white
+       rather than the tool hue: it has to read on all six. */
     .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
-    .swatch { width: 26px; height: 26px; border-radius: 7px; cursor: pointer; border: 2px solid transparent; transition: border-color 120ms; }
-    .swatch.active { border-color: rgba(255,255,255,0.75); }
-    .swatch:hover  { border-color: rgba(255,255,255,0.40); }
-
-    /* Sub-divider */
-    .div { height: 1px; background: var(--border2); margin: 11px 0; }
-
-    /* Footer buttons */
-    .sb-foot { margin-top: auto; padding: 13px 15px; display: flex; flex-direction: column; gap: 8px; }
-    .btn-exp {
-      width: 100%; padding: 11px; border-radius: 11px; border: none;
-      background: linear-gradient(135deg, var(--amber), var(--amber2));
-      color: #fff; font-family: var(--font); font-size: 14px; font-weight: 700;
-      cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.28);
-      transition: all 150ms; display: flex; align-items: center; justify-content: center; gap: 7px;
+    .swatch {
+      width: 26px; height: 26px; border-radius: var(--radius-xs); cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color var(--dur-fast) var(--ease-standard);
     }
-    .btn-exp:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(245,158,11,0.44); transform: translateY(-1px); }
-    .btn-exp:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+    .swatch:hover  { border-color: rgba(255,255,255,0.45); }
+    .swatch.active { border-color: var(--paper); }
 
-    /* ── Viewport ── */
+    .div { height: 1px; background: var(--line-soft); margin: 11px 0; }
+
+    /* ── Export ─────────────────────────────────────────────────────────── */
+    /* Was an amber gradient with a coloured glow. The one solid button on the
+       screen is paper, the same as every other primary on the site. */
+    .sb-foot { margin-top: auto; padding: var(--space-3) 15px; display: flex; flex-direction: column; gap: var(--space-2); }
+    .btn-exp {
+      width: 100%; padding: 12px; border-radius: var(--radius-sm); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900);
+      font-family: var(--font-display); font-size: 14px; font-weight: 700;
+      transition: background var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
+    }
+    .btn-exp:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+    .btn-exp:disabled { opacity: 0.40; cursor: not-allowed; transform: none; }
+
+    /* ── Viewport ───────────────────────────────────────────────────────── */
+    /* A graduated backdrop behind a 3D object is a studio sweep, not
+       decoration — it is what stops a grey model dissolving into a flat
+       ground. It stays, in neutral rather than navy. Mostly the canvas
+       covers it; it shows before the renderer starts. */
     #vp {
       flex: 1; position: relative; overflow: hidden;
-      background: radial-gradient(ellipse 80% 60% at 50% 40%, #0d1530, #080c1a);
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, #13161b, var(--ink-900));
     }
     #vp canvas { display: block; width: 100% !important; height: 100% !important; }
 
-    /* Loading overlay */
+    /* ── Loading ────────────────────────────────────────────────────────── */
     #loading {
       position: absolute; inset: 0; z-index: 30;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-      background: rgba(8,12,26,0.96); backdrop-filter: blur(8px);
+      background: rgba(8,9,11,0.96); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     }
     .spin {
-      width: 40px; height: 40px; border: 3px solid rgba(245,158,11,0.18);
-      border-top-color: var(--amber); border-radius: 50%; animation: rot 0.75s linear infinite;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.10); border-top-color: var(--fam);
+      animation: rot 0.75s linear infinite;
     }
     @keyframes rot { to { transform: rotate(360deg); } }
-    .load-title { font-weight: 800; font-size: 17px; letter-spacing: -0.02em; }
-    .load-sub   { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: center; max-width: 280px; line-height: 1.6; }
-    .load-bar-wrap { width: 220px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
-    .load-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber), var(--amber2)); border-radius: 99px; transition: width 400ms ease; animation: indeterminate 1.5s ease-in-out infinite; }
-    @keyframes indeterminate { 0%{transform:translateX(-100%)} 100%{transform:translateX(300%)} }
+    @media (prefers-reduced-motion: reduce) { .spin, .mini-spin { animation-duration: 2.4s; } }
+    .load-title { font-family: var(--font-display); font-weight: 800; font-size: 17px; letter-spacing: -0.025em; color: var(--paper); }
+    .load-sub { max-width: 280px; text-align: center; font-family: var(--font-mono); font-size: 11px; line-height: 1.6; color: var(--text-3); }
+    .load-bar-wrap { width: 220px; height: 4px; overflow: hidden; border-radius: var(--radius-full); background: rgba(255,255,255,0.08); }
+    /* Was an amber gradient. */
+    .load-bar {
+      height: 100%; width: 0%; border-radius: var(--radius-full); background: var(--fam);
+      transition: width 400ms var(--ease-standard);
+      animation: indeterminate 1.5s ease-in-out infinite;
+    }
+    @keyframes indeterminate { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
+    @media (prefers-reduced-motion: reduce) { .load-bar { animation: none; } }
 
-    /* Error overlay */
+    /* ── Error ──────────────────────────────────────────────────────────── */
     #err-overlay {
       position: absolute; inset: 0; z-index: 40;
-      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-      background: rgba(8,12,26,0.97); padding: 32px;
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4);
+      background: rgba(8,9,11,0.97); padding: var(--space-6);
     }
-    .err-icon  { font-size: 40px; }
-    .err-title { font-weight: 800; font-size: 18px; color: #fca5a5; }
-    .err-body  {
-      font-family: var(--mono); font-size: 11px; color: var(--text2); line-height: 1.8;
+    .err-icon { font-size: 40px; }
+    .err-title { font-family: var(--font-display); font-weight: 800; font-size: 18px; color: #f5a3a3; }
+    .err-body {
       max-width: 440px; text-align: center; white-space: pre-wrap;
-      background: rgba(0,0,0,0.40); border: 1px solid rgba(239,68,68,0.20);
-      border-radius: 10px; padding: 14px 18px;
+      padding: var(--space-4) var(--space-5); border-radius: var(--radius-sm);
+      background: var(--ink-800); border: 1px solid rgba(239,91,91,0.24);
+      font-family: var(--font-mono); font-size: 11.5px; line-height: 1.8; color: var(--text-2);
     }
 
-    /* Rebuild spinner (small, shown during geometry recompute) */
+    /* ── Viewport overlays ──────────────────────────────────────────────── */
+    /* "Rebuilding" is live state, so it takes the hue; the other two are
+       static reference and stay quiet. */
     #recompute-badge {
       position: absolute; top: 10px; right: 10px; z-index: 5;
-      font-family: var(--mono); font-size: 9px; color: #fbbf24;
-      background: rgba(0,0,0,0.55); border: 1px solid rgba(245,158,11,0.25);
-      padding: 3px 10px; border-radius: 5px; display: none; align-items: center; gap: 6px;
+      display: none; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: var(--radius-2xs);
+      background: rgba(8,9,11,0.72); border: 1px solid rgba(23,196,192,0.34); color: var(--fam);
+      font-family: var(--font-mono); font-size: 9.5px;
     }
-    .mini-spin { width: 9px; height: 9px; border: 1.5px solid rgba(245,158,11,0.30); border-top-color: var(--amber); border-radius: 50%; animation: rot 0.6s linear infinite; }
-
-    .vp-badge {
-      position: absolute; top: 10px; left: 10px; z-index: 5;
-      font-family: var(--mono); font-size: 9px; color: var(--muted);
-      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
-      padding: 3px 9px; border-radius: 5px; pointer-events: none;
+    .mini-spin {
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1.5px solid rgba(23,196,192,0.32); border-top-color: var(--fam);
+      animation: rot 0.6s linear infinite;
     }
-    .vp-hint {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 5;
-      font-family: var(--mono); font-size: 9px; color: var(--muted);
-      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
-      padding: 3px 10px; border-radius: 5px; pointer-events: none; white-space: nowrap;
+    .vp-badge, .vp-hint {
+      position: absolute; z-index: 5; pointer-events: none;
+      padding: 4px 10px; border-radius: var(--radius-2xs);
+      background: rgba(8,9,11,0.58); border: 1px solid var(--line);
+      font-family: var(--font-mono); font-size: 9.5px; color: var(--text-2);
     }
+    .vp-badge { top: 10px; left: 10px; }
+    .vp-hint  { bottom: 10px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
   </style>
 
 
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
+<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--text-3);border-top:1px solid var(--line);background:var(--ink-850);letter-spacing:0.04em;}</style>
 <link rel="stylesheet" href="auth-modal.css">
 <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
@@ -530,7 +602,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(vpEl.clientWidth, vpEl.clientHeight);
-renderer.setClearColor(0x080c1a);
+renderer.setClearColor(0x08090b);
 vpEl.appendChild(renderer.domElement);
 
 const scene  = new THREE.Scene();
@@ -557,8 +629,8 @@ const fillA = new THREE.DirectionalLight(0xa0b8ff, 0.4); fillA.position.set(-80,
 const fillB = new THREE.DirectionalLight(0xffd080, 0.25); fillB.position.set(0,-30,120); scene.add(fillB);
 
 // Grid
-scene.add(new THREE.GridHelper(600, 30, 0x1e2a50, 0x111828));
-scene.add(new THREE.GridHelper(600, 120, 0x0d1224, 0x0d1224));
+scene.add(new THREE.GridHelper(600, 30, 0x2b2f36, 0x191c21));
+scene.add(new THREE.GridHelper(600, 120, 0x141619, 0x141619));
 
 // Shadow floor
 const shadowFloor = new THREE.Mesh(new THREE.PlaneGeometry(600,600), new THREE.ShadowMaterial({ opacity:0.30 }));
@@ -573,7 +645,7 @@ modelGroup.rotation.x = -Math.PI / 2;
 scene.add(modelGroup);
 
 const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(P.colour), roughness: 0.28, metalness: 0.06 });
-const wireMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.05 });
+const wireMat = new THREE.MeshBasicMaterial({ color: 0x17c4c0, wireframe: true, transparent: true, opacity: 0.05 });
 
 var modelMesh = null;
 var wireMesh  = null;
