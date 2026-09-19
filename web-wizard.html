@@ -5,7 +5,7 @@
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0f1e">
+  <meta name="theme-color" content="#08090b">
   <title>Web Wizard — HTML &amp; CSS Editor</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230891b2'/%3E%3Cline x1='14' y1='52' x2='36' y2='28' stroke='%23e0f2fe' stroke-width='5' stroke-linecap='round'/%3E%3Crect x='33' y='22' width='12' height='12' rx='2' transform='rotate(45 33 22)' fill='%2367e8f9' stroke='%230e7490' stroke-width='2'/%3E%3Ccircle cx='52' cy='12' r='4' fill='%23fbbf24'/%3E%3Ccircle cx='58' cy='24' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='46' cy='6' r='2.5' fill='%236ee7b7'/%3E%3Cline x1='52' y1='6' x2='52' y2='18' stroke='%23fbbf24' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3Cline x1='46' y1='12' x2='58' y2='12' stroke='%23fbbf24' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="work-autosave.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
@@ -24,13 +25,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
 
+    /* The tool's own hue is --t-web, the sky blue it wears on the homepage.
+       It marks STATE here and nothing else — the running preview, an active
+       tab, a live control — never a surface and never a button fill. The
+       page's older names are aliased onto the system so the rules further
+       down keep resolving without being rewritten. */
     :root {
-      --bg:#080c1a; --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-      --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-      --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
-      --accent-1:#06c8e0; --accent-2:#11d98f;
-      --font-display:"Cabinet Grotesk",sans-serif; --font-body:"Cabinet Grotesk",sans-serif;
-      --font-mono:"JetBrains Mono",monospace;
+      --accent-1: var(--t-web);
+      --accent-2: var(--t-web);
+      --acc-soft: rgba(31,184,220,0.11);
+      --acc-mid:  rgba(31,184,220,0.20);
+      --acc-line: rgba(31,184,220,0.40);
+
+      --bg:       var(--ink-900);
+      --surface:  rgba(255,255,255,0.048);
+      --surface2: rgba(255,255,255,0.032);
+      --border:   var(--line);
+      --border2:  var(--line-soft);
+      --text2:    var(--text-2);
+      --muted:    var(--text-3);
     }
     body {
       font-family: var(--font-body); font-size: 14px;
@@ -43,11 +56,8 @@
     #appShell {
       height: 100%; width: 100%;
       display: flex; flex-direction: column; overflow: hidden;
-      background:
-        radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(6,182,212,0.14) 0%, transparent 60%),
-        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(124,58,237,0.12) 0%, transparent 55%),
-        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,166,35,0.08) 0%, transparent 60%),
-        var(--bg);
+      /* Was three radial glows. */
+      background: var(--ink-900);
     }
 
     /* ── Header ── */
@@ -71,15 +81,14 @@
     .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
     .app-icon {
       width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg,rgba(6,182,212,0.28),rgba(124,58,237,0.14)); border: 1px solid rgba(6,182,212,0.28);
+      background: var(--acc-soft); border: 1px solid var(--acc-line);
       display: flex; align-items: center; justify-content: center; font-size: 17px;
     }
 
     h1.app-title {
       font-family: var(--font-display); font-weight: 900; letter-spacing: -0.03em;
       font-size: clamp(17px, 2vw, 24px); line-height: 1;
-      background: linear-gradient(125deg, #fff 0%, #67e8f9 50%, #a78bfa 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--paper);
     }
 
     /* hdr-left/center/right defined above */
@@ -165,7 +174,7 @@
       font-family: var(--font-mono); font-size: 12px; line-height: 21px;
       width: 36px; flex-shrink: 0;
       background: rgba(0,0,0,0.28); border-right: 1px solid rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.20); text-align: right;
+      color: var(--text-3); text-align: right;
       padding: 12px 6px 12px 0; overflow: hidden; user-select: none;
     }
 
@@ -191,7 +200,7 @@
     .hl-tag   { color: #67e8f9; }
     .hl-attr  { color: #a5b4fc; }
     .hl-val   { color: #86efac; }
-    .hl-cmt   { color: #4b5563; font-style: italic; }
+    .hl-cmt   { color: #7d8794; font-style: italic; }
     .hl-ent   { color: #fbbf24; }
     /* CSS syntax */
     .hl-sel   { color: #67e8f9; }
@@ -215,10 +224,9 @@
     .act-btn:active { transform: translateY(0); }
 
     .btn-run {
-      background: linear-gradient(135deg, #0776a0, #6d28d9);
-      color: #fff; box-shadow: 0 3px 14px rgba(6,182,212,0.25);
+      background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900);
     }
-    .btn-run:hover { box-shadow: 0 5px 20px rgba(6,182,212,0.42); }
+    .btn-run:hover { background: #fff; }
 
     .btn-reset {
       background: var(--surface); border: 1px solid var(--border); color: var(--text2);
@@ -238,8 +246,8 @@
     .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
 
     .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; text-transform: uppercase; }
-    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
-    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .diff-b { background: rgba(74,207,127,0.14); color: var(--good); }
+    .diff-i { background: rgba(245,178,61,0.14); color: var(--warn); }
 
     /* ── Right column: preview ── */
     #rightCol { display: flex; flex-direction: column; min-height: 0; }
@@ -295,8 +303,8 @@
       flex-shrink: 0; display: flex; align-items: center; gap: 16px;
       padding: 4px 16px; background: rgba(0,0,0,0.25);
       border-top: 1px solid rgba(255,255,255,0.05);
-      font-family: "JetBrains Mono", monospace; font-size: 10px;
-      color: rgba(221,225,240,0.35);
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--text-3);
     }
     #statusBar span { display: flex; align-items: center; gap: 5px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
@@ -326,8 +334,7 @@
     }
     #webTutHdr h2 {
       font-family: var(--font-display); font-weight: 800; font-size: 17px;
-      background: linear-gradient(125deg, #fff 0%, #67e8f9 50%, #a78bfa 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--paper);
     }
     .wt-close {
       width: 30px; height: 30px; border-radius: 7px; background: rgba(255,255,255,0.07);
@@ -411,8 +418,8 @@
       transition: all 140ms;
     }
     #webTutPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
-    #webTutNext { background: linear-gradient(135deg,#0891b2,#7c3aed); color: #fff; }
-    #webTutFinish { background: linear-gradient(135deg,#059669,#10b981); color: #fff; }
+    #webTutNext { background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900); }
+    #webTutFinish { background: var(--good); border: 1px solid var(--good); color: var(--ink-900); }
 
     .hidden { display: none !important; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -473,9 +480,9 @@
         flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
         padding: 8px 4px 7px; border: none; background: none; cursor: pointer;
         font-family: "Cabinet Grotesk", sans-serif; font-size: 10.5px; font-weight: 700;
-        color: rgba(221,225,240,0.40); transition: color 130ms; position: relative;
+        color: var(--text-2); transition: color 130ms; position: relative;
       }
-      .mobile-tab-btn.active { color: #67e8f9; }
+      .mobile-tab-btn.active { color: var(--t-web); }
 
       .ml-contact-fab { bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
     }
@@ -508,7 +515,7 @@
     }
 </style>
 
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
+<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text-3, rgba(226,232,240,0.52));border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
 <div id="appShell">
@@ -613,8 +620,6 @@
       background: #4338ca;
     }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <div class="card">
@@ -622,7 +627,6 @@
     <p>Edit the code on the left to change this page.</p>
     <button class="btn">Click me!</button>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html></textarea>
       </div>
@@ -705,7 +709,7 @@
     <span><div class="status-dot"></div> Ready</span>
     <span id="lineColReadout">Ln 1, Col 1</span>
     <span id="charCount">0 chars</span>
-    <span style="margin-left:auto;color:rgba(221,225,240,0.20);">Web Wizard</span>
+    <span style="margin-left:auto;color:var(--text-3);">Web Wizard</span>
   </div>
 
   <!-- Mobile-only bottom nav: shown/hidden entirely by CSS media query -->
@@ -951,8 +955,6 @@ const examples = {
     }
     .btn:hover { background: #4338ca; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <div class="card">
@@ -960,7 +962,6 @@ const examples = {
     <p>Edit the code on the left to change this page.</p>
     <button class="btn">Click me!</button>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -991,8 +992,6 @@ const examples = {
       font-size: 0.85rem;
     }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <h1>Colour Boxes</h1>
@@ -1004,7 +1003,6 @@ const examples = {
     <div class="box" style="background: #3b82f6;">Blue</div>
     <div class="box" style="background: #8b5cf6;">Purple</div>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1050,8 +1048,6 @@ const examples = {
     h1 { font-size: 2.5rem; color: #1e293b; margin-bottom: 16px; }
     p  { color: #64748b; font-size: 1.1rem; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <nav>
@@ -1067,7 +1063,6 @@ const examples = {
     <h1>Welcome to my site</h1>
     <p>Built with HTML and CSS flexbox.</p>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1096,8 +1091,6 @@ const examples = {
     .card h2 { font-size: 1.1rem; color: #1e293b; margin-bottom: 8px; }
     .card p  { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <h1>Our Features</h1>
@@ -1133,7 +1126,6 @@ const examples = {
       <p>Available in multiple languages for users worldwide.</p>
     </div>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1173,15 +1165,12 @@ const examples = {
     }
     .label { color: #94a3b8; font-size: 0.85rem; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <h1>CSS Animation</h1>
   <div class="ball"></div>
   <div class="ground"></div>
   <p class="label">Animated with @keyframes + cubic-bezier easing</p>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1190,7 +1179,6 @@ const examples = {
 <head>
   <title>HTML Tags</title>
 
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body style="font-family: sans-serif; padding: 32px; background: #f8fafc;">
   <h1>This is an h1 heading</h1>
@@ -1204,7 +1192,6 @@ const examples = {
     <li>Unordered list item three</li>
   </ul>
   <a href="#">This is a link tag</a>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1240,8 +1227,6 @@ const examples = {
       margin-top: 24px;
     }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <h1>CSS adds style to HTML</h1>
@@ -1250,7 +1235,6 @@ const examples = {
     <h2>I am a card</h2>
     <p>Styled with a CSS class called .card</p>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1288,8 +1272,6 @@ const examples = {
     }
     .btn:hover { background: #4338ca; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <div class="card">
@@ -1297,7 +1279,6 @@ const examples = {
     <p>Edit the code on the left to change this page.</p>
     <button class="btn">Click me!</button>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 
@@ -1359,8 +1340,6 @@ const examples = {
     }
     .submit-btn:hover { background: #4f46e5; }
   </style>
-
-<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 </head>
 <body>
   <div class="form-card">
@@ -1380,7 +1359,6 @@ const examples = {
     </div>
     <button class="submit-btn">Send message</button>
   </div>
-  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>`,
 };
