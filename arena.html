@@ -10,111 +10,172 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="auth-modal.css">
+<link rel="stylesheet" href="assets/magic-lab.css">
 <style>
-:root{
-  --bg:#080c1a; --bg2:#0d1226;
-  --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-  --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-  --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
-  --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{
-  font-family:var(--font);background:var(--bg);color:var(--text);
-  min-height:100vh;-webkit-font-smoothing:antialiased;
-  background-image:
-    radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
-  display:flex;flex-direction:column;
-}
-.wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;max-width:520px;margin:0 auto;width:100%;}
-.hidden{display:none !important;}
-.logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;margin-bottom:24px;display:inline-block;}
-.arena-hero{margin-bottom:28px;}
-.arena-hero-icon{font-size:44px;margin-bottom:10px;}
-.arena-hero-title{
-  font-weight:900;font-size:30px;letter-spacing:-0.03em;margin-bottom:8px;
-  background:linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.arena-hero-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:400px;margin:0 auto;}
+/* ══════════════════════════════════════════════════════════════════════════
+   The Arena — live quiz player.
 
-/* ── Status bar: arena name, rank, last-5 history ── */
-.arena-statusbar{
-  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  margin-bottom:18px;padding:10px 14px;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);border-radius:12px;flex-wrap:wrap;
-}
-.arena-statusbar-title{font-weight:800;font-size:13px;color:var(--text2);text-align:left;flex:1;min-width:110px;}
-.arena-rank-badge{
-  font-family:var(--mono);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;
-  background:rgba(124,109,250,0.16);border:1px solid rgba(124,109,250,0.30);color:#c4baff;white-space:nowrap;
-}
-.arena-history{display:flex;gap:4px;align-items:center;}
-.arena-history-dot{
-  width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;flex-shrink:0;
-}
-.arena-history-dot.correct{background:rgba(17,217,143,0.20);color:#6ee7b7;border:1px solid rgba(17,217,143,0.35);}
-.arena-history-dot.wrong{background:rgba(248,113,113,0.16);color:#fca5a5;border:1px solid rgba(248,113,113,0.30);}
+   Stylesheet only; every class and id the game script drives is untouched.
 
-/* ── Join form ── */
-.form-field{width:100%;margin-bottom:14px;text-align:left;}
-.form-label{display:block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.form-input{
-  width:100%;padding:14px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-  border-radius:12px;color:var(--text);font-family:var(--font);font-size:18px;outline:none;transition:border-color 150ms;
-  text-align:center;
+   This is the one screen on the site that is not a document. It is held in a
+   hand, in a classroom, and read in about two seconds under time pressure —
+   so it keeps big targets and high contrast, and takes less of the editorial
+   restraint the rest of the site uses.
+
+   The four answer tiles keep four distinct hues on purpose. Colour is paired
+   with a shape on every tile, which is the right way to do it: a learner who
+   cannot separate red from green still has the shape. That is a working
+   accessibility feature, not decoration, so it survives intact.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --surface2: rgba(255,255,255,0.03);
+  --border2:  var(--line-soft);
+  --text2:    var(--text-2);
+  --font:     var(--font-display);
+  --mono:     var(--font-mono);
 }
-.form-input:focus{border-color:rgba(124,109,250,0.5);}
-#codeInput{font-family:var(--mono);letter-spacing:0.15em;text-transform:uppercase;font-size:26px;}
-.btn-primary{
-  width:100%;padding:14px;border-radius:14px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#7c6dfa,#11d98f);color:#0a0e1c;
-  font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:-0.01em;
-  box-shadow:0 6px 24px rgba(124,109,250,0.30);transition:all 160ms;margin-top:6px;
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font); background: var(--ink-900); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
 }
-.btn-primary:hover{transform:translateY(-1px);}
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.msg{margin-top:10px;font-size:13px;font-weight:600;}
-.msg.err{color:#fca5a5;}
 
-/* ── Waiting ── */
-.wait-icon{font-size:48px;margin-bottom:16px;}
-.wait-title{font-weight:900;font-size:24px;letter-spacing:-0.02em;margin-bottom:8px;}
-.wait-sub{font-size:14px;color:var(--muted);}
-
-/* ── Question ── */
-.q-progress{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:16px;}
-.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;}
-.opt-tile{
-  border:none;border-radius:16px;padding:24px 14px;font-size:15px;font-weight:800;color:#fff;
-  min-height:100px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  transition:transform 120ms,opacity 150ms;
+.wrap {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  width: 100%; max-width: 520px; margin: 0 auto; padding: 24px;
 }
-.opt-tile:active{transform:scale(0.96);}
-.opt-tile.c0{background:linear-gradient(135deg,#dc2626,#ef4444);}
-.opt-tile.c1{background:linear-gradient(135deg,#2563eb,#3b82f6);}
-.opt-tile.c2{background:linear-gradient(135deg,#ca8a04,#eab308);}
-.opt-tile.c3{background:linear-gradient(135deg,#16a34a,#22c55e);}
-.opt-tile.dimmed{opacity:0.3;}
-.opt-shape{font-size:26px;}
+.hidden { display: none !important; }
 
-.locked-icon{font-size:48px;margin-bottom:14px;}
+.logo {
+  display: inline-block; margin-bottom: var(--space-6);
+  font-family: var(--font-display); font-weight: 800; font-size: 16px;
+  letter-spacing: -0.025em; color: var(--text-3); text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.logo:hover { color: var(--paper); }
 
-/* ── Result ── */
-.result-icon{font-size:56px;margin-bottom:14px;}
-.result-title{font-weight:900;font-size:26px;letter-spacing:-0.02em;margin-bottom:6px;}
-.result-title.correct{color:#6ee7b7;}
-.result-title.wrong{color:#fca5a5;}
-.result-points{font-family:var(--mono);font-size:15px;color:var(--muted);margin-bottom:20px;}
-.result-rank{font-size:13px;color:var(--muted);}
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+.arena-hero { margin-bottom: var(--space-6); }
+.arena-hero-icon { font-size: 40px; margin-bottom: 12px; }
+/* Was a gradient-clipped fill. */
+.arena-hero-title {
+  font-family: var(--font-display); font-weight: 900; font-size: 30px;
+  letter-spacing: -0.035em; color: var(--paper); margin-bottom: var(--space-2);
+}
+.arena-hero-sub { font-size: 14.5px; line-height: 1.6; color: var(--text-2); max-width: 400px; margin: 0 auto; }
 
-/* ── Ended ── */
-.final-icon{font-size:52px;margin-bottom:12px;}
-.final-rank{font-weight:900;font-size:32px;letter-spacing:-0.03em;margin-bottom:6px;}
-.final-score{font-family:var(--mono);font-size:15px;color:var(--muted);margin-bottom:24px;}
+/* ── Status bar: arena name, rank, last-5 history ─────────────────────── */
+.arena-statusbar {
+  width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: var(--space-4); padding: 10px 14px;
+  background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.arena-statusbar-title { flex: 1; min-width: 110px; text-align: left; font-weight: 700; font-size: 13px; color: var(--text-2); }
+.arena-rank-badge {
+  font-family: var(--mono); font-size: 11px; font-weight: 500; white-space: nowrap;
+  padding: 4px 10px; border-radius: var(--radius-full);
+  background: rgba(91,156,255,0.14); border: 1px solid rgba(91,156,255,0.32); color: var(--fam-computing);
+  font-variant-numeric: tabular-nums;
+}
+.arena-history { display: flex; gap: 4px; align-items: center; }
+.arena-history-dot {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+}
+/* Right and wrong keep the semantic pair, separate from the tile hues. */
+.arena-history-dot.correct { background: rgba(74,207,127,0.18); color: var(--good); border: 1px solid rgba(74,207,127,0.38); }
+.arena-history-dot.wrong   { background: rgba(239,91,91,0.16);  color: #f5a3a3;    border: 1px solid rgba(239,91,91,0.34); }
+
+/* ── Join form ────────────────────────────────────────────────────────── */
+.form-field { width: 100%; margin-bottom: var(--space-4); text-align: left; }
+.form-label {
+  display: block; margin-bottom: 7px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+}
+.form-input {
+  width: 100%; padding: 14px 16px; text-align: center;
+  background: var(--ink-850); border: 1px solid var(--line-hard);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--font); font-size: 18px; outline: none;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.form-input::placeholder { color: var(--text-4); }
+.form-input:focus { border-color: var(--paper); }
+/* The room code is the thing being typed under pressure — give it room. */
+#codeInput {
+  font-family: var(--mono); font-size: 28px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+.btn-primary {
+  width: 100%; margin-top: var(--space-2); padding: 15px;
+  border: 1px solid var(--paper); border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--paper); color: var(--ink-900);
+  font-family: var(--font); font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  transition: background var(--dur-fast) var(--ease-standard),
+              transform var(--dur-fast) var(--ease-standard);
+}
+.btn-primary:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.msg { margin-top: 10px; font-size: 13px; font-weight: 600; }
+.msg.err { color: #f5a3a3; }
+
+/* ── Waiting ──────────────────────────────────────────────────────────── */
+.wait-icon { font-size: 44px; margin-bottom: var(--space-4); }
+.wait-title { font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: -0.03em; margin-bottom: var(--space-2); color: var(--paper); }
+.wait-sub { font-size: 14.5px; color: var(--text-2); }
+
+/* ── Question ─────────────────────────────────────────────────────────── */
+.q-progress {
+  font-family: var(--mono); font-size: 12px; color: var(--text-3);
+  margin-bottom: var(--space-4); font-variant-numeric: tabular-nums;
+}
+.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.opt-tile {
+  min-height: 104px; padding: 24px 14px;
+  border: none; border-radius: var(--radius-md); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font); font-size: 15.5px; font-weight: 800; color: #fff;
+  transition: transform 120ms, opacity 150ms, filter 150ms;
+}
+.opt-tile:hover { filter: brightness(1.08); }
+.opt-tile:active { transform: scale(0.96); }
+/* Flat fills rather than gradients, and every one measured against its own
+   text colour rather than eyeballed. All four failed WCAG AA before this:
+   red 3.76, blue 3.68, yellow 1.92, green 2.28 against white, where 15.5px
+   bold needs 4.5. They now read 4.59, 4.70, 9.45 and 4.70 — the amber by
+   taking ink text, since white on yellow cannot get there at any usable
+   lightness. Hues stay far enough apart to tell at a glance, and every tile
+   still carries its shape as well. */
+.opt-tile.c0 { background: #d24141; }
+.opt-tile.c1 { background: #2f6fe0; }
+.opt-tile.c2 { background: #e5a828; color: var(--ink-900); }
+.opt-tile.c3 { background: #19853e; }
+.opt-tile.dimmed { opacity: 0.28; }
+.opt-shape { font-size: 26px; }
+
+.locked-icon { font-size: 44px; margin-bottom: var(--space-3); }
+
+/* ── Result ───────────────────────────────────────────────────────────── */
+.result-icon { font-size: 52px; margin-bottom: var(--space-3); }
+.result-title { font-family: var(--font-display); font-weight: 900; font-size: 26px; letter-spacing: -0.03em; margin-bottom: 6px; color: var(--paper); }
+.result-title.correct { color: var(--good); }
+.result-title.wrong   { color: #f5a3a3; }
+.result-points { font-family: var(--mono); font-size: 15px; color: var(--text-2); margin-bottom: var(--space-5); font-variant-numeric: tabular-nums; }
+.result-rank { font-size: 13px; color: var(--text-3); }
+
+/* ── Ended ────────────────────────────────────────────────────────────── */
+.final-icon { font-size: 48px; margin-bottom: var(--space-3); }
+.final-rank { font-family: var(--font-display); font-weight: 900; font-size: 32px; letter-spacing: -0.035em; margin-bottom: 6px; color: var(--paper); }
+.final-score { font-family: var(--mono); font-size: 15px; color: var(--text-2); margin-bottom: var(--space-5); font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
