@@ -6,157 +6,181 @@
   <title>Terms of Use — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
-    :root {
-      --bg:#080c1a; --bg2:#0d1226;
-      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-      --text:#e4e8f8; --text2:rgba(210,218,245,0.70); --muted:rgba(210,218,245,0.38);
-      --accent:#7c6dfa; --emerald:#11d98f; --amber:#f5a623;
-      --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font); font-size: 16px; line-height: 1.7;
-      background: var(--bg); color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      background-image:
-        radial-gradient(ellipse 60% 35% at 5% 3%, rgba(124,109,250,0.10) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 30% at 96% 6%, rgba(17,217,143,0.07) 0%, transparent 55%);
-    }
+    /* ══════════════════════════════════════════════════════════════════════
+       Terms and Privacy — shared stylesheet.
 
+       These are the only pages on the site read paragraph by paragraph, so
+       everything here serves prose: a measure that stays near 70 characters,
+       generous leading, and a heading hierarchy you can navigate by scanning.
+
+       They wear no tool colour. A legal page that is brand-coloured reads as
+       marketing, and these need to read as the plain record of what you
+       agreed to. The only colour is the three semantic callouts, which mean
+       something: information, warning, and a right you have.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    html { scroll-behavior: smooth; }
+
+    /* ── Chrome ─────────────────────────────────────────────────────────── */
     nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 52px; border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 10;
-      background: rgba(8,12,26,0.92); backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
     }
     .nav-logo {
-      font-weight: 900; font-size: 20px; letter-spacing: -0.03em; text-decoration: none;
-      background: linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper);
     }
+    .nav-logo img { width: 26px; height: 26px; }
     .nav-back {
-      font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none;
-      padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border);
-      background: var(--surface); transition: all 140ms;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent; color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
     }
-    .nav-back:hover { color: var(--text); background: rgba(255,255,255,0.09); }
+    .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
 
-    .page-wrap {
-      max-width: 780px; margin: 0 auto; padding: 56px 40px 100px;
-    }
+    /* ── Page ───────────────────────────────────────────────────────────── */
+    /* 74ch rather than a pixel width, so the measure holds if the body size
+       ever changes. */
+    .page-wrap { width: 100%; max-width: 74ch; margin-inline: auto; padding: clamp(40px,6vw,72px) var(--gutter) var(--space-9); }
 
-    .page-header { margin-bottom: 48px; }
+    .page-header { padding-bottom: var(--space-6); margin-bottom: var(--space-7); border-bottom: 1px solid var(--line); }
     .page-tag {
-      font-family: var(--mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 14px; display: block;
+      display: inline-block; margin-bottom: var(--space-4);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
     }
     .page-title {
-      font-weight: 900; font-size: clamp(28px, 4vw, 42px);
-      letter-spacing: -0.03em; line-height: 1.1; color: #fff;
-      margin-bottom: 14px;
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(34px, 4.6vw, 54px); line-height: 1.0;
+      letter-spacing: -0.042em; color: var(--paper); margin-bottom: var(--space-4);
+      text-wrap: balance;
     }
-    .page-meta {
-      font-family: var(--mono); font-size: 11px; color: var(--muted);
-      display: flex; gap: 18px; flex-wrap: wrap;
-    }
+    .page-subtitle { font-size: 17px; line-height: 1.65; color: var(--text-2); }
+    .page-meta { margin-top: var(--space-4); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text-3); }
 
-    /* Table of contents */
+    /* ── Contents ───────────────────────────────────────────────────────── */
     .toc {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 16px; padding: 22px 26px; margin-bottom: 48px;
+      padding: var(--space-5); margin-bottom: var(--space-8);
+      background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md);
     }
     .toc-title {
-      font-family: var(--mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.10em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 14px;
+      margin-bottom: var(--space-4);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
     }
-    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .toc-list { list-style: none; display: grid; gap: 2px; }
     .toc-list a {
-      font-size: 14px; color: var(--text2); text-decoration: none;
-      display: flex; align-items: center; gap: 8px; transition: color 130ms;
+      display: flex; gap: var(--space-3); align-items: baseline;
+      padding: 7px 9px; margin-inline: -9px; border-radius: var(--radius-2xs);
+      font-size: 14.5px; color: var(--text-2); text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
     }
-    .toc-list a:hover { color: #c4baff; }
-    .toc-num {
-      font-family: var(--mono); font-size: 10px; color: var(--muted);
-      min-width: 22px;
-    }
+    .toc-list a:hover { background: rgba(255,255,255,0.05); color: var(--paper); }
+    .toc-num { flex-shrink: 0; font-family: var(--font-mono); font-size: 12px; color: var(--text-4); font-variant-numeric: tabular-nums; }
 
-    /* Content */
-    .doc-section { margin-bottom: 44px; }
-    .doc-section:first-child { margin-top: 0; }
+    /* ── Body ───────────────────────────────────────────────────────────── */
+    .doc-section { margin-bottom: var(--space-8); scroll-margin-top: 88px; }
 
     h2 {
-      font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
-      color: #fff; margin-bottom: 14px;
-      display: flex; align-items: center; gap: 10px;
-      padding-top: 8px;
+      display: flex; align-items: baseline; gap: var(--space-3);
+      margin-bottom: var(--space-4); padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--line-soft);
+      font-family: var(--font-display); font-weight: 800; font-size: 23px;
+      letter-spacing: -0.03em; line-height: 1.2; color: var(--paper);
     }
+    /* The section number is reference apparatus, not a heading — it is how a
+       reader cites a clause, so it is set in the data face and steps back. */
     h2 .sec-num {
-      font-family: var(--mono); font-size: 11px; font-weight: 600;
-      color: var(--accent); background: rgba(124,109,250,0.12);
-      border: 1px solid rgba(124,109,250,0.25);
-      padding: 2px 9px; border-radius: 99px; flex-shrink: 0;
+      flex-shrink: 0; font-family: var(--font-mono); font-weight: 500; font-size: 13px;
+      color: var(--text-4); font-variant-numeric: tabular-nums;
     }
-
     h3 {
-      font-weight: 700; font-size: 15px; letter-spacing: -0.01em;
-      color: rgba(210,218,245,0.90); margin: 20px 0 8px;
+      margin: var(--space-6) 0 var(--space-3);
+      font-family: var(--font-display); font-weight: 700; font-size: 17px;
+      letter-spacing: -0.02em; color: var(--paper);
     }
+    /* The measure is set on the prose itself, not the wrapper: a ch on the
+       wrapper resolves against the root font, not the paragraph font, and the
+       lines were running to about 82 characters. Constraining here keeps the
+       text near 70 while the wrapper stays wide enough for the tables. */
+    p, li { max-width: 68ch; }
+    p { margin-bottom: var(--space-4); font-size: 15.5px; line-height: 1.75; color: var(--text-2); }
+    p strong, li strong { color: var(--paper); font-weight: 700; }
+    ul, ol { margin: 0 0 var(--space-4) var(--space-5); }
+    li { margin-bottom: 9px; font-size: 15.5px; line-height: 1.75; color: var(--text-2); }
+    a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { text-decoration-thickness: 2px; }
 
-    p { font-size: 15px; color: var(--text2); margin-bottom: 14px; line-height: 1.8; }
-    p strong { color: var(--text); font-weight: 700; }
-
-    ul, ol {
-      padding-left: 22px; margin-bottom: 16px;
-    }
-    li { font-size: 15px; color: var(--text2); margin-bottom: 7px; line-height: 1.7; }
-    li strong { color: var(--text); }
-
+    /* ── Callouts: the only colour on the page ──────────────────────────── */
     .callout {
-      border-radius: 12px; padding: 14px 18px; margin: 20px 0;
-      font-size: 14px; line-height: 1.7;
+      margin: var(--space-5) 0; padding: var(--space-4) var(--space-5);
+      border: 1px solid var(--line); border-left-width: 3px;
+      border-radius: var(--radius-2xs);
+      background: var(--ink-850);
+      font-size: 15px; line-height: 1.7; color: var(--text-2);
     }
-    .callout-info { background: rgba(124,109,250,0.10); border: 1px solid rgba(124,109,250,0.22); color: #c4baff; }
-    .callout-warn { background: rgba(245,166,35,0.10); border: 1px solid rgba(245,166,35,0.25); color: #fcd34d; }
-    .callout-green { background: rgba(17,217,143,0.09); border: 1px solid rgba(17,217,143,0.22); color: #6ee7b7; }
-    .callout strong { font-weight: 700; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout-info  { border-left-color: var(--fam-computing); }
+    .callout-warn  { border-left-color: var(--warn); }
+    .callout-green { border-left-color: var(--good); }
 
-    .divider {
-      border: none; border-top: 1px solid var(--border2); margin: 40px 0;
-    }
-
+    /* ── Contact block ──────────────────────────────────────────────────── */
     .contact-box {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 14px; padding: 22px 26px;
-      display: flex; flex-direction: column; gap: 8px;
+      margin-top: var(--space-6); padding: var(--space-5);
+      background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md);
     }
-    .contact-row { display: flex; gap: 12px; align-items: baseline; }
+    .contact-row { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); padding: 7px 0; }
     .contact-label {
-      font-family: var(--mono); font-size: 11px; font-weight: 600;
-      letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
-      min-width: 80px; flex-shrink: 0;
+      min-width: 130px; flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
     }
-    .contact-val { font-size: 14px; color: var(--text2); }
-    .contact-val a { color: #c4baff; text-decoration: none; }
-    .contact-val a:hover { text-decoration: underline; }
+    .contact-val { font-size: 14.5px; color: var(--text); }
 
-    footer {
-      border-top: 1px solid var(--border2); padding: 24px 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px;
+    /* ── Your rights (privacy only) ─────────────────────────────────────── */
+    .rights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-3); margin: var(--space-5) 0; }
+    .right-card { padding: var(--space-4); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-2xs); }
+    .right-title { font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--paper); margin-bottom: 5px; }
+    .right-desc { font-size: 13.5px; line-height: 1.6; color: var(--text-2); }
+
+    /* ── Data table (privacy only) ──────────────────────────────────────── */
+    .data-table { width: 100%; border-collapse: collapse; margin: var(--space-5) 0; font-size: 14px; }
+    .data-table th, .data-table td { padding: 11px 13px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .data-table th {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+      border-bottom-color: var(--line-hard);
     }
-    .footer-copy { font-size: 12px; color: var(--muted); }
-    .footer-links { display: flex; gap: 16px; }
-    .footer-link { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 130ms; }
-    .footer-link:hover { color: var(--text2); }
+    .data-table td { color: var(--text-2); line-height: 1.6; }
+
+    /* ── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      margin-top: auto; padding: var(--space-7) var(--gutter);
+      border-top: 1px solid var(--line);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4);
+    }
+    .footer-copy { font-size: 13px; color: var(--text-3); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+    .footer-link { font-size: 13px; color: var(--text-3); text-decoration: none; transition: color var(--dur-fast) var(--ease-standard); }
+    .footer-link:hover { color: var(--paper); }
 
     @media (max-width: 640px) {
-      nav { padding: 14px 20px; }
-      .page-wrap { padding: 36px 20px 72px; }
-      footer { padding: 20px; }
+      nav { min-height: 60px; }
+      .contact-label { min-width: 0; }
+      .data-table { display: block; overflow-x: auto; }
     }
   </style>
 </head>
