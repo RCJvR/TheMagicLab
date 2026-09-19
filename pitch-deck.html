@@ -22,13 +22,23 @@
   --amber:#d97706; --rose:#be123c; --cyan:#0891b2; --accent:#5b21b6;
   --fs:'Sora',sans-serif; --fd:'Fraunces',serif; --fm:'JetBrains Mono',monospace;
 }
+
+/* --muted was one value doing two jobs. On the ink slides it measures
+   6.01 : 1, which is fine; on the cream and paper slides it measures
+   3.09 : 1, which is not. Same token, two grounds, and it only worked on
+   one — so the light slides get their own. 5.71 : 1 on cream. */
+.slide--cream, .slide--paper, .slide--paper2 {
+  --muted:#5f6178;
+  /* The status hues are set for the ink slides. On cream the roadmap
+     labels measured 3.55 (done) and 3.00 (next), so the light slides take
+     deeper versions of the same two colours. */
+  --emerald:#04704f; --amber:#9a5504; --cyan:#066a83;
+}
 html,body{height:100%;background:#050611;overflow:hidden;}
 body{font-family:var(--fs);-webkit-font-smoothing:antialiased;}
 
 /* ═══ STAGE / SCALING RIG ═══ */
 #viewport{position:fixed;inset:0;background:
-    radial-gradient(ellipse 60% 50% at 15% 10%,rgba(67,56,202,0.16),transparent 60%),
-    radial-gradient(ellipse 50% 40% at 85% 90%,rgba(5,150,105,0.10),transparent 60%),
     #050611;
   overflow:hidden;}
 #deck{position:absolute;top:0;left:0;width:1280px;height:720px;transform-origin:top left;}
@@ -49,9 +59,9 @@ body{font-family:var(--fs);-webkit-font-smoothing:antialiased;}
 @media (prefers-reduced-motion:reduce){.slide-inner{transition:none;}}
 
 /* orbs for ink slides */
+/* The two floating orbs are gone; this base rule is kept
+   harmless in case markup elsewhere still names one. */
 .orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;}
-.orb-a{width:460px;height:460px;top:-140px;left:-120px;background:radial-gradient(ellipse,rgba(99,58,237,0.22),transparent 70%);}
-.orb-b{width:380px;height:380px;bottom:-160px;right:-100px;background:radial-gradient(ellipse,rgba(5,150,105,0.16),transparent 70%);}
 .grid-bg{position:absolute;inset:0;background-image:
     linear-gradient(rgba(232,234,248,0.045) 1px,transparent 1px),
     linear-gradient(90deg,rgba(232,234,248,0.045) 1px,transparent 1px);
@@ -60,7 +70,7 @@ body{font-family:var(--fs);-webkit-font-smoothing:antialiased;}
 /* ═══ TYPE / SHARED ═══ */
 .tag{font-family:var(--fm);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
   display:flex;align-items:center;gap:10px;color:var(--muted);margin-bottom:14px;}
-.slide--ink .tag,.slide--ink2 .tag{color:rgba(232,234,248,0.45);}
+.slide--ink .tag,.slide--ink2 .tag{color:rgba(232,234,248,0.62);}
 .tag-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
 .tag-line{flex:0 0 40px;height:1px;background:currentColor;opacity:0.35;}
 
@@ -70,12 +80,11 @@ p.lead{font-family:var(--fs);font-size:16px;line-height:1.65;color:var(--text2);
 .slide--ink p.lead,.slide--ink2 p.lead{color:rgba(232,234,248,0.60);}
 
 em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
-  background:linear-gradient(120deg,var(--indigo) 0%,var(--violet) 50%,var(--emerald) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  color:var(--violet);}
 
 .pagefoot{position:absolute;left:76px;bottom:34px;font-family:var(--fm);font-size:10px;letter-spacing:0.10em;
-  text-transform:uppercase;color:var(--muted);opacity:0.6;}
-.slide--ink .pagefoot,.slide--ink2 .pagefoot{color:rgba(232,234,248,0.30);}
+  text-transform:uppercase;color:var(--muted);}
+.slide--ink .pagefoot,.slide--ink2 .pagefoot{color:rgba(232,234,248,0.62);}
 
 /* ═══ SLIDE 1 — COVER ═══ */
 .cover{align-items:flex-start;justify-content:center;position:relative;}
@@ -90,7 +99,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
   margin-top:26px;line-height:1.65;position:relative;z-index:1;}
 .cover-foot{position:absolute;left:76px;bottom:48px;display:flex;align-items:center;gap:18px;z-index:1;}
 .cover-logo{font-family:var(--fd);font-weight:700;font-size:19px;color:#fff;display:flex;align-items:center;gap:8px;}
-.cover-contact{font-family:var(--fm);font-size:12px;color:rgba(232,234,248,0.40);}
+.cover-contact{font-family:var(--fm);font-size:12px;color:rgba(232,234,248,0.62);}
 
 /* ═══ SLIDE 2 — PROBLEM ═══ */
 .problem-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;}
@@ -98,7 +107,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 .pstat-num{font-family:var(--fd);font-weight:900;font-size:36px;letter-spacing:-0.03em;line-height:1;margin-bottom:10px;}
 .pstat-num.red{color:#f87171;} .pstat-num.amber{color:#fbbf24;} .pstat-num.violet{color:#c4baff;}
 .pstat-label{font-size:13.5px;font-weight:600;color:#e8eaf8;line-height:1.4;margin-bottom:6px;}
-.pstat-sub{font-size:12px;color:rgba(232,234,248,0.45);line-height:1.55;}
+.pstat-sub{font-size:12px;color:rgba(232,234,248,0.62);line-height:1.55;}
 .callout{margin-top:20px;background:rgba(99,58,237,0.12);border:1px solid rgba(99,58,237,0.25);
   border-radius:16px;padding:22px 26px;max-width:1100px;}
 .callout-q{font-family:var(--fd);font-weight:700;font-style:italic;font-size:18px;color:#c4baff;line-height:1.4;margin-bottom:8px;}
@@ -112,8 +121,12 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 .proof-div{width:1px;background:rgba(26,28,48,0.14);margin:0 40px;}
 
 /* ═══ TOOL GRID SLIDES ═══ */
-.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:16px;margin-top:26px;flex:1;}
-.tcard{background:var(--cream);border:1px solid rgba(26,28,48,0.10);border-radius:16px;padding:20px 22px;
+/* Rows were pinned at exactly two. With a thirteenth tool the second
+   slide needs three, and the extra one landed in an unsized implicit row
+   that ran into the page footer. Letting the rows divide the available
+   height instead means the grid fits whatever it is given. */
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:16px;margin-top:26px;flex:1;min-height:0;}
+.tcard{background:var(--cream);border:1px solid rgba(26,28,48,0.10);border-radius:16px;padding:15px 18px;
   display:flex;flex-direction:column;position:relative;}
 .tcard-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:12px;}
 .tcard-grade{font-family:var(--fm);font-size:9.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
@@ -141,13 +154,13 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 .lvl{background:rgba(255,255,255,0.05);border:1px solid rgba(232,234,248,0.10);border-radius:12px;
   padding:12px 16px;min-width:118px;}
 .lvl.cur{background:rgba(124,109,250,0.16);border-color:rgba(124,109,250,0.35);}
-.lvl-n{font-family:var(--fm);font-size:9px;color:rgba(232,234,248,0.35);margin-bottom:4px;}
+.lvl-n{font-family:var(--fm);font-size:9px;color:rgba(232,234,248,0.62);margin-bottom:4px;}
 .lvl-name{font-size:13px;font-weight:700;color:#e8eaf8;}
 .lvl-xp{font-family:var(--fm);font-size:10px;color:rgba(196,186,255,0.65);margin-top:3px;}
 .principles{display:flex;gap:16px;margin-top:30px;}
 .principle{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;}
 .principle-t{font-size:13px;font-weight:700;color:rgba(232,234,248,0.85);margin-bottom:6px;}
-.principle-d{font-size:12px;color:rgba(232,234,248,0.48);line-height:1.55;}
+.principle-d{font-size:12px;color:rgba(232,234,248,0.62);line-height:1.55;}
 
 /* ═══ VISION QUOTE ═══ */
 .vision{align-items:center;justify-content:center;text-align:center;}
@@ -155,7 +168,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
   color:#fff;max-width:880px;margin:0 auto;}
 .vision-q strong{font-weight:700;font-style:normal;color:#c4baff;}
 .vision-a{font-family:var(--fm);font-size:12px;letter-spacing:0.09em;text-transform:uppercase;
-  color:rgba(232,234,248,0.35);margin-top:26px;}
+  color:rgba(232,234,248,0.62);margin-top:26px;}
 
 /* ═══ ROADMAP ═══ */
 .road{display:flex;flex-direction:column;gap:0;margin-top:22px;flex:1;justify-content:center;}
@@ -185,7 +198,13 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 .plan.feat .plan-feat-row{color:rgba(232,234,248,0.72);}
 .check{width:15px;height:15px;border-radius:4px;background:rgba(5,150,105,0.15);color:var(--emerald);
   display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
-.plan.feat .check{background:rgba(196,186,255,0.15);color:#c4baff;}
+.plan.feat /* The pricing slide puts one dark plan card on a light slide, and .check
+   appears in both. One value cannot serve both grounds: the original light
+   violet was right on the dark card and 1.40 : 1 on the light one, and
+   swapping it to the accent just moved the failure to the dark card.
+   So: accent by default, light violet inside the dark card. */
+.check{background:rgba(196,186,255,0.15);color:var(--accent);}
+.plan.feat .check{color:#c4baff;}
 
 /* ═══ CTA ═══ */
 .cta{align-items:center;justify-content:center;text-align:center;}
@@ -194,8 +213,8 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 .cta-pills{display:flex;gap:14px;justify-content:center;margin-top:34px;}
 .pill{padding:13px 28px;border-radius:99px;font-size:14px;font-weight:700;font-family:var(--fs);}
 .pill.solid{background:#fff;color:var(--ink);}
-.pill.outline{border:1.5px solid rgba(232,234,248,0.30);color:#e8eaf8;}
-.cta-contact{margin-top:28px;font-family:var(--fm);font-size:12px;color:rgba(232,234,248,0.42);}
+.pill.outline{border:1.5px solid rgba(232,234,248,0.62);color:#e8eaf8;}
+.cta-contact{margin-top:28px;font-family:var(--fm);font-size:12px;color:rgba(232,234,248,0.62);}
 
 /* ═══ CONTROLS (outside scaled stage) ═══ */
 #controls{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:center;
@@ -214,7 +233,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 #fsbtn{position:fixed;top:18px;right:18px;z-index:50;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);
   color:#e8eaf8;padding:8px 14px;border-radius:9px;font-family:var(--fm);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:7px;}
 #fsbtn:hover{background:rgba(255,255,255,0.16);}
-#hint{position:fixed;left:18px;bottom:66px;z-index:50;font-family:var(--fm);font-size:10px;color:rgba(232,234,248,0.30);
+#hint{position:fixed;left:18px;bottom:66px;z-index:50;font-family:var(--fm);font-size:10px;color:rgba(232,234,248,0.62);
   letter-spacing:0.04em;pointer-events:none;transition:opacity .6s ease;}
 </style>
 
@@ -225,11 +244,10 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 
     <!-- 1 · COVER -->
     <section class="slide slide--ink active" data-idx="0">
-      <div class="grid-bg"></div><div class="orb orb-a"></div><div class="orb orb-b"></div>
-      <div class="slide-inner cover">
+      <div class="grid-bg"></div><div class="slide-inner cover">
         <div class="cover-eyebrow"><span class="dot"></span>South African EdTech · CAPS &amp; IEB Aligned</div>
         <h1>STEM education<br>that <em class="accent">actually works</em></h1>
-        <p class="sub">Twelve browser-based learning tools for Grade&nbsp;8–12 — plus Robotics from Grade 4. No installs. No IT tickets. Just learning.</p>
+        <p class="sub">Thirteen browser-based learning tools for Grade&nbsp;8–12 — plus Robotics from Grade 4. No installs. No IT tickets. Just learning.</p>
         <div class="cover-foot">
           <div class="cover-logo"><img src="assets/logo-prism.svg" alt="" style="width:28px;height:28px;">The Magic Lab</div>
           <div class="cover-contact">themagiclab.co.za&nbsp;&nbsp;·&nbsp;&nbsp;ruhan@themagiclab.co.za</div>
@@ -271,7 +289,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
     <section class="slide slide--paper" data-idx="2">
       <div class="slide-inner">
         <div class="tag"><span class="tag-dot"></span>The platform<span class="tag-line"></span></div>
-        <h2 class="h">Twelve tools. One platform. One login.</h2>
+        <h2 class="h">Thirteen tools. One platform. One login.</h2>
         <p class="lead">Each tool is purpose-built for the South African curriculum — Grade 8–12, plus Robotics from Grade 4. Students use the same account across all of them.</p>
         <div class="proof-row">
           <div class="proof"><div class="proof-num">12</div><div class="proof-label">Learning tools live</div></div>
@@ -339,6 +357,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
           <div class="tcard"><div class="tcard-icon" style="background:rgba(126,34,206,0.12);border:1px solid rgba(126,34,206,0.20);"><i data-lucide="sparkles" style="width:20px;height:20px;"></i></div>
             <div class="tcard-grade">Grade 8–12</div><div class="tcard-name">AI Oracle</div>
             <div class="tcard-desc">How AI works, prompt craft, and ethical AI use — for every learner.</div></div>
+              <div class="tcard"><div class="tcard-icon" style="background:rgba(237,92,134,0.12);border:1px solid rgba(237,92,134,0.22);"><i data-lucide="hourglass" style="width:20px;height:20px;"></i></div> <div class="tcard-grade">Every grade</div><div class="tcard-name">Time Turner</div> <div class="tcard-desc">Weekly time-management planner &mdash; plan the week, then print it.</div></div>
         </div>
       </div>
       <div class="pagefoot">The Magic Lab · Pitch Deck</div>
@@ -450,7 +469,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
             <div class="rdesc">Math Gr 8–12, Science Sage, Robot Realm, AI Oracle. Teacher dashboard with class management shipped.</div></div></div>
           <div class="rstep"><div class="rphase active">► Now</div>
             <div><div class="rtitle">New tools &amp; pilot preparation</div>
-            <div class="rdesc">The Tech Tower, Spike Spellcaster, and Drawing Druid launched — 12 tools live. Assignments, homework reminders, and The Arena (live Kahoot-style quiz battles) shipped. Preparing for pilot.</div></div></div>
+            <div class="rdesc">The Tech Tower, Spike Spellcaster, and Drawing Druid launched — 13 tools live. Assignments, homework reminders, and The Arena (live Kahoot-style quiz battles) shipped. Preparing for pilot.</div></div></div>
           <div class="rstep"><div class="rphase next">→ Next</div>
             <div><div class="rtitle">School pilot &amp; teacher tools</div>
             <div class="rdesc">Pilot with partner schools. Parent progress reports, class leaderboards.</div></div></div>
@@ -474,7 +493,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
             <div class="plan-price">R45<span class="plan-period"> / learner / term</span></div>
             <div class="plan-desc">Curriculum-aligned coverage with teacher oversight — free for the first 30 days.</div>
             <div class="plan-feats">
-              <div class="plan-feat-row"><span class="check">✓</span>All 12 learning tools</div>
+              <div class="plan-feat-row"><span class="check">✓</span>All 13 learning tools</div>
               <div class="plan-feat-row"><span class="check">✓</span>AI Oracle literacy course</div>
               <div class="plan-feat-row"><span class="check">✓</span>Teacher dashboard</div>
               <div class="plan-feat-row"><span class="check">✓</span>Assignment setting</div>
@@ -497,8 +516,7 @@ em.accent{font-style:italic;font-weight:300;font-family:var(--fd);
 
     <!-- 12 · CTA -->
     <section class="slide slide--ink" data-idx="11">
-      <div class="grid-bg"></div><div class="orb orb-a"></div><div class="orb orb-b"></div>
-      <div class="slide-inner cta">
+      <div class="grid-bg"></div><div class="slide-inner cta">
         <h2 class="h">Ready to bring The Magic Lab to your school?</h2>
         <p class="sub2">Whether you're a teacher curious about a trial, a principal considering a pilot, or an investor looking at EdTech — let's have a conversation.</p>
         <div class="cta-pills">
