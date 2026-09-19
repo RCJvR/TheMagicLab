@@ -5,155 +5,237 @@
 <script>document.documentElement.style.visibility='hidden';</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080c1a">
+<meta name="theme-color" content="#08090b">
 <title>Theme Weaver — The Magic Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="auth-modal.css">
+<link rel="stylesheet" href="assets/magic-lab.css">
 <style>
-:root{
-  --bg:#080c1a; --bg2:#0d1226;
-  --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-  --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-  --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
-  --accent-1:#7c6dfa; --accent-2:#11d98f; --accent-3:#f5a623;
-  --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
-body{
-  font-family:var(--font);background:var(--bg);color:var(--text);
-  min-height:100vh;-webkit-font-smoothing:antialiased;
-  background-image:
-    radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
-}
-a{color:inherit;}
-.hidden{display:none !important;}
+/* ══════════════════════════════════════════════════════════════════════════
+   Theme Weaver.
 
-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;flex-wrap:wrap;gap:10px;}
-.nav-logo{font-weight:900;font-size:16px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;}
-.nav-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.nav-pill{
-  display:inline-flex;align-items:center;padding:8px 14px;border-radius:99px;
-  background:var(--surface);border:1px solid var(--border);color:var(--text2);
-  font-size:12.5px;font-weight:700;text-decoration:none;cursor:pointer;transition:all 150ms;
-}
-.nav-pill:hover{background:var(--surface2);border-color:var(--border2);}
+   Stylesheet only; the markup is untouched apart from six icon colours.
 
-main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
+   A staff planning tool, so it is built as a working document: one column,
+   generous line height, hairlines instead of boxes wherever a box was only
+   there to look like a card. The only saturated colour on the page is the
+   due-date badge, because "overdue" is the single fact here worth finding
+   without reading.
+   ══════════════════════════════════════════════════════════════════════ */
 
-.hero{text-align:center;margin:28px auto 36px;max-width:560px;}
-.hero-icon{font-size:38px;margin-bottom:10px;}
-.hero-title{
-  font-weight:900;font-size:32px;letter-spacing:-0.03em;margin-bottom:10px;
-  background:linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-sub{font-size:14.5px;color:var(--muted);line-height:1.65;}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; }
+.hidden { display: none !important; }
 
-.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
-.tab-btn{
-  padding:9px 18px;border-radius:99px;background:var(--surface);border:1px solid var(--border);
-  color:var(--text2);font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;transition:all 150ms;
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+  min-height: 68px; padding: 0 var(--gutter);
+  background: rgba(8,9,11,0.82);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
 }
-.tab-btn.active{background:linear-gradient(135deg,rgba(124,109,250,0.28),rgba(17,217,143,0.22));border-color:rgba(124,109,250,0.4);color:#fff;}
-.tab-panel{display:none;}
-.tab-panel.active{display:block;animation:fadeIn 200ms ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.nav-logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 17px;
+  letter-spacing: -0.025em; color: var(--paper); text-decoration: none;
+}
+.nav-right { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.nav-pill {
+  display: inline-flex; align-items: center;
+  padding: 8px 15px; border-radius: var(--radius-full);
+  background: transparent; border: 1px solid var(--line); color: var(--text-2);
+  font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              background var(--dur-fast) var(--ease-standard);
+}
+.nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
 
-.section-title{font-weight:800;font-size:15px;letter-spacing:-0.01em;margin:26px 0 12px;display:flex;align-items:center;gap:8px;color:var(--text);}
-.section-title:first-child{margin-top:0;}
-.section-sub{font-size:12.5px;color:var(--muted);margin:-8px 0 14px;}
+/* ── Page ───────────────────────────────────────────────────────────────── */
+main { max-width: 860px; margin-inline: auto; padding: clamp(32px,4vw,48px) var(--gutter) var(--space-9); }
 
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:12px;
+/* Left-aligned, not centred. A centred hero over a left-aligned list of work
+   is the arrangement that makes a tool look like a landing page. */
+.hero { text-align: left; margin: 0 0 var(--space-7); max-width: 62ch; }
+.hero-icon { font-size: 30px; line-height: 1; margin-bottom: var(--space-3); }
+.hero-title {
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(30px,3.6vw,40px);
+  letter-spacing: -0.04em; line-height: 1.04; color: var(--paper); margin-bottom: 10px;
+}
+.hero-sub { font-size: 15px; line-height: 1.65; color: var(--text-2); }
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: var(--space-2); flex-wrap: wrap;
+  margin-bottom: var(--space-6); padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+.tab-btn {
+  padding: 9px 17px; border-radius: var(--radius-full);
+  background: transparent; border: 1px solid var(--line); color: var(--text-2);
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 700; line-height: 1;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              background var(--dur-fast) var(--ease-standard);
+}
+.tab-btn:hover { color: var(--paper); border-color: var(--line-hard); }
+.tab-btn.active { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 200ms var(--ease-standard); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .tab-panel.active { animation: none; } }
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+.section-title {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin: var(--space-6) 0 var(--space-3);
+  font-family: var(--font-display); font-weight: 800; font-size: 16px;
+  letter-spacing: -0.02em; color: var(--paper);
+}
+.section-title:first-child { margin-top: 0; }
+.section-sub { margin: -6px 0 var(--space-4); font-size: 13.5px; line-height: 1.6; color: var(--text-3); max-width: 68ch; }
+
+.card {
+  padding: var(--space-5);
+  margin-bottom: var(--space-3);
+  background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md);
 }
 
-/* Upcoming (combined) calendar */
-.upcoming-item{
-  display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);
+/* ── Combined calendar ──────────────────────────────────────────────────── */
+.upcoming-item {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) 0; border-bottom: 1px solid var(--line-soft);
 }
-.upcoming-item:last-child{border-bottom:none;padding-bottom:0;}
-.upcoming-date{
-  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-2);white-space:nowrap;
-  padding:5px 10px;border-radius:8px;background:rgba(17,217,143,0.12);border:1px solid rgba(17,217,143,0.25);flex-shrink:0;
-}
-.upcoming-date.overdue{color:#fca5a5;background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.28);}
-.upcoming-date.none{color:var(--muted);background:rgba(255,255,255,0.05);border-color:var(--border);}
-.upcoming-body{flex:1;min-width:0;}
-.upcoming-title{font-weight:700;font-size:13.5px;margin-bottom:3px;}
-.upcoming-meta{font-size:11.5px;color:var(--muted);}
-.subject-tag{
-  display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;
-  background:rgba(124,109,250,0.14);border:1px solid rgba(124,109,250,0.28);color:#c4baff;margin:2px 4px 0 0;
-}
-.type-tag{text-transform:capitalize;}
+.upcoming-item:first-child { padding-top: 0; }
+.upcoming-item:last-child { border-bottom: none; padding-bottom: 0; }
 
-/* Theme cards */
-.theme-card{cursor:pointer;}
-.theme-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.theme-name{font-weight:800;font-size:16px;letter-spacing:-0.01em;}
-.theme-badge{font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap;}
-.theme-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-top:6px;}
-.theme-items{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:none;}
-.theme-items.open{display:block;}
-
-/* Onboarding */
-.resource-card{padding:16px 18px;}
-.resource-title{font-weight:700;font-size:13.5px;margin-bottom:4px;}
-.resource-body{font-size:13px;color:var(--text2);line-height:1.6;}
-.resource-link{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;color:var(--accent-2);text-decoration:none;}
-.checklist-item{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid var(--border);}
-.checklist-item:last-child{border-bottom:none;}
-.checklist-item input{width:18px;height:18px;accent-color:var(--accent-2);flex-shrink:0;cursor:pointer;}
-.checklist-item label{font-size:13.5px;cursor:pointer;flex:1;}
-.checklist-item.done label{color:var(--muted);text-decoration:line-through;}
-
-.empty-hint{font-size:13px;color:var(--muted);text-align:center;padding:22px 10px;}
-
-/* Teacher admin */
-.admin-panel{margin-top:36px;padding-top:22px;border-top:1px dashed var(--border2);}
-.admin-badge{
-  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;font-weight:700;
-  color:var(--accent-3);background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.28);
-  padding:4px 10px;border-radius:99px;margin-bottom:14px;
+/* The one scale on the page that carries colour, and it carries a real one:
+   overdue, upcoming, undated. Weight moves with it so it survives on a
+   screen where the hues do not separate. */
+.upcoming-date {
+  flex-shrink: 0; white-space: nowrap;
+  padding: 5px 10px; border-radius: var(--radius-2xs);
+  font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums;
 }
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.form-input,.form-select,.form-textarea{
-  width:100%;padding:11px 13px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-  border-radius:10px;color:var(--text);font-family:var(--font);font-size:13.5px;outline:none;transition:border-color 150ms;
-}
-.form-textarea{resize:vertical;min-height:56px;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(124,109,250,0.5);}
-.form-input::placeholder{color:var(--muted);}
-.btn-primary{
-  padding:11px 20px;border-radius:12px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#7c6dfa,#11d98f);color:#0a0e1c;
-  font-family:var(--font);font-size:13px;font-weight:800;letter-spacing:-0.01em;transition:all 160ms;
-}
-.btn-primary:hover{transform:translateY(-1px);}
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.btn-ghost{
-  padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);
-  font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 150ms;
-}
-.btn-ghost:hover{color:#fca5a5;border-color:rgba(248,113,113,0.3);}
-.admin-list-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
-.admin-list-row:last-child{border-bottom:none;}
-.admin-list-title{font-size:13px;font-weight:700;}
-.admin-list-meta{font-size:11px;color:var(--muted);margin-top:2px;}
-.msg{font-size:12.5px;font-weight:600;margin-top:8px;}
-.msg.err{color:#fca5a5;}
-.msg.ok{color:#6ee7b7;}
+.upcoming-date          { font-weight: 500; color: var(--good); background: rgba(74,207,127,0.11); border: 1px solid rgba(74,207,127,0.32); }
+.upcoming-date.overdue  { font-weight: 700; color: #f5a3a3; background: rgba(239,91,91,0.14); border-color: rgba(239,91,91,0.42); }
+.upcoming-date.none     { font-weight: 400; color: var(--text-3); background: transparent; border-color: var(--line); }
 
-@media (max-width:640px){
-  .form-row{grid-template-columns:1fr;}
-  nav{padding:14px 18px;}
-  main{padding:8px 16px 60px;}
-  .hero-title{font-size:26px;}
+.upcoming-body { flex: 1; min-width: 0; }
+.upcoming-title { font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--paper); margin-bottom: 4px; }
+.upcoming-meta { font-size: 12.5px; line-height: 1.6; color: var(--text-3); }
+
+/* Thirteen subjects. Giving each a hue would be thirteen colours meaning
+   nothing — the tags are labels, so they are set as labels. */
+.subject-tag {
+  display: inline-block; margin: 3px 4px 0 0;
+  padding: 2px 9px; border-radius: var(--radius-full);
+  background: transparent; border: 1px solid var(--line-hard); color: var(--text-2);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+}
+.type-tag { text-transform: capitalize; }
+
+/* ── Themes ─────────────────────────────────────────────────────────────── */
+.theme-card { cursor: pointer; transition: border-color var(--dur-fast) var(--ease-standard); }
+.theme-card:hover { border-color: var(--line-hard); }
+.theme-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.theme-name { font-family: var(--font-display); font-weight: 800; font-size: 16.5px; letter-spacing: -0.02em; color: var(--paper); }
+.theme-badge { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); white-space: nowrap; }
+.theme-desc { margin-top: 6px; font-size: 13.5px; line-height: 1.65; color: var(--text-2); }
+.theme-items { display: none; margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line-soft); }
+.theme-items.open { display: block; }
+
+/* ── Onboarding ─────────────────────────────────────────────────────────── */
+.resource-card { padding: var(--space-4) var(--space-5); }
+.resource-title { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--paper); margin-bottom: 4px; }
+.resource-body { font-size: 13.5px; line-height: 1.65; color: var(--text-2); }
+.resource-link {
+  display: inline-block; margin-top: var(--space-2);
+  font-size: 13px; font-weight: 700; color: var(--paper);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.checklist-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--space-3) 2px; border-bottom: 1px solid var(--line-soft);
+}
+.checklist-item:last-child { border-bottom: none; }
+.checklist-item input { width: 17px; height: 17px; flex-shrink: 0; cursor: pointer; accent-color: var(--paper); }
+.checklist-item label { flex: 1; font-size: 14px; line-height: 1.5; cursor: pointer; }
+.checklist-item.done label { color: var(--text-4); text-decoration: line-through; }
+
+.empty-hint { padding: var(--space-6) var(--space-3); text-align: center; font-size: 13.5px; color: var(--text-3); }
+
+/* ── Staff-only panel ───────────────────────────────────────────────────── */
+.admin-panel { margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+.admin-badge {
+  display: inline-flex; align-items: center; gap: 6px; margin-bottom: var(--space-5);
+  padding: 4px 11px; border-radius: var(--radius-full);
+  background: rgba(245,178,61,0.12); border: 1px solid rgba(245,178,61,0.36); color: var(--warn);
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 12px 14px; border-radius: var(--radius-sm);
+  background: var(--ink-750); border: 1px solid var(--line-hard); color: var(--text);
+  font-family: var(--font-body); font-size: 14px; outline: none;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.form-textarea { resize: vertical; min-height: 58px; line-height: 1.6; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--paper); }
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-4); }
+
+.btn-primary {
+  padding: 12px 22px; border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900);
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  transition: background var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard);
+}
+.btn-primary:hover:not(:disabled) { background: #fff; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* Kept, though nothing renders them yet: theme-weaver.js exports
+   deleteTheme, deleteThemeItem and deleteOnboardingResource, but the
+   admin panel never draws a delete control, so the create side of it is
+   finished and the remove side is not. These are the styles that half
+   is waiting on.
+
+   Ghost is that delete control, so it is allowed to go red — but only on
+   hover, so a list of them does not read as a list of warnings. */
+.btn-ghost {
+  padding: 9px 15px; border-radius: var(--radius-2xs); cursor: pointer;
+  background: transparent; border: 1px solid var(--line); color: var(--text-3);
+  font-family: var(--font-body); font-size: 12.5px; font-weight: 700;
+  transition: color var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+}
+.btn-ghost:hover { color: #f5a3a3; border-color: rgba(239,91,91,0.38); }
+
+.admin-list-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 11px 0; border-bottom: 1px solid var(--line-soft);
+}
+.admin-list-row:last-child { border-bottom: none; }
+.admin-list-title { font-family: var(--font-display); font-size: 13.5px; font-weight: 700; color: var(--paper); }
+.admin-list-meta { margin-top: 2px; font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+
+.msg { margin-top: var(--space-2); font-size: 13px; font-weight: 700; }
+.msg.err { color: #f5a3a3; }
+.msg.ok  { color: var(--good); }
+
+@media (max-width: 640px) {
+  nav { min-height: 60px; }
+  .form-row { grid-template-columns: 1fr; }
+  .upcoming-item { flex-direction: column; gap: 8px; }
 }
 </style>
 </head>
@@ -182,30 +264,30 @@ main{max-width:920px;margin:0 auto;padding:8px 24px 80px;}
 
   <!-- ── This Week: combined cross-subject calendar ── -->
   <div class="tab-panel active" id="panel-upcoming">
-    <div class="section-title"><i data-lucide="calendar-clock" style="width:16px;height:16px;color:var(--accent-2);"></i>Coming up, across every subject</div>
+    <div class="section-title"><i data-lucide="calendar-clock" style="width:16px;height:16px;color:var(--text-3);"></i>Coming up, across every subject</div>
     <div class="section-sub">One list instead of six subjects' worth of separate reminders — this is every shared theme assessment, content piece, and activity, soonest first.</div>
     <div class="card" id="upcoming-list"><div class="empty-hint">Loading…</div></div>
   </div>
 
   <!-- ── Themes ── -->
   <div class="tab-panel" id="panel-themes">
-    <div class="section-title"><i data-lucide="layers" style="width:16px;height:16px;color:var(--accent-1);"></i>Active themes</div>
+    <div class="section-title"><i data-lucide="layers" style="width:16px;height:16px;color:var(--text-3);"></i>Active themes</div>
     <div class="section-sub">Tap a theme to see which subjects are weaving into it and what's shared.</div>
     <div id="themes-list"><div class="empty-hint">Loading…</div></div>
   </div>
 
   <!-- ── Onboarding / New Here ── -->
   <div class="tab-panel" id="panel-onboarding">
-    <div class="section-title"><i data-lucide="compass" style="width:16px;height:16px;color:var(--accent-3);"></i>Campus logistics</div>
+    <div class="section-title"><i data-lucide="compass" style="width:16px;height:16px;color:var(--text-3);"></i>Campus logistics</div>
     <div id="onboarding-logistics"><div class="empty-hint">Loading…</div></div>
 
-    <div class="section-title"><i data-lucide="users" style="width:16px;height:16px;color:var(--accent-3);"></i>Extracurriculars</div>
+    <div class="section-title"><i data-lucide="users" style="width:16px;height:16px;color:var(--text-3);"></i>Extracurriculars</div>
     <div id="onboarding-extracurricular"><div class="empty-hint">Loading…</div></div>
 
-    <div class="section-title"><i data-lucide="help-circle" style="width:16px;height:16px;color:var(--accent-3);"></i>Frequently asked</div>
+    <div class="section-title"><i data-lucide="help-circle" style="width:16px;height:16px;color:var(--text-3);"></i>Frequently asked</div>
     <div id="onboarding-faq"><div class="empty-hint">Loading…</div></div>
 
-    <div class="section-title"><i data-lucide="check-square" style="width:16px;height:16px;color:var(--accent-3);"></i>Settling-in checklist</div>
+    <div class="section-title"><i data-lucide="check-square" style="width:16px;height:16px;color:var(--text-3);"></i>Settling-in checklist</div>
     <div class="section-sub">Ticks are saved on this device only.</div>
     <div class="card" id="onboarding-checklist"><div class="empty-hint">Loading…</div></div>
   </div>
