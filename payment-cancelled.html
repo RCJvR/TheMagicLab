@@ -11,25 +11,66 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; background: #080c1a; color: #e4e8f8; font-family: "Cabinet Grotesk", sans-serif; }
-    body { display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
-    .card { max-width: 420px; }
-    .icon {
-      width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 50%;
-      background: rgba(210,218,245,0.08); border: 1px solid rgba(210,218,245,0.18);
-      display: flex; align-items: center; justify-content: center; font-size: 26px;
+    /* ══════════════════════════════════════════════════════════════════════
+       Checkout cancelled.
+
+       A single-purpose status screen: one card, one message, one or two
+       actions. Centred on purpose — this is the one layout on the site where
+       centring is the right answer rather than the default one.
+
+       The status icon is what the page is for, so it is the only thing
+       carrying colour, and the colour means something.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    body {
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      min-height: 100vh; padding: var(--space-5);
     }
-    h1 { font-weight: 800; font-size: 24px; letter-spacing: -0.02em; margin-bottom: 10px; }
-    p { color: rgba(210,218,245,0.55); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
-    .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .card { width: 100%; max-width: 420px; }
+
+    .spinner {
+      width: 38px; height: 38px; margin: 0 auto var(--space-5);
+      border-radius: 50%; border: 3px solid rgba(255,255,255,0.10);
+      border-top-color: var(--paper);
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* A spinner is decoration once the outcome is known, and motion for its
+       own sake is the first thing to go for anyone who asked for less of it. */
+    @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+
+    .checkmark, .icon {
+      width: 54px; height: 54px; margin: 0 auto var(--space-4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+    }
+    .checkmark { background: rgba(74,207,127,0.13); border: 1px solid rgba(74,207,127,0.38); color: var(--good); }
+    .icon      { background: rgba(255,255,255,0.05); border: 1px solid var(--line-hard); color: var(--text-2); }
+
+    h1 {
+      font-family: var(--font-display); font-weight: 800; font-size: 25px;
+      letter-spacing: -0.032em; line-height: 1.15; color: var(--paper); margin-bottom: 10px;
+    }
+    p { font-size: 14.5px; line-height: 1.65; color: var(--text-2); margin-bottom: var(--space-5); }
+    p a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
     .btn {
-      display: inline-block; padding: 12px 24px; border-radius: 12px; text-decoration: none;
-      font-weight: 700; font-size: 14px;
+      display: inline-block; padding: 12px 24px;
+      border: 1px solid transparent; border-radius: var(--radius-sm);
+      font-family: var(--font-display); font-size: 14.5px; font-weight: 700;
+      text-decoration: none; cursor: pointer;
+      transition: background var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  transform var(--dur-fast) var(--ease-standard);
     }
-    .btn-primary { background: linear-gradient(135deg,#7c6dfa,#11d98f); color: #0a0e1c; }
-    .btn-ghost { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #e4e8f8; }
+    .btn, .btn-primary { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+    .btn:hover:not(:disabled), .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .btn-ghost { background: transparent; border-color: var(--line-hard); color: var(--text); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); border-color: var(--paper); transform: translateY(-1px); }
   </style>
 </head>
 <body>
