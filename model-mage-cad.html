@@ -63,6 +63,49 @@
               font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:280px;}
     .hint-box b{color:var(--text);}
 
+    /*  Extrude prompt  ------------------------------------------------------
+        Bottom-right of the sketch, opposite the hint box, so the two never
+        collide. Not a modal: a learner can ignore it and keep drawing.      */
+    .ext-prompt{
+      position:absolute; right:10px; bottom:10px; z-index:6; width:212px;
+      background:rgba(10,15,32,0.95); border:1px solid rgba(255,255,255,0.16);
+      border-radius:9px; padding:11px 12px 10px;
+      box-shadow:0 14px 34px rgba(0,0,0,0.5);
+    }
+    .ext-prompt[hidden]{display:none;}
+    .ext-prompt-title{font-size:0.76rem;font-weight:700;color:var(--text);margin-bottom:9px;}
+    .ext-prompt-row{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+    .ext-prompt-label{font-size:0.66rem;color:var(--text2);flex-shrink:0;}
+    .ext-prompt-input{
+      width:100%;height:26px;padding:0 7px;border-radius:5px;
+      border:1px solid var(--border);background:var(--surface);
+      color:var(--text);font-family:inherit;font-size:0.74rem;outline:none;
+    }
+    .ext-prompt-input:focus{border-color:rgba(255,255,255,0.34);}
+    .ext-prompt-unit{font-size:0.66rem;color:var(--text2);flex-shrink:0;}
+    .ext-prompt-actions{display:flex;gap:6px;}
+    .ext-btn{
+      flex:1;height:27px;border-radius:5px;cursor:pointer;
+      border:1px solid var(--border);background:none;color:var(--text2);
+      font-family:inherit;font-size:0.71rem;font-weight:700;
+      transition:background 140ms,border-color 140ms,color 140ms;
+    }
+    .ext-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.30);}
+    .ext-btn-go{background:#f2f5f9;border-color:#f2f5f9;color:#08090b;}
+    .ext-btn-go:hover{background:#fff;border-color:#fff;color:#08090b;}
+    .ext-prompt-note{margin-top:8px;font-size:0.62rem;color:var(--text2);opacity:0.75;}
+
+    /*  Shown when profiles were kept flat, so that choice is never a dead end. */
+    .ext-flat-chip{
+      position:absolute; right:10px; bottom:10px; z-index:5;
+      background:rgba(10,15,32,0.92); border:1px solid rgba(255,255,255,0.14);
+      border-radius:99px; padding:6px 13px; cursor:pointer;
+      color:var(--text2); font-family:inherit; font-size:0.66rem; font-weight:600;
+      transition:color 140ms,border-color 140ms;
+    }
+    .ext-flat-chip[hidden]{display:none;}
+    .ext-flat-chip:hover{color:var(--text);border-color:rgba(255,255,255,0.30);}
+
     /* ── 3D mode ── */
     .main.mode-3d .sketch-panel{flex:0;width:0;min-width:0;overflow:hidden;}
     .main.mode-3d .right-panel{flex:1;width:auto;min-width:0;}
@@ -352,6 +395,23 @@
   <div class="sketch-panel">
     <canvas id="sk"></canvas>
     <div class="sk-overlay">Sketch · XY Plane</div>
+
+    <!-- Asked once per profile, then remembered. Sits over the sketch rather
+         than blocking it, so drawing can carry on while it is open. -->
+    <div class="ext-prompt" id="ext-prompt" hidden>
+      <div class="ext-prompt-title" id="ext-prompt-title">Extrude this profile?</div>
+      <div class="ext-prompt-row">
+        <label class="ext-prompt-label" for="ext-prompt-height">Height</label>
+        <input class="ext-prompt-input" id="ext-prompt-height" type="number" min="0.1" step="1" value="40">
+        <span class="ext-prompt-unit">mm</span>
+      </div>
+      <div class="ext-prompt-actions">
+        <button class="ext-btn ext-btn-go" id="ext-prompt-yes">Extrude</button>
+        <button class="ext-btn" id="ext-prompt-no">Keep flat</button>
+      </div>
+      <div class="ext-prompt-note">You can undo this with Ctrl&#8288;+&#8288;Z.</div>
+    </div>
+    <button class="ext-flat-chip" id="ext-flat-chip" hidden></button>
     <div class="hint-box" id="hint-box">
       <b>Line tool</b><br>
       Click start · Click end · type length<br>
@@ -1849,13 +1909,18 @@ function syncExtrudeNodes() {
   if (!sk) return;
   const profs = getAllProfiles(sk);
   const existing = featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+  // A profile only becomes a solid once it has been answered for. Profiles
+  // with no answer yet are left flat and picked up by the prompt; profiles
+  // answered 'flat' are left alone for good.
+  sk.extrudeChoice = sk.extrudeChoice || {};
   for (let i = existing.length; i < profs.length; i++) {
+    if (sk.extrudeChoice[i] !== 'extrude') continue;
     featureTree.push({
       id:newId('ex'), type:'extrude',
       name: i===0?'Extrude 1':`Extrude ${i+1}`,
       sketchId:activeSketchId, profileIdx:i,
       operation: i===0 ? (sk.datumId ? 'cut' : 'new') : (sk.datumId ? 'cut' : 'fuse'),
-      height:extH, filletR, chamferR
+      height: (sk.extrudeHeight != null ? sk.extrudeHeight : extH), filletR, chamferR
     });
   }
   if (existing.length > profs.length) {
@@ -1896,16 +1961,146 @@ function collectExtrudePayload() {
   return items;
 }
 
+//  ── Undo history ────────────────────────────────────────────────────────
+//  State-based rather than entity-based. The old undo could only pop the last
+//  sketch entity, which meant an extrude — the one action that changes the
+//  model most — was the one action you could not take back. Snapshotting the
+//  whole feature tree makes every change reversible by the same mechanism.
+let historyStack = [];
+let historyCurrent = null;
+let historyMuted = true;           // muted until INIT finishes, and while restoring
+
+function snapshotState() {
+  try {
+    return JSON.stringify({ tree: featureTree, active: activeSketchId, next: nextFeatId });
+  } catch (_) { return null; }
+}
+function commitHistory() {
+  if (historyMuted) { historyCurrent = snapshotState(); return; }
+  if (historyCurrent !== null) {
+    historyStack.push(historyCurrent);
+    if (historyStack.length > 60) historyStack.shift();
+  }
+  historyCurrent = snapshotState();
+  updateUndoButton();
+}
+function restoreState(json) {
+  if (!json) return false;
+  let data; try { data = JSON.parse(json); } catch (_) { return false; }
+  const wasMuted = historyMuted;
+  historyMuted  = true;             // applying a snapshot is not a new change
+  featureTree   = data.tree;
+  activeSketchId = data.active;
+  nextFeatId    = data.next || nextFeatId;
+  selection = null;
+  linePoints=[]; rectStart=null; circleCenter=null; arcPts=[]; polyCenter=null; splinePts=[];
+  hideLenPopup();
+  if (typeof updateConstraintPanel === 'function') updateConstraintPanel();
+  renderFeatureTree();
+  scheduleRender();
+  refreshExtrudePrompt();
+  clearTimeout(extTimer);
+  extTimer = setTimeout(doExtrude, 60);   // rebuild the solid to match
+  historyMuted = wasMuted;
+  return true;
+}
+function updateUndoButton() {
+  const b = document.getElementById('btn-undo');
+  if (b) b.disabled = historyStack.length === 0
+      && !linePoints.length && !arcPts.length && !splinePts.length
+      && !(activeSketch() && ents().length);
+}
+
 function scheduleExtrude() {
   clearTimeout(extTimer);
+  commitHistory();
   const hasAny = featureTree.some(f => f.type==='sketch' && getAllProfiles(f).length > 0);
   if (hasAny) extTimer = setTimeout(doExtrude, 300);
+  refreshExtrudePrompt();
   scheduleAutosave();
+}
+
+//  ── "Extrude this profile?" ──────────────────────────────────────────────
+//  Closing a shape used to start a 300ms timer that turned it into a solid on
+//  its own. Now it waits and asks, once per profile, and remembers the answer.
+function pendingProfiles() {
+  const sk = activeSketch();
+  if (!sk) return [];
+  sk.extrudeChoice = sk.extrudeChoice || {};
+  const out = [];
+  getAllProfiles(sk).forEach((_, i) => { if (!sk.extrudeChoice[i]) out.push(i); });
+  return out;
+}
+function flatProfileCount() {
+  const sk = activeSketch();
+  if (!sk || !sk.extrudeChoice) return 0;
+  const n = getAllProfiles(sk).length;
+  return Object.keys(sk.extrudeChoice).filter(k => +k < n && sk.extrudeChoice[k] === 'flat').length;
+}
+function refreshExtrudePrompt() {
+  const box  = document.getElementById('ext-prompt');
+  const chip = document.getElementById('ext-flat-chip');
+  if (!box) return;
+  const pend = pendingProfiles();
+  const is3d = document.querySelector('.main') && document.querySelector('.main').classList.contains('mode-3d');
+  if (pend.length && !is3d) {
+    const n = pend.length;
+    document.getElementById('ext-prompt-title').textContent =
+      n === 1 ? 'Extrude this profile?' : `Extrude ${n} new profiles?`;
+    const h = document.getElementById('ext-prompt-height');
+    const sk = activeSketch();
+    if (h && document.activeElement !== h) h.value = (sk && sk.extrudeHeight != null) ? sk.extrudeHeight : extH;
+    box.hidden = false;
+  } else {
+    box.hidden = true;
+  }
+  if (chip) {
+    const f = flatProfileCount();
+    chip.hidden = !(f > 0) || is3d;
+    if (f > 0) chip.textContent = f === 1 ? '1 profile kept flat · Extrude it' : `${f} profiles kept flat · Extrude them`;
+  }
+}
+function answerExtrude(choice) {
+  const sk = activeSketch();
+  if (!sk) return;
+  sk.extrudeChoice = sk.extrudeChoice || {};
+  if (choice === 'extrude') {
+    const h = parseFloat((document.getElementById('ext-prompt-height') || {}).value);
+    if (isFinite(h) && h > 0) { sk.extrudeHeight = h; extH = h; }
+  }
+  pendingProfiles().forEach(i => { sk.extrudeChoice[i] = choice; });
+  renderFeatureTree();
+  scheduleExtrude();          // commits history, so this is undoable
+  if (choice !== 'extrude') { clearTimeout(extTimer); doExtrude(); }
+}
+function extrudeKeptFlat() {
+  const sk = activeSketch();
+  if (!sk || !sk.extrudeChoice) return;
+  Object.keys(sk.extrudeChoice).forEach(k => {
+    if (sk.extrudeChoice[k] === 'flat') delete sk.extrudeChoice[k];
+  });
+  refreshExtrudePrompt();
+}
+
+// Clears the 3D view back to its empty state. Needed because undoing the last
+// extrude leaves a solid on screen that no longer corresponds to anything in
+// the feature tree.
+function clearSolid() {
+  if (modelMesh) { modelGroup.remove(modelMesh); modelGroup.remove(wireMesh); modelMesh = null; wireMesh = null; }
+  if (lastGeo) { lastGeo.dispose(); lastGeo = null; }
+  const ph = document.getElementById('vp-ph');
+  const badge = document.getElementById('vp-badge');
+  const stl = document.getElementById('btn-stl');
+  if (ph) ph.style.display = '';
+  if (badge) badge.style.display = 'none';
+  if (stl) stl.classList.remove('show');
+  setRebuildStatus('');
+  renderer.render(scene, camera);
 }
 
 function doExtrude() {
   const profiles = collectExtrudePayload();
-  if (!profiles.length) return;
+  if (!profiles.length) { clearSolid(); return; }
   setRebuildStatus('building');
   const msg = {type:'build', profiles};
   if (workerReady) worker.postMessage(msg);
@@ -2016,9 +2211,19 @@ function updateHint() {
 
 function undoLast() {
   hideLenPopup();
+  // Points of a shape still being drawn are not in the feature tree, so they
+  // come off first and do not touch the history.
   if (splinePts.length>0) { splinePts.pop(); scheduleRender(); return; }
-  if (arcPts.length>0) { arcPts.pop(); scheduleRender(); return; }
-  if (linePoints.length>0) { linePoints.pop(); scheduleRender(); return; }
+  if (arcPts.length>0)    { arcPts.pop();    scheduleRender(); return; }
+  if (linePoints.length>0){ linePoints.pop(); scheduleRender(); return; }
+  // Everything else — entities, extrudes, height and operation changes —
+  // is a feature-tree state, so one step back is one snapshot back.
+  if (historyStack.length > 0) {
+    restoreState(historyStack.pop());
+    historyCurrent = snapshotState();
+    updateUndoButton();
+    return;
+  }
   if (ents().length>0) { ents().pop(); selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree(); }
 }
 window.undoLast = undoLast;
@@ -2046,6 +2251,12 @@ document.getElementById('tool-polygon').addEventListener('click', ()=>setTool('p
 document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('spline'));
 document.getElementById('tool-edit').addEventListener('click',    ()=>setTool('edit'));
 document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
+document.getElementById('ext-prompt-yes').addEventListener('click',  ()=>answerExtrude('extrude'));
+document.getElementById('ext-prompt-no').addEventListener('click',   ()=>answerExtrude('flat'));
+document.getElementById('ext-flat-chip').addEventListener('click',   ()=>extrudeKeptFlat());
+document.getElementById('ext-prompt-height').addEventListener('keydown', e=>{
+  if (e.key === 'Enter') { e.preventDefault(); answerExtrude('extrude'); }
+});
 document.getElementById('btn-clear').addEventListener('click',    ()=>clearAll());
 document.getElementById('btn-rebuild').addEventListener('click',  ()=>doExtrude());
 
@@ -2921,6 +3132,11 @@ function setMode3d(on) {
     right.style.cssText = '';
   }
 
+  // The extrude prompt belongs to the sketch, so it hides in 3D — which means
+  // coming back to the sketch has to bring it back. Without this, undoing an
+  // extrude (which leaves you in 3D) loses the only way to re-answer.
+  refreshExtrudePrompt();
+
   setTimeout(() => {
     const vp = document.getElementById('vp3d');
     renderer.setSize(vp.clientWidth, vp.clientHeight);
@@ -3199,6 +3415,13 @@ if (tryRestoreAutosave()) {
 }
 renderFeatureTree();
 scheduleRender();
+
+// Boot is over: from here every change is the user's, so it is undoable, and
+// the first snapshot is whatever they opened with.
+historyMuted = false;
+historyCurrent = snapshotState();
+refreshExtrudePrompt();
+updateUndoButton();
 
 </script>
   <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
