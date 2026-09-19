@@ -5,13 +5,14 @@
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0f1e">
+  <meta name="theme-color" content="#08090b">
   <title>Java Genie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='shine' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a5b4fc'/%3E%3Cstop offset='1' stop-color='%236ee7b7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cellipse cx='32' cy='40' rx='16' ry='10' fill='%23fbbf24'/%3E%3Cellipse cx='32' cy='38' rx='16' ry='10' fill='%23fcd34d'/%3E%3Cpath d='M48 36 Q56 30 54 24 Q52 20 46 22 Q44 28 48 36Z' fill='%23f59e0b'/%3E%3Cpath d='M16 38 Q8 36 10 44 Q12 50 18 46' fill='none' stroke='%23f59e0b' stroke-width='3.5' stroke-linecap='round'/%3E%3Cpath d='M46 20 Q44 12 38 8 Q34 5 32 10 Q34 14 38 12 Q42 10 46 20Z' fill='url(%23shine)' opacity='0.9'/%3E%3Ccircle cx='40' cy='10' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='50' cy='14' r='1.8' fill='%236ee7b7'/%3E%3Ccircle cx='44' cy='5' r='1.5' fill='%23fcd34d'/%3E%3Ctext x='26' y='43' font-family='monospace' font-size='10' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Java Genie">
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
@@ -27,13 +28,28 @@
 
 
   <style>
+    /* ══════════════════════════════════════════════════════════════════════
+       Java Genie.
+
+       Targeted repalette; layout and markup untouched apart from two inline
+       button styles. The file is 5,500 lines with example Java woven through
+       it, so nothing is replaced globally.
+
+       The tool hue is --t-java, the cornflower it wears on the homepage, and
+       it marks state only.
+
+       NOT on the system, on purpose: the eight Java syntax colours, the
+       illustrated pen avatar in the drawing canvas, and every setColor() in
+       the example programs — those are the students' own drawings.
+       ══════════════════════════════════════════════════════════════════════ */
     :root {
-      --bg:#080c1a; --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
-      --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
-      --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
-      --accent-1:#7c6dfa; --accent-2:#11d98f;
-      --font-display:"Cabinet Grotesk",sans-serif; --font-body:"Cabinet Grotesk",sans-serif;
-      --font-mono:"JetBrains Mono",monospace;
+      --bg: var(--ink-900);
+      --surface: rgba(255,255,255,0.048); --surface2: rgba(255,255,255,0.032);
+      --border: var(--line); --border2: var(--line-soft);
+      --text2: var(--text-2); --muted: var(--text-3);
+      --accent-1: var(--t-java); --accent-2: var(--good);
+      --acc-soft: rgba(91,147,255,0.12);
+      --acc-line: rgba(91,147,255,0.40);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -42,11 +58,8 @@
     #appShell {
       height: 100%; width: 100%;
       display: flex; flex-direction: column; overflow: hidden;
-      background:
-        radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(124,109,250,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(17,217,143,0.12) 0%, transparent 55%),
-        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,166,35,0.08) 0%, transparent 60%),
-        var(--bg);
+      /* Was three radial glows. */
+      background: var(--ink-900);
     }
 
     /* ── Header ── */
@@ -61,20 +74,19 @@
     .hdr-right { display: flex; align-items: center; gap: 6px; justify-content: flex-end; min-width: 0; flex-wrap: wrap; }
     .app-icon {
       width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg,rgba(124,109,250,0.30),rgba(17,217,143,0.12)); border: 1px solid rgba(124,109,250,0.28);
+      background: var(--acc-soft); border: 1px solid var(--acc-line);
       display: flex; align-items: center; justify-content: center; font-size: 17px;
     }
     .badge {
       display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
-      border-radius: 99px; background: rgba(124,109,250,0.16); border: 1px solid rgba(124,109,250,0.32);
+      border-radius: 99px; background: rgba(91,147,255,0.16); border: 1px solid rgba(91,147,255,0.32);
       font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase; color: #c4baff; white-space: nowrap;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #c2d6ff; white-space: nowrap;
     }
     h1.app-title {
       font-family: var(--font-display); font-weight: 900; letter-spacing: -0.03em;
       font-size: clamp(17px, 2vw, 24px); line-height: 1;
-      background: linear-gradient(125deg, #fff 0%, #a89ffc 50%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--paper);
     }
     /* hdr-left/center/right defined above */
     .hdr-btn {
@@ -83,14 +95,14 @@
       background: var(--surface); font-family: var(--font-body); font-size: 12px; font-weight: 600;
       color: var(--text2); cursor: pointer; transition: all 130ms;
     }
-    .hdr-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
+    .hdr-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: var(--text-3); }
     .home-btn {
       display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
       padding: 6px 13px; border-radius: 99px; border: 1px solid var(--border);
       background: var(--surface); color: var(--muted);
       text-decoration: none; transition: all 140ms; flex-shrink: 0; font-family: var(--font-body);
     }
-    .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: var(--text-3); }
 
     /* ── Main grid ── */
     #mainGrid {
@@ -123,7 +135,7 @@
       padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer;
       transition: all 130ms ease; color: var(--muted); background: transparent;
     }
-    .tab-btn.active { background: rgba(124,109,250,0.28); color: #c4baff; }
+    .tab-btn.active { background: rgba(91,147,255,0.28); color: #c2d6ff; }
     .tab-btn:hover:not(.active) { color: var(--text2); }
 
     .icon-btn {
@@ -132,7 +144,7 @@
       cursor: pointer; color: var(--muted); transition: all 130ms; flex-shrink: 0;
     }
     .icon-btn:hover { background: rgba(255,255,255,0.12); color: var(--text); }
-    .icon-btn.active { background: rgba(124,109,250,0.30); border-color: rgba(124,109,250,0.50); color: #c4baff; }
+    .icon-btn.active { background: rgba(91,147,255,0.30); border-color: rgba(91,147,255,0.50); color: #c2d6ff; }
 
     /* ── Code editor ── */
     /* 14: syntax highlighting overlay */
@@ -140,7 +152,7 @@
     #lineNumbers {
       font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
       width: 36px; flex-shrink: 0; background: rgba(0,0,0,0.28);
-      border-right: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.20);
+      border-right: 1px solid rgba(255,255,255,0.06); color: var(--text-3);
       text-align: right; padding: 12px 6px 12px 0; overflow: hidden; user-select: none;
     }
     /* The real textarea stays on top, transparent background so highlight layer shows */
@@ -151,7 +163,7 @@
       resize: none; padding: 12px 12px 12px 10px; outline: none; overflow-y: auto;
       z-index: 2; white-space: pre; overflow-wrap: normal;
     }
-    #codeEditor::selection { background: rgba(99,102,241,0.38); }
+    #codeEditor::selection { background: rgba(91,147,255,0.38); }
     /* Highlight layer */
     #highlightLayer {
       font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
@@ -164,7 +176,7 @@
     .hl-type { color: #60a5fa; }   /* types: Pen String */
     .hl-str  { color: #86efac; }   /* string literals */
     .hl-num  { color: #fb923c; }   /* numbers */
-    .hl-cmt  { color: #6b7280; font-style: italic; }  /* comments */
+    .hl-cmt  { color: #868f9c; font-style: italic; }  /* comments */
     .hl-dir  { color: #fbbf24; }   /* direction constants UP DOWN LEFT RIGHT */
     .hl-met  { color: #34d399; }   /* method calls n.xxx() */
     .hl-op   { color: #e2e8ff; }   /* default */
@@ -177,13 +189,13 @@
       background: none; cursor: pointer; transition: background 110ms; color: inherit;
     }
     .ex-item:last-child { border-bottom: none; }
-    .ex-item:hover { background: rgba(99,102,241,0.12); }
+    .ex-item:hover { background: rgba(91,147,255,0.12); }
     .ex-item h4 { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
     .ex-item p  { font-size: 12px; color: var(--muted); }
     .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; letter-spacing: 0.04em; text-transform: uppercase; }
-    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
-    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
-    .diff-a { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .diff-b { background: rgba(74,207,127,0.14); color: var(--good); }
+    .diff-i { background: rgba(245,178,61,0.14); color: var(--warn); }
+    .diff-a { background: rgba(239,91,91,0.14); color: #f5a3a3; }
 
     /* ── Action buttons ── */
     .actions-row {
@@ -199,7 +211,7 @@
     .act-btn:hover  { transform: translateY(-1px); }
     .act-btn:active { transform: translateY(0); }
     .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
-    .btn-run { background: linear-gradient(135deg, #059669, #10b981); color: #fff; box-shadow: 0 3px 14px rgba(16,185,129,0.28); }
+    .btn-run { background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900); box-shadow: 0 3px 14px rgba(16,185,129,0.28); }
     .btn-run:hover { box-shadow: 0 5px 20px rgba(16,185,129,0.44); }
     .btn-reset { background: var(--surface); border: 1px solid var(--border); color: var(--text2); }
     .btn-reset:hover { background: rgba(255,255,255,0.10); }
@@ -209,27 +221,27 @@
       flex-shrink: 0; display: flex; align-items: center; gap: 7px;
       padding: 6px 12px 8px; border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .ctrl-label { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.50); white-space: nowrap; }
+    .ctrl-label { font-size: 11px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
     .speed-tag { font-family: "JetBrains Mono", monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
     .speed-tag--slow { color: rgba(252,211,77,0.6); }
     .speed-tag--fast { color: rgba(110,231,183,0.7); }
     .speed-slider {
       flex: 1; height: 4px; -webkit-appearance: none; appearance: none; border-radius: 99px;
-      background: linear-gradient(to right, #6366f1 0%, #6366f1 calc((var(--val,50) - 1) / 99 * 100%), rgba(255,255,255,0.12) calc((var(--val,50) - 1) / 99 * 100%));
+      background: linear-gradient(to right, var(--t-java) 0%, var(--t-java) calc((var(--val,50) - 1) / 99 * 100%), rgba(255,255,255,0.12) calc((var(--val,50) - 1) / 99 * 100%));
       outline: none; cursor: pointer;
     }
     .speed-slider::-webkit-slider-thumb {
       -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
-      background: #a5b4fc; border: 2px solid #1e1b4b; cursor: pointer;
-      box-shadow: 0 0 0 2px rgba(99,102,241,0.35);
+      background: #a8c4ff; border: 2px solid #1e1b4b; cursor: pointer;
+      box-shadow: 0 0 0 2px rgba(91,147,255,0.35);
     }
     .speed-slider::-moz-range-thumb {
       width: 14px; height: 14px; border-radius: 50%;
-      background: #a5b4fc; border: 2px solid #1e1b4b; cursor: pointer;
+      background: #a8c4ff; border: 2px solid #1e1b4b; cursor: pointer;
     }
     .speed-value {
       font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
-      color: #a5b4fc; min-width: 28px; text-align: center;
+      color: #a8c4ff; min-width: 28px; text-align: center;
     }
 
     /* ── Cheat sheet ── */
@@ -238,7 +250,7 @@
     .cheat-row { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .cheat-row:last-child { border-bottom: none; }
     .cheat-cmd  { font-family: "JetBrains Mono", monospace; font-size: 10px; color: #818cf8; white-space: nowrap; flex-shrink: 0; }
-    .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
+    .cheat-desc { font-size: 10px; color: var(--text-3); }
 
     /* ── Right column ── */
     #rightCol {
@@ -307,7 +319,7 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
 
-    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(99,102,241,0.60); outline-offset: 2px; }
+    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(91,147,255,0.60); outline-offset: 2px; }
 
     /* ── Tutorial overlay ─────────────────────────────────────────────────────── */
     /* ── Challenges overlay ── */
@@ -318,7 +330,7 @@
       animation: tutorialFadeIn 180ms ease;
     }
     #challengesBox {
-      background: #0f1628; border: 1px solid rgba(124,109,250,0.25);
+      background: #0f1628; border: 1px solid rgba(91,147,255,0.25);
       border-radius: 18px; width: min(780px, 95vw); max-height: 88vh;
       display: flex; flex-direction: column; overflow: hidden;
       box-shadow: 0 32px 80px rgba(0,0,0,0.55);
@@ -330,8 +342,7 @@
     }
     #challengesHeader h2 {
       font-family: var(--font-display); font-weight: 800; font-size: 16px;
-      background: linear-gradient(125deg, #fff 0%, #c4baff 60%, #a89ffc 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--paper);
     }
     #challengesBody {
       flex: 1; overflow-y: auto; padding: 16px 20px 20px;
@@ -345,7 +356,7 @@
       border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
       transition: border-color 150ms;
     }
-    .chal-card:hover { border-color: rgba(124,109,250,0.35); }
+    .chal-card:hover { border-color: rgba(91,147,255,0.35); }
     .chal-num {
       font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
       color: rgba(196,186,255,0.70);
@@ -356,7 +367,7 @@
     .chal-lines {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px;
-      background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.22); color: #c4baff;
+      background: rgba(91,147,255,0.12); border: 1px solid rgba(91,147,255,0.22); color: #c2d6ff;
     }
     .chal-diff {
       display: inline-flex; align-items: center; gap: 5px;
@@ -408,7 +419,7 @@
       width: 100%; max-width: 780px;
       display: flex; flex-direction: column;
       background: #0f1629;
-      border: 1px solid rgba(99,102,241,0.25);
+      border: 1px solid rgba(91,147,255,0.25);
       border-radius: 18px;
       overflow: hidden;
       align-self: flex-start;
@@ -423,8 +434,7 @@
     #tutorialHeader h2 {
       font-family: var(--font-display); font-weight: 800;
       font-size: 18px;
-      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--paper);
     }
     .tut-close {
       width: 32px; height: 32px; border-radius: 8px;
@@ -444,11 +454,11 @@
       background: rgba(255,255,255,0.15); transition: all 200ms;
       cursor: pointer; flex-shrink: 0;
     }
-    .tut-dot.active { background: #6366f1; transform: scale(1.3); }
+    .tut-dot.active { background: #5b93ff; transform: scale(1.3); }
     .tut-dot.done   { background: #34d399; }
     #tutorialStepLabel {
       margin-left: auto; font-size: 11px; font-weight: 600;
-      color: rgba(221,225,240,0.35);
+      color: var(--text-3);
     }
     /* slide content */
     #tutorialSlides { flex: 1; }
@@ -456,13 +466,13 @@
     .tut-slide.active { display: block; }
     .tut-slide h3 {
       font-family: var(--font-display); font-weight: 700; font-size: 15px;
-      color: #a5b4fc; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+      color: #a8c4ff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
     }
     .tut-slide h3 .step-num {
       display: inline-flex; align-items: center; justify-content: center;
       width: 24px; height: 24px; border-radius: 50%;
-      background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.4);
-      font-size: 12px; color: #a5b4fc; flex-shrink: 0;
+      background: rgba(91,147,255,0.25); border: 1px solid rgba(91,147,255,0.4);
+      font-size: 12px; color: #a8c4ff; flex-shrink: 0;
     }
     .tut-slide p {
       font-size: 13px; line-height: 1.65; color: rgba(221,225,240,0.75);
@@ -480,8 +490,8 @@
     /* inline code */
     .tut-slide code {
       font-family: "JetBrains Mono", monospace; font-size: 11.5px;
-      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.2);
-      border-radius: 4px; padding: 1px 5px; color: #a5b4fc;
+      background: rgba(91,147,255,0.15); border: 1px solid rgba(91,147,255,0.2);
+      border-radius: 4px; padding: 1px 5px; color: #a8c4ff;
     }
     /* callout boxes */
     .tut-callout {
@@ -489,7 +499,7 @@
       font-size: 12.5px; line-height: 1.6;
     }
     .tut-callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
-    .tut-callout.info { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; }
+    .tut-callout.info { background: rgba(91,147,255,0.10); border: 1px solid rgba(91,147,255,0.25); color: #a8c4ff; }
     .tut-callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
     /* nav bar */
     #tutorialNav {
@@ -505,13 +515,13 @@
     }
     #tutPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
     #tutPrev:hover { background: rgba(255,255,255,0.13); }
-    #tutNext { background: linear-gradient(135deg,#059669,#10b981); color: #fff; box-shadow: 0 3px 12px rgba(16,185,129,0.25); }
+    #tutNext { background: var(--paper); border: 1px solid var(--paper); color: var(--ink-900); box-shadow: 0 3px 12px rgba(16,185,129,0.25); }
     #tutNext:hover { box-shadow: 0 5px 16px rgba(16,185,129,0.4); }
     #tutTryBtn {
-      background: linear-gradient(135deg,#4f46e5,#6366f1); color: #fff;
-      box-shadow: 0 3px 12px rgba(99,102,241,0.3);
+      background: var(--paper); color: var(--ink-900);
+      box-shadow: 0 3px 12px rgba(91,147,255,0.3);
     }
-    #tutTryBtn:hover { box-shadow: 0 5px 16px rgba(99,102,241,0.45); }
+    #tutTryBtn:hover { box-shadow: 0 5px 16px rgba(91,147,255,0.45); }
 
     .hidden { display: none !important; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -586,22 +596,22 @@
   border:none;
   border-radius:8px;
   padding:8px 12px;
-  background:rgba(99,102,241,0.18);
+  background:rgba(91,147,255,0.18);
   color:#c7d2fe;
   cursor:pointer;
   font-size:12px;
   font-weight:600;
 }
 .quiz-btn:hover{
-  background:rgba(99,102,241,0.32);
+  background:rgba(91,147,255,0.32);
 }
 .quiz-feedback{
   margin-top:10px;
   font-size:12px;
   font-weight:700;
 }
-.quiz-correct{ color:#6ee7b7; }
-.quiz-wrong{ color:#fca5a5; }
+.quiz-correct{ color:var(--good); }
+.quiz-wrong{ color:#f5a3a3; }
 
 @keyframes slideFade {
   from {
@@ -631,13 +641,13 @@
   font-weight:700;
   cursor:pointer;
   transition:all 140ms ease;
-  background:rgba(99,102,241,0.18);
+  background:rgba(91,147,255,0.18);
   color:#c7d2fe;
-  border:1px solid rgba(99,102,241,0.35);
+  border:1px solid rgba(91,147,255,0.35);
 }
 .tut-action-btn:hover{
   transform:translateY(-1px);
-  background:rgba(99,102,241,0.28);
+  background:rgba(91,147,255,0.28);
 }
 .tut-quiz{
   margin-top:14px;
@@ -673,7 +683,7 @@
 .quiz-feedback{
   margin-top:8px;
   font-size:12px;
-  color:#a5b4fc;
+  color:#a8c4ff;
 }
 
     /* ── Fill-in-blank quiz ──────────────────────────────────────────────── */
@@ -699,10 +709,10 @@
       display: inline-block;
       min-width: 64px;
       height: 20px;
-      border-bottom: 2px solid #6366f1;
-      background: rgba(99,102,241,0.10);
+      border-bottom: 2px solid #5b93ff;
+      background: rgba(91,147,255,0.10);
       border-radius: 4px 4px 0 0;
-      color: #a5b4fc;
+      color: #a8c4ff;
       font-weight: 700;
       text-align: center;
       padding: 0 5px;
@@ -718,13 +728,13 @@
       font-size: 12px;
       padding: 5px 11px;
       border-radius: 7px;
-      border: 1px solid rgba(99,102,241,0.35);
-      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(91,147,255,0.35);
+      background: rgba(91,147,255,0.14);
       color: #c7d2fe;
       cursor: pointer;
       transition: all 130ms;
     }
-    .fill-token:hover:not(:disabled) { background: rgba(99,102,241,0.28); transform: translateY(-1px); }
+    .fill-token:hover:not(:disabled) { background: rgba(91,147,255,0.28); transform: translateY(-1px); }
     .fill-token:disabled { opacity: 0.32; cursor: not-allowed; }
     .fill-feedback { font-size: 12px; font-weight: 700; min-height: 18px; margin-top: 6px; }
     .fill-feedback.correct { color: #6ee7b7; }
@@ -753,15 +763,15 @@
       font-size: 11.5px;
       padding: 6px 10px;
       border-radius: 6px;
-      border: 1px solid rgba(99,102,241,0.30);
-      background: rgba(99,102,241,0.10);
+      border: 1px solid rgba(91,147,255,0.30);
+      background: rgba(91,147,255,0.10);
       color: #c7d2fe;
       cursor: pointer;
       text-align: left;
       transition: all 120ms;
       white-space: pre;
     }
-    .parsons-tile:hover { background: rgba(99,102,241,0.22); border-color: rgba(99,102,241,0.50); }
+    .parsons-tile:hover { background: rgba(91,147,255,0.22); border-color: rgba(91,147,255,0.50); }
     .parsons-tile.placed { cursor: default; }
     .parsons-tile.correct-pos { background: rgba(52,211,153,0.14); border-color: rgba(52,211,153,0.5); color: #6ee7b7; }
     .parsons-tile.wrong-pos   { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
@@ -776,10 +786,10 @@
     .parsons-check {
       font-family: var(--font-body); font-size: 11px; font-weight: 700;
       padding: 5px 11px; border-radius: 7px;
-      border: 1px solid rgba(99,102,241,0.35); background: rgba(99,102,241,0.16); color: #c7d2fe;
+      border: 1px solid rgba(91,147,255,0.35); background: rgba(91,147,255,0.16); color: #c7d2fe;
       cursor: pointer; transition: all 120ms;
     }
-    .parsons-check:hover { background: rgba(99,102,241,0.28); }
+    .parsons-check:hover { background: rgba(91,147,255,0.28); }
     .parsons-feedback { font-size: 12px; font-weight: 700; min-height: 18px; margin-top: 6px; }
     .parsons-feedback.correct { color: #6ee7b7; }
     .parsons-feedback.wrong   { color: #fca5a5; }
@@ -860,9 +870,9 @@
         flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
         padding: 8px 4px 7px; border: none; background: none; cursor: pointer;
         font-family: "Cabinet Grotesk", sans-serif; font-size: 10.5px; font-weight: 700;
-        color: rgba(221,225,240,0.40); transition: color 130ms; position: relative;
+        color: var(--text-3); transition: color 130ms; position: relative;
       }
-      .mobile-tab-btn.active { color: #a5b4fc; }
+      .mobile-tab-btn.active { color: #a8c4ff; }
 
       .ml-contact-fab { bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
     }
@@ -917,7 +927,7 @@
            placement instead of floating in this center column. -->
     </div>
     <div class="hdr-right">
-      <button id="learnBtn" class="hdr-btn" style="background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
+      <button id="learnBtn" class="hdr-btn" style="background:rgba(91,147,255,0.14);border-color:rgba(91,147,255,0.40);color:#a8c4ff;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn Java
       </button>
       <button id="advancedBtn" class="hdr-btn" style="background:rgba(236,72,153,0.18);border-color:rgba(236,72,153,0.40);color:#f9a8d4;">
@@ -2627,7 +2637,7 @@ drawPolygon(n, 5, 10);   // pentagon, 10-step sides</div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0;">
         <button class="tut-nav-btn" id="advPrev" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#b0b8d8;">&#x2190; Back</button>
         <button class="tut-nav-btn" id="advNext" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 3px 12px rgba(16,185,129,0.25);">Next &#x2192;</button>
-        <button class="tut-nav-btn hidden" id="advTryBtn" style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;box-shadow:0 3px 12px rgba(99,102,241,0.3);">
+        <button class="tut-nav-btn hidden" id="advTryBtn" style="background:var(--paper);color:var(--ink-900);box-shadow:0 3px 12px rgba(99,102,241,0.3);">
           <i data-lucide="play" style="width:13px;height:13px;"></i> Close &amp; Code
         </button>
       </div>
@@ -3841,7 +3851,7 @@ function buildGrid(w, h) {
 
   // Axis labels
   const fs = 1.8;
-  let lHtml = `<g font-family="'JetBrains Mono',monospace" font-size="${fs}" fill="rgba(100,116,139,0.7)">`;
+  let lHtml = `<g font-family="'JetBrains Mono',monospace" font-size="${fs}" fill="#556074">`;
   lHtml += `<text x="0.8" y="${fs}" text-anchor="start">0</text>`;
   for (let x = step; x < w; x += step)
     lHtml += `<text x="${x}" y="${fs}" text-anchor="middle">${x}</text>`;
