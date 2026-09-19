@@ -23,10 +23,10 @@
     s.id = STYLE_ID;
     s.textContent = `
       .ml-lang-toggle{display:inline-flex;align-items:center;border-radius:99px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.05);padding:2px;gap:2px;font-family:inherit;flex-shrink:0}
-      .ml-lang-btn{font-size:10.5px;font-weight:700;letter-spacing:0.03em;padding:4px 10px;border-radius:99px;border:none;background:none;color:rgba(221,225,240,0.45);cursor:pointer;transition:all 150ms;line-height:1.2;font-family:inherit}
-      .ml-lang-btn.ml-active{background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff}
-      .ml-lang-btn:not(.ml-active):hover{color:#fff}
-      .ml-lang-note{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:#181428;border:1px solid rgba(255,255,255,0.14);color:#dde1f0;font-size:12.5px;font-family:"Cabinet Grotesk","DM Sans",sans-serif;padding:10px 18px;border-radius:11px;box-shadow:0 16px 40px rgba(0,0,0,0.45);opacity:0;pointer-events:none;transition:opacity 220ms,transform 220ms;z-index:99999;max-width:320px;text-align:center}
+      .ml-lang-btn{font-size:10.5px;font-weight:700;letter-spacing:0.03em;padding:4px 10px;border-radius:99px;border:none;background:none;color:var(--text-3, rgba(226,232,240,0.52));cursor:pointer;transition:all 150ms;line-height:1.2;font-family:inherit}
+      .ml-lang-btn.ml-active{background:var(--paper, #f2f5f9);color:var(--ink-900, #08090b)}
+      .ml-lang-btn:not(.ml-active):hover{color:var(--paper, #f2f5f9)}
+      .ml-lang-note{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink-800, #111418);border:1px solid rgba(255,255,255,0.16);color:var(--text, #e3e8ef);font-size:12.5px;font-family:"Cabinet Grotesk","DM Sans",sans-serif;padding:10px 18px;border-radius:11px;box-shadow:0 16px 40px rgba(0,0,0,0.45);opacity:0;pointer-events:none;transition:opacity 220ms,transform 220ms;z-index:99999;max-width:320px;text-align:center}
       .ml-lang-note.ml-show{opacity:1;transform:translateX(-50%) translateY(0)}
     `;
     document.head.appendChild(s);
