@@ -11,13 +11,26 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"}}</script>
+  <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
+    /* ══════════════════════════════════════════════════════════════════════
+       Model Mage — CAD.
+
+       The third Model Mage page; the other two are already on --t-model, so
+       this one joins them. It was already free of glows and gradients, so
+       this is a token migration and a contrast pass.
+
+       Kept as meaning: the boolean operation colours. New green, Fuse blue,
+       Cut red is CAD convention, and it runs across the feature-tree chips
+       and the operation buttons. Construction geometry keeps its blue.
+       ══════════════════════════════════════════════════════════════════════ */
     :root {
-      --bg:#080c1a; --bg2:#0d1226;
-      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085);
-      --text:#e4e8f8; --text2:rgba(210,218,245,0.65);
-      --accent:#14b8a6; --accent2:#2dd4bf;
-      --blue:#3b82f6; --green:#10b981; --red:#ef4444;
+      --bg: var(--ink-900); --bg2: var(--ink-850);
+      --surface: rgba(255,255,255,0.048); --border: var(--line);
+      --text2: var(--text-2);
+      --accent: var(--t-model); --accent2: var(--t-model);
+      /* Boolean operations — convention, not decoration. */
+      --blue:#5b93ff; --green:var(--good); --red:#f5a3a3;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);
@@ -31,10 +44,10 @@
     .nav-link{background:var(--surface);border:1px solid var(--border);color:var(--text2);
               font-size:0.76rem;font-weight:600;padding:6px 14px;border-radius:99px;
               text-decoration:none;transition:color 120ms,border-color 120ms;}
-    .nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
-    .nav-link.accent{background:rgba(20,184,166,0.15);border-color:rgba(20,184,166,0.4);color:var(--accent2);}
+    .nav-link:hover{color:var(--text);border-color:var(--text-3);}
+    .nav-link.accent{background:rgba(23,196,192,0.15);border-color:rgba(23,196,192,0.4);color:var(--accent2);}
 
-    .toolbar{height:40px;flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
+    .toolbar{height:40px;flex-shrink:0;background:rgba(8,9,11,0.95);border-bottom:1px solid var(--border);
              display:flex;align-items:center;padding:0 8px;gap:2px;}
     .tb-sep{width:1px;height:20px;background:var(--border);margin:0 5px;}
     .tb-btn{height:28px;padding:0 9px;border-radius:5px;border:1px solid transparent;
@@ -43,22 +56,22 @@
             font-family:inherit;transition:background 100ms,color 100ms;}
     .tb-btn:hover{background:var(--surface);color:var(--text);}
     .tb-btn.active{background:rgba(217,119,6,0.18);color:var(--accent2);border-color:rgba(217,119,6,0.4);}
-    .tb-btn.construct-on{background:rgba(59,130,246,0.18);color:var(--blue);border-color:rgba(59,130,246,0.4);}
+    .tb-btn.construct-on{background:rgba(91,147,255,0.18);color:var(--blue);border-color:rgba(91,147,255,0.4);}
     .tb-btn svg{width:13px;height:13px;flex-shrink:0;}
     .snap-sel{height:26px;padding:0 7px;border-radius:5px;border:1px solid var(--border);
               background:#111827;color:#e4e8f8;font-size:0.74rem;cursor:pointer;font-family:inherit;}
     .snap-sel option{background:#111827;color:#e4e8f8;}
-    .snap-sel:focus{outline:none;border-color:rgba(255,255,255,0.20);}
+    .snap-sel:focus{outline:none;border-color:var(--text-3);}
     .tb-label{font-size:0.73rem;color:var(--text2);padding-left:4px;}
 
     .main{flex:1;display:flex;overflow:hidden;}
 
-    .sketch-panel{flex:1;position:relative;background:#05081a;overflow:hidden;}
+    .sketch-panel{flex:1;position:relative;background:#0c0e11;overflow:hidden;}
     #sk{display:block;width:100%;height:100%;touch-action:none;}
-    .sk-overlay{position:absolute;top:8px;left:8px;background:rgba(10,15,32,0.88);
+    .sk-overlay{position:absolute;top:8px;left:8px;background:rgba(8,9,11,0.88);
                 border:1px solid var(--border);border-radius:7px;padding:5px 10px;
                 font-size:0.70rem;font-weight:600;color:var(--text2);}
-    .hint-box{position:absolute;bottom:8px;left:8px;background:rgba(10,15,32,0.88);
+    .hint-box{position:absolute;bottom:8px;left:8px;background:rgba(8,9,11,0.88);
               border:1px solid var(--border);border-radius:7px;padding:7px 11px;
               font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:280px;}
     .hint-box b{color:var(--text);}
@@ -68,7 +81,7 @@
         collide. Not a modal: a learner can ignore it and keep drawing.      */
     .ext-prompt{
       position:absolute; right:10px; bottom:10px; z-index:6; width:212px;
-      background:rgba(10,15,32,0.95); border:1px solid rgba(255,255,255,0.16);
+      background:rgba(8,9,11,0.95); border:1px solid rgba(255,255,255,0.16);
       border-radius:9px; padding:11px 12px 10px;
       box-shadow:0 14px 34px rgba(0,0,0,0.5);
     }
@@ -81,7 +94,7 @@
       border:1px solid var(--border);background:var(--surface);
       color:var(--text);font-family:inherit;font-size:0.74rem;outline:none;
     }
-    .ext-prompt-input:focus{border-color:rgba(255,255,255,0.34);}
+    .ext-prompt-input:focus{border-color:var(--text-3);}
     .ext-prompt-unit{font-size:0.66rem;color:var(--text2);flex-shrink:0;}
     .ext-prompt-actions{display:flex;gap:6px;}
     .ext-btn{
@@ -90,7 +103,7 @@
       font-family:inherit;font-size:0.71rem;font-weight:700;
       transition:background 140ms,border-color 140ms,color 140ms;
     }
-    .ext-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.30);}
+    .ext-btn:hover{color:var(--text);border-color:var(--text-3);}
     .ext-btn-go{background:#f2f5f9;border-color:#f2f5f9;color:#08090b;}
     .ext-btn-go:hover{background:#fff;border-color:#fff;color:#08090b;}
     .ext-prompt-note{margin-top:8px;font-size:0.62rem;color:var(--text2);opacity:0.75;}
@@ -98,13 +111,13 @@
     /*  Shown when profiles were kept flat, so that choice is never a dead end. */
     .ext-flat-chip{
       position:absolute; right:10px; bottom:10px; z-index:5;
-      background:rgba(10,15,32,0.92); border:1px solid rgba(255,255,255,0.14);
+      background:rgba(8,9,11,0.92); border:1px solid rgba(255,255,255,0.14);
       border-radius:99px; padding:6px 13px; cursor:pointer;
       color:var(--text2); font-family:inherit; font-size:0.66rem; font-weight:600;
       transition:color 140ms,border-color 140ms;
     }
     .ext-flat-chip[hidden]{display:none;}
-    .ext-flat-chip:hover{color:var(--text);border-color:rgba(255,255,255,0.30);}
+    .ext-flat-chip:hover{color:var(--text);border-color:var(--text-3);}
 
     /* ── 3D mode ── */
     .main.mode-3d .sketch-panel{flex:0;width:0;min-width:0;overflow:hidden;}
@@ -121,7 +134,7 @@
 
     /* Length popup */
     #len-popup{position:absolute;display:none;align-items:center;gap:4px;
-               background:rgba(10,15,32,0.97);border:1px solid rgba(217,119,6,0.6);
+               background:rgba(8,9,11,0.97);border:1px solid rgba(217,119,6,0.6);
                border-radius:7px;padding:4px 8px;z-index:100;pointer-events:auto;}
     #len-popup input{width:72px;height:24px;padding:0 6px;border-radius:4px;
                      border:1px solid rgba(217,119,6,0.4);background:rgba(255,255,255,0.07);
@@ -159,26 +172,26 @@
     .cst-quick{flex:1;height:22px;border-radius:5px;border:1px solid var(--border);
                background:var(--surface);color:var(--text2);font-size:0.70rem;font-weight:600;
                cursor:pointer;font-family:inherit;}
-    .cst-quick:hover{background:rgba(59,130,246,0.15);color:var(--blue);border-color:rgba(59,130,246,0.4);}
+    .cst-quick:hover{background:rgba(91,147,255,0.15);color:var(--blue);border-color:rgba(91,147,255,0.4);}
 
-    #vp3d{flex:1;position:relative;background:#04060f;overflow:hidden;}
+    #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;}
     .vp-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
                     align-items:center;justify-content:center;gap:8px;pointer-events:none;}
-    .vp-ph-icon{font-size:2.2rem;opacity:0.2;}
-    .vp-ph-text{font-size:0.74rem;color:var(--text2);opacity:0.45;text-align:center;line-height:1.6;}
+    .vp-ph-icon{font-size:2.2rem;opacity:0.5;}
+    .vp-ph-text{font-size:0.74rem;color:var(--text-2);opacity:1;text-align:center;line-height:1.6;}
     .vp-badge{position:absolute;top:8px;left:8px;background:rgba(4,6,15,0.88);
               border:1px solid var(--border);border-radius:6px;padding:3px 9px;
               font-size:0.68rem;font-weight:600;color:var(--text2);}
-    .vp-hint{position:absolute;bottom:4px;left:8px;font-size:0.62rem;color:rgba(210,218,245,0.3);}
+    .vp-hint{position:absolute;bottom:4px;left:8px;font-size:0.62rem;color:var(--text-3);}
     .btn-stl{position:absolute;bottom:10px;right:10px;height:30px;padding:0 13px;
-             border-radius:6px;background:rgba(217,119,6,0.9);border:none;
-             color:#fff;font-weight:700;font-size:0.73rem;font-family:inherit;
+             border-radius:6px;background:var(--ink-800);border:1px solid var(--line-hard);
+             color:var(--paper);font-weight:700;font-size:0.73rem;font-family:inherit;
              cursor:pointer;opacity:0;pointer-events:none;transition:opacity 200ms;}
     .btn-stl.show{opacity:1;pointer-events:auto;}
 
     .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
       color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
-    .edge-mode-btn.active{background:rgba(20,184,166,0.2);color:var(--accent2);}
+    .edge-mode-btn.active{background:rgba(23,196,192,0.2);color:var(--accent2);}
     .feat-panel{width:200px;flex-shrink:0;border-right:1px solid var(--border);
       background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
     .feat-panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
@@ -193,22 +206,22 @@
     .feat-node.extrude-node{padding-left:26px;}
     .feat-node-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .feat-node-op{font-size:0.60rem;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;}
-    .feat-node-op.op-new {background:rgba(16,185,129,0.2);color:var(--green);}
-    .feat-node-op.op-fuse{background:rgba(59,130,246,0.2);color:var(--blue);}
-    .feat-node-op.op-cut {background:rgba(239,68,68,0.2);color:var(--red);}
+    .feat-node-op.op-new {background:rgba(74,207,127,0.2);color:var(--green);}
+    .feat-node-op.op-fuse{background:rgba(91,147,255,0.2);color:var(--blue);}
+    .feat-node-op.op-cut {background:rgba(239,91,91,0.2);color:var(--red);}
     .feat-node.datum-node{border-left-color:rgba(245,158,11,0.7);color:rgba(245,200,80,0.9);}
     .feat-node.datum-node:hover{background:rgba(245,158,11,0.08);}
     .feat-node.sketch-under-datum{padding-left:24px;}
     .feat-node.extrude-under-datum{padding-left:38px;}
     .pr-num-inp{width:52px;height:22px;padding:0 5px;border-radius:4px;border:1px solid var(--border);
                 background:#111827;color:#e4e8f8;font-size:0.74rem;font-family:inherit;text-align:right;}
-    .pr-num-inp:focus{outline:none;border-color:rgba(255,255,255,0.30);}
+    .pr-num-inp:focus{outline:none;border-color:var(--text-3);}
     .pr-unit{font-size:0.68rem;color:var(--text2);flex-shrink:0;}
     .op-toggle{display:none;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:10px;}
     .op-toggle.visible{display:flex;}
     .op-btn{flex:1;height:24px;padding:0 8px;border:none;background:none;color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 120ms;}
-    .op-btn.active.add{background:rgba(59,130,246,0.25);color:var(--blue);}
-    .op-btn.active.cut{background:rgba(239,68,68,0.20);color:var(--red);}
+    .op-btn.active.add{background:rgba(91,147,255,0.25);color:var(--blue);}
+    .op-btn.active.cut{background:rgba(239,91,91,0.20);color:var(--red);}
     .feat-add-sketch{margin:6px 10px 8px;padding:5px 0;border-radius:5px;
       border:1px dashed var(--border);background:none;color:var(--text2);
       font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit;width:calc(100% - 20px);}
@@ -2699,7 +2712,7 @@ const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.setClearColor(0x04060f);
+renderer.setClearColor(0x08090b);
 vpEl.appendChild(renderer.domElement);
 
 const scene=new THREE.Scene();
@@ -2731,15 +2744,15 @@ Object.assign(sun.shadow.camera,{near:1,far:700,left:-220,right:220,top:220,bott
 scene.add(sun);
 const fillA=new THREE.DirectionalLight(0xa0b8ff,0.4); fillA.position.set(-80,60,-80); scene.add(fillA);
 const fillB=new THREE.DirectionalLight(0xffd080,0.25); fillB.position.set(0,-30,120); scene.add(fillB);
-scene.add(new THREE.GridHelper(600,30,0x1e2a50,0x111828));
+scene.add(new THREE.GridHelper(600,30,0x2b2f36,0x191c21));
 
 const modelGroup=new THREE.Group();
 modelGroup.rotation.x=-Math.PI/2;
 scene.add(modelGroup);
 
 const mat=new THREE.MeshStandardMaterial({color:0xb0c8e4,roughness:0.28,metalness:0.06});
-const wireMat=new THREE.MeshBasicMaterial({color:0x14b8a6,wireframe:true,transparent:true,opacity:0.05});
-const _faceHlMat=new THREE.MeshBasicMaterial({color:0x14b8a6,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+const wireMat=new THREE.MeshBasicMaterial({color:0x17c4c0,wireframe:true,transparent:true,opacity:0.05});
+const _faceHlMat=new THREE.MeshBasicMaterial({color:0x17c4c0,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
 var modelMesh=null, wireMesh=null, lastGeo=null;
 var _faceHlMesh=null;
 
