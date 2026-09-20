@@ -15,32 +15,32 @@
 <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
 <script src="https://unpkg.com/blockly/python_compressed.js"></script>
 <script src="https://unpkg.com/blockly/msg/en.js"></script>
+<link rel="stylesheet" href="../assets/magic-lab.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0b0a06;--bg2:#14110a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
-  --text:#f4efdf;--muted:rgba(240,232,205,0.45);
-  --accent:#facc15;--accent2:#f59e0b;--accent-dim:#a16207;
+  --bg:var(--ink-900);--bg2:var(--ink-850);--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+  --text:#f4efdf;--muted:rgba(240,232,205,0.55);
+  --accent:var(--t-spike);--accent2:var(--t-spike);--accent-dim:#8a7420;
   --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);-webkit-font-smoothing:antialiased;}
 body{display:flex;flex-direction:column;overflow:hidden;
   background-image:
-    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(250,204,21,0.10) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(245,158,11,0.07) 0%,transparent 55%);
+    none;  /* Was two radial glows. */
 }
 
 /* ── Nav ── */
 nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
 .nav-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
-.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(250,204,21,0.28),rgba(245,158,11,0.16));border:1px solid rgba(250,204,21,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
-.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;background:linear-gradient(125deg,#fff 0%,#fde047 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:rgba(232,198,58,0.13);border:1px solid rgba(232,198,58,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;color:var(--paper);}
 .nav-center{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
 .nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;flex-wrap:wrap;}
 .nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
 .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
 .nav-filename-input{height:28px;padding:0 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fm);font-size:11px;width:120px;}
-.nav-filename-input:focus{outline:none;border-color:rgba(250,204,21,0.45);}
+.nav-filename-input:focus{outline:none;border-color:rgba(232,198,58,0.45);}
 .nav-filename-ext{font-size:11px;color:var(--muted);margin-right:2px;}
 
 @media (max-width: 640px){
@@ -60,26 +60,26 @@ nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;
 .panel-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
 .code-area{flex:1;padding:0;position:relative;overflow:hidden;}
 textarea.code-input{width:100%;height:100%;background:#080703;color:#f1ecdb;font-family:var(--fm);font-size:12.5px;line-height:1.7;padding:14px;border:none;outline:none;resize:none;tab-size:4;}
-textarea.code-input::placeholder{color:rgba(240,232,205,0.20);}
+textarea.code-input::placeholder{color:var(--text-3);}
 
 /* ── Control bar ── */
 .ctrl-bar{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
 .btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 140ms;letter-spacing:-0.01em;}
 .btn:active{transform:scale(0.97);}
-.btn-run{background:linear-gradient(135deg,#ca8a04,#a16207);color:#fff;box-shadow:0 2px 10px rgba(202,138,4,0.4);}
+.btn-run{background:var(--paper);color:var(--ink-900);}
 .btn-run:hover{box-shadow:0 4px 16px rgba(202,138,4,0.55);}
 .btn-reset{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border);}
 .btn-reset:hover{background:rgba(255,255,255,0.10);color:var(--text);}
 .btn-speed{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border);font-size:11px;padding:6px 10px;}
-.btn-speed.active{background:rgba(250,204,21,0.15);color:#fde047;border-color:rgba(250,204,21,0.30);}
+.btn-speed.active{background:rgba(232,198,58,0.15);color:#f0dc86;border-color:rgba(232,198,58,0.30);}
 
 /* ── Log panel ── */
-.log-panel{flex-shrink:0;height:130px;border-top:1px solid var(--border);overflow-y:auto;background:#050403;padding:8px 12px;font-family:var(--fm);font-size:11px;line-height:1.6;color:rgba(240,232,205,0.55);}
+.log-panel{flex-shrink:0;height:130px;border-top:1px solid var(--border);overflow-y:auto;background:var(--ink-900);padding:8px 12px;font-family:var(--fm);font-size:11px;line-height:1.6;color:var(--text-2);}
 .log-panel .log-line{margin-bottom:1px;white-space:pre-wrap;word-break:break-word;}
-.log-panel .log-err{color:#f87171;}
-.log-panel .log-ok{color:#4ade80;}
-.log-panel .log-info{color:#a3a3a3;}
-.log-panel .log-out{color:#fde047;}
+.log-panel .log-err{color:#f5a3a3;}
+.log-panel .log-ok{color:var(--good);}
+.log-panel .log-info{color:var(--text-3);}
+.log-panel .log-out{color:#f0dc86;}
 
 /* ── Centre: hub + arena ── */
 .panel-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
@@ -88,7 +88,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 .hub-strip{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;}
 
 /* ── Hub graphic ── */
-.hub{background:linear-gradient(160deg,#26221a,#171410);border:1px solid rgba(250,204,21,0.22);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(0,0,0,0.4);}
+.hub{background:linear-gradient(160deg,#26221a,#171410);border:1px solid rgba(232,198,58,0.22);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(0,0,0,0.4);}
 .hub-top{display:flex;align-items:center;gap:12px;}
 .matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:6px;background:#0a0906;border-radius:8px;border:1px solid rgba(255,255,255,0.05);}
 .px{width:14px;height:14px;border-radius:3px;background:#1a1710;transition:background 80ms,box-shadow 80ms;}
@@ -96,7 +96,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 .status-light{width:22px;height:22px;border-radius:50%;background:#333;border:2px solid rgba(255,255,255,0.12);box-shadow:0 0 0 rgba(0,0,0,0);transition:all 120ms;}
 .hub-btns{display:flex;gap:5px;}
 .hub-btn{width:26px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--fd);}
-.hub-btn:active,.hub-btn.pressed{background:rgba(250,204,21,0.25);color:#fde047;border-color:rgba(250,204,21,0.4);}
+.hub-btn:active,.hub-btn.pressed{background:rgba(232,198,58,0.25);color:#f0dc86;border-color:rgba(232,198,58,0.4);}
 .hub-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
 
 /* ── Right panel ── */
@@ -108,21 +108,21 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 .row-val{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--text);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:3px 8px;min-width:60px;text-align:right;}
 .bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
 .bar{height:100%;border-radius:3px;transition:width 120ms;background:var(--accent);}
-.port-chip{font-family:var(--fm);font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(250,204,21,0.14);color:#fde047;border:1px solid rgba(250,204,21,0.25);}
+.port-chip{font-family:var(--fm);font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(232,198,58,0.14);color:#f0dc86;border:1px solid rgba(232,198,58,0.25);}
 .mission-btn{width:100%;text-align:left;font-family:var(--fd);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;margin-bottom:6px;transition:all 140ms;display:flex;align-items:center;gap:8px;}
 .mission-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);}
-.mission-btn.active{border-color:rgba(250,204,21,0.40);background:rgba(250,204,21,0.10);color:#fde047;}
+.mission-btn.active{border-color:rgba(232,198,58,0.40);background:rgba(232,198,58,0.10);color:#f0dc86;}
 .mission-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .api-item{margin-bottom:9px;}
 .api-fn{font-family:var(--fm);font-size:10px;color:#fbbf24;margin-bottom:2px;word-break:break-word;}
 .api-desc{font-size:10px;color:var(--muted);line-height:1.5;}
 .press-btn{width:100%;font-family:var(--fd);font-size:11px;font-weight:700;padding:7px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--muted);cursor:pointer;transition:all 120ms;}
-.press-btn:active,.press-btn.on{background:rgba(250,204,21,0.20);color:#fde047;border-color:rgba(250,204,21,0.35);}
+.press-btn:active,.press-btn.on{background:rgba(232,198,58,0.20);color:#f0dc86;border-color:rgba(232,198,58,0.35);}
 
 /* ── Block/Python toggle ── */
 .mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
 .mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
-.mode-btn.active{background:rgba(250,204,21,0.20);color:#fde047;}
+.mode-btn.active{background:rgba(232,198,58,0.20);color:#f0dc86;}
 #codeArea{display:none;}
 #blocklyDiv{flex:1;display:flex;flex-direction:column;min-height:0;}
 #blocklyDiv .blocklyMainBackground{fill:#080703 !important;}
@@ -132,8 +132,8 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 /* ── Status bar ── */
 .status-bar{flex-shrink:0;display:flex;align-items:center;gap:14px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);flex-wrap:wrap;}
 .status-dot{width:7px;height:7px;border-radius:50%;background:#6b7280;flex-shrink:0;}
-.status-dot.running{background:#facc15;animation:pulse 1s ease-in-out infinite;}
-.status-dot.done{background:#4ade80;}
+.status-dot.running{background:var(--t-spike);animation:pulse 1s ease-in-out infinite;}
+.status-dot.done{background:var(--good);}
 .status-dot.error{background:#f87171;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
@@ -198,8 +198,8 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
         <button class="mode-btn" id="tgtHub" onclick="setTarget('hub')">🤖 Live Hub</button>
       </div>
       <button class="btn btn-run" id="btnRun" onclick="runCode()" title="Run (Ctrl+R)">▶ Run</button>
-      <button class="btn btn-reset" id="btnSync" onclick="syncToHub()" title="Upload the latest code to the hub without running it" style="opacity:0.35;">🔁 Sync</button>
-      <button class="btn btn-reset" id="btnStop" onclick="stopHub()" title="Stop the program currently running on the hub" style="opacity:0.35;">⏹ Stop</button>
+      <button class="btn btn-reset" id="btnSync" onclick="syncToHub()" title="Upload the latest code to the hub without running it" style="opacity:0.35;" disabled aria-disabled="true">🔁 Sync</button>
+      <button class="btn btn-reset" id="btnStop" onclick="stopHub()" title="Stop the program currently running on the hub" style="opacity:0.35;" disabled aria-disabled="true">⏹ Stop</button>
       <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
       <button class="btn btn-speed active" id="btnSlow" onclick="setSpeed('slow')" title="Real-time speed">🐢 Slow</button>
       <button class="btn btn-speed" id="btnFast" onclick="setSpeed('fast')" title="Fast forward">⚡ Fast</button>
@@ -979,10 +979,26 @@ function setTarget(t){
   runTarget = t;
   document.getElementById('tgtSim').classList.toggle('active', t === 'sim');
   document.getElementById('tgtHub').classList.toggle('active', t === 'hub');
-  document.getElementById('btnSlow').style.opacity = t === 'hub' ? 0.35 : 1;
-  document.getElementById('btnFast').style.opacity = t === 'hub' ? 0.35 : 1;
-  document.getElementById('btnSync').style.opacity = t === 'hub' ? 1 : 0.35;
-  document.getElementById('btnStop').style.opacity = t === 'hub' ? 1 : 0.35;
+  // Mirror of the same bug: the two simulator speed buttons are dimmed on
+  // hub, where they do nothing, but stayed enabled and clickable.
+  for (const id of ['btnSlow', 'btnFast']) {
+    const b = document.getElementById(id);
+    b.style.opacity = t === 'hub' ? 0.35 : 1;
+    b.disabled = (t === 'hub');
+    b.setAttribute('aria-disabled', String(t === 'hub'));
+  }
+  // Sync and Stop only mean anything with a hub attached. They were dimmed
+  // to 0.35 but left enabled, so they looked unavailable, still fired when
+  // clicked, told assistive tech nothing, and their labels sat at 1.71 : 1.
+  // Disabling them makes the intent real - and WCAG exempts inactive
+  // controls from contrast, so the dimming is then honest rather than a bug.
+  const onHub = t === 'hub';
+  for (const id of ['btnSync', 'btnStop']) {
+    const b = document.getElementById(id);
+    b.style.opacity = onHub ? 1 : 0.35;
+    b.disabled = !onHub;
+    b.setAttribute('aria-disabled', String(!onHub));
+  }
   const rb = document.getElementById('btnRun');
   rb.title = t === 'hub' ? 'Upload & run the latest code on the hub (Ctrl+R)' : 'Run in the simulator (Ctrl+R)';
 }
