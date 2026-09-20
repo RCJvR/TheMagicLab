@@ -8,7 +8,7 @@
       // assets/magic-lab.css yet still get the same treatment.
       '.ml-contact-fab{position:fixed;bottom:24px;right:24px;z-index:9998;width:46px;height:46px;border-radius:14px;' +
       'border:1px solid var(--line-hard,rgba(255,255,255,.16));background:var(--ink-800,#111418);' +
-      'color:var(--text,#e3e8ef);font-size:17px;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.70);' +
+      'color:#e3e8ef;font-size:17px;cursor:pointer;box-shadow:0 8px 24px -8px rgba(0,0,0,.70);' +
       'display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;' +
       'transition:background 140ms,border-color 140ms,transform 140ms}' +
       '.ml-contact-fab:hover{background:var(--ink-750,#171b20);border-color:var(--paper,#f2f5f9);transform:translateY(-2px)}' +
