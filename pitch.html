@@ -35,7 +35,12 @@
   --fm:"JetBrains Mono",monospace;
 }
 html{scroll-behavior:smooth;}
-body{font-family:var(--fs);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+/* .reveal-right starts at translateX(40px), so before it animates in it
+   sits past the right edge. overflow-x on body alone does not stop the
+   viewport scrolling - it has to be on html too. clip rather than hidden,
+   because clip does not create a scroll container. */
+html{overflow-x:clip;}
+body{font-family:var(--fs);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;}
 
 /* ── Scroll-reveal ── */
 .js .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
@@ -54,7 +59,7 @@ body{font-family:var(--fs);background:var(--cream);color:var(--text);font-size:1
 ═══════════════════════════════ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
   padding:18px 56px;
   background:rgba(240,237,230,0.85);
   backdrop-filter:blur(16px);
@@ -562,6 +567,7 @@ footer{
   .hero-proof{gap:16px;}
   .proof-divider{display:none;}
   .bento{grid-template-columns:1fr;}
+  .bento-arena-demo{grid-template-columns:1fr;}
   .bento-cell:nth-child(n){grid-column:span 1;}
   .curriculum-grid{grid-template-columns:1fr;}
   .plans-grid{grid-template-columns:1fr;}
@@ -689,7 +695,7 @@ footer{
       <div class="tc-tags">
         <span class="tc-tag">Block Coding</span><span class="tc-tag">Robotics</span><span class="tc-tag">CAPS C&amp;R</span><span class="tc-tag">Senior Phase</span>
       </div>
-      <a href="robot-realm.html" class="tc-link">Try it →</a>
+      <a href="robot-realm/index.html" class="tc-link">Try it →</a>
     </div>
 
     <div class="tool-card tc-amber reveal delay-3">

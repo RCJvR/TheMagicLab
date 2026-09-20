@@ -1081,7 +1081,13 @@ window.WRO_PROGRAM = (function() {
     // Fallback distance bound for helpers that drive/follow until a sensor
     // trigger with no source distance argument at all -- generous enough
     // to not truncate a real run, just a simulator infinite-loop guard.
-    const noLimitSafetyCapMm = 3000;
+    // Kept well under the mat's own ~2362x1143mm footprint: if a stop
+    // condition never fires (e.g. accumulated drift from an earlier
+    // approximated step means the simulated path no longer crosses the
+    // real target line), this bounds how far the robot overshoots to a
+    // visibly-off-course miss instead of flying thousands of mm past the
+    // mat's edge and out of view entirely.
+    const noLimitSafetyCapMm = 1000;
     // The line-following helpers below steer with motor.dc(), so their
     // `speed` argument is a 0-100 DUTY CYCLE PERCENTAGE, not mm/s (the
     // drive_base.drive()-based helpers' speed genuinely is mm/s). Taking a

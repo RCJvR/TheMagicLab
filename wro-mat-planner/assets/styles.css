@@ -115,7 +115,10 @@ body {
     none;  /* Was two radial glows. */
 }
 
-.page { max-width: 1500px; margin: 0 auto; padding: 0 24px 64px; }
+/* width:100% matters here: linking magic-lab.css made body a flex column,
+   and a centred child without it is sized to its content rather than the
+   viewport - which had this page 642px wide on a 360px screen. */
+.page { width: 100%; max-width: 1500px; margin: 0 auto; padding: 0 24px 64px; }
 
 /* ------------------ NAV ------------------ */
 nav.app-nav {
@@ -320,7 +323,7 @@ nav.app-nav {
 #robotStateToggle button:last-child { border-right: 0 !important; }
 #robotStateToggle button.active { background: rgba(238,117,68,0.22) !important; color: var(--t-robot);color: #fff !important; }
 
-.robot-size-fields { display: inline-flex; align-items: center; gap: 10px; }
+.robot-size-fields { display: inline-flex; align-items: center; gap: 10px; ;flex-wrap:wrap;}
 .mini-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); white-space: nowrap; }
 .mini-label input[type="number"] {
   width: 58px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text);
@@ -1098,3 +1101,10 @@ footer.site {
   footer.site { font-size: 10px; }
   .zone-box { stroke-dasharray: 8 4 !important; }
 }
+
+
+/* The zones table is 560px of real columns and should not be squeezed —
+   a reference table you read across. It gets its own scroll container so
+   the table scrolls instead of the whole page. */
+section:has(> .zones-table) { overflow-x: auto; }
+.zones-table { min-width: 520px; }
