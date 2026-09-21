@@ -14,11 +14,26 @@
 // — they need to see why they're locked out and finish/manage
 // checkout) set `window.MLSkipPaywall = true` in an inline <script>
 // before this file loads. They still require sign-in either way.
+//
+// A handful of sample lessons set `window.MLPublicPreview = true` instead.
+// Those are open to everyone, signed in or not: the gate reveals the page
+// and gets out of the way. auth.js still loads on them, so the nav knows
+// who you are and the sign-up prompt at the foot of the lesson works —
+// this flag only says "do not send this visitor away".
 // ============================================================
 
 (function () {
   function reveal() {
     document.documentElement.style.visibility = '';
+  }
+
+  // A public sample lesson: show it to everyone and skip every redirect
+  // below. Revealed immediately rather than waiting on auth, so a
+  // signed-out visitor never stares at a blank page while the session
+  // check makes its round trips.
+  if (window.MLPublicPreview) {
+    reveal();
+    return;
   }
 
   function redirectToSignIn() {

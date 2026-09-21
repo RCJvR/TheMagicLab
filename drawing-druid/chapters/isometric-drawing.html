@@ -111,7 +111,26 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:380px;display:block;}
 }
 
     .ml-skip{position:absolute;left:12px;top:10px;z-index:1000;padding:10px 16px;border-radius:8px;background:#f5f7fa;color:#08090b;font:600 14px/1 ui-sans-serif,system-ui,-apple-system,sans-serif;text-decoration:none;transform:translateY(-250%);transition:transform .15s}.ml-skip:focus{transform:translateY(0)}
+  
+    /* Sample-lesson prompt. Neutral literals rather than tokens: these
+       lessons each carry their own palette and do not all load the design
+       system. */
+    .ml-preview-cta{max-width:640px;margin:56px auto 72px;padding:28px 26px;
+      border:1px solid rgba(255,255,255,.14);border-radius:16px;
+      background:rgba(255,255,255,.035);text-align:center;}
+    .ml-preview-cta .pv-eyebrow{margin:0 0 10px;font-size:11px;font-weight:700;
+      letter-spacing:.11em;text-transform:uppercase;color:rgba(226,232,240,.52);}
+    .ml-preview-cta .pv-title{margin:0 0 10px;font-size:23px;font-weight:800;
+      letter-spacing:-.02em;color:#e3e8ef;line-height:1.2;}
+    .ml-preview-cta .pv-body{margin:0 auto 20px;max-width:46ch;font-size:14.5px;
+      line-height:1.65;color:rgba(226,232,240,.72);}
+    .ml-preview-cta .pv-btn{display:inline-block;padding:12px 22px;border-radius:10px;
+      background:#f5f7fa;color:#08090b;font-weight:650;font-size:14.5px;
+      text-decoration:none;}
+    .ml-preview-cta .pv-alt{display:block;margin-top:14px;font-size:13px;
+      color:rgba(226,232,240,.52);}
   </style>
+  <link rel="stylesheet" href="/auth-modal.css">
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -192,7 +211,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:380px;display:block;}
 
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
 <script defer src="../../auth.js"></script>
+<script>window.MLPublicPreview = true;</script>
 <script defer src="../../require-auth.js"></script>
+<script defer src="/auth-modal.js"></script>
 <script defer src="../../progress.js"></script>
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
@@ -437,5 +458,24 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:380px;display:block;}
 </script>
 <script defer src="../wip-notice.js"></script>
   <script src="/contact-button.js" defer></script>
+
+  <!-- Sample lesson: open to signed-out visitors (window.MLPublicPreview). -->
+  <aside class="ml-preview-cta">
+    <p class="pv-eyebrow">Free sample lesson</p>
+    <p class="pv-title">This one is on the house.</p>
+    <p class="pv-body">It is one of more than three hundred lessons across thirteen browser-based tools for South African classrooms. Make a free account to open the rest.</p>
+    <a class="pv-btn" href="/index.html" id="mlPreviewCta">Create a free account</a>
+    <a class="pv-alt" href="/index.html">See what else is here &rarr;</a>
+  </aside>
+  <script>
+  // A real link first; only take it over once the modal script is here.
+  (function () {
+    var a = document.getElementById('mlPreviewCta');
+    if (!a) return;
+    a.addEventListener('click', function (e) {
+      if (window.MagicLabModal) { e.preventDefault(); window.MagicLabModal.open('signup'); }
+    });
+  })();
+  </script>
 </body>
 </html>
