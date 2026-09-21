@@ -64,7 +64,7 @@
     .pg-result .g{font-size:16px}
     .pg-result .p{font-size:9px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
     .results-panel{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px}
-    .results-panel h4{font-size:12px;font-weight:800;color:#fff;margin-bottom:10px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    .results-panel h3{font-size:12px;font-weight:800;color:#fff;margin-bottom:10px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
     .ratio-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(210,218,245,.80)}
     .ratio-row:last-child{border-bottom:none}
     .ratio-row .pct{color:#86efac;font-weight:700;font-family:var(--fm)}
@@ -113,6 +113,8 @@
       .punnett-controls{grid-template-columns:1fr}
       .punnett-layout{grid-template-columns:1fr}
     }
+  
+    .ml-skip{position:absolute;left:12px;top:10px;z-index:1000;padding:10px 16px;border-radius:8px;background:#f5f7fa;color:#08090b;font:600 14px/1 ui-sans-serif,system-ui,-apple-system,sans-serif;text-decoration:none;transform:translateY(-250%);transition:transform .15s}.ml-skip:focus{transform:translateY(0)}
   </style>
 <script defer src="../../../auth.js"></script>
 <script defer src="../../../require-auth.js"></script>
@@ -121,6 +123,7 @@
 <script defer src="../../../lesson-progress-observer.js"></script>
 </head>
 <body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
   <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
   <div style="display:flex;align-items:center;gap:10px">
@@ -129,6 +132,7 @@
     <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
   </div>
 </nav>
+  <div id="ml-main" tabindex="-1"></div>
 <div class="lesson-header">
   <div class="lesson-tag">Grade 12 · Diversity, Change &amp; Continuity · Lesson 3</div>
   <h1 class="lesson-title">Genetics and Inheritance</h1>
@@ -197,9 +201,9 @@
         <div class="punnett-grid" id="punnettGrid"></div>
       </div>
       <div class="results-panel">
-        <h4>Genotype ratio</h4>
+        <h3>Genotype ratio</h3>
         <div id="genoRatios"></div>
-        <h4 style="margin-top:16px">Phenotype ratio</h4>
+        <h3 style="margin-top:16px">Phenotype ratio</h3>
         <div id="phenoRatios"></div>
       </div>
     </div>
