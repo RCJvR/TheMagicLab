@@ -884,7 +884,7 @@
 
       <div class="assign-toolbar">
         <div class="form-field" style="margin:0;min-width:220px;">
-          <label class="form-label">Class</label>
+          <label for="assign-class-select" class="form-label">Class</label>
           <select class="form-input" id="assign-class-select" onchange="_onAssignmentClassChange()"></select>
         </div>
         <button class="btn-primary" id="assign-new-btn" style="flex:0 0 auto;padding:10px 22px;" onclick="openCreateAssignmentModal()">+ New Assignment</button>
@@ -911,22 +911,22 @@
 
       <div id="livegame-setup">
         <div class="form-field" style="max-width:320px;">
-          <label class="form-label">Class (optional, for your records)</label>
+          <label for="lg-class" class="form-label">Class (optional, for your records)</label>
           <select class="form-input" id="lg-class"></select>
         </div>
         <div class="form-field" style="max-width:320px;">
-          <label class="form-label">Tool</label>
+          <label for="lg-tool" class="form-label">Tool</label>
           <select class="form-input" id="lg-tool" onchange="_populateGameQuestionPicker()"></select>
         </div>
         <div class="form-field">
-          <label class="form-label">Topics — pulled from each lesson's own Knowledge Check questions</label>
+          <label for="lg-topic-search" class="form-label">Topics — pulled from each lesson's own Knowledge Check questions</label>
           <input class="form-input" id="lg-topic-search" placeholder="Filter topics…" style="margin-bottom:8px;" oninput="_filterGameQuestionPicker()">
           <div id="lg-topic-picker" class="lesson-picker"></div>
           <div id="lg-question-count" class="lesson-picker-count">0 questions available from selected topics</div>
         </div>
         <div style="display:flex;gap:16px;flex-wrap:wrap;">
           <div class="form-field" style="max-width:180px;">
-            <label class="form-label">Number of questions</label>
+            <label for="lg-num-questions" class="form-label">Number of questions</label>
             <select class="form-input" id="lg-num-questions">
               <option value="5">5</option>
               <option value="10" selected>10</option>
@@ -935,7 +935,7 @@
             </select>
           </div>
           <div class="form-field" style="max-width:180px;">
-            <label class="form-label">Seconds per question</label>
+            <label for="lg-seconds" class="form-label">Seconds per question</label>
             <select class="form-input" id="lg-seconds">
               <option value="10">10</option>
               <option value="20" selected>20</option>
@@ -944,7 +944,7 @@
           </div>
         </div>
         <div class="form-field">
-          <label class="form-label">Game title</label>
+          <label for="lg-title" class="form-label">Game title</label>
           <input class="form-input" id="lg-title" placeholder="e.g. Unit 9 AI Quiz">
         </div>
         <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()"><i data-lucide="trophy" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px"></i>Launch Arena</button>
@@ -1061,7 +1061,7 @@
       </div>
 
       <div class="atp-controls">
-        <select class="atp-select" id="atpSubjectSelect" onchange="onATPSubjectChange()"></select>
+        <select aria-label="Annual Teaching Plan subject" class="atp-select" id="atpSubjectSelect" onchange="onATPSubjectChange()"></select>
         <div class="atp-view-tabs" id="atpViewTabs">
           <button class="atp-view-tab active" data-view="year" onclick="switchATPView('year')">Year</button>
           <button class="atp-view-tab" data-view="term" onclick="switchATPView('term')">Term</button>
@@ -1125,7 +1125,7 @@
           <div class="help-chat-box" id="help-chat-panel">
             <div class="help-chat-messages" id="help-chat-messages"></div>
             <div class="help-chat-input-row">
-              <input type="text" class="form-input" id="help-chat-input" placeholder="Type a reply…" maxlength="1000" style="margin:0;">
+              <input aria-label="Type a reply" type="text" class="form-input" id="help-chat-input" placeholder="Type a reply…" maxlength="1000" style="margin:0;">
               <button class="help-chat-send" id="help-chat-send">Send</button>
             </div>
           </div>
@@ -1142,7 +1142,7 @@
       <div class="modal-title">Create a new class</div>
       <div class="modal-sub">Your learners will join using the invite code you'll receive.</div>
       <div class="form-field">
-        <label class="form-label">Class name</label>
+        <label for="cc-name" class="form-label">Class name</label>
         <input class="form-input" id="cc-name" placeholder="e.g. Grade 9A IT, Period 3">
       </div>
       <div class="form-field">
@@ -1156,7 +1156,7 @@
         </div>
       </div>
       <div class="form-field">
-        <label class="form-label">Subject (optional)</label>
+        <label for="cc-subject" class="form-label">Subject (optional)</label>
         <input class="form-input" id="cc-subject" placeholder="e.g. Information Technology, Mathematics">
       </div>
       <div class="modal-actions">
@@ -1173,29 +1173,29 @@
       <div class="modal-title">New assignment</div>
       <div class="modal-sub">Completion is detected from your learners' lesson activity — no separate submission step needed.</div>
       <div class="form-field">
-        <label class="form-label">Class</label>
+        <label for="ca-class" class="form-label">Class</label>
         <select class="form-input" id="ca-class"></select>
       </div>
       <div class="form-field">
-        <label class="form-label">Tool</label>
+        <label for="ca-tool" class="form-label">Tool</label>
         <select class="form-input" id="ca-tool" onchange="_populateLessonPicker()"></select>
       </div>
       <div class="form-field">
-        <label class="form-label">Title</label>
+        <label for="ca-title" class="form-label">Title</label>
         <input class="form-input" id="ca-title" placeholder="e.g. Unit 3: Loops &amp; Conditions">
       </div>
       <div class="form-field">
-        <label class="form-label">Lessons (optional — leave none checked to assign the whole tool)</label>
+        <label for="ca-lesson-search" class="form-label">Lessons (optional — leave none checked to assign the whole tool)</label>
         <input class="form-input" id="ca-lesson-search" placeholder="Filter lessons…" style="margin-bottom:8px;" oninput="_filterLessonPicker()">
         <div id="ca-lesson-picker" class="lesson-picker"></div>
         <div id="ca-lesson-count" class="lesson-picker-count">Whole tool — no specific lessons selected</div>
       </div>
       <div class="form-field">
-        <label class="form-label">Instructions (optional)</label>
+        <label for="ca-instructions" class="form-label">Instructions (optional)</label>
         <textarea class="form-input" id="ca-instructions" rows="2" placeholder="Anything learners should know"></textarea>
       </div>
       <div class="form-field">
-        <label class="form-label">Due date (optional)</label>
+        <label for="ca-due" class="form-label">Due date (optional)</label>
         <input class="form-input" type="date" id="ca-due">
       </div>
       <div class="modal-actions">
@@ -8077,7 +8077,7 @@ function _renderATPCycleHTML(data) {
     .map(c => `<option value="${c.id}">${c.name}${c.grade ? ` (Gr ${c.grade})` : ''}</option>`).join('');
   return `
     <div class="atp-form-row">
-      <label class="atp-form-label">Which class is this cycle for?</label>
+      <label for="atpCycleClass" class="atp-form-label">Which class is this cycle for?</label>
       <select class="atp-form-select" id="atpCycleClass" onchange="_atpClassId=this.value;_loadATPCycleConfig()">
         <option value="">— Select a class —</option>
         ${classOpts}
@@ -8085,7 +8085,7 @@ function _renderATPCycleHTML(data) {
       <div class="atp-form-hint">Cycle setup is saved per class, since different classes for the same subject can meet on different cycle days.</div>
     </div>
     <div class="atp-form-row">
-      <label class="atp-form-label">Cycle length (school's timetable cycle, in days)</label>
+      <label for="atpCycleLength" class="atp-form-label">Cycle length (school's timetable cycle, in days)</label>
       <select class="atp-form-select" id="atpCycleLength" onchange="_renderATPCycleDayButtons()" style="max-width:160px">
         <option value="5">5-day cycle</option>
         <option value="7">7-day cycle</option>
@@ -8097,7 +8097,7 @@ function _renderATPCycleHTML(data) {
       <div class="atp-cycle-days" id="atpCycleDayButtons"></div>
     </div>
     <div class="atp-form-row">
-      <label class="atp-form-label">Periods per meeting</label>
+      <label for="atpPeriodsPerMeeting" class="atp-form-label">Periods per meeting</label>
       <input class="atp-form-input" id="atpPeriodsPerMeeting" type="number" min="1" max="4" value="1" style="max-width:100px">
     </div>
     <div>
@@ -8173,7 +8173,7 @@ function _renderATPLessonHTML(data) {
   const options = data.topics.map((t, i) => `<option value="${i}">Term ${t.term} — ${t.topic}</option>`).join('');
   let html = `
     <div class="atp-lesson-picker">
-      <label class="atp-form-label">Which ATP topic is this lesson for?</label>
+      <label for="atpLessonTopicSelect" class="atp-form-label">Which ATP topic is this lesson for?</label>
       <select class="atp-form-select" id="atpLessonTopicSelect" onchange="_selectATPLessonTopic(this.value)">
         <option value="">— Select a topic —</option>
         ${options}
@@ -8202,24 +8202,24 @@ async function _selectATPLessonTopic(idxStr) {
     </div>
     ${!topic.objective ? `<div class="atp-form-hint" style="margin-bottom:14px">A drafted lesson plan isn't written for this topic yet — the fields below are blank for you to fill in.</div>` : ''}
     <div class="atp-form-row">
-      <label class="atp-form-label">Lesson objective</label>
+      <label for="atpLessonObjective" class="atp-form-label">Lesson objective</label>
       <textarea class="atp-form-textarea" id="atpLessonObjective" placeholder="By the end of this lesson, learners will be able to...">${_escapeHtml(topic.objective || '')}</textarea>
     </div>
     <div class="atp-form-row">
-      <label class="atp-form-label">Activity / how you'll teach it</label>
+      <label for="atpLessonActivity" class="atp-form-label">Activity / how you'll teach it</label>
       <textarea class="atp-form-textarea" id="atpLessonActivity">${_escapeHtml(topic.activity || '')}</textarea>
     </div>
     <div class="atp-form-row">
-      <label class="atp-form-label">Assessment</label>
+      <label for="atpLessonAssessment" class="atp-form-label">Assessment</label>
       <textarea class="atp-form-textarea" id="atpLessonAssessment">${_escapeHtml(topic.assessmentPlan || topic.assessment || '')}</textarea>
     </div>
     <div class="atp-form-row">
-      <label class="atp-form-label">Differentiation</label>
+      <label for="atpLessonDifferentiation" class="atp-form-label">Differentiation</label>
       <textarea class="atp-form-textarea" id="atpLessonDifferentiation">${_escapeHtml(topic.differentiation || '')}</textarea>
     </div>
     <div class="atp-form-row atp-coverage-row">
       <div style="flex:1;min-width:200px">
-        <label class="atp-form-label">Date(s) taught</label>
+        <label for="atpLessonDatesTaught" class="atp-form-label">Date(s) taught</label>
         <input class="atp-form-input" type="text" id="atpLessonDatesTaught" placeholder="e.g. 12 Feb, 14 Feb, 19 Feb">
       </div>
       <label class="atp-covered-check">

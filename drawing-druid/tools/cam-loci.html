@@ -113,8 +113,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
   <div class="panel-controls">
 
     <div class="ctrl-group">
-      <div class="ctrl-label">Base circle radius <span class="val" id="vBase">30 mm</span></div>
-      <input type="range" id="baseRadius" min="15" max="60" value="30" step="1">
+      <div id="lbl-baseRadius" class="ctrl-label">Base circle radius <span class="val" id="vBase">30 mm</span></div>
+      <input aria-labelledby="lbl-baseRadius" type="range" id="baseRadius" min="15" max="60" value="30" step="1">
     </div>
 
     <div class="ctrl-group">
@@ -133,8 +133,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
       </div>
     </div>
     <div class="ctrl-group" id="rollerRadiusGroup" style="display:none;">
-      <div class="ctrl-label">Roller radius <span class="val" id="vRoller">8 mm</span></div>
-      <input type="range" id="rollerRadius" min="3" max="18" value="8" step="1">
+      <div id="lbl-rollerRadius" class="ctrl-label">Roller radius <span class="val" id="vRoller">8 mm</span></div>
+      <input aria-labelledby="lbl-rollerRadius" type="range" id="rollerRadius" min="3" max="18" value="8" step="1">
     </div>
 
     <div class="ctrl-group">
@@ -165,11 +165,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
     <div class="playbar">
       <button class="btn btn-play" id="btnPlay" onclick="togglePlay()">▶ Animate</button>
       <div class="scrub-wrap">
-        <span class="scrub-label">0°</span>
-        <input type="range" id="scrub" min="0" max="359" value="0" step="1" style="flex:1;">
-        <span class="scrub-label">360°</span>
+        <span id="lbl-scrub" class="scrub-label">0°</span>
+        <input aria-labelledby="lbl-scrub" type="range" id="scrub" min="0" max="359" value="0" step="1" style="flex:1;">
+        <span id="lbl-speedSelect" class="scrub-label">360°</span>
       </div>
-      <select class="speed-select" id="speedSelect">
+      <select aria-labelledby="lbl-speedSelect" class="speed-select" id="speedSelect">
         <option value="20">Slow</option>
         <option value="60" selected>Normal</option>
         <option value="140">Fast</option>
@@ -495,7 +495,7 @@ function renderSegmentList(){
     card.innerHTML = `
       <div class="seg-title">
         <span class="seg-dot" style="background:${segColor(seg.type)}"></span>
-        <select data-i="${i}" data-field="type" style="flex:1;">
+        <select aria-label="Segment ${i + 1} motion type" data-i="${i}" data-field="type" style="flex:1;">
           <option value="rise" ${seg.type==='rise'?'selected':''}>Rise</option>
           <option value="dwell" ${seg.type==='dwell'?'selected':''}>Dwell</option>
           <option value="fall" ${seg.type==='fall'?'selected':''}>Fall</option>
@@ -506,13 +506,13 @@ function renderSegmentList(){
       </div>
       <div class="row2" ${isDwell ? '' : 'style="margin-bottom:8px;"'}>
         <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div>
-          <input type="number" data-i="${i}" data-field="angle" value="${seg.angle}" min="1" max="359">
+          <input type="number" data-i="${i}" data-field="angle" value="${seg.angle}" min="1" max="359" aria-label="Segment ${i + 1} angle in degrees">
         </div>
         ${isDwell ? '<div></div>' : `<div><div class="ctrl-label" style="margin-bottom:4px;">Lift (mm)</div>
-          <input type="number" data-i="${i}" data-field="lift" value="${seg.lift||0}" min="0" max="200"></div>`}
+          <input type="number" data-i="${i}" data-field="lift" value="${seg.lift||0}" min="0" max="200" aria-label="Segment ${i + 1} lift in millimetres"></div>`}
       </div>
       ${isDwell ? '' : `<div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
-        <select data-i="${i}" data-field="motion">
+        <select data-i="${i}" data-field="motion" aria-label="Segment ${i + 1} motion law">
           <option value="uniform" ${seg.motion==='uniform'?'selected':''}>Uniform velocity</option>
           <option value="shm" ${seg.motion==='shm'?'selected':''}>Harmonic (SHM)</option>
           <option value="uar" ${seg.motion==='uar'?'selected':''}>Uniform accel/retard</option>

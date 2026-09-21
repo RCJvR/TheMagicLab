@@ -764,7 +764,7 @@ const LESSONS = [
 <div class="fitb-wrap">
   <div class="fitb-prompt">Complete the sentence: The branch of AI that learns patterns from data rather than following hand-coded rules is called <strong>machine _____</strong>.</div>
   <div class="fitb-row">
-    <input class="fitb-input" id="fitb0" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb0',['learning'],'fitb0-fb','fitb0-btn')">
+    <input aria-label="Your answer" class="fitb-input" id="fitb0" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb0',['learning'],'fitb0-fb','fitb0-btn')">
     <button class="fitb-btn" id="fitb0-btn" onclick="checkFitb('fitb0',['learning'],'fitb0-fb','fitb0-btn')">Check</button>
   </div>
   <div class="fitb-feedback" id="fitb0-fb"></div>
@@ -909,7 +909,7 @@ const LESSONS = [
 <div class="fitb-wrap">
   <div class="fitb-prompt">Fill in the blank: The learnable numbers on connections between neurons — adjusted during training to reduce the model's error — are called <strong>_____</strong>.</div>
   <div class="fitb-row">
-    <input class="fitb-input" id="fitb1" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">
+    <input aria-label="Your answer" class="fitb-input" id="fitb1" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">
     <button class="fitb-btn" id="fitb1-btn" onclick="checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">Check</button>
   </div>
   <div class="fitb-feedback" id="fitb1-fb"></div>
@@ -920,23 +920,23 @@ const LESSONS = [
   <div class="nn-viz-diagram">
     <div class="nn-viz-col">
       <div class="nn-slider-group">
-        <div class="nn-slider-label"><span>Input x₁</span><span id="x1val">5</span></div>
-        <input class="nn-slider" type="range" min="0" max="10" value="5" id="x1" oninput="updateNN()">
+        <div id="lbl-x1" class="nn-slider-label"><span>Input x₁</span><span id="x1val">5</span></div>
+        <input aria-labelledby="lbl-x1" class="nn-slider" type="range" min="0" max="10" value="5" id="x1" oninput="updateNN()">
       </div>
       <div class="nn-slider-group">
-        <div class="nn-slider-label"><span>Input x₂</span><span id="x2val">5</span></div>
-        <input class="nn-slider" type="range" min="0" max="10" value="5" id="x2" oninput="updateNN()">
+        <div id="lbl-x2" class="nn-slider-label"><span>Input x₂</span><span id="x2val">5</span></div>
+        <input aria-labelledby="lbl-x2" class="nn-slider" type="range" min="0" max="10" value="5" id="x2" oninput="updateNN()">
       </div>
     </div>
     <div class="nn-viz-arrow">→</div>
     <div class="nn-viz-col">
       <div class="nn-slider-group">
-        <div class="nn-slider-label"><span>Weight w₁</span><span id="w1val">0.5</span></div>
-        <input class="nn-slider" type="range" min="-20" max="20" value="5" id="w1" oninput="updateNN()">
+        <div id="lbl-w1" class="nn-slider-label"><span>Weight w₁</span><span id="w1val">0.5</span></div>
+        <input aria-labelledby="lbl-w1" class="nn-slider" type="range" min="-20" max="20" value="5" id="w1" oninput="updateNN()">
       </div>
       <div class="nn-slider-group">
-        <div class="nn-slider-label"><span>Weight w₂</span><span id="w2val">0.5</span></div>
-        <input class="nn-slider" type="range" min="-20" max="20" value="5" id="w2" oninput="updateNN()">
+        <div id="lbl-w2" class="nn-slider-label"><span>Weight w₂</span><span id="w2val">0.5</span></div>
+        <input aria-labelledby="lbl-w2" class="nn-slider" type="range" min="-20" max="20" value="5" id="w2" oninput="updateNN()">
       </div>
     </div>
     <div class="nn-viz-arrow">→</div>
@@ -1343,20 +1343,20 @@ Definition: <span style="color:#a855f7;">[AI fills this in following your exact 
   <div class="prompt-builder">
     <div class="pb-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
       <div>
-        <div class="pb-label" style="color:#c084fc;">🎭 Role</div>
-        <textarea class="pb-input" id="pb-role" rows="2" placeholder="You are a knowledgeable Grade 11 chemistry teacher..." oninput="buildPrompt()"></textarea>
+        <div id="lbl-pb-role" class="pb-label" style="color:#c084fc;">🎭 Role</div>
+        <textarea aria-labelledby="lbl-pb-role" class="pb-input" id="pb-role" rows="2" placeholder="You are a knowledgeable Grade 11 chemistry teacher..." oninput="buildPrompt()"></textarea>
       </div>
       <div>
-        <div class="pb-label" style="color:#67e8f9;">🗺️ Context</div>
-        <textarea class="pb-input" id="pb-context" rows="2" placeholder="The student understands atomic structure but struggles with balancing equations..." oninput="buildPrompt()"></textarea>
+        <div id="lbl-pb-context" class="pb-label" style="color:#67e8f9;">🗺️ Context</div>
+        <textarea aria-labelledby="lbl-pb-context" class="pb-input" id="pb-context" rows="2" placeholder="The student understands atomic structure but struggles with balancing equations..." oninput="buildPrompt()"></textarea>
       </div>
       <div>
-        <div class="pb-label" style="color:#6ee7b7;">🎯 Task</div>
-        <textarea class="pb-input" id="pb-task" rows="2" placeholder="Explain how to balance the equation: H₂ + O₂ → H₂O, step by step..." oninput="buildPrompt()"></textarea>
+        <div id="lbl-pb-task" class="pb-label" style="color:#6ee7b7;">🎯 Task</div>
+        <textarea aria-labelledby="lbl-pb-task" class="pb-input" id="pb-task" rows="2" placeholder="Explain how to balance the equation: H₂ + O₂ → H₂O, step by step..." oninput="buildPrompt()"></textarea>
       </div>
       <div>
-        <div class="pb-label" style="color:#fcd34d;">📐 Format</div>
-        <textarea class="pb-input" id="pb-format" rows="2" placeholder="Use numbered steps. Highlight each rule used in bold. Keep it under 200 words..." oninput="buildPrompt()"></textarea>
+        <div id="lbl-pb-format" class="pb-label" style="color:#fcd34d;">📐 Format</div>
+        <textarea aria-labelledby="lbl-pb-format" class="pb-input" id="pb-format" rows="2" placeholder="Use numbered steps. Highlight each rule used in bold. Keep it under 200 words..." oninput="buildPrompt()"></textarea>
       </div>
     </div>
     <div class="pb-label">✨ Your complete prompt</div>

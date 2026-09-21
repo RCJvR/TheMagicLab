@@ -200,9 +200,9 @@
   <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Voer enige twee waardes in — Spanning, Stroom of Weerstand — en die derde word outomaties bereken.</p>
   <div class="ohm-calc">
     <div class="ohm-fields">
-      <div class="ohm-field"><label>Spanning (V)</label><input type="number" id="inV" placeholder="bv. 9" oninput="calcOhm('V')"></div>
-      <div class="ohm-field"><label>Stroom (A)</label><input type="number" id="inI" placeholder="bv. 0.45" oninput="calcOhm('I')"></div>
-      <div class="ohm-field"><label>Weerstand (Ω)</label><input type="number" id="inR" placeholder="bv. 20" oninput="calcOhm('R')"></div>
+      <div class="ohm-field"><label for="inV">Spanning (V)</label><input type="number" id="inV" placeholder="bv. 9" oninput="calcOhm('V')"></div>
+      <div class="ohm-field"><label for="inI">Stroom (A)</label><input type="number" id="inI" placeholder="bv. 0.45" oninput="calcOhm('I')"></div>
+      <div class="ohm-field"><label for="inR">Weerstand (Ω)</label><input type="number" id="inR" placeholder="bv. 20" oninput="calcOhm('R')"></div>
     </div>
     <div class="ohm-eq" id="ohmEq">Vul enige twee velde in om die derde te bereken.</div>
     <div class="ohm-note" style="margin-top:10px">Maak 'n veld skoon en tik in 'n ander een om te herbereken. <button class="print-btn" style="margin:8px 0 0" onclick="resetOhm()">Herstel</button></div>
@@ -327,7 +327,7 @@ function buildBandPicker(){
   document.getElementById('bandPicker').innerHTML = rows.map(r=>`
     <div class="band-row">
       <label>${r.label}</label>
-      <select onchange="setBand('${r.key}', this.value)">
+      <select onchange="setBand('${r.key}', this.value)" aria-label="${r.label}">
         ${r.opts.map((c,ci)=>`<option value="${ci}" ${bandSel[r.key]===ci?'selected':''}>${c.name}</option>`).join('')}
       </select>
     </div>`).join('');

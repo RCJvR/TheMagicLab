@@ -636,7 +636,10 @@
           });
         } else if (item.type === 'counter') {
           if (state[item.id] === undefined) state[item.id] = 0;
-          const input = h('input', { type: 'number', min: '0', max: String(item.maxCount), value: String(state[item.id]) }, ctrl);
+          // The score-row label sits in a sibling span, so the input needs its own
+          // name or a screen reader reaches a bare number box.
+          const input = h('input', { type: 'number', min: '0', max: String(item.maxCount), value: String(state[item.id]),
+            'aria-label': item.label }, ctrl);
           h('span', { class: 'score-row-hint', text: `× ${item.points} (max ${item.max})` }, ctrl);
           input.addEventListener('input', () => {
             state[item.id] = Math.max(0, Math.min(item.maxCount, parseInt(input.value, 10) || 0));

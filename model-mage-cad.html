@@ -311,14 +311,14 @@
 <header>
   <div class="logo"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><line x1="14" y1="3" x2="14" y2="14" stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="24" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="4" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="rgba(20,184,166,0.90)"/></svg> Model Mage <span style="opacity:.5;font-weight:600;">· CAD</span></div>
   <div class="hdr-center">
-    <input type="text" id="filename-input" value="sketch"
+    <input aria-label="Filename" type="text" id="filename-input" value="sketch"
       style="height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--border);
       background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;
       font-size:0.74rem;width:110px;" title="Filename (without extension)">
     <span style="font-size:0.72rem;color:var(--text2);">.json</span>
     <button class="tb-btn" id="btn-save" title="Save sketch">💾 Save</button>
     <button class="tb-btn" id="btn-load" title="Load sketch">📂 Load</button>
-    <input type="file" id="file-load" accept=".json,application/json" style="display:none">
+    <input aria-label="Load a sketch file" type="file" id="file-load" accept=".json,application/json" style="display:none">
   </div>
   <div class="hdr-right">
     <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
@@ -369,15 +369,15 @@
   </button>
   <!-- Polygon sides picker -->
   <span class="tb-label" id="poly-sides-lbl" style="display:none">Sides</span>
-  <input type="number" class="snap-sel" id="poly-sides" value="6" min="3" max="64" style="display:none;width:52px">
+  <input aria-labelledby="poly-sides-lbl" type="number" class="snap-sel" id="poly-sides" value="6" min="3" max="64" style="display:none;width:52px">
   <!-- Rect sub-mode -->
-  <select class="snap-sel" id="rect-submode" style="display:none;width:140px" title="Rectangle type">
+  <select aria-label="Rectangle type" class="snap-sel" id="rect-submode" style="display:none;width:140px" title="Rectangle type">
     <option value="corner">Corner to Corner</option>
     <option value="center">From Center</option>
     <option value="rounded">Rounded Corners</option>
   </select>
   <span class="tb-label" id="rect-radius-lbl" style="display:none">r =</span>
-  <input type="number" class="snap-sel" id="rect-radius" value="5" min="0.5" max="100" step="0.5" style="display:none;width:58px" title="Corner radius (mm)">
+  <input aria-labelledby="rect-radius-lbl" type="number" class="snap-sel" id="rect-radius" value="5" min="0.5" max="100" step="0.5" style="display:none;width:58px" title="Corner radius (mm)">
   <span class="tb-label" id="rect-radius-unit" style="display:none">mm</span>
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
@@ -386,8 +386,8 @@
   <div style="margin-left:auto"></div>
   <button class="tb-btn" id="btn-mode-3d" title="Switch to 3D view">⬡ View 3D</button>
   <div class="tb-sep"></div>
-  <span class="tb-label">Grid snap</span>
-  <select class="snap-sel" id="snap-sel">
+  <span id="lbl-snap-sel" class="tb-label">Grid snap</span>
+  <select aria-labelledby="lbl-snap-sel" class="snap-sel" id="snap-sel">
     <option value="1">1 mm</option>
     <option value="2">2 mm</option>
     <option value="5" selected>5 mm</option>
@@ -432,7 +432,7 @@
     </div>
     <!-- Length popup -->
     <div id="len-popup">
-      <input type="number" id="len-input" step="0.1" min="0.1">
+      <input aria-label="Length in millimetres" type="number" id="len-input" step="0.1" min="0.1">
       <span class="lp-unit">mm</span>
     </div>
   </div>
@@ -446,14 +446,14 @@
         <button class="op-btn cut active" id="btn-op-cut">Cut ↓</button>
       </div>
       <div class="pr">
-        <div class="pr-lbl">
+        <div id="lbl-v-h" class="pr-lbl">
           <span id="lbl-h">Height</span>
           <span style="display:flex;align-items:center;gap:4px">
-            <input type="number" id="v-h" class="pr-num-inp" value="40" min="1" max="1000" step="1">
+            <input aria-labelledby="lbl-v-h" type="number" id="v-h" class="pr-num-inp" value="40" min="1" max="1000" step="1">
             <span class="pr-unit">mm</span>
           </span>
         </div>
-        <input type="range" id="s-h" min="1" max="1000" value="40">
+        <input aria-label="Height in millimetres" type="range" id="s-h" min="1" max="1000" value="40">
       </div>
       <div class="pr">
         <div class="pr-lbl">
@@ -462,11 +462,11 @@
             <button id="btn-chamfer-mode" class="edge-mode-btn" title="Chamfer">Chamfer</button>
           </span>
           <span style="display:flex;align-items:center;gap:4px">
-            <input type="number" id="v-edge" class="pr-num-inp" value="0" min="0" max="50" step="0.5">
+            <input aria-label="Edge size in millimetres" type="number" id="v-edge" class="pr-num-inp" value="0" min="0" max="50" step="0.5">
             <span class="pr-unit">mm</span>
           </span>
         </div>
-        <input type="range" id="s-edge" min="0" max="50" value="0" step="0.5">
+        <input aria-label="Edge size in millimetres" type="range" id="s-edge" min="0" max="50" value="0" step="0.5">
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
         <span id="rebuild-status" style="font-size:0.68rem;color:var(--text2)"></span>
@@ -478,21 +478,21 @@
     <div class="cst-panel" id="cst-panel">
       <div class="panel-title">Constrain — <span id="cst-label">Segment</span></div>
       <div class="cst-row" id="cst-len-row">
-        <span class="cst-lbl">Length</span>
-        <input type="number" class="cst-inp" id="cst-len" step="0.1" min="0.1">
+        <span id="lbl-cst-len" class="cst-lbl">Length</span>
+        <input aria-labelledby="lbl-cst-len" type="number" class="cst-inp" id="cst-len" step="0.1" min="0.1">
         <span class="cst-unit">mm</span>
         <button class="cst-btn" id="btn-cst-len">Set</button>
       </div>
       <div class="cst-row" id="cst-ang-row">
-        <span class="cst-lbl">Angle</span>
-        <input type="number" class="cst-inp" id="cst-ang" step="1" min="-360" max="360">
+        <span id="lbl-cst-ang" class="cst-lbl">Angle</span>
+        <input aria-labelledby="lbl-cst-ang" type="number" class="cst-inp" id="cst-ang" step="1" min="-360" max="360">
         <span class="cst-unit">°</span>
         <button class="cst-btn" id="btn-cst-ang">Set</button>
       </div>
       <!-- Circle radius row (shown instead of angle when circle selected) -->
       <div class="cst-row" id="cst-rad-row" style="display:none">
-        <span class="cst-lbl">Radius</span>
-        <input type="number" class="cst-inp" id="cst-rad" step="0.1" min="0.1">
+        <span id="lbl-cst-rad" class="cst-lbl">Radius</span>
+        <input aria-labelledby="lbl-cst-rad" type="number" class="cst-inp" id="cst-rad" step="0.1" min="0.1">
         <span class="cst-unit">mm</span>
         <button class="cst-btn" id="btn-cst-rad">Set</button>
       </div>
@@ -516,7 +516,7 @@
         <button class="btn-stl" id="btn-load-stl" style="position:static">↑ Import STL</button>
         <button class="btn-stl" id="btn-clear-stl" style="position:static;display:none">✕ Clear STL</button>
       </div>
-      <input type="file" id="file-load-stl" accept=".stl" style="display:none">
+      <input aria-label="Import an STL file" type="file" id="file-load-stl" accept=".stl" style="display:none">
     </div>
 
   </div>

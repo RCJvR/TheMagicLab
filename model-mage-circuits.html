@@ -262,7 +262,7 @@
     <button class="mini-btn" id="btn-toggle-panel">💻 Code</button>
     <button class="mini-btn" id="btn-save">💾 Save</button>
     <button class="mini-btn" id="btn-load">📂 Load</button>
-    <input type="file" id="file-load" accept=".json,application/json" style="display:none">
+    <input aria-label="Load a circuit file" type="file" id="file-load" accept=".json,application/json" style="display:none">
     <button class="mini-btn" id="btn-clear">🗑 Clear</button>
     <a class="nav-link" href="model-mage.html">← Model Mage</a>
     <button class="nav-link" data-ml-auth onclick="window.MagicLabModal?.open()" style="cursor:pointer;">🔐 Sign In</button>
@@ -289,7 +289,7 @@
 
 <div class="toolbar">
   <div class="toolbar-actions">
-    <select class="examples-sel" id="examplesSel">
+    <select aria-label="Load an example circuit" class="examples-sel" id="examplesSel">
       <option value="">Load example circuit…</option>
       <option value="ledBlink">LED blink (microcontroller)</option>
       <option value="ldrAlarm">LDR light alarm</option>
@@ -330,7 +330,7 @@
         <button class="code-tab-btn active" id="tabTextCode">Text code</button>
         <button class="code-tab-btn" id="tabBlockCode">Block coding</button>
       </div>
-      <textarea id="code-editor" spellcheck="false">void setup() {
+      <textarea aria-label="Arduino code editor" id="code-editor" spellcheck="false">void setup() {
   pinMode(13, OUTPUT);
 }
 
@@ -1822,8 +1822,8 @@ function renderPropPanel(){
     const bendCount = (w.waypoints||[]).length;
     panel.innerHTML = `
       <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🔌 Wire</div>
-      <div class="prop-row"><div class="prop-lbl"><span>Colour</span></div>
-        <input type="color" id="wireColorInput" value="${w.color||'#fbbf24'}" style="width:100%;height:30px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;"></div>
+      <div class="prop-row"><div id="lbl-wireColorInput" class="prop-lbl"><span>Colour</span></div>
+        <input aria-labelledby="lbl-wireColorInput" type="color" id="wireColorInput" value="${w.color||'#fbbf24'}" style="width:100%;height:30px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;"></div>
       <p class="empty-hint">${bendCount ? bendCount+' routing point'+(bendCount>1?'s':'')+' along this wire.' : 'Tip: while drawing a wire, click empty board space to bend it around other parts — hold Ctrl to snap that bend perfectly horizontal or vertical.'} Press 1–9 to set its colour without opening the picker.</p>
       <button class="del-btn" id="btnDelWire">Delete wire</button>`;
     document.getElementById('wireColorInput').addEventListener('input', (e)=>{ w.color = e.target.value; scheduleRender(); });
@@ -1843,12 +1843,12 @@ function renderPropPanel(){
     const val = c.props[p.key];
     if (p.type==='select'){
       html += `<div class="prop-row"><div class="prop-lbl"><span>${p.label}</span></div>
-        <select data-key="${p.key}" class="propInput">
+        <select data-key="${p.key}" class="propInput" aria-label="${p.label}">
         ${p.options.map(o=>`<option value="${o}" ${String(o)===String(val)?'selected':''}>${o}</option>`).join('')}
         </select></div>`;
     } else if (p.type==='range'){
       html += `<div class="prop-row"><div class="prop-lbl"><span>${p.label}</span><span class="prop-val" id="rv-${p.key}">${Math.round(val)}</span></div>
-        <input type="range" min="${p.min}" max="${p.max}" value="${val}" data-key="${p.key}" class="propInput"></div>`;
+        <input type="range" min="${p.min}" max="${p.max}" value="${val}" data-key="${p.key}" class="propInput" aria-label="${p.label}"></div>`;
     }
   });
   if (c.type==='mcu'){
@@ -2392,6 +2392,7 @@ function fieldText(labelTxt, value, onChange){
 function makeAddRow(targetArr){
   const row = document.createElement('div'); row.className = 'block-add-row';
   const sel = document.createElement('select'); sel.className = 'block-add-select';
+  sel.setAttribute('aria-label', 'Add a block');   // its only visible text is the placeholder option
   const ph = document.createElement('option'); ph.value=''; ph.textContent='+ Add a block…'; sel.appendChild(ph);
   Object.keys(BLOCK_TYPES).forEach(t=>{
     const o = document.createElement('option'); o.value=t; o.textContent=BLOCK_TYPES[t].label; sel.appendChild(o);

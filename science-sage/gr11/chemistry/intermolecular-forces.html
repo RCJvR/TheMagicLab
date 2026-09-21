@@ -654,10 +654,10 @@ function renderCtrlExtra() {
     const opts = Object.keys(imfData).map(k=>`<option value="${k}" ${k===imfSubstance?'selected':''}>${imfData[k].name} (${k})</option>`).join('');
     el.innerHTML = `
       <div class="ctrl-label">Substance</div>
-      <select onchange="setIMFSubstance(this.value)" style="width:100%;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#e4e8f8;font-size:13px;margin-bottom:12px">${opts}</select>
+      <select aria-label="Substance" onchange="setIMFSubstance(this.value)" style="width:100%;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#e4e8f8;font-size:13px;margin-bottom:12px">${opts}</select>
       <div class="slider-row">
         <label>Temperature</label>
-        <input type="range" min="-200" max="200" value="${tempSliderVal}" oninput="setTemp(+this.value,this)">
+        <input type="range" min="-200" max="200" value="${tempSliderVal}" oninput="setTemp(+this.value,this)" aria-label="Temperature">
         <span class="slider-val" id="temp-disp">${tempSliderVal}°C</span>
       </div>
     `;

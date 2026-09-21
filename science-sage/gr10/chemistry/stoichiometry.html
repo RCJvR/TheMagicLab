@@ -644,8 +644,8 @@ function buildInputs(){
   if(stoicMode === 'mole'){
     document.getElementById('stoicTitle').textContent = 'Mole Calculator';
     inp.innerHTML = `
-      <div class="ctrl-label">Compound &amp; Mass</div>
-      <select id="compSel" onchange="updateMole()">
+      <div id="lbl-compSel" class="ctrl-label">Compound &amp; Mass</div>
+      <select aria-labelledby="lbl-compSel" id="compSel" onchange="updateMole()">
         <option value="18">H₂O — Water (M = 18)</option>
         <option value="58.5">NaCl — Sodium chloride (M = 58.5)</option>
         <option value="100">CaCO₃ — Calcium carbonate (M = 100)</option>
@@ -656,7 +656,7 @@ function buildInputs(){
         <option value="180">C₆H₁₂O₆ — Glucose (M = 180)</option>
       </select>
       <div class="slider-row">
-        <label>Mass (g)</label>
+        <label for="massSlider">Mass (g)</label>
         <input type="range" id="massSlider" min="0" max="500" value="18" step="1" oninput="updateMole()">
         <span class="slider-val" id="massVal">18 g</span>
       </div>
@@ -672,14 +672,14 @@ function buildInputs(){
   } else if(stoicMode === 'rxn'){
     document.getElementById('stoicTitle').textContent = 'Reaction Stoichiometry';
     inp.innerHTML = `
-      <div class="ctrl-label">Reaction</div>
-      <select id="rxnSel" onchange="updateRxn()">
+      <div id="lbl-rxnSel" class="ctrl-label">Reaction</div>
+      <select aria-labelledby="lbl-rxnSel" id="rxnSel" onchange="updateRxn()">
         <option value="0">NaOH + HCl → NaCl + H₂O</option>
         <option value="1">CaCO₃ → CaO + CO₂</option>
         <option value="2">2H₂ + O₂ → 2H₂O</option>
       </select>
       <div class="slider-row">
-        <label>Reactant mass</label>
+        <label for="rxnMass">Reactant mass</label>
         <input type="range" id="rxnMass" min="0" max="200" value="40" step="1" oninput="updateRxn()">
         <span class="slider-val" id="rxnMassVal">40 g</span>
       </div>
@@ -697,12 +697,12 @@ function buildInputs(){
     inp.innerHTML = `
       <div class="ctrl-label">Reactant Masses</div>
       <div class="slider-row">
-        <label>HCl (g)</label>
+        <label for="hclMass">HCl (g)</label>
         <input type="range" id="hclMass" min="0" max="100" value="50" step="1" oninput="updateLimiting()">
         <span class="slider-val" id="hclVal">50 g</span>
       </div>
       <div class="slider-row">
-        <label>CaCO₃ (g)</label>
+        <label for="cacMass">CaCO₃ (g)</label>
         <input type="range" id="cacMass" min="0" max="100" value="50" step="1" oninput="updateLimiting()">
         <span class="slider-val" id="cacVal">50 g</span>
       </div>

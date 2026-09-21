@@ -200,9 +200,9 @@
   <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Enter any two values — Voltage, Current or Resistance — and the third is calculated automatically.</p>
   <div class="ohm-calc">
     <div class="ohm-fields">
-      <div class="ohm-field"><label>Voltage (V)</label><input type="number" id="inV" placeholder="e.g. 9" oninput="calcOhm('V')"></div>
-      <div class="ohm-field"><label>Current (A)</label><input type="number" id="inI" placeholder="e.g. 0.45" oninput="calcOhm('I')"></div>
-      <div class="ohm-field"><label>Resistance (Ω)</label><input type="number" id="inR" placeholder="e.g. 20" oninput="calcOhm('R')"></div>
+      <div class="ohm-field"><label for="inV">Voltage (V)</label><input type="number" id="inV" placeholder="e.g. 9" oninput="calcOhm('V')"></div>
+      <div class="ohm-field"><label for="inI">Current (A)</label><input type="number" id="inI" placeholder="e.g. 0.45" oninput="calcOhm('I')"></div>
+      <div class="ohm-field"><label for="inR">Resistance (Ω)</label><input type="number" id="inR" placeholder="e.g. 20" oninput="calcOhm('R')"></div>
     </div>
     <div class="ohm-eq" id="ohmEq">Fill in any two fields to calculate the third.</div>
     <div class="ohm-note" style="margin-top:10px">Clear a field and type in a different one to recalculate. <button class="print-btn" style="margin:8px 0 0" onclick="resetOhm()">Reset</button></div>
@@ -327,7 +327,7 @@ function buildBandPicker(){
   document.getElementById('bandPicker').innerHTML = rows.map(r=>`
     <div class="band-row">
       <label>${r.label}</label>
-      <select onchange="setBand('${r.key}', this.value)">
+      <select onchange="setBand('${r.key}', this.value)" aria-label="${r.label}">
         ${r.opts.map((c,ci)=>`<option value="${ci}" ${bandSel[r.key]===ci?'selected':''}>${c.name}</option>`).join('')}
       </select>
     </div>`).join('');
