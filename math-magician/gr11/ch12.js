@@ -462,7 +462,7 @@ MathMagician.registerChapter(12, {
                 });
                 // legend
                 ctx.fillStyle='rgba(165,180,252,0.60)';ctx.font='10px monospace';ctx.textAlign='left';
-                ctx.fillText((goal==='max'?'Maximise':'Minimise')+' P = '+a+'x + '+b+'y',7,14);
+                {const _t=(goal==='max'?'Maximise':'Minimise')+' P = '+a+'x + '+b+'y',_w=ctx.measureText(_t).width;ctx.fillStyle='rgba(15,10,40,0.85)';ctx.fillRect(W-_w-14,3,_w+10,16);ctx.fillStyle='rgba(165,180,252,0.75)';ctx.textAlign='right';ctx.fillText(_t,W-9,15);} // top-right, clear of the y-axis labels
               }
 
               document.getElementById('g11c12t2gBtn').addEventListener('click',draw);

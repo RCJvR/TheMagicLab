@@ -68,10 +68,11 @@ MathMagician.registerChapter(2, {
               var W=320,H=54,pad=20;
               var sx=function(v){return pad+(v-lo)/(range)*(W-2*pad);};
               var ticks='';
-              for(var v=Math.ceil(lo);v<=Math.floor(hi);v++){
+              var _st=(function(r){var raw=r/8,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;return Math.max(1,(m<=1?1:m<=2?2:m<=5?5:10)*p);})(range);
+              for(var v=Math.ceil(lo/_st)*_st;v<=Math.floor(hi);v+=_st){
                 var x=sx(v);
                 ticks+='<line x1="'+x+'" y1="27" x2="'+x+'" y2="34" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>';
-                if(v%2===0||range<=8) ticks+='<text x="'+x+'" y="47" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.35)" font-family="JetBrains Mono,monospace">'+v+'</text>';
+                if(_st>1||v%2===0||range<=8) ticks+='<text x="'+x+'" y="47" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.35)" font-family="JetBrains Mono,monospace">'+v+'</text>';
               }
               var ax=sx(a),rx=sx(result);
               var arr='<line x1="'+pad+'" y1="30" x2="'+(W-pad)+'" y2="30" stroke="rgba(255,255,255,0.20)" stroke-width="1.5"/>';

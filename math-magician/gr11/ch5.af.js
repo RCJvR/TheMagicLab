@@ -396,6 +396,7 @@ MathMagician.registerChapter(5, {
               const W=520,H=320;
               cv.width=W*DPR;cv.height=H*DPR;
               const ctx=cv.getContext('2d');
+              const _tk=(mn,mx,maxN)=>{const raw=(mx-mn)/maxN,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;const st=Math.max(1,(m<=1?1:m<=2?2:m<=5?5:10)*p);const t=[];for(let v=Math.ceil(mn/st)*st;v<=mx+1e-9;v+=st)t.push(Math.round(v*1e6)/1e6);return t;}; // nice, non-overlapping tick values
               ctx.scale(DPR,DPR);
               const fmt=n=>(Math.round(n*10)/10)+'';
               const toR=d=>d*Math.PI/180;
@@ -431,7 +432,7 @@ MathMagician.registerChapter(5, {
                   ctx.lineWidth=isAxis?1.5:1;
                   ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
                 }
-                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                for(const y of _tk(yMn,yMx,H/22)){
                   ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                   ctx.lineWidth=y===0?1.5:1;
                   ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
@@ -446,7 +447,7 @@ MathMagician.registerChapter(5, {
                   if(Math.abs(x)>0.1)ctx.fillText(Math.round(x)+'°',px(x),ay0);
                 }
                 ctx.textAlign='right';
-                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                for(const y of _tk(yMn,yMx,H/22)){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
 
                 // period markers (vertical dashed at each full period)
                 for(let n=-2;n<=3;n++){

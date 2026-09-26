@@ -128,6 +128,7 @@ MathMagician.registerChapter(6, {
               const W=520,H=320;
               cv.width=W*DPR;cv.height=H*DPR;
               const ctx=cv.getContext('2d');
+              const _tk=(mn,mx,maxN)=>{const raw=(mx-mn)/maxN,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;const st=Math.max(1,(m<=1?1:m<=2?2:m<=5?5:10)*p);const t=[];for(let v=Math.ceil(mn/st)*st;v<=mx+1e-9;v+=st)t.push(Math.round(v*1e6)/1e6);return t;}; // nice, non-overlapping tick values
               ctx.scale(DPR,DPR);
               let mode='para';
               let xMn=-8,xMx=8,yMn=-8,yMx=8;
@@ -137,12 +138,12 @@ MathMagician.registerChapter(6, {
 
               function drawGrid(){
                 ctx.clearRect(0,0,W,H);
-                for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){
+                for(const x of _tk(xMn,xMx,W/34)){
                   ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                   ctx.lineWidth=x===0?1.5:1;
                   ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
                 }
-                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                for(const y of _tk(yMn,yMx,H/22)){
                   ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                   ctx.lineWidth=y===0?1.5:1;
                   ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
@@ -151,9 +152,9 @@ MathMagician.registerChapter(6, {
                 const ax0=Math.max(20,Math.min(px(0)-4,W-20));
                 const ay0=Math.max(14,Math.min(py(0)+14,H-4));
                 ctx.textAlign='center';
-                for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                for(const x of _tk(xMn,xMx,W/34)){if(x!==0)ctx.fillText(x,px(x),ay0);}
                 ctx.textAlign='right';
-                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                for(const y of _tk(yMn,yMx,H/22)){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
               }
 
               function curve(fn,color,skipJump){
@@ -452,6 +453,7 @@ MathMagician.registerChapter(6, {
               const W=520,H=320;
               cv.width=W*DPR;cv.height=H*DPR;
               const ctx=cv.getContext('2d');
+              const _tk=(mn,mx,maxN)=>{const raw=(mx-mn)/maxN,p=Math.pow(10,Math.floor(Math.log10(raw))),m=raw/p;const st=Math.max(1,(m<=1?1:m<=2?2:m<=5?5:10)*p);const t=[];for(let v=Math.ceil(mn/st)*st;v<=mx+1e-9;v+=st)t.push(Math.round(v*1e6)/1e6);return t;}; // nice, non-overlapping tick values
               ctx.scale(DPR,DPR);
               let mode='exp';
               let xMn,xMx,yMn,yMx;
@@ -469,7 +471,7 @@ MathMagician.registerChapter(6, {
                     ctx.lineWidth=1;
                     ctx.beginPath();ctx.moveTo(px(d),0);ctx.lineTo(px(d),H);ctx.stroke();
                   });
-                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                  for(const y of _tk(yMn,yMx,H/22)){
                     ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                     ctx.lineWidth=y===0?1.5:1;
                     ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
@@ -482,14 +484,14 @@ MathMagician.registerChapter(6, {
                   // y-etikette
                   ctx.textAlign='right';
                   const ax0=Math.max(26,Math.min(px(0)-4,W-20));
-                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                  for(const y of _tk(yMn,yMx,H/22)){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
                 } else {
-                  for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){
+                  for(const x of _tk(xMn,xMx,W/34)){
                     ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                     ctx.lineWidth=x===0?1.5:1;
                     ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
                   }
-                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                  for(const y of _tk(yMn,yMx,H/22)){
                     ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
                     ctx.lineWidth=y===0?1.5:1;
                     ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
@@ -498,9 +500,9 @@ MathMagician.registerChapter(6, {
                   const ax0=Math.max(20,Math.min(px(0)-4,W-20));
                   const ay0=Math.max(14,Math.min(py(0)+14,H-4));
                   ctx.textAlign='center';
-                  for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                  for(const x of _tk(xMn,xMx,W/34)){if(x!==0)ctx.fillText(x,px(x),ay0);}
                   ctx.textAlign='right';
-                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                  for(const y of _tk(yMn,yMx,H/22)){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
                 }
               }
 
@@ -543,7 +545,7 @@ MathMagician.registerChapter(6, {
                 if([a,b,q].some(isNaN)||b<=0||b===1||a===0)return;
                 xMn=-6;xMx=6;
                 // skat y-omvang
-                const yVals=[-6,-3,0,3,6].map(x=>a*Math.pow(b,x)+q).filter(isFinite);
+                const yVals=[-3,-1.5,0,1.5,3].map(x=>a*Math.pow(b,x)+q).filter(isFinite);
                 yMn=Math.min(q-1,...yVals)-1;yMx=Math.max(...yVals)+1;
                 yMn=Math.min(yMn,-2);yMx=Math.max(yMx,2);
                 drawGrid(false);
@@ -594,7 +596,7 @@ MathMagician.registerChapter(6, {
                 // periode-etiket
                 const period=fn==='tan'?'Periode: 180°':'Periode: 360°';
                 ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='11px monospace';ctx.textAlign='left';
-                ctx.fillText('Waardeversameling: ['+fmt(q-amp)+', '+fmt(q+amp)+']   '+period,6,14);
+                {const _t='Waardeversameling: ['+fmt(q-amp)+', '+fmt(q+amp)+']   '+period,_w=ctx.measureText(_t).width;ctx.save();ctx.fillStyle='rgba(15,10,40,0.85)';ctx.fillRect(W-_w-14,3,_w+10,16);ctx.restore();ctx.textAlign='right';ctx.fillText(_t,W-9,15);} // top-right: the y-axis labels sit on the left in trig mode
               }
 
               const inp=document.getElementById('g10c6ginp2');

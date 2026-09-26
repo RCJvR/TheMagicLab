@@ -92,10 +92,11 @@ MathMagician.registerChapter(2, {
               function px(v){return ax+(v-lo)/(hi-lo)*(bx-ax);}
               let h='<line x1="'+ax+'" y1="'+cy+'" x2="'+bx+'" y2="'+cy+'" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>';
               h+='<polygon points="'+bx+','+cy+' '+(bx-6)+','+(cy-4)+' '+(bx-6)+','+(cy+4)+'" fill="rgba(255,255,255,0.15)"/>';
-              for(let v=lo;v<=hi;v++){
+              const _raw=(hi-lo)/14,_p=Math.pow(10,Math.floor(Math.log10(_raw))),_m=_raw/_p,_st=Math.max(1,(_m<=1?1:_m<=2?2:_m<=5?5:10)*_p);
+              for(let v=Math.ceil(lo/_st)*_st;v<=hi;v+=_st){
                 const x=px(v);
                 h+='<line x1="'+x+'" y1="'+(cy-4)+'" x2="'+x+'" y2="'+(cy+4)+'" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>';
-                if(v%2===0||hi-lo<=12)h+='<text x="'+x+'" y="'+(cy+16)+'" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.25)" font-family="JetBrains Mono,monospace">'+v+'</text>';
+                if(_st>1||v%2===0||hi-lo<=12)h+='<text x="'+x+'" y="'+(cy+16)+'" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.25)" font-family="JetBrains Mono,monospace">'+v+'</text>';
               }
               const colors=['#f59e0b','#6366f1','#10b981','#ec4899','#06b6d4','#a78bfa','#f87171','#34d399'];
               nums.forEach((v,i)=>{

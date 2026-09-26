@@ -365,11 +365,16 @@ MathMagician.registerChapter(10, {
                 // as
                 ctx.strokeStyle='rgba(99,102,241,0.30)';ctx.lineWidth=1;
                 ctx.beginPath();ctx.moveTo(pad,H-20);ctx.lineTo(W-pad,H-20);ctx.stroke();
+                let _lx=-1e9,_lv=null,_up=false; // lift a label above the axis when it would collide with its neighbour
                 [mn,Q1,Q2,Q3,mx].forEach(v=>{
                   ctx.strokeStyle='rgba(99,102,241,0.25)';
                   ctx.beginPath();ctx.moveTo(x(v),H-24);ctx.lineTo(x(v),H-16);ctx.stroke();
                   ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='10px monospace';ctx.textAlign='center';
-                  ctx.fillText(parseFloat(v.toFixed(2)),x(v),H-6);
+                  const t=String(parseFloat(v.toFixed(2)));
+                  if(t===_lv)return;
+                  _up=!_up&&x(v)-_lx<ctx.measureText(t).width+8;
+                  ctx.fillText(t,x(v),_up?H-28:H-6);
+                  _lx=x(v);_lv=t;
                 });
                 // snorre
                 ctx.strokeStyle='#a5b4fc';ctx.lineWidth=2;
