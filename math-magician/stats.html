@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Statistics Charts · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    textarea.data { width: 100%; min-height: 96px; resize: vertical; padding: 9px 10px; border-radius: var(--radius-2xs); background: var(--ink-900); border: 1px solid var(--line-hard); color: var(--paper); font-family: var(--font-mono); font-size: 13px; }
+    textarea.data.err { border-color: var(--bad); }
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+    .stat { background: var(--ink-850); border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; }
+    .stat span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+    .stat b { font-family: var(--font-mono); font-size: 16px; color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Data-hantering · Gr 8–12">Resource · Data handling · Gr 8–12</span></div>
+    <h1 data-af-html="Statistiek-<em>grafieke.</em>">Statistics <em>charts.</em></h1>
+    <p class="hero-sub" data-af="Plak data en kry ’n mond-en-snor-diagram, histogram, frekwensieveelhoek, ogief, stam-en-blaar, puntdiagram of spreidiagram met regressielyn — met die opsommende statistiek daarby.">Paste data and get a box-and-whisker plot, histogram, frequency polygon, ogive, stem-and-leaf, dot plot or scatter plot with regression line — with the summary statistics alongside.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hData">
+        <h2 id="hData" style="margin-bottom:10px"><i data-lucide="table" style="width:16px;height:16px"></i><span data-af="Data">Data</span></h2>
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="list" data-af="Lys van waardes">List of values</button>
+          <button type="button" data-mode="grouped" data-af="Gegroepeer (klasse)">Grouped (classes)</button>
+          <button type="button" data-mode="pairs" data-af="Pare (x ; y)">Pairs (x ; y)</button>
+        </div>
+        <div id="dataBox"></div>
+        <select id="examples" aria-label="Load an example" style="margin-top:8px">
+          <option value="" data-af="Voorbeelde…">Examples…</option>
+          <option value="marks" data-af="Toetspunte (lys)">Test marks (list)</option>
+          <option value="compare" data-af="Twee klasse vergelyk (mond-en-snor)">Compare two classes (box plots)</option>
+          <option value="heights" data-af="Lengtes (gegroepeer)">Heights (grouped)</option>
+          <option value="study" data-af="Studie-ure teen punte (pare)">Study hours vs marks (pairs)</option>
+        </select>
+      </section>
+
+      <section class="panel" aria-labelledby="hChart">
+        <h2 id="hChart" style="margin-bottom:10px"><i data-lucide="bar-chart-3" style="width:16px;height:16px"></i><span data-af="Grafiek">Chart</span></h2>
+        <label class="field" style="margin-bottom:10px"><span data-af="Soort">Type</span><select id="chart"></select></label>
+        <div id="chartOpts"></div>
+        <div class="row c2">
+          <label class="field"><span data-af="x-as byskrif">x-axis title</span><input type="text" id="xtitle" maxlength="60"></label>
+          <label class="field"><span data-af="y-as byskrif">y-axis title</span><input type="text" id="ytitle" maxlength="60"></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+      <div class="summary" id="summary"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+
+    const STR = {
+      en: {
+        charts: { box: 'Box-and-whisker plot', hist: 'Histogram', poly: 'Frequency polygon', ogive: 'Ogive (cumulative frequency)', stem: 'Stem-and-leaf plot', dot: 'Dot plot', scatter: 'Scatter plot' },
+        dataA: 'Data set A', dataB: 'Data set B (optional, to compare)', nameA: 'Name of set A', nameB: 'Name of set B',
+        listHint: 'Separate values with commas or spaces. If your decimals use a comma (2,5), separate values with semicolons.',
+        groupedHint: 'One class per line: lower bound, upper bound, frequency — e.g. 150 160 4 or 150-160 4. You can paste from a spreadsheet.',
+        pairsHint: 'One pair per line: x and y — e.g. 2 45. You can paste two columns from a spreadsheet.',
+        width: 'Class width', start: 'First class starts at', auto: 'auto', outliers: 'Show outliers separately', values: 'Show the five values', regLine: 'Show the regression line', eq: 'Show the equation and r',
+        bars: 'Bar colour',
+        n: 'n', mean: 'Mean', median: 'Median', mode: 'Mode', q1: 'Q1', q3: 'Q3', iqr: 'IQR', range: 'Range', sd: 'σ (std dev)', variance: 'Variance', min: 'Min', max: 'Max',
+        estMean: 'Estimated mean', modal: 'Modal class', medClass: 'Median class', a: 'a (intercept)', b: 'b (gradient)', r: 'r', r2: 'r²', none: 'none',
+        bad: (list) => `Could not read: ${list}`, need: 'Enter at least two values.', needPairs: 'Enter at least two (x ; y) pairs.',
+        freq: 'Frequency', cf: 'Cumulative frequency', key: 'Key', copied: 'Link copied — anyone with it sees this chart.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        charts: { box: 'Mond-en-snor-diagram', hist: 'Histogram', poly: 'Frekwensieveelhoek', ogive: 'Ogief (kumulatiewe frekwensie)', stem: 'Stam-en-blaar-diagram', dot: 'Puntdiagram', scatter: 'Spreidiagram' },
+        dataA: 'Datastel A', dataB: 'Datastel B (opsioneel, om te vergelyk)', nameA: 'Naam van stel A', nameB: 'Naam van stel B',
+        listHint: 'Skei waardes met kommas of spasies. As jou desimale ’n komma gebruik (2,5), skei waardes met kommapunte.',
+        groupedHint: 'Een klas per reël: ondergrens, bogrens, frekwensie — bv. 150 160 4 of 150-160 4. Jy kan uit ’n sigblad plak.',
+        pairsHint: 'Een paar per reël: x en y — bv. 2 45. Jy kan twee kolomme uit ’n sigblad plak.',
+        width: 'Klaswydte', start: 'Eerste klas begin by', auto: 'outo', outliers: 'Wys uitskieters apart', values: 'Wys die vyf waardes', regLine: 'Wys die regressielyn', eq: 'Wys die vergelyking en r',
+        bars: 'Staafkleur',
+        n: 'n', mean: 'Gemiddeld', median: 'Mediaan', mode: 'Modus', q1: 'K1', q3: 'K3', iqr: 'IKW', range: 'Omvang', sd: 'σ (std-afw.)', variance: 'Variansie', min: 'Min', max: 'Maks',
+        estMean: 'Beraamde gemiddeld', modal: 'Modale klas', medClass: 'Mediaanklas', a: 'a (afsnit)', b: 'b (gradiënt)', r: 'r', r2: 'r²', none: 'geen',
+        bad: (list) => `Kon nie lees nie: ${list}`, need: 'Tik ten minste twee waardes.', needPairs: 'Tik ten minste twee (x ; y)-pare.',
+        freq: 'Frekwensie', cf: 'Kumulatiewe frekwensie', key: 'Sleutel', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie grafiek.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+    const CHARTS = { list: ['box', 'hist', 'poly', 'ogive', 'stem', 'dot'], grouped: ['hist', 'poly', 'ogive'], pairs: ['scatter'] };
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const defaults = () => ({
+      mode: 'list', chart: 'box', a: '', b: '', nameA: 'A', nameB: 'B', grouped: '', pairs: '',
+      width: '', start: '', outliers: true, values: true, reg: true, eq: true, color: '#2563eb',
+      xtitle: '', ytitle: '', title: '',
+    });
+    let st = defaults();
+    const store = K.store('mm_stats_v1', 's');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults();
+      Object.keys(d).forEach(k => {
+        if (s[k] === undefined) return;
+        d[k] = typeof d[k] === 'boolean' ? !!s[k] : String(s[k]).slice(0, 20000);
+      });
+      if (!CHARTS[d.mode]) d.mode = 'list';
+      if (!CHARTS[d.mode].includes(d.chart)) d.chart = CHARTS[d.mode][0];
+      if (!/^#[0-9a-f]{6}$/i.test(d.color)) d.color = '#2563eb';
+      return d;
+    }
+    function example(k) {
+      const keep = { color: st.color };
+      st = Object.assign(defaults(), keep);
+      if (k === 'marks') Object.assign(st, { mode: 'list', chart: 'box', a: '34, 28, 41, 22, 34, 45, 37, 29, 41, 18, 34, 40, 38, 25, 31', xtitle: 'Marks out of 50', title: 'Grade 10 test marks' });
+      if (k === 'compare') Object.assign(st, { mode: 'list', chart: 'box', a: '56 62 48 71 65 59 80 44 67 73 58 61', b: '45 52 38 66 49 57 70 41 55 60 47 51', nameA: 'Class A', nameB: 'Class B', xtitle: 'Marks (%)', title: 'Term test: two classes' });
+      if (k === 'heights') Object.assign(st, { mode: 'grouped', chart: 'ogive', grouped: '140 150 3\n150 160 8\n160 170 14\n170 180 10\n180 190 5', xtitle: 'Height (cm)', title: 'Heights of 40 learners' });
+      if (k === 'study') Object.assign(st, { mode: 'pairs', chart: 'scatter', pairs: '1 42\n2 48\n2 51\n3 55\n4 60\n4 58\n5 66\n6 70\n7 71\n8 79', xtitle: 'Hours studied', ytitle: 'Mark (%)', title: 'Study time and marks' });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Parsing
+    // ══════════════════════════════════════════════════════════════════
+    function parseList(src) {
+      const text = String(src || '').trim();
+      if (!text) return { vals: [], bad: [] };
+      const semi = text.includes(';');
+      const toks = semi ? text.split(/[;\s]+/) : text.split(/[,\s]+/);
+      const vals = [], bad = [];
+      toks.filter(Boolean).forEach(t => { const v = Number(semi ? t.replace(',', '.') : t); if (Number.isFinite(v)) vals.push(v); else bad.push(t); });
+      return { vals, bad };
+    }
+    function numsIn(line) {
+      const l = line.replace(/(\d)\s*[-–]\s*(\d)/g, '$1 $2').replace(/(\d),(\d)/g, '$1.$2');
+      return (l.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+    }
+    function parseGrouped(src) {
+      const rows = [], bad = [];
+      String(src || '').split(/\n/).map(l => l.trim()).filter(Boolean).forEach(l => {
+        const n = numsIn(l);
+        if (n.length >= 3 && n[1] > n[0] && n[2] >= 0) rows.push({ lo: n[0], hi: n[1], f: n[2] }); else bad.push(l);
+      });
+      rows.sort((a, b) => a.lo - b.lo);
+      return { rows, bad };
+    }
+    function parsePairs(src) {
+      const pts = [], bad = [];
+      String(src || '').split(/\n/).map(l => l.trim()).filter(Boolean).forEach(l => {
+        const n = numsIn(l);
+        if (n.length >= 2) pts.push({ x: n[0], y: n[1] }); else bad.push(l);
+      });
+      return { pts, bad };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Statistics (CAPS conventions: quartiles as medians of the lower and
+    // upper halves, leaving out the median when n is odd; population σ)
+    // ══════════════════════════════════════════════════════════════════
+    const med = (s) => { const n = s.length, m = Math.floor(n / 2); return n % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+    function summary(vals) {
+      const s = vals.slice().sort((a, b) => a - b), n = s.length;
+      const mean = s.reduce((a, b) => a + b, 0) / n;
+      const lower = s.slice(0, Math.floor(n / 2)), upper = s.slice(Math.ceil(n / 2));
+      const q1 = lower.length ? med(lower) : s[0], q3 = upper.length ? med(upper) : s[n - 1];
+      const variance = s.reduce((a, v) => a + (v - mean) ** 2, 0) / n;
+      const counts = new Map(); s.forEach(v => counts.set(v, (counts.get(v) || 0) + 1));
+      const top = Math.max(...counts.values());
+      const modes = top > 1 ? [...counts].filter(([, c]) => c === top).map(([v]) => v) : [];
+      const iqr = q3 - q1, lf = q1 - 1.5 * iqr, uf = q3 + 1.5 * iqr;
+      const inside = s.filter(v => v >= lf && v <= uf);
+      return { s, n, mean, median: med(s), q1, q3, iqr, min: s[0], max: s[n - 1], range: s[n - 1] - s[0], variance, sd: Math.sqrt(variance), modes,
+        lo: inside[0], hi: inside[inside.length - 1], out: s.filter(v => v < lf || v > uf) };
+    }
+    function regression(pts) {
+      const n = pts.length, mx = pts.reduce((a, p) => a + p.x, 0) / n, my = pts.reduce((a, p) => a + p.y, 0) / n;
+      let sxy = 0, sxx = 0, syy = 0;
+      pts.forEach(p => { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) ** 2; syy += (p.y - my) ** 2; });
+      const b = sxx ? sxy / sxx : 0, a = my - b * mx, r = sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
+      return { a, b, r, mx, my };
+    }
+    function autoClasses(vals) {
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      const w = st.width && +st.width > 0 ? +st.width : niceStep((hi - lo || 1) / Math.max(4, Math.ceil(1 + Math.log2(vals.length))));
+      const start = st.start !== '' && Number.isFinite(+st.start) ? +st.start : Math.floor(lo / w) * w;
+      const rows = [];
+      for (let x = start; x <= hi && rows.length < 60; x += w) rows.push({ lo: round(x), hi: round(x + w), f: 0 });
+      vals.forEach(v => { const r = rows.find((c, i) => v >= c.lo && (v < c.hi || (i === rows.length - 1 && v <= c.hi))); if (r) r.f++; });
+      return rows;
+    }
+    function niceStep(raw) { const mag = 10 ** Math.floor(Math.log10(raw)); return [1, 2, 2.5, 5, 10].map(m => m * mag).find(m => m >= raw); }
+    function nice(lo, hi, n) {
+      if (lo === hi) { lo -= 1; hi += 1; }
+      const step = niceStep((hi - lo) / (n || 8));
+      return { lo: Math.floor(lo / step + 1e-9) * step, hi: Math.ceil(hi / step - 1e-9) * step, step };
+    }
+    const round = (v, dp = 6) => { const r = Math.round(v * 10 ** dp) / 10 ** dp; return Object.is(r, -0) ? 0 : r; };
+    const fmt = (v, dp = 2) => { const s = String(round(v, dp)); return (lang === 'af' ? s.replace('.', ',') : s).replace('-', '−'); };
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering
+    // ══════════════════════════════════════════════════════════════════
+    const W = 900, FONT = 'Helvetica, Arial, sans-serif', INK = '#111827', SUB = '#4b5563', GRID = '#e5e7eb';
+    let svgOut = '';
+    const topOf = () => (String(st.title || '').trim() ? 56 : 22);
+    function frame(H) {
+      const title = String(st.title || '').trim();
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(T().charts[st.chart])}" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      return { s, top: title ? 56 : 22 };
+    }
+    // Axes for x/y charts. Returns mapping functions.
+    function axes(s, box, xs, ys, opts) {
+      const { x0, x1, y0, y1 } = box;
+      const X = (v) => x0 + (v - xs.lo) / (xs.hi - xs.lo) * (x1 - x0);
+      const Y = (v) => y1 - (v - ys.lo) / (ys.hi - ys.lo) * (y1 - y0);
+      let g = '';
+      for (let v = ys.lo, i = 0; v <= ys.hi + 1e-9 && i < 60; v = ys.lo + (++i) * ys.step) {
+        g += `<line x1="${x0}" y1="${Y(v)}" x2="${x1}" y2="${Y(v)}" stroke="${GRID}"/>`;
+        g += `<text x="${x0 - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="13" fill="${SUB}">${fmt(v, 4)}</text>`;
+      }
+      const xticks = opts && opts.xticks ? opts.xticks : (() => { const t = []; for (let v = xs.lo, i = 0; v <= xs.hi + 1e-9 && i < 80; v = xs.lo + (++i) * xs.step) t.push(v); return t; })();
+      xticks.forEach(v => {
+        g += `<line x1="${X(v)}" y1="${y1}" x2="${X(v)}" y2="${y1 + 6}" stroke="${INK}"/>`;
+        g += `<text x="${X(v)}" y="${y1 + 22}" text-anchor="middle" font-size="13" fill="${SUB}">${fmt(v, 4)}</text>`;
+      });
+      g += `<line x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}" stroke="${INK}" stroke-width="1.5"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y1}" stroke="${INK}" stroke-width="1.5"/>`;
+      if (st.xtitle) g += `<text x="${(x0 + x1) / 2}" y="${y1 + 48}" text-anchor="middle" font-size="15" fill="${INK}">${esc(st.xtitle)}</text>`;
+      const yt = st.ytitle || (opts && opts.ytitle) || '';
+      if (yt) g += `<text transform="translate(${x0 - 52} ${(y0 + y1) / 2}) rotate(-90)" text-anchor="middle" font-size="15" fill="${INK}">${esc(yt)}</text>`;
+      return { g: s + g, X, Y };
+    }
+
+    function render() {
+      store.save(JSON.stringify(st));
+      const t = T(), warn = [];
+      let stats = [], svg = '';
+      const col = st.color, colB = '#dc2626';
+      if (st.mode === 'list') {
+        const A = parseList(st.a), B = parseList(st.b);
+        if (A.bad.length || B.bad.length) warn.push(t.bad([...A.bad, ...B.bad].slice(0, 6).join(', ')));
+        $('dataA').classList.toggle('err', A.bad.length > 0);
+        if ($('dataB')) $('dataB').classList.toggle('err', B.bad.length > 0);
+        if (A.vals.length < 2) { warn.push(t.need); return finish('', [], warn); }
+        const sA = summary(A.vals), sB = B.vals.length >= 2 ? summary(B.vals) : null;
+        stats = statsFor(sA, sB ? st.nameA : null);
+        if (sB) stats = stats.concat(statsFor(sB, st.nameB));
+        if (st.chart === 'box') svg = boxPlot([[sA, st.nameA, col]].concat(sB ? [[sB, st.nameB, colB]] : []));
+        else if (st.chart === 'stem') svg = stemLeaf(sA.s, sB ? sB.s : null);
+        else if (st.chart === 'dot') svg = dotPlot([[sA.s, st.nameA, col]].concat(sB ? [[sB.s, st.nameB, colB]] : []));
+        else {
+          const rows = autoClasses(A.vals);
+          svg = freqChart(rows, st.chart);
+          stats = stats.concat(groupedStats(rows));
+        }
+      } else if (st.mode === 'grouped') {
+        const G = parseGrouped(st.grouped);
+        $('dataG').classList.toggle('err', G.bad.length > 0);
+        if (G.bad.length) warn.push(t.bad(G.bad.slice(0, 4).join(' | ')));
+        if (G.rows.length < 1) { warn.push(t.need); return finish('', [], warn); }
+        svg = freqChart(G.rows, st.chart);
+        stats = groupedStats(G.rows);
+      } else {
+        const Pp = parsePairs(st.pairs);
+        $('dataP').classList.toggle('err', Pp.bad.length > 0);
+        if (Pp.bad.length) warn.push(t.bad(Pp.bad.slice(0, 4).join(' | ')));
+        if (Pp.pts.length < 2) { warn.push(t.needPairs); return finish('', [], warn); }
+        const r = regression(Pp.pts);
+        svg = scatter(Pp.pts, r);
+        stats = [[t.n, Pp.pts.length], [t.a, fmt(r.a, 3)], [t.b, fmt(r.b, 3)], [t.r, fmt(r.r, 3)], [t.r2, fmt(r.r * r.r, 3)],
+          ['x̄', fmt(r.mx)], ['ȳ', fmt(r.my)]];
+      }
+      finish(svg, stats, warn);
+    }
+    function finish(svg, stats, warn) {
+      svgOut = svg;
+      $('plot').innerHTML = svg || '';
+      $('warn').textContent = warn.join(' ');
+      $('summary').innerHTML = stats.map(([k, v]) => `<div class="stat"><span>${esc(k)}</span><b>${esc(String(v))}</b></div>`).join('');
+    }
+    function statsFor(s, name) {
+      const t = T(), p = name ? name + ' · ' : '';
+      return [[p + t.n, s.n], [p + t.mean, fmt(s.mean)], [p + t.median, fmt(s.median)], [p + t.mode, s.modes.length ? s.modes.map(v => fmt(v)).join('; ') : t.none],
+        [p + t.min, fmt(s.min)], [p + t.q1, fmt(s.q1)], [p + t.q3, fmt(s.q3)], [p + t.max, fmt(s.max)], [p + t.range, fmt(s.range)], [p + t.iqr, fmt(s.iqr)],
+        [p + t.variance, fmt(s.variance)], [p + t.sd, fmt(s.sd)]];
+    }
+    function groupedStats(rows) {
+      const t = T(), n = rows.reduce((a, r) => a + r.f, 0);
+      if (!n) return [];
+      const mean = rows.reduce((a, r) => a + r.f * (r.lo + r.hi) / 2, 0) / n;
+      const top = Math.max(...rows.map(r => r.f));
+      const modal = rows.filter(r => r.f === top).map(r => `${fmt(r.lo)} ≤ x < ${fmt(r.hi)}`).join('; ');
+      let cum = 0; const mc = rows.find(r => (cum += r.f) >= n / 2);
+      return [[t.n, n], [t.estMean, fmt(mean)], [t.modal, modal], [t.medClass, mc ? `${fmt(mc.lo)} ≤ x < ${fmt(mc.hi)}` : '—']];
+    }
+
+    function boxPlot(sets) {
+      const top = topOf(), rowH = st.values ? 120 : 90, H = top + sets.length * rowH + 90;
+      const lo = Math.min(...sets.map(([s]) => s.min)), hi = Math.max(...sets.map(([s]) => s.max));
+      const xs = nice(lo, hi, 10), x0 = 70, x1 = W - 40;
+      const X = (v) => x0 + (v - xs.lo) / (xs.hi - xs.lo) * (x1 - x0);
+      let s = frame(H).s;
+      const axisY = top + sets.length * rowH + 14;
+      for (let v = xs.lo, i = 0; v <= xs.hi + 1e-9 && i < 80; v = xs.lo + (++i) * xs.step) {
+        s += `<line x1="${X(v)}" y1="${top}" x2="${X(v)}" y2="${axisY}" stroke="${GRID}"/>`;
+        s += `<line x1="${X(v)}" y1="${axisY}" x2="${X(v)}" y2="${axisY + 6}" stroke="${INK}"/><text x="${X(v)}" y="${axisY + 22}" text-anchor="middle" font-size="13" fill="${SUB}">${fmt(v, 4)}</text>`;
+      }
+      s += `<line x1="${x0}" y1="${axisY}" x2="${x1}" y2="${axisY}" stroke="${INK}" stroke-width="1.5"/>`;
+      if (st.xtitle) s += `<text x="${(x0 + x1) / 2}" y="${axisY + 50}" text-anchor="middle" font-size="15" fill="${INK}">${esc(st.xtitle)}</text>`;
+      sets.forEach(([d, name, c], i) => {
+        const cy = top + i * rowH + (st.values ? 58 : 45), h = 44;
+        const wlo = st.outliers ? d.lo : d.min, whi = st.outliers ? d.hi : d.max;
+        if (sets.length > 1) s += `<text x="${x0 - 10}" y="${cy + 5}" text-anchor="end" font-size="15" font-weight="bold" fill="${c}">${esc(name)}</text>`;
+        s += `<line x1="${X(wlo)}" y1="${cy}" x2="${X(d.q1)}" y2="${cy}" stroke="${INK}" stroke-width="2"/><line x1="${X(d.q3)}" y1="${cy}" x2="${X(whi)}" y2="${cy}" stroke="${INK}" stroke-width="2"/>`;
+        s += `<line x1="${X(wlo)}" y1="${cy - h / 4}" x2="${X(wlo)}" y2="${cy + h / 4}" stroke="${INK}" stroke-width="2"/><line x1="${X(whi)}" y1="${cy - h / 4}" x2="${X(whi)}" y2="${cy + h / 4}" stroke="${INK}" stroke-width="2"/>`;
+        s += `<rect x="${X(d.q1)}" y="${cy - h / 2}" width="${Math.max(1, X(d.q3) - X(d.q1))}" height="${h}" fill="${c}" fill-opacity="0.16" stroke="${c}" stroke-width="2.2"/>`;
+        s += `<line x1="${X(d.median)}" y1="${cy - h / 2}" x2="${X(d.median)}" y2="${cy + h / 2}" stroke="${c}" stroke-width="3"/>`;
+        if (st.outliers) d.out.forEach(v => { s += `<circle cx="${X(v)}" cy="${cy}" r="4.5" fill="#fff" stroke="${INK}" stroke-width="1.8"/>`; });
+        if (st.values) {
+          const vals = [[wlo, 'min'], [d.q1, 'q1'], [d.median, 'med'], [d.q3, 'q3'], [whi, 'max']];
+          let lastX = -1e9, row = 0;
+          vals.forEach(([v]) => { const px = X(v); row = px - lastX < 34 ? 1 - row : 0; lastX = px;
+            s += `<text x="${px}" y="${cy - h / 2 - 8 - row * 15}" text-anchor="middle" font-size="12.5" fill="${SUB}">${fmt(v)}</text>`; });
+        }
+      });
+      return s + '</svg>';
+    }
+    function freqChart(rows, kind) {
+      const H = 560, { s: head, top } = frame(H);
+      const box = { x0: 90, x1: W - 40, y0: top + 10, y1: H - 70 };
+      const t = T();
+      let cum = 0; const cf = rows.map(r => (cum += r.f));
+      const w = rows[0].hi - rows[0].lo;
+      const xlo = kind === 'poly' ? rows[0].lo - w : rows[0].lo, xhi = kind === 'poly' ? rows[rows.length - 1].hi + w : rows[rows.length - 1].hi;
+      const ymax = kind === 'ogive' ? cum : Math.max(...rows.map(r => r.f));
+      const ys = nice(0, ymax, 8);
+      const edges = [...new Set(rows.flatMap(r => [r.lo, r.hi]).concat(kind === 'poly' ? [xlo, xhi] : []))].sort((a, b) => a - b);
+      const { g, X, Y } = axes(head, box, { lo: xlo, hi: xhi, step: w }, ys, { xticks: edges, ytitle: kind === 'ogive' ? t.cf : t.freq });
+      let s = g;
+      if (kind === 'hist') rows.forEach(r => { s += `<rect x="${X(r.lo)}" y="${Y(r.f)}" width="${X(r.hi) - X(r.lo)}" height="${Y(0) - Y(r.f)}" fill="${st.color}" fill-opacity="0.35" stroke="${st.color}" stroke-width="2"/>`; });
+      if (kind === 'poly') {
+        const pts = [[xlo + w / 2, 0], ...rows.map(r => [(r.lo + r.hi) / 2, r.f]), [xhi - w / 2, 0]];
+        s += `<polyline points="${pts.map(([x, y]) => `${X(x)},${Y(y)}`).join(' ')}" fill="none" stroke="${st.color}" stroke-width="2.6"/>`;
+        pts.forEach(([x, y]) => { s += `<circle cx="${X(x)}" cy="${Y(y)}" r="4.5" fill="${st.color}"/>`; });
+      }
+      if (kind === 'ogive') {
+        const pts = [[rows[0].lo, 0], ...rows.map((r, i) => [r.hi, cf[i]])];
+        s += `<polyline points="${pts.map(([x, y]) => `${X(x)},${Y(y)}`).join(' ')}" fill="none" stroke="${st.color}" stroke-width="2.6" stroke-linejoin="round"/>`;
+        pts.forEach(([x, y]) => { s += `<circle cx="${X(x)}" cy="${Y(y)}" r="4.5" fill="${st.color}"/>`; });
+      }
+      return s + '</svg>';
+    }
+    function scatter(pts, r) {
+      const H = 560, { s: head, top } = frame(H);
+      const box = { x0: 90, x1: W - 40, y0: top + 10, y1: H - 70 };
+      // a little room so points at the extremes aren't sitting on the axes
+      const padded = (vals) => { const lo = Math.min(...vals), hi = Math.max(...vals), m = (hi - lo || 1) * 0.06; return [lo - m, hi + m]; };
+      const xs = nice(...padded(pts.map(p => p.x)), 10);
+      const ys = nice(...padded(pts.map(p => p.y)), 8);
+      const { g, X, Y } = axes(head, box, xs, ys);
+      let s = g;
+      if (st.reg) {
+        const ya = r.a + r.b * xs.lo, yb = r.a + r.b * xs.hi;
+        s += `<defs><clipPath id="sc"><rect x="${box.x0}" y="${box.y0}" width="${box.x1 - box.x0}" height="${box.y1 - box.y0}"/></clipPath></defs>`;
+        s += `<line x1="${X(xs.lo)}" y1="${Y(ya)}" x2="${X(xs.hi)}" y2="${Y(yb)}" stroke="#dc2626" stroke-width="2.4" clip-path="url(#sc)"/>`;
+      }
+      pts.forEach(p => { s += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="5.5" fill="${st.color}" fill-opacity="0.85"/>`; });
+      if (st.eq) {
+        const sign = r.b < 0 ? '−' : '+';
+        s += `<text x="${box.x0 + 14}" y="${box.y0 + 22}" font-size="17" fill="#dc2626" font-family="'Times New Roman', serif"><tspan font-style="italic">ŷ</tspan> = ${fmt(r.a, 3)} ${sign} ${fmt(Math.abs(r.b), 3)}<tspan font-style="italic">x</tspan>   ·   <tspan font-style="italic">r</tspan> = ${fmt(r.r, 3)}</text>`;
+      }
+      return s + '</svg>';
+    }
+    function dotPlot(sets) {
+      const top = topOf();
+      const all = sets.flatMap(([v]) => v), xs = nice(Math.min(...all), Math.max(...all), 12);
+      const x0 = 70, x1 = W - 40, X = (v) => x0 + (v - xs.lo) / (xs.hi - xs.lo) * (x1 - x0);
+      const stacks = sets.map(([v]) => { const m = new Map(); v.forEach(x => m.set(x, (m.get(x) || 0) + 1)); return m; });
+      const tallest = Math.max(...stacks.map(m => Math.max(...m.values())));
+      const r = Math.max(4, Math.min(9, (x1 - x0) / (all.length ? new Set(all).size : 1) / 2.6));
+      const band = tallest * (r * 2 + 3) + 30;
+      const H = top + sets.length * band + 70;
+      let s = frame(H).s;
+      sets.forEach(([, name, c], i) => {
+        const base = top + (i + 1) * band;
+        if (sets.length > 1) s += `<text x="${x0 - 10}" y="${base - 6}" text-anchor="end" font-size="14" font-weight="bold" fill="${c}">${esc(name)}</text>`;
+        stacks[i].forEach((n, v) => { for (let k = 0; k < n; k++) s += `<circle cx="${X(v)}" cy="${base - r - k * (2 * r + 3)}" r="${r}" fill="${c}"/>`; });
+        s += `<line x1="${x0}" y1="${base + 2}" x2="${x1}" y2="${base + 2}" stroke="${INK}" stroke-width="1.5"/>`;
+      });
+      const axisY = top + sets.length * band + 2;
+      for (let v = xs.lo, i = 0; v <= xs.hi + 1e-9 && i < 80; v = xs.lo + (++i) * xs.step) s += `<line x1="${X(v)}" y1="${axisY}" x2="${X(v)}" y2="${axisY + 6}" stroke="${INK}"/><text x="${X(v)}" y="${axisY + 22}" text-anchor="middle" font-size="13" fill="${SUB}">${fmt(v, 4)}</text>`;
+      if (st.xtitle) s += `<text x="${(x0 + x1) / 2}" y="${axisY + 48}" text-anchor="middle" font-size="15" fill="${INK}">${esc(st.xtitle)}</text>`;
+      return s + '</svg>';
+    }
+    // Stem = all but the last digit; leaf = last digit (tenths for 1-dp data).
+    function stemLeaf(a, b) {
+      const dp = [...a, ...(b || [])].some(v => !Number.isInteger(v)) ? 1 : 0;
+      const split = (v) => { const u = Math.round(Math.abs(v) * 10 ** dp); return { stem: Math.floor(u / 10) * Math.sign(v || 1), leaf: u % 10 }; };
+      const all = [...a, ...(b || [])].map(split);
+      const stems = []; for (let s = Math.min(...all.map(x => x.stem)); s <= Math.max(...all.map(x => x.stem)); s++) stems.push(s);
+      const leaves = (vals) => { const m = new Map(stems.map(s => [s, []])); vals.map(split).forEach(({ stem, leaf }) => m.get(stem).push(leaf)); m.forEach(l => l.sort((x, y) => x - y)); return m; };
+      const LA = leaves(a), LB = b ? leaves(b) : null;
+      const rowH = 30, top = topOf() + 16, H = top + stems.length * rowH + 80;
+      let s = frame(H).s;
+      const cx = b ? W / 2 : 180, mono = "'Courier New', monospace";
+      s += `<line x1="${cx + 22}" y1="${top + 4}" x2="${cx + 22}" y2="${top + stems.length * rowH + 8}" stroke="${INK}" stroke-width="2"/>`;
+      if (b) s += `<line x1="${cx - 22}" y1="${top + 4}" x2="${cx - 22}" y2="${top + stems.length * rowH + 8}" stroke="${INK}" stroke-width="2"/>`;
+      stems.forEach((stem, i) => {
+        const y = top + (i + 1) * rowH;
+        s += `<text x="${cx}" y="${y}" text-anchor="middle" font-size="19" font-weight="bold" fill="${INK}" font-family="${mono}">${stem}</text>`;
+        s += `<text x="${cx + 36}" y="${y}" font-size="19" fill="${st.color}" font-family="${mono}" letter-spacing="6">${LA.get(stem).join('')}</text>`;
+        if (LB) s += `<text x="${cx - 36}" y="${y}" text-anchor="end" font-size="19" fill="#dc2626" font-family="${mono}" letter-spacing="6">${LB.get(stem).slice().reverse().join('')}</text>`;
+      });
+      const ex = split(a[0]);
+      const keyVal = dp ? `${ex.stem}.${ex.leaf}` : `${ex.stem}${ex.leaf}`;
+      s += `<text x="${b ? 40 : cx - 20}" y="${H - 28}" font-size="15" fill="${SUB}">${esc(T().key)}: ${ex.stem} | ${ex.leaf} = ${esc(fmt(+keyVal))}</text>`;
+      if (b) s += `<text x="${cx - 40}" y="${top - 2}" text-anchor="end" font-size="14" font-weight="bold" fill="#dc2626">${esc(st.nameB)}</text><text x="${cx + 40}" y="${top - 2}" font-size="14" font-weight="bold" fill="${st.color}">${esc(st.nameA)}</text>`;
+      return s + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintData() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      let h = '';
+      if (st.mode === 'list') {
+        h = `<label class="field"><span>${esc(t.dataA)}</span><textarea class="data" id="dataA" data-k="a" spellcheck="false">${esc(st.a)}</textarea></label>
+          <label class="field" style="margin-top:8px"><span>${esc(t.dataB)}</span><textarea class="data" id="dataB" data-k="b" spellcheck="false" style="min-height:60px">${esc(st.b)}</textarea></label>
+          <div class="row c2" style="margin-top:8px"><label class="field"><span>${esc(t.nameA)}</span><input type="text" data-k="nameA" value="${esc(st.nameA)}" maxlength="24"></label>
+          <label class="field"><span>${esc(t.nameB)}</span><input type="text" data-k="nameB" value="${esc(st.nameB)}" maxlength="24"></label></div>
+          <p class="hint">${esc(t.listHint)}</p>`;
+      } else if (st.mode === 'grouped') {
+        h = `<textarea class="data" id="dataG" data-k="grouped" spellcheck="false" style="min-height:150px" aria-label="Classes">${esc(st.grouped)}</textarea><p class="hint">${esc(t.groupedHint)}</p>`;
+      } else {
+        h = `<textarea class="data" id="dataP" data-k="pairs" spellcheck="false" style="min-height:150px" aria-label="Pairs">${esc(st.pairs)}</textarea><p class="hint">${esc(t.pairsHint)}</p>`;
+      }
+      $('dataBox').innerHTML = h;
+    }
+    function paintChart() {
+      const t = T();
+      $('chart').innerHTML = CHARTS[st.mode].map(c => `<option value="${c}"${c === st.chart ? ' selected' : ''}>${esc(t.charts[c])}</option>`).join('');
+      let h = '';
+      const chk = (k, l) => `<label class="check"><input type="checkbox" data-k="${k}"${st[k] ? ' checked' : ''}> ${esc(l)}</label>`;
+      if (st.chart === 'box') h += `<div class="checks">${chk('outliers', t.outliers)}${chk('values', t.values)}</div>`;
+      if (st.mode === 'list' && ['hist', 'poly', 'ogive'].includes(st.chart)) h += `<div class="row c2"><label class="field"><span>${esc(t.width)}</span><input type="text" data-k="width" value="${esc(st.width)}" placeholder="${esc(t.auto)}" inputmode="decimal"></label><label class="field"><span>${esc(t.start)}</span><input type="text" data-k="start" value="${esc(st.start)}" placeholder="${esc(t.auto)}" inputmode="decimal"></label></div>`;
+      if (st.chart === 'scatter') h += `<div class="checks">${chk('reg', t.regLine)}${chk('eq', t.eq)}</div>`;
+      h += `<label class="field" style="margin-bottom:10px;max-width:160px"><span>${esc(t.bars)}</span><input type="color" data-k="color" value="${esc(st.color)}" style="height:34px;padding:2px"></label>`;
+      $('chartOpts').innerHTML = h;
+      ['xtitle', 'ytitle', 'title'].forEach(k => { $(k).value = st[k]; });
+    }
+    function onField(e) {
+      const k = e.target.dataset.k; if (!k) return;
+      st[k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      render();
+    }
+    $('dataBox').addEventListener('input', onField);
+    $('chartOpts').addEventListener('input', onField);
+    $('chartOpts').addEventListener('change', onField);
+    ['xtitle', 'ytitle', 'title'].forEach(k => $(k).addEventListener('input', e => { st[k] = e.target.value; render(); }));
+    $('chart').addEventListener('change', e => { st.chart = e.target.value; paintChart(); render(); });
+    $('modeTabs').addEventListener('click', e => {
+      const b = e.target.closest('[data-mode]'); if (!b) return;
+      st.mode = b.dataset.mode; if (!CHARTS[st.mode].includes(st.chart)) st.chart = CHARTS[st.mode][0];
+      paintData(); paintChart(); render();
+    });
+    $('examples').addEventListener('change', e => { if (e.target.value) { example(e.target.value); paintData(); paintChart(); render(); } e.target.value = ''; });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || T().charts[st.chart]).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'chart', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('marks');
+    K.i18n((l) => { lang = l; paintData(); paintChart(); render(); }).apply();
+    window.__stats = { summary, regression, parseList, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
