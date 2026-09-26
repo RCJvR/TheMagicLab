@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Reaction Graphs · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .evt { display: grid; grid-template-columns: minmax(0,0.7fr) minmax(0,1.6fr) minmax(0,0.7fr) 30px; gap: 6px; align-items: end; margin-bottom: 6px; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Energie, tempo en ewewig · Gr 11–12">Resource · Energy, rates &amp; equilibrium · Gr 11–12</span></div>
+    <h1 data-af-html="Reaksie-<em>grafieke.</em>">Reaction <em>graphs.</em></h1>
+    <p class="hero-sub" data-af="Energieprofiele met Eₐ en ΔH, Maxwell-Boltzmann-verspreidings, tempokurwes, en ewewigsgrafieke waar steurings self Le Chatelier volg — omdat die grafieke uit ’n klein simulasie kom.">Energy profiles with Eₐ and ΔH, Maxwell–Boltzmann distributions, rate curves, and equilibrium graphs where disturbances follow Le Chatelier on their own — because the graphs come from a small simulation.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="energy" data-af="Energieprofiel">Energy profile</button>
+          <button type="button" data-mode="mb" data-af="Maxwell-Boltzmann">Maxwell–Boltzmann</button>
+          <button type="button" data-mode="rate" data-af="Tempo">Rate</button>
+          <button type="button" data-mode="eq" data-af="Ewewig">Equilibrium</button>
+        </div>
+        <div id="controls"></div>
+      </section>
+      <section class="panel">
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="nums"> <span data-af="Getalle op die asse">Numbers on the axes</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="hint" id="explain" style="margin-top:8px"></p>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        eR: 'Reactants energy', eP: 'Products energy', ea: 'Activation energy Eₐ', eaCat: 'Eₐ with catalyst (optional)', rLab: 'Reactants label', pLab: 'Products label',
+        showEa: 'Mark Eₐ', showDH: 'Mark ΔH', showAC: 'Label the activated complex', energyAxis: 'Potential energy (kJ·mol⁻¹)', course: 'Course of reaction', ac: 'Activated complex',
+        exo: 'Exothermic: ΔH < 0', endo: 'Endothermic: ΔH > 0', catalysed: 'with catalyst',
+        t1: 'Temperature T₁ (K)', t2: 'Temperature T₂ (K, optional)', eaPos: 'Eₐ position (fraction of the energy axis)', catPos: 'Eₐ with catalyst (optional)', shade: 'Shade particles with E ≥ Eₐ',
+        mbY: 'Number of particles', mbX: 'Kinetic energy', mbHint: 'The area under each curve is the same (same number of particles). At the higher temperature more particles have E ≥ Eₐ.',
+        cond: 'Condition', k: 'Relative rate', final: 'Final amount', yLab: 'Y-axis label', xLab: 'X-axis label', add: 'Add condition', remove: 'Remove',
+        rateHint: 'A faster rate gives a steeper start; the final amount only changes when there is more (or less) of the limiting reactant.',
+        a: 'Coefficient of A', b: 'Coefficient of B', nameA: 'Reactant A', nameB: 'Product B', dh: 'Forward reaction', endoF: 'Endothermic (ΔH > 0)', exoF: 'Exothermic (ΔH < 0)',
+        show: 'Show', conc: 'Concentration–time', rates: 'Rate–time', events: 'Disturbances', at: 'At t', what: 'What happens', addEvt: 'Add disturbance',
+        evts: { addA: 'Add more reactant', removeA: 'Remove some reactant', addB: 'Add more product', removeB: 'Remove some product', heat: 'Increase temperature', cool: 'Decrease temperature', pUp: 'Increase pressure (decrease volume)', pDown: 'Decrease pressure', cat: 'Add a catalyst' },
+        concY: 'Concentration (mol·dm⁻³)', rateY: 'Reaction rate', time: 'Time', fwd: 'forward', rev: 'reverse',
+        copied: 'Link copied — anyone with it sees this graph.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        eR: 'Energie van reaktanse', eP: 'Energie van produkte', ea: 'Aktiveringsenergie Eₐ', eaCat: 'Eₐ met katalisator (opsioneel)', rLab: 'Byskrif: reaktanse', pLab: 'Byskrif: produkte',
+        showEa: 'Merk Eₐ', showDH: 'Merk ΔH', showAC: 'Benoem die geaktiveerde kompleks', energyAxis: 'Potensiële energie (kJ·mol⁻¹)', course: 'Reaksieverloop', ac: 'Geaktiveerde kompleks',
+        exo: 'Eksotermies: ΔH < 0', endo: 'Endotermies: ΔH > 0', catalysed: 'met katalisator',
+        t1: 'Temperatuur T₁ (K)', t2: 'Temperatuur T₂ (K, opsioneel)', eaPos: 'Eₐ-posisie (fraksie van die energie-as)', catPos: 'Eₐ met katalisator (opsioneel)', shade: 'Kleur deeltjies met E ≥ Eₐ in',
+        mbY: 'Aantal deeltjies', mbX: 'Kinetiese energie', mbHint: 'Die oppervlakte onder elke kurwe is dieselfde (dieselfde aantal deeltjies). By die hoër temperatuur het meer deeltjies E ≥ Eₐ.',
+        cond: 'Toestand', k: 'Relatiewe tempo', final: 'Finale hoeveelheid', yLab: 'Y-as-byskrif', xLab: 'X-as-byskrif', add: 'Voeg toestand by', remove: 'Verwyder',
+        rateHint: '’n Vinniger tempo gee ’n steiler begin; die finale hoeveelheid verander net as daar meer (of minder) van die beperkende reaktans is.',
+        a: 'Koëffisiënt van A', b: 'Koëffisiënt van B', nameA: 'Reaktans A', nameB: 'Produk B', dh: 'Voorwaartse reaksie', endoF: 'Endotermies (ΔH > 0)', exoF: 'Eksotermies (ΔH < 0)',
+        show: 'Wys', conc: 'Konsentrasie–tyd', rates: 'Tempo–tyd', events: 'Steurings', at: 'By t', what: 'Wat gebeur', addEvt: 'Voeg steuring by',
+        evts: { addA: 'Voeg meer reaktans by', removeA: 'Verwyder van die reaktans', addB: 'Voeg meer produk by', removeB: 'Verwyder van die produk', heat: 'Verhoog temperatuur', cool: 'Verlaag temperatuur', pUp: 'Verhoog druk (verklein volume)', pDown: 'Verlaag druk', cat: 'Voeg ’n katalisator by' },
+        concY: 'Konsentrasie (mol·dm⁻³)', rateY: 'Reaksietempo', time: 'Tyd', fwd: 'voorwaarts', rev: 'terugwaarts',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie grafiek.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    const defaults = () => ({
+      mode: 'energy', title: '', nums: false,
+      energy: { eR: '100', eP: '40', ea: '80', eaCat: '45', rLab: 'N₂ + 3H₂', pLab: '2NH₃', showEa: true, showDH: true, showAC: true },
+      mb: { t1: '300', t2: '400', eaPos: '0.6', catPos: '', shade: true },
+      rate: { yLab: 'Volume of CO₂ (cm³)', xLab: 'Time (s)', conds: [{ name: 'A: 25 °C', k: '1', final: '60' }, { name: 'B: 35 °C', k: '2', final: '60' }, { name: 'C: more acid', k: '1.5', final: '90' }] },
+      eq: { a: '1', b: '2', nameA: 'N₂O₄', nameB: 'NO₂', dh: 'endo', show: 'conc', events: [{ at: '40', what: 'heat' }, { at: '80', what: 'addA' }] },
+    });
+    let st = defaults();
+    const store = K.store('ss_rxgraph_v1', 'r');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 40);
+      d.mode = ['energy', 'mb', 'rate', 'eq'].includes(s.mode) ? s.mode : 'energy'; d.title = str(s.title, 80); d.nums = !!s.nums;
+      ['energy', 'mb', 'rate', 'eq'].forEach(sec => {
+        if (!s[sec]) return;
+        Object.keys(d[sec]).forEach(k => {
+          if (s[sec][k] === undefined) return;
+          if (typeof d[sec][k] === 'boolean') d[sec][k] = !!s[sec][k];
+          else if (Array.isArray(d[sec][k])) d[sec][k] = (Array.isArray(s[sec][k]) ? s[sec][k] : []).slice(0, 5).map(o => Object.fromEntries(Object.keys(d[sec][k][0]).map(kk => [kk, str(o[kk])])));
+          else d[sec][k] = str(s[sec][k]);
+        });
+      });
+      return d;
+    }
+    const num = (v, dflt) => { const x = parseFloat(String(v).replace(',', '.')); return Number.isFinite(x) ? x : dflt; };
+    const W = 900, H = 560, INK = '#111827', SUB = '#4b5563', FONT = 'Helvetica, Arial, sans-serif', SERIF = "'Times New Roman', Times, serif";
+    const COLS = ['#1d4ed8', '#dc2626', '#15803d', '#9333ea', '#ea580c'];
+    const fmt = (v) => { const r = Math.round(v * 100) / 100; const s = String(r); return lang === 'af' ? s.replace('.', ',') : s; };
+    function frame(xLab, yLab) {
+      const title = String(st.title || '').trim(), top = title ? 60 : 24;
+      const box = { x0: 100, x1: W - 40, y0: top + 10, y1: H - 70 };
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Reaction graph" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      s += `<defs><marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${INK}"/></marker>
+        <marker id="dim" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${INK}"/></marker></defs>`;
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      s += `<line x1="${box.x0}" y1="${box.y1}" x2="${box.x1 + 10}" y2="${box.y1}" stroke="${INK}" stroke-width="1.8" marker-end="url(#ax)"/><line x1="${box.x0}" y1="${box.y1}" x2="${box.x0}" y2="${box.y0 - 10}" stroke="${INK}" stroke-width="1.8" marker-end="url(#ax)"/>`;
+      s += `<text x="${(box.x0 + box.x1) / 2}" y="${H - 28}" text-anchor="middle" font-size="16" fill="${INK}">${esc(xLab)}</text>`;
+      s += `<text transform="translate(${box.x0 - 58} ${(box.y0 + box.y1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" fill="${INK}">${esc(yLab)}</text>`;
+      return { s, box };
+    }
+    function yTicks(box, lo, hi, Y) {
+      if (!st.nums) return '';
+      const step = [1, 2, 2.5, 5, 10].map(k => k * 10 ** Math.floor(Math.log10((hi - lo) / 5 || 1))).find(k => k >= (hi - lo) / 6);
+      let s = ''; for (let v = Math.ceil(lo / step) * step, i = 0; v <= hi + 1e-9 && i < 30; v += step, i++) s += `<line x1="${box.x0 - 5}" y1="${Y(v)}" x2="${box.x0}" y2="${Y(v)}" stroke="${INK}"/><text x="${box.x0 - 9}" y="${Y(v) + 4}" text-anchor="end" font-size="12" fill="${SUB}">${fmt(v)}</text>`;
+      return s;
+    }
+    const poly = (pts, col, extra) => `<polyline points="${pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="2.8" stroke-linejoin="round"${extra || ''}/>`;
+    function dimArrow(x, y1, y2, label, side) {
+      return `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${INK}" stroke-width="1.6" marker-start="url(#dim)" marker-end="url(#dim)"/>` +
+        `<text x="${x + (side === 'left' ? -8 : 8)}" y="${(y1 + y2) / 2 + 6}" text-anchor="${side === 'left' ? 'end' : 'start'}" font-size="18" fill="${INK}" font-family="${SERIF}">${label}</text>`;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // 1. Energy profile
+    // ══════════════════════════════════════════════════════════════════
+    function energy() {
+      const t = T(), E = st.energy;
+      const eR = num(E.eR, 100), eP = num(E.eP, 40), ea = Math.max(1, num(E.ea, 80)), eaC = num(E.eaCat, NaN);
+      const peak = eR + ea, peakC = Number.isFinite(eaC) && eaC > 0 ? eR + eaC : NaN;
+      const lo = Math.min(0, eR, eP) , hi = Math.max(peak, eR, eP) * 1.12;
+      const { s: head, box } = frame(t.course, t.energyAxis);
+      const X = (u) => box.x0 + u * (box.x1 - box.x0), Y = (v) => box.y1 - (v - lo) / (hi - lo) * (box.y1 - box.y0);
+      const curve = (pk) => { const pts = []; for (let i = 0; i <= 200; i++) { const u = i / 200; let v;
+        if (u < 0.2) v = eR; else if (u < 0.5) v = eR + (pk - eR) * (1 - Math.cos(Math.PI * (u - 0.2) / 0.3)) / 2; else if (u < 0.8) v = pk + (eP - pk) * (1 - Math.cos(Math.PI * (u - 0.5) / 0.3)) / 2; else v = eP;
+        pts.push([X(u), Y(v)]); } return pts; };
+      let s = head + yTicks(box, lo, hi, Y);
+      s += poly(curve(peak), '#1d4ed8');
+      if (Number.isFinite(peakC)) s += poly(curve(peakC), '#dc2626', ' stroke-dasharray="9 6"') + `<text x="${X(0.5) + 10}" y="${Y(peakC) - 8}" font-size="15" fill="#dc2626" font-family="${SERIF}">${esc(t.catalysed)}</text>`;
+      // guide lines
+      s += `<line x1="${X(0.05)}" y1="${Y(eR)}" x2="${X(0.95)}" y2="${Y(eR)}" stroke="${SUB}" stroke-dasharray="4 4"/><line x1="${X(0.45)}" y1="${Y(peak)}" x2="${X(0.6)}" y2="${Y(peak)}" stroke="${SUB}" stroke-dasharray="4 4"/>`;
+      s += `<text x="${X(0.1)}" y="${Y(eR) - 12}" text-anchor="middle" font-size="18" fill="${INK}" font-family="${SERIF}">${esc(E.rLab)}</text><text x="${X(0.9)}" y="${Y(eP) - 12}" text-anchor="middle" font-size="18" fill="${INK}" font-family="${SERIF}">${esc(E.pLab)}</text>`;
+      if (E.showAC) s += `<text x="${X(0.5)}" y="${Y(peak) - 12}" text-anchor="middle" font-size="15" fill="${INK}">${esc(t.ac)}</text>`;
+      if (E.showEa) s += dimArrow(X(0.3), Y(eR), Y(peak), `E<tspan baseline-shift="sub" font-size="70%">a</tspan>${st.nums ? ' = ' + fmt(ea) : ''}`, 'left');
+      if (E.showEa && Number.isFinite(peakC)) s += dimArrow(X(0.38), Y(eR), Y(peakC), '', 'left');
+      if (E.showDH) s += dimArrow(X(0.75), Y(eR), Y(eP), `ΔH${st.nums ? ' = ' + fmt(eP - eR) : ''}`, 'right');
+      $('explain').textContent = eP < eR ? t.exo : t.endo;
+      return s + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // 2. Maxwell–Boltzmann: f(E) ∝ √E · e^(−E/kT) / (kT)^(3/2)
+    // ══════════════════════════════════════════════════════════════════
+    function mb() {
+      const t = T(), M = st.mb;
+      const T1 = Math.max(50, num(M.t1, 300)), T2 = num(M.t2, NaN), temps = [T1].concat(Number.isFinite(T2) && T2 > 50 ? [T2] : []);
+      const Emax = 6 * Math.max(...temps);                // x-axis runs to 6kT of the hotter gas
+      const f = (E, Tk) => 2 * Math.sqrt(E / Math.PI) * Math.pow(1 / Tk, 1.5) * Math.exp(-E / Tk);
+      const peakY = Math.max(...temps.map(Tk => f(Tk / 2, Tk))) * 1.15;
+      const { s: head, box } = frame(t.mbX, t.mbY);
+      const X = (E) => box.x0 + E / Emax * (box.x1 - box.x0), Y = (v) => box.y1 - v / peakY * (box.y1 - box.y0);
+      const ea = Math.max(0.05, Math.min(0.95, num(M.eaPos, 0.6))) * Emax, eaC = num(M.catPos, NaN) > 0 ? Math.min(0.95, num(M.catPos, NaN)) * Emax : NaN;
+      let s = head;
+      temps.forEach((Tk, i) => {
+        const col = COLS[i], pts = [];
+        for (let k = 0; k <= 300; k++) { const E = Emax * k / 300; pts.push([X(E), Y(f(E, Tk))]); }
+        if (M.shade) {
+          const area = pts.filter(p => p[0] >= X(ea));
+          if (area.length) s += `<path d="M${X(ea)} ${box.y1}L${area.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L')}L${box.x1} ${box.y1}Z" fill="${col}" fill-opacity="${i ? 0.18 : 0.28}"/>`;
+        }
+        s += poly(pts, col);
+        const pk = [X(Tk / 2), Y(f(Tk / 2, Tk))];
+        s += `<text x="${pk[0] + 10}" y="${pk[1] - 8}" font-size="18" fill="${col}" font-family="${SERIF}"><tspan font-style="italic">T</tspan><tspan baseline-shift="sub" font-size="70%">${i + 1}</tspan>${st.nums ? ' = ' + Tk + ' K' : ''}</text>`;
+      });
+      s += `<line x1="${X(ea)}" y1="${box.y1}" x2="${X(ea)}" y2="${box.y0 + 20}" stroke="${INK}" stroke-width="1.8" stroke-dasharray="7 5"/><text x="${X(ea)}" y="${box.y0 + 12}" text-anchor="middle" font-size="18" font-family="${SERIF}" fill="${INK}">E<tspan baseline-shift="sub" font-size="70%">a</tspan></text>`;
+      if (Number.isFinite(eaC)) s += `<line x1="${X(eaC)}" y1="${box.y1}" x2="${X(eaC)}" y2="${box.y0 + 60}" stroke="#dc2626" stroke-width="1.8" stroke-dasharray="7 5"/><text x="${X(eaC)}" y="${box.y0 + 52}" text-anchor="middle" font-size="16" font-family="${SERIF}" fill="#dc2626">E<tspan baseline-shift="sub" font-size="70%">a</tspan> (${esc(t.catalysed)})</text>`;
+      $('explain').textContent = t.mbHint;
+      return s + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // 3. Rate: amount of product P(t) = P_final (1 − e^(−k t))
+    // ══════════════════════════════════════════════════════════════════
+    function rate() {
+      const t = T(), R = st.rate;
+      const conds = R.conds.map(c => ({ name: c.name, k: Math.max(0.05, num(c.k, 1)), fin: Math.max(0, num(c.final, 50)) }));
+      const kMin = Math.min(...conds.map(c => c.k)), tEnd = 5 / kMin;
+      const hi = Math.max(...conds.map(c => c.fin)) * 1.15 || 1;
+      const { s: head, box } = frame(R.xLab, R.yLab);
+      const X = (tt) => box.x0 + tt / tEnd * (box.x1 - box.x0), Y = (v) => box.y1 - v / hi * (box.y1 - box.y0);
+      let s = head + yTicks(box, 0, hi, Y);
+      conds.forEach((c, i) => {
+        const pts = []; for (let k = 0; k <= 200; k++) { const tt = tEnd * k / 200; pts.push([X(tt), Y(c.fin * (1 - Math.exp(-c.k * tt)))]); }
+        s += poly(pts, COLS[i]);
+        const lx = X(Math.min(tEnd * 0.92, 2.2 / c.k)), ly = Y(c.fin * (1 - Math.exp(-c.k * Math.min(tEnd * 0.92, 2.2 / c.k))));
+        s += `<text x="${lx + 8}" y="${ly + 22}" font-size="15" font-weight="bold" fill="${COLS[i]}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(c.name)}</text>`;
+      });
+      $('explain').textContent = t.rateHint;
+      return s + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // 4. Equilibrium: aA ⇌ bB, rate_f = kf[A]^a, rate_r = kr[B]^b,
+    //    integrated step by step so each disturbance plays out naturally.
+    // ══════════════════════════════════════════════════════════════════
+    function simulate() {
+      const E = st.eq, a = Math.max(1, Math.min(3, parseInt(E.a, 10) || 1)), b = Math.max(1, Math.min(3, parseInt(E.b, 10) || 1));
+      const endoF = E.dh === 'endo';
+      let kf = 0.08, kr = 0.08 * (b >= a ? 0.6 : 1.4), A = 1.0, B = 0;
+      const evs = E.events.map(e => ({ at: num(e.at, 50), what: e.what })).filter(e => e.at > 0).sort((p, q) => p.at - q.at);
+      const tEnd = Math.max(120, (evs.length ? evs[evs.length - 1].at : 0) + 45);
+      const dt = 0.02, out = [];
+      let next = 0;
+      for (let tt = 0; tt <= tEnd + 1e-9; tt += dt) {
+        while (next < evs.length && tt >= evs[next].at) {
+          const w = evs[next].what;
+          const before = { t: tt, A, B, rf: kf * A ** a, rr: kr * B ** b, jump: true };
+          if (w === 'addA') A += 0.5; if (w === 'removeA') A *= 0.55; if (w === 'addB') B += 0.5; if (w === 'removeB') B *= 0.55;
+          if (w === 'pUp') { A *= 1.5; B *= 1.5; } if (w === 'pDown') { A /= 1.5; B /= 1.5; }
+          // the endothermic direction's rate constant rises more on heating
+          if (w === 'heat') { if (endoF) { kf *= 1.8; kr *= 1.25; } else { kf *= 1.25; kr *= 1.8; } }
+          if (w === 'cool') { if (endoF) { kf /= 1.8; kr /= 1.25; } else { kf /= 1.25; kr /= 1.8; } }
+          if (w === 'cat') { kf *= 1.8; kr *= 1.8; }
+          out.push(before);
+          next++;
+        }
+        const rf = kf * A ** a, rr = kr * B ** b;
+        out.push({ t: tt, A, B, rf, rr });
+        A += -a * (rf - rr) * dt; B += b * (rf - rr) * dt;
+        A = Math.max(0, A); B = Math.max(0, B);
+      }
+      return { pts: out, tEnd, evs };
+    }
+    function eq() {
+      const t = T(), E = st.eq, { pts, tEnd, evs } = simulate();
+      const conc = E.show !== 'rate';
+      const vals = conc ? pts.flatMap(p => [p.A, p.B]) : pts.flatMap(p => [p.rf, p.rr]);
+      const hi = Math.max(...vals) * 1.15 || 1;
+      const { s: head, box } = frame(t.time, conc ? t.concY : t.rateY);
+      const X = (tt) => box.x0 + tt / tEnd * (box.x1 - box.x0), Y = (v) => box.y1 - v / hi * (box.y1 - box.y0);
+      let s = head + yTicks(box, 0, hi, Y);
+      evs.forEach(e => { s += `<line x1="${X(e.at)}" y1="${box.y1}" x2="${X(e.at)}" y2="${box.y0}" stroke="${SUB}" stroke-dasharray="4 5"/><text x="${X(e.at) + 4}" y="${box.y0 + 12}" font-size="12.5" fill="${SUB}">${esc(t.evts[e.what] || '')}</text>`; });
+      const series = conc ? [['A', E.nameA, COLS[0]], ['B', E.nameB, COLS[1]]] : [['rf', t.fwd, COLS[0]], ['rr', t.rev, COLS[1]]];
+      series.forEach(([key, name, col], si) => {
+        // break the line at a jump so an instant change shows as a vertical step
+        let d = '', started = false;
+        pts.forEach((p, i) => { const cmd = !started ? 'M' : 'L'; d += `${cmd}${X(p.t).toFixed(1)} ${Y(p[key]).toFixed(1)}`; started = true; });
+        s += `<path d="${d}" fill="none" stroke="${col}" stroke-width="2.8" stroke-linejoin="round"/>`;
+        const last = pts[pts.length - 1];
+        // the two lines meet at equilibrium, so one label sits above and one below
+        const other = pts[pts.length - 1][series[1 - si][0]], above = last[key] >= other ? (si === 0 || last[key] > other) : false;
+        s += `<text x="${X(last.t) - 6}" y="${Y(last[key]) + (above ? -10 : 22)}" text-anchor="end" font-size="16" font-weight="bold" fill="${col}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(name)}</text>`;
+      });
+      $('explain').textContent = '';
+      return s + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintControls() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      const sec = st[st.mode];
+      const f = (k, label, extra) => `<label class="field"><span>${esc(label)}</span><input type="text" data-k="${k}" value="${esc(sec[k])}" ${extra || ''}></label>`;
+      const chk = (k, label) => `<label class="check"><input type="checkbox" data-k="${k}"${sec[k] ? ' checked' : ''}> ${esc(label)}</label>`;
+      const sel = (k, label, opts) => `<label class="field"><span>${esc(label)}</span><select data-k="${k}">${opts.map(([v, l]) => `<option value="${v}"${sec[k] === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+      let h = '';
+      if (st.mode === 'energy') h = `<div class="row c2">${f('eR', t.eR, 'inputmode="decimal"')}${f('eP', t.eP, 'inputmode="decimal"')}</div><div class="row c2">${f('ea', t.ea, 'inputmode="decimal"')}${f('eaCat', t.eaCat, 'inputmode="decimal"')}</div>
+        <div class="row c2">${f('rLab', t.rLab, 'maxlength="30"')}${f('pLab', t.pLab, 'maxlength="30"')}</div><div class="checks">${chk('showEa', t.showEa)}${chk('showDH', t.showDH)}${chk('showAC', t.showAC)}</div>`;
+      if (st.mode === 'mb') h = `<div class="row c2">${f('t1', t.t1, 'inputmode="decimal"')}${f('t2', t.t2, 'inputmode="decimal"')}</div><div class="row c2">${f('eaPos', t.eaPos, 'inputmode="decimal"')}${f('catPos', t.catPos, 'inputmode="decimal"')}</div><div class="checks">${chk('shade', t.shade)}</div>`;
+      if (st.mode === 'rate') {
+        h = `<div class="row c2">${f('xLab', t.xLab, 'maxlength="40"')}${f('yLab', t.yLab, 'maxlength="40"')}</div>`;
+        h += sec.conds.map((c, i) => `<div class="evt"><label class="field"><span>${esc(t.cond)}</span><input type="text" data-c="${i}|name" value="${esc(c.name)}" maxlength="30"></label><label class="field"><span>${esc(t.k)}</span><input type="text" data-c="${i}|k" value="${esc(c.k)}" inputmode="decimal"></label><label class="field"><span>${esc(t.final)}</span><input type="text" data-c="${i}|final" value="${esc(c.final)}" inputmode="decimal"></label><button class="btn icon danger" type="button" data-rmc="${i}" aria-label="${esc(t.remove)}"${sec.conds.length < 2 ? ' disabled' : ''}>✕</button></div>`).join('');
+        if (sec.conds.length < 5) h += `<button class="btn" type="button" id="addCond">+ ${esc(t.add)}</button>`;
+      }
+      if (st.mode === 'eq') {
+        h = `<div class="row c4">${sel('a', t.a, [['1', '1'], ['2', '2'], ['3', '3']])}${f('nameA', t.nameA, 'maxlength="14"')}${sel('b', t.b, [['1', '1'], ['2', '2'], ['3', '3']])}${f('nameB', t.nameB, 'maxlength="14"')}</div>
+          <div class="row c2">${sel('dh', t.dh, [['endo', t.endoF], ['exo', t.exoF]])}${sel('show', t.show, [['conc', t.conc], ['rate', t.rates]])}</div>
+          <p class="hint" style="margin-bottom:6px">${esc(t.events)}</p>`;
+        h += sec.events.map((e, i) => `<div class="evt" style="grid-template-columns:minmax(0,0.6fr) minmax(0,2fr) 30px"><label class="field"><span>${esc(t.at)}</span><input type="text" data-e="${i}|at" value="${esc(e.at)}" inputmode="decimal"></label><label class="field"><span>${esc(t.what)}</span><select data-e="${i}|what">${Object.keys(t.evts).map(k => `<option value="${k}"${e.what === k ? ' selected' : ''}>${esc(t.evts[k])}</option>`).join('')}</select></label><button class="btn icon danger" type="button" data-rme="${i}" aria-label="${esc(t.remove)}">✕</button></div>`).join('');
+        if (sec.events.length < 4) h += `<button class="btn" type="button" id="addEvt">+ ${esc(t.addEvt)}</button>`;
+      }
+      $('controls').innerHTML = h;
+      $('nums').checked = st.nums; $('title').value = st.title;
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      $('plot').innerHTML = st.mode === 'energy' ? energy() : st.mode === 'mb' ? mb() : st.mode === 'rate' ? rate() : eq();
+    }
+    const ctl = $('controls');
+    function onField(e) {
+      const d = e.target.dataset, sec = st[st.mode];
+      if (d.k) sec[d.k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      else if (d.c) { const [i, k] = d.c.split('|'); sec.conds[+i][k] = e.target.value; }
+      else if (d.e) { const [i, k] = d.e.split('|'); sec.events[+i][k] = e.target.value; }
+      else return;
+      render();
+    }
+    ctl.addEventListener('input', onField);
+    ctl.addEventListener('change', onField);
+    ctl.addEventListener('click', (e) => {
+      const sec = st[st.mode];
+      if (e.target.id === 'addCond') { sec.conds.push({ name: String.fromCharCode(65 + sec.conds.length), k: '1', final: '50' }); }
+      else if (e.target.id === 'addEvt') { const last = sec.events.length ? num(sec.events[sec.events.length - 1].at, 40) : 0; sec.events.push({ at: String(last + 40), what: 'cat' }); }
+      else if (e.target.closest('[data-rmc]')) sec.conds.splice(+e.target.closest('[data-rmc]').dataset.rmc, 1);
+      else if (e.target.closest('[data-rme]')) sec.events.splice(+e.target.closest('[data-rme]').dataset.rme, 1);
+      else return;
+      paintControls(); render();
+    });
+    $('modeTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (!b) return; st.mode = b.dataset.mode; paintControls(); render(); });
+    $('nums').addEventListener('change', (e) => { st.nums = e.target.checked; render(); });
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'reaction-graph').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'reaction-graph', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded;
+    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    window.__rx = { simulate, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
