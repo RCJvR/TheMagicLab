@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Number Line · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="grapher.html" class="nav-back" data-af-html='<i data-lucide="spline" style="width:13px;height:13px"></i> Grafiekplotter'><i data-lucide="spline" style="width:13px;height:13px"></i> Graph Plotter</a>
+      <a href="index.html" class="nav-back" data-af-html='<i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grade'><i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grades</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Getalle en ongelykhede · Gr 4–12">Resource · Numbers &amp; inequalities · Gr 4–12</span></div>
+    <h1 data-af-html="Getal<em>lyn.</em>">Number <em>line.</em></h1>
+    <p class="hero-sub" data-af="Bou ’n getallyn met jou eie bereik en inkremente — heelgetalle, desimale of breuke — en merk punte, ongelykhede en intervalle, of spronge vir optel en aftrek.">Build a number line with your own range and increments — integers, decimals or fractions — and mark points, inequalities and intervals, or jumps for adding and subtracting.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+
+      <section class="panel" aria-labelledby="hLine">
+        <div class="panel-head">
+          <h2 id="hLine"><i data-lucide="ruler" style="width:16px;height:16px"></i><span data-af="Getallyn">Number line</span></h2>
+          <select id="examples" aria-label="Load an example" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="jumps" data-af="Heelgetalle: optel en aftrek">Integers: adding &amp; subtracting</option>
+            <option value="gt" data-af="Ongelykheid x &gt; 2">Inequality x &gt; 2</option>
+            <option value="interval" data-af="Interval −1 ≤ x &lt; 3">Interval −1 ≤ x &lt; 3</option>
+            <option value="or" data-af="x &lt; −2 of x ≥ 3">x &lt; −2 or x ≥ 3</option>
+            <option value="fractions" data-af="Breuke in kwarte">Fractions in quarters</option>
+            <option value="decimals" data-af="Desimale in tiendes">Decimals in tenths</option>
+          </select>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="Begin">Start</span><input type="text" id="min" inputmode="decimal"></label>
+          <label class="field"><span data-af="Einde">End</span><input type="text" id="max" inputmode="decimal"></label>
+          <label class="field"><span data-af="Inkrement">Increment</span><input type="text" id="step" inputmode="decimal"></label>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="Klein merkies">Small ticks</span>
+            <select id="minor">
+              <option value="0" data-af="Geen">None</option>
+              <option value="2" data-af="2 per inkrement">2 per increment</option>
+              <option value="4" data-af="4 per inkrement">4 per increment</option>
+              <option value="5" data-af="5 per inkrement">5 per increment</option>
+              <option value="10" data-af="10 per inkrement">10 per increment</option>
+            </select>
+          </label>
+          <label class="field"><span data-af="Getalle">Numbers</span>
+            <select id="labels">
+              <option value="1" data-af="By elke merkie">At every tick</option>
+              <option value="2" data-af="Elke 2de merkie">Every 2nd tick</option>
+              <option value="5" data-af="Elke 5de merkie">Every 5th tick</option>
+              <option value="ends" data-af="Net die punte aan die kante">Only the ends</option>
+              <option value="zero" data-af="Net 0">Only 0</option>
+              <option value="none" data-af="Geen (vul self in)">None (fill in)</option>
+            </select>
+          </label>
+          <label class="field"><span data-af="Skryf getalle as">Write numbers as</span>
+            <select id="format">
+              <option value="decimal" data-af="Desimale">Decimals</option>
+              <option value="fraction" data-af="Breuke">Fractions</option>
+              <option value="mixed" data-af="Gemengde getalle">Mixed numbers</option>
+            </select>
+          </label>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="Pyle">Arrows</span>
+            <select id="arrows">
+              <option value="both" data-af="Albei kante">Both ends</option>
+              <option value="right" data-af="Net regs">Right only</option>
+              <option value="none" data-af="Geen">None</option>
+            </select>
+          </label>
+          <label class="field"><span data-af="Veranderlike">Variable</span><input type="text" id="variable" maxlength="4"></label>
+          <label class="field"><span data-af="Styl">Style</span>
+            <select id="theme">
+              <option value="paper" data-af="Papier (wit)">Paper (white)</option>
+              <option value="dark" data-af="Donker">Dark</option>
+            </select>
+          </label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+        <p class="warn" id="lineWarn" role="status"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="hItems">
+        <div class="panel-head">
+          <h2 id="hItems"><i data-lucide="map-pin" style="width:16px;height:16px"></i><span data-af="Op die lyn">On the line</span></h2>
+        </div>
+        <div class="glist" id="ilist"></div>
+        <div class="btn-row">
+          <button class="btn" type="button" data-add="point"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Punt">Point</span></button>
+          <button class="btn" type="button" data-add="interval"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Ongelykheid / interval">Inequality / interval</span></button>
+          <button class="btn" type="button" data-add="jumps"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Spronge">Jumps</span></button>
+        </div>
+      </section>
+
+      <section class="panel tips" aria-labelledby="hTips">
+        <h2 id="hTips" style="margin-bottom:6px"><i data-lucide="lightbulb" style="width:16px;height:16px"></i><span data-af="Wenke">Tips</span></h2>
+        <ul>
+          <li data-af-html="Elke waarde-blokkie aanvaar breuke en uitdrukkings: <code>3/4</code>, <code>-1 1/2</code> skryf jy as <code>-3/2</code>, <code>sqrt(2)</code>, <code>pi</code>.">Every value box accepts fractions and expressions: <code>3/4</code>, <code>-3/2</code> (for −1½), <code>sqrt(2)</code>, <code>pi</code>.</li>
+          <li data-af-html="Vir breuke: stel die inkrement op bv. <code>1/4</code> en kies <b>Breuke</b> of <b>Gemengde getalle</b>.">For fractions: set the increment to e.g. <code>1/4</code> and choose <b>Fractions</b> or <b>Mixed numbers</b>.</li>
+          <li data-af-html="Laat <b>Van</b> of <b>Tot</b> leeg vir ’n ongelykheid wat vir altyd aangaan, bv. <i>x</i> &gt; 2.">Leave <b>From</b> or <b>To</b> empty for an inequality that carries on forever, e.g. <i>x</i> &gt; 2.</li>
+          <li data-af-html="Spronge: tik die stappe met spasies tussen, bv. <code>+5 -8 +2</code>.">Jumps: type the steps with spaces between, e.g. <code>+5 -8 +2</code>.</li>
+          <li data-af-html="Kies <b>Getalle: Geen</b> vir ’n werkkaart waar leerders self die getalle invul.">Choose <b>Numbers: None</b> for a worksheet where learners fill in the numbers themselves.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+        <span class="spacer"></span>
+        <button class="btn icon danger" id="clearAll" type="button" aria-label="Start over" title="Start over"><i data-lucide="rotate-ccw" style="width:15px;height:15px"></i></button>
+      </div>
+      <div class="plot-wrap" id="plotWrap"><div id="plot"></div></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit;
+    const { compile, esc } = K;
+
+    const STR = {
+      en: {
+        kinds: { point: 'Point', interval: 'Inequality / interval', jumps: 'Jumps' },
+        value: 'Value', name: 'Name', dot: 'Dot', closed: 'Closed ●', open: 'Open ○',
+        showVal: 'Show the value', from: 'From', to: 'To', blankInf: 'empty = no end',
+        fromOpen: 'Open at start', toOpen: 'Open at end', labelAs: 'Label on the line',
+        asIneq: 'Inequality', asInterval: 'Interval notation', asNone: 'No label',
+        start: 'Start at', steps: 'Steps', side: 'Draw', above: 'Above the line', below: 'Below the line',
+        hide: 'Hide', show: 'Show', remove: 'Remove',
+        empty: 'Nothing on the line yet. Add a point, an inequality or jumps below.',
+        badValue: 'Enter a number or expression here.', useNumber: 'Use a number here, not x.',
+        range: 'The end must be bigger than the start.', stepErr: 'The increment must be bigger than 0.',
+        tooMany: 'That is a lot of ticks for one line, so only some are drawn. Try a bigger increment.',
+        order: '“From” must be smaller than “To”.', stepsErr: 'Type steps like +5 -8 +2.',
+        copied: 'Link copied — anyone with it sees this number line.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+        confirmClear: 'Clear the number line and start over?', lands: 'lands on', all: 'all real numbers',
+        aria: 'Number line',
+      },
+      af: {
+        kinds: { point: 'Punt', interval: 'Ongelykheid / interval', jumps: 'Spronge' },
+        value: 'Waarde', name: 'Naam', dot: 'Kolletjie', closed: 'Toe ●', open: 'Oop ○',
+        showVal: 'Wys die waarde', from: 'Van', to: 'Tot', blankInf: 'leeg = geen einde',
+        fromOpen: 'Oop aan begin', toOpen: 'Oop aan einde', labelAs: 'Byskrif op die lyn',
+        asIneq: 'Ongelykheid', asInterval: 'Intervalnotasie', asNone: 'Geen byskrif',
+        start: 'Begin by', steps: 'Stappe', side: 'Teken', above: 'Bo die lyn', below: 'Onder die lyn',
+        hide: 'Versteek', show: 'Wys', remove: 'Verwyder',
+        empty: 'Nog niks op die lyn nie. Voeg ’n punt, ’n ongelykheid of spronge hieronder by.',
+        badValue: 'Tik ’n getal of uitdrukking hier.', useNumber: 'Gebruik ’n getal hier, nie x nie.',
+        range: 'Die einde moet groter as die begin wees.', stepErr: 'Die inkrement moet groter as 0 wees.',
+        tooMany: 'Dit is baie merkies vir een lyn, so net sommige word geteken. Probeer ’n groter inkrement.',
+        order: '“Van” moet kleiner as “Tot” wees.', stepsErr: 'Tik stappe soos +5 -8 +2.',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie getallyn.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+        confirmClear: 'Vee die getallyn uit en begin oor?', lands: 'land op', all: 'alle reële getalle',
+        aria: 'Getallyn',
+      },
+    };
+    let lang = (window.MLLang && MLLang.getLang()) || 'en';
+    const T = () => STR[lang];
+    const $ = (id) => document.getElementById(id);
+
+    // ══════════════════════════════════════════════════════════════════
+    // Values & number formatting
+    // ══════════════════════════════════════════════════════════════════
+    function constVal(src) {
+      if (src === '' || src == null) return { ok: false, msg: T().badValue };
+      try {
+        const c = compile(src);
+        if (c.usesX) return { ok: false, msg: T().useNumber };
+        const v = c.fn(0, false);
+        return Number.isFinite(v) ? { ok: true, v } : { ok: false, msg: T().badValue };
+      } catch (e) { return { ok: false, msg: e.message }; }
+    }
+    const MINUS = '−';
+    function round(v, dp) { const r = Math.round(v * 10 ** dp) / 10 ** dp; return Object.is(r, -0) ? 0 : r; }
+    function decimalText(v, step) {
+      const dp = step ? Math.min(6, Math.max(0, -Math.floor(Math.log10(step) + 1e-9) + 1)) : 3;
+      const r = round(v, Math.max(dp, 0));
+      let s = String(Math.abs(round(r, 6)));
+      if (lang === 'af') s = s.replace('.', ',');
+      return (r < 0 ? MINUS : '') + s;
+    }
+    // Exact fraction for v when a small denominator reproduces it, else null.
+    function fraction(v) {
+      for (let d = 1; d <= 100; d++) {
+        const n = Math.round(v * d);
+        if (Math.abs(n / d - v) < 1e-9) return { n, d };
+      }
+      return null;
+    }
+    // Parts for drawing: { sign, whole, num, den } — whole/num/den may be absent.
+    function parts(v, fmt, step) {
+      const sign = v < -1e-12 ? MINUS : '';
+      if (fmt !== 'decimal') {
+        const f = fraction(Math.abs(v));
+        if (f) {
+          if (f.d === 1) return { sign, whole: String(f.n) };
+          if (fmt === 'mixed' && f.n > f.d) return { sign, whole: String(Math.floor(f.n / f.d)), num: String(f.n % f.d), den: String(f.d) };
+          return { sign, num: String(f.n), den: String(f.d) };
+        }
+      }
+      const t = decimalText(Math.abs(v), step);
+      return { sign: sign && t !== '0' ? sign : '', whole: t };
+    }
+    function inlineText(v, fmt, step) {       // "−1 1/2", "3/4", "2,5"
+      const p = parts(v, fmt, step);
+      return p.sign + [p.whole, p.num !== undefined ? `${p.num}/${p.den}` : ''].filter(Boolean).join(' ');
+    }
+    function htmlText(v, fmt, step) {
+      const p = parts(v, fmt, step);
+      return esc(p.sign) + (p.whole || '') + (p.num !== undefined ? `<sup>${p.num}</sup>⁄<sub>${p.den}</sub>` : '');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const PALETTE = ['#2563eb', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#db2777'];
+    const PNAMES = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    let uid = 1;
+    function defaultLine() {
+      return { min: '-10', max: '10', step: '1', minor: '0', labels: '1', format: 'decimal', arrows: 'both', variable: '', theme: 'paper', title: '' };
+    }
+    let state = { line: defaultLine(), items: [] };
+    function newItem(kind, o) {
+      const usedC = new Set(state.items.map(i => i.color));
+      const base = { id: uid++, kind, visible: true, color: PALETTE.find(c => !usedC.has(c)) || PALETTE[0] };
+      if (kind === 'point') {
+        const used = new Set(state.items.filter(i => i.kind === 'point').map(i => i.name));
+        Object.assign(base, { v: '3', name: PNAMES.find(n => !used.has(n)) || 'P', open: false, showVal: false });
+      } else if (kind === 'interval') {
+        Object.assign(base, { from: '2', to: '', fromOpen: true, toOpen: true, label: 'ineq' });
+      } else {
+        Object.assign(base, { start: '0', steps: '+3 -5', side: 'above' });
+      }
+      return Object.assign(base, o || {});
+    }
+
+    const LS_KEY = 'mm_numberline_v1';
+    function serialize() { return JSON.stringify({ line: state.line, items: state.items.map(({ id, ...i }) => i) }); }
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const line = defaultLine();
+      Object.keys(line).forEach(k => { if (s.line && s.line[k] != null) line[k] = String(s.line[k]).slice(0, 80); });
+      const items = (Array.isArray(s.items) ? s.items : []).filter(i => i && ['point', 'interval', 'jumps'].includes(i.kind)).slice(0, 30).map(i => {
+        const it = newItem(i.kind);
+        Object.keys(it).forEach(k => {
+          if (k === 'id' || k === 'kind' || i[k] == null) return;
+          if (typeof it[k] === 'boolean') { if (typeof i[k] === 'boolean') it[k] = i[k]; }
+          else if (k === 'color') { if (/^#[0-9a-f]{6}$/i.test(i.color)) it.color = i.color; }
+          else it[k] = String(i[k]).slice(0, 120);
+        });
+        return it;
+      });
+      return { line, items };
+    }
+    let saveTimer = 0;
+    function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(LS_KEY, serialize()); } catch (_) {} }, 300); }
+    function load() {
+      const m = /[#&]n=([A-Za-z0-9_-]+)/.exec(location.hash);
+      if (m) {
+        history.replaceState(null, '', location.pathname + location.search);
+        try { const s = sanitize(JSON.parse(K.fromB64(m[1]))); if (s) return s; } catch (_) {}
+      }
+      try { const raw = localStorage.getItem(LS_KEY); if (raw) { const s = sanitize(JSON.parse(raw)); if (s) return s; } } catch (_) {}
+      return null;
+    }
+
+    function example(key) {
+      const L = (o) => { state.line = Object.assign(defaultLine(), { theme: state.line.theme }, o); };
+      state.items = [];
+      const add = (k, o) => state.items.push(newItem(k, o));
+      if (key === 'jumps') { L({ min: '-10', max: '10' }); add('jumps', { start: '-3', steps: '+8 -12' }); }
+      else if (key === 'gt') { L({ min: '-5', max: '5', variable: 'x' }); add('interval', { from: '2', to: '', fromOpen: true }); }
+      else if (key === 'interval') { L({ min: '-5', max: '5', variable: 'x' }); add('interval', { from: '-1', to: '3', fromOpen: false, toOpen: true }); }
+      else if (key === 'or') {
+        L({ min: '-6', max: '6', variable: 'x' });
+        add('interval', { from: '', to: '-2', toOpen: true });
+        add('interval', { from: '3', to: '', fromOpen: false });
+      } else if (key === 'fractions') {
+        L({ min: '0', max: '2', step: '1/4', format: 'mixed' });
+        add('point', { v: '3/4', name: 'A' }); add('point', { v: '5/4', name: 'B' });
+      } else if (key === 'decimals') {
+        L({ min: '0', max: '1', step: '0.1', minor: '10' });
+        add('point', { v: '0.35', name: 'P', showVal: true });
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering
+    // ══════════════════════════════════════════════════════════════════
+    const FONT = 'Helvetica, Arial, sans-serif';
+    const MATHFONT = "'Times New Roman', Times, serif";
+    const THEMES = {
+      paper: { bg: '#ffffff', axis: '#111827', text: '#1f2937', sub: '#374151', halo: '#ffffff' },
+      dark:  { bg: '#0c0e11', axis: '#e5e7eb', text: '#e5e7eb', sub: '#cbd5e1', halo: '#0c0e11' },
+    };
+
+    function readLine() {
+      const L = state.line, v = {}, errs = {};
+      ['min', 'max', 'step'].forEach(k => { const r = constVal(L[k]); if (r.ok) v[k] = r.v; else errs[k] = r.msg; });
+      let msg = '';
+      if (!errs.min && !errs.max && !(v.max > v.min)) { errs.max = 1; msg = T().range; }
+      if (!errs.step && !(v.step > 0)) { errs.step = 1; msg = T().stepErr; }
+      ['min', 'max', 'step'].forEach(k => $(k).classList.toggle('err', !!errs[k]));
+      return { v, ok: !Object.keys(errs).length, msg: msg || T().badValue };
+    }
+    function parseSteps(src) {
+      const toks = String(src).match(/[+\-−]?\s*[^\s;+\-−]+/g) || [];
+      const out = [];
+      for (const t of toks) { const r = constVal(t.replace(/\s+/g, '')); if (!r.ok) return null; out.push(r.v); }
+      return out.length ? out : null;
+    }
+    // Resolve an item's values; marks {err} for the card.
+    function resolve(it) {
+      it._err = {};
+      if (it.kind === 'point') {
+        const r = constVal(it.v); if (!r.ok) { it._err.v = true; return null; }
+        return { v: r.v };
+      }
+      if (it.kind === 'interval') {
+        let a = -Infinity, b = Infinity;
+        if (String(it.from).trim() !== '') { const r = constVal(it.from); if (r.ok) a = r.v; else it._err.from = true; }
+        if (String(it.to).trim() !== '') { const r = constVal(it.to); if (r.ok) b = r.v; else it._err.to = true; }
+        if (it._err.from || it._err.to) return null;
+        if (!(b > a)) { it._err.from = it._err.to = true; it._err.msg = T().order; return null; }
+        return { a, b };
+      }
+      const s = constVal(it.start); if (!s.ok) { it._err.start = true; return null; }
+      const steps = parseSteps(it.steps); if (!steps) { it._err.steps = true; it._err.msg = T().stepsErr; return null; }
+      return { start: s.v, steps };
+    }
+    function ineqText(it, r, fmt, step, varName) {
+      const x = varName || 'x';
+      const n = (v) => inlineText(v, fmt, step);
+      const aF = Number.isFinite(r.a), bF = Number.isFinite(r.b);
+      if (it.label === 'interval') {
+        return `${aF && !it.fromOpen ? '[' : '('}${aF ? n(r.a) : MINUS + '∞'} ; ${bF ? n(r.b) : '∞'}${bF && !it.toOpen ? ']' : ')'}`;
+      }
+      if (aF && bF) return `${n(r.a)} ${it.fromOpen ? '<' : '≤'} ${x} ${it.toOpen ? '<' : '≤'} ${n(r.b)}`;
+      if (aF) return `${x} ${it.fromOpen ? '>' : '≥'} ${n(r.a)}`;
+      if (bF) return `${x} ${it.toOpen ? '<' : '≤'} ${n(r.b)}`;
+      return `${x} ∈ ℝ`;
+    }
+
+    function render() {
+      const warn = $('lineWarn');
+      const lr = readLine();
+      const L = state.line;
+      const th = THEMES[L.theme] || THEMES.paper;
+      $('plotWrap').classList.toggle('dark', L.theme === 'dark');
+      state.items.forEach(it => { it._r = resolve(it); });
+      paintCardStatus();
+      if (!lr.ok) { warn.textContent = lr.msg; return; }
+      const { min, max, step } = lr.v;
+      const warnings = [];
+      const fmt = L.format;
+      const W = 900, padX = 36, ext = 22;      // ext: line runs past the end ticks
+      const x0 = padX + ext, x1 = W - padX - ext;
+      const X = (v) => x0 + (v - min) / (max - min) * (x1 - x0);
+      const title = String(L.title || '').trim();
+
+      // ── Vertical layout ──
+      const vis = state.items.filter(it => it.visible && it._r);
+      const intervals = vis.filter(it => it.kind === 'interval');
+      const jumps = vis.filter(it => it.kind === 'jumps');
+      const points = vis.filter(it => it.kind === 'point');
+      const arcH = (a, b) => Math.max(26, Math.min(95, 16 + Math.abs(X(b) - X(a)) * 0.3));
+      let arcAbove = 0, arcBelow = 0;
+      jumps.forEach(it => {
+        let cur = it._r.start;
+        it._r.steps.forEach(s => { const h = arcH(cur, cur + s); if (it.side === 'below') arcBelow = Math.max(arcBelow, h); else arcAbove = Math.max(arcAbove, h); cur += s; });
+      });
+      const rowH = 24;
+      // Pack intervals into rows: ones that don't overlap share a row, so
+      // "x < −2 or x ≥ 3" reads as one line of shading, as in a textbook.
+      const span = (it) => [Number.isFinite(it._r.a) ? X(it._r.a) : -Infinity, Number.isFinite(it._r.b) ? X(it._r.b) : Infinity];
+      const rows = [];
+      intervals.forEach(it => {
+        const [p, q] = span(it);
+        let r = rows.findIndex(row => row.every(([a, b]) => q + 30 < a || p - 30 > b));
+        if (r < 0) { rows.push([]); r = rows.length - 1; }
+        rows[r].push([p, q]); it._row = r;
+      });
+      const rowsH = rows.length ? 14 + rows.length * rowH : 0;
+      const hasFrac = fmt !== 'decimal';
+      const pointLbl = points.length ? 24 : 0;
+      const above = Math.max(rowsH + (intervals.some(i => i.label !== 'none') ? 16 : 0), arcAbove ? arcAbove + 20 : 0, pointLbl, 16);
+      const labelsH = L.labels === 'none' ? 10 : (hasFrac ? 44 : 28);
+      const top = (title ? 46 : 14) + above;
+      const lineY = top;
+      const H = lineY + labelsH + (arcBelow ? arcBelow + 22 : 0) + 14;
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${Math.round(H)}" width="${W}" height="${Math.round(H)}" role="img" aria-label="${esc(T().aria)}" font-family="${FONT}">`;
+      let defs = `<marker id="nlAx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${th.axis}"/></marker>`;
+      const markerFor = (col) => {
+        const id = 'nlM' + col.slice(1);
+        if (!defs.includes(`id="${id}"`)) defs += `<marker id="${id}" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${col}"/></marker>`;
+        return `url(#${id})`;
+      };
+      let body = `<rect width="${W}" height="${Math.round(H)}" fill="${th.bg}"/>`;
+      if (title) body += `<text x="${W / 2}" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="${th.text}">${esc(title)}</text>`;
+      const halo = `stroke="${th.halo}" stroke-width="4" paint-order="stroke" stroke-linejoin="round"`;
+
+      // ── Axis ──
+      const aStart = L.arrows === 'both' ? ' marker-start="url(#nlAx)"' : '';
+      const aEnd = L.arrows === 'none' ? '' : ' marker-end="url(#nlAx)"';
+      const lx0 = L.arrows === 'both' ? padX : x0 - 6, lx1 = L.arrows === 'none' ? x1 + 6 : W - padX;
+      body += `<line x1="${lx0}" y1="${lineY}" x2="${lx1}" y2="${lineY}" stroke="${th.axis}" stroke-width="2"${aStart}${aEnd}/>`;
+      if (L.variable) body += `<text x="${W - padX + 2}" y="${lineY + 24}" text-anchor="end" font-size="19" font-style="italic" font-family="${MATHFONT}" fill="${th.text}">${esc(L.variable)}</text>`;
+
+      // ── Ticks & numbers ──
+      const n = Math.round((max - min) / step);
+      const exact = Math.abs(min + n * step - max) < step * 1e-6;
+      const count = Math.floor((max - min) / step + 1e-9);
+      const thin = Math.max(1, Math.ceil(count / 200));
+      if (thin > 1) warnings.push(T().tooMany);
+      const minorN = parseInt(L.minor, 10) || 0;
+      if (minorN > 1 && thin === 1 && count * minorN <= 2000) {
+        let d = '';
+        for (let i = 0; i < count * minorN + (exact ? 0 : minorN); i++) {
+          if (i % minorN === 0) continue;
+          const v = min + i * step / minorN; if (v > max + 1e-9) break;
+          d += `M${X(v).toFixed(2)} ${lineY - 5}V${lineY + 5}`;
+        }
+        body += `<path d="${d}" stroke="${th.axis}" stroke-width="1.1"/>`;
+      }
+      const pxPer = (x1 - x0) / ((max - min) / step);
+      const need = hasFrac ? 26 : Math.max(22, decimalText(max, step).length * 8 + 8, decimalText(min, step).length * 8 + 8);
+      const auto = Math.max(thin, Math.ceil(need / pxPer));
+      const every = /^\d+$/.test(L.labels) ? Math.max(parseInt(L.labels, 10), auto) : auto;
+      let ticks = '', nums = '';
+      for (let i = 0; i <= count; i += thin) {
+        const v = min + i * step;
+        const px = X(v);
+        ticks += `M${px.toFixed(2)} ${lineY - 9}V${lineY + 9}`;
+        let show = false;
+        if (/^\d+$/.test(L.labels)) show = i % every === 0 || (i === count && every === 1);
+        else if (L.labels === 'ends') show = i === 0 || i === count;
+        else if (L.labels === 'zero') show = Math.abs(v) < step * 1e-6;
+        if (show) nums += numberSvg(round(v, 10), px, lineY + 26, th);
+      }
+      body += `<path d="${ticks}" stroke="${th.axis}" stroke-width="1.6"/>` + nums;
+
+      // ── Intervals / inequalities ──
+      intervals.forEach((it) => {
+        const { a, b } = it._r;
+        const y = lineY - 14 - it._row * rowH;
+        const col = it.color;
+        const pa = Number.isFinite(a) ? X(Math.max(a, min - (max - min) * 0.05)) : padX + 4;
+        const pb = Number.isFinite(b) ? X(Math.min(b, max + (max - min) * 0.05)) : W - padX - 4;
+        const ma = Number.isFinite(a) ? '' : ` marker-start="${markerFor(col)}"`;
+        const mb = Number.isFinite(b) ? '' : ` marker-end="${markerFor(col)}"`;
+        body += `<line x1="${pa.toFixed(2)}" y1="${y}" x2="${pb.toFixed(2)}" y2="${y}" stroke="${col}" stroke-width="4" stroke-linecap="butt"${ma}${mb}/>`;
+        [[a, it.fromOpen], [b, it.toOpen]].forEach(([v, open]) => {
+          if (!Number.isFinite(v) || v < min - 1e-9 || v > max + 1e-9) return;
+          const px = X(v).toFixed(2);
+          body += `<line x1="${px}" y1="${y}" x2="${px}" y2="${lineY}" stroke="${col}" stroke-width="1.2" stroke-dasharray="3 3"/>`;
+          body += `<circle cx="${px}" cy="${y}" r="6" fill="${open ? th.bg : col}" stroke="${col}" stroke-width="2.4"/>`;
+        });
+        if (it.label !== 'none') {
+          const cx = Math.max(x0 + 40, Math.min(x1 - 40, (Math.max(pa, x0) + Math.min(pb, x1)) / 2));
+          body += `<text x="${cx.toFixed(2)}" y="${y - 10}" text-anchor="middle" font-size="16" font-family="${MATHFONT}" fill="${col}" ${halo}>${ineqSvg(ineqText(it, it._r, fmt, step, L.variable))}</text>`;
+        }
+      });
+
+      // ── Jumps ──
+      jumps.forEach(it => {
+        const col = it.color, dir = it.side === 'below' ? 1 : -1;
+        let cur = it._r.start;
+        const base = lineY + (dir > 0 ? 12 : -2);
+        body += dot(X(cur), lineY, col, false, th);
+        it._r.steps.forEach(s => {
+          const nx = cur + s;
+          const ax = X(cur), bx = X(nx), h = arcH(cur, nx);
+          const cy = base + dir * h * 2 * 0.9;
+          body += `<path d="M${ax.toFixed(2)} ${base} Q${((ax + bx) / 2).toFixed(2)} ${cy.toFixed(2)} ${bx.toFixed(2)} ${base}" fill="none" stroke="${col}" stroke-width="2.2" marker-end="${markerFor(col)}"/>`;
+          const ly = base + dir * h * 0.9 + (dir < 0 ? -6 : 16);
+          const t = (s > 0 ? '+' : MINUS) + inlineText(Math.abs(s), fmt, step);
+          body += `<text x="${((ax + bx) / 2).toFixed(2)}" y="${ly.toFixed(2)}" text-anchor="middle" font-size="15" font-weight="700" fill="${col}" ${halo}>${esc(t)}</text>`;
+          cur = nx;
+        });
+        body += dot(X(cur), lineY, col, false, th);
+      });
+
+      // ── Points ──
+      points.forEach(it => {
+        const v = it._r.v;
+        if (v < min - 1e-9 || v > max + 1e-9) return;
+        const px = X(v);
+        body += dot(px, lineY, it.color, it.open, th);
+        const lbl = [it.name ? `<tspan font-family="${MATHFONT}" font-style="italic" font-size="18">${esc(it.name)}</tspan>` : '',
+                     it.showVal ? esc((it.name ? ' = ' : '') + inlineText(v, fmt, step)) : ''].join('');
+        if (lbl) body += `<text x="${px.toFixed(2)}" y="${lineY - 14}" text-anchor="middle" font-size="15" fill="${it.color}" ${halo}>${lbl}</text>`;
+      });
+
+      svg += `<defs>${defs}</defs>${body}</svg>`;
+      $('plot').innerHTML = svg;
+      warn.textContent = warnings.join(' ');
+      save();
+
+      function numberSvg(v, px, y, th) {
+        const p = parts(v, fmt, step);
+        const c = `fill="${th.sub}" ${halo}`;
+        if (p.num === undefined) return `<text x="${px.toFixed(2)}" y="${y}" text-anchor="middle" font-size="14" ${c}>${esc(p.sign + p.whole)}</text>`;
+        // stacked fraction, with the whole number (and sign) to its left
+        const w = Math.max(p.num.length, p.den.length) * 7.5 + 4;
+        const lead = p.sign + (p.whole || '');
+        const fx = lead ? px + (lead.length * 8.5) / 2 : px;
+        let s = '';
+        if (lead) s += `<text x="${(fx - w / 2 - 2).toFixed(2)}" y="${y + 7}" text-anchor="end" font-size="15" ${c}>${esc(lead)}</text>`;
+        s += `<text x="${fx.toFixed(2)}" y="${y - 1}" text-anchor="middle" font-size="12.5" ${c}>${p.num}</text>`;
+        s += `<line x1="${(fx - w / 2).toFixed(2)}" y1="${y + 3}" x2="${(fx + w / 2).toFixed(2)}" y2="${y + 3}" stroke="${th.sub}" stroke-width="1.1"/>`;
+        s += `<text x="${fx.toFixed(2)}" y="${y + 16}" text-anchor="middle" font-size="12.5" ${c}>${p.den}</text>`;
+        return s;
+      }
+    }
+    function dot(px, y, col, open, th) {
+      return `<circle cx="${px.toFixed(2)}" cy="${y}" r="6" fill="${open ? th.bg : col}" stroke="${col}" stroke-width="2.4"/>`;
+    }
+    // italicise the variable inside an inequality label
+    function ineqSvg(t) {
+      return esc(t).replace(/(^|[\s(])([a-zA-Z])(?=[\s)]|$)/g, '$1<tspan font-style="italic">$2</tspan>');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    const LINE_TEXT = ['min', 'max', 'step', 'variable', 'title'];
+    const LINE_SELECT = ['minor', 'labels', 'format', 'arrows', 'theme'];
+    function paintLine() {
+      LINE_TEXT.forEach(k => { $(k).value = state.line[k]; });
+      LINE_SELECT.forEach(k => { $(k).value = state.line[k]; });
+    }
+    LINE_TEXT.forEach(k => $(k).addEventListener('input', e => { state.line[k] = e.target.value; render(); }));
+    LINE_SELECT.forEach(k => $(k).addEventListener('change', e => { state.line[k] = e.target.value; render(); }));
+    $('examples').addEventListener('change', e => {
+      if (e.target.value) { example(e.target.value); paintLine(); paintItems(); render(); }
+      e.target.value = '';
+    });
+
+    const byId = (id) => state.items.find(i => String(i.id) === String(id));
+    function paintItems() {
+      const list = $('ilist');
+      if (!state.items.length) { list.innerHTML = `<div class="empty">${esc(T().empty)}</div>`; return; }
+      const t = T();
+      const txt = (f, v, label, extra) => `<label class="field"><span>${esc(label)}</span><input type="text" data-f="${f}" value="${esc(v)}" ${extra || ''}></label>`;
+      const chk = (f, v, label) => `<label class="check"><input type="checkbox" data-f="${f}"${v ? ' checked' : ''}> ${esc(label)}</label>`;
+      list.innerHTML = state.items.map(it => {
+        let fields = '';
+        if (it.kind === 'point') {
+          fields = `<div class="row c3">${txt('v', it.v, t.value, 'inputmode="decimal"')}${txt('name', it.name, t.name, 'maxlength="6"')}
+            <label class="field"><span>${esc(t.dot)}</span><select data-f="open"><option value="0"${it.open ? '' : ' selected'}>${esc(t.closed)}</option><option value="1"${it.open ? ' selected' : ''}>${esc(t.open)}</option></select></label></div>
+            <div class="checks" style="margin-bottom:0">${chk('showVal', it.showVal, t.showVal)}</div>`;
+        } else if (it.kind === 'interval') {
+          fields = `<div class="row c2">${txt('from', it.from, t.from, `placeholder="${esc(t.blankInf)}"`)}${txt('to', it.to, t.to, `placeholder="${esc(t.blankInf)}"`)}</div>
+            <div class="checks">${chk('fromOpen', it.fromOpen, t.fromOpen)}${chk('toOpen', it.toOpen, t.toOpen)}</div>
+            <label class="field"><span>${esc(t.labelAs)}</span><select data-f="label">
+              <option value="ineq"${it.label === 'ineq' ? ' selected' : ''}>${esc(t.asIneq)}</option>
+              <option value="interval"${it.label === 'interval' ? ' selected' : ''}>${esc(t.asInterval)}</option>
+              <option value="none"${it.label === 'none' ? ' selected' : ''}>${esc(t.asNone)}</option></select></label>`;
+        } else {
+          fields = `<div class="row c3">${txt('start', it.start, t.start, 'inputmode="decimal"')}<label class="field" style="grid-column:span 2"><span>${esc(t.steps)}</span><input type="text" data-f="steps" value="${esc(it.steps)}" spellcheck="false"></label></div>
+            <label class="field"><span>${esc(t.side)}</span><select data-f="side"><option value="above"${it.side === 'above' ? ' selected' : ''}>${esc(t.above)}</option><option value="below"${it.side === 'below' ? ' selected' : ''}>${esc(t.below)}</option></select></label>`;
+        }
+        return `<div class="gcard${it.visible ? '' : ' off'}" data-iid="${it.id}" style="--gc:${esc(it.color)}">
+          <div class="gcard-top">
+            <input type="color" data-f="color" value="${esc(it.color)}" aria-label="Colour">
+            <strong style="flex:1;font-family:var(--font-display);font-size:14px;color:var(--paper)">${esc(t.kinds[it.kind])}</strong>
+            <button class="btn icon" type="button" data-act="toggle" aria-label="${esc(it.visible ? t.hide : t.show)}" title="${esc(it.visible ? t.hide : t.show)}"><i data-lucide="${it.visible ? 'eye' : 'eye-off'}" style="width:15px;height:15px"></i></button>
+            <button class="btn icon danger" type="button" data-act="remove" aria-label="${esc(t.remove)}" title="${esc(t.remove)}"><i data-lucide="trash-2" style="width:15px;height:15px"></i></button>
+          </div>
+          <div class="eq" data-sum></div>
+          ${fields}
+        </div>`;
+      }).join('');
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    // The summary line on each card, and red boxes for bad input.
+    function paintCardStatus() {
+      const L = state.line;
+      const st = constVal(L.step);
+      const step = st.ok ? st.v : 1;
+      document.querySelectorAll('#ilist .gcard').forEach(card => {
+        const it = byId(card.dataset.iid); if (!it) return;
+        card.querySelectorAll('input[data-f]').forEach(inp => inp.classList.toggle('err', !!(it._err && it._err[inp.dataset.f])));
+        const sum = card.querySelector('[data-sum]');
+        const r = it._r;
+        if (!r) { sum.className = 'eq err'; sum.textContent = (it._err && it._err.msg) || T().badValue; return; }
+        sum.className = 'eq';
+        if (it.kind === 'point') sum.innerHTML = `<i>${esc(it.name)}</i>${it.name ? ' = ' : ''}${htmlText(r.v, L.format, step)}`;
+        else if (it.kind === 'interval') {
+          const a = ineqText(it, r, L.format, step, L.variable), b = ineqText(Object.assign({}, it, { label: 'interval' }), r, L.format, step, L.variable);
+          sum.innerHTML = `${ineqSvgHtml(a)} &nbsp;<span style="color:var(--text-3)">·</span>&nbsp; ${esc(b)}`;
+        } else {
+          const end = r.steps.reduce((s, v) => s + v, r.start);
+          sum.innerHTML = `${htmlText(r.start, L.format, step)} ${r.steps.map(s => `${s < 0 ? MINUS : '+'} ${htmlText(Math.abs(s), L.format, step)}`).join(' ')} = ${htmlText(end, L.format, step)}`;
+        }
+      });
+    }
+    const ineqSvgHtml = (t) => esc(t).replace(/(^|[\s(])([a-zA-Z])(?=[\s)]|$)/g, '$1<i>$2</i>');
+
+    $('ilist').addEventListener('input', e => {
+      const card = e.target.closest('.gcard'); if (!card) return;
+      const it = byId(card.dataset.iid); if (!it) return;
+      const f = e.target.dataset.f; if (!f || e.target.type === 'checkbox' || e.target.tagName === 'SELECT') return;
+      it[f] = e.target.value;
+      if (f === 'color') card.style.setProperty('--gc', e.target.value);
+      render();
+    });
+    $('ilist').addEventListener('change', e => {
+      const card = e.target.closest('.gcard'); if (!card) return;
+      const it = byId(card.dataset.iid); if (!it) return;
+      const f = e.target.dataset.f; if (!f) return;
+      if (e.target.type === 'checkbox') it[f] = e.target.checked;
+      else if (f === 'open') it.open = e.target.value === '1';
+      else if (e.target.tagName === 'SELECT') it[f] = e.target.value;
+      else return;
+      render();
+    });
+    $('ilist').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-act]'); if (!btn) return;
+      const it = byId(btn.closest('.gcard').dataset.iid); if (!it) return;
+      if (btn.dataset.act === 'remove') state.items = state.items.filter(x => x !== it);
+      else it.visible = !it.visible;
+      paintItems(); render();
+    });
+    document.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => {
+      state.items.push(newItem(b.dataset.add));
+      paintItems(); render();
+      const cards = document.querySelectorAll('#ilist .gcard');
+      cards[cards.length - 1]?.querySelector('input[type=text]')?.focus();
+    }));
+
+    // ── Export / share ──
+    function fileBase() {
+      const t = String(state.line.title || '').trim();
+      return (t ? t.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) : 'number-line') || 'number-line';
+    }
+    K.attach({ getSvg: () => document.querySelector('#plot svg'), fileBase, print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg' });
+    $('copyLink').addEventListener('click', async () => {
+      const link = location.origin + location.pathname + '#n=' + K.toB64(serialize());
+      try { await navigator.clipboard.writeText(link); K.toast(T().copied); } catch (_) { K.toast(T().copyFail); }
+    });
+    $('clearAll').addEventListener('click', () => {
+      if (!confirm(T().confirmClear)) return;
+      state = { line: Object.assign(defaultLine(), { theme: state.line.theme }), items: [] };
+      paintLine(); paintItems(); render();
+    });
+
+    // ── Language ──
+    function applyDataAf() {
+      document.querySelectorAll('[data-af-html]').forEach(el => {
+        if (el.dataset.enHtml === undefined) el.dataset.enHtml = el.innerHTML;
+        el.innerHTML = lang === 'af' ? el.dataset.afHtml : el.dataset.enHtml;
+      });
+      document.querySelectorAll('[data-af]:not([data-af-html])').forEach(el => {
+        if (el.dataset.en === undefined) el.dataset.en = el.textContent;
+        el.textContent = lang === 'af' ? el.dataset.af : el.dataset.en;
+      });
+      document.documentElement.lang = lang;
+    }
+    function applyLang() { applyDataAf(); paintItems(); render(); try { lucide.createIcons(); } catch (_) {} }
+    if (window.MLLang) MLLang.mount('mlLangToggle', { onChange(next) { lang = next; applyLang(); } });
+
+    // ── Boot ──
+    const loaded = load();
+    if (loaded) state = loaded; else example('jumps');
+    paintLine();
+    applyLang();
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

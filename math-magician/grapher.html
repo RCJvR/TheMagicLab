@@ -12,236 +12,13 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="../assets/magic-lab.css">
-  <style>
-    /* ══════════════════════════════════════════════════════════════════════
-       Math Magician — Graph Plotter (resource).
-
-       Build a Cartesian plane (range, increments, gridlines, axis labels),
-       then plot any number of graphs on it in the CAPS standard forms —
-       linear, parabola, hyperbola, exponential, logarithmic, trig, cubic,
-       circle — or a free-typed y = … expression. The plot is a
-       self-contained SVG, so what you see is exactly what downloads.
-
-       Expressions are parsed by a small recursive-descent parser below; the
-       page never calls eval() or new Function() on anything a user typed.
-       ══════════════════════════════════════════════════════════════════════ */
-
-    :root {
-      --accent: var(--t-math);
-      --font-display: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, monospace;
-      --bad: #f87171;
-    }
-
-    /* ── Nav (same as the Math Magician landing page) ───────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4);
-      min-height: 68px; padding: 0 var(--gutter);
-      background: rgba(8,9,11,0.82);
-      backdrop-filter: blur(14px) saturate(1.4);
-      -webkit-backdrop-filter: blur(14px) saturate(1.4);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-logo {
-      font-family: var(--font-display); font-weight: 800; font-size: 17px;
-      letter-spacing: -0.025em; color: var(--paper);
-      text-decoration: none; display: flex; align-items: center; gap: 9px;
-    }
-    .nav-logo i, .nav-logo svg { color: var(--accent); }
-    .nav-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .nav-back {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 15px; border-radius: var(--radius-full);
-      border: 1px solid var(--line); background: transparent;
-      color: var(--text-2);
-      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
-      text-decoration: none; cursor: pointer; white-space: nowrap;
-      transition: color var(--dur-fast) var(--ease-standard),
-                  border-color var(--dur-fast) var(--ease-standard),
-                  background var(--dur-fast) var(--ease-standard);
-    }
-    .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
-
-    /* ── Hero ───────────────────────────────────────────────────────────── */
-    .hero {
-      width: 100%; max-width: var(--measure); margin-inline: auto;
-      padding: clamp(28px, 4vw, 48px) var(--gutter) var(--space-5);
-    }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 9px; margin-bottom: var(--space-3);
-      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
-    }
-    .hero-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-    .hero h1 {
-      font-family: var(--font-display); font-weight: 900;
-      font-size: clamp(30px, 4.2vw, 48px); line-height: 1.02;
-      letter-spacing: -0.04em; color: var(--paper); margin-bottom: var(--space-3);
-    }
-    .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: var(--text); }
-    .hero-sub { font-size: 15.5px; line-height: 1.6; color: var(--text-2); max-width: 66ch; }
-
-    /* ── Layout ─────────────────────────────────────────────────────────── */
-    .gp {
-      display: grid; grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
-      gap: var(--space-5); align-items: start;
-      width: 100%; max-width: var(--measure); margin-inline: auto;
-      padding: 0 var(--gutter) var(--space-8);
-    }
-    .gp-controls { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
-    .gp-stage { position: sticky; top: 84px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
-    @media (max-width: 980px) {
-      .gp { grid-template-columns: minmax(0, 1fr); }
-      .gp-stage { position: static; order: -1; }
-    }
-
-    /* ── Panels ─────────────────────────────────────────────────────────── */
-    .panel {
-      background: var(--ink-850); border: 1px solid var(--line);
-      border-radius: var(--radius-md); padding: var(--space-4);
-    }
-    .panel-head {
-      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
-      margin-bottom: var(--space-3);
-    }
-    .panel h2 {
-      display: flex; align-items: center; gap: 8px;
-      font-family: var(--font-display); font-size: 16px; font-weight: 800;
-      letter-spacing: -0.02em; color: var(--paper);
-    }
-    .panel h2 i, .panel h2 svg { color: var(--accent); }
-    .hint { font-size: 12.5px; line-height: 1.55; color: var(--text-3); }
-    .hint code, .tips code { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px; }
-
-    .row { display: grid; gap: var(--space-2); margin-bottom: var(--space-3); }
-    .row.c2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .row.c3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .row.c4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
-    .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-    .field > span {
-      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3);
-    }
-    .field > span.var { font-family: var(--font-serif); font-style: italic; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--text); line-height: 1; }
-    input[type=text], input[type=number], select {
-      width: 100%; min-width: 0;
-      padding: 8px 10px; border-radius: var(--radius-2xs);
-      background: var(--ink-900); border: 1px solid var(--line-hard);
-      color: var(--paper); font-family: var(--font-mono); font-size: 13px;
-    }
-    select { font-family: var(--font-body); font-size: 13.5px; cursor: pointer; }
-    input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-    input.err { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--ink-900)); }
-    .checks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-bottom: var(--space-3); }
-    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-2); cursor: pointer; user-select: none; }
-    .check input { accent-color: var(--accent); width: 15px; height: 15px; }
-
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 8px 13px; border-radius: var(--radius-2xs);
-      border: 1px solid var(--line-hard); background: transparent;
-      color: var(--text); font-family: var(--font-body); font-size: 13px; font-weight: 700;
-      cursor: pointer; white-space: nowrap;
-      transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
-    }
-    .btn:hover { background: rgba(255,255,255,0.05); border-color: var(--paper); color: var(--paper); }
-    .btn.primary { background: var(--accent); border-color: var(--accent); color: #0d1400; }
-    .btn.primary:hover { background: #b4e25a; border-color: #b4e25a; color: #0d1400; }
-    .btn.icon { padding: 6px; border-color: var(--line); color: var(--text-3); }
-    .btn.icon:hover { color: var(--paper); }
-    .btn.icon.danger:hover { color: var(--bad); border-color: var(--bad); }
-    .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-
-    /* ── Graph cards ────────────────────────────────────────────────────── */
-    .glist { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-3); }
-    .gcard {
-      border: 1px solid var(--line); border-left: 3px solid var(--gc, var(--accent));
-      border-radius: var(--radius-sm); padding: var(--space-3); background: var(--ink-900);
-    }
-    .gcard.off { opacity: 0.55; }
-    .gcard-top { display: flex; align-items: center; gap: 6px; margin-bottom: var(--space-2); }
-    .gcard-top input[type=color] { width: 30px; height: 30px; padding: 0; border: 1px solid var(--line-hard); border-radius: 6px; background: none; cursor: pointer; flex-shrink: 0; }
-    .gcard-top .gname { width: 46px; flex-shrink: 0; text-align: center; font-family: var(--font-serif); font-style: italic; font-size: 17px; padding: 4px; }
-    .gcard-top select { flex: 1; }
-    .eq {
-      font-family: var(--font-serif); font-size: 19px; color: var(--paper);
-      padding: 6px 2px 10px; overflow-x: auto; white-space: nowrap;
-    }
-    .eq i { font-style: italic; }
-    .eq sup { font-size: 0.68em; }
-    .eq.err { font-family: var(--font-mono); font-size: 12px; color: var(--bad); white-space: normal; }
-    details.more { margin-top: 2px; }
-    details.more > summary {
-      cursor: pointer; list-style: none;
-      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3);
-      padding: 4px 0;
-    }
-    details.more > summary::before { content: "▸ "; }
-    details.more[open] > summary::before { content: "▾ "; }
-    details.more > summary:hover { color: var(--paper); }
-    details.more .inner { padding-top: var(--space-2); }
-    .empty { font-size: 13px; color: var(--text-3); padding: var(--space-3); border: 1px dashed var(--line-hard); border-radius: var(--radius-sm); text-align: center; }
-
-    .prow { display: grid; grid-template-columns: 30px 52px minmax(0,1fr) minmax(0,1fr) 30px; gap: 6px; align-items: center; margin-bottom: 6px; }
-    .prow input[type=color] { width: 30px; height: 30px; padding: 0; border: 1px solid var(--line-hard); border-radius: 6px; background: none; cursor: pointer; }
-    .prow .pname { text-align: center; }
-
-    /* ── Plot stage ─────────────────────────────────────────────────────── */
-    .toolbar { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-    .toolbar .spacer { flex: 1; }
-    .plot-wrap {
-      position: relative; border-radius: var(--radius-md); overflow: hidden;
-      border: 1px solid var(--line-hard); background: #fff; box-shadow: var(--elevation-md);
-    }
-    .plot-wrap.dark { background: #0c0e11; }
-    #plot svg { display: block; width: 100%; height: auto; cursor: crosshair; }
-    .readout {
-      font-family: var(--font-mono); font-size: 12px; color: var(--text-2);
-      min-height: 20px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
-    }
-    .readout b { color: var(--paper); font-weight: 600; }
-    .readout .sw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
-    .warn { font-size: 12.5px; color: #fbbf24; }
-    .warn:empty { display: none; }
-    .toast {
-      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px);
-      background: var(--ink-800); border: 1px solid var(--line-hard); color: var(--text);
-      padding: 10px 18px; border-radius: 11px; font-size: 13px; box-shadow: var(--elevation-lg);
-      opacity: 0; pointer-events: none; transition: opacity 200ms, transform 200ms; z-index: 500;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    .tips { font-size: 13px; line-height: 1.65; color: var(--text-2); }
-    .tips ul { padding-left: 18px; margin: 6px 0 0; }
-    .tips li { margin-bottom: 4px; }
-
-    footer {
-      margin-top: auto; padding: var(--space-7) var(--gutter);
-      border-top: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .footer-copy { font-size: 13px; color: var(--text-3); }
-
-    @media (max-width: 520px) {
-      .row.c4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .row.c3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .prow { grid-template-columns: 30px 44px minmax(0,1fr) minmax(0,1fr) 30px; }
-    }
-
-    @media print {
-      nav, .hero, .gp-controls, .toolbar, .readout, .warn, footer, .ml-skip, .toast { display: none !important; }
-      body { background: #fff !important; }
-      .gp { display: block; padding: 0; }
-      .gp-stage { position: static; }
-      .plot-wrap { border: none; box-shadow: none; }
-    }
-  </style>
+  <link rel="stylesheet" href="plot-tools.css">
 <link rel="stylesheet" href="../auth-modal.css">
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
 <script defer src="../auth-modal.js"></script>
 <script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -249,6 +26,7 @@
     <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
     <div class="nav-right">
       <span id="mlLangToggle"></span>
+      <a href="numberline.html" class="nav-back" data-af-html='<i data-lucide="ruler" style="width:13px;height:13px"></i> Getallyn'><i data-lucide="ruler" style="width:13px;height:13px"></i> Number Line</a>
       <a href="index.html" class="nav-back" data-af-html='<i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grade'><i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grades</a>
       <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
@@ -363,6 +141,7 @@
           <li data-af-html="Beperk ’n grafiek se definisieversameling onder <b>Meer opsies</b>; oop eindpunte word as hol kolletjies geteken.">Restrict a graph’s domain under <b>More options</b>; open endpoints are drawn as hollow dots.</li>
           <li data-af-html="Skakel <b>Grade (trig)</b> aan sodat sin, cos en tan in grade werk, en stel die x-inkrement op 30°, 45° of 90°.">Turn on <b>Degrees (trig)</b> so sin, cos and tan work in degrees, and set the x increment to 30°, 45° or 90°.</li>
           <li data-af-html="Beweeg oor die vlak om waardes af te lees. <b>Kopieer skakel</b> stoor die hele grafiek in ’n skakel wat jy met jou klas kan deel.">Hover over the plane to read off values. <b>Copy link</b> saves the whole graph in a link you can share with your class.</li>
+          <li data-af-html="Om die grafiek in ’n toets of werkkaart te sit: <b>Kopieer prent</b> en plak dit in Word of Google Docs, of kies <b>Druk / voeg in dokument</b> vir ’n vaste grootte in cm, ’n onderskrif en verskeie kopieë per bladsy.">To put the graph in a test or worksheet: <b>Copy image</b> and paste it into Word or Google Docs, or choose <b>Print / add to document</b> for a set size in cm, a caption and several copies per page.</li>
         </ul>
       </section>
     </div>
@@ -370,10 +149,11 @@
     <!-- ═══ Plot ═══ -->
     <div class="gp-stage">
       <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
         <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
         <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
         <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
-        <button class="btn" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk">Print</span></button>
         <span class="spacer"></span>
         <button class="btn icon danger" id="clearAll" type="button" aria-label="Start over" title="Start over"><i data-lucide="rotate-ccw" style="width:15px;height:15px"></i></button>
       </div>
@@ -382,7 +162,6 @@
     </div>
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <footer>
     <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
@@ -441,157 +220,8 @@
     let lang = (window.MLLang && MLLang.getLang()) || 'en';
     const T = () => STR[lang];
 
-    // ══════════════════════════════════════════════════════════════════
-    // Expression parser → closures. No eval.
-    //   expr  := term (('+'|'-') term)*
-    //   term  := unary (('*'|'/') unary | <implicit ×> power)*
-    //   unary := ('-'|'+') unary | power
-    //   power := primary ('^' unary)?          (right-associative)
-    // Every compiled function takes (x, degrees).
-    // ══════════════════════════════════════════════════════════════════
-    const DEG = Math.PI / 180;
-    const FUNCS = {
-      sin:  (v, d) => Math.sin(d ? v * DEG : v),
-      cos:  (v, d) => Math.cos(d ? v * DEG : v),
-      tan:  (v, d) => {
-        // Exact asymptotes in degree mode (cos(90°) isn't exactly 0 in floating point).
-        if (d && Math.abs(((v % 180) + 180) % 180 - 90) < 1e-9) return NaN;
-        return Math.tan(d ? v * DEG : v);
-      },
-      asin: (v, d) => d ? Math.asin(v) / DEG : Math.asin(v),
-      acos: (v, d) => d ? Math.acos(v) / DEG : Math.acos(v),
-      atan: (v, d) => d ? Math.atan(v) / DEG : Math.atan(v),
-      sqrt: (v) => Math.sqrt(v),
-      cbrt: (v) => Math.cbrt(v),
-      abs:  (v) => Math.abs(v),
-      ln:   (v) => Math.log(v),
-      log:  (v) => Math.log10(v),
-      exp:  (v) => Math.exp(v),
-    };
-    const CONSTS = { pi: Math.PI, e: Math.E };
-    const NAMES = [...Object.keys(FUNCS), 'pi', 'x', 'e'].sort((a, b) => b.length - a.length);
-
-    function tokenize(src) {
-      const s = String(src)
-        .replace(/[−–]/g, '-').replace(/[×·]/g, '*').replace(/÷/g, '/')
-        .replace(/π/g, 'pi').replace(/√/g, 'sqrt').replace(/²/g, '^2').replace(/³/g, '^3')
-        .replace(/°/g, '').replace(/(\d),(\d)/g, '$1.$2');
-      const toks = [];
-      let i = 0;
-      while (i < s.length) {
-        const c = s[i];
-        if (/\s/.test(c)) { i++; continue; }
-        if (/[0-9.]/.test(c)) {
-          const m = /^(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?/.exec(s.slice(i));
-          if (!m) throw new Error(`Unexpected "${c}"`);
-          toks.push({ type: 'num', v: parseFloat(m[0]) });
-          i += m[0].length; continue;
-        }
-        if (/[a-zA-Z]/.test(c)) {
-          let word = /^[a-zA-Z]+/.exec(s.slice(i))[0];
-          i += word.length;
-          word = word.toLowerCase();
-          while (word) {                       // "xsinx" → x, sin, x
-            const name = NAMES.find(n => word.startsWith(n));
-            if (!name) throw new Error(`Unknown name "${word}"`);
-            toks.push({ type: 'id', v: name });
-            word = word.slice(name.length);
-          }
-          continue;
-        }
-        if ('+-*/^()|'.includes(c)) { toks.push({ type: 'op', v: c }); i++; continue; }
-        if (c === '[' || c === '{') { toks.push({ type: 'op', v: '(' }); i++; continue; }
-        if (c === ']' || c === '}') { toks.push({ type: 'op', v: ')' }); i++; continue; }
-        throw new Error(`Unexpected "${c}"`);
-      }
-      return toks;
-    }
-
-    function compile(src) {
-      const toks = tokenize(src);
-      if (!toks.length) throw new Error('Empty');
-      let i = 0, usesX = false;
-      const peek = () => toks[i];
-      const isOp = (v) => peek() && peek().type === 'op' && peek().v === v;
-      const startsPrimary = (t) => t && (t.type === 'num' || t.type === 'id' || (t.type === 'op' && t.v === '('));
-
-      function expr() {
-        let l = term();
-        while (isOp('+') || isOp('-')) {
-          const op = toks[i++].v, r = term(), a = l;
-          l = op === '+' ? (x, d) => a(x, d) + r(x, d) : (x, d) => a(x, d) - r(x, d);
-        }
-        return l;
-      }
-      function term() {
-        let l = unary();
-        for (;;) {
-          if (isOp('*') || isOp('/')) {
-            const op = toks[i++].v, r = unary(), a = l;
-            l = op === '*' ? (x, d) => a(x, d) * r(x, d) : (x, d) => a(x, d) / r(x, d);
-          } else if (startsPrimary(peek())) {
-            const r = power(), a = l;
-            l = (x, d) => a(x, d) * r(x, d);
-          } else break;
-        }
-        return l;
-      }
-      function unary() {
-        if (isOp('-')) { i++; const a = unary(); return (x, d) => -a(x, d); }
-        if (isOp('+')) { i++; return unary(); }
-        return power();
-      }
-      function power() {
-        const b = primary();
-        if (isOp('^')) {
-          i++;
-          const e = unary();
-          return (x, d) => Math.pow(b(x, d), e(x, d));
-        }
-        return b;
-      }
-      function primary() {
-        const t = toks[i++];
-        if (!t) throw new Error('Incomplete expression');
-        if (t.type === 'num') { const v = t.v; return () => v; }
-        if (t.type === 'op' && t.v === '(') {
-          const a = expr();
-          if (!isOp(')')) throw new Error('Missing ")"');
-          i++; return a;
-        }
-        if (t.type === 'op' && t.v === '|') {
-          const a = expr();
-          if (!isOp('|')) throw new Error('Missing closing "|"');
-          i++; return (x, d) => Math.abs(a(x, d));
-        }
-        if (t.type === 'id') {
-          if (t.v === 'x') { usesX = true; return (x) => x; }
-          if (t.v in CONSTS) { const v = CONSTS[t.v]; return () => v; }
-          const f = FUNCS[t.v];
-          let arg;
-          if (isOp('(')) {
-            i++; arg = expr();
-            if (!isOp(')')) throw new Error('Missing ")"');
-            i++;
-            // sin(x)^2 reads as (sin x)^2
-            if (isOp('^')) { i++; const e = unary(), g = arg; return (x, d) => Math.pow(f(g(x, d), d), e(x, d)); }
-          } else {
-            // "sin 2x" → sin(2x): the argument is the implicit product that follows.
-            arg = power();
-            while (startsPrimary(peek()) && !(peek().type === 'id' && FUNCS[peek().v])) {
-              const r = power(), a = arg; arg = (x, d) => a(x, d) * r(x, d);
-            }
-          }
-          const g = arg;
-          return (x, d) => f(g(x, d), d);
-        }
-        throw new Error(`Unexpected "${t.v}"`);
-      }
-
-      const fn = expr();
-      if (i < toks.length) throw new Error(`Unexpected "${toks[i].v}"`);
-      return { fn, usesX };
-    }
+    // Expression parser (shared with the number line): see plot-kit.js.
+    const { compile, FUNCS } = window.MMPlotKit;
 
     // A parameter box: a constant expression. Returns {ok, v, msg}.
     function constVal(src, deg) {
@@ -815,15 +445,7 @@
     // Persistence: share-link hash first, then localStorage.
     // ══════════════════════════════════════════════════════════════════
     const LS_KEY = 'mm_grapher_v1';
-    function toB64(str) {
-      const bytes = new TextEncoder().encode(str);
-      let bin = ''; bytes.forEach(b => { bin += String.fromCharCode(b); });
-      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    }
-    function fromB64(b64) {
-      const bin = atob(b64.replace(/-/g, '+').replace(/_/g, '/'));
-      return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
-    }
+    const { toB64, fromB64 } = window.MMPlotKit;
     function sanitize(s) {
       if (!s || typeof s !== 'object') return null;
       const plane = Object.assign(defaultPlane(), s.plane || {});
@@ -1360,7 +982,7 @@
       });
 
       svg += `<g clip-path="url(#gpClip)">${overlays}</g>${curves}<g>${feat}${pts}${labels}</g>`;
-      svg += `<g id="gpHover" pointer-events="none"></g>`;
+      svg += `<g id="gpHover" pointer-events="none" data-export-skip></g>`;
       svg += `</svg>`;
       document.getElementById('plot').innerHTML = svg;
       view.th = th;
@@ -1593,44 +1215,15 @@
     plotEl.addEventListener('pointerdown', onHover);
     plotEl.addEventListener('pointerleave', () => { const h = document.querySelector('#gpHover'); if (h) h.innerHTML = ''; readoutIdle(); });
 
-    // ── Export ──
+    // ── Export: print / add to a document, copy image, PNG, SVG (plot-kit.js) ──
     function fileBase() {
       const t = String(state.plane.title || '').trim();
       return (t ? t.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) : 'graph') || 'graph';
     }
-    function svgMarkup() {
-      const el = document.querySelector('#plot svg');
-      if (!el) return '';
-      const c = el.cloneNode(true);
-      c.querySelector('#gpHover')?.remove();
-      c.removeAttribute('role');
-      return '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(c);
-    }
-    function download(blob, name) {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob); a.download = name;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    }
-    $('dlSvg').addEventListener('click', () => {
-      const s = svgMarkup(); if (s) download(new Blob([s], { type: 'image/svg+xml' }), fileBase() + '.svg');
+    window.MMPlotKit.attach({
+      getSvg: () => document.querySelector('#plot svg'), fileBase,
+      print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg',
     });
-    $('dlPng').addEventListener('click', () => {
-      const s = svgMarkup(); if (!s || !view) return;
-      const img = new Image();
-      const url = URL.createObjectURL(new Blob([s], { type: 'image/svg+xml' }));
-      img.onload = () => {
-        const scale = 2;
-        const c = document.createElement('canvas');
-        c.width = view.W * scale; c.height = Math.round(view.H * scale);
-        const ctx = c.getContext('2d');
-        ctx.drawImage(img, 0, 0, c.width, c.height);
-        URL.revokeObjectURL(url);
-        c.toBlob(b => { if (b) download(b, fileBase() + '.png'); }, 'image/png');
-      };
-      img.src = url;
-    });
-    $('printBtn').addEventListener('click', () => window.print());
     $('copyLink').addEventListener('click', async () => {
       const link = location.origin + location.pathname + '#g=' + toB64(serialize());
       try { await navigator.clipboard.writeText(link); toast(T().copied); }
@@ -1643,11 +1236,7 @@
       history.replaceState(null, '', location.pathname);
       paintPlane(); paintGraphs(); paintPoints(); render();
     });
-    let toastTimer = 0;
-    function toast(msg) {
-      const t = $('toast'); t.textContent = msg; t.classList.add('show');
-      clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
-    }
+    const toast = window.MMPlotKit.toast;
 
     // ══════════════════════════════════════════════════════════════════
     // Language

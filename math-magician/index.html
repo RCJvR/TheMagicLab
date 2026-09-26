@@ -337,7 +337,7 @@
     <a href="../index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
     <div style="display:flex;align-items:center;gap:10px">
       <span id="mlLangToggle"></span>
-      <a href="grapher.html" class="nav-back"><i data-lucide="spline" style="width:13px;height:13px"></i> <span id="lblNavGrapher">Graph Plotter</span></a>
+      <a href="#resources" class="nav-back"><i data-lucide="library" style="width:13px;height:13px"></i> <span id="lblNavResources">Resources</span></a>
       <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span id="lblBack">Back to Magic Lab</span></a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
@@ -426,7 +426,7 @@
     </div>
   </div>
 
-  <section class="resources" aria-labelledby="lblResources">
+  <section class="resources" id="resources" aria-labelledby="lblResources">
     <h2 class="resources-label"><span class="hero-tag-dot"></span><span id="lblResources">Resources</span></h2>
     <div class="resources-grid">
       <a href="grapher.html" class="resource-card">
@@ -434,6 +434,14 @@
         <div>
           <div class="resource-title" id="lblGrapherTitle">Graph Plotter</div>
           <p class="resource-desc" id="lblGrapherDesc">Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.</p>
+        </div>
+        <span class="resource-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="numberline.html" class="resource-card">
+        <div class="resource-icon"><i data-lucide="ruler" style="width:20px;height:20px"></i></div>
+        <div>
+          <div class="resource-title" id="lblNumlineTitle">Number Line</div>
+          <p class="resource-desc" id="lblNumlineDesc">Build a number line in integers, decimals or fractions and mark points, inequalities, intervals and jumps.</p>
         </div>
         <span class="resource-arrow" aria-hidden="true">→</span>
       </a>
@@ -458,7 +466,8 @@
         startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
         topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
         continueWhere: 'Continue where you left off', gradeWord: 'Grade', mathsWord: 'Maths',
-        resources: 'Resources', grapherTitle: 'Graph Plotter',
+        resources: 'Resources', grapherTitle: 'Graph Plotter', numlineTitle: 'Number Line',
+        numlineDesc: 'Build a number line in integers, decimals or fractions and mark points, inequalities, intervals and jumps.',
         grapherDesc: 'Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.',
         footer: 'Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
@@ -477,7 +486,8 @@
         startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
         topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
         continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad', mathsWord: 'Wiskunde',
-        resources: 'Hulpbronne', grapherTitle: 'Grafiekplotter',
+        resources: 'Hulpbronne', grapherTitle: 'Grafiekplotter', numlineTitle: 'Getallyn',
+        numlineDesc: 'Bou ’n getallyn in heelgetalle, desimale of breuke en merk punte, ongelykhede, intervalle en spronge.',
         grapherDesc: 'Stel ’n Cartesiese vlak op en plot reguit lyne, parabole, hiperbole, eksponensiële, log-, trig- en eie grafieke, met afsnitte en asimptote gemerk.',
         footer: 'Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
@@ -505,7 +515,9 @@
       set('lblResources', t.resources);
       set('lblGrapherTitle', t.grapherTitle);
       set('lblGrapherDesc', t.grapherDesc);
-      set('lblNavGrapher', t.grapherTitle);
+      set('lblNavResources', t.resources);
+      set('lblNumlineTitle', t.numlineTitle);
+      set('lblNumlineDesc', t.numlineDesc);
       document.querySelector('.path-trigger-label').textContent = t.jumpToGrade;
       document.querySelector('.path-trigger-current').textContent = t.selectGrade;
       document.querySelector('.footer-copy').lastChild.textContent = t.footer;
