@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Equations &amp; Moles · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .eqin { font-family: var(--font-mono); font-size: 15px; }
+    table.res { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); margin-top: 10px; }
+    table.res th, table.res td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+    table.res th:first-child, table.res td:first-child { text-align: left; }
+    table.res th { color: var(--text-3); font-weight: 500; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+    table.res td b { color: var(--paper); font-weight: 600; }
+    table.res tr.lim td { color: #fbbf24; }
+    .f { font-family: "Times New Roman", serif; font-size: 16px; color: var(--paper); }
+    .f sub, .f sup { font-size: 0.7em; }
+    .note { font-size: 12.5px; color: var(--text-2); margin-top: 8px; line-height: 1.6; }
+    .note b { color: var(--paper); }
+    .pct { display: grid; grid-template-columns: minmax(0,0.8fr) minmax(0,1fr) 30px; gap: 6px; margin-bottom: 6px; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Chemiese verandering · Gr 8–12">Resource · Chemical change · Gr 8–12</span></div>
+    <h1 data-af-html="Vergelykings en <em>mol.</em>">Equations &amp; <em>moles.</em></h1>
+    <p class="hero-sub" data-af="Balanseer enige vergelyking (ook ioniese), kry molêre massas uit die NSS-gegewensblad, en werk stoïgiometrie uit — met die beperkende reagens en die teoretiese opbrengs. Plus persentasie-samestelling en empiriese formules.">Balance any equation (ionic ones too), get molar masses from the NSC data sheet, and work out stoichiometry — with the limiting reagent and theoretical yield. Plus percentage composition and empirical formulae.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hEq">
+        <div class="panel-head">
+          <h2 id="hEq"><i data-lucide="flask-conical" style="width:16px;height:16px"></i><span data-af="Vergelyking">Equation</span></h2>
+          <select id="examples" aria-label="Examples" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="C3H8 + O2 -> CO2 + H2O">C₃H₈ + O₂ → CO₂ + H₂O</option>
+            <option value="Al + O2 -> Al2O3">Al + O₂ → Al₂O₃</option>
+            <option value="CaCO3(s) + HCl(aq) -> CaCl2(aq) + H2O(l) + CO2(g)">CaCO₃ + HCl → …</option>
+            <option value="N2(g) + H2(g) <=> NH3(g)">N₂ + H₂ ⇌ NH₃</option>
+            <option value="Cu(s) + Ag^+(aq) -> Cu^2+(aq) + Ag(s)">Cu + Ag⁺ → Cu²⁺ + Ag</option>
+            <option value="MnO4^- + Fe^2+ + H^+ -> Mn^2+ + Fe^3+ + H2O">MnO₄⁻ + Fe²⁺ + H⁺ → …</option>
+            <option value="CuSO4·5H2O -> CuSO4 + H2O">CuSO₄·5H₂O → …</option>
+          </select>
+        </div>
+        <input type="text" id="eq" class="eqin" spellcheck="false" autocomplete="off" aria-label="Equation">
+        <p class="hint" style="margin-top:6px" data-af-html="Tik formules gewoon: <code>H2SO4</code>, <code>Ca(OH)2</code>, <code>CuSO4·5H2O</code>. Ione: <code>Fe^3+</code>, <code>SO4^2-</code>. Toestande: <code>(aq)</code>. Pyle: <code>-></code> of <code>&lt;=&gt;</code>.">Type formulae plainly: <code>H2SO4</code>, <code>Ca(OH)2</code>, <code>CuSO4·5H2O</code>. Ions: <code>Fe^3+</code>, <code>SO4^2-</code>. States: <code>(aq)</code>. Arrows: <code>-></code> or <code>&lt;=&gt;</code>.</p>
+        <div id="balanced" class="note"></div>
+        <table class="res" id="species"></table>
+      </section>
+
+      <section class="panel" aria-labelledby="hSt">
+        <h2 id="hSt" style="margin-bottom:10px"><i data-lucide="scale" style="width:16px;height:16px"></i><span data-af="Stoïgiometrie">Stoichiometry</span></h2>
+        <p class="hint" style="margin-bottom:8px" data-af="Gee ’n hoeveelheid vir een of meer reaktanse. Met twee reaktanse vind die bladsy die beperkende reagens.">Give an amount for one or more reactants. With two reactants the page finds the limiting reagent.</p>
+        <div id="given"></div>
+        <label class="field" style="margin-top:8px;max-width:220px"><span data-af="Molêre gasvolume (dm³·mol⁻¹)">Molar gas volume (dm³·mol⁻¹)</span><input type="text" id="vm" inputmode="decimal"></label>
+        <table class="res" id="stoich"></table>
+        <div id="stoichNote" class="note"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="hComp">
+        <h2 id="hComp" style="margin-bottom:10px"><i data-lucide="percent" style="width:16px;height:16px"></i><span data-af="Verbinding">Compound</span></h2>
+        <label class="field"><span data-af="Formule">Formula</span><input type="text" id="comp" class="eqin" spellcheck="false"></label>
+        <div id="compOut" class="note"></div>
+        <h3 style="font-size:13px;font-weight:800;color:var(--paper);margin:14px 0 8px" data-af="Empiriese formule uit massapersentasies">Empirical formula from percentages by mass</h3>
+        <div id="pcts"></div>
+        <div class="row c2" style="margin-top:6px">
+          <button class="btn" type="button" id="addPct">+ <span data-af="Element">Element</span></button>
+          <label class="field"><span data-af="Molêre massa van verbinding (opsioneel)">Molar mass of compound (optional)</span><input type="text" id="empM" inputmode="decimal"></label>
+        </div>
+        <div id="empOut" class="note"></div>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="showStates"> <span data-af="Toestande">States</span></label>
+        <label class="check"><input type="checkbox" id="showM"> <span data-af="Molêre massas onder die formules">Molar masses under the formulae</span></label>
+        <label class="check"><input type="checkbox" id="blanks"> <span data-af="Leë blokkies vir koëffisiënte (werkkaart)">Blank boxes for coefficients (worksheet)</span></label>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    // Relative atomic masses as rounded on the NSC Physical Sciences data sheet.
+    const AR = { H: 1, He: 4, Li: 7, Be: 9, B: 11, C: 12, N: 14, O: 16, F: 19, Ne: 20, Na: 23, Mg: 24, Al: 27, Si: 28, P: 31, S: 32, Cl: 35.5, Ar: 40, K: 39, Ca: 40,
+      Sc: 45, Ti: 48, V: 51, Cr: 52, Mn: 55, Fe: 56, Co: 59, Ni: 59, Cu: 63.5, Zn: 65, Ga: 70, Ge: 73, As: 75, Se: 79, Br: 80, Kr: 84, Rb: 86, Sr: 88, Y: 89, Zr: 91,
+      Nb: 92, Mo: 96, Tc: 98, Ru: 101, Rh: 103, Pd: 106, Ag: 108, Cd: 112, In: 115, Sn: 119, Sb: 122, Te: 128, I: 127, Xe: 131, Cs: 133, Ba: 137, La: 139, W: 184, Pt: 195, Au: 197, Hg: 201, Pb: 207, Bi: 209, U: 238 };
+    const STR = {
+      en: {
+        balanced: 'Balanced', cantBalance: 'This equation cannot be balanced as written — check the formulae.', manyWays: 'This equation balances in more than one way — it is really two reactions. Split it up.',
+        unknownEl: (e) => `Unknown element “${e}”.`, badFormula: (f) => `Could not read “${f}”.`, needArrow: 'Put an arrow between the reactants and products (->).',
+        species: 'Species', coef: 'Coeff.', M: 'M (g·mol⁻¹)', react: 'reactant', prod: 'product', given: 'Given', unit: 'Unit', none: '—',
+        units: { g: 'g', mol: 'mol', dm3: 'dm³ (gas)', conc: 'mol·dm⁻³ × dm³' }, amount: 'Amount', vol: 'Volume (dm³)',
+        n: 'n (mol)', m: 'm (g)', V: 'V (dm³, gas)', limiting: (s) => `Limiting reagent: ${s}. The other reactant is in excess.`, excess: (s, n, m) => `${s} left over: ${n} mol (${m} g).`,
+        Mcomp: 'Molar mass', pctComp: 'Percentage composition', emp: 'Empirical formula', mol: 'Molecular formula', el: 'Element', pct: '% by mass',
+        copied: 'Link copied — anyone with it sees this equation.', copyFail: 'Could not copy the link — your browser blocked the clipboard.', check: 'Atoms and charge both balance.',
+      },
+      af: {
+        balanced: 'Gebalanseer', cantBalance: 'Hierdie vergelyking kan nie soos geskryf gebalanseer word nie — kyk na die formules.', manyWays: 'Hierdie vergelyking balanseer op meer as een manier — dis eintlik twee reaksies. Verdeel dit.',
+        unknownEl: (e) => `Onbekende element “${e}”.`, badFormula: (f) => `Kon nie “${f}” lees nie.`, needArrow: 'Sit ’n pyl tussen die reaktanse en produkte (->).',
+        species: 'Spesie', coef: 'Koëff.', M: 'M (g·mol⁻¹)', react: 'reaktans', prod: 'produk', given: 'Gegee', unit: 'Eenheid', none: '—',
+        units: { g: 'g', mol: 'mol', dm3: 'dm³ (gas)', conc: 'mol·dm⁻³ × dm³' }, amount: 'Hoeveelheid', vol: 'Volume (dm³)',
+        n: 'n (mol)', m: 'm (g)', V: 'V (dm³, gas)', limiting: (s) => `Beperkende reagens: ${s}. Die ander reaktans is in oormaat.`, excess: (s, n, m) => `${s} oor: ${n} mol (${m} g).`,
+        Mcomp: 'Molêre massa', pctComp: 'Persentasie-samestelling', emp: 'Empiriese formule', mol: 'Molekulêre formule', el: 'Element', pct: '% volgens massa',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie vergelyking.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.', check: 'Atome en lading balanseer albei.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // Formula parsing: "Ca(OH)2", "CuSO4·5H2O", "SO4^2-", "Fe^3+(aq)"
+    // → { atoms: {Ca:1, O:2, H:2}, charge, state, text }
+    // ══════════════════════════════════════════════════════════════════
+    function parseSpecies(raw) {
+      let s = String(raw).trim().replace(/\s+/g, '');
+      let coef = 1;
+      const cm = /^(\d+)(?=[A-Z(\[])/.exec(s); if (cm) { coef = +cm[1]; s = s.slice(cm[0].length); }
+      let state = '';
+      const sm = /\((s|l|g|aq)\)$/i.exec(s); if (sm) { state = sm[1].toLowerCase(); s = s.slice(0, -sm[0].length); }
+      let charge = 0;
+      const qm = /\^?(\d*)([+-])$/.exec(s);
+      if (qm && (s.includes('^') || /[A-Za-z)\]]\d*[+-]$/.test(s))) {
+        const hasCaret = s.lastIndexOf('^');
+        if (hasCaret >= 0) { const q = s.slice(hasCaret + 1); const m = /^(\d*)([+-])$/.exec(q); if (!m) throw new Error(T().badFormula(raw)); charge = (m[2] === '-' ? -1 : 1) * (m[1] ? +m[1] : 1); s = s.slice(0, hasCaret); }
+        else { charge = qm[2] === '-' ? -1 : 1; s = s.slice(0, -1); }
+      }
+      const parts = s.split(/[·*.]/);
+      const atoms = {};
+      parts.forEach((p, idx) => {
+        let mult = 1;
+        const pm = /^(\d+)/.exec(p); if (idx > 0 && pm) { mult = +pm[1]; p = p.slice(pm[0].length); }
+        const add = (el, n) => { if (!(el in AR)) throw new Error(T().unknownEl(el)); atoms[el] = (atoms[el] || 0) + n * mult; };
+        let i = 0;
+        const group = () => {
+          const out = {};
+          while (i < p.length && p[i] !== ')' && p[i] !== ']') {
+            if (p[i] === '(' || p[i] === '[') {
+              i++; const inner = group(); if (p[i] !== ')' && p[i] !== ']') throw new Error(T().badFormula(raw)); i++;
+              const n = readNum(); Object.keys(inner).forEach(e => { out[e] = (out[e] || 0) + inner[e] * n; });
+            } else {
+              const m = /^[A-Z][a-z]?/.exec(p.slice(i)); if (!m) throw new Error(T().badFormula(raw));
+              i += m[0].length; const n = readNum(); out[m[0]] = (out[m[0]] || 0) + n;
+            }
+          }
+          return out;
+        };
+        const readNum = () => { const m = /^\d+/.exec(p.slice(i)); if (m) { i += m[0].length; return +m[0]; } return 1; };
+        const g = group(); if (i !== p.length) throw new Error(T().badFormula(raw));
+        Object.keys(g).forEach(e => add(e, g[e]));
+      });
+      if (!Object.keys(atoms).length) throw new Error(T().badFormula(raw));
+      return { atoms, charge, state, body: s, coefGiven: coef };
+    }
+    const molar = (sp) => Object.keys(sp.atoms).reduce((a, e) => a + AR[e] * sp.atoms[e], 0);
+
+    // ══════════════════════════════════════════════════════════════════
+    // Balancing: null space of the element/charge matrix, in exact
+    // fractions, scaled to the smallest whole numbers.
+    // ══════════════════════════════════════════════════════════════════
+    const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; };
+    const Fr = (n, d = 1) => { if (d < 0) { n = -n; d = -d; } const g = gcd(n, d) || 1; return [n / g, d / g]; };
+    const fsub = (a, b) => Fr(a[0] * b[1] - b[0] * a[1], a[1] * b[1]), fmul = (a, b) => Fr(a[0] * b[0], a[1] * b[1]), fdiv = (a, b) => Fr(a[0] * b[1], a[1] * b[0]);
+    function balance(reac, prod) {
+      const all = reac.concat(prod), n = all.length;
+      const els = [...new Set(all.flatMap(s => Object.keys(s.atoms)))];
+      const rows = els.map(e => all.map((s, j) => Fr((s.atoms[e] || 0) * (j < reac.length ? 1 : -1))));
+      if (all.some(s => s.charge)) rows.push(all.map((s, j) => Fr(s.charge * (j < reac.length ? 1 : -1))));
+      // reduced row echelon form
+      const M = rows.map(r => r.slice());
+      const piv = []; let r = 0;
+      for (let c = 0; c < n && r < M.length; c++) {
+        let p = r; while (p < M.length && M[p][c][0] === 0) p++;
+        if (p === M.length) continue;
+        [M[r], M[p]] = [M[p], M[r]];
+        const pv = M[r][c]; M[r] = M[r].map(x => fdiv(x, pv));
+        for (let i = 0; i < M.length; i++) if (i !== r && M[i][c][0] !== 0) { const f = M[i][c]; M[i] = M[i].map((x, k) => fsub(x, fmul(f, M[r][k]))); }
+        piv.push(c); r++;
+      }
+      const free = []; for (let c = 0; c < n; c++) if (!piv.includes(c)) free.push(c);
+      if (free.length !== 1) return { ok: false, many: free.length > 1 };
+      const f = free[0], v = Array(n).fill(null);
+      v[f] = Fr(1);
+      piv.forEach((c, i) => { v[c] = fmul(Fr(-1), M[i][f]); });
+      const lcm = v.reduce((a, x) => a * x[1] / gcd(a, x[1]), 1);
+      let ints = v.map(x => x[0] * lcm / x[1]);
+      const g = ints.reduce((a, x) => gcd(a, x), 0) || 1; ints = ints.map(x => x / g);
+      if (ints.every(x => x < 0)) ints = ints.map(x => -x);
+      if (ints.some(x => x <= 0)) return { ok: false, many: false };
+      return { ok: true, coefs: ints };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const defaults = () => ({ eq: 'C3H8 + O2 -> CO2 + H2O', given: {}, vm: '22.4', comp: 'CuSO4·5H2O', pcts: [['C', '40'], ['H', '6.7'], ['O', '53.3']], empM: '180', showStates: true, showM: false, blanks: false });
+    let st = defaults();
+    const store = K.store('ss_chem_v1', 'q');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 200);
+      ['eq', 'vm', 'comp', 'empM'].forEach(k => { if (s[k] != null) d[k] = str(s[k]); });
+      ['showStates', 'showM', 'blanks'].forEach(k => { d[k] = !!s[k]; });
+      if (s.given && typeof s.given === 'object') Object.keys(s.given).slice(0, 10).forEach(k => { const g = s.given[k]; if (g) d.given[str(k, 4)] = { v: str(g.v, 16), u: ['g', 'mol', 'dm3', 'conc'].includes(g.u) ? g.u : 'g', vol: str(g.vol, 16) }; });
+      if (Array.isArray(s.pcts)) d.pcts = s.pcts.slice(0, 8).map(p => [str(p[0], 3), str(p[1], 10)]);
+      return d;
+    }
+    let parsed = null;     // { reac, prod, rev, coefs } of the last good parse
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering the equation (SVG) and the tables
+    // ══════════════════════════════════════════════════════════════════
+    const fmt = (v, dp = 2) => { if (!Number.isFinite(v)) return '—'; const r = Math.round(v * 10 ** dp) / 10 ** dp; const s = String(r); return lang === 'af' ? s.replace('.', ',') : s; };
+    // body text → segments of plain / subscript
+    function segs(sp) {
+      const out = []; let i = 0; const b = sp.body;
+      while (i < b.length) {
+        const c = b[i];
+        if (/\d/.test(c)) {
+          let j = i; while (j < b.length && /\d/.test(b[j])) j++;
+          const prev = b[i - 1];
+          const lead = i === 0 || /[·*.]/.test(prev);       // hydrate multiplier: normal size
+          out.push({ t: b.slice(i, j), sub: !lead }); i = j;
+        } else { out.push({ t: c === '*' || c === '.' ? '·' : c, sub: false }); i++; }
+      }
+      return out;
+    }
+    const chargeText = (q) => q === 0 ? '' : (Math.abs(q) === 1 ? '' : Math.abs(q)) + (q > 0 ? '+' : '−');
+    function speciesSvg(sp) {
+      let s = segs(sp).map(p => p.sub ? `<tspan baseline-shift="sub" font-size="68%">${esc(p.t)}</tspan>` : esc(p.t)).join('');
+      if (sp.charge) s += `<tspan baseline-shift="super" font-size="68%">${esc(chargeText(sp.charge))}</tspan>`;
+      if (st.showStates && sp.state) s += `<tspan font-size="80%">(${esc(sp.state)})</tspan>`;
+      return s;
+    }
+    function speciesHtml(sp) {
+      let s = segs(sp).map(p => p.sub ? `<sub>${esc(p.t)}</sub>` : esc(p.t)).join('');
+      if (sp.charge) s += `<sup>${esc(chargeText(sp.charge))}</sup>`;
+      if (sp.state) s += `(${esc(sp.state)})`;
+      return `<span class="f">${s}</span>`;
+    }
+    const plainName = (sp) => sp.body + (sp.charge ? '^' + chargeText(sp.charge) : '');
+    // Real rendered width of a formula, from a hidden SVG on the page.
+    let meter = null;
+    function measure(inner, size) {
+      if (!meter) {
+        meter = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        meter.setAttribute('width', '0'); meter.setAttribute('height', '0');
+        meter.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden';
+        document.body.appendChild(meter);
+      }
+      meter.innerHTML = `<text font-size="${size}" font-family="'Times New Roman', Times, serif">${inner}</text>`;
+      try { return meter.firstChild.getBBox().width; } catch (_) { return inner.length * size * 0.3; }
+    }
+    function drawEquation() {
+      if (!parsed) { $('plot').innerHTML = ''; return; }
+      const { reac, prod, rev, coefs } = parsed;
+      const FS = 30, SERIF = "'Times New Roman', Times, serif";
+      // measure roughly: 0.55em per char
+      const items = [];
+      const push = (sp, k) => items.push({ sp, k });
+      reac.forEach((sp, i) => { if (i) items.push({ op: '+' }); push(sp, i); });
+      items.push({ op: rev ? '⇌' : '→' });
+      prod.forEach((sp, i) => { if (i) items.push({ op: '+' }); push(sp, reac.length + i); });
+      let x = 30, parts = '', under = '';
+      const H = st.showM ? 130 : 96, y = 58;
+      items.forEach(it => {
+        if (it.op) { const w = it.op === '+' ? 34 : 60; parts += `<text x="${x + w / 2}" y="${y}" text-anchor="middle" font-size="${FS}" font-family="${SERIF}">${it.op}</text>`; x += w; return; }
+        const c = coefs ? coefs[it.k] : null;
+        if (st.blanks) { parts += `<rect x="${x}" y="${y - 26}" width="30" height="34" fill="none" stroke="#111827" stroke-width="1.5"/>`; x += 38; }
+        else if (c && c !== 1) { const t = String(c); parts += `<text x="${x}" y="${y}" font-size="${FS}" font-family="${SERIF}">${t}</text>`; x += measure(t, FS) + 6; }
+        const w = measure(speciesSvg(it.sp), FS) + 8;
+        parts += `<text x="${x}" y="${y}" font-size="${FS}" font-family="${SERIF}">${speciesSvg(it.sp)}</text>`;
+        if (st.showM) under += `<text x="${x + w / 2}" y="${y + 50}" text-anchor="middle" font-size="16" fill="#4b5563" font-family="Helvetica, Arial, sans-serif">${fmt(molar(it.sp), 1)} g·mol⁻¹</text>`;
+        x += w;
+      });
+      const W = Math.max(400, x + 30);
+      $('plot').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Balanced equation" fill="#111827"><rect width="${W}" height="${H}" fill="#fff"/>${parts}${under}</svg>`;
+    }
+    function analyse() {
+      const t = T(), warn = [];
+      parsed = null;
+      const raw = String(st.eq || '').trim();
+      const m = /(<=>|⇌|<->|->|→|=)/.exec(raw);
+      if (!raw) { finish(); return; }
+      if (!m) { warn.push(t.needArrow); finish(warn); return; }
+      const rev = /<=>|⇌|<->/.test(m[1]);
+      const L = raw.slice(0, m.index), R = raw.slice(m.index + m[0].length);
+      // Split a side into species. A "+" separates species unless it is a
+      // charge: right after "^" (and its digits), or a lone trailing "+"
+      // as in "Na+ + Cl-".
+      const split = (side) => {
+        const out = []; let cur = '';
+        for (let i = 0; i < side.length; i++) {
+          const c = side[i];
+          if (c === '+') {
+            // after "^" (and digits) it's a charge; so is a "+" whose next non-space character is the separating "+"
+            const isCharge = /\^\d*$/.test(cur) || /^\s*\+/.test(side.slice(i + 1));
+            if (!isCharge) { if (cur.trim()) out.push(cur.trim()); cur = ''; continue; }
+          }
+          cur += c;
+        }
+        if (cur.trim()) out.push(cur.trim());
+        return out;
+      };
+      let reac, prod;
+      try { reac = split(L).map(parseSpecies); prod = split(R).map(parseSpecies); }
+      catch (e) { warn.push(e.message); finish(warn); return; }
+      if (!reac.length || !prod.length) { warn.push(t.needArrow); finish(warn); return; }
+      const b = balance(reac, prod);
+      parsed = { reac, prod, rev, coefs: b.ok ? b.coefs : null };
+      if (!b.ok) warn.push(b.many ? t.manyWays : t.cantBalance);
+      finish(warn);
+    }
+    function finish(warn) {
+      warn = warn || [];
+      const t = T();
+      $('warn').textContent = warn.join(' ');
+      drawEquation();
+      if (!parsed) { $('balanced').innerHTML = ''; $('species').innerHTML = ''; $('given').innerHTML = ''; $('stoich').innerHTML = ''; $('stoichNote').innerHTML = ''; return; }
+      const { reac, prod, rev, coefs } = parsed, all = reac.concat(prod);
+      if (coefs) {
+        const side = (arr, off) => arr.map((sp, i) => (coefs[off + i] > 1 ? coefs[off + i] + ' ' : '') + speciesHtml(sp)).join(' + ');
+        $('balanced').innerHTML = `<b>${esc(t.balanced)}:</b> ${side(reac, 0)} ${rev ? '⇌' : '→'} ${side(prod, reac.length)}<br><span style="color:var(--text-3)">${esc(t.check)}</span>`;
+      } else $('balanced').innerHTML = '';
+      $('species').innerHTML = `<thead><tr><th>${esc(t.species)}</th><th>${esc(t.coef)}</th><th>${esc(t.M)}</th></tr></thead><tbody>` +
+        all.map((sp, i) => `<tr><td>${speciesHtml(sp)} <span style="color:var(--text-3)">${esc(i < reac.length ? t.react : t.prod)}</span></td><td>${coefs ? coefs[i] : '?'}</td><td><b>${fmt(molar(sp), 1)}</b></td></tr>`).join('') + '</tbody>';
+      paintGiven(); stoich();
+    }
+    function paintGiven() {
+      const t = T(), { reac } = parsed;
+      $('given').innerHTML = reac.map((sp, i) => {
+        const g = st.given[i] || { v: '', u: 'g', vol: '' };
+        return `<div class="row c3" style="margin-bottom:6px;align-items:end"><div class="field"><span>${esc(t.given)}</span><div style="padding:6px 0">${speciesHtml(sp)}</div></div>
+          <label class="field"><span>${esc(t.amount)}</span><input type="text" inputmode="decimal" data-g="${i}" data-k="v" value="${esc(g.v)}"></label>
+          <label class="field"><span>${esc(t.unit)}</span><select data-g="${i}" data-k="u">${Object.keys(t.units).map(u => `<option value="${u}"${g.u === u ? ' selected' : ''}>${esc(t.units[u])}</option>`).join('')}</select></label>
+          ${g.u === 'conc' ? `<label class="field" style="grid-column:2"><span>${esc(t.vol)}</span><input type="text" inputmode="decimal" data-g="${i}" data-k="vol" value="${esc(g.vol)}"></label>` : ''}</div>`;
+      }).join('');
+    }
+    function stoich() {
+      const t = T(), { reac, prod, coefs } = parsed;
+      if (!coefs) { $('stoich').innerHTML = ''; $('stoichNote').innerHTML = ''; return; }
+      const Vm = parseFloat(String(st.vm).replace(',', '.')) || 22.4;
+      const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return Number.isFinite(x) && x > 0 ? x : NaN; };
+      const nGiven = reac.map((sp, i) => {
+        const g = st.given[i]; if (!g) return NaN;
+        const v = num(g.v); if (!Number.isFinite(v)) return NaN;
+        if (g.u === 'g') return v / molar(sp);
+        if (g.u === 'mol') return v;
+        if (g.u === 'dm3') return v / Vm;
+        return v * (num(g.vol) || NaN);
+      });
+      const known = nGiven.map((n, i) => [n / coefs[i], i]).filter(([x]) => Number.isFinite(x));
+      if (!known.length) { $('stoich').innerHTML = ''; $('stoichNote').innerHTML = ''; return; }
+      // the reactant that runs out first sets the extent of reaction
+      const [ext, lim] = known.reduce((a, b) => b[0] < a[0] ? b : a);
+      const all = reac.concat(prod);
+      $('stoich').innerHTML = `<thead><tr><th>${esc(t.species)}</th><th>${esc(t.n)}</th><th>${esc(t.m)}</th><th>${esc(t.V)}</th></tr></thead><tbody>` +
+        all.map((sp, i) => { const n = ext * coefs[i]; return `<tr${i === lim && known.length > 1 ? ' class="lim"' : ''}><td>${speciesHtml(sp)}</td><td><b>${fmt(n, 3)}</b></td><td>${fmt(n * molar(sp), 2)}</td><td>${sp.state === 'g' || (!sp.state && /^(H2|O2|N2|Cl2|CO2|CO|NH3|CH4|C3H8|SO2|NO2|NO|HCl|C2H6|C2H4|C4H10|F2|He|Ne|Ar)$/.test(sp.body) && !sp.charge) ? fmt(n * Vm, 2) : '—'}</td></tr>`; }).join('') + '</tbody>';
+      let note = '';
+      if (known.length > 1) {
+        note = `<b>${esc(t.limiting(plainName(reac[lim])))}</b>`;
+        known.filter(([, i]) => i !== lim).forEach(([, i]) => { const left = nGiven[i] - ext * coefs[i]; note += '<br>' + esc(t.excess(plainName(reac[i]), fmt(left, 3), fmt(left * molar(reac[i]), 2))); });
+      }
+      $('stoichNote').innerHTML = note;
+    }
+    // ── Compound panel ──
+    function compound() {
+      const t = T();
+      try {
+        const sp = parseSpecies(st.comp); const M = molar(sp);
+        const rows = Object.keys(sp.atoms).map(e => `${esc(e)}: ${fmt(AR[e] * sp.atoms[e] / M * 100, 2)} %`).join(' · ');
+        $('compOut').innerHTML = `${speciesHtml(sp)} — <b>${esc(t.Mcomp)}:</b> ${fmt(M, 1)} g·mol⁻¹<br><b>${esc(t.pctComp)}:</b> ${rows}`;
+      } catch (e) { $('compOut').innerHTML = `<span style="color:var(--bad)">${esc(e.message)}</span>`; }
+      // empirical formula
+      $('pcts').innerHTML = st.pcts.map((p, i) => `<div class="pct"><label class="field"><span>${esc(t.el)}</span><input type="text" data-p="${i}|0" value="${esc(p[0])}" maxlength="2"></label><label class="field"><span>${esc(t.pct)}</span><input type="text" data-p="${i}|1" value="${esc(p[1])}" inputmode="decimal"></label><button class="btn icon danger" type="button" data-rmp="${i}" aria-label="Remove" style="align-self:end">✕</button></div>`).join('');
+      empirical();
+    }
+    function empirical() {
+      const t = T();
+      const rows = st.pcts.map(([e, p]) => [e.trim(), parseFloat(String(p).replace(',', '.'))]).filter(([e, p]) => AR[e] && p > 0);
+      if (rows.length < 2) { $('empOut').innerHTML = ''; return; }
+      const mols = rows.map(([e, p]) => p / AR[e]), min = Math.min(...mols);
+      let ratio = mols.map(m => m / min);
+      // multiply up until every ratio is within 0.1 of a whole number
+      let mult = 1;
+      for (const k of [1, 2, 3, 4, 5, 6]) { if (ratio.every(r => Math.abs(r * k - Math.round(r * k)) < 0.1)) { mult = k; break; } }
+      const ints = ratio.map(r => Math.round(r * mult));
+      const html = rows.map(([e], i) => esc(e) + (ints[i] > 1 ? `<sub>${ints[i]}</sub>` : '')).join('');
+      let out = `<b>${esc(t.emp)}:</b> <span class="f">${html}</span>`;
+      const Memp = rows.reduce((a, [e], i) => a + AR[e] * ints[i], 0);
+      const Mc = parseFloat(String(st.empM).replace(',', '.'));
+      if (Mc > 0) { const k = Math.round(Mc / Memp); if (k >= 1) out += ` &nbsp; <b>${esc(t.mol)}:</b> <span class="f">${rows.map(([e], i) => esc(e) + (ints[i] * k > 1 ? `<sub>${ints[i] * k}</sub>` : '')).join('')}</span> (M = ${fmt(Memp * k, 1)})`; }
+      $('empOut').innerHTML = out;
+    }
+
+    // ── Wiring ──
+    function render() { store.save(JSON.stringify(st)); analyse(); }
+    $('eq').addEventListener('input', (e) => { st.eq = e.target.value; st.given = {}; render(); });
+    $('examples').addEventListener('change', (e) => { if (e.target.value) { st.eq = e.target.value; st.given = {}; $('eq').value = st.eq; render(); } e.target.value = ''; });
+    $('given').addEventListener('input', (e) => { const d = e.target.dataset; if (d.g == null) return; st.given[d.g] = st.given[d.g] || { v: '', u: 'g', vol: '' }; st.given[d.g][d.k] = e.target.value; store.save(JSON.stringify(st)); stoich(); });
+    $('given').addEventListener('change', (e) => { const d = e.target.dataset; if (d.k !== 'u') return; st.given[d.g] = st.given[d.g] || { v: '', u: 'g', vol: '' }; st.given[d.g].u = e.target.value; store.save(JSON.stringify(st)); paintGiven(); stoich(); });
+    $('vm').addEventListener('input', (e) => { st.vm = e.target.value; store.save(JSON.stringify(st)); if (parsed) stoich(); });
+    $('comp').addEventListener('input', (e) => { st.comp = e.target.value; store.save(JSON.stringify(st)); compound(); });
+    $('pcts').addEventListener('input', (e) => { const d = e.target.dataset.p; if (!d) return; const [i, k] = d.split('|').map(Number); st.pcts[i][k] = e.target.value; store.save(JSON.stringify(st)); empirical(); });
+    $('pcts').addEventListener('click', (e) => { const b = e.target.closest('[data-rmp]'); if (!b) return; st.pcts.splice(+b.dataset.rmp, 1); compound(); });
+    $('addPct').addEventListener('click', () => { st.pcts.push(['', '']); compound(); });
+    $('empM').addEventListener('input', (e) => { st.empM = e.target.value; empirical(); });
+    ['showStates', 'showM', 'blanks'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; store.save(JSON.stringify(st)); drawEquation(); }));
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => 'equation', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded;
+    K.i18n((l) => { lang = l; $('eq').value = st.eq; $('vm').value = st.vm; $('comp').value = st.comp; $('empM').value = st.empM; ['showStates', 'showM', 'blanks'].forEach(k => { $(k).checked = st[k]; }); analyse(); compound(); }).apply();
+    window.__chem = { parseSpecies, balance, molar, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
