@@ -173,7 +173,8 @@
       captionPh: 'e.g. Question 3.2',
       sizes: [['17', 'Full width · 17 cm'], ['12', 'Large · 12 cm'], ['8.5', 'Half width · 8.5 cm'], ['6', 'Small · 6 cm']],
       how: 'To put it in a Word or Google Docs document, choose <b>Copy image</b> and paste it (Ctrl + V). Or download the PNG: it inserts at the size chosen above.',
-      copyImg: 'Copy image', png: 'PNG', svg: 'SVG', print: 'Print',
+      copyImg: 'Copy image', png: 'PNG', svg: 'SVG', print: 'Print', toWs: 'Add to worksheet',
+      wsAdded: 'Added to your worksheet inbox. Open the Worksheet Builder to place it.', wsFull: 'Could not add it: the worksheet inbox is full. Remove some items in the Worksheet Builder.',
       copied: 'Image copied. Paste it into your document with Ctrl + V.',
       copyFail: 'Your browser would not copy the image. Download the PNG and insert it instead.',
     },
@@ -183,7 +184,8 @@
       captionPh: 'bv. Vraag 3.2',
       sizes: [['17', 'Volle breedte · 17 cm'], ['12', 'Groot · 12 cm'], ['8.5', 'Halwe breedte · 8,5 cm'], ['6', 'Klein · 6 cm']],
       how: 'Om dit in ’n Word- of Google Docs-dokument te sit, kies <b>Kopieer prent</b> en plak dit (Ctrl + V). Of laai die PNG af: dit word teen die grootte hierbo ingevoeg.',
-      copyImg: 'Kopieer prent', png: 'PNG', svg: 'SVG', print: 'Druk',
+      copyImg: 'Kopieer prent', png: 'PNG', svg: 'SVG', print: 'Druk', toWs: 'Voeg by werkkaart',
+      wsAdded: 'By jou werkkaart-inkassie gevoeg. Maak die Werkkaartbouer oop om dit te plaas.', wsFull: 'Kon dit nie byvoeg nie: die werkkaart-inkassie is vol. Verwyder items in die Werkkaartbouer.',
       copied: 'Prent gekopieer. Plak dit met Ctrl + V in jou dokument.',
       copyFail: 'Jou blaaier wou nie die prent kopieer nie. Laai eerder die PNG af en voeg dit in.',
     },
@@ -363,6 +365,7 @@
           </div>
         </div>
         <div class="mmx-foot">
+          <button class="btn" type="button" data-x="ws">${esc(s.toWs)}</button>
           <button class="btn" type="button" data-x="copy">${esc(s.copyImg)}</button>
           <button class="btn" type="button" data-x="png">${esc(s.png)}</button>
           <button class="btn" type="button" data-x="svg">${esc(s.svg)}</button>
@@ -390,6 +393,7 @@
     };
     q('close').onclick = close;
     q('copy').onclick = () => copyImage(svgEl);
+    q('ws').onclick = () => addToWorksheet(svgEl, cfg.fileBase());
     q('png').onclick = async () => { const o = opts(); download(await pngBlob(svgEl, Math.max(1200, o.widthCm / 2.54 * 300), o.widthCm), cfg.fileBase() + '.png'); };
     q('svg').onclick = () => download(new Blob([svgString(svgEl)], { type: 'image/svg+xml' }), cfg.fileBase() + '.svg');
     q('print').onclick = () => { printSheet(svgEl, opts()); };
@@ -403,6 +407,7 @@
     on(cfg.copy, () => { const s = svg(); if (s) copyImage(s); });
     on(cfg.print, () => openDialog(cfg));
     on(cfg.png, async () => { const s = svg(); if (s) download(await pngBlob(s, 2000, 17), cfg.fileBase() + '.png'); });
+    on(cfg.worksheet, () => { const s = svg(); if (s) addToWorksheet(s, cfg.fileBase()); });
     on(cfg.svg, () => { const s = svg(); if (s) download(new Blob([svgString(s)], { type: 'image/svg+xml' }), cfg.fileBase() + '.svg'); });
   }
 
@@ -417,5 +422,71 @@
     return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
   }
 
-  window.MMPlotKit = { compile, FUNCS, DEG, attach, openDialog, copyImage, printSheet, pngBlob, svgString, download, toast, toB64, fromB64, esc };
+  // ══════════════════════════════════════════════════════════════════
+  // Worksheet inbox: any tool can drop its diagram here, and the
+  // Worksheet Builder (worksheet.html) places it into a question.
+  // ══════════════════════════════════════════════════════════════════
+  const WS_INBOX = 'mm_ws_inbox_v1';
+  function inbox() { try { return JSON.parse(localStorage.getItem(WS_INBOX)) || []; } catch (_) { return []; } }
+  function setInbox(list) { localStorage.setItem(WS_INBOX, JSON.stringify(list)); }
+  function addToWorksheet(svgEl, title) {
+    const { w, h } = svgSize(svgEl);
+    const list = inbox();
+    list.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: String(title || 'diagram'), svg: svgString(svgEl), w, h, at: Date.now() });
+    try { setInbox(list.slice(0, 30)); toast(S().wsAdded); return true; }
+    catch (_) { toast(S().wsFull); return false; }
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // Page helpers shared by the tool pages
+  // ══════════════════════════════════════════════════════════════════
+  // EN/AF: swaps [data-af] / [data-af-html] text and mounts the toggle.
+  // onChange(lang) runs after every swap, including the first.
+  function i18n(onChange) {
+    let lang = (window.MLLang && MLLang.getLang()) || 'en';
+    function apply() {
+      document.querySelectorAll('[data-af-html]').forEach(el => {
+        if (el.dataset.enHtml === undefined) el.dataset.enHtml = el.innerHTML;
+        el.innerHTML = lang === 'af' ? el.dataset.afHtml : el.dataset.enHtml;
+      });
+      document.querySelectorAll('[data-af]:not([data-af-html])').forEach(el => {
+        if (el.dataset.en === undefined) el.dataset.en = el.textContent;
+        el.textContent = lang === 'af' ? el.dataset.af : el.dataset.en;
+      });
+      document.querySelectorAll('[data-af-ph]').forEach(el => {
+        if (el.dataset.enPh === undefined) el.dataset.enPh = el.placeholder;
+        el.placeholder = lang === 'af' ? el.dataset.afPh : el.dataset.enPh;
+      });
+      document.documentElement.lang = lang;
+      if (onChange) onChange(lang);
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    if (window.MLLang) MLLang.mount('mlLangToggle', { onChange(next) { lang = next; apply(); } });
+    return { get: () => lang, apply };
+  }
+  // localStorage autosave + a share link carried in the URL hash (#<hashKey>=…).
+  function store(key, hashKey) {
+    let timer = 0;
+    return {
+      load(sanitize) {
+        const m = new RegExp('[#&]' + hashKey + '=([A-Za-z0-9_-]+)').exec(location.hash);
+        if (m) {
+          history.replaceState(null, '', location.pathname + location.search);
+          try { const s = sanitize(JSON.parse(fromB64(m[1]))); if (s) return s; } catch (_) {}
+        }
+        try { const raw = localStorage.getItem(key); if (raw) { const s = sanitize(JSON.parse(raw)); if (s) return s; } } catch (_) {}
+        return null;
+      },
+      save(json) { clearTimeout(timer); timer = setTimeout(() => { try { localStorage.setItem(key, json); } catch (_) {} }, 300); },
+      async copyLink(json, okMsg, failMsg) {
+        const link = location.origin + location.pathname + '#' + hashKey + '=' + toB64(json);
+        try { await navigator.clipboard.writeText(link); toast(okMsg); } catch (_) { toast(failMsg); }
+      },
+    };
+  }
+
+  window.MMPlotKit = {
+    compile, FUNCS, DEG, attach, openDialog, copyImage, printSheet, pngBlob, svgString, svgSize, download, toast,
+    toB64, fromB64, esc, addToWorksheet, inbox, setInbox, i18n, store,
+  };
 })();

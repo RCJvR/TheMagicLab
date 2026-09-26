@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Equation Writer · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    /* ── Equation Writer ─────────────────────────────────────────────────
+       Editing: MathLive's <math-field> (visual, no LaTeX needed).
+       Output:  MathJax renders the finished LaTeX to self-contained SVG
+                (glyphs as paths, no fonts), which is what gets copied,
+                printed and downloaded — so it looks the same everywhere. */
+    .eline { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px; align-items: center; margin-bottom: 8px; }
+    .eline .mv { display: flex; gap: 4px; }
+    math-field {
+      display: block; width: 100%; min-height: 46px;
+      font-size: 22px; padding: 6px 10px; border-radius: var(--radius-2xs);
+      background: #fff; color: #111827; border: 2px solid transparent;
+      --caret-color: #2563eb; --selection-background-color: #bfdbfe; --contains-highlight-background-color: #f1f5f9;
+    }
+    math-field:focus-within { border-color: var(--accent); }
+    math-field::part(virtual-keyboard-toggle) { color: #4b5563; }
+    math-field::part(menu-toggle) { color: #4b5563; }
+    .pal { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pal button {
+      min-width: 38px; height: 36px; padding: 0 9px; border-radius: 7px;
+      border: 1px solid var(--line-hard); background: var(--ink-900); color: var(--paper);
+      font-family: "Times New Roman", serif; font-size: 17px; cursor: pointer;
+    }
+    .pal button:hover { border-color: var(--accent); }
+    .pal button.wide { font-family: var(--font-body); font-size: 12.5px; font-weight: 700; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .tab { padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--text-3); font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: var(--font-body); }
+    .tab.on { background: rgba(255,255,255,0.08); color: var(--paper); border-color: var(--line-hard); }
+    .tpl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+    .tpl button {
+      text-align: left; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-hard);
+      background: var(--ink-900); color: var(--text); font-size: 12.5px; cursor: pointer; font-family: var(--font-body);
+    }
+    .tpl button:hover { border-color: var(--accent); color: var(--paper); }
+    .tpl button small { display: block; color: var(--text-3); font-size: 11px; margin-top: 2px; }
+    #out { padding: 28px 24px; min-height: 140px; display: flex; align-items: center; overflow-x: auto; }
+    #out.center { justify-content: center; }
+    #out svg { max-width: 100%; height: auto; }
+    .latex-box { width: 100%; min-height: 70px; resize: vertical; padding: 9px 10px; border-radius: var(--radius-2xs); background: var(--ink-900); border: 1px solid var(--line-hard); color: var(--paper); font-family: var(--font-mono); font-size: 12.5px; }
+    .lib { display: flex; flex-direction: column; gap: 6px; }
+    .lib-item { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 6px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+    .lib-item span { font-size: 13px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .loading { font-size: 13px; color: var(--text-3); }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+<script>
+  // MathJax: TeX in, SVG out, glyphs inlined as paths (fontCache 'none') so a
+  // copied or downloaded equation needs no fonts to display.
+  window.MathJax = {
+    loader: { load: ['[tex]/ams'] },
+    tex: { packages: { '[+]': ['ams'] } },
+    svg: { fontCache: 'none' },
+    startup: { typeset: false, ready() { MathJax.startup.defaultReady(); document.dispatchEvent(new Event('mathjax-ready')); } },
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathlive@0.110.0/mathlive.min.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="index.html#resources" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Hulpbronne'><i data-lucide="library" style="width:13px;height:13px"></i> Resources</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Wiskundige skryfwerk">Resource · Mathematical writing</span></div>
+    <h1 data-af-html="Vergelyking-<em>skrywer.</em>">Equation <em>writer.</em></h1>
+    <p class="hero-sub" data-af="Tik wiskunde soos jy dit sou skryf — breuke, wortels, magte, sigma — sonder om LaTeX te ken. Kopieer dit dan na Word of Google Docs, druk dit, of stuur dit na ’n werkkaart.">Type maths the way you would write it — fractions, roots, powers, sigma — without knowing LaTeX. Then copy it into Word or Google Docs, print it, or send it to a worksheet.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hLines">
+        <div class="panel-head">
+          <h2 id="hLines"><i data-lucide="pencil" style="width:16px;height:16px"></i><span data-af="Reëls">Lines</span></h2>
+          <button class="btn" id="addLine" type="button"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Nuwe reël">New line</span></button>
+        </div>
+        <div id="lines"><p class="loading" data-af="Laai die vergelyking-redigeerder…">Loading the equation editor…</p></div>
+        <p class="hint" data-af-html="Tik <code>/</code> vir ’n breuk, <code>^</code> vir ’n mag, <code>sqrt</code> vir ’n wortel, <code>pi</code>, <code>theta</code>, <code>&lt;=</code> of <code>&gt;=</code>. Druk Enter vir ’n nuwe reël.">Type <code>/</code> for a fraction, <code>^</code> for a power, <code>sqrt</code> for a root, <code>pi</code>, <code>theta</code>, <code>&lt;=</code> or <code>&gt;=</code>. Press Enter for a new line.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="hIns">
+        <h2 id="hIns" style="margin-bottom:10px"><i data-lucide="shapes" style="width:16px;height:16px"></i><span data-af="Voeg in">Insert</span></h2>
+        <div class="tabs" role="tablist" id="insTabs">
+          <button class="tab on" type="button" data-tab="build" data-af="Bou">Build</button>
+          <button class="tab" type="button" data-tab="sym" data-af="Simbole">Symbols</button>
+          <button class="tab" type="button" data-tab="greek" data-af="Grieks">Greek</button>
+          <button class="tab" type="button" data-tab="formula" data-af="Formuleblad">Formula sheet</button>
+          <button class="tab" type="button" data-tab="layout" data-af="Uitlegte">Layouts</button>
+        </div>
+        <div id="insBody"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="hStyle">
+        <h2 id="hStyle" style="margin-bottom:10px"><i data-lucide="sliders-horizontal" style="width:16px;height:16px"></i><span data-af="Voorkoms">Look</span></h2>
+        <div class="row c3">
+          <label class="field"><span data-af="Belyning">Alignment</span>
+            <select id="align">
+              <option value="eq" data-af="Gelykaan-tekens onder mekaar">= signs lined up</option>
+              <option value="left" data-af="Links">Left</option>
+              <option value="center" data-af="Middel">Centre</option>
+            </select></label>
+          <label class="field"><span data-af="Grootte">Size</span>
+            <select id="size">
+              <option value="0.8" data-af="Klein">Small</option>
+              <option value="1" data-af="Normaal">Normal</option>
+              <option value="1.4" data-af="Groot">Large</option>
+              <option value="2" data-af="Baie groot (skyfies)">Extra large (slides)</option>
+            </select></label>
+          <label class="field"><span data-af="Kleur">Colour</span>
+            <select id="color">
+              <option value="#000000" data-af="Swart">Black</option>
+              <option value="#1d4ed8" data-af="Blou">Blue</option>
+              <option value="#b91c1c" data-af="Rooi">Red</option>
+              <option value="#15803d" data-af="Groen">Green</option>
+            </select></label>
+        </div>
+        <div class="checks" style="margin-bottom:0">
+          <label class="check"><input type="checkbox" id="comma"> <span data-af="Desimale komma (2,5)">Decimal comma (2,5)</span></label>
+          <label class="check"><input type="checkbox" id="numbered"> <span data-af="Nommer die reëls">Number the lines</span></label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="hLatex">
+        <h2 id="hLatex" style="margin-bottom:10px"><i data-lucide="code" style="width:16px;height:16px"></i>LaTeX</h2>
+        <textarea class="latex-box" id="latex" spellcheck="false" aria-label="LaTeX" readonly></textarea>
+        <p class="hint" style="margin-top:6px" data-af="Ken jy LaTeX? Plak dit in enige reël hierbo — dit word omgeskakel.">Know LaTeX? Paste it into any line above and it converts.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="hLib">
+        <div class="panel-head">
+          <h2 id="hLib"><i data-lucide="bookmark" style="width:16px;height:16px"></i><span data-af="My biblioteek">My library</span></h2>
+          <button class="btn" id="saveLib" type="button"><i data-lucide="save" style="width:14px;height:14px"></i><span data-af="Stoor">Save</span></button>
+        </div>
+        <div class="lib" id="lib"></div>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyWord" type="button"><i data-lucide="file-text" style="width:14px;height:14px"></i><span data-af="Kopieer vir Word">Copy for Word</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="copyTex" type="button"><i data-lucide="code" style="width:14px;height:14px"></i><span data-af="Kopieer LaTeX">Copy LaTeX</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <span class="spacer"></span>
+        <button class="btn icon danger" id="clearAll" type="button" aria-label="Start over" title="Start over"><i data-lucide="rotate-ccw" style="width:15px;height:15px"></i></button>
+      </div>
+      <div class="plot-wrap"><div id="out" aria-live="polite"><span class="loading" data-af="Laai…">Loading…</span></div></div>
+      <p class="hint" data-af-html="<b>Word:</b> Kopieer vir Word en plak — dit word ’n Word-vergelyking wat jy steeds kan redigeer. As dit as teks verskyn, plak met <i>Plak spesiaal → Ongeformateerde teks</i>. <b>Google Docs:</b> gebruik Kopieer prent.">
+        <b>Word:</b> Copy for Word, then paste — it becomes a Word equation you can still edit. If it shows as text, paste with <i>Paste Special → Unformatted text</i>. <b>Google Docs:</b> use Copy image.</p>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit;
+    const $ = (id) => document.getElementById(id);
+    const esc = K.esc;
+
+    const STR = {
+      en: {
+        up: 'Move up', down: 'Move down', remove: 'Remove line', empty: 'Your equation appears here.',
+        texCopied: 'LaTeX copied.', wordCopied: 'Copied. Paste it into Word with Ctrl + V.', copyFail: 'Your browser blocked the clipboard.',
+        name: 'Name for this equation', saved: 'Saved to your library.', libEmpty: 'Nothing saved yet. Equations you save stay in this browser.',
+        load: 'Open', del: 'Delete', confirmClear: 'Clear every line and start over?', err: 'Could not typeset this line — check the brackets.',
+        failLoad: 'The equation editor could not load. Check your internet connection and reload the page.',
+      },
+      af: {
+        up: 'Skuif op', down: 'Skuif af', remove: 'Verwyder reël', empty: 'Jou vergelyking verskyn hier.',
+        texCopied: 'LaTeX gekopieer.', wordCopied: 'Gekopieer. Plak dit met Ctrl + V in Word.', copyFail: 'Jou blaaier het die knipbord geblokkeer.',
+        name: 'Naam vir hierdie vergelyking', saved: 'In jou biblioteek gestoor.', libEmpty: 'Nog niks gestoor nie. Vergelykings wat jy stoor, bly in hierdie blaaier.',
+        load: 'Maak oop', del: 'Skrap', confirmClear: 'Vee alle reëls uit en begin oor?', err: 'Kon nie hierdie reël set nie — kyk na die hakies.',
+        failLoad: 'Die vergelyking-redigeerder kon nie laai nie. Kyk na jou internetverbinding en laai die bladsy weer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // Insert palettes. #0 = where the selection goes, #? = an empty box.
+    // ══════════════════════════════════════════════════════════════════
+    const BUILD = [
+      ['\\frac{#0}{#?}', 'a/b', 'Fraction'], ['#@^{#?}', 'xⁿ', 'Power'], ['#@_{#?}', 'xₙ', 'Subscript'],
+      ['\\sqrt{#0}', '√', 'Square root'], ['\\sqrt[#?]{#0}', 'ⁿ√', 'Root'], ['\\left(#0\\right)', '( )', 'Brackets'],
+      ['\\left[#0\\right]', '[ ]', 'Square brackets'], ['\\left|#0\\right|', '| |', 'Absolute value'], ['^{\\circ}', '°', 'Degrees'],
+      ['\\sum_{#?}^{#?}#0', 'Σ', 'Sigma'], ['\\lim_{#?\\to #?}', 'lim', 'Limit'], ['\\frac{d}{dx}', 'd/dx', 'Derivative'],
+      ["f'(x)", "f′(x)", 'f dashed'], ['\\overline{#0}', 'x̄', 'Bar'], ['\\hat{#0}', 'ŷ', 'Hat'], ['\\log_{#?}#0', 'log_b', 'Log base b'],
+      ['\\sin #0', 'sin', ''], ['\\cos #0', 'cos', ''], ['\\tan #0', 'tan', ''], ['\\text{#0}', 'Abc', 'Words'],
+      ['\\begin{cases}#0\\\\#?\\end{cases}', '{', 'Cases'], ['\\begin{pmatrix}#0 & #?\\\\#? & #?\\end{pmatrix}', '( ⋮ )', 'Matrix'],
+      ['\\binom{#0}{#?}', 'ⁿCᵣ', 'Combination'], ['\\overrightarrow{#0}', 'AB→', 'Vector'],
+    ];
+    const SYM = [
+      '=', '\\ne', '\\approx', '<', '>', '\\le', '\\ge', '\\pm', '\\times', '\\div', '\\cdot', '\\therefore', '\\because',
+      '\\infty', '\\angle', '\\triangle', '\\parallel', '\\perp', '\\equiv', '\\cong', '\\sim', '\\in', '\\notin', '\\mathbb{R}',
+      '\\mathbb{Z}', '\\mathbb{N}', '\\mathbb{Q}', '\\to', '\\Rightarrow', '\\Leftrightarrow', '\\cup', '\\cap', '\\emptyset', "'", '\\%', '\\ldots',
+    ];
+    const GREEK = ['\\alpha', '\\beta', '\\gamma', '\\delta', '\\Delta', '\\theta', '\\lambda', '\\mu', '\\pi', '\\rho', '\\sigma', '\\Sigma', '\\phi', '\\omega', '\\Omega', '\\varepsilon'];
+    const FORMULAS = [
+      ['Quadratic formula', 'Kwadratiese formule', 'x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}'],
+      ['Simple interest', 'Enkelvoudige rente', 'A=P(1+ni)'],
+      ['Compound interest', 'Saamgestelde rente', 'A=P(1+i)^n'],
+      ['Straight-line depreciation', 'Reguitlyn-waardevermindering', 'A=P(1-ni)'],
+      ['Reducing balance', 'Verminderende saldo', 'A=P(1-i)^n'],
+      ['Future value annuity', 'Toekomstige waarde', 'F=\\frac{x\\left[(1+i)^n-1\\right]}{i}'],
+      ['Present value annuity', 'Huidige waarde', 'P=\\frac{x\\left[1-(1+i)^{-n}\\right]}{i}'],
+      ['Arithmetic: Tₙ', 'Rekenkundig: Tₙ', 'T_n=a+(n-1)d'],
+      ['Arithmetic: Sₙ', 'Rekenkundig: Sₙ', 'S_n=\\frac{n}{2}\\left[2a+(n-1)d\\right]'],
+      ['Geometric: Tₙ', 'Meetkundig: Tₙ', 'T_n=ar^{n-1}'],
+      ['Geometric: Sₙ', 'Meetkundig: Sₙ', 'S_n=\\frac{a(r^n-1)}{r-1};\\ r\\ne1'],
+      ['Sum to infinity', 'Som tot oneindig', 'S_{\\infty}=\\frac{a}{1-r};\\ -1<r<1'],
+      ['First principles', 'Eerste beginsels', "f'(x)=\\lim_{h\\to0}\\frac{f(x+h)-f(x)}{h}"],
+      ['Distance', 'Afstand', 'd=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}'],
+      ['Midpoint', 'Middelpunt', 'M\\left(\\frac{x_1+x_2}{2};\\frac{y_1+y_2}{2}\\right)'],
+      ['Gradient', 'Gradiënt', 'm=\\frac{y_2-y_1}{x_2-x_1}'],
+      ['Line: point–gradient', 'Lyn: punt–gradiënt', 'y-y_1=m(x-x_1)'],
+      ['Inclination', 'Inklinasie', 'm=\\tan\\theta'],
+      ['Circle', 'Sirkel', '(x-a)^2+(y-b)^2=r^2'],
+      ['Sine rule', 'Sinusreël', '\\frac{\\sin A}{a}=\\frac{\\sin B}{b}=\\frac{\\sin C}{c}'],
+      ['Cosine rule', 'Cosinusreël', 'a^2=b^2+c^2-2bc\\cos A'],
+      ['Area rule', 'Oppervlaktereël', '\\text{Area }\\triangle ABC=\\frac{1}{2}ab\\sin C'],
+      ['sin(α ± β)', 'sin(α ± β)', '\\sin(\\alpha\\pm\\beta)=\\sin\\alpha\\cos\\beta\\pm\\cos\\alpha\\sin\\beta'],
+      ['cos(α ± β)', 'cos(α ± β)', '\\cos(\\alpha\\pm\\beta)=\\cos\\alpha\\cos\\beta\\mp\\sin\\alpha\\sin\\beta'],
+      ['cos 2α', 'cos 2α', '\\cos2\\alpha=\\cos^2\\alpha-\\sin^2\\alpha=1-2\\sin^2\\alpha=2\\cos^2\\alpha-1'],
+      ['sin 2α', 'sin 2α', '\\sin2\\alpha=2\\sin\\alpha\\cos\\alpha'],
+      ['Mean', 'Gemiddeld', '\\overline{x}=\\frac{\\sum x}{n}'],
+      ['Variance', 'Variansie', '\\sigma^2=\\frac{\\sum_{i=1}^{n}(x_i-\\overline{x})^2}{n}'],
+      ['Regression line', 'Regressielyn', '\\hat{y}=a+bx'],
+      ['Gradient of regression', 'Regressie-gradiënt', 'b=\\frac{\\sum(x-\\overline{x})(y-\\overline{y})}{\\sum(x-\\overline{x})^2}'],
+      ['P(A or B)', 'P(A of B)', 'P(A\\text{ or }B)=P(A)+P(B)-P(A\\text{ and }B)'],
+      ['Probability', 'Waarskynlikheid', 'P(A)=\\frac{n(A)}{n(S)}'],
+    ];
+    const LAYOUTS = [
+      ['Solve an equation', 'Los ’n vergelyking op', ['2x+3=11', '2x=8', 'x=4']],
+      ['Quadratic, by formula', 'Kwadraties, met formule', ['x^2-3x-2=0', 'x=\\frac{-(-3)\\pm\\sqrt{(-3)^2-4(1)(-2)}}{2(1)}', 'x=\\frac{3\\pm\\sqrt{17}}{2}', 'x\\approx3.56\\quad\\text{or}\\quad x\\approx-0.56']],
+      ['Prove an identity (LHS/RHS)', 'Bewys ’n identiteit (LK/RK)', ['\\text{LHS}=\\frac{\\sin2x}{1+\\cos2x}', '=\\frac{2\\sin x\\cos x}{2\\cos^2x}', '=\\frac{\\sin x}{\\cos x}', '=\\tan x', '=\\text{RHS}']],
+      ['Derivative from first principles', 'Afgeleide uit eerste beginsels', ["f'(x)=\\lim_{h\\to0}\\frac{f(x+h)-f(x)}{h}", '=\\lim_{h\\to0}\\frac{(x+h)^2-x^2}{h}', '=\\lim_{h\\to0}\\frac{2xh+h^2}{h}', '=\\lim_{h\\to0}(2x+h)', '=2x']],
+      ['Simplify exponents', 'Vereenvoudig eksponente', ['\\frac{2^{x+2}-2^x}{3\\cdot2^x}', '=\\frac{2^x(2^2-1)}{3\\cdot2^x}', '=\\frac{3}{3}', '=1']],
+      ['Geometry reason', 'Meetkunde-rede', ['\\hat{A}_1=\\hat{C}\\quad\\text{(tan chord theorem)}']],
+    ];
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const store = K.store('mm_equations_v1', 'e');
+    function defaults() { return { lines: ['x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}'], align: 'eq', size: '1', color: '#000000', comma: false, numbered: false }; }
+    let state = defaults();
+    function sanitize(s) {
+      if (!s || !Array.isArray(s.lines)) return null;
+      const d = defaults();
+      return {
+        lines: s.lines.slice(0, 40).map(l => String(l).slice(0, 4000)),
+        align: ['eq', 'left', 'center'].includes(s.align) ? s.align : d.align,
+        size: ['0.8', '1', '1.4', '2'].includes(String(s.size)) ? String(s.size) : d.size,
+        color: /^#[0-9a-f]{6}$/i.test(s.color) ? s.color : d.color,
+        comma: !!s.comma, numbered: !!s.numbered,
+      };
+    }
+    const serialize = () => JSON.stringify(state);
+
+    // ══════════════════════════════════════════════════════════════════
+    // Lines (MathLive fields)
+    // ══════════════════════════════════════════════════════════════════
+    let fields = [];
+    let lastField = null;
+    function paintLines(focusIndex) {
+      const box = $('lines');
+      box.innerHTML = '';
+      fields = state.lines.map((latex, i) => {
+        const row = document.createElement('div');
+        row.className = 'eline';
+        const mf = document.createElement('math-field');
+        mf.setAttribute('aria-label', `Line ${i + 1}`);
+        mf.smartFence = true;
+        mf.addEventListener('input', () => { state.lines[i] = mf.value; render(); });
+        mf.addEventListener('focusin', () => { lastField = mf; });
+        // Enter starts a new line below, like a word processor.
+        mf.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); state.lines.splice(i + 1, 0, ''); paintLines(i + 1); render(); }
+          if (e.key === 'Backspace' && !mf.value && state.lines.length > 1) { e.preventDefault(); state.lines.splice(i, 1); paintLines(Math.max(0, i - 1)); render(); }
+        }, true);
+        row.appendChild(mf);
+        const mv = document.createElement('div');
+        mv.className = 'mv';
+        mv.innerHTML = `
+          <button class="btn icon" type="button" data-a="up" aria-label="${esc(T().up)}" title="${esc(T().up)}"><i data-lucide="arrow-up" style="width:14px;height:14px"></i></button>
+          <button class="btn icon" type="button" data-a="down" aria-label="${esc(T().down)}" title="${esc(T().down)}"><i data-lucide="arrow-down" style="width:14px;height:14px"></i></button>
+          <button class="btn icon danger" type="button" data-a="del" aria-label="${esc(T().remove)}" title="${esc(T().remove)}"><i data-lucide="x" style="width:14px;height:14px"></i></button>`;
+        mv.addEventListener('click', (e) => {
+          const b = e.target.closest('button'); if (!b) return;
+          const a = b.dataset.a, L = state.lines;
+          if (a === 'up' && i > 0) [L[i - 1], L[i]] = [L[i], L[i - 1]];
+          else if (a === 'down' && i < L.length - 1) [L[i + 1], L[i]] = [L[i], L[i + 1]];
+          else if (a === 'del') { L.splice(i, 1); if (!L.length) L.push(''); }
+          else return;
+          paintLines(); render();
+        });
+        row.appendChild(mv);
+        box.appendChild(row);
+        mf.value = latex;
+        return mf;
+      });
+      try { lucide.createIcons(); } catch (_) {}
+      if (focusIndex != null && fields[focusIndex]) setTimeout(() => fields[focusIndex].focus(), 0);
+    }
+    function target() {
+      if (lastField && document.body.contains(lastField)) return lastField;
+      return fields[fields.length - 1];
+    }
+    function insert(latex) {
+      const mf = target(); if (!mf) return;
+      mf.focus();
+      mf.insert(latex, { focus: true, feedback: false, selectionMode: 'placeholder', format: 'latex', mode: 'math' });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Insert panel
+    // ══════════════════════════════════════════════════════════════════
+    let tab = 'build';
+    function paintInsert() {
+      const body = $('insBody');
+      const af = lang === 'af';
+      if (tab === 'build') body.innerHTML = `<div class="pal">${BUILD.map(([l, g, t], i) => `<button type="button" data-i="${i}" title="${esc(t)}" aria-label="${esc(t || g)}">${esc(g)}</button>`).join('')}</div>`;
+      else if (tab === 'sym') body.innerHTML = `<div class="pal">${SYM.map((l, i) => `<button type="button" data-s="${i}" aria-label="${esc(l)}">${esc(symGlyph(l))}</button>`).join('')}</div>`;
+      else if (tab === 'greek') body.innerHTML = `<div class="pal">${GREEK.map((l, i) => `<button type="button" data-g="${i}" aria-label="${esc(l.slice(1))}">${esc(symGlyph(l))}</button>`).join('')}</div>`;
+      else if (tab === 'formula') body.innerHTML = `<div class="tpl">${FORMULAS.map(([en, a], i) => `<button type="button" data-f="${i}">${esc(af ? a : en)}</button>`).join('')}</div>`;
+      else body.innerHTML = `<div class="tpl">${LAYOUTS.map(([en, a, lines], i) => `<button type="button" data-l="${i}">${esc(af ? a : en)}<small>${lines.length} ${af ? 'reëls' : 'lines'}</small></button>`).join('')}</div>`;
+    }
+    const GLYPH = { '\\ne': '≠', '\\approx': '≈', '\\le': '≤', '\\ge': '≥', '\\pm': '±', '\\times': '×', '\\div': '÷', '\\cdot': '·', '\\therefore': '∴', '\\because': '∵', '\\infty': '∞', '\\angle': '∠', '\\triangle': '△', '\\parallel': '∥', '\\perp': '⊥', '\\equiv': '≡', '\\cong': '≅', '\\sim': '∼', '\\in': '∈', '\\notin': '∉', '\\mathbb{R}': 'ℝ', '\\mathbb{Z}': 'ℤ', '\\mathbb{N}': 'ℕ', '\\mathbb{Q}': 'ℚ', '\\to': '→', '\\Rightarrow': '⇒', '\\Leftrightarrow': '⇔', '\\cup': '∪', '\\cap': '∩', '\\emptyset': '∅', "'": '′', '\\%': '%', '\\ldots': '…', '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\Delta': 'Δ', '\\theta': 'θ', '\\lambda': 'λ', '\\mu': 'μ', '\\pi': 'π', '\\rho': 'ρ', '\\sigma': 'σ', '\\Sigma': 'Σ', '\\phi': 'φ', '\\omega': 'ω', '\\Omega': 'Ω', '\\varepsilon': 'ε' };
+    const symGlyph = (l) => GLYPH[l] || l;
+    $('insTabs').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-tab]'); if (!b) return;
+      tab = b.dataset.tab;
+      document.querySelectorAll('#insTabs .tab').forEach(t => t.classList.toggle('on', t === b));
+      paintInsert();
+    });
+    $('insBody').addEventListener('mousedown', (e) => { if (e.target.closest('button')) e.preventDefault(); });   // keep the caret in the field
+    $('insBody').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.i != null) insert(BUILD[b.dataset.i][0]);
+      else if (b.dataset.s != null) insert(SYM[b.dataset.s]);
+      else if (b.dataset.g != null) insert(GREEK[b.dataset.g]);
+      else if (b.dataset.f != null) {
+        const mf = target();
+        const l = FORMULAS[b.dataset.f][2];
+        if (mf && !mf.value) insert(l);
+        else { state.lines.push(l); paintLines(state.lines.length - 1); render(); }
+      } else if (b.dataset.l != null) {
+        const lines = LAYOUTS[b.dataset.l][2];
+        const onlyEmpty = state.lines.every(l => !l.trim());
+        state.lines = onlyEmpty ? lines.slice() : state.lines.concat(lines);
+        paintLines(); render();
+      }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // Compose one LaTeX document from the lines
+    // ══════════════════════════════════════════════════════════════════
+    // Put "&" before the first top-level relation so = signs line up.
+    function alignAt(line) {
+      let depth = 0;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '\\') {
+          const m = /^\\([a-zA-Z]+)/.exec(line.slice(i));
+          if (m) {
+            if (depth === 0 && /^(le|ge|leq|geq|ne|neq|approx|equiv)$/.test(m[1])) return line.slice(0, i) + '&' + line.slice(i);
+            if (m[1] === 'left') depth++;
+            if (m[1] === 'right') depth--;
+            i += m[0].length - 1; continue;
+          }
+          i++; continue;
+        }
+        if (c === '{') depth++;
+        else if (c === '}') depth--;
+        else if (depth === 0 && (c === '=' || c === '<' || c === '>')) return line.slice(0, i) + '&' + line.slice(i);
+      }
+      return '&' + line;
+    }
+    function composed() {
+      let lines = state.lines.map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return '';
+      if (state.comma) lines = lines.map(l => l.replace(/(\d)\.(\d)/g, '$1{,}$2'));
+      if (state.numbered) lines = lines.map((l, i) => l + `\\tag{${i + 1}}`);
+      if (lines.length === 1 && !state.numbered) return lines[0];
+      if (state.align === 'center') return `\\begin{gather${state.numbered ? '' : '*'}}${lines.join('\\\\')}\\end{gather${state.numbered ? '' : '*'}}`;
+      const body = lines.map(l => state.align === 'eq' ? alignAt(l) : '&' + l).join('\\\\');
+      return state.numbered ? `\\begin{align}${body}\\end{align}` : `\\begin{aligned}${body}\\end{aligned}`;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Output: MathJax SVG wrapped in a padded SVG of our own
+    // ══════════════════════════════════════════════════════════════════
+    let outSvg = null, mjReady = false;
+    function render() {
+      store.save(serialize());
+      const tex = composed();
+      $('latex').value = tex;
+      $('out').classList.toggle('center', state.align === 'center');
+      if (!mjReady) return;
+      if (!tex) { outSvg = null; $('out').innerHTML = `<span class="loading">${esc(T().empty)}</span>`; return; }
+      let node;
+      try { node = MathJax.tex2svg(tex, { display: true }); } catch (e) { $('out').innerHTML = `<span class="loading" style="color:#dc2626">${esc(T().err)}</span>`; return; }
+      const inner = node.querySelector('svg');
+      if (!inner || node.querySelector('[data-mjx-error]')) {
+        const msg = node.querySelector('[data-mjx-error]')?.getAttribute('data-mjx-error') || '';
+        $('out').innerHTML = `<span class="loading" style="color:#dc2626">${esc(T().err)} ${esc(msg)}</span>`; outSvg = null; return;
+      }
+      // MathJax sizes in ex; 1ex ≈ 8.6px at a 18.7px body, times the chosen size.
+      const scale = 8.6 * parseFloat(state.size);
+      const exW = parseFloat(inner.getAttribute('width')), exH = parseFloat(inner.getAttribute('height'));
+      const w = exW * scale, h = exH * scale, pad = 14 * parseFloat(state.size);
+      inner.setAttribute('width', w.toFixed(2)); inner.setAttribute('height', h.toFixed(2));
+      inner.setAttribute('x', pad); inner.setAttribute('y', pad);
+      inner.removeAttribute('style'); inner.removeAttribute('role'); inner.removeAttribute('focusable');
+      inner.setAttribute('color', state.color);
+      const W = w + pad * 2, H = h + pad * 2;
+      const wrap = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      wrap.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      wrap.setAttribute('viewBox', `0 0 ${W.toFixed(2)} ${H.toFixed(2)}`);
+      wrap.setAttribute('width', W.toFixed(2)); wrap.setAttribute('height', H.toFixed(2));
+      wrap.setAttribute('role', 'img'); wrap.setAttribute('aria-label', tex);
+      wrap.style.color = state.color;
+      wrap.appendChild(inner);
+      // currentColor inside the MathJax SVG must survive being an <img>, so pin it.
+      wrap.querySelectorAll('[fill="currentColor"]').forEach(n => n.setAttribute('fill', state.color));
+      wrap.querySelectorAll('[stroke="currentColor"]').forEach(n => n.setAttribute('stroke', state.color));
+      inner.setAttribute('fill', state.color); inner.setAttribute('stroke', state.color);
+      const out = $('out'); out.innerHTML = ''; out.appendChild(wrap);
+      outSvg = wrap;
+    }
+
+    // ── Look ──
+    ['align', 'size', 'color'].forEach(k => $(k).addEventListener('change', e => { state[k] = e.target.value; render(); }));
+    ['comma', 'numbered'].forEach(k => $(k).addEventListener('change', e => { state[k] = e.target.checked; render(); }));
+    function paintLook() { ['align', 'size', 'color'].forEach(k => { $(k).value = state[k]; }); $('comma').checked = state.comma; $('numbered').checked = state.numbered; }
+
+    // ── Copy / export ──
+    async function copyText(text, ok) {
+      try { await navigator.clipboard.writeText(text); K.toast(ok); } catch (_) { K.toast(T().copyFail); }
+    }
+    $('copyTex').addEventListener('click', () => copyText(composed(), T().texCopied));
+    $('copyWord').addEventListener('click', async () => {
+      const tex = composed(); if (!tex || !mjReady) return;
+      let mml = MathJax.tex2mml(tex, { display: true });
+      mml = mml.replace(/\sdata-[a-z-]+="[^"]*"/g, '').replace(/<math([^>]*)>/, (m, a) => /xmlns=/.test(a) ? m : `<math xmlns="http://www.w3.org/1998/Math/MathML"${a}>`);
+      // Word turns pasted MathML into an editable equation. Offer HTML as
+      // well, so apps that prefer rich text get the same MathML.
+      try {
+        if (window.ClipboardItem) {
+          await navigator.clipboard.write([new ClipboardItem({
+            'text/plain': new Blob([mml], { type: 'text/plain' }),
+            'text/html': new Blob([mml], { type: 'text/html' }),
+          })]);
+        } else await navigator.clipboard.writeText(mml);
+        K.toast(T().wordCopied);
+      } catch (_) { copyText(mml, T().wordCopied); }
+    });
+    K.attach({
+      getSvg: () => outSvg, fileBase: () => 'equation',
+      print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs',
+    });
+    $('addLine').addEventListener('click', () => { state.lines.push(''); paintLines(state.lines.length - 1); render(); });
+    $('clearAll').addEventListener('click', () => {
+      if (!confirm(T().confirmClear)) return;
+      state.lines = ['']; paintLines(0); render();
+    });
+
+    // ── Library (this browser only) ──
+    const LIB = 'mm_equation_library_v1';
+    const lib = () => { try { return JSON.parse(localStorage.getItem(LIB)) || []; } catch (_) { return []; } };
+    function paintLib() {
+      const L = lib();
+      $('lib').innerHTML = L.length ? L.map((it, i) => `
+        <div class="lib-item"><span title="${esc(it.name)}">${esc(it.name)}</span>
+          <button class="btn" type="button" data-open="${i}">${esc(T().load)}</button>
+          <button class="btn icon danger" type="button" data-del="${i}" aria-label="${esc(T().del)}"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button></div>`).join('')
+        : `<p class="hint">${esc(T().libEmpty)}</p>`;
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    $('saveLib').addEventListener('click', () => {
+      const name = prompt(T().name, (state.lines.find(Boolean) || '').slice(0, 40));
+      if (!name) return;
+      const L = lib(); L.unshift({ name: name.slice(0, 80), state: JSON.parse(serialize()) });
+      try { localStorage.setItem(LIB, JSON.stringify(L.slice(0, 100))); K.toast(T().saved); } catch (_) {}
+      paintLib();
+    });
+    $('lib').addEventListener('click', (e) => {
+      const o = e.target.closest('[data-open]'), d = e.target.closest('[data-del]');
+      const L = lib();
+      if (o) { const s = sanitize(L[o.dataset.open].state); if (s) { state = s; paintLook(); paintLines(); render(); } }
+      if (d) { L.splice(d.dataset.del, 1); try { localStorage.setItem(LIB, JSON.stringify(L)); } catch (_) {} paintLib(); }
+    });
+
+    // ── Boot ──
+    const loaded = store.load(sanitize);
+    if (loaded) state = loaded;
+    const I = K.i18n((l) => { lang = l; paintInsert(); paintLib(); if (fields.length) paintLines(); render(); });
+    paintLook();
+    I.apply();
+    document.addEventListener('mathjax-ready', () => { mjReady = true; render(); });
+    if (window.MathJax && MathJax.tex2svg) { mjReady = true; }
+    // MathLive registers <math-field> when its script runs (deferred).
+    function mathliveReady() {
+      // MathLive guesses its fonts folder from the script URL and gets it
+      // wrong for the CDN build, so point it there; no keypress sounds.
+      const MF = customElements.get('math-field');
+      try { MF.fontsDirectory = 'https://cdn.jsdelivr.net/npm/mathlive@0.110.0/fonts'; MF.soundsDirectory = null; MF.keypressSound = null; MF.plonkSound = null; } catch (_) {}
+      paintLines(); render();
+    }
+    if (customElements.get('math-field')) mathliveReady();
+    else {
+      customElements.whenDefined('math-field').then(mathliveReady);
+      setTimeout(() => { if (!customElements.get('math-field')) $('lines').innerHTML = `<p class="warn">${esc(T().failLoad)}</p>`; }, 15000);
+    }
+    window.__eq = { composed, state: () => state };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
