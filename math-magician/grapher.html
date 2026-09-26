@@ -27,7 +27,7 @@
     <div class="nav-right">
       <span id="mlLangToggle"></span>
       <a href="numberline.html" class="nav-back" data-af-html='<i data-lucide="ruler" style="width:13px;height:13px"></i> Getallyn'><i data-lucide="ruler" style="width:13px;height:13px"></i> Number Line</a>
-      <a href="index.html" class="nav-back" data-af-html='<i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grade'><i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grades</a>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
       <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
@@ -151,6 +151,7 @@
       <div class="toolbar">
         <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
         <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
         <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
         <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
         <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
@@ -1222,7 +1223,7 @@
     }
     window.MMPlotKit.attach({
       getSvg: () => document.querySelector('#plot svg'), fileBase,
-      print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg',
+      print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs',
     });
     $('copyLink').addEventListener('click', async () => {
       const link = location.origin + location.pathname + '#g=' + toB64(serialize());

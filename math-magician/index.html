@@ -335,9 +335,9 @@
   <a class="ml-skip" href="#ml-main">Skip to content</a>
   <nav>
     <a href="../index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px 10px;padding:8px 0">
       <span id="mlLangToggle"></span>
-      <a href="#resources" class="nav-back"><i data-lucide="library" style="width:13px;height:13px"></i> <span id="lblNavResources">Resources</span></a>
+      <a href="toolbox.html" class="nav-back"><i data-lucide="library" style="width:13px;height:13px"></i> <span id="lblNavResources">Teacher Toolbox</span></a>
       <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span id="lblBack">Back to Magic Lab</span></a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
@@ -428,24 +428,7 @@
 
   <section class="resources" id="resources" aria-labelledby="lblResources">
     <h2 class="resources-label"><span class="hero-tag-dot"></span><span id="lblResources">Resources</span></h2>
-    <div class="resources-grid">
-      <a href="grapher.html" class="resource-card">
-        <div class="resource-icon"><i data-lucide="spline" style="width:20px;height:20px"></i></div>
-        <div>
-          <div class="resource-title" id="lblGrapherTitle">Graph Plotter</div>
-          <p class="resource-desc" id="lblGrapherDesc">Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.</p>
-        </div>
-        <span class="resource-arrow" aria-hidden="true">→</span>
-      </a>
-      <a href="numberline.html" class="resource-card">
-        <div class="resource-icon"><i data-lucide="ruler" style="width:20px;height:20px"></i></div>
-        <div>
-          <div class="resource-title" id="lblNumlineTitle">Number Line</div>
-          <p class="resource-desc" id="lblNumlineDesc">Build a number line in integers, decimals or fractions and mark points, inequalities, intervals and jumps.</p>
-        </div>
-        <span class="resource-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
+    <div class="resources-grid" id="resourcesGrid"></div>
   </section>
 
   <footer>
@@ -466,9 +449,7 @@
         startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
         topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
         continueWhere: 'Continue where you left off', gradeWord: 'Grade', mathsWord: 'Maths',
-        resources: 'Resources', grapherTitle: 'Graph Plotter', numlineTitle: 'Number Line',
-        numlineDesc: 'Build a number line in integers, decimals or fractions and mark points, inequalities, intervals and jumps.',
-        grapherDesc: 'Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.',
+        resources: 'Resources', toolbox: 'Teacher Toolbox',
         footer: 'Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Phase', desc: 'Foundations for the Senior Phase — numbers, algebra, geometry and data.' },
@@ -486,9 +467,7 @@
         startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
         topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
         continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad', mathsWord: 'Wiskunde',
-        resources: 'Hulpbronne', grapherTitle: 'Grafiekplotter', numlineTitle: 'Getallyn',
-        numlineDesc: 'Bou ’n getallyn in heelgetalle, desimale of breuke en merk punte, ongelykhede, intervalle en spronge.',
-        grapherDesc: 'Stel ’n Cartesiese vlak op en plot reguit lyne, parabole, hiperbole, eksponensiële, log-, trig- en eie grafieke, met afsnitte en asimptote gemerk.',
+        resources: 'Hulpbronne', toolbox: 'Onderwyser-gereedskap',
         footer: 'Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Fase', desc: 'Grondslag vir die Senior Fase — getalle, algebra, meetkunde en data.' },
@@ -502,6 +481,36 @@
     let currentLang = (window.MLLang && MLLang.getLang()) || 'en';
     function PT() { return PICKER_T[currentLang]; }
 
+    // ── Resources: the teacher tools, with the Toolbox (every lesson calculator) first ──
+    const RESOURCE_CARDS = [
+      ['toolbox.html', 'library', ['Teacher Toolbox', 'Onderwyser-gereedskap'], ['All the tools below, plus 210 calculators and explorers from the lessons, searchable by grade.', 'Al die hulpmiddels hieronder, plus 210 sakrekenaars en verkenners uit die lesse, soekbaar per graad.']],
+      ['worksheet.html', 'file-text', ['Worksheet Builder', 'Werkkaartbouer'], ['Numbered questions, marks, diagrams from every tool, and a memo — ready to print.', 'Genommerde vrae, punte, diagramme uit elke hulpmiddel, en ’n memorandum — gereed om te druk.']],
+      ['equations.html', 'sigma', ['Equation Writer', 'Vergelykingskrywer'], ['Type maths visually and paste it into Word as an editable equation.', 'Tik wiskunde visueel en plak dit as ’n redigeerbare vergelyking in Word.']],
+      ['grapher.html', 'spline', ['Graph Plotter', 'Grafiekplotter'], ['Any function on a Cartesian plane, with intercepts, turning points and asymptotes.', 'Enige funksie op ’n Cartesiese vlak, met afsnitte, draaipunte en asimptote.']],
+      ['numberline.html', 'ruler', ['Number Line', 'Getallyn'], ['Points, inequalities, intervals and jumps — in integers, decimals or fractions.', 'Punte, ongelykhede, intervalle en spronge — in heelgetalle, desimale of breuke.']],
+      ['geometry.html', 'triangle', ['Geometry Sketcher', 'Meetkunde-sketsblad'], ['Euclidean diagrams: circles, chords, tangents, angle marks and equal-side ticks.', 'Euklidiese diagramme: sirkels, koorde, raaklyne, hoekmerke en gelyke-sy-merkies.']],
+      ['stats.html', 'bar-chart-3', ['Statistics Charts', 'Statistiekgrafieke'], ['Box-and-whisker, histogram, ogive and scatter plot with regression line.', 'Mond-en-snor, histogram, ogief en spreidiagram met regressielyn.']],
+      ['probability.html', 'git-fork', ['Probability Diagrams', 'Waarskynlikheidsdiagramme'], ['Venn diagrams with two or three sets, and tree diagrams.', 'Venn-diagramme met twee of drie versamelings, en boomdiagramme.']],
+      ['timeline.html', 'calendar-range', ['Finance Timeline', 'Finansiële tydlyn'], ['Annuity and loan timelines with payments, withdrawals and rate changes.', 'Annuïteit- en lening-tydlyne met paaiemente, onttrekkings en koersveranderings.']],
+      ['manipulatives.html', 'boxes', ['Fractions & Algebra Tiles', 'Breuke en algebra-teëls'], ['Fraction walls and models, and algebra tiles for factorising.', 'Breukmure en -modelle, en algebra-teëls vir faktorisering.']],
+    ];
+    function renderResources() {
+      const grid = document.getElementById('resourcesGrid');
+      if (!grid) return;
+      const k = currentLang === 'af' ? 1 : 0;
+      grid.innerHTML = '';
+      RESOURCE_CARDS.forEach(([href, icon, title, desc]) => {
+        const a = document.createElement('a');
+        a.href = href; a.className = 'resource-card';
+        a.innerHTML = `<div class="resource-icon"><i data-lucide="${icon}" style="width:20px;height:20px"></i></div>
+          <div><div class="resource-title"></div><p class="resource-desc"></p></div><span class="resource-arrow" aria-hidden="true">→</span>`;
+        a.querySelector('.resource-title').textContent = title[k];
+        a.querySelector('.resource-desc').textContent = desc[k];
+        grid.appendChild(a);
+      });
+      refreshIcons();
+    }
+
     function applyPickerChrome() {
       const t = PT();
       const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
@@ -513,11 +522,8 @@
       set('lblGrid', t.grid);
       set('lblQuickJump', t.quickJump);
       set('lblResources', t.resources);
-      set('lblGrapherTitle', t.grapherTitle);
-      set('lblGrapherDesc', t.grapherDesc);
-      set('lblNavResources', t.resources);
-      set('lblNumlineTitle', t.numlineTitle);
-      set('lblNumlineDesc', t.numlineDesc);
+      set('lblNavResources', t.toolbox);
+      renderResources();
       document.querySelector('.path-trigger-label').textContent = t.jumpToGrade;
       document.querySelector('.path-trigger-current').textContent = t.selectGrade;
       document.querySelector('.footer-copy').lastChild.textContent = t.footer;
