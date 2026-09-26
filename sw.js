@@ -403,6 +403,7 @@ const urlsToCache = [
   '/computer-codex.html',
   '/conjurer_interpreter.js',
   '/math-magician/index.html',
+  '/math-magician/grapher.html',
   '/math-magician/gr8/index.html',
   '/math-magician/gr8/ch1.js',
   '/math-magician/gr8/ch2.js',

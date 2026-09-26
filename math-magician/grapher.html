@@ -1,0 +1,1689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Graph Plotter · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <style>
+    /* ══════════════════════════════════════════════════════════════════════
+       Math Magician — Graph Plotter (resource).
+
+       Build a Cartesian plane (range, increments, gridlines, axis labels),
+       then plot any number of graphs on it in the CAPS standard forms —
+       linear, parabola, hyperbola, exponential, logarithmic, trig, cubic,
+       circle — or a free-typed y = … expression. The plot is a
+       self-contained SVG, so what you see is exactly what downloads.
+
+       Expressions are parsed by a small recursive-descent parser below; the
+       page never calls eval() or new Function() on anything a user typed.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --accent: var(--t-math);
+      --font-display: "Cabinet Grotesk", "Segoe UI", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --bad: #f87171;
+    }
+
+    /* ── Nav (same as the Math Magician landing page) ───────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4);
+      min-height: 68px; padding: 0 var(--gutter);
+      background: rgba(8,9,11,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-weight: 800; font-size: 17px;
+      letter-spacing: -0.025em; color: var(--paper);
+      text-decoration: none; display: flex; align-items: center; gap: 9px;
+    }
+    .nav-logo i, .nav-logo svg { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 15px; border-radius: var(--radius-full);
+      border: 1px solid var(--line); background: transparent;
+      color: var(--text-2);
+      font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: color var(--dur-fast) var(--ease-standard),
+                  border-color var(--dur-fast) var(--ease-standard),
+                  background var(--dur-fast) var(--ease-standard);
+    }
+    .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: clamp(28px, 4vw, 48px) var(--gutter) var(--space-5);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 9px; margin-bottom: var(--space-3);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .hero-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(30px, 4.2vw, 48px); line-height: 1.02;
+      letter-spacing: -0.04em; color: var(--paper); margin-bottom: var(--space-3);
+    }
+    .hero h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: var(--text); }
+    .hero-sub { font-size: 15.5px; line-height: 1.6; color: var(--text-2); max-width: 66ch; }
+
+    /* ── Layout ─────────────────────────────────────────────────────────── */
+    .gp {
+      display: grid; grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
+      gap: var(--space-5); align-items: start;
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-8);
+    }
+    .gp-controls { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+    .gp-stage { position: sticky; top: 84px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+    @media (max-width: 980px) {
+      .gp { grid-template-columns: minmax(0, 1fr); }
+      .gp-stage { position: static; order: -1; }
+    }
+
+    /* ── Panels ─────────────────────────────────────────────────────────── */
+    .panel {
+      background: var(--ink-850); border: 1px solid var(--line);
+      border-radius: var(--radius-md); padding: var(--space-4);
+    }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    .panel h2 {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-display); font-size: 16px; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--paper);
+    }
+    .panel h2 i, .panel h2 svg { color: var(--accent); }
+    .hint { font-size: 12.5px; line-height: 1.55; color: var(--text-3); }
+    .hint code, .tips code { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px; }
+
+    .row { display: grid; gap: var(--space-2); margin-bottom: var(--space-3); }
+    .row.c2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .row.c3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .row.c4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .field > span {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3);
+    }
+    .field > span.var { font-family: var(--font-serif); font-style: italic; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--text); line-height: 1; }
+    input[type=text], input[type=number], select {
+      width: 100%; min-width: 0;
+      padding: 8px 10px; border-radius: var(--radius-2xs);
+      background: var(--ink-900); border: 1px solid var(--line-hard);
+      color: var(--paper); font-family: var(--font-mono); font-size: 13px;
+    }
+    select { font-family: var(--font-body); font-size: 13.5px; cursor: pointer; }
+    input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    input.err { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--ink-900)); }
+    .checks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-bottom: var(--space-3); }
+    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-2); cursor: pointer; user-select: none; }
+    .check input { accent-color: var(--accent); width: 15px; height: 15px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 8px 13px; border-radius: var(--radius-2xs);
+      border: 1px solid var(--line-hard); background: transparent;
+      color: var(--text); font-family: var(--font-body); font-size: 13px; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+      transition: background var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+    }
+    .btn:hover { background: rgba(255,255,255,0.05); border-color: var(--paper); color: var(--paper); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #0d1400; }
+    .btn.primary:hover { background: #b4e25a; border-color: #b4e25a; color: #0d1400; }
+    .btn.icon { padding: 6px; border-color: var(--line); color: var(--text-3); }
+    .btn.icon:hover { color: var(--paper); }
+    .btn.icon.danger:hover { color: var(--bad); border-color: var(--bad); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+    /* ── Graph cards ────────────────────────────────────────────────────── */
+    .glist { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-3); }
+    .gcard {
+      border: 1px solid var(--line); border-left: 3px solid var(--gc, var(--accent));
+      border-radius: var(--radius-sm); padding: var(--space-3); background: var(--ink-900);
+    }
+    .gcard.off { opacity: 0.55; }
+    .gcard-top { display: flex; align-items: center; gap: 6px; margin-bottom: var(--space-2); }
+    .gcard-top input[type=color] { width: 30px; height: 30px; padding: 0; border: 1px solid var(--line-hard); border-radius: 6px; background: none; cursor: pointer; flex-shrink: 0; }
+    .gcard-top .gname { width: 46px; flex-shrink: 0; text-align: center; font-family: var(--font-serif); font-style: italic; font-size: 17px; padding: 4px; }
+    .gcard-top select { flex: 1; }
+    .eq {
+      font-family: var(--font-serif); font-size: 19px; color: var(--paper);
+      padding: 6px 2px 10px; overflow-x: auto; white-space: nowrap;
+    }
+    .eq i { font-style: italic; }
+    .eq sup { font-size: 0.68em; }
+    .eq.err { font-family: var(--font-mono); font-size: 12px; color: var(--bad); white-space: normal; }
+    details.more { margin-top: 2px; }
+    details.more > summary {
+      cursor: pointer; list-style: none;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3);
+      padding: 4px 0;
+    }
+    details.more > summary::before { content: "▸ "; }
+    details.more[open] > summary::before { content: "▾ "; }
+    details.more > summary:hover { color: var(--paper); }
+    details.more .inner { padding-top: var(--space-2); }
+    .empty { font-size: 13px; color: var(--text-3); padding: var(--space-3); border: 1px dashed var(--line-hard); border-radius: var(--radius-sm); text-align: center; }
+
+    .prow { display: grid; grid-template-columns: 30px 52px minmax(0,1fr) minmax(0,1fr) 30px; gap: 6px; align-items: center; margin-bottom: 6px; }
+    .prow input[type=color] { width: 30px; height: 30px; padding: 0; border: 1px solid var(--line-hard); border-radius: 6px; background: none; cursor: pointer; }
+    .prow .pname { text-align: center; }
+
+    /* ── Plot stage ─────────────────────────────────────────────────────── */
+    .toolbar { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+    .toolbar .spacer { flex: 1; }
+    .plot-wrap {
+      position: relative; border-radius: var(--radius-md); overflow: hidden;
+      border: 1px solid var(--line-hard); background: #fff; box-shadow: var(--elevation-md);
+    }
+    .plot-wrap.dark { background: #0c0e11; }
+    #plot svg { display: block; width: 100%; height: auto; cursor: crosshair; }
+    .readout {
+      font-family: var(--font-mono); font-size: 12px; color: var(--text-2);
+      min-height: 20px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
+    }
+    .readout b { color: var(--paper); font-weight: 600; }
+    .readout .sw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
+    .warn { font-size: 12.5px; color: #fbbf24; }
+    .warn:empty { display: none; }
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px);
+      background: var(--ink-800); border: 1px solid var(--line-hard); color: var(--text);
+      padding: 10px 18px; border-radius: 11px; font-size: 13px; box-shadow: var(--elevation-lg);
+      opacity: 0; pointer-events: none; transition: opacity 200ms, transform 200ms; z-index: 500;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .tips { font-size: 13px; line-height: 1.65; color: var(--text-2); }
+    .tips ul { padding-left: 18px; margin: 6px 0 0; }
+    .tips li { margin-bottom: 4px; }
+
+    footer {
+      margin-top: auto; padding: var(--space-7) var(--gutter);
+      border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .footer-copy { font-size: 13px; color: var(--text-3); }
+
+    @media (max-width: 520px) {
+      .row.c4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .row.c3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .prow { grid-template-columns: 30px 44px minmax(0,1fr) minmax(0,1fr) 30px; }
+    }
+
+    @media print {
+      nav, .hero, .gp-controls, .toolbar, .readout, .warn, footer, .ml-skip, .toast { display: none !important; }
+      body { background: #fff !important; }
+      .gp { display: block; padding: 0; }
+      .gp-stage { position: static; }
+      .plot-wrap { border: none; box-shadow: none; }
+    }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="index.html" class="nav-back" data-af-html='<i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grade'><i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grades</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Funksies · Gr 8–12">Resource · Functions · Gr 8–12</span></div>
+    <h1 data-af-html="Grafiek-<em>plotter.</em>">Graph <em>plotter.</em></h1>
+    <p class="hero-sub" data-af="Stel jou Cartesiese vlak op — bereik, inkremente en roosterlyne — en plot dan lineêre, paraboliese, hiperboliese, eksponensiële, trig- en ander grafieke daarop. Afsnitte, draaipunte en asimptote word vir jou gemerk.">Set up your Cartesian plane — range, increments and gridlines — then plot linear, parabolic, hyperbolic, exponential, trig and other graphs onto it. Intercepts, turning points and asymptotes are marked for you.</p>
+  </section>
+
+  <main class="gp">
+    <!-- ═══ Controls ═══ -->
+    <div class="gp-controls">
+
+      <section class="panel" aria-labelledby="hPlane">
+        <div class="panel-head">
+          <h2 id="hPlane"><i data-lucide="grid" style="width:16px;height:16px"></i><span data-af="Cartesiese vlak">Cartesian plane</span></h2>
+          <select id="preset" aria-label="Plane preset" style="width:auto">
+            <option value="" data-af="Voorafstelling…">Preset…</option>
+            <option value="std10" data-af="Standaard −10 tot 10">Standard −10 to 10</option>
+            <option value="std5" data-af="Klein −5 tot 5">Small −5 to 5</option>
+            <option value="q1" data-af="Eerste kwadrant 0 tot 10">First quadrant 0 to 10</option>
+            <option value="trig360" data-af="Trig 0° tot 360°">Trig 0° to 360°</option>
+            <option value="trig180" data-af="Trig −180° tot 180°">Trig −180° to 180°</option>
+          </select>
+        </div>
+
+        <div class="row c3">
+          <label class="field"><span data-af="x min">x min</span><input type="text" id="xmin" inputmode="decimal"></label>
+          <label class="field"><span data-af="x maks">x max</span><input type="text" id="xmax" inputmode="decimal"></label>
+          <label class="field"><span data-af="x-inkrement">x increment</span><input type="text" id="xstep" inputmode="decimal"></label>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="y min">y min</span><input type="text" id="ymin" inputmode="decimal"></label>
+          <label class="field"><span data-af="y maks">y max</span><input type="text" id="ymax" inputmode="decimal"></label>
+          <label class="field"><span data-af="y-inkrement">y increment</span><input type="text" id="ystep" inputmode="decimal"></label>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="x-as byskrif">x-axis label</span><input type="text" id="xlabel" maxlength="16"></label>
+          <label class="field"><span data-af="y-as byskrif">y-axis label</span><input type="text" id="ylabel" maxlength="16"></label>
+          <label class="field"><span data-af="Fyn roosterlyne">Minor gridlines</span>
+            <select id="minor">
+              <option value="0" data-af="Geen">None</option>
+              <option value="2" data-af="2 per inkrement">2 per increment</option>
+              <option value="4" data-af="4 per inkrement">4 per increment</option>
+              <option value="5" data-af="5 per inkrement">5 per increment</option>
+              <option value="10" data-af="10 per inkrement">10 per increment</option>
+            </select>
+          </label>
+        </div>
+        <div class="row c2">
+          <label class="field"><span data-af="Vorm van vlak">Plane shape</span>
+            <select id="shape">
+              <option value="wide" data-af="Landskap (4:3)">Landscape (4:3)</option>
+              <option value="square" data-af="Vierkantig">Square</option>
+              <option value="equal" data-af="Gelyke skaal op x en y">Equal scale on x and y</option>
+            </select>
+          </label>
+          <label class="field"><span data-af="Styl">Style</span>
+            <select id="theme">
+              <option value="paper" data-af="Papier (wit, vir druk)">Paper (white, for print)</option>
+              <option value="dark" data-af="Donker">Dark</option>
+            </select>
+          </label>
+        </div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="grid"> <span data-af="Roosterlyne">Gridlines</span></label>
+          <label class="check"><input type="checkbox" id="numbers"> <span data-af="Getalle op asse">Numbers on axes</span></label>
+          <label class="check"><input type="checkbox" id="degrees"> <span data-af="Grade (trig)">Degrees (trig)</span></label>
+          <label class="check"><input type="checkbox" id="intersections"> <span data-af="Snypunte tussen grafieke">Points of intersection</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+        <p class="warn" id="planeWarn" role="status"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="hGraphs">
+        <div class="panel-head">
+          <h2 id="hGraphs"><i data-lucide="spline" style="width:16px;height:16px"></i><span data-af="Grafieke">Graphs</span></h2>
+          <select id="examples" aria-label="Load an example" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="hyp" data-af="Hiperbool met asimptote">Hyperbola with asymptotes</option>
+            <option value="parLine" data-af="Parabool en reguit lyn">Parabola and straight line</option>
+            <option value="exp" data-af="Eksponensieel en log (inverses)">Exponential and log (inverses)</option>
+            <option value="trig" data-af="Sin en cos, 0° tot 360°">Sin and cos, 0° to 360°</option>
+            <option value="circle" data-af="Sirkel en raaklyn">Circle and tangent</option>
+          </select>
+        </div>
+        <div class="glist" id="glist"></div>
+        <div class="row c2" style="margin-bottom:0">
+          <select id="newType" aria-label="Type of graph to add"></select>
+          <button class="btn primary" id="addGraph" type="button"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Voeg grafiek by">Add graph</span></button>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="hPoints">
+        <div class="panel-head">
+          <h2 id="hPoints"><i data-lucide="map-pin" style="width:16px;height:16px"></i><span data-af="Punte">Points</span></h2>
+          <button class="btn" id="addPoint" type="button"><i data-lucide="plus" style="width:14px;height:14px"></i><span data-af="Voeg punt by">Add point</span></button>
+        </div>
+        <div id="plist"></div>
+        <p class="hint" data-af="Merk enige punt met ’n naam, bv. A(2 ; 3). Gebruik dit vir gegewe punte in ’n vraag.">Mark any point with a name, e.g. A(2 ; 3). Useful for the given points in a question.</p>
+      </section>
+
+      <section class="panel tips" aria-labelledby="hTips">
+        <h2 id="hTips" style="margin-bottom:6px"><i data-lucide="lightbulb" style="width:16px;height:16px"></i><span data-af="Wenke">Tips</span></h2>
+        <ul>
+          <li data-af-html="Elke waarde-blokkie aanvaar ’n uitdrukking: <code>1/2</code>, <code>-3</code>, <code>sqrt(2)</code>, <code>pi</code>. ’n Komma werk as desimaalteken (<code>2,5</code>).">Every value box accepts an expression: <code>1/2</code>, <code>-3</code>, <code>sqrt(2)</code>, <code>pi</code>. A comma works as a decimal sign (<code>2,5</code>).</li>
+          <li data-af-html="Kies <b>Eie funksie</b> om enige <i>y</i> = … in te tik, bv. <code>2x^2 - 3x + 1</code>, <code>3/(x-1) + 2</code>, <code>2^x</code>, <code>sin(2x)</code>, <code>|x - 2|</code>, <code>sqrt(x)</code>, <code>ln(x)</code>, <code>log(x)</code>.">Choose <b>Custom</b> to type any <i>y</i> = …, e.g. <code>2x^2 - 3x + 1</code>, <code>3/(x-1) + 2</code>, <code>2^x</code>, <code>sin(2x)</code>, <code>|x - 2|</code>, <code>sqrt(x)</code>, <code>ln(x)</code>, <code>log(x)</code>.</li>
+          <li data-af-html="Beperk ’n grafiek se definisieversameling onder <b>Meer opsies</b>; oop eindpunte word as hol kolletjies geteken.">Restrict a graph’s domain under <b>More options</b>; open endpoints are drawn as hollow dots.</li>
+          <li data-af-html="Skakel <b>Grade (trig)</b> aan sodat sin, cos en tan in grade werk, en stel die x-inkrement op 30°, 45° of 90°.">Turn on <b>Degrees (trig)</b> so sin, cos and tan work in degrees, and set the x increment to 30°, 45° or 90°.</li>
+          <li data-af-html="Beweeg oor die vlak om waardes af te lees. <b>Kopieer skakel</b> stoor die hele grafiek in ’n skakel wat jy met jou klas kan deel.">Hover over the plane to read off values. <b>Copy link</b> saves the whole graph in a link you can share with your class.</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- ═══ Plot ═══ -->
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+        <button class="btn" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk">Print</span></button>
+        <span class="spacer"></span>
+        <button class="btn icon danger" id="clearAll" type="button" aria-label="Start over" title="Start over"><i data-lucide="rotate-ccw" style="width:15px;height:15px"></i></button>
+      </div>
+      <div class="plot-wrap" id="plotWrap"><div id="plot"></div></div>
+      <div class="readout" id="readout" aria-live="off"></div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ══════════════════════════════════════════════════════════════════
+    // Strings used by the dynamic parts of the page. Static markup uses
+    // the data-af / data-af-html attributes like the rest of the site.
+    // ══════════════════════════════════════════════════════════════════
+    const STR = {
+      en: {
+        types: {
+          linear: 'Straight line', vertical: 'Vertical line', quadVertex: 'Parabola (turning-point form)',
+          quadStd: 'Parabola (standard form)', hyperbola: 'Hyperbola', exponential: 'Exponential',
+          log: 'Logarithmic', sin: 'Sine', cos: 'Cosine', tan: 'Tangent', cubic: 'Cubic',
+          circle: 'Circle', custom: 'Custom  y = …',
+        },
+        expr: 'y =', more: 'More options', domFrom: 'Domain from', domTo: 'Domain to',
+        openFrom: 'Open dot at start', openTo: 'Open dot at end', keyPts: 'Intercepts & turning points', asym: 'Asymptotes', showEq: 'Equation on the graph',
+        hide: 'Hide', show: 'Show', remove: 'Remove', noGraphs: 'No graphs yet. Add one below, or load an example.',
+        noPoints: '', pointName: 'Name', badValue: 'Enter a number or expression here.',
+        useNumber: 'Use a number here, not x.',
+        planeRange: 'The maximum must be bigger than the minimum.', planeStep: 'Increments must be bigger than 0.',
+        tooMany: 'That many gridlines would be unreadable, so only every few are drawn. Try a bigger increment.',
+        equalClamped: 'The ranges are very different, so the plane could not be drawn at exactly equal scale.',
+        hover: 'Hover over the plane to read off values.', copied: 'Link copied — anyone with it sees this graph.',
+        copyFail: 'Could not copy the link — your browser blocked the clipboard.', confirmClear: 'Clear every graph and point and start over?',
+        center: 'centre', undef: 'undefined', aria: (n) => `Cartesian plane with ${n} graph(s)`,
+        center2: 'Centre', radius: 'r',
+      },
+      af: {
+        types: {
+          linear: 'Reguit lyn', vertical: 'Vertikale lyn', quadVertex: 'Parabool (draaipuntvorm)',
+          quadStd: 'Parabool (standaardvorm)', hyperbola: 'Hiperbool', exponential: 'Eksponensieel',
+          log: 'Logaritmies', sin: 'Sinus', cos: 'Cosinus', tan: 'Tangens', cubic: 'Derdegraads',
+          circle: 'Sirkel', custom: 'Eie funksie  y = …',
+        },
+        expr: 'y =', more: 'Meer opsies', domFrom: 'Definisieversameling van', domTo: 'Definisieversameling tot',
+        openFrom: 'Oop kolletjie aan begin', openTo: 'Oop kolletjie aan einde', keyPts: 'Afsnitte en draaipunte', asym: 'Asimptote', showEq: 'Vergelyking op die grafiek',
+        hide: 'Versteek', show: 'Wys', remove: 'Verwyder', noGraphs: 'Nog geen grafieke nie. Voeg een hieronder by, of laai ’n voorbeeld.',
+        noPoints: '', pointName: 'Naam', badValue: 'Tik ’n getal of uitdrukking hier.',
+        useNumber: 'Gebruik ’n getal hier, nie x nie.',
+        planeRange: 'Die maksimum moet groter as die minimum wees.', planeStep: 'Inkremente moet groter as 0 wees.',
+        tooMany: 'Soveel roosterlyne sou onleesbaar wees, so slegs elke paar word geteken. Probeer ’n groter inkrement.',
+        equalClamped: 'Die bereike verskil te veel, so die vlak kon nie presies op gelyke skaal geteken word nie.',
+        hover: 'Beweeg oor die vlak om waardes af te lees.', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie grafiek.',
+        copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.', confirmClear: 'Vee alle grafieke en punte uit en begin oor?',
+        center: 'middelpunt', undef: 'ongedefinieer', aria: (n) => `Cartesiese vlak met ${n} grafiek(e)`,
+        center2: 'Middelpunt', radius: 'r',
+      },
+    };
+    let lang = (window.MLLang && MLLang.getLang()) || 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // Expression parser → closures. No eval.
+    //   expr  := term (('+'|'-') term)*
+    //   term  := unary (('*'|'/') unary | <implicit ×> power)*
+    //   unary := ('-'|'+') unary | power
+    //   power := primary ('^' unary)?          (right-associative)
+    // Every compiled function takes (x, degrees).
+    // ══════════════════════════════════════════════════════════════════
+    const DEG = Math.PI / 180;
+    const FUNCS = {
+      sin:  (v, d) => Math.sin(d ? v * DEG : v),
+      cos:  (v, d) => Math.cos(d ? v * DEG : v),
+      tan:  (v, d) => {
+        // Exact asymptotes in degree mode (cos(90°) isn't exactly 0 in floating point).
+        if (d && Math.abs(((v % 180) + 180) % 180 - 90) < 1e-9) return NaN;
+        return Math.tan(d ? v * DEG : v);
+      },
+      asin: (v, d) => d ? Math.asin(v) / DEG : Math.asin(v),
+      acos: (v, d) => d ? Math.acos(v) / DEG : Math.acos(v),
+      atan: (v, d) => d ? Math.atan(v) / DEG : Math.atan(v),
+      sqrt: (v) => Math.sqrt(v),
+      cbrt: (v) => Math.cbrt(v),
+      abs:  (v) => Math.abs(v),
+      ln:   (v) => Math.log(v),
+      log:  (v) => Math.log10(v),
+      exp:  (v) => Math.exp(v),
+    };
+    const CONSTS = { pi: Math.PI, e: Math.E };
+    const NAMES = [...Object.keys(FUNCS), 'pi', 'x', 'e'].sort((a, b) => b.length - a.length);
+
+    function tokenize(src) {
+      const s = String(src)
+        .replace(/[−–]/g, '-').replace(/[×·]/g, '*').replace(/÷/g, '/')
+        .replace(/π/g, 'pi').replace(/√/g, 'sqrt').replace(/²/g, '^2').replace(/³/g, '^3')
+        .replace(/°/g, '').replace(/(\d),(\d)/g, '$1.$2');
+      const toks = [];
+      let i = 0;
+      while (i < s.length) {
+        const c = s[i];
+        if (/\s/.test(c)) { i++; continue; }
+        if (/[0-9.]/.test(c)) {
+          const m = /^(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?/.exec(s.slice(i));
+          if (!m) throw new Error(`Unexpected "${c}"`);
+          toks.push({ type: 'num', v: parseFloat(m[0]) });
+          i += m[0].length; continue;
+        }
+        if (/[a-zA-Z]/.test(c)) {
+          let word = /^[a-zA-Z]+/.exec(s.slice(i))[0];
+          i += word.length;
+          word = word.toLowerCase();
+          while (word) {                       // "xsinx" → x, sin, x
+            const name = NAMES.find(n => word.startsWith(n));
+            if (!name) throw new Error(`Unknown name "${word}"`);
+            toks.push({ type: 'id', v: name });
+            word = word.slice(name.length);
+          }
+          continue;
+        }
+        if ('+-*/^()|'.includes(c)) { toks.push({ type: 'op', v: c }); i++; continue; }
+        if (c === '[' || c === '{') { toks.push({ type: 'op', v: '(' }); i++; continue; }
+        if (c === ']' || c === '}') { toks.push({ type: 'op', v: ')' }); i++; continue; }
+        throw new Error(`Unexpected "${c}"`);
+      }
+      return toks;
+    }
+
+    function compile(src) {
+      const toks = tokenize(src);
+      if (!toks.length) throw new Error('Empty');
+      let i = 0, usesX = false;
+      const peek = () => toks[i];
+      const isOp = (v) => peek() && peek().type === 'op' && peek().v === v;
+      const startsPrimary = (t) => t && (t.type === 'num' || t.type === 'id' || (t.type === 'op' && t.v === '('));
+
+      function expr() {
+        let l = term();
+        while (isOp('+') || isOp('-')) {
+          const op = toks[i++].v, r = term(), a = l;
+          l = op === '+' ? (x, d) => a(x, d) + r(x, d) : (x, d) => a(x, d) - r(x, d);
+        }
+        return l;
+      }
+      function term() {
+        let l = unary();
+        for (;;) {
+          if (isOp('*') || isOp('/')) {
+            const op = toks[i++].v, r = unary(), a = l;
+            l = op === '*' ? (x, d) => a(x, d) * r(x, d) : (x, d) => a(x, d) / r(x, d);
+          } else if (startsPrimary(peek())) {
+            const r = power(), a = l;
+            l = (x, d) => a(x, d) * r(x, d);
+          } else break;
+        }
+        return l;
+      }
+      function unary() {
+        if (isOp('-')) { i++; const a = unary(); return (x, d) => -a(x, d); }
+        if (isOp('+')) { i++; return unary(); }
+        return power();
+      }
+      function power() {
+        const b = primary();
+        if (isOp('^')) {
+          i++;
+          const e = unary();
+          return (x, d) => Math.pow(b(x, d), e(x, d));
+        }
+        return b;
+      }
+      function primary() {
+        const t = toks[i++];
+        if (!t) throw new Error('Incomplete expression');
+        if (t.type === 'num') { const v = t.v; return () => v; }
+        if (t.type === 'op' && t.v === '(') {
+          const a = expr();
+          if (!isOp(')')) throw new Error('Missing ")"');
+          i++; return a;
+        }
+        if (t.type === 'op' && t.v === '|') {
+          const a = expr();
+          if (!isOp('|')) throw new Error('Missing closing "|"');
+          i++; return (x, d) => Math.abs(a(x, d));
+        }
+        if (t.type === 'id') {
+          if (t.v === 'x') { usesX = true; return (x) => x; }
+          if (t.v in CONSTS) { const v = CONSTS[t.v]; return () => v; }
+          const f = FUNCS[t.v];
+          let arg;
+          if (isOp('(')) {
+            i++; arg = expr();
+            if (!isOp(')')) throw new Error('Missing ")"');
+            i++;
+            // sin(x)^2 reads as (sin x)^2
+            if (isOp('^')) { i++; const e = unary(), g = arg; return (x, d) => Math.pow(f(g(x, d), d), e(x, d)); }
+          } else {
+            // "sin 2x" → sin(2x): the argument is the implicit product that follows.
+            arg = power();
+            while (startsPrimary(peek()) && !(peek().type === 'id' && FUNCS[peek().v])) {
+              const r = power(), a = arg; arg = (x, d) => a(x, d) * r(x, d);
+            }
+          }
+          const g = arg;
+          return (x, d) => f(g(x, d), d);
+        }
+        throw new Error(`Unexpected "${t.v}"`);
+      }
+
+      const fn = expr();
+      if (i < toks.length) throw new Error(`Unexpected "${toks[i].v}"`);
+      return { fn, usesX };
+    }
+
+    // A parameter box: a constant expression. Returns {ok, v, msg}.
+    function constVal(src, deg) {
+      if (src === '' || src == null) return { ok: false, msg: T().badValue };
+      try {
+        const c = compile(src);
+        if (c.usesX) return { ok: false, msg: T().useNumber };
+        const v = c.fn(0, deg);
+        return Number.isFinite(v) ? { ok: true, v } : { ok: false, msg: T().badValue };
+      } catch (e) { return { ok: false, msg: e.message }; }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Number formatting
+    // ══════════════════════════════════════════════════════════════════
+    function round(v, dp = 2) {
+      const r = Math.round(v * 10 ** dp) / 10 ** dp;
+      return Object.is(r, -0) ? 0 : r;
+    }
+    const MINUS = '−';
+    function num(v, dp = 2) { const r = round(v, dp); return (r < 0 ? MINUS : '') + String(Math.abs(r)); }
+    function coord(x, y, deg) { return `(${num(x)}${deg ? '°' : ''} ; ${num(y)})`; }
+    function tickText(v, step) {
+      const dp = Math.min(6, Math.max(0, -Math.floor(Math.log10(step) + 1e-9) + 1));
+      return num(v, dp);
+    }
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    // ══════════════════════════════════════════════════════════════════
+    // Equation display. Built as segments so it can render either as
+    // HTML (the card) or as SVG tspans (the label on the plot).
+    //   {t}         plain text        {v}  italic variable
+    //   {sup:[...]} superscript group
+    // ══════════════════════════════════════════════════════════════════
+    const seg = {
+      t: (t) => ({ t }), v: (v) => ({ v }), sup: (...s) => ({ sup: s }),
+    };
+    function coefSeg(a, withVar) {     // 1x → x, −1x → −x
+      if (withVar && round(a, 4) === 1) return [];
+      if (withVar && round(a, 4) === -1) return [seg.t(MINUS)];
+      return [seg.t(num(a, 3))];
+    }
+    function signed(c, deg) {           // " + 3", " − 3", "" for 0
+      if (round(c, 6) === 0) return [];
+      return [seg.t(` ${c < 0 ? MINUS : '+'} ${num(Math.abs(c), 3)}${deg ? '°' : ''}`)];
+    }
+    function xShift(p, deg) {           // x + p, bracketed when p ≠ 0
+      if (round(p, 6) === 0) return { s: [seg.v('x')], bracket: false };
+      return { s: [seg.t('('), seg.v('x'), ...signed(p, deg), seg.t(')')], bracket: true };
+    }
+    function polySeg(coefs) {           // highest power first
+      const out = [];
+      const n = coefs.length - 1;
+      coefs.forEach((c, k) => {
+        const pow = n - k;
+        if (round(c, 6) === 0) return;
+        const first = out.length === 0;
+        const mag = Math.abs(c);
+        if (!first) out.push(seg.t(` ${c < 0 ? MINUS : '+'} `));
+        else if (c < 0) out.push(seg.t(MINUS));
+        if (pow === 0 || round(mag, 4) !== 1) out.push(seg.t(num(mag, 3)));
+        if (pow >= 1) out.push(seg.v('x'));
+        if (pow >= 2) out.push(seg.sup(seg.t(String(pow))));
+      });
+      return out.length ? out : [seg.t('0')];
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Graph types. Parameters are stored as raw strings so a learner can
+    // type "1/2" or "-3"; they are evaluated by constVal() at draw time.
+    //   make(P, deg) → { f(x), breaks(x0,x1), asym: [{x}|{y}], eq: segs }
+    // ══════════════════════════════════════════════════════════════════
+    const TYPES = {
+      linear: {
+        form: 'y = mx + c', params: [['m', '1'], ['c', '0']],
+        make: (P) => ({ f: x => P.m * x + P.c, eq: polySeg([P.m, P.c]), noTP: true }),
+      },
+      vertical: {
+        form: 'x = k', params: [['k', '2']], special: 'vertical',
+        make: (P) => ({ k: P.k, eq: [seg.v('x'), seg.t(' = ' + num(P.k, 3))], lhs: 'none' }),
+      },
+      quadVertex: {
+        form: 'y = a(x + p)² + q', params: [['a', '1'], ['p', '0'], ['q', '-4']],
+        make: (P) => {
+          const sh = xShift(P.p);
+          return {
+            f: x => P.a * (x + P.p) ** 2 + P.q,
+            eq: round(P.a, 6) === 0 ? [seg.t(num(P.q, 3))] : [...coefSeg(P.a, true), ...sh.s, seg.sup(seg.t('2')), ...signed(P.q)],
+          };
+        },
+      },
+      quadStd: {
+        form: 'y = ax² + bx + c', params: [['a', '1'], ['b', '-2'], ['c', '-3']],
+        make: (P) => ({ f: x => P.a * x * x + P.b * x + P.c, eq: polySeg([P.a, P.b, P.c]) }),
+      },
+      cubic: {
+        form: 'y = ax³ + bx² + cx + d', params: [['a', '1'], ['b', '0'], ['c', '-3'], ['d', '0']],
+        make: (P) => ({ f: x => ((P.a * x + P.b) * x + P.c) * x + P.d, eq: polySeg([P.a, P.b, P.c, P.d]) }),
+      },
+      hyperbola: {
+        form: 'y = a/(x + p) + q', params: [['a', '2'], ['p', '0'], ['q', '0']],
+        make: (P) => {
+          const den = round(P.p, 6) === 0 ? [seg.v('x')] : [seg.t('('), seg.v('x'), ...signed(P.p), seg.t(')')];
+          return {
+            f: x => P.a / (x + P.p) + P.q,
+            breaks: [-P.p],
+            asym: [{ x: -P.p }, { y: P.q }],
+            eq: [seg.t(num(P.a, 3) + '/'), ...den, ...signed(P.q)],
+            noTP: true,
+          };
+        },
+      },
+      exponential: {
+        form: 'y = a·bˣ⁺ᵖ + q', params: [['a', '1'], ['b', '2'], ['p', '0'], ['q', '0']],
+        make: (P) => {
+          const ex = round(P.p, 6) === 0 ? [seg.v('x')] : [seg.v('x'), ...signed(P.p)];
+          return {
+            f: x => P.a * Math.pow(P.b, x + P.p) + P.q,
+            asym: [{ y: P.q }],
+            eq: [...coefSeg(P.a, true), ...(round(Math.abs(P.a), 4) === 1 ? [] : [seg.t('·')]), seg.t(num(P.b, 3)), seg.sup(...ex), ...signed(P.q)],
+            noTP: true,
+          };
+        },
+      },
+      log: {
+        form: 'y = a·log_b(x + p) + q', params: [['a', '1'], ['b', '2'], ['p', '0'], ['q', '0']],
+        make: (P) => {
+          const lb = Math.log(P.b);
+          const sh = xShift(P.p);
+          return {
+            f: x => P.a * Math.log(x + P.p) / lb + P.q,
+            breaks: [-P.p],
+            asym: [{ x: -P.p }],
+            eq: [...coefSeg(P.a, true), seg.t('log'), { sub: [seg.t(num(P.b, 3))] }, seg.t(' '), ...sh.s, ...signed(P.q)],
+            noTP: true,
+          };
+        },
+      },
+      sin: trig('sin'), cos: trig('cos'), tan: trig('tan'),
+      circle: {
+        form: '(x − a)² + (y − b)² = r²', params: [['a', '0'], ['b', '0'], ['r', '5']], special: 'circle',
+        make: (P) => {
+          const part = (v, c) => round(c, 6) === 0 ? [seg.v(v), seg.sup(seg.t('2'))]
+            : [seg.t('('), seg.v(v), ...signed(-c), seg.t(')'), seg.sup(seg.t('2'))];
+          return { a: P.a, b: P.b, r: Math.abs(P.r), eq: [...part('x', P.a), seg.t(' + '), ...part('y', P.b), seg.t(' = ' + num(P.r * P.r, 3))], lhs: 'none' };
+        },
+      },
+      custom: {
+        form: 'y = f(x)', params: [], expr: true,
+        make: null,
+      },
+    };
+    function trig(name) {
+      return {
+        form: `y = a·${name} k(x + p) + q`, params: [['a', '1'], ['k', '1'], ['p', '0'], ['q', '0']], trig: true,
+        make: (P, deg) => {
+          const F = FUNCS[name];
+          const out = {
+            f: x => P.a * F(P.k * (x + P.p), deg) + P.q,
+            eq: [
+              ...coefSeg(P.a, true), seg.t((round(Math.abs(P.a), 4) === 1 ? '' : ' ') + name + ' '),
+              ...(round(P.k, 4) === 1 ? [] : [seg.t(num(P.k, 3))]),
+              ...xShift(P.p, deg).s,
+              ...signed(P.q),
+            ],
+            noTP: name === 'tan',
+          };
+          if (name === 'tan' && P.k !== 0) {
+            // k(x + p) = 90° + 180°n  →  x = (90 + 180n)/k − p
+            const half = deg ? 90 : Math.PI / 2, per = deg ? 180 : Math.PI;
+            out.breaksFn = (x0, x1) => {
+              const xs = [];
+              const lo = Math.min(P.k * (x0 + P.p), P.k * (x1 + P.p)), hi = Math.max(P.k * (x0 + P.p), P.k * (x1 + P.p));
+              for (let n = Math.ceil((lo - half) / per); n <= Math.floor((hi - half) / per) && xs.length < 400; n++) {
+                xs.push((half + per * n) / P.k - P.p);
+              }
+              return xs;
+            };
+            out.asymFn = (x0, x1) => out.breaksFn(x0, x1).map(x => ({ x }));
+          }
+          return out;
+        },
+      };
+    }
+    const TYPE_ORDER = ['linear', 'quadVertex', 'quadStd', 'hyperbola', 'exponential', 'log', 'sin', 'cos', 'tan', 'cubic', 'circle', 'vertical', 'custom'];
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const PALETTE = ['#2563eb', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#db2777', '#65a30d'];
+    const GNAMES = ['f', 'g', 'h', 'k', 'p', 'q', 'r', 's', 't'];
+    const PNAMES = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    let uid = 1;
+
+    function defaultPlane() {
+      return {
+        xmin: '-10', xmax: '10', ymin: '-10', ymax: '10', xstep: '1', ystep: '1',
+        xlabel: 'x', ylabel: 'y', minor: '0', shape: 'wide', theme: 'paper',
+        grid: true, numbers: true, degrees: false, intersections: false, title: '',
+      };
+    }
+    function newGraph(type, overrides) {
+      const def = TYPES[type];
+      const params = {};
+      def.params.forEach(([k, v]) => { params[k] = v; });
+      const used = new Set(state.graphs.map(g => g.name));
+      const usedC = new Set(state.graphs.map(g => g.color));
+      const g = {
+        id: uid++, type, params,
+        expr: type === 'custom' ? 'x^2 - 4' : '',
+        name: GNAMES.find(n => !used.has(n)) || 'f',
+        color: PALETTE.find(c => !usedC.has(c)) || PALETTE[state.graphs.length % PALETTE.length],
+        visible: true, keyPts: true, asym: true, showEq: false,
+        from: '', to: '', fromOpen: false, toOpen: false,
+      };
+      return Object.assign(g, overrides || {});
+    }
+    let state = { plane: defaultPlane(), graphs: [], points: [] };
+
+    // ══════════════════════════════════════════════════════════════════
+    // Persistence: share-link hash first, then localStorage.
+    // ══════════════════════════════════════════════════════════════════
+    const LS_KEY = 'mm_grapher_v1';
+    function toB64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let bin = ''; bytes.forEach(b => { bin += String.fromCharCode(b); });
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+    function fromB64(b64) {
+      const bin = atob(b64.replace(/-/g, '+').replace(/_/g, '/'));
+      return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+    }
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const plane = Object.assign(defaultPlane(), s.plane || {});
+      const graphs = (Array.isArray(s.graphs) ? s.graphs : []).filter(g => g && TYPES[g.type]).slice(0, 20).map(g => {
+        const base = { id: uid++, type: g.type, params: {}, expr: '', name: 'f', color: PALETTE[0], visible: true, keyPts: true, asym: true, showEq: false, from: '', to: '', fromOpen: false, toOpen: false };
+        TYPES[g.type].params.forEach(([k, v]) => { base.params[k] = (g.params && g.params[k] != null) ? String(g.params[k]) : v; });
+        ['expr', 'name', 'from', 'to'].forEach(k => { if (g[k] != null) base[k] = String(g[k]).slice(0, 200); });
+        if (/^#[0-9a-f]{6}$/i.test(g.color)) base.color = g.color;
+        ['visible', 'keyPts', 'asym', 'showEq', 'fromOpen', 'toOpen'].forEach(k => { if (typeof g[k] === 'boolean') base[k] = g[k]; });
+        return base;
+      });
+      const points = (Array.isArray(s.points) ? s.points : []).slice(0, 40).map(p => ({
+        id: uid++, name: String(p.name ?? '').slice(0, 12), x: String(p.x ?? '0'), y: String(p.y ?? '0'),
+        color: /^#[0-9a-f]{6}$/i.test(p.color) ? p.color : '#111827',
+      }));
+      return { plane, graphs, points };
+    }
+    function serialize() {
+      return JSON.stringify({
+        plane: state.plane,
+        graphs: state.graphs.map(({ id, ...g }) => g),
+        points: state.points.map(({ id, ...p }) => p),
+      });
+    }
+    let saveTimer = 0;
+    function save() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => { try { localStorage.setItem(LS_KEY, serialize()); } catch (_) {} }, 300);
+    }
+    function load() {
+      const m = /[#&]g=([A-Za-z0-9_-]+)/.exec(location.hash);
+      if (m) {
+        // Drop the hash once read, so later edits (saved locally) survive a reload.
+        history.replaceState(null, '', location.pathname + location.search);
+        try { const s = sanitize(JSON.parse(fromB64(m[1]))); if (s) return s; } catch (_) {}
+      }
+      try { const raw = localStorage.getItem(LS_KEY); if (raw) { const s = sanitize(JSON.parse(raw)); if (s) return s; } } catch (_) {}
+      return null;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Examples & presets
+    // ══════════════════════════════════════════════════════════════════
+    const PRESETS = {
+      std10:   { xmin: '-10', xmax: '10', ymin: '-10', ymax: '10', xstep: '1', ystep: '1', degrees: false },
+      std5:    { xmin: '-5', xmax: '5', ymin: '-5', ymax: '5', xstep: '1', ystep: '1', degrees: false },
+      q1:      { xmin: '0', xmax: '10', ymin: '0', ymax: '10', xstep: '1', ystep: '1', degrees: false },
+      trig360: { xmin: '0', xmax: '360', ymin: '-3', ymax: '3', xstep: '90', ystep: '1', degrees: true, minor: '0' },
+      trig180: { xmin: '-180', xmax: '180', ymin: '-3', ymax: '3', xstep: '45', ystep: '1', degrees: true, minor: '0' },
+    };
+    function example(key) {
+      state.graphs = []; state.points = [];
+      const add = (type, o) => state.graphs.push(newGraph(type, o));
+      const P = (o) => Object.assign(state.plane, defaultPlane(), { theme: state.plane.theme }, o);
+      if (key === 'hyp') {
+        P({ xmin: '-8', xmax: '8', ymin: '-8', ymax: '8' });
+        add('hyperbola', { params: { a: '3', p: '-1', q: '2' } });
+      } else if (key === 'parLine') {
+        P({ xmin: '-6', xmax: '6', ymin: '-6', ymax: '8', intersections: true });
+        add('quadVertex', { params: { a: '1', p: '-1', q: '-4' } });
+        add('linear', { params: { m: '1', c: '-1' } });
+      } else if (key === 'exp') {
+        P({ xmin: '-5', xmax: '8', ymin: '-5', ymax: '8', shape: 'equal' });
+        add('exponential', { params: { a: '1', b: '2', p: '0', q: '0' } });
+        add('log', { params: { a: '1', b: '2', p: '0', q: '0' } });
+        add('linear', { params: { m: '1', c: '0' }, keyPts: false, color: '#94a3b8', name: 'y' });
+      } else if (key === 'trig') {
+        P(Object.assign({}, PRESETS.trig360, { intersections: true }));
+        add('sin', { params: { a: '2', k: '1', p: '0', q: '0' } });
+        add('cos', { params: { a: '1', k: '2', p: '0', q: '0' } });
+      } else if (key === 'circle') {
+        P({ xmin: '-7', xmax: '7', ymin: '-7', ymax: '7', shape: 'equal', intersections: true });
+        add('circle', { params: { a: '0', b: '0', r: '5' } });
+        add('linear', { params: { m: '-3/4', c: '25/4' } });
+        state.points.push({ id: uid++, name: 'T', x: '3', y: '4', color: '#111827' });
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Plane evaluation
+    // ══════════════════════════════════════════════════════════════════
+    function readPlane() {
+      const p = state.plane, errs = {};
+      const v = {};
+      ['xmin', 'xmax', 'ymin', 'ymax', 'xstep', 'ystep'].forEach(k => {
+        const r = constVal(p[k], false);
+        if (r.ok) v[k] = r.v; else errs[k] = r.msg;
+      });
+      let msg = '';
+      if (!errs.xmin && !errs.xmax && !(v.xmax > v.xmin)) { errs.xmax = 1; msg = T().planeRange; }
+      if (!errs.ymin && !errs.ymax && !(v.ymax > v.ymin)) { errs.ymax = 1; msg = T().planeRange; }
+      if (!errs.xstep && !(v.xstep > 0)) { errs.xstep = 1; msg = T().planeStep; }
+      if (!errs.ystep && !(v.ystep > 0)) { errs.ystep = 1; msg = T().planeStep; }
+      return { v, errs, msg, ok: Object.keys(errs).length === 0 };
+    }
+
+    // Build a drawable model of one graph, or {err}.
+    function buildGraph(g, deg) {
+      const def = TYPES[g.type];
+      let m;
+      if (def.expr) {
+        try {
+          const c = compile(g.expr);
+          m = { f: x => c.fn(x, deg), eq: exprSegs(g.expr) };
+        } catch (e) { return { err: e.message }; }
+      } else {
+        const P = {}, bad = [];
+        def.params.forEach(([k]) => { const r = constVal(g.params[k], deg); if (r.ok) P[k] = r.v; else bad.push(k); });
+        if (bad.length) return { err: T().badValue, bad };
+        if ((g.type === 'exponential' || g.type === 'log') && (P.b <= 0 || P.b === 1)) return { err: 'b > 0, b ≠ 1', bad: ['b'] };
+        m = def.make(P, deg);
+      }
+      m.special = def.special;
+      // Domain restriction
+      m.from = -Infinity; m.to = Infinity; m.domErr = [];
+      if (!def.special) {
+        if (String(g.from).trim() !== '') { const r = constVal(g.from, deg); if (r.ok) m.from = r.v; else m.domErr.push('from'); }
+        if (String(g.to).trim() !== '') { const r = constVal(g.to, deg); if (r.ok) m.to = r.v; else m.domErr.push('to'); }
+      }
+      return m;
+    }
+    // A custom expression shown back to the learner, lightly prettified.
+    function exprSegs(src) {
+      const s = String(src).replace(/\*/g, '·').replace(/-/g, MINUS).replace(/\s+/g, ' ').trim();
+      const out = [];
+      const re = /\^(\([^()]*\)|[−-]?[\d.]+|[a-z]+)|x/g;
+      let last = 0, mm;
+      while ((mm = re.exec(s))) {
+        if (mm.index > last) out.push(seg.t(s.slice(last, mm.index)));
+        if (mm[0] === 'x') {
+          // only italicise a stand-alone x, not the x in "exp"
+          const prev = s[mm.index - 1] || '', next = s[mm.index + 1] || '';
+          if (/[a-z]/i.test(prev) || /[a-z]/i.test(next)) out.push(seg.t('x')); else out.push(seg.v('x'));
+        } else {
+          let e = mm[1];
+          if (e.startsWith('(') && e.endsWith(')')) e = e.slice(1, -1);
+          out.push(seg.sup(...exprSegs(e)));
+        }
+        last = re.lastIndex;
+      }
+      if (last < s.length) out.push(seg.t(s.slice(last)));
+      return out;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Sampling & feature finding
+    // ══════════════════════════════════════════════════════════════════
+    function sample(f, a, b, breaks, H) {
+      const segs = [];
+      const span = b - a;
+      if (!(span > 0)) return segs;
+      const eps = span * 1e-9;
+      const near = (x) => breaks.some(bx => Math.abs(bx - x) <= eps);
+      const cuts = [a, ...breaks.filter(x => x > a + eps && x < b - eps).sort((p, q) => p - q), b];
+      const N = 1400;
+      for (let c = 0; c < cuts.length - 1; c++) {
+        const lo = cuts[c], hi = cuts[c + 1], w = hi - lo;
+        const xs = [];
+        const n = Math.max(24, Math.round(N * w / span));
+        for (let j = 0; j <= n; j++) xs.push(lo + w * j / n);
+        // Crowd extra samples against an asymptote so the curve runs off the edge
+        // of the plane instead of stopping short of it.
+        if (c > 0 || near(lo)) { xs[0] = lo + w * 1e-12; for (let k = 11; k >= 3; k--) xs.push(lo + w * 10 ** -k); }
+        if (c < cuts.length - 2 || near(hi)) { xs[n] = hi - w * 1e-12; for (let k = 11; k >= 3; k--) xs.push(hi - w * 10 ** -k); }
+        xs.sort((p, q) => p - q);
+
+        let cur = [], prevX = null, prevY = NaN;
+        const flush = () => { if (cur.length) segs.push(cur); cur = []; };
+        for (const x of xs) {
+          const y = f(x);
+          const ok = Number.isFinite(y), prevOk = Number.isFinite(prevY);
+          if (prevX !== null && ok !== prevOk) {
+            // Crossing into or out of where f is defined (sqrt, log, …): find the edge.
+            const e = ok ? edge(f, x, prevX) : edge(f, prevX, x);
+            if (e) cur.push(e);
+          }
+          if (!ok) { flush(); prevX = x; prevY = y; continue; }
+          if (prevOk && Math.abs(y - prevY) > H) {
+            const ym = f((x + prevX) / 2);
+            if (!Number.isFinite(ym) || ym > Math.max(y, prevY) || ym < Math.min(y, prevY)) flush();
+          }
+          cur.push([x, y]); prevX = x; prevY = y;
+        }
+        flush();
+      }
+      return segs;
+
+      // bisect between a defined and an undefined x
+      function edge(fn, xDef, xUndef) {
+        let d = xDef, u = xUndef;
+        for (let k = 0; k < 50; k++) { const m = (d + u) / 2; if (Number.isFinite(fn(m))) d = m; else u = m; }
+        const y = fn(d);
+        return Number.isFinite(y) ? [d, y] : null;
+      }
+    }
+
+    function bisectRoot(f, a, b) {
+      let fa = f(a);
+      for (let k = 0; k < 60; k++) {
+        const m = (a + b) / 2, fm = f(m);
+        if (fm === 0) return m;
+        if ((fa < 0) === (fm < 0)) { a = m; fa = fm; } else b = m;
+      }
+      return (a + b) / 2;
+    }
+    function extremum(f, a, b, max) {
+      const g = max ? (x) => -f(x) : f;
+      const r = (Math.sqrt(5) - 1) / 2;
+      let c = b - r * (b - a), d = a + r * (b - a);
+      for (let k = 0; k < 80; k++) {
+        if (g(c) < g(d)) b = d; else a = c;
+        c = b - r * (b - a); d = a + r * (b - a);
+      }
+      return (a + b) / 2;
+    }
+    function rootsOf(f, segs, H) {
+      const out = [];
+      for (const s of segs) {
+        for (let i = 0; i < s.length; i++) {
+          const [x1, y1] = s[i];
+          if (y1 === 0) { out.push(x1); continue; }
+          if (i === 0) continue;
+          const [x0, y0] = s[i - 1];
+          if (y0 !== 0 && (y0 < 0) !== (y1 < 0)) {
+            const r = bisectRoot(f, x0, x1);
+            if (Math.abs(f(r)) < 1e-6 * Math.max(1, H)) out.push(r);
+          }
+        }
+      }
+      const r = dedupe(out);
+      return r.length > 60 ? [] : r;   // identically zero (e.g. y = 0): no isolated roots to mark
+    }
+    function dedupe(xs, tol = 1e-7) {
+      xs.sort((a, b) => a - b);
+      return xs.filter((x, i) => i === 0 || Math.abs(x - xs[i - 1]) > tol * Math.max(1, Math.abs(x)));
+    }
+    function turningPoints(f, segs) {
+      const out = [];
+      for (const s of segs) {
+        for (let i = 1; i < s.length - 1; i++) {
+          const d0 = s[i][1] - s[i - 1][1], d1 = s[i + 1][1] - s[i][1];
+          if (d0 * d1 < 0) {
+            const x = extremum(f, s[i - 1][0], s[i + 1][0], d0 > 0);
+            out.push(x);
+          }
+        }
+      }
+      return dedupe(out, 1e-5);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering (SVG string)
+    // ══════════════════════════════════════════════════════════════════
+    const FONT = "Helvetica, Arial, sans-serif";
+    const MATHFONT = "'Times New Roman', Times, serif";
+    const THEMES = {
+      paper: { bg: '#ffffff', grid: '#d4d8de', minor: '#eceef1', axis: '#111827', text: '#1f2937', sub: '#4b5563', halo: '#ffffff', feature: '#111827', asym: '#6b7280' },
+      dark:  { bg: '#0c0e11', grid: '#2a2f36', minor: '#171b20', axis: '#e5e7eb', text: '#e5e7eb', sub: '#9ca3af', halo: '#0c0e11', feature: '#f3f4f6', asym: '#9ca3af' },
+    };
+
+    let view = null;          // last-rendered geometry, for hover readout
+    function segsToSvg(segs) {
+      return segs.map(s => s.map((p) => `${p[0]} ${p[1]}`).join(' '));
+    }
+    function textSegsSvg(segs) {
+      let out = '';
+      const walk = (list, shift) => {
+        list.forEach(s => {
+          if (s.sup) { out += `<tspan baseline-shift="super" font-size="70%">`; walk(s.sup); out += `</tspan>`; }
+          else if (s.sub) { out += `<tspan baseline-shift="sub" font-size="70%">`; walk(s.sub); out += `</tspan>`; }
+          else if (s.v) out += `<tspan font-style="italic">${esc(s.v)}</tspan>`;
+          else out += esc(s.t);
+        });
+      };
+      walk(segs);
+      return out;
+    }
+    function textSegsHtml(segs) {
+      return segs.map(s => {
+        if (s.sup) return `<sup>${textSegsHtml(s.sup)}</sup>`;
+        if (s.sub) return `<sub>${textSegsHtml(s.sub)}</sub>`;
+        if (s.v) return `<i>${esc(s.v)}</i>`;
+        return esc(s.t);
+      }).join('');
+    }
+
+    function render() {
+      const warnEl = document.getElementById('planeWarn');
+      const pl = readPlane();
+      markPlaneErrors(pl.errs);
+      const P = state.plane;
+      const th = THEMES[P.theme] || THEMES.paper;
+      document.getElementById('plotWrap').classList.toggle('dark', P.theme === 'dark');
+      const warnings = [];
+      if (!pl.ok) {
+        warnEl.textContent = pl.msg || T().badValue;
+        return;
+      }
+      const { xmin, xmax, ymin, ymax, xstep, ystep } = pl.v;
+      const deg = !!P.degrees;
+      const W = 900;
+      const title = String(P.title || '').trim();
+      const padT = title ? 50 : 18, padB = 18, padL = 18, padR = 18;
+      const pw = W - padL - padR;
+      let ph;
+      if (P.shape === 'square') ph = pw;
+      else if (P.shape === 'equal') {
+        ph = pw * (ymax - ymin) / (xmax - xmin);
+        if (ph < 220 || ph > 1600) { ph = Math.min(1600, Math.max(220, ph)); warnings.push(T().equalClamped); }
+      } else ph = pw * 0.75;
+      const H = padT + ph + padB;
+      const sx = pw / (xmax - xmin), sy = ph / (ymax - ymin);
+      const X = x => padL + (x - xmin) * sx;
+      const Y = y => padT + (ymax - y) * sy;
+      const Hr = ymax - ymin;
+      view = { X, Y, xmin, xmax, ymin, ymax, padL, padT, pw, ph, W, H, sx, sy, deg, models: [] };
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${round(H, 1)}" width="${W}" height="${round(H, 1)}" role="img" aria-label="${esc(T().aria(state.graphs.length))}" font-family="${FONT}">`;
+      svg += `<defs><clipPath id="gpClip"><rect x="${padL}" y="${padT}" width="${pw}" height="${ph}"/></clipPath>` +
+             `<marker id="gpArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${th.axis}"/></marker></defs>`;
+      svg += `<rect x="0" y="0" width="${W}" height="${round(H, 1)}" fill="${th.bg}"/>`;
+      if (title) svg += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="${th.text}">${esc(title)}</text>`;
+
+      // ── Grid ──
+      const MAXLINES = 300;
+      const nx = (xmax - xmin) / xstep, ny = (ymax - ymin) / ystep;
+      const thinX = Math.max(1, Math.ceil(nx / MAXLINES)), thinY = Math.max(1, Math.ceil(ny / MAXLINES));
+      if (thinX > 1 || thinY > 1) warnings.push(T().tooMany);
+      const minorN = parseInt(P.minor, 10) || 0;
+      let grid = '';
+      if (P.grid && minorN > 1 && thinX === 1 && thinY === 1 && nx * minorN <= 1200 && ny * minorN <= 1200) {
+        let d = '';
+        const mx = xstep / minorN, my = ystep / minorN;
+        for (let i = Math.ceil(xmin / mx - 1e-9); i * mx <= xmax + 1e-9; i++) if (i % minorN) d += `M${round(X(i * mx), 2)} ${padT}V${padT + ph}`;
+        for (let i = Math.ceil(ymin / my - 1e-9); i * my <= ymax + 1e-9; i++) if (i % minorN) d += `M${padL} ${round(Y(i * my), 2)}H${padL + pw}`;
+        grid += `<path d="${d}" stroke="${th.minor}" stroke-width="1" fill="none"/>`;
+      }
+      if (P.grid) {
+        let d = '';
+        for (let i = Math.ceil(xmin / xstep - 1e-9); i * xstep <= xmax + 1e-9; i++) if (i % thinX === 0) d += `M${round(X(i * xstep), 2)} ${padT}V${padT + ph}`;
+        for (let i = Math.ceil(ymin / ystep - 1e-9); i * ystep <= ymax + 1e-9; i++) if (i % thinY === 0) d += `M${padL} ${round(Y(i * ystep), 2)}H${padL + pw}`;
+        grid += `<path d="${d}" stroke="${th.grid}" stroke-width="1" fill="none"/>`;
+      }
+      svg += grid;
+      svg += `<rect x="${padL}" y="${padT}" width="${pw}" height="${ph}" fill="none" stroke="${th.grid}" stroke-width="1"/>`;
+
+      // ── Axes ──
+      const xAxisY = (ymin <= 0 && ymax >= 0) ? Y(0) : null;
+      const yAxisX = (xmin <= 0 && xmax >= 0) ? X(0) : null;
+      if (xAxisY !== null) svg += `<line x1="${padL}" y1="${xAxisY}" x2="${padL + pw - 2}" y2="${xAxisY}" stroke="${th.axis}" stroke-width="1.6" marker-end="url(#gpArrow)"/>`;
+      if (yAxisX !== null) svg += `<line x1="${yAxisX}" y1="${padT + ph}" x2="${yAxisX}" y2="${padT + 2}" stroke="${th.axis}" stroke-width="1.6" marker-end="url(#gpArrow)"/>`;
+
+      // ── Tick numbers ──
+      const halo = `stroke="${th.halo}" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round"`;
+      if (P.numbers) {
+        const pxX = xstep * sx, pxY = ystep * sy;
+        const widest = Math.max(tickText(xmax, xstep).length, tickText(xmin, xstep).length) + (deg ? 1 : 0);
+        const everyX = Math.max(thinX, Math.ceil((widest * 7 + 10) / pxX));
+        const everyY = Math.max(thinY, Math.ceil(18 / pxY));
+        const lx = xAxisY !== null ? Math.min(xAxisY + 16, padT + ph - 4) : padT + ph - 5;
+        const ly = yAxisX !== null ? yAxisX - 5 : padL + 4;
+        const anchorY = yAxisX !== null ? 'end' : 'start';
+        let t = '';
+        const tickLen = 4;
+        for (let i = Math.ceil(xmin / xstep - 1e-9); i * xstep <= xmax + 1e-9; i++) {
+          if (i === 0 && yAxisX !== null) continue;
+          if (i % everyX) continue;
+          const px = X(i * xstep);
+          if (px < padL - 0.5 || px > padL + pw + 0.5) continue;
+          const xa = px > padL + pw - 14 ? 'end' : px < padL + 14 ? 'start' : 'middle';
+          if (xAxisY !== null) t += `<line x1="${round(px, 2)}" y1="${xAxisY - tickLen}" x2="${round(px, 2)}" y2="${xAxisY + tickLen}" stroke="${th.axis}" stroke-width="1.2"/>`;
+          t += `<text x="${round(px + (xa === 'end' ? -3 : xa === 'start' ? 3 : 0), 2)}" y="${round(lx, 2)}" text-anchor="${xa}" font-size="12" fill="${th.sub}" ${halo}>${tickText(i * xstep, xstep)}${deg ? '°' : ''}</text>`;
+        }
+        for (let i = Math.ceil(ymin / ystep - 1e-9); i * ystep <= ymax + 1e-9; i++) {
+          if (i === 0 && xAxisY !== null) continue;
+          if (i % everyY) continue;
+          const py = Y(i * ystep);
+          if (py < padT - 0.5 || py > padT + ph + 0.5) continue;
+          if (yAxisX !== null) t += `<line x1="${yAxisX - tickLen}" y1="${round(py, 2)}" x2="${yAxisX + tickLen}" y2="${round(py, 2)}" stroke="${th.axis}" stroke-width="1.2"/>`;
+          t += `<text x="${round(ly, 2)}" y="${round(Math.max(padT + 12, Math.min(padT + ph - 3, py + 4)), 2)}" text-anchor="${anchorY}" font-size="12" fill="${th.sub}" ${halo}>${tickText(i * ystep, ystep)}</text>`;
+        }
+        if (xAxisY !== null && yAxisX !== null) t += `<text x="${yAxisX - 5}" y="${Math.min(xAxisY + 16, padT + ph - 4)}" text-anchor="end" font-size="13" font-style="italic" font-family="${MATHFONT}" fill="${th.text}" ${halo}>O</text>`;
+        svg += t;
+      }
+      // axis names
+      if (xAxisY !== null && P.xlabel) svg += `<text x="${padL + pw - 6}" y="${xAxisY - 9}" text-anchor="end" font-size="18" font-style="italic" font-family="${MATHFONT}" fill="${th.text}" ${halo}>${esc(P.xlabel)}</text>`;
+      if (yAxisX !== null && P.ylabel) svg += `<text x="${yAxisX + 9}" y="${padT + 16}" font-size="18" font-style="italic" font-family="${MATHFONT}" fill="${th.text}" ${halo}>${esc(P.ylabel)}</text>`;
+
+      // ── Graphs ──
+      let curves = '', overlays = '', labels = '';
+      const features = [];
+      const fnModels = [];
+      state.graphs.forEach(g => {
+        const m = buildGraph(g, deg);
+        g._model = m;
+        if (m.err || !g.visible) return;
+        const col = g.color;
+        const labelText = g.showEq && m.lhs !== 'none'
+          ? [seg.v(g.name), seg.t('('), seg.v('x'), seg.t(') = '), ...m.eq]
+          : (g.showEq ? m.eq : [seg.v(g.name)]);
+        const lbl = (px, py, anchor) => `<text x="${round(px, 1)}" y="${round(py, 1)}" text-anchor="${anchor}" font-size="${g.showEq ? 16 : 19}" font-family="${MATHFONT}" fill="${col}" ${halo}>${textSegsSvg(labelText)}</text>`;
+
+        if (m.special === 'vertical') {
+          if (m.k >= xmin && m.k <= xmax) {
+            curves += `<line x1="${X(m.k)}" y1="${padT}" x2="${X(m.k)}" y2="${padT + ph}" stroke="${col}" stroke-width="2.6"/>`;
+            labels += lbl(X(m.k) + 7, padT + 22, 'start');
+            if (g.keyPts && xAxisY !== null) features.push({ x: m.k, y: 0, col });
+          }
+          view.models.push({ g, m });
+          return;
+        }
+        if (m.special === 'circle') {
+          const { a, b, r } = m;
+          let d = '';
+          for (let k = 0; k <= 360; k++) { const t = k * Math.PI / 180; d += `${k ? 'L' : 'M'}${round(X(a + r * Math.cos(t)), 2)} ${round(Y(b + r * Math.sin(t)), 2)}`; }
+          curves += `<path d="${d}Z" fill="none" stroke="${col}" stroke-width="2.6" clip-path="url(#gpClip)"/>`;
+          const t45 = Math.PI / 4;
+          labels += lbl(X(a + r * Math.cos(t45)) + 6, Y(b + r * Math.sin(t45)) - 6, 'start');
+          if (g.keyPts) {
+            features.push({ x: a, y: b, col, small: true, label: `${T().center2} ${coord(a, b)}` });
+            const dx = r * r - b * b; if (dx >= 0) [a - Math.sqrt(dx), a + Math.sqrt(dx)].forEach(x => features.push({ x, y: 0, col }));
+            const dy = r * r - a * a; if (dy >= 0) [b - Math.sqrt(dy), b + Math.sqrt(dy)].forEach(y => features.push({ x: 0, y, col }));
+          }
+          view.models.push({ g, m });
+          return;
+        }
+
+        // y = f(x)
+        const f = m.f;
+        const x0 = Math.max(xmin, m.from), x1 = Math.min(xmax, m.to);
+        const brk = [...(m.breaks || []), ...(m.breaksFn ? m.breaksFn(xmin, xmax) : [])];
+        const segs = x1 > x0 ? sample(f, x0, x1, brk, Hr) : [];
+        const clampY = y => Math.max(ymin - 4 * Hr, Math.min(ymax + 4 * Hr, y));
+        let d = '';
+        segs.forEach(s => {
+          if (s.length === 1) return;
+          s.forEach((p, i) => { d += `${i ? 'L' : 'M'}${round(X(p[0]), 2)} ${round(Y(clampY(p[1])), 2)}`; });
+        });
+        // asymptotes
+        if (g.asym) {
+          const as = [...(m.asym || []), ...(m.asymFn ? m.asymFn(xmin, xmax) : [])];
+          as.forEach(a => {
+            if (a.x !== undefined && a.x >= xmin && a.x <= xmax) {
+              overlays += `<line x1="${round(X(a.x), 2)}" y1="${padT}" x2="${round(X(a.x), 2)}" y2="${padT + ph}" stroke="${col}" stroke-opacity="0.8" stroke-width="1.5" stroke-dasharray="7 5"/>`;
+              if (!m.asymFn) overlays += `<text x="${round(X(a.x) + 5, 2)}" y="${padT + ph - 8}" font-size="13" font-family="${MATHFONT}" fill="${col}" ${halo}><tspan font-style="italic">x</tspan> = ${num(a.x)}</text>`;
+            }
+            if (a.y !== undefined && a.y >= ymin && a.y <= ymax) {
+              overlays += `<line x1="${padL}" y1="${round(Y(a.y), 2)}" x2="${padL + pw}" y2="${round(Y(a.y), 2)}" stroke="${col}" stroke-opacity="0.8" stroke-width="1.5" stroke-dasharray="7 5"/>`;
+              overlays += `<text x="${padL + 6}" y="${round(Y(a.y) - 6, 2)}" font-size="13" font-family="${MATHFONT}" fill="${col}" ${halo}><tspan font-style="italic">y</tspan> = ${num(a.y)}</text>`;
+            }
+          });
+        }
+        curves += `<path d="${d}" fill="none" stroke="${col}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" clip-path="url(#gpClip)"/>`;
+
+        // domain endpoints
+        [[m.from, g.fromOpen], [m.to, g.toOpen]].forEach(([ex, open]) => {
+          if (!Number.isFinite(ex) || ex < xmin || ex > xmax) return;
+          const y = f(ex);
+          if (!Number.isFinite(y) || y < ymin || y > ymax) return;
+          overlays += `<circle cx="${round(X(ex), 2)}" cy="${round(Y(y), 2)}" r="4.5" fill="${open ? th.bg : col}" stroke="${col}" stroke-width="2"/>`;
+        });
+
+        // key points
+        if (g.keyPts) {
+          const inDom = x => x >= m.from - 1e-12 && x <= m.to + 1e-12;
+          rootsOf(f, segs, Hr).forEach(x => features.push({ x, y: 0, col }));
+          if (xmin <= 0 && xmax >= 0 && inDom(0)) { const y = f(0); if (Number.isFinite(y)) features.push({ x: 0, y, col }); }
+          if (!m.noTP) turningPoints(f, segs).forEach(x => { const y = f(x); if (Number.isFinite(y)) features.push({ x, y, col, tp: true }); });
+        }
+
+        // curve name: rightmost visible sample, away from the edges
+        let best = null;
+        const inner = (x, y) => y > ymin + Hr * 0.06 && y < ymax - Hr * 0.06 && x < xmax - (xmax - xmin) * 0.03;
+        segs.forEach(s => s.forEach(p => { if (inner(p[0], p[1]) && (!best || p[0] > best[0])) best = p; }));
+        if (best) {
+          const px = X(best[0]), py = Y(best[1]);
+          const right = px > padL + pw * 0.6;
+          labels += lbl(px + (right ? -8 : 8), py - 10, right ? 'end' : 'start');
+        }
+        fnModels.push({ g, m, segs });
+        view.models.push({ g, m });
+      });
+
+      // ── Intersections between graphs ──
+      if (P.intersections) {
+        const fn = view.models.filter(o => o.m.f);
+        for (let i = 0; i < fn.length; i++) {
+          for (let j = i + 1; j < fn.length; j++) {
+            const A = fn[i].m, B = fn[j].m;
+            const lo = Math.max(xmin, A.from, B.from), hi = Math.min(xmax, A.to, B.to);
+            if (!(hi > lo)) continue;
+            const h = x => A.f(x) - B.f(x);
+            const brk = [...(A.breaks || []), ...(B.breaks || []), ...(A.breaksFn ? A.breaksFn(lo, hi) : []), ...(B.breaksFn ? B.breaksFn(lo, hi) : [])];
+            const segs = sample(h, lo, hi, brk, Hr);
+            rootsOf(h, segs, Hr).forEach(x => { const y = A.f(x); if (Number.isFinite(y)) features.push({ x, y, col: th.feature, ix: true }); });
+          }
+          // with vertical lines
+          view.models.filter(o => o.m.special === 'vertical').forEach(v => {
+            const A = fn[i].m, x = v.m.k;
+            if (x < A.from || x > A.to) return;
+            const y = A.f(x); if (Number.isFinite(y)) features.push({ x, y, col: th.feature, ix: true });
+          });
+        }
+      }
+
+      // ── Feature dots & coordinate labels ──
+      const seen = [];
+      let feat = '';
+      features.forEach(p => {
+        if (!(p.x >= xmin && p.x <= xmax && p.y >= ymin && p.y <= ymax)) return;
+        const px = X(p.x), py = Y(p.y);
+        if (seen.some(q => Math.hypot(q[0] - px, q[1] - py) < 3)) return;
+        seen.push([px, py]);
+        feat += `<circle cx="${round(px, 2)}" cy="${round(py, 2)}" r="${p.small ? 3 : 4}" fill="${p.col}" stroke="${th.halo}" stroke-width="1.5"/>`;
+        const right = px < padL + pw - 110;
+        const below = py < padT + 30;
+        const ty = p.tp && below ? py + 20 : py - 9;
+        const txt = p.label || coord(p.x, p.y, deg);
+        feat += `<text x="${round(px + (right ? 7 : -7), 2)}" y="${round(Math.max(padT + 12, Math.min(padT + ph - 4, ty)), 2)}" text-anchor="${right ? 'start' : 'end'}" font-size="12.5" fill="${p.col}" ${halo}>${esc(txt)}</text>`;
+      });
+
+      // ── Free points ──
+      let pts = '';
+      state.points.forEach(p => {
+        const rx = constVal(p.x, deg), ry = constVal(p.y, deg);
+        p._err = { x: !rx.ok, y: !ry.ok };
+        if (!rx.ok || !ry.ok) return;
+        const x = rx.v, y = ry.v;
+        if (x < xmin || x > xmax || y < ymin || y > ymax) return;
+        const px = X(x), py = Y(y);
+        const right = px < padL + pw - 110;
+        pts += `<circle cx="${round(px, 2)}" cy="${round(py, 2)}" r="5" fill="${p.color}" stroke="${th.halo}" stroke-width="1.5"/>`;
+        pts += `<text x="${round(px + (right ? 9 : -9), 2)}" y="${round(py - 9, 2)}" text-anchor="${right ? 'start' : 'end'}" font-size="15" fill="${p.color}" ${halo}><tspan font-family="${MATHFONT}" font-style="italic" font-size="17">${esc(p.name)}</tspan>${esc(coord(x, y, deg))}</text>`;
+      });
+
+      svg += `<g clip-path="url(#gpClip)">${overlays}</g>${curves}<g>${feat}${pts}${labels}</g>`;
+      svg += `<g id="gpHover" pointer-events="none"></g>`;
+      svg += `</svg>`;
+      document.getElementById('plot').innerHTML = svg;
+      view.th = th;
+      warnEl.textContent = warnings.join(' ');
+      paintEquations();
+      markPointErrors();
+      save();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Hover readout
+    // ══════════════════════════════════════════════════════════════════
+    function readoutIdle() {
+      document.getElementById('readout').textContent = T().hover;
+    }
+    function onHover(ev) {
+      if (!view) return;
+      const svgEl = document.querySelector('#plot svg');
+      if (!svgEl) return;
+      const rect = svgEl.getBoundingClientRect();
+      const px = (ev.clientX - rect.left) * view.W / rect.width;
+      const py = (ev.clientY - rect.top) * view.H / rect.height;
+      const hov = svgEl.querySelector('#gpHover');
+      if (px < view.padL || px > view.padL + view.pw || py < view.padT || py > view.padT + view.ph) { hov.innerHTML = ''; readoutIdle(); return; }
+      const x = view.xmin + (px - view.padL) / view.sx;
+      const yCur = view.ymax - (py - view.padT) / view.sy;
+      let g = `<line x1="${px}" y1="${view.padT}" x2="${px}" y2="${view.padT + view.ph}" stroke="${view.th.asym}" stroke-width="1" stroke-dasharray="3 4"/>`;
+      const u = view.deg ? '°' : '';
+      let html = `<span><b>x</b> = ${esc(num(x))}${u}</span><span><b>y</b> = ${esc(num(yCur))}</span>`;
+      view.models.forEach(({ g: gr, m }) => {
+        if (!m.f) return;
+        if (x < m.from || x > m.to) return;
+        const y = m.f(x);
+        const txt = Number.isFinite(y) ? num(y) : T().undef;
+        html += `<span><span class="sw" style="background:${esc(gr.color)}"></span><i>${esc(gr.name)}</i>(${esc(num(x))}${u}) = ${esc(txt)}</span>`;
+        if (Number.isFinite(y) && y >= view.ymin && y <= view.ymax) g += `<circle cx="${px}" cy="${view.Y(y)}" r="4.5" fill="${gr.color}" stroke="${view.th.halo}" stroke-width="1.5"/>`;
+      });
+      hov.innerHTML = g;
+      document.getElementById('readout').innerHTML = html;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    const $ = (id) => document.getElementById(id);
+    const PLANE_TEXT = ['xmin', 'xmax', 'ymin', 'ymax', 'xstep', 'ystep', 'xlabel', 'ylabel', 'title'];
+    const PLANE_SELECT = ['minor', 'shape', 'theme'];
+    const PLANE_CHECK = ['grid', 'numbers', 'degrees', 'intersections'];
+
+    function paintPlane() {
+      PLANE_TEXT.forEach(k => { $(k).value = state.plane[k]; });
+      PLANE_SELECT.forEach(k => { $(k).value = state.plane[k]; });
+      PLANE_CHECK.forEach(k => { $(k).checked = !!state.plane[k]; });
+    }
+    function markPlaneErrors(errs) {
+      ['xmin', 'xmax', 'ymin', 'ymax', 'xstep', 'ystep'].forEach(k => $(k).classList.toggle('err', !!errs[k]));
+    }
+    PLANE_TEXT.forEach(k => $(k).addEventListener('input', e => { state.plane[k] = e.target.value; render(); }));
+    PLANE_SELECT.forEach(k => $(k).addEventListener('change', e => { state.plane[k] = e.target.value; render(); }));
+    PLANE_CHECK.forEach(k => $(k).addEventListener('change', e => { state.plane[k] = e.target.checked; render(); }));
+    $('preset').addEventListener('change', e => {
+      const p = PRESETS[e.target.value];
+      if (p) { Object.assign(state.plane, p); paintPlane(); render(); }
+      e.target.value = '';
+    });
+    $('examples').addEventListener('change', e => {
+      if (e.target.value) { example(e.target.value); paintPlane(); paintGraphs(); paintPoints(); render(); }
+      e.target.value = '';
+    });
+
+    function paintTypeSelect(sel, current) {
+      sel.innerHTML = TYPE_ORDER.map(t => `<option value="${t}"${t === current ? ' selected' : ''}>${esc(T().types[t])} · ${esc(TYPES[t].form)}</option>`).join('');
+    }
+
+    function paintGraphs() {
+      const list = $('glist');
+      if (!state.graphs.length) { list.innerHTML = `<div class="empty">${esc(T().noGraphs)}</div>`; return; }
+      list.innerHTML = state.graphs.map(g => {
+        const def = TYPES[g.type];
+        const cols = def.params.length;
+        const params = def.expr
+          ? `<label class="field" style="margin-bottom:8px"><span>${esc(T().expr)}</span><input type="text" data-f="expr" value="${esc(g.expr)}" spellcheck="false" autocomplete="off" aria-label="${esc(g.name)}: y ="></label>`
+          : `<div class="row c${cols}">${def.params.map(([k]) => `<label class="field"><span class="var">${esc(k)}</span><input type="text" inputmode="decimal" data-p="${k}" value="${esc(g.params[k])}" aria-label="${esc(g.name)}: ${k}"></label>`).join('')}</div>`;
+        const dom = def.special ? '' : `
+            <div class="row c2">
+              <label class="field"><span>${esc(T().domFrom)}</span><input type="text" data-f="from" value="${esc(g.from)}" placeholder="−∞"></label>
+              <label class="field"><span>${esc(T().domTo)}</span><input type="text" data-f="to" value="${esc(g.to)}" placeholder="∞"></label>
+            </div>
+            <div class="checks">
+              <label class="check"><input type="checkbox" data-c="fromOpen"${g.fromOpen ? ' checked' : ''}> ${esc(T().openFrom)}</label>
+              <label class="check"><input type="checkbox" data-c="toOpen"${g.toOpen ? ' checked' : ''}> ${esc(T().openTo)}</label>
+            </div>`;
+        const hasAsym = ['hyperbola', 'exponential', 'log', 'tan'].includes(g.type);
+        return `
+        <div class="gcard${g.visible ? '' : ' off'}" data-gid="${g.id}" style="--gc:${esc(g.color)}">
+          <div class="gcard-top">
+            <input type="color" data-f="color" value="${esc(g.color)}" aria-label="Colour of ${esc(g.name)}">
+            <input type="text" class="gname" data-f="name" value="${esc(g.name)}" maxlength="6" aria-label="Name">
+            <select data-f="type" aria-label="Type of graph"></select>
+            <button class="btn icon" type="button" data-act="toggle" aria-label="${esc(g.visible ? T().hide : T().show)}" title="${esc(g.visible ? T().hide : T().show)}"><i data-lucide="${g.visible ? 'eye' : 'eye-off'}" style="width:15px;height:15px"></i></button>
+            <button class="btn icon danger" type="button" data-act="remove" aria-label="${esc(T().remove)}" title="${esc(T().remove)}"><i data-lucide="trash-2" style="width:15px;height:15px"></i></button>
+          </div>
+          <div class="eq" data-eq></div>
+          ${params}
+          <div class="checks" style="margin-bottom:0">
+            <label class="check"><input type="checkbox" data-c="keyPts"${g.keyPts ? ' checked' : ''}> ${esc(T().keyPts)}</label>
+            ${hasAsym ? `<label class="check"><input type="checkbox" data-c="asym"${g.asym ? ' checked' : ''}> ${esc(T().asym)}</label>` : ''}
+            <label class="check"><input type="checkbox" data-c="showEq"${g.showEq ? ' checked' : ''}> ${esc(T().showEq)}</label>
+          </div>
+          ${dom ? `<details class="more"><summary>${esc(T().more)}</summary><div class="inner">${dom}</div></details>` : ''}
+        </div>`;
+      }).join('');
+      list.querySelectorAll('.gcard').forEach(card => {
+        const g = graphById(card.dataset.gid);
+        paintTypeSelect(card.querySelector('select[data-f=type]'), g.type);
+      });
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    function paintEquations() {
+      document.querySelectorAll('#glist .gcard').forEach(card => {
+        const g = graphById(card.dataset.gid);
+        if (!g) return;
+        const m = g._model || buildGraph(g, !!state.plane.degrees);
+        const eq = card.querySelector('[data-eq]');
+        card.querySelectorAll('input[data-p]').forEach(inp => inp.classList.toggle('err', !!(m.bad && m.bad.includes(inp.dataset.p))));
+        const ex = card.querySelector('input[data-f=expr]'); if (ex) ex.classList.toggle('err', !!m.err);
+        ['from', 'to'].forEach(k => { const i = card.querySelector(`input[data-f=${k}]`); if (i) i.classList.toggle('err', !!(m.domErr && m.domErr.includes(k))); });
+        if (m.err) { eq.className = 'eq err'; eq.textContent = m.err; return; }
+        eq.className = 'eq';
+        const lhs = m.lhs === 'none' ? '' : `<i>y</i> = `;
+        let dom = '';
+        if (Number.isFinite(m.from) || Number.isFinite(m.to)) {
+          const u = state.plane.degrees ? '°' : '';
+          const a = Number.isFinite(m.from) ? `${num(m.from)}${u} ${g.fromOpen ? '&lt;' : '≤'} ` : '';
+          const b = Number.isFinite(m.to) ? ` ${g.toOpen ? '&lt;' : '≤'} ${num(m.to)}${u}` : '';
+          dom = `<span style="font-size:0.78em;color:var(--text-2)">&nbsp;;&nbsp; ${a}<i>x</i>${b}</span>`;
+        }
+        eq.innerHTML = lhs + textSegsHtml(m.eq) + dom;
+      });
+    }
+    const graphById = (id) => state.graphs.find(g => String(g.id) === String(id));
+
+    $('glist').addEventListener('input', e => {
+      const card = e.target.closest('.gcard'); if (!card) return;
+      const g = graphById(card.dataset.gid); if (!g) return;
+      const t = e.target;
+      if (t.dataset.p) g.params[t.dataset.p] = t.value;
+      else if (t.dataset.f && t.dataset.f !== 'type') {
+        g[t.dataset.f] = t.value;
+        if (t.dataset.f === 'color') card.style.setProperty('--gc', t.value);
+      }
+      render();
+    });
+    $('glist').addEventListener('change', e => {
+      const card = e.target.closest('.gcard'); if (!card) return;
+      const g = graphById(card.dataset.gid); if (!g) return;
+      const t = e.target;
+      if (t.dataset.c) { g[t.dataset.c] = t.checked; render(); return; }
+      if (t.dataset.f === 'type') {
+        const fresh = newGraph(t.value);
+        g.type = t.value; g.params = fresh.params;
+        if (t.value === 'custom' && !g.expr) g.expr = fresh.expr;
+        if (TYPES[t.value].trig && !state.plane.degrees) { /* leave the plane alone; the tip explains Degrees */ }
+        paintGraphs(); render();
+      }
+    });
+    $('glist').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-act]'); if (!btn) return;
+      const card = btn.closest('.gcard');
+      const g = graphById(card.dataset.gid); if (!g) return;
+      if (btn.dataset.act === 'remove') state.graphs = state.graphs.filter(x => x !== g);
+      if (btn.dataset.act === 'toggle') g.visible = !g.visible;
+      paintGraphs(); render();
+    });
+    $('addGraph').addEventListener('click', () => {
+      const type = $('newType').value;
+      state.graphs.push(newGraph(type));
+      if (TYPES[type].trig && !state.plane.degrees && state.graphs.length === 1) {
+        Object.assign(state.plane, PRESETS.trig360); paintPlane();
+      }
+      paintGraphs(); render();
+      const cards = document.querySelectorAll('#glist .gcard');
+      const last = cards[cards.length - 1];
+      if (last) { const f = last.querySelector('input[data-p], input[data-f=expr]'); if (f) f.focus(); }
+    });
+
+    // Points
+    function paintPoints() {
+      const list = $('plist');
+      list.innerHTML = state.points.map(p => `
+        <div class="prow" data-pid="${p.id}">
+          <input type="color" data-f="color" value="${esc(p.color)}" aria-label="Colour">
+          <input type="text" class="pname" data-f="name" value="${esc(p.name)}" maxlength="12" aria-label="${esc(T().pointName)}">
+          <label class="field"><input type="text" inputmode="decimal" data-f="x" value="${esc(p.x)}" aria-label="${esc(p.name)} x" placeholder="x"></label>
+          <label class="field"><input type="text" inputmode="decimal" data-f="y" value="${esc(p.y)}" aria-label="${esc(p.name)} y" placeholder="y"></label>
+          <button class="btn icon danger" type="button" data-act="remove" aria-label="${esc(T().remove)}"><i data-lucide="x" style="width:14px;height:14px"></i></button>
+        </div>`).join('');
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    function markPointErrors() {
+      document.querySelectorAll('#plist .prow').forEach(row => {
+        const p = state.points.find(q => String(q.id) === row.dataset.pid);
+        if (!p || !p._err) return;
+        row.querySelector('[data-f=x]').classList.toggle('err', p._err.x);
+        row.querySelector('[data-f=y]').classList.toggle('err', p._err.y);
+      });
+    }
+    $('plist').addEventListener('input', e => {
+      const row = e.target.closest('.prow'); if (!row) return;
+      const p = state.points.find(q => String(q.id) === row.dataset.pid); if (!p) return;
+      p[e.target.dataset.f] = e.target.value; render();
+    });
+    $('plist').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-act=remove]'); if (!btn) return;
+      const id = btn.closest('.prow').dataset.pid;
+      state.points = state.points.filter(q => String(q.id) !== id);
+      paintPoints(); render();
+    });
+    $('addPoint').addEventListener('click', () => {
+      const used = new Set(state.points.map(p => p.name));
+      state.points.push({ id: uid++, name: PNAMES.find(n => !used.has(n)) || 'P', x: '1', y: '1', color: state.plane.theme === 'dark' ? '#f3f4f6' : '#111827' });
+      paintPoints(); render();
+      const rows = document.querySelectorAll('#plist .prow');
+      rows[rows.length - 1]?.querySelector('[data-f=x]')?.focus();
+    });
+
+    // Plot hover
+    const plotEl = $('plot');
+    plotEl.addEventListener('pointermove', onHover);
+    plotEl.addEventListener('pointerdown', onHover);
+    plotEl.addEventListener('pointerleave', () => { const h = document.querySelector('#gpHover'); if (h) h.innerHTML = ''; readoutIdle(); });
+
+    // ── Export ──
+    function fileBase() {
+      const t = String(state.plane.title || '').trim();
+      return (t ? t.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) : 'graph') || 'graph';
+    }
+    function svgMarkup() {
+      const el = document.querySelector('#plot svg');
+      if (!el) return '';
+      const c = el.cloneNode(true);
+      c.querySelector('#gpHover')?.remove();
+      c.removeAttribute('role');
+      return '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(c);
+    }
+    function download(blob, name) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    }
+    $('dlSvg').addEventListener('click', () => {
+      const s = svgMarkup(); if (s) download(new Blob([s], { type: 'image/svg+xml' }), fileBase() + '.svg');
+    });
+    $('dlPng').addEventListener('click', () => {
+      const s = svgMarkup(); if (!s || !view) return;
+      const img = new Image();
+      const url = URL.createObjectURL(new Blob([s], { type: 'image/svg+xml' }));
+      img.onload = () => {
+        const scale = 2;
+        const c = document.createElement('canvas');
+        c.width = view.W * scale; c.height = Math.round(view.H * scale);
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        c.toBlob(b => { if (b) download(b, fileBase() + '.png'); }, 'image/png');
+      };
+      img.src = url;
+    });
+    $('printBtn').addEventListener('click', () => window.print());
+    $('copyLink').addEventListener('click', async () => {
+      const link = location.origin + location.pathname + '#g=' + toB64(serialize());
+      try { await navigator.clipboard.writeText(link); toast(T().copied); }
+      catch (_) { toast(T().copyFail); }
+    });
+    $('clearAll').addEventListener('click', () => {
+      if (!confirm(T().confirmClear)) return;
+      const theme = state.plane.theme;
+      state = { plane: Object.assign(defaultPlane(), { theme }), graphs: [], points: [] };
+      history.replaceState(null, '', location.pathname);
+      paintPlane(); paintGraphs(); paintPoints(); render();
+    });
+    let toastTimer = 0;
+    function toast(msg) {
+      const t = $('toast'); t.textContent = msg; t.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Language
+    // ══════════════════════════════════════════════════════════════════
+    function applyDataAf() {
+      document.querySelectorAll('[data-af-html]').forEach(el => {
+        if (el.dataset.enHtml === undefined) el.dataset.enHtml = el.innerHTML;
+        el.innerHTML = lang === 'af' ? el.dataset.afHtml : el.dataset.enHtml;
+      });
+      document.querySelectorAll('[data-af]:not([data-af-html])').forEach(el => {
+        if (el.dataset.en === undefined) el.dataset.en = el.textContent;
+        el.textContent = lang === 'af' ? el.dataset.af : el.dataset.en;
+      });
+      document.documentElement.lang = lang;
+    }
+    function applyLang() {
+      applyDataAf();
+      const cur = $('newType').value || 'linear';
+      paintTypeSelect($('newType'), cur);
+      paintGraphs(); paintPoints(); render(); readoutIdle();
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    if (window.MLLang) MLLang.mount('mlLangToggle', { onChange(next) { lang = next; applyLang(); } });
+
+    // ══════════════════════════════════════════════════════════════════
+    // Boot
+    // ══════════════════════════════════════════════════════════════════
+    const loaded = load();
+    if (loaded) state = loaded;
+    else example('hyp');
+    paintPlane();
+    applyLang();
+    // Test hook (harmless in production): lets a headless check exercise the parser.
+    window.__grapher = { compile, state: () => state };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

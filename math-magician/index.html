@@ -282,6 +282,43 @@
 
     #view-dropdown { z-index: 5; }
 
+    /* ── Resources (tools that sit beside the grade content) ────────────── */
+    .resources {
+      width: 100%; max-width: var(--measure); margin-inline: auto;
+      padding: 0 var(--gutter) var(--space-8);
+    }
+    .resources-label {
+      display: flex; align-items: center; gap: 9px; margin-bottom: var(--space-4);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
+    .resource-card {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-5); border-radius: var(--radius-md);
+      background: var(--ink-850); border: 1px solid var(--line);
+      text-decoration: none; color: inherit;
+      transition: background var(--dur-med) var(--ease-standard),
+                  border-color var(--dur-med) var(--ease-standard),
+                  transform var(--dur-med) var(--ease-standard);
+    }
+    .resource-card:hover {
+      background: var(--ink-800);
+      border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+      transform: translateY(-2px);
+    }
+    .resource-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      display: grid; place-items: center; border-radius: var(--radius-sm);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .resource-title { font-family: var(--font-display); font-weight: 800; font-size: 16px; letter-spacing: -0.02em; color: var(--paper); }
+    .resource-desc { font-size: 13px; line-height: 1.55; color: var(--text-2); margin-top: 2px; }
+    .resource-arrow { margin-left: auto; color: var(--text-3); flex-shrink: 0; }
+    .resource-card:hover .resource-arrow { color: var(--accent); }
+
     @media (max-width: 640px) {
       nav { min-height: 60px; }
       .strands { grid-template-columns: repeat(2, 1fr); }
@@ -300,6 +337,7 @@
     <a href="../index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
     <div style="display:flex;align-items:center;gap:10px">
       <span id="mlLangToggle"></span>
+      <a href="grapher.html" class="nav-back"><i data-lucide="spline" style="width:13px;height:13px"></i> <span id="lblNavGrapher">Graph Plotter</span></a>
       <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span id="lblBack">Back to Magic Lab</span></a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
@@ -388,6 +426,20 @@
     </div>
   </div>
 
+  <section class="resources" aria-labelledby="lblResources">
+    <h2 class="resources-label"><span class="hero-tag-dot"></span><span id="lblResources">Resources</span></h2>
+    <div class="resources-grid">
+      <a href="grapher.html" class="resource-card">
+        <div class="resource-icon"><i data-lucide="spline" style="width:20px;height:20px"></i></div>
+        <div>
+          <div class="resource-title" id="lblGrapherTitle">Graph Plotter</div>
+          <p class="resource-desc" id="lblGrapherDesc">Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.</p>
+        </div>
+        <span class="resource-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
   <footer>
     <span class="footer-copy"><i data-lucide="calculator" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px"></i>Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
   </footer>
@@ -406,6 +458,8 @@
         startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
         topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
         continueWhere: 'Continue where you left off', gradeWord: 'Grade', mathsWord: 'Maths',
+        resources: 'Resources', grapherTitle: 'Graph Plotter',
+        grapherDesc: 'Set up a Cartesian plane and plot straight lines, parabolas, hyperbolas, exponential, log, trig and custom graphs, with intercepts and asymptotes marked.',
         footer: 'Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Phase', desc: 'Foundations for the Senior Phase — numbers, algebra, geometry and data.' },
@@ -423,6 +477,8 @@
         startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
         topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
         continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad', mathsWord: 'Wiskunde',
+        resources: 'Hulpbronne', grapherTitle: 'Grafiekplotter',
+        grapherDesc: 'Stel ’n Cartesiese vlak op en plot reguit lyne, parabole, hiperbole, eksponensiële, log-, trig- en eie grafieke, met afsnitte en asimptote gemerk.',
         footer: 'Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg',
         cards: {
           8:  { tag: 'Senior Fase', desc: 'Grondslag vir die Senior Fase — getalle, algebra, meetkunde en data.' },
@@ -446,6 +502,10 @@
       set('lblHeroSub', t.heroSub);
       set('lblGrid', t.grid);
       set('lblQuickJump', t.quickJump);
+      set('lblResources', t.resources);
+      set('lblGrapherTitle', t.grapherTitle);
+      set('lblGrapherDesc', t.grapherDesc);
+      set('lblNavGrapher', t.grapherTitle);
       document.querySelector('.path-trigger-label').textContent = t.jumpToGrade;
       document.querySelector('.path-trigger-current').textContent = t.selectGrade;
       document.querySelector('.footer-copy').lastChild.textContent = t.footer;
