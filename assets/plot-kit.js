@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// Math Magician — plot kit
-// Shared by the Graph Plotter (grapher.html) and the Number Line
-// (numberline.html):
+// The Magic Lab — plot kit
+// Shared by the teacher tools in Math Magician and Science Sage:
 //   • a small expression parser (no eval) for every value box
 //   • getting a plot out of the page: copy as image (to paste into
 //     Word / Google Docs), PNG sized in cm, SVG, and a print sheet
