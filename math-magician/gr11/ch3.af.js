@@ -67,7 +67,7 @@ MathMagician.registerChapter(3, {
                 if([T1,T2,T3].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Voer drie numeriese terme in.</span>';return;}
                 const d1=T2-T1,d2=T3-T2;
                 const d2nd=d2-d1;
-                if(d2nd===0){out.innerHTML='<span style="color:#fca5a5;">Tweede verskil is 0 — dit is \'n lineêre (nie kwadratiese) ry.</span>';return;}
+                if(d2nd===0){out.innerHTML='<span style="color:#fca5a5;">Tweede verskil is 0 — dit is ’n lineêre (nie kwadratiese) ry.</span>';return;}
                 const a=d2nd/2;
                 // b vanaf 3a+b = d1
                 const b=d1-3*a;
@@ -225,7 +225,7 @@ MathMagician.registerChapter(3, {
                     const ni=Math.round(n);
                     html+='<span style="color:#6ee7b7;">n = '+ni+' ✓ → T₍'+ni+'₎ = '+f(a*ni*ni+b*ni+c)+'</span><br>';
                   } else if(n>0){
-                    html+='<span style="color:rgba(221,225,240,0.50);">n = '+f(n)+' — nie \'n positiewe heelgetal nie, verwerp</span><br>';
+                    html+='<span style="color:rgba(221,225,240,0.50);">n = '+f(n)+' — nie ’n positiewe heelgetal nie, verwerp</span><br>';
                   } else {
                     html+='<span style="color:rgba(221,225,240,0.50);">n = '+f(n)+' — negatief, verwerp</span><br>';
                   }
@@ -343,7 +343,7 @@ MathMagician.registerChapter(3, {
               function calc(){
                 const n=parseInt(document.getElementById('g11c3t3n').value);
                 const out=document.getElementById('g11c3t3Out');
-                if(isNaN(n)||n<2){out.innerHTML='<span style="color:#fca5a5;">Voer \'n heelgetal aantal spanne in (minstens 2).</span>';return;}
+                if(isNaN(n)||n<2){out.innerHTML='<span style="color:#fca5a5;">Voer ’n heelgetal aantal spanne in (minstens 2).</span>';return;}
                 const seqTerms=[];
                 for(let k=2;k<=Math.min(n+1,7);k++) seqTerms.push(k*(k-1)/2);
                 const matches=n*(n-1)/2;

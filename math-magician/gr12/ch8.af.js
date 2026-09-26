@@ -85,7 +85,7 @@ MathMagician.registerChapter(8, {
                   html='<span style="color:rgba(221,225,240,0.50);">AD/DB = '+f4(lhs)+'   AE/EC = '+f4(rhs)+'</span><br>';
                   html+=isParallel?'<span style="color:#6ee7b7;">✅ DE ∥ BC (verhoudings gelyk — omgekeerde ET)</span>':'<span style="color:#fca5a5;">❌ DE is NIE parallel aan BC nie</span>';
                 } else {
-                  out.innerHTML="<span style=\"color:#fca5a5;\">Voer AD, DB, AE in en laat EC leeg om dit te vind, of voer al vier in om parallelisme te toets.</span>";return;
+                  out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer AD, DB, AE in en laat EC leeg om dit te vind, of voer al vier in om parallelisme te toets.</span>";return;
                 }
                 out.innerHTML=html;
               }

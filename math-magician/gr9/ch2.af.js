@@ -87,7 +87,7 @@ MathMagician.registerChapter(2, {
               var op=document.getElementById('intOp').value;
               var result,expr,rule='';
               if(op==='+'){result=a+b;expr=a+' + ('+b+') = '+result;}
-              else if(op==='-'){result=a-b;expr=a+' - ('+b+') = '+a+' + ('+(- b)+') = '+result;rule="Aftrekking van 'n negatiewe getal = optelling van sy positiewe";}
+              else if(op==='-'){result=a-b;expr=a+' - ('+b+') = '+a+' + ('+(- b)+') = '+result;rule="Aftrekking van ’n negatiewe getal = optelling van sy positiewe";}
               else if(op==='*'){result=a*b;expr='('+a+') × ('+b+') = '+result;
                 var sa=a>=0?'+':'-',sb=b>=0?'+':'-',sr=result>=0?'+':'-';
                 rule=sa+' × '+sb+' = '+sr+(result>=0?' (dieselfde tekens → positief)':' (verskillende tekens → negatief)');}
@@ -165,7 +165,7 @@ MathMagician.registerChapter(2, {
             function f(v){return Number.isInteger(v)?String(v):v.toFixed(4);}
             function explore(){
               var n=parseFloat(document.getElementById('rootN').value);
-              if(isNaN(n)){document.getElementById('rootOut').innerHTML='<span style="color:#fca5a5;">Voer \'n geldige heelgetal in.</span>';return;}
+              if(isNaN(n)){document.getElementById('rootOut').innerHTML='<span style="color:#fca5a5;">Voer ’n geldige heelgetal in.</span>';return;}
               var sq=n*n, cu=n*n*n;
               var sqrtReal=n>=0, sqrtVal=sqrtReal?Math.sqrt(n):NaN;
               var cbrtVal=n>=0?Math.cbrt(n):-Math.cbrt(-n);

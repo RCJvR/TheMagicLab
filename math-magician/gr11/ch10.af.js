@@ -326,7 +326,7 @@ MathMagician.registerChapter(10, {
                 const acOnly=AC-ABC, bcOnly=BC-ABC, abOnly=AB-ABC;
                 const none=S-U;
                 if(AB<0||aOnly<0||bOnly<0||cOnly<0||acOnly<0||bcOnly<0||abOnly<0||none<0){
-                  out.innerHTML='<span style="color:#fca5a5;">Hierdie waardes is teenstrydig — kontroleer of \'n streek negatief uitgekom het. Hersien jou gegewe tellings.</span>';return;
+                  out.innerHTML='<span style="color:#fca5a5;">Hierdie waardes is teenstrydig — kontroleer of ’n streek negatief uitgekom het. Hersien jou gegewe tellings.</span>';return;
                 }
                 let html='<span style="color:rgba(221,225,240,0.50);">n(A∩B) opgelos uit die optelreël: '+AB+'</span><br>';
                 html+='<span style="color:#fcd34d;">A alleen = '+aOnly+'</span>   <span style="color:#fcd34d;">B alleen = '+bOnly+'</span>   <span style="color:#fcd34d;">C alleen = '+cOnly+'</span><br>';

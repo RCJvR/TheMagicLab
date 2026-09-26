@@ -63,14 +63,14 @@ MathMagician.registerChapter(8, {
             <div id="g11c8Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
             <script>
             (function(){
-              function lbl(id,label,val,mn,mx){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="'+(mn||0)+'" max="'+(mx||360)+'" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function lbl(id,label,val,mn,mx){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="'+(mn||0)+'" max="'+(mx||360)+'" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               const descs={
                 central:'Die middelpuntshoek (∠AOB) is dubbel die ingeskrewe hoek. Voer middelpuntshoek in → vind omtrekshoek.',
                 circ:'Voer omtrekshoek in → vind middelpuntshoek (dubbel).',
-                cyclicA:'Voer een hoek van \'n koordevierhoek in → vind sy opponerende hoek (supplementêr: som = 180°).',
+                cyclicA:'Voer een hoek van ’n koordevierhoek in → vind sy opponerende hoek (supplementêr: som = 180°).',
                 extcyclic:'Voer die binnehoek by een hoekpunt in → die buitehoek by die opponerende hoekpunt is daaraan gelyk.',
-                semicircle:'Die hoek in \'n halfsirkel is altyd 90°. Voer die middelpuntshoek van die deursnee (180°) in → bevestig.',
+                semicircle:'Die hoek in ’n halfsirkel is altyd 90°. Voer die middelpuntshoek van die deursnee (180°) in → bevestig.',
                 sameseg:'Hoeke wat deur dieselfde boog in dieselfde segment onderspan word, is gelyk. Voer een in → kry die ander.'
               };
               function build(){
@@ -90,8 +90,8 @@ MathMagician.registerChapter(8, {
                 const out=document.getElementById('g11c8Out');
                 const a=gv('g11c8a');
                 let html='';
-                if(t==='semicircle'){out.innerHTML='<span style="color:#6ee7b7;">∠ACB = 90° (hoek in \'n halfsirkel; AB is \'n deursnee)</span>';return;}
-                if(isNaN(a)||a<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige hoek in.</span>';return;}
+                if(t==='semicircle'){out.innerHTML='<span style="color:#6ee7b7;">∠ACB = 90° (hoek in ’n halfsirkel; AB is ’n deursnee)</span>';return;}
+                if(isNaN(a)||a<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige hoek in.</span>';return;}
                 if(t==='central'){
                   if(a<=0||a>=360){out.innerHTML='<span style="color:#fca5a5;">Middelpuntshoek moet tussen 0° en 360° wees.</span>';return;}
                   const circ=a/2;
@@ -387,15 +387,15 @@ MathMagician.registerChapter(8, {
                 if(unknownCount!==1){out.innerHTML='<span style="color:#fca5a5;">Voer presies twee waardes in en los die derde as ? .</span>';return;}
                 const r=isQ(rS)?NaN:parseFloat(rS), c=isQ(cS)?NaN:parseFloat(cS), d=isQ(dS)?NaN:parseFloat(dS);
                 if(isQ(rS)){
-                  if(isNaN(c)||isNaN(d)||c<=0||d<0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige positiewe koord en nie-negatiewe afstand in.</span>';return;}
+                  if(isNaN(c)||isNaN(d)||c<=0||d<0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige positiewe koord en nie-negatiewe afstand in.</span>';return;}
                   const half=c/2, newR=Math.sqrt(d*d+half*half);
                   out.innerHTML='<span style="color:rgba(221,225,240,0.50);">r² = d² + (c/2)² = '+f(d*d)+' + '+f(half*half)+'</span><br><span style="color:#6ee7b7;">r = '+f(newR)+'</span>';
                 } else if(isQ(cS)){
-                  if(isNaN(r)||isNaN(d)||r<=0||d<0||d>=r){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige radius en afstand in (afstand moet kleiner as die radius wees).</span>';return;}
+                  if(isNaN(r)||isNaN(d)||r<=0||d<0||d>=r){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige radius en afstand in (afstand moet kleiner as die radius wees).</span>';return;}
                   const half=Math.sqrt(r*r-d*d), newC=2*half;
                   out.innerHTML='<span style="color:rgba(221,225,240,0.50);">(c/2)² = r² − d² = '+f(r*r)+' − '+f(d*d)+'</span><br><span style="color:#6ee7b7;">c = '+f(newC)+'</span>';
                 } else {
-                  if(isNaN(r)||isNaN(c)||r<=0||c<=0||c>2*r){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige radius en koord in (koord kan nie langer as die deursnee wees nie).</span>';return;}
+                  if(isNaN(r)||isNaN(c)||r<=0||c<=0||c>2*r){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige radius en koord in (koord kan nie langer as die deursnee wees nie).</span>';return;}
                   const half=c/2, newD=Math.sqrt(r*r-half*half);
                   out.innerHTML='<span style="color:rgba(221,225,240,0.50);">d² = r² − (c/2)² = '+f(r*r)+' − '+f(half*half)+'</span><br><span style="color:#6ee7b7;">d = '+f(newD)+'</span>';
                 }
@@ -517,7 +517,7 @@ MathMagician.registerChapter(8, {
                 const extAngle=central;
                 let html='<span style="color:rgba(221,225,240,0.50);">Stap 1: ∠ by omtrek = x = '+x+'° (gegee)</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">Stap 2: middelpunts-∠O = 2 × x = '+central+'° (∠ by middelpunt = 2 × ∠ by omtrek)</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">Stap 3: as hierdie middelpuntshoek binne \'n koordevierhoek-tipe figuur ABPO lê, is die opponerende ∠ = 180° − '+central+'° = '+cyclicOpp+'° (opp ∠e koordevierhoek)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Stap 3: as hierdie middelpuntshoek binne ’n koordevierhoek-tipe figuur ABPO lê, is die opponerende ∠ = 180° − '+central+'° = '+cyclicOpp+'° (opp ∠e koordevierhoek)</span><br>';
                 html+='<span style="color:#6ee7b7;">Stap 4: buitehoek by die aangrensende hoekpunt = '+extAngle+'° (buite-∠ koordevierhoek = binne-opp ∠)</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.45);font-size:12px;">Dit weerspieël die ketting van redenasie wat in multi-stap vraagstukke gebruik word — elke nuwe hoek hang af van die een voor dit.</span>';
                 out.innerHTML=html;

@@ -87,11 +87,11 @@ MathMagician.registerChapter(12, {
                 const a=parseFloat(document.getElementById('g10c12ang').value);
                 const r=rel.value;
                 const out=document.getElementById('g10c12Out');
-                if(isNaN(a)||a<=0||a>=180){out.innerHTML='<span style="color:#fca5a5;">Voer \'n hoek tussen 1° en 179° in.</span>';return;}
+                if(isNaN(a)||a<=0||a>=180){out.innerHTML='<span style="color:#fca5a5;">Voer ’n hoek tussen 1° en 179° in.</span>';return;}
                 let result,reason;
-                if(r==='supp'){result=180-a;reason='Supplementêre hoeke tel op tot 180° (hoeke op \'n reguit lyn)';}
+                if(r==='supp'){result=180-a;reason='Supplementêre hoeke tel op tot 180° (hoeke op ’n reguit lyn)';}
                 else if(r==='vert'){result=a;reason='Vertikaal oorstaande hoeke is gelyk';}
-                else if(r==='comp'){if(a>=90){out.innerHTML='<span style="color:#fca5a5;">Komplementêr vereis \'n hoek < 90°.</span>';return;}result=90-a;reason='Komplementêre hoeke tel op tot 90°';}
+                else if(r==='comp'){if(a>=90){out.innerHTML='<span style="color:#fca5a5;">Komplementêr vereis ’n hoek < 90°.</span>';return;}result=90-a;reason='Komplementêre hoeke tel op tot 90°';}
                 else if(r==='alt'){result=a;reason='Verwisselende hoeke is gelyk (AB ∥ CD, transversaal)';}
                 else if(r==='corr'){result=a;reason='Ooreenstemmende hoeke is gelyk (AB ∥ CD, transversaal)';}
                 else if(r==='coint'){result=180-a;reason='Ko-interne hoeke is supplementêr — hulle tel op tot 180° (AB ∥ CD)';}
@@ -219,13 +219,13 @@ MathMagician.registerChapter(12, {
               function calc(){
                 const A=parseFloat(document.getElementById('g10c12t2ang').value);
                 const out=document.getElementById('g10c12t2Out');
-                if(isNaN(A)||A<=0||A>=180){out.innerHTML='<span style="color:#fca5a5;">Voer \'n hoek tussen 1° en 179° in.</span>';return;}
+                if(isNaN(A)||A<=0||A>=180){out.innerHTML='<span style="color:#fca5a5;">Voer ’n hoek tussen 1° en 179° in.</span>';return;}
                 const B=180-A;
                 let html='<span style="color:rgba(221,225,240,0.50);">In parallelogram ABCD:</span><br>';
                 html+='<span style="color:#fcd34d;">∠A = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (gegee)</span><br>';
-                html+='<span style="color:#6ee7b7;">∠C = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van \'n parallelogram is gelyk)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠C = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van ’n parallelogram is gelyk)</span><br>';
                 html+='<span style="color:#6ee7b7;">∠B = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (ko-interne hoeke, AB∥DC → ∠A + ∠B = 180°)</span><br>';
-                html+='<span style="color:#6ee7b7;">∠D = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van \'n parallelogram is gelyk)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠D = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van ’n parallelogram is gelyk)</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">Kontroleer: '+A+' + '+B+' + '+A+' + '+B+' = '+(2*A+2*B)+'° ✓</span>';
                 out.innerHTML=html;
               }
@@ -360,7 +360,7 @@ MathMagician.registerChapter(12, {
                 if(c2)msgs.push('<span style="color:#6ee7b7;">Kongruent volgens SHS ✓</span>');
                 if(c3)msgs.push('<span style="color:#6ee7b7;">Kongruent volgens HHS ✓</span>');
                 if(c4)msgs.push('<span style="color:#6ee7b7;">Kongruent volgens RSS ✓</span>');
-                if(c5)msgs.push('<span style="color:#fca5a5;">SSH is NIE \'n geldige kongruensievoorwaarde op sy eie nie — die driehoeke is moontlik NIE kongruent nie ✗</span>');
+                if(c5)msgs.push('<span style="color:#fca5a5;">SSH is NIE ’n geldige kongruensievoorwaarde op sy eie nie — die driehoeke is moontlik NIE kongruent nie ✗</span>');
                 if(msgs.length===0){out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Merk die feite wat jy van die twee driehoeke weet.</span>';return;}
                 out.innerHTML=msgs.join('<br>');
               }

@@ -331,7 +331,7 @@ MathMagician.registerChapter(3, {
               const raw=document.getElementById('sciInput').value.trim();
               const n=parseFloat(raw);
               const el=document.getElementById('sciOut');
-              if(isNaN(n)){el.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige getal in.</span>';return;}
+              if(isNaN(n)){el.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige getal in.</span>';return;}
               const sci=n.toExponential();
               const parts=sci.split('e');
               const coeff=parseFloat(parts[0]).toFixed(4).replace(/\.?0+$/,'');

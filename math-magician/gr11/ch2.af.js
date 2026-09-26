@@ -500,7 +500,7 @@ MathMagician.registerChapter(2, {
               function calc(){
                 const L=parseFloat(document.getElementById('g11c2t4L').value);
                 const out=document.getElementById('g11c2t4Out');
-                if(isNaN(L)||L<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe omheiningslengte in.</span>";return;}
+                if(isNaN(L)||L<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe omheiningslengte in.</span>";return;}
                 // A(x) = x(L - 2x) = Lx - 2x^2, max at x = L/4
                 const x=L/4;
                 const other=L-2*x;

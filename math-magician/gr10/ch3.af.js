@@ -239,7 +239,7 @@ MathMagician.registerChapter(3, {
                 if([t1,t2,t3,n].some(isNaN)||n<1){out.innerHTML='<span style="color:#fca5a5;">Voer geldige waardes in.</span>';return;}
                 const d1=t2-t1, d2=t3-t2;
                 if(Math.abs(d1-d2)>0.0001){
-                  out.innerHTML='<span style="color:#fca5a5;">Verskille nie konstant nie (d₁='+d1+', d₂='+d2+') — nie \'n lineêre ry nie.</span>';
+                  out.innerHTML='<span style="color:#fca5a5;">Verskille nie konstant nie (d₁='+d1+', d₂='+d2+') — nie ’n lineêre ry nie.</span>';
                   return;
                 }
                 const d=d1;
@@ -390,7 +390,7 @@ MathMagician.registerChapter(3, {
                 const word=(document.getElementById('g10c3cycWord').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
                 const n=parseInt(document.getElementById('g10c3cycN').value);
                 const out=document.getElementById('g10c3cycOut');
-                if(!word||!n||n<1){out.innerHTML='<span style="color:#fca5a5;">Voer \'n blok en \'n posisie ≥ 1 in.</span>';return;}
+                if(!word||!n||n<1){out.innerHTML='<span style="color:#fca5a5;">Voer ’n blok en ’n posisie ≥ 1 in.</span>';return;}
                 const L=word.length;
                 let rem=n%L;
                 const idx=rem===0?L:rem;

@@ -650,7 +650,7 @@ MathMagician.registerChapter(5, {
                   html+='<span style="color:#fcd34d;">Domein: </span><span style="color:#6ee7b7;">x ∈ ℝ, x ≠ '+p+'</span> &nbsp; <span style="color:#fcd34d;">Waardeversameling: </span><span style="color:#6ee7b7;">y ∈ ℝ, y ≠ '+q+'</span>';
                 } else {
                   const b=gv('g11c5t3b');
-                  if(isNaN(b)||b<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige grondtal b &gt; 0 in.</span>';return;}
+                  if(isNaN(b)||b<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige grondtal b &gt; 0 in.</span>';return;}
                   const yInt=a*Math.pow(b,-p)+q;
                   html+='<span style="color:rgba(221,225,240,0.50);">y = '+a+'·'+b+'^(x−'+p+') + '+q+'</span><br>';
                   html+='<span style="color:#fcd34d;">y-afsnit: </span><span style="color:#6ee7b7;">(0; '+f(yInt)+')</span><br>';

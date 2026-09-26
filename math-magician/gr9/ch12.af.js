@@ -55,7 +55,7 @@ MathMagician.registerChapter(12, {
           </div>
           <script>
           (function(){
-            var reasons={supp:'Hoeke op \'n reguit lyn',comp:'Komplementêre hoeke',rev:'Hoeke rondom \'n punt',vert:'Regoorst. ∠e (gelyk)',coInt:'Mede-binne ∠e, lyne ∥'};
+            var reasons={supp:'Hoeke op ’n reguit lyn',comp:'Komplementêre hoeke',rev:'Hoeke rondom ’n punt',vert:'Regoorst. ∠e (gelyk)',coInt:'Mede-binne ∠e, lyne ∥'};
             var totals={supp:180,comp:90,rev:360,vert:null,coInt:180};
             function solve(){
               var rel=document.getElementById('ang4Rel').value;

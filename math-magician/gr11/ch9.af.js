@@ -70,7 +70,7 @@ MathMagician.registerChapter(9, {
                 else html+='<span style="color:#fcd34d;">Reguitlyn A = '+R(sl)+'</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">Verminderende-saldo: A = P(1−i)ⁿ = '+R(P)+'('+((1-i).toFixed(4))+')^'+n+'</span><br>';
                 html+='<span style="color:#6ee7b7;">Verminderende-saldo A = '+R(rb)+'</span>';
-                if(sl>0) html+='<br><span style="color:rgba(221,225,240,0.50);">Verminderende-saldo is hoër met '+R(rb-sl)+' (dieselfde koers, VS gee altyd \'n hoër boekwaarde)</span>';
+                if(sl>0) html+='<br><span style="color:rgba(221,225,240,0.50);">Verminderende-saldo is hoër met '+R(rb-sl)+' (dieselfde koers, VS gee altyd ’n hoër boekwaarde)</span>';
                 out.innerHTML=html;
               }
               ['g11c9p','g11c9i','g11c9n'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
@@ -206,7 +206,7 @@ MathMagician.registerChapter(9, {
               accBtn.addEventListener('click',()=>setMode('acc'));
               document.getElementById('g11c9t2convBtn').addEventListener('click',()=>{
                 const nom=gv('g11c9t2nom')/100,n=parseInt(document.getElementById('g11c9t2n').value);
-                if(isNaN(nom)||nom<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige nominale koers in.</span>';return;}
+                if(isNaN(nom)||nom<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige nominale koers in.</span>';return;}
                 const eff=Math.pow(1+nom/n,n)-1;
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i_nom = '+( nom*100).toFixed(2)+'% saamgestel '+n+'×/jaar</span><br>'+
                   '<span style="color:rgba(221,225,240,0.50);">i_eff = (1 + '+nom.toFixed(6)+'/'+n+')^'+n+' − 1</span><br>'+
@@ -486,7 +486,7 @@ MathMagician.registerChapter(9, {
                 const n=Math.log(A/P)/Math.log(1+i);
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">A/P = '+(A/P).toFixed(4)+' = (1 + '+i.toFixed(4)+')ⁿ</span><br>'+
                   '<span style="color:rgba(221,225,240,0.50);">n = log('+(A/P).toFixed(4)+') / log('+(1+i).toFixed(4)+')</span><br>'+
-                  '<span style="color:#6ee7b7;">n ≈ '+n.toFixed(4)+' jaar</span>   <span style="color:#fcd34d;">Rond op na '+Math.ceil(n)+' volle jare as \'n heelgetal periode vereis word</span>';
+                  '<span style="color:#6ee7b7;">n ≈ '+n.toFixed(4)+' jaar</span>   <span style="color:#fcd34d;">Rond op na '+Math.ceil(n)+' volle jare as ’n heelgetal periode vereis word</span>';
               });
               document.getElementById('g11c9t4iCalc').addEventListener('click',()=>{
                 const P=gv('g11c9t4ip'),A=gv('g11c9t4ia'),n=gv('g11c9t4in');

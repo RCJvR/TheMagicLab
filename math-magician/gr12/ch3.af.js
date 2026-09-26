@@ -76,7 +76,7 @@ MathMagician.registerChapter(3, {
               fBtn.addEventListener('click',()=>setMode('F')); xBtn.addEventListener('click',()=>setMode('X'));
               document.getElementById('g12c3fvFBtn').addEventListener('click',()=>{
                 const x=gv('g12c3x'),r=gv('g12c3r')/100,np=gi('g12c3np'),t=gv('g12c3t');
-                if([x,r,t].some(isNaN)||x<=0||r<=0||t<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer positiewe waardes in.</span>";return;}
+                if([x,r,t].some(isNaN)||x<=0||r<=0||t<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer positiewe waardes in.</span>";return;}
                 const i=r/np,n=np*t,F=x*(Math.pow(1+i,n)-1)/i;
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i = '+r*100+'%/'+np+' = '+(i*100).toFixed(4)+'% per periode; n = '+np+'×'+t+' = '+n+' periodes</span><br>'+
                   '<span style="color:rgba(221,225,240,0.50);">F = '+R(x)+'·[(1+'+i.toFixed(6)+')^'+n+'−1]/'+i.toFixed(6)+'</span><br>'+
@@ -85,7 +85,7 @@ MathMagician.registerChapter(3, {
               });
               document.getElementById('g12c3fvXBtn').addEventListener('click',()=>{
                 const F=gv('g12c3F'),r=gv('g12c3r2')/100,np=gi('g12c3np2'),t=gv('g12c3t2');
-                if([F,r,t].some(isNaN)||F<=0||r<=0||t<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer positiewe waardes in.</span>";return;}
+                if([F,r,t].some(isNaN)||F<=0||r<=0||t<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer positiewe waardes in.</span>";return;}
                 const i=r/np,n=np*t,x=F*i/(Math.pow(1+i,n)-1);
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">x = F·i/[(1+i)ⁿ−1]; i = '+(i*100).toFixed(4)+'%; n = '+n+' periodes</span><br>'+
                   '<span style="color:#6ee7b7;">Betaling x = '+R(x)+' per periode</span><br>'+
@@ -161,7 +161,7 @@ MathMagician.registerChapter(3, {
               const out=document.getElementById('g12c3lOut');
               document.getElementById('g12c3lBtn').addEventListener('click',()=>{
                 const P=gv('g12c3lP'),r=gv('g12c3lr')/100,t=gv('g12c3lt'),k=gv('g12c3lk');
-                if([P,r,t].some(isNaN)||P<=0||r<=0||t<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer geldige leningsbesonderhede in.</span>";return;}
+                if([P,r,t].some(isNaN)||P<=0||r<=0||t<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer geldige leningsbesonderhede in.</span>";return;}
                 const i=r/12,n=12*t;
                 const x=P*i/(1-Math.pow(1+i,-n));
                 const remaining=n-k;
@@ -266,7 +266,7 @@ MathMagician.registerChapter(3, {
               function calc(){
                 const P=gv('g12c3gP'),i=gv('g12c3gi')/100,n=gv('g12c3gn'),mode=gs('g12c3gMode');
                 const out=document.getElementById('g12c3gOut');
-                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer positiewe waardes in.</span>";return;}
+                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer positiewe waardes in.</span>";return;}
                 const sign=mode==='growth'?1:-1;
                 const simple=P*(1+sign*i*n);
                 const compound=P*Math.pow(1+sign*i,n);
@@ -360,7 +360,7 @@ MathMagician.registerChapter(3, {
               function calc(){
                 const rA=gv('g12c3eA')/100,mA=gi('g12c3eAm'),rB=gv('g12c3eB')/100,mB=gi('g12c3eBm');
                 const out=document.getElementById('g12c3eOut');
-                if([rA,rB].some(isNaN)||rA<=0||rB<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer geldige koerse in.</span>";return;}
+                if([rA,rB].some(isNaN)||rA<=0||rB<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer geldige koerse in.</span>";return;}
                 const effA=(Math.pow(1+rA/mA,mA)-1)*100;
                 const effB=(Math.pow(1+rB/mB,mB)-1)*100;
                 const better=effA>effB?'A':(effB>effA?'B':'A en B is gelyk');

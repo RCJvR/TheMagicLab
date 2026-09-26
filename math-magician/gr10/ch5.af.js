@@ -90,16 +90,16 @@ MathMagician.registerChapter(5, {
                 tan:{'0':'0','30':'0.5774','45':'1.0000','60':'1.7321','90':'—'}
               };
               const explain={
-                '30sin':'Uit \'n 30-60-90-driehoek: sye 1, √3, 2. Teenoorstaande van 30° = 1, skuinssy = 2.',
-                '30cos':'Uit \'n 30-60-90-driehoek: aangrensend aan 30° = √3, skuinssy = 2.',
+                '30sin':'Uit ’n 30-60-90-driehoek: sye 1, √3, 2. Teenoorstaande van 30° = 1, skuinssy = 2.',
+                '30cos':'Uit ’n 30-60-90-driehoek: aangrensend aan 30° = √3, skuinssy = 2.',
                 '30tan':'Teenoorstaande/aangrensend = 1/√3 = √3/3 (gerasionaliseer).',
-                '45sin':'Uit \'n 45-45-90-driehoek: sye 1, 1, √2. Teenoorstaande = 1, skuinssy = √2.',
+                '45sin':'Uit ’n 45-45-90-driehoek: sye 1, 1, √2. Teenoorstaande = 1, skuinssy = √2.',
                 '45cos':'Aangrensend = 1, skuinssy = √2. Dieselfde as sin 45°.',
                 '45tan':'Teenoorstaande = aangrensend = 1, dus tan 45° = 1.',
-                '60sin':'Uit \'n 30-60-90-driehoek: teenoorstaande van 60° = √3, skuinssy = 2.',
+                '60sin':'Uit ’n 30-60-90-driehoek: teenoorstaande van 60° = √3, skuinssy = 2.',
                 '60cos':'Aangrensend aan 60° = 1, skuinssy = 2.',
                 '60tan':'Teenoorstaande/aangrensend = √3/1 = √3.',
-                '0sin':'By 0° het die teenoorstaande sy \'n lengte van 0.',
+                '0sin':'By 0° het die teenoorstaande sy ’n lengte van 0.',
                 '0cos':'By 0° is aangrensend = skuinssy, dus verhouding = 1.',
                 '0tan':'sin 0°/cos 0° = 0/1 = 0.',
                 '90sin':'By 90° is teenoorstaande = skuinssy, dus verhouding = 1.',
@@ -242,7 +242,7 @@ MathMagician.registerChapter(5, {
                 const r=document.getElementById('g10c5cratio').value;
                 const v=parseFloat(document.getElementById('g10c5cval').value);
                 const out=document.getElementById('g10c5cOut');
-                if(isNaN(v)){out.innerHTML='<span style="color:#fca5a5;">Voer \'n desimale waarde in.</span>';return;}
+                if(isNaN(v)){out.innerHTML='<span style="color:#fca5a5;">Voer ’n desimale waarde in.</span>';return;}
                 if((r==='sin'||r==='cos')&&(v<-1||v>1)){out.innerHTML='<span style="color:#fca5a5;">'+r+' θ moet tussen −1 en 1 wees.</span>';return;}
                 let ref=Math.round(Math.abs(Math.asin(r==='sin'?v:r==='cos'?v:0)*180/Math.PI)*10)/10;
                 if(r==='cos') ref=Math.round(Math.acos(Math.abs(v))*180/Math.PI*10)/10;

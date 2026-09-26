@@ -76,18 +76,18 @@ MathMagician.registerChapter(11, {
                 const side=document.getElementById('g10c11side').value;
                 const len=parseFloat(document.getElementById('g10c11len').value);
                 const out=document.getElementById('g10c11Out');
-                if(isNaN(ang)||isNaN(len)||ang<=0||ang>=90||len<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige hoek (1°–89°) en positiewe lengte in.</span>';return;}
+                if(isNaN(ang)||isNaN(len)||ang<=0||ang>=90||len<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige hoek (1°–89°) en positiewe lengte in.</span>';return;}
                 const rad=ang*Math.PI/180;
                 const sinA=Math.sin(rad),cosA=Math.cos(rad),tanA=Math.tan(rad);
                 let adj,opp,hyp;
                 if(side==='adj'){adj=len;opp=adj*tanA;hyp=adj/cosA;}
                 else if(side==='opp'){opp=len;adj=opp/tanA;hyp=opp/sinA;}
                 else{hyp=len;opp=hyp*sinA;adj=hyp*cosA;}
-                const used=side==='adj'?'tan θ = opp/adj → opp = adj × tan θ\ncos θ = adj/hyp → hyp = adj/cos θ'
-                  :side==='opp'?'tan θ = opp/adj → adj = opp/tan θ\nsin θ = opp/hyp → hyp = opp/sin θ'
-                  :'sin θ = opp/hyp → opp = hyp × sin θ\ncos θ = adj/hyp → adj = hyp × cos θ';
+                const used=side==='adj'?'tan θ = opp/adj → opp = adj × tan θ\\ncos θ = adj/hyp → hyp = adj/cos θ'
+                  :side==='opp'?'tan θ = opp/adj → adj = opp/tan θ\\nsin θ = opp/hyp → hyp = opp/sin θ'
+                  :'sin θ = opp/hyp → opp = hyp × sin θ\\ncos θ = adj/hyp → adj = hyp × cos θ';
                 let html='<span style="color:rgba(221,225,240,0.50);">θ = '+ang+'°, sin = '+f(sinA)+', cos = '+f(cosA)+', tan = '+f(tanA)+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">'+used.replace('\n','<br><span style="color:rgba(221,225,240,0.50);">')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">'+used.replace('\\n','<br><span style="color:rgba(221,225,240,0.50);">')+'</span><br>';
                 html+='<span style="color:#6ee7b7;">Aanliggend = '+f(adj)+'</span>  <span style="color:#6ee7b7;">Oorstaande = '+f(opp)+'</span>  <span style="color:#6ee7b7;">Skuinssy = '+f(hyp)+'</span>';
                 out.innerHTML=html;
               }

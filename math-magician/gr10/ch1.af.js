@@ -73,11 +73,11 @@ MathMagician.registerChapter(1, {
               function run(){
                 const n=parseInt(document.getElementById('g10c1surd').value);
                 const out=document.getElementById('g10c1surdOut');
-                if(!n||n<1||isNaN(n)){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe heelgetal in.</span>";return;}
+                if(!n||n<1||isNaN(n)){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe heelgetal in.</span>";return;}
                 const sq=Math.round(Math.sqrt(n));
                 if(sq*sq===n){
                   out.innerHTML='<span style="color:#6ee7b7;">√'+n+' = '+sq+'</span><br>'
-                    +"<span style=\"color:rgba(221,225,240,0.50);\">✓ Rasionaal — volkome vierkant, nie 'n wortelvorm nie.</span>";
+                    +"<span style=\\"color:rgba(221,225,240,0.50);\\">✓ Rasionaal — volkome vierkant, nie ’n wortelvorm nie.</span>";
                 } else {
                   const psf=largestPSF(n);
                   const k=Math.round(Math.sqrt(psf));
@@ -269,7 +269,7 @@ MathMagician.registerChapter(1, {
                 const c=parseInt(document.getElementById('g10c1fc').value);
                 const out=document.getElementById('g10c1fOut');
                 if(isNaN(a)||isNaN(b)||isNaN(c)){out.innerHTML='<span style="color:#fca5a5;">Voer heelgetalle in vir a, b en c.</span>';return;}
-                if(a===0){out.innerHTML="<span style=\"color:#fca5a5;\">a kan nie 0 wees nie — dit is nie 'n kwadratiese uitdrukking nie.</span>";return;}
+                if(a===0){out.innerHTML="<span style=\\"color:#fca5a5;\\">a kan nie 0 wees nie — dit is nie ’n kwadratiese uitdrukking nie.</span>";return;}
                 const expr=fmtExpr(a,b,c);
                 const disc=b*b-4*a*c;
                 const discSqrt=Math.sqrt(Math.abs(disc));
@@ -280,7 +280,7 @@ MathMagician.registerChapter(1, {
                   html+='<span style="color:#fca5a5;">Δ &lt; 0 — geen reële faktore nie</span>';
                 } else if(!isPerf){
                   const r1=(-b+Math.sqrt(disc))/(2*a), r2=(-b-Math.sqrt(disc))/(2*a);
-                  html+="<span style=\"color:#fca5a5;\">Δ is nie 'n volkome vierkant nie — kan nie oor ℤ faktoriseer nie</span><br>";
+                  html+="<span style=\\"color:#fca5a5;\\">Δ is nie ’n volkome vierkant nie — kan nie oor ℤ faktoriseer nie</span><br>";
                   html+='<span style="color:rgba(221,225,240,0.50);">Irrasionale wortels ≈ '+r1.toFixed(3)+' en '+r2.toFixed(3)+'</span>';
                 } else {
                   const f=findFactors(a,b,c);

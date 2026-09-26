@@ -351,7 +351,7 @@ MathMagician.registerChapter(4, {
               function calc(){
                 const id=gs('g12c4t4id'),Ad=gv('g12c4t4A');
                 const out=document.getElementById('g12c4t4Out');
-                if(isNaN(Ad)){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n hoek in.</span>";return;}
+                if(isNaN(Ad)){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n hoek in.</span>";return;}
                 const A=Ad*Math.PI/180;
                 const s=Math.sin(A),c=Math.cos(A);
                 let lhs,rhs,label;

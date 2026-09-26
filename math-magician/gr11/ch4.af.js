@@ -225,7 +225,7 @@ MathMagician.registerChapter(4, {
                   else{const c=vy-mAlt*vx;html+='<span style="color:#6ee7b7;">Hoogtelyn vanaf V('+vx+';'+vy+'): y = '+f(mAlt)+'x + '+f(c)+'</span>';}
                 } else {
                   html='<span style="color:rgba(221,225,240,0.50);">Middelpunt M van P₁P₂ = ('+f(mx)+'; '+f(my)+')</span><br>';
-                  html+='<span style="color:rgba(221,225,240,0.50);">Die mediaan gaan van \'n hoekpunt na M. Voer \'n hoekpunt hieronder in om die lyn te kry:</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Die mediaan gaan van ’n hoekpunt na M. Voer ’n hoekpunt hieronder in om die lyn te kry:</span><br>';
                   const vx=parseFloat(document.getElementById('g11c4t2vx').value)||0,vy=parseFloat(document.getElementById('g11c4t2vy').value)||0;
                   const mMed=mx===vx?Infinity:(my-vy)/(mx-vx);
                   if(mMed===Infinity){html+='<span style="color:#6ee7b7;">Mediaan: x = '+f(vx)+'</span>';}

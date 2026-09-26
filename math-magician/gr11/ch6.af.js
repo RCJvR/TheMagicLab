@@ -412,7 +412,7 @@ MathMagician.registerChapter(6, {
                 const fn=document.getElementById('g11c6t3fn').value;
                 const val=parseFloat(document.getElementById('g11c6t3val').value);
                 const out=document.getElementById('g11c6t3Out');
-                if(isNaN(val)){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige waarde in.</span>';return;}
+                if(isNaN(val)){out.innerHTML='<span style="color:#fca5a5;">Voer ’n geldige waarde in.</span>';return;}
                 if(fn!=='tan'&&(val<-1||val>1)){out.innerHTML='<span style="color:#fca5a5;">'+fn+'θ moet tussen −1 en 1 wees.</span>';return;}
                 let html='';
                 if(fn==='sin'){

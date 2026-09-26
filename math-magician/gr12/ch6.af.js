@@ -83,9 +83,9 @@ MathMagician.registerChapter(6, {
                 if(c!==0) pstr+=(c>0&&(a!==0||b!==0)?'+':'')+c+'x';
                 if(d!==0) pstr+=(d>0&&(a!==0||b!==0||c!==0)?'+':'')+d;
                 let html='<span style="color:rgba(221,225,240,0.50);">'+pstr+'</span><br>';
-                html+='<span style="color:#fcd34d;">f\'(x) = '+da+'x² + '+db+'x + '+dc+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">f\'\'(x) = '+(6*a)+'x + '+(2*b)+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">f('+x0+') = '+fx0+'</span>   <span style="color:#6ee7b7;">f\'('+x0+') = '+fpx0+'</span>   <span style="color:rgba(221,225,240,0.50);">f\'\'('+x0+') = '+fppx0+'</span><br>';
+                html+='<span style="color:#fcd34d;">f\\'(x) = '+da+'x² + '+db+'x + '+dc+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f\\'\\'(x) = '+(6*a)+'x + '+(2*b)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f('+x0+') = '+fx0+'</span>   <span style="color:#6ee7b7;">f\\'('+x0+') = '+fpx0+'</span>   <span style="color:rgba(221,225,240,0.50);">f\\'\\'('+x0+') = '+fppx0+'</span><br>';
                 html+='<span style="color:#6ee7b7;">Raaklyn by ('+x0+', '+fx0+'): y = '+fpx0+'x + '+yint+'</span>';
                 out.innerHTML=html;
               }
@@ -178,7 +178,7 @@ MathMagician.registerChapter(6, {
                 const f=x=>a*x*x*x+b*x*x+c*x+d;
                 // f'(x) = 3ax²+2bx+c → stel gelyk aan 0
                 const disc=4*b*b-4*3*a*c;
-                let html='<span style="color:rgba(221,225,240,0.50);">f\'(x) = '+3*a+'x² + '+2*b+'x + '+c+'</span><br>';
+                let html='<span style="color:rgba(221,225,240,0.50);">f\\'(x) = '+3*a+'x² + '+2*b+'x + '+c+'</span><br>';
                 if(disc<0){html+='<span style="color:#fca5a5;">Δ < 0 → geen reële stilstandspunte nie.</span>';}
                 else{
                   const x1=(-2*b+Math.sqrt(disc))/(2*3*a),x2=(-2*b-Math.sqrt(disc))/(2*3*a);
@@ -187,11 +187,11 @@ MathMagician.registerChapter(6, {
                     const fx=f(x);
                     const fpp=6*a*x+2*b;
                     const nature=fpp>0?'minimum':'maksimum';
-                    html+='<span style="color:#fcd34d;">Stilstandspunt by x = '+f4(x)+': f(x) = '+f4(fx)+'  →  '+nature+' (f\'\'= '+f4(fpp)+')</span><br>';
+                    html+='<span style="color:#fcd34d;">Stilstandspunt by x = '+f4(x)+': f(x) = '+f4(fx)+'  →  '+nature+' (f\\'\\'= '+f4(fpp)+')</span><br>';
                   });
                 }
                 const xi=-b/(3*a),fxi=f(xi);
-                html+='<span style="color:#6ee7b7;">Buigpunt (f\'\'=0): x = '+f4(xi)+', y = '+f4(fxi)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Buigpunt (f\\'\\'=0): x = '+f4(xi)+', y = '+f4(fxi)+'</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">y-afsnit: (0, '+d+')   Eindgedrag: a='+a+(a>0?' → val links, styg regs':' → styg links, val regs')+'</span>';
                 out.innerHTML=html;
               }
@@ -292,14 +292,14 @@ MathMagician.registerChapter(6, {
                 const v=t=>2*a*t+b;
                 const acc=2*a;
                 let html='<span style="color:rgba(221,225,240,0.50);">s(t) = '+a+'t² + '+b+'t + '+c+'</span><br>';
-                html+='<span style="color:#fcd34d;">v(t) = s\'(t) = '+(2*a)+'t + '+b+'</span><br>';
-                html+='<span style="color:#fcd34d;">a(t) = v\'(t) = '+acc+'  (konstant)</span><br>';
+                html+='<span style="color:#fcd34d;">v(t) = s\\'(t) = '+(2*a)+'t + '+b+'</span><br>';
+                html+='<span style="color:#fcd34d;">a(t) = v\\'(t) = '+acc+'  (konstant)</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">s('+t0+') = '+f4(s(t0))+'   v('+t0+') = '+f4(v(t0))+'</span><br>';
                 if(a!==0){
                   const tstat=-b/(2*a);
                   html+='<span style="color:#6ee7b7;">Stilstaande (v=0) by t = '+f4(tstat)+' s, wat s = '+f4(s(tstat))+' m gee</span>';
                 } else {
-                  html+="<span style=\"color:rgba(221,225,240,0.50);\">v(t) is konstant "+b+" — voorwerp hou nooit op nie (tensy b=0).</span>";
+                  html+="<span style=\\"color:rgba(221,225,240,0.50);\\">v(t) is konstant "+b+" — voorwerp hou nooit op nie (tensy b=0).</span>";
                 }
                 out.innerHTML=html;
               }
@@ -396,7 +396,7 @@ MathMagician.registerChapter(6, {
                 if([a,b,c,d].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Voer kubieke koëffisiënte in (a ≠ 0).</span>';return;}
                 const f=x=>a*x*x*x+b*x*x+c*x+d;
                 const disc=4*b*b-4*3*a*c;
-                let html='<span style="color:rgba(221,225,240,0.50);">f\'(x) = '+(3*a)+'x² + '+(2*b)+'x + '+c+'</span><br>';
+                let html='<span style="color:rgba(221,225,240,0.50);">f\\'(x) = '+(3*a)+'x² + '+(2*b)+'x + '+c+'</span><br>';
                 if(disc<0){
                   html+='<span style="color:#fca5a5;">Geen reële draaipunte nie — f is '+(a>0?'altyd toenemend':'altyd afnemend')+'.</span>';
                 } else {

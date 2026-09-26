@@ -199,7 +199,7 @@ MathMagician.registerChapter(10, {
                 const raw=document.getElementById('g10c10t2data').value;
                 const out=document.getElementById('g10c10t2Out');
                 const vals=raw.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
-                if(vals.length<4){out.innerHTML='<span style="color:#fca5a5;">Voer ten minste 4 waardes in vir \'n betekenisvolle vyfgetalopsomming.</span>';return;}
+                if(vals.length<4){out.innerHTML='<span style="color:#fca5a5;">Voer ten minste 4 waardes in vir ’n betekenisvolle vyfgetalopsomming.</span>';return;}
                 const s=[...vals].sort((a,b)=>a-b);
                 const n=s.length;
                 const mn=s[0],mx=s[n-1];
@@ -389,8 +389,8 @@ MathMagician.registerChapter(10, {
                 const leftW=Q1-mn, rightW=mx-Q3;
                 let skew;
                 if(Math.abs(leftW-rightW)<0.05*range && Math.abs((Q2-Q1)-(Q3-Q2))<0.05*(IQR||1)) skew='ongeveer simmetries';
-                else if(rightW>leftW && (Q2-Q1)<(Q3-Q2)) skew='positief skeef (regs skeef) — \'n langer regter snor en mediaan nader aan Q1';
-                else if(leftW>rightW && (Q2-Q1)>(Q3-Q2)) skew='negatief skeef (links skeef) — \'n langer linker snor en mediaan nader aan Q3';
+                else if(rightW>leftW && (Q2-Q1)<(Q3-Q2)) skew='positief skeef (regs skeef) — ’n langer regter snor en mediaan nader aan Q1';
+                else if(leftW>rightW && (Q2-Q1)>(Q3-Q2)) skew='negatief skeef (links skeef) — ’n langer linker snor en mediaan nader aan Q3';
                 else skew='nie sterk skeef in enige rigting nie';
 
                 let html='<span style="color:rgba(221,225,240,0.50);">Min='+mn+', Q1='+Q1+', Mediaan='+Q2+', Q3='+Q3+', Maks='+mx+'</span><br>';

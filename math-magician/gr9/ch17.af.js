@@ -135,9 +135,9 @@ MathMagician.registerChapter(17, {
             var solids={
               cube:{name:'Kubus',F:6,V:8,E:12,faces:'6 vierkante',cross:'Vierkant (horisontaal) of reghoek (diagonaal)',net:'Kruis van 6 vierkante'},
               rect:{name:'Reghoekige Prisma',F:6,V:8,E:12,faces:'6 reghoeke',cross:'Reghoek',net:'Kruis van 6 reghoeke'},
-              tri:{name:'Driehoekige Prisma',F:5,V:6,E:9,faces:'2 driehoeke + 3 reghoeke',cross:'Driehoek (parallel aan basis) of reghoek (loodreg)',net:'2 driehoeke + 3 reghoeke in \'n strook'},
+              tri:{name:'Driehoekige Prisma',F:5,V:6,E:9,faces:'2 driehoeke + 3 reghoeke',cross:'Driehoek (parallel aan basis) of reghoek (loodreg)',net:'2 driehoeke + 3 reghoeke in ’n strook'},
               square_pyr:{name:'Vierkantige Piramide',F:5,V:5,E:8,faces:'1 vierkantige basis + 4 driehoeke',cross:'Vierkant (parallel aan basis) of driehoek (deur die apeks)',net:'Vierkant + 4 driehoeke daarom'},
-              tri_pyr:{name:'Tetraëder',F:4,V:4,E:6,faces:'4 gelyksydige driehoeke',cross:'Driehoek of kleiner driehoek',net:'4 driehoeke in \'n strook'},
+              tri_pyr:{name:'Tetraëder',F:4,V:4,E:6,faces:'4 gelyksydige driehoeke',cross:'Driehoek of kleiner driehoek',net:'4 driehoeke in ’n strook'},
               hex_prism:{name:'Sesghoekige Prisma',F:8,V:12,E:18,faces:'2 sesghoeke + 6 reghoeke',cross:'Sesghoek (parallel) of reghoek (loodreg)',net:'2 sesghoeke + 6 reghoeke'},
             };
             function explore(){

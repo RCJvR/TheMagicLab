@@ -61,7 +61,7 @@ MathMagician.registerChapter(8, {
                 const mx=(x1+x2)/2,my=(y1+y2)/2;
                 const nice=Math.abs(d-Math.round(d))<0.0001;
                 let distStr=nice?Math.round(d)+'':d.toFixed(4);
-                // Kontroleer vir 'n netjiese wortel: as d²= k²*m dan d=k√m
+                // Kontroleer vir ’n netjiese wortel: as d²= k²*m dan d=k√m
                 let surdStr='';
                 for(let k=2;k*k<=d2;k++){if(d2%(k*k)===0){const m=d2/(k*k);surdStr=(k===1?'':''+k)+'√'+m;break;}}
                 let html='<span style="color:rgba(221,225,240,0.50);">A('+x1+' ; '+y1+'), B('+x2+' ; '+y2+')</span><br>';

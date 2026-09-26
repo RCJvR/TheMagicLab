@@ -424,7 +424,7 @@ MathMagician.registerChapter(1, {
                 const op=document.getElementById('g11c1t3op').value;
                 const out=document.getElementById('g11c1t3Out');
                 if(isNaN(x)||x<=0||isNaN(e1.n)||isNaN(e1.d)||isNaN(e2.n)||isNaN(e2.d)||e1.d===0||e2.d===0){
-                  out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe grondtal en geldige breuk-eksponente in (bv. 2/3).</span>";return;
+                  out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe grondtal en geldige breuk-eksponente in (bv. 2/3).</span>";return;
                 }
                 let rn,rd,symbol;
                 if(op==='mul'){rn=e1.n*e2.d+e2.n*e1.d;rd=e1.d*e2.d;symbol='+';}

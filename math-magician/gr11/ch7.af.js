@@ -64,7 +64,7 @@ MathMagician.registerChapter(7, {
             (function(){
               const π=Math.PI;
               function f(n){return n.toFixed(2);}
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               function build(){
                 const c=document.getElementById('g11c7combo').value;
@@ -100,10 +100,10 @@ MathMagician.registerChapter(7, {
                   html+='<span style="color:#6ee7b7;">Totale SA = '+f(total)+' eenhede²</span>';
                 } else {
                   const s=gv('g11c7s');
-                  if(isNaN(s)||s<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n positiewe sylengte in.</span>';return;}
+                  if(isNaN(s)||s<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n positiewe sylengte in.</span>';return;}
                   const cubeSA=6*s*s;
                   html='<span style="color:rgba(221,225,240,0.50);">Kubus-SA = 6a² = '+f(cubeSA)+'</span><br>';
-                  html+='<span style="color:rgba(221,225,240,0.50);">(Let wel: die verwydering van \'n sfeer van binne verander nie die buite-SA nie)</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">(Let wel: die verwydering van ’n sfeer van binne verander nie die buite-SA nie)</span><br>';
                   html+='<span style="color:#6ee7b7;">Buite-SA = '+f(cubeSA)+' eenhede²</span>';
                 }
                 out.innerHTML=html;
@@ -241,7 +241,7 @@ MathMagician.registerChapter(7, {
             (function(){
               const π=Math.PI;
               function f(n){return n.toFixed(3);}
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               function build(){
                 const s=document.getElementById('g11c7t2shape').value;
@@ -257,12 +257,12 @@ MathMagician.registerChapter(7, {
                 const s=document.getElementById('g11c7t2shape').value;
                 const k=gv('g11c7t2k');
                 const out=document.getElementById('g11c7t2Out');
-                if(isNaN(k)||k<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n positiewe skaalfaktor in.</span>';return;}
+                if(isNaN(k)||k<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n positiewe skaalfaktor in.</span>';return;}
                 let V,sa,label;
-                if(s==='sphere'){const r=gv('g11c7t2r');if(isNaN(r)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n positiewe radius in.</span>';return;}V=(4/3)*π*r*r*r;sa=4*π*r*r;label='r='+r;}
+                if(s==='sphere'){const r=gv('g11c7t2r');if(isNaN(r)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n positiewe radius in.</span>';return;}V=(4/3)*π*r*r*r;sa=4*π*r*r;label='r='+r;}
                 else if(s==='cylinder'){const r=gv('g11c7t2r'),h=gv('g11c7t2h');if([r,h].some(isNaN)||[r,h].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Voer positiewe waardes in.</span>';return;}V=π*r*r*h;sa=2*π*r*(r+h);label='r='+r+', h='+h;}
                 else if(s==='cone'){const r=gv('g11c7t2r'),h=gv('g11c7t2h');if([r,h].some(isNaN)||[r,h].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Voer positiewe waardes in.</span>';return;}const l=Math.sqrt(r*r+h*h);V=(1/3)*π*r*r*h;sa=π*r*(r+l);label='r='+r+', h='+h;}
-                else{const a=gv('g11c7t2a');if(isNaN(a)||a<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n positiewe sy in.</span>';return;}V=a*a*a;sa=6*a*a;label='a='+a;}
+                else{const a=gv('g11c7t2a');if(isNaN(a)||a<=0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n positiewe sy in.</span>';return;}V=a*a*a;sa=6*a*a;label='a='+a;}
                 const newV=V*k*k*k,newSA=sa*k*k;
                 let html='<span style="color:rgba(221,225,240,0.50);">Oorspronklike ('+shapeNames[s]+', '+label+')</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">Volume V = '+f(V)+'</span>   <span style="color:rgba(221,225,240,0.50);">Oppervlak = '+f(sa)+'</span><br>';
@@ -400,7 +400,7 @@ MathMagician.registerChapter(7, {
               costBtn.addEventListener('click',()=>setMode('cost'));
               document.getElementById('g11c7t3volBtn').addEventListener('click',()=>{
                 const v=gv('g11c7t3v');
-                if(isNaN(v)||v<0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n nie-negatiewe volume in.</span>';return;}
+                if(isNaN(v)||v<0){out.innerHTML='<span style="color:#fca5a5;">Voer ’n nie-negatiewe volume in.</span>';return;}
                 const litres=v/1000;
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">1000 cm³ = 1 liter</span><br><span style="color:#6ee7b7;">'+v+' cm³ = '+litres.toLocaleString('en-ZA',{maximumFractionDigits:3})+' ℓ</span>';
               });
@@ -526,7 +526,7 @@ MathMagician.registerChapter(7, {
               function calc(){
                 const r=gv('g11c7t4r'),ang=gv('g11c7t4ang');
                 const out=document.getElementById('g11c7t4Out');
-                if([r,ang].some(isNaN)||r<=0||ang<=0||ang>=90){out.innerHTML='<span style="color:#fca5a5;">Voer \'n r > 0 en \'n hoek streng tussen 0° en 90° in.</span>';return;}
+                if([r,ang].some(isNaN)||r<=0||ang<=0||ang>=90){out.innerHTML='<span style="color:#fca5a5;">Voer ’n r > 0 en ’n hoek streng tussen 0° en 90° in.</span>';return;}
                 const rad=ang*π/180;
                 const h=r*Math.tan(rad);
                 const l=r/Math.cos(rad);

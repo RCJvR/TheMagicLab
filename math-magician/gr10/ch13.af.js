@@ -62,7 +62,7 @@ MathMagician.registerChapter(13, {
             <script>
             (function(){
               const π=Math.PI;
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function f(n){return n.toFixed(2);}
               function buildInputs(){
                 const s=document.getElementById('g10c13shape').value;
@@ -90,10 +90,10 @@ MathMagician.registerChapter(13, {
                   const l=Math.sqrt(r*r+h*h);
                   SA=π*r*r+π*r*l;
                   formula='SA = πr² + πrl (skuinshoogte l = √(r²+h²))';
-                  working='l = √('+r+'²+'+h+'²) = '+f(l)+'\n= π('+r+')² + π('+r+')('+f(l)+') = '+f(π*r*r)+' + '+f(π*r*l);
+                  working='l = √('+r+'²+'+h+'²) = '+f(l)+'\\n= π('+r+')² + π('+r+')('+f(l)+') = '+f(π*r*r)+' + '+f(π*r*l);
                 } else if(s==='sphere'){
                   const r=val('g10c13r');
-                  if(isNaN(r)||r<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe radius in.</span>";return;}
+                  if(isNaN(r)||r<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe radius in.</span>";return;}
                   SA=4*π*r*r;
                   formula='SA = 4πr²';
                   working='= 4π('+r+')² = '+f(4*π*r*r);
@@ -105,7 +105,7 @@ MathMagician.registerChapter(13, {
                   working='= 2('+l+'×'+w+' + '+l+'×'+h+' + '+w+'×'+h+') = 2('+f(l*w+l*h+w*h)+')';
                 }
                 let html='<span style="color:rgba(221,225,240,0.50);">Formule: </span><span style="color:#fcd34d;">'+formula+'</span><br>';
-                working.split('\n').forEach(line=>{ html+='<span style="color:rgba(221,225,240,0.50);">'+line+'</span><br>'; });
+                working.split('\\n').forEach(line=>{ html+='<span style="color:rgba(221,225,240,0.50);">'+line+'</span><br>'; });
                 html+='<span style="color:#6ee7b7;">SA = '+f(SA)+' eenhede²</span>';
                 out.innerHTML=html;
               }
@@ -229,7 +229,7 @@ MathMagician.registerChapter(13, {
             <script>
             (function(){
               const π=Math.PI;
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function f(n){return parseFloat(n.toFixed(4)).toString();}
               function build(){
                 const s=document.getElementById('g10c13t2shape').value;
@@ -246,7 +246,7 @@ MathMagician.registerChapter(13, {
                 const s=document.getElementById('g10c13t2shape').value;
                 const k=gv('g10c13t2k');
                 const out=document.getElementById('g10c13t2Out');
-                if(isNaN(k)||k<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe skaalfaktor in.</span>";return;}
+                if(isNaN(k)||k<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe skaalfaktor in.</span>";return;}
                 let V,label;
                 if(s==='cylinder'){const r=gv('g10c13t2r'),h=gv('g10c13t2h');if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML='<span style="color:#fca5a5;">Positiewe waardes vereis.</span>';return;}V=π*r*r*h;label='π×'+r+'²×'+h;}
                 else if(s==='cone'){const r=gv('g10c13t2r'),h=gv('g10c13t2h');if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML='<span style="color:#fca5a5;">Positiewe waardes vereis.</span>';return;}V=π*r*r*h/3;label='⅓π×'+r+'²×'+h;}
@@ -382,13 +382,13 @@ MathMagician.registerChapter(13, {
                 const h=parseFloat(document.getElementById('g10c13ch').value);
                 const cap=document.getElementById('g10c13cap').value;
                 const out=document.getElementById('g10c13cOut');
-                if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe radius en hoogte in.</span>";return;}
+                if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe radius en hoogte in.</span>";return;}
                 let V=π*r*r*h;
                 let SA=2*π*r*h+π*r*r; // curved cylinder + ONE flat base (bottom); top face replaced or open
                 let detail='<span style="color:rgba(221,225,240,0.50);">Silinder: V = πr²h = '+f(π*r*r*h)+' cm³; geboë SA = 2πrh = '+f(2*π*r*h)+' cm²; basis-SA = πr² = '+f(π*r*r)+' cm²</span><br>';
                 if(cap==='cone'){
                   const ch=parseFloat(document.getElementById('g10c13coneh').value);
-                  if(isNaN(ch)||ch<=0){out.innerHTML="<span style=\"color:#fca5a5;\">Voer 'n positiewe keëlhoogte in.</span>";return;}
+                  if(isNaN(ch)||ch<=0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Voer ’n positiewe keëlhoogte in.</span>";return;}
                   const Vcone=π*r*r*ch/3;
                   const l=Math.sqrt(r*r+ch*ch);
                   const SAcone=π*r*l;

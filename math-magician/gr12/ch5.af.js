@@ -73,7 +73,7 @@ MathMagician.registerChapter(5, {
                 let html='<span style="color:rgba(221,225,240,0.50);">p(x) = '+pstr+'</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">p('+k+') = '+a+'('+k+')³ + '+b+'('+k+')² + '+c+'('+k+') + '+d+'</span><br>';
                 html+='<span style="color:'+(rem===0?'#6ee7b7':'#fcd34d')+';">p('+k+') = '+rem+'</span><br>';
-                if(rem===0) html+='<span style="color:#6ee7b7;">✅ (x − '+k+") IS 'n faktor van p(x)</span>";
+                if(rem===0) html+='<span style="color:#6ee7b7;">✅ (x − '+k+") IS ’n faktor van p(x)</span>";
                 else html+='<span style="color:rgba(221,225,240,0.50);">Res wanneer gedeel deur (x − '+k+') = '+rem+'</span>';
                 out.innerHTML=html;
               }
@@ -162,7 +162,7 @@ MathMagician.registerChapter(5, {
                 const tests=[];
                 for(let i=1;i<=absD*2+1;i++){for(let j=1;j<=absA+1;j++){[i/j,-i/j].forEach(r=>{if(Math.abs(p(r))<1e-9)tests.push(r);});}}
                 if(tests.length>0) root1=tests[0];
-                else{out.innerHTML="<span style=\"color:#fca5a5;\">Geen eenvoudige rasionale wortel gevind nie. Probeer 'n ander kubieke.</span>";return;}
+                else{out.innerHTML="<span style=\\"color:#fca5a5;\\">Geen eenvoudige rasionale wortel gevind nie. Probeer ’n ander kubieke.</span>";return;}
                 // sintetiese deling van ax³+bx²+cx+d deur (x−root1)
                 const A=a,B=b+a*root1,C=c+B*root1;
                 // kwadratiese: Ax²+Bx+C
@@ -266,7 +266,7 @@ MathMagician.registerChapter(5, {
                 const c=gv('g12c5u_c'),d=gv('g12c5u_d'),a=gv('g12c5u_a'),R=gv('g12c5u_R');
                 const out=document.getElementById('g12c5uOut');
                 if([c,d,a,R].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Voer alle waardes in.</span>';return;}
-                if(a===0){out.innerHTML="<span style=\"color:#fca5a5;\">Wortel a kan nie 0 wees met hierdie opstelling nie (k-koëffisiënt verdwyn).</span>";return;}
+                if(a===0){out.innerHTML="<span style=\\"color:#fca5a5;\\">Wortel a kan nie 0 wees met hierdie opstelling nie (k-koëffisiënt verdwyn).</span>";return;}
                 // p(x) = x^3 + k x^2 + c x + d; p(a) = a^3 + k a^2 + c a + d = R
                 // los op vir k: k = (R - a^3 - c*a - d) / a^2
                 const k=(R - a*a*a - c*a - d)/(a*a);

@@ -239,13 +239,13 @@ MathMagician.registerChapter(9, {
               let html='';
               if(type==='straight'){
                 const x=180-sum;
-                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Reël: hoeke op \'n reguit lyn tel op tot 180°</div>'+
+                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Reël: hoeke op ’n reguit lyn tel op tot 180°</div>'+
                   '<div>Som van bekende hoeke: <span style="color:#fbbf24;">'+sum+'°</span></div>'+
                   (x>=0?'<div>Onbekende hoek x = 180° − '+sum+'° = <span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+x+'°</span></div>':
                   '<span style="color:#fca5a5;">Hoeke oorskry reeds 180°</span>');
               } else if(type==='point'){
                 const x=360-sum;
-                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Reël: hoeke rondom \'n punt tel op tot 360°</div>'+
+                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Reël: hoeke rondom ’n punt tel op tot 360°</div>'+
                   '<div>Som van bekende hoeke: <span style="color:#fbbf24;">'+sum+'°</span></div>'+
                   (x>=0?'<div>Onbekende hoek x = 360° − '+sum+'° = <span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+x+'°</span></div>':
                   '<span style="color:#fca5a5;">Hoeke oorskry reeds 360°</span>');
@@ -445,7 +445,7 @@ MathMagician.registerChapter(9, {
             }
 
             function summaryLine(a1,a2){
-              if(highlight==='all')    return '<span style="color:rgba(221,225,240,0.35);">Kies \'n verligting hierbo om die verhoudingsreël te sien.</span>';
+              if(highlight==='all')    return '<span style="color:rgba(221,225,240,0.35);">Kies ’n verligting hierbo om die verhoudingsreël te sien.</span>';
               if(highlight==='corr')  return '<span style="color:'+CLR.corr+';">∠1 = ∠5 = '+a1+'° ✓ Ooreenkomstige hoeke is gelyk (F-vorm)</span>';
               if(highlight==='alt')   return '<span style="color:'+CLR.alt+';">∠3 = ∠5 = '+a1+'° ✓ Verwisselende binnehoeke is gelyk (Z-vorm)</span>';
               if(highlight==='coint') return '<span style="color:'+CLR.coint+';">∠3 + ∠6 = '+a1+' + '+a2+' = 180° ✓ Mede-binnehoeke is supplementêr (C-vorm)</span>';
