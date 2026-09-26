@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Lab Data Grapher · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    textarea.data { width: 100%; min-height: 160px; resize: vertical; padding: 9px 10px; border-radius: var(--radius-2xs); background: var(--ink-900); border: 1px solid var(--line-hard); color: var(--paper); font-family: var(--font-mono); font-size: 13px; }
+    .summary { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); line-height: 1.8; }
+    .summary b { color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Praktiese werk · Gr 7–12">Resource · Practical work · Gr 7–12</span></div>
+    <h1 data-af-html="Eksperiment-<em>grafieke.</em>">Lab data <em>grapher.</em></h1>
+    <p class="hero-sub" data-af="Plak resultate uit ’n eksperiment en kry ’n netjiese grafiek: spreidiagram met beste-pas-lyn en gradiënt met eenhede, lyngrafiek of staafgrafiek — op grafiekpapier as jy wil.">Paste the results of an experiment and get a clean graph: scatter plot with best-fit line and gradient with units, line graph or bar graph — on graph paper if you like.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="panel-head">
+          <h2><i data-lucide="table" style="width:16px;height:16px"></i><span data-af="Data">Data</span></h2>
+          <select id="examples" aria-label="Examples" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="ohm" data-af="Ohm se wet (V teen I)">Ohm’s law (V against I)</option>
+            <option value="boyle" data-af="Boyle se wet (p teen 1/V)">Boyle’s law (p against 1/V)</option>
+            <option value="spring" data-af="Veer-uitrekking">Spring extension</option>
+            <option value="cooling" data-af="Afkoelkurwe (lyn)">Cooling curve (line)</option>
+            <option value="photo" data-af="Fotosintese teen ligintensiteit">Photosynthesis vs light intensity</option>
+            <option value="bar" data-af="Hartklop per aktiwiteit (staaf)">Heart rate per activity (bar)</option>
+          </select>
+        </div>
+        <div class="row c2">
+          <label class="field"><span data-af="Onafhanklike veranderlike">Independent variable</span><input type="text" id="xName" maxlength="40"></label>
+          <label class="field"><span data-af="Eenheid">Unit</span><input type="text" id="xUnit" maxlength="16"></label>
+        </div>
+        <div class="row c2">
+          <label class="field"><span data-af="Afhanklike veranderlike">Dependent variable</span><input type="text" id="yName" maxlength="40"></label>
+          <label class="field"><span data-af="Eenheid">Unit</span><input type="text" id="yUnit" maxlength="16"></label>
+        </div>
+        <label class="field"><span data-af="Tabel: x, dan een tot drie y-kolomme">Table: x, then one to three y columns</span><textarea class="data" id="data" spellcheck="false"></textarea></label>
+        <label class="field" style="margin-top:8px"><span data-af="Name van die reekse (kommas)">Series names (commas)</span><input type="text" id="series" maxlength="80"></label>
+        <p class="hint" style="margin-top:6px" data-af="Een ry per lyn. Jy kan kolomme uit ’n sigblad plak. Vir ’n staafgrafiek mag die eerste kolom woorde wees.">One row per line. You can paste columns from a spreadsheet. For a bar graph the first column may be words.</p>
+      </section>
+
+      <section class="panel">
+        <h2 style="margin-bottom:10px"><i data-lucide="line-chart" style="width:16px;height:16px"></i><span data-af="Grafiek">Graph</span></h2>
+        <div class="row c3">
+          <label class="field"><span data-af="Soort">Type</span><select id="kind"><option value="scatter" data-af="Spreidiagram">Scatter</option><option value="line" data-af="Lyngrafiek">Line graph</option><option value="bar" data-af="Staafgrafiek">Bar graph</option></select></label>
+          <label class="field"><span data-af="Beste-pas">Best fit</span><select id="fit"><option value="none" data-af="Geen">None</option><option value="line" data-af="Reguit lyn">Straight line</option><option value="origin" data-af="Lyn deur oorsprong">Line through origin</option><option value="smooth" data-af="Gladde kurwe">Smooth curve</option></select></label>
+          <label class="field"><span data-af="x-as teen">x-axis as</span><select id="xT"><option value="x">x</option><option value="inv">1/x</option><option value="sq">x²</option></select></label>
+        </div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="origin"> <span data-af="Asse begin by 0">Axes start at 0</span></label>
+          <label class="check"><input type="checkbox" id="paper"> <span data-af="Grafiekpapier">Graph paper</span></label>
+          <label class="check"><input type="checkbox" id="tri"> <span data-af="Gradiënt-driehoek">Gradient triangle</span></label>
+          <label class="check"><input type="checkbox" id="eq"> <span data-af="Vergelyking op die grafiek">Equation on the graph</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+      <div class="summary" id="summary"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: { gradient: 'Gradient', intercept: 'y-intercept', r2: 'R²', eqn: 'Equation', bad: (l) => `Could not read line: ${l}`, need: 'Enter at least two rows of numbers.', inv: '1/', copied: 'Link copied — anyone with it sees this graph.', copyFail: 'Could not copy the link — your browser blocked the clipboard.', tri: 'Gradient from the triangle' },
+      af: { gradient: 'Gradiënt', intercept: 'y-afsnit', r2: 'R²', eqn: 'Vergelyking', bad: (l) => `Kon nie die reël lees nie: ${l}`, need: 'Tik ten minste twee rye getalle.', inv: '1/', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie grafiek.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.', tri: 'Gradiënt uit die driehoek' },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+    const EX = {
+      ohm: { xName: 'Current', xUnit: 'A', yName: 'Potential difference', yUnit: 'V', data: '0.1 0.52\n0.2 0.98\n0.3 1.55\n0.4 2.01\n0.5 2.47\n0.6 3.05', series: '', kind: 'scatter', fit: 'origin', xT: 'x', title: 'Potential difference against current for a resistor', tri: true },
+      boyle: { xName: 'Volume', xUnit: 'cm³', yName: 'Pressure', yUnit: 'kPa', data: '10 240\n12 200\n15 160\n20 121\n24 99\n30 80', series: '', kind: 'scatter', fit: 'origin', xT: 'inv', title: 'Pressure against 1/volume', tri: true },
+      spring: { xName: 'Mass added', xUnit: 'g', yName: 'Extension', yUnit: 'mm', data: '0 0\n50 11\n100 20\n150 31\n200 41\n250 49', series: '', kind: 'scatter', fit: 'line', xT: 'x', title: 'Extension of a spring', tri: false },
+      cooling: { xName: 'Time', xUnit: 'min', yName: 'Temperature', yUnit: '°C', data: '0 90 90\n2 78 84\n4 69 79\n6 61 74\n8 55 70\n10 50 66\n12 46 63', series: 'Beaker A (no lid), Beaker B (lid)', kind: 'line', fit: 'none', xT: 'x', title: 'Cooling of water', tri: false },
+      photo: { xName: 'Light intensity', xUnit: 'lux', yName: 'Bubbles per minute', yUnit: '', data: '0 0\n1000 8\n2000 15\n3000 20\n4000 23\n5000 24\n6000 24', series: '', kind: 'scatter', fit: 'smooth', xT: 'x', title: 'Rate of photosynthesis and light intensity', tri: false },
+      bar: { xName: 'Activity', xUnit: '', yName: 'Heart rate', yUnit: 'beats per minute', data: 'Resting 68\nWalking 95\nJogging 132\nSprinting 168', series: '', kind: 'bar', fit: 'none', xT: 'x', title: 'Heart rate after different activities', tri: false },
+    };
+    const defaults = () => Object.assign({ origin: true, paper: false, tri: true, eq: true }, EX.ohm);
+    let st = defaults();
+    const store = K.store('ss_labgraph_v1', 'l');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 80);
+      Object.keys(d).forEach(k => { if (s[k] === undefined) return; d[k] = typeof d[k] === 'boolean' ? !!s[k] : str(s[k], k === 'data' ? 8000 : 120); });
+      if (!['scatter', 'line', 'bar'].includes(d.kind)) d.kind = 'scatter';
+      if (!['none', 'line', 'origin', 'smooth'].includes(d.fit)) d.fit = 'none';
+      if (!['x', 'inv', 'sq'].includes(d.xT)) d.xT = 'x';
+      return d;
+    }
+
+    function parse() {
+      const rows = [], bad = [];
+      String(st.data).split('\n').map(l => l.trim()).filter(Boolean).forEach(l => {
+        const parts = l.replace(/(\d),(\d)/g, '$1.$2').split(/[\s;\t,]+/).filter(Boolean);
+        if (st.kind === 'bar') {
+          const nums = []; while (parts.length && Number.isFinite(+parts[parts.length - 1])) nums.unshift(+parts.pop());
+          if (!nums.length || !parts.length && !nums.length) { bad.push(l); return; }
+          rows.push({ label: parts.join(' ') || String(rows.length + 1), ys: nums.slice(0, 3) });
+        } else {
+          const n = parts.map(Number);
+          if (n.length < 2 || n.some(v => !Number.isFinite(v))) { bad.push(l); return; }
+          rows.push({ x: n[0], ys: n.slice(1, 4) });
+        }
+      });
+      return { rows, bad };
+    }
+    const xform = (x) => st.xT === 'inv' ? (x === 0 ? NaN : 1 / x) : st.xT === 'sq' ? x * x : x;
+    function fitLine(pts, throughOrigin) {
+      const n = pts.length;
+      if (throughOrigin) {
+        const sxy = pts.reduce((a, p) => a + p[0] * p[1], 0), sxx = pts.reduce((a, p) => a + p[0] * p[0], 0);
+        const m = sxx ? sxy / sxx : 0; return { m, c: 0, r2: r2(pts, x => m * x) };
+      }
+      const mx = pts.reduce((a, p) => a + p[0], 0) / n, my = pts.reduce((a, p) => a + p[1], 0) / n;
+      let sxy = 0, sxx = 0; pts.forEach(p => { sxy += (p[0] - mx) * (p[1] - my); sxx += (p[0] - mx) ** 2; });
+      const m = sxx ? sxy / sxx : 0, c = my - m * mx; return { m, c, r2: r2(pts, x => m * x + c) };
+    }
+    function r2(pts, f) { const my = pts.reduce((a, p) => a + p[1], 0) / pts.length; const ss = pts.reduce((a, p) => a + (p[1] - my) ** 2, 0), sr = pts.reduce((a, p) => a + (p[1] - f(p[0])) ** 2, 0); return ss ? 1 - sr / ss : 1; }
+    const niceStep = (raw) => { const m = 10 ** Math.floor(Math.log10(raw || 1)); return [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= raw); };
+    function nice(lo, hi, n) { if (lo === hi) { lo -= 1; hi += 1; } const step = niceStep((hi - lo) / n); return { lo: Math.floor(lo / step + 1e-9) * step, hi: Math.ceil(hi / step - 1e-9) * step, step }; }
+    const fmt = (v, sig = 3) => { if (!Number.isFinite(v)) return '—'; const a = Math.abs(v); const r = a >= 100 ? Math.round(v * 10) / 10 : a >= 1 ? Math.round(v * 100) / 100 : Number(v.toPrecision(sig)); const s = String(r); return (lang === 'af' ? s.replace('.', ',') : s).replace('-', '−'); };
+    const COLS = ['#1d4ed8', '#dc2626', '#15803d'];
+    const W = 900, H = 580, INK = '#111827', SUB = '#4b5563', FONT = 'Helvetica, Arial, sans-serif';
+    const axisLabel = (name, unit) => unit ? `${name} (${unit})` : name;
+    // cm³ → cm⁻³, A → A⁻¹ (the unit of 1/x)
+    const invUnit = (u) => { if (!u) return ''; const m = /^(.*?)([²³])$/.exec(u); return m ? `${m[1]}⁻${m[2]}` : `${u}⁻¹`; };
+    const xLabel = () => st.xT === 'inv' ? axisLabel(`1/${st.xName}`, invUnit(st.xUnit)) : st.xT === 'sq' ? axisLabel(`${st.xName}²`, st.xUnit ? `${st.xUnit}²` : '') : axisLabel(st.xName, st.xUnit);
+
+    function render() {
+      store.save(JSON.stringify(st));
+      const t = T(), { rows, bad } = parse();
+      const warn = []; if (bad.length) warn.push(t.bad(bad.slice(0, 3).join(' | ')));
+      if (rows.length < (st.kind === 'bar' ? 1 : 2)) { warn.push(t.need); $('warn').textContent = warn.join(' '); $('plot').innerHTML = ''; $('summary').innerHTML = ''; return; }
+      $('warn').textContent = warn.join(' ');
+      const names = String(st.series || '').split(',').map(s => s.trim()).filter(Boolean);
+      const nSeries = Math.max(...rows.map(r => r.ys.length));
+      const title = String(st.title || '').trim(), top = title ? 60 : 24;
+      const box = { x0: 100, x1: W - 40, y0: top + 10, y1: H - 78 };
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Graph" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      const allY = rows.flatMap(r => r.ys);
+      const ys = nice(st.origin ? Math.min(0, ...allY) : Math.min(...allY), Math.max(...allY), 8);
+      const Y = (v) => box.y1 - (v - ys.lo) / (ys.hi - ys.lo) * (box.y1 - box.y0);
+      let summary = '';
+      // graph paper / gridlines
+      const grid = (X, xs) => {
+        let g = '';
+        if (st.paper) {
+          const fx = xs.step / 5, fy = ys.step / 5;
+          for (let v = xs.lo; v <= xs.hi + 1e-9; v += fx) g += `<line x1="${X(v)}" y1="${box.y0}" x2="${X(v)}" y2="${box.y1}" stroke="#bbf7d0" stroke-width="0.6"/>`;
+          for (let v = ys.lo; v <= ys.hi + 1e-9; v += fy) g += `<line x1="${box.x0}" y1="${Y(v)}" x2="${box.x1}" y2="${Y(v)}" stroke="#bbf7d0" stroke-width="0.6"/>`;
+        }
+        for (let v = xs.lo, i = 0; v <= xs.hi + 1e-9 && i < 60; v = xs.lo + (++i) * xs.step) g += `<line x1="${X(v)}" y1="${box.y0}" x2="${X(v)}" y2="${box.y1}" stroke="${st.paper ? '#86efac' : '#e5e7eb'}" stroke-width="1"/><text x="${X(v)}" y="${box.y1 + 20}" text-anchor="middle" font-size="12.5" fill="${SUB}">${fmt(v)}</text>`;
+        return g;
+      };
+      let yAxis = '';
+      for (let v = ys.lo, i = 0; v <= ys.hi + 1e-9 && i < 60; v = ys.lo + (++i) * ys.step) yAxis += `<line x1="${box.x0}" y1="${Y(v)}" x2="${box.x1}" y2="${Y(v)}" stroke="${st.paper ? '#86efac' : '#e5e7eb'}" stroke-width="1"/><text x="${box.x0 - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="12.5" fill="${SUB}">${fmt(v)}</text>`;
+      const axes = `<line x1="${box.x0}" y1="${box.y1}" x2="${box.x1}" y2="${box.y1}" stroke="${INK}" stroke-width="1.8"/><line x1="${box.x0}" y1="${box.y0}" x2="${box.x0}" y2="${box.y1}" stroke="${INK}" stroke-width="1.8"/>` +
+        `<text x="${(box.x0 + box.x1) / 2}" y="${H - 34}" text-anchor="middle" font-size="16" fill="${INK}">${esc(st.kind === 'bar' ? st.xName : xLabel())}</text>` +
+        `<text transform="translate(${box.x0 - 62} ${(box.y0 + box.y1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" fill="${INK}">${esc(axisLabel(st.yName, st.yUnit))}</text>`;
+      let legend = '';
+      if (nSeries > 1) (names.length ? names : [...Array(nSeries)].map((_, i) => 'Series ' + (i + 1))).slice(0, nSeries).forEach((n, i) => {
+        legend += `<rect x="${box.x0 + 16}" y="${box.y0 + 10 + i * 22}" width="14" height="14" fill="${COLS[i]}"/><text x="${box.x0 + 36}" y="${box.y0 + 22 + i * 22}" font-size="14" fill="${INK}">${esc(n)}</text>`;
+      });
+
+      if (st.kind === 'bar') {
+        const nb = rows.length, slot = (box.x1 - box.x0) / nb, bw = slot * 0.7 / nSeries;
+        let bars = '';
+        rows.forEach((r, i) => {
+          r.ys.forEach((v, j) => { const x = box.x0 + slot * i + slot * 0.15 + j * bw; bars += `<rect x="${x}" y="${Math.min(Y(v), Y(0))}" width="${bw}" height="${Math.abs(Y(0) - Y(v))}" fill="${COLS[j]}" fill-opacity="0.8" stroke="${INK}" stroke-width="1"/>`; });
+          bars += `<text x="${box.x0 + slot * (i + 0.5)}" y="${box.y1 + 20}" text-anchor="middle" font-size="13" fill="${INK}">${esc(r.label)}</text>`;
+        });
+        s += yAxis + bars + axes + legend;
+      } else {
+        const pts = rows.map(r => ({ x: xform(r.x), ys: r.ys })).filter(p => Number.isFinite(p.x));
+        const allX = pts.map(p => p.x);
+        const xs = nice(st.origin ? Math.min(0, ...allX) : Math.min(...allX), Math.max(...allX), 10);
+        const X = (v) => box.x0 + (v - xs.lo) / (xs.hi - xs.lo) * (box.x1 - box.x0);
+        let body = '';
+        for (let j = 0; j < nSeries; j++) {
+          const P = pts.filter(p => p.ys[j] !== undefined).map(p => [p.x, p.ys[j]]).sort((a, b) => a[0] - b[0]);
+          const c = COLS[j];
+          if (st.kind === 'line') body += `<polyline points="${P.map(p => X(p[0]) + ',' + Y(p[1])).join(' ')}" fill="none" stroke="${c}" stroke-width="2.4"/>`;
+          if (st.kind === 'scatter' && st.fit === 'smooth' && P.length > 2) {
+            // Catmull–Rom spline through the points
+            let d = `M${X(P[0][0])} ${Y(P[0][1])}`;
+            for (let i = 0; i < P.length - 1; i++) {
+              const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+              const c1 = [X(p1[0]) + (X(p2[0]) - X(p0[0])) / 6, Y(p1[1]) + (Y(p2[1]) - Y(p0[1])) / 6], c2 = [X(p2[0]) - (X(p3[0]) - X(p1[0])) / 6, Y(p2[1]) - (Y(p3[1]) - Y(p1[1])) / 6];
+              d += `C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${X(p2[0])} ${Y(p2[1])}`;
+            }
+            body += `<path d="${d}" fill="none" stroke="${c}" stroke-width="2.4"/>`;
+          }
+          if (st.kind === 'scatter' && (st.fit === 'line' || st.fit === 'origin') && P.length > 1) {
+            const f = fitLine(P, st.fit === 'origin');
+            const xa = st.fit === 'origin' ? Math.max(xs.lo, 0) : xs.lo, xb = xs.hi;
+            body += `<defs><clipPath id="cl${j}"><rect x="${box.x0}" y="${box.y0}" width="${box.x1 - box.x0}" height="${box.y1 - box.y0}"/></clipPath></defs><line x1="${X(xa)}" y1="${Y(f.m * xa + f.c)}" x2="${X(xb)}" y2="${Y(f.m * xb + f.c)}" stroke="${c}" stroke-width="2.2" clip-path="url(#cl${j})"/>`;
+            // gradient unit = y-unit per (plotted) x-unit, written the CAPS way (V·A⁻¹)
+            const xu = st.xUnit ? st.xUnit + (st.xT === 'inv' ? '' : st.xT === 'sq' ? '⁻²' : '⁻¹') : '';
+            const unit = [st.yUnit, xu].filter(Boolean).join('·');
+            summary += `<div>${nSeries > 1 ? `<b>${esc(names[j] || 'Series ' + (j + 1))}</b> · ` : ''}<b>${esc(t.gradient)}:</b> ${fmt(f.m)} ${esc(unit)} · <b>${esc(t.intercept)}:</b> ${fmt(f.c)} ${esc(st.yUnit)} · <b>${esc(t.r2)}:</b> ${fmt(f.r2, 4)}</div>`;
+            if (st.eq) body += `<text x="${box.x1 - 10}" y="${box.y0 + 22 + j * 22}" text-anchor="end" font-size="16" fill="${c}" font-family="'Times New Roman', serif" font-style="italic">y = ${fmt(f.m)}x${f.c ? (f.c < 0 ? ' − ' : ' + ') + fmt(Math.abs(f.c)) : ''}</text>`;
+            if (st.tri && j === 0) {
+              // a big right-angled triangle on the line, the way it is drawn to read off a gradient
+              const xA = xs.lo + (xs.hi - xs.lo) * 0.2, xB = xs.lo + (xs.hi - xs.lo) * 0.75;
+              const yA = f.m * xA + f.c, yB = f.m * xB + f.c;
+              body += `<path d="M${X(xA)} ${Y(yA)}H${X(xB)}V${Y(yB)}" fill="none" stroke="${INK}" stroke-width="1.4" stroke-dasharray="6 4"/>`;
+              body += `<circle cx="${X(xA)}" cy="${Y(yA)}" r="3.5" fill="${INK}"/><circle cx="${X(xB)}" cy="${Y(yB)}" r="3.5" fill="${INK}"/>`;
+              body += `<text x="${(X(xA) + X(xB)) / 2}" y="${Y(yA) + (f.m >= 0 ? 20 : -8)}" text-anchor="middle" font-size="14" fill="${INK}">Δx = ${fmt(xB - xA)}</text>`;
+              body += `<text x="${X(xB) + 8}" y="${(Y(yA) + Y(yB)) / 2 + 5}" font-size="14" fill="${INK}">Δy = ${fmt(yB - yA)}</text>`;
+              summary += `<div><b>${esc(t.tri)}:</b> Δy/Δx = ${fmt(yB - yA)} / ${fmt(xB - xA)} = ${fmt((yB - yA) / (xB - xA))}</div>`;
+            }
+          }
+          P.forEach(p => { body += st.kind === 'scatter' ? `<g stroke="${c}" stroke-width="2.2"><line x1="${X(p[0]) - 5}" y1="${Y(p[1]) - 5}" x2="${X(p[0]) + 5}" y2="${Y(p[1]) + 5}"/><line x1="${X(p[0]) - 5}" y1="${Y(p[1]) + 5}" x2="${X(p[0]) + 5}" y2="${Y(p[1]) - 5}"/></g>` : `<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="4" fill="${c}"/>`; });
+        }
+        s += grid(X, xs) + yAxis + axes + body + legend;
+      }
+      $('plot').innerHTML = s + '</svg>';
+      $('summary').innerHTML = summary;
+    }
+
+    const TXT = ['xName', 'xUnit', 'yName', 'yUnit', 'data', 'series', 'title'], SEL = ['kind', 'fit', 'xT'], CHK = ['origin', 'paper', 'tri', 'eq'];
+    function paint() { TXT.forEach(k => { $(k).value = st[k]; }); SEL.forEach(k => { $(k).value = st[k]; }); CHK.forEach(k => { $(k).checked = st[k]; }); }
+    TXT.forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; render(); }));
+    SEL.forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.value; render(); }));
+    CHK.forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
+    $('examples').addEventListener('change', (e) => { const x = EX[e.target.value]; if (x) { Object.assign(st, x); paint(); render(); } e.target.value = ''; });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'graph').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'graph', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded;
+    K.i18n((l) => { lang = l; paint(); render(); }).apply();
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
