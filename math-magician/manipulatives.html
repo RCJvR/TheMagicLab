@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Fractions &amp; Algebra Tiles · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .mrow { display: grid; grid-template-columns: minmax(0,1.3fr) repeat(2, minmax(0,0.8fr)) 30px; gap: 6px; margin-bottom: 6px; align-items: end; }
+    #plot svg [data-piece] { cursor: pointer; }
+    .result { font-family: "Times New Roman", serif; font-size: 20px; color: var(--paper); margin-top: 8px; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Breuke en algebra · Gr 4–9">Resource · Fractions &amp; algebra · Gr 4–9</span></div>
+    <h1 data-af-html="Breuke en <em>algebra-teëls.</em>">Fractions &amp; <em>algebra tiles.</em></h1>
+    <p class="hero-sub" data-af="Breukmure en breukmodelle om te vergelyk, op te tel en ekwivalente breuke te sien — en algebra-teëls wat drieterme faktoriseer en tweeterme vermenigvuldig as ’n oppervlakmodel.">Fraction walls and fraction models to compare, add and see equivalent fractions — and algebra tiles that factorise trinomials and multiply binomials as an area model.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="wall" data-af="Breukmuur">Fraction wall</button>
+          <button type="button" data-mode="models" data-af="Breukmodelle">Fraction models</button>
+          <button type="button" data-mode="tiles" data-af="Algebra-teëls">Algebra tiles</button>
+        </div>
+        <div id="controls"></div>
+      </section>
+      <section class="panel">
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        dens: 'Rows (denominators)', denHint: 'e.g. 1-12, or 2, 4, 8 to show halves, quarters and eighths', labels: 'Labels', lblFrac: 'Fractions', lblDec: 'Decimals', lblPct: 'Percentages', lblNone: 'None (blank)',
+        clickHint: 'Click pieces to shade them — e.g. shade 1/2 and 2/4 to show they are equal.', clear: 'Clear shading',
+        shape: 'Shape', bar: 'Bar', circle: 'Circle', grid: 'Grid', num: 'Numerator', den: 'Denominator', add: 'Add model', caption: 'Caption', sum: 'Show the sum', remove: 'Remove',
+        mode: 'Show', factor: 'Factorise a trinomial', expand: 'Multiply two binomials', expr: 'Trinomial ax² + bx + c', b1: 'First bracket (px + q)', b2: 'Second bracket (rx + s)',
+        noFactor: 'No factorisation with whole numbers, so the tiles are shown in groups.', tooBig: 'Keep coefficients between −12 and 12 so the tiles fit.',
+        pos: 'positive', neg: 'negative', badExpr: 'Type a trinomial like x^2 + 5x + 6 or 2x² − x − 3.',
+        copied: 'Link copied — anyone with it sees this model.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        dens: 'Rye (noemers)', denHint: 'bv. 1-12, of 2, 4, 8 om halwes, kwarte en agstes te wys', labels: 'Byskrifte', lblFrac: 'Breuke', lblDec: 'Desimale', lblPct: 'Persentasies', lblNone: 'Geen (leeg)',
+        clickHint: 'Klik op stukke om hulle in te kleur — bv. kleur 1/2 en 2/4 in om te wys hulle is gelyk.', clear: 'Vee inkleuring uit',
+        shape: 'Vorm', bar: 'Strook', circle: 'Sirkel', grid: 'Rooster', num: 'Teller', den: 'Noemer', add: 'Voeg model by', caption: 'Onderskrif', sum: 'Wys die som', remove: 'Verwyder',
+        mode: 'Wys', factor: 'Faktoriseer ’n drieterm', expand: 'Vermenigvuldig twee tweeterme', expr: 'Drieterm ax² + bx + c', b1: 'Eerste hakie (px + q)', b2: 'Tweede hakie (rx + s)',
+        noFactor: 'Geen faktorisering met heelgetalle nie, so die teëls word in groepe gewys.', tooBig: 'Hou koëffisiënte tussen −12 en 12 sodat die teëls pas.',
+        pos: 'positief', neg: 'negatief', badExpr: 'Tik ’n drieterm soos x^2 + 5x + 6 of 2x² − x − 3.',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie model.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    const defaults = () => ({
+      mode: 'wall', title: '',
+      wall: { dens: '1-12', labels: 'frac', shaded: {} },
+      models: { items: [{ shape: 'circle', n: '2', d: '3', cap: '' }, { shape: 'circle', n: '1', d: '4', cap: '' }], sum: true },
+      tiles: { mode: 'factor', expr: 'x^2 + 5x + 6', b1: 'x + 2', b2: 'x - 3' },
+    });
+    let st = defaults();
+    const store = K.store('mm_manip_v1', 'm');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 60);
+      d.mode = ['wall', 'models', 'tiles'].includes(s.mode) ? s.mode : 'wall'; d.title = str(s.title, 80);
+      if (s.wall) { d.wall.dens = str(s.wall.dens, 60); d.wall.labels = ['frac', 'dec', 'pct', 'none'].includes(s.wall.labels) ? s.wall.labels : 'frac';
+        Object.keys(s.wall.shaded || {}).slice(0, 400).forEach(k => { if (/^\d+:\d+$/.test(k)) d.wall.shaded[k] = !!s.wall.shaded[k]; }); }
+      if (s.models && Array.isArray(s.models.items)) { d.models.items = s.models.items.slice(0, 6).map(m => ({ shape: ['bar', 'circle', 'grid'].includes(m.shape) ? m.shape : 'bar', n: str(m.n, 4), d: str(m.d, 4), cap: str(m.cap, 40) })); d.models.sum = s.models.sum !== false; }
+      if (s.tiles) { d.tiles.mode = s.tiles.mode === 'expand' ? 'expand' : 'factor'; ['expr', 'b1', 'b2'].forEach(k => { if (s.tiles[k] != null) d.tiles[k] = str(s.tiles[k], 40); }); }
+      return d;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Helpers
+    // ══════════════════════════════════════════════════════════════════
+    const W = 900, FONT = 'Helvetica, Arial, sans-serif', INK = '#111827', SERIF = "'Times New Roman', Times, serif";
+    const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a || 1; };
+    const COLS = ['#fca5a5', '#fdba74', '#fcd34d', '#bef264', '#86efac', '#5eead4', '#7dd3fc', '#a5b4fc', '#c4b5fd', '#f0abfc', '#fda4af', '#d6d3d1'];
+    function fracSvg(x, y, n, d, size, color) {           // stacked fraction centred on x
+      size = size || 18; color = color || INK;
+      if (d === 1) return `<text x="${x}" y="${y + size * 0.35}" text-anchor="middle" font-size="${size}" fill="${color}" font-family="${SERIF}">${n}</text>`;
+      const w = Math.max(String(n).length, String(d).length) * size * 0.55 + 6;
+      return `<text x="${x}" y="${y - 3}" text-anchor="middle" font-size="${size * 0.9}" fill="${color}" font-family="${SERIF}">${n}</text><line x1="${x - w / 2}" y1="${y + 1}" x2="${x + w / 2}" y2="${y + 1}" stroke="${color}" stroke-width="1.3"/><text x="${x}" y="${y + size * 0.9 + 2}" text-anchor="middle" font-size="${size * 0.9}" fill="${color}" font-family="${SERIF}">${d}</text>`;
+    }
+    function head(H) {
+      const title = String(st.title || '').trim();
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(st.mode)}" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      return { s, top: title ? 52 : 18 };
+    }
+    function parseDens(src) {
+      const out = [];
+      String(src).split(/[,;\s]+/).filter(Boolean).forEach(tok => {
+        const r = /^(\d+)\s*-\s*(\d+)$/.exec(tok);
+        if (r) { for (let k = +r[1]; k <= +r[2] && out.length < 24; k++) out.push(k); }
+        else if (/^\d+$/.test(tok)) out.push(+tok);
+      });
+      return [...new Set(out.filter(d => d >= 1 && d <= 24))].slice(0, 16);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Fraction wall
+    // ══════════════════════════════════════════════════════════════════
+    function wall() {
+      const dens = parseDens(st.wall.dens);
+      const rowH = 44, { top } = head(0);
+      const H = top + Math.max(1, dens.length) * rowH + 20, x0 = 30, x1 = W - 30;
+      let s = head(H).s;
+      dens.forEach((d, r) => {
+        const y = top + r * rowH, w = (x1 - x0) / d, c = COLS[(d - 1) % COLS.length];
+        for (let i = 0; i < d; i++) {
+          const key = d + ':' + i, on = !!st.wall.shaded[key];
+          s += `<rect data-piece="${key}" x="${x0 + i * w}" y="${y}" width="${w}" height="${rowH - 6}" fill="${on ? c : '#fff'}" stroke="${INK}" stroke-width="1.6"/>`;
+          const L = st.wall.labels, cx = x0 + (i + 0.5) * w, cy = y + (rowH - 6) / 2;
+          if (L === 'frac') s += `<g pointer-events="none">${fracSvg(cx, cy - 2, 1, d, d > 12 ? 13 : 16)}</g>`;
+          else if (L === 'dec' || L === 'pct') {
+            const v = L === 'dec' ? Math.round(1000 / d) / 1000 : Math.round(1000 / d) / 10;
+            const txt = (L === 'pct' ? v + '%' : String(v)).replace('.', lang === 'af' ? ',' : '.');
+            if (w > 34) s += `<text pointer-events="none" x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="${w > 60 ? 14 : 11}" fill="${INK}">${txt}</text>`;
+          }
+        }
+      });
+      return { svg: s + '</svg>', warn: dens.length ? '' : T().denHint };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Fraction models
+    // ══════════════════════════════════════════════════════════════════
+    function models() {
+      const items = st.models.items.map(m => ({ ...m, n: Math.max(0, parseInt(m.n, 10) || 0), d: Math.max(1, Math.min(60, parseInt(m.d, 10) || 1)) }));
+      const { top } = head(0);
+      const MCOLS = ['#7dd3fc', '#fca5a5', '#86efac', '#fcd34d', '#c4b5fd', '#fdba74'];
+      // the sum, worked out first so it can take the last cell
+      let result = '', RN = 0, RD = 1;
+      const showSum = st.models.sum && items.length > 1;
+      if (showSum) {
+        items.forEach(m => { RN = RN * m.d + m.n * RD; RD = RD * m.d; const g = gcd(RN, RD); RN /= g; RD /= g; });
+        result = RD === 1 ? String(RN) : (RN > RD ? `${Math.floor(RN / RD)} ${RN % RD}/${RD}  ( = ${RN}/${RD})` : `${RN}/${RD}`);
+      }
+      const cols = Math.max(1, items.length + (showSum ? 1 : 0)), cellW = (W - 40) / cols;
+      const maxWholes = Math.max(1, ...items.map(m => Math.max(1, Math.ceil(m.n / m.d))));
+      const size = Math.min(170, cellW - 30);
+      const H = top + maxWholes * (size + 18) + 110;
+      let s = head(H).s;
+      items.forEach((m, k) => {
+        const cx = 20 + (k + 0.5) * cellW, c = MCOLS[k % MCOLS.length];
+        const wholes = Math.max(1, Math.ceil(m.n / m.d));
+        for (let wI = 0; wI < wholes; wI++) {
+          const y = top + wI * (size + 18), shadedHere = Math.max(0, Math.min(m.d, m.n - wI * m.d));
+          if (m.shape === 'circle') {
+            const r = size / 2, ccx = cx, ccy = y + r;
+            if (m.d === 1) s += `<circle cx="${ccx}" cy="${ccy}" r="${r}" fill="${shadedHere ? c : '#fff'}" stroke="${INK}" stroke-width="1.8"/>`;
+            else for (let i = 0; i < m.d; i++) {
+              const a1 = -Math.PI / 2 + i * 2 * Math.PI / m.d, a2 = a1 + 2 * Math.PI / m.d;
+              s += `<path d="M${ccx} ${ccy}L${ccx + r * Math.cos(a1)} ${ccy + r * Math.sin(a1)}A${r} ${r} 0 ${m.d === 2 ? 0 : 0} 1 ${ccx + r * Math.cos(a2)} ${ccy + r * Math.sin(a2)}Z" fill="${i < shadedHere ? c : '#fff'}" stroke="${INK}" stroke-width="1.6"/>`;
+            }
+          } else if (m.shape === 'bar') {
+            const bw = size * 1.15, bh = size * 0.42, bx = cx - bw / 2, w = bw / m.d;
+            for (let i = 0; i < m.d; i++) s += `<rect x="${bx + i * w}" y="${y + (size - bh) / 2}" width="${w}" height="${bh}" fill="${i < shadedHere ? c : '#fff'}" stroke="${INK}" stroke-width="1.6"/>`;
+          } else {
+            // grid: as square as possible
+            let rows = Math.floor(Math.sqrt(m.d)); while (m.d % rows) rows--;
+            const colsN = m.d / rows, cw = size / colsN, ch = size / rows, gx = cx - size / 2;
+            for (let i = 0; i < m.d; i++) s += `<rect x="${gx + (i % colsN) * cw}" y="${y + Math.floor(i / colsN) * ch}" width="${cw}" height="${ch}" fill="${i < shadedHere ? c : '#fff'}" stroke="${INK}" stroke-width="1.4"/>`;
+          }
+        }
+        const ly = top + maxWholes * (size + 18) + 24;     // one baseline, so the sum reads as a line
+        s += fracSvg(cx, ly, m.n, m.d, 24);
+        if (m.cap) s += `<text x="${cx}" y="${ly + 50}" text-anchor="middle" font-size="15" fill="#4b5563">${esc(m.cap)}</text>`;
+        if (showSum) s += `<text x="${20 + (k + 1) * cellW}" y="${ly + 10}" text-anchor="middle" font-size="26" fill="${INK}">${k < items.length - 1 ? '+' : '='}</text>`;
+      });
+      if (showSum) {
+        const cx = 20 + (items.length + 0.5) * cellW, ly = top + maxWholes * (size + 18) + 24;
+        if (RD === 1 || RN <= RD) s += fracSvg(cx, ly, RN, RD, 24);
+        else { s += `<text x="${cx - 14}" y="${ly + 9}" text-anchor="end" font-size="26" fill="${INK}" font-family="${SERIF}">${Math.floor(RN / RD)}</text>` + fracSvg(cx + 4, ly, RN % RD, RD, 24); }
+      }
+      return { svg: s + '</svg>', warn: '', result };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Algebra tiles
+    // ══════════════════════════════════════════════════════════════════
+    // "2x^2 - x - 3" → {a, b, c}
+    function parseTri(src) {
+      const s = String(src).replace(/\s+/g, '').replace(/[−–]/g, '-').replace(/²/g, '^2').replace(/\*\*/g, '^').toLowerCase();
+      if (!/^[-+]?[\dx^.+-]*$/.test(s) || !s) return null;
+      const terms = s.match(/[+-]?[^+-]+/g) || [];
+      let a = 0, b = 0, c = 0;
+      for (const t of terms) {
+        let m;
+        if ((m = /^([+-]?\d*)x\^2$/.exec(t))) a += coef(m[1]);
+        else if ((m = /^([+-]?\d*)x(\^1)?$/.exec(t))) b += coef(m[1]);
+        else if (/^[+-]?\d+$/.test(t)) c += +t;
+        else return null;
+      }
+      return { a, b, c };
+    }
+    function coef(s) { return s === '' || s === '+' ? 1 : s === '-' ? -1 : +s; }
+    function parseBin(src) { const r = parseTri(src); return r && r.a === 0 ? { p: r.b, q: r.c } : null; }
+    // integer factorisation a x² + b x + c = (p x + q)(r x + s) with p, r > 0
+    function factorise({ a, b, c }) {
+      if (a <= 0) return null;
+      for (let p = 1; p <= a; p++) {
+        if (a % p) continue;
+        const r = a / p;
+        for (let q = -Math.abs(c) - 1; q <= Math.abs(c) + 1; q++) {
+          if (q === 0 && c !== 0) continue;
+          const s2 = q === 0 ? null : c / q;
+          const cand = q === 0 ? (Number.isInteger(b / p) ? [b / p] : []) : (Number.isInteger(s2) ? [s2] : []);
+          for (const s of cand) if (p * s + q * r === b && q * s === c) return { p, q, r, s };
+        }
+      }
+      return null;
+    }
+    const term = (k, v) => k === 0 ? '' : (Math.abs(k) === 1 && v ? (k < 0 ? '−' : '') : String(k).replace('-', '−')) + v;
+    function bin(p, q) { return `(${term(p, 'x')}${q ? (q < 0 ? ' − ' : ' + ') + Math.abs(q) : ''})`; }
+    function tri({ a, b, c }) { let s = term(a, 'x²'); if (b) s += (b < 0 ? ' − ' : (s ? ' + ' : '')) + term(Math.abs(b), 'x'); if (c) s += (c < 0 ? ' − ' : (s ? ' + ' : '')) + Math.abs(c); return s || '0'; }
+    const TILE = { x2: ['#93c5fd', '#fca5a5'], x: ['#86efac', '#fca5a5'], one: ['#fde68a', '#fca5a5'] };
+    function tileRect(x, y, w, h, kind, neg, label) {
+      const fill = TILE[kind][neg ? 1 : 0];
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${fill}" stroke="${INK}" stroke-width="1.4"/>` +
+        (label ? `<text x="${x + w / 2}" y="${y + h / 2 + 5}" text-anchor="middle" font-size="${Math.min(15, Math.max(9, Math.min(w, h) * 0.45))}" fill="${INK}" font-family="${SERIF}"${/x/.test(label) ? ' font-style="italic"' : ''}>${label}</text>` : '');
+    }
+    function tiles() {
+      const t = T(), TL = st.tiles;
+      let p, q, r, s, a, b, c, statement = '', warn = '';
+      if (TL.mode === 'expand') {
+        const B1 = parseBin(TL.b1), B2 = parseBin(TL.b2);
+        if (!B1 || !B2 || !B1.p || !B2.p) return { svg: head(200).s + '</svg>', warn: t.badExpr };
+        ({ p, q } = B1); ({ p: r, q: s } = B2);
+        a = p * r; b = p * s + q * r; c = q * s;
+        statement = `${bin(p, q)}${bin(r, s)} = ${tri({ a, b, c })}`;
+      } else {
+        const P = parseTri(TL.expr); if (!P) return { svg: head(200).s + '</svg>', warn: t.badExpr };
+        ({ a, b, c } = P);
+        const f = factorise(P);
+        if (f) { ({ p, q, r, s } = f); statement = `${tri(P)} = ${bin(p, q)}${bin(r, s)}`; }
+        else warn = t.noFactor;
+      }
+      if ([a, b, c, p, q, r, s].some(v => v !== undefined && Math.abs(v) > 12)) return { svg: head(200).s + '</svg>', warn: t.tooBig };
+      const X = 92, U = 26;                // tile sizes: x = 92px, 1 = 26px
+      const { top } = head(0);
+      if (p !== undefined) {
+        // area model: columns = (r x + s), rows = (p x + q)
+        const colsW = [...Array(r).fill(X), ...Array(Math.abs(s)).fill(U)], rowsH = [...Array(p).fill(X), ...Array(Math.abs(q)).fill(U)];
+        const gw = colsW.reduce((a2, b2) => a2 + b2, 0), gh = rowsH.reduce((a2, b2) => a2 + b2, 0);
+        const ox = Math.max(90, (W - gw) / 2), oy = top + 60, H = oy + gh + 90;
+        let out = head(H).s;
+        // side tiles showing the factors
+        let cx = ox;
+        colsW.forEach((w, i) => { const isX = i < r; out += tileRect(cx, oy - 40, w, 30, isX ? 'x' : 'one', !isX && s < 0, isX ? 'x' : (s < 0 ? '−1' : '1')); cx += w; });
+        let cy = oy;
+        rowsH.forEach((h, i) => { const isX = i < p; out += tileRect(ox - 40, cy, 30, h, isX ? 'x' : 'one', !isX && q < 0, isX ? 'x' : (q < 0 ? '−1' : '1')); cy += h; });
+        cy = oy;
+        rowsH.forEach((h, i) => {
+          let cx2 = ox; const rowX = i < p, rowNeg = !rowX && q < 0;
+          colsW.forEach((w, j) => {
+            const colX = j < r, colNeg = !colX && s < 0;
+            const kind = rowX && colX ? 'x2' : (rowX || colX ? 'x' : 'one'), neg = rowNeg !== colNeg;
+            out += tileRect(cx2, cy, w, h, kind, neg, kind === 'x2' ? (neg ? '−x²' : 'x²') : kind === 'x' ? (neg ? '−x' : 'x') : (neg ? '−1' : '1'));
+            cx2 += w;
+          });
+          cy += h;
+        });
+        out += `<text x="${W / 2}" y="${H - 30}" text-anchor="middle" font-size="24" fill="${INK}" font-family="${SERIF}">${esc(statement)}</text>`;
+        return { svg: out + '</svg>', warn };
+      }
+      // no factorisation: tiles in groups
+      const groups = [['x2', a, X, X], ['x', b, U, X], ['one', c, U, U]];
+      let x = 40, y = top + 30, rowMax = 0, out = '';
+      groups.forEach(([kind, n, w, h]) => {
+        for (let i = 0; i < Math.abs(n); i++) {
+          if (x + w > W - 40) { x = 40; y += rowMax + 12; rowMax = 0; }
+          out += tileRect(x, y, w, h, kind, n < 0, kind === 'x2' ? (n < 0 ? '−x²' : 'x²') : kind === 'x' ? (n < 0 ? '−x' : 'x') : (n < 0 ? '−1' : '1'));
+          x += w + 8; rowMax = Math.max(rowMax, h);
+        }
+        x += 22;
+      });
+      const H = y + rowMax + 90;
+      out = head(H).s + out + `<text x="${W / 2}" y="${H - 30}" text-anchor="middle" font-size="24" fill="${INK}" font-family="${SERIF}">${esc(tri({ a, b, c }))}</text>`;
+      return { svg: out + '</svg>', warn };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintControls() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      let h = '';
+      if (st.mode === 'wall') {
+        const Wl = st.wall;
+        h = `<div class="row c2"><label class="field"><span>${esc(t.dens)}</span><input type="text" data-w="dens" value="${esc(Wl.dens)}"></label>
+          <label class="field"><span>${esc(t.labels)}</span><select data-w="labels">${[['frac', t.lblFrac], ['dec', t.lblDec], ['pct', t.lblPct], ['none', t.lblNone]].map(([v, l]) => `<option value="${v}"${Wl.labels === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label></div>
+          <p class="hint">${esc(t.denHint)}</p><p class="hint" style="margin-top:6px">${esc(t.clickHint)}</p><button class="btn" type="button" id="clearShade" style="margin-top:8px">${esc(t.clear)}</button>`;
+      } else if (st.mode === 'models') {
+        h = st.models.items.map((m, i) => `<div class="mrow">
+          <label class="field"><span>${esc(t.shape)}</span><select data-m="${i}|shape">${[['bar', t.bar], ['circle', t.circle], ['grid', t.grid]].map(([v, l]) => `<option value="${v}"${m.shape === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
+          <label class="field"><span>${esc(t.num)}</span><input type="text" inputmode="numeric" data-m="${i}|n" value="${esc(m.n)}"></label>
+          <label class="field"><span>${esc(t.den)}</span><input type="text" inputmode="numeric" data-m="${i}|d" value="${esc(m.d)}"></label>
+          <button class="btn icon danger" type="button" data-rm="${i}" aria-label="${esc(t.remove)}"${st.models.items.length < 2 ? ' disabled' : ''}>✕</button></div>`).join('');
+        h += `<div class="btn-row" style="margin:6px 0 8px">${st.models.items.length < 6 ? `<button class="btn" type="button" id="addModel">+ ${esc(t.add)}</button>` : ''}</div>
+          <label class="check"><input type="checkbox" id="sum"${st.models.sum ? ' checked' : ''}> ${esc(t.sum)}</label><div class="result" id="result"></div>`;
+      } else {
+        const TL = st.tiles;
+        h = `<label class="field" style="margin-bottom:10px"><span>${esc(t.mode)}</span><select data-t="mode"><option value="factor"${TL.mode === 'factor' ? ' selected' : ''}>${esc(t.factor)}</option><option value="expand"${TL.mode === 'expand' ? ' selected' : ''}>${esc(t.expand)}</option></select></label>`;
+        h += TL.mode === 'factor'
+          ? `<label class="field"><span>${esc(t.expr)}</span><input type="text" data-t="expr" value="${esc(TL.expr)}" spellcheck="false"></label>`
+          : `<div class="row c2"><label class="field"><span>${esc(t.b1)}</span><input type="text" data-t="b1" value="${esc(TL.b1)}" spellcheck="false"></label><label class="field"><span>${esc(t.b2)}</span><input type="text" data-t="b2" value="${esc(TL.b2)}" spellcheck="false"></label></div>`;
+        h += `<p class="hint" style="margin-top:8px">x² <span style="display:inline-block;width:12px;height:12px;background:${TILE.x2[0]};border:1px solid #000"></span> &nbsp; x <span style="display:inline-block;width:12px;height:12px;background:${TILE.x[0]};border:1px solid #000"></span> &nbsp; 1 <span style="display:inline-block;width:12px;height:12px;background:${TILE.one[0]};border:1px solid #000"></span> &nbsp; ${esc(t.neg)} <span style="display:inline-block;width:12px;height:12px;background:${TILE.x2[1]};border:1px solid #000"></span></p>`;
+      }
+      $('controls').innerHTML = h;
+      $('title').value = st.title;
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      const out = st.mode === 'wall' ? wall() : st.mode === 'models' ? models() : tiles();
+      $('plot').innerHTML = out.svg;
+      $('warn').textContent = out.warn || '';
+      if ($('result')) $('result').textContent = out.result ? '= ' + out.result : '';
+    }
+    const ctl = $('controls');
+    ctl.addEventListener('input', (e) => {
+      const d = e.target.dataset;
+      if (d.w) st.wall[d.w] = e.target.value;
+      else if (d.m) { const [i, k] = d.m.split('|'); st.models.items[+i][k] = e.target.value; }
+      else if (d.t && d.t !== 'mode') st.tiles[d.t] = e.target.value;
+      else return;
+      render();
+    });
+    ctl.addEventListener('change', (e) => {
+      const d = e.target.dataset;
+      if (d.t === 'mode') { st.tiles.mode = e.target.value; paintControls(); }
+      else if (e.target.id === 'sum') st.models.sum = e.target.checked;
+      else if (d.w === 'labels') st.wall.labels = e.target.value;
+      else if (d.m) { const [i, k] = d.m.split('|'); st.models.items[+i][k] = e.target.value; }
+      else return;
+      render();
+    });
+    ctl.addEventListener('click', (e) => {
+      if (e.target.id === 'clearShade') { st.wall.shaded = {}; render(); }
+      if (e.target.id === 'addModel') { st.models.items.push({ shape: st.models.items[0].shape, n: '1', d: '2', cap: '' }); paintControls(); render(); }
+      const rm = e.target.closest('[data-rm]'); if (rm && st.models.items.length > 1) { st.models.items.splice(+rm.dataset.rm, 1); paintControls(); render(); }
+    });
+    $('plot').addEventListener('click', (e) => {
+      const p = e.target.closest('[data-piece]'); if (!p || st.mode !== 'wall') return;
+      const k = p.dataset.piece; st.wall.shaded[k] = !st.wall.shaded[k]; if (!st.wall.shaded[k]) delete st.wall.shaded[k];
+      render();
+    });
+    $('modeTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (!b) return; st.mode = b.dataset.mode; paintControls(); render(); });
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || st.mode).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'model', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded;
+    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    window.__manip = { parseTri, factorise, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
