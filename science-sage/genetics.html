@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Genetics · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .person { border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin-bottom: 6px; background: var(--ink-900); }
+    .person-h { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 12.5px; color: var(--text-2); }
+    .person-h b { font-family: var(--font-mono); color: var(--accent); min-width: 44px; }
+    .person-h select { width: auto; padding: 5px 7px; font-size: 12.5px; }
+    .person-h .btn { padding: 5px 9px; font-size: 12px; }
+    .gen-h { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin: 10px 0 6px; }
+    .ratio { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); line-height: 1.8; margin-top: 10px; }
+    .ratio b { color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Genetika en oorerwing · Gr 12">Resource · Genetics &amp; inheritance · Gr 12</span></div>
+    <h1 data-af-html="Genetika-<em>kruisings.</em>">Genetics <em>crosses.</em></h1>
+    <p class="hero-sub" data-af="Punnett-vierkante vir monohibriede, dihibriede, geslagsgekoppelde en bloedgroep-kruisings — met die volledige CAPS-kruising (P₁, meiose, gamete, bevrugting, F₁) en die verhoudings. Plus stamboomdiagramme.">Punnett squares for monohybrid, dihybrid, sex-linked and blood-group crosses — with the full CAPS cross layout (P₁, meiosis, gametes, fertilisation, F₁) and the ratios. Plus pedigree charts.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="cross" data-af="Genetiese kruising">Genetic cross</button>
+          <button type="button" data-mode="pedigree" data-af="Stamboom">Pedigree</button>
+        </div>
+        <div id="controls"></div>
+      </section>
+      <section class="panel">
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+      <div class="ratio" id="ratio"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        types: { mono: 'Monohybrid', di: 'Dihybrid', sex: 'Sex-linked', blood: 'Blood groups' },
+        type: 'Type of cross', dom: 'Dominance', complete: 'Complete dominance', incomplete: 'Incomplete dominance', co: 'Co-dominance',
+        p1: 'Parent 1 genotype', p2: 'Parent 2 genotype', letter: 'Allele letter', t1: 'Trait 1', t2: 'Trait 2',
+        domPh: 'Dominant phenotype', recPh: 'Recessive phenotype', hetPh: 'Heterozygous phenotype', female: 'Mother', male: 'Father',
+        layout: 'Show the full CAPS cross layout', percent: 'Show percentages', phenotype: 'Phenotype', genotype: 'Genotype',
+        meiosis: 'Meiosis', gametes: 'Gametes', fert: 'Fertilisation', geno: 'Genotypic ratio', pheno: 'Phenotypic ratio',
+        bad: 'Check the genotypes: use two letters per gene, e.g. Tt or RrYy.', blood: { A: 'Blood group A', B: 'Blood group B', AB: 'Blood group AB', O: 'Blood group O' },
+        sexNames: { male: 'male', female: 'female' },
+        ped: { sex: 'Sex', m: 'Male', f: 'Female', status: 'Status', un: 'Unaffected', aff: 'Affected', car: 'Carrier', partner: '+ Partner', child: '+ Child', remove: 'Remove', gen: 'Generation', trait: 'Trait name (for the key)', key: 'Key', start: 'Start again' },
+        copied: 'Link copied — anyone with it sees this cross.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+        ex: { '': 'Examples…', tt: 'Tall × short (Tt × tt)', het: 'Two heterozygotes (Tt × Tt)', inc: 'Incomplete dominance: red × white', di: 'Dihybrid RrYy × RrYy', colour: 'Colour blindness (carrier mother)', bl: 'Blood groups A × B' },
+      },
+      af: {
+        types: { mono: 'Monohibried', di: 'Dihibried', sex: 'Geslagsgekoppel', blood: 'Bloedgroepe' },
+        type: 'Soort kruising', dom: 'Dominansie', complete: 'Volledige dominansie', incomplete: 'Onvolledige dominansie', co: 'Kodominansie',
+        p1: 'Ouer 1 genotipe', p2: 'Ouer 2 genotipe', letter: 'Alleelletter', t1: 'Eienskap 1', t2: 'Eienskap 2',
+        domPh: 'Dominante fenotipe', recPh: 'Resessiewe fenotipe', hetPh: 'Heterosigotiese fenotipe', female: 'Moeder', male: 'Vader',
+        layout: 'Wys die volledige CAPS-kruising', percent: 'Wys persentasies', phenotype: 'Fenotipe', genotype: 'Genotipe',
+        meiosis: 'Meiose', gametes: 'Gamete', fert: 'Bevrugting', geno: 'Genotipiese verhouding', pheno: 'Fenotipiese verhouding',
+        bad: 'Kyk na die genotipes: gebruik twee letters per geen, bv. Tt of RrYy.', blood: { A: 'Bloedgroep A', B: 'Bloedgroep B', AB: 'Bloedgroep AB', O: 'Bloedgroep O' },
+        sexNames: { male: 'manlik', female: 'vroulik' },
+        ped: { sex: 'Geslag', m: 'Manlik', f: 'Vroulik', status: 'Status', un: 'Nie geaffekteer', aff: 'Geaffekteer', car: 'Draer', partner: '+ Maat', child: '+ Kind', remove: 'Verwyder', gen: 'Generasie', trait: 'Eienskap (vir die sleutel)', key: 'Sleutel', start: 'Begin oor' },
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie kruising.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+        ex: { '': 'Voorbeelde…', tt: 'Lank × kort (Tt × tt)', het: 'Twee heterosigote (Tt × Tt)', inc: 'Onvolledige dominansie: rooi × wit', di: 'Dihibried RrYy × RrYy', colour: 'Kleurblindheid (draer-moeder)', bl: 'Bloedgroepe A × B' },
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    // ══════════════════════════════════════════════════════════════════
+    const defaults = () => ({
+      mode: 'cross', title: '',
+      cross: { type: 'mono', dom: 'complete', p1: 'Tt', p2: 'tt', domPh: 'Tall', recPh: 'Short', hetPh: 'Pink', t2dom: 'Yellow', t2rec: 'Green',
+        letter: 'R', sexDom: 'Normal vision', sexRec: 'Colour blind', mother: 'XRXr', father: 'XRY', b1: 'IAi', b2: 'IBi', layout: true, pct: true },
+      ped: { trait: 'Albinism', people: [] },
+    });
+    let st = defaults();
+    function example(k) {
+      const c = st.cross;
+      const reset = () => Object.assign(c, defaults().cross);
+      reset();
+      if (k === 'tt') Object.assign(c, { type: 'mono', p1: 'Tt', p2: 'tt' });
+      if (k === 'het') Object.assign(c, { type: 'mono', p1: 'Tt', p2: 'Tt' });
+      if (k === 'inc') Object.assign(c, { type: 'mono', dom: 'incomplete', p1: 'RR', p2: 'WW', domPh: 'Red', recPh: 'White', hetPh: 'Pink' });
+      if (k === 'di') Object.assign(c, { type: 'di', p1: 'RrYy', p2: 'RrYy', domPh: 'Round', recPh: 'Wrinkled', t2dom: 'Yellow', t2rec: 'Green', layout: false });
+      if (k === 'colour') Object.assign(c, { type: 'sex', mother: 'XRXr', father: 'XRY' });
+      if (k === 'bl') Object.assign(c, { type: 'blood', b1: 'IAi', b2: 'IBi' });
+    }
+    function pedStart() {
+      st.ped.people = [
+        { id: 1, gen: 0, sex: 'm', status: 'un', partner: 2, parents: null },
+        { id: 2, gen: 0, sex: 'f', status: 'car', partner: 1, parents: null },
+        { id: 3, gen: 1, sex: 'f', status: 'un', partner: null, parents: [1, 2] },
+        { id: 4, gen: 1, sex: 'm', status: 'aff', partner: null, parents: [1, 2] },
+        { id: 5, gen: 1, sex: 'f', status: 'car', partner: 6, parents: [1, 2] },
+        { id: 6, gen: 1, sex: 'm', status: 'car', partner: 5, parents: null },
+        { id: 7, gen: 2, sex: 'm', status: 'aff', partner: null, parents: [5, 6] },
+        { id: 8, gen: 2, sex: 'f', status: 'un', partner: null, parents: [5, 6] },
+      ];
+    }
+    const store = K.store('ss_genetics_v1', 'g');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 30);
+      d.mode = s.mode === 'pedigree' ? 'pedigree' : 'cross'; d.title = str(s.title, 80);
+      if (s.cross) Object.keys(d.cross).forEach(k => { if (s.cross[k] !== undefined) d.cross[k] = typeof d.cross[k] === 'boolean' ? !!s.cross[k] : str(s.cross[k]); });
+      if (s.ped) { d.ped.trait = str(s.ped.trait, 40); d.ped.people = (Array.isArray(s.ped.people) ? s.ped.people : []).slice(0, 60).map(p => ({
+        id: +p.id || 0, gen: Math.max(0, Math.min(5, +p.gen || 0)), sex: p.sex === 'f' ? 'f' : 'm', status: ['un', 'aff', 'car'].includes(p.status) ? p.status : 'un',
+        partner: p.partner ? +p.partner : null, parents: Array.isArray(p.parents) ? p.parents.slice(0, 2).map(Number) : null })).filter(p => p.id); }
+      return d;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Crosses. A genotype is a list of allele pairs, one pair per gene.
+    // Alleles are strings: "T", "t", "X^R", "Y", "I^A", "i".
+    // ══════════════════════════════════════════════════════════════════
+    function genes(str, n) {
+      const s = String(str).replace(/\s+/g, '');
+      if (s.length !== 2 * n || !/^[A-Za-z]+$/.test(s)) return null;
+      const out = []; for (let i = 0; i < n; i++) out.push([s[2 * i], s[2 * i + 1]]);
+      if (out.some(([a, b]) => a.toLowerCase() !== b.toLowerCase())) {
+        // incomplete dominance can use two different letters (R and W)
+        if (n !== 1) return null;
+      }
+      return out;
+    }
+    const sexAlleles = (g) => { const m = /^X([A-Za-z])(X([A-Za-z])|Y)$/.exec(String(g).replace(/[\s^]/g, '')); if (!m) return null; return m[2] === 'Y' ? [['X^' + m[1], 'Y']] : [['X^' + m[1], 'X^' + m[3]]]; };
+    const bloodAlleles = (g) => { const m = /^(IA|IB|i)(IA|IB|i)$/.exec(String(g).replace(/[\s^]/g, '')); if (!m) return null; const f = (a) => a === 'i' ? 'i' : 'I^' + a[1]; return [[f(m[1]), f(m[2])]]; };
+    // all gametes (one allele from each pair), with repeats kept so the grid is complete
+    function gametes(pairs) { let out = [[]]; pairs.forEach(p => { out = out.flatMap(g => [g.concat(p[0]), g.concat(p[1])]); }); return out; }
+    const isDom = (a) => a === a.toUpperCase() && !a.startsWith('X^') ? true : false;
+    // Sort an allele pair the way it is written: dominant first; X before Y; I^A/I^B before i.
+    function sortPair(a, b) {
+      const rank = (x) => x === 'Y' && st.cross.type === 'sex' ? 3 : x.startsWith('X^') ? (x[2] === x[2].toUpperCase() ? 0 : 1) : x.startsWith('I^') ? 0 : x === 'i' ? 2 : (x === x.toUpperCase() ? 0 : 1);
+      return rank(a) <= rank(b) ? [a, b] : [b, a];
+    }
+    function phenotype(pairs) {
+      const c = st.cross, t = T();
+      if (c.type === 'blood') { const [a, b] = pairs[0]; const set = new Set([a, b]); if (set.has('I^A') && set.has('I^B')) return t.blood.AB; if (set.has('I^A')) return t.blood.A; if (set.has('I^B')) return t.blood.B; return t.blood.O; }
+      if (c.type === 'sex') {
+        const [a, b] = pairs[0], male = b === 'Y' || a === 'Y';
+        const X = [a, b].filter(x => x.startsWith('X^'));
+        const dom = X.some(x => x[2] === x[2].toUpperCase());
+        const car = !male && dom && X.some(x => x[2] !== x[2].toUpperCase());
+        return `${dom ? c.sexDom : c.sexRec} ${t.sexNames[male ? 'male' : 'female']}${car ? ' (' + t.ped.car.toLowerCase() + ')' : ''}`;
+      }
+      const ph = pairs.map(([a, b], i) => {
+        const dn = i === 0 ? c.domPh : c.t2dom, rn = i === 0 ? c.recPh : c.t2rec;
+        if (c.type === 'mono' && c.dom !== 'complete') {
+          // No dominance: the first parent's first allele names one homozygote,
+          // the other letter the other; a mix is the heterozygote.
+          const first = String(c.p1).trim()[0];
+          if (a !== b) return c.dom === 'co' ? `${dn} ${lang === 'af' ? 'en' : 'and'} ${rn}` : c.hetPh;
+          return a === first ? dn : rn;
+        }
+        return (isDom(a) || isDom(b)) ? dn : rn;
+      });
+      return ph.join(', ');
+    }
+    function cross() {
+      const c = st.cross;
+      let P1, P2;
+      if (c.type === 'mono') { P1 = genes(c.p1, 1); P2 = genes(c.p2, 1); }
+      else if (c.type === 'di') { P1 = genes(c.p1, 2); P2 = genes(c.p2, 2); }
+      else if (c.type === 'sex') { P1 = sexAlleles(c.mother); P2 = sexAlleles(c.father); }
+      else { P1 = bloodAlleles(c.b1); P2 = bloodAlleles(c.b2); }
+      if (!P1 || !P2) return null;
+      const g1 = gametes(P1), g2 = gametes(P2);
+      const cells = g1.map(a => g2.map(b => a.map((x, i) => sortPair(x, b[i]))));
+      return { P1, P2, g1, g2, cells };
+    }
+    const genoText = (pairs) => pairs.map(p => p.join('')).join('');
+    // "X^R" → X with superscript R, for SVG and HTML
+    const alleleSvg = (a) => a.includes('^') ? `${esc(a[0])}<tspan baseline-shift="super" font-size="65%">${esc(a.slice(2))}</tspan>` : esc(a);
+    const alleleHtml = (a) => a.includes('^') ? `${esc(a[0])}<sup>${esc(a.slice(2))}</sup>` : esc(a);
+    const pairsSvg = (pairs) => pairs.map(p => p.map(alleleSvg).join('')).join('');
+    const pairsHtml = (pairs) => pairs.map(p => p.map(alleleHtml).join('')).join('');
+    function ratioOf(keys) {
+      const m = new Map(); keys.forEach(k => m.set(k, (m.get(k) || 0) + 1));
+      const vals = [...m.values()], g = vals.reduce((a, b) => { while (b) [a, b] = [b, a % b]; return a; });
+      return [...m.entries()].map(([k, n]) => ({ k, n, r: n / g }));
+    }
+    const PHCOL = ['#bfdbfe', '#fecaca', '#bbf7d0', '#fde68a', '#e9d5ff', '#fed7aa', '#a5f3fc', '#fbcfe8'];
+
+    function renderCross() {
+      const t = T(), c = st.cross, X = cross();
+      if (!X) { $('warn').textContent = t.bad; $('plot').innerHTML = ''; $('ratio').innerHTML = ''; return; }
+      $('warn').textContent = '';
+      const { P1, P2, g1, g2, cells } = X;
+      const flat = cells.flat();
+      const phs = ratioOf(flat.map(phenotype));
+      const colOf = new Map(phs.map((p, i) => [p.k, PHCOL[i % PHCOL.length]]));
+      const title = String(st.title || '').trim();
+      const cs = g1.length > 2 ? 78 : 110;           // cell size
+      const layoutH = c.layout ? 250 : 0;
+      const top = (title ? 56 : 20);
+      const gridW = cs * (g2.length + 1), gridH = cs * (g1.length + 1);
+      // ratio lines are sized up front so the image is wide / tall enough for them
+      const genosPre = ratioOf(flat.map(genoText));
+      const genoLen = (t.geno.length + 4 + genosPre.reduce((a, g) => a + g.k.replace(/\^/g, '').length + 3, 0) + genosPre.length * 4) * 8.4;
+      const W = Math.max(760, gridW + 120, genoLen + 40);
+      const phLen = (t.pheno + ': ' + phs.map(p => p.k).join(' : ') + '  =  ' + phs.map(p => p.r).join(' : ')).length * 8.2;
+      const phWrap = phLen >= W - 40;
+      const H = top + layoutH + gridH + 120 + (phWrap ? phs.length * 24 : 0);
+      const SERIF = "'Times New Roman', Times, serif", INK = '#111827';
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Punnett square" font-family="${SERIF}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="${INK}" font-family="Helvetica, Arial, sans-serif">${esc(title)}</text>`;
+      if (c.layout) {
+        // The CAPS layout: P1 phenotype & genotype, meiosis, gametes, fertilisation, F1
+        const longest = Math.max(phenotype(P1).length, genoText(P1).length * 1.4, 10);
+        const x0 = 40, xa = 210, xm = xa + longest * 9.6 + 30, xb = xm + 30;
+        const uniq = (gs) => [...new Map(gs.map(g => [g.join(','), g])).values()];
+        let y = top + 26;
+        const row = (label, a, mid, b) => { s += `<text x="${x0}" y="${y}" font-size="18" font-weight="bold" fill="${INK}">${label}</text>`; if (a) s += `<text x="${xa}" y="${y}" font-size="19" fill="${INK}">${a}</text>`; if (mid) s += `<text x="${xm}" y="${y}" font-size="19" text-anchor="middle" fill="${INK}">${mid}</text>`; if (b) s += `<text x="${xb}" y="${y}" font-size="19" fill="${INK}">${b}</text>`; y += 34; };
+        row(`P<tspan baseline-shift="sub" font-size="70%">1</tspan>  ${esc(t.phenotype)}`, esc(phenotype(P1)), '×', esc(phenotype(P2)));
+        row(`      ${esc(t.genotype)}`, pairsSvg(P1), '×', pairsSvg(P2));
+        row(esc(t.meiosis), '', '', '');
+        row(`G/${esc(t.gametes)}`, uniq(g1).map(g => g.map(alleleSvg).join('')).join(', '), '×', uniq(g2).map(g => g.map(alleleSvg).join('')).join(', '));
+        row(esc(t.fert), '', '', '');
+        row(`F<tspan baseline-shift="sub" font-size="70%">1</tspan>`, '', '', '');
+      }
+      // the Punnett square
+      const gx = (W - gridW) / 2, gy = top + layoutH + 10;
+      s += `<rect x="${gx}" y="${gy}" width="${cs}" height="${cs}" fill="#f1f5f9" stroke="${INK}" stroke-width="1.6"/><text x="${gx + cs / 2}" y="${gy + cs / 2 + 6}" text-anchor="middle" font-size="16" fill="#4b5563" font-family="Helvetica, Arial, sans-serif">${esc(t.gametes)}</text>`;
+      g2.forEach((g, j) => { const x = gx + cs * (j + 1); s += `<rect x="${x}" y="${gy}" width="${cs}" height="${cs}" fill="#f1f5f9" stroke="${INK}" stroke-width="1.6"/><text x="${x + cs / 2}" y="${gy + cs / 2 + 8}" text-anchor="middle" font-size="24" font-weight="bold" fill="${INK}">${g.map(alleleSvg).join('')}</text>`; });
+      g1.forEach((g, i) => {
+        const y = gy + cs * (i + 1);
+        s += `<rect x="${gx}" y="${y}" width="${cs}" height="${cs}" fill="#f1f5f9" stroke="${INK}" stroke-width="1.6"/><text x="${gx + cs / 2}" y="${y + cs / 2 + 8}" text-anchor="middle" font-size="24" font-weight="bold" fill="${INK}">${g.map(alleleSvg).join('')}</text>`;
+        cells[i].forEach((cell, j) => {
+          const x = gx + cs * (j + 1), ph = phenotype(cell);
+          s += `<rect x="${x}" y="${y}" width="${cs}" height="${cs}" fill="${colOf.get(ph)}" stroke="${INK}" stroke-width="1.6"/><text x="${x + cs / 2}" y="${y + cs / 2 + 8}" text-anchor="middle" font-size="${cs < 90 ? 21 : 26}" fill="${INK}">${pairsSvg(cell)}</text>`;
+        });
+      });
+      // ratio lines under the grid
+      const genos = ratioOf(flat.map(genoText));
+      const total = flat.length;
+      let y2 = gy + gridH + 36;
+      const splitKey = (k) => k.match(/(X\^.|I\^.|.)/g).reduce((acc, al, i) => { if (i % 2 === 0) acc.push([al]); else acc[acc.length - 1].push(al); return acc; }, []);
+      const gline = genos.map(g => pairsSvg(splitKey(g.k))).join(' : ') + '  =  ' + genos.map(g => g.r).join(' : ');
+      s += `<text x="${W / 2}" y="${y2}" text-anchor="middle" font-size="17" fill="${INK}">${esc(t.geno)}: ${gline}</text>`;
+      y2 += 30;
+      const pline = `${esc(t.pheno)}: ${phs.map(p => esc(p.k)).join(' : ')}  =  ${phs.map(p => p.r).join(' : ')}`;
+      if (!phWrap) s += `<text x="${W / 2}" y="${y2}" text-anchor="middle" font-size="17" fill="${INK}">${pline}</text>`;
+      else {
+        // too long for one line: one phenotype per line, with its share
+        s += `<text x="${W / 2}" y="${y2}" text-anchor="middle" font-size="17" fill="${INK}">${esc(t.pheno)}:</text>`;
+        phs.forEach(p => { y2 += 24; s += `<text x="${W / 2}" y="${y2}" text-anchor="middle" font-size="16" fill="${INK}">${esc(p.k)}: ${p.r}</text>`; });
+      }
+      $('plot').innerHTML = s + '</svg>';
+      $('ratio').innerHTML = `<div><b>${esc(t.geno)}:</b> ${genos.map(g => `${pairsHtml(g.k.match(/(X\^.|I\^.|.)/g).reduce((acc, a, i) => { if (i % 2 === 0) acc.push([a]); else acc[acc.length - 1].push(a); return acc; }, []))} ${g.n}/${total}${c.pct ? ' (' + Math.round(g.n / total * 1000) / 10 + '%)' : ''}`).join(' · ')}</div>
+        <div><b>${esc(t.pheno)}:</b> ${phs.map(p => `${esc(p.k)} ${p.n}/${total}${c.pct ? ' (' + Math.round(p.n / total * 1000) / 10 + '%)' : ''}`).join(' · ')}</div>`;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Pedigree
+    // ══════════════════════════════════════════════════════════════════
+    const P = (id) => st.ped.people.find(p => p.id === id);
+    const nextId = () => Math.max(0, ...st.ped.people.map(p => p.id)) + 1;
+    const coupleKey = (a, b) => [a, b].sort((x, y) => x - y).join('+');
+    function layoutPedigree() {
+      const people = st.ped.people, gens = Math.max(0, ...people.map(p => p.gen)) + 1;
+      const x = new Map(), GAP = 90;
+      for (let g = 0; g < gens; g++) {
+        const row = people.filter(p => p.gen === g);
+        // children grouped by their parents, placed under the parents' midpoint
+        const blood = row.filter(p => p.parents || g === 0 || !row.some(q => q.partner === p.id && q.parents));
+        const ordered = [];
+        const groups = new Map();
+        blood.forEach(p => { const k = p.parents ? coupleKey(...p.parents) : 'root'; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(p); });
+        const center = (k) => { if (k === 'root') return 0; const [a, b] = k.split('+').map(Number); return ((x.get(a) || 0) + (x.get(b) || 0)) / 2; };
+        [...groups.keys()].sort((a, b) => center(a) - center(b)).forEach(k => groups.get(k).forEach(p => {
+          if (ordered.includes(p)) return;
+          ordered.push(p);
+          const sp = p.partner && P(p.partner);
+          if (sp && sp.gen === g && !ordered.includes(sp) && !(sp.parents && !p.parents)) ordered.push(sp);
+        }));
+        row.forEach(p => { if (!ordered.includes(p)) ordered.push(p); });
+        // left-to-right placement, trying to centre each sibship under its parents
+        let cursor = -Infinity;
+        let i = 0;
+        while (i < ordered.length) {
+          const p = ordered[i];
+          const k = p.parents ? coupleKey(...p.parents) : null;
+          const sib = [];
+          while (i < ordered.length && (ordered[i].parents ? coupleKey(...ordered[i].parents) : null) === k && (k || sib.length === 0) || (i < ordered.length && sib.length && ordered[i].partner && sib.some(s => s.id === ordered[i].partner) && !ordered[i].parents)) { sib.push(ordered[i]); i++; }
+          if (!sib.length) { sib.push(ordered[i]); i++; }
+          const want = k ? center(k) - (sib.length - 1) * GAP / 2 : (cursor === -Infinity ? 0 : cursor + GAP);
+          let start = Math.max(want, cursor === -Infinity ? want : cursor + GAP);
+          sib.forEach((q, j) => x.set(q.id, start + j * GAP));
+          cursor = start + (sib.length - 1) * GAP;
+        }
+      }
+      return { x, gens };
+    }
+    function renderPedigree() {
+      const t = T().ped, people = st.ped.people;
+      if (!people.length) { $('plot').innerHTML = ''; $('ratio').innerHTML = ''; return; }
+      const { x, gens } = layoutPedigree();
+      const xs = [...x.values()], minX = Math.min(...xs), maxX = Math.max(...xs);
+      const title = String(st.title || '').trim(), top = title ? 70 : 34;
+      const ROW = 130, R = 18, left = 90;
+      const W = Math.max(760, maxX - minX + left + 140), H = top + gens * ROW + 144;
+      const X = (id) => left + 40 + (x.get(id) - minX), Y = (g) => top + 20 + g * ROW;
+      const INK = '#111827';
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Pedigree" font-family="Helvetica, Arial, sans-serif"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+      for (let g = 0; g < gens; g++) s += `<text x="30" y="${Y(g) + 6}" font-size="18" font-weight="bold" fill="${INK}" font-family="'Times New Roman', serif">${roman[g]}</text>`;
+      let lines = '';
+      const done = new Set();
+      people.forEach(p => {
+        if (p.partner && P(p.partner) && !done.has(coupleKey(p.id, p.partner))) {
+          done.add(coupleKey(p.id, p.partner));
+          const a = X(p.id), b = X(p.partner), y = Y(p.gen);
+          lines += `<line x1="${Math.min(a, b) + R}" y1="${y}" x2="${Math.max(a, b) - R}" y2="${y}" stroke="${INK}" stroke-width="2"/>`;
+          const kids = people.filter(q => q.parents && coupleKey(...q.parents) === coupleKey(p.id, p.partner));
+          if (kids.length) {
+            const mx = (a + b) / 2, sy = Y(p.gen) + ROW / 2;
+            const kx = kids.map(q => X(q.id));
+            lines += `<line x1="${mx}" y1="${y}" x2="${mx}" y2="${sy}" stroke="${INK}" stroke-width="2"/>`;
+            lines += `<line x1="${Math.min(mx, ...kx)}" y1="${sy}" x2="${Math.max(mx, ...kx)}" y2="${sy}" stroke="${INK}" stroke-width="2"/>`;
+            kx.forEach(k => { lines += `<line x1="${k}" y1="${sy}" x2="${k}" y2="${Y(p.gen + 1) - R}" stroke="${INK}" stroke-width="2"/>`; });
+          }
+        }
+      });
+      const shape = (cx, cy, sex, status) => {
+        const fill = status === 'aff' ? INK : '#fff';
+        let o = sex === 'm' ? `<rect x="${cx - R}" y="${cy - R}" width="${2 * R}" height="${2 * R}" fill="${fill}" stroke="${INK}" stroke-width="2"/>` : `<circle cx="${cx}" cy="${cy}" r="${R}" fill="${fill}" stroke="${INK}" stroke-width="2"/>`;
+        if (status === 'car') o += `<circle cx="${cx}" cy="${cy}" r="5.5" fill="${INK}"/>`;
+        return o;
+      };
+      let shapes = '';
+      const genCount = {};
+      people.slice().sort((a, b) => a.gen - b.gen || x.get(a.id) - x.get(b.id)).forEach(p => {
+        genCount[p.gen] = (genCount[p.gen] || 0) + 1;
+        shapes += shape(X(p.id), Y(p.gen), p.sex, p.status) + `<text x="${X(p.id)}" y="${Y(p.gen) + R + 20}" text-anchor="middle" font-size="14" fill="${INK}">${genCount[p.gen]}</text>`;
+      });
+      // key
+      const ky = H - 84, trait = st.ped.trait;
+      const items = [['m', 'un', t.m + ', ' + t.un.toLowerCase()], ['f', 'un', t.f + ', ' + t.un.toLowerCase()], ['m', 'aff', t.m + ', ' + (trait || t.aff).toLowerCase()], ['f', 'aff', t.f + ', ' + (trait || t.aff).toLowerCase()]];
+      if (people.some(p => p.status === 'car')) items.push(['f', 'car', t.car]);
+      let kx = 40, kyy = ky;
+      let key = `<text x="${kx}" y="${ky - 26}" font-size="14" font-weight="bold" fill="${INK}">${esc(t.key)}</text>`;
+      items.forEach(([sx, stt, lab]) => {
+        const w = 30 + lab.length * 7 + 26;
+        if (kx + w > W - 20) { kx = 40; kyy += 34; }      // wrap to a second row
+        key += `<g transform="translate(${kx + 12} ${kyy}) scale(0.6) translate(${-(kx + 12)} ${-kyy})">${shape(kx + 12, kyy, sx, stt)}</g><text x="${kx + 30}" y="${kyy + 5}" font-size="13" fill="${INK}">${esc(lab)}</text>`;
+        kx += w;
+      });
+      $('plot').innerHTML = s + lines + shapes + key + '</svg>';
+      $('ratio').innerHTML = '';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintControls() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      let h = '';
+      if (st.mode === 'cross') {
+        const c = st.cross;
+        const f = (k, label, extra) => `<label class="field"><span>${esc(label)}</span><input type="text" data-c="${k}" value="${esc(c[k])}" ${extra || ''}></label>`;
+        const sel = (k, label, opts) => `<label class="field"><span>${esc(label)}</span><select data-c="${k}">${opts.map(([v, l]) => `<option value="${v}"${c[k] === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+        h += `<select id="examples" aria-label="Examples" style="margin-bottom:10px">${Object.entries(t.ex).map(([v, l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select>`;
+        h += `<div class="row c2">${sel('type', t.type, Object.entries(t.types))}${c.type === 'mono' ? sel('dom', t.dom, [['complete', t.complete], ['incomplete', t.incomplete], ['co', t.co]]) : '<span></span>'}</div>`;
+        if (c.type === 'mono' || c.type === 'di') {
+          h += `<div class="row c2">${f('p1', t.p1, 'maxlength="4" spellcheck="false"')}${f('p2', t.p2, 'maxlength="4" spellcheck="false"')}</div>`;
+          h += `<div class="row c${c.type === 'mono' && c.dom !== 'complete' ? 3 : 2}">${f('domPh', (c.type === 'di' ? t.t1 + ': ' : '') + t.domPh)}${f('recPh', (c.type === 'di' ? t.t1 + ': ' : '') + t.recPh)}${c.type === 'mono' && c.dom !== 'complete' ? f('hetPh', t.hetPh) : ''}</div>`;
+          if (c.type === 'di') h += `<div class="row c2">${f('t2dom', t.t2 + ': ' + t.domPh)}${f('t2rec', t.t2 + ': ' + t.recPh)}</div>`;
+        } else if (c.type === 'sex') {
+          h += `<div class="row c2">${sel('mother', t.female, [['XRXR', 'X^R X^R'], ['XRXr', 'X^R X^r'], ['XrXr', 'X^r X^r']])}${sel('father', t.male, [['XRY', 'X^R Y'], ['XrY', 'X^r Y']])}</div>`;
+          h += `<div class="row c2">${f('sexDom', t.domPh)}${f('sexRec', t.recPh)}</div>`;
+        } else {
+          const bl = [['IAIA', 'IᴬIᴬ (A)'], ['IAi', 'Iᴬi (A)'], ['IBIB', 'IᴮIᴮ (B)'], ['IBi', 'Iᴮi (B)'], ['IAIB', 'IᴬIᴮ (AB)'], ['ii', 'ii (O)']];
+          h += `<div class="row c2">${sel('b1', t.p1, bl)}${sel('b2', t.p2, bl)}</div>`;
+        }
+        h += `<div class="checks"><label class="check"><input type="checkbox" data-c="layout"${c.layout ? ' checked' : ''}> ${esc(t.layout)}</label><label class="check"><input type="checkbox" data-c="pct"${c.pct ? ' checked' : ''}> ${esc(t.percent)}</label></div>`;
+      } else {
+        const tp = t.ped;
+        h += `<label class="field" style="margin-bottom:8px"><span>${esc(tp.trait)}</span><input type="text" id="trait" value="${esc(st.ped.trait)}" maxlength="40"></label>`;
+        const gens = Math.max(0, ...st.ped.people.map(p => p.gen)) + 1;
+        const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+        for (let g = 0; g < gens; g++) {
+          h += `<div class="gen-h">${esc(tp.gen)} ${roman[g]}</div>`;
+          st.ped.people.filter(p => p.gen === g).forEach((p, i) => {
+            h += `<div class="person" data-id="${p.id}"><div class="person-h"><b>${roman[g]}-${i + 1}</b>
+              <select data-k="sex" aria-label="${esc(tp.sex)}"><option value="m"${p.sex === 'm' ? ' selected' : ''}>${esc(tp.m)}</option><option value="f"${p.sex === 'f' ? ' selected' : ''}>${esc(tp.f)}</option></select>
+              <select data-k="status" aria-label="${esc(tp.status)}"><option value="un"${p.status === 'un' ? ' selected' : ''}>${esc(tp.un)}</option><option value="aff"${p.status === 'aff' ? ' selected' : ''}>${esc(tp.aff)}</option><option value="car"${p.status === 'car' ? ' selected' : ''}>${esc(tp.car)}</option></select>
+              ${p.partner ? '' : `<button class="btn" type="button" data-a="partner">${esc(tp.partner)}</button>`}
+              ${p.partner && g < 5 ? `<button class="btn" type="button" data-a="child">${esc(tp.child)}</button>` : ''}
+              <button class="btn icon danger" type="button" data-a="remove" aria-label="${esc(tp.remove)}">✕</button></div></div>`;
+          });
+        }
+        h += `<button class="btn" type="button" id="pedReset" style="margin-top:8px">${esc(tp.start)}</button>`;
+      }
+      $('controls').innerHTML = h;
+      $('title').value = st.title;
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      if (st.mode === 'cross') renderCross(); else { $('warn').textContent = ''; renderPedigree(); }
+    }
+    const ctl = $('controls');
+    ctl.addEventListener('input', (e) => {
+      const d = e.target.dataset;
+      if (d.c && e.target.type === 'text') { st.cross[d.c] = e.target.value; render(); }
+      if (e.target.id === 'trait') { st.ped.trait = e.target.value; render(); }
+    });
+    ctl.addEventListener('change', (e) => {
+      const d = e.target.dataset;
+      if (e.target.id === 'examples') { if (e.target.value) { example(e.target.value); paintControls(); render(); } return; }
+      if (d.c) { st.cross[d.c] = e.target.type === 'checkbox' ? e.target.checked : e.target.value; if (d.c === 'type' || d.c === 'dom') { if (d.c === 'type' && st.cross.type === 'di' && st.cross.p1.length !== 4) { st.cross.p1 = 'RrYy'; st.cross.p2 = 'RrYy'; } if (d.c === 'type' && st.cross.type === 'mono' && st.cross.p1.length !== 2) { st.cross.p1 = 'Tt'; st.cross.p2 = 'tt'; } paintControls(); } render(); return; }
+      const card = e.target.closest('[data-id]');
+      if (card && d.k) { const p = P(+card.dataset.id); p[d.k] = e.target.value; render(); }
+    });
+    ctl.addEventListener('click', (e) => {
+      if (e.target.id === 'pedReset') { pedStart(); paintControls(); render(); return; }
+      const b = e.target.closest('[data-a]'); if (!b) return;
+      const p = P(+b.closest('[data-id]').dataset.id);
+      if (b.dataset.a === 'partner') { const q = { id: nextId(), gen: p.gen, sex: p.sex === 'm' ? 'f' : 'm', status: 'un', partner: p.id, parents: null }; p.partner = q.id; st.ped.people.push(q); }
+      if (b.dataset.a === 'child') st.ped.people.push({ id: nextId(), gen: p.gen + 1, sex: 'm', status: 'un', partner: null, parents: [p.id, p.partner] });
+      if (b.dataset.a === 'remove') {
+        // remove the person, their descendants, and married-in partners left without a family
+        const gone = new Set([p.id]); let grew = true;
+        while (grew) { grew = false; st.ped.people.forEach(q => { if (!gone.has(q.id) && q.parents && q.parents.some(x => gone.has(x))) { gone.add(q.id); grew = true; } }); }
+        st.ped.people.forEach(q => { if (!gone.has(q.id) && !q.parents && q.partner && gone.has(q.partner) && q.gen > 0) gone.add(q.id); });
+        st.ped.people = st.ped.people.filter(q => !gone.has(q.id));
+        st.ped.people.forEach(q => { if (q.partner && gone.has(q.partner)) q.partner = null; });
+      }
+      paintControls(); render();
+    });
+    $('modeTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (!b) return; st.mode = b.dataset.mode; if (st.mode === 'pedigree' && !st.ped.people.length) pedStart(); paintControls(); render(); });
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || (st.mode === 'cross' ? 'punnett-square' : 'pedigree')).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'genetics', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else { example('het'); pedStart(); }
+    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    window.__gen = { cross, phenotype, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
