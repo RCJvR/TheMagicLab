@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Motion Graphs · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .stage { display: grid; grid-template-columns: 28px minmax(0,1fr) minmax(0,1fr) minmax(0,1.4fr) 30px; gap: 6px; align-items: end; margin-bottom: 6px; }
+    .stage b { font-family: var(--font-mono); color: var(--text-3); font-size: 12px; padding-bottom: 10px; }
+    .summary { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); line-height: 1.8; }
+    .summary b { color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Beweging · Gr 10–12">Resource · Motion · Gr 10–12</span></div>
+    <h1 data-af-html="Bewegings-<em>grafieke.</em>">Motion <em>graphs.</em></h1>
+    <p class="hero-sub" data-af="Posisie–tyd-, snelheid–tyd- en versnelling–tyd-grafieke wat saam opgestel is — uit bewegingsfases, of vir ’n vertikale projektiel wat opspring. Kies self die positiewe rigting en die verwysingspunt.">Position–time, velocity–time and acceleration–time graphs lined up together — from stages of motion, or for a vertical projectile that bounces. You choose the positive direction and the reference point.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="stages" data-af="Bewegingsfases">Stages of motion</button>
+          <button type="button" data-mode="proj" data-af="Vertikale projektiel">Vertical projectile</button>
+        </div>
+        <select id="examples" aria-label="Examples" style="margin-bottom:12px"></select>
+        <div id="controls"></div>
+      </section>
+      <section class="panel">
+        <h2 style="margin-bottom:10px"><i data-lucide="line-chart" style="width:16px;height:16px"></i><span data-af="Grafieke">Graphs</span></h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="gx"> <span data-af="Posisie–tyd">Position–time</span></label>
+          <label class="check"><input type="checkbox" id="gv"> <span data-af="Snelheid–tyd">Velocity–time</span></label>
+          <label class="check"><input type="checkbox" id="ga"> <span data-af="Versnelling–tyd">Acceleration–time</span></label>
+        </div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="nums"> <span data-af="Getalle op die asse">Numbers on the axes</span></label>
+          <label class="check"><input type="checkbox" id="keys"> <span data-af="Merk sleutelwaardes">Mark key values</span></label>
+          <label class="check"><input type="checkbox" id="grid"> <span data-af="Roosterlyne">Gridlines</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+      <div class="summary" id="summary"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        x0: 'Start position (m)', v0: 'Start velocity (m·s⁻¹)', dt: 'Δt (s)', a: 'a (m·s⁻²)', note: 'Note (optional)', add: 'Add stage', remove: 'Remove',
+        h: 'Launch height (m)', speed: 'Launch speed (m·s⁻¹)', dir: 'Thrown', up: 'Upwards', down: 'Downwards', dropped: 'Dropped (from rest)', g: 'g (m·s⁻²)',
+        pos: 'Positive direction', posUp: 'Upwards', posDown: 'Downwards', ref: 'Position measured from', ground: 'The ground', launch: 'The launch point',
+        bounces: 'Bounces', rebound: 'Rebound speed (fraction of impact)',
+        xlab: 'Position (m)', vlab: 'Velocity (m·s⁻¹)', alab: 'Acceleration (m·s⁻²)', tlab: 'Time (s)',
+        ex: { '': 'Examples…', car: 'Car: accelerate, cruise, brake', stop: 'Taxi to rest and back', ball: 'Ball thrown up from the ground', cliff: 'Ball thrown up from a cliff', bounce: 'Dropped ball bouncing twice' },
+        total: 'Total time', disp: 'Displacement', dist: 'Distance travelled', maxh: 'Maximum height above the ground', flight: 'Time of flight',
+        copied: 'Link copied — anyone with it sees these graphs.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        x0: 'Beginposisie (m)', v0: 'Beginsnelheid (m·s⁻¹)', dt: 'Δt (s)', a: 'a (m·s⁻²)', note: 'Nota (opsioneel)', add: 'Voeg fase by', remove: 'Verwyder',
+        h: 'Lanseerhoogte (m)', speed: 'Lanseerspoed (m·s⁻¹)', dir: 'Gegooi', up: 'Opwaarts', down: 'Afwaarts', dropped: 'Laat val (uit rus)', g: 'g (m·s⁻²)',
+        pos: 'Positiewe rigting', posUp: 'Opwaarts', posDown: 'Afwaarts', ref: 'Posisie gemeet vanaf', ground: 'Die grond', launch: 'Die lanseerpunt',
+        bounces: 'Opspronge', rebound: 'Terugspringspoed (fraksie van trefspoed)',
+        xlab: 'Posisie (m)', vlab: 'Snelheid (m·s⁻¹)', alab: 'Versnelling (m·s⁻²)', tlab: 'Tyd (s)',
+        ex: { '': 'Voorbeelde…', car: 'Motor: versnel, ry konstant, rem', stop: 'Taxi tot rus en terug', ball: 'Bal opgegooi van die grond', cliff: 'Bal opgegooi van ’n krans', bounce: 'Bal laat val wat twee keer opspring' },
+        total: 'Totale tyd', disp: 'Verplasing', dist: 'Afstand afgelê', maxh: 'Maksimum hoogte bo die grond', flight: 'Vlugtyd',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie grafieke.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    const defaults = () => ({
+      mode: 'stages', title: '', gx: true, gv: true, ga: true, nums: true, keys: true, grid: true,
+      x0: '0', v0: '0', stages: [{ dt: '4', a: '2.5', note: '' }, { dt: '6', a: '0', note: '' }, { dt: '5', a: '-2', note: '' }],
+      h: '0', speed: '15', dir: 'up', g: '9.8', pos: 'up', ref: 'ground', bounces: '0', rebound: '0.6',
+    });
+    let st = defaults();
+    function example(k) {
+      const keep = { gx: st.gx, gv: st.gv, ga: st.ga, nums: st.nums, keys: st.keys, grid: st.grid };
+      st = Object.assign(defaults(), keep);
+      if (k === 'car') Object.assign(st, { mode: 'stages', title: 'A car accelerates, cruises and brakes' });
+      if (k === 'stop') Object.assign(st, { mode: 'stages', title: 'A taxi comes to rest, then reverses', x0: '0', v0: '12', stages: [{ dt: '4', a: '-3', note: '' }, { dt: '2', a: '0', note: '' }, { dt: '3', a: '-2', note: '' }] });
+      if (k === 'ball') Object.assign(st, { mode: 'proj', title: 'A ball thrown vertically upwards', h: '0', speed: '15', dir: 'up', pos: 'up', ref: 'ground', bounces: '0' });
+      if (k === 'cliff') Object.assign(st, { mode: 'proj', title: 'A ball thrown upwards from the edge of a 20 m cliff', h: '20', speed: '10', dir: 'up', pos: 'down', ref: 'launch', bounces: '0' });
+      if (k === 'bounce') Object.assign(st, { mode: 'proj', title: 'A ball dropped from 5 m bounces twice', h: '5', speed: '0', dir: 'drop', pos: 'up', ref: 'ground', bounces: '2', rebound: '0.7' });
+    }
+    const store = K.store('ss_motion_v1', 'm');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 16);
+      Object.keys(d).forEach(k => {
+        if (s[k] === undefined || k === 'stages') return;
+        d[k] = typeof d[k] === 'boolean' ? !!s[k] : str(s[k], 80);
+      });
+      if (Array.isArray(s.stages)) d.stages = s.stages.slice(0, 10).map(x => ({ dt: str(x.dt), a: str(x.a), note: str(x.note, 40) }));
+      if (d.mode !== 'proj') d.mode = 'stages';
+      return d;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Motion → segments { t0, t1, x0, v0, a }, with x(t) = x0 + v0 τ + ½ a τ²
+    // ══════════════════════════════════════════════════════════════════
+    const num = (v, d) => { try { const c = K.compile(v); if (c.usesX) return d; const x = c.fn(0, false); return Number.isFinite(x) ? x : d; } catch (_) { return d; } };
+    function segments() {
+      const out = [];
+      if (st.mode === 'stages') {
+        let t = 0, x = num(st.x0, 0), v = num(st.v0, 0);
+        st.stages.forEach(s => {
+          const dt = Math.max(0, num(s.dt, 0)), a = num(s.a, 0);
+          if (dt <= 0) return;
+          out.push({ t0: t, t1: t + dt, x0: x, v0: v, a });
+          x += v * dt + 0.5 * a * dt * dt; v += a * dt; t += dt;
+        });
+        return { segs: out, jumps: false };
+      }
+      // Vertical projectile, worked with "up" positive and y = height above the ground.
+      const g = Math.max(0.1, num(st.g, 9.8)), h = Math.max(0, num(st.h, 0));
+      const speed = Math.max(0, num(st.speed, 0));
+      let u = st.dir === 'down' ? -speed : st.dir === 'drop' ? 0 : speed;
+      let y = h, t = 0;
+      const e = Math.max(0, Math.min(1, num(st.rebound, 0.6))), n = Math.max(0, Math.min(3, parseInt(st.bounces, 10) || 0));
+      for (let k = 0; k <= n; k++) {
+        const disc = u * u + 2 * g * y;
+        const tf = (u + Math.sqrt(disc)) / g;
+        if (!(tf > 0)) break;
+        out.push({ t0: t, t1: t + tf, x0: y, v0: u, a: -g });
+        const vImpact = u - g * tf;
+        t += tf; y = 0; u = -e * vImpact;
+        if (u < 1e-6) break;
+      }
+      // convert to the chosen sign convention and reference point
+      const sgn = st.pos === 'down' ? -1 : 1, ref = st.ref === 'launch' ? h : 0;
+      return { segs: out.map(s => ({ t0: s.t0, t1: s.t1, x0: sgn * (s.x0 - ref), v0: sgn * s.v0, a: sgn * s.a })), jumps: true, raw: out };
+    }
+    const xAt = (s, t) => { const τ = t - s.t0; return s.x0 + s.v0 * τ + 0.5 * s.a * τ * τ; };
+    const vAt = (s, t) => s.v0 + s.a * (t - s.t0);
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering
+    // ══════════════════════════════════════════════════════════════════
+    const W = 900, INK = '#111827', SUB = '#4b5563', GRID = '#e5e7eb', COL = '#15803d', FONT = 'Helvetica, Arial, sans-serif', SERIF = "'Times New Roman', Times, serif";
+    const fmt = (v) => { const r = Math.round(v * 100) / 100; const s = String(Object.is(r, -0) ? 0 : r); return (lang === 'af' ? s.replace('.', ',') : s).replace('-', '−'); };
+    function niceStep(raw) { const m = 10 ** Math.floor(Math.log10(raw || 1)); return [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= raw); }
+    function range(vals) {
+      let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals);
+      if (hi - lo < 1e-9) { hi += 1; lo -= 1; }
+      const pad = (hi - lo) * 0.08; if (hi > 0) hi += pad; if (lo < 0) lo -= pad;
+      const step = niceStep((hi - lo) / 5);
+      return { lo: Math.floor(lo / step) * step, hi: Math.ceil(hi / step) * step, step };
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      const t = T(), { segs, jumps } = segments();
+      const title = String(st.title || '').trim();
+      const graphs = [['x', st.gx, t.xlab], ['v', st.gv, t.vlab], ['a', st.ga, t.alab]].filter(g => g[1]);
+      if (!segs.length || !graphs.length) { $('plot').innerHTML = ''; $('summary').innerHTML = ''; return; }
+      const T1 = segs[segs.length - 1].t1;
+      const panelH = 210, gap = 34, top = title ? 56 : 20, left = 96, right = W - 30;
+      const H = top + graphs.length * (panelH + gap) + 30;
+      const ts = { lo: 0, hi: T1, step: niceStep(T1 / 10) }; ts.hi = Math.ceil(T1 / ts.step - 1e-9) * ts.step;
+      const X = (tt) => left + (tt / ts.hi) * (right - left);
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Motion graphs" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      s += `<defs><marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${INK}"/></marker></defs>`;
+      graphs.forEach(([kind, , label], gi) => {
+        const y0 = top + gi * (panelH + gap), y1 = y0 + panelH;
+        // values sampled for range
+        const vals = [];
+        segs.forEach(sg => { for (let i = 0; i <= 40; i++) { const tt = sg.t0 + (sg.t1 - sg.t0) * i / 40; vals.push(kind === 'x' ? xAt(sg, tt) : kind === 'v' ? vAt(sg, tt) : sg.a); } });
+        const ys = range(vals);
+        const Y = (v) => y1 - (v - ys.lo) / (ys.hi - ys.lo) * (y1 - y0);
+        let g = '';
+        if (st.grid) {
+          for (let v = ys.lo, i = 0; v <= ys.hi + 1e-9 && i < 40; v = ys.lo + (++i) * ys.step) g += `<line x1="${left}" y1="${Y(v)}" x2="${right}" y2="${Y(v)}" stroke="${GRID}"/>`;
+          for (let v = ts.step, i = 1; v <= ts.hi + 1e-9 && i < 80; v = (++i) * ts.step) g += `<line x1="${X(v)}" y1="${y0}" x2="${X(v)}" y2="${y1}" stroke="${GRID}"/>`;
+        }
+        // axes: t-axis at value 0
+        const zeroY = Y(0);
+        g += `<line x1="${left}" y1="${y1}" x2="${left}" y2="${y0 - 6}" stroke="${INK}" stroke-width="1.6" marker-end="url(#ax)"/>`;
+        g += `<line x1="${left}" y1="${zeroY}" x2="${right + 8}" y2="${zeroY}" stroke="${INK}" stroke-width="1.6" marker-end="url(#ax)"/>`;
+        g += `<text x="${right + 8}" y="${zeroY - 8}" text-anchor="end" font-size="14" fill="${INK}" font-family="${SERIF}" font-style="italic">t (s)</text>`;
+        g += `<text transform="translate(${left - 62} ${(y0 + y1) / 2}) rotate(-90)" text-anchor="middle" font-size="14" fill="${INK}">${esc(label)}</text>`;
+        if (st.nums) {
+          for (let v = ys.lo, i = 0; v <= ys.hi + 1e-9 && i < 40; v = ys.lo + (++i) * ys.step) g += `<text x="${left - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="12" fill="${SUB}">${fmt(v)}</text>`;
+          for (let v = ts.step, i = 1; v <= ts.hi + 1e-9 && i < 80; v = (++i) * ts.step) g += `<text x="${X(v)}" y="${zeroY + 16}" text-anchor="middle" font-size="12" fill="${SUB}" stroke="#fff" stroke-width="3" paint-order="stroke">${fmt(v)}</text>`;
+        }
+        // the curve, one polyline per segment (so jumps in v and a stay jumps)
+        let path = '';
+        segs.forEach(sg => {
+          const pts = [];
+          const n = kind === 'x' && sg.a !== 0 ? 60 : 1;
+          for (let i = 0; i <= n; i++) { const tt = sg.t0 + (sg.t1 - sg.t0) * i / n; pts.push(`${X(tt).toFixed(2)},${Y(kind === 'x' ? xAt(sg, tt) : kind === 'v' ? vAt(sg, tt) : sg.a).toFixed(2)}`); }
+          path += `<polyline points="${pts.join(' ')}" fill="none" stroke="${COL}" stroke-width="2.8" stroke-linejoin="round"/>`;
+        });
+        // key values at the ends of each segment
+        let keys = '';
+        if (st.keys) {
+          const seen = new Set();
+          const mark = (tt, v, above) => {
+            const k = Math.round(X(tt)) + ':' + Math.round(Y(v)); if (seen.has(k)) return; seen.add(k);
+            keys += `<circle cx="${X(tt)}" cy="${Y(v)}" r="3.8" fill="${COL}"/>`;
+            if (Math.abs(v) > 1e-9) keys += `<text x="${X(tt) + 6}" y="${Y(v) + (above ? -8 : 16)}" font-size="12.5" fill="${INK}" stroke="#fff" stroke-width="3" paint-order="stroke">${fmt(v)}</text>`;
+            if (tt > 1e-9) keys += `<line x1="${X(tt)}" y1="${Y(v)}" x2="${X(tt)}" y2="${zeroY}" stroke="${SUB}" stroke-dasharray="3 3"/>`;
+          };
+          segs.forEach((sg, i) => {
+            const vS = kind === 'x' ? sg.x0 : kind === 'v' ? sg.v0 : sg.a, vE = kind === 'x' ? xAt(sg, sg.t1) : kind === 'v' ? vAt(sg, sg.t1) : sg.a;
+            if (i === 0 || kind !== 'x') mark(sg.t0, vS, vS >= 0);
+            mark(sg.t1, vE, vE >= 0);
+            // turning point of x inside the segment (v = 0)
+            if (kind === 'x' && sg.a !== 0) { const tv = sg.t0 - sg.v0 / sg.a; if (tv > sg.t0 + 1e-6 && tv < sg.t1 - 1e-6) mark(tv, xAt(sg, tv), xAt(sg, tv) >= 0); }
+            if (kind === 'v' && sg.a !== 0) { const tv = sg.t0 - sg.v0 / sg.a; if (tv > sg.t0 + 1e-6 && tv < sg.t1 - 1e-6) keys += `<circle cx="${X(tv)}" cy="${zeroY}" r="3.8" fill="${COL}"/><text x="${X(tv)}" y="${zeroY - 8}" text-anchor="middle" font-size="12.5" fill="${INK}" stroke="#fff" stroke-width="3" paint-order="stroke">${fmt(tv)}</text>`; }
+          });
+        }
+        s += g + path + keys;
+      });
+      $('plot').innerHTML = s + '</svg>';
+      // summary
+      const last = segs[segs.length - 1];
+      let dist = 0; segs.forEach(sg => { const tv = sg.a ? sg.t0 - sg.v0 / sg.a : -1; const pts = [sg.t0, ...(tv > sg.t0 && tv < sg.t1 ? [tv] : []), sg.t1]; for (let i = 1; i < pts.length; i++) dist += Math.abs(xAt(sg, pts[i]) - xAt(sg, pts[i - 1])); });
+      let h = `<div><b>${esc(t.total)}:</b> ${fmt(last.t1)} s</div><div><b>${esc(t.disp)}:</b> ${fmt(xAt(last, last.t1) - segs[0].x0)} m</div><div><b>${esc(t.dist)}:</b> ${fmt(dist)} m</div>`;
+      if (st.mode === 'proj') {
+        const raw = segments().raw || [];
+        let maxh = 0; raw.forEach(sg => { const tv = sg.t0 - sg.v0 / sg.a; const ts2 = [sg.t0, sg.t1, ...(tv > sg.t0 && tv < sg.t1 ? [tv] : [])]; ts2.forEach(tt => { maxh = Math.max(maxh, xAt(sg, tt)); }); });
+        h += `<div><b>${esc(t.maxh)}:</b> ${fmt(maxh)} m</div><div><b>${esc(t.flight)}:</b> ${fmt(raw.length ? raw[0].t1 : 0)} s</div>`;
+      }
+      $('summary').innerHTML = h;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintControls() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      const keys = st.mode === 'stages' ? ['', 'car', 'stop'] : ['', 'ball', 'cliff', 'bounce'];
+      $('examples').innerHTML = keys.map(k => `<option value="${k}">${esc(t.ex[k])}</option>`).join('');
+      const f = (k, label) => `<label class="field"><span>${esc(label)}</span><input type="text" data-k="${k}" value="${esc(st[k])}" inputmode="decimal"></label>`;
+      const sel = (k, label, opts) => `<label class="field"><span>${esc(label)}</span><select data-k="${k}">${opts.map(([v, l]) => `<option value="${v}"${st[k] === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+      let h = '';
+      if (st.mode === 'stages') {
+        h = `<div class="row c2">${f('x0', t.x0)}${f('v0', t.v0)}</div>`;
+        h += st.stages.map((s, i) => `<div class="stage"><b>${i + 1}</b><label class="field"><span>${esc(t.dt)}</span><input type="text" data-s="${i}|dt" value="${esc(s.dt)}" inputmode="decimal"></label>
+          <label class="field"><span>${esc(t.a)}</span><input type="text" data-s="${i}|a" value="${esc(s.a)}" inputmode="decimal"></label>
+          <label class="field"><span>${esc(t.note)}</span><input type="text" data-s="${i}|note" value="${esc(s.note)}" maxlength="40"></label>
+          <button class="btn icon danger" type="button" data-rm="${i}" aria-label="${esc(t.remove)}"${st.stages.length < 2 ? ' disabled' : ''}>✕</button></div>`).join('');
+        if (st.stages.length < 10) h += `<button class="btn" type="button" id="addStage">+ ${esc(t.add)}</button>`;
+      } else {
+        h = `<div class="row c3">${f('h', t.h)}${f('speed', t.speed)}${sel('dir', t.dir, [['up', t.up], ['down', t.down], ['drop', t.dropped]])}</div>
+          <div class="row c3">${f('g', t.g)}${sel('pos', t.pos, [['up', t.posUp], ['down', t.posDown]])}${sel('ref', t.ref, [['ground', t.ground], ['launch', t.launch]])}</div>
+          <div class="row c2">${sel('bounces', t.bounces, [['0', '0'], ['1', '1'], ['2', '2'], ['3', '3']])}${f('rebound', t.rebound)}</div>`;
+      }
+      $('controls').innerHTML = h;
+      ['gx', 'gv', 'ga', 'nums', 'keys', 'grid'].forEach(k => { $(k).checked = st[k]; });
+      $('title').value = st.title;
+    }
+    const ctl = $('controls');
+    function onField(e) {
+      const d = e.target.dataset;
+      if (d.k) st[d.k] = e.target.value;
+      else if (d.s) { const [i, k] = d.s.split('|'); st.stages[+i][k] = e.target.value; }
+      else return;
+      render();
+    }
+    ctl.addEventListener('input', onField);
+    ctl.addEventListener('change', onField);
+    ctl.addEventListener('click', (e) => {
+      if (e.target.id === 'addStage') { st.stages.push({ dt: '2', a: '0', note: '' }); paintControls(); render(); }
+      const rm = e.target.closest('[data-rm]'); if (rm && st.stages.length > 1) { st.stages.splice(+rm.dataset.rm, 1); paintControls(); render(); }
+    });
+    ['gx', 'gv', 'ga', 'nums', 'keys', 'grid'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    $('modeTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (!b) return; st.mode = b.dataset.mode; paintControls(); render(); });
+    $('examples').addEventListener('change', (e) => { if (e.target.value) { example(e.target.value); paintControls(); render(); } });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'motion-graphs').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'motion-graphs', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('car');
+    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    window.__motion = { segments, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
