@@ -764,11 +764,46 @@ function getTopicById(id) {
 }
 
 // ── Workbook & answer key pulled from loaded chapters ──────────
+// The FET chapter files store one workbook per chapter as
+// { title, questions: [{ number, text, parts }], answers: { "1": { a: "…" } } },
+// while the Workbook and Answer Key tabs render the Senior Phase shape
+// { chapter, chapterName, topics: [{ name, questions | answers }] }.
+// Convert here, so the tabs render and init() no longer throws before the
+// first topic (and the ?ch= / ?topic= deep links) can open.
+// "Chapter 3 Workbook — Number Patterns" → "Number Patterns" (the tab adds "Chapter 3 —").
+const fetTitle = (wb) => String(wb.title || '').replace(/^[^—]*—\s*/, '') || wb.title;
+function fetWorkbook(num, wb) {
+  return {
+    chapter: num, chapterName: fetTitle(wb),
+    topics: [{ name: fetTitle(wb), questions: (wb.questions || []).map(q => ({
+      num: String(q.number), text: q.text,
+      parts: q.parts && q.parts.map(p => ({ label: p.label + ')', text: p.text, marks: p.marks })),
+    })) }],
+  };
+}
+function fetAnswerKey(num, wb) {
+  const answers = [];
+  Object.keys(wb.answers || {}).forEach(q => {
+    const a = wb.answers[q];
+    if (a && typeof a === 'object') Object.keys(a).forEach(part => answers.push({ num: 'Q' + q + part, ans: a[part] }));
+    else answers.push({ num: 'Q' + q, ans: a });
+  });
+  return { chapter: num, chapterName: fetTitle(wb), topics: [{ name: fetTitle(wb), answers }] };
+}
 function getAllWorkbook() {
-  return CHAPTER_MANIFEST.map(m => MathMagician.get(m.num, currentLang)?.workbook).filter(Boolean);
+  return CHAPTER_MANIFEST.map(m => {
+    const wb = MathMagician.get(m.num, currentLang)?.workbook;
+    if (!wb) return null;
+    return Array.isArray(wb.topics) ? wb : (Array.isArray(wb.questions) ? fetWorkbook(m.num, wb) : null);
+  }).filter(Boolean);
 }
 function getAllAnswerKey() {
-  return CHAPTER_MANIFEST.map(m => MathMagician.get(m.num, currentLang)?.answerKey).filter(Boolean);
+  return CHAPTER_MANIFEST.map(m => {
+    const d = MathMagician.get(m.num, currentLang);
+    if (!d) return null;
+    if (d.answerKey) return d.answerKey;
+    return d.workbook && d.workbook.answers ? fetAnswerKey(m.num, d.workbook) : null;
+  }).filter(Boolean);
 }
 
 // Track which chapters are collapsed (all collapsed by default)
@@ -1518,6 +1553,23 @@ async function init() {
   if (_deepLinkCh) {
     const _deepLinkTopic = TOPICS.find(t => t.chapter === _deepLinkCh);
     if (_deepLinkTopic) selectTopic(_deepLinkTopic.id);
+  }
+  // Deep link from the Math Magician Toolbox — ?topic=ID opens that topic,
+  // and &tool=Name scrolls to the calculator with that title and flashes it.
+  const _deepLinkQ = new URLSearchParams(location.search);
+  const _deepLinkTopicId = parseInt(_deepLinkQ.get('topic'), 10);
+  if (_deepLinkTopicId && TOPICS.some(t => t.id === _deepLinkTopicId)) {
+    selectTopic(_deepLinkTopicId);
+    const _tool = (_deepLinkQ.get('tool') || '').trim().toLowerCase();
+    if (_tool) setTimeout(() => {
+      const box = [...document.querySelectorAll('.def-box-title')].find(el => el.textContent.toLowerCase().includes(_tool));
+      if (!box) return;
+      const card = box.closest('.def-box') || box;
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      card.style.transition = 'box-shadow 400ms';
+      card.style.boxShadow = '0 0 0 3px #9ed43c';
+      setTimeout(() => { card.style.boxShadow = ''; }, 2600);
+    }, 350);
   }
   lucide.createIcons();
 }
