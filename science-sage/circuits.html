@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Circuit Builder · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .btn.primary:hover { background: #6ee7a0; border-color: #6ee7a0; color: #03140a; }
+    .comp { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,0.8fr) minmax(0,0.8fr) auto; gap: 6px; align-items: end; margin-bottom: 6px; }
+    .branch { border: 1px dashed var(--line-hard); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+    .branch-h { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    table.res { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); }
+    table.res th, table.res td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--line); }
+    table.res th:first-child, table.res td:first-child { text-align: left; }
+    table.res th { color: var(--text-3); font-weight: 500; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+    table.res td b { color: var(--paper); font-weight: 600; }
+    .kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .kv div { background: var(--ink-850); border: 1px solid var(--line); border-radius: 10px; padding: 8px 11px; }
+    .kv span { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+    .kv b { font-family: var(--font-mono); font-size: 16px; color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Elektriese stroombane · Gr 7–12">Resource · Electric circuits · Gr 7–12</span></div>
+    <h1 data-af-html="Stroombaan-<em>bouer.</em>">Circuit <em>builder.</em></h1>
+    <p class="hero-sub" data-af="Beskryf die stroombaan — selle, komponente in serie, parallelle takke, ammeters en voltmeters — en kry ’n netjiese diagram met CAPS-simbole. Die stroombaan word ook opgelos, met interne weerstand, vir die memorandum.">Describe the circuit — cells, components in series, parallel branches, ammeters and voltmeters — and get a clean diagram with CAPS symbols. The circuit is solved too, including internal resistance, for the memo.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hSrc">
+        <div class="panel-head">
+          <h2 id="hSrc"><i data-lucide="battery-medium" style="width:16px;height:16px"></i><span data-af="Bron">Source</span></h2>
+          <select id="examples" aria-label="Examples" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="series" data-af="Serie: gloeilampe en ’n skakelaar (Gr 9)">Series: bulbs and a switch (Gr 9)</option>
+            <option value="mixed" data-af="Serie en parallel (Gr 10)">Series and parallel (Gr 10)</option>
+            <option value="internal" data-af="Interne weerstand (Gr 11–12)">Internal resistance (Gr 11–12)</option>
+            <option value="three" data-af="Drie parallelle takke">Three parallel branches</option>
+          </select>
+        </div>
+        <div class="row c4">
+          <label class="field"><span data-af="Selle">Cells</span><select id="cells"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+          <label class="field"><span data-af="emk (V)">emf (V)</span><input type="text" id="emf" inputmode="decimal"></label>
+          <label class="field"><span data-af="Interne r (Ω)">Internal r (Ω)</span><input type="text" id="r" inputmode="decimal"></label>
+          <label class="field"><span data-af="Skakelaar">Switch</span><select id="sw"><option value="none" data-af="Geen">None</option><option value="closed" data-af="Toe">Closed</option><option value="open" data-af="Oop">Open</option></select></label>
+        </div>
+        <div class="checks" style="margin-bottom:0">
+          <label class="check"><input type="checkbox" id="vBat"> <span data-af="Voltmeter oor die battery">Voltmeter across the battery</span></label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="hLoop">
+        <h2 id="hLoop" style="margin-bottom:10px"><i data-lucide="zap" style="width:16px;height:16px"></i><span data-af="Stroombaan (van links na regs)">Circuit (left to right)</span></h2>
+        <div id="loop"></div>
+        <div class="btn-row">
+          <button class="btn" type="button" id="addComp">+ <span data-af="Komponent in serie">Component in series</span></button>
+          <button class="btn" type="button" id="addPar">+ <span data-af="Parallelle takke">Parallel branches</span></button>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="hShow">
+        <h2 id="hShow" style="margin-bottom:10px"><i data-lucide="eye" style="width:16px;height:16px"></i><span data-af="Wys op die diagram">Show on the diagram</span></h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="showR"> <span data-af="Weerstandwaardes">Resistance values</span></label>
+          <label class="check"><input type="checkbox" id="showEmf"> <span data-af="emk en r">emf and r</span></label>
+          <label class="check"><input type="checkbox" id="showRead"> <span data-af="Meterlesings (memo)">Meter readings (memo)</span></label>
+          <label class="check"><input type="checkbox" id="showI"> <span data-af="Stroomrigting">Current direction</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+      <div id="analysis"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        types: { resistor: 'Resistor', bulb: 'Bulb', ammeter: 'Ammeter', rheostat: 'Rheostat', switch: 'Switch', fuse: 'Fuse' },
+        type: 'Type', label: 'Label', R: 'R (Ω)', state: 'State', open: 'Open', closed: 'Closed', vAcross: 'Voltmeter across', remove: 'Remove',
+        branch: 'Branch', addToBranch: '+ Component', addBranch: '+ Branch', group: 'Parallel branches', up: 'Up', down: 'Down',
+        rext: 'R external', rtot: 'R total', I: 'Current I', vt: 'Terminal p.d.', lost: '“Lost volts” Ir', P: 'Power (external)',
+        comp: 'Component', cur: 'I (A)', pd: 'V (V)', pw: 'P (W)', meter: 'reads', open_circuit: 'The circuit is open (a switch is open), so no current flows.',
+        short: 'Total resistance is zero — a short circuit. Add resistance.', copied: 'Link copied — anyone with it sees this circuit.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        types: { resistor: 'Resistor', bulb: 'Gloeilamp', ammeter: 'Ammeter', rheostat: 'Reostaat', switch: 'Skakelaar', fuse: 'Smeltdraad' },
+        type: 'Soort', label: 'Byskrif', R: 'R (Ω)', state: 'Toestand', open: 'Oop', closed: 'Toe', vAcross: 'Voltmeter oor', remove: 'Verwyder',
+        branch: 'Tak', addToBranch: '+ Komponent', addBranch: '+ Tak', group: 'Parallelle takke', up: 'Op', down: 'Af',
+        rext: 'R ekstern', rtot: 'R totaal', I: 'Stroom I', vt: 'Terminaal-pv', lost: '“Verlore volts” Ir', P: 'Drywing (ekstern)',
+        comp: 'Komponent', cur: 'I (A)', pd: 'V (V)', pw: 'P (W)', meter: 'lees', open_circuit: 'Die stroombaan is oop (’n skakelaar is oop), so geen stroom vloei nie.',
+        short: 'Totale weerstand is nul — ’n kortsluiting. Voeg weerstand by.', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie stroombaan.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // Model: a source, then a loop read left to right along the bottom of
+    // the diagram. Each loop element is a component or a parallel group
+    // (branches, each a series list of components).
+    // ══════════════════════════════════════════════════════════════════
+    let uid = 1;
+    const C = (type, o) => Object.assign({ id: uid++, type, label: '', R: type === 'bulb' ? '4' : type === 'resistor' || type === 'rheostat' ? '6' : '0', closed: true, vm: false }, o || {});
+    const defaults = () => ({ cells: '2', emf: '6', r: '0', sw: 'closed', vBat: false, showR: true, showEmf: false, showRead: false, showI: false, title: '', loop: [] });
+    let st = defaults();
+    function example(k) {
+      st = defaults();
+      if (k === 'series') Object.assign(st, { cells: '2', emf: '3', sw: 'closed', showR: false, loop: [{ kind: 'c', c: C('bulb', { label: 'L₁', R: '5' }) }, { kind: 'c', c: C('ammeter', { label: 'A' }) }, { kind: 'c', c: C('bulb', { label: 'L₂', R: '5' }) }] });
+      if (k === 'mixed') Object.assign(st, { cells: '3', emf: '6', sw: 'closed', loop: [
+        { kind: 'c', c: C('ammeter', { label: 'A₁' }) },
+        { kind: 'c', c: C('resistor', { label: 'R₁', R: '2', vm: true }) },
+        { kind: 'p', br: [[C('resistor', { label: 'R₂', R: '6' }), C('ammeter', { label: 'A₂' })], [C('resistor', { label: 'R₃', R: '3' })]] }] });
+      if (k === 'internal') Object.assign(st, { cells: '4', emf: '12', r: '0.5', sw: 'closed', vBat: true, showEmf: true, loop: [
+        { kind: 'c', c: C('resistor', { label: 'R₁', R: '4' }) },
+        { kind: 'p', br: [[C('resistor', { label: 'R₂', R: '6' })], [C('resistor', { label: 'R₃', R: '3', vm: true })]] },
+        { kind: 'c', c: C('ammeter', { label: 'A' }) }] });
+      if (k === 'three') Object.assign(st, { cells: '2', emf: '6', sw: 'none', loop: [
+        { kind: 'c', c: C('ammeter', { label: 'A₁' }) },
+        { kind: 'p', br: [[C('bulb', { label: 'L₁', R: '6' })], [C('bulb', { label: 'L₂', R: '6' }), C('switch', { label: 'S₂', closed: false })], [C('resistor', { label: 'R', R: '3' })]] }] });
+    }
+    const store = K.store('ss_circuits_v1', 'c');
+    function sanitize(s) {
+      if (!s || !Array.isArray(s.loop)) return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 12);
+      ['cells', 'emf', 'r', 'sw', 'title'].forEach(k => { if (s[k] != null) d[k] = str(s[k], 80); });
+      ['vBat', 'showR', 'showEmf', 'showRead', 'showI'].forEach(k => { d[k] = !!s[k]; });
+      const comp = (c) => STR.en.types[c && c.type] ? { id: uid++, type: c.type, label: str(c.label), R: str(c.R), closed: c.closed !== false, vm: !!c.vm } : null;
+      d.loop = s.loop.slice(0, 12).map(e => e.kind === 'p'
+        ? { kind: 'p', br: (e.br || []).slice(0, 4).map(b => (b || []).slice(0, 5).map(comp).filter(Boolean)).filter(b => b.length) }
+        : (comp(e.c) ? { kind: 'c', c: comp(e.c) } : null)).filter(e => e && (e.kind === 'c' || e.br.length));
+      return d;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Analysis (series-parallel reduction)
+    // ══════════════════════════════════════════════════════════════════
+    const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return Number.isFinite(x) && x >= 0 ? x : 0; };
+    const rOf = (c) => c.type === 'switch' ? (c.closed ? 0 : Infinity) : (c.type === 'ammeter' || c.type === 'fuse' ? 0 : num(c.R));
+    const rBranch = (b) => b.reduce((a, c) => a + rOf(c), 0);
+    function rGroup(br) {
+      const live = br.map(rBranch).filter(r => r !== Infinity);
+      if (!live.length) return Infinity;
+      if (live.some(r => r === 0)) return 0;
+      return 1 / live.reduce((a, r) => a + 1 / r, 0);
+    }
+    function solve() {
+      const emf = num(st.emf), r = num(st.r);
+      const swOpen = st.sw === 'open';
+      const Rext = st.loop.reduce((a, e) => a + (e.kind === 'c' ? rOf(e.c) : rGroup(e.br)), 0);
+      const Rt = Rext + r;
+      const res = { emf, r, Rext, Rt, I: 0, comps: new Map(), open: swOpen || Rext === Infinity, short: false };
+      if (res.open) { res.I = 0; }
+      else if (Rt === 0) { res.short = true; }
+      else res.I = emf / Rt;
+      const I = res.I;
+      res.Vt = emf - I * r;
+      st.loop.forEach(e => {
+        if (e.kind === 'c') res.comps.set(e.c.id, { I, V: I * (rOf(e.c) === Infinity ? 0 : rOf(e.c)) });
+        else {
+          const Rg = rGroup(e.br), Vg = Rg === Infinity ? 0 : I * Rg;
+          e.br.forEach(b => {
+            const Rb = rBranch(b);
+            const Ib = Rb === Infinity ? 0 : (Rb === 0 ? (I / e.br.filter(x => rBranch(x) === 0).length) : Vg / Rb);
+            b.forEach(c => res.comps.set(c.id, { I: Ib, V: rOf(c) === Infinity ? Vg : Ib * rOf(c) }));
+          });
+        }
+      });
+      return res;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Drawing
+    // ══════════════════════════════════════════════════════════════════
+    const INK = '#111827', FONT = 'Helvetica, Arial, sans-serif', SERIF = "'Times New Roman', Times, serif", RED = '#b91c1c';
+    const CW = 110;                          // width of one component slot
+    const fmt = (v, dp = 2) => { if (!Number.isFinite(v)) return '∞'; const s = String(Math.round(v * 10 ** dp) / 10 ** dp); return lang === 'af' ? s.replace('.', ',') : s; };
+    // One component centred at (cx, y) on a horizontal wire; returns svg.
+    function symbol(c, cx, y) {
+      const s = [];
+      const line = (x1, y1, x2, y2, w) => s.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${INK}" stroke-width="${w || 2}"/>`);
+      if (c.type === 'resistor' || c.type === 'rheostat') {
+        s.push(`<rect x="${cx - 22}" y="${y - 8}" width="44" height="16" fill="#fff" stroke="${INK}" stroke-width="2"/>`);
+        if (c.type === 'rheostat') s.push(`<line x1="${cx - 18}" y1="${y + 14}" x2="${cx + 18}" y2="${y - 16}" stroke="${INK}" stroke-width="1.6" marker-end="url(#arr)"/>`);
+      } else if (c.type === 'fuse') {
+        s.push(`<rect x="${cx - 20}" y="${y - 7}" width="40" height="14" fill="#fff" stroke="${INK}" stroke-width="2"/>`); line(cx - 20, y, cx + 20, y, 1.6);
+      } else if (c.type === 'bulb') {
+        s.push(`<circle cx="${cx}" cy="${y}" r="13" fill="#fff" stroke="${INK}" stroke-width="2"/>`);
+        line(cx - 9, y - 9, cx + 9, y + 9, 1.8); line(cx - 9, y + 9, cx + 9, y - 9, 1.8);
+      } else if (c.type === 'ammeter') {
+        s.push(`<circle cx="${cx}" cy="${y}" r="14" fill="#fff" stroke="${INK}" stroke-width="2"/><text x="${cx}" y="${y + 6}" text-anchor="middle" font-size="16" font-weight="bold" fill="${INK}">A</text>`);
+      } else if (c.type === 'switch') {
+        s.push(`<rect x="${cx - 20}" y="${y - 4}" width="40" height="8" fill="#fff"/>`);
+        s.push(`<circle cx="${cx - 17}" cy="${y}" r="3" fill="${INK}"/><circle cx="${cx + 17}" cy="${y}" r="3" fill="${INK}"/>`);
+        if (c.closed) line(cx - 17, y, cx + 17, y, 2.2); else line(cx - 17, y, cx + 14, y - 15, 2.2);
+      }
+      return s.join('');
+    }
+    function voltmeterOver(x1, x2, y, lift, label, reading) {
+      const cx = (x1 + x2) / 2, top = y - lift;
+      let s = `<path d="M${x1} ${y}V${top}H${cx - 14}M${cx + 14} ${top}H${x2}V${y}" fill="none" stroke="${INK}" stroke-width="1.8"/>`;
+      s += `<circle cx="${x1}" cy="${y}" r="3" fill="${INK}"/><circle cx="${x2}" cy="${y}" r="3" fill="${INK}"/>`;
+      s += `<circle cx="${cx}" cy="${top}" r="14" fill="#fff" stroke="${INK}" stroke-width="2"/><text x="${cx}" y="${top + 6}" text-anchor="middle" font-size="16" font-weight="bold" fill="${INK}">V</text>`;
+      if (label) s += `<text x="${cx + 20}" y="${top - 10}" font-size="15" fill="${INK}" font-family="${SERIF}">${esc(label)}</text>`;
+      if (reading) s += `<text x="${cx + 20}" y="${top + 20}" font-size="14" font-weight="bold" fill="${RED}">${esc(reading)}</text>`;
+      return s;
+    }
+    const branchHasV = (b) => b.some(c => c.vm);
+    const V_LIFT = 46;
+
+    function render() {
+      store.save(JSON.stringify(st));
+      const t = T(), res = solve();
+      const title = String(st.title || '').trim();
+      // widths
+      const elW = (e) => e.kind === 'c' ? CW : Math.max(...e.br.map(b => b.length * CW)) + 40;
+      const bottomW = st.loop.reduce((a, e) => a + elW(e), 0) || CW;
+      const cells = Math.max(1, Math.min(4, parseInt(st.cells, 10) || 1));
+      const topW = cells * 22 + 60 + (st.sw !== 'none' ? CW : 0) + (st.showEmf ? 90 : 0);
+      const innerW = Math.max(bottomW + 40, topW + 80, 360);
+      const W = Math.max(640, innerW + 80);
+      const L = (W - innerW) / 2, R = L + innerW;
+      const topY = (title ? 60 : 24) + (st.vBat ? V_LIFT + 24 : 24);
+      const mainHasV = st.loop.some(e => e.kind === 'c' && e.c.vm) || st.loop.some(e => e.kind === 'p' && branchHasV(e.br[0]));
+      const rowY = topY + Math.max(130, mainHasV ? 150 : 130);
+      // below-row extent for parallel groups
+      const brY = (e) => { const ys = [rowY]; for (let i = 1; i < e.br.length; i++) ys.push(ys[i - 1] + 96 + (branchHasV(e.br[i]) ? V_LIFT + 10 : 0)); return ys; };
+      const maxY = Math.max(rowY, ...st.loop.filter(e => e.kind === 'p').map(e => brY(e).slice(-1)[0]));
+      const H = maxY + 70;
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Circuit diagram" font-family="${FONT}">`;
+      s += `<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10z" fill="${INK}"/></marker>
+        <marker id="iarr" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0 0L10 5L0 10z" fill="${RED}"/></marker></defs>`;
+      s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      let wires = '', parts = '', labels = '';
+      const lbl = (x, y, text, anchor) => { labels += `<text x="${x}" y="${y}" text-anchor="${anchor || 'middle'}" font-size="15" fill="${INK}" font-family="${SERIF}">${esc(text)}</text>`; };
+      const reading = (c) => { if (!st.showRead) return ''; const r = res.comps.get(c.id); if (!r) return ''; return c.type === 'ammeter' ? fmt(r.I) + ' A' : ''; };
+
+      // ── top: battery (positive terminal = long plate, on the left) and switch ──
+      const batW = cells * 22, swW = st.sw !== 'none' ? CW : 0;
+      const groupW = batW + (swW ? swW + 20 : 0);
+      let x = (L + R) / 2 - groupW / 2;
+      const bx0 = x, bx1 = x + batW;
+      wires += `<line x1="${L}" y1="${topY}" x2="${bx0}" y2="${topY}" stroke="${INK}" stroke-width="2"/>`;
+      for (let i = 0; i < cells; i++) {
+        const cx = bx0 + i * 22 + 5;
+        parts += `<line x1="${cx}" y1="${topY - 20}" x2="${cx}" y2="${topY + 20}" stroke="${INK}" stroke-width="2"/><line x1="${cx + 10}" y1="${topY - 10}" x2="${cx + 10}" y2="${topY + 10}" stroke="${INK}" stroke-width="5"/>`;
+        if (i < cells - 1) wires += `<line x1="${cx + 10}" y1="${topY}" x2="${cx + 22}" y2="${topY}" stroke="${INK}" stroke-width="2"/>`;
+      }
+      const bEnd = bx0 + (cells - 1) * 22 + 15;
+      // below the battery, clear of a voltmeter drawn above it
+      if (st.showEmf) lbl((bx0 + bx0 + (cells - 1) * 22 + 15) / 2, topY + 40, `ε = ${fmt(num(st.emf))} V${num(st.r) ? ', r = ' + fmt(num(st.r)) + ' Ω' : ''}`);
+      if (st.vBat) parts += voltmeterOver(bx0 - 10, bEnd + 10, topY, V_LIFT + 4, 'V₁', st.showRead ? fmt(res.Vt) + ' V' : '');
+      x = bEnd;
+      if (swW) {
+        const sx = x + 20, cx = sx + CW / 2;
+        wires += `<line x1="${x}" y1="${topY}" x2="${sx}" y2="${topY}" stroke="${INK}" stroke-width="2"/>`;
+        wires += `<line x1="${sx}" y1="${topY}" x2="${sx + CW}" y2="${topY}" stroke="${INK}" stroke-width="2"/>`;
+        parts += symbol({ type: 'switch', closed: st.sw === 'closed' }, cx, topY);
+        lbl(cx, topY + 30, 'S');
+        x = sx + CW;
+      }
+      wires += `<line x1="${x}" y1="${topY}" x2="${R}" y2="${topY}" stroke="${INK}" stroke-width="2"/>`;
+      // sides
+      wires += `<line x1="${L}" y1="${topY}" x2="${L}" y2="${rowY}" stroke="${INK}" stroke-width="2"/><line x1="${R}" y1="${topY}" x2="${R}" y2="${rowY}" stroke="${INK}" stroke-width="2"/>`;
+
+      // ── bottom: the loop, left to right ──
+      x = L + (innerW - bottomW) / 2;
+      wires += `<line x1="${L}" y1="${rowY}" x2="${x}" y2="${rowY}" stroke="${INK}" stroke-width="2"/>`;
+      function compAt(c, x0, y, w) {
+        const cx = x0 + w / 2;
+        wires += `<line x1="${x0}" y1="${y}" x2="${x0 + w}" y2="${y}" stroke="${INK}" stroke-width="2"/>`;
+        parts += symbol(c, cx, y);
+        const text = [c.label, st.showR && (c.type === 'resistor' || c.type === 'bulb' || c.type === 'rheostat') ? fmt(num(c.R)) + ' Ω' : ''].filter(Boolean).join(' = ');
+        if (text) lbl(cx, y + 34, text);
+        const rd = reading(c); if (rd) labels += `<text x="${cx}" y="${y + 52}" text-anchor="middle" font-size="14" font-weight="bold" fill="${RED}">${rd}</text>`;
+        if (c.vm) { const r = res.comps.get(c.id); parts += voltmeterOver(cx - 36, cx + 36, y, V_LIFT, '', st.showRead && r ? fmt(r.V) + ' V' : ''); }
+      }
+      st.loop.forEach(e => {
+        const w = elW(e);
+        if (e.kind === 'c') compAt(e.c, x, rowY, w);
+        else {
+          const ys = brY(e), x0 = x + 20, x1 = x + w - 20;
+          wires += `<line x1="${x}" y1="${rowY}" x2="${x0}" y2="${rowY}" stroke="${INK}" stroke-width="2"/><line x1="${x1}" y1="${rowY}" x2="${x + w}" y2="${rowY}" stroke="${INK}" stroke-width="2"/>`;
+          wires += `<line x1="${x0}" y1="${rowY}" x2="${x0}" y2="${ys[ys.length - 1]}" stroke="${INK}" stroke-width="2"/><line x1="${x1}" y1="${rowY}" x2="${x1}" y2="${ys[ys.length - 1]}" stroke="${INK}" stroke-width="2"/>`;
+          parts += `<circle cx="${x0}" cy="${rowY}" r="3.5" fill="${INK}"/><circle cx="${x1}" cy="${rowY}" r="3.5" fill="${INK}"/>`;
+          e.br.forEach((b, i) => {
+            const y = ys[i], bw = (x1 - x0) / b.length;
+            b.forEach((c, j) => compAt(c, x0 + j * bw, y, bw));
+            if (i > 0 && i < e.br.length - 1) parts += `<circle cx="${x0}" cy="${y}" r="3.5" fill="${INK}"/><circle cx="${x1}" cy="${y}" r="3.5" fill="${INK}"/>`;
+          });
+        }
+        x += w;
+      });
+      wires += `<line x1="${x}" y1="${rowY}" x2="${R}" y2="${rowY}" stroke="${INK}" stroke-width="2"/>`;
+      // conventional current: out of + (left), round anticlockwise-on-screen: down the left, along the bottom, up the right
+      if (st.showI && res.I > 0) {
+        const my = (topY + rowY) / 2;
+        parts += `<line x1="${L}" y1="${my - 12}" x2="${L}" y2="${my + 6}" stroke="${RED}" stroke-width="2.4" marker-end="url(#iarr)"/><text x="${L - 10}" y="${my + 4}" text-anchor="end" font-size="16" font-style="italic" fill="${RED}" font-family="${SERIF}">I</text>`;
+        parts += `<line x1="${R}" y1="${my + 12}" x2="${R}" y2="${my - 6}" stroke="${RED}" stroke-width="2.4" marker-end="url(#iarr)"/>`;
+      }
+      s += wires + parts + labels + '</svg>';
+      $('plot').innerHTML = s;
+      $('warn').textContent = res.short ? t.short : (res.open ? t.open_circuit : '');
+      paintAnalysis(res);
+    }
+    function paintAnalysis(res) {
+      const t = T();
+      let h = `<div class="kv"><div><span>${esc(t.rext)}</span><b>${fmt(res.Rext)} Ω</b></div><div><span>${esc(t.rtot)}</span><b>${fmt(res.Rt)} Ω</b></div>
+        <div><span>${esc(t.I)}</span><b>${fmt(res.I, 3)} A</b></div><div><span>${esc(t.vt)}</span><b>${fmt(res.Vt)} V</b></div>
+        ${res.r ? `<div><span>${esc(t.lost)}</span><b>${fmt(res.I * res.r)} V</b></div>` : ''}<div><span>${esc(t.P)}</span><b>${fmt(res.I * res.I * (Number.isFinite(res.Rext) ? res.Rext : 0))} W</b></div></div>`;
+      const rows = [];
+      const add = (c) => { const r = res.comps.get(c.id); if (!r) return; const R = rOf(c); rows.push(`<tr><td><b>${esc(c.label || t.types[c.type])}</b> · ${esc(t.types[c.type])}</td><td>${fmt(R)}</td><td>${fmt(r.I, 3)}</td><td>${fmt(r.V)}</td><td>${fmt(Number.isFinite(R) ? r.I * r.I * R : 0)}</td></tr>`); };
+      st.loop.forEach(e => e.kind === 'c' ? add(e.c) : e.br.forEach(b => b.forEach(add)));
+      h += `<table class="res"><thead><tr><th>${esc(t.comp)}</th><th>R (Ω)</th><th>${esc(t.cur)}</th><th>${esc(t.pd)}</th><th>${esc(t.pw)}</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+      $('analysis').innerHTML = h;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function compRow(c, path) {
+      const t = T();
+      const types = Object.keys(t.types).map(k => `<option value="${k}"${c.type === k ? ' selected' : ''}>${esc(t.types[k])}</option>`).join('');
+      const third = c.type === 'switch'
+        ? `<label class="field"><span>${esc(t.state)}</span><select data-k="closed" data-path="${path}"><option value="1"${c.closed ? ' selected' : ''}>${esc(t.closed)}</option><option value="0"${c.closed ? '' : ' selected'}>${esc(t.open)}</option></select></label>`
+        : (c.type === 'ammeter' || c.type === 'fuse' ? '<span></span>' : `<label class="field"><span>${esc(t.R)}</span><input type="text" inputmode="decimal" data-k="R" data-path="${path}" value="${esc(c.R)}"></label>`);
+      return `<div class="comp"><label class="field"><span>${esc(t.type)}</span><select data-k="type" data-path="${path}">${types}</select></label>
+        <label class="field"><span>${esc(t.label)}</span><input type="text" data-k="label" data-path="${path}" value="${esc(c.label)}" maxlength="8"></label>${third}
+        <button class="btn icon danger" type="button" data-rm="${path}" aria-label="${esc(t.remove)}">✕</button></div>
+        ${c.type !== 'ammeter' && c.type !== 'switch' ? `<label class="check" style="margin:-2px 0 8px"><input type="checkbox" data-k="vm" data-path="${path}"${c.vm ? ' checked' : ''}> ${esc(t.vAcross)} ${esc(c.label || t.types[c.type].toLowerCase())}</label>` : ''}`;
+    }
+    function paintLoop() {
+      const t = T();
+      $('loop').innerHTML = st.loop.map((e, i) => {
+        const mv = `<button class="btn icon" type="button" data-mv="${i}|-1" aria-label="${esc(t.up)}">↑</button><button class="btn icon" type="button" data-mv="${i}|1" aria-label="${esc(t.down)}">↓</button>`;
+        if (e.kind === 'c') return `<div class="gcard" style="margin-bottom:8px"><div class="gcard-top"><strong style="flex:1;font-size:13px;color:var(--text-3);font-family:var(--font-mono)">${i + 1}</strong>${mv}</div>${compRow(e.c, i + '')}</div>`;
+        return `<div class="gcard" style="margin-bottom:8px;--gc:#60a5fa"><div class="gcard-top"><strong style="flex:1;font-size:14px;color:var(--paper)">${i + 1} · ${esc(t.group)}</strong>${mv}<button class="btn icon danger" type="button" data-rmg="${i}" aria-label="${esc(t.remove)}">✕</button></div>
+          ${e.br.map((b, j) => `<div class="branch"><div class="branch-h"><span>${esc(t.branch)} ${j + 1}</span>${e.br.length > 2 ? `<button class="btn icon danger" type="button" data-rmb="${i}|${j}" aria-label="${esc(t.remove)}">✕</button>` : ''}</div>
+            ${b.map((c, k) => compRow(c, `${i}|${j}|${k}`)).join('')}${b.length < 5 ? `<button class="btn" type="button" data-addb="${i}|${j}">${esc(t.addToBranch)}</button>` : ''}</div>`).join('')}
+          ${e.br.length < 4 ? `<button class="btn" type="button" data-addbr="${i}">${esc(t.addBranch)}</button>` : ''}</div>`;
+      }).join('');
+    }
+    function at(path) {
+      const [i, j, k] = String(path).split('|').map(Number);
+      return j === undefined || Number.isNaN(j) ? st.loop[i].c : st.loop[i].br[j][k];
+    }
+    function setK(e) {
+      const d = e.target.dataset; if (!d.k || d.path == null) return;
+      const c = at(d.path);
+      if (d.k === 'vm') c.vm = e.target.checked;
+      else if (d.k === 'closed') c.closed = e.target.value === '1';
+      else if (d.k === 'type') { c.type = e.target.value; if (!num(c.R) && (c.type === 'resistor' || c.type === 'bulb' || c.type === 'rheostat')) c.R = '4'; paintLoop(); }
+      else c[d.k] = e.target.value;
+      render();
+    }
+    $('loop').addEventListener('input', (e) => { if (e.target.tagName === 'INPUT' && e.target.type === 'text') setK(e); });
+    $('loop').addEventListener('change', (e) => { if (e.target.tagName === 'SELECT' || e.target.type === 'checkbox') setK(e); });
+    $('loop').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      const d = b.dataset;
+      if (d.rm != null) {
+        const [i, j, k] = d.rm.split('|').map(Number);
+        if (j === undefined || Number.isNaN(j)) st.loop.splice(i, 1);
+        else { st.loop[i].br[j].splice(k, 1); if (!st.loop[i].br[j].length) st.loop[i].br.splice(j, 1); if (st.loop[i].br.length < 2) { const left = st.loop[i].br[0] || []; st.loop.splice(i, 1, ...left.map(c => ({ kind: 'c', c }))); } }
+      } else if (d.rmg != null) st.loop.splice(+d.rmg, 1);
+      else if (d.rmb != null) { const [i, j] = d.rmb.split('|').map(Number); st.loop[i].br.splice(j, 1); }
+      else if (d.addb != null) { const [i, j] = d.addb.split('|').map(Number); st.loop[i].br[j].push(C('resistor', { label: 'R' })); }
+      else if (d.addbr != null) st.loop[+d.addbr].br.push([C('resistor', { label: 'R' })]);
+      else if (d.mv != null) { const [i, dir] = d.mv.split('|').map(Number); const j = i + dir; if (j >= 0 && j < st.loop.length) [st.loop[i], st.loop[j]] = [st.loop[j], st.loop[i]]; }
+      else return;
+      paintLoop(); render();
+    });
+    const nextR = () => 'R' + ['₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'][Math.min(8, st.loop.length)];
+    $('addComp').addEventListener('click', () => { st.loop.push({ kind: 'c', c: C('resistor', { label: nextR() }) }); paintLoop(); render(); });
+    $('addPar').addEventListener('click', () => { st.loop.push({ kind: 'p', br: [[C('resistor', { label: 'R' })], [C('resistor', { label: 'R' })]] }); paintLoop(); render(); });
+    const TOP = ['cells', 'emf', 'r', 'sw', 'title'], CHK = ['vBat', 'showR', 'showEmf', 'showRead', 'showI'];
+    function paintTop() { TOP.forEach(k => { $(k).value = st[k]; }); CHK.forEach(k => { $(k).checked = st[k]; }); }
+    TOP.forEach(k => $(k).addEventListener(k === 'cells' || k === 'sw' ? 'change' : 'input', (e) => { st[k] = e.target.value; render(); }));
+    CHK.forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
+    $('examples').addEventListener('change', (e) => { if (e.target.value) { example(e.target.value); paintTop(); paintLoop(); render(); } e.target.value = ''; });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'circuit').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'circuit', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('mixed');
+    K.i18n((l) => { lang = l; paintTop(); paintLoop(); render(); }).apply();
+    window.__circ = { solve, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
