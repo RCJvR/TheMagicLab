@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Force Diagrams · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .btn.primary { color: #03140a; }
+    .frow { display: grid; grid-template-columns: 30px minmax(0,0.8fr) minmax(0,1.3fr) minmax(0,0.8fr) minmax(0,0.8fr) 30px; gap: 6px; align-items: end; margin-bottom: 6px; }
+    .frow input[type=color] { width: 30px; height: 34px; padding: 0; border: 1px solid var(--line-hard); border-radius: 6px; background: none; }
+    .summary { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); line-height: 1.8; }
+    .summary b { color: var(--paper); font-weight: 600; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Newton se wette · Gr 10–12">Resource · Newton’s laws · Gr 10–12</span></div>
+    <h1 data-af-html="Krag-<em>diagramme.</em>">Force <em>diagrams.</em></h1>
+    <p class="hero-sub" data-af="Kragdiagramme en vrye-liggaamdiagramme op ’n plat oppervlak, ’n skuinsvlak of hangend aan toue — met die komponente van gewig, die resultant, en F_net en a as jy groottes gee.">Force diagrams and free-body diagrams on a flat surface, an incline, or hanging from ropes — with the components of weight, the resultant, and F_net and a when you give magnitudes.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="panel-head">
+          <h2><i data-lucide="move" style="width:16px;height:16px"></i><span data-af="Situasie">Situation</span></h2>
+          <select id="examples" aria-label="Examples" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="pull" data-af="Boks getrek teen ’n hoek">Box pulled at an angle</option>
+            <option value="incline" data-af="Blok op ’n skuinsvlak">Block on an incline</option>
+            <option value="hang" data-af="Hangende voorwerp">Hanging object</option>
+            <option value="ropes" data-af="Twee toue in ewewig">Two ropes in equilibrium</option>
+          </select>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="Oppervlak">Surface</span>
+            <select id="surface"><option value="flat" data-af="Plat">Flat</option><option value="incline" data-af="Skuinsvlak">Incline</option><option value="ceiling" data-af="Hang van plafon">Hanging</option><option value="none" data-af="Geen">None</option></select></label>
+          <label class="field"><span data-af="Hoek θ (°)">Angle θ (°)</span><input type="text" id="theta" inputmode="decimal"></label>
+          <label class="field"><span data-af="Massa (kg, opsioneel)">Mass (kg, optional)</span><input type="text" id="mass" inputmode="decimal"></label>
+        </div>
+        <div class="row c2">
+          <label class="field"><span data-af="Teken as">Draw as</span>
+            <select id="style"><option value="force" data-af="Kragdiagram (voorwerp)">Force diagram (object)</option><option value="fbd" data-af="Vrye-liggaamdiagram (punt)">Free-body diagram (dot)</option></select></label>
+          <label class="field"><span data-af="Voorwerp-byskrif">Object label</span><input type="text" id="objLabel" maxlength="10"></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 style="margin-bottom:10px"><i data-lucide="arrow-up-right" style="width:16px;height:16px"></i><span data-af="Kragte">Forces</span></h2>
+        <div id="forces"></div>
+        <div class="btn-row" id="presets"></div>
+        <div class="checks" style="margin-top:10px">
+          <label class="check"><input type="checkbox" id="showMag"> <span data-af="Wys groottes">Show magnitudes</span></label>
+          <label class="check"><input type="checkbox" id="scale"> <span data-af="Pyllengte volgens grootte">Arrow length to scale</span></label>
+          <label class="check"><input type="checkbox" id="comps"> <span data-af="Komponente van gewig (skuinsvlak)">Components of weight (incline)</span></label>
+          <label class="check"><input type="checkbox" id="resultant"> <span data-af="Resultante krag">Resultant force</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <div class="summary" id="summary"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        dirs: { down: 'Down', up: 'Up', left: 'Left', right: 'Right', normal: '⊥ surface (normal)', upslope: 'Up the slope', downslope: 'Down the slope', angle: 'At an angle…' },
+        label: 'Label', dir: 'Direction', angle: 'Angle (°)', mag: 'Size (N)', remove: 'Remove',
+        presets: { w: 'Weight', n: 'Normal', f: 'Friction', t: 'Tension', a: 'Applied' },
+        fnet: 'Net force', dirOf: 'direction', a: 'Acceleration', eq: 'The forces balance: the object is in equilibrium.', angleHint: 'angles: 0° = right, 90° = up',
+        copied: 'Link copied — anyone with it sees this diagram.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        dirs: { down: 'Af', up: 'Op', left: 'Links', right: 'Regs', normal: '⊥ oppervlak (normaal)', upslope: 'Teen die helling op', downslope: 'Teen die helling af', angle: 'Teen ’n hoek…' },
+        label: 'Byskrif', dir: 'Rigting', angle: 'Hoek (°)', mag: 'Grootte (N)', remove: 'Verwyder',
+        presets: { w: 'Gewig', n: 'Normaal', f: 'Wrywing', t: 'Spanning', a: 'Toegepas' },
+        fnet: 'Netto krag', dirOf: 'rigting', a: 'Versnelling', eq: 'Die kragte balanseer: die voorwerp is in ewewig.', angleHint: 'hoeke: 0° = regs, 90° = op',
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie diagram.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+    const COLS = ['#b91c1c', '#1d4ed8', '#15803d', '#9333ea', '#ea580c', '#0891b2'];
+
+    let uid = 1;
+    const F = (label, dir, mag, o) => Object.assign({ id: uid++, label, dir, angle: '0', mag: mag == null ? '' : String(mag), color: COLS[(uid - 2) % COLS.length] }, o || {});
+    const defaults = () => ({ surface: 'flat', theta: '30', mass: '', style: 'force', objLabel: '', showMag: true, scale: true, comps: false, resultant: false, title: '', forces: [] });
+    let st = defaults();
+    function example(k) {
+      st = defaults(); uid = 1;
+      if (k === 'pull') Object.assign(st, { surface: 'flat', mass: '10', title: 'A 10 kg box pulled at 30° on a rough surface', forces: [F('F_g', 'down', 98), F('N', 'normal', 78), F('F_A', 'angle', 40, { angle: '30' }), F('f', 'left', 20)] });
+      if (k === 'incline') Object.assign(st, { surface: 'incline', theta: '30', mass: '5', comps: true, title: 'A 5 kg block at rest on a 30° incline', forces: [F('F_g', 'down', 49), F('N', 'normal', 42.44), F('f', 'upslope', 24.5)] });
+      if (k === 'hang') Object.assign(st, { surface: 'ceiling', mass: '2', title: 'A 2 kg object hanging from a string', forces: [F('F_g', 'down', 19.6), F('T', 'up', 19.6)] });
+      if (k === 'ropes') Object.assign(st, { surface: 'none', style: 'fbd', mass: '4', title: 'Object held by two ropes', forces: [F('F_g', 'down', 39.2), F('T₁', 'angle', 19.6, { angle: '150' }), F('T₂', 'angle', 33.95, { angle: '60' })] });
+    }
+    const store = K.store('ss_forces_v1', 'f');
+    function sanitize(s) {
+      if (!s || !Array.isArray(s.forces)) return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 16);
+      Object.keys(d).forEach(k => { if (s[k] === undefined || k === 'forces') return; d[k] = typeof d[k] === 'boolean' ? !!s[k] : str(s[k], 80); });
+      d.forces = s.forces.slice(0, 10).map(f => ({ id: uid++, label: str(f.label, 10), dir: STR.en.dirs[f.dir] ? f.dir : 'down', angle: str(f.angle, 8), mag: str(f.mag, 10), color: /^#[0-9a-f]{6}$/i.test(f.color) ? f.color : COLS[0] }));
+      return d;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Geometry. Angles in degrees, 0° = right, 90° = up (the maths
+    // convention). The incline rises to the right at θ.
+    // ══════════════════════════════════════════════════════════════════
+    const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return Number.isFinite(x) ? x : NaN; };
+    const theta = () => st.surface === 'incline' ? Math.max(5, Math.min(70, num(st.theta) || 30)) : 0;
+    function angleOf(f) {
+      const th = theta();
+      switch (f.dir) {
+        case 'down': return 270; case 'up': return 90; case 'left': return 180; case 'right': return 0;
+        case 'normal': return 90 + th; case 'upslope': return th; case 'downslope': return 180 + th;
+        default: return num(f.angle) || 0;
+      }
+    }
+    function net() {
+      const known = st.forces.filter(f => Number.isFinite(num(f.mag)));
+      if (!known.length || known.length < st.forces.length) return null;
+      let fx = 0, fy = 0;
+      known.forEach(f => { const a = angleOf(f) * Math.PI / 180; fx += num(f.mag) * Math.cos(a); fy += num(f.mag) * Math.sin(a); });
+      return { fx, fy, mag: Math.hypot(fx, fy), ang: (Math.atan2(fy, fx) * 180 / Math.PI + 360) % 360 };
+    }
+
+    const W = 900, H = 620, INK = '#111827', FONT = 'Helvetica, Arial, sans-serif', SERIF = "'Times New Roman', Times, serif";
+    const fmt = (v, dp = 2) => { const r = Math.round(v * 10 ** dp) / 10 ** dp; const s = String(Object.is(r, -0) ? 0 : r); return lang === 'af' ? s.replace('.', ',') : s; };
+    // "F_g" → F with subscript g
+    function labelSvg(text) {
+      const m = /^([^_]+)_(.+)$/.exec(text);
+      return m ? `${esc(m[1])}<tspan baseline-shift="sub" font-size="70%">${esc(m[2])}</tspan>` : esc(text);
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      const t = T(), th = theta(), thr = th * Math.PI / 180;
+      const title = String(st.title || '').trim();
+      const cx = 450, cy = 330;
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Force diagram" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      let defs = '';
+      const mk = (c) => { const id = 'fa' + c.slice(1); if (!defs.includes(id)) defs += `<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" orient="auto"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`; return `url(#${id})`; };
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      const box = 90, fbd = st.style === 'fbd';
+      // surroundings
+      let scene = '';
+      if (!fbd) {
+        if (st.surface === 'flat') {
+          scene += `<line x1="120" y1="${cy + box / 2}" x2="780" y2="${cy + box / 2}" stroke="${INK}" stroke-width="2.4"/>`;
+          for (let x = 130; x < 780; x += 18) scene += `<line x1="${x}" y1="${cy + box / 2}" x2="${x - 12}" y2="${cy + box / 2 + 12}" stroke="${INK}" stroke-width="1.2"/>`;
+        } else if (st.surface === 'incline') {
+          // slope through the bottom-centre of the block
+          const bx = cx + Math.sin(thr) * box / 2, by = cy + Math.cos(thr) * box / 2;
+          const L = 340, x0 = bx - L * Math.cos(thr), y0 = by + L * Math.sin(thr), x1 = bx + L * Math.cos(thr), y1 = by - L * Math.sin(thr);
+          scene += `<path d="M${x0} ${y0}L${x1} ${y1}L${x1} ${y0}Z" fill="#f1f5f9" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>`;
+          const r = 60; scene += `<path d="M${x0 + r} ${y0}A${r} ${r} 0 0 0 ${x0 + r * Math.cos(thr)} ${y0 - r * Math.sin(thr)}" fill="none" stroke="${INK}" stroke-width="1.6"/><text x="${x0 + r + 12}" y="${y0 - 10}" font-size="18" font-style="italic" fill="${INK}" font-family="${SERIF}">θ</text>`;
+        } else if (st.surface === 'ceiling') {
+          scene += `<line x1="330" y1="70" x2="570" y2="70" stroke="${INK}" stroke-width="2.4"/>`;
+          for (let x = 340; x < 570; x += 18) scene += `<line x1="${x}" y1="70" x2="${x - 12}" y2="58" stroke="${INK}" stroke-width="1.2"/>`;
+          scene += `<line x1="${cx}" y1="70" x2="${cx}" y2="${cy - box / 2}" stroke="${INK}" stroke-width="2"/>`;
+        }
+        scene += `<rect x="${cx - box / 2}" y="${cy - box / 2}" width="${box}" height="${box}" fill="#e0f2fe" stroke="${INK}" stroke-width="2.4" transform="rotate(${-th} ${cx} ${cy})"/>`;
+        if (st.objLabel) scene += `<text x="${cx}" y="${cy + 7}" text-anchor="middle" font-size="20" fill="${INK}" font-family="${SERIF}">${esc(st.objLabel)}</text>`;
+      } else {
+        scene += `<circle cx="${cx}" cy="${cy}" r="6" fill="${INK}"/>`;
+        if (st.objLabel) scene += `<text x="${cx + 10}" y="${cy + 22}" font-size="18" fill="${INK}" font-family="${SERIF}">${esc(st.objLabel)}</text>`;
+      }
+      // arrow lengths: to scale if every force has a size
+      const mags = st.forces.map(f => num(f.mag));
+      const allKnown = mags.length && mags.every(Number.isFinite);
+      const maxM = allKnown ? Math.max(...mags.map(Math.abs), 1e-9) : 1;
+      const lenOf = (m) => st.scale && allKnown ? 60 + 170 * Math.abs(m) / maxM : 150;
+      let arrows = '';
+      // components of weight on an incline
+      const wF = st.forces.find(f => f.dir === 'down' && /g|w|W/.test(f.label));
+      if (st.comps && st.surface === 'incline' && wF) {
+        const Lw = lenOf(num(wF.mag)), c = '#6b7280';
+        const par = Lw * Math.sin(thr), perp = Lw * Math.cos(thr);
+        const d1 = (180 + th) * Math.PI / 180, d2 = (270 + th) * Math.PI / 180;
+        arrows += `<line x1="${cx}" y1="${cy}" x2="${cx + par * Math.cos(d1)}" y2="${cy - par * Math.sin(d1)}" stroke="${c}" stroke-width="2.2" stroke-dasharray="7 5" marker-end="${mk(c)}"/>`;
+        arrows += `<line x1="${cx}" y1="${cy}" x2="${cx + perp * Math.cos(d2)}" y2="${cy - perp * Math.sin(d2)}" stroke="${c}" stroke-width="2.2" stroke-dasharray="7 5" marker-end="${mk(c)}"/>`;
+        const m = num(wF.mag);
+        arrows += `<text x="${cx + (par + 18) * Math.cos(d1)}" y="${cy - (par + 18) * Math.sin(d1) + 6}" text-anchor="middle" font-size="16" fill="${c}" font-family="${SERIF}" font-style="italic">F<tspan baseline-shift="sub" font-size="70%">g∥</tspan>${st.showMag && Number.isFinite(m) ? ' = ' + fmt(m * Math.sin(thr)) + ' N' : ''}</text>`;
+        arrows += `<text x="${cx + (perp + 22) * Math.cos(d2) + 10}" y="${cy - (perp + 22) * Math.sin(d2) + 6}" font-size="16" fill="${c}" font-family="${SERIF}" font-style="italic">F<tspan baseline-shift="sub" font-size="70%">g⊥</tspan>${st.showMag && Number.isFinite(m) ? ' = ' + fmt(m * Math.cos(thr)) + ' N' : ''}</text>`;
+      }
+      st.forces.forEach(f => {
+        const a = angleOf(f) * Math.PI / 180, L = lenOf(num(f.mag));
+        // start at the edge of the object for a force diagram, at the dot for a free-body diagram
+        const start = fbd ? 7 : 0;
+        const x1 = cx + start * Math.cos(a), y1 = cy - start * Math.sin(a), x2 = cx + L * Math.cos(a), y2 = cy - L * Math.sin(a);
+        arrows += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${f.color}" stroke-width="3.2" marker-end="${mk(f.color)}"/>`;
+        // near-vertical upward arrows get their label beside the tip, clear of ropes and ceilings
+        const upish = Math.sin(a) > 0.9;
+        const lx = upish ? x2 + 12 : cx + (L + 22) * Math.cos(a), ly = upish ? y2 + 14 : cy - (L + 22) * Math.sin(a);
+        const anchor = upish ? 'start' : Math.cos(a) > 0.3 ? 'start' : Math.cos(a) < -0.3 ? 'end' : 'middle';
+        const m = num(f.mag);
+        arrows += `<text x="${lx}" y="${ly + 6}" text-anchor="${anchor}" font-size="19" fill="${f.color}" font-family="${SERIF}"><tspan font-style="italic">${labelSvg(f.label)}</tspan>${st.showMag && Number.isFinite(m) ? ` = ${fmt(m)} N` : ''}</text>`;
+      });
+      const n = net();
+      if (st.resultant && n && n.mag > 1e-6) {
+        const L = st.scale && allKnown ? 60 + 170 * n.mag / maxM : 150, a = n.ang * Math.PI / 180, c = INK;
+        arrows += `<line x1="${cx}" y1="${cy}" x2="${cx + L * Math.cos(a)}" y2="${cy - L * Math.sin(a)}" stroke="${c}" stroke-width="3" stroke-dasharray="10 6" marker-end="${mk(c)}"/>`;
+        arrows += `<text x="${cx + (L + 24) * Math.cos(a)}" y="${cy - (L + 24) * Math.sin(a) + 6}" text-anchor="middle" font-size="18" font-weight="bold" fill="${c}" font-family="${SERIF}"><tspan font-style="italic">F</tspan><tspan baseline-shift="sub" font-size="70%">net</tspan>${st.showMag ? ' = ' + fmt(n.mag) + ' N' : ''}</text>`;
+      }
+      s += `<defs>${defs}</defs>${scene}${arrows}</svg>`;
+      $('plot').innerHTML = s;
+      // summary
+      let h = '';
+      if (n) {
+        if (n.mag < 1e-3 * Math.max(1, ...st.forces.map(f => Math.abs(num(f.mag)) || 0))) h = `<div><b>${esc(t.eq)}</b></div>`;
+        else {
+          h = `<div><b>${esc(t.fnet)}:</b> ${fmt(n.mag)} N, ${esc(t.dirOf)} ${fmt(n.ang, 1)}° (x: ${fmt(n.fx)} N, y: ${fmt(n.fy)} N)</div>`;
+          const m = num(st.mass); if (m > 0) h += `<div><b>${esc(t.a)}:</b> ${fmt(n.mag / m)} m·s⁻²</div>`;
+        }
+      }
+      $('summary').innerHTML = h;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintForces() {
+      const t = T();
+      $('forces').innerHTML = st.forces.map((f, i) => `<div class="frow">
+        <input type="color" data-i="${i}" data-k="color" value="${esc(f.color)}" aria-label="Colour">
+        <label class="field"><span>${esc(t.label)}</span><input type="text" data-i="${i}" data-k="label" value="${esc(f.label)}" maxlength="10"></label>
+        <label class="field"><span>${esc(t.dir)}</span><select data-i="${i}" data-k="dir">${Object.keys(t.dirs).map(d => `<option value="${d}"${f.dir === d ? ' selected' : ''}>${esc(t.dirs[d])}</option>`).join('')}</select></label>
+        <label class="field"><span>${esc(t.angle)}</span><input type="text" data-i="${i}" data-k="angle" value="${esc(f.angle)}" inputmode="decimal"${f.dir === 'angle' ? '' : ' disabled'} title="${esc(t.angleHint)}"></label>
+        <label class="field"><span>${esc(t.mag)}</span><input type="text" data-i="${i}" data-k="mag" value="${esc(f.mag)}" inputmode="decimal"></label>
+        <button class="btn icon danger" type="button" data-rm="${i}" aria-label="${esc(t.remove)}">✕</button></div>`).join('') + `<p class="hint">${esc(t.angleHint)}</p>`;
+      $('presets').innerHTML = Object.entries(t.presets).map(([k, l]) => `<button class="btn" type="button" data-p="${k}">+ ${esc(l)}</button>`).join('');
+    }
+    function paintTop() { ['surface', 'theta', 'mass', 'style', 'objLabel', 'title'].forEach(k => { $(k).value = st[k]; }); ['showMag', 'scale', 'comps', 'resultant'].forEach(k => { $(k).checked = st[k]; }); }
+    function onForce(e) {
+      const d = e.target.dataset; if (d.i == null) return;
+      const f = st.forces[+d.i]; f[d.k] = e.target.value;
+      if (d.k === 'dir') paintForces();
+      render();
+    }
+    $('forces').addEventListener('input', onForce);
+    $('forces').addEventListener('change', onForce);
+    $('forces').addEventListener('click', (e) => { const b = e.target.closest('[data-rm]'); if (b) { st.forces.splice(+b.dataset.rm, 1); paintForces(); render(); } });
+    $('presets').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-p]'); if (!b) return;
+      const m = num(st.mass), g = 9.8, th = theta() * Math.PI / 180;
+      const P = {
+        w: () => F('F_g', 'down', m > 0 ? +(m * g).toFixed(2) : ''),
+        n: () => F('N', 'normal', m > 0 ? +(m * g * Math.cos(th)).toFixed(2) : ''),
+        f: () => F('f', st.surface === 'incline' ? 'upslope' : 'left', ''),
+        t: () => F('T', 'up', ''),
+        a: () => F('F_A', 'right', ''),
+      }[b.dataset.p];
+      st.forces.push(P()); paintForces(); render();
+    });
+    ['surface', 'style'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.value; render(); }));
+    ['theta', 'mass', 'objLabel', 'title'].forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; render(); }));
+    ['showMag', 'scale', 'comps', 'resultant'].forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
+    $('examples').addEventListener('change', (e) => { if (e.target.value) { example(e.target.value); paintTop(); paintForces(); render(); } e.target.value = ''; });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'force-diagram').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'force-diagram', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('incline');
+    K.i18n((l) => { lang = l; paintTop(); paintForces(); render(); }).apply();
+    window.__forces = { net, st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
