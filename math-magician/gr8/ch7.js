@@ -164,7 +164,7 @@ MathMagician.registerChapter(7, {
                 el.innerHTML='<span style="color:#fca5a5;">Please enter valid numbers.</span>'; return;
               }
               if(a===0){
-                el.innerHTML='<span style="color:#fca5a5;">Coefficient a cannot be 0 — that's not a linear equation.</span>'; return;
+                el.innerHTML='<span style="color:#fca5a5;">Coefficient a cannot be 0 — that’s not a linear equation.</span>'; return;
               }
               const x = (c - b) / a;
               const absB = Math.abs(b);

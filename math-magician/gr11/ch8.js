@@ -63,7 +63,7 @@ MathMagician.registerChapter(8, {
             <div id="g11c8Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
             <script>
             (function(){
-              function lbl(id,label,val,mn,mx){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="'+(mn||0)+'" max="'+(mx||360)+'" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function lbl(id,label,val,mn,mx){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="'+(mn||0)+'" max="'+(mx||360)+'" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               const descs={
                 central:'The central angle (∠AOB) is double the inscribed angle. Enter central angle → find circumference angle.',

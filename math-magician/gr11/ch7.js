@@ -64,7 +64,7 @@ MathMagician.registerChapter(7, {
             (function(){
               const π=Math.PI;
               function f(n){return n.toFixed(2);}
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               function build(){
                 const c=document.getElementById('g11c7combo').value;
@@ -103,7 +103,7 @@ MathMagician.registerChapter(7, {
                   if(isNaN(s)||s<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive side length.</span>';return;}
                   const cubeSA=6*s*s;
                   html='<span style="color:rgba(221,225,240,0.50);">Cube SA = 6a² = '+f(cubeSA)+'</span><br>';
-                  html+='<span style="color:rgba(221,225,240,0.50);">(Note: removing a sphere from inside doesn\'t change external SA)</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">(Note: removing a sphere from inside doesn\\'t change external SA)</span><br>';
                   html+='<span style="color:#6ee7b7;">External SA = '+f(cubeSA)+' units²</span>';
                 }
                 out.innerHTML=html;
@@ -240,7 +240,7 @@ MathMagician.registerChapter(7, {
             (function(){
               const π=Math.PI;
               function f(n){return n.toFixed(3);}
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
               function build(){
                 const s=document.getElementById('g11c7t2shape').value;

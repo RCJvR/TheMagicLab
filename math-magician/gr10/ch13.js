@@ -62,7 +62,7 @@ MathMagician.registerChapter(13, {
             <script>
             (function(){
               const π=Math.PI;
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function f(n){return n.toFixed(2);}
               function buildInputs(){
                 const s=document.getElementById('g10c13shape').value;
@@ -90,7 +90,7 @@ MathMagician.registerChapter(13, {
                   const l=Math.sqrt(r*r+h*h);
                   SA=π*r*r+π*r*l;
                   formula='SA = πr² + πrl (slant l = √(r²+h²))';
-                  working='l = √('+r+'²+'+h+'²) = '+f(l)+'\n= π('+r+')² + π('+r+')('+f(l)+') = '+f(π*r*r)+' + '+f(π*r*l);
+                  working='l = √('+r+'²+'+h+'²) = '+f(l)+'\\n= π('+r+')² + π('+r+')('+f(l)+') = '+f(π*r*r)+' + '+f(π*r*l);
                 } else if(s==='sphere'){
                   const r=val('g10c13r');
                   if(isNaN(r)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive radius.</span>';return;}
@@ -105,7 +105,7 @@ MathMagician.registerChapter(13, {
                   working='= 2('+l+'×'+w+' + '+l+'×'+h+' + '+w+'×'+h+') = 2('+f(l*w+l*h+w*h)+')';
                 }
                 let html='<span style="color:rgba(221,225,240,0.50);">Formula: </span><span style="color:#fcd34d;">'+formula+'</span><br>';
-                working.split('\n').forEach(line=>{ html+='<span style="color:rgba(221,225,240,0.50);">'+line+'</span><br>'; });
+                working.split('\\n').forEach(line=>{ html+='<span style="color:rgba(221,225,240,0.50);">'+line+'</span><br>'; });
                 html+='<span style="color:#6ee7b7;">SA = '+f(SA)+' units²</span>';
                 out.innerHTML=html;
               }
@@ -229,7 +229,7 @@ MathMagician.registerChapter(13, {
             <script>
             (function(){
               const π=Math.PI;
-              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';}
               function f(n){return parseFloat(n.toFixed(4)).toString();}
               function build(){
                 const s=document.getElementById('g10c13t2shape').value;

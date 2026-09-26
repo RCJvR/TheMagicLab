@@ -326,8 +326,8 @@ MathMagician.registerChapter(12, {
                   const div=document.createElement('div');
                   div.style.cssText='display:flex;gap:4px;align-items:center;';
                   div.innerHTML='<span style="font-size:12px;color:rgba(221,225,240,0.40);min-width:18px;">'+(String.fromCharCode(65+i))+':</span>'+
-                    '<input type="number" value="'+pt[0]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\'JetBrains Mono\',monospace;text-align:center;" placeholder="x">'+
-                    '<input type="number" value="'+pt[1]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\'JetBrains Mono\',monospace;text-align:center;" placeholder="y">'+
+                    '<input type="number" value="'+pt[0]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;" placeholder="x">'+
+                    '<input type="number" value="'+pt[1]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;" placeholder="y">'+
                     (pts.length>2?'<button onclick="this.parentNode.remove()" style="background:transparent;border:none;color:rgba(221,225,240,0.30);cursor:pointer;font-size:16px;padding:0 4px;" title="Remove">×</button>':'');
                   const [xi,yi]=div.querySelectorAll('input');
                   xi.addEventListener('change',()=>{pts[i][0]=parseFloat(xi.value)||0;});

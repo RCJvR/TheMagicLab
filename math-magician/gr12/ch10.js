@@ -72,7 +72,7 @@ MathMagician.registerChapter(10, {
                 if(mode==='fact'){
                   inp.innerHTML='<div><div style="'+lblStyle+'">n</div><input id="g12c10n" type="number" value="5" min="0" max="20" style="'+inStyle+'"></div>';
                 } else if(mode==='fcp'){
-                  inp.innerHTML='<div><div style="'+lblStyle+'">Choices at each step (comma-separated)</div><input id="g12c10steps" type="text" value="3,4,2" style="width:220px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:\'JetBrains Mono\',monospace;box-sizing:border-box;"></div>';
+                  inp.innerHTML='<div><div style="'+lblStyle+'">Choices at each step (comma-separated)</div><input id="g12c10steps" type="text" value="3,4,2" style="width:220px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:\\'JetBrains Mono\\',monospace;box-sizing:border-box;"></div>';
                 } else {
                   inp.innerHTML='<div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;"><div><div style="'+lblStyle+'">n</div><input id="g12c10pn" type="number" value="8" min="0" max="20" style="'+inStyle+'"></div><div><div style="'+lblStyle+'">r</div><input id="g12c10pr" type="number" value="3" min="0" max="20" style="'+inStyle+'"></div></div>';
                 }

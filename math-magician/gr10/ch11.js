@@ -83,11 +83,11 @@ MathMagician.registerChapter(11, {
                 if(side==='adj'){adj=len;opp=adj*tanA;hyp=adj/cosA;}
                 else if(side==='opp'){opp=len;adj=opp/tanA;hyp=opp/sinA;}
                 else{hyp=len;opp=hyp*sinA;adj=hyp*cosA;}
-                const used=side==='adj'?'tan θ = opp/adj → opp = adj × tan θ\ncos θ = adj/hyp → hyp = adj/cos θ'
-                  :side==='opp'?'tan θ = opp/adj → adj = opp/tan θ\nsin θ = opp/hyp → hyp = opp/sin θ'
-                  :'sin θ = opp/hyp → opp = hyp × sin θ\ncos θ = adj/hyp → adj = hyp × cos θ';
+                const used=side==='adj'?'tan θ = opp/adj → opp = adj × tan θ\\ncos θ = adj/hyp → hyp = adj/cos θ'
+                  :side==='opp'?'tan θ = opp/adj → adj = opp/tan θ\\nsin θ = opp/hyp → hyp = opp/sin θ'
+                  :'sin θ = opp/hyp → opp = hyp × sin θ\\ncos θ = adj/hyp → adj = hyp × cos θ';
                 let html='<span style="color:rgba(221,225,240,0.50);">θ = '+ang+'°, sin = '+f(sinA)+', cos = '+f(cosA)+', tan = '+f(tanA)+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">'+used.replace('\n','<br><span style="color:rgba(221,225,240,0.50);">')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">'+used.replace('\\n','<br><span style="color:rgba(221,225,240,0.50);">')+'</span><br>';
                 html+='<span style="color:#6ee7b7;">Adjacent = '+f(adj)+'</span>  <span style="color:#6ee7b7;">Opposite = '+f(opp)+'</span>  <span style="color:#6ee7b7;">Hypotenuse = '+f(hyp)+'</span>';
                 out.innerHTML=html;
               }

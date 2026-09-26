@@ -268,7 +268,7 @@ MathMagician.registerChapter(14, {
                 const p=gv('g10c14t2pcomp');
                 const out=document.getElementById('g10c14t2Out');
                 if(p===null||p<0||p>1){out.innerHTML='<span style="color:#fca5a5;">Enter a probability between 0 and 1.</span>';return;}
-                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(A\') = 1 − P(A) = 1 − '+p+' = </span><span style="color:#6ee7b7;">'+f(1-p)+'</span>';
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(A\\') = 1 − P(A) = 1 − '+p+' = </span><span style="color:#6ee7b7;">'+f(1-p)+'</span>';
               });
               document.getElementById('g10c14t2atlBtn').addEventListener('click',()=>{
                 const p=gv('g10c14t2pp'),n=parseInt(document.getElementById('g10c14t2pn').value);

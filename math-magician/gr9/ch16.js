@@ -91,13 +91,13 @@ MathMagician.registerChapter(16, {
               grid+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="#fbbf24"/>';
               grid+='<text x="'+(px+8)+'" y="'+(py-6)+'" font-size="9" fill="#fbbf24" font-family="JetBrains Mono,monospace">P('+x+';'+y+')</text>';
               grid+='<circle cx="'+px2+'" cy="'+py2+'" r="6" fill="#6ee7b7"/>';
-              grid+='<text x="'+(px2+8)+'" y="'+(py2-6)+'" font-size="9" fill="#6ee7b7" font-family="JetBrains Mono,monospace">P\'('+ix+';'+iy+')</text>';
+              grid+='<text x="'+(px2+8)+'" y="'+(py2-6)+'" font-size="9" fill="#6ee7b7" font-family="JetBrains Mono,monospace">P\\'('+ix+';'+iy+')</text>';
               document.getElementById('tfSvg').innerHTML=grid;
               document.getElementById('tfOut').innerHTML=[
                 '<div><span style="color:rgba(221,225,240,0.45);">Transformation: </span><span style="color:#fbbf24;">'+label+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);">Rule: </span><span style="color:#a5b4fc;">'+rule+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);">Original: </span><span style="color:#fbbf24;font-weight:700;">P('+x+'; '+y+')</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);">Image: </span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">P\'('+ix+'; '+iy+')</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Image: </span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">P\\'('+ix+'; '+iy+')</span></div>',
               ].join('');
             }
             ['tfType','tfX','tfY','tfA','tfB'].forEach(function(id){

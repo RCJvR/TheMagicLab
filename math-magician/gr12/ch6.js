@@ -83,9 +83,9 @@ MathMagician.registerChapter(6, {
                 if(c!==0) pstr+=(c>0&&(a!==0||b!==0)?'+':'')+c+'x';
                 if(d!==0) pstr+=(d>0&&(a!==0||b!==0||c!==0)?'+':'')+d;
                 let html='<span style="color:rgba(221,225,240,0.50);">'+pstr+'</span><br>';
-                html+='<span style="color:#fcd34d;">f\'(x) = '+da+'x² + '+db+'x + '+dc+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">f\'\'(x) = '+(6*a)+'x + '+(2*b)+'</span><br>';
-                html+='<span style="color:rgba(221,225,240,0.50);">f('+x0+') = '+fx0+'</span>   <span style="color:#6ee7b7;">f\'('+x0+') = '+fpx0+'</span>   <span style="color:rgba(221,225,240,0.50);">f\'\'('+x0+') = '+fppx0+'</span><br>';
+                html+='<span style="color:#fcd34d;">f\\'(x) = '+da+'x² + '+db+'x + '+dc+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f\\'\\'(x) = '+(6*a)+'x + '+(2*b)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f('+x0+') = '+fx0+'</span>   <span style="color:#6ee7b7;">f\\'('+x0+') = '+fpx0+'</span>   <span style="color:rgba(221,225,240,0.50);">f\\'\\'('+x0+') = '+fppx0+'</span><br>';
                 html+='<span style="color:#6ee7b7;">Tangent at ('+x0+', '+fx0+'): y = '+fpx0+'x + '+yint+'</span>';
                 out.innerHTML=html;
               }
@@ -178,7 +178,7 @@ MathMagician.registerChapter(6, {
                 const f=x=>a*x*x*x+b*x*x+c*x+d;
                 // f'(x) = 3ax²+2bx+c → set to 0
                 const disc=4*b*b-4*3*a*c;
-                let html='<span style="color:rgba(221,225,240,0.50);">f\'(x) = '+3*a+'x² + '+2*b+'x + '+c+'</span><br>';
+                let html='<span style="color:rgba(221,225,240,0.50);">f\\'(x) = '+3*a+'x² + '+2*b+'x + '+c+'</span><br>';
                 if(disc<0){html+='<span style="color:#fca5a5;">Δ < 0 → no real stationary points.</span>';}
                 else{
                   const x1=(-2*b+Math.sqrt(disc))/(2*3*a),x2=(-2*b-Math.sqrt(disc))/(2*3*a);
@@ -187,11 +187,11 @@ MathMagician.registerChapter(6, {
                     const fx=f(x);
                     const fpp=6*a*x+2*b;
                     const nature=fpp>0?'minimum':'maximum';
-                    html+='<span style="color:#fcd34d;">Stationary point at x = '+f4(x)+': f(x) = '+f4(fx)+'  →  '+nature+' (f\'\'= '+f4(fpp)+')</span><br>';
+                    html+='<span style="color:#fcd34d;">Stationary point at x = '+f4(x)+': f(x) = '+f4(fx)+'  →  '+nature+' (f\\'\\'= '+f4(fpp)+')</span><br>';
                   });
                 }
                 const xi=-b/(3*a),fxi=f(xi);
-                html+='<span style="color:#6ee7b7;">Point of inflection (f\'\'=0): x = '+f4(xi)+', y = '+f4(fxi)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Point of inflection (f\\'\\'=0): x = '+f4(xi)+', y = '+f4(fxi)+'</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">y-intercept: (0, '+d+')   End behaviour: a='+a+(a>0?' → falls left, rises right':' → rises left, falls right')+'</span>';
                 out.innerHTML=html;
               }
