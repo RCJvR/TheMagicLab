@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Geometry Sketcher · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    .toolgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .tbtn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 4px;
+      border-radius: 8px; border: 1px solid var(--line-hard); background: var(--ink-900); color: var(--text-2);
+      font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: var(--font-body);
+    }
+    .tbtn:hover { color: var(--paper); border-color: var(--paper); }
+    .tbtn.on { background: var(--accent); color: #0d1400; border-color: var(--accent); }
+    .status { font-size: 13px; color: var(--text-2); min-height: 20px; }
+    .status b { color: var(--accent); }
+    #plot svg { touch-action: none; cursor: default; }
+    #plot svg.adding { cursor: crosshair; }
+    .props:empty::before { content: attr(data-empty); font-size: 12.5px; color: var(--text-3); }
+    .tpls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .tpls button { text-align: left; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-hard); background: var(--ink-900); color: var(--text); font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .tpls button:hover { border-color: var(--accent); color: var(--paper); }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Euklidiese meetkunde · Gr 8–12">Resource · Euclidean geometry · Gr 8–12</span></div>
+    <h1 data-af-html="Meetkunde-<em>sketsblad.</em>">Geometry <em>sketcher.</em></h1>
+    <p class="hero-sub" data-af="Teken meetkundediagramme vir toetse: sirkels, koorde, raaklyne, hoekmerke, gelyke-sy-merkies en ewewydige pyle. Punte op ’n sirkel bly op die sirkel as jy hulle sleep.">Draw geometry diagrams for tests: circles, chords, tangents, angle marks, equal-side ticks and parallel arrows. Points on a circle stay on the circle when you drag them.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hTools">
+        <h2 id="hTools" style="margin-bottom:10px"><i data-lucide="pen-tool" style="width:16px;height:16px"></i><span data-af="Gereedskap">Tools</span></h2>
+        <div class="toolgrid" id="toolgrid"></div>
+        <p class="status" id="status" style="margin-top:10px" role="status"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="hProps">
+        <h2 id="hProps" style="margin-bottom:10px"><i data-lucide="sliders-horizontal" style="width:16px;height:16px"></i><span data-af="Gekies">Selected</span></h2>
+        <div class="props" id="props" data-empty="Click something in the diagram to change it."></div>
+      </section>
+
+      <section class="panel" aria-labelledby="hTpl">
+        <h2 id="hTpl" style="margin-bottom:10px"><i data-lucide="layout-template" style="width:16px;height:16px"></i><span data-af="Begin met">Start from</span></h2>
+        <div class="tpls" id="tpls"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="hOpts">
+        <h2 id="hOpts" style="margin-bottom:10px"><i data-lucide="settings-2" style="width:16px;height:16px"></i><span data-af="Blad">Sheet</span></h2>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="grid"> <span data-af="Wys rooster terwyl ek teken">Show a grid while drawing</span></label>
+          <label class="check"><input type="checkbox" id="snap"> <span data-af="Spring na rooster">Snap to grid</span></label>
+        </div>
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+        <p class="hint" style="margin-top:10px" data-af-html="Sleep punte om te skuif. <b>Ctrl+Z</b> ontdoen, <b>Delete</b> verwyder die gekose item, <b>Esc</b> kanselleer.">Drag points to move them. <b>Ctrl+Z</b> undoes, <b>Delete</b> removes the selected item, <b>Esc</b> cancels.</p>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+        <span class="spacer"></span>
+        <button class="btn icon" id="undo" type="button" aria-label="Undo" title="Undo (Ctrl+Z)"><i data-lucide="undo-2" style="width:15px;height:15px"></i></button>
+        <button class="btn icon" id="redo" type="button" aria-label="Redo" title="Redo (Ctrl+Y)"><i data-lucide="redo-2" style="width:15px;height:15px"></i></button>
+        <button class="btn icon danger" id="clearAll" type="button" aria-label="Start over" title="Start over"><i data-lucide="rotate-ccw" style="width:15px;height:15px"></i></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const W = 900, H = 640;
+
+    const STR = {
+      en: {
+        tools: { move: 'Move', point: 'Point', segment: 'Segment', line: 'Line', circle: 'Circle', angle: 'Angle', tangent: 'Tangent', text: 'Text', midpoint: 'Midpoint', tanpts: 'Tangents from P', del: 'Delete', perp: 'Perpendicular', isect: 'Intersection' },
+        hint: {
+          move: 'Drag points to move them. Click anything to select it.',
+          point: 'Click to place a point. Click on a circle or a segment to put the point on it.',
+          segment: ['Click the first point.', 'Click the second point.'],
+          line: ['Click a point the line passes through.', 'Click a second point.'],
+          circle: ['Click the centre.', 'Click to set the radius.'],
+          angle: ['Click a point on the first arm.', 'Click the vertex.', 'Click a point on the second arm.'],
+          tangent: ['Click a circle.', 'Click the point of contact (on the circle).'],
+          text: 'Click where the text goes.',
+          midpoint: ['Click the first point.', 'Click the second point.'],
+          tanpts: ['Click a circle.', 'Click the external point.'],
+          perp: ['Click a point.', 'Click the segment or line to drop the perpendicular onto.'],
+          isect: ['Click the first line or segment.', 'Click the second one.'],
+          del: 'Click something to delete it.',
+        },
+        props: {
+          label: 'Label', showLabel: 'Show label', hideDot: 'Hide the dot', pos: 'Label position', auto: 'Automatic',
+          style: 'Line', solid: 'Solid', dashed: 'Dashed', ticks: 'Equal-length ticks', arrows: 'Parallel arrows', none: 'None',
+          arcs: 'Mark', arc1: 'One arc', arc2: 'Two arcs', arc3: 'Three arcs', right: 'Right angle ▫', noArc: 'No arc',
+          angleLabel: 'Label (e.g. x, 1, 40°)', measure: 'Show the measured size', reflex: 'Reflex angle', text: 'Text',
+          showCentre: 'Show the centre', radius: 'Radius', lengthLbl: 'Label on the segment (e.g. 5 cm, x)', del: 'Delete', size: 'Size',
+        },
+        tpl: [
+          'Triangle', 'Triangle with midpoints', 'Parallel lines & transversal', 'Chord ⊥ from centre', 'Angle at centre',
+          'Cyclic quadrilateral', 'Tangent–chord', 'Two tangents from a point', 'Right-angled triangle', 'Isosceles triangle',
+        ],
+        text: 'Text', confirmClear: 'Clear the whole diagram?', copied: 'Link copied — anyone with it sees this diagram.',
+        copyFail: 'Could not copy the link — your browser blocked the clipboard.', empty: 'Click something in the diagram to change it.',
+        tooClose: 'That point is inside the circle, so there are no tangents from it.',
+      },
+      af: {
+        tools: { move: 'Skuif', point: 'Punt', segment: 'Lynstuk', line: 'Lyn', circle: 'Sirkel', angle: 'Hoek', tangent: 'Raaklyn', text: 'Teks', midpoint: 'Middelpunt', tanpts: 'Raaklyne uit P', del: 'Skrap', perp: 'Loodlyn', isect: 'Snypunt' },
+        hint: {
+          move: 'Sleep punte om hulle te skuif. Klik op enigiets om dit te kies.',
+          point: 'Klik om ’n punt te plaas. Klik op ’n sirkel of lynstuk om die punt daarop te sit.',
+          segment: ['Klik die eerste punt.', 'Klik die tweede punt.'],
+          line: ['Klik ’n punt waardeur die lyn gaan.', 'Klik ’n tweede punt.'],
+          circle: ['Klik die middelpunt.', 'Klik om die radius te stel.'],
+          angle: ['Klik ’n punt op die eerste been.', 'Klik die hoekpunt.', 'Klik ’n punt op die tweede been.'],
+          tangent: ['Klik ’n sirkel.', 'Klik die raakpunt (op die sirkel).'],
+          text: 'Klik waar die teks moet kom.',
+          midpoint: ['Klik die eerste punt.', 'Klik die tweede punt.'],
+          tanpts: ['Klik ’n sirkel.', 'Klik die eksterne punt.'],
+          perp: ['Klik ’n punt.', 'Klik die lynstuk of lyn waarop die loodlyn moet val.'],
+          isect: ['Klik die eerste lyn of lynstuk.', 'Klik die tweede een.'],
+          del: 'Klik op iets om dit te skrap.',
+        },
+        props: {
+          label: 'Byskrif', showLabel: 'Wys byskrif', hideDot: 'Versteek die kolletjie', pos: 'Byskrifposisie', auto: 'Outomaties',
+          style: 'Lyn', solid: 'Solied', dashed: 'Stippel', ticks: 'Gelyke-lengte-merkies', arrows: 'Ewewydige pyle', none: 'Geen',
+          arcs: 'Merk', arc1: 'Een boog', arc2: 'Twee boë', arc3: 'Drie boë', right: 'Regte hoek ▫', noArc: 'Geen boog',
+          angleLabel: 'Byskrif (bv. x, 1, 40°)', measure: 'Wys die gemete grootte', reflex: 'Refleks hoek', text: 'Teks',
+          showCentre: 'Wys die middelpunt', radius: 'Radius', lengthLbl: 'Byskrif op die lynstuk (bv. 5 cm, x)', del: 'Skrap', size: 'Grootte',
+        },
+        tpl: [
+          'Driehoek', 'Driehoek met middelpunte', 'Ewewydige lyne en snylyn', 'Koord ⊥ uit middelpunt', 'Middelpuntshoek',
+          'Koordevierhoek', 'Raaklyn–koord', 'Twee raaklyne uit ’n punt', 'Reghoekige driehoek', 'Gelykbenige driehoek',
+        ],
+        text: 'Teks', confirmClear: 'Vee die hele diagram uit?', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie diagram.',
+        copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.', empty: 'Klik op iets in die diagram om dit te verander.',
+        tooClose: 'Daardie punt is binne die sirkel, so daar is geen raaklyne daaruit nie.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // Model
+    //   points: { id, kind, label, showLabel, hideDot, pos, … }
+    //     free {x,y} · circ {c: circleId, ang} · seg {s: objId, t} ·
+    //     mid {a,b} · tan {c: circleId, e: pointId, which} · foot {p, s: objId}
+    //   objs:   seg {a,b,dash,ticks,arrows,text} · line {a,b,dash} ·
+    //     circle {c: pointId, r, dash, showCentre} · tangent {c: circleId, p} ·
+    //     angle {a,v,b,arcs,label,measure,reflex} · text {x,y,text,size}
+    // ══════════════════════════════════════════════════════════════════
+    let st = { pts: [], objs: [], grid: true, snap: false, title: '', n: 1 };
+    const nid = (p) => p + (st.n++);
+    const P = (id) => st.pts.find(p => p.id === id);
+    const O = (id) => st.objs.find(o => o.id === id);
+
+    // Position of a point, following whatever it is constrained to. `seen`
+    // holds only the current chain, so shared parents are fine and a real
+    // cycle resolves to null instead of recursing forever.
+    function pos(id, seen) {
+      seen = seen || new Set();
+      if (seen.has(id)) return null;
+      seen.add(id);
+      const r = rawPos(id, seen);
+      seen.delete(id);
+      return r;
+    }
+    function rawPos(id, seen) {
+      const p = P(id); if (!p) return null;
+      if (p.kind === 'free') return { x: p.x, y: p.y };
+      if (p.kind === 'circ') {
+        const c = O(p.c); if (!c) return null;
+        const o = pos(c.c, seen); if (!o) return null;
+        return { x: o.x + c.r * Math.cos(p.ang), y: o.y - c.r * Math.sin(p.ang) };
+      }
+      if (p.kind === 'seg') {
+        const s = O(p.s); if (!s) return null;
+        const a = pos(s.a, seen), b = pos(s.b, seen); if (!a || !b) return null;
+        return { x: a.x + (b.x - a.x) * p.t, y: a.y + (b.y - a.y) * p.t };
+      }
+      if (p.kind === 'mid') {
+        const a = pos(p.a, seen), b = pos(p.b, seen); if (!a || !b) return null;
+        return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      }
+      if (p.kind === 'tan') {
+        const c = O(p.c); if (!c) return null;
+        const o = pos(c.c, seen), e = pos(p.e, seen); if (!o || !e) return null;
+        const d = Math.hypot(e.x - o.x, e.y - o.y);
+        if (d <= c.r + 1e-6) return null;
+        const base = Math.atan2(e.y - o.y, e.x - o.x), al = Math.acos(c.r / d) * (p.which ? -1 : 1);
+        return { x: o.x + c.r * Math.cos(base + al), y: o.y + c.r * Math.sin(base + al) };
+      }
+      if (p.kind === 'isect') {
+        const s1 = O(p.s), s2 = O(p.s2); if (!s1 || !s2) return null;
+        const a = pos(s1.a, seen), b = pos(s1.b, seen), c = pos(s2.a, seen), d = pos(s2.b, seen);
+        if (!a || !b || !c || !d) return null;
+        const den = (a.x - b.x) * (c.y - d.y) - (a.y - b.y) * (c.x - d.x);
+        if (Math.abs(den) < 1e-9) return null;
+        const t = ((a.x - c.x) * (c.y - d.y) - (a.y - c.y) * (c.x - d.x)) / den;
+        return { x: a.x + t * (b.x - a.x), y: a.y + t * (b.y - a.y) };
+      }
+      if (p.kind === 'tdir') {           // a point along the tangent at p, d units away
+        const c = O(p.c); if (!c) return null;
+        const o = pos(c.c, seen), q = pos(p.p, seen); if (!o || !q) return null;
+        const rx = q.x - o.x, ry = q.y - o.y, L = Math.hypot(rx, ry) || 1;
+        return { x: q.x - ry / L * p.d, y: q.y + rx / L * p.d };
+      }
+      if (p.kind === 'foot') {
+        const s = O(p.s); if (!s) return null;
+        const q = pos(p.p, seen), a = pos(s.a, seen), b = pos(s.b, seen); if (!q || !a || !b) return null;
+        const dx = b.x - a.x, dy = b.y - a.y, L = dx * dx + dy * dy || 1;
+        const t = ((q.x - a.x) * dx + (q.y - a.y) * dy) / L;
+        return { x: a.x + dx * t, y: a.y + dy * t };
+      }
+      return null;
+    }
+    // Everything that depends on an id (for cascading deletes).
+    function dependents(id) {
+      const out = new Set([id]);
+      let grew = true;
+      while (grew) {
+        grew = false;
+        st.pts.forEach(p => {
+          if (out.has(p.id)) return;
+          if ([p.c, p.s, p.s2, p.a, p.b, p.e, p.p].some(r => r && out.has(r))) { out.add(p.id); grew = true; }
+        });
+        st.objs.forEach(o => {
+          if (out.has(o.id)) return;
+          if ([o.a, o.b, o.v, o.c, o.p].some(r => r && out.has(r))) { out.add(o.id); grew = true; }
+        });
+      }
+      return out;
+    }
+    function remove(id) {
+      const d = dependents(id);
+      st.pts = st.pts.filter(p => !d.has(p.id));
+      st.objs = st.objs.filter(o => !d.has(o.id));
+    }
+    function nextLabel() {
+      const used = new Set(st.pts.map(p => p.label));
+      for (const L of 'ABCDEFGHKLMNPQRSTUVWXYZ') if (!used.has(L)) return L;
+      for (let i = 1; ; i++) if (!used.has('P' + i)) return 'P' + i;
+    }
+    function addPoint(props) {
+      const p = Object.assign({ id: nid('p'), label: nextLabel(), showLabel: true, hideDot: false, pos: 'auto' }, props);
+      st.pts.push(p); return p;
+    }
+
+    // ── History ──
+    let hist = [], fut = [];
+    const snap = () => JSON.stringify(st);
+    function commit() { hist.push(lastSaved); if (hist.length > 80) hist.shift(); fut = []; lastSaved = snap(); persist(); }
+    let lastSaved = snap();
+    function undo() { if (!hist.length) return; fut.push(snap()); st = JSON.parse(hist.pop()); lastSaved = snap(); sel = null; pend = []; paintAll(); persist(); }
+    function redo() { if (!fut.length) return; hist.push(snap()); st = JSON.parse(fut.pop()); lastSaved = snap(); sel = null; pend = []; paintAll(); persist(); }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering
+    // ══════════════════════════════════════════════════════════════════
+    const INK = '#111827', SEL = '#2563eb', FONT = "'Times New Roman', Times, serif";
+    let sel = null;            // selected id
+    let pend = [];             // ids / picks collected by the current tool
+    let hover = null;
+    function lineEnds(a, b) {
+      const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, k = 3000 / L;
+      return [{ x: a.x - dx * k, y: a.y - dy * k }, { x: b.x + dx * k, y: b.y + dy * k }];
+    }
+    const f = (v) => Math.round(v * 100) / 100;
+    function angleOf(a, v, b) {   // counter-clockwise start & sweep (screen coords, y down)
+      const a1 = Math.atan2(-(a.y - v.y), a.x - v.x), a2 = Math.atan2(-(b.y - v.y), b.x - v.x);
+      let sw = a2 - a1; while (sw <= -Math.PI) sw += 2 * Math.PI; while (sw > Math.PI) sw -= 2 * Math.PI;
+      return { a1, sw };
+    }
+    function arcPath(v, r, start, sweep) {
+      const x1 = v.x + r * Math.cos(start), y1 = v.y - r * Math.sin(start);
+      const x2 = v.x + r * Math.cos(start + sweep), y2 = v.y - r * Math.sin(start + sweep);
+      const large = Math.abs(sweep) > Math.PI ? 1 : 0, dir = sweep > 0 ? 0 : 1;
+      return `M${f(x1)} ${f(y1)}A${r} ${r} 0 ${large} ${dir} ${f(x2)} ${f(y2)}`;
+    }
+    function autoLabelDir(p, xy) {
+      // Push the label away from everything the point is joined to.
+      let vx = 0, vy = 0;
+      const push = (q) => { if (!q) return; const d = Math.hypot(xy.x - q.x, xy.y - q.y) || 1; vx += (xy.x - q.x) / d; vy += (xy.y - q.y) / d; };
+      st.objs.forEach(o => {
+        if ((o.type === 'seg' || o.type === 'line') && (o.a === p.id || o.b === p.id)) push(pos(o.a === p.id ? o.b : o.a));
+        if (o.type === 'angle' && o.v === p.id) { push(pos(o.a)); push(pos(o.b)); }
+      });
+      if (p.kind === 'circ' || p.kind === 'tan') { const c = O(p.c); if (c) { const o = pos(c.c); if (o) { push(o); push(o); } } }
+      if (p.kind === 'seg' || p.kind === 'foot' || p.kind === 'mid') {
+        // on a line: label goes to the side (perpendicular)
+        const s = p.kind === 'mid' ? { a: p.a, b: p.b } : O(p.s);
+        if (s) { const a = pos(s.a), b = pos(s.b); if (a && b) { const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1; vx += -dy / L * 0.8; vy += dx / L * 0.8; } }
+      }
+      const L = Math.hypot(vx, vy);
+      return L < 0.2 ? { x: 0.7, y: -0.7 } : { x: vx / L, y: vy / L };
+    }
+    const DIRS = { N: [0, -1], NE: [0.7, -0.7], E: [1, 0], SE: [0.7, 0.7], S: [0, 1], SW: [-0.7, 0.7], W: [-1, 0], NW: [-0.7, -0.7] };
+
+    function render() {
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Geometry diagram" font-family="${FONT}">`;
+      s += `<defs><clipPath id="gClip"><rect width="${W}" height="${H}"/></clipPath></defs>`;
+      s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (st.grid) {
+        let d = '';
+        for (let x = 20; x < W; x += 20) for (let y = 20; y < H; y += 20) d += `M${x} ${y}h0.01`;
+        s += `<path d="${d}" stroke="#cbd5e1" stroke-width="2.4" stroke-linecap="round" data-export-skip/>`;
+      }
+      const title = String(st.title || '').trim();
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="${INK}" font-family="Helvetica, Arial, sans-serif">${esc(title)}</text>`;
+      const col = (id) => (sel === id ? SEL : INK);
+      const hl = (id) => (hover === id && sel !== id) ? ` stroke-opacity="0.55"` : '';
+      let body = '', marks = '', labels = '';
+
+      st.objs.forEach(o => {
+        if (o.type === 'circle') {
+          const c = pos(o.c); if (!c) return;
+          body += `<circle cx="${f(c.x)}" cy="${f(c.y)}" r="${f(o.r)}" fill="none" stroke="${col(o.id)}" stroke-width="2.2"${o.dash ? ' stroke-dasharray="8 6"' : ''}${hl(o.id)}/>`;
+        } else if (o.type === 'seg' || o.type === 'line') {
+          const a = pos(o.a), b = pos(o.b); if (!a || !b) return;
+          const [p1, p2] = o.type === 'line' ? lineEnds(a, b) : [a, b];
+          body += `<line x1="${f(p1.x)}" y1="${f(p1.y)}" x2="${f(p2.x)}" y2="${f(p2.y)}" stroke="${col(o.id)}" stroke-width="2.2" stroke-linecap="round"${o.dash ? ' stroke-dasharray="8 6"' : ''}${hl(o.id)}/>`;
+          const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, L = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+          const ux = (b.x - a.x) / L, uy = (b.y - a.y) / L, nx = -uy, ny = ux;
+          for (let i = 0; i < (o.ticks || 0); i++) {
+            const off = (i - ((o.ticks || 0) - 1) / 2) * 6;
+            const cx = mx + ux * off, cy = my + uy * off;
+            marks += `<line x1="${f(cx + nx * 8)}" y1="${f(cy + ny * 8)}" x2="${f(cx - nx * 8)}" y2="${f(cy - ny * 8)}" stroke="${col(o.id)}" stroke-width="2"/>`;
+          }
+          for (let i = 0; i < (o.arrows || 0); i++) {
+            const off = (i - ((o.arrows || 0) - 1) / 2) * 9 + (o.ticks ? 18 : 0);
+            const cx = mx + ux * off, cy = my + uy * off;
+            marks += `<path d="M${f(cx - ux * 8 + nx * 6)} ${f(cy - uy * 8 + ny * 6)}L${f(cx)} ${f(cy)}L${f(cx - ux * 8 - nx * 6)} ${f(cy - uy * 8 - ny * 6)}" fill="none" stroke="${col(o.id)}" stroke-width="2" stroke-linejoin="round"/>`;
+          }
+          if (o.text) {
+            const side = (ny < 0 || (ny === 0 && nx < 0)) ? 1 : -1;    // label above/left of the segment
+            labels += `<text x="${f(mx + nx * 18 * side)}" y="${f(my + ny * 18 * side + 6)}" text-anchor="middle" font-size="19" font-style="italic" fill="${col(o.id)}">${esc(o.text)}</text>`;
+          }
+        } else if (o.type === 'tangent') {
+          const c = O(o.c), p = pos(o.p); if (!c || !p) return;
+          const ctr = pos(c.c); if (!ctr) return;
+          const dx = p.x - ctr.x, dy = p.y - ctr.y;
+          const [p1, p2] = lineEnds(p, { x: p.x - dy, y: p.y + dx });
+          body += `<line x1="${f(p1.x)}" y1="${f(p1.y)}" x2="${f(p2.x)}" y2="${f(p2.y)}" stroke="${col(o.id)}" stroke-width="2.2"${hl(o.id)}/>`;
+        }
+      });
+      st.objs.forEach(o => {
+        if (o.type === 'angle') {
+          const a = pos(o.a), v = pos(o.v), b = pos(o.b); if (!a || !v || !b) return;
+          let { a1, sw } = angleOf(a, v, b);
+          if (o.reflex) sw = sw > 0 ? sw - 2 * Math.PI : sw + 2 * Math.PI;
+          const c = col(o.id);
+          if (o.arcs === 'right') {
+            const u1 = { x: Math.cos(a1), y: -Math.sin(a1) }, u2 = { x: Math.cos(a1 + sw), y: -Math.sin(a1 + sw) }, k = 13;
+            marks += `<path d="M${f(v.x + u1.x * k)} ${f(v.y + u1.y * k)}L${f(v.x + (u1.x + u2.x) * k)} ${f(v.y + (u1.y + u2.y) * k)}L${f(v.x + u2.x * k)} ${f(v.y + u2.y * k)}" fill="none" stroke="${c}" stroke-width="1.8"/>`;
+          } else {
+            const n = o.arcs === 'none' ? 0 : parseInt(o.arcs || '1', 10);
+            for (let i = 0; i < n; i++) marks += `<path d="${arcPath(v, 24 + i * 5, a1, sw)}" fill="none" stroke="${c}" stroke-width="1.8"/>`;
+          }
+          const deg = Math.abs(sw) * 180 / Math.PI;
+          const txt = [o.label, o.measure ? `${Math.round(deg * 10) / 10}°` : ''].filter(Boolean).join(' = ');
+          if (txt) {
+            const mid = a1 + sw / 2, r = o.arcs === 'right' ? 30 : 42 + Math.max(0, String(txt).length - 2) * 3;
+            labels += `<text x="${f(v.x + r * Math.cos(mid))}" y="${f(v.y - r * Math.sin(mid) + 6)}" text-anchor="middle" font-size="18" fill="${c}"${/^[a-zα-ω]$/i.test(o.label) && !o.measure ? ' font-style="italic"' : ''}>${esc(txt)}</text>`;
+          }
+        } else if (o.type === 'text') {
+          labels += `<text x="${f(o.x)}" y="${f(o.y)}" font-size="${o.size || 20}" fill="${col(o.id)}" text-anchor="middle">${esc(o.text)}</text>`;
+        } else if (o.type === 'circle' && o.showCentre) {
+          const c = pos(o.c); if (c) marks += `<circle cx="${f(c.x)}" cy="${f(c.y)}" r="2.6" fill="${col(o.id)}"/>`;
+        }
+      });
+      st.pts.forEach(p => {
+        const xy = pos(p.id); if (!xy) return;
+        if (!p.hideDot) body += `<circle cx="${f(xy.x)}" cy="${f(xy.y)}" r="${sel === p.id ? 5.5 : 4}" fill="${col(p.id)}"/>`;
+        if (p.showLabel && p.label) {
+          const d = p.pos && DIRS[p.pos] ? { x: DIRS[p.pos][0], y: DIRS[p.pos][1] } : autoLabelDir(p, xy);
+          labels += `<text x="${f(xy.x + d.x * 17)}" y="${f(xy.y + d.y * 17 + 7)}" text-anchor="middle" font-size="21" fill="${col(p.id)}">${esc(p.label)}</text>`;
+        }
+      });
+      // tool feedback: highlight picks
+      let fb = '';
+      pend.forEach(id => { const xy = P(id) && pos(id); if (xy) fb += `<circle cx="${f(xy.x)}" cy="${f(xy.y)}" r="9" fill="none" stroke="${SEL}" stroke-width="2"/>`; });
+      s += `<g clip-path="url(#gClip)">${body}${marks}</g>${labels}<g data-export-skip>${fb}</g></svg>`;
+      $('plot').innerHTML = s;
+      paintStatus();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Hit testing & pointer
+    // ══════════════════════════════════════════════════════════════════
+    function svgXY(ev) {
+      const svg = $('plot').querySelector('svg');
+      const r = svg.getBoundingClientRect();
+      return { x: (ev.clientX - r.left) * W / r.width, y: (ev.clientY - r.top) * H / r.height, k: W / r.width };
+    }
+    function distSeg(q, a, b) {
+      const dx = b.x - a.x, dy = b.y - a.y, L = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((q.x - a.x) * dx + (q.y - a.y) * dy) / L));
+      return { d: Math.hypot(q.x - a.x - dx * t, q.y - a.y - dy * t), t };
+    }
+    function hit(q, k, only) {
+      const tol = 9 * Math.max(1, k);
+      if (!only || only.includes('point')) {
+        let best = null, bd = tol + 3;
+        st.pts.forEach(p => { const xy = pos(p.id); if (!xy) return; const d = Math.hypot(xy.x - q.x, xy.y - q.y); if (d < bd) { bd = d; best = p.id; } });
+        if (best) return { id: best, kind: 'point' };
+      }
+      for (const o of st.objs.slice().reverse()) {
+        if (only && !only.includes(o.type)) continue;
+        if (o.type === 'seg' || o.type === 'line') {
+          const a = pos(o.a), b = pos(o.b); if (!a || !b) continue;
+          const [p1, p2] = o.type === 'line' ? lineEnds(a, b) : [a, b];
+          const r = distSeg(q, p1, p2); if (r.d < tol) return { id: o.id, kind: o.type, t: distSeg(q, a, b).t };
+        } else if (o.type === 'circle') {
+          const c = pos(o.c); if (!c) continue;
+          if (Math.abs(Math.hypot(q.x - c.x, q.y - c.y) - o.r) < tol) return { id: o.id, kind: 'circle' };
+        } else if (o.type === 'tangent') {
+          const c = O(o.c), p = pos(o.p); if (!c || !p) continue; const ctr = pos(c.c); if (!ctr) continue;
+          const [p1, p2] = lineEnds(p, { x: p.x - (p.y - ctr.y), y: p.y + (p.x - ctr.x) });
+          if (distSeg(q, p1, p2).d < tol) return { id: o.id, kind: 'tangent' };
+        } else if (o.type === 'angle') {
+          const v = pos(o.v); if (v && Math.hypot(q.x - v.x, q.y - v.y) < 44) return { id: o.id, kind: 'angle' };
+        } else if (o.type === 'text') {
+          if (Math.abs(q.x - o.x) < Math.max(20, o.text.length * 5.5) && q.y < o.y + 6 && q.y > o.y - (o.size || 20)) return { id: o.id, kind: 'text' };
+        }
+      }
+      return null;
+    }
+    function snapXY(q) { return st.snap ? { x: Math.round(q.x / 20) * 20, y: Math.round(q.y / 20) * 20 } : { x: q.x, y: q.y }; }
+    // A point for a tool click: an existing point, a point on a circle or
+    // segment under the cursor, or a new free point.
+    function pointAt(q, k) {
+      const h = hit(q, k, ['point', 'circle', 'seg']);
+      if (h && h.kind === 'point') return h.id;
+      if (h && h.kind === 'circle') { const c = O(h.id), o = pos(c.c); return addPoint({ kind: 'circ', c: c.id, ang: Math.atan2(-(q.y - o.y), q.x - o.x) }).id; }
+      if (h && h.kind === 'seg') return addPoint({ kind: 'seg', s: h.id, t: Math.max(0.02, Math.min(0.98, h.t)) }).id;
+      const s = snapXY(q);
+      return addPoint({ kind: 'free', x: f(s.x), y: f(s.y) }).id;
+    }
+
+    let tool = 'move', drag = null;
+    const NEED = { segment: 2, line: 2, circle: 2, angle: 3, tangent: 2, midpoint: 2, tanpts: 2, perp: 2, isect: 2 };
+    function onDown(ev) {
+      const q = svgXY(ev), k = q.k;
+      if (tool === 'move') {
+        const h = hit(q, k);
+        sel = h ? h.id : null;
+        if (h && h.kind === 'point') {
+          const p = P(h.id);
+          if (['free', 'circ', 'seg'].includes(p.kind)) drag = { id: p.id, moved: false };
+        } else if (h && h.kind === 'circle') drag = { circle: h.id, moved: false };
+        else if (h && h.kind === 'text') drag = { text: h.id, dx: q.x - O(h.id).x, dy: q.y - O(h.id).y, moved: false };
+        if (drag) $('plot').setPointerCapture(ev.pointerId);
+        paintProps(); render(); return;
+      }
+      if (tool === 'del') { const h = hit(q, k); if (h) { remove(h.id); sel = null; commit(); paintProps(); render(); } return; }
+      if (tool === 'point') { sel = pointAt(q, k); commit(); paintProps(); render(); return; }
+      if (tool === 'text') {
+        const t = prompt(T().text, ''); if (!t) return;
+        const o = { id: nid('o'), type: 'text', x: f(q.x), y: f(q.y), text: t.slice(0, 120), size: 20 };
+        st.objs.push(o); sel = o.id; commit(); paintProps(); render(); return;
+      }
+      // multi-click tools
+      const step = pend.length;
+      if ((tool === 'tangent' || tool === 'tanpts') && step === 0) {
+        const h = hit(q, k, ['circle']); if (!h) return;
+        pend.push(h.id); render(); return;
+      }
+      if (tool === 'circle' && step === 1) {
+        const c = pos(pend[0]), s = snapXY(q);
+        const o = { id: nid('o'), type: 'circle', c: pend[0], r: f(Math.max(8, Math.hypot(s.x - c.x, s.y - c.y))), dash: false, showCentre: true };
+        st.objs.push(o); sel = o.id; pend = []; commit(); paintProps(); render(); return;
+      }
+      if (tool === 'perp' && step === 1) {
+        const h = hit(q, k, ['seg', 'line']); if (!h) return;
+        const foot = addPoint({ kind: 'foot', p: pend[0], s: h.id });
+        const seg = { id: nid('o'), type: 'seg', a: pend[0], b: foot.id, dash: false, ticks: 0, arrows: 0 };
+        const L = O(h.id);
+        st.objs.push(seg, { id: nid('o'), type: 'angle', a: pend[0], v: foot.id, b: L.a === foot.id ? L.b : L.a, arcs: 'right', label: '', measure: false });
+        sel = seg.id; pend = []; commit(); paintProps(); render(); return;
+      }
+      if (tool === 'isect') {
+        const h = hit(q, k, ['seg', 'line']); if (!h) return;
+        if (step === 0) { pend.push(h.id); render(); return; }
+        if (h.id === pend[0]) return;
+        const x = addPoint({ kind: 'isect', s: pend[0], s2: h.id });
+        pend = [];
+        if (!pos(x.id)) { remove(x.id); render(); return; }
+        sel = x.id; commit(); paintProps(); render(); return;
+      }
+      let id;
+      if (tool === 'tangent' && step === 1) {
+        const c = O(pend[0]), o = pos(c.c);
+        const h = hit(q, k, ['point']);
+        id = h && P(h.id).kind === 'circ' && P(h.id).c === c.id ? h.id : addPoint({ kind: 'circ', c: c.id, ang: Math.atan2(-(q.y - o.y), q.x - o.x) }).id;
+        const t = { id: nid('o'), type: 'tangent', c: c.id, p: id };
+        st.objs.push(t); sel = t.id; pend = []; commit(); paintProps(); render(); return;
+      }
+      if (tool === 'tanpts' && step === 1) {
+        const c = O(pend[0]), ctr = pos(c.c);
+        id = pointAt(q, k);
+        const e = pos(id);
+        if (Math.hypot(e.x - ctr.x, e.y - ctr.y) <= c.r) { K.toast(T().tooClose); pend = []; render(); return; }
+        const t1 = addPoint({ kind: 'tan', c: c.id, e: id, which: 0 }), t2 = addPoint({ kind: 'tan', c: c.id, e: id, which: 1 });
+        st.objs.push({ id: nid('o'), type: 'seg', a: id, b: t1.id, ticks: 1 }, { id: nid('o'), type: 'seg', a: id, b: t2.id, ticks: 1 });
+        pend = []; commit(); render(); return;
+      }
+      id = pointAt(q, k);
+      pend.push(id);
+      if (pend.length >= (NEED[tool] || 1)) {
+        const [a, b, c] = pend;
+        let o = null;
+        if (tool === 'segment' && a !== b) o = { id: nid('o'), type: 'seg', a, b, dash: false, ticks: 0, arrows: 0 };
+        if (tool === 'line' && a !== b) o = { id: nid('o'), type: 'line', a, b, dash: false };
+        if (tool === 'angle' && a !== b && b !== c) o = { id: nid('o'), type: 'angle', a, v: b, b: c, arcs: '1', label: '', measure: false };
+        if (tool === 'midpoint' && a !== b) { const m = addPoint({ kind: 'mid', a, b }); sel = m.id; }
+        if (o) { st.objs.push(o); sel = o.id; }
+        pend = []; commit(); paintProps();
+      }
+      render();
+    }
+    function onMove(ev) {
+      const q = svgXY(ev);
+      if (!drag) {
+        const h = tool === 'move' || tool === 'del' ? hit(q, q.k) : null;
+        const nh = h ? h.id : null;
+        if (nh !== hover) { hover = nh; render(); }
+        return;
+      }
+      drag.moved = true;
+      if (drag.id) {
+        const p = P(drag.id);
+        if (p.kind === 'free') { const s = snapXY(q); p.x = f(Math.max(0, Math.min(W, s.x))); p.y = f(Math.max(0, Math.min(H, s.y))); }
+        else if (p.kind === 'circ') { const c = O(p.c), o = pos(c.c); p.ang = Math.atan2(-(q.y - o.y), q.x - o.x); }
+        else if (p.kind === 'seg') { const s = O(p.s); p.t = Math.max(0.02, Math.min(0.98, distSeg(q, pos(s.a), pos(s.b)).t)); }
+      } else if (drag.circle) {
+        const c = O(drag.circle), o = pos(c.c); c.r = f(Math.max(8, Math.hypot(q.x - o.x, q.y - o.y)));
+      } else if (drag.text) { const o = O(drag.text); o.x = f(q.x - drag.dx); o.y = f(q.y - drag.dy); }
+      render();
+    }
+    function onUp() { if (drag && drag.moved) { commit(); paintProps(); } drag = null; }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Panels
+    // ══════════════════════════════════════════════════════════════════
+    const TOOLS = [['move', 'mouse-pointer-2'], ['point', 'dot'], ['segment', 'minus'], ['line', 'move-diagonal'], ['circle', 'circle'], ['angle', 'chevron-left'],
+      ['tangent', 'git-commit'], ['midpoint', 'split'], ['perp', 'corner-down-right'], ['tanpts', 'git-fork'], ['isect', 'x'], ['text', 'type'], ['del', 'eraser']];
+    function paintTools() {
+      $('toolgrid').innerHTML = TOOLS.map(([t, ic]) => `<button type="button" class="tbtn${tool === t ? ' on' : ''}" data-tool="${t}" aria-pressed="${tool === t}"><i data-lucide="${ic}" style="width:17px;height:17px"></i>${esc(T().tools[t])}</button>`).join('');
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    function paintStatus() {
+      const h = T().hint[tool];
+      $('status').innerHTML = Array.isArray(h) ? `<b>${pend.length + 1}/${h.length}</b> ${esc(h[Math.min(pend.length, h.length - 1)])}` : esc(h);
+      const svg = $('plot').querySelector('svg'); if (svg) svg.classList.toggle('adding', tool !== 'move');
+    }
+    $('toolgrid').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-tool]'); if (!b) return;
+      tool = b.dataset.tool; pend = []; paintTools(); render();
+    });
+
+    function paintProps() {
+      const box = $('props'); box.dataset.empty = T().empty;
+      const t = T().props;
+      const item = sel && (P(sel) || O(sel));
+      if (!item) { box.innerHTML = ''; return; }
+      const txt = (k, v, label, extra) => `<label class="field" style="margin-bottom:8px"><span>${esc(label)}</span><input type="text" data-k="${k}" value="${esc(v || '')}" ${extra || ''}></label>`;
+      const chk = (k, v, label) => `<label class="check"><input type="checkbox" data-k="${k}"${v ? ' checked' : ''}> ${esc(label)}</label>`;
+      const selx = (k, v, label, opts) => `<label class="field" style="margin-bottom:8px"><span>${esc(label)}</span><select data-k="${k}">${opts.map(([val, l]) => `<option value="${val}"${String(v) === String(val) ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+      let h = '';
+      if (P(sel)) {
+        h += `<div class="row c2">${txt('label', item.label, t.label, 'maxlength="8"')}${selx('pos', item.pos || 'auto', t.pos, [['auto', t.auto], ...Object.keys(DIRS).map(d => [d, d])])}</div>`;
+        h += `<div class="checks">${chk('showLabel', item.showLabel, t.showLabel)}${chk('hideDot', item.hideDot, t.hideDot)}</div>`;
+      } else if (item.type === 'seg' || item.type === 'line') {
+        h += selx('dash', item.dash ? 1 : 0, t.style, [[0, t.solid], [1, t.dashed]]);
+        if (item.type === 'seg') {
+          h += `<div class="row c2">${selx('ticks', item.ticks || 0, t.ticks, [[0, t.none], [1, '|'], [2, '||'], [3, '|||']])}${selx('arrows', item.arrows || 0, t.arrows, [[0, t.none], [1, '>'], [2, '>>']])}</div>`;
+          h += txt('text', item.text, t.lengthLbl, 'maxlength="16"');
+        }
+      } else if (item.type === 'circle') {
+        h += selx('dash', item.dash ? 1 : 0, t.style, [[0, t.solid], [1, t.dashed]]);
+        h += `<div class="checks">${chk('showCentre', item.showCentre, t.showCentre)}</div>`;
+      } else if (item.type === 'angle') {
+        h += `<div class="row c2">${txt('label', item.label, t.angleLabel, 'maxlength="12"')}${selx('arcs', item.arcs || '1', t.arcs, [['1', t.arc1], ['2', t.arc2], ['3', t.arc3], ['right', t.right], ['none', t.noArc]])}</div>`;
+        h += `<div class="checks">${chk('measure', item.measure, t.measure)}${chk('reflex', item.reflex, t.reflex)}</div>`;
+      } else if (item.type === 'text') {
+        h += `<div class="row c2">${txt('text', item.text, t.text, 'maxlength="120"')}${selx('size', item.size || 20, t.size, [[16, 'S'], [20, 'M'], [26, 'L'], [34, 'XL']])}</div>`;
+      }
+      h += `<button class="btn icon danger" type="button" data-del style="width:auto;padding:6px 12px;margin-top:4px"><i data-lucide="trash-2" style="width:14px;height:14px"></i> ${esc(t.del)}</button>`;
+      box.innerHTML = h;
+      try { lucide.createIcons(); } catch (_) {}
+    }
+    function setProp(e) {
+      const k = e.target.dataset.k; if (!k) return;
+      const item = sel && (P(sel) || O(sel)); if (!item) return;
+      let v = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      if (k === 'dash') v = v === '1';
+      if (k === 'ticks' || k === 'arrows' || k === 'size') v = parseInt(v, 10);
+      item[k] = v; render();
+    }
+    $('props').addEventListener('input', setProp);
+    $('props').addEventListener('change', (e) => { setProp(e); commit(); });
+    $('props').addEventListener('click', (e) => { if (e.target.closest('[data-del]') && sel) { remove(sel); sel = null; commit(); paintProps(); render(); } });
+
+    // ══════════════════════════════════════════════════════════════════
+    // Templates
+    // ══════════════════════════════════════════════════════════════════
+    function build(fn) {
+      st.pts = []; st.objs = []; st.n = 1; sel = null; pend = [];
+      const pt = (x, y, label, extra) => addPoint(Object.assign({ kind: 'free', x, y, label }, extra || {})).id;
+      const seg = (a, b, extra) => { const o = Object.assign({ id: nid('o'), type: 'seg', a, b, dash: false, ticks: 0, arrows: 0 }, extra || {}); st.objs.push(o); return o.id; };
+      const circ = (c, r) => { const o = { id: nid('o'), type: 'circle', c, r, dash: false, showCentre: true }; st.objs.push(o); return o.id; };
+      const on = (c, deg, label) => addPoint({ kind: 'circ', c, ang: deg * Math.PI / 180, label }).id;
+      const ang = (a, v, b, extra) => { st.objs.push(Object.assign({ id: nid('o'), type: 'angle', a, v, b, arcs: '1', label: '', measure: false }, extra || {})); };
+      fn({ pt, seg, circ, on, ang });
+      commit(); paintProps(); render();
+    }
+    const TEMPLATES = [
+      ({ pt, seg }) => { const A = pt(450, 130, 'A'), B = pt(230, 500, 'B'), C = pt(680, 500, 'C'); seg(A, B); seg(B, C); seg(C, A); },
+      ({ pt, seg }) => {
+        const A = pt(450, 110, 'A'), B = pt(200, 520, 'B'), C = pt(700, 520, 'C');
+        const ab = seg(A, B), ac = seg(A, C); seg(B, C, { arrows: 1 });
+        const D = addPoint({ kind: 'mid', a: A, b: B, label: 'D' }).id, E = addPoint({ kind: 'mid', a: A, b: C, label: 'E' }).id;
+        seg(D, E, { arrows: 1 });
+        // tick the halves
+        st.objs = st.objs.filter(o => o.id !== ab && o.id !== ac);
+        seg(A, D, { ticks: 1 }); seg(D, B, { ticks: 1 }); seg(A, E, { ticks: 2 }); seg(E, C, { ticks: 2 });
+      },
+      ({ pt, ang }) => {
+        const line = (a, b, extra) => { const o = Object.assign({ id: nid('o'), type: 'line', a, b, dash: false }, extra || {}); st.objs.push(o); return o.id; };
+        const A = pt(140, 220, 'A'), B = pt(760, 220, 'B'), C = pt(140, 440, 'C'), D = pt(760, 440, 'D');
+        const E = pt(330, 90, 'E'), F = pt(560, 570, 'F');
+        const ab = line(A, B, { arrows: 1 }), cd = line(C, D, { arrows: 1 }), ef = line(E, F);
+        const G = addPoint({ kind: 'isect', s: ab, s2: ef, label: 'G' }).id, Hh = addPoint({ kind: 'isect', s: cd, s2: ef, label: 'H' }).id;
+        ang(E, G, B, { label: '1' }); ang(E, Hh, D, { label: '2' });
+      },
+      ({ pt, seg, circ, on, ang }) => {
+        const Oc = pt(450, 320, 'O'), c = circ(Oc, 220);
+        const A = on(c, 205, 'A'), B = on(c, 335, 'B');
+        seg(A, B);
+        const M = addPoint({ kind: 'mid', a: A, b: B, label: 'M' }).id;
+        seg(Oc, M, { dash: false }); ang(Oc, M, B, { arcs: 'right' });
+        st.objs = st.objs.filter(o => !(o.type === 'seg' && o.a === A && o.b === B));
+        seg(A, M, { ticks: 1 }); seg(M, B, { ticks: 1 });
+      },
+      ({ pt, seg, circ, on, ang }) => {
+        const Oc = pt(450, 330, 'O'), c = circ(Oc, 230);
+        const A = on(c, 210, 'A'), B = on(c, 330, 'B'), P2 = on(c, 95, 'P');
+        seg(Oc, A); seg(Oc, B); seg(P2, A); seg(P2, B);
+        ang(A, Oc, B, { label: '2x' }); ang(A, P2, B, { label: 'x' });
+      },
+      ({ pt, seg, circ, on, ang }) => {
+        const Oc = pt(450, 330, 'O'), c = circ(Oc, 240);
+        const A = on(c, 130, 'A'), B = on(c, 40, 'B'), C = on(c, 320, 'C'), D = on(c, 215, 'D');
+        seg(A, B); seg(B, C); seg(C, D); seg(D, A);
+        ang(D, A, B, { label: 'x' }); ang(B, C, D, { label: 'y' });
+      },
+      ({ pt, seg, circ, on, ang }) => {
+        const Oc = pt(450, 290, 'O'), c = circ(Oc, 210);
+        const A = on(c, 270, 'A'), B = on(c, 20, 'B'), C = on(c, 150, 'C');
+        st.objs.push({ id: nid('o'), type: 'tangent', c, p: A });
+        const T1 = addPoint({ kind: 'tdir', c, p: A, d: -250, label: 'T', hideDot: true }).id;
+        seg(A, B); seg(A, C); seg(B, C);
+        ang(T1, A, B, { label: 'x' }); ang(A, C, B, { label: 'x' });
+      },
+      ({ pt, seg, circ, ang }) => {
+        const Oc = pt(360, 320, 'O'), c = circ(Oc, 170);
+        const Pp = pt(760, 320, 'P');
+        const A = addPoint({ kind: 'tan', c, e: Pp, which: 0, label: 'A' }).id, B = addPoint({ kind: 'tan', c, e: Pp, which: 1, label: 'B' }).id;
+        seg(Pp, A, { ticks: 1 }); seg(Pp, B, { ticks: 1 }); seg(Oc, A); seg(Oc, B);
+        ang(Oc, A, Pp, { arcs: 'right' }); ang(Oc, B, Pp, { arcs: 'right' });
+      },
+      ({ pt, seg, ang }) => { const A = pt(250, 130, 'A'), B = pt(250, 510, 'B'), C = pt(700, 510, 'C'); seg(A, B); seg(B, C); seg(C, A); ang(A, B, C, { arcs: 'right' }); ang(B, C, A, { label: 'θ' }); },
+      ({ pt, seg, ang }) => { const A = pt(450, 110, 'A'), B = pt(260, 520, 'B'), C = pt(640, 520, 'C'); seg(A, B, { ticks: 1 }); seg(C, A, { ticks: 1 }); seg(B, C); ang(A, B, C, { label: '' }); ang(B, C, A, { label: '' }); },
+    ];
+    function paintTpls() { $('tpls').innerHTML = T().tpl.map((n, i) => `<button type="button" data-t="${i}">${esc(n)}</button>`).join(''); }
+    $('tpls').addEventListener('click', (e) => { const b = e.target.closest('[data-t]'); if (b) build(TEMPLATES[b.dataset.t]); });
+
+    // ══════════════════════════════════════════════════════════════════
+    // Wiring
+    // ══════════════════════════════════════════════════════════════════
+    const store = K.store('mm_geometry_v1', 'd');
+    function persist() { store.save(snap()); }
+    function sanitize(s) {
+      if (!s || !Array.isArray(s.pts) || !Array.isArray(s.objs)) return null;
+      const num = (v) => Number.isFinite(+v) ? +v : 0;
+      const str = (v, n) => String(v == null ? '' : v).slice(0, n || 40);
+      return {
+        pts: s.pts.slice(0, 200).map(p => ({
+          id: str(p.id), kind: ['free', 'circ', 'seg', 'mid', 'tan', 'foot', 'isect', 'tdir'].includes(p.kind) ? p.kind : 'free', s2: p.s2 && str(p.s2), d: num(p.d),
+          x: num(p.x), y: num(p.y), ang: num(p.ang), t: num(p.t), which: p.which ? 1 : 0,
+          c: p.c && str(p.c), s: p.s && str(p.s), a: p.a && str(p.a), b: p.b && str(p.b), e: p.e && str(p.e), p: p.p && str(p.p),
+          label: str(p.label, 8), showLabel: p.showLabel !== false, hideDot: !!p.hideDot, pos: str(p.pos || 'auto', 4),
+        })),
+        objs: s.objs.slice(0, 300).filter(o => ['seg', 'line', 'circle', 'tangent', 'angle', 'text'].includes(o.type)).map(o => ({
+          id: str(o.id), type: o.type, a: o.a && str(o.a), b: o.b && str(o.b), v: o.v && str(o.v), c: o.c && str(o.c), p: o.p && str(o.p),
+          r: num(o.r), x: num(o.x), y: num(o.y), size: num(o.size) || 20, dash: !!o.dash, ticks: Math.min(3, num(o.ticks)), arrows: Math.min(2, num(o.arrows)),
+          showCentre: !!o.showCentre, measure: !!o.measure, reflex: !!o.reflex, arcs: ['1', '2', '3', 'right', 'none'].includes(o.arcs) ? o.arcs : '1',
+          label: str(o.label, 12), text: str(o.text, 120),
+        })),
+        grid: s.grid !== false, snap: !!s.snap, title: str(s.title, 80), n: Math.max(1, num(s.n)),
+      };
+    }
+    const plot = $('plot');
+    plot.addEventListener('pointerdown', (e) => { if (e.button === 0 || e.pointerType !== 'mouse') onDown(e); });
+    plot.addEventListener('pointermove', onMove);
+    plot.addEventListener('pointerup', onUp);
+    plot.addEventListener('pointercancel', onUp);
+    document.addEventListener('keydown', (e) => {
+      if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
+      else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+      else if ((e.key === 'Delete' || e.key === 'Backspace') && sel) { e.preventDefault(); remove(sel); sel = null; commit(); paintProps(); render(); }
+      else if (e.key === 'Escape') { pend = []; sel = null; tool = 'move'; paintTools(); paintProps(); render(); }
+    });
+    $('undo').addEventListener('click', undo); $('redo').addEventListener('click', redo);
+    $('grid').addEventListener('change', (e) => { st.grid = e.target.checked; commit(); render(); });
+    $('snap').addEventListener('change', (e) => { st.snap = e.target.checked; commit(); });
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    $('title').addEventListener('change', commit);
+    $('clearAll').addEventListener('click', () => { if (!confirm(T().confirmClear)) return; st.pts = []; st.objs = []; sel = null; pend = []; commit(); paintProps(); render(); });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'diagram').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'diagram', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(snap(), T().copied, T().copyFail));
+
+    function paintAll() { $('grid').checked = st.grid; $('snap').checked = st.snap; $('title').value = st.title; paintTools(); paintTpls(); paintProps(); render(); }
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else { build(TEMPLATES[6]); hist = []; }
+    lastSaved = snap();
+    K.i18n((l) => { lang = l; paintAll(); }).apply();
+    window.__geo = { st: () => st, pos };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
