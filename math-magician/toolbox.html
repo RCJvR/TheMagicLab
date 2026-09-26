@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Teacher Toolbox · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    .wrap { width: 100%; max-width: var(--measure); margin-inline: auto; padding: 0 var(--gutter) var(--space-8); }
+    .sec-label {
+      display: flex; align-items: center; gap: 9px; margin: var(--space-6) 0 var(--space-4);
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+    }
+    .tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); }
+    .tool {
+      display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-4);
+      border-radius: var(--radius-md); background: var(--ink-850); border: 1px solid var(--line);
+      text-decoration: none; color: inherit; transition: border-color var(--dur-fast), background var(--dur-fast), transform var(--dur-fast);
+    }
+    .tool:hover { background: var(--ink-800); border-color: color-mix(in srgb, var(--accent) 42%, transparent); transform: translateY(-2px); }
+    .tool-ic { width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 13%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); }
+    .tool-t { font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: var(--paper); }
+    .tool-d { font-size: 12.5px; line-height: 1.5; color: var(--text-2); margin-top: 3px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: var(--space-4); }
+    .filters input { max-width: 340px; font-family: var(--font-body); font-size: 14px; }
+    .gpill { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 13px; cursor: pointer; font-family: var(--font-body); }
+    .gpill.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .grade { margin-bottom: var(--space-6); }
+    .grade h3 { font-family: var(--font-display); font-size: 19px; font-weight: 900; letter-spacing: -0.03em; color: var(--paper); margin-bottom: var(--space-3); }
+    .topic { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 8px 16px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .topic-n { font-size: 13px; color: var(--text-3); }
+    .topic-n b { color: var(--text-2); font-weight: 700; font-family: var(--font-mono); font-size: 11px; margin-right: 6px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 8px; border: 1px solid var(--line-hard); color: var(--text); text-decoration: none; font-size: 13px; background: var(--ink-850); }
+    .chip:hover { border-color: var(--accent); color: var(--paper); }
+    .chip.plot::after { content: "↗ plotter"; font-size: 10px; font-family: var(--font-mono); color: var(--accent); }
+    mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--paper); border-radius: 3px; }
+    @media (max-width: 640px) { .topic { grid-template-columns: 1fr; } }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+<script src="toolbox-data.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="index.html" class="nav-back" data-af-html='<i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grade'><i data-lucide="graduation-cap" style="width:13px;height:13px"></i> Grades</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbronne · Vir onderwysers">Resources · For teachers</span></div>
+    <h1 data-af-html="Onderwyser-<em>gereedskap.</em>">Teacher <em>toolbox.</em></h1>
+    <p class="hero-sub" data-af="Gereedskap om toetse, werkkaarte en skyfies te maak — en elke sakrekenaar en verkenner uit die lesse, op een plek.">Tools for making tests, worksheets and slides — and every calculator and explorer from the lessons, in one place.</p>
+  </section>
+
+  <div class="wrap">
+    <h2 class="sec-label"><span class="hero-tag-dot"></span><span data-af="Maak iets">Make something</span></h2>
+    <div class="tools" id="tools"></div>
+
+    <h2 class="sec-label" id="lessonTools"><span class="hero-tag-dot"></span><span data-af="Sakrekenaars en verkenners uit die lesse">Calculators &amp; explorers from the lessons</span> <span id="count"></span></h2>
+    <div class="filters">
+      <input type="text" id="q" placeholder="Search, e.g. quadratic, Venn, annuity…" data-af-ph="Soek, bv. kwadraties, Venn, annuïteit…" aria-label="Search the lesson tools">
+      <div id="gpills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    // The standalone tools. Descriptions stay short: the card is a door, not a manual.
+    const TOOLS = [
+      ['worksheet.html', 'file-text', ['Worksheet Builder', 'Werkkaartbouer'], ['Numbered questions, marks, diagrams from every tool, and a memo — ready to print.', 'Genommerde vrae, punte, diagramme uit elke hulpmiddel, en ’n memorandum — gereed om te druk.']],
+      ['equations.html', 'sigma', ['Equation Writer', 'Vergelykingskrywer'], ['Type maths visually and paste it into Word as an editable equation.', 'Tik wiskunde visueel en plak dit as ’n redigeerbare vergelyking in Word.']],
+      ['grapher.html', 'spline', ['Graph Plotter', 'Grafiekplotter'], ['Any function on a Cartesian plane, with intercepts, turning points and asymptotes.', 'Enige funksie op ’n Cartesiese vlak, met afsnitte, draaipunte en asimptote.']],
+      ['numberline.html', 'ruler', ['Number Line', 'Getallyn'], ['Points, inequalities, intervals and jumps — in integers, decimals or fractions.', 'Punte, ongelykhede, intervalle en spronge — in heelgetalle, desimale of breuke.']],
+      ['geometry.html', 'triangle', ['Geometry Sketcher', 'Meetkunde-sketsblad'], ['Euclidean diagrams: circles, chords, tangents, angle marks and equal-side ticks.', 'Euklidiese diagramme: sirkels, koorde, raaklyne, hoekmerke en gelyke-sy-merkies.']],
+      ['stats.html', 'bar-chart-3', ['Statistics Charts', 'Statistiekgrafieke'], ['Box-and-whisker, histogram, ogive and scatter plot with regression line.', 'Mond-en-snor, histogram, ogief en spreidiagram met regressielyn.']],
+      ['probability.html', 'git-fork', ['Probability Diagrams', 'Waarskynlikheidsdiagramme'], ['Venn diagrams with two or three sets, and tree diagrams.', 'Venn-diagramme met twee of drie versamelings, en boomdiagramme.']],
+      ['timeline.html', 'calendar-range', ['Finance Timeline', 'Finansiële tydlyn'], ['Annuity and loan timelines with payments, withdrawals and rate changes.', 'Annuïteit- en lening-tydlyne met paaiemente, onttrekkings en koersveranderings.']],
+      ['manipulatives.html', 'boxes', ['Fractions & Algebra Tiles', 'Breuke en algebra-teëls'], ['Fraction walls and models, and algebra tiles for factorising.', 'Breukmure en -modelle, en algebra-teëls vir faktorisering.']],
+    ];
+    // Lesson graphers that also open in the Graph Plotter (see plotter-link.js).
+    const PLOTTABLE = /Parabola Explorer|Function Grapher|Distance & Midpoint Visualiser|Line Grapher|Trig Function Grapher|Exponential & Logarithm Graph Plotter|Cubic Graph Plotter/;
+    let lang = 'en', grade = 'all';
+
+    function paintTools() {
+      const af = lang === 'af' ? 1 : 0;
+      $('tools').innerHTML = TOOLS.map(([href, ic, t, d]) => `
+        <a class="tool" href="${href}"><div class="tool-ic"><i data-lucide="${ic}" style="width:19px;height:19px"></i></div>
+          <div><div class="tool-t">${esc(t[af])}</div><p class="tool-d">${esc(d[af])}</p></div></a>`).join('');
+    }
+    function paintPills() {
+      const g = ['all', 8, 9, 10, 11, 12];
+      $('gpills').innerHTML = g.map(x => `<button class="gpill${String(x) === String(grade) ? ' on' : ''}" type="button" data-g="${x}">${x === 'all' ? (lang === 'af' ? 'Alle grade' : 'All grades') : (lang === 'af' ? 'Gr ' : 'Gr ') + x}</button>`).join('');
+    }
+    function hl(text, q) {
+      if (!q) return esc(text);
+      const i = text.toLowerCase().indexOf(q);
+      return i < 0 ? esc(text) : esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+    }
+    function paintList() {
+      const q = $('q').value.trim().toLowerCase();
+      const af = lang === 'af' ? 1 : 0;
+      const data = (window.MM_TOOLBOX || []).filter(e => grade === 'all' || e.g === +grade);
+      let total = 0, html = '';
+      [8, 9, 10, 11, 12].forEach(g => {
+        const rows = data.filter(e => e.g === g).map(e => {
+          const topic = af ? e.topicAf : e.topic;
+          const tools = e.tools.filter(t => !q || t[af].toLowerCase().includes(q) || t[0].toLowerCase().includes(q) || topic.toLowerCase().includes(q));
+          if (!tools.length) return '';
+          total += tools.length;
+          return `<div class="topic"><div class="topic-n"><b>${lang === 'af' ? 'H' : 'Ch'}${e.ch}</b>${hl(topic, q)}</div><div class="chips">${
+            tools.map(t => `<a class="chip${PLOTTABLE.test(t[0]) ? ' plot' : ''}" href="gr${g}/index.html?topic=${e.id}&tool=${encodeURIComponent(t[af])}">${hl(t[af], q)}</a>`).join('')}</div></div>`;
+        }).join('');
+        if (rows) html += `<section class="grade"><h3>${lang === 'af' ? 'Graad' : 'Grade'} ${g}</h3>${rows}</section>`;
+      });
+      $('list').innerHTML = html || `<p class="hint">${lang === 'af' ? 'Niks gevind nie.' : 'Nothing found.'}</p>`;
+      $('count').textContent = `· ${total}`;
+    }
+    $('q').addEventListener('input', paintList);
+    $('gpills').addEventListener('click', (e) => { const b = e.target.closest('[data-g]'); if (!b) return; grade = b.dataset.g; paintPills(); paintList(); });
+    K.i18n((l) => { lang = l; paintTools(); paintPills(); paintList(); }).apply();
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

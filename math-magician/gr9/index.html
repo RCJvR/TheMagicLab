@@ -1524,6 +1524,23 @@ async function init() {
     const _deepLinkTopic = TOPICS.find(t => t.chapter === _deepLinkCh);
     if (_deepLinkTopic) selectTopic(_deepLinkTopic.id);
   }
+  // Deep link from the Math Magician Toolbox — ?topic=ID opens that topic,
+  // and &tool=Name scrolls to the calculator with that title and flashes it.
+  const _deepLinkQ = new URLSearchParams(location.search);
+  const _deepLinkTopicId = parseInt(_deepLinkQ.get('topic'), 10);
+  if (_deepLinkTopicId && TOPICS.some(t => t.id === _deepLinkTopicId)) {
+    selectTopic(_deepLinkTopicId);
+    const _tool = (_deepLinkQ.get('tool') || '').trim().toLowerCase();
+    if (_tool) setTimeout(() => {
+      const box = [...document.querySelectorAll('.def-box-title')].find(el => el.textContent.toLowerCase().includes(_tool));
+      if (!box) return;
+      const card = box.closest('.def-box') || box;
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      card.style.transition = 'box-shadow 400ms';
+      card.style.boxShadow = '0 0 0 3px #9ed43c';
+      setTimeout(() => { card.style.boxShadow = ''; }, 2600);
+    }, 350);
+  }
   lucide.createIcons();
 }
 init();
