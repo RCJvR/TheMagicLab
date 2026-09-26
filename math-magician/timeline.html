@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Finance Timeline · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Finansiële wiskunde · Gr 10–12">Resource · Financial maths · Gr 10–12</span></div>
+    <h1 data-af-html="Finansiële <em>tydlyn.</em>">Finance <em>timeline.</em></h1>
+    <p class="hero-sub" data-af="Teken die tydlyn vir enige rente-, annuïteit- of leningvraag: paaiemente, deposito’s, onttrekkings, koersveranderings en die waarde wat gevra word.">Draw the timeline for any interest, annuity or loan question: payments, deposits, withdrawals, rate changes and the value being asked for.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel" aria-labelledby="hLine">
+        <div class="panel-head">
+          <h2 id="hLine"><i data-lucide="calendar-range" style="width:16px;height:16px"></i><span data-af="Tydlyn">Timeline</span></h2>
+          <select id="examples" aria-label="Examples" style="width:auto">
+            <option value="" data-af="Voorbeelde…">Examples…</option>
+            <option value="fv" data-af="Toekomstige waarde-annuïteit">Future value annuity</option>
+            <option value="loan" data-af="Huislening (huidige waarde)">Home loan (present value)</option>
+            <option value="rates" data-af="Koersverandering en onttrekking">Rate change and withdrawal</option>
+            <option value="delay" data-af="Uitgestelde paaiemente">Delayed payments</option>
+          </select>
+        </div>
+        <div class="row c3">
+          <label class="field"><span data-af="Laaste periode n">Last period n</span><input type="text" id="n" inputmode="numeric"></label>
+          <label class="field"><span data-af="Byskrifte">Labels</span>
+            <select id="labelStyle">
+              <option value="T">T₀, T₁, T₂ …</option>
+              <option value="num">0, 1, 2 …</option>
+            </select></label>
+          <label class="field"><span data-af="Getal by elke …">Number every …</span><input type="text" id="every" inputmode="numeric" placeholder="auto" data-af-ph="outo"></label>
+        </div>
+        <div class="row c2">
+          <label class="field"><span data-af="Eenheid (bv. jare, maande)">Unit (e.g. years, months)</span><input type="text" id="unit" maxlength="20"></label>
+          <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="hItems">
+        <h2 id="hItems" style="margin-bottom:10px"><i data-lucide="list-plus" style="width:16px;height:16px"></i><span data-af="Op die tydlyn">On the timeline</span></h2>
+        <div class="glist" id="items"></div>
+        <div class="btn-row">
+          <button class="btn" type="button" data-add="rate">+ <span data-af="Rentekoers">Interest rate</span></button>
+          <button class="btn" type="button" data-add="amount">+ <span data-af="Bedrag">Amount</span></button>
+          <button class="btn" type="button" data-add="series">+ <span data-af="Gereelde paaiemente">Regular payments</span></button>
+          <button class="btn" type="button" data-add="brace">+ <span data-af="Hakie">Brace</span></button>
+        </div>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        kinds: { rate: 'Interest rate', amount: 'Amount', series: 'Regular payments', brace: 'Brace' },
+        from: 'From', to: 'To', at: 'At', text: 'Text', side: 'Side', above: 'Above', below: 'Below', arrow: 'Arrow',
+        down: 'Into the account ↓', up: 'Out of the account ↑', none: 'No arrow', remove: 'Remove',
+        ph: { rate: 'e.g. i = 9% p.a. compounded monthly', amount: 'e.g. R5 000 or F = ?', series: 'e.g. R2 000 each month', brace: 'e.g. 60 payments' },
+        copied: 'Link copied — anyone with it sees this timeline.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+      },
+      af: {
+        kinds: { rate: 'Rentekoers', amount: 'Bedrag', series: 'Gereelde paaiemente', brace: 'Hakie' },
+        from: 'Van', to: 'Tot', at: 'By', text: 'Teks', side: 'Kant', above: 'Bo', below: 'Onder', arrow: 'Pyl',
+        down: 'In die rekening ↓', up: 'Uit die rekening ↑', none: 'Geen pyl', remove: 'Verwyder',
+        ph: { rate: 'bv. i = 9% p.j. maandeliks saamgestel', amount: 'bv. R5 000 of F = ?', series: 'bv. R2 000 elke maand', brace: 'bv. 60 paaiemente' },
+        copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie tydlyn.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+    const COLORS = { rate: '#1d4ed8', amount: '#b91c1c', series: '#15803d', brace: '#374151' };
+
+    const defaults = () => ({ n: '5', labelStyle: 'T', every: '', unit: 'years', title: '', items: [] });
+    let st = defaults(), uid = 1;
+    const store = K.store('mm_timeline_v1', 't');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 80);
+      ['n', 'every', 'unit', 'title'].forEach(k => { if (s[k] != null) d[k] = str(s[k]); });
+      d.labelStyle = s.labelStyle === 'num' ? 'num' : 'T';
+      d.items = (Array.isArray(s.items) ? s.items : []).slice(0, 40).filter(i => COLORS[i.kind]).map(i => ({
+        id: uid++, kind: i.kind, from: str(i.from, 8), to: str(i.to, 8), at: str(i.at, 8), text: str(i.text, 80),
+        side: i.side === 'below' ? 'below' : 'above', arrow: ['down', 'up', 'none'].includes(i.arrow) ? i.arrow : 'down',
+      }));
+      return d;
+    }
+    const item = (kind, o) => Object.assign({ id: uid++, kind, from: '0', to: st.n, at: '0', text: '', side: kind === 'series' || kind === 'amount' ? 'above' : 'below', arrow: 'down' }, o || {});
+    function example(k) {
+      st = defaults();
+      if (k === 'fv') { Object.assign(st, { n: '60', unit: 'months', every: '12', title: 'R2 000 deposited monthly for 5 years' });
+        st.items = [item('rate', { from: '0', to: '60', text: 'i = 9% p.a. compounded monthly' }), item('series', { from: '1', to: '60', text: 'R2 000 each month', arrow: 'down', side: 'above' }), item('amount', { at: '60', text: 'F = ?', arrow: 'none', side: 'below' }), item('brace', { from: '1', to: '60', text: '60 payments', side: 'below' })]; }
+      if (k === 'loan') { Object.assign(st, { n: '240', unit: 'months', every: '24', title: 'Home loan repaid over 20 years' });
+        st.items = [item('rate', { from: '0', to: '240', text: 'i = 11,25% p.a. compounded monthly' }), item('amount', { at: '0', text: 'P = R850 000', arrow: 'none', side: 'below' }), item('series', { from: '1', to: '240', text: 'x = ?', arrow: 'up', side: 'above' })]; }
+      if (k === 'rates') { Object.assign(st, { n: '7', unit: 'years', title: 'Savings with a change in interest rate' });
+        st.items = [item('rate', { from: '0', to: '3', text: '8% p.a. compounded quarterly' }), item('rate', { from: '3', to: '7', text: '10% p.a. compounded monthly' }),
+          item('amount', { at: '0', text: 'R20 000', arrow: 'down', side: 'above' }), item('amount', { at: '4', text: 'R5 000 withdrawn', arrow: 'up', side: 'above' }), item('amount', { at: '7', text: 'A = ?', arrow: 'none', side: 'below' })]; }
+      if (k === 'delay') { Object.assign(st, { n: '18', unit: 'months', every: '3', title: 'First payment 6 months after the loan' });
+        st.items = [item('rate', { from: '0', to: '18', text: 'i = 12% p.a. compounded monthly' }), item('amount', { at: '0', text: 'R30 000 loan', arrow: 'none', side: 'below' }), item('series', { from: '6', to: '18', text: 'x = ?', arrow: 'up', side: 'above' }), item('brace', { from: '6', to: '18', text: '13 payments', side: 'below' })]; }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Rendering
+    // ══════════════════════════════════════════════════════════════════
+    const W = 900, FONT = 'Helvetica, Arial, sans-serif', INK = '#111827', SERIF = "'Times New Roman', Times, serif";
+    const toNum = (v, d) => { const x = parseFloat(String(v).replace(',', '.')); return Number.isFinite(x) ? x : d; };
+    function sub(nstr) { return String(nstr).split('').map(c => '₀₁₂₃₄₅₆₇₈₉'['0123456789'.indexOf(c)] || c).join(''); }
+    function render() {
+      store.save(JSON.stringify(st));
+      const n = Math.max(1, Math.min(600, Math.round(toNum(st.n, 5))));
+      const x0 = 50, x1 = W - 90, X = (t) => x0 + (t / n) * (x1 - x0);
+      const items = st.items;
+      const rates = items.filter(i => i.kind === 'rate'), up = items.filter(i => (i.kind === 'amount' || i.kind === 'series') && i.side === 'above');
+      const down = items.filter(i => (i.kind === 'amount' || i.kind === 'series') && i.side === 'below'), braces = items.filter(i => i.kind === 'brace');
+      // rows for overlapping rate bands
+      const rows = [];
+      rates.forEach(r => { const a = toNum(r.from, 0), b = toNum(r.to, n); let k = rows.findIndex(row => row.every(([p, q]) => b <= p || a >= q)); if (k < 0) { rows.push([]); k = rows.length - 1; } rows[k].push([a, b]); r._row = k; });
+      const title = String(st.title || '').trim();
+      const topPad = (title ? 50 : 16);
+      const upH = up.length ? 78 : 0, rateH = rows.length * 42;
+      const lineY = topPad + upH + rateH + 26;
+      const downH = down.some(i => i.arrow !== 'none' || i.kind === 'series') ? 84 : (down.length ? 30 : 0), braceH = braces.length * 54;
+      const H = lineY + 44 + downH + braceH + (st.unit ? 10 : 0) + 20;
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Timeline" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      let defs = '';
+      const mk = (c) => { const id = 'tm' + c.slice(1); if (!defs.includes(id)) defs += `<marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${c}"/></marker>`; return `url(#${id})`; };
+      if (title) s += `<text x="${W / 2}" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      // the line and its ticks
+      s += `<line x1="${x0}" y1="${lineY}" x2="${x1}" y2="${lineY}" stroke="${INK}" stroke-width="2.4"/>`;
+      const every = Math.max(1, Math.round(toNum(st.every, 0)) || Math.ceil(n / 12));
+      const tickEvery = n > 120 ? every : 1;
+      for (let t = 0; t <= n; t += tickEvery) {
+        const big = t % every === 0 || t === n;
+        s += `<line x1="${X(t)}" y1="${lineY - (big ? 9 : 5)}" x2="${X(t)}" y2="${lineY + (big ? 9 : 5)}" stroke="${INK}" stroke-width="${big ? 2 : 1.2}"/>`;
+        if (big) s += `<text x="${X(t)}" y="${lineY + 30}" text-anchor="middle" font-size="16" fill="${INK}" font-family="${SERIF}">${st.labelStyle === 'T' ? 'T' + sub(t) : t}</text>`;
+      }
+      if (st.unit) s += `<text x="${x1 + 12}" y="${lineY + 5}" font-size="14" fill="#4b5563">${esc(st.unit)}</text>`;
+      // interest-rate bands: a bracket above the line with the rate over it
+      rates.forEach(r => {
+        const a = X(Math.max(0, toNum(r.from, 0))), b = X(Math.min(n, toNum(r.to, n))), y = lineY - 22 - r._row * 42, c = COLORS.rate;
+        s += `<path d="M${a + 2} ${y + 8}V${y}H${b - 2}V${y + 8}" fill="none" stroke="${c}" stroke-width="1.8"/>`;
+        s += `<text x="${(a + b) / 2}" y="${y - 8}" text-anchor="middle" font-size="15" fill="${c}" font-family="${SERIF}" font-style="italic">${esc(r.text)}</text>`;
+      });
+      // amounts and payment series, with arrows into (↓) or out of (↑) the account
+      function arrowsAt(i, times, side) {
+        const c = COLORS[i.kind], above = side === 'above';
+        const yNear = above ? lineY - rateH - 14 : lineY + 44, yFar = above ? topPad + 34 : lineY + 44 + 50;
+        let out = '';
+        // A long series is drawn the textbook way: the first few and the last
+        // arrows, with an ellipsis between.
+        let shown = times;
+        if (times.length > 14) {
+          const roomy = X(times[1]) - X(times[0]) >= 14;      // are neighbouring arrows far enough apart?
+          shown = roomy ? times.slice(0, 3).concat(times.slice(-2)) : [times[0], times[times.length - 1]];
+          const gx = (X(shown[roomy ? 2 : 0]) + X(shown[roomy ? 3 : 1])) / 2, gy = (yNear + yFar) / 2;
+          out += `<text x="${gx}" y="${gy + 6}" text-anchor="middle" font-size="22" fill="${c}" font-family="${SERIF}">. . .</text>`;
+        }
+        if (i.arrow !== 'none') shown.forEach(t => {
+          const xx = X(t);
+          // 'down' = money into the account: arrow points at the line from the text side when above
+          const toLine = (i.arrow === 'down') === above;
+          const [ya, yb] = toLine ? [yFar, yNear] : [yNear, yFar];
+          out += `<line x1="${xx}" y1="${ya}" x2="${xx}" y2="${yb}" stroke="${c}" stroke-width="1.8" marker-end="${mk(c)}"/>`;
+        });
+        const mid = times.length ? (X(times[0]) + X(times[times.length - 1])) / 2 : X(0);
+        const tx = Math.max(x0 + 40, Math.min(x1 - 40, mid));
+        // no arrow below the line: the value sits just under its time label
+        const ty = above ? yFar - 10 : (i.arrow === 'none' ? lineY + 60 : yFar + 22);
+        out += `<text x="${tx}" y="${ty}" text-anchor="middle" font-size="16" font-weight="bold" fill="${c}" font-family="${SERIF}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(i.text)}</text>`;
+        return out;
+      }
+      [...up, ...down].forEach(i => {
+        let times;
+        if (i.kind === 'amount') times = [Math.max(0, Math.min(n, toNum(i.at, 0)))];
+        else { const a = Math.max(0, Math.round(toNum(i.from, 1))), b = Math.min(n, Math.round(toNum(i.to, n))); times = []; for (let t = a; t <= b && times.length < 600; t++) times.push(t); }
+        s += arrowsAt(i, times, i.side);
+        if (i.arrow === 'none' && i.kind === 'amount') s += `<circle cx="${X(times[0])}" cy="${lineY}" r="4.5" fill="${COLORS.amount}"/>`;
+      });
+      // braces below
+      braces.forEach((bI, k) => {
+        const a = X(Math.max(0, toNum(bI.from, 0))), b = X(Math.min(n, toNum(bI.to, n))), y = lineY + 44 + downH + k * 54, m = (a + b) / 2, c = COLORS.brace;
+        s += `<path d="M${a} ${y}Q${a} ${y + 10} ${a + 10} ${y + 10}H${m - 8}Q${m} ${y + 10} ${m} ${y + 18}Q${m} ${y + 10} ${m + 8} ${y + 10}H${b - 10}Q${b} ${y + 10} ${b} ${y}" fill="none" stroke="${c}" stroke-width="1.8"/>`;
+        s += `<text x="${m}" y="${y + 38}" text-anchor="middle" font-size="15" fill="${c}" font-family="${SERIF}">${esc(bI.text)}</text>`;
+      });
+      $('plot').innerHTML = s.replace('<rect', `<defs>${defs}</defs><rect`) + '</svg>';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintLine() { ['n', 'every', 'unit', 'title'].forEach(k => { $(k).value = st[k]; }); $('labelStyle').value = st.labelStyle; }
+    function paintItems() {
+      const t = T();
+      $('items').innerHTML = st.items.map(i => {
+        const f = (k, label, extra) => `<label class="field"><span>${esc(label)}</span><input type="text" data-k="${k}" value="${esc(i[k])}" ${extra || ''}></label>`;
+        const sel = (k, label, opts) => `<label class="field"><span>${esc(label)}</span><select data-k="${k}">${opts.map(([v, l]) => `<option value="${v}"${i[k] === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+        let body = `<label class="field" style="margin-bottom:8px"><span>${esc(t.text)}</span><input type="text" data-k="text" value="${esc(i.text)}" maxlength="80" placeholder="${esc(t.ph[i.kind])}"></label>`;
+        if (i.kind === 'amount') body += `<div class="row c3">${f('at', t.at, 'inputmode="decimal"')}${sel('side', t.side, [['above', t.above], ['below', t.below]])}${sel('arrow', t.arrow, [['down', t.down], ['up', t.up], ['none', t.none]])}</div>`;
+        else if (i.kind === 'series') body += `<div class="row c4">${f('from', t.from, 'inputmode="numeric"')}${f('to', t.to, 'inputmode="numeric"')}${sel('side', t.side, [['above', t.above], ['below', t.below]])}${sel('arrow', t.arrow, [['down', t.down], ['up', t.up], ['none', t.none]])}</div>`;
+        else body += `<div class="row c2">${f('from', t.from, 'inputmode="decimal"')}${f('to', t.to, 'inputmode="decimal"')}</div>`;
+        return `<div class="gcard" data-id="${i.id}" style="--gc:${COLORS[i.kind]}"><div class="gcard-top"><strong style="flex:1;font-family:var(--font-display);font-size:14px;color:var(--paper)">${esc(t.kinds[i.kind])}</strong>
+          <button class="btn icon danger" type="button" data-rm aria-label="${esc(t.remove)}">✕</button></div>${body}</div>`;
+      }).join('');
+    }
+    const byId = (id) => st.items.find(i => String(i.id) === String(id));
+    $('items').addEventListener('input', (e) => { const c = e.target.closest('[data-id]'); const i = c && byId(c.dataset.id); if (i && e.target.dataset.k) { i[e.target.dataset.k] = e.target.value; render(); } });
+    $('items').addEventListener('change', (e) => { const c = e.target.closest('[data-id]'); const i = c && byId(c.dataset.id); if (i && e.target.dataset.k) { i[e.target.dataset.k] = e.target.value; render(); } });
+    $('items').addEventListener('click', (e) => { if (!e.target.closest('[data-rm]')) return; const c = e.target.closest('[data-id]'); st.items = st.items.filter(i => String(i.id) !== c.dataset.id); paintItems(); render(); });
+    document.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => { st.items.push(item(b.dataset.add, b.dataset.add === 'series' ? { from: '1' } : {})); paintItems(); render(); }));
+    ['n', 'every', 'unit', 'title'].forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; render(); }));
+    $('labelStyle').addEventListener('change', (e) => { st.labelStyle = e.target.value; render(); });
+    $('examples').addEventListener('change', (e) => { if (e.target.value) { example(e.target.value); paintLine(); paintItems(); render(); } e.target.value = ''; });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'timeline').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'timeline', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('rates');
+    K.i18n((l) => { lang = l; paintLine(); paintItems(); render(); }).apply();
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
