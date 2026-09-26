@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Teacher Toolbox · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="../assets/plot-tools.css">
+  <style>
+    :root { --accent: var(--t-science); }
+    .wrap { width: 100%; max-width: var(--measure); margin-inline: auto; padding: 0 var(--gutter) var(--space-8); }
+    .sec-label { display: flex; align-items: center; gap: 9px; margin: var(--space-6) 0 var(--space-4); font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
+    .tools { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); }
+    .tool { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-4); border-radius: var(--radius-md); background: var(--ink-850); border: 1px solid var(--line); text-decoration: none; color: inherit; transition: border-color var(--dur-fast), background var(--dur-fast), transform var(--dur-fast); }
+    .tool:hover { background: var(--ink-800); border-color: color-mix(in srgb, var(--accent) 42%, transparent); transform: translateY(-2px); }
+    .tool-ic { width: 40px; height: 40px; flex-shrink: 0; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--accent); background: color-mix(in srgb, var(--accent) 13%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); }
+    .tool-t { font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: var(--paper); }
+    .tool-d { font-size: 12.5px; line-height: 1.5; color: var(--text-2); margin-top: 3px; }
+    .tool-tag { display: inline-block; margin-top: 6px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: var(--space-4); }
+    .filters input { max-width: 340px; font-family: var(--font-body); font-size: 14px; }
+    .gpill { padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 13px; cursor: pointer; font-family: var(--font-body); }
+    .gpill.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .grade { margin-bottom: var(--space-6); }
+    .grade h3 { font-family: var(--font-display); font-size: 19px; font-weight: 900; letter-spacing: -0.03em; color: var(--paper); margin-bottom: var(--space-3); }
+    .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
+    .chip { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-hard); color: var(--text); text-decoration: none; background: var(--ink-850); }
+    .chip:hover { border-color: var(--accent); }
+    .chip b { font-size: 13.5px; color: var(--paper); }
+    .chip span { font-size: 12px; color: var(--text-3); }
+    .chip em { font-style: normal; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+    mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--paper); border-radius: 3px; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="../assets/plot-kit.js"></script>
+<script src="toolbox-data.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="resources.html" class="nav-back" data-af-html='<i data-lucide="book-open" style="width:13px;height:13px"></i> Verwysingsblaaie'><i data-lucide="book-open" style="width:13px;height:13px"></i> Reference sheets</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbronne · Vir onderwysers">Resources · For teachers</span></div>
+    <h1 data-af-html="Onderwyser-<em>gereedskap.</em>">Teacher <em>toolbox.</em></h1>
+    <p class="hero-sub" data-af="Hulpmiddels om diagramme en grafieke vir toetse, werkkaarte en skyfies te maak — en elke simulasie uit die lesse, op een plek.">Tools for making diagrams and graphs for tests, worksheets and slides — and every simulator from the lessons, in one place.</p>
+  </section>
+
+  <div class="wrap">
+    <h2 class="sec-label"><span class="hero-tag-dot"></span><span data-af="Maak iets">Make something</span></h2>
+    <div class="tools" id="tools"></div>
+
+    <h2 class="sec-label"><span class="hero-tag-dot"></span><span data-af="Simulasies uit die lesse">Simulators from the lessons</span> <span id="count"></span></h2>
+    <div class="filters">
+      <input type="text" id="q" placeholder="Search, e.g. circuit, titration, Punnett…" data-af-ph="Soek, bv. stroombaan, titrasie, Punnett…" aria-label="Search the lesson simulators">
+      <div id="gpills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <footer>
+    <span class="footer-copy" data-af="Science Sage · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    // [href, icon, [title EN, AF], [description EN, AF], tag]
+    const TOOLS = [
+      ['circuits.html', 'zap', ['Circuit Builder', 'Stroombaanbouer'], ['Circuit diagrams with CAPS symbols, solved: I, V and R everywhere, internal resistance too.', 'Stroombaandiagramme met CAPS-simbole, opgelos: I, V en R oral, ook interne weerstand.'], 'Physics'],
+      ['motion.html', 'line-chart', ['Motion Graphs', 'Bewegingsgrafieke'], ['Aligned x–t, v–t and a–t graphs, including vertical projectiles that bounce.', 'Posisie-, snelheid- en versnelling–tyd-grafieke, ook vir opspringende projektiele.'], 'Physics'],
+      ['forces.html', 'move', ['Force Diagrams', 'Kragdiagramme'], ['Force and free-body diagrams on flat surfaces and inclines, with components and F_net.', 'Krag- en vrye-liggaamdiagramme op plat oppervlakke en skuinsvlakke, met komponente en F_net.'], 'Physics'],
+      ['chemistry.html', 'flask-conical', ['Equations & Moles', 'Vergelykings en mol'], ['Balance equations (ionic and redox too), molar masses, limiting reagents, empirical formulae.', 'Balanseer vergelykings (ook ionies en redoks), molêre massas, beperkende reagense, empiriese formules.'], 'Chemistry'],
+      ['reaction-graphs.html', 'activity', ['Reaction Graphs', 'Reaksiegrafieke'], ['Energy profiles, Maxwell–Boltzmann curves, rate curves and Le Chatelier equilibrium graphs.', 'Energieprofiele, Maxwell-Boltzmann-kurwes, tempokurwes en Le Chatelier-ewewigsgrafieke.'], 'Chemistry'],
+      ['genetics.html', 'dna', ['Genetics', 'Genetika'], ['Punnett squares with the full CAPS cross layout, sex-linked and blood groups; pedigree charts.', 'Punnett-vierkante met die volledige CAPS-kruising, geslagsgekoppel en bloedgroepe; stambome.'], 'Life Sciences'],
+      ['lab-graph.html', 'table', ['Lab Data Grapher', 'Eksperiment-grafieke'], ['Graph experiment results: best-fit line, gradient with units, line and bar graphs.', 'Grafiek eksperimentresultate: beste-pas-lyn, gradiënt met eenhede, lyn- en staafgrafieke.'], 'Practical work'],
+      ['../math-magician/worksheet.html', 'file-text', ['Worksheet Builder', 'Werkkaartbouer'], ['Put diagrams from any of these tools into a test with marks, answer lines and a memo.', 'Sit diagramme uit enige van hierdie hulpmiddels in ’n toets met punte, antwoordlyne en ’n memo.'], 'Tests'],
+      ['../math-magician/equations.html', 'sigma', ['Equation Writer', 'Vergelykingskrywer'], ['Type formulae visually and paste them into Word as editable equations.', 'Tik formules visueel en plak hulle as redigeerbare vergelykings in Word.'], 'Tests'],
+      ['../math-magician/stats.html', 'bar-chart-3', ['Statistics Charts', 'Statistiekgrafieke'], ['Histograms, box plots and scatter plots for investigations and data questions.', 'Histogramme, mond-en-snor- en spreidiagramme vir ondersoeke en datavrae.'], 'Data'],
+      ['resources.html', 'book-open', ['Reference Sheets', 'Verwysingsblaaie'], ['Periodic table, formula sheets, constants, electrode potentials and more.', 'Periodieke tabel, formuleblaaie, konstantes, elektrodepotensiale en meer.'], 'Reference'],
+    ];
+    const STRANDS = { physics: ['Physics', 'Fisika'], chemistry: ['Chemistry', 'Chemie'], life: ['Life Sciences', 'Lewenswetenskappe'], energy: ['Energy & Change', 'Energie en Verandering'], matter: ['Matter & Materials', 'Materie en Materiale'], earth: ['Planet Earth & Beyond', 'Aarde en die Ruimte'] };
+    let lang = 'en', grade = 'all';
+    function paintTools() {
+      const k = lang === 'af' ? 1 : 0;
+      $('tools').innerHTML = TOOLS.map(([href, ic, t, d, tag]) => `<a class="tool" href="${href}"><div class="tool-ic"><i data-lucide="${ic}" style="width:19px;height:19px"></i></div><div><div class="tool-t">${esc(t[k])}</div><p class="tool-d">${esc(d[k])}</p><span class="tool-tag">${esc(tag)}</span></div></a>`).join('');
+    }
+    function paintPills() {
+      $('gpills').innerHTML = ['all', 7, 8, 9, 10, 11, 12].map(x => `<button class="gpill${String(x) === String(grade) ? ' on' : ''}" type="button" data-g="${x}">${x === 'all' ? (lang === 'af' ? 'Alle grade' : 'All grades') : 'Gr ' + x}</button>`).join('');
+    }
+    const hl = (text, q) => { if (!q) return esc(text); const i = text.toLowerCase().indexOf(q); return i < 0 ? esc(text) : esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length)); };
+    function paintList() {
+      const q = $('q').value.trim().toLowerCase(), k = lang === 'af' ? 1 : 0;
+      const data = (window.SS_TOOLBOX || []).filter(e => grade === 'all' || e.g === +grade);
+      let total = 0, html = '';
+      [7, 8, 9, 10, 11, 12].forEach(g => {
+        const rows = data.filter(e => e.g === g).filter(e => {
+          const topic = k ? e.topicAf : e.topic;
+          return !q || topic.toLowerCase().includes(q) || e.tools.some(t => t[0].toLowerCase().includes(q) || t[1].toLowerCase().includes(q));
+        });
+        if (!rows.length) return;
+        total += rows.length;
+        html += `<section class="grade"><h3>${lang === 'af' ? 'Graad' : 'Grade'} ${g}</h3><div class="chips">${rows.map(e => {
+          const topic = k ? e.topicAf : e.topic, href = k && e.af ? e.af : e.file;
+          return `<a class="chip" href="${href}"><em>${esc((STRANDS[e.strand] || [e.strand, e.strand])[k])}</em><b>${hl(e.tools.map(t => t[k]).join(' · '), q)}</b><span>${hl(topic, q)}</span></a>`;
+        }).join('')}</div></section>`;
+      });
+      $('list').innerHTML = html || `<p class="hint">${lang === 'af' ? 'Niks gevind nie.' : 'Nothing found.'}</p>`;
+      $('count').textContent = `· ${total}`;
+    }
+    $('q').addEventListener('input', paintList);
+    $('gpills').addEventListener('click', (e) => { const b = e.target.closest('[data-g]'); if (!b) return; grade = b.dataset.g; paintPills(); paintList(); });
+    K.i18n((l) => { lang = l; paintTools(); paintPills(); paintList(); }).apply();
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

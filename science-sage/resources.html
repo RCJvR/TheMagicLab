@@ -328,6 +328,21 @@
       .formula-grid { grid-template-columns: 1fr; }
       .formula-item.full { grid-column: auto; }
     }
+
+    /* ── Teacher toolbox banner ─────────────────────────────────────────── */
+    .tools-banner {
+      display: flex; align-items: center; gap: var(--space-4);
+      width: calc(100% - 2 * var(--gutter)); max-width: calc(var(--measure) - 2 * var(--gutter)); margin: 0 auto var(--space-6);
+      padding: 16px 20px; border-radius: var(--radius-md); text-decoration: none;
+      background: color-mix(in srgb, var(--t-science) 9%, transparent);
+      border: 1px solid color-mix(in srgb, var(--t-science) 32%, transparent);
+      transition: background var(--dur-fast) var(--ease-standard);
+    }
+    .tools-banner:hover { background: color-mix(in srgb, var(--t-science) 15%, transparent); }
+    .tools-banner .tb-ic { width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--t-science); background: color-mix(in srgb, var(--t-science) 14%, transparent); }
+    .tools-banner .tb-t { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--paper); letter-spacing: -0.02em; }
+    .tools-banner .tb-d { font-size: 13px; color: var(--text-2); margin-top: 2px; line-height: 1.5; }
+    .tools-banner .tb-arrow { margin-left: auto; color: var(--t-science); font-size: 18px; }
   </style>
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
@@ -340,6 +355,7 @@
     <div class="nav-right">
       <span id="mlLangToggle"></span>
       <a href="index.html" class="nav-link" data-af-html='<i data-lucide="book-open" style="width:13px;height:13px"></i>Lesse'><i data-lucide="book-open" style="width:13px;height:13px"></i>Lessons</a>
+<a href="toolbox.html" class="nav-link" data-af-html='<i data-lucide="wrench" style="width:13px;height:13px;"></i> Gereedskap'><i data-lucide="wrench" style="width:13px;height:13px;"></i> Toolbox</a>
       <a href="resources.html" class="nav-link active" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i>Hulpbronne'><i data-lucide="library" style="width:13px;height:13px"></i>Resources</a>
       <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px;"></i>Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px;"></i>Magic Lab</a>
     </div>
@@ -351,6 +367,13 @@
     <h1 data-af-html="Alles wat jy nodig het,<br><em>reg hier.</em>">Everything you need,<br><em>right here.</em></h1>
     <p class="hero-sub" data-af="Periodieke tabel, formuleblaaie, fisiese konstantes, elektrochemiese reeks, en meer — alles op een plek.">Periodic table, formula sheets, physical constants, electrochemical series, and more — all in one place.</p>
   </section>
+
+  <a class="tools-banner" href="toolbox.html">
+    <span class="tb-ic"><i data-lucide="library" style="width:20px;height:20px"></i></span>
+    <span><span class="tb-t" data-af="Onderwyser-gereedskap">Teacher toolbox</span>
+      <span class="tb-d" data-af="Stroombane, bewegings- en kragdiagramme, vergelykings en mol, reaksiegrafieke, genetika en eksperimentgrafieke — plus elke simulasie uit die lesse." style="display:block">Circuits, motion and force diagrams, equations and moles, reaction graphs, genetics and lab graphs — plus every simulator from the lessons.</span></span>
+    <span class="tb-arrow" aria-hidden="true">→</span>
+  </a>
 
   <div class="filter-bar">
     <button class="filter-pill active" onclick="filterCards('all',this)" data-af="Alle hulpbronne">All resources</button>
