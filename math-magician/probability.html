@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08090b">
+  <title>Probability Diagrams · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Cpath d='M8 52 L32 10 L56 52 Z' fill='none' stroke='rgba(253%2C230%2C138%2C0.85)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Crect x='5' y='52' width='54' height='7' rx='3' fill='rgba(253%2C230%2C138%2C0.15)' stroke='rgba(253%2C230%2C138%2C0.45)' stroke-width='2'/%3E%3Ccircle cx='32' cy='34' r='3.5' fill='rgba(251%2C191%2C36%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../assets/magic-lab.css">
+  <link rel="stylesheet" href="plot-tools.css">
+  <style>
+    .seg-tabs { display: flex; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+    .seg-tabs button { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line-hard); background: none; color: var(--text-2); font-weight: 700; font-size: 12.5px; cursor: pointer; font-family: var(--font-body); }
+    .seg-tabs button.on { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+    .region { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 6px; align-items: center; margin-bottom: 6px; }
+    .region code { font-family: "Times New Roman", serif; font-size: 16px; color: var(--paper); background: none; }
+    .stage { border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+    .stage h3 { font-size: 13px; font-weight: 800; color: var(--paper); margin-bottom: 8px; font-family: var(--font-display); }
+    .branch { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr) 30px; gap: 6px; margin-bottom: 6px; }
+    .pgrid { display: grid; grid-template-columns: minmax(0,1fr) repeat(var(--n), minmax(0,1fr)); gap: 4px 6px; align-items: center; font-size: 12.5px; color: var(--text-2); margin-top: 8px; }
+    .pgrid input { padding: 5px 7px; font-size: 12.5px; }
+  </style>
+<link rel="stylesheet" href="../auth-modal.css">
+<script defer src="../auth.js"></script>
+<script defer src="../require-auth.js"></script>
+<script defer src="../auth-modal.js"></script>
+<script src="../lang-toggle.js"></script>
+<script src="plot-kit.js"></script>
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav>
+    <a href="index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
+    <div class="nav-right">
+      <span id="mlLangToggle"></span>
+      <a href="toolbox.html" class="nav-back" data-af-html='<i data-lucide="library" style="width:13px;height:13px"></i> Gereedskap'><i data-lucide="library" style="width:13px;height:13px"></i> Toolbox</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Magic Lab</a>
+      <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
+    </div>
+  </nav>
+  <div id="ml-main" tabindex="-1"></div>
+
+  <section class="hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span data-af="Hulpbron · Waarskynlikheid · Gr 8–12">Resource · Probability · Gr 8–12</span></div>
+    <h1 data-af-html="Waarskynlikheids-<em>diagramme.</em>">Probability <em>diagrams.</em></h1>
+    <p class="hero-sub" data-af="Venn-diagramme met twee of drie versamelings — met waardes en skadu per gebied — en boomdiagramme met tot drie stappe, met of sonder terugplasing.">Venn diagrams with two or three sets — with a value and shading per region — and tree diagrams with up to three stages, with or without replacement.</p>
+  </section>
+
+  <main class="gp">
+    <div class="gp-controls">
+      <section class="panel">
+        <div class="seg-tabs" id="modeTabs">
+          <button type="button" data-mode="venn" data-af="Venn-diagram">Venn diagram</button>
+          <button type="button" data-mode="tree" data-af="Boomdiagram">Tree diagram</button>
+        </div>
+        <div id="controls"></div>
+      </section>
+      <section class="panel">
+        <label class="field"><span data-af="Titel (opsioneel)">Title (optional)</span><input type="text" id="title" maxlength="80"></label>
+      </section>
+    </div>
+
+    <div class="gp-stage">
+      <div class="toolbar">
+        <button class="btn primary" id="printBtn" type="button"><i data-lucide="printer" style="width:14px;height:14px"></i><span data-af="Druk / voeg in dokument">Print / add to document</span></button>
+        <button class="btn" id="copyImg" type="button"><i data-lucide="clipboard-copy" style="width:14px;height:14px"></i><span data-af="Kopieer prent">Copy image</span></button>
+        <button class="btn" id="toWs" type="button"><i data-lucide="file-plus" style="width:14px;height:14px"></i><span data-af="Na werkkaart">To worksheet</span></button>
+        <button class="btn" id="dlPng" type="button"><i data-lucide="image" style="width:14px;height:14px"></i>PNG</button>
+        <button class="btn" id="dlSvg" type="button"><i data-lucide="file-down" style="width:14px;height:14px"></i>SVG</button>
+        <button class="btn" id="copyLink" type="button"><i data-lucide="link" style="width:14px;height:14px"></i><span data-af="Kopieer skakel">Copy link</span></button>
+      </div>
+      <div class="plot-wrap"><div id="plot"></div></div>
+      <p class="warn" id="warn" role="status"></p>
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy" data-af="Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg">Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    const K = window.MMPlotKit, esc = K.esc;
+    const $ = (id) => document.getElementById(id);
+    const STR = {
+      en: {
+        sets: 'Number of sets', names: 'Set names', universal: 'Universal set label', total: 'Total shown in the corner (optional)',
+        region: 'Value in each region', shade: 'Shade', fill: 'Fill the regions from totals', nS: 'n(S)', nA: 'n(A)', nB: 'n(B)', nAB: 'n(A and B)', apply: 'Fill',
+        fillBad: 'Those totals do not fit together (a region would be negative).', shadeCol: 'Shading colour',
+        stages: 'Stages', stage: 'Stage', outcome: 'Outcome', prob: 'Probability', addOutcome: 'Add outcome', same: 'Same probabilities on every branch',
+        perBranch: 'Probabilities for each branch (e.g. without replacement)', after: 'After', showProducts: 'Show the outcome and its probability at the end',
+        asFraction: 'Write products as fractions', examples: 'Examples…', copied: 'Link copied — anyone with it sees this diagram.', copyFail: 'Could not copy the link — your browser blocked the clipboard.',
+        badProb: 'Some probabilities are not numbers, so their products are left out.', sumWarn: (s) => `The branches after ${s} do not add up to 1.`,
+        start: 'Start',
+      },
+      af: {
+        sets: 'Aantal versamelings', names: 'Name van versamelings', universal: 'Byskrif vir die universele versameling', total: 'Totaal in die hoek (opsioneel)',
+        region: 'Waarde in elke gebied', shade: 'Skadu', fill: 'Vul die gebiede uit totale in', nS: 'n(S)', nA: 'n(A)', nB: 'n(B)', nAB: 'n(A en B)', apply: 'Vul in',
+        fillBad: 'Daardie totale pas nie saam nie (’n gebied sou negatief wees).', shadeCol: 'Skadukleur',
+        stages: 'Stappe', stage: 'Stap', outcome: 'Uitkoms', prob: 'Waarskynlikheid', addOutcome: 'Voeg uitkoms by', same: 'Dieselfde waarskynlikhede op elke tak',
+        perBranch: 'Waarskynlikhede vir elke tak (bv. sonder terugplasing)', after: 'Ná', showProducts: 'Wys die uitkoms en sy waarskynlikheid aan die einde',
+        asFraction: 'Skryf produkte as breuke', examples: 'Voorbeelde…', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie diagram.', copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.',
+        badProb: 'Sommige waarskynlikhede is nie getalle nie, so hul produkte word weggelaat.', sumWarn: (s) => `Die takke ná ${s} tel nie op tot 1 nie.`,
+        start: 'Begin',
+      },
+    };
+    let lang = 'en';
+    const T = () => STR[lang];
+
+    // ══════════════════════════════════════════════════════════════════
+    // State
+    //   venn: regions keyed by membership bits, e.g. "10" = in A, not B;
+    //         "000"… = outside every set.
+    //   tree: stages[k] = { outcomes: [names], probs: [default probs],
+    //         same: bool, per: { pathKey: [probs] } }
+    // ══════════════════════════════════════════════════════════════════
+    const defaults = () => ({
+      mode: 'venn', title: '',
+      venn: { n: 2, names: ['A', 'B', 'C'], uni: 'S', total: '', vals: { '10': '', '11': '', '01': '', '00': '' }, shade: {}, color: '#93c5fd' },
+      tree: {
+        stages: [
+          { outcomes: ['R', 'B'], probs: ['3/5', '2/5'], same: true, per: {} },
+          { outcomes: ['R', 'B'], probs: ['3/5', '2/5'], same: true, per: {} },
+        ],
+        products: true, fractions: true,
+      },
+    });
+    let st = defaults();
+    const store = K.store('mm_probability_v1', 'p');
+    function sanitize(s) {
+      if (!s || typeof s !== 'object') return null;
+      const d = defaults(), str = (v, n) => String(v == null ? '' : v).slice(0, n || 40);
+      d.mode = s.mode === 'tree' ? 'tree' : 'venn'; d.title = str(s.title, 80);
+      if (s.venn) {
+        const v = s.venn;
+        d.venn.n = v.n === 3 ? 3 : 2;
+        if (Array.isArray(v.names)) d.venn.names = [0, 1, 2].map(i => str(v.names[i] || 'ABC'[i], 12));
+        d.venn.uni = str(v.uni || 'S', 12); d.venn.total = str(v.total, 20);
+        d.venn.vals = {}; Object.keys(v.vals || {}).forEach(k => { if (/^[01]{2,3}$/.test(k)) d.venn.vals[k] = str(v.vals[k], 40); });
+        d.venn.shade = {}; Object.keys(v.shade || {}).forEach(k => { if (/^[01]{2,3}$/.test(k)) d.venn.shade[k] = !!v.shade[k]; });
+        if (/^#[0-9a-f]{6}$/i.test(v.color)) d.venn.color = v.color;
+      }
+      if (s.tree && Array.isArray(s.tree.stages) && s.tree.stages.length) {
+        d.tree.stages = s.tree.stages.slice(0, 3).map(g => ({
+          outcomes: (g.outcomes || []).slice(0, 4).map(o => str(o, 12)),
+          probs: (g.probs || []).slice(0, 4).map(o => str(o, 16)),
+          same: g.same !== false,
+          per: Object.fromEntries(Object.entries(g.per || {}).slice(0, 64).map(([k, v]) => [str(k, 40), (v || []).slice(0, 4).map(x => str(x, 16))])),
+        })).filter(g => g.outcomes.length);
+        d.tree.products = s.tree.products !== false; d.tree.fractions = s.tree.fractions !== false;
+      }
+      return d;
+    }
+    function example(k) {
+      st = defaults();
+      if (k === 'venn2') { st.mode = 'venn'; st.venn.vals = { '10': '20', '11': '8', '01': '12', '00': '10' }; st.venn.names = ['S', 'C', 'C']; st.venn.total = '50'; st.venn.uni = 'U'; st.title = 'Soccer (S) and cricket (C)'; }
+      if (k === 'venn2shade') { st.mode = 'venn'; st.venn.shade = { '10': true, '11': true, '01': true }; st.title = 'A ∪ B'; }
+      if (k === 'venn3') { st.mode = 'venn'; st.venn.n = 3; st.venn.vals = { '100': '12', '110': '5', '010': '9', '101': '4', '111': '3', '011': '6', '001': '8', '000': '3' }; st.venn.total = '50'; }
+      if (k === 'with') { st.mode = 'tree'; st.title = 'Two draws with replacement'; }
+      if (k === 'without') {
+        st.mode = 'tree'; st.title = 'Two draws without replacement (3 red, 2 blue)';
+        st.tree.stages[1].same = false;
+        st.tree.stages[1].per = { 'R': ['2/4', '2/4'], 'B': ['3/4', '1/4'] };
+      }
+      if (k === 'three') {
+        st.mode = 'tree'; st.title = 'Three coin tosses';
+        st.tree.stages = [0, 1, 2].map(() => ({ outcomes: ['H', 'T'], probs: ['1/2', '1/2'], same: true, per: {} }));
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Numbers
+    // ══════════════════════════════════════════════════════════════════
+    function val(src) { try { const c = K.compile(src); if (c.usesX) return NaN; return c.fn(0, false); } catch (_) { return NaN; } }
+    function frac(v) {
+      for (let d = 1; d <= 10000; d++) { const n = Math.round(v * d); if (Math.abs(n / d - v) < 1e-9) return { n, d }; }
+      return null;
+    }
+    const dec = (v) => { const s = String(Math.round(v * 10000) / 10000); return lang === 'af' ? s.replace('.', ',') : s; };
+
+    // ══════════════════════════════════════════════════════════════════
+    // SVG helpers
+    // ══════════════════════════════════════════════════════════════════
+    const W = 900, FONT = 'Helvetica, Arial, sans-serif', INK = '#111827', SERIF = "'Times New Roman', Times, serif";
+    // A probability like "3/5" is drawn as a stacked fraction; anything else as text.
+    function mathText(x, y, s, anchor, size, color) {
+      size = size || 17; color = color || INK;
+      const m = /^\s*(-?\d+)\s*\/\s*(\d+)\s*$/.exec(String(s));
+      if (!m) return `<text x="${x}" y="${y + size * 0.35}" text-anchor="${anchor || 'middle'}" font-size="${size}" fill="${color}" font-family="${SERIF}">${esc(s)}</text>`;
+      const w = Math.max(m[1].length, m[2].length) * size * 0.55 + 6;
+      const cx = anchor === 'start' ? x + w / 2 : anchor === 'end' ? x - w / 2 : x;
+      return `<text x="${cx}" y="${y - 3}" text-anchor="middle" font-size="${size * 0.85}" fill="${color}" font-family="${SERIF}">${esc(m[1])}</text>` +
+        `<line x1="${cx - w / 2}" y1="${y + 1}" x2="${cx + w / 2}" y2="${y + 1}" stroke="${color}" stroke-width="1.2"/>` +
+        `<text x="${cx}" y="${y + size * 0.85 + 2}" text-anchor="middle" font-size="${size * 0.85}" fill="${color}" font-family="${SERIF}">${esc(m[2])}</text>`;
+    }
+    function head(H) {
+      const title = String(st.title || '').trim();
+      let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(st.mode === 'venn' ? 'Venn diagram' : 'Tree diagram')}" font-family="${FONT}"><rect width="${W}" height="${H}" fill="#fff"/>`;
+      if (title) s += `<text x="${W / 2}" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="${INK}">${esc(title)}</text>`;
+      return s;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Venn
+    // ══════════════════════════════════════════════════════════════════
+    function regionKeys(n) { const out = []; for (let m = (1 << n) - 1; m >= 0; m--) out.push(m.toString(2).padStart(n, '0')); return out; }
+    // Where each region's value goes (hand-placed; circles are fixed).
+    function vennGeom(n, top) {
+      if (n === 2) {
+        const cy = top + 230, r = 175;
+        return { circles: [{ x: 350, y: cy, r }, { x: 550, y: cy, r }], box: { x: 60, y: top + 20, w: 780, h: 420 },
+          spots: { '10': [265, cy], '11': [450, cy], '01': [635, cy], '00': [120, top + 400] }, labels: [[210, cy - 150], [690, cy - 150]] };
+      }
+      const r = 150, cx = 450, cy = top + 245;
+      const c = [{ x: cx - 95, y: cy - 60, r }, { x: cx + 95, y: cy - 60, r }, { x: cx, y: cy + 100, r }];
+      return { circles: c, box: { x: 60, y: top + 10, w: 780, h: 520 },
+        spots: { '100': [cx - 175, cy - 95], '010': [cx + 175, cy - 95], '001': [cx, cy + 180], '110': [cx, cy - 120], '101': [cx - 95, cy + 55], '011': [cx + 95, cy + 55], '111': [cx, cy + 5], '000': [120, top + 500] },
+        labels: [[cx - 225, cy - 190], [cx + 225, cy - 190], [cx + 150, cy + 225]] };
+    }
+    function venn() {
+      const V = st.venn, n = V.n, title = String(st.title || '').trim(), top = title ? 50 : 10;
+      const g = vennGeom(n, top), H = g.box.y + g.box.h + 20;
+      let s = head(H);
+      // one clip path per circle, and one "outside this circle" mask per circle
+      let defs = '';
+      g.circles.forEach((c, i) => {
+        defs += `<clipPath id="vIn${i}"><circle cx="${c.x}" cy="${c.y}" r="${c.r}"/></clipPath>`;
+        defs += `<mask id="vOut${i}"><rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/><circle cx="${c.x}" cy="${c.y}" r="${c.r}" fill="#000"/></mask>`;
+      });
+      s += `<defs>${defs}</defs>`;
+      // shading: nest an "inside" clip or "outside" mask for every set
+      Object.keys(V.shade).filter(k => V.shade[k] && k.length === n).forEach(k => {
+        let open = '', close = '';
+        [...k].forEach((bit, i) => { open += bit === '1' ? `<g clip-path="url(#vIn${i})">` : `<g mask="url(#vOut${i})">`; close += '</g>'; });
+        s += open + `<rect x="${g.box.x}" y="${g.box.y}" width="${g.box.w}" height="${g.box.h}" fill="${V.color}"/>` + close;
+      });
+      s += `<rect x="${g.box.x}" y="${g.box.y}" width="${g.box.w}" height="${g.box.h}" fill="none" stroke="${INK}" stroke-width="2"/>`;
+      s += `<text x="${g.box.x + 12}" y="${g.box.y + 30}" font-size="24" font-style="italic" fill="${INK}" font-family="${SERIF}">${esc(V.uni)}</text>`;
+      if (String(V.total).trim()) s += `<text x="${g.box.x + g.box.w - 12}" y="${g.box.y + 30}" text-anchor="end" font-size="19" fill="${INK}" font-family="${SERIF}">${esc(V.total)}</text>`;
+      g.circles.forEach((c, i) => {
+        s += `<circle cx="${c.x}" cy="${c.y}" r="${c.r}" fill="none" stroke="${INK}" stroke-width="2.2"/>`;
+        const [lx, ly] = g.labels[i];
+        s += `<text x="${lx}" y="${ly}" text-anchor="middle" font-size="24" font-style="italic" fill="${INK}" font-family="${SERIF}">${esc(V.names[i])}</text>`;
+      });
+      regionKeys(n).forEach(k => { const v = V.vals[k]; if (v && String(v).trim()) { const [x, y] = g.spots[k]; s += mathText(x, y, v, 'middle', 21); } });
+      return { svg: s + '</svg>', warn: [] };
+    }
+    // "A ∩ B′" style name for a region
+    function regionName(k) {
+      const names = st.venn.names;
+      if (!k.includes('1')) return (st.venn.n === 2 ? `(${names[0]} ∪ ${names[1]})′` : `(${names[0]} ∪ ${names[1]} ∪ ${names[2]})′`);
+      return [...k].map((b, i) => b === '1' ? names[i] : names[i] + '′').join(' ∩ ');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Tree
+    // ══════════════════════════════════════════════════════════════════
+    function paths(stages, depth) {           // all paths of the first `depth` stages, as index arrays
+      let out = [[]];
+      for (let k = 0; k < depth; k++) out = out.flatMap(p => stages[k].outcomes.map((_, i) => p.concat(i)));
+      return out;
+    }
+    const pathKey = (stages, p) => p.map((i, k) => stages[k].outcomes[i]).join(',');
+    function probsAt(stages, k, p) {           // probabilities for stage k after path p
+      const g = stages[k];
+      if (k === 0 || g.same) return g.probs;
+      const per = g.per[pathKey(stages, p)];
+      return g.outcomes.map((_, i) => (per && per[i] != null && per[i] !== '') ? per[i] : (g.probs[i] || ''));
+    }
+    function tree() {
+      const TR = st.tree, S = TR.stages, depth = S.length, warn = [];
+      const leaves = paths(S, depth);
+      const title = String(st.title || '').trim(), top = title ? 60 : 24;
+      const rowH = Math.max(34, Math.min(70, 560 / leaves.length));
+      const H = top + leaves.length * rowH + 30;
+      const colW = TR.products ? (W - 330) / depth : (W - 100) / depth;
+      const x0 = 50;
+      let s = head(H);
+      // y of a node = mean y of its leaves
+      const leafY = (i) => top + rowH * (i + 0.5);
+      function nodeY(p) {
+        const idx = leaves.map((l, i) => l.slice(0, p.length).join() === p.join() ? i : -1).filter(i => i >= 0);
+        return idx.reduce((a, i) => a + leafY(i), 0) / idx.length;
+      }
+      let badNum = false;
+      const nodeX = (d) => x0 + d * colW;
+      s += `<circle cx="${nodeX(0)}" cy="${nodeY([])}" r="4" fill="${INK}"/>`;
+      for (let d = 0; d < depth; d++) {
+        paths(S, d).forEach(p => {
+          const px = nodeX(d), py = nodeY(p), probs = probsAt(S, d, p);
+          const nums = probs.map(val);
+          if (nums.every(Number.isFinite) && Math.abs(nums.reduce((a, b) => a + b, 0) - 1) > 1e-6) warn.push(T().sumWarn(p.length ? pathKey(S, p) : T().start));
+          S[d].outcomes.forEach((o, i) => {
+            const q = p.concat(i), qx = nodeX(d + 1) - 34, qy = nodeY(q);
+            s += `<line x1="${px + 6}" y1="${py}" x2="${qx}" y2="${qy}" stroke="${INK}" stroke-width="1.8"/>`;
+            s += `<text x="${qx + 16}" y="${qy + 7}" text-anchor="middle" font-size="20" fill="${INK}" font-family="${SERIF}">${esc(o)}</text>`;
+            // probability label beside the middle of the branch, on the outside
+            const mx = (px + qx) / 2, my = (py + qy) / 2, up = qy <= py;
+            s += mathText(mx - 4, my + (up ? -16 : 18), probs[i] || '', 'middle', 16, '#1d4ed8');
+          });
+        });
+      }
+      if (TR.products) {
+        const xText = nodeX(depth) + 10;
+        leaves.forEach((l, i) => {
+          const y = leafY(i);
+          const probs = l.map((idx, k) => val(probsAt(S, k, l.slice(0, k))[idx]));
+          const ok = probs.every(Number.isFinite); if (!ok) badNum = true;
+          const prod = probs.reduce((a, b) => a * b, 1);
+          s += `<text x="${xText}" y="${y + 6}" font-size="17" fill="${INK}" font-family="${SERIF}">(${esc(pathKey(S, l).replace(/,/g, ' ; '))})</text>`;
+          if (ok) {
+            const f = TR.fractions ? frac(prod) : null;
+            s += `<text x="${xText + 118}" y="${y + 6}" font-size="17" fill="${INK}" font-family="${SERIF}">=</text>`;
+            s += f ? mathText(xText + 134, y, `${f.n}/${f.d}`, 'start', 17, '#15803d') : `<text x="${xText + 134}" y="${y + 6}" font-size="17" fill="#15803d" font-family="${SERIF}">${esc(dec(prod))}</text>`;
+          }
+        });
+      }
+      if (badNum) warn.push(T().badProb);
+      return { svg: s + '</svg>', warn: [...new Set(warn)] };
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // Controls
+    // ══════════════════════════════════════════════════════════════════
+    function paintControls() {
+      const t = T();
+      document.querySelectorAll('#modeTabs button').forEach(b => b.classList.toggle('on', b.dataset.mode === st.mode));
+      const ex = st.mode === 'venn'
+        ? [['venn2', lang === 'af' ? 'Sokker en krieket (getalle)' : 'Soccer and cricket (numbers)'], ['venn2shade', lang === 'af' ? 'Skadu A ∪ B' : 'Shade A ∪ B'], ['venn3', lang === 'af' ? 'Drie versamelings' : 'Three sets']]
+        : [['with', lang === 'af' ? 'Met terugplasing' : 'With replacement'], ['without', lang === 'af' ? 'Sonder terugplasing' : 'Without replacement'], ['three', lang === 'af' ? 'Drie muntgooie' : 'Three coin tosses']];
+      let h = `<select id="examples" aria-label="Examples" style="margin-bottom:12px"><option value="">${esc(t.examples)}</option>${ex.map(([v, l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select>`;
+      if (st.mode === 'venn') {
+        const V = st.venn;
+        h += `<div class="row c3"><label class="field"><span>${esc(t.sets)}</span><select data-v="n"><option value="2"${V.n === 2 ? ' selected' : ''}>2</option><option value="3"${V.n === 3 ? ' selected' : ''}>3</option></select></label>
+          <label class="field"><span>${esc(t.universal)}</span><input type="text" data-v="uni" value="${esc(V.uni)}" maxlength="12"></label>
+          <label class="field"><span>${esc(t.total)}</span><input type="text" data-v="total" value="${esc(V.total)}" maxlength="20"></label></div>`;
+        h += `<div class="row c3">${[0, 1, 2].slice(0, V.n).map(i => `<label class="field"><span>${esc(t.names)} ${i + 1}</span><input type="text" data-name="${i}" value="${esc(V.names[i])}" maxlength="12"></label>`).join('')}</div>`;
+        h += `<p class="hint" style="margin-bottom:8px">${esc(t.region)}</p>`;
+        h += regionKeys(V.n).map(k => `<div class="region"><code>${esc(regionName(k))}</code><input type="text" data-r="${k}" value="${esc(V.vals[k] || '')}" maxlength="40" aria-label="${esc(regionName(k))}"><label class="check"><input type="checkbox" data-sh="${k}"${V.shade[k] ? ' checked' : ''}> ${esc(t.shade)}</label></div>`).join('');
+        h += `<label class="field" style="max-width:160px;margin-top:8px"><span>${esc(t.shadeCol)}</span><input type="color" data-v="color" value="${esc(V.color)}" style="height:34px;padding:2px"></label>`;
+        if (V.n === 2) h += `<details class="more" style="margin-top:10px"><summary>${esc(t.fill)}</summary><div class="inner"><div class="row c4">
+            <label class="field"><span>${esc(t.nS)}</span><input type="text" id="fS" inputmode="decimal"></label><label class="field"><span>${esc(t.nA)}</span><input type="text" id="fA" inputmode="decimal"></label>
+            <label class="field"><span>${esc(t.nB)}</span><input type="text" id="fB" inputmode="decimal"></label><label class="field"><span>${esc(t.nAB)}</span><input type="text" id="fAB" inputmode="decimal"></label></div>
+            <button class="btn" type="button" id="doFill">${esc(t.apply)}</button></div></details>`;
+      } else {
+        const TR = st.tree, S = TR.stages;
+        h += `<div class="row c2" style="margin-bottom:8px"><label class="field"><span>${esc(t.stages)}</span><select data-t="depth">${[1, 2, 3].map(n => `<option${S.length === n ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div>`;
+        S.forEach((g, k) => {
+          h += `<div class="stage"><h3>${esc(t.stage)} ${k + 1}</h3>`;
+          g.outcomes.forEach((o, i) => {
+            h += `<div class="branch"><input type="text" data-o="${k},${i}" value="${esc(o)}" maxlength="12" aria-label="${esc(t.outcome)}" placeholder="${esc(t.outcome)}">
+              <input type="text" data-pr="${k},${i}" value="${esc(g.probs[i] || '')}" maxlength="16" aria-label="${esc(t.prob)}" placeholder="${esc(t.prob)}">
+              <button class="btn icon danger" type="button" data-rm="${k},${i}" aria-label="Remove"${g.outcomes.length <= 2 ? ' disabled' : ''}>✕</button></div>`;
+          });
+          if (g.outcomes.length < 4) h += `<button class="btn" type="button" data-add="${k}" style="margin-bottom:6px">+ ${esc(t.addOutcome)}</button>`;
+          if (k > 0) {
+            h += `<label class="check" style="margin-top:4px"><input type="checkbox" data-same="${k}"${g.same ? ' checked' : ''}> ${esc(t.same)}</label>`;
+            if (!g.same) {
+              h += `<p class="hint" style="margin-top:6px">${esc(t.perBranch)}</p><div class="pgrid" style="--n:${g.outcomes.length}"><span></span>${g.outcomes.map(o => `<b>${esc(o)}</b>`).join('')}`;
+              paths(S, k).forEach(p => {
+                const key = pathKey(S, p), cur = probsAt(S, k, p);
+                h += `<span>${esc(t.after)} ${esc(key.replace(/,/g, ', '))}</span>${g.outcomes.map((_, i) => `<input type="text" data-per="${k}|${esc(key)}|${i}" value="${esc(cur[i] || '')}" maxlength="16">`).join('')}`;
+              });
+              h += `</div>`;
+            }
+          }
+          h += `</div>`;
+        });
+        h += `<div class="checks"><label class="check"><input type="checkbox" data-t="products"${TR.products ? ' checked' : ''}> ${esc(t.showProducts)}</label>
+          <label class="check"><input type="checkbox" data-t="fractions"${TR.fractions ? ' checked' : ''}> ${esc(t.asFraction)}</label></div>`;
+      }
+      $('controls').innerHTML = h;
+      $('title').value = st.title;
+    }
+    function render() {
+      store.save(JSON.stringify(st));
+      const out = st.mode === 'venn' ? venn() : tree();
+      $('plot').innerHTML = out.svg;
+      $('warn').textContent = out.warn.join(' ');
+    }
+
+    const ctl = $('controls');
+    ctl.addEventListener('input', (e) => {
+      const d = e.target.dataset, V = st.venn, S = st.tree.stages;
+      if (d.v && e.target.tagName === 'INPUT' && e.target.type !== 'checkbox') V[d.v] = e.target.value;
+      else if (d.name) { V.names[+d.name] = e.target.value; paintRegionNames(); }
+      else if (d.r) V.vals[d.r] = e.target.value;
+      else if (d.o) { const [k, i] = d.o.split(',').map(Number); S[k].outcomes[i] = e.target.value; }
+      else if (d.pr) { const [k, i] = d.pr.split(',').map(Number); S[k].probs[i] = e.target.value; }
+      else if (d.per) { const [k, key, i] = d.per.split('|'); const g = S[+k]; g.per[key] = g.per[key] || g.outcomes.map((_, j) => g.probs[j] || ''); g.per[key][+i] = e.target.value; }
+      else return;
+      render();
+    });
+    function paintRegionNames() { ctl.querySelectorAll('.region code').forEach((c, i) => { c.textContent = regionName(regionKeys(st.venn.n)[i]); }); }
+    ctl.addEventListener('change', (e) => {
+      const d = e.target.dataset, V = st.venn, TR = st.tree, S = TR.stages;
+      if (e.target.id === 'examples') { if (e.target.value) { example(e.target.value); paintControls(); render(); } return; }
+      if (d.v === 'n') { V.n = +e.target.value; paintControls(); }
+      else if (d.v === 'color') V.color = e.target.value;
+      else if (d.sh) V.shade[d.sh] = e.target.checked;
+      else if (d.t === 'depth') {
+        const n = +e.target.value;
+        while (S.length < n) S.push({ outcomes: S[S.length - 1].outcomes.slice(), probs: S[S.length - 1].probs.slice(), same: true, per: {} });
+        S.length = n; paintControls();
+      } else if (d.t === 'products' || d.t === 'fractions') TR[d.t] = e.target.checked;
+      else if (d.same) { S[+d.same].same = e.target.checked; paintControls(); }
+      else if (d.o) paintControls();       // outcome renamed: rebuild per-branch rows
+      else return;
+      render();
+    });
+    ctl.addEventListener('click', (e) => {
+      const S = st.tree.stages;
+      const add = e.target.closest('[data-add]'), rm = e.target.closest('[data-rm]');
+      if (add) { const g = S[+add.dataset.add]; g.outcomes.push(String.fromCharCode(65 + g.outcomes.length)); g.probs.push(''); g.per = {}; paintControls(); render(); }
+      if (rm) { const [k, i] = rm.dataset.rm.split(',').map(Number); const g = S[k]; if (g.outcomes.length > 2) { g.outcomes.splice(i, 1); g.probs.splice(i, 1); g.per = {}; } paintControls(); render(); }
+      if (e.target.id === 'doFill') {
+        const n = ['fS', 'fA', 'fB', 'fAB'].map(id => val($(id).value));
+        if (!n.every(Number.isFinite)) return;
+        const [S0, A, B, AB] = n, regs = { '10': A - AB, '11': AB, '01': B - AB, '00': S0 - A - B + AB };
+        if (Object.values(regs).some(v => v < 0)) { K.toast(T().fillBad); return; }
+        Object.keys(regs).forEach(k => { st.venn.vals[k] = String(Math.round(regs[k] * 1e6) / 1e6); });
+        st.venn.total = String(S0);
+        paintControls(); render();
+      }
+    });
+    $('modeTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-mode]'); if (!b) return; st.mode = b.dataset.mode; paintControls(); render(); });
+    $('title').addEventListener('input', (e) => { st.title = e.target.value; render(); });
+    K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || st.mode).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'diagram', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
+    $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
+
+    const loaded = store.load(sanitize);
+    if (loaded) st = loaded; else example('venn2');
+    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    window.__prob = { st: () => st };
+  })();
+  </script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
