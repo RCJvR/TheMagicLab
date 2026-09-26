@@ -30,7 +30,37 @@ MathMagician.registerChapter(5, {
             <div class="example-step"><span class="step-num">4</span><span>Is 50 a term? 3n + 2 = 50 → n = 16. Yes, T16 = 50.</span></div>
             <div class="example-step"><span class="step-num">5</span><span>Is 51 a term? 3n + 2 = 51 → n = 16,33. No (not a natural number).</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In many matchstick patterns, each new shape adds d matches. Look for
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In many matchstick patterns, each new shape adds d matches. Look for what is added each time, not just the total.</span></div>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Linear Sequence Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter first term and common difference. See the sequence, general term, and any T&#8345;.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">First term (a)</label><input id="seqA" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Common diff (d)</label><input id="seqD" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">n =</label><input id="seqN" type="number" value="10" min="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+            </div>
+            <div id="seqOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('seqA').value)||0;
+              const d=parseFloat(document.getElementById('seqD').value)||0;
+              const n=parseInt(document.getElementById('seqN').value)||1;
+              const terms=Array.from({length:8},function(_,i){return a+i*d;});
+              const tn=a+(n-1)*d;
+              const c=a-d;
+              const genStr=d===0?String(a):d+'n'+(c>0?' + '+c:c<0?' \u2212 '+Math.abs(c):'');
+              document.getElementById('seqOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">First 8 terms:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', \u2026</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">General term:</span><span style="color:#fbbf24;">T\u2099 = '+genStr+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">T<sub>'+n+'</sub>:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+tn+'</span></div>',
+              ].join('');
+            }
+            ['seqA','seqD','seqN'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            update();
+          })();
+          </script>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Geometric Pattern Builder</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Set the starting count and how many elements are added per step. See the visual pattern and formula grow.</p>
@@ -80,7 +110,6 @@ MathMagician.registerChapter(5, {
             update();
           })();
           </script>
-        what is added each time, not just the total.</span></div>
         `
       },
       questions: [

@@ -104,7 +104,7 @@ MathMagician.registerChapter(8, {
             <div class="example-step"><span class="step-num">3</span><span>x² - 5x - 14: need pq = -14, p+q = -5 → p = -7, q = 2 → (x - 7)(x + 2)</span></div>
             <div class="example-step"><span class="step-num">4</span><span>2x² - 8 = 2(x² - 4) = 2(x + 2)(x - 2) (HCF first!)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For trinomials, always check: p + q = b (middle term coefficient) AND p × q = c (constant). 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For trinomials, always check: p + q = b (middle term coefficient) AND p × q = c (constant). Both conditions must hold.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Quadratic Factoriser</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a, b, c for ax&#178; + bx + c. See the discriminant, roots, and factorised form.</p>
@@ -139,7 +139,6 @@ MathMagician.registerChapter(8, {
             solve();
           })();
           </script>
-        Both conditions must hold.</span></div>
         `
       },
       questions: [

@@ -104,7 +104,7 @@ MathMagician.registerChapter(8, {
             <div class="example-step"><span class="step-num">3</span><span>x² - 5x - 14: benodig pq = -14, p+q = -5 → p = -7, q = 2 → (x - 7)(x + 2)</span></div>
             <div class="example-step"><span class="step-num">4</span><span>2x² - 8 = 2(x² - 4) = 2(x + 2)(x - 2) (GGD eers!)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Vir trinome, kyk altyd: p + q = b (koëffisiënt van die middelterm) EN p × q = c (konstante).
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Vir trinome, kyk altyd: p + q = b (koëffisiënt van die middelterm) EN p × q = c (konstante). Albei voorwaardes moet geld.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit — Kwadratiese Faktoriseerder</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer a, b, c in vir ax&#178; + bx + c. Sien die diskriminant, wortels, en gefaktoriseerde vorm.</p>
@@ -139,7 +139,6 @@ MathMagician.registerChapter(8, {
             solve();
           })();
           </script>
-        Albei voorwaardes moet geld.</span></div>
         `
       },
       questions: [

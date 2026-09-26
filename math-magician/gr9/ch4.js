@@ -33,7 +33,7 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">4</span><span>3⁻² = 1/9</span></div>
             <div class="example-step"><span class="step-num">5</span><span>(5xy)⁰ = 1</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The base must be the SAME to use the product and quotient laws. You cannot simplify x³ × y⁵ using these laws.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Rational Exponent Calculator</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Evaluate base^(m/n) step by step: take the nth root, then raise to m.</p>
@@ -67,7 +67,30 @@ MathMagician.registerChapter(4, {
             ev();
           })();
           </script>
-        The base must be the SAME to use the product and quotient laws. You cannot simplify x³ × y⁵ using these laws.</span></div>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Exponential Equation Drill</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Solve b&#8339; = c by matching bases. Score as many as you can!</p>
+            <div id="expEqQ" style="font-family:JetBrains Mono,monospace;font-size:20px;color:#fcd34d;margin-bottom:12px;min-height:28px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;">x =</span>
+              <input id="expEqAns" type="number" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <button id="expEqCheck" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Check</button>
+              <button id="expEqSkip" style="padding:6px 10px;border-radius:7px;border:none;background:rgba(99,102,241,0.20);color:#a5b4fc;font-family:DM Sans,sans-serif;font-size:11px;cursor:pointer;">Skip</button>
+              <span id="expEqScore" style="font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(221,225,240,0.45);"></span>
+            </div>
+            <div id="expEqFb" style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:13px;min-height:20px;"></div>
+          </div>
+          <script>
+          (function(){
+            const bases=[2,3,5,10];let ans,score=0,total=0;
+            function newQ(){const b=bases[Math.floor(Math.random()*bases.length)];ans=Math.floor(Math.random()*5)+1;document.getElementById('expEqQ').textContent=b+'\u02e3 = '+Math.pow(b,ans);document.getElementById('expEqAns').value='';document.getElementById('expEqFb').textContent='';document.getElementById('expEqAns').focus();}
+            function check(){const v=parseFloat(document.getElementById('expEqAns').value);if(isNaN(v))return;total++;const ok=Math.abs(v-ans)<0.01;if(ok)score++;document.getElementById('expEqFb').innerHTML=ok?'<span style="color:#6ee7b7;">\u2713 Correct! x = '+ans+'</span>':'<span style="color:#fca5a5;">\u2717 x = '+ans+'</span>';document.getElementById('expEqScore').textContent='Score: '+score+'/'+total;if(ok)setTimeout(newQ,800);}
+            document.getElementById('expEqCheck').addEventListener('click',check);
+            document.getElementById('expEqSkip').addEventListener('click',function(){total++;document.getElementById('expEqScore').textContent='Score: '+score+'/'+total;newQ();});
+            document.getElementById('expEqAns').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+            newQ();
+          })();
+          </script>
         `
       },
       questions: [
@@ -106,32 +129,56 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">2</span><span>(8 × 10⁵) ÷ (2 × 10²) = 4 × 10³</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Convert: 5,6 × 10⁻³ = 0,0056</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>After multiplying/dividing, 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>After multiplying/dividing, check that the coefficient is between 1 and 10. If not, adjust the power of 10.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
-            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Exponential Equation Drill</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Solve b&#8339; = c by matching bases. Score as many as you can!</p>
-            <div id="expEqQ" style="font-family:JetBrains Mono,monospace;font-size:20px;color:#fcd34d;margin-bottom:12px;min-height:28px;"></div>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;">x =</span>
-              <input id="expEqAns" type="number" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
-              <button id="expEqCheck" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Check</button>
-              <button id="expEqSkip" style="padding:6px 10px;border-radius:7px;border:none;background:rgba(99,102,241,0.20);color:#a5b4fc;font-family:DM Sans,sans-serif;font-size:11px;cursor:pointer;">Skip</button>
-              <span id="expEqScore" style="font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(221,225,240,0.45);"></span>
-            </div>
-            <div id="expEqFb" style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:13px;min-height:20px;"></div>
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Scientific Notation Converter & Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Convert any number to a × 10ⁿ, then multiply or divide numbers in scientific notation.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snIn" id="g9snInL">Number</label><input id="g9snIn" type="text" value="3450000" autocomplete="off" style="width:150px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
+            <div id="g9snOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;margin-bottom:12px;"></div>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;align-items:center;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snA" id="g9snAL">a</label><input id="g9snA" type="text" value="8" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">× 10^</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snM" id="g9snML">m</label><input id="g9snM" type="number" value="5" style="width:50px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snOp">&nbsp;</label><select id="g9snOp" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;"><option>×</option><option selected>÷</option></select></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snB" id="g9snBL">b</label><input id="g9snB" type="text" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">× 10^</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9snN" id="g9snNL">n</label><input id="g9snN" type="number" value="2" style="width:50px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
+            <div id="g9snCalc" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
           <script>
-          (function(){
-            const bases=[2,3,5,10];let ans,score=0,total=0;
-            function newQ(){const b=bases[Math.floor(Math.random()*bases.length)];ans=Math.floor(Math.random()*5)+1;document.getElementById('expEqQ').textContent=b+'\u02e3 = '+Math.pow(b,ans);document.getElementById('expEqAns').value='';document.getElementById('expEqFb').textContent='';document.getElementById('expEqAns').focus();}
-            function check(){const v=parseFloat(document.getElementById('expEqAns').value);if(isNaN(v))return;total++;const ok=Math.abs(v-ans)<0.01;if(ok)score++;document.getElementById('expEqFb').innerHTML=ok?'<span style="color:#6ee7b7;">\u2713 Correct! x = '+ans+'</span>':'<span style="color:#fca5a5;">\u2717 x = '+ans+'</span>';document.getElementById('expEqScore').textContent='Score: '+score+'/'+total;if(ok)setTimeout(newQ,800);}
-            document.getElementById('expEqCheck').addEventListener('click',check);
-            document.getElementById('expEqSkip').addEventListener('click',function(){total++;document.getElementById('expEqScore').textContent='Score: '+score+'/'+total;newQ();});
-            document.getElementById('expEqAns').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
-            newQ();
-          })();
+          (function sciNotation(T) {
+  var $ = function (id) { return document.getElementById(id); };
+  var SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  function sup(n) { return String(n).split('').map(function (c) { return SUP[c] || c; }).join(''); }
+  function dec(x) { return String(x).replace('.', ','); }
+  function trim(x) { return parseFloat(x.toPrecision(10)); }
+  function sn(x) {
+    if (x === 0) return { a: 0, n: 0 };
+    var n = Math.floor(Math.log10(Math.abs(x))), a = trim(x / Math.pow(10, n));
+    if (Math.abs(a) >= 10) { a = trim(a / 10); n++; }
+    if (Math.abs(a) < 1) { a = trim(a * 10); n--; }
+    return { a: a, n: n };
+  }
+  function show(s) { return dec(s.a) + ' × 10' + sup(s.n); }
+  function convert() {
+    var raw = $('g9snIn').value.replace(/\\s+/g, '').replace(',', '.'), out = $('g9snOut');
+    var x = parseFloat(raw);
+    if (!raw || isNaN(x) || !/^[-+]?[0-9]*\\.?[0-9]+(e[-+]?[0-9]+)?$/i.test(raw)) { out.innerHTML = '<span style="color:#fca5a5;">' + T.bad + '</span>'; return; }
+    var s = sn(x);
+    var why = s.n > 0 ? T.left.replace('#', s.n) : s.n < 0 ? T.right.replace('#', -s.n) : T.none;
+    out.innerHTML = '<div style="color:#6ee7b7;font-size:15px;font-weight:700;">' + dec(x) + ' = ' + show(s) + '</div><div style="color:rgba(221,225,240,0.55);">' + why + '</div>';
+  }
+  function calc() {
+    var a = parseFloat($('g9snA').value.replace(',', '.')), m = parseInt($('g9snM').value, 10);
+    var b = parseFloat($('g9snB').value.replace(',', '.')), n = parseInt($('g9snN').value, 10), op = $('g9snOp').value, out = $('g9snCalc');
+    if ([a, m, b, n].some(isNaN) || (op === '÷' && b === 0)) { out.innerHTML = '<span style="color:#fca5a5;">' + T.bad + '</span>'; return; }
+    var coef = op === '×' ? trim(a * b) : trim(a / b), p = op === '×' ? m + n : m - n;
+    var lines = ['(' + dec(a) + ' ' + op + ' ' + dec(b) + ') × 10' + sup(m) + (op === '×' ? '⁺' : '⁻') + sup(n < 0 ? '(' + n + ')' : n).replace('(', '⁽').replace(')', '⁾'),
+      '= ' + dec(coef) + ' × 10' + sup(p)];
+    var s = sn(coef);
+    if (s.n !== 0) lines.push('= ' + dec(s.a) + ' × 10' + sup(s.n + p) + ' <span style="color:rgba(221,225,240,0.45);">(' + T.adjust + ')</span>');
+    out.innerHTML = lines.map(function (l, i) { return '<div' + (i === lines.length - 1 ? ' style="color:#6ee7b7;font-weight:700;"' : '') + '>' + l + '</div>'; }).join('');
+  }
+  $('g9snIn').addEventListener('input', convert);
+  ['g9snA', 'g9snM', 'g9snB', 'g9snN', 'g9snOp'].forEach(function (id) { $(id).addEventListener('input', calc); $(id).addEventListener('change', calc); });
+  convert(); calc();
+})({"tryit":"Try it","bad":"Enter a number such as 3450000 or 0,00047.","left":"The decimal comma moves # place(s) left, so the exponent is positive.","right":"The decimal comma moves # place(s) right, so the exponent is negative.","none":"Already between 1 and 10, so the exponent is 0.","adjust":"coefficient adjusted to between 1 and 10"});
           </script>
-        check that the coefficient is between 1 and 10. If not, adjust the power of 10.</span></div>
         `
       },
       questions: [

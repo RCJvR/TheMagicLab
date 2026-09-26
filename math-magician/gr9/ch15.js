@@ -164,7 +164,7 @@ MathMagician.registerChapter(15, {
             <div class="example-step"><span class="step-num">2</span><span>Cone r = 6, h = 8: V = ⅓π(36)(8) = 96π ≈ 301,59 cm³</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Sphere r = 3: V = 4/3π(27) = 36π ≈ 113,10 cm³</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Pyramid/cone volume = ⅓ × (
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Pyramid/cone volume = ⅓ × ( volume of the corresponding prism/cylinder). A useful check!</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; 3D Volume & Surface Area</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select a solid, enter dimensions, and get V and SA instantly.</p>
@@ -203,7 +203,6 @@ MathMagician.registerChapter(15, {
             setL();
           })();
           </script>
-        volume of the corresponding prism/cylinder). A useful check!</span></div>
 
           <div style="margin:26px 0 14px;">
             <div style="font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:#fbbf24;text-transform:uppercase;letter-spacing:0.07em;">&#128209; Quick reference &mdash; all 6 solids</div>

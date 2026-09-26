@@ -127,7 +127,7 @@ MathMagician.registerChapter(15, {
             <div class="example-step"><span class="step-num">2</span><span>Keël r = 6, h = 8: V = ⅓π(36)(8) = 96π ≈ 301,59 cm³</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Sfeer r = 3: V = 4/3π(27) = 36π ≈ 113,10 cm³</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Piramide-/keëlvolume = ⅓ × (
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Piramide-/keëlvolume = ⅓ × ( volume van die ooreenstemmende prisma/silinder). 'n Nuttige toets!</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; 3D-Volume en -Oppervlak</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Kies 'n voorwerp, voer afmetings in, en kry V en OV onmiddellik.</p>
@@ -166,7 +166,6 @@ MathMagician.registerChapter(15, {
             setL();
           })();
           </script>
-        volume van die ooreenstemmende prisma/silinder). 'n Nuttige toets!</span></div>
         `
       },
       questions: [

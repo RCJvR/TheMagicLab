@@ -126,7 +126,7 @@ MathMagician.registerChapter(14, {
             <div class="example-step"><span class="step-num">3</span><span>Sirkel r = 9: A = π(81) ≈ 254,47 cm²</span></div>
             <div class="example-step"><span class="step-num">4</span><span>Saamgesteld: reghoek + halfsirkel = lw + ½πr²</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Die hoogte van 'n parallelogram/driehoek is LOODREG op die basis —
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Die hoogte van 'n parallelogram/driehoek is LOODREG op die basis — nie die skuinssy nie.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Oppervlakte- en Omtrekberekenaar</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Kies 'n vorm en voer afmetings in. Oppervlakte en omtrek word onmiddellik bereken.</p>
@@ -168,7 +168,6 @@ MathMagician.registerChapter(14, {
             setL();
           })();
           </script>
-        nie die skuinssy nie.</span></div>
         `
       },
       questions: [

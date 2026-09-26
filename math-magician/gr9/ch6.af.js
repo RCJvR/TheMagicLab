@@ -108,7 +108,7 @@ MathMagician.registerChapter(6, {
             <div class="example-step"><span class="step-num">2</span><span>y = x²: draaipunt (0;0), open opwaarts, simmetrie-as x = 0</span></div>
             <div class="example-step"><span class="step-num">3</span><span>y = 6/x: gaan deur (1;6), (2;3), (3;2), (6;1) en (-1;-6), (-2;-3)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Om enige funksie te skets, maak altyd eers 'n tabel van waardes.
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Om enige funksie te skets, maak altyd eers 'n tabel van waardes. Gebruik ten minste 5 punte vir akkuraatheid.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Parabool-verkenner</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Verstel a, p, q in y = a(x&#8722;p)&#178; + q. Draaipunt, afsnitte en bereik werk regstreeks op.</p>
@@ -156,7 +156,6 @@ MathMagician.registerChapter(6, {
             update();
           })();
           </script>
-        Gebruik ten minste 5 punte vir akkuraatheid.</span></div>
         `
       },
       questions: [

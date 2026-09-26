@@ -30,7 +30,37 @@ MathMagician.registerChapter(5, {
             <div class="example-step"><span class="step-num">4</span><span>Is 50 'n term? 3n + 2 = 50 → n = 16. Ja, T16 = 50.</span></div>
             <div class="example-step"><span class="step-num">5</span><span>Is 51 'n term? 3n + 2 = 51 → n = 16,33. Nee (nie 'n natuurlike getal nie).</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In baie vuurhoutjiepatrone voeg elke nuwe figuur d vuurhoutjies by. Kyk na
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In baie vuurhoutjiepatrone voeg elke nuwe figuur d vuurhoutjies by. Kyk na wat elke keer bygevoeg word, nie net na die totaal nie.</span></div>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Lineêre Ry-verkenner</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer die eerste term en gemeenskaplike verskil in. Sien die ry, algemene term, en enige T&#8345;.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Eerste term (a)</label><input id="seqA" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Gemeenskaplike verskil (d)</label><input id="seqD" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">n =</label><input id="seqN" type="number" value="10" min="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+            </div>
+            <div id="seqOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('seqA').value)||0;
+              const d=parseFloat(document.getElementById('seqD').value)||0;
+              const n=parseInt(document.getElementById('seqN').value)||1;
+              const terms=Array.from({length:8},function(_,i){return a+i*d;});
+              const tn=a+(n-1)*d;
+              const c=a-d;
+              const genStr=d===0?String(a):d+'n'+(c>0?' + '+c:c<0?' \u2212 '+Math.abs(c):'');
+              document.getElementById('seqOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Eerste 8 terme:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Algemene term:</span><span style="color:#fbbf24;">T\u2099 = '+genStr+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">T<sub>'+n+'</sub>:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+tn+'</span></div>',
+              ].join('');
+            }
+            ['seqA','seqD','seqN'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            update();
+          })();
+          </script>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Meetkundige Patroon-bouer</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Stel die beginwaarde en hoeveel elemente per stap bygevoeg word. Sien die visuele patroon en formule groei.</p>
@@ -80,7 +110,6 @@ MathMagician.registerChapter(5, {
             update();
           })();
           </script>
-        wat elke keer bygevoeg word, nie net na die totaal nie.</span></div>
         `
       },
       questions: [

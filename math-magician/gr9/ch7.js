@@ -30,7 +30,45 @@ MathMagician.registerChapter(7, {
             <div class="example-step"><span class="step-num">4</span><span>(5x - 2)(5x + 2) = 25x² - 4</span></div>
             <div class="example-step"><span class="step-num">5</span><span>Simplify: (x + 2)² - (x - 1)(x + 3) = x² + 4x + 4 - (x² + 2x - 3) = 2x + 7</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state restrictions when simplifying algebraic fractions —
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state restrictions when simplifying algebraic fractions — values of x that make the denominator zero are excluded from the domain.</span></div>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Binomial Expander</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Expand (ax + b)(cx + d) step by step with FOIL, then collect like terms.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;align-items:center;"><span style="color:#a5b4fc;margin-top:16px;">(</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9exA" id="g9exAL">a</label><input id="g9exA" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">x +</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9exB" id="g9exBL">b</label><input id="g9exB" type="number" value="3" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">)(</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9exC" id="g9exCL">c</label><input id="g9exC" type="number" value="1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">x +</span><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9exD" id="g9exDL">d</label><input id="g9exD" type="number" value="-4" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><span style="color:#a5b4fc;margin-top:16px;">)</span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;"><button type="button" data-g9ex="1,4,1,-3" style="padding:4px 10px;border-radius:999px;border:1px solid rgba(99,102,241,0.40);background:rgba(99,102,241,0.12);color:#c7d2fe;font-family:JetBrains Mono,monospace;font-size:12px;cursor:pointer;">(x+4)(x−3)</button><button type="button" data-g9ex="2,3,2,3" style="padding:4px 10px;border-radius:999px;border:1px solid rgba(99,102,241,0.40);background:rgba(99,102,241,0.12);color:#c7d2fe;font-family:JetBrains Mono,monospace;font-size:12px;cursor:pointer;">(2x+3)²</button><button type="button" data-g9ex="5,-2,5,2" style="padding:4px 10px;border-radius:999px;border:1px solid rgba(99,102,241,0.40);background:rgba(99,102,241,0.12);color:#c7d2fe;font-family:JetBrains Mono,monospace;font-size:12px;cursor:pointer;">(5x−2)(5x+2)</button><button type="button" data-g9ex="3,0,2,-5" style="padding:4px 10px;border-radius:999px;border:1px solid rgba(99,102,241,0.40);background:rgba(99,102,241,0.12);color:#c7d2fe;font-family:JetBrains Mono,monospace;font-size:12px;cursor:pointer;">3x(2x−5)</button></div>
+            <div id="g9exOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function expander(T) {
+  var $ = function (id) { return document.getElementById(id); };
+  function n(id) { var x = parseFloat($(id).value.replace(',', '.')); return isNaN(x) ? 0 : x; }
+  function term(c, v, first) { // signed term like " + 3x", "−x²"
+    if (c === 0) return '';
+    var abs = Math.abs(c), sign = c < 0 ? (first ? '−' : ' − ') : (first ? '' : ' + ');
+    return sign + (abs === 1 && v ? '' : String(abs).replace('.', ',')) + v;
+  }
+  function poly(a, b, c) { var s = term(a, 'x²', true); s += term(b, 'x', !s); s += term(c, '', !s); return s || '0'; }
+  function bin(p, q) { var s = term(p, 'x', true); s += term(q, '', !s); return '(' + (s || '0') + ')'; }
+  function run() {
+    var a = n('g9exA'), b = n('g9exB'), c = n('g9exC'), d = n('g9exD'), out = $('g9exOut');
+    var F = a * c, O = a * d, I = b * c, L = b * d;
+    var h = '<div>' + bin(a, b) + bin(c, d) + '</div>' +
+      '<div style="color:rgba(221,225,240,0.55);">= ' + T.F + ' ' + poly(F, 0, 0) + ' &nbsp; ' + T.O + ' ' + poly(0, O, 0) + ' &nbsp; ' + T.I + ' ' + poly(0, I, 0) + ' &nbsp; ' + T.L + ' ' + poly(0, 0, L) + '</div>' +
+      '<div>= ' + poly(F, 0, 0) + term(O, 'x', false) + term(I, 'x', false) + term(L, '', false) + '</div>' +
+      '<div style="color:#6ee7b7;font-size:15px;font-weight:700;">= ' + poly(F, O + I, L) + '</div>';
+    var note = '';
+    if (a === c && b === -d && b !== 0) note = T.dos;
+    else if (a === c && b === d && b !== 0) note = T.sq;
+    if (note) h += '<div style="color:#fbbf24;">💡 ' + note + '</div>';
+    out.innerHTML = h;
+  }
+  ['g9exA', 'g9exB', 'g9exC', 'g9exD'].forEach(function (id) { $(id).addEventListener('input', run); });
+  document.querySelectorAll('[data-g9ex]').forEach(function (btn) {
+    btn.addEventListener('click', function () { var v = btn.getAttribute('data-g9ex').split(','); ['g9exA', 'g9exB', 'g9exC', 'g9exD'].forEach(function (id, i) { $(id).value = v[i]; }); run(); });
+  });
+  run();
+})({"tryit":"Try it","F":"F:","O":"O:","I":"I:","L":"L:","dos":"Difference of squares: (a + b)(a − b) = a² − b², so the middle terms cancel.","sq":"Square of a binomial: (a + b)² = a² + 2ab + b²."});
+          </script>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Algebraic Fraction Evaluator</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a value of x to evaluate a rational expression. Explore how the numerator and denominator change, and spot undefined values.</p>
@@ -84,7 +122,6 @@ MathMagician.registerChapter(7, {
             evalF();
           })();
           </script>
-        values of x that make the denominator zero are excluded from the domain.</span></div>
         `
       },
       questions: [

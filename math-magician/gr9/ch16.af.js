@@ -150,7 +150,7 @@ MathMagician.registerChapter(16, {
               <strong>Effek op omtrek:</strong> vermenigvuldig met k
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Vir 'n vergroting met faktor k vanaf die oorsprong:
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Vir 'n vergroting met faktor k vanaf die oorsprong: elke punt beweeg langs sy lyn deur die oorsprong, k keer verder weg.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Probeer dit — Transformasieverkenner</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer 'n punt in en kies 'n transformasie. Sien die beeld en die gebruikte reël.</p>
@@ -193,7 +193,6 @@ MathMagician.registerChapter(16, {
             tx();
           })();
           </script>
-          elke punt beweeg langs sy lyn deur die oorsprong, k keer verder weg.</span></div>
         `
       },
       questions: [

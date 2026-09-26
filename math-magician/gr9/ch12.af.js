@@ -32,7 +32,7 @@ MathMagician.registerChapter(12, {
               <em>Hierdie verhoudings werk ook in OMGEKEERDE rigting: as enige paar aan die voorwaarde voldoen, is die lyne ewewydig.</em>
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Gee altyd 'n rede by elke hoekberekening. "Regoorst. ∠e", "Verw. binnehoeke, AB ∥ CD", "Mede-binnehoeke, PQ ∥ RS" —
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Gee altyd 'n rede by elke hoekberekening. "Regoorst. ∠e", "Verw. binnehoeke, AB ∥ CD", "Mede-binnehoeke, PQ ∥ RS" — redes verdien punte.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Hoekverhouding-oplosser</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer bekende hoeke in, kies 'n verhouding, en vind die onbekende met 'n rede.</p>
@@ -72,7 +72,6 @@ MathMagician.registerChapter(12, {
             solve();
           })();
           </script>
-        redes verdien punte.</span></div>
         `
       },
       questions: [

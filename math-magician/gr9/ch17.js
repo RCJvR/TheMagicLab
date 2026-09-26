@@ -36,7 +36,7 @@ MathMagician.registerChapter(17, {
             <div class="example-step"><span class="step-num">3</span><span>E = 12 (edges)</span></div>
             <div class="example-step"><span class="step-num">4</span><span>F + V - E = 6 + 8 - 12 = 2 ✓</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Euler's formula works for all convex polyhedra. It's a quick check for your face/vertex/edge counts.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Euler's Formula Checker</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two of F, V, E and the third is calculated using F + V &#8722; E = 2.</p>
@@ -65,7 +65,6 @@ MathMagician.registerChapter(17, {
             ['efF','efV','efE'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')check();});});
           })();
           </script>
-        Euler's formula works for all convex polyhedra. It's a quick check for your face/vertex/edge counts.</span></div>
         `
       },
       questions: [

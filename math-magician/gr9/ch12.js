@@ -32,7 +32,7 @@ MathMagician.registerChapter(12, {
               <em>These relationships also work in REVERSE: if any pair satisfies the condition, the lines are parallel.</em>
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always give a reason with every angle calculation. "Vert. opp. ∠s", "Alt. ∠s, AB ∥ CD", "Co-interior ∠s, PQ ∥ RS" — 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always give a reason with every angle calculation. "Vert. opp. ∠s", "Alt. ∠s, AB ∥ CD", "Co-interior ∠s, PQ ∥ RS" — reasons earn marks.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Angle Relationship Solver</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter known angles, select a relationship, and find the unknown with a reason.</p>
@@ -72,7 +72,6 @@ MathMagician.registerChapter(12, {
             solve();
           })();
           </script>
-        reasons earn marks.</span></div>
         `
       },
       questions: [

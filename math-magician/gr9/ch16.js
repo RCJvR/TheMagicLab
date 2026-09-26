@@ -150,7 +150,7 @@ MathMagician.registerChapter(16, {
               <strong>Effect on perimeter:</strong> multiplied by k
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For enlargement by factor k from the origin: 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For enlargement by factor k from the origin: each point moves along its line through the origin, k times further away.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Transformation Explorer</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a point and pick a transformation. See the image and the rule used.</p>
@@ -193,7 +193,6 @@ MathMagician.registerChapter(16, {
             tx();
           })();
           </script>
-        each point moves along its line through the origin, k times further away.</span></div>
         `
       },
       questions: [

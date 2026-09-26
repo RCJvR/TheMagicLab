@@ -123,42 +123,42 @@ MathMagician.registerChapter(11, {
               <strong>Skaalfaktor k:</strong> as sye van △ABC k keer die sye van △DEF is, dan is die oppervlaktes in die verhouding k²
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>By gelykvormigheidsprobleme, pas altyd
+          <div class="tip-box"><span class="tip-icon">💡</span><span>By gelykvormigheidsprobleme, pas altyd ooreenstemmende hoekpunte in dieselfde volgorde by. △ABC ||| △DEF beteken A→D, B→E, C→F.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
-            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Afstand, Middelpunt & Gradiënt</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer twee punte in. Afstand, middelpunt, gradiënt en die vergelyking van die lyn word bereken.</p>
-            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">x&#8321;</label><input id="agX1" type="number" value="1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">y&#8321;</label><input id="agY1" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">x&#8322;</label><input id="agX2" type="number" value="5" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">y&#8322;</label><input id="agY2" type="number" value="6" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <button id="agBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Bereken</button>
-            </div>
-            <div id="agOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;"></div>
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Gelykvormige Driehoeke-sakrekenaar</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer die sye van △ABC en △DEF in (in ooreenstemmende volgorde). Laat een sy van △DEF oop om dit te vind.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stA" id="g9stAL">AB</label><input id="g9stA" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stB" id="g9stBL">BC</label><input id="g9stB" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stC" id="g9stCL">AC</label><input id="g9stC" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stD" id="g9stDL">DE</label><input id="g9stD" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stE" id="g9stEL">EF</label><input id="g9stE" type="number" value="8" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9stF" id="g9stFL">DF</label><input id="g9stF" type="number" value="" placeholder="?" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
+            <div id="g9stOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
           <script>
-          (function(){
-            function f(v){return Math.round(v*10000)/10000;}
-            function calc(){
-              var x1=parseFloat(document.getElementById('agX1').value)||0,y1=parseFloat(document.getElementById('agY1').value)||0;
-              var x2=parseFloat(document.getElementById('agX2').value)||0,y2=parseFloat(document.getElementById('agY2').value)||0;
-              var dx=x2-x1,dy=y2-y1,dist=Math.sqrt(dx*dx+dy*dy);
-              var mx=(x1+x2)/2,my=(y1+y2)/2;
-              var m=dx===0?null:dy/dx,c=m===null?null:y1-m*x1;
-              var line=m===null?'x='+x1:m===0?'y='+f(c):'y='+f(m)+'x'+(c>0?'+'+f(c):c<0?'−'+f(Math.abs(c)):'');
-              document.getElementById('agOut').innerHTML=[
-                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Afstand:</span><span style="color:#fbbf24;">'+f(dist)+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Middelpunt M:</span><span style="color:#a5b4fc;">('+f(mx)+' ; '+f(my)+')</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Gradiënt m:</span><span style="color:#a5b4fc;">'+(m===null?'onbepaald':f(m))+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Lyn:</span><span style="color:#6ee7b7;font-weight:700;">'+line+'</span></div>',
-              ].join('');
-            }
-            document.getElementById('agBtn').addEventListener('click',calc);
-            ['agX1','agY1','agX2','agY2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-
-          })();
+          (function similarTriangles(T) {
+  var $ = function (id) { return document.getElementById(id); };
+  var ids = ['g9stA', 'g9stB', 'g9stC', 'g9stD', 'g9stE', 'g9stF'];
+  function v(id) { var s = $(id).value.replace(',', '.').trim(); return s === '' ? null : parseFloat(s); }
+  function f(x) { return String(Math.round(x * 1000) / 1000).replace('.', ','); }
+  function run() {
+    var s = ids.map(v), out = $('g9stOut');
+    if (s.slice(0, 3).some(function (x) { return x === null || isNaN(x) || x <= 0; })) { out.innerHTML = '<span style="color:#fca5a5;">' + T.needABC + '</span>'; return; }
+    var blanks = s.slice(3).filter(function (x) { return x === null; }).length;
+    if (blanks > 1 || s.slice(3).some(function (x) { return x !== null && (isNaN(x) || x <= 0); })) { out.innerHTML = '<span style="color:#fca5a5;">' + T.needDEF + '</span>'; return; }
+    var names = ['DE/AB', 'EF/BC', 'DF/AC'], ratios = [];
+    for (var i = 0; i < 3; i++) if (s[i + 3] !== null) ratios.push([names[i], s[i + 3] / s[i]]);
+    var k = ratios[0][1], same = ratios.every(function (r) { return Math.abs(r[1] - k) < 1e-6 * Math.max(1, k); });
+    var h = '<div>' + ratios.map(function (r) { return r[0] + ' = ' + f(r[1]); }).join(' &nbsp; ') + '</div>';
+    if (!same) { out.innerHTML = h + '<div style="color:#fca5a5;">✗ ' + T.notSim + '</div>'; return; }
+    if (blanks === 1) {
+      var j = s.slice(3).indexOf(null), side = ['DE', 'EF', 'DF'][j], orig = ['AB', 'BC', 'AC'][j];
+      h += '<div style="color:#fbbf24;">' + side + ' = k × ' + orig + ' = ' + f(k) + ' × ' + f(s[j]) + ' = <b>' + f(k * s[j]) + '</b></div>';
+    }
+    h += '<div style="color:#6ee7b7;">✓ ' + (Math.abs(k - 1) < 1e-9 ? T.cong : T.sim) + '</div>' +
+      '<div>' + T.scale + ' k = ' + f(k) + ' &nbsp; | &nbsp; ' + T.area + ' = k² = ' + f(k * k) + '</div>';
+    out.innerHTML = h;
+  }
+  ids.forEach(function (id) { $(id).addEventListener('input', run); });
+  run();
+})({"tryit":"Probeer dit","needABC":"Voer al drie sye van △ABC in.","needDEF":"Voer die sye van △DEF in — hoogstens een mag oop wees.","notSim":"Die verhoudings verskil, dus is die driehoeke NIE gelykvormig nie.","sim":"Gelykvormig (sye in verhouding: SSS-gelykvormigheid).","cong":"Kongruent (k = 1: alle sye gelyk, SSS).","scale":"Skaalfaktor","area":"oppervlakteverhouding"});
           </script>
-        ooreenstemmende hoekpunte in dieselfde volgorde by. △ABC ||| △DEF beteken A→D, B→E, C→F.</span></div>
         `
       },
       questions: [

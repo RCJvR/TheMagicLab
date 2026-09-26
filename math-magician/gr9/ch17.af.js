@@ -36,7 +36,7 @@ MathMagician.registerChapter(17, {
             <div class="example-step"><span class="step-num">3</span><span>R = 12 (rande)</span></div>
             <div class="example-step"><span class="step-num">4</span><span>V + H - R = 6 + 8 - 12 = 2 ✓</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Euler se formule geld vir alle konvekse veelvlakke. Dit is 'n vinnige kontrole vir jou vlak-/hoekpunt-/randtellings.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Probeer dit — Euler-formulekontroleerder</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Laat een veld leeg. Voer enige twee van V, H, R in en die derde word bereken met behulp van V + H − R = 2.</p>
@@ -65,7 +65,6 @@ MathMagician.registerChapter(17, {
             ['efF','efV','efE'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')check();});});
           })();
           </script>
-          Euler se formule geld vir alle konvekse veelvlakke. Dit is 'n vinnige kontrole vir jou vlak-/hoekpunt-/randtellings.</span></div>
         `
       },
       questions: [
