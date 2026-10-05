@@ -404,6 +404,8 @@ const urlsToCache = [
   '/conjurer_interpreter.js',
   '/math-magician/index.html',
   '/math-magician/grapher.html',
+  '/math-magician/calculator.html',
+  '/math-magician/calc-engine.js',
   '/math-magician/numberline.html',
   '/assets/plot-kit.js',
   '/assets/plot-tools.css',

@@ -1,0 +1,773 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#08090b">
+  <title>Scientific Calculator · Math Magician</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111418'/%3E%3Crect x='14' y='10' width='36' height='15' rx='3' fill='%23b8c7a8'/%3E%3Cg fill='%23e3e8ef'%3E%3Crect x='14' y='31' width='9' height='7' rx='2'/%3E%3Crect x='27.500' y='31' width='9' height='7' rx='2'/%3E%3Crect x='41' y='31' width='9' height='7' rx='2'/%3E%3Crect x='14' y='42' width='9' height='7' rx='2'/%3E%3Crect x='27.500' y='42' width='9' height='7' rx='2'/%3E%3C/g%3E%3Crect x='41' y='42' width='9' height='18' rx='2' fill='%23f59e0b'/%3E%3Crect x='14' y='53' width='22.500' height='7' rx='2' fill='%23e3e8ef'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #08090b; --panel: #111418; --panel-2: #181c22; --line: rgba(255,255,255,.1);
+      --text: #e3e8ef; --text-2: rgba(226,232,240,.68); --text-3: rgba(226,232,240,.45);
+      --accent: #f59e0b; --shift: #f5b83d; --alpha: #ef6f8a; --ok: #4ade80; --err: #ff6b6b;
+      --body: #1a1e25; --key: #2b313b; --key-hi: #343b47; --key-num: #454e5c; --key-num-hi: #525c6c;
+      --lcd: #c9d6bd; --lcd-ink: #1c2417; --lcd-dim: rgba(28,36,23,.5);
+      --font: "Cabinet Grotesk", "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { background: var(--bg); }
+    body { font-family: var(--font); color: var(--text); background: radial-gradient(1200px 500px at 50% -10%, #1c2230 0%, var(--bg) 60%) no-repeat, var(--bg); min-height: 100vh; line-height: 1.5; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px max(16px, env(safe-area-inset-left)); border-bottom: 1px solid var(--line); }
+    .logo { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+    .logo svg { color: var(--accent); }
+    .back { font-size: 13px; color: var(--text-2); text-decoration: none; padding: 6px 12px; border: 1px solid var(--line); border-radius: 99px; }
+    .back:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
+
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); justify-items: center; }
+    @media (min-width: 860px) { .wrap { grid-template-columns: 420px minmax(0, 1fr); align-items: start; justify-items: stretch; } }
+
+    /* ── The calculator body ─────────────────────────────────────────────── */
+    .calc { width: 100%; max-width: 420px; background: linear-gradient(180deg, #20252d, var(--body)); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 14px 14px 18px; box-shadow: 0 30px 70px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); }
+    .brand { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px 8px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+    .brand b { color: var(--text-2); letter-spacing: .08em; }
+
+    .lcd { background: var(--lcd); color: var(--lcd-ink); border-radius: 10px; padding: 6px 10px 8px; box-shadow: inset 0 3px 8px rgba(0,0,0,.35), 0 0 0 3px #0e1116; font-family: var(--mono); }
+    .ind { display: flex; flex-wrap: wrap; gap: 2px 9px; min-height: 16px; font-size: 10px; font-weight: 700; letter-spacing: .04em; color: var(--lcd-ink); }
+    .ind span { opacity: .16; transition: opacity .1s; }
+    .ind span.on { opacity: 1; }
+    .ind .grow { flex: 1; opacity: 1; text-align: right; }
+    .expr { min-height: 30px; max-height: 62px; overflow-y: auto; overflow-x: hidden; font-size: 20px; line-height: 1.5; word-break: break-all; padding-top: 2px; cursor: text; }
+    .expr .tk { white-space: pre-wrap; }
+    .expr .cur { display: inline-block; width: 2px; height: 1.15em; vertical-align: text-bottom; background: var(--lcd-ink); margin: 0 -1px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .res { min-height: 40px; text-align: right; font-size: 28px; font-weight: 600; line-height: 1.3; padding-top: 2px; overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+    .res.err { font-size: 20px; font-weight: 700; }
+    .res small { display: block; font-size: 13px; font-weight: 500; color: var(--lcd-dim); }
+    .fr { display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; }
+    .fr .fn { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.05; font-size: .8em; }
+    .fr .fn span:first-child { border-bottom: 2px solid currentColor; padding: 0 3px 1px; }
+    .fr .fn span:last-child { padding: 1px 3px 0; }
+    .fr .wh { font-size: .9em; }
+
+    .hint { margin-top: 8px; min-height: 18px; font-size: 11.5px; color: var(--text-3); text-align: center; }
+
+    /* ── Keys ────────────────────────────────────────────────────────────── */
+    .keys { margin-top: 10px; display: grid; gap: 7px; }
+    .row6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; }
+    .row5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+    .keys .sep { height: 6px; }
+    .k { position: relative; height: 42px; padding-top: 11px; border-radius: 8px; background: var(--key); font-weight: 700; font-size: 13px; letter-spacing: -.01em; box-shadow: 0 3px 0 rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.1); transition: transform .05s, box-shadow .05s, background .1s; user-select: none; touch-action: manipulation; }
+    .k:hover { background: var(--key-hi); }
+    .k:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
+    .k .m { display: block; line-height: 1; }
+    .k .s, .k .a { position: absolute; top: 3px; font-size: 8.5px; font-weight: 800; line-height: 1; letter-spacing: 0; white-space: nowrap; }
+    .k .s { left: 5px; color: var(--shift); }
+    .k .a { right: 5px; color: var(--alpha); }
+    .k.num { background: var(--key-num); height: 46px; padding-top: 0; font-size: 18px; font-weight: 700; display: grid; place-items: center; }
+    .k.num:hover { background: var(--key-num-hi); }
+    .k.num .s, .k.num .a { top: 4px; }
+    .k.op { background: #3b4350; height: 46px; padding-top: 0; display: grid; place-items: center; font-size: 19px; }
+    .k.clr { background: #c2570f; height: 46px; padding-top: 0; display: grid; place-items: center; color: #fff; font-size: 14px; }
+    .k.clr:hover { background: #d9650f; }
+    .k.eq { background: var(--accent); color: #1a1200; height: 46px; padding-top: 0; display: grid; place-items: center; font-size: 22px; }
+    .k.eq:hover { background: #fbb83a; }
+    .k.mod { background: #20242b; }
+    .k.nav { background: #20242b; padding-top: 0; display: grid; place-items: center; font-size: 12px; height: 34px; }
+    .k.sh { color: var(--shift); } .k.al { color: var(--alpha); }
+    .k.sel { outline: 2px solid currentColor; outline-offset: -2px; }
+    .k.pend { box-shadow: 0 0 0 2px var(--accent); }
+
+    /* ── Mode panels (STAT / EQN / TABLE) ───────────────────────────────── */
+    .panel { margin-top: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+    .panel h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .panel label { font-size: 12px; color: var(--text-2); }
+    .panel input, .panel select { width: 100%; background: #0c0e12; color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px; font: 500 14px var(--mono); min-width: 0; }
+    .panel input.bad { border-color: var(--err); }
+    .panel select { font-family: var(--font); }
+    .btn { padding: 7px 12px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line); font-size: 12.5px; font-weight: 700; }
+    .btn:hover { border-color: rgba(255,255,255,.28); }
+    .btn.pri { background: var(--accent); color: #1a1200; border-color: transparent; }
+    .grid { display: grid; gap: 6px; }
+    .stat-rows { grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); max-height: 230px; overflow-y: auto; padding: 2px; }
+    .stat-rows .h { font-size: 11px; color: var(--text-3); text-align: center; }
+    .results { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 14px; margin-top: 12px; font-family: var(--mono); font-size: 13px; }
+    .results div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed var(--line); padding-bottom: 3px; }
+    .results div span:first-child { color: var(--text-2); }
+    .eqn-grid { display: grid; gap: 6px; align-items: center; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
+    .eqn-grid .t { font-size: 12px; color: var(--text-3); text-align: center; }
+    .sol { margin-top: 12px; display: grid; gap: 6px; font-family: var(--mono); font-size: 15px; }
+    .sol > div { display: flex; gap: 8px; align-items: center; }
+    .sol .nm { color: var(--accent); min-width: 34px; }
+    .sol .fr { color: var(--text); }
+    .sol .fr .fn span:first-child { border-bottom-color: var(--text-2); }
+    .sol small { color: var(--text-3); font-size: 12px; }
+    .note { margin-top: 10px; font-size: 12px; color: var(--text-3); }
+    .err-msg { color: var(--err); font-family: var(--mono); font-weight: 700; }
+    table.tbl { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13.5px; margin-top: 10px; }
+    table.tbl th, table.tbl td { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: right; }
+    table.tbl th { color: var(--text-3); font-weight: 600; }
+
+    /* ── Overlays (MODE, SETUP) ──────────────────────────────────────────── */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+    .overlay.open { display: flex; }
+    .sheet { background: var(--panel); border: 1px solid rgba(255,255,255,.16); border-radius: 16px; padding: 18px; width: 100%; max-width: 380px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+    .sheet h3 { font-size: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .sheet h3 button { color: var(--text-2); font-size: 20px; line-height: 1; padding: 0 4px; }
+    .choices { display: grid; gap: 8px; }
+    .choice { text-align: left; padding: 11px 14px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); font-weight: 700; display: flex; justify-content: space-between; gap: 10px; }
+    .choice small { color: var(--text-3); font-weight: 500; }
+    .choice:hover, .choice.on { border-color: var(--accent); }
+    .set-group { margin-bottom: 14px; }
+    .set-group > div:first-child { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+    .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+    .seg button { padding: 7px 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel-2); font-size: 13px; font-weight: 700; }
+    .seg button.on { background: var(--accent); color: #1a1200; border-color: transparent; }
+    .digits { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--text-2); }
+    .digits input { width: 64px; background: #0c0e12; color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; font: 500 14px var(--mono); }
+
+    /* ── Side panel ──────────────────────────────────────────────────────── */
+    .side { width: 100%; display: grid; gap: 18px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .card h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .hist { list-style: none; display: grid; gap: 6px; max-height: 280px; overflow-y: auto; }
+    .hist li { display: block; width: 100%; text-align: left; padding: 8px 10px; border-radius: 9px; background: var(--panel-2); border: 1px solid transparent; font-family: var(--mono); font-size: 13px; cursor: pointer; }
+    .hist li:hover { border-color: var(--accent); }
+    .hist .e { color: var(--text-2); word-break: break-all; }
+    .hist .r { color: var(--text); font-weight: 600; text-align: right; }
+    .empty { color: var(--text-3); font-size: 13px; }
+    .guide { display: grid; gap: 10px; font-size: 13.5px; color: var(--text-2); }
+    .guide code { font-family: var(--mono); font-size: 12px; background: #0c0e12; border: 1px solid var(--line); padding: 1px 6px; border-radius: 5px; color: var(--text); white-space: nowrap; }
+    .guide .sh { color: var(--shift); font-weight: 700; } .guide .al { color: var(--alpha); font-weight: 700; }
+    .guide h3 { font-size: 13px; color: var(--text); margin-top: 4px; }
+    .kbd { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; color: var(--text-2); }
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 12px); background: var(--panel-2); border: 1px solid rgba(255,255,255,.2); padding: 9px 16px; border-radius: 11px; font-size: 13px; opacity: 0; pointer-events: none; transition: .2s; z-index: 60; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    @media (max-width: 400px) { .k { font-size: 12px; } .row6, .row5, .keys { gap: 6px; } .expr { font-size: 18px; } .res { font-size: 25px; } }
+    @media (prefers-reduced-motion: reduce) { .expr .cur { animation: none; } .k { transition: none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Math Magician</a>
+    <a class="back" href="index.html">← Back to Math Magician</a>
+  </nav>
+
+  <main class="wrap">
+    <section class="calc" aria-label="Scientific calculator">
+      <div class="brand"><b>Scientific Calculator</b><span id="modeName">COMP</span></div>
+
+      <div class="lcd" id="lcd">
+        <div class="ind" id="ind" aria-hidden="true">
+          <span data-i="S">S</span><span data-i="A">A</span><span data-i="hyp">hyp</span><span data-i="pend">STO▶</span><span data-i="M">M</span>
+          <span class="grow" id="indRight"></span>
+        </div>
+        <div class="expr" id="expr" role="textbox" aria-label="Expression" aria-readonly="true"></div>
+        <div class="res" id="res" aria-live="polite"></div>
+      </div>
+      <div class="hint" id="hint"></div>
+
+      <div id="modePanel"></div>
+      <div class="keys" id="keys" aria-label="Keypad"></div>
+    </section>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="hHist">
+        <h2 id="hHist">History <button class="btn" id="clearHist" type="button">Clear</button></h2>
+        <ul class="hist" id="hist"></ul>
+      </section>
+      <section class="card" aria-labelledby="hGuide">
+        <h2 id="hGuide">Quick guide</h2>
+        <div class="guide">
+          <p>Works like the CAPS-approved scientific calculators. <span class="sh">SHIFT</span> unlocks the <span class="sh">yellow</span> functions, <span class="al">ALPHA</span> the <span class="al">pink</span> letters (variables A–F, X, Y, M).</p>
+          <h3>Try these</h3>
+          <div><code>sin 30</code> → ½ &nbsp; <code>2<span class="sh">SHIFT</span>sin</code> inverse trig &nbsp; <code>√ 144</code></div>
+          <div><code>1 a b/c 3 + 1 a b/c 6</code> → ½, then <code>S⇔D</code> flips fraction ⇄ decimal</div>
+          <div><code>5 <span class="sh">SHIFT</span> x² </code> → 125 &nbsp; <code>8 nCr 3</code> → 56 &nbsp; <code>5 <span class="sh">SHIFT</span> x⁻¹</code> → 120</div>
+          <div><code>Ans</code> uses your last answer; start with <code>+ − × ÷</code> and it is inserted for you. <code>▲</code> / <code>▼</code> replay earlier calculations.</div>
+          <div><code>MODE</code> → STAT for mean, standard deviation, quartiles and regression; EQN for simultaneous, quadratic and cubic equations; TABLE for f(x) tables. <code><span class="sh">SHIFT</span> MODE</code> sets Deg/Rad/Gra, Fix/Sci and the decimal comma.</div>
+          <h3>Keyboard</h3>
+          <div class="kbd">
+            <span><code>0–9 . + − * / ^ ( )</code></span><span>type normally</span>
+            <span><code>Enter</code></span><span>=</span>
+            <span><code>Backspace</code> · <code>Esc</code></span><span>DEL · AC</span>
+            <span><code>← → ↑ ↓</code></span><span>cursor · replay history</span>
+            <span><code>s c t</code> · <code>l n</code></span><span>sin cos tan · log ln</span>
+            <span><code>r</code> · <code>p</code> · <code>E</code></span><span>√ · π · ×10ˣ</span>
+            <span><code>!</code> · <code>%</code> · <code>a</code></span><span>x! · percent · Ans</span>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <div class="overlay" id="modeOv" role="dialog" aria-modal="true" aria-label="Mode">
+    <div class="sheet"><h3>Mode <button type="button" data-close aria-label="Close">×</button></h3>
+      <div class="choices" id="modeChoices"></div>
+    </div>
+  </div>
+  <div class="overlay" id="setOv" role="dialog" aria-modal="true" aria-label="Setup">
+    <div class="sheet"><h3>Setup <button type="button" data-close aria-label="Close">×</button></h3>
+      <div id="setBody"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="calc-engine.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    const E = window.CalcEngine;
+    const $ = id => document.getElementById(id);
+
+    // ── State ──────────────────────────────────────────────────────────────
+    const SETKEY = 'mm_calc_settings_v1';
+    const settings = Object.assign({ angle: 'deg', fmt: 'norm1', digits: 0, mixed: true, comma: false }, (() => {
+      try { return JSON.parse(localStorage.getItem(SETKEY) || '{}'); } catch (e) { return {}; }
+    })());
+    const saveSettings = () => { try { localStorage.setItem(SETKEY, JSON.stringify(settings)); } catch (e) { /* private mode */ } };
+
+    const S = {
+      mode: 'comp',            // comp | stat | eqn | table
+      tokens: [], cur: 0,
+      shift: false, alpha: false, hyp: false, pending: null,   // pending: 'STO' | 'RCL'
+      done: false,             // an answer is showing
+      last: null,              // { val, extra } of the displayed answer
+      view: null,              // null | 'dms' | 'dec' | 'frac' — how the answer is shown
+      error: null,
+      ans: null, vars: {}, hist: [], histPos: -1,
+    };
+    const MODES = [
+      ['comp', 'COMP', 'Calculations'],
+      ['stat', 'STAT', 'Statistics & regression'],
+      ['eqn', 'EQN', 'Equation solver'],
+      ['table', 'TABLE', 'Table of f(x) values'],
+    ];
+
+    // ── Keys ───────────────────────────────────────────────────────────────
+    // [id, label, shift label, alpha label, css class]. Actions are in ACT.
+    const TOP = [
+      [['shift', 'SHIFT', '', '', 'mod sh'], ['alpha', 'ALPHA', '', '', 'mod al'], ['left', '◀', '', '', 'nav'], ['right', '▶', '', '', 'nav'], ['up', '▲', '', '', 'nav'], ['down', '▼', '', '', 'nav']],
+      [['mode', 'MODE', 'SETUP', '', 'mod'], ['inv', 'x⁻¹', 'x!', ''], ['frac', 'a b/c', 'd/c', ''], ['sqrt', '√', '³√', ''], ['sq', 'x²', 'x³', ''], ['pow', 'xʸ', 'ˣ√', '']],
+      [['log', 'log', '10ˣ', ''], ['ln', 'ln', 'eˣ', ''], ['neg', '(−)', '', 'A'], ['dms', '° ′ ″', '▸DMS', 'B'], ['hyp', 'hyp', '', 'C'], ['sin', 'sin', 'sin⁻¹', 'D']],
+      [['cos', 'cos', 'cos⁻¹', 'E'], ['tan', 'tan', 'tan⁻¹', 'F'], ['rcl', 'RCL', 'STO', ''], ['lp', '(', 'Abs', 'X'], ['rp', ')', ',', 'Y'], ['sd', 'S⇔D', 'logₐ', '']],
+      [['npr', 'nPr', 'GCD', ''], ['ncr', 'nCr', 'LCM', ''], ['pol', 'Pol', 'Rec', ''], ['int', 'Int', 'Intg', ''], ['ran', 'Ran#', 'RanInt', ''], ['mplus', 'M+', 'M−', 'M']],
+    ];
+    const BOTTOM = [
+      [['7', '7', '', '', 'num'], ['8', '8', '', '', 'num'], ['9', '9', '', '', 'num'], ['del', 'DEL', '', '', 'clr'], ['ac', 'AC', '', '', 'clr']],
+      [['4', '4', '', '', 'num'], ['5', '5', '', '', 'num'], ['6', '6', '', '', 'num'], ['mul', '×', '', '', 'op'], ['div', '÷', '', '', 'op']],
+      [['1', '1', '', '', 'num'], ['2', '2', '', '', 'num'], ['3', '3', '', '', 'num'], ['add', '+', '', '', 'op'], ['sub', '−', '', '', 'op']],
+      [['0', '0', '', '', 'num'], ['dot', '.', '', '', 'num'], ['exp', '×10ˣ', 'π', 'e', 'op'], ['ans', 'Ans', '%', '', 'op'], ['eq', '=', '', '', 'eq']],
+    ];
+    const ACT = {
+      inv: { p: ['⁻¹'], s: ['!'] }, frac: { p: ['┘'], s: '@fmt' }, sqrt: { p: ['√('], s: ['³√('] },
+      sq: { p: ['²'], s: ['³'] }, pow: { p: ['^'], s: ['ˣ√'] },
+      log: { p: ['log('], s: ['10', '^', '('] }, ln: { p: ['ln('], s: ['e', '^', '('] },
+      neg: { p: ['-'], a: ['A'] }, dms: { p: ['°'], s: '@todms', a: ['B'] }, hyp: { p: '@hyp', a: ['C'] },
+      sin: { p: ['sin('], s: ['sin⁻¹('], a: ['D'] }, cos: { p: ['cos('], s: ['cos⁻¹('], a: ['E'] }, tan: { p: ['tan('], s: ['tan⁻¹('], a: ['F'] },
+      rcl: { p: '@rcl', s: '@sto' }, lp: { p: ['('], s: ['Abs('], a: ['X'] }, rp: { p: [')'], s: [','], a: ['Y'] },
+      sd: { p: '@sd', s: ['logₐ('] }, npr: { p: ['P'], s: ['GCD('] }, ncr: { p: ['C'], s: ['LCM('] },
+      pol: { p: ['Pol('], s: ['Rec('] }, int: { p: ['Int('], s: ['Intg('] }, ran: { p: ['Ran#'], s: ['RanInt('] },
+      mplus: { p: '@mplus', s: '@mminus', a: ['M'] },
+      del: { p: '@del' }, ac: { p: '@ac' }, eq: { p: '@eq' },
+      mul: { p: ['×'] }, div: { p: ['÷'] }, add: { p: ['+'] }, sub: { p: ['-'], sub: true },
+      dot: { p: ['.'] }, exp: { p: ['ᴇ'], s: ['π'], a: ['e'] }, ans: { p: ['Ans'], s: ['%'] },
+      shift: { p: '@shift' }, alpha: { p: '@alpha' }, mode: { p: '@mode', s: '@setup' },
+      left: { p: '@left' }, right: { p: '@right' }, up: { p: '@up' }, down: { p: '@down' },
+    };
+    '0123456789'.split('').forEach(d => { ACT[d] = { p: [d] }; });
+    const HYPABLE = { 'sin(': 'sinh(', 'cos(': 'cosh(', 'tan(': 'tanh(', 'sin⁻¹(': 'sinh⁻¹(', 'cos⁻¹(': 'cosh⁻¹(', 'tan⁻¹(': 'tanh⁻¹(' };
+    const BINARY_START = new Set(['+', '×', '÷', '^', 'ˣ√', 'P', 'C']);
+    const POSTFIX_START = new Set(['²', '³', '⁻¹', '!', '%', '┘']);
+
+    function buildKeys() {
+      const mk = (rows, cls) => rows.map(r => `<div class="${cls}">` + r.map(([id, m, s, a, c]) =>
+        `<button type="button" class="k ${c || ''}" data-k="${id}" aria-label="${(ARIA[id] || m).replace(/"/g, '&quot;')}">` +
+        (s ? `<span class="s">${s}</span>` : '') + (a ? `<span class="a">${a}</span>` : '') + `<span class="m">${m}</span></button>`).join('') + '</div>').join('');
+      $('keys').innerHTML = mk(TOP, 'row6') + '<div class="sep"></div>' + mk(BOTTOM, 'row5');
+    }
+    const ARIA = { shift: 'Shift', alpha: 'Alpha', left: 'Cursor left', right: 'Cursor right', up: 'Previous calculation', down: 'Next calculation',
+      inv: 'Reciprocal, shift factorial', frac: 'Fraction', sqrt: 'Square root, shift cube root', sq: 'Square, shift cube', pow: 'Power, shift x-th root',
+      neg: 'Negative sign', dms: 'Degrees minutes seconds', sd: 'Fraction to decimal', del: 'Delete', ac: 'All clear', exp: 'Times ten to the power, shift pi',
+      eq: 'Equals', mul: 'Multiply', div: 'Divide', add: 'Add', sub: 'Subtract', dot: 'Decimal point', ans: 'Last answer, shift percent', mplus: 'Memory plus, shift memory minus' };
+
+    // ── Rendering the display ──────────────────────────────────────────────
+    const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const SHOW = { '-': '−' };
+    function tokenText() { // display text for each token, DMS marks by position
+      let k = 0;
+      return S.tokens.map((t, i) => {
+        if (t === '°') { const sym = ['°', '′', '″'][k % 3]; k++; return sym; }
+        if (!(t.length === 1 && ((t >= '0' && t <= '9') || t === '.'))) k = 0;
+        return SHOW[t] || t;
+      });
+    }
+    function plainExpr() { return tokenText().join(''); }
+    function renderExpr() {
+      const txt = tokenText();
+      let h = '';
+      for (let i = 0; i <= txt.length; i++) {
+        if (i === S.cur) h += '<span class="cur"></span>';
+        if (i < txt.length) h += `<span class="tk" data-i="${i}">${esc(txt[i])}</span>`;
+      }
+      const ex = $('expr'); ex.innerHTML = h;
+      const c = ex.querySelector('.cur'); if (c && c.scrollIntoView) c.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+    function stdFmt() { return { fmt: settings.fmt, digits: settings.digits, comma: settings.comma }; }
+    const dec = f => E.formatDecimal(f, stdFmt());
+    function fractionHTML(val) {
+      const p = E.fractionParts(val, settings.mixed);
+      return (p.neg ? '−' : '') + '<span class="fr">' + (p.whole ? `<span class="wh">${p.whole}</span>` : '') +
+        `<span class="fn"><span>${p.n}</span><span>${p.d}</span></span></span>`;
+    }
+    function valueHTML(val, view) {
+      if (view === 'dms') return esc(E.formatDMS(val.f));
+      const wantFrac = view === 'frac' ? true : view === 'dec' ? false : !val.dec;
+      if (wantFrac && E.canFraction(val)) return fractionHTML(val);
+      return esc(dec(val.f));
+    }
+    function renderResult() {
+      const el = $('res');
+      el.classList.toggle('err', !!S.error);
+      if (S.error) { el.textContent = S.error; return; }
+      if (!S.last) { el.innerHTML = ''; return; }
+      const { val, extra } = S.last;
+      let h = valueHTML(val, S.view);
+      if (extra) h = `<small>${extra.map(([n, v]) => `${n} = ${esc(dec(v.f))}`).join('   ')}</small>`;
+      el.innerHTML = h;
+    }
+    function renderIndicators() {
+      const on = (k, v) => { const e = document.querySelector(`#ind [data-i="${k}"]`); if (e) { e.classList.toggle('on', !!v); if (k === 'pend') e.textContent = S.pending === 'RCL' ? 'RCL▶' : 'STO▶'; } };
+      on('S', S.shift); on('A', S.alpha); on('hyp', S.hyp); on('pend', S.pending);
+      on('M', S.vars.M && !E.isZero(S.vars.M));
+      const f = settings.fmt === 'fix' ? `Fix${settings.digits}` : settings.fmt === 'sci' ? `Sci${settings.digits || 10}` : settings.fmt === 'norm2' ? 'Norm2' : '';
+      $('indRight').textContent = [{ deg: 'D', rad: 'R', gra: 'G' }[settings.angle], f, settings.mixed ? '' : 'd/c'].filter(Boolean).join('  ');
+      document.querySelector('[data-k="shift"]').classList.toggle('sel', S.shift);
+      document.querySelector('[data-k="alpha"]').classList.toggle('sel', S.alpha);
+      document.querySelector('[data-k="hyp"]').classList.toggle('sel', S.hyp);
+      ['rcl'].forEach(id => document.querySelector(`[data-k="${id}"]`).classList.toggle('pend', S.pending === 'RCL'));
+      $('modeName').textContent = (MODES.find(m => m[0] === S.mode) || [])[1];
+      $('hint').textContent = S.pending ? `Press a variable key (A–F, X, Y, M) to ${S.pending === 'STO' ? 'store the answer in it' : 'recall it'}` : '';
+    }
+    function render() { renderExpr(); renderResult(); renderIndicators(); }
+    function toast(msg) {
+      const t = $('toast'); t.textContent = msg; t.classList.add('show');
+      clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 1700);
+    }
+
+    // ── Editing ────────────────────────────────────────────────────────────
+    function clearAnswer() { S.last = null; S.view = null; S.error = null; S.done = false; }
+    function input(tokens) {
+      if (S.mode !== 'comp' && S.mode !== 'table') return;
+      const first = tokens[0];
+      const needsAns = BINARY_START.has(first) || POSTFIX_START.has(first) || (first === '-' && tokens.sub);
+      if (S.done) {
+        if (needsAns && S.ans) { S.tokens = ['Ans']; S.cur = 1; } else { S.tokens = []; S.cur = 0; }
+      } else if (!S.tokens.length && needsAns && S.mode === 'comp') { S.tokens = ['Ans']; S.cur = 1; }
+      clearAnswer();
+      S.tokens.splice(S.cur, 0, ...tokens);
+      S.cur += tokens.length;
+      if (S.mode === 'table') renderTable();
+    }
+    function del() {
+      if (S.done || S.error) { S.cur = S.tokens.length; clearAnswer(); }
+      if (S.cur > 0) { S.tokens.splice(S.cur - 1, 1); S.cur--; }
+      if (S.mode === 'table') renderTable();
+    }
+    function ac() { S.tokens = []; S.cur = 0; clearAnswer(); S.shift = S.alpha = S.hyp = false; S.pending = null; S.histPos = -1; if (S.mode === 'table') renderTable(); }
+
+    function ctx() { return { angle: settings.angle, vars: S.vars, ans: S.ans }; }
+    function calculate() {
+      try {
+        const r = E.evaluate(S.tokens, ctx());
+        S.ans = r.val; S.last = r; S.error = null; S.view = null; S.done = true;
+        const entry = { tokens: S.tokens.slice(), html: valueHTML(r.val, null), text: plainExpr() };
+        const prev = S.hist[0];
+        if (!prev || prev.text !== entry.text || prev.html !== entry.html) S.hist.unshift(entry);
+        if (S.hist.length > 50) S.hist.pop();
+        S.histPos = -1; renderHist();
+        return true;
+      } catch (e) {
+        S.last = null; S.error = e instanceof E.CalcError ? e.kind : 'Math ERROR'; S.done = false;
+        return false;
+      }
+    }
+    function ensureAnswer() { // evaluate the expression first if it has not been
+      if (S.done && S.ans) return true;
+      if (!S.tokens.length) return !!S.ans;
+      return calculate();
+    }
+    function storeVar(name) {
+      if (!ensureAnswer()) return;
+      S.vars[name] = S.ans;
+      toast(`Stored in ${name}`);
+    }
+    function memAdd(sign) {
+      if (!ensureAnswer()) return;
+      const M = S.vars.M || E.vInt(0);
+      S.vars.M = sign > 0 ? E.add(M, S.ans) : E.sub(M, S.ans);
+      toast(`M = ${dec(S.vars.M.f)}`);
+    }
+
+    // ── Pressing a key ─────────────────────────────────────────────────────
+    function press(id) {
+      const a = ACT[id]; if (!a) return;
+      const wasShift = S.shift, wasAlpha = S.alpha;
+      // pending STO / RCL: the next variable key decides
+      if (S.pending) {
+        const v = a.a && a.a[0] && 'ABCDEFMXY'.includes(a.a[0]) ? a.a[0] : null;
+        const mode = S.pending; S.pending = null;
+        if (v) {
+          if (mode === 'STO') storeVar(v); else input([v]);
+          S.shift = S.alpha = false; render(); return;
+        }
+        if (id === 'ac') { S.shift = S.alpha = false; render(); return; }
+        // any other key just cancels and is handled normally
+      }
+      let spec = a.p;
+      if (wasShift && a.s) spec = a.s;
+      else if (wasAlpha && a.a) spec = a.a;
+      else if ((wasShift || wasAlpha) && !['shift', 'alpha'].includes(id) && !a.s && !a.a) spec = a.p;
+      if (id !== 'shift' && id !== 'alpha' && id !== 'hyp') { S.shift = false; S.alpha = false; }
+      if (typeof spec === 'string') command(spec, id);
+      else {
+        let toks = spec.slice();
+        if (S.hyp && toks.length === 1 && HYPABLE[toks[0]]) { toks = [HYPABLE[toks[0]]]; S.hyp = false; }
+        else if (S.hyp && id !== 'hyp') S.hyp = false;
+        if (a.sub && !wasShift) toks.sub = true;
+        input(toks);
+      }
+      render();
+    }
+    function command(c, id) {
+      switch (c) {
+        case '@shift': S.shift = !S.shift; if (S.shift) S.alpha = false; break;
+        case '@alpha': S.alpha = !S.alpha; if (S.alpha) S.shift = false; break;
+        case '@hyp': S.hyp = !S.hyp; break;
+        case '@del': del(); break;
+        case '@ac': ac(); break;
+        case '@eq': if (S.mode === 'table') { renderTable(); break; } if (S.tokens.length && !S.done) calculate(); else if (S.done) { /* already shown */ } break;
+        case '@left': if (S.done || S.error) { clearAnswer(); S.cur = S.tokens.length; } S.cur = Math.max(0, S.cur - 1); break;
+        case '@right': if (S.done || S.error) { clearAnswer(); S.cur = S.tokens.length; } S.cur = Math.min(S.tokens.length, S.cur + 1); break;
+        case '@up': replay(1); break;
+        case '@down': replay(-1); break;
+        case '@rcl': S.pending = 'RCL'; break;
+        case '@sto': S.pending = 'STO'; break;
+        case '@mplus': memAdd(1); break;
+        case '@mminus': memAdd(-1); break;
+        case '@sd': // fraction ⇄ decimal
+          if (S.last) {
+            const v = S.last.val;
+            const showingFrac = (S.view === 'frac') || (!S.view && !v.dec && E.canFraction(v));
+            if (E.canFraction(v)) S.view = showingFrac ? 'dec' : 'frac';
+            else if (S.view === 'dms') S.view = 'dec';
+          } else if (S.ans) { S.tokens = ['Ans']; S.cur = 1; if (calculate()) { const v = S.last.val; if (E.canFraction(v)) S.view = v.dec ? 'frac' : 'dec'; } }
+          break;
+        case '@todms':
+          if (!S.done && S.tokens.length) calculate();
+          if (S.last) S.view = S.view === 'dms' ? null : 'dms';
+          break;
+        case '@fmt': settings.mixed = !settings.mixed; saveSettings(); toast(settings.mixed ? 'Mixed fractions (a b/c)' : 'Improper fractions (d/c)'); break;
+        case '@mode': openMode(); break;
+        case '@setup': openSetup(); break;
+      }
+    }
+    function replay(dir) {
+      if (!S.hist.length) return;
+      let p = S.histPos + dir;
+      if (p < 0) { p = -1; }
+      if (p >= S.hist.length) p = S.hist.length - 1;
+      if (p === S.histPos && !(S.done || S.error)) return;
+      S.histPos = p;
+      if (p === -1) { S.tokens = []; S.cur = 0; clearAnswer(); return; }
+      S.tokens = S.hist[p].tokens.slice(); S.cur = S.tokens.length; clearAnswer();
+    }
+
+    // ── History panel ──────────────────────────────────────────────────────
+    function renderHist() {
+      const ul = $('hist');
+      if (!S.hist.length) { ul.innerHTML = '<li class="empty" style="cursor:default;background:none">Your calculations appear here. Click one to bring it back.</li>'; return; }
+      ul.innerHTML = S.hist.map((h, i) => `<li data-h="${i}" tabindex="0" role="button"><div class="e">${esc(h.text)}</div><div class="r">= ${h.html}</div></li>`).join('');
+    }
+    $('hist').addEventListener('click', e => {
+      const li = e.target.closest('[data-h]'); if (!li) return;
+      if (S.mode !== 'comp') setMode('comp');
+      const h = S.hist[+li.dataset.h]; S.tokens = h.tokens.slice(); S.cur = S.tokens.length; clearAnswer(); S.histPos = +li.dataset.h; render();
+    });
+    $('hist').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.target.click(); } });
+    $('clearHist').addEventListener('click', () => { S.hist = []; renderHist(); });
+
+    // ── Mode menu & setup ──────────────────────────────────────────────────
+    const open = id => { $(id).classList.add('open'); };
+    const closeOv = () => document.querySelectorAll('.overlay').forEach(o => o.classList.remove('open'));
+    function openMode() {
+      $('modeChoices').innerHTML = MODES.map(([id, n, d]) => `<button type="button" class="choice ${S.mode === id ? 'on' : ''}" data-mode="${id}">${n}<small>${d}</small></button>`).join('');
+      open('modeOv');
+    }
+    $('modeChoices').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) { closeOv(); setMode(b.dataset.mode); } });
+    function openSetup() {
+      const seg = (key, opts) => `<div class="seg">` + opts.map(([v, l]) => `<button type="button" data-set="${key}" data-v="${v}" class="${String(settings[key]) === String(v) ? 'on' : ''}">${l}</button>`).join('') + '</div>';
+      $('setBody').innerHTML =
+        `<div class="set-group"><div>Angle unit</div>${seg('angle', [['deg', 'Degrees'], ['rad', 'Radians'], ['gra', 'Gradians']])}</div>` +
+        `<div class="set-group"><div>Number format</div>${seg('fmt', [['norm1', 'Norm 1'], ['norm2', 'Norm 2'], ['fix', 'Fix'], ['sci', 'Sci']])}` +
+        `<div class="digits" ${settings.fmt === 'fix' || settings.fmt === 'sci' ? '' : 'hidden'}><label for="digits">${settings.fmt === 'sci' ? 'Significant digits' : 'Decimal places'}</label><input id="digits" type="number" min="${settings.fmt === 'sci' ? 1 : 0}" max="${settings.fmt === 'sci' ? 10 : 9}" value="${settings.fmt === 'sci' ? (settings.digits || 10) : settings.digits}"></div></div>` +
+        `<div class="set-group"><div>Fractions</div>${seg('mixed', [['true', 'Mixed a b/c'], ['false', 'Improper d/c']])}</div>` +
+        `<div class="set-group"><div>Decimal separator</div>${seg('comma', [['false', 'Point  0.5'], ['true', 'Comma  0,5']])}</div>`;
+      open('setOv');
+    }
+    $('setBody').addEventListener('click', e => {
+      const b = e.target.closest('[data-set]'); if (!b) return;
+      const k = b.dataset.set, v = b.dataset.v;
+      settings[k] = (k === 'mixed' || k === 'comma') ? v === 'true' : v;
+      if (k === 'fmt' && v === 'fix' && settings.digits > 9) settings.digits = 2;
+      if (k === 'fmt' && v === 'fix' && !settings.digits) settings.digits = 2;
+      if (k === 'fmt' && v === 'sci' && !settings.digits) settings.digits = 4;
+      if (k === 'fmt' && (v === 'norm1' || v === 'norm2')) settings.digits = 0;
+      saveSettings(); openSetup(); render(); refreshPanel();
+    });
+    $('setBody').addEventListener('input', e => {
+      if (e.target.id !== 'digits') return;
+      const n = parseInt(e.target.value, 10); if (isNaN(n)) return;
+      settings.digits = Math.max(settings.fmt === 'sci' ? 1 : 0, Math.min(settings.fmt === 'sci' ? 10 : 9, n)); saveSettings(); render(); refreshPanel();
+    });
+    document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o || e.target.closest('[data-close]')) closeOv(); }));
+
+    function setMode(m) {
+      S.mode = m; S.shift = S.alpha = S.hyp = false; S.pending = null;
+      ac();
+      $('keys').hidden = (m === 'stat' || m === 'eqn');
+      $('lcd').style.display = (m === 'stat' || m === 'eqn') ? 'none' : '';
+      $('hint').style.display = (m === 'stat' || m === 'eqn') ? 'none' : '';
+      refreshPanel(); render();
+    }
+    function refreshPanel() {
+      const p = $('modePanel');
+      if (S.mode === 'comp') { p.innerHTML = ''; return; }
+      if (S.mode === 'stat') buildStat(p);
+      else if (S.mode === 'eqn') buildEqn(p);
+      else buildTable(p);
+    }
+    const panelHead = (title) => `<h2>${title}<button class="btn" type="button" data-back>← COMP</button></h2>`;
+    $('modePanel').addEventListener('click', e => { if (e.target.closest('[data-back]')) setMode('comp'); });
+
+    // number from a text field: any expression ("1/2", "√2", "3E4") → float, NaN if blank/invalid
+    function numOf(str) {
+      if (!str || !str.trim()) return NaN;
+      const t = E.textToTokens(str); if (!t) return NaN;
+      try { return E.evaluate(t, ctx()).val.f; } catch (e) { return NaN; }
+    }
+    function valOf(str) {
+      const t = E.textToTokens(str || ''); if (!t) return null;
+      try { return E.evaluate(t, ctx()).val; } catch (e) { return null; }
+    }
+
+    // ── STAT ───────────────────────────────────────────────────────────────
+    const ST = { type: '1var', freq: false, rows: Array.from({ length: 6 }, () => ({ x: '', y: '', f: '' })), qx: '', qy: '' };
+    const STAT_TYPES = [['1var', '1-VAR  (one variable)'], ['linear', 'A + BX  (linear)'], ['quad', 'A + BX + CX²  (quadratic)'], ['exp', 'A · Bˣ  (exponential)'], ['power', 'A · Xᴮ  (power)'], ['log', 'A + B ln X  (logarithmic)']];
+    function buildStat(p) {
+      const two = ST.type !== '1var';
+      const cols = two ? 2 : (ST.freq ? 2 : 1);
+      p.innerHTML = `<div class="panel">${panelHead('Statistics')}
+        <label for="stType">Type</label><select id="stType">${STAT_TYPES.map(([v, l]) => `<option value="${v}" ${ST.type === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+        ${two ? '' : `<label style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="stFreq" style="width:auto" ${ST.freq ? 'checked' : ''}> Frequency column</label>`}
+        <div class="grid stat-rows" id="stRows" style="--cols:${cols};margin-top:10px">
+          <div class="h">X</div>${two ? '<div class="h">Y</div>' : ST.freq ? '<div class="h">Freq</div>' : ''}
+          ${ST.rows.map((r, i) => `<input data-r="${i}" data-c="x" inputmode="decimal" aria-label="X ${i + 1}" value="${esc(r.x)}">` + (two ? `<input data-r="${i}" data-c="y" inputmode="decimal" aria-label="Y ${i + 1}" value="${esc(r.y)}">` : ST.freq ? `<input data-r="${i}" data-c="f" inputmode="numeric" aria-label="Frequency ${i + 1}" value="${esc(r.f)}">` : '')).join('')}
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" type="button" id="stAdd">+ Add rows</button><button class="btn" type="button" id="stClear">Clear data</button></div>
+        <div id="stOut"></div>
+        <div class="note">Type numbers or simple expressions (1/2, √3). Quartiles use the median of each half, as in CAPS.</div></div>`;
+      computeStat();
+    }
+    function computeStat() {
+      const out = $('stOut'); if (!out) return;
+      const two = ST.type !== '1var';
+      const xs = [], ys = [], fs = [];
+      ST.rows.forEach(r => {
+        const x = numOf(r.x); if (isNaN(x)) return;
+        if (two) { const y = numOf(r.y); if (isNaN(y)) return; xs.push(x); ys.push(y); }
+        else { const f = ST.freq ? (r.f.trim() ? numOf(r.f) : 1) : 1; if (isNaN(f) || f < 0 || !Number.isInteger(f)) return; xs.push(x); fs.push(f); }
+      });
+      document.querySelectorAll('#stRows input').forEach(inp => {
+        const r = ST.rows[+inp.dataset.r], c = inp.dataset.c, v = r[c];
+        inp.classList.toggle('bad', v.trim() !== '' && isNaN(numOf(v)));
+      });
+      const cell = (n, v) => `<div><span>${n}</span><span>${isNaN(v) ? '—' : esc(dec(v))}</span></div>`;
+      try {
+        if (!xs.length) { out.innerHTML = ''; return; }
+        if (!two) {
+          const s = E.stat1(xs, ST.freq ? fs : null);
+          out.innerHTML = `<div class="results">${cell('n', s.n)}${cell('x̄', s.mean)}${cell('Σx', s.sumX)}${cell('Σx²', s.sumX2)}${cell('σx', s.sigma)}${cell('sx', s.s)}${cell('minX', s.min)}${cell('Q1', s.q1)}${cell('Med', s.median)}${cell('Q3', s.q3)}${cell('maxX', s.max)}</div>`;
+        } else {
+          const m = E.regression(xs, ys, ST.type), sx = E.stat1(xs), sy = E.stat1(ys);
+          const names = ST.type === 'quad' ? [['a', m.a], ['b', m.b], ['c', m.c]] : [['a', m.a], ['b', m.b], ['r', m.r]];
+          out.innerHTML = `<div class="results">${cell('n', sx.n)}${cell('x̄', sx.mean)}${cell('σx', sx.sigma)}${cell('sx', sx.s)}${cell('ȳ', sy.mean)}${cell('σy', sy.sigma)}${cell('sy', sy.s)}${names.map(([n, v]) => cell(n, v)).join('')}</div>
+            <div class="eqn-grid" style="--cols:2;margin-top:12px"><div><label for="qx">x =</label><input id="qx" value="${esc(ST.qx)}" inputmode="decimal"></div><div><label for="qy">y =</label><input id="qy" value="${esc(ST.qy)}" inputmode="decimal"></div></div>
+            <div class="results" id="stEst" style="margin-top:8px"></div>`;
+          estimate(m);
+          out.m = m;
+        }
+      } catch (e) { out.innerHTML = `<p class="err-msg" style="margin-top:12px">${esc(e.kind || 'Math ERROR')}</p>`; }
+    }
+    function estimate(m) {
+      const el = $('stEst'); if (!el) return;
+      const parts = [];
+      const x = numOf(ST.qx), y = numOf(ST.qy);
+      if (!isNaN(x)) { const v = E.regressionEstimateY(m, x); parts.push(`<div><span>ŷ</span><span>${isNaN(v) ? '—' : esc(dec(v))}</span></div>`); }
+      if (!isNaN(y)) E.regressionEstimateX(m, y).forEach((v, i, arr) => parts.push(`<div><span>x̂${arr.length > 1 ? i + 1 : ''}</span><span>${esc(dec(v))}</span></div>`));
+      el.innerHTML = parts.join('');
+    }
+    $('modePanel').addEventListener('input', e => {
+      const t = e.target;
+      if (S.mode === 'stat') {
+        if (t.dataset.r !== undefined) { ST.rows[+t.dataset.r][t.dataset.c] = t.value; computeStat(); }
+        else if (t.id === 'qx' || t.id === 'qy') { ST[t.id] = t.value; const m = $('stOut').m; if (m) estimate(m); }
+      } else if (S.mode === 'eqn') { if (t.dataset.f !== undefined) { EQ.vals[EQ.type + t.dataset.f] = t.value; solveEqn(); } }
+      else if (S.mode === 'table' && t.dataset.tb) { TB[t.dataset.tb] = t.value; renderTable(); }
+    });
+    $('modePanel').addEventListener('change', e => {
+      const t = e.target;
+      if (S.mode === 'stat') {
+        if (t.id === 'stType') { ST.type = t.value; buildStat($('modePanel')); }
+        if (t.id === 'stFreq') { ST.freq = t.checked; buildStat($('modePanel')); }
+      } else if (S.mode === 'eqn' && t.id === 'eqType') { EQ.type = t.value; buildEqn($('modePanel')); }
+    });
+    $('modePanel').addEventListener('click', e => {
+      if (S.mode !== 'stat') return;
+      if (e.target.id === 'stAdd') { for (let i = 0; i < 5; i++) ST.rows.push({ x: '', y: '', f: '' }); buildStat($('modePanel')); }
+      if (e.target.id === 'stClear') { ST.rows = Array.from({ length: 6 }, () => ({ x: '', y: '', f: '' })); ST.qx = ST.qy = ''; buildStat($('modePanel')); }
+    });
+
+    // ── EQN ────────────────────────────────────────────────────────────────
+    const EQ = { type: 'simul2', vals: {} };
+    const EQ_TYPES = {
+      simul2: { name: 'Simultaneous, 2 unknowns', rows: 2, cols: ['x', 'y', '='], lead: ['a₁', 'a₂'] },
+      simul3: { name: 'Simultaneous, 3 unknowns', rows: 3, cols: ['x', 'y', 'z', '='], lead: ['a₁', 'a₂', 'a₃'] },
+      quad: { name: 'Quadratic  ax² + bx + c = 0', rows: 1, cols: ['a', 'b', 'c'], lead: [''] },
+      cubic: { name: 'Cubic  ax³ + bx² + cx + d = 0', rows: 1, cols: ['a', 'b', 'c', 'd'], lead: [''] },
+    };
+    function buildEqn(p) {
+      const T = EQ_TYPES[EQ.type];
+      const nC = T.cols.length;
+      let cells = '';
+      for (let r = 0; r < T.rows; r++) for (let c = 0; c < nC; c++)
+        cells += `<input data-f="${r}_${c}" aria-label="${EQ.type === 'simul2' || EQ.type === 'simul3' ? `Equation ${r + 1}, ${T.cols[c]}` : `Coefficient ${T.cols[c]}`}" inputmode="decimal" value="${esc(EQ.vals[EQ.type + r + '_' + c] || '')}" placeholder="${T.cols[c]}">`;
+      p.innerHTML = `<div class="panel">${panelHead('Equations')}
+        <label for="eqType">Type</label><select id="eqType">${Object.entries(EQ_TYPES).map(([k, v]) => `<option value="${k}" ${EQ.type === k ? 'selected' : ''}>${v.name}</option>`).join('')}</select>
+        <div class="eqn-grid" style="--cols:${nC};margin-top:10px">${cells}</div>
+        <div class="sol" id="sol"></div>
+        <div class="note">${EQ.type.startsWith('simul') ? 'Enter the coefficients of each equation in the form ax + by (+ cz) = d.' : 'Enter the coefficients. Fractions like 1/2 and roots like √2 work.'}</div></div>`;
+      solveEqn();
+    }
+    function rootHTML(val) { // exact Value → fraction or decimal
+      return valueHTML(val, null);
+    }
+    function floatRootHTML(f) {
+      const fr = E.approxFraction(f);
+      return esc(dec(f)) + (fr ? ` <small>= ${fr.n < 0 ? '−' : ''}${Math.abs(fr.n)}/${fr.d}</small>` : '');
+    }
+    function cplxHTML(re, im) { // exact Values
+      if (E.isZero(im)) return rootHTML(re);
+      const imAbs = im.f < 0 ? E.neg(im) : im;
+      return (E.isZero(re) ? '' : rootHTML(re) + ' ') + (im.f < 0 ? '− ' : (E.isZero(re) ? '' : '+ ')) + (imAbs.r && imAbs.r.n === 1n && imAbs.r.d === 1n ? '' : rootHTML(imAbs)) + 'i';
+    }
+    function solveEqn() {
+      const out = $('sol'); if (!out) return;
+      const T = EQ_TYPES[EQ.type], nC = T.cols.length;
+      const get = (r, c) => { const s = EQ.vals[EQ.type + r + '_' + c]; return s && s.trim() ? valOf(s) : (s === undefined || !s.trim() ? E.vInt(0) : null); };
+      const filled = Array.from({ length: T.rows * nC }, (_, i) => EQ.vals[EQ.type + Math.floor(i / nC) + '_' + (i % nC)]).some(s => s && s.trim());
+      if (!filled) { out.innerHTML = ''; return; }
+      const grid = []; let bad = false;
+      for (let r = 0; r < T.rows; r++) { grid.push([]); for (let c = 0; c < nC; c++) { const v = get(r, c); if (!v) bad = true; grid[r].push(v); } }
+      if (bad) { out.innerHTML = '<div class="err-msg">Syntax ERROR</div>'; return; }
+      try {
+        if (EQ.type === 'simul2' || EQ.type === 'simul3') {
+          const names = EQ.type === 'simul2' ? ['x', 'y'] : ['x', 'y', 'z'];
+          const sol = E.solveSimul(grid);
+          out.innerHTML = sol.map((v, i) => `<div><span class="nm">${names[i]} =</span>${rootHTML(v)}${v.r ? '' : ''}</div>`).join('');
+        } else if (EQ.type === 'quad') {
+          const q = E.solveQuadratic(grid[0][0], grid[0][1], grid[0][2]);
+          const same = q.roots[0].im.f === 0 && Math.abs(q.roots[0].re.f - q.roots[1].re.f) < 1e-13;
+          out.innerHTML = `<div><span class="nm">Δ =</span>${rootHTML(q.disc)}</div>` +
+            (same ? `<div><span class="nm">x =</span>${cplxHTML(q.roots[0].re, q.roots[0].im)} <small>(one repeated root)</small></div>` :
+              q.roots.map((r, i) => `<div><span class="nm">x${i + 1} =</span>${cplxHTML(r.re, r.im)}${r.im.f === 0 && !r.re.r ? '' : ''}</div>`).join(''));
+        } else {
+          const roots = E.solveCubic(grid[0][0].f, grid[0][1].f, grid[0][2].f, grid[0][3].f);
+          out.innerHTML = roots.map((r, i) => `<div><span class="nm">x${i + 1} =</span>${r.im === 0 ? floatRootHTML(r.re) : esc(dec(r.re)) + ' ' + (r.im < 0 ? '−' : '+') + ' ' + esc(dec(Math.abs(r.im))) + 'i'}</div>`).join('');
+        }
+      } catch (e) {
+        out.innerHTML = `<div class="err-msg">${esc(e.kind || 'Math ERROR')}</div><div class="note" style="margin:0">${EQ.type.startsWith('simul') ? 'No single solution (the equations are dependent or contradict).' : 'Check the coefficients — a must not be 0.'}</div>`;
+      }
+    }
+
+    // ── TABLE ──────────────────────────────────────────────────────────────
+    const TB = { start: '1', end: '5', step: '1' };
+    function buildTable(p) {
+      p.innerHTML = `<div class="panel">${panelHead('Table of values')}
+        <div class="note" style="margin:0 0 8px">Type f(X) on the keypad (use <b>ALPHA</b> then <b>(</b> for X), then set the range.</div>
+        <div class="eqn-grid" style="--cols:3"><div><label for="tbS">Start</label><input id="tbS" data-tb="start" value="${esc(TB.start)}" inputmode="decimal"></div>
+        <div><label for="tbE">End</label><input id="tbE" data-tb="end" value="${esc(TB.end)}" inputmode="decimal"></div>
+        <div><label for="tbT">Step</label><input id="tbT" data-tb="step" value="${esc(TB.step)}" inputmode="decimal"></div></div>
+        <div id="tbOut"></div></div>`;
+      renderTable();
+    }
+    function renderTable() {
+      const out = $('tbOut'); if (!out) return;
+      const s = numOf(TB.start), e = numOf(TB.end), t = numOf(TB.step);
+      if (!S.tokens.length) { out.innerHTML = '<div class="note">Enter f(X) above to see the table.</div>'; return; }
+      if ([s, e, t].some(isNaN)) { out.innerHTML = '<p class="err-msg" style="margin-top:10px">Syntax ERROR</p>'; return; }
+      try {
+        const rows = E.table(S.tokens, s, e, t, ctx());
+        out.innerHTML = `<table class="tbl"><thead><tr><th>X</th><th>f(X)</th></tr></thead><tbody>` +
+          rows.map(r => `<tr><td>${esc(dec(r.x))}</td><td>${r.y ? valueHTML(r.y, null) : '<span class="err-msg">Math ERROR</span>'}</td></tr>`).join('') + '</tbody></table>';
+      } catch (err) {
+        out.innerHTML = `<p class="err-msg" style="margin-top:10px">${esc(err.kind || 'Math ERROR')}</p>` + (err.kind === 'Range ERROR' ? '<div class="note">A table can show at most 30 rows. Increase the step or shorten the range.</div>' : '');
+      }
+    }
+
+    // ── Wiring: mouse/touch and keyboard ───────────────────────────────────
+    $('keys').addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) press(b.dataset.k); });
+    $('expr').addEventListener('click', e => {
+      const tk = e.target.closest('.tk'); if (!tk) { S.cur = S.tokens.length; } else {
+        const r = tk.getBoundingClientRect(); S.cur = +tk.dataset.i + (e.clientX > r.left + r.width / 2 ? 1 : 0);
+      }
+      if (S.done || S.error) clearAnswer();
+      render();
+    });
+
+    const KEYMAP = {
+      '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '.': 'dot', ',': 'dot',
+      '+': 'add', '*': 'mul', '/': 'div', '^': 'pow', '(': 'lp', ')': 'rp', '!': ['inv', 1], '%': ['ans', 1],
+      Enter: 'eq', '=': 'eq', Backspace: 'del', Delete: 'del', Escape: 'ac',
+      ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
+      s: 'sin', c: 'cos', t: 'tan', l: 'log', n: 'ln', r: 'sqrt', a: 'ans', E: 'exp', x: 'mul',
+    };
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+      if (document.querySelector('.overlay.open')) { if (e.key === 'Escape') closeOv(); return; }
+      if (S.mode === 'stat' || S.mode === 'eqn') return;
+      let k = e.key;
+      if (k === '-') { e.preventDefault(); input(['-']); render(); return; }
+      if (k === 'p') { e.preventDefault(); S.shift = true; press('exp'); return; }
+      if (!(k in KEYMAP)) return;
+      e.preventDefault();
+      const m = KEYMAP[k];
+      if (Array.isArray(m)) { S.shift = true; press(m[0]); } else press(m);
+    });
+
+    // ── Go ─────────────────────────────────────────────────────────────────
+    buildKeys(); renderHist(); setMode('comp');
+    window.__calc = { S, press, settings, E }; // handy for tests / debugging
+  })();
+  </script>
+</body>
+</html>
