@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PDF Reader — The Magic Lab</title>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/magic-lab.css">
+  <style>
+    body { margin: 0; background: var(--bg, #08090b); color: var(--text); font-family: var(--font-body); }
+    main { max-width: 980px; margin: 0 auto; padding: 40px var(--gutter) 80px; }
+    h1 { font-family: var(--font-display); color: var(--paper); font-size: clamp(28px, 4vw, 40px); margin: 0 0 6px; }
+    .sub { color: #98a2b3; margin: 0 0 28px; max-width: 62ch; line-height: 1.5; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius-lg); background: rgba(255,255,255,0.025); padding: 20px; margin-bottom: 18px; }
+    .card h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #98a2b3; margin: 0 0 14px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #b6bfcc; }
+    input[type=text], input[type=password], select {
+      background: #0e1014; color: var(--text); border: 1px solid var(--line-hard); border-radius: var(--radius-sm);
+      padding: 10px 12px; font: inherit; min-width: 0;
+    }
+    input[type=range] { accent-color: var(--t-conjurer); }
+    button {
+      font: inherit; font-weight: 700; cursor: pointer; border-radius: var(--radius-full);
+      border: 1px solid var(--line-hard); background: rgba(255,255,255,0.05); color: var(--text); padding: 10px 18px;
+    }
+    button.primary { background: var(--paper); color: #08090b; border-color: var(--paper); }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .drop { border: 2px dashed var(--line-hard); border-radius: var(--radius-lg); padding: 34px 20px; text-align: center; color: #98a2b3; cursor: pointer; }
+    .drop.over { border-color: var(--t-conjurer); color: var(--paper); }
+    .hint { font-size: 12.5px; color: #7d8797; line-height: 1.5; margin: 10px 0 0; }
+    .status { font-family: var(--font-mono); font-size: 12.5px; color: #98a2b3; min-height: 1.4em; }
+    .status.err { color: var(--crit); }
+    #text { max-height: 420px; overflow: auto; line-height: 1.7; font-size: 16px; padding-right: 8px; }
+    #text p { margin: 0 0 14px; }
+    .s { border-radius: 4px; padding: 1px 2px; cursor: pointer; }
+    .s:hover { background: rgba(255,255,255,0.08); }
+    .s.now { background: rgba(155,107,255,0.35); color: var(--paper); }
+    .s[data-emo]:not([data-emo="neutral"])::after {
+      content: attr(data-emo); font-family: var(--font-mono); font-size: 10px; margin-left: 4px; padding: 1px 5px;
+      border-radius: 999px; background: rgba(255,255,255,0.08); color: #98a2b3; vertical-align: super;
+    }
+    .s[data-emo="joy"]::after, .s[data-emo="excited"]::after { color: var(--t-spike); }
+    .s[data-emo="sad"]::after { color: var(--t-java); }
+    .s[data-emo="angry"]::after { color: var(--crit); }
+    .s[data-emo="fear"]::after, .s[data-emo="whisper"]::after { color: var(--t-conjurer); }
+    .s[data-emo="surprise"]::after { color: var(--t-robot); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>PDF Reader</h1>
+  <p class="sub">Drop in a PDF and have it read aloud with feeling. Each sentence is scored for emotion — joy, sadness, anger, fear, surprise — and voiced to match.</p>
+
+  <section class="card">
+    <h2>1 · Voice engine</h2>
+    <div class="grid">
+      <label>Engine
+        <select id="engine">
+          <option value="eleven">ElevenLabs — expressive AI voice (needs API key)</option>
+          <option value="browser">Browser voice — free, simulated emotion</option>
+        </select>
+      </label>
+      <label class="el">ElevenLabs API key
+        <input type="password" id="apiKey" placeholder="sk_…" autocomplete="off">
+      </label>
+      <label class="el">Model
+        <select id="model">
+          <option value="eleven_v3">Eleven v3 — emotion tags (most expressive)</option>
+          <option value="eleven_multilingual_v2">Multilingual v2 — emotion via style settings</option>
+        </select>
+      </label>
+      <label class="el">Voice
+        <select id="voice"><option value="">Load voices…</option></select>
+      </label>
+      <label class="br">Browser voice
+        <select id="bvoice"></select>
+      </label>
+      <label>Speed <input type="range" id="speed" min="0.7" max="1.3" step="0.05" value="1"></label>
+      <label>Emotion intensity <input type="range" id="intensity" min="0" max="1" step="0.1" value="0.7"></label>
+    </div>
+    <p class="hint el">Your key is kept only in this browser (localStorage) and sent straight to ElevenLabs — never to The Magic Lab. Use a key with only text-to-speech access. Browser voices cost nothing but can only fake emotion with pitch and pace.</p>
+  </section>
+
+  <section class="card">
+    <h2>2 · PDF</h2>
+    <div class="drop" id="drop">Drop a PDF here, or click to choose<input type="file" id="file" accept="application/pdf" hidden></div>
+    <div class="row" style="margin-top:12px">
+      <label style="flex-direction:row;align-items:center;gap:8px">Pages <input type="text" id="range" placeholder="all, or e.g. 2-5" style="width:130px"></label>
+      <div class="status" id="pdfStatus"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3 · Listen</h2>
+    <div class="row" style="margin-bottom:14px">
+      <button class="primary" id="play" disabled>▶ Play</button>
+      <button id="pause" disabled>⏸ Pause</button>
+      <button id="stop" disabled>■ Stop</button>
+      <div class="status" id="status"></div>
+    </div>
+    <div id="text"><p class="hint">Text from your PDF will appear here. Click any sentence to start from it.</p></div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d) { try { return localStorage.getItem('pdfreader.' + k) ?? d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('pdfreader.' + k, v); } catch (e) {} }
+  };
+
+  // ── Emotion model ────────────────────────────────────────────────────────
+  // Lexicon + punctuation heuristics. Good enough to colour a narration; not
+  // a sentiment classifier. Each emotion maps to an ElevenLabs v3 audio tag,
+  // v2 voice settings, and a pitch/rate nudge for the browser engine.
+  const LEX = {
+    joy: /\b(happy|joy\w*|delight\w*|love[ds]?|wonderful|great|amazing|laugh\w*|smil\w*|celebrat\w*|win|won|success\w*|glad|thrill\w*|beautiful|cheer\w*|excellent|fantastic)\b/i,
+    sad: /\b(sad\w*|sorrow\w*|griev\w*|cry|cried|crying|tears?|lost|loss|died|death|dead|lonely|alone|miss(?:ed|ing)?|mourn\w*|tragic\w*|unfortunately|regret\w*|hopeless|broken)\b/i,
+    angry: /\b(ang(?:ry|er)\w*|furious|rage\w*|hate[ds]?|hatred|damn\w*|outrag\w*|betray\w*|fury|slam\w*|shout\w*|scream\w*|curse[ds]?|enemy|war|attack\w*)\b/i,
+    fear: /\b(fear\w*|afraid|terrif\w*|scar(?:y|ed)|horror|dread\w*|panic\w*|danger\w*|dark|threat\w*|trembl\w*|nightmare|haunt\w*)\b/i,
+    surprise: /\b(suddenly|surpris\w*|shock\w*|unexpected\w*|incredible|unbelievable|astonish\w*|gasp\w*|wow|amazing)\b/i
+  };
+  const EMO = {
+    neutral:  { tag: '',            stab: 0.55, style: 0.0,  pitch: 1.0,  rate: 1.0  },
+    joy:      { tag: '[cheerfully]', stab: 0.35, style: 0.6,  pitch: 1.15, rate: 1.08 },
+    excited:  { tag: '[excited]',   stab: 0.30, style: 0.75, pitch: 1.2,  rate: 1.15 },
+    sad:      { tag: '[sadly]',     stab: 0.50, style: 0.5,  pitch: 0.85, rate: 0.85 },
+    angry:    { tag: '[angrily]',   stab: 0.30, style: 0.8,  pitch: 0.95, rate: 1.12 },
+    fear:     { tag: '[nervously]', stab: 0.35, style: 0.6,  pitch: 1.1,  rate: 1.1  },
+    whisper:  { tag: '[whispers]',  stab: 0.60, style: 0.4,  pitch: 0.9,  rate: 0.9  },
+    surprise: { tag: '[gasps]',     stab: 0.30, style: 0.7,  pitch: 1.25, rate: 1.05 }
+  };
+
+  function detectEmotion(s) {
+    let best = 'neutral', score = 0;
+    for (const k of Object.keys(LEX)) {
+      const m = s.match(new RegExp(LEX[k].source, 'gi'));
+      if (m && m.length > score) { best = k; score = m.length; }
+    }
+    const bangs = (s.match(/!/g) || []).length;
+    if (best === 'joy' && bangs) best = 'excited';
+    if (best === 'neutral') {
+      if (bangs >= 2 || (bangs && /[A-Z]{4,}/.test(s))) best = 'excited';
+      else if (bangs && /\b(no|stop|never|how dare)\b/i.test(s)) best = 'angry';
+      else if (/\?!|!\?/.test(s)) best = 'surprise';
+      else if (/\(([^)]{8,})\)/.test(s) && /\b(whisper|quietly|softly|murmur)/i.test(s)) best = 'whisper';
+    }
+    if (/\b(whisper\w*|murmur\w*|hush\w*)\b/i.test(s)) best = 'whisper';
+    return best;
+  }
+
+  // ── PDF → sentences ──────────────────────────────────────────────────────
+  let sentences = [];   // { text, emo, el }
+  let cursor = 0;
+
+  function parseRange(str, n) {
+    if (!str.trim()) return Array.from({ length: n }, (_, i) => i + 1);
+    const out = new Set();
+    str.split(',').forEach(part => {
+      const m = part.trim().match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+      if (!m) return;
+      const a = +m[1], b = +(m[2] || m[1]);
+      for (let p = Math.max(1, a); p <= Math.min(n, b); p++) out.add(p);
+    });
+    return [...out].sort((a, b) => a - b);
+  }
+
+  async function pageText(page) {
+    const content = await page.getTextContent();
+    let out = '', lastY = null;
+    for (const it of content.items) {
+      const y = it.transform[5];
+      if (lastY !== null && Math.abs(y - lastY) > 2) {
+        // new line: join hyphenated words, otherwise a space; big gap = paragraph
+        if (/-$/.test(out)) out = out.slice(0, -1);
+        else out += (Math.abs(y - lastY) > it.height * 1.8 ? '\n\n' : ' ');
+      }
+      out += it.str;
+      lastY = y;
+    }
+    return out;
+  }
+
+  function splitSentences(paragraph) {
+    const parts = paragraph.replace(/\s+/g, ' ').trim().match(/[^.!?…]+(?:[.!?…]+["'”’)\]]*|$)/g) || [];
+    const out = [];
+    for (const p of parts) {
+      const t = p.trim();
+      if (!t) continue;
+      // glue tiny fragments (abbreviations like "Dr.") onto the next sentence
+      if (out.length && out[out.length - 1].length < 4) out[out.length - 1] += ' ' + t;
+      else out.push(t);
+    }
+    return out;
+  }
+
+  async function loadPdf(file) {
+    stop();
+    setPdfStatus('Reading PDF…');
+    try {
+      const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+      const pages = parseRange($('range').value, pdf.numPages);
+      const paras = [];
+      for (const n of pages) {
+        const txt = await pageText(await pdf.getPage(n));
+        txt.split(/\n\n+/).forEach(p => { if (p.trim()) paras.push(p); });
+        setPdfStatus('Reading page ' + n + ' of ' + pdf.numPages + '…');
+      }
+      render(paras);
+      if (!sentences.length) setPdfStatus('No selectable text found — this PDF may be scanned images.', true);
+      else setPdfStatus(file.name + ' · ' + pages.length + ' page(s) · ' + sentences.length + ' sentences');
+      $('play').disabled = !sentences.length;
+    } catch (e) {
+      setPdfStatus('Could not read that PDF: ' + e.message, true);
+    }
+  }
+
+  function render(paras) {
+    const box = $('text');
+    box.textContent = '';
+    sentences = [];
+    paras.forEach(p => {
+      const el = document.createElement('p');
+      splitSentences(p).forEach(t => {
+        const emo = detectEmotion(t);
+        const span = document.createElement('span');
+        span.className = 's';
+        span.textContent = t + ' ';
+        span.dataset.emo = emo;
+        const idx = sentences.length;
+        span.addEventListener('click', () => { play(idx); });
+        el.appendChild(span);
+        sentences.push({ text: t, emo, el: span });
+      });
+      box.appendChild(el);
+    });
+  }
+
+  function setPdfStatus(msg, err) { const e = $('pdfStatus'); e.textContent = msg; e.classList.toggle('err', !!err); }
+  function setStatus(msg, err) { const e = $('status'); e.textContent = msg; e.classList.toggle('err', !!err); }
+
+  // ── Playback ─────────────────────────────────────────────────────────────
+  let runId = 0, paused = false, audio = null;
+  const cache = new Map();   // sentence index → Promise<Blob>
+
+  function mark(i) {
+    sentences.forEach(s => s.el.classList.remove('now'));
+    const s = sentences[i];
+    if (!s) return;
+    s.el.classList.add('now');
+    s.el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  function intensity() { return +$('intensity').value; }
+  function speed() { return +$('speed').value; }
+
+  // ElevenLabs: group nothing — one request per sentence keeps emotion
+  // accurate per line, and the next two are prefetched to hide latency.
+  function fetchEleven(i) {
+    if (cache.has(i)) return cache.get(i);
+    const s = sentences[i];
+    const e = EMO[s.emo] || EMO.neutral;
+    const v3 = $('model').value === 'eleven_v3';
+    const k = intensity();
+    let text = s.text;
+    const body = { model_id: $('model').value };
+    if (v3) {
+      if (e.tag && k >= 0.3) text = e.tag + ' ' + text;
+      body.voice_settings = { stability: k > 0.6 ? 0.0 : 0.5, speed: speed() };
+      // v3 only accepts stability presets: 0 (creative), 0.5 (natural), 1 (robust)
+    } else {
+      body.voice_settings = {
+        stability: 0.55 + (e.stab - 0.55) * k,
+        similarity_boost: 0.75,
+        style: e.style * k,
+        use_speaker_boost: true,
+        speed: speed()
+      };
+    }
+    body.text = text;
+    const p = fetch('https://api.elevenlabs.io/v1/text-to-speech/' + encodeURIComponent($('voice').value) + '?output_format=mp3_44100_128', {
+      method: 'POST',
+      headers: { 'xi-api-key': $('apiKey').value.trim(), 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+      body: JSON.stringify(body)
+    }).then(async r => {
+      if (!r.ok) {
+        let msg = r.status + '';
+        try { const j = await r.json(); msg += ' ' + (j.detail?.message || j.detail || ''); } catch (_) {}
+        throw new Error(msg);
+      }
+      return r.blob();
+    });
+    p.catch(() => cache.delete(i));
+    cache.set(i, p);
+    return p;
+  }
+
+  function playBlob(blob, id) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(blob);
+      audio = new Audio(url);
+      audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
+      audio.onerror = () => { URL.revokeObjectURL(url); reject(new Error('audio playback failed')); };
+      audio.play().catch(reject);
+    });
+  }
+
+  function speakBrowser(i) {
+    return new Promise(resolve => {
+      const s = sentences[i], e = EMO[s.emo] || EMO.neutral, k = intensity();
+      const u = new SpeechSynthesisUtterance(s.text);
+      const v = speechSynthesis.getVoices().find(v => v.voiceURI === $('bvoice').value);
+      if (v) { u.voice = v; u.lang = v.lang; }
+      u.pitch = Math.min(2, Math.max(0.1, 1 + (e.pitch - 1) * k));
+      u.rate = Math.min(2, Math.max(0.5, speed() * (1 + (e.rate - 1) * k)));
+      u.volume = s.emo === 'whisper' ? 0.5 : 1;
+      u.onend = u.onerror = () => resolve();
+      speechSynthesis.speak(u);
+    });
+  }
+
+  async function play(from) {
+    if (!sentences.length) return;
+    const eleven = $('engine').value === 'eleven';
+    if (eleven && (!$('apiKey').value.trim() || !$('voice').value)) {
+      setStatus('Add your ElevenLabs key and pick a voice, or switch to a browser voice.', true);
+      return;
+    }
+    stopAudio();
+    const id = ++runId;
+    paused = false;
+    cache.clear();
+    $('pause').disabled = $('stop').disabled = false;
+    $('pause').textContent = '⏸ Pause';
+    try {
+      for (let i = typeof from === 'number' ? from : cursor; i < sentences.length; i++) {
+        if (id !== runId) return;
+        cursor = i;
+        mark(i);
+        setStatus('Sentence ' + (i + 1) + ' of ' + sentences.length + ' · ' + sentences[i].emo);
+        if (eleven) {
+          const blob = await fetchEleven(i);
+          if (i + 1 < sentences.length) fetchEleven(i + 1);
+          if (i + 2 < sentences.length) fetchEleven(i + 2);
+          if (id !== runId) return;
+          await playBlob(blob, id);
+        } else {
+          await speakBrowser(i);
+        }
+        cache.delete(i);
+      }
+      if (id === runId) { setStatus('Finished.'); cursor = 0; $('pause').disabled = $('stop').disabled = true; }
+    } catch (e) {
+      if (id === runId) { setStatus('Playback failed: ' + e.message, true); $('pause').disabled = true; }
+    }
+  }
+
+  function stopAudio() {
+    if (audio) { audio.onended = null; audio.pause(); audio = null; }
+    if (window.speechSynthesis) speechSynthesis.cancel();
+  }
+  function stop() {
+    runId++; stopAudio(); paused = false; cursor = 0;
+    $('pause').disabled = $('stop').disabled = true;
+    sentences.forEach(s => s.el.classList.remove('now'));
+    setStatus('');
+  }
+  function togglePause() {
+    if (!$('pause').disabled) {
+      paused = !paused;
+      if ($('engine').value === 'eleven') { if (audio) paused ? audio.pause() : audio.play(); }
+      else paused ? speechSynthesis.pause() : speechSynthesis.resume();
+      $('pause').textContent = paused ? '▶ Resume' : '⏸ Pause';
+    }
+  }
+
+  // ── Settings & voices ────────────────────────────────────────────────────
+  function syncEngine() {
+    const eleven = $('engine').value === 'eleven';
+    document.querySelectorAll('.el').forEach(e => e.style.display = eleven ? '' : 'none');
+    document.querySelectorAll('.br').forEach(e => e.style.display = eleven ? 'none' : '');
+    store.set('engine', $('engine').value);
+  }
+
+  async function loadElevenVoices() {
+    const key = $('apiKey').value.trim();
+    if (!key) return;
+    try {
+      const r = await fetch('https://api.elevenlabs.io/v1/voices', { headers: { 'xi-api-key': key } });
+      if (!r.ok) throw new Error(r.status === 401 ? 'key rejected' : 'HTTP ' + r.status);
+      const j = await r.json();
+      const sel = $('voice'), saved = store.get('voice', '');
+      sel.textContent = '';
+      j.voices.forEach(v => sel.appendChild(new Option(v.name + (v.labels?.accent ? ' · ' + v.labels.accent : ''), v.voice_id)));
+      if (saved) sel.value = saved;
+      setStatus(j.voices.length + ' voices loaded.');
+    } catch (e) { setStatus('Could not load voices: ' + e.message, true); }
+  }
+
+  function loadBrowserVoices() {
+    if (!window.speechSynthesis) return;
+    const sel = $('bvoice'), saved = store.get('bvoice', '');
+    sel.textContent = '';
+    speechSynthesis.getVoices().forEach(v => sel.appendChild(new Option(v.name + ' (' + v.lang + ')', v.voiceURI)));
+    if (saved) sel.value = saved;
+  }
+
+  $('engine').value = store.get('engine', 'eleven');
+  $('model').value = store.get('model', 'eleven_v3');
+  $('apiKey').value = store.get('key', '');
+  $('engine').onchange = syncEngine;
+  $('model').onchange = () => store.set('model', $('model').value);
+  $('voice').onchange = () => store.set('voice', $('voice').value);
+  $('bvoice').onchange = () => store.set('bvoice', $('bvoice').value);
+  $('apiKey').onchange = () => { store.set('key', $('apiKey').value.trim()); loadElevenVoices(); };
+  syncEngine();
+  loadBrowserVoices();
+  if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadBrowserVoices;
+  loadElevenVoices();
+
+  $('play').onclick = () => play();
+  $('pause').onclick = togglePause;
+  $('stop').onclick = stop;
+
+  const drop = $('drop'), fileIn = $('file');
+  drop.onclick = () => fileIn.click();
+  fileIn.onchange = () => fileIn.files[0] && loadPdf(fileIn.files[0]);
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f && /pdf$/i.test(f.type + f.name)) loadPdf(f); });
+})();
+</script>
+</body>
+</html>
