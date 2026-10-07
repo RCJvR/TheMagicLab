@@ -258,7 +258,7 @@ input::placeholder { color: var(--text-3); }
           <button class="btn" type="button" data-shape="diamond">Diamond</button>
         </div>
         <div class="row" style="margin-top:var(--space-3)">
-          <label class="f">Text or initials<input type="text" id="textIn" maxlength="12" placeholder="e.g. CURRO"></label>
+          <label class="f">Text or initials<input type="text" id="textIn" maxlength="24" placeholder="e.g. CURRO"></label>
           <button class="btn" id="textBtn" type="button" style="align-self:flex-end">Use text</button>
         </div>
         <div class="row" style="margin-top:var(--space-3)">
@@ -583,16 +583,80 @@ function shape(name) {
   dropSrc(); applyGray(grayOf(c), 0.5, false);
 }
 document.querySelectorAll('[data-shape]').forEach(b => b.onclick = () => shape(b.dataset.shape));
+/* Text uses a hand-built 5 × 7 pixel font, drawn at the largest whole-number scale that fits, so letters stay
+   crisp instead of being blurred down from a smooth font. Long text is split over several lines. */
+const FONT = {
+  A: '01110 10001 10001 11111 10001 10001 10001', B: '11110 10001 10001 11110 10001 10001 11110',
+  C: '01110 10001 10000 10000 10000 10001 01110', D: '11110 10001 10001 10001 10001 10001 11110',
+  E: '11111 10000 10000 11110 10000 10000 11111', F: '11111 10000 10000 11110 10000 10000 10000',
+  G: '01110 10001 10000 10111 10001 10001 01111', H: '10001 10001 10001 11111 10001 10001 10001',
+  I: '01110 00100 00100 00100 00100 00100 01110', J: '00111 00010 00010 00010 00010 10010 01100',
+  K: '10001 10010 10100 11000 10100 10010 10001', L: '10000 10000 10000 10000 10000 10000 11111',
+  M: '10001 11011 10101 10101 10001 10001 10001', N: '10001 11001 10101 10011 10001 10001 10001',
+  O: '01110 10001 10001 10001 10001 10001 01110', P: '11110 10001 10001 11110 10000 10000 10000',
+  Q: '01110 10001 10001 10001 10101 10010 01101', R: '11110 10001 10001 11110 10100 10010 10001',
+  S: '01111 10000 10000 01110 00001 00001 11110', T: '11111 00100 00100 00100 00100 00100 00100',
+  U: '10001 10001 10001 10001 10001 10001 01110', V: '10001 10001 10001 10001 10001 01010 00100',
+  W: '10001 10001 10001 10101 10101 11011 10001', X: '10001 10001 01010 00100 01010 10001 10001',
+  Y: '10001 10001 01010 00100 00100 00100 00100', Z: '11111 00001 00010 00100 01000 10000 11111',
+  0: '01110 10001 10011 10101 11001 10001 01110', 1: '00100 01100 00100 00100 00100 00100 01110',
+  2: '01110 10001 00001 00010 00100 01000 11111', 3: '11110 00001 00001 01110 00001 00001 11110',
+  4: '00010 00110 01010 10010 11111 00010 00010', 5: '11111 10000 11110 00001 00001 10001 01110',
+  6: '00110 01000 10000 11110 10001 10001 01110', 7: '11111 00001 00010 00100 01000 01000 01000',
+  8: '01110 10001 10001 01110 10001 10001 01110', 9: '01110 10001 10001 01111 00001 00010 01100',
+  '!': '00100 00100 00100 00100 00100 00000 00100', '?': '01110 10001 00001 00010 00100 00000 00100',
+  '.': '00000 00000 00000 00000 00000 00000 00100', '-': '00000 00000 00000 11111 00000 00000 00000',
+  '+': '00000 00100 00100 11111 00100 00100 00000', ' ': '00000 00000 00000 00000 00000 00000 00000'
+};
+const lineWidth = (t, sc) => t.length * 5 * sc + (t.length - 1) * sc;
+function textLayouts(t) {
+  const out = [], words = t.split(/\s+/).filter(Boolean);
+  if (words.length > 1) {                       // split between words, every way round
+    const n = words.length;
+    for (let mask = 0; mask < (1 << (n - 1)); mask++) {
+      const ls = [words[0]];
+      for (let i = 1; i < n; i++) { if (mask >> (i - 1) & 1) ls.push(words[i]); else ls[ls.length - 1] += ' ' + words[i]; }
+      out.push(ls);
+    }
+  } else {                                       // one word: even split into 1, 2, 3 ... lines
+    for (let k = 1; k <= Math.min(t.length, 6); k++) {
+      const ls = [], size = Math.ceil(t.length / k);
+      for (let i = 0; i < t.length; i += size) ls.push(t.slice(i, i + size));
+      out.push(ls);
+    }
+  }
+  return out;
+}
 function textPic() {
-  const t = $('textIn').value.trim().toUpperCase(); if (!t) { $('textIn').focus(); return; }
-  const [c, g] = hiCanvas(), lines = t.length > 6 && t.includes(' ') ? t.split(/\s+/) : [t], lh = c.height / lines.length;
-  g.textAlign = 'center'; g.textBaseline = 'middle';
-  lines.forEach((ln, i) => {
-    let px = lh * 0.92; const f = () => `900 ${px}px "Cabinet Grotesk", Arial Black, sans-serif`;
-    g.font = f(); const w = g.measureText(ln).width; if (w > c.width * .94) { px *= c.width * .94 / w; g.font = f(); }
-    g.fillText(ln, c.width / 2, lh * i + lh / 2 + px * 0.04);
+  const t = $('textIn').value.toUpperCase().replace(/[^A-Z0-9!?.+\- ]/g, '').trim();
+  if (!t) { $('textIn').focus(); return; }
+  let best = null;
+  for (const ls of textLayouts(t)) {
+    let sc = 0;
+    for (let k = 1; k <= 12; k++) {
+      const h = ls.length * 7 * k + (ls.length - 1) * k;
+      if (Math.max(...ls.map(l => lineWidth(l, k))) <= W.cols && h <= W.rows) sc = k;
+    }
+    if (sc && (!best || sc > best.sc || (sc === best.sc && ls.length < best.ls.length))) best = { ls, sc };
+  }
+  if (!best) { updateReadout('That text is too long for this grid. Try fewer letters, or make the grid bigger.'); return; }
+  const { ls, sc } = best, blockH = ls.length * 7 * sc + (ls.length - 1) * sc;
+  dropSrc(); snapshot(); W.cells.fill(0);
+  const y0 = Math.floor((W.rows - blockH) / 2);
+  ls.forEach((line, li) => {
+    const x0 = Math.floor((W.cols - lineWidth(line, sc)) / 2), ty = y0 + li * 8 * sc;
+    [...line].forEach((ch, ci) => {
+      const rows = (FONT[ch] || FONT[' ']).split(' '), cx = x0 + ci * 6 * sc;
+      rows.forEach((row, ry) => [...row].forEach((bit, rx) => {
+        if (bit !== '1') return;
+        for (let dy = 0; dy < sc; dy++) for (let dx = 0; dx < sc; dx++) {
+          const r = ty + ry * sc + dy, c = cx + rx * sc + dx;
+          if (r >= 0 && r < W.rows && c >= 0 && c < W.cols) W.cells[r * W.cols + c] = 1;
+        }
+      }));
+    });
   });
-  dropSrc(); applyGray(grayOf(c), 0.55, false);
+  refresh();
 }
 $('textBtn').onclick = textPic; $('textIn').addEventListener('keydown', e => { if (e.key === 'Enter') textPic(); });
 $('imgIn').onchange = e => {
