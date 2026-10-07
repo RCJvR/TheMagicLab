@@ -209,6 +209,7 @@
       <button class="tab-btn active" data-filter="soon">Expiring in 7 days</button>
       <button class="tab-btn" data-filter="trial">All trials</button>
       <button class="tab-btn" data-filter="expired">Expired</button>
+      <button class="tab-btn" data-filter="paying">Paying</button>
       <button class="tab-btn" data-filter="all">Everyone</button>
     </div>
 
@@ -334,6 +335,7 @@ function renderTrialRow(p) {
 function filteredTrialRows() {
   if (trialFilter === 'all')     return trialRows;
   if (trialFilter === 'expired') return trialRows.filter(p => p.account_status === 'Expired');
+  if (trialFilter === 'paying')  return trialRows.filter(p => p.account_status === 'Pro' || p.account_status === 'School');
   if (trialFilter === 'trial')   return trialRows.filter(p => p.account_status === 'Trial');
   return trialRows.filter(p =>
     p.account_status === 'Trial' && p.trial_days_left !== null && p.trial_days_left <= 7);
