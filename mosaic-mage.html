@@ -306,6 +306,11 @@ input::placeholder { color: var(--text-3); }
             <input type="range" id="thr" min="5" max="95" value="50">
           </label>
           <label class="chk" style="margin-top:var(--space-2)"><input type="checkbox" id="invImg"> Swap (light parts become colour 1)</label>
+          <label class="chk" style="margin-top:var(--space-2)"><input type="checkbox" id="imgTrim" checked> Trim empty margins first</label>
+          <label class="f" style="margin-top:var(--space-2)">Fit to the grid
+            <select id="imgFit"><option value="keep">Keep the proportions</option><option value="fill">Stretch to fill the grid</option></select>
+          </label>
+          <p class="hint">Words and logos read best with "Stretch to fill" and the line weight on Thin.</p>
         </div>
         <p class="hint">Shapes, text and photos are only a starting point. You can click any learner afterwards to fix it.</p>
       </div>
@@ -627,14 +632,17 @@ $('cols').onchange = resize; $('rows').onchange = resize;
 const HI = 24;
 function hiCanvas() { const c = document.createElement('canvas'); c.width = W.cols * HI; c.height = W.rows * HI; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.fillStyle = '#000'; g.strokeStyle = '#000'; return [c, g]; }
 function grayOf(canvas) {
-  const s = document.createElement('canvas'); s.width = W.cols; s.height = W.rows;
-  const g = s.getContext('2d', { willReadFrequently: true }); g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
-  g.fillStyle = '#fff'; g.fillRect(0, 0, W.cols, W.rows); g.drawImage(canvas, 0, 0, W.cols, W.rows);
-  const d = g.getImageData(0, 0, W.cols, W.rows).data, out = new Float32Array(W.cols * W.rows);
-  for (let i = 0; i < out.length; i++) out[i] = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]) / 255;
+  const w = canvas.width, h = canvas.height, d = canvas.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, w, h).data;
+  const out = new Float32Array(W.cols * W.rows), bw = w / W.cols, bh = h / W.rows;
+  for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols; c++) {
+    let sum = 0, n = 0;
+    for (let y = Math.floor(r * bh); y < Math.floor((r + 1) * bh); y++) for (let x = Math.floor(c * bw); x < Math.floor((c + 1) * bw); x++) { const k = (y * w + x) * 4; sum += 0.299 * d[k] + 0.587 * d[k + 1] + 0.114 * d[k + 2]; n++; }
+    out[r * W.cols + c] = n ? sum / n / 255 : 1;
+  }
   return out;
 }
-function dropSrc() { srcGray = null; $('imgCtl').classList.add('hidden'); }
+let srcImg = null, photoAspect = 1;
+function dropSrc() { srcGray = null; srcImg = null; $('imgCtl').classList.add('hidden'); }
 const weight = () => +$('weight').value;
 const WEIGHT_NAMES = ['', 'Thin (1 learner wide)', 'Bold (2 wide)', 'Extra bold (3 wide)'];
 function dilate(f, extra) {          // thicken every colour-1 stroke by `extra` learners, down and to the right
@@ -755,20 +763,41 @@ $('weight').oninput = () => { $('weightLbl').textContent = WEIGHT_NAMES[weight()
 $('weight').onchange = () => refresh();
 $('textLines').onchange = () => { if (mk && mk.kind === 'text') textPic(); };
 $('textBtn').onclick = () => textPic(); $('textIn').addEventListener('keydown', e => { if (e.key === 'Enter') textPic(); });
+/* A photo is trimmed to its content (so the margins don't waste learners), then fitted to the grid either keeping its
+   proportions or stretched to fill it, and averaged down to one grey value per learner. */
+function buildPhoto() {
+  const k = Math.min(1, 1400 / Math.max(srcImg.width, srcImg.height));
+  const wc = document.createElement('canvas'); wc.width = Math.max(1, Math.round(srcImg.width * k)); wc.height = Math.max(1, Math.round(srcImg.height * k));
+  const wg = wc.getContext('2d', { willReadFrequently: true }); wg.fillStyle = '#fff'; wg.fillRect(0, 0, wc.width, wc.height); wg.drawImage(srcImg, 0, 0, wc.width, wc.height);
+  let sx = 0, sy = 0, sw = wc.width, sh = wc.height;
+  if ($('imgTrim').checked) {
+    const d = wg.getImageData(0, 0, wc.width, wc.height).data, lum = i => 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+    const corner = [0, (wc.width - 1) * 4, (wc.height - 1) * wc.width * 4, (wc.height * wc.width - 1) * 4].map(lum), bg = corner.reduce((a, b) => a + b) / 4;
+    let x0 = wc.width, y0 = wc.height, x1 = -1, y1 = -1;
+    for (let y = 0; y < wc.height; y++) for (let x = 0; x < wc.width; x++) if (Math.abs(lum((y * wc.width + x) * 4) - bg) > 48) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 >= x0 && y1 >= y0) { sx = x0; sy = y0; sw = x1 - x0 + 1; sh = y1 - y0 + 1; }
+  }
+  photoAspect = sw / sh;
+  const [c, g] = hiCanvas(); let dw = c.width, dh = c.height;
+  if ($('imgFit').value === 'keep') { const ar = sw / sh, ca = c.width / c.height; if (ar > ca) dh = dw / ar; else dw = dh * ar; }
+  g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+  g.drawImage(wc, sx, sy, sw, sh, (c.width - dw) / 2, (c.height - dh) / 2, dw, dh);
+  srcGray = grayOf(c);
+}
 $('imgIn').onchange = e => {
   const file = e.target.files[0]; if (!file) return;
   const url = URL.createObjectURL(file), img = new Image();
   img.onload = () => {
-    const [c, g] = hiCanvas(), ar = img.width / img.height, ca = c.width / c.height; let w = c.width, h = c.height;
-    if (ar > ca) h = w / ar; else w = h * ar;
-    g.drawImage(img, (c.width - w) / 2, (c.height - h) / 2, w, h);
-    srcGray = grayOf(c); URL.revokeObjectURL(url);
+    srcImg = img; $('imgFit').value = 'keep'; buildPhoto(); URL.revokeObjectURL(url);
+    if (photoAspect > 2 || photoAspect < 0.5) { $('imgFit').value = 'fill'; buildPhoto(); }   // a word or banner: stretching keeps it legible
     const t = otsu(srcGray); $('thr').value = Math.round(t * 100); $('thrLbl').textContent = $('thr').value + '%';
     $('invImg').checked = false; $('imgCtl').classList.remove('hidden'); mk = { kind: 'photo' }; applyGray(srcGray, t, false);
   };
   img.onerror = () => { URL.revokeObjectURL(url); updateReadout('That file could not be read as a picture.'); };
   img.src = url; e.target.value = '';
 };
+const photoOpt = () => { if (!srcImg) return; buildPhoto(); const t = otsu(srcGray); $('thr').value = Math.round(t * 100); rethreshold(); save(); renderStrip(); };
+$('imgTrim').onchange = photoOpt; $('imgFit').onchange = photoOpt;
 function rethreshold() { if (!srcGray) return; $('thrLbl').textContent = $('thr').value + '%'; const t = $('thr').value / 100, inv = $('invImg').checked; for (let i = 0; i < W.cells.length; i++) W.cells[i] = ((srcGray[i] < t) !== inv) ? 1 : 0; dilate(W.cells, weight() - 1); redrawStage(); updateReadout(); }
 $('thr').oninput = rethreshold; $('thr').onchange = () => { renderStrip(); save(); }; $('invImg').onchange = () => { rethreshold(); save(); };
 
