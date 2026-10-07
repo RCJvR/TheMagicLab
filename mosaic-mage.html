@@ -720,7 +720,7 @@ $('saveImg').onclick = () => {
   if (same >= 0) { lib[same] = clonePic(W); loaded = same; } else { lib.push(clonePic(W)); loaded = lib.length - 1; }
   refresh(); updateReadout(`Saved “${W.name}”.`);
 };
-$('newImg').onclick = () => { const L = W.len; W = newPic(W.cols, W.rows, W.c1, W.c2); W.len = { ...L }; W.mode = 'all'; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
+$('newImg').onclick = () => { W = newPic(23, 23, W.c1, W.c2); selRow = null; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
 $('prevImg').onclick = () => stepPic(-1); $('nextImg').onclick = () => stepPic(1);
 $('speed').oninput = () => { $('speedLbl').textContent = parseFloat($('speed').value).toFixed(1) + ' s per picture'; if (presentTimer) { stopAuto(); $('pAuto').click(); } };
 
