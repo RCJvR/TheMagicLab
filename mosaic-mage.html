@@ -73,9 +73,17 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px,4
 .frame span { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 11.5px; }
 
 /* ── Controls ───────────────────────────────────────────────────────────── */
-.panel { border-top: 1px solid var(--line); padding: var(--space-4) 0; }
-.panel:first-child { border-top: 0; padding-top: 0; }
-.panel h2 { font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); margin-bottom: var(--space-3); }
+.side { position: sticky; top: 80px; max-height: calc(100vh - 96px); overflow-y: auto; padding-right: 4px; }
+@media (max-width: 980px) { .side { position: static; max-height: none; overflow: visible; } }
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; margin-bottom: var(--space-4); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); position: sticky; top: 0; z-index: 2; }
+.tabs button { padding: 9px 4px; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--text-2); font: 700 13px var(--font-body); cursor: pointer; }
+.tabs button:hover { color: var(--paper); }
+.tabs button[aria-selected="true"] { background: var(--accent); color: #14110a; }
+.tabs button:focus-visible { outline: 2px solid var(--paper); outline-offset: 1px; }
+.panel[hidden] { display: none; }
+.panel { padding: 0 0 var(--space-4); }
+.panel h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.panel h2.old { font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); margin-bottom: var(--space-3); }
 .row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 .row + .row { margin-top: var(--space-2); }
 label.f { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text-2); font-weight: 600; }
@@ -194,8 +202,14 @@ input::placeholder { color: var(--text-3); }
       </div>
     </section>
 
-    <aside aria-label="Controls">
-      <div class="panel">
+    <aside aria-label="Controls" class="side">
+      <div class="tabs" role="tablist" aria-label="Control sections">
+        <button type="button" role="tab" id="tab-group" aria-controls="pan-group" aria-selected="true">Group</button>
+        <button type="button" role="tab" id="tab-colours" aria-controls="pan-colours" aria-selected="false" tabindex="-1">Colours</button>
+        <button type="button" role="tab" id="tab-picture" aria-controls="pan-picture" aria-selected="false" tabindex="-1">Picture</button>
+        <button type="button" role="tab" id="tab-print" aria-controls="pan-print" aria-selected="false" tabindex="-1">Print</button>
+      </div>
+      <div class="panel" role="tabpanel" id="pan-group" aria-labelledby="tab-group">
         <h2>Your group</h2>
         <div class="row">
           <label class="f">Columns (seats across)<input type="number" id="cols" min="2" max="60" value="23"></label>
@@ -224,7 +238,7 @@ input::placeholder { color: var(--text-3); }
         <p class="hint">Learners face the audience. Row 1 is the top of the picture.</p>
       </div>
 
-      <div class="panel">
+      <div class="panel" role="tabpanel" id="pan-colours" aria-labelledby="tab-colours" hidden>
         <h2>Colours</h2>
         <div class="row">
           <label class="f">Colour 1<input type="color" id="c1" value="#1b2a5c"></label>
@@ -252,7 +266,7 @@ input::placeholder { color: var(--text-3); }
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel" role="tabpanel" id="pan-picture" aria-labelledby="tab-picture" hidden>
         <h2>Make a picture</h2>
         <div class="shapes" role="group" aria-label="Starter shapes">
           <button class="btn" type="button" data-shape="heart">Heart</button>
@@ -287,7 +301,7 @@ input::placeholder { color: var(--text-3); }
         <p class="hint">Shapes, text and photos are only a starting point. You can click any learner afterwards to fix it.</p>
       </div>
 
-      <div class="panel">
+      <div class="panel" role="tabpanel" id="pan-print" aria-labelledby="tab-print" hidden>
         <h2>Print and share</h2>
         <div class="row">
           <button class="btn" id="printSheet" type="button"><i data-lucide="printer"></i>Run sheet</button>
@@ -813,6 +827,18 @@ $('loadIn').onchange = e => {
     .catch(() => updateReadout('That file is not a Mosaic Mage export.'));
   e.target.value = '';
 };
+
+/* ── Control tabs ────────────────────────────────────────────────────────── */
+const tabBtns = [...document.querySelectorAll('.tabs [role=tab]')];
+function showTab(id, focus) {
+  tabBtns.forEach(b => { const on = b.id === 'tab-' + id; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; $(b.getAttribute('aria-controls')).hidden = !on; if (on && focus) b.focus(); });
+  try { localStorage.setItem('ml-mosaic-mage-tab', id); } catch (e) {}
+}
+tabBtns.forEach((b, i) => {
+  b.onclick = () => showTab(b.id.slice(4));
+  b.onkeydown = e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return; e.preventDefault(); showTab(tabBtns[(i + d + tabBtns.length) % tabBtns.length].id.slice(4), true); };
+});
+try { const t = localStorage.getItem('ml-mosaic-mage-tab'); if (t && $('tab-' + t)) showTab(t); } catch (e) {}
 
 /* ── Start ───────────────────────────────────────────────────────────────── */
 if (!load()) { W = newPic(23, 23, '#1b2a5c', '#f2f5f9'); shape('heart'); }
