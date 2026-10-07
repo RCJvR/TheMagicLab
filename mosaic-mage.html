@@ -113,7 +113,8 @@ input::placeholder { color: var(--text-3); }
 .btn.primary:hover { background: #f2d45c; border-color: #f2d45c; color: #14110a; }
 .btn svg { width: 14px; height: 14px; }
 .btn[aria-pressed="true"] { border-color: var(--accent); color: var(--paper); }
-.shapes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+.shapes { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); }
+.shapes .btn { padding: 9px 4px; }
 
 /* ── Present mode ───────────────────────────────────────────────────────── */
 #present { position: fixed; inset: 0; z-index: 200; background: #050607; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4); padding: var(--space-5); }
@@ -284,6 +285,14 @@ input::placeholder { color: var(--text-3); }
           <button class="btn" type="button" data-shape="arrow">Arrow</button>
           <button class="btn" type="button" data-shape="circle">Circle</button>
           <button class="btn" type="button" data-shape="diamond">Diamond</button>
+          <button class="btn" type="button" data-shape="bolt">Bolt</button>
+          <button class="btn" type="button" data-shape="triangle">Triangle</button>
+          <button class="btn" type="button" data-shape="cross">Cross</button>
+          <button class="btn" type="button" data-shape="crown">Crown</button>
+          <button class="btn" type="button" data-shape="paw">Paw</button>
+          <button class="btn" type="button" data-shape="sun">Sun</button>
+          <button class="btn" type="button" data-shape="moon">Moon</button>
+          <button class="btn" type="button" data-shape="tick">Tick</button>
         </div>
         <label class="f" style="margin-top:var(--space-3)">Line weight: <span id="weightLbl">Thin (1 learner wide)</span>
           <input type="range" id="weight" min="1" max="3" step="1" value="1">
@@ -668,13 +677,28 @@ function otsu(gray) {
 }
 function shape(name, live) {
   const [c, g] = hiCanvas(), w = c.width, h = c.height, cx = w / 2, cy = h / 2, s = Math.min(w, h) * 0.46;
+  const poly = pts => pts.forEach(([x, y], i) => g[i ? 'lineTo' : 'moveTo'](cx + x * s, cy + y * s));
+  const dot = (x, y, r) => { g.moveTo(cx + (x + r) * s, cy + y * s); g.arc(cx + x * s, cy + y * s, r * s, 0, 7); };
+  let custom = false;
   g.beginPath();
-  if (name === 'circle') g.ellipse(cx, cy, Math.min(w, h) * .45, Math.min(w, h) * .45, 0, 0, 7);
+  if (name === 'bolt') { poly([[.2, -1], [-.6, .15], [-.05, .15], [-.3, 1], [.65, -.25], [.1, -.25], [.55, -1]]); g.closePath(); }
+  else if (name === 'triangle') { poly([[0, -1], [1.05, .85], [-1.05, .85]]); g.closePath(); }
+  else if (name === 'crown') { poly([[-1, .75], [-1, -.65], [-.5, .0], [0, -.9], [.5, .0], [1, -.65], [1, .75]]); g.closePath(); }
+  else if (name === 'cross') { custom = true; g.fillRect(cx - s * .3, cy - s, s * .6, s * 2); g.fillRect(cx - s, cy - s * .3, s * 2, s * .6); }
+  else if (name === 'paw') { custom = true; g.ellipse(cx, cy + s * .38, s * .6, s * .5, 0, 0, 7); dot(-.82, -.1, .24); dot(-.3, -.62, .26); dot(.3, -.62, .26); dot(.82, -.1, .24); g.fill(); }
+  else if (name === 'sun') {
+    custom = true; g.arc(cx, cy, s * .5, 0, 7); g.fill(); g.lineWidth = s * .2; g.lineCap = 'round';
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g.beginPath(); g.moveTo(cx + Math.cos(a) * s * .78, cy + Math.sin(a) * s * .78); g.lineTo(cx + Math.cos(a) * s * 1.05, cy + Math.sin(a) * s * 1.05); g.stroke(); }
+  }
+  else if (name === 'moon') { custom = true; g.arc(cx, cy, s, 0, 7); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(cx + s * .48, cy - s * .2, s * .82, 0, 7); g.fill(); g.fillStyle = '#000'; }
+  else if (name === 'tick') { custom = true; g.lineWidth = s * .38; g.lineCap = 'round'; g.lineJoin = 'round'; poly([[-.9, .05], [-.3, .65], [.95, -.7]]); g.stroke(); }
+  else if (name === 'circle') g.ellipse(cx, cy, Math.min(w, h) * .45, Math.min(w, h) * .45, 0, 0, 7);
   else if (name === 'diamond') { g.moveTo(cx, cy - s); g.lineTo(cx + s, cy); g.lineTo(cx, cy + s); g.lineTo(cx - s, cy); g.closePath(); }
   else if (name === 'star') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? s * .42 : s * 1.05; g[i ? 'lineTo' : 'moveTo'](cx + r * Math.cos(a), cy + r * Math.sin(a) + s * .05); } g.closePath(); }
   else if (name === 'heart') { g.moveTo(cx, cy + s * .85); g.bezierCurveTo(cx - s * 1.6, cy + s * .1, cx - s * .9, cy - s, cx, cy - s * .35); g.bezierCurveTo(cx + s * .9, cy - s, cx + s * 1.6, cy + s * .1, cx, cy + s * .85); }
   else if (name === 'arrow') { g.moveTo(cx - s * 1.1, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .8); g.lineTo(cx + s * 1.1, cy); g.lineTo(cx + s * .15, cy + s * .8); g.lineTo(cx + s * .15, cy + s * .28); g.lineTo(cx - s * 1.1, cy + s * .28); g.closePath(); }
-  if (name !== 'smiley') g.fill();
+  if (custom) { /* already drawn */ }
+  else if (name !== 'smiley') g.fill();
   else {
     g.arc(cx, cy, s, 0, 7); g.lineWidth = s * .16; g.stroke();
     g.beginPath(); g.arc(cx - s * .35, cy - s * .25, s * .13, 0, 7); g.arc(cx + s * .35, cy - s * .25, s * .13, 0, 7); g.fill();
