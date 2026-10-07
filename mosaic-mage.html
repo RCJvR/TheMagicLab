@@ -203,7 +203,7 @@ input::placeholder { color: var(--text-3); }
         </div>
         <p class="hint" id="groupHint"></p>
         <div class="row">
-          <label class="f">Seat limit<input type="number" id="limit" min="1" max="9999" value="300"></label>
+          <label class="f">Seat limit<input type="number" id="limit" min="1" max="9999" value="540"></label>
         </div>
         <p class="hint" id="seatLine" style="margin-bottom:var(--space-2)"></p>
         <div class="row">
@@ -257,9 +257,18 @@ input::placeholder { color: var(--text-3); }
           <button class="btn" type="button" data-shape="circle">Circle</button>
           <button class="btn" type="button" data-shape="diamond">Diamond</button>
         </div>
+        <label class="f" style="margin-top:var(--space-3)">Line weight: <span id="weightLbl">Thin (1 learner wide)</span>
+          <input type="range" id="weight" min="1" max="3" step="1" value="1">
+        </label>
+        <p class="hint" style="margin-top:4px">Thicker lines are easier to read from far away. This changes text, shapes and photos as you drag it.</p>
         <div class="row" style="margin-top:var(--space-3)">
           <label class="f">Text or initials<input type="text" id="textIn" maxlength="24" placeholder="e.g. CURRO"></label>
           <button class="btn" id="textBtn" type="button" style="align-self:flex-end">Use text</button>
+        </div>
+        <div class="row">
+          <label class="f">Lines of text
+            <select id="textLines"><option value="0">Automatic</option><option value="1">1 line</option><option value="2">2 lines</option><option value="3">3 lines</option><option value="4">4 lines</option></select>
+          </label>
         </div>
         <div class="row" style="margin-top:var(--space-3)">
           <label class="f">Photo or logo<input type="file" id="imgIn" accept="image/*"></label>
@@ -314,7 +323,7 @@ const HEX = /^#[0-9a-f]{6}$/i;
    W is the picture being edited. cells: 1 = colour 1, 0 = colour 2, row-major.
    rowCols / colCols hold per-line colour pairs, used when mode is 'row' / 'col'.
    lib is the list of named, saved pictures; loaded is the index W came from. */
-let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 300;
+let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 540, mk = null;   // mk = what the last 'Make a picture' tool was, so the weight slider can redo it
 let undoStack = [], cursor = { c: 0, r: 0 }, layout = null, srcGray = null, seatFrom = 'left';
 let presentIdx = 0, presentTimer = null;
 
@@ -352,7 +361,7 @@ function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFro
 function restore(o) {
   W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
   seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
-  seatLimit = Math.min(9999, Math.max(1, o.seatLimit | 0)) || 300;
+  seatLimit = Math.min(9999, Math.max(1, o.seatLimit | 0)) || 540;
   loaded = (o.loaded | 0) >= 0 && o.loaded < lib.length ? o.loaded | 0 : -1;
 }
 function load() { try { const r = localStorage.getItem(KEY); if (r) { restore(JSON.parse(r)); return true; } } catch (e) {} return false; }
@@ -452,7 +461,7 @@ $('seatFrom').onchange = e => { seatFrom = e.target.value; refresh(); };
 
 /* ── Editing: click flips a learner between the two colours ──────────────── */
 function snapshot() { undoStack.push(W.cells.slice()); if (undoStack.length > 40) undoStack.shift(); }
-function mutate(fn) { snapshot(); fn(W.cells); refresh(); }
+function mutate(fn) { mk = null; snapshot(); fn(W.cells); refresh(); }
 function hit(ev) {
   const r = $('grid').getBoundingClientRect(), x = ev.clientX - r.left - layout.ox, y = ev.clientY - r.top - layout.oy;
   const c = Math.floor(x / layout.cs), rr = Math.floor(y / layout.cs);
@@ -471,7 +480,7 @@ $('grid').addEventListener('pointerdown', ev => {
   if (h.row != null) { selRow = h.row; if (W.mode === 'row') sel = { kind: 'row', i: h.row }; refresh(); return; }
   if (h.col != null && W.mode === 'col') { sel = { kind: 'col', i: h.col }; refresh(); return; }
   if (!h.cell) return;
-  $('grid').setPointerCapture(ev.pointerId); snapshot(); painting = true; cursor = h.cell;
+  $('grid').setPointerCapture(ev.pointerId); mk = null; snapshot(); painting = true; cursor = h.cell;
   const i = h.cell.r * W.cols + h.cell.c; paintVal = W.cells[i] ? 0 : 1; W.cells[i] = paintVal;
   redrawStage(); updateReadout(describe(h.cell));
 });
@@ -546,7 +555,7 @@ $('seatAdd').onclick = () => {
 };
 $('seatDel').onclick = () => { if (selRow == null) return; const n = lenOf(W, selRow) - 1; if (n < 1) return; W.len[selRow] = n; undoStack = []; refresh(); };
 $('seatReset').onclick = () => { if (selRow == null) return; delete W.len[selRow]; refresh(); };
-$('limit').onchange = () => { seatLimit = Math.min(9999, Math.max(1, parseInt($('limit').value) || 300)); $('limit').value = seatLimit; refresh(); };
+$('limit').onchange = () => { seatLimit = Math.min(9999, Math.max(1, parseInt($('limit').value) || 540)); $('limit').value = seatLimit; refresh(); };
 $('cols').onchange = resize; $('rows').onchange = resize;
 
 /* ── Starter pictures: drawn black-on-white at high resolution, scaled down to
@@ -562,7 +571,22 @@ function grayOf(canvas) {
   return out;
 }
 function dropSrc() { srcGray = null; $('imgCtl').classList.add('hidden'); }
-function applyGray(gray, thr, invert) { snapshot(); const f = W.cells; for (let i = 0; i < f.length; i++) f[i] = ((gray[i] < thr) !== invert) ? 1 : 0; refresh(); }
+const weight = () => +$('weight').value;
+const WEIGHT_NAMES = ['', 'Thin (1 learner wide)', 'Bold (2 wide)', 'Extra bold (3 wide)'];
+function dilate(f, extra) {          // thicken every colour-1 stroke by `extra` learners, down and to the right
+  if (extra < 1) return; const src = f.slice();
+  for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols; c++) if (src[r * W.cols + c]) {
+    for (let dy = 0; dy <= extra; dy++) for (let dx = 0; dx <= extra; dx++) {
+      const rr = r + dy, cc = c + dx; if (rr < W.rows && cc < lenOf(W, rr)) f[rr * W.cols + cc] = 1;
+    }
+  }
+}
+function finish(live) { if (live) { redrawStage(); updateReadout(); } else refresh(); }
+function applyGray(gray, thr, invert, live) {
+  if (!live) snapshot();
+  const f = W.cells; for (let i = 0; i < f.length; i++) f[i] = ((gray[i] < thr) !== invert) ? 1 : 0;
+  dilate(f, weight() - 1); finish(live);
+}
 function otsu(gray) {
   const h = new Array(256).fill(0); gray.forEach(v => h[Math.min(255, v * 255 | 0)]++);
   const tot = gray.length; let sum = 0; for (let i = 0; i < 256; i++) sum += i * h[i];
@@ -570,7 +594,7 @@ function otsu(gray) {
   for (let i = 0; i < 256; i++) { wb += h[i]; if (!wb) continue; const wf = tot - wb; if (!wf) break; sb += i * h[i]; const d = sb / wb - (sum - sb) / wf, v = wb * wf * d * d; if (v > best) { best = v; t = i; } }
   return t / 255;
 }
-function shape(name) {
+function shape(name, live) {
   const [c, g] = hiCanvas(), w = c.width, h = c.height, cx = w / 2, cy = h / 2, s = Math.min(w, h) * 0.46;
   g.beginPath();
   if (name === 'circle') g.ellipse(cx, cy, Math.min(w, h) * .45, Math.min(w, h) * .45, 0, 0, 7);
@@ -584,7 +608,7 @@ function shape(name) {
     g.beginPath(); g.arc(cx - s * .35, cy - s * .25, s * .13, 0, 7); g.arc(cx + s * .35, cy - s * .25, s * .13, 0, 7); g.fill();
     g.beginPath(); g.arc(cx, cy + s * .05, s * .55, .15 * Math.PI, .85 * Math.PI); g.lineWidth = s * .15; g.lineCap = 'round'; g.stroke();
   }
-  dropSrc(); applyGray(grayOf(c), 0.5, false);
+  dropSrc(); mk = { kind: 'shape', name }; applyGray(grayOf(c), 0.5, false, live);
 }
 document.querySelectorAll('[data-shape]').forEach(b => b.onclick = () => shape(b.dataset.shape));
 /* Text uses a hand-built 5 × 7 pixel font, drawn at the largest whole-number scale that fits, so letters stay
@@ -612,8 +636,7 @@ const FONT = {
   '.': '00000 00000 00000 00000 00000 00000 00100', '-': '00000 00000 00000 11111 00000 00000 00000',
   '+': '00000 00100 00100 11111 00100 00100 00000', ' ': '00000 00000 00000 00000 00000 00000 00000'
 };
-const lineWidth = (t, sc) => t.length * 5 * sc + (t.length - 1) * sc;
-function textLayouts(t) {
+function textLayouts(t, want) {
   const out = [], words = t.split(/\s+/).filter(Boolean);
   if (words.length > 1) {                       // split between words, every way round
     const n = words.length;
@@ -629,40 +652,45 @@ function textLayouts(t) {
       out.push(ls);
     }
   }
-  return out;
+  return want ? out.filter(ls => ls.length === want) : out;
 }
-function textPic() {
+function textPic(live) {
   const t = $('textIn').value.toUpperCase().replace(/[^A-Z0-9!?.+\- ]/g, '').trim();
   if (!t) { $('textIn').focus(); return; }
+  const ex = weight() - 1, want = +$('textLines').value;
+  const gw = sc => 5 * sc + ex, gh = sc => 7 * sc + ex;                        // one letter, including its extra thickness
+  const lineW = (l, sc) => l.length * gw(sc) + (l.length - 1) * sc;
+  const blockH = (ls, sc) => ls.length * gh(sc) + (ls.length - 1) * sc;
   let best = null;
-  for (const ls of textLayouts(t)) {
+  for (const ls of textLayouts(t, want)) {
     let sc = 0;
-    for (let k = 1; k <= 12; k++) {
-      const h = ls.length * 7 * k + (ls.length - 1) * k;
-      if (Math.max(...ls.map(l => lineWidth(l, k))) <= W.cols && h <= W.rows) sc = k;
-    }
+    for (let k = 1; k <= 12; k++) if (Math.max(...ls.map(l => lineW(l, k))) <= W.cols && blockH(ls, k) <= W.rows) sc = k;
     if (sc && (!best || sc > best.sc || (sc === best.sc && ls.length < best.ls.length))) best = { ls, sc };
   }
-  if (!best) { updateReadout('That text is too long for this grid. Try fewer letters, or make the grid bigger.'); return; }
-  const { ls, sc } = best, blockH = ls.length * 7 * sc + (ls.length - 1) * sc;
-  dropSrc(); snapshot(); W.cells.fill(0);
-  const y0 = Math.floor((W.rows - blockH) / 2);
+  if (!best) { updateReadout(want ? `That text won't fit on ${want} line${want > 1 ? 's' : ''} in this grid. Try Automatic, a thinner line weight, or a bigger grid.` : 'That text is too long for this grid. Try fewer letters, a thinner line weight, or a bigger grid.'); return; }
+  const { ls, sc } = best;
+  mk = { kind: 'text' }; dropSrc(); if (!live) snapshot(); W.cells.fill(0);
+  const y0 = Math.floor((W.rows - blockH(ls, sc)) / 2);
   ls.forEach((line, li) => {
-    const x0 = Math.floor((W.cols - lineWidth(line, sc)) / 2), ty = y0 + li * 8 * sc;
+    const x0 = Math.floor((W.cols - lineW(line, sc)) / 2), ty = y0 + li * (gh(sc) + sc);
     [...line].forEach((ch, ci) => {
-      const rows = (FONT[ch] || FONT[' ']).split(' '), cx = x0 + ci * 6 * sc;
-      rows.forEach((row, ry) => [...row].forEach((bit, rx) => {
+      const cx = x0 + ci * (gw(sc) + sc);
+      (FONT[ch] || FONT[' ']).split(' ').forEach((row, ry) => [...row].forEach((bit, rx) => {
         if (bit !== '1') return;
-        for (let dy = 0; dy < sc; dy++) for (let dx = 0; dx < sc; dx++) {
+        for (let dy = 0; dy < sc + ex; dy++) for (let dx = 0; dx < sc + ex; dx++) {
           const r = ty + ry * sc + dy, c = cx + rx * sc + dx;
-          if (r >= 0 && r < W.rows && c >= 0 && c < W.cols) W.cells[r * W.cols + c] = 1;
+          if (r >= 0 && r < W.rows && c >= 0 && c < lenOf(W, r)) W.cells[r * W.cols + c] = 1;
         }
       }));
     });
   });
-  refresh();
+  finish(live);
 }
-$('textBtn').onclick = textPic; $('textIn').addEventListener('keydown', e => { if (e.key === 'Enter') textPic(); });
+function reapply(live) { if (!mk) return; if (mk.kind === 'text') textPic(live); else if (mk.kind === 'shape') shape(mk.name, live); else if (mk.kind === 'photo') rethreshold(); }
+$('weight').oninput = () => { $('weightLbl').textContent = WEIGHT_NAMES[weight()]; reapply(true); };
+$('weight').onchange = () => refresh();
+$('textLines').onchange = () => { if (mk && mk.kind === 'text') textPic(); };
+$('textBtn').onclick = () => textPic(); $('textIn').addEventListener('keydown', e => { if (e.key === 'Enter') textPic(); });
 $('imgIn').onchange = e => {
   const file = e.target.files[0]; if (!file) return;
   const url = URL.createObjectURL(file), img = new Image();
@@ -672,12 +700,12 @@ $('imgIn').onchange = e => {
     g.drawImage(img, (c.width - w) / 2, (c.height - h) / 2, w, h);
     srcGray = grayOf(c); URL.revokeObjectURL(url);
     const t = otsu(srcGray); $('thr').value = Math.round(t * 100); $('thrLbl').textContent = $('thr').value + '%';
-    $('invImg').checked = false; $('imgCtl').classList.remove('hidden'); applyGray(srcGray, t, false);
+    $('invImg').checked = false; $('imgCtl').classList.remove('hidden'); mk = { kind: 'photo' }; applyGray(srcGray, t, false);
   };
   img.onerror = () => { URL.revokeObjectURL(url); updateReadout('That file could not be read as a picture.'); };
   img.src = url; e.target.value = '';
 };
-function rethreshold() { if (!srcGray) return; $('thrLbl').textContent = $('thr').value + '%'; const t = $('thr').value / 100, inv = $('invImg').checked; for (let i = 0; i < W.cells.length; i++) W.cells[i] = ((srcGray[i] < t) !== inv) ? 1 : 0; redrawStage(); updateReadout(); }
+function rethreshold() { if (!srcGray) return; $('thrLbl').textContent = $('thr').value + '%'; const t = $('thr').value / 100, inv = $('invImg').checked; for (let i = 0; i < W.cells.length; i++) W.cells[i] = ((srcGray[i] < t) !== inv) ? 1 : 0; dilate(W.cells, weight() - 1); redrawStage(); updateReadout(); }
 $('thr').oninput = rethreshold; $('thr').onchange = () => { renderStrip(); save(); }; $('invImg').onchange = () => { rethreshold(); save(); };
 
 /* ── Saved pictures ──────────────────────────────────────────────────────── */
