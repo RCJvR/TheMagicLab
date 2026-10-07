@@ -231,12 +231,7 @@ input::placeholder { color: var(--text-3); }
           <button class="btn" id="seatDel" type="button">− Remove a seat</button>
           <button class="btn" id="seatReset" type="button">Reset row</button>
         </div>
-        <div class="row">
-          <label class="f">Number seats from the audience's
-            <select id="seatFrom"><option value="left">left</option><option value="right">right</option></select>
-          </label>
-        </div>
-        <p class="hint">Learners face the audience. Row 1 is the top of the picture.</p>
+        <p class="hint">Learners face the audience. Rows run across the picture and columns run up and down.</p>
         <div class="row">
           <label class="f">Seat names (A1, B1…) start at
             <select id="nmStart">
@@ -377,6 +372,9 @@ function seatNames(p) {
     out[r * p.cols + c] = letters(fromRight ? p.cols - 1 - c : c) + (fromBottom ? p.rows - r : r + 1);
   return out;
 }
+/* Rows run across and are numbered; columns run up and down and are lettered. Both follow the start corner. */
+const rowLab = (p, r) => nm.start[0] === 'b' ? p.rows - r : r + 1;
+const colLab = (p, c) => letters(nm.start[1] === 'r' ? p.cols - 1 - c : c);
 const isLight = hex => (parseInt(hex.slice(1, 3), 16) * 299 + parseInt(hex.slice(3, 5), 16) * 587 + parseInt(hex.slice(5, 7), 16) * 114) / 1000 > 140;
 const totalSeats = p => { let n = 0; for (let r = 0; r < p.rows; r++) n += lenOf(p, r); return n; };
 function pairAt(p, r, c) {
@@ -437,9 +435,9 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
   }
   if (labels && cs >= 13) {
     g.font = `600 ${Math.min(12, cs * .7)}px "JetBrains Mono", monospace`; g.textAlign = 'center'; g.textBaseline = 'middle';
-    const step = cs >= 22 ? 1 : cs >= 16 ? 2 : 5;
-    for (let c = 0; c < p.cols; c++) { const n = seatOf(p, c); g.fillStyle = (p.mode === 'col' && sel && sel.kind === 'col' && sel.i === c) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if (n % step === 0 || n === 1 || (p.mode === 'col')) g.fillText(n, ox + c * cs + cs / 2, oy - cs * .7); }
-    for (let r = 0; r < p.rows; r++) { g.fillStyle = (selRow === r) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if ((r + 1) % step === 0 || r === 0 || p.mode === 'row') g.fillText(r + 1, ox - cs * .8, oy + r * cs + cs / 2); }
+    const step = cs >= 20 ? 1 : cs >= 14 ? 2 : 3;
+    for (let c = 0; c < p.cols; c++) { g.fillStyle = (p.mode === 'col' && sel && sel.kind === 'col' && sel.i === c) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if (c % step === 0 || p.mode === 'col') g.fillText(colLab(p, c), ox + c * cs + cs / 2, oy - cs * .7); }
+    for (let r = 0; r < p.rows; r++) { g.fillStyle = (selRow === r) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if (r % step === 0 || p.mode === 'row' || selRow === r) g.fillText(rowLab(p, r), ox - cs * .8, oy + r * cs + cs / 2); }
   }
   return { cs, ox, oy };
 }
@@ -477,12 +475,12 @@ function updateReadout(extra) {
   $('groupHint').textContent = `${tot} seats in total${over ? ` — ${tot - seatLimit} over the limit of ${seatLimit}` : `, ${seatLimit - tot} spare of ${seatLimit}`}.`;
   $('groupHint').style.color = over ? 'var(--crit)' : '';
   if (selRow != null && selRow >= W.rows) selRow = null;
-  $('seatLine').innerHTML = selRow == null ? 'Click a row number on the grid to add or remove seats in that row.' : `Row <b>${selRow + 1}</b> has <b>${lenOf(W, selRow)}</b> seats.`;
+  $('seatLine').innerHTML = selRow == null ? 'Click a row number on the grid to add or remove seats in that row.' : `Row <b>${rowLab(W, selRow)}</b> has <b>${lenOf(W, selRow)}</b> seats.`;
   for (const id of ['seatAdd', 'seatDel', 'seatReset']) $(id).disabled = selRow == null;
 }
 function syncControls() {
   $('cols').value = W.cols; $('rows').value = W.rows; $('c1').value = W.c1; $('c2').value = W.c2;
-  nmSync(); $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
+  nmSync(); $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('nameIn').value = W.name;
   syncLine();
 }
 function refresh() { if ($('nmHint')) nmSync(); redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
@@ -496,7 +494,7 @@ function syncLine() {
   $('l1').disabled = $('l2').disabled = $('lineReset').disabled = $('lineAll').disabled = !has;
   if (!has) { $('lineHint').textContent = `Click a ${word} number on the grid to give that ${word} its own colours. Any ${word} you leave alone uses the grid colours above.`; $('l1').value = W.c1; $('l2').value = W.c2; return; }
   const store = kind === 'row' ? W.rowCols : W.colCols, pair = store[sel.i] || [W.c1, W.c2];
-  $('lineHint').innerHTML = `Colours for <b>${word} ${kind === 'row' ? sel.i + 1 : seatOf(W, sel.i)}</b>${store[sel.i] ? '' : ' (using grid colours)'}`;
+  $('lineHint').innerHTML = `Colours for <b>${word} ${kind === 'row' ? rowLab(W, sel.i) : colLab(W, sel.i)}</b>${store[sel.i] ? '' : ' (using grid colours)'}`;
   $('l1').value = pair[0]; $('l2').value = pair[1];
 }
 function setLine() {
@@ -509,7 +507,6 @@ $('lineAll').onclick = () => { if (!sel) return; const store = W.mode === 'row' 
 $('mode').onchange = e => { W.mode = e.target.value; sel = null; refresh(); };
 $('c1').oninput = e => { W.c1 = e.target.value; refresh(); };
 $('c2').oninput = e => { W.c2 = e.target.value; refresh(); };
-$('seatFrom').onchange = e => { seatFrom = e.target.value; refresh(); };
 
 /* ── Editing: click flips a learner between the two colours ──────────────── */
 function snapshot() { undoStack.push(W.cells.slice()); if (undoStack.length > 40) undoStack.shift(); }
@@ -524,7 +521,7 @@ function hit(ev) {
 }
 function describe(p) {
   const pr = pairAt(W, p.r, p.c), on = W.cells[p.r * W.cols + p.c];
-  return `Row <b>${p.r + 1}</b>, seat <b>${seatIn(W, p.r, p.c)}</b> (name <b>${seatNames(W)[p.r * W.cols + p.c]}</b>): colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
+  return `<b>${seatNames(W)[p.r * W.cols + p.c]}</b> (column ${colLab(W, p.c)}, row ${rowLab(W, p.r)}): colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
 }
 let painting = false, paintVal = 1;
 $('grid').addEventListener('pointerdown', ev => {
@@ -817,17 +814,16 @@ const sameShape = p => p.cols === W.cols && p.rows === W.rows && JSON.stringify(
 const NM_START = { br: 'the bottom right (front right)', bl: 'the bottom left (front left)', tr: 'the top right (back right)', tl: 'the top left (back left)' };
 const printable = () => { const m = lib.filter(sameShape); return m.length ? m : [W]; };
 function printHeader(title, list) {
-  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.rows} rows, ${totalSeats(W)} learners (longest row ${W.cols}) · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience, seats counted from the audience's ${seatFrom}, row 1 is the top of the picture · seat names are column letter + row number, with A1 at ${NM_START[nm.start]} · “1” and “2” are the two colours shown beside each instruction</div>`;
+  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.rows} rows, ${totalSeats(W)} learners (longest row ${W.cols}) · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience · rows run across and are numbered, columns run up and down and are lettered, with A1 at ${NM_START[nm.start]} · “1” and “2” are the two colours shown beside each instruction</div>`;
 }
 function runs(p, r) {
-  const cs = []; for (let c = 0; c < lenOf(p, r); c++) cs.push(c); if (seatFrom === 'right') cs.reverse();
+  const cs = []; for (let c = 0; c < lenOf(p, r); c++) cs.push(c); 
   const out = [], names = seatNames(p); let i = 0;
   while (i < cs.length) {
     const v = p.cells[r * p.cols + cs[i]]; let j = i;
     while (j + 1 < cs.length && p.cells[r * p.cols + cs[j + 1]] === v) j++;
-    const a = seatIn(p, r, cs[i]), b = seatIn(p, r, cs[j]);
     const n1 = names[r * p.cols + cs[i]], n2 = names[r * p.cols + cs[j]];
-    out.push(`${a === b ? 'seat ' + a : 'seats ' + a + '–' + b} (${n1 === n2 ? n1 : n1 + '–' + n2}): ${sw(colourOf(p, r, cs[i]))}<b>${v ? 1 : 2}</b>`);
+    out.push(`${n1 === n2 ? n1 : n1 + '–' + n2}: ${sw(colourOf(p, r, cs[i]))}<b>${v ? 1 : 2}</b>`);
     i = j + 1;
   }
   return out.join(' &nbsp;|&nbsp; ');
@@ -839,7 +835,7 @@ $('printSheet').onclick = () => {
   list.forEach((p, i) => {
     const cv = document.createElement('canvas'); drawGrid(cv, p, 560, 360, true);
     h += `<div class="p-frame"><h3>${i + 1}. ${esc(p.name || 'Untitled')}</h3><img alt="${esc(p.name)}" src="${cv.toDataURL('image/png')}"><table>`;
-    for (let r = 0; r < p.rows; r++) h += `<tr><td>Row ${r + 1}</td><td>${runs(p, r)}</td></tr>`;
+    for (let r = 0; r < p.rows; r++) h += `<tr><td>Row ${rowLab(p, r)}</td><td>${runs(p, r)}</td></tr>`;
     h += '</table></div>';
   });
   doPrint(h);
@@ -848,7 +844,7 @@ $('printCards').onclick = () => {
   const list = printable(), single = list.length === 1, names = seatNames(W);
   let h = printHeader('Learner cards', list) + '<div class="cards">';
   for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) {
-    h += `<div class="card${single ? ' big' : ''}"><div class="nm">${esc(names[r * W.cols + c])}</div><div class="pos">Row ${r + 1} · Seat ${seatIn(W, r, c)}</div>` +
+    h += `<div class="card${single ? ' big' : ''}"><div class="nm">${esc(names[r * W.cols + c])}</div><div class="pos">Column ${colLab(W, c)} · Row ${rowLab(W, r)}</div>` +
       list.map((p, i) => { const v = p.cells[r * p.cols + c]; return `<span class="chip">${single ? '' : (i + 1) + ': '}${sw(colourOf(p, r, c))}${v ? 1 : 2}</span>`; }).join('') + '</div>';
   }
   doPrint(h + '</div>');
