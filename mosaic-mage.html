@@ -166,7 +166,7 @@ input::placeholder { color: var(--text-3); }
         <button class="btn" id="undoBtn" type="button"><i data-lucide="undo-2"></i>Undo</button>
         <button class="btn" id="clearBtn" type="button">All colour 2</button>
         <button class="btn" id="fillBtn" type="button">All colour 1</button>
-        <button class="btn" id="invertBtn" type="button">Swap colours</button>
+        <button class="btn" id="invertBtn" type="button">Invert</button>
         <button class="btn" id="mirrorBtn" type="button">Mirror ↔</button>
         <button class="btn" id="flipBtn" type="button">Flip ↕</button>
       </div>
@@ -501,7 +501,11 @@ function undo() { if (!undoStack.length) return; W.cells.set(undoStack.pop()); r
 $('undoBtn').onclick = undo;
 $('clearBtn').onclick = () => mutate(f => f.fill(0));
 $('fillBtn').onclick = () => mutate(f => f.fill(1));
-$('invertBtn').onclick = () => mutate(f => { for (let i = 0; i < f.length; i++) f[i] ^= 1; });
+$('invertBtn').onclick = () => {          // invert = swap the two colours everywhere, so the picture reads the other way round
+  [W.c1, W.c2] = [W.c2, W.c1];
+  for (const store of [W.rowCols, W.colCols]) for (const i in store) store[i] = [store[i][1], store[i][0]];
+  syncControls(); refresh();
+};
 $('mirrorBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows; r++) { const n = lenOf(W, r); for (let c = 0; c < n >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + n - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } } });
 $('flipBtn').onclick = () => mutate(f => {
   for (let r = 0; r < W.rows >> 1; r++) {
