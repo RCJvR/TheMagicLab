@@ -1,0 +1,667 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Mosaic Mage — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="assets/magic-lab.css">
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   Mosaic Mage — plan a human-pixel "flash" (card stunt).
+
+   A working tool, so: one stage on the left, one column of controls on the
+   right, hairlines instead of boxes. The only colour on the page is the
+   grid itself — the two blazer colours the teacher chose — plus one accent
+   (--t-spike) for the active frame and primary action.
+   ══════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; }
+.hidden { display: none !important; }
+:root { --accent: var(--t-spike); }
+
+nav {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+  min-height: 68px; padding: 0 var(--gutter);
+  background: rgba(8,9,11,0.82);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 17px; letter-spacing: -0.025em; color: var(--paper); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.nav-pill {
+  display: inline-flex; align-items: center; padding: 8px 15px; border-radius: var(--radius-full);
+  background: transparent; border: 1px solid var(--line); color: var(--text-2);
+  font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+.nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+
+main { width: 100%; max-width: 1280px; margin-inline: auto; padding: clamp(28px,4vw,44px) var(--gutter) var(--space-9); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px,4vw,44px); letter-spacing: -0.03em; color: var(--paper); }
+.lede { margin-top: 8px; max-width: 62ch; color: var(--text-2); font-size: 16px; line-height: 1.55; }
+
+.layout { margin-top: var(--space-6); display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: var(--space-6); align-items: start; }
+@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+
+/* ── Stage ──────────────────────────────────────────────────────────────── */
+.stage-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.stage-bar .grow { flex: 1; }
+.stage-wrap { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; justify-content: center; }
+#grid { display: block; touch-action: none; border-radius: var(--radius-xs); cursor: crosshair; }
+#grid:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.readout { margin-top: var(--space-3); min-height: 22px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); }
+.readout b { color: var(--paper); font-weight: 600; }
+
+/* ── Frames ─────────────────────────────────────────────────────────────── */
+.frames { margin-top: var(--space-5); }
+.frames-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.frames-head h2 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--paper); margin-right: auto; }
+.strip { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); }
+.frame { flex: 0 0 auto; background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px; cursor: pointer; color: var(--text-2); font: inherit; text-align: left; }
+.frame:hover { border-color: var(--line-hard); }
+.frame[aria-current="true"] { border-color: var(--accent); color: var(--paper); }
+.frame canvas { display: block; border-radius: 3px; }
+.frame span { display: block; margin-top: 6px; font-family: var(--font-mono); font-size: 11.5px; }
+
+/* ── Controls ───────────────────────────────────────────────────────────── */
+.panel { border-top: 1px solid var(--line); padding: var(--space-4) 0; }
+.panel:first-child { border-top: 0; padding-top: 0; }
+.panel h2 { font-family: var(--font-display); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); margin-bottom: var(--space-3); }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.row + .row { margin-top: var(--space-2); }
+label.f { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text-2); font-weight: 600; }
+.row label.f { flex: 1 1 90px; }
+input[type=number], input[type=text], select {
+  width: 100%; padding: 9px 10px; border-radius: var(--radius-xs);
+  background: var(--ink-750); border: 1px solid var(--line-hard); color: var(--paper);
+  font: 500 14px var(--font-body);
+}
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=color] { width: 100%; height: 38px; padding: 2px; border-radius: var(--radius-xs); background: var(--ink-750); border: 1px solid var(--line-hard); cursor: pointer; }
+input::placeholder { color: var(--text-3); }
+.chk { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text); }
+.chk input { accent-color: var(--accent); width: 16px; height: 16px; }
+.hint { font-size: 12.5px; color: var(--text-3); line-height: 1.5; margin-top: var(--space-2); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 9px 13px; border-radius: var(--radius-xs); cursor: pointer;
+  background: transparent; border: 1px solid var(--line-hard); color: var(--text);
+  font: 700 13px var(--font-body); line-height: 1; white-space: nowrap;
+}
+.btn:hover { border-color: var(--paper); color: var(--paper); background: rgba(255,255,255,0.04); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn:focus-visible, .frame:focus-visible, .nav-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #14110a; }
+.btn.primary:hover { background: #f2d45c; border-color: #f2d45c; color: #14110a; }
+.btn svg { width: 14px; height: 14px; }
+.btn[aria-pressed="true"] { border-color: var(--accent); color: var(--paper); }
+.shapes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+
+/* ── Present mode ───────────────────────────────────────────────────────── */
+#present { position: fixed; inset: 0; z-index: 200; background: #050607; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-4); padding: var(--space-5); }
+#present canvas { display: block; max-width: 100%; }
+#present .bar { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; justify-content: center; }
+#present .count { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--paper); min-width: 8ch; text-align: center; }
+
+#printRoot { display: none; }
+@media print {
+  body > *:not(#printRoot) { display: none !important; }
+  html, body { background: #fff !important; }
+  #printRoot { display: block; color: #000; font-family: var(--font-body); }
+  @page { margin: 12mm; }
+}
+.p-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.p-sub { font-size: 12px; color: #444; margin-bottom: 12px; }
+.p-frame { break-inside: avoid; page-break-inside: avoid; margin-bottom: 18px; }
+.p-frame h3 { font-size: 15px; margin: 0 0 6px; }
+.p-frame img { max-width: 100%; border: 1px solid #000; margin-bottom: 8px; }
+.p-frame table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.p-frame td { border: 1px solid #999; padding: 3px 6px; vertical-align: top; }
+.p-frame td:first-child { width: 64px; font-weight: 700; white-space: nowrap; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.card { border: 1px dashed #777; padding: 8px 9px; break-inside: avoid; page-break-inside: avoid; font-size: 11px; min-height: 74px; }
+.card .pos { font-weight: 800; font-size: 13px; margin-bottom: 5px; }
+.chip { display: inline-block; margin: 0 4px 3px 0; padding: 2px 6px; border: 1.5px solid #000; border-radius: 3px; font-weight: 700; font-size: 11px; }
+.card.big .chip { font-size: 18px; padding: 4px 10px; }
+
+.libhead { display:flex; flex-wrap:wrap; gap:var(--space-2); align-items:flex-end; margin-bottom:var(--space-3); }
+.libhead label.f { flex:1 1 200px; max-width:320px; }
+.libhead h2 { font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--paper); width:100%; }
+.item { position:relative; flex:0 0 auto; }
+.item .x { position:absolute; top:4px; right:4px; width:24px; height:24px; border-radius:50%; border:1px solid var(--line-hard); background:rgba(8,9,11,.85); color:var(--text); cursor:pointer; font:700 14px/1 var(--font-body); }
+.item .x:hover { color:var(--paper); border-color:var(--paper); }
+.item .x:focus-visible { outline:2px solid var(--accent); }
+.empty { font-size:13.5px; color:var(--text-3); padding:var(--space-3) 0; }
+.sw { display:inline-block; width:.9em; height:.9em; border:1px solid #888; vertical-align:-1px; margin-right:3px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.readout .sw { width:12px; height:12px; }
+</style>
+</head>
+<body>
+<a class="ml-skip" href="#ml-main">Skip to content</a>
+
+<nav>
+  <a href="index.html" class="nav-logo">✨ The Magic Lab</a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-pill">← All Tools</a>
+  </div>
+</nav>
+
+<main id="ml-main" tabindex="-1">
+  <h1>Mosaic Mage</h1>
+  <p class="lede">Plan a flash: learners in a block, each one a pixel in one of two colours. Set the size of the block and the colours, click the grid to flip a learner between them, then save the picture under a name. Click through your saved pictures to run the show, and print a run sheet and a card for every learner.</p>
+
+  <div class="layout">
+    <section aria-label="Flash grid">
+      <div class="stage-bar">
+        <button class="btn" id="undoBtn" type="button"><i data-lucide="undo-2"></i>Undo</button>
+        <button class="btn" id="clearBtn" type="button">All colour 2</button>
+        <button class="btn" id="fillBtn" type="button">All colour 1</button>
+        <button class="btn" id="invertBtn" type="button">Swap colours</button>
+        <button class="btn" id="mirrorBtn" type="button">Mirror ↔</button>
+        <button class="btn" id="flipBtn" type="button">Flip ↕</button>
+      </div>
+      <div class="stage-wrap" id="stageWrap">
+        <canvas id="grid" tabindex="0" role="application" aria-label="Flash grid. Use arrow keys to move and space to switch a learner between the two colours."></canvas>
+      </div>
+      <div class="readout" id="readout" aria-live="polite"></div>
+
+      <div class="frames">
+        <div class="libhead">
+          <h2>Saved pictures</h2>
+          <label class="f">Picture name<input type="text" id="nameIn" maxlength="40" placeholder="e.g. School heart"></label>
+          <button class="btn primary" id="saveImg" type="button"><i data-lucide="save"></i>Save picture</button>
+          <button class="btn" id="newImg" type="button"><i data-lucide="plus"></i>New blank</button>
+        </div>
+        <div class="row" style="margin-bottom:var(--space-3)">
+          <button class="btn" id="prevImg" type="button">← Previous</button>
+          <button class="btn" id="nextImg" type="button">Next →</button>
+          <button class="btn primary" id="presentBtn" type="button"><i data-lucide="play"></i>Present all</button>
+        </div>
+        <div class="strip" id="strip"></div>
+        <label class="f" style="max-width:280px;margin-top:var(--space-3)">Auto-play speed: <span id="speedLbl">2.0 s per picture</span>
+          <input type="range" id="speed" min="0.3" max="8" step="0.1" value="2">
+        </label>
+      </div>
+    </section>
+
+    <aside aria-label="Controls">
+      <div class="panel">
+        <h2>Your group</h2>
+        <div class="row">
+          <label class="f">Columns (seats across)<input type="number" id="cols" min="2" max="60" value="16"></label>
+          <label class="f">Rows<input type="number" id="rows" min="2" max="40" value="10"></label>
+        </div>
+        <p class="hint" id="groupHint"></p>
+        <div class="row">
+          <label class="f">Number seats from the audience's
+            <select id="seatFrom"><option value="left">left</option><option value="right">right</option></select>
+          </label>
+        </div>
+        <p class="hint">Learners face the audience. Row 1 is the top of the picture.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Colours</h2>
+        <div class="row">
+          <label class="f">Colour 1<input type="color" id="c1" value="#1b2a5c"></label>
+          <label class="f">Colour 2<input type="color" id="c2" value="#f2f5f9"></label>
+        </div>
+        <div class="row">
+          <label class="f">Apply these colours to
+            <select id="mode">
+              <option value="all">The whole grid</option>
+              <option value="row">Each row separately</option>
+              <option value="col">Each column separately</option>
+            </select>
+          </label>
+        </div>
+        <div id="lineCtl" class="hidden" style="margin-top:var(--space-3)">
+          <p class="hint" id="lineHint" style="margin-top:0"></p>
+          <div class="row">
+            <label class="f"><span id="lineL1">Colour 1</span><input type="color" id="l1"></label>
+            <label class="f"><span id="lineL2">Colour 2</span><input type="color" id="l2"></label>
+          </div>
+          <div class="row">
+            <button class="btn" id="lineReset" type="button">Use grid colours</button>
+            <button class="btn" id="lineAll" type="button">Copy to all</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Make a picture</h2>
+        <div class="shapes" role="group" aria-label="Starter shapes">
+          <button class="btn" type="button" data-shape="heart">Heart</button>
+          <button class="btn" type="button" data-shape="star">Star</button>
+          <button class="btn" type="button" data-shape="smiley">Smiley</button>
+          <button class="btn" type="button" data-shape="arrow">Arrow</button>
+          <button class="btn" type="button" data-shape="circle">Circle</button>
+          <button class="btn" type="button" data-shape="diamond">Diamond</button>
+        </div>
+        <div class="row" style="margin-top:var(--space-3)">
+          <label class="f">Text or initials<input type="text" id="textIn" maxlength="12" placeholder="e.g. CURRO"></label>
+          <button class="btn" id="textBtn" type="button" style="align-self:flex-end">Use text</button>
+        </div>
+        <div class="row" style="margin-top:var(--space-3)">
+          <label class="f">Photo or logo<input type="file" id="imgIn" accept="image/*"></label>
+        </div>
+        <div id="imgCtl" class="hidden" style="margin-top:var(--space-3)">
+          <label class="f">Dark parts → colour 1: <span id="thrLbl">50%</span>
+            <input type="range" id="thr" min="5" max="95" value="50">
+          </label>
+          <label class="chk" style="margin-top:var(--space-2)"><input type="checkbox" id="invImg"> Swap (light parts become colour 1)</label>
+        </div>
+        <p class="hint">Shapes, text and photos are only a starting point. You can click any learner afterwards to fix it.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Print and share</h2>
+        <div class="row">
+          <button class="btn" id="printSheet" type="button"><i data-lucide="printer"></i>Run sheet</button>
+          <button class="btn" id="printCards" type="button"><i data-lucide="printer"></i>Learner cards</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="pngBtn" type="button"><i data-lucide="image"></i>Save as PNG</button>
+          <button class="btn" id="saveBtn" type="button"><i data-lucide="download"></i>Export all</button>
+          <label class="btn" for="loadIn" style="cursor:pointer"><i data-lucide="upload"></i>Import</label>
+          <input type="file" id="loadIn" accept="application/json,.json" class="hidden">
+        </div>
+        <p class="hint">Print uses your saved pictures that match the current grid size. Everything is kept in this browser automatically; Export all makes a copy you can move to another computer.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="present" class="hidden" role="dialog" aria-modal="true" aria-label="Presenting pictures">
+  <canvas id="presentCanvas"></canvas>
+  <div class="bar">
+    <button class="btn" id="pPrev" type="button">← Back</button>
+    <span class="count" id="pCount" aria-live="polite"></span>
+    <button class="btn" id="pNext" type="button">Next →</button>
+    <button class="btn" id="pAuto" type="button" aria-pressed="false">Auto-play</button>
+    <button class="btn" id="pClose" type="button">Close (Esc)</button>
+  </div>
+</div>
+<div id="printRoot"></div>
+
+<script>
+(function () {
+'use strict';
+const $ = id => document.getElementById(id);
+const KEY = 'ml-mosaic-mage-v2';
+const HEX = /^#[0-9a-f]{6}$/i;
+
+/* ── State ───────────────────────────────────────────────────────────────
+   W is the picture being edited. cells: 1 = colour 1, 0 = colour 2, row-major.
+   rowCols / colCols hold per-line colour pairs, used when mode is 'row' / 'col'.
+   lib is the list of named, saved pictures; loaded is the index W came from. */
+let W, lib = [], loaded = -1, sel = null;
+let undoStack = [], cursor = { c: 0, r: 0 }, layout = null, srcGray = null, seatFrom = 'left';
+let presentIdx = 0, presentTimer = null;
+
+const newPic = (cols, rows, c1, c2) => ({ name: '', cols, rows, cells: new Uint8Array(cols * rows), c1, c2, mode: 'all', rowCols: {}, colCols: {} });
+const clonePic = p => ({ ...p, cells: p.cells.slice(), rowCols: JSON.parse(JSON.stringify(p.rowCols)), colCols: JSON.parse(JSON.stringify(p.colCols)) });
+const seatOf = (p, c) => seatFrom === 'left' ? c + 1 : p.cols - c;
+function pairAt(p, r, c) {
+  if (p.mode === 'row' && p.rowCols[r]) return p.rowCols[r];
+  if (p.mode === 'col' && p.colCols[c]) return p.colCols[c];
+  return [p.c1, p.c2];
+}
+const colourOf = (p, r, c) => pairAt(p, r, c)[p.cells[r * p.cols + c] ? 0 : 1];
+
+/* ── Persistence ────────────────────────────────────────────────────────── */
+const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols });
+function unpack(o) {
+  const cols = Math.min(60, Math.max(2, o.cols | 0)), rows = Math.min(40, Math.max(2, o.rows | 0));
+  const p = newPic(cols, rows, HEX.test(o.c1) ? o.c1 : '#1b2a5c', HEX.test(o.c2) ? o.c2 : '#f2f5f9');
+  p.name = String(o.name || '').slice(0, 40);
+  for (let i = 0; i < p.cells.length; i++) p.cells[i] = String(o.cells || '').charCodeAt(i) === 49 ? 1 : 0;
+  p.mode = ['row', 'col'].includes(o.mode) ? o.mode : 'all';
+  for (const k of ['rowCols', 'colCols']) {
+    const lim = k === 'rowCols' ? rows : cols;
+    for (const i in (o[k] || {})) { const v = o[k][i]; if (+i >= 0 && +i < lim && Array.isArray(v) && HEX.test(v[0]) && HEX.test(v[1])) p[k][i] = [v[0], v[1]]; }
+  }
+  return p;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
+function restore(o) {
+  W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
+  seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
+  loaded = (o.loaded | 0) >= 0 && o.loaded < lib.length ? o.loaded | 0 : -1;
+}
+function load() { try { const r = localStorage.getItem(KEY); if (r) { restore(JSON.parse(r)); return true; } } catch (e) {} return false; }
+
+/* ── Drawing ─────────────────────────────────────────────────────────────── */
+function drawGrid(canvas, p, maxW, maxH, labels) {
+  const dpr = window.devicePixelRatio || 1, lm = labels ? 2 : 0;
+  let cs = Math.floor(Math.min(maxW / (p.cols + lm), maxH / (p.rows + lm)));
+  cs = Math.max(4, Math.min(cs, 64));
+  const w = cs * (p.cols + lm), h = cs * (p.rows + lm);
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+  const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.fillStyle = labels ? '#0c0e11' : '#8a93a0'; g.fillRect(0, 0, w, h);
+  const ox = lm * cs, oy = lm * cs;
+  g.fillStyle = '#8a93a0'; g.fillRect(ox, oy, cs * p.cols, cs * p.rows);
+  const gap = cs >= 14 ? 1.5 : 1;
+  for (let r = 0; r < p.rows; r++) for (let c = 0; c < p.cols; c++) {
+    g.fillStyle = colourOf(p, r, c);
+    g.fillRect(ox + c * cs + gap / 2, oy + r * cs + gap / 2, cs - gap, cs - gap);
+  }
+  if (labels && cs >= 13) {
+    g.font = `600 ${Math.min(12, cs * .7)}px "JetBrains Mono", monospace`; g.textAlign = 'center'; g.textBaseline = 'middle';
+    const step = cs >= 22 ? 1 : cs >= 16 ? 2 : 5;
+    for (let c = 0; c < p.cols; c++) { const n = seatOf(p, c); g.fillStyle = (p.mode === 'col' && sel && sel.kind === 'col' && sel.i === c) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if (n % step === 0 || n === 1 || (p.mode === 'col')) g.fillText(n, ox + c * cs + cs / 2, oy - cs * .7); }
+    for (let r = 0; r < p.rows; r++) { g.fillStyle = (p.mode === 'row' && sel && sel.kind === 'row' && sel.i === r) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if ((r + 1) % step === 0 || r === 0 || p.mode === 'row') g.fillText(r + 1, ox - cs * .8, oy + r * cs + cs / 2); }
+  }
+  return { cs, ox, oy };
+}
+function redrawStage() {
+  layout = drawGrid($('grid'), W, $('stageWrap').clientWidth - 32, Math.max(280, window.innerHeight * 0.68), true);
+  if (document.activeElement === $('grid')) {
+    const g = $('grid').getContext('2d'); g.strokeStyle = '#eda13c'; g.lineWidth = 2.5;
+    g.strokeRect(layout.ox + cursor.c * layout.cs + 1, layout.oy + cursor.r * layout.cs + 1, layout.cs - 2, layout.cs - 2);
+  }
+}
+function renderStrip() {
+  const strip = $('strip'); strip.textContent = '';
+  if (!lib.length) { const d = document.createElement('p'); d.className = 'empty'; d.textContent = 'Nothing saved yet. Draw a picture, give it a name and press Save picture.'; strip.appendChild(d); }
+  lib.forEach((p, i) => {
+    const item = document.createElement('div'); item.className = 'item';
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'frame';
+    if (i === loaded) b.setAttribute('aria-current', 'true');
+    b.setAttribute('aria-label', 'Open ' + (p.name || 'Picture ' + (i + 1)) + (i === loaded ? ' (open now)' : ''));
+    const cv = document.createElement('canvas'); drawGrid(cv, p, 120, 80, false);
+    const sp = document.createElement('span'); sp.textContent = (i + 1) + '. ' + (p.name || 'Untitled');
+    b.append(cv, sp); b.onclick = () => openPic(i);
+    const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '×';
+    x.setAttribute('aria-label', 'Delete ' + (p.name || 'Picture ' + (i + 1))); x.onclick = () => delPic(i);
+    item.append(b, x); strip.appendChild(item);
+  });
+  $('prevImg').disabled = $('nextImg').disabled = lib.length < 2;
+}
+function tallies() { let a = 0; for (let i = 0; i < W.cells.length; i++) a += W.cells[i]; return [a, W.cells.length - a]; }
+let tail = '';
+function updateReadout(extra) {
+  const [a, b] = tallies();
+  tail = `<b>${a}</b> learners in colour 1, <b>${b}</b> in colour 2`;
+  $('readout').innerHTML = (extra ? extra + ' &nbsp;·&nbsp; ' : '') + tail;
+  $('groupHint').textContent = `${W.cols} × ${W.rows} = ${W.cols * W.rows} learners needed.`;
+}
+function syncControls() {
+  $('cols').value = W.cols; $('rows').value = W.rows; $('c1').value = W.c1; $('c2').value = W.c2;
+  $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
+  syncLine();
+}
+function refresh() { redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
+
+/* ── Per-row / per-column colours ────────────────────────────────────────── */
+function syncLine() {
+  const on = W.mode !== 'all'; $('lineCtl').classList.toggle('hidden', !on); if (!on) return;
+  const kind = W.mode, word = kind === 'row' ? 'row' : 'column';
+  if (sel && sel.kind !== kind) sel = null;
+  const has = sel != null;
+  $('l1').disabled = $('l2').disabled = $('lineReset').disabled = $('lineAll').disabled = !has;
+  if (!has) { $('lineHint').textContent = `Click a ${word} number on the grid to give that ${word} its own colours. Any ${word} you leave alone uses the grid colours above.`; $('l1').value = W.c1; $('l2').value = W.c2; return; }
+  const store = kind === 'row' ? W.rowCols : W.colCols, pair = store[sel.i] || [W.c1, W.c2];
+  $('lineHint').innerHTML = `Colours for <b>${word} ${kind === 'row' ? sel.i + 1 : seatOf(W, sel.i)}</b>${store[sel.i] ? '' : ' (using grid colours)'}`;
+  $('l1').value = pair[0]; $('l2').value = pair[1];
+}
+function setLine() {
+  if (!sel) return; const store = W.mode === 'row' ? W.rowCols : W.colCols;
+  store[sel.i] = [$('l1').value, $('l2').value]; refresh();
+}
+$('l1').oninput = setLine; $('l2').oninput = setLine;
+$('lineReset').onclick = () => { if (!sel) return; delete (W.mode === 'row' ? W.rowCols : W.colCols)[sel.i]; refresh(); };
+$('lineAll').onclick = () => { if (!sel) return; const store = W.mode === 'row' ? W.rowCols : W.colCols, n = W.mode === 'row' ? W.rows : W.cols; for (let i = 0; i < n; i++) store[i] = [$('l1').value, $('l2').value]; refresh(); };
+$('mode').onchange = e => { W.mode = e.target.value; sel = null; refresh(); };
+$('c1').oninput = e => { W.c1 = e.target.value; refresh(); };
+$('c2').oninput = e => { W.c2 = e.target.value; refresh(); };
+$('seatFrom').onchange = e => { seatFrom = e.target.value; refresh(); };
+
+/* ── Editing: click flips a learner between the two colours ──────────────── */
+function snapshot() { undoStack.push(W.cells.slice()); if (undoStack.length > 40) undoStack.shift(); }
+function mutate(fn) { snapshot(); fn(W.cells); refresh(); }
+function hit(ev) {
+  const r = $('grid').getBoundingClientRect(), x = ev.clientX - r.left - layout.ox, y = ev.clientY - r.top - layout.oy;
+  const c = Math.floor(x / layout.cs), rr = Math.floor(y / layout.cs);
+  if (c >= 0 && c < W.cols && rr >= 0 && rr < W.rows) return { cell: { c, r: rr } };
+  if (x < 0 && rr >= 0 && rr < W.rows) return { row: rr };
+  if (y < 0 && c >= 0 && c < W.cols) return { col: c };
+  return null;
+}
+function describe(p) {
+  const pr = pairAt(W, p.r, p.c), on = W.cells[p.r * W.cols + p.c];
+  return `Row <b>${p.r + 1}</b>, seat <b>${seatOf(W, p.c)}</b>: colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
+}
+let painting = false, paintVal = 1;
+$('grid').addEventListener('pointerdown', ev => {
+  const h = hit(ev); if (!h) return; ev.preventDefault(); $('grid').focus();
+  if (h.row != null && W.mode === 'row') { sel = { kind: 'row', i: h.row }; refresh(); return; }
+  if (h.col != null && W.mode === 'col') { sel = { kind: 'col', i: h.col }; refresh(); return; }
+  if (!h.cell) return;
+  $('grid').setPointerCapture(ev.pointerId); snapshot(); painting = true; cursor = h.cell;
+  const i = h.cell.r * W.cols + h.cell.c; paintVal = W.cells[i] ? 0 : 1; W.cells[i] = paintVal;
+  redrawStage(); updateReadout(describe(h.cell));
+});
+$('grid').addEventListener('pointermove', ev => {
+  const h = hit(ev);
+  if (!painting) { if (h && h.cell) $('readout').innerHTML = describe(h.cell) + ' &nbsp;·&nbsp; ' + tail; return; }
+  if (!h || !h.cell) return; const i = h.cell.r * W.cols + h.cell.c;
+  if (W.cells[i] !== paintVal) { W.cells[i] = paintVal; cursor = h.cell; redrawStage(); }
+});
+const endPaint = () => { if (painting) { painting = false; refresh(); } };
+$('grid').addEventListener('pointerup', endPaint); $('grid').addEventListener('pointercancel', endPaint);
+$('grid').addEventListener('keydown', ev => {
+  const k = ev.key;
+  if (k === 'ArrowLeft') cursor.c = Math.max(0, cursor.c - 1);
+  else if (k === 'ArrowRight') cursor.c = Math.min(W.cols - 1, cursor.c + 1);
+  else if (k === 'ArrowUp') cursor.r = Math.max(0, cursor.r - 1);
+  else if (k === 'ArrowDown') cursor.r = Math.min(W.rows - 1, cursor.r + 1);
+  else if (k === ' ' || k === 'Enter') { ev.preventDefault(); mutate(f => { const i = cursor.r * W.cols + cursor.c; f[i] = f[i] ? 0 : 1; }); updateReadout(describe(cursor)); return; }
+  else return;
+  ev.preventDefault(); redrawStage(); updateReadout(describe(cursor));
+});
+$('grid').addEventListener('focus', redrawStage); $('grid').addEventListener('blur', redrawStage);
+document.addEventListener('keydown', ev => {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z' && $('present').classList.contains('hidden') && !/INPUT|SELECT/.test(document.activeElement.tagName)) { ev.preventDefault(); undo(); }
+});
+function undo() { if (!undoStack.length) return; W.cells.set(undoStack.pop()); refresh(); }
+$('undoBtn').onclick = undo;
+$('clearBtn').onclick = () => mutate(f => f.fill(0));
+$('fillBtn').onclick = () => mutate(f => f.fill(1));
+$('invertBtn').onclick = () => mutate(f => { for (let i = 0; i < f.length; i++) f[i] ^= 1; });
+$('mirrorBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + W.cols - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } });
+$('flipBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows >> 1; r++) for (let c = 0; c < W.cols; c++) { const a = r * W.cols + c, b = (W.rows - 1 - r) * W.cols + c; [f[a], f[b]] = [f[b], f[a]]; } });
+
+/* ── Group size ──────────────────────────────────────────────────────────── */
+function resize() {
+  const nc = Math.min(60, Math.max(2, parseInt($('cols').value) || W.cols)), nr = Math.min(40, Math.max(2, parseInt($('rows').value) || W.rows));
+  $('cols').value = nc; $('rows').value = nr;
+  if (nc === W.cols && nr === W.rows) return;
+  const a = new Uint8Array(nc * nr);
+  for (let r = 0; r < Math.min(nr, W.rows); r++) for (let c = 0; c < Math.min(nc, W.cols); c++) a[r * nc + c] = W.cells[r * W.cols + c];
+  for (const i in W.rowCols) if (+i >= nr) delete W.rowCols[i];
+  for (const i in W.colCols) if (+i >= nc) delete W.colCols[i];
+  W.cells = a; W.cols = nc; W.rows = nr; undoStack = []; cursor = { c: 0, r: 0 }; sel = null; dropSrc(); refresh();
+}
+$('cols').onchange = resize; $('rows').onchange = resize;
+
+/* ── Starter pictures: drawn black-on-white at high resolution, scaled down to
+   one pixel per learner, then thresholded. Dark becomes colour 1. ────────── */
+const HI = 24;
+function hiCanvas() { const c = document.createElement('canvas'); c.width = W.cols * HI; c.height = W.rows * HI; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.fillStyle = '#000'; g.strokeStyle = '#000'; return [c, g]; }
+function grayOf(canvas) {
+  const s = document.createElement('canvas'); s.width = W.cols; s.height = W.rows;
+  const g = s.getContext('2d', { willReadFrequently: true }); g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W.cols, W.rows); g.drawImage(canvas, 0, 0, W.cols, W.rows);
+  const d = g.getImageData(0, 0, W.cols, W.rows).data, out = new Float32Array(W.cols * W.rows);
+  for (let i = 0; i < out.length; i++) out[i] = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]) / 255;
+  return out;
+}
+function dropSrc() { srcGray = null; $('imgCtl').classList.add('hidden'); }
+function applyGray(gray, thr, invert) { snapshot(); const f = W.cells; for (let i = 0; i < f.length; i++) f[i] = ((gray[i] < thr) !== invert) ? 1 : 0; refresh(); }
+function otsu(gray) {
+  const h = new Array(256).fill(0); gray.forEach(v => h[Math.min(255, v * 255 | 0)]++);
+  const tot = gray.length; let sum = 0; for (let i = 0; i < 256; i++) sum += i * h[i];
+  let sb = 0, wb = 0, best = 0, t = 128;
+  for (let i = 0; i < 256; i++) { wb += h[i]; if (!wb) continue; const wf = tot - wb; if (!wf) break; sb += i * h[i]; const d = sb / wb - (sum - sb) / wf, v = wb * wf * d * d; if (v > best) { best = v; t = i; } }
+  return t / 255;
+}
+function shape(name) {
+  const [c, g] = hiCanvas(), w = c.width, h = c.height, cx = w / 2, cy = h / 2, s = Math.min(w, h) * 0.46;
+  g.beginPath();
+  if (name === 'circle') g.ellipse(cx, cy, Math.min(w, h) * .45, Math.min(w, h) * .45, 0, 0, 7);
+  else if (name === 'diamond') { g.moveTo(cx, cy - s); g.lineTo(cx + s, cy); g.lineTo(cx, cy + s); g.lineTo(cx - s, cy); g.closePath(); }
+  else if (name === 'star') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? s * .42 : s * 1.05; g[i ? 'lineTo' : 'moveTo'](cx + r * Math.cos(a), cy + r * Math.sin(a) + s * .05); } g.closePath(); }
+  else if (name === 'heart') { g.moveTo(cx, cy + s * .85); g.bezierCurveTo(cx - s * 1.6, cy + s * .1, cx - s * .9, cy - s, cx, cy - s * .35); g.bezierCurveTo(cx + s * .9, cy - s, cx + s * 1.6, cy + s * .1, cx, cy + s * .85); }
+  else if (name === 'arrow') { g.moveTo(cx - s * 1.1, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .8); g.lineTo(cx + s * 1.1, cy); g.lineTo(cx + s * .15, cy + s * .8); g.lineTo(cx + s * .15, cy + s * .28); g.lineTo(cx - s * 1.1, cy + s * .28); g.closePath(); }
+  if (name !== 'smiley') g.fill();
+  else {
+    g.arc(cx, cy, s, 0, 7); g.lineWidth = s * .16; g.stroke();
+    g.beginPath(); g.arc(cx - s * .35, cy - s * .25, s * .13, 0, 7); g.arc(cx + s * .35, cy - s * .25, s * .13, 0, 7); g.fill();
+    g.beginPath(); g.arc(cx, cy + s * .05, s * .55, .15 * Math.PI, .85 * Math.PI); g.lineWidth = s * .15; g.lineCap = 'round'; g.stroke();
+  }
+  dropSrc(); applyGray(grayOf(c), 0.5, false);
+}
+document.querySelectorAll('[data-shape]').forEach(b => b.onclick = () => shape(b.dataset.shape));
+function textPic() {
+  const t = $('textIn').value.trim().toUpperCase(); if (!t) { $('textIn').focus(); return; }
+  const [c, g] = hiCanvas(), lines = t.length > 6 && t.includes(' ') ? t.split(/\s+/) : [t], lh = c.height / lines.length;
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  lines.forEach((ln, i) => {
+    let px = lh * 0.92; const f = () => `900 ${px}px "Cabinet Grotesk", Arial Black, sans-serif`;
+    g.font = f(); const w = g.measureText(ln).width; if (w > c.width * .94) { px *= c.width * .94 / w; g.font = f(); }
+    g.fillText(ln, c.width / 2, lh * i + lh / 2 + px * 0.04);
+  });
+  dropSrc(); applyGray(grayOf(c), 0.55, false);
+}
+$('textBtn').onclick = textPic; $('textIn').addEventListener('keydown', e => { if (e.key === 'Enter') textPic(); });
+$('imgIn').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const url = URL.createObjectURL(file), img = new Image();
+  img.onload = () => {
+    const [c, g] = hiCanvas(), ar = img.width / img.height, ca = c.width / c.height; let w = c.width, h = c.height;
+    if (ar > ca) h = w / ar; else w = h * ar;
+    g.drawImage(img, (c.width - w) / 2, (c.height - h) / 2, w, h);
+    srcGray = grayOf(c); URL.revokeObjectURL(url);
+    const t = otsu(srcGray); $('thr').value = Math.round(t * 100); $('thrLbl').textContent = $('thr').value + '%';
+    $('invImg').checked = false; $('imgCtl').classList.remove('hidden'); applyGray(srcGray, t, false);
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); updateReadout('That file could not be read as a picture.'); };
+  img.src = url; e.target.value = '';
+};
+function rethreshold() { if (!srcGray) return; $('thrLbl').textContent = $('thr').value + '%'; const t = $('thr').value / 100, inv = $('invImg').checked; for (let i = 0; i < W.cells.length; i++) W.cells[i] = ((srcGray[i] < t) !== inv) ? 1 : 0; redrawStage(); updateReadout(); }
+$('thr').oninput = rethreshold; $('thr').onchange = () => { renderStrip(); save(); }; $('invImg').onchange = () => { rethreshold(); save(); };
+
+/* ── Saved pictures ──────────────────────────────────────────────────────── */
+function openPic(i) { if (i < 0 || i >= lib.length) return; W = clonePic(lib[i]); loaded = i; undoStack = []; sel = null; dropSrc(); cursor = { c: 0, r: 0 }; syncControls(); refresh(); }
+function stepPic(d) { if (!lib.length) return; openPic((loaded < 0 ? (d > 0 ? 0 : lib.length - 1) : (loaded + d + lib.length) % lib.length)); }
+function delPic(i) { lib.splice(i, 1); if (loaded === i) loaded = -1; else if (loaded > i) loaded--; refresh(); }
+$('nameIn').oninput = e => { W.name = e.target.value.trim().slice(0, 40); save(); };
+$('saveImg').onclick = () => {
+  W.name = $('nameIn').value.trim().slice(0, 40);
+  if (!W.name) { $('nameIn').focus(); updateReadout('Give the picture a name first.'); return; }
+  const same = lib.findIndex(p => p.name.toLowerCase() === W.name.toLowerCase());
+  if (same >= 0) { lib[same] = clonePic(W); loaded = same; } else { lib.push(clonePic(W)); loaded = lib.length - 1; }
+  refresh(); updateReadout(`Saved “${W.name}”.`);
+};
+$('newImg').onclick = () => { W = newPic(W.cols, W.rows, W.c1, W.c2); W.mode = 'all'; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
+$('prevImg').onclick = () => stepPic(-1); $('nextImg').onclick = () => stepPic(1);
+$('speed').oninput = () => { $('speedLbl').textContent = parseFloat($('speed').value).toFixed(1) + ' s per picture'; if (presentTimer) { stopAuto(); $('pAuto').click(); } };
+
+/* ── Present ─────────────────────────────────────────────────────────────── */
+const presentList = () => lib.length ? lib : [W];
+function drawPresent() {
+  const list = presentList(), p = list[presentIdx];
+  drawGrid($('presentCanvas'), p, window.innerWidth - 48, window.innerHeight - 140, false);
+  $('pCount').textContent = `${p.name || 'Picture'} (${presentIdx + 1}/${list.length})`;
+}
+function stopAuto() { clearInterval(presentTimer); presentTimer = null; $('pAuto').setAttribute('aria-pressed', 'false'); }
+function stepPresent(d) { const n = presentList().length; presentIdx = (presentIdx + d + n) % n; drawPresent(); }
+$('presentBtn').onclick = () => { presentIdx = Math.max(0, loaded); $('present').classList.remove('hidden'); drawPresent(); $('pNext').focus(); };
+$('pPrev').onclick = () => stepPresent(-1); $('pNext').onclick = () => stepPresent(1);
+$('pClose').onclick = () => { stopAuto(); $('present').classList.add('hidden'); $('presentBtn').focus(); };
+$('pAuto').onclick = () => { if (presentTimer) { stopAuto(); return; } $('pAuto').setAttribute('aria-pressed', 'true'); presentTimer = setInterval(() => stepPresent(1), $('speed').value * 1000); };
+document.addEventListener('keydown', ev => {
+  if ($('present').classList.contains('hidden')) return;
+  if (ev.key === 'Escape') $('pClose').click();
+  else if (ev.key === 'ArrowRight') stepPresent(1);
+  else if (ev.key === 'ArrowLeft') stepPresent(-1);
+});
+window.addEventListener('resize', () => { redrawStage(); if (!$('present').classList.contains('hidden')) drawPresent(); });
+
+/* ── Print ───────────────────────────────────────────────────────────────── */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const sw = c => `<span class="sw" style="background:${c}"></span>`;
+const printable = () => { const m = lib.filter(p => p.cols === W.cols && p.rows === W.rows); return m.length ? m : [W]; };
+function printHeader(title, list) {
+  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.cols} columns × ${W.rows} rows = ${W.cols * W.rows} learners · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience, seats counted from the audience's ${seatFrom}, row 1 is the top of the picture · “1” and “2” are the two colours shown beside each instruction</div>`;
+}
+function runs(p, r) {
+  const cs = []; for (let c = 0; c < p.cols; c++) cs.push(c); if (seatFrom === 'right') cs.reverse();
+  const out = []; let i = 0;
+  while (i < cs.length) {
+    const v = p.cells[r * p.cols + cs[i]]; let j = i;
+    while (j + 1 < cs.length && p.cells[r * p.cols + cs[j + 1]] === v) j++;
+    const a = seatOf(p, cs[i]), b = seatOf(p, cs[j]);
+    out.push(`${a === b ? 'seat ' + a : 'seats ' + a + '–' + b}: ${sw(colourOf(p, r, cs[i]))}<b>${v ? 1 : 2}</b>`);
+    i = j + 1;
+  }
+  return out.join(' &nbsp;|&nbsp; ');
+}
+function doPrint(html) { $('printRoot').innerHTML = html; window.print(); }
+window.addEventListener('afterprint', () => { $('printRoot').innerHTML = ''; });
+$('printSheet').onclick = () => {
+  const list = printable(); let h = printHeader('Flash run sheet', list);
+  list.forEach((p, i) => {
+    const cv = document.createElement('canvas'); drawGrid(cv, p, 560, 360, true);
+    h += `<div class="p-frame"><h3>${i + 1}. ${esc(p.name || 'Untitled')}</h3><img alt="${esc(p.name)}" src="${cv.toDataURL('image/png')}"><table>`;
+    for (let r = 0; r < p.rows; r++) h += `<tr><td>Row ${r + 1}</td><td>${runs(p, r)}</td></tr>`;
+    h += '</table></div>';
+  });
+  doPrint(h);
+};
+$('printCards').onclick = () => {
+  const list = printable(), single = list.length === 1;
+  let h = printHeader('Learner cards', list) + '<div class="cards">';
+  for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols; c++) {
+    h += `<div class="card${single ? ' big' : ''}"><div class="pos">Row ${r + 1} · Seat ${seatOf(W, c)}</div>` +
+      list.map((p, i) => { const v = p.cells[r * p.cols + c]; return `<span class="chip">${single ? '' : (i + 1) + ': '}${sw(colourOf(p, r, c))}${v ? 1 : 2}</span>`; }).join('') + '</div>';
+  }
+  doPrint(h + '</div>');
+};
+$('pngBtn').onclick = () => {
+  const cv = document.createElement('canvas'); drawGrid(cv, W, 1400, 1000, true);
+  const a = document.createElement('a'); a.download = (W.name || 'flash').replace(/[^\w\- ]+/g, '') + '.png'; a.href = cv.toDataURL('image/png'); a.click();
+};
+$('saveBtn').onclick = () => {
+  const a = document.createElement('a'); a.download = 'mosaic-mage-pictures.json';
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+$('loadIn').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  file.text().then(t => { restore(JSON.parse(t)); undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); })
+    .catch(() => updateReadout('That file is not a Mosaic Mage export.'));
+  e.target.value = '';
+};
+
+/* ── Start ───────────────────────────────────────────────────────────────── */
+if (!load()) { W = newPic(16, 10, '#1b2a5c', '#f2f5f9'); shape('heart'); }
+syncControls(); refresh();
+if (document.fonts) document.fonts.ready.then(redrawStage);
+})();
+</script>
+</body>
+</html>
