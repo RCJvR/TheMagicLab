@@ -178,6 +178,7 @@ input::placeholder { color: var(--text-3); }
         <button class="btn" id="invertBtn" type="button">Invert</button>
         <button class="btn" id="mirrorBtn" type="button">Mirror ↔</button>
         <button class="btn" id="flipBtn" type="button">Flip ↕</button>
+        <button class="btn" id="namesBtn" type="button" aria-pressed="true">Seat names: On</button>
       </div>
       <div class="stage-wrap" id="stageWrap">
         <canvas id="grid" tabindex="0" role="application" aria-label="Flash grid. Use arrow keys to move and space to switch a learner between the two colours."></canvas>
@@ -611,11 +612,13 @@ $('defCols').onchange = setDefaults; $('defRows').onchange = setDefaults;
 $('defUse').onclick = () => { $('defCols').value = W.cols; $('defRows').value = W.rows; setDefaults(); updateReadout(`New blanks will now start at ${defCols} × ${defRows}.`); };
 function nmSync() {
   $('nmStart').value = nm.start; $('nmShow').checked = nm.show;
+  $('namesBtn').setAttribute('aria-pressed', nm.show); $('namesBtn').textContent = 'Seat names: ' + (nm.show ? 'On' : 'Off');
   const first = seatNames(W).find(x => x);
   $('nmHint').textContent = first ? `Rows ${letters(0)}–${letters(W.rows - 1)}, seats 1–${W.cols} along each row, with ${nm.start === 'br' ? 'A1 at the bottom right' : nm.start === 'bl' ? 'A1 at the bottom left' : nm.start === 'tr' ? 'A1 at the top right' : 'A1 at the top left'}. Printed on each learner card and in the run sheet.` : '';
 }
 $('nmStart').onchange = e => { nm.start = e.target.value; refresh(); };
 $('nmShow').onchange = e => { nm.show = e.target.checked; refresh(); };
+$('namesBtn').onclick = () => { nm.show = !nm.show; refresh(); };
 $('limit').onchange = () => { seatLimit = Math.min(9999, Math.max(1, parseInt($('limit').value) || 540)); $('limit').value = seatLimit; refresh(); };
 $('cols').onchange = resize; $('rows').onchange = resize;
 
