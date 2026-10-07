@@ -751,6 +751,9 @@ const FONT4 = {
   '.': '.... .... .... .... .... .... .#..', '-': '.... .... .... #### .... .... ....',
   '+': '.... .#.. .#.. #### .#.. .#.. ....', ' ': '.... .... .... .... .... .... ....'
 };
+/* Hand-drawn letters for the "Bold (2 wide)" weight at the smallest size. They replace the automatic thickening,
+   and may be wider than the letter they replace. */
+const BOLD1 = { G: ['..####', '.#####', '###...', '##.###', '##.###', '##..##', '######', '.####.'] };
 const FONTS = [{ f: FONT, w: 5 }, { f: FONT4, w: 4 }];
 function textPic(live) {
   const t = $('textIn').value.toUpperCase().replace(/[^A-Z0-9!?.+\- ]/g, '').trim();   // apostrophes and other marks are skipped
@@ -759,26 +762,28 @@ function textPic(live) {
   let best = null;
   for (const font of FONTS) {
     const gw = sc => font.w * sc + ex, gh = sc => 7 * sc + ex;                 // one letter, including its extra thickness
-    const lineW = (l, sc) => l.length * gw(sc) + (l.length - 1) * sc;
+    const cw = (ch, sc) => (ex === 1 && sc === 1 && BOLD1[ch]) ? BOLD1[ch][0].length : gw(sc);
+    const lineW = (l, sc) => [...l].reduce((a, ch) => a + cw(ch, sc), 0) + (l.length - 1) * sc;
     const blockH = (ls, sc) => ls.length * gh(sc) + (ls.length - 1) * sc;
     for (const ls of textLayouts(t, want)) {
       let sc = 0;
       for (let k = 1; k <= 12; k++) if (Math.max(...ls.map(l => lineW(l, k))) <= W.cols && blockH(ls, k) <= W.rows) sc = k;
-      if (sc && (!best || sc > best.sc || (sc === best.sc && ls.length < best.ls.length))) best = { ls, sc, font, gw, gh, lineW, blockH };
+      if (sc && (!best || sc > best.sc || (sc === best.sc && ls.length < best.ls.length))) best = { ls, sc, font, gw, cw, gh, lineW, blockH };
     }
   }
   if (!best) { updateReadout(want ? `That text won't fit on ${want} line${want > 1 ? 's' : ''} in this grid. Try Automatic, a thinner line weight, or a bigger grid.` : 'That text is too long for this grid. Try fewer letters, a thinner line weight, or a bigger grid.'); return; }
-  const { ls, sc, font, gw, gh, lineW, blockH } = best;
+  const { ls, sc, font, gw, cw, gh, lineW, blockH } = best;
   mk = { kind: 'text' }; dropSrc(); if (!live) snapshot(); W.cells.fill(0);
   const y0 = Math.floor((W.rows - blockH(ls, sc)) / 2);
   ls.forEach((line, li) => {
     const x0 = Math.floor((W.cols - lineW(line, sc)) / 2), ty = y0 + li * (gh(sc) + sc);
-    [...line].forEach((ch, ci) => {
-      const cx = x0 + ci * (gw(sc) + sc);
-      (font.f[ch] || font.f[' ']).split(' ').forEach((row, ry) => [...row].forEach((bit, rx) => {
+    let cx = x0;
+    [...line].forEach(ch => {
+      const custom = ex === 1 && sc === 1 && BOLD1[ch], gx = cx; cx += cw(ch, sc) + sc;
+      (custom || (font.f[ch] || font.f[' ']).split(' ')).forEach((row, ry) => [...row].forEach((bit, rx) => {
         if (bit !== '1' && bit !== '#') return;
-        for (let dy = 0; dy < sc + ex; dy++) for (let dx = 0; dx < sc + ex; dx++) {
-          const r = ty + ry * sc + dy, c = cx + rx * sc + dx;
+        for (let dy = 0; dy < (custom ? 1 : sc + ex); dy++) for (let dx = 0; dx < (custom ? 1 : sc + ex); dx++) {
+          const r = ty + ry * sc + dy, c = gx + rx * sc + dx;
           if (r >= 0 && r < W.rows && c >= 0 && c < lenOf(W, r)) W.cells[r * W.cols + c] = 1;
         }
       }));
