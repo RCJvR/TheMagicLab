@@ -203,6 +203,11 @@ input::placeholder { color: var(--text-3); }
         </div>
         <p class="hint" id="groupHint"></p>
         <div class="row">
+          <label class="f">New blanks start at (columns)<input type="number" id="defCols" min="2" max="60" value="23"></label>
+          <label class="f">Rows<input type="number" id="defRows" min="2" max="40" value="23"></label>
+        </div>
+        <div class="row"><button class="btn" id="defUse" type="button">Use the current size</button></div>
+        <div class="row">
           <label class="f">Seat limit<input type="number" id="limit" min="1" max="9999" value="540"></label>
         </div>
         <p class="hint" id="seatLine" style="margin-bottom:var(--space-2)"></p>
@@ -323,7 +328,7 @@ const HEX = /^#[0-9a-f]{6}$/i;
    W is the picture being edited. cells: 1 = colour 1, 0 = colour 2, row-major.
    rowCols / colCols hold per-line colour pairs, used when mode is 'row' / 'col'.
    lib is the list of named, saved pictures; loaded is the index W came from. */
-let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 540, mk = null;   // mk = what the last 'Make a picture' tool was, so the weight slider can redo it
+let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 540, defCols = 23, defRows = 23, mk = null;   // mk = what the last 'Make a picture' tool was, so the weight slider can redo it
 let undoStack = [], cursor = { c: 0, r: 0 }, layout = null, srcGray = null, seatFrom = 'left';
 let presentIdx = 0, presentTimer = null;
 
@@ -357,11 +362,12 @@ function unpack(o) {
   for (const i in (o.len || {})) { const v = o.len[i] | 0; if (+i >= 0 && +i < rows && v >= 1 && v < cols) p.len[i] = v; }
   return p;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
 function restore(o) {
   W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
   seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
   seatLimit = Math.min(9999, Math.max(1, o.seatLimit | 0)) || 540;
+  defCols = Math.min(60, Math.max(2, o.defCols | 0)) || 23; defRows = Math.min(40, Math.max(2, o.defRows | 0)) || 23;
   loaded = (o.loaded | 0) >= 0 && o.loaded < lib.length ? o.loaded | 0 : -1;
 }
 function load() { try { const r = localStorage.getItem(KEY); if (r) { restore(JSON.parse(r)); return true; } } catch (e) {} return false; }
@@ -430,7 +436,7 @@ function updateReadout(extra) {
 }
 function syncControls() {
   $('cols').value = W.cols; $('rows').value = W.rows; $('c1').value = W.c1; $('c2').value = W.c2;
-  $('limit').value = seatLimit; $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
+  $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
   syncLine();
 }
 function refresh() { redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
@@ -555,6 +561,12 @@ $('seatAdd').onclick = () => {
 };
 $('seatDel').onclick = () => { if (selRow == null) return; const n = lenOf(W, selRow) - 1; if (n < 1) return; W.len[selRow] = n; undoStack = []; refresh(); };
 $('seatReset').onclick = () => { if (selRow == null) return; delete W.len[selRow]; refresh(); };
+function setDefaults() {
+  defCols = Math.min(60, Math.max(2, parseInt($('defCols').value) || defCols)); defRows = Math.min(40, Math.max(2, parseInt($('defRows').value) || defRows));
+  $('defCols').value = defCols; $('defRows').value = defRows; save();
+}
+$('defCols').onchange = setDefaults; $('defRows').onchange = setDefaults;
+$('defUse').onclick = () => { $('defCols').value = W.cols; $('defRows').value = W.rows; setDefaults(); updateReadout(`New blanks will now start at ${defCols} × ${defRows}.`); };
 $('limit').onchange = () => { seatLimit = Math.min(9999, Math.max(1, parseInt($('limit').value) || 540)); $('limit').value = seatLimit; refresh(); };
 $('cols').onchange = resize; $('rows').onchange = resize;
 
@@ -720,7 +732,7 @@ $('saveImg').onclick = () => {
   if (same >= 0) { lib[same] = clonePic(W); loaded = same; } else { lib.push(clonePic(W)); loaded = lib.length - 1; }
   refresh(); updateReadout(`Saved “${W.name}”.`);
 };
-$('newImg').onclick = () => { W = newPic(23, 23, W.c1, W.c2); selRow = null; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
+$('newImg').onclick = () => { W = newPic(defCols, defRows, W.c1, W.c2); selRow = null; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
 $('prevImg').onclick = () => stepPic(-1); $('nextImg').onclick = () => stepPic(1);
 $('speed').oninput = () => { $('speedLbl').textContent = parseFloat($('speed').value).toFixed(1) + ' s per picture'; if (presentTimer) { stopAuto(); $('pAuto').click(); } };
 
@@ -792,7 +804,7 @@ $('pngBtn').onclick = () => {
 };
 $('saveBtn').onclick = () => {
   const a = document.createElement('a'); a.download = 'mosaic-mage-pictures.json';
-  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, seatLimit, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
 $('loadIn').onchange = e => {
