@@ -198,10 +198,19 @@ input::placeholder { color: var(--text-3); }
       <div class="panel">
         <h2>Your group</h2>
         <div class="row">
-          <label class="f">Columns (seats across)<input type="number" id="cols" min="2" max="60" value="16"></label>
-          <label class="f">Rows<input type="number" id="rows" min="2" max="40" value="10"></label>
+          <label class="f">Columns (seats across)<input type="number" id="cols" min="2" max="60" value="17"></label>
+          <label class="f">Rows<input type="number" id="rows" min="2" max="40" value="17"></label>
         </div>
         <p class="hint" id="groupHint"></p>
+        <div class="row">
+          <label class="f">Seat limit<input type="number" id="limit" min="1" max="9999" value="300"></label>
+        </div>
+        <p class="hint" id="seatLine" style="margin-bottom:var(--space-2)"></p>
+        <div class="row">
+          <button class="btn" id="seatAdd" type="button">+ Add a seat</button>
+          <button class="btn" id="seatDel" type="button">− Remove a seat</button>
+          <button class="btn" id="seatReset" type="button">Reset row</button>
+        </div>
         <div class="row">
           <label class="f">Number seats from the audience's
             <select id="seatFrom"><option value="left">left</option><option value="right">right</option></select>
@@ -305,13 +314,18 @@ const HEX = /^#[0-9a-f]{6}$/i;
    W is the picture being edited. cells: 1 = colour 1, 0 = colour 2, row-major.
    rowCols / colCols hold per-line colour pairs, used when mode is 'row' / 'col'.
    lib is the list of named, saved pictures; loaded is the index W came from. */
-let W, lib = [], loaded = -1, sel = null;
+let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 300;
 let undoStack = [], cursor = { c: 0, r: 0 }, layout = null, srcGray = null, seatFrom = 'left';
 let presentIdx = 0, presentTimer = null;
 
-const newPic = (cols, rows, c1, c2) => ({ name: '', cols, rows, cells: new Uint8Array(cols * rows), c1, c2, mode: 'all', rowCols: {}, colCols: {} });
-const clonePic = p => ({ ...p, cells: p.cells.slice(), rowCols: JSON.parse(JSON.stringify(p.rowCols)), colCols: JSON.parse(JSON.stringify(p.colCols)) });
-const seatOf = (p, c) => seatFrom === 'left' ? c + 1 : p.cols - c;
+const newPic = (cols, rows, c1, c2) => ({ name: '', cols, rows, cells: new Uint8Array(cols * rows), c1, c2, mode: 'all', rowCols: {}, colCols: {}, len: {} });
+const clonePic = p => ({ ...p, cells: p.cells.slice(), rowCols: JSON.parse(JSON.stringify(p.rowCols)), colCols: JSON.parse(JSON.stringify(p.colCols)), len: { ...p.len } });
+const seatOf = (p, c) => seatFrom === 'left' ? c + 1 : p.cols - c;           // column header numbers
+/* A row can be longer or shorter than the rest: len[r] is its seat count, p.cols is the widest row. */
+const lenOf = (p, r) => Math.min(p.cols, p.len[r] ?? p.cols);
+const active = (p, r, c) => c < lenOf(p, r);
+const seatIn = (p, r, c) => seatFrom === 'left' ? c + 1 : lenOf(p, r) - c;
+const totalSeats = p => { let n = 0; for (let r = 0; r < p.rows; r++) n += lenOf(p, r); return n; };
 function pairAt(p, r, c) {
   if (p.mode === 'row' && p.rowCols[r]) return p.rowCols[r];
   if (p.mode === 'col' && p.colCols[c]) return p.colCols[c];
@@ -320,7 +334,7 @@ function pairAt(p, r, c) {
 const colourOf = (p, r, c) => pairAt(p, r, c)[p.cells[r * p.cols + c] ? 0 : 1];
 
 /* ── Persistence ────────────────────────────────────────────────────────── */
-const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols });
+const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols, len: p.len });
 function unpack(o) {
   const cols = Math.min(60, Math.max(2, o.cols | 0)), rows = Math.min(40, Math.max(2, o.rows | 0));
   const p = newPic(cols, rows, HEX.test(o.c1) ? o.c1 : '#1b2a5c', HEX.test(o.c2) ? o.c2 : '#f2f5f9');
@@ -331,12 +345,14 @@ function unpack(o) {
     const lim = k === 'rowCols' ? rows : cols;
     for (const i in (o[k] || {})) { const v = o[k][i]; if (+i >= 0 && +i < lim && Array.isArray(v) && HEX.test(v[0]) && HEX.test(v[1])) p[k][i] = [v[0], v[1]]; }
   }
+  for (const i in (o.len || {})) { const v = o.len[i] | 0; if (+i >= 0 && +i < rows && v >= 1 && v < cols) p.len[i] = v; }
   return p;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
 function restore(o) {
   W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
   seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
+  seatLimit = Math.min(9999, Math.max(1, o.seatLimit | 0)) || 300;
   loaded = (o.loaded | 0) >= 0 && o.loaded < lib.length ? o.loaded | 0 : -1;
 }
 function load() { try { const r = localStorage.getItem(KEY); if (r) { restore(JSON.parse(r)); return true; } } catch (e) {} return false; }
@@ -352,9 +368,9 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
   const g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
   g.fillStyle = labels ? '#0c0e11' : '#8a93a0'; g.fillRect(0, 0, w, h);
   const ox = lm * cs, oy = lm * cs;
-  g.fillStyle = '#8a93a0'; g.fillRect(ox, oy, cs * p.cols, cs * p.rows);
   const gap = cs >= 14 ? 1.5 : 1;
-  for (let r = 0; r < p.rows; r++) for (let c = 0; c < p.cols; c++) {
+  for (let r = 0; r < p.rows; r++) for (let c = 0; c < lenOf(p, r); c++) {
+    g.fillStyle = '#8a93a0'; g.fillRect(ox + c * cs, oy + r * cs, cs, cs);
     g.fillStyle = colourOf(p, r, c);
     g.fillRect(ox + c * cs + gap / 2, oy + r * cs + gap / 2, cs - gap, cs - gap);
   }
@@ -362,7 +378,7 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
     g.font = `600 ${Math.min(12, cs * .7)}px "JetBrains Mono", monospace`; g.textAlign = 'center'; g.textBaseline = 'middle';
     const step = cs >= 22 ? 1 : cs >= 16 ? 2 : 5;
     for (let c = 0; c < p.cols; c++) { const n = seatOf(p, c); g.fillStyle = (p.mode === 'col' && sel && sel.kind === 'col' && sel.i === c) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if (n % step === 0 || n === 1 || (p.mode === 'col')) g.fillText(n, ox + c * cs + cs / 2, oy - cs * .7); }
-    for (let r = 0; r < p.rows; r++) { g.fillStyle = (p.mode === 'row' && sel && sel.kind === 'row' && sel.i === r) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if ((r + 1) % step === 0 || r === 0 || p.mode === 'row') g.fillText(r + 1, ox - cs * .8, oy + r * cs + cs / 2); }
+    for (let r = 0; r < p.rows; r++) { g.fillStyle = (selRow === r) ? '#eda13c' : 'rgba(226,232,240,0.72)'; if ((r + 1) % step === 0 || r === 0 || p.mode === 'row') g.fillText(r + 1, ox - cs * .8, oy + r * cs + cs / 2); }
   }
   return { cs, ox, oy };
 }
@@ -390,17 +406,22 @@ function renderStrip() {
   });
   $('prevImg').disabled = $('nextImg').disabled = lib.length < 2;
 }
-function tallies() { let a = 0; for (let i = 0; i < W.cells.length; i++) a += W.cells[i]; return [a, W.cells.length - a]; }
+function tallies() { let a = 0, n = 0; for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) { a += W.cells[r * W.cols + c]; n++; } return [a, n - a]; }
 let tail = '';
 function updateReadout(extra) {
   const [a, b] = tallies();
   tail = `<b>${a}</b> learners in colour 1, <b>${b}</b> in colour 2`;
   $('readout').innerHTML = (extra ? extra + ' &nbsp;·&nbsp; ' : '') + tail;
-  $('groupHint').textContent = `${W.cols} × ${W.rows} = ${W.cols * W.rows} learners needed.`;
+  const tot = totalSeats(W), over = tot > seatLimit;
+  $('groupHint').textContent = `${tot} seats in total${over ? ` — ${tot - seatLimit} over the limit of ${seatLimit}` : `, ${seatLimit - tot} spare of ${seatLimit}`}.`;
+  $('groupHint').style.color = over ? 'var(--crit)' : '';
+  if (selRow != null && selRow >= W.rows) selRow = null;
+  $('seatLine').innerHTML = selRow == null ? 'Click a row number on the grid to add or remove seats in that row.' : `Row <b>${selRow + 1}</b> has <b>${lenOf(W, selRow)}</b> seats.`;
+  for (const id of ['seatAdd', 'seatDel', 'seatReset']) $(id).disabled = selRow == null;
 }
 function syncControls() {
   $('cols').value = W.cols; $('rows').value = W.rows; $('c1').value = W.c1; $('c2').value = W.c2;
-  $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
+  $('limit').value = seatLimit; $('mode').value = W.mode; $('seatFrom').value = seatFrom; $('nameIn').value = W.name;
   syncLine();
 }
 function refresh() { redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
@@ -435,19 +456,19 @@ function mutate(fn) { snapshot(); fn(W.cells); refresh(); }
 function hit(ev) {
   const r = $('grid').getBoundingClientRect(), x = ev.clientX - r.left - layout.ox, y = ev.clientY - r.top - layout.oy;
   const c = Math.floor(x / layout.cs), rr = Math.floor(y / layout.cs);
-  if (c >= 0 && c < W.cols && rr >= 0 && rr < W.rows) return { cell: { c, r: rr } };
+  if (rr >= 0 && rr < W.rows && c >= 0 && active(W, rr, c)) return { cell: { c, r: rr } };
   if (x < 0 && rr >= 0 && rr < W.rows) return { row: rr };
   if (y < 0 && c >= 0 && c < W.cols) return { col: c };
   return null;
 }
 function describe(p) {
   const pr = pairAt(W, p.r, p.c), on = W.cells[p.r * W.cols + p.c];
-  return `Row <b>${p.r + 1}</b>, seat <b>${seatOf(W, p.c)}</b>: colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
+  return `Row <b>${p.r + 1}</b>, seat <b>${seatIn(W, p.r, p.c)}</b>: colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
 }
 let painting = false, paintVal = 1;
 $('grid').addEventListener('pointerdown', ev => {
   const h = hit(ev); if (!h) return; ev.preventDefault(); $('grid').focus();
-  if (h.row != null && W.mode === 'row') { sel = { kind: 'row', i: h.row }; refresh(); return; }
+  if (h.row != null) { selRow = h.row; if (W.mode === 'row') sel = { kind: 'row', i: h.row }; refresh(); return; }
   if (h.col != null && W.mode === 'col') { sel = { kind: 'col', i: h.col }; refresh(); return; }
   if (!h.cell) return;
   $('grid').setPointerCapture(ev.pointerId); snapshot(); painting = true; cursor = h.cell;
@@ -465,12 +486,12 @@ $('grid').addEventListener('pointerup', endPaint); $('grid').addEventListener('p
 $('grid').addEventListener('keydown', ev => {
   const k = ev.key;
   if (k === 'ArrowLeft') cursor.c = Math.max(0, cursor.c - 1);
-  else if (k === 'ArrowRight') cursor.c = Math.min(W.cols - 1, cursor.c + 1);
+  else if (k === 'ArrowRight') cursor.c = Math.min(lenOf(W, cursor.r) - 1, cursor.c + 1);
   else if (k === 'ArrowUp') cursor.r = Math.max(0, cursor.r - 1);
   else if (k === 'ArrowDown') cursor.r = Math.min(W.rows - 1, cursor.r + 1);
   else if (k === ' ' || k === 'Enter') { ev.preventDefault(); mutate(f => { const i = cursor.r * W.cols + cursor.c; f[i] = f[i] ? 0 : 1; }); updateReadout(describe(cursor)); return; }
   else return;
-  ev.preventDefault(); redrawStage(); updateReadout(describe(cursor));
+  ev.preventDefault(); cursor.c = Math.min(cursor.c, lenOf(W, cursor.r) - 1); redrawStage(); updateReadout(describe(cursor));
 });
 $('grid').addEventListener('focus', redrawStage); $('grid').addEventListener('blur', redrawStage);
 document.addEventListener('keydown', ev => {
@@ -481,20 +502,47 @@ $('undoBtn').onclick = undo;
 $('clearBtn').onclick = () => mutate(f => f.fill(0));
 $('fillBtn').onclick = () => mutate(f => f.fill(1));
 $('invertBtn').onclick = () => mutate(f => { for (let i = 0; i < f.length; i++) f[i] ^= 1; });
-$('mirrorBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + W.cols - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } });
-$('flipBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows >> 1; r++) for (let c = 0; c < W.cols; c++) { const a = r * W.cols + c, b = (W.rows - 1 - r) * W.cols + c; [f[a], f[b]] = [f[b], f[a]]; } });
+$('mirrorBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows; r++) { const n = lenOf(W, r); for (let c = 0; c < n >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + n - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } } });
+$('flipBtn').onclick = () => mutate(f => {
+  for (let r = 0; r < W.rows >> 1; r++) {
+    const r2 = W.rows - 1 - r;
+    for (let c = 0; c < W.cols; c++) { const a = r * W.cols + c, b = r2 * W.cols + c; [f[a], f[b]] = [f[b], f[a]]; }
+    const x = W.len[r], y = W.len[r2];
+    if (y === undefined) delete W.len[r]; else W.len[r] = y;
+    if (x === undefined) delete W.len[r2]; else W.len[r2] = x;
+  }
+});
 
 /* ── Group size ──────────────────────────────────────────────────────────── */
-function resize() {
-  const nc = Math.min(60, Math.max(2, parseInt($('cols').value) || W.cols)), nr = Math.min(40, Math.max(2, parseInt($('rows').value) || W.rows));
-  $('cols').value = nc; $('rows').value = nr;
-  if (nc === W.cols && nr === W.rows) return;
+function reshape(nc, nr) {
   const a = new Uint8Array(nc * nr);
   for (let r = 0; r < Math.min(nr, W.rows); r++) for (let c = 0; c < Math.min(nc, W.cols); c++) a[r * nc + c] = W.cells[r * W.cols + c];
   for (const i in W.rowCols) if (+i >= nr) delete W.rowCols[i];
   for (const i in W.colCols) if (+i >= nc) delete W.colCols[i];
-  W.cells = a; W.cols = nc; W.rows = nr; undoStack = []; cursor = { c: 0, r: 0 }; sel = null; dropSrc(); refresh();
+  for (const i in W.len) { if (+i >= nr || W.len[i] >= nc) delete W.len[i]; }
+  W.cells = a; W.cols = nc; W.rows = nr; undoStack = []; cursor = { c: 0, r: 0 };
 }
+function resize() {
+  const nc = Math.min(60, Math.max(2, parseInt($('cols').value) || W.cols)), nr = Math.min(40, Math.max(2, parseInt($('rows').value) || W.rows));
+  $('cols').value = nc; $('rows').value = nr;
+  if (nc === W.cols && nr === W.rows) return;
+  reshape(nc, nr); sel = null; dropSrc(); refresh();
+}
+$('seatAdd').onclick = () => {
+  if (selRow == null) return; const n = lenOf(W, selRow) + 1;
+  if (n > 60) return;
+  if (n > W.cols) {                       // widen the grid; every other row keeps its current length
+    const old = W.cols, keep = selRow, pins = {};
+    for (let r = 0; r < W.rows; r++) pins[r] = lenOf(W, r);
+    reshape(old + 1, W.rows);
+    for (let r = 0; r < W.rows; r++) W.len[r] = pins[r];
+    W.len[keep] = n; selRow = keep; $('cols').value = W.cols;
+  } else if (n === W.cols) delete W.len[selRow]; else W.len[selRow] = n;
+  undoStack = []; refresh();
+};
+$('seatDel').onclick = () => { if (selRow == null) return; const n = lenOf(W, selRow) - 1; if (n < 1) return; W.len[selRow] = n; undoStack = []; refresh(); };
+$('seatReset').onclick = () => { if (selRow == null) return; delete W.len[selRow]; refresh(); };
+$('limit').onchange = () => { seatLimit = Math.min(9999, Math.max(1, parseInt($('limit').value) || 300)); $('limit').value = seatLimit; refresh(); };
 $('cols').onchange = resize; $('rows').onchange = resize;
 
 /* ── Starter pictures: drawn black-on-white at high resolution, scaled down to
@@ -576,7 +624,7 @@ $('saveImg').onclick = () => {
   if (same >= 0) { lib[same] = clonePic(W); loaded = same; } else { lib.push(clonePic(W)); loaded = lib.length - 1; }
   refresh(); updateReadout(`Saved “${W.name}”.`);
 };
-$('newImg').onclick = () => { W = newPic(W.cols, W.rows, W.c1, W.c2); W.mode = 'all'; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
+$('newImg').onclick = () => { const L = W.len; W = newPic(W.cols, W.rows, W.c1, W.c2); W.len = { ...L }; W.mode = 'all'; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
 $('prevImg').onclick = () => stepPic(-1); $('nextImg').onclick = () => stepPic(1);
 $('speed').oninput = () => { $('speedLbl').textContent = parseFloat($('speed').value).toFixed(1) + ' s per picture'; if (presentTimer) { stopAuto(); $('pAuto').click(); } };
 
@@ -604,17 +652,18 @@ window.addEventListener('resize', () => { redrawStage(); if (!$('present').class
 /* ── Print ───────────────────────────────────────────────────────────────── */
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const sw = c => `<span class="sw" style="background:${c}"></span>`;
-const printable = () => { const m = lib.filter(p => p.cols === W.cols && p.rows === W.rows); return m.length ? m : [W]; };
+const sameShape = p => p.cols === W.cols && p.rows === W.rows && JSON.stringify(p.len) === JSON.stringify(W.len);
+const printable = () => { const m = lib.filter(sameShape); return m.length ? m : [W]; };
 function printHeader(title, list) {
-  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.cols} columns × ${W.rows} rows = ${W.cols * W.rows} learners · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience, seats counted from the audience's ${seatFrom}, row 1 is the top of the picture · “1” and “2” are the two colours shown beside each instruction</div>`;
+  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.rows} rows, ${totalSeats(W)} learners (longest row ${W.cols}) · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience, seats counted from the audience's ${seatFrom}, row 1 is the top of the picture · “1” and “2” are the two colours shown beside each instruction</div>`;
 }
 function runs(p, r) {
-  const cs = []; for (let c = 0; c < p.cols; c++) cs.push(c); if (seatFrom === 'right') cs.reverse();
+  const cs = []; for (let c = 0; c < lenOf(p, r); c++) cs.push(c); if (seatFrom === 'right') cs.reverse();
   const out = []; let i = 0;
   while (i < cs.length) {
     const v = p.cells[r * p.cols + cs[i]]; let j = i;
     while (j + 1 < cs.length && p.cells[r * p.cols + cs[j + 1]] === v) j++;
-    const a = seatOf(p, cs[i]), b = seatOf(p, cs[j]);
+    const a = seatIn(p, r, cs[i]), b = seatIn(p, r, cs[j]);
     out.push(`${a === b ? 'seat ' + a : 'seats ' + a + '–' + b}: ${sw(colourOf(p, r, cs[i]))}<b>${v ? 1 : 2}</b>`);
     i = j + 1;
   }
@@ -635,8 +684,8 @@ $('printSheet').onclick = () => {
 $('printCards').onclick = () => {
   const list = printable(), single = list.length === 1;
   let h = printHeader('Learner cards', list) + '<div class="cards">';
-  for (let r = 0; r < W.rows; r++) for (let c = 0; c < W.cols; c++) {
-    h += `<div class="card${single ? ' big' : ''}"><div class="pos">Row ${r + 1} · Seat ${seatOf(W, c)}</div>` +
+  for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) {
+    h += `<div class="card${single ? ' big' : ''}"><div class="pos">Row ${r + 1} · Seat ${seatIn(W, r, c)}</div>` +
       list.map((p, i) => { const v = p.cells[r * p.cols + c]; return `<span class="chip">${single ? '' : (i + 1) + ': '}${sw(colourOf(p, r, c))}${v ? 1 : 2}</span>`; }).join('') + '</div>';
   }
   doPrint(h + '</div>');
@@ -647,7 +696,7 @@ $('pngBtn').onclick = () => {
 };
 $('saveBtn').onclick = () => {
   const a = document.createElement('a'); a.download = 'mosaic-mage-pictures.json';
-  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, seatLimit, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
 $('loadIn').onchange = e => {
@@ -658,7 +707,7 @@ $('loadIn').onchange = e => {
 };
 
 /* ── Start ───────────────────────────────────────────────────────────────── */
-if (!load()) { W = newPic(16, 10, '#1b2a5c', '#f2f5f9'); shape('heart'); }
+if (!load()) { W = newPic(17, 17, '#1b2a5c', '#f2f5f9'); shape('heart'); }
 syncControls(); refresh();
 if (document.fonts) document.fonts.ready.then(redrawStage);
 })();
