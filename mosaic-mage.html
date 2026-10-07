@@ -151,6 +151,11 @@ input::placeholder { color: var(--text-3); }
 .item .x { position:absolute; top:4px; right:4px; width:24px; height:24px; border-radius:50%; border:1px solid var(--line-hard); background:rgba(8,9,11,.85); color:var(--text); cursor:pointer; font:700 14px/1 var(--font-body); }
 .item .x:hover { color:var(--paper); border-color:var(--paper); }
 .item .x:focus-visible { outline:2px solid var(--accent); }
+.item { cursor: grab; }
+.item.dragging { opacity: .4; }
+.item.drop-before::before, .item.drop-after::before { content: ''; position: absolute; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--accent); }
+.item.drop-before::before { left: -8px; }
+.item.drop-after::before { right: -8px; }
 .empty { font-size:13.5px; color:var(--text-3); padding:var(--space-3) 0; }
 .sw { display:inline-block; width:.9em; height:.9em; border:1px solid #888; vertical-align:-1px; margin-right:3px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 .readout .sw { width:12px; height:12px; }
@@ -199,6 +204,7 @@ input::placeholder { color: var(--text-3); }
           <button class="btn primary" id="presentBtn" type="button"><i data-lucide="play"></i>Present all</button>
         </div>
         <div class="strip" id="strip"></div>
+        <p class="hint hidden" id="reorderHint">Drag a picture to change the order, or focus one and press Alt + ← or →. Present all, Next and printing follow this order.</p>
         <label class="f" style="max-width:280px;margin-top:var(--space-3)">Auto-play speed: <span id="speedLbl">2.0 s per picture</span>
           <input type="range" id="speed" min="0.3" max="8" step="0.1" value="2">
         </label>
@@ -462,6 +468,14 @@ function redrawStage() {
     g.strokeRect(layout.ox + cursor.c * layout.cs + 1, layout.oy + cursor.r * layout.cs + 1, layout.cs - 2, layout.cs - 2);
   }
 }
+let dragFrom = -1, focusPic = -1;
+const clearDrop = () => document.querySelectorAll('.item.drop-before, .item.drop-after').forEach(el => el.classList.remove('drop-before', 'drop-after'));
+function movePic(from, to) {
+  if (from === to || from < 0 || to < 0 || from >= lib.length || to >= lib.length) return;
+  const cur = loaded >= 0 ? lib[loaded] : null, [m] = lib.splice(from, 1); lib.splice(to, 0, m);
+  loaded = cur ? lib.indexOf(cur) : -1; refresh();
+  updateReadout(`Moved “${m.name || 'Untitled'}” to position ${to + 1}.`);
+}
 function renderStrip() {
   const strip = $('strip'); strip.textContent = '';
   if (!lib.length) { const d = document.createElement('p'); d.className = 'empty'; d.textContent = 'Nothing saved yet. Draw a picture, give it a name and press Save picture.'; strip.appendChild(d); }
@@ -476,8 +490,29 @@ function renderStrip() {
     const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '×';
     x.setAttribute('aria-label', 'Delete ' + (p.name || 'Picture ' + (i + 1))); x.onclick = () => delPic(i);
     item.append(b, x); strip.appendChild(item);
+    item.draggable = true; item.dataset.i = i;
+    item.ondragstart = e => { dragFrom = i; item.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(i)); };
+    item.ondragend = () => { dragFrom = -1; clearDrop(); item.classList.remove('dragging'); };
+    item.ondragover = e => {
+      if (dragFrom < 0) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+      const r = item.getBoundingClientRect(), after = e.clientX > r.left + r.width / 2;
+      clearDrop(); item.classList.add(after ? 'drop-after' : 'drop-before');
+      const sr = strip.getBoundingClientRect(); if (e.clientX < sr.left + 40) strip.scrollLeft -= 14; else if (e.clientX > sr.right - 40) strip.scrollLeft += 14;
+    };
+    item.ondrop = e => {
+      if (dragFrom < 0) return; e.preventDefault();
+      const r = item.getBoundingClientRect(), after = e.clientX > r.left + r.width / 2;
+      let to = i + (after ? 1 : 0); if (dragFrom < to) to--;
+      const from = dragFrom; dragFrom = -1; clearDrop(); movePic(from, to);
+    };
+    b.onkeydown = e => {
+      if (!e.altKey || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+      e.preventDefault(); const to = i + (e.key === 'ArrowRight' ? 1 : -1); if (to >= 0 && to < lib.length) { focusPic = to; movePic(i, to); }
+    };
   });
   $('prevImg').disabled = $('nextImg').disabled = lib.length < 2;
+  $('reorderHint').classList.toggle('hidden', lib.length < 2);
+  if (focusPic >= 0) { const f = strip.querySelectorAll('.frame')[focusPic]; focusPic = -1; if (f) f.focus(); }
 }
 function tallies() { let a = 0, n = 0; for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) { a += W.cells[r * W.cols + c]; n++; } return [a, n - a]; }
 let tail = '';
