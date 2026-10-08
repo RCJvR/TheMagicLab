@@ -75,8 +75,8 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px,4
 /* ── Controls ───────────────────────────────────────────────────────────── */
 .side { position: sticky; top: 80px; max-height: calc(100vh - 96px); overflow-y: auto; padding-right: 4px; }
 @media (max-width: 980px) { .side { position: static; max-height: none; overflow: visible; } }
-.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; margin-bottom: var(--space-4); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); position: sticky; top: 0; z-index: 2; }
-.tabs button { padding: 9px 4px; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--text-2); font: 700 13px var(--font-body); cursor: pointer; }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 4px; margin-bottom: var(--space-4); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); position: sticky; top: 0; z-index: 2; }
+.tabs button { padding: 9px 2px; border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--text-2); font: 700 12.5px var(--font-body); cursor: pointer; }
 .tabs button:hover { color: var(--paper); }
 .tabs button[aria-selected="true"] { background: var(--accent); color: #14110a; }
 .tabs button:focus-visible { outline: 2px solid var(--paper); outline-offset: 1px; }
@@ -156,6 +156,8 @@ input::placeholder { color: var(--text-3); }
 .item.drop-before::before, .item.drop-after::before { content: ''; position: absolute; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--accent); }
 .item.drop-before::before { left: -8px; }
 .item.drop-after::before { right: -8px; }
+.panel h3 { font-family: var(--font-display); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); margin: var(--space-4) 0 var(--space-2); }
+.panel .hint b { color: var(--text); }
 .empty { font-size:13.5px; color:var(--text-3); padding:var(--space-3) 0; }
 .sw { display:inline-block; width:.9em; height:.9em; border:1px solid #888; vertical-align:-1px; margin-right:3px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 .readout .sw { width:12px; height:12px; }
@@ -185,6 +187,7 @@ input::placeholder { color: var(--text-3); }
         <button class="btn" id="mirrorBtn" type="button">Mirror ↔</button>
         <button class="btn" id="flipBtn" type="button">Flip ↕</button>
         <button class="btn" id="namesBtn" type="button" aria-pressed="true">Seat names: On</button>
+        <button class="btn" id="twBtn" type="button" aria-pressed="false">Twinkle brush: Off</button>
       </div>
       <div class="stage-wrap" id="stageWrap">
         <canvas id="grid" tabindex="0" role="application" aria-label="Flash grid. Use arrow keys to move and space to switch a learner between the two colours."></canvas>
@@ -205,9 +208,6 @@ input::placeholder { color: var(--text-3); }
         </div>
         <div class="strip" id="strip"></div>
         <p class="hint hidden" id="reorderHint">Drag a picture to change the order, or focus one and press Alt + ← or →. Present all, Next and printing follow this order.</p>
-        <label class="f" style="max-width:280px;margin-top:var(--space-3)">Auto-play speed: <span id="speedLbl">2.0 s per picture</span>
-          <input type="range" id="speed" min="0.3" max="8" step="0.1" value="2">
-        </label>
       </div>
     </section>
 
@@ -216,6 +216,7 @@ input::placeholder { color: var(--text-3); }
         <button type="button" role="tab" id="tab-group" aria-controls="pan-group" aria-selected="true">Group</button>
         <button type="button" role="tab" id="tab-colours" aria-controls="pan-colours" aria-selected="false" tabindex="-1">Colours</button>
         <button type="button" role="tab" id="tab-picture" aria-controls="pan-picture" aria-selected="false" tabindex="-1">Picture</button>
+        <button type="button" role="tab" id="tab-animate" aria-controls="pan-animate" aria-selected="false" tabindex="-1">Animate</button>
         <button type="button" role="tab" id="tab-print" aria-controls="pan-print" aria-selected="false" tabindex="-1">Print</button>
       </div>
       <div class="panel" role="tabpanel" id="pan-group" aria-labelledby="tab-group">
@@ -330,6 +331,52 @@ input::placeholder { color: var(--text-3); }
         <p class="hint">Shapes, text and photos are only a starting point. You can click any learner afterwards to fix it.</p>
       </div>
 
+      <div class="panel" role="tabpanel" id="pan-animate" aria-labelledby="tab-animate" hidden>
+        <h2>Animate</h2>
+        <div class="row">
+          <label class="f">What moves
+            <select id="anSource"><option value="pic">This picture</option><option value="text">A line of text</option></select>
+          </label>
+          <label class="f">Motion
+            <select id="anMotion"><option value="scroll">Scroll</option><option value="slide">Slide in</option><option value="wipe">Wipe</option><option value="bounce">Bounce</option></select>
+          </label>
+        </div>
+        <div id="anTextRow" class="row hidden">
+          <label class="f" style="flex:2 1 150px">Text<input type="text" id="anText" maxlength="40" placeholder="e.g. WELCOME"></label>
+          <label class="f">Size<select id="anSize"><option value="1">Small</option><option value="2">Medium</option><option value="3">Large</option></select></label>
+        </div>
+        <div class="row">
+          <label class="f">Direction<select id="anDir"></select></label>
+          <label class="f">Step<select id="anStep"><option value="1">1 learner</option><option value="2">2 learners</option><option value="3">3 learners</option><option value="4">4 learners</option></select></label>
+        </div>
+        <div class="row hidden" id="anWipeRow"><label class="f">The wipe<select id="anWipeMode"><option value="reveal">Reveals the picture</option><option value="erase">Erases the picture</option></select></label></div>
+        <p class="hint" id="anInfo" style="margin:var(--space-2) 0"></p>
+        <div class="row">
+          <label class="f" style="flex:2 1 140px">Frame name<input type="text" id="anName" maxlength="32" placeholder="e.g. Welcome"></label>
+        </div>
+        <div class="row">
+          <button class="btn" id="anPlay" type="button"><i data-lucide="play"></i><span>Preview</span></button>
+          <button class="btn primary" id="anCreate" type="button"><i data-lucide="layers"></i>Create frames</button>
+        </div>
+        <p class="hint">Create frames saves each step as its own saved picture, in order, so the cards and run sheet show every step.</p>
+
+        <h3>Twinkle</h3>
+        <p class="hint" style="margin-top:0">Turn on <b>Twinkle brush</b> above the grid, then click or drag cells. They swap colours on their own (orange corner).</p>
+        <div class="row">
+          <label class="f">Swap every
+            <select id="twRate"><option value="1">1 beat</option><option value="2">2 beats</option><option value="3">3 beats</option><option value="4">4 beats</option></select>
+          </label>
+          <button class="btn" id="twClear" type="button" style="align-self:flex-end">Clear twinkles</button>
+        </div>
+
+        <h3>Timing</h3>
+        <div class="row">
+          <label class="f" style="flex:2 1 150px">Beat: <span id="speedLbl">1.0 s per beat</span>
+            <input type="range" id="speed" min="0.5" max="5" step="0.1" value="1">
+          </label>
+          <label class="f">Picture changes every<select id="picEvery"><option value="1">1 beat</option><option value="2">2 beats</option><option value="3">3 beats</option><option value="4">4 beats</option></select></label>
+        </div>
+      </div>
       <div class="panel" role="tabpanel" id="pan-print" aria-labelledby="tab-print" hidden>
         <h2>Print and share</h2>
         <div class="row">
@@ -374,10 +421,12 @@ const HEX = /^#[0-9a-f]{6}$/i;
 let W, lib = [], loaded = -1, sel = null, selRow = null, seatLimit = 540, defCols = 23, defRows = 23, mk = null;
 let nm = { start: 'br', dir: 'rows', show: true };   // seat-name settings   // mk = what the last 'Make a picture' tool was, so the weight slider can redo it
 let undoStack = [], cursor = { c: 0, r: 0 }, layout = null, srcGray = null, seatFrom = 'left';
-let presentIdx = 0, presentTimer = null;
+let presentIdx = 0, presentTick = null, presentAuto = false, presentBeat = 0;
+let beatSec = 1, picEvery = 1, twBrush = false, twRate = 1, override = null;
+const anim = { timer: null, frames: null, idx: 0, beat: 0 };
 
-const newPic = (cols, rows, c1, c2) => ({ name: '', cols, rows, cells: new Uint8Array(cols * rows), c1, c2, mode: 'all', rowCols: {}, colCols: {}, len: {} });
-const clonePic = p => ({ ...p, cells: p.cells.slice(), rowCols: JSON.parse(JSON.stringify(p.rowCols)), colCols: JSON.parse(JSON.stringify(p.colCols)), len: { ...p.len } });
+const newPic = (cols, rows, c1, c2) => ({ name: '', cols, rows, cells: new Uint8Array(cols * rows), tw: new Uint8Array(cols * rows), c1, c2, mode: 'all', rowCols: {}, colCols: {}, len: {} });
+const clonePic = p => ({ ...p, cells: p.cells.slice(), tw: (p.tw || new Uint8Array(p.cells.length)).slice(), rowCols: JSON.parse(JSON.stringify(p.rowCols)), colCols: JSON.parse(JSON.stringify(p.colCols)), len: { ...p.len } });
 const seatOf = (p, c) => seatFrom === 'left' ? c + 1 : p.cols - c;           // column header numbers
 /* A row can be longer or shorter than the rest: len[r] is its seat count, p.cols is the widest row. */
 const lenOf = (p, r) => Math.min(p.cols, p.len[r] ?? p.cols);
@@ -405,12 +454,13 @@ function pairAt(p, r, c) {
 const colourOf = (p, r, c) => pairAt(p, r, c)[p.cells[r * p.cols + c] ? 0 : 1];
 
 /* ── Persistence ────────────────────────────────────────────────────────── */
-const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols, len: p.len });
+const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), tw: Array.from(p.tw || []).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols, len: p.len });
 function unpack(o) {
   const cols = Math.min(60, Math.max(2, o.cols | 0)), rows = Math.min(40, Math.max(2, o.rows | 0));
   const p = newPic(cols, rows, HEX.test(o.c1) ? o.c1 : '#1b2a5c', HEX.test(o.c2) ? o.c2 : '#f2f5f9');
   p.name = String(o.name || '').slice(0, 40);
   for (let i = 0; i < p.cells.length; i++) p.cells[i] = String(o.cells || '').charCodeAt(i) === 49 ? 1 : 0;
+  for (let i = 0; i < p.tw.length; i++) { const d = String(o.tw || '').charCodeAt(i) - 48; p.tw[i] = d >= 1 && d <= 4 ? d : 0; }
   p.mode = ['row', 'col'].includes(o.mode) ? o.mode : 'all';
   for (const k of ['rowCols', 'colCols']) {
     const lim = k === 'rowCols' ? rows : cols;
@@ -419,10 +469,11 @@ function unpack(o) {
   for (const i in (o.len || {})) { const v = o.len[i] | 0; if (+i >= 0 && +i < rows && v >= 1 && v < cols) p.len[i] = v; }
   return p;
 }
-function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, nm, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, nm, beatSec, picEvery, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
 function restore(o) {
   W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
   seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
+  beatSec = Math.min(5, Math.max(0.5, +o.beatSec || 1)); picEvery = [1, 2, 3, 4].includes(o.picEvery | 0) ? o.picEvery | 0 : 1;
   if (o.nm) nm = { start: ['br', 'bl', 'tr', 'tl'].includes(o.nm.start) ? o.nm.start : 'br', dir: o.nm.dir === 'cols' ? 'cols' : 'rows', show: o.nm.show !== false };
   seatLimit = Math.min(9999, Math.max(1, o.seatLimit | 0)) || 540;
   defCols = Math.min(60, Math.max(2, o.defCols | 0)) || 23; defRows = Math.min(40, Math.max(2, o.defRows | 0)) || 23;
@@ -446,6 +497,10 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
     g.fillStyle = '#8a93a0'; g.fillRect(ox + c * cs, oy + r * cs, cs, cs);
     g.fillStyle = colourOf(p, r, c);
     g.fillRect(ox + c * cs + gap / 2, oy + r * cs + gap / 2, cs - gap, cs - gap);
+    if (labels && p.tw && !p.hideTw && p.tw[r * p.cols + c]) {      // twinkle marker: orange corner
+      const x = ox + (c + 1) * cs - gap / 2, y = oy + r * cs + gap / 2, t = Math.max(5, cs * 0.38);
+      g.fillStyle = '#f5b23d'; g.beginPath(); g.moveTo(x, y); g.lineTo(x - t, y); g.lineTo(x, y + t); g.closePath(); g.fill();
+    }
   }
   if (labels && nm.show && cs >= 17) {
     const names = seatNames(p); g.font = `700 ${Math.min(15, cs * 0.4)}px "JetBrains Mono", monospace`; g.textAlign = 'center'; g.textBaseline = 'middle';
@@ -462,7 +517,7 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
   return { cs, ox, oy };
 }
 function redrawStage() {
-  layout = drawGrid($('grid'), W, $('stageWrap').clientWidth - 32, Math.max(280, window.innerHeight * 0.68), true);
+  layout = drawGrid($('grid'), override ? { ...W, cells: override, hideTw: true } : W, $('stageWrap').clientWidth - 32, Math.max(280, window.innerHeight * 0.68), true);
   if (document.activeElement === $('grid')) {
     const g = $('grid').getContext('2d'); g.strokeStyle = '#eda13c'; g.lineWidth = 2.5;
     g.strokeRect(layout.ox + cursor.c * layout.cs + 1, layout.oy + cursor.r * layout.cs + 1, layout.cs - 2, layout.cs - 2);
@@ -529,10 +584,10 @@ function updateReadout(extra) {
 }
 function syncControls() {
   $('cols').value = W.cols; $('rows').value = W.rows; $('c1').value = W.c1; $('c2').value = W.c2;
-  nmSync(); $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('nameIn').value = W.name;
+  nmSync(); $('speed').value = beatSec; $('picEvery').value = picEvery; speedLabel(); $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('nameIn').value = W.name;
   syncLine();
 }
-function refresh() { if ($('nmHint')) nmSync(); redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
+function refresh() { if ($('nmHint')) nmSync(); if ($('anInfo')) anUpdate(); redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
 
 /* ── Per-row / per-column colours ────────────────────────────────────────── */
 function syncLine() {
@@ -558,8 +613,8 @@ $('c1').oninput = e => { W.c1 = e.target.value; refresh(); };
 $('c2').oninput = e => { W.c2 = e.target.value; refresh(); };
 
 /* ── Editing: click flips a learner between the two colours ──────────────── */
-function snapshot() { undoStack.push(W.cells.slice()); if (undoStack.length > 40) undoStack.shift(); }
-function mutate(fn) { mk = null; snapshot(); fn(W.cells); refresh(); }
+function snapshot() { undoStack.push({ c: W.cells.slice(), t: W.tw.slice() }); if (undoStack.length > 40) undoStack.shift(); }
+function mutate(fn) { if (anim.timer) stopAnim(); mk = null; snapshot(); fn(W.cells); refresh(); }
 function hit(ev) {
   const r = $('grid').getBoundingClientRect(), x = ev.clientX - r.left - layout.ox, y = ev.clientY - r.top - layout.oy;
   const c = Math.floor(x / layout.cs), rr = Math.floor(y / layout.cs);
@@ -570,7 +625,7 @@ function hit(ev) {
 }
 function describe(p) {
   const pr = pairAt(W, p.r, p.c), on = W.cells[p.r * W.cols + p.c];
-  return `<b>${seatNames(W)[p.r * W.cols + p.c]}</b> (row ${rowLab(W, p.r)}, seat ${seatNum(W, p.r, p.c)}): colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>`;
+  return `<b>${seatNames(W)[p.r * W.cols + p.c]}</b> (row ${rowLab(W, p.r)}, seat ${seatNum(W, p.r, p.c)}): colour ${on ? 1 : 2} <span class="sw" style="background:${pr[on ? 0 : 1]}"></span>${W.tw[p.r * W.cols + p.c] ? ' · twinkles every ' + W.tw[p.r * W.cols + p.c] + ' beat' + (W.tw[p.r * W.cols + p.c] > 1 ? 's' : '') : ''}`;
 }
 let painting = false, paintVal = 1;
 $('grid').addEventListener('pointerdown', ev => {
@@ -578,15 +633,18 @@ $('grid').addEventListener('pointerdown', ev => {
   if (h.row != null) { selRow = h.row; if (W.mode === 'row') sel = { kind: 'row', i: h.row }; refresh(); return; }
   if (h.col != null && W.mode === 'col') { sel = { kind: 'col', i: h.col }; refresh(); return; }
   if (!h.cell) return;
+  if (anim.timer) stopAnim();
   $('grid').setPointerCapture(ev.pointerId); mk = null; snapshot(); painting = true; cursor = h.cell;
-  const i = h.cell.r * W.cols + h.cell.c; paintVal = W.cells[i] ? 0 : 1; W.cells[i] = paintVal;
+  const i = h.cell.r * W.cols + h.cell.c;
+  if (twBrush) { paintVal = W.tw[i] ? 0 : twRate; W.tw[i] = paintVal; } else { paintVal = W.cells[i] ? 0 : 1; W.cells[i] = paintVal; }
   redrawStage(); updateReadout(describe(h.cell));
 });
 $('grid').addEventListener('pointermove', ev => {
   const h = hit(ev);
   if (!painting) { if (h && h.cell) $('readout').innerHTML = describe(h.cell) + ' &nbsp;·&nbsp; ' + tail; return; }
   if (!h || !h.cell) return; const i = h.cell.r * W.cols + h.cell.c;
-  if (W.cells[i] !== paintVal) { W.cells[i] = paintVal; cursor = h.cell; redrawStage(); }
+  const arr = twBrush ? W.tw : W.cells;
+  if (arr[i] !== paintVal) { arr[i] = paintVal; cursor = h.cell; redrawStage(); }
 });
 const endPaint = () => { if (painting) { painting = false; refresh(); } };
 $('grid').addEventListener('pointerup', endPaint); $('grid').addEventListener('pointercancel', endPaint);
@@ -596,7 +654,7 @@ $('grid').addEventListener('keydown', ev => {
   else if (k === 'ArrowRight') cursor.c = Math.min(lenOf(W, cursor.r) - 1, cursor.c + 1);
   else if (k === 'ArrowUp') cursor.r = Math.max(0, cursor.r - 1);
   else if (k === 'ArrowDown') cursor.r = Math.min(W.rows - 1, cursor.r + 1);
-  else if (k === ' ' || k === 'Enter') { ev.preventDefault(); mutate(f => { const i = cursor.r * W.cols + cursor.c; f[i] = f[i] ? 0 : 1; }); updateReadout(describe(cursor)); return; }
+  else if (k === ' ' || k === 'Enter') { ev.preventDefault(); mutate(f => { const i = cursor.r * W.cols + cursor.c; if (twBrush) W.tw[i] = W.tw[i] ? 0 : twRate; else f[i] = f[i] ? 0 : 1; }); updateReadout(describe(cursor)); return; }
   else return;
   ev.preventDefault(); cursor.c = Math.min(cursor.c, lenOf(W, cursor.r) - 1); redrawStage(); updateReadout(describe(cursor));
 });
@@ -604,7 +662,7 @@ $('grid').addEventListener('focus', redrawStage); $('grid').addEventListener('bl
 document.addEventListener('keydown', ev => {
   if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z' && $('present').classList.contains('hidden') && !/INPUT|SELECT/.test(document.activeElement.tagName)) { ev.preventDefault(); undo(); }
 });
-function undo() { if (!undoStack.length) return; W.cells.set(undoStack.pop()); refresh(); }
+function undo() { if (!undoStack.length) return; const u = undoStack.pop(); W.cells.set(u.c); W.tw.set(u.t); refresh(); }
 $('undoBtn').onclick = undo;
 $('clearBtn').onclick = () => mutate(f => f.fill(0));
 $('fillBtn').onclick = () => mutate(f => f.fill(1));
@@ -613,11 +671,13 @@ $('invertBtn').onclick = () => {          // invert = swap the two colours every
   for (const store of [W.rowCols, W.colCols]) for (const i in store) store[i] = [store[i][1], store[i][0]];
   syncControls(); refresh();
 };
-$('mirrorBtn').onclick = () => mutate(f => { for (let r = 0; r < W.rows; r++) { const n = lenOf(W, r); for (let c = 0; c < n >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + n - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } } });
-$('flipBtn').onclick = () => mutate(f => {
+$('mirrorBtn').onclick = () => mutate(() => {
+  for (const f of [W.cells, W.tw]) for (let r = 0; r < W.rows; r++) { const n = lenOf(W, r); for (let c = 0; c < n >> 1; c++) { const a = r * W.cols + c, b = r * W.cols + n - 1 - c; [f[a], f[b]] = [f[b], f[a]]; } }
+});
+$('flipBtn').onclick = () => mutate(() => {
   for (let r = 0; r < W.rows >> 1; r++) {
     const r2 = W.rows - 1 - r;
-    for (let c = 0; c < W.cols; c++) { const a = r * W.cols + c, b = r2 * W.cols + c; [f[a], f[b]] = [f[b], f[a]]; }
+    for (const f of [W.cells, W.tw]) for (let c = 0; c < W.cols; c++) { const a = r * W.cols + c, b = r2 * W.cols + c; [f[a], f[b]] = [f[b], f[a]]; }
     const x = W.len[r], y = W.len[r2];
     if (y === undefined) delete W.len[r]; else W.len[r] = y;
     if (x === undefined) delete W.len[r2]; else W.len[r2] = x;
@@ -626,12 +686,12 @@ $('flipBtn').onclick = () => mutate(f => {
 
 /* ── Group size ──────────────────────────────────────────────────────────── */
 function reshape(nc, nr) {
-  const a = new Uint8Array(nc * nr);
-  for (let r = 0; r < Math.min(nr, W.rows); r++) for (let c = 0; c < Math.min(nc, W.cols); c++) a[r * nc + c] = W.cells[r * W.cols + c];
+  const a = new Uint8Array(nc * nr), t = new Uint8Array(nc * nr);
+  for (let r = 0; r < Math.min(nr, W.rows); r++) for (let c = 0; c < Math.min(nc, W.cols); c++) { a[r * nc + c] = W.cells[r * W.cols + c]; t[r * nc + c] = W.tw[r * W.cols + c]; }
   for (const i in W.rowCols) if (+i >= nr) delete W.rowCols[i];
   for (const i in W.colCols) if (+i >= nc) delete W.colCols[i];
   for (const i in W.len) { if (+i >= nr || W.len[i] >= nc) delete W.len[i]; }
-  W.cells = a; W.cols = nc; W.rows = nr; undoStack = []; cursor = { c: 0, r: 0 };
+  W.cells = a; W.tw = t; W.cols = nc; W.rows = nr; undoStack = []; cursor = { c: 0, r: 0 };
 }
 function resize() {
   const nc = Math.min(60, Math.max(2, parseInt($('cols').value) || W.cols)), nr = Math.min(40, Math.max(2, parseInt($('rows').value) || W.rows));
@@ -917,21 +977,34 @@ $('saveImg').onclick = () => {
 };
 $('newImg').onclick = () => { W = newPic(defCols, defRows, W.c1, W.c2); selRow = null; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
 $('prevImg').onclick = () => stepPic(-1); $('nextImg').onclick = () => stepPic(1);
-$('speed').oninput = () => { $('speedLbl').textContent = parseFloat($('speed').value).toFixed(1) + ' s per picture'; if (presentTimer) { stopAuto(); $('pAuto').click(); } };
+/* A beat is the shortest time between changes. Twinkling cells flip on the beat (every 1 to 4 beats) and the picture
+   changes every 1 to 4 beats, so everything stays in step. */
+function viewCells(p, beat) {
+  const v = p.cells.slice();
+  if (p.tw) for (let i = 0; i < v.length; i++) { const d = p.tw[i]; if (d && Math.floor(beat / d) % 2 === 1) v[i] ^= 1; }
+  return v;
+}
+function speedLabel() { $('speedLbl').textContent = beatSec.toFixed(1) + ' s per beat'; }
+$('speed').oninput = () => { beatSec = parseFloat($('speed').value); speedLabel(); if (anim.timer) restartAnim(); if (presentTick) startPresentTick(); };
+$('speed').onchange = () => save();
+$('picEvery').onchange = () => { picEvery = +$('picEvery').value; anUpdate(); save(); };
 
 /* ── Present ─────────────────────────────────────────────────────────────── */
 const presentList = () => lib.length ? lib : [W];
 function drawPresent() {
   const list = presentList(), p = list[presentIdx];
-  drawGrid($('presentCanvas'), p, window.innerWidth - 48, window.innerHeight - 140, false);
+  drawGrid($('presentCanvas'), { ...p, cells: viewCells(p, presentBeat) }, window.innerWidth - 48, window.innerHeight - 140, false);
   $('pCount').textContent = `${p.name || 'Picture'} (${presentIdx + 1}/${list.length})`;
 }
-function stopAuto() { clearInterval(presentTimer); presentTimer = null; $('pAuto').setAttribute('aria-pressed', 'false'); }
 function stepPresent(d) { const n = presentList().length; presentIdx = (presentIdx + d + n) % n; drawPresent(); }
-$('presentBtn').onclick = () => { presentIdx = Math.max(0, loaded); $('present').classList.remove('hidden'); drawPresent(); $('pNext').focus(); };
+function startPresentTick() {
+  clearInterval(presentTick);
+  presentTick = setInterval(() => { presentBeat++; if (presentAuto && presentBeat % picEvery === 0) stepPresent(1); else drawPresent(); }, beatSec * 1000);
+}
+$('presentBtn').onclick = () => { stopAnim(); presentIdx = Math.max(0, loaded); presentBeat = 0; presentAuto = false; $('pAuto').setAttribute('aria-pressed', 'false'); $('present').classList.remove('hidden'); drawPresent(); startPresentTick(); $('pNext').focus(); };
 $('pPrev').onclick = () => stepPresent(-1); $('pNext').onclick = () => stepPresent(1);
-$('pClose').onclick = () => { stopAuto(); $('present').classList.add('hidden'); $('presentBtn').focus(); };
-$('pAuto').onclick = () => { if (presentTimer) { stopAuto(); return; } $('pAuto').setAttribute('aria-pressed', 'true'); presentTimer = setInterval(() => stepPresent(1), $('speed').value * 1000); };
+$('pClose').onclick = () => { clearInterval(presentTick); presentTick = null; presentAuto = false; $('pAuto').setAttribute('aria-pressed', 'false'); $('present').classList.add('hidden'); $('presentBtn').focus(); };
+$('pAuto').onclick = () => { presentAuto = !presentAuto; $('pAuto').setAttribute('aria-pressed', presentAuto); if (presentAuto) { presentBeat = 0; startPresentTick(); } };
 document.addEventListener('keydown', ev => {
   if ($('present').classList.contains('hidden')) return;
   if (ev.key === 'Escape') $('pClose').click();
@@ -946,8 +1019,14 @@ const sw = c => `<span class="sw" style="background:${c}"></span>`;
 const sameShape = p => p.cols === W.cols && p.rows === W.rows && JSON.stringify(p.len) === JSON.stringify(W.len);
 const NM_START = { br: 'the bottom right (front right)', bl: 'the bottom left (front left)', tr: 'the top right (back right)', tl: 'the top left (back left)' };
 const printable = () => { const m = lib.filter(sameShape); return m.length ? m : [W]; };
+const anyTw = list => list.some(p => p.tw && p.tw.some(Boolean));
+function twLine(p) {
+  const names = seatNames(p), by = {};
+  (p.tw || []).forEach((d, i) => { if (d && names[i]) (by[d] = by[d] || []).push(names[i]); });
+  return Object.keys(by).map(d => `<p class="p-sub">✦ Swap colours every ${d} beat${d > 1 ? 's' : ''}: ${by[d].join(', ')}</p>`).join('');
+}
 function printHeader(title, list) {
-  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.rows} rows, ${totalSeats(W)} learners (longest row ${W.cols}) · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience · rows run across and are lettered, and seats are numbered along each row, with A1 at ${NM_START[nm.start]} · “1” and “2” are the two colours shown beside each instruction</div>`;
+  return `<div class="p-title">${esc(title)}</div><div class="p-sub">${W.rows} rows, ${totalSeats(W)} learners (longest row ${W.cols}) · ${list.length} picture${list.length > 1 ? 's' : ''} · learners face the audience · rows run across and are lettered, and seats are numbered along each row, with A1 at ${NM_START[nm.start]} · “1” and “2” are the two colours shown beside each instruction${anyTw(list) ? ' · ✦n = that learner swaps between the two colours every n beat' + 's' : ''} · beat ${beatSec.toFixed(1)} s, picture changes every ${picEvery} beat${picEvery > 1 ? 's' : ''}</div>`;
 }
 function runs(p, r) {
   const cs = []; for (let c = 0; c < lenOf(p, r); c++) cs.push(c); 
@@ -969,7 +1048,7 @@ $('printSheet').onclick = () => {
     const cv = document.createElement('canvas'); drawGrid(cv, p, 560, 360, true);
     h += `<div class="p-frame"><h3>${i + 1}. ${esc(p.name || 'Untitled')}</h3><img alt="${esc(p.name)}" src="${cv.toDataURL('image/png')}"><table>`;
     for (let r = 0; r < p.rows; r++) h += `<tr><td>Row ${rowLab(p, r)}</td><td>${runs(p, r)}</td></tr>`;
-    h += '</table></div>';
+    h += '</table>' + twLine(p) + '</div>';
   });
   doPrint(h);
 };
@@ -978,7 +1057,7 @@ $('printCards').onclick = () => {
   let h = printHeader('Learner cards', list) + '<div class="cards">';
   for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) {
     h += `<div class="card${single ? ' big' : ''}"><div class="nm">${esc(names[r * W.cols + c])}</div><div class="pos">Row ${rowLab(W, r)} · Seat ${seatNum(W, r, c)}</div>` +
-      list.map((p, i) => { const v = p.cells[r * p.cols + c]; return `<span class="chip">${single ? '' : (i + 1) + ': '}${sw(colourOf(p, r, c))}${v ? 1 : 2}</span>`; }).join('') + '</div>';
+      list.map((p, i) => { const v = p.cells[r * p.cols + c]; return `<span class="chip">${single ? '' : (i + 1) + ': '}${sw(colourOf(p, r, c))}${v ? 1 : 2}${p.tw && p.tw[r * p.cols + c] ? ' ✦' + p.tw[r * p.cols + c] : ''}</span>`; }).join('') + '</div>';
   }
   doPrint(h + '</div>');
 };
@@ -988,7 +1067,7 @@ $('pngBtn').onclick = () => {
 };
 $('saveBtn').onclick = () => {
   const a = document.createElement('a'); a.download = 'mosaic-mage-pictures.json';
-  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, nm, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, nm, beatSec, picEvery, loaded, W: pack(W), lib: lib.map(pack) })], { type: 'application/json' }));
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 };
 $('loadIn').onchange = e => {
@@ -997,6 +1076,146 @@ $('loadIn').onchange = e => {
     .catch(() => updateReadout('That file is not a Mosaic Mage export.'));
   e.target.value = '';
 };
+
+/* ── Animate ─────────────────────────────────────────────────────────────── */
+const AN_DIRS = {
+  scroll: [['left', 'To the left'], ['right', 'To the right'], ['up', 'Upwards'], ['down', 'Downwards']],
+  slide: [['left', 'From the left'], ['right', 'From the right'], ['top', 'From the top'], ['bottom', 'From the bottom']],
+  wipe: [['left', 'From the left'], ['right', 'From the right'], ['top', 'From the top'], ['bottom', 'From the bottom']],
+  bounce: [['h', 'Sideways'], ['v', 'Up and down']]
+};
+function anFillDirs() {
+  const keep = $('anDir').value, m = $('anMotion').value, o = AN_DIRS[m];
+  $('anDir').innerHTML = o.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  if (o.some(([v]) => v === keep)) $('anDir').value = keep;
+  $('anWipeRow').classList.toggle('hidden', m !== 'wipe');
+  $('anTextRow').classList.toggle('hidden', $('anSource').value !== 'text');
+}
+function activeBox(cells) {
+  let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+  for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) if (cells[r * W.cols + c]) { if (c < x0) x0 = c; if (c > x1) x1 = c; if (r < y0) y0 = r; if (r > y1) y1 = r; }
+  return x1 < 0 ? null : { x0, y0, x1, y1 };
+}
+function textBitmap(t, sc, ex) {
+  const gs = [...t].map(ch => { const cu = ex === 1 && sc === 1 && BOLD1[ch]; return cu ? { rows: cu, w: cu[0].length, cu: true } : { rows: (FONT[ch] || FONT[' ']).split(' '), w: 5 * sc + ex, cu: false }; });
+  const h = 7 * sc + ex, w = gs.reduce((a, g) => a + g.w, 0) + (gs.length - 1) * sc, bits = new Uint8Array(w * h);
+  let cx = 0;
+  gs.forEach(g => {
+    const k = g.cu ? 1 : sc, n = g.cu ? 1 : sc + ex;
+    g.rows.forEach((row, ry) => [...row].forEach((bit, rx) => {
+      if (bit !== '1' && bit !== '#') return;
+      for (let dy = 0; dy < n; dy++) for (let dx = 0; dx < n; dx++) { const y = ry * k + dy, x = cx + rx * k + dx; if (y < h && x < w) bits[y * w + x] = 1; }
+    }));
+    cx += g.w + sc;
+  });
+  return { w, h, bits };
+}
+function getSource(motion) {
+  if ($('anSource').value === 'pic') {
+    const b = activeBox(W.cells); if (!b) return { err: 'Draw something on the grid first, or choose "A line of text".' };
+    const w = b.x1 - b.x0 + 1, h = b.y1 - b.y0 + 1, bits = new Uint8Array(w * h);
+    for (let r = b.y0; r <= b.y1; r++) for (let c = b.x0; c <= b.x1; c++) if (c < lenOf(W, r) && W.cells[r * W.cols + c]) bits[(r - b.y0) * w + (c - b.x0)] = 1;
+    return { w, h, bits, x0: b.x0, y0: b.y0 };
+  }
+  const t = $('anText').value.toUpperCase().replace(/[^A-Z0-9!?.+\- ]/g, '').trim();
+  if (!t) return { err: 'Type some text to move.' };
+  const ex = weight() - 1; let sc = +$('anSize').value; while (sc > 1 && 7 * sc + ex > W.rows) sc--;
+  if (7 * sc + ex > W.rows) return { err: 'The grid is too short for letters at this line weight.' };
+  const bm = textBitmap(t, sc, ex), y0 = Math.floor((W.rows - bm.h) / 2);
+  const x0 = (motion === 'scroll' || motion === 'bounce') ? 0 : Math.max(0, Math.floor((W.cols - bm.w) / 2));
+  return { ...bm, x0, y0 };
+}
+function buildFrames() {
+  const motion = $('anMotion').value, dir = $('anDir').value, k = +$('anStep').value, C = W.cols, R = W.rows;
+  const src = getSource(motion); if (src.err) return { err: src.err };
+  const { w, h, bits, x0, y0 } = src;
+  const make = (dx, dy) => {
+    const f = new Uint8Array(C * R);
+    for (let sr = 0; sr < h; sr++) for (let sc = 0; sc < w; sc++) if (bits[sr * w + sc]) {
+      const r = y0 + sr + dy, c = x0 + sc + dx; if (r >= 0 && r < R && c >= 0 && c < lenOf(W, r)) f[r * C + c] = 1;
+    }
+    return f;
+  };
+  const seq = (from, to) => { const out = [], st = from <= to ? k : -k; for (let v = from; st > 0 ? v < to : v > to; v += st) out.push(v); out.push(to); return out; };
+  let frames = [];
+  if (motion === 'scroll') {
+    if (dir === 'left') frames = seq(C - x0, -(x0 + w)).map(dx => make(dx, 0));
+    else if (dir === 'right') frames = seq(-(x0 + w), C - x0).map(dx => make(dx, 0));
+    else if (dir === 'up') frames = seq(R - y0, -(y0 + h)).map(dy => make(0, dy));
+    else frames = seq(-(y0 + h), R - y0).map(dy => make(0, dy));
+  } else if (motion === 'slide') {
+    if (dir === 'left') frames = seq(-(x0 + w), 0).map(dx => make(dx, 0));
+    else if (dir === 'right') frames = seq(C - x0, 0).map(dx => make(dx, 0));
+    else if (dir === 'top') frames = seq(-(y0 + h), 0).map(dy => make(0, dy));
+    else frames = seq(R - y0, 0).map(dy => make(0, dy));
+  } else if (motion === 'wipe') {
+    const full = make(0, 0), horiz = dir === 'left' || dir === 'right';
+    frames = seq(0, horiz ? C : R).map(n => {
+      const f = full.slice();
+      for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+        const keep = dir === 'left' ? c < n : dir === 'right' ? c >= C - n : dir === 'top' ? r < n : r >= R - n;
+        if (!keep) f[r * C + c] = 0;
+      }
+      return f;
+    });
+    if ($('anWipeMode').value === 'erase') frames.reverse();
+  } else {
+    const horiz = dir === 'h', size = horiz ? w : h, room = horiz ? C : R, lo = Math.min(0, room - size), hi = Math.max(0, room - size);
+    if (lo === hi) return { err: horiz ? 'The picture already fills the width, so it has no room to bounce sideways.' : 'The picture already fills the height, so it has no room to bounce up and down.' };
+    const there = seq(lo, hi), back = seq(hi, lo).slice(1, -1), at = horiz ? x0 : y0;
+    frames = [...there, ...back].map(pos => horiz ? make(pos - at, 0) : make(0, pos - at));
+  }
+  return frames.length ? { frames } : { err: 'Nothing to animate.' };
+}
+function anUpdate() {
+  if (!$('anInfo')) return;
+  anFillDirs();
+  const b = buildFrames();
+  $('anInfo').textContent = b.err ? b.err : `${b.frames.length} frame${b.frames.length > 1 ? 's' : ''}, about ${(b.frames.length * beatSec * picEvery).toFixed(0)} seconds for one pass at the current timing.${b.frames.length > 60 ? ' That is more than the 60 pictures a show can hold. Use a bigger step.' : ''}`;
+}
+function animShow() {
+  override = viewCells({ cells: anim.frames[anim.idx], tw: W.tw }, anim.beat);
+  redrawStage(); $('readout').textContent = `Previewing: beat ${anim.beat + 1}, frame ${anim.idx + 1} of ${anim.frames.length}`;
+}
+function stopAnim() {
+  clearInterval(anim.timer); anim.timer = null; override = null;
+  $('anPlay').querySelector('span').textContent = 'Preview'; $('anPlay').setAttribute('aria-pressed', 'false');
+  redrawStage(); updateReadout();
+}
+function restartAnim() {
+  clearInterval(anim.timer);
+  anim.timer = setInterval(() => { anim.beat++; if (anim.beat % picEvery === 0) anim.idx = (anim.idx + 1) % anim.frames.length; animShow(); }, beatSec * 1000);
+}
+$('anPlay').onclick = () => {
+  if (anim.timer) { stopAnim(); return; }
+  const b = buildFrames(); let frames = b.frames;
+  if (b.err) { if (W.tw.some(Boolean)) frames = [W.cells.slice()]; else { updateReadout(b.err); return; } }
+  Object.assign(anim, { frames, idx: 0, beat: 0 });
+  $('anPlay').querySelector('span').textContent = 'Stop'; $('anPlay').setAttribute('aria-pressed', 'true');
+  animShow(); restartAnim();
+};
+$('anCreate').onclick = () => {
+  const b = buildFrames(); if (b.err) { updateReadout(b.err); return; }
+  const base = ($('anName').value.trim() || ($('anSource').value === 'text' && $('anText').value.trim()) || $('anMotion').selectedOptions[0].text.split(' (')[0]).slice(0, 32);
+  const re = new RegExp('^' + base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\d+$'), cur = loaded >= 0 ? lib[loaded] : null;
+  const kept = lib.filter(p => !re.test(p.name));
+  if (kept.length + b.frames.length > 60) { updateReadout(`That would make ${b.frames.length} frames, and a show can hold 60 pictures in total. Use a bigger step, or delete some saved pictures first.`); return; }
+  lib = kept; loaded = cur && lib.includes(cur) ? lib.indexOf(cur) : -1;
+  b.frames.forEach((f, i) => { const p = clonePic(W); p.cells = f; p.name = `${base} ${i + 1}`; lib.push(p); });
+  refresh(); updateReadout(`Saved ${b.frames.length} frames as “${base} 1” to “${base} ${b.frames.length}”. Present all plays them in order.`);
+};
+['anSource', 'anMotion', 'anDir', 'anStep', 'anWipeMode', 'anSize'].forEach(id => $(id).onchange = () => { if (anim.timer) stopAnim(); anUpdate(); });
+$('anText').oninput = () => anUpdate();
+$('weight').addEventListener('input', () => anUpdate());
+
+/* Twinkle brush */
+function twSync() {
+  $('twBtn').setAttribute('aria-pressed', twBrush); $('twBtn').textContent = 'Twinkle brush: ' + (twBrush ? 'On' : 'Off');
+  $('grid').style.cursor = twBrush ? 'cell' : 'crosshair';
+}
+$('twBtn').onclick = () => { twBrush = !twBrush; twSync(); updateReadout(twBrush ? 'Twinkle brush on: click or drag cells to make them twinkle. Click a twinkling cell to turn it off.' : ''); };
+$('twRate').onchange = () => { twRate = +$('twRate').value; };
+$('twClear').onclick = () => mutate(() => W.tw.fill(0));
 
 /* ── Control tabs ────────────────────────────────────────────────────────── */
 const tabBtns = [...document.querySelectorAll('.tabs [role=tab]')];
