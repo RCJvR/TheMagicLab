@@ -339,7 +339,7 @@ input::placeholder { color: var(--text-3); }
             <select id="anSource"><option value="pic">This picture</option><option value="text">A line of text</option></select>
           </label>
           <label class="f">Motion
-            <select id="anMotion"><option value="scroll">Scroll</option><option value="slide">Slide in</option><option value="wipe">Wipe</option><option value="bounce">Bounce</option></select>
+            <select id="anMotion"><option value="scroll">Scroll</option><option value="slide">Slide in</option><option value="wipe">Wipe</option><option value="bounce">Bounce</option><option value="roll">Roll (move and turn)</option></select>
           </label>
         </div>
         <div id="anTextRow" class="row hidden">
@@ -351,6 +351,7 @@ input::placeholder { color: var(--text-3); }
           <label class="f">Step<select id="anStep"><option value="1">1 learner</option><option value="2">2 learners</option><option value="3">3 learners</option><option value="4">4 learners</option><option value="5">5 learners</option><option value="6">6 learners</option><option value="7">7 learners</option><option value="8">8 learners</option><option value="9">9 learners</option><option value="10">10 learners</option></select></label>
         </div>
         <div class="row hidden" id="anWipeRow"><label class="f">The wipe<select id="anWipeMode"><option value="reveal">Reveals the picture</option><option value="erase">Erases the picture</option></select></label></div>
+        <div class="row hidden" id="anPauseRow"><label class="f">Pause while in view<select id="anPause"><option value="0">No pause</option><option value="1">1 frame</option><option value="2">2 frames</option><option value="3">3 frames</option><option value="4">4 frames</option></select></label></div>
         <p class="hint" id="anInfo" style="margin:var(--space-2) 0"></p>
         <div class="row">
           <label class="f" style="flex:2 1 140px">Frame name<input type="text" id="anName" maxlength="32" placeholder="e.g. Welcome"></label>
@@ -1114,13 +1115,15 @@ const AN_DIRS = {
   scroll: [['left', 'To the left'], ['right', 'To the right'], ['up', 'Upwards'], ['down', 'Downwards']],
   slide: [['left', 'From the left'], ['right', 'From the right'], ['top', 'From the top'], ['bottom', 'From the bottom']],
   wipe: [['left', 'From the left'], ['right', 'From the right'], ['top', 'From the top'], ['bottom', 'From the bottom']],
-  bounce: [['h', 'Sideways'], ['v', 'Up and down']]
+  bounce: [['h', 'Sideways'], ['v', 'Up and down']],
+  roll: [['across-right', 'Rolls across to the right'], ['across-left', 'Rolls across to the left'], ['in-left', 'Rolls in from the left, then back out'], ['in-right', 'Rolls in from the right, then back out']]
 };
 function anFillDirs() {
   const keep = $('anDir').value, m = $('anMotion').value, o = AN_DIRS[m];
   $('anDir').innerHTML = o.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   if (o.some(([v]) => v === keep)) $('anDir').value = keep;
   $('anWipeRow').classList.toggle('hidden', m !== 'wipe');
+  $('anPauseRow').classList.toggle('hidden', !(m === 'roll' && $('anDir').value.startsWith('in-')));
   $('anTextRow').classList.toggle('hidden', $('anSource').value !== 'text');
 }
 function activeBox(cells) {
@@ -1191,6 +1194,29 @@ function buildFrames() {
       return f;
     });
     if ($('anWipeMode').value === 'erase') frames.reverse();
+  } else if (motion === 'roll') {
+    // The picture turns as it travels, like a wheel rolling without slipping: angle = distance / radius.
+    const cxg = x0 + w / 2, cyg = y0 + h / 2, rr = Math.max(w, h) / 2, rad = Math.ceil(Math.hypot(w, h) / 2) + 1;
+    const spin = dx => {
+      const th = dx / rr, cs = Math.cos(th), sn = Math.sin(th), f = new Uint8Array(C * R);
+      for (let r = 0; r < R; r++) for (let c = 0; c < lenOf(W, r); c++) {
+        let hits = 0;
+        for (const sy of [1 / 6, .5, 5 / 6]) for (const sx of [1 / 6, .5, 5 / 6]) {
+          const px = c + sx - (cxg + dx), py = r + sy - cyg, qx = cs * px + sn * py + cxg - x0, qy = -sn * px + cs * py + cyg - y0;
+          const ix = Math.floor(qx), iy = Math.floor(qy);
+          if (ix >= 0 && ix < w && iy >= 0 && iy < h && bits[iy * w + ix]) hits++;
+        }
+        if (hits >= 5) f[r * C + c] = 1;
+      }
+      return f;
+    };
+    const left = -Math.ceil(cxg + rad), right = Math.ceil(C - cxg + rad);
+    if (dir === 'across-right') frames = seq(left, right).map(spin);
+    else if (dir === 'across-left') frames = seq(right, left).map(spin);
+    else {
+      const inn = seq(dir === 'in-left' ? left : right, 0).map(spin), home = inn[inn.length - 1], pause = Array.from({ length: +$('anPause').value }, () => home.slice());
+      frames = [...inn, ...pause, ...inn.slice(0, -1).reverse()];
+    }
   } else {
     const horiz = dir === 'h', size = horiz ? w : h, room = horiz ? C : R, lo = Math.min(0, room - size), hi = Math.max(0, room - size);
     if (lo === hi) return { err: horiz ? 'The picture already fills the width, so it has no room to bounce sideways.' : 'The picture already fills the height, so it has no room to bounce up and down.' };
@@ -1236,7 +1262,7 @@ $('anCreate').onclick = () => {
   b.frames.forEach((f, i) => { const p = clonePic(W); p.cells = f; p.name = `${base} ${i + 1}`; lib.push(p); });
   refresh(); updateReadout(`Saved ${b.frames.length} frames as “${base} 1” to “${base} ${b.frames.length}”. Present all plays them in order.`);
 };
-['anSource', 'anMotion', 'anDir', 'anStep', 'anWipeMode', 'anSize'].forEach(id => $(id).onchange = () => { if (anim.timer) stopAnim(); anUpdate(); });
+['anSource', 'anMotion', 'anDir', 'anStep', 'anWipeMode', 'anSize', 'anPause'].forEach(id => $(id).onchange = () => { if (anim.timer) stopAnim(); anUpdate(); });
 $('anText').oninput = () => anUpdate();
 $('weight').addEventListener('input', () => anUpdate());
 
