@@ -1004,7 +1004,9 @@
       </div>
     </div>
     <div class="aa-card"><div id="r-list"></div>
-      <div class="aa-actions"><button class="aa-btn aa-btn--sm" id="r-copyall">Copy all</button><button class="aa-btn aa-btn--sm" id="r-clear">Clear list</button></div></div>
+      <div class="aa-actions"><button class="aa-btn aa-btn--sm" id="r-copyall">Copy all</button><button class="aa-btn aa-btn--sm" id="r-clear">Clear list</button></div>
+      <div class="aa-actions aa-file-actions"><button class="aa-btn aa-btn--sm" id="r-save-file" type="button">Save list to a file</button><button class="aa-btn aa-btn--sm" id="r-open-file" type="button">Open a saved list</button><input type="file" id="r-open-input" accept=".json,application/json" hidden></div>
+      <div class="aa-hint">The list saves itself in this browser. A file lets you keep a copy, move to another device or carry on later.</div></div>
     </div><!-- /tab-reports -->
 
     <!-- ═══ TAB: RUBRIC BUILDER ═══ -->
@@ -1033,6 +1035,12 @@
         <button class="aa-btn" id="b-csv">Copy for Excel</button>
         <button class="aa-btn" id="b-reset">Clear</button>
       </div>
+      <div class="aa-actions aa-file-actions">
+        <button class="aa-btn" id="b-save-file" type="button">Save rubric to a file</button>
+        <button class="aa-btn" id="b-open-file" type="button">Open a saved rubric</button>
+        <input type="file" id="b-open-input" accept=".json,application/json" hidden>
+      </div>
+      <div class="aa-hint">The rubric saves itself in this browser. A file lets you keep a copy, move to another device or carry on later.</div>
     </div>
     </div><!-- /tab-rubric -->
 
@@ -1043,7 +1051,13 @@
         <p>Build a write-on question paper in sections: cover page, per-question analysis, numbered questions, answer lines and a memo. Everything stays in this browser.</p>
       </div>
 
-      <div class="aa-section-title">Paper details</div>
+      <div class="aa-subtabs" role="tablist" aria-label="Paper Assembler sections">
+        <button class="aa-subtab active" type="button" role="tab" data-sub="details">Paper details</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="print">Print settings</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="build">Sections &amp; questions</button>
+      </div>
+
+      <div class="aa-subpanel" id="sub-details" role="tabpanel">
       <div class="aa-card">
         <div class="aa-row">
           <div><label class="aa-lbl" for="p-school">School</label><input class="aa-in" id="p-school" placeholder="School name"></div>
@@ -1076,7 +1090,9 @@
         </div>
       </div>
 
-      <div class="aa-section-title">Print settings</div>
+      </div><!-- /sub-details -->
+
+      <div class="aa-subpanel" id="sub-print" role="tabpanel" hidden>
       <div class="aa-card">
         <div class="aa-row">
           <div><label class="aa-lbl" for="p-font">Text size</label>
@@ -1105,6 +1121,9 @@
         <div class="aa-hint">With answer lines on, a written question gets its marks plus 2 lines (1 mark = 3 lines, 2 marks = 4 lines) unless you set a number on the question.</div>
       </div>
 
+      </div><!-- /sub-print -->
+
+      <div class="aa-subpanel" id="sub-build" role="tabpanel" hidden>
       <div class="aa-section-title">Sections</div>
       <div class="aa-card">
         <div class="aa-row">
@@ -1144,7 +1163,7 @@
           <div id="q-w-lines"><label class="aa-lbl" for="q-lines">Answer lines (blank = automatic)</label><input class="aa-in" id="q-lines" type="number" min="0" max="20" placeholder="auto"></div>
           <div id="q-w-ans" hidden><label class="aa-lbl" for="q-ans">Correct answer</label><select class="aa-in" id="q-ans"></select></div>
           <div id="q-w-level"><label class="aa-lbl" for="q-level">Cognitive level</label>
-            <select class="aa-in" id="q-level"><option>Knowledge</option><option>Routine procedures</option><option>Complex procedures</option><option>Problem solving</option></select></div>
+            <select class="aa-in" id="q-level"><optgroup label="Lower order"><option>Recall</option><option>Comprehend</option></optgroup><optgroup label="Higher order"><option>Application</option><option>Analysis</option><option>Synthesis</option><option>Evaluate</option></optgroup></select></div>
         </div>
         <div id="q-w-memo"><label class="aa-lbl" for="q-memo">Memo / marking guidance</label>
           <textarea class="aa-in" id="q-memo" rows="2"></textarea></div>
@@ -1154,14 +1173,22 @@
         </div>
       </div>
 
-      <div class="aa-actions" style="margin-top:0;margin-bottom:12px"><span class="aa-total" id="p-total"></span></div>
       <div class="aa-spread" id="p-spread"></div>
       <div id="p-list"></div>
-      <div class="aa-actions">
+      </div><!-- /sub-build -->
+
+      <div class="aa-actions aa-paper-actions">
+        <span class="aa-total" id="p-total"></span>
         <button class="aa-btn aa-btn--primary" id="p-print" type="button">Print paper</button>
         <button class="aa-btn" id="p-print-memo" type="button">Print memo</button>
         <button class="aa-btn" id="p-reset" type="button">Clear paper</button>
       </div>
+      <div class="aa-actions aa-file-actions">
+        <button class="aa-btn" id="p-save-file" type="button">Save paper to a file</button>
+        <button class="aa-btn" id="p-open-file" type="button">Open a saved paper</button>
+        <input type="file" id="p-open-input" accept=".json,application/json" hidden>
+      </div>
+      <div class="aa-hint">Your work saves itself in this browser as you go. Use <b>Save paper to a file</b> to keep a copy on your computer, move to another device, or carry on later; <b>Open a saved paper</b> brings it straight back.</div>
     </div><!-- /tab-paper -->
 
 

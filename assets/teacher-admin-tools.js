@@ -31,6 +31,36 @@
   const pick = a => a[Math.floor(Math.random() * a.length)];
   function lucide() { if (window.lucide) window.lucide.createIcons(); }
 
+
+  // ── save to / open from a file (report list and rubric) ──
+  // A small envelope names what the file holds, so a rubric cannot be opened
+  // as a comment list. Contents are rebuilt by the caller, never trusted.
+  function downloadJson(kind, name, data) {
+    const base = String(name || kind).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-').slice(0, 60) || kind;
+    const blob = new Blob([JSON.stringify({ magiclab: kind, saved: new Date().toISOString(), data }, null, 1)], { type: 'application/json' });
+    const a = el('a', { href: URL.createObjectURL(blob), download: base + '.magiclab-' + kind + '.json' });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Saved to your downloads folder');
+  }
+  function wireOpen(buttonId, inputId, kind, apply) {
+    $(buttonId).addEventListener('click', () => $(inputId).click());
+    $(inputId).addEventListener('change', () => {
+      const f = $(inputId).files[0]; $(inputId).value = '';
+      if (!f) return;
+      if (f.size > 4 * 1024 * 1024) return toast('That file is too large');
+      const r = new FileReader();
+      r.onload = () => {
+        let o; try { o = JSON.parse(r.result); } catch (e) { return toast('That is not a saved file from this tool'); }
+        if (!o || o.magiclab !== kind) return toast('That file is not the right kind of saved file');
+        apply(o.data);
+      };
+      r.onerror = () => toast('Could not read that file');
+      r.readAsText(f);
+    });
+  }
+  const strOf = (v, max) => typeof v === 'string' ? v.slice(0, max) : '';
+
   /* ═══════════════ REPORT COMMENTS ═══════════════ */
   const STRENGTHS = {
     participates: 'Participates actively in class',
@@ -174,6 +204,14 @@
   $('r-copyall').addEventListener('click', () => classList.length && copy(classList.map(c => c.name + ': ' + c.text).join('\n\n')));
   $('r-clear').addEventListener('click', () => { if (classList.length && confirm('Remove all saved comments?')) { classList = []; store.set('comments', classList); renderList(); } });
   renderList();
+  $('r-save-file').addEventListener('click', () => classList.length ? downloadJson('report-comments', 'report-comments', classList) : toast('Nothing to save yet'));
+  wireOpen('r-open-file', 'r-open-input', 'report-comments', data => {
+    if (!Array.isArray(data)) return toast('That file is not a saved comment list');
+    const clean = data.slice(0, 500).map(c => ({ name: strOf(c && c.name, 200), text: strOf(c && c.text, 4000) })).filter(c => c.text.trim());
+    if (!clean.length) return toast('That file has no comments in it');
+    if (classList.length && !confirm('Replace your current list with the ' + clean.length + ' comment(s) in this file?')) return;
+    classList = clean; store.set('comments', classList); renderList(); toast('List opened');
+  });
 
   /* ═══════════════ RUBRIC ═══════════════ */
   const TEMPLATES = {
@@ -241,9 +279,27 @@
     pa.appendChild(tbl); window.print();
   });
   renderRubric();
+  $('b-save-file').addEventListener('click', () => downloadJson('rubric', rubric.title || 'rubric', rubric));
+  wireOpen('b-open-file', 'b-open-input', 'rubric', data => {
+    if (!data || !Array.isArray(data.rows)) return toast('That file is not a saved rubric');
+    const levels = [3, 4, 5].includes(+data.levels) ? +data.levels : 4;
+    const rows = data.rows.slice(0, 50).map(r => ({ name: strOf(r && r.name, 300), cells: (Array.isArray(r && r.cells) ? r.cells : []).slice(0, levels).map(c => strOf(c, 1000)) }));
+    if (!rows.length) rows.push({ name: '', cells: [] });
+    if (rubric.rows.some(r => r.name || r.cells.some(Boolean)) && !confirm('Replace the rubric you are working on with this file?')) return;
+    rubric = { title: strOf(data.title, 300), levels, rows };
+    $('b-title').value = rubric.title; $('b-levels').value = String(levels);
+    save(); renderRubric(); toast('Rubric opened');
+  });
 
   /* ═══════════════ PAPER ═══════════════ */
-  const LEVELS = ['Knowledge', 'Routine procedures', 'Complex procedures', 'Problem solving'];
+  // Cognitive levels, grouped the way the paper's mark analysis is reported.
+  const BANDS = [
+    { name: 'Lower order', levels: ['Recall', 'Comprehend'] },
+    { name: 'Higher order', levels: ['Application', 'Analysis', 'Synthesis', 'Evaluate'] }
+  ];
+  const LEVELS = BANDS.flatMap(b => b.levels);
+  // Papers saved before these levels existed used a four-level scale.
+  const OLD_LEVEL = { 'Knowledge': 'Recall', 'Routine procedures': 'Comprehend', 'Complex procedures': 'Application', 'Problem solving': 'Analysis' };
   const TYPE_LABEL = { written: 'Written', mcq: 'Multiple choice', tf: 'True or false', context: 'Context note' };
   const DEFAULT_INST = [
     'Fill in your name in the space provided above.',
@@ -268,6 +324,7 @@
       if (!p.inst) o.inst = DEFAULT_INST;
     }
     delete o.qs;
+    o.sections.forEach(s => s.qs.forEach(q => { if (OLD_LEVEL[q.level]) q.level = OLD_LEVEL[q.level]; }));
     o.opts = Object.assign({ font: '12', marksPos: 'right', nameLine: 'yes', lines: 'on', cover: 'yes', analysis: 'yes', extra: 'yes' }, p.opts);
     return o;
   }
@@ -313,6 +370,18 @@
   });
   $('p-logo-remove').addEventListener('click', () => { delete paper.logo; $('p-logo').value = ''; savePaper(); showLogo(); });
   showLogo();
+
+  // ── sub-tabs: details | print settings | sections & questions ──
+  function showSub(name) {
+    document.querySelectorAll('.aa-subtab').forEach(b => {
+      const on = b.dataset.sub === name;
+      b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.aa-subpanel').forEach(p => { p.hidden = p.id !== 'sub-' + name; });
+    store.set('paper-sub', name);
+  }
+  document.querySelectorAll('.aa-subtab').forEach(b => b.addEventListener('click', () => showSub(b.dataset.sub)));
+  { const s = store.get('paper-sub', 'details'); showSub(['details', 'print', 'build'].includes(s) ? s : 'details'); }
 
   // ── helpers over the section tree ──
   const secMarks = s => s.qs.reduce((a, q) => a + (q.type === 'context' ? 0 : q.marks), 0);
@@ -397,6 +466,7 @@
   function editQuestion(si, qi) {
     const q = paper.sections[si].qs[qi];
     editing = { si, qi };
+    showSub('build');
     fillSections(si); setType(q.type);
     $('q-text').value = q.text || ''; $('q-heading').value = q.heading || '';
     $('q-marks').value = q.marks || 1; $('q-level').value = q.level || LEVELS[0];
@@ -426,11 +496,10 @@
     tot.textContent = 'Total: ' + sum + ' / ' + paper.target + ' marks';
     tot.className = 'aa-total ' + (sum === paper.target ? 'aa-ok' : sum > paper.target ? 'aa-bad' : 'aa-warn');
     const sp = $('p-spread'); sp.textContent = '';
-    LEVELS.forEach(l => {
-      let m = 0;
-      paper.sections.forEach(s => s.qs.forEach(q => { if (q.type !== 'context' && q.level === l) m += q.marks; }));
-      sp.appendChild(el('div', { text: l }, [el('b', { text: m + ' marks · ' + (sum ? Math.round(m / sum * 100) : 0) + '%' })]));
-    });
+    const marksAt = l => { let m = 0; paper.sections.forEach(s => s.qs.forEach(q => { if (q.type !== 'context' && l.includes(q.level)) m += q.marks; })); return m; };
+    const tile = (label, m, band) => el('div', { class: band ? 'aa-band' : '', text: label }, [el('b', { text: m + ' marks · ' + (sum ? Math.round(m / sum * 100) : 0) + '%' })]);
+    BANDS.forEach(b => sp.appendChild(tile(b.name, marksAt(b.levels), true)));
+    LEVELS.forEach(l => sp.appendChild(tile(l, marksAt([l]), false)));
 
     const host = $('p-list'); host.textContent = '';
     if (!paper.sections.length) { host.appendChild(el('div', { class: 'aa-card aa-empty-hint', text: 'No sections yet. Add one above, then add questions to it.' })); fillSections(); return; }
@@ -620,6 +689,85 @@
     }
     window.print();
   }
+  // ── save to / open from a file ──
+  // The browser keeps the working copy; a file lets a teacher carry a paper to
+  // another device or come back after clearing site data. Anything read from a
+  // file is rebuilt field by field, never trusted as-is.
+  function cleanQuestion(q) {
+    if (!q || typeof q !== 'object') return null;
+    const str = (v, max) => typeof v === 'string' ? v.slice(0, max) : '';
+    const type = ['written', 'mcq', 'tf', 'context'].includes(q.type) ? q.type : 'written';
+    const text = str(q.text, 3000).trim();
+    if (!text) return null;
+    const out = { type, text };
+    if (type === 'context') { out.heading = str(q.heading, 300); return out; }
+    out.marks = Math.min(100, Math.max(1, parseInt(q.marks, 10) || 1));
+    out.level = LEVELS.includes(q.level) ? q.level : LEVELS[0];
+    if (type === 'written') {
+      out.memo = str(q.memo, 3000);
+      out.lines = q.lines == null || q.lines === '' ? null : Math.min(20, Math.max(0, parseInt(q.lines, 10) || 0));
+    }
+    if (type === 'mcq') {
+      const o = Array.isArray(q.options) ? q.options : [];
+      out.options = [0, 1, 2, 3].map(i => str(o[i], 500));
+      out.ans = 'ABCD'.includes(q.ans) && q.ans ? q.ans : 'A';
+    }
+    if (type === 'tf') out.ans = q.ans === 'False' ? 'False' : 'True';
+    return out;
+  }
+  function sanitizePaper(raw) {
+    if (!raw || typeof raw !== 'object' || !(Array.isArray(raw.sections) || Array.isArray(raw.qs))) return null;
+    const str = (v, max) => typeof v === 'string' ? v.slice(0, max) : '';
+    const o = migrate(raw), yn = v => v === 'no' ? 'no' : 'yes';
+    const clean = { inst: str(o.inst, 5000), target: Math.min(1000, Math.max(0, parseInt(o.target, 10) || 0)) };
+    ['school', 'grade', 'subject', 'title', 'headerLeft', 'headerRight', 'footerText', 'date', 'time', 'examiner', 'moderator'].forEach(k => { clean[k] = str(o[k], 300); });
+    if (typeof o.logo === 'string' && o.logo.length < 4e6 && /^data:image\/(png|jpeg|webp|svg\+xml);base64,[A-Za-z0-9+\/=]+$/.test(o.logo)) clean.logo = o.logo;
+    const op = o.opts || {};
+    clean.opts = {
+      font: ['10', '11', '12', '14'].includes(String(op.font)) ? String(op.font) : '12',
+      marksPos: op.marksPos === 'inline' ? 'inline' : 'right',
+      nameLine: yn(op.nameLine), lines: op.lines === 'off' ? 'off' : 'on', cover: yn(op.cover), analysis: yn(op.analysis), extra: yn(op.extra)
+    };
+    clean.sections = (Array.isArray(o.sections) ? o.sections : []).slice(0, 50).map(s => ({
+      title: str(s && s.title, 200), instruction: str(s && s.instruction, 500),
+      qs: (Array.isArray(s && s.qs) ? s.qs : []).slice(0, 300).map(cleanQuestion).filter(Boolean)
+    }));
+    return clean;
+  }
+  function applyPaperToForm() {
+    Object.entries(FIELDS).forEach(([k, id]) => { $(id).value = paper[k] || ''; });
+    $('p-target').value = paper.target;
+    OPTS.forEach(([id, k]) => { $(id).value = paper.opts[k]; });
+    $('p-logo').value = '';
+    showLogo(); endEdit(); renderPaper(); fillSections();
+  }
+  $('p-save-file').addEventListener('click', () => {
+    const name = (paper.title || paper.subject || 'paper').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-').slice(0, 60) || 'paper';
+    const blob = new Blob([JSON.stringify({ magiclabPaper: 1, saved: new Date().toISOString(), paper }, null, 1)], { type: 'application/json' });
+    const a = el('a', { href: URL.createObjectURL(blob), download: name + '.magiclab-paper.json' });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Saved to your downloads folder');
+  });
+  $('p-open-file').addEventListener('click', () => $('p-open-input').click());
+  $('p-open-input').addEventListener('change', () => {
+    const f = $('p-open-input').files[0];
+    $('p-open-input').value = '';
+    if (!f) return;
+    if (f.size > 8 * 1024 * 1024) return toast('That file is too large to be a saved paper');
+    const r = new FileReader();
+    r.onload = () => {
+      let raw; try { raw = JSON.parse(r.result); } catch (e) { return toast('That is not a saved paper file'); }
+      const clean = sanitizePaper(raw && raw.magiclabPaper ? raw.paper : raw);
+      if (!clean) return toast('That is not a saved paper file');
+      if (paper.sections.some(s => s.qs.length) && !confirm('Replace the paper you are working on with this file?')) return;
+      paper = migrate(clean); savePaper(); applyPaperToForm();
+      toast('Paper opened');
+    };
+    r.onerror = () => toast('Could not read that file');
+    r.readAsText(f);
+  });
+
   const hasQs = () => paper.sections.some(s => s.qs.some(q => q.type !== 'context'));
   $('p-print').addEventListener('click', () => hasQs() ? printPaper(false) : toast('Add a question first'));
   $('p-print-memo').addEventListener('click', () => hasQs() ? printPaper(true) : toast('Add a question first'));
