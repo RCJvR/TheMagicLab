@@ -269,6 +269,22 @@
       color: rgba(221,225,240,0.55); white-space: nowrap; transition: color 200ms;
     }
 
+    /* ── Board size row ── */
+    .board-size { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 7px 14px 2px; font-size: 11px; color: rgba(221,225,240,0.62); }
+    .board-size label { font-weight: 600; }
+    .board-size input[type=number] {
+      width: 64px; padding: 4px 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.30); color: #dde1f0; font: 600 12px "JetBrains Mono", monospace;
+    }
+    .board-size input[type=number]:focus-visible, .bs-btn:focus-visible { outline: 2px solid #6ee7b7; outline-offset: 1px; }
+    .bs-btn {
+      padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.16); background: transparent;
+      color: rgba(221,225,240,0.8); font: 600 11px inherit; cursor: pointer;
+    }
+    .bs-btn:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+    .bs-set { background: rgba(99,102,241,0.35); border-color: rgba(165,180,252,0.55); color: #fff; }
+    .bs-note { color: rgba(252,211,77,0.9); }
+
     /* ── Drawing board ── */
     /*
       The SVG viewBox is 76 × 48. A square in coordinate space must look square
@@ -1122,6 +1138,15 @@
             <span id="penReadout"       class="readout">pen ↓</span>
           </div>
         </div>
+        <form class="board-size" id="boardSizeForm" aria-label="Drawing board size">
+          <label for="boardW">Board size</label>
+          <input id="boardW" type="number" min="10" max="500" step="1" inputmode="numeric" aria-label="Board width in squares" value="76">
+          <span aria-hidden="true">×</span>
+          <input id="boardH" type="number" min="10" max="500" step="1" inputmode="numeric" aria-label="Board height in squares" value="48">
+          <button type="submit" class="bs-btn bs-set">Set size</button>
+          <button type="button" class="bs-btn" id="boardSizeDefault" title="Back to 76 × 48">Default</button>
+          <span class="bs-note" id="boardSizeNote" role="status" aria-live="polite"></span>
+        </form>
         <div class="canvas-outer" id="canvasOuter">
           <svg id="drawingSvg" viewBox="0 0 76 48" preserveAspectRatio="xMidYMid meet"
                role="img" aria-label="Turtle drawing canvas">
@@ -3901,8 +3926,29 @@ function applyGridSize(w, h) {
   canvasOuter.style.aspectRatio = `${w} / ${h}`;
   canvasOuter.style.paddingBottom = '';
   gridSizeLabel.textContent = `${w} × ${h}  · pen starts at centre`;
+  const bw = document.getElementById("boardW"), bh = document.getElementById("boardH");
+  if (bw && bh) { bw.value = w; bh.value = h; }
   buildGrid(w, h);
 }
+
+// ── Board size controls (set the grid from the page instead of n.setGridSize) ─
+(function () {
+  const form = document.getElementById("boardSizeForm"), bw = document.getElementById("boardW"), bh = document.getElementById("boardH");
+  const note = document.getElementById("boardSizeNote"), KEY = "java-genie-board-size";
+  const say = t => { note.textContent = t; };
+  function apply(w, h, remember) {
+    if (isRunning) { say("Stop the program first."); return false; }
+    if (!Number.isInteger(w) || !Number.isInteger(h) || w < 10 || w > 500 || h < 10 || h > 500) { say("Use whole numbers from 10 to 500."); return false; }
+    applyGridSize(w, h); resetTurtle(true);
+    say(`Board is now ${w} × ${h}. Drawing cleared.`);
+    if (remember) { try { localStorage.setItem(KEY, JSON.stringify([w, h])); } catch (e) {} }
+    return true;
+  }
+  form.addEventListener("submit", e => { e.preventDefault(); apply(Number(bw.value), Number(bh.value), true); });
+  document.getElementById("boardSizeDefault").addEventListener("click", () => { if (apply(76, 48, false)) { try { localStorage.removeItem(KEY); } catch (e) {} } });
+  [bw, bh].forEach(i => i.addEventListener("input", () => say("")));
+  window.jgSavedBoardSize = () => { try { const v = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(v) && v.length === 2 && v.every(n => Number.isInteger(n) && n >= 10 && n <= 500)) return v; } catch (e) {} return null; };
+})();
 
 // ── Turtle state ─────────────────────────────────────────────────────────────
 let turtle = {};
@@ -5515,7 +5561,7 @@ fileInput.addEventListener("change", e => {
 
 
 // ── Init ──────────────────────────────────────────────────────────────────────
-applyGridSize(76, 48);
+{ const saved = window.jgSavedBoardSize(); applyGridSize(saved ? saved[0] : 76, saved ? saved[1] : 48); }
 resetTurtle(true);
 if (jgAutosave.tryRestore()) jgAutosave.showToast();
 lucide.createIcons();
