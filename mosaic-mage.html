@@ -301,6 +301,14 @@ input::placeholder { color: var(--text-3); }
 
       <div class="panel" role="tabpanel" id="pan-picture" aria-labelledby="tab-picture" hidden>
         <h2>Make a picture</h2>
+        <div class="row" style="align-items:center">
+          <span style="font-size:12.5px;font-weight:700;color:var(--text-2);margin-right:2px">Move picture</span>
+          <button class="btn" id="mvL" type="button" aria-label="Move one learner left" title="Move left (Shift + ←)">←</button>
+          <button class="btn" id="mvU" type="button" aria-label="Move one learner up" title="Move up (Shift + ↑)">↑</button>
+          <button class="btn" id="mvD" type="button" aria-label="Move one learner down" title="Move down (Shift + ↓)">↓</button>
+          <button class="btn" id="mvR" type="button" aria-label="Move one learner right" title="Move right (Shift + →)">→</button>
+          <label class="chk" style="margin-left:auto"><input type="checkbox" id="mvWrap"> Wrap round</label>
+        </div>
         <div class="shapes" role="group" aria-label="Starter shapes">
           <button class="btn" type="button" data-shape="heart">Heart</button>
           <button class="btn" type="button" data-shape="star">Star</button>
@@ -677,6 +685,7 @@ const endPaint = () => { if (painting) { painting = false; refresh(); } };
 $('grid').addEventListener('pointerup', endPaint); $('grid').addEventListener('pointercancel', endPaint);
 $('grid').addEventListener('keydown', ev => {
   const k = ev.key;
+  if (ev.shiftKey && k.startsWith('Arrow')) { ev.preventDefault(); shiftPic(k === 'ArrowLeft' ? -1 : k === 'ArrowRight' ? 1 : 0, k === 'ArrowUp' ? -1 : k === 'ArrowDown' ? 1 : 0); return; }
   if (k === 'ArrowLeft') cursor.c = Math.max(0, cursor.c - 1);
   else if (k === 'ArrowRight') cursor.c = Math.min(lenOf(W, cursor.r) - 1, cursor.c + 1);
   else if (k === 'ArrowUp') cursor.r = Math.max(0, cursor.r - 1);
@@ -710,6 +719,26 @@ $('flipBtn').onclick = () => mutate(() => {
     if (x === undefined) delete W.len[r2]; else W.len[r2] = x;
   }
 });
+
+/* Move the whole picture (and its twinkles) by one learner. Anything pushed past an edge is lost, unless
+   Wrap round is ticked, in which case it comes back in on the opposite side. */
+function shiftPic(dx, dy) {
+  const wrap = $('mvWrap').checked;
+  mutate(() => {
+    for (const arr of [W.cells, W.tw]) {
+      const old = arr.slice(); arr.fill(0);
+      for (let r = 0; r < W.rows; r++) for (let c = 0; c < lenOf(W, r); c++) {
+        const v = old[r * W.cols + c]; if (!v) continue;
+        let nr = r + dy; if (wrap) nr = (nr + W.rows) % W.rows; if (nr < 0 || nr >= W.rows) continue;
+        const len = lenOf(W, nr); let nc = c + dx; if (wrap) nc = (nc + len) % len;
+        if (nc < 0 || nc >= len) continue;
+        arr[nr * W.cols + nc] = v;
+      }
+    }
+  });
+}
+$('mvL').onclick = () => shiftPic(-1, 0); $('mvR').onclick = () => shiftPic(1, 0);
+$('mvU').onclick = () => shiftPic(0, -1); $('mvD').onclick = () => shiftPic(0, 1);
 
 /* ── Group size ──────────────────────────────────────────────────────────── */
 function reshape(nc, nr) {
