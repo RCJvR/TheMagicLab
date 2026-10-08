@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
+  <link rel="stylesheet" href="assets/teacher-admin-tools.css">
   <style>
     /* ══════════════════════════════════════════════════════════════════════
        Teacher dashboard.
@@ -106,7 +107,7 @@
     .tab-bar{
       display:flex;gap:4px;
       background:rgba(0,0,0,0.30);border-radius:var(--radius-sm);padding:4px;
-      margin-bottom:36px;width:fit-content;
+      margin-bottom:36px;width:fit-content;max-width:100%;flex-wrap:wrap;
     }
     .tab-btn{
       padding:9px 22px;border-radius:var(--radius-xs);border:none;cursor:pointer;
@@ -807,7 +808,9 @@
       <button class="tab-btn" data-tab="assignments" onclick="switchTab('assignments', this)"><i data-lucide="file-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Assignments</button>
       <button class="tab-btn" data-tab="livegame" onclick="switchTab('livegame', this)"><i data-lucide="trophy" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>The Arena</button>
       <button class="tab-btn" data-tab="training" onclick="switchTab('training', this)"><i data-lucide="book-open" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Teacher Training</button>
-      <button class="tab-btn" data-tab="admin" onclick="switchTab('admin', this)"><i data-lucide="wand-2" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Admin Tools</button>
+      <button class="tab-btn" data-tab="reports" onclick="switchTab('reports', this)"><i data-lucide="message-square-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Report Comments</button>
+      <button class="tab-btn" data-tab="rubric" onclick="switchTab('rubric', this)"><i data-lucide="table" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Rubric Builder</button>
+      <button class="tab-btn" data-tab="paper" onclick="switchTab('paper', this)"><i data-lucide="file-pen-line" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Paper Assembler</button>
       <button class="tab-btn" data-tab="planning" onclick="switchTab('planning', this)"><i data-lucide="calendar-range" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Lesson Planning</button>
       <button class="tab-btn" data-tab="help" onclick="switchTab('help', this)"><i data-lucide="message-circle" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Help Requests<span id="help-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
     </div>
@@ -956,23 +959,127 @@
     </div><!-- /tab-livegame -->
 
 
-    <!-- ═══ TAB: ADMIN TOOLS ═══ -->
-    <div class="tab-panel" id="tab-admin">
+    <!-- ═══ TAB: REPORT COMMENTS ═══ -->
+    <div class="tab-panel" id="tab-reports">
       <div class="page-header">
-        <h1>Admin Tools</h1>
-        <p>Teacher paperwork, turned into a few clicks. Everything you type stays in this browser.</p>
+        <h1>Report Comments</h1>
+        <p>Write a comment in the CAPS achievement bands. Everything you type stays in this browser.</p>
       </div>
-      <div class="training-intro">
-        <div class="training-intro-icon" style="color:var(--accent-3);"><i data-lucide="wand-2" style="width:32px;height:32px;"></i></div>
-        <div class="training-intro-text">
-          <div class="training-intro-title">Admin Alchemist</div>
-          <div class="training-intro-body">Report comments in the CAPS achievement bands, marking rubrics, and question papers with a running mark total and a memo.</div>
-          <a href="admin-alchemist.html" class="cta-btn" style="display:inline-block;text-decoration:none;margin-top:16px;">Open Admin Alchemist</a>
-        </div>
+    <div class="aa-section-title">Write a report comment</div>
+    <div class="aa-section-sub">Pick the learner's CAPS achievement level, tick what applies, and get a comment you can edit. Press Regenerate for different wording.</div>
+    <div class="aa-card">
+      <div class="aa-row">
+        <div><label class="aa-lbl" for="r-name">Learner's first name</label><input class="aa-in" id="r-name" placeholder="e.g. Thandi"></div>
+        <div><label class="aa-lbl" for="r-pron">Pronouns</label>
+          <select class="aa-in" id="r-pron"><option value="they">they / them</option><option value="she">she / her</option><option value="he">he / him</option></select></div>
+        <div><label class="aa-lbl" for="r-subject">Subject (optional)</label><input class="aa-in" id="r-subject" placeholder="e.g. Mathematics"></div>
       </div>
-    </div><!-- /tab-admin -->
+      <div class="aa-row">
+        <div><label class="aa-lbl" for="r-level">CAPS achievement level</label>
+          <select class="aa-in" id="r-level">
+            <option value="7">7 · Outstanding (80–100%)</option>
+            <option value="6">6 · Meritorious (70–79%)</option>
+            <option value="5" selected>5 · Substantial (60–69%)</option>
+            <option value="4">4 · Adequate (50–59%)</option>
+            <option value="3">3 · Moderate (40–49%)</option>
+            <option value="2">2 · Elementary (30–39%)</option>
+            <option value="1">1 · Not achieved (0–29%)</option>
+          </select></div>
+        <div><label class="aa-lbl" for="r-trend">Compared with last term</label>
+          <select class="aa-in" id="r-trend"><option value="">No comparison</option><option value="up">Improved</option><option value="same">Consistent</option><option value="down">Dropped</option></select></div>
+      </div>
+      <label class="aa-lbl">Strengths</label>
+      <div class="aa-chips" id="r-strengths"></div>
+      <label class="aa-lbl">Areas to work on</label>
+      <div class="aa-chips" id="r-needs"></div>
+      <div class="aa-actions">
+        <button class="aa-btn aa-btn--primary" id="r-gen">Generate comment</button>
+        <button class="aa-btn" id="r-regen">Regenerate</button>
+      </div>
+      <label class="aa-lbl" for="r-out" style="margin-top:16px">Comment (edit freely)</label>
+      <textarea class="aa-in" id="r-out" rows="5"></textarea>
+      <div class="aa-actions">
+        <button class="aa-btn aa-btn--sm" id="r-copy">Copy</button>
+        <button class="aa-btn aa-btn--sm" id="r-add">Add to class list</button>
+      </div>
+    </div>
+    <div class="aa-card"><div id="r-list"></div>
+      <div class="aa-actions"><button class="aa-btn aa-btn--sm" id="r-copyall">Copy all</button><button class="aa-btn aa-btn--sm" id="r-clear">Clear list</button></div></div>
+    </div><!-- /tab-reports -->
 
-    <!-- ═══ TAB: TRAINING ═══ -->
+    <!-- ═══ TAB: RUBRIC BUILDER ═══ -->
+    <div class="tab-panel" id="tab-rubric">
+      <div class="page-header">
+        <h1>Rubric Builder</h1>
+        <p>Name the task, set the levels and describe each one. Totals work themselves out.</p>
+      </div>
+    <div class="aa-section-title">Build a rubric</div>
+    <div class="aa-section-sub">Name the task, set the performance levels, then describe what each level looks like for each criterion. Total marks work themselves out.</div>
+    <div class="aa-card">
+      <div class="aa-row">
+        <div><label class="aa-lbl" for="b-title">Task title</label><input class="aa-in" id="b-title" placeholder="e.g. Gr 9 Science practical report"></div>
+        <div><label class="aa-lbl" for="b-start">Start from</label>
+          <select class="aa-in" id="b-start"><option value="">Blank</option><option value="presentation">Oral presentation</option><option value="practical">Practical report</option><option value="project">Project / PAT</option></select></div>
+        <div><label class="aa-lbl" for="b-levels">Levels</label>
+          <select class="aa-in" id="b-levels"><option>3</option><option selected>4</option><option>5</option></select></div>
+      </div>
+      <div class="aa-tbl-wrap"><table class="aa-grid" id="b-table"></table></div>
+      <div class="aa-actions">
+        <button class="aa-btn aa-btn--sm" id="b-addrow">+ Criterion</button>
+        <span class="aa-total" id="b-total"></span>
+      </div>
+      <div class="aa-actions">
+        <button class="aa-btn aa-btn--primary" id="b-print">Print rubric</button>
+        <button class="aa-btn" id="b-csv">Copy for Excel</button>
+        <button class="aa-btn" id="b-reset">Clear</button>
+      </div>
+    </div>
+    </div><!-- /tab-rubric -->
+
+    <!-- ═══ TAB: PAPER ASSEMBLER ═══ -->
+    <div class="tab-panel" id="tab-paper">
+      <div class="page-header">
+        <h1>Paper Assembler</h1>
+        <p>Add questions with marks and cognitive levels, check the total, then print the paper and memo.</p>
+      </div>
+    <div class="aa-section-title">Assemble a question paper</div>
+    <div class="aa-section-sub">Add questions with their marks and cognitive level. The total checks itself against your target, and you can print the paper and a separate memo.</div>
+    <div class="aa-card">
+      <div class="aa-row">
+        <div><label class="aa-lbl" for="p-school">School</label><input class="aa-in" id="p-school" placeholder="School name"></div>
+        <div><label class="aa-lbl" for="p-subject">Subject &amp; grade</label><input class="aa-in" id="p-subject" placeholder="e.g. Mathematics Gr 8"></div>
+        <div><label class="aa-lbl" for="p-title">Assessment</label><input class="aa-in" id="p-title" placeholder="e.g. Term 2 Test"></div>
+      </div>
+      <div class="aa-row">
+        <div><label class="aa-lbl" for="p-target">Target marks</label><input class="aa-in" id="p-target" type="number" min="1" value="50"></div>
+        <div><label class="aa-lbl" for="p-time">Time</label><input class="aa-in" id="p-time" placeholder="e.g. 1 hour"></div>
+        <div><label class="aa-lbl" for="p-inst">Instructions</label><input class="aa-in" id="p-inst" placeholder="e.g. Answer all questions. Show all working."></div>
+      </div>
+    </div>
+
+    <div class="aa-card">
+      <div class="aa-row">
+        <div style="flex:3 1 280px"><label class="aa-lbl" for="q-text">Question</label><textarea class="aa-in" id="q-text" rows="2"></textarea></div>
+        <div><label class="aa-lbl" for="q-marks">Marks</label><input class="aa-in" id="q-marks" type="number" min="1" value="2"></div>
+        <div><label class="aa-lbl" for="q-level">Cognitive level</label>
+          <select class="aa-in" id="q-level"><option>Knowledge</option><option>Routine procedures</option><option>Complex procedures</option><option>Problem solving</option></select></div>
+      </div>
+      <label class="aa-lbl" for="q-memo">Memo / marking guidance</label>
+      <textarea class="aa-in" id="q-memo" rows="2"></textarea>
+      <div class="aa-actions"><button class="aa-btn aa-btn--primary" id="q-add">Add question</button></div>
+    </div>
+
+    <div class="aa-actions" style="margin-top:0;margin-bottom:12px"><span class="aa-total" id="p-total"></span></div>
+    <div class="aa-spread" id="p-spread"></div>
+    <div class="aa-card" id="p-list"></div>
+    <div class="aa-actions">
+      <button class="aa-btn aa-btn--primary" id="p-print">Print paper</button>
+      <button class="aa-btn" id="p-print-memo">Print memo</button>
+      <button class="aa-btn" id="p-reset">Clear paper</button>
+    </div>
+    </div><!-- /tab-paper -->
+
+
     <div class="tab-panel" id="tab-training">
 
       <div class="page-header">
@@ -1226,6 +1333,7 @@
 
 </main>
 
+<div id="print-area" aria-hidden="true"></div>
 <script src="auth.js"></script>
 <script defer src="require-auth.js"></script>
 <script src="progress.js"></script>
@@ -1238,6 +1346,7 @@
 <script src="auth-modal.js"></script>
 
 <script src="assets/dashboard-teacher.js"></script>
+<script src="assets/teacher-admin-tools.js"></script>
 
   <script src="/contact-button.js" defer></script>
 </body>
