@@ -791,7 +791,14 @@ function shape(name, live) {
   else if (name === 'circle') g.ellipse(cx, cy, Math.min(w, h) * .45, Math.min(w, h) * .45, 0, 0, 7);
   else if (name === 'diamond') { g.moveTo(cx, cy - s); g.lineTo(cx + s, cy); g.lineTo(cx, cy + s); g.lineTo(cx - s, cy); g.closePath(); }
   else if (name === 'star') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? s * .42 : s * 1.05; g[i ? 'lineTo' : 'moveTo'](cx + r * Math.cos(a), cy + r * Math.sin(a) + s * .05); } g.closePath(); }
-  else if (name === 'heart') { g.moveTo(cx, cy + s * .85); g.bezierCurveTo(cx - s * 1.6, cy + s * .1, cx - s * .9, cy - s, cx, cy - s * .35); g.bezierCurveTo(cx + s * .9, cy - s, cx + s * 1.6, cy + s * .1, cx, cy + s * .85); }
+  else if (name === 'heart') {       // the classic heart curve, which is about as tall as it is wide
+    const k = s * 2 / 32;
+    for (let i = 0; i <= 120; i++) {
+      const t = i / 120 * Math.PI * 2, x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      g[i ? 'lineTo' : 'moveTo'](cx + x * k, cy - (y + 2.5) * k);
+    }
+    g.closePath();
+  }
   else if (name === 'arrow') { g.moveTo(cx - s * 1.1, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .28); g.lineTo(cx + s * .15, cy - s * .8); g.lineTo(cx + s * 1.1, cy); g.lineTo(cx + s * .15, cy + s * .8); g.lineTo(cx + s * .15, cy + s * .28); g.lineTo(cx - s * 1.1, cy + s * .28); g.closePath(); }
   if (custom) { /* already drawn */ }
   else if (name !== 'smiley') g.fill();
