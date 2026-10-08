@@ -45,24 +45,31 @@ nav {
 }
 .nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
 
-main { width: 100%; max-width: 1280px; margin-inline: auto; padding: clamp(28px,4vw,44px) var(--gutter) var(--space-9); }
-h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px,4vw,44px); letter-spacing: -0.03em; color: var(--paper); }
-.lede { margin-top: 8px; max-width: 62ch; color: var(--text-2); font-size: 16px; line-height: 1.55; }
+main { width: 100%; max-width: 1280px; margin-inline: auto; padding: clamp(12px,1.6vw,18px) var(--gutter) var(--space-9); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px,2.6vw,30px); letter-spacing: -0.03em; color: var(--paper); }
+.titlebar { position: relative; display: flex; align-items: center; gap: 10px; }
+.info { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); font: 700 14px var(--font-display); cursor: pointer; line-height: 1; }
+.info:hover, .info[aria-expanded="true"] { color: var(--paper); border-color: var(--paper); }
+.info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tip { position: absolute; top: 100%; left: 0; margin-top: 8px; width: min(520px, 90vw); padding: 12px 14px; background: var(--ink-800); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); color: var(--text); font-size: 14px; line-height: 1.55; z-index: 50; box-shadow: var(--elevation-md); }
+.tip[hidden] { display: none; }
 
-.layout { margin-top: var(--space-6); display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: var(--space-6); align-items: start; }
+.layout { margin-top: var(--space-3); display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: var(--space-6); align-items: start; }
 @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
 
 /* ── Stage ──────────────────────────────────────────────────────────────── */
-.stage-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.stage-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: var(--space-2); }
 .stage-bar .grow { flex: 1; }
-.stage-wrap { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; justify-content: center; }
+.stage-bar .btn { padding: 8px 10px; font-size: 12.5px; }
+.stage-bar .titlebar { margin-right: 4px; }
+.stage-wrap { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 6px; display: flex; justify-content: center; }
 #grid { display: block; touch-action: none; border-radius: var(--radius-xs); cursor: crosshair; }
 #grid:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.readout { margin-top: var(--space-3); min-height: 22px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); }
+.readout { margin-top: 4px; min-height: 20px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text-2); }
 .readout b { color: var(--paper); font-weight: 600; }
 
 /* ── Frames ─────────────────────────────────────────────────────────────── */
-.frames { margin-top: var(--space-5); }
+.frames { margin-top: 4px; }
 .frames-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
 .frames-head h2 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--paper); margin-right: auto; }
 .strip { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); }
@@ -144,6 +151,11 @@ input::placeholder { color: var(--text-3); }
 .chip { display: inline-block; margin: 0 4px 3px 0; padding: 2px 6px; border: 1.5px solid #000; border-radius: 3px; font-weight: 700; font-size: 11px; }
 .card.big .chip { font-size: 18px; padding: 4px 10px; }
 
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.libbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; }
+.libbar .nameBox { flex: 1 1 130px; max-width: 150px; }
+.libbar .btn { padding: 8px 10px; font-size: 12.5px; }
+.libbar .spacer { flex: 1 1 0; }
 .libhead { display:flex; flex-wrap:wrap; gap:var(--space-2); align-items:flex-end; margin-bottom:var(--space-3); }
 .libhead label.f { flex:1 1 200px; max-width:320px; }
 .libhead h2 { font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--paper); width:100%; }
@@ -174,20 +186,24 @@ input::placeholder { color: var(--text-3); }
 </nav>
 
 <main id="ml-main" tabindex="-1">
-  <h1>Mosaic Mage</h1>
-  <p class="lede">Plan a flash: learners in a block, each one a pixel in one of two colours. Set the size of the block and the colours, click the grid to flip a learner between them, then save the picture under a name. Click through your saved pictures to run the show, and print a run sheet and a card for every learner.</p>
+
 
   <div class="layout">
     <section aria-label="Flash grid">
       <div class="stage-bar">
+      <div class="titlebar">
+        <h1>Mosaic Mage</h1>
+        <button type="button" class="info" id="helpBtn" aria-expanded="false" aria-controls="helpTip" aria-label="What is Mosaic Mage?">i</button>
+        <div class="tip" id="helpTip" role="tooltip" hidden>Plan a flash: learners in a block, each one a pixel in one of two colours. Set the size of the block and the colours, click the grid to flip a learner between them, then save the picture under a name. Click through your saved pictures to run the show, and print a run sheet and a card for every learner.</div>
+      </div>
         <button class="btn" id="undoBtn" type="button"><i data-lucide="undo-2"></i>Undo</button>
-        <button class="btn" id="clearBtn" type="button">All colour 2</button>
-        <button class="btn" id="fillBtn" type="button">All colour 1</button>
-        <button class="btn" id="invertBtn" type="button">Invert</button>
-        <button class="btn" id="mirrorBtn" type="button">Mirror ↔</button>
-        <button class="btn" id="flipBtn" type="button">Flip ↕</button>
-        <button class="btn" id="namesBtn" type="button" aria-pressed="true">Seat names: On</button>
-        <button class="btn" id="twBtn" type="button" aria-pressed="false">Twinkle brush: Off</button>
+        <button class="btn" id="clearBtn" type="button" title="Set every learner to colour 2">Clear</button>
+        <button class="btn" id="fillBtn" type="button" title="Set every learner to colour 1">Fill</button>
+        <button class="btn" id="invertBtn" type="button" title="Swap the two colours">Invert</button>
+        <button class="btn" id="mirrorBtn" type="button" title="Mirror left to right">Mirror ↔</button>
+        <button class="btn" id="flipBtn" type="button" title="Flip top to bottom">Flip ↕</button>
+        <button class="btn" id="namesBtn" type="button" aria-pressed="true" title="Show or hide seat names on the grid">Names: On</button>
+        <button class="btn" id="twBtn" type="button" aria-pressed="false" title="Click or drag cells to make them twinkle">Twinkle: Off</button>
       </div>
       <div class="stage-wrap" id="stageWrap">
         <canvas id="grid" tabindex="0" role="application" aria-label="Flash grid. Use arrow keys to move and space to switch a learner between the two colours."></canvas>
@@ -195,14 +211,13 @@ input::placeholder { color: var(--text-3); }
       <div class="readout" id="readout" aria-live="polite"></div>
 
       <div class="frames">
-        <div class="libhead">
-          <h2>Saved pictures</h2>
-          <label class="f">Picture name<input type="text" id="nameIn" maxlength="40" placeholder="e.g. School heart"></label>
-          <button class="btn primary" id="saveImg" type="button"><i data-lucide="save"></i>Save picture</button>
+        <h2 class="sr">Saved pictures</h2>
+        <div class="libbar">
+          <div class="nameBox"><input type="text" id="nameIn" maxlength="40" aria-label="Picture name" placeholder="Picture name, e.g. School heart"></div>
+          <button class="btn primary" id="saveImg" type="button" aria-label="Save picture" title="Save this picture under the name in the box"><i data-lucide="save"></i>Save</button>
           <button class="btn" id="newImg" type="button"><i data-lucide="plus"></i>New blank</button>
-        </div>
-        <div class="row" style="margin-bottom:var(--space-3)">
-          <button class="btn" id="anDelete" type="button" style="margin-right:var(--space-4)"><i data-lucide="trash-2"></i>Delete all frames</button>
+          <span class="spacer"></span>
+          <button class="btn" id="anDelete" type="button" style="margin-right:var(--space-3)"><i data-lucide="trash-2"></i>Delete all frames</button>
           <button class="btn" id="prevImg" type="button">← Previous</button>
           <button class="btn" id="nextImg" type="button">Next →</button>
           <button class="btn primary" id="presentBtn" type="button"><i data-lucide="play"></i>Present all</button>
@@ -487,9 +502,9 @@ function load() { try { const r = localStorage.getItem(KEY); if (r) { restore(JS
 
 /* ── Drawing ─────────────────────────────────────────────────────────────── */
 function drawGrid(canvas, p, maxW, maxH, labels) {
-  const dpr = window.devicePixelRatio || 1, lm = labels ? 2 : 0;
+  const dpr = window.devicePixelRatio || 1, lm = labels ? 1.4 : 0;
   let cs = Math.floor(Math.min(maxW / (p.cols + lm), maxH / (p.rows + lm)));
-  cs = Math.max(4, Math.min(cs, 64));
+  cs = Math.max(labels ? 4 : 2, Math.min(cs, 64));
   const w = cs * (p.cols + lm), h = cs * (p.rows + lm);
   canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
   canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
@@ -521,7 +536,7 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
   return { cs, ox, oy };
 }
 function redrawStage() {
-  layout = drawGrid($('grid'), override ? { ...W, cells: override, hideTw: true } : W, $('stageWrap').clientWidth - 32, Math.max(280, window.innerHeight * 0.68), true);
+  layout = drawGrid($('grid'), override ? { ...W, cells: override, hideTw: true } : W, $('stageWrap').clientWidth - 14, Math.max(280, window.innerHeight * 0.68), true);
   if (document.activeElement === $('grid')) {
     const g = $('grid').getContext('2d'); g.strokeStyle = '#eda13c'; g.lineWidth = 2.5;
     g.strokeRect(layout.ox + cursor.c * layout.cs + 1, layout.oy + cursor.r * layout.cs + 1, layout.cs - 2, layout.cs - 2);
@@ -543,7 +558,7 @@ function renderStrip() {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'frame';
     if (i === loaded) b.setAttribute('aria-current', 'true');
     b.setAttribute('aria-label', 'Open ' + (p.name || 'Picture ' + (i + 1)) + (i === loaded ? ' (open now)' : ''));
-    const cv = document.createElement('canvas'); drawGrid(cv, p, 120, 80, false);
+    const cv = document.createElement('canvas'); drawGrid(cv, p, 72, 72, false);
     const sp = document.createElement('span'); sp.textContent = (i + 1) + '. ' + (p.name || 'Untitled');
     b.append(cv, sp); b.onclick = () => openPic(i);
     const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '×';
@@ -725,7 +740,7 @@ $('defCols').onchange = setDefaults; $('defRows').onchange = setDefaults;
 $('defUse').onclick = () => { $('defCols').value = W.cols; $('defRows').value = W.rows; setDefaults(); updateReadout(`New blanks will now start at ${defCols} × ${defRows}.`); };
 function nmSync() {
   $('nmStart').value = nm.start; $('nmShow').checked = nm.show;
-  $('namesBtn').setAttribute('aria-pressed', nm.show); $('namesBtn').textContent = 'Seat names: ' + (nm.show ? 'On' : 'Off');
+  $('namesBtn').setAttribute('aria-pressed', nm.show); $('namesBtn').textContent = 'Names: ' + (nm.show ? 'On' : 'Off');
   const first = seatNames(W).find(x => x);
   $('nmHint').textContent = first ? `Rows ${letters(0)}–${letters(W.rows - 1)}, seats 1–${W.cols} along each row, with ${nm.start === 'br' ? 'A1 at the bottom right' : nm.start === 'bl' ? 'A1 at the bottom left' : nm.start === 'tr' ? 'A1 at the top right' : 'A1 at the top left'}. Printed on each learner card and in the run sheet.` : '';
 }
@@ -1279,12 +1294,23 @@ $('weight').addEventListener('input', () => anUpdate());
 
 /* Twinkle brush */
 function twSync() {
-  $('twBtn').setAttribute('aria-pressed', twBrush); $('twBtn').textContent = 'Twinkle brush: ' + (twBrush ? 'On' : 'Off');
+  $('twBtn').setAttribute('aria-pressed', twBrush); $('twBtn').textContent = 'Twinkle: ' + (twBrush ? 'On' : 'Off');
   $('grid').style.cursor = twBrush ? 'cell' : 'crosshair';
 }
 $('twBtn').onclick = () => { twBrush = !twBrush; twSync(); updateReadout(twBrush ? 'Twinkle brush on: click or drag cells to make them twinkle. Click a twinkling cell to turn it off.' : ''); };
 $('twRate').onchange = () => { twRate = +$('twRate').value; };
 $('twClear').onclick = () => mutate(() => W.tw.fill(0));
+
+/* Help tooltip: shows on hover or focus, toggles on click or tap, closes with Esc */
+const helpBtn = $('helpBtn'), helpTip = $('helpTip');
+const showHelp = on => { helpTip.hidden = !on; helpBtn.setAttribute('aria-expanded', on); };
+helpBtn.onmouseenter = () => showHelp(true);
+helpBtn.onfocus = () => showHelp(true);
+helpBtn.onclick = () => showHelp(true);
+helpBtn.parentElement.onmouseleave = () => { if (document.activeElement !== helpBtn) showHelp(false); };
+helpBtn.onblur = () => showHelp(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') showHelp(false); });
+document.addEventListener('click', e => { if (!helpTip.hidden && !e.target.closest('.titlebar')) showHelp(false); });
 
 /* ── Control tabs ────────────────────────────────────────────────────────── */
 const tabBtns = [...document.querySelectorAll('.tabs [role=tab]')];
