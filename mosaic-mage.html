@@ -759,9 +759,10 @@ function dilate(f, extra) {          // thicken every colour-1 stroke by `extra`
   }
 }
 function finish(live) { if (live) { redrawStage(); updateReadout(); } else refresh(); }
-function applyGray(gray, thr, invert, live) {
+function applyGray(gray, thr, invert, live, post) {
   if (!live) snapshot();
   const f = W.cells; for (let i = 0; i < f.length; i++) f[i] = ((gray[i] < thr) !== invert) ? 1 : 0;
+  if (post) post(f);
   dilate(f, weight() - 1); finish(live);
 }
 function otsu(gray) {
@@ -770,6 +771,13 @@ function otsu(gray) {
   let sb = 0, wb = 0, best = 0, t = 128;
   for (let i = 0; i < 256; i++) { wb += h[i]; if (!wb) continue; const wf = tot - wb; if (!wf) break; sb += i * h[i]; const d = sb / wb - (sum - sb) / wf, v = wb * wf * d * d; if (v > best) { best = v; t = i; } }
   return t / 255;
+}
+/* The heart's notch looks better with its lowest cell filled in (R12 on a 23-wide grid). */
+function heartTweak(f) {
+  if (W.cols % 2 === 0) return;
+  const c = (W.cols - 1) / 2; let r0 = 0;
+  while (r0 < W.rows && !f[r0 * W.cols + c]) r0++;
+  if (r0 > 0 && r0 < W.rows && f[(r0 - 1) * W.cols + c - 1] && f[(r0 - 1) * W.cols + c + 1]) f[(r0 - 1) * W.cols + c] = 1;
 }
 function shape(name, live) {
   const [c, g] = hiCanvas(), w = c.width, h = c.height, cx = w / 2, cy = h / 2, s = Math.min(w, h) * 0.46;
@@ -807,7 +815,7 @@ function shape(name, live) {
     g.beginPath(); g.arc(cx - s * .35, cy - s * .25, s * .13, 0, 7); g.arc(cx + s * .35, cy - s * .25, s * .13, 0, 7); g.fill();
     g.beginPath(); g.arc(cx, cy + s * .05, s * .55, .15 * Math.PI, .85 * Math.PI); g.lineWidth = s * .15; g.lineCap = 'round'; g.stroke();
   }
-  dropSrc(); mk = { kind: 'shape', name }; applyGray(grayOf(c), 0.5, false, live);
+  dropSrc(); mk = { kind: 'shape', name }; applyGray(grayOf(c), 0.5, false, live, name === 'heart' ? heartTweak : null);
 }
 document.querySelectorAll('[data-shape]').forEach(b => b.onclick = () => shape(b.dataset.shape));
 /* Text uses a hand-built 5 × 7 pixel font, drawn at the largest whole-number scale that fits, so letters stay
