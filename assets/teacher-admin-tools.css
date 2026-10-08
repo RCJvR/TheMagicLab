@@ -67,6 +67,7 @@ table.aa-grid textarea.aa-in { min-height: 70px; }
    Modelled on a write-on exam paper: Arial, generous leading, marks in the
    right margin, ruled answer lines, running header and page numbers. */
 #print-area { display: none; }
+@page aal { size: A4 landscape; margin: 12mm; }
 @page aa { size: A4; margin: 22mm 22mm 20mm 22mm; }
 @page aa {
   @top-left { content: var(--aa-hl, ""); font: 12pt Arial, Helvetica, sans-serif; color: #000; vertical-align: bottom; padding-bottom: 6mm; }
@@ -169,3 +170,83 @@ table.aa-grid textarea.aa-in { min-height: 70px; }
 .aa-spread .aa-band { border-color: var(--line-hard); color: var(--paper); font-weight: 700; }
 
 .aa-file-actions { margin-top: var(--space-3); }
+
+/* ── shared: dialog, picker, groups, timer, log, tracker ── */
+.aa-btn--lg { padding: 14px 26px; font-size: 16px; }
+.aa-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.aa-c { text-align: center; }
+.aa-pick label { display: flex; gap: 6px; align-items: flex-start; cursor: pointer; font-size: 13px; line-height: 1.45; }
+.aa-pick input { margin-top: 3px; flex: 0 0 auto; }
+.aa-dlg { border: 1px solid var(--line-hard); border-radius: var(--radius-md); background: var(--ink-850); color: var(--text); padding: 0; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; }
+.aa-dlg::backdrop { background: rgba(0,0,0,0.6); }
+.aa-dlg-in { padding: var(--space-5); }
+.aa-dlg-h { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: var(--space-2); color: var(--paper); }
+.aa-privacy { margin-bottom: var(--space-5); padding: var(--space-4); border: 1px solid var(--line-hard); border-left: 3px solid var(--warn); border-radius: var(--radius-sm); font-size: 13.5px; line-height: 1.65; color: var(--text-2); }
+.aa-privacy b { color: var(--paper); }
+.aa-pick-stage { display: flex; align-items: center; justify-content: center; min-height: 190px; margin: var(--space-4) 0; border: 1px dashed var(--line-hard); border-radius: var(--radius-md); padding: var(--space-4); }
+.aa-pick-name { font-family: var(--font-display); font-weight: 900; font-size: clamp(34px, 7vw, 76px); letter-spacing: -0.03em; color: var(--paper); text-align: center; overflow-wrap: anywhere; }
+.aa-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
+.aa-group { padding: var(--space-3) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; }
+.aa-group-h { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.aa-tm-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 260px; margin-bottom: var(--space-4); padding: var(--space-5); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--ink-900); }
+.aa-tm-stage:fullscreen { background: #000; min-height: 100vh; }
+.aa-tm-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 3vw, 36px); color: var(--text-2); min-height: 1.3em; }
+.aa-tm-display { font-family: var(--font-mono); font-weight: 600; font-size: clamp(64px, 17vw, 220px); line-height: 1.05; color: var(--paper); font-variant-numeric: tabular-nums; }
+.aa-tm-stage.aa-tm-done { border-color: var(--crit); }
+.aa-tm-stage.aa-tm-done .aa-tm-display { color: var(--crit); }
+.aa-att-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid var(--line-soft); }
+.aa-att-name { font-weight: 700; color: var(--paper); font-size: 14px; }
+.aa-att-opts { display: flex; gap: 6px; }
+.aa-chip { position: relative; display: inline-block; }
+.aa-chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.aa-chip span { display: inline-block; padding: 7px 14px; border-radius: var(--radius-full); border: 1px solid var(--line); color: var(--text-2); font-size: 13px; font-weight: 600; }
+.aa-chip input:checked + span { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.aa-chip--A input:checked + span { background: var(--crit); border-color: var(--crit); color: #fff; }
+.aa-chip--L input:checked + span { background: var(--warn); border-color: var(--warn); color: var(--ink-900); }
+.aa-chip input:focus-visible + span { outline: 2px solid var(--paper); outline-offset: 2px; }
+.aa-low td { color: var(--warn); }
+.aa-up { margin-bottom: var(--space-3); padding: var(--space-3) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 13.5px; color: var(--text-2); }
+.aa-up--late { border-color: rgba(245,178,61,0.5); color: var(--warn); }
+.aa-num-in { width: 84px; }
+table.aa-tk td { vertical-align: middle; }
+
+@media print {
+  #print-area .aa-pr-h { font-size: 1.5em; margin: 0 0 2mm; }
+  #print-area .aa-pr-sub { margin-bottom: 5mm; }
+  #print-area .aa-pr-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+  #print-area .aa-pr-group { border: 0.75pt solid #333; padding: 3mm; break-inside: avoid; }
+  #print-area .aa-pr-gh { font-weight: 700; margin-bottom: 1mm; }
+}
+
+/* ── timetable planner ── */
+.aa-issue { padding: 6px 0; font-size: 13.5px; line-height: 1.55; color: var(--text-2); border-bottom: 1px solid var(--line-soft); }
+.aa-issue:last-child { border-bottom: 0; }
+.aa-issue--error { color: var(--crit); }
+.aa-issue--warn { color: var(--warn); }
+table.aa-tt { width: 100%; min-width: 640px; border-collapse: collapse; table-layout: fixed; font-size: 12.5px; }
+table.aa-tt th, table.aa-tt td { border: 1px solid var(--line); padding: 4px 6px; vertical-align: top; text-align: left; }
+table.aa-tt th { background: var(--ink-850); color: var(--paper); font-weight: 700; }
+table.aa-tt .aa-tt-p { width: 84px; }
+.aa-tt-time { font-family: var(--font-mono); font-size: 10.5px; font-weight: 400; color: var(--text-3); }
+.aa-tt-brk th, .aa-tt-brkcell { background: rgba(255,255,255,0.03); color: var(--text-3); font-size: 11px; text-align: center; }
+table.aa-tt td { height: 52px; }
+.aa-tt-u { border-left: 4px solid var(--line-hard) !important; cursor: pointer; }
+.aa-tt-s { font-weight: 800; color: var(--paper); }
+.aa-tt-m { color: var(--text-2); font-size: 11.5px; }
+.aa-tt-lock { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+.aa-tt-sel { outline: 2px solid var(--paper); outline-offset: -2px; background: rgba(255,255,255,0.08); }
+.aa-tt-ok { background: rgba(74,207,127,0.16); cursor: pointer; }
+.aa-tt-ok:hover, .aa-tt-ok:focus-visible { background: rgba(74,207,127,0.3); outline: 2px solid var(--good); outline-offset: -2px; }
+.aa-tt-selbar { border-color: var(--line-hard); }
+@media print {
+  #print-area .aa-tt-page--next { break-before: page; }
+  #print-area table.aa-tt { table-layout: fixed; }
+  #print-area table.aa-tt th, #print-area table.aa-tt td { border: 0.75pt solid #000; padding: 1.5mm 2mm; background: none; color: #000; font-size: 0.95em; }
+  #print-area table.aa-tt th { background: #dbe2f3; }
+  #print-area table.aa-tt td { height: 14mm; }
+  #print-area .aa-tt-brk th, #print-area .aa-tt-brkcell { background: #eee; color: #000; text-align: center; }
+  #print-area .aa-tt-s { color: #000; font-weight: 700; }
+  #print-area .aa-tt-m { color: #000; font-size: 0.85em; }
+  #print-area .aa-tt-u { border-left: 0.75pt solid #000 !important; }
+  #print-area .aa-tt-time { color: #000; font-size: 0.75em; }
+}

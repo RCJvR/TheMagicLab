@@ -808,9 +808,13 @@
       <button class="tab-btn" data-tab="assignments" onclick="switchTab('assignments', this)"><i data-lucide="file-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Assignments</button>
       <button class="tab-btn" data-tab="livegame" onclick="switchTab('livegame', this)"><i data-lucide="trophy" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>The Arena</button>
       <button class="tab-btn" data-tab="training" onclick="switchTab('training', this)"><i data-lucide="book-open" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Teacher Training</button>
-      <button class="tab-btn" data-tab="reports" onclick="switchTab('reports', this)"><i data-lucide="message-square-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Report Comments</button>
+      <button class="tab-btn" data-tab="reports" onclick="switchTab('reports', this)"><i data-lucide="message-square" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Report Comments</button>
       <button class="tab-btn" data-tab="rubric" onclick="switchTab('rubric', this)"><i data-lucide="table" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Rubric Builder</button>
-      <button class="tab-btn" data-tab="paper" onclick="switchTab('paper', this)"><i data-lucide="file-pen-line" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Paper Assembler</button>
+      <button class="tab-btn" data-tab="paper" onclick="switchTab('paper', this)"><i data-lucide="file-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Paper Assembler</button>
+      <button class="tab-btn" data-tab="classroom" onclick="switchTab('classroom', this)"><i data-lucide="shuffle" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Classroom Tools</button>
+      <button class="tab-btn" data-tab="log" onclick="switchTab('log', this)"><i data-lucide="clipboard-list" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Class Log</button>
+      <button class="tab-btn" data-tab="tracker" onclick="switchTab('tracker', this)"><i data-lucide="calendar-check" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Assessment Tracker</button>
+      <button class="tab-btn" data-tab="timetable" onclick="switchTab('timetable', this)"><i data-lucide="layout-grid" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Timetable Planner</button>
       <button class="tab-btn" data-tab="planning" onclick="switchTab('planning', this)"><i data-lucide="calendar-range" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Lesson Planning</button>
       <button class="tab-btn" data-tab="help" onclick="switchTab('help', this)"><i data-lucide="message-circle" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Help Requests<span id="help-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
     </div>
@@ -1015,6 +1019,11 @@
         <h1>Rubric Builder</h1>
         <p>Name the task, set the levels and describe each one. Totals work themselves out.</p>
       </div>
+    <div class="aa-subtabs" role="tablist" aria-label="Rubric Builder">
+      <button class="aa-subtab active" type="button" role="tab" data-sub="build">Build</button>
+      <button class="aa-subtab" type="button" role="tab" data-sub="mark">Mark a class</button>
+    </div>
+    <div class="aa-subpanel" id="rub-build" role="tabpanel">
     <div class="aa-section-title">Build a rubric</div>
     <div class="aa-section-sub">Name the task, set the performance levels, then describe what each level looks like for each criterion. Total marks work themselves out.</div>
     <div class="aa-card">
@@ -1042,6 +1051,36 @@
       </div>
       <div class="aa-hint">The rubric saves itself in this browser. A file lets you keep a copy, move to another device or carry on later.</div>
     </div>
+    </div><!-- /rub-build -->
+
+    <div class="aa-subpanel" id="rub-mark" role="tabpanel" hidden>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="m-class">Class</label><select class="aa-in" id="m-class"></select></div>
+          <div><label class="aa-lbl" for="m-learner">Learner</label><select class="aa-in" id="m-learner"></select></div>
+        </div>
+        <div class="aa-actions">
+          <button class="aa-btn aa-btn--sm" id="m-prev" type="button">← Previous learner</button>
+          <button class="aa-btn aa-btn--sm" id="m-next" type="button">Next learner →</button>
+          <button class="aa-btn aa-btn--sm" id="m-manage" type="button">Manage class lists</button>
+        </div>
+        <div id="m-sheet" style="margin-top:12px"></div>
+        <label class="aa-lbl" for="m-note" style="margin-top:12px">Comment on this learner (optional)</label>
+        <textarea class="aa-in" id="m-note" rows="2"></textarea>
+        <div class="aa-actions"><span class="aa-total" id="m-score"></span><button class="aa-btn aa-btn--sm" id="m-clear-one" type="button">Clear this learner</button></div>
+        <div class="aa-hint">Marking uses the rubric on the Build tab, with the top level worth the most marks. Marks are tied to each criterion's position, so avoid reordering or removing criteria once you have started marking.</div>
+      </div>
+      <div class="aa-section-title">Class results</div>
+      <div class="aa-card">
+        <div class="aa-tbl-wrap"><table class="aa-grid" id="m-results"></table></div>
+        <div class="aa-hint" id="m-avg"></div>
+        <div class="aa-actions">
+          <button class="aa-btn" id="m-copy" type="button">Copy for Excel</button>
+          <button class="aa-btn" id="m-print" type="button">Print results</button>
+          <button class="aa-btn" id="m-clear-all" type="button">Clear all marks for this class</button>
+        </div>
+      </div>
+    </div><!-- /rub-mark -->
     </div><!-- /tab-rubric -->
 
     <!-- ═══ TAB: PAPER ASSEMBLER ═══ -->
@@ -1191,6 +1230,240 @@
       <div class="aa-hint">Your work saves itself in this browser as you go. Use <b>Save paper to a file</b> to keep a copy on your computer, move to another device, or carry on later; <b>Open a saved paper</b> brings it straight back.</div>
     </div><!-- /tab-paper -->
 
+
+    <!-- ═══ TAB: CLASSROOM TOOLS ═══ -->
+    <div class="tab-panel" id="tab-classroom">
+      <div class="page-header">
+        <h1>Classroom Tools</h1>
+        <p>A random name picker, group maker and big-screen timer for the front of the room.</p>
+      </div>
+      <div class="aa-subtabs" role="tablist" aria-label="Classroom tools">
+        <button class="aa-subtab active" type="button" role="tab" data-sub="picker">Random picker</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="groups">Groups</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="timer">Timer</button>
+      </div>
+
+      <div class="aa-subpanel" id="tab-classroom-picker" role="tabpanel">
+        <div class="aa-card">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="pk-class">Class</label><select class="aa-in" id="pk-class"></select></div>
+            <div><label class="aa-lbl" for="pk-norepeat">Repeat names</label>
+              <select class="aa-in" id="pk-norepeat"><option value="yes" selected>Not until everyone has had a turn</option><option value="no">Allow repeats</option></select></div>
+            <div><label class="aa-lbl" for="pk-skip">Learners marked absent today</label>
+              <select class="aa-in" id="pk-skip"><option value="yes" selected>Leave out</option><option value="no">Include</option></select></div>
+          </div>
+          <div class="aa-actions"><button class="aa-btn aa-btn--sm" id="pk-manage" type="button">Manage class lists</button></div>
+          <div class="aa-pick-stage"><div class="aa-pick-name" id="pk-name" aria-live="polite">—</div></div>
+          <div class="aa-actions" style="justify-content:center">
+            <button class="aa-btn aa-btn--primary aa-btn--lg" id="pk-go" type="button">Pick a learner</button>
+            <button class="aa-btn" id="pk-reset" type="button">Start over</button>
+          </div>
+          <div class="aa-hint" id="pk-left" style="text-align:center"></div>
+        </div>
+      </div>
+
+      <div class="aa-subpanel" id="tab-classroom-groups" role="tabpanel" hidden>
+        <div class="aa-card">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="gr-class">Class</label><select class="aa-in" id="gr-class"></select></div>
+            <div><label class="aa-lbl" for="gr-mode">Split by</label>
+              <select class="aa-in" id="gr-mode"><option value="size">Learners per group</option><option value="count">Number of groups</option></select></div>
+            <div><label class="aa-lbl" for="gr-n">How many</label><input class="aa-in" id="gr-n" type="number" min="1" max="50" value="4"></div>
+            <div><label class="aa-lbl" for="gr-skip">Learners marked absent today</label>
+              <select class="aa-in" id="gr-skip"><option value="yes" selected>Leave out</option><option value="no">Include</option></select></div>
+          </div>
+          <div class="aa-actions">
+            <button class="aa-btn aa-btn--primary" id="gr-go" type="button">Make groups</button>
+            <button class="aa-btn" id="gr-copy" type="button">Copy</button>
+            <button class="aa-btn" id="gr-print" type="button">Print</button>
+            <button class="aa-btn aa-btn--sm" id="gr-manage" type="button">Manage class lists</button>
+          </div>
+          <div class="aa-groups" id="gr-out"></div>
+        </div>
+      </div>
+
+      <div class="aa-subpanel" id="tab-classroom-timer" role="tabpanel" hidden>
+        <div class="aa-card">
+          <div class="aa-tm-stage" id="tm-stage">
+            <div class="aa-tm-title" id="tm-title"></div>
+            <div class="aa-tm-display" id="tm-display">05:00</div>
+            <div class="aa-sr" id="tm-live" role="status"></div>
+          </div>
+          <div class="aa-actions" style="justify-content:center">
+            <button class="aa-btn aa-btn--primary aa-btn--lg" id="tm-start" type="button">Start</button>
+            <button class="aa-btn" id="tm-reset" type="button">Reset</button>
+            <button class="aa-btn" id="tm-full" type="button">Full screen</button>
+          </div>
+          <div class="aa-actions" id="tm-presets" style="justify-content:center"></div>
+          <div class="aa-row" style="margin-top:12px">
+            <div><label class="aa-lbl" for="tm-mode">Mode</label><select class="aa-in" id="tm-mode"><option value="down">Countdown</option><option value="up">Stopwatch</option></select></div>
+            <div><label class="aa-lbl" for="tm-min">Minutes</label><input class="aa-in" id="tm-min" type="number" min="0" max="600" value="5"></div>
+            <div><label class="aa-lbl" for="tm-sec">Seconds</label><input class="aa-in" id="tm-sec" type="number" min="0" max="59" value="0"></div>
+            <div><label class="aa-lbl" for="tm-sound">Sound at the end</label><select class="aa-in" id="tm-sound"><option value="on" selected>On</option><option value="off">Off</option></select></div>
+            <div><label class="aa-lbl" for="tm-label">Label on screen</label><input class="aa-in" id="tm-label" placeholder="e.g. Pack up"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-classroom -->
+
+    <!-- ═══ TAB: CLASS LOG ═══ -->
+    <div class="tab-panel" id="tab-log">
+      <div class="page-header">
+        <h1>Class Log</h1>
+        <p>Attendance and behaviour notes for each class, with summaries you can copy or print.</p>
+      </div>
+      <div class="aa-privacy">
+        <b>Learners' information.</b> This log is kept only in this browser on this computer. It is not sent to The Magic Lab or anyone else. Use first names and initials, keep medical or child-protection matters in your school's official system, and save a file only to somewhere secure. <b>Delete all log data</b> at the bottom removes everything stored here.
+      </div>
+      <div class="aa-subtabs" role="tablist" aria-label="Class log">
+        <button class="aa-subtab active" type="button" role="tab" data-sub="attendance">Attendance</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="behaviour">Behaviour</button>
+      </div>
+
+      <div class="aa-subpanel" id="tab-log-attendance" role="tabpanel">
+        <div class="aa-card">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="at-class">Class</label><select class="aa-in" id="at-class"></select></div>
+            <div><label class="aa-lbl" for="at-date">Date</label><input class="aa-in" id="at-date" type="date"></div>
+          </div>
+          <div class="aa-actions">
+            <button class="aa-btn aa-btn--sm" id="at-allp" type="button">Mark everyone not yet marked as present</button>
+            <button class="aa-btn aa-btn--sm" id="at-manage" type="button">Manage class lists</button>
+          </div>
+          <div id="at-list" class="aa-att"></div>
+        </div>
+        <div class="aa-section-title">Attendance summary</div>
+        <div class="aa-card">
+          <div class="aa-tbl-wrap"><table class="aa-grid" id="at-summary"></table></div>
+          <div class="aa-actions"><button class="aa-btn" id="at-copy" type="button">Copy for Excel</button><button class="aa-btn" id="at-print" type="button">Print</button></div>
+        </div>
+      </div>
+
+      <div class="aa-subpanel" id="tab-log-behaviour" role="tabpanel" hidden>
+        <div class="aa-card">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="bh-class">Class</label><select class="aa-in" id="bh-class"></select></div>
+            <div><label class="aa-lbl" for="bh-learner">Learner</label><select class="aa-in" id="bh-learner"></select></div>
+            <div><label class="aa-lbl" for="bh-date">Date</label><input class="aa-in" id="bh-date" type="date"></div>
+          </div>
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="bh-kind">Type</label>
+              <select class="aa-in" id="bh-kind"><option value="positive">Positive</option><option value="concern" selected>Concern</option><option value="incident">Incident</option></select></div>
+            <div><label class="aa-lbl" for="bh-cat">Category</label>
+              <select class="aa-in" id="bh-cat"><option>Participation</option><option>Effort</option><option>Homework</option><option>Respect</option><option>Disruption</option><option>Punctuality</option><option>Other</option></select></div>
+          </div>
+          <label class="aa-lbl" for="bh-note">What happened</label>
+          <textarea class="aa-in" id="bh-note" rows="3" maxlength="1000"></textarea>
+          <label class="aa-lbl" for="bh-action" style="margin-top:12px">Action taken (optional)</label>
+          <input class="aa-in" id="bh-action" maxlength="500">
+          <div class="aa-actions"><button class="aa-btn aa-btn--primary" id="bh-add" type="button">Add entry</button><button class="aa-btn aa-btn--sm" id="bh-manage" type="button">Manage class lists</button></div>
+        </div>
+        <div class="aa-section-title">Entries</div>
+        <div class="aa-card">
+          <div class="aa-row"><div><label class="aa-lbl" for="bh-filter">Show</label><select class="aa-in" id="bh-filter"></select></div></div>
+          <div class="aa-hint" id="bh-count"></div>
+          <div id="bh-list"></div>
+          <div class="aa-actions"><button class="aa-btn" id="bh-copy" type="button">Copy for Excel</button></div>
+        </div>
+      </div>
+
+      <div class="aa-actions aa-file-actions">
+        <button class="aa-btn" id="lg-save-file" type="button">Save class log to a file</button>
+        <button class="aa-btn" id="lg-open-file" type="button">Open a saved class log</button>
+        <input type="file" id="lg-open-input" accept=".json,application/json" hidden>
+        <button class="aa-btn" id="lg-wipe" type="button">Delete all log data</button>
+      </div>
+      <div class="aa-hint">The log saves itself in this browser. The file includes your class lists, attendance and behaviour entries.</div>
+    </div><!-- /tab-log -->
+
+    <!-- ═══ TAB: ASSESSMENT TRACKER ═══ -->
+    <div class="tab-panel" id="tab-tracker">
+      <div class="page-header">
+        <h1>Assessment Tracker</h1>
+        <p>Plan the year's assessment tasks by term, weight them, enter marks and watch each learner's year mark build up.</p>
+      </div>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="tk-class">Class (each class has its own programme)</label><select class="aa-in" id="tk-class"></select></div>
+        </div>
+        <div class="aa-actions"><button class="aa-btn aa-btn--sm" id="tk-manage" type="button">Manage class lists</button></div>
+      </div>
+      <div class="aa-subtabs" role="tablist" aria-label="Assessment tracker">
+        <button class="aa-subtab active" type="button" role="tab" data-sub="tasks">Programme</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="marks">Marks and year mark</button>
+      </div>
+
+      <div class="aa-subpanel" id="tab-tracker-tasks" role="tabpanel">
+        <div class="aa-card">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="tk-term">Term</label><select class="aa-in" id="tk-term"><option value="1">Term 1</option><option value="2">Term 2</option><option value="3">Term 3</option><option value="4">Term 4</option></select></div>
+            <div style="flex:2 1 220px"><label class="aa-lbl" for="tk-name">Task</label><input class="aa-in" id="tk-name" placeholder="e.g. Term test, Practical, PAT" maxlength="120"></div>
+            <div><label class="aa-lbl" for="tk-type">Type</label><select class="aa-in" id="tk-type"></select></div>
+          </div>
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="tk-date">Date</label><input class="aa-in" id="tk-date" type="date"></div>
+            <div><label class="aa-lbl" for="tk-total">Total marks</label><input class="aa-in" id="tk-total" type="number" min="1" value="50"></div>
+            <div><label class="aa-lbl" for="tk-weight">Weighting (% of the year mark)</label><input class="aa-in" id="tk-weight" type="number" min="0" max="100" step="any" value="10"></div>
+          </div>
+          <div class="aa-actions">
+            <button class="aa-btn aa-btn--primary" id="tk-add" type="button">Add task</button>
+            <button class="aa-btn" id="tk-cancel" type="button" hidden>Cancel edit</button>
+            <span class="aa-total" id="tk-weight-sum"></span>
+          </div>
+          <div class="aa-hint">Weightings are percentages of the final year mark and should add up to 100. Check your school's or the IEB's own weightings for each subject.</div>
+        </div>
+        <div id="tk-up"></div>
+        <div id="tk-list"></div>
+        <div class="aa-actions"><button class="aa-btn" id="tk-print" type="button">Print programme</button></div>
+      </div>
+
+      <div class="aa-subpanel" id="tab-tracker-marks" role="tabpanel" hidden>
+        <div class="aa-card">
+          <div id="tk-grid"></div>
+          <div class="aa-hint" id="tk-avg"></div>
+          <div class="aa-actions"><button class="aa-btn" id="tk-copy" type="button">Copy for Excel</button></div>
+        </div>
+        <div class="aa-hint">The year mark so far counts only the tasks that have a mark, so it is comparable with the final result as the year goes on. The percentage in brackets shows how much of the year's weighting that covers.</div>
+      </div>
+
+      <div class="aa-actions aa-file-actions">
+        <button class="aa-btn" id="tk-save-file" type="button">Save tracker to a file</button>
+        <button class="aa-btn" id="tk-open-file" type="button">Open a saved tracker</button>
+        <input type="file" id="tk-open-input" accept=".json,application/json" hidden>
+      </div>
+      <div class="aa-hint">The tracker saves itself in this browser. The file includes your class lists, tasks and marks.</div>
+    </div><!-- /tab-tracker -->
+
+    <!-- ═══ TAB: TIMETABLE PLANNER ═══ -->
+    <div class="tab-panel" id="tab-timetable">
+      <div class="page-header">
+        <h1>Timetable Planner</h1>
+        <p>Set up your periods, teachers, classes, subjects and lessons, then let the planner build a clash-free timetable. Adjust it by hand, print it for every class and teacher, and save it to a file.</p>
+      </div>
+      <div class="aa-subtabs" role="tablist" aria-label="Timetable Planner">
+        <button class="aa-subtab active" type="button" role="tab" data-sub="setup">1. Setup</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="teachers">2. Teachers</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="classes">3. Classes</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="subjects">4. Subjects</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="rooms">5. Rooms</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="lessons">6. Lessons</button>
+        <button class="aa-subtab" type="button" role="tab" data-sub="grid">7. Timetable</button>
+      </div>
+      <div class="aa-subpanel" id="tab-timetable-setup" role="tabpanel"></div>
+      <div class="aa-subpanel" id="tab-timetable-teachers" role="tabpanel" hidden></div>
+      <div class="aa-subpanel" id="tab-timetable-classes" role="tabpanel" hidden></div>
+      <div class="aa-subpanel" id="tab-timetable-subjects" role="tabpanel" hidden></div>
+      <div class="aa-subpanel" id="tab-timetable-rooms" role="tabpanel" hidden></div>
+      <div class="aa-subpanel" id="tab-timetable-lessons" role="tabpanel" hidden></div>
+      <div class="aa-subpanel" id="tab-timetable-grid" role="tabpanel" hidden></div>
+      <div class="aa-actions aa-file-actions">
+        <button class="aa-btn" id="tt-save-file" type="button">Save timetable to a file</button>
+        <button class="aa-btn" id="tt-open-file" type="button">Open a saved timetable</button>
+        <input type="file" id="tt-open-input" accept=".json,application/json" hidden>
+        <button class="aa-btn" id="tt-reset-all" type="button">Delete this timetable project</button>
+      </div>
+      <div class="aa-hint">Everything saves itself in this browser. The file holds the whole project, so you can carry on at another computer or hand it to a colleague.</div>
+    </div><!-- /tab-timetable -->
 
     <div class="tab-panel" id="tab-training">
 
@@ -1458,7 +1731,10 @@
 <script src="auth-modal.js"></script>
 
 <script src="assets/dashboard-teacher.js"></script>
+<script src="assets/teacher-shared.js"></script>
 <script src="assets/teacher-admin-tools.js"></script>
+<script src="assets/teacher-class-tools.js"></script>
+<script src="assets/teacher-timetable.js"></script>
 
   <script src="/contact-button.js" defer></script>
 </body>

@@ -291,6 +291,137 @@
     save(); renderRubric(); toast('Rubric opened');
   });
 
+
+  /* ═══════════════ RUBRIC MARKING MODE ═══════════════ */
+  // Mark a class against the rubric above. Picks are stored per class and
+  // learner by criterion position, so reordering criteria after marking would
+  // shift them; the hint in the panel says so.
+  (function () {
+    const M = window.MLT;
+    if (!M) return;
+    const marks = () => M.store.get('rubric-marks', {});
+    const saveMarks = m => M.store.set('rubric-marks', m);
+    const rec = (m, cls, learner) => ((m[cls.id] || {})[learner]) || { picks: [], note: '' };
+    const score = r => {
+      const n = rubric.levels; let total = 0, done = 0;
+      rubric.rows.forEach((_, ri) => { const p = r.picks[ri]; if (Number.isInteger(p) && p >= 0 && p < n) { total += n - p; done++; } });
+      return { total, done, max: rubric.rows.length * n, complete: rubric.rows.length > 0 && done === rubric.rows.length };
+    };
+    let learnerSel = '';
+
+    // sub-tabs inside the Rubric Builder: Build | Mark
+    function showRub(name) {
+      document.querySelectorAll('#tab-rubric .aa-subtab').forEach(b => { const on = b.dataset.sub === name; b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      document.querySelectorAll('#tab-rubric .aa-subpanel').forEach(p => { p.hidden = p.id !== 'rub-' + name; });
+      if (name === 'mark') render();
+    }
+    document.querySelectorAll('#tab-rubric .aa-subtab').forEach(b => b.addEventListener('click', () => showRub(b.dataset.sub)));
+
+    function render() {
+      const cls = M.classes.current();
+      const sheet = $('m-sheet'), res = $('m-results');
+      sheet.textContent = ''; res.textContent = '';
+      $('m-learner').textContent = '';
+      if (!cls || !cls.learners.length) {
+        sheet.appendChild(M.el('div', { class: 'aa-empty-hint', text: 'Add a class list first (Manage class lists), then pick a learner to mark.' }));
+        $('m-score').textContent = ''; $('m-note').value = ''; return;
+      }
+      if (!rubric.rows.some(r => r.name)) { sheet.appendChild(M.el('div', { class: 'aa-empty-hint', text: 'Name at least one criterion on the Build tab first.' })); return; }
+      const all = marks();
+      cls.learners.forEach(l => {
+        const s = score(rec(all, cls, l));
+        $('m-learner').appendChild(M.el('option', { value: l, text: l + (s.complete ? '  ✓' : s.done ? '  …' : '') }));
+      });
+      if (!cls.learners.includes(learnerSel)) learnerSel = cls.learners[0];
+      $('m-learner').value = learnerSel;
+      const r = rec(all, cls, learnerSel), n = rubric.levels;
+      const t = M.el('table', { class: 'aa-grid' });
+      const head = M.el('tr', {}, [M.el('th', { text: 'Criterion' })]);
+      for (let i = 0; i < n; i++) head.appendChild(M.el('th', { text: 'Level ' + levelLabel(i, n) + ' · ' + levelLabel(i, n) + ' marks' }));
+      t.appendChild(head);
+      rubric.rows.forEach((row, ri) => {
+        const tr = M.el('tr', {}, [M.el('td', { text: row.name || '(unnamed criterion)' })]);
+        for (let i = 0; i < n; i++) {
+          const id = 'm-r' + ri + '-' + i;
+          const inp = M.el('input', { type: 'radio', name: 'm-row-' + ri, id, value: String(i) });
+          if (r.picks[ri] === i) inp.checked = true;
+          inp.addEventListener('change', () => {
+            const a = marks(); (a[cls.id] = a[cls.id] || {}); const cur = (a[cls.id][learnerSel] = a[cls.id][learnerSel] || { picks: [], note: '' });
+            cur.picks[ri] = i; saveMarks(a); renderSummary();
+          });
+          tr.appendChild(M.el('td', { class: 'aa-pick' }, [M.el('label', { for: id }, [inp, M.el('span', { text: ' ' + (row.cells[i] || 'Level ' + levelLabel(i, n)) })])]));
+        }
+        t.appendChild(tr);
+      });
+      sheet.appendChild(M.el('div', { class: 'aa-tbl-wrap' }, [t]));
+      $('m-note').value = r.note || '';
+      renderSummary();
+    }
+
+    function renderSummary() {
+      const cls = M.classes.current(); if (!cls) return;
+      const all = marks();
+      const s = score(rec(all, cls, learnerSel));
+      $('m-score').textContent = learnerSel + ': ' + s.total + ' / ' + s.max + (s.max ? ' · ' + Math.round(s.total / s.max * 100) + '% · level ' + M.capsLevel(s.total / s.max * 100) : '') + (s.complete ? '' : '  (' + s.done + ' of ' + rubric.rows.length + ' criteria marked)');
+      // class results table
+      const res = $('m-results'); res.textContent = '';
+      res.appendChild(M.el('tr', {}, ['Learner', 'Marks', '%', 'Level', 'Marked'].map(h => M.el('th', { text: h }))));
+      let sum = 0, cnt = 0;
+      cls.learners.forEach(l => {
+        const x = score(rec(all, cls, l));
+        const pct = x.max ? x.total / x.max * 100 : 0;
+        if (x.complete) { sum += pct; cnt++; }
+        res.appendChild(M.el('tr', {}, [
+          M.el('td', { text: l }), M.el('td', { text: x.complete ? x.total + ' / ' + x.max : '' }), M.el('td', { text: x.complete ? Math.round(pct) + '%' : '' }),
+          M.el('td', { text: x.complete ? String(M.capsLevel(pct)) : '' }), M.el('td', { text: x.complete ? 'Yes' : x.done ? x.done + '/' + rubric.rows.length : 'No' })
+        ]));
+      });
+      $('m-avg').textContent = cnt ? 'Class average (' + cnt + ' marked): ' + Math.round(sum / cnt) + '%' : 'No learners fully marked yet.';
+    }
+
+    M.classes.bind($('m-class'), render);
+    $('m-manage').addEventListener('click', () => M.classes.manage());
+    $('m-learner').addEventListener('change', () => { learnerSel = $('m-learner').value; render(); });
+    const step = d => { const cls = M.classes.current(); if (!cls) return; const i = cls.learners.indexOf(learnerSel) + d; if (i >= 0 && i < cls.learners.length) { learnerSel = cls.learners[i]; render(); $('m-learner').focus(); } };
+    $('m-prev').addEventListener('click', () => step(-1));
+    $('m-next').addEventListener('click', () => step(1));
+    $('m-note').addEventListener('input', () => {
+      const cls = M.classes.current(); if (!cls) return;
+      const a = marks(); (a[cls.id] = a[cls.id] || {}); const cur = (a[cls.id][learnerSel] = a[cls.id][learnerSel] || { picks: [], note: '' });
+      cur.note = $('m-note').value.slice(0, 1000); saveMarks(a);
+    });
+    $('m-clear-one').addEventListener('click', () => {
+      const cls = M.classes.current(); if (!cls) return;
+      const a = marks(); if (a[cls.id]) delete a[cls.id][learnerSel]; saveMarks(a); render();
+    });
+    $('m-clear-all').addEventListener('click', () => {
+      const cls = M.classes.current(); if (!cls || !confirm('Clear every learner\'s marks on this rubric for ' + cls.name + '?')) return;
+      const a = marks(); delete a[cls.id]; saveMarks(a); render();
+    });
+    $('m-copy').addEventListener('click', () => {
+      const cls = M.classes.current(); if (!cls) return;
+      const all = marks();
+      const rows = [['Learner'].concat(rubric.rows.map(r => r.name || 'Criterion'), ['Total', 'Out of', '%', 'Level', 'Comment'])];
+      cls.learners.forEach(l => {
+        const r = rec(all, cls, l), x = score(r), pct = x.max ? x.total / x.max * 100 : 0;
+        rows.push([l].concat(rubric.rows.map((_, ri) => Number.isInteger(r.picks[ri]) ? rubric.levels - r.picks[ri] : ''), x.done ? [x.total, x.max, Math.round(pct), M.capsLevel(pct)] : ['', x.max, '', ''], [r.note || '']));
+      });
+      M.copy(M.csv(rows));
+    });
+    $('m-print').addEventListener('click', () => {
+      const cls = M.classes.current(); if (!cls) return;
+      const all = marks();
+      M.printDoc(pa => {
+        pa.appendChild(M.el('h1', { class: 'aa-pr-h', text: (rubric.title || 'Rubric') + ' — results' }));
+        pa.appendChild(M.el('div', { class: 'aa-pr-sub', text: cls.name }));
+        const t = M.el('table', {}, [M.el('tr', {}, ['Learner', 'Marks', '%', 'Level'].map(h => M.el('th', { text: h })))]);
+        cls.learners.forEach(l => { const x = score(rec(all, cls, l)), pct = x.max ? x.total / x.max * 100 : 0;
+          t.appendChild(M.el('tr', {}, [M.el('td', { text: l }), M.el('td', { text: x.complete ? x.total + ' / ' + x.max : '' }), M.el('td', { text: x.complete ? Math.round(pct) + '%' : '' }), M.el('td', { text: x.complete ? String(M.capsLevel(pct)) : '' })])); });
+        pa.appendChild(t);
+      });
+    });
+  })();
+
   /* ═══════════════ PAPER ═══════════════ */
   // Cognitive levels, grouped the way the paper's mark analysis is reported.
   const BANDS = [
@@ -373,14 +504,14 @@
 
   // ── sub-tabs: details | print settings | sections & questions ──
   function showSub(name) {
-    document.querySelectorAll('.aa-subtab').forEach(b => {
+    document.querySelectorAll('#tab-paper .aa-subtab').forEach(b => {
       const on = b.dataset.sub === name;
       b.classList.toggle('active', on); b.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    document.querySelectorAll('.aa-subpanel').forEach(p => { p.hidden = p.id !== 'sub-' + name; });
+    document.querySelectorAll('#tab-paper .aa-subpanel').forEach(p => { p.hidden = p.id !== 'sub-' + name; });
     store.set('paper-sub', name);
   }
-  document.querySelectorAll('.aa-subtab').forEach(b => b.addEventListener('click', () => showSub(b.dataset.sub)));
+  document.querySelectorAll('#tab-paper .aa-subtab').forEach(b => b.addEventListener('click', () => showSub(b.dataset.sub)));
   { const s = store.get('paper-sub', 'details'); showSub(['details', 'print', 'build'].includes(s) ? s : 'details'); }
 
   // ── helpers over the section tree ──

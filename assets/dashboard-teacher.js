@@ -7377,7 +7377,7 @@ function _fmtDate(iso) {
 
 document.addEventListener('DOMContentLoaded', () => {
   window.lucide?.createIcons();
-  const VALID_TABS = ['classes', 'assignments', 'livegame', 'training', 'planning', 'reports', 'rubric', 'paper', 'help'];
+  const VALID_TABS = ['classes', 'assignments', 'livegame', 'training', 'planning', 'reports', 'rubric', 'paper', 'classroom', 'log', 'tracker', 'timetable', 'help'];
   let lastTab = null;
   try { lastTab = localStorage.getItem('mlTeacherLastTab'); } catch (e) { /* private mode etc. */ }
   if (lastTab && lastTab !== 'classes' && VALID_TABS.includes(lastTab)) switchTab(lastTab);
