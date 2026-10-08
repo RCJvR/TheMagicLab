@@ -359,6 +359,7 @@ input::placeholder { color: var(--text-3); }
         <div class="row">
           <button class="btn" id="anPlay" type="button"><i data-lucide="play"></i><span>Preview</span></button>
           <button class="btn primary" id="anCreate" type="button"><i data-lucide="layers"></i>Create frames</button>
+          <button class="btn" id="anDelete" type="button"><i data-lucide="trash-2"></i>Delete all frames</button>
         </div>
         <p class="hint">Create frames saves each step as its own saved picture, in order, so the cards and run sheet show every step.</p>
 
@@ -457,11 +458,11 @@ function pairAt(p, r, c) {
 const colourOf = (p, r, c) => pairAt(p, r, c)[p.cells[r * p.cols + c] ? 0 : 1];
 
 /* ── Persistence ────────────────────────────────────────────────────────── */
-const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), tw: Array.from(p.tw || []).join(''), c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols, len: p.len });
+const pack = p => ({ name: p.name, cols: p.cols, rows: p.rows, cells: Array.from(p.cells).join(''), tw: Array.from(p.tw || []).join(''), frame: !!p.frame, c1: p.c1, c2: p.c2, mode: p.mode, rowCols: p.rowCols, colCols: p.colCols, len: p.len });
 function unpack(o) {
   const cols = Math.min(60, Math.max(2, o.cols | 0)), rows = Math.min(40, Math.max(2, o.rows | 0));
   const p = newPic(cols, rows, HEX.test(o.c1) ? o.c1 : '#1b2a5c', HEX.test(o.c2) ? o.c2 : '#f2f5f9');
-  p.name = String(o.name || '').slice(0, 40);
+  p.name = String(o.name || '').slice(0, 40); p.frame = !!o.frame;
   for (let i = 0; i < p.cells.length; i++) p.cells[i] = String(o.cells || '').charCodeAt(i) === 49 ? 1 : 0;
   for (let i = 0; i < p.tw.length; i++) { const d = String(o.tw || '').charCodeAt(i) - 48; p.tw[i] = d >= 1 && d <= 4 ? d : 0; }
   p.mode = ['row', 'col'].includes(o.mode) ? o.mode : 'all';
@@ -1259,8 +1260,18 @@ $('anCreate').onclick = () => {
   const kept = lib.filter(p => !re.test(p.name));
   if (kept.length + b.frames.length > MAX_PICS) { updateReadout(`That would make ${b.frames.length} frames, and a show can hold ${MAX_PICS} pictures in total. Use a bigger step, or delete some saved pictures first.`); return; }
   lib = kept; loaded = cur && lib.includes(cur) ? lib.indexOf(cur) : -1;
-  b.frames.forEach((f, i) => { const p = clonePic(W); p.cells = f; p.name = `${base} ${i + 1}`; lib.push(p); });
+  b.frames.forEach((f, i) => { const p = clonePic(W); p.cells = f; p.name = `${base} ${i + 1}`; p.frame = true; lib.push(p); });
   refresh(); updateReadout(`Saved ${b.frames.length} frames as “${base} 1” to “${base} ${b.frames.length}”. Present all plays them in order.`);
+};
+$('anDelete').onclick = () => {
+  const isFrame = p => p.frame || /^.+ \d+$/.test(p.name), gone = lib.filter(isFrame);
+  if (!gone.length) { updateReadout('There are no animation frames to delete.'); return; }
+  const loose = gone.filter(p => !p.frame).length;
+  const list = gone.length > 2 ? `“${gone[0].name}” … “${gone[gone.length - 1].name}”` : gone.map(p => `“${p.name}”`).join(' and ');
+  if (!window.confirm(`Delete ${gone.length} animation frame${gone.length > 1 ? 's' : ''} (${list})?` + (loose ? `\n\n${loose} of them were made before frames were tracked and are picked out by their numbered names, so check the list.` : '') + '\n\nThis cannot be undone. Your other saved pictures are kept.')) return;
+  const cur = loaded >= 0 ? lib[loaded] : null;
+  lib = lib.filter(p => !isFrame(p)); loaded = cur && lib.includes(cur) ? lib.indexOf(cur) : -1;
+  refresh(); updateReadout(`Deleted ${gone.length} frame${gone.length > 1 ? 's' : ''}.`);
 };
 ['anSource', 'anMotion', 'anDir', 'anStep', 'anWipeMode', 'anSize', 'anPause'].forEach(id => $(id).onchange = () => { if (anim.timer) stopAnim(); anUpdate(); });
 $('anText').oninput = () => anUpdate();
