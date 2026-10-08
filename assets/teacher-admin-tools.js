@@ -244,71 +244,388 @@
 
   /* ═══════════════ PAPER ═══════════════ */
   const LEVELS = ['Knowledge', 'Routine procedures', 'Complex procedures', 'Problem solving'];
-  let paper = store.get('paper', null) || { school: '', subject: '', title: '', target: 50, time: '', inst: '', qs: [] };
-  const fields = { school: 'p-school', subject: 'p-subject', title: 'p-title', time: 'p-time', inst: 'p-inst' };
-  Object.entries(fields).forEach(([k, id]) => { $(id).value = paper[k] || ''; $(id).addEventListener('input', () => { paper[k] = $(id).value; savePaper(); }); });
-  $('p-target').value = paper.target;
-  $('p-target').addEventListener('input', () => { paper.target = +$('p-target').value || 0; savePaper(); renderPaper(); });
+  const TYPE_LABEL = { written: 'Written', mcq: 'Multiple choice', tf: 'True or false', context: 'Context note' };
+  const DEFAULT_INST = [
+    'Fill in your name in the space provided above.',
+    'Check that your paper is complete.',
+    'Answer ALL questions.',
+    'Read each question carefully before answering.',
+    'Write the answers in the space provided.',
+    'There is extra space at the back if you need it.',
+    'It is in your own interest to write NEATLY and LEGIBLY.',
+    'Use the mark allocation as a guide to the length of your responses, e.g. 2 marks = 2 facts.'
+  ].join('\n');
+
+  // Older saves were a flat list of questions; fold them into one section.
+  function migrate(p) {
+    p = p || {};
+    const o = Object.assign({
+      school: '', grade: '', subject: '', title: '', headerLeft: '', headerRight: '', footerText: '', date: '', time: '',
+      examiner: '', moderator: '', target: 50, inst: DEFAULT_INST, sections: []
+    }, p);
+    if (Array.isArray(p.qs)) {
+      o.sections = [{ title: 'Questions', instruction: '', qs: p.qs.map(q => Object.assign({ type: 'written', lines: null }, q)) }];
+      if (!p.inst) o.inst = DEFAULT_INST;
+    }
+    delete o.qs;
+    o.opts = Object.assign({ font: '12', marksPos: 'right', nameLine: 'yes', lines: 'on', cover: 'yes', analysis: 'yes', extra: 'yes' }, p.opts);
+    return o;
+  }
+  let paper = migrate(store.get('paper', null));
   const savePaper = () => store.set('paper', paper);
 
+  const FIELDS = { school: 'p-school', grade: 'p-grade', subject: 'p-subject', title: 'p-title', date: 'p-date', time: 'p-time', examiner: 'p-examiner', moderator: 'p-moderator', headerLeft: 'p-header-left', headerRight: 'p-header-right', footerText: 'p-footer', inst: 'p-inst' };
+  Object.entries(FIELDS).forEach(([k, id]) => {
+    $(id).value = paper[k] || '';
+    $(id).addEventListener('input', () => { paper[k] = $(id).value; savePaper(); });
+  });
+  $('p-target').value = paper.target;
+  $('p-target').addEventListener('input', () => { paper.target = +$('p-target').value || 0; savePaper(); renderPaper(); });
+  const OPTS = [['p-font', 'font'], ['p-marks-pos', 'marksPos'], ['p-name-line', 'nameLine'], ['p-lines', 'lines'], ['p-cover', 'cover'], ['p-analysis', 'analysis'], ['p-extra', 'extra']];
+  OPTS.forEach(([id, k]) => {
+    $(id).value = paper.opts[k];
+    $(id).addEventListener('change', () => { paper.opts[k] = $(id).value; savePaper(); });
+  });
+
+  // School logo: shrunk to fit and kept in this browser only, so it never
+  // leaves the teacher's device and stays small enough for localStorage.
+  function showLogo() {
+    $('p-logo-box').hidden = !paper.logo;
+    if (paper.logo) $('p-logo-img').src = paper.logo;
+  }
+  $('p-logo').addEventListener('change', () => {
+    const f = $('p-logo').files[0];
+    if (!f) return;
+    if (!/^image\/(png|jpeg|webp|svg\+xml)$/.test(f.type)) return toast('Please choose a PNG, JPG, WebP or SVG image');
+    if (f.size > 5 * 1024 * 1024) return toast('That image is over 5 MB');
+    const url = URL.createObjectURL(f), img = new Image();
+    img.onload = () => {
+      const max = 400, k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.width * k)); c.height = Math.max(1, Math.round(img.height * k));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      paper.logo = c.toDataURL('image/png');
+      savePaper(); showLogo();
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); toast('Could not read that image'); };
+    img.src = url;
+  });
+  $('p-logo-remove').addEventListener('click', () => { delete paper.logo; $('p-logo').value = ''; savePaper(); showLogo(); });
+  showLogo();
+
+  // ── helpers over the section tree ──
+  const secMarks = s => s.qs.reduce((a, q) => a + (q.type === 'context' ? 0 : q.marks), 0);
+  const paperMarks = () => paper.sections.reduce((a, s) => a + secMarks(s), 0);
+  // Number questions 1.1, 1.2 … per section; context notes take no number.
+  function numbered(si) {
+    let n = 0;
+    return paper.sections[si].qs.map(q => (q.type === 'context' ? null : (si + 1) + '.' + (++n)));
+  }
+  const autoLines = q => (q.lines == null || q.lines === '') ? q.marks + 2 : q.lines;
+  const mk = n => n + (n === 1 ? ' MARK' : ' MARKS');
+
+  // ── the add / edit question form ──
+  let editing = null; // { si, qi } while a question is being edited
+  const curSec = () => { const v = parseInt($('q-section').value, 10); return Number.isInteger(v) ? v : undefined; };
+  function fillSections(sel) {
+    const s = $('q-section'); s.textContent = '';
+    paper.sections.forEach((sec, i) => s.appendChild(el('option', { value: String(i), text: 'Question ' + (i + 1) + ' · ' + (sec.title || 'Untitled') })));
+    const last = Math.max(0, paper.sections.length - 1);
+    s.value = String(Math.min(Number.isInteger(sel) ? Math.max(0, sel) : last, last));
+  }
+  function setType(t) {
+    $('q-type').value = t;
+    const show = (id, on) => { $(id).hidden = !on; };
+    show('q-w-heading', t === 'context');
+    show('q-w-opts', t === 'mcq');
+    show('q-w-marks', t !== 'context');
+    show('q-w-lines', t === 'written');
+    show('q-w-ans', t === 'mcq' || t === 'tf');
+    show('q-w-level', t !== 'context');
+    show('q-w-memo', t === 'written');
+    $('q-text-lbl').textContent = t === 'context' ? 'Scenario or context text (printed in italics)' : t === 'tf' ? 'Statement' : 'Question';
+    const ans = $('q-ans'); ans.textContent = '';
+    (t === 'mcq' ? ['A', 'B', 'C', 'D'] : ['True', 'False']).forEach(v => ans.appendChild(el('option', { value: v, text: v })));
+  }
+  $('q-type').addEventListener('change', () => { const t = $('q-type').value; setType(t); if (t === 'mcq' || t === 'tf') $('q-marks').value = 1; });
+  setType('written');
+
+  function clearForm() {
+    ['q-text', 'q-heading', 'q-oa', 'q-ob', 'q-oc', 'q-od', 'q-memo', 'q-lines'].forEach(id => { $(id).value = ''; });
+    $('q-marks').value = 1;
+  }
+  function endEdit() {
+    editing = null;
+    $('q-add').textContent = 'Add question'; $('q-cancel').hidden = true; $('q-form-title').textContent = 'Add a question';
+    clearForm();
+  }
+  $('q-cancel').addEventListener('click', endEdit);
+
+  $('q-add').addEventListener('click', () => {
+    if (!paper.sections.length) return toast('Add a section first');
+    const t = $('q-type').value, text = $('q-text').value.trim();
+    if (!text) return toast('Type the question first');
+    const q = { type: t, text };
+    if (t !== 'context') {
+      q.marks = parseInt($('q-marks').value, 10);
+      if (!(q.marks > 0)) return toast('Marks must be 1 or more');
+      q.level = $('q-level').value;
+    } else {
+      q.heading = $('q-heading').value.trim();
+    }
+    if (t === 'written') {
+      q.memo = $('q-memo').value.trim();
+      const l = $('q-lines').value.trim();
+      q.lines = l === '' ? null : Math.min(20, Math.max(0, parseInt(l, 10) || 0));
+    }
+    if (t === 'mcq') {
+      q.options = ['q-oa', 'q-ob', 'q-oc', 'q-od'].map(id => $(id).value.trim());
+      if (q.options.filter(Boolean).length < 2) return toast('Give at least two options');
+      q.ans = $('q-ans').value;
+    }
+    if (t === 'tf') q.ans = $('q-ans').value;
+    const si = +$('q-section').value;
+    if (editing) {
+      if (editing.si === si) paper.sections[si].qs[editing.qi] = q;
+      else { paper.sections[editing.si].qs.splice(editing.qi, 1); paper.sections[si].qs.push(q); }
+    } else paper.sections[si].qs.push(q);
+    const keep = si;
+    endEdit(); savePaper(); renderPaper(); fillSections(keep); $('q-text').focus();
+  });
+
+  function editQuestion(si, qi) {
+    const q = paper.sections[si].qs[qi];
+    editing = { si, qi };
+    fillSections(si); setType(q.type);
+    $('q-text').value = q.text || ''; $('q-heading').value = q.heading || '';
+    $('q-marks').value = q.marks || 1; $('q-level').value = q.level || LEVELS[0];
+    $('q-memo').value = q.memo || ''; $('q-lines').value = q.lines == null ? '' : q.lines;
+    (q.options || ['', '', '', '']).forEach((v, i) => { $(['q-oa', 'q-ob', 'q-oc', 'q-od'][i]).value = v; });
+    if (q.ans) $('q-ans').value = q.ans;
+    $('q-add').textContent = 'Save question'; $('q-cancel').hidden = false; $('q-form-title').textContent = 'Edit question';
+    $('q-text').focus(); $('q-form-title').scrollIntoView({ block: 'center' });
+  }
+
+  // ── sections ──
+  $('s-add').addEventListener('click', () => {
+    const title = $('s-title').value.trim();
+    if (!title) return toast('Give the section a title');
+    paper.sections.push({ title, instruction: $('s-inst').value.trim(), qs: [] });
+    $('s-title').value = ''; $('s-inst').value = '';
+    savePaper(); renderPaper(); fillSections(paper.sections.length - 1);
+  });
+  function moveIn(arr, i, d, after) {
+    const j = i + d; if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j], arr[i]]; savePaper(); after();
+  }
+
   function renderPaper() {
-    const sum = paper.qs.reduce((a, q) => a + q.marks, 0);
+    const sum = paperMarks();
     const tot = $('p-total');
     tot.textContent = 'Total: ' + sum + ' / ' + paper.target + ' marks';
     tot.className = 'aa-total ' + (sum === paper.target ? 'aa-ok' : sum > paper.target ? 'aa-bad' : 'aa-warn');
     const sp = $('p-spread'); sp.textContent = '';
     LEVELS.forEach(l => {
-      const m = paper.qs.filter(q => q.level === l).reduce((a, q) => a + q.marks, 0);
+      let m = 0;
+      paper.sections.forEach(s => s.qs.forEach(q => { if (q.type !== 'context' && q.level === l) m += q.marks; }));
       sp.appendChild(el('div', { text: l }, [el('b', { text: m + ' marks · ' + (sum ? Math.round(m / sum * 100) : 0) + '%' })]));
     });
+
     const host = $('p-list'); host.textContent = '';
-    if (!paper.qs.length) { host.appendChild(el('div', { class: 'aa-empty-hint', text: 'No questions yet. Add one above.' })); return; }
-    paper.qs.forEach((q, i) => {
-      const move = d => () => { const j = i + d; if (j < 0 || j >= paper.qs.length) return; [paper.qs[i], paper.qs[j]] = [paper.qs[j], paper.qs[i]]; savePaper(); renderPaper(); };
-      host.appendChild(el('div', { class: 'aa-list-item' }, [
-        el('div', { class: 'aa-who', text: 'Question ' + (i + 1) + ' · [' + q.marks + '] · ' + q.level }),
-        el('div', { class: 'aa-txt', text: q.text }),
-        q.memo ? el('div', { class: 'aa-txt', style: 'color:var(--text-3)', text: 'Memo: ' + q.memo }) : el('span'),
+    if (!paper.sections.length) { host.appendChild(el('div', { class: 'aa-card aa-empty-hint', text: 'No sections yet. Add one above, then add questions to it.' })); fillSections(); return; }
+    paper.sections.forEach((s, si) => {
+      const nums = numbered(si);
+      const card = el('div', { class: 'aa-card aa-sec' });
+      const tin = el('input', { class: 'aa-in', 'aria-label': 'Section ' + (si + 1) + ' title', value: s.title });
+      tin.addEventListener('input', () => { s.title = tin.value; savePaper(); });
+      tin.addEventListener('change', () => fillSections(curSec()));
+      const iin = el('input', { class: 'aa-in', 'aria-label': 'Section ' + (si + 1) + ' instruction', value: s.instruction || '', placeholder: 'Instruction (italic)' });
+      iin.addEventListener('input', () => { s.instruction = iin.value; savePaper(); });
+      card.appendChild(el('div', { class: 'aa-sec-head' }, [
+        el('div', { class: 'aa-sec-no', text: 'QUESTION ' + (si + 1) + ' · ' + mk(secMarks(s)) }),
         el('div', { class: 'aa-actions' }, [
-          el('button', { class: 'aa-btn aa-btn--sm', 'aria-label': 'Move question ' + (i + 1) + ' up', text: '↑', onclick: move(-1) }),
-          el('button', { class: 'aa-btn aa-btn--sm', 'aria-label': 'Move question ' + (i + 1) + ' down', text: '↓', onclick: move(1) }),
-          el('button', { class: 'aa-btn aa-btn--sm', text: 'Edit', onclick: () => {
-            $('q-text').value = q.text; $('q-marks').value = q.marks; $('q-level').value = q.level; $('q-memo').value = q.memo || '';
-            paper.qs.splice(i, 1); savePaper(); renderPaper(); $('q-text').focus();
-          } }),
-          el('button', { class: 'aa-btn aa-btn--sm', text: 'Remove', onclick: () => { paper.qs.splice(i, 1); savePaper(); renderPaper(); } })
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', 'aria-label': 'Move section up', text: '↑', onclick: () => moveIn(paper.sections, si, -1, () => { renderPaper(); fillSections(si - 1); }) }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', 'aria-label': 'Move section down', text: '↓', onclick: () => moveIn(paper.sections, si, 1, () => { renderPaper(); fillSections(si + 1); }) }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: 'Remove section', onclick: () => {
+            if (s.qs.length && !confirm('Remove this section and its ' + s.qs.length + ' question(s)?')) return;
+            paper.sections.splice(si, 1); endEdit(); savePaper(); renderPaper();
+          } })
         ])
       ]));
+      card.appendChild(el('div', { class: 'aa-row' }, [tin, iin]));
+      if (!s.qs.length) card.appendChild(el('div', { class: 'aa-empty-hint', text: 'No questions in this section yet.' }));
+      s.qs.forEach((q, qi) => {
+        const label = q.type === 'context' ? 'Context note' : nums[qi] + ' · [' + q.marks + '] · ' + TYPE_LABEL[q.type] + ' · ' + q.level;
+        const item = el('div', { class: 'aa-list-item' }, [
+          el('div', { class: 'aa-who', text: label }),
+          el('div', { class: 'aa-txt', text: (q.heading ? q.heading + '\n' : '') + q.text })
+        ]);
+        if (q.type === 'mcq') item.appendChild(el('div', { class: 'aa-txt', text: q.options.map((o, i) => o ? 'ABCD'[i] + '. ' + o : '').filter(Boolean).join('\n') + '\nAnswer: ' + q.ans }));
+        if (q.type === 'tf') item.appendChild(el('div', { class: 'aa-txt', text: 'Answer: ' + q.ans }));
+        if (q.type === 'written' && q.memo) item.appendChild(el('div', { class: 'aa-txt aa-memo-note', text: 'Memo: ' + q.memo }));
+        item.appendChild(el('div', { class: 'aa-actions' }, [
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', 'aria-label': 'Move up', text: '↑', onclick: () => moveIn(s.qs, qi, -1, renderPaper) }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', 'aria-label': 'Move down', text: '↓', onclick: () => moveIn(s.qs, qi, 1, renderPaper) }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: 'Edit', onclick: () => editQuestion(si, qi) }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: 'Remove', onclick: () => { s.qs.splice(qi, 1); if (editing) endEdit(); savePaper(); renderPaper(); } })
+        ]));
+        card.appendChild(item);
+      });
+      host.appendChild(card);
     });
+    fillSections(curSec());
   }
-  $('q-add').addEventListener('click', () => {
-    const text = $('q-text').value.trim(), marks = parseInt($('q-marks').value, 10);
-    if (!text) return toast('Type the question first');
-    if (!(marks > 0)) return toast('Marks must be 1 or more');
-    paper.qs.push({ text, marks, level: $('q-level').value, memo: $('q-memo').value.trim() });
-    savePaper(); renderPaper();
-    $('q-text').value = ''; $('q-memo').value = ''; $('q-text').focus();
-  });
+
+  // ── printing ──
+  // Modelled on a write-on exam paper: cover page (header with logo top right,
+  // info and name boxes, per-question analysis, numbered instructions), then
+  // sections on a number | text | marks grid with ruled answer lines, a grand
+  // total and extra writing space. The running header and page numbers come
+  // from the named @page rule in the stylesheet.
+  const td = (text, attrs) => el('td', attrs || {}, text == null ? [] : [document.createTextNode(text)]);
+  const th = (text, attrs) => el('th', attrs || {}, [document.createTextNode(text)]);
+  const ruledLines = n => { const w = el('div', { class: 'aa-lines' }); for (let i = 0; i < n; i++) w.appendChild(el('div', { class: 'aa-line' })); return w; };
+
+  function printHead(pa, memo) {
+    const left = el('div', { class: 'aa-cv-left' }, [
+      paper.school ? el('div', { class: 'aa-cv-school', text: paper.school }) : el('span'),
+      paper.grade ? el('div', { class: 'aa-cv-grade', text: paper.grade.toUpperCase() }) : el('span'),
+      paper.subject ? el('div', { class: 'aa-cv-grade', text: paper.subject.toUpperCase() }) : el('span')
+    ]);
+    const top = el('div', { class: 'aa-cv-top' }, [left]);
+    if (paper.logo) top.appendChild(el('img', { class: 'aa-print-logo', src: paper.logo, alt: '' }));
+    pa.appendChild(top);
+    pa.appendChild(el('div', { class: 'aa-cv-term', text: (paper.title || 'Assessment') + (memo ? ' — MEMORANDUM' : '') }));
+  }
+
+  function printCover(pa) {
+    const o = paper.opts, sum = paperMarks();
+    printHead(pa, false);
+    pa.appendChild(el('table', { class: 'aa-box' }, [
+      el('colgroup', {}, [el('col', { style: 'width:26%' }), el('col', { style: 'width:32%' }), el('col', { style: 'width:13%' }), el('col', { style: 'width:30%' })]), el('tr', {}, [th('Examiner:', { class: 'aa-lab' }), td(paper.examiner), th('Date:', { class: 'aa-lab' }), td(paper.date)]),
+      el('tr', {}, [th('Moderator:', { class: 'aa-lab' }), td(paper.moderator), th('Time:', { class: 'aa-lab' }), td(paper.time)]),
+      el('tr', {}, [td('', { class: 'aa-blank' }), td('', { class: 'aa-blank' }), th('Marks:', { class: 'aa-lab' }), td(String(sum))])
+    ]));
+    if (o.nameLine === 'yes') {
+      pa.appendChild(el('table', { class: 'aa-box aa-box--name' }, [
+        el('colgroup', {}, [el('col', { style: 'width:26%' }), el('col', { style: 'width:32%' }), el('col', { style: 'width:13%' }), el('col', { style: 'width:30%' })]), el('tr', {}, [th('Name and surname:', { class: 'aa-lab' }), td('', { colspan: '3' })]),
+        el('tr', {}, [th('Educator:', { class: 'aa-lab' }), td(''), th('Class:', { class: 'aa-lab' }), td('')])
+      ]));
+    }
+    if (o.analysis === 'yes' && paper.sections.length) {
+      pa.appendChild(el('div', { class: 'aa-an-h', text: 'PER QUESTION ANALYSIS' }));
+      const t = el('table', { class: 'aa-an' }, [el('tr', {}, [th('QUESTION', { class: 'aa-lab' }), th('TOPIC', { class: 'aa-lab' }), th('MARKS', { class: 'aa-lab' }), th('MARK ACHIEVED', { class: 'aa-lab' })])]);
+      paper.sections.forEach((s, i) => t.appendChild(el('tr', {}, [td(String(i + 1), { class: 'aa-c' }), td(s.title), td(String(secMarks(s)), { class: 'aa-c' }), td('')])));
+      t.appendChild(el('tr', { class: 'aa-an-total' }, [td('TOTAL', { colspan: '2', class: 'aa-c' }), td(String(sum), { class: 'aa-c' }), td('%', { class: 'aa-pct' })]));
+      pa.appendChild(t);
+    }
+    const inst = (paper.inst || '').split('\n').map(x => x.trim()).filter(Boolean);
+    if (inst.length) {
+      pa.appendChild(el('div', { class: 'aa-inst-h', text: 'PLEASE READ THE FOLLOWING INSTRUCTIONS CAREFULLY:' }));
+      pa.appendChild(el('ol', { class: 'aa-inst-list' }, inst.map(x => el('li', { text: x }))));
+    }
+    pa.lastElementChild.classList.add('aa-cover-end');
+  }
+
+  function printQuestions(pa) {
+    const o = paper.opts, right = o.marksPos === 'right', lines = o.lines === 'on';
+    paper.sections.forEach((s, si) => {
+      // The section heading, its instruction, any leading context note and the
+      // first question travel together, so a heading is never stranded at the
+      // foot of a page.
+      const keep = el('div', { class: 'aa-keep' });
+      keep.appendChild(el('div', { class: 'aa-sh' }, [el('span', { text: 'QUESTION ' + (si + 1) }), el('span', { class: 'aa-sh-t', text: (s.title || '').toUpperCase() }), el('span', { class: 'aa-sh-m', text: mk(secMarks(s)) })]));
+      if (s.instruction) keep.appendChild(el('div', { class: 'aa-si', text: s.instruction }));
+      pa.appendChild(keep);
+      let dest = keep;
+      const nums = numbered(si);
+      let run = []; // consecutive true/false numbers waiting for their answer grid
+      const flushTf = () => {
+        if (!run.length) return;
+        const t = el('table', { class: 'aa-tf' }, [
+          el('tr', {}, run.map(n => th(n))),
+          el('tr', {}, run.map(() => td('')))
+        ]);
+        pa.appendChild(t); run = [];
+      };
+      s.qs.forEach((q, qi) => {
+        if (q.type !== 'tf') flushTf();
+        if (q.type === 'context') {
+          const c = el('div', { class: 'aa-ctx' });
+          if (q.heading) c.appendChild(el('div', { class: 'aa-ctx-h', text: q.heading }));
+          c.appendChild(el('div', { class: 'aa-ctx-t', text: q.text }));
+          dest.appendChild(c); return;
+        }
+        const row = el('div', { class: 'aa-q' + (right ? '' : ' aa-q--inline') }, [
+          el('div', { class: 'aa-qn', text: nums[qi] + '.' }),
+          el('div', { class: 'aa-qt', text: q.text + (right ? '' : '  [' + q.marks + ']') })
+        ]);
+        if (right) row.appendChild(el('div', { class: 'aa-qm', text: '(' + q.marks + ')' }));
+        if (q.type === 'mcq') {
+          const ol = el('div', { class: 'aa-opts' });
+          q.options.forEach((v, i) => { if (v) ol.appendChild(el('div', { text: 'ABCD'[i] + '. ' + v })); });
+          row.appendChild(ol);
+        }
+        dest.appendChild(row);
+        if (q.type === 'tf') run.push(nums[qi]);
+        if (q.type === 'written' && lines) { const n = autoLines(q); if (n) dest.appendChild(ruledLines(n)); }
+        dest = pa;
+      });
+      flushTf();
+    });
+    pa.appendChild(el('div', { class: 'aa-grand', text: 'GRAND TOTAL: ' + mk(paperMarks()) }));
+    if (o.extra === 'yes') {
+      const x = el('div', { class: 'aa-extra' }, [el('div', { class: 'aa-extra-h', text: 'ADDITIONAL WRITING SPACE:' })]);
+      x.appendChild(ruledLines(14)); pa.appendChild(x);
+    }
+  }
+
+  function printMemo(pa) {
+    printHead(pa, true);
+    paper.sections.forEach((s, si) => {
+      pa.appendChild(el('div', { class: 'aa-sh' }, [el('span', { text: 'QUESTION ' + (si + 1) }), el('span', { class: 'aa-sh-t', text: (s.title || '').toUpperCase() }), el('span', { class: 'aa-sh-m', text: mk(secMarks(s)) })]));
+      const nums = numbered(si);
+      const t = el('table', { class: 'aa-memo' }, [el('tr', {}, [th('Q'), th('Answer / guidance'), th('Marks')])]);
+      s.qs.forEach((q, qi) => {
+        if (q.type === 'context') return;
+        const ans = q.type === 'mcq' ? q.ans + (q.options['ABCD'.indexOf(q.ans)] ? '. ' + q.options['ABCD'.indexOf(q.ans)] : '') : q.type === 'tf' ? q.ans : (q.memo || '');
+        t.appendChild(el('tr', {}, [td(nums[qi]), td(ans), td(String(q.marks), { class: 'aa-num' })]));
+      });
+      pa.appendChild(t);
+    });
+    pa.appendChild(el('div', { class: 'aa-grand', text: 'GRAND TOTAL: ' + mk(paperMarks()) }));
+  }
+
+  function marginContent(tpl) {
+    const parts = String(tpl).replace(/\s+/g, ' ').split(/(\{pages?\})/i).filter(x => x !== '');
+    if (!parts.length) return '""';
+    return parts.map(p => /^\{page\}$/i.test(p) ? 'counter(page)' : /^\{pages\}$/i.test(p) ? 'counter(pages)' : JSON.stringify(p)).join(' ');
+  }
+
   function printPaper(memo) {
     const pa = $('print-area'); pa.textContent = '';
-    const sum = paper.qs.reduce((a, q) => a + q.marks, 0);
-    pa.appendChild(el('h1', { text: (paper.school ? paper.school + ' — ' : '') + (paper.title || 'Assessment') + (memo ? ' — MEMORANDUM' : '') }));
-    pa.appendChild(el('div', { class: 'aa-meta', text: [paper.subject, 'Total: ' + sum + ' marks', paper.time && 'Time: ' + paper.time].filter(Boolean).join('  |  ') }));
-    if (!memo && paper.inst) pa.appendChild(el('div', { class: 'aa-meta', text: 'Instructions: ' + paper.inst }));
-    if (memo) {
-      const tbl = el('table', {}, [el('tr', {}, [el('th', { text: 'Q' }), el('th', { text: 'Answer / guidance' }), el('th', { text: 'Marks' })])]);
-      paper.qs.forEach((q, i) => tbl.appendChild(el('tr', {}, [el('td', { text: String(i + 1) }), el('td', { text: q.memo || '' }), el('td', { text: String(q.marks) })])));
-      pa.appendChild(tbl);
-    } else {
-      paper.qs.forEach((q, i) => pa.appendChild(el('div', { class: 'aa-q', text: (i + 1) + '.  ' + q.text + '   [' + q.marks + ']' })));
+    pa.style.setProperty('--aa-pt', paper.opts.font + 'pt');
+    // The running header and footer live in the page margin, so they are handed
+    // to the stylesheet as content lists. {page} and {pages} become the page
+    // counters, which is what makes "Page 2 of 5" possible.
+    const root = document.documentElement.style;
+    root.setProperty('--aa-hl', marginContent(paper.headerLeft || paper.subject || ''));
+    root.setProperty('--aa-hr', marginContent(paper.headerRight || paper.grade || ''));
+    root.setProperty('--aa-fc', marginContent(paper.footerText || '{page}'));
+    if (memo) printMemo(pa);
+    else {
+      if (paper.opts.cover === 'yes') printCover(pa);
+      printQuestions(pa);
     }
     window.print();
   }
-  $('p-print').addEventListener('click', () => paper.qs.length ? printPaper(false) : toast('Add a question first'));
-  $('p-print-memo').addEventListener('click', () => paper.qs.length ? printPaper(true) : toast('Add a question first'));
+  const hasQs = () => paper.sections.some(s => s.qs.some(q => q.type !== 'context'));
+  $('p-print').addEventListener('click', () => hasQs() ? printPaper(false) : toast('Add a question first'));
+  $('p-print-memo').addEventListener('click', () => hasQs() ? printPaper(true) : toast('Add a question first'));
   $('p-reset').addEventListener('click', () => {
-    if (!paper.qs.length || !confirm('Remove all questions?')) return;
-    paper.qs = []; savePaper(); renderPaper();
+    if (!paper.sections.length || !confirm('Remove all sections and questions?')) return;
+    paper.sections = []; endEdit(); savePaper(); renderPaper();
   });
   renderPaper();
 

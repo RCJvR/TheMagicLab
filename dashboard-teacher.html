@@ -1040,43 +1040,128 @@
     <div class="tab-panel" id="tab-paper">
       <div class="page-header">
         <h1>Paper Assembler</h1>
-        <p>Add questions with marks and cognitive levels, check the total, then print the paper and memo.</p>
+        <p>Build a write-on question paper in sections: cover page, per-question analysis, numbered questions, answer lines and a memo. Everything stays in this browser.</p>
       </div>
-    <div class="aa-section-title">Assemble a question paper</div>
-    <div class="aa-section-sub">Add questions with their marks and cognitive level. The total checks itself against your target, and you can print the paper and a separate memo.</div>
-    <div class="aa-card">
-      <div class="aa-row">
-        <div><label class="aa-lbl" for="p-school">School</label><input class="aa-in" id="p-school" placeholder="School name"></div>
-        <div><label class="aa-lbl" for="p-subject">Subject &amp; grade</label><input class="aa-in" id="p-subject" placeholder="e.g. Mathematics Gr 8"></div>
-        <div><label class="aa-lbl" for="p-title">Assessment</label><input class="aa-in" id="p-title" placeholder="e.g. Term 2 Test"></div>
-      </div>
-      <div class="aa-row">
-        <div><label class="aa-lbl" for="p-target">Target marks</label><input class="aa-in" id="p-target" type="number" min="1" value="50"></div>
-        <div><label class="aa-lbl" for="p-time">Time</label><input class="aa-in" id="p-time" placeholder="e.g. 1 hour"></div>
-        <div><label class="aa-lbl" for="p-inst">Instructions</label><input class="aa-in" id="p-inst" placeholder="e.g. Answer all questions. Show all working."></div>
-      </div>
-    </div>
 
-    <div class="aa-card">
-      <div class="aa-row">
-        <div style="flex:3 1 280px"><label class="aa-lbl" for="q-text">Question</label><textarea class="aa-in" id="q-text" rows="2"></textarea></div>
-        <div><label class="aa-lbl" for="q-marks">Marks</label><input class="aa-in" id="q-marks" type="number" min="1" value="2"></div>
-        <div><label class="aa-lbl" for="q-level">Cognitive level</label>
-          <select class="aa-in" id="q-level"><option>Knowledge</option><option>Routine procedures</option><option>Complex procedures</option><option>Problem solving</option></select></div>
+      <div class="aa-section-title">Paper details</div>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-school">School</label><input class="aa-in" id="p-school" placeholder="School name"></div>
+          <div><label class="aa-lbl" for="p-grade">Grade</label><input class="aa-in" id="p-grade" placeholder="e.g. GRADE 9"></div>
+          <div><label class="aa-lbl" for="p-subject">Subject</label><input class="aa-in" id="p-subject" placeholder="e.g. Coding and Robotics IEB"></div>
+        </div>
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-title">Assessment</label><input class="aa-in" id="p-title" placeholder="e.g. Term 3: Term test"></div>
+          <div><label class="aa-lbl" for="p-date">Date</label><input class="aa-in" id="p-date" placeholder="e.g. 27 August 2026"></div>
+          <div><label class="aa-lbl" for="p-time">Time</label><input class="aa-in" id="p-time" placeholder="e.g. 1 hour"></div>
+        </div>
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-examiner">Examiner</label><input class="aa-in" id="p-examiner"></div>
+          <div><label class="aa-lbl" for="p-moderator">Moderator</label><input class="aa-in" id="p-moderator"></div>
+        </div>
+        <div class="aa-row aa-logo-row">
+          <div>
+            <label class="aa-lbl" for="p-logo">School logo (top right of the cover page)</label>
+            <input class="aa-in" id="p-logo" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+          </div>
+          <div class="aa-logo-preview" id="p-logo-box" hidden>
+            <img id="p-logo-img" alt="Your school logo">
+            <button class="aa-btn aa-btn--sm" id="p-logo-remove" type="button">Remove logo</button>
+          </div>
+        </div>
+        <label class="aa-lbl" for="p-inst">Instructions (one per line, numbered when printed)</label>
+        <textarea class="aa-in" id="p-inst" rows="6"></textarea>
+        <div class="aa-row" style="margin-top:12px">
+          <div><label class="aa-lbl" for="p-target">Target marks</label><input class="aa-in" id="p-target" type="number" min="1" value="50"></div>
+        </div>
       </div>
-      <label class="aa-lbl" for="q-memo">Memo / marking guidance</label>
-      <textarea class="aa-in" id="q-memo" rows="2"></textarea>
-      <div class="aa-actions"><button class="aa-btn aa-btn--primary" id="q-add">Add question</button></div>
-    </div>
 
-    <div class="aa-actions" style="margin-top:0;margin-bottom:12px"><span class="aa-total" id="p-total"></span></div>
-    <div class="aa-spread" id="p-spread"></div>
-    <div class="aa-card" id="p-list"></div>
-    <div class="aa-actions">
-      <button class="aa-btn aa-btn--primary" id="p-print">Print paper</button>
-      <button class="aa-btn" id="p-print-memo">Print memo</button>
-      <button class="aa-btn" id="p-reset">Clear paper</button>
-    </div>
+      <div class="aa-section-title">Print settings</div>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-font">Text size</label>
+            <select class="aa-in" id="p-font"><option value="10">10 pt (compact)</option><option value="11">11 pt</option><option value="12" selected>12 pt (standard)</option><option value="14">14 pt (large print)</option></select></div>
+          <div><label class="aa-lbl" for="p-marks-pos">Mark allocation</label>
+            <select class="aa-in" id="p-marks-pos"><option value="right" selected>Right margin: (3)</option><option value="inline">After the question: [3]</option></select></div>
+          <div><label class="aa-lbl" for="p-lines">Answer lines</label>
+            <select class="aa-in" id="p-lines"><option value="on" selected>On: write-on paper</option><option value="off">Off: questions only</option></select></div>
+        </div>
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-cover">Cover page</label>
+            <select class="aa-in" id="p-cover"><option value="yes" selected>Include</option><option value="no">Leave out</option></select></div>
+          <div><label class="aa-lbl" for="p-analysis">Per-question analysis table</label>
+            <select class="aa-in" id="p-analysis"><option value="yes" selected>Include</option><option value="no">Leave out</option></select></div>
+          <div><label class="aa-lbl" for="p-name-line">Name, educator and class boxes</label>
+            <select class="aa-in" id="p-name-line"><option value="yes" selected>Include</option><option value="no">Leave out</option></select></div>
+          <div><label class="aa-lbl" for="p-extra">Additional writing space</label>
+            <select class="aa-in" id="p-extra"><option value="yes" selected>Include</option><option value="no">Leave out</option></select></div>
+        </div>
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="p-header-left">Page header, left</label><input class="aa-in" id="p-header-left" placeholder="Default: the subject"></div>
+          <div><label class="aa-lbl" for="p-header-right">Page header, right</label><input class="aa-in" id="p-header-right" placeholder="Default: the grade, e.g. Grade 9: Term 3"></div>
+          <div><label class="aa-lbl" for="p-footer">Page footer, centre</label><input class="aa-in" id="p-footer" placeholder="Default: {page}"></div>
+        </div>
+        <div class="aa-hint">In the header and footer, type <b>{page}</b> for the page number and <b>{pages}</b> for the total, e.g. <b>Page {page} of {pages}</b>. The cover page has no header or footer. Leave a box empty to use its default.</div>
+        <div class="aa-hint">With answer lines on, a written question gets its marks plus 2 lines (1 mark = 3 lines, 2 marks = 4 lines) unless you set a number on the question.</div>
+      </div>
+
+      <div class="aa-section-title">Sections</div>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div style="flex:2 1 220px"><label class="aa-lbl" for="s-title">Section title</label><input class="aa-in" id="s-title" placeholder="e.g. Short questions"></div>
+          <div style="flex:3 1 280px"><label class="aa-lbl" for="s-inst">Instruction (printed in italics)</label><input class="aa-in" id="s-inst" placeholder="e.g. Write only the letter of the correct answer."></div>
+        </div>
+        <div class="aa-actions"><button class="aa-btn aa-btn--primary" id="s-add" type="button">Add section</button></div>
+      </div>
+
+      <div class="aa-section-title" id="q-form-title">Add a question</div>
+      <div class="aa-card">
+        <div class="aa-row">
+          <div><label class="aa-lbl" for="q-section">Section</label><select class="aa-in" id="q-section"></select></div>
+          <div><label class="aa-lbl" for="q-type">Type</label>
+            <select class="aa-in" id="q-type">
+              <option value="written">Written answer</option>
+              <option value="mcq">Multiple choice</option>
+              <option value="tf">True or false</option>
+              <option value="context">Scenario / context note</option>
+            </select></div>
+        </div>
+        <div id="q-w-heading" hidden><label class="aa-lbl" for="q-heading">Heading (optional, printed bold)</label><input class="aa-in" id="q-heading" placeholder="e.g. Scenario 1: Robotics Club" style="margin-bottom:12px"></div>
+        <label class="aa-lbl" for="q-text" id="q-text-lbl">Question</label>
+        <textarea class="aa-in" id="q-text" rows="2"></textarea>
+        <div id="q-w-opts" hidden style="margin-top:12px">
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="q-oa">Option A</label><input class="aa-in" id="q-oa"></div>
+            <div><label class="aa-lbl" for="q-ob">Option B</label><input class="aa-in" id="q-ob"></div>
+          </div>
+          <div class="aa-row">
+            <div><label class="aa-lbl" for="q-oc">Option C</label><input class="aa-in" id="q-oc"></div>
+            <div><label class="aa-lbl" for="q-od">Option D</label><input class="aa-in" id="q-od"></div>
+          </div>
+        </div>
+        <div class="aa-row" style="margin-top:12px">
+          <div id="q-w-marks"><label class="aa-lbl" for="q-marks">Marks</label><input class="aa-in" id="q-marks" type="number" min="1" value="1"></div>
+          <div id="q-w-lines"><label class="aa-lbl" for="q-lines">Answer lines (blank = automatic)</label><input class="aa-in" id="q-lines" type="number" min="0" max="20" placeholder="auto"></div>
+          <div id="q-w-ans" hidden><label class="aa-lbl" for="q-ans">Correct answer</label><select class="aa-in" id="q-ans"></select></div>
+          <div id="q-w-level"><label class="aa-lbl" for="q-level">Cognitive level</label>
+            <select class="aa-in" id="q-level"><option>Knowledge</option><option>Routine procedures</option><option>Complex procedures</option><option>Problem solving</option></select></div>
+        </div>
+        <div id="q-w-memo"><label class="aa-lbl" for="q-memo">Memo / marking guidance</label>
+          <textarea class="aa-in" id="q-memo" rows="2"></textarea></div>
+        <div class="aa-actions">
+          <button class="aa-btn aa-btn--primary" id="q-add" type="button">Add question</button>
+          <button class="aa-btn" id="q-cancel" type="button" hidden>Cancel edit</button>
+        </div>
+      </div>
+
+      <div class="aa-actions" style="margin-top:0;margin-bottom:12px"><span class="aa-total" id="p-total"></span></div>
+      <div class="aa-spread" id="p-spread"></div>
+      <div id="p-list"></div>
+      <div class="aa-actions">
+        <button class="aa-btn aa-btn--primary" id="p-print" type="button">Print paper</button>
+        <button class="aa-btn" id="p-print-memo" type="button">Print memo</button>
+        <button class="aa-btn" id="p-reset" type="button">Clear paper</button>
+      </div>
     </div><!-- /tab-paper -->
 
 
