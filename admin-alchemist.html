@@ -1,0 +1,623 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Admin Alchemist — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="auth-modal.css">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<style>
+/* Admin Alchemist — teacher paperwork, turned into a few clicks.
+   A working document, not a landing page: one left-aligned column, hairlines
+   instead of boxes. Neutral throughout; colour is spent only on meaning
+   (the mark total turning amber or red when it does not add up). */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; }
+.hidden { display: none !important; }
+
+nav {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+  min-height: 68px; padding: 0 var(--gutter);
+  background: rgba(8,9,11,0.82);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 17px; letter-spacing: -0.025em; color: var(--paper); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.nav-pill {
+  display: inline-flex; align-items: center; padding: 8px 15px; border-radius: var(--radius-full);
+  background: transparent; border: 1px solid var(--line); color: var(--text-2);
+  font-family: var(--font-body); font-size: 13px; font-weight: 700; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+}
+.nav-pill:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+
+main { width: 100%; max-width: 900px; margin-inline: auto; padding: clamp(32px,4vw,48px) var(--gutter) var(--space-9); }
+.hero { margin: 0 0 var(--space-6); max-width: 64ch; }
+.hero-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(30px,3.6vw,40px); letter-spacing: -0.04em; line-height: 1.04; color: var(--paper); margin-bottom: 10px; }
+.hero-sub { font-size: 15px; line-height: 1.65; color: var(--text-2); }
+.privacy-note { margin-top: 10px; font-size: 13px; color: var(--text-3); }
+
+.tabs { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-6); padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); }
+.tab-btn {
+  padding: 9px 17px; border-radius: var(--radius-full); background: transparent;
+  border: 1px solid var(--line); color: var(--text-2);
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.tab-btn:hover { color: var(--paper); border-color: var(--line-hard); }
+.tab-btn.active { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.section-title { margin: var(--space-6) 0 var(--space-3); font-family: var(--font-display); font-weight: 800; font-size: 16px; letter-spacing: -0.02em; color: var(--paper); }
+.section-title:first-child { margin-top: 0; }
+.section-sub { margin: -6px 0 var(--space-4); font-size: 13.5px; line-height: 1.6; color: var(--text-3); max-width: 68ch; }
+.card { padding: var(--space-5); margin-bottom: var(--space-3); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md); }
+
+.row { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-3); }
+.row > * { flex: 1 1 160px; min-width: 0; }
+label.lbl { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-3); }
+.in, select.in, textarea.in {
+  width: 100%; padding: 10px 12px; border-radius: var(--radius-xs, 8px);
+  background: var(--ink-900); border: 1px solid var(--line); color: var(--text);
+  font-family: var(--font-body); font-size: 14px; line-height: 1.5; outline: none;
+}
+textarea.in { resize: vertical; min-height: 64px; }
+.in:focus { border-color: var(--paper); }
+.in::placeholder { color: var(--text-4); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--space-3); }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.chip span {
+  display: inline-block; padding: 7px 12px; border-radius: var(--radius-full);
+  border: 1px solid var(--line); color: var(--text-2); font-size: 13px; font-weight: 600;
+}
+.chip input:checked + span { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.chip input:focus-visible + span { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: var(--radius-full);
+  border: 1px solid var(--line-hard); background: transparent; color: var(--text);
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.btn:hover { border-color: var(--paper); color: var(--paper); }
+.btn--primary { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.btn--primary:hover { background: #fff; color: var(--ink-900); }
+.btn--sm { padding: 7px 12px; font-size: 12.5px; }
+.actions { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-3); }
+
+.output { margin-top: var(--space-4); padding: var(--space-4); border: 1px dashed var(--line-hard); border-radius: var(--radius-md); font-size: 15px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+.output:empty { display: none; }
+.list-item { padding: var(--space-3) 0; border-bottom: 1px solid var(--line-soft); }
+.list-item:last-child { border-bottom: 0; }
+.list-item .who { font-weight: 800; color: var(--paper); font-size: 14px; }
+.list-item .txt { margin-top: 4px; font-size: 14px; line-height: 1.65; color: var(--text-2); white-space: pre-wrap; }
+.empty-hint { font-size: 13.5px; color: var(--text-3); }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 10px 18px; border-radius: var(--radius-full); background: var(--paper); color: var(--ink-900); font-weight: 700; font-size: 13px; z-index: 100; }
+
+/* Rubric + paper tables */
+.tbl-wrap { overflow-x: auto; }
+table.grid { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.grid th, table.grid td { border: 1px solid var(--line); padding: 6px; vertical-align: top; text-align: left; }
+table.grid th { background: var(--ink-850); color: var(--paper); font-weight: 700; }
+table.grid .in { padding: 6px 8px; font-size: 13px; }
+table.grid textarea.in { min-height: 70px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.total { display: inline-block; padding: 6px 12px; border-radius: var(--radius-2xs, 6px); font-family: var(--font-mono); font-size: 13px; font-weight: 600; border: 1px solid var(--line); color: var(--text-2); }
+.total.ok { color: var(--good); border-color: rgba(74,207,127,0.4); }
+.total.warn { color: var(--warn); border-color: rgba(245,178,61,0.45); }
+.total.bad { color: var(--crit); border-color: rgba(239,91,91,0.5); }
+.spread { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-2); margin: var(--space-3) 0; }
+.spread div { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm, 8px); font-size: 13px; color: var(--text-2); }
+.spread b { display: block; font-family: var(--font-mono); color: var(--paper); font-size: 15px; }
+
+/* Printing: only the document, on white. */
+#print-area { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { display: block; position: absolute; inset: 0; padding: 12mm; background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 11pt; }
+  #print-area h1 { font-size: 16pt; margin-bottom: 4pt; }
+  #print-area .meta { margin-bottom: 10pt; font-size: 10pt; }
+  #print-area table { width: 100%; border-collapse: collapse; }
+  #print-area th, #print-area td { border: 1px solid #000; padding: 4pt 6pt; vertical-align: top; text-align: left; }
+  #print-area .q { margin-bottom: 10pt; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<a class="ml-skip" href="#ml-main">Skip to content</a>
+
+<nav>
+  <a href="index.html" class="nav-logo">✨ The Magic Lab</a>
+  <div class="nav-right">
+    <a href="dashboard-teacher.html" class="nav-pill">← Teacher Dashboard</a>
+    <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;vertical-align:-2px;margin-right:5px;"></i>Sign In</button>
+  </div>
+</nav>
+
+<main id="ml-main" tabindex="-1">
+  <div id="teachers-only" class="hero hidden">
+    <div class="hero-title">Teachers only</div>
+    <div class="hero-sub">Admin Alchemist is part of the teacher dashboard and needs a teacher account.</div>
+    <div class="actions"><a class="btn btn--primary" href="dashboard-student.html">Go to My Progress</a></div>
+  </div>
+  <div id="aa-body">
+  <div class="hero">
+    <div class="hero-title">Admin Alchemist</div>
+    <div class="hero-sub">Turn teacher paperwork into a few clicks: report comments in the CAPS achievement bands, marking rubrics, and question papers with a running mark total and a memo.</div>
+    <div class="privacy-note">Everything you type stays in this browser. Nothing is uploaded or stored on our servers.</div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="reports" role="tab">Report comments</button>
+    <button class="tab-btn" data-tab="rubric" role="tab">Rubric builder</button>
+    <button class="tab-btn" data-tab="paper" role="tab">Paper assembler</button>
+  </div>
+
+  <!-- ══ REPORT COMMENTS ══ -->
+  <div class="tab-panel active" id="panel-reports">
+    <div class="section-title">Write a report comment</div>
+    <div class="section-sub">Pick the learner's CAPS achievement level, tick what applies, and get a comment you can edit. Press Regenerate for different wording.</div>
+    <div class="card">
+      <div class="row">
+        <div><label class="lbl" for="r-name">Learner's first name</label><input class="in" id="r-name" placeholder="e.g. Thandi"></div>
+        <div><label class="lbl" for="r-pron">Pronouns</label>
+          <select class="in" id="r-pron"><option value="they">they / them</option><option value="she">she / her</option><option value="he">he / him</option></select></div>
+        <div><label class="lbl" for="r-subject">Subject (optional)</label><input class="in" id="r-subject" placeholder="e.g. Mathematics"></div>
+      </div>
+      <div class="row">
+        <div><label class="lbl" for="r-level">CAPS achievement level</label>
+          <select class="in" id="r-level">
+            <option value="7">7 · Outstanding (80–100%)</option>
+            <option value="6">6 · Meritorious (70–79%)</option>
+            <option value="5" selected>5 · Substantial (60–69%)</option>
+            <option value="4">4 · Adequate (50–59%)</option>
+            <option value="3">3 · Moderate (40–49%)</option>
+            <option value="2">2 · Elementary (30–39%)</option>
+            <option value="1">1 · Not achieved (0–29%)</option>
+          </select></div>
+        <div><label class="lbl" for="r-trend">Compared with last term</label>
+          <select class="in" id="r-trend"><option value="">No comparison</option><option value="up">Improved</option><option value="same">Consistent</option><option value="down">Dropped</option></select></div>
+      </div>
+      <label class="lbl">Strengths</label>
+      <div class="chips" id="r-strengths"></div>
+      <label class="lbl">Areas to work on</label>
+      <div class="chips" id="r-needs"></div>
+      <div class="actions">
+        <button class="btn btn--primary" id="r-gen">Generate comment</button>
+        <button class="btn" id="r-regen">Regenerate</button>
+      </div>
+      <label class="lbl" for="r-out" style="margin-top:16px">Comment (edit freely)</label>
+      <textarea class="in" id="r-out" rows="5"></textarea>
+      <div class="actions">
+        <button class="btn btn--sm" id="r-copy">Copy</button>
+        <button class="btn btn--sm" id="r-add">Add to class list</button>
+      </div>
+    </div>
+
+    <div class="section-title">Class list</div>
+    <div class="section-sub">Comments you have added. Copy them all at once into your report system.</div>
+    <div class="card"><div id="r-list"></div>
+      <div class="actions"><button class="btn btn--sm" id="r-copyall">Copy all</button><button class="btn btn--sm" id="r-clear">Clear list</button></div></div>
+  </div>
+
+  <!-- ══ RUBRIC ══ -->
+  <div class="tab-panel" id="panel-rubric">
+    <div class="section-title">Build a rubric</div>
+    <div class="section-sub">Name the task, set the performance levels, then describe what each level looks like for each criterion. Total marks work themselves out.</div>
+    <div class="card">
+      <div class="row">
+        <div><label class="lbl" for="b-title">Task title</label><input class="in" id="b-title" placeholder="e.g. Gr 9 Science practical report"></div>
+        <div><label class="lbl" for="b-start">Start from</label>
+          <select class="in" id="b-start"><option value="">Blank</option><option value="presentation">Oral presentation</option><option value="practical">Practical report</option><option value="project">Project / PAT</option></select></div>
+        <div><label class="lbl" for="b-levels">Levels</label>
+          <select class="in" id="b-levels"><option>3</option><option selected>4</option><option>5</option></select></div>
+      </div>
+      <div class="tbl-wrap"><table class="grid" id="b-table"></table></div>
+      <div class="actions">
+        <button class="btn btn--sm" id="b-addrow">+ Criterion</button>
+        <span class="total" id="b-total"></span>
+      </div>
+      <div class="actions">
+        <button class="btn btn--primary" id="b-print">Print rubric</button>
+        <button class="btn" id="b-csv">Copy for Excel</button>
+        <button class="btn" id="b-reset">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAPER ══ -->
+  <div class="tab-panel" id="panel-paper">
+    <div class="section-title">Assemble a question paper</div>
+    <div class="section-sub">Add questions with their marks and cognitive level. The total checks itself against your target, and you can print the paper and a separate memo.</div>
+    <div class="card">
+      <div class="row">
+        <div><label class="lbl" for="p-school">School</label><input class="in" id="p-school" placeholder="School name"></div>
+        <div><label class="lbl" for="p-subject">Subject &amp; grade</label><input class="in" id="p-subject" placeholder="e.g. Mathematics Gr 8"></div>
+        <div><label class="lbl" for="p-title">Assessment</label><input class="in" id="p-title" placeholder="e.g. Term 2 Test"></div>
+      </div>
+      <div class="row">
+        <div><label class="lbl" for="p-target">Target marks</label><input class="in" id="p-target" type="number" min="1" value="50"></div>
+        <div><label class="lbl" for="p-time">Time</label><input class="in" id="p-time" placeholder="e.g. 1 hour"></div>
+        <div><label class="lbl" for="p-inst">Instructions</label><input class="in" id="p-inst" placeholder="e.g. Answer all questions. Show all working."></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div style="flex:3 1 280px"><label class="lbl" for="q-text">Question</label><textarea class="in" id="q-text" rows="2"></textarea></div>
+        <div><label class="lbl" for="q-marks">Marks</label><input class="in" id="q-marks" type="number" min="1" value="2"></div>
+        <div><label class="lbl" for="q-level">Cognitive level</label>
+          <select class="in" id="q-level"><option>Knowledge</option><option>Routine procedures</option><option>Complex procedures</option><option>Problem solving</option></select></div>
+      </div>
+      <label class="lbl" for="q-memo">Memo / marking guidance</label>
+      <textarea class="in" id="q-memo" rows="2"></textarea>
+      <div class="actions"><button class="btn btn--primary" id="q-add">Add question</button></div>
+    </div>
+
+    <div class="actions" style="margin-top:0;margin-bottom:12px"><span class="total" id="p-total"></span></div>
+    <div class="spread" id="p-spread"></div>
+    <div class="card" id="p-list"></div>
+    <div class="actions">
+      <button class="btn btn--primary" id="p-print">Print paper</button>
+      <button class="btn" id="p-print-memo">Print memo</button>
+      <button class="btn" id="p-reset">Clear paper</button>
+    </div>
+  </div>
+  </div><!-- /aa-body -->
+</main>
+
+<div id="print-area" aria-hidden="true"></div>
+
+<script src="auth.js"></script>
+<script src="require-auth.js"></script>
+<script defer src="auth-modal.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── helpers ────────────────────────────────────────────────────────────
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('aa:' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('aa:' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function el(tag, attrs, kids) {
+    const n = document.createElement(tag);
+    Object.entries(attrs || {}).forEach(([k, v]) => {
+      if (k === 'text') n.textContent = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v);
+    });
+    (kids || []).forEach(c => n.appendChild(c));
+    return n;
+  }
+  function toast(msg) {
+    const t = el('div', { class: 'toast', role: 'status', text: msg });
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 1800);
+  }
+  async function copy(text) {
+    try { await navigator.clipboard.writeText(text); toast('Copied'); }
+    catch (e) { toast('Copy failed — select the text and copy manually'); }
+  }
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  function lucide() { if (window.lucide) window.lucide.createIcons(); }
+
+  // ── tabs ───────────────────────────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + b.dataset.tab));
+  }));
+
+  /* ═══════════════ REPORT COMMENTS ═══════════════ */
+  const STRENGTHS = {
+    participates: 'Participates actively in class',
+    consistent:   'Works consistently',
+    problem:      'Shows strong problem-solving skills',
+    neat:         'Presents neat, careful work',
+    teamwork:     'Works well with others',
+    initiative:   'Shows initiative',
+    homework:     'Hands in homework on time',
+    tests:        'Performs well in tests'
+  };
+  const NEEDS = {
+    revise:   'Revise regularly',
+    homework: 'Hand in homework on time',
+    focus:    'Stay focused in class',
+    working:  'Show full working',
+    help:     'Ask for help sooner',
+    present:  'Improve presentation of work',
+    testprep: 'Prepare more thoroughly for tests',
+    participate: 'Take part more in class'
+  };
+  // [verb|verbs] resolves by pronoun; {S} subject pronoun, {o} object, {p} possessive.
+  const STRENGTH_PHRASE = {
+    participates: '{S} [take|takes] an active part in lessons',
+    consistent:   '{S} [work|works] consistently',
+    problem:      '{S} [approach|approaches] problems with confidence and clear thinking',
+    neat:         '{p} work is neat and carefully presented',
+    teamwork:     '{S} [work|works] well with classmates',
+    initiative:   '{S} [show|shows] initiative',
+    homework:     '{S} [hand|hands] in homework on time',
+    tests:        '{S} [perform|performs] well in assessments'
+  };
+  const NEED_PHRASE = {
+    revise:   'revising regularly',
+    homework: 'handing in homework on time',
+    focus:    'staying focused in class',
+    working:  'showing full working',
+    help:     'asking for help sooner',
+    present:  'improving the presentation of {p} work',
+    testprep: 'preparing more thoroughly for tests',
+    participate: 'taking a more active part in lessons'
+  };
+  const OPENERS = {
+    7: ['{N} has achieved outstanding results{sub}.', '{N} has produced outstanding work{sub} this term.'],
+    6: ['{N} has achieved a meritorious result{sub}.', '{N} has done very well{sub} this term.'],
+    5: ['{N} has achieved a substantial result{sub}.', '{N} has made good progress{sub} this term.'],
+    4: ['{N} has achieved an adequate result{sub}.', '{N} has met the basic requirements{sub} this term.'],
+    3: ['{N} has achieved a moderate result{sub}, and there is room to grow.', '{N} is working at a moderate level{sub} and can improve with more effort.'],
+    2: ['{N} is currently performing at an elementary level{sub} and needs more support.', '{N} has found the work{sub} challenging this term.'],
+    1: ['{N} has not yet achieved the required standard{sub} and needs urgent support.', '{N} is not yet meeting the requirements{sub} and needs focused help.']
+  };
+  const TREND = {
+    up:   ['This is an improvement on last term.', 'It is encouraging to see progress since last term.'],
+    same: ['This is consistent with last term.'],
+    down: ['This is a drop from last term, which we would like to turn around.']
+  };
+  const CLOSERS = {
+    high: ['Keep it up!', 'Well done on a strong term.'],
+    mid:  ['With continued effort {S} can reach even higher.', 'I look forward to seeing {o} build on this.'],
+    low:  ['With support at home and regular practice, improvement is possible.', 'Please encourage regular revision; I am happy to help.']
+  };
+  const PRON = {
+    they: { S: 'They', s: 'they', o: 'them', p: 'their', i: 0 },
+    she:  { S: 'She',  s: 'she',  o: 'her',  p: 'her',   i: 1 },
+    he:   { S: 'He',   s: 'he',   o: 'him',  p: 'his',   i: 1 }
+  };
+  function fill(tpl, ctx) {
+    return tpl
+      .replace(/\[([^|\]]+)\|([^\]]+)\]/g, (m, a, b) => ctx.pr.i ? b : a)
+      .replace(/\{N\}/g, ctx.name)
+      .replace(/\{sub\}/g, ctx.subject ? ' in ' + ctx.subject : '')
+      .replace(/\{S\}/g, ctx.pr.S)
+      .replace(/\{o\}/g, ctx.pr.o)
+      .replace(/\{p\}/g, ctx.pr.p);
+  }
+  // Possessive at the start of a sentence needs a capital.
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  function joinList(a) { return a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+
+  function buildComment() {
+    const name = $('r-name').value.trim() || 'This learner';
+    const pr = PRON[$('r-pron').value];
+    const level = +$('r-level').value;
+    const ctx = { name, pr, subject: $('r-subject').value.trim() };
+    const sKeys = [...document.querySelectorAll('#r-strengths input:checked')].map(i => i.value);
+    const nKeys = [...document.querySelectorAll('#r-needs input:checked')].map(i => i.value);
+    const parts = [fill(pick(OPENERS[level]), ctx)];
+    const trend = $('r-trend').value;
+    if (trend) parts.push(pick(TREND[trend]));
+    if (sKeys.length) {
+      const phrases = sKeys.map(k => fill(STRENGTH_PHRASE[k], ctx)).map(cap);
+      parts.push(phrases.map(p => p + '.').join(' '));
+    }
+    if (nKeys.length) {
+      const verb = pick(['would benefit from', 'should focus on']);
+      parts.push(pr.S + ' ' + verb + ' ' + joinList(nKeys.map(k => fill(NEED_PHRASE[k], ctx))) + '.');
+    }
+    parts.push(fill(pick(level >= 6 ? CLOSERS.high : level >= 4 ? CLOSERS.mid : CLOSERS.low), ctx));
+    return parts.join(' ');
+  }
+
+  function chipGroup(host, map) {
+    Object.entries(map).forEach(([k, label]) => {
+      host.appendChild(el('label', { class: 'chip' }, [
+        el('input', { type: 'checkbox', value: k }), el('span', { text: label })
+      ]));
+    });
+  }
+  chipGroup($('r-strengths'), STRENGTHS);
+  chipGroup($('r-needs'), NEEDS);
+
+  const gen = () => { $('r-out').value = buildComment(); };
+  $('r-gen').addEventListener('click', gen);
+  $('r-regen').addEventListener('click', gen);
+  $('r-copy').addEventListener('click', () => $('r-out').value && copy($('r-out').value));
+
+  let classList = store.get('comments', []);
+  function renderList() {
+    const host = $('r-list');
+    host.textContent = '';
+    if (!classList.length) { host.appendChild(el('div', { class: 'empty-hint', text: 'No comments added yet.' })); return; }
+    classList.forEach((c, i) => {
+      host.appendChild(el('div', { class: 'list-item' }, [
+        el('div', { class: 'who', text: c.name }),
+        el('div', { class: 'txt', text: c.text }),
+        el('div', { class: 'actions' }, [
+          el('button', { class: 'btn btn--sm', text: 'Copy', onclick: () => copy(c.text) }),
+          el('button', { class: 'btn btn--sm', text: 'Remove', onclick: () => { classList.splice(i, 1); store.set('comments', classList); renderList(); } })
+        ])
+      ]));
+    });
+  }
+  $('r-add').addEventListener('click', () => {
+    const text = $('r-out').value.trim();
+    if (!text) return toast('Generate a comment first');
+    classList.push({ name: $('r-name').value.trim() || 'Learner ' + (classList.length + 1), text });
+    store.set('comments', classList); renderList();
+    $('r-name').value = ''; $('r-out').value = ''; $('r-name').focus();
+  });
+  $('r-copyall').addEventListener('click', () => classList.length && copy(classList.map(c => c.name + ': ' + c.text).join('\n\n')));
+  $('r-clear').addEventListener('click', () => { if (classList.length && confirm('Remove all saved comments?')) { classList = []; store.set('comments', classList); renderList(); } });
+  renderList();
+
+  /* ═══════════════ RUBRIC ═══════════════ */
+  const TEMPLATES = {
+    presentation: ['Content knowledge', 'Organisation', 'Delivery and voice', 'Use of visual aids'],
+    practical:    ['Aim and hypothesis', 'Method and safety', 'Results and data', 'Conclusion'],
+    project:      ['Planning and research', 'Quality of product', 'Process documentation', 'Evaluation and reflection']
+  };
+  let rubric = store.get('rubric', null) || { title: '', levels: 4, rows: [{ name: '', cells: [] }] };
+
+  function levelLabel(i, n) { return n - i; } // top level scores highest
+  function renderRubric() {
+    const n = rubric.levels;
+    const t = $('b-table'); t.textContent = '';
+    const head = el('tr', {}, [el('th', { text: 'Criterion' })]);
+    for (let i = 0; i < n; i++) head.appendChild(el('th', { text: 'Level ' + levelLabel(i, n) + ' · ' + levelLabel(i, n) + ' marks' }));
+    t.appendChild(head);
+    rubric.rows.forEach((r, ri) => {
+      const tr = el('tr');
+      const name = el('input', { class: 'in', 'aria-label': 'Criterion ' + (ri + 1), value: r.name, placeholder: 'Criterion' });
+      name.addEventListener('input', () => { r.name = name.value; save(); });
+      tr.appendChild(el('td', {}, [name, el('button', { class: 'btn btn--sm', style: 'margin-top:6px', text: 'Remove', onclick: () => { rubric.rows.splice(ri, 1); save(); renderRubric(); } })]));
+      for (let i = 0; i < n; i++) {
+        const ta = el('textarea', { class: 'in', 'aria-label': 'Criterion ' + (ri + 1) + ' level ' + levelLabel(i, n) });
+        ta.value = r.cells[i] || '';
+        ta.addEventListener('input', () => { r.cells[i] = ta.value; save(); });
+        tr.appendChild(el('td', {}, [ta]));
+      }
+      t.appendChild(tr);
+    });
+    $('b-total').textContent = 'Total: ' + (rubric.rows.length * n) + ' marks · ' + rubric.rows.length + ' criteria';
+  }
+  const save = () => store.set('rubric', rubric);
+  $('b-title').value = rubric.title; $('b-levels').value = String(rubric.levels);
+  $('b-title').addEventListener('input', () => { rubric.title = $('b-title').value; save(); });
+  $('b-levels').addEventListener('change', () => { rubric.levels = +$('b-levels').value; save(); renderRubric(); });
+  $('b-addrow').addEventListener('click', () => { rubric.rows.push({ name: '', cells: [] }); save(); renderRubric(); });
+  $('b-start').addEventListener('change', () => {
+    const t = TEMPLATES[$('b-start').value]; if (!t) return;
+    if (rubric.rows.some(r => r.name || r.cells.some(Boolean)) && !confirm('Replace the current criteria?')) return;
+    rubric.rows = t.map(name => ({ name, cells: [] })); save(); renderRubric();
+  });
+  $('b-reset').addEventListener('click', () => {
+    if (!confirm('Clear the rubric?')) return;
+    rubric = { title: '', levels: rubric.levels, rows: [{ name: '', cells: [] }] };
+    $('b-title').value = ''; save(); renderRubric();
+  });
+  $('b-csv').addEventListener('click', () => {
+    const n = rubric.levels, q = s => '"' + String(s || '').replace(/"/g, '""') + '"';
+    const lines = [['Criterion'].concat(Array.from({ length: n }, (_, i) => 'Level ' + levelLabel(i, n))).map(q).join('\t')];
+    rubric.rows.forEach(r => lines.push([r.name].concat(Array.from({ length: n }, (_, i) => r.cells[i] || '')).map(q).join('\t')));
+    copy(lines.join('\n'));
+  });
+  $('b-print').addEventListener('click', () => {
+    const n = rubric.levels, pa = $('print-area'); pa.textContent = '';
+    pa.appendChild(el('h1', { text: rubric.title || 'Rubric' }));
+    pa.appendChild(el('div', { class: 'meta', text: 'Learner: ______________________    Date: ____________    Total: ____ / ' + (rubric.rows.length * n) }));
+    const tbl = el('table'); const hr = el('tr', {}, [el('th', { text: 'Criterion' })]);
+    for (let i = 0; i < n; i++) hr.appendChild(el('th', { text: 'Level ' + levelLabel(i, n) + ' (' + levelLabel(i, n) + ')' }));
+    hr.appendChild(el('th', { text: 'Mark' })); tbl.appendChild(hr);
+    rubric.rows.forEach(r => {
+      const tr = el('tr', {}, [el('td', { text: r.name })]);
+      for (let i = 0; i < n; i++) tr.appendChild(el('td', { text: r.cells[i] || '' }));
+      tr.appendChild(el('td', { text: '' })); tbl.appendChild(tr);
+    });
+    pa.appendChild(tbl); window.print();
+  });
+  renderRubric();
+
+  /* ═══════════════ PAPER ═══════════════ */
+  const LEVELS = ['Knowledge', 'Routine procedures', 'Complex procedures', 'Problem solving'];
+  let paper = store.get('paper', null) || { school: '', subject: '', title: '', target: 50, time: '', inst: '', qs: [] };
+  const fields = { school: 'p-school', subject: 'p-subject', title: 'p-title', time: 'p-time', inst: 'p-inst' };
+  Object.entries(fields).forEach(([k, id]) => { $(id).value = paper[k] || ''; $(id).addEventListener('input', () => { paper[k] = $(id).value; savePaper(); }); });
+  $('p-target').value = paper.target;
+  $('p-target').addEventListener('input', () => { paper.target = +$('p-target').value || 0; savePaper(); renderPaper(); });
+  const savePaper = () => store.set('paper', paper);
+
+  function renderPaper() {
+    const sum = paper.qs.reduce((a, q) => a + q.marks, 0);
+    const tot = $('p-total');
+    tot.textContent = 'Total: ' + sum + ' / ' + paper.target + ' marks';
+    tot.className = 'total ' + (sum === paper.target ? 'ok' : sum > paper.target ? 'bad' : 'warn');
+    const sp = $('p-spread'); sp.textContent = '';
+    LEVELS.forEach(l => {
+      const m = paper.qs.filter(q => q.level === l).reduce((a, q) => a + q.marks, 0);
+      sp.appendChild(el('div', { text: l }, [el('b', { text: m + ' marks · ' + (sum ? Math.round(m / sum * 100) : 0) + '%' })]));
+    });
+    const host = $('p-list'); host.textContent = '';
+    if (!paper.qs.length) { host.appendChild(el('div', { class: 'empty-hint', text: 'No questions yet. Add one above.' })); return; }
+    paper.qs.forEach((q, i) => {
+      const move = d => () => { const j = i + d; if (j < 0 || j >= paper.qs.length) return; [paper.qs[i], paper.qs[j]] = [paper.qs[j], paper.qs[i]]; savePaper(); renderPaper(); };
+      host.appendChild(el('div', { class: 'list-item' }, [
+        el('div', { class: 'who', text: 'Question ' + (i + 1) + ' · [' + q.marks + '] · ' + q.level }),
+        el('div', { class: 'txt', text: q.text }),
+        q.memo ? el('div', { class: 'txt', style: 'color:var(--text-3)', text: 'Memo: ' + q.memo }) : el('span'),
+        el('div', { class: 'actions' }, [
+          el('button', { class: 'btn btn--sm', 'aria-label': 'Move question ' + (i + 1) + ' up', text: '↑', onclick: move(-1) }),
+          el('button', { class: 'btn btn--sm', 'aria-label': 'Move question ' + (i + 1) + ' down', text: '↓', onclick: move(1) }),
+          el('button', { class: 'btn btn--sm', text: 'Edit', onclick: () => {
+            $('q-text').value = q.text; $('q-marks').value = q.marks; $('q-level').value = q.level; $('q-memo').value = q.memo || '';
+            paper.qs.splice(i, 1); savePaper(); renderPaper(); $('q-text').focus();
+          } }),
+          el('button', { class: 'btn btn--sm', text: 'Remove', onclick: () => { paper.qs.splice(i, 1); savePaper(); renderPaper(); } })
+        ])
+      ]));
+    });
+  }
+  $('q-add').addEventListener('click', () => {
+    const text = $('q-text').value.trim(), marks = parseInt($('q-marks').value, 10);
+    if (!text) return toast('Type the question first');
+    if (!(marks > 0)) return toast('Marks must be 1 or more');
+    paper.qs.push({ text, marks, level: $('q-level').value, memo: $('q-memo').value.trim() });
+    savePaper(); renderPaper();
+    $('q-text').value = ''; $('q-memo').value = ''; $('q-text').focus();
+  });
+  function printPaper(memo) {
+    const pa = $('print-area'); pa.textContent = '';
+    const sum = paper.qs.reduce((a, q) => a + q.marks, 0);
+    pa.appendChild(el('h1', { text: (paper.school ? paper.school + ' — ' : '') + (paper.title || 'Assessment') + (memo ? ' — MEMORANDUM' : '') }));
+    pa.appendChild(el('div', { class: 'meta', text: [paper.subject, 'Total: ' + sum + ' marks', paper.time && 'Time: ' + paper.time].filter(Boolean).join('  |  ') }));
+    if (!memo && paper.inst) pa.appendChild(el('div', { class: 'meta', text: 'Instructions: ' + paper.inst }));
+    if (memo) {
+      const tbl = el('table', {}, [el('tr', {}, [el('th', { text: 'Q' }), el('th', { text: 'Answer / guidance' }), el('th', { text: 'Marks' })])]);
+      paper.qs.forEach((q, i) => tbl.appendChild(el('tr', {}, [el('td', { text: String(i + 1) }), el('td', { text: q.memo || '' }), el('td', { text: String(q.marks) })])));
+      pa.appendChild(tbl);
+    } else {
+      paper.qs.forEach((q, i) => pa.appendChild(el('div', { class: 'q', text: (i + 1) + '.  ' + q.text + '   [' + q.marks + ']' })));
+    }
+    window.print();
+  }
+  $('p-print').addEventListener('click', () => paper.qs.length ? printPaper(false) : toast('Add a question first'));
+  $('p-print-memo').addEventListener('click', () => paper.qs.length ? printPaper(true) : toast('Add a question first'));
+  $('p-reset').addEventListener('click', () => {
+    if (!paper.qs.length || !confirm('Remove all questions?')) return;
+    paper.qs = []; savePaper(); renderPaper();
+  });
+  renderPaper();
+
+  // Teacher accounts only. Hold the tools back until the profile says so.
+  $('aa-body').classList.add('hidden');
+  let tries = 0;
+  (function gate() {
+    const A = window.MagicLabAuth, prof = A && A.getProfile && A.getProfile();
+    if (prof) {
+      if (prof.role === 'teacher') $('aa-body').classList.remove('hidden');
+      else $('teachers-only').classList.remove('hidden');
+    } else if (++tries < 40) setTimeout(gate, 150);
+    else $('teachers-only').classList.remove('hidden');
+  })();
+
+  lucide();
+})();
+</script>
+</body>
+</html>
