@@ -300,6 +300,7 @@ input::placeholder { color: var(--text-3); }
           <button class="btn" type="button" data-shape="sun">Sun</button>
           <button class="btn" type="button" data-shape="moon">Moon</button>
           <button class="btn" type="button" data-shape="tick">Tick</button>
+          <button class="btn" type="button" data-shape="wheel">Wheel</button>
         </div>
         <label class="f" style="margin-top:var(--space-3)">Line weight: <span id="weightLbl">Thin (1 learner wide)</span>
           <input type="range" id="weight" min="1" max="3" step="1" value="1">
@@ -799,6 +800,13 @@ function shape(name, live) {
   else if (name === 'sun') {
     custom = true; g.arc(cx, cy, s * .5, 0, 7); g.fill(); g.lineWidth = s * .2; g.lineCap = 'round';
     for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g.beginPath(); g.moveTo(cx + Math.cos(a) * s * .78, cy + Math.sin(a) * s * .78); g.lineTo(cx + Math.cos(a) * s * 1.05, cy + Math.sin(a) * s * 1.05); g.stroke(); }
+  }
+  else if (name === 'wheel') {      // rim, hub and eight spokes
+    custom = true; g.lineCap = 'butt';
+    g.lineWidth = s * .2; g.arc(cx, cy, s * .9, 0, 7); g.stroke();
+    g.lineWidth = s * .2;
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * s * .85, cy + Math.sin(a) * s * .85); g.stroke(); }
+    g.beginPath(); g.arc(cx, cy, s * .3, 0, 7); g.fill();
   }
   else if (name === 'moon') { custom = true; g.arc(cx, cy, s, 0, 7); g.fill(); g.fillStyle = '#fff'; g.beginPath(); g.arc(cx + s * .48, cy - s * .2, s * .82, 0, 7); g.fill(); g.fillStyle = '#000'; }
   else if (name === 'tick') { custom = true; g.lineWidth = s * .38; g.lineCap = 'round'; g.lineJoin = 'round'; poly([[-.9, .05], [-.3, .65], [.95, -.7]]); g.stroke(); }
