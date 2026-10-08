@@ -413,6 +413,7 @@ input::placeholder { color: var(--text-3); }
 const $ = id => document.getElementById(id);
 const KEY = 'ml-mosaic-mage-v2';
 const HEX = /^#[0-9a-f]{6}$/i;
+const MAX_PICS = 100;                       // most saved pictures a show can hold
 
 /* ── State ───────────────────────────────────────────────────────────────
    W is the picture being edited. cells: 1 = colour 1, 0 = colour 2, row-major.
@@ -471,7 +472,7 @@ function unpack(o) {
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify({ v: 2, seatFrom, seatLimit, defCols, defRows, nm, beatSec, picEvery, loaded, W: pack(W), lib: lib.map(pack) })); } catch (e) {} }
 function restore(o) {
-  W = unpack(o.W); lib = (o.lib || []).slice(0, 60).map(unpack);
+  W = unpack(o.W); lib = (o.lib || []).slice(0, MAX_PICS).map(unpack);
   seatFrom = o.seatFrom === 'right' ? 'right' : 'left';
   beatSec = Math.min(5, Math.max(0.5, +o.beatSec || 1)); picEvery = [1, 2, 3, 4].includes(o.picEvery | 0) ? o.picEvery | 0 : 1;
   if (o.nm) nm = { start: ['br', 'bl', 'tr', 'tl'].includes(o.nm.start) ? o.nm.start : 'br', dir: o.nm.dir === 'cols' ? 'cols' : 'rows', show: o.nm.show !== false };
@@ -972,7 +973,9 @@ $('saveImg').onclick = () => {
   W.name = $('nameIn').value.trim().slice(0, 40);
   if (!W.name) { $('nameIn').focus(); updateReadout('Give the picture a name first.'); return; }
   const same = lib.findIndex(p => p.name.toLowerCase() === W.name.toLowerCase());
-  if (same >= 0) { lib[same] = clonePic(W); loaded = same; } else { lib.push(clonePic(W)); loaded = lib.length - 1; }
+  if (same >= 0) { lib[same] = clonePic(W); loaded = same; }
+  else if (lib.length >= MAX_PICS) { updateReadout(`A show can hold ${MAX_PICS} pictures. Delete one to make room.`); return; }
+  else { lib.push(clonePic(W)); loaded = lib.length - 1; }
   refresh(); updateReadout(`Saved “${W.name}”.`);
 };
 $('newImg').onclick = () => { W = newPic(defCols, defRows, W.c1, W.c2); selRow = null; loaded = -1; undoStack = []; sel = null; dropSrc(); syncControls(); refresh(); $('nameIn').focus(); };
@@ -1171,7 +1174,7 @@ function anUpdate() {
   if (!$('anInfo')) return;
   anFillDirs();
   const b = buildFrames();
-  $('anInfo').textContent = b.err ? b.err : `${b.frames.length} frame${b.frames.length > 1 ? 's' : ''}, about ${(b.frames.length * beatSec * picEvery).toFixed(0)} seconds for one pass at the current timing.${b.frames.length > 60 ? ' That is more than the 60 pictures a show can hold. Use a bigger step.' : ''}`;
+  $('anInfo').textContent = b.err ? b.err : `${b.frames.length} frame${b.frames.length > 1 ? 's' : ''}, about ${(b.frames.length * beatSec * picEvery).toFixed(0)} seconds for one pass at the current timing.${b.frames.length > MAX_PICS ? ` That is more than the ${MAX_PICS} pictures a show can hold. Use a bigger step.` : ''}`;
 }
 function animShow() {
   override = viewCells({ cells: anim.frames[anim.idx], tw: W.tw }, anim.beat);
@@ -1199,7 +1202,7 @@ $('anCreate').onclick = () => {
   const base = ($('anName').value.trim() || ($('anSource').value === 'text' && $('anText').value.trim()) || $('anMotion').selectedOptions[0].text.split(' (')[0]).slice(0, 32);
   const re = new RegExp('^' + base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ' \\d+$'), cur = loaded >= 0 ? lib[loaded] : null;
   const kept = lib.filter(p => !re.test(p.name));
-  if (kept.length + b.frames.length > 60) { updateReadout(`That would make ${b.frames.length} frames, and a show can hold 60 pictures in total. Use a bigger step, or delete some saved pictures first.`); return; }
+  if (kept.length + b.frames.length > MAX_PICS) { updateReadout(`That would make ${b.frames.length} frames, and a show can hold ${MAX_PICS} pictures in total. Use a bigger step, or delete some saved pictures first.`); return; }
   lib = kept; loaded = cur && lib.includes(cur) ? lib.indexOf(cur) : -1;
   b.frames.forEach((f, i) => { const p = clonePic(W); p.cells = f; p.name = `${base} ${i + 1}`; lib.push(p); });
   refresh(); updateReadout(`Saved ${b.frames.length} frames as “${base} 1” to “${base} ${b.frames.length}”. Present all plays them in order.`);
