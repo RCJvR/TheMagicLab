@@ -779,7 +779,13 @@ function heartTweak(f) {
   while (r0 < W.rows && !f[r0 * W.cols + c]) r0++;
   if (r0 > 0 && r0 < W.rows && f[(r0 - 1) * W.cols + c - 1] && f[(r0 - 1) * W.cols + c + 1]) f[(r0 - 1) * W.cols + c] = 1;
 }
+const BOLT = ['.........#..', '........##..', '.......##...', '......##....', '.....###....', '....####....', '....###.....', '...####.....', '..####......', '..##########', '.##########.', '##########..', '......####..', '.....####...', '.....###....', '....###.....', '....###.....', '....##......', '...##.......', '..##........', '..#.........'];     // hand-drawn lightning bolt, 12 wide and 21 tall
 function shape(name, live) {
+  if (name === 'bolt' && W.cols >= BOLT[0].length + 1 && W.rows >= BOLT.length) {
+    const gray = new Float32Array(W.cols * W.rows).fill(1), x0 = Math.floor((W.cols - BOLT[0].length) / 2) + 1, y0 = Math.floor((W.rows - BOLT.length) / 2);
+    BOLT.forEach((row, r) => [...row].forEach((ch, c) => { if (ch === '#') gray[(y0 + r) * W.cols + x0 + c] = 0; }));
+    dropSrc(); mk = { kind: 'shape', name }; applyGray(gray, 0.5, false, live); return;
+  }
   const [c, g] = hiCanvas(), w = c.width, h = c.height, cx = w / 2, cy = h / 2, s = Math.min(w, h) * 0.46;
   const poly = pts => pts.forEach(([x, y], i) => g[i ? 'lineTo' : 'moveTo'](cx + x * s, cy + y * s));
   const dot = (x, y, r) => { g.moveTo(cx + (x + r) * s, cy + y * s); g.arc(cx + x * s, cy + y * s, r * s, 0, 7); };
