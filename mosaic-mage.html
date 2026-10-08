@@ -72,7 +72,7 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px,2
 .frames { margin-top: 4px; }
 .frames-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
 .frames-head h2 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--paper); margin-right: auto; }
-.strip { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); }
+.strip { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); min-height: 116px; }
 .frame { flex: 0 0 auto; background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px; cursor: pointer; color: var(--text-2); font: inherit; text-align: left; }
 .frame:hover { border-color: var(--line-hard); }
 .frame[aria-current="true"] { border-color: var(--accent); color: var(--paper); }
@@ -535,8 +535,16 @@ function drawGrid(canvas, p, maxW, maxH, labels) {
   }
   return { cs, ox, oy };
 }
+/* The grid is sized so that it and the saved-pictures row both fit on screen at once, with no scrolling between
+   them: whatever height is left after the page chrome above it and the buttons and thumbnails below it. */
+function gridRoom() {
+  const wr = $('stageWrap').getBoundingClientRect(), sr = $('strip').getBoundingClientRect();
+  if (!sr.height) return Math.max(280, window.innerHeight * 0.68);
+  const above = wr.top + window.scrollY, below = sr.bottom - wr.bottom;
+  return Math.max(260, window.innerHeight - above - 12 - below - 2);
+}
 function redrawStage() {
-  layout = drawGrid($('grid'), override ? { ...W, cells: override, hideTw: true } : W, $('stageWrap').clientWidth - 14, Math.max(280, window.innerHeight * 0.68), true);
+  layout = drawGrid($('grid'), override ? { ...W, cells: override, hideTw: true } : W, $('stageWrap').clientWidth - 14, gridRoom(), true);
   if (document.activeElement === $('grid')) {
     const g = $('grid').getContext('2d'); g.strokeStyle = '#eda13c'; g.lineWidth = 2.5;
     g.strokeRect(layout.ox + cursor.c * layout.cs + 1, layout.oy + cursor.r * layout.cs + 1, layout.cs - 2, layout.cs - 2);
@@ -606,7 +614,7 @@ function syncControls() {
   nmSync(); $('speed').value = beatSec; $('picEvery').value = picEvery; speedLabel(); $('limit').value = seatLimit; $('defCols').value = defCols; $('defRows').value = defRows; $('mode').value = W.mode; $('nameIn').value = W.name;
   syncLine();
 }
-function refresh() { if ($('nmHint')) nmSync(); if ($('anInfo')) anUpdate(); redrawStage(); renderStrip(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
+function refresh() { if ($('nmHint')) nmSync(); if ($('anInfo')) anUpdate(); renderStrip(); redrawStage(); updateReadout(); syncLine(); save(); if (window.lucide) lucide.createIcons(); }
 
 /* ── Per-row / per-column colours ────────────────────────────────────────── */
 function syncLine() {
