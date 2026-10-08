@@ -18,7 +18,7 @@
     ['7', '13:15', '14:00', 0], ['8', '14:00', '14:45', 0]
   ].map(([label, start, end, brk]) => ({ label, start, end, brk: !!brk }));
   const weekDays = () => DAY_NAMES.slice(0, 5).map(name => ({ name, periods: defaultPeriods() }));
-  const blank = () => ({ school: '', title: '', days: weekDays(), teachers: [], classes: [], subjects: [], rooms: [], lessons: [], placed: [], cycle: { anchor: '', anchorDay: 0, holidays: [] }, absences: [], cover: {} });
+  const blank = () => ({ school: '', title: '', days: weekDays(), teachers: [], classes: [], subjects: [], rooms: [], lessons: [], placed: [], cycle: { anchor: '', anchorDay: 0, holidays: [] }, absences: [], cover: {}, learners: [] });
 
   // Rebuild everything from untrusted input (a saved file or old storage).
   function sanitize(raw) {
@@ -59,6 +59,10 @@
       id: mkId(p.id), lesson: p.lesson, day: Math.min(o.days.length - 1, Math.max(0, parseInt(p.day, 10) || 0)), period: Math.max(0, parseInt(p.period, 10) || 0),
       len: p.len === 2 ? 2 : 1, locked: !!p.locked
     }));
+    // learners belong to a class and are printed on class lists
+    o.learners = list(raw.learners, 6000, l => l && has(o.classes, l.cls) && ({
+      id: mkId(l.id), cls: l.cls, surname: str(l.surname, 60).trim(), name: str(l.name, 60).trim(), ref: str(l.ref, 20).trim()
+    })).filter(l => l.surname || l.name);
     // substitutions: where the cycle sits on the calendar, who is out, who covers
     const cy = raw.cycle && typeof raw.cycle === 'object' ? raw.cycle : {};
     o.cycle = {
@@ -352,7 +356,7 @@
         S[kind] = S[kind].filter(x => x.id !== item.id);
         if (kind === 'teachers') { S.lessons.forEach(l => { if (l.teacher === item.id) l.teacher = ''; }); S.absences = S.absences.filter(a => a.teacher !== item.id); Object.values(S.cover).forEach(v => { if (v.sub === item.id) v.sub = ''; }); }
         if (kind === 'rooms') S.lessons.forEach(l => { if (l.room === item.id) l.room = ''; });
-        if (kind === 'classes') S.lessons.forEach(l => { l.classes = l.classes.filter(c => c !== item.id); });
+        if (kind === 'classes') { S.lessons.forEach(l => { l.classes = l.classes.filter(c => c !== item.id); }); S.learners = S.learners.filter(l => l.cls !== item.id); }
         if (kind === 'subjects') S.lessons = S.lessons.filter(l => l.subject !== item.id);
       })]));
       t.appendChild(tr);
@@ -725,6 +729,6 @@
   };
   const show = subTabs();
   const saved = store.get('tt-sub', 'setup');
-  show(['setup', 'teachers', 'classes', 'subjects', 'rooms', 'lessons', 'grid', 'subs'].includes(saved) ? saved : 'setup');
+  show(['setup', 'teachers', 'classes', 'subjects', 'rooms', 'lessons', 'grid', 'subs', 'learners'].includes(saved) ? saved : 'setup');
   document.querySelector('.tab-btn[data-tab="timetable"]').addEventListener('click', renderAll);
 })();
