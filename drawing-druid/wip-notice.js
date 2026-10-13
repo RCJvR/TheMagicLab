@@ -13,7 +13,7 @@
     overlay.setAttribute('aria-labelledby', 'ddWipTitle');
     overlay.style.cssText = [
       'position:fixed', 'inset:0', 'z-index:99999', 'display:flex', 'align-items:center', 'justify-content:center',
-      'background:rgba(5,6,10,0.72)', 'backdrop-filter:blur(3px)', 'padding:20px', 'box-sizing:border-box',
+      'background:rgba(5,6,10,0.72)', 'padding:20px', 'box-sizing:border-box',
       'font-family:"Cabinet Grotesk",system-ui,sans-serif',
     ].join(';');
 

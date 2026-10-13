@@ -118,8 +118,6 @@
     display: flex; align-items: center; justify-content: center;
     padding: 20px;
     background: rgba(6, 8, 20, 0.92);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
     opacity: 0;
     transition: opacity 320ms ease;
   }

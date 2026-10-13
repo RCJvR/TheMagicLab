@@ -425,12 +425,12 @@
             <svg class="ml-user-chevron" width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="ml-user-menu" id="ml-user-menu">
-            <a href="/account.html" class="ml-user-menu-item"><span class="ml-umi-icon">👤</span> My Account</a>
-            <a href="/dashboard-student.html" class="ml-user-menu-item"><span class="ml-umi-icon">📊</span> My Progress</a>
-            ${isTeacher ? '<a href="/dashboard-teacher.html" class="ml-user-menu-item"><span class="ml-umi-icon">🎓</span> Teacher Dashboard</a>' : ''}
-            ${isAdmin ? '<a href="/admin.html" class="ml-user-menu-item"><span class="ml-umi-icon">🛡️</span> CDV Verification</a>' : ''}
+            <a href="/account.html" class="ml-user-menu-item"><span class="ml-umi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> My Account</a>
+            <a href="/dashboard-student.html" class="ml-user-menu-item"><span class="ml-umi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span> My Progress</a>
+            ${isTeacher ? '<a href="/dashboard-teacher.html" class="ml-user-menu-item"><span class="ml-umi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span> Teacher Dashboard</a>' : ''}
+            ${isAdmin ? '<a href="/admin.html" class="ml-user-menu-item"><span class="ml-umi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> CDV Verification</a>' : ''}
             <div class="ml-user-menu-sep"></div>
-            <button class="ml-user-menu-item ml-user-menu-signout" id="ml-signout-btn" type="button"><span class="ml-umi-icon">🚪</span> Sign out</button>
+            <button class="ml-user-menu-item ml-user-menu-signout" id="ml-signout-btn" type="button"><span class="ml-umi-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></span> Sign out</button>
           </div>`;
 
         const chipBtn = target.querySelector('#ml-user-chip-btn');
@@ -459,7 +459,7 @@
         }
       } else {
         target.className = 'nav-pill ml-auth-btn';
-        target.innerHTML = '🔐 Sign In';
+        target.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Sign in';
         target.onclick = () => openModal('signin');
       }
     });

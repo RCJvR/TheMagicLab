@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="af">
 <head>
+<script src="/assets/theme.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -50,12 +51,12 @@
     body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
     body>*{position:relative;z-index:1}
     nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
-    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;text-decoration:none;color:#f2f5f9;}
     .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
     .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
-    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .nav-strand{font-family:inherit;font-size:12px;font-weight:600;text-transform:none;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
     .lesson-header{padding:36px 40px 24px}
-    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-tag{font-family:inherit;font-size:12px;font-weight:600;text-transform:none;color:#fcd34d;margin-bottom:10px}
     .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
     .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
     .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
@@ -73,22 +74,22 @@
     .callout strong{color:#fcd34d}
     .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
     .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
-    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table th{font-family:inherit;font-size:12px;text-transform:none;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
     .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
     .symbols-table tr:last-child td{border-bottom:none}
     .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
     .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
     .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
-    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:inherit;text-transform:none}
     canvas{display:block;border-radius:10px;background:#040710;width:100%}
     .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
-    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .ctrl-label{font-family:inherit;font-size:12px;font-weight:600;text-transform:none;color:var(--muted);margin-bottom:10px}
     .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
     .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
     .practice-wrap{max-width:640px}
     .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-num{font-family:inherit;font-size:12px;font-weight:700;text-transform:none;color:#fbbf24;margin-bottom:8px}
     .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
     .mc-options{display:flex;flex-direction:column;gap:8px}
     .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
@@ -107,7 +108,7 @@
     .wb-wrap{max-width:680px}
     .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
     .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
-    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qnum{font-family:inherit;font-size:12px;font-weight:700;text-transform:none;color:#fbbf24;margin-bottom:6px}
     .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
     .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
     .print-btn:hover{background:rgba(251,191,36,.18)}
@@ -160,10 +161,10 @@
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Les</button>
-  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Verken</button>
-  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Oefening</button>
-  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Werkboek</button>
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
 </div>
 
 <!-- LEARN TAB -->

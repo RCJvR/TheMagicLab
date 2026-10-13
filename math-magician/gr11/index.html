@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script src="/assets/theme.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,10 +51,7 @@
     }
     h1.app-title {
       font-family: "Cabinet Grotesk", sans-serif; font-weight: 800;
-      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;
-      background: linear-gradient(125deg, #fff 0%, var(--paper-ink, #f2f5f9) 55%, #a8d13f 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;color:#f2f5f9;}
     .grade-badge {
       font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
       padding: 3px 9px; border-radius: 99px;
@@ -135,10 +133,9 @@
     /* ── Lesson panel ── */
     .lesson-heading {
       font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 22px;
-      background: linear-gradient(125deg, #fff 0%, var(--paper-ink, #f2f5f9) 60%, #a8d13f 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 6px;
-    }
+      
+        
+      margin-bottom: 6px;color:#f2f5f9;}
     .lesson-subheading {
       font-size: 12px; color: rgba(226,232,240,0.38); letter-spacing: 0.05em;
       text-transform: uppercase; margin-bottom: 22px;
@@ -211,10 +208,10 @@
       display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
     }
     .q-counter {
-      font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600;
+      font-family:inherit; font-size:12px; font-weight: 600;
       padding: 3px 10px; border-radius: 99px;
       background: rgba(158,212,60,0.12); border: 1px solid rgba(158,212,60,0.25); color: #aada4a;
-      letter-spacing: 0.06em; text-transform: uppercase;
+       text-transform:none;
     }
     .q-topic-tag {
       font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 99px;
@@ -319,10 +316,9 @@
     }
     .complete-banner h2 {
       font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 24px;
-      background: linear-gradient(125deg, #fff 0%, var(--paper-ink, #f2f5f9) 60%, #6ee7b7 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 10px;
-    }
+      
+        
+      margin-bottom: 10px;color:#f2f5f9;}
     .complete-banner p { font-size: 14px; color: rgba(226,232,240,0.50); margin-bottom: 24px; }
 
     .chapter-hdr {
@@ -356,7 +352,7 @@
     /* ── Workbook panel ── */
     #workbookPanel { padding: 24px 28px 48px; }
     .wb-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; gap: 16px; flex-wrap: wrap; }
-    .wb-title { font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 20px; background: linear-gradient(125deg, #fff 0%, var(--paper-ink, #f2f5f9) 60%, #a8d13f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .wb-title { font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 20px;color:#f2f5f9;}
     .wb-print-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(158,212,60,0.30); background: rgba(158,212,60,0.10); color: #c3e56f; font-family: "Cabinet Grotesk", sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 140ms; white-space: nowrap; }
     .wb-print-btn:hover { background: rgba(158,212,60,0.20); }
     .wb-intro { font-size: 12px; color: rgba(226,232,240,0.38); margin-bottom: 24px; font-style: italic; }
@@ -1434,7 +1430,7 @@ function _buildFilteredAK(allAK, chapterNum, topicIdx) {
     ? t.answerKeyTopic(chap.topics[topicIdx]?.name)
     : t.answerKeyChapter(chap.chapter, chap.chapterName);
   let html = `<div class="wb-header">
-    <div class="wb-title" style="background:linear-gradient(125deg,#fff 0%,#6ee7b7 60%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${label}</div>
+    <div class="wb-title" style=";color:#f2f5f9">${label}</div>
   </div><p class="wb-intro">${t.filteredAKIntro}</p>
   <div class="wb-chapter-block">`;
   topics.filter(Boolean).forEach(topic => {
@@ -1466,7 +1462,7 @@ function buildAnswerKey() {
 
   let html = `
     <div class="wb-header">
-      <div class="wb-title" style="background:linear-gradient(125deg,#fff 0%,#6ee7b7 60%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${t.answerKeyAll}</div>
+      <div class="wb-title" style=";color:#f2f5f9">${t.answerKeyAll}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="wb-print-btn" onclick="printSection('answerkey')" style="border-color:rgba(16,185,129,0.30);background:rgba(16,185,129,0.10);color:#6ee7b7;">
           <i data-lucide="printer" style="width:12px;height:12px;"></i> ${t.printAll}
