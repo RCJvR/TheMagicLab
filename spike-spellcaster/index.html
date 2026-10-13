@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <script src="/assets/theme.js"></script>
-<script>document.documentElement.style.visibility='hidden';</script>
+<script>
+const BT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg>';document.documentElement.style.visibility='hidden';</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0a0f1e">
@@ -169,12 +170,12 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
   <div class="nav-right">
     <input aria-label="Filename" type="text" id="filenameInput" class="nav-filename-input" value="spike-program" title="Filename (without extension)">
     <span class="nav-filename-ext">.json</span>
-    <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
-    <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
+    <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Save</button>
+    <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg> Load</button>
     <input aria-label="Load a program file" type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
     <button class="nav-pill" id="btnConnect" onclick="toggleHubConnection()" title="Connect a real SPIKE Prime hub over Bluetooth"
-      style="border-color:rgba(59,130,246,0.40);background:rgba(59,130,246,0.10);color:#93c5fd;">🔵 Connect Hub</button>
-    <a href="../index.html" class="nav-pill">← Home</a>
+      style="border-color:rgba(59,130,246,0.40);background:rgba(59,130,246,0.10);color:#93c5fd;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg> Connect Hub</button>
+    <a href="../index.html" class="nav-pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;flex-shrink:0"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Home</a>
     <button class="nav-pill" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;"></i> Sign In</button>
   </div>
 </nav>
@@ -1010,7 +1011,7 @@ async function toggleHubConnection(){
   if (SpikeBLE.isConnected()){ await SpikeBLE.disconnect(); return; }
   if (!SpikeBLE.isSupported()){ showHubUnsupported(); return; }
   const btn = document.getElementById('btnConnect');
-  btn.textContent = '🔵 Connecting…'; btn.disabled = true;
+  btn.innerHTML = BT_ICON + ' Connecting…'; btn.disabled = true;
   try {
     const { info, name } = await SpikeBLE.connect({
       onStatus: onHubStatus, onConsole: onHubConsole,
@@ -1033,7 +1034,7 @@ async function toggleHubConnection(){
     else addLog('✗ Connect failed: ' + e.message, 'err');
   } finally {
     btn.disabled = false;
-    if (!SpikeBLE.isConnected()) btn.textContent = '🔵 Connect Hub';
+    if (!SpikeBLE.isConnected()) btn.innerHTML = BT_ICON + ' Connect Hub';
   }
 }
 
@@ -1041,7 +1042,7 @@ function onHubDisconnect(){
   addLog('🔌 Hub disconnected.', 'info');
   document.getElementById('hubSection').style.display = 'none';
   const btn = document.getElementById('btnConnect');
-  btn.textContent = '🔵 Connect Hub'; btn.style.background = 'rgba(59,130,246,0.10)';
+  btn.innerHTML = BT_ICON + ' Connect Hub'; btn.style.background = 'rgba(59,130,246,0.10)';
   btn.style.color = '#93c5fd'; btn.style.borderColor = 'rgba(59,130,246,0.40)';
   btn.title = 'Connect a real SPIKE Prime hub over Bluetooth';
   hubProgramRunning = false;
@@ -1058,7 +1059,7 @@ function getCurrentSource(){
 // watching a stale program. Use the separate Stop button to just stop, or
 // Sync to just upload without running.
 async function runOnHub(){
-  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “Connect Hub”.', 'err'); return; }
   const source = getCurrentSource();
   clearLog(); hubConsoleBuf = '';
   if (currentMode === 'blocks'){
@@ -1087,7 +1088,7 @@ async function runOnHub(){
 
 // Sync: upload the latest code to the hub WITHOUT running it.
 async function syncToHub(){
-  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “Connect Hub”.', 'err'); return; }
   const source = getCurrentSource();
   clearLog(); hubConsoleBuf = '';
   if (hubProgramRunning){
@@ -1110,7 +1111,7 @@ async function syncToHub(){
 
 // Stop: stop whatever's running on the hub, without touching the upload.
 async function stopHub(){
-  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “Connect Hub”.', 'err'); return; }
   try { await SpikeBLE.stopProgram({ slot: 0 }); addLog('⏹ Stop sent to hub.', 'info'); }
   catch(e){ addLog('✗ ' + e.message, 'err'); }
 }
