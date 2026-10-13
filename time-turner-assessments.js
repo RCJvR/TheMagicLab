@@ -438,6 +438,11 @@
   async function renderAll() {
     document.getElementById('assess-list').classList.remove('hidden');
     document.getElementById('assess-controls-row').classList.remove('hidden');
+    // Learners only ever see their own grade; the whole-school view is for staff.
+    if (!window.MagicLabAuth.isTeacher()) {
+      viewMode = 'mine';
+      document.getElementById('assess-view-toggle').classList.add('hidden');
+    }
     availableSubjects = profile.grade >= 10 ? await fetchDistinctSubjects(profile.grade) : [];
     renderSubjectPicker();
     await renderList();
@@ -547,7 +552,13 @@
       refreshManageList();
     });
 
-    document.getElementById('aa-manage-grade').addEventListener('change', refreshManageList);
+    document.querySelectorAll('#aa-manage-grade [data-grade]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        manageGrade = btn.dataset.grade;
+        document.querySelectorAll('#aa-manage-grade [data-grade]').forEach(b => b.classList.toggle('active', b === btn));
+        refreshManageList();
+      });
+    });
   }
 
   let _pendingBulkRows = [];
@@ -567,9 +578,32 @@
     return new Date(y, m - 1, 1).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
   }
 
+  let _manageList = [];
+  let manageGrade = '';   // '' = all grades
+
+  // Fetch, then pick which month to open by default. Only done on a fresh
+  // load (first view, grade filter, add, delete) - never on a plain
+  // expand/collapse click, or the fallback would re-open what was just closed.
   async function refreshManageList() {
-    const gradeVal = document.getElementById('aa-manage-grade').value;
-    const list = await getAllAssessments(gradeVal ? parseInt(gradeVal, 10) : null);
+    _manageList = await getAllAssessments(manageGrade ? parseInt(manageGrade, 10) : null);
+
+    const keys = new Set(_manageList.filter(a => a.due_date).map(a => a.due_date.slice(0, 7)));
+    const hasUndated = _manageList.some(a => !a.due_date);
+    // If nothing currently expanded still exists in this (possibly
+    // grade-filtered) list, fall back to the nearest month ahead, or
+    // else the most recent one - better than everything defaulting shut.
+    const stillValid = [...expandedMonths].some(k => keys.has(k) || (k === 'no-date' && hasUndated));
+    if (!stillValid) {
+      const nowKey = currentMonthKey();
+      const sorted = [...keys].sort();
+      const fallback = sorted.find(k => k >= nowKey) || sorted[sorted.length - 1];
+      if (fallback) expandedMonths.add(fallback);
+    }
+    renderManageList();
+  }
+
+  function renderManageList() {
+    const list = _manageList;
     const box = document.getElementById('aa-manage-list');
     if (!list.length) { box.innerHTML = '<div class="empty-hint">No assessments yet.</div>'; return; }
 
@@ -583,16 +617,6 @@
       byMonth.get(key).push(a);
     });
     const monthKeys = [...byMonth.keys()].sort();
-
-    // If nothing currently expanded still exists in this (possibly
-    // grade-filtered) list, fall back to the nearest month ahead, or
-    // else the most recent one — better than everything defaulting shut.
-    const stillValid = [...expandedMonths].some(k => byMonth.has(k) || (k === 'no-date' && undated.length));
-    if (!stillValid) {
-      const nowKey = currentMonthKey();
-      const fallback = monthKeys.find(k => k >= nowKey) || monthKeys[monthKeys.length - 1];
-      if (fallback) expandedMonths.add(fallback);
-    }
 
     function renderRow(a) {
       return `
@@ -624,7 +648,7 @@
       btn.addEventListener('click', () => {
         const key = btn.dataset.monthToggle;
         if (expandedMonths.has(key)) expandedMonths.delete(key); else expandedMonths.add(key);
-        refreshManageList();
+        renderManageList();
       });
     });
     box.querySelectorAll('[data-del-assess]').forEach(btn => {
