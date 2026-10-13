@@ -1,6 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script id="ml-sim-pause">
+(function(){
+  var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
+  var seq = 0, live = new Map(), panel = null;
+  function hidden(){
+    if (!panel) panel = document.querySelector('#tab-explore,#tab-simulate,#panel-explore');
+    return !!panel && !panel.offsetParent;
+  }
+  function fromPage(){
+    var lines = String((new Error()).stack || '').split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      if (!l || /fromPage|requestAnimationFrame|^Error/.test(l)) continue;
+      return /\.html/.test(l);
+    }
+    return false;
+  }
+  window.requestAnimationFrame = function(cb){
+    var id = ++seq, mine = fromPage();
+    function run(ts){
+      if (!live.has(id)) return;
+      if (mine && hidden()) { live.set(id, { t: setTimeout(function(){ if (live.has(id)) live.set(id, { r: raf(run) }); }, 300) }); return; }
+      live.delete(id); cb(ts);
+    }
+    live.set(id, { r: raf(run) });
+    return id;
+  };
+  window.cancelAnimationFrame = function(id){
+    var e = live.get(id); if (!e) return caf(id);
+    if (e.r) caf(e.r); if (e.t) clearTimeout(e.t); live.delete(id);
+  };
+})();
+</script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -113,6 +146,7 @@
 <script defer src="../../../require-auth.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -191,10 +225,11 @@
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Seasons &amp; Day/Night Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the month slider to move Earth around its orbit. Watch how the tilt changes which hemisphere faces the Sun, and see South Africa's season and daylight hours update live.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the month slider to move Earth around its orbit. Watch how the tilt changes which hemisphere faces the Sun, and see South Africa's season and daylight hours update live. The orbit only looks oval because we view it at an angle — Earth's distance from the Sun hardly changes. Seasons come from the tilt, not the distance.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> When it is summer in South Africa, is Earth closer to the Sun than in winter? <strong style="color:#fde68a">Then test it:</strong> Move the month slider to January and then July, and compare the tilt and the distance.</div>
   <div class="explore-layout">
     <div class="solar-wrap">
-      <canvas id="seasonsCanvas" height="460"></canvas>
+      <canvas id="seasonsCanvas" height="460" role="img" aria-label="Seasons &amp; Day/Night Simulator: interactive simulation"></canvas>
     </div>
     <div class="controls">
       <div class="ctrl-card">
@@ -222,7 +257,7 @@
       </div>
       <div class="info-card">
         <div class="ctrl-label">Day/Night Inset</div>
-        <canvas id="dayNightCanvas" width="220" height="110" style="display:block;border-radius:10px;margin-top:4px"></canvas>
+        <canvas id="dayNightCanvas" width="220" height="110" style="display:block;border-radius:10px;margin-top:4px" role="img" aria-label="Seasons &amp; Day/Night Simulator: interactive simulation"></canvas>
         <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">🟡 = South Africa's position on Earth</div>
       </div>
     </div>
@@ -307,7 +342,7 @@ function getSHInfo(month){
 function getDateLabel(month){
   const m = Math.floor(month);
   const labels = {
-    0:'~January — Southern Hemisphere tilting back',
+    0:'~January — Mid Summer (Southern Hemisphere tilted toward the Sun)',
     1:'~February — Late Summer',
     2:'~21 March — Autumn Equinox (equal day/night)',
     3:'~April — Early Autumn',

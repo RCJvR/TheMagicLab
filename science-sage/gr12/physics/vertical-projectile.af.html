@@ -1,6 +1,39 @@
 <!doctype html>
 <html lang="af">
 <head>
+<script id="ml-sim-pause">
+(function(){
+  var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
+  var seq = 0, live = new Map(), panel = null;
+  function hidden(){
+    if (!panel) panel = document.querySelector('#tab-explore,#tab-simulate,#panel-explore');
+    return !!panel && !panel.offsetParent;
+  }
+  function fromPage(){
+    var lines = String((new Error()).stack || '').split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      if (!l || /fromPage|requestAnimationFrame|^Error/.test(l)) continue;
+      return /\.html/.test(l);
+    }
+    return false;
+  }
+  window.requestAnimationFrame = function(cb){
+    var id = ++seq, mine = fromPage();
+    function run(ts){
+      if (!live.has(id)) return;
+      if (mine && hidden()) { live.set(id, { t: setTimeout(function(){ if (live.has(id)) live.set(id, { r: raf(run) }); }, 300) }); return; }
+      live.delete(id); cb(ts);
+    }
+    live.set(id, { r: raf(run) });
+    return id;
+  };
+  window.cancelAnimationFrame = function(id){
+    var e = live.get(id); if (!e) return caf(id);
+    if (e.r) caf(e.r); if (e.t) clearTimeout(e.t); live.delete(id);
+  };
+})();
+</script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -124,6 +157,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -270,10 +304,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> 'n Bal wat van 20 m laat val word en een wat van 20 m afgegooi word: watter een land eerste, en versnel hulle verskillend? <strong style="color:#fde68a">Toets dit dan:</strong> Probeer Laat val en dan Gooi af van 20 m en vergelyk die tyd en trefsnelheid.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Vertikale Projektiel-simulator</h3>
-      <canvas id="projCanvas" height="360"></canvas>
+      <canvas id="projCanvas" height="360" role="img" aria-label="Vertikale Projektiel-simulator: interaktiewe simulasie"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -282,6 +317,16 @@
           <label for="sl-vi">Aanvangsnelheid</label>
           <input type="range" min="5" max="30" value="15" id="sl-vi" oninput="updateVi()">
           <span class="slider-val" id="sv-vi">15 m·s⁻¹</span>
+        </div>
+        <div class="slider-row">
+          <label for="sl-h0">Beginhoogte</label>
+          <input type="range" min="0" max="60" value="0" id="sl-h0" oninput="updateVi()">
+          <span class="slider-val" id="sv-h0">0 m</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+          <button class="mode-btn active" id="dirUp" onclick="setDir('up')">Gooi op</button>
+          <button class="mode-btn" id="dirDrop" onclick="setDir('drop')">Laat val</button>
+          <button class="mode-btn" id="dirDown" onclick="setDir('down')">Gooi af</button>
         </div>
         <div style="display:flex;gap:8px;margin-top:10px">
           <button class="mode-btn active" id="playProjBtn" onclick="toggleProj()">▶ Lanseer</button>
@@ -500,10 +545,23 @@
   let projRunning=false,projRaf=null,projT=0,projLastT=null,projInited=false;
   let vtPoints=[];
   const G=9.8;
+  // Up is positive. v0 is the signed launch velocity; h0 the starting height above the ground.
+  let projDir='up';
+  function v0(){const v=+document.getElementById('sl-vi').value;return projDir==='up'?v:projDir==='down'?-v:0;}
+  function h0(){return +document.getElementById('sl-h0').value;}
+  function setDir(d){
+    projDir=d;
+    ['Up','Drop','Down'].forEach(k=>document.getElementById('dir'+k).classList.toggle('active',d===k.toLowerCase()));
+    // dropping or throwing down from ground level would end at once, so give it a height
+    if(d!=='up'&&h0()===0) document.getElementById('sl-h0').value=20;
+    document.getElementById('sl-vi').disabled=(d==='drop');
+    updateVi();
+  }
 
   function updateVi(){
     const v=+document.getElementById('sl-vi').value;
     document.getElementById('sv-vi').textContent=v+' m·s⁻¹';
+    document.getElementById('sv-h0').textContent=h0()+' m';
     resetProj();
   }
 
@@ -513,10 +571,10 @@
     if(projRaf){cancelAnimationFrame(projRaf);projRaf=null;}
     projRunning=false;projT=0;projLastT=null;vtPoints=[];
     document.getElementById('playProjBtn').textContent='▶ Lanseer';
-    document.getElementById('ro-h').innerHTML='0.0<span>m</span>';
-    document.getElementById('ro-v').innerHTML=document.getElementById('sl-vi').value+'<span>m·s⁻¹</span>';
+    document.getElementById('ro-h').innerHTML=h0().toFixed(1)+'<span>m</span>';
+    document.getElementById('ro-v').innerHTML=v0().toFixed(1)+'<span>m·s⁻¹</span>';
     document.getElementById('ro-t').innerHTML='0.0<span>s</span>';
-    if(projInited) drawProj(0,+document.getElementById('sl-vi').value);
+    if(projInited) drawProj(h0(),v0());
   }
 
   function toggleProj(){
@@ -537,18 +595,24 @@
     const dt=Math.min((ts-projLastT)/1000,0.03);
     projLastT=ts;
     projT+=dt;
-    const vi=+document.getElementById('sl-vi').value;
-    const y=vi*projT - 0.5*G*projT*projT;
-    const v=vi - G*projT;
+    const V0=v0(),H0=h0();
+    const y=H0 + V0*projT - 0.5*G*projT*projT;
+    const v=V0 - G*projT;
     vtPoints.push({t:projT,v:v});
     document.getElementById('ro-h').innerHTML=Math.max(0,y).toFixed(1)+'<span>m</span>';
     document.getElementById('ro-v').innerHTML=v.toFixed(1)+'<span>m·s⁻¹</span>';
     document.getElementById('ro-t').innerHTML=projT.toFixed(2)+'<span>s</span>';
     drawProj(y,v);
-    if(y<-0.5&&projT>0.5){
-      projRunning=false;
+    if(y<=0&&projT>0.02){
+      // land exactly on the ground: time of flight and impact velocity from the equations
+      const tl=(V0+Math.sqrt(V0*V0+2*G*H0))/G, vl=V0-G*tl;
+      projRunning=false;projT=tl;
+      vtPoints[vtPoints.length-1]={t:tl,v:vl};
       document.getElementById('playProjBtn').textContent='▶ Lanseer';
       document.getElementById('ro-h').innerHTML='0.0<span>m</span>';
+      document.getElementById('ro-v').innerHTML=vl.toFixed(1)+'<span>m·s⁻¹</span>';
+      document.getElementById('ro-t').innerHTML=tl.toFixed(2)+'<span>s</span>';
+      drawProj(0,vl);
       return;
     }
     projRaf=requestAnimationFrame(projStep);
@@ -565,9 +629,11 @@
     ctx.scale(dpr,dpr);
     ctx.clearRect(0,0,W,H);
 
-    const vi=+document.getElementById('sl-vi').value;
-    const yMax=vi*vi/(2*G);
-    const tTotal=2*vi/G;
+    const V0=v0(),H0=h0();
+    const yMax=H0+Math.max(V0,0)**2/(2*G);
+    const tTotal=Math.max((V0+Math.sqrt(V0*V0+2*G*H0))/G,0.1);
+    // largest speed during the flight (launch or impact), used to scale the v-t graph
+    const vi=Math.max(Math.abs(V0),Math.sqrt(V0*V0+2*G*H0),1);
 
     // Split: left = ball animation, right = v-t graph
     const split=Math.floor(W*0.45);
@@ -580,6 +646,16 @@
     ctx.fillStyle='rgba(96,165,250,0.06)';ctx.fillRect(0,groundY,split,H-groundY);
     ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(split,groundY);ctx.stroke();
+
+    // Launch ledge at the starting height
+    if(H0>0){
+      const ledgeTop=groundY-H0*scaleY;
+      ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fillRect(split*0.28,ledgeTop,split*0.2,groundY-ledgeTop);
+      ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(split*0.28,ledgeTop);ctx.lineTo(split*0.48,ledgeTop);ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,0.35)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillText('begin '+H0+'m',split*0.29,ledgeTop-4);
+    }
 
     // Height marker
     ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
@@ -665,7 +741,7 @@
     }
   }
 
-  window.addEventListener('resize',()=>{if(projInited)drawProj(0,+document.getElementById('sl-vi').value);});
+  window.addEventListener('resize',()=>{if(projInited)drawProj(h0(),v0());});
 </script>
   <script>
 (function(){

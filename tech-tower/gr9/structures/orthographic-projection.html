@@ -119,6 +119,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <script src="../../../lang-toggle.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -184,12 +185,13 @@
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">3-View Explorer</h2>
   <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Pick an object below — it's shown in isometric on the left. Click Front, Top or Side to see the matching first-angle orthographic view appear on the right.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> In first-angle projection, does the top view go above or below the front view? <strong style="color:#fde68a">Then test it:</strong> Pick an object and build the complete sketch.</div>
   <div class="view-btns" id="objectBtns" style="margin-bottom:16px">
     <button class="view-btn active" id="ob_stepped" onclick="selectObject('stepped')"><i data-lucide="box" style="width:13px;height:13px"></i> Stepped block</button>
     <button class="view-btn" id="ob_notched" onclick="selectObject('notched')"><i data-lucide="box" style="width:13px;height:13px"></i> Notched (U) block</button>
   </div>
   <div class="explore-layout">
-    <div class="truss-canvas-wrap"><canvas id="isoCanvas" height="320"></canvas></div>
+    <div class="truss-canvas-wrap"><canvas id="isoCanvas" height="320" role="img" aria-label="3-View Explorer: interactive simulation"></canvas></div>
     <div>
       <div class="view-label">Choose a view</div>
       <div class="view-btns">
@@ -198,7 +200,7 @@
         <button class="view-btn" id="vb_side" onclick="selectView('side')"><i data-lucide="square" style="width:13px;height:13px"></i> Side</button>
         <button class="view-btn" id="vb_all" onclick="selectView('all')"><i data-lucide="layout-grid" style="width:13px;height:13px"></i> Complete Sketch</button>
       </div>
-      <div class="truss-canvas-wrap" style="padding:10px"><canvas id="viewCanvas" height="200"></canvas></div>
+      <div class="truss-canvas-wrap" style="padding:10px"><canvas id="viewCanvas" height="200" role="img" aria-label="3-View Explorer: interactive simulation"></canvas></div>
       <div class="part-info" id="viewInfo" style="margin-top:12px"></div>
     </div>
   </div>

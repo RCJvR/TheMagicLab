@@ -1,6 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script id="ml-sim-pause">
+(function(){
+  var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
+  var seq = 0, live = new Map(), panel = null;
+  function hidden(){
+    if (!panel) panel = document.querySelector('#tab-explore,#tab-simulate,#panel-explore');
+    return !!panel && !panel.offsetParent;
+  }
+  function fromPage(){
+    var lines = String((new Error()).stack || '').split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      if (!l || /fromPage|requestAnimationFrame|^Error/.test(l)) continue;
+      return /\.html/.test(l);
+    }
+    return false;
+  }
+  window.requestAnimationFrame = function(cb){
+    var id = ++seq, mine = fromPage();
+    function run(ts){
+      if (!live.has(id)) return;
+      if (mine && hidden()) { live.set(id, { t: setTimeout(function(){ if (live.has(id)) live.set(id, { r: raf(run) }); }, 300) }); return; }
+      live.delete(id); cb(ts);
+    }
+    live.set(id, { r: raf(run) });
+    return id;
+  };
+  window.cancelAnimationFrame = function(id){
+    var e = live.get(id); if (!e) return caf(id);
+    if (e.r) caf(e.r); if (e.t) clearTimeout(e.t); live.delete(id);
+  };
+})();
+</script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
@@ -112,6 +145,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <script src="../../../lang-toggle.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -191,8 +225,9 @@
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Gear System Explorer</h2>
   <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Choose a gear system to see a simple diagram of how it moves, its typical speed/force trade-off, and a real-world example.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which gear system lets a motor turn something at a right angle to its own shaft? <strong style="color:#fde68a">Then test it:</strong> Choose each gear system and compare.</div>
   <div class="explore-layout">
-    <div class="truss-canvas-wrap"><canvas id="gearCanvas" height="320"></canvas></div>
+    <div class="truss-canvas-wrap"><canvas id="gearCanvas" height="320" role="img" aria-label="Gear System Explorer: interactive simulation"></canvas></div>
     <div>
       <div class="parts-list" id="partsList"></div>
       <div class="part-info" id="partInfo"></div>

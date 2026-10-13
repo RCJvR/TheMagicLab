@@ -1058,6 +1058,22 @@
       sel.innerHTML = TYPE_ORDER.map(t => `<option value="${t}"${t === current ? ' selected' : ''}>${esc(T().types[t])} · ${esc(TYPES[t].form)}</option>`).join('');
     }
 
+    // Each parameter also gets a slider, so a learner can drag a, p, q… and watch the graph
+    // transform. Typing in the box still works; the two stay in step.
+    function sliderRange(type, k, deg) {
+      if ((type === 'exponential' || type === 'log') && k === 'b') return [0.1, 10, 0.1];
+      if (type === 'circle' && k === 'r') return [0.5, 12, 0.5];
+      if (TYPES[type].trig && k === 'k') return [0.1, 4, 0.1];
+      if (TYPES[type].trig && k === 'p') return deg ? [-180, 180, 5] : [-3.2, 3.2, 0.05];
+      return [-10, 10, 0.1];
+    }
+    function sliderAttrs(type, k, raw) {
+      const deg = !!state.plane.degrees;
+      const [lo, hi, st] = sliderRange(type, k, deg);
+      const r = constVal(raw, deg);
+      const v = r.ok ? Math.min(hi, Math.max(lo, r.v)) : (lo + hi) / 2;
+      return `min="${lo}" max="${hi}" step="${st}" value="${v}"`;
+    }
     function paintGraphs() {
       const list = $('glist');
       if (!state.graphs.length) { list.innerHTML = `<div class="empty">${esc(T().noGraphs)}</div>`; return; }
@@ -1066,7 +1082,7 @@
         const cols = def.params.length;
         const params = def.expr
           ? `<label class="field" style="margin-bottom:8px"><span>${esc(T().expr)}</span><input type="text" data-f="expr" value="${esc(g.expr)}" spellcheck="false" autocomplete="off" aria-label="${esc(g.name)}: y ="></label>`
-          : `<div class="row c${cols}">${def.params.map(([k]) => `<label class="field"><span class="var">${esc(k)}</span><input type="text" inputmode="decimal" data-p="${k}" value="${esc(g.params[k])}" aria-label="${esc(g.name)}: ${k}"></label>`).join('')}</div>`;
+          : `<div class="row c${cols}">${def.params.map(([k]) => `<label class="field"><span class="var">${esc(k)}</span><input type="text" inputmode="decimal" data-p="${k}" value="${esc(g.params[k])}" aria-label="${esc(g.name)}: ${k}"><input type="range" class="pslider" data-s="${k}" ${sliderAttrs(g.type, k, g.params[k])} aria-label="${esc(g.name)}: ${k} (slider)"></label>`).join('')}</div>`;
         const dom = def.special ? '' : `
             <div class="row c2">
               <label class="field"><span>${esc(T().domFrom)}</span><input type="text" data-f="from" value="${esc(g.from)}" placeholder="−∞"></label>
@@ -1130,7 +1146,18 @@
       const card = e.target.closest('.gcard'); if (!card) return;
       const g = graphById(card.dataset.gid); if (!g) return;
       const t = e.target;
-      if (t.dataset.p) g.params[t.dataset.p] = t.value;
+      if (t.dataset.s) {
+        const v = String(round(+t.value, 2));
+        g.params[t.dataset.s] = v;
+        const box = card.querySelector(`input[data-p="${t.dataset.s}"]`); if (box) box.value = v;
+        render(); return;
+      }
+      if (t.dataset.p) {
+        g.params[t.dataset.p] = t.value;
+        const sl = card.querySelector(`input[data-s="${t.dataset.p}"]`);
+        const r = constVal(t.value, !!state.plane.degrees);
+        if (sl && r.ok) sl.value = r.v;
+      }
       else if (t.dataset.f && t.dataset.f !== 'type') {
         g[t.dataset.f] = t.value;
         if (t.dataset.f === 'color') card.style.setProperty('--gc', t.value);

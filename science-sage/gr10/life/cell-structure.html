@@ -1,6 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script id="ml-sim-pause">
+(function(){
+  var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
+  var seq = 0, live = new Map(), panel = null;
+  function hidden(){
+    if (!panel) panel = document.querySelector('#tab-explore,#tab-simulate,#panel-explore');
+    return !!panel && !panel.offsetParent;
+  }
+  function fromPage(){
+    var lines = String((new Error()).stack || '').split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      if (!l || /fromPage|requestAnimationFrame|^Error/.test(l)) continue;
+      return /\.html/.test(l);
+    }
+    return false;
+  }
+  window.requestAnimationFrame = function(cb){
+    var id = ++seq, mine = fromPage();
+    function run(ts){
+      if (!live.has(id)) return;
+      if (mine && hidden()) { live.set(id, { t: setTimeout(function(){ if (live.has(id)) live.set(id, { r: raf(run) }); }, 300) }); return; }
+      live.delete(id); cb(ts);
+    }
+    live.set(id, { r: raf(run) });
+    return id;
+  };
+  window.cancelAnimationFrame = function(id){
+    var e = live.get(id); if (!e) return caf(id);
+    if (e.r) caf(e.r); if (e.t) clearTimeout(e.t); live.delete(id);
+  };
+})();
+</script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -116,6 +149,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -175,12 +209,13 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Diffusion &amp; Osmosis Simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch particles move across a membrane. In Diffusion mode, all particles can cross freely. In Osmosis mode, only water (blue) can cross — solute (orange) stays put — and water moves to balance the concentration.</p>
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Membrane Transport Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch particles move across a membrane. <strong>Diffusion:</strong> particles spread from high to low concentration on their own. <strong>Osmosis:</strong> only water (blue) can cross, moving toward the side with more solute (orange). <strong>Active transport:</strong> the membrane blocks the particles, but carrier proteins use ATP to pump them from low to high concentration — against the gradient.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> In Active transport mode, what will happen to the particles if the cell runs out of ATP? <strong style="color:#fde68a">Then test it:</strong> Run Active transport and watch the ATP counter and both sides, then compare with Diffusion.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Membrane chamber</h3>
-      <canvas id="diffCanvas" height="300"></canvas>
+      <canvas id="diffCanvas" height="300" role="img" aria-label="Membrane Transport Simulator: interactive simulation"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -188,6 +223,7 @@
         <div class="mode-row">
           <button class="mode-btn active" id="btnDiff" onclick="setMode('diffusion')">Diffusion</button>
           <button class="mode-btn" id="btnOsm" onclick="setMode('osmosis')">Osmosis</button>
+          <button class="mode-btn" id="btnAct" onclick="setMode('active')">Active transport</button>
         </div>
       </div>
       <div class="ctrl-card">
@@ -198,6 +234,7 @@
     <div class="readout-row">
       <div class="readout-chip"><div class="n" id="leftCount">0</div>Left side</div>
       <div class="readout-chip"><div class="n" id="rightCount">0</div>Right side</div>
+      <div class="readout-chip" id="atpChip" style="display:none"><div class="n" id="atpCount">0</div>ATP used</div>
     </div>
     <div class="sim-caption" id="simCaption">All particles start on the left. Watch them spread until concentration is equal on both sides — that's diffusion.</div>
   </div>
@@ -261,6 +298,10 @@ let W, H;
 let mode = 'diffusion';
 let gradient = 85;
 let particles = [];
+// Active transport: three carrier proteins (pumps) in the membrane, as fractions of the height.
+const PUMPS = [0.2, 0.5, 0.8];
+let atpUsed = 0, pumpFlash = [0, 0, 0];
+const CAPTION_ACTIVE = 'The membrane is closed to these particles. Purple carrier proteins (pumps) use ATP to move them from the side with FEWER particles to the side with MORE — against the concentration gradient. Watch the ATP counter: no energy, no transport.';
 
 function resizeCanvas(){
   W = canvas.offsetWidth || 600;
@@ -274,12 +315,28 @@ function resizeCanvas(){
 function initParticles(){
   particles = [];
   const N = 60;
-  if (mode === 'diffusion'){
-    // all particles start on the left, can cross freely
+  atpUsed = 0; pumpFlash = [0, 0, 0];
+  const atpEl = document.getElementById('atpCount'); if (atpEl) atpEl.textContent = 0;
+  if (mode === 'active'){
+    // more particles already on the right; the membrane is closed to them
+    const rightFrac = 0.55 + gradient/500;
     for(let i=0;i<N;i++){
+      const onRight = i < N*rightFrac;
+      particles.push({
+        type:'solute', canCross:false,
+        x: onRight ? Math.random()*(W/2-20)+W/2+10 : Math.random()*(W/2-20)+10,
+        y: Math.random()*(H-20)+10,
+        ...(()=>{ const a=Math.random()*Math.PI*2, s=1.2+Math.random()*0.8; return {vx:Math.cos(a)*s, vy:Math.sin(a)*s}; })(),
+      });
+    }
+  } else if (mode === 'diffusion'){
+    // most particles start on the left (how many depends on the gradient slider), can cross freely
+    const leftFrac = 0.5 + gradient/200;
+    for(let i=0;i<N;i++){
+      const onLeft = i < N*leftFrac;
       particles.push({
         type:'solute', canCross:true,
-        x: Math.random()*(W/2-20)+10, y: Math.random()*(H-20)+10,
+        x: onLeft ? Math.random()*(W/2-20)+10 : Math.random()*(W/2-20)+W/2+10, y: Math.random()*(H-20)+10,
         vx:(Math.random()-0.5)*1.6, vy:(Math.random()-0.5)*1.6,
       });
     }
@@ -310,16 +367,19 @@ function setMode(m){
   mode = m;
   document.getElementById('btnDiff').classList.toggle('active', m==='diffusion');
   document.getElementById('btnOsm').classList.toggle('active', m==='osmosis');
+  document.getElementById('btnAct').classList.toggle('active', m==='active');
+  document.getElementById('atpChip').style.display = m==='active' ? '' : 'none';
   document.getElementById('simCaption').textContent = m==='diffusion'
     ? 'All particles start on the left. Watch them spread until concentration is equal on both sides — that\'s diffusion.'
     : 'Orange solute particles cannot cross the membrane. Blue water molecules cross freely, moving toward the side with more solute — that\'s osmosis.';
+  if (m==='active') document.getElementById('simCaption').textContent = CAPTION_ACTIVE;
   initParticles();
 }
 
 document.getElementById('gradSlider').addEventListener('input', e=>{
   gradient = parseInt(e.target.value);
   document.getElementById('gradVal').textContent = gradient>65?'High':gradient>35?'Medium':'Low';
-  if (mode==='osmosis') initParticles();
+  initParticles();
 });
 
 function step(){
@@ -330,6 +390,16 @@ function step(){
     if (p.x < 8 || p.x > W-8) p.vx *= -1;
     // membrane collision for non-crossing particles
     if (!p.canCross){
+      // active transport: a particle reaching a pump from the low side is carried across, using one ATP
+      if (mode === 'active' && p.x <= midX && p.x > midX-9){
+        const k = PUMPS.findIndex(f => Math.abs(p.y - f*H) < 22);
+        if (k >= 0){
+          p.x = midX + 10; p.vx = Math.abs(p.vx) + 0.3;
+          atpUsed++; pumpFlash[k] = 14;
+          document.getElementById('atpCount').textContent = atpUsed;
+          return;
+        }
+      }
       const onRight = p.x > midX;
       if (onRight && p.x < midX+8) { p.x = midX+8; p.vx = Math.abs(p.vx); }
       if (!onRight && p.x > midX-8) { p.x = midX-8; p.vx = -Math.abs(p.vx); }
@@ -357,6 +427,18 @@ function draw(){
   ctx.setLineDash([6,4]);
   ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
   ctx.setLineDash([]);
+  if (mode === 'active'){
+    PUMPS.forEach((f, k) => {
+      const y = f*H, glow = pumpFlash[k] > 0;
+      if (pumpFlash[k] > 0) pumpFlash[k]--;
+      ctx.fillStyle = glow ? 'rgba(196,181,253,0.9)' : 'rgba(167,139,250,0.45)';
+      ctx.strokeStyle = 'rgba(196,181,253,0.9)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(W/2-8, y-22, 16, 44, 6); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = glow ? '#fde68a' : 'rgba(253,230,138,0.6)';
+      ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('ATP', W/2, y-26);
+    });
+  }
 
   particles.forEach(p=>{
     ctx.beginPath();

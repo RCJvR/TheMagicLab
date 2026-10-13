@@ -121,6 +121,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -223,6 +224,7 @@
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Die Rotssiklus</h2>
   <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik enige fase of pyl in die lus om uit te vind wat gebeur en 'n voorbeeldrots te sien.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Kan 'n stollingsgesteente 'n sedimentêre gesteente word? Hoe? <strong style="color:#fde68a">Toets dit dan:</strong> Klik op die stadiums en pyle van die gesteentesiklus.</div>
   <div class="explore-layout">
     <div class="rock-wrap">
       <div class="rock-svg-wrap">
@@ -265,6 +267,13 @@
         <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Klik 'n fase of pyl<br>om die rotssiklus te verken</div>
       </div>
     </div>
+  </div>
+  <div class="ctrl-card" style="margin-top:16px;min-height:0">
+    <div style="font-weight:800;font-size:15px;color:#fff;margin-bottom:4px">Gesteentereis</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Kies 'n begingesteente, pas dan prosesse toe en kyk wat dit word. Uitdaging: kan jy basalt in kwartsiet verander?</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px"><span style="font-size:12px;color:var(--muted)">Begin met:</span><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('granite')">Graniet</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('basalt')">Basalt</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('sandstone')">Sandsteen</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('limestone')">Kalksteen</button></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('weather')">Verwering en erosie</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('compact')">Kompaksie en sementering</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('heat')">Hitte en druk</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('melt')">Smelting</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('coolSlow')">Stadig afkoel (ondergronds)</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('coolFast')">Vinnig afkoel (op die oppervlak)</button></div>
+    <div id="rjState" aria-live="polite"></div>
   </div>
 </div>
 
@@ -372,6 +381,49 @@ function selectStage(id){
     <div class="stage-example">${s.example}</div>
     ${extra}
   `;
+}
+
+/* ═══════════════════════════════════════════════
+   ROCK JOURNEY — apply processes to a rock and follow the cycle
+═══════════════════════════════════════════════ */
+const RJ = {"now": "Nou:", "path": "Pad:", "procs": {"weather": "Verwering en erosie", "compact": "Kompaksie en sementering", "heat": "Hitte en druk", "melt": "Smelting", "coolSlow": "Stadig afkoel (ondergronds)", "coolFast": "Vinnig afkoel (op die oppervlak)"}, "kinds": {"igneous": "stollingsgesteente", "sedimentary": "sedimentêre gesteente", "metamorphic": "metamorfe gesteente", "sediment": "los sediment", "magma": "gesmelte gesteente"}, "names": {"granite": "Graniet", "basalt": "Basalt", "sandstone": "Sandsteen", "limestone": "Kalksteen", "shale": "Skalie", "quartzite": "Kwartsiet", "marble": "Marmer", "slate": "Lei", "schist": "Skis", "gneiss": "Gneis", "sediment": "Sediment", "magma": "Magma"}, "msg": {"weatherSediment": "Dit is reeds los sediment — erosie dra dit net verder.", "weatherMagma": "Gesmelte gesteente kan nie verweer nie. Dit moet eers tot vaste gesteente afkoel.", "compactNo": "Slegs los sediment kan saamgepers en gesementeer word tot gesteente. Laat dit eers verweer.", "heatSediment": "Los sediment word eers tot gesteente saamgepers voordat hitte en druk dit kan verander.", "heatMagma": "Dit is reeds gesmelt. Laat dit eers afkoel.", "heatMax": "Dit is reeds sterk metamorfies. Nog meer hitte sal dit begin smelt.", "meltMagma": "Dit is reeds gesmelt.", "meltSediment": "Sediment word gewoonlik lank voordat dit diep genoeg begrawe is om te smelt, tot gesteente saamgepers.", "coolNo": "Slegs gesmelte gesteente (magma of lawa) kan afkoel en kristalliseer tot stollingsgesteente.", "ok": {"weather": "Wind, water en ys breek dit in fragmente wat weggedra en neergelê word.", "compact": "Begrawe lae word saamgepers en gesementeer tot sedimentêre gesteente.", "heat": "Diep ondergronds verander hitte en druk dit sonder om dit te smelt.", "melt": "Diep genoeg begrawe, smelt dit tot magma.", "coolSlow": "Stadige afkoeling ondergronds gee groot kristalle: ’n intrusiewe stollingsgesteente.", "coolFast": "Lawa wat vinnig op die oppervlak afkoel, gee klein kristalle: ’n ekstrusiewe stollingsgesteente."}}};
+const RJ_KIND = {granite:'igneous', basalt:'igneous', sandstone:'sedimentary', limestone:'sedimentary', shale:'sedimentary',
+  quartzite:'metamorphic', marble:'metamorphic', slate:'metamorphic', schist:'metamorphic', gneiss:'metamorphic', sediment:'sediment', magma:'magma'};
+// what each rock becomes under heat and pressure
+const RJ_META = {sandstone:'quartzite', limestone:'marble', shale:'slate', granite:'gneiss', basalt:'schist', slate:'schist', schist:'gneiss'};
+let rjRock = null, rjFrom = null, rjPath = [];
+
+function rjStart(name){ rjRock = name; rjFrom = null; rjPath = [name]; rjShow(''); }
+function rjApply(proc){
+  if (!rjRock) return;
+  const k = RJ_KIND[rjRock], M = RJ.msg;
+  let next = null, msg = '';
+  if (proc === 'weather') {
+    if (k === 'sediment') msg = M.weatherSediment; else if (k === 'magma') msg = M.weatherMagma;
+    else { rjFrom = rjRock; next = 'sediment'; }
+  } else if (proc === 'compact') {
+    if (k !== 'sediment') msg = M.compactNo;
+    else next = (rjFrom === 'limestone' || rjFrom === 'marble') ? 'limestone' : (rjFrom === 'shale' || rjFrom === 'slate') ? 'shale' : 'sandstone';
+  } else if (proc === 'heat') {
+    if (k === 'sediment') msg = M.heatSediment; else if (k === 'magma') msg = M.heatMagma;
+    else if (RJ_META[rjRock]) next = RJ_META[rjRock]; else msg = M.heatMax;
+  } else if (proc === 'melt') {
+    if (k === 'magma') msg = M.meltMagma; else if (k === 'sediment') msg = M.meltSediment; else next = 'magma';
+  } else if (proc === 'coolSlow' || proc === 'coolFast') {
+    if (k !== 'magma') msg = M.coolNo; else next = proc === 'coolSlow' ? 'granite' : 'basalt';
+  }
+  if (next) { rjRock = next; rjPath.push(next); msg = M.ok[proc]; }
+  rjShow(msg, !next);
+}
+function rjShow(msg, warn){
+  const box = document.getElementById('rjState');
+  if (!rjRock) { box.innerHTML = ''; return; }
+  const k = RJ_KIND[rjRock];
+  box.innerHTML = `<div style="font-size:12px;color:var(--muted)">${RJ.now}</div>
+    <div style="font-size:20px;font-weight:800;color:#fff">${RJ.names[rjRock]} <span style="font-size:12px;font-weight:600;color:var(--muted)">· ${RJ.kinds[k]}</span></div>
+    <div style="margin-top:6px;font-size:12.5px;color:${warn ? '#fca5a5' : '#86efac'}">${msg}</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--muted)">${RJ.path} ${rjPath.map(n => RJ.names[n]).join(' → ')}</div>`;
+  selectStage(k);
 }
 
 const QUESTIONS=[

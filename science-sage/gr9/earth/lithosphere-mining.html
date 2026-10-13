@@ -121,6 +121,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -223,6 +224,7 @@
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">The Rock Cycle</h2>
   <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click any stage or arrow in the loop to find out what's happening and see an example rock.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Can an igneous rock become a sedimentary rock? How? <strong style="color:#fde68a">Then test it:</strong> Click the stages and arrows of the rock cycle.</div>
   <div class="explore-layout">
     <div class="rock-wrap">
       <div class="rock-svg-wrap">
@@ -265,6 +267,13 @@
         <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Click a stage or arrow<br>to explore the rock cycle</div>
       </div>
     </div>
+  </div>
+  <div class="ctrl-card" style="margin-top:16px;min-height:0">
+    <div style="font-weight:800;font-size:15px;color:#fff;margin-bottom:4px">Rock journey</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Pick a starting rock, then apply processes and see what it becomes. Challenge: can you turn basalt into quartzite?</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px"><span style="font-size:12px;color:var(--muted)">Start with:</span><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('granite')">Granite</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('basalt')">Basalt</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('sandstone')">Sandstone</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjStart('limestone')">Limestone</button></div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('weather')">Weathering & erosion</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('compact')">Compaction & cementation</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('heat')">Heat & pressure</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('melt')">Melting</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('coolSlow')">Cool slowly (underground)</button><button type="button" style="padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#e2e8f0;font-size:12px;font-weight:700;cursor:pointer" onclick="rjApply('coolFast')">Cool quickly (at the surface)</button></div>
+    <div id="rjState" aria-live="polite"></div>
   </div>
 </div>
 
@@ -372,6 +381,49 @@ function selectStage(id){
     <div class="stage-example">${s.example}</div>
     ${extra}
   `;
+}
+
+/* ═══════════════════════════════════════════════
+   ROCK JOURNEY — apply processes to a rock and follow the cycle
+═══════════════════════════════════════════════ */
+const RJ = {"now": "Now:", "path": "Path:", "procs": {"weather": "Weathering & erosion", "compact": "Compaction & cementation", "heat": "Heat & pressure", "melt": "Melting", "coolSlow": "Cool slowly (underground)", "coolFast": "Cool quickly (at the surface)"}, "kinds": {"igneous": "igneous rock", "sedimentary": "sedimentary rock", "metamorphic": "metamorphic rock", "sediment": "loose sediment", "magma": "molten rock"}, "names": {"granite": "Granite", "basalt": "Basalt", "sandstone": "Sandstone", "limestone": "Limestone", "shale": "Shale", "quartzite": "Quartzite", "marble": "Marble", "slate": "Slate", "schist": "Schist", "gneiss": "Gneiss", "sediment": "Sediment", "magma": "Magma"}, "msg": {"weatherSediment": "It is already loose sediment — erosion just carries it further.", "weatherMagma": "Molten rock can't be weathered. It has to cool into solid rock first.", "compactNo": "Only loose sediment can be compacted and cemented into rock. Weather it first.", "heatSediment": "Loose sediment is compacted into rock before heat and pressure can change it.", "heatMagma": "It is already molten. Let it cool first.", "heatMax": "It is already strongly metamorphosed. Even more heat would start to melt it.", "meltMagma": "It is already molten.", "meltSediment": "Sediment is usually compacted into rock long before it is buried deep enough to melt.", "coolNo": "Only molten rock (magma or lava) can cool and crystallise into igneous rock.", "ok": {"weather": "Wind, water and ice break it into fragments that are carried away and deposited.", "compact": "Buried layers are squeezed and cemented together into sedimentary rock.", "heat": "Deep underground, heat and pressure change it without melting it.", "melt": "Buried deep enough, it melts into magma.", "coolSlow": "Cooling slowly underground gives big crystals: an intrusive igneous rock.", "coolFast": "Lava cooling quickly at the surface gives tiny crystals: an extrusive igneous rock."}}};
+const RJ_KIND = {granite:'igneous', basalt:'igneous', sandstone:'sedimentary', limestone:'sedimentary', shale:'sedimentary',
+  quartzite:'metamorphic', marble:'metamorphic', slate:'metamorphic', schist:'metamorphic', gneiss:'metamorphic', sediment:'sediment', magma:'magma'};
+// what each rock becomes under heat and pressure
+const RJ_META = {sandstone:'quartzite', limestone:'marble', shale:'slate', granite:'gneiss', basalt:'schist', slate:'schist', schist:'gneiss'};
+let rjRock = null, rjFrom = null, rjPath = [];
+
+function rjStart(name){ rjRock = name; rjFrom = null; rjPath = [name]; rjShow(''); }
+function rjApply(proc){
+  if (!rjRock) return;
+  const k = RJ_KIND[rjRock], M = RJ.msg;
+  let next = null, msg = '';
+  if (proc === 'weather') {
+    if (k === 'sediment') msg = M.weatherSediment; else if (k === 'magma') msg = M.weatherMagma;
+    else { rjFrom = rjRock; next = 'sediment'; }
+  } else if (proc === 'compact') {
+    if (k !== 'sediment') msg = M.compactNo;
+    else next = (rjFrom === 'limestone' || rjFrom === 'marble') ? 'limestone' : (rjFrom === 'shale' || rjFrom === 'slate') ? 'shale' : 'sandstone';
+  } else if (proc === 'heat') {
+    if (k === 'sediment') msg = M.heatSediment; else if (k === 'magma') msg = M.heatMagma;
+    else if (RJ_META[rjRock]) next = RJ_META[rjRock]; else msg = M.heatMax;
+  } else if (proc === 'melt') {
+    if (k === 'magma') msg = M.meltMagma; else if (k === 'sediment') msg = M.meltSediment; else next = 'magma';
+  } else if (proc === 'coolSlow' || proc === 'coolFast') {
+    if (k !== 'magma') msg = M.coolNo; else next = proc === 'coolSlow' ? 'granite' : 'basalt';
+  }
+  if (next) { rjRock = next; rjPath.push(next); msg = M.ok[proc]; }
+  rjShow(msg, !next);
+}
+function rjShow(msg, warn){
+  const box = document.getElementById('rjState');
+  if (!rjRock) { box.innerHTML = ''; return; }
+  const k = RJ_KIND[rjRock];
+  box.innerHTML = `<div style="font-size:12px;color:var(--muted)">${RJ.now}</div>
+    <div style="font-size:20px;font-weight:800;color:#fff">${RJ.names[rjRock]} <span style="font-size:12px;font-weight:600;color:var(--muted)">· ${RJ.kinds[k]}</span></div>
+    <div style="margin-top:6px;font-size:12.5px;color:${warn ? '#fca5a5' : '#86efac'}">${msg}</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--muted)">${RJ.path} ${rjPath.map(n => RJ.names[n]).join(' → ')}</div>`;
+  selectStage(k);
 }
 
 const QUESTIONS=[

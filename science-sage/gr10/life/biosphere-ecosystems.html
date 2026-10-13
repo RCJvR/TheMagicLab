@@ -106,6 +106,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -163,8 +164,16 @@
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Ecosystem Energy Pyramid</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click each level of the pyramid to see how much energy remains and which organisms occupy it.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Change how much energy the producers capture and how much is passed on at each step. The pyramid and the numbers update live; click a level for details.</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> If the producers capture 10 000 kJ, roughly how much energy reaches the tertiary consumers? <strong style="color:#fde68a">Then test it:</strong> Click each level of the pyramid and see how much energy is left at each step.</div>
+  <div style="max-width:820px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+    <label style="font-size:12px;color:var(--muted)">Energy captured by producers: <strong id="e0Val" style="color:#86efac">10 000 kJ</strong>
+      <input type="range" id="e0Slider" min="1000" max="50000" step="1000" value="10000" style="width:100%;margin-top:6px" oninput="buildPyramid()"></label>
+    <label style="font-size:12px;color:var(--muted)">Energy passed on to the next level: <strong id="effVal" style="color:#86efac">10%</strong>
+      <input type="range" id="effSlider" min="5" max="20" step="1" value="10" style="width:100%;margin-top:6px" oninput="buildPyramid()"></label>
+  </div>
   <div class="pyramid-wrap" id="pyramidWrap"></div>
+  <div id="pyrSummary" style="max-width:820px;margin:10px auto 0;font-size:12.5px;line-height:1.6;color:var(--muted);text-align:center"></div>
   <div class="pyr-info" id="pyrInfo"></div>
 </div>
 
@@ -232,12 +241,26 @@ const LEVELS = [
 ];
 let activeLevel = null;
 
+let E = [];
+const fmt = n => n >= 100 ? Math.round(n).toLocaleString('en-ZA') : n >= 1 ? n.toFixed(1) : n.toFixed(2);
+const pct = n => { const v = 100 * n / E[0]; return v >= 1 ? +v.toFixed(1) : +v.toFixed(3); };
 function buildPyramid(){
+  const e0 = +document.getElementById('e0Slider').value, eff = +document.getElementById('effSlider').value / 100;
+  document.getElementById('e0Val').textContent = fmt(e0) + ' kJ';
+  document.getElementById('effVal').textContent = Math.round(eff * 100) + '%';
+  E = LEVELS.map((_, i) => e0 * Math.pow(eff, i));
   const wrap = document.getElementById('pyramidWrap');
-  wrap.innerHTML = [...LEVELS].reverse().map(l=>`
-    <div class="pyr-level" id="lvl_${l.name.replace(/\s/g,'')}" style="background:${l.color};width:${l.width}%" onclick="selectLevel('${l.name}')">${l.name}</div>
+  wrap.innerHTML = [...LEVELS].map((l, i) => ({ l, i })).reverse().map(({ l, i }) => `
+    <div class="pyr-level" id="lvl_${l.name.replace(/\s/g,'')}" style="background:${l.color};width:${Math.max(16, 100 * Math.cbrt(E[i] / E[0]))}%" onclick="selectLevel('${l.name}')">${l.name} · ${fmt(E[i])} kJ</div>
   `).join('');
-  selectLevel('Producers');
+  document.getElementById('pyrSummary').textContent = `Top predators receive ${fmt(E[3])} kJ — only ${pct(E[3])}% of what the producers captured. ${fmt(E[0]-E[3])} kJ was lost along the way, mostly as heat from respiration.`;
+  selectLevel(activeLevel ? activeLevel.name : 'Producers');
+}
+function levelEnergy(){
+  const i = LEVELS.indexOf(activeLevel);
+  let s = `${fmt(E[i])} kJ · ${pct(E[i])}% of producer energy`;
+  if (i > 0) s += ` · ${fmt(E[i-1] - E[i])} kJ lost between the level below and this one, mostly as heat`;
+  return s.toUpperCase();
 }
 function selectLevel(name){
   activeLevel = LEVELS.find(l=>l.name===name);
@@ -245,7 +268,7 @@ function selectLevel(name){
   document.getElementById('lvl_'+name.replace(/\s/g,'')).classList.add('active');
   document.getElementById('pyrInfo').innerHTML = `
     <div class="pyr-info-title">${activeLevel.name}</div>
-    <div class="pyr-info-energy">${activeLevel.energy.toUpperCase()}</div>
+    <div class="pyr-info-energy">${levelEnergy()}</div>
     <p class="pyr-info-desc">${activeLevel.desc}</p>
     <div class="pyr-examples">${activeLevel.examples}</div>`;
 }

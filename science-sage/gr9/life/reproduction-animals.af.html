@@ -108,6 +108,7 @@
 <script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
+<style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -256,10 +257,11 @@
 
 <!-- EXPLORE TAB -->
 <div class="tab-panel" id="tab-explore">
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Waar word spermselle gemaak, en waar word hulle gestoor terwyl hulle ryp word? <strong style="color:#fde68a">Toets dit dan:</strong> Klik op die manlike organe om te kontroleer.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Voortplantingstelselverkenner</h3>
-      <canvas id="reproCanvas" height="460"></canvas>
+      <canvas id="reproCanvas" height="460" role="img" aria-label="Voortplantingstelselverkenner: interaktiewe simulasie"></canvas>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -455,12 +457,22 @@ function drawSystem() {
   else drawFemale(ctx, W);
 }
 
+function pointer(ctx, ax, ay, lx, ly, text, key) {
+  ctx.save();
+  ctx.strokeStyle = selectedOrgan === key ? 'rgba(252,211,77,0.7)' : 'rgba(210,218,245,0.25)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx - 6, ly - 4); ctx.stroke();
+  ctx.restore();
+  label(ctx, lx, ly, text, key);
+}
+
 function label(ctx, x, y, text, key) {
   const data = system === 'male' ? maleOrgans : femaleOrgans;
   const active = selectedOrgan === key;
   ctx.save();
   ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
   ctx.fillStyle = active ? (data[key] ? data[key].col : '#fcd34d') : 'rgba(210,218,245,0.52)';
+  const W = ctx.canvas.offsetWidth || 640;
   ctx.textAlign = x > W * 0.5 ? 'left' : 'right';
   ctx.fillText(text, x, y);
   ctx.restore();
@@ -468,7 +480,7 @@ function label(ctx, x, y, text, key) {
 
 function drawMale(ctx, W) {
   const cx = W * 0.46;
-  const baseY = 60;
+  const baseY = 40;
 
   // — Body outline (torso hint) —
   ctx.save();
@@ -558,11 +570,14 @@ function drawMale(ctx, W) {
   ctx.restore();
 
   // — Labels —
-  label(ctx, cx - 18, testesY + 5,   'Testes',        'testes');
-  label(ctx, cx - 18, testesY - 6,   'Epididimis',    'epididymis');
-  label(ctx, cx - 18, baseY + 170,   'Vas deferens',  'vasdeferens');
-  label(ctx, cx - 18, urethraTop + 40,'Uretra',       'urethra');
-  label(ctx, cx - 18, urethraBot + 8, 'Penis',        'penis');
+  // Labels sit to the right of the figure (as on the female diagram), each
+  // with a thin pointer to its organ so none of them cover the drawing.
+  const lx = cx + 110;
+  pointer(ctx, cx + 70, baseY + 245, lx, baseY + 215, 'Vas deferens', 'vasdeferens');
+  pointer(ctx, cx + 2,  urethraTop + 45, lx, baseY + 250, 'Uretra',      'urethra');
+  pointer(ctx, cx + 64, testesY - 4, lx, testesY - 14, 'Epididimis',     'epididymis');
+  pointer(ctx, cx + 48, testesY + 10, lx, testesY + 14, 'Testes',        'testes');
+  pointer(ctx, cx + 16, urethraBot - 20, lx, urethraBot - 6, 'Penis',    'penis');
 }
 
 function drawFemale(ctx, W) {
