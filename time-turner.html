@@ -108,6 +108,22 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
 .section-sub { margin: -6px 0 var(--space-4); font-size: 13px; line-height: 1.6; color: var(--text-3); max-width: 72ch; }
 .section-title-note { font-size: 11.5px; font-weight: 500; color: var(--text-3); }
 
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+.tt-tabs {
+  display: flex; gap: var(--space-1); flex-wrap: wrap;
+  margin: 0 0 var(--space-6); border-bottom: 1px solid var(--line);
+}
+.tt-tab {
+  padding: 11px 16px; margin-bottom: -1px;
+  background: transparent; border: 0; border-bottom: 2px solid transparent;
+  color: var(--text-2); font-family: var(--font-body); font-size: 14px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+}
+.tt-tab:hover { color: var(--paper); }
+.tt-tab[aria-selected="true"] { color: var(--paper); border-bottom-color: var(--tt); }
+.tt-tab:focus-visible { outline: 2px solid var(--paper); outline-offset: -2px; }
+.tt-panel[hidden] { display: none; }
+
 .card {
   padding: var(--space-5);
   margin-bottom: var(--space-3);
@@ -426,6 +442,8 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
 @media print {
   body { background: #fff !important; color: #000 !important; background-image: none !important; }
   nav, .no-print, .hero-sub { display: none !important; }
+  /* Printing always shows every panel, whichever tab is open. */
+  .tt-panel[hidden] { display: block !important; }
   .print-only { display: block !important; }
 
   main { max-width: none; padding: 0; }
@@ -484,6 +502,14 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
     <div id="print-date" style="font-size:11px;color:#555;margin-top:2px;"></div>
   </div>
 
+  <div class="tt-tabs no-print" role="tablist" aria-label="Time Turner sections">
+    <button type="button" class="tt-tab" role="tab" id="tt-tab-assess" data-tt-tab="assess" aria-controls="tt-panel-assess">🗓️ Assessments</button>
+    <button type="button" class="tt-tab" role="tab" id="tt-tab-setup" data-tt-tab="setup" aria-controls="tt-panel-setup">⚙️ Set-up</button>
+    <button type="button" class="tt-tab" role="tab" id="tt-tab-plan" data-tt-tab="plan" aria-controls="tt-panel-plan">📅 My plan</button>
+    <button type="button" class="tt-tab" role="tab" id="tt-tab-export" data-tt-tab="export" aria-controls="tt-panel-export">📤 Export</button>
+  </div>
+
+  <div class="tt-panel" id="tt-panel-assess" role="tabpanel" aria-labelledby="tt-tab-assess" hidden>
   <!-- ── Assessment calendar (school-wide, uploaded by teachers) ── -->
   <div class="section-title">🗓️ Assessment calendar</div>
   <div class="section-sub">Uploaded by your teachers. Grade 8-9 see every subject automatically; Grade 10-12 pick their own subjects below.</div>
@@ -604,6 +630,9 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
     </div>
   </div>
 
+  </div><!-- /tt-panel-assess -->
+
+  <div class="tt-panel" id="tt-panel-setup" role="tabpanel" aria-labelledby="tt-tab-setup" hidden>
   <!-- ── Period schedule (school-wide, uploaded by teachers) ── -->
   <div class="no-print">
     <div class="section-title">🔔 Period times</div>
@@ -650,6 +679,9 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
     </div>
   </div>
 
+  </div><!-- /tt-panel-setup -->
+
+  <div class="tt-panel" id="tt-panel-plan" role="tabpanel" aria-labelledby="tt-tab-plan" hidden>
   <!-- ── Add entry ── -->
   <div class="no-print">
     <div class="section-title">🪄 Add a block</div>
@@ -803,6 +835,9 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
     </div>
   </div>
 
+  </div><!-- /tt-panel-plan -->
+
+  <div class="tt-panel" id="tt-panel-export" role="tabpanel" aria-labelledby="tt-tab-export" hidden>
   <!-- ── Calendar export ── -->
   <div class="no-print">
     <div class="section-title">📤 Export to your calendar</div>
@@ -842,6 +877,8 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
     </div>
   </div>
 
+  </div><!-- /tt-panel-export -->
+
   <div class="actions-row no-print">
     <button class="btn-primary" id="print-btn"><i data-lucide="printer" style="width:14px;height:14px;"></i>Print / Save as PDF</button>
     <button class="btn-ghost danger" id="clear-btn"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>Clear all</button>
@@ -857,6 +894,33 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
 <script defer src="auth-modal.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
+
+(function () {
+  const tabs = Array.from(document.querySelectorAll('.tt-tab'));
+  const names = tabs.map(t => t.dataset.ttTab);
+  function show(name, focus) {
+    if (!names.includes(name)) name = 'plan';
+    tabs.forEach(t => {
+      const on = t.dataset.ttTab === name;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById('tt-panel-' + t.dataset.ttTab).hidden = !on;
+      if (on && focus) t.focus();
+    });
+    try { localStorage.setItem('tt-tab', name); } catch (e) {}
+    if (history.replaceState) history.replaceState(null, '', '#' + name);
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(t.dataset.ttTab));
+    t.addEventListener('keydown', e => {
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { e.preventDefault(); show(names[(i + d + names.length) % names.length], true); }
+    });
+  });
+  let start = location.hash.slice(1);
+  if (!names.includes(start)) { try { start = localStorage.getItem('tt-tab'); } catch (e) {} }
+  show(start);
+})();
 document.addEventListener('magiclab:auth:ready', () => {
   window.TimeTurnerPeriods.init();
   window.TimeTurner.init();
