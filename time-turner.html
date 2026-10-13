@@ -196,6 +196,13 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
   font-family: var(--font-mono); font-size: 10.5px; font-weight: 500;
   letter-spacing: 0.08em; text-transform: uppercase;
 }
+.admin-tool { padding: 12px 16px; margin-bottom: 8px; }
+.admin-tool-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.admin-tool-title { font-family: var(--font-display); font-weight: 800; font-size: 14px; letter-spacing: -0.01em; color: var(--paper); }
+.admin-tool-note { margin-top: 2px; font-size: 12px; color: var(--text-3); }
+.admin-tool-head .btn-ghost { padding: 7px 14px; font-size: 12.5px; }
+.admin-tool-body { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.admin-tool-body .section-sub { margin: 0 0 12px; }
 .admin-list-row {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 10px 0; border-bottom: 1px solid var(--line-soft);
@@ -530,20 +537,23 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
   <div class="admin-panel hidden no-print" id="assess-admin">
     <div class="admin-badge"><i data-lucide="shield" style="width:12px;height:12px;"></i>Teacher tools — visible only to staff</div>
 
-    <div class="section-title">🧑‍🎓 Check on a learner</div>
-    <div class="section-sub">Look up a specific learner's upcoming assessment load and, if they've used their own planner, a few wellbeing signals.</div>
-    <div class="card">
-      <button class="btn-primary" id="checkin-toggle" type="button"><i data-lucide="search" style="width:14px;height:14px;"></i>Check on a learner</button>
-      <div id="checkin-panel" class="hidden" style="margin-top:16px;">
-        <a class="btn-ghost" href="time-turner-checkin.html" style="text-decoration:none;"><i data-lucide="search" style="width:14px;height:14px;"></i>Open Check on a Learner</a>
+    <div class="card admin-tool">
+      <div class="admin-tool-head">
+        <div>
+          <div class="admin-tool-title">🧑‍🎓 Check on a learner</div>
+          <div class="admin-tool-note">Look up a learner's upcoming assessment load and wellbeing signals.</div>
+        </div>
+        <a class="btn-ghost" href="time-turner-checkin.html" style="text-decoration:none;"><i data-lucide="search" style="width:14px;height:14px;"></i>Open</a>
       </div>
     </div>
 
-    <div class="section-title">🗓️ Upload a class timetable</div>
-    <div class="section-sub">One timetable per class you own — a different register class in the same grade (8A1, 8A2, ...) can have a completely different daily rotation, so this is per class, not per grade. Students who've joined that class can then import it into their own plan in one click instead of adding it by hand. One row per timetable day (1–10): the day number, then each period's subject, separated by commas — leave a period blank for a free period or break.</div>
-    <div class="card">
-      <button class="btn-primary" id="tt-admin-toggle" type="button"><i data-lucide="upload" style="width:14px;height:14px;"></i>Upload a class timetable</button>
-      <div id="tt-admin-form" class="hidden" style="margin-top:16px;">
+    <div class="card admin-tool">
+      <div class="admin-tool-head">
+        <div class="admin-tool-title">🗓️ Upload a class timetable</div>
+        <button class="btn-ghost" id="tt-admin-toggle" type="button"><i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open</button>
+      </div>
+      <div id="tt-admin-form" class="hidden admin-tool-body">
+      <p class="section-sub">One timetable per class you own — each register class (8A1, 8A2, ...) can have its own rotation. Learners who've joined the class can import it in one click. One row per timetable day (1–10): the day number, then each period's subject, comma-separated; leave a period blank for a free period or break.</p>
       <label class="form-label" for="tt-admin-class">Class</label>
       <select class="form-select" id="tt-admin-class" style="margin-bottom:12px;max-width:260px;">
         <option value="">Loading…</option>
@@ -558,15 +568,17 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
       </div>
     </div>
 
-    <div class="section-title">Class timetables on file</div>
-    <div class="card">
+    <div class="card admin-tool">
+      <div class="admin-tool-title" style="margin-bottom:8px;">Class timetables on file</div>
       <div id="tt-admin-list"><div class="empty-hint">Loading…</div></div>
     </div>
 
-    <div class="section-title">Add one assessment</div>
-    <div class="card">
-      <button class="btn-primary" id="aa-toggle" type="button"><i data-lucide="plus" style="width:14px;height:14px;"></i>Add one assessment</button>
-      <div id="aa-form" class="hidden" style="margin-top:16px;">
+<div class="card admin-tool">
+      <div class="admin-tool-head">
+        <div class="admin-tool-title">Add one assessment</div>
+        <button class="btn-ghost" id="aa-toggle" type="button"><i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open</button>
+      </div>
+      <div id="aa-form" class="hidden admin-tool-body">
       <div class="form-row">
         <div>
           <label class="form-label" for="aa-grade">Grade</label>
@@ -604,11 +616,13 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
       <div class="msg" id="aa-msg"></div>
     </div>
 
-    <div class="section-title">Upload the assessment calendar</div>
-    <div class="section-sub">One row per assessment: Grade, Subject, Type, Title, Due Date, Term, Description. Upload a .csv, or paste rows copied from a spreadsheet.</div>
-    <div class="card">
-      <button class="btn-primary" id="aa-bulk-toggle" type="button"><i data-lucide="upload" style="width:14px;height:14px;"></i>Upload the assessment calendar</button>
-      <div id="aa-bulk-form" class="hidden" style="margin-top:16px;">
+<div class="card admin-tool">
+      <div class="admin-tool-head">
+        <div class="admin-tool-title">Upload the assessment calendar</div>
+        <button class="btn-ghost" id="aa-bulk-toggle" type="button"><i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open</button>
+      </div>
+      <div id="aa-bulk-form" class="hidden admin-tool-body">
+      <p class="section-sub">One row per assessment: Grade, Subject, Type, Title, Due Date, Term, Description. Upload a .csv, or paste rows copied from a spreadsheet.</p>
       <input aria-label="Assessment calendar CSV file" type="file" id="aa-file" accept=".csv,text/csv" style="margin-bottom:10px;">
       <textarea aria-label="Assessment rows" class="form-textarea" id="aa-bulk-text" placeholder="8, Mathematics, test, Test 1: Algebra, 2026-03-12, 1, Chapters 1-3&#10;10, Physical Sciences, exam, June Exam, 2026-06-03, 2," style="min-height:110px;"></textarea>
       <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
@@ -619,8 +633,8 @@ main { width: 100%; max-width: 960px; margin-inline: auto; padding: clamp(28px,3
       </div>
     </div>
 
-    <div class="section-title">Manage assessments</div>
-    <div class="card">
+    <div class="card admin-tool">
+      <div class="admin-tool-title" style="margin-bottom:10px;">Manage assessments</div>
       <div class="day-quick" id="aa-manage-grade" role="group" aria-label="Filter assessments by grade" style="margin-bottom:12px;">
         <button type="button" class="timemode-btn active" data-grade="">All grades</button>
         <button type="button" class="timemode-btn" data-grade="8">Grade 8</button>

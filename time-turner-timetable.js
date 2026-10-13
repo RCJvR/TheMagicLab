@@ -249,8 +249,8 @@
     toggle.addEventListener('click', () => {
       const nowHidden = panel.classList.toggle('hidden');
       toggle.innerHTML = nowHidden
-        ? '<i data-lucide="upload" style="width:14px;height:14px;"></i>Upload a class timetable'
-        : '<i data-lucide="minus" style="width:14px;height:14px;"></i>Close';
+        ? '<i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open'
+        : '<i data-lucide="chevron-up" style="width:14px;height:14px;"></i>Close';
       window.lucide?.createIcons();
     });
   }

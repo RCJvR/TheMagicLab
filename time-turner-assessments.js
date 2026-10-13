@@ -464,7 +464,7 @@
   // they've submitted — same pattern as Time Turner's own add-block form.
   function collapseAddAssessmentForm() {
     document.getElementById('aa-form').classList.add('hidden');
-    document.getElementById('aa-toggle').innerHTML = '<i data-lucide="plus" style="width:14px;height:14px;"></i>Add one assessment';
+    document.getElementById('aa-toggle').innerHTML = '<i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open';
     window.lucide?.createIcons();
   }
 
@@ -483,19 +483,19 @@
 
   function wireAdminForms() {
     wireCollapsible('checkin-toggle', 'checkin-panel',
-      '<i data-lucide="search" style="width:14px;height:14px;"></i>Check on a learner',
-      '<i data-lucide="minus" style="width:14px;height:14px;"></i>Close');
+      '<i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open',
+      '<i data-lucide="chevron-up" style="width:14px;height:14px;"></i>Close');
     wireCollapsible('aa-bulk-toggle', 'aa-bulk-form',
-      '<i data-lucide="upload" style="width:14px;height:14px;"></i>Upload the assessment calendar',
-      '<i data-lucide="minus" style="width:14px;height:14px;"></i>Close');
+      '<i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open',
+      '<i data-lucide="chevron-up" style="width:14px;height:14px;"></i>Close');
 
     const aaToggle = document.getElementById('aa-toggle');
     const aaForm = document.getElementById('aa-form');
     aaToggle.addEventListener('click', () => {
       const nowHidden = aaForm.classList.toggle('hidden');
       aaToggle.innerHTML = nowHidden
-        ? '<i data-lucide="plus" style="width:14px;height:14px;"></i>Add one assessment'
-        : '<i data-lucide="minus" style="width:14px;height:14px;"></i>Close';
+        ? '<i data-lucide="chevron-down" style="width:14px;height:14px;"></i>Open'
+        : '<i data-lucide="chevron-up" style="width:14px;height:14px;"></i>Close';
       window.lucide?.createIcons();
     });
 
