@@ -322,6 +322,8 @@ const TX=AF?{
 descs.virus+=TX.virusKey; descs.decompose+=TX.decKey;
 let hint='', soilN=0, showLabels=false;
 const MAX_BAC=300, SPLIT_FRAMES=45;
+// Pace of the virus and decomposition scenes (1 = the original speed).
+const VIRUS_SPEED=0.6, INFECTION_SLOWDOWN=1.7, DECAY_RATE=0.0005, DECOMP_SPEED=0.75;
 
 function toggleLabels(btn){
   showLabels=!showLabels;
@@ -644,7 +646,7 @@ function simVirus(){
       drawHost(h.x,h.y,h.r,h.seed,0);
     } else if(h.state==='infected'){
       infected++;
-      const age=t-h.t0;
+      const age=(t-h.t0)/INFECTION_SLOWDOWN;
       // 0-60 frames: virus takes over the cell. 60-300: the cell makes copies. 300-360: it swells. 360: bursts.
       const copies=Math.round(Math.min(1,Math.max(0,(age-60)/240))*h.n);
       const swell=age>300?1+0.15*(age-300)/60:1;
@@ -658,7 +660,7 @@ function simVirus(){
         h.state='dead'; h.t0=t;
       }
     } else if(h.state==='dead'){
-      const age=t-h.t0;
+      const age=(t-h.t0)/INFECTION_SLOWDOWN;
       if(age>150){h.gone=true; continue;}
       // Burst cell: the membrane breaks into fragments that fade away.
       const a=1-age/150;
@@ -671,7 +673,7 @@ function simVirus(){
   }
   for(const p of particles){
     if(p.type!=='virus') continue;
-    p.x+=p.vx; p.y+=p.vy; p.rot+=0.01;
+    p.x+=p.vx*VIRUS_SPEED; p.y+=p.vy*VIRUS_SPEED; p.rot+=0.006;
     if(p.x<9||p.x>W-9) p.vx*=-1;
     if(p.y<9||p.y>H-9) p.vy*=-1;
     drawVirus(p.x,p.y,p.r,p.rot);
@@ -709,17 +711,17 @@ function simDecompose(){
     let best=null,bd=1e9;
     for(const l of leaves){const d=Math.hypot(l.x-p.x,l.y-p.y); if(d<bd){bd=d;best=l;}}
     p.angle+=(Math.random()-.5)*0.5;
-    p.x+=Math.cos(p.angle)*0.6; p.y+=Math.sin(p.angle)*0.6;
+    p.x+=Math.cos(p.angle)*0.6*DECOMP_SPEED; p.y+=Math.sin(p.angle)*0.6*DECOMP_SPEED;
     if(best&&bd<170&&bd>best.r*0.6){
       const ta=Math.atan2(best.y-p.y,best.x-p.x);
-      p.x+=Math.cos(ta)*0.8; p.y+=Math.sin(ta)*0.8;
+      p.x+=Math.cos(ta)*0.8*DECOMP_SPEED; p.y+=Math.sin(ta)*0.8*DECOMP_SPEED;
     }
     p.x=Math.max(22,Math.min(W-22,p.x)); p.y=Math.max(22,Math.min(soilY-8,p.y));
     if(best&&Math.hypot(best.x-p.x,best.y-p.y)<best.r) best.feeders++;
   }
 
   for(const l of leaves){
-    l.decay=Math.min(1,l.decay+0.0012*l.feeders);
+    l.decay=Math.min(1,l.decay+DECAY_RATE*l.feeders);
     if(l.decay>=1){
       l.done=true;
       for(let i=0;i<14;i++) particles.push({type:'nutrient',x:l.x+(Math.random()-.5)*30,y:l.y+(Math.random()-.5)*20,vy:0.3+Math.random()*0.4});
