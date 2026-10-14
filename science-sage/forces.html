@@ -135,12 +135,20 @@
     const F = (label, dir, mag, o) => Object.assign({ id: uid++, label, dir, angle: '0', mag: mag == null ? '' : String(mag), color: COLS[(uid - 2) % COLS.length] }, o || {});
     const defaults = () => ({ surface: 'flat', theta: '30', mass: '', style: 'force', objLabel: '', showMag: true, scale: true, comps: false, resultant: false, title: '', forces: [] });
     let st = defaults();
+    // Example text in both languages; it follows the language toggle until the user edits it.
+    const EX_TEXT = [
+      ["A 10 kg box pulled at 30° on a rough surface", "'n 10 kg-boks wat teen 30° oor 'n rowwe oppervlak getrek word"],
+      ["A 5 kg block at rest on a 30° incline", "'n 5 kg-blok in rus op 'n skuinsvlak van 30°"],
+      ["A 2 kg object hanging from a string", "'n 2 kg-voorwerp wat aan 'n tou hang"],
+      ["Object held by two ropes", "Voorwerp wat deur twee toue vasgehou word"],
+    ];
     function example(k) {
       st = defaults(); uid = 1;
       if (k === 'pull') Object.assign(st, { surface: 'flat', mass: '10', title: 'A 10 kg box pulled at 30° on a rough surface', forces: [F('F_g', 'down', 98), F('N', 'normal', 78), F('F_A', 'angle', 40, { angle: '30' }), F('f', 'left', 20)] });
       if (k === 'incline') Object.assign(st, { surface: 'incline', theta: '30', mass: '5', comps: true, title: 'A 5 kg block at rest on a 30° incline', forces: [F('F_g', 'down', 49), F('N', 'normal', 42.44), F('f', 'upslope', 24.5)] });
       if (k === 'hang') Object.assign(st, { surface: 'ceiling', mass: '2', title: 'A 2 kg object hanging from a string', forces: [F('F_g', 'down', 19.6), F('T', 'up', 19.6)] });
       if (k === 'ropes') Object.assign(st, { surface: 'none', style: 'fbd', mass: '4', title: 'Object held by two ropes', forces: [F('F_g', 'down', 39.2), F('T₁', 'angle', 19.6, { angle: '150' }), F('T₂', 'angle', 33.95, { angle: '60' })] });
+      K.localize(st, EX_TEXT, lang);
     }
     const store = K.store('ss_forces_v1', 'f');
     function sanitize(s) {
@@ -309,7 +317,7 @@
 
     const loaded = store.load(sanitize);
     if (loaded) st = loaded; else example('incline');
-    K.i18n((l) => { lang = l; paintTop(); paintForces(); render(); }).apply();
+    K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintTop(); paintForces(); render(); }).apply();
     window.__forces = { net, st: () => st };
   })();
   </script>

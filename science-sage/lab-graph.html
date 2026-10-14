@@ -130,6 +130,29 @@
       photo: { xName: 'Light intensity', xUnit: 'lux', yName: 'Bubbles per minute', yUnit: '', data: '0 0\n1000 8\n2000 15\n3000 20\n4000 23\n5000 24\n6000 24', series: '', kind: 'scatter', fit: 'smooth', xT: 'x', title: 'Rate of photosynthesis and light intensity', tri: false },
       bar: { xName: 'Activity', xUnit: '', yName: 'Heart rate', yUnit: 'beats per minute', data: 'Resting 68\nWalking 95\nJogging 132\nSprinting 168', series: '', kind: 'bar', fit: 'none', xT: 'x', title: 'Heart rate after different activities', tri: false },
     };
+    // Example text in both languages; it follows the language toggle until the user edits it.
+    const EX_TEXT = [
+      ["Current", "Stroom"],
+      ["Potential difference", "Potensiaalverskil"],
+      ["Potential difference against current for a resistor", "Potensiaalverskil teenoor stroom vir 'n resistor"],
+      ["Pressure", "Druk"],
+      ["Pressure against 1/volume", "Druk teenoor 1/volume"],
+      ["Mass added", "Massa bygevoeg"],
+      ["Extension", "Verlenging"],
+      ["Extension of a spring", "Verlenging van 'n veer"],
+      ["Time", "Tyd"],
+      ["Temperature", "Temperatuur"],
+      ["Beaker A (no lid), Beaker B (lid)", "Beker A (geen deksel), Beker B (deksel)"],
+      ["Cooling of water", "Afkoeling van water"],
+      ["Light intensity", "Ligintensiteit"],
+      ["Bubbles per minute", "Borrels per minuut"],
+      ["Rate of photosynthesis and light intensity", "Tempo van fotosintese en ligintensiteit"],
+      ["Activity", "Aktiwiteit"],
+      ["Heart rate", "Harttempo"],
+      ["beats per minute", "slae per minuut"],
+      ["Resting 68\nWalking 95\nJogging 132\nSprinting 168", "Rus 68\nStap 95\nDraf 132\nNaelloop 168"],
+      ["Heart rate after different activities", "Harttempo ná verskillende aktiwiteite"],
+    ];
     const defaults = () => Object.assign({ origin: true, paper: false, tri: true, eq: true }, EX.ohm);
     let st = defaults();
     const store = K.store('ss_labgraph_v1', 'l');
@@ -279,13 +302,13 @@
     TXT.forEach(k => $(k).addEventListener('input', (e) => { st[k] = e.target.value; render(); }));
     SEL.forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.value; render(); }));
     CHK.forEach(k => $(k).addEventListener('change', (e) => { st[k] = e.target.checked; render(); }));
-    $('examples').addEventListener('change', (e) => { const x = EX[e.target.value]; if (x) { Object.assign(st, x); paint(); render(); } e.target.value = ''; });
+    $('examples').addEventListener('change', (e) => { const x = EX[e.target.value]; if (x) { Object.assign(st, x); K.localize(st, EX_TEXT, lang); paint(); render(); } e.target.value = ''; });
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'graph').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'graph', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
     $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
 
     const loaded = store.load(sanitize);
     if (loaded) st = loaded;
-    K.i18n((l) => { lang = l; paint(); render(); }).apply();
+    K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paint(); render(); }).apply();
   })();
   </script>
   <script src="/contact-button.js" defer></script>

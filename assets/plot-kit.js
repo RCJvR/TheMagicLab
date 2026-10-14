@@ -484,8 +484,26 @@
     };
   }
 
+  // Example text in both languages: pairs is a list of [english, afrikaans].
+  // Every string in st (and in arrays of objects inside it) that is still
+  // exactly an example string is switched to `lang`; anything the user typed
+  // or changed is left alone.
+  function localize(st, pairs, lang) {
+    const map = new Map();
+    pairs.forEach(([en, af]) => { map.set(en, lang === 'af' ? af : en); map.set(af, lang === 'af' ? af : en); });
+    const walk = (o) => {
+      for (const k of Object.keys(o)) {
+        const v = o[k];
+        if (typeof v === 'string') { if (map.has(v)) o[k] = map.get(v); }
+        else if (Array.isArray(v)) v.forEach(x => { if (x && typeof x === 'object') walk(x); });
+      }
+    };
+    walk(st);
+    return st;
+  }
+
   window.MMPlotKit = {
     compile, FUNCS, DEG, attach, openDialog, copyImage, printSheet, pngBlob, svgString, svgSize, download, toast,
-    toB64, fromB64, esc, addToWorksheet, inbox, setInbox, i18n, store,
+    toB64, fromB64, esc, addToWorksheet, inbox, setInbox, i18n, store, localize,
   };
 })();

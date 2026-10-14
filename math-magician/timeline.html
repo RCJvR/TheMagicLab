@@ -137,6 +137,24 @@
       return d;
     }
     const item = (kind, o) => Object.assign({ id: uid++, kind, from: '0', to: st.n, at: '0', text: '', side: kind === 'series' || kind === 'amount' ? 'above' : 'below', arrow: 'down' }, o || {});
+    // Example text in both languages; it follows the language toggle until the user edits it.
+    const EX_TEXT = [
+      ["R2 000 deposited monthly for 5 years", "R2 000 maandeliks gedeponeer vir 5 jaar"],
+      ["i = 9% p.a. compounded monthly", "i = 9% p.j. maandeliks saamgestel"],
+      ["R2 000 each month", "R2 000 elke maand"],
+      ["60 payments", "60 paaiemente"],
+      ["Home loan repaid over 20 years", "Huislening oor 20 jaar terugbetaal"],
+      ["i = 11,25% p.a. compounded monthly", "i = 11,25% p.j. maandeliks saamgestel"],
+      ["Savings with a change in interest rate", "Spaargeld met 'n verandering in die rentekoers"],
+      ["8% p.a. compounded quarterly", "8% p.j. kwartaalliks saamgestel"],
+      ["10% p.a. compounded monthly", "10% p.j. maandeliks saamgestel"],
+      ["R5 000 withdrawn", "R5 000 onttrek"],
+      ["First payment 6 months after the loan", "Eerste paaiement 6 maande ná die lening"],
+      ["i = 12% p.a. compounded monthly", "i = 12% p.j. maandeliks saamgestel"],
+      ["R30 000 loan", "R30 000-lening"],
+      ["years", "jare"], ["months", "maande"],
+      ["13 payments", "13 paaiemente"],
+    ];
     function example(k) {
       st = defaults();
       if (k === 'fv') { Object.assign(st, { n: '60', unit: 'months', every: '12', title: 'R2 000 deposited monthly for 5 years' });
@@ -148,6 +166,7 @@
           item('amount', { at: '0', text: 'R20 000', arrow: 'down', side: 'above' }), item('amount', { at: '4', text: 'R5 000 withdrawn', arrow: 'up', side: 'above' }), item('amount', { at: '7', text: 'A = ?', arrow: 'none', side: 'below' })]; }
       if (k === 'delay') { Object.assign(st, { n: '18', unit: 'months', every: '3', title: 'First payment 6 months after the loan' });
         st.items = [item('rate', { from: '0', to: '18', text: 'i = 12% p.a. compounded monthly' }), item('amount', { at: '0', text: 'R30 000 loan', arrow: 'none', side: 'below' }), item('series', { from: '6', to: '18', text: 'x = ?', arrow: 'up', side: 'above' }), item('brace', { from: '6', to: '18', text: '13 payments', side: 'below' })]; }
+      K.localize(st, EX_TEXT, lang);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -266,7 +285,7 @@
 
     const loaded = store.load(sanitize);
     if (loaded) st = loaded; else example('rates');
-    K.i18n((l) => { lang = l; paintLine(); paintItems(); render(); }).apply();
+    K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintLine(); paintItems(); render(); }).apply();
   })();
   </script>
   <script src="/contact-button.js" defer></script>

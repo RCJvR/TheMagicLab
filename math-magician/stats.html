@@ -161,6 +161,20 @@
       if (!/^#[0-9a-f]{6}$/i.test(d.color)) d.color = '#2563eb';
       return d;
     }
+    // Example text in both languages; it follows the language toggle until the user edits it.
+    const EX_TEXT = [
+      ["Marks out of 50", "Punte uit 50"],
+      ["Grade 10 test marks", "Graad 10-toetspunte"],
+      ["Class A", "Klas A"],
+      ["Class B", "Klas B"],
+      ["Marks (%)", "Punte (%)"],
+      ["Term test: two classes", "Kwartaaltoets: twee klasse"],
+      ["Height (cm)", "Lengte (cm)"],
+      ["Heights of 40 learners", "Lengtes van 40 leerders"],
+      ["Hours studied", "Ure gestudeer"],
+      ["Mark (%)", "Punt (%)"],
+      ["Study time and marks", "Studietyd en punte"],
+    ];
     function example(k) {
       const keep = { color: st.color };
       st = Object.assign(defaults(), keep);
@@ -168,6 +182,7 @@
       if (k === 'compare') Object.assign(st, { mode: 'list', chart: 'box', a: '56 62 48 71 65 59 80 44 67 73 58 61', b: '45 52 38 66 49 57 70 41 55 60 47 51', nameA: 'Class A', nameB: 'Class B', xtitle: 'Marks (%)', title: 'Term test: two classes' });
       if (k === 'heights') Object.assign(st, { mode: 'grouped', chart: 'ogive', grouped: '140 150 3\n150 160 8\n160 170 14\n170 180 10\n180 190 5', xtitle: 'Height (cm)', title: 'Heights of 40 learners' });
       if (k === 'study') Object.assign(st, { mode: 'pairs', chart: 'scatter', pairs: '1 42\n2 48\n2 51\n3 55\n4 60\n4 58\n5 66\n6 70\n7 71\n8 79', xtitle: 'Hours studied', ytitle: 'Mark (%)', title: 'Study time and marks' });
+      K.localize(st, EX_TEXT, lang);
     }
 
     // ══════════════════════════════════════════════════════════════════
@@ -522,7 +537,7 @@
 
     const loaded = store.load(sanitize);
     if (loaded) st = loaded; else example('marks');
-    K.i18n((l) => { lang = l; paintData(); paintChart(); render(); }).apply();
+    K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintData(); paintChart(); render(); }).apply();
     window.__stats = { summary, regression, parseList, st: () => st };
   })();
   </script>

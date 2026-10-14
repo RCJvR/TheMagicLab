@@ -132,6 +132,14 @@
       h: '0', speed: '15', dir: 'up', g: '9.8', pos: 'up', ref: 'ground', bounces: '0', rebound: '0.6',
     });
     let st = defaults();
+    // Example text in both languages; it follows the language toggle until the user edits it.
+    const EX_TEXT = [
+      ["A car accelerates, cruises and brakes", "'n Motor versnel, ry teen konstante snelheid en rem"],
+      ["A taxi comes to rest, then reverses", "'n Taxi kom tot stilstand en ry dan agteruit"],
+      ["A ball thrown vertically upwards", "'n Bal wat vertikaal opwaarts gegooi word"],
+      ["A ball thrown upwards from the edge of a 20 m cliff", "'n Bal wat opwaarts gegooi word van die rand van 'n 20 m-krans af"],
+      ["A ball dropped from 5 m bounces twice", "'n Bal wat van 5 m af laat val word, bons twee keer"],
+    ];
     function example(k) {
       const keep = { gx: st.gx, gv: st.gv, ga: st.ga, nums: st.nums, keys: st.keys, grid: st.grid };
       st = Object.assign(defaults(), keep);
@@ -140,6 +148,7 @@
       if (k === 'ball') Object.assign(st, { mode: 'proj', title: 'A ball thrown vertically upwards', h: '0', speed: '15', dir: 'up', pos: 'up', ref: 'ground', bounces: '0' });
       if (k === 'cliff') Object.assign(st, { mode: 'proj', title: 'A ball thrown upwards from the edge of a 20 m cliff', h: '20', speed: '10', dir: 'up', pos: 'down', ref: 'launch', bounces: '0' });
       if (k === 'bounce') Object.assign(st, { mode: 'proj', title: 'A ball dropped from 5 m bounces twice', h: '5', speed: '0', dir: 'drop', pos: 'up', ref: 'ground', bounces: '2', rebound: '0.7' });
+      K.localize(st, EX_TEXT, lang);
     }
     const store = K.store('ss_motion_v1', 'm');
     function sanitize(s) {
@@ -333,7 +342,7 @@
 
     const loaded = store.load(sanitize);
     if (loaded) st = loaded; else example('car');
-    K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
+    K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintControls(); render(); }).apply();
     window.__motion = { segments, st: () => st };
   })();
   </script>
