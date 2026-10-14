@@ -894,6 +894,7 @@
   //   opts.scale     — text for the Scale cell (default '1:1')
   //   opts.thumb(model) — optional { model, label, maxScale } to show something else as the reference
   //   opts.code      — short chapter code used for the drawing number, e.g. 'OP'
+  //   opts.projection — the chapter's default method ('first' | 'third') when a model doesn't state one
   // Drawing area inside the sheet border, clear of the prompt, thumbnail and title block (mm).
   const MAIN_W = 258, MAIN_H = 300;
 
@@ -920,7 +921,7 @@
       thumbBox.appendChild(thumbSvg);
       sheet.appendChild(thumbBox);
 
-      const proj = projectionOf(model);
+      const proj = projectionOf(model) || (model.projection === 'none' ? null : opts.projection || null);
       const no = (opts.code ? opts.code + '-' : '') + String(idx + 1).padStart(2, '0');
       const titleBlock = document.createElement('div');
       titleBlock.className = 'title-block';
