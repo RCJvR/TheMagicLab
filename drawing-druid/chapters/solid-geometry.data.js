@@ -35,17 +35,18 @@
     const SV_RIGHT = FV_LEFT - GAP, SV_LEFT = SV_RIGHT - hexD;
 
     CONSTRUCTIONS['hex-prism-first-angle'] = {
-      id: 'hex-prism-first-angle', title: 'Hexagonal Prism (1st Angle)',
+      id: 'hex-prism-first-angle', title: 'Hexagonal Prism (1st Angle)', projection: 'first',
       summary: 'Draw a hexagonal prism in first-angle projection — the mirror-image layout rule of the 3rd-angle projection used for mechanical drawings.',
       bounds: { w: 150, h: 205 },
       workbookPrompt: 'Draw the front, top and side views of the hexagonal prism in FIRST-angle projection. Remember: the top view goes below the front view, and the side view goes to the left.',
       steps: [
         {
           id: 1,
-          instruction: 'In FIRST-angle projection, the object sits between you and the projection plane, so each view lands on the OPPOSITE side from the direction you\'re viewing from. Start with the front view — a simple rectangle for this upright hexagonal prism.',
+          instruction: 'In FIRST-angle projection, the object sits between you and the projection plane, so each view lands on the OPPOSITE side from the direction you\'re viewing from. Start with the front view of this upright hexagonal prism: a rectangle as wide as the distance across flats of the hexagon, with one vertical line down the middle. That line is the edge where the two front faces meet, pointing straight at you.',
           calloutAt: [FV_CX, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
             { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX, FV_TOP], p2: [FV_CX, FV_BOTTOM], lineType: 'A' },
           ],
         },
         {
@@ -60,10 +61,12 @@
         },
         {
           id: 3,
-          instruction: 'Project the SIDE view — in 1st angle, it goes to the LEFT of the front view (again, the opposite of 3rd angle).',
+          instruction: 'Project the SIDE view seen from the right. In 1st angle it goes to the LEFT of the front view (the opposite of 3rd angle). From the side the prism is as wide as the distance across corners, and you see three faces: one square-on in the middle and one sloping away on each side, so draw two vertical edge lines.',
           calloutAt: [(SV_LEFT + SV_RIGHT) / 2, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
             { kind: 'polygon', points: [[SV_LEFT, FV_TOP], [SV_RIGHT, FV_TOP], [SV_RIGHT, FV_BOTTOM], [SV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'line', p1: [SV_LEFT + R / 2, FV_TOP], p2: [SV_LEFT + R / 2, FV_BOTTOM], lineType: 'A' },
+            { kind: 'line', p1: [SV_RIGHT - R / 2, FV_TOP], p2: [SV_RIGHT - R / 2, FV_BOTTOM], lineType: 'A' },
             { kind: 'line', p1: [SV_RIGHT, FV_TOP], p2: [FV_LEFT, FV_TOP], lineType: 'construction' },
             { kind: 'line', p1: [SV_RIGHT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM], lineType: 'construction' },
           ],
@@ -159,7 +162,7 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the front view: an isoceles triangle — the base is the pyramid\'s true width, the apex sits directly above the centre at the true height.',
+          instruction: 'Draw the front view: an isosceles triangle — the base is the pyramid\'s true width, the apex sits directly above the centre at the true height.',
           calloutAt: [FV_CX, FV_TOP + H / 2],
           reveals: [
             { kind: 'polygon', points: [[FV_LEFT, FV_BOTTOM], [FV_RIGHT, FV_BOTTOM], [FV_CX, FV_TOP]], lineType: 'A' },
@@ -216,19 +219,26 @@
     const topCY = FV_BOTTOM + GAP - Math.min(...pys);
     const pentaTop = G.regularPolygonInCircle([FV_CX, topCY], R, 5, -90);
     const SV_RIGHT = FV_LEFT - GAP, SV_LEFT = SV_RIGHT - pentaD;
+    // Pentagon with a corner pointing away from the viewer (the top of the top view is the
+    // BACK in 1st angle), so a flat face looks straight at the front view.
+    const frontCornerX = R * Math.cos(54 * Math.PI / 180);        // the two front corners, either side of the axis
+    const sideEdgeFromBack = R - R * Math.sin(18 * Math.PI / 180); // the side corners, measured from the back corner
 
     CONSTRUCTIONS['pentagonal-prism-views'] = {
-      id: 'pentagonal-prism-views', title: 'Pentagonal Prism — First-Angle Views',
+      id: 'pentagonal-prism-views', projection: 'first', title: 'Pentagonal Prism — First-Angle Views',
       summary: 'Project the three 1st-angle views of a right regular pentagonal prism, one of the five side-counts (3, 4, 5, 6 or 8) CAPS prescribes for Grade 10 solid geometry.',
       bounds: { w: 200, h: 210 },
       workbookPrompt: 'Draw the front, top and side views of the pentagonal prism (circumradius 28 mm, height 55 mm) in FIRST-angle projection.',
       steps: [
         {
           id: 1,
-          instruction: 'Draw the front view as a plain rectangle — the prism stands upright, so its height profile has no sloped or curved edges.',
+          instruction: 'Draw the front view: a rectangle as wide as the pentagon, with two solid vertical lines where the front face meets its neighbours. The back corner of the pentagon is also an edge, but it is behind the prism, so show it as a hidden (short broken) line down the middle.',
           calloutAt: [FV_CX, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
             { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX - frontCornerX, FV_TOP], p2: [FV_CX - frontCornerX, FV_BOTTOM], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX + frontCornerX, FV_TOP], p2: [FV_CX + frontCornerX, FV_BOTTOM], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX, FV_TOP], p2: [FV_CX, FV_BOTTOM], lineType: 'hidden' },
           ],
         },
         {
@@ -243,10 +253,11 @@
         },
         {
           id: 3,
-          instruction: 'Project the SIDE view to the LEFT of the front view (1st-angle rule), using the pentagon\'s depth extent from the top view.',
+          instruction: 'Project the SIDE view to the LEFT of the front view (1st-angle rule), using the depth of the pentagon from the top view. In 1st angle the side of this view nearest the front view is the BACK of the prism. The side corner of the pentagon shows as one vertical line; the matching corner on the far side lies directly behind it.',
           calloutAt: [(SV_LEFT + SV_RIGHT) / 2, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
             { kind: 'polygon', points: [[SV_LEFT, FV_TOP], [SV_RIGHT, FV_TOP], [SV_RIGHT, FV_BOTTOM], [SV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'line', p1: [SV_RIGHT - sideEdgeFromBack, FV_TOP], p2: [SV_RIGHT - sideEdgeFromBack, FV_BOTTOM], lineType: 'A' },
             { kind: 'line', p1: [SV_RIGHT, FV_TOP], p2: [FV_LEFT, FV_TOP], lineType: 'construction' },
             { kind: 'line', p1: [SV_RIGHT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM], lineType: 'construction' },
           ],

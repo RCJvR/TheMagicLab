@@ -94,9 +94,12 @@
     const block = { x: 60, y: 70, w: 80, h: 40 };
     const pocket = { x: 85, y: 70, w: 30, h: 20 };
     const tv = { x: 60, y: 42, w: 80, h: 14 };
+    // The pocket stops 3 mm short of the front and back faces, so from the front it is hidden.
+    const tvPocket = { y: tv.y + 3, h: tv.h - 6 };
+    const planeY = tv.y + tv.h / 2;
 
     CONSTRUCTIONS['sectional-view'] = {
-      id: 'sectional-view', title: 'Stepped Block: Sectional View',
+      id: 'sectional-view', title: 'Stepped Block: Sectional View', projection: 'third',
       summary: 'Mark a cutting plane, convert hidden detail into a sectional view, and add 45° hatching to the solid material that the cutting plane passes through.',
       bounds: { w: 150, h: 130 },
       workbookPrompt: 'Draw the front view of the block as a full section on cutting plane A-A, showing the pocket and correctly hatching all solid material.',
@@ -108,7 +111,7 @@
           reveals: [
             { kind: 'polygon', points: [[block.x, block.y], [block.x + block.w, block.y], [block.x + block.w, block.y + block.h], [block.x, block.y + block.h]], lineType: 'A' },
             { kind: 'polygon', points: [[tv.x, tv.y], [tv.x + tv.w, tv.y], [tv.x + tv.w, tv.y + tv.h], [tv.x, tv.y + tv.h]], lineType: 'A' },
-            { kind: 'polygon', points: [[pocket.x, tv.y], [pocket.x + pocket.w, tv.y], [pocket.x + pocket.w, tv.y + tv.h], [pocket.x, tv.y + tv.h]], lineType: 'A' },
+            { kind: 'polygon', points: [[pocket.x, tvPocket.y], [pocket.x + pocket.w, tvPocket.y], [pocket.x + pocket.w, tvPocket.y + tvPocket.h], [pocket.x, tvPocket.y + tvPocket.h]], lineType: 'A' },
           ],
         },
         {
@@ -116,19 +119,25 @@
           instruction: 'Without a section, the pocket is hidden inside the block when viewed from the front — draw it dashed. This is exactly what a section will let us avoid.',
           calloutAt: [100, 80],
           reveals: [
-            { kind: 'line', p1: [pocket.x, pocket.y + pocket.h], p2: [pocket.x, block.y + block.h], lineType: 'hidden' },
-            { kind: 'line', p1: [pocket.x + pocket.w, pocket.y + pocket.h], p2: [pocket.x + pocket.w, block.y + block.h], lineType: 'hidden' },
+            { kind: 'line', p1: [pocket.x, pocket.y], p2: [pocket.x, pocket.y + pocket.h], lineType: 'hidden' },
+            { kind: 'line', p1: [pocket.x + pocket.w, pocket.y], p2: [pocket.x + pocket.w, pocket.y + pocket.h], lineType: 'hidden' },
             { kind: 'line', p1: [pocket.x, pocket.y + pocket.h], p2: [pocket.x + pocket.w, pocket.y + pocket.h], lineType: 'hidden' },
           ],
         },
         {
           id: 3,
-          instruction: 'Mark a cutting plane A-A across the top view, through the pocket, showing exactly where we imagine slicing the block to see inside it.',
-          calloutAt: [100, 49],
+          instruction: 'Mark the cutting plane A-A across the top view, through the pocket: a chain line, thickened at each end, with arrows showing the direction you look in. We look from the front towards the back, so in this 3rd-angle layout the arrows point up, away from the front view.',
+          calloutAt: [100, planeY],
           reveals: [
-            { kind: 'line', p1: [52, 49], p2: [148, 49], lineType: 'centre' },
-            { kind: 'label', at: [48, 47], text: 'A', size: 5, anchor: 'end', color: '#fde047' },
-            { kind: 'label', at: [148, 47], text: 'A', size: 5, anchor: 'start', color: '#fde047' },
+            { kind: 'line', p1: [52, planeY], p2: [148, planeY], lineType: 'centre' },
+            { kind: 'line', p1: [52, planeY], p2: [58, planeY], lineType: 'A' },
+            { kind: 'line', p1: [142, planeY], p2: [148, planeY], lineType: 'A' },
+            { kind: 'line', p1: [52, planeY], p2: [52, planeY - 9], lineType: 'B' },
+            { kind: 'line', p1: [148, planeY], p2: [148, planeY - 9], lineType: 'B' },
+            { kind: 'polyline', points: [[50.2, planeY - 6], [52, planeY - 9], [53.8, planeY - 6]], lineType: 'B' },
+            { kind: 'polyline', points: [[146.2, planeY - 6], [148, planeY - 9], [149.8, planeY - 6]], lineType: 'B' },
+            { kind: 'label', at: [48, planeY - 6], text: 'A', size: 5, anchor: 'end', color: '#fde047' },
+            { kind: 'label', at: [152, planeY - 6], text: 'A', size: 5, anchor: 'start', color: '#fde047' },
           ],
         },
         {
