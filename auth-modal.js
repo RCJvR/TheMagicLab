@@ -150,15 +150,50 @@
 
   // ── 4. Open / close ────────────────────────────────────────
   function openModal(tab = 'signin') {
-    _switchTab(tab);
+    const wasOpen = overlay().classList.contains('ml-open');
+    // Re-opening while already open (a second trigger click) must not wipe the
+    // tab or messages the user is looking at.
+    if (!wasOpen || tab !== _activeTab) _switchTab(tab);
     overlay().classList.add('ml-open');
     document.body.style.overflow = 'hidden';
+    if (!wasOpen) {
+      _returnFocus = document.activeElement;
+      // Put the cursor in the first empty field so typing starts in a predictable place.
+      setTimeout(_focusFirstField, 30);
+    }
+  }
+
+  let _returnFocus = null;
+
+  function _visibleFields() {
+    return Array.from(overlay().querySelectorAll('input, select, textarea'))
+      .filter(el => el.offsetParent !== null && !el.disabled);
+  }
+
+  function _focusFirstField() {
+    const fields = _visibleFields();
+    const target = fields.find(el => !el.value) || fields[0];
+    if (target) target.focus();
+  }
+
+  // True once the user has typed or chosen anything in the visible form — from then
+  // on only the close button (or a successful sign-in) closes the window.
+  function _hasInput() {
+    // Only typed text counts; dropdowns and checkboxes start with a value of their own.
+    return _visibleFields().some(el =>
+      (el.tagName === 'TEXTAREA' || (el.tagName === 'INPUT' && !/^(checkbox|radio|hidden)$/.test(el.type))) &&
+      String(el.value || '').trim() !== '');
   }
 
   function closeModal() {
+    if (!overlay().classList.contains('ml-open')) return;
     overlay().classList.remove('ml-open');
     document.body.style.overflow = '';
     _clearMessages();
+    if (_returnFocus && document.contains(_returnFocus) && _returnFocus.focus) {
+      try { _returnFocus.focus(); } catch (e) { /* element no longer focusable */ }
+    }
+    _returnFocus = null;
   }
 
   // ── 5. Tab switching ───────────────────────────────────────
@@ -328,8 +363,38 @@
 
   // ── 10. Close button + overlay click ──────────────────────
   document.getElementById('ml-close').addEventListener('click', closeModal);
-  overlay().addEventListener('click', (e) => { if (e.target === overlay()) closeModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // Backdrop clicks: a click only counts if it both STARTED and ENDED on the backdrop.
+  // Selecting text in a field and releasing the mouse outside the card produces a
+  // click on the backdrop, which used to close the window mid-typing. And once the
+  // user has typed anything, the backdrop no longer closes it at all.
+  let _downOnBackdrop = false;
+  overlay().addEventListener('pointerdown', (e) => { _downOnBackdrop = e.target === overlay(); });
+  overlay().addEventListener('click', (e) => {
+    const fromBackdrop = _downOnBackdrop && e.target === overlay();
+    _downOnBackdrop = false;
+    if (fromBackdrop && !_hasInput()) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay().classList.contains('ml-open')) return;
+    if (e.key === 'Escape') {
+      // Escape is often pressed to dismiss the browser's saved-login dropdown;
+      // don't throw away what the user has typed.
+      if (!_hasInput()) closeModal();
+      return;
+    }
+    // Keep Tab inside the window so focus can't wander to the page behind it.
+    if (e.key === 'Tab') {
+      const items = Array.from(overlay().querySelectorAll('button, input, select, textarea, a[href]'))
+        .filter(el => el.offsetParent !== null && !el.disabled);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (!overlay().contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 
   // ── 10b. Enter key submits the active form ─────────────────
   // Attached to document (not overlay) so the element is guaranteed to exist.
