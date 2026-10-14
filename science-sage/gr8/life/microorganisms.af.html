@@ -572,7 +572,7 @@ function drawKey(){
     drawBacillus(x0+22,30,5,0.4,{detail:true,pal:DEC_PAL,seed:2});
     ctx.fillStyle='#e2e8f0'; ctx.textAlign='left'; ctx.fillText(TX.kBac,x0+46,30);
     drawHypha(x0+32,54,0,1); ctx.fillStyle='#e2e8f0'; ctx.fillText(TX.kFun,x0+46,54);
-    ctx.beginPath(); ctx.ellipse(x0+22,78,11,7,0.3,0,Math.PI*2); ctx.fillStyle='hsla(120,45%,45%,0.55)'; ctx.fill(); ctx.strokeStyle='hsla(120,55%,40%,0.6)'; ctx.stroke();
+    drawLeaf(x0+24,78,12,-0.3,0,[]);
     ctx.fillStyle='#e2e8f0'; ctx.fillText(TX.kLeaf,x0+46,78);
     ctx.beginPath(); ctx.arc(x0+22,102,2.5,0,Math.PI*2); ctx.fillStyle='rgba(134,239,172,0.9)'; ctx.fill();
     ctx.fillStyle='#e2e8f0'; ctx.fillText(TX.kNut,x0+46,102);
@@ -624,7 +624,7 @@ function resetSim(){
       const col=i%4, row=Math.floor(i/4);
       const x=70+col*(W-140)/3+(row?30:0)+(Math.random()-.5)*24;
       const y=(row?190:85)+(Math.random()-.5)*34;
-      particles.push({type:'leaf',x:Math.min(W-40,x),y,r:28,decay:0,rot:Math.random()*Math.PI,feeders:0,done:false,released:0});
+      particles.push({type:'leaf',x:Math.min(W-40,x),y,r:28,decay:0,rot:(Math.random()-.5)*2.4,holes:leafHoles(Math.random()),feeders:0,done:false,released:0});
     }
     addDecomp(6);
   }
@@ -798,6 +798,61 @@ function simVirus(){
   if(healthy===0&&infected===0) hint=TX.noHost;
 }
 
+// A dead leaf: pointed blade, stalk, midrib and side veins. As decay rises the
+// colour browns, dark rot spots spread and holes open up until only the
+// skeleton of veins is left.
+function leafHoles(seed){
+  let s=seed*233280|0;
+  const rnd=()=>((s=(s*9301+49297)%233280)/233280);
+  const holes=[];
+  for(let i=0;i<8;i++) holes.push({u:-0.6+rnd()*1.25, v:(rnd()-.5)*0.5, k:0.8+rnd()*0.6, at:0.08+i*0.09});
+  return holes;
+}
+function leafPath(r,w){
+  ctx.beginPath();
+  ctx.moveTo(-0.8*r,0);
+  ctx.bezierCurveTo(-0.5*r,-1.25*w, 0.45*r,-1.05*w, r,0);
+  ctx.bezierCurveTo(0.45*r,1.05*w, -0.5*r,1.25*w, -0.8*r,0);
+  ctx.closePath();
+}
+function drawLeaf(x,y,r,rot,decay,holes){
+  const w=0.46*r, d=Math.min(1,decay);
+  const hue=78-50*d, light=40-14*d, alpha=0.92-0.35*d;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(rot);
+  // stalk
+  ctx.beginPath(); ctx.moveTo(-0.8*r,0); ctx.quadraticCurveTo(-1.0*r,0.02*r,-1.18*r,0.12*r);
+  ctx.strokeStyle=`hsla(${hue-8},40%,${light-8}%,${alpha})`; ctx.lineWidth=2; ctx.lineCap='round'; ctx.stroke();
+  // blade
+  leafPath(r,w);
+  ctx.fillStyle=`hsla(${hue},50%,${light}%,${alpha})`; ctx.fill();
+  ctx.save(); leafPath(r,w); ctx.clip();
+  // rot spots, then holes where the tissue has been eaten away
+  for(const h of holes){
+    const g=(d-h.at+0.1)/0.35; if(g<=0) continue;
+    ctx.beginPath(); ctx.ellipse(h.u*r,h.v*r,h.k*0.26*r*Math.min(1.4,g+0.4),h.k*0.17*r*Math.min(1.4,g+0.4),0.4,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${hue-12},45%,${light-14}%,${alpha})`; ctx.fill();
+  }
+  for(const h of holes){
+    const g=(d-h.at-0.08)/0.3; if(g<=0) continue;
+    ctx.beginPath(); ctx.ellipse(h.u*r,h.v*r,h.k*0.24*r*Math.min(1.3,g),h.k*0.15*r*Math.min(1.3,g),0.4,0,Math.PI*2);
+    ctx.fillStyle='#060a16'; ctx.fill();
+  }
+  ctx.restore();
+  // edge, midrib and side veins (veins are the last part to go)
+  leafPath(r,w);
+  ctx.strokeStyle=`hsla(${hue-6},45%,${light-10}%,${alpha})`; ctx.lineWidth=1.2; ctx.stroke();
+  ctx.strokeStyle=`hsla(${hue+4},35%,${light+14}%,${0.75*(1-d*0.5)})`; ctx.lineWidth=1.3;
+  ctx.beginPath(); ctx.moveTo(-0.8*r,0); ctx.quadraticCurveTo(0.1*r,-0.03*r,0.93*r,0); ctx.stroke();
+  ctx.lineWidth=0.8;
+  for(let i=1;i<=5;i++){
+    const t=i/6, mx=-0.8*r+t*1.65*r, reach=w*Math.sin(Math.PI*Math.min(1,t*1.05))*0.9;
+    for(const sgn of [-1,1]){
+      ctx.beginPath(); ctx.moveTo(mx,0); ctx.quadraticCurveTo(mx+0.12*r,sgn*reach*0.55,mx+0.28*r,sgn*reach); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
 function simDecompose(){
   const soilY=H-26;
   const leaves=particles.filter(p=>p.type==='leaf'&&!p.done);
@@ -833,14 +888,7 @@ function simDecompose(){
       particles.push({type:'nutrient',x:l.x+(Math.random()-.5)*36,y:l.y+(Math.random()-.5)*24,vy:0.3+Math.random()*0.4});
     }
     if(l.decay>=1){l.done=true; continue;}
-    const s=1-l.decay*0.3;
-    ctx.beginPath();
-    ctx.ellipse(l.x,l.y,l.r*s,l.r*0.7*s,l.rot,0,Math.PI*2);
-    ctx.fillStyle=`hsla(${130-70*l.decay},45%,45%,${0.6*(1-l.decay*0.7)})`;
-    ctx.fill();
-    ctx.strokeStyle=`hsla(${130-70*l.decay},55%,40%,${0.6*(1-l.decay*0.5)})`;
-    ctx.lineWidth=1.5;
-    ctx.stroke();
+    drawLeaf(l.x,l.y,l.r*(1-l.decay*0.15),l.rot,l.decay,l.holes);
   }
 
   for(const p of decs){
