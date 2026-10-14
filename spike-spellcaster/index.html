@@ -13,10 +13,10 @@ const BT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" str
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <script src="/assets/vendor/lucide-1.56.0.min.js"></script>
-<script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
-<script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
-<script src="https://unpkg.com/blockly/python_compressed.js"></script>
-<script src="https://unpkg.com/blockly/msg/en.js"></script>
+<script src="/assets/vendor/blockly-13.4.0/blockly_compressed.js"></script>
+<script src="/assets/vendor/blockly-13.4.0/blocks_compressed.js"></script>
+<script src="/assets/vendor/blockly-13.4.0/python_compressed.js"></script>
+<script src="/assets/vendor/blockly-13.4.0/msg/en.js"></script>
 <link rel="stylesheet" href="../assets/magic-lab.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1949,6 +1949,7 @@ function initBlockly(){
     grid:{spacing:20,length:3,colour:'rgba(255,255,255,0.04)',snap:true},
     zoom:{controls:true,wheel:true,startScale:0.85,maxScale:2,minScale:0.4,scaleSpeed:1.2},
     trashcan:true, scrollbars:true, sounds:false, renderer:'zelos',
+    media:'/assets/vendor/blockly-13.4.0/media/',
   });
   new ResizeObserver(()=>{ if(blocklyWorkspace) Blockly.svgResize(blocklyWorkspace); }).observe(div);
   blocklyWorkspace.addChangeListener(() => ssAutosave.scheduleAutosave());

@@ -9,12 +9,12 @@
 const SUPABASE_URL  = 'https://hrnodxqvyxzhfexkzeji.supabase.co';   // e.g. https://xyzxyz.supabase.co
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhybm9keHF2eXh6aGZleGt6ZWppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDc3NTQsImV4cCI6MjA5NTI4Mzc1NH0.wT1QoZZITE0iMYnievwSEDhiFU1wtV2Y3lmzGDVgzWI';
 
-// ── Load Supabase client from CDN ────────────────────────────
+// ── Load Supabase client (self-hosted) ────────────────────────────
 // This loads automatically when auth.js is included.
 // The global window.MagicLabAuth is available after DOMContentLoaded.
 (function () {
   const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  script.src = '/assets/vendor/supabase-2.117.3.min.js';
   script.onload = () => _initAuth();
   document.head.appendChild(script);
 })();

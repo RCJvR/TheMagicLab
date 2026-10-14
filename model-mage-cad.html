@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"}}</script>
+  <script type="importmap">{"imports":{"three":"/assets/vendor/three-0.162.0/build/three.module.js","three/addons/":"/assets/vendor/three-0.162.0/examples/jsm/"}}</script>
   <link rel="stylesheet" href="assets/magic-lab.css">
   <style>
     /* ══════════════════════════════════════════════════════════════════════
@@ -544,9 +544,9 @@ import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
 // ════════════════════════════════════════════════════════════════════
 
 const _wSrc = `
-import Module from 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/replicad_single.js';
-import { setOC, draw, drawRectangle, drawCircle } from 'https://cdn.jsdelivr.net/npm/replicad@0.23.1/dist/replicad.js';
-const OC_BASE = 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/';
+import Module from '${location.origin}/assets/vendor/replicad-opencascadejs-0.23.0/replicad_single.js';
+import { setOC, draw, drawRectangle, drawCircle } from '${location.origin}/assets/vendor/replicad-0.23.1/replicad.js';
+const OC_BASE = '${location.origin}/assets/vendor/replicad-opencascadejs-0.23.0/';
 let ready = false;
 const boot = (async () => {
   self.postMessage({ type:'status', msg:'Loading OpenCascade WASM…' });

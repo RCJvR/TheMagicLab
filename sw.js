@@ -460,9 +460,9 @@ const urlsToCache = [
   '/arena-host.html',
   '/arena.html',
   '/assets/vendor/lucide-1.56.0.min.js',
+  '/assets/vendor/supabase-2.117.3.min.js',
 
   // CDN resources
-  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
   'https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap'
 ];
 

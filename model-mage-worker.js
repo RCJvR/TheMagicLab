@@ -2,10 +2,10 @@
 // Uses replicad@0.23.1 + replicad-opencascadejs@0.23.0 (custom OpenCascade WASM build).
 // Both packages expose ES modules, so this file runs as type:"module".
 
-import Module from 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/replicad_single.js';
-import { setOC, draw, drawRectangle, drawCircle } from 'https://cdn.jsdelivr.net/npm/replicad@0.23.1/dist/replicad.js';
+import Module from '/assets/vendor/replicad-opencascadejs-0.23.0/replicad_single.js';
+import { setOC, draw, drawRectangle, drawCircle } from '/assets/vendor/replicad-0.23.1/replicad.js';
 
-const OC_BASE = 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/';
+const OC_BASE = self.location.origin + '/assets/vendor/replicad-opencascadejs-0.23.0/';
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 

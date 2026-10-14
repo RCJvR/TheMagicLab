@@ -74,8 +74,8 @@
     startup: { typeset: false, ready() { MathJax.startup.defaultReady(); document.dispatchEvent(new Event('mathjax-ready')); } },
   };
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathlive@0.110.0/mathlive.min.js"></script>
+<script defer src="/assets/vendor/mathjax-3.2.2/tex-svg.js"></script>
+<script defer src="/assets/vendor/mathlive-0.110.0/mathlive.min.js"></script>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -540,7 +540,7 @@
       // MathLive guesses its fonts folder from the script URL and gets it
       // wrong for the CDN build, so point it there; no keypress sounds.
       const MF = customElements.get('math-field');
-      try { MF.fontsDirectory = 'https://cdn.jsdelivr.net/npm/mathlive@0.110.0/fonts'; MF.soundsDirectory = null; MF.keypressSound = null; MF.plonkSound = null; } catch (_) {}
+      try { MF.fontsDirectory = '/assets/vendor/mathlive-0.110.0/fonts'; MF.soundsDirectory = null; MF.keypressSound = null; MF.plonkSound = null; } catch (_) {}
       paintLines(); render();
     }
     if (customElements.get('math-field')) mathliveReady();

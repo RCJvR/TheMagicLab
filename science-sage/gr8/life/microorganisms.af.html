@@ -97,6 +97,12 @@
     .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
     .stat-item span:first-child{color:var(--muted)}
     .stat-item span:last-child{color:#86efac;font-family:var(--fm);font-weight:600}
+    .log-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .log-row span:first-child{color:var(--muted)}
+    .log-row span:last-child{color:#e2e8f0;font-family:var(--fm);font-weight:600}
+    .log-row.check span{color:#fde68a}
+    .go-btn{width:100%;margin-top:10px;padding:9px;border-radius:8px;border:1px solid #22c55e;background:rgba(34,197,94,.12);color:#86efac;font-weight:700;font-size:12px;cursor:pointer}
+    .go-btn:hover{background:rgba(34,197,94,.2)}
     /* Practice */
     .practice-wrap{max-width:640px}
     .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
@@ -234,7 +240,7 @@
 
 <!-- EXPLORE -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Een bakterie verdeel elke 20 minute. Hoeveel sal daar ná 2 uur wees? <strong style="color:#fde68a">Toets dit dan:</strong> Laat die bakteriekolonie loop en kyk hoe die getal verdubbel; probeer dan Ontbinding sonder ontbinders.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Een bakterie verdeel elke 20 minute. Hoeveel sal daar ná 2 uur wees? <strong style="color:#fde68a">Toets dit dan:</strong> Laat die bakteriekolonie loop: die horlosie wys gesimuleerde tyd (elke 20 minute duur 'n paar sekondes) en stop by 2 uur sodat jy kan tel; probeer dan Ontbinding sonder ontbinders.</div>
   <div class="explore-wrap">
     <div class="canvas-card">
       <canvas id="cv" width="520" height="400" role="img" aria-label="Mikro-organismes: interaktiewe simulasie"></canvas>
@@ -259,6 +265,11 @@
         <div class="stat-item"><span>Modus</span><span id="st-mode">Bakterieë</span></div>
         <div class="stat-item"><span>Telling</span><span id="st-count">1</span></div>
         <div class="stat-item"><span>Tyd</span><span id="st-time">0 s</span></div>
+      </div>
+      <div class="ctrl-card" id="bac-log-card">
+        <div class="ctrl-label">Bevolking elke 20 minute</div>
+        <div id="bac-log" aria-live="polite"></div>
+        <button class="go-btn" id="bac-go" onclick="resumeBac()" hidden>Gaan voort</button>
       </div>
       <div class="ctrl-card" style="font-size:12px;color:var(--muted);line-height:1.7" id="mode-desc">
         Bakterieë vermeerder deur binêre splitsing — een sel splits in twee. Kyk hoe die kolonie eksponensieel groei.
@@ -335,6 +346,7 @@ function setMode(m,btn){
 const AF=/\.af\.html/i.test(location.pathname);
 const TX=AF?{
   capBac:'Voedingstowwe is op — die kolonie hou op groei.',
+  hr:'uur', min:'min', clock:'Tyd', check:n=>'2 uur: '+n+' bakterieë. Was jou voorspelling reg?',
   noHost:'Geen gasheerselle oor nie — virusse kan nie op hul eie vermeerder nie.',
   noDec:'Geen ontbinders nie — die dooie blare bly soos hulle is.',
   allDone:'Alles is afgebreek — voedingstowwe is terug in die grond.',
@@ -347,6 +359,7 @@ const TX=AF?{
   kBac:'Bakterieë (ontbinders)', kFun:'Swamdrade (hife)', kLeaf:'Dooie blaar', kNut:'Voedingstowwe'
 }:{
   capBac:'Nutrients used up — the colony stops growing.',
+  hr:'h', min:'min', clock:'Time', check:n=>'2 hours: '+n+' bacteria. Was your prediction right?',
   noHost:'No host cells left — viruses cannot reproduce on their own.',
   noDec:'No decomposers — the dead leaves stay as they are.',
   allDone:'Everything has been broken down — nutrients are back in the soil.',
@@ -361,6 +374,29 @@ const TX=AF?{
 descs.virus+=TX.virusKey; descs.decompose+=TX.decKey;
 let hint='', soilN=0, showLabels=false;
 const MAX_BAC=300, SPLIT_FRAMES=45;
+// Simulated clock for the colony: one generation (20 minutes) takes GEN
+// frames. Every cell finishes dividing just before each 20-minute mark,
+// so the count is exactly 1, 2, 4, 8 ... at 0, 20, 40, 60 ... minutes.
+const GEN=240, MIN_PER_GEN=20, CHECK_MIN=120, LOG_ROWS=10;
+let bacFrame=0, bacPaused=false, bacLogged=-1;
+function bacMinutes(){return Math.floor(bacFrame*MIN_PER_GEN/GEN);}
+function fmtMin(m){
+  const h=Math.floor(m/60), r=m%60;
+  return h?h+' '+TX.hr+(r?' '+r+' '+TX.min:''):m+' '+TX.min;
+}
+// When a cell of generation g starts dividing: a little before the next
+// mark (spread over ~0.4 s so the colony does not split in lockstep).
+function nextSplit(g){return (g+1)*GEN-SPLIT_FRAMES-1-Math.floor(Math.random()*24);}
+function logBac(){
+  const m=bacMinutes(), n=particles.length, log=document.getElementById('bac-log');
+  if(log.children.length>=LOG_ROWS) return;
+  const row=document.createElement('div');
+  row.className='log-row'+(m===CHECK_MIN?' check':'');
+  row.innerHTML='<span>'+fmtMin(m)+'</span><span>'+n+'</span>';
+  log.appendChild(row);
+  if(m===CHECK_MIN){bacPaused=true; document.getElementById('bac-go').hidden=false;}
+}
+function resumeBac(){bacPaused=false; document.getElementById('bac-go').hidden=true;}
 // Pace of the virus and decomposition scenes (1 = the original speed).
 const VIRUS_SPEED=0.6, INFECTION_SLOWDOWN=1.7, DECAY_RATE=0.0005, DECOMP_SPEED=0.75;
 const LEAVES=8, NUTRIENTS_PER_LEAF=14;
@@ -551,8 +587,9 @@ function isFree(x,y,minD){
 }
 // Bacteria with a flagellum swim (run and tumble); the rest only jiggle about.
 // A daughter cell inherits its parent's flagellum.
-function newBac(x,y,rot,flag){
-  return {type:'bac',x,y,r:8,rot:rot===undefined?Math.random()*Math.PI*2:rot,dt:0,divAt:150+Math.random()*60,split:0,child:null,seed:Math.random()*100,
+function newBac(x,y,rot,flag,gen){
+  gen=gen||0;
+  return {type:'bac',x,y,r:8,rot:rot===undefined?Math.random()*Math.PI*2:rot,gen,splitAt:nextSplit(gen),split:0,child:null,seed:Math.random()*100,
     flag:flag===undefined?Math.random()<0.4:flag,run:30+Math.random()*120};
 }
 function newVirus(x,y,sp){
@@ -569,6 +606,9 @@ function removeDecomp(n){
 function resetSim(){
   t=0; particles=[]; hint=''; soilN=0;
   document.getElementById('dec-ctrl').style.display=(mode==='decompose')?'':'none';
+  document.getElementById('bac-log-card').style.display=(mode==='bacteria')?'':'none';
+  document.getElementById('bac-log').innerHTML=''; document.getElementById('bac-go').hidden=true;
+  bacFrame=0; bacPaused=false; bacLogged=-1;
   if(mode==='bacteria'){
     particles=[newBac(W/2,H/2,0.3,true)];
   } else if(mode==='virus'){
@@ -614,12 +654,31 @@ function loop(){
   ctx.textBaseline='alphabetic';
   if(hint){ctx.font='12px sans-serif';ctx.textAlign='left';ctx.fillStyle='rgba(6,10,22,0.85)';ctx.fillRect(4,4,ctx.measureText(hint).width+14,22);ctx.fillStyle='#cbd5e1';ctx.fillText(hint,11,19);}
   drawKey();
-  document.getElementById('st-time').textContent=(t/60|0)+' s';
+  document.getElementById('st-time').textContent=mode==='bacteria'?fmtMin(bacMinutes()):(t/60|0)+' s';
 }
 
 function simBacteria(){
+  if(bacFrame%GEN===0&&bacFrame/GEN!==bacLogged){bacLogged=bacFrame/GEN; logBac();}
   document.getElementById('st-count').textContent=particles.length;
   if(particles.length>=MAX_BAC) hint=TX.capBac;
+  if(bacPaused) hint=TX.check(particles.length);
+  if(!bacPaused) stepBacteria();
+  for(const p of particles){
+    const pinch=p.split?Math.min(1,p.split/SPLIT_FRAMES):0;
+    drawBacillus(p.x,p.y,p.r,p.rot,{detail:true,flag:p.flag,pinch,stretch:1+0.45*pinch,seed:p.seed});
+  }
+  drawClock();
+}
+function drawClock(){
+  const s=TX.clock+'  '+fmtMin(bacMinutes());
+  ctx.font='bold 13px sans-serif'; ctx.textAlign='left';
+  const w=ctx.measureText(s).width+18;
+  ctx.fillStyle='rgba(6,10,22,0.85)'; ctx.fillRect(4,H-30,w,26);
+  ctx.strokeStyle='rgba(134,239,172,0.35)'; ctx.strokeRect(4.5,H-29.5,w-1,25);
+  ctx.fillStyle='#86efac'; ctx.fillText(s,13,H-12);
+}
+function stepBacteria(){
+  bacFrame++;
   const margin=18;
   let pending=particles.filter(q=>q.split>0).length; // daughters still to come
   for(let i=0;i<particles.length;i++){
@@ -627,13 +686,12 @@ function simBacteria(){
     if(p.split>0){
       p.split++;
       if(p.split>=SPLIT_FRAMES){
-        particles.push(newBac(p.child.x,p.child.y,p.rot+(Math.random()-.5)*0.6,p.flag));
-        p.split=0; p.child=null; p.dt=0; p.divAt=150+Math.random()*60;
+        particles.push(newBac(p.child.x,p.child.y,p.rot+(Math.random()-.5)*0.6,p.flag,p.gen+1));
+        p.split=0; p.child=null; p.gen++; p.splitAt=nextSplit(p.gen);
       }
       continue;
     }
-    p.dt++;
-    if(p.dt>p.divAt&&particles.length+pending<MAX_BAC){
+    if(bacFrame>=p.splitAt&&particles.length+pending<MAX_BAC){
       // Rods divide across their middle, so the daughter first lines up
       // end-to-end; if that spot is taken, try other directions.
       const d=p.r*3.6;
@@ -642,8 +700,12 @@ function simBacteria(){
         const nx=p.x+Math.cos(a)*d, ny=p.y+Math.sin(a)*d;
         if(nx>margin&&nx<W-margin&&ny>margin&&ny<H-margin&&isFree(nx,ny,p.r*2.6)){p.child={x:nx,y:ny}; p.split=1; pending++;}
       }
-      // Crowded out: try again shortly instead of every frame.
-      if(!p.child) p.dt=p.divAt-30;
+      // Crowded: divide anyway (on time, so the count keeps doubling);
+      // the overlap check below pushes the cells apart.
+      if(!p.child){
+        const nx=Math.max(margin,Math.min(W-margin,p.x+Math.cos(p.rot)*d)), ny=Math.max(margin,Math.min(H-margin,p.y+Math.sin(p.rot)*d));
+        p.child={x:nx,y:ny}; p.split=1; pending++;
+      }
       if(p.child) continue;
     }
     if(p.flag){
@@ -675,10 +737,6 @@ function simBacteria(){
       if(a.flag&&a.run>20) a.run=20;
       if(b.flag&&b.run>20) b.run=20;
     }
-  }
-  for(const p of particles){
-    const pinch=p.split?Math.min(1,p.split/SPLIT_FRAMES):0;
-    drawBacillus(p.x,p.y,p.r,p.rot,{detail:true,flag:p.flag,pinch,stretch:1+0.45*pinch,seed:p.seed});
   }
 }
 
