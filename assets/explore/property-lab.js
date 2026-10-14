@@ -169,7 +169,7 @@ MLX.ready(function () {
           for (let k = 0; k < 4; k++) { const r = 20 + k * 22 + q * 40; ctx.beginPath(); ctx.arc(cx, bench - 14, r, -Math.PI * 0.85, -Math.PI * 0.15); ctx.stroke(); }
           text(ctx, 'ting!', cx + sw / 2 + 20, bench - 60, { size: 18, weight: 800, color: '#93c5fd' });
         } else {
-          text(ctx, 'thud', cx + sw / 2 + 20, bench - 30, { size: 14, weight: 700, color: 'rgba(226,232,240,0.5)' });
+          text(ctx, { en: 'thud', af: 'doef' }, cx + sw / 2 + 20, bench - 30, { size: 14, weight: 700, color: 'rgba(226,232,240,0.5)' });
         }
       }
     }

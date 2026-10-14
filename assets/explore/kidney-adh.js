@@ -95,7 +95,10 @@ MLX.ready(function () {
     [[200, 150, -1], [240, 200, -1], [240, 250, -1]].forEach(([x, y, d]) => arrow(x, y, d * 26));
     const nDuct = 1 + Math.round(m.adh * 6);
     for (let k = 0; k < nDuct; k++) { const y = 120 + k * 26 + ((flow * 30) % 10); arrow(442, y, 28); }
-    text(ctx, T.toBlood, X(480), Y(110), { size: 11, color: '#93c5fd' });
+    ctx.font = '500 11px "Cabinet Grotesk", sans-serif';
+    const tbW = ctx.measureText(L(T.toBlood)).width;
+    if (X(480) + tbW < W - 4) text(ctx, T.toBlood, X(480), Y(110), { size: 11, color: '#93c5fd' });
+    else text(ctx, T.toBlood, W - 4, Y(100) - 14, { size: 11, align: 'right', color: '#93c5fd' });   // narrow screens: keep it inside
     // ADH from the pituitary
     const adhA = 0.2 + 0.8 * m.adh;
     ctx.fillStyle = `rgba(167,139,250,${adhA})`; ctx.beginPath(); ctx.arc(X(520), Y(40), 16 * s, 0, Math.PI * 2); ctx.fill();
