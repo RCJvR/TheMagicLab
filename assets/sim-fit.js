@@ -41,6 +41,7 @@
     var panel = document.querySelector(PANEL), out = [];
     if (!panel) return out;
     panel.querySelectorAll('canvas').forEach(function (c) {
+      if (c.closest('.mlx-sim')) return;   // Explore-kit sims size themselves
       var w = c.parentElement;
       if (w && w !== panel && out.indexOf(w) < 0) out.push(w);
     });
