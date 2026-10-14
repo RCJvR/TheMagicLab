@@ -14,7 +14,10 @@
 
 .a3-sheet .frame {
   position: absolute;
-  inset: 5mm;
+  top: 10mm;
+  right: 10mm;
+  bottom: 10mm;
+  left: 20mm;
   border: 0.7mm solid #111;
   pointer-events: none;
 }
@@ -23,14 +26,14 @@
    attributes (set by ConstructionEngine.render) must drive its physical print size. */
 .a3-sheet .a3-main-svg {
   position: absolute;
-  top: 26mm;
-  left: 12mm;
+  top: 34mm;
+  left: 26mm;
 }
 
 .a3-sheet .thumb-box {
   position: absolute;
-  left: 10mm;
-  bottom: 10mm;
+  left: 24mm;
+  bottom: 14mm;
   width: 60mm;
   height: 60mm;
   border: 0.35mm solid #111;
@@ -51,45 +54,59 @@
   left: 2mm;
 }
 
+/* Title block sits in the bottom-right corner of the border, sharing its lines. */
 .a3-sheet .title-block {
   position: absolute;
   right: 10mm;
   bottom: 10mm;
-  width: 110mm;
-  border: 0.35mm solid #111;
-  padding: 4mm;
+  width: 130mm;
   font-size: 8pt;
   color: #111;
 }
-.a3-sheet .tb-title {
-  font-weight: 800;
-  font-size: 10pt;
-  margin-bottom: 3mm;
+.a3-sheet .tb-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
-.a3-sheet .tb-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 6mm;
-  padding: 1.2mm 0;
-  border-top: 0.2mm solid #ccc;
+.a3-sheet .tb-grid td {
+  border: 0.35mm solid #111;
+  padding: 1.2mm 2mm;
+  height: 9mm;
+  vertical-align: top;
 }
-.a3-sheet .tb-row span:first-child {
-  color: #666;
-  font-size: 7pt;
+.a3-sheet .tb-grid tr:first-child td { border-top-width: 0.7mm; }
+.a3-sheet .tb-grid td:first-child { border-left-width: 0.7mm; }
+.a3-sheet .tb-k {
+  display: block;
+  color: #555;
+  font-size: 6pt;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.a3-sheet .tb-blank {
-  flex: 1;
-  border-bottom: 0.2mm solid #999;
-  margin-left: 4mm;
+.a3-sheet .tb-title {
+  font-weight: 800;
+  font-size: 11pt;
+  margin-top: 0.6mm;
+}
+.a3-sheet .tb-v {
+  font-size: 9pt;
+  font-weight: 700;
+  margin-top: 0.6mm;
+}
+.a3-sheet .tb-sym {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  margin-top: 0.4mm;
+  font-size: 6.5pt;
+  color: #333;
 }
 
 .a3-sheet .sheet-prompt {
   position: absolute;
-  top: 8mm;
-  left: 8mm;
-  right: 8mm;
+  top: 14mm;
+  left: 24mm;
+  right: 14mm;
   font-size: 9pt;
   line-height: 1.4;
   color: #333;
@@ -104,5 +121,9 @@
   #printSheets { display: block !important; }
   .a3-sheet { display: block; page-break-after: always; }
   .a3-sheet:last-child { page-break-after: auto; }
-  @page { size: A3 portrait; margin: 12mm; }
+  /* The sheet already carries its own 10/20 mm border, so the page adds no margin
+     (a page margin on top of a full 297 x 420 mm sheet pushes it onto a second page). */
+  @page { size: A3 portrait; margin: 0; }
+  .a3-sheet { margin: 0; }
+  [aria-labelledby="ddWipTitle"] { display: none !important; }
 }

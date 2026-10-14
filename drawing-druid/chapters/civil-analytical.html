@@ -316,51 +316,7 @@ svg#lessonSvg{width:100%;height:420px;display:block;}
   }
 
   function buildPrintSheets() {
-    const host = document.getElementById('printSheets');
-    host.innerHTML = '';
-    order.forEach(id => {
-      const model = window.CONSTRUCTIONS[id];
-      const sheet = document.createElement('div');
-      sheet.className = 'a3-sheet';
-
-      sheet.appendChild(Object.assign(document.createElement('div'), { className: 'frame' }));
-
-      const mainSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      mainSvg.setAttribute('class', 'a3-main-svg');
-      sheet.appendChild(mainSvg);
-
-      const thumbBox = document.createElement('div');
-      thumbBox.className = 'thumb-box';
-      const thumbLabel = document.createElement('div');
-      thumbLabel.className = 'thumb-label';
-      thumbLabel.textContent = 'Reference (not to scale)';
-      thumbBox.appendChild(thumbLabel);
-      const thumbSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      thumbBox.appendChild(thumbSvg);
-      sheet.appendChild(thumbBox);
-
-      const titleBlock = document.createElement('div');
-      titleBlock.className = 'title-block';
-      titleBlock.innerHTML =
-        '<div class="tb-title">' + model.title + '</div>' +
-        '<div class="tb-row"><span>Scale</span><span>1:1</span></div>' +
-        '<div class="tb-row"><span>Name</span><span class="tb-blank"></span></div>' +
-        '<div class="tb-row"><span>Class</span><span class="tb-blank"></span></div>' +
-        '<div class="tb-row"><span>Date</span><span class="tb-blank"></span></div>';
-      sheet.appendChild(titleBlock);
-
-      const promptEl = document.createElement('div');
-      promptEl.className = 'sheet-prompt';
-      promptEl.textContent = model.workbookPrompt;
-      sheet.appendChild(promptEl);
-
-      host.appendChild(sheet);
-
-      CE.render(mainSvg, model, { uptoStep: Infinity, mode: 'print-full', scale: 1, showCallouts: false });
-      const b = model.bounds;
-      const fitScale = Math.min(55 / (b.w + 28), 55 / (b.h + 28), 0.35);
-      CE.render(thumbSvg, model, { uptoStep: Infinity, mode: 'print-thumb', scale: fitScale, showCallouts: false, showLabels: false, pad: 14 });
-    });
+    CE.buildPrintSheets(document.getElementById('printSheets'), order.map(id => window.CONSTRUCTIONS[id]), { code: 'CA' });
   }
 
   function switchTab(id, btn) {

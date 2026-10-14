@@ -78,15 +78,15 @@
   // ── 2. Bird's-Eye, Natural and Worm's-Eye Views ──
   (function () {
     const boxes = [
-      { name: 'Bird’s-Eye View', x1: 15, x2: 55, y1: 70, y2: 100, vp: [80, 20], note: 'VP high above — looking down' },
-      { name: 'Natural (Eye-Level) View', x1: 75, x2: 115, y1: 70, y2: 100, vp: [140, 85], note: 'VP through the object — a natural view' },
-      { name: 'Worm’s-Eye View', x1: 135, x2: 175, y1: 70, y2: 100, vp: [200, 150], note: 'VP low below — looking up' },
+      { name: 'Bird’s-Eye View', x1: 10, x2: 50, y1: 70, y2: 100, vp: [72, 20], note: 'VP high above: looking down' },
+      { name: 'Natural (Eye-Level) View', x1: 88, x2: 128, y1: 70, y2: 100, vp: [150, 85], note: 'VP at eye level, through the object' },
+      { name: 'Worm’s-Eye View', x1: 166, x2: 206, y1: 70, y2: 100, vp: [228, 150], note: 'VP low below: looking up' },
     ];
 
     CONSTRUCTIONS['viewpoint-comparison'] = {
       id: 'viewpoint-comparison', title: 'Bird’s-Eye, Natural & Worm’s-Eye',
       summary: 'The same simple box, drawn three times with the vanishing point at a different height each time — showing how moving the horizon line changes the viewpoint.',
-      bounds: { w: 225, h: 175 },
+      bounds: { w: 240, h: 175 },
       workbookPrompt: 'Draw the same simple box three times, moving only the position of the VP each time, to produce a bird’s-eye, a natural, and a worm’s-eye view.',
       steps: boxes.map((b, i) => ({
         id: i + 1,
@@ -101,8 +101,8 @@
           { kind: 'point', at: b.vp, label: 'VP', size: 1.4 },
           { kind: 'line', p1: [b.x2, b.y1], p2: b.vp, lineType: 'construction' },
           { kind: 'line', p1: [b.x2, b.y2], p2: b.vp, lineType: 'construction' },
-          { kind: 'label', at: [b.x1, b.y2 + 12], text: b.name, size: 4, anchor: 'start', color: '#fde047' },
-          { kind: 'label', at: [b.x1, b.y2 + 18], text: b.note, size: 3.2, anchor: 'start', color: '#94a3b8' },
+          { kind: 'label', at: [(b.x1 + b.x2) / 2, b.y2 + 12], text: b.name, size: 4, anchor: 'middle', color: '#fde047' },
+          { kind: 'label', at: [(b.x1 + b.x2) / 2, b.y2 + 18], text: b.note, size: 3.2, anchor: 'middle', color: '#94a3b8' },
         ],
       })),
     };

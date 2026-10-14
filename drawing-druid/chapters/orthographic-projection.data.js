@@ -82,7 +82,7 @@
             { kind: 'line', p1: [sv.x - 4, holeSideY], p2: [sv.x + sv.w + 4, holeSideY], lineType: 'centre' },
             { kind: 'dimension', p1: [60, 116], p2: [120, 116], offset: 8, text: '60' },
             { kind: 'dimension', p1: [46, 70], p2: [46, 110], offset: -8, text: '40' },
-            { kind: 'label', at: [60, 128], text: 'THIRD-ANGLE PROJECTION', size: 4, anchor: 'start', color: '#94a3b8' },
+            { kind: 'label', at: [60, 136], text: 'THIRD-ANGLE PROJECTION', size: 4, anchor: 'start', color: '#94a3b8' },
           ],
         },
       ],
@@ -154,7 +154,7 @@
           instruction: 'Label the section and dimension the pocket\'s width and depth.',
           calloutAt: [100, 120],
           reveals: [
-            { kind: 'label', at: [60, 120], text: 'SECTION A-A', size: 5, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [100, 140], text: 'SECTION A-A', size: 5, anchor: 'middle', color: '#fde047' },
             { kind: 'dimension', p1: [85, 116], p2: [115, 116], offset: 8, text: '30' },
             { kind: 'dimension', p1: [122, 70], p2: [122, 90], offset: 8, text: '20' },
           ],
