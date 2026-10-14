@@ -459,10 +459,10 @@ const urlsToCache = [
   '/games.js',
   '/arena-host.html',
   '/arena.html',
+  '/assets/vendor/lucide-1.56.0.min.js',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
-  'https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js',
   'https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap'
 ];
 
