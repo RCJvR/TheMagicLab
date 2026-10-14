@@ -189,7 +189,7 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
     </div>
     <div class="formula">
       CH<sub>3</sub>COOH + CH<sub>3</sub>CH<sub>2</sub>OH &#x21CC; CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub> + H<sub>2</sub>O<br>
-      (etaansuur + etanol &#x21CC; etielethanoaat + water)
+      (etaansuur + etanol &#x21CC; etieletanoaat + water)
     </div>
     <p>Esters het vrugtige reuke en word gebruik in geursels, parfuums, en oplosmiddels. Benoeming: die alkoholdeel benoem die alkielgroep (etiel), en die suurdeel word -oaat (etanoaat).</p>
 
@@ -264,7 +264,7 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
 
 <!-- VERKEN-OORTJIE -->
 <div id="tab-explore" class="tab-panel">
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Kies 'n reaktans en reaksietipe. Voorspel die produk se naam en funksionele groep voordat jy kyk. <strong style="color:#fde68a">Toets dit dan:</strong> Kontroleer dan die gebalanseerde vergelyking en die toestande.</div>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Kies 'n reagens en reaksietipe. Voorspel die produk se naam en funksionele groep voordat jy kyk. <strong style="color:#fde68a">Toets dit dan:</strong> Kontroleer dan die gebalanseerde vergelyking en die toestande.</div>
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Reaksiebouer &mdash; Kies reagens en reaksietipe om die gebalanseerde vergelyking te sien</h3>
@@ -279,7 +279,7 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
           <option value="alkane">Alkaan (metaan, CH₄)</option>
           <option value="alcohol">Alkohol (etanol)</option>
           <option value="haloalkane">Haloalkaan (broometaan)</option>
-          <option value="ester">Ester (etielethanoaat)</option>
+          <option value="ester">Ester (etieletanoaat)</option>
         </select>
         <label for="reactionType" style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Reaksietipe</label>
         <select class="sim-select" id="reactionType" onchange="updateReaction()">
@@ -366,7 +366,7 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
       </table>
       (a) Bereken die gemiddelde tempo van estervorming (in mol&middot;min<sup>&minus;1</sup>) tussen t = 0 en t = 20 min, en tussen t = 80 en t = 100 min.<br>
       (b) Verduidelik, in terme van reagens- en produkkonsentrasies, waarom die tempo bereken in (a) soveel laer is in die tweede interval as in die eerste.<br>
-      (c) Die hoeveelheid ester gevorm plato by 0.40 mol na t = 80 min eerder as om voort te gaan om na die teoretiese maksimum te styg. Verduidelik waarom, met verwysing na die aard van die veresteringsreaksie.<br>
+      (c) Die hoeveelheid ester gevorm bereik 'n plato by 0,40 mol na t = 80 min eerder as om voort te gaan om na die teoretiese maksimum te styg. Verduidelik waarom, met verwysing na die aard van die veresteringsreaksie.<br>
       (d) Stel EEN verandering aan die eksperimentele opstelling voor (nie &rsquo;n verandering in temperatuur nie) wat die aantal mol ester teenwoordig sou verhoog sodra die stelsel weer tot rus kom, en regverdig dit met behulp van Le Chatelier se Beginsel.<br><br>
       <em>(8 punte)</em></div>
     </div>
@@ -412,7 +412,7 @@ const REACTIONS = {
     label: 'Alkohol (etanol)',
     types: {
       elim: { label: 'Dehidrasie → alkeen', eq: 'CH₃CH₂OH → CH₂=CH₂ + H₂O\n(etanol → eteen)', cond: 'Gekons. H₂SO₄, 180°C', cls: 'Eliminasie (dehidrasie)' },
-      ester: { label: 'Verestering met etaansuur', eq: 'CH₃COOH + CH₃CH₂OH ⇌ CH₃COOCH₂CH₃ + H₂O\n(→ etielethanoaat)', cond: 'Gekons. H₂SO₄-katalisator, terugvloei', cls: 'Verestering (omkeerbaar)' },
+      ester: { label: 'Verestering met etaansuur', eq: 'CH₃COOH + CH₃CH₂OH ⇌ CH₃COOCH₂CH₃ + H₂O\n(→ etieletanoaat)', cond: 'Gekons. H₂SO₄-katalisator, terugvloei', cls: 'Verestering (omkeerbaar)' },
       oxidation: { label: 'Oksidasie na aldehied/suur', eq: 'CH₃CH₂OH → [O] → CH₃CHO → [O] → CH₃COOH\n(etanol → etanal → etaansuur)', cond: 'K₂Cr₂O₇/H₂SO₄ (aangesuurde dichromaat)', cls: 'Oksidasie' }
     }
   },
@@ -424,7 +424,7 @@ const REACTIONS = {
     }
   },
   ester: {
-    label: 'Ester (etielethanoaat)',
+    label: 'Ester (etieletanoaat)',
     types: {
       acid_hyd: { label: 'Suurhidrolise', eq: 'CH₃COOC₂H₅ + H₂O ⇌ CH₃COOH + C₂H₅OH\n(omkeerbaar)', cond: 'Verdunde H₂SO₄, terugvloei', cls: 'Hidrolise (suur)' },
       base_hyd: { label: 'Basishidrolise (versaping)', eq: 'CH₃COOC₂H₅ + NaOH → CH₃COO⁻Na⁺ + C₂H₅OH\n(onomkeerbaar)', cond: 'NaOH(aq), terugvloei', cls: 'Hidrolise (basis / versaping)' }
@@ -658,7 +658,7 @@ const NSC_QUESTIONS = [
       "But-2-een; die dubbelbinding skuif na C2 voordat Br of OH ingebring word"
     ],
     ans: 0,
-    exp: "Stap 1 is addisie van HBr oor die C=C-binding. Volgens Markovnikov se reël voeg H by die koolstof wat reeds MEER waterstowwe het (C1, wat 2 H in die =CH₂-groep het) en Br voeg by die koolstof met MINDER waterstowwe (C2, die meer gesubstitueerde koolstof) — wat CH₃–CHBr–CH₂–CH₃ (2-broombutaan) gee. Stap 2 is nukleofiliese substitusie: OH⁻ vervang Br⁻ by DIESELFDE koolstof (C2) sonder om die koolstofskelet te beweeg, wat CH₃–CH(OH)–CH₂–CH₃ (butan-2-ol) gee. Die regiochemie wat in Stap 1 (Markovnikov-addisie) vasgestel word, bepaal die posisie van die OH-groep in die finale produk."
+    exp: "Stap 1 is addisie van HBr oor die C=C-binding. Volgens Markovnikov se reël voeg H by die koolstof wat reeds MEER waterstofatome het (C1, wat 2 H in die =CH₂-groep het) en Br voeg by die koolstof met MINDER waterstofatome (C2, die meer gesubstitueerde koolstof) — wat CH₃–CHBr–CH₂–CH₃ (2-broombutaan) gee. Stap 2 is nukleofiliese substitusie: OH⁻ vervang Br⁻ by DIESELFDE koolstof (C2) sonder om die koolstofskelet te beweeg, wat CH₃–CH(OH)–CH₂–CH₃ (butan-2-ol) gee. Die regiochemie wat in Stap 1 (Markovnikov-addisie) vasgestel word, bepaal die posisie van die OH-groep in die finale produk."
   },
   {
     q: '\'n Monster dekaan (C₁₀H₂₂) ondergaan katalitiese kraking om oktaan (C₈H₁₈) en een ander organiese produk, X, te produseer. Wat is X, en watter vergelyking verteenwoordig sy volledige verbranding korrek?',

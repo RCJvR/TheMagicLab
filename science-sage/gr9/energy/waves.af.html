@@ -222,12 +222,12 @@
     <p>Die EM-spektrum is 'n aaneenlopende reeks gerangskik volgens frekwensie (of golflengte). Vanaf <strong>laagste frekwensie / langste golflengte</strong> na <strong>hoogste frekwensie / kortste golflengte</strong>:</p>
 
     <table class="symbols-table">
-      <thead><tr><th>Tipe</th><th>Bykomstige golflengte</th><th>Frekwensiereeks</th><th>Toepassings</th></tr></thead>
+      <thead><tr><th>Tipe</th><th>Benaderde golflengte</th><th>Frekwensiereeks</th><th>Toepassings</th></tr></thead>
       <tbody>
         <tr><td><strong>Radiogolwe</strong></td><td>&gt; 0,1 m</td><td>&lt; 3 GHz</td><td>AM/FM-uitsending, TV, langafstand-kommunikasie</td></tr>
         <tr><td><strong>Mikrogolwe</strong></td><td>1 mm – 0,1 m</td><td>3 GHz – 300 GHz</td><td>Mikrogolfkookkuns, radar, satelliet- en selfoonkommunikasie</td></tr>
-        <tr><td><strong>Infrarooi (IR)</strong></td><td>700 nm – 1 mm</td><td>300 GHz – 430 THz</td><td>Termiese kameras, TV-afstandbeheerders, naguitkyktoerusting, hitteligte</td></tr>
-        <tr><td><strong>Sigbare lig</strong></td><td>400 nm – 700 nm</td><td>430 THz – 750 THz</td><td>Menslike gesig, fotografie, veseloptika</td></tr>
+        <tr><td><strong>Infrarooi (IR)</strong></td><td>700 nm – 1 mm</td><td>300 GHz – 430 THz</td><td>Termiese kameras, TV-afstandbeheerders, nagsigtoerusting, hitteligte</td></tr>
+        <tr><td><strong>Sigbare lig</strong></td><td>400 nm – 700 nm</td><td>430 THz – 750 THz</td><td>Menslike sig, fotografie, veseloptika</td></tr>
         <tr><td><strong>Ultraviolet (UV)</strong></td><td>10 nm – 400 nm</td><td>750 THz – 30 PHz</td><td>Sterilisasie, veroorsaak sonbrand, fluoressensie, vitamien D-produksie</td></tr>
         <tr><td><strong>X-strale</strong></td><td>0,01 nm – 10 nm</td><td>30 PHz – 30 EHz</td><td>Mediese beelding, lughawe-sekuriteitskandering, materiaalontleding</td></tr>
         <tr><td><strong>Gammastrale (γ)</strong></td><td>&lt; 0,01 nm</td><td>&gt; 30 EHz</td><td>Kankerbestralingsterapie, kernreaksies, sterilisering van voedsel/toerusting</td></tr>
@@ -262,15 +262,15 @@
           <div id="lbl-freqSlider" class="ctrl-label">Frekwensie</div>
           <input aria-labelledby="lbl-freqSlider" type="range" id="freqSlider" min="0.5" max="3" step="0.1" value="1.2" oninput="updateWaveReadouts()">
           <div class="readout-row">
-            <div class="readout"><div class="readout-label">Frekwensie</div><div class="readout-val" id="rdFreq">1.2 Hz</div></div>
-            <div class="readout"><div class="readout-label">Periode</div><div class="readout-val" id="rdPeriod">0.83 s</div></div>
+            <div class="readout"><div class="readout-label">Frekwensie</div><div class="readout-val" id="rdFreq">1,2 Hz</div></div>
+            <div class="readout"><div class="readout-label">Periode</div><div class="readout-val" id="rdPeriod">0,83 s</div></div>
           </div>
         </div>
         <div class="ctrl-card">
           <div id="lbl-ampSlider" class="ctrl-label">Amplitude</div>
           <input aria-labelledby="lbl-ampSlider" type="range" id="ampSlider" min="0.2" max="1" step="0.05" value="0.6" oninput="updateWaveReadouts()">
           <div class="readout-row">
-            <div class="readout"><div class="readout-label">Amplitude</div><div class="readout-val" id="rdAmp">0.6 eenhede</div></div>
+            <div class="readout"><div class="readout-label">Amplitude</div><div class="readout-val" id="rdAmp">0,6 eenhede</div></div>
             <div class="readout"><div class="readout-label">Golflengte</div><div class="readout-val" id="rdLambda">— m</div></div>
           </div>
         </div>
@@ -330,12 +330,12 @@ let rafId = null;
 
 const EM_BANDS = [
   { name: 'Radio', color: '#6366f1', wl: '> 0.1 m', freq: '< 3 GHz', apps: 'AM/FM-uitsending, televisie, langafstand-radiokommunikasie', danger: 'Nie-ioniserend — oor die algemeen veilig by alledaagse blootstellingsvlakke.' },
-  { name: 'Mikrogolf', color: '#8b5cf6', wl: '1 mm – 0.1 m', freq: '3 GHz – 300 GHz', apps: 'Mikrogolfoonde, radar, satelliet-TV, selfone (4G/5G)', danger: 'Nie-ioniserend — kan verhitting van weefsel by hoë krag veroorsaak (mikrogolfoonde gebruik dit doelbewus).' },
-  { name: 'Infrarooi', color: '#ef4444', wl: '700 nm – 1 mm', freq: '300 GHz – 430 THz', apps: 'Termiese kameras, TV-afstandbeheerders, naguitkykbrille, hitteligte', danger: 'Nie-ioniserend — veroorsaak verhitting; langdurige blootstelling kan oë en vel beskadig.' },
-  { name: 'Sigbaar', color: '#fbbf24', wl: '400 nm – 700 nm', freq: '430 THz – 750 THz', apps: 'Menslike gesig, kameras, veseloptiese kommunikasie, fotografie', danger: 'Oor die algemeen veilig; baie intense laserlig kan oë beskadig.' },
-  { name: 'Ultraviolet', color: '#a3e635', wl: '10 nm – 400 nm', freq: '750 THz – 30 PHz', apps: 'Sterilisasie (dood bakterieë), veroorsaak sonbrand, fluoressensie, vitamien D-produksie in die vel', danger: 'Ioniserend by hoë frekwensies — veroorsaak sonbrand, velkanker, katarakte met oorblootstelling.' },
+  { name: 'Mikrogolf', color: '#8b5cf6', wl: '1 mm – 0.1 m', freq: '3 GHz – 300 GHz', apps: 'Mikrogolfoonde, radar, satelliet-TV, selfone (4G/5G)', danger: 'Nie-ioniserend — kan verhitting van weefsel by hoë drywing veroorsaak (mikrogolfoonde gebruik dit doelbewus).' },
+  { name: 'Infrarooi', color: '#ef4444', wl: '700 nm – 1 mm', freq: '300 GHz – 430 THz', apps: 'Termiese kameras, TV-afstandbeheerders, nagsigbrille, hitteligte', danger: 'Nie-ioniserend — veroorsaak verhitting; langdurige blootstelling kan oë en vel beskadig.' },
+  { name: 'Sigbaar', color: '#fbbf24', wl: '400 nm – 700 nm', freq: '430 THz – 750 THz', apps: 'Menslike sig, kameras, veseloptiese kommunikasie, fotografie', danger: 'Oor die algemeen veilig; baie intense laserlig kan oë beskadig.' },
+  { name: 'Ultraviolet', color: '#a3e635', wl: '10 nm – 400 nm', freq: '750 THz – 30 PHz', apps: 'Sterilisasie (maak bakterieë dood), veroorsaak sonbrand, fluoressensie, vitamien D-produksie in die vel', danger: 'Ioniserend by hoë frekwensies — veroorsaak sonbrand, velkanker, katarakte met oorblootstelling.' },
   { name: 'X-strale', color: '#22d3ee', wl: '0.01 nm – 10 nm', freq: '30 PHz – 30 EHz', apps: 'Mediese X-straalbeelding, lughawe-sekuriteitskandeerders, materiaalontleding, kankerbehandeling', danger: 'Ioniserend — beskadig DNS; mediese dosisse word noukeurig beperk.' },
-  { name: 'Gammastrale', color: '#f0abfc', wl: '< 0.01 nm', freq: '> 30 EHz', apps: 'Kankerbestralingsterapie (dood tumore), kernreaksies, sterilisering van mediese toerusting en voedsel', danger: 'Gevaarlikste EM-straling — hoogs ioniserend; kan diep in weefsel indring en ernstige DNS-skade en stralingsiekte veroorsaak.' }
+  { name: 'Gammastrale', color: '#f0abfc', wl: '< 0.01 nm', freq: '> 30 EHz', apps: 'Kankerbestralingsterapie (vernietig gewasse), kernreaksies, sterilisering van mediese toerusting en voedsel', danger: 'Gevaarlikste EM-straling — hoogs ioniserend; kan diep in weefsel indring en ernstige DNS-skade en stralingsiekte veroorsaak.' }
 ];
 
 let emSelected = -1;
@@ -462,9 +462,9 @@ function drawEMFrame(ctx, W, H) {
   ctx.font = '700 11px "JetBrains Mono",monospace';
   ctx.fillStyle = 'rgba(210,218,245,0.45)';
   ctx.textAlign = 'left';
-  ctx.fillText('LAAG FREKWENSIE / LANG GOLFLENGTE', padX, 28);
+  ctx.fillText('LAE FREKWENSIE / LANG GOLFLENGTE', padX, 28);
   ctx.textAlign = 'right';
-  ctx.fillText('HOOG FREKWENSIE / KORT GOLFLENGTE', W - padX, 28);
+  ctx.fillText('HOË FREKWENSIE / KORT GOLFLENGTE', W - padX, 28);
 
   // Arrows for freq / wavelength trend
   ctx.strokeStyle = 'rgba(210,218,245,0.20)';
@@ -623,7 +623,7 @@ const QUESTIONS = [
     text: "Watter toepassing gebruik infrarooi-straling?",
     opts: ['Mediese X-straalbeelding', 'TV-afstandbeheerders', 'Radio-uitsending', 'Kankerbestralingsterapie'],
     ans: 1,
-    exp: "TV-afstandbeheerders gebruik infrarooi- (IR-) pulse om seine na die televisie te stuur. Ander IR-toepassings sluit termiese kameras, naguitkyktoerusting en hitteligte in. X-straalbeelding gebruik X-strale; bestralingsterapie gebruik gammastrale; uitsending gebruik radiogolwe."
+    exp: "TV-afstandbeheerders gebruik infrarooi- (IR-) pulse om seine na die televisie te stuur. Ander IR-toepassings sluit termiese kameras, nagsigtoerusting en hitteligte in. X-straalbeelding gebruik X-strale; bestralingsterapie gebruik gammastrale; uitsending gebruik radiogolwe."
   },
   {
     text: "'n Elektromagnetiese golf het 'n golflengte van 500 nm (500 × 10⁻⁹ m). Deur v = f × λ te gebruik en die feit dat alle EM-golwe teen c = 3 × 10⁸ m/s in 'n vakuum beweeg, bereken die frekwensie daarvan, en identifiseer aan watter gebied van die EM-spektrum dit behoort.",
