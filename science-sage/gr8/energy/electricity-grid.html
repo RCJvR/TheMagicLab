@@ -124,6 +124,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
+<link rel="stylesheet" href="/assets/explore-kit.css">
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -199,9 +200,12 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">The grid pipeline</h2>
-  <p class="explore-intro">Click each stage below to see what happens there, why it matters, and how the voltage changes along the journey from power station to home.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Why is electricity sent across the country at a very high voltage? <strong style="color:#fde68a">Then test it:</strong> Click each stage and follow how the voltage changes.</div>
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Sending power across the country</h2>
+  <p class="explore-intro">The same power can be sent at a low voltage with a big current, or at a high voltage with a small current. Which wastes less?</p>
+  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> A power station sends 100 MW. Will more energy be wasted as heat at 22 kV or at 400 kV? <strong style="color:#fde68a">Then test it:</strong> Change the transmission voltage and watch the current, the heat lost and how many homes stay lit.</div>
+  <div id="mlx-root"></div>
+  <h3 class="mlx-ref-title">The grid, stage by stage</h3>
+  <p class="mlx-ref-sub">Click each stage to see what happens there and how the voltage changes.</p>
   <div class="grid-pipeline" id="pipeline"></div>
   <div class="voltage-readout">
     <span class="vlabel">Voltage at this stage</span>
@@ -343,5 +347,7 @@ buildPractice();
 })();
 </script>
   <script src="/contact-button.js" defer></script>
+<script src="/assets/explore-kit.js"></script>
+<script src="/assets/explore/grid-transmission.js"></script>
 </body>
 </html>
