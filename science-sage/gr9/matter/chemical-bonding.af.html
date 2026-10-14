@@ -421,147 +421,145 @@ function animate() {
 }
 
 // ─── IONIC drawing ───────────────────────────────────────────────────────────
-function drawIonic(W, H) {
-  const phase = (tick % 300) / 300; // 0 → 1 cycle
-
-  // Phase 0–0.35: atoms approaching
-  // Phase 0.35–0.55: electron transfer
-  // Phase 0.55–0.85: ions shown, attraction
-  // Phase 0.85–1.0: NaCl label, reset
-
-  const cx = W / 2;
-  const cy = H / 2;
-
-  // Background label
-  ctx.fillStyle = 'rgba(251,191,36,0.06)';
-  ctx.font = 'bold 80px "Cabinet Grotesk",sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('NaCl', cx, cy);
-
-  let naX, clX;
-  let electronFrac = 0; // 0 = on Na, 1 = on Cl
-  let showIons = false;
-
-  if (phase < 0.35) {
-    const t = phase / 0.35;
-    naX = cx - 180 + t * 100;
-    clX = cx + 180 - t * 100;
-  } else if (phase < 0.55) {
-    naX = cx - 80;
-    clX = cx + 80;
-    electronFrac = (phase - 0.35) / 0.20;
-  } else if (phase < 0.85) {
-    naX = cx - 80;
-    clX = cx + 80;
-    electronFrac = 1;
-    showIons = true;
-  } else {
-    const t = (phase - 0.85) / 0.15;
-    naX = cx - 80 - t * 100;
-    clX = cx + 80 + t * 100;
-    electronFrac = 1;
-    showIons = true;
-  }
-
-  // Draw Na atom
-  drawAtom(naX, cy, 32, '#fbbf24', 'Na', showIons ? 'Na⁺' : '', showIons ? 10 : 11, false);
-
-  // Draw Cl atom
-  drawAtom(clX, cy, 36, '#60a5fa', 'Cl', showIons ? 'Cl⁻' : '', showIons ? 18 : 17, true);
-
-  // Draw the transferring electron
-  const ex = naX + (clX - naX) * electronFrac;
-  const ey = cy - 40;
-  const eGrad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 8);
-  eGrad.addColorStop(0, '#fbbf24');
-  eGrad.addColorStop(1, 'transparent');
-  ctx.fillStyle = eGrad;
+// Dot-and-cross shell diagrams: sodium's electrons are dots and chlorine's are
+// crosses, so learners can see exactly which electron moves.
+const BL = /\.af\.html/i.test(location.pathname) ? {
+  fromNa: '• elektron van natrium', fromCl: '× elektron van chloor', attract: 'elektrostatiese aantrekking',
+  s1: 'Natrium (2,8,1) het 1 buitenste elektron; chloor (2,8,7) het 7',
+  s2: 'Natrium dra sy buitenste elektron aan chloor oor',
+  s3: 'Ione gevorm: Na⁺ (2,8) en Cl⁻ (2,8,8) trek mekaar aan — die ioniese binding',
+  s4: 'Albei ione het nou vol buitenste skille, soos die edelgasse neon en argon',
+  key: '• en × wys van watter atoom elke elektron kom (net buitenste skille)',
+  H2: '1 gedeelde paar → enkelbinding',
+  H2O: '2 gedeelde pare → 2 enkelbindings; O het nou 8 buitenste elektrone',
+  CO2: '2 gedeelde pare per binding → 2 dubbelbindings',
+} : {
+  fromNa: '• electron from sodium', fromCl: '× electron from chlorine', attract: 'electrostatic attraction',
+  s1: 'Sodium (2,8,1) has 1 outer electron; chlorine (2,8,7) has 7',
+  s2: 'Sodium transfers its outer electron to chlorine',
+  s3: 'Ions formed: Na⁺ (2,8) and Cl⁻ (2,8,8) attract each other — the ionic bond',
+  s4: 'Both ions now have full outer shells, like the noble gases neon and argon',
+  key: '• and × show which atom each electron came from (outer shells only)',
+  H2: '1 shared pair → single bond',
+  H2O: '2 shared pairs → 2 single bonds; O now has 8 outer electrons',
+  CO2: '2 shared pairs per bond → 2 double bonds',
+};
+const NA_COL = '#fbbf24', CL_COL = '#60a5fa';
+// Electron positions on a shell: singles at N, E, S, W first, then pairs.
+const SLOT_OFF = 0.22;
+function slotAngle(i, cap) {
+  if (cap <= 2) return i === 0 ? -Math.PI / 2 : Math.PI / 2;
+  const base = [-Math.PI / 2, 0, Math.PI / 2, Math.PI][i % 4];
+  return i < 4 ? base - SLOT_OFF : base + SLOT_OFF;
+}
+function drawMarker(x, y, kind, color) {
+  ctx.fillStyle = color; ctx.strokeStyle = color;
+  if (kind === 'dot') { ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill(); }
+  else { ctx.lineWidth = 2.2; ctx.beginPath(); ctx.moveTo(x - 4, y - 4); ctx.lineTo(x + 4, y + 4); ctx.moveTo(x + 4, y - 4); ctx.lineTo(x - 4, y + 4); ctx.stroke(); }
+}
+function drawCore(x, y, sym, color, r) {
+  ctx.fillStyle = color + '2e'; ctx.strokeStyle = color + 'cc'; ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(sym, x, y);
+}
+// shells: electrons per shell; a shell given as 0 is drawn as an empty ring.
+function drawShellAtom(x, y, sym, shells, kind, color, R, ringAlpha) {
+  shells.forEach((n, si) => {
+    ctx.strokeStyle = `rgba(210,218,245,${n === 0 && ringAlpha != null ? ringAlpha : 0.28})`;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(x, y, R[si], 0, Math.PI * 2); ctx.stroke();
+    for (let i = 0; i < n; i++) {
+      const a = slotAngle(i, si === 0 ? 2 : 8);
+      drawMarker(x + R[si] * Math.cos(a), y + R[si] * Math.sin(a), kind, color);
+    }
+  });
+  drawCore(x, y, sym, color, 15);
+}
+function drawBrackets(x, y, b, charge, color) {
+  ctx.strokeStyle = 'rgba(226,232,240,0.75)'; ctx.lineWidth = 1.6;
   ctx.beginPath();
-  ctx.arc(ex, ey, 8, 0, Math.PI*2);
-  ctx.fill();
-  ctx.fillStyle = '#fbbf24';
-  ctx.beginPath();
-  ctx.arc(ex, ey, 4, 0, Math.PI*2);
-  ctx.fill();
-
-  // Arrow when transferring
-  if (phase >= 0.35 && phase < 0.6) {
-    ctx.strokeStyle = 'rgba(251,191,36,0.4)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4,4]);
-    ctx.beginPath();
-    ctx.moveTo(naX + 35, cy - 40);
-    ctx.lineTo(clX - 38, cy - 40);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  // Attraction arrow between ions
-  if (showIons && phase < 0.85) {
-    ctx.strokeStyle = 'rgba(200,200,255,0.3)';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(naX + 35, cy);
-    ctx.lineTo(clX - 38, cy);
-    ctx.stroke();
-    ctx.fillStyle = 'rgba(200,200,255,0.4)';
-    ctx.font = '11px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('elektrostatiese aantrekking', cx, cy + 55);
-  }
-
-  // Step label
-  ctx.fillStyle = 'rgba(210,218,245,0.5)';
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  let stepLabel = '';
-  if (phase < 0.35) stepLabel = 'Stap 1: Atome nader mekaar';
-  else if (phase < 0.55) stepLabel = 'Stap 2: Na dra 1 elektron aan Cl oor';
-  else if (phase < 0.85) stepLabel = 'Stap 3: Ione gevorm — elektrostatiese aantrekking skep die ioniese binding';
-  else stepLabel = 'Stap 4: NaCl-ioonpaar gevorm — stabiele edelgaskonfigurasies bereik';
-  ctx.fillText(stepLabel, cx, H - 28);
+  ctx.moveTo(x - b + 9, y - b); ctx.lineTo(x - b, y - b); ctx.lineTo(x - b, y + b); ctx.lineTo(x - b + 9, y + b);
+  ctx.moveTo(x + b - 9, y - b); ctx.lineTo(x + b, y - b); ctx.lineTo(x + b, y + b); ctx.lineTo(x + b - 9, y + b);
+  ctx.stroke();
+  ctx.fillStyle = color; ctx.font = 'bold 18px "JetBrains Mono",monospace';
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(charge, x + b + 4, y - b + 4);
+}
+function wrapLines(text, maxW) {
+  const words = text.split(' '), lines = []; let cur = '';
+  for (const w of words) { const t = cur ? cur + ' ' + w : w; if (cur && ctx.measureText(t).width > maxW) { lines.push(cur); cur = w; } else cur = t; }
+  if (cur) lines.push(cur);
+  return lines;
+}
+function drawCaption(text, W, yBottom) {
+  ctx.fillStyle = 'rgba(210,218,245,0.62)'; ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  const lines = wrapLines(text, W - 40);
+  lines.forEach((l, i) => ctx.fillText(l, W / 2, yBottom - (lines.length - 1 - i) * 16));
+}
+function drawKey(items) {
+  ctx.font = '11px "JetBrains Mono", monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+  items.forEach(([t, c], i) => { ctx.fillStyle = c; ctx.fillText(t, 16, 12 + i * 17); });
 }
 
-function drawAtom(x, y, r, color, sym, ionLabel, numE, isRing) {
-  // Glow
-  const g = ctx.createRadialGradient(x, y, 0, x, y, r + 12);
-  g.addColorStop(0, color + '55');
-  g.addColorStop(1, 'transparent');
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(x, y, r + 12, 0, Math.PI*2);
-  ctx.fill();
+function drawIonic(W, H) {
+  const phase = (tick % 480) / 480;
+  const s = Math.min(1, W / 720);
+  const R = [32, 54, 76].map(v => v * s);
+  const cx = W / 2, cy = H / 2 - 12;
+  const naX = cx - 180 * s, clX = cx + 180 * s;
+  const ions = phase >= 0.45;
 
-  // Body
-  ctx.fillStyle = color + '33';
-  ctx.strokeStyle = color + 'bb';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI*2);
-  ctx.fill();
-  ctx.stroke();
+  drawKey([[BL.fromNa, NA_COL], [BL.fromCl, CL_COL]]);
 
-  // Symbol
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold 15px "Cabinet Grotesk",sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(sym, x, y);
+  // Sodium: 2,8 inside; its outer electron is drawn separately below.
+  // Once it has left, the empty third shell fades away.
+  const fade = phase < 0.22 ? 1 : phase < 0.45 ? 1 : Math.max(0, 1 - (phase - 0.45) / 0.12);
+  drawShellAtom(naX, cy, 'Na', fade > 0 ? [2, 8, 0] : [2, 8], 'dot', NA_COL, R, 0.28 * fade);
+  // Chlorine: 2,8,7 — the gap in its outer shell faces sodium.
+  drawShellAtom(clX, cy, 'Cl', [2, 8, 7], 'cross', CL_COL, R);
 
-  // Ion label
-  if (ionLabel) {
-    ctx.fillStyle = color;
-    ctx.font = 'bold 13px "JetBrains Mono",monospace';
-    ctx.fillText(ionLabel, x, y - r - 16);
+  // The transferring electron: from sodium's outer shell (facing chlorine)
+  // into the gap in chlorine's outer shell.
+  const gapA = slotAngle(7, 8);
+  const sx = naX + R[2], sy = cy;
+  const tx = clX + R[2] * Math.cos(gapA), ty = cy + R[2] * Math.sin(gapA);
+  let t = phase < 0.22 ? 0 : phase < 0.45 ? (phase - 0.22) / 0.23 : 1;
+  t = t * t * (3 - 2 * t);
+  const ex = sx + (tx - sx) * t, ey = sy + (ty - sy) * t - Math.sin(Math.PI * t) * 46 * s;
+  if (t > 0 && t < 1) {
+    ctx.strokeStyle = 'rgba(251,191,36,0.35)'; ctx.lineWidth = 1.4; ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(sx, sy);
+    for (let k = 1; k <= 24; k++) { const u = k / 24; ctx.lineTo(sx + (tx - sx) * u, sy + (ty - sy) * u - Math.sin(Math.PI * u) * 46 * s); }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  const glow = ctx.createRadialGradient(ex, ey, 0, ex, ey, 10);
+  glow.addColorStop(0, 'rgba(251,191,36,0.55)'); glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(ex, ey, 10, 0, Math.PI * 2); ctx.fill();
+  drawMarker(ex, ey, 'dot', NA_COL);
+
+  // Ions: brackets, charges and the attraction between them.
+  if (ions) {
+    drawBrackets(naX, cy, R[1] + 14, '+', NA_COL);
+    drawBrackets(clX, cy, R[2] + 14, '−', CL_COL);
+    const x1 = naX + R[1] + 22, x2 = clX - R[2] - 22;
+    ctx.strokeStyle = 'rgba(200,200,255,0.45)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x1, cy); ctx.lineTo(x2, cy);
+    ctx.moveTo(x1 + 7, cy - 5); ctx.lineTo(x1, cy); ctx.lineTo(x1 + 7, cy + 5);
+    ctx.moveTo(x2 - 7, cy - 5); ctx.lineTo(x2, cy); ctx.lineTo(x2 - 7, cy + 5);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(200,200,255,0.65)'; ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(BL.attract, (x1 + x2) / 2, cy - 8);
   }
 
-  // Electron count label
-  ctx.fillStyle = 'rgba(210,218,245,0.45)';
-  ctx.font = '10px "JetBrains Mono",monospace';
-  ctx.fillText(numE + 'e⁻', x, y + r + 14);
+  // Name and electron arrangement under each particle
+  ctx.font = 'bold 13px "JetBrains Mono", monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  const ly = cy + R[2] + 26;
+  ctx.fillStyle = NA_COL; ctx.fillText(ions ? 'Na⁺  2,8' : 'Na  2,8,1', naX, ly);
+  ctx.fillStyle = CL_COL; ctx.fillText(ions ? 'Cl⁻  2,8,8' : 'Cl  2,8,7', clX, ly);
+
+  drawCaption(phase < 0.22 ? BL.s1 : phase < 0.45 ? BL.s2 : phase < 0.78 ? BL.s3 : BL.s4, W, H - 16);
 }
 
 // ─── COVALENT drawing ────────────────────────────────────────────────────────
@@ -597,108 +595,57 @@ const MOLECULES = {
   }
 };
 
+// Dot-and-cross diagrams of the outer shells: overlapping circles, each
+// shared pair (one dot + one cross) in the overlap, lone pairs on the atom.
+const COV = {
+  H2: { atoms: [{ sym: 'H', x: -36, y: 0, r: 44, kind: 'dot', color: '#fbbf24' }, { sym: 'H', x: 36, y: 0, r: 44, kind: 'cross', color: '#fcd34d' }],
+        bonds: [[0, 1, 1]], lone: [] },
+  H2O: { atoms: [{ sym: 'O', x: 0, y: -14, r: 52, kind: 'cross', color: '#60a5fa' }, { sym: 'H', x: -60, y: 30, r: 36, kind: 'dot', color: '#fbbf24' }, { sym: 'H', x: 60, y: 30, r: 36, kind: 'dot', color: '#fbbf24' }],
+         bonds: [[0, 1, 1], [0, 2, 1]], lone: [[0, -2.2], [0, -0.94]] },
+  CO2: { atoms: [{ sym: 'C', x: 0, y: 0, r: 46, kind: 'dot', color: '#a78bfa' }, { sym: 'O', x: -80, y: 0, r: 46, kind: 'cross', color: '#60a5fa' }, { sym: 'O', x: 80, y: 0, r: 46, kind: 'cross', color: '#60a5fa' }],
+         bonds: [[0, 1, 2], [0, 2, 2]], lone: [[1, Math.PI - 0.8], [1, Math.PI + 0.8], [2, -0.8], [2, 0.8]] },
+};
+
 function drawCovalent(W, H) {
-  const mol = MOLECULES[molecule];
-  const cx = W / 2;
-  const cy = H / 2;
-  const pulse = 0.5 + 0.5 * Math.sin(tick * 0.04);
+  const mol = MOLECULES[molecule], spec = COV[molecule];
+  const s = Math.min(1.25, W / 560);
+  const cx = W / 2, cy = H / 2 - 18;
+  const pulse = 0.5 + 0.5 * Math.sin(tick * 0.05);
+  const P = spec.atoms.map(a => ({ ...a, x: cx + a.x * s, y: cy + a.y * s, r: a.r * s }));
 
-  if (molecule === 'H2') {
-    const sep = 70;
-    const ax = cx - sep, bx = cx + sep;
+  drawKey([[BL.key, 'rgba(210,218,245,0.6)']]);
 
-    // Shared electron cloud (between atoms)
-    const ov = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30);
-    ov.addColorStop(0, `rgba(251,191,36,${0.25 + 0.15*pulse})`);
-    ov.addColorStop(1, 'transparent');
-    ctx.fillStyle = ov;
-    ctx.beginPath();
-    ctx.arc(cx, cy, 30, 0, Math.PI*2);
-    ctx.fill();
-
-    // Bond line
-    ctx.strokeStyle = `rgba(251,191,36,${0.4 + 0.2*pulse})`;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(ax + 22, cy);
-    ctx.lineTo(bx - 22, cy);
-    ctx.stroke();
-
-    drawSimpleAtom(ax, cy, 22, '#fbbf24', 'H');
-    drawSimpleAtom(bx, cy, 22, '#fbbf24', 'H');
-    drawSharedLabel(cx, cy - 50, '1 gedeelde paar', '#fbbf24');
-
-    // Electron dots
-    for (let i = 0; i < 2; i++) {
-      const a = tick * 0.03 + i * Math.PI;
-      const er = 15;
-      ctx.fillStyle = '#fbbf24';
-      ctx.beginPath();
-      ctx.arc(cx + er*Math.cos(a), cy + er*Math.sin(a)*0.5, 4, 0, Math.PI*2);
-      ctx.fill();
+  // Outer shells
+  P.forEach(a => {
+    ctx.fillStyle = a.color + '12'; ctx.strokeStyle = a.color + '99'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  });
+  // Shared pairs in the overlap of two outer shells
+  spec.bonds.forEach(([i, j, n]) => {
+    const A = P[i], B = P[j];
+    const dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy), ux = dx / d, uy = dy / d;
+    const m0 = (A.r + (d - B.r)) / 2;                 // middle of the overlap, from A
+    const mx = A.x + ux * m0, my = A.y + uy * m0, px = -uy, py = ux;
+    const g = ctx.createRadialGradient(mx, my, 0, mx, my, 22 * s);
+    g.addColorStop(0, `rgba(255,255,255,${0.10 + 0.08 * pulse})`); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(mx, my, 22 * s, 0, Math.PI * 2); ctx.fill();
+    for (let k = 0; k < n; k++) {
+      const o = (k - (n - 1) / 2) * 22 * s;
+      drawMarker(mx + px * (o - 5.5 * s), my + py * (o - 5.5 * s), A.kind, A.color);
+      drawMarker(mx + px * (o + 5.5 * s), my + py * (o + 5.5 * s), B.kind, B.color);
     }
+  });
+  // Lone pairs (both electrons from the same atom)
+  spec.lone.forEach(([i, ang]) => {
+    const A = P[i];
+    [-0.17, 0.17].forEach(da => drawMarker(A.x + A.r * Math.cos(ang + da), A.y + A.r * Math.sin(ang + da), A.kind, A.color));
+  });
+  P.forEach(a => drawCore(a.x, a.y, a.sym, a.color, 14));
 
-  } else if (molecule === 'H2O') {
-    const ox = cx, oy = cy;
-    const h1x = cx - 80, h1y = cy + 50;
-    const h2x = cx + 80, h2y = cy + 50;
-
-    // Bond lines
-    ctx.strokeStyle = `rgba(96,165,250,${0.5 + 0.2*pulse})`;
-    ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h1x + 18, h1y - 16); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h2x - 18, h2y - 16); ctx.stroke();
-
-    // Lone pairs on O
-    ctx.fillStyle = 'rgba(96,165,250,0.6)';
-    [[-25,-25],[25,-25]].forEach(([dx,dy]) => {
-      ctx.beginPath(); ctx.arc(ox+dx, oy+dy, 4, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(ox+dx+10, oy+dy, 4, 0, Math.PI*2); ctx.fill();
-    });
-
-    drawSimpleAtom(ox, oy, 30, '#60a5fa', 'O');
-    drawSimpleAtom(h1x, h1y, 20, '#fbbf24', 'H');
-    drawSimpleAtom(h2x, h2y, 20, '#fbbf24', 'H');
-    drawSharedLabel(cx, cy - 60, '2 enkelbindings — O bereik 8e⁻', '#60a5fa');
-    ctx.fillStyle = 'rgba(96,165,250,0.5)';
-    ctx.font = '10px "JetBrains Mono",monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('los pare', ox, oy - 42);
-
-  } else if (molecule === 'CO2') {
-    const cx2 = cx, cy2 = cy;
-    const o1x = cx - 130, o2x = cx + 130;
-
-    // Double bond lines (left)
-    [[cy2-5, cy2+5]].forEach(() => {
-      ctx.strokeStyle = `rgba(167,139,250,${0.5+0.2*pulse})`;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(o1x+26, cy2-5); ctx.lineTo(cx2-28, cy2-5); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(o1x+26, cy2+5); ctx.lineTo(cx2-28, cy2+5); ctx.stroke();
-      // Double bond right
-      ctx.beginPath(); ctx.moveTo(cx2+28, cy2-5); ctx.lineTo(o2x-26, cy2-5); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx2+28, cy2+5); ctx.lineTo(o2x-26, cy2+5); ctx.stroke();
-    });
-
-    drawSimpleAtom(cx2, cy2, 28, '#a78bfa', 'C');
-    drawSimpleAtom(o1x, cy2, 26, '#60a5fa', 'O');
-    drawSimpleAtom(o2x, cy2, 26, '#60a5fa', 'O');
-    drawSharedLabel(cx, cy2 - 65, '2 dubbelbindings — C deel 4 pare in totaal', '#a78bfa');
-
-    // Bond labels
-    ctx.fillStyle = 'rgba(167,139,250,0.6)';
-    ctx.font = '11px "JetBrains Mono",monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('= (dubbel)', cx - 65, cy2 + 30);
-    ctx.fillText('= (dubbel)', cx + 65, cy2 + 30);
-  }
-
-  // Description
-  ctx.fillStyle = 'rgba(210,218,245,0.5)';
-  ctx.font = '11px "JetBrains Mono",monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(mol.desc.substring(0,90) + (mol.desc.length>90?'…':''), cx, H - 10);
+  // What the diagram shows, then the description (wrapped, never cut off)
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
+  drawSharedLabel(cx, cy - 92 * s, BL[molecule], spec.atoms[0].color);
+  drawCaption(mol.desc, W, H - 14);
 }
 
 function drawSimpleAtom(x, y, r, color, sym) {

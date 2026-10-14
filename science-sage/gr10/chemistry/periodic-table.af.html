@@ -298,7 +298,7 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
     <div class="ieb-block">
       <div class="ieb-block-title">IEB-uitbreiding — Gevorderde Periodisiteit</div>
       <p>Opeenvolgende ionisasie-energieë verskaf direkte bewys vir elektrondoppe. Vir natrium (Na) is die eerste ionisasie-energie laag (een valanselektron, maklik om te verwyder). Die tweede ionisasie-energie is dramaties hoër — die elektron word nou uit 'n volledige binneste dop verwyder. Hierdie groot sprong in IE-waardes bewys die dopstruktuur.</p>
-      <p>Oorgangsmetale het onreëlmatighede in elektronkonfigurasie. Die d-subdop is effens laer in energie as 4s, wat veroorsaak dat:</p>
+      <p>Oorgangsmetale het onreëlmatighede in elektronkonfigurasie. Die 3d- en 4s-subdoppe is baie naby aan mekaar in energie, so 'n paar elemente wyk af van die verwagte vulvolgorde:</p>
       <ul>
         <li>Chroom (Cr, Z=24): verwag [Ar]3d⁴4s² maar in werklikheid [Ar]3d⁵4s¹ — 'n half-gevulde d-subdop is ekstra stabiel</li>
         <li>Koper (Cu, Z=29): verwag [Ar]3d⁹4s² maar in werklikheid [Ar]3d¹⁰4s¹ — 'n volgevulde d-subdop is ekstra stabiel</li>
@@ -671,7 +671,7 @@ function setMode(mode, btn){
   if(mode === 'browse'){
     hint.textContent = 'Klik of beweeg oor enige elementblokkie om besonderhede te sien.';
   } else {
-    hint.textContent = 'Kleurintensiteit dui relatiewe atoomradius aan. Pyle dui neigingsrigtings aan.';
+    hint.textContent = 'Elke sirkel is volgens skaal geteken: hoe groter die sirkel, hoe groter die atoomradius. Beweeg oor \'n element vir besonderhede.';
   }
   drawPT();
 }
@@ -709,11 +709,11 @@ function initSim(){
     const my = e.clientY - rect.top;
     const cw = cssW;
     const ch = cssH;
-    const cellW = cw / 18;
+    const cellW = (cw - PT_LM) / 18;
     const cellH = ch / 5;
     hoveredElem = null;
     PT_DATA.forEach(el => {
-      const x = (el.group - 1) * cellW;
+      const x = PT_LM + (el.group - 1) * cellW;
       const y = el.period * cellH;
       if(mx >= x && mx < x + cellW && my >= y && my < y + cellH){
         hoveredElem = el;
@@ -776,6 +776,12 @@ function initSim(){
   drawPT();
 }
 
+// Covalent radii in pm (Cordero et al., 2008), used to size the circles in the trends view.
+const RADIUS_PM = {1:31,2:28,3:128,4:96,5:84,6:76,7:71,8:66,9:57,10:58,11:166,12:141,13:121,14:111,15:107,16:105,17:102,18:106,
+  19:203,20:176,21:170,22:160,23:153,24:139,25:139,26:132,27:126,28:124,29:132,30:122,31:122,32:120,33:119,34:120,35:120,36:116};
+// Left margin of the table canvas, for the period labels.
+const PT_LM = 26;
+
 function drawPT(){
   const canvas = document.getElementById('ptCanvas');
   if(!canvas) return;
@@ -792,7 +798,7 @@ function drawPT(){
   ctx.fillStyle = '#040710';
   ctx.fillRect(0, 0, cssW, cssH);
 
-  const cellW = cssW / 18;
+  const cellW = (cssW - PT_LM) / 18;
   const cellH = cssH / 5;
   const pad = 1.5;
 
@@ -801,7 +807,7 @@ function drawPT(){
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   for(let g = 1; g <= 18; g++){
-    const x = (g - 1) * cellW;
+    const x = PT_LM + (g - 1) * cellW;
     ctx.fillStyle = 'rgba(210,218,245,0.30)';
     ctx.fillText(String(g), x + cellW/2, cellH/2);
   }
@@ -809,7 +815,7 @@ function drawPT(){
   if(currentMode === 'browse'){
     // Draw elements
     PT_DATA.forEach(el => {
-      const x = (el.group - 1) * cellW;
+      const x = PT_LM + (el.group - 1) * cellW;
       const y = el.period * cellH;
       const isHovered = hoveredElem && hoveredElem.Z === el.Z;
       const alpha = isHovered ? 0.70 : 0.30;
@@ -845,107 +851,91 @@ function drawPT(){
       ctx.fillText(el.sym, x + cellW/2, y + cellH * 0.60);
     });
   } else {
-    // TRENDS MODE
-    // Atomic radius: largest at bottom-left (K, Ca), smallest at top-right (He, F)
-    // Map: larger radius = more blue tint. radius is roughly proportional to (period / group_position)
-    // We'll use a simple heuristic: radius ~ period * 40 - group * 2 (arbitrary scale)
+    // TRENDS MODE: each circle is drawn to scale with the element's atomic
+    // (covalent) radius, so the trends can be seen directly.
+    const rMaxPx = Math.min(cellW, cellH) * 0.40;
     PT_DATA.forEach(el => {
-      const x = (el.group - 1) * cellW;
+      const x = PT_LM + (el.group - 1) * cellW;
       const y = el.period * cellH;
-
-      // Radius proxy: higher period = larger, higher group (for main group) = smaller
-      // For transition metals, group 3-12, treat as middle
-      let groupPos = el.group;
-      if(groupPos >= 3 && groupPos <= 12) groupPos = 7; // middle
-      const radiusProxy = el.period * 3 - groupPos * 0.15; // rough scale
-      // Normalise 0-1
-      const rMin = 1 * 3 - 18 * 0.15; // period1, group18 ~ 0.3
-      const rMax = 4 * 3 - 1 * 0.15;  // period4, group1 ~ 11.85
-      const t = Math.max(0, Math.min(1, (radiusProxy - rMin) / (rMax - rMin)));
-
-      // Color: large radius = blue-ish, small radius = purple-ish
-      const r = Math.round(96 + (192-96) * (1-t));
-      const g2 = Math.round(165 + (132-165) * (1-t));
-      const b = Math.round(250 + (252-250) * (1-t));
-      ctx.fillStyle = `rgba(${r},${g2},${b},${0.25 + t * 0.45})`;
+      const isHovered = hoveredElem && hoveredElem.Z === el.Z;
+      ctx.fillStyle = isHovered ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.035)';
       ctx.beginPath();
       ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 3);
       ctx.fill();
-
-      // symbol
-      const symSize = Math.max(7, Math.floor(cellW * 0.40));
-      ctx.font = '700 ' + symSize + 'px "Cabinet Grotesk", sans-serif';
-      ctx.fillStyle = 'rgba(228,232,248,0.80)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(el.sym, x + cellW/2, y + cellH/2);
+      const pm = RADIUS_PM[el.Z];
+      const rr = Math.max(2, rMaxPx * pm / 203);
+      const ccx = x + cellW / 2, ccy = y + cellH * 0.56;
+      ctx.fillStyle = typeColor(el, 0.45);
+      ctx.strokeStyle = typeColor(el, 0.95);
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(ccx, ccy, rr, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // symbol top-left, radius in pm bottom-right
+      ctx.font = '700 ' + Math.max(7, Math.floor(cellW * 0.22)) + 'px "Cabinet Grotesk", sans-serif';
+      ctx.fillStyle = 'rgba(228,232,248,0.92)';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText(el.sym, x + pad + 3, y + pad + 2);
+      ctx.font = '500 ' + Math.max(6, Math.floor(cellW * 0.16)) + 'px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(210,218,245,0.6)';
+      ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+      ctx.fillText(String(pm), x + cellW - pad - 3, y + cellH - pad - 2);
     });
 
-    // Draw trend arrows
-    ctx.save();
-
-    // Arrow across top: IE and EN increase left to right
-    const arrowY = cellH * 0.5;
-    const arrowXstart = cellW * 0.5;
-    const arrowXend = cellW * 17.5;
-    ctx.strokeStyle = 'rgba(251,191,36,0.7)';
-    ctx.fillStyle = 'rgba(251,191,36,0.7)';
-    ctx.lineWidth = 1.5;
-    // Line
-    ctx.beginPath();
-    ctx.moveTo(arrowXstart, arrowY);
-    ctx.lineTo(arrowXend - 6, arrowY);
-    ctx.stroke();
-    // Arrowhead
-    ctx.beginPath();
-    ctx.moveTo(arrowXend, arrowY);
-    ctx.lineTo(arrowXend - 7, arrowY - 4);
-    ctx.lineTo(arrowXend - 7, arrowY + 4);
-    ctx.closePath();
-    ctx.fill();
-    // Label
-    ctx.font = '600 9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText('IE, EN neem toe →', cssW / 2, arrowY - 2);
-
-    // Arrow down left side: radius and metallic increase going down
-    const arrowX = cellW * 0.5;
-    const arrowYtop = cellH * 1.5;
-    const arrowYbot = cellH * 4.5;
-    ctx.strokeStyle = 'rgba(96,165,250,0.7)';
-    ctx.fillStyle = 'rgba(96,165,250,0.7)';
-    ctx.beginPath();
-    ctx.moveTo(arrowX, arrowYtop);
-    ctx.lineTo(arrowX, arrowYbot - 6);
-    ctx.stroke();
-    // Arrowhead
-    ctx.beginPath();
-    ctx.moveTo(arrowX, arrowYbot);
-    ctx.lineTo(arrowX - 4, arrowYbot - 7);
-    ctx.lineTo(arrowX + 4, arrowYbot - 7);
-    ctx.closePath();
-    ctx.fill();
-    // Label (rotated)
-    ctx.save();
-    ctx.translate(arrowX - 10, (arrowYtop + arrowYbot) / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.font = '600 8px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('↓ Radius, metaalkarakter neem toe', 0, 0);
-    ctx.restore();
-
-    ctx.restore();
+    // Trend arrows in the empty middle of periods 1-3 (groups 3-12)
+    const TT = /\.af\.html/i.test(location.pathname) ? {
+      across: "Oor 'n periode →", acrossT: 'atoomradius neem af; ionisasie-energie en elektronegatiwiteit neem toe',
+      down: "Af in 'n groep ↓", downT: 'atoomradius en metaalkarakter neem toe; ionisasie-energie en elektronegatiwiteit neem af',
+      key: 'Sirkelgrootte = atoomradius (kovalente radius, in pm)'
+    } : {
+      across: 'Across a period →', acrossT: 'atomic radius decreases; ionisation energy and electronegativity increase',
+      down: 'Down a group ↓', downT: 'atomic radius and metallic character increase; ionisation energy and electronegativity decrease',
+      key: 'Circle size = atomic radius (covalent radius, in pm)'
+    };
+    const ax0 = PT_LM + 2.3 * cellW, ax1 = PT_LM + 11.7 * cellW, areaW = ax1 - ax0;
+    const fsz = Math.max(8, Math.min(12, Math.floor(cellW * 0.19)));
+    const lh = fsz + 4;
+    function wrapAt(text, maxW) {
+      const words = text.split(' '), out = []; let cur = '';
+      words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (cur && ctx.measureText(t).width > maxW) { out.push(cur); cur = w; } else cur = t; });
+      if (cur) out.push(cur);
+      return out;
+    }
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    // across: arrow under the heading
+    let ty = cellH * 1.12;
+    ctx.font = '700 ' + fsz + 'px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(251,191,36,0.95)';
+    ctx.fillText(TT.across, ax0, ty);
+    ctx.font = '500 ' + fsz + 'px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(253,230,138,0.85)';
+    wrapAt(TT.acrossT, areaW).forEach((l, i) => ctx.fillText(l, ax0, ty + lh * (i + 1)));
+    const ay = ty + lh * (1 + wrapAt(TT.acrossT, areaW).length) + 6;
+    ctx.strokeStyle = 'rgba(251,191,36,0.8)'; ctx.fillStyle = 'rgba(251,191,36,0.8)'; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(ax0, ay); ctx.lineTo(ax1 - 7, ay); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ax1, ay); ctx.lineTo(ax1 - 8, ay - 4.5); ctx.lineTo(ax1 - 8, ay + 4.5); ctx.closePath(); ctx.fill();
+    // down: vertical arrow beside the text
+    ty = ay + 14;
+    const dx = ax0 + 4, dy1 = Math.min(4 * cellH - 8, ty + lh * 4);
+    ctx.strokeStyle = 'rgba(96,165,250,0.85)'; ctx.fillStyle = 'rgba(96,165,250,0.85)';
+    ctx.beginPath(); ctx.moveTo(dx, ty); ctx.lineTo(dx, dy1 - 7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(dx, dy1); ctx.lineTo(dx - 4.5, dy1 - 8); ctx.lineTo(dx + 4.5, dy1 - 8); ctx.closePath(); ctx.fill();
+    ctx.font = '700 ' + fsz + 'px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(147,197,253,0.95)';
+    ctx.fillText(TT.down, dx + 14, ty);
+    ctx.font = '500 ' + fsz + 'px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(191,219,254,0.85)';
+    const dl = wrapAt(TT.downT, areaW - 18);
+    dl.forEach((l, i) => ctx.fillText(l, dx + 14, ty + lh * (i + 1)));
+    ctx.fillStyle = 'rgba(210,218,245,0.5)';
+    ctx.fillText(TT.key, dx + 14, ty + lh * (dl.length + 1) + 6);
   }
 
-  // Period labels on left
-  ctx.font = '600 9px "JetBrains Mono", monospace';
+  // Period labels in the left margin
+  ctx.font = '600 ' + Math.max(8, Math.min(11, Math.floor(cellW * 0.17))) + 'px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = 'rgba(210,218,245,0.25)';
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
   for(let p = 1; p <= 4; p++){
-    ctx.fillText('P' + p, cellW * 0.9 - 2, p * cellH + cellH/2);
+    ctx.fillText('P' + p, PT_LM - 5, p * cellH + cellH/2);
   }
 }
 
