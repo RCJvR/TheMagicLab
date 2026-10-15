@@ -81,6 +81,26 @@
   let memoryTheme = null;
   function currentTheme() { return memoryTheme || getCanvasTheme(); }
 
+  // Construction lines on or off (screen only; printed sheets always show them). The choice is
+  // remembered per browser. The current step's own construction lines always stay visible.
+  let showConstruction = true;
+  try { showConstruction = localStorage.getItem('ce-show-construction') !== '0'; } catch (e) { /* storage blocked */ }
+  function setShowConstruction(on) {
+    showConstruction = !!on;
+    try { localStorage.setItem('ce-show-construction', on ? '1' : '0'); } catch (e) { /* storage blocked */ }
+  }
+
+  // Every exercise ends with a FINISHED DRAWING step: the whole drawing, nothing new, so the
+  // construction lines can be switched off to see the clean result.
+  function addFinishSteps(constructions) {
+    Object.values(constructions || {}).forEach(m => {
+      if (!m || !Array.isArray(m.steps) || !m.steps.length || m.steps[m.steps.length - 1].finished) return;
+      m.steps.push({ id: m.steps.length + 1, finished: true,
+        instruction: 'FINISHED DRAWING: the complete drawing. Use the Lines button above the drawing to switch the construction lines off and on.',
+        reveals: [] });
+    });
+  }
+
   function el(tag, attrs) {
     const e = document.createElementNS(NS, tag);
     for (const k in attrs) {
@@ -620,6 +640,11 @@
     mk('+', 'Zoom in', () => zoomBy(svgEl, 1.5));
     mk('−', 'Zoom out', () => zoomBy(svgEl, 1 / 1.5));
     mk('Fit', 'Fit the whole drawing', () => zoomBy(svgEl, 0));
+    const linesBtn = mk('', 'Show or hide the construction lines', () => {
+      setShowConstruction(!showConstruction);
+      rerenderAll();
+    });
+    wrap._ceLinesBtn = linesBtn;
     const themeBtn = mk('', 'Switch drawing background', () => {
       setCanvasTheme(currentTheme() === 'paper' ? 'dark' : 'paper');
       rerenderAll();
@@ -730,6 +755,7 @@
         wrap.setAttribute('data-ml-no-theme', '');
         attachTools(svgEl);
         if (wrap._ceThemeBtn) wrap._ceThemeBtn.textContent = theme === 'paper' ? 'Dark' : 'Paper';
+        if (wrap._ceLinesBtn) { wrap._ceLinesBtn.textContent = showConstruction ? 'Lines on' : 'Lines off'; wrap._ceLinesBtn.setAttribute('aria-pressed', showConstruction ? 'true' : 'false'); }
       } else {
         svgEl.classList.toggle('ce-paper-svg', theme === 'paper');
       }
@@ -756,8 +782,10 @@
 
     const layout = { segs: [], boxes: [], vb };
     const visible = [];
+    const hideCons = !print && !showConstruction;
     for (let i = 0; i <= lastIndex; i++) {
       (steps[i].reveals || []).forEach(r => {
+        if (hideCons && i < lastIndex && (r.lineType === 'construction' || (r.kind === 'point' && !r.label))) return;
         visible.push([r, i]);
         if (r.kind === 'dimension' && !showMeasurements) return;
         primSegments(r, layout.segs);
@@ -1022,7 +1050,7 @@
   }
 
   global.ConstructionEngine = {
-    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg,
+    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg, addFinishSteps, setShowConstruction,
     LINE_TYPES, CALLOUT_COLORS, PRINT_COLORS, MODE_STROKE_MULT,
   };
 })(window);

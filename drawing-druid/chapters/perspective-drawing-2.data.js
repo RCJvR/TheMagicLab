@@ -13,7 +13,7 @@
   // One two-point exercise from a 3D model (object axes: u along the right-receding side,
   // v along the left-receding side, z up; the corner u = v = 0 touches PP).
   function twoPoint(cfg) {
-    const P = K.setup(Object.assign({ cx: cfg.setup.sx }, cfg.setup));
+    const P = K.setup(Object.assign({ cx: cfg.setup.sx }, /interior/.test(cfg.id) ? cfg.setup : K.eyeAbove(cfg.setup, cfg.solids)));
     const { LVP, RVP, LPP, RPP } = P.vps;
     const view = SK.perspView(P);
     const fin = SK.hlr(cfg.solids, view);
@@ -36,8 +36,10 @@
     // "ground" = the lowest level any visible corner behind PP is at (usually GL)
     let zLow = Infinity;
     fin.visible.forEach(seg => seg.forEach(p => { if (p[1] > 1e-6 || Math.abs(p[0]) + Math.abs(p[1]) > 1e-6) zLow = Math.min(zLow, p[2]); }));
+    const isOp = K.openingTest(cfg.solids);
+    const main = fin.visible.filter(s => !isOp(s)), ops = fin.visible.filter(isOp);
     const depth = new Map();
-    fin.visible.forEach(seg => seg.forEach(p => {
+    main.forEach(seg => seg.forEach(p => {
       if (Math.abs(p[0]) < 1e-6 && Math.abs(p[1]) < 1e-6) return;
       const k = keyUV(p[0], p[1]);
       const d = depth.get(k) || { u: p[0], v: p[1], zTop: -Infinity, ground: false };
@@ -70,6 +72,21 @@
       const c = clusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
       if (c) c.push(d); else clusters.push([d]);
     });
+    // doors and windows: their depth points, grouped per opening, are done last
+    const opDepth = new Map();
+    ops.forEach(seg => seg.forEach(p => {
+      if (Math.abs(p[0]) < 1e-6 && Math.abs(p[1]) < 1e-6) return;
+      const k = keyUV(p[0], p[1]);
+      if (depth.has(k)) return;
+      const d = opDepth.get(k) || { u: p[0], v: p[1], zTop: -Infinity };
+      d.zTop = Math.max(d.zTop, p[2]);
+      opDepth.set(k, d);
+    }));
+    const opClusters = [];
+    [...opDepth.values()].forEach(d => {
+      const c = opClusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
+      if (c) c.push(d); else opClusters.push([d]);
+    });
     const isVert = ([p, q]) => Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-6;
     const isLevel = ([p, q]) => Math.abs(p[2] - q[2]) < 1e-6;
     const notes = cfg.notes || [];
@@ -89,10 +106,10 @@
           ...plan,
           lbl([P.plan(uMax / 2, vMax / 2)[0], P.plan(uMax / 2, vMax / 2)[1] - Math.max(uMax, vMax) * 0.55 - 6], 'TOP VIEW / BO-AANSIG'),
         ] },
-      { t: 'Mark the station point SP below the PP.', at: P.SP, r: K.spMark(P) },
+      { t: 'The station point SP is GIVEN, below the PP.', at: P.SP, r: K.spMark(P) },
       { t: 'From SP draw a line at ' + th + '° to the RIGHT and one at ' + (90 - th) + '° to the LEFT (parallel to the edges of the top view), up to the PP.',
         at: RPP, r: [line(P.SP, LPP), line(P.SP, RPP)] },
-      { t: 'Draw the horizon line HL at eye height. Drop verticals from the two PP points to the HL: they are the left and right vanishing points, LVP and RVP.',
+      { t: 'The horizon line HL is GIVEN at eye height' + (/interior/.test(cfg.id) ? '.' : ', above the object, so the drawing looks down onto it.') + ' Drop verticals from the two PP points to the HL: they are the left and right vanishing points, LVP and RVP.',
         at: RVP,
         r: [
           { kind: 'line', p1: [x0, P.yHL], p2: [x1, P.yHL], lineType: 'B' },
@@ -146,19 +163,30 @@
         r: dUp.map(drop) },
       { t: 'Each corner is where its dropped vertical meets the right VP line. Draw the visible VERTICAL edges first.',
         at: P.persp(uMax / 2, 0, zMax / 2),
-        r: A(fin.visible.filter(isVert)) },
+        r: A(main.filter(isVert)) },
       { t: 'Then the level edges that run to RVP (parallel to the right-hand side of the top view). Heights of parts not on the corner come along the VP lines from their true-height mark. Hidden edges are left out.',
         at: P.persp(uMax / 2, 0, zMax),
-        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][1] - s[1][1]) < 1e-6)) },
+        r: A(main.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][1] - s[1][1]) < 1e-6)) },
       { t: 'Then the level edges that run to LVP (parallel to the left-hand side of the top view).' + n(notes[3]),
         at: P.persp(0, vMax / 2, zMax),
-        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
+        r: A(main.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
       { t: 'Level edges that go to neither VP (curves, edges at other angles in the top view): join their plotted points.',
         at: P.persp(uMax / 2, vMax / 2, zMax),
-        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
-      { t: 'Finally the sloping edges (roof slopes, hips, chamfers): they do not go to a VP, so join their end points.',
+        r: A(main.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
+      { t: 'Then the sloping edges (roof slopes, hips, chamfers): they do not go to a VP, so join their end points.',
         at: P.persp(uMax / 2, vMax / 2, zMax),
-        r: A(fin.visible.filter(s => !isVert(s) && !isLevel(s))) },
+        r: A(main.filter(s => !isVert(s) && !isLevel(s))) },
+      ...opClusters.map((cl, i) => ({
+        t: (i === 0 ? 'DOORS AND WINDOWS LAST, one at a time: ' : 'The next opening: ') + 'rays from SP to its corners (its sides and the inside corners of the reveal), the PP crossings, and verticals dropped from them. Their heights come from the true-height line along the VP lines.',
+        at: P.onPP(cl[0].u, cl[0].v),
+        r: [...cl.map(ray), ...cl.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 })), ...cl.map(drop)],
+      })),
+      { t: 'Draw the openings: their vertical edges first.',
+        at: ops.length ? view.project(ops[0][0]) : RVP,
+        r: A(ops.filter(isVert)) },
+      { t: 'Then the heads, sills and reveals: level edges that run to RVP or LVP.',
+        at: ops.length ? view.project(ops[0][1]) : RVP,
+        r: A(ops.filter(s => !isVert(s))) },
     ].filter(s => s.r.length);
 
     CONSTRUCTIONS[cfg.id] = {

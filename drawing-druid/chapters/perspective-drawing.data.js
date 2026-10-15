@@ -15,7 +15,7 @@
   // true size on PP, visual rays and drops for depth, lines to the VP, and the finished
   // drawing with hidden edges left out.
   function onePoint(cfg) {
-    const P = K.setup(Object.assign({ theta: 0 }, cfg.setup));
+    const P = K.setup(Object.assign({ theta: 0 }, /interior/.test(cfg.id) ? cfg.setup : K.eyeAbove(cfg.setup, cfg.solids)));
     const VP = P.vps.VP;
     const view = SK.perspView(P);
     const fin = SK.hlr(cfg.solids, view);
@@ -29,8 +29,12 @@
     const elev = SK.draw(cfg.solids, elevView, { hidden: true });
     const x0 = Math.min(ex, P.cx + uMin) - 16, x1 = Math.max(ex + uMax - uMin, P.sx, P.cx + uMax) + 16;
 
-    const front = fin.visible.filter(([p, q]) => near0(p[1]) && near0(q[1]));
-    const rest = fin.visible.filter(([p, q]) => !(near0(p[1]) && near0(q[1])));
+    const isOp = K.openingTest(cfg.solids);
+    const frontAll = fin.visible.filter(([p, q]) => near0(p[1]) && near0(q[1]));
+    const restAll = fin.visible.filter(([p, q]) => !(near0(p[1]) && near0(q[1])));
+    // doors and windows are drawn last, after the building itself
+    const front = frontAll.filter(s => !isOp(s)), frontOps = frontAll.filter(isOp);
+    const rest = restAll.filter(s => !isOp(s)), restOps = restAll.filter(isOp);
     // depth points: every visible corner behind PP, one ray per plan position. Corners that
     // stand on the ground (a base corner exists below them) come first; roof points,
     // openings and other details second.
@@ -71,6 +75,22 @@
       const c = clusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
       if (c) c.push(d); else clusters.push([d]);
     });
+
+    // doors and windows: their depth points, grouped per opening, are done last
+    const opDepth = new Map();
+    restOps.forEach(seg => seg.forEach(p => {
+      if (p[1] <= 1e-6) return;
+      const k = keyUV(p[0], p[1]);
+      if (depth.has(k)) return;
+      const d = opDepth.get(k) || { u: p[0], v: p[1], zTop: -Infinity };
+      d.zTop = Math.max(d.zTop, p[2]);
+      opDepth.set(k, d);
+    }));
+    const opClusters = [];
+    [...opDepth.values()].forEach(d => {
+      const c = opClusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
+      if (c) c.push(d); else opClusters.push([d]);
+    });
     const recFront = new Map();
     rest.forEach(([p, q]) => {
       const recedes = Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[2] - q[2]) < 1e-6 && Math.abs(p[1] - q[1]) > 1e-6;
@@ -100,7 +120,7 @@
           ...plan,
           lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - (cfg.planDepth || 30) - 6], 'TOP VIEW / BO-AANSIG'),
         ] },
-      { t: 'Mark the station point SP: where the viewer stands, in front of the PP.', at: P.SP, r: K.spMark(P) },
+      { t: 'The station point SP is GIVEN: where the viewer stands, in front of the PP.', at: P.SP, r: K.spMark(P) },
       { t: 'Draw the ground line GL, and stand the FRONT VIEW on it at the side.',
         at: [ex + (uMax - uMin) / 2, P.yGL],
         r: [
@@ -108,7 +128,7 @@
           { kind: 'label', at: [x0 - 2, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           ...elev, lbl([ex + (uMax - uMin) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
         ] },
-      { t: 'Draw the horizon line HL at eye height above GL. Draw a line straight up from SP: where it meets HL is the vanishing point VP.',
+      { t: 'The horizon line HL is GIVEN at eye height' + (/interior/.test(cfg.id) ? ' above GL.' : ', above the object, so the drawing looks down onto it.') + ' Draw a line straight up from SP: where it meets HL is the vanishing point VP.',
         at: VP,
         r: [
           { kind: 'line', p1: [x0, P.yHL], p2: [x1, P.yHL], lineType: 'B' },
@@ -162,9 +182,23 @@
       { t: 'Any other level edges (curves, slanting walls in plan): plot them by their end points.',
         at: mid((uMin + uMax) / 2, 20, zMax),
         r: A(rest.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
-      { t: 'Finally the sloping edges (roof slopes, hips, the spire): they do not go to the VP, so join their end points.',
+      { t: 'Then the sloping edges (roof slopes, hips, the spire): they do not go to the VP, so join their end points.',
         at: mid((uMin + uMax) / 2, 10, zMax),
         r: A(rest.filter(s => !isVert(s) && !isLevel(s))) },
+      { t: 'DOORS AND WINDOWS LAST. Those in the front face lie on the PP, so they are true size: drop their widths from the top view and project their heights across from the front view.',
+        at: frontOps.length ? view.project(frontOps[0][0]) : VP,
+        r: A(frontOps) },
+      ...opClusters.map((cl, i) => ({
+        t: (i === 0 ? 'Doors and windows further back, one at a time: ' : 'The next opening: ') + 'rays from SP to its corners (its sides and the inside corners of the reveal), the PP crossings, and verticals dropped from them.',
+        at: P.onPP(cl[0].u, cl[0].v),
+        r: [...cl.map(ray), ...cl.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 })), ...cl.map(drop)],
+      })),
+      { t: 'Draw these openings: their vertical edges, and the edges of the reveals that run back to the VP.',
+        at: restOps.length ? view.project(restOps[0][0]) : VP,
+        r: A(restOps.filter(s => isVert(s) || (isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6))) },
+      { t: 'Finish the openings with their level edges: the sills and the heads.',
+        at: restOps.length ? view.project(restOps[0][1]) : VP,
+        r: A(restOps.filter(s => !isVert(s) && !(isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6))) },
     ].filter(s => s.r.length);
 
     CONSTRUCTIONS[cfg.id] = {

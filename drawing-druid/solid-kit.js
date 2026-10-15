@@ -96,12 +96,13 @@
     const front = [at(u0, v0, 0), at(u1, v0, 0), at(u1, v1, 0), at(u0, v1, 0)];
     const back = [at(u0, v0, t), at(u1, v0, t), at(u1, v1, t), at(u0, v1, t)];
     f.holes = f.holes.concat([front]);
+    f.openingHoles = (f.openingHoles || []).concat([front]);
     for (let i = 0; i < 4; i++) {
       const j = (i + 1) % 4;
       // reveal faces point into the opening
-      faces.push(face([front[i], back[i], back[j], front[j]].reverse()));
+      faces.push(Object.assign(face([front[i], back[i], back[j], front[j]].reverse()), { opening: true }));
     }
-    faces.push(face(back.slice(), { n: f.n }));
+    faces.push(Object.assign(face(back.slice(), { n: f.n }), { opening: true }));
     return faces;
   }
 
@@ -118,7 +119,7 @@
       const at = (u, v) => add(add(add(b.o, mul(b.u, u)), mul(b.v, v)), mul(f.n, -t));
       const ring = [at(rect[0], rect[1]), at(rect[2], rect[1]), at(rect[2], rect[3]), at(rect[0], rect[3])];
       const opp = faces.find(g => dot(g.n, f.n) < -0.9999 && Math.abs(dot(g.n, g.pts[0]) - dot(g.n, ring[0])) < 1e-6);
-      if (opp) opp.holes = opp.holes.concat([ring]);
+      if (opp) { opp.holes = opp.holes.concat([ring]); opp.openingHoles = (opp.openingHoles || []).concat([ring]); }
     }
     return faces;
   }
@@ -140,7 +141,7 @@
       return add(r, o);
     };
     const Rn = n => { const r = R(add(o, n)); return sub(r, o); };
-    return faces.map(f => ({ pts: f.pts.map(R), holes: f.holes.map(h => h.map(R)), n: unit(Rn(f.n)), smooth: f.smooth }));
+    return faces.map(f => ({ pts: f.pts.map(R), holes: f.holes.map(h => h.map(R)), n: unit(Rn(f.n)), smooth: f.smooth, opening: f.opening, openingHoles: f.openingHoles && f.openingHoles.map(h => h.map(R)) }));
   }
 
   // Cut a CONVEX solid with a plane and keep the part where n·p <= d. Returns the kept faces
@@ -175,7 +176,7 @@
   }
 
   function translate(faces, d) {
-    return faces.map(f => ({ pts: f.pts.map(p => add(p, d)), holes: f.holes.map(h => h.map(p => add(p, d))), n: f.n, smooth: f.smooth }));
+    return faces.map(f => ({ pts: f.pts.map(p => add(p, d)), holes: f.holes.map(h => h.map(p => add(p, d))), n: f.n, smooth: f.smooth, opening: f.opening, openingHoles: f.openingHoles && f.openingHoles.map(h => h.map(p => add(p, d))) }));
   }
 
   // ── Hidden-line removal ──

@@ -145,5 +145,30 @@
     return pts3.map(([u, v, z]) => ({ kind: 'line', p1: P.onPP(u, v), p2: P.persp(u, v, z), lineType: 'construction' }));
   }
 
-  global.PerspectiveKit = { setup, extrude, visibleEdges, perspLines, frame, spMark, rays, drops };
+  // Returns seg => true when the edge belongs to a door or window opening (an edge of a reveal
+  // face or of an opening's outline in a wall), so builders can draw openings last.
+  function openingTest(solids) {
+    const loops = [];
+    solids.forEach(s => s.forEach(f => { if (f.opening) loops.push(f.pts); (f.openingHoles || []).forEach(h => loops.push(h)); }));
+    const onSeg = (m, a, b) => {
+      const ab = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], l2 = ab[0] * ab[0] + ab[1] * ab[1] + ab[2] * ab[2];
+      const t = l2 ? ((m[0] - a[0]) * ab[0] + (m[1] - a[1]) * ab[1] + (m[2] - a[2]) * ab[2]) / l2 : 0;
+      if (t < -1e-6 || t > 1 + 1e-6) return false;
+      return Math.hypot(m[0] - a[0] - ab[0] * t, m[1] - a[1] - ab[1] * t, m[2] - a[2] - ab[2] * t) < 1e-3;
+    };
+    return ([p, q]) => { const m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2, (p[2] + q[2]) / 2]; return loops.some(l => l.some((a, i) => onSeg(m, a, l[(i + 1) % l.length]))); };
+  }
+
+  // The horizon is usually given above the object, so the drawing looks down on it: raise
+  // the eye height to clear the tallest part when a set-up has it lower.
+  function eyeAbove(setupOpts, solids) {
+    let zMax = 0;
+    solids.forEach(s => s.forEach(f => f.pts.forEach(p => { zMax = Math.max(zMax, p[2]); })));
+    const o = Object.assign({}, setupOpts);
+    const want = zMax + Math.max(10, zMax * 0.3);
+    if (o.h < zMax + 6) o.h = Math.min(want, o.yGL - o.yPP - 10);
+    return o;
+  }
+
+  global.PerspectiveKit = { setup, extrude, visibleEdges, perspLines, frame, spMark, rays, drops, openingTest, eyeAbove };
 })(window);
