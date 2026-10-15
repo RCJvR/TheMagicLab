@@ -258,9 +258,12 @@
       const L = len(sub(e.q, e.p));
       const n = Math.max(6, Math.ceil(L / 1.2));
       // a point slightly in front of its faces, so it does not hide itself
+      // only the faces turned towards the viewer: a face turned away (the underside of a block
+      // standing on another, the ceiling of an opening) would push the point into the solid
+      const facing = fs.filter((F, i) => fronts[i]);
       const nudge = p => {
         let d = [0, 0, 0];
-        fs.forEach(F => { d = add(d, F.f.n); });
+        (facing.length ? facing : fs).forEach(F => { d = add(d, F.f.n); });
         // and a little towards the eye, so a face lying flush against another solid (a pyramid
         // standing on a slab) does not count as hidden behind that solid's top face
         return add(add(p, mul(unit(d), 1e-3)), mul(view.toViewer(p), 2e-3));

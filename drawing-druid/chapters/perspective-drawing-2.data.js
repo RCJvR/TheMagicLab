@@ -119,7 +119,7 @@
         at: RVP,
         r: [line(LPP, LVP), line(RPP, RVP), { kind: 'point', at: LVP, label: 'LVP', size: 1.3 }, { kind: 'point', at: RVP, label: 'RVP', size: 1.3 }] },
       { t: 'The corner of the top view touching PP is the TRUE-HEIGHT LINE: drop it straight down to GL. It is the only line drawn at true scale.',
-        at: C0, r: [line(P.plan(0, 0), C0), line(C0, P.persp(0, 0, zMax), 'B')] },
+        at: C0, r: [line(P.plan(0, 0), C0), line(C0, P.persp(0, 0, zMax))] },
       { t: 'Mark every height on the true-height line, projected across from the given views.' + n(notes[1]),
         at: [C0[0], C0[1] - zMax / 2],
         r: heights.map(z => line([lvRight, P.yGL - z], P.persp(0, 0, z))) },
