@@ -100,4 +100,51 @@
       ],
     });
   })();
+  const area = pts => pts.reduce((a, p, i) => { const q = pts[(i + 1) % pts.length]; return a + p[0] * q[1] - q[0] * p[1]; }, 0) / 2;
+  const ccw = (pts, sm) => area(pts) >= 0 ? { pts, sm } : { pts: pts.slice().reverse(), sm: sm.map(i => pts.length - 1 - i) };
+
+  // ── Saddle clip: an arch on two feet ──
+  (function () {
+    const Ri = 16, Ro = 26, cz = 8, T = 30;
+    const inner = arcPts([0, cz], Ri, 180, 0, 14), outer = arcPts([0, cz], Ro, 0, 180, 14);
+    const pts = [[-42, 0], [-Ri, 0], ...inner, [Ri, 0], [42, 0], [42, cz], ...outer, [-42, cz]].map(([x, z]) => [x + 42, z]);
+    const sm = []; pts.forEach((p, i) => { if (i >= 2 && i <= 16) sm.push(i); if (i >= 20 && i <= 34) sm.push(i); });
+    const o = ccw(pts, sm);
+    build({
+      id: 'iso2-saddle-clip', title: 'Isometric from Views: Saddle Clip',
+      summary: 'A pipe saddle: a half-round arch on two feet. The inside and outside of the arch are half isometric circles in the front plane.',
+      prompt: 'Draw an isometric view of the saddle clip (feet 84 long × 8 thick, arch R26 outside and R16 inside, 30 deep) from the given 3rd-angle views, full size, starting at S. Show no hidden detail.',
+      parts: [{ solid: extrudeH(o.pts, [], 'xz', 0, T, o.sm), text: 'Draw the front face: the two feet, then the arch as two half isometric circles (R26 and R16) on the same centre, 8 above the base. Carry the visible corners and the outside curve 30 back, and draw the outline that touches the back curve.', at: [42, 0, 20] }],
+    });
+  })();
+
+  // ── Rounded block with a cross hole ──
+  (function () {
+    const D = 44, H = 44, R = 22, L = 70;
+    const prof = [[0, 0], [D, 0], [D, H - R], ...arcPts([D - R, H - R], R, 0, 90, 10).slice(1), [0, H]];
+    const sm = prof.map((_, i) => i).filter(i => i >= 2 && i <= 12);
+    build({
+      id: 'iso2-rounded-block', title: 'Isometric from Views: Rounded Block with a Cross Hole',
+      summary: 'A block with one rounded edge and a hole running its full length: a quarter isometric circle and a full one in the same end plane.',
+      prompt: 'Draw an isometric view of the block (70 long, 44 × 44 end with an R22 rounded edge at the back top, Ø16 hole on the centre of the curve) from the given 3rd-angle views, full size, starting at S. Show no hidden detail.',
+      parts: [{ solid: extrudeH(prof, [circ([D - R, H - R], 8)], 'yz', 0, L, sm), text: 'Draw the end profile on the left-hand end of the box: the R22 round as a quarter isometric circle and the Ø16 hole as a full one on the same centre. Carry the corners and the curve 70 along the length, and draw the outline line touching the far end of the curve.', at: [0, 22, 40] }],
+    });
+  })();
+
+  // ── Fork end: base with two round-topped lugs ──
+  (function () {
+    const W = 76, D = 50, T = 12, t = 12, R = 16, cz = 46, gap = D - 2 * t;
+    const lug = () => [[W / 2 - R, T], [W / 2 + R, T], ...arcPts([W / 2, cz], R, 0, 180, 12)];
+    const smL = lug().map((_, i) => i).filter(i => i >= 2);
+    build({
+      id: 'iso2-fork-end', title: 'Isometric from Views: Fork End',
+      summary: 'A fork: two round-topped lugs with a common pin hole, on a base plate. The front lug hides part of the back one.',
+      prompt: 'Draw an isometric view of the fork end (base 76 × 50 × 12; two lugs 12 thick with R16 tops and Ø14 holes on a common centre 46 above the base, 26 apart) from the given 3rd-angle views, full size, starting at S. Show no hidden detail.',
+      parts: [
+        { solid: SK.box(0, 0, 0, W, D, T), text: 'Draw the base plate: 76 × 50 × 12.', at: [W / 2, 0, 6] },
+        { solid: extrudeH(lug(), [circ([W / 2, cz], 7)], 'xz', 0, t, smL), text: 'Draw the front lug, flush with the front of the base: its sides, the R16 top as half an isometric circle and the Ø14 hole on the same centre.', at: [W / 2, 0, cz] },
+        { solid: extrudeH(lug(), [circ([W / 2, cz], 7)], 'xz', t + gap, D, smL), text: 'Draw the back lug the same way, ' + gap + ' behind the front one. Only the parts the front lug does not hide are drawn.', at: [W / 2, D, cz + R] },
+      ],
+    });
+  })();
 })(window);
