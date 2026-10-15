@@ -169,4 +169,91 @@
       summary: 'A cast column bracket: a base plate, a hollow round column and two ribs. The cutting plane runs along the ribs, so by convention the ribs are not hatched, although they are cut.',
       prompt: 'The front view and top view of a column bracket are given (3rd angle) with cutting plane A-A. Draw, full size: the top view and the sectional front view on A-A. Do not hatch the ribs. Show all hidden detail in the top view.' });
   }
+  // ═══ Orthographic views from a given (dimensioned) isometric, in small steps ═══
+  //   cfg: id, title, name, solids, dims [[a3, b3, dirName, offset, text]], axes [{ p, dir: 'z'|'y', len, r }]
+  function fromIso(cfg) {
+    const IK = global.IsoKit, solids = cfg.solids;
+    const pts = solids.flatMap(s => s.flatMap(f => f.pts));
+    const ext = i => [Math.min(...pts.map(p => p[i])), Math.max(...pts.map(p => p[i]))];
+    const [x0, x1] = ext(0), [y0, y1] = ext(1), [z0, z1] = ext(2);
+    const gap = 24, FX = 30 - x0, GY = 30 + (y1 - y0) + gap + z1, TYf = GY - z1 - gap + y0, RX = FX + x1 + gap - y0;
+    const fv = SK.orthoView('front', [FX, GY]), tv = SK.orthoView('top', [FX, TYf]), rv = SK.orthoView('right', [RX, GY]);
+    const F = VL(solids, fv, true), T = VL(solids, tv, true), R = VL(solids, rv, true);
+    const AS = (q, lt) => L(q[0], q[1], lt || 'A');
+    // the given isometric, to the right of the right view
+    const IO = [RX + (y1 - y0) + 40 + (y1 - y0) * 0.87, GY - 6];
+    const isoO = [IO[0] - (x0 - y0) * 0.866, IO[1] + (x0 + y0) * 0.5 + z0];
+    const iso = SK.isoView(isoO);
+    const I = VL(solids, iso, false);
+    const arrowA = iso.project([x0 + (x1 - x0) * 0.1, y0 - 30, z0 + (z1 - z0) * 0.5]), arrowB = iso.project([x0 + (x1 - x0) * 0.1, y0 - 6, z0 + (z1 - z0) * 0.5]);
+    const corners = solids.flatMap(s => s.flatMap(f => f.pts));
+    const uniq = a => { const o = []; a.forEach(v => { if (!o.some(w => Math.abs(w - v) < 0.05)) o.push(v); }); return o; };
+    const whole = v => Math.abs(v - Math.round(v)) < 0.01;
+    const xs = uniq(corners.map(p => p[0])).filter(whole), ys = uniq(corners.map(p => p[1])).filter(whole), zs = uniq(corners.map(p => p[2])).filter(whole);
+    const mitre = y => [RX + y, TYf - y];
+    const axesIn = view => (cfg.axes || []).flatMap(a => {
+      const e = a.r + 3;
+      if (view === 'fv') return a.dir === 'z' ? [L([FX + a.p[0], GY - a.p[2] + 3], [FX + a.p[0], GY - a.p[2] - a.len - 3], 'centre')]
+        : [L([FX + a.p[0] - e, GY - a.p[2]], [FX + a.p[0] + e, GY - a.p[2]], 'centre'), L([FX + a.p[0], GY - a.p[2] - e], [FX + a.p[0], GY - a.p[2] + e], 'centre')];
+      if (view === 'tv') return a.dir === 'z' ? [L([FX + a.p[0] - e, TYf - a.p[1]], [FX + a.p[0] + e, TYf - a.p[1]], 'centre'), L([FX + a.p[0], TYf - a.p[1] - e], [FX + a.p[0], TYf - a.p[1] + e], 'centre')]
+        : [L([FX + a.p[0], TYf - a.p[1] + 3], [FX + a.p[0], TYf - a.p[1] - a.len - 3], 'centre')];
+      return a.dir === 'z' ? [L([RX + a.p[1], GY - a.p[2] + 3], [RX + a.p[1], GY - a.p[2] - a.len - 3], 'centre')]
+        : [L([RX + a.p[1] - 3, GY - a.p[2]], [RX + a.p[1] + a.len + 3, GY - a.p[2]], 'centre')];
+    });
+    const steps = [
+      { instruction: 'GIVEN: the isometric drawing of the ' + cfg.name + ', with its dimensions and an arrow showing the direction of the FRONT view. Draw, full size in 3rd-angle projection, the front view, the top view and the right view. Start at S.',
+        calloutAt: IO, reveals: [...I.vis.map(q => AS(q)), ...(cfg.dims || []).map(([a, b, d, off, t]) => IK.dim(isoO, a, b, IK.DIR[d], off, t)),
+          L(arrowA, arrowB, 'B'), pl([[arrowB[0] - 1.6, arrowB[1] + 1.8], arrowB, [arrowB[0] + 2.2, arrowB[1] + 0.4]], 'B'), lbl([arrowA[0] + 2, arrowA[1] - 3], 'FRONT / VOOR', Object.assign({ size: 2.6 }, YEL)),
+          { kind: 'point', at: [FX + x0, GY], label: 'S' }] },
+      { instruction: 'FRONT VIEW (looking in the direction of the arrow): draw its visible outline and edges with thick lines.', calloutAt: [FX + (x0 + x1) / 2, GY - z1 / 2], reveals: F.vis.map(q => AS(q)) },
+      { instruction: 'Add the hidden edges of the front view as short dashes.', calloutAt: [FX + (x0 + x1) / 2, GY - z1 / 3], reveals: F.hid.map(q => AS(q, 'hidden')) },
+      { instruction: 'Project the widths straight up from the front view into the top view (3rd angle: the top view goes ABOVE the front view).', calloutAt: [FX + x0, (GY - z1 + TYf - y1) / 2], reveals: xs.map(x => L([FX + x, GY - z1], [FX + x, TYf - y1 - 3], 'construction')) },
+      { instruction: 'TOP VIEW: measure the depths from the isometric (the front of the object is at the bottom, nearest the front view) and draw the visible edges.', calloutAt: [FX + (x0 + x1) / 2, TYf - (y0 + y1) / 2], reveals: T.vis.map(q => AS(q)) },
+      { instruction: 'Add the hidden edges of the top view.', calloutAt: [FX + (x0 + x1) / 2, TYf - (y0 + y1) / 2], reveals: T.hid.map(q => AS(q, 'hidden')) },
+      { instruction: 'Draw a 45° mitre line beside the top view. Carry each depth from the top view across to the mitre line and down into the right view.', calloutAt: mitre((y0 + y1) / 2),
+        reveals: [L(mitre(y0 - 6), mitre(y1 + 6), 'construction'), ...ys.flatMap(y => [L([FX + x1, TYf - y], mitre(y), 'construction'), L(mitre(y), [RX + y, GY + 3], 'construction')])] },
+      { instruction: 'Project the heights straight across from the front view to the right view.', calloutAt: [(FX + x1 + RX) / 2, GY - z1 / 2], reveals: zs.map(z => L([FX + x1, GY - z], [RX + y1 + 4, GY - z], 'construction')) },
+      { instruction: 'RIGHT VIEW (3rd angle: to the RIGHT of the front view, with the front of the object nearest the front view): draw the visible edges where the depth and height lines cross.', calloutAt: [RX + (y0 + y1) / 2, GY - z1 / 2], reveals: R.vis.map(q => AS(q)) },
+      { instruction: 'Add the hidden edges of the right view.', calloutAt: [RX + (y0 + y1) / 2, GY - z1 / 3], reveals: R.hid.map(q => AS(q, 'hidden')) },
+      { instruction: 'Add the centre lines of the holes and curves in all three views (chain lines, a little past the outline).', calloutAt: [FX + (x0 + x1) / 2, GY - z1], reveals: [...axesIn('fv'), ...axesIn('tv'), ...axesIn('rv')] },
+      { instruction: 'Label the views.', calloutAt: [FX + (x0 + x1) / 2, GY + 8],
+        reveals: [lbl([FX + (x0 + x1) / 2, GY + 8], 'FRONT VIEW / VOORAANSIG', GREY), lbl([FX + (x0 + x1) / 2, TYf - y1 - 9], 'TOP VIEW / BOAANSIG', GREY), lbl([RX + (y0 + y1) / 2, GY + 8], 'RIGHT VIEW / REGTERAANSIG', GREY)] },
+    ];
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+      steps: steps.filter(st => st.reveals.length).map((st, i) => Object.assign({ id: i + 1 }, st)) };
+    ORDER.push(cfg.id);
+  }
+
+  {
+    // angle block with a hole through the base
+    const base = extrudeH([[24, 0], [76, 0], [76, 44], [24, 44]], [circle([52, 22], 7)], 'xy', 0, 14, () => false);
+    fromIso({ id: 'iso2ortho-angle-block', title: 'From an Isometric: Angle Block with a Hole', name: 'angle block',
+      solids: [SK.box(0, 0, 0, 24, 44, 48), base],
+      dims: [[[0, 0, 0], [76, 0, 0], 'negY', 10, 76], [[76, 0, 0], [76, 44, 0], 'negX', 10, 44], [[0, 0, 0], [0, 0, 48], 'negY', 8, 48]],
+      axes: [{ p: [52, 22, 0], dir: 'z', len: 14, r: 7 }],
+      summary: 'An L-shaped block with a hole drilled down through its base: three views from the isometric, the hole shown hidden in the front and right views.',
+      prompt: 'The isometric drawing of an angle block is given (76 × 44 × 48; upright 24 thick; base 14 thick; Ø14 hole through the base, 28 from the right-hand end, central in the depth). Draw, full size in 3rd-angle projection: the front view, top view and right view. Show hidden detail and centre lines.' });
+  }
+  {
+    // bearing block: base with two holes, upright with a round top and a bore front to back
+    const base = extrudeH([[0, 0], [90, 0], [90, 50], [0, 50]], [circle([14, 25], 5), circle([76, 25], 5)], 'xy', 0, 12, () => false);
+    const prof = [[25, 12], [65, 12], [65, 50], ...arc([45, 50], 20, 0, 180, 18).slice(1, -1), [25, 50]];
+    const up = extrudeH(prof, [circle([45, 50], 10)], 'xz', 15, 35, p => p[1] > 50 + 1e-6);
+    fromIso({ id: 'iso2ortho-bearing-block', title: 'From an Isometric: Bearing Block', name: 'bearing block',
+      solids: [base, up],
+      dims: [[[0, 0, 0], [90, 0, 0], 'negY', 10, 90], [[90, 0, 0], [90, 50, 0], 'negX', 10, 50], [[25, 15, 12], [65, 15, 12], 'negY', 6, 40]],
+      axes: [{ p: [14, 25, 0], dir: 'z', len: 12, r: 5 }, { p: [76, 25, 0], dir: 'z', len: 12, r: 5 }, { p: [45, 15, 50], dir: 'y', len: 20, r: 20 }],
+      summary: 'A base plate with two bolt holes and an upright with a round top and a bearing hole: curves and holes in all three views.',
+      prompt: 'The isometric drawing of a bearing block is given (base 90 × 50 × 12 with two Ø10 holes; upright 40 wide and 20 thick, centred, with an R20 top and a Ø20 hole on a centre 50 above the base). Draw, full size in 3rd-angle projection: the front view, top view and right view. Show hidden detail and centre lines.' });
+  }
+  {
+    // T-slot block
+    const prof = [[0, 0], [80, 0], [80, 40], [52, 40], [52, 30], [60, 30], [60, 16], [20, 16], [20, 30], [28, 30], [28, 40], [0, 40]];
+    fromIso({ id: 'iso2ortho-t-slot-block', title: 'From an Isometric: T-Slot Block', name: 'T-slot block',
+      solids: [SK.extrude(prof, 'xz', 0, 50)],
+      dims: [[[0, 0, 0], [80, 0, 0], 'negY', 10, 80], [[80, 0, 0], [80, 50, 0], 'negX', 10, 50], [[0, 0, 0], [0, 0, 40], 'negY', 8, 40]],
+      summary: 'A block with a T-slot running front to back: the slot is seen in the front view and shows as hidden lines in the top and right views.',
+      prompt: 'The isometric drawing of a T-slot block is given (80 × 50 × 40; the slot is 24 wide at the top for 10, then 40 wide for 14, running front to back). Draw, full size in 3rd-angle projection: the front view, top view and right view. Show hidden detail.' });
+  }
+
 })(window);
