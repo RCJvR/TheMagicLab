@@ -127,6 +127,183 @@
     };
   })();
 
+  // ═══ Circuit symbols (IEC 60617 / SANS 60617 style) ═══
+  // Each symbol sits on a straight wire through c, along 'h' (left to right), 'h-' (right to
+  // left), 'v' (top to bottom) or 'v-'. u runs along the wire, w across it (w < 0 is up / left).
+  const EL = {
+    T(c, o) {
+      return (u, w) => o === 'h' ? [c[0] + u, c[1] + w] : o === 'h-' ? [c[0] - u, c[1] + w] : o === 'v' ? [c[0] + w, c[1] + u] : [c[0] + w, c[1] - u];
+    },
+    line(P, a, b, lt) { return { kind: 'line', p1: P(a[0], a[1]), p2: P(b[0], b[1]), lineType: lt || 'A' }; },
+    leads(P, hl, a) { return [EL.line(P, [-hl, 0], [-a, 0]), EL.line(P, [a, 0], [hl, 0])]; },
+    // single cell: long plate (+) first along u
+    cell(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.leads(P, 6, 1.5), EL.line(P, [-1.5, -6], [-1.5, 6]), EL.line(P, [1.5, -3], [1.5, 3]),
+        { kind: 'label', at: P(-5, -7), text: '+', size: 4, anchor: 'middle', color: '#94a3b8' }];
+    },
+    // battery of two cells in series
+    battery(c, o) {
+      const P = EL.T(c, o);
+      return [EL.line(P, [-10, 0], [-6, 0]), EL.line(P, [-6, -6], [-6, 6]), EL.line(P, [-3, -3], [-3, 3]), EL.line(P, [-3, 0], [3, 0], 'hidden'),
+        EL.line(P, [3, -6], [3, 6]), EL.line(P, [6, -3], [6, 3]), EL.line(P, [6, 0], [10, 0]),
+        { kind: 'label', at: P(-9, -7), text: '+', size: 4, anchor: 'middle', color: '#94a3b8' }];
+    },
+    // single-pole switch, drawn open
+    sw(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.leads(P, 8, 6.2), { kind: 'circle', center: P(-5, 0), r: 1.2, lineType: 'A' }, { kind: 'circle', center: P(5, 0), r: 1.2, lineType: 'A' },
+        EL.line(P, [-4.2, -0.8], [4.5, -5.5])];
+    },
+    // two-way switch: common on the left, contacts at w = -4 and +4 on the right; blade to 'up' or 'down'
+    twoWay(c, o, to) {
+      const P = EL.T(c, o), wt = to === 'down' ? 4 : -4;
+      return [EL.line(P, [-8, 0], [-6.2, 0]), { kind: 'circle', center: P(-5, 0), r: 1.2, lineType: 'A' },
+        { kind: 'circle', center: P(5, -4), r: 1.2, lineType: 'A' }, { kind: 'circle', center: P(5, 4), r: 1.2, lineType: 'A' },
+        EL.line(P, [6.2, -4], [8, -4]), EL.line(P, [6.2, 4], [8, 4]), EL.line(P, [-3.9, Math.sign(wt) * 0.5], [3.9, wt * 0.8])];
+    },
+    lamp(c, o) {
+      const P = EL.T(c, o), k = 5 * Math.SQRT1_2;
+      return [...EL.leads(P, 9, 5), { kind: 'circle', center: P(0, 0), r: 5, lineType: 'A' }, EL.line(P, [-k, -k], [k, k]), EL.line(P, [-k, k], [k, -k])];
+    },
+    resistor(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.leads(P, 10, 6), { kind: 'polygon', points: [P(-6, -2), P(6, -2), P(6, 2), P(-6, 2)], lineType: 'A' }];
+    },
+    rheostat(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.resistor(c, o), EL.line(P, [-6, 5], [6, -5]), { kind: 'polyline', points: [P(3.2, -4.6), P(6, -5), P(5.2, -2.3)], lineType: 'A' }];
+    },
+    fuse(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.resistor(c, o), EL.line(P, [-6, 0], [6, 0])];
+    },
+    meter(c, o, letter) {
+      const P = EL.T(c, o);
+      return [...EL.leads(P, 9, 5), { kind: 'circle', center: P(0, 0), r: 5, lineType: 'A' }, { kind: 'label', at: [P(0, 0)[0], P(0, 0)[1] + 1.6], text: letter, size: 4.6, anchor: 'middle', color: '#e8eaf2' }];
+    },
+    motor(c, o) {
+      const P = EL.T(c, o);
+      return [...EL.leads(P, 10, 6), { kind: 'circle', center: P(0, 0), r: 6, lineType: 'A' }, { kind: 'label', at: [P(0, 0)[0], P(0, 0)[1] + 1.8], text: 'M', size: 5, anchor: 'middle', color: '#e8eaf2' }];
+    },
+    // diode pointing along +u (conventional current flows from the triangle to the bar); led adds two arrows
+    diode(c, o, led) {
+      const P = EL.T(c, o);
+      const out = [...EL.leads(P, 8, 3), { kind: 'polygon', points: [P(-3, -3.5), P(-3, 3.5), P(3, 0)], lineType: 'A' }, EL.line(P, [3, -3.5], [3, 3.5])];
+      if (led) [[-1, 0], [2, 0]].forEach(([u]) => {
+        out.push(EL.line(P, [u, -4.5], [u + 3, -8.5]), { kind: 'polyline', points: [P(u + 1.2, -8.2), P(u + 3, -8.5), P(u + 3.1, -6.7)], lineType: 'A' });
+      });
+      return out;
+    },
+    terminal(at) { return { kind: 'circle', center: at, r: 1.4, lineType: 'A' }; },
+    dot(at) { return { kind: 'point', at }; },
+    wire(pts) { return { kind: 'polyline', points: pts, lineType: 'A' }; },
+    tag(at, text, anchor) { return { kind: 'label', at, text, size: 3.4, anchor: anchor || 'middle', color: '#fde047' }; },
+  };
+
+  // ── 3. Parallel circuit ──
+  CONSTRUCTIONS['parallel-circuit'] = {
+    id: 'parallel-circuit', title: 'Parallel Circuit with Fuse and Ammeter',
+    summary: 'Two lamps in parallel, fed from a two-cell battery through a switch, a fuse and an ammeter in the main line. Junction dots show where the current divides.',
+    bounds: { w: 200, h: 130 },
+    workbookPrompt: 'Draw the circuit diagram: a 2-cell battery, a switch, a fuse and an ammeter in series in the main line, feeding two lamps connected in parallel. Use correct SANS/IEC symbols, right-angled wiring and junction dots, and label each component.',
+    steps: [
+      { id: 1, instruction: 'Lay out the main loop of the circuit as a rectangle with thick straight lines that meet at right angles. Leave gaps where the components go.',
+        calloutAt: [90, 110],
+        reveals: [EL.wire([[20, 60], [20, 30], [37, 30]]), EL.wire([[53, 30], [65, 30]]), EL.wire([[85, 30], [96, 30]]), EL.wire([[114, 30], [165, 30], [165, 61]]), EL.wire([[165, 79], [165, 110], [20, 110], [20, 80]])] },
+      { id: 2, instruction: 'Draw the BATTERY on the left-hand wire: two cells in series, each a long line (+) and a short line (-). The long line of the first cell is the positive terminal.',
+        calloutAt: [8, 70], reveals: EL.battery([20, 70], 'v') },
+      { id: 3, instruction: 'Draw the SWITCH on the top wire, shown open: two small terminal circles and a blade that does not touch the second one.',
+        calloutAt: [45, 20], reveals: EL.sw([45, 30], 'h') },
+      { id: 4, instruction: 'Draw the FUSE next to it: a rectangle with a line through its full length. It protects the circuit, so it goes in the main line, close to the supply.',
+        calloutAt: [75, 20], reveals: EL.fuse([75, 30], 'h') },
+      { id: 5, instruction: 'Draw the AMMETER in the main line: a circle with an A. It is in SERIES, so it measures the total current.',
+        calloutAt: [105, 20], reveals: EL.meter([105, 30], 'h', 'A') },
+      { id: 6, instruction: 'Draw the second branch, from the top wire to the bottom wire, and put a junction dot at each point where the wires join.',
+        calloutAt: [130, 50], reveals: [EL.wire([[130, 30], [130, 61]]), EL.wire([[130, 79], [130, 110]]), EL.dot([130, 30]), EL.dot([130, 110])] },
+      { id: 7, instruction: 'Draw the two LAMPS, one in each branch: a circle with a cross. They are in PARALLEL, so each lamp gets the full battery voltage.',
+        calloutAt: [148, 70], reveals: [...EL.lamp([130, 70], 'v'), ...EL.lamp([165, 70], 'v')] },
+      { id: 8, instruction: 'Label every component (B1, S1, F1, A, L1, L2) next to its symbol.',
+        calloutAt: [100, 122], reveals: [EL.tag([8, 72], 'B1', 'end'), EL.tag([45, 22], 'S1'), EL.tag([75, 24], 'F1'), EL.tag([105, 20], 'A'), EL.tag([138, 72], 'L1', 'start'), EL.tag([173, 72], 'L2', 'start')] },
+    ],
+  };
+
+  // ── 4. Measuring circuit: rheostat, ammeter and voltmeter ──
+  CONSTRUCTIONS['meters-circuit'] = {
+    id: 'meters-circuit', title: 'Measuring Circuit: Ammeter, Voltmeter and Rheostat',
+    summary: 'A resistor with a voltmeter across it and an ammeter in series, the current set by a rheostat (variable resistor). Shows where each meter must be connected.',
+    bounds: { w: 220, h: 130 },
+    workbookPrompt: 'Draw the circuit diagram: a battery, a switch, a rheostat and an ammeter in series with resistor R1 and a lamp; a voltmeter is connected across R1. Use correct symbols and label each component.',
+    steps: [
+      { id: 1, instruction: 'Lay out the main loop with right-angled wiring, leaving gaps for the components.',
+        calloutAt: [95, 110],
+        reveals: [EL.wire([[20, 60], [20, 30], [42, 30]]), EL.wire([[58, 30], [80, 30]]), EL.wire([[100, 30], [126, 30]]), EL.wire([[144, 30], [170, 30], [170, 60]]), EL.wire([[170, 80], [170, 110], [104, 110]]), EL.wire([[86, 110], [20, 110], [20, 80]])] },
+      { id: 2, instruction: 'Draw the BATTERY on the left-hand wire, positive terminal at the top.',
+        calloutAt: [8, 70], reveals: EL.battery([20, 70], 'v') },
+      { id: 3, instruction: 'Draw the open SWITCH on the top wire.', calloutAt: [50, 20], reveals: EL.sw([50, 30], 'h') },
+      { id: 4, instruction: 'Draw the RHEOSTAT (variable resistor): a resistor rectangle with an arrow drawn diagonally through it. Turning it changes the current in the circuit.',
+        calloutAt: [90, 20], reveals: EL.rheostat([90, 30], 'h') },
+      { id: 5, instruction: 'Draw the AMMETER in series in the main line.', calloutAt: [135, 20], reveals: EL.meter([135, 30], 'h', 'A') },
+      { id: 6, instruction: 'Draw resistor R1 on the right-hand wire and the LAMP on the bottom wire.',
+        calloutAt: [170, 70], reveals: [...EL.resistor([170, 70], 'v'), ...EL.lamp([95, 110], 'h')] },
+      { id: 7, instruction: 'The VOLTMETER measures the voltage across R1, so it is connected in PARALLEL with it: take a wire off above R1 and back in below it, with a junction dot at each join.',
+        calloutAt: [200, 50], reveals: [EL.wire([[170, 45], [200, 45], [200, 61]]), EL.wire([[200, 79], [200, 95], [170, 95]]), EL.dot([170, 45]), EL.dot([170, 95])] },
+      { id: 8, instruction: 'Draw the voltmeter symbol: a circle with a V.', calloutAt: [212, 70], reveals: EL.meter([200, 70], 'v', 'V') },
+      { id: 9, instruction: 'Label the components (B1, S1, RV1, A, R1, V, L1).',
+        calloutAt: [100, 122], reveals: [EL.tag([8, 72], 'B1', 'end'), EL.tag([50, 20], 'S1'), EL.tag([90, 20], 'RV1'), EL.tag([135, 20], 'A'), EL.tag([162, 72], 'R1', 'end'), EL.tag([208, 72], 'V', 'start'), EL.tag([95, 122], 'L1')] },
+    ],
+  };
+
+  // ── 5. Two-way switching (a staircase light) ──
+  CONSTRUCTIONS['two-way-switching'] = {
+    id: 'two-way-switching', title: 'Two-Way Switching: Staircase Light',
+    summary: 'One lamp switched from two places, as on a staircase: two two-way switches joined by two strapper wires. Changing either switch turns the lamp on or off.',
+    bounds: { w: 200, h: 130 },
+    workbookPrompt: 'Draw the circuit diagram of a lamp controlled by two two-way switches (staircase switching), fed from a 230 V AC supply through a fuse in the live wire. Label the live and neutral, the switches, the strappers and the lamp.',
+    steps: [
+      { id: 1, instruction: 'Draw the supply terminals on the left: L (live) at the top and N (neutral) at the bottom.',
+        calloutAt: [12, 75], reveals: [EL.terminal([20, 40]), EL.terminal([20, 110]), EL.tag([14, 41], 'L', 'end'), EL.tag([14, 111], 'N', 'end')] },
+      { id: 2, instruction: 'The FUSE always goes in the LIVE wire, next to the supply. Draw the live wire with the fuse in it.',
+        calloutAt: [42, 30], reveals: [EL.wire([[21.4, 40], [32, 40]]), ...EL.fuse([42, 40], 'h'), EL.wire([[52, 40], [70, 40]])] },
+      { id: 3, instruction: 'Draw switch S1: a TWO-WAY switch. Its blade joins the common terminal (left) to one of two contacts (right). Here it is set to the upper contact.',
+        calloutAt: [78, 28], reveals: EL.twoWay([78, 40], 'h', 'up') },
+      { id: 4, instruction: 'Draw switch S2, the mirror image of S1, with its common terminal on the right. Set it to the LOWER contact.',
+        calloutAt: [138, 28], reveals: EL.twoWay([138, 40], 'h-', 'down') },
+      { id: 5, instruction: 'Join the two pairs of contacts with the two STRAPPER wires.',
+        calloutAt: [108, 30], reveals: [EL.wire([[86, 36], [130, 36]]), EL.wire([[86, 44], [130, 44]])] },
+      { id: 6, instruction: 'Take the switched live from the common of S2 to the lamp, and draw the LAMP.',
+        calloutAt: [180, 70], reveals: [EL.wire([[146, 40], [170, 40], [170, 66]]), ...EL.lamp([170, 75], 'v')] },
+      { id: 7, instruction: 'Return the neutral from the lamp to the N terminal.',
+        calloutAt: [95, 116], reveals: [EL.wire([[170, 84], [170, 110], [21.4, 110]])] },
+      { id: 8, instruction: 'Label the drawing. With S1 up and S2 down there is no path, so the lamp is OFF; changing EITHER switch completes the circuit.',
+        calloutAt: [100, 60], reveals: [EL.tag([42, 33], 'F1'), EL.tag([78, 56], 'S1'), EL.tag([138, 56], 'S2'), EL.tag([108, 31], 'STRAPPERS / KOPPELDRADE'), EL.tag([178, 77], 'L1', 'start'),
+          EL.tag([60, 126], '230 V AC SUPPLY / TOEVOER')] },
+    ],
+  };
+
+  // ── 6. Motor with an LED indicator ──
+  CONSTRUCTIONS['motor-led-circuit'] = {
+    id: 'motor-led-circuit', title: 'DC Motor with an LED Indicator',
+    summary: 'A DC motor switched from a battery through a fuse, with an LED and its series resistor in parallel to show when the motor is on.',
+    bounds: { w: 200, h: 140 },
+    workbookPrompt: 'Draw the circuit diagram: a battery, a switch and a fuse supply a DC motor. An LED with a series resistor is connected in parallel with the motor as an "on" indicator. Use correct symbols and label each component.',
+    steps: [
+      { id: 1, instruction: 'Lay out the main loop and the LED branch on the right, with gaps for the components.',
+        calloutAt: [90, 120],
+        reveals: [EL.wire([[20, 65], [20, 30], [42, 30]]), EL.wire([[58, 30], [75, 30]]), EL.wire([[95, 30], [160, 30], [160, 45]]), EL.wire([[160, 65], [160, 87]]), EL.wire([[160, 103], [160, 120], [20, 120], [20, 85]])] },
+      { id: 2, instruction: 'Draw the BATTERY on the left-hand wire, positive at the top.', calloutAt: [8, 75], reveals: EL.battery([20, 75], 'v') },
+      { id: 3, instruction: 'Draw the open SWITCH and the FUSE on the top wire.', calloutAt: [65, 20], reveals: [...EL.sw([50, 30], 'h'), ...EL.fuse([85, 30], 'h')] },
+      { id: 4, instruction: 'Draw the motor branch from the top wire to the bottom wire, with junction dots where it joins.',
+        calloutAt: [115, 45], reveals: [EL.wire([[115, 30], [115, 65]]), EL.wire([[115, 85], [115, 120]]), EL.dot([115, 30]), EL.dot([115, 120])] },
+      { id: 5, instruction: 'Draw the MOTOR: a circle with an M.', calloutAt: [128, 75], reveals: EL.motor([115, 75], 'v') },
+      { id: 6, instruction: 'Draw the series RESISTOR in the LED branch. It limits the current, so the LED does not burn out.', calloutAt: [172, 55], reveals: EL.resistor([160, 55], 'v') },
+      { id: 7, instruction: 'Draw the LED: a diode (a triangle pointing the way current flows, against a bar) with two small arrows pointing away for the light. The triangle points down, from + towards -.',
+        calloutAt: [172, 95], reveals: EL.diode([160, 95], 'v', true) },
+      { id: 8, instruction: 'Label the components (B1, S1, F1, M1, R1, LED1).',
+        calloutAt: [100, 132], reveals: [EL.tag([8, 77], 'B1', 'end'), EL.tag([50, 20], 'S1'), EL.tag([85, 24], 'F1'), EL.tag([125, 77], 'M1', 'start'), EL.tag([152, 57], 'R1', 'end'), EL.tag([145, 97], 'LED1', 'end')] },
+    ],
+  };
+
   // ── Practice questions ──
   const PRACTICE_QUESTIONS = [
     {
@@ -175,9 +352,21 @@
       answer: 0,
       explanation: 'Circuit diagrams are schematic drawings, not physical layouts — straight lines at right angles is simply the accepted drafting convention that keeps them clean and unambiguous.',
     },
+    {
+      text: 'In a 230 V circuit, in which wire must the fuse (and the switch) be placed?',
+      options: ['The live wire', 'The neutral wire', 'The earth wire', 'It makes no difference'],
+      answer: 0,
+      explanation: 'The fuse and switches go in the LIVE wire, so that when the fuse blows or the switch is off, the appliance is disconnected from the live supply and is safe to touch.',
+    },
+    {
+      text: 'In two-way (staircase) switching, what joins the two two-way switches?',
+      options: ['Two strapper wires between their contacts', 'A single neutral wire', 'The earth wire', 'A fuse'],
+      answer: 0,
+      explanation: 'The two contacts of one two-way switch are joined to the two contacts of the other by two strapper wires; the lamp is on when both blades select the same strapper.',
+    },
   ];
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
-  global.CONSTRUCTION_ORDER = ['series-circuit', 'symbol-reference'];
+  global.CONSTRUCTION_ORDER = ['symbol-reference', 'series-circuit', 'parallel-circuit', 'meters-circuit', 'motor-led-circuit', 'two-way-switching'];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);
