@@ -299,38 +299,20 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:380px;display:block;}
   document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
 
   // ── Explore tab: isometric vs non-isometric edge identifier ──
-  const U = [Math.cos(-Math.PI / 6), Math.sin(-Math.PI / 6)];
-  const V = [Math.cos(7 * Math.PI / 6), Math.sin(7 * Math.PI / 6)];
-  function isoPt(origin, a, b) { return [origin[0] + a * U[0] + b * V[0], origin[1] + a * U[1] + b * V[1]]; }
-  const EO = [90, 115];
-  const EWIDTH = 55, EDEPTH = 40, EHEIGHT = 45;
-  const EA = isoPt(EO, EWIDTH, 0), EB = isoPt(EO, 0, EDEPTH), EC = isoPt(EO, EWIDTH, EDEPTH);
-  const EFrontTop = [EO[0], EO[1] - EHEIGHT], ERightTop = [EA[0], EA[1] - EHEIGHT], ELeftTop = [EB[0], EB[1] - EHEIGHT];
-
+  // The lesson's wedge (a triangular prism): corners come from the data file.
+  const WG = window.ISO_WEDGE;
   const EDGES = [
-    { id: 'oa', label: 'O–A (width)', p1: EO, p2: EA, iso: true, reason: 'It runs parallel to the right-hand 30° axis (the width direction), so it IS isometric — measured directly.' },
-    { id: 'ob', label: 'O–B (depth)', p1: EO, p2: EB, iso: true, reason: 'It runs parallel to the left-hand 30° axis (the depth direction), so it IS isometric — measured directly.' },
-    { id: 'oft', label: 'O–FrontTop (height)', p1: EO, p2: EFrontTop, iso: true, reason: 'It runs parallel to the vertical axis, so it IS isometric — measured directly.' },
-    { id: 'ftrt', label: 'FrontTop–RightTop', p1: EFrontTop, p2: ERightTop, iso: true, reason: 'It runs parallel to the width axis (same direction as O–A), so it IS isometric.' },
-    { id: 'rtc', label: 'RightTop–C (sloped)', p1: ERightTop, p2: EC, iso: false, reason: 'It runs from full height down to zero height — that direction matches none of the three axes, so it is NON-isometric. It was constructed by joining two already-known points, not measured directly.' },
-    { id: 'ltc', label: 'LeftTop–C (sloped)', p1: ELeftTop, p2: EC, iso: false, reason: 'Like its mirror edge, it slopes from full height to zero height, matching none of the three axes — NON-isometric.' },
+    { id: 'oa', label: 'O–A (length)', p1: WG.O, p2: WG.A, iso: true, reason: 'It runs parallel to the right-hand 30° axis, so it IS isometric: its true length is measured directly.' },
+    { id: 'ob', label: 'O–B (depth)', p1: WG.O, p2: WG.B, iso: true, reason: 'It runs parallel to the left-hand 30° axis, so it IS isometric: measured directly.' },
+    { id: 'bbt', label: 'Back vertical edge', p1: WG.B, p2: WG.Bt, iso: true, reason: 'It is vertical, parallel to the vertical axis, so it IS isometric: measured directly.' },
+    { id: 'top', label: 'Top back edge', p1: WG.Bt, p2: WG.Ct, iso: true, reason: 'It runs parallel to O–A, along the right-hand axis, so it IS isometric.' },
+    { id: 'slope1', label: 'Sloping end edge', p1: WG.O, p2: WG.Bt, iso: false, reason: 'It rises from the front bottom corner to the back top corner, a direction that matches none of the three axes, so it is NON-isometric. Its true length (√(40² + 35²) ≈ 53 mm) does not appear on the drawing; it was drawn by joining two points found on the box.' },
+    { id: 'slope2', label: 'Sloping far edge', p1: WG.A, p2: WG.Ct, iso: false, reason: 'It is parallel to the other sloping edge, and just as NON-isometric: plotted from its end points, never measured.' },
   ];
   let activeEdge = null;
 
   function baseWedgeReveals() {
-    return [
-      { kind: 'line', p1: EO, p2: EA, lineType: 'A' },
-      { kind: 'line', p1: EO, p2: EB, lineType: 'A' },
-      { kind: 'line', p1: EA, p2: EC, lineType: 'A' },
-      { kind: 'line', p1: EB, p2: EC, lineType: 'A' },
-      { kind: 'line', p1: EO, p2: EFrontTop, lineType: 'A' },
-      { kind: 'line', p1: EA, p2: ERightTop, lineType: 'A' },
-      { kind: 'line', p1: EB, p2: ELeftTop, lineType: 'A' },
-      { kind: 'line', p1: EFrontTop, p2: ERightTop, lineType: 'A' },
-      { kind: 'line', p1: EFrontTop, p2: ELeftTop, lineType: 'A' },
-      { kind: 'line', p1: ERightTop, p2: EC, lineType: 'A' },
-      { kind: 'line', p1: ELeftTop, p2: EC, lineType: 'A' },
-    ];
+    return EDGES.map(e => ({ kind: 'line', p1: e.p1, p2: e.p2, lineType: 'A' }));
   }
 
   function renderEdgePicker() {
@@ -353,11 +335,11 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:380px;display:block;}
     if (edge) {
       reveals.push({ kind: 'line', p1: edge.p1, p2: edge.p2, lineType: 'A', id: 'hl' });
     }
-    const model = { bounds: { w: 190, h: 140 }, steps: [{ id: 1, reveals }] };
+    const model = { id: 'iso-explore', bounds: { w: 170, h: 140 }, steps: [{ id: 1, reveals }] };
     CE.render(document.getElementById('exploreSvg'), model, { uptoStep: Infinity, mode: 'interactive' });
     if (edge) {
       const hl = document.querySelector('#exploreSvg [data-ce-id="hl"]');
-      if (hl) { hl.setAttribute('stroke', edge.iso ? '#60a5fa' : '#f472b6'); hl.setAttribute('stroke-width', '3.5'); }
+      if (hl) { hl.setAttribute('stroke', edge.iso ? '#2563eb' : '#db2777'); hl.setAttribute('stroke-width', '3.5'); }
       document.getElementById('exploreReadout').innerHTML = '<strong>' + edge.label + ':</strong> ' + (edge.iso ? 'ISOMETRIC. ' : 'NON-ISOMETRIC. ') + edge.reason;
     } else {
       document.getElementById('exploreReadout').textContent = 'Click an edge above to identify it.';
