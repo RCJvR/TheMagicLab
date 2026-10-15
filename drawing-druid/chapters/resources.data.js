@@ -33,34 +33,33 @@
   }
   // the faces seen in the side view, as [x0, x1] relative to the axis
   const facesOf = n => n === 3 ? [[-AC / 2, -SIDE / 2], [-SIDE / 2, SIDE / 2], [SIDE / 2, AC / 2]] : [[-AF / 2, 0], [0, AF / 2]];
-  // The 30° chamfer drops every corner of the head by the same amount below the top line:
-  const DROP = (AC / 2 - AF / 2) * Math.tan(rad(30));
-  // chamfer arc on one face: it touches the top line at the middle of the face and meets both
-  // edges of the face at the chamfer depth (R1 on the narrow faces, R2 on the middle face, R3
-  // in the two-face view)
-  function faceArc(cx, yTop, f, down) {
-    const w = f[1] - f[0], m = cx + (f[0] + f[1]) / 2, R = ((w / 2) * (w / 2) + DROP * DROP) / (2 * DROP), s = down ? -1 : 1;
-    const c = [m, yTop + s * R], half = Math.asin((w / 2) / R) * 180 / Math.PI;
+  // Chamfer arcs by the SET-SQUARE method: with the 30°/60° set square on the T-square, draw
+  // lines at 60° from two points on the top line; where they meet is the centre, and the arc
+  // is drawn from there so that it just touches the top line at the middle of the face.
+  //   R1 (narrow faces) and R3 (two-face view): the lines start at the face's two top corners.
+  //   R2 (middle face of the three-face view): the lines start at the head's two OUTER corners.
+  function faceArc(cx, yTop, f, down, span, name) {
+    const w = f[1] - f[0], m = cx + (f[0] + f[1]) / 2, sp = span || w / 2, R = sp * Math.tan(rad(60)), s = down ? -1 : 1;
+    const c = [m, yTop + s * R], half = Math.asin(Math.min(1, (w / 2) / R)) * 180 / Math.PI;
     const pts = Array.from({ length: 17 }, (_, i) => { const a = -half + 2 * half * i / 16; return [c[0] + R * Math.sin(rad(a)), c[1] - s * R * Math.cos(rad(a))]; });
     const endY = c[1] - s * R * Math.cos(rad(half));
-    return { c, R, pts, endY, touch: [m, yTop], corners: [[cx + f[0], yTop], [cx + f[1], yTop]] };
+    return { name, c, R, pts, endY, touch: [m, yTop], from: [[m - sp, yTop], [m + sp, yTop]], corners: [[cx + f[0], yTop], [cx + f[1], yTop]] };
   }
   // side view of a hexagon head or nut: n faces, height h, chamfered on top (and bottom if both)
   function hexSide(cx, yTop, h, n, both) {
-    const fs = facesOf(n), arcs = fs.map(f => faceArc(cx, yTop, f, false)), arcsB = both ? fs.map(f => faceArc(cx, yTop + h, f, true)) : [];
+    const fs = facesOf(n);
+    const mk = (f, i, y, down) => n === 3 && i === 1 ? faceArc(cx, y, f, down, AC / 2, 'R2') : faceArc(cx, y, f, down, null, n === 3 ? 'R1' : 'R3');
+    const arcs = fs.map((f, i) => mk(f, i, yTop, false)), arcsB = both ? fs.map((f, i) => mk(f, i, yTop + h, true)) : [];
     const yB = yTop + h;
     const edges = [...new Set(fs.flatMap(f => [f[0], f[1]]).map(x => +x.toFixed(4)))].map(x => {
       const top = Math.max(...arcs.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY));
       const bot = both ? Math.min(...arcsB.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY)) : yB;
       return L([cx + x, top], [cx + x, bot]);
     });
-    const W2 = (n === 3 ? AC : AF) / 2;
-    const chamfer = [];
-    if (n === 3) [-1, 1].forEach(k => { chamfer.push(L([cx + k * AF / 2, yTop], [cx + k * W2, yTop + DROP], 'construction')); if (both) chamfer.push(L([cx + k * AF / 2, yB], [cx + k * W2, yB - DROP], 'construction')); });
-    chamfer.push(L([cx - W2 - 3, yTop + DROP], [cx + W2 + 3, yTop + DROP], 'construction'));
-    if (both) chamfer.push(L([cx - W2 - 3, yB - DROP], [cx + W2 + 3, yB - DROP], 'construction'));
+    const lines = name => [...arcs, ...arcsB].filter(a => a.name === name).flatMap(a => [L(a.from[0], a.c, 'construction'), L(a.from[1], a.c, 'construction'), pt(a.c, a === arcs.find(b => b.name === name) ? name : undefined)]);
     return {
-      chamfer,
+      lines,
+      radii: [...arcs, ...arcsB].map(a => L(a.c, a.touch, 'B')),
       box: [poly([[cx - (n === 3 ? AC : AF) / 2, yTop], [cx + (n === 3 ? AC : AF) / 2, yTop], [cx + (n === 3 ? AC : AF) / 2, yB], [cx - (n === 3 ? AC : AF) / 2, yB]], 'construction')],
       constr: [...arcs, ...arcsB].flatMap(a => [L(a.corners[0], a.c, 'construction'), L(a.corners[1], a.c, 'construction'), L(a.c, a.touch, 'B'), pt(a.c)]),
       arcs: [...arcs, ...arcsB].map(a => pl(a.pts)),
@@ -101,10 +100,13 @@
       { instruction: 'Draw the end view of the head (' + (n === 3 ? 'corners left and right' : 'corners at the top and bottom') + ') and its centre lines.', calloutAt: ec, reveals: [poly(hex), circ(ec, AF / 2, 'B'), L([ec[0] - AC / 2 - 6, ec[1]], [ec[0] + AC / 2 + 6, ec[1]], 'centre'), L([ec[0], ec[1] - AC / 2 - 6], [ec[0], yTop + h + 6], 'centre')] },
       { instruction: 'Project the corners straight down. The head is 0.7D = 14 mm high (a nut is 0.8D). Draw the thin box of the head: ' + (n === 3 ? 'it is as wide as the hexagon across CORNERS, and you see three faces' : 'it is as wide as the hexagon across FLATS, and you see two faces') + '.',
         calloutAt: [cx, yTop + h / 2], reveals: [...xs.map(x => L([x, ec[1]], [x, yTop + h], 'construction')), ...s.box] },
-      { instruction: n === 3 ? 'THE CHAMFER: project the chamfer circle (Ø1.5D) down to the top line. From there, draw a 30° line (30° set square) to each outer edge. Where it meets the edge is the depth of the chamfer at every corner: draw a thin line across at that depth.' : 'THE CHAMFER DEPTH: take it from the three-face view (the 30° lines at the outer corners), and draw a thin line across at that depth.',
-        calloutAt: [cx + (n === 3 ? AC : AF) / 2, yTop], reveals: s.chamfer },
-      { instruction: 'Each face gets an arc that touches the top line at the middle of the face and meets both edges of the face on the chamfer line. Find its centre on the centre line of the face, below the head: ' + (n === 3 ? 'R1 (about 0.4D) for the narrow faces and R2 (about 1.4D) for the middle face.' : 'R3 (about 1.1D) for each face.'),
-        calloutAt: s.constr.find(r => r.kind === 'point').at, reveals: s.constr.filter(r => r.kind === 'point' || r.lineType === 'B') },
+      ...(n === 3 ? [
+        { instruction: 'R1: put the 30°/60° set square on the T-square. From the two top corners of each NARROW face, draw lines at 60°. Where they meet (inside the head) is the centre R1.', calloutAt: [cx - AC / 2 + SIDE / 4, yTop + 6], reveals: s.lines('R1') },
+        { instruction: 'R2: from the two OUTER top corners of the head, draw lines at 60°. They meet on the centre line below the head: the centre R2 (1.5D below the top).', calloutAt: [cx, yTop + 1.5 * D], reveals: s.lines('R2') },
+      ] : [
+        { instruction: 'R3: put the 30°/60° set square on the T-square. From the two top corners of each face, draw lines at 60°. Where they meet, just below the head, is the centre R3 for that face.', calloutAt: [cx - AF / 4, yTop + h], reveals: s.lines('R3') },
+      ]),
+      { instruction: 'With each centre, set the compass to reach the top line at the middle of its face (the radius), and draw the arc across that face.', calloutAt: [cx, yTop], reveals: s.radii },
       { instruction: 'Draw the arcs. ' + (n === 3 ? 'R1 arcs on the narrow faces, the R2 arc on the middle face.' : 'R3 arcs on both faces.'), calloutAt: [cx, yTop], reveals: s.arcs },
       { instruction: 'Line in the head: the vertical edges up to where the arcs meet them, and the bottom line. The top line of the box stays thin (it is not an edge).', calloutAt: [cx - (n === 3 ? AC : AF) / 2, yTop + h / 2],
         reveals: [...s.outline, dim([cx + (n === 3 ? AC : AF) / 2 + 8, yTop], [cx + (n === 3 ? AC : AF) / 2 + 8, yTop + h], 5, '0.7D'),
@@ -134,7 +136,7 @@
     const cx = 60, yN = 20, hN = 0.8 * D, yW = 60, yL = 90, hL = 0.5 * D;
     const nut = hexSide(cx, yN, hN, 3, true), lock = hexSide(cx, yL, hL, 3, true);
     add('res-nut-washer', 'Nut & Bolt: Nut, Washer and Locknut', 'A hexagon nut (0.8D, chamfered both sides), a plain washer (2D × 0.2D) and a locknut (0.5D), drawn to the standard proportions for an M20 bolt.', [
-      { instruction: 'NUT: draw it like the bolt head, three faces, but 0.8D = 16 high and chamfered on BOTH sides: the chamfer depth is marked at the top and at the bottom.', calloutAt: [cx, yN + hN / 2], reveals: [...nut.box, ...nut.chamfer] },
+      { instruction: 'NUT: draw it like the bolt head, three faces, but 0.8D = 16 high and chamfered on BOTH sides: find R1 and R2 with the set square at the top AND at the bottom.', calloutAt: [cx, yN + hN / 2], reveals: [...nut.box, ...nut.lines('R1'), ...nut.lines('R2')] },
       { instruction: 'Draw the arcs and line in the nut.', calloutAt: [cx, yN], reveals: [...nut.arcs, ...nut.outline, L([cx, yN - 5], [cx, yN + hN + 5], 'centre'), dim([cx + AC / 2 + 12, yN], [cx + AC / 2 + 12, yN + hN], 5, '0.8D')] },
       { instruction: 'WASHER: 2D = 40 in diameter and 0.2D = 4 thick, with a hole a little bigger than D (hidden lines).', calloutAt: [cx, yW],
         reveals: [poly([[cx - D, yW], [cx + D, yW], [cx + D, yW + 0.2 * D], [cx - D, yW + 0.2 * D]]), L([cx - D / 2 - 0.5, yW], [cx - D / 2 - 0.5, yW + 0.2 * D], 'hidden'), L([cx + D / 2 + 0.5, yW], [cx + D / 2 + 0.5, yW + 0.2 * D], 'hidden'), L([cx, yW - 5], [cx, yW + 9], 'centre'),
