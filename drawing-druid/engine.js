@@ -163,7 +163,9 @@
     const len = Math.hypot(dx, dy) || 1;
     const nx = -dy / len, ny = dx / len;
     const offset = r.offset != null ? r.offset : 10;
-    const ox = nx * offset, oy = ny * offset;
+    // r.dir: extension lines run in this (unit) direction instead of square to the dimension
+    // line, as on an isometric drawing where they follow an isometric axis.
+    const ox = (r.dir ? r.dir[0] : nx) * offset, oy = (r.dir ? r.dir[1] : ny) * offset;
     return { x1, y1, x2, y2, ox, oy, dax: x1 + ox, day: y1 + oy, dbx: x2 + ox, dby: y2 + oy };
   }
 

@@ -594,6 +594,200 @@
     };
   })();
 
+  // ── Exercises: a dimensioned isometric is GIVEN, draw three views in 3rd angle ──
+  // Shared layout: the isometric on the left, the answer views on the right — front view,
+  // top view ABOVE it, right view to its RIGHT, depth carried across by a 45° mitre line.
+  function threeViews(o, L, D, H, gap) {
+    const fx = o[0], fy = o[1];                       // front view: bottom-left corner
+    const tyFront = fy - H - gap;                     // top view: screen y of its FRONT edge (nearest the FV)
+    const sx = fx + L + gap;                          // right view: screen x of its FRONT edge (nearest the FV)
+    return {
+      fv: (x, z) => [fx + x, fy - z],
+      tv: (x, y) => [fx + x, tyFront - y],
+      sv: (y, z) => [sx + y, fy - z],
+      mitre: [[sx, tyFront], [sx + D + 8, tyFront - D - 8]],
+      // depth projector: from the top view across to the mitre, then down to the right view
+      depth: y => [
+        { kind: 'line', p1: [fx + L, tyFront - y], p2: [sx + y, tyFront - y], lineType: 'construction' },
+        { kind: 'line', p1: [sx + y, tyFront - y], p2: [sx + y, fy - H], lineType: 'construction' },
+      ],
+    };
+  }
+
+  // ── 9. Guide block: given isometric → three views ──
+  (function () {
+    const IK = global.IsoKit;
+    const L = 70, D = 40, H = 45, T = 15, UP = 20, HX = 20, HY = 20, HR = 6;
+    const prof = [[0, 0], [L, 0], [L, H], [L - UP, H], [L - UP, T], [0, T]];
+    const O = [40, 128];
+    const iso = IK.lines3(O, IK.visibleEdges(IK.extrude(prof, 'xz', 0, D)), 'A');
+    const V = threeViews([128, 128], L, D, H, 14);
+
+    CONSTRUCTIONS['ortho-from-iso-guide-block'] = {
+      id: 'ortho-from-iso-guide-block', title: 'From an Isometric: Guide Block', projection: 'third',
+      summary: 'Read a dimensioned isometric and draw the front, top and right views in 3rd-angle projection, with hidden detail and centre lines.',
+      bounds: { w: 280, h: 140 },
+      workbookPrompt: 'The isometric drawing of a guide block is given. Draw, full size in 3rd-angle projection: the front view (in the direction of the arrow), the top view and the right view. Show hidden detail and centre lines.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'GIVEN: the dimensioned isometric. Find the overall sizes (70 long, 40 deep, 45 high), the 15 mm base, the 20 mm upright at the right-hand end, and the Ø12 hole through the base, 20 from the left end and centred in the depth. The arrow shows the front-view direction.',
+          calloutAt: IK.P(O, L / 2, D / 2, H),
+          reveals: [
+            ...iso,
+            { kind: 'polyline', points: IK.circle(O, [HX, HY, T], HR, 'xy'), lineType: 'A' },
+            { kind: 'line', p1: IK.P(O, HX - 10, HY, T), p2: IK.P(O, HX + 10, HY, T), lineType: 'centre' },
+            { kind: 'line', p1: IK.P(O, HX, HY - 10, T), p2: IK.P(O, HX, HY + 10, T), lineType: 'centre' },
+            IK.dim(O, [0, 0, 0], [L, 0, 0], IK.DIR.negY, 10, L),
+            IK.dim(O, [0, 0, 0], [0, D, 0], IK.DIR.negX, 10, D),
+            IK.dim(O, [L, 0, 0], [L, 0, H], IK.DIR.negY, 10, H),
+            IK.dim(O, [0, D, 0], [0, D, T], IK.DIR.negX, 8, T),
+            IK.dim(O, [L - UP, D, H], [L, D, H], IK.DIR.y, 8, UP),
+            { kind: 'line', p1: IK.P(O, HX - HR * 0.7, HY - HR * 0.7, T), p2: [IK.P(O, 0, D, H)[0] - 6, IK.P(O, 0, D, H)[1] - 6], lineType: 'B' },
+            { kind: 'label', at: [IK.P(O, 0, D, H)[0] - 8, IK.P(O, 0, D, H)[1] - 8], text: 'Ø12 THROUGH, 20 FROM LEFT END', size: 3.2, anchor: 'middle', color: '#e8eaf2' },
+            { kind: 'polyline', points: [IK.P(O, 8, -34, 7), IK.P(O, 8, -18, 7)], lineType: 'B' },
+            { kind: 'polyline', points: [IK.P(O, 7, -21, 8.2), IK.P(O, 8, -18, 7), IK.P(O, 9.2, -21, 6)], lineType: 'B' },
+            { kind: 'label', at: IK.P(O, 8, -40, 7), text: 'FRONT', size: 3.2, anchor: 'middle', color: '#e8eaf2' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'FRONT VIEW: looking in the arrow\'s direction you see the L-shaped end profile: 70 long, the 15 mm base and the 20 mm upright, 45 high. The hole runs vertically through the base, so here it is HIDDEN: two short broken lines 12 apart, with its centre line.',
+          calloutAt: V.fv(L / 2, T / 2),
+          reveals: [
+            { kind: 'polygon', points: prof.map(([x, z]) => V.fv(x, z)), lineType: 'A' },
+            { kind: 'line', p1: V.fv(HX - HR, 0), p2: V.fv(HX - HR, T), lineType: 'hidden' },
+            { kind: 'line', p1: V.fv(HX + HR, 0), p2: V.fv(HX + HR, T), lineType: 'hidden' },
+            { kind: 'line', p1: V.fv(HX, -4), p2: V.fv(HX, T + 4), lineType: 'centre' },
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'TOP VIEW, directly ABOVE the front view (3rd angle): project the widths up. From above you see a 70 x 40 rectangle, the line where the upright meets the base, and the hole as a full circle (it is visible from above), with two centre lines.',
+          calloutAt: V.tv(L / 2, D / 2),
+          reveals: [
+            ...[0, HX, L - UP, L].map(x => ({ kind: 'line', p1: V.fv(x, x === HX ? T : (x === 0 ? T : H)), p2: V.tv(x, 0), lineType: 'construction' })),
+            { kind: 'polygon', points: [V.tv(0, 0), V.tv(L, 0), V.tv(L, D), V.tv(0, D)], lineType: 'A' },
+            { kind: 'line', p1: V.tv(L - UP, 0), p2: V.tv(L - UP, D), lineType: 'A' },
+            { kind: 'circle', center: V.tv(HX, HY), r: HR, lineType: 'A' },
+            { kind: 'line', p1: V.tv(HX - HR - 4, HY), p2: V.tv(HX + HR + 4, HY), lineType: 'centre' },
+            { kind: 'line', p1: V.tv(HX, HY - HR - 4), p2: V.tv(HX, HY + HR + 4), lineType: 'centre' },
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'RIGHT VIEW, to the RIGHT of the front view. Heights come straight across from the front view; depths come from the top view, across to a 45° mitre line and down. From the right you see only the end of the upright, so the step (at 15 mm) and the hole are hidden.',
+          calloutAt: V.sv(D / 2, H / 2),
+          reveals: [
+            { kind: 'line', p1: V.mitre[0], p2: V.mitre[1], lineType: 'construction' },
+            ...V.depth(0), ...V.depth(D), ...V.depth(HY - HR), ...V.depth(HY + HR),
+            ...[0, T, H].map(z => ({ kind: 'line', p1: V.fv(L, z), p2: V.sv(0, z), lineType: 'construction' })),
+            { kind: 'polygon', points: [V.sv(0, 0), V.sv(D, 0), V.sv(D, H), V.sv(0, H)], lineType: 'A' },
+            { kind: 'line', p1: V.sv(0, T), p2: V.sv(D, T), lineType: 'hidden' },
+            { kind: 'line', p1: V.sv(HY - HR, 0), p2: V.sv(HY - HR, T), lineType: 'hidden' },
+            { kind: 'line', p1: V.sv(HY + HR, 0), p2: V.sv(HY + HR, T), lineType: 'hidden' },
+            { kind: 'line', p1: V.sv(HY, -4), p2: V.sv(HY, T + 4), lineType: 'centre' },
+          ],
+        },
+      ],
+    };
+  })();
+
+  // ── 10. Lug base: given isometric → three views ──
+  (function () {
+    const IK = global.IsoKit;
+    const L = 80, D = 50, T = 12;                       // base plate
+    const LX0 = 50, LX1 = 80, LY0 = 38, LY1 = 50;       // upright lug at the back right
+    const CZ = 37, R = 15, HR = 7, CX = (LX0 + LX1) / 2;
+    const O = [52, 132];
+    const p = (x, y, z) => IK.P(O, x, y, z);
+    const ln = (a, b, t) => ({ kind: 'line', p1: p(...a), p2: p(...b), lineType: t || 'A' });
+    // visible edges, worked out for this view direction (front-left, from above)
+    const isoEdges = [
+      ln([0, 0, 0], [L, 0, 0]), ln([0, 0, 0], [0, D, 0]), ln([0, 0, 0], [0, 0, T]), ln([L, 0, 0], [L, 0, T]), ln([0, D, 0], [0, D, T]),
+      ln([0, 0, T], [L, 0, T]), ln([0, 0, T], [0, D, T]), ln([0, D, T], [LX0, D, T]), ln([L, 0, T], [L, LY0, T]),
+      ln([LX0, LY0, T], [LX1, LY0, T]), ln([LX0, LY0, T], [LX0, LY0, CZ]), ln([LX1, LY0, T], [LX1, LY0, CZ]),
+      ln([LX0, LY0, T], [LX0, LY1, T]), ln([LX0, LY1, T], [LX0, LY1, CZ]), ln([LX0, LY0, CZ], [LX0, LY1, CZ]),
+      // the curved top shows from 45° (where it turns away) round to the left side
+      ln([CX + R * Math.cos(Math.PI / 4), LY0, CZ + R * Math.sin(Math.PI / 4)], [CX + R * Math.cos(Math.PI / 4), LY1, CZ + R * Math.sin(Math.PI / 4)]),
+    ];
+    const V = threeViews([150, 132], L, D, CZ + R, 14);
+
+    CONSTRUCTIONS['ortho-from-iso-lug-base'] = {
+      id: 'ortho-from-iso-lug-base', title: 'From an Isometric: Lug Base', projection: 'third',
+      summary: 'A base plate with an upright lug that has a rounded top and a hole: the hole is a circle in one view and hidden lines in the other two.',
+      bounds: { w: 300, h: 140 },
+      workbookPrompt: 'The isometric drawing of a lug base is given. Draw, full size in 3rd-angle projection: the front view (in the direction of the arrow), the top view and the right view. Show hidden detail and centre lines.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'GIVEN: the dimensioned isometric. The plate is 80 x 50 x 12. The lug stands at the back right: 30 wide, 12 thick, with a semicircular top (R15) whose centre is 37 above the bottom, and a Ø14 hole through it on that centre.',
+          calloutAt: p(L / 2, D / 2, T),
+          reveals: [
+            ...isoEdges,
+            { kind: 'polyline', points: IK.circle(O, [CX, LY0, CZ], R, 'xz', 0, 180), lineType: 'A' },
+            { kind: 'polyline', points: IK.circle(O, [CX, LY1, CZ], R, 'xz', 45, 180), lineType: 'A' },
+            { kind: 'polyline', points: IK.circle(O, [CX, LY0, CZ], HR, 'xz'), lineType: 'A' },
+            { kind: 'line', p1: p(CX - R - 4, LY0, CZ), p2: p(CX + R + 4, LY0, CZ), lineType: 'centre' },
+            { kind: 'line', p1: p(CX, LY0, CZ - R - 4), p2: p(CX, LY0, CZ + R + 4), lineType: 'centre' },
+            IK.dim(O, [0, 0, 0], [L, 0, 0], IK.DIR.negY, 10, L),
+            IK.dim(O, [0, 0, 0], [0, D, 0], IK.DIR.negX, 10, D),
+            IK.dim(O, [0, D, 0], [0, D, T], IK.DIR.negX, 8, T),
+            IK.dim(O, [LX0, LY1, T], [LX1, LY1, T], IK.DIR.y, 26, LX1 - LX0),
+            { kind: 'label', at: [p(CX, LY0, CZ + R)[0] + 12, p(CX, LY0, CZ + R)[1] - 6], text: 'R15, Ø14 HOLE', size: 3.2, anchor: 'start', color: '#e8eaf2' },
+            { kind: 'label', at: [p(CX, LY0, CZ + R)[0] + 12, p(CX, LY0, CZ + R)[1] - 1.5], text: 'CENTRE 37 HIGH, LUG 12 THICK', size: 3.2, anchor: 'start', color: '#e8eaf2' },
+            { kind: 'polyline', points: [p(30, -22, 8), p(30, -6, 8)], lineType: 'B' },
+            { kind: 'polyline', points: [p(29, -9, 9.2), p(30, -6, 8), p(31.2, -9, 7)], lineType: 'B' },
+            { kind: 'label', at: p(30, -26, 8), text: 'FRONT', size: 3.2, anchor: 'middle', color: '#e8eaf2' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'FRONT VIEW: the plate is an 80 x 12 rectangle. The lug stands on it at the right: vertical sides up to the centre height, then a semicircle. Its hole runs from front to back, so here you look straight into it: a full circle, with two centre lines.',
+          calloutAt: V.fv(CX, CZ),
+          reveals: [
+            { kind: 'polygon', points: [V.fv(0, 0), V.fv(L, 0), V.fv(L, T), V.fv(0, T)], lineType: 'A' },
+            { kind: 'line', p1: V.fv(LX0, T), p2: V.fv(LX0, CZ), lineType: 'A' },
+            { kind: 'line', p1: V.fv(LX1, T), p2: V.fv(LX1, CZ), lineType: 'A' },
+            { kind: 'arc-construction', center: V.fv(CX, CZ), r: R, startDeg: 180, endDeg: 360, lineType: 'A' },
+            { kind: 'circle', center: V.fv(CX, CZ), r: HR, lineType: 'A' },
+            { kind: 'line', p1: V.fv(CX - R - 4, CZ), p2: V.fv(CX + R + 4, CZ), lineType: 'centre' },
+            { kind: 'line', p1: V.fv(CX, T - 3), p2: V.fv(CX, CZ + R + 4), lineType: 'centre' },
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'TOP VIEW above it: the 80 x 50 plate, with the top of the lug at the back right (its front edge and left side are visible lines). The hole runs front to back inside the lug, so from above it is HIDDEN: two broken lines 14 apart, with a centre line.',
+          calloutAt: V.tv(CX, (LY0 + LY1) / 2),
+          reveals: [
+            ...[0, LX0, LX1].map(x => ({ kind: 'line', p1: V.fv(x, x === 0 ? T : CZ), p2: V.tv(x, 0), lineType: 'construction' })),
+            { kind: 'polygon', points: [V.tv(0, 0), V.tv(L, 0), V.tv(L, D), V.tv(0, D)], lineType: 'A' },
+            { kind: 'line', p1: V.tv(LX0, LY0), p2: V.tv(LX1, LY0), lineType: 'A' },
+            { kind: 'line', p1: V.tv(LX0, LY0), p2: V.tv(LX0, LY1), lineType: 'A' },
+            { kind: 'line', p1: V.tv(CX - HR, LY0), p2: V.tv(CX - HR, LY1), lineType: 'hidden' },
+            { kind: 'line', p1: V.tv(CX + HR, LY0), p2: V.tv(CX + HR, LY1), lineType: 'hidden' },
+            { kind: 'line', p1: V.tv(CX, LY0 - 4), p2: V.tv(CX, LY1 + 4), lineType: 'centre' },
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'RIGHT VIEW: heights across from the front view, depths via the mitre line. You see the plate end (50 x 12) and the end of the lug at the back, up to 52 high (the round top is seen edge-on as a straight line). The hole is hidden: two broken lines, with a centre line.',
+          calloutAt: V.sv((LY0 + LY1) / 2, CZ),
+          reveals: [
+            { kind: 'line', p1: V.mitre[0], p2: V.mitre[1], lineType: 'construction' },
+            ...V.depth(0), ...V.depth(D), ...V.depth(LY0),
+            ...[T, CZ + R, CZ - HR, CZ + HR].map(z => ({ kind: 'line', p1: V.fv(L, z), p2: V.sv(0, z), lineType: 'construction' })),
+            { kind: 'polygon', points: [V.sv(0, 0), V.sv(D, 0), V.sv(D, T), V.sv(0, T)], lineType: 'A' },
+            { kind: 'polygon', points: [V.sv(LY0, T), V.sv(LY1, T), V.sv(LY1, CZ + R), V.sv(LY0, CZ + R)], lineType: 'A' },
+            { kind: 'line', p1: V.sv(LY0, CZ - HR), p2: V.sv(LY1, CZ - HR), lineType: 'hidden' },
+            { kind: 'line', p1: V.sv(LY0, CZ + HR), p2: V.sv(LY1, CZ + HR), lineType: 'hidden' },
+            { kind: 'line', p1: V.sv(LY0 - 4, CZ), p2: V.sv(LY1 + 4, CZ), lineType: 'centre' },
+          ],
+        },
+      ],
+    };
+  })();
+
   // ── Practice questions ──
   const PRACTICE_QUESTIONS = [
     {
@@ -693,6 +887,7 @@
   global.CONSTRUCTION_ORDER = [
     'l-bracket-views', 'sectional-view', 'half-sectional-view', 'auxiliary-view',
     'break-line-shaft', 'basic-bolted-joint', 'removed-section-flat', 'assembling-given-parts',
+    'ortho-from-iso-guide-block', 'ortho-from-iso-lug-base',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);
