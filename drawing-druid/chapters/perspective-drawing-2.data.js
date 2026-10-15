@@ -111,7 +111,7 @@
   (function () {
     const W = 50, D = 30;
     const prof = [[0, 0], [W, 0], [W, 14], [20, 14], [20, 34], [0, 34]];
-    const P = K.setup({ sx: 96, d: 122, yPP: 72, yGL: 170, h: 60, theta: 30, cx: 100 });
+    const P = K.setup({ sx: 150, d: 112, yPP: 72, yGL: 170, h: 60, theta: 60, cx: 160 });
     const faces = K.extrude(prof, 'uz', 0, D);
     const edges = K.visibleEdges(P, faces);
     const { LVP, RVP } = P.vps;
@@ -123,11 +123,11 @@
       id: 'two-point-stepped-block', title: 'Two-Point Perspective: Stepped Block',
       summary: 'Heights that are not on the true-height corner are measured on it first and carried along a VP line to where they belong.',
       bounds: { w: 330, h: 190 },
-      workbookPrompt: 'Draw the stepped block in two-point perspective. The top view touches PP at its nearest corner at 30°; SP is 122 mm in front of PP; the eye is 60 mm above GL.',
+      workbookPrompt: 'Draw the stepped block in two-point perspective. The top view touches PP at its nearest corner, its long side at 60° to PP on the right and its short side at 30° on the left. SP is 112 mm in front of PP, 10 mm left of that corner; the eye is 60 mm above GL.',
       steps: [
         {
           id: 1,
-          instruction: 'Set up: top view at 30° touching PP, SP, the two VPs, GL and HL. Draw the front view on GL at the side.',
+          instruction: 'Set up: this time the top view is turned 60° on the right and 30° on the left (they always add up to 90°). From SP draw lines at those same angles, 60° to the right and 30° to the left, up to PP, and drop them to HL for RVP and LVP. Draw the front view on GL at the side.',
           calloutAt: P.plan(W / 2, D / 2),
           reveals: [
             ...setupReveals(P, [[0, 0], [W, 0], [W, D], [0, D]], EX - 26, RVP[0] + 4, [{ kind: 'line', p1: P.plan(20, 0), p2: P.plan(20, D), lineType: 'A' }]),
@@ -168,7 +168,7 @@
     const L = 56, D = 34, WALL = 26, RIDGE = 42;
     // gable profile in (depth, height), extruded along the length
     const prof = [[0, 0], [D, 0], [D, WALL], [D / 2, RIDGE], [0, WALL]];
-    const P = K.setup({ sx: 104, d: 120, yPP: 76, yGL: 176, h: 18, theta: 30, cx: 100 });
+    const P = K.setup({ sx: 104, d: 120, yPP: 76, yGL: 176, h: 18, theta: 45, cx: 100 });
     const faces = K.extrude(prof, 'vz', 0, L);
     const edges = K.visibleEdges(P, faces);
     const { LVP, RVP } = P.vps;
@@ -182,11 +182,11 @@
       id: 'two-point-building', title: 'Two-Point Perspective: Gable-Roof Building',
       summary: 'A small building seen from a corner: the ridge height is measured on the true-height line and carried back to the middle of the gable, the door and window go on different receding walls.',
       bounds: { w: 340, h: 200 },
-      workbookPrompt: 'Draw the building in two-point perspective, seen from its front-left corner, at a natural eye height of 18 mm. Show the door on the long wall and the window on the gable end.',
+      workbookPrompt: 'Draw the building in two-point perspective with the top view at 45°/45°, touching PP at its near corner. SP is 120 mm in front of PP; the eye is 18 mm above GL. Show the door on the long wall and the window on the gable end.',
       steps: [
         {
           id: 1,
-          instruction: 'Set up: top view at 30° touching PP at the near corner (the ridge line drawn on it), SP, the VPs, GL and a low HL for a natural standing view. Draw the gable end (left view) on GL at the side.',
+          instruction: 'Set up: the top view is at 45° on both sides, touching PP at the near corner (the ridge line drawn on it). From SP draw 45° lines left and right up to PP and drop them to HL: with 45°/45° the two VPs are the same distance either side of SP. Use a low HL for a natural standing view and draw the gable end (left view) on GL at the side.',
           calloutAt: P.plan(L / 2, D / 2),
           reveals: [
             ...setupReveals(P, [[0, 0], [L, 0], [L, D], [0, D]], EX - 26, RVP[0] + 4, [{ kind: 'line', p1: P.plan(0, D / 2), p2: P.plan(L, D / 2), lineType: 'A' }]),
