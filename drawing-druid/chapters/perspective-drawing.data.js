@@ -31,15 +31,46 @@
 
     const front = fin.visible.filter(([p, q]) => near0(p[1]) && near0(q[1]));
     const rest = fin.visible.filter(([p, q]) => !(near0(p[1]) && near0(q[1])));
-    // depth points: every visible corner behind PP, one ray per plan position
+    // depth points: every visible corner behind PP, one ray per plan position. Corners that
+    // stand on the ground (a base corner exists below them) come first; roof points,
+    // openings and other details second.
+    // "ground" = the lowest level any visible corner behind PP is at (usually GL)
+    let zLow = Infinity;
+    rest.forEach(seg => seg.forEach(p => { if (p[1] > 1e-6 || Math.abs(p[0]) + Math.abs(p[1]) > 1e-6) zLow = Math.min(zLow, p[2]); }));
     const depth = new Map();
     rest.forEach(seg => seg.forEach(p => {
       if (p[1] <= 1e-6) return;
       const k = keyUV(p[0], p[1]);
-      if (!depth.has(k) || depth.get(k)[2] < p[2]) depth.set(k, p);
+      const d = depth.get(k) || { u: p[0], v: p[1], zTop: -Infinity, ground: false };
+      d.zTop = Math.max(d.zTop, p[2]);
+      if (Math.abs(p[2] - zLow) < 1e-6) d.ground = true;
+      depth.set(k, d);
     }));
-    const dpts = [...depth.values()];
-    // front corners that start a receding edge
+    const dAll = [...depth.values()];
+    const dBase = dAll.filter(d => d.ground), dRest = dAll.filter(d => !d.ground);
+    // the rest in two groups: points on the walls (openings, sills, heads) and points above
+    // the walls (roof, ridge, chimney, raised parts)
+    const wallTop = dBase.length ? Math.max(...dBase.map(d => d.zTop)) : 0;
+    const dWall = dRest.filter(d => d.zTop <= wallTop + 1e-6), dUp = dRest.filter(d => d.zTop > wallTop + 1e-6);
+    // Base corners on the outline of the top view first, the parts standing inside it second.
+    const hull = (pts) => {
+      const p = pts.map(d => [d.u, d.v]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+      if (p.length < 3) return p;
+      const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+      const lo = [], up = [];
+      p.forEach(q => { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); });
+      p.slice().reverse().forEach(q => { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); });
+      return lo.slice(0, -1).concat(up.slice(0, -1));
+    };
+    const H = hull(dBase);
+    const onHull = d => H.some((a, i) => { const b = H[(i + 1) % H.length]; const L2 = (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2 || 1; const t = Math.max(0, Math.min(1, ((d.u - a[0]) * (b[0] - a[0]) + (d.v - a[1]) * (b[1] - a[1])) / L2)); return Math.hypot(d.u - a[0] - t * (b[0] - a[0]), d.v - a[1] - t * (b[1] - a[1])) < 0.6; });
+    const dOuter = dBase.filter(onHull), dInner = dBase.filter(d => !onHull(d));
+    // points on the walls grouped per opening (points close together in the top view)
+    const clusters = [];
+    dWall.forEach(d => {
+      const c = clusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
+      if (c) c.push(d); else clusters.push([d]);
+    });
     const recFront = new Map();
     rest.forEach(([p, q]) => {
       const recedes = Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[2] - q[2]) < 1e-6 && Math.abs(p[1] - q[1]) > 1e-6;
@@ -50,56 +81,96 @@
     const frontZ = [...new Set(front.flatMap(s => s.map(p => +p[2].toFixed(3))))].filter(z => z > 1e-6);
     const frontU = [...new Set(front.flatMap(s => s.map(p => +p[0].toFixed(3))))];
     const line = (a, b, t) => ({ kind: 'line', p1: a, p2: b, lineType: t || 'construction' });
+    const isVert = ([p, q]) => Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-6;
+    const isLevel = ([p, q]) => Math.abs(p[2] - q[2]) < 1e-6;
     const notes = cfg.notes || [];
+    const n = s => (s ? ' ' + s : '');
+    const ray = d => line(P.SP, P.plan(d.u, d.v));
+    const drop = d => line(P.onPP(d.u, d.v), P.persp(d.u, d.v, d.zTop));
+    const A = segs => segs.map(([p, q]) => line(view.project(p), view.project(q), 'A'));
+    const mid = (u, v, z) => P.persp(u, v, z);
+
+    const steps = [
+      { t: 'Draw the picture-plane line PP (PV) across the sheet. Draw the TOP VIEW above it with its front edge lying ON the PP.' + n(notes[0]),
+        at: P.plan((uMin + uMax) / 2, 0),
+        r: [
+          { kind: 'line', p1: [x0, P.yPP], p2: [x1, P.yPP], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yPP - 1], text: 'PP', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          { kind: 'label', at: [x0 - 2, P.yPP + 5.5], text: 'PV', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          ...plan,
+          lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - (cfg.planDepth || 30) - 6], 'TOP VIEW / BO-AANSIG'),
+        ] },
+      { t: 'Mark the station point SP: where the viewer stands, in front of the PP.', at: P.SP, r: K.spMark(P) },
+      { t: 'Draw the ground line GL, and stand the FRONT VIEW on it at the side.',
+        at: [ex + (uMax - uMin) / 2, P.yGL],
+        r: [
+          { kind: 'line', p1: [x0, P.yGL], p2: [x1, P.yGL], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          ...elev, lbl([ex + (uMax - uMin) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
+        ] },
+      { t: 'Draw the horizon line HL at eye height above GL. Draw a line straight up from SP: where it meets HL is the vanishing point VP.',
+        at: VP,
+        r: [
+          { kind: 'line', p1: [x0, P.yHL], p2: [x1, P.yHL], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yHL + 1.3], text: 'HL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          line(P.SP, VP), { kind: 'point', at: VP, label: 'VP', size: 1.3 },
+        ] },
+      { t: 'The front face lies on the PP, so it is true size. Drop its widths straight down from the top view.',
+        at: P.persp((uMin + uMax) / 2, 0, 0),
+        r: frontU.map(u => line(P.plan(u, 0), P.persp(u, 0, 0))) },
+      { t: 'Project its heights across from the front view, and draw the front face with Type A lines.' + n(notes[1]),
+        at: P.persp((uMin + uMax) / 2, 0, zMax / 2),
+        r: [
+          ...frontZ.map(z => line(side === 'left' ? [ex + uMax - uMin, P.yGL - z] : [ex, P.yGL - z], P.persp(side === 'left' ? uMin : uMax, 0, z))),
+          ...A(front),
+        ] },
+      { t: 'Draw visual rays from SP to the corners of the OUTLINE of the top view that stand on the ground behind the PP. Mark where each ray crosses the PP.' + n(notes[2]),
+        at: dOuter.length ? P.onPP(dOuter[0].u, dOuter[0].v) : VP,
+        r: [...dOuter.map(ray), ...dOuter.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'From each crossing, drop a vertical line down into the drawing.',
+        at: dOuter.length ? P.onPP(dOuter[0].u, dOuter[0].v) : VP,
+        r: dOuter.map(drop) },
+      { t: 'Now the other points on the ground INSIDE the outline (for example the foot of a doorway, a column, a braai or a counter): rays to them, with the PP crossings marked.',
+        at: dInner.length ? P.onPP(dInner[0].u, dInner[0].v) : VP,
+        r: [...dInner.map(ray), ...dInner.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'Drop verticals from these crossings.',
+        at: dInner.length ? P.onPP(dInner[0].u, dInner[0].v) : VP,
+        r: dInner.map(drop) },
+      ...clusters.map((cl, i) => ({
+        t: cfg.pointsText || ((i === 0 ? 'Openings one at a time. ' : 'The next opening. ') + 'Send rays from SP to the corners of this opening (its sides and the inside corners of the reveal), mark the PP crossings and drop verticals from them.'),
+        at: P.onPP(cl[0].u, cl[0].v),
+        r: [...cl.map(ray), ...cl.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 })), ...cl.map(drop)],
+      })),
+      { t: 'Rays from SP to the points above the walls: ridge ends, hips, the chimney, raised parts. Mark their PP crossings.',
+        at: dUp.length ? P.onPP(dUp[0].u, dUp[0].v) : VP,
+        r: [...dUp.map(ray), ...dUp.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'Drop verticals from these crossings too.',
+        at: dUp.length ? P.onPP(dUp[0].u, dUp[0].v) : VP,
+        r: dUp.map(drop) },
+      { t: 'Join the corners of the front face to the VP. Every edge that runs straight back lies on one of these lines.',
+        at: VP,
+        r: [...recFront.values()].map(p => line(view.project(p), VP)) },
+      { t: 'Where the VP lines cut the dropped verticals are the corners further back. Draw the visible vertical edges there.',
+        at: mid((uMin + uMax) / 2, 10, zMax / 2),
+        r: A(rest.filter(isVert)) },
+      { t: 'Draw the edges that run straight back, along the VP lines, between the corners you have found. Hidden edges are left out.' + n(notes[3]),
+        at: mid((uMin + uMax) / 2, 10, zMax),
+        r: A(rest.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6)) },
+      { t: 'Draw the horizontal edges further back: they stay parallel to the PP, so they are drawn level.',
+        at: mid((uMin + uMax) / 2, 20, zMax),
+        r: A(rest.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) < 1e-6)) },
+      { t: 'Any other level edges (curves, slanting walls in plan): plot them by their end points.',
+        at: mid((uMin + uMax) / 2, 20, zMax),
+        r: A(rest.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
+      { t: 'Finally the sloping edges (roof slopes, hips, the spire): they do not go to the VP, so join their end points.',
+        at: mid((uMin + uMax) / 2, 10, zMax),
+        r: A(rest.filter(s => !isVert(s) && !isLevel(s))) },
+    ].filter(s => s.r.length);
 
     CONSTRUCTIONS[cfg.id] = {
       id: cfg.id, title: cfg.title, summary: cfg.summary, workbookPrompt: cfg.prompt,
       printLayout: 'full', bounds: { w: x1 - x0, h: 200 },
-      steps: [
-        {
-          id: 1,
-          instruction: 'Set up the sheet: the TOP VIEW above the picture plane PP with its front ON the PP, the station point SP, the ground line GL, and the horizon line HL at eye height. Draw a line straight up from SP: where it meets HL is the vanishing point VP. Draw the FRONT VIEW standing on GL at the side. ' + (notes[0] || ''),
-          calloutAt: VP,
-          reveals: [
-            ...K.frame(P, x0, x1),
-            ...plan,
-            lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - (cfg.planDepth || 30) - 6], 'TOP VIEW / BO-AANSIG'),
-            ...K.spMark(P),
-            line(P.SP, VP),
-            { kind: 'point', at: VP, label: 'VP', size: 1.3 },
-            ...elev,
-            lbl([ex + (uMax - uMin) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Everything on the PP is true size. Drop the widths straight down from the top view and project the heights across from the front view, then draw the front face. ' + (notes[1] || ''),
-          calloutAt: P.persp((uMin + uMax) / 2, 0, zMax / 2),
-          reveals: [
-            ...frontU.map(u => line(P.plan(u, 0), P.persp(u, 0, 0))),
-            ...frontZ.map(z => line(side === 'left' ? [ex + uMax - uMin, P.yGL - z] : [ex, P.yGL - z], P.persp(side === 'left' ? uMin : uMax, 0, z))),
-            ...front.map(([p, q]) => line(view.project(p), view.project(q), 'A')),
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Draw visual rays from SP to every corner of the top view that lies behind the PP. Where each ray crosses PP, drop a vertical line into the drawing. ' + (notes[2] || ''),
-          calloutAt: P.onPP(dpts.length ? dpts[0][0] : 0, dpts.length ? dpts[0][1] : 0),
-          reveals: [
-            ...dpts.map(p => line(P.SP, P.plan(p[0], p[1]))),
-            ...dpts.map(p => line(P.onPP(p[0], p[1]), P.persp(p[0], p[1], p[2]))),
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Join the corners of the front face to the VP. Where these lines cut the dropped verticals are the corners further back. Line in every visible edge with Type A lines; hidden edges are left out. ' + (notes[3] || ''),
-          calloutAt: P.persp((uMin + uMax) / 2, 10, zMax),
-          reveals: [
-            ...[...recFront.values()].map(p => line(view.project(p), VP)),
-            ...rest.map(([p, q]) => line(view.project(p), view.project(q), 'A')),
-          ],
-        },
-      ],
+      steps: steps.map((s, i) => ({ id: i + 1, instruction: s.t, calloutAt: s.at, reveals: s.r })),
     };
   }
 

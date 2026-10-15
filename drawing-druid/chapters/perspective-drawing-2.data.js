@@ -21,78 +21,150 @@
     const plan = SK.draw(cfg.planSolids || cfg.solids, planView, { hidden: true });
     let uMax = 0, vMax = 0, zMax = 0;
     cfg.solids.forEach(s => s.forEach(f => f.pts.forEach(p => { uMax = Math.max(uMax, p[0]); vMax = Math.max(vMax, p[1]); zMax = Math.max(zMax, p[2]); })));
-    // perspective extents, to place the given views either side of it on GL
     let px0 = Infinity, px1 = -Infinity;
     fin.visible.forEach(s => s.forEach(p => { const x = view.project(p)[0]; px0 = Math.min(px0, x); px1 = Math.max(px1, x); }));
     const gap = cfg.viewGap || 10;
-    const lvRight = px0 - gap;                                  // LEFT VIEW: v runs to the left, front (v = 0) at its right edge
-    const fvLeft = px1 + gap;                                   // FRONT VIEW: u runs to the right
+    const lvRight = px0 - gap, fvLeft = px1 + gap;
     const leftView = { toViewer: () => [-1, 0, 0], distance: () => Infinity, project: p => [lvRight - p[1], P.yGL - p[2]] };
     const frontView = { toViewer: () => [0, -1, 0], distance: () => Infinity, project: p => [fvLeft + p[0], P.yGL - p[2]] };
     const lv = SK.draw(cfg.solids, leftView, { hidden: true });
     const fv = SK.draw(cfg.solids, frontView, { hidden: true });
     const x0 = Math.min(lvRight - vMax, LVP[0]) - 14, x1 = Math.max(fvLeft + uMax, RVP[0]) + 8;
 
-    // true heights: every height a visible corner has, marked on the corner touching PP
     const heights = [...new Set(fin.visible.flatMap(s => s.map(p => +p[2].toFixed(3))))].filter(z => z > 1e-6).sort((a, b) => a - b);
     const C0 = P.persp(0, 0, 0);
-    // plan points for rays: every visible corner not on the true-height line
+    // "ground" = the lowest level any visible corner behind PP is at (usually GL)
+    let zLow = Infinity;
+    fin.visible.forEach(seg => seg.forEach(p => { if (p[1] > 1e-6 || Math.abs(p[0]) + Math.abs(p[1]) > 1e-6) zLow = Math.min(zLow, p[2]); }));
     const depth = new Map();
     fin.visible.forEach(seg => seg.forEach(p => {
       if (Math.abs(p[0]) < 1e-6 && Math.abs(p[1]) < 1e-6) return;
       const k = keyUV(p[0], p[1]);
-      if (!depth.has(k) || depth.get(k)[2] < p[2]) depth.set(k, p);
+      const d = depth.get(k) || { u: p[0], v: p[1], zTop: -Infinity, ground: false };
+      d.zTop = Math.max(d.zTop, p[2]);
+      if (Math.abs(p[2] - zLow) < 1e-6) d.ground = true;
+      depth.set(k, d);
     }));
-    const dpts = [...depth.values()];
+    const dAll = [...depth.values()];
+    const dBase = dAll.filter(d => d.ground), dRest = dAll.filter(d => !d.ground);
+    // the rest in two groups: points on the walls (openings, sills, heads) and points above
+    // the walls (roof, ridge, chimney, raised parts)
+    const wallTop = dBase.length ? Math.max(...dBase.map(d => d.zTop)) : 0;
+    const dWall = dRest.filter(d => d.zTop <= wallTop + 1e-6), dUp = dRest.filter(d => d.zTop > wallTop + 1e-6);
+    // Base corners on the outline of the top view first, the parts standing inside it second.
+    const hull = (pts) => {
+      const p = pts.map(d => [d.u, d.v]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+      if (p.length < 3) return p;
+      const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+      const lo = [], up = [];
+      p.forEach(q => { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); });
+      p.slice().reverse().forEach(q => { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); });
+      return lo.slice(0, -1).concat(up.slice(0, -1));
+    };
+    const H = hull(dBase);
+    const onHull = d => H.some((a, i) => { const b = H[(i + 1) % H.length]; const L2 = (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2 || 1; const t = Math.max(0, Math.min(1, ((d.u - a[0]) * (b[0] - a[0]) + (d.v - a[1]) * (b[1] - a[1])) / L2)); return Math.hypot(d.u - a[0] - t * (b[0] - a[0]), d.v - a[1] - t * (b[1] - a[1])) < 0.6; });
+    const dOuter = dBase.filter(onHull), dInner = dBase.filter(d => !onHull(d));
+    // points on the walls grouped per opening (points close together in the top view)
+    const clusters = [];
+    dWall.forEach(d => {
+      const c = clusters.find(cl => cl.some(e => Math.hypot(e.u - d.u, e.v - d.v) < 8));
+      if (c) c.push(d); else clusters.push([d]);
+    });
+    const isVert = ([p, q]) => Math.abs(p[0] - q[0]) < 1e-6 && Math.abs(p[1] - q[1]) < 1e-6;
+    const isLevel = ([p, q]) => Math.abs(p[2] - q[2]) < 1e-6;
     const notes = cfg.notes || [];
+    const n = s => (s ? ' ' + s : '');
+    const ray = d => line(P.SP, P.plan(d.u, d.v));
+    const drop = d => line(P.onPP(d.u, d.v), P.persp(d.u, d.v, d.zTop));
+    const A = segs => segs.map(([p, q]) => line(view.project(p), view.project(q), 'A'));
+    const th = cfg.setup.theta;
+
+    const steps = [
+      { t: 'Draw the picture-plane line PP (PV). Draw the TOP VIEW above it, turned ' + th + '° on the right and ' + (90 - th) + '° on the left (the two angles always add up to 90°), with only its nearest corner touching the PP.' + n(notes[0]),
+        at: P.plan(uMax / 2, vMax / 2),
+        r: [
+          { kind: 'line', p1: [x0, P.yPP], p2: [x1, P.yPP], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yPP - 1], text: 'PP', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          { kind: 'label', at: [x0 - 2, P.yPP + 5.5], text: 'PV', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          ...plan,
+          lbl([P.plan(uMax / 2, vMax / 2)[0], P.plan(uMax / 2, vMax / 2)[1] - Math.max(uMax, vMax) * 0.55 - 6], 'TOP VIEW / BO-AANSIG'),
+        ] },
+      { t: 'Mark the station point SP below the PP.', at: P.SP, r: K.spMark(P) },
+      { t: 'From SP draw a line at ' + th + '° to the RIGHT and one at ' + (90 - th) + '° to the LEFT (parallel to the edges of the top view), up to the PP.',
+        at: RPP, r: [line(P.SP, LPP), line(P.SP, RPP)] },
+      { t: 'Draw the horizon line HL at eye height. Drop verticals from the two PP points to the HL: they are the left and right vanishing points, LVP and RVP.',
+        at: RVP,
+        r: [
+          { kind: 'line', p1: [x0, P.yHL], p2: [x1, P.yHL], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yHL + 1.3], text: 'HL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          line(LPP, LVP), line(RPP, RVP),
+          { kind: 'point', at: LVP, label: 'LVP', size: 1.3 }, { kind: 'point', at: RVP, label: 'RVP', size: 1.3 },
+        ] },
+      { t: 'Draw the ground line GL and stand the given LEFT VIEW on it, on the left.',
+        at: [lvRight - vMax / 2, P.yGL],
+        r: [
+          { kind: 'line', p1: [x0, P.yGL], p2: [x1, P.yGL], lineType: 'B' },
+          { kind: 'label', at: [x0 - 2, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+          ...lv, lbl([lvRight - vMax / 2, P.yGL + 7], 'LEFT VIEW / LINKERAANSIG'),
+        ] },
+      { t: 'Stand the given FRONT VIEW on GL on the right.',
+        at: [fvLeft + uMax / 2, P.yGL],
+        r: [...fv, lbl([fvLeft + uMax / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG')] },
+      { t: 'The corner of the top view touching PP is the TRUE-HEIGHT LINE: drop it straight down to GL. It is the only line drawn at true scale.',
+        at: C0, r: [line(P.plan(0, 0), C0), line(C0, P.persp(0, 0, zMax), 'B')] },
+      { t: 'Mark every height on the true-height line, projected across from the given views.' + n(notes[1]),
+        at: [C0[0], C0[1] - zMax / 2],
+        r: heights.map(z => line([lvRight, P.yGL - z], P.persp(0, 0, z))) },
+      { t: 'Join the ground point and every height mark to LVP.',
+        at: [(C0[0] + LVP[0]) / 2, (C0[1] + LVP[1]) / 2],
+        r: [0].concat(heights).map(z => line(P.persp(0, 0, z), LVP)) },
+      { t: 'Join them to RVP as well.',
+        at: [(C0[0] + RVP[0]) / 2, (C0[1] + RVP[1]) / 2],
+        r: [0].concat(heights).map(z => line(P.persp(0, 0, z), RVP)) },
+      { t: 'Draw visual rays from SP to the corners of the OUTLINE of the top view that stand on the ground behind the PP. Mark where each ray crosses the PP.' + n(notes[2]),
+        at: dOuter.length ? P.onPP(dOuter[0].u, dOuter[0].v) : RVP,
+        r: [...dOuter.map(ray), ...dOuter.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'From each crossing, drop a vertical line down into the drawing.',
+        at: dOuter.length ? P.onPP(dOuter[0].u, dOuter[0].v) : RVP,
+        r: dOuter.map(drop) },
+      { t: 'Now the other points on the ground INSIDE the outline (for example the foot of a doorway, a column, a braai or a counter): rays to them, with the PP crossings marked.',
+        at: dInner.length ? P.onPP(dInner[0].u, dInner[0].v) : RVP,
+        r: [...dInner.map(ray), ...dInner.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'Drop verticals from these crossings.',
+        at: dInner.length ? P.onPP(dInner[0].u, dInner[0].v) : RVP,
+        r: dInner.map(drop) },
+      ...clusters.map((cl, i) => ({
+        t: cfg.pointsText || ((i === 0 ? 'Openings one at a time. ' : 'The next opening. ') + 'Send rays from SP to the corners of this opening (its sides and the inside corners of the reveal), mark the PP crossings and drop verticals from them.'),
+        at: P.onPP(cl[0].u, cl[0].v),
+        r: [...cl.map(ray), ...cl.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 })), ...cl.map(drop)],
+      })),
+      { t: 'Rays from SP to the points above the walls: ridge ends, hips, the chimney, raised parts. Mark their PP crossings.',
+        at: dUp.length ? P.onPP(dUp[0].u, dUp[0].v) : RVP,
+        r: [...dUp.map(ray), ...dUp.map(d => ({ kind: 'point', at: P.onPP(d.u, d.v), size: 0.8 }))] },
+      { t: 'Drop verticals from these crossings too.',
+        at: dUp.length ? P.onPP(dUp[0].u, dUp[0].v) : RVP,
+        r: dUp.map(drop) },
+      { t: 'Each corner is where its dropped vertical meets the right VP line. Draw the visible VERTICAL edges first.',
+        at: P.persp(uMax / 2, 0, zMax / 2),
+        r: A(fin.visible.filter(isVert)) },
+      { t: 'Then the level edges that run to RVP (parallel to the right-hand side of the top view). Heights of parts not on the corner come along the VP lines from their true-height mark. Hidden edges are left out.',
+        at: P.persp(uMax / 2, 0, zMax),
+        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][1] - s[1][1]) < 1e-6)) },
+      { t: 'Then the level edges that run to LVP (parallel to the left-hand side of the top view).' + n(notes[3]),
+        at: P.persp(0, vMax / 2, zMax),
+        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) < 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
+      { t: 'Level edges that go to neither VP (curves, edges at other angles in the top view): join their plotted points.',
+        at: P.persp(uMax / 2, vMax / 2, zMax),
+        r: A(fin.visible.filter(s => !isVert(s) && isLevel(s) && Math.abs(s[0][0] - s[1][0]) >= 1e-6 && Math.abs(s[0][1] - s[1][1]) >= 1e-6)) },
+      { t: 'Finally the sloping edges (roof slopes, hips, chamfers): they do not go to a VP, so join their end points.',
+        at: P.persp(uMax / 2, vMax / 2, zMax),
+        r: A(fin.visible.filter(s => !isVert(s) && !isLevel(s))) },
+    ].filter(s => s.r.length);
 
     CONSTRUCTIONS[cfg.id] = {
       id: cfg.id, title: cfg.title, summary: cfg.summary, workbookPrompt: cfg.prompt,
       printLayout: 'full', bounds: { w: x1 - x0, h: 200 },
-      steps: [
-        {
-          id: 1,
-          instruction: 'Set up: the TOP VIEW turned at ' + cfg.setup.theta + '° (right) and ' + (90 - cfg.setup.theta) + '° (left), touching PP at its nearest corner. From SP draw lines at those same angles, to the right and to the left, up to PP; drop them to the HL for RVP and LVP. Draw the given LEFT and FRONT views on GL. ' + (notes[0] || ''),
-          calloutAt: RVP,
-          reveals: [
-            ...K.frame(P, x0, x1),
-            ...plan,
-            lbl([P.plan(uMax / 2, vMax / 2)[0], P.plan(uMax / 2, vMax / 2)[1] - Math.max(uMax, vMax) * 0.55 - 6], 'TOP VIEW / BO-AANSIG'),
-            ...K.spMark(P),
-            line(P.SP, LPP), line(P.SP, RPP), line(LPP, LVP), line(RPP, RVP),
-            { kind: 'point', at: LVP, label: 'LVP', size: 1.3 },
-            { kind: 'point', at: RVP, label: 'RVP', size: 1.3 },
-            ...lv, lbl([lvRight - vMax / 2, P.yGL + 7], 'LEFT VIEW / LINKERAANSIG'),
-            ...fv, lbl([fvLeft + uMax / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'The corner touching PP is the TRUE-HEIGHT LINE. Drop it from PP and mark every height on it, projected across from the given views. Join the marks to both vanishing points. ' + (notes[1] || ''),
-          calloutAt: [C0[0], C0[1] - zMax / 2],
-          reveals: [
-            line(P.plan(0, 0), C0),
-            line(C0, P.persp(0, 0, zMax), 'B'),
-            ...heights.map(z => line([lvRight, P.yGL - z], P.persp(0, 0, z))),
-            ...[0].concat(heights).flatMap(z => [line(P.persp(0, 0, z), LVP), line(P.persp(0, 0, z), RVP)]),
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Draw visual rays from SP to the corners of the top view; where each crosses PP, drop a vertical line into the drawing. ' + (notes[2] || ''),
-          calloutAt: P.onPP(uMax, 0),
-          reveals: [
-            ...dpts.map(p => line(P.SP, P.plan(p[0], p[1]))),
-            ...dpts.map(p => line(P.onPP(p[0], p[1]), P.persp(p[0], p[1], p[2]))),
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Each corner is where its dropped vertical meets the right VP line. Heights of parts that are not on the corner are carried along the VP lines from their true-height mark. Line in all visible edges; hidden edges are left out. ' + (notes[3] || ''),
-          calloutAt: P.persp(uMax / 2, vMax / 2, zMax),
-          reveals: fin.visible.map(([p, q]) => line(view.project(p), view.project(q), 'A')),
-        },
-      ],
+      steps: steps.map((s, i) => ({ id: i + 1, instruction: s.t, calloutAt: s.at, reveals: s.r })),
     };
   }
 
@@ -276,6 +348,7 @@
       prompt: 'Draw the block with the semicircular end (straight part 40, R16, 24 high) in two-point perspective at 30° / 60°. Plot at least 7 points on the arc.',
       setup: { sx: 150, d: 112, yPP: 72, yGL: 168, h: 62, theta: 30 },
       solids: [S.extrude(prof, 'xy', 0, 24, smooth)],
+      pointsText: 'Send a ray from SP to every division point on the arc, mark the PP crossings and drop a vertical from each.',
       notes: ['Divide the semicircle in the top view into equal parts.', '', 'Every arc point gets its own ray.', 'Join the points with smooth curves; the two outline lines of the curved side are where the rays touch the arc.'],
     });
   })();
