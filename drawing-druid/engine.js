@@ -1051,8 +1051,24 @@
     });
   }
 
+  // Keyboard-friendly view controls for a rendered interactive SVG.
+  function panBy(svgEl, fx, fy) {
+    const v = svgEl._ceView, b = svgEl._ceBase;
+    if (!v || !b || v.z <= 1.001) return;
+    v.cx += fx * b[2] / v.z;
+    v.cy += fy * b[3] / v.z;
+    applyView(svgEl);
+  }
+  const view = {
+    zoom: (svgEl, factor) => zoomBy(svgEl, factor),
+    fit: svgEl => zoomBy(svgEl, 0),
+    pan: panBy,
+    toggleLines: () => { setShowConstruction(!showConstruction); rerenderAll(); return showConstruction; },
+    toggleTheme: () => { setCanvasTheme(currentTheme() === 'paper' ? 'dark' : 'paper'); rerenderAll(); return currentTheme(); },
+  };
+
   global.ConstructionEngine = {
-    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg, addFinishSteps, setShowConstruction,
+    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg, addFinishSteps, setShowConstruction, view,
     LINE_TYPES, CALLOUT_COLORS, PRINT_COLORS, MODE_STROKE_MULT,
   };
 })(window);

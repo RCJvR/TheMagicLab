@@ -200,6 +200,7 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:clamp(460px,68vh,640px);display:b
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
 <script src="../engine.js"></script>
+<script src="../lesson-ui.js"></script>
 <script src="../iso-kit.js"></script>
 <script src="../assembly-kit.js"></script>
 <script src="orthographic-projection.data.js"></script>
@@ -218,73 +219,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:clamp(460px,68vh,640px);display:b
 
   function currentModel() { return window.CONSTRUCTIONS[currentId]; }
 
-  function renderPicker() {
-    const wrap = document.getElementById('constrPicker');
-    wrap.innerHTML = '';
-    order.forEach(id => {
-      const btn = document.createElement('button');
-      btn.className = 'constr-pill' + (id === currentId ? ' active' : '');
-      btn.type = 'button';
-      btn.textContent = window.CONSTRUCTIONS[id].title;
-      btn.onclick = () => { currentId = id; currentStep = 1; renderLesson(); };
-      wrap.appendChild(btn);
-    });
-  }
-
-  function renderStepList() {
-    const model = currentModel();
-    const wrap = document.getElementById('stepList');
-    wrap.innerHTML = '';
-    model.steps.forEach((step, i) => {
-      const n = i + 1;
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.className = 'step-item' + (n === currentStep ? ' active' : '');
-      const badge = document.createElement('span');
-      badge.className = 'step-badge';
-      badge.style.background = CE.CALLOUT_COLORS[i % CE.CALLOUT_COLORS.length];
-      badge.textContent = n;
-      item.appendChild(badge);
-      const txt = document.createElement('span');
-      txt.textContent = step.instruction.length > 62 ? step.instruction.slice(0, 60) + '…' : step.instruction;
-      item.appendChild(txt);
-      item.onclick = () => { currentStep = n; renderLesson(); };
-      wrap.appendChild(item);
-    });
-  }
-
-  function renderCallout() {
-    const step = currentModel().steps[currentStep - 1];
-    const box = document.getElementById('stepCallout');
-    let html = '<strong>Step ' + currentStep + ':</strong> ' + step.instruction;
-    if (step.measurement && step.measurement.label) {
-      html += '<div class="step-measure">📏 ' + step.measurement.label + '</div>';
-    }
-    box.innerHTML = html;
-  }
-
-  function renderNavButtons() {
-    const model = currentModel();
-    document.getElementById('prevStepBtn').disabled = currentStep <= 1;
-    document.getElementById('nextStepBtn').disabled = currentStep >= model.steps.length;
-    document.getElementById('stepCounter').textContent = currentStep + ' / ' + model.steps.length;
-  }
-
-  function renderLesson() {
-    const model = currentModel();
-    document.getElementById('constrTitle').textContent = model.title;
-    renderPicker();
-    renderStepList();
-    CE.render(document.getElementById('lessonSvg'), model, { uptoStep: currentStep, mode: 'interactive' });
-    renderCallout();
-    renderNavButtons();
-    if (currentStep === model.steps.length && window.MagicLabProgress) {
-      window.MagicLabProgress.track('drawing-druid', 'lesson_complete', { topic: currentId });
-    }
-  }
-
-  document.getElementById('prevStepBtn').onclick = () => { if (currentStep > 1) { currentStep--; renderLesson(); } };
-  document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
+  // Lesson tab: drop-down, step track and keyboard shortcuts come from ../lesson-ui.js
+  let lesson = null;
+  function renderLesson() { if (lesson) lesson.render(); else lesson = window.DruidLesson.mount({ order, constructions: window.CONSTRUCTIONS }); }
 
   // ── Explore tab: cutting-plane depth slider ──
   const BLOCK = { x: 20, y: 20, w: 160, h: 80 };
