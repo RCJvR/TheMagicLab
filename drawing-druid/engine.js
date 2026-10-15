@@ -934,7 +934,7 @@
 
   // Builds one landscape A3 worksheet per model inside host: border, question bar, the
   // full-size construction, a reference drawing and the bilingual title strip.
-  //   opts.scale      — text for the Scale cell (default '1:1')
+  //   opts.scale      — text for the Scale cell (default '1:1'; a model's own .scale wins)
   //   opts.thumb(model) — optional { model, label, maxScale } to show something else as the reference
   //   opts.code       — short chapter code used for the sheet number, e.g. 'OP'
   //   opts.projection — the chapter's default method ('first' | 'third') when a model doesn't state one
@@ -971,7 +971,8 @@
       // True scale where it fits; otherwise the next standard reduction.
       const ext = modelExtents(model);
       let scale = 1, area = AREA_SIDE;
-      let scaleText = opts.scale || '1:1';
+      // a model drawn to a stated scale (civil plans at 1:50, details at 1:25) carries its own
+      let scaleText = model.scale || opts.scale || '1:1';
       if (ext && scaleText === '1:1') {
         const w = ext[2] - ext[0] + 8, h = ext[3] - ext[1] + 8;
         if (full) { area = AREA_FULL; if (w > AREA_FULL.w || h > AREA_FULL.h) { scale = 0.5; scaleText = '1:2'; } }
