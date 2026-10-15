@@ -111,6 +111,7 @@
   }
 
   global.IsoFromViews = isoFromViews;
+  global.ViewLines = viewLines;      // hidden-line views with the seams between joined parts removed
   if (!C['isometric-wedge']) return;          // the exercises below belong to Isometric I
 
   // ═══ Exercises (original parts) ═══
