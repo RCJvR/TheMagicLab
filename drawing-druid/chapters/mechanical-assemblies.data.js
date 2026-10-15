@@ -56,14 +56,18 @@
     };
 
     // ── step 1: the body, cut by the plane A-A
+    const bodyAll = cfg.body.section.flatMap(it => { const pl = it.poly || it, ang = it.hatch || cfg.body.hatch; return [...A.hatch([pl.map(([x, y]) => P(x, y))], ang, 2.4), { kind: 'polygon', points: pl.map(([x, y]) => P(x, y)), lineType: 'A' }]; });
     steps.push({
       id: 1,
-      instruction: 'Using the parts on sheet A: draw the ' + cfg.body.name.toLowerCase() + ' (part 1) cut through its centre on A-A, and hatch every part of it the cutting plane passes through. Draw the centre line of the shaft.',
+      instruction: 'Draw the centre line of the shaft. Using the parts on sheet A, draw the outline of the ' + cfg.body.name.toLowerCase() + ' (part 1) as it is cut through its centre on A-A.',
       calloutAt: P(cfg.body.callout[0], cfg.body.callout[1]),
-      reveals: [
-        ...cfg.body.section.flatMap(it => { const pl = it.poly || it, ang = it.hatch || cfg.body.hatch; return [...A.hatch([pl.map(([x, y]) => P(x, y))], ang, 2.4), { kind: 'polygon', points: pl.map(([x, y]) => P(x, y)), lineType: 'A' }]; }),
-        L([AX + cfg.axisFrom - 6, ay], [AX + cfg.axisTo + 6, ay], 'centre'),
-      ],
+      reveals: [L([AX + cfg.axisFrom - 6, ay], [AX + cfg.axisTo + 6, ay], 'centre'), ...bodyAll.filter(r => !r.hatch)],
+    });
+    steps.push({
+      id: 2,
+      instruction: 'Hatch every part of the ' + cfg.body.name.toLowerCase() + ' that the cutting plane passes through: thin lines at 45°, evenly spaced. Leave the holes clear.',
+      calloutAt: P(cfg.body.callout[0], cfg.body.callout[1]),
+      reveals: bodyAll.filter(r => r.hatch),
     });
 
     // ── steps 3...: the parts in assembly order
@@ -79,7 +83,10 @@
         if (p.extra) rev.push(...p.extra(P, ay));
         if (p.note) text.push(p.note);
       });
-      steps.push({ id: steps.length + 1, instruction: text.join(' '), calloutAt: [AX + cfg.parts[grp[0]].at + 4, ay - 6], reveals: rev });
+      const at = [AX + cfg.parts[grp[0]].at + 4, ay - 6];
+      const outline = rev.filter(r => !r.hatch), hatchLines = rev.filter(r => r.hatch);
+      steps.push({ id: steps.length + 1, instruction: text.join(' '), calloutAt: at, reveals: outline });
+      if (hatchLines.length) steps.push({ id: steps.length + 1, instruction: 'Now hatch it. Parts that touch are hatched in opposite directions so they read as separate pieces.', calloutAt: at, reveals: hatchLines });
     });
 
     // ── last step: right view, cutting plane, labels
@@ -88,11 +95,11 @@
     const inPoly = (pt, pl) => { let c = false; for (let i = 0, j = pl.length - 1; i < pl.length; j = i++) { const [xi, yi] = pl[i], [xj, yj] = pl[j]; if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c; } return c; };
     const region = (cfg.body.endRegion || cfg.body.end[0]).map(([z, y]) => [RX + z, BY - y]);
     const rv = [];
-    let covered = 0, bodyIn = false;
+    let covered = 0, bodyIn = false, drawingBody = false;
     const hidden = pt => Math.hypot(pt[0] - RX, pt[1] - ay) < covered - 0.05 || (bodyIn && inPoly(pt, region));
     const visibleRuns = pts => {
       let run = [];
-      const flush = () => { if (run.length > 1) rv.push({ kind: 'polyline', points: run, lineType: 'A' }); run = []; };
+      const flush = () => { if (run.length > 1) rv.push({ kind: 'polyline', points: run, lineType: 'A', body: drawingBody }); run = []; };
       pts.forEach(p => { if (hidden(p)) flush(); else run.push(p); });
       flush();
     };
@@ -115,7 +122,9 @@
         rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true }));
         covered = Math.max(covered, 0.75 * e.nut.D);
       } else if (e.body) {
+        drawingBody = true;
         cfg.body.end.forEach(pl => visibleRuns(dense(pl.map(([z, y]) => [RX + z, BY - y]))));
+        drawingBody = false;
         bodyIn = true;
       } else {
         e.radii.forEach(r => { if (r > covered + 0.05) visibleRuns(circlePts(r)); });
@@ -123,6 +132,7 @@
       }
     });
     const cpTop = BY - cfg.cutTop, cpBot = BY + 6;
+    const rvLen = rv.length;
     rv.push(
       L([RX - cfg.rvHalf, ay], [RX + cfg.rvHalf, ay], 'centre'),
       L([RX, cpTop - 4], [RX, cpBot], 'centre'),
@@ -136,11 +146,21 @@
       lbl([AX + (cfg.axisFrom + cfg.axisTo) / 2, BY + 10], 'SECTION A-A / SNIT A-A', { size: 3.8, color: '#fde047' }),
       lbl([RX, BY + 16], 'RIGHT VIEW / REGTERAANSIG', { size: 3.4, color: '#94a3b8' }),
     );
+    const rvParts = rv.slice(0, rvLen).filter(r => !r.body), rvBody = rv.slice(0, rvLen).filter(r => r.body), rvRest = rv.slice(rvLen);
     steps.push({
       id: steps.length + 1,
-      instruction: 'Draw the RIGHT VIEW beside the section, projected across from it: the nut shows as a hexagon, the turned parts as circles, and only what is not hidden behind a nearer part. Mark the cutting plane A-A on it, with the arrows pointing the way you look at the section, and label the section.',
-      calloutAt: [RX, ay],
-      reveals: rv,
+      instruction: 'RIGHT VIEW, projected across from the section: start with the nearest parts. The nut is a hexagon; each turned part shows as circles, but only where no nearer part covers it.',
+      calloutAt: [RX, ay], reveals: rvParts,
+    });
+    steps.push({
+      id: steps.length + 1,
+      instruction: 'Add the ' + cfg.body.name.toLowerCase() + ' in the right view: only the parts of its outline you can see around the turned parts.',
+      calloutAt: [RX, BY - 6], reveals: rvBody,
+    });
+    steps.push({
+      id: steps.length + 1,
+      instruction: 'Draw the centre lines and the cutting plane A-A on the right view, with the arrows pointing the way you look at the section, and label the section and the views.',
+      calloutAt: [RX, BY - cfg.cutTop], reveals: rvRest,
     });
 
     CONSTRUCTIONS[cfg.id] = {

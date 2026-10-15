@@ -32,7 +32,7 @@
       for (let i = 0; i + 1 < ts.length; i += 2) {
         const p = [n[0] * s + d[0] * ts[i], n[1] * s + d[1] * ts[i]];
         const q = [n[0] * s + d[0] * ts[i + 1], n[1] * s + d[1] * ts[i + 1]];
-        out.push(L(p, q, 'B'));
+        out.push(Object.assign(L(p, q, 'B'), { hatch: true }));
       }
     }
     return out;
