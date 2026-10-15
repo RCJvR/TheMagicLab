@@ -123,6 +123,57 @@
     return faces;
   }
 
+  // A pyramid: base polygon (anticlockwise seen from above) at height z0, apex point.
+  function pyramid(base, z0, apex) {
+    const B = base.map(([x, y]) => [x, y, z0]);
+    const faces = [face(B.slice().reverse(), { n: [0, 0, -1] })];
+    B.forEach((p, i) => { const q = B[(i + 1) % B.length]; faces.push(face([p, q, apex])); });
+    return faces;
+  }
+
+  // Rotate a solid about an axis through a point: axis 'x', 'y' or 'z', angle in degrees.
+  function rotate(faces, axis, deg, about) {
+    const t = deg * Math.PI / 180, c = Math.cos(t), s = Math.sin(t), o = about || [0, 0, 0];
+    const R = p => {
+      const [x, y, z] = sub(p, o);
+      const r = axis === 'x' ? [x, y * c - z * s, y * s + z * c] : axis === 'y' ? [x * c + z * s, y, -x * s + z * c] : [x * c - y * s, x * s + y * c, z];
+      return add(r, o);
+    };
+    const Rn = n => { const r = R(add(o, n)); return sub(r, o); };
+    return faces.map(f => ({ pts: f.pts.map(R), holes: f.holes.map(h => h.map(R)), n: unit(Rn(f.n)), smooth: f.smooth }));
+  }
+
+  // Cut a CONVEX solid with a plane and keep the part where n·p <= d. Returns the kept faces
+  // (including the new cut face) and the cut face on its own.
+  function cut(faces, n, d) {
+    const side = p => dot(n, p) - d;
+    const kept = [], cutPts = [];
+    faces.forEach(f => {
+      const out = [];
+      f.pts.forEach((p, i) => {
+        const q = f.pts[(i + 1) % f.pts.length];
+        const sp = side(p), sq = side(q);
+        if (sp <= 1e-9) out.push(p);
+        if ((sp < -1e-9 && sq > 1e-9) || (sp > 1e-9 && sq < -1e-9)) {
+          const t = sp / (sp - sq), x = add(p, mul(sub(q, p), t));
+          out.push(x); cutPts.push(x);
+        }
+        if (Math.abs(sp) <= 1e-9) cutPts.push(p);
+      });
+      if (out.length >= 3) kept.push({ pts: out, holes: [], n: f.n, smooth: f.smooth });
+    });
+    // the cut face: its points ordered round their centre, anticlockwise seen along n
+    const uniq = [];
+    cutPts.forEach(p => { if (!uniq.some(q => len(sub(p, q)) < 1e-6)) uniq.push(p); });
+    if (uniq.length < 3) return { faces: kept, cap: null };
+    const c = mul(uniq.reduce((a, p) => add(a, p), [0, 0, 0]), 1 / uniq.length);
+    let u = unit(sub(uniq[0], c)); const v = cross(n, u);
+    uniq.sort((a, b) => Math.atan2(dot(sub(a, c), v), dot(sub(a, c), u)) - Math.atan2(dot(sub(b, c), v), dot(sub(b, c), u)));
+    const cap = face(uniq, { n });
+    kept.push(cap);
+    return { faces: kept, cap };
+  }
+
   function translate(faces, d) {
     return faces.map(f => ({ pts: f.pts.map(p => add(p, d)), holes: f.holes.map(h => h.map(p => add(p, d))), n: f.n, smooth: f.smooth }));
   }
@@ -209,7 +260,9 @@
       const nudge = p => {
         let d = [0, 0, 0];
         fs.forEach(F => { d = add(d, F.f.n); });
-        return add(p, mul(unit(d), 1e-3));
+        // and a little towards the eye, so a face lying flush against another solid (a pyramid
+        // standing on a slab) does not count as hidden behind that solid's top face
+        return add(add(p, mul(unit(d), 1e-3)), mul(view.toViewer(p), 2e-3));
       };
       const vis = t => !occluded(scene, nudge(add(e.p, mul(sub(e.q, e.p), t))), view);
       let t0 = 0, state = vis(0.5 / n);
@@ -273,5 +326,5 @@
     return out;
   }
 
-  global.SolidKit = { face, box, extrude, poly, hipRoof, opening, openingAt, translate, hlr, draw, isoView, orthoView, perspView, newell };
+  global.SolidKit = { face, box, extrude, poly, hipRoof, opening, openingAt, translate, pyramid, rotate, cut, hlr, draw, isoView, orthoView, perspView, newell };
 })(window);
