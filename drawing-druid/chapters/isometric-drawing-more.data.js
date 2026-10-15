@@ -104,11 +104,14 @@
       steps.push({ instruction: p.text, calloutAt: iso.project(p.at || [x0, y0, z0]), reveals: mine.map(q => AS(q)) });
     });
     steps.push({ instruction: 'Check every line against the given views, then line in the isometric with thick lines. No hidden detail is shown in an isometric drawing.',
-      calloutAt: [O[0], O[1] + 8], reveals: two([O[0] + (W - D) * C30 / 2, O[1] + 10], 'ISOMETRIC VIEW', 'ISOMETRIESE AANSIG') });
+      calloutAt: [O[0], O[1] + 8], reveals: two([O[0] + (W - D) * C30 / 2, O[1] + 15], 'ISOMETRIC VIEW', 'ISOMETRIESE AANSIG') });
     C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
       steps: steps.filter(s => s.reveals.length).map((s, i) => Object.assign({ id: i + 1 }, s)) };
     ORDER.push(cfg.id);
   }
+
+  global.IsoFromViews = isoFromViews;
+  if (!C['isometric-wedge']) return;          // the exercises below belong to Isometric I
 
   // ═══ Exercises (original parts) ═══
   isoFromViews({
