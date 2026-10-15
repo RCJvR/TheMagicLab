@@ -47,7 +47,8 @@
       calloutAt: cfg.listAt,
       reveals: A.partsList(cfg.listAt[0], cfg.listAt[1], cfg.listRows || [[cfg.body.name, 1, cfg.body.mat]].concat(cfg.parts.filter(p => p.list !== false).map(p => [p.name, p.qty || 1, p.mat]))),
     });
-    if (!cfg.noPartsSheet) CONSTRUCTIONS[cfg.id + '-parts'] = {
+    const OUT = cfg.into || CONSTRUCTIONS;
+    if (!cfg.noPartsSheet) OUT[cfg.id + '-parts'] = {
       id: cfg.id + '-parts', title: cfg.title.replace(/ \(Gr/, ': Parts (Gr'), projection: 'third', printLayout: 'full',
       summary: 'Sheet A of the assembly: the drawing of every part and the parts list. Study it before drawing the assembled section on sheet B.',
       workbookPrompt: 'Study the parts of the ' + cfg.title.replace(/ \(Gr.*$/, '').toLowerCase() + ' and the parts list. Use them to answer the next exercise (the assembled sectional view).',
@@ -163,7 +164,7 @@
       calloutAt: [RX, BY - cfg.cutTop], reveals: rvRest,
     });
 
-    CONSTRUCTIONS[cfg.id] = {
+    OUT[cfg.id] = {
       id: cfg.id, title: cfg.title, summary: cfg.summary, workbookPrompt: cfg.prompt,
       projection: 'third', printLayout: 'full', bounds: { w: 300, h: 200 },
       steps,
@@ -474,6 +475,9 @@
       details: [], listAt: [0, 0],
     });
   })();
+
+  // shared with the Gr 11-12 assemblies page
+  global.AssemblyBuilder = { assembly, partDetail, fork, forkDetail };
 
   // ── Practice questions ──
   const PRACTICE_QUESTIONS = [
