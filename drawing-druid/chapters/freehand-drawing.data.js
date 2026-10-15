@@ -147,24 +147,25 @@
   // One row per character (like a real lettering worksheet): a light Type C cap-height/baseline
   // guideline pair spanning the full row, ONE printed example on the left to copy, and the rest
   // of the guideline left blank so the student repeats the letter freehand across the row.
+  // Two columns so the sheet fits a landscape A3 page at full size: A–M with 0–4, then N–Z with 5–9.
   function letteringSheetReveals() {
-    const W = 200, rowH = 7, letterSize = 5, startX = 6;
+    const W = 176, GAP = 12, rowH = 7, letterSize = 5, startX = 6;
     const reveals = [];
-    let row = 0;
-    function addRow(char) {
-      const yBase = 16 + row * rowH;
+    const rows = [0, 0];
+    function addRow(char, col) {
+      const x0 = col * (W + GAP);
+      const yBase = 16 + rows[col] * rowH;
       const yCap = yBase - letterSize;
-      reveals.push({ kind: 'line', p1: [0, yCap], p2: [W, yCap], lineType: 'C' });
-      reveals.push({ kind: 'line', p1: [0, yBase], p2: [W, yBase], lineType: 'C' });
-      reveals.push({ kind: 'label', at: [startX, yBase], text: char, size: letterSize, anchor: 'start', color: '#e8eaf2' });
-      row++;
+      reveals.push({ kind: 'line', p1: [x0, yCap], p2: [x0 + W, yCap], lineType: 'C' });
+      reveals.push({ kind: 'line', p1: [x0, yBase], p2: [x0 + W, yBase], lineType: 'C' });
+      reveals.push({ kind: 'label', at: [x0 + startX, yBase], text: char, size: letterSize, anchor: 'start', color: '#e8eaf2' });
+      rows[col]++;
     }
-    reveals.push({ kind: 'label', at: [0, 8], text: 'CAPITAL LETTERS — SINGLE-STROKE, SANS 0111', size: 4, anchor: 'start', color: '#fde047' });
-    for (let c = 65; c <= 90; c++) addRow(String.fromCharCode(c));
-    row += 1; // blank gap row before numerals
-    reveals.push({ kind: 'label', at: [0, 16 + row * rowH - letterSize - 3], text: 'NUMERALS', size: 4, anchor: 'start', color: '#fde047' });
-    for (let c = 48; c <= 57; c++) addRow(String.fromCharCode(c));
-    return { reveals, width: W, height: 16 + row * rowH + 6 };
+    reveals.push({ kind: 'label', at: [0, 8], text: 'CAPITAL LETTERS AND NUMERALS — SINGLE-STROKE, SANS 0111', size: 4, anchor: 'start', color: '#fde047' });
+    for (let c = 65; c <= 90; c++) addRow(String.fromCharCode(c), c <= 77 ? 0 : 1);
+    rows[0]++; rows[1]++; // blank gap row before the numerals
+    for (let c = 48; c <= 57; c++) addRow(String.fromCharCode(c), c <= 52 ? 0 : 1);
+    return { reveals, width: 2 * W + GAP, height: 16 + Math.max(rows[0], rows[1]) * rowH + 6 };
   }
 
   // ── Reference-object icons (small, deliberately simple line art) ──

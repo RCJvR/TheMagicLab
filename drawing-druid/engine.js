@@ -889,22 +889,63 @@
     return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   }
 
-  // Builds one A3 sheet per model inside host: border, the full-size construction, a
-  // reference thumbnail, the exercise prompt and a title block.
-  //   opts.scale     — text for the Scale cell (default '1:1')
-  //   opts.thumb(model) — optional { model, label, maxScale } to show something else as the reference
-  //   opts.code      — short chapter code used for the drawing number, e.g. 'OP'
-  //   opts.projection — the chapter's default method ('first' | 'third') when a model doesn't state one
-  // Drawing area inside the sheet border, clear of the prompt, thumbnail and title block (mm).
-  const MAIN_W = 258, MAIN_H = 300;
+  // Chapter names in Afrikaans for the bilingual title strip, keyed by the page's <h1>.
+  const TOPIC_AF = {
+    'Freehand Drawing': 'Vryhandtekeninge',
+    'Geometric Constructions': 'Geometriese konstruksies',
+    'Orthographic Projection': 'Ortografiese projeksie',
+    'Isometric Drawing': 'Isometriese tekeninge',
+    'Solid Geometry': 'Vaste liggame',
+    'Descriptive Geometry': 'Beskrywende meetkunde',
+    'Civil Drawing': 'Siviele tekeninge',
+    'Civil Analytical': 'Siviel analities',
+    'Perspective Drawing': 'Perspektieftekeninge',
+    'Electrical Drawing': 'Elektriese tekeninge',
+    'Practical Assessment Task': 'Praktiese assesseringstaak',
+    'Mechanical Assemblies': 'Meganiese samestelling',
+    'Mechanical Analytical': 'Meganies analities',
+    'Loci': 'Lokusse',
+    'Interpenetration & Development': 'Deurdringing & ontwikkeling',
+    'Transition Pieces': 'Oorgangstukke',
+  };
 
+  function pageTopic() {
+    const h1 = document.querySelector('h1.lesson-title, h1');
+    const full = h1 ? h1.textContent.trim() : '';
+    const base = full.split(' — ')[0].replace(/\s+II$/, '').trim();
+    return { en: base, af: TOPIC_AF[base] || '' };
+  }
+
+  function pageGrade() {
+    const tag = document.querySelector('.chapter-tag');
+    const m = tag && /Grade\s+(\d+)(?!\s*[-–])/.exec(tag.textContent);
+    return m ? m[1] : '';
+  }
+
+  // Sheet geometry, landscape A3 (mm). The drawing goes left of the reference box; a drawing
+  // too wide for that but short enough may use the full width below the reference box.
+  const AREA_SIDE = { x: 26, y: 30, w: 308, h: 229 };
+  const AREA_LOW = { x: 26, y: 97, w: 380, h: 162 };
+
+  // Builds one landscape A3 worksheet per model inside host: border, question bar, the
+  // full-size construction, a reference drawing and the bilingual title strip.
+  //   opts.scale      — text for the Scale cell (default '1:1')
+  //   opts.thumb(model) — optional { model, label, maxScale } to show something else as the reference
+  //   opts.code       — short chapter code used for the sheet number, e.g. 'OP'
+  //   opts.projection — the chapter's default method ('first' | 'third') when a model doesn't state one
   function buildPrintSheets(host, models, opts) {
     opts = opts || {};
     host.innerHTML = '';
+    const topic = pageTopic(), grade = pageGrade();
     models.forEach((model, idx) => {
       const sheet = document.createElement('div');
       sheet.className = 'a3-sheet';
       sheet.appendChild(Object.assign(document.createElement('div'), { className: 'frame' }));
+
+      const promptEl = document.createElement('div');
+      promptEl.className = 'sheet-prompt';
+      promptEl.innerHTML = '<span class="q-k">QUESTION / VRAAG:</span>' + esc(model.workbookPrompt || '');
+      sheet.appendChild(promptEl);
 
       const mainSvg = document.createElementNS(NS, 'svg');
       mainSvg.setAttribute('class', 'a3-main-svg');
@@ -915,55 +956,58 @@
       thumbBox.className = 'thumb-box';
       const thumbLabel = document.createElement('div');
       thumbLabel.className = 'thumb-label';
-      thumbLabel.textContent = (thumb && thumb.label) || 'Reference (not to scale)';
+      thumbLabel.textContent = (thumb && thumb.label) || 'Reference / Verwysing (not to scale)';
       thumbBox.appendChild(thumbLabel);
       const thumbSvg = document.createElementNS(NS, 'svg');
       thumbBox.appendChild(thumbSvg);
       sheet.appendChild(thumbBox);
 
+      // True scale where it fits; otherwise the next standard reduction.
+      const ext = modelExtents(model);
+      let scale = 1, area = AREA_SIDE;
+      let scaleText = opts.scale || '1:1';
+      if (ext && scaleText === '1:1') {
+        const w = ext[2] - ext[0] + 8, h = ext[3] - ext[1] + 8;
+        if (w <= AREA_SIDE.w && h <= AREA_SIDE.h) area = AREA_SIDE;
+        else if (w <= AREA_LOW.w && h <= AREA_LOW.h) area = AREA_LOW;
+        else { scale = 0.5; scaleText = '1:2'; }
+      }
+
       const proj = projectionOf(model) || (model.projection === 'none' ? null : opts.projection || null);
-      const no = (opts.code ? opts.code + '-' : '') + String(idx + 1).padStart(2, '0');
       const titleBlock = document.createElement('div');
       titleBlock.className = 'title-block';
       titleBlock.innerHTML =
-        '<table class="tb-grid"><tbody>' +
-        '<tr><td colspan="3" class="tb-title-cell"><span class="tb-k">Title</span><div class="tb-title">' + esc(model.title) + '</div></td></tr>' +
-        '<tr><td colspan="2"><span class="tb-k">Name</span></td><td><span class="tb-k">Class</span></td></tr>' +
-        '<tr><td colspan="2"><span class="tb-k">School</span></td><td><span class="tb-k">Date</span></td></tr>' +
-        '<tr><td><span class="tb-k">Scale</span><div class="tb-v">' + esc(opts.scale || '1:1') + '</div></td>' +
-        '<td><span class="tb-k">Sheet</span><div class="tb-v">A3 &middot; ' + esc(no) + '</div></td>' +
-        '<td class="tb-proj"><span class="tb-k">Projection</span>' +
-        (proj ? '<div class="tb-sym">' + projectionSymbolSvg(proj) + '<span>' + (proj === 'third' ? '3rd angle' : '1st angle') + '</span></div>' : '') +
-        '</td></tr></tbody></table>';
+        '<div class="tb-cell tb-brand"><strong>DRAWING DRUID</strong>The Magic Lab</div>' +
+        '<div class="tb-cell tb-person">' +
+          '<div class="tb-line"><span>NAME / NAAM:</span><span class="tb-blank"></span></div>' +
+          '<div class="tb-line"><span>GRADE / GRAAD' + (grade ? ' ' + esc(grade) : '') + ':</span><span class="tb-blank"></span></div>' +
+        '</div>' +
+        '<div class="tb-cell tb-main">' +
+          '<div class="tb-subject">ENGINEERING GRAPHICS &amp; DESIGN<br>INGENIEURSGRAFIKA &amp; ONTWERP</div>' +
+          '<div class="tb-exercise">' + esc(model.title) + '</div>' +
+        '</div>' +
+        '<div class="tb-cell tb-topic">' +
+          '<div class="tb-topic-name">' + esc(topic.en.toUpperCase()) + (topic.af ? ' / ' + esc(topic.af.toUpperCase()) : '') + '</div>' +
+          '<div class="tb-line"><span>DATE / DATUM:</span><span class="tb-blank"></span></div>' +
+        '</div>' +
+        '<div class="tb-cell tb-scale"><span class="tb-k">SCALE / SKAAL</span><div class="tb-v">' + esc(scaleText) + '</div></div>' +
+        '<div class="tb-cell tb-proj"><span class="tb-k">' + (proj === 'third' ? '3RD ANGLE / 3DE HOEK' : proj === 'first' ? '1ST ANGLE / 1STE HOEK' : 'PROJECTION') + '</span>' +
+          (proj ? '<div class="tb-sym">' + projectionSymbolSvg(proj) + '</div>' : '') + '</div>' +
+        '<div class="tb-cell tb-no"><span class="tb-k">' + esc(opts.code || '') + '</span><div class="tb-num">' + (idx + 1) + '</div></div>';
       sheet.appendChild(titleBlock);
-
-      const promptEl = document.createElement('div');
-      promptEl.className = 'sheet-prompt';
-      promptEl.textContent = model.workbookPrompt || '';
-      sheet.appendChild(promptEl);
 
       host.appendChild(sheet);
 
-      // True scale where it fits inside the border; otherwise the next standard reduction.
-      const ext = modelExtents(model);
-      let scale = 1;
-      if (ext && (opts.scale || '1:1') === '1:1') {
-        const w = ext[2] - ext[0] + 8, h = ext[3] - ext[1] + 8;
-        if (w > MAIN_W || h > MAIN_H) {
-          scale = 0.5;
-          titleBlock.querySelector('.tb-v').textContent = '1:2';
-        }
-      }
       render(mainSvg, model, { uptoStep: Infinity, mode: 'print-full', scale, showCallouts: false, fit: ext ? 'extents' : null, pad: 4 });
-      // centre the drawing in the drawing area (print.css places it at 26 mm, 34 mm)
+      // centre the drawing in its area
       const mw = parseFloat(mainSvg.getAttribute('width')), mh = parseFloat(mainSvg.getAttribute('height'));
       if (mw > 0 && mh > 0) {
-        mainSvg.style.left = (26 + Math.max(0, (MAIN_W - mw) / 2)).toFixed(1) + 'mm';
-        mainSvg.style.top = (34 + Math.max(0, (MAIN_H - mh) / 2)).toFixed(1) + 'mm';
+        mainSvg.style.left = (area.x + Math.max(0, (area.w - mw) / 2)).toFixed(1) + 'mm';
+        mainSvg.style.top = (area.y + Math.max(0, (area.h - mh) / 2)).toFixed(1) + 'mm';
       }
       const tm = thumb && thumb.model ? thumb.model : model;
       const b = tm.bounds || { w: 200, h: 150 };
-      const fitScale = Math.min(55 / (b.w + 28), 55 / (b.h + 28), (thumb && thumb.maxScale) || 0.35);
+      const fitScale = Math.min(66 / (b.w + 28), 60 / (b.h + 28), (thumb && thumb.maxScale) || 0.35);
       render(thumbSvg, tm, { uptoStep: Infinity, mode: 'print-thumb', scale: fitScale, showCallouts: false, showLabels: false, pad: 14 });
     });
   }

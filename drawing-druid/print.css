@@ -1,17 +1,21 @@
-/* Drawing Druid — shared A3 workbook print stylesheet, reused by every chapter page. */
+/* Drawing Druid — shared A3 workbook print stylesheet, reused by every chapter page.
+   Landscape A3 worksheet in the layout South African EGD workbooks use: a border with a
+   filing margin, a question bar along the top, the reference drawing in the top-right
+   corner and a full-width bilingual title strip along the bottom. */
 
 .a3-sheet {
   position: relative;
-  width: 297mm;
-  height: 420mm;
+  width: 420mm;
+  height: 297mm;
   margin: 0 auto 20px;
   background: #fff;
   color: #111;
   display: none;
   overflow: hidden;
-  font-family: "Cabinet Grotesk", sans-serif;
+  font-family: Arial, "Helvetica Neue", sans-serif;
 }
 
+/* Border: 10 mm all round, 20 mm on the left for filing. */
 .a3-sheet .frame {
   position: absolute;
   top: 10mm;
@@ -22,21 +26,44 @@
   pointer-events: none;
 }
 
+/* Question bar across the top of the frame. */
+.a3-sheet .sheet-prompt {
+  position: absolute;
+  top: 10mm;
+  left: 20mm;
+  right: 10mm;
+  min-height: 13mm;
+  box-sizing: border-box;
+  border-bottom: 0.35mm solid #111;
+  padding: 2mm 4mm;
+  font-size: 9pt;
+  line-height: 1.35;
+  color: #222;
+}
+.a3-sheet .sheet-prompt .q-k {
+  font-weight: 700;
+  margin-right: 2mm;
+}
+
 /* Full-scale construction. No CSS width/height here — the SVG's own mm width/height
-   attributes (set by ConstructionEngine.render) must drive its physical print size. */
+   attributes (set by ConstructionEngine.render) drive its physical print size. The
+   builder centres it in the drawing area by setting left/top. */
 .a3-sheet .a3-main-svg {
   position: absolute;
-  top: 34mm;
+  top: 30mm;
   left: 26mm;
 }
 
+/* Reference drawing, top-right corner under the question bar. */
 .a3-sheet .thumb-box {
   position: absolute;
-  left: 24mm;
-  bottom: 14mm;
-  width: 60mm;
-  height: 60mm;
-  border: 0.35mm solid #111;
+  top: 23mm;
+  right: 10mm;
+  width: 70mm;
+  height: 70mm;
+  box-sizing: border-box;
+  border-left: 0.35mm solid #111;
+  border-bottom: 0.35mm solid #111;
   background: #fff;
 }
 .a3-sheet .thumb-label {
@@ -44,76 +71,74 @@
   top: 1.5mm;
   left: 2mm;
   right: 2mm;
-  font-size: 6pt;
+  font-size: 6.5pt;
   color: #555;
   text-align: center;
 }
 .a3-sheet .thumb-box svg {
   position: absolute;
-  top: 8mm;
+  top: 7mm;
   left: 2mm;
 }
 
-/* Title block sits in the bottom-right corner of the border, sharing its lines. */
+/* Title strip: full width along the bottom, sharing the border lines. */
 .a3-sheet .title-block {
   position: absolute;
+  left: 20mm;
   right: 10mm;
   bottom: 10mm;
-  width: 130mm;
-  font-size: 8pt;
+  height: 24mm;
+  box-sizing: border-box;
+  border-top: 0.7mm solid #111;
+  display: flex;
   color: #111;
 }
-.a3-sheet .tb-grid {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+.a3-sheet .tb-cell {
+  border-left: 0.35mm solid #111;
+  padding: 1.6mm 2.4mm;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
-.a3-sheet .tb-grid td {
-  border: 0.35mm solid #111;
-  padding: 1.2mm 2mm;
-  height: 9mm;
-  vertical-align: top;
+.a3-sheet .tb-cell:first-child { border-left: none; }
+.a3-sheet .tb-brand { width: 30mm; align-items: center; text-align: center; font-size: 6.5pt; line-height: 1.25; }
+.a3-sheet .tb-brand strong { display: block; font-size: 8.5pt; letter-spacing: 0.04em; }
+.a3-sheet .tb-person { width: 72mm; justify-content: space-around; }
+.a3-sheet .tb-main { flex: 1; align-items: center; text-align: center; }
+.a3-sheet .tb-subject { font-size: 13pt; font-weight: 800; line-height: 1.15; letter-spacing: 0.02em; }
+.a3-sheet .tb-exercise { font-size: 8.5pt; margin-top: 1.2mm; color: #333; }
+.a3-sheet .tb-topic { width: 78mm; justify-content: space-around; }
+.a3-sheet .tb-scale { width: 22mm; align-items: center; text-align: center; }
+.a3-sheet .tb-proj { width: 30mm; align-items: center; text-align: center; }
+.a3-sheet .tb-no { width: 22mm; align-items: center; text-align: center; }
+.a3-sheet .tb-no .tb-num { font-size: 22pt; font-weight: 800; line-height: 1; }
+.a3-sheet .tb-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 2mm;
+  font-size: 7pt;
+  white-space: nowrap;
 }
-.a3-sheet .tb-grid tr:first-child td { border-top-width: 0.7mm; }
-.a3-sheet .tb-grid td:first-child { border-left-width: 0.7mm; }
+.a3-sheet .tb-line .tb-blank {
+  flex: 1;
+  border-bottom: 0.2mm solid #888;
+  height: 3.6mm;
+}
 .a3-sheet .tb-k {
   display: block;
   color: #555;
   font-size: 6pt;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.a3-sheet .tb-title {
-  font-weight: 800;
-  font-size: 11pt;
-  margin-top: 0.6mm;
+  letter-spacing: 0.04em;
 }
 .a3-sheet .tb-v {
   font-size: 9pt;
   font-weight: 700;
   margin-top: 0.6mm;
 }
-.a3-sheet .tb-sym {
-  display: flex;
-  align-items: center;
-  gap: 2mm;
-  margin-top: 0.4mm;
-  font-size: 6.5pt;
-  color: #333;
-}
-
-.a3-sheet .sheet-prompt {
-  position: absolute;
-  top: 14mm;
-  left: 24mm;
-  right: 14mm;
-  font-size: 9pt;
-  line-height: 1.4;
-  color: #333;
-  background: #f4f4f4;
-  border-left: 1.5mm solid #999;
-  padding: 2mm 4mm;
-}
+.a3-sheet .tb-topic-name { font-size: 7.5pt; font-weight: 700; line-height: 1.25; }
+.a3-sheet .tb-sym { margin-top: 0.6mm; }
 
 @media print {
   nav, .tabs, .lesson-header, .print-btn { display: none !important; }
@@ -122,8 +147,8 @@
   .a3-sheet { display: block; page-break-after: always; }
   .a3-sheet:last-child { page-break-after: auto; }
   /* The sheet already carries its own 10/20 mm border, so the page adds no margin
-     (a page margin on top of a full 297 x 420 mm sheet pushes it onto a second page). */
-  @page { size: A3 portrait; margin: 0; }
+     (a page margin on top of a full 420 x 297 mm sheet pushes it onto a second page). */
+  @page { size: A3 landscape; margin: 0; }
   .a3-sheet { margin: 0; }
   [aria-labelledby="ddWipTitle"] { display: none !important; }
 }
