@@ -16,8 +16,9 @@
   }
 
   // Sizes follow the conventions in the school's papers: a load-bearing wall is 222 mm brick (one
-  // brick length, the SANS minimum), drawn 250 mm thick when plastered on both sides;
-  // 110 mm internal walls, 600 x 250 footings (400 x 250 under 110 walls), 100 mm surface bed,
+  // brick length, the SANS minimum; about 250 when plastered) and internal walls 111 mm (half a
+  // brick length), as the JPEGD workbooks draw them; 600 x 250 footings (400 x 250 under 111
+  // walls), 100 mm surface bed,
   // DPC at floor level, 900 x 2000 doors in 50 mm frames.
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 3.4, anchor: 'start', color: '#e8eaf2' }, opts || {});
   const leader = (from, to) => ({ kind: 'line', p1: from, p2: to, lineType: 'B' });
@@ -59,7 +60,7 @@
   // ── 1. Floor plan of one room, scale 1:50 ──
   (function () {
     const S = 50;                                  // 1:50 → 1 unit = 50 mm
-    const t = 250 / S;                             // 5 units
+    const t = 222 / S;                             // 4.44 units
     const X0 = 30, Y0 = 30, W = 3500 / S, H = 3100 / S;      // outside of the walls
     const xi0 = X0 + t, yi0 = Y0 + t, xi1 = X0 + W - t, yi1 = Y0 + H - t;
     const door = { x0: X0 + 700 / S, w: 900 / S, frame: 50 / S };   // in the bottom wall
@@ -75,13 +76,13 @@
 
     CONSTRUCTIONS['floor-plan'] = {
       id: 'floor-plan', title: 'Floor Plan: One Room (1:50)', scale: '1:50',
-      summary: 'A room in 250 mm load-bearing walls at 1:50: walls hatched in section, a 900 mm door in its frame with its swing, a window with its sill, room name and floor finish, dimensions in millimetres.',
+      summary: 'A room in 222 mm load-bearing walls at 1:50: walls hatched in section, a 900 mm door in its frame with its swing, a window with its sill, room name and floor finish, dimensions in millimetres.',
       bounds: { w: 150, h: 120 },
-      workbookPrompt: 'Draw the floor plan of the bedroom to a scale of 1:50. External walls are 222 mm brick (the SANS minimum for a load-bearing wall), 250 mm thick with plaster on both sides. Show the 900 mm door (50 mm frame) with its swing, the 1200 mm window with its sill, wall hatching, the room name and floor finish, overall dimensions, the north point and the scale.',
+      workbookPrompt: 'Draw the floor plan of the bedroom to a scale of 1:50. External walls are 222 mm brick, the SANS minimum for a load-bearing wall. Show the 900 mm door (50 mm frame) with its swing, the 1200 mm window with its sill, wall hatching, the room name and floor finish, overall dimensions, the north point and the scale.',
       steps: [
         {
           id: 1,
-          instruction: 'Draw the outside and inside faces of the walls: 3500 x 3100 outside. A load-bearing wall is 222 mm brick (one brick length, the SANS minimum); with plaster on both sides it is drawn 250 mm thick (5 mm at 1:50). Leave the door and window openings open.',
+          instruction: 'Draw the outside and inside faces of the walls: 3500 x 3100 outside. A load-bearing wall is 222 mm (one brick length, the SANS minimum), 4.4 mm at 1:50; plaster, if any, is not drawn thicker on the plan. Leave the door and window openings open.',
           calloutAt: [X0 + W / 2, Y0 + t / 2],
           reveals: [
             { kind: 'polyline', points: [[door.x0, yo1], [X0, yo1], [X0, Y0], [xo1, Y0], [xo1, win.y0]], lineType: 'A' },
@@ -196,7 +197,7 @@
       workbookPrompt: 'Draw the sectional elevation through the foundation of a ' + wallMm + ' mm ' + (insideBothSides ? 'internal (non-load-bearing)' : 'external (load-bearing)') + ' wall to a scale of 1:25. Footing ' + footingMm + ' x 250. Show all hatching and label the DPC, FFL and NGL.',
       steps: [
         { id: 1, instruction: 'Draw the concrete footing, ' + footingMm + ' wide and 250 deep (' + fw + ' x ' + fd + ' mm at 1:25), centred under the wall. Concrete in section is shown with small stones (triangles and dots).', calloutAt: [CX, yFootBot - fd / 2], reveals: reveals1 },
-        { id: 2, instruction: 'Draw the ' + wallMm + ' mm wall standing on the middle of the footing, up to a break line' + (wallMm === 250 ? ' (222 mm brick, the SANS minimum for a load-bearing wall, plus plaster)' : ' (a half-brick wall: 106 mm brick plus plaster)') + '. Brick in section is hatched at 45°.', calloutAt: [CX, (yTop + yFootTop) / 2], reveals: reveals2 },
+        { id: 2, instruction: 'Draw the ' + wallMm + ' mm wall standing on the middle of the footing, up to a break line' + (wallMm >= 222 ? ' (one brick length, the SANS minimum for a load-bearing wall)' : ' (half a brick length: a non-load-bearing wall)') + '. Brick in section is hatched at 45°.', calloutAt: [CX, (yTop + yFootTop) / 2], reveals: reveals2 },
         { id: 3, instruction: insideBothSides
             ? 'This wall is inside the house, so there is floor on BOTH sides: the 100 mm concrete surface bed on compacted hardcore fill, with natural ground below.'
             : 'Outside, draw the natural ground level (NGL) with the earth symbol. Inside, the 100 mm concrete surface bed sits on compacted hardcore fill; its top is the finished floor level (FFL), 200 above NGL.',
@@ -206,8 +207,8 @@
     };
   }
 
-  CONSTRUCTIONS['foundation-section'] = foundationSection('foundation-section', 'Foundation: Load-Bearing Wall (1:25)', 250, 600, false);
-  CONSTRUCTIONS['foundation-section-110'] = foundationSection('foundation-section-110', 'Foundation: 110 mm Internal Wall (1:25)', 110, 400, true);
+  CONSTRUCTIONS['foundation-section'] = foundationSection('foundation-section', 'Foundation: Load-Bearing Wall (1:25)', 222, 600, false);
+  CONSTRUCTIONS['foundation-section-110'] = foundationSection('foundation-section-110', 'Foundation: 111 mm Internal Wall (1:25)', 111, 400, true);
 
   // ── Sanitary fixtures at 1:25 ──
   (function () {
@@ -528,6 +529,155 @@
     };
   })();
 
+  // ── Floor area and perimeter ──
+  (function () {
+    const S = 200;                     // 1:200, sizes in mm
+    const u = mm => mm / S;
+    const plans = [
+      { name: 'PLAN 1', at: [15, 20], pts: [[0, 0], [9000, 0], [9000, 4000], [4000, 4000], [4000, 8000], [0, 8000]], split: [[0, 4000], [4000, 4000]], parts: '9.0 x 4.0 + 4.0 x 4.0', area: 52, per: 34 },
+      { name: 'PLAN 2', at: [75, 20], pts: [[0, 0], [12000, 0], [12000, 7000], [8000, 7000], [8000, 4000], [4000, 4000], [4000, 7000], [0, 7000]], split: [[4000, 0], [4000, 4000], [8000, 0], [8000, 4000]], parts: '4.0 x 7.0 + 4.0 x 4.0 + 4.0 x 7.0', area: 72, per: 44 },
+      { name: 'PLAN 3', at: [150, 20], pts: [[0, 0], [10000, 0], [10000, 3000], [7000, 3000], [7000, 8000], [3000, 8000], [3000, 3000], [0, 3000]], split: [[3000, 3000], [7000, 3000]], parts: '10.0 x 3.0 + 4.0 x 5.0', area: 50, per: 36 },
+    ];
+    const P = (pl, x, y) => [pl.at[0] + u(x), pl.at[1] + u(8000) - u(y)];
+    const steps = [];
+    plans.forEach((pl, i) => {
+      const pts = pl.pts.map(([x, y]) => P(pl, x, y));
+      const dims = pl.pts.map((p, k) => { const q = pl.pts[(k + 1) % pl.pts.length]; const len = Math.hypot(q[0] - p[0], q[1] - p[1]); return { kind: 'dimension', p1: P(pl, p[0], p[1]), p2: P(pl, q[0], q[1]), offset: -4, text: String(len) }; });
+      steps.push({ id: steps.length + 1, instruction: pl.name + ': draw the outline at 1:200 and write each wall length (outside sizes, in millimetres).', calloutAt: pts[0], reveals: [{ kind: 'polygon', points: pts, lineType: 'A' }, ...dims, lbl([pts[0][0] + u(2000), pts[0][1] + 8], pl.name, { size: 3.4, color: '#fde047' })] });
+      const sp = [];
+      for (let k = 0; k < pl.split.length; k += 2) sp.push({ kind: 'line', p1: P(pl, ...pl.split[k]), p2: P(pl, ...pl.split[k + 1]), lineType: 'construction' });
+      steps.push({ id: steps.length + 1, instruction: 'Split ' + pl.name + ' into rectangles with thin lines. AREA = the sum of the rectangles: ' + pl.parts + ' = ' + pl.area + ' m². PERIMETER = the sum of ALL the outside wall lengths = ' + pl.per + ' m.', calloutAt: pts[0], reveals: [...sp, lbl([pts[0][0] + u(2000), pts[0][1] + 13], 'A = ' + pl.area + ' m²   P = ' + pl.per + ' m', { size: 3, color: '#e8eaf2' })] });
+    });
+    CONSTRUCTIONS['area-perimeter'] = {
+      id: 'area-perimeter', title: 'Floor Area and Perimeter', scale: '1:200',
+      summary: 'The total floor area of a house includes the outside walls: split each plan into rectangles, add their areas, and add every outside wall length for the perimeter.',
+      bounds: { w: 220, h: 80 },
+      workbookPrompt: 'For each house profile, draw it at 1:200, then work out its total area (m²) and the perimeter of its outside walls (m). The area includes the outside walls.',
+      steps,
+    };
+  })();
+
+  // ── Steel window: elevation and partial plan, 1:20 ──
+  (function () {
+    const S = 20, u = mm => mm / S;
+    const W = 1500, H = 1200, fr = 25, mull = 500, wall = 222;
+    const EX = 20, EY = 20;                               // elevation: top-left of the opening
+    const E = (x, y) => [EX + u(x), EY + u(H) - u(y)];   // y up from the sill
+    const PY = EY + u(H) + 22;                            // plan: inside face of the wall
+    // civil drawings are 1st angle: in the plan below the elevation the OUTSIDE is at the bottom
+    const Pp = (x, d) => [EX + u(x), PY + u(d)];          // d from the inside face towards outside
+    CONSTRUCTIONS['steel-window'] = {
+      id: 'steel-window', title: 'Steel Window: Elevation and Plan (1:20)', scale: '1:20',
+      summary: 'A steel window with a fixed pane and a side-hung opening sash, drawn in elevation and in a partial plan of a 222 mm load-bearing wall, with the conventional opening-sash symbol and the fibre-cement sill.',
+      bounds: { w: 120, h: 130 },
+      workbookPrompt: 'Draw, to scale 1:20, the elevation and the partial plan of the 1500 x 1200 steel window in a 222 mm load-bearing wall. Show the frame, the fixed pane, the opening sash with its symbol and the 100 x 25 fibre-cement sill.',
+      steps: [
+        { id: 1, instruction: 'ELEVATION: draw the window opening, 1500 wide and 1200 high (75 x 60 at 1:20).', calloutAt: E(W / 2, H / 2), reveals: [{ kind: 'polygon', points: [E(0, 0), E(W, 0), E(W, H), E(0, H)], lineType: 'A' }] },
+        { id: 2, instruction: 'Draw the steel frame (25 mm all round) and the mullion 500 from the left that divides the opening sash from the fixed pane.', calloutAt: E(mull, H / 2), reveals: [
+          { kind: 'polygon', points: [E(fr, fr), E(W - fr, fr), E(W - fr, H - fr), E(fr, H - fr)], lineType: 'B' },
+          { kind: 'line', p1: E(mull, fr), p2: E(mull, H - fr), lineType: 'B' }, { kind: 'line', p1: E(mull + fr, fr), p2: E(mull + fr, H - fr), lineType: 'B' }] },
+        { id: 3, instruction: 'The opening sash symbol: broken lines from the two corners on the opening side to the middle of the hinge side. Here the sash is hinged on the left.', calloutAt: E(mull / 2, H / 2), reveals: [
+          { kind: 'line', p1: E(mull, H - fr), p2: E(fr, H / 2), lineType: 'hidden' }, { kind: 'line', p1: E(mull, fr), p2: E(fr, H / 2), lineType: 'hidden' }] },
+        { id: 4, instruction: 'The 100 x 25 fibre-cement sill below the window, projecting past it on both sides.', calloutAt: E(W / 2, -10), reveals: [
+          { kind: 'polygon', points: [E(-50, 0), E(W + 50, 0), E(W + 50, -25), E(-50, -25)], lineType: 'A' },
+          lbl([EX + u(W) / 2, EY - 12], 'ELEVATION / AANSIG', { size: 3.2, color: '#fde047' })] },
+        { id: 5, instruction: 'PARTIAL PLAN, straight below the elevation: the 222 mm wall either side of the opening, hatched.', calloutAt: Pp(-200, wall / 2), reveals: [
+          ...[[-600, 0], [W, W + 600]].flatMap(([a, b]) => { const pl = [Pp(a, 0), Pp(b, 0), Pp(b, wall), Pp(a, wall)]; return [{ kind: 'polygon', points: pl, lineType: 'A' }, ...hatchBox(pl[0][0], pl[0][1], pl[2][0], pl[2][1], 1.4)]; })] },
+        { id: 6, instruction: 'The frame in the middle of the wall thickness, the glass line, and the sill projecting past the outside face. Civil drawings use 1st-angle projection, so in this plan (below the elevation) the outside of the wall is at the bottom.', calloutAt: Pp(W / 2, wall / 2), reveals: [
+          { kind: 'line', p1: Pp(0, wall / 2 - 12), p2: Pp(W, wall / 2 - 12), lineType: 'A' }, { kind: 'line', p1: Pp(0, wall / 2 + 13), p2: Pp(W, wall / 2 + 13), lineType: 'A' },
+          { kind: 'line', p1: Pp(0, wall / 2), p2: Pp(W, wall / 2), lineType: 'B' },
+          { kind: 'polyline', points: [Pp(-50, wall), Pp(-50, wall + 60), Pp(W + 50, wall + 60), Pp(W + 50, wall)], lineType: 'B' },
+          lbl([EX + u(W) / 2, PY + u(wall) + 10], 'PARTIAL PLAN / GEDEELTELIKE PLAN', { size: 3.2, color: '#fde047' }),
+          { kind: 'dimension', p1: E(0, H), p2: E(W, H), offset: -6, text: '1500' }, { kind: 'dimension', p1: E(W, 0), p2: E(W, H), offset: -6, text: '1200' }] },
+      ],
+    };
+  })();
+
+  // ── Door openings with frame profile and swing, 1:10 ──
+  function doorOpening(id, title, wallMm, external) {
+    const S = 10, u = mm => mm / S;
+    const opening = 900, frameW = 55, frameD = external ? 120 : 95, leafT = 40;
+    const X0 = 20, Y0 = 60;                                  // inside face of the wall at y = Y0
+    const P = (x, d) => [X0 + u(x), Y0 - u(d)];              // d measured from the inside face out
+    const wallL = [[-500, 0], [0, wallMm]], wallR = [[opening, 0], [opening + 500, wallMm]];
+    // the steel frame profile at each jamb (a U wrapped round the wall end), simplified
+    const frame = side => {
+      const x = side < 0 ? 0 : opening, s = side < 0 ? 1 : -1;
+      const d0 = (wallMm - frameD) / 2, d1 = d0 + frameD;
+      return { kind: 'polygon', points: [P(x, d0), P(x + s * frameW, d0), P(x + s * frameW, d1), P(x, d1)], lineType: 'A' };
+    };
+    const hinge = [opening - frameW, (wallMm - frameD) / 2];
+    const leaf = opening - 2 * frameW;
+    return {
+      id, title, scale: '1:10',
+      summary: 'The plan of a door opening in a ' + wallMm + ' mm ' + (external ? 'load-bearing' : 'non-load-bearing') + ' wall at 1:10: the wall ends hatched, the steel door frame at each jamb, the ' + leafT + ' mm door leaf and its swing.',
+      bounds: { w: 180, h: 110 },
+      workbookPrompt: 'Using the given frame profile, draw to scale 1:10 the plan of the ' + (external ? 'external' : 'internal') + ' door opening in a ' + wallMm + ' mm wall: the frame profile at both jambs, the door (' + leafT + ' mm thick) and the door swing.',
+      steps: [
+        { id: 1, instruction: 'Draw the two ends of the ' + wallMm + ' mm wall either side of the 900 mm opening (' + u(wallMm) + ' mm thick at 1:10).', calloutAt: P(-250, wallMm / 2), reveals: [wallL, wallR].map(([a, b]) => ({ kind: 'polygon', points: [P(a[0], a[1]), P(b[0], a[1]), P(b[0], b[1]), P(a[0], b[1])], lineType: 'A' })) },
+        { id: 2, instruction: 'Hatch the wall ends at 45°.', calloutAt: P(-250, wallMm / 2), reveals: [wallL, wallR].flatMap(([a, b]) => { const p = P(a[0], a[1]), q = P(b[0], b[1]); return hatchBox(p[0], p[1], q[0], q[1], 1.6); }) },
+        { id: 3, instruction: 'The steel door frame at each jamb: ' + frameW + ' mm on the face of the opening and ' + frameD + ' mm deep, set ' + (external ? 'in the middle of the wall' : 'centred in the thin wall') + '.', calloutAt: P(frameW / 2, wallMm / 2), reveals: [frame(-1), frame(1)] },
+        { id: 4, instruction: 'The door leaf, ' + leafT + ' mm thick, hinged on the right-hand frame and drawn open at 90°, into the room.', calloutAt: P(hinge[0] - leafT / 2, -leaf / 2), reveals: [{ kind: 'polygon', points: [P(hinge[0], hinge[1]), P(hinge[0] - leafT, hinge[1]), P(hinge[0] - leafT, hinge[1] - leaf), P(hinge[0], hinge[1] - leaf)], lineType: 'A' }] },
+        { id: 5, instruction: 'The door swing: a thin quarter circle from the edge of the open leaf to the far frame. Label the view and dimension the opening.', calloutAt: P(opening / 2, -leaf / 2), reveals: [
+          { kind: 'arc-construction', center: P(hinge[0], hinge[1]), r: u(leaf), startDeg: 90, endDeg: 180, lineType: 'C' },
+          { kind: 'dimension', p1: P(0, wallMm), p2: P(opening, wallMm), offset: -8, text: '900' },
+          { kind: 'dimension', p1: P(opening + 500, 0), p2: P(opening + 500, wallMm), offset: -8, text: String(wallMm) },
+          lbl([X0 + u(opening) / 2, Y0 + u(leaf) + 12], (external ? 'EXTERNAL DOOR / EKSTERNE DEUR' : 'INTERNAL DOOR / INTERNE DEUR') + ' - PLAN 1:10', { size: 3.2, color: '#fde047' })] },
+      ],
+    };
+  }
+  CONSTRUCTIONS['door-external'] = doorOpening('door-external', 'External Door Opening (1:10)', 222, true);
+  CONSTRUCTIONS['door-internal'] = doorOpening('door-internal', 'Internal Door Opening (1:10)', 111, false);
+
+  // ── Bathroom floor plan, 1:25, with a schedule of areas ──
+  (function () {
+    const S = 25, u = mm => mm / S;
+    const IW = 2400, IH = 1800, ext = 222, int = 111;
+    const X0 = 20, Y0 = 20;                                   // inside top-left corner
+    const P = (x, y) => [X0 + u(x), Y0 + u(y)];               // y downwards on the sheet
+    const door = [1300, 800];                                 // in the bottom (internal) wall
+    const win = [500, 1200];                                  // in the top (external) wall
+    const rect = (x0, y0, x1, y1) => [P(x0, y0), P(x1, y0), P(x1, y1), P(x0, y1)];
+    const walls = [
+      [-ext, -ext, win[0], 0], [win[0] + win[1], -ext, IW + ext, 0],                   // top, either side of the window
+      [-ext, 0, 0, IH + int], [IW, 0, IW + ext, IH + int],                              // left and right
+      [0, IH, door[0], IH + int], [door[0] + door[1], IH, IW, IH + int],                // bottom, either side of the door
+    ];
+    CONSTRUCTIONS['bathroom-plan'] = {
+      id: 'bathroom-plan', title: 'Bathroom Floor Plan (1:25)', scale: '1:25',
+      summary: 'A bathroom plan at 1:25: 222 mm external walls and a 111 mm internal wall, hatched; door and window; bath, WC and wash basin from the symbols sheet; the room name, floor finish and a schedule of areas.',
+      bounds: { w: 160, h: 130 },
+      workbookPrompt: 'Draw the floor plan of the bathroom (inside 2400 x 1800) to scale 1:25: 222 mm external walls, a 111 mm internal wall with the 800 door, the 1200 window, the bath, WC and wash basin, all hatching, labels and a schedule of areas.',
+      steps: [
+        { id: 1, instruction: 'Draw the walls: 222 mm on the outside (top, left, right), 111 mm on the inside (bottom). Leave the window and door openings open.', calloutAt: P(IW / 2, -ext / 2), reveals: walls.map(w => ({ kind: 'polygon', points: rect(...w), lineType: 'A' })) },
+        { id: 2, instruction: 'Hatch all the walls at 45°.', calloutAt: P(-ext / 2, IH / 2), reveals: walls.flatMap(w => { const a = P(w[0], w[1]), b = P(w[2], w[3]); return hatchBox(a[0], a[1], b[0], b[1], 1.4); }) },
+        { id: 3, instruction: 'The window in the top wall: frame and glass lines in the middle of the wall, and the sill outside.', calloutAt: P(win[0] + win[1] / 2, -ext / 2), reveals: [
+          { kind: 'line', p1: P(win[0], -ext / 2 - 12), p2: P(win[0] + win[1], -ext / 2 - 12), lineType: 'A' }, { kind: 'line', p1: P(win[0], -ext / 2 + 12), p2: P(win[0] + win[1], -ext / 2 + 12), lineType: 'A' },
+          { kind: 'polyline', points: [P(win[0] - 50, -ext), P(win[0] - 50, -ext - 60), P(win[0] + win[1] + 50, -ext - 60), P(win[0] + win[1] + 50, -ext)], lineType: 'B' }] },
+        { id: 4, instruction: 'The door in the internal wall: frames, the leaf open against the wall, and its swing into the bathroom.', calloutAt: P(door[0] + door[1] / 2, IH - 200), reveals: [
+          { kind: 'polygon', points: rect(door[0], IH, door[0] + 40, IH + int), lineType: 'A' }, { kind: 'polygon', points: rect(door[0] + door[1] - 40, IH, door[0] + door[1], IH + int), lineType: 'A' },
+          { kind: 'polygon', points: rect(door[0] + door[1] - 80, IH - 720, door[0] + door[1] - 40, IH), lineType: 'A' },
+          { kind: 'arc-construction', center: P(door[0] + door[1] - 40, IH), r: u(720), startDeg: 180, endDeg: 270, lineType: 'C' }] },
+        { id: 5, instruction: 'The BATH (1700 x 750) along the top wall from the left corner.', calloutAt: P(850, 375), reveals: [
+          { kind: 'polygon', points: rect(0, 0, 1700, 750), lineType: 'A' }, { kind: 'polygon', points: rect(80, 70, 1640, 680), lineType: 'B' }, { kind: 'circle', center: P(180, 375), r: u(40), lineType: 'B' },
+          lbl(P(850, 420), 'B', { size: 3.2 })] },
+        { id: 6, instruction: 'The WC (500 x 850) against the right wall, and the WASH BASIN (600 x 450) against the left wall.', calloutAt: P(IW - 425, 1100), reveals: [
+          { kind: 'polygon', points: rect(IW - 250, 900, IW, 1400), lineType: 'A' },
+          { kind: 'polyline', points: Array.from({ length: 25 }, (_, i) => { const a = Math.PI / 2 + Math.PI * i / 24; return P(IW - 250 + 600 * Math.cos(a), 1150 + 230 * Math.sin(a)); }), lineType: 'A' },
+          { kind: 'polygon', points: rect(0, 1050, 450, 1650), lineType: 'A' },
+          { kind: 'polyline', points: Array.from({ length: 33 }, (_, i) => { const a = 2 * Math.PI * i / 32; return P(210 + 150 * Math.cos(a), 1350 + 220 * Math.sin(a)); }), lineType: 'B' },
+          lbl(P(IW - 420, 1180), 'WC', { size: 2.8 }), lbl(P(225, 1380), 'WB', { size: 2.8 })] },
+        { id: 7, instruction: 'Label the room and its floor finish, dimension the inside sizes, and complete the schedule of areas: floor area 2.4 x 1.8 = 4.32 m², perimeter 2 x (2.4 + 1.8) = 8.4 m.', calloutAt: P(IW / 2, IH / 2 + 300), reveals: [
+          lbl(P(830, 1000), 'BATHROOM / BADKAMER', { size: 2.8 }), lbl(P(830, 1150), 'TILES / TEËLS', { size: 2.4, color: '#94a3b8' }),
+          { kind: 'dimension', p1: P(0, -ext), p2: P(IW, -ext), offset: -8, text: '2400' }, { kind: 'dimension', p1: P(IW + ext, 0), p2: P(IW + ext, IH), offset: -8, text: '1800' },
+          lbl([X0 + u(IW) + 26, Y0 + 30], 'SCHEDULE OF AREAS', { anchor: 'start', size: 3, color: '#fde047' }),
+          lbl([X0 + u(IW) + 26, Y0 + 36], 'Area: 2.4 x 1.8 = 4.32 m²', { anchor: 'start', size: 2.8 }),
+          lbl([X0 + u(IW) + 26, Y0 + 41], 'Perimeter: 8.4 m', { anchor: 'start', size: 2.8 }),
+          lbl([X0 + u(IW) / 2, Y0 + u(IH + int) + 12], 'FLOOR PLAN / VLOERPLAN  1:25', { size: 3.2, color: '#fde047' })] },
+      ],
+    };
+  })();
+
   // ── Practice questions ──
   const PRACTICE_QUESTIONS = [
     {
@@ -660,7 +810,7 @@
     {
       text: 'What visually distinguishes a load-bearing wall from a non-load-bearing (partition) wall on a floor plan?',
       options: [
-        'The load-bearing wall is drawn noticeably thicker (e.g. 250 mm vs 110 mm), since it must be strong enough to carry structural load down to the foundation',
+        'The load-bearing wall is drawn noticeably thicker (222 mm against 111 mm), since it must be strong enough to carry structural load down to the foundation',
         'Load-bearing walls are always drawn in a different colour',
         'There is no visual difference between the two on a floor plan',
         'Non-load-bearing walls are never shown on a floor plan at all',
@@ -672,8 +822,9 @@
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
-    'floor-plan', 'foundation-section', 'foundation-section-110', 'bathroom-fixtures',
-    'electrical-symbols', 'roof-detail-section', 'window-detail', 'drainage-waste-line',
+    'floor-plan', 'area-perimeter', 'foundation-section', 'foundation-section-110', 'steel-window',
+    'door-external', 'door-internal', 'bathroom-fixtures', 'bathroom-plan', 'electrical-symbols',
+    'roof-detail-section', 'window-detail', 'drainage-waste-line',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);
