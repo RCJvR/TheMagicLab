@@ -6,13 +6,29 @@
 
   // Generates 45°-hatching line segments clipped to a rectangle [x0,x0+w] x [y0,y0+h].
   // Hatching is B-weight (medium) per the CAPS/SANS line-type spec, not C.
-  function hatchRect(x0, y0, w, h, spacing) {
+  // reverse = true hatches the other way (\\ instead of //), for the second of two adjacent parts.
+  function hatchRect(x0, y0, w, h, spacing, reverse) {
     const lines = [];
+    const X = u => reverse ? x0 + w - u : x0 + u;
     for (let k = -h; k <= w + 0.01; k += spacing) {
       const vLo = Math.max(0, -k), vHi = Math.min(h, w - k);
       if (vHi <= vLo) continue;
       const u1 = vLo + k, v1 = vLo, u2 = vHi + k, v2 = vHi;
-      lines.push({ kind: 'line', p1: [x0 + u1, y0 + v1], p2: [x0 + u2, y0 + v2], lineType: 'B' });
+      lines.push({ kind: 'line', p1: [X(u1), y0 + v1], p2: [X(u2), y0 + v2], lineType: 'B' });
+    }
+    return lines;
+  }
+
+  // 45° hatching inside a circle, keeping only the part below y = cutY (a round bar with a flat on top).
+  function hatchCircleBelow(cx, cy, r, cutY, spacing) {
+    const lines = [], s2 = Math.SQRT1_2;
+    for (let o = -r + spacing / 2; o < r; o += spacing) {
+      const c = [cx + o * s2, cy - o * s2];          // point on the line nearest the centre
+      const half = Math.sqrt(r * r - o * o);
+      let t0 = -half, t1 = half;                     // direction (1, 1) / sqrt 2
+      t0 = Math.max(t0, (cutY - c[1]) / s2);
+      if (t1 <= t0) continue;
+      lines.push({ kind: 'line', p1: [c[0] + t0 * s2, c[1] + t0 * s2], p2: [c[0] + t1 * s2, c[1] + t1 * s2], lineType: 'B' });
     }
     return lines;
   }
@@ -26,7 +42,9 @@
     const holeX = 100, holeTopY = tv.y + tv.h / 2, holeR = 4;
     // Side view: aligned to the right of front view (same Y range as front view)
     const sv = { x: 135, y: 70, w: 15, h: 40 };
-    const holeSideY = 102.5;
+    // In 3rd angle the edge of the side view nearest the front view is the FRONT of the
+    // part, so the hole (half-way back in the top view) sits half-way across the side view.
+    const holeSideX = sv.x + (tv.y + tv.h - holeTopY);
 
     CONSTRUCTIONS['l-bracket-views'] = {
       id: 'l-bracket-views', title: 'L-Bracket: Three Views',
@@ -42,20 +60,24 @@
         },
         {
           id: 2,
-          instruction: 'Project the TOP view directly ABOVE the front view — this is the rule for 3rd-angle projection. Align it using thin projection lines from the front view\'s left and right edges.',
+          instruction: 'Project the TOP view directly ABOVE the front view — this is the rule for 3rd-angle projection. Align it using thin projection lines from the front view\'s left and right edges. From above you see the top of the upright and, lower down, the top of the base, so draw the line where they meet (x = 75).',
           calloutAt: [60, 55],
           reveals: [
             { kind: 'polygon', points: [[tv.x, tv.y], [tv.x + tv.w, tv.y], [tv.x + tv.w, tv.y + tv.h], [tv.x, tv.y + tv.h]], lineType: 'A' },
+            { kind: 'line', p1: [75, tv.y], p2: [75, tv.y + tv.h], lineType: 'A' },
+            { kind: 'line', p1: [75, 70], p2: [75, 55], lineType: 'construction' },
             { kind: 'line', p1: [60, 70], p2: [60, 55], lineType: 'construction' },
             { kind: 'line', p1: [120, 70], p2: [120, 55], lineType: 'construction' },
           ],
         },
         {
           id: 3,
-          instruction: 'Project the (right) SIDE view to the RIGHT of the front view, aligned by height using thin projection lines from the front view\'s top and bottom edges.',
+          instruction: 'Project the (right) SIDE view to the RIGHT of the front view, aligned by height using thin projection lines from the front view\'s top and bottom edges. From the right you see the end of the base with the upright standing behind it, so the top edge of the base shows as a line across the view.',
           calloutAt: [142, 90],
           reveals: [
             { kind: 'polygon', points: [[sv.x, sv.y], [sv.x + sv.w, sv.y], [sv.x + sv.w, sv.y + sv.h], [sv.x, sv.y + sv.h]], lineType: 'A' },
+            { kind: 'line', p1: [sv.x, 95], p2: [sv.x + sv.w, 95], lineType: 'A' },
+            { kind: 'line', p1: [120, 95], p2: [135, 95], lineType: 'construction' },
             { kind: 'line', p1: [120, 70], p2: [135, 70], lineType: 'construction' },
             { kind: 'line', p1: [120, 110], p2: [135, 110], lineType: 'construction' },
           ],
@@ -68,18 +90,19 @@
             { kind: 'circle', center: [holeX, holeTopY], r: holeR, lineType: 'A' },
             { kind: 'line', p1: [holeX - holeR, 95], p2: [holeX - holeR, 110], lineType: 'hidden' },
             { kind: 'line', p1: [holeX + holeR, 95], p2: [holeX + holeR, 110], lineType: 'hidden' },
-            { kind: 'line', p1: [sv.x, holeSideY - holeR], p2: [sv.x + sv.w, holeSideY - holeR], lineType: 'hidden' },
-            { kind: 'line', p1: [sv.x, holeSideY + holeR], p2: [sv.x + sv.w, holeSideY + holeR], lineType: 'hidden' },
+            { kind: 'line', p1: [holeSideX - holeR, 95], p2: [holeSideX - holeR, 110], lineType: 'hidden' },
+            { kind: 'line', p1: [holeSideX + holeR, 95], p2: [holeSideX + holeR, 110], lineType: 'hidden' },
           ],
         },
         {
           id: 5,
-          instruction: 'Add a centre line (chain line) through the hole in every view, then dimension the bracket\'s overall width and height.',
+          instruction: 'Add centre lines (chain lines): two crossing lines through the circle in the top view, and the hole\'s vertical axis in the front and side views. Then dimension the bracket\'s overall width and height.',
           calloutAt: [90, 130],
           reveals: [
             { kind: 'line', p1: [holeX, tv.y - 4], p2: [holeX, tv.y + tv.h + 4], lineType: 'centre' },
-            { kind: 'line', p1: [holeX - holeR - 5, 102.5], p2: [holeX + holeR + 5, 102.5], lineType: 'centre' },
-            { kind: 'line', p1: [sv.x - 4, holeSideY], p2: [sv.x + sv.w + 4, holeSideY], lineType: 'centre' },
+            { kind: 'line', p1: [holeX - holeR - 4, holeTopY], p2: [holeX + holeR + 4, holeTopY], lineType: 'centre' },
+            { kind: 'line', p1: [holeX, 91], p2: [holeX, 114], lineType: 'centre' },
+            { kind: 'line', p1: [holeSideX, 91], p2: [holeSideX, 114], lineType: 'centre' },
             { kind: 'dimension', p1: [60, 116], p2: [120, 116], offset: 8, text: '60' },
             { kind: 'dimension', p1: [46, 70], p2: [46, 110], offset: -8, text: '40' },
             { kind: 'label', at: [60, 136], text: 'THIRD-ANGLE PROJECTION', size: 4, anchor: 'start', color: '#94a3b8' },
@@ -185,31 +208,33 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the plate outline, mark BOTH hole positions with centre lines (the pattern is symmetric), and draw the plate\'s own vertical centre line — the axis the section is built around.',
+          instruction: 'This is the front view of a block with two holes drilled straight down through it. Draw the outline, the vertical centre line (axis) of BOTH holes (the pattern is symmetric), and the block\'s own vertical centre line: the line the half section is built around.',
           calloutAt: [CX, PLATE.y + PLATE.h / 2],
           reveals: [
             { kind: 'polygon', points: [[PLATE.x, PLATE.y], [PLATE.x + PLATE.w, PLATE.y], [PLATE.x + PLATE.w, PLATE.y + PLATE.h], [PLATE.x, PLATE.y + PLATE.h]], lineType: 'A' },
-            { kind: 'line', p1: [leftHole[0] - holeR - 4, leftHole[1]], p2: [leftHole[0] + holeR + 4, leftHole[1]], lineType: 'centre' },
-            { kind: 'line', p1: [rightHole[0] - holeR - 4, rightHole[1]], p2: [rightHole[0] + holeR + 4, rightHole[1]], lineType: 'centre' },
+            { kind: 'line', p1: [leftHole[0], PLATE.y - 4], p2: [leftHole[0], PLATE.y + PLATE.h + 4], lineType: 'centre' },
+            { kind: 'line', p1: [rightHole[0], PLATE.y - 4], p2: [rightHole[0], PLATE.y + PLATE.h + 4], lineType: 'centre' },
             { kind: 'line', p1: [CX, PLATE.y - 6], p2: [CX, PLATE.y + PLATE.h + 6], lineType: 'centre' },
           ],
         },
         {
           id: 2,
-          instruction: 'Section the RIGHT half only: hatch the solid material (leaving a gap for the hole) and draw that hole\'s edges as solid Type A lines — they are exposed by the cut.',
+          instruction: 'Section the RIGHT half only: hatch the solid material, leaving the hole unhatched (it is empty space). The cut exposes the two sides of the hole, so draw them as solid Type A lines from top to bottom.',
           calloutAt: [rightHole[0] + 20, rightHole[1]],
           reveals: [
             ...hatchRect(CX, PLATE.y, rightHole[0] - holeR - CX, PLATE.h, 4),
             ...hatchRect(rightHole[0] + holeR, PLATE.y, (PLATE.x + PLATE.w) - (rightHole[0] + holeR), PLATE.h, 4),
-            { kind: 'circle', center: rightHole, r: holeR, lineType: 'A' },
+            { kind: 'line', p1: [rightHole[0] - holeR, PLATE.y], p2: [rightHole[0] - holeR, PLATE.y + PLATE.h], lineType: 'A' },
+            { kind: 'line', p1: [rightHole[0] + holeR, PLATE.y], p2: [rightHole[0] + holeR, PLATE.y + PLATE.h], lineType: 'A' },
           ],
         },
         {
           id: 3,
-          instruction: 'Leave the LEFT half completely plain — no hatching, and no line at all for the left hole. Because the plate is symmetric, repeating it (even as hidden detail) would only clutter the drawing.',
+          instruction: 'Leave the LEFT half as a plain outside view: no hatching, and no hidden lines for the left hole, only its centre line. Hidden detail is left out of a half section because the sectioned half already shows it.',
           calloutAt: [leftHole[0] - 15, leftHole[1] + 20],
           reveals: [
-            { kind: 'label', at: [PLATE.x + 4, PLATE.y + PLATE.h - 4], text: 'PLAIN (UNSECTIONED)', size: 3.8, anchor: 'start', color: '#94a3b8' },
+            { kind: 'label', at: [(PLATE.x + CX) / 2, PLATE.y + PLATE.h + 9], text: 'OUTSIDE VIEW', size: 3.6, anchor: 'middle', color: '#94a3b8' },
+            { kind: 'label', at: [(CX + PLATE.x + PLATE.w) / 2, PLATE.y + PLATE.h + 9], text: 'SECTIONED', size: 3.6, anchor: 'middle', color: '#94a3b8' },
           ],
         },
         {
@@ -217,9 +242,9 @@
           instruction: 'Label the view HALF SECTION and dimension the overall width and hole spacing.',
           calloutAt: [CX, PLATE.y + PLATE.h + 20],
           reveals: [
-            { kind: 'label', at: [PLATE.x, PLATE.y + PLATE.h + 30], text: 'HALF SECTION', size: 5, anchor: 'start', color: '#fde047' },
-            { kind: 'dimension', p1: [PLATE.x, PLATE.y - 10], p2: [PLATE.x + PLATE.w, PLATE.y - 10], offset: -6, text: PLATE.w.toFixed(0) },
-            { kind: 'dimension', p1: leftHole, p2: rightHole, offset: 14, text: (rightHole[0] - leftHole[0]).toFixed(0) },
+            { kind: 'label', at: [CX, PLATE.y + PLATE.h + 22], text: 'HALF SECTION', size: 5, anchor: 'middle', color: '#fde047' },
+            { kind: 'dimension', p1: [PLATE.x, PLATE.y], p2: [PLATE.x + PLATE.w, PLATE.y], offset: -20, text: PLATE.w.toFixed(0) },
+            { kind: 'dimension', p1: [leftHole[0], PLATE.y - 4], p2: [rightHole[0], PLATE.y - 4], offset: -6, text: (rightHole[0] - leftHole[0]).toFixed(0) },
           ],
         },
       ],
@@ -228,13 +253,13 @@
 
   // ── 4. Auxiliary View — True Shape of an Inclined Face ──
   (function () {
-    const P1 = [60, 80], P2 = [100, 60]; // inclined edge, front view (already true length)
+    const P1 = [60, 90], P2 = [85, 60]; // inclined edge, front view (already true length)
     const FV = [[60, 110], P1, P2, [140, 60], [140, 110]];
-    const TV = { x: 60, y: 15, w: 80, h: 30 }; // top view, depth = 30
-    const DEPTH = 30, GAP = 15;
+    const TV = { x: 60, y: 5, w: 80, h: 30 }; // top view (above the front view: 3rd angle), depth = 30
+    const DEPTH = 30, GAP = 12;
     const d = [P2[0] - P1[0], P2[1] - P1[1]];
     const len = Math.hypot(d[0], d[1]);
-    const perp = [-d[1] / len, d[0] / len]; // outward (away from the block)
+    const perp = [d[1] / len, -d[0] / len]; // outward: up and to the left, away from the block
     const F1 = [P1[0] + perp[0] * GAP, P1[1] + perp[1] * GAP];
     const F2 = [P2[0] + perp[0] * GAP, P2[1] + perp[1] * GAP];
     const A1 = [P1[0] + perp[0] * (GAP + DEPTH), P1[1] + perp[1] * (GAP + DEPTH)];
@@ -248,13 +273,15 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the front view (the inclined edge is already TRUE LENGTH here, since it lies in a plane parallel to the front view) and the top view, showing the block\'s depth.',
+          instruction: 'Draw the front view (the inclined edge is already TRUE LENGTH here, since it lies in a plane parallel to the front view) and the top view above it, showing the block\'s depth. Seen from above, the sloping face is a strip, so the top view needs a line where the slope meets the flat top.',
           measurement: { label: 'depth = 30 mm' },
           calloutAt: [100, 90],
           reveals: [
             { kind: 'polygon', points: FV, lineType: 'A' },
             { kind: 'polygon', points: [[TV.x, TV.y], [TV.x + TV.w, TV.y], [TV.x + TV.w, TV.y + TV.h], [TV.x, TV.y + TV.h]], lineType: 'A' },
-            { kind: 'dimension', p1: [TV.x - 8, TV.y], p2: [TV.x - 8, TV.y + TV.h], offset: -6, text: DEPTH.toFixed(0) },
+            { kind: 'line', p1: [P2[0], TV.y], p2: [P2[0], TV.y + TV.h], lineType: 'A' },
+            { kind: 'line', p1: [P2[0], P2[1]], p2: [P2[0], TV.y + TV.h], lineType: 'construction' },
+            { kind: 'dimension', p1: [TV.x + TV.w, TV.y], p2: [TV.x + TV.w, TV.y + TV.h], offset: -8, text: DEPTH.toFixed(0) },
           ],
         },
         {
@@ -284,7 +311,7 @@
           calloutAt: G.midpoint(G.midpoint(F1, F2), G.midpoint(A1, A2)),
           reveals: [
             { kind: 'polygon', points: [F1, F2, A2, A1], lineType: 'A' },
-            { kind: 'label', at: [Math.min(A1[0], A2[0]) - 4, Math.min(A1[1], A2[1]) - 4], text: 'AUXILIARY VIEW — TRUE SHAPE', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [A1[0] - 2, A1[1] + 9], text: 'TRUE SHAPE', size: 4, anchor: 'middle', color: '#fde047' },
           ],
         },
       ],
@@ -295,14 +322,22 @@
   (function () {
     const Y_TOP = 80, Y_BOT = 100, CY = 90;
     const LEFT_END = 30, BREAK1 = 85, BREAK2 = 115, RIGHT_END = 190;
-    function breakZigzag(x, yTop, yBot, amp, n) {
-      const pts = []; const step = (yBot - yTop) / n;
-      for (let i = 0; i <= n; i++) {
-        const y = yTop + step * i;
-        const dx = (i === 0 || i === n) ? 0 : (i % 2 === 0 ? -amp : amp);
-        pts.push([x + dx, y]);
+    // Conventional break for a solid round bar: an S-curve across the end, plus a second
+    // curve on one half that makes the small "loop" (the bar's curved surface turning away).
+    function bulge(x, y0, y1, amount) {
+      const pts = [];
+      for (let i = 0; i <= 12; i++) {
+        const t = i / 12;
+        pts.push([x + amount * Math.sin(Math.PI * t), y0 + (y1 - y0) * t]);
       }
       return pts;
+    }
+    function roundBreak(x, dir) {
+      const a = 3.5 * dir;
+      return [
+        { kind: 'polyline', points: bulge(x, Y_TOP, CY, a).concat(bulge(x, CY, Y_BOT, -a).slice(1)), lineType: 'B' },
+        { kind: 'polyline', points: dir > 0 ? bulge(x, Y_TOP, CY, a * 2.4) : bulge(x, CY, Y_BOT, a * 2.4), lineType: 'B' },
+      ];
     }
     CONSTRUCTIONS['break-line-shaft'] = {
       id: 'break-line-shaft', title: 'Break-Line Convention — Shortening a Long Shaft',
@@ -334,11 +369,11 @@
         },
         {
           id: 3,
-          instruction: 'Add the break-line symbol (a jagged line) at each cut — this tells the reader that material has been removed from the DRAWING, not from the real part.',
+          instruction: 'Add the break symbol at each cut. For a solid ROUND bar the convention is an S-shaped curve with a small loop on one half (zigzag break lines are for flat parts and long breaks). It tells the reader that material has been left out of the DRAWING, not the real part.',
           calloutAt: [(BREAK1 + BREAK2) / 2, CY],
           reveals: [
-            { kind: 'polyline', points: breakZigzag(BREAK1, Y_TOP - 3, Y_BOT + 3, 3, 6), lineType: 'B' },
-            { kind: 'polyline', points: breakZigzag(BREAK2, Y_TOP - 3, Y_BOT + 3, 3, 6), lineType: 'B' },
+            ...roundBreak(BREAK1, 1),
+            ...roundBreak(BREAK2, -1),
           ],
         },
         {
@@ -357,12 +392,19 @@
   (function () {
     const CX = 100, PLATE_L = 60, PLATE_R = 140;
     const P1_TOP = 60, P1_BOT = 72, P2_TOP = 72, P2_BOT = 88;
-    const HOLE_R = 5;
+    const HOLE_R = 6; // clearance hole: a little larger than the 10 mm shank
     const HEAD_TOP = 48, HEAD_BOT = 60, HEAD_AF = 18, HEAD_R = HEAD_AF / Math.sqrt(3);
     const SHANK_R = 5, SHANK_BOT = 98;
     const NUT_TOP = 98, NUT_BOT = 110, NUT_AF = 16, NUT_R = NUT_AF / Math.sqrt(3);
-    const headHex = G.regularPolygonInCircle([CX, (HEAD_TOP + HEAD_BOT) / 2], HEAD_R, 6, 0);
-    const nutHex = G.regularPolygonInCircle([CX, (NUT_TOP + NUT_BOT) / 2], NUT_R, 6, 0);
+    // Head and nut drawn across corners, as they are conventionally shown in a front view:
+    // a rectangle 2R wide with the two vertical edges between the three visible faces.
+    function hexSide(top, bot, R) {
+      return [
+        { kind: 'polygon', points: [[CX - R, top], [CX + R, top], [CX + R, bot], [CX - R, bot]], lineType: 'A' },
+        { kind: 'line', p1: [CX - R / 2, top], p2: [CX - R / 2, bot], lineType: 'A' },
+        { kind: 'line', p1: [CX + R / 2, top], p2: [CX + R / 2, bot], lineType: 'A' },
+      ];
+    }
 
     CONSTRUCTIONS['basic-bolted-joint'] = {
       id: 'basic-bolted-joint', title: 'Basic Bolted Joint — Two Plates',
@@ -372,34 +414,38 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the two plates with a clearance gap for the bolt hole, and the bolt (hex head and shank) passing through — drawn as a plain outline only. Fasteners are never hatched, even when the cutting plane runs straight through them.',
+          instruction: 'Draw the two plates with a clearance gap for the bolt hole, and the bolt (hex head and shank) passing through — drawn as a plain outline only. Fasteners are never hatched, even when the cutting plane runs straight through them. Draw the hexagon head across its corners, so three faces show.',
           calloutAt: [CX, HEAD_TOP + 4],
           reveals: [
-            { kind: 'polygon', points: [[PLATE_L, P1_TOP], [PLATE_R, P1_TOP], [PLATE_R, P1_BOT], [PLATE_L, P1_BOT]], lineType: 'A' },
-            { kind: 'polygon', points: [[PLATE_L, P2_TOP], [PLATE_R, P2_TOP], [PLATE_R, P2_BOT], [PLATE_L, P2_BOT]], lineType: 'A' },
-            { kind: 'polygon', points: headHex, lineType: 'A' },
-            { kind: 'line', p1: [CX - SHANK_R, HEAD_BOT], p2: [CX - SHANK_R, SHANK_BOT], lineType: 'A' },
-            { kind: 'line', p1: [CX + SHANK_R, HEAD_BOT], p2: [CX + SHANK_R, SHANK_BOT], lineType: 'A' },
+            // each plate is cut through its hole, so it shows as two pieces either side of the bolt
+            ...[[P1_TOP, P1_BOT], [P2_TOP, P2_BOT]].flatMap(([t, b]) => [
+              { kind: 'polygon', points: [[PLATE_L, t], [CX - HOLE_R, t], [CX - HOLE_R, b], [PLATE_L, b]], lineType: 'A' },
+              { kind: 'polygon', points: [[CX + HOLE_R, t], [PLATE_R, t], [PLATE_R, b], [CX + HOLE_R, b]], lineType: 'A' },
+            ]),
+            ...hexSide(HEAD_TOP, HEAD_BOT, HEAD_R),
+            { kind: 'line', p1: [CX - SHANK_R, HEAD_BOT], p2: [CX - SHANK_R, NUT_TOP], lineType: 'A' },
+            { kind: 'line', p1: [CX + SHANK_R, HEAD_BOT], p2: [CX + SHANK_R, NUT_TOP], lineType: 'A' },
           ],
         },
         {
           id: 2,
-          instruction: 'Hatch both plates, since the section cuts through solid material in each — leave a gap for the bolt hole.',
+          instruction: 'Hatch both plates, since the section cuts through solid material in each, and leave the bolt hole clear. The two plates touch, so hatch them in OPPOSITE directions; that is how the reader sees they are separate parts.',
           calloutAt: [PLATE_L + 15, (P1_TOP + P2_BOT) / 2],
           reveals: [
             ...hatchRect(PLATE_L, P1_TOP, (CX - HOLE_R) - PLATE_L, P1_BOT - P1_TOP, 4),
             ...hatchRect(CX + HOLE_R, P1_TOP, PLATE_R - (CX + HOLE_R), P1_BOT - P1_TOP, 4),
-            ...hatchRect(PLATE_L, P2_TOP, (CX - HOLE_R) - PLATE_L, P2_BOT - P2_TOP, 4),
-            ...hatchRect(CX + HOLE_R, P2_TOP, PLATE_R - (CX + HOLE_R), P2_BOT - P2_TOP, 4),
+            ...hatchRect(PLATE_L, P2_TOP, (CX - HOLE_R) - PLATE_L, P2_BOT - P2_TOP, 4, true),
+            ...hatchRect(CX + HOLE_R, P2_TOP, PLATE_R - (CX + HOLE_R), P2_BOT - P2_TOP, 4, true),
           ],
         },
         {
           id: 3,
-          instruction: 'Add the nut at the bottom of the shank — also left unsectioned — and a centre line through the whole assembly.',
+          instruction: 'Add the nut at the bottom, also unsectioned and drawn across corners, with the end of the bolt standing a little past it. Finish with a centre line through the whole assembly.',
           calloutAt: [CX, (NUT_TOP + NUT_BOT) / 2],
           reveals: [
-            { kind: 'polygon', points: nutHex, lineType: 'A' },
-            { kind: 'line', p1: [CX, HEAD_TOP - 6], p2: [CX, NUT_BOT + 6], lineType: 'centre' },
+            ...hexSide(NUT_TOP, NUT_BOT, NUT_R),
+            { kind: 'polyline', points: [[CX - SHANK_R, NUT_BOT], [CX - SHANK_R, NUT_BOT + 3], [CX + SHANK_R, NUT_BOT + 3], [CX + SHANK_R, NUT_BOT]], lineType: 'A' },
+            { kind: 'line', p1: [CX, HEAD_TOP - 6], p2: [CX, NUT_BOT + 8], lineType: 'centre' },
           ],
         },
         {
@@ -409,7 +455,7 @@
           reveals: [
             { kind: 'dimension', p1: [PLATE_R + 10, P1_TOP], p2: [PLATE_R + 10, P1_BOT], offset: 0, text: (P1_BOT - P1_TOP).toFixed(0) },
             { kind: 'dimension', p1: [PLATE_R + 10, P2_TOP], p2: [PLATE_R + 10, P2_BOT], offset: 0, text: (P2_BOT - P2_TOP).toFixed(0) },
-            { kind: 'label', at: [PLATE_L, P2_BOT + 16], text: 'SECTIONAL FRONT VIEW', size: 4.4, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [CX, NUT_BOT + 18], text: 'SECTIONAL FRONT VIEW', size: 4.4, anchor: 'middle', color: '#fde047' },
           ],
         },
       ],
@@ -420,6 +466,8 @@
   (function () {
     const CY = 90, R = 12, X0 = 40, X1 = 160, FLAT_X0 = 90, FLAT_X1 = 115, FLAT_DEPTH = 5;
     const SEC_CX = 140, SEC_CY = 45;
+    // angle (below the horizontal) at which the flat meets the circle
+    const FLAT_ANG = Math.asin((R - FLAT_DEPTH) / R) * 180 / Math.PI;
     CONSTRUCTIONS['removed-section-flat'] = {
       id: 'removed-section-flat', title: 'Removed Section — Shaft with a Flat',
       summary: 'A feature that\'s hard to read in the main view (a milled flat on a round shaft) can be shown clearly as a removed section — a true cross-section, drawn separately and labelled.',
@@ -444,10 +492,16 @@
         },
         {
           id: 2,
-          instruction: 'Mark the section plane B-B straight through the flat, with direction arrows showing which way to look.',
+          instruction: 'Mark the section plane B-B straight through the flat: a chain line, thick at the ends, with arrows showing which way to look.',
           calloutAt: [(FLAT_X0 + FLAT_X1) / 2, CY],
           reveals: [
             { kind: 'line', p1: [(FLAT_X0 + FLAT_X1) / 2, CY - R - 10], p2: [(FLAT_X0 + FLAT_X1) / 2, CY + R + 10], lineType: 'centre' },
+            { kind: 'line', p1: [(FLAT_X0 + FLAT_X1) / 2, CY - R - 10], p2: [(FLAT_X0 + FLAT_X1) / 2, CY - R - 5], lineType: 'A' },
+            { kind: 'line', p1: [(FLAT_X0 + FLAT_X1) / 2, CY + R + 5], p2: [(FLAT_X0 + FLAT_X1) / 2, CY + R + 10], lineType: 'A' },
+            { kind: 'line', p1: [(FLAT_X0 + FLAT_X1) / 2, CY - R - 10], p2: [(FLAT_X0 + FLAT_X1) / 2 + 8, CY - R - 10], lineType: 'B' },
+            { kind: 'line', p1: [(FLAT_X0 + FLAT_X1) / 2, CY + R + 10], p2: [(FLAT_X0 + FLAT_X1) / 2 + 8, CY + R + 10], lineType: 'B' },
+            { kind: 'polyline', points: [[(FLAT_X0 + FLAT_X1) / 2 + 5, CY - R - 11.8], [(FLAT_X0 + FLAT_X1) / 2 + 8, CY - R - 10], [(FLAT_X0 + FLAT_X1) / 2 + 5, CY - R - 8.2]], lineType: 'B' },
+            { kind: 'polyline', points: [[(FLAT_X0 + FLAT_X1) / 2 + 5, CY + R + 8.2], [(FLAT_X0 + FLAT_X1) / 2 + 8, CY + R + 10], [(FLAT_X0 + FLAT_X1) / 2 + 5, CY + R + 11.8]], lineType: 'B' },
             { kind: 'label', at: [(FLAT_X0 + FLAT_X1) / 2 - 12, CY - R - 12], text: 'B', size: 5, anchor: 'middle', color: '#fde047' },
             { kind: 'label', at: [(FLAT_X0 + FLAT_X1) / 2 - 12, CY + R + 16], text: 'B', size: 5, anchor: 'middle', color: '#fde047' },
           ],
@@ -468,7 +522,8 @@
           calloutAt: [SEC_CX, SEC_CY - R + FLAT_DEPTH / 2],
           reveals: [
             { kind: 'line', p1: [SEC_CX - Math.sqrt(R * R - (R - FLAT_DEPTH) * (R - FLAT_DEPTH)), SEC_CY - R + FLAT_DEPTH], p2: [SEC_CX + Math.sqrt(R * R - (R - FLAT_DEPTH) * (R - FLAT_DEPTH)), SEC_CY - R + FLAT_DEPTH], lineType: 'A' },
-            { kind: 'arc-construction', center: [SEC_CX, SEC_CY], r: R, startDeg: 0, endDeg: 180, lineType: 'A' },
+            { kind: 'arc-construction', center: [SEC_CX, SEC_CY], r: R, startDeg: -FLAT_ANG, endDeg: 180 + FLAT_ANG, lineType: 'A' },
+            ...hatchCircleBelow(SEC_CX, SEC_CY, R, SEC_CY - R + FLAT_DEPTH, 3),
             { kind: 'label', at: [SEC_CX - R, SEC_CY + R + 12], text: 'SECTION B-B', size: 4.4, anchor: 'start', color: '#fde047' },
           ],
         },
