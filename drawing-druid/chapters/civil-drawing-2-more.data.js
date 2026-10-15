@@ -286,4 +286,124 @@
       'Using the floor plan of the single bedroom, draw to scale 1:25 the complete sectional elevation on cutting plane A-A: both footings (600 × 250 and 400 × 250), foundation walls, DPC, floors, the north wall with window W1, sills and a DOUBLE lintel, the internal wall through door D1, the wall plate (114 × 38), tie beam and ceiling. Show all hatching, label the room with its floor finish and use the abbreviations NGL, FFL and DPC.',
       steps);
   })();
+
+  // ═══ A small house at 1:50: floor plan, then the south elevation projected from it ═══
+  //   x west → east (0..8000), y north → south (0..5000); outside faces on 0 and W/D.
+  const HS = { W: 8000, D: 5000, E: 230, I: 110, VX: 4600, HY: 2700,
+    d1: [900, 1800], d2: [1500, 2400], d3: [3300, 4100], w1: [2300, 4100], w2: [5800, 6400], w3: [5600, 7000], w4: [1300, 2500], step: [750, 1950, 350] };
+
+  function housePlan(P) {
+    const { W, D, E, I, VX, HY, d1, d2, d3, w1, w2, w3, w4, step } = HS, S = 50;
+    const box = (x0, y0, x1, y1, lt) => poly([P(x0, y0), P(x1, y0), P(x1, y1), P(x0, y1)], lt);
+    const hb = w => { const a = P(w[0], w[1]), b = P(w[2], w[3]); return hatchBox(a[0], a[1], b[0], b[1], 1.3); };
+    const walls = [
+      [0, 0, w4[0], E], [w4[1], 0, w3[0], E], [w3[1], 0, W, E],                     // north
+      [0, D - E, d1[0], D], [d1[1], D - E, w1[0], D], [w1[1], D - E, w2[0], D], [w2[1], D - E, W, D],   // south
+      [0, E, E, D - E], [W - E, E, W - E + E, D - E],                               // west, east
+      [VX, E, VX + I, d2[0]], [VX, d2[1], VX + I, d3[0]], [VX, d3[1], VX + I, D - E], [VX + I, HY, W - E, HY + I],   // internal
+    ];
+    const fr = 50;
+    const doorV = (y0, y1) => { const leaf = y1 - y0 - 2 * fr, hx = VX + I; return [box(VX, y0, VX + I, y0 + fr), box(VX, y1 - fr, VX + I, y1), box(hx, y1 - fr - 40, hx + leaf, y1 - fr),
+      { kind: 'arc-construction', center: P(hx, y1 - fr), r: leaf / S, startDeg: 270, endDeg: 360, lineType: 'C' }]; };
+    const leaf1 = d1[1] - d1[0] - 2 * fr, h1 = d1[1] - fr;
+    const front = [box(d1[0], D - E, d1[0] + fr, D), box(d1[1] - fr, D - E, d1[1], D), box(h1 - 40, D - E - leaf1, h1, D - E),
+      { kind: 'arc-construction', center: P(h1, D - E), r: leaf1 / S, startDeg: 180, endDeg: 270, lineType: 'C' }];
+    const stepEl = [pl([P(step[0], D), P(step[0], D + step[2]), P(step[1], D + step[2]), P(step[1], D)])];
+    const winN = ([a, b]) => [L(P(a, 120), P(b, 120)), L(P(a, 160), P(b, 160)), L(P(a, 140), P(b, 140), 'B'),
+      pl([P(a, E), P(a - 50, E), P(a - 50, E + 100), P(b + 50, E + 100), P(b + 50, E), P(b, E)], 'B'), pl([P(a, 0), P(a - 50, 0), P(a - 50, -50), P(b + 50, -50), P(b + 50, 0), P(b, 0)], 'B')];
+    const winS = ([a, b]) => [L(P(a, D - 120), P(b, D - 120)), L(P(a, D - 160), P(b, D - 160)), L(P(a, D - 140), P(b, D - 140), 'B'),
+      pl([P(a, D - E), P(a - 50, D - E), P(a - 50, D - E - 100), P(b + 50, D - E - 100), P(b + 50, D - E), P(b, D - E)], 'B'), pl([P(a, D), P(a - 50, D), P(a - 50, D + 50), P(b + 50, D + 50), P(b + 50, D), P(b, D)], 'B')];
+    const ell = (cx, cy, rx, ry, a0, a1, lt) => pl(Array.from({ length: 25 }, (_, i) => { const a = (a0 + (a1 - a0) * i / 24) * Math.PI / 180; return P(cx + rx * Math.cos(a), cy + ry * Math.sin(a)); }), lt || 'B');
+    const kitchen = [box(E, E, 3400, E + 600), box(w4[0] + 100, E + 80, (w4[0] + w4[1]) / 2 - 20, E + 500, 'B'), box((w4[0] + w4[1]) / 2 + 20, E + 80, w4[1] - 100, E + 500, 'B'),
+      box(2800, E, 3400, E + 600), ...[[2950, E + 150], [3250, E + 150], [2950, E + 450], [3250, E + 450]].map(([x, y]) => ({ kind: 'circle', center: P(x, y), r: 2, lineType: 'B' }))];
+    const bx = W - E - 700, by0 = HY + I;
+    const bath = [box(bx, by0, W - E, by0 + 1700), box(bx + 60, by0 + 60, W - E - 60, by0 + 1640, 'B')];
+    const wc = [box(5000, D - E - 200, 5450, D - E), ell(5225, D - E - 200, 200, 450, 180, 360, 'A')];
+    const wb = [box(5300, by0, 5850, by0 + 420), ell(5575, by0 + 210, 200, 140, 0, 360)];
+    const bic = [pl([P(VX + I, E), P(VX + I + 600, E), P(VX + I + 600, d2[0] - 100), P(VX + I, d2[0] - 100)]), L(P(VX + I, E), P(VX + I + 600, d2[0] - 100), 'B')];
+    return { walls: walls.map(w => box(...w)), hatch: walls.flatMap(hb), front, stepEl, inner: [...doorV(...d2), ...doorV(...d3)],
+      windows: [...winS(w1), ...winS(w2), ...winN(w3), ...winN(w4)], kitchen, bathroom: [...bath, ...wc, ...wb], bic,
+      tags: [lbl(P((w4[0] + w4[1]) / 2, E + 780), 'S', { size: 2.2 }), lbl(P(bx + 350, by0 + 850), 'B', { size: 2.2 }), lbl(P(5225, D - E - 450), 'WC', { size: 2 }), lbl(P(5575, by0 + 560), 'WB', { size: 2 }), lbl(P(VX + I + 170, 1250), 'BIC', { size: 2.2 })],
+      rooms: [lbl(P(2300, 2500), 'LOUNGE / KITCHEN', { size: 2.6 }), lbl(P(2300, 2750), 'SITKAMER / KOMBUIS', { size: 2.3 }), lbl(P(2300, 3000), 'TILES / TEËLS', Object.assign({ size: 2 }, GREY)),
+        lbl(P(6400, 1300), 'BEDROOM', { size: 2.6 }), lbl(P(6400, 1550), 'SLAAPKAMER', { size: 2.3 }), lbl(P(6400, 1800), 'CARPET / MAT', Object.assign({ size: 2 }, GREY)),
+        lbl(P(6150, 3400), 'BATHROOM', { size: 2.3 }), lbl(P(6150, 3620), 'BADKAMER', { size: 2.1 }), lbl(P(6150, 3840), 'TILES / TEËLS', Object.assign({ size: 2 }, GREY))] };
+  }
+
+  (function () {
+    const S = 50, X0 = 58, Y0 = 44, P = (x, y) => [X0 + x / S, Y0 + y / S];
+    const { W, D, E, d1, w1, w2, w3, w4, step } = HS, H = housePlan(P);
+    const sched = [['SCHEDULE / SKEDULE', YEL], ['D1: FRONT DOOR 900 × 2100, 50 mm FRAME'], ['D2, D3: INTERNAL DOORS (900, 800)'], ['W1: 1800 × 1200, SILL 900 (LOUNGE)'], ['W2: 600 × 600, SILL 1500 (BATHROOM)'],
+      ['W3: 1400 × 1200 (BEDROOM)'], ['W4: 1200 × 1050 (KITCHEN)'], ['FIXTURES: S = DOUBLE SINK, B = BATH,'], ['WC = TOILET, WB = WASH BASIN, BIC'], ['STEP 1200 × 350 AT THE FRONT DOOR']];
+    const tag = (x, y, t) => lbl(P(x, y), t, Object.assign({ size: 2.2 }, GREY));
+    const steps = [
+      { instruction: 'GIVEN: the incomplete floor plan of a small house at 1:50: the outlines of the 230 external and 110 internal walls with all the openings, and the schedule. Complete the floor plan to scale 1:50.',
+        calloutAt: P(W / 2, D / 2),
+        reveals: [...H.walls, tag(d1[1] + 300, D - 450, 'D1'), tag((w1[0] + w1[1]) / 2, D - 550, 'W1'), tag((w2[0] + w2[1]) / 2, D - 550, 'W2'), tag((w3[0] + w3[1]) / 2, -400, 'W3'), tag((w4[0] + w4[1]) / 2, -400, 'W4'),
+          tag(HS.VX - 300, (HS.d2[0] + HS.d2[1]) / 2, 'D2'), tag(HS.VX - 300, (HS.d3[0] + HS.d3[1]) / 2, 'D3'),
+          ...sched.map(([t, c], i) => lbl(P(W + 1100, 250 + i * 330), t, Object.assign({ anchor: 'start', size: 2.2 }, c || {})))] },
+      { instruction: 'Hatch all the walls at 45°.', calloutAt: P(E / 2, D / 2), reveals: H.hatch },
+      { instruction: 'The front door D1: 50 mm frames, the door opening into the lounge with its swing, and the step outside.', calloutAt: P((d1[0] + d1[1]) / 2, D - 600), reveals: [...H.front, ...H.stepEl] },
+      { instruction: 'The internal doors D2 (bedroom) and D3 (bathroom), both opening into the rooms they serve.', calloutAt: P(HS.VX + 500, 2000), reveals: H.inner },
+      { instruction: 'The windows W1 to W4: frame and glass lines in the wall, the fibre-cement sill inside and the sill outside.', calloutAt: P((w1[0] + w1[1]) / 2, D - 140), reveals: H.windows },
+      { instruction: 'The kitchen along the north wall: the work top (600 deep) with a double sink (S) under W4 and a stove.', calloutAt: P(2000, E + 300), reveals: H.kitchen },
+      { instruction: 'The bathroom fixtures: the bath (B) against the east wall, the toilet (WC) against the south wall and the wash basin (WB).', calloutAt: P(6600, 3800), reveals: H.bathroom },
+      { instruction: 'The built-in cupboard (BIC) in the bedroom, 600 deep, against the internal wall.', calloutAt: P(HS.VX + 400, 800), reveals: H.bic },
+      { instruction: 'Mark the fixtures with their abbreviations, and name each room with its floor finish.', calloutAt: P(2300, 2600), reveals: [...H.tags, ...H.rooms] },
+      { instruction: 'Dimension the plan (overall sizes and the openings in the south wall), and add the north point, the title and the scale.', calloutAt: P(W / 2, D + 1700),
+        reveals: [dim(P(0, 0), P(W, 0), -16, String(W)), dim(P(W, 0), P(W, D), -10, String(D)),
+          ...[[0, d1[0]], d1, [d1[1], w1[0]], w1, [w1[1], w2[0]], w2, [w2[1], W]].map(([a, b]) => dim(P(a, D), P(b, D), 17, String(b - a))),
+          { kind: 'circle', center: P(-1300, 400), r: 6, lineType: 'B' }, poly([[P(-1300, 0)[0], P(0, 400)[1] - 7], [P(-1300, 0)[0] + 2.2, P(0, 400)[1] + 2], P(-1300, 400), [P(-1300, 0)[0] - 2.2, P(0, 400)[1] + 2]]),
+          lbl([P(-1300, 0)[0], P(0, 400)[1] - 9], 'N', { size: 3.4 }),
+          lbl(P(W / 2, D + 1700), 'FLOOR PLAN / VLOERPLAN', Object.assign({ size: 3.4 }, YEL)), lbl(P(W / 2, D + 1950), 'SCALE / SKAAL 1:50', Object.assign({ size: 2.6 }, GREY))] },
+    ];
+    finish('house-floor-plan', 'Small House: Floor Plan (1:50)', '1:50',
+      'A two-room house with a bathroom at 1:50: hatched walls, three doors, four windows with sills, a step, kitchen and bathroom fixtures, a BIC, room names with floor finishes, dimensions and the north point.',
+      'Using the given incomplete floor plan and the schedule, draw to scale 1:50 the complete floor plan of the house: all walls with hatching, the doors with swings, the windows with sills, the step, the kitchen work top with sink and stove, the bathroom fixtures (B, WC, WB), the BIC, the room names with floor finishes, the dimensions and the north point.',
+      steps);
+  })();
+
+  (function () {
+    // 1st angle: the south elevation goes ABOVE the plan, the plan's south wall (bottom) faces the viewer.
+    const S = 50, X0 = 46, ZE = 92, Y0 = 122;
+    const P = (x, y) => [X0 + x / S, Y0 + y / S], V = (x, z) => [X0 + x / S, ZE - z / S];
+    const { W, D, d1, w1, w2, step } = HS, H = housePlan(P);
+    const ngl = -150, fz0 = 2360, fz1 = 2585, rz = 3515, cap = 3600, ov = 300;
+    const vrect = (x0, z0, x1, z1, lt) => poly([V(x0, z0), V(x1, z0), V(x1, z1), V(x0, z1)], lt);
+    const proj = xs => xs.map(x => L(P(x, D), V(x, ngl), 'construction'));
+    const winEl = ([a, b], z0, z1, panes, transom) => [vrect(a, z0, b, z1), vrect(a + 40, z0 + 40, b - 40, z1 - 40, 'B'),
+      ...Array.from({ length: panes - 1 }, (_, i) => L(V(a + (b - a) * (i + 1) / panes, z0 + 40), V(a + (b - a) * (i + 1) / panes, z1 - 40), 'B')),
+      ...(transom ? [L(V(a + 40, transom), V(b - 40, transom), 'B')] : []), vrect(a - 50, z0 - 35, b + 50, z0)];
+    const steps = [
+      { instruction: 'GIVEN: the complete floor plan of the house at 1:50 and the natural ground level NGL for the elevation above it (1st-angle: the SOUTH elevation is drawn ABOVE the plan, looking at the south wall at the bottom of the plan). Draw the south elevation to scale 1:50.',
+        calloutAt: V(W / 2, ngl),
+        reveals: [...H.walls, ...H.hatch, ...H.front, ...H.stepEl, ...H.inner, ...H.windows, ...H.kitchen, ...H.bathroom, ...H.bic, ...H.tags,
+          lbl(P(W + 1000, D / 2), 'FLOOR PLAN 1:50', Object.assign({ size: 2.6, anchor: 'start' }, GREY)), L(V(-1000, ngl), V(W + 1000, ngl))] },
+      { instruction: 'Project the corners of the house and the edges of the door, the step and the windows in the SOUTH wall straight up from the plan to the NGL.', calloutAt: V(d1[0], ngl - 400),
+        reveals: proj([0, W, step[0], step[1], ...d1, ...w1, ...w2]) },
+      { instruction: 'The WALLS: the outline of the south wall from the NGL up to the underside of the fascia (2360 above the FFL). The FFL is 150 above the NGL.', calloutAt: V(W - 400, 1200),
+        reveals: [pl([V(0, ngl), V(0, fz0), V(W, fz0), V(W, ngl)])] },
+      { instruction: 'The STEP at the front door (1200 wide, its top 25 below the FFL) and the front door D1 (900 × 2100) with its frame and the handle on the side away from the hinges.', calloutAt: V((d1[0] + d1[1]) / 2, 1000),
+        reveals: [vrect(step[0], ngl, step[1], -25), vrect(d1[0], 0, d1[1], 2100), vrect(d1[0] + 50, 0, d1[1] - 50, 2050, 'B'), { kind: 'circle', center: V(d1[0] + 140, 1000), r: 0.8, lineType: 'B' }] },
+      { instruction: 'Window W1 (1800 × 1200, sill at 900): the frame, three panes, a transom and the sill below the window.', calloutAt: V((w1[0] + w1[1]) / 2, 1500), reveals: winEl(w1, 900, 2100, 3, 1750) },
+      { instruction: 'Window W2 of the bathroom (600 × 600, sill at 1500), with its sill.', calloutAt: V((w2[0] + w2[1]) / 2, 1800), reveals: winEl(w2, 1500, 2100, 1, 1800) },
+      { instruction: 'The FASCIA BOARD along the eaves (225 deep, from 2360 to 2585). At the gable ends the roof overhangs the walls by 300.', calloutAt: V(W / 2, (fz0 + fz1) / 2),
+        reveals: [vrect(-ov, fz0, W + ov, fz1)] },
+      { instruction: 'The ROOF: the sheeting slopes up from the fascia to the ridge at 3515, with the BARGE BOARDS at the gable ends and the RIDGE CAPPING on top.', calloutAt: V(W / 2, 3000),
+        reveals: [pl([V(-ov, fz1), V(-ov, rz), V(W + ov, rz), V(W + ov, fz1)]), vrect(-ov, fz1, -ov + 25, rz, 'B'), vrect(W + ov - 25, fz1, W + ov, rz, 'B'), vrect(-ov + 25, rz, W + ov - 25, cap)] },
+      { instruction: 'The corrugations of the roof sheeting as thin lines from the fascia to the ridge.', calloutAt: V(W / 2 + 500, 3100),
+        reveals: Array.from({ length: Math.floor((W + 2 * ov - 200) / 400) }, (_, i) => L(V(-ov + 200 + i * 400, fz1), V(-ov + 200 + i * 400, rz), 'C')) },
+      { instruction: 'Label the elevation: NGL and FFL, the door and windows, the fascia, barge board, roof sheeting and ridge capping.', calloutAt: V(W + 1200, 2000),
+        reveals: [...[['RIDGE CAPPING / NOKKAP', [W - 300, (rz + cap) / 2], 3700], ['ROOF SHEETING / DAKPLATE', [W - 500, 3100], 3250], ['BARGE BOARD / WINDVEER', [W + ov - 12, 2950], 2800], ['FASCIA / BOEIPLANK', [W + 100, (fz0 + fz1) / 2], 2350],
+            ['W2', [(w2[0] + w2[1]) / 2, 1800], 1850], ['WALL / MUUR (PLASTERED)', [W - 600, 800], 900], ['FFL / VVV', [W - 100, 0], 250], ['NGL / NGV', [W + 600, ngl], -350]]
+            .flatMap(([t, at, lz]) => [L(V(...at), V(W + 1100, lz), 'B'), lbl(V(W + 1200, lz - 40), t, { anchor: 'start', size: 2.2 })]),
+          L(V(-300, 0), V(W + 300, 0), 'C'), lbl(V((d1[0] + d1[1]) / 2, 2200), 'D1', { size: 2.2 }), lbl(V((w1[0] + w1[1]) / 2, 2200), 'W1', { size: 2.2 })] },
+      { instruction: 'Dimension the heights and add the title and scale.', calloutAt: V(-800, 1800),
+        reveals: [dim(V(0, ngl), V(0, 0), -8, '150'), dim(V(0, 0), V(0, fz0), -8, '2360'), dim(V(-ov, fz0), V(-ov, rz), -8, '1155'), dim(V(0, ngl), V(0, cap), -18, '3750'),
+          lbl(V(W + 1200, 4300), 'SOUTH ELEVATION / SUIDAANSIG', Object.assign({ anchor: 'start', size: 3 }, YEL)), lbl(V(W + 1200, 4000), 'SCALE / SKAAL 1:50', Object.assign({ anchor: 'start', size: 2.4 }, GREY))] },
+    ];
+    finish('house-south-elevation', 'Small House: South Elevation (1:50)', '1:50',
+      'The south elevation of the house, projected up from the floor plan in 1st angle: walls, step, front door, windows with sills, fascia, barge boards, roof sheeting and ridge capping, labelled and dimensioned.',
+      'Using the floor plan of the house, draw to scale 1:50 the south elevation above it (1st angle): the walls (FFL 150 above NGL, fascia underside 2360), the step and front door D1, windows W1 (sill 900) and W2 (sill 1500) with sills, a 225 fascia, 300 verge overhangs with barge boards, the roof sheeting to the ridge at 3515 and the ridge capping. Label and dimension.',
+      steps);
+  })();
 })(window);
