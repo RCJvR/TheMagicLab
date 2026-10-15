@@ -200,6 +200,7 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
 <script src="../engine.js"></script>
+<script src="../perspective-kit.js"></script>
 <script src="perspective-drawing.data.js"></script>
 <script>
 (function () {
@@ -280,31 +281,36 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
   document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
 
   // ── Explore tab: live horizon-line height slider ──
-  const BOX = { x1: 50, x2: 110, y1: 60, y2: 110 };
-  const VP_X = 170;
+  // The same block in one-point perspective; the slider changes only the eye height.
+  const K = window.PerspectiveKit;
   const slider = document.getElementById('hlSlider');
+  const EB = { W: 40, D: 36, H: 30 };
 
-  function buildExploreModel(vpY) {
-    const VP = [VP_X, vpY];
+  function buildExploreModel(v) {
+    const h = 80 - (v - 10) * 0.8;               // slider left = high eye, right = low eye
+    const P = K.setup({ sx: 120, d: 110, yPP: 40, yGL: 140, h, theta: 0, cx: 60 });
+    const faces = K.extrude([[0, 0], [EB.W, 0], [EB.W, EB.H], [0, EB.H]], 'uz', 0, EB.D);
+    const VP = P.vps.VP;
     const reveals = [
-      { kind: 'polygon', points: [[BOX.x1, BOX.y1], [BOX.x2, BOX.y1], [BOX.x2, BOX.y2], [BOX.x1, BOX.y2]], lineType: 'A' },
-      { kind: 'line', p1: [0, vpY], p2: [200, vpY], lineType: 'B' },
-      { kind: 'point', at: VP, label: 'VP', size: 1.6 },
-      { kind: 'line', p1: [BOX.x2, BOX.y1], p2: VP, lineType: 'construction' },
-      { kind: 'line', p1: [BOX.x2, BOX.y2], p2: VP, lineType: 'construction' },
+      { kind: 'line', p1: [20, P.yGL], p2: [180, P.yGL], lineType: 'B' },
+      { kind: 'label', at: [18, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+      { kind: 'line', p1: [20, P.yHL], p2: [180, P.yHL], lineType: 'B' },
+      { kind: 'label', at: [18, P.yHL + 1.3], text: 'HL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+      { kind: 'point', at: VP, label: 'VP', size: 1.3 },
+      ...[[0, 0], [EB.W, 0], [EB.W, EB.H], [0, EB.H]].map(([u, z]) => ({ kind: 'line', p1: P.persp(u, 0, z), p2: VP, lineType: 'construction' })),
+      ...K.perspLines(P, K.visibleEdges(P, faces), 'A'),
     ];
     let kind;
-    if (vpY < BOX.y1 - 4) kind = 'BIRD’S-EYE VIEW';
-    else if (vpY > BOX.y2 + 4) kind = 'WORM’S-EYE VIEW';
-    else kind = 'NATURAL (EYE-LEVEL) VIEW';
-    return { bounds: { w: 200, h: 170 }, steps: [{ id: 1, reveals }], _kind: kind, _vpY: vpY };
+    if (h > EB.H + 3) kind = 'BIRD’S-EYE VIEW: the eye is above the block, so you see its top';
+    else if (h < -3) kind = 'WORM’S-EYE VIEW: the eye is below the ground line, so you see the underside';
+    else kind = 'NATURAL VIEW: the horizon line passes through the block; neither top nor bottom shows';
+    return { id: 'persp-explore', bounds: { w: 200, h: 170 }, steps: [{ id: 1, reveals }], _kind: kind, _h: h };
   }
 
   function renderExplore() {
-    const vpY = parseFloat(slider.value);
-    const model = buildExploreModel(vpY);
+    const model = buildExploreModel(parseFloat(slider.value));
     CE.render(document.getElementById('exploreSvg'), model, { uptoStep: Infinity, mode: 'interactive' });
-    document.getElementById('exploreReadout').textContent = model._kind + ' — horizon line at y=' + vpY.toFixed(0) + ' (box spans y=' + BOX.y1 + ' to ' + BOX.y2 + ').';
+    document.getElementById('exploreReadout').textContent = model._kind + '. Eye height: ' + model._h.toFixed(0) + ' mm above GL (block is ' + EB.H + ' mm high).';
   }
 
   slider.addEventListener('input', renderExplore);

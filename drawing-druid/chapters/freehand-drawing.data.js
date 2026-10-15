@@ -359,6 +359,7 @@
   };
 
   WORKBOOK_SHEETS['isometric-grid'] = {
+      clipToBounds: true,
     id: 'isometric-grid',
     title: 'Isometric Grid — Pictorial Sketching (Set 1)',
     workbookPrompt: 'Using the 30° isometric grid, freehand-sketch each reference object pictorially (in 3D), keeping every edge along one of the three grid directions: vertical, or 30° left/right.',
@@ -372,6 +373,7 @@
   };
 
   WORKBOOK_SHEETS['isometric-grid-2'] = {
+      clipToBounds: true,
     id: 'isometric-grid-2',
     title: 'Isometric Grid — Pictorial Sketching (Set 2)',
     workbookPrompt: 'A second set of reference objects — freehand-sketch the hex bolt and the mounting bracket pictorially on the isometric grid, keeping every edge along one of the three axis directions.',

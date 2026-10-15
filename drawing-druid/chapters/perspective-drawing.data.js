@@ -1,457 +1,281 @@
-// Perspective Drawing — Chapter 8 data. Requires engine-geometry.js loaded first (window.ConstructionGeometry).
+// Perspective Drawing — Grade 10: one-point perspective by the plan (measured) method.
+// Requires engine-geometry.js and perspective-kit.js loaded first.
 (function (global) {
   'use strict';
-  const G = global.ConstructionGeometry;
+  const K = global.PerspectiveKit;
   const CONSTRUCTIONS = {};
 
-  function recede(P, VP, t) { return [P[0] + t * (VP[0] - P[0]), P[1] + t * (VP[1] - P[1])]; }
+  const lbl = (at, text, anchor, size) => ({ kind: 'label', at, text, size: size || 3.4, anchor: anchor || 'middle', color: '#94a3b8' });
 
-  // ── 1. One-Point Perspective: A Simple Building ──
+  // The front elevation drawn standing on GL to the left, with its heights projected across
+  // to the true-height line (the front face, which lies on the picture plane).
+  function elevation(P, ex, profile, label) {
+    const pts = profile.map(([u, z]) => [ex + u, P.yGL - z]);
+    return [
+      { kind: 'polygon', points: pts, lineType: 'A' },
+      lbl([ex + (Math.max(...profile.map(p => p[0])) / 2), P.yGL + 6], label || 'FRONT VIEW / VOORAANSIG'),
+    ];
+  }
+  function heightProjectors(P, ex, heights, toX) {
+    return heights.map(z => ({ kind: 'line', p1: [ex, P.yGL - z], p2: [toX, P.yGL - z], lineType: 'construction' }));
+  }
+  const frontOnly = edges => edges.filter(([p, q]) => p[1] === 0 && q[1] === 0);
+  const notFront = edges => edges.filter(([p, q]) => !(p[1] === 0 && q[1] === 0));
+
+  // ── 1. Setting up one-point perspective: a rectangular block ──
   (function () {
-    const FL = [40, 120], FR = [100, 120], TR = [100, 80], TL = [40, 80], apex = [70, 60];
-    const VP = [170, 100];
-    const T = 0.35;
-    const bFL = recede(FL, VP, T), bFR = recede(FR, VP, T), bTR = recede(TR, VP, T), bTL = recede(TL, VP, T), bApex = recede(apex, VP, T);
+    const W = 50, D = 40, H = 30;
+    const P = K.setup({ sx: 125, d: 120, yPP: 62, yGL: 150, h: 48, theta: 0, cx: 45 });
+    const faces = K.extrude([[0, 0], [W, 0], [W, H], [0, H]], 'uz', 0, D);
+    const edges = K.visibleEdges(P, faces);
+    const EX = -30;
+    const VP = P.vps.VP;
+    const backPts = [[0, D], [W, D]];
 
-    CONSTRUCTIONS['one-point-building'] = {
-      id: 'one-point-building', title: 'One-Point Perspective: A Building',
-      summary: 'Draw a simple pitched-roof building in one-point perspective — the front face at true shape, with every receding edge converging on a single vanishing point.',
-      bounds: { w: 205, h: 150 },
-      workbookPrompt: 'Draw this building in one-point perspective: the true-shape front face, the horizon line and vanishing point, and the receding depth edges converging correctly.',
+    CONSTRUCTIONS['one-point-setup'] = {
+      id: 'one-point-setup', title: 'One-Point Perspective: Setting Up (Block)',
+      summary: 'The full one-point set-up: the top view on the picture plane, the station point, ground line, horizon line and vanishing point, then the block found by visual rays and lines to the VP.',
+      bounds: { w: 230, h: 200 },
+      workbookPrompt: 'Draw the block (50 x 40 x 30) in one-point perspective. The front face lies on the picture plane. SP is 120 mm in front of PP and 80 mm to the right of the block\'s left edge; the eye is 48 mm above GL.',
       steps: [
         {
           id: 1,
-          instruction: 'The front face of the building touches the picture plane, so it is drawn at its TRUE SHAPE and size — completely undistorted, just like an ordinary front view.',
-          calloutAt: [70, 100],
+          instruction: 'Draw the picture-plane line PP. Draw the TOP VIEW above it with its front edge ON the PP. In one-point perspective the front face is parallel to the picture plane, so it will appear at its true shape and size.',
+          calloutAt: P.plan(W / 2, D / 2),
           reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'polygon', points: [TL, TR, apex], lineType: 'A' },
+            { kind: 'line', p1: [EX - 26, P.yPP], p2: [P.sx + 40, P.yPP], lineType: 'B' },
+            lbl([EX - 28, P.yPP - 1], 'PP', 'end', 3.6), lbl([EX - 28, P.yPP + 5.5], 'PV', 'end', 3.6),
+            { kind: 'polygon', points: [P.plan(0, 0), P.plan(W, 0), P.plan(W, D), P.plan(0, D)], lineType: 'A' },
+            lbl([P.plan(W / 2, D)[0], P.plan(W / 2, D)[1] - 4], 'TOP VIEW / BO-AANSIG'),
           ],
         },
         {
           id: 2,
-          instruction: 'Draw the Horizon Line (HL) at eye level, and mark a single Vanishing Point (VP) on it. In one-point perspective, every edge receding into the distance appears to converge on this one point.',
-          calloutAt: [VP[0] - 15, VP[1] - 8],
+          instruction: 'Mark the station point SP (the eye) in front of the PP. Draw the ground line GL and the horizon line HL at eye height above it. The single vanishing point VP lies on the HL directly above SP.',
+          calloutAt: VP,
           reveals: [
-            { kind: 'line', p1: [0, VP[1]], p2: [205, VP[1]], lineType: 'B' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.6 },
-            { kind: 'label', at: [5, VP[1] - 3], text: 'HL', size: 4.5, anchor: 'start', color: '#94a3b8' },
+            ...K.spMark(P),
+            { kind: 'line', p1: [EX - 26, P.yGL], p2: [P.sx + 40, P.yGL], lineType: 'B' }, lbl([EX - 28, P.yGL + 1.3], 'GL', 'end', 3.6),
+            { kind: 'line', p1: [EX - 26, P.yHL], p2: [P.sx + 40, P.yHL], lineType: 'B' }, lbl([EX - 28, P.yHL + 1.3], 'HL', 'end', 3.6),
+            { kind: 'line', p1: P.SP, p2: VP, lineType: 'construction' },
+            { kind: 'point', at: VP, label: 'VP', size: 1.3 },
           ],
         },
         {
           id: 3,
-          instruction: 'From every corner of the front face — including the roof apex — draw a feint construction line towards the VP. These show the direction each receding edge will follow.',
-          calloutAt: [(FR[0] + VP[0]) / 2, (FR[1] + VP[1]) / 2],
+          instruction: 'Draw the FRONT VIEW standing on GL at the side and project its heights across. Because the front face lies on the PP, its width comes straight down from the top view and its heights are true: draw it full size.',
+          calloutAt: P.persp(W / 2, 0, H / 2),
           reveals: [
-            { kind: 'line', p1: FL, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: FR, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: TR, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: TL, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: apex, p2: VP, lineType: 'construction' },
+            ...elevation(P, EX, [[0, 0], [W, 0], [W, H], [0, H]]),
+            ...heightProjectors(P, EX + W, [H], P.persp(0, 0, H)[0]),
+            { kind: 'line', p1: P.plan(0, 0), p2: P.persp(0, 0, 0), lineType: 'construction' },
+            { kind: 'line', p1: P.plan(W, 0), p2: P.persp(W, 0, 0), lineType: 'construction' },
+            ...K.perspLines(P, frontOnly(edges), 'A'),
           ],
         },
         {
           id: 4,
-          instruction: 'Choose how deep the building should be, and mark that depth along each receding line. Complete the back face with lines PARALLEL to the front face\'s own edges — only the depth direction converges in one-point perspective.',
-          calloutAt: [(bFL[0] + bFR[0]) / 2, bFL[1] + 6],
+          instruction: 'Draw visual rays from SP to the two back corners of the top view. Where each ray crosses the PP, drop a vertical line down into the drawing.',
+          calloutAt: P.onPP(W, D),
           reveals: [
-            { kind: 'line', p1: bFL, p2: bFR, lineType: 'A' },
-            { kind: 'line', p1: bTL, p2: bTR, lineType: 'A' },
+            ...K.rays(P, backPts),
+            ...backPts.map(([u, v]) => ({ kind: 'point', at: P.onPP(u, v), size: 0.9 })),
+            ...K.drops(P, [[0, D, H], [W, D, 0]]),
           ],
         },
         {
           id: 5,
-          instruction: 'Add the visible depth edges on the side facing the vanishing point, and the roof ridge line, to complete the pictorial view.',
-          calloutAt: [(TR[0] + bTR[0]) / 2, (TR[1] + bTR[1]) / 2 - 8],
+          instruction: 'Join the corners of the front face to the VP. Where these lines cut the dropped verticals are the back corners. Draw the visible edges with Type A lines; the hidden back edges are left out.',
+          calloutAt: P.persp(W, D / 2, H),
           reveals: [
-            { kind: 'line', p1: FR, p2: bFR, lineType: 'A' },
-            { kind: 'line', p1: TR, p2: bTR, lineType: 'A' },
-            { kind: 'line', p1: bTR, p2: bFR, lineType: 'A' },
-            { kind: 'line', p1: apex, p2: bApex, lineType: 'A' },
-            { kind: 'line', p1: bApex, p2: bTR, lineType: 'A' },
+            ...[[0, H], [W, H], [W, 0]].map(([u, z]) => ({ kind: 'line', p1: P.persp(u, 0, z), p2: VP, lineType: 'construction' })),
+            ...K.perspLines(P, notFront(edges), 'A'),
           ],
         },
       ],
     };
   })();
 
-  // ── 2. Bird's-Eye, Natural and Worm's-Eye Views ──
+  // ── 2. Stepped block ──
   (function () {
-    const boxes = [
-      { name: 'Bird’s-Eye View', x1: 10, x2: 50, y1: 70, y2: 100, vp: [72, 20], note: 'VP high above: looking down' },
-      { name: 'Natural (Eye-Level) View', x1: 88, x2: 128, y1: 70, y2: 100, vp: [150, 85], note: 'VP at eye level, through the object' },
-      { name: 'Worm’s-Eye View', x1: 166, x2: 206, y1: 70, y2: 100, vp: [228, 150], note: 'VP low below: looking up' },
-    ];
+    const W = 56, D = 36;
+    const prof = [[0, 0], [W, 0], [W, 16], [28, 16], [28, 36], [0, 36]];
+    const P = K.setup({ sx: 130, d: 125, yPP: 60, yGL: 152, h: 55, theta: 0, cx: 40 });
+    const faces = K.extrude(prof, 'uz', 0, D);
+    const edges = K.visibleEdges(P, faces);
+    const EX = -36;
+    const VP = P.vps.VP;
+    const corners = [[28, D], [W, D], [0, D]];
 
+    CONSTRUCTIONS['one-point-stepped-block'] = {
+      id: 'one-point-stepped-block', title: 'One-Point Perspective: Stepped Block',
+      summary: 'A block with a step: the front face is true shape on the PP, and every receding edge runs to the one VP and stops where its visual ray says.',
+      bounds: { w: 230, h: 200 },
+      workbookPrompt: 'Draw the stepped block in one-point perspective from the given top view and front view. The front face lies on PP; SP is 125 mm in front of PP; the eye is 55 mm above GL.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Set up as before: top view with its front edge on PP, SP below, GL, and HL at eye height with the VP above SP. Draw the front view on GL at the side.',
+          calloutAt: VP,
+          reveals: [
+            ...K.frame(P, EX - 26, P.sx + 40),
+            { kind: 'polygon', points: [P.plan(0, 0), P.plan(W, 0), P.plan(W, D), P.plan(0, D)], lineType: 'A' },
+            { kind: 'line', p1: P.plan(28, 0), p2: P.plan(28, D), lineType: 'A' },
+            lbl([P.plan(W / 2, D)[0], P.plan(W / 2, D)[1] - 4], 'TOP VIEW / BO-AANSIG'),
+            ...K.spMark(P),
+            { kind: 'line', p1: P.SP, p2: VP, lineType: 'construction' },
+            { kind: 'point', at: VP, label: 'VP', size: 1.3 },
+            ...elevation(P, EX, prof),
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'The front face is on the PP, so draw it at true size: widths straight down from the top view, heights projected across from the front view.',
+          calloutAt: P.persp(14, 0, 18),
+          reveals: [
+            ...heightProjectors(P, EX + W, [16, 36], P.persp(0, 0, 0)[0]),
+            ...[0, 28, W].map(u => ({ kind: 'line', p1: P.plan(u, 0), p2: P.persp(u, 0, 0), lineType: 'construction' })),
+            ...K.perspLines(P, frontOnly(edges), 'A'),
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'Visual rays from SP to the back corners of the top view; drop verticals where they cross PP. Join the front corners to the VP.',
+          calloutAt: P.onPP(W, D),
+          reveals: [
+            ...K.rays(P, corners),
+            ...K.drops(P, [[28, D, 36], [W, D, 0], [0, D, 36]]),
+            ...[[0, 36], [28, 36], [28, 16], [W, 16], [W, 0]].map(([u, z]) => ({ kind: 'line', p1: P.persp(u, 0, z), p2: VP, lineType: 'construction' })),
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Complete the block where the VP lines cut the verticals. Note how the tread of the step and the top of the upright both run back to the same VP: every edge going straight back does.',
+          calloutAt: P.persp(42, D / 2, 16),
+          reveals: K.perspLines(P, notFront(edges), 'A'),
+        },
+      ],
+    };
+  })();
+
+  // ── 3. Small building with a door and a window ──
+  (function () {
+    const W = 60, D = 50, WALL = 30, RIDGE = 46;
+    const prof = [[0, 0], [W, 0], [W, WALL], [W / 2, RIDGE], [0, WALL]];
+    const P = K.setup({ sx: 140, d: 135, yPP: 70, yGL: 165, h: 22, theta: 0, cx: 50 });
+    const faces = K.extrude(prof, 'uz', 0, D);
+    const edges = K.visibleEdges(P, faces);
+    const EX = -34;
+    const VP = P.vps.VP;
+    // door on the front (gable) face; window on the right-hand side wall (u = W)
+    const DOOR = { u0: 14, u1: 26, h: 22 };
+    const WIN = { v0: 18, v1: 34, z0: 10, z1: 22 };
+
+    CONSTRUCTIONS['one-point-building'] = {
+      id: 'one-point-building', title: 'One-Point Perspective: Small Building',
+      summary: 'A gable-ended building with its gable on the picture plane: the door is drawn true size, while the window on the receding side wall is found with visual rays and lines to the VP.',
+      bounds: { w: 240, h: 210 },
+      workbookPrompt: 'Draw the building in one-point perspective with its gable end on PP. Show the door on the gable end and the window on the right-hand wall. The eye is 22 mm above GL (a natural, standing view).',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Set up: top view with the gable end on PP, SP, GL, HL at a natural eye height and the VP above SP. Draw the front view (the gable end with its door) on GL at the side.',
+          calloutAt: VP,
+          reveals: [
+            ...K.frame(P, EX - 26, P.sx + 40),
+            { kind: 'polygon', points: [P.plan(0, 0), P.plan(W, 0), P.plan(W, D), P.plan(0, D)], lineType: 'A' },
+            { kind: 'line', p1: P.plan(W / 2, 0), p2: P.plan(W / 2, D), lineType: 'A' },
+            lbl([P.plan(W / 2, D)[0], P.plan(W / 2, D)[1] - 4], 'TOP VIEW / BO-AANSIG'),
+            ...K.spMark(P),
+            { kind: 'line', p1: P.SP, p2: VP, lineType: 'construction' },
+            { kind: 'point', at: VP, label: 'VP', size: 1.3 },
+            ...elevation(P, EX, prof),
+            { kind: 'polyline', points: [[EX + DOOR.u0, P.yGL], [EX + DOOR.u0, P.yGL - DOOR.h], [EX + DOOR.u1, P.yGL - DOOR.h], [EX + DOOR.u1, P.yGL]], lineType: 'A' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Draw the gable end at true size on the PP, door included: the ridge, eaves and door heights are projected across from the front view.',
+          calloutAt: P.persp(W / 2, 0, RIDGE - 6),
+          reveals: [
+            ...heightProjectors(P, EX + W, [WALL, DOOR.h], P.persp(0, 0, 0)[0]),
+            { kind: 'line', p1: [EX + W / 2, P.yGL - RIDGE], p2: P.persp(W / 2, 0, RIDGE), lineType: 'construction' },
+            ...K.perspLines(P, frontOnly(edges), 'A'),
+            { kind: 'polyline', points: [P.persp(DOOR.u0, 0, 0), P.persp(DOOR.u0, 0, DOOR.h), P.persp(DOOR.u1, 0, DOOR.h), P.persp(DOOR.u1, 0, 0)], lineType: 'A' },
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'Rays from SP to the back corners and the ridge end in the top view; drop verticals from the PP crossings. Join the front corners and the ridge to the VP, then complete the roof and the side wall.',
+          calloutAt: P.persp(W, D / 2, WALL),
+          reveals: [
+            ...K.rays(P, [[W, D], [W / 2, D]]),
+            ...K.drops(P, [[W, D, 0], [W / 2, D, RIDGE]]),
+            ...[[W, 0], [W, WALL], [W / 2, RIDGE], [0, WALL]].map(([u, z]) => ({ kind: 'line', p1: P.persp(u, 0, z), p2: VP, lineType: 'construction' })),
+            ...K.perspLines(P, notFront(edges), 'A'),
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'The window is on the receding side wall. Mark its two edges on the side of the top view and send visual rays to them; drop verticals. Its sill and head heights go on the front corner (the true-height line) and run back to the VP.',
+          calloutAt: P.persp(W, (WIN.v0 + WIN.v1) / 2, (WIN.z0 + WIN.z1) / 2),
+          reveals: [
+            { kind: 'point', at: P.plan(W, WIN.v0), size: 0.9 }, { kind: 'point', at: P.plan(W, WIN.v1), size: 0.9 },
+            ...K.rays(P, [[W, WIN.v0], [W, WIN.v1]]),
+            ...K.drops(P, [[W, WIN.v0, WIN.z1], [W, WIN.v1, WIN.z1]]),
+            ...[WIN.z0, WIN.z1].map(z => ({ kind: 'line', p1: P.persp(W, 0, z), p2: VP, lineType: 'construction' })),
+            { kind: 'polygon', points: [P.persp(W, WIN.v0, WIN.z0), P.persp(W, WIN.v1, WIN.z0), P.persp(W, WIN.v1, WIN.z1), P.persp(W, WIN.v0, WIN.z1)], lineType: 'A' },
+          ],
+        },
+      ],
+    };
+  })();
+
+  // ── 4. Bird's-eye, natural and worm's-eye: the eye height decides the view ──
+  (function () {
+    const W = 30, D = 30, H = 24;
+    const views = [
+      { name: 'BIRD\'S-EYE', h: 60, cx: 0 },
+      { name: 'NATURAL', h: 12, cx: 75 },
+      { name: 'WORM\'S-EYE', h: -14, cx: 150 },
+    ];
+    const yPP = 40, yGL = 135, d = 90;
+    const steps = views.map((vw, i) => {
+      const P = K.setup({ sx: vw.cx + W + 12, d, yPP, yGL, h: vw.h, theta: 0, cx: vw.cx });
+      const faces = K.extrude([[0, 0], [W, 0], [W, H], [0, H]], 'uz', 0, D);
+      const edges = K.visibleEdges(P, faces);
+      const VP = P.vps.VP;
+      const reveals = [
+        { kind: 'polygon', points: [P.plan(0, 0), P.plan(W, 0), P.plan(W, D), P.plan(0, D)], lineType: 'A' },
+        { kind: 'line', p1: [vw.cx - 6, P.yHL], p2: [vw.cx + W + 22, P.yHL], lineType: 'B' },
+        { kind: 'point', at: VP, label: 'VP', size: 1.1 },
+        ...[[0, 0], [W, 0], [W, H], [0, H]].map(([u, z]) => ({ kind: 'line', p1: P.persp(u, 0, z), p2: VP, lineType: 'construction' })),
+        ...K.perspLines(P, edges, 'A'),
+        { kind: 'label', at: [vw.cx + W / 2, yPP - D - 9], text: vw.name, size: 3.6, anchor: 'middle', color: '#fde047' },
+        { kind: 'label', at: [vw.cx + W / 2, yPP - D - 4], text: 'eye ' + (vw.h >= 0 ? vw.h + ' mm above GL' : (-vw.h) + ' mm below GL'), size: 3, anchor: 'middle', color: '#94a3b8' },
+      ];
+      const instr = [
+        'BIRD\'S-EYE VIEW: the eye (and so the HL) is well ABOVE the block. Every receding edge runs UP to the VP, and you see the top of the block.',
+        'NATURAL VIEW: the HL passes through the block, at a person\'s eye height. Edges above the HL run down to the VP, edges below it run up; you see neither the top nor the bottom.',
+        'WORM\'S-EYE VIEW: the HL is BELOW the ground line, as if looking up from below. Receding edges run DOWN to the VP and you see the underside.',
+      ][i];
+      return { id: i + 1, instruction: instr, calloutAt: P.persp(W, D, H), reveals };
+    });
     CONSTRUCTIONS['viewpoint-comparison'] = {
       id: 'viewpoint-comparison', title: 'Bird’s-Eye, Natural & Worm’s-Eye',
-      summary: 'The same simple box, drawn three times with the vanishing point at a different height each time — showing how moving the horizon line changes the viewpoint.',
-      bounds: { w: 240, h: 175 },
-      workbookPrompt: 'Draw the same simple box three times, moving only the position of the VP each time, to produce a bird’s-eye, a natural, and a worm’s-eye view.',
-      steps: boxes.map((b, i) => ({
-        id: i + 1,
-        instruction: (i === 0
-          ? 'For a BIRD’S-EYE view, place the horizon line (and VP) well ABOVE the object, as if looking down from a height.'
-          : i === 1
-          ? 'For a NATURAL view, place the horizon line at normal eye level, roughly passing through the object itself.'
-          : 'For a WORM’S-EYE view, place the horizon line (and VP) well BELOW the object, as if looking up from ground level.'),
-        calloutAt: [(b.x1 + b.x2) / 2, b.y1 - 10],
-        reveals: [
-          { kind: 'polygon', points: [[b.x1, b.y1], [b.x2, b.y1], [b.x2, b.y2], [b.x1, b.y2]], lineType: 'A' },
-          { kind: 'point', at: b.vp, label: 'VP', size: 1.4 },
-          { kind: 'line', p1: [b.x2, b.y1], p2: b.vp, lineType: 'construction' },
-          { kind: 'line', p1: [b.x2, b.y2], p2: b.vp, lineType: 'construction' },
-          { kind: 'label', at: [(b.x1 + b.x2) / 2, b.y2 + 12], text: b.name, size: 4, anchor: 'middle', color: '#fde047' },
-          { kind: 'label', at: [(b.x1 + b.x2) / 2, b.y2 + 18], text: b.note, size: 3.2, anchor: 'middle', color: '#94a3b8' },
-        ],
-      })),
-    };
-  })();
-
-  // ── 3. Door with Correct Depth (Reveal) ──
-  (function () {
-    const FL = [40, 120], FR = [100, 120], TR = [100, 80], TL = [40, 80];
-    const VP = [175, 100], T = 0.4;
-    const bFR = recede(FR, VP, T), bTR = recede(TR, VP, T);
-    const doorH = 30, dNear = 0.10, dFar = 0.17;
-    const doorTopFront = [FR[0], FR[1] - doorH];
-    const dBotNear = recede(FR, VP, dNear), dBotFar = recede(FR, VP, dFar);
-    const dTopNear = recede(doorTopFront, VP, dNear), dTopFar = recede(doorTopFront, VP, dFar);
-
-    CONSTRUCTIONS['perspective-door-reveal'] = {
-      id: 'perspective-door-reveal', title: 'Door with Correct Depth (Reveal)',
-      summary: 'A door opening on the receding side wall — its verticals stay perfectly vertical (they never converge), while its top and bottom "reveal" edges recede toward the same VP as the wall itself.',
-      bounds: { w: 215, h: 150 },
-      workbookPrompt: 'Draw the building shell in one-point perspective, then construct a door opening on the receding side wall with a correctly projected reveal (depth), 30 mm true height.',
+      summary: 'The same block, the same station point distance, three eye heights: only the height of the horizon line changes the view.',
+      bounds: { w: 230, h: 160 },
+      workbookPrompt: 'Draw the same 30 x 30 x 24 block three times in one-point perspective, changing only the eye height: 60 mm above GL, 12 mm above GL and 14 mm below GL.',
       steps: [
         {
-          id: 1,
-          instruction: 'Draw the front face (true shape) and project the receding side wall to the VP, exactly as before — this is the wall the door will sit on.',
-          calloutAt: [(FR[0] + bFR[0]) / 2, (FR[1] + bTR[1]) / 2],
+          id: 1, instruction: 'Draw the PP and GL across the sheet, and the three top views on PP, spaced apart. Each block gets its own SP and VP, at the same distance in front of PP.',
+          calloutAt: [100, yPP],
           reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-            { kind: 'line', p1: FR, p2: bFR, lineType: 'A' }, { kind: 'line', p1: TR, p2: bTR, lineType: 'A' }, { kind: 'line', p1: bFR, p2: bTR, lineType: 'A' },
+            { kind: 'line', p1: [-10, yPP], p2: [215, yPP], lineType: 'B' }, { kind: 'label', at: [-12, yPP + 1.3], text: 'PP', size: 3.6, anchor: 'end', color: '#e8eaf2' },
+            { kind: 'line', p1: [-10, yGL], p2: [215, yGL], lineType: 'B' }, { kind: 'label', at: [-12, yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           ],
         },
-        {
-          id: 2,
-          instruction: 'Mark the door\'s TRUE height at the front corner, then project that point toward the VP — this line shows the door\'s correct (foreshortened) height at any position along the depth.',
-          calloutAt: doorTopFront,
-          reveals: [
-            { kind: 'point', at: doorTopFront, label: '' },
-            { kind: 'line', p1: doorTopFront, p2: VP, lineType: 'construction' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Mark the door\'s near and far position along the depth, and drop verticals at each down to the ground line and up to the height-projection line — these stay perfectly vertical, since verticals never converge in one-point perspective.',
-          calloutAt: G.midpoint(dBotNear, dTopFar),
-          reveals: [
-            { kind: 'line', p1: dBotNear, p2: dTopNear, lineType: 'A' },
-            { kind: 'line', p1: dBotFar, p2: dTopFar, lineType: 'A' },
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Join the top and bottom of the door reveal — these edges DO recede toward the VP, since they run in the depth direction, parallel to the wall\'s own top and bottom edges.',
-          calloutAt: G.midpoint(dTopNear, dTopFar),
-          reveals: [
-            { kind: 'line', p1: dTopNear, p2: dTopFar, lineType: 'A' },
-            { kind: 'line', p1: dBotNear, p2: dBotFar, lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 4. Window with Sill and Reveal ──
-  (function () {
-    const FL = [40, 120], FR = [100, 120], TR = [100, 80], TL = [40, 80];
-    const VP = [175, 100], T = 0.4;
-    const bFR = recede(FR, VP, T), bTR = recede(TR, VP, T);
-    const sillH = 14, winTopH = 32, wNear = 0.22, wFar = 0.30;
-    const sillFront = [FR[0], FR[1] - sillH], winTopFront = [FR[0], FR[1] - winTopH];
-    const sNear = recede(sillFront, VP, wNear), sFar = recede(sillFront, VP, wFar);
-    const wtNear = recede(winTopFront, VP, wNear), wtFar = recede(winTopFront, VP, wFar);
-
-    CONSTRUCTIONS['perspective-window-reveal'] = {
-      id: 'perspective-window-reveal', title: 'Window with Sill and Reveal',
-      summary: 'A window doesn\'t reach the ground, so BOTH its sill and its head need their own true-height projection lines before the reveal can be constructed.',
-      bounds: { w: 215, h: 150 },
-      workbookPrompt: 'Construct a window opening on the receding side wall: sill height 14 mm, window head height 32 mm, both projected correctly to the VP.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the building shell (front face and receding side wall), as before.',
-          calloutAt: [(FR[0] + bFR[0]) / 2, (FR[1] + bTR[1]) / 2],
-          reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-            { kind: 'line', p1: FR, p2: bFR, lineType: 'A' }, { kind: 'line', p1: TR, p2: bTR, lineType: 'A' }, { kind: 'line', p1: bFR, p2: bTR, lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Mark the TRUE sill height and window head height at the front corner, and project BOTH to the VP — a window needs two height-projection lines, not one, since neither its top nor bottom touches the ground or the wall top.',
-          calloutAt: G.midpoint(sillFront, winTopFront),
-          reveals: [
-            { kind: 'point', at: sillFront, label: '' }, { kind: 'point', at: winTopFront, label: '' },
-            { kind: 'line', p1: sillFront, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: winTopFront, p2: VP, lineType: 'construction' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Mark the window\'s near and far position along the depth, and drop verticals between the two projection lines at each — again, perfectly vertical.',
-          calloutAt: G.midpoint(sNear, wtFar),
-          reveals: [
-            { kind: 'line', p1: sNear, p2: wtNear, lineType: 'A' },
-            { kind: 'line', p1: sFar, p2: wtFar, lineType: 'A' },
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Join the sill and head lines across — both recede toward the VP, completing the window opening with a correct reveal.',
-          calloutAt: G.midpoint(wtNear, wtFar),
-          reveals: [
-            { kind: 'line', p1: wtNear, p2: wtFar, lineType: 'A' },
-            { kind: 'line', p1: sNear, p2: sFar, lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 5. Overhanging Roof Detail ──
-  (function () {
-    const FL = [40, 120], FR = [100, 120], TR = [100, 80], TL = [40, 80], apex = [70, 60];
-    const VP = [175, 100], T = 0.4, OVER = 7;
-    const eaveL = [TL[0] - OVER, TL[1]], eaveR = [TR[0] + OVER, TR[1]];
-    const bEaveL = recede(eaveL, VP, T), bEaveR = recede(eaveR, VP, T), bApex = recede(apex, VP, T);
-
-    CONSTRUCTIONS['perspective-roof-overhang'] = {
-      id: 'perspective-roof-overhang', title: 'Overhanging Roof Detail',
-      summary: 'A roof that overhangs its walls is simply built on an EAVE LINE that extends past the wall corners — on both the true-shape front face and the receded back face.',
-      bounds: { w: 220, h: 150 },
-      workbookPrompt: 'Draw the building with a 7 mm roof overhang past each wall corner, on both the front eave line and the receded back eave line.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the walls, then extend the EAVE LINE past both wall corners at true shape on the front face — the roof will oversail the wall by this amount all round.',
-          calloutAt: [(eaveL[0] + eaveR[0]) / 2, eaveL[1]],
-          reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'line', p1: eaveL, p2: eaveR, lineType: 'A' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Project the two extended eave points toward the VP — the overhang recedes exactly like every other depth edge.',
-          calloutAt: G.midpoint(eaveR, VP),
-          reveals: [
-            { kind: 'line', p1: eaveL, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: eaveR, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: apex, p2: VP, lineType: 'construction' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Mark the building\'s depth on each projector, and complete the back eave line (parallel to the front eave line) and the receded roof apex.',
-          calloutAt: G.midpoint(bEaveL, bEaveR),
-          reveals: [
-            { kind: 'line', p1: bEaveL, p2: bEaveR, lineType: 'A' },
-            { kind: 'point', at: bApex, label: '' },
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Complete the roof surfaces — the overhang is now visible past the wall face on both the near and far edges, exactly like a real oversailing roof.',
-          calloutAt: [(apex[0] + bApex[0]) / 2, (apex[1] + bApex[1]) / 2 - 10],
-          reveals: [
-            { kind: 'line', p1: eaveL, p2: apex, lineType: 'A' }, { kind: 'line', p1: eaveR, p2: apex, lineType: 'A' },
-            { kind: 'line', p1: bEaveL, p2: bApex, lineType: 'A' }, { kind: 'line', p1: bEaveR, p2: bApex, lineType: 'A' },
-            { kind: 'line', p1: apex, p2: bApex, lineType: 'A' }, { kind: 'line', p1: eaveR, p2: bEaveR, lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 6. Circular Feature in Perspective ──
-  (function () {
-    const FL = [40, 120], FR = [100, 120], TR = [100, 80], TL = [40, 80];
-    const VP = [175, 100], T = 0.4;
-    const bFR = recede(FR, VP, T), bTR = recede(TR, VP, T);
-    const centreFront = [80, 100], r = 14, N = 12, tCircle = 0.22;
-    const truePts = Array.from({ length: N }, (_, i) => {
-      const a = i * 2 * Math.PI / N;
-      return [centreFront[0] + r * Math.cos(a), centreFront[1] + r * Math.sin(a)];
-    });
-    const persPts = truePts.map(p => recede(p, VP, tCircle));
-    const smooth = G.catmullRomExpand(persPts.concat([persPts[0], persPts[1]]), 6);
-
-    CONSTRUCTIONS['perspective-circular-feature'] = {
-      id: 'perspective-circular-feature', title: 'Circular Feature in Perspective',
-      summary: 'A circular window on a receding wall is never a true circle — plot its true shape at the picture plane first, then project every point individually to the correct depth.',
-      bounds: { w: 215, h: 150 },
-      workbookPrompt: 'Construct a circular window (28 mm diameter) on the receding side wall using the point-projection method: plot the true circle, then project all 12 points to the required depth.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the building shell, as before.',
-          calloutAt: [(FR[0] + bFR[0]) / 2, (FR[1] + bTR[1]) / 2],
-          reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-            { kind: 'line', p1: FR, p2: bFR, lineType: 'A' }, { kind: 'line', p1: TR, p2: bTR, lineType: 'A' }, { kind: 'line', p1: bFR, p2: bTR, lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'At the picture-plane depth, construct the window\'s TRUE circle and divide it into 12 equal points — exactly like plotting any circle that isn\'t shown true shape.',
-          calloutAt: centreFront,
-          reveals: [
-            { kind: 'circle', center: centreFront, r, lineType: 'construction' },
-            ...truePts.map(p => ({ kind: 'point', at: p, size: 1, color: '#eab308' })),
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Project EACH of the 12 points individually toward the VP, stopping every one at the SAME chosen depth — this places the whole circle at its correct perspective position at once.',
-          calloutAt: G.midpoint(centreFront, VP),
-          reveals: [
-            ...truePts.map(p => ({ kind: 'line', p1: p, p2: VP, lineType: 'construction' })),
-            ...persPts.map(p => ({ kind: 'point', at: p, size: 1.1, color: '#f472b6' })),
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Join the 12 projected points with a smooth curve — the circular window as it actually appears on the receding wall, foreshortened by the perspective projection.',
-          calloutAt: G.midpoint(persPts[0], persPts[6]),
-          reveals: [{ kind: 'polyline', points: smooth, lineType: 'A' }],
-        },
-      ],
-    };
-  })();
-
-  // ── 7. Full Worked Dwelling ──
-  (function () {
-    const FL = [35, 125], FR = [110, 125], TR = [110, 82], TL = [35, 82], apex = [72.5, 58];
-    const VP = [185, 102], T = 0.42;
-    const bFL = recede(FL, VP, T), bFR = recede(FR, VP, T), bTR = recede(TR, VP, T), bTL = recede(TL, VP, T), bApex = recede(apex, VP, T);
-    const doorH = 32, dNear = 0.06, dFar = 0.12;
-    const dTopFront = [FR[0], FR[1] - doorH];
-    const dBotN = recede(FR, VP, dNear), dBotF = recede(FR, VP, dFar), dTopN = recede(dTopFront, VP, dNear), dTopF = recede(dTopFront, VP, dFar);
-    const sillH = 15, winTopH = 34, wNear = 0.24, wFar = 0.30;
-    const sillFront = [FR[0], FR[1] - sillH], winTopFront = [FR[0], FR[1] - winTopH];
-    const sN = recede(sillFront, VP, wNear), sF = recede(sillFront, VP, wFar), wtN = recede(winTopFront, VP, wNear), wtF = recede(winTopFront, VP, wFar);
-
-    CONSTRUCTIONS['perspective-full-dwelling'] = {
-      id: 'perspective-full-dwelling', title: 'Full Worked Dwelling',
-      summary: 'Bringing every technique in this chapter together — walls, roof, a door and a window, all built from the same single vanishing point.',
-      bounds: { w: 235, h: 160 },
-      workbookPrompt: 'Draw the complete dwelling in one-point perspective: front face and roof, the receding shell, and a door and window each with a correctly projected reveal.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the true-shape front face and roof, and mark the VP on the horizon line.',
-          calloutAt: [(FL[0] + FR[0]) / 2, (FL[1] + TL[1]) / 2],
-          reveals: [
-            { kind: 'polygon', points: [FL, FR, TR, TL], lineType: 'A' },
-            { kind: 'polygon', points: [TL, TR, apex], lineType: 'A' },
-            { kind: 'line', p1: [0, VP[1]], p2: [235, VP[1]], lineType: 'B' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Project every front corner (and the apex) to the VP, mark the building\'s depth, and complete the receding shell — walls, back face and roof.',
-          calloutAt: [(bFL[0] + bFR[0]) / 2, bFL[1] + 6],
-          reveals: [
-            { kind: 'line', p1: FR, p2: bFR, lineType: 'A' }, { kind: 'line', p1: TR, p2: bTR, lineType: 'A' },
-            { kind: 'line', p1: bFL, p2: bFR, lineType: 'A' }, { kind: 'line', p1: bTL, p2: bTR, lineType: 'A' }, { kind: 'line', p1: bTR, p2: bFR, lineType: 'A' },
-            { kind: 'line', p1: apex, p2: bApex, lineType: 'A' }, { kind: 'line', p1: bApex, p2: bTR, lineType: 'A' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Add the DOOR on the receding wall: project its true height to the VP, mark its near/far depth position, and complete the reveal.',
-          calloutAt: G.midpoint(dBotN, dTopF),
-          reveals: [
-            { kind: 'line', p1: dTopFront, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: dBotN, p2: dTopN, lineType: 'A' }, { kind: 'line', p1: dBotF, p2: dTopF, lineType: 'A' },
-            { kind: 'line', p1: dTopN, p2: dTopF, lineType: 'A' }, { kind: 'line', p1: dBotN, p2: dBotF, lineType: 'A' },
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Add the WINDOW on the receding wall, further back — its own sill and head height lines, then the reveal, exactly as before.',
-          calloutAt: G.midpoint(sN, wtF),
-          reveals: [
-            { kind: 'line', p1: sillFront, p2: VP, lineType: 'construction' }, { kind: 'line', p1: winTopFront, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: sN, p2: wtN, lineType: 'A' }, { kind: 'line', p1: sF, p2: wtF, lineType: 'A' },
-            { kind: 'line', p1: wtN, p2: wtF, lineType: 'A' }, { kind: 'line', p1: sN, p2: sF, lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 8. Relative Size at Different Depths ──
-  (function () {
-    const VP = [190, 90];
-    const near = { FL: [20, 130], FR: [55, 130], TR: [55, 100], TL: [20, 100] };
-    const T1 = 0.35; // a second, identical box, set back further along the SAME projectors
-    function recedeBox(box, t) {
-      return { FL: recede(box.FL, VP, t), FR: recede(box.FR, VP, t), TR: recede(box.TR, VP, t), TL: recede(box.TL, VP, t) };
-    }
-    const far = recedeBox(near, T1);
-    const nearH = G.distance(near.FL, near.TL), farH = G.distance(far.FL, far.TL);
-
-    CONSTRUCTIONS['relative-size-depth'] = {
-      id: 'relative-size-depth', title: 'Relative Size at Different Depths',
-      summary: 'The same true-size box, drawn at two different depths from the SAME vanishing point — proof that apparent size shrinks purely as a function of distance, with no separate scaling step.',
-      bounds: { w: 210, h: 145 },
-      workbookPrompt: 'Draw one box at the picture plane and an identical true-size box set back along the same projectors to the VP. Compare their apparent heights.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the NEAR box at true shape (it touches the picture plane), and mark the VP.',
-          calloutAt: G.midpoint(near.FL, near.TR),
-          reveals: [
-            { kind: 'polygon', points: [near.FL, near.FR, near.TR, near.TL], lineType: 'A' },
-            { kind: 'point', at: VP, label: 'VP', size: 1.4 },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Project every corner of the near box toward the VP — these projectors show every position that box COULD occupy, at any depth, along the same sightlines.',
-          calloutAt: G.midpoint(near.FR, VP),
-          reveals: [
-            { kind: 'line', p1: near.FL, p2: VP, lineType: 'construction' }, { kind: 'line', p1: near.FR, p2: VP, lineType: 'construction' },
-            { kind: 'line', p1: near.TL, p2: VP, lineType: 'construction' }, { kind: 'line', p1: near.TR, p2: VP, lineType: 'construction' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Mark a second, FARTHER depth on the same projectors, and complete the far box the same way as any receding face.',
-          calloutAt: G.midpoint(far.FL, far.TR),
-          reveals: [
-            { kind: 'polygon', points: [far.FL, far.FR, far.TR, far.TL], lineType: 'A' },
-          ],
-        },
-        {
-          id: 4,
-          instruction: 'Compare the two boxes\' apparent heights. Both are the SAME true size — the far box only looks smaller because it is farther away, exactly like a real building or a row of similar columns receding into the distance.',
-          measurement: { label: `near height = ${nearH.toFixed(1)}, far height = ${farH.toFixed(1)}` },
-          calloutAt: [near.TL[0] - 10, (near.TL[1] + far.TL[1]) / 2],
-          reveals: [
-            { kind: 'dimension', p1: [near.FL[0] - 10, near.TL[1]], p2: [near.FL[0] - 10, near.FL[1]], offset: 0, text: nearH.toFixed(0) },
-            { kind: 'dimension', p1: [far.FL[0] - 8, far.TL[1]], p2: [far.FL[0] - 8, far.FL[1]], offset: 0, text: farH.toFixed(0) },
-          ],
-        },
+        ...steps.map((s, i) => Object.assign(s, { id: i + 2 })),
       ],
     };
   })();
@@ -578,8 +402,7 @@
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
-    'one-point-building', 'viewpoint-comparison', 'perspective-door-reveal', 'perspective-window-reveal',
-    'perspective-roof-overhang', 'perspective-circular-feature', 'perspective-full-dwelling', 'relative-size-depth',
+    'one-point-setup', 'one-point-stepped-block', 'one-point-building', 'viewpoint-comparison',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);

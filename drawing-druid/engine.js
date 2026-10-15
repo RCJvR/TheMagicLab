@@ -525,9 +525,9 @@
       if (step.calloutAt) primExtents({ kind: 'point', at: step.calloutAt }, acc);
     });
     let res = isFinite(acc[0]) ? acc : null;
-    // Some drawings (grids, construction rays) run past the sheet and rely on being clipped,
-    // so never frame wider than the model's own bounds plus a margin.
-    if (res && model.bounds) {
+    // Some drawings (grid paper) run past the sheet and rely on being clipped: those set
+    // clipToBounds, and are never framed wider than their bounds plus a margin.
+    if (res && model.bounds && model.clipToBounds) {
       const mx = Math.min(model.bounds.w * 0.12, 3), my = Math.min(model.bounds.h * 0.12, 3);
       res = [Math.max(res[0], -mx), Math.max(res[1], -my), Math.min(res[2], model.bounds.w + mx), Math.min(res[3], model.bounds.h + my)];
       if (res[2] <= res[0] || res[3] <= res[1]) res = null;
@@ -918,7 +918,7 @@
 
   function pageGrade() {
     const tag = document.querySelector('.chapter-tag');
-    const m = tag && /Grade\s+(\d+)(?!\s*[-–])/.exec(tag.textContent);
+    const m = tag && /Grade\s+(\d+)(?!\s*[-–])/.exec(tag.textContent);
     return m ? m[1] : '';
   }
 
@@ -926,6 +926,9 @@
   // too wide for that but short enough may use the full width below the reference box.
   const AREA_SIDE = { x: 26, y: 30, w: 308, h: 229 };
   const AREA_LOW = { x: 26, y: 97, w: 380, h: 162 };
+  // model.printLayout === 'full': no reference box, the whole sheet is drawing area
+  // (perspective set-ups, where the plan, both VPs and SP all have to fit).
+  const AREA_FULL = { x: 26, y: 26, w: 380, h: 233 };
 
   // Builds one landscape A3 worksheet per model inside host: border, question bar, the
   // full-size construction, a reference drawing and the bilingual title strip.
@@ -951,6 +954,7 @@
       mainSvg.setAttribute('class', 'a3-main-svg');
       sheet.appendChild(mainSvg);
 
+      const full = model.printLayout === 'full';
       const thumb = (opts.thumb && opts.thumb(model)) || null;
       const thumbBox = document.createElement('div');
       thumbBox.className = 'thumb-box';
@@ -960,7 +964,7 @@
       thumbBox.appendChild(thumbLabel);
       const thumbSvg = document.createElementNS(NS, 'svg');
       thumbBox.appendChild(thumbSvg);
-      sheet.appendChild(thumbBox);
+      if (!full) sheet.appendChild(thumbBox);
 
       // True scale where it fits; otherwise the next standard reduction.
       const ext = modelExtents(model);
@@ -968,7 +972,8 @@
       let scaleText = opts.scale || '1:1';
       if (ext && scaleText === '1:1') {
         const w = ext[2] - ext[0] + 8, h = ext[3] - ext[1] + 8;
-        if (w <= AREA_SIDE.w && h <= AREA_SIDE.h) area = AREA_SIDE;
+        if (full) { area = AREA_FULL; if (w > AREA_FULL.w || h > AREA_FULL.h) { scale = 0.5; scaleText = '1:2'; } }
+        else if (w <= AREA_SIDE.w && h <= AREA_SIDE.h) area = AREA_SIDE;
         else if (w <= AREA_LOW.w && h <= AREA_LOW.h) area = AREA_LOW;
         else { scale = 0.5; scaleText = '1:2'; }
       }
@@ -1005,6 +1010,7 @@
         mainSvg.style.left = (area.x + Math.max(0, (area.w - mw) / 2)).toFixed(1) + 'mm';
         mainSvg.style.top = (area.y + Math.max(0, (area.h - mh) / 2)).toFixed(1) + 'mm';
       }
+      if (full) return;
       const tm = thumb && thumb.model ? thumb.model : model;
       const b = tm.bounds || { w: 200, h: 150 };
       const fitScale = Math.min(66 / (b.w + 28), 60 / (b.h + 28), (thumb && thumb.maxScale) || 0.35);

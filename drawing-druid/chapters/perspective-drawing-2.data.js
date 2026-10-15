@@ -1,426 +1,308 @@
-// Perspective Drawing II — Two-Point Perspective. Chapter data. Requires engine-geometry.js
-// loaded first (window.ConstructionGeometry). Grade 11-12 tier escalation of perspective-drawing
-// .data.js (Ch8, one-point perspective) — this chapter adds a SECOND vanishing point, so both
-// visible faces of an object recede, not just one.
+// Perspective Drawing II — Grade 11-12: two-point perspective by the plan (measured) method,
+// with curved work for Grade 12. Requires engine-geometry.js and perspective-kit.js.
 (function (global) {
   'use strict';
-  const G = global.ConstructionGeometry;
+  const K = global.PerspectiveKit;
   const CONSTRUCTIONS = {};
 
-  // Same linear recede() used throughout perspective-drawing.data.js: point P moves toward
-  // vanishing point VP by fraction t (0 = at P, 1 = at the VP itself).
-  function recede(P, VP, t) { return [P[0] + t * (VP[0] - P[0]), P[1] + t * (VP[1] - P[1])]; }
-  function lineIntersect(p1, p2, p3, p4) {
-    const [x1, y1] = p1, [x2, y2] = p2, [x3, y3] = p3, [x4, y4] = p4;
-    const d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-    if (Math.abs(d) < 1e-9) return G.midpoint(p1, p2);
-    const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / d;
-    return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)];
+  const lbl = (at, text, anchor, size) => ({ kind: 'label', at, text, size: size || 3.4, anchor: anchor || 'middle', color: '#94a3b8' });
+  const toVP = (P, from, vp) => ({ kind: 'line', p1: from, p2: vp, lineType: 'construction' });
+  // Is the curved surface at (u, v), with outward plan normal (nu, nv), facing the eye?
+  function frontFacing(P, nu, nv, u, v) {
+    const [X, Y] = P.world(u, v);
+    const nx = nu * P.cs - nv * P.sn, ny = nu * P.sn + nv * P.cs;
+    return nx * (P.eye[0] - X) + ny * (P.eye[1] - Y) > 0;
   }
 
-  const VPL = [10, 90], VPR = [190, 90], HORIZON_Y = 90;
+  // The common set-up for every two-point exercise: plan, SP, the two lines from SP parallel
+  // to the plan's edges, the VPs dropped onto HL, and the GL / HL / PP lines.
+  function setupReveals(P, planPts, x0, x1, extraPlan) {
+    const { LVP, RVP, LPP, RPP } = P.vps;
+    return [
+      ...K.frame(P, x0, x1),
+      { kind: 'polygon', points: planPts.map(([u, v]) => P.plan(u, v)), lineType: 'A' },
+      ...(extraPlan || []),
+      ...K.spMark(P),
+      { kind: 'line', p1: P.SP, p2: LPP, lineType: 'construction' },
+      { kind: 'line', p1: P.SP, p2: RPP, lineType: 'construction' },
+      { kind: 'line', p1: LPP, p2: LVP, lineType: 'construction' },
+      { kind: 'line', p1: RPP, p2: RVP, lineType: 'construction' },
+      { kind: 'point', at: LVP, label: 'LVP', size: 1.3 },
+      { kind: 'point', at: RVP, label: 'RVP', size: 1.3 },
+    ];
+  }
 
-  // ── 1. Setting Up Two-Point Perspective ──
+  // A front elevation (the face along u) standing on GL at ex, heights projected across to the
+  // true-height line at the corner that touches PP.
+  function elevation(P, ex, profile, heights) {
+    const tx = P.persp(0, 0, 0)[0];
+    return [
+      { kind: 'polygon', points: profile.map(([u, z]) => [ex + u, P.yGL - z]), lineType: 'A' },
+      lbl([ex + Math.max(...profile.map(p => p[0])) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
+      ...heights.map(z => ({ kind: 'line', p1: [ex + Math.max(...profile.filter(p => Math.abs(p[1] - z) < 1e-6).map(p => p[0]).concat([0])), P.yGL - z], p2: [tx, P.yGL - z], lineType: 'construction' })),
+    ];
+  }
+
+  // ── 1. Setting up two-point perspective: a block at 30° / 60° ──
   (function () {
-    const cornerTop = [100, 55], cornerBot = [100, 130];
+    const W = 44, D = 30, H = 32;
+    const P = K.setup({ sx: 100, d: 117, yPP: 72, yGL: 168, h: 52, theta: 30, cx: 100 });
+    const faces = K.extrude([[0, 0], [W, 0], [W, H], [0, H]], 'uz', 0, D);
+    const edges = K.visibleEdges(P, faces);
+    const { LVP, RVP } = P.vps;
+    const EX = Math.round(P.vps.LVP[0]) - 54;
+    const C0 = P.persp(0, 0, 0), C1 = P.persp(0, 0, H);
+
     CONSTRUCTIONS['two-point-setup'] = {
-      id: 'two-point-setup', title: 'Setting Up Two-Point Perspective',
-      summary: 'Instead of one-point perspective\'s single VP, two-point perspective uses TWO vanishing points on the horizon — one for each set of horizontal edges receding away from the viewer.',
-      bounds: { w: 205, h: 150 },
-      workbookPrompt: 'Set up a two-point perspective drawing: draw the horizon line, mark VPL and VPR at its ends, and draw a single vertical corner edge exactly where the object is nearest the viewer.',
+      printLayout: 'full',
+      id: 'two-point-setup', title: 'Two-Point Perspective: Setting Up (Block)',
+      summary: 'The full two-point set-up: the top view at 30°/60° touching PP at one corner, the vanishing points found from SP, the true-height line, and the block found by visual rays.',
+      bounds: { w: 330, h: 190 },
+      workbookPrompt: 'Draw the block (44 x 30 x 32) in two-point perspective. The top view touches PP at its nearest corner, with its long side at 30° to PP. SP is 117 mm in front of PP, directly in line with that corner; the eye is 52 mm above GL.',
       steps: [
         {
           id: 1,
-          instruction: 'Balloon 1: the HORIZON — the line at the viewer\'s own eye level. Both vanishing points always sit on this same line.',
-          calloutAt: [100, 84],
+          instruction: 'Draw PP and the TOP VIEW above it, turned so its long side makes 30° with PP and its short side 60°. Only the nearest corner touches the picture plane.',
+          calloutAt: P.plan(W / 2, D / 2),
           reveals: [
-            { kind: 'line', p1: [0, HORIZON_Y], p2: [200, HORIZON_Y], lineType: 'centre' },
+            { kind: 'line', p1: [EX - 26, P.yPP], p2: [RVP[0] + 4, P.yPP], lineType: 'B' },
+            lbl([EX - 28, P.yPP - 1], 'PP', 'end', 3.6), lbl([EX - 28, P.yPP + 5.5], 'PV', 'end', 3.6),
+            { kind: 'polygon', points: [P.plan(0, 0), P.plan(W, 0), P.plan(W, D), P.plan(0, D)], lineType: 'A' },
+            lbl([P.plan(W, D)[0], P.plan(W, D)[1] - 6], 'TOP VIEW / BO-AANSIG'),
           ],
         },
         {
           id: 2,
-          instruction: 'Balloon 2: VPL and VPR — TWO vanishing points, placed on the horizon on either side of the object. Every horizontal edge receding to the left converges toward VPL; every one receding to the right converges toward VPR.',
-          calloutAt: [10, 84],
-          reveals: [
-            { kind: 'point', at: VPL, label: 'VPL' }, { kind: 'point', at: VPR, label: 'VPR' },
-          ],
+          instruction: 'Mark SP. From SP draw a line PARALLEL to each edge of the top view up to the PP (30° and 60° set-square lines). Drop verticals from those two points to the HL: they are the left and right vanishing points, LVP and RVP. Draw GL and HL.',
+          calloutAt: RVP,
+          reveals: setupReveals(P, [[0, 0], [W, 0], [W, D], [0, D]], EX - 26, RVP[0] + 4).filter(r => r.kind !== 'polygon'),
         },
         {
           id: 3,
-          instruction: 'Balloon 3: the CORNER VERTICAL — drawn at the object\'s nearest point to the viewer. This is the only line in the whole drawing whose true height can be measured and drawn directly to scale.',
-          calloutAt: [100, 92],
+          instruction: 'The corner touching PP is the TRUE-HEIGHT LINE: the only line in the drawing shown at true scale. Drop it from PP to GL and mark its true height, projected across from the front view drawn on GL.',
+          calloutAt: [C0[0], (C0[1] + C1[1]) / 2],
           reveals: [
-            { kind: 'line', p1: cornerTop, p2: cornerBot, lineType: 'A' },
+            { kind: 'line', p1: P.plan(0, 0), p2: C0, lineType: 'construction' },
+            ...elevation(P, EX, [[0, 0], [W, 0], [W, H], [0, H]], [H]),
+            { kind: 'line', p1: C0, p2: C1, lineType: 'A' },
           ],
         },
         {
           id: 4,
-          instruction: 'Balloon 4 (capstone): every other vertical elsewhere in the drawing is still vertical in direction — verticals never converge — but it sits at a different depth, so its TRUE height must be transferred from this corner using the technique in the next sheet.',
-          calloutAt: [100, 140],
-          reveals: [],
-        },
-      ],
-    };
-  })();
-
-  // ── 2. The Basic Two-Point Box ──
-  (function () {
-    const cTop = [100, 55], cBot = [100, 130];
-    const tL = 0.35, tR = 0.4;
-    const lTop = recede(cTop, VPL, tL), lBot = recede(cBot, VPL, tL);
-    const rTop = recede(cTop, VPR, tR), rBot = recede(cBot, VPR, tR);
-    CONSTRUCTIONS['two-point-box'] = {
-      id: 'two-point-box', title: 'The Basic Two-Point Box',
-      summary: 'Both visible faces of the box recede — the left face toward VPL, the right face toward VPR — meeting at the true-height corner vertical.',
-      bounds: { w: 205, h: 150 },
-      workbookPrompt: 'Starting from a corner vertical, project both its top and bottom corners toward VPL and VPR, then close off both receding faces at a chosen depth on each side.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'From both ends of the corner vertical, project four lines: top and bottom toward VPL, and top and bottom toward VPR.',
-          calloutAt: [70, 65],
-          reveals: [
-            { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' },
-            { kind: 'line', p1: cTop, p2: VPL, lineType: 'construction' }, { kind: 'line', p1: cBot, p2: VPL, lineType: 'construction' },
-            { kind: 'line', p1: cTop, p2: VPR, lineType: 'construction' }, { kind: 'line', p1: cBot, p2: VPR, lineType: 'construction' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Balloon 1: choose a depth for the LEFT face and draw its closing vertical between the two VPL projectors. Because both projectors share the same VP, this vertical is automatically the correctly foreshortened height at that depth — no extra measuring needed.',
-          calloutAt: lTop,
-          reveals: [{ kind: 'line', p1: lTop, p2: lBot, lineType: 'A' }],
-        },
-        {
-          id: 3,
-          instruction: 'Balloon 2: do the same for the RIGHT face, at its own chosen depth toward VPR.',
-          calloutAt: rTop,
-          reveals: [{ kind: 'line', p1: rTop, p2: rBot, lineType: 'A' }],
-        },
-        {
-          id: 4,
-          instruction: 'Balloon 3: outline both faces solid — the corner vertical is shared by both, so the whole box reads as one solid object with two visible receding sides.',
-          calloutAt: [100, 140],
-          reveals: [
-            { kind: 'line', p1: cTop, p2: lTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: lBot, lineType: 'A' },
-            { kind: 'line', p1: cTop, p2: rTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: rBot, lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 3. Transferring a True Height (Two-Point Method) ──
-  (function () {
-    const cTop = [100, 55], cBot = [100, 130];
-    const t = 0.5;
-    const P = recede(cBot, VPL, t);
-    const newTrueTop = [100, 30];
-    const R = recede(newTrueTop, VPL, t);
-    CONSTRUCTIONS['two-point-height-transfer'] = {
-      id: 'two-point-height-transfer', title: 'Transferring a True Height (Two-Point Method)',
-      summary: 'Any NEW height that doesn\'t match the box (like a taller chimney) must be measured on the corner vertical first, then carried out to the correct depth along the same vanishing line.',
-      bounds: { w: 205, h: 165 },
-      workbookPrompt: 'Given a point halfway along a receding base edge, construct its true height for a feature taller than the existing box, using the corner vertical as a measuring line.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'The corner vertical and its base edge receding to VPL. Balloon 1: point P sits partway along the base edge — this is where a NEW feature (e.g. a chimney) will stand, taller than the rest of the box.',
-          calloutAt: P,
-          reveals: [
-            { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' },
-            { kind: 'line', p1: cBot, p2: VPL, lineType: 'construction' },
-            { kind: 'point', at: P, label: 'P' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Balloon 2: since the corner vertical is the ONLY place true heights can be measured directly, mark the chimney\'s TRUE height there — well above the box\'s own top corner.',
-          calloutAt: newTrueTop,
-          reveals: [{ kind: 'point', at: newTrueTop, label: 'true height' }],
-        },
-        {
-          id: 3,
-          instruction: 'Balloon 3: draw a new line from that true-height mark toward the SAME vanishing point, VPL — this line now shows the correctly foreshortened version of that exact height, at every depth along it.',
-          calloutAt: [70, 40],
-          reveals: [{ kind: 'line', p1: newTrueTop, p2: VPL, lineType: 'construction' }],
-        },
-        {
-          id: 4,
-          instruction: 'Balloon 4: erect a vertical at P, up until it meets this new line — that crossing point is P\'s CORRECT foreshortened height. Draw the chimney as a solid vertical from P to this point.',
-          calloutAt: R,
-          reveals: [{ kind: 'line', p1: P, p2: R, lineType: 'A' }],
+          instruction: 'Join the top and bottom of the true-height line to BOTH vanishing points. Every edge of the block lies on one of these four lines.',
+          calloutAt: [(C1[0] + RVP[0]) / 2, (C1[1] + RVP[1]) / 2],
+          reveals: [toVP(P, C0, LVP), toVP(P, C1, LVP), toVP(P, C0, RVP), toVP(P, C1, RVP)],
         },
         {
           id: 5,
-          instruction: 'Balloon 5 (capstone): this is the fundamental technique behind every added feature in two-point perspective — nothing is ever guessed by eye; every new height traces back to the one true-height measuring line.',
-          calloutAt: [100, 150],
-          reveals: [],
+          instruction: 'Visual rays from SP to the other plan corners; where they cross PP drop verticals. They cut the VP lines at the block\'s corners. Draw the visible edges with Type A lines.',
+          calloutAt: P.persp(W, 0, H / 2),
+          reveals: [
+            ...K.rays(P, [[W, 0], [0, D], [W, D]]),
+            ...K.drops(P, [[W, 0, 0], [0, D, 0], [W, D, H]]),
+            ...K.perspLines(P, edges.filter(([p, q]) => !(p[0] === 0 && p[1] === 0 && q[0] === 0 && q[1] === 0)), 'A'),
+          ],
         },
       ],
     };
   })();
 
-  // ── 4. Dividing a Receding Face into Equal Bays ──
+  // ── 2. Stepped block ──
   (function () {
-    const cTop = [100, 55], cBot = [100, 130];
-    const tL = 0.55;
-    const bTop = recede(cTop, VPL, tL), bBot = recede(cBot, VPL, tL);
-    const center = lineIntersect(cTop, bBot, cBot, bTop);
-    const midTop = lineIntersect([center[0], -1000], [center[0], 1000], cTop, bTop);
-    const midBot = lineIntersect([center[0], -1000], [center[0], 1000], cBot, bBot);
-    CONSTRUCTIONS['two-point-equal-bay-division'] = {
-      id: 'two-point-equal-bay-division', title: 'Dividing a Receding Face into Equal Bays',
-      summary: 'Crossing the diagonals of a receding face finds its exact centre in perspective — the same trick that divides any receding face into equal bays, however many times it\'s repeated.',
-      bounds: { w: 205, h: 150 },
-      workbookPrompt: 'Given one receding face of the two-point box, draw both diagonals, mark their crossing point, and drop a vertical through it to divide the face into two equal bays.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'A single receding face (the left side of the box). Balloon 1: draw BOTH diagonals of the face, corner to opposite corner.',
-          calloutAt: [85, 75],
-          reveals: [
-            { kind: 'line', p1: cTop, p2: bBot, lineType: 'A' }, { kind: 'line', p1: cBot, p2: bTop, lineType: 'A' },
-            { kind: 'line', p1: bTop, p2: bBot, lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Balloon 2: where the diagonals cross is the face\'s exact CENTRE, correctly foreshortened for its depth — a straightforward eye-measured midpoint would be wrong here, since the face narrows with distance.',
-          calloutAt: center,
-          reveals: [{ kind: 'point', at: center, label: 'centre' }],
-        },
-        {
-          id: 3,
-          instruction: 'Balloon 3: drop a vertical straight through the crossing point — this line divides the face into two EQUAL bays (e.g. two equal window bays), each correctly foreshortened for its own position.',
-          calloutAt: [center[0], 92],
-          reveals: [{ kind: 'line', p1: midTop, p2: midBot, lineType: 'A' }],
-        },
-        {
-          id: 4,
-          instruction: 'Balloon 4 (capstone): repeating this same diagonal-crossing method inside each new bay divides the face into 4 equal bays, then 8, and so on — any number of equal repeats, without ever needing to guess a spacing by eye.',
-          calloutAt: [100, 142],
-          reveals: [],
-        },
-      ],
-    };
-  })();
+    const W = 50, D = 30;
+    const prof = [[0, 0], [W, 0], [W, 14], [20, 14], [20, 34], [0, 34]];
+    const P = K.setup({ sx: 96, d: 122, yPP: 72, yGL: 170, h: 60, theta: 30, cx: 100 });
+    const faces = K.extrude(prof, 'uz', 0, D);
+    const edges = K.visibleEdges(P, faces);
+    const { LVP, RVP } = P.vps;
+    const EX = Math.round(P.vps.LVP[0]) - 54;
+    const C0 = P.persp(0, 0, 0);
 
-  // ── 5. Door & Window on Two Receding Faces ──
-  (function () {
-    const cTop = [100, 55], cBot = [100, 130];
-    const tL = 0.4, tR = 0.42;
-    const lTop = recede(cTop, VPL, tL), lBot = recede(cBot, VPL, tL);
-    const rTop = recede(cTop, VPR, tR), rBot = recede(cBot, VPR, tR);
-    const doorT = 0.06;
-    const doorNear = recede(cBot, VPL, doorT), doorFar = recede(cBot, VPL, doorT + 0.22);
-    const doorTopLine_a = recede([100, 75], VPL, doorT), doorTopLine_b = recede([100, 75], VPL, doorT + 0.22);
-    const sillTrue = [100, 95], headTrue = [100, 68];
-    const winT0 = 0.18, winT1 = 0.34;
-    const sillNear = recede(sillTrue, VPR, winT0), sillFar = recede(sillTrue, VPR, winT1);
-    const headNear = recede(headTrue, VPR, winT0), headFar = recede(headTrue, VPR, winT1);
-    CONSTRUCTIONS['two-point-door-window'] = {
-      id: 'two-point-door-window', title: 'Door & Window on Two Receding Faces',
-      summary: 'A door on the left face and a window on the right face — each height found by the same true-height transfer technique, just carried out toward whichever VP that face belongs to.',
-      bounds: { w: 205, h: 150 },
-      workbookPrompt: 'Add a door opening (from the ground) to the left receding face and a window opening (sill and head, both above the ground) to the right receding face of the two-point box.',
+    CONSTRUCTIONS['two-point-stepped-block'] = {
+      printLayout: 'full',
+      id: 'two-point-stepped-block', title: 'Two-Point Perspective: Stepped Block',
+      summary: 'Heights that are not on the true-height corner are measured on it first and carried along a VP line to where they belong.',
+      bounds: { w: 330, h: 190 },
+      workbookPrompt: 'Draw the stepped block in two-point perspective. The top view touches PP at its nearest corner at 30°; SP is 122 mm in front of PP; the eye is 60 mm above GL.',
       steps: [
         {
           id: 1,
-          instruction: 'The box\'s two faces. Balloon 1: on the LEFT face, the door\'s bottom coincides with the ground line, so only its TOP height needs transferring from the corner — carried out toward VPL.',
-          calloutAt: doorTopLine_a,
+          instruction: 'Set up: top view at 30° touching PP, SP, the two VPs, GL and HL. Draw the front view on GL at the side.',
+          calloutAt: P.plan(W / 2, D / 2),
           reveals: [
-            { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' }, { kind: 'line', p1: cTop, p2: lTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: lBot, lineType: 'A' }, { kind: 'line', p1: lTop, p2: lBot, lineType: 'A' },
-            { kind: 'line', p1: cTop, p2: rTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: rBot, lineType: 'A' }, { kind: 'line', p1: rTop, p2: rBot, lineType: 'A' },
-            { kind: 'point', at: [100, 75], label: 'true door height' },
-            { kind: 'line', p1: [100, 75], p2: VPL, lineType: 'construction' },
+            ...setupReveals(P, [[0, 0], [W, 0], [W, D], [0, D]], EX - 26, RVP[0] + 4, [{ kind: 'line', p1: P.plan(20, 0), p2: P.plan(20, D), lineType: 'A' }]),
+            ...elevation(P, EX, prof, []),
           ],
         },
         {
           id: 2,
-          instruction: 'Balloon 2: mark the door\'s near and far edges along the base, project both up to the true-height line, and close off the opening — the door reads correctly foreshortened, narrower and shorter toward the back.',
-          calloutAt: G.midpoint(doorNear, doorTopLine_a),
+          instruction: 'Mark BOTH heights (14 and 34) on the true-height line by projecting them across from the front view, and join them to the VPs.',
+          calloutAt: P.persp(0, 0, 24),
           reveals: [
-            { kind: 'line', p1: doorNear, p2: doorTopLine_a, lineType: 'A' }, { kind: 'line', p1: doorFar, p2: doorTopLine_b, lineType: 'A' },
-            { kind: 'line', p1: doorTopLine_a, p2: doorTopLine_b, lineType: 'A' },
+            { kind: 'line', p1: P.plan(0, 0), p2: C0, lineType: 'construction' },
+            ...[14, 34].map(z => ({ kind: 'line', p1: [EX + (z === 14 ? W : 20), P.yGL - z], p2: P.persp(0, 0, z), lineType: 'construction' })),
+            ...[0, 14, 34].flatMap(z => [toVP(P, P.persp(0, 0, z), LVP), toVP(P, P.persp(0, 0, z), RVP)]),
           ],
         },
         {
           id: 3,
-          instruction: 'Balloon 3: on the RIGHT face, a window needs TWO true heights transferred — sill height and head height — since neither touches the ground or the box top.',
-          calloutAt: sillTrue,
+          instruction: 'Rays from SP to the plan corners, including both ends of the riser line at 20 mm. Drop verticals. The riser\'s height (34 down to 14) comes from the VP lines through the true-height marks, not from measuring.',
+          calloutAt: P.persp(20, 0, 24),
           reveals: [
-            { kind: 'point', at: sillTrue, label: 'sill' }, { kind: 'point', at: headTrue, label: 'head' },
-            { kind: 'line', p1: sillTrue, p2: VPR, lineType: 'construction' }, { kind: 'line', p1: headTrue, p2: VPR, lineType: 'construction' },
+            ...K.rays(P, [[20, 0], [W, 0], [0, D], [20, D], [W, D]]),
+            ...K.drops(P, [[20, 0, 34], [W, 0, 14], [0, D, 34], [20, D, 34], [W, D, 14]]),
           ],
         },
         {
           id: 4,
-          instruction: 'Balloon 4: mark the window\'s near and far edges, project up to BOTH true-height lines, and close off the opening — exactly the two-height technique already used on the one-point perspective window.',
-          calloutAt: G.midpoint(sillNear, headNear),
-          reveals: [
-            { kind: 'line', p1: sillNear, p2: headNear, lineType: 'A' }, { kind: 'line', p1: sillFar, p2: headFar, lineType: 'A' },
-            { kind: 'line', p1: headNear, p2: headFar, lineType: 'A' }, { kind: 'line', p1: sillNear, p2: sillFar, lineType: 'A' },
-          ],
+          instruction: 'Complete the visible edges. The tread and the top of the upright both run to LVP, the front edges to RVP; every vertical stays vertical.',
+          calloutAt: P.persp(35, D / 2, 14),
+          reveals: K.perspLines(P, edges, 'A'),
         },
       ],
     };
   })();
 
-  // ── 6. A Gable Roof End in Two-Point Perspective ──
+  // ── 3. Gable-roof building with a door and a window ──
   (function () {
-    const cTop = [100, 55], cBot = [100, 130];
-    const tL = 0.45;
-    const bTop = recede(cTop, VPL, tL), bBot = recede(cBot, VPL, tL);
-    const eaveMid = G.midpoint(cTop, bTop);
-    const riseTrue = [100, 28];
-    const ridge = recede(riseTrue, VPL, tL / 2);
-    CONSTRUCTIONS['two-point-gable-roof'] = {
-      id: 'two-point-gable-roof', title: 'A Gable Roof End in Two-Point Perspective',
-      summary: 'The ridge point sits above the eave\'s exact midpoint, at a height transferred and foreshortened by exactly the same depth fraction — both found without any guesswork.',
-      bounds: { w: 205, h: 165 },
-      workbookPrompt: 'Given the left face of the two-point box as a gable end, construct the roof ridge point and draw the two sloping roof edges down to the eave corners.',
+    const L = 56, D = 34, WALL = 26, RIDGE = 42;
+    // gable profile in (depth, height), extruded along the length
+    const prof = [[0, 0], [D, 0], [D, WALL], [D / 2, RIDGE], [0, WALL]];
+    const P = K.setup({ sx: 104, d: 120, yPP: 76, yGL: 176, h: 18, theta: 30, cx: 100 });
+    const faces = K.extrude(prof, 'vz', 0, L);
+    const edges = K.visibleEdges(P, faces);
+    const { LVP, RVP } = P.vps;
+    const EX = Math.round(P.vps.LVP[0]) - 54;
+    const C0 = P.persp(0, 0, 0);
+    const DOOR = { u0: 30, u1: 40, h: 20 };          // on the long side wall (v = 0)
+    const WIN = { v0: 10, v1: 22, z0: 9, z1: 19 };   // on the gable end (u = 0)
+
+    CONSTRUCTIONS['two-point-building'] = {
+      printLayout: 'full',
+      id: 'two-point-building', title: 'Two-Point Perspective: Gable-Roof Building',
+      summary: 'A small building seen from a corner: the ridge height is measured on the true-height line and carried back to the middle of the gable, the door and window go on different receding walls.',
+      bounds: { w: 340, h: 200 },
+      workbookPrompt: 'Draw the building in two-point perspective, seen from its front-left corner, at a natural eye height of 18 mm. Show the door on the long wall and the window on the gable end.',
       steps: [
         {
           id: 1,
-          instruction: 'The left face, treated as a gable end wall. Balloon 1: find the eave\'s midpoint — this is simply the ordinary midpoint of the two eave corners, since it lies on a single straight receding line.',
-          calloutAt: eaveMid,
+          instruction: 'Set up: top view at 30° touching PP at the near corner (the ridge line drawn on it), SP, the VPs, GL and a low HL for a natural standing view. Draw the gable end (left view) on GL at the side.',
+          calloutAt: P.plan(L / 2, D / 2),
           reveals: [
-            { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' }, { kind: 'line', p1: bTop, p2: bBot, lineType: 'A' }, { kind: 'line', p1: cTop, p2: bTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: bBot, lineType: 'A' },
-            { kind: 'point', at: eaveMid, label: 'mid' },
+            ...setupReveals(P, [[0, 0], [L, 0], [L, D], [0, D]], EX - 26, RVP[0] + 4, [{ kind: 'line', p1: P.plan(0, D / 2), p2: P.plan(L, D / 2), lineType: 'A' }]),
+            { kind: 'polygon', points: prof.map(([v, z]) => [EX + v, P.yGL - z]), lineType: 'A' },
+            lbl([EX + D / 2, P.yGL + 7], 'LEFT VIEW / LINKERAANSIG'),
+            { kind: 'polygon', points: [[EX + WIN.v0, P.yGL - WIN.z0], [EX + WIN.v1, P.yGL - WIN.z0], [EX + WIN.v1, P.yGL - WIN.z1], [EX + WIN.v0, P.yGL - WIN.z1]], lineType: 'A' },
           ],
         },
         {
           id: 2,
-          instruction: 'Balloon 2: mark the roof\'s TRUE rise above the box on the corner vertical, exactly like any other new height.',
-          calloutAt: riseTrue,
-          reveals: [{ kind: 'point', at: riseTrue, label: 'true rise' }],
+          instruction: 'On the true-height line mark the wall height and the RIDGE height (the ridge is not on this corner, but its height is measured here). Join the wall height and the ground to both VPs, and the ridge height to LVP (the gable runs that way).',
+          calloutAt: P.persp(0, 0, RIDGE),
+          reveals: [
+            { kind: 'line', p1: P.plan(0, 0), p2: C0, lineType: 'construction' },
+            ...[WALL, RIDGE].map(z => ({ kind: 'line', p1: [EX + D, P.yGL - z], p2: P.persp(0, 0, z), lineType: 'construction' })),
+            { kind: 'line', p1: C0, p2: P.persp(0, 0, RIDGE), lineType: 'construction' },
+            ...[0, WALL].flatMap(z => [toVP(P, P.persp(0, 0, z), LVP), toVP(P, P.persp(0, 0, z), RVP)]),
+            toVP(P, P.persp(0, 0, RIDGE), LVP),
+          ],
         },
         {
           id: 3,
-          instruction: 'Balloon 3: because the eave midpoint sits exactly HALFWAY along the receding face, the ridge is found by receding the true-rise point toward VPL by exactly HALF the face\'s own depth fraction — the same halving relationship as the midpoint itself.',
-          calloutAt: ridge,
+          instruction: 'Rays to the plan corners and to both ends of the ridge; drop verticals. The near ridge point is where its vertical cuts the ridge-height line to LVP. Join the far ridge end to RVP, then draw the visible outline.',
+          calloutAt: P.persp(0, D / 2, RIDGE),
           reveals: [
-            { kind: 'line', p1: riseTrue, p2: VPL, lineType: 'construction' },
-            { kind: 'point', at: ridge, label: 'ridge' },
+            ...K.rays(P, [[L, 0], [0, D], [0, D / 2], [L, D / 2]]),
+            ...K.drops(P, [[L, 0, 0], [0, D, 0], [0, D / 2, RIDGE], [L, D / 2, RIDGE]]),
+            toVP(P, P.persp(0, D / 2, RIDGE), RVP),
+            ...K.perspLines(P, edges, 'A'),
           ],
         },
         {
           id: 4,
-          instruction: 'Balloon 4: join the ridge point down to both near and far eave corners — two correctly foreshortened roof slopes, ready to close the gable end.',
-          calloutAt: [90, 45],
+          instruction: 'Door on the long wall: mark its sides in the top view, ray and drop; its height goes on the true-height line and runs to RVP. Window on the gable end: same idea, with its sill and head heights running to LVP.',
+          calloutAt: P.persp((DOOR.u0 + DOOR.u1) / 2, 0, DOOR.h / 2),
           reveals: [
-            { kind: 'line', p1: ridge, p2: cTop, lineType: 'A' }, { kind: 'line', p1: ridge, p2: bTop, lineType: 'A' },
+            ...K.rays(P, [[DOOR.u0, 0], [DOOR.u1, 0], [0, WIN.v0], [0, WIN.v1]]),
+            toVP(P, P.persp(0, 0, DOOR.h), RVP),
+            toVP(P, P.persp(0, 0, WIN.z0), LVP), toVP(P, P.persp(0, 0, WIN.z1), LVP),
+            { kind: 'polyline', points: [P.persp(DOOR.u0, 0, 0), P.persp(DOOR.u0, 0, DOOR.h), P.persp(DOOR.u1, 0, DOOR.h), P.persp(DOOR.u1, 0, 0)], lineType: 'A' },
+            { kind: 'polygon', points: [P.persp(0, WIN.v0, WIN.z0), P.persp(0, WIN.v1, WIN.z0), P.persp(0, WIN.v1, WIN.z1), P.persp(0, WIN.v0, WIN.z1)], lineType: 'A' },
           ],
         },
       ],
     };
   })();
 
-  // ── 7. Bird's-Eye, Natural & Worm's-Eye Views (Two-Point) ──
+  // ── 4. Grade 12: a block with a semicircular end (curves in perspective) ──
   (function () {
-    function miniBox(cx, vpDy) {
-      const cTop = [cx, 50], cBot = [cx, 85];
-      const hy = cTop[1] + vpDy;
-      const vpl = [cx - 30, hy], vpr = [cx + 30, hy];
-      const tL = 0.4, tR = 0.4;
-      const lTop = recede(cTop, vpl, tL), lBot = recede(cBot, vpl, tL);
-      const rTop = recede(cTop, vpr, tR), rBot = recede(cBot, vpr, tR);
-      return [
-        { kind: 'line', p1: cx - 32 < 0 ? [0, hy] : [cx - 32, hy], p2: [cx + 32, hy], lineType: 'centre' },
-        { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' },
-        { kind: 'line', p1: cTop, p2: lTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: lBot, lineType: 'A' }, { kind: 'line', p1: lTop, p2: lBot, lineType: 'A' },
-        { kind: 'line', p1: cTop, p2: rTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: rBot, lineType: 'A' }, { kind: 'line', p1: rTop, p2: rBot, lineType: 'A' },
-      ];
-    }
-    CONSTRUCTIONS['two-point-birds-natural-worms'] = {
-      id: 'two-point-birds-natural-worms', title: 'Bird\'s-Eye, Natural & Worm\'s-Eye Views (Two-Point)',
-      summary: 'Moving the horizon relative to the object changes how much of its top (or underside) is revealed — the exact same principle from one-point perspective, now with two vanishing points.',
-      bounds: { w: 205, h: 130 },
-      workbookPrompt: 'Draw the same simple two-point box three times, moving only the horizon\'s height each time, to produce a bird\'s-eye, a natural, and a worm\'s-eye view.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Balloon 1: BIRD\'S-EYE VIEW — the horizon sits ABOVE the whole box, so the viewer looks down onto it; both top edges slope noticeably downward toward their vanishing points.',
-          calloutAt: [40, 30],
-          reveals: [
-            ...miniBox(40, -25),
-            { kind: 'label', at: [20, 105], text: "BIRD'S-EYE", size: 3.6, anchor: 'start', color: '#94a3b8' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Balloon 2: NATURAL (EYE-LEVEL) VIEW — the horizon passes directly through the box, roughly at its own mid-height, exactly as a person of ordinary height would actually see it standing nearby.',
-          calloutAt: [102, 30],
-          reveals: [
-            ...miniBox(102, 20),
-            { kind: 'label', at: [82, 105], text: 'NATURAL', size: 3.6, anchor: 'start', color: '#94a3b8' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Balloon 3: WORM\'S-EYE VIEW — the horizon sits BELOW the whole box, so the viewer looks steeply up at it; the top face vanishes from view entirely and both top edges now slope upward toward their vanishing points.',
-          calloutAt: [164, 30],
-          reveals: [
-            ...miniBox(164, 55),
-            { kind: 'label', at: [144, 105], text: "WORM'S-EYE", size: 3.6, anchor: 'start', color: '#94a3b8' },
-          ],
-        },
-      ],
-    };
-  })();
+    const L = 40, R = 16, H = 24;
+    const N = 12;                                   // arc divided every 15°
+    const arc = Array.from({ length: N + 1 }, (_, i) => {
+      const t = (-90 + 180 * i / N) * Math.PI / 180;
+      return [L + R * Math.cos(t), R + R * Math.sin(t)];
+    });
+    const prof = [[0, 0], ...arc, [0, 2 * R]];
+    // the arc and its two tangent ends are smooth: no edge line there except the outline
+    const smooth = new Set(arc.map((_, i) => i + 1));
+    const P = K.setup({ sx: 108, d: 118, yPP: 74, yGL: 172, h: 62, theta: 30, cx: 100 });
+    const faces = K.extrude(prof, 'uv', 0, H, smooth);
+    const edges = K.visibleEdges(P, faces);
+    const { LVP, RVP } = P.vps;
+    const EX = Math.round(P.vps.LVP[0]) - 54;
+    const C0 = P.persp(0, 0, 0), C1 = P.persp(0, 0, H);
+    const plotted = arc.filter((_, i) => i % 2 === 0);
 
-  // ── 8. Worked Example — A Small Cottage in Two-Point Perspective ──
-  (function () {
-    const cTop = [100, 50], cBot = [100, 128];
-    const tL = 0.42, tR = 0.4;
-    const lTop = recede(cTop, VPL, tL), lBot = recede(cBot, VPL, tL);
-    const rTop = recede(cTop, VPR, tR), rBot = recede(cBot, VPR, tR);
-    const eaveMid = G.midpoint(cTop, lTop);
-    const riseTrue = [100, 25];
-    const ridge = recede(riseTrue, VPL, tL / 2);
-    const doorT0 = 0.08, doorT1 = 0.28;
-    const doorTopTrue = [100, 78];
-    const doorNear = recede(cBot, VPR, doorT0), doorFar = recede(cBot, VPR, doorT1);
-    const doorTopN = recede(doorTopTrue, VPR, doorT0), doorTopF = recede(doorTopTrue, VPR, doorT1);
-    CONSTRUCTIONS['two-point-cottage-capstone'] = {
-      id: 'two-point-cottage-capstone', title: 'Worked Example — A Small Cottage in Two-Point Perspective',
-      summary: 'Every technique from this chapter, combined into one finished drawing: the box, a gable roof, and a door — all built from the single corner vertical and its two vanishing points.',
-      bounds: { w: 205, h: 170 },
-      workbookPrompt: 'Draw a complete small cottage in two-point perspective: the basic box, a gable roof on the left face, and a door on the right face, using only the corner vertical, VPL and VPR.',
+    CONSTRUCTIONS['two-point-curved-end'] = {
+      printLayout: 'full',
+      id: 'two-point-curved-end', title: 'Curves in Perspective: Rounded-End Block (Gr 12)',
+      summary: 'A curve is plotted point by point: divide the arc in the top view, send a visual ray to every point, and find each point\'s depth with a line to a VP. The outline of the curved side is where the rays just touch the arc.',
+      bounds: { w: 330, h: 190 },
+      workbookPrompt: 'Draw the block with the semicircular end (straight part 40, R16, 24 high) in two-point perspective. Divide the arc into at least 6 equal parts and plot each point at the top and the bottom.',
       steps: [
         {
           id: 1,
-          instruction: 'Start with the basic two-point box, exactly as constructed earlier in this chapter.',
-          calloutAt: [100, 20],
+          instruction: 'Set up as usual: top view at 30° touching PP at the square corner, SP, VPs, GL and HL. Divide the semicircle in the top view into equal parts (every 30°).',
+          calloutAt: P.plan(L + R, R),
           reveals: [
-            { kind: 'line', p1: cTop, p2: cBot, lineType: 'A' },
-            { kind: 'line', p1: cTop, p2: lTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: lBot, lineType: 'A' }, { kind: 'line', p1: lTop, p2: lBot, lineType: 'A' },
-            { kind: 'line', p1: cTop, p2: rTop, lineType: 'A' }, { kind: 'line', p1: cBot, p2: rBot, lineType: 'A' }, { kind: 'line', p1: rTop, p2: rBot, lineType: 'A' },
+            ...setupReveals(P, prof, EX - 26, RVP[0] + 4).filter(r => r.kind !== 'polygon'),
+            { kind: 'polyline', points: prof.map(([u, v]) => P.plan(u, v)).concat([P.plan(0, 0)]), lineType: 'A' },
+            ...plotted.map(([u, v]) => ({ kind: 'point', at: P.plan(u, v), size: 0.9 })),
+            lbl([P.plan(L, 2 * R)[0], P.plan(L, 2 * R)[1] - 8], 'TOP VIEW / BO-AANSIG'),
           ],
         },
         {
           id: 2,
-          instruction: 'Add the gable roof to the left face: true rise on the corner, receded to the eave midpoint\'s own depth fraction to find the ridge.',
-          calloutAt: ridge,
+          instruction: 'True-height line at the square corner, height from the front view; join its top and bottom to both VPs and draw the two straight sides.',
+          calloutAt: [C0[0], (C0[1] + C1[1]) / 2],
           reveals: [
-            { kind: 'line', p1: ridge, p2: cTop, lineType: 'A' }, { kind: 'line', p1: ridge, p2: lTop, lineType: 'A' },
+            { kind: 'line', p1: P.plan(0, 0), p2: C0, lineType: 'construction' },
+            { kind: 'polygon', points: [[EX, P.yGL], [EX + L + R, P.yGL], [EX + L + R, P.yGL - H], [EX, P.yGL - H]], lineType: 'A' },
+            lbl([EX + (L + R) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
+            { kind: 'line', p1: [EX + L + R, P.yGL - H], p2: C1, lineType: 'construction' },
+            toVP(P, C0, LVP), toVP(P, C1, LVP), toVP(P, C0, RVP), toVP(P, C1, RVP),
           ],
         },
         {
           id: 3,
-          instruction: 'Add the door to the right face: true door height transferred from the corner toward VPR, then the near and far edges closed off.',
-          calloutAt: G.midpoint(doorNear, doorTopN),
+          instruction: 'Send a visual ray to EVERY point on the arc and drop verticals from PP. For each point\'s height: in the top view, draw a line from the point parallel to the long side until it meets PP. Heights are true there, so mark the height and join it to RVP; it cuts the point\'s dropped vertical at the right place (shown for the end point of the arc).',
+          calloutAt: P.persp(L + R, R, H),
           reveals: [
-            { kind: 'line', p1: doorNear, p2: doorTopN, lineType: 'A' }, { kind: 'line', p1: doorFar, p2: doorTopF, lineType: 'A' },
-            { kind: 'line', p1: doorTopN, p2: doorTopF, lineType: 'A' },
+            { kind: 'line', p1: P.plan(L + R, R), p2: P.plan(-R * P.cs / P.sn, R), lineType: 'construction' },
+            { kind: 'line', p1: P.plan(-R * P.cs / P.sn, R), p2: P.persp(-R * P.cs / P.sn, R, 0), lineType: 'construction' },
+            { kind: 'line', p1: P.persp(-R * P.cs / P.sn, R, 0), p2: P.persp(-R * P.cs / P.sn, R, H), lineType: 'B' },
+            toVP(P, P.persp(-R * P.cs / P.sn, R, H), RVP), toVP(P, P.persp(-R * P.cs / P.sn, R, 0), RVP),
+            ...K.rays(P, plotted),
+            ...plotted.map(([u, v]) => ({ kind: 'point', at: P.persp(u, v, H), size: 0.8 })),
+            ...plotted.filter(([u, v]) => frontFacing(P, u - L, v - R, u, v)).map(([u, v]) => ({ kind: 'point', at: P.persp(u, v, 0), size: 0.8 })),
+            ...K.drops(P, plotted.map(([u, v]) => [u, v, 0])),
           ],
         },
         {
           id: 4,
-          instruction: 'The finished cottage: one true-height corner, two vanishing points, and every other line and height on the page built up from just those three references.',
-          calloutAt: [100, 155],
-          reveals: [],
+          instruction: 'Join the points with smooth curves. The whole top curve shows; at the bottom, only the part facing you. The two vertical outline lines of the curved side are where the visual rays just touch the arc, not at the plotted points.',
+          calloutAt: P.persp(L + R, R, 0),
+          reveals: K.perspLines(P, edges, 'A'),
         },
       ],
     };
@@ -471,16 +353,6 @@
       explanation: 'The two diagonals of any quadrilateral cross exactly at its centre — this holds true even for a foreshortened, receding face in perspective, unlike a naive eye-measured halfway point.',
     },
     {
-      text: 'On the two-point gable roof construction, why can the eave midpoint be found using an ordinary arithmetic midpoint, rather than the diagonal-crossing method?',
-      options: [
-        'Because the two eave corners both lie on a single straight receding line, so simple linear interpolation along that one line is already correct',
-        'Because roofs are never subject to perspective foreshortening',
-        'Diagonal-crossing only works for finding heights, never horizontal positions',
-        'It cannot — the diagonal method must always be used instead'],
-      answer: 0,
-      explanation: 'The diagonal-crossing method is needed to find the centre of a whole quadrilateral face. A midpoint of two points already on the SAME straight receding line is a much simpler, still fully valid, linear interpolation.',
-    },
-    {
       text: 'In a "worm\'s-eye" two-point perspective view, where does the horizon sit relative to the object, and what happens to the top face?',
       options: [
         'The horizon sits BELOW the whole object, and the top face disappears from view entirely',
@@ -504,8 +376,7 @@
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
-    'two-point-setup', 'two-point-box', 'two-point-height-transfer', 'two-point-equal-bay-division',
-    'two-point-door-window', 'two-point-gable-roof', 'two-point-birds-natural-worms', 'two-point-cottage-capstone',
+    'two-point-setup', 'two-point-stepped-block', 'two-point-building', 'two-point-curved-end',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);
