@@ -300,7 +300,8 @@
       return false;
     };
     const M = Math.ceil(T * 240);
-    const curve = (rho, dz) => Array.from({ length: M + 1 }, (_, i) => P3(rho, (H - p / 2) * i / M, dz)).filter(q => q[2] <= H + 1e-6);
+    // the whole threaded length: each helix runs from the bottom end to the top end
+    const curve = (rho, dz) => Array.from({ length: M + 1 }, (_, i) => P3(rho, -dz + (H + dz) * i / M, dz)).filter(q => q[2] >= -1e-6 && q[2] <= H + 1e-6);
     const runs = (pts, lt) => { const out = []; let cur = []; pts.forEach(q => { if (!hiddenAt(q)) cur.push(F(q)); else { if (cur.length > 1) out.push(PL(cur, lt)); cur = []; } }); if (cur.length > 1) out.push(PL(cur, lt)); return out; };
     const N = 12, divs = Array.from({ length: N }, (_, k) => a0 + s * 30 * k);
     const xsOf = rho => { const xs = []; divs.forEach(a => { const x = rho * Math.cos(rad(a)); if (!xs.some(v => Math.abs(v - x) < 0.05)) xs.push(x); }); return xs; };
