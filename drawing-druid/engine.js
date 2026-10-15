@@ -443,7 +443,9 @@
 
   function renderPolygon(r, ctx) {
     const pts = r.points.map(p => p.join(',')).join(' ');
-    return el('polygon', Object.assign({ points: pts }, strokeAttrs(r.lineType || 'A', ctx)));
+    const a = strokeAttrs(r.lineType || 'A', ctx);
+    if (r.solid) a.fill = a.stroke;            // filled solid, e.g. welds in section
+    return el('polygon', Object.assign({ points: pts }, a));
   }
 
   function labelBox(r, fs) {
