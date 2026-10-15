@@ -15,7 +15,8 @@
     return lines;
   }
 
-  // Sizes follow the conventions in the school's papers: 250 mm plastered load-bearing walls,
+  // Sizes follow the conventions in the school's papers: a load-bearing wall is 222 mm brick (one
+  // brick length, the SANS minimum), drawn 250 mm thick when plastered on both sides;
   // 110 mm internal walls, 600 x 250 footings (400 x 250 under 110 walls), 100 mm surface bed,
   // DPC at floor level, 900 x 2000 doors in 50 mm frames.
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 3.4, anchor: 'start', color: '#e8eaf2' }, opts || {});
@@ -76,11 +77,11 @@
       id: 'floor-plan', title: 'Floor Plan: One Room (1:50)', scale: '1:50',
       summary: 'A room in 250 mm load-bearing walls at 1:50: walls hatched in section, a 900 mm door in its frame with its swing, a window with its sill, room name and floor finish, dimensions in millimetres.',
       bounds: { w: 150, h: 120 },
-      workbookPrompt: 'Draw the floor plan of the bedroom to a scale of 1:50. External walls are 250 mm plastered brick. Show the 900 mm door (50 mm frame) with its swing, the 1200 mm window with its sill, wall hatching, the room name and floor finish, overall dimensions, the north point and the scale.',
+      workbookPrompt: 'Draw the floor plan of the bedroom to a scale of 1:50. External walls are 222 mm brick (the SANS minimum for a load-bearing wall), 250 mm thick with plaster on both sides. Show the 900 mm door (50 mm frame) with its swing, the 1200 mm window with its sill, wall hatching, the room name and floor finish, overall dimensions, the north point and the scale.',
       steps: [
         {
           id: 1,
-          instruction: 'Draw the outside and inside faces of the walls: 3500 x 3100 outside, 250 mm thick (5 mm at 1:50). Leave the door and window openings open.',
+          instruction: 'Draw the outside and inside faces of the walls: 3500 x 3100 outside. A load-bearing wall is 222 mm brick (one brick length, the SANS minimum); with plaster on both sides it is drawn 250 mm thick (5 mm at 1:50). Leave the door and window openings open.',
           calloutAt: [X0 + W / 2, Y0 + t / 2],
           reveals: [
             { kind: 'polyline', points: [[door.x0, yo1], [X0, yo1], [X0, Y0], [xo1, Y0], [xo1, win.y0]], lineType: 'A' },
@@ -195,7 +196,7 @@
       workbookPrompt: 'Draw the sectional elevation through the foundation of a ' + wallMm + ' mm ' + (insideBothSides ? 'internal (non-load-bearing)' : 'external (load-bearing)') + ' wall to a scale of 1:25. Footing ' + footingMm + ' x 250. Show all hatching and label the DPC, FFL and NGL.',
       steps: [
         { id: 1, instruction: 'Draw the concrete footing, ' + footingMm + ' wide and 250 deep (' + fw + ' x ' + fd + ' mm at 1:25), centred under the wall. Concrete in section is shown with small stones (triangles and dots).', calloutAt: [CX, yFootBot - fd / 2], reveals: reveals1 },
-        { id: 2, instruction: 'Draw the ' + wallMm + ' mm brick wall standing on the middle of the footing, up to a break line. Brick in section is hatched at 45°.', calloutAt: [CX, (yTop + yFootTop) / 2], reveals: reveals2 },
+        { id: 2, instruction: 'Draw the ' + wallMm + ' mm wall standing on the middle of the footing, up to a break line' + (wallMm === 250 ? ' (222 mm brick, the SANS minimum for a load-bearing wall, plus plaster)' : ' (a half-brick wall: 106 mm brick plus plaster)') + '. Brick in section is hatched at 45°.', calloutAt: [CX, (yTop + yFootTop) / 2], reveals: reveals2 },
         { id: 3, instruction: insideBothSides
             ? 'This wall is inside the house, so there is floor on BOTH sides: the 100 mm concrete surface bed on compacted hardcore fill, with natural ground below.'
             : 'Outside, draw the natural ground level (NGL) with the earth symbol. Inside, the 100 mm concrete surface bed sits on compacted hardcore fill; its top is the finished floor level (FFL), 200 above NGL.',
