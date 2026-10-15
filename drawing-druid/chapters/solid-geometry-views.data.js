@@ -343,7 +343,7 @@
   });
   threeViews({
     id: 'sg-square-pyramid-30', title: 'Square Pyramid at 30°: Three Views', name: 'square pyramid', kind: 'pyramid', H: 65,
-    solids: [pyramidOn(reg(4, 32, 30, 0, 0), 0, 65)],
+    solids: [pyramidOn(reg(4, 32, 75, 0, 0), 0, 65)],
     summary: 'A right square pyramid with its base edges at 30° and 60° to the vertical plane: the base corners are found in the top view, the apex sits on the axis.',
     prompt: 'A right square pyramid (base edges 45 mm, height 65 mm) stands on its base with its base edges at 30°/60° to the VP. Draw, in 1st angle, the top view, front view and left view. Show hidden edges.',
   });
@@ -431,4 +431,95 @@
     summary: 'A hexagonal pyramid standing on a square slab: the slab hides nothing, but its corners and the pyramid\'s corners project to different places in the left view.',
     prompt: 'A right regular hexagonal pyramid (base 52 mm across corners, height 65 mm) stands centrally on a square slab (56 mm square, 15 mm thick) with two of its base corners on the front-to-back centre line. Draw the top view, front view and left view in 1st angle.',
   });
+
+  // ═══ More exercises (JPEGD-volume pass, 2026-10-15) ═══
+  const tv = (id, title, name, kind, H, solids, summary, prompt, note) => threeViews({ id, title, name, kind, H, solids, summary, prompt, note });
+  tv('sg-square-prism-30', 'Square Prism at 30°: Three Views', 'square prism', null, 60, [prism(reg(4, 28, 75, 0, 0), 60)],
+    'An upright square prism turned with its faces at 30° and 60° to the vertical plane: three faces and one hidden edge to find.',
+    'An upright square prism (base edges 40 mm, height 60 mm) stands on the HP with its faces at 30°/60° to the VP. Draw, in 1st angle, the top view, front view and left view. Show hidden edges.');
+  tv('sg-pentagonal-prism', 'Pentagonal Prism: Three Views', 'pentagonal prism', null, 60, [prism(reg(5, 30, 90, 0, 0), 60)],
+    'An upright pentagonal prism with a corner pointing to the back: one long edge is hidden in the front view.',
+    'An upright regular pentagonal prism (circumradius 30 mm, height 60 mm) stands on the HP with one base corner pointing directly backwards. Draw the top view, front view and left view in 1st angle. Show hidden edges.');
+  tv('sg-hexagonal-prism-faces', 'Hexagonal Prism, Faces Parallel to the VP', 'hexagonal prism', null, 55, [prism(reg(6, 30, 30, 0, 0), 55)],
+    'An upright hexagonal prism with two faces parallel to the vertical plane: the front view shows three faces, the left view two.',
+    'An upright regular hexagonal prism (60 mm across corners, height 55 mm) stands on the HP with two faces parallel to the VP. Draw the top view, front view and left view in 1st angle.');
+  tv('sg-triangular-prism-point', 'Triangular Prism, Corner to the Front', 'triangular prism', null, 65, [prism(reg(3, 32, -90, 0, 0), 65)],
+    'An upright triangular prism with one long edge pointing to the front: the back face is seen as a single line in the left view.',
+    'An upright equilateral triangular prism (circumradius 32 mm, height 65 mm) stands on the HP with one corner pointing directly forward. Draw the top view, front view and left view in 1st angle. Show hidden edges.');
+  tv('sg-square-pyramid-45', 'Square Pyramid, Edges at 45°', 'square pyramid', 'pyramid', 70, [pyramidOn(reg(4, 32, 0, 0, 0), 0, 70)],
+    'A square pyramid with its base edges at 45° to the vertical plane: the corner sloping edges show in the front view, one of them hidden.',
+    'A right square pyramid (base 45 mm, height 70 mm) stands on its base with the base edges at 45° to the VP. Draw the top view, front view and left view in 1st angle. Show hidden edges.');
+  tv('sg-octagonal-pyramid', 'Octagonal Pyramid: Three Views', 'octagonal pyramid', 'pyramid', 70, [pyramidOn(reg(8, 30, 22.5, 0, 0), 0, 70)],
+    'A right octagonal pyramid: eight sloping edges, three of them hidden in the front view behind the visible ones.',
+    'A right regular octagonal pyramid (60 mm across corners, height 70 mm) stands on the HP with two base edges parallel to the VP. Draw the top view, front view and left view in 1st angle.');
+  tv('sg-pentagonal-prism-15', 'Pentagonal Prism Turned 15°', 'pentagonal prism', null, 60, [prism(reg(5, 30, 15, 0, 0), 60)],
+    'A pentagonal prism turned so that no face is parallel to either plane: every edge position comes from the top view.',
+    'An upright regular pentagonal prism (circumradius 30 mm, height 60 mm) stands on the HP with one corner at 15° to the left-right centre line. Draw the top view, front view and left view in 1st angle. Show hidden edges.');
+  tv('sg-hexagonal-pyramid-corners', 'Hexagonal Pyramid, Corner to the Front', 'hexagonal pyramid', 'pyramid', 72, [pyramidOn(reg(6, 30, 90, 0, 0), 0, 72)],
+    'A hexagonal pyramid with a base corner to the front: the front view is symmetrical, with the back edge hidden behind the front one.',
+    'A right regular hexagonal pyramid (base 60 mm across corners, height 72 mm) stands on the HP with one base corner pointing forward. Draw the top view, front view and left view in 1st angle.');
+
+  lyingPrism({ id: 'sg-tri-prism-lying', title: 'Triangular Prism Lying on a Face', shape: 'triangle',
+    solids: [SK.extrude(reg(3, 30, 90, 0, 15), 'yz', 0, 85)], axis: [0, 15],
+    summary: 'A triangular prism lying on one rectangular face, axis parallel to both planes: the left view is the true triangle; the top view shows the ridge.',
+    prompt: 'An equilateral triangular prism (circumradius 30 mm, 85 mm long) lies on one rectangular face on the HP with its axis parallel to the VP. Draw the left view (true shape), front view and top view in 1st angle.' });
+  lyingPrism({ id: 'sg-pent-prism-lying', title: 'Pentagonal Prism Lying on a Face', shape: 'pentagon',
+    solids: [SK.extrude(reg(5, 30, 90, 0, 30 * Math.cos(Math.PI / 5)), 'yz', 0, 80)], axis: [0, 30 * Math.cos(Math.PI / 5)],
+    summary: 'A pentagonal prism lying on one face: the end view in its true shape comes first, the long edges are projected from its corners.',
+    prompt: 'A regular pentagonal prism (circumradius 30 mm, 80 mm long) lies on one rectangular face on the HP with its axis parallel to the VP. Draw the left view (true shape), front view and top view in 1st angle.' });
+  lyingPrism({ id: 'sg-square-prism-edge', title: 'Square Prism Resting on an Edge', shape: 'square',
+    solids: [SK.extrude(reg(4, 26, 90, 0, 26), 'yz', 0, 85)], axis: [0, 26],
+    summary: 'A square prism resting on one long edge with its faces at 45°: the end view is a square standing on a corner.',
+    prompt: 'A square prism (ends 36.8 mm square, 85 mm long) rests on one long edge on the HP with its faces at 45° to the HP and its axis parallel to the VP. Draw the left view (true shape), front view and top view in 1st angle.' });
+
+  const cs = (id, title, name, kind, deg, through, solids, summary, prompt) => cutSolid({ id, title, name, kind, deg, through, solids, summary, prompt });
+  cs('sg-square-prism-cut', 'Square Prism Cut at 45°', 'square prism', null, 45, [0, 40], [prism(reg(4, 30, 45, 0, 0), 70)],
+    'An upright square prism cut at 45°: the true shape of the cut is a rectangle longer than the base by the factor √2.',
+    'An upright square prism (base 42 mm, height 70 mm) stands on the HP with two faces parallel to the VP. Plane A-A, at 45° to the HP, cuts the axis 40 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-hexagonal-prism-cut', 'Hexagonal Prism Cut at 30°', 'hexagonal prism', null, 30, [0, 38], [prism(reg(6, 30, 0, 0, 0), 70)],
+    'An upright hexagonal prism cut by a plane at 30°: the cut face is an elongated hexagon in its true shape.',
+    'An upright regular hexagonal prism (60 mm across corners, height 70 mm) stands on the HP with two corners on a line parallel to the VP. Plane A-A, at 30° to the HP, cuts the axis 38 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-octagonal-prism-cut', 'Octagonal Prism Cut at 35°', 'octagonal prism', null, 35, [0, 40], [prism(reg(8, 30, 22.5, 0, 0), 70)],
+    'An octagonal prism cut by an inclined plane: eight cut points, an octagon in its true shape stretched along the plane.',
+    'An upright regular octagonal prism (60 mm across corners, height 70 mm) stands on the HP with two faces parallel to the VP. Plane A-A, at 35° to the HP, cuts the axis 40 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-pentagonal-pyramid-cut', 'Pentagonal Pyramid Cut by an Inclined Plane', 'pentagonal pyramid', 'pyramid', 30, [0, 28], [pyramidOn(reg(5, 32, 90, 0, 0), 0, 75)],
+    'A pentagonal pyramid cut at 30°: the cut points on the sloping edges are carried into the top view along the projectors and the true shape is laid out at 90° to the plane.',
+    'A right regular pentagonal pyramid (circumradius 32 mm, height 75 mm) stands on the HP with one base corner pointing backwards. Plane A-A, at 30° to the HP, cuts the axis 28 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-triangular-pyramid-cut', 'Triangular Pyramid Cut by an Inclined Plane', 'triangular pyramid', 'pyramid', 35, [0, 25], [pyramidOn(reg(3, 34, 90, 0, 0), 0, 70)],
+    'A triangular pyramid cut at 35°: three cut points, one of them on the edge at the back, give a triangular true shape.',
+    'A right triangular pyramid (equilateral base, circumradius 34 mm, height 70 mm) stands on the HP with one base corner pointing backwards. Plane A-A, at 35° to the HP, cuts the axis 25 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-square-pyramid-cut-45', 'Square Pyramid Cut at 45°', 'square pyramid', 'pyramid', 45, [0, 30], [pyramidOn(reg(4, 34, 0, 0, 0), 0, 75)],
+    'A square pyramid with its base edges at 45°, cut by a plane at 45°: the cut passes one corner edge near the base and the opposite one near the apex.',
+    'A right square pyramid (base 48 mm, height 75 mm) stands on the HP with its base edges at 45° to the VP. Plane A-A, at 45° to the HP, cuts the axis 30 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-hexagonal-prism-cut-top', 'Hexagonal Prism Cut Through the Top', 'hexagonal prism', null, 40, [0, 50], [prism(reg(6, 30, 30, 0, 0), 65)],
+    'A hexagonal prism cut by a plane that leaves through the top face: part of the true shape lies on the top face, so the cut face has a straight edge across the top.',
+    'An upright regular hexagonal prism (60 mm across corners, height 65 mm) stands on the HP with two faces parallel to the VP. Plane A-A, at 40° to the HP, cuts the axis 50 mm above the base and passes out through the top face. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+
+  inclined({ id: 'sg-pent-prism-inclined', title: 'Inclined Pentagonal Prism', name: 'pentagonal prism', base: 'pentagonal end',
+    solids0: [prism(reg(5, 24, 0, 0, 0), 60)], axis: [0, 0], tilt: 30, pivot: [24, 0, 0], len: 60,
+    summary: 'A pentagonal prism resting on one base corner with its axis at 60° to the HP: auxiliary view of the end first, then front, top and left views.',
+    prompt: 'A regular pentagonal prism (circumradius 24 mm, 60 mm long) rests on one corner of its base on the HP. Its axis is parallel to the VP and at 60° to the HP. Draw the auxiliary view of the end, the front view, the top view and the left view in 1st angle.' });
+  inclined({ id: 'sg-tri-prism-inclined', title: 'Inclined Triangular Prism', name: 'triangular prism', base: 'triangular end',
+    solids0: [prism(reg(3, 26, 0, 0, 0), 60)], axis: [0, 0], tilt: 35, pivot: [26, 0, 0], len: 60,
+    summary: 'A triangular prism resting on a base corner with its axis at 55° to the HP.',
+    prompt: 'An equilateral triangular prism (circumradius 26 mm, 60 mm long) rests on one corner of its base on the HP. Its axis is parallel to the VP and at 55° to the HP. Draw the auxiliary view of the end, the front view, the top view and the left view in 1st angle.' });
+  inclined({ id: 'sg-hex-pyramid-inclined', title: 'Inclined Hexagonal Pyramid', name: 'hexagonal pyramid', base: 'hexagonal base',
+    solids0: [pyramidOn(reg(6, 28, 0, 0, 0), 0, 65)], axis: [0, 0], tilt: 25, pivot: [28, 0, 0], len: 65,
+    summary: 'A hexagonal pyramid resting on one base corner with its axis at 65° to the HP: the base becomes a flattened hexagon in the top view.',
+    prompt: 'A right regular hexagonal pyramid (56 mm across corners, height 65 mm) rests on one base corner on the HP. Its axis is parallel to the VP and at 65° to the HP. Draw the auxiliary view of the base, the front view, the top view and the left view in 1st angle.' });
+  inclined({ id: 'sg-square-prism-inclined', title: 'Inclined Square Prism', name: 'square prism', base: 'square end',
+    solids0: [prism(reg(4, 28, 45, 0, 0), 70)], axis: [0, 0], tilt: 30, pivot: [28 / Math.SQRT2, 0, 0], len: 70,
+    summary: 'A square prism resting on one edge of its end, with its axis at 60° to the HP.',
+    prompt: 'A square prism (ends 39.6 mm square, 70 mm long) rests on one edge of its end on the HP, that edge perpendicular to the VP. Its axis is parallel to the VP and at 60° to the HP. Draw the auxiliary view of the end, the front view, the top view and the left view in 1st angle.' });
+
+  tv('sg-combined-tri-on-slab', 'Combined Solids: Triangular Prism on a Slab', 'square slab with a triangular prism on it', null, 60,
+    [prism(reg(4, 42, 45, 0, 0), 12), prism(reg(3, 26, 90, 0, 0), 60)],
+    'An upright triangular prism standing centrally on a square slab: three views of the combined solid.',
+    'An upright equilateral triangular prism (circumradius 26 mm, 48 mm tall) stands centrally on a square slab (59 mm square, 12 mm thick) with one corner pointing backwards. Draw the top view, front view and left view in 1st angle.',
+    'The top view shows the square slab with the triangle of the prism inside it.');
+  tv('sg-combined-pent-on-hex', 'Combined Solids: Pentagonal Pyramid on a Hexagonal Prism', 'hexagonal prism with a pentagonal pyramid on it', null, 80,
+    [prism(reg(6, 34, 30, 0, 0), 25), pyramidOn(reg(5, 26, 90, 0, 0), 25, 55)],
+    'A pentagonal pyramid standing centrally on a hexagonal prism: two different polygons in one top view, every corner projected to its own solid.',
+    'A right regular pentagonal pyramid (circumradius 26 mm, height 55 mm) stands centrally on a regular hexagonal prism (68 mm across corners, 25 mm high, two faces parallel to the VP). Draw the top view, front view and left view in 1st angle.',
+    'The top view shows the hexagon of the prism with the pentagonal base of the pyramid and its edges to the apex inside it.');
 })(window);
