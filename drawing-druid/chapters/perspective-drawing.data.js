@@ -111,7 +111,7 @@
     const mid = (u, v, z) => P.persp(u, v, z);
 
     const steps = [
-      { t: 'Draw the picture-plane line PP (PV) across the sheet. Draw the TOP VIEW above it with its front edge lying ON the PP.' + n(notes[0]),
+      { t: 'GIVEN (these are on the question sheet, you do not draw them): the picture plane PP with the TOP VIEW, its front edge ON the PP; the station point SP; the ground line GL with the FRONT VIEW; and the horizon line HL at eye height' + (/interior/.test(cfg.id) ? '.' : ', above the object, so the drawing looks down onto it.') + n(notes[0]),
         at: P.plan((uMin + uMax) / 2, 0),
         r: [
           { kind: 'line', p1: [x0, P.yPP], p2: [x1, P.yPP], lineType: 'B' },
@@ -119,22 +119,16 @@
           { kind: 'label', at: [x0 - 2, P.yPP + 5.5], text: 'PV', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           ...plan,
           lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - (cfg.planDepth || 30) - 6], 'TOP VIEW / BO-AANSIG'),
-        ] },
-      { t: 'The station point SP is GIVEN: where the viewer stands, in front of the PP.', at: P.SP, r: K.spMark(P) },
-      { t: 'Draw the ground line GL, and stand the FRONT VIEW on it at the side.',
-        at: [ex + (uMax - uMin) / 2, P.yGL],
-        r: [
+          ...K.spMark(P),
           { kind: 'line', p1: [x0, P.yGL], p2: [x1, P.yGL], lineType: 'B' },
           { kind: 'label', at: [x0 - 2, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           ...elev, lbl([ex + (uMax - uMin) / 2, P.yGL + 7], 'FRONT VIEW / VOORAANSIG'),
-        ] },
-      { t: 'The horizon line HL is GIVEN at eye height' + (/interior/.test(cfg.id) ? ' above GL.' : ', above the object, so the drawing looks down onto it.') + ' Draw a line straight up from SP: where it meets HL is the vanishing point VP.',
-        at: VP,
-        r: [
           { kind: 'line', p1: [x0, P.yHL], p2: [x1, P.yHL], lineType: 'B' },
           { kind: 'label', at: [x0 - 2, P.yHL + 1.3], text: 'HL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
-          line(P.SP, VP), { kind: 'point', at: VP, label: 'VP', size: 1.3 },
         ] },
+      { t: 'Find the vanishing point: draw a line straight up from SP. Where it meets HL is the vanishing point VP.',
+        at: VP,
+        r: [line(P.SP, VP), { kind: 'point', at: VP, label: 'VP', size: 1.3 }] },
       { t: 'The front face lies on the PP, so it is true size. Drop its widths straight down from the top view.',
         at: P.persp((uMin + uMax) / 2, 0, 0),
         r: frontU.map(u => line(P.plan(u, 0), P.persp(u, 0, 0))) },
@@ -332,7 +326,7 @@
       setup: { sx: 105, d: 130, yPP: 70, yGL: 172, h: 16, cx: 40 },
       planDepth: 42,
       solids: [slab, back, colL, colR, roof, braai, chimney],
-      notes: ['The top view shows only the roof and the chimney; everything under the roof is hidden.', 'The roof edge and the two columns are on PP.', 'Rays go to the back wall, the braai and the chimney corners.', 'The HL is below the roof, so the underside of the roof slab shows, and the chimney passes up through it.'],
+      notes: ['The top view shows only the roof and the chimney; everything under the roof is hidden.', 'The roof edge and the two columns are on PP.', 'Rays go to the back wall, the braai and the chimney corners.', 'The HL is above the roof, so you look down onto the roof slab, with the chimney standing on it.'],
     });
   })();
 
