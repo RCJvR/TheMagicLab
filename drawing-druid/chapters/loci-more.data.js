@@ -276,6 +276,73 @@
     finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
   }
 
+  // ═══ Square thread (single start): crest and root helices, half a pitch apart ═══
+  //   cfg: D (outside), d (core), pitch, turns, hand
+  function squareThread(cfg) {
+    const s = cfg.hand === 'L' ? -1 : 1, p = cfg.pitch, T = cfg.turns, H = p * T, R = cfg.D / 2, r = cfg.d / 2;
+    const a0 = 180, CX = 30 + R + 20, TCY = 22 + R, FY = TCY + R + 24 + H;
+    const th = z => a0 + s * 360 * z / p;
+    const P3 = (rho, z, dz) => { const a = rad(th(z)); return [rho * Math.cos(a), rho * Math.sin(a), z + (dz || 0)]; };
+    const F = q => [CX + q[0], FY - q[2]];
+    // the thread (ridge) occupies the band where the phase is in [0, p/2)
+    const inRidge = (x, y, z) => {
+      const rho = Math.hypot(x, y);
+      if (rho <= r + 1e-6) return z >= -1e-6 && z <= H + 1e-6;
+      if (rho > R + 1e-6 || z < 0 || z > H) return false;
+      let phi = Math.atan2(y, x) * 180 / Math.PI;
+      // height of the ridge's lower flank at this angle, then the phase of z above it
+      const base = s * (phi - a0) / 360 * p;
+      const ph = (((z - base) % p) + p) % p;
+      return ph < p / 2 - 1e-6;
+    };
+    const hiddenAt = q => {
+      for (let t = 0.35; q[1] - t > -R - 1; t += 0.35) if (inRidge(q[0], q[1] - t, q[2])) return true;
+      return false;
+    };
+    const M = Math.ceil(T * 240);
+    const curve = (rho, dz) => Array.from({ length: M + 1 }, (_, i) => P3(rho, (H - p / 2) * i / M, dz)).filter(q => q[2] <= H + 1e-6);
+    const runs = (pts, lt) => { const out = []; let cur = []; pts.forEach(q => { if (!hiddenAt(q)) cur.push(F(q)); else { if (cur.length > 1) out.push(PL(cur, lt)); cur = []; } }); if (cur.length > 1) out.push(PL(cur, lt)); return out; };
+    const N = 12, divs = Array.from({ length: N }, (_, k) => a0 + s * 30 * k);
+    const xsOf = rho => { const xs = []; divs.forEach(a => { const x = rho * Math.cos(rad(a)); if (!xs.some(v => Math.abs(v - x) < 0.05)) xs.push(x); }); return xs; };
+    // side profile at the left (x = -R) and right (x = +R): crests and roots
+    const side = sx => {
+      const out = [], phiDeg = sx < 0 ? 180 : 0, base = s * (phiDeg - a0) / 360 * p;
+      const zs = []; for (let k = -2; k <= 2 * T + 2; k++) zs.push(base + k * p / 2);
+      for (let k = 0; k + 1 < zs.length; k++) {
+        const z0 = Math.max(0, zs[k]), z1 = Math.min(H, zs[k + 1]);
+        if (z1 - z0 < 1e-6) continue;
+        const ridge = ((((zs[k] - base) % p) + p) % p) < 1e-6;
+        const xr = sx * (ridge ? R : r);
+        out.push(L([CX + xr, FY - z0], [CX + xr, FY - z1]));
+        if (zs[k + 1] < H - 1e-6 && zs[k + 1] > 1e-6) out.push(L([CX + sx * r, FY - zs[k + 1]], [CX + sx * R, FY - zs[k + 1]]));
+      }
+      return out;
+    };
+    const handTxt = s > 0 ? 'right-hand' : 'left-hand';
+    const steps = [
+      { instruction: 'Draw the TOP VIEW: the outside circle (Ø' + cfg.D + ') and the core circle (Ø' + cfg.d + ') with their centre lines. A square thread is as deep as half the pitch is wide: depth ' + (R - r) + ', width ' + p / 2 + '.',
+        calloutAt: [CX + R, TCY - R], reveals: [L([CX - R - 6, TCY], [CX + R + 6, TCY], 'centre'), L([CX, TCY - R - 6], [CX, TCY + R + 6], 'centre'), { kind: 'circle', center: [CX, TCY], r: R, lineType: 'A' }, { kind: 'circle', center: [CX, TCY], r, lineType: 'A' }] },
+      { instruction: 'Divide both circles into 12 equal parts and number them from 0, in the direction of rotation (' + (s > 0 ? 'anticlockwise' : 'clockwise') + ' seen from above for a ' + handTxt + ' thread).',
+        calloutAt: [CX - R, TCY], reveals: divs.flatMap((a, k) => { const e = [CX + R * Math.cos(rad(a)), TCY - R * Math.sin(rad(a))], t = [CX + (R + 5) * Math.cos(rad(a)), TCY - (R + 5) * Math.sin(rad(a)) + 1.2]; return [L([CX, TCY], e, 'construction'), lbl(t, k === 0 ? '0/12' : String(k), { size: 2.8, color: '#eab308' })]; }) },
+      { instruction: 'Start the FRONT VIEW: the centre line, the ends of the threaded length (' + H + ' mm) and the core lines (Ø' + cfg.d + ') in thin lines.',
+        calloutAt: [CX, FY - H / 2], reveals: [L([CX, FY + 5], [CX, FY - H - 5], 'centre'), L([CX - R, FY], [CX + R, FY]), L([CX - R, FY - H], [CX + R, FY - H]), L([CX - r, FY], [CX - r, FY - H], 'construction'), L([CX + r, FY], [CX + r, FY - H], 'construction')] },
+      { instruction: 'Divide each pitch (' + p + ' mm) into 12 equal parts up the side and draw thin horizontal lines through the marks.',
+        calloutAt: [CX - R - 12, FY - p / 2], reveals: Array.from({ length: Math.round(T * N) + 1 }, (_, k) => L([CX - R - 12, FY - k * p / N], [CX + R + 4, FY - k * p / N], 'construction')) },
+      { instruction: 'Project the outside division points straight down into the front view.', calloutAt: [CX + R, (TCY + FY - H) / 2], reveals: xsOf(R).map(x => L([CX + x, TCY], [CX + x, FY], 'construction')) },
+      { instruction: 'Project the core division points down as well.', calloutAt: [CX + r, (TCY + FY - H) / 2], reveals: xsOf(r).map(x => L([CX + x, TCY], [CX + x, FY], 'construction')) },
+      { instruction: 'Draw the outline of the thread on both sides: the crests (Ø' + cfg.D + ') and roots (Ø' + cfg.d + '), each ' + p / 2 + ' long, joined by the flanks.', calloutAt: [CX - R, FY - p], reveals: [...side(-1), ...side(1)] },
+      { instruction: 'Plot the CREST helices: point k where projector k meets height line k. There are two, half a pitch apart (the top and the bottom edge of the thread). Draw the parts you can see.',
+        calloutAt: F(P3(R, p / 4)), reveals: [...runs(curve(R, 0), 'A'), ...runs(curve(R, p / 2), 'A')] },
+      { instruction: 'Plot the ROOT helices on the core the same way. Only short pieces show, in the grooves between the threads.',
+        calloutAt: F(P3(r, p / 4)), reveals: [...runs(curve(r, 0), 'A'), ...runs(curve(r, p / 2), 'A')] },
+      { instruction: 'Add the pitch and the thread width, and label the view.', calloutAt: [CX, FY + 8],
+        reveals: [{ kind: 'dimension', p1: [CX + R + 10, FY], p2: [CX + R + 10, FY - p], offset: 6, text: 'PITCH ' + p },
+          lbl([CX, TCY + R + 12], 'TOP VIEW / BOAANSIG', GREY), lbl([CX, FY + 8], 'FRONT VIEW / VOORAANSIG', GREY),
+          lbl([CX, FY + 13], (s > 0 ? 'RIGHT-HAND / REGSHANDIGE' : 'LEFT-HAND / LINKSHANDIGE') + ' SQUARE THREAD / VIERKANTSKROEFDRAAD', Object.assign({ size: 2.8 }, YEL))] },
+    ];
+    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
+  }
+
   // ═══ Exercises ═══
   helix({ id: 'helix-line-rh', title: 'Helix on a Shaft: Right-Hand, One Turn', kind: 'line', D: 60, pitch: 72, turns: 1, hand: 'R',
     summary: 'One turn of a right-hand helix on a Ø60 shaft: divide the top view into 12, the pitch into 12, and plot the front half of the curve.',
@@ -296,6 +363,9 @@
     summary: 'Two turns of a left-hand coil spring: the front coils hide parts of the back coils.',
     prompt: 'A left-hand coil spring: outside diameter 66 mm, round wire Ø10, pitch 46 mm. Draw two turns in the front view with the top view, starting at 0 on the left. Show the cut ends hatched. Scale 1:1.' });
 
+  squareThread({ id: 'square-thread-rh', title: 'Square Thread: Right-Hand, One and a Half Turns', D: 70, d: 50, pitch: 40, turns: 1.5, hand: 'R',
+    summary: 'A single-start right-hand square thread: two crest helices and two root helices, half a pitch apart, with the square profile showing on each side.',
+    prompt: 'A single-start right-hand square thread has an outside diameter of 70 mm, a core diameter of 50 mm and a pitch of 40 mm. Draw the top view and one and a half turns in the front view, starting at 0 on the left. Scale 1:1, no hidden detail.' });
   cam({ id: 'cam-knife-uniform', title: 'Cam: Knife-Edge Follower, Uniform Motion', follower: 'knife', base: 26, shaft: 22, dir: 'cw', sc: 10,
     segs: [{ to: 150, lift: 30, law: 'uniform' }, { to: 210 }, { to: 330, lift: -30, law: 'uniform' }, { to: 360 }],
     summary: 'Uniform motion: draw the displacement graph, then transfer it radially to the cam to find the profile for a knife-edge follower.',
