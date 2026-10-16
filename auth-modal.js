@@ -344,7 +344,9 @@
     } else {
       // With email confirmation off, signup immediately creates a session.
       // Wait for the profile to be ready then close, same as sign-in.
-      _showOk(signupOk(), '✓ Account created! Signing you in…');
+      _showOk(signupOk(), _selectedRole === 'teacher'
+        ? '✓ Account created! Teacher access needs approval. You can use the site as a student until then. Signing you in…'
+        : '✓ Account created! Signing you in…');
       const _onReady = (e) => {
         if (!e.detail?.profile) return;
         document.removeEventListener('magiclab:auth:change', _onReady);

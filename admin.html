@@ -184,6 +184,7 @@
 <main id="adminView" hidden>
   <div class="section-nav">
     <button class="section-btn active" data-section="cdv">CDV Verification</button>
+    <button class="section-btn" data-section="teachers">Teacher Requests</button>
     <button class="section-btn" data-section="trials">Trials</button>
   </div>
 
@@ -198,6 +199,17 @@
     </div>
 
     <div id="list"></div>
+  </section>
+
+  <section id="teacherSection" hidden>
+    <div class="page-title">Teacher Requests</div>
+    <div class="page-sub">People who picked Teacher at sign-up. They use the site as students until you approve them. Rejecting an approved teacher removes their teacher access.</div>
+    <div class="tabs">
+      <button class="tab-btn active" data-status="pending">Pending</button>
+      <button class="tab-btn" data-status="approved">Approved</button>
+      <button class="tab-btn" data-status="rejected">Rejected</button>
+    </div>
+    <div id="teacherList"></div>
   </section>
 
   <section id="trialSection" hidden>
@@ -296,6 +308,72 @@ document.querySelectorAll('#cdvSection .tab-btn').forEach(btn => {
   });
 });
 
+// ── Teacher requests tab ─────────────────────────────────────
+// admin_list_teacher_requests / admin_set_teacher_request apply the same
+// hardcoded-admin check (see supabase-profile-role-guard.sql).
+let teacherStatus = 'pending';
+let teacherLoaded = false;
+
+function renderTeacherRow(p) {
+  const name = p.display_name || p.email || '(no name)';
+  const asked = p.created_at
+    ? 'signed up ' + new Date(p.created_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })
+    : '';
+  const meta = [p.email, p.school, p.subjects, asked].filter(Boolean).join(' · ');
+  return `
+    <div class="card" data-id="${p.id}">
+      <div class="card-info">
+        <div class="card-name">${escapeHtml(name)}</div>
+        <div class="card-meta">${escapeHtml(meta)}</div>
+      </div>
+      <div class="card-actions">
+        ${teacherStatus !== 'approved' ? `<button class="btn btn-verify" data-action="approved">Approve</button>` : ''}
+        ${teacherStatus !== 'rejected' ? `<button class="btn btn-reject" data-action="rejected">${teacherStatus === 'approved' ? 'Revoke' : 'Reject'}</button>` : ''}
+      </div>
+    </div>`;
+}
+
+async function loadTeacherList() {
+  teacherLoaded = true;
+  const listEl = document.getElementById('teacherList');
+  listEl.innerHTML = '<div class="empty-state">Loading…</div>';
+  const supabase = window.MagicLabAuth._supabase();
+  const { data, error } = await supabase.rpc('admin_list_teacher_requests', { status_filter: teacherStatus });
+  if (error) {
+    listEl.innerHTML = `<div class="empty-state">Error: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+  listEl.innerHTML = data && data.length
+    ? data.map(renderTeacherRow).join('')
+    : '<div class="empty-state">Nothing here.</div>';
+}
+
+document.getElementById('teacherList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const card = btn.closest('.card');
+  card.querySelectorAll('button').forEach(b => b.disabled = true);
+  const supabase = window.MagicLabAuth._supabase();
+  const { error } = await supabase.rpc('admin_set_teacher_request', { target_user_id: card.dataset.id, new_status: btn.dataset.action });
+  if (error) {
+    alert('Failed: ' + error.message);
+    card.querySelectorAll('button').forEach(b => b.disabled = false);
+    return;
+  }
+  card.remove();
+  const listEl = document.getElementById('teacherList');
+  if (!listEl.children.length) listEl.innerHTML = '<div class="empty-state">Nothing here.</div>';
+});
+
+document.querySelectorAll('#teacherSection .tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#teacherSection .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    teacherStatus = btn.dataset.status;
+    loadTeacherList();
+  });
+});
+
 // ── Trials tab ───────────────────────────────────────────────
 // Read-only. Everything here comes from admin_list_trials(), which
 // applies the same hardcoded-admin check as the CDV functions.
@@ -388,7 +466,9 @@ document.querySelectorAll('.section-btn').forEach(btn => {
     btn.classList.add('active');
     const section = btn.dataset.section;
     document.getElementById('cdvSection').hidden   = section !== 'cdv';
+    document.getElementById('teacherSection').hidden = section !== 'teachers';
     document.getElementById('trialSection').hidden = section !== 'trials';
+    if (section === 'teachers' && !teacherLoaded) loadTeacherList();
     if (section === 'trials' && trialRows === null) loadTrials();  // fetch once, then filter client-side
   });
 });
