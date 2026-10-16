@@ -58,8 +58,8 @@
   }
   const covered = (s, set) => [0, 0.25, 0.5, 0.75, 1].every(t => { const p = [s[0][0] + (s[1][0] - s[0][0]) * t, s[0][1] + (s[1][1] - s[0][1]) * t]; return set.some(v => onSeg2(p, v[0], v[1])); });
   function viewLines(solids, view, hidden) {
-    const r = SK.hlr(solids, view);
-    const keep = r.visible.filter(s => !isSeam(solids, s)), hid = hidden ? r.hidden.filter(s => !isSeam(solids, s)) : [];
+    const r = SK.hlr(solids, view, { crease: true });   // flush joins are removed point by point
+    const keep = r.visible, hid = hidden ? r.hidden.filter(s => !isSeam(solids, s)) : [];
     const vis2 = [], hid2 = [];
     keep.forEach(s => { const q = [view.project(s[0]), view.project(s[1])]; if (d2(q[0], q[1]) > 0.05 && !covered(q, vis2)) vis2.push(Object.assign(q, { s })); });
     hid.forEach(s => { const q = [view.project(s[0]), view.project(s[1])]; if (d2(q[0], q[1]) > 0.05 && !covered(q, vis2) && !covered(q, hid2)) hid2.push(q); });
@@ -105,7 +105,7 @@
     });
     steps.push({ instruction: 'Check every line against the given views, then line in the isometric with thick lines. No hidden detail is shown in an isometric drawing.',
       calloutAt: [O[0], O[1] + 8], reveals: two([O[0] + (W - D) * C30 / 2, O[1] + 15], 'ISOMETRIC VIEW', 'ISOMETRIESE AANSIG') });
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _iso: solids,
       steps: steps.filter(s => s.reveals.length).map((s, i) => Object.assign({ id: i + 1 }, s)) };
     ORDER.push(cfg.id);
   }

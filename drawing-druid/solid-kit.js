@@ -244,12 +244,35 @@
 
   function faceFront(F, view, p) { return dot(F.f.n, view.toViewer(p)) > 1e-9; }
 
+  // The face seen first from the eye along the sight line through X (null: background).
+  function frontHit(scene, X, view) {
+    const dir = view.toViewer(X), maxT = view.distance(X);
+    let best = null, bt = -Infinity;
+    for (const F of scene.faces) {
+      const denom = dot(F.f.n, dir);
+      if (Math.abs(denom) < 1e-9) continue;
+      const t = (F.d - dot(F.f.n, X)) / denom;
+      if (t >= maxT || t <= bt) continue;
+      const h2 = F.b.to2(add(X, mul(dir, t)));
+      if (!inPoly2(h2, F.outer2) || F.holes2.some(h => inPoly2(h2, h))) continue;
+      best = F; bt = t;
+    }
+    return best;
+  }
+  const samePlane = (A, B) => A === B || (!!A && !!B && dot(A.f.n, B.f.n) > 0.9999 && Math.abs(A.d - B.d) < 1e-3);
+
   // Returns { visible: [[p, q]...], hidden: [[p, q]...] } as 3D segments.
-  function hlr(solids, view) {
+  //   opts.crease: a visible point is only drawn where the surfaces seen just either side of the edge
+  //   differ (so flush joins between parts vanish point by point, and real edges stay).
+  function hlr(solids, view, opts) {
+    const crease = !!(opts && opts.crease);
     const scene = prepare(solids);
     const visible = [], hidden = [];
-    scene.edges.forEach(e => {
+    scene.edges.forEach(e0 => {
+      let e = e0;
       const fs = e.faces.map(i => scene.faces[i]);
+      // a 'smooth' edge where the faces meet at a real corner (the end of a curve meeting a flat) is a crease
+      if (e.smooth && fs.length >= 2 && dot(fs[0].f.n, fs[1].f.n) < 0.8) e = Object.assign({}, e, { smooth: false });
       const mid = mul(add(e.p, e.q), 0.5);
       // skip seams between coplanar faces
       if (fs.length >= 2 && fs.every(F => dot(F.f.n, fs[0].f.n) > 0.9999) && !e.smooth) return;
@@ -268,7 +291,15 @@
         // standing on a slab) does not count as hidden behind that solid's top face
         return add(add(p, mul(unit(d), 1e-3)), mul(view.toViewer(p), 2e-3));
       };
-      const vis = t => !occluded(scene, nudge(add(e.p, mul(sub(e.q, e.p), t))), view);
+      const eu = unit(sub(e.q, e.p));
+      // 1 = visible line, 0 = hidden, 2 = visible but no line (both sides show the same plane)
+      const vis = t => {
+        const P = add(e.p, mul(sub(e.q, e.p), t));
+        if (occluded(scene, nudge(P), view)) return 0;
+        if (!crease || e.smooth) return 1;
+        const u = unit(cross(view.toViewer(P), eu)), d = 0.15;
+        return samePlane(frontHit(scene, add(P, mul(u, d)), view), frontHit(scene, add(P, mul(u, -d)), view)) ? 2 : 1;
+      };
       let t0 = 0, state = vis(0.5 / n);
       const bound = (a, b) => { let lo = a, hi = b; const sa = vis(a); for (let k = 0; k < 10; k++) { const m = (lo + hi) / 2; if (vis(m) === sa) lo = m; else hi = m; } return (lo + hi) / 2; };
       for (let i = 1; i <= n; i++) {
@@ -277,7 +308,7 @@
         if (i === n || s !== state) {
           const tb = i === n ? 1 : bound((i - 1.5) / n, t);
           const seg = [add(e.p, mul(sub(e.q, e.p), t0)), add(e.p, mul(sub(e.q, e.p), tb))];
-          if (tb - t0 > 1e-3) (state ? visible : hidden).push(seg);
+          if (tb - t0 > 1e-3 && state !== 2) (state ? visible : hidden).push(seg);
           t0 = tb; state = s;
         }
       }

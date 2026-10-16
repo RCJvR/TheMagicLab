@@ -83,7 +83,7 @@
       ...cfg.parts.map((p, i) => ({ instruction: p.text, calloutAt: iso.project(p.at || [0, 0, 0]), reveals: I.vis.filter(q => partOf(solids, q.s) === i).map(q => AS(q)) })),
       { instruction: 'Check every edge against the given ' + (cfg.given === 'iso' ? 'picture' : 'views') + ' and line it in. No hidden detail on an isometric drawing.', calloutAt: [S[0], S[1] + 8], reveals: [lbl([S[0], S[1] + 12], 'ISOMETRIC ON GRID PAPER', YEL)] },
     ];
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: cfg.given === 'views' ? 'third' : 'none', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: cfg.given === 'views' ? 'third' : 'none', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _iso: solids,
       steps: steps.filter(s => s.reveals.length).map((s, i) => Object.assign({ id: i + 1 }, s)) };
     gridIds.push(cfg.id);
   }
