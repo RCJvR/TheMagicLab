@@ -5862,10 +5862,15 @@ async function _initDashboard() {
     return;
   }
 
-  // Role comes from profile — check both profile object and user metadata as fallback
-  const role = profile?.role || session?.user?.user_metadata?.role || 'student';
+  // Role comes only from the profile row; sign-up metadata is user-supplied
+  const role = profile?.role || 'student';
 
   if (role !== 'teacher') {
+    if (profile?.teacher_request === 'pending') {
+      studentEl.querySelector('h2').textContent = 'Teacher access pending';
+      studentEl.querySelector('p').textContent =
+        'Your request for a teacher account has been sent. You will get access to this dashboard once it has been approved. Until then you can use the site as a student.';
+    }
     guestEl.style.display   = 'none';
     studentEl.style.display = 'flex';
     teacherEl.style.display = 'none';

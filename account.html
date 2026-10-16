@@ -242,7 +242,9 @@
       const session = window.MagicLabAuth.getSession();
       document.getElementById('acc-email').textContent = profile.email || session?.user?.email || '—';
       document.getElementById('acc-role').textContent =
-        profile.role === 'teacher' ? '👩‍🏫 Teacher' : '🎓 Student' + (profile.grade ? ` · Gr ${profile.grade}` : '');
+        profile.role === 'teacher' ? '👩‍🏫 Teacher'
+        : profile.teacher_request === 'pending' ? '👩‍🏫 Teacher (awaiting approval)'
+        : '🎓 Student' + (profile.grade ? ` · Gr ${profile.grade}` : '');
 
       const planEl = document.getElementById('acc-plan');
       const pkg = profile.package || 'free';

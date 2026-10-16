@@ -111,7 +111,11 @@ function _fallbackProfile(user) {
     id:           user.id,
     email:        user.email,
     display_name: user.user_metadata?.display_name || user.email.split('@')[0],
-    role:         user.user_metadata?.role || 'student',
+    // Never trust metadata for role: anyone can put 'teacher' there at
+    // sign-up. Teacher access only comes from the profiles row, after
+    // the admin approves the request (see supabase-profile-role-guard.sql).
+    role:         'student',
+    teacher_request: user.user_metadata?.role === 'teacher' ? 'pending' : 'none',
     grade:        user.user_metadata?.grade || null,
     package:      'free',
     school:       user.user_metadata?.school || null,
