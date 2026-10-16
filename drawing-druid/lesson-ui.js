@@ -46,11 +46,33 @@
     };
   }
 
+  // "Check my drawing": closed until opened, then selfcheck.js is loaded for the current drawing
+  function selfCheckPanel(after) {
+    const box = document.createElement('details');
+    box.className = 'dl-check';
+    box.innerHTML = '<summary>Check my drawing <span>photograph your drawing and lay the finished drawing over it</span></summary><div class="dl-check-body"></div>';
+    after.insertAdjacentElement('afterend', box);
+    let tool = null, model = null, loading = null;
+    const load = () => loading || (loading = new Promise((ok, bad) => {
+      if (global.DruidSelfCheck) return ok();
+      const sc = document.createElement('script');
+      sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, 'selfcheck.js');
+      sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc);
+    }));
+    const sync = () => { if (!box.open || !model) return; load().then(() => { if (!tool) tool = global.DruidSelfCheck.mount(box.querySelector('.dl-check-body')); tool.show(model); }).catch(() => {}); };
+    box.addEventListener('toggle', sync);
+    return { show(md) { model = md; box.hidden = !md; sync(); } };
+  }
+
   function injectStyle() {
     if (document.getElementById('dl-style')) return;
     const s = document.createElement('style');
     s.id = 'dl-style';
     s.textContent = [
+      '.dl-check{margin-top:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden}',
+      '.dl-check summary{cursor:pointer;padding:9px 14px;font-weight:800;font-size:13px;color:var(--text)}',
+      '.dl-check summary span{font-weight:500;color:var(--muted);margin-left:6px;font-size:12px}',
+      '.dl-check-body{padding:4px 14px 14px}',
       '.lesson-main.dl-single{display:block}',
       '.lesson-main.dl-single .step-panel{display:none}',
       '.dl-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px}',
@@ -118,6 +140,9 @@
     const titleEl = document.getElementById('constrTitle');
     tab.querySelector('.lesson-main').classList.add('dl-single');
     const panel3d = model3dPanel(callout);
+    const panelCheck = selfCheckPanel(callout.nextElementSibling);
+    // opts.selfCheck(id) → false hides it (course drawings: the overlay would show learners the memo)
+    const showCheck = md => panelCheck.show(md && (!opts.selfCheck || opts.selfCheck(md.id)) ? md : null);
     let shown3d = null;
     function show3d(md) {
       const k = md && (!opts.show3d || opts.show3d(md.id)) ? md : null;
@@ -189,6 +214,7 @@
         callout.innerHTML = '<strong>🔒 Locked:</strong> ' + lockedNow;
         $('dlStepLabel').textContent = 'Locked';
         show3d(null);
+        showCheck(null);
         if (opts.onRender) opts.onRender(id, 0, true);
         return;
       }
@@ -217,6 +243,7 @@
 
       CE.render(svg, md, { uptoStep: step, mode: 'interactive' });
       show3d(md);
+      showCheck(md);
       const s = md.steps[step - 1];
       let html = '<strong>' + word + ' ' + step + ' of ' + N + ':</strong> ' + s.instruction;
       if (s.measurement && s.measurement.label) html += '<div class="step-measure">📏 ' + s.measurement.label + '</div>';

@@ -173,7 +173,7 @@
     _progressRows: progressRows, _PROG: PROG,   // for testing
     mount() {
       applyView();
-      lesson = global.DruidLesson.mount({ order: ORDER, constructions: C, locked, onRender, show3d: () => S.teacher });   // the model would give the answer away
+      lesson = global.DruidLesson.mount({ order: ORDER, constructions: C, locked, onRender, show3d: () => S.teacher, selfCheck: () => S.teacher });   // the model and the overlay would give the answer away
       return lesson;
     },
     locked,
