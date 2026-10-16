@@ -222,9 +222,19 @@
     };
     switch (r.kind) {
       case 'circle': add(r.center[0] - r.r, r.center[1] - r.r); add(r.center[0] + r.r, r.center[1] + r.r); return;
-      case 'point': add(r.at[0], r.at[1]); return;
+      case 'point': {
+        add(r.at[0], r.at[1]);
+        // its label goes on whichever side is clearest (placePointLabel): leave room on every side
+        if (r.label != null && r.label !== '') {
+          const w = 0.62 * 3.6 * String(r.label).length + 2, h = 0.78 * 3.6 + 1.5;
+          add(r.at[0] - w, r.at[1] - h); add(r.at[0] + w, r.at[1] + h);
+        }
+        return;
+      }
       case 'label': {
-        const fs = r.size || 3.8, w = 0.58 * fs * String(r.text || '').length;
+        // capitals and digits run wider than lower case
+        const t = String(r.text || ''), caps = t.replace(/[^A-Z0-9°—]/g, '').length / Math.max(1, t.length);
+        const fs = r.size || 3.8, w = (0.58 + 0.12 * caps) * fs * t.length;
         const x0 = r.anchor === 'middle' ? r.at[0] - w / 2 : r.anchor === 'end' ? r.at[0] - w : r.at[0];
         add(x0, r.at[1] - fs); add(x0 + w, r.at[1] + fs * 0.25);
         return;
@@ -235,9 +245,16 @@
         const segs = [];
         primSegments(r, segs);
         segs.forEach(s => { add(s[0], s[1]); add(s[2], s[3]); });
+        // an angle's text sits just outside its arc, on the bisector: allow for it on any side
+        if (r.kind === 'angle-arc' && r.text && r.vertex) {
+          const e = (r.radius || 10) + 0.62 * 3.4 * String(r.text).length + 3;
+          add(r.vertex[0] - e, r.vertex[1] - e); add(r.vertex[0] + e, r.vertex[1] + e);
+        }
         if (r.kind === 'dimension') {
+          // the text sits beside the line, turned with it: allow its half-length either way
           const d = dimensionGeom(r), mx = (d.dax + d.dbx) / 2, my = (d.day + d.dby) / 2;
-          add(mx, my - 6); add(mx, my + 2);
+          const half = 0.6 * 4.2 * String(r.text || '').length / 2 + 1, side = 4.2 + 2;
+          add(mx - Math.max(half, side), my - Math.max(half, side)); add(mx + Math.max(half, side), my + Math.max(half, side));
         }
       }
     }
