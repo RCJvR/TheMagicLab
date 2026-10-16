@@ -48,7 +48,7 @@
       details: [
         { note: 'Part 1, the PEDESTAL (cast iron): a base 118 × 92 × 12 with an upright boss Ø44 × 50 long, its Ø24 bore 50 above the base. Front view and right view.', at: [60, 60],
           draw: () => {
-            const F = (x, y) => [52 + x, 96 - y], R = (z, y) => [180 + z, 96 - y];
+            const F = (x, y) => [52 + x, 96 - y], R = (z, y) => [196 + z, 96 - y];
             return [
               { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, 72], [0, 72], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
               L(F(0, 38), F(50, 38), 'hidden'), L(F(0, 62), F(50, 62), 'hidden'), L(F(-4, 50), F(54, 50), 'centre'),
@@ -60,12 +60,12 @@
               { kind: 'dimension', p1: R(-46, 0), p2: R(46, 0), offset: 7, text: '92' },
               { kind: 'dimension', p1: R(46, 0), p2: R(46, 50), offset: -8, text: '50' },
               lbl(R(-26, 76), 'R22', { size: 2.8 }), lbl(R(14, 60), 'Ø24', { size: 2.8 }),
-              lbl(F(25, 80), '(1) PEDESTAL', { size: 3, color: '#fde047' }),
+              lbl(F(25, 90), '(1) PEDESTAL', { size: 3, color: '#fde047' }),
             ];
           } },
         { note: 'Part 2, the BUSH (bronze, 2 off): Ø16 bore, Ø24 where it fits the pedestal, Ø34 flange 4 thick, 24 long.', at: [40, 128], draw: () => B.partDetail(2, 'BUSH', bush, 20, 126, { section: true }) },
         { note: 'Part 3, the SHAFT (mild steel): Ø28 collar 8 long, then Ø16 for 104, threaded M16 for the last 12.', at: [130, 128], draw: () => B.partDetail(3, 'SHAFT', shaft, 96, 130) },
-        { note: 'Part 4, the PULLEY (cast iron): hub Ø28 × 24 with a Ø16 bore, web 8 thick, rim Ø80 × 28 with a slight crown.', at: [262, 50], draw: () => B.partDetail(4, 'PULLEY', pulley, 236, 12, { section: true }) },
+        { note: 'Part 4, the PULLEY (cast iron): hub Ø28 × 24 with a Ø16 bore, web 8 thick, rim Ø80 × 28 with a slight crown.', at: [262, 50], draw: () => B.partDetail(4, 'PULLEY', pulley, 256, 12, { section: true }) },
         { note: 'Part 5, the WASHER (Ø32 × 3), and part 6, the M16 NUT (across flats 24, 12.8 thick).', at: [262, 136], draw: () => [...B.partDetail(5, 'WASHER', washer, 236, 130, { section: true }), ...A.nutEnd(312, 146, D, {}), lbl([312, 131], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
       ],
       listAt: [16, 172],
@@ -110,6 +110,94 @@
         { note: 'Part 4, the IDLER GEAR (cast steel): 35 teeth, module 2: pitch circle Ø70, tips Ø76; hub Ø40 × 46 with a Ø24 bore, web 6 thick, face width 28.', at: [262, 50],
           draw: () => [...B.partDetail(4, 'IDLER GEAR', gear, 236, 12, { section: true }), L([246, 15], [274, 15], 'centre'), L([246, 85], [274, 85], 'centre'), lbl([300, 102], 'PCD Ø70', { size: 2.6, color: '#94a3b8' })] },
         { note: 'Part 5, the WASHER (Ø32 × 3), and part 6, the M16 NUT (across flats 24, 12.8 thick).', at: [262, 136], draw: () => [...B.partDetail(5, 'WASHER', washer, 236, 130, { section: true }), ...A.nutEnd(312, 146, D, {}), lbl([312, 131], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
+      ],
+      listAt: [16, 172],
+    });
+  })();
+
+  // ── V-pulley pedestal with one long bush (Gr 11) ──
+  (function () {
+    const D = 16;
+    const bush = [[0, 8], [50, 8], [50, 12], [0, 12]];
+    const shaft = [[0, 0], [0, 14], [8, 14], [8, 8], [108, 8], [108, 0]];
+    const pulley = [[0, 8], [24, 8], [24, 14], [16, 14], [16, 30], [26, 34], [26, 40], [19, 40], [12, 32], [5, 40], [-2, 40], [-2, 34], [8, 30], [8, 14], [0, 14]];
+    const washer = [[0, 8.5], [3, 8.5], [3, 16], [0, 16]];
+    const body = {
+      name: 'PEDESTAL', mat: 'CAST IRON / GIETYSTER', callout: [-14, 6], nearX: 50,
+      section: [[[-34, 0], [84, 0], [84, 12], [50, 12], [50, 38], [0, 38], [0, 12], [-34, 12]], [[0, 62], [50, 62], [50, 72], [0, 72]]],
+      hatch: 45,
+      end: [[[-46, 0], [46, 0], [46, 12], [-46, 12], [-46, 0]], [[-22, 12], [-22, 50]].concat(arc([0, 50], 22, 12)).concat([[22, 12]])],
+    };
+    add({
+      id: 'v-pulley-pedestal-assembly', title: 'V-Pulley Pedestal with a Long Bush (Gr 11)',
+      summary: 'A shaft turning in one long bronze bush in a cast-iron pedestal, with a V-belt pulley on the end. The V-groove is cut in section; the shaft, washer and nut are not.',
+      prompt: 'The parts of a V-pulley pedestal are given. Draw, full size in 3rd-angle projection: the sectional front view on A-A and the right view. Do not section the shaft, washer or nut; show three faces of the nut.',
+      story: 'the long bush is pressed into the bore of the pedestal, the shaft goes in from the left until its collar meets the pedestal, and the V-pulley, washer and nut go on from the right.',
+      ax: 70, by: 150, axisH: 50, rx: 262, cutTop: 96, axisFrom: -34, axisTo: 100, rvHalf: 52,
+      body,
+      parts: [
+        { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 0, sectioned: true, hatch: 135, note: 'Part 2, the BUSH: one plain bush the full length of the Ø24 bore. Section it, hatched opposite to the pedestal.' },
+        { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: -8, sectioned: false, D, thread: [84, 96], note: 'Part 3, the SHAFT, from the left until its Ø28 collar meets the pedestal. Shafts are never sectioned.' },
+        { name: 'V-PULLEY', mat: 'CAST IRON / GIETYSTER', profile: pulley, at: 50, sectioned: true, hatch: 45, note: 'Part 4, the V-PULLEY against the end of the bush: hub, web and rim with the V-groove, sectioned. It touches the bush, so its hatching is opposite to the bush.' },
+        { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 74, sectioned: false, note: 'Part 5, the WASHER, and' },
+        { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 77, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT.' },
+      ],
+      order: [[0], [1], [2], [3, 4]],
+      details: [
+        { note: 'Part 1, the PEDESTAL (cast iron): base 118 × 92 × 12, boss Ø44 × 50 long with a Ø24 bore 50 above the base.', at: [60, 60],
+          draw: () => {
+            const F = (x, y) => [52 + x, 96 - y], R = (z, y) => [196 + z, 96 - y];
+            return [
+              { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, 72], [0, 72], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
+              L(F(0, 38), F(50, 38), 'hidden'), L(F(0, 62), F(50, 62), 'hidden'), L(F(-4, 50), F(54, 50), 'centre'),
+              ...body.end.map(pl => ({ kind: 'polyline', points: pl.map(([z, y]) => R(z, y)), lineType: 'A' })),
+              { kind: 'circle', center: R(0, 50), r: 12, lineType: 'A' }, L(R(-28, 50), R(28, 50), 'centre'), L(R(0, 20), R(0, 78), 'centre'),
+              { kind: 'dimension', p1: F(-34, 0), p2: F(84, 0), offset: 7, text: '118' }, { kind: 'dimension', p1: R(-46, 0), p2: R(46, 0), offset: 7, text: '92' },
+              { kind: 'dimension', p1: R(46, 0), p2: R(46, 50), offset: -8, text: '50' }, lbl(R(14, 60), 'Ø24', { size: 2.8 }),
+              lbl(F(25, 90), '(1) PEDESTAL', { size: 3, color: '#fde047' }),
+            ];
+          } },
+        { note: 'Part 2, the BUSH (bronze): Ø16 bore, Ø24 outside, 50 long.', at: [40, 128], draw: () => B.partDetail(2, 'BUSH', bush, 16, 126, { section: true }) },
+        { note: 'Part 3, the SHAFT (mild steel): Ø28 collar 8 long, then Ø16 for 100, threaded M16 for the last 12.', at: [150, 128], draw: () => B.partDetail(3, 'SHAFT', shaft, 110, 130) },
+        { note: 'Part 4, the V-PULLEY (cast iron): hub Ø28 × 24, Ø16 bore, web 8 thick, rim Ø80 with a V-groove 8 deep.', at: [262, 50], draw: () => B.partDetail(4, 'V-PULLEY', pulley, 256, 12, { section: true }) },
+        { note: 'Part 5, the WASHER (Ø32 × 3), and part 6, the M16 NUT.', at: [262, 136], draw: () => [...B.partDetail(5, 'WASHER', washer, 236, 130, { section: true }), ...A.nutEnd(312, 146, D, {}), lbl([312, 131], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
+      ],
+      listAt: [16, 172],
+    });
+  })();
+
+  // ── Flanged guide pulley on a fork (Gr 11) ──
+  (function () {
+    const D = 16;
+    const fk = B.fork(64, 10, 50, 8, 26, 10, 10, 40);
+    const pin = [[0, 0], [0, 13], [6, 13], [6, 8], [96, 8], [96, 0]];
+    const bush = [[0, 8], [40, 8], [40, 12], [0, 12]];
+    const guide = [[0, 12], [40, 12], [40, 30], [35, 30], [35, 22], [5, 22], [5, 30], [0, 30]];
+    const washer = [[0, 8.5], [3, 8.5], [3, 16], [0, 16]];
+    add({
+      id: 'guide-pulley-fork-assembly', title: 'Flanged Guide Pulley on a Fork (Gr 11)',
+      summary: 'A flanged guide pulley turning on a bronze bush, on a pin through a fork. The flanges keep a rope or belt on the pulley; in section the tread and both flanges are hatched as one part.',
+      prompt: 'The parts of a guide pulley assembly are given. Draw, full size in 3rd-angle projection: the sectional front view on A-A and the right view. Do not section the pin, washer or nut; show three faces of the nut.',
+      story: 'the bush is pressed into the guide pulley, the pulley sits between the uprights, the pin goes through the left upright, the bush and the right upright, and the washer and nut hold it.',
+      ax: 70, by: 150, axisH: 50, rx: 236, cutTop: 96, axisFrom: -10, axisTo: 94, rvHalf: 48,
+      body: { name: 'FORK', mat: 'CAST IRON / GIETYSTER', callout: [5, 28], nearX: fk.nearX, section: fk.section, hatch: 45, end: fk.end },
+      parts: [
+        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [72, 96], note: 'Part 2, the PIN: head against the left upright, shank through both uprights. Never sectioned.' },
+        { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 12, sectioned: true, hatch: 135, note: 'Part 3, the BUSH between the uprights, sectioned and hatched opposite to the pulley.' },
+        { name: 'GUIDE PULLEY', mat: 'CAST IRON / GIETYSTER', profile: guide, at: 12, sectioned: true, hatch: 45, note: 'Part 4, the GUIDE PULLEY round the bush: the tread (Ø44) between two flanges (Ø60), sectioned. It must clear both uprights.' },
+        { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 64, sectioned: false, note: 'Part 5, the WASHER, and' },
+        { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 67, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT (three faces).' },
+      ],
+      order: [[0], [1], [2], [3, 4]],
+      details: [
+        { note: 'Part 1, the FORK (cast iron): uprights 10 thick, 44 apart inside, Ø16 holes 50 above the base, rounded tops R26.', at: [40, 50],
+          draw: () => [...B.forkDetail(fk, 64, 50, 8, 26, 30, 100, 168, '(1) FORK'),
+            { kind: 'dimension', p1: [20, 100], p2: [104, 100], offset: 7, text: '84' }, { kind: 'dimension', p1: [40, 34], p2: [84, 34], offset: -5, text: '44' },
+            { kind: 'dimension', p1: [208, 100], p2: [208, 50], offset: -8, text: '50' }, lbl([194, 26], 'R26', { size: 2.8 })] },
+        { note: 'Part 2, the PIN (mild steel): head Ø26 × 6, shank Ø16 × 90, threaded M16 for the last 24.', at: [40, 128], draw: () => B.partDetail(2, 'PIN', pin, 16, 122) },
+        { note: 'Part 3, the BUSH (bronze): Ø16 bore, Ø24 outside, 40 long.', at: [170, 128], draw: () => B.partDetail(3, 'BUSH', bush, 150, 124, { section: true }) },
+        { note: 'Part 4, the GUIDE PULLEY (cast iron): 40 wide, Ø24 bore, tread Ø44, flanges Ø60 × 5.', at: [262, 50], draw: () => B.partDetail(4, 'GUIDE PULLEY', guide, 236, 16, { section: true }) },
+        { note: 'Part 5, the WASHER (Ø32 × 3), and part 6, the M16 NUT.', at: [262, 136], draw: () => [...B.partDetail(5, 'WASHER', washer, 236, 130, { section: true }), ...A.nutEnd(312, 146, D, {}), lbl([312, 131], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
       ],
       listAt: [16, 172],
     });
