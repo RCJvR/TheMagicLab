@@ -425,6 +425,20 @@
     return g;
   }
 
+  // The compass for a step: given explicitly ({ center, r, angle } or false), or found from the
+  // last arc / circle the step draws when its instruction is about a compass, radius, arc or circle.
+  function stepCompass(step) {
+    if (!step || step.compass === false) return null;
+    if (step.compass) return Object.assign({ kind: 'tool', tool: 'compass' }, step.compass);
+    if (!/compass|radius|radii|\barcs?\b|circle|swing|semicircle|\bR\s?\d/i.test(step.instruction || '')) return null;
+    let c = null;
+    (step.reveals || []).forEach(r => {
+      if (r.kind === 'arc-construction' && r.r >= 3) c = { center: r.center, r: r.r, angle: r.endDeg };
+      else if (r.kind === 'circle' && r.r >= 4) c = { center: r.center, r: r.r, angle: -50 };
+    });
+    return c ? Object.assign({ kind: 'tool', tool: 'compass' }, c) : null;
+  }
+
   // ── Drawing instruments (on screen only, on the current step only) ──
   // { kind: 'tool', tool: 'ruler', at, angle, length, side }
   //     the measuring edge runs from `at` along `angle` (screen degrees, 0 = +x) for `length` mm;
@@ -437,13 +451,42 @@
     const paper = ctx.theme === 'paper';
     const k = ctx.k || 1;
     const g = el('g', { class: 'ce-tool', 'pointer-events': 'none',
-      transform: 'translate(' + r.at[0] + ' ' + r.at[1] + ') rotate(' + (r.angle || 0) + ')' + (r.flip ? ' scale(-1 1)' : '') });
+      transform: 'translate(' + (r.at || [0, 0])[0] + ' ' + (r.at || [0, 0])[1] + ') rotate(' + (r.angle || 0) + ')' + (r.flip ? ' scale(-1 1)' : '') });
     const sw = (1.1 / k).toFixed(3);
     const txt = (x, y, t, rot) => {
       const e = el('text', { x, y, 'font-size': 2.3, 'font-family': 'JetBrains Mono, monospace', 'text-anchor': 'middle', fill: paper ? '#4b5563' : '#cbd5e1',
         transform: (rot ? 'rotate(' + rot + ' ' + x + ' ' + y + ')' : '') + (r.flip ? ' scale(-1 1) translate(' + (-2 * x) + ' 0)' : '') });
       e.textContent = t; return e;
     };
+    if (r.tool === 'compass') {
+      // needle on `center`, pencil on the arc at `angle` (screen degrees); the hinge stands off to the side
+      const Cn = r.center, rr = r.r, a = (r.angle || -50) * Math.PI / 180;
+      const Pp = [Cn[0] + rr * Math.cos(a), Cn[1] + rr * Math.sin(a)];
+      const Lg = Math.max(rr / 2 + 14, 38), M = [(Cn[0] + Pp[0]) / 2, (Cn[1] + Pp[1]) / 2];
+      const ch = Math.hypot(Pp[0] - Cn[0], Pp[1] - Cn[1]) || 1, u = [(Pp[0] - Cn[0]) / ch, (Pp[1] - Cn[1]) / ch];
+      let n = [u[1], -u[0]];
+      if (n[1] > 0 || (Math.abs(n[1]) < 1e-6 && n[0] > 0)) n = [-n[0], -n[1]];      // hinge above the chord
+      const hgt = Math.sqrt(Math.max(Lg * Lg - (ch / 2) * (ch / 2), 25));
+      const H = [M[0] + n[0] * hgt, M[1] + n[1] * hgt];
+      const metal = paper ? 'rgba(71,85,105,.85)' : 'rgba(203,213,225,.8)', fillM = paper ? 'rgba(100,116,139,.22)' : 'rgba(148,163,184,.18)';
+      const cg = el('g', { class: 'ce-tool ce-compass', 'pointer-events': 'none' });
+      const leg = (from, to, w0, w1) => {
+        const d = Math.hypot(to[0] - from[0], to[1] - from[1]) || 1, v = [(to[0] - from[0]) / d, (to[1] - from[1]) / d], q = [-v[1], v[0]];
+        const pts = [[from[0] + q[0] * w0, from[1] + q[1] * w0], [to[0] + q[0] * w1, to[1] + q[1] * w1], [to[0] - q[0] * w1, to[1] - q[1] * w1], [from[0] - q[0] * w0, from[1] - q[1] * w0]];
+        return el('polygon', { points: pts.map(p => p.join(',')).join(' '), fill: fillM, stroke: metal, 'stroke-width': sw, 'vector-effect': 'non-scaling-stroke' });
+      };
+      const toward = (p, q, t) => [p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t];
+      const needleStart = toward(H, Cn, 0.86), leadStart = toward(H, Pp, 0.84);
+      cg.appendChild(leg(H, needleStart, 1.3, 0.8));
+      cg.appendChild(el('line', { x1: needleStart[0], y1: needleStart[1], x2: Cn[0], y2: Cn[1], stroke: metal, 'stroke-width': (1.4 / k).toFixed(3), 'vector-effect': 'non-scaling-stroke' }));
+      cg.appendChild(leg(H, leadStart, 1.3, 1.0));
+      cg.appendChild(leg(leadStart, Pp, 0.7, 0.15));
+      cg.appendChild(el('circle', { cx: Pp[0], cy: Pp[1], r: 0.55, fill: paper ? '#111827' : '#f8fafc' }));
+      cg.appendChild(el('circle', { cx: H[0], cy: H[1], r: 2.2, fill: fillM, stroke: metal, 'stroke-width': sw, 'vector-effect': 'non-scaling-stroke' }));
+      const T = [H[0] + n[0] * 9, H[1] + n[1] * 9];
+      cg.appendChild(leg(H, T, 0.9, 0.9));
+      return cg;
+    }
     if (r.tool === 'ruler') {
       const L = r.length || 150, W = 13, side = r.side === -1 ? 1 : -1;     // body above the edge by default
       g.appendChild(el('rect', { x: 0, y: side < 0 ? -W : 0, width: L, height: W, rx: 1.2,
@@ -849,6 +892,7 @@
       });
     }
 
+    if (!print && stepped && !model.noCompass) { const cmp = stepCompass(steps[lastIndex]); if (cmp) visible.push([cmp, lastIndex]); }
     const baseCtx = { mode, print, theme, showLabels, showMeasurements, k, layout };
     const curCtx = Object.assign({}, baseCtx, { current: stepped && steps.length > 1 });
     const labelLayer = el('g', { class: 'ce-labels' });
