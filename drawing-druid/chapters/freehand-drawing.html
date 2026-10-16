@@ -104,7 +104,16 @@ nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between
 }
 
     .ml-skip{position:absolute;left:12px;top:10px;z-index:1000;padding:10px 16px;border-radius:8px;background:#f5f7fa;color:#08090b;font:600 14px/1 ui-sans-serif,system-ui,-apple-system,sans-serif;text-decoration:none;transform:translateY(-250%);transition:transform .15s}.ml-skip:focus{transform:translateY(0)}
-  </style>
+  .lesson-main{display:grid;grid-template-columns:270px 1fr;gap:20px;align-items:start;}
+.svg-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:18px;min-width:0;}
+.svg-card-title{font-size:13px;font-weight:800;color:#fde047;}
+.svg-wrap{background:#05070c;border:1px solid var(--border);border-radius:14px;padding:10px;margin:12px 0;}
+svg#lessonSvg{width:100%;height:clamp(460px,68vh,640px);display:block;}
+.step-measure{margin-top:8px;font-family:var(--fm);font-size:12px;color:#fde047;}
+.fh-ex-title{font-weight:800;font-size:17px;letter-spacing:-0.02em;color:#fff;margin:0 0 6px;}
+.fh-ex-intro{font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.6;}
+.fh-theory{margin-top:40px;}
+</style>
 </head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
@@ -139,7 +148,18 @@ nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between
 
 <!-- LESSON -->
 <div class="tab-panel active" id="tab-lesson">
-  <div class="lesson-body">
+  <h2 class="fh-ex-title">Sketching exercises</h2>
+  <p class="fh-ex-intro">Work through each exercise on paper, step by step. The lines are shown straight here; you sketch them freehand: lightly first, then lined in.</p>
+  <div id="constrPicker"></div>
+  <div class="lesson-main">
+    <div class="step-panel"></div>
+    <div class="svg-card">
+      <span class="svg-card-title" id="constrTitle"></span>
+      <div class="svg-wrap"><svg id="lessonSvg"></svg></div>
+      <div class="callout" id="stepCallout"></div>
+    </div>
+  </div>
+  <div class="lesson-body fh-theory">
     <h2>Freehand vs. instrument drawing</h2>
     <p>Not every drawing starts with a ruler and compass. <strong>Freehand drawing</strong> — sketching without instruments — is how engineers and designers quickly explore ideas before committing to an accurate instrument drawing. It's faster, but it still isn't careless: freehand work follows the exact same SANS 0111/0143 line-type conventions as instrument drawing.</p>
     <div class="key-fact">Type A (thick) = outlines. Type B (medium) = dimensions &amp; writing. Type C (thin) = construction &amp; guidelines — even freehand.</div>
@@ -225,7 +245,9 @@ nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
 <script src="../engine.js"></script>
+<script src="../lesson-ui.js"></script>
 <script src="freehand-drawing.data.js"></script>
+<script src="freehand-steps.data.js"></script>
 <script>
 (function () {
   const G = window.ConstructionGeometry;
@@ -427,6 +449,10 @@ nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between
   buildPrintSheets();
   if (window.lucide) lucide.createIcons();
 })();
+</script>
+<script>
+  ConstructionEngine.addFinishSteps(window.CONSTRUCTIONS);
+  window.DruidLesson.mount({ order: window.CONSTRUCTION_ORDER, constructions: window.CONSTRUCTIONS });
 </script>
 <script defer src="../wip-notice.js"></script>
   <script src="/contact-button.js" defer></script>
