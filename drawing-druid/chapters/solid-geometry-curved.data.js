@@ -16,6 +16,22 @@
   const uniq = (arr, k) => { const out = []; arr.forEach(v => { if (!out.some(w => Math.abs(k(w) - k(v)) < 0.05)) out.push(v); }); return out; };
 
   // cfg: id, title, kind 'cylinder' | 'cone', R, H, deg (plane at deg° to the HP, rising to the right), za (where it cuts the axis)
+  // the cut solid for the 3D model: 48 flat facets marked as one smooth surface (smooth.all)
+  function model3d(cone, R, H, T, za) {
+    const SK = global.SolidKit, N = 48, ring = Array.from({ length: N }, (_, i) => { const a = 2 * Math.PI * i / N; return [R * Math.cos(a), R * Math.sin(a)]; });
+    const faces = [SK.face(ring.slice().reverse().map(([x, y]) => [x, y, 0]), { n: [0, 0, -1] })];
+    ring.forEach((p, i) => {
+      const q = ring[(i + 1) % N], m = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2], l = Math.hypot(m[0], m[1]);
+      const n = cone ? [m[0] / l * H, m[1] / l * H, R] : [m[0] / l, m[1] / l, 0];
+      const pts = cone ? [[p[0], p[1], 0], [q[0], q[1], 0], [0, 0, H]] : [[p[0], p[1], 0], [q[0], q[1], 0], [q[0], q[1], H], [p[0], p[1], H]];
+      faces.push(SK.face(pts, { n, smooth: { a: true, b: true, all: true } }));
+    });
+    if (!cone) faces.push(SK.face(ring.map(([x, y]) => [x, y, H]), { n: [0, 0, 1] }));
+    const k = Math.hypot(T, 1), res = SK.cut(faces, [-T / k, 0, 1 / k], za / k);   // keep z - T·x ≤ za
+    if (res.cap) res.cap.cutFace = true;
+    return [res.faces];
+  }
+
   function curvedCut(cfg) {
     const { R, H, deg, za } = cfg, cone = cfg.kind === 'cone', T = Math.tan(rad(deg)), name = cone ? 'cone' : 'cylinder';
     const gap = 24, FX = 40 + R, GY = 30 + H, TY = GY + gap + R, LX = FX + R + gap + R;
@@ -79,7 +95,7 @@
         reveals: [...AK.hatch([tsCurve], 45, 2.5), lbl([ts([0, 0, za])[0], ts([0, 0, za])[1] - R / Math.cos(rad(deg)) - 5], 'TRUE SHAPE A-A', Object.assign({ size: 3 }, YEL)),
           lbl([FX, GY + 8], 'FRONT VIEW', { size: 3 }), lbl([FX, TY + R + 9], 'SECTIONAL TOP VIEW', { size: 3 }), lbl([LX, GY + 8], 'SECTIONAL LEFT VIEW', { size: 3 })] },
     ];
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', printLayout: 'full', summary: cfg.summary,
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', printLayout: 'full', summary: cfg.summary, _solids: model3d(cone, R, H, T, za),
       workbookPrompt: 'A right ' + name + ' (base Ø' + 2 * R + ', height ' + H + ') stands on its base on the HP. It is cut by plane A-A, perpendicular to the VP, at ' + deg + '° to the HP, crossing the axis ' + za + ' above the base. Draw, in 1st angle, the front view, the sectional top view, the sectional left view and the true shape of the section. Use 12 generators.',
       steps: steps.map((s, i) => Object.assign({ id: i + 1 }, s)) };
     ORDER.push(cfg.id);

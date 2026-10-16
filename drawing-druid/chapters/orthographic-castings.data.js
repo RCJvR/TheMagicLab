@@ -141,7 +141,7 @@
           { kind: 'dimension', p1: [FX + x0, GY + 3], p2: [FX + x1, GY + 3], offset: 10, text: String(Math.round(x1 - x0)) },
           { kind: 'dimension', p1: [FX + x1 + 4, GY], p2: [FX + x1 + 4, GY - z1], offset: 6, text: String(Math.round(z1)) }] },
     ];
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _solids: B.full,
       steps: steps.filter(s => s.reveals.length).map((s, i) => Object.assign({ id: i + 1 }, s)) };
     ORDER.push(cfg.id);
   }
@@ -223,7 +223,7 @@
       { instruction: 'Label the views.', calloutAt: [FX + (x0 + x1) / 2, GY + 8],
         reveals: [lbl([FX + (x0 + x1) / 2, GY + 8], 'FRONT VIEW / VOORAANSIG', GREY), lbl([FX + (x0 + x1) / 2, TYf - y1 - 9], 'TOP VIEW / BOAANSIG', GREY), lbl([RX + (y0 + y1) / 2, GY + 8], 'RIGHT VIEW / REGTERAANSIG', GREY)] },
     ];
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _solids: solids,
       steps: steps.filter(st => st.reveals.length).map((st, i) => Object.assign({ id: i + 1 }, st)) };
     ORDER.push(cfg.id);
   }

@@ -182,6 +182,7 @@
 
     CONSTRUCTIONS[cfg.id] = {
       id: cfg.id, title: cfg.title, summary: cfg.summary, workbookPrompt: cfg.prompt,
+      _solids: /interior/.test(cfg.id) ? null : cfg.solids,          // the 3D model (not for a room seen from inside)
       printLayout: 'full', bounds: { w: x1 - x0, h: 200 },
       steps: steps.map((s, i) => ({ id: i + 1, instruction: s.t, calloutAt: s.at, reveals: s.r })),
     };

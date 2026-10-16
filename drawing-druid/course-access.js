@@ -109,7 +109,7 @@
   global.CourseAccess = {
     mount() {
       applyView();
-      lesson = global.DruidLesson.mount({ order: ORDER, constructions: C, locked, onRender });
+      lesson = global.DruidLesson.mount({ order: ORDER, constructions: C, locked, onRender, show3d: () => S.teacher });   // the model would give the answer away
       return lesson;
     },
     locked,

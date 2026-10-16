@@ -105,7 +105,7 @@
         lbl([DX + Lmax / 2, DY + perim + 7], 'DEVELOPMENT / ONTWIKKELING', GREY)] });
     steps.push({ instruction: 'Label the views.', calloutAt: [FX + (x0 + x1) / 2, GY + 6],
       reveals: [lbl([FX + (x0 + x1) / 2, GY + 6], 'FRONT VIEW / VOORAANSIG', GREY), lbl([FX + (x0 + x1) / 2, TY - y0 + 7], 'TOP VIEW / BOAANSIG', GREY), lbl([LX - (y0 + y1) / 2, GY + 6], 'LEFT VIEW / LINKERAANSIG', GREY)] });
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _solids: solids,
       steps: steps.filter(st => st.reveals.length).map((st, k) => Object.assign({ id: k + 1 }, st)) };
     ORDER.push(cfg.id);
   }

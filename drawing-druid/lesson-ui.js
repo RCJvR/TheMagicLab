@@ -4,11 +4,39 @@
 //     Previous / Next buttons, the full instruction, and an "All steps" overview;
 //   - keyboard: ← → steps, Home / End first step / finished drawing, [ ] or PgUp / PgDn drawings,
 //     + − 0 zoom, Shift + arrows pan, L construction lines, B background, ? help;
-//   - the place is kept in the URL (#d=<id>&s=<step>) so a refresh or a shared link returns to it.
+//   - the place is kept in the URL (#d=<id>&s=<step>) so a refresh or a shared link returns to it;
+//   - a rotatable 3D model under the instruction when the model carries its solids (_solids or _iso;
+//     model3d.js is loaded on demand). opts.show3d(id) → false hides it (course drawings, learners).
 // Usage (after engine.js and the chapter data): const lesson = DruidLesson.mount({ order, constructions, stepWord });
 (function (global) {
   'use strict';
   const CE = global.ConstructionEngine;
+  const HERE = (document.currentScript && document.currentScript.src) || '';
+
+  // the 3D model panel: loads model3d.js the first time a drawing has solids
+  function model3dPanel(after) {
+    const holder = document.createElement('div');
+    after.insertAdjacentElement('afterend', holder);
+    let viewer = null, loading = null, want = null;
+    const load = () => loading || (loading = new Promise((ok, bad) => {
+      if (global.DruidModel3D) return ok();
+      const sc = document.createElement('script');
+      sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, 'model3d.js');
+      sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc);
+    }));
+    return {
+      show(md) {
+        const solids = md && (md._solids || md._iso);
+        want = solids ? md : null;
+        if (!solids) { if (viewer) viewer.hide(); return; }
+        load().then(() => {
+          if (want !== md) return;
+          if (!viewer) viewer = global.DruidModel3D.attach(holder);
+          viewer.show(solids, { projection: md.projection });
+        }).catch(() => {});
+      },
+    };
+  }
 
   function injectStyle() {
     if (document.getElementById('dl-style')) return;
@@ -81,6 +109,13 @@
     const callout = document.getElementById('stepCallout');
     const titleEl = document.getElementById('constrTitle');
     tab.querySelector('.lesson-main').classList.add('dl-single');
+    const panel3d = model3dPanel(callout);
+    let shown3d = null;
+    function show3d(md) {
+      const k = md && (!opts.show3d || opts.show3d(md.id)) ? md : null;
+      if (k === shown3d) return;
+      shown3d = k; panel3d.show(k);
+    }
 
     // ── drawing chooser ──
     const bar = document.getElementById('constrPicker');
@@ -145,6 +180,7 @@
         while (svg.firstChild) svg.removeChild(svg.firstChild);
         callout.innerHTML = '<strong>🔒 Locked:</strong> ' + lockedNow;
         $('dlStepLabel').textContent = 'Locked';
+        show3d(null);
         if (opts.onRender) opts.onRender(id, 0, true);
         return;
       }
@@ -172,6 +208,7 @@
       });
 
       CE.render(svg, md, { uptoStep: step, mode: 'interactive' });
+      show3d(md);
       const s = md.steps[step - 1];
       let html = '<strong>' + word + ' ' + step + ' of ' + N + ':</strong> ' + s.instruction;
       if (s.measurement && s.measurement.label) html += '<div class="step-measure">📏 ' + s.measurement.label + '</div>';

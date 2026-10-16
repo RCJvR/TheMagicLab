@@ -142,7 +142,7 @@
       { instruction: 'Label the views and the XY line. Leave the construction lines thin and light.',
         calloutAt: [Lo.FX + cx, lowestTV(Lo) + 9], reveals: viewLabels(Lo) },
     ];
-    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
+    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps, { _solids: cfg.solids });
   }
 
   // ── Prism lying on a side face (axis along x): start from the true shape in the left view ──
@@ -175,7 +175,7 @@
       { instruction: 'Label the views and the XY line.',
         calloutAt: [Lo.FX + (Lo.x0 + Lo.x1) / 2, lowestTV(Lo) + 9], reveals: viewLabels(Lo) },
     ];
-    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
+    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps, { _solids: cfg.solids });
   }
 
   // ── A solid cut by a plane A-A that is perpendicular to the front (VP): sectional top view,
@@ -188,6 +188,7 @@
     const whole = cfg.solids;
     const res = whole.map(s => SK.cut(s, n, d));
     const kept = res.map(r => r.faces), caps = res.map(r => r.cap).filter(Boolean);
+    caps.forEach(c => { c.cutFace = true; });
     const Lo = layout(whole);
     const cx = (Lo.x0 + Lo.x1) / 2, cy = (Lo.y0 + Lo.y1) / 2, ax = cfg.axis || [cx, cy];
     const Fw = lines(whole, Lo.fv), Tw = lines(whole, Lo.tv);
@@ -260,7 +261,7 @@
         reveals: viewLabels(Lo, [['FRONT VIEW', 'VOORAANSIG'], ['SECTIONAL TOP VIEW', 'DEURSNEE-BOAANSIG'], ['SECTIONAL LEFT VIEW', 'DEURSNEE-LINKERAANSIG']]) },
     ];
     void fvLine;
-    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
+    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps, { _solids: kept });
   }
 
   // ── A solid tilted in the front view (rotated about a y-axis edge), drawn from the true shape of
@@ -330,7 +331,7 @@
       { instruction: 'Label the views and the XY line.', calloutAt: [Lo.FX + cx, lowestTV(Lo) + 9],
         reveals: [...viewLabels(Lo), lbl([auxCen[0] + aS[0] * (maxDev + 8), auxCen[1] + aS[1] * (maxDev + 8)], 'AUXILIARY VIEW / HULPAANSIG', { size: 3, color: '#94a3b8' })] },
     ];
-    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
+    finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps, { _solids: solids });
   }
 
   // Course Drawings page: export the builder and stop before this chapter's own exercises.
