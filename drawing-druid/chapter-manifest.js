@@ -183,7 +183,9 @@ window.DD_CHAPTERS = {
   "ip12-cyl-45",
   "ip12-cyl-offset",
   "ip12-cyl-30-offset",
-  "ip12-equal-45"
+  "ip12-equal-45",
+  "ip12-cone-cyl",
+  "ip12-cone-cyl-offset"
  ],
  "isometric-drawing-2": [
   "isometric-half-section",
@@ -308,7 +310,9 @@ window.DD_CHAPTERS = {
   "sect-column-bracket",
   "iso2ortho-angle-block",
   "iso2ortho-bearing-block",
-  "iso2ortho-t-slot-block"
+  "iso2ortho-t-slot-block",
+  "sect12-stepped-plate",
+  "sect12-stepped-block"
  ],
  "perspective-drawing-2": [
   "two-point-block",

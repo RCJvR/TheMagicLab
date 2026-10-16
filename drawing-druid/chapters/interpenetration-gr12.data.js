@@ -129,6 +129,94 @@
     ORDER.push(cfg.id);
   }
 
+  // ── A horizontal cylinder meeting a vertical cone: the HORIZONTAL CUTTING PLANE method ──
+  // cfg: id, title, summary, prompt, R (cone base radius), H (cone height), R2 (branch radius),
+  //      e (offset, + = behind), zc (branch axis height), Lb (free end, from the cone axis)
+  function coneBranch(cfg) {
+    const { R, H, R2, e, zc, Lb } = cfg;
+    const rAt = z => R * (1 - z / H);                                   // the cone's radius at height z
+    const NM = 96, eps = 0.05;
+    // the cone as four-sided facets (a tiny flat top), so its sides read as one smooth surface
+    const ang = i => 2 * Math.PI * i / NM, rr = rAt(H - eps);
+    const cone = [SK.face(Array.from({ length: NM }, (_, i) => [R * Math.cos(ang(i)), R * Math.sin(ang(i)), 0]).reverse(), { n: [0, 0, -1] }),
+      SK.face(Array.from({ length: NM }, (_, i) => [rr * Math.cos(ang(i)), rr * Math.sin(ang(i)), H - eps]), { n: [0, 0, 1] })];
+    for (let i = 0; i < NM; i++) {
+      const a = ang(i), b = ang(i + 1), m = (a + b) / 2;
+      cone.push(SK.face([[R * Math.cos(a), R * Math.sin(a), 0], [R * Math.cos(b), R * Math.sin(b), 0], [rr * Math.cos(b), rr * Math.sin(b), H - eps], [rr * Math.cos(a), rr * Math.sin(a), H - eps]],
+        { n: [H * Math.cos(m), H * Math.sin(m), R], smooth: { a: true, b: true } }));
+    }
+    // a generator of the branch: horizontal, at depth y and height z; it meets the cone where the
+    // horizontal plane at z cuts the cone in a circle of radius rAt(z)
+    const gen = th => { const y = e + R2 * Math.sin(th), z = zc + R2 * Math.cos(th), x = -Math.sqrt(Math.max(0, rAt(z) * rAt(z) - y * y));
+      return { th, y, z, E: [-Lb, y, z], I: [x, y, z], s: x + Lb }; };
+    const NB = 48, G = Array.from({ length: NB }, (_, i) => gen(2 * Math.PI * i / NB));
+    const branch = [SK.face(G.map(g => g.E).reverse(), { n: [-1, 0, 0] })];
+    G.forEach((g, i) => { const h = G[(i + 1) % NB], m = (g.th + h.th + (i === NB - 1 ? 2 * Math.PI : 0)) / 2;
+      branch.push(SK.face([g.E, h.E, h.I, g.I], { n: [0, Math.sin(m), Math.cos(m)], smooth: { a: true, b: true } })); });
+    const solids = [cone, branch];
+    const P = Array.from({ length: 12 }, (_, k) => gen(2 * Math.PI * k / 12));
+    const num = k => String(k + 1);
+    // layout
+    const auxC = [-Lb - R2 - 3, zc];
+    const x0 = Math.min(-R, auxC[0] - R2) - 6, x1 = R, y0 = Math.min(-R, e - R2), y1 = Math.max(R, e + R2);
+    const FX = 30 - x0, GY = 22 + H + 4, gap = 20, TY = GY + gap + y1;
+    const F = ([x, , z]) => [FX + x, GY - z], T = ([x, y]) => [FX + x, TY - y];
+    const fv = SK.orthoView('front', [FX, GY]), tv = SK.orthoView('top', [FX, TY]);
+    const FVL = viewLines(solids, fv), TVL = viewLines(solids, tv);
+    const onCone = p => Math.abs(Math.hypot(p[0], p[1]) - rAt(p[2])) < 0.6;
+    const isCurve = s => s.every(p => G.some(g => d2([g.I[0], g.I[2]], [p[0], p[2]]) < 1e-3 && Math.abs(g.I[1] - p[1]) < 1e-3));
+    const kindOf = q => { const s = q.s; if (isCurve(s)) return 'curve'; const m = [0, 1, 2].map(k => (s[0][k] + s[1][k]) / 2); return onCone(m) || m[2] < 1e-3 || m[2] > H - 0.2 ? 'main' : 'branch'; };
+    const pick = (set, k, lt) => set.filter(q => kindOf(q) === k).map(q => L(q[0], q[1], lt));
+    const heights = []; P.forEach(g => { if (!heights.some(z => Math.abs(z - g.z) < 0.05)) heights.push(g.z); });
+    const tAuxC = [-Lb - R2 - 6, e];
+    const steps = [];
+    steps.push({ instruction: 'Draw the XY line. In 1st-angle projection the top view goes below the front view.',
+      calloutAt: [FX + x0 + 10, GY], reveals: [L([FX + x0 - 4, GY], [FX + x1 + 10, GY], 'B')] });
+    steps.push({ instruction: 'FRONT VIEW of the cone (base Ø' + 2 * R + ', ' + H + ' high) and TOP VIEW (a circle with its centre point). Draw the axes, and the branch axis ' + zc + ' mm up' + (e ? ', ' + Math.abs(e) + ' mm ' + (e > 0 ? 'behind' : 'in front of') + ' the cone axis (offset)' : '') + '.',
+      calloutAt: F([0, 0, H / 2]),
+      reveals: [L(F([-R, 0, 0]), F([0, 0, H]), 'construction'), L(F([R, 0, 0]), F([0, 0, H]), 'construction'), L(F([-R, 0, 0]), F([R, 0, 0]), 'construction'), L(F([0, 0, -4]), F([0, 0, H + 4]), 'centre'),
+        { kind: 'circle', center: [FX, TY], r: R, lineType: 'A' }, L([FX - R - 4, TY], [FX + R + 4, TY], 'centre'), L([FX, TY - R - 4], [FX, TY + R + 4], 'centre'),
+        L(F([-Lb - 6, 0, zc]), F([0, 0, zc]), 'centre'), L(T([-Lb - 6, e]), T([0, e]), 'centre')] });
+    steps.push({ instruction: 'AUXILIARY CIRCLE: beside the end of the branch draw a circle of Ø' + 2 * R2 + ' and divide it into 12; number the points from the top. Draw the end of the branch.',
+      calloutAt: F([auxC[0], 0, auxC[1]]),
+      reveals: [{ kind: 'circle', center: F([auxC[0], 0, auxC[1]]), r: R2, lineType: 'construction' }, L(F([-Lb, 0, zc - R2]), F([-Lb, 0, zc + R2]), 'construction'),
+        ...P.map(g => ({ kind: 'point', at: F([auxC[0] - R2 * Math.sin(g.th), 0, g.z]) })),
+        ...P.map((g, k) => lbl(F([auxC[0] - (R2 + 3.4) * Math.sin(g.th), 0, zc + (R2 + 3.4) * Math.cos(g.th) - 1]), num(k)))] });
+    steps.push({ instruction: 'Draw the GENERATORS: level lines from the divisions, through the end of the branch, right across the cone. Each one is also a HORIZONTAL CUTTING PLANE: mark where it cuts the outline of the cone.',
+      calloutAt: F([0, 0, zc]),
+      reveals: [...heights.map(z => L(F([auxC[0], 0, z]), F([rAt(z) + 4, 0, z]), 'construction')), ...heights.map(z => ({ kind: 'point', at: F([-rAt(z), 0, z]) }))] });
+    steps.push({ instruction: 'A horizontal plane cuts a cone in a CIRCLE. Project each outline point down to the top view and draw that plane\'s circle about the centre.',
+      calloutAt: T([-rAt(heights[0]), 0]),
+      reveals: [...heights.map(z => L(F([-rAt(z), 0, z]), T([-rAt(z), 0]), 'construction')), ...heights.map(z => ({ kind: 'circle', center: [FX, TY], r: rAt(z), lineType: 'construction' }))] });
+    steps.push({ instruction: 'In the top view draw a circle the size of the branch beside its end, and find the depth of each generator. Carry each depth across to the circle of ITS plane: generator 1 to the circle of plane 1, and so on. The crossing is a point on the curve.',
+      calloutAt: T(tAuxC),
+      reveals: [{ kind: 'circle', center: T(tAuxC), r: R2, lineType: 'construction' },
+        ...P.flatMap(g => { const ax = tAuxC[0] - Math.sqrt(Math.max(0, R2 * R2 - (g.y - e) * (g.y - e))); return [{ kind: 'point', at: T([ax, g.y]) }, L(T([ax, g.y]), T([g.I[0], g.y]), 'construction'), { kind: 'point', at: T([g.I[0], g.y]) }]; }),
+        ...(() => { const gs = []; P.forEach((g, k) => { const q = gs.find(x => Math.abs(x.y - g.y) < 0.05 && Math.abs(x.x - g.I[0]) < 0.05); if (q) q.k.push(k); else gs.push({ x: g.I[0], y: g.y, k: [k] }); });
+          return gs.map(q => lbl(T([q.x - 2, q.y + 1.2]), q.k.map(num).join(', '), { anchor: 'end' })); })()] });
+    steps.push({ instruction: 'Project each point up to its own generator in the front view. These are the points on the CURVE OF INTERPENETRATION.',
+      calloutAt: F(P[3].I), reveals: [...P.map(g => L(T([g.I[0], g.y]), F(g.I), 'construction')), ...P.map(g => ({ kind: 'point', at: F(g.I) }))] });
+    steps.push({ instruction: 'Join the points with a smooth curve, in both views. Parts behind the branch or the cone are hidden.',
+      calloutAt: F(P[0].I), reveals: [...pick(FVL.vis, 'curve', 'A'), ...pick(FVL.hid, 'curve', 'hidden'), ...pick(TVL.vis, 'curve', 'A'), ...pick(TVL.hid, 'curve', 'hidden')] });
+    steps.push({ instruction: 'Line in the branch and the cone in both views.',
+      calloutAt: F([R, 0, 0]), reveals: [...pick(FVL.vis, 'branch', 'A'), ...pick(FVL.hid, 'branch', 'hidden'), ...pick(FVL.vis, 'main', 'A'), ...pick(FVL.hid, 'main', 'hidden'),
+        ...pick(TVL.vis, 'branch', 'A'), ...pick(TVL.hid, 'branch', 'hidden')] });
+    // development of the branch
+    const per = 2 * Math.PI * R2, DX = FX + R + 26, DY = GY - 4, step = per / 12, sMax = Math.max(...G.map(g => g.s));
+    const dev = (s, th) => [DX + per * th / (2 * Math.PI), DY - s];
+    steps.push({ instruction: 'DEVELOPMENT of the branch: a stretch-out line ' + per.toFixed(1) + ' mm long (π × ' + 2 * R2 + '), divided into 12 and numbered (seam on 1).',
+      calloutAt: [DX + per / 2, DY + 4], reveals: [L([DX, DY], [DX + per, DY]), ...Array.from({ length: 13 }, (_, k) => lbl([DX + k * step, DY + 4.5], num(k % 12)))] });
+    steps.push({ instruction: 'On each division mark the length of that generator from the front view (true length: the generators are level and parallel to the VP).',
+      calloutAt: [DX + per / 2, DY - sMax / 2], reveals: Array.from({ length: 13 }, (_, k) => L([DX + k * step, DY], dev(P[k % 12].s, 2 * Math.PI * k / 12), 'construction')) });
+    const devCurve = [...G, G[0]].map((g, i) => dev(g.s, 2 * Math.PI * i / NB));
+    steps.push({ instruction: 'Join the ends with a smooth curve and line in the development. Label the views.',
+      calloutAt: dev(P[6].s, Math.PI), reveals: [{ kind: 'polyline', points: devCurve, lineType: 'A' }, L([DX, DY], devCurve[0]), L([DX + per, DY], devCurve[devCurve.length - 1]),
+        lbl([DX + per / 2, DY + 11], 'DEVELOPMENT OF THE BRANCH / ONTWIKKELING VAN DIE TAK', GREY), lbl([FX, GY + 6], 'FRONT VIEW / VOORAANSIG', GREY), lbl([FX, TY + R + 8], 'TOP VIEW / BOAANSIG', GREY)] });
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _solids: solids,
+      steps: steps.filter(st => st.reveals.length).map((st, k) => Object.assign({ id: k + 1 }, st)) };
+    ORDER.push(cfg.id);
+  }
+
   cylBranch({ id: 'ip12-cyl-45', title: 'Cylinder Branch at 45° (Gr 12)', R1: 30, Hm: 96, R2: 15, e: 0, alpha: 45, zc: 34, Lb: 80,
     summary: 'A Ø30 pipe joins a Ø60 pipe at 45°. The generators are found on the auxiliary circle at the branch end; the top view gives where each meets the main pipe.',
     prompt: 'A cylindrical branch Ø30 joins a vertical cylinder Ø60 × 96 high. The branch axis is parallel to the VP, at 45° to the horizontal, and meets the main axis 34 mm above the base; the free end is 80 mm from the main axis. Draw, in 1st angle, the front view with the curve of interpenetration, the top view, and the development of the branch. Use 12 generators.' });
@@ -141,4 +229,10 @@
   cylBranch({ id: 'ip12-equal-45', title: 'Equal Cylinders at 45° (Gr 12)', R1: 22, Hm: 100, R2: 22, e: 0, alpha: 45, zc: 40, Lb: 78,
     summary: 'When the two pipes are the same diameter and their axes meet, the curve of interpenetration shows as straight lines in the front view, at any angle.',
     prompt: 'Two cylinders of Ø44 meet with their axes intersecting at 45°: the main cylinder is vertical (100 high), the branch axis meets it 40 mm above the base and its free end is 78 mm away. Draw the front view with the curve of interpenetration, the top view and the development of the branch. Explain why the curve is straight.' });
+  coneBranch({ id: 'ip12-cone-cyl', title: 'Cylinder Meeting a Cone (Gr 12)', R: 40, H: 90, R2: 12, e: 0, zc: 30, Lb: 76,
+    summary: 'A horizontal pipe meets a cone. Each generator of the pipe is a horizontal cutting plane, which cuts the cone in a circle: where the generator meets its circle in the top view is a point on the curve.',
+    prompt: 'A horizontal cylinder Ø24 meets a right cone (base Ø80, 90 high) standing on the HP. The cylinder axis is 30 mm above the base, parallel to the VP and in the same vertical plane as the cone axis; its free end is 76 mm from the cone axis. Draw, in 1st angle, the front and top views with the curve of interpenetration, and the development of the cylinder. Use 12 generators and the horizontal cutting plane method.' });
+  coneBranch({ id: 'ip12-cone-cyl-offset', title: 'Offset Cylinder Meeting a Cone (Gr 12)', R: 42, H: 96, R2: 11, e: 8, zc: 32, Lb: 78,
+    summary: 'The same method with the pipe 8 mm behind the cone axis: the circles of the cutting planes do not change, but each generator now meets its circle further round.',
+    prompt: 'A horizontal cylinder Ø22 meets a right cone (base Ø84, 96 high). The cylinder axis is 32 mm above the base, parallel to the VP and 8 mm behind the cone axis; its free end is 78 mm from the cone axis. Draw the front and top views with the curve of interpenetration, and the development of the cylinder (1st angle, horizontal cutting planes).' });
 })(window);

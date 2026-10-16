@@ -187,6 +187,12 @@
       if (!cache[id]) {
         if (DEFS[id]) cache[id] = DEFS[id]();
         else if (md && md._turned) cache[id] = [revolve(md._turned)];
+        else if (md && md._stepped) {
+          // a plate with holes: one layer for each counterbore depth, so each hole has its own step
+          const c = md._stepped, cuts = [...new Set([0, c.H, ...c.holes.filter(h => h.cb).map(h => c.H - h.cb.depth)])].sort((u, v) => u - v);
+          cache[id] = cuts.slice(0, -1).map((za, i) => box(0, 0, za, c.L, c.D, cuts[i + 1],
+            c.holes.map(h => circle([h.x, h.y], (h.cb && za >= c.H - h.cb.depth - 1e-6 ? h.cb.d : h.d) / 2, 36))));
+        }
       }
       return cache[id] || null;
     },
