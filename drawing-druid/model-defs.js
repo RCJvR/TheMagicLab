@@ -142,6 +142,22 @@
     'ortho-from-iso-guide-block': () => [box(0, 0, 0, 50, 40, 15, [circle([20, 20], 6, 32)]), box(50, 0, 0, 70, 40, 45)],
     'ortho-from-iso-lug-base': () => [box(0, 0, 0, 80, 50, 12), extr(lugProfile(50, 80, 12, 37, 15), 'xz', 38, 50, { holes: [circle([65, 37], 7, 32)], curved: onArc([65, 37], 15) })],
 
+    'break-line-shaft': () => [cylX([0, 10], 10, 0, 450)],
+    'basic-bolted-joint': () => {
+      const hex = af => regPlan(6, af / Math.sqrt(3)).map(([x, y]) => [y, x]);          // flats front and back
+      return Object.assign([box(-40, -20, 22, 40, 20, 38, [circle([0, 0], 6, 32)]), box(-40, -20, 38, 40, 20, 50, [circle([0, 0], 6, 32)]),
+        cylZ([0, 0], 5, -3, 50), extr(hex(18), 'xy', 50, 62), extr(hex(16), 'xy', 0, 12, { holes: [circle([0, 0], 5, 32)] })], { parts: true });   // an assembly: each part keeps its outline
+    },
+    'removed-section-flat': () => {
+      // the flat: the shaft's own 40 facets below a chord through two of its corners (36° and 144°,
+      // about 5 mm down), so the flat part joins the round parts without a seam
+      const ring = circle([0, 0], 12, 40), prof = ring.filter((p, i) => { const a = i * 9; return a >= 144 || a <= 36; });
+      const k = prof.findIndex((p, i) => i > 0 && Math.abs(Math.atan2(p[1], p[0]) * 180 / Math.PI - 144) < 0.01);
+      const loop = prof.slice(k).concat(prof.slice(0, k));            // 144° … round the bottom … 36°, then the chord
+      return ([cylX([0, 0], 12, 0, 50), extr(loop, 'yz', 50, 75, { curved: onArc([0, 0], 12) }), cylX([0, 0], 12, 75, 120)]);
+    },
+    'assembling-given-parts': () => Object.assign([extr(rect(0, 0, 40, 30), 'yz', 0, 55, { holes: [circle([20, 15], 7.3, 36)] }), cylX([20, 15], 7, 0.4, 54.6)], { parts: true }),
+
     // ── Isometric drawing ──
     'isometric-wedge': () => [extr([[0, 0], [40, 0], [40, 35]], 'yz', 0, 60)],
     'isometric-circle': () => [cylZ([25, 25], 25, 0, 4)],

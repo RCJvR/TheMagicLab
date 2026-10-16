@@ -73,7 +73,13 @@
         if (li === 0 && sm && f.pts.length === 4 && ((i === 1 && sm.b) || (i === 3 && sm.a))) e.smooth = true;
       })));
       edges.forEach(e => {
-        if (e.faces.length === 2 && e.faces.every(fi => faces[fi].smooth && faces[fi].smooth.all)) e.smooth = true;
+        // curved faces meeting along an edge (also where two parts of one round bar meet) are one surface
+        const curved = e.faces.filter(fi => faces[fi].smooth && faces[fi].smooth.all);
+        for (let i = 0; i < curved.length; i++) for (let j = i + 1; j < curved.length; j++) {
+          const A = faces[curved[i]].n, B = faces[curved[j]].n, la = Math.hypot(A[0], A[1], A[2]) || 1, lb = Math.hypot(B[0], B[1], B[2]) || 1;
+          if ((A[0] * B[0] + A[1] * B[1] + A[2] * B[2]) / la / lb >= 0.8) parent[root(curved[i])] = root(curved[j]);
+        }
+        if (e.faces.length === 2 && curved.length === 2) e.smooth = true;
         if (!e.smooth || e.faces.length < 2) return;
         const [m, n] = e.faces, A = faces[m].n, B = faces[n].n;
         const la = Math.hypot(A[0], A[1], A[2]) || 1, lb = Math.hypot(B[0], B[1], B[2]) || 1;
@@ -88,7 +94,7 @@
       const ext = i => [Math.min(...all.map(q => q[i])), Math.max(...all.map(q => q[i]))];
       const c = [0, 1, 2].map(i => { const [lo, hi] = ext(i); return (lo + hi) / 2; });
       const R = Math.max(1e-6, ...all.map(q => Math.hypot(q[0] - c[0], q[1] - c[1], q[2] - c[2])));
-      M = { faces, solidOf, edges: [...edges.values()], surf: faces.map((f, i) => root(i)), plane, c, R };
+      M = { faces, solidOf, edges: [...edges.values()], surf: faces.map((f, i) => root(i)), plane, c, R, parts: !!sol.parts };
     }
 
     function draw() {
@@ -151,14 +157,15 @@
         if (a < 0) continue;
         for (const q of [o + 1, o + PW]) {
           const b = fb[q];
-          if (b < 0 || M.solidOf[a] === M.solidOf[b] || M.plane[a] === M.plane[b] || Math.abs(zb[o] - zb[q]) > tol) continue;
+          if (b < 0 || M.solidOf[a] === M.solidOf[b] || M.surf[a] === M.surf[b] || M.plane[a] === M.plane[b] || Math.abs(zb[o] - zb[q]) > tol) continue;
           [o, q].forEach(t => { px[t * 4] = 27; px[t * 4 + 1] = 27; px[t * 4 + 2] = 31; });
         }
       }
       g.putImageData(img, 0, 0);
       // edges: drawn where they are in front, and only where the surface really changes across them
       const eps = 0.012 * M.R + 2 / k;                               // depth tolerance, model units
-      const same = (i, j) => i >= 0 && j >= 0 && (M.surf[i] === M.surf[j] || M.plane[i] === M.plane[j]);
+      // one surface on both sides: no edge. In an assembly (solids.parts) flush faces of two parts still meet at an edge
+      const same = (i, j) => i >= 0 && j >= 0 && (M.surf[i] === M.surf[j] || (M.plane[i] === M.plane[j] && (!M.parts || M.solidOf[i] === M.solidOf[j])));
       const at = (x, y) => { x = Math.floor(x); y = Math.floor(y); return x < 0 || y < 0 || x >= PW || y >= PH ? -1 : y * PW + x; };
       const off = 1.6 * dpr;
       g.beginPath();
