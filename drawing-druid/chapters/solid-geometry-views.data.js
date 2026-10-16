@@ -522,4 +522,26 @@
     'A pentagonal pyramid standing centrally on a hexagonal prism: two different polygons in one top view, every corner projected to its own solid.',
     'A right regular pentagonal pyramid (circumradius 26 mm, height 55 mm) stands centrally on a regular hexagonal prism (68 mm across corners, 25 mm high, two faces parallel to the VP). Draw the top view, front view and left view in 1st angle.',
     'The top view shows the hexagon of the prism with the pentagonal base of the pyramid and its edges to the apex inside it.');
+
+  // ═══ Combined solids cut by a plane (Gr 11 type) ═══
+  cs('sg-cut-pyramid-on-prism', 'Combined Solids Cut: Pyramid on a Hexagonal Prism', 'combined solid', null, 30, [0, 34],
+    [prism(reg(6, 32, 0, 0, 0), 30), pyramidOn(reg(4, 24, 45, 0, 0), 30, 45)],
+    'A square pyramid on a hexagonal prism, cut by a plane at 30° that passes from the prism into the pyramid: the true shape has a corner where it crosses the join.',
+    'A square pyramid (base 34 mm, height 45 mm) stands centrally on a regular hexagonal prism (64 mm across corners, 30 mm high). Plane A-A, at 30° to the HP, cuts the axis 34 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-cut-slab-pyramid', 'Combined Solids Cut: Hexagonal Pyramid on a Slab', 'combined solid', null, 25, [0, 22],
+    [prism(reg(4, 40, 45, 0, 0), 15), pyramidOn(reg(6, 26, 90, 0, 0), 15, 60)],
+    'A hexagonal pyramid on a square slab, cut at 25° through both: the section is part slab, part pyramid.',
+    'A right regular hexagonal pyramid (52 mm across corners, 60 mm high) stands centrally on a square slab (56 mm square, 15 mm thick). Plane A-A, at 25° to the HP, cuts the axis 22 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-cut-stacked-prisms', 'Combined Solids Cut: Square Prism on a Hexagonal Prism', 'combined solid', null, 35, [0, 32],
+    [prism(reg(6, 32, 30, 0, 0), 24), SK.extrude(reg(4, 20, 45, 0, 0), 'xy', 24, 60)],
+    'A square prism standing on a hexagonal prism, cut by a plane at 35°: two different polygons in one true shape.',
+    'A square prism (28 mm square, 36 mm high) stands centrally on a regular hexagonal prism (64 mm across corners, 24 mm high, two faces parallel to the VP). Plane A-A, at 35° to the HP, cuts the axis 32 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-cut-tri-on-slab', 'Combined Solids Cut: Triangular Prism on a Slab', 'combined solid', null, 40, [0, 26],
+    [prism(reg(4, 42, 45, 0, 0), 12), SK.extrude(reg(3, 26, 90, 0, 0), 'xy', 12, 60)],
+    'A triangular prism on a square slab, cut steeply at 40%: the cut leaves the slab and runs up the prism.'.replace('40%', '40°'),
+    'An equilateral triangular prism (circumradius 26 mm, 48 mm tall) stands centrally on a square slab (59 mm square, 12 mm thick) with one corner pointing backwards. Plane A-A, at 40° to the HP, cuts the axis 26 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
+  cs('sg-cut-pent-on-hex', 'Combined Solids Cut: Pentagonal Pyramid on a Hexagonal Prism', 'combined solid', null, 30, [0, 30],
+    [prism(reg(6, 34, 30, 0, 0), 25), pyramidOn(reg(5, 26, 90, 0, 0), 25, 55)],
+    'A pentagonal pyramid on a hexagonal prism, cut at 30°: number the cut points on both solids, then lay out one true shape.',
+    'A right regular pentagonal pyramid (circumradius 26 mm, height 55 mm) stands centrally on a regular hexagonal prism (68 mm across corners, 25 mm high). Plane A-A, at 30° to the HP, cuts the axis 30 mm above the base. Draw the front view, the sectional top view, the sectional left view and the true shape of the section.');
 })(window);
