@@ -498,7 +498,7 @@
     S.openingAt(kennel, 0, [12, 0, 0], [24, 0, 16], 2.5);
     onePoint({
       id: 'one-point-kennel', title: 'One-Point: Gable-Ended Kennel',
-      summary: 'A small gable building with an arched-free square doorway: the ridge runs straight back to the VP.',
+      summary: 'A small gable building with a square (not arched) doorway: the ridge runs straight back to the VP.',
       prompt: 'Draw the kennel at 1:20 in one-point perspective: front gable on PP, 720 wide, 800 deep, eaves 400 and ridge 640 high, with a doorway in the gable.',
       setup: { sx: 118, d: 115, yPP: 64, yGL: 160, h: 46, cx: 50 },
       solids: [kennel],
