@@ -205,6 +205,10 @@
 
   const S = SK;
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { onePoint: cfg => { onePoint(cfg); return CONSTRUCTIONS[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   // 1. Block
   onePoint({
     id: 'one-point-block', title: 'One-Point: Rectangular Block',

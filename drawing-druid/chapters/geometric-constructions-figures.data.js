@@ -112,6 +112,10 @@
     ORDER.push(cfg.id);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { figure: cfg => { figure(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   figure({ id: 'fig-rocker-arm', title: 'Copy a Figure: Rocker Arm', part: 'rocker arm',
     bosses: [{ c: [70, 140], r: 22, hole: 24 }, { c: [150, 80], r: 14, hole: 12 }, { c: [215, 135], r: 12, hole: 10 }],
     links: [{ type: 'line' }, { type: 'enclose', R: 75 }, { type: 'arc', R: 80 }],

@@ -344,6 +344,10 @@
     finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { cam: cfg => { cam(cfg); return C[cfg.id]; }, helix: cfg => { helix(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   // ═══ Exercises ═══
   helix({ id: 'helix-line-rh', title: 'Helix on a Shaft: Right-Hand, One Turn', kind: 'line', D: 60, pitch: 72, turns: 1, hand: 'R',
     summary: 'One turn of a right-hand helix on a Ø60 shaft: divide the top view into 12, the pitch into 12, and plot the front half of the curve.',

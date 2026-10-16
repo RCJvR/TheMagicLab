@@ -333,6 +333,10 @@
     finish(cfg.id, cfg.title, cfg.summary, cfg.prompt, steps);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { threeViews: cfg => { threeViews(cfg); return C[cfg.id]; }, cutSolid: cfg => { cutSolid(cfg); return C[cfg.id]; }, inclined: cfg => { inclined(cfg); return C[cfg.id]; }, reg, prism, pyramidOn });
+  if (global.DD_BUILDERS_ONLY) return;
+
   // ═══ The exercises ═══
 
   threeViews({

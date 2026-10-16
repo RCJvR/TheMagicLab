@@ -146,6 +146,10 @@
     ORDER.push(cfg.id);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { fromIso: cfg => { fromIso(cfg); return C[cfg.id]; }, casting: cfg => { casting(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   // ═══ Exercises (original castings) ═══
   {
     const up = [[-20, 12], [20, 12], [20, 52], ...arc([0, 52], 20, 0, 180, 18).slice(1, -1), [-20, 52]];

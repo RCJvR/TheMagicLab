@@ -91,7 +91,13 @@
       '<span class="dl-count" id="dlDrawCount" aria-live="polite"></span>' +
       '<button type="button" class="dl-btn" id="dlNextDrawing" aria-label="Next drawing" title="Next drawing ( ] )">›</button></div>';
     const select = bar.querySelector('#dlSelect');
-    order.forEach((k, i) => { const o = document.createElement('option'); o.value = k; o.textContent = (i + 1) + '.  ' + C[k].title; select.appendChild(o); });
+    // opts.locked(id) → a message while a drawing is not available yet (course drawings), else null
+    const lockMsg = k => (opts.locked ? opts.locked(k) : null);
+    function fillSelect() {
+      select.innerHTML = '';
+      order.forEach((k, i) => { const o = document.createElement('option'); o.value = k; o.textContent = (i + 1) + '.  ' + (lockMsg(k) ? '🔒 ' : '') + C[k].title; select.appendChild(o); });
+    }
+    fillSelect();
 
     // ── step track, status, all-steps overview, help ──
     const wrap = svg.closest('.svg-wrap');
@@ -125,6 +131,23 @@
     function moveDrawing(d) { const i = order.indexOf(id) + d; if (i >= 0 && i < order.length) setDrawing(order[i]); }
 
     function render() {
+      fillSelect();
+      const lockedNow = lockMsg(id);
+      if (lockedNow) {
+        const idx = order.indexOf(id);
+        if (titleEl) titleEl.textContent = C[id].title;
+        select.value = id;
+        $('dlDrawCount').textContent = (idx + 1) + ' / ' + order.length;
+        $('dlPrevDrawing').disabled = idx <= 0;
+        $('dlNextDrawing').disabled = idx >= order.length - 1;
+        track.innerHTML = ''; list.innerHTML = '';
+        $('dlPrev').disabled = true; $('dlNext').disabled = true;
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        callout.innerHTML = '<strong>🔒 Locked:</strong> ' + lockedNow;
+        $('dlStepLabel').textContent = 'Locked';
+        if (opts.onRender) opts.onRender(id, 0, true);
+        return;
+      }
       const md = model(), N = md.steps.length, idx = order.indexOf(id);
       step = Math.max(1, Math.min(N, step));
       if (titleEl) titleEl.textContent = md.title;

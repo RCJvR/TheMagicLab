@@ -192,6 +192,10 @@
     return out;
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.AssemblyBuilder = { assembly, partDetail, fork, forkDetail };
+  if (global.DD_BUILDERS_ONLY) return;
+
   // ── 1. Hexagon bolt, nut and washer to proportions (M20) ──
   (function () {
     const D = 20, head = 0.7 * D, nutH = 0.8 * D, wT = 0.2 * D, wD = 2 * D, len = 100, thr = 50;

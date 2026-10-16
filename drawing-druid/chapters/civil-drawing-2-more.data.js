@@ -158,6 +158,10 @@
     finish(cfg.id, cfg.title, '1:20', cfg.summary, cfg.prompt, steps);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { detail: cfg => { detail(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   detail({ id: 'detail-window-section', kind: 'window', title: 'Detailed Section of a Window up to Ceiling Height (1:20)',
     summary: 'A detailed section through a steel window in a 230 mm wall at 1:20: footing, foundation wall, DPC, floor, precast and fibre-cement sills, the window, a double lintel, the wall plate, tie beam and ceiling.',
     prompt: 'Using the given partial floor plan, draw to scale 1:20 the detailed section on A-A through the window, from the foundation up to ceiling height: 600 × 250 footing, 230 brick walls, DPC, hardcore, 100 surface bed and 25 screed (FFL 150 above NGL), the sills (170 × 35 fibre-cement inside), the steel window (sill 900, head 2100), a DOUBLE lintel, the wall plate, tie beam, brandering and ceiling. Show all hatching and label NGL, FFL and DPC.' });

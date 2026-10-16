@@ -189,6 +189,10 @@
 
   const S = SK;
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { twoPoint: cfg => { twoPoint(cfg); return CONSTRUCTIONS[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   // 1. Block at 45° / 45°
   twoPoint({
     id: 'two-point-block', title: 'Two-Point: Block at 45° / 45°',

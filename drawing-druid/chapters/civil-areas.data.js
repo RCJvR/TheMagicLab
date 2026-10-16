@@ -87,6 +87,10 @@
     ORDER.push(cfg.id);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { areas: cfg => { areas(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   areas({ id: 'areas-flatlet', title: 'Schedule of Areas: Flatlet', plan: 'FLATLET / WOONSTELLETJIE',
     outline: [[0, 0], [8, 0], [8, 6], [0, 6]], walls: [[3.5, 0.23, 3.61, 5.77]],
     rooms: [{ name: 'BEDROOM', r: [0.23, 0.23, 3.5, 5.77] }, { name: 'LOUNGE', r: [3.61, 0.23, 7.77, 5.77] }], split: [[0, 0, 8, 6]],

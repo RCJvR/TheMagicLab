@@ -68,6 +68,10 @@
     ORDER.push(cfg.id);
   }
 
+  // Course Drawings page: export the builder and stop before this chapter's own exercises.
+  global.DDBuild = Object.assign(global.DDBuild || {}, { lineTL: cfg => { lineTL(cfg); return C[cfg.id]; } });
+  if (global.DD_BUILDERS_ONLY) return;
+
   lineTL({ id: 'dg-line-1', title: 'Line in Space 1: Rising to the Right', A: { x: 20, h: 15, v: 50 }, B: { x: 80, h: 55, v: 20 },
     context: 'Line AB: A is 15 above the HP and 50 in front of the VP; B is 55 above the HP and 20 in front of the VP. The ends are 60 apart along XY.',
     summary: 'A line given by its end points: draw both views from the measurements, then find the true length and both inclinations by rotation.' });
