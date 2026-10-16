@@ -6,6 +6,7 @@
 (function (global) {
   'use strict';
   const C = global.CONSTRUCTIONS, ORDER = global.CONSTRUCTION_ORDER, AK = global.AssemblyKit;
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only, current step only)
   ORDER.splice(0).forEach(id => { delete C[id]; });
   const L = (p1, p2, lt) => ({ kind: 'line', p1, p2, lineType: lt || 'A' });
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 2.8, anchor: 'middle', color: '#e8eaf2' }, opts || {});
@@ -53,7 +54,7 @@
       { instruction: 'With centre O, draw the head arc through T and both edges of the base.', calloutAt: top, reveals: [pl(snapArc(sx, yb, d, -1))] },
       { instruction: 'TOP VIEW of the snap head (3rd angle: above the front view): a Ø32 circle with centre lines. The shank cannot be seen.', calloutAt: [sx, ty], reveals: [circ([sx, ty], a), ...cross([sx, ty], a + 4), L([sx - a, yb - H - 6], [sx - a, ty], 'construction'), L([sx + a, yb - H - 6], [sx + a, ty], 'construction')] },
       { instruction: 'COUNTERSUNK HEAD: draw the centre line, the top of the head (1.6d = 32) and, with the 45° set square, the 90° countersink down to the shank.', calloutAt: [cx2, yb + 3],
-        reveals: [L([cx2, yb - 6], [cx2, ye + 5], 'centre'), L([cx2 - a, yb], [cx2 + a, yb]), L([cx2 - a, yb], [cx2 - d / 2, csD]), L([cx2 + a, yb], [cx2 + d / 2, csD])] },
+        reveals: [...TOOL.squareOn([cx2 - d / 2, csD], [cx2 - a, yb], { deg: 45, size: 34, flip: true }), L([cx2, yb - 6], [cx2, ye + 5], 'centre'), L([cx2 - a, yb], [cx2 + a, yb]), L([cx2 - a, yb], [cx2 - d / 2, csD]), L([cx2 + a, yb], [cx2 + d / 2, csD])] },
       { instruction: 'Complete the shank of the countersunk rivet, and its top view: a Ø32 circle.', calloutAt: [cx2, 135],
         reveals: [pl([[cx2 - d / 2, csD], [cx2 - d / 2, ye], [cx2 + d / 2, ye], [cx2 + d / 2, csD]]), circ([cx2, ty], a), ...cross([cx2, ty], a + 4)] },
       { instruction: 'Dimension the proportions and name the views.', calloutAt: [155, 185],

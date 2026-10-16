@@ -3,6 +3,7 @@
 (function (global) {
   'use strict';
   const C = global.CONSTRUCTIONS, ORDER = global.CONSTRUCTION_ORDER;
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only, current step only)
   const L = (p1, p2, lt) => ({ kind: 'line', p1, p2, lineType: lt || 'A' });
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 3.4, anchor: 'middle', color: '#fde047' }, opts || {});
   const pt = (at, label) => ({ kind: 'point', at, label });
@@ -80,7 +81,7 @@
       [
         { instruction: 'Draw line XY.', calloutAt: X, reveals: XY(X, Y) },
         { instruction: 'Mark two points well apart on XY. With each as centre and radius 35, draw an arc above the line.', calloutAt: T1, reveals: [pt(P1), pt(P2), arcS(P1, d, 230, 310), arcS(P2, d, 230, 310)] },
-        { instruction: 'Draw a line just touching the tops of both arcs (the common tangent). It is parallel to XY and 35 from it.', calloutAt: T2, reveals: [L([25, 100], [180, 100]), L(P2, T2, 'construction'), { kind: 'dimension', p1: P2, p2: T2, offset: -8, text: '35' }] },
+        { instruction: 'Draw a line just touching the tops of both arcs (the common tangent). It is parallel to XY and 35 from it.', calloutAt: T2, reveals: [TOOL.ruler([25, 100], [180, 100], { side: 1, lead: 5 }), L([25, 100], [180, 100]), L(P2, T2, 'construction'), { kind: 'dimension', p1: P2, p2: T2, offset: -8, text: '35' }] },
       ]);
   })();
 
@@ -91,7 +92,7 @@
       'All three sides equal: arcs of radius AB from both ends of the side meet at the third corner.',
       'Construct an equilateral triangle on a side AB of 80 mm. Show all construction.',
       [
-        { instruction: 'Draw the side AB, 80 mm long.', calloutAt: A, reveals: [L(A, B), pt(A, 'A'), pt(B, 'B')] },
+        { instruction: 'Draw the side AB, 80 mm long.', calloutAt: A, reveals: [TOOL.ruler(A, B, { side: -1 }), L(A, B), pt(A, 'A'), pt(B, 'B')] },
         { instruction: 'With centre A and radius AB, draw an arc above the line.', calloutAt: Cp, reveals: [arcVia(A, s, B, Cp, add(A, rot([s, 0], -0.6)), 'construction')] },
         { instruction: 'With centre B and the same radius, draw an arc to cross the first one at C.', calloutAt: Cp, reveals: [arcVia(B, s, A, Cp, add(B, rot([-s, 0], 0.6)), 'construction'), pt(Cp, 'C')] },
         { instruction: 'Join A and B to C.', calloutAt: Cp, reveals: [L(A, Cp), L(B, Cp)] },
@@ -106,7 +107,7 @@
       'Erect a perpendicular at one end of the side, step the side length up it, and close the square with arcs.',
       'Construct a square on a side AB of 70 mm. Show all construction.',
       [
-        { instruction: 'Draw the side AB, 70 mm long, extended a little to the left of A.', calloutAt: A, reveals: [L([25, 150], B, 'construction'), L(A, B), pt(A, 'A'), pt(B, 'B')] },
+        { instruction: 'Draw the side AB, 70 mm long, extended a little to the left of A.', calloutAt: A, reveals: [TOOL.ruler(A, B, { side: -1 }), L([25, 150], B, 'construction'), L(A, B), pt(A, 'A'), pt(B, 'B')] },
         { instruction: 'Erect a perpendicular at A: arcs of 30 from A mark the line on both sides; arcs of 45 from those points cross above A.', calloutAt: Q, reveals: [swing(A, 30, E, 8), swing(A, 30, F, 8), swing(E, 45, Q, 10), swing(F, 45, Q, 10), L(A, ext(A, Q, 30), 'construction')] },
         { instruction: 'With centre A and radius 70, cut the perpendicular at D.', calloutAt: D, reveals: [swing(A, s, D, 10), pt(D, 'D')] },
         { instruction: 'With radius 70, draw arcs from B and from D. They cross at C.', calloutAt: Cq, reveals: [swing(B, s, Cq, 10), swing(D, s, Cq, 10), pt(Cq, 'C')] },
@@ -122,7 +123,7 @@
       'A hexagon is six equilateral triangles: the centre is found from the side, and the side length steps round the circle exactly six times.',
       'Construct a regular hexagon on a side AB of 40 mm. Show all construction.',
       [
-        { instruction: 'Draw the side AB, 40 mm long.', calloutAt: A, reveals: [L(A, B), pt(A, 'A'), pt(B, 'B')] },
+        { instruction: 'Draw the side AB, 40 mm long.', calloutAt: A, reveals: [TOOL.ruler(A, B, { side: -1 }), L(A, B), pt(A, 'A'), pt(B, 'B')] },
         { instruction: 'With radius 40, draw arcs from A and B to cross at O: the centre of the hexagon.', calloutAt: O, reveals: [swing(A, s, O, 12), swing(B, s, O, 12), pt(O, 'O')] },
         { instruction: 'With centre O and radius 40, draw the circle through A and B.', calloutAt: add(O, [0, -s]), reveals: [circle(O, s, 'construction')] },
         { instruction: 'Step the radius 40 round the circle from B: the other four corners.', calloutAt: P[3], reveals: P.slice(2).map((p, i) => swing(P[i + 1], s, p, 8)) },
@@ -139,7 +140,7 @@
       'Construct a regular octagon on a side AB of 40 mm, using the 45° set square. Show all construction.',
       [
         { instruction: 'Draw the side AB, 40 mm long.', calloutAt: A, reveals: [L(A, B), pt(A, 'A'), pt(B, 'B')] },
-        { instruction: 'With the 45° set square, draw lines at 45° up and out from A and from B. Mark 40 along each.', calloutAt: P[2], reveals: [L(B, ext(B, P[2], 10), 'construction'), L(A, ext(A, P[7], 10), 'construction'), swing(B, s, P[2], 8), swing(A, s, P[7], 8), pt(P[2]), pt(P[7])] },
+        { instruction: 'With the 45° set square, draw lines at 45° up and out from A and from B. Mark 40 along each.', calloutAt: P[2], reveals: [...TOOL.squareOn(B, P[2], { deg: 45, size: 34 }), ...TOOL.squareOn(A, P[7], { deg: 45, size: 34, flip: true, ruler: false }), L(B, ext(B, P[2], 10), 'construction'), L(A, ext(A, P[7], 10), 'construction'), swing(B, s, P[2], 8), swing(A, s, P[7], 8), pt(P[2]), pt(P[7])] },
         { instruction: 'From those corners draw vertical sides 40 long.', calloutAt: P[3], reveals: [L(P[2], P[3], 'construction'), L(P[7], P[6], 'construction'), pt(P[3]), pt(P[6])] },
         { instruction: 'From their tops draw lines at 45° inwards, 40 long, and join the last two corners: the top side is parallel to AB.', calloutAt: P[4], reveals: [L(P[3], P[4], 'construction'), L(P[6], P[5], 'construction'), pt(P[4]), pt(P[5])] },
         { instruction: 'Line in the octagon.', calloutAt: P[4], reveals: P.map((p, i) => L(p, P[(i + 1) % 8])) },

@@ -2,6 +2,7 @@
 (function (global) {
   'use strict';
   const G = global.ConstructionGeometry;
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only)
   const CONSTRUCTIONS = {};
 
   function arcTowards(center, target, r, halfWidthDeg, lineType) {
@@ -154,13 +155,14 @@
           reveals: [
             { kind: 'line', p1: A, p2: B, lineType: 'A' },
             { kind: 'point', at: A, label: 'A' }, { kind: 'point', at: B, label: 'B' },
+            TOOL.ruler(A, B, { side: -1 }),
           ],
         },
         {
           id: 2,
           instruction: 'From A, draw a random auxiliary line — any convenient angle, any length, as long as it is not along AB.',
           calloutAt: G.midpoint(A, last),
-          reveals: [{ kind: 'line', p1: A, p2: last, lineType: 'C' }],
+          reveals: [{ kind: 'line', p1: A, p2: last, lineType: 'C' }, TOOL.ruler(A, last, { side: 1, tail: 10 })],
         },
         {
           id: 3,
@@ -181,6 +183,7 @@
           reveals: [
             ...auxPts.slice(0, N - 1).map((p, i) => ({ kind: 'line', p1: p, p2: divPts[i], lineType: 'construction' })),
             ...divPts.map((p, i) => ({ kind: 'point', at: p, label: 'D' + (i + 1) })),
+            ...TOOL.squareOn(divPts[3], auxPts[3], { deg: 45, size: 40 }),
           ],
         },
         {

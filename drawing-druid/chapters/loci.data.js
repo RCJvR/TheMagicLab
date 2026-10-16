@@ -7,6 +7,7 @@
   'use strict';
   const G = global.ConstructionGeometry;
   const CONSTRUCTIONS = {};
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only, current step only)
   const D2R = Math.PI / 180;
 
   function polarPt(cx, cy, r, thetaDeg) {
@@ -176,7 +177,7 @@
           id: 1,
           instruction: 'Draw the base circle and 6 equally-spaced (30°) radial construction lines across the rise — the same "equal divisions" technique used for every cam and mechanism construction in this chapter.',
           calloutAt: [CX, CY],
-          reveals: [
+          reveals: [...TOOL.squareOn([CX, CY], [CX + 40 * Math.cos(30 * D2R), CY - 40 * Math.sin(30 * D2R)], { deg: 30, size: 38 }), 
             { kind: 'circle', center: [CX, CY], r: BASE_R, lineType: 'construction' },
             ...Array.from({ length: N + 1 }, (_, i) => ({ kind: 'line', p1: [CX, CY], p2: polarPt(CX, CY, pitchR(N) + ROLLER_R + 6, thetaOf(i)), lineType: 'construction' })),
           ],
@@ -291,9 +292,9 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the top view: a circle representing the cylinder, divided into 12 equal 30° parts with radial construction lines.',
+          instruction: 'Draw the top view: a circle representing the cylinder, divided into 12 equal 30° parts with radial construction lines. Use the 30°/60° set square on the T-square (or ruler) for the lines through the centre.',
           calloutAt: [TOP_CX, TOP_CY],
-          reveals: [
+          reveals: [...TOOL.squareOn([TOP_CX, TOP_CY], [TOP_CX + 40 * Math.cos(30 * D2R), TOP_CY - 40 * Math.sin(30 * D2R)], { deg: 30, size: 38 }), 
             { kind: 'circle', center: [TOP_CX, TOP_CY], r: BASE_R, lineType: 'A' },
             ...topPts.slice(0, 12).map(p => ({ kind: 'line', p1: [TOP_CX, TOP_CY], p2: p, lineType: 'construction' })),
             ...topPts.slice(0, 12).map(p => ({ kind: 'point', at: p, size: 1.1, color: '#eab308' })),

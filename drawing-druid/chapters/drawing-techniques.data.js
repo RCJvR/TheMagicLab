@@ -4,6 +4,7 @@
 (function (global) {
   'use strict';
   const C = {}, ORDER = [];
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only, current step only)
   const L = (p1, p2, lt) => ({ kind: 'line', p1, p2, lineType: lt || 'A' });
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 3, anchor: 'middle', color: '#e8eaf2' }, opts || {});
   const YEL = { color: '#fde047' }, GREY = { color: '#94a3b8' };
@@ -44,7 +45,7 @@
       'Every line on an engineering drawing has a meaning given by its type and thickness: the seven line types you will use in every chapter.',
       'Draw each SANS 10111 line type 115 mm long and name it: type A (visible outline), type B (dimensions, hatching, leaders), type C (construction), centre line, hidden detail, cutting plane and a freehand break line.',
       [
-        { instruction: 'TYPE A — thick continuous line (about 0.5–0.7 mm): visible outlines and edges.', calloutAt: [x1, row(0)], reveals: [...name(0, 'TYPE A', 'VISIBLE OUTLINES'), L([x0, row(0)], [x1, row(0)], 'A')] },
+        { instruction: 'TYPE A — thick continuous line (about 0.5–0.7 mm): visible outlines and edges.', calloutAt: [x1, row(0)], reveals: [TOOL.ruler([x0, row(0)], [x1, row(0)], { side: -1, tail: 5 }), ...name(0, 'TYPE A', 'VISIBLE OUTLINES'), L([x0, row(0)], [x1, row(0)], 'A')] },
         { instruction: 'TYPE B — thin continuous line (about 0.35 mm): dimension lines, extension lines, leaders and hatching.', calloutAt: [x1, row(1)], reveals: [...name(1, 'TYPE B', 'DIMENSIONS, HATCHING, LEADERS'), L([x0, row(1)], [x1, row(1)], 'B')] },
         { instruction: 'TYPE C — very thin, light line: construction and guidelines. It should hardly show on the finished drawing.', calloutAt: [x1, row(2)], reveals: [...name(2, 'TYPE C', 'CONSTRUCTION, GUIDELINES'), L([x0, row(2)], [x1, row(2)], 'C')] },
         { instruction: 'CENTRE LINE — thin chain line (long dash, short dash): axes of holes, cylinders and symmetrical parts.', calloutAt: [x1, row(3)], reveals: [...name(3, 'CENTRE LINE', 'AXES, LINES OF SYMMETRY'), L([x0, row(3)], [x1, row(3)], 'centre')] },
@@ -83,10 +84,10 @@
       'With the 45° and the 30°/60° set squares on the T-square or ruler, every multiple of 15° can be drawn — alone or by combining the two squares.',
       'From point O on a horizontal line, draw lines at every 15° from 15° to 165° using only the set squares. Label each angle.',
       [
-        { instruction: 'Draw the base line and mark O. Draw the 90° line with either set square standing on the ruler.', calloutAt: O, reveals: [L([15, 140], [185, 140]), pt(O, 'O'), ln(90), tag(90, '#fde047')] },
-        { instruction: '45° set square: 45° and 135°.', calloutAt: end(45), reveals: [ln(45), ln(135), tag(45), tag(135)] },
-        { instruction: '30°/60° set square: 30°, 60°, 120° and 150°.', calloutAt: end(60), reveals: [30, 60, 120, 150].flatMap(d => [ln(d), tag(d)]) },
-        { instruction: 'Combine both squares: 45° + 30° = 75°, 60° + 45° = 105°, 45° − 30° = 15° and 180° − 15° = 165°.', calloutAt: end(75), reveals: [15, 75, 105, 165].flatMap(d => [ln(d), tag(d, '#fde047')]) },
+        { instruction: 'Draw the base line and mark O. Draw the 90° line with either set square standing on the ruler.', calloutAt: O, reveals: [{ kind: 'tool', tool: 'set-square', deg: 45, use: 'leg', at: O, angle: 0, size: 45 }, TOOL.ruler([15, 140], [185, 140], { side: -1 }), L([15, 140], [185, 140]), pt(O, 'O'), ln(90), tag(90, '#fde047')] },
+        { instruction: '45° set square: 45° and 135°.', calloutAt: end(45), reveals: [...TOOL.squareOn(O, end(45), { deg: 45, size: 48, ruler: false }), ...TOOL.squareOn(O, end(135), { deg: 45, size: 48, flip: true, ruler: false }), TOOL.ruler([15, 140], [185, 140], { side: -1 }), ln(45), ln(135), tag(45), tag(135)] },
+        { instruction: '30°/60° set square: 30°, 60°, 120° and 150°.', calloutAt: end(60), reveals: [...TOOL.squareOn(O, end(60), { deg: 60, size: 32, ruler: false }), ...TOOL.squareOn(O, end(150), { deg: 30, size: 62, flip: true, ruler: false }), TOOL.ruler([15, 140], [185, 140], { side: -1 }), ...[30, 60, 120, 150].flatMap(d => [ln(d), tag(d)])] },
+        { instruction: 'Combine both squares: 45° + 30° = 75°, 60° + 45° = 105°, 45° − 30° = 15° and 180° − 15° = 165°.', calloutAt: end(75), reveals: [...TOOL.squareOn(O, end(45), { deg: 45, size: 70, ruler: false }), ...TOOL.squareOn(O, end(75), { deg: 30, size: 52, ruler: false }), TOOL.ruler([15, 140], [185, 140], { side: -1 }), ...[15, 75, 105, 165].flatMap(d => [ln(d), tag(d, '#fde047')])] },
         { instruction: 'Check: the lines are 15° apart all round. Add a thin arc through their ends.', calloutAt: end(120), reveals: [arcA(O, R - 10, 180, 360, 'C')] },
       ], { bounds: { w: 200, h: 155 } });
   })();
@@ -122,8 +123,8 @@
       'Copy the star pattern to scale 1:1 in a circle of radius 60, using only the 30°/60° set square and ruler.',
       [
         { instruction: 'Draw the centre lines and a construction circle of radius 60.', calloutAt: O, reveals: [...cross(O, R + 6), circ(O, R, 'C')] },
-        { instruction: 'Mark the six points where the 60° set square lines through O cut the circle (every 60°, starting at the top).', calloutAt: P(90), reveals: [30, 90, 150].map(d => L(P(d), P(d + 180), 'C')).concat([90, 150, 210, 270, 330, 30].map(d => pt(P(d)))) },
-        { instruction: 'Join every second point: the upright triangle (sides at 60° and horizontal).', calloutAt: P(210), reveals: [poly([P(90), P(210), P(330)])] },
+        { instruction: 'Mark the six points where the 60° set square lines through O cut the circle (every 60°, starting at the top).', calloutAt: P(90), reveals: [...TOOL.squareOn(P(210), P(30), { deg: 30, size: 60 }), ...[30, 90, 150].map(d => L(P(d), P(d + 180), 'C')), ...[90, 150, 210, 270, 330, 30].map(d => pt(P(d)))] },
+        { instruction: 'Join every second point: the upright triangle (sides at 60° and horizontal).', calloutAt: P(210), reveals: [...TOOL.squareOn(P(210), P(90), { deg: 60, size: 40 }), poly([P(90), P(210), P(330)])] },
         { instruction: 'Join the other three points: the inverted triangle.', calloutAt: P(270), reveals: [poly([P(270), P(30), P(150)])] },
         { instruction: 'Draw the circle in type A to finish the pattern.', calloutAt: P(0), reveals: [circ(O, R)] },
       ]);
@@ -134,7 +135,7 @@
       [
         { instruction: 'Centre lines and a construction circle of radius 60.', calloutAt: O, reveals: [...cross(O, R + 6), circ(O, R, 'C')] },
         { instruction: 'The first square: corners where the 45° lines through O cut the circle. Its sides are vertical and horizontal.', calloutAt: Q(45), reveals: [poly([45, 135, 225, 315].map(d => Q(d)))] },
-        { instruction: 'The second square: corners on the centre lines, sides at 45°.', calloutAt: Q(90), reveals: [poly([0, 90, 180, 270].map(d => Q(d)))] },
+        { instruction: 'The second square: corners on the centre lines, sides at 45°.', calloutAt: Q(90), reveals: [...TOOL.squareOn(Q(180), Q(90), { deg: 45, size: 50 }), poly([0, 90, 180, 270].map(d => Q(d)))] },
         { instruction: 'Where the two squares overlap they outline a regular octagon. Finish with a circle of radius 12 at the centre.', calloutAt: O, reveals: [circ(O, 12)] },
       ]);
     // tumbling blocks: each block is a hexagon (corner up) split into three rhombi, like a cube seen in isometric
@@ -146,7 +147,7 @@
       'Copy the three-cube pattern to scale 1:1 (cube edges 30 mm), using the 30°/60° set square. Show only the edges.',
       [
         { instruction: 'Mark the centre of the middle block and draw a construction circle of radius 30 round it.', calloutAt: blocks[1].c, reveals: [pt(blocks[1].c), circ(blocks[1].c, s, 'C')] },
-        { instruction: 'Draw the hexagon in the circle: two vertical sides and four sides at 30° (corners at the top and bottom).', calloutAt: blocks[1].hex[0], reveals: [poly(blocks[1].hex)] },
+        { instruction: 'Draw the hexagon in the circle: two vertical sides and four sides at 30° (corners at the top and bottom).', calloutAt: blocks[1].hex[0], reveals: [...TOOL.squareOn(blocks[1].hex[3], blocks[1].hex[4], { deg: 30, size: 40 }), poly(blocks[1].hex)] },
         { instruction: 'From the centre draw three edges: straight down, and up at 30° to the left and right. The hexagon now reads as a cube.', calloutAt: blocks[1].c, reveals: yLines(blocks[1]) },
         { instruction: 'Draw the same block on each side, sharing a vertical side with the middle one (centres 52 apart).', calloutAt: blocks[2].c, reveals: [poly(blocks[0].hex), poly(blocks[2].hex), ...yLines(blocks[0]), ...yLines(blocks[2])] },
       ], { bounds: { w: 200, h: 160 } });
@@ -158,7 +159,7 @@
       'Copy the chevron border to scale 1:1: three zig-zag bands with 60° sides, 26 mm pitch, between two parallel border lines.',
       [
         { instruction: 'Draw two parallel border lines 85 apart, and mark 13 mm steps along the bottom line.', calloutAt: [25, 140], reveals: [L([20, 140], [185, 140]), L([20, 55], [185, 55]), ...Array.from({ length: 2 * n + 1 }, (_, k) => pt([25 + k * w / 2, 140]))] },
-        { instruction: 'From each step draw a 60° line up and to the right, and one up and to the left, to meet: the first zig-zag band.', calloutAt: [25 + w / 2, 140 - 22], reveals: [band(140)] },
+        { instruction: 'From each step draw a 60° line up and to the right, and one up and to the left, to meet: the first zig-zag band.', calloutAt: [25 + w / 2, 140 - 22], reveals: [...TOOL.squareOn([25, 140], [25 + w / 2, 140 - (w / 2) * Math.tan(rad(60))], { deg: 60, size: 22 }), band(140)] },
         { instruction: 'Repeat the band 25 higher, and again 25 higher still.', calloutAt: [25 + w / 2, 115 - 22], reveals: [band(115), band(90)] },
         { instruction: 'Join the bands at the ends with vertical lines to close the border.', calloutAt: [25, 115], reveals: [L([25, 140], [25, 90]), L([25 + n * w, 140], [25 + n * w, 90])] },
       ], { bounds: { w: 200, h: 155 } });
@@ -222,7 +223,7 @@
       'The same plate drawn full size, half size and twice full size. The figures on the dimensions are always the TRUE sizes, whatever the scale.',
       'A plate 60 × 40 has a Ø16 hole 40 from the left and 20 up. Draw it at 1:1, at 1:2 and at 2:1, and dimension each with the true sizes.',
       [
-        { instruction: 'SCALE 1:1 (full size): draw the plate 60 × 40 and the Ø16 hole.', calloutAt: A.box[0], reveals: [poly(A.box), circ(A.hole, A.r), ...cross(A.hole, A.r + 4)] },
+        { instruction: 'SCALE 1:1 (full size): draw the plate 60 × 40 and the Ø16 hole.', calloutAt: A.box[0], reveals: [TOOL.ruler(A.box[0], A.box[1], { side: -1, tail: 10 }), poly(A.box), circ(A.hole, A.r), ...cross(A.hole, A.r + 4)] },
         { instruction: 'Dimension it: 60, 40 and Ø16.', calloutAt: A.box[0], reveals: [dim(A.box[0], A.box[1], 8, '60'), dim(A.box[0], A.box[3], -8, '40'), lbl([A.hole[0] + 10, A.hole[1] - 10], 'Ø16', { size: 2.5, anchor: 'start' }), lbl([A.box[0][0] + 30, 140], 'SCALE 1:1', YEL)] },
         { instruction: 'SCALE 1:2 (half size): every size is divided by 2, so draw 30 × 20 with a Ø8 hole. The dimensions still read 60, 40 and Ø16.', calloutAt: B.box[0],
           reveals: [poly(B.box), circ(B.hole, B.r), ...cross(B.hole, B.r + 3), dim(B.box[0], B.box[1], 8, '60'), dim(B.box[0], B.box[3], -6, '40'), lbl([B.box[0][0] + 15, 140], 'SCALE 1:2', YEL)] },
@@ -288,17 +289,17 @@
   })();
 
   const PRACTICE_QUESTIONS = [
-    { question: 'Which line type is used for the visible outline of an object?', options: ['Type A: thick continuous', 'Type B: thin continuous', 'A chain line', 'Short dashes'], answer: 0,
+    { text: 'Which line type is used for the visible outline of an object?', options: ['Type A: thick continuous', 'Type B: thin continuous', 'A chain line', 'Short dashes'], answer: 0,
       explanation: 'Visible outlines and edges are type A, the thick continuous line. Thin type B lines are for dimensions, hatching and leaders.' },
-    { question: 'What does a line of short dashes show?', options: ['Hidden detail', 'A centre line', 'A construction line', 'A break in the part'], answer: 0,
+    { text: 'What does a line of short dashes show?', options: ['Hidden detail', 'A centre line', 'A construction line', 'A break in the part'], answer: 0,
       explanation: 'Short dashes show edges that are hidden from the direction of viewing.' },
-    { question: 'Which two set squares together give a 75° line?', options: ['45° and 30°', '60° and 60°', '45° and 45°', '30° and 30°'], answer: 0,
+    { text: 'Which two set squares together give a 75° line?', options: ['45° and 30°', '60° and 60°', '45° and 45°', '30° and 30°'], answer: 0,
       explanation: '45° + 30° = 75°. Combining the two set squares gives every multiple of 15°.' },
-    { question: 'A part 80 mm long is drawn at scale 1:2. How long is it on the paper, and what figure goes on the dimension?', options: ['40 mm on paper; the dimension reads 80', '40 mm on paper; the dimension reads 40', '160 mm on paper; the dimension reads 80', '80 mm on paper; the dimension reads 40'], answer: 0,
+    { text: 'A part 80 mm long is drawn at scale 1:2. How long is it on the paper, and what figure goes on the dimension?', options: ['40 mm on paper; the dimension reads 80', '40 mm on paper; the dimension reads 40', '160 mm on paper; the dimension reads 80', '80 mm on paper; the dimension reads 40'], answer: 0,
       explanation: 'At 1:2 everything is half size on paper, but dimensions always state the TRUE size.' },
-    { question: 'How should two parts that touch be hatched in a section?', options: ['At 45° in opposite directions', 'Both the same way', 'One hatched, one left clear', 'With dashed lines'], answer: 0,
+    { text: 'How should two parts that touch be hatched in a section?', options: ['At 45° in opposite directions', 'Both the same way', 'One hatched, one left clear', 'With dashed lines'], answer: 0,
       explanation: 'Neighbouring parts are hatched in opposite directions (or with clearly different spacing) so you can tell them apart.' },
-    { question: 'When do you use R and when Ø?', options: ['R for arcs, Ø for full circles', 'R for small circles, Ø for large ones', 'Either, they mean the same', 'Ø for arcs, R for holes'], answer: 0,
+    { text: 'When do you use R and when Ø?', options: ['R for arcs, Ø for full circles', 'R for small circles, Ø for large ones', 'Either, they mean the same', 'Ø for arcs, R for holes'], answer: 0,
       explanation: 'A full circle is dimensioned by its diameter (Ø); an arc by its radius (R).' },
   ];
 

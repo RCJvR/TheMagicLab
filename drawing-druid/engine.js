@@ -230,6 +230,7 @@
         return;
       }
       case 'right-angle-marker': add(r.at[0], r.at[1]); return;
+      case 'tool': return;   // instruments never change the framing
       default: {
         const segs = [];
         primSegments(r, segs);
@@ -424,6 +425,53 @@
     return g;
   }
 
+  // ── Drawing instruments (on screen only, on the current step only) ──
+  // { kind: 'tool', tool: 'ruler', at, angle, length, side }
+  //     the measuring edge runs from `at` along `angle` (screen degrees, 0 = +x) for `length` mm;
+  //     the body lies on the left of that direction (side: -1 puts it on the right).
+  // { kind: 'tool', tool: 'set-square', deg: 45 | 30 | 60, at, angle, size, use: 'hyp' | 'leg', flip }
+  //     use 'hyp': `at` is where the sloping edge meets the base; the base runs along `angle` for
+  //     `size` mm to the right angle and the sloping edge rises at `deg` (up-right; flip: up-left).
+  //     use 'leg': the right angle sits at `at` and the second leg stands square to the base.
+  function renderTool(r, ctx) {
+    const paper = ctx.theme === 'paper';
+    const k = ctx.k || 1;
+    const g = el('g', { class: 'ce-tool', 'pointer-events': 'none',
+      transform: 'translate(' + r.at[0] + ' ' + r.at[1] + ') rotate(' + (r.angle || 0) + ')' + (r.flip ? ' scale(-1 1)' : '') });
+    const sw = (1.1 / k).toFixed(3);
+    const txt = (x, y, t, rot) => {
+      const e = el('text', { x, y, 'font-size': 2.3, 'font-family': 'JetBrains Mono, monospace', 'text-anchor': 'middle', fill: paper ? '#4b5563' : '#cbd5e1',
+        transform: (rot ? 'rotate(' + rot + ' ' + x + ' ' + y + ')' : '') + (r.flip ? ' scale(-1 1) translate(' + (-2 * x) + ' 0)' : '') });
+      e.textContent = t; return e;
+    };
+    if (r.tool === 'ruler') {
+      const L = r.length || 150, W = 13, side = r.side === -1 ? 1 : -1;     // body above the edge by default
+      g.appendChild(el('rect', { x: 0, y: side < 0 ? -W : 0, width: L, height: W, rx: 1.2,
+        fill: paper ? 'rgba(217,170,40,.16)' : 'rgba(250,204,21,.10)', stroke: paper ? 'rgba(146,104,10,.75)' : 'rgba(250,204,21,.55)', 'stroke-width': sw, 'vector-effect': 'non-scaling-stroke' }));
+      let d = '';
+      for (let m = 0; m <= L; m += 1) {
+        const h = m % 10 === 0 ? 4 : m % 5 === 0 ? 2.6 : 1.5;
+        d += 'M' + m + ' 0 L' + m + ' ' + (side * h) + ' ';
+      }
+      g.appendChild(el('path', { d, stroke: paper ? 'rgba(90,70,20,.75)' : 'rgba(250,230,150,.6)', 'stroke-width': (0.6 / k).toFixed(3), 'vector-effect': 'non-scaling-stroke', fill: 'none' }));
+      for (let m = 10; m < L; m += 10) g.appendChild(txt(m, side * 6.6 + (side < 0 ? 0.6 : 1.6), String(m / 10)));
+      return g;
+    }
+    // set square
+    const deg = r.deg || 45, a = r.size || 60, b = a * Math.tan(deg * Math.PI / 180);
+    const pts = r.use === 'leg' ? [[0, 0], [a, 0], [0, -b]] : [[0, 0], [a, 0], [a, -b]];
+    // hollow centre: the same triangle shrunk towards its incentre
+    const [A, B, Cc] = pts, la = Math.hypot(B[0] - Cc[0], B[1] - Cc[1]), lb = Math.hypot(A[0] - Cc[0], A[1] - Cc[1]), lc = Math.hypot(A[0] - B[0], A[1] - B[1]);
+    const I = [(la * A[0] + lb * B[0] + lc * Cc[0]) / (la + lb + lc), (la * A[1] + lb * B[1] + lc * Cc[1]) / (la + lb + lc)];
+    const inner = pts.map(p => [I[0] + (p[0] - I[0]) * 0.42, I[1] + (p[1] - I[1]) * 0.42]);
+    const P = ps => ps.map(p => p.join(',')).join(' ');
+    g.appendChild(el('path', { d: 'M' + P(pts).replace(/ /g, ' L') + ' Z M' + P(inner.slice().reverse()).replace(/ /g, ' L') + ' Z', 'fill-rule': 'evenodd',
+      fill: paper ? 'rgba(37,99,235,.10)' : 'rgba(96,165,250,.10)', stroke: paper ? 'rgba(30,64,175,.7)' : 'rgba(147,197,253,.6)', 'stroke-width': sw, 'vector-effect': 'non-scaling-stroke' }));
+    const lab = deg === 45 ? '45°' : '30°/60°';
+    g.appendChild(txt(I[0], I[1] + 0.8, lab));
+    return g;
+  }
+
   function renderRightAngleMarker(r, ctx) {
     const size = r.size || 3.5;
     const [x, y] = r.at;
@@ -529,6 +577,7 @@
       case 'dimension': return ctx.showMeasurements ? renderDimension(r, ctx) : null;
       case 'angle-arc': return renderAngleArc(r, ctx);
       case 'right-angle-marker': return renderRightAngleMarker(r, ctx);
+      case 'tool': return renderTool(r, ctx);
       case 'polyline': return renderPolyline(r, ctx);
       case 'polygon': return renderPolygon(r, ctx);
       case 'label': return ctx.showLabels ? renderLabel(r, ctx) : null;
@@ -788,6 +837,7 @@
     for (let i = 0; i <= lastIndex; i++) {
       (steps[i].reveals || []).forEach(r => {
         if (hideCons && i < lastIndex && (r.lineType === 'construction' || (r.kind === 'point' && !r.label))) return;
+        if (r.kind === 'tool') { if (!print && stepped && i === lastIndex) visible.push([r, i]); return; }
         visible.push([r, i]);
         if (r.kind === 'dimension' && !showMeasurements) return;
         primSegments(r, layout.segs);
@@ -1051,6 +1101,30 @@
     });
   }
 
+  // Placement helpers for the drawing instruments, so lessons only say which line a tool lies on.
+  const tools = {
+    // a ruler whose measuring edge lies along P→Q, zero at P (start before P with `lead`), body on `side`
+    ruler(P, Q, opts) {
+      opts = opts || {};
+      const ang = Math.atan2(Q[1] - P[1], Q[0] - P[0]), lead = opts.lead || 0, len = Math.hypot(Q[0] - P[0], Q[1] - P[1]);
+      return { kind: 'tool', tool: 'ruler', at: [P[0] - lead * Math.cos(ang), P[1] - lead * Math.sin(ang)], angle: ang * 180 / Math.PI,
+        length: opts.length || Math.ceil((len + lead + (opts.tail == null ? 15 : opts.tail)) / 10) * 10, side: opts.side || 1 };
+    },
+    // a set square whose sloping edge runs from P towards Q, standing on a ruler along its base
+    squareOn(P, Q, opts) {
+      opts = opts || {};
+      const deg = opts.deg || 45, size = opts.size || 45, flip = !!opts.flip;
+      const phi = Math.atan2(Q[1] - P[1], Q[0] - P[0]) * 180 / Math.PI;
+      const theta = flip ? phi - deg + 180 : phi + deg, beta = (flip ? phi - deg : phi + deg) * Math.PI / 180;
+      const sq = { kind: 'tool', tool: 'set-square', deg, at: P, angle: theta, size, flip, use: 'hyp' };
+      if (opts.ruler === false) return [sq];
+      const u = [Math.cos(beta), Math.sin(beta)], Lr = Math.ceil((size + 45) / 10) * 10;
+      let R0 = [P[0] - 20 * u[0], P[1] - 20 * u[1]], ang = beta * 180 / Math.PI, side = flip ? 1 : -1;
+      if (u[0] < -1e-6) { R0 = [R0[0] + Lr * u[0], R0[1] + Lr * u[1]]; ang += 180; side = -side; }   // keep the figures reading left to right
+      return [sq, { kind: 'tool', tool: 'ruler', at: R0, angle: ang, length: Lr, side }];
+    },
+  };
+
   // Keyboard-friendly view controls for a rendered interactive SVG.
   function panBy(svgEl, fx, fy) {
     const v = svgEl._ceView, b = svgEl._ceBase;
@@ -1068,7 +1142,7 @@
   };
 
   global.ConstructionEngine = {
-    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg, addFinishSteps, setShowConstruction, view,
+    render, wirePractice, buildPrintSheets, projectionOf, projectionSymbolSvg, addFinishSteps, setShowConstruction, view, tools,
     LINE_TYPES, CALLOUT_COLORS, PRINT_COLORS, MODE_STROKE_MULT,
   };
 })(window);

@@ -4,6 +4,7 @@
 (function (global) {
   'use strict';
   const C = {}, ORDER = [];
+  const TOOL = global.ConstructionEngine.tools;   // ruler / set-square overlays (screen only, current step only)
   const L = (p1, p2, lt) => ({ kind: 'line', p1, p2, lineType: lt || 'A' });
   const lbl = (at, text, opts) => Object.assign({ kind: 'label', at, text, size: 3, anchor: 'middle', color: '#e8eaf2' }, opts || {});
   const YEL = { color: '#fde047' }, GREY = { color: '#94a3b8' };
@@ -83,7 +84,7 @@
     add('res-hex-end', 'Nut & Bolt: The Hexagon (End View)', 'The end view of a hexagon head or nut, drawn around a circle 1.5D across the flats with a 60° set square, in the two positions used for side views.', [
       { instruction: 'M20 means the bolt diameter D = 20 mm (M = D = Ø). Every size of the bolt, nut and washer is a multiple of D. Draw the centre lines of the two end views.', calloutAt: A, reveals: [...a.cl, ...b.cl] },
       { instruction: 'Draw a thin circle 1.5D = 30 mm in diameter. Its diameter is the distance ACROSS FLATS (AF) of the hexagon.', calloutAt: A, reveals: [...a.circle, ...b.circle] },
-      { instruction: 'Left: with the 60° set square on the T-square, draw the six sides touching the circle, with two flats at the top and bottom and the corners left and right. Right: the same with the 30°/60° set square turned, so the corners are at the top and bottom.', calloutAt: [A[0] + AF / 2, A[1]], reveals: [...a.hex, ...b.hex] },
+      { instruction: 'Left: with the 60° set square on the T-square, draw the six sides touching the circle, with two flats at the top and bottom and the corners left and right. Right: the same with the 30°/60° set square turned, so the corners are at the top and bottom.', calloutAt: [A[0] + AF / 2, A[1]], reveals: [...TOOL.squareOn([A[0] - AC / 2, A[1]], [A[0] - AC / 4, A[1] - AF / 2], { deg: 60, size: 26 }), ...a.hex, ...b.hex] },
       { instruction: 'The circle drawn in thin is also the CHAMFER circle seen on the top of the head: line it in. Label the across-flats (1.5D) and across-corners sizes.', calloutAt: B,
         reveals: [...a.chamfer, ...b.chamfer, dim([A[0] - AC / 2 - 10, A[1] - AF / 2], [A[0] - AC / 2 - 10, A[1] + AF / 2], -4, 'AF 1.5D'), dim([B[0] - AF / 2, B[1] - AC / 2 - 8], [B[0] + AF / 2, B[1] - AC / 2 - 8], -4, 'AF 1.5D')] },
     ]);
@@ -102,9 +103,9 @@
         calloutAt: [cx, yTop + h / 2], reveals: [...xs.map(x => L([x, ec[1]], [x, yTop + h], 'construction')), ...s.box] },
       ...(n === 3 ? [
         { instruction: 'R1: put the 30°/60° set square on the T-square. From the two top corners of each NARROW face, draw lines at 60°. Where they meet (inside the head) is the centre R1.', calloutAt: [cx - AC / 2 + SIDE / 4, yTop + 6], reveals: s.lines('R1') },
-        { instruction: 'R2: from the two OUTER top corners of the head, draw lines at 60°. They meet on the centre line below the head: the centre R2 (1.5D below the top).', calloutAt: [cx, yTop + 1.5 * D], reveals: s.lines('R2') },
+        { instruction: 'R2: from the two OUTER top corners of the head, draw lines at 60°. They meet on the centre line below the head: the centre R2 (1.5D below the top).', calloutAt: [cx, yTop + 1.5 * D], reveals: [...TOOL.squareOn([cx, yTop + 1.5 * D], [cx - AC / 2, yTop], { deg: 60, size: 26, flip: true }), ...s.lines('R2')] },
       ] : [
-        { instruction: 'R3: put the 30°/60° set square on the T-square. From the two top corners of each face, draw lines at 60°. Where they meet, just below the head, is the centre R3 for that face.', calloutAt: [cx - AF / 4, yTop + h], reveals: s.lines('R3') },
+        { instruction: 'R3: put the 30°/60° set square on the T-square. From the two top corners of each face, draw lines at 60°. Where they meet, just below the head, is the centre R3 for that face.', calloutAt: [cx - AF / 4, yTop + h], reveals: [...TOOL.squareOn([cx - AF / 4, yTop + (AF / 4) * Math.sqrt(3)], [cx - AF / 2, yTop], { deg: 60, size: 22, flip: true }), ...s.lines('R3')] },
       ]),
       { instruction: 'With each centre, set the compass to reach the top line at the middle of its face (the radius), and draw the arc across that face.', calloutAt: [cx, yTop], reveals: s.radii },
       { instruction: 'Draw the arcs. ' + (n === 3 ? 'R1 arcs on the narrow faces, the R2 arc on the middle face.' : 'R3 arcs on both faces.'), calloutAt: [cx, yTop], reveals: s.arcs },
@@ -213,7 +214,7 @@
     add('res-ellipse', 'Ellipse: Concentric-Circles Method', 'An ellipse from its major axis (100) and minor axis (60): two circles, twelve radial lines, and the points where vertical and horizontal lines from them cross.', [
       { instruction: 'Draw the major axis (100) and the minor axis (60) crossing at right angles at the centre.', calloutAt: O, reveals: [L([O[0] - a - 5, O[1]], [O[0] + a + 5, O[1]], 'centre'), L([O[0], O[1] - b - 15], [O[0], O[1] + b + 15], 'centre')] },
       { instruction: 'Draw two circles on the centre: one on the major axis (radius 50) and one on the minor axis (radius 30).', calloutAt: [O[0] + a, O[1]], reveals: [circ(O, a, 'construction'), circ(O, b, 'construction')] },
-      { instruction: 'Divide them with 12 radial lines, 30° apart (use the 30°/60° set square).', calloutAt: at(O, a, 30), reveals: Array.from({ length: 6 }, (_, k) => L(at(O, a, ang(k)), at(O, a, ang(k) + 180), 'construction')) },
+      { instruction: 'Divide them with 12 radial lines, 30° apart (use the 30°/60° set square).', calloutAt: at(O, a, 30), reveals: [...TOOL.squareOn(O, at(O, a, 30), { deg: 30, size: 44 }), ...Array.from({ length: 6 }, (_, k) => L(at(O, a, ang(k)), at(O, a, ang(k) + 180), 'construction'))] },
       { instruction: 'Where a radial line cuts the BIG circle, draw a vertical line; where it cuts the SMALL circle, draw a horizontal line. They cross at a point on the ellipse.', calloutAt: P(1),
         reveals: Array.from({ length: n }, (_, k) => k).filter(k => k % 3).flatMap(k => [L(at(O, a, ang(k)), P(k), 'construction'), L(at(O, b, ang(k)), P(k), 'construction'), pt(P(k))]) },
       { instruction: 'Join the points with a smooth curve through the ends of both axes.', calloutAt: P(2), reveals: [pl(Array.from({ length: 73 }, (_, i) => [O[0] + a * Math.cos(rad(5 * i)), O[1] - b * Math.sin(rad(5 * i))]))] },
