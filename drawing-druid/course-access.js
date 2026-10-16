@@ -80,9 +80,11 @@
     box.innerHTML = '<details class="cd-panel" open><summary>Release settings for your class</summary>' +
       '<label class="cd-row">Class <select id="cdClass">' + S.classes.map(c => '<option value="' + c.id + '"' + (c.id === cls ? ' selected' : '') + '>' + esc(c.name) + '</option>').join('') + '</select> <span id="cdSaveState" class="cd-save"></span></label>' +
       '<table class="cd-rel">' + ORDER.map(id => '<tr><td>' + esc(C[id].title) + '</td><td><select data-id="' + id + '">' + MODES.map(([v, t]) => '<option value="' + v + '"' + ((rel[id] || 'auto') === v ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></td></tr>').join('') + '</table></details>';
-    box.insertAdjacentHTML('beforeend', '<details class="cd-panel" id="cdProgress" open><summary>Class progress</summary><div id="cdProgressBody" class="cd-prog-body">Loading…</div></details>');
+    box.insertAdjacentHTML('beforeend', '<details class="cd-panel" id="cdProgress" open><summary>Class progress</summary><div id="cdProgressBody" class="cd-prog-body">Loading…</div></details>' +
+      '<details class="cd-panel" id="cdSubs"><summary>Learner drawings <span class="cd-save" id="cdSubsCount"></span></summary><div id="cdSubsBody">Loading…</div></details>');
     box.querySelector('#cdClass').onchange = e => { S.cls = e.target.value; teacherPanel(); };
     classProgress(cls);
+    submissions(cls);
     box.querySelectorAll('select[data-id]').forEach(sel => { sel.onchange = () => saveMode(cls, sel.dataset.id, sel.value); });
   }
 
@@ -139,6 +141,50 @@
       a.download = 'drawing-druid-progress-' + ((c && c.name) || 'class').replace(/[^\w-]+/g, '-') + '.csv';
       document.body.appendChild(a); a.click(); a.remove();
     };
+  }
+
+  // ── learner drawings sent from "Check my drawing" (table drawing_submissions, bucket drawing-checks) ──
+  async function submissions(classId) {
+    const body = document.getElementById('cdSubsBody'), count = document.getElementById('cdSubsCount');
+    if (!body) return;
+    const sb = global.MagicLabAuth._supabase();
+    const { data, error } = await sb.from('drawing_submissions').select('id, drawing_title, chapter, created_at, note, checklist, photo_path, teacher_comment, mark, reviewed_at, profiles:student_id(display_name)')
+      .eq('class_id', classId).order('created_at', { ascending: false }).limit(60);
+    if (S.cls && S.cls !== classId) return;
+    if (error) { body.textContent = 'Could not load the drawings: ' + error.message; return; }
+    const rows = data || [], waiting = rows.filter(r => !r.reviewed_at).length;
+    count.textContent = rows.length ? '(' + waiting + ' waiting)' : '';
+    if (!rows.length) { body.innerHTML = '<p class="cd-note" style="margin:0">No drawings yet. Learners send them from <strong>Check my drawing</strong> under any drawing.</p>'; return; }
+    body.innerHTML = '<p class="cd-note" style="margin:0 0 8px">Each picture shows the learner\'s photo with the finished drawing over it in red, as they lined it up.</p><div class="cd-subs"></div>';
+    const list = body.querySelector('.cd-subs');
+    const urls = await sb.storage.from('drawing-checks').createSignedUrls(rows.map(r => r.photo_path), 3600);
+    const urlOf = {}; ((urls && urls.data) || []).forEach(u => { if (u && u.path) urlOf[u.path] = u.signedUrl; });
+    rows.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'cd-sub' + (r.reviewed_at ? '' : ' new');
+      const ticks = (r.checklist || []), done = ticks.filter(t => t.done).length;
+      card.innerHTML = '<a target="_blank" rel="noopener" class="cd-sub-img"><img alt="Learner drawing with the overlay"></a><div class="cd-sub-info">' +
+        '<div class="cd-sub-head"><strong></strong> <span></span></div><div class="cd-sub-meta"></div><div class="cd-sub-note"></div>' +
+        '<details><summary>Checklist ' + done + ' / ' + ticks.length + '</summary><ul></ul></details>' +
+        '<div class="cd-row"><input type="text" maxlength="20" placeholder="Mark" class="cd-mark"><button type="button" class="cd-btn">Save</button><span class="cd-save"></span></div>' +
+        '<textarea maxlength="1000" placeholder="Comment for the learner"></textarea></div>';
+      const url = urlOf[r.photo_path];
+      if (url) { card.querySelector('a').href = url; card.querySelector('img').src = url; }
+      card.querySelector('strong').textContent = (r.profiles && r.profiles.display_name) || 'Learner';
+      card.querySelector('.cd-sub-head span').textContent = r.drawing_title;
+      card.querySelector('.cd-sub-meta').textContent = new Date(r.created_at).toLocaleString() + (r.reviewed_at ? ' · reviewed' : ' · waiting');
+      card.querySelector('.cd-sub-note').textContent = r.note ? '“' + r.note + '”' : '';
+      const ul = card.querySelector('ul'); ticks.forEach(t => { const li = document.createElement('li'); li.textContent = (t.done ? '✓ ' : '✗ ') + t.item; ul.appendChild(li); });
+      const mark = card.querySelector('.cd-mark'), ta = card.querySelector('textarea'), st = card.querySelector('.cd-row .cd-save');
+      mark.value = r.mark || ''; ta.value = r.teacher_comment || '';
+      card.querySelector('.cd-btn').onclick = async () => {
+        st.textContent = 'Saving…';
+        const { error: e2 } = await sb.from('drawing_submissions').update({ mark: mark.value.trim() || null, teacher_comment: ta.value.trim() || null, reviewed_at: new Date().toISOString() }).eq('id', r.id);
+        st.textContent = e2 ? 'Could not save: ' + e2.message : 'Saved. The learner sees it under the drawing.';
+        if (!e2) card.classList.remove('new');
+      };
+      list.appendChild(card);
+    });
   }
 
   async function load(profile) {
