@@ -14,35 +14,86 @@
   const HERE = (document.currentScript && document.currentScript.src) || '';
 
   // the 3D model panel: loads model3d.js the first time a drawing has solids
+  // scripts loaded on demand, once
+  const loaded = {};
+  const script = (name, ready) => loaded[name] || (loaded[name] = new Promise((ok, bad) => {
+    if (ready()) return ok();
+    const sc = document.createElement('script');
+    sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, name);
+    sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc);
+  }));
+  // a drawing's 3D model: the builder's own solids, or a hand-made one from model-defs.js (null if none)
+  function solidsFor(md) {
+    if (!md) return Promise.resolve(null);
+    const own = md._solids || md._iso;
+    if (own) return Promise.resolve(own);
+    return script('model-defs.js', () => global.DruidModelDefs).then(() => global.DruidModelDefs.get(md.id, md)).catch(() => null);
+  }
+  const viewerLib = () => script('model3d.js', () => global.DruidModel3D);
+
+  // the 3D model under the instruction (opened and closed by the learner)
   function model3dPanel(after) {
     const holder = document.createElement('div');
     after.insertAdjacentElement('afterend', holder);
     let viewer = null, want = null;
-    const loaded = {};
-    const script = (name, ready) => loaded[name] || (loaded[name] = new Promise((ok, bad) => {
-      if (ready()) return ok();
-      const sc = document.createElement('script');
-      sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, name);
-      sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc);
-    }));
     return {
+      holder,
       show(md) {
         want = md;
         if (!md) { if (viewer) viewer.hide(); return; }
-        // a builder's own solids, or a hand-made model from model-defs.js
-        const own = md._solids || md._iso;
-        const defs = own ? Promise.resolve(null) : script('model-defs.js', () => global.DruidModelDefs);
-        defs.then(() => {
-          const solids = own || global.DruidModelDefs.get(md.id, md);
+        solidsFor(md).then(solids => {
           if (want !== md) return;
           if (!solids) { if (viewer) viewer.hide(); return; }
-          return script('model3d.js', () => global.DruidModel3D).then(() => {
+          return viewerLib().then(() => {
             if (want !== md) return;
             if (!viewer) viewer = global.DruidModel3D.attach(holder);
             viewer.show(solids, { projection: md.projection });
           });
         }).catch(() => {});
       },
+    };
+  }
+
+  // the 3D model beside the drawing (or under it on a phone), switched with the 3D button on the
+  // drawing's toolbar; the choice is remembered
+  function sideBySide(svg, onToggle) {
+    const wrap = svg.parentElement, stage = document.createElement('div');
+    stage.className = 'dl-stage';
+    wrap.insertAdjacentElement('beforebegin', stage);
+    stage.appendChild(wrap);
+    const side = document.createElement('div');
+    side.className = 'dl-side3d'; side.hidden = true;
+    stage.appendChild(side);
+    let on = false; try { on = localStorage.getItem('dd-3d-side') === '1'; } catch (e) { /* private mode */ }
+    let viewer = null, md = null, solids = null, btn = null;
+    function ensureButton() {
+      const bar = wrap.querySelector('.ce-tools');
+      if (!bar || (btn && btn.parentElement === bar)) return;
+      btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = '3D';
+      btn.title = 'Show the 3D model beside the drawing';
+      btn.onclick = () => { on = !on; try { localStorage.setItem('dd-3d-side', on ? '1' : '0'); } catch (e) { /* private mode */ } apply(); };
+      bar.insertBefore(btn, bar.firstChild);
+    }
+    function apply() {
+      ensureButton();
+      const open = on && !!solids;
+      if (btn) { btn.hidden = !solids; btn.setAttribute('aria-pressed', String(open)); }
+      stage.classList.toggle('dl-split', open);
+      side.hidden = !open;
+      if (open) viewerLib().then(() => {
+        if (!viewer) viewer = global.DruidModel3D.attach(side, { embedded: true });
+        viewer.show(solids, { projection: md.projection });
+        requestAnimationFrame(() => viewer.redraw());
+      }).catch(() => {});
+      onToggle(open);
+    }
+    return {
+      show(m) {
+        md = m;
+        solidsFor(m).then(sol => { if (md !== m) return; solids = sol; apply(); });
+      },
+      refresh: ensureButton,
     };
   }
 
@@ -69,6 +120,10 @@
     const s = document.createElement('style');
     s.id = 'dl-style';
     s.textContent = [
+      '.dl-stage.dl-split{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:10px;align-items:stretch}',
+      '.dl-side3d{border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:280px;background:#f7f5ef}',
+      '@media (max-width:899px){.dl-stage.dl-split{grid-template-columns:1fr}.dl-side3d{height:300px}}',
+      '.ce-tools button[aria-pressed="true"]{background:#1b1b1f;color:#fff}',
       '.dl-check{margin-top:12px;border:1px solid var(--border);border-radius:12px;overflow:hidden}',
       '.dl-check summary{cursor:pointer;padding:9px 14px;font-weight:800;font-size:13px;color:var(--text)}',
       '.dl-check summary span{font-weight:500;color:var(--muted);margin-left:6px;font-size:12px}',
@@ -141,13 +196,16 @@
     tab.querySelector('.lesson-main').classList.add('dl-single');
     const panel3d = model3dPanel(callout);
     const panelCheck = selfCheckPanel(callout.nextElementSibling);
+    // beside the drawing: when it is open, the panel under the instruction is not needed
+    let rerender = null, side3d = null;   // side3d is made once the step track and status are in place
     // opts.selfCheck(id) → false hides it (course drawings: the overlay would show learners the memo)
     const showCheck = md => panelCheck.show(md && (!opts.selfCheck || opts.selfCheck(md.id)) ? md : null);
     let shown3d = null;
     function show3d(md) {
       const k = md && (!opts.show3d || opts.show3d(md.id)) ? md : null;
+      if (side3d) side3d.refresh();
       if (k === shown3d) return;
-      shown3d = k; panel3d.show(k);
+      shown3d = k; panel3d.show(k); if (side3d) side3d.show(k);
     }
 
     // ── drawing chooser ──
@@ -266,6 +324,9 @@
       if (opts.onRender) opts.onRender(id, step);
     }
 
+    side3d = sideBySide(svg, open => { panel3d.holder.hidden = open; if (rerender) rerender(); });
+    if (shown3d) side3d.show(shown3d);
+    rerender = () => render();   // the drawing re-fits when the 3D pane opens or closes beside it
     select.addEventListener('change', () => setDrawing(select.value));
     $('dlPrevDrawing').onclick = () => moveDrawing(-1);
     $('dlNextDrawing').onclick = () => moveDrawing(1);

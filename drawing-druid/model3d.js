@@ -20,20 +20,27 @@
       '.m3d-btns{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}' +
       '.m3d-btns button{font:600 11.5px system-ui,sans-serif;padding:5px 9px;border-radius:7px;border:1px solid rgba(0,0,0,.2);background:#fff;color:#1b1b1f;cursor:pointer}' +
       '.m3d-btns button.on{background:#1b1b1f;color:#fff}' +
-      '.m3d-btns button:focus-visible{outline:2px solid #2563eb;outline-offset:1px}';
+      '.m3d-btns button:focus-visible{outline:2px solid #2563eb;outline-offset:1px}' +
+      '.m3d-embed{margin:0;height:100%;display:flex;flex-direction:column}.m3d-embed .m3d-body{flex:1;min-height:0}.m3d-embed canvas{height:100%}';
     document.head.appendChild(s);
   }
 
-  function attach(container) {
+  // opts.embedded: no open/close summary; the viewer fills its container (the pane beside the drawing)
+  function attach(container, opts) {
     injectStyle();
-    const box = document.createElement('details');
-    box.className = 'm3d';
-    // closed until the learner opens it (on some exercises the model is the answer); the choice is remembered
-    try { box.open = localStorage.getItem('dd-3d-open') === '1'; } catch (e) { box.open = false; }
-    box.innerHTML = '<summary>3D model <span>open it to turn the object; drag to rotate, or pick a view</span></summary><div class="m3d-body"><canvas></canvas><div class="m3d-btns"></div></div>';
+    const embedded = !!(opts && opts.embedded);
+    const box = document.createElement(embedded ? 'div' : 'details');
+    box.className = 'm3d' + (embedded ? ' m3d-embed' : '');
+    const body = '<div class="m3d-body"><canvas aria-label="3D model: drag to turn it"></canvas><div class="m3d-btns"></div></div>';
+    if (embedded) box.innerHTML = body;
+    else {
+      // closed until the learner opens it (on some exercises the model is the answer); the choice is remembered
+      try { box.open = localStorage.getItem('dd-3d-open') === '1'; } catch (e) { box.open = false; }
+      box.innerHTML = '<summary>3D model <span>open it to turn the object; drag to rotate, or pick a view</span></summary>' + body;
+    }
     container.appendChild(box);
     const cv = box.querySelector('canvas'), btns = box.querySelector('.m3d-btns');
-    box.addEventListener('toggle', () => { try { localStorage.setItem('dd-3d-open', box.open ? '1' : '0'); } catch (e) { /* private mode */ } if (box.open) draw(); });
+    if (!embedded) box.addEventListener('toggle', () => { try { localStorage.setItem('dd-3d-open', box.open ? '1' : '0'); } catch (e) { /* private mode */ } if (box.open) draw(); });
     let yaw = VIEWS.iso[0], pitch = VIEWS.iso[1], anim = null;
     const names = [['iso', 'Iso'], ['front', 'Front'], ['top', 'Top'], ['left', 'Left'], ['right', 'Right']];
     names.forEach(([k, t]) => {
