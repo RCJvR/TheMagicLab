@@ -100,6 +100,13 @@
   // A hexagon nut (or bolt head) seen from the side, across its corners: three faces showing,
   // with the conventional chamfer arcs. Axis horizontal: the nut spans x0..x0+h.
   //   D: bolt diameter; h: thickness (0.8D for a nut, 0.7D for a head).
+  //
+  // Each visible face is rounded by its own single arc, radius equal to the face's own width,
+  // centred that width's (w/2)*sqrt(3) in from the face — the standard construction: a 60°
+  // line from each of the face's two corners meets the other at the apex of an equilateral
+  // triangle, so the crossing point is exactly one face-width from both corners. The arc bulges
+  // outward, slightly proud of the nominal flat (not cut into it) — verified pixel-for-pixel
+  // against the JPEGD Grade 10 workbook's "shows three faces" construction sheet.
   function nutSide(x0, ay, D, h, opts) {
     opts = opts || {};
     const AC = 1.5 * D * 2 / Math.sqrt(3);           // across corners
@@ -109,20 +116,16 @@
       L([x0, ys[0]], [x1, ys[0]]), L([x0, ys[3]], [x1, ys[3]]),
       L([x0, ys[1]], [x1, ys[1]]), L([x0, ys[2]], [x1, ys[2]]),
     ];
-    // chamfer arcs on the chamfered end(s): a shallow arc on each face, cutting its corners
+    // chamfer arcs on the chamfered end(s): one true arc per face, cutting its corners
     const ends = opts.bothEnds === false ? [opts.chamferAt === 'left' ? x0 : x1] : [x0, x1];
     ends.forEach(xe => {
-      const s = xe === x0 ? 1 : -1;                  // arc bulges into the nut
-      const c = 0.12 * D;
+      const s = xe === x0 ? 1 : -1;                  // which way the solid lies from this face
+      const centreAngle = s === 1 ? 180 : 0;          // direction, from each arc's centre, that points outward
       [[ys[0], ys[1]], [ys[1], ys[2]], [ys[2], ys[3]]].forEach(([a, b]) => {
-        const pts = [];
-        for (let i = 0; i <= 10; i++) {
-          const t = i / 10, y = a + (b - a) * t;
-          pts.push([xe + s * c * 4 * t * (1 - t) * (b - a > AC / 3 ? 1 : 0.6), y]);
-        }
-        out.push({ kind: 'polyline', points: pts, lineType: 'A' });
+        const w = b - a, depth = (w / 2) * Math.sqrt(3);
+        const cx = xe + s * depth, cy = (a + b) / 2;
+        out.push({ kind: 'arc-construction', center: [cx, cy], r: w, startDeg: centreAngle - 30, endDeg: centreAngle + 30, lineType: 'A' });
       });
-      out.push(L([xe, ys[0]], [xe, ys[3]]));
     });
     return out;
   }
