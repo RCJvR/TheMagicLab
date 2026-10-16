@@ -1,6 +1,9 @@
 // Drawing Druid — "Check my drawing": the learner photographs their drawing, lays the finished drawing
 // over it (drag to move, pinch / wheel / buttons to scale and turn), compares with the opacity slider
-// or Blink, and ticks a checklist. Everything stays on the device: the photo is never uploaded.
+// or Blink, and ticks a checklist. The photo stays on the device unless the learner presses
+// "Send to my teacher": then the aligned picture (photo + overlay, as a JPEG), the ticks and a note go
+// to Supabase (table drawing_submissions, private bucket drawing-checks), and any comment and mark the
+// teacher gives come back here.
 //   DruidSelfCheck.mount(container) → { show(model) }      (loaded on demand by lesson-ui.js)
 (function (global) {
   'use strict';
@@ -26,7 +29,13 @@
       '.dck-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}' +
       '.dck-list li label{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--text);cursor:pointer}' +
       '.dck-list input{margin-top:3px;accent-color:#eab308}' +
-      '.dck-score{font:700 13px var(--fm,monospace);color:var(--text)}';
+      '.dck-score{font:700 13px var(--fm,monospace);color:var(--text)}' +
+      '.dck-send{border-top:1px solid var(--border);padding-top:12px;display:grid;gap:8px}' +
+      '.dck-send textarea{font:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:8px;min-height:54px;resize:vertical}' +
+      '.dck-send select{font:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:5px 8px}' +
+      '.dck-sent{list-style:none;margin:0;padding:0;display:grid;gap:8px}' +
+      '.dck-sent li{border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12.5px;color:var(--text);line-height:1.5}' +
+      '.dck-sent .fb{color:#fde047}';
     document.head.appendChild(s);
   }
 
@@ -73,7 +82,7 @@
     const wrap = document.createElement('div');
     wrap.className = 'dck-wrap';
     wrap.innerHTML =
-      '<p class="dck-note">Take a photo of your drawing from straight above, in good light, with the whole drawing in the frame. The finished drawing is laid over it in red: line it up, then compare. <strong>Your photo stays on this device; nothing is uploaded.</strong></p>' +
+      '<p class="dck-note">Take a photo of your drawing from straight above, in good light, with the whole drawing in the frame. The finished drawing is laid over it in red: line it up, then compare. <strong>Your photo stays on this device unless you send it to your teacher.</strong></p>' +
       '<div class="dck-row"><input type="file" accept="image/*" capture="environment" class="dck-file" id="dckFile"><label for="dckFile" class="dck-btn" role="button" tabindex="0">Choose or take a photo</label>' +
       '<button type="button" class="dck-btn" data-a="fit">Fit</button><button type="button" class="dck-btn" data-a="blink" aria-pressed="false">Blink</button>' +
       '<label><input type="checkbox" data-a="cons"> Construction lines</label></div>' +
@@ -82,12 +91,29 @@
       '<button type="button" class="dck-btn" data-a="s-" aria-label="Smaller">−</button><button type="button" class="dck-btn" data-a="s+" aria-label="Bigger">+</button>' +
       '<button type="button" class="dck-btn" data-a="r-" aria-label="Turn anticlockwise">⟲</button><button type="button" class="dck-btn" data-a="r+" aria-label="Turn clockwise">⟳</button>' +
       '<span class="dck-note">Drag to move · wheel or pinch to scale · arrow keys nudge</span></div>' +
-      '<div><div class="dck-row" style="justify-content:space-between"><strong style="font-size:13px">Checklist</strong><span class="dck-score"></span></div><ul class="dck-list"></ul></div>';
+      '<div><div class="dck-row" style="justify-content:space-between"><strong style="font-size:13px">Checklist</strong><span class="dck-score"></span></div><ul class="dck-list"></ul></div>' +
+      '<div class="dck-send" hidden><strong style="font-size:13px">Send to my teacher</strong>' +
+      '<p class="dck-note">Your teacher sees the photo with the red overlay exactly as you lined it up, your ticks and your note.</p>' +
+      '<label class="dck-note" data-cls hidden>Class <select></select></label>' +
+      '<textarea maxlength="500" placeholder="A note for your teacher (optional)"></textarea>' +
+      '<div class="dck-row"><button type="button" class="dck-btn" data-a="send">Send to my teacher</button><span class="dck-note" data-st aria-live="polite"></span></div>' +
+      '<ul class="dck-sent"></ul></div>';
     container.appendChild(wrap);
     const $ = s => wrap.querySelector(s);
     const cv = $('canvas'), stage = $('.dck-stage'), empty = $('.dck-empty');
     const S = { model: null, photo: null, over: null, x: 0, y: 0, k: 1, rot: 0, op: 0.6, hidden: false, cons: false, blink: null };
 
+    // the photo with the overlay, W px wide
+    function paint(g, W, H, overlay, alpha) {
+      const P = S.photo;
+      g.drawImage(P, 0, 0, W, H);
+      if (!overlay || !S.over) return;
+      const sc = W / P.width;                                       // photo px → target px
+      g.save(); g.globalAlpha = alpha;
+      g.translate(S.x * sc, S.y * sc); g.rotate(S.rot * Math.PI / 180); g.scale(S.k * sc, S.k * sc);
+      g.drawImage(S.over.im, -S.over.im.width / 2, -S.over.im.height / 2);
+      g.restore();
+    }
     function draw() {
       const W = stage.clientWidth || 600, P = S.photo;
       const H = P ? Math.round(W * P.height / P.width) : 180;
@@ -97,13 +123,7 @@
       g.clearRect(0, 0, W, H);
       empty.hidden = !!P;
       if (!P) return;
-      g.drawImage(P, 0, 0, W, H);
-      if (!S.over || S.hidden) return;
-      const sc = W / P.width;                                       // photo px → screen px
-      g.save(); g.globalAlpha = S.op;
-      g.translate(S.x * sc, S.y * sc); g.rotate(S.rot * Math.PI / 180); g.scale(S.k * sc, S.k * sc);
-      g.drawImage(S.over.im, -S.over.im.width / 2, -S.over.im.height / 2);
-      g.restore();
+      paint(g, W, H, !S.hidden, S.op);
     }
     // the overlay centred on the photo, as large as fits (most photos crop the sheet a little)
     function fit() {
@@ -183,10 +203,81 @@
     });
     global.addEventListener('resize', draw);
 
+    // ── sending to the teacher (signed-in learners in a class) ──
+    const send = $('.dck-send'), stEl = $('[data-st]'), clsSel = $('[data-cls] select');
+    const A = () => global.MagicLabAuth, sb = () => A() && A()._supabase && A()._supabase();
+    const uid = () => { const s = A() && A().getSession && A().getSession(); return s && s.user && s.user.id; };
+    let classes = null;
+    async function myClasses() {
+      if (classes) return classes;
+      const { data } = await sb().rpc('get_my_teachers');
+      const seen = new Set(); classes = (data || []).filter(c => !seen.has(c.class_id) && seen.add(c.class_id)).map(c => ({ id: c.class_id, name: c.class_name }));
+      return classes;
+    }
+    async function setupSend() {
+      send.hidden = true;
+      if (!sb() || !uid() || (A().isTeacher && A().isTeacher())) return;
+      try { await myClasses(); } catch (e) { return; }
+      if (!classes.length) return;
+      clsSel.innerHTML = classes.map(c => '<option value="' + c.id + '"></option>').join('');
+      [...clsSel.options].forEach((o, i) => { o.textContent = classes[i].name || 'Class'; });
+      $('[data-cls]').hidden = classes.length < 2;
+      send.hidden = false;
+      listSent();
+    }
+    function picture() {
+      // the aligned photo and overlay, at most 1600 px wide, as a JPEG under 1 MB
+      const P = S.photo, W = Math.min(1600, P.width), H = Math.round(W * P.height / P.width);
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      paint(c.getContext('2d'), W, H, true, 0.7);
+      const tryQ = q => new Promise(ok => c.toBlob(b => ok(b), 'image/jpeg', q));
+      return tryQ(0.82).then(b => (b && b.size > 950000 ? tryQ(0.6) : b));
+    }
+    async function doSend() {
+      if (!S.photo) { stEl.textContent = 'Take or choose a photo first.'; return; }
+      const btn = $('[data-a="send"]'); btn.disabled = true; stEl.textContent = 'Sending…';
+      try {
+        const blob = await picture(), me = uid(), name = me + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        const up = await sb().storage.from('drawing-checks').upload(name, blob, { contentType: 'image/jpeg' });
+        if (up.error) throw up.error;
+        const ticks = [...$('.dck-list').querySelectorAll('li')].map(li => ({ item: li.querySelector('span').textContent, done: li.querySelector('input').checked }));
+        const ins = await sb().from('drawing_submissions').insert({ student_id: me, class_id: clsSel.value, drawing_id: S.model.id, drawing_title: S.model.title,
+          chapter: (location.pathname.split('/').pop() || '').replace(/\.html$/, ''), photo_path: name, checklist: ticks, note: $('.dck-send textarea').value.trim() || null });
+        if (ins.error) { await sb().storage.from('drawing-checks').remove([name]); throw ins.error; }
+        stEl.textContent = 'Sent. Your teacher\'s comment will appear below.';
+        $('.dck-send textarea').value = '';
+        listSent();
+      } catch (e) {
+        stEl.textContent = 'Could not send: ' + (e.message || e);
+      } finally { btn.disabled = false; }
+    }
+    async function listSent() {
+      const ul = $('.dck-sent');
+      const { data } = await sb().from('drawing_submissions').select('id, created_at, note, teacher_comment, mark, reviewed_at, photo_path')
+        .eq('student_id', uid()).eq('drawing_id', S.model.id).order('created_at', { ascending: false }).limit(5);
+      ul.innerHTML = '';
+      (data || []).forEach(r => {
+        const li = document.createElement('li');
+        const when = new Date(r.created_at).toLocaleString();
+        li.innerHTML = '<div><strong></strong></div><div class="fb"></div><button type="button" class="dck-btn" style="margin-top:6px">Delete</button>';
+        li.querySelector('strong').textContent = 'Sent ' + when + (r.reviewed_at ? '' : ': waiting for your teacher');
+        li.querySelector('.fb').textContent = r.reviewed_at ? 'Teacher: ' + (r.mark ? '[' + r.mark + '] ' : '') + (r.teacher_comment || '(no comment)') : '';
+        li.querySelector('button').onclick = async () => {
+          if (!confirm('Delete this drawing from your teacher\'s list?')) return;
+          await sb().from('drawing_submissions').delete().eq('id', r.id);
+          await sb().storage.from('drawing-checks').remove([r.photo_path]);
+          listSent();
+        };
+        ul.appendChild(li);
+      });
+    }
+    $('[data-a="send"]').addEventListener('click', e => { e.stopPropagation(); doSend(); });
+    document.addEventListener('magiclab:auth:ready', () => { classes = null; if (S.model) setupSend(); });
+
     return {
       show(model) {
         if (S.model === model) return;
-        S.model = model; renderList(); loadOverlay(true);
+        S.model = model; renderList(); loadOverlay(true); setupSend();
       },
     };
   }
