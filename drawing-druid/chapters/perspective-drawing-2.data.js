@@ -373,6 +373,48 @@
   })();
 
   // ── Practice questions ──
+
+  // ═══ More two-point exercises (JPEGD-volume pass, 2026-10-16) ═══
+  twoPoint({
+    id: 'two-point-stepped-block', title: 'Two-Point: Stepped Block at 30° / 60°',
+    summary: 'A block with one step: the tread height is marked on the true-height line and carried round to the step along a VP line.',
+    prompt: 'Draw the stepped block (54 x 34, 16 and 36 high) in two-point perspective at 30° / 60°.',
+    setup: { sx: 150, d: 110, yPP: 70, yGL: 168, h: 62, theta: 30 },
+    solids: [S.extrude([[0, 0], [54, 0], [54, 16], [26, 16], [26, 36], [0, 36]], 'xz', 0, 34)],
+  });
+  twoPoint({
+    id: 'two-point-pedestal', title: 'Two-Point: Pedestal at 45° / 45°',
+    summary: 'A base, a column and a cap on the same centre: none of the upper corners stand on the PP, so their heights come along VP lines.',
+    prompt: 'Draw the pedestal (base 44 x 44 x 10, column 20 x 20 x 26, cap 30 x 30 x 8) in two-point perspective at 45° / 45°.',
+    setup: { sx: 186, d: 108, yPP: 72, yGL: 170, h: 66, theta: 45 },
+    solids: [S.box(0, 0, 0, 44, 44, 10), S.box(12, 12, 10, 32, 32, 36), S.box(7, 7, 36, 37, 37, 44)],
+  });
+  twoPoint({
+    id: 'two-point-steps', title: 'Two-Point: Three Steps at 30° / 60°',
+    summary: 'Three steps turned to the PP: each riser and tread recedes to its own VP.',
+    prompt: 'Draw the three steps (each 12 high and 14 deep, 40 wide) in two-point perspective at 30° / 60°.',
+    setup: { sx: 152, d: 110, yPP: 70, yGL: 168, h: 60, theta: 30 },
+    solids: [S.extrude([[0, 0], [42, 0], [42, 36], [28, 36], [28, 24], [14, 24], [14, 12], [0, 12]], 'yz', 0, 40)],
+  });
+  twoPoint({
+    id: 'two-point-cross', title: 'Two-Point: Cross-Shaped Block at 45° / 45°',
+    summary: 'A cross-shaped block: many corners at different depths, each found with its own ray.',
+    prompt: 'Draw the cross-shaped block (arms 16 wide, overall 48 x 48, 22 high) in two-point perspective at 45° / 45°.',
+    setup: { sx: 186, d: 110, yPP: 72, yGL: 170, h: 60, theta: 45 },
+    solids: [S.extrude([[16, 0], [32, 0], [32, 16], [48, 16], [48, 32], [32, 32], [32, 48], [16, 48], [16, 32], [0, 32], [0, 16], [16, 16]], 'xy', 0, 22)],
+  });
+  (function () {
+    const shed = S.extrude([[0, 0], [40, 0], [40, 22], [0, 30]], 'xz', 0, 34);
+    S.openingAt(shed, 0, [8, 0, 0], [17, 0, 21], 2.5);
+    twoPoint({
+      id: 'two-point-shed', title: 'Two-Point: Mono-Pitch Shed at 30° / 60°',
+      summary: 'A shed with a roof sloping one way: the sloping roof edges are found by joining their two ends.',
+      prompt: 'Draw the shed at 1:100 in two-point perspective at 30° / 60°: 4 m x 3.4 m, walls 2.2 m and 3 m high, with a door.',
+      setup: { sx: 152, d: 118, yPP: 74, yGL: 176, h: 16, theta: 30 },
+      solids: [shed],
+    });
+  })();
+
   const PRACTICE_QUESTIONS = [
     {
       text: 'How many vanishing points does two-point perspective use, and where must they sit?',
@@ -441,7 +483,7 @@
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
     'two-point-block', 'two-point-l-block', 'two-point-sloped-block', 'two-point-hex-prism',
-    'two-point-t-model', 'two-point-gable-house', 'two-point-hip-veranda', 'two-point-house-garage',
+    'two-point-t-model', 'two-point-stepped-block', 'two-point-pedestal', 'two-point-steps', 'two-point-cross', 'two-point-shed', 'two-point-gable-house', 'two-point-hip-veranda', 'two-point-house-garage',
     'two-point-double-storey', 'two-point-braai-area', 'two-point-bathroom-interior', 'two-point-curved-end',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;

@@ -21,7 +21,8 @@
     const fin = SK.hlr(cfg.solids, view);
     const planView = { toViewer: () => [0, 0, 1], distance: () => Infinity, project: p => P.plan(p[0], p[1]) };
     const plan = SK.draw(cfg.planSolids || cfg.solids, planView, { hidden: true });
-    let uMin = Infinity, uMax = -Infinity, zMax = 0;
+    let uMin = Infinity, uMax = -Infinity, zMax = 0, vTop = 0;
+    (cfg.planSolids || cfg.solids).forEach(s => s.forEach(f => f.pts.forEach(p => { vTop = Math.max(vTop, p[1]); })));
     cfg.solids.forEach(s => s.forEach(f => f.pts.forEach(p => { uMin = Math.min(uMin, p[0]); uMax = Math.max(uMax, p[0]); zMax = Math.max(zMax, p[2]); })));
     const side = cfg.elevSide || 'left';
     const ex = side === 'left' ? P.cx + uMin - (uMax - uMin) - (cfg.elevGap || 22) : P.cx + uMax + (cfg.elevGap || 22) - uMin;
@@ -118,7 +119,7 @@
           { kind: 'label', at: [x0 - 2, P.yPP - 1], text: 'PP', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           { kind: 'label', at: [x0 - 2, P.yPP + 5.5], text: 'PV', size: 3.6, anchor: 'end', color: '#e8eaf2' },
           ...plan,
-          lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - (cfg.planDepth || 30) - 6], 'TOP VIEW / BO-AANSIG'),
+          lbl([P.plan((uMin + uMax) / 2, 0)[0], P.yPP - Math.max(cfg.planDepth || 0, vTop) - 6], 'TOP VIEW / BO-AANSIG'),
           ...K.spMark(P),
           { kind: 'line', p1: [x0, P.yGL], p2: [x1, P.yGL], lineType: 'B' },
           { kind: 'label', at: [x0 - 2, P.yGL + 1.3], text: 'GL', size: 3.6, anchor: 'end', color: '#e8eaf2' },
@@ -428,6 +429,77 @@
   })();
 
   // ── Practice questions ──
+
+  // ═══ More one-point exercises (JPEGD-volume pass, 2026-10-16) ═══
+  onePoint({
+    id: 'one-point-l-block', title: 'One-Point: L-Block',
+    summary: 'An L-shaped block with its L-shaped face on the PP: the face is true size and every corner recedes to the one VP.',
+    prompt: 'Draw the L-block (56 x 30 x 40) in one-point perspective. Its L-shaped face lies on PP.',
+    setup: { sx: 122, d: 112, yPP: 62, yGL: 152, h: 54, cx: 48 },
+    solids: [S.extrude([[0, 0], [56, 0], [56, 14], [18, 14], [18, 40], [0, 40]], 'xz', 0, 30)],
+  });
+  onePoint({
+    id: 'one-point-back-step', title: 'One-Point: Block Stepped Up at the Back',
+    summary: 'The step rises towards the back, so the front face is low and the high part is found by carrying its height back along the side.',
+    prompt: 'Draw the block (50 x 40, 14 high at the front and 32 high at the back half) in one-point perspective. Its front face lies on PP.',
+    setup: { sx: 120, d: 112, yPP: 62, yGL: 152, h: 54, cx: 46 },
+    solids: [S.extrude([[0, 0], [40, 0], [40, 32], [20, 32], [20, 14], [0, 14]], 'yz', 0, 50)],
+  });
+  onePoint({
+    id: 'one-point-bench', title: 'One-Point: Bench',
+    summary: 'A bench: two legs and a seat. The space under the seat shows the inside faces of the legs receding to the VP.',
+    prompt: 'Draw the bench (60 long, 26 deep, 26 high, legs 10 thick, seat 8 thick) in one-point perspective with its front on PP.',
+    setup: { sx: 124, d: 112, yPP: 62, yGL: 152, h: 48, cx: 44 },
+    solids: [S.extrude([[0, 0], [10, 0], [10, 18], [50, 18], [50, 0], [60, 0], [60, 26], [0, 26]], 'xz', 0, 26)],
+    notes: ['', 'The opening under the seat is part of the front face: draw it true size.', '', 'Under the seat you see the inside face of the left-hand leg.'],
+  });
+  onePoint({
+    id: 'one-point-steps', title: 'One-Point: Three Steps',
+    summary: 'Three steps seen from the side, the profile on the PP: each tread and riser recedes to the VP.',
+    prompt: 'Draw the three steps (each 14 high and 14 deep, 44 wide) in one-point perspective. The stepped side lies on PP.',
+    setup: { sx: 118, d: 112, yPP: 62, yGL: 152, h: 52, cx: 46 },
+    solids: [S.extrude([[0, 0], [42, 0], [42, 42], [28, 42], [28, 28], [14, 28], [14, 14], [0, 14]], 'xz', 0, 44)],
+  });
+  onePoint({
+    id: 'one-point-pedestal', title: 'One-Point: Pedestal',
+    summary: 'A base, a column and a cap, the column set back from the front: its height is marked on the front face and carried back to where it stands.',
+    prompt: 'Draw the pedestal (base 50 x 40 x 10, column 22 x 16 x 26 set 12 back, cap 32 x 24 x 8) in one-point perspective.',
+    setup: { sx: 120, d: 112, yPP: 62, yGL: 152, h: 62, cx: 46 },
+    solids: [S.box(0, 0, 0, 50, 40, 10), S.box(14, 12, 10, 36, 28, 36), S.box(9, 8, 36, 41, 32, 44)],
+  });
+  onePoint({
+    id: 'one-point-cross', title: 'One-Point: Cross-Shaped Block',
+    summary: 'A block that is cross-shaped in plan: only the front arm touches the PP, the side arms are set back.',
+    prompt: 'Draw the cross-shaped block (arms 18 wide, overall 54 x 54, 20 high) in one-point perspective. The front arm touches PP.',
+    setup: { sx: 122, d: 112, yPP: 60, yGL: 152, h: 50, cx: 44 },
+    solids: [S.extrude([[18, 0], [36, 0], [36, 18], [54, 18], [54, 36], [36, 36], [36, 54], [18, 54], [18, 36], [0, 36], [0, 18], [18, 18]], 'xy', 0, 20)],
+  });
+  (function () {
+    const shed = S.extrude([[0, 0], [44, 0], [44, 24], [0, 32]], 'xz', 0, 36);
+    S.openingAt(shed, 0, [8, 0, 0], [17, 0, 21], 2.5);
+    S.openingAt(shed, 0, [26, 0, 10], [38, 0, 18], 2.5);
+    onePoint({
+      id: 'one-point-shed', title: 'One-Point: Garden Shed with a Mono-Pitch Roof',
+      summary: 'A shed whose roof slopes one way: the front gable is true size on PP, and the roof edges recede to the VP.',
+      prompt: 'Draw the shed at 1:100 in one-point perspective: 4.4 m wide, 3.6 m deep, walls 2.4 m high at the right and 3.2 m at the left, with a door and a window in the front.',
+      setup: { sx: 118, d: 120, yPP: 66, yGL: 166, h: 18, cx: 46 },
+      planDepth: 36,
+      solids: [shed],
+      notes: ['', 'The door and window lie on PP: true size.', '', 'Inside the openings the wall thickness recedes to the VP.'],
+    });
+  })();
+  (function () {
+    const kennel = S.extrude([[0, 0], [36, 0], [36, 20], [18, 32], [0, 20]], 'xz', 0, 40);
+    S.openingAt(kennel, 0, [12, 0, 0], [24, 0, 16], 2.5);
+    onePoint({
+      id: 'one-point-kennel', title: 'One-Point: Gable-Ended Kennel',
+      summary: 'A small gable building with an arched-free square doorway: the ridge runs straight back to the VP.',
+      prompt: 'Draw the kennel at 1:20 in one-point perspective: front gable on PP, 720 wide, 800 deep, eaves 400 and ridge 640 high, with a doorway in the gable.',
+      setup: { sx: 118, d: 115, yPP: 64, yGL: 160, h: 46, cx: 50 },
+      solids: [kennel],
+    });
+  })();
+
   const PRACTICE_QUESTIONS = [
     {
       text: 'In one-point perspective, why is the front face of a building drawn at its true shape and size?',
@@ -550,7 +622,7 @@
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
     'one-point-block', 'one-point-notched-block', 'one-point-stepped-block', 'one-point-frame',
-    'one-point-stacked-blocks', 'viewpoint-comparison', 'one-point-gable-house', 'one-point-hip-house',
+    'one-point-stacked-blocks', 'one-point-l-block', 'one-point-back-step', 'one-point-bench', 'one-point-steps', 'one-point-pedestal', 'one-point-cross', 'viewpoint-comparison', 'one-point-gable-house', 'one-point-hip-house', 'one-point-shed', 'one-point-kennel',
     'one-point-house-garage', 'one-point-entertainment-area', 'one-point-church', 'one-point-kitchen-interior',
   ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
