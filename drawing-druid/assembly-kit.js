@@ -97,42 +97,34 @@
     return [L([x0, ay - rr], [x1, ay - rr], 'B'), L([x0, ay + rr], [x1, ay + rr], 'B')];
   }
 
-  // A hexagon nut (or bolt head) seen from the side, across its corners: three faces showing —
-  // a plain rectangle (across flats top/bottom, two straight divider lines marking the receding
-  // faces) with a small washer-face chamfer rounded in at the end(s) that have one. Axis
-  // horizontal: the nut spans x0..x0+h.
+  // A hexagon nut (or bolt head) seen from the side, across its corners: three faces showing,
+  // with the conventional chamfer arcs. Axis horizontal: the nut spans x0..x0+h.
   //   D: bolt diameter; h: thickness (0.8D for a nut, 0.7D for a head).
   //
-  // The two divider lines run straight the full length — they are not chamfered, only the outer
-  // top/bottom corners are. At a chamfered end the outline sits in at the across-flats divider
-  // level right at the tip, then eases out to the full across-corners level over a short depth,
-  // tangent to the tip (vertical) and tangent to the straight outer line (horizontal) at the far
-  // side — a quarter-ellipse, not a full-face arc. Verified pixel-for-pixel against the JPEGD
-  // Grade 10 workbook's "HEXAGONAL NUT — CHAMFER BOTH SIDES" icon.
+  // Each visible face is rounded by its own single arc, radius equal to the face's own width,
+  // centred that width's (w/2)*sqrt(3) in from the face — the standard construction: a 60°
+  // line from each of the face's two corners meets the other at the apex of an equilateral
+  // triangle, so the crossing point is exactly one face-width from both corners. The arc bulges
+  // outward, slightly proud of the nominal flat (not cut into it) — verified pixel-for-pixel
+  // against the JPEGD Grade 10 workbook's "shows three faces" construction sheet.
   function nutSide(x0, ay, D, h, opts) {
     opts = opts || {};
     const AC = 1.5 * D * 2 / Math.sqrt(3);           // across corners
-    const AF = 1.5 * D;                              // across flats
-    const ys = [-AC / 2, -AF / 2, AF / 2, AC / 2].map(v => ay + v);
+    const ys = [-AC / 2, -AC / 4, AC / 4, AC / 2].map(v => ay + v);
     const x1 = x0 + h;
-    const ends = opts.bothEnds === false ? [opts.chamferAt === 'left' ? x0 : x1] : [x0, x1];
-    const depth = Math.min(D / 4, h / ends.length);  // how far the chamfer eases in from the tip
-    const chamferedAt = x => ends.includes(x);
-    const outerStart = chamferedAt(x0) ? x0 + depth : x0;
-    const outerEnd = chamferedAt(x1) ? x1 - depth : x1;
     const out = [
-      L([x0, ys[1]], [x1, ys[1]]), L([x0, ys[2]], [x1, ys[2]]),       // divider lines: straight, full length
-      L([outerStart, ys[0]], [outerEnd, ys[0]]), L([outerStart, ys[3]], [outerEnd, ys[3]]),
+      L([x0, ys[0]], [x1, ys[0]]), L([x0, ys[3]], [x1, ys[3]]),
+      L([x0, ys[1]], [x1, ys[1]]), L([x0, ys[2]], [x1, ys[2]]),
     ];
+    // chamfer arcs on the chamfered end(s): one true arc per face, cutting its corners
+    const ends = opts.bothEnds === false ? [opts.chamferAt === 'left' ? x0 : x1] : [x0, x1];
     ends.forEach(xe => {
-      const s = xe === x0 ? 1 : -1;                  // which way the solid lies from this tip
-      [[ys[1], ys[0]], [ys[2], ys[3]]].forEach(([yInner, yOuter]) => {
-        const pts = [];
-        for (let i = 0; i <= 10; i++) {
-          const t = i / 10 * Math.PI / 2;
-          pts.push([xe + s * depth * Math.sin(t), yInner + (yOuter - yInner) * (1 - Math.cos(t))]);
-        }
-        out.push({ kind: 'polyline', points: pts, lineType: 'A' });
+      const s = xe === x0 ? 1 : -1;                  // which way the solid lies from this face
+      const centreAngle = s === 1 ? 180 : 0;          // direction, from each arc's centre, that points outward
+      [[ys[0], ys[1]], [ys[1], ys[2]], [ys[2], ys[3]]].forEach(([a, b]) => {
+        const w = b - a, depth = (w / 2) * Math.sqrt(3);
+        const cx = xe + s * depth, cy = (a + b) / 2;
+        out.push({ kind: 'arc-construction', center: [cx, cy], r: w, startDeg: centreAngle - 30, endDeg: centreAngle + 30, lineType: 'A' });
       });
     });
     return out;
