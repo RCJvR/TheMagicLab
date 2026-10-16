@@ -944,55 +944,137 @@
 
   // ── Shared Practice-tab MCQ wiring (Science-Sage-style, generalized) ──
 
+  // ── Practice quiz ──
+  // English questions come from the chapter (PRACTICE_QUESTIONS). chapters/quiz/<page>.js, loaded on
+  // demand, adds the Afrikaans of each (matched by the start of its English text, key k) and more
+  // questions in both languages:  window.DD_QUIZ = { af: [{ k, text, options, explanation }],
+  //   more: [{ answer, en: { text, options, explanation }, af: { ... } }] }
+  // The learner switches language (remembered), sees a running score, and can start again.
+  function quizStyle() {
+    if (document.getElementById('dd-quiz-style')) return;
+    const st = document.createElement('style');
+    st.id = 'dd-quiz-style';
+    st.textContent = '.dq-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}' +
+      '.dq-lang{display:inline-flex;border:1px solid var(--border,rgba(255,255,255,.12));border-radius:10px;overflow:hidden}' +
+      '.dq-lang button{font:600 12.5px var(--fd,system-ui);padding:7px 13px;border:0;background:transparent;color:var(--muted,#9aa3b2);cursor:pointer}' +
+      '.dq-lang button[aria-pressed="true"]{background:rgba(234,179,8,.16);color:var(--text,#e3e8ef)}' +
+      '.dq-score{font:700 13px var(--fm,monospace);color:var(--text,#e3e8ef);margin-left:auto}' +
+      '.dq-reset{font:600 12.5px var(--fd,system-ui);padding:7px 13px;border-radius:10px;border:1px solid var(--border,rgba(255,255,255,.12));background:transparent;color:var(--text,#e3e8ef);cursor:pointer}' +
+      '.dq-lang button:focus-visible,.dq-reset:focus-visible{outline:2px solid #eab308;outline-offset:2px}';
+    document.head.appendChild(st);
+  }
   function wirePractice(containerEl, questions, opts) {
     opts = opts || {};
     const tool = opts.tool || 'drawing-druid';
     const defaultTopic = opts.topic || '';
-    containerEl.innerHTML = '';
-    questions.forEach((q, qi) => {
-      const card = document.createElement('div');
-      card.className = 'q-card';
+    quizStyle();
+    let lang = 'en';
+    try { lang = localStorage.getItem('dd-quiz-lang') === 'af' ? 'af' : 'en'; } catch (e) { /* private mode */ }
+    let extra = global.DD_QUIZ || null;
+    const answered = {};      // question index → the option chosen
 
-      const qText = document.createElement('div');
-      qText.className = 'q-text';
-      qText.textContent = (qi + 1) + '. ' + q.text;
-      card.appendChild(qText);
-
-      const optsWrap = document.createElement('div');
-      optsWrap.className = 'q-opts';
-      q.options.forEach((optText, oi) => {
-        const btn = document.createElement('button');
-        btn.className = 'mc-opt';
-        btn.type = 'button';
-        btn.textContent = optText;
-        btn.addEventListener('click', () => {
-          if (optsWrap.classList.contains('answered')) return;
-          optsWrap.classList.add('answered');
-          const correct = oi === q.answer;
-          Array.from(optsWrap.children).forEach((b, bi) => {
-            if (bi === q.answer) b.classList.add('correct');
-            else if (bi === oi) b.classList.add('wrong');
-          });
-          if (global.MagicLabProgress) {
-            global.MagicLabProgress.track(tool, correct ? 'quiz_correct' : 'quiz_wrong', { topic: q.topic || defaultTopic });
-          }
-          if (q.explanation) {
-            const exp = card.querySelector('.q-explain');
-            if (exp) exp.classList.add('show');
-          }
-        });
-        optsWrap.appendChild(btn);
+    // the options in a fixed shuffled order per question (seeded by its English text), the same in both
+    // languages, so the right answer is not always in the same place
+    const order = (key, n) => {
+      let h = 2166136261; for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+      const idx = Array.from({ length: n }, (_, i) => i);
+      for (let i = n - 1; i > 0; i--) { h = Math.imul(h ^ (h >>> 15), 2246822519) >>> 0; const j = h % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+      return idx;
+    };
+    const shuffled = (q, ord) => q && Object.assign({}, q, { options: ord.map(i => q.options[i]) });
+    const items = () => {
+      const af = (extra && extra.af) || [];
+      const raw = questions.map(q => ({ answer: q.answer, topic: q.topic, en: q, af: af.find(x => x.k && q.text.indexOf(x.k) === 0) || null }))
+        .concat(((extra && extra.more) || []).map(m => ({ answer: m.answer, en: m.en, af: m.af })));
+      return raw.map(it => {
+        const ord = order(it.en.text, it.en.options.length);
+        return { answer: ord.indexOf(it.answer), topic: it.topic, en: shuffled(it.en, ord), af: it.af && it.af.options.length === it.en.options.length ? shuffled(it.af, ord) : null };
       });
-      card.appendChild(optsWrap);
+    };
+    const hasAf = () => items().some(it => it.af);
 
-      if (q.explanation) {
+    function draw() {
+      containerEl.innerHTML = '';
+      const list = items(), total = list.length;
+      const bar = document.createElement('div');
+      bar.className = 'dq-bar';
+      if (hasAf()) {
+        bar.innerHTML = '<div class="dq-lang" role="group" aria-label="Language / Taal"><button type="button" data-l="en">English</button><button type="button" data-l="af">Afrikaans</button></div>';
+        bar.querySelectorAll('[data-l]').forEach(btn => {
+          btn.setAttribute('aria-pressed', String(btn.dataset.l === lang));
+          btn.onclick = () => { lang = btn.dataset.l; try { localStorage.setItem('dd-quiz-lang', lang); } catch (e) { /* private mode */ } draw(); };
+        });
+      }
+      const score = document.createElement('span');
+      score.className = 'dq-score';
+      score.setAttribute('aria-live', 'polite');
+      const reset = document.createElement('button');
+      reset.type = 'button'; reset.className = 'dq-reset';
+      reset.textContent = lang === 'af' ? 'Begin weer' : 'Try again';
+      reset.onclick = () => { Object.keys(answered).forEach(k => delete answered[k]); draw(); };
+      bar.appendChild(score); bar.appendChild(reset);
+      containerEl.appendChild(bar);
+      const showScore = () => {
+        const n = Object.keys(answered).length, right = list.filter((it, i) => answered[i] === it.answer).length;
+        score.textContent = (lang === 'af' ? 'Telling: ' : 'Score: ') + right + ' / ' + n + (lang === 'af' ? ' beantwoord, ' : ' answered, ') + total + (lang === 'af' ? ' vrae' : ' questions');
+      };
+      showScore();
+
+      list.forEach((it, qi) => {
+        const q = (lang === 'af' && it.af) || it.en;
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        const qText = document.createElement('div');
+        qText.className = 'q-text';
+        qText.textContent = (qi + 1) + '. ' + q.text;
+        card.appendChild(qText);
+        const optsWrap = document.createElement('div');
+        optsWrap.className = 'q-opts';
         const exp = document.createElement('div');
         exp.className = 'q-explain';
-        exp.textContent = q.explanation;
-        card.appendChild(exp);
+        exp.textContent = q.explanation || '';
+        const mark = oi => {
+          optsWrap.classList.add('answered');
+          Array.from(optsWrap.children).forEach((b, bi) => {
+            if (bi === it.answer) b.classList.add('correct');
+            else if (bi === oi) b.classList.add('wrong');
+          });
+          if (q.explanation) exp.classList.add('show');
+        };
+        q.options.forEach((optText, oi) => {
+          const btn = document.createElement('button');
+          btn.className = 'mc-opt';
+          btn.type = 'button';
+          btn.textContent = optText;
+          btn.addEventListener('click', () => {
+            if (optsWrap.classList.contains('answered')) return;
+            const correct = oi === it.answer;
+            answered[qi] = oi;
+            mark(oi);
+            showScore();
+            if (global.MagicLabProgress) global.MagicLabProgress.track(tool, correct ? 'quiz_correct' : 'quiz_wrong', { topic: it.topic || defaultTopic });
+          });
+          optsWrap.appendChild(btn);
+        });
+        card.appendChild(optsWrap);
+        if (q.explanation) card.appendChild(exp);
+        containerEl.appendChild(card);
+        if (qi in answered) mark(answered[qi]);   // keep the answers when the language changes
+      });
+    }
+    draw();
+
+    // the chapter's bilingual quiz file, once per page
+    if (!extra && !opts.noExtra) {
+      const page = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+      if (page) {
+        const sc = document.createElement('script');
+        sc.src = 'quiz/' + page + '.js';
+        sc.onload = () => { if (global.DD_QUIZ) { extra = global.DD_QUIZ; draw(); } };
+        sc.onerror = () => {};
+        document.head.appendChild(sc);
       }
-      containerEl.appendChild(card);
-    });
+    }
   }
 
   // ── A3 workbook sheets ──

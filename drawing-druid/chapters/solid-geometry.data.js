@@ -602,7 +602,7 @@
       text: 'An oblique plane cuts through a cylinder. What shape is the true shape of that cut?',
       options: ['An ellipse', 'A perfect circle', 'A rectangle', 'A triangle'],
       answer: 0,
-      explanation: 'A circular cross-section viewed obliquely always foreshortens into an ellipse — the same reason an isometric circle is drawn as an ellipse.',
+      explanation: 'An oblique cut through a cylinder is always an ellipse: its minor axis is the diameter of the cylinder and its major axis the true length of the cutting line. For the same reason an isometric circle is drawn as an ellipse.',
     },
     {
       text: 'A cutting plane through a cone is exactly PARALLEL to its base. What is the true shape of that cut, and does it need a special true-shape construction?',

@@ -548,7 +548,7 @@
       explanation: 'A feature control frame reads left to right: characteristic symbol, then tolerance value/zone, then (if needed) datum reference letters.',
     },
     {
-      text: 'A hole is callled out as "⌀10 CBORE ⌀6 DEEP 4". What does CBORE tell a machinist to do?',
+      text: 'A hole is called out as "⌀10 CBORE ⌀6 DEEP 4". What does CBORE tell a machinist to do?',
       options: [
         'Machine a wider, flat-bottomed recess at the hole\'s entrance — typically so a bolt head can sit flush with or below the surface',
         'Cut a conical recess sized by an included angle',
