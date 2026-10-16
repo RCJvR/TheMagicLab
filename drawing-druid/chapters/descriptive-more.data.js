@@ -47,6 +47,8 @@
     });
     const lineAB = [L(a, b, 'A'), L(a1, b1, 'A')];
     lineAB.forEach(r => Object.assign(r, { color: '#f87171' }));
+    // answer block to the right of everything, level with the XY line
+    const ansX = Math.max(cx + cfg.R, bF[0], b1r[0], bT[0], bR[0]) + 16, ansY = XY + 8;
     const ang = (v, p1, p2, r, t) => ({ kind: 'angle-arc', vertex: v, p1, p2, radius: r, text: t });
     const steps = [
       { instruction: 'GIVEN (1st angle): the front view and the top view of a ' + cfg.name + ', with the sloping edge AB marked (a, b in the front view; a1, b1 in the top view). Find (1) the TRUE LENGTH of AB, (2) its true inclination to the HP and (3) its true inclination to the VP.',
@@ -65,8 +67,8 @@
       { instruction: 'Join a1 to b1\'\'. It is the true length again (check it against the first answer), and the angle it makes with XY is the true inclination of AB to the VP (φ).',
         calloutAt: [(a1[0] + bT[0]) / 2, (a1[1] + bT[1]) / 2], reveals: [Object.assign(L(a1, bT, 'A'), { color: '#fde047' }), (sg > 0 ? ang(a1, [a1[0] + 10, a1[1]], bT, 9, 'φ') : ang(a1, bT, [a1[0] - 10, a1[1]], 9, 'φ'))] },
       { instruction: 'Write the answers in the answer block: true length, true inclination to the HP and true inclination to the VP.',
-        calloutAt: [cx + cfg.R + 40, XY - cfg.h], reveals: [['ANSWER / ANTWOORD', YEL], ['1. TL AB = ' + TL.toFixed(1) + ' mm'], ['2. θ (HP) = ' + theta.toFixed(1) + '°'], ['3. φ (VP) = ' + phi.toFixed(1) + '°']]
-          .map(([t, c], i) => lbl([cx + cfg.R + 40, XY - cfg.h + i * 5.5], t, Object.assign({ anchor: 'start', size: 2.9 }, c || {}))) },
+        calloutAt: [ansX, ansY], reveals: [['ANSWER / ANTWOORD', YEL], ['1. TL AB = ' + TL.toFixed(1) + ' mm'], ['2. θ (HP) = ' + theta.toFixed(1) + '°'], ['3. φ (VP) = ' + phi.toFixed(1) + '°']]
+          .map(([t, c], i) => lbl([ansX, ansY + i * 5.5], t, Object.assign({ anchor: 'start', size: 2.9 }, c || {}))) },
     ];
     C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary || ('Find the true length of a sloping edge of a ' + cfg.name + ' and its true inclinations to the HP and the VP by swinging each view parallel to XY.'),
       workbookPrompt: 'The front and top views of a ' + cfg.name + ' (base circumradius ' + cfg.R + ' mm, height ' + cfg.h + ' mm) are given in 1st angle, with the edge AB marked. Determine (1) the true length of AB, (2) its true inclination to the HP and (3) its true inclination to the VP. Show all construction.',
@@ -80,4 +82,8 @@
   pyramidLine({ id: 'dg-tl-pentagonal', title: 'True Length: Edge of a Pentagonal Pyramid', name: 'pentagonal pyramid', n: 5, R: 28, a0: 90, h: 58, b: 3 });
   pyramidLine({ id: 'dg-tl-hexagonal', title: 'True Length: Edge of a Hexagonal Pyramid', name: 'hexagonal pyramid', n: 6, R: 28, a0: 0, h: 60, b: 5 });
   pyramidLine({ id: 'dg-tl-octagonal', title: 'True Length: Edge of an Octagonal Pyramid', name: 'octagonal pyramid', n: 8, R: 28, a0: 22.5, h: 62, b: 6 });
+  pyramidLine({ id: 'dg-tl-square-front', title: 'True Length: Front Edge of a Square Pyramid', name: 'square pyramid (edge to the front)', n: 4, R: 30, a0: -60, h: 52, b: 0 });
+  pyramidLine({ id: 'dg-tl-triangular-low', title: 'True Length: Edge of a Low Triangular Pyramid', name: 'low triangular pyramid', n: 3, R: 32, a0: 30, h: 35, b: 2 });
+  pyramidLine({ id: 'dg-tl-pentagonal-tall', title: 'True Length: Edge of a Tall Pentagonal Pyramid', name: 'tall pentagonal pyramid', n: 5, R: 24, a0: 18, h: 70, b: 4 });
+  pyramidLine({ id: 'dg-tl-hexagonal-30', title: 'True Length: Hexagonal Pyramid Turned 30°', name: 'hexagonal pyramid (corners front and back)', n: 6, R: 28, a0: 90, h: 58, b: 4 });
 })(window);
