@@ -391,4 +391,31 @@
     segs: [{ to: 120, lift: 30, law: 'uarm' }, { to: 210 }, { to: 330, lift: -30, law: 'uarm' }, { to: 360 }],
     summary: 'Uniform acceleration and retardation both ways: the graph is two mirrored parabolas, each built from the 1:3:5:5:3:1 height ratio.',
     prompt: 'A cam turning anticlockwise drives a knife-edge follower. Camshaft Ø24; minimum distance 28 mm. 0°–120°: rise 30 mm with uniform acceleration and retardation; 120°–210°: dwell; 210°–330°: fall 30 mm with uniform acceleration and retardation; 330°–360°: dwell. Draw the displacement graph (10 mm = 30°) and the cam profile.' });
+
+  // ═══ More exercises (JPEGD-volume pass, 2026-10-16) ═══
+  helix({ id: 'auger-rh-2', title: 'Auger: Right-Hand, Two Turns, Fine Pitch', kind: 'auger', D: 70, d: 26, pitch: 44, turns: 2, hand: 'R',
+    summary: 'A finer-pitched right-hand auger: two turns, so the blade crosses in front of the shaft twice.',
+    prompt: 'A right-hand single-start auger: outside diameter 70 mm, shaft Ø26, pitch 44 mm. Starting at 0 on the left, draw two turns in the front view with the top view. Scale 1:1, no hidden detail.' });
+  helix({ id: 'spring-rh-2', title: 'Coil Spring: Right-Hand, Two Turns, Fine Wire', kind: 'spring', D: 60, wire: 8, pitch: 40, turns: 2, hand: 'R',
+    summary: 'A lighter right-hand spring of Ø8 wire: the same wire-centre helix method, with more space between the coils.',
+    prompt: 'A right-hand coil spring: outside diameter 60 mm, round wire Ø8, pitch 40 mm. Draw two turns in the front view with the top view, starting at 0 on the left. Show the cut ends hatched. Scale 1:1.' });
+  squareThread({ id: 'square-thread-lh', title: 'Square Thread: Left-Hand, Two Turns', D: 64, d: 44, pitch: 36, turns: 2, hand: 'L',
+    summary: 'A single-start left-hand square thread: the crest and root helices slope the other way.',
+    prompt: 'A single-start LEFT-hand square thread: outside diameter 64 mm, core diameter 44 mm, pitch 36 mm. Draw the top view and two turns in the front view, starting at 0 on the left. Scale 1:1, no hidden detail.' });
+  cam({ id: 'cam-knife-uniform-shm', title: 'Cam: Knife-Edge, Uniform Rise and SHM Fall', follower: 'knife', base: 24, shaft: 20, dir: 'cw', sc: 10,
+    segs: [{ to: 120, lift: 32, law: 'uniform' }, { to: 180 }, { to: 300, lift: -32, law: 'shm' }, { to: 360 }],
+    summary: 'A uniform rise and a simple harmonic fall on a clockwise cam: two different motion laws on one graph.',
+    prompt: 'A cam turning clockwise drives a knife-edge follower. Camshaft Ø20; minimum distance 24 mm. 0°–120°: rise 32 mm, uniform motion; 120°–180°: dwell; 180°–300°: fall 32 mm, simple harmonic motion; 300°–360°: dwell. Draw the displacement graph (10 mm = 30°) and the cam profile.' });
+  cam({ id: 'cam-roller-uarm', title: 'Cam: Roller Follower, UARM Rise and Fall', follower: 'roller', roller: 16, base: 22, shaft: 20, dir: 'cw', sc: 10,
+    segs: [{ to: 150, lift: 30, law: 'uarm' }, { to: 210 }, { to: 360, lift: -30, law: 'uarm' }],
+    summary: 'Uniform acceleration and retardation with a roller follower: the graph goes to the roller-centre path, and the profile is drawn inside the rollers.',
+    prompt: 'A cam turning clockwise drives a Ø16 roller follower. Camshaft Ø20; minimum distance 22 mm. 0°–150°: rise 30 mm, uniform acceleration and retardation; 150°–210°: dwell; 210°–360°: fall 30 mm, uniform acceleration and retardation. Draw the displacement graph (10 mm = 30°) and the cam profile.' });
+  cam({ id: 'cam-knife-shm-both', title: 'Cam: Knife-Edge, SHM Rise and Fall, Long Dwell', follower: 'knife', base: 26, shaft: 22, dir: 'ccw', sc: 10,
+    segs: [{ to: 90, lift: 28, law: 'shm' }, { to: 210 }, { to: 300, lift: -28, law: 'shm' }, { to: 360 }],
+    summary: 'A quick simple harmonic rise and fall with a long dwell at the top between them.',
+    prompt: 'A cam turning anticlockwise drives a knife-edge follower. Camshaft Ø22; minimum distance 26 mm. 0°–90°: rise 28 mm, SHM; 90°–210°: dwell; 210°–300°: fall 28 mm, SHM; 300°–360°: dwell. Draw the displacement graph (10 mm = 30°) and the cam profile.' });
+  cam({ id: 'cam-roller-two-step', title: 'Cam: Roller Follower, Two-Step Rise', follower: 'roller', roller: 14, base: 20, shaft: 18, dir: 'ccw', sc: 10,
+    segs: [{ to: 60, lift: 14, law: 'uniform' }, { to: 120 }, { to: 180, lift: 16, law: 'uniform' }, { to: 240 }, { to: 360, lift: -30, law: 'shm' }],
+    summary: 'The follower rises in two uniform steps with a dwell between them, then falls back with simple harmonic motion.',
+    prompt: 'A cam turning anticlockwise drives a Ø14 roller follower. Camshaft Ø18; minimum distance 20 mm. 0°–60°: rise 14 mm, uniform; 60°–120°: dwell; 120°–180°: rise 16 mm, uniform; 180°–240°: dwell; 240°–360°: fall 30 mm, SHM. Draw the displacement graph (10 mm = 30°) and the cam profile.' });
 })(window);
