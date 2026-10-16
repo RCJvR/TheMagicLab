@@ -1,6 +1,8 @@
 // Drawing Druid — Course Drawings access.
 //   Teachers: see every drawing with its full step-by-step memo, and set each drawing per class to
 //             Locked / Open / Opens when the chapter is complete (table course_drawing_releases).
+//             Teachers also get a class progress table: each learner's finished drawings per chapter,
+//             and how many course drawings are open to them (CSV download).
 //   Learners: see the task (step 1) and the rubric only. A drawing is available when
 //             - a class they belong to has it Open, or
 //             - it is on "chapter complete" (the default, and the rule for learners who are not in a
@@ -62,7 +64,11 @@
     const { error } = await sb.from('course_drawing_releases').upsert({ class_id: classId, drawing_id: id, mode, updated_by: uid, updated_at: new Date().toISOString() });
     const st = document.getElementById('cdSaveState');
     if (st) st.textContent = error ? 'Could not save: ' + error.message : 'Saved.';
-    if (!error) { (S.releases[classId] = S.releases[classId] || {})[id] = mode; }
+    if (!error) {
+      (S.releases[classId] = S.releases[classId] || {})[id] = mode;
+      const body = document.getElementById('cdProgressBody');
+      if (body && PROG[classId]) renderProgress(classId, body);
+    }
   }
 
   function teacherPanel() {
@@ -74,8 +80,65 @@
     box.innerHTML = '<details class="cd-panel" open><summary>Release settings for your class</summary>' +
       '<label class="cd-row">Class <select id="cdClass">' + S.classes.map(c => '<option value="' + c.id + '"' + (c.id === cls ? ' selected' : '') + '>' + esc(c.name) + '</option>').join('') + '</select> <span id="cdSaveState" class="cd-save"></span></label>' +
       '<table class="cd-rel">' + ORDER.map(id => '<tr><td>' + esc(C[id].title) + '</td><td><select data-id="' + id + '">' + MODES.map(([v, t]) => '<option value="' + v + '"' + ((rel[id] || 'auto') === v ? ' selected' : '') + '>' + t + '</option>').join('') + '</select></td></tr>').join('') + '</table></details>';
+    box.insertAdjacentHTML('beforeend', '<details class="cd-panel" id="cdProgress" open><summary>Class progress</summary><div id="cdProgressBody" class="cd-prog-body">Loading…</div></details>');
     box.querySelector('#cdClass').onchange = e => { S.cls = e.target.value; teacherPanel(); };
+    classProgress(cls);
     box.querySelectorAll('select[data-id]').forEach(sel => { sel.onchange = () => saveMode(cls, sel.dataset.id, sel.value); });
+  }
+
+  // ── class progress (teachers): progress_events of their learners are readable under RLS ──
+  const PROG = {};
+  async function classProgress(classId) {
+    const body = document.getElementById('cdProgressBody');
+    if (!body) return;
+    try {
+      if (!PROG[classId]) {
+        const sb = global.MagicLabAuth._supabase();
+        const { data: mem, error: e1 } = await sb.from('class_members').select('student_id, profiles:student_id(display_name)').eq('class_id', classId);
+        if (e1) throw e1;
+        const learners = (mem || []).map(m => ({ id: m.student_id, name: (m.profiles && m.profiles.display_name) || 'Learner', done: new Set() }));
+        if (learners.length) {
+          const { data: ev, error: e2 } = await sb.from('progress_events').select('user_id, topic').in('user_id', learners.map(l => l.id))
+            .eq('tool', 'drawing-druid').eq('event_type', 'lesson_complete').not('topic', 'is', null);
+          if (e2) throw e2;
+          const by = Object.fromEntries(learners.map(l => [l.id, l]));
+          (ev || []).forEach(r => { if (by[r.user_id]) by[r.user_id].done.add(r.topic); });
+        }
+        learners.sort((a, b) => a.name.localeCompare(b.name));
+        PROG[classId] = learners;
+      }
+      if (S.cls && S.cls !== classId) return;
+      renderProgress(classId, body);
+    } catch (err) {
+      body.textContent = 'Could not load the progress: ' + (err.message || err);
+    }
+  }
+  function progressRows(classId) {
+    const chapters = Object.keys(CH).sort(), rel = S.releases[classId] || {};
+    return { chapters, rows: PROG[classId].map(l => {
+      const per = chapters.map(ch => [CH[ch].filter(id => l.done.has(id)).length, CH[ch].length]);
+      const open = ORDER.filter(id => { const m = rel[id] || 'auto'; if (m === 'open') return true; if (m === 'locked') return false; const ids = CH[META[id].chapter] || []; return ids.length && ids.every(x => l.done.has(x)); }).length;
+      return { name: l.name, per, total: per.reduce((t, p) => t + p[0], 0), open };
+    }) };
+  }
+  function renderProgress(classId, body) {
+    if (!PROG[classId].length) { body.textContent = 'No learners in this class yet.'; return; }
+    const { chapters, rows } = progressRows(classId), all = chapters.reduce((t, ch) => t + CH[ch].length, 0);
+    const cell = ([d, n]) => '<td class="cd-pc' + (d === n ? ' full' : d ? ' part' : '') + '" title="' + d + ' of ' + n + ' finished">' + (d ? d + '/' + n : '·') + '</td>';
+    body.innerHTML = '<p class="cd-note" style="margin:0 0 8px">A drawing counts once the learner reaches its finished step. Course drawings open uses this class\u2019s release settings.</p>' +
+      '<div class="cd-prog-scroll"><table class="cd-prog"><thead><tr><th>Learner</th><th>All</th><th>Course drawings open</th>' + chapters.map(ch => '<th class="cd-ch"><span>' + esc(chapterName(ch)) + '</span></th>').join('') + '</tr></thead><tbody>' +
+      rows.map(r => '<tr><th>' + esc(r.name) + '</th><td class="cd-pt">' + r.total + '/' + all + '</td><td class="cd-pt">' + r.open + '/' + ORDER.length + '</td>' + r.per.map(cell).join('') + '</tr>').join('') +
+      '</tbody></table></div><button type="button" class="cd-csv" id="cdCsv">Download CSV</button>';
+    body.querySelector('#cdCsv').onclick = () => {
+      const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+      const lines = [['Learner', 'Drawings finished', 'Course drawings open', ...chapters.map(chapterName)].map(q).join(',')]
+        .concat(rows.map(r => [r.name, r.total + '/' + all, r.open + '/' + ORDER.length, ...r.per.map(p => p[0] + '/' + p[1])].map(q).join(',')));
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv' }));
+      const c = S.classes.find(x => x.id === classId);
+      a.download = 'drawing-druid-progress-' + ((c && c.name) || 'class').replace(/[^\w-]+/g, '-') + '.csv';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
   }
 
   async function load(profile) {
@@ -107,6 +170,7 @@
   }
 
   global.CourseAccess = {
+    _progressRows: progressRows, _PROG: PROG,   // for testing
     mount() {
       applyView();
       lesson = global.DruidLesson.mount({ order: ORDER, constructions: C, locked, onRender, show3d: () => S.teacher });   // the model would give the answer away
