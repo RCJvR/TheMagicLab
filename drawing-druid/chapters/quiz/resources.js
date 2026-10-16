@@ -19,8 +19,8 @@ window.DD_QUIZ = {
   ],
   more: [
     { answer: 2,
-      en: { text: "What is the diameter of a standard flat washer for an M16 bolt?", options: ["16 mm", "24 mm", "About 2D + 3 = 35 mm", "1.5D = 24 mm across flats"], explanation: "A washer's outside diameter is drawn as about 2D + 3 mm; for M16 that is 35 mm. Its thickness is about 0.15D." },
-      af: { text: "Wat is die middellyn van 'n standaard plat wasser vir 'n M16-bout?", options: ["16 mm", "24 mm", "Ongeveer 2D + 3 = 35 mm", "1,5D = 24 mm oor die plat vlakke"], explanation: "'n Wasser se buitemiddellyn word as ongeveer 2D + 3 mm geteken; vir M16 is dit 35 mm. Sy dikte is ongeveer 0,15D." } },
+      en: { text: "In the proportions used for drawing a washer under an M16 nut, what are its outside diameter and thickness?", options: ["16 mm and 16 mm", "24 mm and 8 mm", "32 mm (2D) and 3.2 mm (0.2D)", "48 mm (3D) and 1.6 mm (0.1D)"], explanation: "A washer is drawn 2D across and 0.2D thick: for M16 that is Ø32 × 3.2 mm." },
+      af: { text: "Volgens die verhoudings vir die teken van 'n wasser onder 'n M16-moer, wat is sy buitemiddellyn en dikte?", options: ["16 mm en 16 mm", "24 mm en 8 mm", "32 mm (2D) en 3,2 mm (0,2D)", "48 mm (3D) en 1,6 mm (0,1D)"], explanation: "'n Wasser word 2D breed en 0,2D dik geteken: vir M16 is dit Ø32 × 3,2 mm." } },
     { answer: 1,
       en: { text: "The curved chamfer arcs on a hexagon head are drawn with which radius in the view showing three faces?", options: ["R = D", "R = 1.5D on the middle face", "R = 0.7D", "No arcs are drawn"], explanation: "The large arc on the middle face is R 1.5D; the smaller arcs on the side faces are found from it." },
       af: { text: "Met watter radius word die geboë afskuinsingsboë op 'n seshoekkop geteken in die aansig wat drie vlakke wys?", options: ["R = D", "R = 1,5D op die middelste vlak", "R = 0,7D", "Geen boë word geteken nie"], explanation: "Die groot boog op die middelste vlak is R 1,5D; die kleiner boë op die syvlakke word daarvandaan gevind." } },

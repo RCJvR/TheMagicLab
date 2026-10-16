@@ -179,7 +179,11 @@ window.DD_CHAPTERS = {
   "ip-square-on-hexagon",
   "ip-triangle-on-square",
   "ip-hexagon-on-octagon",
-  "ip-square-on-triangle"
+  "ip-square-on-triangle",
+  "ip12-cyl-45",
+  "ip12-cyl-offset",
+  "ip12-cyl-30-offset",
+  "ip12-equal-45"
  ],
  "isometric-drawing-2": [
   "isometric-half-section",
