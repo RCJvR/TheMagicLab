@@ -110,7 +110,7 @@
           { kind: 'dimension', p1: [FX - Rmax, CY + Rmax + 4], p2: [FX + Rmax, CY + Rmax + 4], offset: 4, text: 'Ø' + (2 * Rmax) },
           { kind: 'dimension', p1: [RX, CY - Rmax - 4], p2: [RX + len, CY - Rmax - 4], offset: -4, text: String(+len.toFixed(1)) }] },
     ];
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'third', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _turned: P,
       steps: steps.filter(s => s.reveals.length).map((s, i) => Object.assign({ id: i + 1 }, s)) };
     ORDER.push(cfg.id);
   }

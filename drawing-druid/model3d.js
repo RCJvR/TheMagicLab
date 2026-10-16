@@ -53,7 +53,7 @@
     // ── prepared once per model: faces, their surfaces, and the unique edges ──
     let M = null;
     function prepare(sol) {
-      const faces = []; sol.forEach(sd => sd.forEach(f => faces.push(f)));
+      const faces = [], solidOf = []; sol.forEach((sd, si) => sd.forEach(f => { faces.push(f); solidOf.push(si); }));
       const kq = q => q.map(v => Math.round(v * 1e3)).join(',');
       // a surface: faces joined across smooth seams (a cylinder, a cone), so the seams are not outlined
       const parent = faces.map((f, i) => i), root = i => { while (parent[i] !== i) i = parent[i] = parent[parent[i]]; return i; };
@@ -81,7 +81,7 @@
       const ext = i => [Math.min(...all.map(q => q[i])), Math.max(...all.map(q => q[i]))];
       const c = [0, 1, 2].map(i => { const [lo, hi] = ext(i); return (lo + hi) / 2; });
       const R = Math.max(1e-6, ...all.map(q => Math.hypot(q[0] - c[0], q[1] - c[1], q[2] - c[2])));
-      M = { faces, edges: [...edges.values()], surf: faces.map((f, i) => root(i)), plane, c, R };
+      M = { faces, solidOf, edges: [...edges.values()], surf: faces.map((f, i) => root(i)), plane, c, R };
     }
 
     function draw() {
@@ -98,15 +98,18 @@
       const zb = new Float32Array(PW * PH).fill(Infinity), fb = new Int32Array(PW * PH).fill(-1);
       const img = g.createImageData(PW, PH), px = img.data;
       const light = [-0.35, -0.55, 0.76];
-      const colour = M.faces.map(f => {
-        const n = f.n, l = Math.hypot(n[0], n[1], n[2]) || 1, lit = Math.max(0, (n[0] * light[0] + n[1] * light[1] + n[2] * light[2]) / l);
-        const sh = 150 + 85 * lit;
+      const colourOf = (f, n, inside) => {
+        const l = Math.hypot(n[0], n[1], n[2]) || 1, lit = Math.max(0, (n[0] * light[0] + n[1] * light[1] + n[2] * light[2]) / l);
+        const sh = (150 + 85 * lit) * (inside ? 0.82 : 1);
         return f.opening ? [120, 120, 120] : f.cutFace ? [sh * 0.98, sh * 0.78, sh * 0.55] : [sh, sh, Math.min(255, sh + 10)];
-      });
+      };
       // fill: scanline per face (even-odd, so holes stay open), depth from the face's plane
       M.faces.forEach((f, fi) => {
-        const nv = tf(f.n);
-        if (nv[1] > -1e-6) return;                                   // facing away
+        let nv = tf(f.n), n = f.n, inside = false;
+        if (nv[1] > -1e-6) {                                         // facing away: skip, unless it is sheet metal (seen from inside)
+          if (!f.twoSided || nv[1] < 1e-6) return;
+          nv = nv.map(v => -v); n = n.map(v => -v); inside = true;
+        }
         const loops = [f.pts, ...(f.holes || [])].map(L => L.map(q => { const v = tf(q); return [SX(v), SY(v)]; }));
         const v0 = tf(f.pts[0]), d0 = nv[0] * v0[0] + nv[1] * v0[1] + nv[2] * v0[2];
         // depth at a pixel: solve the face's plane for the depth coordinate
@@ -114,7 +117,7 @@
         let y0 = Infinity, y1 = -Infinity;
         loops.forEach(L => L.forEach(q => { y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); }));
         const ya = Math.max(0, Math.ceil(y0 - 0.5)), yb = Math.min(PH - 1, Math.floor(y1 - 0.5));
-        const col = colour[fi];
+        const col = colourOf(f, n, inside);
         for (let y = ya; y <= yb; y++) {
           const yc = y + 0.5, xs = [];
           loops.forEach(L => L.forEach((q, i) => {
@@ -133,6 +136,18 @@
           }
         }
       });
+      // where two solids pass through each other there is no edge in either: draw that curve from the
+      // image, wherever neighbouring pixels belong to different solids at the same depth
+      const tol = 0.01 * M.R + 2.5 / k;
+      for (let y = 0; y < PH - 1; y++) for (let x = 0; x < PW - 1; x++) {
+        const o = y * PW + x, a = fb[o];
+        if (a < 0) continue;
+        for (const q of [o + 1, o + PW]) {
+          const b = fb[q];
+          if (b < 0 || M.solidOf[a] === M.solidOf[b] || M.plane[a] === M.plane[b] || Math.abs(zb[o] - zb[q]) > tol) continue;
+          [o, q].forEach(t => { px[t * 4] = 27; px[t * 4 + 1] = 27; px[t * 4 + 2] = 31; });
+        }
+      }
       g.putImageData(img, 0, 0);
       // edges: drawn where they are in front, and only where the surface really changes across them
       const eps = 0.012 * M.R + 2 / k;                               // depth tolerance, model units

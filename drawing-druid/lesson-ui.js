@@ -5,8 +5,8 @@
 //   - keyboard: ← → steps, Home / End first step / finished drawing, [ ] or PgUp / PgDn drawings,
 //     + − 0 zoom, Shift + arrows pan, L construction lines, B background, ? help;
 //   - the place is kept in the URL (#d=<id>&s=<step>) so a refresh or a shared link returns to it;
-//   - a rotatable 3D model under the instruction when the model carries its solids (_solids or _iso;
-//     model3d.js is loaded on demand). opts.show3d(id) → false hides it (course drawings, learners).
+//   - a rotatable 3D model under the instruction when the model carries its solids (_solids or _iso)
+//     or model-defs.js has one for its id (model3d.js and model-defs.js are loaded on demand). opts.show3d(id) → false hides it (course drawings, learners).
 // Usage (after engine.js and the chapter data): const lesson = DruidLesson.mount({ order, constructions, stepWord });
 (function (global) {
   'use strict';
@@ -17,22 +17,30 @@
   function model3dPanel(after) {
     const holder = document.createElement('div');
     after.insertAdjacentElement('afterend', holder);
-    let viewer = null, loading = null, want = null;
-    const load = () => loading || (loading = new Promise((ok, bad) => {
-      if (global.DruidModel3D) return ok();
+    let viewer = null, want = null;
+    const loaded = {};
+    const script = (name, ready) => loaded[name] || (loaded[name] = new Promise((ok, bad) => {
+      if (ready()) return ok();
       const sc = document.createElement('script');
-      sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, 'model3d.js');
+      sc.src = HERE.replace(/lesson-ui\.js(\?.*)?$/, name);
       sc.onload = ok; sc.onerror = bad; document.head.appendChild(sc);
     }));
     return {
       show(md) {
-        const solids = md && (md._solids || md._iso);
-        want = solids ? md : null;
-        if (!solids) { if (viewer) viewer.hide(); return; }
-        load().then(() => {
+        want = md;
+        if (!md) { if (viewer) viewer.hide(); return; }
+        // a builder's own solids, or a hand-made model from model-defs.js
+        const own = md._solids || md._iso;
+        const defs = own ? Promise.resolve(null) : script('model-defs.js', () => global.DruidModelDefs);
+        defs.then(() => {
+          const solids = own || global.DruidModelDefs.get(md.id, md);
           if (want !== md) return;
-          if (!viewer) viewer = global.DruidModel3D.attach(holder);
-          viewer.show(solids, { projection: md.projection });
+          if (!solids) { if (viewer) viewer.hide(); return; }
+          return script('model3d.js', () => global.DruidModel3D).then(() => {
+            if (want !== md) return;
+            if (!viewer) viewer = global.DruidModel3D.attach(holder);
+            viewer.show(solids, { projection: md.projection });
+          });
         }).catch(() => {});
       },
     };

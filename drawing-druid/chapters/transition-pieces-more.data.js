@@ -154,7 +154,11 @@
     steps.push({ instruction: 'Close the development with the second half of the seam, ' + nameB(0) + nameT(0) + ' again, and line in the outline. The fold lines stay thin.',
       calloutAt: lastB, reveals: [L(lastB, lastT), lbl([(lastB[0] + lastT[0]) / 2 + 6, (lastB[1] + lastT[1]) / 2], 'SEAM / NAAT', { size: 2.6 }),
         lbl([devBox[0] + 50, devBox[1] + 8], 'DEVELOPMENT / ONTWIKKELING', GREY), lbl([FX + (x0 + x1) / 2, GY + 6], 'FRONT VIEW / VOORAANSIG', Object.assign({ size: 2.6 }, GREY)), lbl([FX + (x0 + x1) / 2, TY - y0 + 7], 'TOP VIEW / BOAANSIG', Object.assign({ size: 2.6 }, GREY))] });
-    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full',
+    // the 3D model: the triangles as thin sheet (two-sided; the ends stay open)
+    const sheet = pts => { const u = pts[1].map((v, k) => v - pts[0][k]), w = pts[2].map((v, k) => v - pts[0][k]);
+      return { pts, holes: [], n: [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]], twoSided: true }; };
+    const model = tris.map(t => sheet(t.kind === 'b' ? [B3(t.b), B3(t.b + 1), T3(t.t)] : [B3(t.b), T3(t.t + 1), T3(t.t)]));
+    C[cfg.id] = { id: cfg.id, title: cfg.title, projection: 'first', summary: cfg.summary, workbookPrompt: cfg.prompt, printLayout: 'full', _solids: [model],
       steps: steps.filter(s => s.reveals.length).map((s, k) => Object.assign({ id: k + 1 }, s)) };
     ORDER.push(cfg.id);
   }
