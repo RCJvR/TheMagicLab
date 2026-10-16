@@ -30,7 +30,8 @@
   ];
 
   // ── XP RATES ─────────────────────────────────────────────
-  // All rates in one place — easy to rebalance after pilot
+  // Mirrors public.xp_rates (supabase-xp-award-limits.sql), which is what
+  // actually decides the award — change both together.
   const XP_RATES = {
     lesson_complete:    10,
     quiz_correct_first: 5,
@@ -153,43 +154,36 @@
 
   /**
    * Award XP to the current user.
-   * Writes to profiles.xp and fires a progress_event.
-   * @param {number} amount
-   * @param {string} reason  — human-readable event label
-   * @param {string} [tool]  — tool slug if applicable
+   * The server (award_xp in supabase-xp-award-limits.sql) decides the
+   * amount from its own copy of XP_RATES, applies daily limits and writes
+   * the 'xp_earned' activity-feed row. awarded is 0 when a limit was hit.
+   * @param {string} eventKey — a key of XP_RATES, e.g. 'lesson_complete'
+   * @param {string} reason   — human-readable event label
+   * @param {string} [tool]   — tool slug if applicable
+   * @param {string} [topic]  — lesson/topic name if applicable
    */
-  async function awardXP(amount, reason, tool = null) {
+  async function awardXP(eventKey, reason, tool = null, topic = null) {
     if (!window.MagicLabAuth?.isLoggedIn()) return;
     const supabase = window.MagicLabAuth._supabase();
     const profile  = window.MagicLabAuth.getProfile();
     const session  = window.MagicLabAuth.getSession();
     const userId   = profile?.id ?? session?.user?.id;
-    if (!userId || amount <= 0) return;
+    if (!userId || !XP_RATES[eventKey]) return;
 
     try {
-      // Increment xp on the profile row
-      const { data: updated } = await supabase.rpc('increment_xp', {
-        user_id: userId,
-        amount:  amount
+      const { data, error } = await supabase.rpc('award_xp', {
+        event_key: eventKey,
+        tool:      tool || 'platform',
+        topic:     topic,
+        reason:    reason
       });
+      if (error) throw error;
 
-      // Also track in progress_events for the activity feed
-      await supabase.from('progress_events').insert({
-        user_id:    userId,
-        tool:       tool || 'platform',
-        event_type: 'xp_earned',
-        topic:      reason,
-        score:      amount,
-        metadata:   { xp: amount, reason }
-      });
-
-      // Check for newly unlocked badges after XP update
-      if (updated) {
-        const newXP = updated.xp;
+      if (data && data.awarded > 0) {
         await _checkAndAwardBadges(userId, supabase);
         // Dispatch a DOM event so nav chips etc. can update
         document.dispatchEvent(new CustomEvent('magiclab:xp:updated', {
-          detail: { xp: newXP, amount, reason }
+          detail: { xp: data.xp, amount: data.awarded, reason }
         }));
       }
     } catch (e) {
@@ -235,7 +229,7 @@
             .gte('created_at', today)
             .maybeSingle();
           if (!existing.data) {
-            await awardXP(XP_RATES.daily_first_lesson, 'Daily streak bonus');
+            await awardXP('daily_first_lesson', 'Daily streak bonus');
           }
         }
       }

@@ -68,15 +68,14 @@ async function track(tool, eventType, options = {}) {
   // ── XP awards ─────────────────────────────────────────────
   const _award = async () => {
     if (!window.MagicLabXP) return;
-    const rates = window.MagicLabXP.XP_RATES;
     const key   = `${tool}::${options.topic || ''}`;
 
     if (eventType === 'lesson_complete') {
-      await window.MagicLabXP.awardXP(rates.lesson_complete, `Lesson: ${options.topic || tool}`, tool);
+      await window.MagicLabXP.awardXP('lesson_complete', `Lesson: ${options.topic || tool}`, tool, options.topic ?? null);
 
       // Perfect quiz bonus — all questions correct first try this lesson
       if (_perfectTracker[key] === true) {
-        await window.MagicLabXP.awardXP(rates.quiz_perfect_bonus, 'Perfect quiz!', tool);
+        await window.MagicLabXP.awardXP('quiz_perfect_bonus', 'Perfect quiz!', tool, options.topic ?? null);
         // Track the perfect event for badge counting
         try {
           const sb  = window.MagicLabAuth._supabase();
@@ -90,18 +89,18 @@ async function track(tool, eventType, options = {}) {
 
       // Unit complete bonus
       if (options.unitComplete) {
-        await window.MagicLabXP.awardXP(rates.unit_complete, `Unit complete: ${options.unit || tool}`, tool);
+        await window.MagicLabXP.awardXP('unit_complete', `Unit complete: ${options.unit || tool}`, tool, options.unit ?? null);
       }
       // Full tool complete bonus
       if (options.toolComplete) {
-        await window.MagicLabXP.awardXP(rates.tool_complete, `Tool complete: ${tool}`, tool);
+        await window.MagicLabXP.awardXP('tool_complete', `Tool complete: ${tool}`, tool);
       }
     }
 
     if (eventType === 'quiz_correct') {
       const isFirst = options.metadata?.attempt === 1 || options.metadata?.firstTry !== false;
-      const xp = isFirst ? rates.quiz_correct_first : rates.quiz_correct_retry;
-      await window.MagicLabXP.awardXP(xp, `Quiz correct${isFirst ? '' : ' (retry)'}`, tool);
+      await window.MagicLabXP.awardXP(isFirst ? 'quiz_correct_first' : 'quiz_correct_retry',
+        `Quiz correct${isFirst ? '' : ' (retry)'}`, tool, options.topic ?? null);
       // Track perfect state: undefined = not seen yet, true = all good, false = disqualified
       if (isFirst) {
         if (_perfectTracker[key] === undefined) _perfectTracker[key] = true;
@@ -116,7 +115,7 @@ async function track(tool, eventType, options = {}) {
     }
 
     if (eventType === 'code_run') {
-      await window.MagicLabXP.awardXP(rates.code_run, 'Code run', tool);
+      await window.MagicLabXP.awardXP('code_run', 'Code run', tool, options.topic ?? null);
     }
   };
 
