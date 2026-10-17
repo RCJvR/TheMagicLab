@@ -493,7 +493,7 @@ MathMagician.registerChapter(7, {
             <div class="example-box-title">✏️ Example: Cone height from a half-angle</div>
             <p>A cone has base radius 6 cm. The slant side makes an angle of 65° with the base.<br>
             Stage 1: tan(65°) = h/6 → h = 6 tan(65°) ≈ 12.867 cm<br>
-            Slant height l = 6/cos(65°) ≈ 14.199 cm<br>
+            Slant height l = 6/cos(65°) ≈ 14.197 cm<br>
             Stage 2: Volume = ⅓π(6)²(12.867) ≈ 485.1 cm³</p>
           </div>
 <div class="mf-fig" data-fig='{"t":"geo","w":220,"h":230,"pts":{"A":[-6,0],"B":[6,0],"T":[0,12.87],"O":[0,0]},"nolab":["A","O"],"seg":[["A","B"],["B","T","ac",null,"l"],["T","A"],["O","T","mu dash",null,"h"],["O","B","or",null,"6"]],"ang":[["T","B","A","65°","gn",20]],"ra":[["B","O","T"]],"lab":{"T":"n","B":"se"},"cap":"Cross-section: tan 65° = h/6 and cos 65° = 6/l"}'></div>

@@ -30,7 +30,7 @@ MathMagician.registerChapter(9, {
             <div class="example-box-title">✏️ Voorbeeld: Vergelyk waardevermindering</div>
             <p>Motor gekoop vir R250 000. Waardeverminderingskoers 15% p.j. Waarde na 5 jaar:<br>
             <strong>Reguitlyn:</strong> A = 250000(1 − 0.15 × 5) = 250000(0.25) = R62 500<br>
-            <strong>Verminderende-saldo:</strong> A = 250000(0.85)⁵ ≈ 250000 × 0.4437 ≈ R110 929</p>
+            <strong>Verminderende-saldo:</strong> A = 250000(0.85)⁵ ≈ 250000 × 0.44371 ≈ R110 926</p>
           </div>
 
           <div class="def-box">
@@ -307,9 +307,9 @@ MathMagician.registerChapter(9, {
             <div class="example-box-title">✏️ Voorbeeld: Koersverandering plus 'n onttrekking</div>
             <p>R50 000 belê teen 8% p.j. kwartaalliks saamgestel vir 18 maande, waarna die koers verander na 6% p.j. maandeliks saamgestel. 2 jaar na die begin word R10 000 onttrek. Bereken die waarde na 4 jaar.<br>
             Stadium 1 (0 → 1.5 jaar, 8% kwartaalliks): A₁ = 50000(1.02)⁶ ≈ R56 308.12<br>
-            Stadium 2 (1.5 → 2 jaar, 6% maandeliks, 6 maande): A₂ = 56308.12(1.005)⁶ ≈ R58 018.05<br>
-            Onttrek R10 000 by jaar 2: saldo = 48 018.05<br>
-            Stadium 3 (2 → 4 jaar, 6% maandeliks, 24 maande): A₃ = 48018.05(1.005)²⁴ ≈ R54 152.71</p>
+            Stadium 2 (1.5 → 2 jaar, 6% maandeliks, 6 maande): A₂ = 56308.12(1.005)⁶ ≈ R58 018.62<br>
+            Onttrek R10 000 by jaar 2: saldo = 48 018.62<br>
+            Stadium 3 (2 → 4 jaar, 6% maandeliks, 24 maande): A₃ = 48018.62(1.005)²⁴ ≈ R54 124.66</p>
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Behou ten minste 4-5 desimale plekke (of volle sakrekenaar-akkuraatheid) by elke tussenstadium — vroeë afronding veroorsaak dat die finale antwoord wegdryf.</span></div>

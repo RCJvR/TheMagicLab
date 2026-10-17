@@ -31,7 +31,8 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">1</span><span>A perpendicular bisector cuts a line segment at 90° through its midpoint.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>An angle bisector divides an angle into two equal parts.</span></div>
             <div class="example-step"><span class="step-num">3</span><span>The perpendicular bisectors of the sides of a triangle meet at the circumcentre.</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>
+            <div class="example-step"><span class="step-num">4</span><span>The angle bisectors of a triangle meet at the incentre.</span></div>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Bisector Construction Explorer</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Watch the compass arcs of a perpendicular bisector or an angle bisector. Drag the yellow points.</p>
@@ -152,8 +153,6 @@ MathMagician.registerChapter(10, {
 
           })();
           </script>
-        The angle bisectors of a triangle meet at the incentre.</span></div>
-          </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>For SSS constructions, if the sum of the two shorter sides ≤ longest side, no triangle is possible — the sides won't meet (this is known as the triangle inequality).</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Regular Polygon Angle Calculator</div>

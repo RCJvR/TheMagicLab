@@ -31,7 +31,8 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">1</span><span>'n Middelloodlyn sny 'n lynstuk teen 90° deur sy middelpunt.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>'n Hoekhalveerder verdeel 'n hoek in twee gelyke dele.</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Die middelloodlyne van die sye van 'n driehoek ontmoet by die omsentrum.</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>
+            <div class="example-step"><span class="step-num">4</span><span>Die hoekhalveerders van 'n driehoek ontmoet by die insentrum.</span></div>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Middelloodlyn- en Halveerlynverkenner</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Kyk na die passerboë van ’n middelloodlyn of ’n hoekhalveerlyn. Sleep die geel punte.</p>
@@ -152,8 +153,6 @@ MathMagician.registerChapter(10, {
 
           })();
           </script>
-        Die hoekhalveerders van 'n driehoek ontmoet by die insentrum.</span></div>
-          </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>By SSS-konstruksies, as die som van die twee korter sye ≤ die langste sy, is geen driehoek moontlik nie — die sye sal nie ontmoet nie (dit staan bekend as die driehoeksongelykheid).</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit &#8212; Reëlmatige Veelhoek-hoeksakrekenaar</div>

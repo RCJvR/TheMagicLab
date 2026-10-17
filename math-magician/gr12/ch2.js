@@ -256,7 +256,7 @@ MathMagician.registerChapter(2, {
 
 
           <div class="example-box">
-            <div class="example-box-title">✏️ Example: y = ay², i.e. x = ay²</div>
+            <div class="example-box-title">✏️ Example: the sideways parabola x = ay²</div>
             <p>Consider the relation x = ay² (a sideways parabola, a > 0). Solving for y: y = ±√(x/a).<br>
             To make this a function we restrict to y ≥ 0 or y ≤ 0. If we choose y ≥ 0, the inverse (swapping back) is f⁻¹(x) = ax², x ≥ 0.</p>
           </div>

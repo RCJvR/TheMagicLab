@@ -321,8 +321,8 @@ MathMagician.registerChapter(4, {
             <div class="example-box-title">✏️ Example</div>
             <p>A(2; 5), B(−3; −4), C(4; −2). Find <strong>Ĉ</strong> = the angle at C in △ABC (angle ACB).<br>
             <span class="math">m_CA = (5−(−2))/(2−4) = 7/(−2) = −3,5</span> → θ₁ = tan⁻¹(−3,5) + 180° ≈ 105,9°<br>
-            <span class="math">m_CB = (−4−(−2))/(−3−4) = −2/−7 ≈ 0,286</span> → θ₂ = tan⁻¹(0,286) ≈ 16,0°<br>
-            Angle ACB = θ₁ − θ₂ ≈ 105,9° − 16,0° = 89,9°</p>
+            <span class="math">m_CB = (−4−(−2))/(−3−4) = −2/−7 ≈ 0,286</span> → θ₂ = tan⁻¹(0,286) ≈ 15,9°<br>
+            Angle ACB = θ₁ − θ₂ ≈ 105,9° − 15,9° = 90,0°. (In fact m_CA × m_CB = −3,5 × 2/7 = −1, so CA ⊥ CB and Ĉ = 90° exactly.)</p>
           </div>
 <div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-4,-5,6,6],"grid":1,"axes":{"ticks":2},"pts":{"A":[2,5],"B":[-3,-4],"C":[4,-2]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["B","C","ac"],["C","A","ac"]],"ang":[["A","C","B","Ĉ","gn",18]],"dots":true,"lab":{"A":"n","B":"sw","C":"e"},"cap":"Ĉ = inclination of CA − inclination of CB"}'></div>
 

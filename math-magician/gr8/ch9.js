@@ -303,8 +303,9 @@ MathMagician.registerChapter(9, {
           <div class="example-box">
             <div class="example-box-title">✏️ Identifying angle pairs</div>
             <div class="example-step"><span class="step-num">1</span><span>A transversal crosses parallel lines AB and CD at points P and Q.</span></div>
+            <div class="mf-fig" data-fig='{"t":"geo","w":320,"h":210,"view":[-0.5,-1.8,8.5,5],"pts":{"A":[0,3],"B":[8,3],"C":[0,0],"D":[8,0],"P":[3.1,3],"Q":[4.9,0],"T1":[2.2,4.5],"T2":[5.8,-1.5]},"nolab":["T1","T2","P","Q"],"dots":["P","Q"],"lab":{"A":"w","B":"e","C":"w","D":"e"},"seg":[["A","B","ln"],["C","D","ln"],["T1","T2","ac"]],"par":[["P","B"],["C","Q"]],"txt":[[3.65,3.95,"P"],[4.25,-1.05,"Q"],[2.4,3.45,"1","or"],[3.95,3.45,"2","or"],[2.6,2.5,"3","or"],[3.9,2.5,"4","or"],[4.2,0.45,"5","gn"],[5.7,0.45,"6","gn"],[4.45,-0.5,"7","gn"],[5.75,-0.5,"8","gn"]],"cap":"Angles 1–4 are at P and angles 5–8 at Q, numbered in the same positions"}'></div>
             <div class="example-step"><span class="step-num">2</span><span>∠1 (above AB, left of transversal) and ∠5 (above CD, left of transversal) → <strong>corresponding angles</strong> → equal.</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>∠3 (below AB, right) and ∠5 (above CD, left) → <strong>alternate interior angles</strong> → equal.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>∠4 (below AB, right) and ∠5 (above CD, left) → <strong>alternate interior angles</strong> → equal.</span></div>
             <div class="example-step"><span class="step-num">4</span><span>∠3 (below AB, left) and ∠5 (above CD, left) → <strong>co-interior angles</strong> → sum = 180°.</span></div>
           </div>
           <div class="example-box">

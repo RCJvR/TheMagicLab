@@ -30,7 +30,7 @@ MathMagician.registerChapter(9, {
             <div class="example-box-title">✏️ Example: Compare depreciation</div>
             <p>Car bought for R250 000. Depreciation rate 15% p.a. Value after 5 years:<br>
             <strong>Straight-line:</strong> A = 250000(1 − 0.15 × 5) = 250000(0.25) = R62 500<br>
-            <strong>Reducing-balance:</strong> A = 250000(0.85)⁵ ≈ 250000 × 0.4437 ≈ R110 929</p>
+            <strong>Reducing-balance:</strong> A = 250000(0.85)⁵ ≈ 250000 × 0.44371 ≈ R110 926</p>
           </div>
 
           <div class="def-box">
@@ -307,9 +307,9 @@ MathMagician.registerChapter(9, {
             <div class="example-box-title">✏️ Example: Rate change plus a withdrawal</div>
             <p>R50 000 invested at 8% p.a. compounded quarterly for 18 months, then the rate changes to 6% p.a. compounded monthly. 2 years after the start, R10 000 is withdrawn. Find the value after 4 years.<br>
             Stage 1 (0 → 1.5 yr, 8% quarterly): A₁ = 50000(1.02)⁶ ≈ R56 308.12<br>
-            Stage 2 (1.5 → 2 yr, 6% monthly, 6 months): A₂ = 56308.12(1.005)⁶ ≈ R58 018.05<br>
-            Withdraw R10 000 at year 2: balance = 48 018.05<br>
-            Stage 3 (2 → 4 yr, 6% monthly, 24 months): A₃ = 48018.05(1.005)²⁴ ≈ R54 152.71</p>
+            Stage 2 (1.5 → 2 yr, 6% monthly, 6 months): A₂ = 56308.12(1.005)⁶ ≈ R58 018.62<br>
+            Withdraw R10 000 at year 2: balance = 48 018.62<br>
+            Stage 3 (2 → 4 yr, 6% monthly, 24 months): A₃ = 48018.62(1.005)²⁴ ≈ R54 124.66</p>
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Keep at least 4-5 decimal places (or full calculator accuracy) at each intermediate stage — rounding early causes the final answer to drift.</span></div>

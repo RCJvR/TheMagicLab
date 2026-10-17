@@ -340,13 +340,13 @@ MathMagician.registerChapter(9, {
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Vorige prys</div>
             <p>'n Motor kos vandag R320 000. Inflasie was gemiddeld 7% p.j. oor die laaste 5 jaar. Bereken die geskatte prys 5 jaar gelede.<br>
-            <span class="math">P = 320000 ÷ (1.07)⁵ ≈ 320000 ÷ 1.4026 ≈ R228 148</span></p>
+            <span class="math">P = 320000 ÷ (1.07)⁵ ≈ 320000 ÷ 1.40255 ≈ R228 156</span></p>
           </div>
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bevolkingsgroei</div>
             <p>'n Dorp het 12 000 inwoners, en groei teen 3.2% p.j. Skat die bevolking in 6 jaar.<br>
-            <span class="math">A = 12000(1.032)⁶ ≈ 12000 × 1.2098 ≈ 14 518</span> inwoners</p>
+            <span class="math">A = 12000(1.032)⁶ ≈ 12000 × 1.20803 ≈ 14 496</span> inwoners</p>
           </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">

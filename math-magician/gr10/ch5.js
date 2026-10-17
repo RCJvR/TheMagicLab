@@ -471,11 +471,12 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="example-box">
-            <div class="example-box-title">✏️ Example: Using the identity given 5sin θ + 4 = 0</div>
+            <div class="example-box-title">✏️ Example: Using the identity — 5sin θ + 4 = 0, θ in Quadrant III</div>
             <p>
               <span class="math">sin θ = −4/5</span>, so <span class="math">sin²θ = 16/25</span>.<br>
-              By the identity: <span class="math">cos²θ = 1 − 16/25 = 9/25</span>.<br>
-              Note the question only asks for <span class="math">sin²θ + cos²θ</span>, which always equals <strong>1</strong> — no need to find θ itself!
+              By the identity: <span class="math">cos²θ = 1 − 16/25 = 9/25</span>, so <span class="math">cos θ = ±3/5</span>.<br>
+              In Quadrant III cosine is negative: <span class="math">cos θ = −3/5</span> and <span class="math">tan θ = sin θ / cos θ = (−4/5) ÷ (−3/5) = 4/3</span>.<br>
+              The identity gives cos θ without ever finding the size of θ.
             </p>
           </div>
 

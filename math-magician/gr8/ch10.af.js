@@ -211,7 +211,7 @@ MathMagician.registerChapter(10, {
           <p>Baie probleme kombineer driehoek- en vierhoek-eienskappe met reguitlyn-hoekreëls. Werk sistematies, benoem elke hoek en gee 'n rede by elke stap.</p>
           <div class="example-box">
             <div class="example-box-title">✏️ Veelstap-probleem</div>
-            <div class="example-step"><span class="step-num">1</span><span>ABCD is 'n parallelogram. 'n Diagonaal AC word getrek. ∠DAC = 38° en ∠ACD = 57°. Vind ∠ACB.</span></div>
+            <div class="example-step"><span class="step-num">1</span><span>ABCD is 'n parallelogram. 'n Diagonaal AC word getrek. ∠DAC = 38° en ∠ACD = 57°. Vind ∠ACB en ∠ABC.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>∠DAC = ∠BCA = 38° <em>(verwiss. binne-∠e; AD ∥ BC)</em></span></div>
             <div class="example-step"><span class="step-num">3</span><span>In △ACD: ∠ADC = 180° − 38° − 57° = 85° <em>(∠ som, △)</em></span></div>
             <div class="example-step"><span class="step-num">4</span><span>∠ABC = ∠ADC = 85° <em>(opp. ∠e van ∥gram)</em></span></div>

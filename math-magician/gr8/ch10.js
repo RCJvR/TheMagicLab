@@ -211,7 +211,7 @@ MathMagician.registerChapter(10, {
           <p>Many problems combine triangle and quadrilateral properties with straight-line angle rules. Work systematically, labelling every angle and giving a reason at each step.</p>
           <div class="example-box">
             <div class="example-box-title">✏️ Multi-step problem</div>
-            <div class="example-step"><span class="step-num">1</span><span>ABCD is a parallelogram. A diagonal AC is drawn. ∠DAC = 38° and ∠ACD = 57°. Find ∠ACB.</span></div>
+            <div class="example-step"><span class="step-num">1</span><span>ABCD is a parallelogram. A diagonal AC is drawn. ∠DAC = 38° and ∠ACD = 57°. Find ∠ACB and ∠ABC.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>∠DAC = ∠BCA = 38° <em>(alt. int. ∠s; AD ∥ BC)</em></span></div>
             <div class="example-step"><span class="step-num">3</span><span>In △ACD: ∠ADC = 180° − 38° − 57° = 85° <em>(∠ sum, △)</em></span></div>
             <div class="example-step"><span class="step-num">4</span><span>∠ABC = ∠ADC = 85° <em>(opp. ∠s of ∥gram)</em></span></div>

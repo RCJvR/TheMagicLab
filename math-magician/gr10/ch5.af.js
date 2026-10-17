@@ -471,11 +471,12 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="example-box">
-            <div class="example-box-title">✏️ Voorbeeld: Gebruik van die identiteit gegewe 5sin θ + 4 = 0</div>
+            <div class="example-box-title">✏️ Voorbeeld: Gebruik die identiteit — 5sin θ + 4 = 0, θ in Kwadrant III</div>
             <p>
               <span class="math">sin θ = −4/5</span>, dus <span class="math">sin²θ = 16/25</span>.<br>
-              Volgens die identiteit: <span class="math">cos²θ = 1 − 16/25 = 9/25</span>.<br>
-              Let daarop dat die vraag net <span class="math">sin²θ + cos²θ</span> vra, wat altyd gelyk is aan <strong>1</strong> — geen nodig om θ self te vind nie!
+              Volgens die identiteit: <span class="math">cos²θ = 1 − 16/25 = 9/25</span>, dus <span class="math">cos θ = ±3/5</span>.<br>
+              In Kwadrant III is cosinus negatief: <span class="math">cos θ = −3/5</span> en <span class="math">tan θ = sin θ / cos θ = (−4/5) ÷ (−3/5) = 4/3</span>.<br>
+              Die identiteit gee cos θ sonder dat jy ooit die grootte van θ hoef te bepaal.
             </p>
           </div>
 

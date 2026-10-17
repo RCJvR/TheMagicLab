@@ -256,7 +256,7 @@ MathMagician.registerChapter(2, {
 
 
           <div class="example-box">
-            <div class="example-box-title">✏️ Voorbeeld: y = ay², d.w.s. x = ay²</div>
+            <div class="example-box-title">✏️ Voorbeeld: die sywaartse parabool x = ay²</div>
             <p>Beskou die relasie x = ay² ('n sywaartse parabool, a > 0). Los op vir y: y = ±√(x/a).<br>
             Om dit 'n funksie te maak, beperk ons tot y ≥ 0 of y ≤ 0. As ons y ≥ 0 kies, is die inverse (terug-omruil) f⁻¹(x) = ax², x ≥ 0.</p>
           </div>

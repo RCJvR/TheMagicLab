@@ -496,7 +496,7 @@ MathMagician.registerChapter(7, {
             <div class="example-box-title">✏️ Voorbeeld: Keëlhoogte vanaf 'n hoek by die basis</div>
             <p>'n Keël het basisradius 6 cm. Die skuinssy maak 'n hoek van 65° met die basis.<br>
             Fase 1: tan(65°) = h/6 → h = 6 tan(65°) ≈ 12.867 cm<br>
-            Skuinshoogte l = 6/cos(65°) ≈ 14.199 cm<br>
+            Skuinshoogte l = 6/cos(65°) ≈ 14.197 cm<br>
             Fase 2: Volume = ⅓π(6)²(12.867) ≈ 485.1 cm³</p>
           </div>
 <div class="mf-fig" data-fig='{"t":"geo","w":220,"h":230,"pts":{"A":[-6,0],"B":[6,0],"T":[0,12.87],"O":[0,0]},"nolab":["A","O"],"seg":[["A","B"],["B","T","ac",null,"l"],["T","A"],["O","T","mu dash",null,"h"],["O","B","or",null,"6"]],"ang":[["T","B","A","65°","gn",20]],"ra":[["B","O","T"]],"lab":{"T":"n","B":"se"},"cap":"Deursnee: tan 65° = h/6 en cos 65° = 6/s"}'></div>
