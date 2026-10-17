@@ -13,6 +13,7 @@
   // ── Pulley pedestal: a shaft in two flanged bushes, with a flat-belt pulley (Gr 11) ──
   (function () {
     const D = 16;
+    const H = 60;                     // axis height: the Ø80 pulley rim clears the base by 8
     const bush = [[0, 8], [24, 8], [24, 12], [4, 12], [4, 17], [0, 17]];            // flange at x = 0..4
     const shaft = [[0, 0], [0, 14], [8, 14], [8, 8], [112, 8], [112, 0]];
     const pulley = [[0, 8], [24, 8], [24, 14], [16, 14], [16, 36], [26, 36], [26, 40], [-2, 40], [-2, 36], [8, 36], [8, 14], [0, 14]];
@@ -20,13 +21,13 @@
     const body = {
       name: 'PEDESTAL', mat: 'CAST IRON / GIETYSTER', callout: [-14, 6], nearX: 50,
       section: [
-        [[-34, 0], [84, 0], [84, 12], [50, 12], [50, 38], [0, 38], [0, 12], [-34, 12]],
-        [[0, 62], [50, 62], [50, 72], [0, 72]],
+        [[-34, 0], [84, 0], [84, 12], [50, 12], [50, H - 12], [0, H - 12], [0, 12], [-34, 12]],
+        [[0, H + 12], [50, H + 12], [50, H + 22], [0, H + 22]],
       ],
       hatch: 45,
       end: [
         [[-46, 0], [46, 0], [46, 12], [-46, 12], [-46, 0]],
-        [[-22, 12], [-22, 50]].concat(arc([0, 50], 22, 12)).concat([[22, 12]]),
+        [[-22, 12], [-22, H]].concat(arc([0, H], 22, 12)).concat([[22, 12]]),
       ],
     };
     add({
@@ -34,32 +35,32 @@
       summary: 'A shaft turning in two flanged bronze bushes in a cast-iron pedestal, with a flat-belt pulley on the end held by a washer and an M16 nut. Two bushes hatched opposite to the pedestal, a pulley hatched opposite to the bush it touches.',
       prompt: 'The parts of a pulley pedestal are given. Draw, full size in 3rd-angle projection: the sectional front view on A-A and the right view. Do not section the shaft, washer or nut; show three faces of the nut.',
       story: 'one bush is pressed into each end of the pedestal\'s bore with its flange outside, the shaft goes in from the left until its collar meets the left flange, and the pulley, washer and nut go on from the right.',
-      ax: 70, by: 150, axisH: 50, rx: 262, cutTop: 96, axisFrom: -34, axisTo: 104, rvHalf: 52,
+      ax: 70, by: 150, axisH: H, rx: 262, cutTop: H + 46, axisFrom: -34, axisTo: 104, rvHalf: 52,
       body,
       parts: [
         { name: 'BUSH', mat: 'BRONZE / BRONS', qty: 2, profile: bush, at: -4, sectioned: true, hatch: 135, note: 'Part 2, the two flanged BUSHES: one pressed into each end of the Ø24 bore with its flange outside. Section both, hatched opposite to the pedestal.' },
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 30, flip: true, sectioned: true, hatch: 135, list: false, note: '' },
         { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: -12, sectioned: false, D, thread: [88, 100], note: 'Part 3, the SHAFT, from the left until its Ø28 collar meets the left flange. Shafts are never sectioned.' },
-        { name: 'PULLEY', mat: 'CAST IRON / GIETYSTER', profile: pulley, at: 56, sectioned: true, hatch: 45, note: 'Part 4, the flat-belt PULLEY, on the shaft against the right flange: hub, web and crowned rim, sectioned. It touches the bush, so its hatching is opposite to the bush.' },
-        { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 80, sectioned: false, note: 'Part 5, the WASHER, and' },
-        { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 83, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT (12.8 thick, three faces showing).' },
+        { name: 'PULLEY', mat: 'CAST IRON / GIETYSTER', profile: pulley, at: 54, sectioned: true, hatch: 45, note: 'Part 4, the flat-belt PULLEY, on the shaft against the right flange: hub, web and crowned rim, sectioned. It touches the bush, so its hatching is opposite to the bush.' },
+        { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 78, sectioned: false, note: 'Part 5, the WASHER, and' },
+        { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 81, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT (12.8 thick, three faces showing).' },
       ],
       order: [[0, 1], [2], [3], [4, 5]],
       details: [
-        { note: 'Part 1, the PEDESTAL (cast iron): a base 118 × 92 × 12 with an upright boss Ø44 × 50 long, its Ø24 bore 50 above the base. Front view and right view.', at: [60, 60],
+        { note: 'Part 1, the PEDESTAL (cast iron): a base 118 × 92 × 12 with an upright boss Ø44 × 50 long, its Ø24 bore 60 above the base. Front view and right view.', at: [60, 60],
           draw: () => {
             const F = (x, y) => [52 + x, 96 - y], R = (z, y) => [196 + z, 96 - y];
             return [
-              { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, 72], [0, 72], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
-              L(F(0, 38), F(50, 38), 'hidden'), L(F(0, 62), F(50, 62), 'hidden'), L(F(-4, 50), F(54, 50), 'centre'),
+              { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, H + 22], [0, H + 22], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
+              L(F(0, H - 12), F(50, H - 12), 'hidden'), L(F(0, H + 12), F(50, H + 12), 'hidden'), L(F(-4, H), F(54, H), 'centre'),
               ...body.end.map(pl => ({ kind: 'polyline', points: pl.map(([z, y]) => R(z, y)), lineType: 'A' })),
-              { kind: 'circle', center: R(0, 50), r: 12, lineType: 'A' },
-              L(R(-28, 50), R(28, 50), 'centre'), L(R(0, 20), R(0, 78), 'centre'),
+              { kind: 'circle', center: R(0, H), r: 12, lineType: 'A' },
+              L(R(-28, H), R(28, H), 'centre'), L(R(0, 20), R(0, H + 28), 'centre'),
               { kind: 'dimension', p1: F(-34, 0), p2: F(84, 0), offset: 7, text: '118' },
-              { kind: 'dimension', p1: F(0, 72), p2: F(50, 72), offset: -5, text: '50' },
+              { kind: 'dimension', p1: F(0, H + 22), p2: F(50, H + 22), offset: -5, text: '50' },
               { kind: 'dimension', p1: R(-46, 0), p2: R(46, 0), offset: 7, text: '92' },
-              { kind: 'dimension', p1: R(46, 0), p2: R(46, 50), offset: -8, text: '50' },
-              lbl(R(-26, 76), 'R22', { size: 2.8 }), lbl(R(14, 60), 'Ø24', { size: 2.8 }),
+              { kind: 'dimension', p1: R(46, 0), p2: R(46, H), offset: -8, text: String(H) },
+              lbl(R(-26, H + 26), 'R22', { size: 2.8 }), lbl(R(14, H + 10), 'Ø24', { size: 2.8 }),
               lbl(F(25, 90), '(1) PEDESTAL', { size: 3, color: '#fde047' }),
             ];
           } },
@@ -118,22 +119,23 @@
   // ── V-pulley pedestal with one long bush (Gr 11) ──
   (function () {
     const D = 16;
+    const H = 60;                     // axis height: the Ø80 pulley rim clears the base by 8
     const bush = [[0, 8], [50, 8], [50, 12], [0, 12]];
     const shaft = [[0, 0], [0, 14], [8, 14], [8, 8], [108, 8], [108, 0]];
-    const pulley = [[0, 8], [24, 8], [24, 14], [16, 14], [16, 30], [26, 34], [26, 40], [19, 40], [12, 32], [5, 40], [-2, 40], [-2, 34], [8, 30], [8, 14], [0, 14]];
+    const pulley = [[0, 8], [24, 8], [24, 14], [20, 14], [20, 30], [30, 34], [30, 40], [23, 40], [16, 32], [9, 40], [2, 40], [2, 34], [12, 30], [12, 14], [0, 14]];   // rim 2 clear of the pedestal face
     const washer = [[0, 8.5], [3, 8.5], [3, 16], [0, 16]];
     const body = {
       name: 'PEDESTAL', mat: 'CAST IRON / GIETYSTER', callout: [-14, 6], nearX: 50,
-      section: [[[-34, 0], [84, 0], [84, 12], [50, 12], [50, 38], [0, 38], [0, 12], [-34, 12]], [[0, 62], [50, 62], [50, 72], [0, 72]]],
+      section: [[[-34, 0], [84, 0], [84, 12], [50, 12], [50, H - 12], [0, H - 12], [0, 12], [-34, 12]], [[0, H + 12], [50, H + 12], [50, H + 22], [0, H + 22]]],
       hatch: 45,
-      end: [[[-46, 0], [46, 0], [46, 12], [-46, 12], [-46, 0]], [[-22, 12], [-22, 50]].concat(arc([0, 50], 22, 12)).concat([[22, 12]])],
+      end: [[[-46, 0], [46, 0], [46, 12], [-46, 12], [-46, 0]], [[-22, 12], [-22, H]].concat(arc([0, H], 22, 12)).concat([[22, 12]])],
     };
     add({
       id: 'v-pulley-pedestal-assembly', title: 'V-Pulley Pedestal with a Long Bush (Gr 11)',
       summary: 'A shaft turning in one long bronze bush in a cast-iron pedestal, with a V-belt pulley on the end. The V-groove is cut in section; the shaft, washer and nut are not.',
       prompt: 'The parts of a V-pulley pedestal are given. Draw, full size in 3rd-angle projection: the sectional front view on A-A and the right view. Do not section the shaft, washer or nut; show three faces of the nut.',
       story: 'the long bush is pressed into the bore of the pedestal, the shaft goes in from the left until its collar meets the pedestal, and the V-pulley, washer and nut go on from the right.',
-      ax: 70, by: 150, axisH: 50, rx: 262, cutTop: 96, axisFrom: -34, axisTo: 100, rvHalf: 52,
+      ax: 70, by: 150, axisH: H, rx: 262, cutTop: H + 46, axisFrom: -34, axisTo: 100, rvHalf: 52,
       body,
       parts: [
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 0, sectioned: true, hatch: 135, note: 'Part 2, the BUSH: one plain bush the full length of the Ø24 bore. Section it, hatched opposite to the pedestal.' },
@@ -144,16 +146,16 @@
       ],
       order: [[0], [1], [2], [3, 4]],
       details: [
-        { note: 'Part 1, the PEDESTAL (cast iron): base 118 × 92 × 12, boss Ø44 × 50 long with a Ø24 bore 50 above the base.', at: [60, 60],
+        { note: 'Part 1, the PEDESTAL (cast iron): base 118 × 92 × 12, boss Ø44 × 50 long with a Ø24 bore 60 above the base.', at: [60, 60],
           draw: () => {
             const F = (x, y) => [52 + x, 96 - y], R = (z, y) => [196 + z, 96 - y];
             return [
-              { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, 72], [0, 72], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
-              L(F(0, 38), F(50, 38), 'hidden'), L(F(0, 62), F(50, 62), 'hidden'), L(F(-4, 50), F(54, 50), 'centre'),
+              { kind: 'polygon', points: [[-34, 0], [84, 0], [84, 12], [50, 12], [50, H + 22], [0, H + 22], [0, 12], [-34, 12]].map(([x, y]) => F(x, y)), lineType: 'A' },
+              L(F(0, H - 12), F(50, H - 12), 'hidden'), L(F(0, H + 12), F(50, H + 12), 'hidden'), L(F(-4, H), F(54, H), 'centre'),
               ...body.end.map(pl => ({ kind: 'polyline', points: pl.map(([z, y]) => R(z, y)), lineType: 'A' })),
-              { kind: 'circle', center: R(0, 50), r: 12, lineType: 'A' }, L(R(-28, 50), R(28, 50), 'centre'), L(R(0, 20), R(0, 78), 'centre'),
+              { kind: 'circle', center: R(0, H), r: 12, lineType: 'A' }, L(R(-28, H), R(28, H), 'centre'), L(R(0, 20), R(0, H + 28), 'centre'),
               { kind: 'dimension', p1: F(-34, 0), p2: F(84, 0), offset: 7, text: '118' }, { kind: 'dimension', p1: R(-46, 0), p2: R(46, 0), offset: 7, text: '92' },
-              { kind: 'dimension', p1: R(46, 0), p2: R(46, 50), offset: -8, text: '50' }, lbl(R(14, 60), 'Ø24', { size: 2.8 }),
+              { kind: 'dimension', p1: R(46, 0), p2: R(46, H), offset: -8, text: String(H) }, lbl(R(14, H + 10), 'Ø24', { size: 2.8 }),
               lbl(F(25, 90), '(1) PEDESTAL', { size: 3, color: '#fde047' }),
             ];
           } },

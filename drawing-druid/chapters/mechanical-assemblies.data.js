@@ -73,11 +73,16 @@
 
     // ── steps 3...: the parts in assembly order
     // A shaft, pin or bolt is hidden where a washer or nut sits round it (both are drawn in outside
-    // view, in front of it), so its lines stop at their faces.
+    // view, in front of it). As on the board, it goes in lightly (construction lines) at its own
+    // step, and is lined in only once the washer and nut are drawn, where it can be seen.
     const solid = p => !p.sectioned && p.kind !== 'nut' && Math.min(...p.profile.map(q => q[1])) === 0;
-    const fronts = cfg.parts.filter(p => p.kind === 'nut' || (!p.sectioned && !solid(p))).map(p => p.kind === 'nut'
+    const isFront = p => p.kind === 'nut' || (!p.sectioned && !solid(p));
+    const fronts = cfg.parts.filter(isFront).map(p => p.kind === 'nut'
       ? { x0: AX + p.at, x1: AX + p.at + (p.h || 0.8 * p.D), r: 1.5 * p.D / Math.sqrt(3) }
       : { x0: AX + p.at, x1: AX + p.at + A.profLen(p.profile), r: Math.max(...p.profile.map(q => q[1])) });
+    const lastFrontGroup = cfg.order.reduce((m, grp, gi) => grp.some(i => isFront(cfg.parts[i])) ? gi : m, -1);
+    const lineLen = rs => rs.reduce((t, r) => t + (r.kind === 'line' ? Math.hypot(r.p2[0] - r.p1[0], r.p2[1] - r.p1[1]) : 0), 0);
+    const pending = [];                                       // parts drawn lightly, still to line in
     cfg.order.forEach((grp, gi) => {
       const rev = [];
       let text = [];
@@ -87,8 +92,12 @@
         if (p.kind === 'nut') own.push(...A.nutSide(AX + p.at, ay, p.D, p.h || 0.8 * p.D, { bothEnds: false, chamferAt: p.h ? 'left' : 'right' }));
         else if (p.sectioned) own.push(...A.sectioned(p.profile, AX + p.at, ay, p.hatch, { flip: p.flip }));
         else own.push(...A.outside(p.profile, AX + p.at, ay, { flip: p.flip }));
-        if (p.thread) own.push(...A.threadLines(AX + p.thread[0], AX + p.thread[1], ay, p.D, { limit: 'left' }));
-        rev.push(...(solid(p) ? A.hideBehind(own, fronts, ay) : own));
+        const thread = p.thread ? A.threadLines(AX + p.thread[0], AX + p.thread[1], ay, p.D, { limit: 'left' }) : [];
+        const seen = solid(p) ? A.hideBehind(own.concat(thread), fronts, ay) : null;
+        if (seen && lineLen(seen) < lineLen(own.concat(thread)) - 1e-6) {
+          rev.push(...own.map(r => Object.assign({}, r, { lineType: 'construction' })));
+          pending.push({ p, reveals: seen });
+        } else rev.push(...own, ...thread);
         if (p.extra) rev.push(...p.extra(P, ay));
         if (p.note) text.push(p.note);
       });
@@ -96,6 +105,14 @@
       const outline = rev.filter(r => !r.hatch), hatchLines = rev.filter(r => r.hatch);
       steps.push({ id: steps.length + 1, instruction: text.join(' '), calloutAt: at, reveals: outline });
       if (hatchLines.length) steps.push({ id: steps.length + 1, instruction: 'Now hatch it. Parts that touch are hatched in opposite directions so they read as separate pieces.', calloutAt: at, reveals: hatchLines });
+      if (gi >= lastFrontGroup) pending.splice(0).forEach(({ p, reveals }) => {
+        const noun = /BOLT/.test(p.name) ? 'bolt' : /PIN/.test(p.name) ? 'pin' : 'shaft';
+        steps.push({
+          id: steps.length + 1,
+          instruction: 'You drew the ' + noun + ' lightly: now line it in where it can be seen, with its thread. The washer and nut sit round it further along and hide it, so leave those stretches thin.',
+          calloutAt: [AX + p.at + A.profLen(p.profile) / 2, ay - 4], reveals,
+        });
+      });
     });
 
     // ── last step: right view, cutting plane, labels
@@ -104,6 +121,7 @@
     const inPoly = (pt, pl) => { let c = false; for (let i = 0, j = pl.length - 1; i < pl.length; j = i++) { const [xi, yi] = pl[i], [xj, yj] = pl[j]; if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c; } return c; };
     const region = (cfg.body.endRegion || cfg.body.end[0]).map(([z, y]) => [RX + z, BY - y]);
     const rv = [];
+    const projR = new Set();                                  // radii of the circles drawn: projected across first
     let covered = 0, bodyIn = false, drawingBody = false;
     const hidden = pt => Math.hypot(pt[0] - RX, pt[1] - ay) < covered - 0.05 || (bodyIn && inPoly(pt, region));
     const visibleRuns = pts => {
@@ -128,7 +146,8 @@
     elems.sort((u, v) => v.x - u.x || (u.body ? 1 : -1));
     elems.forEach(e => {
       if (e.nut) {
-        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true }));
+        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true }).filter(r => r.lineType !== 'centre'));
+        projR.add(0.75 * e.nut.D);
         covered = Math.max(covered, 0.75 * e.nut.D);
       } else if (e.body) {
         drawingBody = true;
@@ -136,15 +155,29 @@
         drawingBody = false;
         bodyIn = true;
       } else {
-        e.radii.forEach(r => { if (r > covered + 0.05) visibleRuns(circlePts(r)); });
+        e.radii.forEach(r => { if (r > covered + 0.05) { visibleRuns(circlePts(r)); projR.add(r); } });
         covered = Math.max(covered, e.radii[0]);
       }
     });
     const cpTop = BY - cfg.cutTop, cpBot = BY + 6;
-    const rvLen = rv.length;
-    rv.push(
+    // Projection first: the right view's centre lines, and a thin line carried straight across from
+    // the section at every height the right view needs — the top of each circle, and each
+    // horizontal edge and the top of the body.
+    const bodyH = new Set();
+    cfg.body.end.forEach(pl => {
+      const ys = pl.map(q => q[1]);
+      ys.forEach((y, k) => { if (k && Math.abs(y - ys[k - 1]) < 1e-6) bodyH.add(+y.toFixed(3)); });
+      bodyH.add(+Math.max(...ys).toFixed(3));
+    });
+    const xFrom = AX + cfg.axisTo, xTo = RX + cfg.rvHalf;
+    const projection = [
       L([RX - cfg.rvHalf, ay], [RX + cfg.rvHalf, ay], 'centre'),
       L([RX, cpTop - 4], [RX, cpBot], 'centre'),
+      ...[...projR].map(r => L([xFrom, ay - r], [xTo, ay - r], 'construction')),
+      ...[...bodyH].filter(h => [...projR].every(r => Math.abs(BY - h - (ay - r)) > 0.3)).map(h => L([xFrom, BY - h], [xTo, BY - h], 'construction')),
+    ];
+    const rvLen = rv.length;
+    rv.push(
       L([RX, cpTop - 4], [RX, cpTop + 2], 'A'), L([RX, cpBot - 2], [RX, cpBot], 'A'),
       // 3rd angle: the side of the right view nearest the section is the front, so the arrows
       // point away from it, the way you look when drawing the section
@@ -158,6 +191,11 @@
     const rvParts = rv.slice(0, rvLen).filter(r => !r.body), rvBody = rv.slice(0, rvLen).filter(r => r.body), rvRest = rv.slice(rvLen);
     steps.push({
       id: steps.length + 1,
+      instruction: 'RIGHT VIEW: project across first. Draw its two centre lines, carrying the axis straight across from the section, and thin projection lines at every height you will need: the top of each part and of the body.',
+      calloutAt: [(xFrom + RX) / 2, ay], reveals: projection,
+    });
+    steps.push({
+      id: steps.length + 1,
       instruction: 'RIGHT VIEW, projected across from the section: start with the nearest parts. The nut is a hexagon; each turned part shows as circles, but only where no nearer part covers it.',
       calloutAt: [RX, ay], reveals: rvParts,
     });
@@ -168,7 +206,7 @@
     });
     steps.push({
       id: steps.length + 1,
-      instruction: 'Draw the centre lines and the cutting plane A-A on the right view, with the arrows pointing the way you look at the section, and label the section and the views.',
+      instruction: 'Draw the cutting plane A-A on the right view, with the arrows pointing the way you look at the section, and label the section and the views.',
       calloutAt: [RX, BY - cfg.cutTop], reveals: rvRest,
     });
 
@@ -212,6 +250,8 @@
     const XH = X0 + head, XW = XH + 62, XN = XW + wT;            // under the head; washer; nut
     // the washer and nut sit round the bolt, in front of it: the shank is hidden there
     const covers = [{ x0: XW, x1: XW + wT, r: wD / 2 }, { x0: XN, x1: XN + nutH, r: AC / 2 }];
+    const shank = A.outside([[0, 0], [0, D / 2], [len - td, D / 2], [len, D / 2 - td], [len, 0]], XH, AY);
+    const s = 1.5 * D / Math.sqrt(3), XE = X0 + 215, RE = AC / 2;   // end view: hexagon corners up
     CONSTRUCTIONS['hex-bolt-representation'] = {
       id: 'hex-bolt-representation', title: 'Hexagon Bolt, Nut and Washer (M20)', projection: 'third',
       summary: 'Draw an M20 bolt with its washer and nut using the standard proportions of the diameter D: across flats 1.5D, head 0.7D, nut 0.8D, washer 2D x 0.2D, thread root 0.8D.',
@@ -236,6 +276,12 @@
         },
         {
           id: 3,
+          instruction: 'The shank, Ø20 for 100 mm from under the head, with the 45° chamfer (0.1D) on the end: draw it lightly first, in thin construction lines. The washer and nut go round it next and will hide part of it.',
+          calloutAt: [XH + 40, AY - D / 2],
+          reveals: shank.map(r => Object.assign({}, r, { lineType: 'construction' })),
+        },
+        {
+          id: 4,
           instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered on the outer face) on the thread, leaving two or three threads showing past the nut.',
           calloutAt: [XW + 10, AY - AC / 2],
           reveals: [
@@ -244,21 +290,27 @@
           ],
         },
         {
-          id: 4,
-          instruction: 'The shank, Ø20 for 100 mm from under the head; the washer and nut hide it where they sit round it. The thread is on the last 50: thin root lines 0.1D = 2 in from each side, right to the end; a thick line across where the thread ends, with the run-out drawn at 60° back to the sides; and the 45° chamfer (0.1D) on the end, with a line across where it starts.',
+          id: 5,
+          instruction: 'Line in the shank where it can be seen, either side of the washer and nut, with a line across where the end chamfer starts. The thread is on the last 50: thin root lines 0.1D = 2 in from each side, right to the end, and a thick line across where the thread ends, with the run-out drawn at 60° back to the sides.',
           calloutAt: [XH + 40, AY - D / 2],
-          reveals: A.hideBehind([
-            ...A.outside([[0, 0], [0, D / 2], [len - td, D / 2], [len, D / 2 - td], [len, 0]], XH, AY),
-            ...A.threadLines(XH + len - thr, XH + len, AY, D, { limit: 'left' }),
-          ], covers, AY),
+          reveals: A.hideBehind([...shank, ...A.threadLines(XH + len - thr, XH + len, AY, D, { limit: 'left' })], covers, AY),
         },
         {
-          id: 5,
-          instruction: 'END VIEW of the nut, looking along the bolt: the hexagon (30 across flats) with the chamfer circle touching its flats, the bolt\'s Ø20 crest circle and the thread root as a three-quarter thin circle.',
-          calloutAt: [X0 + 215, AY],
+          id: 6,
+          instruction: 'END VIEW: project across first. Draw its two centre lines, carrying the axis straight across, and thin projection lines from the nut and the bolt at every height you will need.',
+          calloutAt: [XE - 30, AY],
           reveals: [
-            ...A.nutEnd(X0 + 215, AY, D, { cornersUp: true }),
-            lbl([X0 + 215, AY + 30], 'END VIEW / ENTAANSIG', { size: 3.2, color: '#94a3b8' }),
+            L([XE - RE - 3, AY], [XE + RE + 3, AY], 'centre'), L([XE, AY - RE - 3], [XE, AY + RE + 3], 'centre'),
+            ...[AC / 2, 0.75 * D, D / 2, 0.4 * D, s / 2].map(h => L([XH + len + 2, AY - h], [XE + 4, AY - h], 'construction')),
+          ],
+        },
+        {
+          id: 7,
+          instruction: 'END VIEW of the nut, looking along the bolt: the hexagon (30 across flats) with the chamfer circle touching its flats, the bolt\'s Ø20 crest circle and the thread root as a three-quarter thin circle.',
+          calloutAt: [XE, AY],
+          reveals: [
+            ...A.nutEnd(XE, AY, D, { cornersUp: true }).filter(r => r.lineType !== 'centre'),
+            lbl([XE, AY + 30], 'END VIEW / ENTAANSIG', { size: 3.2, color: '#94a3b8' }),
           ],
         },
       ],
