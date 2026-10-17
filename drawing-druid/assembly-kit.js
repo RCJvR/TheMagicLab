@@ -126,7 +126,6 @@
     ];
     ends.forEach(xe => {
       const s = xe === x0 ? 1 : -1;                  // which way the solid lies from this tip
-      out.push(L([xe, ys[1]], [xe, ys[2]]));          // the flat end face itself, seen edge-on
       [[ys[1], ys[0]], [ys[2], ys[3]]].forEach(([yInner, yOuter]) => {
         const pts = [];
         for (let i = 0; i <= 10; i++) {
