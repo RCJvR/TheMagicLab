@@ -22,6 +22,7 @@
   <script src="../../lang-toggle.js"></script>
   <script defer src="../plotter-link.js"></script>
   <script src="../answer-check.js"></script>
+  <script src="../practice-help.js"></script>
   <link rel="stylesheet" href="../figs.css">
   <script defer src="../figs.js"></script>
   <style>
@@ -273,22 +274,22 @@
     .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
 
     /* Feedback area */
-    #eaf6cfckArea {
+    #feedbackArea {
       margin-top: 18px; max-width: 600px;
       border-radius: 12px; padding: 14px 18px;
       font-size: 13px; line-height: 1.7; display: none;
     }
-    #eaf6cfckArea.correct { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.28); color: #6ee7b7; }
-    #eaf6cfckArea.wrong   { background: rgba(239,68,68,0.09);  border: 1px solid rgba(239,68,68,0.28);  color: rgba(226,232,240,0.80); }
-    #eaf6cfckArea.loading { background: rgba(158,212,60,0.08); border: 1px solid rgba(158,212,60,0.20); color: rgba(226,232,240,0.55); }
+    #feedbackArea.correct { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.28); color: #6ee7b7; }
+    #feedbackArea.wrong   { background: rgba(239,68,68,0.09);  border: 1px solid rgba(239,68,68,0.28);  color: rgba(226,232,240,0.80); }
+    #feedbackArea.loading { background: rgba(158,212,60,0.08); border: 1px solid rgba(158,212,60,0.20); color: rgba(226,232,240,0.55); }
     .feedback-label {
       font-family: "Cabinet Grotesk", sans-serif; font-weight: 700; font-size: 12px;
       text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
       display: flex; align-items: center; gap: 6px;
     }
-    #eaf6cfckArea.correct .feedback-label { color: #6ee7b7; }
-    #eaf6cfckArea.wrong   .feedback-label { color: #fca5a5; }
-    #eaf6cfckArea.loading .feedback-label { color: #aada4a; }
+    #feedbackArea.correct .feedback-label { color: #6ee7b7; }
+    #feedbackArea.wrong   .feedback-label { color: #fca5a5; }
+    #feedbackArea.loading .feedback-label { color: #aada4a; }
 
     /* Next question button */
     #nextQBtn {
@@ -301,7 +302,7 @@
     #nextQBtn.show { display: inline-flex; }
     #nextQBtn:hover { box-shadow: 0 4px 14px rgba(127,179,46,0.40); transform: translateY(-1px); }
 
-    /* Score bar at top of practice -->
+    /* Score bar at top of practice */
     .score-row {
       display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
     }
@@ -675,7 +676,6 @@ const CHROME_T = {
     nextQuestion: 'Next question', check: 'Check', answerPlaceholder: 'Type your answer…',
     correct: '✓ Correct!', notQuite: '✗ Not quite', wellDone: 'Well done!',
     reviewDefault: 'Have another look at the lesson and try the next question.',
-    gettingExplanation: '⏳ Getting explanation…',
     topicComplete: 'Topic complete! 🎉',
     scoredOn: (c, t, pct, name) => `You scored <strong style="color:#c3e56f">${c} / ${t}</strong> (${pct}%) on <em>${name}</em>.`,
     nextTopic: name => `Next topic: ${name}`,
@@ -709,7 +709,6 @@ const CHROME_T = {
     nextQuestion: 'Volgende vraag', check: 'Gaan na', answerPlaceholder: 'Tik jou antwoord…',
     correct: '✓ Reg!', notQuite: '✗ Nie heeltemal reg nie', wellDone: 'Goed gedaan!',
     reviewDefault: 'Kyk weer na die les en probeer die volgende vraag.',
-    gettingExplanation: '⏳ Verduideliking word verkry…',
     topicComplete: 'Onderwerp voltooi! 🎉',
     scoredOn: (c, t, pct, name) => `Jy het <strong style="color:#c3e56f">${c} / ${t}</strong> (${pct}%) behaal vir <em>${name}</em>.`,
     nextTopic: name => `Volgende onderwerp: ${name}`,
@@ -1072,8 +1071,10 @@ function renderQuestion() {
       <span class="score-pill">${T().qOf(qIndex + 1, t.questions.length)}</span>
       <span class="score-pill">${T().scoreLabel(ts2.correct, ts2.total)}</span>
       <span class="q-topic-tag">${q.topic}</span>
+      <span id="mmLevel"></span>
     </div>
     <div class="question-text">${q.text}</div>
+    <div id="mmHint"></div>
     ${questionHTML}
     <div id="feedbackArea">
       <div class="feedback-label" id="feedbackLabel"></div>
@@ -1082,6 +1083,9 @@ function renderQuestion() {
     <button id="nextQBtn">${T().nextQuestion} <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></button>
   `;
   lucide.createIcons();
+
+  const helpCtx = { grade: 8, topic: t, qIndex, q, lang: currentLang };
+  MMHelp.mount(Object.assign({ levelEl: document.getElementById('mmLevel'), hintEl: document.getElementById('mmHint') }, helpCtx));
 
   const feedbackArea = document.getElementById('feedbackArea');
   const feedbackLabel = document.getElementById('feedbackLabel');
@@ -1099,7 +1103,7 @@ function renderQuestion() {
     if (correct) {
       feedbackArea.className = 'correct';
       feedbackLabel.textContent = T().correct;
-      feedbackText.textContent = explanation || T().wellDone;
+      feedbackText.innerHTML = explanation || T().wellDone;
     } else {
       feedbackArea.className = 'wrong';
       feedbackLabel.textContent = T().notQuite;
@@ -1118,7 +1122,7 @@ function renderQuestion() {
 
     if (isCorrect) {
       topicScores[currentTopicId].correct++;
-      showFeedback(true);
+      showFeedback(true, MMHelp.rightHTML(helpCtx));
       // Track correct answer
       if (window.MagicLabProgress) {
         const t = TOPICS.find(t => t.id === currentTopicId);
@@ -1128,8 +1132,7 @@ function renderQuestion() {
         });
       }
     } else {
-      // Call AI for explanation
-      fetchAIFeedback(q, userAnswer, correct, showFeedback);
+      showFeedback(false, MMHelp.wrongHTML(helpCtx));
       // Track wrong answer
       if (window.MagicLabProgress) {
         const t = TOPICS.find(t => t.id === currentTopicId);
@@ -1172,51 +1175,6 @@ function renderQuestion() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// AI FEEDBACK (Anthropic API — wrong answers only)
-// ═══════════════════════════════════════════════════════════════
-async function fetchAIFeedback(q, userAnswer, correctAnswer, callback) {
-  const feedbackArea = document.getElementById('feedbackArea');
-  const feedbackLabel = document.getElementById('feedbackLabel');
-  const feedbackText  = document.getElementById('feedbackText');
-
-  feedbackArea.style.display = 'block';
-  feedbackArea.className = 'loading';
-  feedbackLabel.textContent = T().gettingExplanation;
-  feedbackText.textContent = '';
-
-  const topic  = TOPICS.find(t => t.id === currentTopicId);
-  const langInstruction = currentLang === 'af' ? '\nWrite your entire explanation in Afrikaans.' : '';
-  const prompt = `You are a friendly, encouraging Grade 8 maths tutor (IEB/CAPS curriculum, South Africa).
-A student answered a question incorrectly. Give a SHORT, clear explanation (max 3 sentences) of:
-1. Why their answer is wrong.
-2. The correct method to get the right answer.
-Be encouraging and specific. Do not just state the answer — explain the method.${langInstruction}
-
-Question: ${q.text.replace(/<[^>]+>/g, '')}
-Topic: ${q.topic} (${topic.name})
-Student answered: ${userAnswer}
-Correct answer: ${correctAnswer}`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.map(c => c.text || '').join('') || 'Check the lesson for a worked example.';
-    callback(false, text);
-  } catch {
-    callback(false, currentLang === 'af'
-      ? `Die korrekte antwoord is <strong>${correctAnswer}</strong>. Kyk weer na die uitgewerkte voorbeeld in die les.`
-      : `The correct answer is <strong>${correctAnswer}</strong>. Review the worked example in the lesson.`);
-  }
-}
 
 
 // ═══════════════════════════════════════════════════════════════
