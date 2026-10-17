@@ -77,7 +77,7 @@
       let text = [];
       grp.forEach(i => {
         const p = cfg.parts[i];
-        if (p.kind === 'nut') rev.push(...A.nutSide(AX + p.at, ay, p.D, p.h || 0.8 * p.D));
+        if (p.kind === 'nut') rev.push(...A.nutSide(AX + p.at, ay, p.D, p.h || 0.8 * p.D, { bothEnds: false, chamferAt: p.h ? 'left' : 'right' }));
         else if (p.sectioned) rev.push(...A.sectioned(p.profile, AX + p.at, ay, p.hatch, { flip: p.flip }));
         else rev.push(...A.outside(p.profile, AX + p.at, ay, { flip: p.flip }));
         if (p.thread) rev.push(...A.threadLines(AX + p.thread[0], AX + p.thread[1], ay, p.D));
@@ -235,11 +235,11 @@
         },
         {
           id: 4,
-          instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered both sides) on the thread, leaving two or three threads showing past the nut.',
+          instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered on the outer face) on the thread, leaving two or three threads showing past the nut.',
           calloutAt: [X0 + head + 70, AY - AC / 2],
           reveals: [
             ...A.outside([[0, 0], [0, wD / 2], [wT, wD / 2], [wT, 0]], X0 + head + 62, AY),
-            ...A.nutSide(X0 + head + 62 + wT, AY, D, nutH),
+            ...A.nutSide(X0 + head + 62 + wT, AY, D, nutH, { bothEnds: false, chamferAt: 'right' }),
           ],
         },
         {

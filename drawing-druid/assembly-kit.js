@@ -98,43 +98,67 @@
   }
 
   // A hexagon nut (or bolt head) seen from the side, across its corners: three faces showing —
-  // a plain rectangle (across flats top/bottom, two straight divider lines marking the receding
-  // faces) with a small washer-face chamfer rounded in at the end(s) that have one. Axis
-  // horizontal: the nut spans x0..x0+h.
-  //   D: bolt diameter; h: thickness (0.8D for a nut, 0.7D for a head).
+  // a plain rectangle (across flats/corners) split by two straight divider lines into the near
+  // face and the two faces receding away, with a washer-face chamfer at the end(s) that have one.
+  // Axis horizontal: the nut spans x0..x0+h.
+  //   D: bolt diameter; h: thickness (0.8D for a nut, 0.7D for a head, 0.5D for a locknut).
   //
-  // The two divider lines run straight the full length — they are not chamfered, only the outer
-  // top/bottom corners are. At a chamfered end the outline sits in at the across-flats divider
-  // level right at the tip, then eases out to the full across-corners level over a short depth,
-  // tangent to the tip (vertical) and tangent to the straight outer line (horizontal) at the far
-  // side — a quarter-ellipse, not a full-face arc. Verified pixel-for-pixel against the JPEGD
-  // Grade 10 workbook's "HEXAGONAL NUT — CHAMFER BOTH SIDES" icon.
+  // The chamfer, per face, is the standard set-square construction: two 60° lines from that
+  // face's own top corners (the middle face instead uses the head's two OUTER corners — a much
+  // larger, flatter arc) meet at a centre; the arc swings from there with radius equal to the
+  // 60°-lines' own span, so it meets the tip exactly at the face's two corners and crests past it
+  // at the face's middle (the actual total length, so the straight sides are shortened by that
+  // same amount). Because the middle face's R is struck from the outer corners but only the
+  // portion inside its own box is drawn, it "kind of" meets the narrow-face arcs at the dividers
+  // rather than exactly — the real workbook construction does too. Verified arc-for-arc against
+  // the JPEGD Grade 10 workbook's "SHOWS THREE FACES OF THE BOLT HEAD" construction.
   function nutSide(x0, ay, D, h, opts) {
     opts = opts || {};
-    const AC = 1.5 * D * 2 / Math.sqrt(3);           // across corners
     const AF = 1.5 * D;                              // across flats
-    const ys = [-AC / 2, -AF / 2, AF / 2, AC / 2].map(v => ay + v);
+    const AC = AF * 2 / Math.sqrt(3);                 // across corners
+    const s = AF / Math.sqrt(3);                      // true hex side length (the middle face's width)
+    const ys = [-AC / 2, -s / 2, s / 2, AC / 2].map(v => ay + v);   // bottom-outer, bottom-divider, top-divider, top-outer
     const x1 = x0 + h;
     const ends = opts.bothEnds === false ? [opts.chamferAt === 'left' ? x0 : x1] : [x0, x1];
-    const depth = Math.min(D / 4, h / ends.length);  // how far the chamfer eases in from the tip
-    const chamferedAt = x => ends.includes(x);
-    const outerStart = chamferedAt(x0) ? x0 + depth : x0;
-    const outerEnd = chamferedAt(x1) ? x1 - depth : x1;
-    const out = [
-      L([x0, ys[1]], [x1, ys[1]]), L([x0, ys[2]], [x1, ys[2]]),       // divider lines: straight, full length
-      L([outerStart, ys[0]], [outerEnd, ys[0]]), L([outerStart, ys[3]], [outerEnd, ys[3]]),
-    ];
+    // the three faces, as [y1, y2, R] — R1 on the two narrow (outer) faces, R2 (struck from the
+    // outer corners) on the middle face, but only drawn across its own box
+    const boxes = [[ys[0], ys[1], (ys[1] - ys[0])], [ys[1], ys[2], AC], [ys[2], ys[3], (ys[3] - ys[2])]];
+
+    const out = [];
+    const touch = {};               // touch[xe][i] = x reached at ys[i] by xe's chamfer arc(s)
     ends.forEach(xe => {
-      const s = xe === x0 ? 1 : -1;                  // which way the solid lies from this tip
-      [[ys[1], ys[0]], [ys[2], ys[3]]].forEach(([yInner, yOuter]) => {
-        const pts = [];
-        for (let i = 0; i <= 10; i++) {
-          const t = i / 10 * Math.PI / 2;
-          pts.push([xe + s * depth * Math.sin(t), yInner + (yOuter - yInner) * (1 - Math.cos(t))]);
-        }
-        out.push({ kind: 'polyline', points: pts, lineType: 'A' });
+      const inward = xe === x1 ? 1 : -1;              // which way the solid lies from this tip
+      touch[xe] = ys.map(() => []);
+      boxes.forEach(([y1, y2, R]) => {
+        const i1 = ys.indexOf(y1), i2 = ys.indexOf(y2);
+        const cy = (y1 + y2) / 2;
+        const cx = xe - inward * R;                   // peak (cx + inward*R) lands exactly on xe
+        const angleOf = y => {
+          const sinA = Math.max(-1, Math.min(1, (y - cy) / R));
+          const a = Math.asin(sinA) * 180 / Math.PI, alt = 180 - a;
+          const xOf = deg => cx + R * Math.cos(deg * Math.PI / 180);
+          return Math.abs(xOf(alt) - xe) < Math.abs(xOf(a) - xe) ? alt : a;
+        };
+        let a1 = angleOf(y1), a2 = angleOf(y2);
+        while (a2 - a1 > 180) a2 -= 360;
+        while (a2 - a1 < -180) a2 += 360;
+        out.push({ kind: 'arc-construction', center: [cx, cy], r: R, startDeg: Math.min(a1, a2), endDeg: Math.max(a1, a2), lineType: 'A' });
+        touch[xe][i1].push(cx + R * Math.cos(a1 * Math.PI / 180));
+        touch[xe][i2].push(cx + R * Math.cos(a2 * Math.PI / 180));
       });
     });
+    const avg = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+    const xAt = (xe, i) => touch[xe] && touch[xe][i].length ? avg(touch[xe][i]) : xe;
+
+    // the two dividers and the two outer lines: straight, each running between its two ends'
+    // (shortened, where chamfered) touchdown points
+    ys.forEach((y, i) => out.push(L([xAt(x0, i), y], [xAt(x1, i), y])));
+    // the flat base at any end with no chamfer
+    if (!ends.includes(x0)) out.push(L([x0, ys[0]], [x0, ys[3]]));
+    if (!ends.includes(x1)) out.push(L([x1, ys[0]], [x1, ys[3]]));
+    // the tangent line across each chamfered tip, flush with both narrow-face arcs' crests
+    const cyB = (ys[0] + ys[1]) / 2, cyT = (ys[2] + ys[3]) / 2;
+    ends.forEach(xe => out.push(L([xe, cyB], [xe, cyT])));
     return out;
   }
 
