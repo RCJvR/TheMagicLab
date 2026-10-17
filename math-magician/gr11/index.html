@@ -21,6 +21,7 @@
   <script defer src="../../auth-modal.js"></script>
   <script src="../../lang-toggle.js"></script>
   <script defer src="../plotter-link.js"></script>
+  <script src="../answer-check.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -1147,8 +1148,7 @@ function renderQuestion() {
     topicScores[currentTopicId] = topicScores[currentTopicId] || { correct: 0, total: 0 };
     topicScores[currentTopicId].total++;
 
-    const isCorrect = String(userAnswer).trim().toLowerCase() === String(correct).trim().toLowerCase() ||
-                      String(userAnswer).trim() === String(correct).trim();
+    const isCorrect = q.type === 'mc' ? userAnswer === correct : MMAnswer.matches(userAnswer, q);
 
     if (isCorrect) {
       topicScores[currentTopicId].correct++;
@@ -1197,7 +1197,7 @@ function renderQuestion() {
       if (!val) return;
       input.disabled = true;
       btn.disabled = true;
-      const isCorrect = val.toLowerCase() === String(q.answer).toLowerCase();
+      const isCorrect = MMAnswer.matches(val, q);
       input.classList.add(isCorrect ? 'correct' : 'wrong');
       checkAnswer(val, q.answer);
     };

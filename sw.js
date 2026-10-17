@@ -419,6 +419,7 @@ const urlsToCache = [
   '/math-magician/toolbox.html',
   '/math-magician/toolbox-data.js',
   '/math-magician/plotter-link.js',
+  '/math-magician/answer-check.js',
   '/science-sage/toolbox.html',
   '/science-sage/toolbox-data.js',
   '/science-sage/circuits.html',
