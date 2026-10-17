@@ -44,19 +44,25 @@
     const cyArc = yb + (R - H), top = [sx, yb - H], edge = [sx + a, yb], mid = [(top[0] + edge[0]) / 2, (top[1] + edge[1]) / 2];
     const nrm = [edge[1] - top[1], -(edge[0] - top[0])], nl = Math.hypot(...nrm);
     const csD = yb + (D - d) / 2;                                           // 90° countersink depth
+    // Each rivet starts from its TOP VIEW: the head and shank are circles there, and their widths are
+    // projected straight down to set out the front view.
+    const down = (x, y1) => L([x, ty], [x, y1], 'construction');
+    const topView = c => [circ([c, ty], a), circ([c, ty], d / 2, 'construction'), down(c - a, yb), down(c + a, yb), down(c - d / 2, ye), down(c + d / 2, ye)];
     const steps = [
-      { instruction: 'Rivets are drawn to PROPORTIONS of the shank diameter d. Here d = 20. SNAP HEAD: draw the centre line and the shank (Ø20, 50 long below the head).', calloutAt: [sx, 135],
-        reveals: [L([sx, yb - H - 6], [sx, ye + 5], 'centre'), pl([[sx - d / 2, yb], [sx - d / 2, ye], [sx + d / 2, ye], [sx + d / 2, yb]])] },
-      { instruction: 'The base of the head: 1.6d = 32 wide. The head is 0.6d = 12 high: mark the top point T on the centre line.', calloutAt: [sx, yb - H],
-        reveals: [L([sx - a, yb], [sx + a, yb]), L([sx - a, yb], [sx - a, yb - H - 3], 'construction'), L([sx + a, yb], [sx + a, yb - H - 3], 'construction'), { kind: 'point', at: top, label: 'T' }] },
+      { instruction: 'Rivets are drawn to PROPORTIONS of the shank diameter d. Here d = 20. Start with the TOP VIEW (3rd angle: above the front view), because the widths of the front view are projected down from it. SNAP HEAD: draw the centre lines of the top view and the centre line of the front view.', calloutAt: [sx, ty],
+        reveals: [...cross([sx, ty], a + 4), L([sx, yb - H - 6], [sx, ye + 5], 'centre')] },
+      { instruction: 'TOP VIEW: the head is a Ø1.6d = Ø32 circle. The shank (Ø20) is under the head and cannot be seen: draw it lightly, because its width is needed below. Project both widths straight down into the front view.', calloutAt: [sx + a, ty],
+        reveals: topView(sx) },
+      { instruction: 'FRONT VIEW: the base of the head between the head\'s projection lines, and the shank between its own, 50 long below the head. The head is 0.6d = 12 high: mark the top point T on the centre line.', calloutAt: [sx, yb - H],
+        reveals: [L([sx - a, yb], [sx + a, yb]), pl([[sx - d / 2, yb], [sx - d / 2, ye], [sx + d / 2, ye], [sx + d / 2, yb]]), { kind: 'point', at: top, label: 'T' }] },
       { instruction: 'Find the centre of the head arc: join T to the edge of the base and bisect that line. The bisector cuts the centre line at the arc centre O (inside the shank).', calloutAt: [sx, cyArc],
         reveals: [L(top, edge, 'construction'), L([mid[0] - nrm[0] / nl * 14, mid[1] - nrm[1] / nl * 14], [mid[0] + nrm[0] / nl * 14, mid[1] + nrm[1] / nl * 14], 'construction'), { kind: 'point', at: [sx, cyArc], label: 'O' }] },
       { instruction: 'With centre O, draw the head arc through T and both edges of the base.', calloutAt: top, reveals: [pl(snapArc(sx, yb, d, -1))] },
-      { instruction: 'TOP VIEW of the snap head (3rd angle: above the front view): a Ø32 circle with centre lines. The shank cannot be seen.', calloutAt: [sx, ty], reveals: [circ([sx, ty], a), ...cross([sx, ty], a + 4), L([sx - a, yb - H - 6], [sx - a, ty], 'construction'), L([sx + a, yb - H - 6], [sx + a, ty], 'construction')] },
-      { instruction: 'COUNTERSUNK HEAD: draw the centre line, the top of the head (1.6d = 32) and, with the 45° set square, the 90° countersink down to the shank.', calloutAt: [cx2, yb + 3],
-        reveals: [...TOOL.squareOn([cx2 - d / 2, csD], [cx2 - a, yb], { deg: 45, size: 34, flip: true }), L([cx2, yb - 6], [cx2, ye + 5], 'centre'), L([cx2 - a, yb], [cx2 + a, yb]), L([cx2 - a, yb], [cx2 - d / 2, csD]), L([cx2 + a, yb], [cx2 + d / 2, csD])] },
-      { instruction: 'Complete the shank of the countersunk rivet, and its top view: a Ø32 circle.', calloutAt: [cx2, 135],
-        reveals: [pl([[cx2 - d / 2, csD], [cx2 - d / 2, ye], [cx2 + d / 2, ye], [cx2 + d / 2, csD]]), circ([cx2, ty], a), ...cross([cx2, ty], a + 4)] },
+      { instruction: 'COUNTERSUNK HEAD: the same way, top view first. Draw its centre lines, the Ø32 head circle and the Ø20 shank lightly, and project both widths down into the front view.', calloutAt: [cx2 + a, ty],
+        reveals: [...cross([cx2, ty], a + 4), L([cx2, yb - 6], [cx2, ye + 5], 'centre'), ...topView(cx2)] },
+      { instruction: 'FRONT VIEW: the top of the head between its projection lines, the 90° countersink with the 45° set square from the ends of that line to the shank\'s projection lines, and the shank, 50 long.', calloutAt: [cx2, yb + 3],
+        reveals: [...TOOL.squareOn([cx2 - d / 2, csD], [cx2 - a, yb], { deg: 45, size: 34, flip: true }), L([cx2 - a, yb], [cx2 + a, yb]), L([cx2 - a, yb], [cx2 - d / 2, csD]), L([cx2 + a, yb], [cx2 + d / 2, csD]),
+          pl([[cx2 - d / 2, csD], [cx2 - d / 2, ye], [cx2 + d / 2, ye], [cx2 + d / 2, csD]])] },
       { instruction: 'Dimension the proportions and name the views.', calloutAt: [155, 185],
         reveals: [dim([sx - d / 2, ye], [sx + d / 2, ye], 8, 'Ø20 = d'), dim([sx - a, yb], [sx + a, yb], -18, '1,6d'), dim([sx + a, yb], [sx + a, yb - H], 8, '0,6d'),
           dim([cx2 - a, yb], [cx2 + a, yb], -8, '1,6d'),
@@ -126,8 +132,8 @@
       { instruction: 'The rivet heads: Ø25,6 circles.', calloutAt: T(-64, 24), reveals: rows.flatMap(x => ys.map(y => circ(T(x, y), a))) },
       { instruction: 'Cutting plane A-A across the joint through the front row of rivets.', calloutAt: T(-150, ys[0]),
         reveals: [L(T(-154, ys[0]), T(154, ys[0]), 'centre'), L(T(-154, ys[0]), T(-148, ys[0])), L(T(148, ys[0]), T(154, ys[0])), ...arrowUp(OX - 154, TY - ys[0]), ...arrowUp(OX + 154, TY - ys[0])] },
-      { instruction: 'SECTION A-A: the two plates butted at the centre, and the two straps above and below them. Leave the rivet holes open.', calloutAt: F(-110, t / 2),
-        reveals: [...[...pL, ...pR, ...sT, ...sB].map(r => poly(r)), zig(OX - PE, FY - t, FY), zig(OX + PE, FY - t, FY)] },
+      { instruction: 'SECTION A-A: project down from the top view the ends of the straps and the rivet centres. Then draw the two plates butted at the centre, and the two straps above and below them. Leave the rivet holes open.', calloutAt: F(-110, t / 2),
+        reveals: [...[-SE, SE, ...rows].map(x => L(T(x, 0), F(x, t + s), 'construction')), ...[...pL, ...pR, ...sT, ...sB].map(r => poly(r)), zig(OX - PE, FY - t, FY), zig(OX + PE, FY - t, FY)] },
       { instruction: 'The four rivets, with snap heads on the outside of both straps. They are NOT sectioned.', calloutAt: F(24, t + s + 8),
         reveals: rows.flatMap(x => [rivet(OX + x, FY - t - s, FY + s, d), L(F(x, t + s + 13), F(x, -s - 13), 'centre')]) },
       { instruction: 'Hatch the four parts so that no two parts that touch look the same: the plates at 45° in opposite directions, the straps at a wider spacing.', calloutAt: F(-110, t / 2),
