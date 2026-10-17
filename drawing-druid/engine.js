@@ -192,7 +192,7 @@
   // Line segments a primitive occupies (used to keep labels and callouts off the drawing).
   function primSegments(r, segs) {
     switch (r.kind) {
-      case 'line': segs.push([r.p1[0], r.p1[1], r.p2[0], r.p2[1]]); break;
+      case 'line': { const [a, b] = lineEnds(r); segs.push([a[0], a[1], b[0], b[1]]); break; }
       case 'polyline': pushPath(segs, r.points, false); break;
       case 'polygon': pushPath(segs, r.points, true); break;
       case 'circle': pushPath(segs, arcPoints(r.center[0], r.center[1], r.r, 0, 359.99, 32), true); break;
@@ -291,9 +291,22 @@
 
   // ── Primitive renderers ──
 
+  // Construction lines (projection lines, construction scaffolding) run a little past both ends, as
+  // on the board: a learner sees where a projected line crosses the line it meets instead of having
+  // to guess the exact point it should stop. A line that must stop dead sets `exact: true`.
+  const CONSTRUCTION_OVERSHOOT = 2.5;   // mm on the drawing
+  function lineEnds(r) {
+    if (r.lineType !== 'construction' || r.exact) return [r.p1, r.p2];
+    const dx = r.p2[0] - r.p1[0], dy = r.p2[1] - r.p1[1], len = Math.hypot(dx, dy);
+    if (len < 1e-6) return [r.p1, r.p2];
+    const ox = dx / len * CONSTRUCTION_OVERSHOOT, oy = dy / len * CONSTRUCTION_OVERSHOOT;
+    return [[r.p1[0] - ox, r.p1[1] - oy], [r.p2[0] + ox, r.p2[1] + oy]];
+  }
+
   function renderLine(r, ctx) {
+    const [a, b] = lineEnds(r);
     return el('line', Object.assign(
-      { x1: r.p1[0], y1: r.p1[1], x2: r.p2[0], y2: r.p2[1] },
+      { x1: a[0], y1: a[1], x2: b[0], y2: b[1] },
       strokeAttrs(r.lineType || 'A', ctx)
     ));
   }
