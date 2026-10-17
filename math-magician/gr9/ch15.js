@@ -319,6 +319,94 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A cylindrical tank has a volume of 6 280 cm³ and a height of 20 cm. Using π ≈ 3,14, find its radius (in cm).", answer: "10", topic: "Volume" },
       ]
     },
+    {
+      id: 1501,
+      chapter: 15,
+      name: "Capacity and units of volume",
+      fullName: "Volume and capacity, and converting between SI units of volume",
+      lesson: {
+        heading: "Capacity and units of volume",
+        sub: "Chapter 15 · Topic 3",
+        body: `
+<p><strong>Volume</strong> is the space an object takes up. <strong>Capacity</strong> is how much a container can hold, usually measured in millilitres, litres and kilolitres.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 The links between the units</div>
+<p>1 cm³ = 1 000 mm³ &nbsp;·&nbsp; 1 m³ = 1 000 000 cm³<br><strong>1 cm³ = 1 ml</strong> &nbsp;·&nbsp; 1 000 cm³ = 1 l &nbsp;·&nbsp; <strong>1 m³ = 1 000 l = 1 kl</strong></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"cuboid","bw":120,"hh":70,"labels":{"l":"60 cm","b":"30 cm","h":"40 cm"},"w":260,"h":190}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a fish tank</div>
+  <div class="example-step"><span class="step-num">1</span><span>V = l × b × h = 60 × 30 × 40 = 72 000 cm³</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Capacity = 72 000 ml = 72 000 ÷ 1 000 = <strong>72 litres</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a cylindrical water tank</div>
+  <div class="example-step"><span class="step-num">1</span><span>r = 0,5 m and h = 1,2 m: V = πr²h = π × 0,25 × 1,2 = 0,942 m³</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>0,942 m³ × 1 000 = <strong>942 litres</strong> (rounded)</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Work in one unit: if the lengths are in cm, the volume is in cm³ = ml. Convert to litres only at the end.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Convert 2,5 litres to millilitres.", "answer": "2500", "topic": "Capacity and units of volume"},
+        {"type": "input", "text": "Convert 3 m³ to litres.", "answer": "3000", "topic": "Capacity and units of volume"},
+        {"type": "input", "text": "A box holds 8 000 cm³. How many litres is that?", "answer": "8", "topic": "Capacity and units of volume"},
+        {"type": "input", "text": "A tank is 50 cm × 40 cm × 30 cm. What is its capacity in litres?", "answer": "60", "topic": "Capacity and units of volume"},
+        {"type": "input", "text": "A cylinder has r = 10 cm and h = 30 cm. What is its capacity in litres, to 2 decimal places?", "answer": "9.42", "altAnswers": ["9,42"], "topic": "Capacity and units of volume"},
+        {"type": "input", "text": "Convert 4 500 mm³ to cm³.", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Capacity and units of volume"},
+      ]
+    },
+    {
+      id: 1502,
+      chapter: 15,
+      name: "Changing dimensions: volume and surface area",
+      fullName: "How changing the dimensions of prisms and cylinders affects their volume and surface area",
+      lesson: {
+        heading: "Changing dimensions: volume and surface area",
+        sub: "Chapter 15 · Topic 4",
+        body: `
+<p>If every length of a solid is multiplied by k, the surface area is multiplied by k² and the volume by k³. If only <em>one</em> dimension changes, the volume changes by that factor only.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":160,"view":[-0.5,-0.9,9.5,5],"pts":{"a":[0,0],"b":[2,0],"c":[2,2],"d":[0,2],"a2":[0.8,0.7],"b2":[2.8,0.7],"c2":[2.8,2.7],"d2":[0.8,2.7],"e":[4.5,0],"f":[8.5,0],"g":[8.5,4],"h":[4.5,4],"f2":[9.3,0.7],"g2":[9.3,4.7],"h2":[5.3,4.7]},"nolab":["a","b","c","d","a2","b2","c2","d2","e","f","g","h","f2","g2","h2"],"seg":[["a","b"],["b","c"],["c","d"],["d","a"],["b","b2"],["c","c2"],["d","d2"],["b2","c2"],["c2","d2"],["e","f"],["f","g"],["g","h"],["h","e"],["f","f2"],["g","g2"],["h","h2"],["f2","g2"],["g2","h2"]],"txt":[[1,-0.6,"2 cm","or"],[6.5,-0.6,"4 cm","or"],[1.4,3.3,"V = 8 cm³","mu"],[6.9,5.1,"V = 64 cm³","mu"]],"cap":"Double every edge: the volume is 2³ = 8 times as big."}'></div>
+<div class="math-block">cube side 2 cm: SA = 6 × 4 = 24 cm²,  V = 8 cm³
+cube side 4 cm: SA = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: only the radius doubles</div>
+  <div class="example-step"><span class="step-num">1</span><span>A cylinder's radius is doubled, its height stays the same.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>V = πr²h: r² becomes (2r)² = 4r², so the volume is <strong>4 times</strong> as big.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Lengths ×k, areas ×k², volumes ×k³: count the dimensions in the unit (cm, cm², cm³).</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "All the dimensions of a box are doubled. By how many times does its volume increase?", "answer": "8", "topic": "Changing dimensions: volume and surface area"},
+        {"type": "input", "text": "Only the height of a box is doubled. By how many times does its volume increase?", "answer": "2", "topic": "Changing dimensions: volume and surface area"},
+        {"type": "input", "text": "A cylinder's radius is doubled and its height stays the same. By how many times does its volume increase?", "answer": "4", "topic": "Changing dimensions: volume and surface area"},
+        {"type": "input", "text": "The sides of a cube are tripled. By how many times does its surface area increase?", "answer": "9", "topic": "Changing dimensions: volume and surface area"},
+        {"type": "input", "text": "A cube has a volume of 27 cm³. Its sides are doubled. What is the new volume? (cm³)", "answer": "216", "topic": "Changing dimensions: volume and surface area"},
+        {"type": "input", "text": "A 2 cm × 3 cm × 4 cm box is enlarged with every dimension doubled. What is its new volume? (cm³)", "answer": "192", "topic": "Changing dimensions: volume and surface area"},
+      ]
+    },
+    {
+      id: 1503,
+      chapter: 15,
+      name: "Ch 15 Exam focus",
+      fullName: "Exam practice: surface area and volume",
+      lesson: {
+        heading: "Ch 15 Exam focus",
+        sub: "Chapter 15 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Write the formula, substitute with units, and say whether the answer is cm² (area) or cm³ (volume).</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A triangular prism has a triangle with base 6 cm and height 4 cm, and length 10 cm. What is its volume? (cm³)", "answer": "120", "topic": "Ch 15 Exam focus"},
+        {"type": "input", "text": "What is the surface area of a cube with sides of 5 cm? (cm²)", "answer": "150", "topic": "Ch 15 Exam focus"},
+        {"type": "input", "text": "A cylinder has r = 3 cm and h = 7 cm. What is its volume, to 2 decimal places? (cm³)", "answer": "197.92", "altAnswers": ["197,92"], "topic": "Ch 15 Exam focus"},
+        {"type": "input", "text": "What is the surface area of an 8 cm × 5 cm × 3 cm rectangular prism? (cm²)", "answer": "158", "topic": "Ch 15 Exam focus"},
+        {"type": "mc", "text": "1 kl is equal to:", "options": ["100 l", "1 000 cm³", "1 m³", "10 m³"], "answer": 2, "topic": "Ch 15 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 15, chapterName: "Surface Area and Volume",
@@ -359,6 +447,32 @@ MathMagician.registerChapter(15, {
           },
         ]
       },
+      {
+        "name": "Capacity and units of volume",
+        "questions": [
+          {
+            "num": "4",
+            "text": "A cylindrical water tank has a radius of 0,7 m and a height of 1,5 m.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Calculate its volume in m³.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "How many litres of water can it hold?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "A new tank has double the radius and double the height. How many times the volume is that?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -380,6 +494,26 @@ MathMagician.registerChapter(15, {
           { num: "Q2c", ans: "523,33 cm³", note: "r=5; 4/3×3,14×125 = 523,33" },
           { num: "Q3a", ans: "≈ 11,31 m³", note: "3,14×1,44×2,5 = 11,304" },
           { num: "Q3b", ans: "≈ 11 304 litres", note: "11,304 × 1 000" },
+        ]
+      },
+      {
+        "name": "Capacity and units of volume",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "≈ 2,31 m³",
+            "note": "π × 0,49 × 1,5 = 2,309"
+          },
+          {
+            "num": "Q4b",
+            "ans": "≈ 2 309 litres",
+            "note": "1 m³ = 1 000 l"
+          },
+          {
+            "num": "Q4c",
+            "ans": "8 times (≈ 18,47 m³)",
+            "note": "r² × 4 and h × 2"
+          }
         ]
       },
     ]

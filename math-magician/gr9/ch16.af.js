@@ -205,6 +205,99 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "'n Vorm word vanaf die oorsprong met skaalfaktor 4 vergroot, wat 'n beeld met oppervlakte 320 cm² tot gevolg het. Bepaal die oppervlakte van die oorspronklike vorm (in cm²).", answer: "20", topic: "Transformasies" },
       ]
     },
+    {
+      id: 1601,
+      chapter: 16,
+      name: "Transformasies uit koördinate beskryf",
+      fullName: "Reëls vir refleksies, translasies en rotasies, en 'n transformasie uit koördinate benoem",
+      lesson: {
+        heading: "Transformasies uit koördinate beskryf",
+        sub: "Hoofstuk 16 · Onderwerp 3",
+        body: `
+<p>Elke transformasie op die Cartesiese vlak het 'n reël vir die koördinate. As jy die reëls ken, kan jy 'n beeld vind, of die transformasie uit 'n punt en sy beeld benoem.</p>
+<div class="math-block">refleksie in die x-as          (x ; y) → (x ; −y)
+refleksie in die y-as          (x ; y) → (−x ; y)
+refleksie in y = x             (x ; y) → (y ; x)
+translasie                     (x ; y) → (x + a ; y + b)
+rotasie 90° antikloksgewys     (x ; y) → (−y ; x)
+rotasie 90° kloksgewys         (x ; y) → (y ; −x)
+rotasie 180°                   (x ; y) → (−x ; −y)</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":260,"view":[-1,-1,6,6],"grid":1,"axes":{"ticks":1},"pts":{"A":[1,3],"B":[2,5],"C":[3,3],"A&#39;":[3,1],"B&#39;":[5,2],"C&#39;":[3,3.0001]},"lab":{"A":"w","B":"n","C":"ne","A&#39;":"s","B&#39;":"e","C&#39;":"se"},"nolab":["C&#39;"],"poly":[["A","B","C","fl"],["A&#39;","B&#39;","C&#39;","fl2"]],"seg":[["A","B","ac"],["B","C","ac"],["C","A","ac"],["A&#39;","B&#39;","gn"],["B&#39;","C&#39;","gn"],["C&#39;","A&#39;","gn"],[[-0.8,-0.8],[5.8,5.8],"mu dash"]],"txt":[[5.3,5.7,"y = x","mu"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: refleksie in y = x</div>
+  <div class="example-step"><span class="step-num">1</span><span>A(1 ; 3), B(2 ; 5), C(3 ; 3). Ruil die koördinate om: A'(3 ; 1), B'(5 ; 2), C'(3 ; 3).</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>C lê op die lyn y = x, so dit is sy eie beeld.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: benoem die transformasie</div>
+  <div class="example-step"><span class="step-num">1</span><span>P(4 ; −2) → P'(−4 ; −2): x het van teken verander, y het dieselfde gebly: <strong>refleksie in die y-as</strong>.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Q(2 ; 5) → Q'(−5 ; 2): (x ; y) → (−y ; x): <strong>rotasie van 90° antikloksgewys</strong> om die oorsprong.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Toets jou reël op 'n tweede punt. Baie reëls stem by een punt ooreen, maar net die regte een werk vir almal.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "A(3 ; −1) → A'(−3 ; −1). Die transformasie is:", "options": ["refleksie in die x-as", "refleksie in die y-as", "refleksie in y = x", "rotasie van 180°"], "answer": 1, "topic": "Transformasies uit koördinate beskryf"},
+        {"type": "mc", "text": "B(−2 ; 5) → B'(5 ; −2). Die transformasie is:", "options": ["refleksie in die x-as", "rotasie van 90° kloksgewys", "refleksie in y = x", "translasie"], "answer": 2, "topic": "Transformasies uit koördinate beskryf"},
+        {"type": "input", "text": "P(1 ; 4) word 3 eenhede links en 2 eenhede af getransleer. Skryf P' as (x ; y).", "answer": "(-2 ; 2)", "topic": "Transformasies uit koördinate beskryf"},
+        {"type": "input", "text": "Roteer (2 ; −3) deur 180° om die oorsprong. Skryf die beeld as (x ; y).", "answer": "(-2 ; 3)", "topic": "Transformasies uit koördinate beskryf"},
+        {"type": "mc", "text": "Die reël (x ; y) → (−y ; x) beskryf:", "options": ["rotasie van 90° antikloksgewys", "rotasie van 90° kloksgewys", "refleksie in y = x", "refleksie in die y-as"], "answer": 0, "topic": "Transformasies uit koördinate beskryf"},
+        {"type": "input", "text": "Reflekteer (−4 ; 1) in die x-as. Skryf die beeld as (x ; y).", "answer": "(-4 ; -1)", "topic": "Transformasies uit koördinate beskryf"},
+      ]
+    },
+    {
+      id: 1602,
+      chapter: 16,
+      name: "Vergrotings: omtrek en oppervlakte",
+      fullName: "Vergrotings en verkleinings: koördinate, omtrek en oppervlakte",
+      lesson: {
+        heading: "Vergrotings: omtrek en oppervlakte",
+        sub: "Hoofstuk 16 · Onderwerp 4",
+        body: `
+<p>'n <strong>Vergroting</strong> (of <strong>verkleining</strong>) met skaalfaktor k om die oorsprong vermenigvuldig albei koördinate met k. Die vorm bly dieselfde; net sy grootte verander.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":230,"view":[-0.5,-0.5,8.5,7],"grid":1,"axes":{"ticks":1},"pts":{"P":[1,1],"Q":[3,1],"R":[1,3],"P&#39;":[2,2],"Q&#39;":[6,2],"R&#39;":[2,6]},"lab":{"P":"sw","Q":"s","R":"w","P&#39;":"sw","Q&#39;":"se","R&#39;":"nw"},"poly":[["P","Q","R","fl"],["P&#39;","Q&#39;","R&#39;","fl2"]],"seg":[["P","Q","ac"],["Q","R","ac"],["R","P","ac"],["P&#39;","Q&#39;","gn"],["Q&#39;","R&#39;","gn"],["R&#39;","P&#39;","gn"],[[0,0],"Q&#39;","mu dash"],[[0,0],"R&#39;","mu dash"]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Wat gebeur met lengtes, omtrek en oppervlakte</div>
+<p><span class="math">(x ; y) → (kx ; ky)</span><br>Elke lengte × k, so die omtrek × k. Die oppervlakte × k².<br>k &gt; 1 is 'n vergroting; 0 &lt; k &lt; 1 is 'n verkleining.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: k = 2</div>
+  <div class="example-step"><span class="step-num">1</span><span>P(1 ; 1), Q(3 ; 1), R(1 ; 3) → P'(2 ; 2), Q'(6 ; 2), R'(2 ; 6)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Oppervlakte van △PQR = ½ × 2 × 2 = 2. Oppervlakte van △P'Q'R' = ½ × 4 × 4 = 8 = 2² × 2.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Die stippellyne van die oorsprong deur elke hoekpunt gaan deur die beeldhoekpunt: so kan jy 'n vergrotingstekening toets.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Driehoek met omtrek 15 cm word met 'n skaalfaktor van 3 vergroot. Wat is die nuwe omtrek? (cm)", "answer": "45", "topic": "Vergrotings: omtrek en oppervlakte"},
+        {"type": "input", "text": "'n Vorm met oppervlakte 12 cm² word met 'n skaalfaktor van 2 vergroot. Wat is die nuwe oppervlakte? (cm²)", "answer": "48", "topic": "Vergrotings: omtrek en oppervlakte"},
+        {"type": "input", "text": "'n Vorm met oppervlakte 40 cm² word met 'n skaalfaktor van 1/2 verklein. Wat is die nuwe oppervlakte? (cm²)", "answer": "10", "topic": "Vergrotings: omtrek en oppervlakte"},
+        {"type": "input", "text": "A(4 ; −6) word met 'n skaalfaktor van 1/2 om die oorsprong verklein. Skryf A' as (x ; y).", "answer": "(2 ; -3)", "topic": "Vergrotings: omtrek en oppervlakte"},
+        {"type": "input", "text": "Na 'n vergroting is die oppervlakte 9 keer so groot. Wat is die skaalfaktor?", "answer": "3", "topic": "Vergrotings: omtrek en oppervlakte"},
+        {"type": "input", "text": "Vergroot (−3 ; 2) met 'n skaalfaktor van 3 om die oorsprong. Skryf die beeld as (x ; y).", "answer": "(-9 ; 6)", "topic": "Vergrotings: omtrek en oppervlakte"},
+      ]
+    },
+    {
+      id: 1603,
+      chapter: 16,
+      name: "Hfst 16 Eksamenfokus",
+      fullName: "Eksamenoefening: transformasiemeetkunde",
+      lesson: {
+        heading: "Hfst 16 Eksamenfokus",
+        sub: "Hoofstuk 16 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Skryf eers die reël, en pas dit dan op elke hoekpunt toe.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Reflekteer (5 ; 2) in die lyn y = x. Skryf die beeld as (x ; y).", "answer": "(2 ; 5)", "topic": "Hfst 16 Eksamenfokus"},
+        {"type": "input", "text": "Transleer (−1 ; −4) met (x + 5 ; y + 3). Skryf die beeld as (x ; y).", "answer": "(4 ; -1)", "topic": "Hfst 16 Eksamenfokus"},
+        {"type": "mc", "text": "Watter transformasie behou NIE dieselfde grootte nie?", "options": ["refleksie", "translasie", "rotasie", "vergroting"], "answer": 3, "topic": "Hfst 16 Eksamenfokus"},
+        {"type": "input", "text": "Roteer (3 ; 1) deur 90° kloksgewys om die oorsprong. Skryf die beeld as (x ; y).", "answer": "(1 ; -3)", "topic": "Hfst 16 Eksamenfokus"},
+        {"type": "input", "text": "'n Vierkant met sye van 4 cm word met 'n skaalfaktor van 1/4 verklein. Wat is die nuwe oppervlakte? (cm²)", "answer": "1", "topic": "Hfst 16 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 16, chapterName: "Transformasiemeetkunde",
@@ -238,6 +331,32 @@ MathMagician.registerChapter(16, {
           },
         ]
       },
+      {
+        "name": "Transformasies uit koördinate beskryf",
+        "questions": [
+          {
+            "num": "3",
+            "text": "△ABC het A(1 ; 1), B(4 ; 1) en C(1 ; 3).",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Reflekteer △ABC in die lyn y = x. Gee die koördinate van die beeld.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Vergroot △ABC met 'n skaalfaktor van 2 om die oorsprong. Gee die koördinate van die beeld.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Bereken die oppervlaktes van △ABC en van die vergrote driehoek, en vergelyk hulle.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -258,6 +377,26 @@ MathMagician.registerChapter(16, {
           { num: "Q2b", ans: "A'(-1;-2), B'(-4;-2), C'(-4;-5)", note: "negeer albei koördinate" },
           { num: "Q2c", ans: "A'(2;4), B'(8;4), C'(8;10)", note: "vermenigvuldig alle koördinate met 2" },
           { num: "Q2d", ans: "Oorspronklik: 4,5 cm²; vergroot: 18 cm²", note: "basis=3, hoogte=3: A=½×3×3=4,5; vergroot met k²=4: 4×4,5=18" },
+        ]
+      },
+      {
+        "name": "Transformasies uit koördinate beskryf",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "A'(1 ; 1), B'(1 ; 4), C'(3 ; 1)",
+            "note": "(x ; y) → (y ; x)"
+          },
+          {
+            "num": "Q3b",
+            "ans": "A'(2 ; 2), B'(8 ; 2), C'(2 ; 6)",
+            "note": "(x ; y) → (2x ; 2y)"
+          },
+          {
+            "num": "Q3c",
+            "ans": "3 eenhede² en 12 eenhede²: 4 keer so groot",
+            "note": "½ × 3 × 2 = 3; ½ × 6 × 4 = 12; k² = 4"
+          }
         ]
       },
     ]

@@ -1925,6 +1925,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Volume",
           "label": "Volume"
+        },
+        {
+          "value": "Capacity and units of volume",
+          "label": "Capacity and units of volume"
+        },
+        {
+          "value": "Changing dimensions: volume and surface area",
+          "label": "Changing dimensions: volume and surface area"
+        },
+        {
+          "value": "Ch 15 Exam focus",
+          "label": "Ch 15 Exam focus"
         }
       ]
     },
@@ -1938,6 +1950,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Rotations and enlargements",
           "label": "Rotations and enlargements"
+        },
+        {
+          "value": "Describing transformations from coordinates",
+          "label": "Describing transformations from coordinates"
+        },
+        {
+          "value": "Enlargements: perimeter and area",
+          "label": "Enlargements: perimeter and area"
+        },
+        {
+          "value": "Ch 16 Exam focus",
+          "label": "Ch 16 Exam focus"
         }
       ]
     },
@@ -1951,6 +1975,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Nets and cross-sections",
           "label": "Nets and cross-sections"
+        },
+        {
+          "value": "Platonic solids, spheres and cylinders",
+          "label": "Platonic solids, spheres and cylinders"
+        },
+        {
+          "value": "Ch 17 Exam focus",
+          "label": "Ch 17 Exam focus"
         }
       ]
     },
@@ -1968,6 +2000,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Interpret, analyse and report data",
           "label": "Interpret, analyse and report data"
+        },
+        {
+          "value": "Choosing and drawing graphs",
+          "label": "Choosing and drawing graphs"
+        },
+        {
+          "value": "Ch 18 Exam focus",
+          "label": "Ch 18 Exam focus"
         }
       ]
     },
@@ -1981,6 +2021,39 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Probability models and two-way tables",
           "label": "Probability models and two-way tables"
+        },
+        {
+          "value": "Tree diagrams",
+          "label": "Tree diagrams"
+        },
+        {
+          "value": "Ch 19 Exam focus",
+          "label": "Ch 19 Exam focus"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Ch 20 — Graphs",
+      "lessons": [
+        {
+          "value": "Interpreting graphs",
+          "label": "Interpreting graphs"
+        },
+        {
+          "value": "Drawing global graphs",
+          "label": "Drawing global graphs"
+        },
+        {
+          "value": "Drawing straight-line graphs",
+          "label": "Drawing straight-line graphs"
+        },
+        {
+          "value": "The equation of a straight line",
+          "label": "The equation of a straight line"
+        },
+        {
+          "value": "Ch 20 Exam focus",
+          "label": "Ch 20 Exam focus"
         }
       ]
     },

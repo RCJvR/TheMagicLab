@@ -154,6 +154,60 @@ MathMagician.registerChapter(19, {
         { type: "input", text: "In a survey of 80 learners: Sport & Bus = 15, Sport & Walk = 25, No Sport & Bus = 10, No Sport & Walk = 30. Of the learners who play sport, what fraction walk to school? (as a fraction, e.g. 2/3)", answer: "5/8", topic: "Two-way tables" },
       ]
     },
+    {
+      id: 1901,
+      chapter: 19,
+      name: "Tree diagrams",
+      fullName: "Using tree diagrams to find the probabilities of compound events",
+      lesson: {
+        heading: "Tree diagrams",
+        sub: "Chapter 19 · Topic 3",
+        body: `
+<p>A <strong>tree diagram</strong> shows every outcome of an experiment with two or more stages. Each branch is one possible result, labelled with its probability.</p>
+<div class="mf-fig" data-fig='{"t":"tree","levels":[[["H","1/2"],["T","1/2"]],[["H","1/2"],["T","1/2"]]],"outcomes":true,"w":300}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Reading a tree diagram</div>
+<p><strong>Multiply</strong> along the branches to get the probability of one outcome: P(HH) = ½ × ½ = ¼.<br><strong>Add</strong> the outcomes you want: P(one head and one tail) = P(HT) + P(TH) = ¼ + ¼ = ½.<br>The probabilities of all the outcomes add up to 1.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a bag of counters, with replacement</div>
+  <div class="example-step"><span class="step-num">1</span><span>A bag has 3 red and 2 blue counters. One is taken, put back, and a second is taken.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>P(red, red) = 3/5 × 3/5 = <strong>9/25</strong></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>P(one of each colour) = P(R, B) + P(B, R) = 6/25 + 6/25 = <strong>12/25</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"At least one" is often easiest as 1 − P(none): P(at least one head in two tosses) = 1 − P(TT) = 1 − ¼ = ¾.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A coin is tossed twice. What is P(two heads)? Give a fraction.", "answer": "1/4", "altAnswers": ["0.25", "0,25"], "topic": "Tree diagrams"},
+        {"type": "input", "text": "A coin is tossed twice. What is P(at least one head)? Give a fraction.", "answer": "3/4", "altAnswers": ["0.75", "0,75"], "topic": "Tree diagrams"},
+        {"type": "input", "text": "A coin is tossed and a die is rolled. How many outcomes are there?", "answer": "12", "topic": "Tree diagrams"},
+        {"type": "input", "text": "A bag has 3 red and 2 blue counters. Two are taken with replacement. What is P(both red)? Give a fraction.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Tree diagrams"},
+        {"type": "input", "text": "For the same bag, what is P(one red and one blue)? Give a fraction.", "answer": "12/25", "altAnswers": ["0.48", "0,48"], "topic": "Tree diagrams"},
+        {"type": "input", "text": "Three coins are tossed. How many outcomes are there?", "answer": "8", "topic": "Tree diagrams"},
+      ]
+    },
+    {
+      id: 1902,
+      chapter: 19,
+      name: "Ch 19 Exam focus",
+      fullName: "Exam practice: probability",
+      lesson: {
+        heading: "Ch 19 Exam focus",
+        sub: "Chapter 19 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. List or draw all the outcomes before you count.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A die is rolled. What is P(a number greater than 4)? Give a fraction.", "answer": "1/3", "altAnswers": ["2/6"], "topic": "Ch 19 Exam focus"},
+        {"type": "input", "text": "A spinner landed on red 18 times in 60 spins. What is the relative frequency of red? Give a decimal.", "answer": "0.3", "altAnswers": ["0,3", "3/10"], "topic": "Ch 19 Exam focus"},
+        {"type": "input", "text": "P(rain) = 0,35. What is P(no rain)?", "answer": "0.65", "altAnswers": ["0,65"], "topic": "Ch 19 Exam focus"},
+        {"type": "input", "text": "Two dice are rolled. What is P(a total of 7)? Give a fraction.", "answer": "1/6", "altAnswers": ["6/36"], "topic": "Ch 19 Exam focus"},
+        {"type": "mc", "text": "When the number of trials gets very large, the relative frequency:", "options": ["gets close to the theoretical probability", "becomes 0", "becomes 1", "changes more and more"], "answer": 0, "topic": "Ch 19 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 19, chapterName: "Probability",
@@ -185,7 +239,7 @@ MathMagician.registerChapter(19, {
         name: "Two-way tables",
         questions: [
           {
-            num: "2",
+            num: "3",
             text: "A survey of 80 learners recorded whether they own a pet and their grade: Grade 8 — pet 18, no pet 12; Grade 9 — pet 24, no pet 26.",
             parts: [
               { label: "a)", text: "Draw the two-way table with row and column totals.", marks: 3 },
@@ -194,6 +248,32 @@ MathMagician.registerChapter(19, {
               { label: "d)", text: "Find P(a learner is in Grade 8).", marks: 2 },
             ]
           },
+        ]
+      },
+      {
+        "name": "Tree diagrams",
+        "questions": [
+          {
+            "num": "4",
+            "text": "A spinner has 4 equal sectors: 3 green and 1 yellow. It is spun twice.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Draw a tree diagram with the probabilities on each branch.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Calculate P(green, green).",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Calculate P(at least one yellow).",
+                "marks": 2
+              }
+            ]
+          }
         ]
       },
     ]
@@ -215,10 +295,30 @@ MathMagician.registerChapter(19, {
       {
         name: "Two-way tables",
         answers: [
-          { num: "Q2a", ans: "Grade 8: pet 18, no pet 12, total 30; Grade 9: pet 24, no pet 26, total 50; Column totals: pet 42, no pet 38; grand total 80", note: "" },
-          { num: "Q2b", ans: "P(Grade 9 and pet) = 24/80 = 3/10", note: "" },
-          { num: "Q2c", ans: "P(pet) = 42/80 = 21/40", note: "" },
-          { num: "Q2d", ans: "P(Grade 8) = 30/80 = 3/8", note: "" },
+          { num: "Q3a", ans: "Grade 8: pet 18, no pet 12, total 30; Grade 9: pet 24, no pet 26, total 50; Column totals: pet 42, no pet 38; grand total 80", note: "" },
+          { num: "Q3b", ans: "P(Grade 9 and pet) = 24/80 = 3/10", note: "" },
+          { num: "Q3c", ans: "P(pet) = 42/80 = 21/40", note: "" },
+          { num: "Q3d", ans: "P(Grade 8) = 30/80 = 3/8", note: "" },
+        ]
+      },
+      {
+        "name": "Tree diagrams",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Each stage: green 3/4, yellow 1/4; outcomes GG, GY, YG, YY",
+            "note": ""
+          },
+          {
+            "num": "Q4b",
+            "ans": "9/16",
+            "note": "3/4 × 3/4"
+          },
+          {
+            "num": "Q4c",
+            "ans": "7/16",
+            "note": "1 − P(GG) = 1 − 9/16"
+          }
         ]
       },
     ]

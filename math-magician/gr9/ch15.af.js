@@ -178,6 +178,94 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "'n Silindriese tenk het 'n volume van 6 280 cm³ en 'n hoogte van 20 cm. Gebruik π ≈ 3,14 om sy radius te vind (in cm).", answer: "10", topic: "Volume" },
       ]
     },
+    {
+      id: 1501,
+      chapter: 15,
+      name: "Inhoudsmaat en eenhede van volume",
+      fullName: "Volume en inhoudsmaat, en herleiding tussen SI-eenhede van volume",
+      lesson: {
+        heading: "Inhoudsmaat en eenhede van volume",
+        sub: "Hoofstuk 15 · Onderwerp 3",
+        body: `
+<p><strong>Volume</strong> is die ruimte wat 'n voorwerp inneem. <strong>Inhoudsmaat</strong> is hoeveel 'n houer kan hou, gewoonlik in milliliter, liter en kiloliter gemeet.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Die verbande tussen die eenhede</div>
+<p>1 cm³ = 1 000 mm³ &nbsp;·&nbsp; 1 m³ = 1 000 000 cm³<br><strong>1 cm³ = 1 ml</strong> &nbsp;·&nbsp; 1 000 cm³ = 1 l &nbsp;·&nbsp; <strong>1 m³ = 1 000 l = 1 kl</strong></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"cuboid","bw":120,"hh":70,"labels":{"l":"60 cm","b":"30 cm","h":"40 cm"},"w":260,"h":190}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n vistenk</div>
+  <div class="example-step"><span class="step-num">1</span><span>V = l × b × h = 60 × 30 × 40 = 72 000 cm³</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Inhoudsmaat = 72 000 ml = 72 000 ÷ 1 000 = <strong>72 liter</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n silindriese watertenk</div>
+  <div class="example-step"><span class="step-num">1</span><span>r = 0,5 m en h = 1,2 m: V = πr²h = π × 0,25 × 1,2 = 0,942 m³</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>0,942 m³ × 1 000 = <strong>942 liter</strong> (afgerond)</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Werk in een eenheid: as die lengtes in cm is, is die volume in cm³ = ml. Herlei eers aan die einde na liter.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Herlei 2,5 liter na milliliter.", "answer": "2500", "topic": "Inhoudsmaat en eenhede van volume"},
+        {"type": "input", "text": "Herlei 3 m³ na liter.", "answer": "3000", "topic": "Inhoudsmaat en eenhede van volume"},
+        {"type": "input", "text": "'n Boks hou 8 000 cm³. Hoeveel liter is dit?", "answer": "8", "topic": "Inhoudsmaat en eenhede van volume"},
+        {"type": "input", "text": "'n Tenk is 50 cm × 40 cm × 30 cm. Wat is sy inhoudsmaat in liter?", "answer": "60", "topic": "Inhoudsmaat en eenhede van volume"},
+        {"type": "input", "text": "'n Silinder het r = 10 cm en h = 30 cm. Wat is sy inhoudsmaat in liter, tot 2 desimale plekke?", "answer": "9.42", "altAnswers": ["9,42"], "topic": "Inhoudsmaat en eenhede van volume"},
+        {"type": "input", "text": "Herlei 4 500 mm³ na cm³.", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Inhoudsmaat en eenhede van volume"},
+      ]
+    },
+    {
+      id: 1502,
+      chapter: 15,
+      name: "Afmetings verander: volume en buite-oppervlakte",
+      fullName: "Hoe die verandering van die afmetings van prismas en silinders hul volume en buite-oppervlakte beïnvloed",
+      lesson: {
+        heading: "Afmetings verander: volume en buite-oppervlakte",
+        sub: "Hoofstuk 15 · Onderwerp 4",
+        body: `
+<p>As elke lengte van 'n liggaam met k vermenigvuldig word, word die buite-oppervlakte met k² en die volume met k³ vermenigvuldig. As net <em>een</em> afmeting verander, verander die volume net met daardie faktor.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":160,"view":[-0.5,-0.9,9.5,5],"pts":{"a":[0,0],"b":[2,0],"c":[2,2],"d":[0,2],"a2":[0.8,0.7],"b2":[2.8,0.7],"c2":[2.8,2.7],"d2":[0.8,2.7],"e":[4.5,0],"f":[8.5,0],"g":[8.5,4],"h":[4.5,4],"f2":[9.3,0.7],"g2":[9.3,4.7],"h2":[5.3,4.7]},"nolab":["a","b","c","d","a2","b2","c2","d2","e","f","g","h","f2","g2","h2"],"seg":[["a","b"],["b","c"],["c","d"],["d","a"],["b","b2"],["c","c2"],["d","d2"],["b2","c2"],["c2","d2"],["e","f"],["f","g"],["g","h"],["h","e"],["f","f2"],["g","g2"],["h","h2"],["f2","g2"],["g2","h2"]],"txt":[[1,-0.6,"2 cm","or"],[6.5,-0.6,"4 cm","or"],[1.4,3.3,"V = 8 cm³","mu"],[6.9,5.1,"V = 64 cm³","mu"]],"cap":"Verdubbel elke rand: die volume is 2³ = 8 keer so groot."}'></div>
+<div class="math-block">kubus sy 2 cm: BO = 6 × 4 = 24 cm²,  V = 8 cm³
+kubus sy 4 cm: BO = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: net die radius verdubbel</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Silinder se radius word verdubbel; sy hoogte bly dieselfde.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>V = πr²h: r² word (2r)² = 4r², so die volume is <strong>4 keer</strong> so groot.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Lengtes ×k, oppervlaktes ×k², volumes ×k³: tel die dimensies in die eenheid (cm, cm², cm³).</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Al die afmetings van 'n boks word verdubbel. Hoeveel keer neem sy volume toe?", "answer": "8", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        {"type": "input", "text": "Net die hoogte van 'n boks word verdubbel. Hoeveel keer neem sy volume toe?", "answer": "2", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        {"type": "input", "text": "'n Silinder se radius word verdubbel en sy hoogte bly dieselfde. Hoeveel keer neem sy volume toe?", "answer": "4", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        {"type": "input", "text": "Die sye van 'n kubus word verdriedubbel. Hoeveel keer neem sy buite-oppervlakte toe?", "answer": "9", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        {"type": "input", "text": "'n Kubus het 'n volume van 27 cm³. Sy sye word verdubbel. Wat is die nuwe volume? (cm³)", "answer": "216", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        {"type": "input", "text": "'n Boks van 2 cm × 3 cm × 4 cm word vergroot sodat elke afmeting verdubbel. Wat is sy nuwe volume? (cm³)", "answer": "192", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+      ]
+    },
+    {
+      id: 1503,
+      chapter: 15,
+      name: "Hfst 15 Eksamenfokus",
+      fullName: "Eksamenoefening: buite-oppervlakte en volume",
+      lesson: {
+        heading: "Hfst 15 Eksamenfokus",
+        sub: "Hoofstuk 15 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Skryf die formule, vervang met eenhede, en sê of die antwoord cm² (oppervlakte) of cm³ (volume) is.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Driehoekige prisma het 'n driehoek met basis 6 cm en hoogte 4 cm, en lengte 10 cm. Wat is sy volume? (cm³)", "answer": "120", "topic": "Hfst 15 Eksamenfokus"},
+        {"type": "input", "text": "Wat is die buite-oppervlakte van 'n kubus met sye van 5 cm? (cm²)", "answer": "150", "topic": "Hfst 15 Eksamenfokus"},
+        {"type": "input", "text": "'n Silinder het r = 3 cm en h = 7 cm. Wat is sy volume, tot 2 desimale plekke? (cm³)", "answer": "197.92", "altAnswers": ["197,92"], "topic": "Hfst 15 Eksamenfokus"},
+        {"type": "input", "text": "Wat is die buite-oppervlakte van 'n reghoekige prisma van 8 cm × 5 cm × 3 cm? (cm²)", "answer": "158", "topic": "Hfst 15 Eksamenfokus"},
+        {"type": "mc", "text": "1 kl is gelyk aan:", "options": ["100 l", "1 000 cm³", "1 m³", "10 m³"], "answer": 2, "topic": "Hfst 15 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 15, chapterName: "Oppervlak en Volume",
@@ -218,6 +306,32 @@ MathMagician.registerChapter(15, {
           },
         ]
       },
+      {
+        "name": "Inhoudsmaat en eenhede van volume",
+        "questions": [
+          {
+            "num": "4",
+            "text": "'n Silindriese watertenk het 'n radius van 0,7 m en 'n hoogte van 1,5 m.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Bereken sy volume in m³.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Hoeveel liter water kan dit hou?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "'n Nuwe tenk het die dubbele radius en die dubbele hoogte. Hoeveel keer die volume is dit?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -239,6 +353,26 @@ MathMagician.registerChapter(15, {
           { num: "Q2c", ans: "523,33 cm³", note: "r=5; 4/3×3,14×125 = 523,33" },
           { num: "Q3a", ans: "≈ 11,31 m³", note: "3,14×1,44×2,5 = 11,304" },
           { num: "Q3b", ans: "≈ 11 304 liter", note: "11,304 × 1 000" },
+        ]
+      },
+      {
+        "name": "Inhoudsmaat en eenhede van volume",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "≈ 2,31 m³",
+            "note": "π × 0,49 × 1,5 = 2,309"
+          },
+          {
+            "num": "Q4b",
+            "ans": "≈ 2 309 liter",
+            "note": "1 m³ = 1 000 l"
+          },
+          {
+            "num": "Q4c",
+            "ans": "8 keer (≈ 18,47 m³)",
+            "note": "r² × 4 en h × 2"
+          }
         ]
       },
     ]

@@ -116,7 +116,8 @@
         const owner = (s.poly || []).find(p => p.includes(sg[0]) && p.includes(sg[1]));
         const cen = owner ? (() => { const v = owner.filter(x => typeof x !== 'string' || pts[x]).map(XY); return [v.reduce((a, p) => a + p[0], 0) / v.length, v.reduce((a, p) => a + p[1], 0) / v.length]; })() : centroid();
         if ((mx - cen[0]) * nx + (my - cen[1]) * ny < 0) { nx = -nx; ny = -ny; }
-        g.appendChild(el('text', { x: mx + nx * 12, y: my + ny * 12 + 4, class: 'mf-tx mf-tx-len', 'text-anchor': 'middle' }, sg[4]));
+        const anchor = nx > 0.6 ? 'start' : nx < -0.6 ? 'end' : 'middle';
+        g.appendChild(el('text', { x: mx + nx * (anchor === 'middle' ? 12 : 7), y: my + ny * 12 + 4, class: 'mf-tx mf-tx-len', 'text-anchor': anchor }, sg[4]));
       }
     });
     function centroid() { const v = Object.values(pts).map(p => [X(p[0]), Y(p[1])]); return v.length ? [v.reduce((a, p) => a + p[0], 0) / v.length, v.reduce((a, p) => a + p[1], 0) / v.length] : [W / 2, H / 2]; }
@@ -154,8 +155,9 @@
       let dx = x - cen[0], dy = y - cen[1];
       const dir = (s.lab || {})[name];
       if (dir) { const m = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0], ne: [1, -1], nw: [-1, -1], se: [1, 1], sw: [-1, 1] }[dir]; dx = m[0]; dy = m[1]; }
-      const L = Math.hypot(dx, dy) || 1;
-      g.appendChild(el('text', { x: x + dx / L * 11, y: y + dy / L * 11 + 4, class: 'mf-tx mf-pt', 'text-anchor': 'middle' }, (s.names || {})[name] || name));
+      const L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L;
+      const anchor = ux > 0.5 ? 'start' : ux < -0.5 ? 'end' : 'middle';
+      g.appendChild(el('text', { x: x + ux * (anchor === 'middle' ? 11 : 7), y: y + uy * 11 + 4 + (uy > 0.5 ? 3 : 0), class: 'mf-tx mf-pt', 'text-anchor': anchor }, (s.names || {})[name] || name));
     }
     (s.txt || []).forEach(t => g.appendChild(el('text', { x: X(t[0]), y: Y(t[1]), class: 'mf-tx ' + (t[3] ? t[3].split(' ').map(c => 'mf-tx-' + c).join(' ') : ''), 'text-anchor': t[4] || 'middle' }, t[2])));
     addDefs(svg);
@@ -230,6 +232,7 @@
 
   function bar(s, asLine) {
     const W = s.w || 320, H = s.h || 210, n = s.xs.length;
+    if (s.series) return bars2(s, W, H, n, asLine);
     const vmax = Math.max(...s.ys), st = s.ystep || niceStep(vmax);
     const f = frame(s, W, H, s.xlab, s.ylab, niceMax(vmax, st), st);
     const slot = (W - f.L - f.Rr) / n, X = i => f.L + slot * (i + 0.5);
@@ -238,6 +241,24 @@
       f.svg.appendChild(el('polyline', { points: s.ys.map((v, i) => `${X(i)},${f.Y(v)}`).join(' '), class: 'mf-ac mf-curve' }));
       s.ys.forEach((v, i) => f.svg.appendChild(el('circle', { cx: X(i), cy: f.Y(v), r: 3, class: 'mf-dot' })));
     } else s.ys.forEach((v, i) => f.svg.appendChild(el('rect', { x: X(i) - slot * 0.32, y: f.Y(v), width: slot * 0.64, height: f.Y(0) - f.Y(v), class: 'mf-bar' })));
+    return f.svg;
+  }
+
+  // two or more series side by side (double bar graph) or as several broken lines
+  function bars2(s, W, H, n, asLine) {
+    const all = s.series.flatMap(x => x[1]), vmax = Math.max(...all), st = s.ystep || niceStep(vmax);
+    const f = frame(s, W, H, s.xlab, s.ylab, niceMax(vmax, st), st);
+    const slot = (W - f.L - f.Rr) / n, X = i => f.L + slot * (i + 0.5), k = s.series.length, bw = slot * 0.7 / k;
+    const cl = ['mf-bar', 'mf-bar3', 'mf-bar2'], lc = ['mf-ac', 'mf-gn', 'mf-hl'];
+    s.xs.forEach((x, i) => f.svg.appendChild(el('text', { x: X(i), y: H - f.B + 14, class: 'mf-tx mf-sm', 'text-anchor': 'middle' }, x)));
+    s.series.forEach(([name, ys], j) => {
+      if (asLine) {
+        f.svg.appendChild(el('polyline', { points: ys.map((v, i) => `${X(i)},${f.Y(v)}`).join(' '), class: lc[j % 3] + ' mf-curve' }));
+        ys.forEach((v, i) => f.svg.appendChild(el('circle', { cx: X(i), cy: f.Y(v), r: 3, class: 'mf-dot' })));
+      } else ys.forEach((v, i) => f.svg.appendChild(el('rect', { x: X(i) - slot * 0.35 + j * bw, y: f.Y(v), width: bw - 1, height: f.Y(0) - f.Y(v), class: cl[j % 3] })));
+      f.svg.appendChild(el('rect', { x: W - 96, y: 6 + j * 16, width: 10, height: 10, rx: 2, class: asLine ? cl[j % 3] : cl[j % 3] }));
+      f.svg.appendChild(el('text', { x: W - 82, y: 15 + j * 16, class: 'mf-tx mf-sm' }, name));
+    });
     return f.svg;
   }
 
@@ -272,7 +293,8 @@
         const probs = Array.isArray(br[1]) ? br[1][ni] : br[1];
         const nx = 14 + colW * (li + 1), ny = span * (ni * lev.length + bi + 0.5);
         svg.appendChild(el('line', { x1: nd.x + 4, y1: nd.y, x2: nx - 14, y2: ny, class: 'mf-ln' }));
-        svg.appendChild(el('text', { x: (nd.x + nx) / 2 - 6, y: (nd.y + ny) / 2 - 5, class: 'mf-tx mf-sm mf-tx-hl', 'text-anchor': 'middle' }, probs));
+        const up = ny < nd.y - 1, flat = Math.abs(ny - nd.y) <= 1;
+        svg.appendChild(el('text', { x: (nd.x + nx) / 2 - 4, y: (nd.y + ny) / 2 + (up || flat ? -7 : 15), class: 'mf-tx mf-tx-hl', 'text-anchor': 'middle' }, probs));
         svg.appendChild(el('text', { x: nx - 6, y: ny + 4, class: 'mf-tx mf-pt', 'text-anchor': 'middle' }, br[0]));
         next.push({ x: nx, y: ny, path: nd.path.concat(br[0]) });
       }));
@@ -406,7 +428,25 @@
     return svg;
   }
 
-  const KINDS = { flow, ftree, geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
+  // ── pie chart: parts = [[label, value], …] ─────────────────────────
+  function pie(s) {
+    const W = s.w || 300, H = s.h || 190, R = Math.min(H / 2 - 14, 80), cx = R + 20, cy = H / 2;
+    const svg = svgRoot(W, H, s.alt), total = s.parts.reduce((a, p) => a + p[1], 0);
+    let a0 = -Math.PI / 2;
+    s.parts.forEach((p, i) => {
+      const a1 = a0 + 2 * Math.PI * p[1] / total, large = a1 - a0 > Math.PI ? 1 : 0;
+      const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0), x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
+      svg.appendChild(el('path', { d: `M${cx},${cy} L${x0},${y0} A${R},${R} 0 ${large} 1 ${x1},${y1} Z`, class: 'mf-pie' + (i % 5 + 1) }));
+      const deg = Math.round(360 * p[1] / total);
+      if (s.angles) { const m = (a0 + a1) / 2; svg.appendChild(el('text', { x: cx + R * 0.62 * Math.cos(m), y: cy + R * 0.62 * Math.sin(m) + 4, class: 'mf-tx mf-sm mf-tx-pie', 'text-anchor': 'middle' }, deg + '°')); }
+      svg.appendChild(el('rect', { x: 2 * R + 40, y: 20 + i * 22, width: 12, height: 12, rx: 2, class: 'mf-pie' + (i % 5 + 1) }));
+      svg.appendChild(el('text', { x: 2 * R + 58, y: 30 + i * 22, class: 'mf-tx mf-sm' }, p[0] + (s.values === false ? '' : ' (' + fmt(p[1]) + ')')));
+      a0 = a1;
+    });
+    return svg;
+  }
+
+  const KINDS = { pie, flow, ftree, geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
 
   function render(host) {
     if (host.dataset.mfDone) return;

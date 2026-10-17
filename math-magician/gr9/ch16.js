@@ -205,6 +205,99 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "A shape is enlarged from the origin by scale factor 4, producing an image with area 320 cm². Find the area of the original shape (in cm²).", answer: "20", topic: "Transformations" },
       ]
     },
+    {
+      id: 1601,
+      chapter: 16,
+      name: "Describing transformations from coordinates",
+      fullName: "Rules for reflections, translations and rotations, and naming a transformation from coordinates",
+      lesson: {
+        heading: "Describing transformations from coordinates",
+        sub: "Chapter 16 · Topic 3",
+        body: `
+<p>Every transformation on the Cartesian plane has a rule for the coordinates. If you know the rules, you can find an image, or name the transformation from a point and its image.</p>
+<div class="math-block">reflection in the x-axis      (x ; y) → (x ; −y)
+reflection in the y-axis      (x ; y) → (−x ; y)
+reflection in y = x           (x ; y) → (y ; x)
+translation                   (x ; y) → (x + a ; y + b)
+rotation 90° anticlockwise    (x ; y) → (−y ; x)
+rotation 90° clockwise        (x ; y) → (y ; −x)
+rotation 180°                 (x ; y) → (−x ; −y)</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":260,"view":[-1,-1,6,6],"grid":1,"axes":{"ticks":1},"pts":{"A":[1,3],"B":[2,5],"C":[3,3],"A&#39;":[3,1],"B&#39;":[5,2],"C&#39;":[3,3.0001]},"lab":{"A":"w","B":"n","C":"ne","A&#39;":"s","B&#39;":"e","C&#39;":"se"},"nolab":["C&#39;"],"poly":[["A","B","C","fl"],["A&#39;","B&#39;","C&#39;","fl2"]],"seg":[["A","B","ac"],["B","C","ac"],["C","A","ac"],["A&#39;","B&#39;","gn"],["B&#39;","C&#39;","gn"],["C&#39;","A&#39;","gn"],[[-0.8,-0.8],[5.8,5.8],"mu dash"]],"txt":[[5.3,5.7,"y = x","mu"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: reflection in y = x</div>
+  <div class="example-step"><span class="step-num">1</span><span>A(1 ; 3), B(2 ; 5), C(3 ; 3). Swap the coordinates: A'(3 ; 1), B'(5 ; 2), C'(3 ; 3).</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>C lies on the line y = x, so it is its own image.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: name the transformation</div>
+  <div class="example-step"><span class="step-num">1</span><span>P(4 ; −2) → P'(−4 ; −2): x changed sign, y stayed: <strong>reflection in the y-axis</strong>.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Q(2 ; 5) → Q'(−5 ; 2): (x ; y) → (−y ; x): <strong>rotation of 90° anticlockwise</strong> about the origin.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Test your rule on a second point. Many rules agree on one point, but only the right one works for all of them.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "A(3 ; −1) → A'(−3 ; −1). The transformation is:", "options": ["reflection in the x-axis", "reflection in the y-axis", "reflection in y = x", "rotation of 180°"], "answer": 1, "topic": "Describing transformations from coordinates"},
+        {"type": "mc", "text": "B(−2 ; 5) → B'(5 ; −2). The transformation is:", "options": ["reflection in the x-axis", "rotation of 90° clockwise", "reflection in y = x", "translation"], "answer": 2, "topic": "Describing transformations from coordinates"},
+        {"type": "input", "text": "P(1 ; 4) is translated 3 units left and 2 units down. Write P' as (x ; y).", "answer": "(-2 ; 2)", "topic": "Describing transformations from coordinates"},
+        {"type": "input", "text": "Rotate (2 ; −3) through 180° about the origin. Write the image as (x ; y).", "answer": "(-2 ; 3)", "topic": "Describing transformations from coordinates"},
+        {"type": "mc", "text": "The rule (x ; y) → (−y ; x) describes:", "options": ["rotation of 90° anticlockwise", "rotation of 90° clockwise", "reflection in y = x", "reflection in the y-axis"], "answer": 0, "topic": "Describing transformations from coordinates"},
+        {"type": "input", "text": "Reflect (−4 ; 1) in the x-axis. Write the image as (x ; y).", "answer": "(-4 ; -1)", "topic": "Describing transformations from coordinates"},
+      ]
+    },
+    {
+      id: 1602,
+      chapter: 16,
+      name: "Enlargements: perimeter and area",
+      fullName: "Enlargements and reductions: coordinates, perimeter and area",
+      lesson: {
+        heading: "Enlargements: perimeter and area",
+        sub: "Chapter 16 · Topic 4",
+        body: `
+<p>An <strong>enlargement</strong> (or <strong>reduction</strong>) with scale factor k about the origin multiplies both coordinates by k. The shape stays the same; only its size changes.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":230,"view":[-0.5,-0.5,8.5,7],"grid":1,"axes":{"ticks":1},"pts":{"P":[1,1],"Q":[3,1],"R":[1,3],"P&#39;":[2,2],"Q&#39;":[6,2],"R&#39;":[2,6]},"lab":{"P":"sw","Q":"s","R":"w","P&#39;":"sw","Q&#39;":"se","R&#39;":"nw"},"poly":[["P","Q","R","fl"],["P&#39;","Q&#39;","R&#39;","fl2"]],"seg":[["P","Q","ac"],["Q","R","ac"],["R","P","ac"],["P&#39;","Q&#39;","gn"],["Q&#39;","R&#39;","gn"],["R&#39;","P&#39;","gn"],[[0,0],"Q&#39;","mu dash"],[[0,0],"R&#39;","mu dash"]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 What happens to lengths, perimeter and area</div>
+<p><span class="math">(x ; y) → (kx ; ky)</span><br>Each length × k, so the perimeter × k. The area × k².<br>k &gt; 1 is an enlargement; 0 &lt; k &lt; 1 is a reduction.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: k = 2</div>
+  <div class="example-step"><span class="step-num">1</span><span>P(1 ; 1), Q(3 ; 1), R(1 ; 3) → P'(2 ; 2), Q'(6 ; 2), R'(2 ; 6)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Area of △PQR = ½ × 2 × 2 = 2. Area of △P'Q'R' = ½ × 4 × 4 = 8 = 2² × 2.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>The dashed lines from the origin through each vertex pass through the image vertex: that is how you can check an enlargement drawing.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A triangle with perimeter 15 cm is enlarged by a scale factor of 3. What is the new perimeter? (cm)", "answer": "45", "topic": "Enlargements: perimeter and area"},
+        {"type": "input", "text": "A shape with area 12 cm² is enlarged by a scale factor of 2. What is the new area? (cm²)", "answer": "48", "topic": "Enlargements: perimeter and area"},
+        {"type": "input", "text": "A shape with area 40 cm² is reduced by a scale factor of 1/2. What is the new area? (cm²)", "answer": "10", "topic": "Enlargements: perimeter and area"},
+        {"type": "input", "text": "A(4 ; −6) is reduced by a scale factor of 1/2 about the origin. Write A' as (x ; y).", "answer": "(2 ; -3)", "topic": "Enlargements: perimeter and area"},
+        {"type": "input", "text": "After an enlargement the area is 9 times as big. What is the scale factor?", "answer": "3", "topic": "Enlargements: perimeter and area"},
+        {"type": "input", "text": "Enlarge (−3 ; 2) by a scale factor of 3 about the origin. Write the image as (x ; y).", "answer": "(-9 ; 6)", "topic": "Enlargements: perimeter and area"},
+      ]
+    },
+    {
+      id: 1603,
+      chapter: 16,
+      name: "Ch 16 Exam focus",
+      fullName: "Exam practice: transformation geometry",
+      lesson: {
+        heading: "Ch 16 Exam focus",
+        sub: "Chapter 16 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Write the rule first, then apply it to each vertex.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Reflect (5 ; 2) in the line y = x. Write the image as (x ; y).", "answer": "(2 ; 5)", "topic": "Ch 16 Exam focus"},
+        {"type": "input", "text": "Translate (−1 ; −4) by (x + 5 ; y + 3). Write the image as (x ; y).", "answer": "(4 ; -1)", "topic": "Ch 16 Exam focus"},
+        {"type": "mc", "text": "Which transformation does NOT keep the same size?", "options": ["reflection", "translation", "rotation", "enlargement"], "answer": 3, "topic": "Ch 16 Exam focus"},
+        {"type": "input", "text": "Rotate (3 ; 1) through 90° clockwise about the origin. Write the image as (x ; y).", "answer": "(1 ; -3)", "topic": "Ch 16 Exam focus"},
+        {"type": "input", "text": "A square with sides 4 cm is reduced by a scale factor of 1/4. What is the new area? (cm²)", "answer": "1", "topic": "Ch 16 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 16, chapterName: "Transformation Geometry",
@@ -238,6 +331,32 @@ MathMagician.registerChapter(16, {
           },
         ]
       },
+      {
+        "name": "Describing transformations from coordinates",
+        "questions": [
+          {
+            "num": "3",
+            "text": "△ABC has A(1 ; 1), B(4 ; 1) and C(1 ; 3).",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Reflect △ABC in the line y = x. Give the coordinates of the image.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Enlarge △ABC by a scale factor of 2 about the origin. Give the coordinates of the image.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Calculate the areas of △ABC and of the enlarged triangle, and compare them.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -258,6 +377,26 @@ MathMagician.registerChapter(16, {
           { num: "Q2b", ans: "A'(-1;-2), B'(-4;-2), C'(-4;-5)", note: "negate both coordinates" },
           { num: "Q2c", ans: "A'(2;4), B'(8;4), C'(8;10)", note: "multiply all coords by 2" },
           { num: "Q2d", ans: "Original: 4,5 cm²; enlarged: 18 cm²", note: "base=3, height=3: A=½×3×3=4,5; enlarged by k²=4: 4×4,5=18" },
+        ]
+      },
+      {
+        "name": "Describing transformations from coordinates",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "A'(1 ; 1), B'(1 ; 4), C'(3 ; 1)",
+            "note": "(x ; y) → (y ; x)"
+          },
+          {
+            "num": "Q3b",
+            "ans": "A'(2 ; 2), B'(8 ; 2), C'(2 ; 6)",
+            "note": "(x ; y) → (2x ; 2y)"
+          },
+          {
+            "num": "Q3c",
+            "ans": "3 units² and 12 units²: 4 times as big",
+            "note": "½ × 3 × 2 = 3; ½ × 6 × 4 = 12; k² = 4"
+          }
         ]
       },
     ]

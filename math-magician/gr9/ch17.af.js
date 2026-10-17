@@ -171,6 +171,64 @@ MathMagician.registerChapter(17, {
         { type: "input", text: "'n Vierkantige piramide se uitslaanpatroon bestaan uit 'n vierkantige basis met sy 8 cm en 4 kongruente driehoeke, elk met basis 8 cm en skuinshoogte 10 cm. Vind die totale oppervlakte van die uitslaanpatroon (in cm²).", answer: "224", topic: "3D-voorwerpe" },
       ]
     },
+    {
+      id: 1701,
+      chapter: 17,
+      name: "Platoniese liggame, sfere en silinders",
+      fullName: "Die vyf Platoniese liggame, Euler se formule, en die eienskappe van sfere en silinders",
+      lesson: {
+        heading: "Platoniese liggame, sfere en silinders",
+        sub: "Hoofstuk 17 · Onderwerp 3",
+        body: `
+<p>'n <strong>Platoniese liggaam</strong> is 'n veelvlak waarvan al die vlakke dieselfde reëlmatige veelhoek is, met dieselfde aantal vlakke wat by elke hoekpunt ontmoet. Daar is presies vyf.</p>
+<div class="math-block">liggaam         vlakke          F    V    E
+tetraëder       driehoeke       4    4    6
+kubus           vierkante       6    8   12
+oktaëder        driehoeke       8    6   12
+dodekaëder      vyfhoeke       12   20   30
+ikosaëder       driehoeke      20   12   30</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Euler se formule</div>
+<p>Vir elke veelvlak: <span class="math">F + V − E = 2</span>. Toets die ikosaëder: 20 + 12 − 30 = 2 ✓</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"cylinder","labels":{"r":"r","h":"h"},"w":200,"h":170}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Sfere en silinders</div>
+<p>'n <strong>Silinder</strong> het twee plat sirkelvormige vlakke en een geboë oppervlak; sy net is twee sirkels en 'n reghoek so lank soos die omtrek. 'n <strong>Sfeer</strong> is heeltemal rond: elke punt op sy oppervlak is ewe ver (die radius) van die middelpunt af. Nie een is 'n veelvlak nie, want hulle het geboë oppervlakke.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>In die net van 'n silinder is die reghoek se lengte 2πr, die omtrek van die sirkel, sodat dit presies een keer rondom vou.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Hoeveel vlakke het 'n ikosaëder?", "answer": "20", "topic": "Platoniese liggame, sfere en silinders"},
+        {"type": "mc", "text": "Watter liggaam is NIE 'n Platoniese liggaam nie?", "options": ["tetraëder", "kubus", "vierkantige piramide", "oktaëder"], "answer": 2, "topic": "Platoniese liggame, sfere en silinders"},
+        {"type": "input", "text": "Hoeveel hoekpunte het 'n oktaëder?", "answer": "6", "topic": "Platoniese liggame, sfere en silinders"},
+        {"type": "input", "text": "'n Veelvlak het 12 vlakke en 20 hoekpunte. Gebruik Euler se formule om die aantal rande te bepaal.", "answer": "30", "topic": "Platoniese liggame, sfere en silinders"},
+        {"type": "mc", "text": "Die vlakke van 'n dodekaëder is:", "options": ["driehoeke", "vyfhoeke", "vierkante", "seshoeke"], "answer": 1, "topic": "Platoniese liggame, sfere en silinders"},
+        {"type": "input", "text": "Die net van 'n silinder met radius 7 cm het 'n reghoek. Hoe lank is die reghoek, tot 2 desimale plekke? (cm)", "answer": "43.98", "altAnswers": ["43,98"], "topic": "Platoniese liggame, sfere en silinders"},
+      ]
+    },
+    {
+      id: 1702,
+      chapter: 17,
+      name: "Hfst 17 Eksamenfokus",
+      fullName: "Eksamenoefening: meetkunde van 3D-voorwerpe",
+      lesson: {
+        heading: "Hfst 17 Eksamenfokus",
+        sub: "Hoofstuk 17 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Tel vlakke, hoekpunte en rande versigtig en toets met Euler se formule.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Hoeveel rande het 'n driehoekige prisma?", "answer": "9", "topic": "Hfst 17 Eksamenfokus"},
+        {"type": "input", "text": "Hoeveel vlakke het 'n vyfhoekige piramide?", "answer": "6", "topic": "Hfst 17 Eksamenfokus"},
+        {"type": "mc", "text": "Watter net vou in 'n kubus?", "options": ["'n kruisvorm van 6 vierkante", "6 vierkante in 'n reguit ry", "5 vierkante in 'n kruis", "4 driehoeke"], "answer": 0, "topic": "Hfst 17 Eksamenfokus"},
+        {"type": "input", "text": "'n Veelvlak het 8 hoekpunte en 12 rande. Hoeveel vlakke het dit?", "answer": "6", "topic": "Hfst 17 Eksamenfokus"},
+        {"type": "mc", "text": "Watter liggaam het glad nie hoekpunte nie?", "options": ["kubus", "tetraëder", "keël", "sfeer"], "answer": 3, "topic": "Hfst 17 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 17, chapterName: "Meetkunde van 3D-voorwerpe",
@@ -211,6 +269,27 @@ MathMagician.registerChapter(17, {
           },
         ]
       },
+      {
+        "name": "Platoniese liggame, sfere en silinders",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Platoniese liggame.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Skryf oor en voltooi die tabel van vlakke, hoekpunte en rande vir die vyf Platoniese liggame.",
+                "marks": 5
+              },
+              {
+                "label": "b)",
+                "text": "Toon dat Euler se formule vir die dodekaëder geld.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -232,6 +311,21 @@ MathMagician.registerChapter(17, {
           { num: "Q3a", ans: "Reghoek (dieselfde afmetings as die basis)", note: "'n Parallele snit behou die deursnitvorm" },
           { num: "Q3b", ans: "Reghoek (wydte = deursnee, hoogte = lengte van die silinder)", note: "Aksiale deursnit" },
           { num: "Q3c", ans: "Vierkant (die helfte van die grootte van die basis, geskaleer met ½)", note: "By halfhoogte, soortgelyke deursnit met die helfte van die basisafmetings" },
+        ]
+      },
+      {
+        "name": "Platoniese liggame, sfere en silinders",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Tetraëder 4, 4, 6; kubus 6, 8, 12; oktaëder 8, 6, 12; dodekaëder 12, 20, 30; ikosaëder 20, 12, 30",
+            "note": "F, V, E in daardie volgorde"
+          },
+          {
+            "num": "Q4b",
+            "ans": "12 + 20 − 30 = 2 ✓",
+            "note": "F + V − E = 2"
+          }
         ]
       },
     ]

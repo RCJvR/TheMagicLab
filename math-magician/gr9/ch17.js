@@ -171,6 +171,64 @@ MathMagician.registerChapter(17, {
         { type: "input", text: "A square pyramid's net consists of a square base of side 8 cm and 4 congruent triangles, each with base 8 cm and slant height 10 cm. Find the total area of the net (in cm²).", answer: "224", topic: "3D Shapes" },
       ]
     },
+    {
+      id: 1701,
+      chapter: 17,
+      name: "Platonic solids, spheres and cylinders",
+      fullName: "The five Platonic solids, Euler's formula, and the properties of spheres and cylinders",
+      lesson: {
+        heading: "Platonic solids, spheres and cylinders",
+        sub: "Chapter 17 · Topic 3",
+        body: `
+<p>A <strong>Platonic solid</strong> is a polyhedron whose faces are all the same regular polygon, with the same number of faces meeting at every vertex. There are exactly five.</p>
+<div class="math-block">solid           faces           F    V    E
+tetrahedron     triangles       4    4    6
+cube            squares         6    8   12
+octahedron      triangles       8    6   12
+dodecahedron    pentagons      12   20   30
+icosahedron     triangles      20   12   30</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Euler's formula</div>
+<p>For every polyhedron: <span class="math">F + V − E = 2</span>. Check the icosahedron: 20 + 12 − 30 = 2 ✓</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"cylinder","labels":{"r":"r","h":"h"},"w":200,"h":170}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Spheres and cylinders</div>
+<p>A <strong>cylinder</strong> has two flat circular faces and one curved surface; its net is two circles and a rectangle as long as the circumference. A <strong>sphere</strong> is perfectly round: every point on its surface is the same distance (the radius) from the centre. Neither is a polyhedron, because they have curved surfaces.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>In the net of a cylinder the rectangle's length is 2πr, the circumference of the circle, so that it wraps around exactly once.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "How many faces does an icosahedron have?", "answer": "20", "topic": "Platonic solids, spheres and cylinders"},
+        {"type": "mc", "text": "Which solid is NOT a Platonic solid?", "options": ["tetrahedron", "cube", "square-based pyramid", "octahedron"], "answer": 2, "topic": "Platonic solids, spheres and cylinders"},
+        {"type": "input", "text": "How many vertices does an octahedron have?", "answer": "6", "topic": "Platonic solids, spheres and cylinders"},
+        {"type": "input", "text": "A polyhedron has 12 faces and 20 vertices. Use Euler's formula to find the number of edges.", "answer": "30", "topic": "Platonic solids, spheres and cylinders"},
+        {"type": "mc", "text": "The faces of a dodecahedron are:", "options": ["triangles", "pentagons", "squares", "hexagons"], "answer": 1, "topic": "Platonic solids, spheres and cylinders"},
+        {"type": "input", "text": "The net of a cylinder with radius 7 cm has a rectangle. How long is the rectangle, to 2 decimal places? (cm)", "answer": "43.98", "altAnswers": ["43,98"], "topic": "Platonic solids, spheres and cylinders"},
+      ]
+    },
+    {
+      id: 1702,
+      chapter: 17,
+      name: "Ch 17 Exam focus",
+      fullName: "Exam practice: geometry of 3D objects",
+      lesson: {
+        heading: "Ch 17 Exam focus",
+        sub: "Chapter 17 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Count faces, vertices and edges carefully and check with Euler's formula.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "How many edges does a triangular prism have?", "answer": "9", "topic": "Ch 17 Exam focus"},
+        {"type": "input", "text": "A pentagonal pyramid has how many faces?", "answer": "6", "topic": "Ch 17 Exam focus"},
+        {"type": "mc", "text": "Which net folds into a cube?", "options": ["a cross shape of 6 squares", "6 squares in a straight row", "5 squares in a cross", "4 triangles"], "answer": 0, "topic": "Ch 17 Exam focus"},
+        {"type": "input", "text": "A polyhedron has 8 vertices and 12 edges. How many faces does it have?", "answer": "6", "topic": "Ch 17 Exam focus"},
+        {"type": "mc", "text": "Which solid has no vertices at all?", "options": ["cube", "tetrahedron", "cone", "sphere"], "answer": 3, "topic": "Ch 17 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 17, chapterName: "Geometry of 3D Shapes",
@@ -211,6 +269,27 @@ MathMagician.registerChapter(17, {
           },
         ]
       },
+      {
+        "name": "Platonic solids, spheres and cylinders",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Platonic solids.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Copy and complete the table of faces, vertices and edges for the five Platonic solids.",
+                "marks": 5
+              },
+              {
+                "label": "b)",
+                "text": "Show that Euler's formula holds for the dodecahedron.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -232,6 +311,21 @@ MathMagician.registerChapter(17, {
           { num: "Q3a", ans: "Rectangle (same dimensions as the base)", note: "Parallel cut preserves cross-section shape" },
           { num: "Q3b", ans: "Rectangle (width = diameter, height = length of cylinder)", note: "Axial cross-section" },
           { num: "Q3c", ans: "Square (half the size of the base, scaled by ½)", note: "At midheight, similar cross-section with half the base dimensions" },
+        ]
+      },
+      {
+        "name": "Platonic solids, spheres and cylinders",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Tetrahedron 4, 4, 6; cube 6, 8, 12; octahedron 8, 6, 12; dodecahedron 12, 20, 30; icosahedron 20, 12, 30",
+            "note": "F, V, E in that order"
+          },
+          {
+            "num": "Q4b",
+            "ans": "12 + 20 − 30 = 2 ✓",
+            "note": "F + V − E = 2"
+          }
         ]
       },
     ]

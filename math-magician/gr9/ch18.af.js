@@ -275,6 +275,63 @@ MathMagician.registerChapter(18, {
         { type: "input", text: "Data: 22, 24, 23, 25, 90. Watter enkele waarde behoort ondersoek te word as 'n moontlike uitskieter?", answer: "90", topic: "Interpretasie" },
       ]
     },
+    {
+      id: 1801,
+      chapter: 18,
+      name: "Grafieke kies en teken",
+      fullName: "Staaf- en dubbele staafgrafieke, sirkeldiagramme, gebroke-lyngrafieke en die regte grafiek kies",
+      lesson: {
+        heading: "Grafieke kies en teken",
+        sub: "Hoofstuk 18 · Onderwerp 4",
+        body: `
+<p>Elke soort grafiek pas by 'n ander soort data. Kies die grafiek wat die vraag die duidelikste beantwoord.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Watter grafiek wanneer?</div>
+<p><strong>Staafgrafiek:</strong> tellings in aparte kategorieë.<br><strong>Dubbele staafgrafiek:</strong> om twee groepe oor dieselfde kategorieë te vergelyk.<br><strong>Sirkeldiagram:</strong> die dele van een geheel; sektorhoek = breuk × 360°.<br><strong>Gebroke-lyngrafiek:</strong> hoe iets oor tyd verander.<br><strong>Histogram:</strong> numeriese data in intervalle gegroepeer; die stawe raak aan mekaar.<br><strong>Spreidiagram:</strong> of twee hoeveelhede verwant is.</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"bar","xs":["sokker","netbal","krieket","rugby"],"series":[["seuns",[14,2,8,10]],["meisies",[9,12,5,3]]],"ylab":"leerders","h":200}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n sirkeldiagram teken</div>
+  <div class="example-step"><span class="step-num">1</span><span>40 leerders reis skool toe: stap 16, taxi 12, motor 8, bus 4.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Stap: 16/40 × 360° = 144°. Taxi: 12/40 × 360° = 108°. Motor: 72°. Bus: 36°.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Toets: 144 + 108 + 72 + 36 = 360° ✓</span></div>
+</div>
+<div class="mf-fig" data-fig='{"t":"pie","parts":[["stap",16],["taxi",12],["motor",8],["bus",4]],"angles":true}'></div>
+<div class="mf-fig" data-fig='{"t":"line","xs":["Ma","Di","Wo","Do","Vr"],"ys":[18,21,25,22,16],"ylab":"°C","h":180}'></div>
+<p>Die gebroke-lyngrafiek wys hoe die temperatuur tot 'n maksimum op Woensdag styg en dan daal.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Elke grafiek het 'n opskrif nodig, benoemde asse met eenhede, en 'n sleutel as daar meer as een datastel is.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "15 uit 60 leerders het rooi gekies. Wat is die sektorhoek vir rooi in 'n sirkeldiagram? (°)", "answer": "90", "topic": "Grafieke kies en teken"},
+        {"type": "mc", "text": "Watter grafiek wys die temperatuur elke dag vir 'n week die beste?", "options": ["sirkeldiagram", "histogram", "gebroke-lyngrafiek", "spreidiagram"], "answer": 2, "topic": "Grafieke kies en teken"},
+        {"type": "mc", "text": "Watter grafiek vergelyk die gunstelingsporte van seuns en meisies die beste?", "options": ["sirkeldiagram", "dubbele staafgrafiek", "gebroke-lyngrafiek", "histogram"], "answer": 1, "topic": "Grafieke kies en teken"},
+        {"type": "input", "text": "In 'n sirkeldiagram van 200 mense het 'n sektor 'n hoek van 54°. Hoeveel mense stel dit voor?", "answer": "30", "topic": "Grafieke kies en teken"},
+        {"type": "mc", "text": "Om te sien of langer leerders 'n groter armspan het, teken 'n:", "options": ["sirkeldiagram", "staafgrafiek", "gebroke-lyngrafiek", "spreidiagram"], "answer": 3, "topic": "Grafieke kies en teken"},
+        {"type": "mc", "text": "Gunstelingsporte:<div class=\"mf-fig\" data-fig='{\"t\":\"bar\",\"xs\":[\"sokker\",\"netbal\",\"krieket\",\"rugby\"],\"series\":[[\"seuns\",[14,2,8,10]],[\"meisies\",[9,12,5,3]]],\"ylab\":\"leerders\",\"h\":200}'></div>Hoeveel meer seuns as meisies het sokker gekies?", "options": ["3", "5", "9", "14"], "answer": 1, "topic": "Grafieke kies en teken"},
+      ]
+    },
+    {
+      id: 1802,
+      chapter: 18,
+      name: "Hfst 18 Eksamenfokus",
+      fullName: "Eksamenoefening: data insamel, orden, voorstel en interpreteer",
+      lesson: {
+        heading: "Hfst 18 Eksamenfokus",
+        sub: "Hoofstuk 18 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Lees die asse en die sleutel voordat jy enige waardes aflees.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Data: 4, 7, 7, 9, 12, 15. Wat is die mediaan?", "answer": "8", "topic": "Hfst 18 Eksamenfokus"},
+        {"type": "input", "text": "Data: 3, 8, 8, 10, 46. Wat is die gemiddelde?", "answer": "15", "topic": "Hfst 18 Eksamenfokus"},
+        {"type": "mc", "text": "Vir die data 3, 8, 8, 10, 46, watter maatstaf beskryf die middel die beste?", "options": ["die gemiddelde, want dit gebruik al die waardes", "die mediaan, want 46 is 'n uitskieter", "die variasiewydte", "nie een nie"], "answer": 1, "topic": "Hfst 18 Eksamenfokus"},
+        {"type": "input", "text": "Data: 12, 18, 25, 31, 40. Wat is die variasiewydte?", "answer": "28", "topic": "Hfst 18 Eksamenfokus"},
+        {"type": "mc", "text": "'n Opname oor skoolvervoer word net by 'n taxistaanplek gedoen. Hierdie steekproef is:", "options": ["ewekansig", "verteenwoordigend", "bevooroordeeld", "te groot"], "answer": 2, "topic": "Hfst 18 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 18, chapterName: "Datahantering",
@@ -325,6 +382,32 @@ MathMagician.registerChapter(18, {
           },
         ]
       },
+      {
+        "name": "Grafieke kies en teken",
+        "questions": [
+          {
+            "num": "5",
+            "text": "'n Klas van 30 het vir 'n skoolkleur gestem: blou 12, groen 9, rooi 6, geel 3.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Bereken die sektorhoek vir elke kleur.",
+                "marks": 4
+              },
+              {
+                "label": "b)",
+                "text": "Teken 'n sirkeldiagram met 'n opskrif en 'n sleutel.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Hoekom is 'n gebroke-lyngrafiek NIE geskik vir hierdie data nie?",
+                "marks": 1
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -350,6 +433,26 @@ MathMagician.registerChapter(18, {
         answers: [
           { num: "Q4a", ans: "Die steekproef (die tydskrif se eie volgelinge) is nie verteenwoordigend van alle tieners nie; die steekproefgrootte (40) is klein; volgelinge hou waarskynlik reeds van sosiale media, wat die uitkoms bevooroordeel", note: "Enige twee redelike probleme" },
           { num: "Q4b", ans: "Gebruik 'n ewekansige of sistematiese steekproef wat uit 'n breë, verteenwoordigende populasie tieners getrek is, met 'n groter steekproefgrootte", note: "" },
+        ]
+      },
+      {
+        "name": "Grafieke kies en teken",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "Blou 144°, groen 108°, rooi 72°, geel 36°",
+            "note": "12/30 × 360 = 144, ens.; totaal 360°"
+          },
+          {
+            "num": "Q5b",
+            "ans": "Sirkeldiagram met die vier sektore met 'n gradeboog geteken, opskrif en sleutel.",
+            "note": ""
+          },
+          {
+            "num": "Q5c",
+            "ans": "Die kleure is kategorieë, nie 'n verandering oor tyd nie.",
+            "note": ""
+          }
         ]
       },
     ]

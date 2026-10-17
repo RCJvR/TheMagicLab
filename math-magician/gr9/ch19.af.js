@@ -154,6 +154,60 @@ MathMagician.registerChapter(19, {
         { type: "input", text: "In 'n opname onder 80 leerders: Sport & Bus = 15, Sport & Loop = 25, Geen sport & Bus = 10, Geen sport & Loop = 30. Van die leerders wat sport speel, watter breukdeel loop skool toe? (as 'n breuk, bv. 2/3)", answer: "5/8", topic: "Twee-rigting-tabelle" },
       ]
     },
+    {
+      id: 1901,
+      chapter: 19,
+      name: "Boomdiagramme",
+      fullName: "Boomdiagramme gebruik om die waarskynlikhede van saamgestelde gebeurtenisse te vind",
+      lesson: {
+        heading: "Boomdiagramme",
+        sub: "Hoofstuk 19 · Onderwerp 3",
+        body: `
+<p>'n <strong>Boomdiagram</strong> wys elke uitkoms van 'n eksperiment met twee of meer stadiums. Elke tak is een moontlike uitslag, gemerk met sy waarskynlikheid.</p>
+<div class="mf-fig" data-fig='{"t":"tree","levels":[[["K","1/2"],["S","1/2"]],[["K","1/2"],["S","1/2"]]],"outcomes":true,"w":300}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 'n Boomdiagram lees</div>
+<p><strong>Vermenigvuldig</strong> langs die takke om die waarskynlikheid van een uitkoms te kry: P(KK) = ½ × ½ = ¼.<br><strong>Tel</strong> die uitkomste wat jy wil hê <strong>op</strong>: P(een kop en een stert) = P(KS) + P(SK) = ¼ + ¼ = ½.<br>Die waarskynlikhede van al die uitkomste tel op tot 1.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n sak tellers, met terugplasing</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Sak het 3 rooi en 2 blou tellers. Een word uitgehaal, teruggesit, en 'n tweede word uitgehaal.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>P(rooi, rooi) = 3/5 × 3/5 = <strong>9/25</strong></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>P(een van elke kleur) = P(R, B) + P(B, R) = 6/25 + 6/25 = <strong>12/25</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"Ten minste een" is dikwels die maklikste as 1 − P(geen): P(ten minste een kop in twee gooie) = 1 − P(SS) = 1 − ¼ = ¾.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Muntstuk word twee keer opgeskiet. Wat is P(twee koppe)? Gee 'n breuk.", "answer": "1/4", "altAnswers": ["0.25", "0,25"], "topic": "Boomdiagramme"},
+        {"type": "input", "text": "'n Muntstuk word twee keer opgeskiet. Wat is P(ten minste een kop)? Gee 'n breuk.", "answer": "3/4", "altAnswers": ["0.75", "0,75"], "topic": "Boomdiagramme"},
+        {"type": "input", "text": "'n Muntstuk word opgeskiet en 'n dobbelsteen gegooi. Hoeveel uitkomste is daar?", "answer": "12", "topic": "Boomdiagramme"},
+        {"type": "input", "text": "'n Sak het 3 rooi en 2 blou tellers. Twee word met terugplasing uitgehaal. Wat is P(albei rooi)? Gee 'n breuk.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Boomdiagramme"},
+        {"type": "input", "text": "Vir dieselfde sak, wat is P(een rooi en een blou)? Gee 'n breuk.", "answer": "12/25", "altAnswers": ["0.48", "0,48"], "topic": "Boomdiagramme"},
+        {"type": "input", "text": "Drie muntstukke word opgeskiet. Hoeveel uitkomste is daar?", "answer": "8", "topic": "Boomdiagramme"},
+      ]
+    },
+    {
+      id: 1902,
+      chapter: 19,
+      name: "Hfst 19 Eksamenfokus",
+      fullName: "Eksamenoefening: waarskynlikheid",
+      lesson: {
+        heading: "Hfst 19 Eksamenfokus",
+        sub: "Hoofstuk 19 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Lys of teken al die uitkomste voordat jy tel.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Dobbelsteen word gegooi. Wat is P('n getal groter as 4)? Gee 'n breuk.", "answer": "1/3", "altAnswers": ["2/6"], "topic": "Hfst 19 Eksamenfokus"},
+        {"type": "input", "text": "'n Draaitol het 18 keer uit 60 draaie op rooi geland. Wat is die relatiewe frekwensie van rooi? Gee 'n desimale breuk.", "answer": "0.3", "altAnswers": ["0,3", "3/10"], "topic": "Hfst 19 Eksamenfokus"},
+        {"type": "input", "text": "P(reën) = 0,35. Wat is P(geen reën)?", "answer": "0.65", "altAnswers": ["0,65"], "topic": "Hfst 19 Eksamenfokus"},
+        {"type": "input", "text": "Twee dobbelstene word gegooi. Wat is P('n totaal van 7)? Gee 'n breuk.", "answer": "1/6", "altAnswers": ["6/36"], "topic": "Hfst 19 Eksamenfokus"},
+        {"type": "mc", "text": "Wanneer die aantal proewe baie groot word, kom die relatiewe frekwensie:", "options": ["naby aan die teoretiese waarskynlikheid", "op 0 uit", "op 1 uit", "al hoe meer verander"], "answer": 0, "topic": "Hfst 19 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 19, chapterName: "Waarskynlikheid",
@@ -185,7 +239,7 @@ MathMagician.registerChapter(19, {
         name: "Twee-rigting-tabelle",
         questions: [
           {
-            num: "2",
+            num: "3",
             text: "'n Opname onder 80 leerders het aangeteken of hulle 'n troeteldier besit en hul graad: Graad 8 — troeteldier 18, geen troeteldier 12; Graad 9 — troeteldier 24, geen troeteldier 26.",
             parts: [
               { label: "a)", text: "Teken die twee-rigting-tabel met ry- en kolomtotale.", marks: 3 },
@@ -194,6 +248,32 @@ MathMagician.registerChapter(19, {
               { label: "d)", text: "Bepaal P('n leerder is in Graad 8).", marks: 2 },
             ]
           },
+        ]
+      },
+      {
+        "name": "Boomdiagramme",
+        "questions": [
+          {
+            "num": "4",
+            "text": "'n Draaitol het 4 gelyke sektore: 3 groen en 1 geel. Dit word twee keer gedraai.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Teken 'n boomdiagram met die waarskynlikhede op elke tak.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Bereken P(groen, groen).",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Bereken P(ten minste een geel).",
+                "marks": 2
+              }
+            ]
+          }
         ]
       },
     ]
@@ -215,10 +295,30 @@ MathMagician.registerChapter(19, {
       {
         name: "Twee-rigting-tabelle",
         answers: [
-          { num: "Q2a", ans: "Graad 8: troeteldier 18, geen troeteldier 12, totaal 30; Graad 9: troeteldier 24, geen troeteldier 26, totaal 50; Kolomtotale: troeteldier 42, geen troeteldier 38; grondtotaal 80", note: "" },
-          { num: "Q2b", ans: "P(Graad 9 en troeteldier) = 24/80 = 3/10", note: "" },
-          { num: "Q2c", ans: "P(troeteldier) = 42/80 = 21/40", note: "" },
-          { num: "Q2d", ans: "P(Graad 8) = 30/80 = 3/8", note: "" },
+          { num: "Q3a", ans: "Graad 8: troeteldier 18, geen troeteldier 12, totaal 30; Graad 9: troeteldier 24, geen troeteldier 26, totaal 50; Kolomtotale: troeteldier 42, geen troeteldier 38; grondtotaal 80", note: "" },
+          { num: "Q3b", ans: "P(Graad 9 en troeteldier) = 24/80 = 3/10", note: "" },
+          { num: "Q3c", ans: "P(troeteldier) = 42/80 = 21/40", note: "" },
+          { num: "Q3d", ans: "P(Graad 8) = 30/80 = 3/8", note: "" },
+        ]
+      },
+      {
+        "name": "Boomdiagramme",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Elke stadium: groen 3/4, geel 1/4; uitkomste GG, GY, YG, YY",
+            "note": ""
+          },
+          {
+            "num": "Q4b",
+            "ans": "9/16",
+            "note": "3/4 × 3/4"
+          },
+          {
+            "num": "Q4c",
+            "ans": "7/16",
+            "note": "1 − P(GG) = 1 − 9/16"
+          }
         ]
       },
     ]

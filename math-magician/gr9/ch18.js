@@ -275,6 +275,63 @@ MathMagician.registerChapter(18, {
         { type: "input", text: "Data: 22, 24, 23, 25, 90. Which single value should be investigated as a possible outlier?", answer: "90", topic: "Interpretation" },
       ]
     },
+    {
+      id: 1801,
+      chapter: 18,
+      name: "Choosing and drawing graphs",
+      fullName: "Bar and double bar graphs, pie charts, broken-line graphs and choosing the right graph",
+      lesson: {
+        heading: "Choosing and drawing graphs",
+        sub: "Chapter 18 · Topic 4",
+        body: `
+<p>Each kind of graph suits a different kind of data. Choose the graph that answers the question most clearly.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Which graph when?</div>
+<p><strong>Bar graph:</strong> counts in separate categories.<br><strong>Double bar graph:</strong> to compare two groups across the same categories.<br><strong>Pie chart:</strong> the parts of one whole; sector angle = fraction × 360°.<br><strong>Broken-line graph:</strong> how something changes over time.<br><strong>Histogram:</strong> numerical data grouped in intervals; the bars touch.<br><strong>Scatter plot:</strong> whether two quantities are related.</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"bar","xs":["soccer","netball","cricket","rugby"],"series":[["boys",[14,2,8,10]],["girls",[9,12,5,3]]],"ylab":"learners","h":200}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: drawing a pie chart</div>
+  <div class="example-step"><span class="step-num">1</span><span>40 learners travel to school: walk 16, taxi 12, car 8, bus 4.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Walk: 16/40 × 360° = 144°. Taxi: 12/40 × 360° = 108°. Car: 72°. Bus: 36°.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Check: 144 + 108 + 72 + 36 = 360° ✓</span></div>
+</div>
+<div class="mf-fig" data-fig='{"t":"pie","parts":[["walk",16],["taxi",12],["car",8],["bus",4]],"angles":true}'></div>
+<div class="mf-fig" data-fig='{"t":"line","xs":["Mon","Tue","Wed","Thu","Fri"],"ys":[18,21,25,22,16],"ylab":"°C","h":180}'></div>
+<p>The broken-line graph shows the temperature rising to a maximum on Wednesday and then falling.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Every graph needs a heading, labelled axes with units, and a key when there is more than one data set.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "15 out of 60 learners chose red. What is the sector angle for red in a pie chart? (°)", "answer": "90", "topic": "Choosing and drawing graphs"},
+        {"type": "mc", "text": "Which graph best shows the temperature each day for a week?", "options": ["pie chart", "histogram", "broken-line graph", "scatter plot"], "answer": 2, "topic": "Choosing and drawing graphs"},
+        {"type": "mc", "text": "Which graph best compares the favourite sports of boys and girls?", "options": ["pie chart", "double bar graph", "broken-line graph", "histogram"], "answer": 1, "topic": "Choosing and drawing graphs"},
+        {"type": "input", "text": "In a pie chart of 200 people, a sector has an angle of 54°. How many people does it represent?", "answer": "30", "topic": "Choosing and drawing graphs"},
+        {"type": "mc", "text": "To see whether taller learners have longer arm spans, draw a:", "options": ["pie chart", "bar graph", "broken-line graph", "scatter plot"], "answer": 3, "topic": "Choosing and drawing graphs"},
+        {"type": "mc", "text": "Favourite sports:<div class=\"mf-fig\" data-fig='{\"t\":\"bar\",\"xs\":[\"soccer\",\"netball\",\"cricket\",\"rugby\"],\"series\":[[\"boys\",[14,2,8,10]],[\"girls\",[9,12,5,3]]],\"ylab\":\"learners\",\"h\":200}'></div>How many more boys than girls chose soccer?", "options": ["3", "5", "9", "14"], "answer": 1, "topic": "Choosing and drawing graphs"},
+      ]
+    },
+    {
+      id: 1802,
+      chapter: 18,
+      name: "Ch 18 Exam focus",
+      fullName: "Exam practice: collecting, organising, representing and interpreting data",
+      lesson: {
+        heading: "Ch 18 Exam focus",
+        sub: "Chapter 18 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Read the axes and the key before you read any values.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Data: 4, 7, 7, 9, 12, 15. What is the median?", "answer": "8", "topic": "Ch 18 Exam focus"},
+        {"type": "input", "text": "Data: 3, 8, 8, 10, 46. What is the mean?", "answer": "15", "topic": "Ch 18 Exam focus"},
+        {"type": "mc", "text": "For the data 3, 8, 8, 10, 46, which measure describes the middle best?", "options": ["the mean, because it uses all the values", "the median, because 46 is an outlier", "the range", "none of them"], "answer": 1, "topic": "Ch 18 Exam focus"},
+        {"type": "input", "text": "Data: 12, 18, 25, 31, 40. What is the range?", "answer": "28", "topic": "Ch 18 Exam focus"},
+        {"type": "mc", "text": "A survey about school transport is done only at a taxi rank. This sample is:", "options": ["random", "representative", "biased", "too big"], "answer": 2, "topic": "Ch 18 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 18, chapterName: "Data Handling",
@@ -325,6 +382,32 @@ MathMagician.registerChapter(18, {
           },
         ]
       },
+      {
+        "name": "Choosing and drawing graphs",
+        "questions": [
+          {
+            "num": "5",
+            "text": "A class of 30 voted for a school colour: blue 12, green 9, red 6, yellow 3.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Calculate the sector angle for each colour.",
+                "marks": 4
+              },
+              {
+                "label": "b)",
+                "text": "Draw a pie chart with a heading and a key.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Why is a broken-line graph NOT suitable for this data?",
+                "marks": 1
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -350,6 +433,26 @@ MathMagician.registerChapter(18, {
         answers: [
           { num: "Q4a", ans: "The sample (magazine's own followers) is not representative of all teenagers; the sample size (40) is small; followers likely already like social media, biasing the result", note: "Any two reasonable issues" },
           { num: "Q4b", ans: "Use a random or systematic sample drawn from a broad, representative population of teenagers, with a larger sample size", note: "" },
+        ]
+      },
+      {
+        "name": "Choosing and drawing graphs",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "Blue 144°, green 108°, red 72°, yellow 36°",
+            "note": "12/30 × 360 = 144, etc.; total 360°"
+          },
+          {
+            "num": "Q5b",
+            "ans": "Pie chart with the four sectors drawn with a protractor, heading and key.",
+            "note": ""
+          },
+          {
+            "num": "Q5c",
+            "ans": "The colours are categories, not a change over time.",
+            "note": ""
+          }
         ]
       },
     ]
