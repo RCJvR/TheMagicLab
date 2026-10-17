@@ -152,7 +152,7 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Calculate 3/5 × 10/9. Simplify your answer (write as a/b or whole number).", answer: "2/3", topic: "Fractions" },
         { type: "mc", text: "Calculate 1½ × 2⅔.", options: ["3", "4", "3½", "4½"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Find ¾ of 48.", answer: "36", topic: "Fractions" },
-        { type: "mc", text: "Calculate 5/6 × 3/10.", options: ["8/16", "15/60", "1/4", "1/3"], answer: 2, topic: "Fractions" },
+        { type: "mc", text: "Calculate 5/6 × 3/10.", options: ["8/16", "5/12", "1/4", "1/3"], answer: 2, topic: "Fractions" },
         { type: "input", text: "Calculate 2⅓ × 1½. Give as a mixed number.", answer: "3 1/2", topic: "Fractions" },
         { type: "input", text: "Calculate 2⅖ × 1⅚. Give as a mixed number.", answer: "4 2/5", topic: "Fractions" },
         { type: "input", text: "A tank is ⅗ full of water. ⅔ of that water is then used. What fraction of the full tank's capacity was used? Give as a simplified fraction.", answer: "2/5", topic: "Fractions" },
@@ -299,7 +299,7 @@ MathMagician.registerChapter(11, {
       },
       questions: [
         { type: "input", text: "Express 18 as a fraction of 24. Simplify.", answer: "3/4", topic: "Fractions" },
-        { type: "mc", text: "Express 30 minutes as a fraction of 2 hours.", options: ["3/4", "1/4", "1/2", "15/60"], answer: 1, topic: "Fractions" },
+        { type: "mc", text: "Express 30 minutes as a fraction of 2 hours.", options: ["3/4", "1/4", "1/2", "1/6"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Express 400 m as a fraction of 2 km. Simplify.", answer: "1/5", topic: "Fractions" },
         { type: "mc", text: "In a class of 32 learners, 20 are girls. What fraction are boys?", options: ["5/8", "3/8", "5/16", "5/12"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Express 750 g as a fraction of 2 kg. Simplify.", answer: "3/8", topic: "Fractions" },

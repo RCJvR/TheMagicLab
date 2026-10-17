@@ -171,7 +171,7 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "Two coins are flipped. What is P(both tails)?", options: ["1/2", "1/4", "1/3", "3/4"], answer: 1, topic: "Sample space" },
         { type: "mc", text: "A bag has 3 shirts (red, blue, green) and 2 hats (cap, beanie). How many outfit combinations?", options: ["5", "6", "9", "3"], answer: 1, topic: "Sample space" },
         { type: "input", text: "Two dice are rolled. How many outcomes are in the sample space?", answer: "36", topic: "Sample space" },
-        { type: "mc", text: "Two coins are flipped. P(at least one head) = ?", options: ["1/4", "1/2", "2/4", "3/4"], answer: 3, topic: "Sample space" },
+        { type: "mc", text: "Two coins are flipped. P(at least one head) = ?", options: ["1/4", "1/2", "1/3", "3/4"], answer: 3, topic: "Sample space" },
         { type: "input", text: "Three coins are flipped together. What is P(exactly two heads)? (fraction)", answer: "3/8", topic: "Sample space" },
         { type: "input", text: "A restaurant offers 3 starters, 4 mains, and 2 desserts. A critic randomly picks one full 3-course combination. What is P(the meal includes one specific main course)? (fraction)", answer: "1/4", topic: "Sample space" },
       ]

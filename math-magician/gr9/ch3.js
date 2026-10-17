@@ -118,7 +118,7 @@ MathMagician.registerChapter(3, {
       questions: [
         { type: "mc", text: "Write 0,375 as a fraction in simplest form:", options: ["375/1000", "3/8", "37/100", "7/20"], answer: 1, topic: "Decimals" },
         { type: "input", text: "Convert 7/8 to a decimal.", answer: "0.875", topic: "Decimals" },
-        { type: "mc", text: "Express 0,2̇ (= 0,222̇) as a fraction:", options: ["2/9", "1/5", "2/10", "22/99"], answer: 0, topic: "Decimals" },
+        { type: "mc", text: "Express 0,2̇ (= 0,222̇) as a fraction:", options: ["2/9", "1/5", "2/10", "2/99"], answer: 0, topic: "Decimals" },
         { type: "input", text: "Convert 0,45 to a percentage.", answer: "45", topic: "Decimals" },
         { type: "mc", text: "Which decimal is equivalent to 5/12?", options: ["0,416̇", "0,41̇6̇", "0,4166̇", "Both a) and c)"], answer: 3, topic: "Decimals" },
         { type: "input", text: "Write 0,875 as a percentage, then use it to calculate 0,875 of R 480. Give the rand amount.", answer: "420", topic: "Decimals" },

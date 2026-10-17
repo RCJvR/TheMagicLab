@@ -171,7 +171,7 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "Twee muntstukke word gegooi. Wat is P(albei munt)?", options: ["1/2", "1/4", "1/3", "3/4"], answer: 1, topic: "Uitkomsruimte" },
         { type: "mc", text: "'n Sak het 3 hemde (rooi, blou, groen) en 2 mussies (pet, wintermus). Hoeveel drag-kombinasies is moontlik?", options: ["5", "6", "9", "3"], answer: 1, topic: "Uitkomsruimte" },
         { type: "input", text: "Twee dobbelstene word gegooi. Hoeveel uitkomste is in die uitkomsruimte?", answer: "36", topic: "Uitkomsruimte" },
-        { type: "mc", text: "Twee muntstukke word gegooi. P(ten minste een kop) = ?", options: ["1/4", "1/2", "2/4", "3/4"], answer: 3, topic: "Uitkomsruimte" },
+        { type: "mc", text: "Twee muntstukke word gegooi. P(ten minste een kop) = ?", options: ["1/4", "1/2", "1/3", "3/4"], answer: 3, topic: "Uitkomsruimte" },
         { type: "input", text: "Drie muntstukke word saam gegooi. Wat is P(presies twee koppe)? (breuk)", answer: "3/8", topic: "Uitkomsruimte" },
         { type: "input", text: "'n Restaurant bied 3 voorgeregte, 4 hoofgeregte, en 2 nagereg-opsies. 'n Resensent kies lukraak een volledige 3-gang-kombinasie. Wat is P(die maaltyd sluit een spesifieke hoofgereg in)? (breuk)", answer: "1/4", topic: "Uitkomsruimte" },
       ]

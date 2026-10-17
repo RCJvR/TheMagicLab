@@ -145,7 +145,7 @@ MathMagician.registerChapter(1, {
         {
           type: "mc",
           text: "Rationalise: 6/√3",
-          options: ["2√3", "6√3/3", "√3/2", "2/√3"],
+          options: ["2√3", "6√3", "√3/2", "2/√3"],
           answer: 0,
           topic: "Rational exponents & surd operations"
         },

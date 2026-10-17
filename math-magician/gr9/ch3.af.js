@@ -118,7 +118,7 @@ MathMagician.registerChapter(3, {
       questions: [
         { type: "mc", text: "Skryf 0,375 as 'n breuk in eenvoudigste vorm:", options: ["375/1000", "3/8", "37/100", "7/20"], answer: 1, topic: "Desimale" },
         { type: "input", text: "Skakel 7/8 om na 'n desimaal.", answer: "0.875", topic: "Desimale" },
-        { type: "mc", text: "Skryf 0,2̇ (= 0,222̇) as 'n breuk:", options: ["2/9", "1/5", "2/10", "22/99"], answer: 0, topic: "Desimale" },
+        { type: "mc", text: "Skryf 0,2̇ (= 0,222̇) as 'n breuk:", options: ["2/9", "1/5", "2/10", "2/99"], answer: 0, topic: "Desimale" },
         { type: "input", text: "Skakel 0,45 om na 'n persentasie.", answer: "45", topic: "Desimale" },
         { type: "mc", text: "Watter desimaal is ekwivalent aan 5/12?", options: ["0,416̇", "0,41̇6̇", "0,4166̇", "Beide a) en c)"], answer: 3, topic: "Desimale" },
         { type: "input", text: "Skryf 0,875 as 'n persentasie, en gebruik dit om 0,875 van R 480 te bereken. Gee die randbedrag.", answer: "420", topic: "Desimale" },

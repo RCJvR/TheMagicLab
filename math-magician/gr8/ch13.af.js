@@ -81,7 +81,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "Bepaal die skuinssy van 'n reghoekige driehoek met bene 5 cm en 12 cm.", answer: "13", topic: "Pythagoras" },
-        { type: "mc", text: "'n Reghoekige driehoek het 'n skuinssy van 17 cm en een been van 8 cm. Bepaal die ander been.", options: ["9 cm", "15 cm", "12 cm", "√225 cm"], answer: 1, topic: "Pythagoras" },
+        { type: "mc", text: "'n Reghoekige driehoek het 'n skuinssy van 17 cm en een been van 8 cm. Bepaal die ander been.", options: ["9 cm", "15 cm", "12 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Bepaal die skuinssy as a = 9 en b = 12. Gee die presiese antwoord.", answer: "15", topic: "Pythagoras" },
         { type: "mc", text: "Is 'n driehoek met sye 6, 8, 10 reghoekig?", options: ["Nee", "Ja — 6²+8²=10²", "Ja — maar net toevallig", "Kan nie bepaal word nie"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Bepaal die ontbrekende been: skuinssy = 26, een been = 24.", answer: "10", topic: "Pythagoras" },
@@ -154,7 +154,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "'n Leer van 10 m lank leun teen 'n muur. Die voet daarvan is 6 m van die muur af. Hoe hoog teen die muur kom dit, in meter?", answer: "8", topic: "Pythagoras" },
-        { type: "mc", text: "'n Reghoek is 9 cm × 40 cm. Wat is die lengte van die diagonaal daarvan?", options: ["41 cm", "49 cm", "38 cm", "√1681 cm"], answer: 0, topic: "Pythagoras" },
+        { type: "mc", text: "'n Reghoek is 9 cm × 40 cm. Wat is die lengte van die diagonaal daarvan?", options: ["41 cm", "49 cm", "38 cm", "√1519 cm"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "Bepaal die afstand tussen die punte A(0, 0) en B(5, 12).", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "'n Vierkant het 'n diagonaal van 10 cm. Wat is die sylengte daarvan? (Los in wortelvorm indien nodig)", options: ["5 cm", "5√2 cm", "√50 cm", "Beide B en C"], answer: 3, topic: "Pythagoras" },
         { type: "input", text: "Bepaal die afstand tussen A(1, 3) en B(4, 7). Rond af tot 2 desimale plekke.", answer: "5", topic: "Pythagoras" },
@@ -189,7 +189,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "'n Reghoekige driehoek het bene 9 en 40. Bepaal die skuinssy.", answer: "41", topic: "Gemeng" },
         { type: "mc", text: "In △ABC, ∠B = 90°. AB = 7, BC = 24. Bepaal AC.", options: ["31", "25", "√527", "17"], answer: 1, topic: "Gemeng" },
         { type: "input", text: "'n Gelykbenige driehoek het gelyke sye van 15 cm en 'n basis van 18 cm. Bepaal die hoogte vanaf die apex.", answer: "12", topic: "Gemeng" },
-        { type: "mc", text: "'n 13 m draad loop vanaf die bopunt van 'n 5 m paal na die grond. Hoe ver van die basis van die paal word dit verankeer?", options: ["8 m", "12 m", "18 m", "√144 m"], answer: 1, topic: "Gemeng" },
+        { type: "mc", text: "'n 13 m draad loop vanaf die bopunt van 'n 5 m paal na die grond. Hoe ver van die basis van die paal word dit verankeer?", options: ["8 m", "12 m", "18 m", "√194 m"], answer: 1, topic: "Gemeng" },
         { type: "input", text: "Bepaal die afstand tussen A(−2, 1) en B(3, 13). Gee die presiese antwoord.", answer: "13", topic: "Gemeng" },
         { type: "input", text: "'n Reghoekige tuin is 24 m lank. Die diagonale paadjie daarvan meet 26 m. Bepaal die totale lengte heining wat nodig is om die tuin se omtrek te omhein EN die diagonale paadjie te bou (in m).", answer: "94", topic: "Gemeng" },
       ]

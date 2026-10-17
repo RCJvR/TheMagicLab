@@ -81,7 +81,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "Find the hypotenuse of a right-angled triangle with legs 5 cm and 12 cm.", answer: "13", topic: "Pythagoras" },
-        { type: "mc", text: "A right-angled triangle has hypotenuse 17 cm and one leg 8 cm. Find the other leg.", options: ["9 cm", "15 cm", "12 cm", "√225 cm"], answer: 1, topic: "Pythagoras" },
+        { type: "mc", text: "A right-angled triangle has hypotenuse 17 cm and one leg 8 cm. Find the other leg.", options: ["9 cm", "15 cm", "12 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Find the hypotenuse if a = 9 and b = 12. Give exact answer.", answer: "15", topic: "Pythagoras" },
         { type: "mc", text: "Is a triangle with sides 6, 8, 10 right-angled?", options: ["No", "Yes — 6²+8²=10²", "Yes — but only by coincidence", "Cannot tell"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Find the missing leg: hypotenuse = 26, one leg = 24.", answer: "10", topic: "Pythagoras" },
@@ -154,7 +154,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "A ladder 10 m long leans against a wall. Its foot is 6 m from the wall. How high up the wall does it reach in metres?", answer: "8", topic: "Pythagoras" },
-        { type: "mc", text: "A rectangle is 9 cm × 40 cm. What is the length of its diagonal?", options: ["41 cm", "49 cm", "38 cm", "√1681 cm"], answer: 0, topic: "Pythagoras" },
+        { type: "mc", text: "A rectangle is 9 cm × 40 cm. What is the length of its diagonal?", options: ["41 cm", "49 cm", "38 cm", "√1519 cm"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "Find the distance between points A(0, 0) and B(5, 12).", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "A square has diagonal 10 cm. What is its side length? (Leave in surd form if needed)", options: ["5 cm", "5√2 cm", "√50 cm", "Both B and C"], answer: 3, topic: "Pythagoras" },
         { type: "input", text: "Find the distance between A(1, 3) and B(4, 7). Round to 2 decimal places.", answer: "5", topic: "Pythagoras" },
@@ -189,7 +189,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "A right-angled triangle has legs 9 and 40. Find the hypotenuse.", answer: "41", topic: "Mixed" },
         { type: "mc", text: "In △ABC, ∠B = 90°. AB = 7, BC = 24. Find AC.", options: ["31", "25", "√527", "17"], answer: 1, topic: "Mixed" },
         { type: "input", text: "An isosceles triangle has equal sides 15 cm and base 18 cm. Find the height from the apex.", answer: "12", topic: "Mixed" },
-        { type: "mc", text: "A 13 m wire runs from the top of a 5 m pole to the ground. How far from the base of the pole does it anchor?", options: ["8 m", "12 m", "18 m", "√144 m"], answer: 1, topic: "Mixed" },
+        { type: "mc", text: "A 13 m wire runs from the top of a 5 m pole to the ground. How far from the base of the pole does it anchor?", options: ["8 m", "12 m", "18 m", "√194 m"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Find the distance between A(−2, 1) and B(3, 13). Give exact answer.", answer: "13", topic: "Mixed" },
         { type: "input", text: "A rectangular garden is 24 m long. Its diagonal path measures 26 m. Find the total length of fencing needed to enclose the garden's perimeter AND build the diagonal path (in m).", answer: "94", topic: "Mixed" },
       ]

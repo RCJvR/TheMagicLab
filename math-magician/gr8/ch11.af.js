@@ -152,7 +152,7 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Bereken 3/5 × 10/9. Vereenvoudig jou antwoord (skryf as a/b of heelgetal).", answer: "2/3", topic: "Breuke" },
         { type: "mc", text: "Bereken 1½ × 2⅔.", options: ["3", "4", "3½", "4½"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Bepaal ¾ van 48.", answer: "36", topic: "Breuke" },
-        { type: "mc", text: "Bereken 5/6 × 3/10.", options: ["8/16", "15/60", "1/4", "1/3"], answer: 2, topic: "Breuke" },
+        { type: "mc", text: "Bereken 5/6 × 3/10.", options: ["8/16", "5/12", "1/4", "1/3"], answer: 2, topic: "Breuke" },
         { type: "input", text: "Bereken 2⅓ × 1½. Gee as 'n gemengde getal.", answer: "3 1/2", topic: "Breuke" },
         { type: "input", text: "Bereken 2⅖ × 1⅚. Gee as 'n gemengde getal.", answer: "4 2/5", topic: "Breuke" },
         { type: "input", text: "'n Tenk is ⅗ vol water. ⅔ van daardie water word dan gebruik. Watter breukdeel van die tenk se volle kapasiteit is gebruik? Gee as 'n vereenvoudigde breuk.", answer: "2/5", topic: "Breuke" },
@@ -299,7 +299,7 @@ MathMagician.registerChapter(11, {
       },
       questions: [
         { type: "input", text: "Druk 18 as 'n breuk van 24 uit. Vereenvoudig.", answer: "3/4", topic: "Breuke" },
-        { type: "mc", text: "Druk 30 minute as 'n breuk van 2 uur uit.", options: ["3/4", "1/4", "1/2", "15/60"], answer: 1, topic: "Breuke" },
+        { type: "mc", text: "Druk 30 minute as 'n breuk van 2 uur uit.", options: ["3/4", "1/4", "1/2", "1/6"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Druk 400 m as 'n breuk van 2 km uit. Vereenvoudig.", answer: "1/5", topic: "Breuke" },
         { type: "mc", text: "In 'n klas van 32 leerders is 20 meisies. Watter breuk is seuns?", options: ["5/8", "3/8", "5/16", "5/12"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Druk 750 g as 'n breuk van 2 kg uit. Vereenvoudig.", answer: "3/8", topic: "Breuke" },
