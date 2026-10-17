@@ -314,7 +314,7 @@ MathMagician.registerChapter(6, {
         {
           type: "mc",
           text: "Oppervlakte van △ABC waar a = 7, b = 5, C = 30°:",
-          options: ["8.75", "17.5", "9.25", "Beide A en C"],
+          options: ["8.75", "17.5", "9.25", "15.16"],
           answer: 0,
           topic: "Sinusreël, kosinusreël en oppervlakte-reël"
         },

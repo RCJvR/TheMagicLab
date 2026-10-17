@@ -314,7 +314,7 @@ MathMagician.registerChapter(6, {
         {
           type: "mc",
           text: "Area of △ABC where a = 7, b = 5, C = 30°:",
-          options: ["8.75", "17.5", "9.25", "Both A and C"],
+          options: ["8.75", "17.5", "9.25", "15.16"],
           answer: 0,
           topic: "Sine rule, cosine rule & area rule"
         },

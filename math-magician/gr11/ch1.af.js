@@ -465,7 +465,7 @@ MathMagician.registerChapter(1, {
           type: "mc",
           text: "Los op vir x: 5^(x−2) = 125",
           options: ["x = 3", "x = 5", "x = 1", "x = 25"],
-          answer: 0,
+          answer: 1,
           topic: "Eksponentwette & eksponensiële vergelykings"
         },
         {
