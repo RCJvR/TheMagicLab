@@ -166,8 +166,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "A horizontal cross-section of a cone (parallel to base) produces:", options: ["Triangle", "Rectangle", "Circle", "Ellipse"], answer: 2, topic: "3D Shapes" },
         { type: "mc", text: "The net of a square pyramid has:", options: ["4 squares + 1 triangle", "1 square + 4 triangles", "5 triangles", "4 triangles + 2 squares"], answer: 1, topic: "3D Shapes" },
         { type: "mc", text: "If you cut a sphere through its centre, the cross-section is:", options: ["An ellipse", "A great circle", "A hemisphere", "A semicircle"], answer: 1, topic: "3D Shapes" },
-        { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "pr", "2pr", "pr²"], answer: 2, topic: "3D Shapes" },
-        { type: "input", text: "A cylinder's net has a rectangle whose width equals the circumference of the circular base. The base has radius 7 cm (use p ≈ 22/7) and the cylinder's height is 12 cm. Find the area of the rectangular part of the net (in cm²).", answer: "528", topic: "3D Shapes" },
+        { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "πr", "2πr", "πr²"], answer: 2, topic: "3D Shapes" },
+        { type: "input", text: "A cylinder's net has a rectangle whose width equals the circumference of the circular base. The base has radius 7 cm (use π ≈ 22/7) and the cylinder's height is 12 cm. Find the area of the rectangular part of the net (in cm²).", answer: "528", topic: "3D Shapes" },
         { type: "input", text: "A square pyramid's net consists of a square base of side 8 cm and 4 congruent triangles, each with base 8 cm and slant height 10 cm. Find the total area of the net (in cm²).", answer: "224", topic: "3D Shapes" },
       ]
     },
@@ -310,7 +310,7 @@ icosahedron     triangles      20   12   30</div>
           { num: "Q2b", ans: "SA = 2×(½×6×5,196) + 3×(6×10) = 31,18 + 180 ≈ 211,18 cm²", note: "Height of equilateral triangle = 6×√3/2 = 3√3 ≈ 5,196 cm" },
           { num: "Q3a", ans: "Rectangle (same dimensions as the base)", note: "Parallel cut preserves cross-section shape" },
           { num: "Q3b", ans: "Rectangle (width = diameter, height = length of cylinder)", note: "Axial cross-section" },
-          { num: "Q3c", ans: "Square (half the size of the base, scaled by ½)", note: "At midheight, similar cross-section with half the base dimensions" },
+          { num: "Q3c", ans: "A square whose sides are half as long as the base (a quarter of its area)", note: "At mid-height the cross-section is similar to the base with scale factor ½" },
         ]
       },
       {

@@ -166,8 +166,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "'n Horisontale deursnit van 'n keël (parallel aan die basis) lewer:", options: ["Driehoek", "Reghoek", "Sirkel", "Ellips"], answer: 2, topic: "3D-voorwerpe" },
         { type: "mc", text: "Die uitslaanpatroon van 'n vierkantige piramide het:", options: ["4 vierkante + 1 driehoek", "1 vierkant + 4 driehoeke", "5 driehoeke", "4 driehoeke + 2 vierkante"], answer: 1, topic: "3D-voorwerpe" },
         { type: "mc", text: "As jy 'n sfeer deur sy middelpunt sny, is die deursnit:", options: ["'n Ellips", "'n Grootsirkel", "'n Halfsfeer", "'n Halfsirkel"], answer: 1, topic: "3D-voorwerpe" },
-        { type: "mc", text: "Die reghoek in die uitslaanpatroon van 'n silinder het 'n wydte gelyk aan:", options: ["2r", "pr", "2pr", "pr²"], answer: 2, topic: "3D-voorwerpe" },
-        { type: "input", text: "'n Silinder se uitslaanpatroon het 'n reghoek waarvan die wydte gelyk is aan die omtrek van die sirkelvormige basis. Die basis het radius 7 cm (gebruik p ≈ 22/7) en die silinder se hoogte is 12 cm. Vind die oppervlakte van die reghoekige deel van die uitslaanpatroon (in cm²).", answer: "528", topic: "3D-voorwerpe" },
+        { type: "mc", text: "Die reghoek in die uitslaanpatroon van 'n silinder het 'n wydte gelyk aan:", options: ["2r", "πr", "2πr", "πr²"], answer: 2, topic: "3D-voorwerpe" },
+        { type: "input", text: "'n Silinder se uitslaanpatroon het 'n reghoek waarvan die wydte gelyk is aan die omtrek van die sirkelvormige basis. Die basis het radius 7 cm (gebruik π ≈ 22/7) en die silinder se hoogte is 12 cm. Vind die oppervlakte van die reghoekige deel van die uitslaanpatroon (in cm²).", answer: "528", topic: "3D-voorwerpe" },
         { type: "input", text: "'n Vierkantige piramide se uitslaanpatroon bestaan uit 'n vierkantige basis met sy 8 cm en 4 kongruente driehoeke, elk met basis 8 cm en skuinshoogte 10 cm. Vind die totale oppervlakte van die uitslaanpatroon (in cm²).", answer: "224", topic: "3D-voorwerpe" },
       ]
     },
@@ -310,7 +310,7 @@ ikosaëder       driehoeke      20   12   30</div>
           { num: "Q2b", ans: "OA = 2×(½×6×5,196) + 3×(6×10) = 31,18 + 180 ≈ 211,18 cm²", note: "Hoogte van gelyksydige driehoek = 6×√3/2 = 3√3 ≈ 5,196 cm" },
           { num: "Q3a", ans: "Reghoek (dieselfde afmetings as die basis)", note: "'n Parallele snit behou die deursnitvorm" },
           { num: "Q3b", ans: "Reghoek (wydte = deursnee, hoogte = lengte van die silinder)", note: "Aksiale deursnit" },
-          { num: "Q3c", ans: "Vierkant (die helfte van die grootte van die basis, geskaleer met ½)", note: "By halfhoogte, soortgelyke deursnit met die helfte van die basisafmetings" },
+          { num: "Q3c", ans: "'n Vierkant waarvan die sye die helfte so lank as die basis s'n is ('n kwart van sy oppervlakte)", note: "By halfhoogte is die deursnit gelykvormig aan die basis met skaalfaktor ½" },
         ]
       },
       {

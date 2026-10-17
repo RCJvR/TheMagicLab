@@ -415,7 +415,7 @@ MathMagician.registerChapter(9, {
         {
           type: "mc",
           text: "A car is worth R210 000 today. Inflation has averaged 6% p.a. for the past 3 years. Its approximate price 3 years ago was:",
-          options: ["R176 358", "R250 133", "R198 000", "R211 800"],
+          options: ["R176 320", "R250 113", "R198 000", "R211 800"],
           answer: 0,
           topic: "Inflation & population growth"
         },
@@ -429,7 +429,7 @@ MathMagician.registerChapter(9, {
         {
           type: "input",
           text: "A city has 50 000 people and grows at 2.5% p.a. Find the population after 5 years (nearest whole number).",
-          answer: "56591",
+          answer: "56570",
           topic: "Inflation & population growth"
         },
         {
@@ -654,7 +654,7 @@ MathMagician.registerChapter(9, {
       },
       2: {
         a: "50000 = P(1.09)⁴",
-        b: "P = 50000/1.4116 ≈ R35 420"
+        b: "P = 50000/1.41158 ≈ R35 421"
       },
       3: {
         a: "Deposit = 0.15×8500 = R1 275",

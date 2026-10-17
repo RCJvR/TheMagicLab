@@ -231,8 +231,8 @@ MathMagician.registerChapter(10, {
       },
       questions: [
         { type: "input", text: "In parallelogram PQRS, ∠P = 4x + 10 en ∠Q = 2x + 20. Vind x.", answer: "25", topic: "Gemeng" },
-        { type: "mc", text: "'n Diagonaal verdeel 'n reghoek in twee driehoeke. Watter tipe driehoeke is dit?", options: ["Gelyksydig", "Gelykbenig reghoekig", "Ongelyksydig", "Stomphoekig gelykbenig"], answer: 1, topic: "Gemeng" },
-        { type: "input", text: "In △ABC, ∠A = 50°. ABCD is 'n parallelogram en BD is 'n diagonaal. Vind ∠ABD as ∠ADB = 70°.", answer: "60", topic: "Gemeng" },
+        { type: "mc", text: "'n Diagonaal verdeel 'n reghoek in twee driehoeke. Watter tipe driehoeke is dit?", options: ["Gelyksydig", "Twee kongruente reghoekige driehoeke", "Twee skerphoekige driehoeke", "Stomphoekig gelykbenig"], answer: 1, topic: "Gemeng" },
+        { type: "input", text: "ABCD is 'n parallelogram met ∠A = 50° en diagonaal BD. As ∠ADB = 70°, vind ∠ABD.", answer: "60", topic: "Gemeng" },
         { type: "mc", text: "In ruit ABCD met diagonaal AC, as ∠BAC = 34°, wat is ∠BCA?", options: ["34°", "56°", "68°", "112°"], answer: 0, topic: "Gemeng" },
         { type: "input", text: "Die hoeke van 'n vierhoek is in die verhouding 2:3:4:3. Vind die grootste hoek.", answer: "120", topic: "Gemeng" },
         { type: "input", text: "ABCD is 'n parallelogram met diagonaal AC getrek. ∠DAC = 42° en ∠ACD = 38°. Vind eers ∠ADC, gebruik dan die eienskappe van 'n parallelogram om ∠ABC te vind.", answer: "100", topic: "Gemeng" },
@@ -645,7 +645,7 @@ MathMagician.registerChapter(10, {
       {
         name: "Meetkunde van driehoeke",
         questions: [
-          { num: "1", text: "In △PQR, ∠P = (3x − 5)°, ∠Q = (2x + 10)°, ∠R = (x + 15)°.", parts: [
+          { num: "1", text: "In △PQR, ∠P = (3x − 5)°, ∠Q = (2x + 10)°, ∠R = (x + 25)°.", parts: [
             { label: "a)", text: "Stel 'n vergelyking op met behulp van die hoeksom van 'n driehoek.", marks: 1 },
             { label: "b)", text: "Los op vir x.", marks: 2 },
             { label: "c)", text: "Vind elke hoek.", marks: 2 },
@@ -659,7 +659,7 @@ MathMagician.registerChapter(10, {
       {
         name: "Meetkunde van vierhoeke",
         questions: [
-          { num: "3", text: "ABCD is 'n parallelogram met ∠A = (4x + 5)° en ∠B = (2x + 15)°.", parts: [
+          { num: "3", text: "ABCD is 'n parallelogram met ∠A = (4x + 5)° en ∠B = (2x + 25)°.", parts: [
             { label: "a)", text: "Verduidelik waarom ∠A + ∠B = 180°.", marks: 1 },
             { label: "b)", text: "Los op vir x en vind albei hoeke.", marks: 3 },
           ]},
@@ -693,9 +693,9 @@ MathMagician.registerChapter(10, {
       {
         name: "Meetkunde van driehoeke",
         answers: [
-          { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+15) = 180", note: "Hoeksom van 'n driehoek = 180°" },
-          { num: "Q1b", ans: "x = 26⅔ ≈ 26.7", note: "6x+20=180 → 6x=160 → x=26.7" },
-          { num: "Q1c", ans: "∠P ≈ 75°, ∠Q ≈ 63.3°, ∠R ≈ 41.7°", note: "Vervang x≈26.7 in elke uitdrukking" },
+          { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+25) = 180", note: "Hoeksom van 'n driehoek = 180°" },
+          { num: "Q1b", ans: "x = 25", note: "6x+30=180 → 6x=150 → x=25" },
+          { num: "Q1c", ans: "∠P = 70°, ∠Q = 60°, ∠R = 50°", note: "Vervang x = 25 in elke uitdrukking" },
           { num: "Q2a", ans: "∠B = 63°", note: "Buitehoek = som van nie-aangrensende binnehoeke: 128°−65°=63°" },
           { num: "Q2b", ans: "Ongelyksydige driehoek", note: "∠C=180°−128°=52°; al drie hoeke verskil (65°, 63°, 52°)" },
         ]
@@ -703,8 +703,8 @@ MathMagician.registerChapter(10, {
       {
         name: "Meetkunde van vierhoeke",
         answers: [
-          { num: "Q3a", ans: "AB ∥ DC in 'n parallelogram, dus ∠A en ∠B is mede-binnehoeke → som = 180°", note: "" },
-          { num: "Q3b", ans: "x = 26⅔; ∠A ≈ 111.7°, ∠B ≈ 68.3°", note: "4x+5+2x+15=180 → 6x=160 → x=26.7" },
+          { num: "Q3a", ans: "AD ∥ BC in 'n parallelogram, dus ∠A en ∠B is mede-binnehoeke → som = 180°", note: "" },
+          { num: "Q3b", ans: "x = 25; ∠A = 105°, ∠B = 75°", note: "4x+5+2x+25=180 → 6x=150 → x=25" },
           { num: "Q4a", ans: "∠Q = 112°", note: "Mede-binnehoeke in ruit: ∠P+∠Q=180°; 68°+∠Q=180°" },
           { num: "Q4b", ans: "∠R = 68°", note: "Opponerende hoeke van 'n ruit is gelyk: ∠R=∠P=68°" },
           { num: "Q4c", ans: "∠APQ = 34°", note: "Diagonaal halveer ∠P: 68°÷2=34°; driehoek by snypunt het 90° (diagonale ⊥)" },

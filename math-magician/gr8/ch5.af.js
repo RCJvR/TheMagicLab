@@ -377,7 +377,7 @@ y  |  2   5   8  11  14</div>
           { num: "Q3c", ans: "4 ure", note: "120h + 200 = 680 → 120h = 480 → h = 4" },
           { num: "Q3d", ans: "5 ure", note: "120h+200 = 130h+150 → 50 = 10h → h = 5" },
           { num: "Q4a", ans: "y = 3x + 1", note: "d=3, as x=1 y=4: 3(1)+c=4 → c=1" },
-          { num: "Q4b", ans: "y = 3(x + ⅓) of kontroleer: geen skoon gefaktoriseerde vorm nie — aanvaar y = 3x + 1", note: "" },
+          { num: "Q4b", ans: "y = 3(x + ⅓)", note: "3 is die enigste gemene faktor van 3x en 1, dus bevat die hakie 'n breuk. Aanvaar y = 3x + 1 as die eenvoudigste vorm." },
           { num: "Q4c", ans: "x = (y − 1) ÷ 3", note: "y − 1 = 3x → x = (y−1)/3" },
           { num: "Q4d", ans: "x = 33", note: "(100−1)÷3 = 99÷3 = 33" },
         ]

@@ -337,7 +337,7 @@ x ≤ −3         →  (−∞ ; −3]
         {
           type: "mc",
           text: "Solve: 2 < 3x − 1 ≤ 11",
-          options: ["1 < x ≤ 4", "1 ≤ x < 4", "x > 1 and x ≤ 4", "1 < x < 4"],
+          options: ["1 < x ≤ 4", "1 ≤ x < 4", "x ≥ 1 and x ≤ 4", "1 < x < 4"],
           answer: 0,
           topic: "Word problems & inequalities"
         },

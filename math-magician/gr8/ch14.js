@@ -114,7 +114,7 @@ MathMagician.registerChapter(14, {
       },
       questions: [
         { type: "input", text: "Find the area of a triangle with base 14 cm and perpendicular height 9 cm.", answer: "63", topic: "Area" },
-        { type: "mc", text: "Find the area of a circle with radius 6 cm. (Use π = 3.142)", options: ["37.70 cm²", "113.10 cm²", "56.55 cm²", "226.19 cm²"], answer: 1, topic: "Area" },
+        { type: "mc", text: "Find the area of a circle with radius 6 cm. (Use π = 3.142)", options: ["37.70 cm²", "113.11 cm²", "56.56 cm²", "226.22 cm²"], answer: 1, topic: "Area" },
         { type: "input", text: "A trapezium has parallel sides 8 cm and 14 cm, and perpendicular height 5 cm. Find its area.", answer: "55", topic: "Area" },
         { type: "mc", text: "A parallelogram has base 12 cm and height 7 cm. Find its area.", options: ["38 cm²", "42 cm²", "84 cm²", "19 cm²"], answer: 2, topic: "Area" },
         { type: "input", text: "Find the area of a rectangle with length 3.5 m and breadth 2.4 m.", answer: "8.4", topic: "Area" },
@@ -281,7 +281,7 @@ MathMagician.registerChapter(14, {
           { num: "Q2b", ans: "A = 80 cm²", note: "½(7+13)×8=80" },
           { num: "Q2c", ans: "≈ 100.53 m²", note: "π(9²−7²)=π×32≈100.53" },
           { num: "Q3a", ans: "42 000 cm²", note: "4.2×10 000=42 000" },
-          { num: "Q3b", ans: "0.000085 m²", note: "85 000÷1 000 000=0.000085" },
+          { num: "Q3b", ans: "0.085 m²", note: "85 000 ÷ 1 000 000 = 0.085 (1 m² = 1 000 000 mm²)" },
           { num: "Q3c", ans: "28.8 m² = 288 000 cm²", note: "6.4×4.5=28.8; ×10 000=288 000" },
         ]
       },

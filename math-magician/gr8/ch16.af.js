@@ -383,7 +383,7 @@ MathMagician.registerChapter(16, {
         questions: [
           {
             num: "3",
-            text: "'n Leerder se toetstellings oor 6 maande: Jan 45, Feb 52, Mrt 58, Apr 55, Jun 70, Jul 68.",
+            text: "'n Leerder se toetstellings oor 6 maande: Jan 45, Feb 52, Mrt 58, Apr 55, Mei 70, Jun 68.",
             parts: [
               { label: "a)", text: "Teken 'n benoemde lyngrafiek.", marks: 4 },
               { label: "b)", text: "Beskryf die algemene neiging.", marks: 1 },
@@ -434,9 +434,9 @@ MathMagician.registerChapter(16, {
         name: "Grafieke en interpretasie",
         answers: [
           { num: "Q3a", ans: "Lyngrafiek: maande op x-as, punte op y-as; punte geplot en verbind", note: "Albei asse benoem" },
-          { num: "Q3b", ans: "Oor die algemeen toenemend met 'n effense afname in April en Julie", note: "" },
+          { num: "Q3b", ans: "Oor die algemeen toenemend met 'n effense afname in April en Junie", note: "" },
           { num: "Q3c", ans: "Gemiddelde = 58", note: "348÷6=58" },
-          { num: "Q3d", ans: "April tot Junie (+15 punte)", note: "55→70" },
+          { num: "Q3d", ans: "April tot Mei (+15 punte)", note: "55→70" },
           { num: "Q4a", ans: "Uitskieters: 12 en 90", note: "Albei ver van die 25–32 groepering" },
           { num: "Q4b", ans: "Met al 8: gemiddelde=34.6; sonder 12 en 90: gemiddelde=29.2", note: "277÷8=34.6; 175÷6=29.2" },
           { num: "Q4c", ans: "Mediaan (≈29.5) verteenwoordig die data beter", note: "Gemiddelde vervorm deur uitskieters 12 en 90" },

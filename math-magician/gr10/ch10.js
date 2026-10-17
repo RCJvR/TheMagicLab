@@ -637,7 +637,7 @@ Total           30                    720</div>
     ],
     answers: {
       1: {
-        a: "Ordered: 18,22,28,29,34,34,34,37,40,41,41,45; Mean=37.75/12... recalc: sum=403, mean≈33.6; Median=(34+34)/2=34; Mode=34",
+        a: "Ordered: 18,22,28,29,34,34,34,37,40,41,41,45; Mean = 403/12 ≈ 33,6; Median=(34+34)/2=34; Mode=34",
         b: "Min=18; Q1=(28+29)/2=28.5; Median=34; Q3=(40+41)/2=40.5; Max=45",
         c: "IQR=12",
         d: "Box from 28.5 to 40.5, median line at 34, whiskers to 18 and 45"

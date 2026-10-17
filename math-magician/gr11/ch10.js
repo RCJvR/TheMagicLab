@@ -373,7 +373,7 @@ MathMagician.registerChapter(10, {
         {
           type: "input",
           text: "120 learners: 60 play soccer, 50 play rugby, 45 play cricket, 20 play soccer and rugby, 15 play rugby and cricket, 18 play soccer and cricket, 8 play all three. How many play none of the three sports?",
-          answer: "30",
+          answer: "10",
           topic: "Venn diagrams for three events"
         },
         {

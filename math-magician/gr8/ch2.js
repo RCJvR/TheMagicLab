@@ -630,7 +630,7 @@ MathMagician.registerChapter(2, {
     },
     questions: [
       { type: "input", text: "Calculate: <span class='math'>(−2)³ + (−3) × (−4)</span>", answer: "4", topic: "Mixed ops" },
-      { type: "mc", text: "What is <span class='math'>−5² + (−3)²</span>?", options: ["−16", "4", "−34", "34"], answer: 1, topic: "Mixed ops" },
+      { type: "mc", text: "What is <span class='math'>−5² + (−3)²</span>?", options: ["−16", "4", "−34", "34"], answer: 0, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>[(−6) ÷ 2] × (−3) − (−1)</span>", answer: "10", topic: "Mixed ops" },
       { type: "mc", text: "Calculate <span class='math'>(−2) × 3 − (−4) × (−2)</span>", options: ["−14", "−2", "2", "14"], answer: 0, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>(−6 + 2)² − (−3)³ ÷ 3</span>", answer: "25", topic: "Mixed ops" },

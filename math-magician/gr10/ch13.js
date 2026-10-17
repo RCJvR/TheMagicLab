@@ -144,7 +144,7 @@ MathMagician.registerChapter(13, {
         },
         {
           type: "mc",
-          text: "A right prism has a triangular base (b=6, h=4) and height 10. Its lateral surface area is:",
+          text: "A right prism has a right-angled triangular base with legs 6 cm and 4 cm, and height 10 cm. Its lateral surface area is closest to:",
           options: ["172 cm²", "200 cm²", "240 cm²", "150 cm²"],
           answer: 0,
           topic: "Area & surface area"

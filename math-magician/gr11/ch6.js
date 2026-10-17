@@ -550,7 +550,7 @@ MathMagician.registerChapter(6, {
       1: {
         a: "(−sinx)(cosx) − (−cosx)(−sinx) = −sinxcosx − sinxcosx = −2sinxcosx",
         b: "cos²x + sin²x = 1",
-        c: "(tanx)(cosx)/(−sinx) ... simplify: (sinx/cosx)(cosx)/(−sinx) = −1"
+        c: "sin(90°+x) = cosx, so (tanx)(cosx)/(cosx) = tanx"
       },
       2: {
         a: "LHS = sin²θ + 2sinθcosθ + cos²θ = 1 + 2sinθcosθ = RHS",
@@ -559,7 +559,7 @@ MathMagician.registerChapter(6, {
       3: {
         a: "Area = ½(9)(7)sin110° ≈ ½(63)(0.9397) ≈ 29.6 cm²",
         b: "AC²=81+49−2(9)(7)cos110°=130−126cos110°≈130+43.1≈173.1 → AC≈13.2 cm",
-        c: "sinA/7 = sin110°/13.2 → sinA≈0.498 → A≈29.9°"
+        c: "sinA/7 = sin110°/13.16 → sinA≈0.4999 → A≈30.0°"
       },
       4: {
         a: "T̂ = 180° − 52° − 61° = 67°",

@@ -620,7 +620,7 @@ MathMagician.registerChapter(7, {
     answers: {
       1: {
         a: "l = √(25+9) = √34 ≈ 5.83 cm",
-        b: "Bottom circle: 25π; cylinder curved: 80π; cone curved: 5√34·π; Total = (105 + 5√34)π ≈ 422.1 cm²",
+        b: "Bottom circle: 25π; cylinder curved: 80π; cone curved: 5√34·π; Total = (105 + 5√34)π ≈ 421.5 cm²",
         c: "Cylinder: π(25)(8)=200π; Cone: ⅓π(25)(3)=25π; Total=225π≈706.9 cm³"
       },
       2: {

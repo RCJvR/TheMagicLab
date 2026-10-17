@@ -67,7 +67,7 @@ MathMagician.registerChapter(12, {
       },
       questions: [
         { type: "input", text: "Bereken 14.7 + 3.85 + 0.067.", answer: "18.617", topic: "Desimale" },
-        { type: "mc", text: "Bereken 25 − 8.46.", options: ["17.54", "16.54", "17.64", "16.64"], answer: 0, topic: "Desimale" },
+        { type: "mc", text: "Bereken 25 − 8.46.", options: ["17.54", "16.54", "17.64", "16.64"], answer: 1, topic: "Desimale" },
         { type: "input", text: "Bereken 7.3 + 2.98 − 4.156.", answer: "6.124", topic: "Desimale" },
         { type: "mc", text: "'n Plank is 3.4 m. Twee stukke van 0.75 m en 1.285 m word afgesny. Wat bly oor?", options: ["1.365 m", "1.375 m", "1.465 m", "1.475 m"], answer: 0, topic: "Desimale" },
         { type: "input", text: "Bereken 100 − 34.567.", answer: "65.433", topic: "Desimale" },

@@ -305,7 +305,7 @@ MathMagician.registerChapter(11, {
         questions: [
           {
             num: "1",
-            text: "In triangle ABC: angle A = (2x + 10)°, angle B = (3x - 5)° and angle C = (x + 15)°.",
+            text: "In triangle ABC: angle A = (2x + 10)°, angle B = (3x - 5)° and angle C = (x + 25)°.",
             parts: [
               { label: "a)", text: "Find x.", marks: 3 },
               { label: "b)", text: "Find each angle.", marks: 3 },
@@ -314,7 +314,7 @@ MathMagician.registerChapter(11, {
           },
           {
             num: "2",
-            text: "ABCD is a parallelogram. Angle A = (4y - 10)° and angle B = (2y + 30)°.",
+            text: "ABCD is a parallelogram. Angle A = (4y - 10)° and angle B = (2y + 10)°.",
             parts: [
               { label: "a)", text: "Find y. (Use the co-interior angle property: A + B = 180°)", marks: 3 },
               { label: "b)", text: "Find all four angles of the parallelogram.", marks: 3 },
@@ -369,11 +369,11 @@ MathMagician.registerChapter(11, {
       {
         name: "Triangles and Quadrilaterals",
         answers: [
-          { num: "Q1a", ans: "x = 27", note: "(2x+10)+(3x-5)+(x+15)=180 → 6x+20=180 → x=27" },
-          { num: "Q1b", ans: "A=64°, B=76°, C=57°", note: "Substitute x=27 into each" },
+          { num: "Q1a", ans: "x = 25", note: "(2x+10)+(3x−5)+(x+25)=180 (∠ sum of △) → 6x+30=180 → x=25" },
+          { num: "Q1b", ans: "A = 60°, B = 70°, C = 50°", note: "Substitute x = 25 into each: 2(25)+10, 3(25)−5, 25+25" },
           { num: "Q1c", ans: "Acute-angled triangle", note: "All angles less than 90°" },
-          { num: "Q2a", ans: "y = 26,67 — accept y = 80/3", note: "(4y-10)+(2y+30)=180 → 6y+20=180 → y=160/6=26,7" },
-          { num: "Q2b", ans: "A = C ≈ 96,7°; B = D ≈ 83,3°", note: "Opposite angles of parallelogram equal; co-interior supplement each other" },
+          { num: "Q2a", ans: "y = 30", note: "(4y−10)+(2y+10)=180 (co-int ∠s, AD ∥ BC) → 6y=180 → y=30" },
+          { num: "Q2b", ans: "A = C = 110°; B = D = 70°", note: "Opposite angles of parallelogram equal; co-interior supplement each other" },
         ]
       },
       {

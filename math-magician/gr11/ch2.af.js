@@ -643,7 +643,7 @@ MathMagician.registerChapter(2, {
       },
       5: {
         a: "3−x=x²−5 → x²+x−8=0",
-        b: "x=(−1±√33)/2; vervang terug om y te vind"
+        b: "x=(−1±√33)/2; y=3−x=(7∓√33)/2, d.w.s. x≈2,37; y≈0,63 of x≈−3,37; y≈6,37"
       }
     }
   }

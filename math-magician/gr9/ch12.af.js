@@ -199,9 +199,9 @@ MathMagician.registerChapter(12, {
 </div>
 <div class="example-box">
   <div class="example-box-title">✏️ Voorbeeld: 'n vergelyking uit hoeke</div>
-  <div class="example-step"><span class="step-num">1</span><span>Twee ko-binnehoeke tussen parallelle lyne is 2x + 10° en 3x − 5°.</span></div>
+  <div class="example-step"><span class="step-num">1</span><span>Twee ko-binnehoeke tussen parallelle lyne is (2x + 10)° en (3x − 5)°.</span></div>
   <div class="example-step"><span class="step-num">2</span><span>2x + 10 + 3x − 5 = 180  (ko-binne ∠e; lyne ∥)</span></div>
-  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35°</strong>; die hoeke is 80° en 100°.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35</strong>; die hoeke is 80° en 100°.</span></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>"Ooreenk", "verwiss" en "ko-binne" is net geldige redes as die lyne parallel is: noem altyd die parallelle lyne.</span></div>
         `
@@ -247,8 +247,8 @@ MathMagician.registerChapter(12, {
             num: "1",
             text: "Bereken die waarde van elke onbekende hoek, en gee 'n rede vir elke stap:",
             parts: [
-              { label: "a)", text: "Drie hoeke op 'n reguit lyn is (2x)°, (x + 10)° en 40°. Vind x en al die hoeke.", marks: 4 },
-              { label: "b)", text: "Hoeke rondom 'n punt sluit (3y)°, (2y + 20)°, (y + 40)° en 80° in. Vind y.", marks: 4 },
+              { label: "a)", text: "Drie hoeke op 'n reguit lyn is (2x)°, (x + 20)° en 40°. Vind x en al die hoeke.", marks: 4 },
+              { label: "b)", text: "Hoeke rondom 'n punt sluit (3y)°, (2y + 20)°, (y + 40)° en 90° in. Vind y.", marks: 4 },
               { label: "c)", text: "Twee snydende lyne vorm hoeke (4a - 5)° en (2a + 35)°. As hulle regoorstaande hoeke is, vind a en albei hoeke.", marks: 4 },
             ]
           },
@@ -302,8 +302,8 @@ MathMagician.registerChapter(12, {
       {
         name: "Hoekverhoudings",
         answers: [
-          { num: "Q1a", ans: "x = 43,3°; hoeke: 86,7°, 53,3°, 40° — aanvaar x = 130/3", note: "2x+x+10+40=180 → 3x=130 → x=43,3" },
-          { num: "Q1b", ans: "y = 110/3 ≈ 36,67°", note: "3y+2y+20+y+40+80=360; 6y+140=360; 6y=220; y=110/3≈36,67", /* was: "y = 36�", note: "3y+2y+20+y+40+80=360 ? 6y+140=360 ? 6y=220 ? y=36,7. JUNK_REMOVED_CH12 */},
+          { num: "Q1a", ans: "x = 40; hoeke: 80°, 60°, 40°", note: "2x + x + 20 + 40 = 180 (∠e op 'n reguit lyn) → 3x = 120 → x = 40" },
+          { num: "Q1b", ans: "y = 35; hoeke: 105°, 90°, 75°, 90°", note: "3y + 2y + 20 + y + 40 + 90 = 360 (∠e om 'n punt) → 6y = 210 → y = 35" },
           { num: "Q1c", ans: "a = 20; albei hoeke = 75°", note: "4a-5=2a+35 → 2a=40 → a=20; hoek = 4(20)-5=75°" },
         ]
       },

@@ -446,7 +446,7 @@ MathMagician.registerChapter(3, {
     answers: {
       1: {
         a: "Lineêr; d=4; Tₙ=4n+1",
-        b: "1ste verskille: 3,5,7,9 → 2de verskille: 2,2,2 → kwadraties; Tₙ=n²+2n−1",
+        b: "1ste verskille: 3,5,7,9 → 2de verskille: 2,2,2 → kwadraties; Tₙ=n²+1",
         c: "Geeneen — verhouding is konstant (×2), meetkundige ry"
       },
       2: {

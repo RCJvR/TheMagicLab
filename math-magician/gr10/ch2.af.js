@@ -484,7 +484,7 @@ MathMagician.registerChapter(2, {
         },
         {
           type: "mc",
-          text: "Los op: x^(2/3) = 9",
+          text: "Los op vir x > 0: x^(2/3) = 9",
           options: ["x = 27", "x = 3", "x = 18", "x = 729"],
           answer: 0,
           topic: "Gevorderde eksponensiële vergelykings"
@@ -542,8 +542,8 @@ MathMagician.registerChapter(2, {
     answers: {
       1: {
         a: "x⁰ = 1",
-        b: "2a⁵b/1 = 2a⁵b⁻¹ ... vereenvoudig: 2a⁵/b",
-        c: "9x⁻³y³",
+        b: "8a⁶b³/(4ab²) = 2a⁵b",
+        c: "9x⁻²y⁴ · x⁻¹y⁻¹ = 9x⁻³y³ = 9y³/x³",
         d: "a⁵"
       },
       2: {

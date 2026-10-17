@@ -27,9 +27,9 @@ MathMagician.registerChapter(1, {
           <div class="example-box">
             <div class="example-box-title">✏️ Classifying numbers</div>
             <div class="example-step"><span class="step-num">1</span><span>Classify <span class="math">-3</span>: integer ✓, rational ✓, real ✓</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Classify <span class="math">0,\overline{3} = 1/3</span>: rational ✓, real ✓</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Classify <span class="math">0,<span style="text-decoration:overline">3</span> = 1/3</span>: rational ✓, real ✓</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Classify <span class="math">√7</span>: irrational ✓, real ✓ (not rational)</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>Converting recurring decimal: let x = 0,\overline{36} → 100x = 36,\overline{36} → 99x = 36 → x = 36/99 = 4/11</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>Converting recurring decimal: let x = 0,<span style="text-decoration:overline">36</span> → 100x = 36,<span style="text-decoration:overline">36</span> → 99x = 36 → x = 36/99 = 4/11</span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Every integer is rational (e.g. -5 = -5/1). Not every rational is an integer.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -114,10 +114,10 @@ MathMagician.registerChapter(1, {
       questions: [
         { type: "mc", text: "Which of these is irrational?", options: ["0,25", "√9", "√5", "-7"], answer: 2, topic: "Number Systems" },
         { type: "mc", text: "The set of integers is a subset of:", options: ["Natural numbers", "Whole numbers", "Rational numbers", "Irrational numbers"], answer: 2, topic: "Number Systems" },
-        { type: "input", text: "Convert 0,<span class='math'>\\overline{27}</span> to a fraction. Give the numerator if the fraction is in simplest form over 99.", answer: "3", topic: "Number Systems" },
+        { type: "input", text: "Convert 0,<span style='text-decoration:overline'>27</span> to a fraction in simplest form. Give the numerator.", answer: "3", topic: "Number Systems" },
         { type: "mc", text: "Which statement is FALSE?", options: ["All naturals are integers", "All integers are rational", "All irrationals are real", "All rationals are integers"], answer: 3, topic: "Number Systems" },
-        { type: "input", text: "Write 0,<span class='math'>\\overline{142857}</span> as a fraction (give the denominator).", answer: "7", topic: "Number Systems" },
-        { type: "input", text: "Calculate 0,<span class='math'>\\overline{18}</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "21/55", altAnswers: ["21​/​55"], topic: "Number Systems" },
+        { type: "input", text: "Write 0,<span style='text-decoration:overline'>142857</span> as a fraction (give the denominator).", answer: "7", topic: "Number Systems" },
+        { type: "input", text: "Calculate 0,<span style='text-decoration:overline'>18</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "21/55", altAnswers: ["21​/​55"], topic: "Number Systems" },
         { type: "mc", text: "Consider the product <span class='math'>√2 × √8</span>. What can you conclude?", options: ["It is irrational, since irrational × irrational is always irrational", "It is rational, equal to 4", "It is irrational, equal to √16", "It cannot be simplified"], answer: 1, topic: "Number Systems" },
       ]
     },
@@ -627,7 +627,7 @@ Savings: 12 400 − 11 200 = R1 200</div>
           { num: "Q3a", ans: "R 16 000 : R 12 000 : R 20 000", note: "12 parts total; 1 part = R 4 000" },
           { num: "Q3b", ans: "R 6 000 : R 4 500 : R 7 500", note: "1 part of profit = 18 000÷12 = R 1 500" },
           { num: "Q4a", ans: "720 items", note: "direct: 9/6 × 480 = 720" },
-          { num: "Q4b", ans: "1,5 days", note: "inverse: 6 × 1 day = 4 × d; d = 6/4 = 1,5 days for 1 day production. For 480: same total work = 4 × d = 6 × 1, d = 1,5" },
+          { num: "Q4b", ans: "1,5 days", note: "inverse: machines × days stays the same: 6 × 1 = 4 × d → d = 6/4 = 1,5 days" },
         ]
       },
       {

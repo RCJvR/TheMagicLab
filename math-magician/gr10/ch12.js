@@ -148,14 +148,14 @@ MathMagician.registerChapter(12, {
         },
         {
           type: "input",
-          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, with ∠AGE = 128°. Find ∠GHC.",
+          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, with ∠AGE = 128°. Find ∠GHD.",
           answer: "52",
           altAnswers: ["52°"],
           topic: "Proofs & conjectures"
         },
         {
           type: "input",
-          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, so that ∠EGB = (3x + 10)° and ∠GHC = (2x + 30)° are co-interior angles. Find x.",
+          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, so that ∠AGH = (3x + 10)° and ∠GHC = (2x + 30)° are co-interior angles. Find x.",
           answer: "28",
           topic: "Proofs & conjectures"
         }
@@ -558,8 +558,8 @@ MathMagician.registerChapter(12, {
     answers: {
       1: {
         a: "∠BGE = 180°−115° = 65° (angles on a straight line)",
-        b: "∠GHD = 115° (co-interior angles with AB∥CD supplement each other: 180°−65°=115°, OR alternate angles with ∠AGE)",
-        c: "∠GHC = 65° (angles on a straight line, or corresponding with ∠BGE)"
+        b: "∠GHD = 65° (corresp ∠s, AB∥CD: ∠GHD = ∠EGB)",
+        c: "∠GHC = 115° (∠s on a str line with ∠GHD, or corresp ∠s with ∠AGE, AB∥CD)"
       },
       2: {
         a: "AO=CO (given bisect); BO=DO (given bisect); ∠AOB=∠COD (vert opp angles)",

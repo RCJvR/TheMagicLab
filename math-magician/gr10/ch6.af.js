@@ -1017,7 +1017,7 @@ MathMagician.registerChapter(6, {
       3: {
         a: "sin x: nulpunte 0°,180°,360°; maks (90°,1); min (270°,−1)",
         b: "2cos x: nulpunte 90°,270°; maks (0°,2),(360°,2); min (180°,−2)",
-        c: "Lees af vanaf die grafieksnypunte"
+        c: "Die grafieke sny waar tan x = 2: x ≈ 63,4° en x ≈ 243,4°. sin x > 2cos x vir 63,4° < x < 243,4°"
       },
       4: {
         a: "q = 3",

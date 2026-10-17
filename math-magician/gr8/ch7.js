@@ -326,11 +326,11 @@ MathMagician.registerChapter(7, {
         `
       },
       questions: [
-        { type: "input", text: "Solve: <span class='math'>3(2x − 1) − 2(x + 3) = 5</span>", answer: "3", topic: "Mixed" },
+        { type: "input", text: "Solve: <span class='math'>3(2x − 1) − 2(x + 3) = 3</span>", answer: "3", topic: "Mixed" },
         { type: "mc", text: "Solve: <span class='math'>5x − 3 = 3x + 7</span>", options: ["2", "3", "4", "5"], answer: 3, topic: "Mixed" },
-        { type: "input", text: "The perimeter of an equilateral triangle is 45 cm. Each side = 3x − 1. Find x.", answer: "6", topic: "Mixed" },
-        { type: "mc", text: "Solve: <span class='math'>4(x + 3) = 2(2x + 6)</span>", options: ["x = 0", "x = 3", "No solution — infinitely many solutions", "x = 6"], answer: 2, topic: "Mixed" },
-        { type: "input", text: "A number is multiplied by 6, then 11 is subtracted. The result is 3 more than twice the number. Find the number.", answer: "7", topic: "Mixed" },
+        { type: "input", text: "The perimeter of an equilateral triangle is 51 cm. Each side = 3x − 1. Find x.", answer: "6", topic: "Mixed" },
+        { type: "mc", text: "Solve: <span class='math'>4(x + 3) = 2(2x + 6)</span>", options: ["x = 0", "x = 3", "Infinitely many solutions (true for every x)", "x = 6"], answer: 2, topic: "Mixed" },
+        { type: "input", text: "A number is multiplied by 6, then 11 is subtracted. The result is 17 more than twice the number. Find the number.", answer: "7", topic: "Mixed" },
         { type: "input", text: "A rectangle's perimeter is 5 times its width. The length is 9 cm more than the width. Find the width (in cm).", answer: "18", topic: "Mixed" },
       ]
     }

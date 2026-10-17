@@ -637,7 +637,7 @@ Totaal           30                    720</div>
     ],
     answers: {
       1: {
-        a: "Georden: 18,22,28,29,34,34,34,37,40,41,41,45; Gemiddelde=37.75/12... herbereken: som=403, gemiddelde≈33.6; Mediaan=(34+34)/2=34; Modus=34",
+        a: "Georden: 18,22,28,29,34,34,34,37,40,41,41,45; Gemiddelde = 403/12 ≈ 33,6; Mediaan=(34+34)/2=34; Modus=34",
         b: "Min=18; Q1=(28+29)/2=28.5; Mediaan=34; Q3=(40+41)/2=40.5; Maks=45",
         c: "IKW=12",
         d: "Boks van 28.5 tot 40.5, mediaanlyn by 34, snorre tot 18 en 45"

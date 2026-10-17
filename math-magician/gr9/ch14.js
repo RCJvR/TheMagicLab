@@ -57,7 +57,7 @@ MathMagician.registerChapter(14, {
               rect:{labels:['Length (l)','Width (w)'],defaults:[10,6],formula:'P = 2(l + w)',calc:function(v){return 2*(v[0]+v[1]);}},
               sq:{labels:['Side (s)'],defaults:[8],formula:'P = 4s',calc:function(v){return 4*v[0];}},
               tri:{labels:['Side a','Side b','Side c'],defaults:[5,7,9],formula:'P = a + b + c',calc:function(v){return v[0]+v[1]+v[2];}},
-              circle:{labels:['Radius (r)'],defaults:[7],formula:'C = 2pr',calc:function(v){return 2*Math.PI*v[0];}},
+              circle:{labels:['Radius (r)'],defaults:[7],formula:'C = 2πr',calc:function(v){return 2*Math.PI*v[0];}},
               trap:{labels:['Side a','Side b','Leg c','Leg d'],defaults:[12,8,5,5],formula:'P = a + b + c + d',calc:function(v){return v[0]+v[1]+v[2]+v[3];}},
             };
             function setShape(){
@@ -177,7 +177,7 @@ MathMagician.registerChapter(14, {
         { type: "mc", text: "A rhombus has diagonals 12 cm and 16 cm. Its area is:", options: ["192 cm²", "96 cm²", "48 cm²", "72 cm²"], answer: 1, topic: "Area" },
         { type: "input", text: "A rectangle is 14 cm × 9 cm. A circle of diameter 6 cm is cut from it. Find the remaining area. (Use π ≈ 3,14)", answer: "98", topic: "Area" },
         { type: "input", text: "A garden path 2 m wide surrounds a rectangular lawn 10 m by 6 m on all sides. Find the area of the path (in m²).", answer: "80", topic: "Area" },
-        { type: "input", text: "A circle has an area of 78,5 cm². Using p ≈ 3,14, find its radius (in cm).", answer: "5", topic: "Area" },
+        { type: "input", text: "A circle has an area of 78,5 cm². Using π ≈ 3,14, find its radius (in cm).", answer: "5", topic: "Area" },
       ]
     },
     {
@@ -276,7 +276,7 @@ MathMagician.registerChapter(14, {
         questions: [
           {
             num: "1",
-            text: "Calculate the perimeter of each shape. (Use p = 3,14 where needed)",
+            text: "Calculate the perimeter of each shape. (Use π = 3,14 where needed)",
             parts: [
               { label: "a)", text: "A regular hexagon with side 8 cm.", marks: 2 },
               { label: "b)", text: "A circle with radius 9 cm.", marks: 3 },
@@ -290,7 +290,7 @@ MathMagician.registerChapter(14, {
         questions: [
           {
             num: "2",
-            text: "Calculate the area of each shape. (Use p = 3,14 where needed)",
+            text: "Calculate the area of each shape. (Use π = 3,14 where needed)",
             parts: [
               { label: "a)", text: "Parallelogram: base = 15 cm, perpendicular height = 8 cm.", marks: 2 },
               { label: "b)", text: "Trapezium: parallel sides = 9 cm and 15 cm, height = 7 cm.", marks: 3 },

@@ -322,7 +322,7 @@ MathMagician.registerChapter(8, {
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Given: AD/DB=AE/EC; RTP: DE∥BC", b: "Draw DE'∥BC; by BPT: AD/DB=AE'/E'C; but AD/DB=AE/EC(given)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "AB/CB=BD/AB→AB²=BD·CB", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "In △ABD and △CBA: ∠B is common and ∠ADB=∠CAB=90°, so △ABD|||△CBA (AA) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
     }
   }
 });

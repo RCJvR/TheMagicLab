@@ -465,7 +465,7 @@ MathMagician.registerChapter(10, {
     ],
     answers: {
       1: { a: "10⁴=10000", b: "10×9×8×7=5040", c: "1×9×8×7=504 (first digit fixed as 5, remaining 3 from remaining 9 digits)" },
-      2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "Fix S at start and end (only 2 S's left... wait 3 S's → fix S at ends: choose 2 of 3 S's for ends=1 way since they're identical; arrange remaining 8 letters (S×1,T×3,A×1,I×2,C×1): 8!/(1!3!1!2!1!)=3360" },
+      2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "The two S's at the ends are identical, so there is 1 way to place them. Arrange the other 8 letters (S×1, T×3, A×1, I×2, C×1): 8!/(3!2!) = 3360" },
       3: { a: "₁₄C₅=2002", b: "₈C₃×₆C₂=56×15=840", c: "P(4W1M)+P(5W)=(₆C₄×₈C₁+₆C₅)/2002=(15×8+6)/2002=126/2002=9/143" },
       4: { a: "7!=5040", b: "Treat PR as unit: 6! arrangements × 2(PR or RP)=1440", c: "Vowels:O,U=2; P(starts with vowel)=2×6!/7!=2/7" },
       5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport and instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport and instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. This does NOT equal P(sport and instrument) = 0.19, so the events are NOT independent (they are dependent)." }

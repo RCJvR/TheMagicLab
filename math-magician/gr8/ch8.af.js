@@ -425,11 +425,11 @@ MathMagician.registerChapter(8, {
       {
         name: "Konstruksie van driehoeke",
         answers: [
-          { num: "Q3a", ans: "Konstruksie van △ABC (SSS); ∠BAC ≈ 46° (aanvaar ±2°)", note: "Trek AB=8; boog 6 cm vanaf B, boog 5 cm vanaf A; snypunt = C; meet ∠BAC" },
+          { num: "Q3a", ans: "Konstruksie van △ABC (SSS); ∠BAC ≈ 48,5° (aanvaar ±2°)", note: "Trek AB=8; boog 6 cm vanaf B, boog 5 cm vanaf A; snypunt = C; meet ∠BAC" },
           { num: "Q3b", ans: "Konstruksie van △PQR (SHS); PR ≈ 5,7 cm (aanvaar ±2 mm)", note: "Trek PQ=7; konstrueer 55° by Q; merk R op 4 cm; verbind PR en meet" },
           { num: "Q4a", ans: "HSH (Hoek-Sy-Hoek)", note: "Twee hoeke en die ingeslote sy is gegee" },
           { num: "Q4b", ans: "∠F = 65°", note: "Hoeksom van driehoek: 180° − 40° − 75° = 65°" },
-          { num: "Q4c", ans: "Konstruksie van △DEF; EF ≈ 4,6 cm (aanvaar ±2 mm)", note: "Trek DE=6; konstrueer 40° by D en 75° by E; snypunt = F" },
+          { num: "Q4c", ans: "Konstruksie van △DEF; EF ≈ 4,3 cm (aanvaar ±2 mm)", note: "Trek DE=6; konstrueer 40° by D en 75° by E; snypunt = F" },
         ]
       },
       {
@@ -437,7 +437,7 @@ MathMagician.registerChapter(8, {
         answers: [
           { num: "Q5a", ans: "Konstrueer middelloodlyne (of gebruik driehoek-liniaal/passer) by A en B om 90°-hoeke te skep", note: "'n Loodlyn by elke eindpunt van AB verseker regte hoeke" },
           { num: "Q5b", ans: "Reghoek ABCD gekonstrueer met alle hoekpunte benoem; BC = AD = 3,5 cm; AB = DC = 6 cm", note: "Kontroleer dat al vier hoeke soos 90° lyk" },
-          { num: "Q5c", ans: "AC ≈ 6,96 cm (aanvaar ±2 mm)", note: "Volgens Pythagoras: AC = √(6² + 3,5²) = √(36 + 12,25) = √48,25 ≈ 6,95 cm" },
+          { num: "Q5c", ans: "AC ≈ 6,95 cm (aanvaar ±2 mm)", note: "Volgens Pythagoras: AC = √(6² + 3,5²) = √(36 + 12,25) = √48,25 ≈ 6,95 cm" },
           { num: "Q6a", ans: "Al vier sye = 5 cm", note: "'n Ruit het vier gelyke sye" },
           { num: "Q6b", ans: "Trek PQ = 5 cm; konstrueer 70° by Q; merk R op 5 cm op die straal; trek diagonaal PR; gebruik PR om S te vind met boë van 5 cm vanaf P en R", note: "Driehoek PQR word eers gekonstrueer; S word gevind met boë gelyk aan die sylengte" },
           { num: "Q6c", ans: "Ruit PQRS gekonstrueer met alle hoekpunte benoem en konstruksieboë sigbaar", note: "Alle sye moet 5 cm meet; ∠PQR = 70° en ∠QRS = 110° (mede-binnehoeke)" },

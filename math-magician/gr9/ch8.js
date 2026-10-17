@@ -68,11 +68,11 @@ MathMagician.registerChapter(8, {
         `
       },
       questions: [
-        { type: "mc", text: "Factorise: 12x²y² - 8x³y²", options: ["4x²y²(3x - 2y)", "4xy(3x² - 2y²)", "2xy(6x² - 4xy)", "4x²y(3y - 2x)"], answer: 0, topic: "Factorisation" },
+        { type: "mc", text: "Factorise: 12x²y² - 8x³y²", options: ["4x²y²(3 - 2x)", "4xy(3x² - 2y²)", "2xy(6x² - 4xy)", "4x²y(3y - 2x)"], answer: 0, topic: "Factorisation" },
         { type: "mc", text: "Factorise by grouping: ax + ay + 3x + 3y", options: ["(a + 3)(x + y)", "a(x + y) + 3", "(a + x)(3 + y)", "(ax)(3y)"], answer: 0, topic: "Factorisation" },
         { type: "input", text: "Factorise 15a²b² - 10ab³. What is the coefficient of the HCF?", answer: "5", topic: "Factorisation" },
         { type: "mc", text: "Factorise by grouping: px - qx + py - qy", options: ["(p - q)(x + y)", "(p + q)(x - y)", "(p - q)(x - y)", "(x + y)(p + q)"], answer: 0, topic: "Factorisation" },
-        { type: "mc", text: "Which expression has (2x - y) as a factor?", options: ["4x² + y²", "4x² - y²", "2x² - y", "4x - 2y"], answer: 1, topic: "Factorisation" },
+        { type: "mc", text: "Which expression has (2x - y) as a factor?", options: ["4x² + y²", "4x² - y²", "2x² - y", "4x - y"], answer: 1, topic: "Factorisation" },
         { type: "mc", text: "Factorise fully: 4x(x + 3) - 8(x + 3)", options: ["4(x + 3)(x - 2)", "4(x + 3)(x + 2)", "(x + 3)(4x - 8)", "(4x - 8)(x - 3)"], answer: 0, topic: "Factorisation" },
         { type: "mc", text: "Factorise fully: 24x³y² - 36x²y³ + 60x⁴y", options: ["12x²y(2xy - 3y² + 5x²)", "12xy(2x²y - 3xy² + 5x³)", "6x²y(4xy - 6y² + 10x²)", "12x²y(2xy + 3y² - 5x²)"], answer: 0, topic: "Factorisation" },
       ]
@@ -143,8 +143,8 @@ MathMagician.registerChapter(8, {
       },
       questions: [
         { type: "mc", text: "Factorise: 4x² - 49", options: ["(2x - 7)(2x - 7)", "(2x - 7)(2x + 7)", "(4x - 7)(x + 7)", "(2x + 49)(2x - 1)"], answer: 1, topic: "Factorisation" },
-        { type: "mc", text: "Factorise: x² + 9x + 20", options: ["(x + 4)(x + 5)", "(x + 2)(x + 10)", "(x + 1)(x + 20)", "(x−4)(x−5)"/*JUNK*/], answer: 0, topic: "Factorisation" },
-        { type: "mc", text: "Factorise: x² - 3x - 18", options: ["(x - 9)(x + 2)", "(x + 3)(x - 6)", "(x - 3)(x + 6)", "(x - 6)(x + 3)"], answer: 3, topic: "Factorisation" },
+        { type: "mc", text: "Factorise: x² + 9x + 20", options: ["(x + 4)(x + 5)", "(x + 2)(x + 10)", "(x + 1)(x + 20)", "(x − 4)(x − 5)"], answer: 0, topic: "Factorisation" },
+        { type: "mc", text: "Factorise: x² - 3x - 18", options: ["(x - 9)(x + 2)", "(x + 9)(x - 2)", "(x - 3)(x + 6)", "(x - 6)(x + 3)"], answer: 3, topic: "Factorisation" },
         { type: "input", text: "Factorise: 3x² - 48. What is the constant in one of the linear factors? (give positive value)", answer: "4", topic: "Factorisation" },
         { type: "mc", text: "Factorise completely: 2x² - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Factorisation" },
         { type: "input", text: "Factorise fully: 5x² - 5x - 60. Give the constant term in the linear factor with the smaller absolute value (give a positive number).", answer: "3", topic: "Factorisation" },
@@ -313,7 +313,7 @@ MathMagician.registerChapter(8, {
       {
         name: "HCF and Grouping",
         answers: [
-          { num: "Q1a", ans: "6ab(3a² - 2ab + b²)", note: "HCF = 6ab" },
+          { num: "Q1a", ans: "6ab(3a − 2ab + b)", note: "HCF = 6ab" },
           { num: "Q1b", ans: "(3a - b)(x + 2y)", note: "3a(x+2y) - b(x+2y) = (3a-b)(x+2y)" },
           { num: "Q1c", ans: "(2p + 5)(x - 3)", note: "Note 3-x = -(x-3); -5(3-x) = +5(x-3); factor out (x-3)" },
         ]

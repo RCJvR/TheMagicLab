@@ -383,7 +383,7 @@ MathMagician.registerChapter(16, {
         questions: [
           {
             num: "3",
-            text: "A learner's test scores over 6 months: Jan 45, Feb 52, Mar 58, Apr 55, Jun 70, Jul 68.",
+            text: "A learner's test scores over 6 months: Jan 45, Feb 52, Mar 58, Apr 55, May 70, Jun 68.",
             parts: [
               { label: "a)", text: "Draw a labelled line graph.", marks: 4 },
               { label: "b)", text: "Describe the general trend.", marks: 1 },
@@ -434,9 +434,9 @@ MathMagician.registerChapter(16, {
         name: "Graphs and interpretation",
         answers: [
           { num: "Q3a", ans: "Line graph: months on x-axis, scores on y-axis; points plotted and connected", note: "Both axes labelled" },
-          { num: "Q3b", ans: "Generally increasing with a slight dip in April and July", note: "" },
+          { num: "Q3b", ans: "Generally increasing with a slight dip in April and June", note: "" },
           { num: "Q3c", ans: "Mean = 58", note: "348÷6=58" },
-          { num: "Q3d", ans: "April to June (+15 marks)", note: "55→70" },
+          { num: "Q3d", ans: "April to May (+15 marks)", note: "55→70" },
           { num: "Q4a", ans: "Outliers: 12 and 90", note: "Both far from the 25–32 cluster" },
           { num: "Q4b", ans: "With all 8: mean=34.6; without 12 and 90: mean=29.2", note: "277÷8=34.6; 175÷6=29.2" },
           { num: "Q4c", ans: "Median (≈29.5) better represents the data", note: "Mean distorted by outliers 12 and 90" },

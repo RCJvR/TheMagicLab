@@ -549,16 +549,16 @@ MathMagician.registerChapter(11, {
     answers: {
       1: {
         a: "Right triangle: horizontal distance from directly below plane to airport",
-        b: "tan18° = 3500/d → d = 3500/tan18° ≈ 10 763 m"
+        b: "tan18° = 3500/d → d = 3500/tan18° ≈ 10 772 m"
       },
       2: {
         a: "tan48° = BC/25 → BC = 25×tan48° ≈ 27.77 m",
-        b: "tan θ = 27.77/35 → θ ≈ 38.4°"
+        b: "DB = 10 m, so tan θ = 27.77/10 → θ ≈ 70.2°"
       },
       3: {
         a: "tan42° = 60/dA → dA = 60/tan42° ≈ 66.64 m",
-        b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.87 m",
-        c: "AB = 112.87 − 66.64 ≈ 46.23 m"
+        b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.84 m",
+        c: "AB = 112.84 − 66.64 ≈ 46.20 m"
       }
     }
   }

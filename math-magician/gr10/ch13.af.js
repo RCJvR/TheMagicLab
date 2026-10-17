@@ -144,7 +144,7 @@ MathMagician.registerChapter(13, {
         },
         {
           type: "mc",
-          text: "'n Regte prisma het 'n driehoekige basis (b=6, h=4) en hoogte 10. Sy laterale oppervlak is:",
+          text: "'n Regte prisma het 'n reghoekige driehoekige basis met reghoeksye 6 cm en 4 cm, en hoogte 10 cm. Sy laterale oppervlak is naaste aan:",
           options: ["172 cm²", "200 cm²", "240 cm²", "150 cm²"],
           answer: 0,
           topic: "Oppervlakte & oppervlak"

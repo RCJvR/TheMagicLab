@@ -71,7 +71,7 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Simplify 18/24 to its simplest form (write as a/b).", answer: "3/4", topic: "Fractions" },
         { type: "mc", text: "Convert 2¾ to an improper fraction.", options: ["9/4", "11/4", "10/4", "8/4"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Convert 17/5 to a mixed number (write as a b/c, e.g. 3 2/5).", answer: "3 2/5", topic: "Fractions" },
-        { type: "mc", text: "Which fraction is equivalent to 2/3?", options: ["4/9", "6/9", "6/12", "4/6"], answer: 3, topic: "Fractions" },
+        { type: "mc", text: "Which fraction is equivalent to 2/3?", options: ["4/9", "6/8", "6/12", "4/6"], answer: 3, topic: "Fractions" },
         { type: "input", text: "What is the GCF of 36 and 48?", answer: "12", topic: "Fractions" },
         { type: "input", text: "Convert 47/6 to a mixed number, then state only the whole-number part.", answer: "7", topic: "Fractions" },
         { type: "input", text: "24/32 and 30/40 both simplify to the same fraction in simplest form. What is that simplest form (write as a/b)?", answer: "3/4", topic: "Fractions" },
@@ -266,7 +266,7 @@ MathMagician.registerChapter(11, {
         { type: "mc", text: "Calculate (2/3)² + 1/3.", options: ["7/9", "1", "5/9", "1 1/9"], answer: 0, topic: "Fractions" },
         { type: "input", text: "Calculate 1½ × 2/3 + ¼. Give as a simplified fraction.", answer: "5/4", topic: "Fractions" },
         { type: "mc", text: "Calculate 3/4 ÷ 1/2 − 1/4.", options: ["1", "1¼", "1½", "¾"], answer: 1, topic: "Fractions" },
-        { type: "input", text: "Calculate √(1/4) + (1/3)³. Write as a simplified fraction.", answer: "55/108", topic: "Fractions" },
+        { type: "input", text: "Calculate √(1/4) + (1/3)³. Write as a simplified fraction.", answer: "29/54", topic: "Fractions" },
         { type: "input", text: "Calculate: (1/2)² + 2/3 ÷ 1/6 − 1/4. Give as a whole number or simplified fraction.", answer: "4", topic: "Fractions" },
         { type: "input", text: "Calculate: [1½ + 2¼] ÷ [1/2 × 3/2] − 1. Give as a whole number or simplified fraction.", answer: "4", topic: "Fractions" },
       ]
@@ -432,7 +432,7 @@ MathMagician.registerChapter(11, {
       },
       questions: [
         { type: "input", text: "Calculate 2⅓ ÷ 1¾. Give as a simplified fraction.", answer: "4/3", topic: "Mixed" },
-        { type: "mc", text: "Calculate (3/4)² − 1/8.", options: ["5/8", "1/2", "9/16", "11/16"], answer: 0, topic: "Mixed" },
+        { type: "mc", text: "Calculate (3/4)² − 1/8.", options: ["7/16", "1/2", "9/16", "11/16"], answer: 0, topic: "Mixed" },
         { type: "input", text: "A jacket is R640 after a 20% increase. What was the original price?", answer: "533.33", topic: "Mixed" },
         { type: "mc", text: "Calculate 1½ + 2/3 × ¾.", options: ["2", "2 1/4", "1 3/4", "2 5/12"], answer: 0, topic: "Mixed" },
         { type: "input", text: "Express 35 minutes as a percentage of 1 hour. Give as a %.", answer: "58.33", topic: "Mixed" },

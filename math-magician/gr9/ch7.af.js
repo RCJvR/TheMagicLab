@@ -298,7 +298,7 @@ MathMagician.registerChapter(7, {
           { num: "Q1b", ans: "2x² + 7x - 15", note: "FOIL: 2x²+10x-3x-15 = 2x²+7x-15" },
           { num: "Q1c", ans: "9x² + 12x + 4", note: "(3x)²+2(3x)(2)+2²=9x²+12x+4" },
           { num: "Q1d", ans: "16x² - 1", note: "verskil van kwadrate: (4x)²-1²=16x²-1" },
-          { num: "Q1e", ans: "4x + 28", note: "x²+8x+16 - (x²+4x-12) = 4x+28; hersien: x²+8x+16-x²-4x+12=4x+28. Aanvaar 4x+28." },
+          { num: "Q1e", ans: "4x + 28", note: "x²+8x+16 − (x²+4x−12) = x²+8x+16−x²−4x+12 = 4x+28" },
         ]
       },
       {

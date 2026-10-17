@@ -57,7 +57,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Calculate: 2/3 + 3/4", options: ["5/7", "17/12", "5/12", "6/7"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate: 3 1/2 × 2 2/3 (give answer as improper fraction numerator over 3)", answer: "28", topic: "Fractions" },
         { type: "mc", text: "Calculate: 5/6 ÷ 5/12", options: ["1/2", "2", "25/72", "10/6"], answer: 1, topic: "Fractions" },
-        { type: "input", text: "Calculate: 4 1/4 - 2 3/4 (give answer as a mixed number numerator + denominator as 2-digit number e.g. 1 1/2 = write 3 for 1+1+... — just write: 1.5 → write 3/2 → write numerator 3)", answer: "3", topic: "Fractions" },
+        { type: "input", text: "Calculate: 4 1/4 − 2 3/4. Give the answer as a mixed number.", answer: "1 1/2", altAnswers: ["3/2", "1.5", "1,5"], topic: "Fractions" },
         { type: "mc", text: "Which fraction is equivalent to 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Fractions" },
         { type: "input", text: "Calculate (2 1/3 + 1 1/6) ÷ 3/4. Give only the whole-number part of the mixed-number answer.", answer: "4", topic: "Fractions" },
         { type: "input", text: "A recipe uses 2 3/4 cups of flour per batch of cookies. A baker has 12 cups of flour. After making as many complete batches as possible, how many cups of flour are left over?", answer: "1", topic: "Fractions" },
@@ -122,7 +122,7 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Convert 0,45 to a percentage.", answer: "45", topic: "Decimals" },
         { type: "mc", text: "Which decimal is equivalent to 5/12?", options: ["0,416̇", "0,41̇6̇", "0,4166̇", "Both a) and c)"], answer: 3, topic: "Decimals" },
         { type: "input", text: "Write 0,875 as a percentage, then use it to calculate 0,875 of R 480. Give the rand amount.", answer: "420", topic: "Decimals" },
-        { type: "input", text: "Calculate 0,<span class='math'>\\overline{4}</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "29/45", topic: "Decimals" },
+        { type: "input", text: "Calculate 0,<span style='text-decoration:overline'>4</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "29/45", topic: "Decimals" },
       ]
     },
     {

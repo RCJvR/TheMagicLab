@@ -292,7 +292,7 @@ MathMagician.registerChapter(3, {
           type: "mc",
           text: "'n Lineêre ry word geplot. Punte lê op 'n lyn met gradiënt 4 en y-afsnit 1. Die n-de term is:",
           options: ["4n + 1", "4n − 3", "n + 4", "4n + 5"],
-          answer: 1,
+          answer: 0,
           topic: "Patrone in konteks"
         },
         {

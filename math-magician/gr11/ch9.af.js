@@ -386,7 +386,7 @@ MathMagician.registerChapter(9, {
         {
           type: "input",
           text: "R8 000 word belê teen 12% p.j. kwartaalliks saamgestel vir 6 maande, waarna 'n verdere R2 000 gedeponeer word. Bereken die saldo onmiddellik na die deposito (tot die naaste rand).",
-          answer: "10488",
+          answer: "10487",
           topic: "Multi-stadium-beleggings met tydlyne"
         },
         {
@@ -595,7 +595,7 @@ MathMagician.registerChapter(9, {
       },
       3: {
         a: "A₃=30000(1.08)³≈30000×1.2597≈R37 791",
-        b: "A₅=37791(1+0.10/2)⁴=37791(1.05)⁴≈37791×1.2155≈R45 953"
+        b: "A₅=37791(1+0.10/2)⁴=37791(1.05)⁴≈37791×1.2155≈R45 936"
       }
     }
   }

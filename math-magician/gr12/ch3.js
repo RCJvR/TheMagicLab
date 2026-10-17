@@ -188,7 +188,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Home loan R1 000 000 at 8.5% p.a. compounded monthly over 20 years. Monthly payment formula:", options: ["x = 1000000·(0.085/12)/[1−(1+0.085/12)⁻²⁴⁰]", "x = 1000000·0.085/20", "x = 1000000/240", "x = 1000000·0.085"], answer: 0, topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "The present value formula is used to:", options: ["Find how much to save", "Find the loan amount that corresponds to given repayments", "Find the future value of savings", "Find compound interest"], answer: 1, topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "After 5 years of a 20-year loan with monthly payments x, the outstanding balance uses:", options: ["n = 20 and k = 60", "n−k = 180 remaining payments", "x and the original principal only", "The future value formula"], answer: 1, topic: "Present value annuities & loan repayments" },
-        { type: "input", text: "P = 10000, i = 0.01 per month, n = 12. Find x (monthly payment) to nearest rand. Use x = Pi/[1−(1.01)⁻¹²]. Answer ≈", answer: "889", topic: "Present value annuities & loan repayments" },
+        { type: "input", text: "P = 10000, i = 0.01 per month, n = 12. Find x (monthly payment) to nearest rand. Use x = Pi/[1−(1.01)⁻¹²]. ", answer: "888", altAnswers: ["888.49", "888,49"], topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "Total interest paid on a loan = ", options: ["Principal × rate × time", "Total repayments − original loan amount", "Monthly payment × n", "Future value − present value"], answer: 1, topic: "Present value annuities & loan repayments" },
         { type: "input", text: "A loan of R450 000 is repaid with equal monthly instalments over 15 years at 12% p.a. compounded monthly. Calculate the outstanding balance immediately after the 100th payment (nearest rand).", answer: "296438", altAnswers: ["296437", "296437.82"], topic: "Present value annuities & loan repayments" },
         { type: "input", text: "A loan of R200 000 at 13% p.a. compounded monthly is repaid with monthly instalments of R3 000. Determine the minimum number of monthly payments required to settle the loan.", answer: "119", topic: "Present value annuities & loan repayments" }
@@ -417,10 +417,10 @@ MathMagician.registerChapter(3, {
       ]}
     ],
     answers: {
-      1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·173.08≈R138 464", b: "800×120=R96 000", c: "138464−96000=R42 464" },
-      2: { a: "Loan=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 786/month", c: "Balance=13786·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 345 000", d: "Total paid=13786×300=R4 135 800; Interest=4135800−1440000≈R2 695 800" },
-      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.5869≈R68 138", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.7716≈R64 802; saves R68138−R64802=R3 336" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509.30" }
+      1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
+      2: { a: "Loan=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/month", c: "Balance=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Total paid=13596×300=R4 078 800; Interest=4078800−1440000≈R2 638 800" },
+      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; saves R68158−R64804=R3 354" },
+      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
     }
   }
 });

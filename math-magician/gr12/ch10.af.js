@@ -465,7 +465,7 @@ MathMagician.registerChapter(10, {
     ],
     answers: {
       1: { a: "10⁴=10000", b: "10×9×8×7=5040", c: "1×9×8×7=504 (eerste syfer vasgestel op 5, oorblywende 3 uit oorblywende 9 syfers)" },
-      2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "Stel S vas aan die begin en einde (slegs 2 S'e oor... wag, 3 S'e → stel S vas aan die punte: kies 2 van die 3 S'e vir die punte = 1 manier aangesien hulle identies is; rangskik die oorblywende 8 letters (S×1,T×3,A×1,I×2,C×1): 8!/(1!3!1!2!1!)=3360" },
+      2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "Die twee S'e aan die punte is identies, dus is daar 1 manier om hulle te plaas. Rangskik die ander 8 letters (S×1, T×3, A×1, I×2, C×1): 8!/(3!2!) = 3360" },
       3: { a: "₁₄C₅=2002", b: "₈C₃×₆C₂=56×15=840", c: "P(4V1M)+P(5V)=(₆C₄×₈C₁+₆C₅)/2002=(15×8+6)/2002=126/2002=9/143" },
       4: { a: "7!=5040", b: "Hanteer PR as 'n eenheid: 6! rangskikkings × 2(PR of RP)=1440", c: "Vokale:O,U=2; P(begin met vokaal)=2×6!/7!=2/7" },
       5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport en instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport en instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. Dit is NIE gelyk aan P(sport en instrument) = 0.19 NIE, dus is die gebeurtenisse NIE onafhanklik NIE (hulle is afhanklik)." }

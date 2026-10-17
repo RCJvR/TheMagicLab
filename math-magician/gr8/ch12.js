@@ -67,7 +67,7 @@ MathMagician.registerChapter(12, {
       },
       questions: [
         { type: "input", text: "Calculate 14.7 + 3.85 + 0.067.", answer: "18.617", topic: "Decimals" },
-        { type: "mc", text: "Calculate 25 − 8.46.", options: ["17.54", "16.54", "17.64", "16.64"], answer: 0, topic: "Decimals" },
+        { type: "mc", text: "Calculate 25 − 8.46.", options: ["17.54", "16.54", "17.64", "16.64"], answer: 1, topic: "Decimals" },
         { type: "input", text: "Calculate 7.3 + 2.98 − 4.156.", answer: "6.124", topic: "Decimals" },
         { type: "mc", text: "A plank is 3.4 m. Two pieces of 0.75 m and 1.285 m are cut off. What remains?", options: ["1.365 m", "1.375 m", "1.465 m", "1.475 m"], answer: 0, topic: "Decimals" },
         { type: "input", text: "Calculate 100 − 34.567.", answer: "65.433", topic: "Decimals" },

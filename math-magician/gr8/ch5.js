@@ -377,7 +377,7 @@ y  |  2   5   8  11  14</div>
           { num: "Q3c", ans: "4 hours", note: "120h + 200 = 680 → 120h = 480 → h = 4" },
           { num: "Q3d", ans: "5 hours", note: "120h+200 = 130h+150 → 50 = 10h → h = 5" },
           { num: "Q4a", ans: "y = 3x + 1", note: "d=3, when x=1 y=4: 3(1)+c=4 → c=1" },
-          { num: "Q4b", ans: "y = 3(x + ⅓) or check: no clean factored form — accept y = 3x + 1", note: "" },
+          { num: "Q4b", ans: "y = 3(x + ⅓)", note: "3 is the only common factor of 3x and 1, so the bracket contains a fraction. Accept y = 3x + 1 as the simplest form." },
           { num: "Q4c", ans: "x = (y − 1) ÷ 3", note: "y − 1 = 3x → x = (y−1)/3" },
           { num: "Q4d", ans: "x = 33", note: "(100−1)÷3 = 99÷3 = 33" },
         ]

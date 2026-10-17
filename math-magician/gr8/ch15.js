@@ -73,10 +73,10 @@ MathMagician.registerChapter(15, {
       },
       questions: [
         { type: "input", text: "A triangular prism has a right-angled triangle with legs 6 and 8 (hypotenuse 10) as its cross-section, and length 12 cm. Find the surface area.", answer: "336", topic: "Surface Area" },
-        { type: "mc", text: "A triangular prism has equilateral triangle faces with side 4 cm, and length 9 cm. Find the surface area. (Use √3 ≈ 1.732)", options: ["124.9 cm²", "121.9 cm²", "108 cm²", "136 cm²"], answer: 0, topic: "Surface Area" },
+        { type: "mc", text: "A triangular prism has equilateral triangle faces with side 4 cm, and length 9 cm. Find the surface area. (Use √3 ≈ 1.732)", options: ["124.9 cm²", "121.9 cm²", "108 cm²", "136 cm²"], answer: 1, topic: "Surface Area" },
         { type: "input", text: "A triangular prism has triangular area 15 cm², triangular perimeter 18 cm, and length 7 cm. Find the surface area.", answer: "156", topic: "Surface Area" },
         { type: "mc", text: "How many faces does a triangular prism have?", options: ["3", "4", "5", "6"], answer: 2, topic: "Surface Area" },
-        { type: "input", text: "A triangular prism has triangle base 10 cm, height 6 cm, three sides 10, 8, 8 cm, and length 15 cm. Find the surface area.", answer: "570", topic: "Surface Area" },
+        { type: "input", text: "A triangular prism has triangle base 10 cm, height 12 cm, three sides 10, 13, 13 cm, and length 15 cm. Find the surface area.", answer: "660", topic: "Surface Area" },
         { type: "input", text: "A triangular prism has a right-angled triangle cross-section with legs 9 cm and 12 cm (hypotenuse 15 cm) and length 20 cm. Find the surface area.", answer: "828", topic: "Surface Area" },
         { type: "input", text: "Two triangular prisms have identical triangular cross-sections (area 20 cm², perimeter 24 cm) but different lengths: Prism A is 10 cm long and Prism B is 15 cm long. Calculate the difference between their surface areas.", answer: "120", topic: "Surface Area" },
       ]
@@ -308,9 +308,9 @@ MathMagician.registerChapter(15, {
       },
       questions: [
         { type: "input", text: "A cube has volume 512 cm³. Find its surface area.", answer: "384", topic: "Mixed" },
-        { type: "mc", text: "A triangular prism (right-angled triangle: 9, 12, 15; length 20) has surface area:", options: ["648 cm²", "756 cm²", "900 cm²", "594 cm²"], answer: 0, topic: "Mixed" },
-        { type: "input", text: "A rectangular prism is 8 × 5 × 4 cm. If all dimensions are doubled, find the new volume.", answer: "2560", topic: "Mixed" },
-        { type: "mc", text: "A box 15 × 12 × 8 cm is filled with water. How many litres does it hold?", options: ["14.4 ℓ", "1.44 ℓ", "144 ℓ", "0.144 ℓ"], answer: 0, topic: "Mixed" },
+        { type: "mc", text: "A triangular prism (right-angled triangle: 9, 12, 15; length 20) has surface area:", options: ["828 cm²", "756 cm²", "900 cm²", "594 cm²"], answer: 0, topic: "Mixed" },
+        { type: "input", text: "A rectangular prism is 8 × 5 × 4 cm. If all dimensions are doubled, find the new volume.", answer: "1280", topic: "Mixed" },
+        { type: "mc", text: "A box 15 × 12 × 8 cm is filled with water. How many litres does it hold?", options: ["14.4 ℓ", "1.44 ℓ", "144 ℓ", "0.144 ℓ"], answer: 1, topic: "Mixed" },
         { type: "input", text: "A triangular prism has triangle area 30 cm² and length 14 cm. Find its volume.", answer: "420", topic: "Mixed" },
         { type: "input", text: "A cube-shaped box has surface area 150 cm². Calculate its volume.", answer: "125", topic: "Mixed" },
         { type: "input", text: "A rectangular container (20 cm × 15 cm × 10 cm) is to be filled with smaller cubes of side 5 cm. How many small cubes fit exactly inside the container?", answer: "24", topic: "Mixed" },
@@ -381,8 +381,8 @@ MathMagician.registerChapter(15, {
         name: "Effect of scale factors",
         answers: [
           { num: "Q4a", ans: "Volume increases by factor 64", note: "k=4; new V = 4³ × old V = 64 × old V" },
-          { num: "Q4b", ans: "New SA = 320 cm²", note: "Original SA=80 cm²; double dimensions: 6×(2×2)²... or: calculate SA of new shape directly. 80×4=320 (SA quadruples when dimensions double)" },
-          { num: "Q4c", ans: "New V = 2 cm³", note: "Dimensions divided by 3; calculate new volume directly: if original 3cm cube, new side=1cm, V=1³=1... or 54÷27=2 (divide by 27 when all dims ÷3)" },
+          { num: "Q4b", ans: "New SA = 320 cm²", note: "Doubling every length multiplies area by 2² = 4: 80 × 4 = 320" },
+          { num: "Q4c", ans: "New V = 2 cm³", note: "Multiplying every length by ⅓ multiplies volume by (⅓)³ = 1/27: 54 ÷ 27 = 2" },
         ]
       },
     ]

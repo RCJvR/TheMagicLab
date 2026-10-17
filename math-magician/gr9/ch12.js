@@ -199,9 +199,9 @@ MathMagician.registerChapter(12, {
 </div>
 <div class="example-box">
   <div class="example-box-title">✏️ Example: an equation from angles</div>
-  <div class="example-step"><span class="step-num">1</span><span>Two co-interior angles between parallel lines are 2x + 10° and 3x − 5°.</span></div>
+  <div class="example-step"><span class="step-num">1</span><span>Two co-interior angles between parallel lines are (2x + 10)° and (3x − 5)°.</span></div>
   <div class="example-step"><span class="step-num">2</span><span>2x + 10 + 3x − 5 = 180  (co-int ∠s; lines ∥)</span></div>
-  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35°</strong>; the angles are 80° and 100°.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35</strong>; the angles are 80° and 100°.</span></div>
 </div>
 <div class="tip-box"><span class="tip-icon">💡</span><span>"Corresp", "alt" and "co-int" are only valid reasons when the lines are parallel: always mention the parallel lines.</span></div>
         `
@@ -247,8 +247,8 @@ MathMagician.registerChapter(12, {
             num: "1",
             text: "Calculate the value of each unknown angle, giving a reason for each step:",
             parts: [
-              { label: "a)", text: "Three angles on a straight line are (2x)°, (x + 10)° and 40°. Find x and all angles.", marks: 4 },
-              { label: "b)", text: "Angles around a point include (3y)°, (2y + 20)°, (y + 40)° and 80°. Find y.", marks: 4 },
+              { label: "a)", text: "Three angles on a straight line are (2x)°, (x + 20)° and 40°. Find x and all angles.", marks: 4 },
+              { label: "b)", text: "Angles around a point include (3y)°, (2y + 20)°, (y + 40)° and 90°. Find y.", marks: 4 },
               { label: "c)", text: "Two intersecting lines form angles (4a - 5)° and (2a + 35)°. If they are vertically opposite, find a and both angles.", marks: 4 },
             ]
           },
@@ -302,8 +302,8 @@ MathMagician.registerChapter(12, {
       {
         name: "Angle Relationships",
         answers: [
-          { num: "Q1a", ans: "x = 43,3°; angles: 86,7°, 53,3°, 40° — accept x = 130/3", note: "2x+x+10+40=180 → 3x=130 → x=43,3" },
-          { num: "Q1b", ans: "y = 110/3 ≈ 36,67°", note: "3y+2y+20+y+40+80=360; 6y+140=360; 6y=220; y=110/3≈36,67" },
+          { num: "Q1a", ans: "x = 40; angles: 80°, 60°, 40°", note: "2x + x + 20 + 40 = 180 (∠s on a str line) → 3x = 120 → x = 40" },
+          { num: "Q1b", ans: "y = 35; angles: 105°, 90°, 75°, 90°", note: "3y + 2y + 20 + y + 40 + 90 = 360 (∠s around a point) → 6y = 210 → y = 35" },
           { num: "Q1c", ans: "a = 20; both angles = 75°", note: "4a-5=2a+35 → 2a=40 → a=20; angle = 4(20)-5=75°" },
         ]
       },

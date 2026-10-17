@@ -551,8 +551,8 @@ MathMagician.registerChapter(12, {
       1: {
         a: "2x+3y≤24; x+2y≤16; x≥2; y≥1; x≥0; y≥0",
         b: "Shade region satisfying all constraints",
-        c: "Solve intersections: (2,1), (2,6.67), (4.5,5), (7,0)... check feasibility; corners approx at (2,1),(2,6),(3,6),(6,2)",
-        d: "Evaluate P=80x+150y at each corner; maximum typically at balanced point"
+        c: "x=2 meets 2x+3y=24 at (2; 6⅔); y=1 meets 2x+3y=24 at (10½; 1). The finishing line x+2y=16 meets 2x+3y=24 at (0; 8), outside x≥2, so it never binds. Corners: (2; 1), (2; 6⅔), (10½; 1)",
+        d: "P(2; 1)=310, P(2; 6⅔)=1 160, P(10½; 1)=990. Chairs and tables must be whole numbers, so test whole-number points near (2; 6⅔): (2; 6) gives 1 060 and (3; 6) gives 1 140 (2×3+3×6=24 ✓, 3+12=15 ✓). Maximum profit R1 140 with 3 chairs and 6 tables"
       },
       2: {
         a: "Evaluate 3x+2y: A=16; B=24; C=21; D=0 → Maximum=24 at B(4;6)",

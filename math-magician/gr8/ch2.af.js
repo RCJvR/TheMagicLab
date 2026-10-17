@@ -630,7 +630,7 @@ MathMagician.registerChapter(2, {
     },
     questions: [
       { type: "input", text: "Bereken: <span class='math'>(−2)³ + (−3) × (−4)</span>", answer: "4", topic: "Gemengde bewerkings" },
-      { type: "mc", text: "Wat is <span class='math'>−5² + (−3)²</span>?", options: ["−16", "4", "−34", "34"], answer: 1, topic: "Gemengde bewerkings" },
+      { type: "mc", text: "Wat is <span class='math'>−5² + (−3)²</span>?", options: ["−16", "4", "−34", "34"], answer: 0, topic: "Gemengde bewerkings" },
       { type: "input", text: "Bereken: <span class='math'>[(−6) ÷ 2] × (−3) − (−1)</span>", answer: "10", topic: "Gemengde bewerkings" },
       { type: "mc", text: "Bereken <span class='math'>(−2) × 3 − (−4) × (−2)</span>", options: ["−14", "−2", "2", "14"], answer: 0, topic: "Gemengde bewerkings" },
       { type: "input", text: "Bereken: <span class='math'>(−6 + 2)² − (−3)³ ÷ 3</span>", answer: "25", topic: "Gemengde bewerkings" },

@@ -322,7 +322,7 @@ MathMagician.registerChapter(8, {
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Gegee: AD/DB=AE/EC; TB: DE∥BC", b: "Teken DE'∥BC; volgens ET: AD/DB=AE'/E'C; maar AD/DB=AE/EC(gegewe)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "AB/CB=BD/AB→AB²=BD·CB", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "In △ABD en △CBA: ∠B is gemeen en ∠ADB=∠CAB=90°, dus △ABD|||△CBA (HH) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
     }
   }
 });

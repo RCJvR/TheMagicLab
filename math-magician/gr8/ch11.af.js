@@ -71,7 +71,7 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Vereenvoudig 18/24 tot sy eenvoudigste vorm (skryf as a/b).", answer: "3/4", topic: "Breuke" },
         { type: "mc", text: "Skakel 2¾ om na 'n onegte breuk.", options: ["9/4", "11/4", "10/4", "8/4"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Skakel 17/5 om na 'n gemengde getal (skryf as a b/c, bv. 3 2/5).", answer: "3 2/5", topic: "Breuke" },
-        { type: "mc", text: "Watter breuk is ekwivalent aan 2/3?", options: ["4/9", "6/9", "6/12", "4/6"], answer: 3, topic: "Breuke" },
+        { type: "mc", text: "Watter breuk is ekwivalent aan 2/3?", options: ["4/9", "6/8", "6/12", "4/6"], answer: 3, topic: "Breuke" },
         { type: "input", text: "Wat is die GGD van 36 en 48?", answer: "12", topic: "Breuke" },
         { type: "input", text: "Skakel 47/6 om na 'n gemengde getal, en gee dan slegs die heelgetal-deel.", answer: "7", topic: "Breuke" },
         { type: "input", text: "24/32 en 30/40 vereenvoudig albei tot dieselfde breuk in eenvoudigste vorm. Wat is daardie eenvoudigste vorm (skryf as a/b)?", answer: "3/4", topic: "Breuke" },
@@ -266,7 +266,7 @@ MathMagician.registerChapter(11, {
         { type: "mc", text: "Bereken (2/3)² + 1/3.", options: ["7/9", "1", "5/9", "1 1/9"], answer: 0, topic: "Breuke" },
         { type: "input", text: "Bereken 1½ × 2/3 + ¼. Gee as 'n vereenvoudigde breuk.", answer: "5/4", topic: "Breuke" },
         { type: "mc", text: "Bereken 3/4 ÷ 1/2 − 1/4.", options: ["1", "1¼", "1½", "¾"], answer: 1, topic: "Breuke" },
-        { type: "input", text: "Bereken √(1/4) + (1/3)³. Skryf as 'n vereenvoudigde breuk.", answer: "55/108", topic: "Breuke" },
+        { type: "input", text: "Bereken √(1/4) + (1/3)³. Skryf as 'n vereenvoudigde breuk.", answer: "29/54", topic: "Breuke" },
         { type: "input", text: "Bereken: (1/2)² + 2/3 ÷ 1/6 − 1/4. Gee as 'n heelgetal of vereenvoudigde breuk.", answer: "4", topic: "Breuke" },
         { type: "input", text: "Bereken: [1½ + 2¼] ÷ [1/2 × 3/2] − 1. Gee as 'n heelgetal of vereenvoudigde breuk.", answer: "4", topic: "Breuke" },
       ]
@@ -432,7 +432,7 @@ MathMagician.registerChapter(11, {
       },
       questions: [
         { type: "input", text: "Bereken 2⅓ ÷ 1¾. Gee as 'n vereenvoudigde breuk.", answer: "4/3", topic: "Gemeng" },
-        { type: "mc", text: "Bereken (3/4)² − 1/8.", options: ["5/8", "1/2", "9/16", "11/16"], answer: 0, topic: "Gemeng" },
+        { type: "mc", text: "Bereken (3/4)² − 1/8.", options: ["7/16", "1/2", "9/16", "11/16"], answer: 0, topic: "Gemeng" },
         { type: "input", text: "'n Baadjie is R640 na 'n 20%-toename. Wat was die oorspronklike prys?", answer: "533.33", topic: "Gemeng" },
         { type: "mc", text: "Bereken 1½ + 2/3 × ¾.", options: ["2", "2 1/4", "1 3/4", "2 5/12"], answer: 0, topic: "Gemeng" },
         { type: "input", text: "Druk 35 minute as 'n persentasie van 1 uur uit. Gee as 'n %.", answer: "58.33", topic: "Gemeng" },

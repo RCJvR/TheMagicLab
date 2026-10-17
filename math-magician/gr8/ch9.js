@@ -629,7 +629,7 @@ MathMagician.registerChapter(9, {
         questions: [
           {
             num: "4",
-            text: "AB ∥ CD. A transversal cuts AB at P and CD at Q. ∠APQ = 118° (obtuse angle above AB, left of transversal).",
+            text: "AB ∥ CD. A transversal cuts AB at P and CD at Q. ∠APQ = 118° (the obtuse angle between the parallel lines, on the left of the transversal).",
             parts: [
               { label: "a)", text: "Find ∠BPQ. Give a reason.", marks: 2 },
               { label: "b)", text: "Find the corresponding angle at Q. Give a reason.", marks: 2 },
@@ -680,9 +680,9 @@ MathMagician.registerChapter(9, {
         name: "Parallel lines cut by a transversal",
         answers: [
           { num: "Q4a", ans: "∠BPQ = 62°", note: "Angles on a straight line: 180° − 118° = 62°" },
-          { num: "Q4b", ans: "∠PQD = 118°", note: "Corresponding angles; AB ∥ CD" },
-          { num: "Q4c", ans: "∠PQG = 62°", note: "Alternate interior angles; AB ∥ CD (also = ∠BPQ)" },
-          { num: "Q4d", ans: "∠BPQ + co-int = 180° → co-int = 118°", note: "Co-interior angles; AB ∥ CD: 62° + 118° = 180° ✓" },
+          { num: "Q4b", ans: "The angle at Q below CD, on the left of the transversal, = 118°", note: "Corresp ∠s with ∠APQ; AB ∥ CD" },
+          { num: "Q4c", ans: "∠PQD = 118°", note: "Alt ∠s with ∠APQ; AB ∥ CD" },
+          { num: "Q4d", ans: "∠PQC = 62°", note: "Co-int ∠s with ∠APQ; AB ∥ CD: 118° + 62° = 180° ✓" },
           { num: "Q5a", ans: "x = 20", note: "4x − 5 = 2x + 35 (corr. angles, lines ∥) → 2x = 40 → x = 20" },
           { num: "Q5b", ans: "Each corresponding angle = 75°", note: "4(20) − 5 = 75°; 2(20) + 35 = 75° ✓" },
           { num: "Q5c", ans: "Co-interior angle = 105°", note: "180° − 75° = 105° (co-interior angles; lines ∥)" },

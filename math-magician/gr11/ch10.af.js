@@ -373,7 +373,7 @@ MathMagician.registerChapter(10, {
         {
           type: "input",
           text: "120 leerders: 60 speel sokker, 50 speel rugby, 45 speel krieket, 20 speel sokker en rugby, 15 speel rugby en krieket, 18 speel sokker en krieket, 8 speel al drie. Hoeveel speel geeneen van die drie sportsoorte nie?",
-          answer: "30",
+          answer: "10",
           topic: "Venn-diagramme vir drie gebeurtenisse"
         },
         {

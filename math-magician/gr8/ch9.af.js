@@ -629,7 +629,7 @@ MathMagician.registerChapter(9, {
         questions: [
           {
             num: "4",
-            text: "AB ∥ CD. 'n Transversaal sny AB by P en CD by Q. ∠APQ = 118° (stomp hoek bo AB, links van transversaal).",
+            text: "AB ∥ CD. 'n Transversaal sny AB by P en CD by Q. ∠APQ = 118° (die stomp hoek tussen die ewewydige lyne, links van die transversaal).",
             parts: [
               { label: "a)", text: "Vind ∠BPQ. Gee 'n rede.", marks: 2 },
               { label: "b)", text: "Vind die ooreenkomstige hoek by Q. Gee 'n rede.", marks: 2 },
@@ -680,9 +680,9 @@ MathMagician.registerChapter(9, {
         name: "Ewewydige lyne gesny deur 'n transversaal",
         answers: [
           { num: "Q4a", ans: "∠BPQ = 62°", note: "Hoeke op 'n reguit lyn: 180° − 118° = 62°" },
-          { num: "Q4b", ans: "∠PQD = 118°", note: "Ooreenkomstige hoeke; AB ∥ CD" },
-          { num: "Q4c", ans: "∠PQG = 62°", note: "Verwisselende binnehoeke; AB ∥ CD (ook = ∠BPQ)" },
-          { num: "Q4d", ans: "∠BPQ + mede-binne = 180° → mede-binne = 118°", note: "Mede-binnehoeke; AB ∥ CD: 62° + 118° = 180° ✓" },
+          { num: "Q4b", ans: "Die hoek by Q onder CD, links van die transversaal, = 118°", note: "Ooreenk. ∠e met ∠APQ; AB ∥ CD" },
+          { num: "Q4c", ans: "∠PQD = 118°", note: "Verw. ∠e met ∠APQ; AB ∥ CD" },
+          { num: "Q4d", ans: "∠PQC = 62°", note: "Ko-binne ∠e met ∠APQ; AB ∥ CD: 118° + 62° = 180° ✓" },
           { num: "Q5a", ans: "x = 20", note: "4x − 5 = 2x + 35 (ooreenk. hoeke, lyne ∥) → 2x = 40 → x = 20" },
           { num: "Q5b", ans: "Elke ooreenkomstige hoek = 75°", note: "4(20) − 5 = 75°; 2(20) + 35 = 75° ✓" },
           { num: "Q5c", ans: "Mede-binnehoek = 105°", note: "180° − 75° = 105° (mede-binnehoeke; lyne ∥)" },

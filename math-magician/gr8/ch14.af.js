@@ -114,7 +114,7 @@ MathMagician.registerChapter(14, {
       },
       questions: [
         { type: "input", text: "Bereken die oppervlakte van 'n driehoek met basis 14 cm en loodregte hoogte 9 cm.", answer: "63", topic: "Oppervlakte" },
-        { type: "mc", text: "Bereken die oppervlakte van 'n sirkel met radius 6 cm. (Gebruik π = 3.142)", options: ["37.70 cm²", "113.10 cm²", "56.55 cm²", "226.19 cm²"], answer: 1, topic: "Oppervlakte" },
+        { type: "mc", text: "Bereken die oppervlakte van 'n sirkel met radius 6 cm. (Gebruik π = 3.142)", options: ["37.70 cm²", "113.11 cm²", "56.56 cm²", "226.22 cm²"], answer: 1, topic: "Oppervlakte" },
         { type: "input", text: "'n Trapesium het parallelle sye 8 cm en 14 cm, en loodregte hoogte 5 cm. Bereken sy oppervlakte.", answer: "55", topic: "Oppervlakte" },
         { type: "mc", text: "'n Parallelogram het basis 12 cm en hoogte 7 cm. Bereken sy oppervlakte.", options: ["38 cm²", "42 cm²", "84 cm²", "19 cm²"], answer: 2, topic: "Oppervlakte" },
         { type: "input", text: "Bereken die oppervlakte van 'n reghoek met lengte 3.5 m en breedte 2.4 m.", answer: "8.4", topic: "Oppervlakte" },
@@ -281,7 +281,7 @@ MathMagician.registerChapter(14, {
           { num: "Q2b", ans: "A = 80 cm²", note: "½(7+13)×8=80" },
           { num: "Q2c", ans: "≈ 100.53 m²", note: "π(9²−7²)=π×32≈100.53" },
           { num: "Q3a", ans: "42 000 cm²", note: "4.2×10 000=42 000" },
-          { num: "Q3b", ans: "0.000085 m²", note: "85 000÷1 000 000=0.000085" },
+          { num: "Q3b", ans: "0,085 m²", note: "85 000 ÷ 1 000 000 = 0,085 (1 m² = 1 000 000 mm²)" },
           { num: "Q3c", ans: "28.8 m² = 288 000 cm²", note: "6.4×4.5=28.8; ×10 000=288 000" },
         ]
       },

@@ -326,11 +326,11 @@ MathMagician.registerChapter(7, {
         `
       },
       questions: [
-        { type: "input", text: "Los op: <span class='math'>3(2x − 1) − 2(x + 3) = 5</span>", answer: "3", topic: "Gemeng" },
+        { type: "input", text: "Los op: <span class='math'>3(2x − 1) − 2(x + 3) = 3</span>", answer: "3", topic: "Gemeng" },
         { type: "mc", text: "Los op: <span class='math'>5x − 3 = 3x + 7</span>", options: ["2", "3", "4", "5"], answer: 3, topic: "Gemeng" },
-        { type: "input", text: "Die omtrek van 'n gelyksydige driehoek is 45 cm. Elke sy = 3x − 1. Vind x.", answer: "6", topic: "Gemeng" },
-        { type: "mc", text: "Los op: <span class='math'>4(x + 3) = 2(2x + 6)</span>", options: ["x = 0", "x = 3", "Geen oplossing — oneindig baie oplossings", "x = 6"], answer: 2, topic: "Gemeng" },
-        { type: "input", text: "'n Getal word met 6 vermenigvuldig, en dan word 11 afgetrek. Die resultaat is 3 meer as twee keer die getal. Vind die getal.", answer: "7", topic: "Gemeng" },
+        { type: "input", text: "Die omtrek van 'n gelyksydige driehoek is 51 cm. Elke sy = 3x − 1. Vind x.", answer: "6", topic: "Gemeng" },
+        { type: "mc", text: "Los op: <span class='math'>4(x + 3) = 2(2x + 6)</span>", options: ["x = 0", "x = 3", "Oneindig baie oplossings (waar vir elke x)", "x = 6"], answer: 2, topic: "Gemeng" },
+        { type: "input", text: "'n Getal word met 6 vermenigvuldig, en dan word 11 afgetrek. Die resultaat is 17 meer as twee keer die getal. Vind die getal.", answer: "7", topic: "Gemeng" },
         { type: "input", text: "'n Reghoek se omtrek is 5 keer sy breedte. Die lengte is 9 cm meer as die breedte. Vind die breedte (in cm).", answer: "18", topic: "Gemeng" },
       ]
     }

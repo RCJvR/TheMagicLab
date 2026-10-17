@@ -626,7 +626,7 @@ MathMagician.registerChapter(7, {
     answers: {
       1: {
         a: "l = √(25+9) = √34 ≈ 5.83 cm",
-        b: "Onderste sirkel: 25π; silinder geboë: 80π; keël geboë: 5√34·π; Totaal = (105 + 5√34)π ≈ 422.1 cm²",
+        b: "Onderste sirkel: 25π; silinder geboë: 80π; keël geboë: 5√34·π; Totaal = (105 + 5√34)π ≈ 421.5 cm²",
         c: "Silinder: π(25)(8)=200π; Keël: ⅓π(25)(3)=25π; Totaal=225π≈706.9 cm³"
       },
       2: {

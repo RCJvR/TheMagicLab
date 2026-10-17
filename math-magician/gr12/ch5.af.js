@@ -195,10 +195,10 @@ MathMagician.registerChapter(5, {
         `
       },
       questions: [
-        { type: "mc", text: "Los op: x³ − 7x + 6 = 0. Die wortels is:", options: ["1, 2, −3", "1, −3, 2", "−1, 3, −2", "1, 2, 3"], answer: 0, topic: "Kubieke polinome — skets & oplos" },
+        { type: "mc", text: "Los op: x³ − 7x + 6 = 0. Die wortels is:", options: ["1, 2, −3", "−1, −2, 3", "−1, 3, −2", "1, 2, 3"], answer: 0, topic: "Kubieke polinome — skets & oplos" },
         { type: "mc", text: "As 'n kubieke 'n dubbele wortel by x = 2 en nog 'n wortel by x = −1 het, kan dit wees:", options: ["(x−2)²(x+1)", "(x+2)²(x−1)", "(x−2)(x+1)²", "(x+2)(x−1)²"], answer: 0, topic: "Kubieke polinome — skets & oplos" },
         { type: "mc", text: "y = −2x³ + … Eindgedrag:", options: ["Val links, styg regs", "Styg links, val regs", "Val albei kante", "Styg albei kante"], answer: 1, topic: "Kubieke polinome — skets & oplos" },
-        { type: "input", text: "p(x) = x³ + px² − x − 6 en (x+2) is 'n faktor. Bepaal p.", answer: "2", topic: "Kubieke polinome — skets & oplos" },
+        { type: "input", text: "p(x) = x³ + kx² − x − 6 en (x+2) is 'n faktor. Bepaal k.", answer: "3", topic: "Kubieke polinome — skets & oplos" },
         { type: "mc", text: "'n Kubieke vergelyking kan hoogstens hoeveel reële wortels hê?", options: ["1", "2", "3", "4"], answer: 2, topic: "Kubieke polinome — skets & oplos" },
         { type: "mc", text: "Los op vir x: 2x³ − x² − 5x − 2 = 0", options: ["x = −1, −½, 2", "x = 1, ½, −2", "x = −1, 2, 5", "x = 1, −2, −5"], answer: 0, topic: "Kubieke polinome — skets & oplos" },
         { type: "input", text: "x³ − x² − 4x + 4 = 0 het wortels p < q < r. Bereken die waarde van p·q·r.", answer: "-4", altAnswers: ["−4"], topic: "Kubieke polinome — skets & oplos" }

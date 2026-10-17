@@ -551,7 +551,7 @@ MathMagician.registerChapter(1, {
       3: {
         a: "2x−3=25 → x=14; check: √25=5 ✓",
         b: "x+4=(x−2)² → x²−5x=0 → x=0 or x=5; check x=0: √4=2≠−2 ✗; x=5: √9=3=3 ✓",
-        c: "x²+12=4x²−4x+1 → 3x²−4x−11=0 → x=(4±√148)/6; check both"
+        c: "x²+12=4x²−4x+1 → 3x²−4x−11=0 → x=(4±√148)/6=(2±√37)/3; x=(2+√37)/3≈2,69 ✓ (x=(2−√37)/3 is rejected because then 2x−1<0)"
       }
     }
   }

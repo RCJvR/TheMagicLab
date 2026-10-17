@@ -231,8 +231,8 @@ MathMagician.registerChapter(10, {
       },
       questions: [
         { type: "input", text: "In parallelogram PQRS, ∠P = 4x + 10 and ∠Q = 2x + 20. Find x.", answer: "25", topic: "Mixed" },
-        { type: "mc", text: "A diagonal divides a rectangle into two triangles. What type of triangles are they?", options: ["Equilateral", "Isosceles right-angled", "Scalene", "Obtuse isosceles"], answer: 1, topic: "Mixed" },
-        { type: "input", text: "In △ABC, ∠A = 50°. ABCD is a parallelogram and BD is a diagonal. Find ∠ABD if ∠ADB = 70°.", answer: "60", topic: "Mixed" },
+        { type: "mc", text: "A diagonal divides a rectangle into two triangles. What type of triangles are they?", options: ["Equilateral", "Two congruent right-angled triangles", "Two acute triangles", "Obtuse isosceles"], answer: 1, topic: "Mixed" },
+        { type: "input", text: "ABCD is a parallelogram with ∠A = 50° and diagonal BD. If ∠ADB = 70°, find ∠ABD.", answer: "60", topic: "Mixed" },
         { type: "mc", text: "In rhombus ABCD with diagonal AC, if ∠BAC = 34°, what is ∠BCA?", options: ["34°", "56°", "68°", "112°"], answer: 0, topic: "Mixed" },
         { type: "input", text: "The angles of a quadrilateral are in the ratio 2:3:4:3. Find the largest angle.", answer: "120", topic: "Mixed" },
         { type: "input", text: "ABCD is a parallelogram with diagonal AC drawn. ∠DAC = 42° and ∠ACD = 38°. Find ∠ADC first, then use the properties of a parallelogram to find ∠ABC.", answer: "100", topic: "Mixed" },
@@ -645,7 +645,7 @@ MathMagician.registerChapter(10, {
       {
         name: "Geometry of triangles",
         questions: [
-          { num: "1", text: "In △PQR, ∠P = (3x − 5)°, ∠Q = (2x + 10)°, ∠R = (x + 15)°.", parts: [
+          { num: "1", text: "In △PQR, ∠P = (3x − 5)°, ∠Q = (2x + 10)°, ∠R = (x + 25)°.", parts: [
             { label: "a)", text: "Set up an equation using the angle sum of a triangle.", marks: 1 },
             { label: "b)", text: "Solve for x.", marks: 2 },
             { label: "c)", text: "Find each angle.", marks: 2 },
@@ -659,7 +659,7 @@ MathMagician.registerChapter(10, {
       {
         name: "Geometry of quadrilaterals",
         questions: [
-          { num: "3", text: "ABCD is a parallelogram with ∠A = (4x + 5)° and ∠B = (2x + 15)°.", parts: [
+          { num: "3", text: "ABCD is a parallelogram with ∠A = (4x + 5)° and ∠B = (2x + 25)°.", parts: [
             { label: "a)", text: "Explain why ∠A + ∠B = 180°.", marks: 1 },
             { label: "b)", text: "Solve for x and find both angles.", marks: 3 },
           ]},
@@ -693,9 +693,9 @@ MathMagician.registerChapter(10, {
       {
         name: "Geometry of triangles",
         answers: [
-          { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+15) = 180", note: "Angle sum of a triangle = 180°" },
-          { num: "Q1b", ans: "x = 26⅔ ≈ 26.7", note: "6x+20=180 → 6x=160 → x=26.7" },
-          { num: "Q1c", ans: "∠P ≈ 75°, ∠Q ≈ 63.3°, ∠R ≈ 41.7°", note: "Substitute x≈26.7 into each expression" },
+          { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+25) = 180", note: "Angle sum of a triangle = 180°" },
+          { num: "Q1b", ans: "x = 25", note: "6x+30=180 → 6x=150 → x=25" },
+          { num: "Q1c", ans: "∠P = 70°, ∠Q = 60°, ∠R = 50°", note: "Substitute x = 25 into each expression" },
           { num: "Q2a", ans: "∠B = 63°", note: "Exterior angle = sum of non-adjacent interior angles: 128°−65°=63°" },
           { num: "Q2b", ans: "Scalene triangle", note: "∠C=180°−128°=52°; all three angles differ (65°, 63°, 52°)" },
         ]
@@ -703,8 +703,8 @@ MathMagician.registerChapter(10, {
       {
         name: "Geometry of quadrilaterals",
         answers: [
-          { num: "Q3a", ans: "AB ∥ DC in a parallelogram, so ∠A and ∠B are co-interior angles → sum = 180°", note: "" },
-          { num: "Q3b", ans: "x = 26⅔; ∠A ≈ 111.7°, ∠B ≈ 68.3°", note: "4x+5+2x+15=180 → 6x=160 → x=26.7" },
+          { num: "Q3a", ans: "AD ∥ BC in a parallelogram and AB is a transversal, so ∠A and ∠B are co-interior angles → sum = 180°", note: "" },
+          { num: "Q3b", ans: "x = 25; ∠A = 105°, ∠B = 75°", note: "4x+5+2x+25=180 → 6x=150 → x=25" },
           { num: "Q4a", ans: "∠Q = 112°", note: "Co-interior angles in rhombus: ∠P+∠Q=180°; 68°+∠Q=180°" },
           { num: "Q4b", ans: "∠R = 68°", note: "Opposite angles of a rhombus are equal: ∠R=∠P=68°" },
           { num: "Q4c", ans: "∠APQ = 34°", note: "Diagonal bisects ∠P: 68°÷2=34°; triangle at intersection has 90° (diagonals ⊥)" },

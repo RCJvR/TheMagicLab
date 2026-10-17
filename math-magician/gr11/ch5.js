@@ -787,7 +787,7 @@ MathMagician.registerChapter(5, {
       2: {
         a: "Amplitude=2; period=180°; range=[−3;1]",
         b: "2sin2x=1→sin2x=½→2x=30°,150°,390°,510°→x=15°,75°,195°,255°",
-        c: "Max at 2x=90°→x=45°: y=1; min at x=135°: y=−3"
+        c: "Maxima where 2x=90° or 450°: (45°; 1) and (225°; 1); minima where 2x=270° or 630°: (135°; −3) and (315°; −3)"
       },
       3: {
         a: "p=2; q=−1",

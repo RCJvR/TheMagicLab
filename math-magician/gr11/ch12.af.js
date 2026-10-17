@@ -551,8 +551,8 @@ MathMagician.registerChapter(12, {
       1: {
         a: "2x+3y≤24; x+2y≤16; x≥2; y≥1; x≥0; y≥0",
         b: "Merk die gebied wat aan al die beperkings voldoen",
-        c: "Los snypunte op: (2,1), (2,6.67), (4.5,5), (7,0)... kontroleer uitvoerbaarheid; hoekpunte ongeveer by (2,1),(2,6),(3,6),(6,2)",
-        d: "Evalueer P=80x+150y by elke hoekpunt; maksimum tipies by 'n gebalanseerde punt"
+        c: "x=2 sny 2x+3y=24 by (2; 6⅔); y=1 sny 2x+3y=24 by (10½; 1). Die afwerkingslyn x+2y=16 sny 2x+3y=24 by (0; 8), buite x≥2, so dit beperk nooit. Hoekpunte: (2; 1), (2; 6⅔), (10½; 1)",
+        d: "P(2; 1)=310, P(2; 6⅔)=1 160, P(10½; 1)=990. Stoele en tafels moet heelgetalle wees, toets dus heelgetalpunte naby (2; 6⅔): (2; 6) gee 1 060 en (3; 6) gee 1 140 (2×3+3×6=24 ✓, 3+12=15 ✓). Maksimum wins R1 140 met 3 stoele en 6 tafels"
       },
       2: {
         a: "Evalueer 3x+2y: A=16; B=24; C=21; D=0 → Maksimum=24 by B(4;6)",

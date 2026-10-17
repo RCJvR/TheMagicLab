@@ -57,7 +57,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Bereken: 2/3 + 3/4", options: ["5/7", "17/12", "5/12", "6/7"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Bereken: 3 1/2 × 2 2/3 (gee die antwoord as onegte breuk se teller, met noemer 3)", answer: "28", topic: "Breuke" },
         { type: "mc", text: "Bereken: 5/6 ÷ 5/12", options: ["1/2", "2", "25/72", "10/6"], answer: 1, topic: "Breuke" },
-        { type: "input", text: "Bereken: 4 1/4 - 2 3/4 (gee die antwoord as gemengde getal se teller + noemer bymekaar getel — skryf net: 1,5 → skryf 3/2 → skryf die teller 3)", answer: "3", topic: "Breuke" },
+        { type: "input", text: "Bereken: 4 1/4 − 2 3/4. Gee die antwoord as 'n gemengde getal.", answer: "1 1/2", altAnswers: ["3/2", "1.5", "1,5"], topic: "Breuke" },
         { type: "mc", text: "Watter breuk is ekwivalent aan 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Breuke" },
         { type: "input", text: "Bereken (2 1/3 + 1 1/6) ÷ 3/4. Gee net die heelgetal-deel van die gemengde-getal-antwoord.", answer: "4", topic: "Breuke" },
         { type: "input", text: "'n Resep gebruik 2 3/4 koppies meel per bondel koekies. 'n Bakker het 12 koppies meel. Nadat sy soveel volledige bondels as moontlik gemaak het, hoeveel koppies meel bly oor?", answer: "1", topic: "Breuke" },
@@ -122,7 +122,7 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Skakel 0,45 om na 'n persentasie.", answer: "45", topic: "Desimale" },
         { type: "mc", text: "Watter desimaal is ekwivalent aan 5/12?", options: ["0,416̇", "0,41̇6̇", "0,4166̇", "Beide a) en c)"], answer: 3, topic: "Desimale" },
         { type: "input", text: "Skryf 0,875 as 'n persentasie, en gebruik dit om 0,875 van R 480 te bereken. Gee die randbedrag.", answer: "420", topic: "Desimale" },
-        { type: "input", text: "Bereken 0,<span class='math'>\\overline{4}</span> + 0,2 en gee die antwoord as 'n enkele breuk a/b in eenvoudigste vorm (skryf dit as a/b).", answer: "29/45", topic: "Desimale" },
+        { type: "input", text: "Bereken 0,<span style='text-decoration:overline'>4</span> + 0,2 en gee die antwoord as 'n enkele breuk a/b in eenvoudigste vorm (skryf dit as a/b).", answer: "29/45", topic: "Desimale" },
       ]
     },
     {

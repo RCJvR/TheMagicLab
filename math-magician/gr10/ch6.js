@@ -1017,7 +1017,7 @@ MathMagician.registerChapter(6, {
       3: {
         a: "sin x: zeros 0°,180°,360°; max (90°,1); min (270°,−1)",
         b: "2cos x: zeros 90°,270°; max (0°,2),(360°,2); min (180°,−2)",
-        c: "Read from graph intersections"
+        c: "The graphs intersect where tan x = 2: x ≈ 63.4° and x ≈ 243.4°. sin x > 2cos x for 63.4° < x < 243.4°"
       },
       4: {
         a: "q = 3",

@@ -148,14 +148,14 @@ MathMagician.registerChapter(12, {
         },
         {
           type: "input",
-          text: "AB ∥ CD. Transversaal EF sny AB by G en CD by H, met ∠AGE = 128°. Bepaal ∠GHC.",
+          text: "AB ∥ CD. Transversaal EF sny AB by G en CD by H, met ∠AGE = 128°. Bepaal ∠GHD.",
           answer: "52",
           altAnswers: ["52°"],
           topic: "Bewyse & vermoedens"
         },
         {
           type: "input",
-          text: "AB ∥ CD. Transversaal EF sny AB by G en CD by H, sodat ∠EGB = (3x + 10)° en ∠GHC = (2x + 30)° ko-interne hoeke is. Bepaal x.",
+          text: "AB ∥ CD. Transversaal EF sny AB by G en CD by H, sodat ∠AGH = (3x + 10)° en ∠GHC = (2x + 30)° ko-interne hoeke is. Bepaal x.",
           answer: "28",
           topic: "Bewyse & vermoedens"
         }
@@ -558,8 +558,8 @@ MathMagician.registerChapter(12, {
     answers: {
       1: {
         a: "∠BGE = 180°−115° = 65° (hoeke op 'n reguit lyn)",
-        b: "∠GHD = 115° (ko-interne hoeke met AB∥CD is supplementêr: 180°−65°=115°, OF verwisselende hoeke met ∠AGE)",
-        c: "∠GHC = 65° (hoeke op 'n reguit lyn, of ooreenstemmend met ∠BGE)"
+        b: "∠GHD = 65° (ooreenk. ∠e, AB∥CD: ∠GHD = ∠EGB)",
+        c: "∠GHC = 115° (∠e op 'n reguit lyn met ∠GHD, of ooreenk. ∠e met ∠AGE, AB∥CD)"
       },
       2: {
         a: "AO=CO (gegee halveer); BO=DO (gegee halveer); ∠AOB=∠COD (vert. oorst. hoeke)",

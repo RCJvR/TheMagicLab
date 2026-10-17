@@ -446,7 +446,7 @@ MathMagician.registerChapter(3, {
     answers: {
       1: {
         a: "Linear; d=4; Tₙ=4n+1",
-        b: "1st diffs: 3,5,7,9 → 2nd diffs: 2,2,2 → quadratic; Tₙ=n²+2n−1",
+        b: "1st diffs: 3,5,7,9 → 2nd diffs: 2,2,2 → quadratic; Tₙ=n²+1",
         c: "Neither — ratio is constant (×2), geometric sequence"
       },
       2: {

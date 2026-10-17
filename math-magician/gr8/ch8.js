@@ -425,11 +425,11 @@ MathMagician.registerChapter(8, {
       {
         name: "Constructing triangles",
         answers: [
-          { num: "Q3a", ans: "Construction of △ABC (SSS); ∠BAC ≈ 46° (accept ±2°)", note: "Draw AB=8; arc 6 cm from B, arc 5 cm from A; intersection = C; measure ∠BAC" },
+          { num: "Q3a", ans: "Construction of △ABC (SSS); ∠BAC ≈ 48,5° (accept ±2°)", note: "Draw AB=8; arc 6 cm from B, arc 5 cm from A; intersection = C; measure ∠BAC" },
           { num: "Q3b", ans: "Construction of △PQR (SAS); PR ≈ 5,7 cm (accept ±2 mm)", note: "Draw PQ=7; construct 55° at Q; mark R at 4 cm; join PR and measure" },
           { num: "Q4a", ans: "ASA (Angle-Side-Angle)", note: "Two angles and the included side are given" },
           { num: "Q4b", ans: "∠F = 65°", note: "Angle sum of triangle: 180° − 40° − 75° = 65°" },
-          { num: "Q4c", ans: "Construction of △DEF; EF ≈ 4,6 cm (accept ±2 mm)", note: "Draw DE=6; construct 40° at D and 75° at E; intersection = F" },
+          { num: "Q4c", ans: "Construction of △DEF; EF ≈ 4,3 cm (accept ±2 mm)", note: "Draw DE=6; construct 40° at D and 75° at E; intersection = F" },
         ]
       },
       {
@@ -437,7 +437,7 @@ MathMagician.registerChapter(8, {
         answers: [
           { num: "Q5a", ans: "Construct perpendicular bisectors (or use set square/compass) at A and B to create 90° angles", note: "Perpendicular at each endpoint of AB ensures right angles" },
           { num: "Q5b", ans: "Rectangle ABCD constructed with all vertices labelled; BC = AD = 3,5 cm; AB = DC = 6 cm", note: "Check all four angles appear to be 90°" },
-          { num: "Q5c", ans: "AC ≈ 6,96 cm (accept ±2 mm)", note: "By Pythagoras: AC = √(6² + 3,5²) = √(36 + 12,25) = √48,25 ≈ 6,95 cm" },
+          { num: "Q5c", ans: "AC ≈ 6,95 cm (accept ±2 mm)", note: "By Pythagoras: AC = √(6² + 3,5²) = √(36 + 12,25) = √48,25 ≈ 6,95 cm" },
           { num: "Q6a", ans: "All four sides = 5 cm", note: "A rhombus has four equal sides" },
           { num: "Q6b", ans: "Draw PQ = 5 cm; construct 70° at Q; mark R at 5 cm on the ray; draw diagonal PR; use PR to locate S by arcs of 5 cm from P and R", note: "Triangle PQR constructed first; S found by arcs equal to side length" },
           { num: "Q6c", ans: "Rhombus PQRS constructed with all vertices labelled and construction arcs visible", note: "All sides must measure 5 cm; ∠PQR = 70° and ∠QRS = 110° (co-interior)" },

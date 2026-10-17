@@ -195,10 +195,10 @@ MathMagician.registerChapter(5, {
         `
       },
       questions: [
-        { type: "mc", text: "Solve: x³ − 7x + 6 = 0. The roots are:", options: ["1, 2, −3", "1, −3, 2", "−1, 3, −2", "1, 2, 3"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
+        { type: "mc", text: "Solve: x³ − 7x + 6 = 0. The roots are:", options: ["1, 2, −3", "−1, −2, 3", "−1, 3, −2", "1, 2, 3"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
         { type: "mc", text: "If a cubic has a double root at x = 2 and another root at x = −1, it could be:", options: ["(x−2)²(x+1)", "(x+2)²(x−1)", "(x−2)(x+1)²", "(x+2)(x−1)²"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
         { type: "mc", text: "y = −2x³ + … End behaviour:", options: ["Falls left, rises right", "Rises left, falls right", "Falls both sides", "Rises both sides"], answer: 1, topic: "Cubic polynomials — sketching & solving" },
-        { type: "input", text: "p(x) = x³ + px² − x − 6 and (x+2) is a factor. Find p.", answer: "2", topic: "Cubic polynomials — sketching & solving" },
+        { type: "input", text: "p(x) = x³ + kx² − x − 6 and (x+2) is a factor. Find k.", answer: "3", topic: "Cubic polynomials — sketching & solving" },
         { type: "mc", text: "A cubic equation can have at most how many real roots?", options: ["1", "2", "3", "4"], answer: 2, topic: "Cubic polynomials — sketching & solving" },
         { type: "mc", text: "Solve for x: 2x³ − x² − 5x − 2 = 0", options: ["x = −1, −½, 2", "x = 1, ½, −2", "x = −1, 2, 5", "x = 1, −2, −5"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
         { type: "input", text: "x³ − x² − 4x + 4 = 0 has roots p < q < r. Calculate the value of p·q·r.", answer: "-4", altAnswers: ["−4"], topic: "Cubic polynomials — sketching & solving" }

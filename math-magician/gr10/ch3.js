@@ -292,7 +292,7 @@ MathMagician.registerChapter(3, {
           type: "mc",
           text: "A linear sequence is plotted. Points lie on a line with gradient 4 and y-intercept 1. The nth term is:",
           options: ["4n + 1", "4n − 3", "n + 4", "4n + 5"],
-          answer: 1,
+          answer: 0,
           topic: "Patterns in context"
         },
         {

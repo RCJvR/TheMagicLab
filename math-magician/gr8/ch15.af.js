@@ -73,10 +73,10 @@ MathMagician.registerChapter(15, {
       },
       questions: [
         { type: "input", text: "'n Driehoekige prisma het 'n reghoekige driehoek met bene 6 en 8 (skuinssy 10) as sy deursnee, en lengte 12 cm. Bereken die oppervlakte.", answer: "336", topic: "Oppervlakte" },
-        { type: "mc", text: "'n Driehoekige prisma het gelyksydige driehoekvlakke met sy 4 cm, en lengte 9 cm. Bereken die oppervlakte. (Gebruik √3 ≈ 1.732)", options: ["124.9 cm²", "121.9 cm²", "108 cm²", "136 cm²"], answer: 0, topic: "Oppervlakte" },
+        { type: "mc", text: "'n Driehoekige prisma het gelyksydige driehoekvlakke met sy 4 cm, en lengte 9 cm. Bereken die oppervlakte. (Gebruik √3 ≈ 1.732)", options: ["124.9 cm²", "121.9 cm²", "108 cm²", "136 cm²"], answer: 1, topic: "Oppervlakte" },
         { type: "input", text: "'n Driehoekige prisma het 'n driehoek-area van 15 cm², driehoek-omtrek van 18 cm, en lengte 7 cm. Bereken die oppervlakte.", answer: "156", topic: "Oppervlakte" },
         { type: "mc", text: "Hoeveel vlakke het 'n driehoekige prisma?", options: ["3", "4", "5", "6"], answer: 2, topic: "Oppervlakte" },
-        { type: "input", text: "'n Driehoekige prisma het 'n driehoek-basis van 10 cm, hoogte 6 cm, drie sye 10, 8, 8 cm, en lengte 15 cm. Bereken die oppervlakte.", answer: "570", topic: "Oppervlakte" },
+        { type: "input", text: "'n Driehoekige prisma het 'n driehoek-basis van 10 cm, hoogte 12 cm, drie sye 10, 13, 13 cm, en lengte 15 cm. Bereken die oppervlakte.", answer: "660", topic: "Oppervlakte" },
         { type: "input", text: "'n Driehoekige prisma het 'n reghoekige driehoek-deursnee met bene 9 cm en 12 cm (skuinssy 15 cm) en lengte 20 cm. Bereken die oppervlakte.", answer: "828", topic: "Oppervlakte" },
         { type: "input", text: "Twee driehoekige prismas het identiese driehoekige deursnee (area 20 cm², omtrek 24 cm) maar verskillende lengtes: Prisma A is 10 cm lank en Prisma B is 15 cm lank. Bereken die verskil tussen hul oppervlaktes.", answer: "120", topic: "Oppervlakte" },
       ]
@@ -252,9 +252,9 @@ MathMagician.registerChapter(15, {
       },
       questions: [
         { type: "input", text: "'n Kubus het volume 512 cm³. Bereken sy oppervlakte.", answer: "384", topic: "Gemeng" },
-        { type: "mc", text: "'n Driehoekige prisma (reghoekige driehoek: 9, 12, 15; lengte 20) het 'n oppervlakte van:", options: ["648 cm²", "756 cm²", "900 cm²", "594 cm²"], answer: 0, topic: "Gemeng" },
-        { type: "input", text: "'n Reghoekige prisma is 8 × 5 × 4 cm. As alle afmetings verdubbel word, bereken die nuwe volume.", answer: "2560", topic: "Gemeng" },
-        { type: "mc", text: "'n Boks 15 × 12 × 8 cm word met water gevul. Hoeveel liter bevat dit?", options: ["14.4 ℓ", "1.44 ℓ", "144 ℓ", "0.144 ℓ"], answer: 0, topic: "Gemeng" },
+        { type: "mc", text: "'n Driehoekige prisma (reghoekige driehoek: 9, 12, 15; lengte 20) het 'n oppervlakte van:", options: ["828 cm²", "756 cm²", "900 cm²", "594 cm²"], answer: 0, topic: "Gemeng" },
+        { type: "input", text: "'n Reghoekige prisma is 8 × 5 × 4 cm. As alle afmetings verdubbel word, bereken die nuwe volume.", answer: "1280", topic: "Gemeng" },
+        { type: "mc", text: "'n Boks 15 × 12 × 8 cm word met water gevul. Hoeveel liter bevat dit?", options: ["14.4 ℓ", "1.44 ℓ", "144 ℓ", "0.144 ℓ"], answer: 1, topic: "Gemeng" },
         { type: "input", text: "'n Driehoekige prisma het driehoek-area 30 cm² en lengte 14 cm. Bereken sy volume.", answer: "420", topic: "Gemeng" },
         { type: "input", text: "'n Kubusvormige boks het oppervlakte 150 cm². Bereken sy volume.", answer: "125", topic: "Gemeng" },
         { type: "input", text: "'n Reghoekige houer (20 cm × 15 cm × 10 cm) moet met kleiner kubusse van sy 5 cm gevul word. Hoeveel klein kubusse pas presies in die houer?", answer: "24", topic: "Gemeng" },
@@ -325,8 +325,8 @@ MathMagician.registerChapter(15, {
         name: "Effek van skaalfaktore",
         answers: [
           { num: "Q4a", ans: "Volume neem toe met faktor 64", note: "k=4; nuwe V = 4³ × ou V = 64 × ou V" },
-          { num: "Q4b", ans: "Nuwe O = 320 cm²", note: "Oorspronklike O=80 cm²; verdubbel afmetings: 6×(2×2)²... of: bereken O van nuwe vorm direk. 80×4=320 (O vervierdubbel wanneer afmetings verdubbel)" },
-          { num: "Q4c", ans: "Nuwe V = 2 cm³", note: "Afmetings gedeel deur 3; bereken nuwe volume direk: as oorspronklike 3cm kubus, nuwe sy=1cm, V=1³=1... of 54÷27=2 (deel deur 27 wanneer alle afmetings ÷3)" },
+          { num: "Q4b", ans: "Nuwe O = 320 cm²", note: "As elke lengte verdubbel, word oppervlakte met 2² = 4 vermenigvuldig: 80 × 4 = 320" },
+          { num: "Q4c", ans: "Nuwe V = 2 cm³", note: "As elke lengte met ⅓ vermenigvuldig word, word volume met (⅓)³ = 1/27 vermenigvuldig: 54 ÷ 27 = 2" },
         ]
       },
     ]

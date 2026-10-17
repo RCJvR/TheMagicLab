@@ -188,7 +188,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Huislening R1 000 000 teen 8.5% p.j. maandeliks saamgestel oor 20 jaar. Maandelikse betalingsformule:", options: ["x = 1000000·(0.085/12)/[1−(1+0.085/12)⁻²⁴⁰]", "x = 1000000·0.085/20", "x = 1000000/240", "x = 1000000·0.085"], answer: 0, topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "mc", text: "Die huidige waarde-formule word gebruik om:", options: ["Te bepaal hoeveel om te spaar", "Die leningsbedrag te bepaal wat by gegewe terugbetalings pas", "Die toekomswaarde van spaargeld te bepaal", "Saamgestelde rente te bepaal"], answer: 1, topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "mc", text: "Na 5 jaar van 'n 20-jaar-lening met maandelikse betalings x, gebruik die uitstaande saldo:", options: ["n = 20 en k = 60", "n−k = 180 oorblywende betalings", "Slegs x en die oorspronklike hoofsom", "Die toekomswaarde-formule"], answer: 1, topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
-        { type: "input", text: "P = 10000, i = 0.01 per maand, n = 12. Bepaal x (maandelikse betaling) tot naaste rand. Gebruik x = Pi/[1−(1.01)⁻¹²]. Antwoord ≈", answer: "889", topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
+        { type: "input", text: "P = 10000, i = 0.01 per maand, n = 12. Bepaal x (maandelikse betaling) tot naaste rand. Gebruik x = Pi/[1−(1.01)⁻¹²]. ", answer: "888", altAnswers: ["888.49", "888,49"], topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "mc", text: "Totale rente betaal op 'n lening = ", options: ["Hoofsom × koers × tyd", "Totale terugbetalings − oorspronklike leningsbedrag", "Maandelikse betaling × n", "Toekomswaarde − huidige waarde"], answer: 1, topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "input", text: "'n Lening van R450 000 word terugbetaal met gelyke maandelikse paaiemente oor 15 jaar teen 12% p.j. maandeliks saamgestel. Bereken die uitstaande saldo onmiddellik na die 100ste betaling (naaste rand).", answer: "296438", altAnswers: ["296437", "296437.82"], topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "input", text: "'n Lening van R200 000 teen 13% p.j. maandeliks saamgestel word terugbetaal met maandelikse paaiemente van R3 000. Bepaal die minimum aantal maandelikse betalings benodig om die lening te delg.", answer: "119", topic: "Huidige waarde-annuïteite & leningsterugbetalings" }
@@ -418,10 +418,10 @@ MathMagician.registerChapter(3, {
       ]}
     ],
     answers: {
-      1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·173.08≈R138 464", b: "800×120=R96 000", c: "138464−96000=R42 464" },
-      2: { a: "Lening=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 786/maand", c: "Saldo=13786·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 345 000", d: "Totaal betaal=13786×300=R4 135 800; Rente=4135800−1440000≈R2 695 800" },
-      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.5869≈R68 138", b: "x teen 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.7716≈R64 802; bespaar R68138−R64802=R3 336" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509.30" }
+      1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
+      2: { a: "Lening=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/maand", c: "Saldo=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Totaal betaal=13596×300=R4 078 800; Rente=4078800−1440000≈R2 638 800" },
+      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x teen 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; bespaar R68158−R64804=R3 354" },
+      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
     }
   }
 });

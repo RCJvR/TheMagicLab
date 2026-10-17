@@ -27,9 +27,9 @@ MathMagician.registerChapter(1, {
           <div class="example-box">
             <div class="example-box-title">✏️ Klassifisering van getalle</div>
             <div class="example-step"><span class="step-num">1</span><span>Klassifiseer <span class="math">-3</span>: geheelgetal ✓, rasionaal ✓, reëel ✓</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Klassifiseer <span class="math">0,\overline{3} = 1/3</span>: rasionaal ✓, reëel ✓</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Klassifiseer <span class="math">0,<span style="text-decoration:overline">3</span> = 1/3</span>: rasionaal ✓, reëel ✓</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Klassifiseer <span class="math">√7</span>: irrasionaal ✓, reëel ✓ (nie rasionaal nie)</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>Herhalende desimaal omskep: laat x = 0,\overline{36} → 100x = 36,\overline{36} → 99x = 36 → x = 36/99 = 4/11</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>Herhalende desimaal omskep: laat x = 0,<span style="text-decoration:overline">36</span> → 100x = 36,<span style="text-decoration:overline">36</span> → 99x = 36 → x = 36/99 = 4/11</span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Elke geheelgetal is rasionaal (bv. -5 = -5/1). Nie elke rasionale getal is 'n geheelgetal nie.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -114,10 +114,10 @@ MathMagician.registerChapter(1, {
       questions: [
         { type: "mc", text: "Watter een van hierdie is irrasionaal?", options: ["0,25", "√9", "√5", "-7"], answer: 2, topic: "Getalstelsels" },
         { type: "mc", text: "Die versameling gehele getalle is 'n deelversameling van:", options: ["Natuurlike getalle", "Heelgetalle", "Rasionale getalle", "Irrasionale getalle"], answer: 2, topic: "Getalstelsels" },
-        { type: "input", text: "Skryf 0,<span class='math'>\\overline{27}</span> as 'n breuk. Gee die teller as die breuk in eenvoudigste vorm oor 99 is.", answer: "3", topic: "Getalstelsels" },
+        { type: "input", text: "Skryf 0,<span style='text-decoration:overline'>27</span> as 'n breuk in eenvoudigste vorm. Gee die teller.", answer: "3", topic: "Getalstelsels" },
         { type: "mc", text: "Watter stelling is ONWAAR?", options: ["Alle natuurlike getalle is gehele getalle", "Alle gehele getalle is rasionaal", "Alle irrasionale getalle is reëel", "Alle rasionale getalle is gehele getalle"], answer: 3, topic: "Getalstelsels" },
-        { type: "input", text: "Skryf 0,<span class='math'>\\overline{142857}</span> as 'n breuk (gee die noemer).", answer: "7", topic: "Getalstelsels" },
-        { type: "input", text: "Bereken 0,<span class='math'>\\overline{18}</span> + 0,2 en gee die antwoord as 'n enkele breuk a/b in eenvoudigste vorm (skryf dit as a/b).", answer: "21/55", altAnswers: ["21​/​55"], topic: "Getalstelsels" },
+        { type: "input", text: "Skryf 0,<span style='text-decoration:overline'>142857</span> as 'n breuk (gee die noemer).", answer: "7", topic: "Getalstelsels" },
+        { type: "input", text: "Bereken 0,<span style='text-decoration:overline'>18</span> + 0,2 en gee die antwoord as 'n enkele breuk a/b in eenvoudigste vorm (skryf dit as a/b).", answer: "21/55", altAnswers: ["21​/​55"], topic: "Getalstelsels" },
         { type: "mc", text: "Beskou die produk <span class='math'>√2 × √8</span>. Wat kan jy aflei?", options: ["Dit is irrasionaal, aangesien irrasionaal × irrasionaal altyd irrasionaal is", "Dit is rasionaal, gelyk aan 4", "Dit is irrasionaal, gelyk aan √16", "Dit kan nie vereenvoudig word nie"], answer: 1, topic: "Getalstelsels" },
       ]
     },
@@ -627,7 +627,7 @@ Spaargeld: 12 400 − 11 200 = R1 200</div>
           { num: "Q3a", ans: "R 16 000 : R 12 000 : R 20 000", note: "12 dele in totaal; 1 deel = R 4 000" },
           { num: "Q3b", ans: "R 6 000 : R 4 500 : R 7 500", note: "1 deel van wins = 18 000÷12 = R 1 500" },
           { num: "Q4a", ans: "720 items", note: "direk: 9/6 × 480 = 720" },
-          { num: "Q4b", ans: "1,5 dae", note: "indirek: 6 × 1 dag = 4 × d; d = 6/4 = 1,5 dae vir 1 dag se produksie. Vir 480: dieselfde totale werk = 4 × d = 6 × 1, d = 1,5" },
+          { num: "Q4b", ans: "1,5 dae", note: "indirek: masjiene × dae bly dieselfde: 6 × 1 = 4 × d → d = 6/4 = 1,5 dae" },
         ]
       },
       {
