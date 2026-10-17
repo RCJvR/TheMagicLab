@@ -51,12 +51,19 @@
     const fs = facesOf(n);
     const mk = (f, i, y, down) => n === 3 && i === 1 ? faceArc(cx, y, f, down, AC / 2, 'R2') : faceArc(cx, y, f, down, null, n === 3 ? 'R1' : 'R3');
     const arcs = fs.map((f, i) => mk(f, i, yTop, false)), arcsB = both ? fs.map((f, i) => mk(f, i, yTop + h, true)) : [];
-    const yB = yTop + h;
+    const yB = yTop + h, W = n === 3 ? AC : AF;
+    // two-face view: the outer edges run right up to the top (and bottom) line, and that line is
+    // drawn across, so each chamfered end is a full rectangle with the R3 arcs inside it
+    const isOuter = x => n !== 3 && Math.abs(Math.abs(x) - W / 2) < 1e-3;
     const edges = [...new Set(fs.flatMap(f => [f[0], f[1]]).map(x => +x.toFixed(4)))].map(x => {
-      const top = Math.max(...arcs.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY));
-      const bot = both ? Math.min(...arcsB.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY)) : yB;
+      const top = isOuter(x) ? yTop : Math.max(...arcs.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY));
+      const bot = !both || isOuter(x) ? yB : Math.min(...arcsB.filter(a => Math.abs(a.corners[0][0] - cx - x) < 1e-3 || Math.abs(a.corners[1][0] - cx - x) < 1e-3).map(a => a.endY));
       return L([cx + x, top], [cx + x, bot]);
     });
+    // the tangent line along the tops of the arcs: three-face, from the top of one R1 arc to the
+    // other (it just touches R2 too); two-face, right across, closing the rectangle
+    const tipLine = (set, y) => n === 3 ? L(set[0].touch, set[2].touch) : L([cx - W / 2, y], [cx + W / 2, y]);
+    const tips = [tipLine(arcs, yTop), ...(both ? [tipLine(arcsB, yB)] : [])];
     const lines = name => [...arcs, ...arcsB].filter(a => a.name === name).flatMap(a => [L(a.from[0], a.c, 'construction'), L(a.from[1], a.c, 'construction'), pt(a.c, a === arcs.find(b => b.name === name) ? name : undefined)]);
     return {
       lines,
@@ -64,7 +71,7 @@
       box: [poly([[cx - (n === 3 ? AC : AF) / 2, yTop], [cx + (n === 3 ? AC : AF) / 2, yTop], [cx + (n === 3 ? AC : AF) / 2, yB], [cx - (n === 3 ? AC : AF) / 2, yB]], 'construction')],
       constr: [...arcs, ...arcsB].flatMap(a => [L(a.corners[0], a.c, 'construction'), L(a.corners[1], a.c, 'construction'), L(a.c, a.touch, 'B'), pt(a.c)]),
       arcs: [...arcs, ...arcsB].map(a => pl(a.pts)),
-      outline: [...edges, ...(both ? [] : [L([cx - (n === 3 ? AC : AF) / 2, yB], [cx + (n === 3 ? AC : AF) / 2, yB])])],
+      outline: [...edges, ...tips, ...(both ? [] : [L([cx - W / 2, yB], [cx + W / 2, yB])])],
     };
   }
 
@@ -109,7 +116,7 @@
       ]),
       { instruction: 'With each centre, set the compass to reach the top line at the middle of its face (the radius), and draw the arc across that face.', calloutAt: [cx, yTop], reveals: s.radii },
       { instruction: 'Draw the arcs. ' + (n === 3 ? 'R1 arcs on the narrow faces, the R2 arc on the middle face.' : 'R3 arcs on both faces.'), calloutAt: [cx, yTop], reveals: s.arcs },
-      { instruction: 'Line in the head: the vertical edges up to where the arcs meet them, and the bottom line. The top line of the box stays thin (it is not an edge).', calloutAt: [cx - (n === 3 ? AC : AF) / 2, yTop + h / 2],
+      { instruction: 'Line in the head: the vertical edges up to where the arcs meet them, the bottom line, and the straight tangent line along the tops of the arcs.', calloutAt: [cx - (n === 3 ? AC : AF) / 2, yTop + h / 2],
         reveals: [...s.outline, dim([cx + (n === 3 ? AC : AF) / 2 + 8, yTop], [cx + (n === 3 ? AC : AF) / 2 + 8, yTop + h], 5, '0.7D'),
           lbl([cx, yTop + h + 12], n === 3 ? 'SHOWS THREE FACES / TOON DRIE VLAKKE' : 'SHOWS TWO FACES / TOON TWEE VLAKKE', Object.assign({ size: 2.8 }, YEL))] },
     ]);
@@ -135,9 +142,9 @@
   // 5. Nut, washer and locknut
   (function () {
     const cx = 60, yN = 20, hN = 0.8 * D, yW = 60, yL = 90, hL = 0.5 * D;
-    const nut = hexSide(cx, yN, hN, 3, true), lock = hexSide(cx, yL, hL, 3, true);
-    add('res-nut-washer', 'Nut & Bolt: Nut, Washer and Locknut', 'A hexagon nut (0.8D, chamfered both sides), a plain washer (2D × 0.2D) and a locknut (0.5D), drawn to the standard proportions for an M20 bolt.', [
-      { instruction: 'NUT: draw it like the bolt head, three faces, but 0.8D = 16 high and chamfered on BOTH sides: find R1 and R2 with the set square at the top AND at the bottom.', calloutAt: [cx, yN + hN / 2], reveals: [...nut.box, ...nut.lines('R1'), ...nut.lines('R2')] },
+    const nut = hexSide(cx, yN, hN, 3, false), lock = hexSide(cx, yL, hL, 3, true);
+    add('res-nut-washer', 'Nut & Bolt: Nut, Washer and Locknut', 'A hexagon nut (0.8D, chamfered on one side), a plain washer (2D × 0.2D) and a locknut (0.5D, chamfered both sides), drawn to the standard proportions for an M20 bolt.', [
+      { instruction: 'NUT: draw it like the bolt head, three faces, but 0.8D = 16 high. Like the head it is chamfered on ONE side only (the other side sits flat on the washer): find R1 and R2 with the set square at the top.', calloutAt: [cx, yN + hN / 2], reveals: [...nut.box, ...nut.lines('R1'), ...nut.lines('R2')] },
       { instruction: 'Draw the arcs and line in the nut.', calloutAt: [cx, yN], reveals: [...nut.arcs, ...nut.outline, L([cx, yN - 5], [cx, yN + hN + 5], 'centre'), dim([cx + AC / 2 + 12, yN], [cx + AC / 2 + 12, yN + hN], 5, '0.8D')] },
       { instruction: 'WASHER: 2D = 40 in diameter and 0.2D = 4 thick, with a hole a little bigger than D (hidden lines).', calloutAt: [cx, yW],
         reveals: [poly([[cx - D, yW], [cx + D, yW], [cx + D, yW + 0.2 * D], [cx - D, yW + 0.2 * D]]), L([cx - D / 2 - 0.5, yW], [cx - D / 2 - 0.5, yW + 0.2 * D], 'hidden'), L([cx + D / 2 + 0.5, yW], [cx + D / 2 + 0.5, yW + 0.2 * D], 'hidden'), L([cx, yW - 5], [cx, yW + 9], 'centre'),

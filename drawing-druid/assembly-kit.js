@@ -104,14 +104,13 @@
   //   D: bolt diameter; h: thickness (0.8D for a nut, 0.7D for a head, 0.5D for a locknut).
   //
   // The chamfer, per face, is the standard set-square construction: two 60° lines from that
-  // face's own top corners (the middle face instead uses the head's two OUTER corners — a much
-  // larger, flatter arc) meet at a centre; the arc swings from there with radius equal to the
-  // 60°-lines' own span, so it meets the tip exactly at the face's two corners and crests past it
-  // at the face's middle (the actual total length, so the straight sides are shortened by that
-  // same amount). Because the middle face's R is struck from the outer corners but only the
-  // portion inside its own box is drawn, it "kind of" meets the narrow-face arcs at the dividers
-  // rather than exactly — the real workbook construction does too. Verified arc-for-arc against
-  // the JPEGD Grade 10 workbook's "SHOWS THREE FACES OF THE BOLT HEAD" construction.
+  // face's own corners on the tip line (the middle face instead uses the head's two OUTER
+  // corners — a much larger, flatter arc) form an equilateral triangle; its apex is the centre,
+  // and the arc is swung from there just touching the tip line at the middle of the face (so
+  // R = the apex's depth: w·√3/2, or 1.5D for the middle face). The arcs cut the face edges a
+  // little short of the tip, so the straight sides are shortened, and the middle-face arc only
+  // "kind of" meets the narrow-face arcs at the dividers — the workbook's does too (JPEGD Gr 10,
+  // "SHOWS THREE FACES OF THE BOLT HEAD").
   function nutSide(x0, ay, D, h, opts) {
     opts = opts || {};
     const AF = 1.5 * D;                              // across flats
@@ -120,9 +119,11 @@
     const ys = [-AC / 2, -s / 2, s / 2, AC / 2].map(v => ay + v);   // bottom-outer, bottom-divider, top-divider, top-outer
     const x1 = x0 + h;
     const ends = opts.bothEnds === false ? [opts.chamferAt === 'left' ? x0 : x1] : [x0, x1];
-    // the three faces, as [y1, y2, R] — R1 on the two narrow (outer) faces, R2 (struck from the
-    // outer corners) on the middle face, but only drawn across its own box
-    const boxes = [[ys[0], ys[1], (ys[1] - ys[0])], [ys[1], ys[2], AC], [ys[2], ys[3], (ys[3] - ys[2])]];
+    // the three faces, as [y1, y2, R]: R = (half the 60° triangle's base)·√3 — R1 on the two
+    // narrow faces from their own corners, R2 on the middle face from the outer corners (= A/F),
+    // drawn only across its own box
+    const tri = base => base / 2 * Math.sqrt(3);
+    const boxes = [[ys[0], ys[1], tri(ys[1] - ys[0])], [ys[1], ys[2], tri(AC)], [ys[2], ys[3], tri(ys[3] - ys[2])]];
 
     const out = [];
     const touch = {};               // touch[xe][i] = x reached at ys[i] by xe's chamfer arc(s)
