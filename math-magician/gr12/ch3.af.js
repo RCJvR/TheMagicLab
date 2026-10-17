@@ -33,6 +33,8 @@ MathMagician.registerChapter(3, {
             <span class="math">F = 2000 · [6.0092 − 1] / 0.0075</span><br>
             <span class="math">F = 2000 · 667.89 ≈ R1 335 780</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":120,"view":[-0.6,-1.4,6.6,1.6],"pts":{"T0":[0,0],"T1":[1,0],"T2":[2,0],"T3":[3,0],"T4":[4.6,0],"T5":[5.8,0]},"nolab":["T0","T1","T2","T3","T4","T5"],"dots":["T0","T1","T2","T3","T4","T5"],"seg":[["T0","T3","ac"],[[3,0],[4.6,0],"ac dash"],["T4","T5","ac"]],"txt":[[0,-0.6,"0"],[1,-0.6,"1"],[2,-0.6,"2"],[3,-0.6,"3"],[4.6,-0.6,"239"],[5.8,-0.6,"240"],[1,0.5,"x","or"],[2,0.5,"x","or"],[3,0.5,"x","or"],[4.6,0.5,"x","or"],[5.8,0.5,"x","or"],[3,-1.25,"maande","mu"],[5.8,1.25,"F = ?","gn"]],"cap":"Betalings aan die EINDE van elke maand; F is die waarde op die dag van die laaste betaling"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Bepaal x (die vereiste betaling)</div>
@@ -133,6 +135,8 @@ MathMagician.registerChapter(3, {
             <span class="math">x = 225000 · 0.009167 / [1 − (1.009167)⁻⁶⁰]</span><br>
             <span class="math">x ≈ 225000 · 0.009167 / 0.4225 ≈ R4 882 per maand</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":120,"view":[-0.6,-1.4,6.6,1.6],"pts":{"T0":[0,0],"T1":[1,0],"T2":[2,0],"T3":[3,0],"T4":[4.6,0],"T5":[5.8,0]},"nolab":["T0","T1","T2","T3","T4","T5"],"dots":["T0","T1","T2","T3","T4","T5"],"seg":[["T0","T3","ac"],[[3,0],[4.6,0],"ac dash"],["T4","T5","ac"]],"txt":[[0,-0.6,"0"],[1,-0.6,"1"],[2,-0.6,"2"],[3,-0.6,"3"],[4.6,-0.6,"59"],[5.8,-0.6,"60"],[1,0.5,"x","or"],[2,0.5,"x","or"],[3,0.5,"x","or"],[4.6,0.5,"x","or"],[5.8,0.5,"x","or"],[3,-1.25,"maande","mu"],[0,1.25,"P = R225 000","gn"]],"cap":"Die lening P is die huidige waarde, by tyd 0, van al 60 betalings"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Uitstaande saldo</div>

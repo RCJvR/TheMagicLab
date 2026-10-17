@@ -31,6 +31,8 @@ MathMagician.registerChapter(7, {
               <span class="math">r = √[(x−a)² + (y−b)²]</span>
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-2,-3,6,5],"grid":1,"axes":{"ticks":1},"circ":[["C",3,"ac"]],"pts":{"C":[2,1],"P":[5,1]},"nolab":["P"],"dots":["C"],"names":{"C":"(a ; b)"},"lab":{"C":"n"},"seg":[["C","P","or",null,"r"]],"cap":"(x − a)² + (y − b)² = r²: centre (a ; b), radius r"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 General form → Standard form (completing the square)</div>
@@ -126,6 +128,8 @@ MathMagician.registerChapter(7, {
             Tangent: y − 6 = −¾(x − 4)<br>
             y = −¾x + 9</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-5,-4,9,9],"grid":1,"axes":{"ticks":2},"circ":[["C",5,"ac"]],"pts":{"C":[1,2],"P":[4,6]},"dots":true,"lab":{"C":"w","P":"ne"},"seg":[["C","P","or"]],"fn":[{"f":"-0.75*x+9","c":"gn","lab":[6.2,5.6,"y = −¾x + 9"]}],"ra":[["C","P",[8,3]]],"cap":"The tangent at P(4 ; 6) is perpendicular to the radius CP: m = −¾"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Tangent from external point</div>
@@ -237,6 +241,8 @@ MathMagician.registerChapter(7, {
             A(−3, −1), B(1, 3).  Midpoint M = (−1, 1).<br>
             Since O is the centre (0,0), OM ⊥ AB can be checked: m_OM × m_AB = (−1)×(1) = −1 ✓</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-4,-4,4,4],"grid":1,"axes":{"ticks":1},"circ":[["O",3.1622776601683795,"ac"]],"pts":{"O":[0,0],"A":[-3,-1],"B":[1,3],"M":[-1,1]},"dots":true,"lab":{"A":"sw","B":"ne","M":"nw","O":"se"},"fn":[{"f":"x+2","c":"gn"}],"seg":[["O","M","hl"]],"ra":[["O","M","B"]],"cap":"y = x + 2 cuts x² + y² = 10 at A and B; OM ⊥ AB"}'></div>
+
 
           <div class="tip-box">
             <div class="tip-box-title">💡 Exam strategy</div>
@@ -324,6 +330,8 @@ MathMagician.registerChapter(7, {
             Δ = 0: 16c² − 20(c²−20) = 0 → −4c² + 400 = 0 → c² = 100 → c = ±10<br>
             Tangents: y = 2x + 10 and y = 2x − 10</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-7,-7,7,7],"grid":1,"axes":{"ticks":2},"circ":[["O",4.47213595499958,"ac"]],"pts":{"O":[0,0],"A":[-4,2],"B":[4,-2]},"dots":true,"nolab":["O"],"lab":{"A":"nw","B":"se"},"fn":[{"f":"2*x+10","c":"gn"},{"f":"2*x-10","c":"gn"},{"f":"2*x","c":"mu dash"}],"cap":"The two tangents parallel to y = 2x touch at A(−4 ; 2) and B(4 ; −2)"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Tangents from an external point P(x₁, y₁)</div>

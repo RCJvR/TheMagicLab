@@ -272,6 +272,8 @@ MathMagician.registerChapter(10, {
             P(S or T) = P(S) + P(T) − P(S and T) = 18/30 + 12/30 − 6/30 = 24/30 = 4/5<br>
             P(neither) = 1 − 4/5 = 1/5</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["S","T"],"vals":{"A":12,"AB":6,"B":6,"out":6},"S":"n = 30","cap":"S only 12, both 6, T only 6, neither 6"}'></div>
+
 
           <div class="tip-box">
             <div class="tip-box-title">💡 Reading a Venn diagram</div>
@@ -362,6 +364,8 @@ MathMagician.registerChapter(10, {
             P(2nd red | 1st red) = 4/7 (one red ball removed)<br>
             P(both red) = 5/8 × 4/7 = 20/56 = 5/14</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"tree","levels":[[["R","5/8"],["B","3/8"]],[["R",["4/7","5/7"]],["B",["3/7","2/7"]]]],"outcomes":["RR = 20/56","RB = 15/56","BR = 15/56","BB = 6/56"],"w":320,"cap":"Without replacement: the second-draw probabilities depend on the first draw"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Two-way contingency tables</div>

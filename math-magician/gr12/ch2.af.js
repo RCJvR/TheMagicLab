@@ -40,6 +40,8 @@ MathMagician.registerChapter(2, {
             Dit is NIE 'n funksie NIE (twee y-waardes vir elke x).<br>
             Beperk domein tot x ≥ 0: f⁻¹(x) = √(x/2) slegs.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-1,4.5,4.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"2*x*x","c":"ac","dom":[0,2],"lab":[0.6,4,"y = 2x²"]},{"f":"Math.sqrt(x/2)","c":"hl","dom":[0,4.5],"lab":[3,0.8,"y = √(x/2)"]},{"f":"x","c":"mu dash"}],"cap":"Met x ≥ 0 is y = 2x² en sy inverse refleksies in y = x"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Logaritmes — die inverse van eksponensiële funksies</div>
@@ -113,6 +115,8 @@ MathMagician.registerChapter(2, {
               As 0 &lt; b &lt; 1: afnemende funksie
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-3,6,3.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"Math.log2(x)","c":"ac","dom":[0.06,6]}],"asym":[["x",0]],"pts":{"A":[1,0],"B":[2,1],"C":[4,2]},"dots":true,"names":{"A":"(1 ; 0)","B":"(2 ; 1)","C":"(4 ; 2)"},"lab":{"A":"se","B":"nw","C":"nw"},"cap":"y = log₂ x: x-afsnit (1 ; 0), asimptoot x = 0"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Los eksponensiële vergelykings op met logaritmes</div>
@@ -248,6 +252,8 @@ MathMagician.registerChapter(2, {
             Ruil om en los op: x = y² → y = √x (neem die positiewe wortel aangesien die beperkte domein x ≥ 0 was)<br>
             Dus f⁻¹(x) = √x, met domein x ≥ 0 en bereik y ≥ 0.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-1,4.5,4.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"x*x","c":"ac","dom":[0,2.1],"lab":[2.2,4.2,"y = x²"]},{"f":"Math.sqrt(x)","c":"hl","dom":[0,4.5],"lab":[3,1.3,"y = √x"]},{"f":"x","c":"mu dash","lab":[3.8,3.1,"y = x"]}],"cap":"As y = x² tot x ≥ 0 beperk word, is dit een-tot-een, so sy inverse y = √x is &#39;n funksie"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: y = ay², d.w.s. x = ay²</div>

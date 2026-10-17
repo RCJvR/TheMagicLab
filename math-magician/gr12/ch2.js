@@ -40,6 +40,8 @@ MathMagician.registerChapter(2, {
             This is NOT a function (two y-values for each x).<br>
             Restrict domain to x ≥ 0: f⁻¹(x) = √(x/2) only.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-1,4.5,4.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"2*x*x","c":"ac","dom":[0,2],"lab":[0.6,4,"y = 2x²"]},{"f":"Math.sqrt(x/2)","c":"hl","dom":[0,4.5],"lab":[3,0.8,"y = √(x/2)"]},{"f":"x","c":"mu dash"}],"cap":"With x ≥ 0, y = 2x² and its inverse are reflections in y = x"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Logarithms — the inverse of exponentials</div>
@@ -113,6 +115,8 @@ MathMagician.registerChapter(2, {
               If 0 &lt; b &lt; 1: decreasing function
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-3,6,3.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"Math.log2(x)","c":"ac","dom":[0.06,6]}],"asym":[["x",0]],"pts":{"A":[1,0],"B":[2,1],"C":[4,2]},"dots":true,"names":{"A":"(1 ; 0)","B":"(2 ; 1)","C":"(4 ; 2)"},"lab":{"A":"se","B":"nw","C":"nw"},"cap":"y = log₂ x: x-intercept (1 ; 0), asymptote x = 0"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Solving exponential equations using logs</div>
@@ -248,6 +252,8 @@ MathMagician.registerChapter(2, {
             Swap and solve: x = y² → y = √x (taking the positive root since the restricted domain was x ≥ 0)<br>
             So f⁻¹(x) = √x, with domain x ≥ 0 and range y ≥ 0.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-1,4.5,4.5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"x*x","c":"ac","dom":[0,2.1],"lab":[2.2,4.2,"y = x²"]},{"f":"Math.sqrt(x)","c":"hl","dom":[0,4.5],"lab":[3,1.3,"y = √x"]},{"f":"x","c":"mu dash","lab":[3.8,3.1,"y = x"]}],"cap":"Restricting y = x² to x ≥ 0 makes it one-to-one, so its inverse y = √x is a function"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: y = ay², i.e. x = ay²</div>

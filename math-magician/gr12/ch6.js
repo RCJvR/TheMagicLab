@@ -22,6 +22,8 @@ MathMagician.registerChapter(6, {
               This is the definition. You must show the full limit process in first-principles questions.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-0.5,-1,3.2,8],"grid":1,"axes":{"ticks":1},"free":true,"fn":[{"f":"x*x","c":"ac"},{"f":"2*x-1","c":"gn","lab":[2.2,2.5,"tangent"]},{"f":"3.5*x-2.5","c":"hl dash","lab":[1.1,6.8,"secant"]}],"pts":{"P":[1,1],"Q":[2.5,6.25]},"dots":true,"lab":{"P":"se","Q":"w"},"cap":"As Q slides towards P, the secant PQ turns into the tangent at P"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ First principles: f(x) = x²</div>
@@ -144,6 +146,8 @@ MathMagician.registerChapter(6, {
               <strong>Step 6:</strong> End behaviour: sign of a
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1.5,-5.5,3.6,2],"grid":1,"axes":{"ticks":1},"fn":[{"f":"x*x*x-3*x*x","c":"ac"}],"pts":{"M":[0,0],"N":[2,-4],"I":[1,-2]},"dots":true,"names":{"M":"max (0 ; 0)","N":"min (2 ; −4)","I":"inflection (1 ; −2)"},"lab":{"M":"nw","N":"s","I":"e"},"cap":"f(x) = x³ − 3x²: f&#39;(x) = 0 at the turning points; f&#39;&#39;(x) = 0 at the point of inflection"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Optimisation</div>
@@ -258,6 +262,8 @@ MathMagician.registerChapter(6, {
             Ball is stationary (reaches greatest height) when v(t) = 0 → 30 − 10t = 0 → t = 3 s<br>
             a(t) = v'(t) = −10 m/s² (constant deceleration due to gravity)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":280,"h":200,"view":[-0.3,-3,7.4,50],"axes":{"tx":1,"ty":10,"x":"t (s)","y":"s (m)"},"fn":[{"f":"30*x-5*x*x","c":"ac","dom":[0,6]}],"pts":{"M":[3,45]},"dots":true,"names":{"M":"v = 0 at t = 3"},"lab":{"M":"n"},"cap":"s(t) = 30t − 5t²: highest point when the velocity is 0"}'></div>
+
 
           <div class="tip-box">
             <div class="tip-box-title">💡 Sign conventions</div>
@@ -363,6 +369,8 @@ MathMagician.registerChapter(6, {
             f(2) = 8 − 12 = −4 (local minimum, since f''(2) = 6 &gt; 0)<br>
             So f is increasing on x &lt; 0, decreasing on 0 &lt; x &lt; 2, increasing again on x &gt; 2.</p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":200,"h":200,"view":[-1.5,-5.5,3.6,4],"grid":1,"axes":{"ticks":1},"fn":[{"f":"x*x*x-3*x*x","c":"ac"}],"cap":"f(x) = x³ − 3x²"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":200,"h":200,"view":[-1.5,-5.5,3.6,4],"grid":1,"axes":{"ticks":1},"fn":[{"f":"3*x*x-6*x","c":"ac"}],"cap":"f&#39;(x) = 3x² − 6x: f&#39; &lt; 0 where f decreases"}'></div></div>
+
 
           <div class="tip-box">
             <div class="tip-box-title">💡 Sketching checklist</div>

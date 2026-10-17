@@ -40,6 +40,8 @@ MathMagician.registerChapter(5, {
             Deel: p(x) = (x − 1)(x² − x − 6) = (x − 1)(x − 3)(x + 2)<br>
             Wortels: x = 1, 3, −2</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-3,-9,4,10],"grid":1,"axes":{"ticks":2},"free":true,"fn":[{"f":"x*x*x-2*x*x-5*x+6","c":"ac"}],"pts":{"A":[-2,0],"B":[1,0],"C":[3,0],"D":[0,6]},"dots":true,"names":{"A":"−2","B":"1","C":"3","D":"(0 ; 6)"},"lab":{"A":"nw","B":"ne","C":"se","D":"e"},"cap":"p(x) = (x − 1)(x − 3)(x + 2): wortels −2, 1 en 3"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Sintetiese deling (kort metode)</div>
@@ -135,6 +137,8 @@ MathMagician.registerChapter(5, {
             y' = 3x² − 3 = 0 → x = ±1 (draaipunte by (1, 0) min en (−1, 4) maks)<br>
             Einde: a > 0 → val links, styg regs</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-3,-2,3,6],"grid":1,"axes":{"ticks":1},"fn":[{"f":"x*x*x-3*x+2","c":"ac"}],"pts":{"M":[-1,4],"N":[1,0],"A":[-2,0],"Y":[0,2]},"dots":true,"names":{"M":"max (−1 ; 4)","N":"min (1 ; 0)","A":"(−2 ; 0)","Y":"(0 ; 2)"},"lab":{"M":"n","N":"s","A":"nw","Y":"e"},"cap":"y = x³ − 3x + 2: die dubbelwortel by x = 1 is &#39;n draaipunt op die x-as"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Kubieke-Wortelvinder (Faktorteorema)</div>

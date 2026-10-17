@@ -39,6 +39,8 @@ MathMagician.registerChapter(8, {
             4/6 = PT/9<br>
             PT = 6</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":220,"pts":{"P":[2,6],"Q":[0,0],"R":[7,0],"S":[1.2,3.6],"T":[4,3.6]},"poly":[["P","Q","R","fl"]],"seg":[["P","S","ln",null,"4"],["S","Q","ln",null,"6"],["P","T","ln",null,"PT"],["T","R","ln",null,"9"],["Q","R"],["S","T","ac"]],"par":[["S","T",1],["Q","R",1]],"lab":{"S":"w","T":"e"},"cap":"ST ∥ QR, so PS : SQ = PT : TR"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Eweredigheid in veelhoeke</div>
@@ -138,12 +140,14 @@ MathMagician.registerChapter(8, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Gelykvormigheidsbewys</div>
-            <p>In die figuur is ∠BAC = ∠ADC = 90°. Bewys △ABD ||| △CAD.<br><br>
-            In △ABD en △CAD:<br>
-            ∠ADB = ∠CDA = 90° − ∠D... (gebruik gegewe hoeke stelselmatig)<br>
-            ∠ABD = ∠ACD (dieselfde boog) ← gebruik 'n rede vir elke stap</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":280,"h":190,"pts":{"B":[0,0],"C":[8,0],"A":[2,3.4641],"D":[2,0]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["B","C"],["C","A"],["A","D","ac"]],"ra":[["B","A","C"],["A","D","C"]],"lab":{"A":"n","D":"s"}}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>In △ABC is ∠BAC = 90° en AD ⊥ BC. Bewys △ABD ||| △CAD.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>In △ABD en △CAD: ∠ADB = ∠CDA = 90° (AD ⊥ BC)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>∠BAD = 90° − ∠B (∠-som van △ABD) en ∠C = 90° − ∠B (∠-som van △ABC), so ∠BAD = ∠C</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>∴ △ABD ||| △CAD (∠∠∠)</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>Gevolg: BD/AD = AD/DC, so <strong>AD² = BD · DC</strong>.</span></div>
           </div>
 
           <div class="def-box">

@@ -39,12 +39,12 @@ MathMagician.registerChapter(4, {
             <span class="math">= (√2/2)(√3/2) + (√2/2)(½) = √6/4 + √2/4 = (√6 + √2)/4</span></p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bewys 'n identiteit</div>
-            <p>Bewys: sin(x + 30°) + sin(x − 30°) = sin x<br>
-            LK = sinx·cos30°+cosx·sin30° + sinx·cos30°−cosx·sin30°<br>
-            = 2sinx·cos30° = 2sinx·(√3/2) = √3 sinx ≠ sinx<br>
-            (Dit sou NIE waar wees nie — verifieer altyd voordat jy aanneem!)</p>
+            
+            <div class="example-step"><span class="step-num">1</span><span>Bewys: sin(x + 30°) + sin(x − 30°) = √3 sin x</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>LK = (sin x cos 30° + cos x sin 30°) + (sin x cos 30° − cos x sin 30°)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>= 2 sin x cos 30° = 2 sin x · (√3/2) = √3 sin x = RK ✓</span></div>
           </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -224,19 +224,24 @@ MathMagician.registerChapter(4, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Toringprobleem</div>
-            <p>TP is 'n vertikale toring met hoogte h. Vanaf punt Q op die grond is die hoek van hoogte na T gelyk aan x. QR = a, en hoek PQR = 150° (hoek TQP is x, die hoek by Q in driehoek PQR is 150°).<br>
-            In driehoek PQR (horisontaal): gebruik die sinus- of kosinusreël om PQ te vind met die bekende hoek 150° en sy a.<br>
-            Gebruik dan in reghoekige driehoek TPQ: h = PQ·tan(x).<br>
-            Hierdie patroon van "vind eers een sy via die sinus-/kosinusreël, gebruik dan reghoekige-driehoek-trig vir hoogte" is die klassieke Graad 12 3D-struktuur.</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":280,"h":230,"pts":{"Q":[0,0],"R":[6,0],"P":[4.2,2.2],"T":[4.2,7]},"seg":[["Q","R","ln",null,"50 m"],["R","P"],["P","Q","mu dash"],["P","T","ac"],["Q","T","hl"]],"ang":[["R","Q","P","40°","gn",30],["P","R","Q","70°","or",18],["P","Q","T","25°","hl",46]],"ra":[["Q","P","T"]],"lab":{"Q":"sw","R":"se","P":"e","T":"n"}}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>TP is 'n vertikale toring. Q en R lê op gelyk grond saam met P. QR = 50 m, ∠PQR = 40°, ∠QRP = 70°, en die hoogtehoek van T vanaf Q is 25°. Bepaal die hoogte TP.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>In △PQR (op die grond): ∠QPR = 180° − 40° − 70° = 70°.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Sinusreël: PQ / sin 70° = QR / sin 70°, so PQ = 50 m.</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>In reghoekige △TPQ: TP = PQ · tan 25° = 50 × 0,4663 ≈ <strong>23,3 m</strong>.</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>Dit is die klassieke 3D-patroon: bepaal 'n sy in die horisontale driehoek met die sinus- of cosinusreël, en gebruik dan die vertikale reghoekige driehoek.</span></div>
           </div>
 
-          <div class="example-box">
-            <div class="example-box-title">✏️ Voorbeeld: Kosinusreël met algebra</div>
-            <p>In ΔABC, a = c−1, b = c+1 (sye in terme van c). Gebruik die kosinusreël vir hoek C = 60°:<br>
-            <span class="math">c² = a² + b² − 2ab·cos60° = (c−1)² + (c+1)² − (c−1)(c+1)</span><br>
-            Vereenvoudig om c algebraïes te vind — 'n algemene "bewys/toon dat"-tipe vraag.</p>
+                    <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: Cosinusreël met algebra</div>
+            
+            <div class="example-step"><span class="step-num">1</span><span>In △ABC is a = c − 4, b = c − 2 en ∠C = 120°. Bepaal c.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>c² = a² + b² − 2ab cos 120° = a² + b² + ab, want cos 120° = −½.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>c² = (c − 4)² + (c − 2)² + (c − 4)(c − 2) = 3c² − 18c + 28</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>0 = 2c² − 18c + 28, so c² − 9c + 14 = 0 en (c − 7)(c − 2) = 0.</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>c = 2 maak a negatief, so <strong>c = 7</strong> (sye 3, 5 en 7).</span></div>
           </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">

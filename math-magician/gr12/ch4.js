@@ -39,12 +39,12 @@ MathMagician.registerChapter(4, {
             <span class="math">= (√2/2)(√3/2) + (√2/2)(½) = √6/4 + √2/4 = (√6 + √2)/4</span></p>
           </div>
 
-          <div class="example-box">
-            <div class="example-box-title">✏️ Example: Prove identity</div>
-            <p>Prove: sin(x + 30°) + sin(x − 30°) = sin x<br>
-            LHS = sinx·cos30°+cosx·sin30° + sinx·cos30°−cosx·sin30°<br>
-            = 2sinx·cos30° = 2sinx·(√3/2) = √3 sinx ≠ sinx<br>
-            (This would NOT be true — always verify before assuming!)</p>
+                    <div class="example-box">
+            <div class="example-box-title">✏️ Example: Prove an identity</div>
+            
+            <div class="example-step"><span class="step-num">1</span><span>Prove: sin(x + 30°) + sin(x − 30°) = √3 sin x</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>LHS = (sin x cos 30° + cos x sin 30°) + (sin x cos 30° − cos x sin 30°)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>= 2 sin x cos 30° = 2 sin x · (√3/2) = √3 sin x = RHS ✓</span></div>
           </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -224,19 +224,24 @@ MathMagician.registerChapter(4, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Example: Tower problem</div>
-            <p>TP is a vertical tower of height h. From point Q on the ground, angle of elevation to T is x. QR = a, and angle PQR = 150° (angle TQP is x, angle at Q in triangle PQR is 150°).<br>
-            In triangle PQR (horizontal): use the sine or cosine rule to find PQ using the known angle 150° and side a.<br>
-            Then in right triangle TPQ: h = PQ·tan(x).<br>
-            This "find one side first via sine/cosine rule, then use right-triangle trig for height" pattern is the classic Grade 12 3D structure.</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":280,"h":230,"pts":{"Q":[0,0],"R":[6,0],"P":[4.2,2.2],"T":[4.2,7]},"seg":[["Q","R","ln",null,"50 m"],["R","P"],["P","Q","mu dash"],["P","T","ac"],["Q","T","hl"]],"ang":[["R","Q","P","40°","gn",30],["P","R","Q","70°","or",18],["P","Q","T","25°","hl",46]],"ra":[["Q","P","T"]],"lab":{"Q":"sw","R":"se","P":"e","T":"n"}}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>TP is a vertical tower. Q and R are on level ground with P. QR = 50 m, ∠PQR = 40°, ∠QRP = 70°, and the angle of elevation of T from Q is 25°. Find the height TP.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>In △PQR (on the ground): ∠QPR = 180° − 40° − 70° = 70°.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Sine rule: PQ / sin 70° = QR / sin 70°, so PQ = 50 m.</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>In right-angled △TPQ: TP = PQ · tan 25° = 50 × 0,4663 ≈ <strong>23,3 m</strong>.</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>This is the classic 3D pattern: find a side in the horizontal triangle with the sine or cosine rule, then use the vertical right-angled triangle.</span></div>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Example: Cosine rule with algebra</div>
-            <p>In ΔABC, a = c−1, b = c+1 (sides in terms of c). Using the cosine rule for angle C = 60°:<br>
-            <span class="math">c² = a² + b² − 2ab·cos60° = (c−1)² + (c+1)² − (c−1)(c+1)</span><br>
-            Simplify to find c algebraically — a common "prove/show that" style question.</p>
+            
+            <div class="example-step"><span class="step-num">1</span><span>In △ABC, a = c − 4, b = c − 2 and ∠C = 120°. Find c.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>c² = a² + b² − 2ab cos 120° = a² + b² + ab, because cos 120° = −½.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>c² = (c − 4)² + (c − 2)² + (c − 4)(c − 2) = 3c² − 18c + 28</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>0 = 2c² − 18c + 28, so c² − 9c + 14 = 0 and (c − 7)(c − 2) = 0.</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>c = 2 makes a negative, so <strong>c = 7</strong> (sides 3, 5 and 7).</span></div>
           </div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">

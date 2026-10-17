@@ -36,6 +36,8 @@ MathMagician.registerChapter(9, {
               The line always passes through the <strong>mean point (x̄, ȳ)</strong>.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[0,0,9,19],"grid":1,"axes":{"ticks":2},"free":true,"pts":{"p0":[1,3.2],"p1":[2,4.6],"p2":[3,7.4],"p3":[4,8.5],"p4":[5,11.3],"p5":[6,12.6],"p6":[7,15.1],"p7":[8,17.4]},"dots":true,"nolab":["p0","p1","p2","p3","p4","p5","p6","p7"],"fn":[{"f":"0.889+2.027*x","c":"hl","lab":[0.5,16.5,"ŷ = 0,89 + 2,03x"]}],"cap":"The least squares line passes through (x̄ ; ȳ)"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Using the regression line</div>
@@ -131,6 +133,8 @@ MathMagician.registerChapter(9, {
               |r| < 0.5: weak correlation
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":160,"h":140,"view":[0,0,10,10],"pad":12,"axes":{"x":" ","y":" ","o":false},"pts":{"p0":[1,1.5],"p1":[2,2.2],"p2":[3,3.4],"p3":[4,3.9],"p4":[5,5.3],"p5":[6,5.8],"p6":[7,7.1],"p7":[8,7.6],"p8":[9,8.9]},"dots":true,"nolab":["p0","p1","p2","p3","p4","p5","p6","p7","p8"],"cap":"strong positive: r ≈ 0,99"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":160,"h":140,"view":[0,0,10,10],"pad":12,"axes":{"x":" ","y":" ","o":false},"pts":{"p0":[1,7],"p1":[2,8.5],"p2":[3,5.5],"p3":[4,7.5],"p4":[5,4.5],"p5":[6,6.5],"p6":[7,3.5],"p7":[8,5.5],"p8":[9,3]},"dots":true,"nolab":["p0","p1","p2","p3","p4","p5","p6","p7","p8"],"cap":"moderate negative: r ≈ −0,7"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":160,"h":140,"view":[0,0,10,10],"pad":12,"axes":{"x":" ","y":" ","o":false},"pts":{"p0":[1,5],"p1":[2,2],"p2":[3,8],"p3":[4,4],"p4":[5,6.5],"p5":[6,2.5],"p6":[7,7.5],"p7":[8,3.5],"p8":[9,6]},"dots":true,"nolab":["p0","p1","p2","p3","p4","p5","p6","p7","p8"],"cap":"no correlation: r ≈ 0"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Important distinctions</div>
@@ -229,6 +233,8 @@ MathMagician.registerChapter(9, {
               <span class="math">mean &lt; median &gt; mode</span> is wrong — correct order: <span class="math">mean &lt; median &lt; mode</span> — the mean is pulled down by extreme low values.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.exp(-(x-3.2)*(x-3.2)/1.2)","c":"ac"}],"cap":"symmetric"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(x-0.2,2)*Math.exp(-(x-0.2)*1.1)*1.2","c":"ac"}],"cap":"positively skewed (tail right)"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(6.2-x,2)*Math.exp(-(6.2-x)*1.1)*1.2","c":"ac"}],"cap":"negatively skewed (tail left)"}'></div></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example</div>
