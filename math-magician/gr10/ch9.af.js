@@ -584,7 +584,7 @@ MathMagician.registerChapter(9, {
         },
         {
           type: "input",
-          text: "R15 000 groei tot R19 998.15 in 3 jaar. Bereken i (as 'n %, tot 1 desimale plek).",
+          text: "R15 000 groei tot R19 965 in 3 jaar. Bereken i (as 'n %, tot 1 desimale plek).",
           answer: "10.0",
           altAnswers: ["10", "10,0"],
           topic: "Oplos vir koers of tydperk"

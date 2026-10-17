@@ -584,7 +584,7 @@ MathMagician.registerChapter(9, {
         },
         {
           type: "input",
-          text: "R15 000 grows to R19 998.15 in 3 years. Find i (as a %, to 1 decimal place).",
+          text: "R15 000 grows to R19 965 in 3 years. Find i (as a %, to 1 decimal place).",
           answer: "10.0",
           altAnswers: ["10", "10,0"],
           topic: "Solving for rate or time period"
