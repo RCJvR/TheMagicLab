@@ -55,7 +55,7 @@ MathMagician.registerChapter(3, {
       },
       questions: [
         { type: "mc", text: "Bereken: 2/3 + 3/4", options: ["5/7", "17/12", "5/12", "6/7"], answer: 1, topic: "Breuke" },
-        { type: "input", text: "Bereken: 3 1/2 × 2 2/3 (gee die antwoord as onegte breuk se teller, met noemer 3)", answer: "28", topic: "Breuke" },
+        { type: "input", text: "Bereken: 3 1/2 × 2 2/3. Gee die antwoord as 'n gemengde getal.", answer: "9 1/3", altAnswers: ["28/3"], topic: "Breuke" },
         { type: "mc", text: "Bereken: 5/6 ÷ 5/12", options: ["1/2", "2", "25/72", "10/6"], answer: 1, topic: "Breuke" },
         { type: "input", text: "Bereken: 4 1/4 − 2 3/4. Gee die antwoord as 'n gemengde getal.", answer: "1 1/2", altAnswers: ["3/2", "1.5", "1,5"], topic: "Breuke" },
         { type: "mc", text: "Watter breuk is ekwivalent aan 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Breuke" },

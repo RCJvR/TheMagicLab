@@ -55,7 +55,7 @@ MathMagician.registerChapter(3, {
       },
       questions: [
         { type: "mc", text: "Calculate: 2/3 + 3/4", options: ["5/7", "17/12", "5/12", "6/7"], answer: 1, topic: "Fractions" },
-        { type: "input", text: "Calculate: 3 1/2 × 2 2/3 (give answer as improper fraction numerator over 3)", answer: "28", topic: "Fractions" },
+        { type: "input", text: "Calculate: 3 1/2 × 2 2/3. Give the answer as a mixed number.", answer: "9 1/3", altAnswers: ["28/3"], topic: "Fractions" },
         { type: "mc", text: "Calculate: 5/6 ÷ 5/12", options: ["1/2", "2", "25/72", "10/6"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate: 4 1/4 − 2 3/4. Give the answer as a mixed number.", answer: "1 1/2", altAnswers: ["3/2", "1.5", "1,5"], topic: "Fractions" },
         { type: "mc", text: "Which fraction is equivalent to 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Fractions" },

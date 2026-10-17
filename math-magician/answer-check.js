@@ -16,6 +16,7 @@
 
   const SUP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-', 'ˣ': 'x', 'ⁿ': 'n' };
   const SUB = { '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9' };
+  const VULGAR = { '½': '1/2', '⅓': '1/3', '⅔': '2/3', '¼': '1/4', '¾': '3/4', '⅕': '1/5', '⅖': '2/5', '⅗': '3/5', '⅘': '4/5', '⅙': '1/6', '⅚': '5/6', '⅛': '1/8', '⅜': '3/8', '⅝': '5/8', '⅞': '7/8' };
   const UNIT = /(?:%|°|degrees?|grade|rand|units?|cm²|cm³|mm²|mm³|m²|m³|km²|cm\^2|cm\^3|m\^2|m\^3|mm|cm|km|m|ml|kl|l|kg|g|s|h|min|km\/h|m\/s)$/;
 
   // One string → its plain written form (no spaces, ASCII signs).
@@ -26,6 +27,7 @@
     s = s.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻ˣⁿ]+/g, m => '^' + [...m].map(c => SUP[c]).join(''));
     s = s.replace(/[₀₁₂₃₄₅₆₇₈₉]/g, c => SUB[c]).replace(/log_/g, 'log');
     s = s.replace(/\bpi\b/g, 'π').replace(/sqrt/g, '√');
+    s = s.replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/g, c => ' ' + VULGAR[c]).trim();  // 9⅓ → 9 1/3
     s = s.replace(/(\d)\s+(\d+)\s*\/\s*(\d+)/g, '$1&$2/$3');          // mixed number 1 7/12
     s = s.replace(/(\d)\s+(?=\d{3}\b)/g, '$1');                       // 1 250 → 1250
     s = s.replace(/\s+(?:or|and|of|en)\s+/g, '|');                    // 0 or 2 → 0|2

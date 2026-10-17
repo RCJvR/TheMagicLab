@@ -64,7 +64,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "In 'n reghoekige driehoek is die bene 9 cm en 12 cm. Bepaal die skuinssy.", answer: "15", topic: "Pythagoras" },
-        { type: "mc", text: "Die skuinssy is 17 cm en een been is 8 cm. Die ander been is:", options: ["9 cm", "15 cm", "√225 = 15 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
+        { type: "mc", text: "Die skuinssy is 17 cm en een been is 8 cm. Die ander been is:", options: ["9 cm", "15 cm", "25 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Bereken: √(5² + 12²)", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "Is 'n driehoek met sye 9, 40, 41 'n reghoekige driehoek?", options: ["Ja", "Nee", "Kan nie bepaal word nie", "Slegs as die hoeke gegee word"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "'n Leer van 10 m lank leun teen 'n muur. Die voet is 6 m van die muur af. Hoe hoog teen die muur reik dit?", answer: "8", topic: "Pythagoras" },

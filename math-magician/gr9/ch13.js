@@ -64,7 +64,7 @@ MathMagician.registerChapter(13, {
       },
       questions: [
         { type: "input", text: "In a right triangle, legs are 9 cm and 12 cm. Find the hypotenuse.", answer: "15", topic: "Pythagoras" },
-        { type: "mc", text: "The hypotenuse is 17 cm and one leg is 8 cm. The other leg is:", options: ["9 cm", "15 cm", "√225 = 15 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
+        { type: "mc", text: "The hypotenuse is 17 cm and one leg is 8 cm. The other leg is:", options: ["9 cm", "15 cm", "25 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Calculate: √(5² + 12²)", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "Is a triangle with sides 9, 40, 41 a right triangle?", options: ["Yes", "No", "Cannot determine", "Only if angles given"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "A ladder 10 m long leans against a wall. The foot is 6 m from the wall. How high up the wall does it reach?", answer: "8", topic: "Pythagoras" },

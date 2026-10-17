@@ -189,7 +189,7 @@ MathMagician.registerChapter(8, {
         {"type": "mc", "text": "Factorise 3x² − 3x − 18:", "options": ["3(x + 3)(x − 2)", "3(x − 3)(x + 2)", "3(x − 6)(x + 1)", "(3x − 6)(x + 3)"], "answer": 1, "topic": "Trinomials with a common factor"},
         {"type": "mc", "text": "Factorise −x² − 2x + 15:", "options": ["(x + 5)(x − 3)", "−(x − 5)(x + 3)", "(x − 5)(x + 3)", "−(x + 5)(x − 3)"], "answer": 3, "topic": "Trinomials with a common factor"},
         {"type": "mc", "text": "Factorise 4x² − 16x + 16:", "options": ["4(x − 2)²", "4(x − 4)(x + 1)", "(4x − 4)²", "4(x + 2)²"], "answer": 0, "topic": "Trinomials with a common factor"},
-        {"type": "mc", "text": "Factorise 2x³ − 8x:", "options": ["2x(x² − 4)", "2(x − 2)(x + 2)", "2x(x − 2)(x + 2)", "x(2x − 4)(x + 2)"], "answer": 2, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise fully: 2x³ − 8x", "options": ["2x(x² − 4)", "2(x − 2)(x + 2)", "2x(x − 2)(x + 2)", "x(2x − 4)(x + 2)"], "answer": 2, "topic": "Trinomials with a common factor"},
       ]
     },
     {
