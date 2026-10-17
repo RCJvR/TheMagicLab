@@ -137,6 +137,65 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "A rectangular field is 21 m by 20 m. How many fewer metres does a farmer walk by cutting diagonally across the field, compared to walking along the two sides?", answer: "12", topic: "Pythagoras" },
       ]
     },
+    {
+      id: 1301,
+      chapter: 13,
+      name: "Pythagoras in shapes",
+      fullName: "Using Pythagoras in rectangles, rhombi, isosceles triangles and multi-step problems",
+      lesson: {
+        heading: "Pythagoras in shapes",
+        sub: "Chapter 13 · Topic 3",
+        body: `
+<p>Many shapes hide right-angled triangles: a rectangle's diagonal, the height of an isosceles triangle, the diagonals of a rhombus. Find the right angle, then use Pythagoras.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":170,"view":[-0.5,-0.5,12.5,5],"pts":{"A":[0,0],"B":[6,0],"C":[6,4],"D":[0,4],"P":[10,0],"Q":[12.2,2.2],"R":[10,4.4],"S":[7.8,2.2],"O":[10,2.2]},"lab":{"A":"sw","B":"se","C":"ne","D":"nw","P":"s","Q":"e","R":"n","S":"w","O":"se"},"seg":[["A","B","ln",null,"12"],["B","C","ln",null,"5"],["C","D"],["D","A"],["A","C","ac"],["P","Q"],["Q","R"],["R","S"],["S","P"],["P","R","hl"],["S","Q","hl"]],"ra":[["A","B","C"],["Q","O","R"]],"nolab":[]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: the diagonal of a rectangle</div>
+  <div class="example-step"><span class="step-num">1</span><span>Rectangle ABCD with AB = 12 and BC = 5. △ABC has a right angle at B.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">AC² = 12² + 5² = 144 + 25 = 169</span>, so <strong>AC = 13</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: the side of a rhombus</div>
+  <div class="example-step"><span class="step-num">1</span><span>A rhombus has diagonals PR = 16 and SQ = 12. They bisect each other at 90° at O.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>OR = 8 and OQ = 6, so QR² = 8² + 6² = 100 and <strong>QR = 10</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: is it right-angled?</div>
+  <div class="example-step"><span class="step-num">1</span><span>Sides 9, 12 and 15: 9² + 12² = 81 + 144 = 225 = 15². <strong>Yes</strong>, the angle opposite 15 is 90°.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Sides 6, 7 and 9: 36 + 49 = 85 ≠ 81. <strong>No</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Round only at the very end. If an answer is a surd like √50, you can leave it, or round to 2 decimals (7,07) when the question asks.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A rectangle is 8 cm by 15 cm. How long is its diagonal? (cm)", "answer": "17", "topic": "Pythagoras in shapes"},
+        {"type": "input", "text": "A rhombus has diagonals of 10 cm and 24 cm. How long is each side? (cm)", "answer": "13", "topic": "Pythagoras in shapes"},
+        {"type": "input", "text": "An isosceles triangle has equal sides of 13 cm and a base of 10 cm. What is its height? (cm)", "answer": "12", "topic": "Pythagoras in shapes"},
+        {"type": "mc", "text": "Which triangle is right-angled?", "options": ["4, 5, 6", "8, 15, 17", "5, 6, 8", "7, 8, 10"], "answer": 1, "topic": "Pythagoras in shapes"},
+        {"type": "input", "text": "A square has a diagonal of 10 cm. What is its area? (cm²)", "answer": "50", "topic": "Pythagoras in shapes"},
+        {"type": "input", "text": "A 5 m ladder leans against a wall with its foot 1,4 m from the wall. How high up the wall does it reach? (m)", "answer": "4.8", "altAnswers": ["4,8"], "topic": "Pythagoras in shapes"},
+      ]
+    },
+    {
+      id: 1302,
+      chapter: 13,
+      name: "Ch 13 Exam focus",
+      fullName: "Exam practice: the theorem of Pythagoras",
+      lesson: {
+        heading: "Ch 13 Exam focus",
+        sub: "Chapter 13 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Mark the right angle and the hypotenuse on the sketch before you substitute.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "The two shorter sides of a right-angled triangle are 20 and 21. Find the hypotenuse.", "answer": "29", "topic": "Ch 13 Exam focus"},
+        {"type": "input", "text": "The hypotenuse is 25 and one side is 7. Find the other side.", "answer": "24", "topic": "Ch 13 Exam focus"},
+        {"type": "input", "text": "A TV screen is 48 cm wide and 36 cm high. What is its diagonal? (cm)", "answer": "60", "topic": "Ch 13 Exam focus"},
+        {"type": "mc", "text": "In △ABC, ∠B = 90°. The hypotenuse is:", "options": ["AB", "BC", "AC", "the shortest side"], "answer": 2, "topic": "Ch 13 Exam focus"},
+        {"type": "input", "text": "A ship sails 9 km east and then 12 km north. How far is it from its start? (km)", "answer": "15", "topic": "Ch 13 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 13, chapterName: "Pythagoras' Theorem",
@@ -176,6 +235,27 @@ MathMagician.registerChapter(13, {
           },
         ]
       },
+      {
+        "name": "Pythagoras in shapes",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Show all working.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "A kite ABCD has diagonals AC and BD meeting at O at 90°. AO = 6 cm, OC = 16 cm and BO = OD = 8 cm. Calculate AB and BC.",
+                "marks": 4
+              },
+              {
+                "label": "b)",
+                "text": "Is a triangle with sides 11, 60 and 61 right-angled? Show why.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -196,6 +276,21 @@ MathMagician.registerChapter(13, {
           { num: "Q2b", ans: "17 m", note: "Half of 34 m" },
           { num: "Q3a", ans: "6√3 ≈ 10,39 cm", note: "h = √(12² - 6²) = √(144-36) = √108 = 6√3" },
           { num: "Q3b", ans: "36√3 ≈ 62,35 cm²", note: "A = ½ × 12 × 6√3 = 36√3" },
+        ]
+      },
+      {
+        "name": "Pythagoras in shapes",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "AB = 10 cm ; BC = √320 ≈ 17,89 cm",
+            "note": "AB² = 36 + 64; BC² = 256 + 64"
+          },
+          {
+            "num": "Q4b",
+            "ans": "Yes: 11² + 60² = 121 + 3 600 = 3 721 = 61²",
+            "note": "Converse of Pythagoras"
+          }
         ]
       },
     ]

@@ -176,6 +176,66 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Twee lyne word deur 'n transversaal gesny sodat een paar mede-binnehoeke 118° en 62° is (wat bevestig dat die twee lyne ewewydig is). 'n Derde lyn, ewewydig aan die eerste, vorm 'n ooreenkomstige hoek van (2x + 10)° met die transversaal (ooreenstemmend met die 118°-hoek). Vind x.", answer: "54", topic: "Lyne" },
       ]
     },
+    {
+      id: 1201,
+      chapter: 12,
+      name: "Hoekprobleme met redes oplos",
+      fullName: "Meetkundige probleme met hoekverwantskappe oplos, met redes",
+      lesson: {
+        heading: "Hoekprobleme met redes oplos",
+        sub: "Hoofstuk 12 · Onderwerp 3",
+        body: `
+<p>In meetkunde moet jy 'n <strong>rede</strong> vir elke bewering gee. Werk vanaf wat gegee is, een stap op 'n slag, en skryf die rede tussen hakies.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":200,"view":[-0.5,-0.5,9,6],"pts":{"A":[0,4],"B":[8.5,4],"C":[0,1],"D":[8.5,1],"P":[5.6,5.6],"Q":[2.2,-0.2],"E":[4.66,4],"F":[2.9,1]},"lab":{"A":"w","B":"e","C":"w","D":"e","P":"ne","Q":"sw","E":"se","F":"se"},"seg":[["A","B","ac"],["C","D","ac"],["P","Q"]],"par":[["A","B",1],["C","D",1]],"ang":[["B","E","P","57°","gn",18],["C","F","E","y","hl",18],["E","F","D","x","or",16]],"dots":["E","F"]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: AB ∥ CD, en ∠BEP = 57°</div>
+  <div class="example-step"><span class="step-num">1</span><span>x = ∠EFD = ∠BEP = 57°  (ooreenk ∠e; AB ∥ CD)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>y = ∠CFE = 180° − 57° = 123°  (∠e op 'n reguit lyn)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Toets: ∠AEF = ∠BEP = 57° (regoorst ∠e), en ∠AEF + y = 57° + 123° = 180° (ko-binne ∠e; AB ∥ CD) ✓</span></div>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Standaardredes</div>
+<p>∠e op 'n reguit lyn · ∠e om 'n punt · regoorst ∠e · ooreenk ∠e (AB ∥ CD) · verwiss ∠e (AB ∥ CD) · ko-binne ∠e (AB ∥ CD) · ∠-som van △ · buite∠ van △</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n vergelyking uit hoeke</div>
+  <div class="example-step"><span class="step-num">1</span><span>Twee ko-binnehoeke tussen parallelle lyne is 2x + 10° en 3x − 5°.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2x + 10 + 3x − 5 = 180  (ko-binne ∠e; lyne ∥)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35°</strong>; die hoeke is 80° en 100°.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"Ooreenk", "verwiss" en "ko-binne" is net geldige redes as die lyne parallel is: noem altyd die parallelle lyne.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Twee parallelle lyne word deur 'n snylyn gesny. Een hoek is 64°. Wat is sy ko-binnehoek? (°)", "answer": "116", "topic": "Hoekprobleme met redes oplos"},
+        {"type": "input", "text": "Verwisselende hoeke tussen parallelle lyne is 3x − 10° en 2x + 25°. Bepaal x. (°)", "answer": "35", "topic": "Hoekprobleme met redes oplos"},
+        {"type": "input", "text": "Hoeke om 'n punt is 90°, 120°, x en 2x. Bepaal x. (°)", "answer": "50", "topic": "Hoekprobleme met redes oplos"},
+        {"type": "mc", "text": "Watter rede is korrek vir \"regoorstaande hoeke is gelyk\"?", "options": ["regoorst ∠e", "ooreenk ∠e", "∠e op 'n reguit lyn", "ko-binne ∠e"], "answer": 0, "topic": "Hoekprobleme met redes oplos"},
+        {"type": "input", "text": "Twee hoeke op 'n reguit lyn is 4x en 5x. Bepaal x. (°)", "answer": "20", "topic": "Hoekprobleme met redes oplos"},
+        {"type": "mc", "text": "Ooreenkomstige hoeke is 72° en 72°. Wat kan jy aflei?", "options": ["Die lyne ontmoet", "Niks", "Die lyne is parallel", "Die lyne is loodreg"], "answer": 2, "topic": "Hoekprobleme met redes oplos"},
+      ]
+    },
+    {
+      id: 1202,
+      chapter: 12,
+      name: "Hfst 12 Eksamenfokus",
+      fullName: "Eksamenoefening: meetkunde van reguit lyne",
+      lesson: {
+        heading: "Hfst 12 Eksamenfokus",
+        sub: "Hoofstuk 12 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Benoem die hoekpaar (F-, Z- of C-vorm) voordat jy die parallelle lyne gebruik.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Die supplement van 47° is: (°)", "answer": "133", "topic": "Hfst 12 Eksamenfokus"},
+        {"type": "input", "text": "Die komplement van 28° is: (°)", "answer": "62", "topic": "Hfst 12 Eksamenfokus"},
+        {"type": "input", "text": "Regoorstaande hoeke is 5x − 20° en 3x + 30°. Bepaal x. (°)", "answer": "25", "topic": "Hfst 12 Eksamenfokus"},
+        {"type": "mc", "text": "Ko-binnehoeke van 110° en 75° wys dat die lyne:", "options": ["parallel is", "nie parallel is nie", "loodreg is", "dieselfde lyn is"], "answer": 1, "topic": "Hfst 12 Eksamenfokus"},
+        {"type": "input", "text": "Drie hoeke op 'n reguit lyn is x, x + 30° en 2x. Bepaal x. (°)", "answer": "37.5", "altAnswers": ["37,5"], "topic": "Hfst 12 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 12, chapterName: "Meetkunde van Reguit Lyne",
@@ -208,6 +268,32 @@ MathMagician.registerChapter(12, {
           },
         ]
       },
+      {
+        "name": "Hoekprobleme met redes oplos",
+        "questions": [
+          {
+            "num": "3",
+            "text": "AB ∥ CD. 'n Snylyn sny AB by E en CD by F. ∠AEF = 3x + 15° en ∠EFD = 5x − 25°.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Watter hoekpaar is ∠AEF en ∠EFD?",
+                "marks": 1
+              },
+              {
+                "label": "b)",
+                "text": "Bereken x, met 'n rede.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Bereken ∠BEF, met 'n rede.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -227,6 +313,26 @@ MathMagician.registerChapter(12, {
           { num: "Q2a", ans: "Hulle is aan teenoorgestelde kante van die transversaal tussen die ewewydige lyne, en vorm 'n Z-vorm.", note: "Verwisselende binnehoeke lê tussen die ewewydige lyne aan teenoorgestelde kante van die transversaal" },
           { num: "Q2b", ans: "x = 20; albei hoeke = 80°", note: "3x+20 = x+60 → 2x=40 → x=20; hoek = 80°" },
           { num: "Q2c", ans: "100°", note: "Mede-binnehoeke tel op tot 180°; 180°-80°=100°" },
+        ]
+      },
+      {
+        "name": "Hoekprobleme met redes oplos",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "Verwisselende hoeke",
+            "note": "'n Z-vorm tussen die parallelle lyne"
+          },
+          {
+            "num": "Q3b",
+            "ans": "x = 20°",
+            "note": "3x + 15 = 5x − 25 (verwiss ∠e; AB ∥ CD); 40 = 2x"
+          },
+          {
+            "num": "Q3c",
+            "ans": "∠BEF = 105°",
+            "note": "∠AEF = 75°; 180 − 75 (∠e op 'n reguit lyn)"
+          }
         ]
       },
     ]

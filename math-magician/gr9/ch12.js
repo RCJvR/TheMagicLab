@@ -176,6 +176,66 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Two lines are cut by a transversal so that one pair of co-interior angles are 118° and 62° (confirming the two lines are parallel). A third line, parallel to the first, forms a corresponding angle of (2x + 10)° with the transversal (corresponding to the 118° angle). Find x.", answer: "54", topic: "Lines" },
       ]
     },
+    {
+      id: 1201,
+      chapter: 12,
+      name: "Solving angle problems with reasons",
+      fullName: "Solving geometric problems using angle relationships, with reasons",
+      lesson: {
+        heading: "Solving angle problems with reasons",
+        sub: "Chapter 12 · Topic 3",
+        body: `
+<p>In geometry you must give a <strong>reason</strong> for every statement. Work from what is given, one step at a time, and write the reason in brackets.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":200,"view":[-0.5,-0.5,9,6],"pts":{"A":[0,4],"B":[8.5,4],"C":[0,1],"D":[8.5,1],"P":[5.6,5.6],"Q":[2.2,-0.2],"E":[4.66,4],"F":[2.9,1]},"lab":{"A":"w","B":"e","C":"w","D":"e","P":"ne","Q":"sw","E":"se","F":"se"},"seg":[["A","B","ac"],["C","D","ac"],["P","Q"]],"par":[["A","B",1],["C","D",1]],"ang":[["B","E","P","57°","gn",18],["C","F","E","y","hl",18],["E","F","D","x","or",16]],"dots":["E","F"]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: AB ∥ CD, and ∠BEP = 57°</div>
+  <div class="example-step"><span class="step-num">1</span><span>x = ∠EFD = ∠BEP = 57°  (corresp ∠s; AB ∥ CD)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>y = ∠CFE = 180° − 57° = 123°  (∠s on a str line)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Check: ∠AEF = ∠BEP = 57° (vert opp ∠s), and ∠AEF + y = 57° + 123° = 180° (co-int ∠s; AB ∥ CD) ✓</span></div>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Standard reasons</div>
+<p>∠s on a str line · ∠s round a pt · vert opp ∠s · corresp ∠s (AB ∥ CD) · alt ∠s (AB ∥ CD) · co-int ∠s (AB ∥ CD) · ∠ sum of △ · ext ∠ of △</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: an equation from angles</div>
+  <div class="example-step"><span class="step-num">1</span><span>Two co-interior angles between parallel lines are 2x + 10° and 3x − 5°.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2x + 10 + 3x − 5 = 180  (co-int ∠s; lines ∥)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>5x + 5 = 180, so <strong>x = 35°</strong>; the angles are 80° and 100°.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"Corresp", "alt" and "co-int" are only valid reasons when the lines are parallel: always mention the parallel lines.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Two parallel lines are cut by a transversal. One angle is 64°. What is its co-interior angle? (°)", "answer": "116", "topic": "Solving angle problems with reasons"},
+        {"type": "input", "text": "Alternate angles between parallel lines are 3x − 10° and 2x + 25°. Find x. (°)", "answer": "35", "topic": "Solving angle problems with reasons"},
+        {"type": "input", "text": "Angles round a point are 90°, 120°, x and 2x. Find x. (°)", "answer": "50", "topic": "Solving angle problems with reasons"},
+        {"type": "mc", "text": "Which reason is correct for \"vertically opposite angles are equal\"?", "options": ["vert opp ∠s", "corresp ∠s", "∠s on a str line", "co-int ∠s"], "answer": 0, "topic": "Solving angle problems with reasons"},
+        {"type": "input", "text": "Two angles on a straight line are 4x and 5x. Find x. (°)", "answer": "20", "topic": "Solving angle problems with reasons"},
+        {"type": "mc", "text": "Corresponding angles are 72° and 72°. What can you conclude?", "options": ["The lines meet", "Nothing", "The lines are parallel", "The lines are perpendicular"], "answer": 2, "topic": "Solving angle problems with reasons"},
+      ]
+    },
+    {
+      id: 1202,
+      chapter: 12,
+      name: "Ch 12 Exam focus",
+      fullName: "Exam practice: geometry of straight lines",
+      lesson: {
+        heading: "Ch 12 Exam focus",
+        sub: "Chapter 12 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Name the angle pair (F, Z or C shape) before you use the parallel lines.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "The supplement of 47° is: (°)", "answer": "133", "topic": "Ch 12 Exam focus"},
+        {"type": "input", "text": "The complement of 28° is: (°)", "answer": "62", "topic": "Ch 12 Exam focus"},
+        {"type": "input", "text": "Vertically opposite angles are 5x − 20° and 3x + 30°. Find x. (°)", "answer": "25", "topic": "Ch 12 Exam focus"},
+        {"type": "mc", "text": "Co-interior angles 110° and 75° show that the lines are:", "options": ["parallel", "not parallel", "perpendicular", "the same line"], "answer": 1, "topic": "Ch 12 Exam focus"},
+        {"type": "input", "text": "Three angles on a straight line are x, x + 30° and 2x. Find x. (°)", "answer": "37.5", "altAnswers": ["37,5"], "topic": "Ch 12 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 12, chapterName: "Geometry of Straight Lines",
@@ -208,6 +268,32 @@ MathMagician.registerChapter(12, {
           },
         ]
       },
+      {
+        "name": "Solving angle problems with reasons",
+        "questions": [
+          {
+            "num": "3",
+            "text": "AB ∥ CD. A transversal cuts AB at E and CD at F. ∠AEF = 3x + 15° and ∠EFD = 5x − 25°.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Which angle pair are ∠AEF and ∠EFD?",
+                "marks": 1
+              },
+              {
+                "label": "b)",
+                "text": "Calculate x, with a reason.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Calculate ∠BEF, with a reason.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -227,6 +313,26 @@ MathMagician.registerChapter(12, {
           { num: "Q2a", ans: "They are on opposite sides of the transversal between the parallel lines, forming a Z-shape.", note: "Alternate interior angles lie between the parallel lines on opposite sides of the transversal" },
           { num: "Q2b", ans: "x = 20; both angles = 80°", note: "3x+20 = x+60 → 2x=40 → x=20; angle = 80°" },
           { num: "Q2c", ans: "100°", note: "Co-interior angles sum to 180°; 180°-80°=100°" },
+        ]
+      },
+      {
+        "name": "Solving angle problems with reasons",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "Alternate angles",
+            "note": "A Z-shape between the parallel lines"
+          },
+          {
+            "num": "Q3b",
+            "ans": "x = 20°",
+            "note": "3x + 15 = 5x − 25 (alt ∠s; AB ∥ CD); 40 = 2x"
+          },
+          {
+            "num": "Q3c",
+            "ans": "∠BEF = 105°",
+            "note": "∠AEF = 75°; 180 − 75 (∠s on a str line)"
+          }
         ]
       },
     ]

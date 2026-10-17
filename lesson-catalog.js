@@ -1800,6 +1800,22 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Bisectors and perpendiculars",
           "label": "Bisectors and perpendiculars"
+        },
+        {
+          "value": "Constructing special angles",
+          "label": "Constructing special angles"
+        },
+        {
+          "value": "Constructing triangles",
+          "label": "Constructing triangles"
+        },
+        {
+          "value": "Quadrilaterals and their diagonals",
+          "label": "Quadrilaterals and their diagonals"
+        },
+        {
+          "value": "Ch 10 Exam focus",
+          "label": "Ch 10 Exam focus"
         }
       ]
     },
@@ -1813,6 +1829,22 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Similar and congruent shapes",
           "label": "Similar and congruent shapes"
+        },
+        {
+          "value": "Angles of polygons",
+          "label": "Angles of polygons"
+        },
+        {
+          "value": "Exterior angles of triangles",
+          "label": "Exterior angles of triangles"
+        },
+        {
+          "value": "Problems with similar triangles",
+          "label": "Problems with similar triangles"
+        },
+        {
+          "value": "Ch 11 Exam focus",
+          "label": "Ch 11 Exam focus"
         }
       ]
     },
@@ -1826,6 +1858,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Proving parallel lines",
           "label": "Proving parallel lines"
+        },
+        {
+          "value": "Solving angle problems with reasons",
+          "label": "Solving angle problems with reasons"
+        },
+        {
+          "value": "Ch 12 Exam focus",
+          "label": "Ch 12 Exam focus"
         }
       ]
     },
@@ -1839,6 +1879,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Applications of Pythagoras",
           "label": "Applications of Pythagoras"
+        },
+        {
+          "value": "Pythagoras in shapes",
+          "label": "Pythagoras in shapes"
+        },
+        {
+          "value": "Ch 13 Exam focus",
+          "label": "Ch 13 Exam focus"
         }
       ]
     },
@@ -1852,6 +1900,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Area",
           "label": "Area"
+        },
+        {
+          "value": "Composite shapes",
+          "label": "Composite shapes"
+        },
+        {
+          "value": "Changing dimensions and units",
+          "label": "Changing dimensions and units"
+        },
+        {
+          "value": "Ch 14 Exam focus",
+          "label": "Ch 14 Exam focus"
         }
       ]
     },

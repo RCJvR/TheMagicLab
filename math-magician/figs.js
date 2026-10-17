@@ -51,7 +51,12 @@
     const XY = p => { p = P(p); return [X(p[0]), Y(p[1])]; };
     const svg = svgRoot(W, H, s.alt);
     const g = el('g', {}); svg.appendChild(g);
-    const cls = (c, d) => (c ? c.split(' ').map(x => x === 'dash' ? 'mf-dash' : 'mf-' + x).join(' ') : d);
+    // a class list like "ac dash"; a dashed line with no colour of its own is drawn in the line colour
+    const cls = (c, d) => {
+      if (!c) return d;
+      const out = c.split(' ').map(x => x === 'dash' ? 'mf-dash' : 'mf-' + x);
+      return out.every(x => x === 'mf-dash') ? 'mf-ln ' + out.join(' ') : out.join(' ');
+    };
 
     if (s.grid) {
       const st = s.grid === true ? 1 : s.grid;
@@ -107,7 +112,10 @@
       if (sg[4] != null) { // length label beside the segment
         const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
         let nx = -dy / L, ny = dx / L;
-        const cen = centroid(); if ((mx - cen[0]) * nx + (my - cen[1]) * ny < 0) { nx = -nx; ny = -ny; }
+        // push the label away from the shape the segment belongs to (or from all the points)
+        const owner = (s.poly || []).find(p => p.includes(sg[0]) && p.includes(sg[1]));
+        const cen = owner ? (() => { const v = owner.filter(x => typeof x !== 'string' || pts[x]).map(XY); return [v.reduce((a, p) => a + p[0], 0) / v.length, v.reduce((a, p) => a + p[1], 0) / v.length]; })() : centroid();
+        if ((mx - cen[0]) * nx + (my - cen[1]) * ny < 0) { nx = -nx; ny = -ny; }
         g.appendChild(el('text', { x: mx + nx * 12, y: my + ny * 12 + 4, class: 'mf-tx mf-tx-len', 'text-anchor': 'middle' }, sg[4]));
       }
     });

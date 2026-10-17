@@ -180,6 +180,93 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "'n Sirkel het 'n oppervlakte van 78,5 cm². Gebruik π ≈ 3,14 om die radius te vind (in cm).", answer: "5", topic: "Oppervlakte" },
       ]
     },
+    {
+      id: 1401,
+      chapter: 14,
+      name: "Saamgestelde vorms",
+      fullName: "Oppervlakte en omtrek van saamgestelde vorms met sirkels en veelhoeke",
+      lesson: {
+        heading: "Saamgestelde vorms",
+        sub: "Hoofstuk 14 · Onderwerp 3",
+        body: `
+<p>'n Saamgestelde vorm bestaan uit eenvoudige vorms. Verdeel dit in reghoeke, driehoeke, sirkels of dele van sirkels; tel die oppervlaktes van die dele bymekaar (of trek 'n gat af). Vir die omtrek, tel net die buiterande bymekaar.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":170,"view":[-0.5,-0.8,13,7],"pts":{"A":[0,0],"B":[8,0],"C":[8,6],"D":[0,6],"O":[8,3]},"nolab":["A","B","C","D","O"],"poly":[["A","B","C","D","fl"]],"seg":[["A","B","ln",null,"8 m"],["D","A","ln",null,"6 m"],["D","C"],["B","C","mu dash"]],"arc":[["O",3,-90,90,"ln"]],"txt":[[9.5,3.2,"r = 3 m","or","start"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n reghoek met 'n halfsirkel</div>
+  <div class="example-step"><span class="step-num">1</span><span>Oppervlakte = reghoek + halfsirkel = 8 × 6 + ½ × π × 3² = 48 + 14,14 = <strong>62,14 m²</strong></span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Omtrek = 8 + 6 + 8 + die helfte van die omtrek van die sirkel = 22 + π × 3 = 22 + 9,42 = <strong>31,42 m</strong></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Die sy tussen die reghoek en die halfsirkel is binne die vorm, so dit is nie deel van die omtrek nie.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n paadjie om 'n grasperk</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Grasperk van 10 m × 6 m het 'n paadjie van 1 m breed rondom. Oppervlakte van die paadjie?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Buitereghoek: 12 × 8 = 96 m². Grasperk: 10 × 6 = 60 m². Paadjie = 96 − 60 = <strong>36 m²</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Gebruik π van jou sakrekenaar en rond aan die einde af. Gebruik π ≈ 3,14 net as die vraag so sê.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Vorm is 'n reghoek van 10 cm × 4 cm met 'n halfsirkel met middellyn 4 cm op een kort sy. Bepaal sy oppervlakte tot 2 desimale plekke. (cm²)", "answer": "46.28", "altAnswers": ["46,28"], "topic": "Saamgestelde vorms"},
+        {"type": "input", "text": "'n Tuin van 12 m × 9 m het 'n paadjie van 2 m breed rondom aan die buitekant. Wat is die oppervlakte van die paadjie? (m²)", "answer": "100", "topic": "Saamgestelde vorms"},
+        {"type": "input", "text": "'n Vierkant met sy 10 cm het 'n sirkel met radius 3 cm uitgesny. Bepaal die oorblywende oppervlakte tot 2 desimale plekke. (cm²)", "answer": "71.73", "altAnswers": ["71,73"], "topic": "Saamgestelde vorms"},
+        {"type": "input", "text": "Bepaal die omtrek van 'n halfsirkel met middellyn 10 cm, tot 2 desimale plekke. (cm)", "answer": "25.71", "altAnswers": ["25,71"], "topic": "Saamgestelde vorms"},
+        {"type": "input", "text": "'n L-vorm bestaan uit 'n reghoek van 6 × 2 en 'n reghoek van 2 × 4 wat sonder oorvleueling aanmekaar is. Wat is sy oppervlakte? (cm²)", "answer": "20", "topic": "Saamgestelde vorms"},
+        {"type": "mc", "text": "Wanneer jy die omtrek van 'n saamgestelde vorm bepaal, sluit jy in:", "options": ["elke rand van elke deel", "net die buiterande", "net die geboë rande", "die binnerande twee keer"], "answer": 1, "topic": "Saamgestelde vorms"},
+      ]
+    },
+    {
+      id: 1402,
+      chapter: 14,
+      name: "Afmetings en eenhede verander",
+      fullName: "Die effek van veranderde afmetings op omtrek en oppervlakte, en eenhede van oppervlakte herlei",
+      lesson: {
+        heading: "Afmetings en eenhede verander",
+        sub: "Hoofstuk 14 · Onderwerp 4",
+        body: `
+<p>As jy die lengtes van 'n vorm met k vermenigvuldig, word sy omtrek met k vermenigvuldig, maar sy oppervlakte met k². As die sye verdubbel, word die oppervlakte vier keer so groot.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":150,"view":[-0.5,-0.8,9.5,5.3],"pts":{"a":[0,0],"b":[2,0],"c":[2,2],"d":[0,2],"e":[4,0],"f":[8,0],"g":[8,4],"h":[4,4]},"nolab":["a","b","c","d","e","f","g","h"],"poly":[["a","b","c","d","fl"],["e","f","g","h","fl2"]],"seg":[["a","b","ln",null,"2"],["b","c"],["c","d"],["d","a"],["e","f","ln",null,"4"],["f","g"],["g","h"],["h","e"],["e","g","mu dash"],["f","h","mu dash"],[[6,0],[6,4],"mu dash"],[[4,2],[8,2],"mu dash"]],"txt":[[1,0.9,"4","or"],[6,4.55,"16 = 4 × 4","or"]],"cap":"Verdubbel die sye: die oppervlakte is 4 keer so groot."}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Eenhede van oppervlakte herlei</div>
+<p>1 cm = 10 mm, so 1 cm² = 10 × 10 = 100 mm².<br>1 m = 100 cm, so 1 m² = 100 × 100 = 10 000 cm².<br>1 km = 1 000 m, so 1 km² = 1 000 000 m².<br>Groter eenheid → kleiner eenheid: vermenigvuldig. Kleiner → groter: deel.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Sirkel se radius word verdriedubbel. Sy oppervlakte word met 3² = <strong>9</strong> vermenigvuldig, sy omtrek met <strong>3</strong>.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2,5 m² = 2,5 × 10 000 = <strong>25 000 cm²</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>'n Algemene fout is 1 m² = 100 cm². Teken 'n vierkant van 1 m: dit is 100 cm by 100 cm, so dit bevat 10 000 cm².</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Die sye van 'n vierkant word verdubbel. Hoeveel keer neem sy oppervlakte toe?", "answer": "4", "topic": "Afmetings en eenhede verander"},
+        {"type": "input", "text": "Die sye van 'n driehoek word verdriedubbel. Hoeveel keer neem sy omtrek toe?", "answer": "3", "topic": "Afmetings en eenhede verander"},
+        {"type": "input", "text": "Herlei 3 m² na cm².", "answer": "30000", "topic": "Afmetings en eenhede verander"},
+        {"type": "input", "text": "Herlei 450 mm² na cm².", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Afmetings en eenhede verander"},
+        {"type": "input", "text": "'n Reghoek het 'n oppervlakte van 24 cm². Elke sy word gehalveer. Wat is die nuwe oppervlakte? (cm²)", "answer": "6", "topic": "Afmetings en eenhede verander"},
+        {"type": "mc", "text": "1 km² is gelyk aan:", "options": ["1 000 m²", "10 000 m²", "100 000 m²", "1 000 000 m²"], "answer": 3, "topic": "Afmetings en eenhede verander"},
+      ]
+    },
+    {
+      id: 1403,
+      chapter: 14,
+      name: "Hfst 14 Eksamenfokus",
+      fullName: "Eksamenoefening: oppervlakte en omtrek",
+      lesson: {
+        heading: "Hfst 14 Eksamenfokus",
+        sub: "Hoofstuk 14 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Skryf eers die formule, en gee oppervlakte-antwoorde in vierkante eenhede.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Trapesium het parallelle sye van 6 cm en 10 cm en 'n hoogte van 5 cm. Wat is sy oppervlakte? (cm²)", "answer": "40", "topic": "Hfst 14 Eksamenfokus"},
+        {"type": "input", "text": "Bepaal die oppervlakte van 'n sirkel met middellyn 14 cm, tot 2 desimale plekke. (cm²)", "answer": "153.94", "altAnswers": ["153,94"], "topic": "Hfst 14 Eksamenfokus"},
+        {"type": "input", "text": "'n Reghoek het 'n omtrek van 36 cm en 'n lengte van 11 cm. Wat is sy oppervlakte? (cm²)", "answer": "77", "topic": "Hfst 14 Eksamenfokus"},
+        {"type": "input", "text": "'n Sirkel het 'n omtrek van 31,4 cm. Gebruik π = 3,14 om sy radius te bepaal. (cm)", "answer": "5", "topic": "Hfst 14 Eksamenfokus"},
+        {"type": "input", "text": "'n Parallelogram het basis 9 cm en loodregte hoogte 4 cm. Wat is sy oppervlakte? (cm²)", "answer": "36", "topic": "Hfst 14 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 14, chapterName: "Oppervlakte en Omtrek",
@@ -220,6 +307,32 @@ MathMagician.registerChapter(14, {
           },
         ]
       },
+      {
+        "name": "Saamgestelde vorms",
+        "questions": [
+          {
+            "num": "4",
+            "text": "'n Atletiekbaan is 'n reghoek van 100 m × 60 m met 'n halfsirkel (middellyn 60 m) aan elke kort kant.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Bereken die afstand een keer om die baan.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Bereken die oppervlakte binne die baan.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "As al die lengtes verdubbel word, wat sal die nuwe oppervlakte wees?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -242,6 +355,26 @@ MathMagician.registerChapter(14, {
           { num: "Q3a", ans: "214,88 m²", note: "20×12 − ½×π×4² = 240 − 25,12 = 214,88 m²" },
           //REMOVED_OLD_Q3a_START{"215,12 m�", note: "20�12 - ��p�4� = 240 - 25,12 = 214,88 � 214,88 m�" },
           { num: "Q3b", ans: "≈ R 3 223,20", note: "214,88 × 15 = 3 223,20" },
+        ]
+      },
+      {
+        "name": "Saamgestelde vorms",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "≈ 388,50 m",
+            "note": "2 × 100 + π × 60 = 200 + 188,50"
+          },
+          {
+            "num": "Q4b",
+            "ans": "≈ 8 827,43 m²",
+            "note": "100 × 60 + π × 30² = 6 000 + 2 827,43"
+          },
+          {
+            "num": "Q4c",
+            "ans": "≈ 35 309,73 m²",
+            "note": "4 × 8 827,43 (oppervlakte × k² met k = 2)"
+          }
         ]
       },
     ]

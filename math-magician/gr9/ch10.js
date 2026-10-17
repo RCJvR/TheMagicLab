@@ -201,6 +201,125 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "The interior angle of a regular polygon is 156°. Using the interior angle formula, determine the number of sides of the polygon.", answer: "15", topic: "Constructions" },
       ]
     },
+    {
+      id: 1001,
+      chapter: 10,
+      name: "Constructing special angles",
+      fullName: "Constructing angles of 90°, 60°, 45°, 30° and 120° with a compass",
+      lesson: {
+        heading: "Constructing special angles",
+        sub: "Chapter 10 · Topic 2",
+        body: `
+<p>With only a compass and a ruler (for straight lines, not for measuring) you can construct angles of 90°, 60°, and by bisecting them, 45° and 30°.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":200,"view":[-0.5,-0.6,6.5,5.6],"pts":{"A":[0,0],"B":[6,0],"D":[3,0],"E":[1.5,2.598076211353316],"F":[3.2,5.542562584220407]},"nolab":["F"],"lab":{"A":"sw","B":"se","D":"s","E":"nw"},"seg":[["A","B"],["A","F","ac"]],"arc":[["A",3,-5,75,"mu"],["D",3,100,140,"mu"]],"ang":[["B","A","E","60°","gn",22]],"dots":["D","E"]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Constructing 60°</div>
+<p>1. Draw a line AB.<br>2. With the compass point on A, draw an arc that cuts AB at D.<br>3. Keep the same radius. With the point on D, draw an arc that cuts the first arc at E.<br>4. Draw a line from A through E. ∠EAB = 60°, because triangle ADE has three equal sides (it is equilateral).</p>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 The other special angles</div>
+<p><strong>90°:</strong> construct the perpendicular at a point on the line.<br><strong>30°:</strong> bisect a 60° angle.<br><strong>45°:</strong> bisect a 90° angle.<br><strong>120°:</strong> construct 60° and use the angle next to it on the straight line (180° − 60°).</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Never erase your construction arcs: they are the proof that you constructed the angle and did not measure it.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "To construct a 30° angle you:", "options": ["bisect a 90° angle", "bisect a 60° angle", "bisect a 45° angle", "measure with a protractor"], "answer": 1, "topic": "Constructing special angles"},
+        {"type": "mc", "text": "Why is the angle in the 60° construction exactly 60°?", "options": ["The arcs are curved", "The ruler is straight", "The triangle formed has three equal sides", "The compass is set to 6 cm"], "answer": 2, "topic": "Constructing special angles"},
+        {"type": "input", "text": "You bisect a 90° angle and then bisect one of the halves. What size is the smallest angle? (°)", "answer": "22.5", "altAnswers": ["22,5"], "topic": "Constructing special angles"},
+        {"type": "mc", "text": "Which angle can you get from a 60° construction on a straight line?", "options": ["100°", "75°", "135°", "120°"], "answer": 3, "topic": "Constructing special angles"},
+        {"type": "mc", "text": "In a construction, the ruler is used:", "options": ["only to draw straight lines", "to measure lengths", "to measure angles", "not at all"], "answer": 0, "topic": "Constructing special angles"},
+        {"type": "input", "text": "You construct 60° and then bisect it twice. What angle do you get? (°)", "answer": "15", "topic": "Constructing special angles"},
+      ]
+    },
+    {
+      id: 1002,
+      chapter: 10,
+      name: "Constructing triangles",
+      fullName: "Constructing triangles from sides and angles and investigating their angles",
+      lesson: {
+        heading: "Constructing triangles",
+        sub: "Chapter 10 · Topic 3",
+        body: `
+<p>A triangle is fixed once you know enough sides and angles. The same conditions that prove triangles congruent tell you what you need to construct one: SSS, SAS, ASA (or AAS) and RHS.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":210,"view":[-0.5,-0.8,7.5,5.2],"pts":{"A":[0,0],"B":[7,0],"C":[2.2,4.3]},"lab":{"A":"sw","B":"se","C":"n"},"seg":[["A","B","ln",null,"7 cm"],["A","C","ac",null,"4,8 cm"],["B","C","ac",null,"6,5 cm"]],"arc":[["A",4.83,50,75,"mu"],["B",6.45,130,148,"mu"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: construct a triangle with sides 7 cm, 6,5 cm and 4,8 cm (SSS)</div>
+  <div class="example-step"><span class="step-num">1</span><span>Draw the longest side AB = 7 cm.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Set the compass to 4,8 cm and draw an arc from A.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Set the compass to 6,5 cm and draw an arc from B. The arcs cross at C.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Join AC and BC.</span></div>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Investigate: the exterior angle</div>
+<p>Extend one side of your triangle. Measure the exterior angle and the two interior angles that are not next to it. The exterior angle always equals their sum.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>A triangle with sides 3, 4 and 8 cm cannot be constructed: the two shorter sides must add up to more than the longest side.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Which set of sides can NOT form a triangle?", "options": ["5, 6, 7", "4, 4, 7", "2, 3, 6", "6, 8, 10"], "answer": 2, "topic": "Constructing triangles"},
+        {"type": "mc", "text": "To construct a triangle given two sides and the angle between them you use:", "options": ["SSS", "SAS", "ASA", "RHS"], "answer": 1, "topic": "Constructing triangles"},
+        {"type": "input", "text": "An exterior angle of a triangle is 118°. One interior opposite angle is 47°. Find the other interior opposite angle. (°)", "answer": "71", "topic": "Constructing triangles"},
+        {"type": "input", "text": "Two angles of a triangle are 35° and 80°. What is the exterior angle next to the third angle? (°)", "answer": "115", "topic": "Constructing triangles"},
+        {"type": "mc", "text": "In an SSS construction, the third vertex is found where:", "options": ["two arcs cross", "two lines are parallel", "a protractor reads 90°", "the base is bisected"], "answer": 0, "topic": "Constructing triangles"},
+        {"type": "mc", "text": "An equilateral triangle is constructed with sides of 5 cm. Each angle is:", "options": ["45°", "60°", "90°", "different each time"], "answer": 1, "topic": "Constructing triangles"},
+      ]
+    },
+    {
+      id: 1003,
+      chapter: 10,
+      name: "Quadrilaterals and their diagonals",
+      fullName: "Constructing quadrilaterals and investigating the properties of their diagonals",
+      lesson: {
+        heading: "Quadrilaterals and their diagonals",
+        sub: "Chapter 10 · Topic 4",
+        body: `
+<p>Construct the quadrilaterals accurately, draw their diagonals, and measure. You will find that each type has its own diagonal properties.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":180,"view":[-0.5,-2.2,13,5.5],"pts":{"P":[0,0],"Q":[5,0],"R":[5,4],"S":[0,4],"K":[9.5,0],"L":[11.5,2.5],"M":[9.5,5],"N":[7.5,2.5]},"lab":{"P":"sw","Q":"se","R":"ne","S":"nw","K":"s","L":"e","M":"n","N":"w"},"poly":[["P","Q","R","S","fl"],["K","L","M","N","fl2"]],"seg":[["P","Q"],["Q","R"],["R","S"],["S","P"],["P","R","ac"],["Q","S","ac"],["K","L"],["L","M"],["M","N"],["N","K"],["K","M","hl"],["L","N","hl"]],"ra":[["L",[9.5,2.5],"M"]],"txt":[[2.5,-1.8,"rectangle","mu"],[9.5,-1.8,"rhombus","mu"]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 What the diagonals do</div>
+<p><strong>Parallelogram:</strong> they bisect each other.<br><strong>Rectangle:</strong> they bisect each other and are equal.<br><strong>Rhombus:</strong> they bisect each other at 90° and bisect the angles.<br><strong>Square:</strong> all of the above: equal, bisect each other at 90°.<br><strong>Kite:</strong> they meet at 90°; the long diagonal bisects the short one.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: constructing a parallelogram</div>
+  <div class="example-step"><span class="step-num">1</span><span>Draw AB = 6 cm and construct ∠A = 60° (as in topic 1). Mark AD = 4 cm on the arm.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>From D draw an arc of 6 cm; from B draw an arc of 4 cm. They cross at C.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Join DC and BC. Both pairs of opposite sides are equal, so ABCD is a parallelogram.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>A square is a special rectangle AND a special rhombus, so its diagonals have both sets of properties.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "In which quadrilateral are the diagonals equal but NOT perpendicular?", "options": ["rectangle", "rhombus", "kite", "square"], "answer": 0, "topic": "Quadrilaterals and their diagonals"},
+        {"type": "mc", "text": "The diagonals of a rhombus:", "options": ["are always equal", "never meet", "bisect each other at 90°", "are parallel"], "answer": 2, "topic": "Quadrilaterals and their diagonals"},
+        {"type": "input", "text": "The diagonals of a rectangle ABCD meet at O. AC = 14 cm. How long is OB? (cm)", "answer": "7", "topic": "Quadrilaterals and their diagonals"},
+        {"type": "mc", "text": "A quadrilateral has diagonals that are perpendicular, and only one bisects the other. It is a:", "options": ["square", "rhombus", "rectangle", "kite"], "answer": 3, "topic": "Quadrilaterals and their diagonals"},
+        {"type": "mc", "text": "Which statement is true for EVERY parallelogram?", "options": ["Its diagonals are equal", "Its diagonals bisect each other", "Its diagonals are perpendicular", "All its angles are 90°"], "answer": 1, "topic": "Quadrilaterals and their diagonals"},
+        {"type": "input", "text": "The diagonals of a rhombus are 12 cm and 16 cm. How long is each side? (cm)", "answer": "10", "topic": "Quadrilaterals and their diagonals"},
+      ]
+    },
+    {
+      id: 1004,
+      chapter: 10,
+      name: "Ch 10 Exam focus",
+      fullName: "Exam practice: geometric constructions",
+      lesson: {
+        heading: "Ch 10 Exam focus",
+        sub: "Chapter 10 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. In a construction question, show all arcs; in an investigation, measure carefully and state what you notice.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "To construct 45° you bisect:", "options": ["60°", "90°", "30°", "180°"], "answer": 1, "topic": "Ch 10 Exam focus"},
+        {"type": "mc", "text": "The perpendicular bisector of AB passes through:", "options": ["the midpoint of AB at 90°", "A only", "B only", "a point outside AB, at 45°"], "answer": 0, "topic": "Ch 10 Exam focus"},
+        {"type": "input", "text": "The interior angles of a triangle are x, 2x and 3x. Find x. (°)", "answer": "30", "topic": "Ch 10 Exam focus"},
+        {"type": "mc", "text": "Every point on the bisector of an angle is:", "options": ["on one arm", "closer to one arm", "the same distance from both arms", "at the vertex"], "answer": 2, "topic": "Ch 10 Exam focus"},
+        {"type": "input", "text": "A kite has diagonals 10 cm and 24 cm. What is its area? (cm²)", "answer": "120", "topic": "Ch 10 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 10, chapterName: "Geometric Constructions",
@@ -231,6 +350,32 @@ MathMagician.registerChapter(10, {
           },
         ]
       },
+      {
+        "name": "Constructing triangles",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Use a compass and ruler. Show all construction arcs.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Construct △ABC with AB = 8 cm, ∠A = 60° and AC = 6 cm.",
+                "marks": 4
+              },
+              {
+                "label": "b)",
+                "text": "Extend AB past B to D. Measure ∠CBD, ∠A and ∠C. What do you notice?",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Construct a rhombus with sides 5 cm and one angle of 60°. Draw and measure its diagonals.",
+                "marks": 4
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -248,6 +393,26 @@ MathMagician.registerChapter(10, {
         answers: [
           { num: "Q2", ans: "Award marks for: base AB = 7 cm, arc of 5 cm from B, arc of 6 cm from A, C at intersection, triangle completed. Angle ABC ≈ 57° (accept 55°–59°).", note: "Use cosine rule to verify: cos B = (49+25-36)/70 = 38/70; B ≈ 57°" },
           { num: "Q3", ans: "Award marks for: PQ = 6 cm, 50° angle at P constructed, PR = 5 cm marked, QR drawn. QR ≈ 4,6 cm (accept 4,4–4,8 cm).", note: "Cosine rule: QR² = 36+25-60cos50 ≈ 22,4; QR ≈ 4,73" },
+        ]
+      },
+      {
+        "name": "Constructing triangles",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Construction: 60° at A with arcs, AC = 6 cm marked on the arm, BC joined.",
+            "note": "SAS construction; arcs must be visible."
+          },
+          {
+            "num": "Q4b",
+            "ans": "∠CBD = ∠A + ∠C (about 60° + 74° ≈ 134°)",
+            "note": "Exterior angle = sum of interior opposite angles."
+          },
+          {
+            "num": "Q4c",
+            "ans": "Diagonals about 5 cm and 8,7 cm; they bisect each other at 90°.",
+            "note": "The short diagonal forms an equilateral triangle with two sides."
+          }
         ]
       },
     ]

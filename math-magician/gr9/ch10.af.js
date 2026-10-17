@@ -201,6 +201,125 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "Die binnehoek van 'n reëlmatige veelhoek is 156°. Gebruik die binnehoek-formule om die aantal sye van die veelhoek te bepaal.", answer: "15", topic: "Konstruksies" },
       ]
     },
+    {
+      id: 1001,
+      chapter: 10,
+      name: "Spesiale hoeke konstrueer",
+      fullName: "Hoeke van 90°, 60°, 45°, 30° en 120° met 'n passer konstrueer",
+      lesson: {
+        heading: "Spesiale hoeke konstrueer",
+        sub: "Hoofstuk 10 · Onderwerp 2",
+        body: `
+<p>Met net 'n passer en 'n liniaal (vir reguit lyne, nie om te meet nie) kan jy hoeke van 90° en 60° konstrueer, en deur hulle te halveer, 45° en 30°.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":200,"view":[-0.5,-0.6,6.5,5.6],"pts":{"A":[0,0],"B":[6,0],"D":[3,0],"E":[1.5,2.598076211353316],"F":[3.2,5.542562584220407]},"nolab":["F"],"lab":{"A":"sw","B":"se","D":"s","E":"nw"},"seg":[["A","B"],["A","F","ac"]],"arc":[["A",3,-5,75,"mu"],["D",3,100,140,"mu"]],"ang":[["B","A","E","60°","gn",22]],"dots":["D","E"]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 60° konstrueer</div>
+<p>1. Trek 'n lyn AB.<br>2. Met die passerpunt op A, trek 'n boog wat AB by D sny.<br>3. Hou dieselfde radius. Met die punt op D, trek 'n boog wat die eerste boog by E sny.<br>4. Trek 'n lyn van A deur E. ∠EAB = 60°, want driehoek ADE het drie gelyke sye (dit is gelyksydig).</p>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Die ander spesiale hoeke</div>
+<p><strong>90°:</strong> konstrueer die loodlyn by 'n punt op die lyn.<br><strong>30°:</strong> halveer 'n hoek van 60°.<br><strong>45°:</strong> halveer 'n hoek van 90°.<br><strong>120°:</strong> konstrueer 60° en gebruik die hoek langsaan op die reguit lyn (180° − 60°).</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Moet nooit jou konstruksieboë uitvee nie: hulle is die bewys dat jy die hoek gekonstrueer en nie gemeet het nie.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Om 'n hoek van 30° te konstrueer:", "options": ["halveer jy 'n hoek van 90°", "halveer jy 'n hoek van 60°", "halveer jy 'n hoek van 45°", "meet jy met 'n gradeboog"], "answer": 1, "topic": "Spesiale hoeke konstrueer"},
+        {"type": "mc", "text": "Hoekom is die hoek in die 60°-konstruksie presies 60°?", "options": ["Die boë is gebuig", "Die liniaal is reguit", "Die driehoek wat vorm, het drie gelyke sye", "Die passer is op 6 cm gestel"], "answer": 2, "topic": "Spesiale hoeke konstrueer"},
+        {"type": "input", "text": "Jy halveer 'n hoek van 90° en halveer dan een van die helftes. Hoe groot is die kleinste hoek? (°)", "answer": "22.5", "altAnswers": ["22,5"], "topic": "Spesiale hoeke konstrueer"},
+        {"type": "mc", "text": "Watter hoek kan jy uit 'n 60°-konstruksie op 'n reguit lyn kry?", "options": ["100°", "75°", "135°", "120°"], "answer": 3, "topic": "Spesiale hoeke konstrueer"},
+        {"type": "mc", "text": "In 'n konstruksie word die liniaal gebruik:", "options": ["net om reguit lyne te trek", "om lengtes te meet", "om hoeke te meet", "glad nie"], "answer": 0, "topic": "Spesiale hoeke konstrueer"},
+        {"type": "input", "text": "Jy konstrueer 60° en halveer dit dan twee keer. Watter hoek kry jy? (°)", "answer": "15", "topic": "Spesiale hoeke konstrueer"},
+      ]
+    },
+    {
+      id: 1002,
+      chapter: 10,
+      name: "Driehoeke konstrueer",
+      fullName: "Driehoeke uit sye en hoeke konstrueer en hul hoeke ondersoek",
+      lesson: {
+        heading: "Driehoeke konstrueer",
+        sub: "Hoofstuk 10 · Onderwerp 3",
+        body: `
+<p>'n Driehoek is vas sodra jy genoeg sye en hoeke ken. Dieselfde voorwaardes wat bewys dat driehoeke kongruent is, sê vir jou wat jy nodig het om een te konstrueer: SSS, SHS, HSH (of HHS) en RHS.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":210,"view":[-0.5,-0.8,7.5,5.2],"pts":{"A":[0,0],"B":[7,0],"C":[2.2,4.3]},"lab":{"A":"sw","B":"se","C":"n"},"seg":[["A","B","ln",null,"7 cm"],["A","C","ac",null,"4,8 cm"],["B","C","ac",null,"6,5 cm"]],"arc":[["A",4.83,50,75,"mu"],["B",6.45,130,148,"mu"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: konstrueer 'n driehoek met sye 7 cm, 6,5 cm en 4,8 cm (SSS)</div>
+  <div class="example-step"><span class="step-num">1</span><span>Trek die langste sy AB = 7 cm.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Stel die passer op 4,8 cm en trek 'n boog vanaf A.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Stel die passer op 6,5 cm en trek 'n boog vanaf B. Die boë kruis by C.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Verbind AC en BC.</span></div>
+</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Ondersoek: die buitehoek</div>
+<p>Verleng een sy van jou driehoek. Meet die buitehoek en die twee binnehoeke wat nie langs dit is nie. Die buitehoek is altyd gelyk aan hul som.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>'n Driehoek met sye 3, 4 en 8 cm kan nie gekonstrueer word nie: die twee korter sye moet saam langer as die langste sy wees.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Watter stel sye kan NIE 'n driehoek vorm nie?", "options": ["5, 6, 7", "4, 4, 7", "2, 3, 6", "6, 8, 10"], "answer": 2, "topic": "Driehoeke konstrueer"},
+        {"type": "mc", "text": "Om 'n driehoek te konstrueer met twee sye en die hoek tussen hulle gegee, gebruik jy:", "options": ["SSS", "SHS", "HSH", "RHS"], "answer": 1, "topic": "Driehoeke konstrueer"},
+        {"type": "input", "text": "'n Buitehoek van 'n driehoek is 118°. Een teenoorstaande binnehoek is 47°. Bepaal die ander teenoorstaande binnehoek. (°)", "answer": "71", "topic": "Driehoeke konstrueer"},
+        {"type": "input", "text": "Twee hoeke van 'n driehoek is 35° en 80°. Wat is die buitehoek langs die derde hoek? (°)", "answer": "115", "topic": "Driehoeke konstrueer"},
+        {"type": "mc", "text": "In 'n SSS-konstruksie word die derde hoekpunt gevind waar:", "options": ["twee boë kruis", "twee lyne parallel is", "'n gradeboog 90° lees", "die basis gehalveer word"], "answer": 0, "topic": "Driehoeke konstrueer"},
+        {"type": "mc", "text": "'n Gelyksydige driehoek word met sye van 5 cm gekonstrueer. Elke hoek is:", "options": ["45°", "60°", "90°", "elke keer anders"], "answer": 1, "topic": "Driehoeke konstrueer"},
+      ]
+    },
+    {
+      id: 1003,
+      chapter: 10,
+      name: "Vierhoeke en hul hoeklyne",
+      fullName: "Vierhoeke konstrueer en die eienskappe van hul hoeklyne ondersoek",
+      lesson: {
+        heading: "Vierhoeke en hul hoeklyne",
+        sub: "Hoofstuk 10 · Onderwerp 4",
+        body: `
+<p>Konstrueer die vierhoeke akkuraat, trek hul hoeklyne en meet. Jy sal vind dat elke soort sy eie hoeklyn-eienskappe het.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":180,"view":[-0.5,-2.2,13,5.5],"pts":{"P":[0,0],"Q":[5,0],"R":[5,4],"S":[0,4],"K":[9.5,0],"L":[11.5,2.5],"M":[9.5,5],"N":[7.5,2.5]},"lab":{"P":"sw","Q":"se","R":"ne","S":"nw","K":"s","L":"e","M":"n","N":"w"},"poly":[["P","Q","R","S","fl"],["K","L","M","N","fl2"]],"seg":[["P","Q"],["Q","R"],["R","S"],["S","P"],["P","R","ac"],["Q","S","ac"],["K","L"],["L","M"],["M","N"],["N","K"],["K","M","hl"],["L","N","hl"]],"ra":[["L",[9.5,2.5],"M"]],"txt":[[2.5,-1.8,"reghoek","mu"],[9.5,-1.8,"ruit","mu"]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Wat die hoeklyne doen</div>
+<p><strong>Parallelogram:</strong> hulle halveer mekaar.<br><strong>Reghoek:</strong> hulle halveer mekaar en is ewe lank.<br><strong>Ruit:</strong> hulle halveer mekaar teen 90° en halveer die hoeke.<br><strong>Vierkant:</strong> al die bogenoemde: ewe lank, halveer mekaar teen 90°.<br><strong>Vlieër:</strong> hulle ontmoet teen 90°; die lang hoeklyn halveer die kort een.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n parallelogram konstrueer</div>
+  <div class="example-step"><span class="step-num">1</span><span>Trek AB = 6 cm en konstrueer ∠A = 60° (soos in onderwerp 1). Merk AD = 4 cm op die been.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Trek vanaf D 'n boog van 6 cm; vanaf B 'n boog van 4 cm. Hulle kruis by C.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Verbind DC en BC. Albei pare oorstaande sye is gelyk, so ABCD is 'n parallelogram.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>'n Vierkant is 'n spesiale reghoek EN 'n spesiale ruit, so sy hoeklyne het albei stelle eienskappe.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "In watter vierhoek is die hoeklyne ewe lank maar NIE loodreg nie?", "options": ["reghoek", "ruit", "vlieër", "vierkant"], "answer": 0, "topic": "Vierhoeke en hul hoeklyne"},
+        {"type": "mc", "text": "Die hoeklyne van 'n ruit:", "options": ["is altyd ewe lank", "ontmoet nooit", "halveer mekaar teen 90°", "is parallel"], "answer": 2, "topic": "Vierhoeke en hul hoeklyne"},
+        {"type": "input", "text": "Die hoeklyne van reghoek ABCD sny by O. AC = 14 cm. Hoe lank is OB? (cm)", "answer": "7", "topic": "Vierhoeke en hul hoeklyne"},
+        {"type": "mc", "text": "'n Vierhoek het hoeklyne wat loodreg is, en net een halveer die ander. Dit is 'n:", "options": ["vierkant", "ruit", "reghoek", "vlieër"], "answer": 3, "topic": "Vierhoeke en hul hoeklyne"},
+        {"type": "mc", "text": "Watter stelling is waar vir ELKE parallelogram?", "options": ["Sy hoeklyne is ewe lank", "Sy hoeklyne halveer mekaar", "Sy hoeklyne is loodreg", "Al sy hoeke is 90°"], "answer": 1, "topic": "Vierhoeke en hul hoeklyne"},
+        {"type": "input", "text": "Die hoeklyne van 'n ruit is 12 cm en 16 cm. Hoe lank is elke sy? (cm)", "answer": "10", "topic": "Vierhoeke en hul hoeklyne"},
+      ]
+    },
+    {
+      id: 1004,
+      chapter: 10,
+      name: "Hfst 10 Eksamenfokus",
+      fullName: "Eksamenoefening: meetkundige konstruksies",
+      lesson: {
+        heading: "Hfst 10 Eksamenfokus",
+        sub: "Hoofstuk 10 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Toon al die boë in 'n konstruksievraag; meet versigtig in 'n ondersoek en sê wat jy opmerk.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Om 45° te konstrueer, halveer jy:", "options": ["60°", "90°", "30°", "180°"], "answer": 1, "topic": "Hfst 10 Eksamenfokus"},
+        {"type": "mc", "text": "Die middelloodlyn van AB gaan deur:", "options": ["die middelpunt van AB teen 90°", "net A", "net B", "'n punt buite AB, teen 45°"], "answer": 0, "topic": "Hfst 10 Eksamenfokus"},
+        {"type": "input", "text": "Die binnehoeke van 'n driehoek is x, 2x en 3x. Bepaal x. (°)", "answer": "30", "topic": "Hfst 10 Eksamenfokus"},
+        {"type": "mc", "text": "Elke punt op die halveerlyn van 'n hoek is:", "options": ["op een been", "nader aan een been", "ewe ver van albei bene", "by die hoekpunt"], "answer": 2, "topic": "Hfst 10 Eksamenfokus"},
+        {"type": "input", "text": "'n Vlieër het hoeklyne van 10 cm en 24 cm. Wat is sy oppervlakte? (cm²)", "answer": "120", "topic": "Hfst 10 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 10, chapterName: "Meetkundige Konstruksies",
@@ -231,6 +350,32 @@ MathMagician.registerChapter(10, {
           },
         ]
       },
+      {
+        "name": "Driehoeke konstrueer",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Gebruik 'n passer en liniaal. Toon al die konstruksieboë.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Konstrueer △ABC met AB = 8 cm, ∠A = 60° en AC = 6 cm.",
+                "marks": 4
+              },
+              {
+                "label": "b)",
+                "text": "Verleng AB verby B tot D. Meet ∠CBD, ∠A en ∠C. Wat merk jy op?",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Konstrueer 'n ruit met sye van 5 cm en een hoek van 60°. Trek en meet sy hoeklyne.",
+                "marks": 4
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -248,6 +393,26 @@ MathMagician.registerChapter(10, {
         answers: [
           { num: "Q2", ans: "Ken punte toe vir: basis AB = 7 cm, boog van 5 cm vanaf B, boog van 6 cm vanaf A, C by die snypunt, driehoek voltooi. Hoek ABC ≈ 57° (aanvaar 55°–59°).", note: "Gebruik die cosinusreël om te verifieer: cos B = (49+25-36)/70 = 38/70; B ≈ 57°" },
           { num: "Q3", ans: "Ken punte toe vir: PQ = 6 cm, 50°-hoek by P gekonstrueer, PR = 5 cm gemerk, QR getrek. QR ≈ 4,6 cm (aanvaar 4,4–4,8 cm).", note: "Cosinusreël: QR² = 36+25-60cos50 ≈ 22,4; QR ≈ 4,73" },
+        ]
+      },
+      {
+        "name": "Driehoeke konstrueer",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Konstruksie: 60° by A met boë, AC = 6 cm op die been gemerk, BC verbind.",
+            "note": "SHS-konstruksie; boë moet sigbaar wees."
+          },
+          {
+            "num": "Q4b",
+            "ans": "∠CBD = ∠A + ∠C (ongeveer 60° + 74° ≈ 134°)",
+            "note": "Buitehoek = som van teenoorstaande binnehoeke."
+          },
+          {
+            "num": "Q4c",
+            "ans": "Hoeklyne ongeveer 5 cm en 8,7 cm; hulle halveer mekaar teen 90°.",
+            "note": "Die kort hoeklyn vorm 'n gelyksydige driehoek met twee sye."
+          }
         ]
       },
     ]

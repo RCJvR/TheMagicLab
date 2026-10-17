@@ -180,6 +180,93 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A circle has an area of 78,5 cm². Using p ≈ 3,14, find its radius (in cm).", answer: "5", topic: "Area" },
       ]
     },
+    {
+      id: 1401,
+      chapter: 14,
+      name: "Composite shapes",
+      fullName: "Area and perimeter of composite shapes with circles and polygons",
+      lesson: {
+        heading: "Composite shapes",
+        sub: "Chapter 14 · Topic 3",
+        body: `
+<p>A composite shape is made of simple shapes. Split it into rectangles, triangles, circles or parts of circles; add the areas of the parts (or subtract a hole). For the perimeter, add only the outside edges.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":170,"view":[-0.5,-0.8,13,7],"pts":{"A":[0,0],"B":[8,0],"C":[8,6],"D":[0,6],"O":[8,3]},"nolab":["A","B","C","D","O"],"poly":[["A","B","C","D","fl"]],"seg":[["A","B","ln",null,"8 m"],["D","A","ln",null,"6 m"],["D","C"],["B","C","mu dash"]],"arc":[["O",3,-90,90,"ln"]],"txt":[[9.5,3.2,"r = 3 m","or","start"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a rectangle with a semicircle</div>
+  <div class="example-step"><span class="step-num">1</span><span>Area = rectangle + semicircle = 8 × 6 + ½ × π × 3² = 48 + 14,14 = <strong>62,14 m²</strong></span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Perimeter = 8 + 6 + 8 + half the circumference = 22 + π × 3 = 22 + 9,42 = <strong>31,42 m</strong></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>The side between the rectangle and the semicircle is inside the shape, so it is not part of the perimeter.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a path around a lawn</div>
+  <div class="example-step"><span class="step-num">1</span><span>A 10 m × 6 m lawn has a 1 m wide path all around it. Area of the path?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Outer rectangle: 12 × 8 = 96 m². Lawn: 10 × 6 = 60 m². Path = 96 − 60 = <strong>36 m²</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Use π from your calculator and round at the end. Use π ≈ 3,14 only if the question says so.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A shape is a 10 cm × 4 cm rectangle with a semicircle of diameter 4 cm on one short side. Find its area to 2 decimal places. (cm²)", "answer": "46.28", "altAnswers": ["46,28"], "topic": "Composite shapes"},
+        {"type": "input", "text": "A 12 m × 9 m garden has a 2 m wide path all around the outside. What is the area of the path? (m²)", "answer": "100", "topic": "Composite shapes"},
+        {"type": "input", "text": "A square of side 10 cm has a circle of radius 3 cm cut out. Find the remaining area to 2 decimal places. (cm²)", "answer": "71.73", "altAnswers": ["71,73"], "topic": "Composite shapes"},
+        {"type": "input", "text": "Find the perimeter of a semicircle with diameter 10 cm, to 2 decimal places. (cm)", "answer": "25.71", "altAnswers": ["25,71"], "topic": "Composite shapes"},
+        {"type": "input", "text": "An L-shape is made of a 6 × 2 rectangle and a 2 × 4 rectangle joined without overlap. What is its area? (cm²)", "answer": "20", "topic": "Composite shapes"},
+        {"type": "mc", "text": "When you find the perimeter of a composite shape you include:", "options": ["every edge of every part", "only the outside edges", "only the curved edges", "the inside edges twice"], "answer": 1, "topic": "Composite shapes"},
+      ]
+    },
+    {
+      id: 1402,
+      chapter: 14,
+      name: "Changing dimensions and units",
+      fullName: "The effect of changing dimensions on perimeter and area, and converting units of area",
+      lesson: {
+        heading: "Changing dimensions and units",
+        sub: "Chapter 14 · Topic 4",
+        body: `
+<p>When you multiply the lengths of a shape by k, its perimeter is multiplied by k, but its area is multiplied by k². Doubling the sides makes the area four times as big.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":150,"view":[-0.5,-0.8,9.5,5.3],"pts":{"a":[0,0],"b":[2,0],"c":[2,2],"d":[0,2],"e":[4,0],"f":[8,0],"g":[8,4],"h":[4,4]},"nolab":["a","b","c","d","e","f","g","h"],"poly":[["a","b","c","d","fl"],["e","f","g","h","fl2"]],"seg":[["a","b","ln",null,"2"],["b","c"],["c","d"],["d","a"],["e","f","ln",null,"4"],["f","g"],["g","h"],["h","e"],["e","g","mu dash"],["f","h","mu dash"],[[6,0],[6,4],"mu dash"],[[4,2],[8,2],"mu dash"]],"txt":[[1,0.9,"4","or"],[6,4.55,"16 = 4 × 4","or"]],"cap":"Double the sides: the area is 4 times as big."}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Converting units of area</div>
+<p>1 cm = 10 mm, so 1 cm² = 10 × 10 = 100 mm².<br>1 m = 100 cm, so 1 m² = 100 × 100 = 10 000 cm².<br>1 km = 1 000 m, so 1 km² = 1 000 000 m².<br>Bigger unit → smaller unit: multiply. Smaller → bigger: divide.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example</div>
+  <div class="example-step"><span class="step-num">1</span><span>A circle's radius is tripled. Its area is multiplied by 3² = <strong>9</strong>, its circumference by <strong>3</strong>.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2,5 m² = 2,5 × 10 000 = <strong>25 000 cm²</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>A common mistake is 1 m² = 100 cm². Draw a 1 m square: it is 100 cm by 100 cm, so it holds 10 000 cm².</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "The sides of a square are doubled. By how many times does its area increase?", "answer": "4", "topic": "Changing dimensions and units"},
+        {"type": "input", "text": "The sides of a triangle are tripled. By how many times does its perimeter increase?", "answer": "3", "topic": "Changing dimensions and units"},
+        {"type": "input", "text": "Convert 3 m² to cm².", "answer": "30000", "topic": "Changing dimensions and units"},
+        {"type": "input", "text": "Convert 450 mm² to cm².", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Changing dimensions and units"},
+        {"type": "input", "text": "A rectangle has an area of 24 cm². Each side is halved. What is the new area? (cm²)", "answer": "6", "topic": "Changing dimensions and units"},
+        {"type": "mc", "text": "1 km² is equal to:", "options": ["1 000 m²", "10 000 m²", "100 000 m²", "1 000 000 m²"], "answer": 3, "topic": "Changing dimensions and units"},
+      ]
+    },
+    {
+      id: 1403,
+      chapter: 14,
+      name: "Ch 14 Exam focus",
+      fullName: "Exam practice: area and perimeter",
+      lesson: {
+        heading: "Ch 14 Exam focus",
+        sub: "Chapter 14 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Write the formula first, and give area answers in square units.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A trapezium has parallel sides 6 cm and 10 cm and a height of 5 cm. What is its area? (cm²)", "answer": "40", "topic": "Ch 14 Exam focus"},
+        {"type": "input", "text": "Find the area of a circle with diameter 14 cm, to 2 decimal places. (cm²)", "answer": "153.94", "altAnswers": ["153,94"], "topic": "Ch 14 Exam focus"},
+        {"type": "input", "text": "A rectangle has a perimeter of 36 cm and a length of 11 cm. What is its area? (cm²)", "answer": "77", "topic": "Ch 14 Exam focus"},
+        {"type": "input", "text": "A circle has a circumference of 31,4 cm. Use π = 3,14 to find its radius. (cm)", "answer": "5", "topic": "Ch 14 Exam focus"},
+        {"type": "input", "text": "A parallelogram has base 9 cm and perpendicular height 4 cm. What is its area? (cm²)", "answer": "36", "topic": "Ch 14 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 14, chapterName: "Area and Perimeter",
@@ -220,6 +307,32 @@ MathMagician.registerChapter(14, {
           },
         ]
       },
+      {
+        "name": "Composite shapes",
+        "questions": [
+          {
+            "num": "4",
+            "text": "A running track is a 100 m × 60 m rectangle with a semicircle (diameter 60 m) on each short end.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Calculate the distance once around the track.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Calculate the area enclosed by the track.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "If all lengths were doubled, what would the new area be?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -241,6 +354,26 @@ MathMagician.registerChapter(14, {
           { num: "Q2c", ans: "115,74 cm²", note: "12²-π×3² = 144-28,26 = 115,74" },
           { num: "Q3a", ans: "214,88 m²", note: "20×12 − ½×π×4² = 240 − 25,12 = 214,88 m²" },
           { num: "Q3b", ans: "≈ R 3 223,20", note: "214,88 × 15 = 3 223,20" },
+        ]
+      },
+      {
+        "name": "Composite shapes",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "≈ 388,50 m",
+            "note": "2 × 100 + π × 60 = 200 + 188,50"
+          },
+          {
+            "num": "Q4b",
+            "ans": "≈ 8 827,43 m²",
+            "note": "100 × 60 + π × 30² = 6 000 + 2 827,43"
+          },
+          {
+            "num": "Q4c",
+            "ans": "≈ 35 309,73 m²",
+            "note": "4 × 8 827,43 (area × k² with k = 2)"
+          }
         ]
       },
     ]

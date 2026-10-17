@@ -171,6 +171,131 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Driehoek ABC is gelykvormig aan driehoek DEF, met driehoek DEF die groter een. Die verhouding van hulle oppervlaktes is 4 : 9. As die kortste sy van driehoek ABC 6 cm is, vind die lengte van die ooreenstemmende kortste sy van driehoek DEF (in cm).", answer: "9", topic: "2D-vorms" },
       ]
     },
+    {
+      id: 1101,
+      chapter: 11,
+      name: "Hoeke van veelhoeke",
+      fullName: "Die som van die binnehoeke van veelhoeke",
+      lesson: {
+        heading: "Hoeke van veelhoeke",
+        sub: "Hoofstuk 11 · Onderwerp 3",
+        body: `
+<p>Trek al die hoeklyne vanuit een hoekpunt van 'n veelhoek. 'n Veelhoek met n sye word in (n − 2) driehoeke verdeel, en elke driehoek se hoeke tel op tot 180°.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":210,"pts":{"A":[1.8369701987210297e-16,3.0],"B":[-2.8531695488854605,0.9270509831248426],"C":[-1.7633557568774196,-2.427050983124842],"D":[1.7633557568774187,-2.427050983124843],"E":[2.853169548885461,0.9270509831248415]},"poly":[["A","B","C","D","E","fl"]],"seg":[["A","B"],["B","C"],["C","D"],["D","E"],["E","A"],["A","C","ac"],["A","D","ac"]],"txt":[[-1.25,0.5,"1","or"],[0,-1.3,"2","or"],[1.25,0.5,"3","or"]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Som van die binnehoeke</div>
+<p><span class="math">som = (n − 2) × 180°</span><br>'n Vyfhoek (n = 5): 3 × 180° = 540°. 'n Seshoek (n = 6): 4 × 180° = 720°.<br>In 'n <strong>reëlmatige</strong> veelhoek is al die hoeke gelyk, so elke hoek = (n − 2) × 180° ÷ n.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n reëlmatige agthoek</div>
+  <div class="example-step"><span class="step-num">1</span><span>n = 8: som = 6 × 180° = 1 080°</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Elke hoek = 1 080° ÷ 8 = <strong>135°</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: bepaal die aantal sye</div>
+  <div class="example-step"><span class="step-num">1</span><span>Die hoeke van 'n veelhoek tel op tot 1 440°. Hoeveel sye het dit?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>(n − 2) × 180 = 1 440, so n − 2 = 8 en <strong>n = 10</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Die buitehoeke van enige konvekse veelhoek, een by elke hoekpunt, tel altyd op tot 360°.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Wat is die som van die binnehoeke van 'n seshoek? (°)", "answer": "720", "topic": "Hoeke van veelhoeke"},
+        {"type": "input", "text": "Wat is elke binnehoek van 'n reëlmatige vyfhoek? (°)", "answer": "108", "topic": "Hoeke van veelhoeke"},
+        {"type": "input", "text": "Die binnehoeke van 'n veelhoek tel op tot 1 260°. Hoeveel sye het dit?", "answer": "9", "topic": "Hoeke van veelhoeke"},
+        {"type": "input", "text": "Vier hoeke van 'n vyfhoek is 100°, 110°, 95° en 120°. Bepaal die vyfde hoek. (°)", "answer": "115", "topic": "Hoeke van veelhoeke"},
+        {"type": "input", "text": "Wat is elke buitehoek van 'n reëlmatige seshoek? (°)", "answer": "60", "topic": "Hoeke van veelhoeke"},
+        {"type": "mc", "text": "'n Reëlmatige veelhoek het binnehoeke van 150°. Hoeveel sye het dit?", "options": ["10", "11", "12", "15"], "answer": 2, "topic": "Hoeke van veelhoeke"},
+      ]
+    },
+    {
+      id: 1102,
+      chapter: 11,
+      name: "Buitehoeke van driehoeke",
+      fullName: "Die buitehoek van 'n driehoek en probleme daarmee oplos",
+      lesson: {
+        heading: "Buitehoeke van driehoeke",
+        sub: "Hoofstuk 11 · Onderwerp 4",
+        body: `
+<p>As jy een sy van 'n driehoek verleng, is die hoek wat buite vorm 'n <strong>buitehoek</strong>.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":180,"view":[-0.4,-0.6,8,3.6],"pts":{"A":[0,0],"B":[5,0],"C":[1.8,3],"D":[7.5,0]},"lab":{"A":"sw","B":"s","C":"n","D":"s"},"seg":[["A","B"],["B","C"],["C","A"],["B","D","dash"]],"ang":[["C","B","D","x","hl",18],["B","A","C","a","ac",22],["A","C","B","c","ac",18]]}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Buitehoekstelling</div>
+<p>Die buitehoek is gelyk aan die som van die twee teenoorstaande binnehoeke: <span class="math">x = a + c</span>.<br>Hoekom? ∠ABC + x = 180° (reguit lyn) en ∠ABC + a + c = 180° (hoekesom), so x = a + c.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld</div>
+  <div class="example-step"><span class="step-num">1</span><span>a = 52°, c = 71°. Bepaal x en ∠ABC.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>x = 52° + 71° = <strong>123°</strong> (buite∠ van △)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>∠ABC = 180° − 123° = <strong>57°</strong> (∠e op 'n reguit lyn)</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Gee 'n rede by elke hoek wat jy vind: "buite∠ van △", "∠e op 'n reguit lyn", "∠-som van △".</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Die teenoorstaande binnehoeke is 38° en 64°. Bepaal die buitehoek. (°)", "answer": "102", "topic": "Buitehoeke van driehoeke"},
+        {"type": "input", "text": "'n Buitehoek is 140° en een teenoorstaande binnehoek is 85°. Bepaal die ander een. (°)", "answer": "55", "topic": "Buitehoeke van driehoeke"},
+        {"type": "input", "text": "'n Buitehoek van 'n gelykbenige driehoek by sy basis is 110°. Bepaal die hoek by die tophoek. (°)", "answer": "40", "topic": "Buitehoeke van driehoeke"},
+        {"type": "input", "text": "Die buitehoek is 3x en die teenoorstaande binnehoeke is x + 20° en 50°. Bepaal x. (°)", "answer": "35", "topic": "Buitehoeke van driehoeke"},
+        {"type": "mc", "text": "'n Buitehoek van 'n driehoek is altyd:", "options": ["kleiner as albei teenoorstaande binnehoeke", "groter as elke teenoorstaande binnehoek", "gelyk aan 90°", "gelyk aan die aangrensende binnehoek"], "answer": 1, "topic": "Buitehoeke van driehoeke"},
+        {"type": "input", "text": "Elke buitehoek van 'n gelyksydige driehoek is: (°)", "answer": "120", "topic": "Buitehoeke van driehoeke"},
+      ]
+    },
+    {
+      id: 1103,
+      chapter: 11,
+      name: "Probleme met gelykvormige driehoeke",
+      fullName: "Probleme oplos met kongruente en gelykvormige driehoeke",
+      lesson: {
+        heading: "Probleme met gelykvormige driehoeke",
+        sub: "Hoofstuk 11 · Onderwerp 5",
+        body: `
+<p>In gelykvormige driehoeke is die hoeke gelyk en die sye in dieselfde verhouding. Vind die skaalfaktor uit een paar ooreenstemmende sye en gebruik dit dan vir die ander.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":170,"view":[-0.3,-0.6,13,4.6],"pts":{"A":[0,0],"B":[4,0],"C":[1.2,2],"D":[6,0],"E":[12,0],"F":[7.8,3]},"lab":{"A":"sw","B":"se","C":"n","D":"sw","E":"se","F":"n"},"seg":[["A","B","ln",null,"4"],["A","C","ln",null,"2,3"],["B","C","ln",null,"3,4"],["D","E","ln",null,"6"],["D","F","ln",null,"x"],["E","F","ln",null,"y"]],"poly":[["A","B","C","fl"],["D","E","F","fl2"]]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: △ABC ||| △DEF</div>
+  <div class="example-step"><span class="step-num">1</span><span>Ooreenstemmende sye AB en DE: skaalfaktor = 6 ÷ 4 = 1,5.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>x = DF = 1,5 × AC = 1,5 × 2,3 = <strong>3,45</strong></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>y = EF = 1,5 × BC = 1,5 × 3,4 = <strong>5,1</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: die hoogte van 'n boom uit sy skaduwee</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Paal van 1,5 m gooi 'n skaduwee van 2 m. Op dieselfde tyd gooi 'n boom 'n skaduwee van 12 m. Die son se strale vorm gelykvormige driehoeke.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>hoogte ÷ 12 = 1,5 ÷ 2, so hoogte = 12 × 0,75 = <strong>9 m</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die driehoeke met ooreenstemmende hoekpunte in dieselfde volgorde (△ABC ||| △DEF beteken A↔D, B↔E, C↔F), dan stem die sye ook ooreen.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "△ABC ||| △PQR. AB = 5, PQ = 15 en BC = 7. Bepaal QR.", "answer": "21", "topic": "Probleme met gelykvormige driehoeke"},
+        {"type": "input", "text": "'n Stok van 2 m gooi 'n skaduwee van 3 m. 'n Gebou gooi op dieselfde tyd 'n skaduwee van 27 m. Hoe hoog is die gebou? (m)", "answer": "18", "topic": "Probleme met gelykvormige driehoeke"},
+        {"type": "mc", "text": "Twee driehoeke het hoeke 40°, 60°, 80° en 60°, 80°, 40°. Hulle is:", "options": ["gelykvormig", "beslis kongruent", "nie een nie", "net gelykvormig as hulle ewe groot is"], "answer": 0, "topic": "Probleme met gelykvormige driehoeke"},
+        {"type": "input", "text": "Gelykvormige driehoeke het sye 4, 6, 8 en x, 9, 12. Bepaal x.", "answer": "6", "topic": "Probleme met gelykvormige driehoeke"},
+        {"type": "mc", "text": "Watter voorwaarde is NIE genoeg om twee driehoeke kongruent te bewys nie?", "options": ["SSS", "SHS", "RHS", "HHH"], "answer": 3, "topic": "Probleme met gelykvormige driehoeke"},
+        {"type": "input", "text": "Die skaalfaktor tussen twee gelykvormige driehoeke is 3. Die klein driehoek se omtrek is 14 cm. Wat is die groot een se omtrek? (cm)", "answer": "42", "topic": "Probleme met gelykvormige driehoeke"},
+      ]
+    },
+    {
+      id: 1104,
+      chapter: 11,
+      name: "Hfst 11 Eksamenfokus",
+      fullName: "Eksamenoefening: meetkunde van 2D-vorms",
+      lesson: {
+        heading: "Hfst 11 Eksamenfokus",
+        sub: "Hoofstuk 11 · Onderwerp 6",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Gee 'n rede vir elke hoek of sy wat jy bereken.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "In △ABC is ∠A = 2x, ∠B = 3x en ∠C = 4x. Bepaal ∠C. (°)", "answer": "80", "topic": "Hfst 11 Eksamenfokus"},
+        {"type": "input", "text": "'n Parallelogram het een hoek van 65°. Wat is die hoek langs dit? (°)", "answer": "115", "topic": "Hfst 11 Eksamenfokus"},
+        {"type": "mc", "text": "Watter vierhoek het presies een paar parallelle sye?", "options": ["parallelogram", "vlieër", "trapesium", "ruit"], "answer": 2, "topic": "Hfst 11 Eksamenfokus"},
+        {"type": "input", "text": "Wat is die som van die binnehoeke van 'n tienhoek (10 sye)? (°)", "answer": "1440", "topic": "Hfst 11 Eksamenfokus"},
+        {"type": "input", "text": "In 'n gelykbenige driehoek is die twee gelyke hoeke elk 72°. Wat is die derde hoek? (°)", "answer": "36", "topic": "Hfst 11 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 11, chapterName: "Meetkunde van 2D-vorms",
@@ -210,6 +335,32 @@ MathMagician.registerChapter(11, {
           },
         ]
       },
+      {
+        "name": "Hoeke van veelhoeke",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Veelhoeke en driehoeke.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Bereken elke binnehoek van 'n reëlmatige 12-hoek.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "In △PQR word QR verleng tot S. ∠P = 48° en ∠PRS = 115°. Bereken ∠Q, met redes.",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "'n Leerder van 1,8 m gooi 'n skaduwee van 1,2 m. 'n Vlagpaal gooi op dieselfde tyd 'n skaduwee van 6 m. Hoe hoog is die vlagpaal?",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -230,6 +381,26 @@ MathMagician.registerChapter(11, {
         answers: [
           { num: "Q3a", ans: "45 cm", note: "18 × 5/2 = 45" },
           { num: "Q3b", ans: "16 cm²", note: "Oppervlakteverhouding = (2/5)² = 4/25; kleiner = 100 × 4/25 = 16 cm²" },
+        ]
+      },
+      {
+        "name": "Hoeke van veelhoeke",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "150°",
+            "note": "(12 − 2) × 180 = 1 800; 1 800 ÷ 12 = 150"
+          },
+          {
+            "num": "Q4b",
+            "ans": "∠Q = 67°",
+            "note": "buite∠ van △: 115 = 48 + ∠Q"
+          },
+          {
+            "num": "Q4c",
+            "ans": "9 m",
+            "note": "h/6 = 1,8/1,2 = 1,5"
+          }
         ]
       },
     ]
