@@ -395,7 +395,9 @@
     const HOLE_R = 6; // clearance hole: a little larger than the 10 mm shank
     const HEAD_TOP = 48, HEAD_BOT = 60, HEAD_AF = 18, HEAD_R = HEAD_AF / Math.sqrt(3);
     const SHANK_R = 5, SHANK_BOT = 98;
-    const NUT_TOP = 98, NUT_BOT = 110, NUT_AF = 16, NUT_R = NUT_AF / Math.sqrt(3);
+    const NUT_TOP = 98, NUT_BOT = 110, NUT_R = HEAD_R;   // the nut has the same size across the flats as the head
+    const TV_CY = 24;                                    // top view of the head, above the front view (3rd angle)
+    const hexTV = [0, 60, 120, 180, 240, 300].map(a => [CX + HEAD_R * Math.cos(a * Math.PI / 180), TV_CY - HEAD_R * Math.sin(a * Math.PI / 180)]);
     // Head and nut drawn across corners, as they are conventionally shown in a front view:
     // a rectangle 2R wide with the two vertical edges between the three visible faces.
     function hexSide(top, bot, R) {
@@ -414,7 +416,18 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the two plates with a clearance gap for the bolt hole, and the bolt (hex head and shank) passing through — drawn as a plain outline only. Fasteners are never hatched, even when the cutting plane runs straight through them. Draw the hexagon head across its corners, so three faces show.',
+          instruction: 'The head and the nut are hexagons, and the front view can only show their faces once you have the hexagon. Start with the TOP VIEW of the head, above the front view (3rd angle): its centre lines and the hexagon, 18 across the flats, with corners to the left and right. Project the corners straight down: the outer corners give the width of the head and the nut, the other corners the edges between their three faces.',
+          calloutAt: [CX, TV_CY - HEAD_AF / 2],
+          reveals: [
+            { kind: 'line', p1: [CX - HEAD_R - 5, TV_CY], p2: [CX + HEAD_R + 5, TV_CY], lineType: 'centre' },
+            { kind: 'line', p1: [CX, TV_CY - HEAD_AF / 2 - 5], p2: [CX, TV_CY + HEAD_AF / 2 + 5], lineType: 'centre' },
+            { kind: 'polygon', points: hexTV, lineType: 'A' },
+            ...[[CX - HEAD_R, TV_CY], [CX - HEAD_R / 2, TV_CY + HEAD_AF / 2], [CX + HEAD_R / 2, TV_CY + HEAD_AF / 2], [CX + HEAD_R, TV_CY]].map(c => ({ kind: 'line', p1: c, p2: [c[0], NUT_BOT], lineType: 'construction' })),
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Draw the two plates with a clearance gap for the bolt hole, and the bolt (hex head and shank) passing through — drawn as a plain outline only. Fasteners are never hatched, even when the cutting plane runs straight through them. Draw the hexagon head across its corners, between the lines projected from the top view, so three faces show.',
           calloutAt: [CX, HEAD_TOP + 4],
           reveals: [
             // each plate is cut through its hole, so it shows as two pieces either side of the bolt
@@ -428,7 +441,7 @@
           ],
         },
         {
-          id: 2,
+          id: 3,
           instruction: 'Hatch both plates, since the section cuts through solid material in each, and leave the bolt hole clear. The two plates touch, so hatch them in OPPOSITE directions; that is how the reader sees they are separate parts.',
           calloutAt: [PLATE_L + 15, (P1_TOP + P2_BOT) / 2],
           reveals: [
@@ -439,8 +452,8 @@
           ],
         },
         {
-          id: 3,
-          instruction: 'Add the nut at the bottom, also unsectioned and drawn across corners, with the end of the bolt standing a little past it. Finish with a centre line through the whole assembly.',
+          id: 4,
+          instruction: 'Add the nut at the bottom, also unsectioned and drawn across corners between the same projection lines, with the end of the bolt standing a little past it. Finish with a centre line through the whole assembly.',
           calloutAt: [CX, (NUT_TOP + NUT_BOT) / 2],
           reveals: [
             ...hexSide(NUT_TOP, NUT_BOT, NUT_R),
@@ -449,10 +462,11 @@
           ],
         },
         {
-          id: 4,
-          instruction: 'Dimension the plate thicknesses and label the view.',
+          id: 5,
+          instruction: 'Dimension the plate thicknesses and label the views.',
           calloutAt: [PLATE_R + 25, (P1_TOP + P2_BOT) / 2],
           reveals: [
+            { kind: 'label', at: [CX + HEAD_R + 8, TV_CY], text: 'TOP VIEW', size: 4.4, anchor: 'start', color: '#fde047' },
             { kind: 'dimension', p1: [PLATE_R + 10, P1_TOP], p2: [PLATE_R + 10, P1_BOT], offset: 0, text: (P1_BOT - P1_TOP).toFixed(0) },
             { kind: 'dimension', p1: [PLATE_R + 10, P2_TOP], p2: [PLATE_R + 10, P2_BOT], offset: 0, text: (P2_BOT - P2_TOP).toFixed(0) },
             { kind: 'label', at: [CX, NUT_BOT + 18], text: 'SECTIONAL FRONT VIEW', size: 4.4, anchor: 'middle', color: '#fde047' },

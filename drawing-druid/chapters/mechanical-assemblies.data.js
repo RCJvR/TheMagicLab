@@ -232,7 +232,9 @@
     });
     steps.push({
       id: steps.length + 1,
-      instruction: 'RIGHT VIEW, projected across from the section: start with the nearest parts. The nut is a hexagon; each turned part shows as circles, but only where no nearer part covers it.',
+      instruction: hexGroup < 0
+        ? 'RIGHT VIEW, projected across from the section: start with the nearest parts. The nut is a hexagon; each turned part shows as circles, but only where no nearer part covers it.'
+        : 'RIGHT VIEW, projected across from the section: the nut is already there, so draw the rest from the nearest parts outwards. Each turned part shows as circles where your projection lines meet the vertical centre line, but only where no nearer part covers it.',
       calloutAt: [RX, ay], reveals: rvParts,
     });
     steps.push({

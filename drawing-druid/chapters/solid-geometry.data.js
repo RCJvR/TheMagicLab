@@ -17,6 +17,23 @@
     return lines;
   }
 
+  // 1st angle, top view below the front view and side view to its left: carry each top-view
+  // point across to a 45° mitre line and up into the side view. y0 is the back of the top
+  // view, which lands on svRight (the side of the side view nearest the front view).
+  function mitreToSide(pts, y0, svRight, span, svTop) {
+    const out = [{ kind: 'line', p1: [svRight + 3, y0 - 3], p2: [svRight - span - 3, y0 + span + 3], lineType: 'construction' }];
+    const seen = new Set();
+    pts.slice().sort((a, b) => a[0] - b[0]).forEach(pt => {
+      const key = pt[1].toFixed(2);
+      if (seen.has(key)) return;
+      seen.add(key);
+      const m = [svRight - (pt[1] - y0), pt[1]];
+      out.push({ kind: 'line', p1: pt, p2: m, lineType: 'construction' });
+      out.push({ kind: 'line', p1: m, p2: [m[0], svTop], lineType: 'construction' });
+    });
+    return out;
+  }
+
   // ── 1. Hexagonal Prism — First-Angle Views ──
   (function () {
     const R = 25, H = 55;
@@ -42,42 +59,42 @@
       steps: [
         {
           id: 1,
-          instruction: 'In FIRST-angle projection, the object sits between you and the projection plane, so each view lands on the OPPOSITE side from the direction you\'re viewing from. Start with the front view of this upright hexagonal prism: a rectangle as wide as the distance across flats of the hexagon, with one vertical line down the middle. That line is the edge where the two front faces meet, pointing straight at you.',
+          instruction: 'In FIRST-angle projection, the object sits between you and the projection plane, so each view lands on the OPPOSITE side from the direction you\'re viewing from: the TOP view goes BELOW the front view. Start with the top view, because the widths of the other views come from it. Draw its centre lines and the hexagon in its true shape, with a corner pointing to the front and one to the back.',
+          calloutAt: [FV_CX, topCY],
+          reveals: [
+            { kind: 'line', p1: [FV_CX, topCY - R - 5], p2: [FV_CX, topCY + R + 5], lineType: 'centre' },
+            { kind: 'line', p1: [FV_CX - hexW / 2 - 5, topCY], p2: [FV_CX + hexW / 2 + 5, topCY], lineType: 'centre' },
+            { kind: 'polygon', points: hexTop, lineType: 'A' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Project each corner of the top view straight up into the front view with thin construction lines, measure the height and draw the FRONT VIEW: a rectangle as wide as the hexagon across its flats, with one vertical line down the middle. That line is the edge where the two front faces meet, pointing straight at you.',
           calloutAt: [FV_CX, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
+            ...[[FV_LEFT, topCY - R / 2], [FV_CX, topCY - R], [FV_RIGHT, topCY - R / 2]].map(c => ({ kind: 'line', p1: c, p2: [c[0], FV_TOP], lineType: 'construction' })),
             { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
             { kind: 'line', p1: [FV_CX, FV_TOP], p2: [FV_CX, FV_BOTTOM], lineType: 'A' },
           ],
         },
         {
-          id: 2,
-          instruction: 'Project the TOP view — but in 1st angle, it goes BELOW the front view (the opposite of 3rd angle). Since the prism stands upright, the top view shows the hexagon in its true shape.',
-          calloutAt: [FV_CX, topCY],
-          reveals: [
-            { kind: 'polygon', points: hexTop, lineType: 'A' },
-            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_LEFT, topCY - R], lineType: 'construction' },
-            { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [FV_RIGHT, topCY - R], lineType: 'construction' },
-          ],
-        },
-        {
           id: 3,
-          instruction: 'Project the SIDE view seen from the right. In 1st angle it goes to the LEFT of the front view (the opposite of 3rd angle). From the side the prism is as wide as the distance across corners, and you see three faces: one square-on in the middle and one sloping away on each side, so draw two vertical edge lines.',
+          instruction: 'The SIDE view seen from the right goes to the LEFT of the front view in 1st angle. Project the heights across from the front view. Draw a 45° mitre line beside the top view, carry each corner of the top view across to it and up into the side view: the back of the prism is nearest the front view. It is as wide as the hexagon across its corners, and you see three faces, so there are two vertical edge lines.',
           calloutAt: [(SV_LEFT + SV_RIGHT) / 2, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
+            { kind: 'line', p1: [FV_LEFT, FV_TOP], p2: [SV_LEFT, FV_TOP], lineType: 'construction' },
+            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [SV_LEFT, FV_BOTTOM], lineType: 'construction' },
+            ...mitreToSide(hexTop, topCY - R, SV_RIGHT, hexD, FV_TOP),
             { kind: 'polygon', points: [[SV_LEFT, FV_TOP], [SV_RIGHT, FV_TOP], [SV_RIGHT, FV_BOTTOM], [SV_LEFT, FV_BOTTOM]], lineType: 'A' },
             { kind: 'line', p1: [SV_LEFT + R / 2, FV_TOP], p2: [SV_LEFT + R / 2, FV_BOTTOM], lineType: 'A' },
             { kind: 'line', p1: [SV_RIGHT - R / 2, FV_TOP], p2: [SV_RIGHT - R / 2, FV_BOTTOM], lineType: 'A' },
-            { kind: 'line', p1: [SV_RIGHT, FV_TOP], p2: [FV_LEFT, FV_TOP], lineType: 'construction' },
-            { kind: 'line', p1: [SV_RIGHT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM], lineType: 'construction' },
           ],
         },
         {
           id: 4,
-          instruction: 'Add a centre line through the hexagon and dimension the across-flats width and the prism height.',
-          calloutAt: [FV_CX, FV_BOTTOM + 10],
+          instruction: 'Dimension the across-flats width and the prism height.',
+          calloutAt: [FV_CX, FV_TOP - 10],
           reveals: [
-            { kind: 'line', p1: [FV_CX, topCY - R - 5], p2: [FV_CX, topCY + R + 5], lineType: 'centre' },
-            { kind: 'line', p1: [FV_CX - hexW / 2 - 5, topCY], p2: [FV_CX + hexW / 2 + 5, topCY], lineType: 'centre' },
             { kind: 'dimension', p1: [FV_LEFT, FV_TOP - 8], p2: [FV_RIGHT, FV_TOP - 8], offset: -6, text: hexW.toFixed(1) },
             { kind: 'dimension', p1: [SV_LEFT - 8, FV_TOP], p2: [SV_LEFT - 8, FV_BOTTOM], offset: -6, text: String(H) },
           ],
@@ -162,42 +179,45 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the front view: an isosceles triangle — the base is the pyramid\'s true width, the apex sits directly above the centre at the true height.',
-          calloutAt: [FV_CX, FV_TOP + H / 2],
-          reveals: [
-            { kind: 'polygon', points: [[FV_LEFT, FV_BOTTOM], [FV_RIGHT, FV_BOTTOM], [FV_CX, FV_TOP]], lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Project the TOP view BELOW the front view (1st-angle rule): the true-size square base, with all four sloped edges drawn solid — they are visible from directly above, not hidden.',
+          instruction: 'In 1st angle the TOP view goes BELOW the front view. Start with it, because the front and side views are projected from it: the centre lines, the true-size square base, and the four sloping edges from each corner to the apex in the middle, all drawn solid (they are visible from directly above, not hidden).',
           calloutAt: tvCentre,
           reveals: [
+            { kind: 'line', p1: [FV_CX, TV_TOP - 5], p2: [FV_CX, TV_BOTTOM + 5], lineType: 'centre' },
+            { kind: 'line', p1: [TV_LEFT - 5, tvCentre[1]], p2: [TV_RIGHT + 5, tvCentre[1]], lineType: 'centre' },
             { kind: 'polygon', points: [[TV_LEFT, TV_TOP], [TV_RIGHT, TV_TOP], [TV_RIGHT, TV_BOTTOM], [TV_LEFT, TV_BOTTOM]], lineType: 'A' },
             { kind: 'line', p1: [TV_LEFT, TV_TOP], p2: tvCentre, lineType: 'A' },
             { kind: 'line', p1: [TV_RIGHT, TV_TOP], p2: tvCentre, lineType: 'A' },
             { kind: 'line', p1: [TV_LEFT, TV_BOTTOM], p2: tvCentre, lineType: 'A' },
             { kind: 'line', p1: [TV_RIGHT, TV_BOTTOM], p2: tvCentre, lineType: 'A' },
-            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [TV_LEFT, TV_TOP], lineType: 'construction' },
-            { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [TV_RIGHT, TV_TOP], lineType: 'construction' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Project the corners and the apex of the top view straight up into the front view, measure the height on the centre line and draw the FRONT VIEW: an isosceles triangle with the apex directly above the centre.',
+          calloutAt: [FV_CX, FV_TOP + H / 2],
+          reveals: [
+            { kind: 'line', p1: [TV_LEFT, TV_TOP], p2: [TV_LEFT, FV_BOTTOM], lineType: 'construction' },
+            { kind: 'line', p1: [TV_RIGHT, TV_TOP], p2: [TV_RIGHT, FV_BOTTOM], lineType: 'construction' },
+            { kind: 'line', p1: [FV_CX, FV_TOP - 6], p2: [FV_CX, FV_BOTTOM + 4], lineType: 'centre' },
+            { kind: 'polygon', points: [[FV_LEFT, FV_BOTTOM], [FV_RIGHT, FV_BOTTOM], [FV_CX, FV_TOP]], lineType: 'A' },
           ],
         },
         {
           id: 3,
-          instruction: 'Project the SIDE view to the LEFT of the front view (1st-angle rule) — by symmetry, it is the identical triangle shape as the front view.',
+          instruction: 'The SIDE view goes to the LEFT of the front view (1st-angle rule). Project the base and the apex across from the front view. Draw a 45° mitre line beside the top view, carry the back, the apex and the front of the top view across to it and up into the side view. By symmetry it is the same triangle as the front view.',
           calloutAt: [(SV_LEFT + SV_RIGHT) / 2, FV_TOP + H / 2],
           reveals: [
+            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [SV_LEFT, FV_BOTTOM], lineType: 'construction' },
+            { kind: 'line', p1: [FV_CX, FV_TOP], p2: [SV_LEFT, FV_TOP], lineType: 'construction' },
+            ...mitreToSide([[TV_LEFT, TV_TOP], tvCentre, [TV_LEFT, TV_BOTTOM]], TV_TOP, SV_RIGHT, W, FV_BOTTOM),
             { kind: 'polygon', points: [[SV_LEFT, FV_BOTTOM], [SV_RIGHT, FV_BOTTOM], [(SV_LEFT + SV_RIGHT) / 2, FV_TOP]], lineType: 'A' },
-            { kind: 'line', p1: [SV_RIGHT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM], lineType: 'construction' },
           ],
         },
         {
           id: 4,
-          instruction: 'Add centre lines and dimension the base and height.',
+          instruction: 'Dimension the base and height.',
           calloutAt: [FV_CX, FV_BOTTOM + 8],
           reveals: [
-            { kind: 'line', p1: [FV_CX, FV_TOP - 6], p2: [FV_CX, FV_BOTTOM + 4], lineType: 'centre' },
-            { kind: 'line', p1: [TV_LEFT - 5, tvCentre[1]], p2: [TV_RIGHT + 5, tvCentre[1]], lineType: 'centre' },
             { kind: 'dimension', p1: [FV_LEFT, FV_BOTTOM + 10], p2: [FV_RIGHT, FV_BOTTOM + 10], offset: 0, text: String(W) },
             { kind: 'dimension', p1: [FV_LEFT - 10, FV_TOP], p2: [FV_LEFT - 10, FV_BOTTOM], offset: 0, text: String(H) },
           ],
@@ -232,9 +252,19 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the front view: a rectangle as wide as the pentagon, with two solid vertical lines where the front face meets its neighbours. The back corner of the pentagon is also an edge, but it is behind the prism, so show it as a hidden (short broken) line down the middle.',
+          instruction: 'In 1st angle the TOP view goes BELOW the front view. Start with it, because the widths of the front view and the depths of the side view come from it: the centre line and the pentagon in true shape (we are looking straight down the prism\'s axis), with a corner pointing to the back.',
+          calloutAt: [FV_CX, topCY],
+          reveals: [
+            { kind: 'line', p1: [FV_CX, topCY - R - 5], p2: [FV_CX, topCY + pentaD + Math.min(...pys) + 5], lineType: 'centre' },
+            { kind: 'polygon', points: pentaTop, lineType: 'A' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Project every corner of the top view straight up into the front view, measure the height and draw the FRONT VIEW: a rectangle as wide as the pentagon, with two solid vertical lines where the front face meets its neighbours. The back corner of the pentagon is also an edge, but it is behind the prism, so show it as a hidden (short broken) line down the middle.',
           calloutAt: [FV_CX, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
+            ...pentaTop.map(c => ({ kind: 'line', p1: c, p2: [c[0], FV_TOP], lineType: 'construction' })),
             { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
             { kind: 'line', p1: [FV_CX - frontCornerX, FV_TOP], p2: [FV_CX - frontCornerX, FV_BOTTOM], lineType: 'A' },
             { kind: 'line', p1: [FV_CX + frontCornerX, FV_TOP], p2: [FV_CX + frontCornerX, FV_BOTTOM], lineType: 'A' },
@@ -242,32 +272,22 @@
           ],
         },
         {
-          id: 2,
-          instruction: 'Project the TOP view BELOW the front view (1st-angle rule): the pentagon in true shape, since we\'re looking straight down the prism\'s axis.',
-          calloutAt: [FV_CX, topCY],
-          reveals: [
-            { kind: 'polygon', points: pentaTop, lineType: 'A' },
-            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_LEFT, topCY - R], lineType: 'construction' },
-            { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [FV_RIGHT, topCY - R], lineType: 'construction' },
-          ],
-        },
-        {
           id: 3,
-          instruction: 'Project the SIDE view to the LEFT of the front view (1st-angle rule), using the depth of the pentagon from the top view. In 1st angle the side of this view nearest the front view is the BACK of the prism. The side corner of the pentagon shows as one vertical line; the matching corner on the far side lies directly behind it.',
+          instruction: 'The SIDE view goes to the LEFT of the front view (1st-angle rule). Project the heights across from the front view. Draw a 45° mitre line beside the top view, carry each corner of the top view across to it and up into the side view: the side nearest the front view is the BACK of the prism. The side corner of the pentagon shows as one vertical line; the matching corner on the far side lies directly behind it.',
           calloutAt: [(SV_LEFT + SV_RIGHT) / 2, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
+            { kind: 'line', p1: [FV_LEFT, FV_TOP], p2: [SV_LEFT, FV_TOP], lineType: 'construction' },
+            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [SV_LEFT, FV_BOTTOM], lineType: 'construction' },
+            ...mitreToSide(pentaTop, topCY - R, SV_RIGHT, pentaD, FV_TOP),
             { kind: 'polygon', points: [[SV_LEFT, FV_TOP], [SV_RIGHT, FV_TOP], [SV_RIGHT, FV_BOTTOM], [SV_LEFT, FV_BOTTOM]], lineType: 'A' },
             { kind: 'line', p1: [SV_RIGHT - sideEdgeFromBack, FV_TOP], p2: [SV_RIGHT - sideEdgeFromBack, FV_BOTTOM], lineType: 'A' },
-            { kind: 'line', p1: [SV_RIGHT, FV_TOP], p2: [FV_LEFT, FV_TOP], lineType: 'construction' },
-            { kind: 'line', p1: [SV_RIGHT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM], lineType: 'construction' },
           ],
         },
         {
           id: 4,
-          instruction: 'Add a centre line through the pentagon and dimension the circumradius and prism height.',
+          instruction: 'Dimension the circumradius and prism height.',
           calloutAt: [FV_CX, FV_BOTTOM + 10],
           reveals: [
-            { kind: 'line', p1: [FV_CX, topCY - R - 5], p2: [FV_CX, topCY + pentaD + Math.min(...pys) + 5], lineType: 'centre' },
             { kind: 'dimension', p1: [FV_CX, topCY - R], p2: [FV_CX, topCY], offset: 10, text: String(R) },
             { kind: 'dimension', p1: [SV_LEFT - 8, FV_TOP], p2: [SV_LEFT - 8, FV_BOTTOM], offset: -6, text: String(H) },
           ],
