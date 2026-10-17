@@ -294,6 +294,160 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "'n Yskas kos R 9 000 kontant. Op huurkoop betaal jy 'n 15% deposito en dan 24 maandelikse paaiemente van R 350. Hoeveel MEER (in rand) betaal jy in totaal op huurkoop in vergelyking met die kontantprys?", answer: "750", topic: "Finansies" },
       ]
     },
+    {
+      id: 101,
+      chapter: 1,
+      name: "Priemfaktore, GGD en KGV",
+      fullName: "Priemfaktorisering, grootste gemene deler en kleinste gemene veelvoud",
+      lesson: {
+        heading: "Priemfaktore, GGD en KGV",
+        sub: "Hoofstuk 1 · Onderwerp 4",
+        body: `
+<p>Elke heelgetal groter as 1 kan op presies een manier as 'n produk van <strong>priemgetalle</strong> geskryf word. Daardie produk is sy <strong>priemfaktorisering</strong>, en dit maak die GGD en KGV maklik om te vind.</p>
+<div class="mf-fig" data-fig='{"t":"ftree","n":360,"split":[[2,180],[2,90],[2,45],[3,15],[3,5]],"w":260}'></div>
+<p>360 = 2 × 2 × 2 × 3 × 3 × 5 = <span class="math">2³ × 3² × 5</span></p>
+<div class="def-box">
+  <div class="def-box-title">📖 GGD en KGV uit priemfaktore</div>
+<p><strong>GGD</strong> (grootste gemene deler): vermenigvuldig die priemgetalle wat in <em>elke</em> getal voorkom, elk met sy <em>laagste</em> mag.<br><strong>KGV</strong> (kleinste gemene veelvoud): vermenigvuldig <em>elke</em> priemgetal wat voorkom, elk met sy <em>hoogste</em> mag.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: GGD en KGV van 84 en 120</div>
+  <div class="example-step"><span class="step-num">1</span><span>84 = 2² × 3 × 7 en 120 = 2³ × 3 × 5</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>GGD: gemene priemgetalle 2 en 3, laagste magte: <span class="math">2² × 3 = 12</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>KGV: alle priemgetalle, hoogste magte: <span class="math">2³ × 3 × 5 × 7 = 840</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: wanneer ontmoet die busse weer?</div>
+  <div class="example-step"><span class="step-num">1</span><span>Bus A vertrek elke 12 minute, bus B elke 18 minute. Albei vertrek om 07:00.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Hulle vertrek weer saam na KGV(12 ; 18) minute: 12 = 2² × 3, 18 = 2 × 3², so KGV = 2² × 3² = 36.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Antwoord: 07:36.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"Deel gelykop in die grootste groepe" vra vir die GGD; "gebeur weer saam" vra vir die KGV.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bepaal die GGD van 36 en 60.", "answer": "12", "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "input", "text": "Bepaal die KGV van 12 en 18.", "answer": "36", "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "mc", "text": "Die priemfaktorisering van 72 is:", "options": ["2² × 3³", "2³ × 3²", "2 × 36", "8 × 9"], "answer": 1, "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "input", "text": "Bepaal die KGV van 8, 12 en 15.", "answer": "120", "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "input", "text": "Twee ligte flits saam. Een flits elke 6 sekondes, die ander elke 8 sekondes. Na hoeveel sekondes flits hulle weer saam?", "answer": "24", "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "input", "text": "Bepaal die GGD van 48, 72 en 120.", "answer": "24", "topic": "Priemfaktore, GGD en KGV"},
+        {"type": "mc", "text": "54 rooi en 72 blou krale word in identiese sakkies verdeel sonder dat krale oorbly. Wat is die grootste aantal sakkies?", "options": ["6", "9", "18", "216"], "answer": 2, "topic": "Priemfaktore, GGD en KGV"},
+      ]
+    },
+    {
+      id: 102,
+      chapter: 1,
+      name: "Direkte en omgekeerde eweredigheid",
+      fullName: "Probleme oplos met direkte en omgekeerde eweredigheid",
+      lesson: {
+        heading: "Direkte en omgekeerde eweredigheid",
+        sub: "Hoofstuk 1 · Onderwerp 5",
+        body: `
+<p>Twee hoeveelhede is in <strong>direkte eweredigheid</strong> wanneer hulle teen dieselfde tempo groei: verdubbel een en die ander verdubbel. Hulle is in <strong>omgekeerde eweredigheid</strong> wanneer een verdubbel en die ander halveer.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Hoe om hulle uitmekaar te ken</div>
+<p><strong>Direk:</strong> die verhouding y ÷ x bly dieselfde (y = kx). Die grafiek is 'n reguit lyn deur die oorsprong.<br><strong>Omgekeerd:</strong> die produk x × y bly dieselfde (xy = k). Die grafiek is 'n kromme wat nooit aan die asse raak nie.</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":300,"h":180,"view":[0,0,10,10],"pad":24,"axes":{"x":"x","y":"y","o":false},"fn":[{"f":"x","c":"ac","dom":[0,9.5],"lab":[7.2,5.4,"direk: y = kx"]},{"f":"8/x","c":"hl","dom":[0.85,9.5],"lab":[1.7,9.2,"omgekeerd: xy = k"]}]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: direkte eweredigheid</div>
+  <div class="example-step"><span class="step-num">1</span><span>5 penne kos R35. Wat kos 8 penne?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Een pen: R35 ÷ 5 = R7. Agt penne: 8 × R7 = <strong>R56</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: omgekeerde eweredigheid</div>
+  <div class="example-step"><span class="step-num">1</span><span>6 werkers bou 'n muur in 10 dae. Hoe lank neem 4 werkers?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Die totale werk bly dieselfde: 6 × 10 = 60 werker-dae.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>4 werkers: 60 ÷ 4 = <strong>15 dae</strong>. Minder werkers, meer dae.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Vra jouself: as een hoeveelheid verdubbel, verdubbel die ander (direk) of halveer dit (omgekeerd)?</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "3 kg appels kos R45. Wat kos 7 kg? (R)", "answer": "105", "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "input", "text": "8 krane maak 'n tenk in 6 uur vol. Hoeveel uur neem 12 krane?", "answer": "4", "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "mc", "text": "Watter paar is in OMGEKEERDE eweredigheid?", "options": ["Liter petrol en koste", "Ure gewerk en loon teen 'n vaste tarief", "Spoed en tyd vir 'n vaste afstand", "Aantal kaartjies en totale prys"], "answer": 2, "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "input", "text": "'n Motor gebruik 20 liter petrol vir 240 km. Hoeveel liter gebruik dit vir 360 km?", "answer": "30", "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "mc", "text": "Die grafiek van twee hoeveelhede is 'n reguit lyn deur die oorsprong. Hulle is in:", "options": ["direkte eweredigheid", "omgekeerde eweredigheid", "geen eweredigheid", "albei"], "answer": 0, "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "input", "text": "'n Prys word gelykop verdeel: met 5 wenners kry elkeen R600. Hoeveel kry elkeen as daar 8 wenners is? (R)", "answer": "375", "topic": "Direkte en omgekeerde eweredigheid"},
+        {"type": "input", "text": "Teen 80 km/h neem 'n rit 3 uur. Hoeveel uur neem dit teen 120 km/h?", "answer": "2", "topic": "Direkte en omgekeerde eweredigheid"},
+      ]
+    },
+    {
+      id: 103,
+      chapter: 1,
+      name: "Finansiële kontekste",
+      fullName: "Begrotings, lenings, huurkoop, wisselkoerse, kommissie en huur",
+      lesson: {
+        heading: "Finansiële kontekste",
+        sub: "Hoofstuk 1 · Onderwerp 6",
+        body: `
+<p>Graad 9-geldprobleme gebruik dieselfde paar idees in verskillende situasies. Lees mooi wat <em>bygetel</em> word, wat <em>afgetrek</em> word en wat <em>per periode gevra</em> word.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Sleutelbegrippe</div>
+<p><strong>Begroting:</strong> 'n plan van verwagte inkomste en uitgawes. Inkomste − uitgawes = spaargeld (of tekort).<br><strong>Lening:</strong> geld wat geleen word; jy betaal die bedrag plus rente terug.<br><strong>Huurkoop (HK):</strong> deposito + paaiemente; HK-prys − kontantprys = rente betaal.<br><strong>Wisselkoers:</strong> buitelands → rand: vermenigvuldig met die koers; rand → buitelands: deel.<br><strong>Kommissie:</strong> 'n persentasie van verkope wat aan 'n verkoopspersoon betaal word.<br><strong>Huur:</strong> 'n vaste bedrag per periode om iets te gebruik, dikwels elke jaar met 'n persentasie verhoog (eskaleer).</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: kommissie</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Eiendomsagent verdien 5% kommissie. Sy verkoop 'n huis vir R1 200 000.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Kommissie = 5% × 1 200 000 = 0,05 × 1 200 000 = <strong>R60 000</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: huur met eskalasie</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Woonstel se huur is R6 500 per maand. Die huur styg ná 'n jaar met 8%.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Nuwe huur = 6 500 × 1,08 = <strong>R7 020</strong> per maand.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Ekstra betaal in die tweede jaar = 12 × (7 020 − 6 500) = 12 × 520 = <strong>R6 240</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n maandelikse begroting</div>
+<div class="math-block">Inkomste: salaris          R12 400
+Uitgawes: huur             R4 800
+          kos              R3 100
+          vervoer          R1 450
+          ander            R1 850
+Totale uitgawes            R11 200
+Spaargeld: 12 400 − 11 200 = R1 200</div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>'n Persentasie-toename van r% beteken vermenigvuldig met (1 + r/100); 'n afname beteken vermenigvuldig met (1 − r/100).</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "'n Verkoopspersoon verdien 4% kommissie op verkope van R85 000. Hoeveel kommissie is dit? (R)", "answer": "3400", "topic": "Finansiële kontekste"},
+        {"type": "input", "text": "Huur van R5 000 per maand styg met 6%. Wat is die nuwe maandelikse huur? (R)", "answer": "5300", "topic": "Finansiële kontekste"},
+        {"type": "input", "text": "'n TV kos R9 000 kontant, of R900 deposito plus 24 paaiemente van R420. Hoeveel meer kos huurkoop? (R)", "answer": "1980", "topic": "Finansiële kontekste"},
+        {"type": "input", "text": "$1 = R18,50. Hoeveel dollar kry jy vir R3 700?", "answer": "200", "topic": "Finansiële kontekste"},
+        {"type": "mc", "text": "Maandelikse inkomste R9 500; uitgawes R4 200, R2 650, R1 300 en R900. Die begroting wys:", "options": ["spaargeld van R450", "'n tekort van R450", "spaargeld van R1 350", "spaargeld van R9 050"], "answer": 0, "topic": "Finansiële kontekste"},
+        {"type": "input", "text": "Thabo leen R4 000 teen 12% enkelvoudige rente per jaar vir 2 jaar. Hoeveel betaal hy altesaam terug? (R)", "answer": "4960", "topic": "Finansiële kontekste"},
+        {"type": "input", "text": "'n Hemp kos £24 in Londen. £1 = R23,50. Wat is die prys in rand? (R)", "answer": "564", "topic": "Finansiële kontekste"},
+      ]
+    },
+    {
+      id: 104,
+      chapter: 1,
+      name: "Hfst 1 Eksamenfokus",
+      fullName: "Eksamenoefening: getalstelsels, verhouding, eweredigheid en finansiële wiskunde",
+      lesson: {
+        heading: "Hoofstuk 1 eksamenfokus",
+        sub: "Hoofstuk 1 · Onderwerp 7",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Besluit voor jy bereken watter idee die vraag oor gaan: getalversamelings, GGD/KGV, verhouding, eweredigheid, of 'n finansiële konteks.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Saamgestelde rente herinnering</div>
+<p><span class="math">A = P(1 + i)ⁿ</span>: P die bedrag belê, i die rentekoers per jaar as 'n desimaal, n die aantal jare. Enkelvoudige rente: <span class="math">A = P(1 + in)</span>.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Toon die formule, die vervanging en die antwoord met eenhede (R, km/h, dae). Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Watter getal is irrasionaal?", "options": ["√49", "0,333…", "√12", "−7/3"], "answer": 2, "topic": "Hfst 1 Eksamenfokus"},
+        {"type": "input", "text": "R12 000 word belê teen 8% saamgestelde rente per jaar. Hoeveel is dit na 2 jaar werd? (R)", "answer": "13996.80", "altAnswers": ["13996,80", "13996.8", "13996,8"], "topic": "Hfst 1 Eksamenfokus"},
+        {"type": "input", "text": "Verdeel R2 400 in die verhouding 3 : 5. Wat is die groter deel? (R)", "answer": "1500", "topic": "Hfst 1 Eksamenfokus"},
+        {"type": "input", "text": "Bepaal die KGV van 14 en 21.", "answer": "42", "topic": "Hfst 1 Eksamenfokus"},
+        {"type": "input", "text": "12 leerders maak die skool in 3 uur skoon. Hoeveel uur neem 9 leerders?", "answer": "4", "topic": "Hfst 1 Eksamenfokus"},
+        {"type": "mc", "text": "'n Prys van R480 word met 15% verhoog en dan met 15% verlaag. Die finale prys is:", "options": ["R480", "R469,20", "R552", "R408"], "answer": 1, "topic": "Hfst 1 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 1, chapterName: "Getalstelsels, Verhoudings, Tempo's, en Finansiële Wiskunde",
@@ -372,6 +526,84 @@ MathMagician.registerChapter(1, {
           },
         ]
       },
+      {
+        "name": "Priemfaktore, GGD en KGV",
+        "questions": [
+          {
+            "num": "8",
+            "text": "84 leerders en 126 ouers word in identiese groepe verdeel sonder dat iemand oorbly.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Skryf 84 en 126 as produkte van priemfaktore.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Wat is die grootste moontlike aantal groepe?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Hoeveel leerders en hoeveel ouers is in elke groep?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Direkte en omgekeerde eweredigheid",
+        "questions": [
+          {
+            "num": "9",
+            "text": "'n Boer het genoeg voer vir 40 koeie vir 15 dae.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Is die aantal koeie en die aantal dae in direkte of omgekeerde eweredigheid? Verduidelik.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Hoe lank hou die voer vir 60 koeie?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Hoeveel koeie kan vir 24 dae gevoer word?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Finansiële kontekste",
+        "questions": [
+          {
+            "num": "10",
+            "text": "Lerato verdien 'n basiese salaris van R7 500 per maand plus 3% kommissie op haar verkope.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "In Maart verkoop sy goedere ter waarde van R120 000. Bereken haar totale inkomste vir Maart.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Haar huur van R4 200 per maand styg met 7,5%. Bereken die nuwe huur.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Sy koop 'n yskas op HK: 10% deposito op R8 000 en 18 paaiemente van R495. Bereken die totale HK-prys.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -407,6 +639,66 @@ MathMagician.registerChapter(1, {
           { num: "Q6b", ans: "Saamgesteld = R 5 194,24; Enkelvoudig = R 4 800; Verskil = R 394,24", note: "Enkelvoudig: 20000 × 0,08 × 3 = 4800" },
           { num: "Q7a", ans: "R 7 140", note: "350 × 20,40 = 7 140" },
           { num: "Q7b", ans: "€400", note: "8 160 ÷ 20,40 = 400" },
+        ]
+      },
+      {
+        "name": "Priemfaktore, GGD en KGV",
+        "answers": [
+          {
+            "num": "Q8a",
+            "ans": "84 = 2² × 3 × 7 ; 126 = 2 × 3² × 7",
+            "note": "Faktorbome"
+          },
+          {
+            "num": "Q8b",
+            "ans": "GGD = 2 × 3 × 7 = 42 groepe",
+            "note": "Gemene priemgetalle, laagste magte"
+          },
+          {
+            "num": "Q8c",
+            "ans": "2 leerders en 3 ouers per groep",
+            "note": "84 ÷ 42 = 2 ; 126 ÷ 42 = 3"
+          }
+        ]
+      },
+      {
+        "name": "Direkte en omgekeerde eweredigheid",
+        "answers": [
+          {
+            "num": "Q9a",
+            "ans": "Omgekeerd: meer koeie beteken die voer hou minder dae; koeie × dae bly 600.",
+            "note": "40 × 15 = 600 koei-dae"
+          },
+          {
+            "num": "Q9b",
+            "ans": "10 dae",
+            "note": "600 ÷ 60 = 10"
+          },
+          {
+            "num": "Q9c",
+            "ans": "25 koeie",
+            "note": "600 ÷ 24 = 25"
+          }
+        ]
+      },
+      {
+        "name": "Finansiële kontekste",
+        "answers": [
+          {
+            "num": "Q10a",
+            "ans": "R11 100",
+            "note": "3% × 120 000 = 3 600; 7 500 + 3 600 = 11 100"
+          },
+          {
+            "num": "Q10b",
+            "ans": "R4 515",
+            "note": "4 200 × 1,075 = 4 515"
+          },
+          {
+            "num": "Q10c",
+            "ans": "R9 710",
+            "note": "Deposito 800; 18 × 495 = 8 910; 800 + 8 910 = 9 710"
+          }
         ]
       },
     ]

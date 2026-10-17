@@ -125,6 +125,96 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Bereken 0,<span class='math'>\\overline{4}</span> + 0,2 en gee die antwoord as 'n enkele breuk a/b in eenvoudigste vorm (skryf dit as a/b).", answer: "29/45", topic: "Desimale" },
       ]
     },
+    {
+      id: 301,
+      chapter: 3,
+      name: "Kwadrate, derdemagte en wortels van breuke",
+      fullName: "Kwadrate, derdemagte, vierkantswortels en derdemagswortels van gewone en desimale breuke bereken",
+      lesson: {
+        heading: "Kwadrate, derdemagte en wortels van breuke",
+        sub: "Hoofstuk 3 · Onderwerp 3",
+        body: `
+<p>Kwadreer, derdemag en wortels trek werk afsonderlik op die teller en die noemer. Desimale breuke is die maklikste as jy hulle eers as gewone breuke skryf.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Reëls</div>
+<p><span class="math">(a/b)² = a²/b²</span> &nbsp; <span class="math">(a/b)³ = a³/b³</span><br><span class="math">√(a/b) = √a / √b</span> &nbsp; <span class="math">∛(a/b) = ∛a / ∛b</span></p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Uitgewerkte voorbeelde</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(2/3)² = 4/9</span> en <span class="math">(−1/2)³ = −1/8</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">√(25/49) = 5/7</span> en <span class="math">∛(8/27) = 2/3</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">(0,3)² = 0,09</span>: 3² = 9, en 1 + 1 = 2 desimale plekke.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span><span class="math">√0,16 = √(16/100) = 4/10 = 0,4</span></span></div>
+  <div class="example-step"><span class="step-num">5</span><span>Gemengde getalle word eers onegte breuke: <span class="math">√(2 1/4) = √(9/4) = 3/2 = 1 1/2</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Die kwadraat van 'n getal tussen 0 en 1 is kleiner as die getal: (0,5)² = 0,25. Die vierkantswortel van so 'n getal is groter: √0,25 = 0,5.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bereken (3/5)². Gee 'n breuk.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "input", "text": "Bereken √(36/121). Gee 'n breuk.", "answer": "6/11", "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "input", "text": "Bereken (0,2)³.", "answer": "0.008", "altAnswers": ["0,008"], "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "input", "text": "Bereken √0,49.", "answer": "0.7", "altAnswers": ["0,7"], "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "mc", "text": "∛(−27/64) =", "options": ["−3/4", "3/4", "−9/16", "nie reëel nie"], "answer": 0, "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "input", "text": "Bereken √(6 1/4). Gee 'n gemengde getal of 'n desimale breuk.", "answer": "2 1/2", "altAnswers": ["2.5", "2,5", "5/2"], "topic": "Kwadrate, derdemagte en wortels van breuke"},
+        {"type": "mc", "text": "Watter een is die grootste?", "options": ["0,6²", "0,6³", "√0,64", "0,6"], "answer": 2, "topic": "Kwadrate, derdemagte en wortels van breuke"},
+      ]
+    },
+    {
+      id: 302,
+      chapter: 3,
+      name: "Persentasies",
+      fullName: "Persentasies van bedrae, een bedrag as 'n persentasie van 'n ander, en persentasieverandering",
+      lesson: {
+        heading: "Persentasies",
+        sub: "Hoofstuk 3 · Onderwerp 4",
+        body: `
+<p>'n Persentasie is 'n breuk uit 100. Om met persentasies te werk, verander hulle na desimale breuke: 35% = 0,35.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Drie soorte persentasievrae</div>
+<p><strong>Persentasie van 'n bedrag:</strong> <span class="math">15% van R80 = 0,15 × 80 = R12</span><br><strong>Een bedrag as 'n persentasie van 'n ander:</strong> <span class="math">18 uit 24 = 18/24 × 100% = 75%</span><br><strong>Persentasieverandering:</strong> <span class="math">verandering ÷ oorspronklik × 100%</span></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"bar","xs":["2024","2025"],"ys":[240,300],"ylab":"R","w":220,"h":170,"cap":"Die prys het van R240 tot R300 gestyg: &#39;n toename van 60/240 × 100% = 25%."}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: persentasie-afname</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Skool het 1 250 leerders gehad. Nou het dit 1 100.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Verandering = 1 100 − 1 250 = −150</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Persentasieverandering = −150 ÷ 1 250 × 100% = <strong>−12%</strong>, 'n afname van 12%.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Deel altyd deur die OORSPRONKLIKE bedrag, die waarde voor die verandering.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bereken 35% van R620. (R)", "answer": "217", "topic": "Persentasies"},
+        {"type": "input", "text": "'n Leerder kry 42 uit 60. Watter persentasie is dit?", "answer": "70", "topic": "Persentasies"},
+        {"type": "input", "text": "'n Prys styg van R80 tot R92. Wat is die persentasie-toename?", "answer": "15", "topic": "Persentasies"},
+        {"type": "input", "text": "'n Dorp se bevolking daal van 25 000 tot 23 500. Wat is die persentasie-afname?", "answer": "6", "topic": "Persentasies"},
+        {"type": "mc", "text": "0,045 as 'n persentasie is:", "options": ["45%", "4,5%", "0,45%", "0,045%"], "answer": 1, "topic": "Persentasies"},
+        {"type": "input", "text": "Na 'n afslag van 20% kos 'n baadjie R640. Wat was die oorspronklike prys? (R)", "answer": "800", "topic": "Persentasies"},
+      ]
+    },
+    {
+      id: 303,
+      chapter: 3,
+      name: "Hfst 3 Eksamenfokus",
+      fullName: "Eksamenoefening: berekeninge met gewone breuke, desimale breuke en persentasies",
+      lesson: {
+        heading: "Hfst 3 Eksamenfokus",
+        sub: "Hoofstuk 3 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Verander gemengde getalle na onegte breuke en persentasies na desimale breuke voordat jy bereken.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bereken 2 1/2 ÷ 1 1/4.", "answer": "2", "topic": "Hfst 3 Eksamenfokus"},
+        {"type": "input", "text": "Bereken 3/4 van 2/9. Gee 'n breuk in eenvoudigste vorm.", "answer": "1/6", "topic": "Hfst 3 Eksamenfokus"},
+        {"type": "mc", "text": "0,36 herhalend (0,363636…) as 'n breuk is:", "options": ["9/25", "36/100", "4/11", "1/3"], "answer": 2, "topic": "Hfst 3 Eksamenfokus"},
+        {"type": "input", "text": "Bereken 1,2 × 0,05.", "answer": "0.06", "altAnswers": ["0,06"], "topic": "Hfst 3 Eksamenfokus"},
+        {"type": "input", "text": "Bereken (1/2)² + √(1/9). Gee 'n breuk.", "answer": "7/12", "topic": "Hfst 3 Eksamenfokus"},
+        {"type": "input", "text": "'n Selfoon van R1 500 word met 12% opgemerk. Wat is die nuwe prys? (R)", "answer": "1680", "topic": "Hfst 3 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 3, chapterName: "Gewone en Desimale Breuke",
@@ -168,6 +258,58 @@ MathMagician.registerChapter(3, {
           },
         ]
       },
+      {
+        "name": "Kwadrate, derdemagte en wortels van breuke",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Vereenvoudig sonder 'n sakrekenaar:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(−2/3)³",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "√(1 9/16)",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "(0,04)² + √0,0081",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Persentasies",
+        "questions": [
+          {
+            "num": "5",
+            "text": "'n Winkel verander sy pryse.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Skoene wat R450 kos, word met 15% afgeprys. Bereken die nuwe prys.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "'n Sak se prys styg van R360 tot R414. Bereken die persentasie-toename.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Na 'n toename van 25% kos 'n boek R275. Wat het dit voorheen gekos?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -192,6 +334,46 @@ MathMagician.registerChapter(3, {
           { num: "Q3a", ans: "0,875", note: "7 ÷ 8 = 0,875" },
           { num: "Q3b", ans: "0,5̇", note: "5 ÷ 9 = 0,555̇" },
           { num: "Q3c", ans: "0,26̇", note: "4 ÷ 15 = 0,2666̇" },
+        ]
+      },
+      {
+        "name": "Kwadrate, derdemagte en wortels van breuke",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "−8/27",
+            "note": "(−2)³ = −8 ; 3³ = 27"
+          },
+          {
+            "num": "Q4b",
+            "ans": "1 1/4",
+            "note": "√(25/16) = 5/4"
+          },
+          {
+            "num": "Q4c",
+            "ans": "0,0916",
+            "note": "0,0016 + 0,09 = 0,0916"
+          }
+        ]
+      },
+      {
+        "name": "Persentasies",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "R382,50",
+            "note": "450 × 0,85 = 382,50"
+          },
+          {
+            "num": "Q5b",
+            "ans": "15%",
+            "note": "54 ÷ 360 × 100% = 15%"
+          },
+          {
+            "num": "Q5c",
+            "ans": "R220",
+            "note": "275 ÷ 1,25 = 220"
+          }
         ]
       },
     ]

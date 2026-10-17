@@ -294,6 +294,160 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "A fridge costs R 9 000 cash. On hire purchase you pay a 15% deposit and then 24 monthly instalments of R 350. How much MORE (in rand) do you pay overall on hire purchase compared to the cash price?", answer: "750", topic: "Finance" },
       ]
     },
+    {
+      id: 101,
+      chapter: 1,
+      name: "Prime factors, HCF and LCM",
+      fullName: "Prime factorisation, highest common factor and lowest common multiple",
+      lesson: {
+        heading: "Prime factors, HCF and LCM",
+        sub: "Chapter 1 · Topic 4",
+        body: `
+<p>Every whole number bigger than 1 can be written as a product of <strong>prime numbers</strong> in exactly one way. That product is its <strong>prime factorisation</strong>, and it makes the HCF and LCM easy to find.</p>
+<div class="mf-fig" data-fig='{"t":"ftree","n":360,"split":[[2,180],[2,90],[2,45],[3,15],[3,5]],"w":260}'></div>
+<p>360 = 2 × 2 × 2 × 3 × 3 × 5 = <span class="math">2³ × 3² × 5</span></p>
+<div class="def-box">
+  <div class="def-box-title">📖 HCF and LCM from prime factors</div>
+<p><strong>HCF</strong> (highest common factor): multiply the primes that appear in <em>every</em> number, each with its <em>lowest</em> power.<br><strong>LCM</strong> (lowest common multiple): multiply <em>every</em> prime that appears, each with its <em>highest</em> power.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: HCF and LCM of 84 and 120</div>
+  <div class="example-step"><span class="step-num">1</span><span>84 = 2² × 3 × 7 and 120 = 2³ × 3 × 5</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>HCF: common primes 2 and 3, lowest powers: <span class="math">2² × 3 = 12</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span>LCM: all primes, highest powers: <span class="math">2³ × 3 × 5 × 7 = 840</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: when do the buses meet again?</div>
+  <div class="example-step"><span class="step-num">1</span><span>Bus A leaves every 12 minutes, bus B every 18 minutes. Both leave at 07:00.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>They leave together again after LCM(12 ; 18) minutes: 12 = 2² × 3, 18 = 2 × 3², so LCM = 2² × 3² = 36.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Answer: 07:36.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>"Share equally into the biggest groups" asks for the HCF; "happen together again" asks for the LCM.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Find the HCF of 36 and 60.", "answer": "12", "topic": "Prime factors, HCF and LCM"},
+        {"type": "input", "text": "Find the LCM of 12 and 18.", "answer": "36", "topic": "Prime factors, HCF and LCM"},
+        {"type": "mc", "text": "The prime factorisation of 72 is:", "options": ["2² × 3³", "2³ × 3²", "2 × 36", "8 × 9"], "answer": 1, "topic": "Prime factors, HCF and LCM"},
+        {"type": "input", "text": "Find the LCM of 8, 12 and 15.", "answer": "120", "topic": "Prime factors, HCF and LCM"},
+        {"type": "input", "text": "Two lights flash together. One flashes every 6 seconds, the other every 8 seconds. After how many seconds do they flash together again?", "answer": "24", "topic": "Prime factors, HCF and LCM"},
+        {"type": "input", "text": "Find the HCF of 48, 72 and 120.", "answer": "24", "topic": "Prime factors, HCF and LCM"},
+        {"type": "mc", "text": "54 red and 72 blue beads are shared into identical bags with no beads left over. What is the largest number of bags?", "options": ["6", "9", "18", "216"], "answer": 2, "topic": "Prime factors, HCF and LCM"},
+      ]
+    },
+    {
+      id: 102,
+      chapter: 1,
+      name: "Direct and indirect proportion",
+      fullName: "Solving problems with direct and indirect (inverse) proportion",
+      lesson: {
+        heading: "Direct and indirect proportion",
+        sub: "Chapter 1 · Topic 5",
+        body: `
+<p>Two quantities are in <strong>direct proportion</strong> when they grow at the same rate: double one and the other doubles. They are in <strong>indirect (inverse) proportion</strong> when one doubles and the other halves.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 How to tell them apart</div>
+<p><strong>Direct:</strong> the ratio y ÷ x stays the same (y = kx). The graph is a straight line through the origin.<br><strong>Indirect:</strong> the product x × y stays the same (xy = k). The graph is a curve that never touches the axes.</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":300,"h":180,"view":[0,0,10,10],"pad":24,"axes":{"x":"x","y":"y","o":false},"fn":[{"f":"x","c":"ac","dom":[0,9.5],"lab":[7.2,5.4,"direct: y = kx"]},{"f":"8/x","c":"hl","dom":[0.85,9.5],"lab":[1.7,9.2,"indirect: xy = k"]}]}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: direct proportion</div>
+  <div class="example-step"><span class="step-num">1</span><span>5 pens cost R35. What do 8 pens cost?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>One pen: R35 ÷ 5 = R7. Eight pens: 8 × R7 = <strong>R56</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: indirect proportion</div>
+  <div class="example-step"><span class="step-num">1</span><span>6 workers build a wall in 10 days. How long do 4 workers take?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>The total work stays the same: 6 × 10 = 60 worker-days.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>4 workers: 60 ÷ 4 = <strong>15 days</strong>. Fewer workers, more days.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Ask yourself: if one quantity doubles, does the other double (direct) or halve (indirect)?</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "3 kg of apples cost R45. What do 7 kg cost? (R)", "answer": "105", "topic": "Direct and indirect proportion"},
+        {"type": "input", "text": "8 taps fill a tank in 6 hours. How many hours do 12 taps take?", "answer": "4", "topic": "Direct and indirect proportion"},
+        {"type": "mc", "text": "Which pair is in INDIRECT proportion?", "options": ["Litres of petrol and cost", "Hours worked and wages at a fixed rate", "Speed and time for a fixed distance", "Number of tickets and total price"], "answer": 2, "topic": "Direct and indirect proportion"},
+        {"type": "input", "text": "A car uses 20 litres of petrol for 240 km. How many litres does it use for 360 km?", "answer": "30", "topic": "Direct and indirect proportion"},
+        {"type": "mc", "text": "The graph of two quantities is a straight line through the origin. They are in:", "options": ["direct proportion", "indirect proportion", "no proportion", "both"], "answer": 0, "topic": "Direct and indirect proportion"},
+        {"type": "input", "text": "A prize is shared equally: with 5 winners each gets R600. How much does each get if there are 8 winners? (R)", "answer": "375", "topic": "Direct and indirect proportion"},
+        {"type": "input", "text": "At 80 km/h a trip takes 3 hours. How many hours does it take at 120 km/h?", "answer": "2", "topic": "Direct and indirect proportion"},
+      ]
+    },
+    {
+      id: 103,
+      chapter: 1,
+      name: "Financial contexts",
+      fullName: "Budgets, loans, hire purchase, exchange rates, commission and rentals",
+      lesson: {
+        heading: "Financial contexts",
+        sub: "Chapter 1 · Topic 6",
+        body: `
+<p>Grade 9 money problems use the same few ideas in different situations. Read carefully what is <em>added</em>, what is <em>taken off</em> and what is <em>charged per period</em>.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Key terms</div>
+<p><strong>Budget:</strong> a plan of expected income and expenses. Income − expenses = savings (or shortfall).<br><strong>Loan:</strong> money borrowed; you repay the amount plus interest.<br><strong>Hire purchase (HP):</strong> deposit + instalments; HP price − cash price = interest paid.<br><strong>Exchange rate:</strong> foreign → rand: multiply by the rate; rand → foreign: divide.<br><strong>Commission:</strong> a percentage of sales paid to a salesperson.<br><strong>Rental:</strong> a fixed amount paid per period to use something, often increased (escalated) by a percentage each year.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: commission</div>
+  <div class="example-step"><span class="step-num">1</span><span>An estate agent earns 5% commission. She sells a house for R1 200 000.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Commission = 5% × 1 200 000 = 0,05 × 1 200 000 = <strong>R60 000</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: rental with escalation</div>
+  <div class="example-step"><span class="step-num">1</span><span>A flat rents for R6 500 per month. The rent goes up by 8% after a year.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>New rent = 6 500 × 1,08 = <strong>R7 020</strong> per month.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Extra paid in the second year = 12 × (7 020 − 6 500) = 12 × 520 = <strong>R6 240</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a monthly budget</div>
+<div class="math-block">Income: salary           R12 400
+Expenses: rent            R4 800
+          food            R3 100
+          transport       R1 450
+          other           R1 850
+Total expenses            R11 200
+Savings: 12 400 − 11 200 = R1 200</div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>A percentage increase of r% means multiply by (1 + r/100); a decrease means multiply by (1 − r/100).</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "A salesperson earns 4% commission on sales of R85 000. How much commission is that? (R)", "answer": "3400", "topic": "Financial contexts"},
+        {"type": "input", "text": "Rent of R5 000 per month increases by 6%. What is the new monthly rent? (R)", "answer": "5300", "topic": "Financial contexts"},
+        {"type": "input", "text": "A TV costs R9 000 cash, or R900 deposit plus 24 instalments of R420. How much more does hire purchase cost? (R)", "answer": "1980", "topic": "Financial contexts"},
+        {"type": "input", "text": "$1 = R18,50. How many dollars do you get for R3 700?", "answer": "200", "topic": "Financial contexts"},
+        {"type": "mc", "text": "Monthly income R9 500; expenses R4 200, R2 650, R1 300 and R900. The budget shows:", "options": ["savings of R450", "a shortfall of R450", "savings of R1 350", "savings of R9 050"], "answer": 0, "topic": "Financial contexts"},
+        {"type": "input", "text": "Thabo borrows R4 000 at 12% simple interest per year for 2 years. How much does he repay in total? (R)", "answer": "4960", "topic": "Financial contexts"},
+        {"type": "input", "text": "A shirt costs £24 in London. £1 = R23,50. What is the price in rand? (R)", "answer": "564", "topic": "Financial contexts"},
+      ]
+    },
+    {
+      id: 104,
+      chapter: 1,
+      name: "Ch 1 Exam focus",
+      fullName: "Exam practice: number systems, ratio, proportion and financial mathematics",
+      lesson: {
+        heading: "Chapter 1 exam focus",
+        sub: "Chapter 1 · Topic 7",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Before you calculate, decide which idea the question is about: number sets, HCF/LCM, ratio, proportion, or a financial context.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Compound interest reminder</div>
+<p><span class="math">A = P(1 + i)ⁿ</span>: P the amount invested, i the interest rate per year as a decimal, n the number of years. Simple interest: <span class="math">A = P(1 + in)</span>.</p>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Show the formula, the substitution and the answer with units (R, km/h, days). Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Which number is irrational?", "options": ["√49", "0,333…", "√12", "−7/3"], "answer": 2, "topic": "Ch 1 Exam focus"},
+        {"type": "input", "text": "R12 000 is invested at 8% compound interest per year. How much is it worth after 2 years? (R)", "answer": "13996.80", "altAnswers": ["13996,80", "13996.8", "13996,8"], "topic": "Ch 1 Exam focus"},
+        {"type": "input", "text": "Share R2 400 in the ratio 3 : 5. What is the bigger share? (R)", "answer": "1500", "topic": "Ch 1 Exam focus"},
+        {"type": "input", "text": "Find the LCM of 14 and 21.", "answer": "42", "topic": "Ch 1 Exam focus"},
+        {"type": "input", "text": "12 learners clean the school in 3 hours. How many hours do 9 learners take?", "answer": "4", "topic": "Ch 1 Exam focus"},
+        {"type": "mc", "text": "A price of R480 is increased by 15%, then decreased by 15%. The final price is:", "options": ["R480", "R469,20", "R552", "R408"], "answer": 1, "topic": "Ch 1 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 1, chapterName: "Number Systems, Ratios, Rates, and Financial Mathematics",
@@ -372,6 +526,84 @@ MathMagician.registerChapter(1, {
           },
         ]
       },
+      {
+        "name": "Prime factors, HCF and LCM",
+        "questions": [
+          {
+            "num": "8",
+            "text": "84 learners and 126 parents are split into identical groups with nobody left over.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Write 84 and 126 as products of prime factors.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "What is the largest number of groups possible?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "How many learners and how many parents are in each group?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Direct and indirect proportion",
+        "questions": [
+          {
+            "num": "9",
+            "text": "A farmer has enough feed for 40 cows for 15 days.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Is the number of cows and the number of days in direct or indirect proportion? Explain.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "How long does the feed last for 60 cows?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "How many cows can be fed for 24 days?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Financial contexts",
+        "questions": [
+          {
+            "num": "10",
+            "text": "Lerato earns a basic salary of R7 500 per month plus 3% commission on her sales.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "In March she sells goods worth R120 000. Calculate her total income for March.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Her rent of R4 200 per month increases by 7,5%. Calculate the new rent.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "She buys a fridge on HP: 10% deposit on R8 000 and 18 instalments of R495. Calculate the total HP price.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -407,6 +639,66 @@ MathMagician.registerChapter(1, {
           { num: "Q6b", ans: "Compound = R 5 194,24; Simple = R 4 800; Difference = R 394,24", note: "Simple: 20000 × 0,08 × 3 = 4800" },
           { num: "Q7a", ans: "R 7 140", note: "350 × 20,40 = 7 140" },
           { num: "Q7b", ans: "€400", note: "8 160 ÷ 20,40 = 400" },
+        ]
+      },
+      {
+        "name": "Prime factors, HCF and LCM",
+        "answers": [
+          {
+            "num": "Q8a",
+            "ans": "84 = 2² × 3 × 7 ; 126 = 2 × 3² × 7",
+            "note": "Factor trees"
+          },
+          {
+            "num": "Q8b",
+            "ans": "HCF = 2 × 3 × 7 = 42 groups",
+            "note": "Common primes, lowest powers"
+          },
+          {
+            "num": "Q8c",
+            "ans": "2 learners and 3 parents per group",
+            "note": "84 ÷ 42 = 2 ; 126 ÷ 42 = 3"
+          }
+        ]
+      },
+      {
+        "name": "Direct and indirect proportion",
+        "answers": [
+          {
+            "num": "Q9a",
+            "ans": "Indirect: more cows means the feed lasts fewer days; cows × days stays 600.",
+            "note": "40 × 15 = 600 cow-days"
+          },
+          {
+            "num": "Q9b",
+            "ans": "10 days",
+            "note": "600 ÷ 60 = 10"
+          },
+          {
+            "num": "Q9c",
+            "ans": "25 cows",
+            "note": "600 ÷ 24 = 25"
+          }
+        ]
+      },
+      {
+        "name": "Financial contexts",
+        "answers": [
+          {
+            "num": "Q10a",
+            "ans": "R11 100",
+            "note": "3% × 120 000 = 3 600; 7 500 + 3 600 = 11 100"
+          },
+          {
+            "num": "Q10b",
+            "ans": "R4 515",
+            "note": "4 200 × 1,075 = 4 515"
+          },
+          {
+            "num": "Q10c",
+            "ans": "R9 710",
+            "note": "Deposit 800; 18 × 495 = 8 910; 800 + 8 910 = 9 710"
+          }
         ]
       },
     ]

@@ -189,6 +189,108 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Simplify: (6 × 10⁶) ÷ (2 × 10²)", options: ["3 × 10⁴", "3 × 10²", "4 × 10⁴", "3 × 10⁸"], answer: 0, topic: "Exponents" },
       ]
     },
+    {
+      id: 401,
+      chapter: 4,
+      name: "Simplifying with several laws",
+      fullName: "Simplifying expressions and solving equations using several laws of exponents",
+      lesson: {
+        heading: "Simplifying with several laws",
+        sub: "Chapter 4 · Topic 3",
+        body: `
+<p>Most exam questions need more than one exponent law. Work in a fixed order and write one law per step.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 A reliable order</div>
+<p>1. Remove brackets: (ab)ⁿ = aⁿbⁿ and (aᵐ)ⁿ = aᵐⁿ.<br>2. Multiply numbers; add exponents of the same base.<br>3. Divide; subtract exponents.<br>4. Write negative exponents as fractions: a⁻ⁿ = 1/aⁿ. Final answers have positive exponents.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: simplify (2x³)² × 3x⁻⁴ ÷ 6x</div>
+  <div class="example-step"><span class="step-num">1</span><span>(2x³)² = 4x⁶</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>4x⁶ × 3x⁻⁴ = 12x²</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>12x² ÷ 6x = <strong>2x</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a negative exponent on a fraction</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(2/3)⁻² = (3/2)² = 9/4</span>: a negative exponent flips the fraction.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">5⁰ + 2⁻¹ = 1 + 1/2 = 1 1/2</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: solve 3ˣ = 81</div>
+  <div class="example-step"><span class="step-num">1</span><span>Write both sides with the same base: 81 = 3⁴.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>3ˣ = 3⁴, so <strong>x = 4</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>−2² = −4 but (−2)² = 4. The exponent only belongs to what is directly in front of it.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Simplify (3a²)³:", "options": ["9a⁶", "3a⁶", "27a⁶", "27a⁵"], "answer": 2, "topic": "Simplifying with several laws"},
+        {"type": "mc", "text": "Simplify 8x⁵ × 2x⁻³ ÷ 4x:", "options": ["4x", "4x²", "16x", "4"], "answer": 0, "topic": "Simplifying with several laws"},
+        {"type": "input", "text": "Calculate (2/5)⁻². Give a fraction.", "answer": "25/4", "altAnswers": ["6.25", "6,25", "6 1/4"], "topic": "Simplifying with several laws"},
+        {"type": "input", "text": "Solve for x: 2ˣ = 64", "answer": "6", "topic": "Simplifying with several laws"},
+        {"type": "input", "text": "Solve for x: 5ˣ⁺¹ = 125", "answer": "2", "topic": "Simplifying with several laws"},
+        {"type": "input", "text": "Calculate 4⁰ + 4⁻¹ + 4¹. Give a fraction or decimal.", "answer": "5.25", "altAnswers": ["5,25", "21/4", "5 1/4"], "topic": "Simplifying with several laws"},
+        {"type": "mc", "text": "Which is equal to 1/x³?", "options": ["x⁻⁽¹ᐟ³⁾", "x⁻³", "−x³", "3x⁻¹"], "answer": 1, "topic": "Simplifying with several laws"},
+      ]
+    },
+    {
+      id: 402,
+      chapter: 4,
+      name: "Problems with scientific notation",
+      fullName: "Solving problems in context with numbers in scientific notation",
+      lesson: {
+        heading: "Problems with scientific notation",
+        sub: "Chapter 4 · Topic 4",
+        body: `
+<p>Scientific notation makes very large and very small numbers easy to compare and calculate with. In context questions, convert, calculate, and then answer in the units asked.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Comparing numbers in scientific notation</div>
+<p>First compare the powers of 10: the bigger power is the bigger number. If the powers are equal, compare the first parts.<br>e.g. 3,2 × 10⁵ &gt; 9,8 × 10⁴, because 10⁵ &gt; 10⁴.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: light from the Sun</div>
+  <div class="example-step"><span class="step-num">1</span><span>Light travels 3 × 10⁵ km per second. The Sun is 1,5 × 10⁸ km away. How long does its light take to reach us?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>time = distance ÷ speed = (1,5 × 10⁸) ÷ (3 × 10⁵) = 0,5 × 10³ = 5 × 10² s</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>= 500 seconds, a little over <strong>8 minutes</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a very small length</div>
+  <div class="example-step"><span class="step-num">1</span><span>A red blood cell is 7 × 10⁻⁶ m wide. How many fit side by side in 1 cm (10⁻² m)?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>10⁻² ÷ (7 × 10⁻⁶) = (1/7) × 10⁴ ≈ 0,143 × 10⁴ ≈ <strong>1 430 cells</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>If the first part of your answer is not between 1 and 10, move the comma and adjust the power: 0,5 × 10³ = 5 × 10².</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Which number is the largest?", "options": ["9,9 × 10³", "5 × 10³", "1,2 × 10³", "1,1 × 10⁴"], "answer": 3, "topic": "Problems with scientific notation"},
+        {"type": "input", "text": "Calculate (4 × 10⁶) × (2 × 10⁻²). Give the answer as an ordinary number.", "answer": "80000", "altAnswers": ["8 × 10^4", "8×10^4", "8 x 10^4"], "topic": "Problems with scientific notation"},
+        {"type": "mc", "text": "(6 × 10⁸) ÷ (3 × 10²) =", "options": ["2 × 10⁶", "2 × 10⁴", "3 × 10⁶", "2 × 10¹⁰"], "answer": 0, "topic": "Problems with scientific notation"},
+        {"type": "mc", "text": "South Africa has about 63 000 000 people. In scientific notation that is:", "options": ["63 × 10⁶", "6,3 × 10⁶", "6,3 × 10⁷", "0,63 × 10⁸"], "answer": 2, "topic": "Problems with scientific notation"},
+        {"type": "input", "text": "A virus is 1,2 × 10⁻⁷ m long. Write this as an ordinary number. (m)", "answer": "0.00000012", "altAnswers": ["0,00000012"], "topic": "Problems with scientific notation"},
+        {"type": "input", "text": "Sound travels 3,4 × 10² m per second. How far does it travel in 5 seconds? Give an ordinary number. (m)", "answer": "1700", "topic": "Problems with scientific notation"},
+      ]
+    },
+    {
+      id: 403,
+      chapter: 4,
+      name: "Ch 4 Exam focus",
+      fullName: "Exam practice: exponents and scientific notation",
+      lesson: {
+        heading: "Ch 4 Exam focus",
+        sub: "Chapter 4 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Use one exponent law per line and give answers with positive exponents.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Simplify (x²y)³ ÷ x⁴y:", "options": ["x²y³", "x²y²", "xy²", "x¹⁰y³"], "answer": 1, "topic": "Ch 4 Exam focus"},
+        {"type": "input", "text": "Calculate 3⁻² × 3⁴.", "answer": "9", "topic": "Ch 4 Exam focus"},
+        {"type": "input", "text": "Calculate (−1)¹⁰¹ + (−1)¹⁰⁰.", "answer": "0", "topic": "Ch 4 Exam focus"},
+        {"type": "input", "text": "Solve for x: 10ˣ = 0,001", "answer": "-3", "topic": "Ch 4 Exam focus"},
+        {"type": "mc", "text": "0,000 506 in scientific notation is:", "options": ["5,06 × 10⁴", "5,06 × 10⁻⁴", "50,6 × 10⁻⁵", "5,06 × 10⁻³"], "answer": 1, "topic": "Ch 4 Exam focus"},
+        {"type": "mc", "text": "Simplify 2ⁿ × 4ⁿ ÷ 8ⁿ:", "options": ["1", "2ⁿ", "8ⁿ", "0"], "answer": 0, "topic": "Ch 4 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 4, chapterName: "Exponents",
@@ -237,6 +339,53 @@ MathMagician.registerChapter(4, {
           },
         ]
       },
+      {
+        "name": "Simplifying with several laws",
+        "questions": [
+          {
+            "num": "5",
+            "text": "Simplify. Leave answers with positive exponents.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(−2a³b)² × 5ab⁻⁴",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "(3x²)³ ÷ (9x⁸)",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Solve: 2ˣ⁻¹ = 1/16",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Problems with scientific notation",
+        "questions": [
+          {
+            "num": "6",
+            "text": "The Earth is about 1,5 × 10⁸ km from the Sun, and Mars about 2,3 × 10⁸ km.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "How much farther from the Sun is Mars than the Earth? Answer in scientific notation.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "A spacecraft travels 4 × 10⁴ km per hour. How many hours does it take to cover that extra distance?",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -260,6 +409,41 @@ MathMagician.registerChapter(4, {
           { num: "Q3b", ans: "8,2 × 10⁻⁷", note: "Decimal moves 7 places right" },
           { num: "Q4a", ans: "3 × 10¹²", note: "30 × 10¹¹ = 3 × 10¹²" },
           { num: "Q4b", ans: "3 × 10¹⁰", note: "9 ÷ 3 = 3; 10^(8-(-2)) = 10¹⁰" },
+        ]
+      },
+      {
+        "name": "Simplifying with several laws",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "20a⁷ / b²",
+            "note": "4a⁶b² × 5ab⁻⁴ = 20a⁷b⁻²"
+          },
+          {
+            "num": "Q5b",
+            "ans": "3 / x²",
+            "note": "27x⁶ ÷ 9x⁸ = 3x⁻²"
+          },
+          {
+            "num": "Q5c",
+            "ans": "x = −3",
+            "note": "1/16 = 2⁻⁴, so x − 1 = −4"
+          }
+        ]
+      },
+      {
+        "name": "Problems with scientific notation",
+        "answers": [
+          {
+            "num": "Q6a",
+            "ans": "8 × 10⁷ km",
+            "note": "2,3 × 10⁸ − 1,5 × 10⁸ = 0,8 × 10⁸"
+          },
+          {
+            "num": "Q6b",
+            "ans": "2 000 hours (2 × 10³)",
+            "note": "8 × 10⁷ ÷ 4 × 10⁴ = 2 × 10³"
+          }
         ]
       },
     ]

@@ -199,6 +199,66 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "'n Kubusvormige houer het 'n volume van 512 cm³. Bereken die lengte van een sy van die houer (in cm).", answer: "8", topic: "Heelgetalle" },
       ]
     },
+    {
+      id: 201,
+      chapter: 2,
+      name: "Heelgetalle in konteks",
+      fullName: "Probleme oplos met heelgetalle en hul eienskappe gebruik",
+      lesson: {
+        heading: "Heelgetalle in konteks",
+        sub: "Hoofstuk 2 · Onderwerp 3",
+        body: `
+<p>Heelgetalle beskryf enigiets wat onder nul kan gaan: temperature, banksaldo's, hoogtes bo en onder seevlak, doelverskille. 'n Getallelyn help jou om die verandering te sien.</p>
+<div class="mf-fig" data-fig='{"t":"nl","min":-8,"max":6,"pts":[[-6,"c"],[4,"c"]],"seg":[[-6,4]],"cap":"Van −6 °C tot 4 °C is &#39;n styging van 4 − (−6) = 10 °C."}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Eienskappe wat jy kan gebruik</div>
+<p><strong>Additiewe inverse:</strong> a + (−a) = 0, bv. 7 + (−7) = 0.<br><strong>Multiplikatiewe inverse:</strong> a × (1/a) = 1, bv. −4 × (−¼) = 1.<br><strong>Kommutatief:</strong> a + b = b + a en a × b = b × a (nie vir − of ÷ nie).<br><strong>Assosiatief:</strong> (a + b) + c = a + (b + c), dieselfde vir ×.<br><strong>Distributief:</strong> a(b + c) = ab + ac, bv. −3(4 − 10) = −12 + 30 = 18.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n banksaldo</div>
+  <div class="example-step"><span class="step-num">1</span><span>Sizwe se saldo is −R250 (oortrokke). Hy deponeer R600 en betaal dan R480.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>−250 + 600 − 480 = 350 − 480 = <strong>−R130</strong>. Hy is steeds oortrokke.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: hoogte bo seevlak</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Duiker is op −18 m. 'n Voël vlieg 25 m bo die see. Hoe ver is hulle vertikaal van mekaar?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Verskil = 25 − (−18) = 25 + 18 = <strong>43 m</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Die verskil tussen twee waardes is altyd die groter een min die kleiner een, selfs as albei negatief is: −3 − (−11) = 8.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Om 05:00 is dit −7 °C. Teen middag is dit 12 °C. Met hoeveel grade het die temperatuur gestyg?", "answer": "19", "topic": "Heelgetalle in konteks"},
+        {"type": "input", "text": "'n Saldo van −R340 word gevolg deur 'n deposito van R500 en 'n betaling van R275. Wat is die nuwe saldo? (R)", "answer": "-115", "topic": "Heelgetalle in konteks"},
+        {"type": "mc", "text": "Wat is die additiewe inverse van −9?", "options": ["−9", "9", "−1/9", "1/9"], "answer": 1, "topic": "Heelgetalle in konteks"},
+        {"type": "mc", "text": "Watter eienskap word gewys deur −2(5 + x) = −10 − 2x?", "options": ["kommutatief", "assosiatief", "distributief", "additiewe inverse"], "answer": 2, "topic": "Heelgetalle in konteks"},
+        {"type": "input", "text": "'n Duikboot op −120 m styg 45 m en duik dan 30 m. Wat is sy diepte nou? (m)", "answer": "-105", "topic": "Heelgetalle in konteks"},
+        {"type": "input", "text": "Bereken: −3 × (−4) + 18 ÷ (−6)", "answer": "9", "topic": "Heelgetalle in konteks"},
+        {"type": "mc", "text": "Watter stelling is ONWAAR?", "options": ["(−5) + 8 = 8 + (−5)", "(−2) × 7 = 7 × (−2)", "(−4 + 6) + 1 = −4 + (6 + 1)", "(−9) − 3 = 3 − (−9)"], "answer": 3, "topic": "Heelgetalle in konteks"},
+      ]
+    },
+    {
+      id: 202,
+      chapter: 2,
+      name: "Hfst 2 Eksamenfokus",
+      fullName: "Eksamenoefening: berekeninge en probleme met heelgetalle",
+      lesson: {
+        heading: "Hfst 2 Eksamenfokus",
+        sub: "Hoofstuk 2 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Pas op vir die tekens: kwadreer voordat jy negatief maak, en om 'n negatief af te trek is om by te tel.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bereken: −2³ + (−3)²", "answer": "1", "topic": "Hfst 2 Eksamenfokus"},
+        {"type": "input", "text": "Bereken: ∛(−64) + √81", "answer": "5", "topic": "Hfst 2 Eksamenfokus"},
+        {"type": "input", "text": "Bereken: (−12) ÷ (−3) − 5 × (−2)", "answer": "14", "topic": "Hfst 2 Eksamenfokus"},
+        {"type": "mc", "text": "'n Span het 18 doele aangeteken en 25 afgestaan. Sy doelverskil is:", "options": ["7", "−7", "43", "−43"], "answer": 1, "topic": "Hfst 2 Eksamenfokus"},
+        {"type": "input", "text": "Die laagste temperatuur in 'n week was −4 °C en die hoogste 23 °C. Wat is die variasiewydte? (°C)", "answer": "27", "topic": "Hfst 2 Eksamenfokus"},
+        {"type": "mc", "text": "√(−36) is:", "options": ["6", "−6", "±6", "nie 'n reële getal nie"], "answer": 3, "topic": "Hfst 2 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 2, chapterName: "Heelgetalle",
@@ -242,6 +302,32 @@ MathMagician.registerChapter(2, {
           },
         ]
       },
+      {
+        "name": "Heelgetalle in konteks",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Gebruik heelgetalle om te antwoord. Toon jou bewerkings.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "'n Vrieskas is op −18 °C. Dit word elke uur 3 °C warmer nadat die krag uitgaan. Wat is die temperatuur na 5 uur?",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Na hoeveel uur bereik dit 0 °C?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Gebruik die distributiewe eienskap om −7 × 98 sonder 'n sakrekenaar te bereken.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -266,6 +352,26 @@ MathMagician.registerChapter(2, {
           { num: "Q3c", ans: "6", note: "6³ = 216" },
           { num: "Q3d", ans: "-4", note: "(-4)³ = -64" },
           { num: "Q3e", ans: "Nie reëel nie", note: "Die vierkantswortel van 'n negatiewe getal kan nie getrek word nie" },
+        ]
+      },
+      {
+        "name": "Heelgetalle in konteks",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "−3 °C",
+            "note": "−18 + 5 × 3 = −18 + 15 = −3"
+          },
+          {
+            "num": "Q4b",
+            "ans": "6 uur",
+            "note": "18 ÷ 3 = 6"
+          },
+          {
+            "num": "Q4c",
+            "ans": "−686",
+            "note": "−7(100 − 2) = −700 + 14 = −686"
+          }
         ]
       },
     ]

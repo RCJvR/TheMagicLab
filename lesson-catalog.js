@@ -1591,6 +1591,22 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Financial mathematics",
           "label": "Financial mathematics"
+        },
+        {
+          "value": "Prime factors, HCF and LCM",
+          "label": "Prime factors, HCF and LCM"
+        },
+        {
+          "value": "Direct and indirect proportion",
+          "label": "Direct and indirect proportion"
+        },
+        {
+          "value": "Financial contexts",
+          "label": "Financial contexts"
+        },
+        {
+          "value": "Ch 1 Exam focus",
+          "label": "Ch 1 Exam focus"
         }
       ]
     },
@@ -1604,6 +1620,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Properties of integers",
           "label": "Properties of integers"
+        },
+        {
+          "value": "Integers in context",
+          "label": "Integers in context"
+        },
+        {
+          "value": "Ch 2 Exam focus",
+          "label": "Ch 2 Exam focus"
         }
       ]
     },
@@ -1617,6 +1641,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Decimal fractions",
           "label": "Decimal fractions"
+        },
+        {
+          "value": "Squares, cubes and roots of fractions",
+          "label": "Squares, cubes and roots of fractions"
+        },
+        {
+          "value": "Percentages",
+          "label": "Percentages"
+        },
+        {
+          "value": "Ch 3 Exam focus",
+          "label": "Ch 3 Exam focus"
         }
       ]
     },
@@ -1630,6 +1666,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Scientific notation",
           "label": "Scientific notation"
+        },
+        {
+          "value": "Simplifying with several laws",
+          "label": "Simplifying with several laws"
+        },
+        {
+          "value": "Problems with scientific notation",
+          "label": "Problems with scientific notation"
+        },
+        {
+          "value": "Ch 4 Exam focus",
+          "label": "Ch 4 Exam focus"
         }
       ]
     },

@@ -125,6 +125,96 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Calculate 0,<span class='math'>\\overline{4}</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "29/45", topic: "Decimals" },
       ]
     },
+    {
+      id: 301,
+      chapter: 3,
+      name: "Squares, cubes and roots of fractions",
+      fullName: "Calculating squares, cubes, square roots and cube roots of common and decimal fractions",
+      lesson: {
+        heading: "Squares, cubes and roots of fractions",
+        sub: "Chapter 3 · Topic 3",
+        body: `
+<p>Squaring, cubing and taking roots work on the numerator and the denominator separately. Decimals are easiest if you first write them as fractions.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Rules</div>
+<p><span class="math">(a/b)² = a²/b²</span> &nbsp; <span class="math">(a/b)³ = a³/b³</span><br><span class="math">√(a/b) = √a / √b</span> &nbsp; <span class="math">∛(a/b) = ∛a / ∛b</span></p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Worked examples</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(2/3)² = 4/9</span> and <span class="math">(−1/2)³ = −1/8</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">√(25/49) = 5/7</span> and <span class="math">∛(8/27) = 2/3</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">(0,3)² = 0,09</span>: 3² = 9, and 1 + 1 = 2 decimal places.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span><span class="math">√0,16 = √(16/100) = 4/10 = 0,4</span></span></div>
+  <div class="example-step"><span class="step-num">5</span><span>Mixed numbers first become improper fractions: <span class="math">√(2 1/4) = √(9/4) = 3/2 = 1 1/2</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>A square of a number between 0 and 1 is smaller than the number: (0,5)² = 0,25. A square root of such a number is bigger: √0,25 = 0,5.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Calculate (3/5)². Give a fraction.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Squares, cubes and roots of fractions"},
+        {"type": "input", "text": "Calculate √(36/121). Give a fraction.", "answer": "6/11", "topic": "Squares, cubes and roots of fractions"},
+        {"type": "input", "text": "Calculate (0,2)³.", "answer": "0.008", "altAnswers": ["0,008"], "topic": "Squares, cubes and roots of fractions"},
+        {"type": "input", "text": "Calculate √0,49.", "answer": "0.7", "altAnswers": ["0,7"], "topic": "Squares, cubes and roots of fractions"},
+        {"type": "mc", "text": "∛(−27/64) =", "options": ["−3/4", "3/4", "−9/16", "not real"], "answer": 0, "topic": "Squares, cubes and roots of fractions"},
+        {"type": "input", "text": "Calculate √(6 1/4). Give a mixed number or a decimal.", "answer": "2 1/2", "altAnswers": ["2.5", "2,5", "5/2"], "topic": "Squares, cubes and roots of fractions"},
+        {"type": "mc", "text": "Which is the biggest?", "options": ["0,6²", "0,6³", "√0,64", "0,6"], "answer": 2, "topic": "Squares, cubes and roots of fractions"},
+      ]
+    },
+    {
+      id: 302,
+      chapter: 3,
+      name: "Percentages",
+      fullName: "Percentages of amounts, one amount as a percentage of another, and percentage change",
+      lesson: {
+        heading: "Percentages",
+        sub: "Chapter 3 · Topic 4",
+        body: `
+<p>A percentage is a fraction out of 100. To work with percentages, change them to decimals: 35% = 0,35.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Three types of percentage question</div>
+<p><strong>Percentage of an amount:</strong> <span class="math">15% of R80 = 0,15 × 80 = R12</span><br><strong>One amount as a percentage of another:</strong> <span class="math">18 out of 24 = 18/24 × 100% = 75%</span><br><strong>Percentage change:</strong> <span class="math">change ÷ original × 100%</span></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"bar","xs":["2024","2025"],"ys":[240,300],"ylab":"R","w":220,"h":170,"cap":"The price rose from R240 to R300: an increase of 60/240 × 100% = 25%."}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: percentage decrease</div>
+  <div class="example-step"><span class="step-num">1</span><span>A school had 1 250 learners. Now it has 1 100.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Change = 1 100 − 1 250 = −150</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Percentage change = −150 ÷ 1 250 × 100% = <strong>−12%</strong>, a decrease of 12%.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Always divide by the ORIGINAL amount, the value before the change.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Calculate 35% of R620. (R)", "answer": "217", "topic": "Percentages"},
+        {"type": "input", "text": "A learner scores 42 out of 60. What percentage is that?", "answer": "70", "topic": "Percentages"},
+        {"type": "input", "text": "A price goes up from R80 to R92. What is the percentage increase?", "answer": "15", "topic": "Percentages"},
+        {"type": "input", "text": "A town's population drops from 25 000 to 23 500. What is the percentage decrease?", "answer": "6", "topic": "Percentages"},
+        {"type": "mc", "text": "0,045 as a percentage is:", "options": ["45%", "4,5%", "0,45%", "0,045%"], "answer": 1, "topic": "Percentages"},
+        {"type": "input", "text": "After a 20% discount a jacket costs R640. What was the original price? (R)", "answer": "800", "topic": "Percentages"},
+      ]
+    },
+    {
+      id: 303,
+      chapter: 3,
+      name: "Ch 3 Exam focus",
+      fullName: "Exam practice: calculations with common fractions, decimal fractions and percentages",
+      lesson: {
+        heading: "Ch 3 Exam focus",
+        sub: "Chapter 3 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Change mixed numbers to improper fractions and percentages to decimals before you calculate.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Calculate 2 1/2 ÷ 1 1/4.", "answer": "2", "topic": "Ch 3 Exam focus"},
+        {"type": "input", "text": "Calculate 3/4 of 2/9. Give a fraction in simplest form.", "answer": "1/6", "topic": "Ch 3 Exam focus"},
+        {"type": "mc", "text": "0,36 recurring (0,363636…) as a fraction is:", "options": ["9/25", "36/100", "4/11", "1/3"], "answer": 2, "topic": "Ch 3 Exam focus"},
+        {"type": "input", "text": "Calculate 1,2 × 0,05.", "answer": "0.06", "altAnswers": ["0,06"], "topic": "Ch 3 Exam focus"},
+        {"type": "input", "text": "Calculate (1/2)² + √(1/9). Give a fraction.", "answer": "7/12", "topic": "Ch 3 Exam focus"},
+        {"type": "input", "text": "A R1 500 cellphone is marked up by 12%. What is the new price? (R)", "answer": "1680", "topic": "Ch 3 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 3, chapterName: "Common & Decimal Fractions",
@@ -168,6 +258,58 @@ MathMagician.registerChapter(3, {
           },
         ]
       },
+      {
+        "name": "Squares, cubes and roots of fractions",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Simplify without a calculator:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(−2/3)³",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "√(1 9/16)",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "(0,04)² + √0,0081",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Percentages",
+        "questions": [
+          {
+            "num": "5",
+            "text": "A shop changes its prices.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Shoes costing R450 are reduced by 15%. Calculate the new price.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "A bag's price rises from R360 to R414. Calculate the percentage increase.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "After a 25% increase a book costs R275. What did it cost before?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -192,6 +334,46 @@ MathMagician.registerChapter(3, {
           { num: "Q3a", ans: "0,875", note: "7 ÷ 8 = 0,875" },
           { num: "Q3b", ans: "0,5̇", note: "5 ÷ 9 = 0,555̇" },
           { num: "Q3c", ans: "0,26̇", note: "4 ÷ 15 = 0,2666̇" },
+        ]
+      },
+      {
+        "name": "Squares, cubes and roots of fractions",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "−8/27",
+            "note": "(−2)³ = −8 ; 3³ = 27"
+          },
+          {
+            "num": "Q4b",
+            "ans": "1 1/4",
+            "note": "√(25/16) = 5/4"
+          },
+          {
+            "num": "Q4c",
+            "ans": "0,0916",
+            "note": "0,0016 + 0,09 = 0,0916"
+          }
+        ]
+      },
+      {
+        "name": "Percentages",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "R382,50",
+            "note": "450 × 0,85 = 382,50"
+          },
+          {
+            "num": "Q5b",
+            "ans": "15%",
+            "note": "54 ÷ 360 × 100% = 15%"
+          },
+          {
+            "num": "Q5c",
+            "ans": "R220",
+            "note": "275 ÷ 1,25 = 220"
+          }
         ]
       },
     ]

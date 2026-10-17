@@ -189,6 +189,108 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Vereenvoudig: (6 × 10⁶) ÷ (2 × 10²)", options: ["3 × 10⁴", "3 × 10²", "4 × 10⁴", "3 × 10⁸"], answer: 0, topic: "Eksponente" },
       ]
     },
+    {
+      id: 401,
+      chapter: 4,
+      name: "Vereenvoudig met verskeie wette",
+      fullName: "Uitdrukkings vereenvoudig en vergelykings oplos met verskeie eksponentwette",
+      lesson: {
+        heading: "Vereenvoudig met verskeie wette",
+        sub: "Hoofstuk 4 · Onderwerp 3",
+        body: `
+<p>Die meeste eksamenvrae het meer as een eksponentwet nodig. Werk in 'n vaste volgorde en skryf een wet per stap.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 'n Betroubare volgorde</div>
+<p>1. Verwyder hakies: (ab)ⁿ = aⁿbⁿ en (aᵐ)ⁿ = aᵐⁿ.<br>2. Vermenigvuldig getalle; tel eksponente van dieselfde grondtal bymekaar.<br>3. Deel; trek eksponente af.<br>4. Skryf negatiewe eksponente as breuke: a⁻ⁿ = 1/aⁿ. Finale antwoorde het positiewe eksponente.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: vereenvoudig (2x³)² × 3x⁻⁴ ÷ 6x</div>
+  <div class="example-step"><span class="step-num">1</span><span>(2x³)² = 4x⁶</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>4x⁶ × 3x⁻⁴ = 12x²</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>12x² ÷ 6x = <strong>2x</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n negatiewe eksponent op 'n breuk</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(2/3)⁻² = (3/2)² = 9/4</span>: 'n negatiewe eksponent draai die breuk om.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">5⁰ + 2⁻¹ = 1 + 1/2 = 1 1/2</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: los op 3ˣ = 81</div>
+  <div class="example-step"><span class="step-num">1</span><span>Skryf albei kante met dieselfde grondtal: 81 = 3⁴.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>3ˣ = 3⁴, so <strong>x = 4</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>−2² = −4 maar (−2)² = 4. Die eksponent behoort net aan wat direk voor dit staan.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Vereenvoudig (3a²)³:", "options": ["9a⁶", "3a⁶", "27a⁶", "27a⁵"], "answer": 2, "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "mc", "text": "Vereenvoudig 8x⁵ × 2x⁻³ ÷ 4x:", "options": ["4x", "4x²", "16x", "4"], "answer": 0, "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "input", "text": "Bereken (2/5)⁻². Gee 'n breuk.", "answer": "25/4", "altAnswers": ["6.25", "6,25", "6 1/4"], "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "input", "text": "Los op vir x: 2ˣ = 64", "answer": "6", "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "input", "text": "Los op vir x: 5ˣ⁺¹ = 125", "answer": "2", "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "input", "text": "Bereken 4⁰ + 4⁻¹ + 4¹. Gee 'n breuk of desimale breuk.", "answer": "5.25", "altAnswers": ["5,25", "21/4", "5 1/4"], "topic": "Vereenvoudig met verskeie wette"},
+        {"type": "mc", "text": "Watter een is gelyk aan 1/x³?", "options": ["x⁻⁽¹ᐟ³⁾", "x⁻³", "−x³", "3x⁻¹"], "answer": 1, "topic": "Vereenvoudig met verskeie wette"},
+      ]
+    },
+    {
+      id: 402,
+      chapter: 4,
+      name: "Probleme met wetenskaplike notasie",
+      fullName: "Probleme in konteks oplos met getalle in wetenskaplike notasie",
+      lesson: {
+        heading: "Probleme met wetenskaplike notasie",
+        sub: "Hoofstuk 4 · Onderwerp 4",
+        body: `
+<p>Wetenskaplike notasie maak baie groot en baie klein getalle maklik om te vergelyk en mee te bereken. In konteksvrae: herlei, bereken, en antwoord dan in die eenhede wat gevra word.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Getalle in wetenskaplike notasie vergelyk</div>
+<p>Vergelyk eers die magte van 10: die groter mag is die groter getal. As die magte gelyk is, vergelyk die eerste dele.<br>bv. 3,2 × 10⁵ &gt; 9,8 × 10⁴, want 10⁵ &gt; 10⁴.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: lig van die Son</div>
+  <div class="example-step"><span class="step-num">1</span><span>Lig beweeg 3 × 10⁵ km per sekonde. Die Son is 1,5 × 10⁸ km weg. Hoe lank neem sy lig om ons te bereik?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>tyd = afstand ÷ spoed = (1,5 × 10⁸) ÷ (3 × 10⁵) = 0,5 × 10³ = 5 × 10² s</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>= 500 sekondes, 'n bietjie meer as <strong>8 minute</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n baie klein lengte</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Rooibloedsel is 7 × 10⁻⁶ m breed. Hoeveel pas langs mekaar in 1 cm (10⁻² m)?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>10⁻² ÷ (7 × 10⁻⁶) = (1/7) × 10⁴ ≈ 0,143 × 10⁴ ≈ <strong>1 430 selle</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>As die eerste deel van jou antwoord nie tussen 1 en 10 is nie, skuif die komma en pas die mag aan: 0,5 × 10³ = 5 × 10².</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Watter getal is die grootste?", "options": ["9,9 × 10³", "5 × 10³", "1,2 × 10³", "1,1 × 10⁴"], "answer": 3, "topic": "Probleme met wetenskaplike notasie"},
+        {"type": "input", "text": "Bereken (4 × 10⁶) × (2 × 10⁻²). Gee die antwoord as 'n gewone getal.", "answer": "80000", "altAnswers": ["8 × 10^4", "8×10^4", "8 x 10^4"], "topic": "Probleme met wetenskaplike notasie"},
+        {"type": "mc", "text": "(6 × 10⁸) ÷ (3 × 10²) =", "options": ["2 × 10⁶", "2 × 10⁴", "3 × 10⁶", "2 × 10¹⁰"], "answer": 0, "topic": "Probleme met wetenskaplike notasie"},
+        {"type": "mc", "text": "Suid-Afrika het ongeveer 63 000 000 mense. In wetenskaplike notasie is dit:", "options": ["63 × 10⁶", "6,3 × 10⁶", "6,3 × 10⁷", "0,63 × 10⁸"], "answer": 2, "topic": "Probleme met wetenskaplike notasie"},
+        {"type": "input", "text": "'n Virus is 1,2 × 10⁻⁷ m lank. Skryf dit as 'n gewone getal. (m)", "answer": "0.00000012", "altAnswers": ["0,00000012"], "topic": "Probleme met wetenskaplike notasie"},
+        {"type": "input", "text": "Klank beweeg 3,4 × 10² m per sekonde. Hoe ver beweeg dit in 5 sekondes? Gee 'n gewone getal. (m)", "answer": "1700", "topic": "Probleme met wetenskaplike notasie"},
+      ]
+    },
+    {
+      id: 403,
+      chapter: 4,
+      name: "Hfst 4 Eksamenfokus",
+      fullName: "Eksamenoefening: eksponente en wetenskaplike notasie",
+      lesson: {
+        heading: "Hfst 4 Eksamenfokus",
+        sub: "Hoofstuk 4 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Gebruik een eksponentwet per reël en gee antwoorde met positiewe eksponente.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Vereenvoudig (x²y)³ ÷ x⁴y:", "options": ["x²y³", "x²y²", "xy²", "x¹⁰y³"], "answer": 1, "topic": "Hfst 4 Eksamenfokus"},
+        {"type": "input", "text": "Bereken 3⁻² × 3⁴.", "answer": "9", "topic": "Hfst 4 Eksamenfokus"},
+        {"type": "input", "text": "Bereken (−1)¹⁰¹ + (−1)¹⁰⁰.", "answer": "0", "topic": "Hfst 4 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: 10ˣ = 0,001", "answer": "-3", "topic": "Hfst 4 Eksamenfokus"},
+        {"type": "mc", "text": "0,000 506 in wetenskaplike notasie is:", "options": ["5,06 × 10⁴", "5,06 × 10⁻⁴", "50,6 × 10⁻⁵", "5,06 × 10⁻³"], "answer": 1, "topic": "Hfst 4 Eksamenfokus"},
+        {"type": "mc", "text": "Vereenvoudig 2ⁿ × 4ⁿ ÷ 8ⁿ:", "options": ["1", "2ⁿ", "8ⁿ", "0"], "answer": 0, "topic": "Hfst 4 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 4, chapterName: "Eksponente",
@@ -237,6 +339,53 @@ MathMagician.registerChapter(4, {
           },
         ]
       },
+      {
+        "name": "Vereenvoudig met verskeie wette",
+        "questions": [
+          {
+            "num": "5",
+            "text": "Vereenvoudig. Laat antwoorde met positiewe eksponente.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(−2a³b)² × 5ab⁻⁴",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "(3x²)³ ÷ (9x⁸)",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Los op: 2ˣ⁻¹ = 1/16",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Probleme met wetenskaplike notasie",
+        "questions": [
+          {
+            "num": "6",
+            "text": "Die Aarde is omtrent 1,5 × 10⁸ km van die Son af, en Mars omtrent 2,3 × 10⁸ km.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Hoeveel verder van die Son af is Mars as die Aarde? Antwoord in wetenskaplike notasie.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "'n Ruimtetuig beweeg 4 × 10⁴ km per uur. Hoeveel uur neem dit om daardie ekstra afstand af te lê?",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -260,6 +409,41 @@ MathMagician.registerChapter(4, {
           { num: "Q3b", ans: "8,2 × 10⁻⁷", note: "Die desimaal skuif 7 plekke na regs" },
           { num: "Q4a", ans: "3 × 10¹²", note: "30 × 10¹¹ = 3 × 10¹²" },
           { num: "Q4b", ans: "3 × 10¹⁰", note: "9 ÷ 3 = 3; 10^(8-(-2)) = 10¹⁰" },
+        ]
+      },
+      {
+        "name": "Vereenvoudig met verskeie wette",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "20a⁷ / b²",
+            "note": "4a⁶b² × 5ab⁻⁴ = 20a⁷b⁻²"
+          },
+          {
+            "num": "Q5b",
+            "ans": "3 / x²",
+            "note": "27x⁶ ÷ 9x⁸ = 3x⁻²"
+          },
+          {
+            "num": "Q5c",
+            "ans": "x = −3",
+            "note": "1/16 = 2⁻⁴, so x − 1 = −4"
+          }
+        ]
+      },
+      {
+        "name": "Probleme met wetenskaplike notasie",
+        "answers": [
+          {
+            "num": "Q6a",
+            "ans": "8 × 10⁷ km",
+            "note": "2,3 × 10⁸ − 1,5 × 10⁸ = 0,8 × 10⁸"
+          },
+          {
+            "num": "Q6b",
+            "ans": "2 000 uur (2 × 10³)",
+            "note": "8 × 10⁷ ÷ 4 × 10⁴ = 2 × 10³"
+          }
         ]
       },
     ]

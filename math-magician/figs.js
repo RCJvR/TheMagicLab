@@ -200,10 +200,12 @@
     return { svg, Y, L, B, T, Rr };
   }
   const niceMax = (m, st) => Math.ceil(m / st) * st;
+  // a 1-2-5 step that gives about five gridlines
+  const niceStep = m => { const raw = m / 5, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; };
 
   function hist(s) {
     const W = s.w || 320, H = s.h || 210;
-    const fmax = Math.max(...s.classes.map(c => c[2])), st = s.ystep || (fmax > 10 ? 5 : fmax > 5 ? 2 : 1);
+    const fmax = Math.max(...s.classes.map(c => c[2])), st = s.ystep || Math.max(1, niceStep(fmax));
     const f = frame(s, W, H, s.xlab, s.ylab, niceMax(fmax, st), st);
     const lo = s.classes[0][0], hi = s.classes[s.classes.length - 1][1];
     const X = v => f.L + (v - lo) / (hi - lo) * (W - f.L - f.Rr);
@@ -220,7 +222,7 @@
 
   function bar(s, asLine) {
     const W = s.w || 320, H = s.h || 210, n = s.xs.length;
-    const vmax = Math.max(...s.ys), st = s.ystep || (vmax > 50 ? 20 : vmax > 20 ? 10 : vmax > 10 ? 5 : vmax > 5 ? 2 : 1);
+    const vmax = Math.max(...s.ys), st = s.ystep || niceStep(vmax);
     const f = frame(s, W, H, s.xlab, s.ylab, niceMax(vmax, st), st);
     const slot = (W - f.L - f.Rr) / n, X = i => f.L + slot * (i + 0.5);
     s.xs.forEach((x, i) => f.svg.appendChild(el('text', { x: X(i), y: H - f.B + 14, class: 'mf-tx mf-sm', 'text-anchor': 'middle' }, x)));
@@ -356,7 +358,30 @@
     return svg;
   }
 
-  const KINDS = { geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
+  // ── factor tree: n split step by step into a prime and the rest ──────
+  function ftree(s) {
+    const steps = s.split, W = s.w || 230, dy = 40, H = 30 + dy * steps.length + 16;
+    const svg = svgRoot(W, H, s.alt);
+    let x = W * 0.38, y = 22;
+    const node = (x, y, t, prime) => {
+      if (prime) svg.appendChild(el('circle', { cx: x, cy: y - 4, r: 12, class: 'mf-gn' }));
+      svg.appendChild(el('text', { x, y, class: 'mf-tx' + (prime ? ' mf-tx-gn' : ''), 'text-anchor': 'middle' }, t));
+    };
+    node(x, y, String(s.n), false);
+    steps.forEach((st, i) => {
+      const last = i === steps.length - 1;
+      const lx = x - 26, rx = x + 26, ny = y + dy;
+      svg.appendChild(el('line', { x1: x - 6, y1: y + 6, x2: lx + 4, y2: ny - 16, class: 'mf-mu' }));
+      svg.appendChild(el('line', { x1: x + 6, y1: y + 6, x2: rx - 4, y2: ny - 16, class: 'mf-mu' }));
+      node(lx, ny, String(st[0]), true);
+      node(rx, ny, String(st[1]), last);
+      x = rx; y = ny;
+    });
+    if (s.result) svg.appendChild(el('text', { x: W / 2, y: H - 4, class: 'mf-tx mf-tx-or', 'text-anchor': 'middle' }, s.result));
+    return svg;
+  }
+
+  const KINDS = { ftree, geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
 
   function render(host) {
     if (host.dataset.mfDone) return;

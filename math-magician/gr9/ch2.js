@@ -199,6 +199,66 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "A cube-shaped box has a volume of 512 cm³. Calculate the length of one side of the box (in cm).", answer: "8", topic: "Integers" },
       ]
     },
+    {
+      id: 201,
+      chapter: 2,
+      name: "Integers in context",
+      fullName: "Solving problems with integers and using their properties",
+      lesson: {
+        heading: "Integers in context",
+        sub: "Chapter 2 · Topic 3",
+        body: `
+<p>Integers describe anything that can go below zero: temperatures, bank balances, heights above and below sea level, goal differences. A number line helps you see the change.</p>
+<div class="mf-fig" data-fig='{"t":"nl","min":-8,"max":6,"pts":[[-6,"c"],[4,"c"]],"seg":[[-6,4]],"cap":"From −6 °C to 4 °C is a rise of 4 − (−6) = 10 °C."}'></div>
+<div class="def-box">
+  <div class="def-box-title">📖 Properties you can use</div>
+<p><strong>Additive inverse:</strong> a + (−a) = 0, e.g. 7 + (−7) = 0.<br><strong>Multiplicative inverse:</strong> a × (1/a) = 1, e.g. −4 × (−¼) = 1.<br><strong>Commutative:</strong> a + b = b + a and a × b = b × a (not for − or ÷).<br><strong>Associative:</strong> (a + b) + c = a + (b + c), the same for ×.<br><strong>Distributive:</strong> a(b + c) = ab + ac, e.g. −3(4 − 10) = −12 + 30 = 18.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a bank balance</div>
+  <div class="example-step"><span class="step-num">1</span><span>Sizwe's balance is −R250 (overdrawn). He deposits R600, then pays R480.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>−250 + 600 − 480 = 350 − 480 = <strong>−R130</strong>. He is still overdrawn.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: height above sea level</div>
+  <div class="example-step"><span class="step-num">1</span><span>A diver is at −18 m. A bird flies at 25 m above the sea. How far apart are they vertically?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Difference = 25 − (−18) = 25 + 18 = <strong>43 m</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>The difference between two values is always the bigger one minus the smaller one, even when both are negative: −3 − (−11) = 8.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "At 05:00 it is −7 °C. By noon it is 12 °C. By how many degrees did the temperature rise?", "answer": "19", "topic": "Integers in context"},
+        {"type": "input", "text": "A balance of −R340 is followed by a deposit of R500 and a payment of R275. What is the new balance? (R)", "answer": "-115", "topic": "Integers in context"},
+        {"type": "mc", "text": "What is the additive inverse of −9?", "options": ["−9", "9", "−1/9", "1/9"], "answer": 1, "topic": "Integers in context"},
+        {"type": "mc", "text": "Which property is shown by −2(5 + x) = −10 − 2x?", "options": ["commutative", "associative", "distributive", "additive inverse"], "answer": 2, "topic": "Integers in context"},
+        {"type": "input", "text": "A submarine at −120 m rises 45 m, then dives 30 m. What is its depth now? (m)", "answer": "-105", "topic": "Integers in context"},
+        {"type": "input", "text": "Calculate: −3 × (−4) + 18 ÷ (−6)", "answer": "9", "topic": "Integers in context"},
+        {"type": "mc", "text": "Which statement is FALSE?", "options": ["(−5) + 8 = 8 + (−5)", "(−2) × 7 = 7 × (−2)", "(−4 + 6) + 1 = −4 + (6 + 1)", "(−9) − 3 = 3 − (−9)"], "answer": 3, "topic": "Integers in context"},
+      ]
+    },
+    {
+      id: 202,
+      chapter: 2,
+      name: "Ch 2 Exam focus",
+      fullName: "Exam practice: calculations and problems with integers",
+      lesson: {
+        heading: "Ch 2 Exam focus",
+        sub: "Chapter 2 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Watch the signs: square before you negate, and subtracting a negative is adding.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Calculate: −2³ + (−3)²", "answer": "1", "topic": "Ch 2 Exam focus"},
+        {"type": "input", "text": "Calculate: ∛(−64) + √81", "answer": "5", "topic": "Ch 2 Exam focus"},
+        {"type": "input", "text": "Calculate: (−12) ÷ (−3) − 5 × (−2)", "answer": "14", "topic": "Ch 2 Exam focus"},
+        {"type": "mc", "text": "A team scored 18 goals and conceded 25. Its goal difference is:", "options": ["7", "−7", "43", "−43"], "answer": 1, "topic": "Ch 2 Exam focus"},
+        {"type": "input", "text": "The lowest temperature in a week was −4 °C and the highest 23 °C. What is the range? (°C)", "answer": "27", "topic": "Ch 2 Exam focus"},
+        {"type": "mc", "text": "√(−36) is:", "options": ["6", "−6", "±6", "not a real number"], "answer": 3, "topic": "Ch 2 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 2, chapterName: "Integers",
@@ -242,6 +302,32 @@ MathMagician.registerChapter(2, {
           },
         ]
       },
+      {
+        "name": "Integers in context",
+        "questions": [
+          {
+            "num": "4",
+            "text": "Use integers to answer. Show your working.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "A freezer is at −18 °C. It warms up by 3 °C every hour after the power fails. What is the temperature after 5 hours?",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "After how many hours does it reach 0 °C?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Use the distributive property to calculate −7 × 98 without a calculator.",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -266,6 +352,26 @@ MathMagician.registerChapter(2, {
           { num: "Q3c", ans: "6", note: "6³ = 216" },
           { num: "Q3d", ans: "-4", note: "(-4)³ = -64" },
           { num: "Q3e", ans: "Not real", note: "Cannot take square root of a negative" },
+        ]
+      },
+      {
+        "name": "Integers in context",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "−3 °C",
+            "note": "−18 + 5 × 3 = −18 + 15 = −3"
+          },
+          {
+            "num": "Q4b",
+            "ans": "6 hours",
+            "note": "18 ÷ 3 = 6"
+          },
+          {
+            "num": "Q4c",
+            "ans": "−686",
+            "note": "−7(100 − 2) = −700 + 14 = −686"
+          }
         ]
       },
     ]
