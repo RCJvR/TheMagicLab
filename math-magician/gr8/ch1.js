@@ -594,6 +594,31 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">3</span><span>Total: <span class="math">R2000 + R480 = R2480</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>In South Africa, VAT is currently 15%. Always check exam questions specify the rate — it has changed before.</span></div>
+
+        <div class="def-box">
+          <div class="def-box-title">📖 Hire purchase (HP)</div>
+          <p>On <strong>hire purchase</strong> you pay a <strong>deposit</strong>, take the item home, and pay the rest in equal monthly <strong>instalments</strong>. The shop charges interest, so you pay more than the cash price.<br>
+          <span class="math">HP price = deposit + (number of instalments × instalment)</span><br>
+          <span class="math">Extra paid = HP price − cash price</span></p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example — hire purchase</div>
+          <div class="example-step"><span class="step-num">1</span><span>A TV costs R 6 000 cash. On HP you pay a 10% deposit and 12 instalments of R 520.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Deposit: <span class="math">10% × R6 000 = R600</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>HP price: <span class="math">R600 + 12 × R520 = R600 + R6 240 = R6 840</span></span></div>
+          <div class="example-step"><span class="step-num">4</span><span>Extra paid: <span class="math">R6 840 − R6 000 = R840</span></span></div>
+        </div>
+        <div class="def-box">
+          <div class="def-box-title">📖 Exchange rates</div>
+          <p>An <strong>exchange rate</strong> tells you how many rand one unit of another currency costs, e.g. <span class="math">$1 = R18.50</span>.<br>
+          <strong>Foreign → rand:</strong> multiply by the rate. <strong>Rand → foreign:</strong> divide by the rate.</p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example — exchange rates</div>
+          <div class="example-step"><span class="step-num">1</span><span>$1 = R18.50. Change R2 775 into dollars: <span class="math">2 775 ÷ 18.50 = $150</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>£1 = R23.20. A £40 ticket in rand: <span class="math">40 × 23.20 = R928</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Check that your answer makes sense: one dollar costs more than one rand, so you always get FEWER dollars than the rand you paid.</span></div>
       
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Financial Calculator</div>
@@ -687,6 +712,11 @@ S — Subtraction }</div>
       { type: "input", text: "Calculate VAT (15%) on a R 200 item. What is the VAT-inclusive price? (R)", answer: "230", topic: "Finance" },
       { type: "mc", text: "Simple interest on R 1 500 at 10% p.a. for 2 years is:", options: ["R 150", "R 300", "R 330", "R 3 000"], answer: 1, topic: "Finance" },
       { type: "input", text: "You invest R 4 000 at 6% simple interest per year. How much interest after 5 years? (R)", answer: "1200", topic: "Finance" },
+      { type: "input", text: "A fridge costs R 8 000 cash. On hire purchase you pay a R 800 deposit and 12 monthly instalments of R 700. What is the total hire purchase price? (R)", answer: "9200", topic: "Finance" },
+      { type: "input", text: "A bicycle costs R 3 000 cash, or a R 300 deposit plus 6 instalments of R 500 on hire purchase. How much extra does hire purchase cost? (R)", answer: "300", topic: "Finance" },
+      { type: "mc", text: "The exchange rate is $1 = R18.00. How many dollars do you get for R 900?", options: ["$50", "$882", "$918", "$16 200"], answer: 0, topic: "Finance" },
+      { type: "input", text: "€1 = R20.00. A hotel room costs €85 a night. What is that in rand? (R)", answer: "1700", topic: "Finance" },
+      { type: "mc", text: "To change rand into a foreign currency, you…", options: ["multiply by the exchange rate", "divide by the exchange rate", "add the exchange rate", "subtract the exchange rate"], answer: 1, topic: "Finance" },
     ]
   },
   {
@@ -794,6 +824,23 @@ S — Subtraction }</div>
               { label: "c)", text: "Calculate the simple interest on R 8 500 at 9% p.a. over 3 years.", marks: 3 },
             ]
           },
+          {
+            num: "7",
+            text: "A gaming console costs R 7 200 cash. On hire purchase you pay a 15% deposit and 18 monthly instalments of R 410.",
+            parts: [
+              { label: "a)", text: "Calculate the deposit.", marks: 2 },
+              { label: "b)", text: "Calculate the total hire purchase price.", marks: 3 },
+              { label: "c)", text: "How much more than the cash price do you pay on hire purchase?", marks: 2 },
+            ]
+          },
+          {
+            num: "8",
+            text: "The exchange rates are $1 = R18,40 and £1 = R23,00.",
+            parts: [
+              { label: "a)", text: "Change $250 into rand.", marks: 2 },
+              { label: "b)", text: "Change R 3 450 into pounds.", marks: 2 },
+            ]
+          },
         ]
       },
     ]
@@ -827,8 +874,13 @@ S — Subtraction }</div>
           { num: "Q5a", ans: "12 km/litre", note: "540 ÷ 45 = 12 km/L" },
           { num: "Q5b", ans: "R 585", note: "300÷12 = 25 L; 25 × R23,40 = R585" },
           { num: "Q6a", ans: "VAT = R 1 275", note: "8500 × 0,15 = 1275" },
-          { num: "Q6b", ans: "R 8 618,20", note: "VAT price = R9775; ×0,88 = R8602 (accept R8601,40)" },
+          { num: "Q6b", ans: "R 8 602", note: "VAT-inclusive price = 8 500 + 1 275 = R9 775; 9 775 × 0,88 = R8 602" },
           { num: "Q6c", ans: "I = R 2 295", note: "I = 8500 × 0,09 × 3 = 2295" },
+          { num: "Q7a", ans: "Deposit = R 1 080", note: "15% × 7 200 = 0,15 × 7 200 = 1 080" },
+          { num: "Q7b", ans: "HP price = R 8 460", note: "1 080 + 18 × 410 = 1 080 + 7 380 = 8 460" },
+          { num: "Q7c", ans: "R 1 260 more", note: "8 460 − 7 200 = 1 260" },
+          { num: "Q8a", ans: "R 4 600", note: "Foreign → rand: multiply. 250 × 18,40 = 4 600" },
+          { num: "Q8b", ans: "£150", note: "Rand → foreign: divide. 3 450 ÷ 23,00 = 150" },
         ]
       },
     ]

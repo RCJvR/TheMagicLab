@@ -231,6 +231,15 @@ MathMagician.registerChapter(4, {
             Numbers: 13 and 18.</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Interval notation</div>
+            <p>The solution of an inequality can be written in three ways: as an inequality, on a number line, or in <strong>interval notation</strong>.<br>A round bracket ( ) means the endpoint is <em>not</em> included (&lt; or &gt;); a square bracket [ ] means it <em>is</em> included (≤ or ≥). Infinity always gets a round bracket.</p>
+            <div class="math-block">x &gt; 2          →  (2 ; ∞)
+x ≤ −3         →  (−∞ ; −3]
+−1 ≤ x &lt; 4     →  [−1 ; 4)</div>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"nl","min":-6,"max":1,"pts":[[-3,"o"]],"seg":[[null,-3]],"cap":"x &lt; −3: an open circle, written (−∞ ; −3)"}'></div>
+          <div class="mf-fig" data-fig='{"t":"nl","min":-3,"max":6,"pts":[[-1,"c"],[4,"o"]],"seg":[[-1,4]],"cap":"−1 ≤ x &lt; 4: closed at −1, open at 4, written [−1 ; 4)"}'></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Linear Inequality Solver</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Solve <strong>ax + b [inequality] c</strong> — see step-by-step working with sign-flip warning.</p>
@@ -351,7 +360,11 @@ MathMagician.registerChapter(4, {
           text: "The sum of three consecutive integers is at most 51. Find the largest possible value of the smallest integer.",
           answer: "16",
           topic: "Word problems & inequalities"
-        }
+        },
+      {"type": "mc", "text": "Which interval notation matches −2 < x ≤ 5?", "options": ["(−2 ; 5]", "[−2 ; 5)", "(−2 ; 5)", "[−2 ; 5]"], "answer": 0, "topic": "Word problems & inequalities"},
+      {"type": "mc", "text": "Solve 3x − 4 ≥ 8 and give the answer in interval notation.", "options": ["(4 ; ∞)", "[4 ; ∞)", "(−∞ ; 4]", "[4 ; ∞]"], "answer": 1, "topic": "Word problems & inequalities"},
+      {"type": "mc", "text": "Solve −2x + 1 > 7 and give the answer in interval notation.", "options": ["(−∞ ; −3)", "(−3 ; ∞)", "(−∞ ; −3]", "[−3 ; ∞)"], "answer": 0, "topic": "Word problems & inequalities"},
+      {"type": "mc", "text": "On a number line, an open circle at 2 with the line shaded to the right shows:", "options": ["x ≥ 2", "x > 2", "x < 2", "x ≤ 2"], "answer": 1, "topic": "Word problems & inequalities"},
       ]
     },
     {

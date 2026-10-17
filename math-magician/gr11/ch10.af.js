@@ -394,6 +394,7 @@ MathMagician.registerChapter(10, {
         heading: "Die fundamentele telbeginsel",
         sub: "Hoofstuk 10 · Onderwerp 4",
         body: `
+          <div class="ext-box"><strong>⭐ Graad 12-voorsmakie.</strong> KABV leer die fundamentele telbeginsel in Graad 12. Dit is hier as 'n voorsprong; jou Graad 11-eksamen sal dit nie vra nie.</div>
           <p>Die <strong>fundamentele telbeginsel</strong> laat jou toe om die totale aantal moontlike uitkomste van 'n multi-stadium-proses te tel sonder om hulle almal te lys — noodsaaklik vir waarskynlikheidsprobleme wat wagwoorde, nommerplate, rangskikkings, en kodes behels.</p>
 
           <div class="def-box">

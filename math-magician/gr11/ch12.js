@@ -12,6 +12,7 @@ MathMagician.registerChapter(12, {
         heading: "Setting up linear programming problems",
         sub: "Chapter 12 · Topic 1",
         body: `
+          <div class="ext-box"><strong>⭐ Extension, beyond CAPS.</strong> Linear programming is not in the CAPS Grade 11 Annual Teaching Plan and will not be examined in the CAPS papers. Work through it as enrichment: it is a powerful way to make the best decision when there are limits.</div>
           <p><strong>Linear programming</strong> finds the maximum or minimum value of an objective function subject to linear constraints (inequalities). It's used in business optimisation.</p>
 
           <div class="def-box">
@@ -269,6 +270,7 @@ MathMagician.registerChapter(12, {
         heading: "Solving linear programming problems",
         sub: "Chapter 12 · Topic 2",
         body: `
+          <div class="ext-box"><strong>⭐ Extension, beyond CAPS.</strong> Linear programming is not in the CAPS Grade 11 Annual Teaching Plan and will not be examined in the CAPS papers. Work through it as enrichment: it is a powerful way to make the best decision when there are limits.</div>
           <div class="def-box">
             <div class="def-box-title">📖 Finding corner points</div>
             <p>

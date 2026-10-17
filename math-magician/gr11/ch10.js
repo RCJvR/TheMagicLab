@@ -394,6 +394,7 @@ MathMagician.registerChapter(10, {
         heading: "The fundamental counting principle",
         sub: "Chapter 10 · Topic 4",
         body: `
+          <div class="ext-box"><strong>⭐ Grade 12 preview.</strong> CAPS teaches the fundamental counting principle in Grade 12. It is here as a head start; your Grade 11 exam will not ask for it.</div>
           <p>The <strong>fundamental counting principle</strong> lets you count the total number of possible outcomes of a multi-stage process without listing them all — essential for probability problems involving passwords, number plates, arrangements, and codes.</p>
 
           <div class="def-box">

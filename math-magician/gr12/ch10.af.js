@@ -133,6 +133,7 @@ MathMagician.registerChapter(10, {
         heading: "Kombinasies en waarskynlikheid met telbeginsels",
         sub: "Hoofstuk 10 · Onderwerp 2",
         body: `
+          <div class="ext-box"><strong>⭐ Uitbreiding, buite KABV.</strong> Die ₙCᵣ-formule (kombinasies) is nie in die KABV Graad 12-jaarlikse onderrigplan nie: elke KABV-telvraag kan met die fundamentele telbeginsel en faktoriale opgelos word. Gebruik ₙCᵣ as verryking of om jou antwoorde na te gaan.</div>
           <div class="def-box">
             <div class="def-box-title">📖 Kombinasies (ongeordende keuses)</div>
             <p>

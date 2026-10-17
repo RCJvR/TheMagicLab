@@ -1034,6 +1034,47 @@ window.ML_LESSON_CATALOG = {
   ],
   "math-magician": [
     {
+      "group": "Grade 8 — Ch 1 — Whole Numbers, Ratios, Rates & Finance",
+      "lessons": [
+        {
+          "value": "The four operations",
+          "label": "The four operations"
+        },
+        {
+          "value": "Properties of whole numbers",
+          "label": "Properties of whole numbers"
+        },
+        {
+          "value": "Calculation techniques",
+          "label": "Calculation techniques"
+        },
+        {
+          "value": "Simplifying calculations",
+          "label": "Simplifying calculations"
+        },
+        {
+          "value": "Factors and multiples",
+          "label": "Factors and multiples"
+        },
+        {
+          "value": "Ratios",
+          "label": "Ratios"
+        },
+        {
+          "value": "Rates",
+          "label": "Rates"
+        },
+        {
+          "value": "Financial contexts",
+          "label": "Financial contexts"
+        },
+        {
+          "value": "Exam focus",
+          "label": "Exam focus"
+        }
+      ]
+    },
+    {
       "group": "Grade 8 — Ch 2 — Integers",
       "lessons": [
         {
@@ -1512,6 +1553,27 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Nets of prisms and pyramids",
           "label": "Nets of prisms and pyramids"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Ch 20 — Graphs",
+      "lessons": [
+        {
+          "value": "Interpreting global graphs",
+          "label": "Interpreting global graphs"
+        },
+        {
+          "value": "Drawing global graphs",
+          "label": "Drawing global graphs"
+        },
+        {
+          "value": "Plotting points and drawing graphs",
+          "label": "Plotting points and drawing graphs"
+        },
+        {
+          "value": "Ch 20 Exam focus",
+          "label": "Ch 20 Exam focus"
         }
       ]
     },
@@ -2264,7 +2326,7 @@ window.ML_LESSON_CATALOG = {
       ]
     },
     {
-      "group": "Grade 11 — Ch 12 — Linear Programming",
+      "group": "Grade 11 — Ch 12 — Linear Programming (extension)",
       "lessons": [
         {
           "value": "Setting up linear programming problems",

@@ -38,6 +38,24 @@ MathMagician.registerChapter(10, {
             Modus = 7</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Histogramme</div>
+            <p>'n <strong>Histogram</strong> wys gegroepeerde data. Elke staaf staan op 'n klasinterval en sy hoogte is die frekwensie. Die stawe <strong>raak aan mekaar</strong>, want die klasse volg sonder gapings op mekaar.</p>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"hist","classes":[[0,10,3],[10,20,7],[20,30,12],[30,40,6],[40,50,2]],"hi":2,"xlab":"Tyd t (min)","ylab":"Frekwensie","cap":"Die modale klas 20 ≤ t &lt; 30 is die hoogste staaf."}'></div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: skat die gemiddelde, modale klas en mediaanklas</div>
+            <div class="math-block">Tyd t (min)    f    middelpunt   f × middelpunt
+0 ≤ t &lt; 10       3       5          15
+10 ≤ t &lt; 20      7      15         105
+20 ≤ t &lt; 30     12      25         300
+30 ≤ t &lt; 40      6      35         210
+40 ≤ t &lt; 50      2      45          90
+Totaal           30                    720</div>
+            <p>Geskatte gemiddelde = 720 ÷ 30 = <strong>24 min</strong><br>
+            Modale klas: <strong>20 ≤ t &lt; 30</strong> (hoogste frekwensie)<br>
+            Mediaan: n = 30, so dit lê tussen die 15de en 16de waardes. Die kumulatiewe frekwensies is 3, 10, 22, … so albei is in die klas <strong>20 ≤ t &lt; 30</strong>.</p>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Gemiddelde, Mediaan & Modus-Sakrekenaar</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Voer kommageskeide waardes in — kry alle maatstawwe van sentrale neiging onmiddellik.</p>
@@ -131,7 +149,11 @@ MathMagician.registerChapter(10, {
           answer: "21.5",
           altAnswers: ["21,5"],
           topic: "Maatstawwe van sentrale neiging"
-        }
+        },
+      {"type": "input", "text": "Gegroepeerde data: 0 ≤ x < 10, f = 4;  10 ≤ x < 20, f = 6;  20 ≤ x < 30, f = 10. Skat die gemiddelde.", "answer": "18", "topic": "Maatstawwe van sentrale neiging"},
+      {"type": "mc", "text": "Vir dieselfde tabel (f = 4, 6, 10) is die modale klas:", "options": ["0 ≤ x < 10", "10 ≤ x < 20", "20 ≤ x < 30", "Daar is nie een nie"], "answer": 2, "topic": "Maatstawwe van sentrale neiging"},
+      {"type": "mc", "text": "Hoekom raak die stawe van 'n histogram aan mekaar?", "options": ["Die klasse volg sonder gapings op mekaar", "Om plek te spaar", "Omdat die frekwensies gelyk is", "Hulle raak net vir diskrete data"], "answer": 0, "topic": "Maatstawwe van sentrale neiging"},
+      {"type": "mc", "text": "40 tye is gegroepeer: 0–10: 5,  10–20: 12,  20–30: 15,  30–40: 8. In watter klas lê die mediaan?", "options": ["0 ≤ t < 10", "10 ≤ t < 20", "20 ≤ t < 30", "30 ≤ t < 40"], "answer": 2, "topic": "Maatstawwe van sentrale neiging"},
       ]
     },
     {
@@ -180,6 +202,15 @@ MathMagician.registerChapter(10, {
             <p>'n Datapunt word as 'n vermoedelike uitskieter beskou as dit meer as 1.5 × IKW onder Q1 of bo Q3 is.</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Persentiele en die semi-interkwartielvariasiewydte</div>
+            <p>Die <strong>p-de persentiel</strong> is die waarde waaronder p% van die gerangskikte data lê. Q1 is die 25ste persentiel, die mediaan die 50ste en Q3 die 75ste.<br><strong>Semi-interkwartielvariasiewydte</strong> = ½(Q3 − Q1), die helfte van die IKV.</p>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"box","five":[2,6,9.5,15,20],"min":0,"max":20,"step":2,"cap":"Q1 = 25ste persentiel, mediaan = 50ste, Q3 = 75ste: elke deel bevat &#39;n kwart van die data."}'></div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: persentiele</div>
+            <p>Thandi se toetspunt is by die 80ste persentiel. Dit beteken 80% van die klas het laer as sy gekry; dit beteken <em>nie</em> dat sy 80% gekry het nie.<br>Vir die data hierbo is IKV = 15 − 6 = 9, so die semi-interkwartielvariasiewydte = 9 ÷ 2 = <strong>4,5</strong>.</p>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Vyfgetalopsomming-Sakrekenaar</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Voer kommageskeide waardes in — kry min, Q1, mediaan, Q3, maks, IKW, en 'n uitskieter-toets.</p>
@@ -284,7 +315,11 @@ MathMagician.registerChapter(10, {
           options: ["Ja — 50 is bo die boonste grens van 35", "Nee — 50 is onder die boonste grens", "Kan nie bepaal word nie", "Slegs die minimum kan ooit 'n uitskieter wees"],
           answer: 0,
           topic: "Spreiding & vyfgetalopsomming"
-        }
+        },
+      {"type": "mc", "text": "'n Leerder se punt is by die 90ste persentiel. Dit beteken:", "options": ["90% van die leerders het laer gekry", "Die leerder het 90% gekry", "10% van die leerders het laer gekry", "Die leerder was 90ste"], "answer": 0, "topic": "Spreiding & vyfgetalopsomming"},
+      {"type": "mc", "text": "Die derde kwartiel Q3 is dieselfde as die:", "options": ["25ste persentiel", "50ste persentiel", "75ste persentiel", "100ste persentiel"], "answer": 2, "topic": "Spreiding & vyfgetalopsomming"},
+      {"type": "input", "text": "Q1 = 12 en Q3 = 30. Bereken die semi-interkwartielvariasiewydte.", "answer": "9", "topic": "Spreiding & vyfgetalopsomming"},
+      {"type": "input", "text": "Data: 3, 5, 6, 8, 9, 12, 15, 18. Bepaal die semi-interkwartielvariasiewydte.", "answer": "4", "topic": "Spreiding & vyfgetalopsomming"},
       ]
     },
     {

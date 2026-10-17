@@ -38,6 +38,24 @@ MathMagician.registerChapter(10, {
             Mode = 7</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Histograms</div>
+            <p>A <strong>histogram</strong> shows grouped data. Each bar stands on a class interval and its height is the frequency. The bars <strong>touch</strong>, because the classes follow on from each other with no gaps.</p>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"hist","classes":[[0,10,3],[10,20,7],[20,30,12],[30,40,6],[40,50,2]],"hi":2,"xlab":"Time t (min)","ylab":"Frequency","cap":"The modal class 20 ≤ t &lt; 30 is the tallest bar."}'></div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: estimate the mean, modal class and median class</div>
+            <div class="math-block">Time t (min)    f    midpoint   f × midpoint
+0 ≤ t &lt; 10       3       5          15
+10 ≤ t &lt; 20      7      15         105
+20 ≤ t &lt; 30     12      25         300
+30 ≤ t &lt; 40      6      35         210
+40 ≤ t &lt; 50      2      45          90
+Total           30                    720</div>
+            <p>Estimated mean = 720 ÷ 30 = <strong>24 min</strong><br>
+            Modal class: <strong>20 ≤ t &lt; 30</strong> (highest frequency)<br>
+            Median: n = 30, so it lies between the 15th and 16th values. The cumulative frequencies are 3, 10, 22, … so both are in the class <strong>20 ≤ t &lt; 30</strong>.</p>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Mean, Median & Mode Calculator</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter comma-separated values — get all measures of central tendency instantly.</p>
@@ -131,7 +149,11 @@ MathMagician.registerChapter(10, {
           answer: "21.5",
           altAnswers: ["21,5"],
           topic: "Measures of central tendency"
-        }
+        },
+      {"type": "input", "text": "Grouped data: 0 ≤ x < 10, f = 4;  10 ≤ x < 20, f = 6;  20 ≤ x < 30, f = 10. Estimate the mean.", "answer": "18", "topic": "Measures of central tendency"},
+      {"type": "mc", "text": "For the same table (f = 4, 6, 10), the modal class is:", "options": ["0 ≤ x < 10", "10 ≤ x < 20", "20 ≤ x < 30", "There is none"], "answer": 2, "topic": "Measures of central tendency"},
+      {"type": "mc", "text": "Why do the bars of a histogram touch?", "options": ["The classes follow on with no gaps", "To save space", "Because the frequencies are equal", "They only touch for discrete data"], "answer": 0, "topic": "Measures of central tendency"},
+      {"type": "mc", "text": "40 times are grouped: 0–10: 5,  10–20: 12,  20–30: 15,  30–40: 8. In which class does the median lie?", "options": ["0 ≤ t < 10", "10 ≤ t < 20", "20 ≤ t < 30", "30 ≤ t < 40"], "answer": 2, "topic": "Measures of central tendency"},
       ]
     },
     {
@@ -180,6 +202,15 @@ MathMagician.registerChapter(10, {
             <p>A data point is a suspected outlier if it is more than 1.5 × IQR below Q1 or above Q3.</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Percentiles and the semi-interquartile range</div>
+            <p>The <strong>p-th percentile</strong> is the value below which p% of the ordered data lies. Q1 is the 25th percentile, the median is the 50th and Q3 is the 75th.<br><strong>Semi-interquartile range</strong> = ½(Q3 − Q1), half of the IQR.</p>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"box","five":[2,6,9.5,15,20],"min":0,"max":20,"step":2,"cap":"Q1 = 25th percentile, median = 50th, Q3 = 75th: each part holds a quarter of the data."}'></div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: percentiles</div>
+            <p>Thandi's test mark is at the 80th percentile. This means 80% of the class scored lower than she did; it does <em>not</em> mean she scored 80%.<br>For the data above, IQR = 15 − 6 = 9, so the semi-interquartile range = 9 ÷ 2 = <strong>4.5</strong>.</p>
+          </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Five-Number Summary Calculator</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter comma-separated values — get min, Q1, median, Q3, max, IQR, and outlier check.</p>
@@ -284,7 +315,11 @@ MathMagician.registerChapter(10, {
           options: ["Yes — 50 is above the upper fence of 35", "No — 50 is below the upper fence", "Cannot be determined", "Only the minimum can ever be an outlier"],
           answer: 0,
           topic: "Dispersion & five-number summary"
-        }
+        },
+      {"type": "mc", "text": "A learner's mark is at the 90th percentile. This means:", "options": ["90% of learners scored lower", "The learner scored 90%", "10% of learners scored lower", "The learner came 90th"], "answer": 0, "topic": "Dispersion & five-number summary"},
+      {"type": "mc", "text": "The third quartile Q3 is the same as the:", "options": ["25th percentile", "50th percentile", "75th percentile", "100th percentile"], "answer": 2, "topic": "Dispersion & five-number summary"},
+      {"type": "input", "text": "Q1 = 12 and Q3 = 30. Calculate the semi-interquartile range.", "answer": "9", "topic": "Dispersion & five-number summary"},
+      {"type": "input", "text": "Data: 3, 5, 6, 8, 9, 12, 15, 18. Find the semi-interquartile range.", "answer": "4", "topic": "Dispersion & five-number summary"},
       ]
     },
     {

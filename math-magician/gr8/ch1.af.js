@@ -595,6 +595,31 @@ S — Aftrekking }</div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>In Suid-Afrika is BTW tans 15%. Kontroleer altyd of eksamenvrae die koers spesifiseer — dit het al voorheen verander.</span></div>
 
+        <div class="def-box">
+          <div class="def-box-title">📖 Huurkoop (HK)</div>
+          <p>Op <strong>huurkoop</strong> betaal jy 'n <strong>deposito</strong>, neem die item huis toe, en betaal die res in gelyke maandelikse <strong>paaiemente</strong>. Die winkel vra rente, so jy betaal meer as die kontantprys.<br>
+          <span class="math">HK-prys = deposito + (aantal paaiemente × paaiement)</span><br>
+          <span class="math">Ekstra betaal = HK-prys − kontantprys</span></p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Uitgewerkte voorbeeld — huurkoop</div>
+          <div class="example-step"><span class="step-num">1</span><span>'n TV kos R 6 000 kontant. Op HK betaal jy 'n 10%-deposito en 12 paaiemente van R 520.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Deposito: <span class="math">10% × R6 000 = R600</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>HK-prys: <span class="math">R600 + 12 × R520 = R600 + R6 240 = R6 840</span></span></div>
+          <div class="example-step"><span class="step-num">4</span><span>Ekstra betaal: <span class="math">R6 840 − R6 000 = R840</span></span></div>
+        </div>
+        <div class="def-box">
+          <div class="def-box-title">📖 Wisselkoerse</div>
+          <p>'n <strong>Wisselkoers</strong> sê vir jou hoeveel rand een eenheid van 'n ander geldeenheid kos, bv. <span class="math">$1 = R18,50</span>.<br>
+          <strong>Buitelands → rand:</strong> vermenigvuldig met die koers. <strong>Rand → buitelands:</strong> deel deur die koers.</p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Uitgewerkte voorbeeld — wisselkoerse</div>
+          <div class="example-step"><span class="step-num">1</span><span>$1 = R18,50. Ruil R2 775 vir dollar: <span class="math">2 775 ÷ 18,50 = $150</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>£1 = R23,20. 'n Kaartjie van £40 in rand: <span class="math">40 × 23,20 = R928</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Kyk of jou antwoord sin maak: een dollar kos meer as een rand, so jy kry altyd MINDER dollar as die rand wat jy betaal het.</span></div>
+
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Probeer dit — Finansiële Berekenaar</div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
@@ -687,6 +712,11 @@ S — Aftrekking }</div>
       { type: "input", text: "Bereken BTW (15%) op 'n R 200-item. Wat is die BTW-inklusiewe prys? (R)", answer: "230", topic: "Finansies" },
       { type: "mc", text: "Enkelvoudige rente op R 1 500 teen 10% p.j. vir 2 jaar is:", options: ["R 150", "R 300", "R 330", "R 3 000"], answer: 1, topic: "Finansies" },
       { type: "input", text: "Jy belê R 4 000 teen 6% enkelvoudige rente per jaar. Hoeveel rente na 5 jaar? (R)", answer: "1200", topic: "Finansies" },
+      { type: "input", text: "'n Yskas kos R 8 000 kontant. Op huurkoop betaal jy 'n deposito van R 800 en 12 maandelikse paaiemente van R 700. Wat is die totale huurkoopprys? (R)", answer: "9200", topic: "Finansies" },
+      { type: "input", text: "'n Fiets kos R 3 000 kontant, of 'n deposito van R 300 plus 6 paaiemente van R 500 op huurkoop. Hoeveel ekstra kos huurkoop? (R)", answer: "300", topic: "Finansies" },
+      { type: "mc", text: "Die wisselkoers is $1 = R18,00. Hoeveel dollar kry jy vir R 900?", options: ["$50", "$882", "$918", "$16 200"], answer: 0, topic: "Finansies" },
+      { type: "input", text: "€1 = R20,00. 'n Hotelkamer kos €85 per nag. Hoeveel is dit in rand? (R)", answer: "1700", topic: "Finansies" },
+      { type: "mc", text: "Om rand na 'n buitelandse geldeenheid om te skakel, …", options: ["vermenigvuldig jy met die wisselkoers", "deel jy deur die wisselkoers", "tel jy die wisselkoers by", "trek jy die wisselkoers af"], answer: 1, topic: "Finansies" },
     ]
   },
   {
@@ -794,6 +824,23 @@ S — Aftrekking }</div>
               { label: "c)", text: "Bereken die enkelvoudige rente op R 8 500 teen 9% p.j. oor 3 jaar.", marks: 3 },
             ]
           },
+          {
+            num: "7",
+            text: "'n Speletjiekonsole kos R 7 200 kontant. Op huurkoop betaal jy 'n deposito van 15% en 18 maandelikse paaiemente van R 410.",
+            parts: [
+              { label: "a)", text: "Bereken die deposito.", marks: 2 },
+              { label: "b)", text: "Bereken die totale huurkoopprys.", marks: 3 },
+              { label: "c)", text: "Hoeveel meer as die kontantprys betaal jy op huurkoop?", marks: 2 },
+            ]
+          },
+          {
+            num: "8",
+            text: "Die wisselkoerse is $1 = R18,40 en £1 = R23,00.",
+            parts: [
+              { label: "a)", text: "Ruil $250 om na rand.", marks: 2 },
+              { label: "b)", text: "Ruil R 3 450 om na pond.", marks: 2 },
+            ]
+          },
         ]
       },
     ]
@@ -827,8 +874,13 @@ S — Aftrekking }</div>
           { num: "Q5a", ans: "12 km/liter", note: "540 ÷ 45 = 12 km/L" },
           { num: "Q5b", ans: "R 585", note: "300÷12 = 25 L; 25 × R23,40 = R585" },
           { num: "Q6a", ans: "BTW = R 1 275", note: "8500 × 0,15 = 1275" },
-          { num: "Q6b", ans: "R 8 618,20", note: "BTW-prys = R9775; ×0,88 = R8602 (aanvaar R8601,40)" },
+          { num: "Q6b", ans: "R 8 602", note: "BTW-inklusiewe prys = 8 500 + 1 275 = R9 775; 9 775 × 0,88 = R8 602" },
           { num: "Q6c", ans: "I = R 2 295", note: "I = 8500 × 0,09 × 3 = 2295" },
+          { num: "Q7a", ans: "Deposito = R 1 080", note: "15% × 7 200 = 0,15 × 7 200 = 1 080" },
+          { num: "Q7b", ans: "HK-prys = R 8 460", note: "1 080 + 18 × 410 = 1 080 + 7 380 = 8 460" },
+          { num: "Q7c", ans: "R 1 260 meer", note: "8 460 − 7 200 = 1 260" },
+          { num: "Q8a", ans: "R 4 600", note: "Buitelands → rand: vermenigvuldig. 250 × 18,40 = 4 600" },
+          { num: "Q8b", ans: "£150", note: "Rand → buitelands: deel. 3 450 ÷ 23,00 = 150" },
         ]
       },
     ]

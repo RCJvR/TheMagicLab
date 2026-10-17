@@ -133,6 +133,7 @@ MathMagician.registerChapter(10, {
         heading: "Combinations and probability with counting",
         sub: "Chapter 10 · Topic 2",
         body: `
+          <div class="ext-box"><strong>⭐ Extension, beyond CAPS.</strong> The ₙCᵣ (combinations) formula is not in the CAPS Grade 12 Annual Teaching Plan: every CAPS counting question can be solved with the fundamental counting principle and factorials. Use ₙCᵣ as enrichment or to check your answers.</div>
           <div class="def-box">
             <div class="def-box-title">📖 Combinations (unordered selections)</div>
             <p>

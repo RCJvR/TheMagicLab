@@ -12,6 +12,7 @@ MathMagician.registerChapter(12, {
         heading: "Opstel van lineêre-programmeringprobleme",
         sub: "Hoofstuk 12 · Onderwerp 1",
         body: `
+          <div class="ext-box"><strong>⭐ Uitbreiding, buite KABV.</strong> Lineêre programmering is nie in die KABV Graad 11-jaarlikse onderrigplan nie en sal nie in die KABV-vraestelle geëksamineer word nie. Werk daardeur as verryking: dit is 'n kragtige manier om die beste besluit te neem wanneer daar beperkings is.</div>
           <p><strong>Lineêre programmering</strong> bepaal die maksimum- of minimumwaarde van 'n doelfunksie onderworpe aan lineêre beperkings (ongelykhede). Dit word in besigheidsoptimering gebruik.</p>
 
           <div class="def-box">
@@ -269,6 +270,7 @@ MathMagician.registerChapter(12, {
         heading: "Oplos van lineêre-programmeringprobleme",
         sub: "Hoofstuk 12 · Onderwerp 2",
         body: `
+          <div class="ext-box"><strong>⭐ Uitbreiding, buite KABV.</strong> Lineêre programmering is nie in die KABV Graad 11-jaarlikse onderrigplan nie en sal nie in die KABV-vraestelle geëksamineer word nie. Werk daardeur as verryking: dit is 'n kragtige manier om die beste besluit te neem wanneer daar beperkings is.</div>
           <div class="def-box">
             <div class="def-box-title">📖 Bepaling van hoekpunte</div>
             <p>

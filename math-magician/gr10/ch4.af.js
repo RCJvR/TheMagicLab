@@ -231,6 +231,15 @@ MathMagician.registerChapter(4, {
             Getalle: 13 en 18.</p>
           </div>
 
+          <div class="def-box">
+            <div class="def-box-title">📖 Intervalnotasie</div>
+            <p>Die oplossing van 'n ongelykheid kan op drie maniere geskryf word: as 'n ongelykheid, op 'n getallelyn, of in <strong>intervalnotasie</strong>.<br>'n Ronde hakie ( ) beteken die eindpunt is <em>nie</em> ingesluit nie (&lt; of &gt;); 'n vierkantige hakie [ ] beteken dit <em>is</em> ingesluit (≤ of ≥). Oneindigheid kry altyd 'n ronde hakie.</p>
+            <div class="math-block">x &gt; 2          →  (2 ; ∞)
+x ≤ −3         →  (−∞ ; −3]
+−1 ≤ x &lt; 4     →  [−1 ; 4)</div>
+          </div>
+          <div class="mf-fig" data-fig='{"t":"nl","min":-6,"max":1,"pts":[[-3,"o"]],"seg":[[null,-3]],"cap":"x &lt; −3: &#39;n oop sirkel, geskryf as (−∞ ; −3)"}'></div>
+          <div class="mf-fig" data-fig='{"t":"nl","min":-3,"max":6,"pts":[[-1,"c"],[4,"o"]],"seg":[[-1,4]],"cap":"−1 ≤ x &lt; 4: toe by −1, oop by 4, geskryf as [−1 ; 4)"}'></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Lineêre-ongelykheid-oplosser</div>
             <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Los <strong>ax + b [ongelykheid] c</strong> op — sien stap-vir-stap berekeninge met teken-omdraai-waarskuwing.</p>
@@ -351,7 +360,11 @@ MathMagician.registerChapter(4, {
           text: "Die som van drie opeenvolgende heelgetalle is hoogstens 51. Bepaal die grootste moontlike waarde van die kleinste heelgetal.",
           answer: "16",
           topic: "Woordprobleme & ongelykhede"
-        }
+        },
+      {"type": "mc", "text": "Watter intervalnotasie pas by −2 < x ≤ 5?", "options": ["(−2 ; 5]", "[−2 ; 5)", "(−2 ; 5)", "[−2 ; 5]"], "answer": 0, "topic": "Woordprobleme & ongelykhede"},
+      {"type": "mc", "text": "Los op: 3x − 4 ≥ 8, en gee die antwoord in intervalnotasie.", "options": ["(4 ; ∞)", "[4 ; ∞)", "(−∞ ; 4]", "[4 ; ∞]"], "answer": 1, "topic": "Woordprobleme & ongelykhede"},
+      {"type": "mc", "text": "Los op: −2x + 1 > 7, en gee die antwoord in intervalnotasie.", "options": ["(−∞ ; −3)", "(−3 ; ∞)", "(−∞ ; −3]", "[−3 ; ∞)"], "answer": 0, "topic": "Woordprobleme & ongelykhede"},
+      {"type": "mc", "text": "Op 'n getallelyn wys 'n oop sirkel by 2 met die lyn regs daarvan ingekleur:", "options": ["x ≥ 2", "x > 2", "x < 2", "x ≤ 2"], "answer": 1, "topic": "Woordprobleme & ongelykhede"},
       ]
     },
     {
