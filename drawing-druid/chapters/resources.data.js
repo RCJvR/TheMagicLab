@@ -128,13 +128,20 @@
   (function () {
     const cx = 60, yTop = 20, h = 0.7 * D, Lb = 80, yS = yTop + h, yE = yS + Lb, tl = 2 * D, td = 0.1 * D;
     const s = hexSide(cx, yTop, h, 3, false);
+    const yT = yE - tl, run = td * Math.sqrt(3);                  // where the thread ends; 60° run-out
+    const xR = cx + D / 2, xr = xR - td, yd = yE - 0.3 * tl;      // the 0.1D dimension, as the PDF shows it:
+    const head = (tip, dir) => ({ kind: 'polygon', solid: true, lineType: 'B', points: [tip, [tip[0] - dir * 1.8, tip[1] - 0.55], [tip[0] - dir * 1.8, tip[1] + 0.55]] });
+    const depthDim = [L([xr - 5, yd], [xr, yd], 'B'), head([xr, yd], 1), L([xR + 7, yd], [xR, yd], 'B'), head([xR, yd], -1),
+      lbl([xR + 8, yd + 1], '0.1D', { anchor: 'start', size: 2.8, color: '#e8eaf2' })];   // arrows from outside, pointing in
     add('res-bolt', 'Nut & Bolt: The Complete Bolt (M20 × 80)', 'A hexagon bolt to standard proportions: head 0.7D showing three faces, shank D, thread length 2D, thread depth 0.1D shown with thin lines, and a 45° chamfer on the end.', [
       { instruction: 'Draw the centre line and the head (three faces, 0.7D high) as on the previous sheet.', calloutAt: [cx, yTop + h / 2], reveals: [L([cx, yTop - 5], [cx, yE + 6], 'centre'), ...s.arcs, ...s.outline] },
       { instruction: 'The shank: D = 20 wide, 80 long under the head (the bolt length is measured from under the head).', calloutAt: [cx + D / 2, (yS + yE) / 2], reveals: [L([cx - D / 2, yS], [cx - D / 2, yE - td]), L([cx + D / 2, yS], [cx + D / 2, yE - td]), dim([cx - AC / 2 - 10, yS], [cx - AC / 2 - 10, yE], -4, 'BOLT LENGTH 80')] },
-      { instruction: 'The end is chamfered at 45° by the thread depth 0.1D = 2 mm. Draw the chamfer and the end line.', calloutAt: [cx, yE], reveals: [L([cx - D / 2, yE - td], [cx - D / 2 + td, yE]), L([cx + D / 2, yE - td], [cx + D / 2 - td, yE]), L([cx - D / 2 + td, yE], [cx + D / 2 - td, yE])] },
-      { instruction: 'The thread is 2D = 40 long. Show it conventionally: thin lines 0.1D inside each side (the root of the thread), and a thick line across where the thread ends.', calloutAt: [cx + D / 2 - td, yE - tl / 2],
-        reveals: [L([cx - D / 2 + td, yE], [cx - D / 2 + td, yE - tl], 'B'), L([cx + D / 2 - td, yE], [cx + D / 2 - td, yE - tl], 'B'), L([cx - D / 2, yE - tl], [cx + D / 2, yE - tl]),
-          dim([cx + D / 2 + 8, yE - tl], [cx + D / 2 + 8, yE], 5, '2D'), dim([cx + D / 2 - td, yE + 6], [cx + D / 2, yE + 6], 5, '0.1D')] },
+      { instruction: 'The end is chamfered at 45° by the thread depth 0.1D = 2 mm: a line across where the chamfer starts, the two 45° lines, and the end line.', calloutAt: [cx, yE],
+        reveals: [L([cx - D / 2, yE - td], [cx + D / 2, yE - td]), L([cx - D / 2, yE - td], [cx - D / 2 + td, yE]), L([cx + D / 2, yE - td], [cx + D / 2 - td, yE]), L([cx - D / 2 + td, yE], [cx + D / 2 - td, yE])] },
+      { instruction: 'The thread is 2D = 40 long. Show it conventionally: thin lines 0.1D inside each side (the root of the thread) right down to the end, a thick line across where the thread ends, and the run-out: thin lines at 60° (60° set square) from the root back out to the sides.', calloutAt: [xr, yE - tl / 2],
+        reveals: [L([cx - D / 2 + td, yE], [cx - D / 2 + td, yT], 'B'), L([xr, yE], [xr, yT], 'B'), L([cx - D / 2, yT], [xR, yT]),
+          L([cx - D / 2 + td, yT], [cx - D / 2, yT - run], 'B'), L([xr, yT], [xR, yT - run], 'B'),
+          dim([xR + 2, yE], [xR + 2, yT], 18, '2D'), ...depthDim] },
       { instruction: 'Label the drawing. (An alternative end is a rounded end drawn with R = 1.25D.)', calloutAt: [cx, yE + 12], reveals: [lbl([cx, yE + 16], 'M20 × 80 HEXAGON BOLT / SESKANTIGE BOUT', Object.assign({ size: 2.8 }, YEL))] },
     ]);
   })();

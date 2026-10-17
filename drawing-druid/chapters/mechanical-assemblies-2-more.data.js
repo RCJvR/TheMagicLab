@@ -137,7 +137,7 @@
       body,
       parts: [
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 0, sectioned: true, hatch: 135, note: 'Part 2, the BUSH: one plain bush the full length of the Ø24 bore. Section it, hatched opposite to the pedestal.' },
-        { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: -8, sectioned: false, D, thread: [84, 96], note: 'Part 3, the SHAFT, from the left until its Ø28 collar meets the pedestal. Shafts are never sectioned.' },
+        { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: -8, sectioned: false, D, thread: [84, 100], note: 'Part 3, the SHAFT, from the left until its Ø28 collar meets the pedestal. Shafts are never sectioned.' },
         { name: 'V-PULLEY', mat: 'CAST IRON / GIETYSTER', profile: pulley, at: 50, sectioned: true, hatch: 45, note: 'Part 4, the V-PULLEY against the end of the bush: hub, web and rim with the V-groove, sectioned. It touches the bush, so its hatching is opposite to the bush.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 74, sectioned: false, note: 'Part 5, the WASHER, and' },
         { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 77, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT.' },
@@ -182,7 +182,7 @@
       ax: 70, by: 150, axisH: 50, rx: 236, cutTop: 96, axisFrom: -10, axisTo: 94, rvHalf: 48,
       body: { name: 'FORK', mat: 'CAST IRON / GIETYSTER', callout: [5, 28], nearX: fk.nearX, section: fk.section, hatch: 45, end: fk.end },
       parts: [
-        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [72, 96], note: 'Part 2, the PIN: head against the left upright, shank through both uprights. Never sectioned.' },
+        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [72, 90], note: 'Part 2, the PIN: head against the left upright, shank through both uprights. Never sectioned.' },
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 12, sectioned: true, hatch: 135, note: 'Part 3, the BUSH between the uprights, sectioned and hatched opposite to the pulley.' },
         { name: 'GUIDE PULLEY', mat: 'CAST IRON / GIETYSTER', profile: guide, at: 12, sectioned: true, hatch: 45, note: 'Part 4, the GUIDE PULLEY round the bush: the tread (Ø44) between two flanges (Ø60), sectioned. It must clear both uprights.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 64, sectioned: false, note: 'Part 5, the WASHER, and' },

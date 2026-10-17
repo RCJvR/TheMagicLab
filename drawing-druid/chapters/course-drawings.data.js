@@ -146,7 +146,7 @@
       ax: 70, by: 150, axisH: 46, rx: 236, cutTop: 92, axisFrom: -10, axisTo: 88, rvHalf: 46,
       body: { name: 'FORK', mat: 'CAST IRON / GIETYSTER', callout: [5, 26], nearX: fk.nearX, section: fk.section, hatch: 45, end: fk.end },
       parts: [
-        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [66, 90], note: 'Part 2, the PIN through the fork. Never sectioned.' },
+        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [66, 84], note: 'Part 2, the PIN through the fork. Never sectioned.' },
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 12, sectioned: true, hatch: 135, note: 'Part 3, the BUSH, hatched opposite to the wheel.' },
         { name: 'WHEEL', mat: 'NYLON / NILON', profile: wheel, at: 12, sectioned: true, hatch: 45, note: 'Part 4, the WHEEL round the bush, sectioned, with chamfered edges.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 60, sectioned: false, note: 'Part 5, the WASHER, and' },

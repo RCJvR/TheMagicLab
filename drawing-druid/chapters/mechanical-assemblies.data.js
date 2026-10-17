@@ -72,15 +72,23 @@
     });
 
     // ── steps 3...: the parts in assembly order
+    // A shaft, pin or bolt is hidden where a washer or nut sits round it (both are drawn in outside
+    // view, in front of it), so its lines stop at their faces.
+    const solid = p => !p.sectioned && p.kind !== 'nut' && Math.min(...p.profile.map(q => q[1])) === 0;
+    const fronts = cfg.parts.filter(p => p.kind === 'nut' || (!p.sectioned && !solid(p))).map(p => p.kind === 'nut'
+      ? { x0: AX + p.at, x1: AX + p.at + (p.h || 0.8 * p.D), r: 1.5 * p.D / Math.sqrt(3) }
+      : { x0: AX + p.at, x1: AX + p.at + A.profLen(p.profile), r: Math.max(...p.profile.map(q => q[1])) });
     cfg.order.forEach((grp, gi) => {
       const rev = [];
       let text = [];
       grp.forEach(i => {
         const p = cfg.parts[i];
-        if (p.kind === 'nut') rev.push(...A.nutSide(AX + p.at, ay, p.D, p.h || 0.8 * p.D, { bothEnds: false, chamferAt: p.h ? 'left' : 'right' }));
-        else if (p.sectioned) rev.push(...A.sectioned(p.profile, AX + p.at, ay, p.hatch, { flip: p.flip }));
-        else rev.push(...A.outside(p.profile, AX + p.at, ay, { flip: p.flip }));
-        if (p.thread) rev.push(...A.threadLines(AX + p.thread[0], AX + p.thread[1], ay, p.D));
+        const own = [];
+        if (p.kind === 'nut') own.push(...A.nutSide(AX + p.at, ay, p.D, p.h || 0.8 * p.D, { bothEnds: false, chamferAt: p.h ? 'left' : 'right' }));
+        else if (p.sectioned) own.push(...A.sectioned(p.profile, AX + p.at, ay, p.hatch, { flip: p.flip }));
+        else own.push(...A.outside(p.profile, AX + p.at, ay, { flip: p.flip }));
+        if (p.thread) own.push(...A.threadLines(AX + p.thread[0], AX + p.thread[1], ay, p.D, { limit: 'left' }));
+        rev.push(...(solid(p) ? A.hideBehind(own, fronts, ay) : own));
         if (p.extra) rev.push(...p.extra(P, ay));
         if (p.note) text.push(p.note);
       });
@@ -198,23 +206,26 @@
 
   // ── 1. Hexagon bolt, nut and washer to proportions (M20) ──
   (function () {
-    const D = 20, head = 0.7 * D, nutH = 0.8 * D, wT = 0.2 * D, wD = 2 * D, len = 100, thr = 50;
+    const D = 20, head = 0.7 * D, nutH = 0.8 * D, wT = 0.2 * D, wD = 2 * D, len = 100, thr = 50, td = 0.1 * D;
     const X0 = 30, AY = 80;
     const AC = 1.5 * D * 2 / Math.sqrt(3);
+    const XH = X0 + head, XW = XH + 62, XN = XW + wT;            // under the head; washer; nut
+    // the washer and nut sit round the bolt, in front of it: the shank is hidden there
+    const covers = [{ x0: XW, x1: XW + wT, r: wD / 2 }, { x0: XN, x1: XN + nutH, r: AC / 2 }];
     CONSTRUCTIONS['hex-bolt-representation'] = {
       id: 'hex-bolt-representation', title: 'Hexagon Bolt, Nut and Washer (M20)', projection: 'third',
-      summary: 'Draw an M20 bolt with its washer and nut using the standard proportions of the diameter D: across flats 1.5D, head 0.7D, nut 0.8D, washer 2D x 0.2D, thread root 0.85D.',
+      summary: 'Draw an M20 bolt with its washer and nut using the standard proportions of the diameter D: across flats 1.5D, head 0.7D, nut 0.8D, washer 2D x 0.2D, thread root 0.8D.',
       bounds: { w: 260, h: 150 },
       workbookPrompt: 'Draw the M20 hexagon bolt (length 100, thread length 50) with a washer and nut, to the proportions of D. Show three faces of the head and nut in the front view and the hexagon in the end view.',
       steps: [
         {
           id: 1,
-          instruction: 'Work out the sizes from D = 20: across flats 1.5D = 30 (across corners 34.6), head 0.7D = 14, nut 0.8D = 16, washer 2D = 40 by 0.2D = 4, thread root 0.85D = 17. Draw the centre line.',
+          instruction: 'Work out the sizes from D = 20: across flats 1.5D = 30 (across corners 34.6), head 0.7D = 14, nut 0.8D = 16, washer 2D = 40 by 0.2D = 4, thread root 0.8D = 16. Draw the centre line.',
           calloutAt: [X0 + 60, AY],
           reveals: [
             L([X0 - 6, AY], [X0 + head + len + 8, AY], 'centre'),
             lbl([X0 + 150, AY - 48], 'D = 20', { anchor: 'start', size: 3.6, color: '#fde047' }),
-            ...[['ACROSS FLATS 1.5D = 30', -42], ['HEAD 0.7D = 14', -37], ['NUT 0.8D = 16', -32], ['WASHER 2D x 0.2D = 40 x 4', -27], ['THREAD ROOT 0.85D = 17', -22]].map(([t, dy]) => lbl([X0 + 150, AY + dy], t, { anchor: 'start', size: 3, color: '#94a3b8' })),
+            ...[['ACROSS FLATS 1.5D = 30', -42], ['HEAD 0.7D = 14', -37], ['NUT 0.8D = 16', -32], ['WASHER 2D x 0.2D = 40 x 4', -27], ['THREAD ROOT 0.8D = 16', -22]].map(([t, dy]) => lbl([X0 + 150, AY + dy], t, { anchor: 'start', size: 3, color: '#94a3b8' })),
           ],
         },
         {
@@ -225,22 +236,21 @@
         },
         {
           id: 3,
-          instruction: 'The shank, Ø20 for 100 mm from under the head, with the thread on the last 50: thin lines at the root diameter (17) and a line across where the thread ends.',
-          calloutAt: [X0 + head + 40, AY - D / 2],
+          instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered on the outer face) on the thread, leaving two or three threads showing past the nut.',
+          calloutAt: [XW + 10, AY - AC / 2],
           reveals: [
-            ...A.outside([[0, 0], [0, D / 2], [len - 2, D / 2], [len, D / 2 - 2], [len, 0]], X0 + head, AY),
-            ...A.threadLines(X0 + head + len - thr, X0 + head + len - 2, AY, D),
-            L([X0 + head + len - thr, AY - D / 2], [X0 + head + len - thr, AY + D / 2], 'A'),
+            ...A.outside([[0, 0], [0, wD / 2], [wT, wD / 2], [wT, 0]], XW, AY),
+            ...A.nutSide(XN, AY, D, nutH, { bothEnds: false, chamferAt: 'right' }),
           ],
         },
         {
           id: 4,
-          instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered on the outer face) on the thread, leaving two or three threads showing past the nut.',
-          calloutAt: [X0 + head + 70, AY - AC / 2],
-          reveals: [
-            ...A.outside([[0, 0], [0, wD / 2], [wT, wD / 2], [wT, 0]], X0 + head + 62, AY),
-            ...A.nutSide(X0 + head + 62 + wT, AY, D, nutH, { bothEnds: false, chamferAt: 'right' }),
-          ],
+          instruction: 'The shank, Ø20 for 100 mm from under the head; the washer and nut hide it where they sit round it. The thread is on the last 50: thin root lines 0.1D = 2 in from each side, right to the end; a thick line across where the thread ends, with the run-out drawn at 60° back to the sides; and the 45° chamfer (0.1D) on the end, with a line across where it starts.',
+          calloutAt: [XH + 40, AY - D / 2],
+          reveals: A.hideBehind([
+            ...A.outside([[0, 0], [0, D / 2], [len - td, D / 2], [len, D / 2 - td], [len, 0]], XH, AY),
+            ...A.threadLines(XH + len - thr, XH + len, AY, D, { limit: 'left' }),
+          ], covers, AY),
         },
         {
           id: 5,

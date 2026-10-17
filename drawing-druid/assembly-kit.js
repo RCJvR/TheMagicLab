@@ -90,11 +90,48 @@
     return out;
   }
 
-  // Thread on an unsectioned shaft or bolt: thin lines at the root diameter (0.85D) along
-  // the threaded length.
-  function threadLines(x0, x1, ay, D) {
-    const rr = 0.425 * D;
-    return [L([x0, ay - rr], [x1, ay - rr], 'B'), L([x0, ay + rr], [x1, ay + rr], 'B')];
+  // Thread on an unsectioned shaft or bolt (axis horizontal) from x0 to x1: thin lines at the
+  // root, the thread depth 0.1D in from each side (root Ø0.8D).
+  //   opts.limit 'left' | 'right': the end where the thread stops — a thick line straight across
+  //   the full D there, and the run-out: thin lines at 60° to it (60° set square) from the root
+  //   out to the sides, on the unthreaded side.
+  function threadLines(x0, x1, ay, D, opts) {
+    opts = opts || {};
+    const rr = 0.4 * D, R = D / 2;
+    const out = [L([x0, ay - rr], [x1, ay - rr], 'B'), L([x0, ay + rr], [x1, ay + rr], 'B')];
+    if (opts.limit) {
+      const xl = opts.limit === 'left' ? x0 : x1, run = (opts.limit === 'left' ? -1 : 1) * (R - rr) * Math.sqrt(3);
+      out.push(L([xl, ay - R], [xl, ay + R]), L([xl, ay - rr], [xl + run, ay - R], 'B'), L([xl, ay + rr], [xl + run, ay + R], 'B'));
+    }
+    return out;
+  }
+
+  // Hidden lines in an outside view: drop the parts of these line segments that lie behind a part
+  // in front, e.g. a shaft or bolt where a washer or nut sits round it.
+  //   fronts: [{ x0, x1, r }] — the axis-symmetric region x0..x1, ay - r..ay + r that covers them.
+  function hideBehind(reveals, fronts, ay) {
+    const eps = 1e-6;
+    return reveals.flatMap(rv => {
+      if (rv.kind !== 'line') return [rv];
+      let pieces = [[rv.p1, rv.p2]];
+      fronts.forEach(f => {
+        pieces = pieces.flatMap(([p, q]) => {
+          // Liang–Barsky: the parameter range of p→q strictly inside the box
+          const d = [q[0] - p[0], q[1] - p[1]];
+          let t0 = 0, t1 = 1;
+          const ok = [[-d[0], p[0] - f.x0], [d[0], f.x1 - p[0]], [-d[1], p[1] - (ay - f.r)], [d[1], ay + f.r - p[1]]].every(([pp, qq]) => {
+            if (Math.abs(pp) < eps) return qq > eps;
+            const t = qq / pp;
+            if (pp < 0) t0 = Math.max(t0, t); else t1 = Math.min(t1, t);
+            return t0 < t1;
+          });
+          if (!ok || t1 - t0 < eps) return [[p, q]];
+          const at = t => [p[0] + d[0] * t, p[1] + d[1] * t];
+          return [t0 > eps ? [p, at(t0)] : null, t1 < 1 - eps ? [at(t1), q] : null].filter(Boolean);
+        });
+      });
+      return pieces.map(([p, q]) => Object.assign({}, rv, { p1: p, p2: q }));
+    });
   }
 
   // A hexagon nut (or bolt head) seen from the side, across its corners: three faces showing —
@@ -171,7 +208,7 @@
     const out = [{ kind: 'polygon', points: hex, lineType: 'A' }, { kind: 'circle', center: [cx, cy], r: 0.75 * D, lineType: 'B' }];
     if (opts.bolt !== false) {
       out.push({ kind: 'circle', center: [cx, cy], r: D / 2, lineType: 'A' });
-      out.push({ kind: 'arc-construction', center: [cx, cy], r: 0.425 * D, startDeg: 0, endDeg: 270, lineType: 'B' });
+      out.push({ kind: 'arc-construction', center: [cx, cy], r: 0.4 * D, startDeg: 0, endDeg: 270, lineType: 'B' });
     }
     out.push(L([cx - R - 3, cy], [cx + R + 3, cy], 'centre'), L([cx, cy - R - 3], [cx, cy + R + 3], 'centre'));
     return out;
@@ -215,5 +252,5 @@
     return out;
   }
 
-  global.AssemblyKit = { hatch, sectioned, outside, threadLines, nutSide, nutEnd, endCircles, balloon, partsList, profLen };
+  global.AssemblyKit = { hatch, sectioned, outside, threadLines, hideBehind, nutSide, nutEnd, endCircles, balloon, partsList, profLen };
 })(window);
