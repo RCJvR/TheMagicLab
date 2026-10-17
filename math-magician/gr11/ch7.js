@@ -25,14 +25,12 @@ MathMagician.registerChapter(7, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Example: Combination solid</div>
-            <p>Cylinder (r = 4, h = 10) with hemisphere on top.<br>
-            Cylinder SA (no top): 2π(4)² + 2π(4)(10) − π(4)² = π(16 + 80 − 16) ... wait:<br>
-            — Bottom circle: π(4)² = 16π<br>
-            — Curved cylinder: 2π(4)(10) = 80π<br>
-            — Hemisphere: 2π(4)² = 32π (curved surface only)<br>
-            Total = 16π + 80π + 32π = 128π ≈ 402.1 cm²</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"view":[-5.5,-0.8,5.5,15],"pts":{"a":[-4,0],"b":[4,0],"c":[4,10],"d":[-4,10],"o":[0,10]},"nolab":["a","b","c","d","o"],"seg":[["a","b","ln",null,"r = 4"],["b","c","ln",null,"10"],["d","a"],["d","c","mu dash"]],"arc":[["o",4,0,180,"ln"]]}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>A cylinder (r = 4 cm, h = 10 cm) has a hemisphere on top. The top of the cylinder is covered by the hemisphere, so it is not part of the outside surface.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Bottom circle: π(4)² = 16π · Curved cylinder: 2π(4)(10) = 80π · Curved hemisphere: 2π(4)² = 32π</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Total SA = 16π + 80π + 32π = 128π ≈ <strong>402,1 cm²</strong></span></div>
           </div>
 
           <div class="def-box">
@@ -354,6 +352,8 @@ MathMagician.registerChapter(7, {
             Volume = cylinder + cone = π(3)²(6) + ⅓π(3)²(2) = 54π + 6π = 60π ≈ 188.5 m³<br>
             In litres: 188.5 m³ × 1000 = 188 496 ℓ (using more accurate π)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"view":[-4.5,-0.8,4.5,9],"pts":{"a":[-3,0],"b":[3,0],"c":[3,6],"d":[-3,6],"t":[0,8]},"nolab":["a","b","c","d","t"],"seg":[["a","b","ln",null,"r = 3 m"],["b","c","ln",null,"6 m"],["d","a"],["d","c","mu dash"],["d","t"],["t","c"],[[0,6],"t","mu dash"]],"txt":[[0.9,6.7,"2 m","or","start"]],"cap":"Cylinder + cone, same radius"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Material and cost</div>
@@ -496,6 +496,8 @@ MathMagician.registerChapter(7, {
             Slant height l = 6/cos(65°) ≈ 14.199 cm<br>
             Stage 2: Volume = ⅓π(6)²(12.867) ≈ 485.1 cm³</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":230,"pts":{"A":[-6,0],"B":[6,0],"T":[0,12.87],"O":[0,0]},"nolab":["A","O"],"seg":[["A","B"],["B","T","ac",null,"l"],["T","A"],["O","T","mu dash",null,"h"],["O","B","or",null,"6"]],"ang":[["T","B","A","65°","gn",20]],"ra":[["B","O","T"]],"lab":{"T":"n","B":"se"},"cap":"Cross-section: tan 65° = h/6 and cos 65° = 6/l"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Prism cross-section using the area rule</div>

@@ -22,6 +22,8 @@ MathMagician.registerChapter(5, {
               This approximates the instantaneous rate of change (introduced properly in Grade 12 calculus).
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":260,"h":230,"view":[-0.5,-2,6,27],"axes":{"tx":1,"ty":5},"fn":[{"f":"x*x","c":"ac","dom":[-0.5,5.3]}],"pts":{"P":[2,4],"Q":[5,25]},"dots":true,"seg":[["P","Q","hl"]],"lab":{"P":"se","Q":"w"},"cap":"The average gradient is the gradient of the chord PQ: (25 − 4) ÷ (5 − 2) = 7"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Effect of parameters — general forms</div>
@@ -48,6 +50,8 @@ MathMagician.registerChapter(5, {
             Sub (0; 1): <span class="math">1 = a(4) − 3 → a = 1</span><br>
             <span class="math">y = (x−2)² − 3</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-4,5,6],"grid":1,"axes":{"ticks":1},"fn":[{"f":"(x-2)*(x-2)-3","c":"ac"}],"pts":{"V":[2,-3],"Y":[0,1]},"dots":true,"names":{"V":"(2 ; −3)","Y":"(0 ; 1)"},"lab":{"V":"s","Y":"w"},"cap":"y = (x − 2)² − 3"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Average Gradient Calculator</div>
@@ -319,6 +323,8 @@ MathMagician.registerChapter(5, {
               Max at x: 2x − 60° = 90° → x = 75°
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":320,"h":200,"view":[0,-1.6,380,3.6],"axes":{"tx":90,"ty":1},"fn":[{"f":"Math.sin(x*Math.PI/180)","c":"mu dash"},{"f":"2*Math.sin((2*x-60)*Math.PI/180)+1","c":"ac"}],"pts":{"M":[75,3]},"dots":true,"names":{"M":"(75° ; 3)"},"lab":{"M":"e"},"cap":"y = 2sin(2x − 60°) + 1 (solid) against y = sin x (dashed): amplitude 2, period 180°, shifted 30° right and 1 up"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Tangent function: y = a tan(bx) + q</div>
@@ -589,6 +595,8 @@ MathMagician.registerChapter(5, {
             y-intercept: x = 0 → y = (−1)(3) = −3 → (0; −3)<br>
             x-intercepts: y = 0 → x = 1 or x = −3 → (1; 0) and (−3; 0)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-5,-5,3,4],"grid":1,"axes":{"ticks":1},"fn":[{"f":"(x-1)*(x+3)","c":"ac"}],"pts":{"A":[-3,0],"B":[1,0],"Y":[0,-3]},"dots":true,"names":{"A":"(−3 ; 0)","B":"(1 ; 0)","Y":"(0 ; −3)"},"lab":{"A":"nw","B":"ne","Y":"se"},"cap":"y = (x − 1)(x + 3)"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Finding the equation from given features</div>
@@ -597,6 +605,8 @@ MathMagician.registerChapter(5, {
             Substitute (3; 3): <span class="math">3 = a/2 + 2 → a/2 = 1 → a = 2</span><br>
             Equation: <span class="math">y = 2/(x−1) + 2</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-3,-3,6,7],"grid":1,"axes":{"ticks":1},"fn":[{"f":"2/(x-1)+2","c":"ac","breaks":[1]}],"asym":[["x",1],["y",2]],"pts":{"P":[3,3]},"dots":true,"names":{"P":"(3 ; 3)"},"lab":{"P":"ne"},"cap":"y = 2/(x − 1) + 2: asymptotes x = 1 and y = 2"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Intercepts, Domain &amp; Range Finder</div>

@@ -35,6 +35,8 @@ MathMagician.registerChapter(4, {
               Vertical line: θ = 90° (undefined gradient)
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-3,-2,3,5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"2*x+3","c":"ac","lab":[0.3,4.4,"y = 2x + 3"]},{"f":"-x+1","c":"hl","lab":[-2.9,4.4,"y = −x + 1"]}],"pts":{"I":[-1.5,0],"P":[0,3],"X1":[0,0.0001],"J":[1,0],"Q":[-1,2],"X2":[2.5,0]},"nolab":["I","P","X1","J","Q","X2"],"ang":[["X1","I","P","63,4°","gn",20],["X2","J","Q","135°","or",14]],"cap":"tan θ = m: y = 2x + 3 makes 63,4° with the x-axis, y = −x + 1 makes 135°"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example</div>
@@ -163,6 +165,8 @@ MathMagician.registerChapter(4, {
             m_AM = (3−3)/(4−1) = 0/3 = 0<br>
             Line AM: y = 3 (horizontal)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-1,-1,7,7],"grid":1,"axes":{"ticks":1},"pts":{"A":[1,3],"B":[5,1],"C":[3,5],"M":[4,3]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["B","C"],["C","A"],["A","M","ac"]],"tick":[["B","M",1],["M","C",1]],"dots":true,"lab":{"A":"w","B":"se","C":"n","M":"e"},"cap":"Median AM to the midpoint M(4 ; 3) of BC"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Key constructions to know</div>
@@ -320,6 +324,8 @@ MathMagician.registerChapter(4, {
             <span class="math">m_CB = (−4−(−2))/(−3−4) = −2/−7 ≈ 0,286</span> → θ₂ = tan⁻¹(0,286) ≈ 16,0°<br>
             Angle ACB = θ₁ − θ₂ ≈ 105,9° − 16,0° = 89,9°</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":240,"view":[-4,-5,6,6],"grid":1,"axes":{"ticks":2},"pts":{"A":[2,5],"B":[-3,-4],"C":[4,-2]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["B","C","ac"],["C","A","ac"]],"ang":[["A","C","B","Ĉ","gn",18]],"dots":true,"lab":{"A":"n","B":"sw","C":"e"},"cap":"Ĉ = inclination of CA − inclination of CB"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Sketch first</div>

@@ -43,6 +43,8 @@ MathMagician.registerChapter(10, {
             P(BB) = 2/5 × 1/4 = 2/20 = 1/10<br>
             Toets: som = 1 ✓</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"tree","levels":[[["R","3/5"],["B","2/5"]],[["R",["2/4","3/4"]],["B",["2/4","1/4"]]]],"outcomes":["RR = 3/10","RB = 3/10","BR = 3/10","BB = 1/10"],"w":320,"cap":"Sonder terugplasing verander die tweede stadium se waarskynlikhede"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Onafhanklikheidstoets & Voorwaardelike Waarskynlikheid</div>
@@ -172,6 +174,8 @@ MathMagician.registerChapter(10, {
             P(Sport) = 80/150; P(Musiek) = 60/150<br>
             P(Sport)×P(Musiek) = 0.213 ≠ P(Sport∩Musiek) = 30/150 = 0.2 → NIE onafhanklik nie</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["Sport","Musiek"],"vals":{"A":50,"AB":30,"B":30,"out":40},"S":"n = 150","cap":"Dieselfde inligting as die tabel, in &#39;n Venndiagram"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Kontingensietabel-onafhanklikheidstoetser</div>
@@ -296,6 +300,8 @@ MathMagician.registerChapter(10, {
             A alleen = 40 − 14 − 8 − 7 = 11; B alleen = 35 − 8 − 11 − 7 = 9; C alleen = 40 − 14 − 11 − 7 = 8.<br>
             Geeneen van die drie nie: 80 − 68 = 12.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["A","B","C"],"vals":{"A":11,"B":9,"C":8,"AB":8,"AC":14,"BC":11,"ABC":7,"out":12},"S":"n = 80","cap":"Vul van die middel na buite in: 7, dan 8, 14, 11, dan 11, 9, 8; 12 buite"}'></div>
+
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Kontroleer altyd: alle streke van die Venn-diagram behoort op te tel tot die totale steekproefgrootte — dit vang die meeste rekenkundige foute.</span></div>
 

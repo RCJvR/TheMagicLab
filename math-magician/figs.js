@@ -317,7 +317,7 @@
     const W = s.w || 300, H = s.h || (s.sets.length === 3 ? 230 : 180);
     const svg = svgRoot(W, H, s.alt), v = s.vals || {};
     svg.appendChild(el('rect', { x: 6, y: 6, width: W - 12, height: H - 12, rx: 8, class: 'mf-ln' }));
-    svg.appendChild(el('text', { x: 16, y: 24, class: 'mf-tx mf-pt' }, s.S || 'S'));
+    svg.appendChild(el('text', { x: 16, y: H - 16, class: 'mf-tx mf-pt' }, s.S || 'S'));
     const r = s.sets.length === 3 ? 62 : 66;
     const C = s.sets.length === 3 ? [[W / 2 - 38, 92], [W / 2 + 38, 92], [W / 2, 150]] : [[W / 2 - 40, H / 2], [W / 2 + 40, H / 2]];
     C.forEach((c, i) => {

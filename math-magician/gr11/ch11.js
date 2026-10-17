@@ -21,6 +21,8 @@ MathMagician.registerChapter(11, {
               <strong>Ogive (cumulative frequency curve):</strong> plots cumulative frequency against upper class boundary. S-shaped curve. Used to read off percentiles and the five-number summary.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"hist","classes":[[0,10,4],[10,20,10],[20,30,16],[30,40,7],[40,50,3]],"xlab":"marks","ylab":"frequency","w":280,"h":190,"cap":"Histogram"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":280,"h":210,"view":[-2,-2,54,44],"axes":{"tx":10,"ty":10,"x":"marks","y":"cum. f"},"pts":{"p0":[0,0],"p1":[10,4],"p2":[20,14],"p3":[30,30],"p4":[40,37],"p5":[50,40],"m":[23.75,20],"m0":[0,20],"mx":[23.75,0]},"nolab":["p0","p1","p2","p3","p4","p5","m","m0","mx"],"dots":["p0","p1","p2","p3","p4","p5"],"seg":[["p0","p1","ac"],["p1","p2","ac"],["p2","p3","ac"],["p3","p4","ac"],["p4","p5","ac"],["m0","m","hl dash"],["m","mx","hl dash"]],"txt":[[25,9,"median ≈ 24","hl","start"]],"cap":"Ogive: cumulative frequency at each upper boundary"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Variance and standard deviation</div>
@@ -152,6 +154,8 @@ MathMagician.registerChapter(11, {
               <strong>Negatively skewed (left-skewed):</strong> Mean &lt; Median &lt; Mode. Tail to the left.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.exp(-(x-3.2)*(x-3.2)/1.2)","c":"ac"}],"cap":"symmetric: mean = median"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(x-0.2,2)*Math.exp(-(x-0.2)*1.1)*1.2","c":"ac"}],"cap":"positively skewed: mean > median"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(6.2-x,2)*Math.exp(-(6.2-x)*1.1)*1.2","c":"ac"}],"cap":"negatively skewed: mean &lt; median"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Outlier identification</div>
@@ -305,6 +309,8 @@ MathMagician.registerChapter(11, {
             <p>Class A marks: mean = 62, σ = 4.2. Class B marks: mean = 62, σ = 11.5.<br>
             Both classes averaged the same mark, but Class A's marks were far more <strong>consistent</strong> (clustered near 62), while Class B had a much wider spread — some learners did very well, others very poorly.</p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":200,"h":120,"view":[20,-0.005,104,0.1],"pad":12,"axes":{"x":" ","y":" ","o":false,"tx":20},"fn":[{"f":"Math.exp(-((x-62)**2)/(2*4.2*4.2))/(4.2*2.5066)","c":"ac"}],"asym":[["x",62]],"cap":"Class A: σ = 4,2"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":200,"h":120,"view":[20,-0.005,104,0.1],"pad":12,"axes":{"x":" ","y":" ","o":false,"tx":20},"fn":[{"f":"Math.exp(-((x-62)**2)/(2*11.5*11.5))/(11.5*2.5066)","c":"ac"}],"asym":[["x",62]],"cap":"Class B: σ = 11,5"}'></div></div>
+
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Never compare raw standard deviations of datasets with very different means or units without also considering the mean — always interpret spread relative to context.</span></div>
 

@@ -21,6 +21,8 @@ MathMagician.registerChapter(11, {
               <strong>Ogief (opeengehoopte-frekwensiekurwe):</strong> stip opeengehoopte frekwensie teenoor die boonste klasgrens. S-vormige kurwe. Word gebruik om persentiele en die vyf-getal-opsomming af te lees.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"hist","classes":[[0,10,4],[10,20,10],[20,30,16],[30,40,7],[40,50,3]],"xlab":"punte","ylab":"frekwensie","w":280,"h":190,"cap":"Histogram"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":280,"h":210,"view":[-2,-2,54,44],"axes":{"tx":10,"ty":10,"x":"punte","y":"kum. f"},"pts":{"p0":[0,0],"p1":[10,4],"p2":[20,14],"p3":[30,30],"p4":[40,37],"p5":[50,40],"m":[23.75,20],"m0":[0,20],"mx":[23.75,0]},"nolab":["p0","p1","p2","p3","p4","p5","m","m0","mx"],"dots":["p0","p1","p2","p3","p4","p5"],"seg":[["p0","p1","ac"],["p1","p2","ac"],["p2","p3","ac"],["p3","p4","ac"],["p4","p5","ac"],["m0","m","hl dash"],["m","mx","hl dash"]],"txt":[[25,9,"mediaan ≈ 24","hl","start"]],"cap":"Ogief: kumulatiewe frekwensie by elke bogrens"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Variansie en standaardafwyking</div>
@@ -152,6 +154,8 @@ MathMagician.registerChapter(11, {
               <strong>Negatief skeef (links-skeef):</strong> Gemiddelde &lt; Mediaan &lt; Modus. Stert na links.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.exp(-(x-3.2)*(x-3.2)/1.2)","c":"ac"}],"cap":"simmetries: gemiddeld = mediaan"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(x-0.2,2)*Math.exp(-(x-0.2)*1.1)*1.2","c":"ac"}],"cap":"positief skeef: gemiddeld > mediaan"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":170,"h":120,"view":[0,-0.1,6.4,1.15],"pad":10,"axes":{"x":" ","y":" ","o":false},"fn":[{"f":"Math.pow(6.2-x,2)*Math.exp(-(6.2-x)*1.1)*1.2","c":"ac"}],"cap":"negatief skeef: gemiddeld &lt; mediaan"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Uitskieteridentifikasie</div>
@@ -305,6 +309,8 @@ MathMagician.registerChapter(11, {
             <p>Klas A se punte: gemiddelde = 62, σ = 4.2. Klas B se punte: gemiddelde = 62, σ = 11.5.<br>
             Albei klasse het dieselfde gemiddelde punt behaal, maar Klas A se punte was baie meer <strong>konsekwent</strong> (saamgetrek naby 62), terwyl Klas B 'n baie wyer spreiding gehad het — sommige leerders het baie goed gevaar, ander baie swak.</p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":200,"h":120,"view":[20,-0.005,104,0.1],"pad":12,"axes":{"x":" ","y":" ","o":false,"tx":20},"fn":[{"f":"Math.exp(-((x-62)**2)/(2*4.2*4.2))/(4.2*2.5066)","c":"ac"}],"asym":[["x",62]],"cap":"Klas A: σ = 4,2"}'></div><div class="mf-fig" data-fig='{"t":"geo","free":true,"w":200,"h":120,"view":[20,-0.005,104,0.1],"pad":12,"axes":{"x":" ","y":" ","o":false,"tx":20},"fn":[{"f":"Math.exp(-((x-62)**2)/(2*11.5*11.5))/(11.5*2.5066)","c":"ac"}],"asym":[["x",62]],"cap":"Klas B: σ = 11,5"}'></div></div>
+
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Moenie ooit rou standaardafwykings van datastelle met baie verskillende gemiddeldes of eenhede vergelyk sonder om ook die gemiddelde in ag te neem nie — interpreteer spreiding altyd relatief tot konteks.</span></div>
 

@@ -33,6 +33,8 @@ MathMagician.registerChapter(6, {
               <strong>Co-ratio (90° ± θ):</strong> sin(90°−θ) = cosθ; cos(90°−θ) = sinθ
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":260,"view":[-4.2,-4.2,4.2,4.2],"axes":{"o":false},"circ":[["O",3,"mu"]],"pts":{"O":[0,0],"P1":[2.4575,1.7207],"P2":[-2.4575,1.7207],"P3":[-2.4575,-1.7207],"P4":[2.4575,-1.7207],"X":[3.6,0],"Xm":[-3.6,0]},"nolab":["O","X","Xm"],"names":{"P1":"θ","P2":"180° − θ","P3":"180° + θ","P4":"360° − θ"},"lab":{"P1":"ne","P2":"nw","P3":"sw","P4":"se"},"seg":[["O","P1","ac"],["O","P2","gn"],["O","P3","or"],["O","P4","hl"]],"dots":["P1","P2","P3","P4"],"txt":[[2.6,3.7,"A","gn"],[-2.6,3.7,"S","gn"],[-2.6,-3.9,"T","gn"],[2.6,-3.9,"C","gn"]],"cap":"Each angle has the same reference angle θ; CAST gives the sign in each quadrant"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Prove an identity</div>
@@ -216,6 +218,8 @@ MathMagician.registerChapter(6, {
               Use when: <strong>SAS</strong> (two sides + included angle) or <strong>SSS</strong> (three sides).
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":190,"pts":{"A":[0,0],"B":[6,0],"C":[2,3.5]},"poly":[["A","B","C","fl"]],"seg":[["A","B","ln",null,"c"],["B","C","ln",null,"a"],["C","A","ln",null,"b"]],"lab":{"A":"sw","B":"se","C":"n"},"cap":"Side a is opposite ∠A, b opposite ∠B, c opposite ∠C"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Cosine rule</div>
@@ -223,6 +227,8 @@ MathMagician.registerChapter(6, {
             <span class="math">c² = 64 + 36 − 2(8)(6)cos60° = 100 − 96(½) = 100 − 48 = 52</span><br>
             <span class="math">c = √52 = 2√13 ≈ 7.21</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":190,"pts":{"C":[0,0],"B":[8,0],"A":[3,5.196152422706632]},"poly":[["A","B","C","fl"]],"seg":[["C","B","ln",null,"a = 8"],["C","A","ln",null,"b = 6"],["A","B","ac",null,"c = ?"]],"ang":[["B","C","A","60°","gn",20]],"lab":{"C":"sw","B":"se","A":"n"},"cap":"Two sides and the included angle: use the cosine rule"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Triangle Rule Calculator</div>
@@ -380,6 +386,8 @@ MathMagician.registerChapter(6, {
             Reference angle: <span class="math">α = cos⁻¹(0,6) ≈ 53,1°</span>. Since cos θ is negative, θ is in Quadrant 2 or 3:<br>
             <span class="math">θ = 180° − 53,1° = 126,9°</span> or <span class="math">θ = 180° + 53,1° = 233,1°</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","free":true,"w":320,"h":190,"view":[0,-1.3,380,1.4],"axes":{"tx":90,"ty":0.5},"fn":[{"f":"Math.cos(x*Math.PI/180)","c":"ac"},{"f":"-0.6+0*x","c":"hl dash"}],"pts":{"P":[126.9,-0.6],"Q":[233.1,-0.6]},"dots":true,"names":{"P":"126,9°","Q":"233,1°"},"lab":{"P":"sw","Q":"se"},"cap":"y = cos θ meets y = −0,6 twice in [0° ; 360°]"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Equations needing extra algebra first</div>

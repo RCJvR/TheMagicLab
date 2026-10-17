@@ -43,6 +43,8 @@ MathMagician.registerChapter(10, {
             P(BB) = 2/5 × 1/4 = 2/20 = 1/10<br>
             Check: sum = 1 ✓</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"tree","levels":[[["R","3/5"],["B","2/5"]],[["R",["2/4","3/4"]],["B",["2/4","1/4"]]]],"outcomes":["RR = 3/10","RB = 3/10","BR = 3/10","BB = 1/10"],"w":320,"cap":"Without replacement the second-stage probabilities change"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Independence Test & Conditional Probability</div>
@@ -172,6 +174,8 @@ MathMagician.registerChapter(10, {
             P(Sport) = 80/150; P(Music) = 60/150<br>
             P(Sport)×P(Music) = 0.213 ≠ P(Sport∩Music) = 30/150 = 0.2 → NOT independent</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["Sport","Music"],"vals":{"A":50,"AB":30,"B":30,"out":40},"S":"n = 150","cap":"The same information as the table, in a Venn diagram"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Contingency Table Independence Checker</div>
@@ -296,6 +300,8 @@ MathMagician.registerChapter(10, {
             A only = 40 − 14 − 8 − 7 = 11; B only = 35 − 8 − 11 − 7 = 9; C only = 40 − 14 − 11 − 7 = 8.<br>
             None of the three: 80 − 68 = 12.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["A","B","C"],"vals":{"A":11,"B":9,"C":8,"AB":8,"AC":14,"BC":11,"ABC":7,"out":12},"S":"n = 80","cap":"Fill in from the centre outwards: 7, then 8, 14, 11, then 11, 9, 8; 12 outside"}'></div>
+
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always double check: all regions of the Venn diagram should add up to the total sample size — this catches most arithmetic slips.</span></div>
 

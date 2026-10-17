@@ -25,14 +25,12 @@ MathMagician.registerChapter(7, {
             </p>
           </div>
 
-          <div class="example-box">
-            <div class="example-box-title">✏️ Voorbeeld: Saamgestelde vaste stof</div>
-            <p>Silinder (r = 4, h = 10) met 'n halfsfeer bo-op.<br>
-            Silinder-SA (geen bokant nie): 2π(4)² + 2π(4)(10) − π(4)² = π(16 + 80 − 16) ... wag:<br>
-            — Onderste sirkel: π(4)² = 16π<br>
-            — Geboë silinder: 2π(4)(10) = 80π<br>
-            — Halfsfeer: 2π(4)² = 32π (slegs die geboë oppervlak)<br>
-            Totaal = 16π + 80π + 32π = 128π ≈ 402.1 cm²</p>
+                    <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: Kombinasieliggaam</div>
+            <div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"view":[-5.5,-0.8,5.5,15],"pts":{"a":[-4,0],"b":[4,0],"c":[4,10],"d":[-4,10],"o":[0,10]},"nolab":["a","b","c","d","o"],"seg":[["a","b","ln",null,"r = 4"],["b","c","ln",null,"10"],["d","a"],["d","c","mu dash"]],"arc":[["o",4,0,180,"ln"]]}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>'n Silinder (r = 4 cm, h = 10 cm) het 'n halfsfeer bo-op. Die bokant van die silinder word deur die halfsfeer bedek, so dit is nie deel van die buite-oppervlak nie.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Onderste sirkel: π(4)² = 16π · Geboë silinder: 2π(4)(10) = 80π · Geboë halfsfeer: 2π(4)² = 32π</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Totale BO = 16π + 80π + 32π = 128π ≈ <strong>402,1 cm²</strong></span></div>
           </div>
 
           <div class="def-box">
@@ -357,6 +355,8 @@ MathMagician.registerChapter(7, {
             Volume = silinder + keël = π(3)²(6) + ⅓π(3)²(2) = 54π + 6π = 60π ≈ 188.5 m³<br>
             In liter: 188.5 m³ × 1000 = 188 496 ℓ (met 'n meer akkurate waarde van π)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"view":[-4.5,-0.8,4.5,9],"pts":{"a":[-3,0],"b":[3,0],"c":[3,6],"d":[-3,6],"t":[0,8]},"nolab":["a","b","c","d","t"],"seg":[["a","b","ln",null,"r = 3 m"],["b","c","ln",null,"6 m"],["d","a"],["d","c","mu dash"],["d","t"],["t","c"],[[0,6],"t","mu dash"]],"txt":[[0.9,6.7,"2 m","or","start"]],"cap":"Silinder + keël, dieselfde radius"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Materiaal en koste</div>
@@ -499,6 +499,8 @@ MathMagician.registerChapter(7, {
             Skuinshoogte l = 6/cos(65°) ≈ 14.199 cm<br>
             Fase 2: Volume = ⅓π(6)²(12.867) ≈ 485.1 cm³</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":230,"pts":{"A":[-6,0],"B":[6,0],"T":[0,12.87],"O":[0,0]},"nolab":["A","O"],"seg":[["A","B"],["B","T","ac",null,"l"],["T","A"],["O","T","mu dash",null,"h"],["O","B","or",null,"6"]],"ang":[["T","B","A","65°","gn",20]],"ra":[["B","O","T"]],"lab":{"T":"n","B":"se"},"cap":"Deursnee: tan 65° = h/6 en cos 65° = 6/s"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Prisma-dwarssnee met die oppervlakte-reël</div>
