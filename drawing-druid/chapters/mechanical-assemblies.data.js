@@ -81,9 +81,28 @@
       ? { x0: AX + p.at, x1: AX + p.at + (p.h || 0.8 * p.D), r: 1.5 * p.D / Math.sqrt(3) }
       : { x0: AX + p.at, x1: AX + p.at + A.profLen(p.profile), r: Math.max(...p.profile.map(q => q[1])) });
     const lastFrontGroup = cfg.order.reduce((m, grp, gi) => grp.some(i => isFront(cfg.parts[i])) ? gi : m, -1);
+    // A hexagon (nut or bolt head) can't be drawn in the section until its END VIEW is drawn: its
+    // corners give the height and the two face edges of the three faces seen in the section. So
+    // before the first one, the right view's centre lines and the hexagon go in (corner up, as the
+    // section shows it across its corners), and its corners are projected across into the section.
+    const hexParts = cfg.parts.filter(p => p.kind === 'nut');
+    const hexGroup = cfg.order.findIndex(grp => grp.some(i => cfg.parts[i].kind === 'nut'));
+    const rvCentre = [L([RX - cfg.rvHalf, ay], [RX + cfg.rvHalf, ay], 'centre'), L([RX, BY - cfg.cutTop - 4], [RX, BY + 6], 'centre')];
+    const hexStep = () => {
+      const Dh = hexParts[0].D, Rh = 1.5 * Dh / Math.sqrt(3), xEnd = AX + Math.min(...hexParts.map(p => p.at));
+      const corners = [[RX, ay - Rh], [RX - Rh * Math.cos(Math.PI / 6), ay - Rh / 2], [RX - Rh * Math.cos(Math.PI / 6), ay + Rh / 2], [RX, ay + Rh]];
+      return {
+        id: steps.length + 1,
+        instruction: 'Before a hexagon (the nut or a bolt head) can be drawn in the section, draw its END VIEW in the right view: the two centre lines, and the hexagon with a corner at the top, 1.5D across the flats. Project its top and bottom corners and the corners where the faces meet straight across into the section: the three faces are drawn between those lines.',
+        calloutAt: [RX, ay - Rh],
+        reveals: [...rvCentre, ...A.nutEnd(RX, ay, Dh, { bolt: false, cornersUp: true }).filter(r => r.lineType !== 'centre'),
+          ...corners.map(c => L(c, [xEnd, c[1]], 'construction'))],
+      };
+    };
     const lineLen = rs => rs.reduce((t, r) => t + (r.kind === 'line' ? Math.hypot(r.p2[0] - r.p1[0], r.p2[1] - r.p1[1]) : 0), 0);
     const pending = [];                                       // parts drawn lightly, still to line in
     cfg.order.forEach((grp, gi) => {
+      if (gi === hexGroup) steps.push(hexStep());
       const rev = [];
       let text = [];
       grp.forEach(i => {
@@ -151,8 +170,11 @@
       if (e.nut) {
         // corners up: the section shows the nut across its corners (three faces), so the end view
         // must have a corner at the top
-        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true, cornersUp: true }).filter(r => r.lineType !== 'centre'));
-        addProj(1.5 * e.nut.D / Math.sqrt(3), AX + e.x);
+        // (the hexagon itself was drawn before the nut went into the section: only the bolt's
+        // circles inside it are added here)
+        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true, cornersUp: true })
+          .filter(r => r.lineType !== 'centre' && (hexGroup < 0 || (r.kind !== 'polygon' && r.lineType !== 'B') || r.kind === 'arc-construction')));
+        if (hexGroup < 0) addProj(1.5 * e.nut.D / Math.sqrt(3), AX + e.x);
         const tp = cfg.parts.find(q => q.thread);
         if (tp) { addProj(e.nut.D / 2, AX + tp.thread[1]); addProj(0.4 * e.nut.D, AX + tp.thread[1]); }
         covered = Math.max(covered, 0.75 * e.nut.D);
@@ -180,15 +202,14 @@
     const bodyPts = cfg.body.section.flatMap(it => it.poly || it);
     const xTo = RX + cfg.rvHalf;
     const projection = [
-      L([RX - cfg.rvHalf, ay], [RX + cfg.rvHalf, ay], 'centre'),
-      L([RX, cpTop - 4], [RX, cpBot], 'centre'),
+      ...(hexGroup < 0 ? rvCentre : []),
       ...[...proj].map(([r, x]) => L([x, ay - r], [xTo, ay - r], 'construction')),
       ...[...bodyH].filter(h => seenBody(h) && [...proj.keys()].every(r => Math.abs(BY - h - (ay - r)) > 0.3)).map(h => {
         const at = bodyPts.filter(p => Math.abs(p[1] - h) < 1e-6).map(p => p[0]);
         return at.length ? L([AX + Math.max(...at), BY - h], [xTo, BY - h], 'construction') : null;
       }).filter(Boolean),
     ];
-    const xFrom = Math.min(...projection.slice(2).map(l => l.p1[0]), RX - cfg.rvHalf);
+    const xFrom = Math.min(...projection.filter(l => l.lineType === 'construction').map(l => l.p1[0]), RX - cfg.rvHalf);
     const rvLen = rv.length;
     rv.push(
       L([RX, cpTop - 4], [RX, cpTop + 2], 'A'), L([RX, cpBot - 2], [RX, cpBot], 'A'),
@@ -204,7 +225,9 @@
     const rvParts = rv.slice(0, rvLen).filter(r => !r.body), rvBody = rv.slice(0, rvLen).filter(r => r.body), rvRest = rv.slice(rvLen);
     steps.push({
       id: steps.length + 1,
-      instruction: 'RIGHT VIEW: project across first. Draw its two centre lines, carrying the axis straight across from the section, and thin projection lines at every height you will need: the top of each part and of the body.',
+      instruction: hexGroup < 0
+        ? 'RIGHT VIEW: project across first. Draw its two centre lines, carrying the axis straight across from the section, and thin projection lines at every height you will need: the top of each part and of the body.'
+        : 'RIGHT VIEW: its centre lines and the nut are already drawn. Project across from the section first: thin projection lines at every height you will still need, the top of each part and of the body.',
       calloutAt: [(xFrom + RX) / 2, ay], reveals: projection,
     });
     steps.push({
@@ -283,18 +306,28 @@
         },
         {
           id: 2,
+          instruction: 'END VIEW first: the head and the nut are drawn from it. Draw its two centre lines, and the hexagon with a corner at the top, 30 across the flats, with the chamfer circle touching its flats. Project its top and bottom corners and the corners where the faces meet straight across into the front view.',
+          calloutAt: [XE, AY - RE],
+          reveals: [
+            L([XE - RE - 3, AY], [XE + RE + 3, AY], 'centre'), L([XE, AY - RE - 3], [XE, AY + RE + 3], 'centre'),
+            ...A.nutEnd(XE, AY, D, { cornersUp: true, bolt: false }).filter(r => r.lineType !== 'centre'),
+            ...[[XE, AY - RE], [XE - RE * Math.cos(Math.PI / 6), AY - RE / 2], [XE - RE * Math.cos(Math.PI / 6), AY + RE / 2], [XE, AY + RE]].map(c => L(c, [X0, c[1]], 'construction')),
+          ],
+        },
+        {
+          id: 3,
           instruction: 'The bolt head, seen across its corners: 14 thick and 34.6 across, with the two face edges showing three faces, and the chamfer arcs on the outer end.',
           calloutAt: [X0 + head / 2, AY - AC / 2],
           reveals: A.nutSide(X0, AY, D, head, { bothEnds: false, chamferAt: 'left' }),
         },
         {
-          id: 3,
+          id: 4,
           instruction: 'The shank, Ø20 for 100 mm from under the head, with the 45° chamfer (0.1D) on the end: draw it lightly first, in thin construction lines. The washer and nut go round it next and will hide part of it.',
           calloutAt: [XH + 40, AY - D / 2],
           reveals: shank.map(r => Object.assign({}, r, { lineType: 'construction' })),
         },
         {
-          id: 4,
+          id: 5,
           instruction: 'The washer (40 x 4) and the nut (16 thick, chamfered on the outer face) on the thread, leaving two or three threads showing past the nut.',
           calloutAt: [XW + 10, AY - AC / 2],
           reveals: [
@@ -303,27 +336,18 @@
           ],
         },
         {
-          id: 5,
+          id: 6,
           instruction: 'Line in the shank where it can be seen, either side of the washer and nut, with a line across where the end chamfer starts. The thread is on the last 50: thin root lines 0.1D = 2 in from each side, right to the end, and a thick line across where the thread ends, with the run-out drawn at 60° back to the sides.',
           calloutAt: [XH + 40, AY - D / 2],
           reveals: A.hideBehind([...shank, ...A.threadLines(XH + len - thr, XH + len, AY, D, { limit: 'left' })], covers, AY),
         },
         {
-          id: 6,
-          instruction: 'END VIEW: project across first. Draw its two centre lines, carrying the axis straight across, and thin projection lines from the nut and the bolt at every height you will need.',
-          calloutAt: [XE - 30, AY],
-          reveals: [
-            L([XE - RE - 3, AY], [XE + RE + 3, AY], 'centre'), L([XE, AY - RE - 3], [XE, AY + RE + 3], 'centre'),
-            ...[AC / 2, 0.75 * D, s / 2].map(h => L([XN + nutH, AY - h], [XE + 4, AY - h], 'construction')),   // from the nut's outer face
-            ...[D / 2, 0.4 * D].map(h => L([XH + len, AY - h], [XE + 4, AY - h], 'construction')),               // from the bolt's end
-          ],
-        },
-        {
           id: 7,
-          instruction: 'END VIEW of the nut, looking along the bolt: the hexagon (30 across flats) with the chamfer circle touching its flats, the bolt\'s Ø20 crest circle and the thread root as a three-quarter thin circle.',
+          instruction: 'END VIEW: the bolt inside the nut. Project its crest and thread root across from the end of the bolt, and draw the Ø20 crest circle and the thread root as a three-quarter thin circle.',
           calloutAt: [XE, AY],
           reveals: [
-            ...A.nutEnd(XE, AY, D, { cornersUp: true }).filter(r => r.lineType !== 'centre'),
+            ...[D / 2, 0.4 * D].map(h => L([XH + len, AY - h], [XE, AY - h], 'construction')),
+            ...A.nutEnd(XE, AY, D, { cornersUp: true }).filter(r => r.lineType !== 'centre' && r.kind !== 'polygon' && !(r.kind === 'circle' && r.lineType === 'B')),
             lbl([XE, AY + 30], 'END VIEW / ENTAANSIG', { size: 3.2, color: '#94a3b8' }),
           ],
         },
