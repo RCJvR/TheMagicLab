@@ -38,6 +38,8 @@ MathMagician.registerChapter(7, {
             • Ooreenstemmende sye eweredig is (SSS-eweredigheid)<br><br>
             As △ABC ||| △DEF met verhouding k, dan is ooreenstemmende sye in verhouding k en oppervlaktes in verhouding k².</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":200,"pts":{"P":[2,4],"Q":[0,0],"R":[5,0],"S":[1,2],"T":[3.5,2]},"poly":[["P","Q","R","fl"]],"seg":[["P","Q"],["Q","R"],["R","P"],["S","T","ac"]],"ang":[["P","Q","R","","gn",16],["P","S","T","","gn",14]],"lab":{"S":"w","T":"e"},"cap":"∠P is gemeen en ∠PQR = ∠PST, so △PQR ||| △PST (HH)"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bewys gelykvormigheid</div>
@@ -185,6 +187,8 @@ MathMagician.registerChapter(7, {
               <strong>Trapesium:</strong> Een paar ewewydige sye.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[4,0],"C":[5.2,2.4],"D":[1.2,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"par":[["A","B",1],["D","C",1],["A","D",2],["B","C",2]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"cap":"parallelogram"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[4,0],"C":[4,2.4],"D":[0,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"ra":[["D","A","B"],["A","B","C"],["B","C","D"],["C","D","A"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["A","C","mu dash"],["B","D","mu dash"]],"cap":"reghoek"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[3,0],"C":[4.8,2.4],"D":[1.8,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"tick":[["A","B",1],["B","C",1],["C","D",1],["D","A",1]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["A","C","mu dash"],["B","D","mu dash"]],"cap":"ruit"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":120,"h":110,"pts":{"A":[0,0],"B":[2.4,0],"C":[2.4,2.4],"D":[0,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"tick":[["A","B",1],["B","C",1],["C","D",1],["D","A",1]],"ra":[["D","A","B"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"cap":"vierkant"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Middellynstelling</div>
@@ -195,6 +199,8 @@ MathMagician.registerChapter(7, {
               Omgekeerde: 'n Lyn deur die middelpunt van een sy van 'n driehoek, ewewydig aan die tweede sy, halveer die derde sy.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":190,"pts":{"A":[2,4],"B":[0,0],"C":[6,0],"M":[1,2],"N":[4,2]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["A","C"],["B","C","ln",null,"14 cm"],["M","N","ac",null,"7 cm"]],"tick":[["A","M",1],["M","B",1],["A","N",2],["N","C",2]],"par":[["M","N",1],["B","C",1]],"lab":{"M":"w","N":"e"},"cap":"M en N is middelpunte, so MN ∥ BC en MN = ½BC"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Gebruik van die middellynstelling</div>
@@ -347,6 +353,8 @@ MathMagician.registerChapter(7, {
               • Die simmetrie-as halveer die hoeke waardeur dit gaan.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"pts":{"K":[0,4],"I":[-2,1.5],"T":[0,-2],"E":[2,1.5],"O":[0,1.5]},"nolab":["O"],"poly":[["K","I","T","E","fl"]],"seg":[["K","I"],["I","T"],["T","E"],["E","K"],["K","T","ac"],["I","E","mu dash"]],"tick":[["K","I",1],["K","E",1],["T","I",2],["T","E",2]],"ra":[["I","O","K"]],"cap":"Vlieër KITE: KI = KE, TI = TE; die hoeklyne ontmoet teen 90°"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Trapesium — definisie en eienskappe</div>
@@ -356,6 +364,8 @@ MathMagician.registerChapter(7, {
               'n Trapesium het geen algemene reël wat sy diagonale koppel nie, tensy verdere inligting (soos dat dit gelykbenig is) gegee word.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":140,"pts":{"A":[0,0],"B":[6,0],"C":[4.5,3],"D":[1.5,3]},"poly":[["A","B","C","D","fl2"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"par":[["A","B",1],["D","C",1]],"cap":"Trapesium: een paar parallelle sye"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bewys van 'n vlieër-eienskap</div>
@@ -453,6 +463,8 @@ MathMagician.registerChapter(7, {
               <strong>Vierkant</strong> = reghoek + ruit (al die eienskappe van albei) → diagonale is gelyk, halveer mekaar by 90°, en halveer die hoeke.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":150,"pts":{"A":[0,0],"B":[5,0],"C":[6.5,3],"D":[1.5,3]},"poly":[["A","B","C","D","fl"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["B","D","ac"]],"par":[["A","B",1],["D","C",1],["A","D",2],["B","C",2]],"ang":[["D","B","A","1","gn",18],["B","D","C","1","gn",18],["B","D","A","2","or",14],["D","B","C","2","or",14]],"cap":"Hoeklyn BD vorm twee pare verwisselende hoeke"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bewys dat opponerende hoeke van 'n parallelogram gelyk is</div>

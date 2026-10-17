@@ -48,6 +48,8 @@ MathMagician.registerChapter(12, {
             ∠FEC = ∠DCE = 35° (verwisselende hoeke, EF ∥ CD)<br>
             ∠BEC = ∠BEF + ∠FEC = 55° + 35° = 90° ✓</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":170,"pts":{"B":[2,4],"A":[8,4],"C":[0.55,0],"D":[8,0],"E":[3.4,2],"F":[8,2]},"seg":[["B","A","ac"],["C","D","ac"],["B","E"],["E","C"],["E","F","mu dash"]],"par":[["B","A",1],["C","D",1],["E","F",1]],"ang":[["A","B","E","55°","gn",18],["D","C","E","35°","or",22]],"ra":[["B","E","C"]],"lab":{"E":"w","F":"e"},"cap":"Trek EF ∥ AB ∥ CD deur E"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Hoekverwantskap-Verkenner</div>
@@ -201,6 +203,8 @@ MathMagician.registerChapter(12, {
             ∴ PS = QR en PS ∥ QR (uit kongruente driehoeke)<br>
             ∴ PQRS is 'n parallelogram (albei pare oorstaande sye gelyk en ewewydig)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":150,"pts":{"P":[0,0],"Q":[5,0],"R":[6.5,3],"S":[1.5,3]},"poly":[["P","Q","R","S","fl"]],"seg":[["P","Q"],["Q","R"],["R","S"],["S","P"],["Q","S","ac"]],"par":[["P","Q",1],["S","R",1]],"tick":[["P","Q",1],["S","R",1]],"ang":[["P","Q","S","","gn",18],["R","S","Q","","gn",18]],"cap":"PQ = SR en PQ ∥ SR; hoeklyn QS vorm twee kongruente driehoeke"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Parallelogram-Hoekvinder</div>
@@ -316,7 +320,7 @@ MathMagician.registerChapter(12, {
           </div>
 
           <div class="example-box">
-            <div class="example-box-title">✏️ Voorbeeld: SHS-bewys</div>
+            <div class="example-box-title">✏️ Voorbeeld: SSS-bewys</div>
             <p>Gegee: AB = CD, AD = CB, met diagonaal AC gemeenskaplik aan albei driehoeke ABC en CDA.<br>
             <strong>VOB:</strong> △ABC ≡ △CDA<br><br>
             In △ABC en △CDA:<br>
@@ -325,6 +329,8 @@ MathMagician.registerChapter(12, {
             AC = CA (gemeenskaplike sy)<br>
             ∴ △ABC ≡ △CDA (SSS)</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":150,"pts":{"A":[0,0],"B":[5,0],"C":[6.5,3],"D":[1.5,3]},"poly":[["A","B","C","D","fl"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["A","C","ac"]],"tick":[["A","B",1],["D","C",1],["A","D",2],["B","C",2]],"cap":"AB = CD, AD = CB en AC is gemeen: △ABC ≡ △CDA (SSS)"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Algemene foute om te vermy</div>
@@ -455,6 +461,8 @@ MathMagician.registerChapter(12, {
             ∴ MFNH het een paar oorstaande sye (MF en NH) gelyk EN ewewydig<br>
             ∴ MFNH is 'n parallelogram.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"pts":{"E":[0,0],"F":[6,0],"G":[7.5,3],"H":[1.5,3],"M":[2,0],"N":[5.5,3]},"poly":[["M","F","N","H","fl2"]],"seg":[["E","F"],["F","G"],["G","H"],["H","E"],["M","H","ac"],["F","N","ac"]],"tick":[["E","M",1],["G","N",1]],"lab":{"M":"s","N":"n"},"cap":"EM = GN, so MF = NH; MFNH (ingekleur) is &#39;n parallelogram"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Wenk: werk agteruit vanaf die VOB</div>

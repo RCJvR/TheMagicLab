@@ -27,6 +27,7 @@
     if (text != null) e.textContent = text;
     return e;
   }
+  let uid = 0;
   const fmt = v => String(Math.round(v * 100) / 100).replace('.', document.documentElement.lang === 'af' ? ',' : '.');
 
   function svgRoot(w, h, label) {
@@ -81,6 +82,13 @@
       if (axis === 'x') g.appendChild(el('line', { x1: X(v), y1: Y(y0), x2: X(v), y2: Y(y1), class: 'mf-mu mf-dash' }));
       else g.appendChild(el('line', { x1: X(x0), y1: Y(v), x2: X(x1), y2: Y(v), class: 'mf-mu mf-dash' }));
     });
+    // graphs are clipped to the viewing window
+    const clipId = 'mfclip' + (++uid);
+    if (s.fn) {
+      const cp = el('clipPath', { id: clipId });
+      cp.appendChild(el('rect', { x: X(x0), y: Y(y1), width: X(x1) - X(x0), height: Y(y0) - Y(y1) }));
+      g.appendChild(cp);
+    }
     (s.fn || []).forEach(f => {
       const fx = new Function('x', 'const {sin,cos,tan,sqrt,abs,log,log10,PI,pow,exp}=Math;const sind=a=>sin(a*PI/180),cosd=a=>cos(a*PI/180),tand=a=>tan(a*PI/180);return ' + f.f + ';');
       const [a, b] = f.dom || [x0, x1];
@@ -89,10 +97,10 @@
       for (let i = 0; i <= N; i++) {
         const x = a + (b - a) * i / N, y = fx(x);
         if (!isFinite(y) || y < y0 - (y1 - y0) || y > y1 + (y1 - y0) || (f.breaks || []).some(bk => Math.abs(x - bk) < (b - a) / N)) { pen = false; continue; }
-        d += (pen ? 'L' : 'M') + X(x).toFixed(1) + ',' + Y(Math.max(y0 - 1, Math.min(y1 + 1, y))).toFixed(1);
+        d += (pen ? 'L' : 'M') + X(x).toFixed(1) + ',' + Y(y).toFixed(1);
         pen = true;
       }
-      g.appendChild(el('path', { d, class: cls(f.c, 'mf-ac') + ' mf-curve' }));
+      g.appendChild(el('path', { d, class: cls(f.c, 'mf-ac') + ' mf-curve', 'clip-path': `url(#${clipId})` }));
       if (f.lab) g.appendChild(el('text', { x: X(f.lab[0]), y: Y(f.lab[1]), class: 'mf-tx ' + (f.c ? 'mf-tx-' + f.c.split(' ')[0] : 'mf-tx-ac') }, f.lab[2]));
     });
     (s.poly || []).forEach(p => {

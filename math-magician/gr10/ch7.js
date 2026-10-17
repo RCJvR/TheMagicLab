@@ -38,6 +38,8 @@ MathMagician.registerChapter(7, {
             • Corresponding sides are in proportion (SSS proportionality)<br><br>
             If △ABC ||| △DEF with ratio k, then corresponding sides are in ratio k and areas in ratio k².</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":200,"pts":{"P":[2,4],"Q":[0,0],"R":[5,0],"S":[1,2],"T":[3.5,2]},"poly":[["P","Q","R","fl"]],"seg":[["P","Q"],["Q","R"],["R","P"],["S","T","ac"]],"ang":[["P","Q","R","","gn",16],["P","S","T","","gn",14]],"lab":{"S":"w","T":"e"},"cap":"∠P is common and ∠PQR = ∠PST, so △PQR ||| △PST (AA)"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Prove similarity</div>
@@ -185,6 +187,8 @@ MathMagician.registerChapter(7, {
               <strong>Trapezium:</strong> One pair of parallel sides.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[4,0],"C":[5.2,2.4],"D":[1.2,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"par":[["A","B",1],["D","C",1],["A","D",2],["B","C",2]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"cap":"parallelogram"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[4,0],"C":[4,2.4],"D":[0,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"ra":[["D","A","B"],["A","B","C"],["B","C","D"],["C","D","A"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["A","C","mu dash"],["B","D","mu dash"]],"cap":"rectangle"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":150,"h":110,"pts":{"A":[0,0],"B":[3,0],"C":[4.8,2.4],"D":[1.8,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"tick":[["A","B",1],["B","C",1],["C","D",1],["D","A",1]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["A","C","mu dash"],["B","D","mu dash"]],"cap":"rhombus"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":120,"h":110,"pts":{"A":[0,0],"B":[2.4,0],"C":[2.4,2.4],"D":[0,2.4]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"tick":[["A","B",1],["B","C",1],["C","D",1],["D","A",1]],"ra":[["D","A","B"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"cap":"square"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Midpoint theorem</div>
@@ -195,6 +199,8 @@ MathMagician.registerChapter(7, {
               Converse: A line through the midpoint of one side of a triangle, parallel to the second side, bisects the third side.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":190,"pts":{"A":[2,4],"B":[0,0],"C":[6,0],"M":[1,2],"N":[4,2]},"poly":[["A","B","C","fl"]],"seg":[["A","B"],["A","C"],["B","C","ln",null,"14 cm"],["M","N","ac",null,"7 cm"]],"tick":[["A","M",1],["M","B",1],["A","N",2],["N","C",2]],"par":[["M","N",1],["B","C",1]],"lab":{"M":"w","N":"e"},"cap":"M and N are midpoints, so MN ∥ BC and MN = ½BC"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Using the midpoint theorem</div>
@@ -347,6 +353,8 @@ MathMagician.registerChapter(7, {
               • The axis of symmetry bisects the angles it passes through.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":220,"pts":{"K":[0,4],"I":[-2,1.5],"T":[0,-2],"E":[2,1.5],"O":[0,1.5]},"nolab":["O"],"poly":[["K","I","T","E","fl"]],"seg":[["K","I"],["I","T"],["T","E"],["E","K"],["K","T","ac"],["I","E","mu dash"]],"tick":[["K","I",1],["K","E",1],["T","I",2],["T","E",2]],"ra":[["I","O","K"]],"cap":"Kite KITE: KI = KE, TI = TE; the diagonals meet at 90°"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Trapezium — definition and properties</div>
@@ -356,6 +364,8 @@ MathMagician.registerChapter(7, {
               A trapezium has no general rule linking its diagonals unless further information (like it being isosceles) is given.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":140,"pts":{"A":[0,0],"B":[6,0],"C":[4.5,3],"D":[1.5,3]},"poly":[["A","B","C","D","fl2"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"par":[["A","B",1],["D","C",1]],"cap":"Trapezium: one pair of parallel sides"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Proving a kite property</div>
@@ -453,6 +463,8 @@ MathMagician.registerChapter(7, {
               <strong>Square</strong> = rectangle + rhombus (all properties of both) → diagonals are equal, bisect each other at 90°, and bisect the angles.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":150,"pts":{"A":[0,0],"B":[5,0],"C":[6.5,3],"D":[1.5,3]},"poly":[["A","B","C","D","fl"]],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["B","D","ac"]],"par":[["A","B",1],["D","C",1],["A","D",2],["B","C",2]],"ang":[["D","B","A","1","gn",18],["B","D","C","1","gn",18],["B","D","A","2","or",14],["D","B","C","2","or",14]],"cap":"Diagonal BD makes two pairs of alternate angles"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Proving opposite angles of a parallelogram are equal</div>

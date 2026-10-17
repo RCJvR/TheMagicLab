@@ -22,6 +22,8 @@ MathMagician.registerChapter(5, {
               <span class="math">tan θ = opposite / adjacent</span>
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":190,"pts":{"A":[0,0],"B":[4,0],"C":[4,3]},"poly":[["A","B","C","fl"]],"seg":[["A","B","ln",null,"adjacent"],["B","C","ln",null,"opposite"],["A","C","ac",null,"hypotenuse"]],"ra":[["A","B","C"]],"ang":[["B","A","C","θ","gn",22]],"lab":{"A":"w"},"cap":"For angle θ: opposite faces θ, adjacent touches θ, hypotenuse faces the right angle"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Reciprocal ratios</div>
@@ -43,6 +45,8 @@ MathMagician.registerChapter(5, {
               | 90° | 1 | 0 | undefined |
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":200,"h":150,"pts":{"A":[0,0],"B":[1.7320508075688772,0],"C":[1.7320508075688772,1]},"poly":[["A","B","C","fl"]],"seg":[["A","B","ln",null,"√3"],["B","C","ln",null,"1"],["A","C","ln",null,"2"]],"ra":[["A","B","C"]],"ang":[["B","A","C","30°","gn",22],["A","C","B","60°","or",14]],"nolab":["A","B","C"],"cap":"1 : √3 : 2"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":160,"h":150,"pts":{"A":[0,0],"B":[1,0],"C":[1,1]},"poly":[["A","B","C","fl2"]],"seg":[["A","B","ln",null,"1"],["B","C","ln",null,"1"],["A","C","ln",null,"√2"]],"ra":[["A","B","C"]],"ang":[["B","A","C","45°","gn",18]],"nolab":["A","B","C"],"cap":"1 : 1 : √2"}'></div></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Evaluate without a calculator</div>
@@ -192,6 +196,8 @@ MathMagician.registerChapter(5, {
             Q3 (180°–270°): <strong>Tangent</strong> only<br>
             Q4 (270°–360°): <strong>Cosine</strong> only</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":260,"view":[-5,-5,5,5],"grid":1,"axes":{"ticks":2},"pts":{"P":[-4,3],"X":[4.6,0],"Q":[-4,0],"O":[0,0]},"nolab":["X","Q","O"],"dots":["P"],"lab":{"P":"nw"},"seg":[["O","P","ac",null,"r = 5"],["P","Q","mu dash"]],"ang":[["X","O","P","θ","gn",14]],"txt":[[2.5,4.2,"A","gn"],[-2.2,4.2,"S","gn"],[-2.5,-4.4,"T","gn"],[2.5,-4.4,"C","gn"]],"cap":"P(−4 ; 3): r = 5, so sin θ = 3/5, cos θ = −4/5, tan θ = −3/4. CAST: the ratios that are positive in each quadrant"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Reference angles</div>
@@ -338,6 +344,8 @@ MathMagician.registerChapter(5, {
               These two angles are <strong>equal</strong> when measured between the same two points (alternate angles, horizontal lines are parallel).
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":170,"pts":{"C":[0,3],"F":[0,0],"B":[6,0],"H":[6,3]},"seg":[["F","C"],["F","B"],["C","B","ac"],["C","H","mu dash"]],"ang":[["H","C","B","θ","hl",26],["F","B","C","θ","gn",26]],"lab":{"C":"nw","F":"sw","B":"se","H":"ne"},"cap":"From C the angle of depression to B equals the angle of elevation from B to C (alternate angles)"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 General method</div>
@@ -357,6 +365,8 @@ MathMagician.registerChapter(5, {
               <span class="math">height = 20 × tan 35° ≈ 20 × 0.7002 ≈ 14.0 m</span>
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":190,"pts":{"O":[0,0],"B":[20,0],"T":[20,14]},"poly":[["O","B","T","fl"]],"seg":[["O","B","ln",null,"20 m"],["B","T","ln",null,"h"],["O","T","ac"]],"ra":[["O","B","T"]],"ang":[["B","O","T","35°","gn",26]],"nolab":["O","B","T"],"cap":"h = 20 tan 35°"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Two triangles combined</div>
@@ -367,6 +377,8 @@ MathMagician.registerChapter(5, {
               <span class="math">distance = length × cos 60° ≈ 9.24 × 0.5 ≈ 4.62 m</span>
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":220,"pts":{"F":[0,0],"W":[4.62,0],"T":[4.62,8]},"poly":[["F","W","T","fl"]],"seg":[["F","W","ln",null,"d"],["W","T","ln",null,"8 m"],["F","T","ac"]],"ra":[["F","W","T"]],"ang":[["W","F","T","60°","gn",22]],"nolab":["F","W","T"],"cap":"8 / sin 60° gives the ladder; × cos 60° gives d"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Rounding</div>

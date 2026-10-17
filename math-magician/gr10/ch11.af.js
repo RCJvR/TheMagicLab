@@ -29,6 +29,8 @@ MathMagician.registerChapter(11, {
             <span class="math">tan 32° = hoogte/40</span><br>
             <span class="math">hoogte = 40 × tan 32° ≈ 40 × 0.6249 ≈ 25.0 m</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":180,"pts":{"O":[0,0],"B":[40,0],"T":[40,25]},"poly":[["O","B","T","fl"]],"nolab":["O","B","T"],"seg":[["O","B","ln",null,"40 m"],["B","T","ln",null,"h"],["O","T","ac"]],"ra":[["O","B","T"]],"ang":[["B","O","T","32°","gn",28]],"cap":"h = 40 tan 32°"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Strategie vir 2D-probleme</div>
@@ -164,7 +166,9 @@ MathMagician.registerChapter(11, {
         body: `
           <p>Sommige probleme vereis dat jy deur <strong>twee driehoeke</strong> in volgorde werk, en die antwoord van die eerste gebruik om die tweede op te los.</p>
 
-          <div class="example-box">
+          
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":200,"pts":{"B":[0,0],"A":[20,0],"C":[39.24,0],"T":[39.24,27.47]},"seg":[["B","A","ln",null,"20 m"],["A","C","ln",null,"d"],["C","T","ln",null,"h"],["B","T","ac"],["A","T","ac"]],"ra":[["A","C","T"]],"ang":[["C","B","T","35°","gn",30],["C","A","T","55°","or",22]],"lab":{"B":"sw","A":"s","C":"se","T":"ne"},"cap":"Twee reghoekige driehoeke deel die hoogte h = CT"}'></div>
+<div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Twee-driehoek-probleem</div>
             <p>Vanaf punt A is die hoek van hoogte na die bopunt (T) van 'n gebou 55°. Vanaf punt B, wat 20 m verder van die gebou se basis (C) is, is die hoek 35°.<br><br>
             Laat BC = 20, AC = d (onbekend), CT = h.<br>
@@ -285,6 +289,8 @@ MathMagician.registerChapter(11, {
               • Om die terugkeer- (rug-) rigting te vind, tel 180° by as die oorspronklike rigting minder as 180° is, of trek 180° af as dit 180° of meer is.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":200,"view":[-4.5,-4.5,4.5,4.5],"pts":{"P":[0,0],"N":[0,4],"D":[3.19,2.41],"E":[4,0],"S":[0,-4],"W":[-4,0]},"seg":[["P","N","ln",">"],["P","E","mu"],["P","S","mu"],["P","W","mu"],["P","D","ac",">"]],"ang":[["N","P","D","053°","gn",26]],"lab":{"N":"n","E":"e","S":"s","W":"w","P":"sw"},"nolab":["D"],"cap":"&#39;n Peiling word kloksgewys van Noord af gemeet, met drie syfers"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Strategie vir rigtingsprobleme</div>
@@ -303,6 +309,8 @@ MathMagician.registerChapter(11, {
             <span class="math">tan(∠QPM) = 30/40 = 0.75 → ∠QPM ≈ 36.87°</span><br>
             Rigting van M vanaf P = 090° − 36.87° ≈ 053.1°</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":220,"pts":{"P":[0,0],"Q":[40,0],"M":[40,30],"N":[0,22]},"seg":[["P","Q","ln",null,"40 km"],["Q","M","ln",null,"30 km"],["P","M","ac"],["P","N","ln",">"]],"ra":[["P","Q","M"]],"ang":[["N","P","M","053,1°","gn",30]],"lab":{"N":"n","P":"sw","Q":"se","M":"ne"}}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Reghoekige-rigting-oplosser</div>
@@ -420,6 +428,8 @@ MathMagician.registerChapter(11, {
             Ekstra hoogte bo torinvlak: <span class="math">tan20° = h/d → h = 64.26 × tan20° ≈ 23.39 m</span><br>
             Totale geboue hoogte ≈ 45 + 23.39 ≈ 68.39 m</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":240,"pts":{"F":[0,0],"A":[0,45],"B":[64.26,0],"T":[64.26,68.39],"H":[64.26,45]},"seg":[["F","A","ln",null,"45 m"],["F","B","ln",null,"d"],["B","T"],["A","T","ac"],["A","B","ac"],["A","H","mu dash"]],"ang":[["H","A","T","20°","gn",28],["H","A","B","35°","hl",22]],"lab":{"F":"sw","A":"nw","B":"se","T":"ne","H":"e"},"cap":"Die horisontale lyn AH verdeel die hoeke: 20° op, 35° af"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Die klassieke "twee vlagpale"-probleem</div>

@@ -33,6 +33,8 @@ MathMagician.registerChapter(13, {
               <strong>Vierkantige piramide:</strong> SA = basis² + 4 × (½ × basis × skuinshoogte)
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"solid","kind":"cuboid","w":160,"h":140,"bw":70,"hh":50,"ox":26,"oy":20,"cap":"prisma"}'></div><div class="mf-fig" data-fig='{"t":"solid","kind":"triprism","w":160,"h":140,"bw":70,"hh":50,"ox":26,"oy":20,"cap":"driehoekige prisma"}'></div><div class="mf-fig" data-fig='{"t":"solid","kind":"cylinder","w":150,"h":150,"cap":"silinder"}'></div><div class="mf-fig" data-fig='{"t":"solid","kind":"cone","w":150,"h":150,"cap":"keël"}'></div><div class="mf-fig" data-fig='{"t":"solid","kind":"sphere","w":150,"h":150,"cap":"sfeer"}'></div></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Silinder-SA</div>
@@ -349,6 +351,8 @@ MathMagician.registerChapter(13, {
             = 2πrh + 2πr² + πrl<br>
             = 2π(2)(10) + 2π(2)² + π(2)(√8) ≈ 125.66 + 25.13 + 17.77 ≈ 168.56 cm²</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":120,"view":[-2.6,-2.8,12.6,2.8],"pts":{"a":[0,2],"b":[10,2],"c":[10,-2],"d":[0,-2],"e":[12,0],"o":[0,0],"r":[0,2]},"nolab":["a","b","c","d","e","o","r"],"seg":[["a","b"],["d","c","ln",null,"10"],["b","e"],["e","c"],["a","d","mu dash"],["b","c","mu dash"],["o","r","or",null,"r = 2"],[[10,0],"e","mu",null,"2"]],"arc":[["o",2,90,270,"ln"]],"cap":"Syaansig: halfsfeer + silinder + keël"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Algemene strik</div>
@@ -491,6 +495,8 @@ MathMagician.registerChapter(13, {
               Skuinshoogte (van 'n driehoekige vlak) word met Pythagoras gevind: <span class="math">l_vlak² = h² + (basis/2)²</span> as h die loodregte hoogte vanaf die middelpunt van die basis is.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"pyramid","bw":110,"hh":90,"labels":{"l":"6 cm","h":"4 cm"},"w":240,"h":200,"cap":"Hoogte 4 cm, helfte van die basis 3 cm: skuinshoogte 5 cm"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Driehoek-gebaseerde piramide (gelyksydige driehoekbasis)</div>
@@ -508,6 +514,8 @@ MathMagician.registerChapter(13, {
               <strong>Totale oppervlak:</strong> SA = πr² + πrl
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"solid","kind":"cone","labels":{"r":"r","h":"h","s":"l"},"w":200,"h":190,"cap":"s² = r² + h²"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Vierkantige piramide</div>

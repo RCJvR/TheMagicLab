@@ -825,6 +825,8 @@ MathMagician.registerChapter(6, {
               <span class="math">y = x² − 3</span>: dieselfde vorm as y = x², maar <strong>3 eenhede afwaarts</strong> geskuif, draaipunt (0, −3).
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"x*x+2","c":"ac"}],"cap":"y = x² + 2: q = 2 skuif op"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"x*x-3","c":"ac"}],"cap":"y = x² − 3: skuif af"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"2*x*x","c":"ac"}],"cap":"y = 2x²: nouer"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"-x*x","c":"ac"}],"cap":"y = −x²: gereflekteer"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Opsommingstabel</div>

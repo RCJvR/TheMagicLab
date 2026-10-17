@@ -27,6 +27,8 @@ MathMagician.registerChapter(8, {
               <strong>8. Raaklyn-radius:</strong> Die raaklyn aan 'n sirkel is loodreg op die radius by die raakpunt.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"M":[0,-1.5]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["O","M","ac"]],"ra":[["O","M","B"]],"tick":[["A","M",1],["M","B",1]],"lab":{"M":"s"},"cap":"1 & 2. OM ⊥ AB ⇔ AM = MB"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"C":[0.0,3.0]},"circ":[["O",3]],"dots":["O"],"seg":[["O","A","ac"],["O","B","ac"],["C","A"],["C","B"]],"ang":[["A","O","B","2x","hl",14],["A","C","B","x","gn",16]],"cap":"3. middelpunts∠ = 2 × omtreks∠"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.8191,-1.0261],"B":[2.8191,-1.0261],"C":[1.5,2.5981],"D":[-1.7207,2.4575]},"circ":[["O",3]],"dots":["O"],"seg":[["C","A"],["C","B"],["D","A"],["D","B"],["A","B","mu"]],"ang":[["A","C","B","x","gn",16],["A","D","B","x","gn",16]],"nolab":["O"],"cap":"4. ∠e in dieselfde segment is gelyk"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-3.0,0.0],"B":[3.0,0.0],"C":[1.5,2.5981]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B","ac"],["A","C"],["C","B"]],"ra":[["A","C","B"]],"cap":"5. ∠ in &#39;n halfsirkel = 90°"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.8191,-1.0261],"B":[2.2981,-1.9284],"C":[2.2981,1.9284],"D":[-1.9284,2.2981]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"ang":[["B","A","D","x","gn",15],["D","C","B","180°−x","hl",15]],"nolab":["O"],"cap":"6. teenoorst ∠e van koordevierhoek = 180°"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,4.6],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"C":[1.9284,2.2981],"D":[-2.2981,1.9284],"E":[1.627,4.007]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["C","E","dash"]],"ang":[["B","A","D","x","gn",15],["E","C","D","x","gn",15]],"nolab":["O"],"cap":"7. buite∠ van koordevierhoek = teenoorst binne∠"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"T":[-0.0,-3.0],"P":[-3.7,-3],"Q":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["P","Q","ac"],["O","T"]],"ra":[["O","T","Q"]],"nolab":["P","Q"],"lab":{"T":"s"},"cap":"8. raaklyn ⊥ radius"}'></div></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Middelpuntshoekstelling</div>
@@ -196,6 +198,8 @@ MathMagician.registerChapter(8, {
               <span class="math">∠ tussen raaklyn en koord = ∠ in tussensegment</span>
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":200,"view":[-3.9,-5.9,3.9,3.9],"pts":{"O":[0,0],"P":[0,-5.2],"A":[-2.4,-1.8],"B":[2.4,-1.8]},"circ":[["O",3]],"dots":["O"],"seg":[["P","A","ac"],["P","B","ac"],["O","A","mu dash"],["O","B","mu dash"]],"tick":[["P","A",1],["P","B",1]],"ra":[["O","A","P"],["O","B","P"]],"lab":{"P":"s","A":"w","B":"e"},"cap":"Raaklyne vanaf P is gelyk: PA = PB"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":170,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-0.0,-3.0],"B":[2.2981,1.9284],"C":[-2.8191,1.0261],"S":[-3.7,-3],"T":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["S","T","ac"],["A","B"],["A","C"],["C","B"]],"ang":[["T","A","B","x","gn",16],["A","C","B","x","gn",16]],"nolab":["O"],"lab":{"A":"s","T":"s"},"cap":"Raaklyn-koord: die hoek tussen raaklyn en koord = die hoek in die teenoorstaande segment"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":170,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,1.5],"B":[2.9544,-0.5209],"C":[0.5209,2.9544],"D":[-1.7207,-2.4575],"P":[-0.411,0.704]},"circ":[["O",3]],"dots":["O","P"],"seg":[["A","B","ac"],["C","D","gn"]],"nolab":["O"],"lab":{"P":"se"},"cap":"PA × PB = PC × PD"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Koordstellings</div>
@@ -348,6 +352,8 @@ MathMagician.registerChapter(8, {
               waar r = radius, d = afstand vanaf middelpunt na koord, c = koordlengte.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":220,"view":[-5.9,-5.9,5.9,5.9],"pts":{"O":[0,0],"A":[-4,-3],"B":[4,-3],"M":[0,-3]},"circ":[["O",5]],"dots":["O"],"seg":[["A","B"],["O","A","ac",null,"r"],["O","M","gn",null,"d"],["A","M","or",null,"½c"]],"ra":[["O","M","B"]],"lab":{"M":"s"},"cap":"r² = d² + (½k)²"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Bereken die radius</div>
@@ -355,10 +361,12 @@ MathMagician.registerChapter(8, {
             r² = 7² + 24² = 49 + 576 = 625 → r = 25 mm</p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Twee koorde, dieselfde sirkel</div>
-            <p>AB en CD is koorde van 'n sirkel, middelpunt O, met OM ⊥ AB en ON ⊥ CD. AB = 50 mm, OM = 40 mm... wag — herbereken met 'n konsekwente radius: r² = OM² + (AB/2)².<br>
-            As AB = 48 mm en OM = 7 mm: r = 25 mm (soos hierbo). Aangesien ON ⊥ CD ook 'n radius-gebaseerde reghoekige driehoek is, kan CD = 2√(r² − ON²) bereken word sodra r bekend is.</p>
+            <div class="example-step"><span class="step-num">1</span><span>AB en CD is koorde van 'n sirkel met middelpunt O. OM ⊥ AB en ON ⊥ CD. AB = 48 mm, OM = 7 mm en ON = 20 mm. Bepaal CD.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>AM = 24 mm (lyn uit middelpunt ⊥ koord), so <span class="math">r² = 7² + 24² = 625</span> en r = 25 mm.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>In △ONC: <span class="math">CN² = r² − ON² = 625 − 400 = 225</span>, so CN = 15 mm.</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>CD = 2 × CN = <strong>30 mm</strong> (lyn uit middelpunt ⊥ koord halveer dit).</span></div>
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Enige twee van {radius, half-koord, afstand vanaf middelpunt} bepaal die derde via Pythagoras — identifiseer watter twee jy gegee is, en los dan die onbekende op.</span></div>
@@ -478,11 +486,14 @@ MathMagician.registerChapter(8, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld: Stellings aanmekaarketting</div>
-            <p>O is die middelpunt van sirkel ABC. Ô₁ = 2x (middelpuntshoek op boog AB). MPT is 'n raaklyn by P.<br>
-            ∠ by omtrek op boog AB = x (middelpuntshoek = 2 × omtrekshoek).<br>
-            As ABPT 'n koordevierhoek is en ∠BAT die raaklyn-koordhoek by P is, gelyk aan die ingeskrewe hoek in die tussensegment, gee verdere hoekjagtery elke ander gemerkte hoek in terme van x.</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":220,"h":210,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-0.0,-3.0],"B":[2.2981,1.9284],"C":[-2.8191,1.0261],"S":[-3.7,-3],"T":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["S","T","ac"],["A","B"],["A","C"],["C","B"],["O","A","mu"],["O","B","mu"]],"ang":[["T","A","B","65°","gn",18],["A","C","B","","or",16],["A","O","B","","hl",12]],"lab":{"A":"s","T":"s","O":"w"},"nolab":["S"]}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>O is die middelpunt. TA is 'n raaklyn by A en ∠TAB = 65°. C lê op die groot boog. Bepaal ∠ACB, ∠AOB en ∠OAB.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>∠ACB = ∠TAB = <strong>65°</strong> (raaklyn-koordstelling)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>∠AOB = 2 × ∠ACB = <strong>130°</strong> (middelpunts∠ = 2 × omtreks∠)</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>OA = OB (radiusse), so ∠OAB = ∠OBA = (180° − 130°) ÷ 2 = <strong>25°</strong> (∠e oorkant gelyke sye)</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>Toets: ∠OAT = ∠OAB + ∠BAT = 25° + 65° = 90° (raaklyn ⊥ radius) ✓</span></div>
           </div>
 
           <div class="def-box">

@@ -27,6 +27,8 @@ MathMagician.registerChapter(8, {
               <strong>8. Tangent-radius:</strong> The tangent to a circle is perpendicular to the radius at the point of contact.
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"M":[0,-1.5]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["O","M","ac"]],"ra":[["O","M","B"]],"tick":[["A","M",1],["M","B",1]],"lab":{"M":"s"},"cap":"1 & 2. OM ⊥ AB ⇔ AM = MB"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"C":[0.0,3.0]},"circ":[["O",3]],"dots":["O"],"seg":[["O","A","ac"],["O","B","ac"],["C","A"],["C","B"]],"ang":[["A","O","B","2x","hl",14],["A","C","B","x","gn",16]],"cap":"3. ∠ at centre = 2 × ∠ at circumference"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.8191,-1.0261],"B":[2.8191,-1.0261],"C":[1.5,2.5981],"D":[-1.7207,2.4575]},"circ":[["O",3]],"dots":["O"],"seg":[["C","A"],["C","B"],["D","A"],["D","B"],["A","B","mu"]],"ang":[["A","C","B","x","gn",16],["A","D","B","x","gn",16]],"nolab":["O"],"cap":"4. ∠s in the same segment are equal"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-3.0,0.0],"B":[3.0,0.0],"C":[1.5,2.5981]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B","ac"],["A","C"],["C","B"]],"ra":[["A","C","B"]],"cap":"5. ∠ in a semicircle = 90°"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.8191,-1.0261],"B":[2.2981,-1.9284],"C":[2.2981,1.9284],"D":[-1.9284,2.2981]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["B","C"],["C","D"],["D","A"]],"ang":[["B","A","D","x","gn",15],["D","C","B","180°−x","hl",15]],"nolab":["O"],"cap":"6. opp ∠s of a cyclic quad = 180°"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,4.6],"pts":{"O":[0,0],"A":[-2.5981,-1.5],"B":[2.5981,-1.5],"C":[1.9284,2.2981],"D":[-2.2981,1.9284],"E":[1.627,4.007]},"circ":[["O",3]],"dots":["O"],"seg":[["A","B"],["B","C"],["C","D"],["D","A"],["C","E","dash"]],"ang":[["B","A","D","x","gn",15],["E","C","D","x","gn",15]],"nolab":["O"],"cap":"7. ext ∠ of cyclic quad = int opp ∠"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":165,"h":165,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"T":[-0.0,-3.0],"P":[-3.7,-3],"Q":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["P","Q","ac"],["O","T"]],"ra":[["O","T","Q"]],"nolab":["P","Q"],"lab":{"T":"s"},"cap":"8. tangent ⊥ radius"}'></div></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Central angle theorem</div>
@@ -196,6 +198,8 @@ MathMagician.registerChapter(8, {
               <span class="math">∠ between tangent and chord = ∠ in alternate segment</span>
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":200,"view":[-3.9,-5.9,3.9,3.9],"pts":{"O":[0,0],"P":[0,-5.2],"A":[-2.4,-1.8],"B":[2.4,-1.8]},"circ":[["O",3]],"dots":["O"],"seg":[["P","A","ac"],["P","B","ac"],["O","A","mu dash"],["O","B","mu dash"]],"tick":[["P","A",1],["P","B",1]],"ra":[["O","A","P"],["O","B","P"]],"lab":{"P":"s","A":"w","B":"e"},"cap":"Tangents from P are equal: PA = PB"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":170,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-0.0,-3.0],"B":[2.2981,1.9284],"C":[-2.8191,1.0261],"S":[-3.7,-3],"T":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["S","T","ac"],["A","B"],["A","C"],["C","B"]],"ang":[["T","A","B","x","gn",16],["A","C","B","x","gn",16]],"nolab":["O"],"lab":{"A":"s","T":"s"},"cap":"Tan-chord: the angle between tangent and chord = the angle in the alternate segment"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":170,"h":170,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-2.5981,1.5],"B":[2.9544,-0.5209],"C":[0.5209,2.9544],"D":[-1.7207,-2.4575],"P":[-0.411,0.704]},"circ":[["O",3]],"dots":["O","P"],"seg":[["A","B","ac"],["C","D","gn"]],"nolab":["O"],"lab":{"P":"se"},"cap":"PA × PB = PC × PD"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Chord theorems</div>
@@ -348,6 +352,8 @@ MathMagician.registerChapter(8, {
               where r = radius, d = distance from centre to chord, c = chord length.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":220,"h":220,"view":[-5.9,-5.9,5.9,5.9],"pts":{"O":[0,0],"A":[-4,-3],"B":[4,-3],"M":[0,-3]},"circ":[["O",5]],"dots":["O"],"seg":[["A","B"],["O","A","ac",null,"r"],["O","M","gn",null,"d"],["A","M","or",null,"½c"]],"ra":[["O","M","B"]],"lab":{"M":"s"},"cap":"r² = d² + (½c)²"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example: Find the radius</div>
@@ -355,10 +361,12 @@ MathMagician.registerChapter(8, {
             r² = 7² + 24² = 49 + 576 = 625 → r = 25 mm</p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Example: Two chords, same circle</div>
-            <p>AB and CD are chords of a circle, centre O, with OM ⊥ AB and ON ⊥ CD. AB = 50 mm, OM = 40 mm... wait — recompute with consistent radius: r² = OM² + (AB/2)².<br>
-            If AB = 48 mm and OM = 7 mm: r = 25 mm (as above). Since ON ⊥ CD is also a radius-based right triangle, once r is known, CD = 2√(r² − ON²).</p>
+            <div class="example-step"><span class="step-num">1</span><span>AB and CD are chords of a circle with centre O. OM ⊥ AB and ON ⊥ CD. AB = 48 mm, OM = 7 mm and ON = 20 mm. Find CD.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>AM = 24 mm (line from centre ⊥ chord), so <span class="math">r² = 7² + 24² = 625</span> and r = 25 mm.</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>In △ONC: <span class="math">CN² = r² − ON² = 625 − 400 = 225</span>, so CN = 15 mm.</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>CD = 2 × CN = <strong>30 mm</strong> (line from centre ⊥ chord bisects it).</span></div>
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Any two of {radius, half-chord, distance from centre} determine the third via Pythagoras — identify which two you're given, then solve for the unknown.</span></div>
@@ -478,11 +486,14 @@ MathMagician.registerChapter(8, {
             </p>
           </div>
 
-          <div class="example-box">
+                    <div class="example-box">
             <div class="example-box-title">✏️ Example: Chaining theorems</div>
-            <p>O is the centre of circle ABC. Ô₁ = 2x (central angle on arc AB). MPT is a tangent at P.<br>
-            ∠ at circumference on arc AB = x (central angle = 2 × circumference angle).<br>
-            If ABPT is cyclic and ∠BAT is the tangent-chord angle at P equal to the inscribed angle in the alternate segment, further angle chasing gives every other marked angle in terms of x.</p>
+            <div class="mf-fig" data-fig='{"t":"geo","w":220,"h":210,"view":[-3.9,-3.9,3.9,3.9],"pts":{"O":[0,0],"A":[-0.0,-3.0],"B":[2.2981,1.9284],"C":[-2.8191,1.0261],"S":[-3.7,-3],"T":[3.7,-3]},"circ":[["O",3]],"dots":["O"],"seg":[["S","T","ac"],["A","B"],["A","C"],["C","B"],["O","A","mu"],["O","B","mu"]],"ang":[["T","A","B","65°","gn",18],["A","C","B","","or",16],["A","O","B","","hl",12]],"lab":{"A":"s","T":"s","O":"w"},"nolab":["S"]}'></div>
+            <div class="example-step"><span class="step-num">1</span><span>O is the centre. TA is a tangent at A and ∠TAB = 65°. C lies on the major arc. Find ∠ACB, ∠AOB and ∠OAB.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>∠ACB = ∠TAB = <strong>65°</strong> (tan-chord theorem)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>∠AOB = 2 × ∠ACB = <strong>130°</strong> (∠ at centre = 2 × ∠ at circumference)</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>OA = OB (radii), so ∠OAB = ∠OBA = (180° − 130°) ÷ 2 = <strong>25°</strong> (∠s opp equal sides)</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>Check: ∠OAT = ∠OAB + ∠BAT = 25° + 65° = 90° (tan ⊥ radius) ✓</span></div>
           </div>
 
           <div class="def-box">

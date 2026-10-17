@@ -29,6 +29,8 @@ MathMagician.registerChapter(11, {
             <span class="math">tan 32° = height/40</span><br>
             <span class="math">height = 40 × tan 32° ≈ 40 × 0.6249 ≈ 25.0 m</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":180,"pts":{"O":[0,0],"B":[40,0],"T":[40,25]},"poly":[["O","B","T","fl"]],"nolab":["O","B","T"],"seg":[["O","B","ln",null,"40 m"],["B","T","ln",null,"h"],["O","T","ac"]],"ra":[["O","B","T"]],"ang":[["B","O","T","32°","gn",28]],"cap":"h = 40 tan 32°"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Strategy for 2D problems</div>
@@ -164,7 +166,9 @@ MathMagician.registerChapter(11, {
         body: `
           <p>Some problems require you to work through <strong>two triangles</strong> in sequence, using the answer from the first to solve the second.</p>
 
-          <div class="example-box">
+          
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":200,"pts":{"B":[0,0],"A":[20,0],"C":[39.24,0],"T":[39.24,27.47]},"seg":[["B","A","ln",null,"20 m"],["A","C","ln",null,"d"],["C","T","ln",null,"h"],["B","T","ac"],["A","T","ac"]],"ra":[["A","C","T"]],"ang":[["C","B","T","35°","gn",30],["C","A","T","55°","or",22]],"lab":{"B":"sw","A":"s","C":"se","T":"ne"},"cap":"Two right-angled triangles share the height h = CT"}'></div>
+<div class="example-box">
             <div class="example-box-title">✏️ Example: Two-triangle problem</div>
             <p>From point A, the angle of elevation to the top (T) of a building is 55°. From point B, which is 20 m further away from the building's base (C), the angle is 35°.<br><br>
             Let BC = 20, AC = d (unknown), CT = h.<br>
@@ -285,6 +289,8 @@ MathMagician.registerChapter(11, {
               • To find the return (back) bearing, add 180° if the original bearing is under 180°, or subtract 180° if it is 180° or more.
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":200,"h":200,"view":[-4.5,-4.5,4.5,4.5],"pts":{"P":[0,0],"N":[0,4],"D":[3.19,2.41],"E":[4,0],"S":[0,-4],"W":[-4,0]},"seg":[["P","N","ln",">"],["P","E","mu"],["P","S","mu"],["P","W","mu"],["P","D","ac",">"]],"ang":[["N","P","D","053°","gn",26]],"lab":{"N":"n","E":"e","S":"s","W":"w","P":"sw"},"nolab":["D"],"cap":"A bearing is measured clockwise from North, with three digits"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">📖 Strategy for bearing problems</div>
@@ -303,6 +309,8 @@ MathMagician.registerChapter(11, {
             <span class="math">tan(∠QPM) = 30/40 = 0.75 → ∠QPM ≈ 36.87°</span><br>
             Bearing of M from P = 090° − 36.87° ≈ 053.1°</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":280,"h":220,"pts":{"P":[0,0],"Q":[40,0],"M":[40,30],"N":[0,22]},"seg":[["P","Q","ln",null,"40 km"],["Q","M","ln",null,"30 km"],["P","M","ac"],["P","N","ln",">"]],"ra":[["P","Q","M"]],"ang":[["N","P","M","053,1°","gn",30]],"lab":{"N":"n","P":"sw","Q":"se","M":"ne"}}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Right-Angle Bearing Solver</div>
@@ -420,6 +428,8 @@ MathMagician.registerChapter(11, {
             Extra height above tower level: <span class="math">tan20° = h/d → h = 64.26 × tan20° ≈ 23.39 m</span><br>
             Total building height ≈ 45 + 23.39 ≈ 68.39 m</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":300,"h":240,"pts":{"F":[0,0],"A":[0,45],"B":[64.26,0],"T":[64.26,68.39],"H":[64.26,45]},"seg":[["F","A","ln",null,"45 m"],["F","B","ln",null,"d"],["B","T"],["A","T","ac"],["A","B","ac"],["A","H","mu dash"]],"ang":[["H","A","T","20°","gn",28],["H","A","B","35°","hl",22]],"lab":{"F":"sw","A":"nw","B":"se","T":"ne","H":"e"},"cap":"The horizontal line AH splits the angles: 20° up, 35° down"}'></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 The classic "two flagpoles" problem</div>

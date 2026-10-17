@@ -825,6 +825,8 @@ MathMagician.registerChapter(6, {
               <span class="math">y = x² − 3</span>: same shape as y = x², but shifted <strong>down 3 units</strong>, turning point (0, −3).
             </p>
           </div>
+<div class="mf-row"><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"x*x+2","c":"ac"}],"cap":"y = x² + 2: q = 2 shifts up"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"x*x-3","c":"ac"}],"cap":"y = x² − 3: shifts down"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"2*x*x","c":"ac"}],"cap":"y = 2x²: narrower"}'></div><div class="mf-fig" data-fig='{"t":"geo","w":140,"h":140,"view":[-3,-4,3,6],"grid":1,"axes":{"o":false},"fn":[{"f":"x*x","c":"mu dash"},{"f":"-x*x","c":"ac"}],"cap":"y = −x²: reflected"}'></div></div>
+
 
           <div class="def-box">
             <div class="def-box-title">💡 Summary table</div>

@@ -48,6 +48,8 @@ MathMagician.registerChapter(14, {
             n(slegs S) = 13; n(slegs T) = 7; n(albei) = 5; n(geeneen) = 5<br>
             P(S ∪ T) = (13+7+5)/30 = 25/30 = 5/6</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"venn","sets":["S","T"],"vals":{"A":13,"AB":5,"B":7,"out":5},"S":"n = 30","cap":"n(net S) = 13, n(albei) = 5, n(net T) = 7, nie een nie = 5"}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Venn-diagramberekenaar</div>

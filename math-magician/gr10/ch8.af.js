@@ -26,6 +26,8 @@ MathMagician.registerChapter(8, {
             <p>Middelpunt M van lynstuk AB:<br>
             <span class="math">M = ((x₁+x₂)/2 ; (y₁+y₂)/2)</span></p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":230,"view":[-1,-2,7,5],"grid":1,"axes":{"ticks":1},"pts":{"A":[1,3],"B":[5,-1],"M":[3,1],"K":[5,3]},"nolab":["K"],"dots":["A","B","M"],"seg":[["A","B","ac"],["A","K","or dash",null,"Δx = 4"],["K","B","or dash",null,"Δy = −4"]],"lab":{"A":"nw","B":"se","M":"sw"},"cap":"AB = √(4² + 4²) = √32; M(3 ; 1) is halfpad in x en in y"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld</div>
@@ -262,6 +264,8 @@ MathMagician.registerChapter(8, {
               d.w.s. <span class="math">m₂ = −1/m₁</span> (negatiewe omgekeerde)
             </p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":260,"view":[-4,-4,4,5],"grid":1,"axes":{"ticks":1},"fn":[{"f":"2*x+1","c":"ac","lab":[0.9,4.2,"y = 2x + 1"]},{"f":"2*x-3","c":"ac","lab":[2.6,1.2,"y = 2x − 3"]},{"f":"-x/2+2","c":"hl","lab":[-3.9,4.2,"y = −x/2 + 2"]}],"cap":"Parallel: gelyke gradiënte (2 en 2). Loodreg: 2 × (−½) = −1"}'></div>
+
 
           <div class="example-box">
             <div class="example-box-title">✏️ Voorbeeld</div>
@@ -709,6 +713,8 @@ MathMagician.registerChapter(8, {
             Een paar sye gelyk en ewewydig ⟹ ABCD is 'n parallelogram.<br>
             Kontroleer <span class="math">m_AD = (4−0)/(2−0) = 2</span>; aangesien <span class="math">m_AB × m_AD = ½ × 2 = 1 ≠ −1</span>, is aangrensende sye nie loodreg nie, so dit is nie 'n reghoek nie.</p>
           </div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":240,"view":[-1,-1,7,7],"grid":1,"axes":{"ticks":1},"pts":{"A":[0,0],"B":[4,2],"C":[6,6],"D":[2,4]},"poly":[["A","B","C","D","fl"]],"seg":[["A","B","ac"],["B","C","ac"],["C","D","ac"],["D","A","ac"]],"dots":true,"lab":{"A":"sw","B":"se","C":"ne","D":"nw"}}'></div>
+
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🔢 Vierhoek-klassifiseerder</div>
