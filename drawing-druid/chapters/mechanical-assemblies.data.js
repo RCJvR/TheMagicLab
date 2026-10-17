@@ -121,7 +121,10 @@
     const inPoly = (pt, pl) => { let c = false; for (let i = 0, j = pl.length - 1; i < pl.length; j = i++) { const [xi, yi] = pl[i], [xj, yj] = pl[j]; if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c; } return c; };
     const region = (cfg.body.endRegion || cfg.body.end[0]).map(([z, y]) => [RX + z, BY - y]);
     const rv = [];
-    const projR = new Set();                                  // radii of the circles drawn: projected across first
+    // what the right view needs projected across first: radius → x of the edge in the section it
+    // is projected from (the face nearest the right view)
+    const proj = new Map();
+    const addProj = (r, x) => { const k = +r.toFixed(3); proj.set(k, Math.max(proj.has(k) ? proj.get(k) : -Infinity, x)); };
     let covered = 0, bodyIn = false, drawingBody = false;
     const hidden = pt => Math.hypot(pt[0] - RX, pt[1] - ay) < covered - 0.05 || (bodyIn && inPoly(pt, region));
     const visibleRuns = pts => {
@@ -146,8 +149,12 @@
     elems.sort((u, v) => v.x - u.x || (u.body ? 1 : -1));
     elems.forEach(e => {
       if (e.nut) {
-        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true }).filter(r => r.lineType !== 'centre'));
-        projR.add(0.75 * e.nut.D);
+        // corners up: the section shows the nut across its corners (three faces), so the end view
+        // must have a corner at the top
+        rv.push(...A.nutEnd(RX, ay, e.nut.D, { bolt: true, cornersUp: true }).filter(r => r.lineType !== 'centre'));
+        addProj(1.5 * e.nut.D / Math.sqrt(3), AX + e.x);
+        const tp = cfg.parts.find(q => q.thread);
+        if (tp) { addProj(e.nut.D / 2, AX + tp.thread[1]); addProj(0.4 * e.nut.D, AX + tp.thread[1]); }
         covered = Math.max(covered, 0.75 * e.nut.D);
       } else if (e.body) {
         drawingBody = true;
@@ -155,27 +162,33 @@
         drawingBody = false;
         bodyIn = true;
       } else {
-        e.radii.forEach(r => { if (r > covered + 0.05) { visibleRuns(circlePts(r)); projR.add(r); } });
+        e.radii.forEach(r => { if (r > covered + 0.05) { visibleRuns(circlePts(r)); addProj(r, AX + e.x); } });
         covered = Math.max(covered, e.radii[0]);
       }
     });
     const cpTop = BY - cfg.cutTop, cpBot = BY + 6;
     // Projection first: the right view's centre lines, and a thin line carried straight across from
-    // the section at every height the right view needs — the top of each circle, and each
-    // horizontal edge and the top of the body.
+    // each edge in the section that the right view needs — the top of each circle drawn, and each
+    // horizontal edge and the top of the body where they show in the right view.
     const bodyH = new Set();
     cfg.body.end.forEach(pl => {
       const ys = pl.map(q => q[1]);
       ys.forEach((y, k) => { if (k && Math.abs(y - ys[k - 1]) < 1e-6) bodyH.add(+y.toFixed(3)); });
       bodyH.add(+Math.max(...ys).toFixed(3));
     });
-    const xFrom = AX + cfg.axisTo, xTo = RX + cfg.rvHalf;
+    const seenBody = h => rv.some(r => r.body && r.points.some(p => Math.abs(p[1] - (BY - h)) < 0.05));
+    const bodyPts = cfg.body.section.flatMap(it => it.poly || it);
+    const xTo = RX + cfg.rvHalf;
     const projection = [
       L([RX - cfg.rvHalf, ay], [RX + cfg.rvHalf, ay], 'centre'),
       L([RX, cpTop - 4], [RX, cpBot], 'centre'),
-      ...[...projR].map(r => L([xFrom, ay - r], [xTo, ay - r], 'construction')),
-      ...[...bodyH].filter(h => [...projR].every(r => Math.abs(BY - h - (ay - r)) > 0.3)).map(h => L([xFrom, BY - h], [xTo, BY - h], 'construction')),
+      ...[...proj].map(([r, x]) => L([x, ay - r], [xTo, ay - r], 'construction')),
+      ...[...bodyH].filter(h => seenBody(h) && [...proj.keys()].every(r => Math.abs(BY - h - (ay - r)) > 0.3)).map(h => {
+        const at = bodyPts.filter(p => Math.abs(p[1] - h) < 1e-6).map(p => p[0]);
+        return at.length ? L([AX + Math.max(...at), BY - h], [xTo, BY - h], 'construction') : null;
+      }).filter(Boolean),
     ];
+    const xFrom = Math.min(...projection.slice(2).map(l => l.p1[0]), RX - cfg.rvHalf);
     const rvLen = rv.length;
     rv.push(
       L([RX, cpTop - 4], [RX, cpTop + 2], 'A'), L([RX, cpBot - 2], [RX, cpBot], 'A'),
@@ -301,7 +314,8 @@
           calloutAt: [XE - 30, AY],
           reveals: [
             L([XE - RE - 3, AY], [XE + RE + 3, AY], 'centre'), L([XE, AY - RE - 3], [XE, AY + RE + 3], 'centre'),
-            ...[AC / 2, 0.75 * D, D / 2, 0.4 * D, s / 2].map(h => L([XH + len + 2, AY - h], [XE + 4, AY - h], 'construction')),
+            ...[AC / 2, 0.75 * D, s / 2].map(h => L([XN + nutH, AY - h], [XE + 4, AY - h], 'construction')),   // from the nut's outer face
+            ...[D / 2, 0.4 * D].map(h => L([XH + len, AY - h], [XE + 4, AY - h], 'construction')),               // from the bolt's end
           ],
         },
         {
@@ -345,7 +359,7 @@
       body,
       parts: [
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 6, sectioned: true, hatch: 135, note: 'Part 2, the flanged BUSH, sits in the bracket\'s bore with its flange against the right face. It is bronze and sectioned, hatched the opposite way to the bracket because they touch.' },
-        { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: 0, sectioned: false, D, thread: [56, 70], note: 'Part 3, the SHAFT, goes through from the left until its collar meets the bracket. A shaft is NEVER sectioned, even though the cutting plane runs along it: draw it as a plain outside view, with its thread at the end.' },
+        { name: 'SHAFT', mat: 'MILD STEEL / SAGTE STAAL', profile: shaft, at: 0, sectioned: false, D, thread: [38, 70], note: 'Part 3, the SHAFT, goes through from the left until its collar meets the bracket. A shaft is NEVER sectioned, even though the cutting plane runs along it: draw it as a plain outside view, with its thread at the end.' },
         { name: 'PULLEY', mat: 'CAST IRON / GIETYSTER', profile: pulley, at: 26, sectioned: true, hatch: 45, note: 'Part 4, the PULLEY, slides onto the shaft against the bush flange. Section it: hub, web and V-grooved rim. It touches the bush, not the bracket, so its hatching goes opposite to the bush.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 50, sectioned: false, note: 'Part 5, the WASHER, and' },
         { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 53, D, profile: [[0, 0], [12.8, 0]], note: 'part 6, the M16 NUT (12.8 thick, three faces showing). Washers and nuts are never sectioned.' },
@@ -533,7 +547,7 @@
       },
       parts: [
         { name: 'M16 BOLT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: -11.2, h: 11.2, D, profile: [[0, 0], [11.2, 0]], note: 'The BOLT head (0.7D = 11.2, three faces showing) against the left plate,' },
-        { name: 'M16 BOLT', mat: 'MILD STEEL / SAGTE STAAL', profile: shank, at: 0, sectioned: false, D, thread: [26, 43], note: 'and the shank through the Ø18 clearance holes, threaded at the end. Never sectioned.' },
+        { name: 'M16 BOLT', mat: 'MILD STEEL / SAGTE STAAL', profile: shank, at: 0, sectioned: false, D, thread: [11, 43], note: 'and the shank through the Ø18 clearance holes, threaded at the end. Never sectioned.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 24, sectioned: false, note: 'The WASHER (2D = 32, 0.2D = 3.2 thick) and' },
         { name: 'M16 NUT', mat: 'MILD STEEL / SAGTE STAAL', kind: 'nut', at: 27.2, D, profile: [[0, 0], [12.8, 0]], note: 'the NUT (0.8D = 12.8), with two or three threads showing past it.' },
       ],

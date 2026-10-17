@@ -146,7 +146,7 @@
       ax: 70, by: 150, axisH: 46, rx: 236, cutTop: 92, axisFrom: -10, axisTo: 88, rvHalf: 46,
       body: { name: 'FORK', mat: 'CAST IRON / GIETYSTER', callout: [5, 26], nearX: fk.nearX, section: fk.section, hatch: 45, end: fk.end },
       parts: [
-        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [66, 84], note: 'Part 2, the PIN through the fork. Never sectioned.' },
+        { name: 'PIN', mat: 'MILD STEEL / SAGTE STAAL', profile: pin, at: -6, sectioned: false, D, thread: [52, 84], note: 'Part 2, the PIN through the fork. Never sectioned.' },
         { name: 'BUSH', mat: 'BRONZE / BRONS', profile: bush, at: 12, sectioned: true, hatch: 135, note: 'Part 3, the BUSH, hatched opposite to the wheel.' },
         { name: 'WHEEL', mat: 'NYLON / NILON', profile: wheel, at: 12, sectioned: true, hatch: 45, note: 'Part 4, the WHEEL round the bush, sectioned, with chamfered edges.' },
         { name: 'WASHER', mat: 'MILD STEEL / SAGTE STAAL', profile: washer, at: 60, sectioned: false, note: 'Part 5, the WASHER, and' },
@@ -155,7 +155,7 @@
       order: [[0], [1], [2], [3, 4]],
       details: [
         { note: 'Part 1, the FORK: uprights 10 thick, 40 apart inside, Ø16 holes 46 above the base, R24 tops.', at: [40, 50], draw: () => AB.forkDetail(fk, 60, 46, 8, 24, 30, 100, 168, '(1) FORK') },
-        { note: 'Part 2, the PIN: head Ø26 × 6, shank Ø16 × 84, threaded M16 for the last 24.', at: [40, 128], draw: () => AB.partDetail(2, 'PIN', pin, 16, 122) },
+        { note: 'Part 2, the PIN: head Ø26 × 6, shank Ø16 × 84, threaded M16 for the last 32.', at: [40, 128], draw: () => AB.partDetail(2, 'PIN', pin, 16, 122) },
         { note: 'Part 3, the BUSH: Ø16 bore, Ø24 outside, 36 long.', at: [170, 128], draw: () => AB.partDetail(3, 'BUSH', bush, 150, 124, { section: true }) },
         { note: 'Part 4, the WHEEL: Ø56, 36 wide, Ø24 bore, 2 × 2 chamfers.', at: [262, 50], draw: () => AB.partDetail(4, 'WHEEL', wheel, 250, 18, { section: true }) },
         { note: 'Part 5, the WASHER (Ø32 × 3), and part 6, the M16 NUT.', at: [262, 136], draw: () => [...AB.partDetail(5, 'WASHER', washer, 236, 130, { section: true }), ...AK.nutEnd(312, 146, D, {}), lbl([312, 131], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
