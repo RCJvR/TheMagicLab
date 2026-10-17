@@ -168,6 +168,62 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "'n Parabool y = ax² het sy draaipunt by die oorsprong en gaan deur die punt (2;12). Bepaal a, en bereken dan y as x = -3.", answer: "27", topic: "Funksies" },
       ]
     },
+    {
+      id: 601,
+      chapter: 6,
+      name: "Een verwantskap, vier beskrywings",
+      fullName: "Ekwivalente beskrywings van 'n verwantskap: woorde, vloeidiagramme, tabelle, formules en grafieke",
+      lesson: {
+        heading: "Een verwantskap, vier beskrywings",
+        sub: "Hoofstuk 6 · Onderwerp 3",
+        body: `
+<p>Dieselfde verwantskap tussen x en y kan in woorde, as 'n vloeidiagram, as 'n tabel, as 'n formule of as 'n grafiek gegee word. Jy moet van enige een na enige ander kan beweeg.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Woorde</div>
+<p>"Verdubbel die getal en tel dan 3 by."</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"flow","items":["x","× 2","+ 3","y"]}'></div>
+<div class="math-block">x │ 0   1   2   3   4
+y │ 3   5   7   9  11</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Formule</div>
+<p><span class="math">y = 2x + 3</span></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":240,"view":[-1,-1,5,12],"grid":1,"free":true,"axes":{"tx":1,"ty":2},"fn":[{"f":"2*x+3","c":"ac","dom":[0,4.2]}],"pts":{"A":[0,3],"B":[1,5],"C":[2,7],"D":[3,9],"E":[4,11]},"dots":true,"nolab":["A","B","C","D","E"]}'></div>
+<p>Al vyf sê dieselfde ding. In die tabel gaan y met 2 op wanneer x met 1 opgaan, en daardie 2 is die getal waarmee x in die formule vermenigvuldig word. Die 3 is die waarde van y wanneer x = 0, waar die grafiek die y-as sny.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Om 'n formule uit 'n tabel te vind, kyk hoeveel y verander wanneer x met 1 opgaan (dit vermenigvuldig x), en kyk dan wat y is wanneer x = 0 (dit word bygetel).</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "\"Vermenigvuldig met 4 en trek dan 1 af\" as 'n formule is:", "options": ["y = 4(x − 1)", "y = 4x − 1", "y = x − 4", "y = 4 − x"], "answer": 1, "topic": "Een verwantskap, vier beskrywings"},
+        {"type": "input", "text": "y = 5x − 2. Bepaal y wanneer x = −3.", "answer": "-17", "topic": "Een verwantskap, vier beskrywings"},
+        {"type": "input", "text": "y = 3x + 4. Bepaal x wanneer y = 25.", "answer": "7", "topic": "Een verwantskap, vier beskrywings"},
+        {"type": "mc", "text": "'n Tabel: x = 0, 1, 2, 3 gee y = 1, 4, 7, 10. Die formule is:", "options": ["y = x + 3", "y = 4x", "y = 3x + 1", "y = x + 1"], "answer": 2, "topic": "Een verwantskap, vier beskrywings"},
+        {"type": "mc", "text": "Vir y = 2x + 3, waar sny die grafiek die y-as?", "options": ["(0 ; 3)", "(3 ; 0)", "(0 ; 2)", "(−1,5 ; 0)"], "answer": 0, "topic": "Een verwantskap, vier beskrywings"},
+        {"type": "input", "text": "'n Vloeidiagram: inset x → × (−2) → + 10 → uitset. Wat is die uitset wanneer x = 4?", "answer": "2", "topic": "Een verwantskap, vier beskrywings"},
+      ]
+    },
+    {
+      id: 602,
+      chapter: 6,
+      name: "Hfst 6 Eksamenfokus",
+      fullName: "Eksamenoefening: funksies en verwantskappe",
+      lesson: {
+        heading: "Hfst 6 Eksamenfokus",
+        sub: "Hoofstuk 6 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Vertaal tussen woorde, tabelle, formules en grafieke.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "y = x² − 1. Bepaal y wanneer x = −4.", "answer": "15", "topic": "Hfst 6 Eksamenfokus"},
+        {"type": "mc", "text": "'n Taxi vra R15 plus R8 per km. Die formule vir die koste C van k km is:", "options": ["C = 15k + 8", "C = 23k", "C = 8 + k", "C = 8k + 15"], "answer": 3, "topic": "Hfst 6 Eksamenfokus"},
+        {"type": "input", "text": "Gebruik C = 8k + 15. Hoeveel km kan jy vir R95 ry?", "answer": "10", "topic": "Hfst 6 Eksamenfokus"},
+        {"type": "mc", "text": "Watter formule gee die tabel x: 1, 2, 3 → y: 2, 4, 8?", "options": ["y = 2x", "y = 2ˣ", "y = x + 1", "y = x²"], "answer": 1, "topic": "Hfst 6 Eksamenfokus"},
+        {"type": "input", "text": "y = −3x + 6. Bepaal x wanneer y = 0.", "answer": "2", "topic": "Hfst 6 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 6, chapterName: "Funksies en Verwantskappe",
@@ -218,6 +274,32 @@ MathMagician.registerChapter(6, {
           },
         ]
       },
+      {
+        "name": "Een verwantskap, vier beskrywings",
+        "questions": [
+          {
+            "num": "5",
+            "text": "'n Loodgieter vra R250 uitroepfooi plus R180 per uur.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Skryf 'n formule vir die koste C van h ure.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Voltooi 'n tabel vir h = 1, 2, 3, 4.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Hoeveel ure het 'n werk geneem as dit R1 330 gekos het?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -243,6 +325,26 @@ MathMagician.registerChapter(6, {
           { num: "Q4b", ans: "y = 2x + 5", note: "c = 5 (waarde van y wanneer x = 0); kontroleer met (4;13): 2(4)+5=13 ✓" },
           { num: "Q4c", ans: "y = 25", note: "y = 2(10) + 5 = 25" },
           { num: "Q4d", ans: "x = 14", note: "33 = 2x + 5 → 2x = 28 → x = 14" },
+        ]
+      },
+      {
+        "name": "Een verwantskap, vier beskrywings",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "C = 180h + 250",
+            "note": ""
+          },
+          {
+            "num": "Q5b",
+            "ans": "h: 1, 2, 3, 4 → C: 430, 610, 790, 970",
+            "note": "Tel elke keer 180 by"
+          },
+          {
+            "num": "Q5c",
+            "ans": "6 uur",
+            "note": "180h + 250 = 1 330; 180h = 1 080; h = 6"
+          }
         ]
       },
     ]

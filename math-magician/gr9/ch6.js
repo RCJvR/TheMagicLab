@@ -168,6 +168,62 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "A parabola y = ax² has its turning point at the origin and passes through the point (2;12). Determine a, then calculate y when x = -3.", answer: "27", topic: "Functions" },
       ]
     },
+    {
+      id: 601,
+      chapter: 6,
+      name: "One relationship, four descriptions",
+      fullName: "Equivalent descriptions of a relationship: words, flow diagrams, tables, formulae and graphs",
+      lesson: {
+        heading: "One relationship, four descriptions",
+        sub: "Chapter 6 · Topic 3",
+        body: `
+<p>The same relationship between x and y can be given in words, as a flow diagram, as a table, as a formula or as a graph. You must be able to move from any one to any other.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Words</div>
+<p>"Double the number, then add 3."</p>
+</div>
+<div class="mf-fig" data-fig='{"t":"flow","items":["x","× 2","+ 3","y"]}'></div>
+<div class="math-block">x │ 0   1   2   3   4
+y │ 3   5   7   9  11</div>
+<div class="def-box">
+  <div class="def-box-title">📖 Formula</div>
+<p><span class="math">y = 2x + 3</span></p>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":240,"h":240,"view":[-1,-1,5,12],"grid":1,"free":true,"axes":{"tx":1,"ty":2},"fn":[{"f":"2*x+3","c":"ac","dom":[0,4.2]}],"pts":{"A":[0,3],"B":[1,5],"C":[2,7],"D":[3,9],"E":[4,11]},"dots":true,"nolab":["A","B","C","D","E"]}'></div>
+<p>All five say the same thing. In the table y goes up by 2 when x goes up by 1, and that 2 is the number x is multiplied by in the formula. The 3 is the value of y when x = 0, where the graph cuts the y-axis.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>To find a formula from a table, find how much y changes when x goes up by 1 (that multiplies x), then find y when x = 0 (that is added).</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "\"Multiply by 4, then subtract 1\" as a formula is:", "options": ["y = 4(x − 1)", "y = 4x − 1", "y = x − 4", "y = 4 − x"], "answer": 1, "topic": "One relationship, four descriptions"},
+        {"type": "input", "text": "y = 5x − 2. Find y when x = −3.", "answer": "-17", "topic": "One relationship, four descriptions"},
+        {"type": "input", "text": "y = 3x + 4. Find x when y = 25.", "answer": "7", "topic": "One relationship, four descriptions"},
+        {"type": "mc", "text": "A table: x = 0, 1, 2, 3 gives y = 1, 4, 7, 10. The formula is:", "options": ["y = x + 3", "y = 4x", "y = 3x + 1", "y = x + 1"], "answer": 2, "topic": "One relationship, four descriptions"},
+        {"type": "mc", "text": "For y = 2x + 3, where does the graph cut the y-axis?", "options": ["(0 ; 3)", "(3 ; 0)", "(0 ; 2)", "(−1,5 ; 0)"], "answer": 0, "topic": "One relationship, four descriptions"},
+        {"type": "input", "text": "A flow diagram: input x → × (−2) → + 10 → output. What is the output when x = 4?", "answer": "2", "topic": "One relationship, four descriptions"},
+      ]
+    },
+    {
+      id: 602,
+      chapter: 6,
+      name: "Ch 6 Exam focus",
+      fullName: "Exam practice: functions and relationships",
+      lesson: {
+        heading: "Ch 6 Exam focus",
+        sub: "Chapter 6 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Translate between words, tables, formulae and graphs.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "y = x² − 1. Find y when x = −4.", "answer": "15", "topic": "Ch 6 Exam focus"},
+        {"type": "mc", "text": "A taxi charges R15 plus R8 per km. The formula for the cost C of k km is:", "options": ["C = 15k + 8", "C = 23k", "C = 8 + k", "C = 8k + 15"], "answer": 3, "topic": "Ch 6 Exam focus"},
+        {"type": "input", "text": "Use C = 8k + 15. How many km can you travel for R95?", "answer": "10", "topic": "Ch 6 Exam focus"},
+        {"type": "mc", "text": "Which formula gives the table x: 1, 2, 3 → y: 2, 4, 8?", "options": ["y = 2x", "y = 2ˣ", "y = x + 1", "y = x²"], "answer": 1, "topic": "Ch 6 Exam focus"},
+        {"type": "input", "text": "y = −3x + 6. Find x when y = 0.", "answer": "2", "topic": "Ch 6 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 6, chapterName: "Functions and Relationships",
@@ -218,6 +274,32 @@ MathMagician.registerChapter(6, {
           },
         ]
       },
+      {
+        "name": "One relationship, four descriptions",
+        "questions": [
+          {
+            "num": "5",
+            "text": "A plumber charges R250 call-out plus R180 per hour.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Write a formula for the cost C of h hours.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Complete a table for h = 1, 2, 3, 4.",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "How many hours did a job take if it cost R1 330?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -242,6 +324,26 @@ MathMagician.registerChapter(6, {
           { num: "Q4b", ans: "y = 2x + 5", note: "c = 5 (value of y when x = 0); check with (4;13): 2(4)+5=13 ✓" },
           { num: "Q4c", ans: "y = 25", note: "y = 2(10) + 5 = 25" },
           { num: "Q4d", ans: "x = 14", note: "33 = 2x + 5 → 2x = 28 → x = 14" },
+        ]
+      },
+      {
+        "name": "One relationship, four descriptions",
+        "answers": [
+          {
+            "num": "Q5a",
+            "ans": "C = 180h + 250",
+            "note": ""
+          },
+          {
+            "num": "Q5b",
+            "ans": "h: 1, 2, 3, 4 → C: 430, 610, 790, 970",
+            "note": "Add 180 each time"
+          },
+          {
+            "num": "Q5c",
+            "ans": "6 hours",
+            "note": "180h + 250 = 1 330; 180h = 1 080; h = 6"
+          }
         ]
       },
     ]

@@ -151,6 +151,99 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Factorise fully: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Factorisation" },
       ]
     },
+    {
+      id: 801,
+      chapter: 8,
+      name: "Trinomials with a common factor",
+      fullName: "Factorising ax² + bx + c where a is a common factor",
+      lesson: {
+        heading: "Trinomials with a common factor",
+        sub: "Chapter 8 · Topic 3",
+        body: `
+<p>When every term of ax² + bx + c has a common factor, take it out first. What is left is usually a trinomial x² + bx + c that you already know how to factorise.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Always in this order</div>
+<p>1. Common factor (HCF of all the terms).<br>2. Difference of two squares? a² − b² = (a − b)(a + b)<br>3. Trinomial? Find two numbers that multiply to c and add to b.<br>4. Check by expanding.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: 2x² + 10x + 12</div>
+  <div class="example-step"><span class="step-num">1</span><span>Common factor 2: 2(x² + 5x + 6)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2 × 3 = 6 and 2 + 3 = 5: <strong>2(x + 2)(x + 3)</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: 3x² − 27</div>
+  <div class="example-step"><span class="step-num">1</span><span>Common factor 3: 3(x² − 9)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Difference of squares: <strong>3(x − 3)(x + 3)</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: −x² + x + 12</div>
+  <div class="example-step"><span class="step-num">1</span><span>Take out −1: −(x² − x − 12)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>−4 × 3 = −12 and −4 + 3 = −1: <strong>−(x − 4)(x + 3)</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>If the first term is negative, take out −1 (or a negative common factor) so that x² is positive inside the bracket.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Factorise 2x² + 14x + 24:", "options": ["2(x + 3)(x + 4)", "2(x + 2)(x + 6)", "(2x + 6)(x + 4)", "2(x + 12)(x + 2)"], "answer": 0, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise 5x² − 45:", "options": ["5(x − 9)(x + 9)", "(5x − 9)(x + 5)", "5(x − 3)(x + 3)", "5(x − 3)²"], "answer": 2, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise 3x² − 3x − 18:", "options": ["3(x + 3)(x − 2)", "3(x − 3)(x + 2)", "3(x − 6)(x + 1)", "(3x − 6)(x + 3)"], "answer": 1, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise −x² − 2x + 15:", "options": ["(x + 5)(x − 3)", "−(x − 5)(x + 3)", "(x − 5)(x + 3)", "−(x + 5)(x − 3)"], "answer": 3, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise 4x² − 16x + 16:", "options": ["4(x − 2)²", "4(x − 4)(x + 1)", "(4x − 4)²", "4(x + 2)²"], "answer": 0, "topic": "Trinomials with a common factor"},
+        {"type": "mc", "text": "Factorise 2x³ − 8x:", "options": ["2x(x² − 4)", "2(x − 2)(x + 2)", "2x(x − 2)(x + 2)", "x(2x − 4)(x + 2)"], "answer": 2, "topic": "Trinomials with a common factor"},
+      ]
+    },
+    {
+      id: 802,
+      chapter: 8,
+      name: "Simplifying algebraic fractions",
+      fullName: "Simplifying algebraic fractions by factorising",
+      lesson: {
+        heading: "Simplifying algebraic fractions",
+        sub: "Chapter 8 · Topic 4",
+        body: `
+<p>You may only cancel <strong>factors</strong>, never terms. So first factorise the numerator and the denominator, then cancel brackets that are the same.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: simplify (x² − 9)/(x² + 5x + 6)</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">= (x − 3)(x + 3) / ((x + 2)(x + 3))</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Cancel (x + 3): <span class="math">= (x − 3)/(x + 2)</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: simplify (4a² − 8a)/(2a)</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">= 4a(a − 2) / (2a) = 2(a − 2) = 2a − 4</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>(x + 3)/3 is NOT x + 1: the 3 in the numerator is a term, not a factor. Only whole brackets or whole factors cancel.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Simplify (x² − 4)/(x + 2):", "options": ["x + 2", "x − 2", "x² − 2", "x − 4"], "answer": 1, "topic": "Simplifying algebraic fractions"},
+        {"type": "mc", "text": "Simplify (x² + 7x + 12)/(x + 4):", "options": ["x + 3", "x + 4", "x + 7", "x + 12"], "answer": 0, "topic": "Simplifying algebraic fractions"},
+        {"type": "mc", "text": "Simplify (6a² + 9a)/(3a):", "options": ["2a + 9a", "6a + 3", "2a + 3", "2a² + 3a"], "answer": 2, "topic": "Simplifying algebraic fractions"},
+        {"type": "mc", "text": "Simplify (x² − 1)/(x² + 2x + 1):", "options": ["−1", "1", "(x + 1)/(x − 1)", "(x − 1)/(x + 1)"], "answer": 3, "topic": "Simplifying algebraic fractions"},
+        {"type": "mc", "text": "Which simplification is WRONG?", "options": ["2x/x = 2", "(x + 5)/5 = x + 1", "(3x − 6)/3 = x − 2", "(x² + x)/x = x + 1"], "answer": 1, "topic": "Simplifying algebraic fractions"},
+        {"type": "mc", "text": "Simplify (2x² − 18)/(x² − 3x):", "options": ["2(x + 3)/x", "2(x − 3)/x", "2/x", "(x + 3)/x"], "answer": 0, "topic": "Simplifying algebraic fractions"},
+      ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Ch 8 Exam focus",
+      fullName: "Exam practice: factorisation",
+      lesson: {
+        heading: "Ch 8 Exam focus",
+        sub: "Chapter 8 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Always look for a common factor first and check by expanding.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Factorise x² − 10x + 21:", "options": ["(x − 7)(x + 3)", "(x + 7)(x + 3)", "(x − 7)(x − 3)", "(x − 21)(x + 1)"], "answer": 2, "topic": "Ch 8 Exam focus"},
+        {"type": "mc", "text": "Factorise 49 − 4y²:", "options": ["(7 − 4y)(7 + 4y)", "(7 − 2y)(7 + 2y)", "(2y − 7)(2y + 7)", "(7 − 2y)²"], "answer": 1, "topic": "Ch 8 Exam focus"},
+        {"type": "mc", "text": "Factorise ax + ay − 3x − 3y:", "options": ["(x + y)(a − 3)", "(x − y)(a + 3)", "a(x + y) − 3", "(a + 3)(x + y)"], "answer": 0, "topic": "Ch 8 Exam focus"},
+        {"type": "mc", "text": "Factorise 6x²y − 9xy²:", "options": ["3(2x²y − 3xy²)", "xy(6x − 9y)", "3x(2xy − 3y²)", "3xy(2x − 3y)"], "answer": 3, "topic": "Ch 8 Exam focus"},
+        {"type": "mc", "text": "Factorise x² + 4x − 32:", "options": ["(x − 8)(x + 4)", "(x + 8)(x − 4)", "(x + 16)(x − 2)", "(x − 4)²"], "answer": 1, "topic": "Ch 8 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 8, chapterName: "Factorisation",
@@ -186,6 +279,32 @@ MathMagician.registerChapter(8, {
           },
         ]
       },
+      {
+        "name": "Trinomials with a common factor",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Factorise fully:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "3x² + 15x + 18",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "2a³ − 50a",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Simplify (x² − x − 6)/(x² − 9)",
+                "marks": 4
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -208,6 +327,26 @@ MathMagician.registerChapter(8, {
           { num: "Q2d", ans: "(x - 6)(x + 2)", note: "-6 × 2 = -12; -6 + 2 = -4 ✓" },
           { num: "Q2e", ans: "2(x + 3)(x + 4)", note: "HCF 2; x²+7x+12 = (x+3)(x+4)" },
           { num: "Q2f", ans: "(x + 4)(x - 4) + x(x - 4) = (x - 4)(2x + 4) = 2(x - 4)(x + 2)", note: "factor (x-4) from both parts" },
+        ]
+      },
+      {
+        "name": "Trinomials with a common factor",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "3(x + 2)(x + 3)",
+            "note": "3(x² + 5x + 6)"
+          },
+          {
+            "num": "Q3b",
+            "ans": "2a(a − 5)(a + 5)",
+            "note": "2a(a² − 25)"
+          },
+          {
+            "num": "Q3c",
+            "ans": "(x + 2)/(x + 3)",
+            "note": "(x − 3)(x + 2) / ((x − 3)(x + 3))"
+          }
         ]
       },
     ]

@@ -151,6 +151,99 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Faktoriseer volledig: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Faktorisering" },
       ]
     },
+    {
+      id: 801,
+      chapter: 8,
+      name: "Drieterme met 'n gemeenskaplike faktor",
+      fullName: "ax² + bx + c faktoriseer waar a 'n gemeenskaplike faktor is",
+      lesson: {
+        heading: "Drieterme met 'n gemeenskaplike faktor",
+        sub: "Hoofstuk 8 · Onderwerp 3",
+        body: `
+<p>Wanneer elke term van ax² + bx + c 'n gemeenskaplike faktor het, haal dit eers uit. Wat oorbly, is gewoonlik 'n drieterm x² + bx + c wat jy reeds kan faktoriseer.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Altyd in hierdie volgorde</div>
+<p>1. Gemeenskaplike faktor (GGD van al die terme).<br>2. Verskil van twee vierkante? a² − b² = (a − b)(a + b)<br>3. Drieterm? Vind twee getalle wat vermenigvuldig tot c en optel tot b.<br>4. Toets deur uit te brei.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 2x² + 10x + 12</div>
+  <div class="example-step"><span class="step-num">1</span><span>Gemeenskaplike faktor 2: 2(x² + 5x + 6)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>2 × 3 = 6 en 2 + 3 = 5: <strong>2(x + 2)(x + 3)</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 3x² − 27</div>
+  <div class="example-step"><span class="step-num">1</span><span>Gemeenskaplike faktor 3: 3(x² − 9)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Verskil van vierkante: <strong>3(x − 3)(x + 3)</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: −x² + x + 12</div>
+  <div class="example-step"><span class="step-num">1</span><span>Haal −1 uit: −(x² − x − 12)</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>−4 × 3 = −12 en −4 + 3 = −1: <strong>−(x − 4)(x + 3)</strong></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>As die eerste term negatief is, haal −1 (of 'n negatiewe gemeenskaplike faktor) uit sodat x² binne die hakie positief is.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Faktoriseer 2x² + 14x + 24:", "options": ["2(x + 3)(x + 4)", "2(x + 2)(x + 6)", "(2x + 6)(x + 4)", "2(x + 12)(x + 2)"], "answer": 0, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+        {"type": "mc", "text": "Faktoriseer 5x² − 45:", "options": ["5(x − 9)(x + 9)", "(5x − 9)(x + 5)", "5(x − 3)(x + 3)", "5(x − 3)²"], "answer": 2, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+        {"type": "mc", "text": "Faktoriseer 3x² − 3x − 18:", "options": ["3(x + 3)(x − 2)", "3(x − 3)(x + 2)", "3(x − 6)(x + 1)", "(3x − 6)(x + 3)"], "answer": 1, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+        {"type": "mc", "text": "Faktoriseer −x² − 2x + 15:", "options": ["(x + 5)(x − 3)", "−(x − 5)(x + 3)", "(x − 5)(x + 3)", "−(x + 5)(x − 3)"], "answer": 3, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+        {"type": "mc", "text": "Faktoriseer 4x² − 16x + 16:", "options": ["4(x − 2)²", "4(x − 4)(x + 1)", "(4x − 4)²", "4(x + 2)²"], "answer": 0, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+        {"type": "mc", "text": "Faktoriseer 2x³ − 8x:", "options": ["2x(x² − 4)", "2(x − 2)(x + 2)", "2x(x − 2)(x + 2)", "x(2x − 4)(x + 2)"], "answer": 2, "topic": "Drieterme met 'n gemeenskaplike faktor"},
+      ]
+    },
+    {
+      id: 802,
+      chapter: 8,
+      name: "Algebraïese breuke vereenvoudig",
+      fullName: "Algebraïese breuke vereenvoudig deur te faktoriseer",
+      lesson: {
+        heading: "Algebraïese breuke vereenvoudig",
+        sub: "Hoofstuk 8 · Onderwerp 4",
+        body: `
+<p>Jy mag net <strong>faktore</strong> kanselleer, nooit terme nie. Faktoriseer dus eers die teller en die noemer, en kanselleer dan hakies wat dieselfde is.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: vereenvoudig (x² − 9)/(x² + 5x + 6)</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">= (x − 3)(x + 3) / ((x + 2)(x + 3))</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Kanselleer (x + 3): <span class="math">= (x − 3)/(x + 2)</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: vereenvoudig (4a² − 8a)/(2a)</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">= 4a(a − 2) / (2a) = 2(a − 2) = 2a − 4</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>(x + 3)/3 is NIE x + 1 nie: die 3 in die teller is 'n term, nie 'n faktor nie. Net hele hakies of hele faktore kanselleer.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Vereenvoudig (x² − 4)/(x + 2):", "options": ["x + 2", "x − 2", "x² − 2", "x − 4"], "answer": 1, "topic": "Algebraïese breuke vereenvoudig"},
+        {"type": "mc", "text": "Vereenvoudig (x² + 7x + 12)/(x + 4):", "options": ["x + 3", "x + 4", "x + 7", "x + 12"], "answer": 0, "topic": "Algebraïese breuke vereenvoudig"},
+        {"type": "mc", "text": "Vereenvoudig (6a² + 9a)/(3a):", "options": ["2a + 9a", "6a + 3", "2a + 3", "2a² + 3a"], "answer": 2, "topic": "Algebraïese breuke vereenvoudig"},
+        {"type": "mc", "text": "Vereenvoudig (x² − 1)/(x² + 2x + 1):", "options": ["−1", "1", "(x + 1)/(x − 1)", "(x − 1)/(x + 1)"], "answer": 3, "topic": "Algebraïese breuke vereenvoudig"},
+        {"type": "mc", "text": "Watter vereenvoudiging is VERKEERD?", "options": ["2x/x = 2", "(x + 5)/5 = x + 1", "(3x − 6)/3 = x − 2", "(x² + x)/x = x + 1"], "answer": 1, "topic": "Algebraïese breuke vereenvoudig"},
+        {"type": "mc", "text": "Vereenvoudig (2x² − 18)/(x² − 3x):", "options": ["2(x + 3)/x", "2(x − 3)/x", "2/x", "(x + 3)/x"], "answer": 0, "topic": "Algebraïese breuke vereenvoudig"},
+      ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Hfst 8 Eksamenfokus",
+      fullName: "Eksamenoefening: faktorisering",
+      lesson: {
+        heading: "Hfst 8 Eksamenfokus",
+        sub: "Hoofstuk 8 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Soek altyd eers na 'n gemeenskaplike faktor en toets deur uit te brei.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Faktoriseer x² − 10x + 21:", "options": ["(x − 7)(x + 3)", "(x + 7)(x + 3)", "(x − 7)(x − 3)", "(x − 21)(x + 1)"], "answer": 2, "topic": "Hfst 8 Eksamenfokus"},
+        {"type": "mc", "text": "Faktoriseer 49 − 4y²:", "options": ["(7 − 4y)(7 + 4y)", "(7 − 2y)(7 + 2y)", "(2y − 7)(2y + 7)", "(7 − 2y)²"], "answer": 1, "topic": "Hfst 8 Eksamenfokus"},
+        {"type": "mc", "text": "Faktoriseer ax + ay − 3x − 3y:", "options": ["(x + y)(a − 3)", "(x − y)(a + 3)", "a(x + y) − 3", "(a + 3)(x + y)"], "answer": 0, "topic": "Hfst 8 Eksamenfokus"},
+        {"type": "mc", "text": "Faktoriseer 6x²y − 9xy²:", "options": ["3(2x²y − 3xy²)", "xy(6x − 9y)", "3x(2xy − 3y²)", "3xy(2x − 3y)"], "answer": 3, "topic": "Hfst 8 Eksamenfokus"},
+        {"type": "mc", "text": "Faktoriseer x² + 4x − 32:", "options": ["(x − 8)(x + 4)", "(x + 8)(x − 4)", "(x + 16)(x − 2)", "(x − 4)²"], "answer": 1, "topic": "Hfst 8 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 8, chapterName: "Faktorisering",
@@ -186,6 +279,32 @@ MathMagician.registerChapter(8, {
           },
         ]
       },
+      {
+        "name": "Drieterme met 'n gemeenskaplike faktor",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Faktoriseer volledig:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "3x² + 15x + 18",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "2a³ − 50a",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Vereenvoudig (x² − x − 6)/(x² − 9)",
+                "marks": 4
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -208,6 +327,26 @@ MathMagician.registerChapter(8, {
           { num: "Q2d", ans: "(x - 6)(x + 2)", note: "-6 × 2 = -12; -6 + 2 = -4 ✓" },
           { num: "Q2e", ans: "2(x + 3)(x + 4)", note: "GGD 2; x²+7x+12 = (x+3)(x+4)" },
           { num: "Q2f", ans: "(x + 4)(x - 4) + x(x - 4) = (x - 4)(2x + 4) = 2(x - 4)(x + 2)", note: "haal (x-4) uit albei dele" },
+        ]
+      },
+      {
+        "name": "Drieterme met 'n gemeenskaplike faktor",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "3(x + 2)(x + 3)",
+            "note": "3(x² + 5x + 6)"
+          },
+          {
+            "num": "Q3b",
+            "ans": "2a(a − 5)(a + 5)",
+            "note": "2a(a² − 25)"
+          },
+          {
+            "num": "Q3c",
+            "ans": "(x + 2)/(x + 3)",
+            "note": "(x − 3)(x + 2) / ((x − 3)(x + 3))"
+          }
         ]
       },
     ]

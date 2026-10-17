@@ -134,6 +134,97 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Vereenvoudig: 5/(3x) - 1/(4x) + 1/(6x), en skryf die antwoord as 'n enkele breuk oor 'n noemer van 12x. Gee die teller.", answer: "19", topic: "Algebra" },
       ]
     },
+    {
+      id: 701,
+      chapter: 7,
+      name: "Algebraïese taal",
+      fullName: "Terme, koëffisiënte, konstantes, eksponente en gelyksoortige terme",
+      lesson: {
+        heading: "Algebraïese taal",
+        sub: "Hoofstuk 7 · Onderwerp 2",
+        body: `
+<p>Algebra het sy eie woordeskat. As jy die woorde ken, kan jy opdragte volg soos "versamel gelyksoortige terme" of "gee die koëffisiënt van x".</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Sleutelwoorde</div>
+<p>In <span class="math">5x² − 3xy + 7</span>:<br><strong>Terme</strong> word deur + en − geskei: 5x², −3xy en 7.<br><strong>Koëffisiënt</strong>: die getal voor 'n veranderlike. Die koëffisiënt van x² is 5, van xy is −3.<br><strong>Konstante</strong>: 'n term sonder 'n veranderlike, hier 7.<br><strong>Eksponent</strong>: die klein verhewe getal; in 5x² is die eksponent 2.<br><strong>Gelyksoortige terme</strong> het presies dieselfde veranderlikes met dieselfde eksponente: 4a²b en −a²b is gelyksoortig; 4a²b en 4ab² is nie.<br><strong>Monoom</strong>: een term. <strong>Binoom</strong>: twee terme. <strong>Drieterm</strong>: drie terme.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: versamel gelyksoortige terme</div>
+  <div class="example-step"><span class="step-num">1</span><span>3x² + 5x − x² + 2 − 8x</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>= (3x² − x²) + (5x − 8x) + 2</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>= <strong>2x² − 3x + 2</strong>, 'n drieterm.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Volgens konvensie skryf ons eers die getal, dan die veranderlikes in alfabetiese volgorde, en die terme met die hoogste eksponent eerste: skryf 3ab, nie b3a nie.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Wat is die koëffisiënt van x in 4x² − 7x + 2?", "answer": "-7", "topic": "Algebraïese taal"},
+        {"type": "mc", "text": "Watter paar is gelyksoortige terme?", "options": ["3x²y and 3xy²", "5a and 5b", "−2pq and 7qp", "4m² and 4m"], "answer": 2, "topic": "Algebraïese taal"},
+        {"type": "mc", "text": "x² − 9 is 'n:", "options": ["monoom", "binoom", "drieterm", "konstante"], "answer": 1, "topic": "Algebraïese taal"},
+        {"type": "mc", "text": "Vereenvoudig 6a − 2b − 4a + 5b:", "options": ["2a + 3b", "10a + 3b", "2a − 7b", "5ab"], "answer": 0, "topic": "Algebraïese taal"},
+        {"type": "input", "text": "Hoeveel terme het 3x³ − x² + 4x − 1?", "answer": "4", "topic": "Algebraïese taal"},
+        {"type": "mc", "text": "Vereenvoudig 2x² + 3x − 5x² + x:", "options": ["−3x² + 3x", "7x² + 4x", "−3x⁴ + 4x", "−3x² + 4x"], "answer": 3, "topic": "Algebraïese taal"},
+      ]
+    },
+    {
+      id: 702,
+      chapter: 7,
+      name: "Deel, vervang en wortels van terme",
+      fullName: "Deel deur monome, vervanging, en kwadrate, derdemagte en wortels van enkelterme",
+      lesson: {
+        heading: "Deel, vervang en wortels van terme",
+        sub: "Hoofstuk 7 · Onderwerp 3",
+        body: `
+<p>Om 'n uitdrukking deur 'n monoom te deel, deel <em>elke</em> term daardeur. Om te vervang, plaas die waarde tussen hakies oral waar die veranderlike voorkom.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: deel deur 'n monoom</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(12x³ − 8x² + 4x) ÷ 4x</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">= 12x³/4x − 8x²/4x + 4x/4x = 3x² − 2x + 1</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: vervanging</div>
+  <div class="example-step"><span class="step-num">1</span><span>Bepaal <span class="math">2a² − 3ab</span> wanneer a = −2 en b = 5.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">2(−2)² − 3(−2)(5) = 2(4) + 30 = 38</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: wortels van enkelterme</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">√(25x⁴) = 5x²</span> want (5x²)² = 25x⁴.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">∛(−8a⁶) = −2a²</span> want (−2a²)³ = −8a⁶.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">(3y³)² = 9y⁶</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Hakies maak saak wanneer jy negatiewe getalle vervang: as x = −3, dan x² = (−3)² = 9, maar −x² = −9.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "(15x⁴ − 10x²) ÷ 5x² =", "options": ["3x² − 10x²", "3x² − 2", "3x² − 2x", "10x²"], "answer": 1, "topic": "Deel, vervang en wortels van terme"},
+        {"type": "input", "text": "Bepaal 3x² − 2x wanneer x = −2.", "answer": "16", "topic": "Deel, vervang en wortels van terme"},
+        {"type": "mc", "text": "√(49a⁶) =", "options": ["7a²", "49a³", "7a³", "7a⁴"], "answer": 2, "topic": "Deel, vervang en wortels van terme"},
+        {"type": "mc", "text": "(−2x³)³ =", "options": ["−8x⁹", "8x⁹", "−6x⁹", "−8x⁶"], "answer": 0, "topic": "Deel, vervang en wortels van terme"},
+        {"type": "input", "text": "Bepaal a² − b² wanneer a = 5 en b = −3.", "answer": "16", "topic": "Deel, vervang en wortels van terme"},
+        {"type": "mc", "text": "(8a³b − 4ab²) ÷ (−4ab) =", "options": ["2a² − b", "−2a² − b", "2a² + b", "−2a² + b"], "answer": 3, "topic": "Deel, vervang en wortels van terme"},
+      ]
+    },
+    {
+      id: 703,
+      chapter: 7,
+      name: "Hfst 7 Eksamenfokus",
+      fullName: "Eksamenoefening: algebraïese uitdrukkings",
+      lesson: {
+        heading: "Hfst 7 Eksamenfokus",
+        sub: "Hoofstuk 7 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Brei eers hakies uit en versamel dan gelyksoortige terme.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Brei uit (x + 4)(x − 3):", "options": ["x² + x − 12", "x² − x − 12", "x² + 7x − 12", "x² − 12"], "answer": 0, "topic": "Hfst 7 Eksamenfokus"},
+        {"type": "mc", "text": "Brei uit (2a − 5)²:", "options": ["4a² − 25", "4a² + 25", "4a² − 20a + 25", "2a² − 20a + 25"], "answer": 2, "topic": "Hfst 7 Eksamenfokus"},
+        {"type": "mc", "text": "Vereenvoudig 3(x − 2) − 2(x − 5):", "options": ["x − 16", "x + 4", "x − 4", "5x + 4"], "answer": 1, "topic": "Hfst 7 Eksamenfokus"},
+        {"type": "input", "text": "Bepaal (2x + 1)(x − 4) wanneer x = 3.", "answer": "-7", "topic": "Hfst 7 Eksamenfokus"},
+        {"type": "mc", "text": "Brei uit −2x(3x² − x + 4):", "options": ["−6x³ − 2x² − 8x", "6x³ + 2x² + 8x", "−6x² + 2x − 8", "−6x³ + 2x² − 8x"], "answer": 3, "topic": "Hfst 7 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 7, chapterName: "Algebraïese Uitdrukkings (Vereenvoudiging)",
@@ -169,6 +260,32 @@ MathMagician.registerChapter(7, {
           },
         ]
       },
+      {
+        "name": "Deel, vervang en wortels van terme",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Vereenvoudig:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(18a⁴ − 12a³ + 6a²) ÷ 6a²",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "√(64x⁸y²) + ∛(27x¹²y³)  (x, y > 0)",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Bepaal die waarde van 2p² − pq + q² wanneer p = −1 en q = 4.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -191,6 +308,26 @@ MathMagician.registerChapter(7, {
           { num: "Q2b", ans: "x + 5, x ≠ 5", note: "(x+5)(x-5)/(x-5) = x+5" },
           { num: "Q2c", ans: "14/(15x), x ≠ 0", note: "KGN=15x: 20/(15x) - 6/(15x) = 14/(15x)" },
           { num: "Q2d", ans: "2(x+2)/(x+3), x ≠ 2, x ≠ -3", note: "2(x+2)(x-2)/(x+3)(x-2) = 2(x+2)/(x+3)" },
+        ]
+      },
+      {
+        "name": "Deel, vervang en wortels van terme",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "3a² − 2a + 1",
+            "note": "Deel elke term deur 6a²"
+          },
+          {
+            "num": "Q3b",
+            "ans": "8x⁴y + 3x⁴y = 11x⁴y",
+            "note": "√64 = 8, √x⁸ = x⁴; ∛27 = 3, ∛x¹² = x⁴"
+          },
+          {
+            "num": "Q3c",
+            "ans": "22",
+            "note": "2(1) − (−1)(4) + 16 = 2 + 4 + 16"
+          }
         ]
       },
     ]

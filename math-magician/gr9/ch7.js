@@ -134,6 +134,97 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Simplify: 5/(3x) - 1/(4x) + 1/(6x), writing the answer as a single fraction over a denominator of 12x. Give the numerator.", answer: "19", topic: "Algebra" },
       ]
     },
+    {
+      id: 701,
+      chapter: 7,
+      name: "Algebraic language",
+      fullName: "Terms, coefficients, constants, exponents and like terms",
+      lesson: {
+        heading: "Algebraic language",
+        sub: "Chapter 7 · Topic 2",
+        body: `
+<p>Algebra has its own vocabulary. Knowing the words helps you follow instructions like "collect like terms" or "give the coefficient of x".</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Key words</div>
+<p>In <span class="math">5x² − 3xy + 7</span>:<br><strong>Terms</strong> are separated by + and −: 5x², −3xy and 7.<br><strong>Coefficient</strong>: the number in front of a variable. The coefficient of x² is 5, of xy is −3.<br><strong>Constant</strong>: a term with no variable, here 7.<br><strong>Exponent</strong>: the small raised number; in 5x² the exponent is 2.<br><strong>Like terms</strong> have exactly the same variables with the same exponents: 4a²b and −a²b are like; 4a²b and 4ab² are not.<br><strong>Monomial</strong>: one term. <strong>Binomial</strong>: two terms. <strong>Trinomial</strong>: three terms.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: collect like terms</div>
+  <div class="example-step"><span class="step-num">1</span><span>3x² + 5x − x² + 2 − 8x</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>= (3x² − x²) + (5x − 8x) + 2</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>= <strong>2x² − 3x + 2</strong>, a trinomial.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>By convention we write the number first, then the variables in alphabetical order, and the terms with the highest exponent first: write 3ab, not b3a.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "What is the coefficient of x in 4x² − 7x + 2?", "answer": "-7", "topic": "Algebraic language"},
+        {"type": "mc", "text": "Which pair are like terms?", "options": ["3x²y and 3xy²", "5a and 5b", "−2pq and 7qp", "4m² and 4m"], "answer": 2, "topic": "Algebraic language"},
+        {"type": "mc", "text": "x² − 9 is a:", "options": ["monomial", "binomial", "trinomial", "constant"], "answer": 1, "topic": "Algebraic language"},
+        {"type": "mc", "text": "Simplify 6a − 2b − 4a + 5b:", "options": ["2a + 3b", "10a + 3b", "2a − 7b", "5ab"], "answer": 0, "topic": "Algebraic language"},
+        {"type": "input", "text": "How many terms does 3x³ − x² + 4x − 1 have?", "answer": "4", "topic": "Algebraic language"},
+        {"type": "mc", "text": "Simplify 2x² + 3x − 5x² + x:", "options": ["−3x² + 3x", "7x² + 4x", "−3x⁴ + 4x", "−3x² + 4x"], "answer": 3, "topic": "Algebraic language"},
+      ]
+    },
+    {
+      id: 702,
+      chapter: 7,
+      name: "Dividing, substituting and roots of terms",
+      fullName: "Dividing by monomials, substitution, and squares, cubes and roots of single terms",
+      lesson: {
+        heading: "Dividing, substituting and roots of terms",
+        sub: "Chapter 7 · Topic 3",
+        body: `
+<p>To divide an expression by a monomial, divide <em>every</em> term by it. To substitute, put the value in brackets wherever the variable appears.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: divide by a monomial</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">(12x³ − 8x² + 4x) ÷ 4x</span></span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">= 12x³/4x − 8x²/4x + 4x/4x = 3x² − 2x + 1</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: substitution</div>
+  <div class="example-step"><span class="step-num">1</span><span>Find <span class="math">2a² − 3ab</span> when a = −2 and b = 5.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">2(−2)² − 3(−2)(5) = 2(4) + 30 = 38</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: roots of single terms</div>
+  <div class="example-step"><span class="step-num">1</span><span><span class="math">√(25x⁴) = 5x²</span> because (5x²)² = 25x⁴.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">∛(−8a⁶) = −2a²</span> because (−2a²)³ = −8a⁶.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">(3y³)² = 9y⁶</span></span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Brackets matter when you substitute negatives: if x = −3, then x² = (−3)² = 9, but −x² = −9.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "(15x⁴ − 10x²) ÷ 5x² =", "options": ["3x² − 10x²", "3x² − 2", "3x² − 2x", "10x²"], "answer": 1, "topic": "Dividing, substituting and roots of terms"},
+        {"type": "input", "text": "Find 3x² − 2x when x = −2.", "answer": "16", "topic": "Dividing, substituting and roots of terms"},
+        {"type": "mc", "text": "√(49a⁶) =", "options": ["7a²", "49a³", "7a³", "7a⁴"], "answer": 2, "topic": "Dividing, substituting and roots of terms"},
+        {"type": "mc", "text": "(−2x³)³ =", "options": ["−8x⁹", "8x⁹", "−6x⁹", "−8x⁶"], "answer": 0, "topic": "Dividing, substituting and roots of terms"},
+        {"type": "input", "text": "Find a² − b² when a = 5 and b = −3.", "answer": "16", "topic": "Dividing, substituting and roots of terms"},
+        {"type": "mc", "text": "(8a³b − 4ab²) ÷ (−4ab) =", "options": ["2a² − b", "−2a² − b", "2a² + b", "−2a² + b"], "answer": 3, "topic": "Dividing, substituting and roots of terms"},
+      ]
+    },
+    {
+      id: 703,
+      chapter: 7,
+      name: "Ch 7 Exam focus",
+      fullName: "Exam practice: algebraic expressions",
+      lesson: {
+        heading: "Ch 7 Exam focus",
+        sub: "Chapter 7 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Expand brackets first, then collect like terms.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Expand (x + 4)(x − 3):", "options": ["x² + x − 12", "x² − x − 12", "x² + 7x − 12", "x² − 12"], "answer": 0, "topic": "Ch 7 Exam focus"},
+        {"type": "mc", "text": "Expand (2a − 5)²:", "options": ["4a² − 25", "4a² + 25", "4a² − 20a + 25", "2a² − 20a + 25"], "answer": 2, "topic": "Ch 7 Exam focus"},
+        {"type": "mc", "text": "Simplify 3(x − 2) − 2(x − 5):", "options": ["x − 16", "x + 4", "x − 4", "5x + 4"], "answer": 1, "topic": "Ch 7 Exam focus"},
+        {"type": "input", "text": "Find (2x + 1)(x − 4) when x = 3.", "answer": "-7", "topic": "Ch 7 Exam focus"},
+        {"type": "mc", "text": "Expand −2x(3x² − x + 4):", "options": ["−6x³ − 2x² − 8x", "6x³ + 2x² + 8x", "−6x² + 2x − 8", "−6x³ + 2x² − 8x"], "answer": 3, "topic": "Ch 7 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 7, chapterName: "Algebraic Expressions (Simplification)",
@@ -169,6 +260,32 @@ MathMagician.registerChapter(7, {
           },
         ]
       },
+      {
+        "name": "Dividing, substituting and roots of terms",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Simplify:",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "(18a⁴ − 12a³ + 6a²) ÷ 6a²",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "√(64x⁸y²) + ∛(27x¹²y³)  (x, y > 0)",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Find the value of 2p² − pq + q² when p = −1 and q = 4.",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -191,6 +308,26 @@ MathMagician.registerChapter(7, {
           { num: "Q2b", ans: "x + 5, x ≠ 5", note: "(x+5)(x-5)/(x-5) = x+5" },
           { num: "Q2c", ans: "14/(15x), x ≠ 0", note: "LCD=15x: 20/(15x) - 6/(15x) = 14/(15x)" },
           { num: "Q2d", ans: "2(x+2)/(x+3), x ≠ 2, x ≠ -3", note: "2(x+2)(x-2)/(x+3)(x-2) = 2(x+2)/(x+3)" },
+        ]
+      },
+      {
+        "name": "Dividing, substituting and roots of terms",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "3a² − 2a + 1",
+            "note": "Divide each term by 6a²"
+          },
+          {
+            "num": "Q3b",
+            "ans": "8x⁴y + 3x⁴y = 11x⁴y",
+            "note": "√64 = 8, √x⁸ = x⁴; ∛27 = 3, ∛x¹² = x⁴"
+          },
+          {
+            "num": "Q3c",
+            "ans": "22",
+            "note": "2(1) − (−1)(4) + 16 = 2 + 4 + 16"
+          }
         ]
       },
     ]

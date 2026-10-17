@@ -122,6 +122,97 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "Patroon A het algemene term Tₙ = 5n - 2. Patroon B het algemene term Tₙ = 3n + 8. Vir watter waarde van n gee die twee patrone gelyke terme?", answer: "5", topic: "Patrone" },
       ]
     },
+    {
+      id: 501,
+      chapter: 5,
+      name: "Meetkundige patrone",
+      fullName: "Meetkundige patrone met 'n konstante verhouding",
+      lesson: {
+        heading: "Meetkundige patrone",
+        sub: "Hoofstuk 5 · Onderwerp 2",
+        body: `
+<p>In 'n <strong>meetkundige patroon</strong> is elke term die vorige term <em>vermenigvuldig</em> met dieselfde getal, die <strong>konstante verhouding</strong> r. In 'n lineêre patroon <em>tel</em> jy elke keer dieselfde getal by.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Die reël vind</div>
+<p>Konstante verhouding: r = T₂ ÷ T₁ = T₃ ÷ T₂.<br>Algemene term: <span class="math">Tₙ = a × rⁿ⁻¹</span>, waar a die eerste term is.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 3 ; 6 ; 12 ; 24 ; …</div>
+  <div class="example-step"><span class="step-num">1</span><span>6 ÷ 3 = 2, 12 ÷ 6 = 2: die verhouding is konstant, r = 2, en a = 3.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">Tₙ = 3 × 2ⁿ⁻¹</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">T₈ = 3 × 2⁷ = 3 × 128 = 384</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n halveringspatroon</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Bal word van 64 cm laat val. Elke bons bereik die helfte van die vorige hoogte: 64 ; 32 ; 16 ; …</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>r = 1/2, so die 5de hoogte is 64 × (1/2)⁴ = 64 ÷ 16 = <strong>4 cm</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Toets eers die verskille. Konstante verskil: lineêr (Tₙ = dn + c). Konstante verhouding: meetkundig. Nie een nie: soek kwadrate, derdemagte of 'n ander reël.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bepaal die volgende term: 5 ; 15 ; 45 ; …", "answer": "135", "topic": "Meetkundige patrone"},
+        {"type": "input", "text": "Wat is die konstante verhouding van 96 ; 48 ; 24 ; 12 ; …? Gee 'n breuk of desimale breuk.", "answer": "1/2", "altAnswers": ["0.5", "0,5"], "topic": "Meetkundige patrone"},
+        {"type": "mc", "text": "Watter patroon is meetkundig?", "options": ["2 ; 5 ; 8 ; 11", "1 ; 4 ; 9 ; 16", "2 ; 6 ; 18 ; 54", "10 ; 8 ; 6 ; 4"], "answer": 2, "topic": "Meetkundige patrone"},
+        {"type": "input", "text": "Tₙ = 2 × 3ⁿ⁻¹. Bereken T₅.", "answer": "162", "topic": "Meetkundige patrone"},
+        {"type": "mc", "text": "Die algemene term van 4 ; 8 ; 16 ; 32 ; … is:", "options": ["Tₙ = 4n", "Tₙ = 4 × 2ⁿ⁻¹", "Tₙ = 2ⁿ", "Tₙ = 4n + 4"], "answer": 1, "topic": "Meetkundige patrone"},
+        {"type": "input", "text": "'n Bakteriekolonie verdubbel elke uur. Dit begin met 50 bakterieë. Hoeveel is daar na 6 uur?", "answer": "3200", "topic": "Meetkundige patrone"},
+      ]
+    },
+    {
+      id: 502,
+      chapter: 5,
+      name: "Patrone uit prente",
+      fullName: "Patrone uit prente en tabelle met 'n algemene reël beskryf",
+      lesson: {
+        heading: "Patrone uit prente",
+        sub: "Hoofstuk 5 · Onderwerp 3",
+        body: `
+<p>Baie patrone word as prente gewys: vuurhoutjies, teëls of kolletjies. Tel elke prent, plaas die tellings in 'n tabel, en vind dan die reël.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":110,"pad":16,"view":[-0.3,-1,9.3,1.3],"pts":{"b0_0":[0,0],"t0_0":[0,1],"b0_1":[1,0],"t0_1":[1,1],"b2.5_0":[2.5,0],"t2.5_0":[2.5,1],"b2.5_1":[3.5,0],"t2.5_1":[3.5,1],"b2.5_2":[4.5,0],"t2.5_2":[4.5,1],"b6.0_0":[6.0,0],"t6.0_0":[6.0,1],"b6.0_1":[7.0,0],"t6.0_1":[7.0,1],"b6.0_2":[8.0,0],"t6.0_2":[8.0,1],"b6.0_3":[9.0,0],"t6.0_3":[9.0,1]},"nolab":["b0_0","t0_0","b0_1","t0_1","b2.5_0","t2.5_0","b2.5_1","t2.5_1","b2.5_2","t2.5_2","b6.0_0","t6.0_0","b6.0_1","t6.0_1","b6.0_2","t6.0_2","b6.0_3","t6.0_3"],"seg":[["b0_0","t0_0","or"],["b0_1","t0_1","or"],["b0_0","b0_1","or"],["t0_0","t0_1","or"],["b2.5_0","t2.5_0","or"],["b2.5_1","t2.5_1","or"],["b2.5_2","t2.5_2","or"],["b2.5_0","b2.5_1","or"],["t2.5_0","t2.5_1","or"],["b2.5_1","b2.5_2","or"],["t2.5_1","t2.5_2","or"],["b6.0_0","t6.0_0","or"],["b6.0_1","t6.0_1","or"],["b6.0_2","t6.0_2","or"],["b6.0_3","t6.0_3","or"],["b6.0_0","b6.0_1","or"],["t6.0_0","t6.0_1","or"],["b6.0_1","b6.0_2","or"],["t6.0_1","t6.0_2","or"],["b6.0_2","b6.0_3","or"],["t6.0_2","t6.0_3","or"]],"txt":[[0.5,-0.7,"4","mu"],[3.5,-0.7,"7","mu"],[7.5,-0.7,"10","mu"]],"cap":"1, 2 en 3 vierkante het 4, 7 en 10 vuurhoutjies nodig."}'></div>
+<div class="math-block">Vierkante (n)      1   2   3   4
+Vuurhoutjies (Tₙ)  4   7  10  13</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: vind en gebruik die reël</div>
+  <div class="example-step"><span class="step-num">1</span><span>Die verskil is elke keer 3, so Tₙ = 3n + c. Met n = 1: 3 + c = 4, so c = 1.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Reël: <span class="math">Tₙ = 3n + 1</span>. Dit maak sin: elke nuwe vierkant voeg 3 vuurhoutjies by die eerste een.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Vuurhoutjies vir 50 vierkante: T₅₀ = 3 × 50 + 1 = <strong>151</strong>.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Watter prent gebruik 100 vuurhoutjies? 3n + 1 = 100, so 3n = 99 en <strong>n = 33</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Om die posisie n van 'n gegewe term te vind, stel die reël gelyk aan die term en los op. As n nie 'n heelgetal is nie, is die term nie in die patroon nie.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Vuurhoutjievierkante in 'n ry gebruik 4 ; 7 ; 10 ; … vuurhoutjies. Hoeveel vuurhoutjies is nodig vir 20 vierkante?", "answer": "61", "topic": "Patrone uit prente"},
+        {"type": "mc", "text": "'n Teëlpatroon het 5 ; 9 ; 13 ; 17 ; … teëls. Die reël is:", "options": ["Tₙ = 4n + 1", "Tₙ = 5n", "Tₙ = n + 4", "Tₙ = 4n + 5"], "answer": 0, "topic": "Patrone uit prente"},
+        {"type": "input", "text": "Tₙ = 6n − 2. Watter term (n) is gelyk aan 100?", "answer": "17", "topic": "Patrone uit prente"},
+        {"type": "mc", "text": "Is 75 'n term van Tₙ = 4n − 1?", "options": ["Ja, n = 19", "Ja, n = 18,5", "Nee, n is nie 'n heelgetal nie", "Nee, die patroon daal"], "answer": 0, "topic": "Patrone uit prente"},
+        {"type": "input", "text": "Kolletjies vorm driehoeke: 1 ; 3 ; 6 ; 10 ; … Wat is die volgende term?", "answer": "15", "topic": "Patrone uit prente"},
+        {"type": "input", "text": "'n Tabel: n = 1, 2, 3 gee y = 7, 12, 17. Bepaal y wanneer n = 10.", "answer": "52", "topic": "Patrone uit prente"},
+      ]
+    },
+    {
+      id: 503,
+      chapter: 5,
+      name: "Hfst 5 Eksamenfokus",
+      fullName: "Eksamenoefening: numeriese en meetkundige patrone",
+      lesson: {
+        heading: "Hfst 5 Eksamenfokus",
+        sub: "Hoofstuk 5 · Onderwerp 4",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Besluit eers of die patroon bytel (lineêr) of vermenigvuldig (meetkundig).</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Bepaal T₁₀ van 2 ; 9 ; 16 ; 23 ; …", "answer": "65", "topic": "Hfst 5 Eksamenfokus"},
+        {"type": "input", "text": "Bepaal die volgende term: 1 ; −2 ; 4 ; −8 ; …", "answer": "16", "topic": "Hfst 5 Eksamenfokus"},
+        {"type": "mc", "text": "Die reël vir 1 ; 4 ; 9 ; 16 ; … is:", "options": ["Tₙ = 3n + 1", "Tₙ = 4n", "Tₙ = n²", "Tₙ = 2ⁿ"], "answer": 2, "topic": "Hfst 5 Eksamenfokus"},
+        {"type": "input", "text": "Tₙ = 50 − 3n. Bereken T₂₀.", "answer": "-10", "topic": "Hfst 5 Eksamenfokus"},
+        {"type": "input", "text": "'n Meetkundige patroon het T₁ = 81 en r = 1/3. Bereken T₄.", "answer": "3", "topic": "Hfst 5 Eksamenfokus"},
+        {"type": "input", "text": "Bepaal die ontbrekende term: 7 ; 11 ; __ ; 19 ; 23", "answer": "15", "topic": "Hfst 5 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 5, chapterName: "Numeriese en Meetkundige Patrone",
@@ -163,6 +254,32 @@ MathMagician.registerChapter(5, {
           },
         ]
       },
+      {
+        "name": "Patrone uit prente",
+        "questions": [
+          {
+            "num": "4",
+            "text": "'n Patroon van tafels en stoele: 1 tafel sit 4, 2 tafels in 'n ry sit 6, 3 tafels sit 8.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Skryf die algemene reël vir die aantal stoele neer.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "Hoeveel stoele pas om 25 tafels?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "Hoeveel tafels is nodig vir 60 mense?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -185,6 +302,26 @@ MathMagician.registerChapter(5, {
           { num: "Q3a", ans: "Tₙ = 4n + 1", note: "a = 5, d = 4; Tₙ = 5 + (n-1)4 = 4n + 1" },
           { num: "Q3b", ans: "61 vuurhoutjies", note: "T15 = 4(15) + 1 = 61" },
           { num: "Q3c", ans: "Ja — 20 vyfhoeke: 4n+1 = 81 → n = 20", note: "n = 20, 'n natuurlike getal" },
+        ]
+      },
+      {
+        "name": "Patrone uit prente",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Tₙ = 2n + 2",
+            "note": "Verskil 2; 2(1) + c = 4, c = 2"
+          },
+          {
+            "num": "Q4b",
+            "ans": "52 stoele",
+            "note": "2 × 25 + 2"
+          },
+          {
+            "num": "Q4c",
+            "ans": "29 tafels",
+            "note": "2n + 2 = 60, n = 29"
+          }
         ]
       },
     ]

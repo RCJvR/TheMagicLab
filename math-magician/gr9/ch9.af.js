@@ -162,6 +162,103 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "'n Reghoek het oppervlakte 40 cm² en sy lengte is 3 cm meer as sy breedte. Bepaal die breedte (in cm).", answer: "5", topic: "Vergelykings" },
       ]
     },
+    {
+      id: 901,
+      chapter: 9,
+      name: "Vergelykings met hakies en breuke",
+      fullName: "Lineêre vergelykings met hakies en breuke oplos",
+      lesson: {
+        heading: "Vergelykings met hakies en breuke",
+        sub: "Hoofstuk 9 · Onderwerp 3",
+        body: `
+<p>Maak die vergelyking eenvoudiger voordat jy oplos: verwyder hakies, en vermenigvuldig elke term met die KGN om van breuke ontslae te raak.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: hakies</div>
+  <div class="example-step"><span class="step-num">1</span><span>3(x − 4) − 2(x + 1) = 5</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>3x − 12 − 2x − 2 = 5</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>x − 14 = 5, so <strong>x = 19</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: breuke</div>
+  <div class="example-step"><span class="step-num">1</span><span>x/3 + (x − 1)/4 = 5. Die KGN van 3 en 4 is 12.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Vermenigvuldig elke term met 12: 4x + 3(x − 1) = 60</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>4x + 3x − 3 = 60, 7x = 63, <strong>x = 9</strong></span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Toets: 9/3 + 8/4 = 3 + 2 = 5 ✓</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Vermenigvuldig ELKE term met die KGN, ook die terme sonder 'n breuk. Sit 'n hakie om 'n teller met twee terme.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Los op vir x: 2(x + 3) = 5x − 9", "answer": "5", "topic": "Vergelykings met hakies en breuke"},
+        {"type": "input", "text": "Los op vir x: x/4 = 7", "answer": "28", "topic": "Vergelykings met hakies en breuke"},
+        {"type": "input", "text": "Los op vir x: x/2 + x/3 = 10", "answer": "12", "topic": "Vergelykings met hakies en breuke"},
+        {"type": "input", "text": "Los op vir x: (x − 2)/5 = (x + 1)/8", "answer": "7", "topic": "Vergelykings met hakies en breuke"},
+        {"type": "input", "text": "Los op vir x: 4 − 3(2x − 1) = −5", "answer": "2", "topic": "Vergelykings met hakies en breuke"},
+        {"type": "input", "text": "Los op vir x: (2x + 1)/3 − 1 = x/2", "answer": "4", "topic": "Vergelykings met hakies en breuke"},
+      ]
+    },
+    {
+      id: 902,
+      chapter: 9,
+      name: "Woordprobleme",
+      fullName: "Vergelykings uit woordprobleme opstel en oplos",
+      lesson: {
+        heading: "Woordprobleme",
+        sub: "Hoofstuk 9 · Onderwerp 4",
+        body: `
+<p>Om 'n woordprobleem op te los: kies 'n letter vir die onbekende, skryf alles anders in terme daarvan, vorm 'n vergelyking, los dit op, en beantwoord die vraag in woorde.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: opeenvolgende getalle</div>
+  <div class="example-step"><span class="step-num">1</span><span>Die som van drie opeenvolgende getalle is 87. Bepaal hulle.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Laat die getalle x, x + 1 en x + 2 wees: x + x + 1 + x + 2 = 87</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>3x + 3 = 87, 3x = 84, x = 28. Die getalle is <strong>28, 29 en 30</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: ouderdomme</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Ma is drie keer so oud as haar seun. Oor 12 jaar sal sy twee keer so oud wees. Hoe oud is hulle nou?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Seun: x, ma: 3x. Oor 12 jaar: 3x + 12 = 2(x + 12)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>3x + 12 = 2x + 24, x = 12. Die seun is <strong>12</strong> en die ma <strong>36</strong>.</span></div>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"view":[0,0,12,6],"pts":{"A":[0,0],"B":[12,0],"C":[12,6],"D":[0,6]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"seg":[["A","B","ln",null,"2x"],["B","C","ln",null,"x"],["C","D"],["D","A"]],"cap":"Omtrek 2x + x + 2x + x = 6x"}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Voorbeeld: 'n reghoek</div>
+  <div class="example-step"><span class="step-num">1</span><span>'n Reghoek is twee keer so lank as wat dit breed is. Sy omtrek is 54 cm. Bepaal sy lengte.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>6x = 54, x = 9. Die lengte is 2x = <strong>18 cm</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Sluit af met 'n sin wat die vraag beantwoord, en toets die antwoord in die oorspronklike storie, nie net in jou vergelyking nie.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Die som van twee opeenvolgende ewe getalle is 70. Wat is die kleiner getal?", "answer": "34", "topic": "Woordprobleme"},
+        {"type": "input", "text": "'n Getal word met 4 vermenigvuldig en dan word 7 afgetrek. Die antwoord is 45. Wat is die getal?", "answer": "13", "topic": "Woordprobleme"},
+        {"type": "input", "text": "'n Pa is 4 keer so oud as sy dogter. Oor 6 jaar sal hy 3 keer so oud wees. Hoe oud is die dogter nou?", "answer": "12", "topic": "Woordprobleme"},
+        {"type": "input", "text": "'n Reghoek se lengte is 5 cm meer as sy breedte. Sy omtrek is 50 cm. Wat is sy breedte? (cm)", "answer": "10", "topic": "Woordprobleme"},
+        {"type": "input", "text": "Thandi het R5- en R2-munte, altesaam 20 munte, wat R67 werd is. Hoeveel R5-munte het sy?", "answer": "9", "topic": "Woordprobleme"},
+        {"type": "input", "text": "Kaartjies kos R45 vir volwassenes en R25 vir kinders. 'n Groep van 12 het R420 betaal. Hoeveel volwassenes was daar?", "answer": "6", "topic": "Woordprobleme"},
+      ]
+    },
+    {
+      id: 903,
+      chapter: 9,
+      name: "Hfst 9 Eksamenfokus",
+      fullName: "Eksamenoefening: algebraïese vergelykings",
+      lesson: {
+        heading: "Hfst 9 Eksamenfokus",
+        sub: "Hoofstuk 9 · Onderwerp 5",
+        body: `
+<p>Hierdie vrae meng die hele hoofstuk, soos 'n toets doen. Toets elke oplossing deur dit terug te vervang in die oorspronklike vergelyking.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Skryf die reël of formule neer wat jy gebruik, vervang dan, en gee die antwoord met eenhede. Punte word vir elke stap gegee.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Los op vir x: 7x − 4 = 3x + 20", "answer": "6", "topic": "Hfst 9 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: x² − 5x = 0. Gee albei oplossings geskei deur \"of\".", "answer": "0 or 5", "altAnswers": ["0 of 5", "5 or 0", "5 of 0"], "topic": "Hfst 9 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: (x − 3)(x + 7) = 0. Gee albei oplossings geskei deur \"of\".", "answer": "3 or -7", "altAnswers": ["3 of -7", "-7 or 3", "-7 of 3"], "topic": "Hfst 9 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: 2ˣ = 32", "answer": "5", "topic": "Hfst 9 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: x² = 49, x > 0", "answer": "7", "topic": "Hfst 9 Eksamenfokus"},
+        {"type": "input", "text": "Los op vir x: 3(x − 2) = 2(x + 4)", "answer": "14", "topic": "Hfst 9 Eksamenfokus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 9, chapterName: "Algebraïese Vergelykings",
@@ -196,6 +293,32 @@ MathMagician.registerChapter(9, {
           },
         ]
       },
+      {
+        "name": "Woordprobleme",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Vorm 'n vergelyking en los dit op.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Die omtrek van 'n driehoek is 48 cm. Die sye is x, x + 4 en 2x. Bepaal die sye.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Sipho is 5 jaar ouer as Lindiwe. Die som van hul ouderdomme is 37. Hoe oud is elkeen?",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Los op: (x + 2)/3 − (x − 1)/4 = 2",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -217,6 +340,26 @@ MathMagician.registerChapter(9, {
           { num: "Q2b", ans: "x = ±4", note: "(x+4)(x-4)=0" },
           { num: "Q2c", ans: "x = 3/2 of x = -5", note: "(2x-3)(x+5)=0" },
           { num: "Q2d", ans: "x = 7 of x = -2", note: "x²-5x-14=0 → (x-7)(x+2)=0" },
+        ]
+      },
+      {
+        "name": "Woordprobleme",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "11 cm, 15 cm en 22 cm",
+            "note": "4x + 4 = 48, x = 11"
+          },
+          {
+            "num": "Q3b",
+            "ans": "Lindiwe 16, Sipho 21",
+            "note": "x + x + 5 = 37, x = 16"
+          },
+          {
+            "num": "Q3c",
+            "ans": "x = 13",
+            "note": "4(x + 2) − 3(x − 1) = 24; x + 11 = 24"
+          }
         ]
       },
     ]

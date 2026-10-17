@@ -162,6 +162,103 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "A rectangle has area 40 cm² and its length is 3 cm more than its width. Find the width (in cm).", answer: "5", topic: "Equations" },
       ]
     },
+    {
+      id: 901,
+      chapter: 9,
+      name: "Equations with brackets and fractions",
+      fullName: "Solving linear equations with brackets and fractions",
+      lesson: {
+        heading: "Equations with brackets and fractions",
+        sub: "Chapter 9 · Topic 3",
+        body: `
+<p>Before you solve, make the equation simpler: remove brackets, and multiply every term by the LCD to get rid of fractions.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: brackets</div>
+  <div class="example-step"><span class="step-num">1</span><span>3(x − 4) − 2(x + 1) = 5</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>3x − 12 − 2x − 2 = 5</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>x − 14 = 5, so <strong>x = 19</strong></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: fractions</div>
+  <div class="example-step"><span class="step-num">1</span><span>x/3 + (x − 1)/4 = 5. The LCD of 3 and 4 is 12.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Multiply every term by 12: 4x + 3(x − 1) = 60</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>4x + 3x − 3 = 60, 7x = 63, <strong>x = 9</strong></span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Check: 9/3 + 8/4 = 3 + 2 = 5 ✓</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Multiply EVERY term by the LCD, including the terms with no fraction. Put a bracket around a numerator with two terms.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Solve for x: 2(x + 3) = 5x − 9", "answer": "5", "topic": "Equations with brackets and fractions"},
+        {"type": "input", "text": "Solve for x: x/4 = 7", "answer": "28", "topic": "Equations with brackets and fractions"},
+        {"type": "input", "text": "Solve for x: x/2 + x/3 = 10", "answer": "12", "topic": "Equations with brackets and fractions"},
+        {"type": "input", "text": "Solve for x: (x − 2)/5 = (x + 1)/8", "answer": "7", "topic": "Equations with brackets and fractions"},
+        {"type": "input", "text": "Solve for x: 4 − 3(2x − 1) = −5", "answer": "2", "topic": "Equations with brackets and fractions"},
+        {"type": "input", "text": "Solve for x: (2x + 1)/3 − 1 = x/2", "answer": "4", "topic": "Equations with brackets and fractions"},
+      ]
+    },
+    {
+      id: 902,
+      chapter: 9,
+      name: "Word problems",
+      fullName: "Setting up and solving equations from word problems",
+      lesson: {
+        heading: "Word problems",
+        sub: "Chapter 9 · Topic 4",
+        body: `
+<p>To solve a word problem: choose a letter for the unknown, write everything else in terms of it, form an equation, solve it, and answer the question in words.</p>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: consecutive numbers</div>
+  <div class="example-step"><span class="step-num">1</span><span>The sum of three consecutive numbers is 87. Find them.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Let the numbers be x, x + 1 and x + 2: x + x + 1 + x + 2 = 87</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>3x + 3 = 87, 3x = 84, x = 28. The numbers are <strong>28, 29 and 30</strong>.</span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: ages</div>
+  <div class="example-step"><span class="step-num">1</span><span>A mother is three times as old as her son. In 12 years she will be twice as old. How old are they now?</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Son: x, mother: 3x. In 12 years: 3x + 12 = 2(x + 12)</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>3x + 12 = 2x + 24, x = 12. The son is <strong>12</strong> and the mother <strong>36</strong>.</span></div>
+</div>
+<div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"view":[0,0,12,6],"pts":{"A":[0,0],"B":[12,0],"C":[12,6],"D":[0,6]},"nolab":["A","B","C","D"],"poly":[["A","B","C","D","fl"]],"seg":[["A","B","ln",null,"2x"],["B","C","ln",null,"x"],["C","D"],["D","A"]],"cap":"Perimeter 2x + x + 2x + x = 6x"}'></div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a rectangle</div>
+  <div class="example-step"><span class="step-num">1</span><span>A rectangle is twice as long as it is wide. Its perimeter is 54 cm. Find its length.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>6x = 54, x = 9. The length is 2x = <strong>18 cm</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Finish with a sentence that answers the question, and check the answer in the original story, not just in your equation.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "The sum of two consecutive even numbers is 70. What is the smaller number?", "answer": "34", "topic": "Word problems"},
+        {"type": "input", "text": "A number is multiplied by 4 and then 7 is subtracted. The result is 45. What is the number?", "answer": "13", "topic": "Word problems"},
+        {"type": "input", "text": "A father is 4 times as old as his daughter. In 6 years he will be 3 times as old. How old is the daughter now?", "answer": "12", "topic": "Word problems"},
+        {"type": "input", "text": "A rectangle's length is 5 cm more than its width. Its perimeter is 50 cm. What is its width? (cm)", "answer": "10", "topic": "Word problems"},
+        {"type": "input", "text": "Thandi has R5 and R2 coins, 20 coins in total, worth R67. How many R5 coins does she have?", "answer": "9", "topic": "Word problems"},
+        {"type": "input", "text": "Tickets cost R45 for adults and R25 for children. A group of 12 paid R420. How many adults were there?", "answer": "6", "topic": "Word problems"},
+      ]
+    },
+    {
+      id: 903,
+      chapter: 9,
+      name: "Ch 9 Exam focus",
+      fullName: "Exam practice: algebraic equations",
+      lesson: {
+        heading: "Ch 9 Exam focus",
+        sub: "Chapter 9 · Topic 5",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. Check every solution by substituting it back into the original equation.</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Solve for x: 7x − 4 = 3x + 20", "answer": "6", "topic": "Ch 9 Exam focus"},
+        {"type": "input", "text": "Solve for x: x² − 5x = 0. Give both solutions separated by \"or\".", "answer": "0 or 5", "altAnswers": ["0 of 5", "5 or 0", "5 of 0"], "topic": "Ch 9 Exam focus"},
+        {"type": "input", "text": "Solve for x: (x − 3)(x + 7) = 0. Give both solutions separated by \"or\".", "answer": "3 or -7", "altAnswers": ["3 of -7", "-7 or 3", "-7 of 3"], "topic": "Ch 9 Exam focus"},
+        {"type": "input", "text": "Solve for x: 2ˣ = 32", "answer": "5", "topic": "Ch 9 Exam focus"},
+        {"type": "input", "text": "Solve for x: x² = 49, x > 0", "answer": "7", "topic": "Ch 9 Exam focus"},
+        {"type": "input", "text": "Solve for x: 3(x − 2) = 2(x + 4)", "answer": "14", "topic": "Ch 9 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 9, chapterName: "Algebraic Equations",
@@ -196,6 +293,32 @@ MathMagician.registerChapter(9, {
           },
         ]
       },
+      {
+        "name": "Word problems",
+        "questions": [
+          {
+            "num": "3",
+            "text": "Form an equation and solve it.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "The perimeter of a triangle is 48 cm. The sides are x, x + 4 and 2x. Find the sides.",
+                "marks": 3
+              },
+              {
+                "label": "b)",
+                "text": "Sipho is 5 years older than Lindiwe. The sum of their ages is 37. How old is each?",
+                "marks": 3
+              },
+              {
+                "label": "c)",
+                "text": "Solve (x + 2)/3 − (x − 1)/4 = 2",
+                "marks": 3
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -217,6 +340,26 @@ MathMagician.registerChapter(9, {
           { num: "Q2b", ans: "x = ±4", note: "(x+4)(x-4)=0" },
           { num: "Q2c", ans: "x = 3/2 or x = -5", note: "(2x-3)(x+5)=0" },
           { num: "Q2d", ans: "x = 7 or x = -2", note: "x²-5x-14=0 → (x-7)(x+2)=0" },
+        ]
+      },
+      {
+        "name": "Word problems",
+        "answers": [
+          {
+            "num": "Q3a",
+            "ans": "11 cm, 15 cm and 22 cm",
+            "note": "4x + 4 = 48, x = 11"
+          },
+          {
+            "num": "Q3b",
+            "ans": "Lindiwe 16, Sipho 21",
+            "note": "x + x + 5 = 37, x = 16"
+          },
+          {
+            "num": "Q3c",
+            "ans": "x = 13",
+            "note": "4(x + 2) − 3(x − 1) = 24; x + 11 = 24"
+          }
         ]
       },
     ]

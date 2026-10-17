@@ -381,7 +381,24 @@
     return svg;
   }
 
-  const KINDS = { ftree, geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
+  // ── flow diagram: input → [operation] → … → output ─────────────────
+  function flow(s) {
+    const items = s.items, H = 56, bw = 64, gap = 34, inW = 30;
+    const W = s.w || inW * 2 + (items.length - 2) * bw + (items.length - 1) * gap + 8;
+    const svg = svgRoot(W, H, s.alt), y = H / 2;
+    let x = 4;
+    items.forEach((it, i) => {
+      const last = i === items.length - 1, first = i === 0, w = first || last ? inW : bw;
+      if (!first && !last) svg.appendChild(el('rect', { x, y: y - 16, width: w, height: 32, rx: 6, class: 'mf-fl mf-ln' }));
+      svg.appendChild(el('text', { x: x + w / 2, y: y + 5, class: 'mf-tx' + (first || last ? ' mf-it' : ''), 'text-anchor': 'middle' }, it));
+      if (!last) svg.appendChild(el('line', { x1: x + w + 3, y1: y, x2: x + w + gap - 3, y2: y, class: 'mf-ac', 'marker-end': 'url(#mfArrow)' }));
+      x += w + gap;
+    });
+    addDefs(svg);
+    return svg;
+  }
+
+  const KINDS = { flow, ftree, geo, nl, hist, bar, line: s => bar(s, true), box, tree, venn, solid };
 
   function render(host) {
     if (host.dataset.mfDone) return;

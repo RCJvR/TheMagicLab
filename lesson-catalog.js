@@ -1687,6 +1687,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Numeric patterns",
           "label": "Numeric patterns"
+        },
+        {
+          "value": "Geometric patterns",
+          "label": "Geometric patterns"
+        },
+        {
+          "value": "Patterns from pictures",
+          "label": "Patterns from pictures"
+        },
+        {
+          "value": "Ch 5 Exam focus",
+          "label": "Ch 5 Exam focus"
         }
       ]
     },
@@ -1700,6 +1712,14 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Linear and non-linear functions",
           "label": "Linear and non-linear functions"
+        },
+        {
+          "value": "One relationship, four descriptions",
+          "label": "One relationship, four descriptions"
+        },
+        {
+          "value": "Ch 6 Exam focus",
+          "label": "Ch 6 Exam focus"
         }
       ]
     },
@@ -1709,6 +1729,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Expanding and simplifying",
           "label": "Expanding and simplifying"
+        },
+        {
+          "value": "Algebraic language",
+          "label": "Algebraic language"
+        },
+        {
+          "value": "Dividing, substituting and roots of terms",
+          "label": "Dividing, substituting and roots of terms"
+        },
+        {
+          "value": "Ch 7 Exam focus",
+          "label": "Ch 7 Exam focus"
         }
       ]
     },
@@ -1722,6 +1754,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Difference of squares and trinomials",
           "label": "Difference of squares and trinomials"
+        },
+        {
+          "value": "Trinomials with a common factor",
+          "label": "Trinomials with a common factor"
+        },
+        {
+          "value": "Simplifying algebraic fractions",
+          "label": "Simplifying algebraic fractions"
+        },
+        {
+          "value": "Ch 8 Exam focus",
+          "label": "Ch 8 Exam focus"
         }
       ]
     },
@@ -1735,6 +1779,18 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "Quadratic equations",
           "label": "Quadratic equations"
+        },
+        {
+          "value": "Equations with brackets and fractions",
+          "label": "Equations with brackets and fractions"
+        },
+        {
+          "value": "Word problems",
+          "label": "Word problems"
+        },
+        {
+          "value": "Ch 9 Exam focus",
+          "label": "Ch 9 Exam focus"
         }
       ]
     },

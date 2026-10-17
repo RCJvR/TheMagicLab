@@ -122,6 +122,97 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "Pattern A has general term Tₙ = 5n - 2. Pattern B has general term Tₙ = 3n + 8. For which value of n do the two patterns give equal terms?", answer: "5", topic: "Patterns" },
       ]
     },
+    {
+      id: 501,
+      chapter: 5,
+      name: "Geometric patterns",
+      fullName: "Geometric patterns with a constant ratio",
+      lesson: {
+        heading: "Geometric patterns",
+        sub: "Chapter 5 · Topic 2",
+        body: `
+<p>In a <strong>geometric pattern</strong> each term is the previous term <em>multiplied</em> by the same number, the <strong>constant ratio</strong> r. In a linear pattern you <em>add</em> the same number each time.</p>
+<div class="def-box">
+  <div class="def-box-title">📖 Finding the rule</div>
+<p>Constant ratio: r = T₂ ÷ T₁ = T₃ ÷ T₂.<br>General term: <span class="math">Tₙ = a × rⁿ⁻¹</span>, where a is the first term.</p>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: 3 ; 6 ; 12 ; 24 ; …</div>
+  <div class="example-step"><span class="step-num">1</span><span>6 ÷ 3 = 2, 12 ÷ 6 = 2: the ratio is constant, r = 2, and a = 3.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span><span class="math">Tₙ = 3 × 2ⁿ⁻¹</span></span></div>
+  <div class="example-step"><span class="step-num">3</span><span><span class="math">T₈ = 3 × 2⁷ = 3 × 128 = 384</span></span></div>
+</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: a halving pattern</div>
+  <div class="example-step"><span class="step-num">1</span><span>A ball is dropped from 64 cm. Each bounce reaches half the height of the one before: 64 ; 32 ; 16 ; …</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>r = 1/2, so the 5th height is 64 × (1/2)⁴ = 64 ÷ 16 = <strong>4 cm</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Check differences first. Constant difference: linear (Tₙ = dn + c). Constant ratio: geometric. Neither: look for squares, cubes or another rule.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Find the next term: 5 ; 15 ; 45 ; …", "answer": "135", "topic": "Geometric patterns"},
+        {"type": "input", "text": "What is the constant ratio of 96 ; 48 ; 24 ; 12 ; …? Give a fraction or decimal.", "answer": "1/2", "altAnswers": ["0.5", "0,5"], "topic": "Geometric patterns"},
+        {"type": "mc", "text": "Which pattern is geometric?", "options": ["2 ; 5 ; 8 ; 11", "1 ; 4 ; 9 ; 16", "2 ; 6 ; 18 ; 54", "10 ; 8 ; 6 ; 4"], "answer": 2, "topic": "Geometric patterns"},
+        {"type": "input", "text": "Tₙ = 2 × 3ⁿ⁻¹. Calculate T₅.", "answer": "162", "topic": "Geometric patterns"},
+        {"type": "mc", "text": "The general term of 4 ; 8 ; 16 ; 32 ; … is:", "options": ["Tₙ = 4n", "Tₙ = 4 × 2ⁿ⁻¹", "Tₙ = 2ⁿ", "Tₙ = 4n + 4"], "answer": 1, "topic": "Geometric patterns"},
+        {"type": "input", "text": "A bacteria colony doubles every hour. It starts with 50 bacteria. How many are there after 6 hours?", "answer": "3200", "topic": "Geometric patterns"},
+      ]
+    },
+    {
+      id: 502,
+      chapter: 5,
+      name: "Patterns from pictures",
+      fullName: "Describing patterns from pictures and tables with a general rule",
+      lesson: {
+        heading: "Patterns from pictures",
+        sub: "Chapter 5 · Topic 3",
+        body: `
+<p>Many patterns are shown as pictures: matchsticks, tiles or dots. Count each picture, put the counts in a table, then find the rule.</p>
+<div class="mf-fig" data-fig='{"t":"geo","w":320,"h":110,"pad":16,"view":[-0.3,-1,9.3,1.3],"pts":{"b0_0":[0,0],"t0_0":[0,1],"b0_1":[1,0],"t0_1":[1,1],"b2.5_0":[2.5,0],"t2.5_0":[2.5,1],"b2.5_1":[3.5,0],"t2.5_1":[3.5,1],"b2.5_2":[4.5,0],"t2.5_2":[4.5,1],"b6.0_0":[6.0,0],"t6.0_0":[6.0,1],"b6.0_1":[7.0,0],"t6.0_1":[7.0,1],"b6.0_2":[8.0,0],"t6.0_2":[8.0,1],"b6.0_3":[9.0,0],"t6.0_3":[9.0,1]},"nolab":["b0_0","t0_0","b0_1","t0_1","b2.5_0","t2.5_0","b2.5_1","t2.5_1","b2.5_2","t2.5_2","b6.0_0","t6.0_0","b6.0_1","t6.0_1","b6.0_2","t6.0_2","b6.0_3","t6.0_3"],"seg":[["b0_0","t0_0","or"],["b0_1","t0_1","or"],["b0_0","b0_1","or"],["t0_0","t0_1","or"],["b2.5_0","t2.5_0","or"],["b2.5_1","t2.5_1","or"],["b2.5_2","t2.5_2","or"],["b2.5_0","b2.5_1","or"],["t2.5_0","t2.5_1","or"],["b2.5_1","b2.5_2","or"],["t2.5_1","t2.5_2","or"],["b6.0_0","t6.0_0","or"],["b6.0_1","t6.0_1","or"],["b6.0_2","t6.0_2","or"],["b6.0_3","t6.0_3","or"],["b6.0_0","b6.0_1","or"],["t6.0_0","t6.0_1","or"],["b6.0_1","b6.0_2","or"],["t6.0_1","t6.0_2","or"],["b6.0_2","b6.0_3","or"],["t6.0_2","t6.0_3","or"]],"txt":[[0.5,-0.7,"4","mu"],[3.5,-0.7,"7","mu"],[7.5,-0.7,"10","mu"]],"cap":"1, 2 and 3 squares need 4, 7 and 10 matches."}'></div>
+<div class="math-block">Squares (n)   1   2   3   4
+Matches (Tₙ)  4   7  10  13</div>
+<div class="example-box">
+  <div class="example-box-title">✏️ Example: find and use the rule</div>
+  <div class="example-step"><span class="step-num">1</span><span>The difference is 3 each time, so Tₙ = 3n + c. With n = 1: 3 + c = 4, so c = 1.</span></div>
+  <div class="example-step"><span class="step-num">2</span><span>Rule: <span class="math">Tₙ = 3n + 1</span>. It makes sense: each new square adds 3 matches to the first one.</span></div>
+  <div class="example-step"><span class="step-num">3</span><span>Matches for 50 squares: T₅₀ = 3 × 50 + 1 = <strong>151</strong>.</span></div>
+  <div class="example-step"><span class="step-num">4</span><span>Which picture uses 100 matches? 3n + 1 = 100, so 3n = 99 and <strong>n = 33</strong>.</span></div>
+</div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>To find the position n of a given term, set the rule equal to the term and solve. If n is not a whole number, the term is not in the pattern.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Matchstick squares in a row use 4 ; 7 ; 10 ; … matches. How many matches are needed for 20 squares?", "answer": "61", "topic": "Patterns from pictures"},
+        {"type": "mc", "text": "A tile pattern has 5 ; 9 ; 13 ; 17 ; … tiles. The rule is:", "options": ["Tₙ = 4n + 1", "Tₙ = 5n", "Tₙ = n + 4", "Tₙ = 4n + 5"], "answer": 0, "topic": "Patterns from pictures"},
+        {"type": "input", "text": "Tₙ = 6n − 2. Which term (n) is equal to 100?", "answer": "17", "topic": "Patterns from pictures"},
+        {"type": "mc", "text": "Is 75 a term of Tₙ = 4n − 1?", "options": ["Yes, n = 19", "Yes, n = 18,5", "No, n is not a whole number", "No, the pattern decreases"], "answer": 0, "topic": "Patterns from pictures"},
+        {"type": "input", "text": "Dots form triangles: 1 ; 3 ; 6 ; 10 ; … What is the next term?", "answer": "15", "topic": "Patterns from pictures"},
+        {"type": "input", "text": "A table: n = 1, 2, 3 gives y = 7, 12, 17. Find y when n = 10.", "answer": "52", "topic": "Patterns from pictures"},
+      ]
+    },
+    {
+      id: 503,
+      chapter: 5,
+      name: "Ch 5 Exam focus",
+      fullName: "Exam practice: numeric and geometric patterns",
+      lesson: {
+        heading: "Ch 5 Exam focus",
+        sub: "Chapter 5 · Topic 4",
+        body: `
+<p>These questions mix the whole chapter, the way a test does. First decide whether the pattern adds (linear) or multiplies (geometric).</p>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Write down the rule or formula you use, then substitute, then give the answer with units. Marks are given for each step.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "Find T₁₀ of 2 ; 9 ; 16 ; 23 ; …", "answer": "65", "topic": "Ch 5 Exam focus"},
+        {"type": "input", "text": "Find the next term: 1 ; −2 ; 4 ; −8 ; …", "answer": "16", "topic": "Ch 5 Exam focus"},
+        {"type": "mc", "text": "The rule for 1 ; 4 ; 9 ; 16 ; … is:", "options": ["Tₙ = 3n + 1", "Tₙ = 4n", "Tₙ = n²", "Tₙ = 2ⁿ"], "answer": 2, "topic": "Ch 5 Exam focus"},
+        {"type": "input", "text": "Tₙ = 50 − 3n. Calculate T₂₀.", "answer": "-10", "topic": "Ch 5 Exam focus"},
+        {"type": "input", "text": "A geometric pattern has T₁ = 81 and r = 1/3. Calculate T₄.", "answer": "3", "topic": "Ch 5 Exam focus"},
+        {"type": "input", "text": "Find the missing term: 7 ; 11 ; __ ; 19 ; 23", "answer": "15", "topic": "Ch 5 Exam focus"},
+      ]
+    },
   ],
   workbook: {
     chapter: 5, chapterName: "Numeric and Geometric Patterns",
@@ -163,6 +254,32 @@ MathMagician.registerChapter(5, {
           },
         ]
       },
+      {
+        "name": "Patterns from pictures",
+        "questions": [
+          {
+            "num": "4",
+            "text": "A pattern of tables and chairs: 1 table seats 4, 2 tables in a row seat 6, 3 tables seat 8.",
+            "parts": [
+              {
+                "label": "a)",
+                "text": "Write down the general rule for the number of chairs.",
+                "marks": 2
+              },
+              {
+                "label": "b)",
+                "text": "How many chairs fit around 25 tables?",
+                "marks": 2
+              },
+              {
+                "label": "c)",
+                "text": "How many tables are needed for 60 people?",
+                "marks": 2
+              }
+            ]
+          }
+        ]
+      },
     ]
   },
   answerKey: {
@@ -185,6 +302,26 @@ MathMagician.registerChapter(5, {
           { num: "Q3a", ans: "Tₙ = 4n + 1", note: "a = 5, d = 4; Tₙ = 5 + (n-1)4 = 4n + 1" },
           { num: "Q3b", ans: "61 matchsticks", note: "T15 = 4(15) + 1 = 61" },
           { num: "Q3c", ans: "Yes — 20 pentagons: 4n+1 = 81 → n = 20", note: "n = 20, a natural number" },
+        ]
+      },
+      {
+        "name": "Patterns from pictures",
+        "answers": [
+          {
+            "num": "Q4a",
+            "ans": "Tₙ = 2n + 2",
+            "note": "Difference 2; 2(1) + c = 4, c = 2"
+          },
+          {
+            "num": "Q4b",
+            "ans": "52 chairs",
+            "note": "2 × 25 + 2"
+          },
+          {
+            "num": "Q4c",
+            "ans": "29 tables",
+            "note": "2n + 2 = 60, n = 29"
+          }
         ]
       },
     ]
