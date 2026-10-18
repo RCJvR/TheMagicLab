@@ -91,6 +91,12 @@
       return ensure(o.grade, ch).then(fill);
     },
 
+    // Just the worked-solution steps (an ordered list), or '' if there are none.
+    solutionHTML(o) {
+      const e = entry(o.grade, chapterOf(o.topic), o.topic.id, o.qIndex, o.q);
+      return e ? stepsHTML(e, o.lang) : '';
+    },
+
     // Feedback after a wrong answer: the answer plus the worked solution.
     wrongHTML(o) {
       const L = TXT[o.lang] || TXT.en;
