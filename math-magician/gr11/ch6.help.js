@@ -24,6 +24,7 @@ MMHelp.add(11, 6, {
     ["R","m4:0","Treat sin θ as a single variable.","Behandel sin θ as een veranderlike.",["2k² − k − 1 = (2k + 1)(k − 1)","→ (2 sin θ + 1)(sin θ − 1) = 0"],["2k² − k − 1 = (2k + 1)(k − 1)","→ (2 sin θ + 1)(sin θ − 1) = 0"]],
     ["K","m4:0","1/cos θ is undefined when cos θ = 0.","1/cos θ is ongedefinieerd as cos θ = 0.",["cos θ = 0 at 90° and 270°"],["cos θ = 0 by 90° en 270°"]],
     ["K","i:60","cos 60° = ½.","cos 60° = ½.",["θ = 60°"],["θ = 60°"]],
-    ["C","i:60","Let k = cos θ and factorise.","Laat k = cos θ en faktoriseer.",["(2k − 1)(k − 1) = 0 → cos θ = ½ or cos θ = 1","cos θ = 1 gives 0° or 360° (not in the open interval)","cos θ = ½ → θ = 60° (smallest)"],["(2k − 1)(k − 1) = 0 → cos θ = ½ of cos θ = 1","cos θ = 1 gee 0° of 360° (nie in die oop interval nie)","cos θ = ½ → θ = 60° (kleinste)"]]
+    ["C","i:60","Let k = cos θ and factorise.","Laat k = cos θ en faktoriseer.",["(2k − 1)(k − 1) = 0 → cos θ = ½ or cos θ = 1","cos θ = 1 gives 0° or 360° (not in the open interval)","cos θ = ½ → θ = 60° (smallest)"],["(2k − 1)(k − 1) = 0 → cos θ = ½ of cos θ = 1","cos θ = 1 gee 0° of 360° (nie in die oop interval nie)","cos θ = ½ → θ = 60° (kleinste)"]],
+    ["P","i:270","Divide both sides by cos x (cos x = 0 is not a solution).","Deel albei kante deur cos x (cos x = 0 is nie 'n oplossing nie).",["tan x = 1 → reference angle 45°","tan is positive in Q1 and Q3: x = 45° or 225°","Sum = 270°"],["tan x = 1 → verwysingshoek 45°","tan is positief in K1 en K3: x = 45° of 225°","Som = 270°"]]
   ]
 });

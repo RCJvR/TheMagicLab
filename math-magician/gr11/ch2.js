@@ -574,7 +574,8 @@ MathMagician.registerChapter(2, {
           text: "A rectangular photo is 4 cm longer than it is wide. A frame of uniform width 2 cm is placed around it, and the extra area covered by the frame is 96 cm². Find the width of the photo (in cm).",
           answer: "8",
           topic: "Solving problems with quadratic equations"
-        }
+        },
+        { type: "input", text: "The sum of a positive number and its reciprocal is 13/6. Find the larger of the two possible numbers.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Solving problems with quadratic equations" }
       ]
     }
   ],

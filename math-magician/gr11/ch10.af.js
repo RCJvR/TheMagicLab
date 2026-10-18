@@ -509,7 +509,8 @@ MathMagician.registerChapter(10, {
           text: "'n Wagwoord bestaan uit 3 letters (A–Z, geen herhaling) gevolg deur 2 syfers (0–9, herhaling toegelaat). Hoeveel verskillende wagwoorde is moontlik?",
           answer: "1560000",
           topic: "Fundamentele telbeginsel"
-        }
+        },
+        { type: "input", text: "Hoeveel 4-syfer ewe getalle kan met die syfers 1, 2, 3, 4, 5, 6 en 7 gevorm word as geen syfer herhaal mag word nie?", answer: "360", topic: "Fundamentele telbeginsel" }
       ]
     }
   ],

@@ -35,6 +35,7 @@ MMHelp.add(11, 8, {
     ["K","m4:0","Use the standard abbreviation.","Gebruik die standaardafkorting.",["opp ∠s cyclic quad"],["oorst ∠e koordevh"]],
     ["K","m4:0","Tan-chord theorem.","Raaklyn-koord-stelling.",["The angle in the alternate segment = 48°"],["Die hoek in die teenoorstaande segment = 48°"]],
     ["C","i:65","The angle between the chords is an exterior angle of the triangle.","Die hoek tussen die koorde is 'n buitehoek van die driehoek.",["Exterior ∠ = sum of the interior opposite angles","40° + 25° = 65°"],["Buite∠ = som van die teenoorstaande binnehoeke","40° + 25° = 65°"]],
-    ["C","i:22.5","∠PRQ = 90° and PR = RQ.","∠PRQ = 90° en PR = RQ.",["∠RPQ = ∠RQP = (180° − 90°) ÷ 2 = 45°","2y = 45° → y = 22.5°"],["∠RPQ = ∠RQP = (180° − 90°) ÷ 2 = 45°","2y = 45° → y = 22,5°"]]
+    ["C","i:22.5","∠PRQ = 90° and PR = RQ.","∠PRQ = 90° en PR = RQ.",["∠RPQ = ∠RQP = (180° − 90°) ÷ 2 = 45°","2y = 45° → y = 22.5°"],["∠RPQ = ∠RQP = (180° − 90°) ÷ 2 = 45°","2y = 45° → y = 22,5°"]],
+    ["P","i:128","Use the tan-chord theorem first, then the angle at the centre.","Gebruik eers die raaklyn-koord-stelling, en dan die hoek by die middelpunt.",["∠ACB = 64° (tan-chord theorem)","∠AOB = 2 × ∠ACB = 128° (∠ at centre = 2 × ∠ at circumference)"],["∠ACB = 64° (raaklyn-koord-stelling)","∠AOB = 2 × ∠ACB = 128° (∠ by middelpunt = 2 × ∠ by omtrek)"]]
   ]
 });

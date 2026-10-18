@@ -734,7 +734,8 @@ MathMagician.registerChapter(5, {
           answer: "-4",
           altAnswers: ["−4"],
           topic: "Sketching functions: intercepts, domain & range"
-        }
+        },
+        { type: "input", text: "The graph of f(x) = 2/(x − 1) + 3 is shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>The line y = −x + k is an axis of symmetry of f. Find k.", answer: "4", topic: "Sketching functions: intercepts, domain & range" }
       ]
     }
   ],

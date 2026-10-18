@@ -26,6 +26,7 @@ MMHelp.add(11, 3, {
     ["R","i:36","Substitute n = 9.","Vervang n met 9.",["9 × 8 ÷ 2","= 36"],["9 × 8 ÷ 2","= 36"]],
     ["K","m4:0","Find the differences.","Vind die verskille.",["First: 3, 4, 5, 6","Second: 1"],["Eerste: 3, 4, 5, 6","Tweede: 1"]],
     ["R","i:11","Set n² + n = 132.","Stel n² + n = 132.",["n² + n − 132 = 0 → (n + 12)(n − 11) = 0","n = 11"],["n² + n − 132 = 0 → (n + 12)(n − 11) = 0","n = 11"]],
-    ["C","i:104","Find a, b and c, then substitute n = 8.","Vind a, b en c en vervang dan n = 8.",["First differences 6, 8, 10, 12 → second 2 → a = 1","3 + b = 6 → b = 3; 1 + 3 + c = 20 → c = 16","T₈ = 64 + 24 + 16 = 104"],["Eerste verskille 6, 8, 10, 12 → tweede 2 → a = 1","3 + b = 6 → b = 3; 1 + 3 + c = 20 → c = 16","T₈ = 64 + 24 + 16 = 104"]]
+    ["C","i:104","Find a, b and c, then substitute n = 8.","Vind a, b en c en vervang dan n = 8.",["First differences 6, 8, 10, 12 → second 2 → a = 1","3 + b = 6 → b = 3; 1 + 3 + c = 20 → c = 16","T₈ = 64 + 24 + 16 = 104"],["Eerste verskille 6, 8, 10, 12 → tweede 2 → a = 1","3 + b = 6 → b = 3; 1 + 3 + c = 20 → c = 16","T₈ = 64 + 24 + 16 = 104"]],
+    ["P","i:24","The total for n rows is n(n + 1)/2.","Die totaal vir n rye is n(n + 1)/2.",["n(n + 1)/2 ≤ 300 → n² + n − 600 ≤ 0","(n + 25)(n − 24) ≤ 0 → n ≤ 24","24 rows use exactly 24 × 25 ÷ 2 = 300 cans"],["n(n + 1)/2 ≤ 300 → n² + n − 600 ≤ 0","(n + 25)(n − 24) ≤ 0 → n ≤ 24","24 rye gebruik presies 24 × 25 ÷ 2 = 300 blikkies"]]
   ]
 });

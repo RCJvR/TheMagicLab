@@ -520,7 +520,8 @@ MathMagician.registerChapter(12, {
           text: "'n Maatskappy maak produkte A (x eenhede) en B (y eenhede), wins R40 per eenheid van A en R55 per eenheid van B. Beperkings gee 'n uitvoerbare gebied met hoekpunte (0;2), (0;10), (12;2). Bepaal die maksimum wins.",
           answer: "590",
           topic: "Optimering — oplos van LP-probleme"
-        }
+        },
+        { type: "input", text: "Die beperkings is x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 en y ≥ 0. Die haalbare gebied is ingekleur.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Bepaal die maksimum waarde van P = 3x + 2y.", answer: "24", topic: "Optimering — oplos van LP-probleme" }
       ]
     }
   ],

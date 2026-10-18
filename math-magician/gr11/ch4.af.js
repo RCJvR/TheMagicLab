@@ -417,7 +417,8 @@ MathMagician.registerChapter(4, {
           text: "Driehoek PQR het P(0;0), Q(6;0), R(2;4). Vind die grootte van hoek QPR, tot die naaste graad.",
           answer: "63",
           topic: "Hoek tussen twee lyne"
-        }
+        },
+        { type: "input", text: "Driehoek ABC het hoekpunte A(0 ; 0), B(6 ; 0) en C(2 ; 4).<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":200,\"view\":[-1,-1,7,5],\"axes\":{\"ticks\":1,\"o\":false},\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[2,4]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"]],\"ang\":[[\"A\",\"C\",\"B\",\"?\",\"ac\"]],\"dots\":true,\"lab\":{\"A\":\"sw\",\"B\":\"se\",\"C\":\"n\"}}'></div>Gebruik inklinasies om ∠ACB te bereken, tot die naaste graad.", answer: "72", topic: "Hoek tussen twee lyne" }
       ]
     }
   ],

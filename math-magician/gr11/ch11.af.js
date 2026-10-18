@@ -527,7 +527,8 @@ MathMagician.registerChapter(11, {
           text: "Frekwensietabel: waarde 4 (freq 3), waarde 10 (freq 1), waarde 13 (freq 2). Bepaal die standaardafwyking, korrek tot 2 desimale plekke.",
           answer: "4.12",
           topic: "Standaardafwyking vanaf 'n frekwensietabel"
-        }
+        },
+        { type: "input", text: "'n Datastel het 'n gemiddeld van 20 en 'n standaardafwyking van 3. Elke waarde word verdubbel en dan word 5 bygetel. Wat is die nuwe standaardafwyking?", answer: "6", topic: "Standaardafwyking vanaf 'n frekwensietabel" }
       ]
     }
   ],

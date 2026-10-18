@@ -26,6 +26,7 @@ MMHelp.add(11, 4, {
     ["R","m4:0","Substitute into the formula.","Vervang in die formule.",["|2 − 3| ÷ |1 + 6|","= 1/7"],["|2 − 3| ÷ |1 + 6|","= 1/7"]],
     ["K","m4:0","Perpendicular means...","Loodreg beteken...",["90°"],["90°"]],
     ["C","i:53","Find both gradients and inclinations.","Vind albei gradiënte en inklinasies.",["m₁ = 6/3 = 2 → 63.4°; m₂ = −6/3 = −2 → 116.6°","116.6° − 63.4° = 53.1° ≈ 53°"],["m₁ = 6/3 = 2 → 63,4°; m₂ = −6/3 = −2 → 116,6°","116,6° − 63,4° = 53,1° ≈ 53°"]],
-    ["C","i:63","PQ lies on the x-axis.","PQ lê op die x-as.",["m_PR = 4/2 = 2","tan⁻¹ 2 ≈ 63.4° → ∠QPR ≈ 63°"],["m_PR = 4/2 = 2","tan⁻¹ 2 ≈ 63,4° → ∠QPR ≈ 63°"]]
+    ["C","i:63","PQ lies on the x-axis.","PQ lê op die x-as.",["m_PR = 4/2 = 2","tan⁻¹ 2 ≈ 63.4° → ∠QPR ≈ 63°"],["m_PR = 4/2 = 2","tan⁻¹ 2 ≈ 63,4° → ∠QPR ≈ 63°"]],
+    ["P","i:72","∠ACB is the difference between the inclinations of CB and CA.","∠ACB is die verskil tussen die inklinasies van CB en CA.",["m_CA = 4/2 = 2 → inclination 63.4°","m_CB = 4/(2 − 6) = −1 → inclination 135°","∠ACB = 135° − 63.4° ≈ 72°"],["m_CA = 4/2 = 2 → inklinasie 63,4°","m_CB = 4/(2 − 6) = −1 → inklinasie 135°","∠ACB = 135° − 63,4° ≈ 72°"]]
   ]
 });

@@ -33,6 +33,7 @@ MMHelp.add(11, 11, {
     ["R","i:1.41","Mean first, then Σf(x − x̄)².","Gemiddeld eers, dan Σf(x − x̄)².",["x̄ = (2 + 8 + 6) ÷ 4 = 4","Σf(x − 4)² = 4 + 0 + 4 = 8 → σ = √(8/4) = √2 ≈ 1.41"],["x̄ = (2 + 8 + 6) ÷ 4 = 4","Σf(x − 4)² = 4 + 0 + 4 = 8 → σ = √(8/4) = √2 ≈ 1,41"]],
     ["K","m4:0","Let the calculator do the sums.","Laat die sakrekenaar die somme doen.",["STAT mode gives x̄ and σ directly."],["STAT-modus gee x̄ en σ direk."]],
     ["C","i:1","Write the mean as an equation in x.","Skryf die gemiddeld as 'n vergelyking in x.",["(12 + 10x + 26) ÷ (5 + x) = 8","38 + 10x = 40 + 8x → x = 1"],["(12 + 10x + 26) ÷ (5 + x) = 8","38 + 10x = 40 + 8x → x = 1"]],
-    ["C","i:4.12","Mean, then deviations with frequencies.","Gemiddeld, dan afwykings met frekwensies.",["x̄ = (12 + 10 + 26) ÷ 6 = 8","Σf(x − 8)² = 3(16) + 1(4) + 2(25) = 102","σ = √(102/6) = √17 ≈ 4.12"],["x̄ = (12 + 10 + 26) ÷ 6 = 8","Σf(x − 8)² = 3(16) + 1(4) + 2(25) = 102","σ = √(102/6) = √17 ≈ 4,12"]]
+    ["C","i:4.12","Mean, then deviations with frequencies.","Gemiddeld, dan afwykings met frekwensies.",["x̄ = (12 + 10 + 26) ÷ 6 = 8","Σf(x − 8)² = 3(16) + 1(4) + 2(25) = 102","σ = √(102/6) = √17 ≈ 4.12"],["x̄ = (12 + 10 + 26) ÷ 6 = 8","Σf(x − 8)² = 3(16) + 1(4) + 2(25) = 102","σ = √(102/6) = √17 ≈ 4,12"]],
+    ["P","i:6","Which change stretches the spread, and which only shifts it?","Watter verandering rek die verspreiding, en watter skuif dit net?",["Doubling doubles every distance from the mean: σ → 6","Adding 5 moves every value equally: σ stays 6","(The new mean is 45.)"],["Verdubbeling verdubbel elke afstand vanaf die gemiddeld: σ → 6","5 byvoeg skuif elke waarde ewe veel: σ bly 6","(Die nuwe gemiddeld is 45.)"]]
   ]
 });

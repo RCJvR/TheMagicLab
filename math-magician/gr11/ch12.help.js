@@ -17,6 +17,7 @@ MMHelp.add(11, 12, {
     ["C","m4:3","Find the missing corner first.","Vind eers die ontbrekende hoekpunt.",["y = 1 and x + y = 7 meet at (6 ; 1)","P(6 ; 1) = 18 − 1 = 17 > 5 → maximum at (6 ; 1)"],["y = 1 en x + y = 7 sny by (6 ; 1)","P(6 ; 1) = 18 − 1 = 17 > 5 → maksimum by (6 ; 1)"]],
     ["K","m4:2","The region goes on forever.","Die gebied gaan vir ewig aan.",["P could keep increasing, so a maximum may not exist."],["P kan aanhou toeneem, dus bestaan 'n maksimum dalk nie."]],
     ["R","i:78","Test every corner point.","Toets elke hoekpunt.",["(0,10): 50; (8,6): 78; (12,0): 72","Maximum P = 78"],["(0,10): 50; (8,6): 78; (12,0): 72","Maksimum P = 78"]],
-    ["R","i:590","P = 40x + 55y at each corner.","P = 40x + 55y by elke hoekpunt.",["(0;2): R110; (0;10): R550; (12;2): R590","Maximum profit R590"],["(0;2): R110; (0;10): R550; (12;2): R590","Maksimum wins R590"]]
+    ["R","i:590","P = 40x + 55y at each corner.","P = 40x + 55y by elke hoekpunt.",["(0;2): R110; (0;10): R550; (12;2): R590","Maximum profit R590"],["(0;2): R110; (0;10): R550; (12;2): R590","Maksimum wins R590"]],
+    ["P","i:24","Find every corner of the region, including where the two lines cross.","Vind elke hoekpunt van die gebied, ook waar die twee lyne sny.",["x + 2y = 16 and 2x + y = 14 meet at (4 ; 6)","Corners: (0 ; 0) → 0, (7 ; 0) → 21, (4 ; 6) → 24, (0 ; 8) → 16","Maximum P = 24 at (4 ; 6)"],["x + 2y = 16 en 2x + y = 14 sny by (4 ; 6)","Hoekpunte: (0 ; 0) → 0, (7 ; 0) → 21, (4 ; 6) → 24, (0 ; 8) → 16","Maksimum P = 24 by (4 ; 6)"]]
   ]
 });

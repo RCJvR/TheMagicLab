@@ -588,7 +588,8 @@ MathMagician.registerChapter(8, {
           answer: "22.5",
           altAnswers: ["22,5"],
           topic: "Sirkelmeetkunde-vraagstukke"
-        }
+        },
+        { type: "input", text: "O is die middelpunt van die sirkel en ST is 'n raaklyn by A. Die hoek tussen die raaklyn en koord AB is 64°, en C lê op die groot boog.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":240,\"pts\":{\"O\":[0,0],\"A\":[0,-3],\"B\":[2.364,1.847],\"C\":[-2.819,1.026],\"S\":[-3,-3],\"T\":[4,-3]},\"circ\":[[\"O\",3]],\"seg\":[[\"S\",\"T\"],[\"A\",\"B\"],[\"C\",\"A\"],[\"C\",\"B\"],[\"O\",\"A\",\"mu dash\"],[\"O\",\"B\",\"mu dash\"]],\"ang\":[[\"T\",\"A\",\"B\",\"64°\"],[\"B\",\"O\",\"A\",\"?\",\"ac\",14]],\"dots\":[\"O\"],\"lab\":{\"A\":\"s\",\"T\":\"s\",\"S\":\"s\"}}'></div>Bereken ∠AOB. (°)", answer: "128", topic: "Sirkelmeetkunde-vraagstukke" }
       ]
     }
   ],

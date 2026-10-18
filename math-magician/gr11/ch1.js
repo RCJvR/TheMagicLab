@@ -500,7 +500,8 @@ MathMagician.registerChapter(1, {
           answer: "0 or 2",
           altAnswers: ["x = 0 or x = 2", "0 or x=2"],
           topic: "Laws of exponents & exponential equations"
-        }
+        },
+        { type: "input", text: "Without a calculator, simplify (√3 + √2)²⁰²³ × (√3 − √2)²⁰²³.", answer: "1", topic: "Laws of exponents & exponential equations" }
       ]
     }
   ],

@@ -407,7 +407,8 @@ MathMagician.registerChapter(3, {
           text: "The number of seats in the first 5 rows of a stadium section is 20, 26, 34, 44, 56. Assuming the pattern continues quadratically, determine the general term Tₙ and hence the number of seats in row 8.",
           answer: "104",
           topic: "Quadratic patterns in context"
-        }
+        },
+        { type: "input", text: "A shop stacks cans in a triangular display: 1 can in the top row, 2 in the next row, 3 in the next, and so on. The shop has 300 cans. How many complete rows can it build?", answer: "24", topic: "Quadratic patterns in context" }
       ]
     }
   ],

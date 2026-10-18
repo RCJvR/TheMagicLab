@@ -597,7 +597,8 @@ MathMagician.registerChapter(7, {
           answer: "67.10",
           altAnswers: ["67,10"],
           topic: "Meting met trigonometrie"
-        }
+        },
+        { type: "input", text: "'n Bal pas presies binne 'n silindriese blik en raak die bokant, die onderkant en die geboë kant. Watter persentasie van die blik se volume vul die bal, tot die naaste heelgetal? (%)", answer: "67", topic: "Meting met trigonometrie" }
       ]
     }
   ],

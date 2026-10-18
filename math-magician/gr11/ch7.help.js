@@ -36,6 +36,7 @@ MMHelp.add(11, 7, {
     ["K","m4:0","Two sides and the included angle.","Twee sye en die ingeslote hoek.",["Area = ½ab sin C"],["Oppervlakte = ½ab sin C"]],
     ["K","m4:0","What do you need before the area?","Wat het jy nodig voor die oppervlakte?",["First find the ladder's length (Pythagoras or trig)."],["Vind eers die leer se lengte (Pythagoras of trig)."]],
     ["C","i:12.38","Use the right triangle from the centre to the middle of a base edge.","Gebruik die reghoekige driehoek van die middelpunt na die middel van 'n basisrand.",["Apothem = 10 ÷ 2 = 5 cm","h = 5 tan 68° ≈ 12.38 cm"],["Apoteem = 10 ÷ 2 = 5 cm","h = 5 tan 68° ≈ 12,38 cm"]],
-    ["C","i:67.10","Find the slant height first.","Vind eers die skuinshoogte.",["cos 55° = 3.5/l → l = 3.5 ÷ cos 55° ≈ 6.10 m","Area = πrl = π × 3.5 × 6.10 ≈ 67.10 m²"],["cos 55° = 3,5/l → l = 3,5 ÷ cos 55° ≈ 6,10 m","Oppervlakte = πrl = π × 3,5 × 6,10 ≈ 67,10 m²"]]
+    ["C","i:67.10","Find the slant height first.","Vind eers die skuinshoogte.",["cos 55° = 3.5/l → l = 3.5 ÷ cos 55° ≈ 6.10 m","Area = πrl = π × 3.5 × 6.10 ≈ 67.10 m²"],["cos 55° = 3,5/l → l = 3,5 ÷ cos 55° ≈ 6,10 m","Oppervlakte = πrl = π × 3,5 × 6,10 ≈ 67,10 m²"]],
+    ["P","i:67","If the ball has radius r, what are the tin's radius and height?","As die bal radius r het, wat is die blik se radius en hoogte?",["Tin: radius r, height 2r → V = πr² × 2r = 2πr³","Ball: (4/3)πr³","(4/3) ÷ 2 = 2/3 ≈ 67%"],["Blik: radius r, hoogte 2r → V = πr² × 2r = 2πr³","Bal: (4/3)πr³","(4/3) ÷ 2 = 2/3 ≈ 67%"]]
   ]
 });

@@ -527,7 +527,8 @@ MathMagician.registerChapter(11, {
           text: "Frequency table: value 4 (freq 3), value 10 (freq 1), value 13 (freq 2). Find the standard deviation, correct to 2 decimal places.",
           answer: "4.12",
           topic: "Standard deviation from a frequency table"
-        }
+        },
+        { type: "input", text: "A data set has a mean of 20 and a standard deviation of 3. Every value is doubled and then 5 is added. What is the new standard deviation?", answer: "6", topic: "Standard deviation from a frequency table" }
       ]
     }
   ],

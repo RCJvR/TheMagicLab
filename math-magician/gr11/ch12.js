@@ -520,7 +520,8 @@ MathMagician.registerChapter(12, {
           text: "A company makes products A (x units) and B (y units), profit R40 per unit of A and R55 per unit of B. Constraints give a feasible region with corner points (0;2), (0;10), (12;2). Find the maximum profit.",
           answer: "590",
           topic: "Optimisation — solving LP problems"
-        }
+        },
+        { type: "input", text: "The constraints are x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 and y ≥ 0. The feasible region is shaded.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Find the maximum value of P = 3x + 2y.", answer: "24", topic: "Optimisation — solving LP problems" }
       ]
     }
   ],

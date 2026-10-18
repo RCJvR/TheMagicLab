@@ -509,7 +509,8 @@ MathMagician.registerChapter(10, {
           text: "A password consists of 3 letters (A–Z, no repetition) followed by 2 digits (0–9, repetition allowed). How many different passwords are possible?",
           answer: "1560000",
           topic: "Fundamental counting principle"
-        }
+        },
+        { type: "input", text: "How many 4-digit even numbers can be formed from the digits 1, 2, 3, 4, 5, 6 and 7 if no digit may be repeated?", answer: "360", topic: "Fundamental counting principle" }
       ]
     }
   ],

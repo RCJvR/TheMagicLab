@@ -503,7 +503,8 @@ MathMagician.registerChapter(6, {
           text: "Solve for θ: 2cos²θ − 3cosθ + 1 = 0. Give the smallest positive solution in (0°; 360°), in degrees.",
           answer: "60",
           topic: "Solving trigonometric equations"
-        }
+        },
+        { type: "input", text: "Solve sin x = cos x for x ∈ [0° ; 360°]. What is the sum of all the solutions? (°)", answer: "270", topic: "Solving trigonometric equations" }
       ]
     }
   ],

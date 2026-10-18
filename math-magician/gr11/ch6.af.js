@@ -503,7 +503,8 @@ MathMagician.registerChapter(6, {
           text: "Los op vir θ: 2cos²θ − 3cosθ + 1 = 0. Gee die kleinste positiewe oplossing in (0°; 360°), in grade.",
           answer: "60",
           topic: "Oplos van trigonometriese vergelykings"
-        }
+        },
+        { type: "input", text: "Los sin x = cos x op vir x ∈ [0° ; 360°]. Wat is die som van al die oplossings? (°)", answer: "270", topic: "Oplos van trigonometriese vergelykings" }
       ]
     }
   ],

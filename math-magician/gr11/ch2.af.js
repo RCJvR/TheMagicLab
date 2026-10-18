@@ -574,7 +574,8 @@ MathMagician.registerChapter(2, {
           text: "'n Reghoekige foto is 4 cm langer as wat dit wyd is. 'n Raam met 'n eenvormige wydte van 2 cm word daarom geplaas, en die ekstra oppervlakte wat deur die raam bedek word, is 96 cm². Bepaal die wydte van die foto (in cm).",
           answer: "8",
           topic: "Oplossing van probleme met kwadratiese vergelykings"
-        }
+        },
+        { type: "input", text: "Die som van 'n positiewe getal en sy omgekeerde is 13/6. Bepaal die grootste van die twee moontlike getalle.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Oplossing van probleme met kwadratiese vergelykings" }
       ]
     }
   ],

@@ -31,6 +31,7 @@ MMHelp.add(11, 10, {
     ["R","m4:1","One fewer choice each time.","Elke keer een keuse minder.",["10 × 9 × 8","= 720"],["10 × 9 × 8","= 720"]],
     ["K","m4:0","Letters and digits are chosen independently.","Letters en syfers word onafhanklik gekies.",["26 × 26 × 26 × 10 × 10 × 10 = 26³ × 10³"],["26 × 26 × 26 × 10 × 10 × 10 = 26³ × 10³"]],
     ["R","i:5040","Count all the PINs.","Tel al die PIN'e.",["10 × 9 × 8 × 7 = 5 040","P('1234') = 1/5 040"],["10 × 9 × 8 × 7 = 5 040","P('1234') = 1/5 040"]],
-    ["C","i:1560000","Count each part, then multiply.","Tel elke deel en vermenigvuldig dan.",["Letters: 26 × 25 × 24 = 15 600","Digits: 10 × 10 = 100","15 600 × 100 = 1 560 000"],["Letters: 26 × 25 × 24 = 15 600","Syfers: 10 × 10 = 100","15 600 × 100 = 1 560 000"]]
+    ["C","i:1560000","Count each part, then multiply.","Tel elke deel en vermenigvuldig dan.",["Letters: 26 × 25 × 24 = 15 600","Digits: 10 × 10 = 100","15 600 × 100 = 1 560 000"],["Letters: 26 × 25 × 24 = 15 600","Syfers: 10 × 10 = 100","15 600 × 100 = 1 560 000"]],
+    ["P","i:360","Fill the restricted place (the last digit) first.","Vul eers die beperkte plek (die laaste syfer).",["Last digit: 2, 4 or 6 → 3 choices","The other three places: 6 × 5 × 4 = 120","3 × 120 = 360"],["Laaste syfer: 2, 4 of 6 → 3 keuses","Die ander drie plekke: 6 × 5 × 4 = 120","3 × 120 = 360"]]
   ]
 });

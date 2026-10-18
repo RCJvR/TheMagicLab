@@ -27,6 +27,7 @@ MMHelp.add(11, 1, {
     ["R","m4:0","Square the bracket, then divide.","Kwadreer die hakie en deel dan.",["(x²y^(1/2))² = x⁴y","x⁴y ÷ x³ = xy"],["(x²y^(1/2))² = x⁴y","x⁴y ÷ x³ = xy"]],
     ["R","i:8","Raise both sides to the power 3/2.","Verhef albei kante tot die mag 3/2.",["x = 4^(3/2)","= 2³ = 8"],["x = 4^(3/2)","= 2³ = 8"]],
     ["R","i:5","Write both sides as powers of 2.","Skryf albei kante as magte van 2.",["2^(2x + 2) = 2^(3x − 3)","2x + 2 = 3x − 3 → x = 5"],["2^(2x + 2) = 2^(3x − 3)","2x + 2 = 3x − 3 → x = 5"]],
-    ["C","i:02","Let y = 2ˣ.","Laat y = 2ˣ.",["y² − 5y + 4 = 0 → (y − 1)(y − 4) = 0","2ˣ = 1 → x = 0; 2ˣ = 4 → x = 2"],["y² − 5y + 4 = 0 → (y − 1)(y − 4) = 0","2ˣ = 1 → x = 0; 2ˣ = 4 → x = 2"]]
+    ["C","i:02","Let y = 2ˣ.","Laat y = 2ˣ.",["y² − 5y + 4 = 0 → (y − 1)(y − 4) = 0","2ˣ = 1 → x = 0; 2ˣ = 4 → x = 2"],["y² − 5y + 4 = 0 → (y − 1)(y − 4) = 0","2ˣ = 1 → x = 0; 2ˣ = 4 → x = 2"]],
+    ["P","i:1","Both factors have the same exponent: combine the bases first.","Albei faktore het dieselfde eksponent: kombineer eers die grondtalle.",["aⁿ × bⁿ = (ab)ⁿ","(√3 + √2)(√3 − √2) = 3 − 2 = 1","1²⁰²³ = 1"],["aⁿ × bⁿ = (ab)ⁿ","(√3 + √2)(√3 − √2) = 3 − 2 = 1","1²⁰²³ = 1"]]
   ]
 });

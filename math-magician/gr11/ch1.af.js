@@ -500,7 +500,8 @@ MathMagician.registerChapter(1, {
           answer: "0 of 2",
           altAnswers: ["x = 0 of x = 2", "0 of x=2"],
           topic: "Eksponentwette & eksponensiële vergelykings"
-        }
+        },
+        { type: "input", text: "Vereenvoudig sonder 'n sakrekenaar: (√3 + √2)²⁰²³ × (√3 − √2)²⁰²³.", answer: "1", topic: "Eksponentwette & eksponensiële vergelykings" }
       ]
     }
   ],

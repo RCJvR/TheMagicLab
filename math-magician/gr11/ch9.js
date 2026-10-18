@@ -548,7 +548,8 @@ MathMagician.registerChapter(9, {
           answer: "12.14",
           altAnswers: ["12.14%"],
           topic: "Solving for n and i"
-        }
+        },
+        { type: "input", text: "Car A costs R300 000 and depreciates at 15% p.a. on the reducing balance. Car B costs R250 000 and depreciates at 10% p.a. on the reducing balance. After how many whole years is car A first worth less than car B?", answer: "4", topic: "Solving for n and i" }
       ]
     }
   ],

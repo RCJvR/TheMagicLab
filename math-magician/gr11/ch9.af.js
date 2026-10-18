@@ -548,7 +548,8 @@ MathMagician.registerChapter(9, {
           answer: "12.14",
           altAnswers: ["12.14%"],
           topic: "Oplos vir n en i"
-        }
+        },
+        { type: "input", text: "Motor A kos R300 000 en verminder in waarde teen 15% p.j. op die verminderende saldo. Motor B kos R250 000 en verminder in waarde teen 10% p.j. op die verminderende saldo. Na hoeveel volle jare is motor A vir die eerste keer minder werd as motor B?", answer: "4", topic: "Oplos vir n en i" }
       ]
     }
   ],

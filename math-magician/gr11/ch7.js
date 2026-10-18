@@ -591,7 +591,8 @@ MathMagician.registerChapter(7, {
           text: "A conical tent has base radius 3.5 m, and the canvas makes an angle of 55° with the ground. Find the area of canvas needed (curved surface area only), correct to 2 decimal places.",
           answer: "67.10",
           topic: "Measurement with trigonometry"
-        }
+        },
+        { type: "input", text: "A ball fits exactly inside a cylindrical tin, touching the top, the bottom and the curved side. What percentage of the tin's volume does the ball fill, to the nearest whole number? (%)", answer: "67", topic: "Measurement with trigonometry" }
       ]
     }
   ],

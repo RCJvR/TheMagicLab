@@ -407,7 +407,8 @@ MathMagician.registerChapter(3, {
           text: "Die aantal sitplekke in die eerste 5 rye van 'n stadionafdeling is 20, 26, 34, 44, 56. Neem aan die patroon gaan kwadraties voort, bepaal die algemene term Tₙ en dus die aantal sitplekke in ry 8.",
           answer: "104",
           topic: "Kwadratiese patrone in konteks"
-        }
+        },
+        { type: "input", text: "'n Winkel pak blikkies in 'n driehoekige uitstalling: 1 blikkie in die boonste ry, 2 in die volgende ry, 3 in die volgende, ensovoorts. Die winkel het 300 blikkies. Hoeveel volledige rye kan dit bou?", answer: "24", topic: "Kwadratiese patrone in konteks" }
       ]
     }
   ],

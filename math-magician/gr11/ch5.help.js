@@ -24,6 +24,7 @@ MMHelp.add(11, 5, {
     ["R","m4:0","Write y = a/x + 1 and substitute (2 ; 3).","Skryf y = a/x + 1 en vervang (2 ; 3).",["3 = a/2 + 1","a = 4 → y = 4/x + 1"],["3 = a/2 + 1","a = 4 → y = 4/x + 1"]],
     ["K","m4:0","a < 0, so the turning point is a maximum.","a < 0, dus is die draaipunt 'n maksimum.",["Maximum y = 2 → y ≤ 2"],["Maksimum y = 2 → y ≤ 2"]],
     ["K","m4:0","a > 0: the graph lies above the asymptote.","a > 0: die grafiek lê bo die asimptoot.",["y > −2"],["y > −2"]],
-    ["C","i:-4","Substitute (5 ; 1) to find a.","Vervang (5 ; 1) om a te vind.",["1 = a(5 − 2)² − 8 → 9a = 9 → a = 1","y-intercept: (0 − 2)² − 8 = −4"],["1 = a(5 − 2)² − 8 → 9a = 9 → a = 1","y-afsnit: (0 − 2)² − 8 = −4"]]
+    ["C","i:-4","Substitute (5 ; 1) to find a.","Vervang (5 ; 1) om a te vind.",["1 = a(5 − 2)² − 8 → 9a = 9 → a = 1","y-intercept: (0 − 2)² − 8 = −4"],["1 = a(5 − 2)² − 8 → 9a = 9 → a = 1","y-afsnit: (0 − 2)² − 8 = −4"]],
+    ["P","i:4","Both axes of symmetry pass through the point where the asymptotes cross.","Albei simmetrie-asse gaan deur die punt waar die asimptote sny.",["Asymptotes x = 1 and y = 3 cross at (1 ; 3)","3 = −1 + k → k = 4","(The other axis is y = x + 2.)"],["Asimptote x = 1 en y = 3 sny by (1 ; 3)","3 = −1 + k → k = 4","(Die ander as is y = x + 2.)"]]
   ]
 });
