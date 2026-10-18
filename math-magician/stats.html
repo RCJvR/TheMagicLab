@@ -67,6 +67,8 @@
           <option value="compare" data-af="Twee klasse vergelyk (mond-en-snor)">Compare two classes (box plots)</option>
           <option value="heights" data-af="Lengtes (gegroepeer)">Heights (grouped)</option>
           <option value="study" data-af="Studie-ure teen punte (pare)">Study hours vs marks (pairs)</option>
+          <option value="skew" data-af="Data met ’n uitskieter">Data with an outlier</option>
+          <option value="dots" data-af="Puntdiagram">Dot plot</option>
         </select>
       </section>
 
@@ -174,6 +176,10 @@
       ["Hours studied", "Ure gestudeer"],
       ["Mark (%)", "Punt (%)"],
       ["Study time and marks", "Studietyd en punte"],
+      ["Time to finish (minutes)", "Tyd om klaar te maak (minute)"],
+      ["A data set with an outlier", "’n Datastel met ’n uitskieter"],
+      ["Number of siblings", "Aantal broers en susters"],
+      ["Siblings in our class", "Broers en susters in ons klas"],
     ];
     function example(k) {
       const keep = { color: st.color };
@@ -182,6 +188,8 @@
       if (k === 'compare') Object.assign(st, { mode: 'list', chart: 'box', a: '56 62 48 71 65 59 80 44 67 73 58 61', b: '45 52 38 66 49 57 70 41 55 60 47 51', nameA: 'Class A', nameB: 'Class B', xtitle: 'Marks (%)', title: 'Term test: two classes' });
       if (k === 'heights') Object.assign(st, { mode: 'grouped', chart: 'ogive', grouped: '140 150 3\n150 160 8\n160 170 14\n170 180 10\n180 190 5', xtitle: 'Height (cm)', title: 'Heights of 40 learners' });
       if (k === 'study') Object.assign(st, { mode: 'pairs', chart: 'scatter', pairs: '1 42\n2 48\n2 51\n3 55\n4 60\n4 58\n5 66\n6 70\n7 71\n8 79', xtitle: 'Hours studied', ytitle: 'Mark (%)', title: 'Study time and marks' });
+      if (k === 'skew') Object.assign(st, { mode: 'list', chart: 'box', a: '12 14 15 15 16 17 18 18 19 21 45', xtitle: 'Time to finish (minutes)', title: 'A data set with an outlier' });
+      if (k === 'dots') Object.assign(st, { mode: 'list', chart: 'dot', a: '0 1 1 1 2 2 2 2 3 3 4 6', xtitle: 'Number of siblings', title: 'Siblings in our class' });
       K.localize(st, EX_TEXT, lang);
     }
 
@@ -535,8 +543,10 @@
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || T().charts[st.chart]).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'chart', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
     $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
 
-    const loaded = store.load(sanitize);
-    if (loaded) st = loaded; else example('marks');
+    const exKey = K.exampleFromHash();
+    const EX_KEYS = ['marks', 'compare', 'heights', 'study', 'skew', 'dots'];
+    const loaded = EX_KEYS.includes(exKey) ? null : store.load(sanitize);
+    if (loaded) st = loaded; else example(EX_KEYS.includes(exKey) ? exKey : 'marks');
     K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintData(); paintChart(); render(); }).apply();
     window.__stats = { summary, regression, parseList, st: () => st };
   })();

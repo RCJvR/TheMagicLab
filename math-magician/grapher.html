@@ -518,6 +518,20 @@
         P(Object.assign({}, PRESETS.trig360, { intersections: true }));
         add('sin', { params: { a: '2', k: '1', p: '0', q: '0' } });
         add('cos', { params: { a: '1', k: '2', p: '0', q: '0' } });
+      } else if (key === 'line') {
+        P({ xmin: '-6', xmax: '6', ymin: '-6', ymax: '6', shape: 'equal', intersections: true });
+        add('linear', { params: { m: '2', c: '1' } });
+        add('linear', { params: { m: '-1/2', c: '3' } });
+      } else if (key === 'quad') {
+        P({ xmin: '-5', xmax: '6', ymin: '-6', ymax: '8', intersections: true });
+        add('quadStd', { params: { a: '1', b: '-2', c: '-3' } });
+      } else if (key === 'cubic') {
+        P({ xmin: '-4', xmax: '5', ymin: '-12', ymax: '12', ystep: '2', intersections: true });
+        add('cubic', { params: { a: '1', b: '-2', c: '-5', d: '6' } });
+      } else if (key === 'seq') {
+        P({ xmin: '0', xmax: '6', ymin: '0', ymax: '28', ystep: '2' });
+        [3, 5, 7, 9, 11].forEach((y, i) => state.points.push({ id: uid++, name: '', x: String(i + 1), y: String(y), color: '#2563eb' }));
+        [2, 5, 10, 17, 26].forEach((y, i) => state.points.push({ id: uid++, name: '', x: String(i + 1), y: String(y), color: '#db2777' }));
       } else if (key === 'circle') {
         P({ xmin: '-7', xmax: '7', ymin: '-7', ymax: '7', shape: 'equal', intersections: true });
         add('circle', { params: { a: '0', b: '0', r: '5' } });
@@ -1293,9 +1307,12 @@
     // ══════════════════════════════════════════════════════════════════
     // Boot
     // ══════════════════════════════════════════════════════════════════
-    const loaded = load();
+    // Lessons open an example with #ex=<name> (see lesson-explore.js).
+    const exKey = window.MMPlotKit.exampleFromHash();
+    const EX_KEYS = ['hyp', 'parLine', 'exp', 'trig', 'circle', 'line', 'quad', 'cubic', 'seq'];
+    const loaded = EX_KEYS.includes(exKey) ? null : load();
     if (loaded) state = loaded;
-    else example('hyp');
+    else example(EX_KEYS.includes(exKey) ? exKey : 'hyp');
     paintPlane();
     applyLang();
     // Test hook (harmless in production): lets a headless check exercise the parser.

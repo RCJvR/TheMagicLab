@@ -703,8 +703,10 @@
     if (window.MLLang) MLLang.mount('mlLangToggle', { onChange(next) { lang = next; applyLang(); } });
 
     // ── Boot ──
-    const loaded = load();
-    if (loaded) state = loaded; else example('jumps');
+    const exKey = K.exampleFromHash();
+    const EX_KEYS = ['jumps', 'gt', 'interval', 'or', 'fractions', 'decimals'];
+    const loaded = EX_KEYS.includes(exKey) ? null : load();
+    if (loaded) state = loaded; else example(EX_KEYS.includes(exKey) ? exKey : 'jumps');
     paintLine();
     applyLang();
   })();

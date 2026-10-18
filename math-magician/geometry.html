@@ -143,6 +143,7 @@
         tpl: [
           'Triangle', 'Triangle with midpoints', 'Parallel lines & transversal', 'Chord ⊥ from centre', 'Angle at centre',
           'Cyclic quadrilateral', 'Tangent–chord', 'Two tangents from a point', 'Right-angled triangle', 'Isosceles triangle',
+          'Parallelogram with diagonals',
         ],
         text: 'Text', confirmClear: 'Clear the whole diagram?', copied: 'Link copied — anyone with it sees this diagram.',
         copyFail: 'Could not copy the link — your browser blocked the clipboard.', empty: 'Click something in the diagram to change it.',
@@ -175,6 +176,7 @@
         tpl: [
           'Driehoek', 'Driehoek met middelpunte', 'Ewewydige lyne en snylyn', 'Koord ⊥ uit middelpunt', 'Middelpuntshoek',
           'Koordevierhoek', 'Raaklyn–koord', 'Twee raaklyne uit ’n punt', 'Reghoekige driehoek', 'Gelykbenige driehoek',
+          'Parallelogram met hoeklyne',
         ],
         text: 'Teks', confirmClear: 'Vee die hele diagram uit?', copied: 'Skakel gekopieer — enigiemand daarmee sien hierdie diagram.',
         copyFail: 'Kon nie die skakel kopieer nie — jou blaaier het die knipbord geblokkeer.', empty: 'Klik op iets in die diagram om dit te verander.',
@@ -715,7 +717,14 @@
       },
       ({ pt, seg, ang }) => { const A = pt(250, 130, 'A'), B = pt(250, 510, 'B'), C = pt(700, 510, 'C'); seg(A, B); seg(B, C); seg(C, A); ang(A, B, C, { arcs: 'right' }); ang(B, C, A, { label: 'θ' }); },
       ({ pt, seg, ang }) => { const A = pt(450, 110, 'A'), B = pt(260, 520, 'B'), C = pt(640, 520, 'C'); seg(A, B, { ticks: 1 }); seg(C, A, { ticks: 1 }); seg(B, C); ang(A, B, C, { label: '' }); ang(B, C, A, { label: '' }); },
+      ({ pt, seg }) => {
+        const A = pt(220, 490, 'A'), B = pt(620, 490, 'B'), C = pt(770, 190, 'C'), D = pt(370, 190, 'D');
+        seg(A, B, { arrows: 1 }); seg(D, C, { arrows: 1 }); seg(A, D, { arrows: 2 }); seg(B, C, { arrows: 2 });
+        seg(A, C, { dash: true }); seg(B, D, { dash: true });
+      },
     ];
+    // Lessons open a template with #ex=<name> (see lesson-explore.js).
+    const TEMPLATE_KEYS = { tri: 0, mid: 1, par: 2, chord: 3, centre: 4, cyclic: 5, tanchord: 6, twotan: 7, right: 8, isos: 9, pgram: 10 };
     function paintTpls() { $('tpls').innerHTML = T().tpl.map((n, i) => `<button type="button" data-t="${i}">${esc(n)}</button>`).join(''); }
     $('tpls').addEventListener('click', (e) => { const b = e.target.closest('[data-t]'); if (b) build(TEMPLATES[b.dataset.t]); });
 
@@ -766,8 +775,10 @@
     $('copyLink').addEventListener('click', () => store.copyLink(snap(), T().copied, T().copyFail));
 
     function paintAll() { $('grid').checked = st.grid; $('snap').checked = st.snap; $('title').value = st.title; paintTools(); paintTpls(); paintProps(); render(); }
-    const loaded = store.load(sanitize);
-    if (loaded) st = loaded; else { build(TEMPLATES[6]); hist = []; }
+    const exKey = K.exampleFromHash();
+    const exIdx = exKey && TEMPLATE_KEYS[exKey] != null ? TEMPLATE_KEYS[exKey] : null;
+    const loaded = exIdx == null ? store.load(sanitize) : null;
+    if (loaded) st = loaded; else { build(TEMPLATES[exIdx == null ? 6 : exIdx]); hist = []; }
     lastSaved = snap();
     K.i18n((l) => { lang = l; paintAll(); }).apply();
     window.__geo = { st: () => st, pos };

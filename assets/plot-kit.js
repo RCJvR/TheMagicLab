@@ -484,6 +484,15 @@
     };
   }
 
+  // A lesson can open a tool on one of its examples with #ex=<name>. Returns the
+  // name (and clears it from the address bar) or null.
+  function exampleFromHash() {
+    const m = /[#&]ex=([A-Za-z0-9_-]+)/.exec(location.hash);
+    if (!m) return null;
+    history.replaceState(null, '', location.pathname + location.search);
+    return m[1];
+  }
+
   // Example text in both languages: pairs is a list of [english, afrikaans].
   // Every string in st (and in arrays of objects inside it) that is still
   // exactly an example string is switched to `lang`; anything the user typed
@@ -504,6 +513,6 @@
 
   window.MMPlotKit = {
     compile, FUNCS, DEG, attach, openDialog, copyImage, printSheet, pngBlob, svgString, svgSize, download, toast,
-    toB64, fromB64, esc, addToWorksheet, inbox, setInbox, i18n, store, localize,
+    toB64, fromB64, esc, addToWorksheet, inbox, setInbox, i18n, store, localize, exampleFromHash,
   };
 })();

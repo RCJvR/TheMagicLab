@@ -435,8 +435,10 @@
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || st.mode).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'diagram', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
     $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
 
-    const loaded = store.load(sanitize);
-    if (loaded) st = loaded; else example('venn2');
+    const exKey = K.exampleFromHash();
+    const EX_KEYS = ['venn2', 'venn2shade', 'venn3', 'with', 'without', 'three'];
+    const loaded = EX_KEYS.includes(exKey) ? null : store.load(sanitize);
+    if (loaded) st = loaded; else example(EX_KEYS.includes(exKey) ? exKey : 'venn2');
     K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
     window.__prob = { st: () => st };
   })();

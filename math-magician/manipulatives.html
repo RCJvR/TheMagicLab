@@ -410,8 +410,12 @@
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || st.mode).replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'model', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
     $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
 
-    const loaded = store.load(sanitize);
+    // Lessons open a mode with #ex=wall | models | tiles | expand (see lesson-explore.js).
+    const exKey = K.exampleFromHash();
+    const loaded = exKey ? null : store.load(sanitize);
     if (loaded) st = loaded;
+    if (['wall', 'models', 'tiles'].includes(exKey)) st.mode = exKey;
+    if (exKey === 'expand') { st.mode = 'tiles'; st.tiles.mode = 'expand'; }
     K.i18n((l) => { lang = l; paintControls(); render(); }).apply();
     window.__manip = { parseTri, factorise, st: () => st };
   })();

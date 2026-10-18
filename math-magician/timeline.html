@@ -283,8 +283,10 @@
     K.attach({ getSvg: () => $('plot').querySelector('svg'), fileBase: () => (st.title || 'timeline').replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-').slice(0, 40) || 'timeline', print: 'printBtn', copy: 'copyImg', png: 'dlPng', svg: 'dlSvg', worksheet: 'toWs' });
     $('copyLink').addEventListener('click', () => store.copyLink(JSON.stringify(st), T().copied, T().copyFail));
 
-    const loaded = store.load(sanitize);
-    if (loaded) st = loaded; else example('rates');
+    const exKey = K.exampleFromHash();
+    const EX_KEYS = ['fv', 'loan', 'rates', 'delay'];
+    const loaded = EX_KEYS.includes(exKey) ? null : store.load(sanitize);
+    if (loaded) st = loaded; else example(EX_KEYS.includes(exKey) ? exKey : 'rates');
     K.i18n((l) => { lang = l; K.localize(st, EX_TEXT, lang); paintLine(); paintItems(); render(); }).apply();
   })();
   </script>
