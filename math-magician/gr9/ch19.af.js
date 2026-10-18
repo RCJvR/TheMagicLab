@@ -152,6 +152,7 @@ MathMagician.registerChapter(19, {
         { type: "mc", text: "Met behulp van die vervoervoorbeeld (Seuns: Bus 12, Loop 8; Meisies: Bus 10, Loop 20; totaal 50), wat is P(seun wat die bus neem)?", options: ["12/20", "12/50", "22/50", "20/50"], answer: 1, topic: "Twee-rigting-tabelle" },
         { type: "input", text: "In 'n twee-rigting-tabel is Kolom A se totaal = 22 en die grondtotaal = 50. Wat is P(Kolom A), as 'n desimaal (2 desimale plekke)?", answer: "0.44", topic: "Twee-rigting-tabelle" },
         { type: "input", text: "In 'n opname onder 80 leerders: Sport & Bus = 15, Sport & Loop = 25, Geen sport & Bus = 10, Geen sport & Loop = 30. Van die leerders wat sport speel, watter breukdeel loop skool toe? (as 'n breuk, bv. 2/3)", answer: "5/8", topic: "Twee-rigting-tabelle" },
+        { type: "input", text: "In 'n klas van 30 stap 18 leerders skool toe. 10 van die stappers is meisies, en daar is 14 meisies in die klas. 'n Leerder word lukraak gekies. Wat is die waarskynlikheid dat dit 'n seun is wat nie stap nie? Gee 'n breuk in eenvoudigste vorm.", answer: "4/15", topic: "Twee-rigting-tabelle" }
       ]
     },
     {
@@ -185,6 +186,7 @@ MathMagician.registerChapter(19, {
         {"type": "input", "text": "'n Sak het 3 rooi en 2 blou tellers. Twee word met terugplasing uitgehaal. Wat is P(albei rooi)? Gee 'n breuk.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Boomdiagramme"},
         {"type": "input", "text": "Vir dieselfde sak, wat is P(een rooi en een blou)? Gee 'n breuk.", "answer": "12/25", "altAnswers": ["0.48", "0,48"], "topic": "Boomdiagramme"},
         {"type": "input", "text": "Drie muntstukke word opgeskiet. Hoeveel uitkomste is daar?", "answer": "8", "topic": "Boomdiagramme"},
+        { type: "input", text: "'n Muntstuk word drie keer gegooi. Wat is die waarskynlikheid om presies twee keer kop te kry? Gee 'n breuk.", answer: "3/8", topic: "Boomdiagramme" }
       ]
     },
     {

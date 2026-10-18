@@ -61,6 +61,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Which fraction is equivalent to 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Fractions" },
         { type: "input", text: "Calculate (2 1/3 + 1 1/6) ÷ 3/4. Give only the whole-number part of the mixed-number answer.", answer: "4", topic: "Fractions" },
         { type: "input", text: "A recipe uses 2 3/4 cups of flour per batch of cookies. A baker has 12 cups of flour. After making as many complete batches as possible, how many cups of flour are left over?", answer: "1", topic: "Fractions" },
+        { type: "input", text: "Thabo spends 1/3 of his money on a book, and then 1/4 of what is left on lunch. He has R120 left. How much did he start with? (R)", answer: "240", topic: "Fractions" }
       ]
     },
     {
@@ -191,6 +192,7 @@ MathMagician.registerChapter(3, {
         {"type": "input", "text": "A town's population drops from 25 000 to 23 500. What is the percentage decrease?", "answer": "6", "topic": "Percentages"},
         {"type": "mc", "text": "0,045 as a percentage is:", "options": ["45%", "4,5%", "0,45%", "0,045%"], "answer": 1, "topic": "Percentages"},
         {"type": "input", "text": "After a 20% discount a jacket costs R640. What was the original price? (R)", "answer": "800", "topic": "Percentages"},
+        { type: "input", text: "A shirt's price is increased by 20%, and later the new price is reduced by 20%. The final price is R480. What was the original price? (R)", answer: "500", topic: "Percentages" }
       ]
     },
     {

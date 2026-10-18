@@ -8,7 +8,8 @@ MMHelp.add(9, 7, {
     ["K","m4:2","The denominator may not be 0.","Die noemer mag nie 0 wees nie.",["x − 5 = 0 when x = 5, so x ≠ 5."],["x − 5 = 0 as x = 5, dus x ≠ 5."]],
     ["R","m4:0","Difference of squares.","Verskil van vierkante.",["(x − 2)(x + 2)/(x − 2)","= x + 2"],["(x − 2)(x + 2)/(x − 2)","= x + 2"]],
     ["C","m4:0","Expand both parts carefully.","Brei albei dele versigtig uit.",["(x + 5)² = x² + 10x + 25","(x − 3)(x + 3) = x² − 9","x² + 10x + 25 − x² + 9 = 10x + 34"],["(x + 5)² = x² + 10x + 25","(x − 3)(x + 3) = x² − 9","x² + 10x + 25 − x² + 9 = 10x + 34"]],
-    ["C","i:19","Write each fraction over 12x.","Skryf elke breuk oor 12x.",["5/(3x) = 20/(12x), 1/(4x) = 3/(12x), 1/(6x) = 2/(12x)","20 − 3 + 2 = 19 → 19/(12x)"],["5/(3x) = 20/(12x), 1/(4x) = 3/(12x), 1/(6x) = 2/(12x)","20 − 3 + 2 = 19 → 19/(12x)"]]
+    ["C","i:19","Write each fraction over 12x.","Skryf elke breuk oor 12x.",["5/(3x) = 20/(12x), 1/(4x) = 3/(12x), 1/(6x) = 2/(12x)","20 − 3 + 2 = 19 → 19/(12x)"],["5/(3x) = 20/(12x), 1/(4x) = 3/(12x), 1/(6x) = 2/(12x)","20 − 3 + 2 = 19 → 19/(12x)"]],
+    ["P","i:8","Area left = rectangle − square; expand both.","Oppervlakte oor = reghoek − vierkant; brei albei uit.",["(x + 5)(x + 2) = x² + 7x + 10 and (x + 3)² = x² + 6x + 9","Difference: x + 1 = 9 → x = 8"],["(x + 5)(x + 2) = x² + 7x + 10 en (x + 3)² = x² + 6x + 9","Verskil: x + 1 = 9 → x = 8"]]
   ],
   "701": [
     ["K","i:-7","The coefficient includes its sign.","Die koëffisiënt sluit sy teken in.",["The x-term is −7x, so the coefficient is −7."],["Die x-term is −7x, dus is die koëffisiënt −7."]],
@@ -24,7 +25,8 @@ MMHelp.add(9, 7, {
     ["R","m4:2","Root of 49 and half the exponent.","Wortel van 49 en die helfte van die eksponent.",["√49 = 7 and √a⁶ = a³","7a³"],["√49 = 7 en √a⁶ = a³","7a³"]],
     ["R","m4:0","Cube the −2 and the x³.","Verhef −2 en x³ tot die derde mag.",["(−2)³ = −8 and (x³)³ = x⁹","−8x⁹"],["(−2)³ = −8 en (x³)³ = x⁹","−8x⁹"]],
     ["R","i:16","Square each value.","Kwadreer elke waarde.",["5² − (−3)²","= 25 − 9 = 16"],["5² − (−3)²","= 25 − 9 = 16"]],
-    ["C","m4:3","Divide each term by −4ab.","Deel elke term deur −4ab.",["8a³b ÷ (−4ab) = −2a²","−4ab² ÷ (−4ab) = +b","−2a² + b"],["8a³b ÷ (−4ab) = −2a²","−4ab² ÷ (−4ab) = +b","−2a² + b"]]
+    ["C","m4:3","Divide each term by −4ab.","Deel elke term deur −4ab.",["8a³b ÷ (−4ab) = −2a²","−4ab² ÷ (−4ab) = +b","−2a² + b"],["8a³b ÷ (−4ab) = −2a²","−4ab² ÷ (−4ab) = +b","−2a² + b"]],
+    ["P","i:29","Expand (a + b)².","Brei (a + b)² uit.",["(a + b)² = a² + 2ab + b² → 49 = a² + b² + 20","a² + b² = 29"],["(a + b)² = a² + 2ab + b² → 49 = a² + b² + 20","a² + b² = 29"]]
   ],
   "703": [
     ["R","m4:0","Multiply every term in the first bracket by every term in the second.","Vermenigvuldig elke term in die eerste hakie met elke term in die tweede.",["x² − 3x + 4x − 12","= x² + x − 12"],["x² − 3x + 4x − 12","= x² + x − 12"]],

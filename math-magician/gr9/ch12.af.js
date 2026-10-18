@@ -174,6 +174,7 @@ MathMagician.registerChapter(12, {
         { type: "mc", text: "Watter VOLLEDIGE rede sou jy gebruik vir verwisselende binnehoeke?", options: ["Verw. hoeke", "Verw. binnehoeke, AB ∥ CD", "Gelyke hoeke", "Z-patroon"], answer: 1, topic: "Lyne" },
         { type: "input", text: "Twee mede-binnehoeke is (2x + 10)° en (3x - 30)°. Vind x.", answer: "40", topic: "Lyne" },
         { type: "input", text: "Twee lyne word deur 'n transversaal gesny sodat een paar mede-binnehoeke 118° en 62° is (wat bevestig dat die twee lyne ewewydig is). 'n Derde lyn, ewewydig aan die eerste, vorm 'n ooreenkomstige hoek van (2x + 10)° met die transversaal (ooreenstemmend met die 118°-hoek). Vind x.", answer: "54", topic: "Lyne" },
+        { type: "input", text: "Twee ewewydige lyne word deur 'n snylyn gesny. Hoeke a en b is ko-binnehoeke, en a is 30° meer as twee keer b. Vind a. (°)", answer: "130", topic: "Lyne" }
       ]
     },
     {
@@ -213,6 +214,7 @@ MathMagician.registerChapter(12, {
         {"type": "mc", "text": "Watter rede is korrek vir \"regoorstaande hoeke is gelyk\"?", "options": ["regoorst ∠e", "ooreenk ∠e", "∠e op 'n reguit lyn", "ko-binne ∠e"], "answer": 0, "topic": "Hoekprobleme met redes oplos"},
         {"type": "input", "text": "Twee hoeke op 'n reguit lyn is 4x en 5x. Bepaal x. (°)", "answer": "20", "topic": "Hoekprobleme met redes oplos"},
         {"type": "mc", "text": "Ooreenkomstige hoeke is 72° en 72°. Wat kan jy aflei?", "options": ["Die lyne ontmoet", "Niks", "Die lyne is parallel", "Die lyne is loodreg"], "answer": 2, "topic": "Hoekprobleme met redes oplos"},
+        { type: "input", text: "AB ∥ CD en E lê tussen die lyne, met ∠BAE = 2x, ∠DCE = 3x en ∠AEC = 100°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":180,\"pts\":{\"A\":[0,4],\"B\":[7,4],\"C\":[0,0],\"D\":[7,0],\"E\":[4.2,2.1]},\"seg\":[[\"A\",\"B\"],[\"C\",\"D\"],[\"A\",\"E\",\"ac\"],[\"C\",\"E\",\"ac\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"ang\":[[\"B\",\"A\",\"E\",\"2x\"],[\"E\",\"C\",\"D\",\"3x\"],[\"A\",\"E\",\"C\",\"100°\",\"ac\"]],\"lab\":{\"E\":\"e\"}}'></div>Vind x.", answer: "20", topic: "Hoekprobleme met redes oplos" }
       ]
     },
     {

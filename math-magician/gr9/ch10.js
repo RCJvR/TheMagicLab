@@ -263,6 +263,7 @@ MathMagician.registerChapter(10, {
         {"type": "input", "text": "Two angles of a triangle are 35° and 80°. What is the exterior angle next to the third angle? (°)", "answer": "115", "topic": "Constructing triangles"},
         {"type": "mc", "text": "In an SSS construction, the third vertex is found where:", "options": ["two arcs cross", "two lines are parallel", "a protractor reads 90°", "the base is bisected"], "answer": 0, "topic": "Constructing triangles"},
         {"type": "mc", "text": "An equilateral triangle is constructed with sides of 5 cm. Each angle is:", "options": ["45°", "60°", "90°", "different each time"], "answer": 1, "topic": "Constructing triangles"},
+        { type: "input", text: "Two sides of a triangle are 5 cm and 8 cm. The third side is a whole number of centimetres. What is the longest third side you can use and still construct a triangle? (cm)", answer: "12", topic: "Constructing triangles" }
       ]
     },
     {
@@ -296,6 +297,7 @@ MathMagician.registerChapter(10, {
         {"type": "mc", "text": "A quadrilateral has diagonals that are perpendicular, and only one bisects the other. It is a:", "options": ["square", "rhombus", "rectangle", "kite"], "answer": 3, "topic": "Quadrilaterals and their diagonals"},
         {"type": "mc", "text": "Which statement is true for EVERY parallelogram?", "options": ["Its diagonals are equal", "Its diagonals bisect each other", "Its diagonals are perpendicular", "All its angles are 90°"], "answer": 1, "topic": "Quadrilaterals and their diagonals"},
         {"type": "input", "text": "The diagonals of a rhombus are 12 cm and 16 cm. How long is each side? (cm)", "answer": "10", "topic": "Quadrilaterals and their diagonals"},
+        { type: "mc", text: "You construct a quadrilateral whose diagonals bisect each other and are equal in length, but are not perpendicular. What have you constructed?", options: ["A rectangle that is not a square","A rhombus","A square","A kite"], answer: 0, topic: "Quadrilaterals and their diagonals" }
       ]
     },
     {

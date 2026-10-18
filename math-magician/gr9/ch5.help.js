@@ -16,7 +16,8 @@ MMHelp.add(9, 5, {
     ["K","m4:2","Geometric means multiply by the same number.","Meetkundig beteken vermenigvuldig met dieselfde getal.",["2 ; 6 ; 18 ; 54: × 3 each time"],["2 ; 6 ; 18 ; 54: × 3 elke keer"]],
     ["R","i:162","Substitute n = 5.","Vervang n met 5.",["T₅ = 2 × 3⁴","= 2 × 81 = 162"],["T₅ = 2 × 3⁴","= 2 × 81 = 162"]],
     ["R","m4:1","a = 4 and r = 2.","a = 4 en r = 2.",["Tₙ = a × rⁿ⁻¹","= 4 × 2ⁿ⁻¹"],["Tₙ = a × rⁿ⁻¹","= 4 × 2ⁿ⁻¹"]],
-    ["C","i:3200","Double six times.","Verdubbel ses keer.",["50 × 2⁶","= 50 × 64 = 3 200"],["50 × 2⁶","= 50 × 64 = 3 200"]]
+    ["C","i:3200","Double six times.","Verdubbel ses keer.",["50 × 2⁶","= 50 × 64 = 3 200"],["50 × 2⁶","= 50 × 64 = 3 200"]],
+    ["P","i:7","New people in hour n = 3ⁿ.","Nuwe mense in uur n = 3ⁿ.",["3⁶ = 729 (not yet)","3⁷ = 2 187 > 1 000 → hour 7"],["3⁶ = 729 (nog nie)","3⁷ = 2 187 > 1 000 → uur 7"]]
   ],
   "502": [
     ["R","i:61","Find the rule first.","Vind eers die reël.",["Tₙ = 3n + 1","T₂₀ = 3(20) + 1 = 61"],["Tₙ = 3n + 1","T₂₀ = 3(20) + 1 = 61"]],
@@ -24,7 +25,8 @@ MMHelp.add(9, 5, {
     ["R","i:17","Solve 6n − 2 = 100.","Los 6n − 2 = 100 op.",["6n = 102","n = 17"],["6n = 102","n = 17"]],
     ["R","m4:0","Solve 4n − 1 = 75.","Los 4n − 1 = 75 op.",["4n = 76","n = 19, a whole number, so yes"],["4n = 76","n = 19, 'n heelgetal, dus ja"]],
     ["R","i:15","Look at the differences.","Kyk na die verskille.",["Differences: 2, 3, 4, … → next difference is 5","10 + 5 = 15"],["Verskille: 2, 3, 4, … → volgende verskil is 5","10 + 5 = 15"]],
-    ["R","i:52","y goes up by 5 each time.","y styg elke keer met 5.",["y = 5n + 2","y = 5(10) + 2 = 52"],["y = 5n + 2","y = 5(10) + 2 = 52"]]
+    ["R","i:52","y goes up by 5 each time.","y styg elke keer met 5.",["y = 5n + 2","y = 5(10) + 2 = 52"],["y = 5n + 2","y = 5(10) + 2 = 52"]],
+    ["P","i:24","Each extra table adds 2 seats.","Elke ekstra tafel voeg 2 sitplekke by.",["Seats = 2n + 2","2n + 2 ≥ 50 → n ≥ 24 → 24 tables (exactly 50 seats)"],["Sitplekke = 2n + 2","2n + 2 ≥ 50 → n ≥ 24 → 24 tafels (presies 50 sitplekke)"]]
   ],
   "503": [
     ["R","i:65","d = 7.","d = 7.",["Tₙ = 7n − 5","T₁₀ = 70 − 5 = 65"],["Tₙ = 7n − 5","T₁₀ = 70 − 5 = 65"]],

@@ -17,7 +17,8 @@ MMHelp.add(9, 1, {
     ["R","i:13","km ÷ litres.","km ÷ liter.",["390 ÷ 30 = 13 km per litre"],["390 ÷ 30 = 13 km per liter"]],
     ["R","m4:0","y = kx. Find k first.","y = kx. Vind eers k.",["k = 18 ÷ 6 = 3","y = 3 × 10 = 30"],["k = 18 ÷ 6 = 3","y = 3 × 10 = 30"]],
     ["C","i:230","Find the size of one part from the flour.","Vind die grootte van een deel uit die meel.",["5 parts = 800 g → 1 part = 160 g","Butter = 3 × 160 = 480 g","480 − 250 = 230 g more"],["5 dele = 800 g → 1 deel = 160 g","Botter = 3 × 160 = 480 g","480 − 250 = 230 g meer"]],
-    ["P","i:24","Work out how much work is left after 6 days.","Bereken hoeveel werk na 6 dae oorbly.",["Total work: 12 × 18 = 216 worker-days","After 6 days: 216 − 12 × 6 = 144 left","8 workers: 144 ÷ 8 = 18 more days → 6 + 18 = 24 days"],["Totale werk: 12 × 18 = 216 werker-dae","Na 6 dae: 216 − 12 × 6 = 144 oor","8 werkers: 144 ÷ 8 = 18 dae meer → 6 + 18 = 24 dae"]]
+    ["P","i:24","Work out how much work is left after 6 days.","Bereken hoeveel werk na 6 dae oorbly.",["Total work: 12 × 18 = 216 worker-days","After 6 days: 216 − 12 × 6 = 144 left","8 workers: 144 ÷ 8 = 18 more days → 6 + 18 = 24 days"],["Totale werk: 12 × 18 = 216 werker-dae","Na 6 dae: 216 − 12 × 6 = 144 oor","8 werkers: 144 ÷ 8 = 18 dae meer → 6 + 18 = 24 dae"]],
+    ["P","i:1264","Find the total distance first, then the litres.","Vind eers die totale afstand, dan die liters.",["Distance: 2 × 360 = 720 km","Petrol: 7.5 × 720 ÷ 100 = 54 litres","Cost: 54 × R23.40 = R1 263.60 ≈ R1 264"],["Afstand: 2 × 360 = 720 km","Petrol: 7,5 × 720 ÷ 100 = 54 liter","Koste: 54 × R23,40 = R1 263,60 ≈ R1 264"]]
   ],
   "2": [
     ["R","i:1680","I = P × i × n","I = P × i × n",["I = 6 000 × 0,07 × 4","= R1 680"],["I = 6 000 × 0,07 × 4","= R1 680"]],
@@ -44,7 +45,8 @@ MMHelp.add(9, 1, {
     ["R","i:30","Litres per km stays the same.","Liter per km bly dieselfde.",["360 ÷ 240 = 1,5 times the distance","20 × 1,5 = 30 litres"],["360 ÷ 240 = 1,5 keer die afstand","20 × 1,5 = 30 liter"]],
     ["K","m4:0","y = kx gives a straight line through (0 ; 0).","y = kx gee 'n reguit lyn deur (0 ; 0).",["A straight line through the origin means y = kx: direct proportion."],["'n Reguit lyn deur die oorsprong beteken y = kx: direkte eweredigheid."]],
     ["R","i:375","The total prize stays the same.","Die totale prys bly dieselfde.",["Total = 5 × 600 = R3 000","3 000 ÷ 8 = R375"],["Totaal = 5 × 600 = R3 000","3 000 ÷ 8 = R375"]],
-    ["R","i:2","The distance stays the same.","Die afstand bly dieselfde.",["Distance = 80 × 3 = 240 km","240 ÷ 120 = 2 hours"],["Afstand = 80 × 3 = 240 km","240 ÷ 120 = 2 uur"]]
+    ["R","i:2","The distance stays the same.","Die afstand bly dieselfde.",["Distance = 80 × 3 = 240 km","240 ÷ 120 = 2 hours"],["Afstand = 80 × 3 = 240 km","240 ÷ 120 = 2 uur"]],
+    ["P","i:8","Measure the job in \"worker-days\".","Meet die werk in \"werker-dae\".",["Whole job: 6 × 10 = 60 worker-days","After 4 days: 6 × 4 = 24 done, 36 left","9 workers: 36 ÷ 9 = 4 more days → 4 + 4 = 8 days"],["Hele werk: 6 × 10 = 60 werker-dae","Na 4 dae: 6 × 4 = 24 klaar, 36 oor","9 werkers: 36 ÷ 9 = 4 dae meer → 4 + 4 = 8 dae"]]
   ],
   "103": [
     ["R","i:3400","4% = 0,04.","4% = 0,04.",["0,04 × 85 000","= R3 400"],["0,04 × 85 000","= R3 400"]],

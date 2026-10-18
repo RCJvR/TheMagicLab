@@ -8,7 +8,8 @@ MMHelp.add(9, 3, {
     ["R","i:11/2","Change to improper fractions.","Skakel om na onegte breuke.",["17/4 − 11/4 = 6/4","= 3/2 = 1 1/2"],["17/4 − 11/4 = 6/4","= 3/2 = 1 1/2"]],
     ["K","m4:0","Whole number × denominator + numerator.","Heelgetal × noemer + teller.",["3 × 7 + 3 = 24 → 24/7"],["3 × 7 + 3 = 24 → 24/7"]],
     ["C","i:4","Add inside the bracket first.","Tel eers binne die hakie op.",["7/3 + 7/6 = 14/6 + 7/6 = 21/6 = 7/2","7/2 ÷ 3/4 = 7/2 × 4/3 = 28/6 = 4 2/3","Whole-number part: 4"],["7/3 + 7/6 = 14/6 + 7/6 = 21/6 = 7/2","7/2 ÷ 3/4 = 7/2 × 4/3 = 28/6 = 4 2/3","Heelgetal-deel: 4"]],
-    ["P","i:1","How many full batches fit into 12 cups?","Hoeveel volle hoeveelhede pas in 12 koppies?",["12 ÷ 2¾ = 12 × 4/11 = 48/11 = 4 4/11 → 4 full batches","4 × 2¾ = 11 cups used","12 − 11 = 1 cup left"],["12 ÷ 2¾ = 12 × 4/11 = 48/11 = 4 4/11 → 4 volle hoeveelhede","4 × 2¾ = 11 koppies gebruik","12 − 11 = 1 koppie oor"]]
+    ["P","i:1","How many full batches fit into 12 cups?","Hoeveel volle hoeveelhede pas in 12 koppies?",["12 ÷ 2¾ = 12 × 4/11 = 48/11 = 4 4/11 → 4 full batches","4 × 2¾ = 11 cups used","12 − 11 = 1 cup left"],["12 ÷ 2¾ = 12 × 4/11 = 48/11 = 4 4/11 → 4 volle hoeveelhede","4 × 2¾ = 11 koppies gebruik","12 − 11 = 1 koppie oor"]],
+    ["P","i:240","Work out what fraction of the money is left.","Bereken watter breuk van die geld oorbly.",["After the book: 2/3 left","After lunch: 3/4 of 2/3 = 1/2 left","1/2 of the money = R120 → R240"],["Na die boek: 2/3 oor","Na middagete: 3/4 van 2/3 = 1/2 oor","1/2 van die geld = R120 → R240"]]
   ],
   "6": [
     ["R","m4:1","0,375 = 375 thousandths.","0,375 = 375 duisendstes.",["375/1 000","Divide by 125: 3/8"],["375/1 000","Deel deur 125: 3/8"]],
@@ -34,7 +35,8 @@ MMHelp.add(9, 3, {
     ["R","i:15","Increase ÷ original × 100%.","Toename ÷ oorspronklike × 100%.",["92 − 80 = 12","12/80 × 100% = 15%"],["92 − 80 = 12","12/80 × 100% = 15%"]],
     ["R","i:6","Decrease ÷ original × 100%.","Afname ÷ oorspronklike × 100%.",["25 000 − 23 500 = 1 500","1 500/25 000 × 100% = 6%"],["25 000 − 23 500 = 1 500","1 500/25 000 × 100% = 6%"]],
     ["K","m4:1","Multiply by 100%.","Vermenigvuldig met 100%.",["0,045 × 100% = 4,5%"],["0,045 × 100% = 4,5%"]],
-    ["C","i:800","R640 is 80% of the original price.","R640 is 80% van die oorspronklike prys.",["0,8 × P = 640","P = 640 ÷ 0,8 = R800"],["0,8 × P = 640","P = 640 ÷ 0,8 = R800"]]
+    ["C","i:800","R640 is 80% of the original price.","R640 is 80% van die oorspronklike prys.",["0,8 × P = 640","P = 640 ÷ 0,8 = R800"],["0,8 × P = 640","P = 640 ÷ 0,8 = R800"]],
+    ["P","i:500","The two changes multiply: they do not cancel.","Die twee veranderinge vermenigvuldig: hulle kanselleer nie.",["Final = x × 1.2 × 0.8 = 0.96x","0.96x = 480 → x = R500"],["Finaal = x × 1,2 × 0,8 = 0,96x","0,96x = 480 → x = R500"]]
   ],
   "303": [
     ["R","i:2","Change to improper fractions and flip the divisor.","Skakel om na onegte breuke en draai die deler om.",["5/2 ÷ 5/4 = 5/2 × 4/5","= 20/10 = 2"],["5/2 ÷ 5/4 = 5/2 × 4/5","= 20/10 = 2"]],

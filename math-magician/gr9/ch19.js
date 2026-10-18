@@ -152,6 +152,7 @@ MathMagician.registerChapter(19, {
         { type: "mc", text: "Using the transport example (Boys: Bus 12, Walk 8; Girls: Bus 10, Walk 20; total 50), what is P(boy who takes the bus)?", options: ["12/20", "12/50", "22/50", "20/50"], answer: 1, topic: "Two-way tables" },
         { type: "input", text: "In a two-way table, Column A total = 22 and grand total = 50. What is P(Column A), as a decimal (2 dp)?", answer: "0.44", topic: "Two-way tables" },
         { type: "input", text: "In a survey of 80 learners: Sport & Bus = 15, Sport & Walk = 25, No Sport & Bus = 10, No Sport & Walk = 30. Of the learners who play sport, what fraction walk to school? (as a fraction, e.g. 2/3)", answer: "5/8", topic: "Two-way tables" },
+        { type: "input", text: "In a class of 30, 18 learners walk to school. 10 of the walkers are girls, and there are 14 girls in the class. A learner is chosen at random. What is the probability that it is a boy who does not walk? Give a fraction in simplest form.", answer: "4/15", topic: "Two-way tables" }
       ]
     },
     {
@@ -185,6 +186,7 @@ MathMagician.registerChapter(19, {
         {"type": "input", "text": "A bag has 3 red and 2 blue counters. Two are taken with replacement. What is P(both red)? Give a fraction.", "answer": "9/25", "altAnswers": ["0.36", "0,36"], "topic": "Tree diagrams"},
         {"type": "input", "text": "For the same bag, what is P(one red and one blue)? Give a fraction.", "answer": "12/25", "altAnswers": ["0.48", "0,48"], "topic": "Tree diagrams"},
         {"type": "input", "text": "Three coins are tossed. How many outcomes are there?", "answer": "8", "topic": "Tree diagrams"},
+        { type: "input", text: "A coin is tossed three times. What is the probability of getting exactly two heads? Give a fraction.", answer: "3/8", topic: "Tree diagrams" }
       ]
     },
     {

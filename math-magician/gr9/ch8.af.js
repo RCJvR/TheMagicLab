@@ -149,6 +149,7 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Faktoriseer volledig: 2x² - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Faktorisering" },
         { type: "input", text: "Faktoriseer volledig: 5x² - 5x - 60. Gee die konstante term in die liniêre faktor met die kleiner absolute waarde (gee 'n positiewe getal).", answer: "3", topic: "Faktorisering" },
         { type: "mc", text: "Faktoriseer volledig: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Faktorisering" },
+        { type: "input", text: "x² − y² = 48 en x + y = 12. Vind x.", answer: "8", topic: "Faktorisering" }
       ]
     },
     {
@@ -221,6 +222,7 @@ MathMagician.registerChapter(8, {
         {"type": "mc", "text": "Vereenvoudig (x² − 1)/(x² + 2x + 1):", "options": ["−1", "1", "(x + 1)/(x − 1)", "(x − 1)/(x + 1)"], "answer": 3, "topic": "Algebraïese breuke vereenvoudig"},
         {"type": "mc", "text": "Watter vereenvoudiging is VERKEERD?", "options": ["2x/x = 2", "(x + 5)/5 = x + 1", "(3x − 6)/3 = x − 2", "(x² + x)/x = x + 1"], "answer": 1, "topic": "Algebraïese breuke vereenvoudig"},
         {"type": "mc", "text": "Vereenvoudig (2x² − 18)/(x² − 3x):", "options": ["2(x + 3)/x", "2(x − 3)/x", "2/x", "(x + 3)/x"], "answer": 0, "topic": "Algebraïese breuke vereenvoudig"},
+        { type: "input", text: "Vereenvoudig (x² − 9)/(x² + 5x + 6), en bepaal dan die waarde daarvan as x = 7. Gee 'n breuk.", answer: "4/9", topic: "Algebraïese breuke vereenvoudig" }
       ]
     },
     {

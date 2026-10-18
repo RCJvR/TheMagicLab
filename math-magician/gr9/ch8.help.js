@@ -17,7 +17,8 @@ MMHelp.add(9, 8, {
     ["R","i:4","Take out the common factor 3 first.","Haal eers die gemeenskaplike faktor 3 uit.",["3(x² − 16)","= 3(x − 4)(x + 4) → constant 4"],["3(x² − 16)","= 3(x − 4)(x + 4) → konstante 4"]],
     ["R","m4:0","Common factor first.","Gemeenskaplike faktor eerste.",["2(x² − x − 12)","= 2(x − 4)(x + 3)"],["2(x² − x − 12)","= 2(x − 4)(x + 3)"]],
     ["C","i:3","Take out 5 first.","Haal eers 5 uit.",["5(x² − x − 12) = 5(x − 4)(x + 3)","Factors: (x − 4) and (x + 3); the smaller absolute value is 3"],["5(x² − x − 12) = 5(x − 4)(x + 3)","Faktore: (x − 4) en (x + 3); die kleiner absolute waarde is 3"]],
-    ["C","m4:0","Factorise x² − 25 first.","Faktoriseer eers x² − 25.",["(x − 5)(x + 5) + x(x + 5)","= (x + 5)(x − 5 + x) = (x + 5)(2x − 5)"],["(x − 5)(x + 5) + x(x + 5)","= (x + 5)(x − 5 + x) = (x + 5)(2x − 5)"]]
+    ["C","m4:0","Factorise x² − 25 first.","Faktoriseer eers x² − 25.",["(x − 5)(x + 5) + x(x + 5)","= (x + 5)(x − 5 + x) = (x + 5)(2x − 5)"],["(x − 5)(x + 5) + x(x + 5)","= (x + 5)(x − 5 + x) = (x + 5)(2x − 5)"]],
+    ["P","i:8","Factorise x² − y².","Faktoriseer x² − y².",["(x − y)(x + y) = 48 → (x − y) × 12 = 48 → x − y = 4","Add: 2x = 16 → x = 8"],["(x − y)(x + y) = 48 → (x − y) × 12 = 48 → x − y = 4","Tel op: 2x = 16 → x = 8"]]
   ],
   "801": [
     ["R","m4:0","Common factor 2, then the trinomial.","Gemeenskaplike faktor 2, dan die drieterm.",["2(x² + 7x + 12)","= 2(x + 3)(x + 4)"],["2(x² + 7x + 12)","= 2(x + 3)(x + 4)"]],
@@ -33,7 +34,8 @@ MMHelp.add(9, 8, {
     ["R","m4:2","Take out 3a in the numerator.","Haal 3a in die teller uit.",["3a(2a + 3)/(3a)","= 2a + 3"],["3a(2a + 3)/(3a)","= 2a + 3"]],
     ["C","m4:3","Factorise top and bottom.","Faktoriseer teller en noemer.",["(x − 1)(x + 1)/((x + 1)(x + 1))","= (x − 1)/(x + 1)"],["(x − 1)(x + 1)/((x + 1)(x + 1))","= (x − 1)/(x + 1)"]],
     ["C","m4:1","You may only cancel factors, not terms.","Jy mag net faktore kanselleer, nie terme nie.",["(x + 5)/5 = x/5 + 1, not x + 1: the 5 is not a factor of the whole numerator."],["(x + 5)/5 = x/5 + 1, nie x + 1 nie: die 5 is nie 'n faktor van die hele teller nie."]],
-    ["C","m4:0","Factorise top and bottom.","Faktoriseer teller en noemer.",["2(x² − 9) = 2(x − 3)(x + 3) and x² − 3x = x(x − 3)","Cancel (x − 3): 2(x + 3)/x"],["2(x² − 9) = 2(x − 3)(x + 3) en x² − 3x = x(x − 3)","Kanselleer (x − 3): 2(x + 3)/x"]]
+    ["C","m4:0","Factorise top and bottom.","Faktoriseer teller en noemer.",["2(x² − 9) = 2(x − 3)(x + 3) and x² − 3x = x(x − 3)","Cancel (x − 3): 2(x + 3)/x"],["2(x² − 9) = 2(x − 3)(x + 3) en x² − 3x = x(x − 3)","Kanselleer (x − 3): 2(x + 3)/x"]],
+    ["P","i:4/9","Factorise top and bottom, cancel, then substitute.","Faktoriseer teller en noemer, kanselleer en vervang dan.",["(x − 3)(x + 3) / ((x + 2)(x + 3)) = (x − 3)/(x + 2)","x = 7: 4/9"],["(x − 3)(x + 3) / ((x + 2)(x + 3)) = (x − 3)/(x + 2)","x = 7: 4/9"]]
   ],
   "803": [
     ["R","m4:2","Product 21, sum −10.","Produk 21, som −10.",["−7 × −3 = 21 and −7 + (−3) = −10","(x − 7)(x − 3)"],["−7 × −3 = 21 en −7 + (−3) = −10","(x − 7)(x − 3)"]],

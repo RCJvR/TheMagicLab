@@ -206,6 +206,7 @@ MathMagician.registerChapter(11, {
         {"type": "input", "text": "Vier hoeke van 'n vyfhoek is 100°, 110°, 95° en 120°. Bepaal die vyfde hoek. (°)", "answer": "115", "topic": "Hoeke van veelhoeke"},
         {"type": "input", "text": "Wat is elke buitehoek van 'n reëlmatige seshoek? (°)", "answer": "60", "topic": "Hoeke van veelhoeke"},
         {"type": "mc", "text": "'n Reëlmatige veelhoek het binnehoeke van 150°. Hoeveel sye het dit?", "options": ["10", "11", "12", "15"], "answer": 2, "topic": "Hoeke van veelhoeke"},
+        { type: "input", text: "Elke binnehoek van 'n reëlmatige veelhoek is 4 keer so groot as elke buitehoek. Hoeveel sye het die veelhoek?", answer: "10", topic: "Hoeke van veelhoeke" }
       ]
     },
     {
@@ -273,6 +274,7 @@ MathMagician.registerChapter(11, {
         {"type": "input", "text": "Gelykvormige driehoeke het sye 4, 6, 8 en x, 9, 12. Bepaal x.", "answer": "6", "topic": "Probleme met gelykvormige driehoeke"},
         {"type": "mc", "text": "Watter voorwaarde is NIE genoeg om twee driehoeke kongruent te bewys nie?", "options": ["SSS", "SHS", "RHS", "HHH"], "answer": 3, "topic": "Probleme met gelykvormige driehoeke"},
         {"type": "input", "text": "Die skaalfaktor tussen twee gelykvormige driehoeke is 3. Die klein driehoek se omtrek is 14 cm. Wat is die groot een se omtrek? (cm)", "answer": "42", "topic": "Probleme met gelykvormige driehoeke"},
+        { type: "input", text: "'n Persoon van 1,8 m lank staan 4 m van 'n lamppaal af. Hulle skaduwee is 2 m lank.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":200,\"pts\":{\"L\":[0,0],\"T\":[0,5.4],\"P\":[4,0],\"H\":[4,1.8],\"S\":[6,0]},\"seg\":[[\"L\",\"T\",\"ln\"],[\"P\",\"H\",\"hl\"],[\"L\",\"P\",null,null,\"4 m\"],[\"P\",\"S\",null,null,\"2 m\"],[\"T\",\"S\",\"ac dash\"]],\"ra\":[[\"T\",\"L\",\"S\"],[\"H\",\"P\",\"S\"]],\"nolab\":[\"L\",\"T\",\"P\",\"H\",\"S\"],\"txt\":[[-0.5,2.7,\"?\",\"ac\",\"end\"],[3.8,0.8,\"1,8 m\",\"hl\",\"end\"]]}'></div>Hoe hoog is die lamppaal? (m)", answer: "5.4", altAnswers: ["5,4"], topic: "Probleme met gelykvormige driehoeke" }
       ]
     },
     {

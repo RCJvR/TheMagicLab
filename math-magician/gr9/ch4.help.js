@@ -24,7 +24,8 @@ MMHelp.add(9, 4, {
     ["R","i:6","Write 64 as a power of 2.","Skryf 64 as 'n mag van 2.",["64 = 2⁶","x = 6"],["64 = 2⁶","x = 6"]],
     ["R","i:2","Write 125 as a power of 5.","Skryf 125 as 'n mag van 5.",["125 = 5³ → x + 1 = 3","x = 2"],["125 = 5³ → x + 1 = 3","x = 2"]],
     ["C","i:5.25","Work out each power.","Bereken elke mag.",["4⁰ = 1, 4⁻¹ = 1/4, 4¹ = 4","1 + 0,25 + 4 = 5,25"],["4⁰ = 1, 4⁻¹ = 1/4, 4¹ = 4","1 + 0,25 + 4 = 5,25"]],
-    ["K","m4:1","A negative exponent gives \"one over\".","'n Negatiewe eksponent gee \"een oor\".",["x⁻³ = 1/x³"],["x⁻³ = 1/x³"]]
+    ["K","m4:1","A negative exponent gives \"one over\".","'n Negatiewe eksponent gee \"een oor\".",["x⁻³ = 1/x³"],["x⁻³ = 1/x³"]],
+    ["P","i:9","Write every number as a power of 2.","Skryf elke getal as 'n mag van 2.",["4³ = 2⁶ and 8⁵ = 2¹⁵","2ˣ⁺⁶ = 2¹⁵ → x + 6 = 15 → x = 9"],["4³ = 2⁶ en 8⁵ = 2¹⁵","2ˣ⁺⁶ = 2¹⁵ → x + 6 = 15 → x = 9"]]
   ],
   "402": [
     ["R","m4:3","Compare the powers of 10 first.","Vergelyk eers die magte van 10.",["1,1 × 10⁴ = 11 000","The others are less than 10 000."],["1,1 × 10⁴ = 11 000","Die ander is kleiner as 10 000."]],
@@ -32,7 +33,8 @@ MMHelp.add(9, 4, {
     ["R","m4:0","Divide the numbers, subtract the exponents.","Deel die getalle, trek die eksponente af.",["6 ÷ 3 = 2 and 10⁸ ÷ 10² = 10⁶","2 × 10⁶"],["6 ÷ 3 = 2 en 10⁸ ÷ 10² = 10⁶","2 × 10⁶"]],
     ["R","m4:2","The first number must be between 1 and 10.","Die eerste getal moet tussen 1 en 10 wees.",["63 000 000 = 6,3 × 10 000 000","= 6,3 × 10⁷"],["63 000 000 = 6,3 × 10 000 000","= 6,3 × 10⁷"]],
     ["R","i:0.00000012","Move the comma 7 places left.","Skuif die komma 7 plekke na links.",["1,2 × 10⁻⁷ = 0,000 000 12 m"],["1,2 × 10⁻⁷ = 0,000 000 12 m"]],
-    ["C","i:1700","Distance = speed × time.","Afstand = spoed × tyd.",["3,4 × 10² × 5 = 17 × 10²","= 1 700 m"],["3,4 × 10² × 5 = 17 × 10²","= 1 700 m"]]
+    ["C","i:1700","Distance = speed × time.","Afstand = spoed × tyd.",["3,4 × 10² × 5 = 17 × 10²","= 1 700 m"],["3,4 × 10² × 5 = 17 × 10²","= 1 700 m"]],
+    ["P","i:8","Time = distance ÷ speed; divide the powers of 10 separately.","Tyd = afstand ÷ spoed; deel die magte van 10 apart.",["(1.5 × 10¹¹) ÷ (3 × 10⁸) = 0.5 × 10³ = 500 s","500 ÷ 60 ≈ 8.3 → about 8 minutes"],["(1,5 × 10¹¹) ÷ (3 × 10⁸) = 0,5 × 10³ = 500 s","500 ÷ 60 ≈ 8,3 → sowat 8 minute"]]
   ],
   "403": [
     ["R","m4:1","Expand the bracket, then subtract exponents.","Brei die hakie uit en trek dan eksponente af.",["(x²y)³ = x⁶y³","x⁶y³ ÷ x⁴y = x²y²"],["(x²y)³ = x⁶y³","x⁶y³ ÷ x⁴y = x²y²"]],

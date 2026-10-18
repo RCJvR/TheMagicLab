@@ -206,6 +206,7 @@ MathMagician.registerChapter(11, {
         {"type": "input", "text": "Four angles of a pentagon are 100°, 110°, 95° and 120°. Find the fifth angle. (°)", "answer": "115", "topic": "Angles of polygons"},
         {"type": "input", "text": "What is each exterior angle of a regular hexagon? (°)", "answer": "60", "topic": "Angles of polygons"},
         {"type": "mc", "text": "A regular polygon has interior angles of 150°. How many sides does it have?", "options": ["10", "11", "12", "15"], "answer": 2, "topic": "Angles of polygons"},
+        { type: "input", text: "Each interior angle of a regular polygon is 4 times as big as each exterior angle. How many sides does the polygon have?", answer: "10", topic: "Angles of polygons" }
       ]
     },
     {
@@ -273,6 +274,7 @@ MathMagician.registerChapter(11, {
         {"type": "input", "text": "Similar triangles have sides 4, 6, 8 and x, 9, 12. Find x.", "answer": "6", "topic": "Problems with similar triangles"},
         {"type": "mc", "text": "Which condition is NOT enough to prove two triangles congruent?", "options": ["SSS", "SAS", "RHS", "AAA"], "answer": 3, "topic": "Problems with similar triangles"},
         {"type": "input", "text": "The scale factor between two similar triangles is 3. The small triangle's perimeter is 14 cm. What is the big one's perimeter? (cm)", "answer": "42", "topic": "Problems with similar triangles"},
+        { type: "input", text: "A person 1,8 m tall stands 4 m from a lamp post. Their shadow is 2 m long.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":200,\"pts\":{\"L\":[0,0],\"T\":[0,5.4],\"P\":[4,0],\"H\":[4,1.8],\"S\":[6,0]},\"seg\":[[\"L\",\"T\",\"ln\"],[\"P\",\"H\",\"hl\"],[\"L\",\"P\",null,null,\"4 m\"],[\"P\",\"S\",null,null,\"2 m\"],[\"T\",\"S\",\"ac dash\"]],\"ra\":[[\"T\",\"L\",\"S\"],[\"H\",\"P\",\"S\"]],\"nolab\":[\"L\",\"T\",\"P\",\"H\",\"S\"],\"txt\":[[-0.5,2.7,\"?\",\"ac\",\"end\"],[3.8,0.8,\"1,8 m\",\"hl\",\"end\"]]}'></div>How tall is the lamp post? (m)", answer: "5.4", altAnswers: ["5,4"], topic: "Problems with similar triangles" }
       ]
     },
     {

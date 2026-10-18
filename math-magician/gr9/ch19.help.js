@@ -15,7 +15,8 @@ MMHelp.add(9, 19, {
     ["R","i:50","Add all four cells.","Tel al vier selle op.",["8 + 12 + 10 + 20 = 50"],["8 + 12 + 10 + 20 = 50"]],
     ["R","m4:1","Divide by the grand total.","Deel deur die groottotaal.",["Boys who take the bus: 12","12/50"],["Seuns wat bus ry: 12","12/50"]],
     ["R","i:0.44","Column total ÷ grand total.","Kolomtotaal ÷ groottotaal.",["22 ÷ 50 = 0.44"],["22 ÷ 50 = 0,44"]],
-    ["C","i:5/8","Only look at the learners who play sport.","Kyk net na die leerders wat sport speel.",["Sport total: 15 + 25 = 40","Walk: 25/40 = 5/8"],["Sporttotaal: 15 + 25 = 40","Stap: 25/40 = 5/8"]]
+    ["C","i:5/8","Only look at the learners who play sport.","Kyk net na die leerders wat sport speel.",["Sport total: 15 + 25 = 40","Walk: 25/40 = 5/8"],["Sporttotaal: 15 + 25 = 40","Stap: 25/40 = 5/8"]],
+    ["P","i:4/15","Fill in a two-way table: boys/girls × walk/do not walk.","Vul 'n tweerigtingtabel in: seuns/meisies × stap/stap nie.",["Boys: 30 − 14 = 16; boys who walk: 18 − 10 = 8","Boys who do not walk: 16 − 8 = 8","P = 8/30 = 4/15"],["Seuns: 30 − 14 = 16; seuns wat stap: 18 − 10 = 8","Seuns wat nie stap nie: 16 − 8 = 8","P = 8/30 = 4/15"]]
   ],
   "1901": [
     ["R","i:1/4","Multiply along the branches.","Vermenigvuldig langs die takke.",["P(H, H) = ½ × ½ = 1/4"],["P(K, K) = ½ × ½ = 1/4"]],
@@ -23,7 +24,8 @@ MMHelp.add(9, 19, {
     ["R","i:12","Multiply the numbers of outcomes.","Vermenigvuldig die aantal uitkomste.",["2 × 6 = 12"],["2 × 6 = 12"]],
     ["R","i:9/25","With replacement: P(red) stays 3/5.","Met terugplasing: P(rooi) bly 3/5.",["3/5 × 3/5","= 9/25"],["3/5 × 3/5","= 9/25"]],
     ["C","i:12/25","Two paths: red-blue or blue-red.","Twee paaie: rooi-blou of blou-rooi.",["RB: 3/5 × 2/5 = 6/25 and BR: 2/5 × 3/5 = 6/25","6/25 + 6/25 = 12/25"],["RB: 3/5 × 2/5 = 6/25 en BR: 2/5 × 3/5 = 6/25","6/25 + 6/25 = 12/25"]],
-    ["R","i:8","Each coin doubles the outcomes.","Elke muntstuk verdubbel die uitkomste.",["2 × 2 × 2 = 8"],["2 × 2 × 2 = 8"]]
+    ["R","i:8","Each coin doubles the outcomes.","Elke muntstuk verdubbel die uitkomste.",["2 × 2 × 2 = 8"],["2 × 2 × 2 = 8"]],
+    ["P","i:3/8","List the outcomes, or count the paths on a tree.","Lys die uitkomste, of tel die paaie op 'n boom.",["2 × 2 × 2 = 8 outcomes","Exactly two heads: HHT, HTH, THH → 3","P = 3/8"],["2 × 2 × 2 = 8 uitkomste","Presies twee kop: KKS, KSK, SKK → 3","P = 3/8"]]
   ],
   "1902": [
     ["R","i:1/3","Which numbers are greater than 4?","Watter getalle is groter as 4?",["5 and 6 → 2 outcomes","2/6 = 1/3"],["5 en 6 → 2 uitkomste","2/6 = 1/3"]],

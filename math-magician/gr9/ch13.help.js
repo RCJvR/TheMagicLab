@@ -15,7 +15,8 @@ MMHelp.add(9, 13, {
     ["R","i:5","Draw the right triangle with sides 3 and 4.","Teken die reghoekige driehoek met sye 3 en 4.",["d² = 3² + 4² = 25","d = 5"],["d² = 3² + 4² = 25","d = 5"]],
     ["K","m4:0","Square the sides, not just add them.","Kwadreer die sye; moenie net optel nie.",["49 + 576 = 625 = 25² → yes"],["49 + 576 = 625 = 25² → ja"]],
     ["C","i:10","The diagonal of a square with side s is s√2.","Die hoeklyn van 'n vierkant met sy s is s√2.",["s² + s² = (10√2)² = 200","s² = 100 → s = 10 cm"],["s² + s² = (10√2)² = 200","s² = 100 → s = 10 cm"]],
-    ["C","i:12","Compare the diagonal with the walk along two sides.","Vergelyk die hoeklyn met die stap langs twee sye.",["Diagonal: √(21² + 20²) = √841 = 29 m","Two sides: 21 + 20 = 41 m → 41 − 29 = 12 m"],["Hoeklyn: √(21² + 20²) = √841 = 29 m","Twee sye: 21 + 20 = 41 m → 41 − 29 = 12 m"]]
+    ["C","i:12","Compare the diagonal with the walk along two sides.","Vergelyk die hoeklyn met die stap langs twee sye.",["Diagonal: √(21² + 20²) = √841 = 29 m","Two sides: 21 + 20 = 41 m → 41 − 29 = 12 m"],["Hoeklyn: √(21² + 20²) = √841 = 29 m","Twee sye: 21 + 20 = 41 m → 41 − 29 = 12 m"]],
+    ["P","i:27.9","Let the width be 16k and the height 9k.","Laat die breedte 16k en die hoogte 9k wees.",["(16k)² + (9k)² = 32² → 337k² = 1 024 → k ≈ 1.743","Width = 16 × 1.743 ≈ 27.9 inches"],["(16k)² + (9k)² = 32² → 337k² = 1 024 → k ≈ 1,743","Breedte = 16 × 1,743 ≈ 27,9 duim"]]
   ],
   "1301": [
     ["R","i:17","The diagonal is the hypotenuse.","Die hoeklyn is die skuinssy.",["d² = 8² + 15² = 64 + 225 = 289","d = 17 cm"],["d² = 8² + 15² = 64 + 225 = 289","d = 17 cm"]],
@@ -23,7 +24,8 @@ MMHelp.add(9, 13, {
     ["R","i:12","The height bisects the base.","Die hoogte halveer die basis.",["Half base = 5 cm","h² = 169 − 25 = 144 → h = 12 cm"],["Halwe basis = 5 cm","h² = 169 − 25 = 144 → h = 12 cm"]],
     ["K","m4:1","Test a² + b² = c² on each.","Toets a² + b² = c² op elkeen.",["8² + 15² = 64 + 225 = 289 = 17²","so 8, 15, 17 is right-angled"],["8² + 15² = 64 + 225 = 289 = 17²","dus is 8, 15, 17 reghoekig"]],
     ["C","i:50","Use s² + s² = d².","Gebruik s² + s² = d².",["2s² = 10² = 100","Area = s² = 50 cm²"],["2s² = 10² = 100","Oppervlakte = s² = 50 cm²"]],
-    ["R","i:4.8","The ladder is the hypotenuse.","Die leer is die skuinssy.",["h² = 5² − 1.4² = 25 − 1.96 = 23.04","h = 4.8 m"],["h² = 5² − 1,4² = 25 − 1,96 = 23,04","h = 4,8 m"]]
+    ["R","i:4.8","The ladder is the hypotenuse.","Die leer is die skuinssy.",["h² = 5² − 1.4² = 25 − 1.96 = 23.04","h = 4.8 m"],["h² = 5² − 1,4² = 25 − 1,96 = 23,04","h = 4,8 m"]],
+    ["P","i:3","After t hours they form a right triangle.","Na t uur vorm hulle 'n reghoekige driehoek.",["Sides 12t and 16t → distance √(144t² + 256t²) = 20t","20t = 60 → t = 3 hours"],["Sye 12t en 16t → afstand √(144t² + 256t²) = 20t","20t = 60 → t = 3 uur"]]
   ],
   "1302": [
     ["R","i:29","c² = a² + b²","c² = a² + b²",["c² = 400 + 441 = 841","c = 29"],["c² = 400 + 441 = 841","c = 29"]],

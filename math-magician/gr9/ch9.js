@@ -160,6 +160,7 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "Solve: 2x² - 8 = 0", options: ["x = 4", "x = ±2", "x = 2", "x = ±4"], answer: 1, topic: "Equations" },
         { type: "input", text: "Solve x² - 2x - 15 = 0. What is the positive solution?", answer: "5", topic: "Equations" },
         { type: "input", text: "A rectangle has area 40 cm² and its length is 3 cm more than its width. Find the width (in cm).", answer: "5", topic: "Equations" },
+        { type: "input", text: "The product of two consecutive positive even numbers is 288. Find the larger number.", answer: "18", topic: "Equations" }
       ]
     },
     {
@@ -235,6 +236,7 @@ MathMagician.registerChapter(9, {
         {"type": "input", "text": "A rectangle's length is 5 cm more than its width. Its perimeter is 50 cm. What is its width? (cm)", "answer": "10", "topic": "Word problems"},
         {"type": "input", "text": "Thandi has R5 and R2 coins, 20 coins in total, worth R67. How many R5 coins does she have?", "answer": "9", "topic": "Word problems"},
         {"type": "input", "text": "Tickets cost R45 for adults and R25 for children. A group of 12 paid R420. How many adults were there?", "answer": "6", "topic": "Word problems"},
+        { type: "input", text: "A boat travels 24 km downstream in 2 hours and comes back upstream in 3 hours. What is the speed of the current? (km/h)", answer: "2", topic: "Word problems" }
       ]
     },
     {

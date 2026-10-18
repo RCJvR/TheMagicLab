@@ -157,6 +157,7 @@ MathMagician.registerChapter(5, {
         {"type": "input", "text": "Tₙ = 2 × 3ⁿ⁻¹. Bereken T₅.", "answer": "162", "topic": "Meetkundige patrone"},
         {"type": "mc", "text": "Die algemene term van 4 ; 8 ; 16 ; 32 ; … is:", "options": ["Tₙ = 4n", "Tₙ = 4 × 2ⁿ⁻¹", "Tₙ = 2ⁿ", "Tₙ = 4n + 4"], "answer": 1, "topic": "Meetkundige patrone"},
         {"type": "input", "text": "'n Bakteriekolonie verdubbel elke uur. Dit begin met 50 bakterieë. Hoeveel is daar na 6 uur?", "answer": "3200", "topic": "Meetkundige patrone"},
+        { type: "input", text: "'n Boodskap word in uur 1 aan 3 mense gestuur. In elke volgende uur stuur almal wat dit die vorige uur ontvang het, dit aan 3 nuwe mense. In watter uur ontvang meer as 1 000 nuwe mense dit?", answer: "7", topic: "Meetkundige patrone" }
       ]
     },
     {
@@ -189,6 +190,7 @@ Vuurhoutjies (Tₙ)  4   7  10  13</div>
         {"type": "mc", "text": "Is 75 'n term van Tₙ = 4n − 1?", "options": ["Ja, n = 19", "Ja, n = 18,5", "Nee, n is nie 'n heelgetal nie", "Nee, die patroon daal"], "answer": 0, "topic": "Patrone uit prente"},
         {"type": "input", "text": "Kolletjies vorm driehoeke: 1 ; 3 ; 6 ; 10 ; … Wat is die volgende term?", "answer": "15", "topic": "Patrone uit prente"},
         {"type": "input", "text": "'n Tabel: n = 1, 2, 3 gee y = 7, 12, 17. Bepaal y wanneer n = 10.", "answer": "52", "topic": "Patrone uit prente"},
+        { type: "input", text: "Vierkantige tafels word in 'n ry aanmekaar geskuif. Een tafel sit 4 mense, twee tafels sit 6 en drie tafels sit 8. Hoeveel tafels is nodig om 50 mense te laat sit?", answer: "24", topic: "Patrone uit prente" }
       ]
     },
     {

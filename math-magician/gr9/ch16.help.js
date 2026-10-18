@@ -17,7 +17,8 @@ MMHelp.add(9, 16, {
     ["R","i:81","Area grows by the square of the scale factor.","Oppervlakte groei met die kwadraat van die skaalfaktor.",["3² = 9","9 × 9 = 81 cm²"],["3² = 9","9 × 9 = 81 cm²"]],
     ["K","m4:1","Perimeter is a length.","Omtrek is 'n lengte.",["Lengths × 0.5, so the perimeter × 0.5."],["Lengtes × 0,5, dus die omtrek × 0,5."]],
     ["C","i:15","90° clockwise: (x ; y) → (y ; −x).","90° kloksgewys: (x ; y) → (y ; −x).",["(−2 ; 5) → (5 ; 2)","× 3 → (15 ; 6) → x = 15"],["(−2 ; 5) → (5 ; 2)","× 3 → (15 ; 6) → x = 15"]],
-    ["C","i:20","Divide by the area factor.","Deel deur die oppervlaktefaktor.",["Area factor = 4² = 16","320 ÷ 16 = 20 cm²"],["Oppervlaktefaktor = 4² = 16","320 ÷ 16 = 20 cm²"]]
+    ["C","i:20","Divide by the area factor.","Deel deur die oppervlaktefaktor.",["Area factor = 4² = 16","320 ÷ 16 = 20 cm²"],["Oppervlaktefaktor = 4² = 16","320 ÷ 16 = 20 cm²"]],
+    ["P","i:-5-2","Do the steps in order.","Doen die stappe in volgorde.",["90° clockwise: (x ; y) → (y ; −x): (2 ; 5) → (5 ; −2)","Reflect in the y-axis: (5 ; −2) → (−5 ; −2)"],["90° kloksgewys: (x ; y) → (y ; −x): (2 ; 5) → (5 ; −2)","Weerkaats in die y-as: (5 ; −2) → (−5 ; −2)"]]
   ],
   "1601": [
     ["K","m4:1","Which coordinate changed sign?","Watter koördinaat het van teken verander?",["x changed sign, y stayed → reflection in the y-axis."],["x het van teken verander, y het dieselfde gebly → weerkaatsing in die y-as."]],
@@ -33,7 +34,8 @@ MMHelp.add(9, 16, {
     ["R","i:10","Area × (½)².","Oppervlakte × (½)².",["40 × ¼","= 10 cm²"],["40 × ¼","= 10 cm²"]],
     ["K","i:2-3","Multiply each coordinate by ½.","Vermenigvuldig elke koördinaat met ½.",["(4 × ½ ; −6 × ½) = (2 ; −3)"],["(4 × ½ ; −6 × ½) = (2 ; −3)"]],
     ["R","i:3","Area factor = k².","Oppervlaktefaktor = k².",["k² = 9","k = 3"],["k² = 9","k = 3"]],
-    ["K","i:-96","Multiply each coordinate by 3.","Vermenigvuldig elke koördinaat met 3.",["(−3 × 3 ; 2 × 3) = (−9 ; 6)"],["(−3 × 3 ; 2 × 3) = (−9 ; 6)"]]
+    ["K","i:-96","Multiply each coordinate by 3.","Vermenigvuldig elke koördinaat met 3.",["(−3 × 3 ; 2 × 3) = (−9 ; 6)"],["(−3 × 3 ; 2 × 3) = (−9 ; 6)"]],
+    ["P","i:2","Area grows by the square of the scale factor.","Oppervlakte groei met die kwadraat van die skaalfaktor.",["Old area: 150 cm² → area factor 600 ÷ 150 = 4","k² = 4 → k = 2"],["Ou oppervlakte: 150 cm² → oppervlaktefaktor 600 ÷ 150 = 4","k² = 4 → k = 2"]]
   ],
   "1603": [
     ["K","i:25","In y = x: swap the coordinates.","In y = x: ruil die koördinate om.",["(5 ; 2) → (2 ; 5)"],["(5 ; 2) → (2 ; 5)"]],

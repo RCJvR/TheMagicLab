@@ -17,7 +17,8 @@ MMHelp.add(9, 12, {
     ["R","i:15","Corresponding angles are equal.","Ooreenkomstige hoeke is gelyk.",["5x + 15 = 3x + 45","2x = 30 → x = 15"],["5x + 15 = 3x + 45","2x = 30 → x = 15"]],
     ["K","m4:1","A complete reason names the angle type and the parallel lines.","'n Volledige rede noem die hoeksoort en die ewewydige lyne.",["\"Alt. int. ∠s, AB ∥ CD\" gives both."],["\"Verw. binne∠e, AB ∥ CD\" gee albei."]],
     ["R","i:40","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["(2x + 10) + (3x − 30) = 180","5x − 20 = 180 → x = 40"],["(2x + 10) + (3x − 30) = 180","5x − 20 = 180 → x = 40"]],
-    ["C","i:54","Corresponding angles on parallel lines are equal.","Ooreenkomstige hoeke op ewewydige lyne is gelyk.",["2x + 10 = 118","2x = 108 → x = 54"],["2x + 10 = 118","2x = 108 → x = 54"]]
+    ["C","i:54","Corresponding angles on parallel lines are equal.","Ooreenkomstige hoeke op ewewydige lyne is gelyk.",["2x + 10 = 118","2x = 108 → x = 54"],["2x + 10 = 118","2x = 108 → x = 54"]],
+    ["P","i:130","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["a + b = 180 and a = 2b + 30","3b + 30 = 180 → b = 50 → a = 130°"],["a + b = 180 en a = 2b + 30","3b + 30 = 180 → b = 50 → a = 130°"]]
   ],
   "1201": [
     ["R","i:116","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["180° − 64° = 116°"],["180° − 64° = 116°"]],
@@ -25,7 +26,8 @@ MMHelp.add(9, 12, {
     ["R","i:50","Angles round a point add up to 360°.","Hoeke om 'n punt tel op tot 360°.",["90 + 120 + x + 2x = 360","3x = 150 → x = 50"],["90 + 120 + x + 2x = 360","3x = 150 → x = 50"]],
     ["K","m4:0","Use the standard abbreviation.","Gebruik die standaardafkorting.",["vert opp ∠s"],["vert opp ∠s"]],
     ["R","i:20","Angles on a straight line add up to 180°.","Hoeke op 'n reguit lyn tel op tot 180°.",["4x + 5x = 180","9x = 180 → x = 20"],["4x + 5x = 180","9x = 180 → x = 20"]],
-    ["K","m4:2","Equal corresponding angles...","Gelyke ooreenkomstige hoeke...",["...prove that the lines are parallel."],["...bewys dat die lyne ewewydig is."]]
+    ["K","m4:2","Equal corresponding angles...","Gelyke ooreenkomstige hoeke...",["...prove that the lines are parallel."],["...bewys dat die lyne ewewydig is."]],
+    ["P","i:20","Draw a line through E parallel to AB.","Trek 'n lyn deur E ewewydig aan AB.",["The parallel line splits ∠AEC into 2x and 3x (alt ∠s)","2x + 3x = 100° → x = 20°"],["Die ewewydige lyn verdeel ∠AEC in 2x en 3x (verw ∠e)","2x + 3x = 100° → x = 20°"]]
   ],
   "1202": [
     ["K","i:133","Supplementary: add up to 180°.","Supplementêr: tel op tot 180°.",["180° − 47° = 133°"],["180° − 47° = 133°"]],

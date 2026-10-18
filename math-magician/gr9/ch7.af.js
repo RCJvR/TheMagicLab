@@ -132,6 +132,7 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Vereenvoudig: (x² - 4)/(x - 2) vir x ≠ 2", options: ["x + 2", "x - 2", "x² + 2", "2"], answer: 0, topic: "Algebra" },
         { type: "mc", text: "Vereenvoudig: (x + 5)² - (x - 3)(x + 3)", options: ["10x + 34", "10x + 16", "8x + 34", "10x - 34"], answer: 0, topic: "Algebra" },
         { type: "input", text: "Vereenvoudig: 5/(3x) - 1/(4x) + 1/(6x), en skryf die antwoord as 'n enkele breuk oor 'n noemer van 12x. Gee die teller.", answer: "19", topic: "Algebra" },
+        { type: "input", text: "'n Vierkant met sye van (x + 3) cm word uit 'n reghoek gesny wat (x + 5) cm lank en (x + 2) cm breed is. Die oppervlakte wat oorbly, is 9 cm². Vind x.", answer: "8", topic: "Algebra" }
       ]
     },
     {
@@ -202,6 +203,7 @@ MathMagician.registerChapter(7, {
         {"type": "mc", "text": "(−2x³)³ =", "options": ["−8x⁹", "8x⁹", "−6x⁹", "−8x⁶"], "answer": 0, "topic": "Deel, vervang en wortels van terme"},
         {"type": "input", "text": "Bepaal a² − b² wanneer a = 5 en b = −3.", "answer": "16", "topic": "Deel, vervang en wortels van terme"},
         {"type": "mc", "text": "(8a³b − 4ab²) ÷ (−4ab) =", "options": ["2a² − b", "−2a² − b", "2a² + b", "−2a² + b"], "answer": 3, "topic": "Deel, vervang en wortels van terme"},
+        { type: "input", text: "As a + b = 7 en ab = 10, bepaal die waarde van a² + b² sonder om a en b te vind.", answer: "29", topic: "Deel, vervang en wortels van terme" }
       ]
     },
     {

@@ -32,6 +32,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "Die watertenk.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":190,\"view\":[0,0,12,110],\"pad\":28,\"axes\":{\"x\":\"tyd (h)\",\"y\":\"liter\",\"o\":false,\"tx\":2,\"ty\":20},\"pts\":{\"A\":[0,100],\"B\":[4,60],\"C\":[6,60],\"D\":[11,0]},\"nolab\":[\"A\",\"B\",\"C\",\"D\"],\"dots\":[\"A\",\"D\"],\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"C\",\"D\",\"ac\"]]}'></div>Tussen 6 h en 11 h word die water gebruik:", "options": ["vinniger as tussen 0 h en 4 h", "stadiger as tussen 0 h en 4 h", "teen dieselfde tempo", "glad nie"], "answer": 0, "topic": "Grafieke interpreteer"},
         {"type": "mc", "text": "Die punt waar 'n grafiek die y-as sny, word genoem die:", "options": ["x-afsnit", "y-afsnit", "maksimum", "gradiënt"], "answer": 1, "topic": "Grafieke interpreteer"},
         {"type": "input", "text": "'n Grafiek gaan reguit van (0 ; 100) tot (4 ; 60). Wat is die tempo van verandering per uur? Gee 'n negatiewe getal vir 'n afname.", "answer": "-10", "topic": "Grafieke interpreteer"},
+        { type: "input", text: "Die grafiek wys Lindiwe se afstand van die huis af terwyl sy winkel toe stap, daar wag, en huis toe stap.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,50,900],\"pad\":30,\"axes\":{\"x\":\"min\",\"y\":\"m\",\"o\":false,\"tx\":10,\"ty\":200},\"pts\":{\"O\":[0,0],\"A\":[10,800],\"B\":[25,800],\"C\":[45,0]},\"seg\":[[\"O\",\"A\",\"ac\"],[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"]],\"dots\":[\"A\",\"B\",\"C\"],\"nolab\":[\"O\",\"A\",\"B\",\"C\"]}'></div>Hoe vinnig het sy huis toe gestap? (meter per minuut)", answer: "40", topic: "Grafieke interpreteer" }
       ]
     },
     {
@@ -134,6 +135,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "Wat is die gradiënt van y = 5 − 2x?", "options": ["5", "−2", "2", "−5"], "answer": 1, "topic": "Die vergelyking van 'n reguit lyn"},
         {"type": "mc", "text": "'n Lyn deur (0 ; 2) en (3 ; 8) het vergelyking:", "options": ["y = 3x + 2", "y = 2x + 3", "y = 6x + 2", "y = 2x + 2"], "answer": 3, "topic": "Die vergelyking van 'n reguit lyn"},
         {"type": "mc", "text": "'n Lyn met gradiënt 2 gaan deur (3 ; 1). Sy vergelyking is:", "options": ["y = 2x + 1", "y = 2x − 1", "y = 2x − 5", "y = 2x + 5"], "answer": 2, "topic": "Die vergelyking van 'n reguit lyn"},
+        { type: "input", text: "'n Reguit lyn gaan deur (2 ; 7) en (6 ; 15). Waar sny dit die x-as? Gee die x-waarde.", answer: "-1.5", altAnswers: ["-1,5","-3/2"], topic: "Die vergelyking van 'n reguit lyn" }
       ]
     },
     {

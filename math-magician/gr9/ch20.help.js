@@ -7,7 +7,8 @@ MMHelp.add(9, 20, {
     ["K","i:11","Where does the graph reach 0 litres?","Waar bereik die grafiek 0 liter?",["It touches the time axis at 11 h."],["Dit raak die tyd-as by 11 h."]],
     ["C","m4:0","Compare the litres used per hour.","Vergelyk die liter wat per uur gebruik word.",["0–4 h: 40 ℓ ÷ 4 h = 10 ℓ/h","6–11 h: 60 ℓ ÷ 5 h = 12 ℓ/h → faster"],["0–4 h: 40 ℓ ÷ 4 h = 10 ℓ/h","6–11 h: 60 ℓ ÷ 5 h = 12 ℓ/h → vinniger"]],
     ["K","m4:1","On the y-axis, x = 0.","Op die y-as is x = 0.",["It is the y-intercept."],["Dit is die y-afsnit."]],
-    ["R","i:-10","Rate = change in y ÷ change in x.","Tempo = verandering in y ÷ verandering in x.",["(60 − 100) ÷ (4 − 0)","= −40 ÷ 4 = −10 litres per hour"],["(60 − 100) ÷ (4 − 0)","= −40 ÷ 4 = −10 liter per uur"]]
+    ["R","i:-10","Rate = change in y ÷ change in x.","Tempo = verandering in y ÷ verandering in x.",["(60 − 100) ÷ (4 − 0)","= −40 ÷ 4 = −10 litres per hour"],["(60 − 100) ÷ (4 − 0)","= −40 ÷ 4 = −10 liter per uur"]],
+    ["P","i:40","The walk home is the last, downward part of the graph.","Die stap huis toe is die laaste, afwaartse deel van die grafiek.",["She walks home from 25 min to 45 min: 20 minutes","800 m ÷ 20 min = 40 m per minute"],["Sy stap huis toe van 25 min tot 45 min: 20 minute","800 m ÷ 20 min = 40 m per minuut"]]
   ],
   "2002": [
     ["K","m4:0","What is the speed while waiting?","Wat is die spoed terwyl dit wag?",["Standing still means speed 0, so the graph is constant at 0."],["Stilstaan beteken spoed 0, dus is die grafiek konstant by 0."]],
@@ -30,7 +31,8 @@ MMHelp.add(9, 20, {
     ["K","m4:0","y = mx + c","y = mx + c",["m = 4, c = −3 → y = 4x − 3"],["m = 4, c = −3 → y = 4x − 3"]],
     ["K","m4:1","The gradient is the coefficient of x.","Die gradiënt is die koëffisiënt van x.",["y = −2x + 5 → m = −2"],["y = −2x + 5 → m = −2"]],
     ["R","m4:3","Find m; c is the y-intercept.","Vind m; c is die y-afsnit.",["m = (8 − 2) ÷ (3 − 0) = 2","c = 2 → y = 2x + 2"],["m = (8 − 2) ÷ (3 − 0) = 2","c = 2 → y = 2x + 2"]],
-    ["C","m4:2","Substitute the point into y = 2x + c.","Vervang die punt in y = 2x + c.",["1 = 2(3) + c","c = −5 → y = 2x − 5"],["1 = 2(3) + c","c = −5 → y = 2x − 5"]]
+    ["C","m4:2","Substitute the point into y = 2x + c.","Vervang die punt in y = 2x + c.",["1 = 2(3) + c","c = −5 → y = 2x − 5"],["1 = 2(3) + c","c = −5 → y = 2x − 5"]],
+    ["P","i:-1.5","Find the equation first, then set y = 0.","Vind eers die vergelyking en stel dan y = 0.",["m = (15 − 7) ÷ (6 − 2) = 2 → 7 = 2(2) + c → c = 3","y = 2x + 3 = 0 → x = −1.5"],["m = (15 − 7) ÷ (6 − 2) = 2 → 7 = 2(2) + c → c = 3","y = 2x + 3 = 0 → x = −1,5"]]
   ],
   "2005": [
     ["K","m4:1","Parallel lines have the same gradient.","Ewewydige lyne het dieselfde gradiënt.",["m = −3 → y = −3x − 7"],["m = −3 → y = −3x − 7"]],

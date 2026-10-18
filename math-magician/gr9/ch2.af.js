@@ -119,6 +119,7 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Bereken: -2 + (-5) × 3 - (-4)", answer: "-13", topic: "Heelgetalle" },
         { type: "input", text: "Bereken: [(-3)² - (-2)³] × [(-5) + 6]", answer: "17", topic: "Heelgetalle" },
         { type: "input", text: "Die temperatuur was middernag -4°C. Dit het elke uur vir die volgende 5 ure met 3°C geval, en toe elke uur vir die volgende 3 ure met 2°C gestyg. Wat was die temperatuur (in °C) aan die einde van hierdie tydperk?", answer: "-13", topic: "Heelgetalle" },
+        { type: "input", text: "Die som van drie opeenvolgende heelgetalle is −42. Wat is die grootste van die drie?", answer: "-13", topic: "Heelgetalle" }
       ]
     },
     {
@@ -235,6 +236,7 @@ MathMagician.registerChapter(2, {
         {"type": "input", "text": "'n Duikboot op −120 m styg 45 m en duik dan 30 m. Wat is sy diepte nou? (m)", "answer": "-105", "topic": "Heelgetalle in konteks"},
         {"type": "input", "text": "Bereken: −3 × (−4) + 18 ÷ (−6)", "answer": "9", "topic": "Heelgetalle in konteks"},
         {"type": "mc", "text": "Watter stelling is ONWAAR?", "options": ["(−5) + 8 = 8 + (−5)", "(−2) × 7 = 7 × (−2)", "(−4 + 6) + 1 = −4 + (6 + 1)", "(−9) − 3 = 3 − (−9)"], "answer": 3, "topic": "Heelgetalle in konteks"},
+        { type: "input", text: "'n Duikboot is by −120 m. Dit styg 4 minute lank teen 15 m per minuut en duik dan teen 25 m per minuut. Na hoeveel minute se duik is dit by −160 m?", answer: "4", topic: "Heelgetalle in konteks" }
       ]
     },
     {

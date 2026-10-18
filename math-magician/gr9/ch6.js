@@ -166,6 +166,7 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "The function y = 4/x is a:", options: ["Linear function", "Parabola", "Hyperbola", "Exponential"], answer: 2, topic: "Functions" },
         { type: "input", text: "The graph of y = k/x passes through the point (3;8). Determine k, then use it to calculate y when x = 6.", answer: "4", topic: "Functions" },
         { type: "input", text: "A parabola y = ax² has its turning point at the origin and passes through the point (2;12). Determine a, then calculate y when x = -3.", answer: "27", topic: "Functions" },
+        { type: "input", text: "Phone plan A costs R60 per month plus R0,50 per minute. Plan B costs R1,10 per minute and has no monthly fee. For how many minutes in a month do the two plans cost the same?", answer: "100", topic: "Functions" }
       ]
     },
     {
@@ -201,6 +202,7 @@ y │ 3   5   7   9  11</div>
         {"type": "mc", "text": "A table: x = 0, 1, 2, 3 gives y = 1, 4, 7, 10. The formula is:", "options": ["y = x + 3", "y = 4x", "y = 3x + 1", "y = x + 1"], "answer": 2, "topic": "One relationship, four descriptions"},
         {"type": "mc", "text": "For y = 2x + 3, where does the graph cut the y-axis?", "options": ["(0 ; 3)", "(3 ; 0)", "(0 ; 2)", "(−1,5 ; 0)"], "answer": 0, "topic": "One relationship, four descriptions"},
         {"type": "input", "text": "A flow diagram: input x → × (−2) → + 10 → output. What is the output when x = 4?", "answer": "2", "topic": "One relationship, four descriptions"},
+        { type: "input", text: "A table of values shows x = 1, 2, 3, 4 with y = 5, 8, 11, 14. The pattern continues. For which value of x is y = 302?", answer: "100", topic: "One relationship, four descriptions" }
       ]
     },
     {

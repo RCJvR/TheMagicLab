@@ -25,7 +25,8 @@ MMHelp.add(9, 15, {
     ["R","i:8","1 l = 1 000 cm³.","1 l = 1 000 cm³.",["8 000 ÷ 1 000 = 8 l"],["8 000 ÷ 1 000 = 8 l"]],
     ["R","i:60","Find the volume in cm³, then convert.","Vind die volume in cm³ en herlei dan.",["50 × 40 × 30 = 60 000 cm³","60 000 ÷ 1 000 = 60 l"],["50 × 40 × 30 = 60 000 cm³","60 000 ÷ 1 000 = 60 l"]],
     ["C","i:9.42","V = πr²h, then divide by 1 000.","V = πr²h, deel dan deur 1 000.",["π × 100 × 30 = 9 424.78 cm³","9 424.78 ÷ 1 000 = 9.42 l"],["π × 100 × 30 = 9 424,78 cm³","9 424,78 ÷ 1 000 = 9,42 l"]],
-    ["R","i:4.5","1 cm³ = 10 × 10 × 10 mm³.","1 cm³ = 10 × 10 × 10 mm³.",["1 cm³ = 1 000 mm³","4 500 ÷ 1 000 = 4.5 cm³"],["1 cm³ = 1 000 mm³","4 500 ÷ 1 000 = 4,5 cm³"]]
+    ["R","i:4.5","1 cm³ = 10 × 10 × 10 mm³.","1 cm³ = 10 × 10 × 10 mm³.",["1 cm³ = 1 000 mm³","4 500 ÷ 1 000 = 4.5 cm³"],["1 cm³ = 1 000 mm³","4 500 ÷ 1 000 = 4,5 cm³"]],
+    ["P","i:63","Use the water depth, not the tank height.","Gebruik die waterdiepte, nie die tenk se hoogte nie.",["Depth = 40 − 5 = 35 cm","60 × 30 × 35 = 63 000 cm³ = 63 litres"],["Diepte = 40 − 5 = 35 cm","60 × 30 × 35 = 63 000 cm³ = 63 liter"]]
   ],
   "1502": [
     ["R","i:8","Volume depends on three lengths.","Volume hang van drie lengtes af.",["2 × 2 × 2 = 8"],["2 × 2 × 2 = 8"]],
@@ -33,7 +34,8 @@ MMHelp.add(9, 15, {
     ["R","i:4","V = πr²h: the radius is squared.","V = πr²h: die radius word gekwadreer.",["2² = 4"],["2² = 4"]],
     ["R","i:9","Surface area depends on two lengths.","Buite-oppervlakte hang van twee lengtes af.",["3 × 3 = 9"],["3 × 3 = 9"]],
     ["R","i:216","Doubling all sides multiplies volume by 8.","As al die sye verdubbel, word die volume met 8 vermenigvuldig.",["27 × 8","= 216 cm³"],["27 × 8","= 216 cm³"]],
-    ["R","i:192","New dimensions: 4, 6, 8.","Nuwe afmetings: 4, 6, 8.",["4 × 6 × 8 = 192 cm³","(or 24 × 8 = 192)"],["4 × 6 × 8 = 192 cm³","(of 24 × 8 = 192)"]]
+    ["R","i:192","New dimensions: 4, 6, 8.","Nuwe afmetings: 4, 6, 8.",["4 × 6 × 8 = 192 cm³","(or 24 × 8 = 192)"],["4 × 6 × 8 = 192 cm³","(of 24 × 8 = 192)"]],
+    ["P","i:2","V = πr²h: the radius is squared.","V = πr²h: die radius word gekwadreer.",["Radius × 2 → volume × 4","Height × ½ → volume × ½","1 × 4 × ½ = 2 litres"],["Radius × 2 → volume × 4","Hoogte × ½ → volume × ½","1 × 4 × ½ = 2 liter"]]
   ],
   "1503": [
     ["R","i:120","V = area of the triangle × length.","V = oppervlakte van die driehoek × lengte.",["½ × 6 × 4 = 12 cm²","12 × 10 = 120 cm³"],["½ × 6 × 4 = 12 cm²","12 × 10 = 120 cm³"]],

@@ -135,6 +135,7 @@ MathMagician.registerChapter(13, {
         { type: "mc", text: "A triangle has sides 7, 24, 25. Is it right-angled?", options: ["Yes, 7²+24²=625=25²", "No", "Yes, 7+24=25", "Cannot tell"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "A square has diagonal 10√2 cm. Find the side length of the square.", answer: "10", topic: "Pythagoras" },
         { type: "input", text: "A rectangular field is 21 m by 20 m. How many fewer metres does a farmer walk by cutting diagonally across the field, compared to walking along the two sides?", answer: "12", topic: "Pythagoras" },
+        { type: "input", text: "A TV is sold as \"32 inch\": its screen diagonal is 32 inches. The screen's width and height are in the ratio 16 : 9. How wide is the screen, to 1 decimal place? (inches)", answer: "27.9", altAnswers: ["27,9"], topic: "Pythagoras" }
       ]
     },
     {
@@ -173,6 +174,7 @@ MathMagician.registerChapter(13, {
         {"type": "mc", "text": "Which triangle is right-angled?", "options": ["4, 5, 6", "8, 15, 17", "5, 6, 8", "7, 8, 10"], "answer": 1, "topic": "Pythagoras in shapes"},
         {"type": "input", "text": "A square has a diagonal of 10 cm. What is its area? (cm²)", "answer": "50", "topic": "Pythagoras in shapes"},
         {"type": "input", "text": "A 5 m ladder leans against a wall with its foot 1,4 m from the wall. How high up the wall does it reach? (m)", "answer": "4.8", "altAnswers": ["4,8"], "topic": "Pythagoras in shapes"},
+        { type: "input", text: "Two ships leave a harbour at the same time. One sails north at 12 km/h and the other east at 16 km/h. After how many hours are they 60 km apart?", answer: "3", topic: "Pythagoras in shapes" }
       ]
     },
     {

@@ -132,6 +132,7 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Simplify: (x² - 4)/(x - 2) for x ≠ 2", options: ["x + 2", "x - 2", "x² + 2", "2"], answer: 0, topic: "Algebra" },
         { type: "mc", text: "Simplify: (x + 5)² - (x - 3)(x + 3)", options: ["10x + 34", "10x + 16", "8x + 34", "10x - 34"], answer: 0, topic: "Algebra" },
         { type: "input", text: "Simplify: 5/(3x) - 1/(4x) + 1/(6x), writing the answer as a single fraction over a denominator of 12x. Give the numerator.", answer: "19", topic: "Algebra" },
+        { type: "input", text: "A square with sides (x + 3) cm is cut out of a rectangle that is (x + 5) cm long and (x + 2) cm wide. The area left over is 9 cm². Find x.", answer: "8", topic: "Algebra" }
       ]
     },
     {
@@ -202,6 +203,7 @@ MathMagician.registerChapter(7, {
         {"type": "mc", "text": "(−2x³)³ =", "options": ["−8x⁹", "8x⁹", "−6x⁹", "−8x⁶"], "answer": 0, "topic": "Dividing, substituting and roots of terms"},
         {"type": "input", "text": "Find a² − b² when a = 5 and b = −3.", "answer": "16", "topic": "Dividing, substituting and roots of terms"},
         {"type": "mc", "text": "(8a³b − 4ab²) ÷ (−4ab) =", "options": ["2a² − b", "−2a² − b", "2a² + b", "−2a² + b"], "answer": 3, "topic": "Dividing, substituting and roots of terms"},
+        { type: "input", text: "If a + b = 7 and ab = 10, find the value of a² + b² without finding a and b.", answer: "29", topic: "Dividing, substituting and roots of terms" }
       ]
     },
     {

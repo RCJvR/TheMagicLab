@@ -263,6 +263,7 @@ MathMagician.registerChapter(10, {
         {"type": "input", "text": "Twee hoeke van 'n driehoek is 35° en 80°. Wat is die buitehoek langs die derde hoek? (°)", "answer": "115", "topic": "Driehoeke konstrueer"},
         {"type": "mc", "text": "In 'n SSS-konstruksie word die derde hoekpunt gevind waar:", "options": ["twee boë kruis", "twee lyne parallel is", "'n gradeboog 90° lees", "die basis gehalveer word"], "answer": 0, "topic": "Driehoeke konstrueer"},
         {"type": "mc", "text": "'n Gelyksydige driehoek word met sye van 5 cm gekonstrueer. Elke hoek is:", "options": ["45°", "60°", "90°", "elke keer anders"], "answer": 1, "topic": "Driehoeke konstrueer"},
+        { type: "input", text: "Twee sye van 'n driehoek is 5 cm en 8 cm. Die derde sy is 'n heel aantal sentimeter. Wat is die langste derde sy wat jy kan gebruik en steeds 'n driehoek kan konstrueer? (cm)", answer: "12", topic: "Driehoeke konstrueer" }
       ]
     },
     {
@@ -296,6 +297,7 @@ MathMagician.registerChapter(10, {
         {"type": "mc", "text": "'n Vierhoek het hoeklyne wat loodreg is, en net een halveer die ander. Dit is 'n:", "options": ["vierkant", "ruit", "reghoek", "vlieër"], "answer": 3, "topic": "Vierhoeke en hul hoeklyne"},
         {"type": "mc", "text": "Watter stelling is waar vir ELKE parallelogram?", "options": ["Sy hoeklyne is ewe lank", "Sy hoeklyne halveer mekaar", "Sy hoeklyne is loodreg", "Al sy hoeke is 90°"], "answer": 1, "topic": "Vierhoeke en hul hoeklyne"},
         {"type": "input", "text": "Die hoeklyne van 'n ruit is 12 cm en 16 cm. Hoe lank is elke sy? (cm)", "answer": "10", "topic": "Vierhoeke en hul hoeklyne"},
+        { type: "mc", text: "Jy konstrueer 'n vierhoek waarvan die hoeklyne mekaar halveer en ewe lank is, maar nie loodreg is nie. Wat het jy gekonstrueer?", options: ["'n Reghoek wat nie 'n vierkant is nie","'n Ruit","'n Vierkant","'n Vlieër"], answer: 0, topic: "Vierhoeke en hul hoeklyne" }
       ]
     },
     {

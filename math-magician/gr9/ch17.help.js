@@ -8,7 +8,8 @@ MMHelp.add(9, 17, {
     ["K","m4:1","A cube has square faces.","'n Kubus het vierkantige vlakke.",["The tetrahedron has 4 equilateral-triangle faces."],["Die tetraëder het 4 gelyksydige driehoekige vlakke."]],
     ["R","i:7","V = 2 − F + E.","V = 2 − F + E.",["V = 2 − 10 + 15","V = 7"],["V = 2 − 10 + 15","V = 7"]],
     ["C","i:8","Substitute E = 2F into Euler's formula.","Vervang E = 2F in Euler se formule.",["F + 10 − 2F = 2","−F = −8 → F = 8"],["F + 10 − 2F = 2","−F = −8 → F = 8"]],
-    ["R","i:27","E = 3n","E = 3n",["n = 9","E = 3 × 9 = 27"],["n = 9","E = 3 × 9 = 27"]]
+    ["R","i:27","E = 3n","E = 3n",["n = 9","E = 3 × 9 = 27"],["n = 9","E = 3 × 9 = 27"]],
+    ["P","i:9","A pyramid on an n-sided base has 2n edges.","'n Piramide op 'n n-hoekige basis het 2n rande.",["2n = 16 → n = 8 (octagonal base)","Vertices: 8 + 1 apex = 9"],["2n = 16 → n = 8 (agthoekige basis)","Hoekpunte: 8 + 1 toppunt = 9"]]
   ],
   "34": [
     ["K","m4:1","Unroll the curved side.","Rol die geboë kant oop.",["The curved side becomes a rectangle and the two ends are circles."],["Die geboë kant word 'n reghoek en die twee ente is sirkels."]],
@@ -17,7 +18,8 @@ MMHelp.add(9, 17, {
     ["K","m4:1","A cut through the centre is the biggest circle.","'n Snit deur die middelpunt is die grootste sirkel.",["It is a great circle."],["Dit is 'n grootsirkel."]],
     ["K","m4:2","The rectangle wraps once around the circle.","Die reghoek draai een keer om die sirkel.",["Width = circumference = 2πr"],["Breedte = omtrek = 2πr"]],
     ["C","i:528","Width = 2πr.","Breedte = 2πr.",["2 × 22/7 × 7 = 44 cm","44 × 12 = 528 cm²"],["2 × 22/7 × 7 = 44 cm","44 × 12 = 528 cm²"]],
-    ["C","i:224","Base plus four triangles.","Basis plus vier driehoeke.",["Base: 8 × 8 = 64","Triangles: 4 × ½ × 8 × 10 = 160","64 + 160 = 224 cm²"],["Basis: 8 × 8 = 64","Driehoeke: 4 × ½ × 8 × 10 = 160","64 + 160 = 224 cm²"]]
+    ["C","i:224","Base plus four triangles.","Basis plus vier driehoeke.",["Base: 8 × 8 = 64","Triangles: 4 × ½ × 8 × 10 = 160","64 + 160 = 224 cm²"],["Basis: 8 × 8 = 64","Driehoeke: 4 × ½ × 8 × 10 = 160","64 + 160 = 224 cm²"]],
+    ["P","i:12","Where would a small cube touch exactly two painted faces?","Waar sal 'n kubussie presies twee geverfde vlakke raak?",["Corners have 3 painted faces; middles of edges have 2","The cube has 12 edges with 1 middle cube each → 12"],["Hoeke het 3 geverfde vlakke; middel van die rande het 2","Die kubus het 12 rande met 1 middelste kubussie elk → 12"]]
   ],
   "1701": [
     ["K","i:20","\"Icosa\" means 20.","\"Ikosa\" beteken 20.",["An icosahedron has 20 triangular faces."],["'n Ikosaëder het 20 driehoekige vlakke."]],

@@ -75,6 +75,7 @@ MathMagician.registerChapter(17, {
         { type: "input", text: "A polyhedron has 10 faces and 15 edges. Find the number of vertices using Euler's formula.", answer: "7", topic: "3D Shapes" },
         { type: "input", text: "A polyhedron has twice as many edges as faces (E = 2F), and 10 vertices. Use Euler's formula to find the number of faces, F.", answer: "8", topic: "3D Shapes" },
         { type: "input", text: "For a prism with an n-sided polygon base, F = n + 2, V = 2n and E = 3n (check: this matches a triangular prism with n=3 and a hexagonal prism with n=6). Use this pattern to find the number of edges of a prism with a 9-sided (nonagonal) base.", answer: "27", topic: "3D Shapes" },
+        { type: "input", text: "A pyramid has 16 edges. How many vertices does it have?", answer: "9", topic: "3D Shapes" }
       ]
     },
     {
@@ -169,6 +170,7 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "πr", "2πr", "πr²"], answer: 2, topic: "3D Shapes" },
         { type: "input", text: "A cylinder's net has a rectangle whose width equals the circumference of the circular base. The base has radius 7 cm (use π ≈ 22/7) and the cylinder's height is 12 cm. Find the area of the rectangular part of the net (in cm²).", answer: "528", topic: "3D Shapes" },
         { type: "input", text: "A square pyramid's net consists of a square base of side 8 cm and 4 congruent triangles, each with base 8 cm and slant height 10 cm. Find the total area of the net (in cm²).", answer: "224", topic: "3D Shapes" },
+        { type: "input", text: "A wooden cube is painted on the outside and then cut into 27 equal small cubes. How many small cubes have paint on exactly two faces?", answer: "12", topic: "3D Shapes" }
       ]
     },
     {

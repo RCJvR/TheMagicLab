@@ -32,6 +32,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "The water tank.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":190,\"view\":[0,0,12,110],\"pad\":28,\"axes\":{\"x\":\"time (h)\",\"y\":\"litres\",\"o\":false,\"tx\":2,\"ty\":20},\"pts\":{\"A\":[0,100],\"B\":[4,60],\"C\":[6,60],\"D\":[11,0]},\"nolab\":[\"A\",\"B\",\"C\",\"D\"],\"dots\":[\"A\",\"D\"],\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"C\",\"D\",\"ac\"]]}'></div>Between 6 h and 11 h the water is used:", "options": ["faster than between 0 h and 4 h", "slower than between 0 h and 4 h", "at the same rate", "not at all"], "answer": 0, "topic": "Interpreting graphs"},
         {"type": "mc", "text": "The point where a graph cuts the y-axis is called the:", "options": ["x-intercept", "y-intercept", "maximum", "gradient"], "answer": 1, "topic": "Interpreting graphs"},
         {"type": "input", "text": "A graph goes from (0 ; 100) to (4 ; 60) in a straight line. What is the rate of change per hour? Give a negative number for a decrease.", "answer": "-10", "topic": "Interpreting graphs"},
+        { type: "input", text: "The graph shows Lindiwe's distance from home as she walks to the shop, waits there, and walks home.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,50,900],\"pad\":30,\"axes\":{\"x\":\"min\",\"y\":\"m\",\"o\":false,\"tx\":10,\"ty\":200},\"pts\":{\"O\":[0,0],\"A\":[10,800],\"B\":[25,800],\"C\":[45,0]},\"seg\":[[\"O\",\"A\",\"ac\"],[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"]],\"dots\":[\"A\",\"B\",\"C\"],\"nolab\":[\"O\",\"A\",\"B\",\"C\"]}'></div>How fast did she walk home? (metres per minute)", answer: "40", topic: "Interpreting graphs" }
       ]
     },
     {
@@ -134,6 +135,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "What is the gradient of y = 5 − 2x?", "options": ["5", "−2", "2", "−5"], "answer": 1, "topic": "The equation of a straight line"},
         {"type": "mc", "text": "A line through (0 ; 2) and (3 ; 8) has equation:", "options": ["y = 3x + 2", "y = 2x + 3", "y = 6x + 2", "y = 2x + 2"], "answer": 3, "topic": "The equation of a straight line"},
         {"type": "mc", "text": "A line with gradient 2 passes through (3 ; 1). Its equation is:", "options": ["y = 2x + 1", "y = 2x − 1", "y = 2x − 5", "y = 2x + 5"], "answer": 2, "topic": "The equation of a straight line"},
+        { type: "input", text: "A straight line passes through (2 ; 7) and (6 ; 15). Where does it cut the x-axis? Give the x-value.", answer: "-1.5", altAnswers: ["-1,5","-3/2"], topic: "The equation of a straight line" }
       ]
     },
     {

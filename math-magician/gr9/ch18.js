@@ -90,6 +90,7 @@ MathMagician.registerChapter(18, {
         { type: "input", text: "Class intervals 0-10 (f=5, midpoint 5) and 10-20 (f=5, midpoint 15). Estimate the mean.", answer: "10", topic: "Data" },
         { type: "mc", text: "A grouped frequency table is most appropriate when:", options: ["Data has only 3 distinct values", "Data is categorical", "Data is continuous and spans a wide range", "There are fewer than 10 data values"], answer: 2, topic: "Data" },
         { type: "input", text: "Classes 0-20 (f=3, mid=10), 20-40 (f=7, mid=30). Estimate the mean (round to 1 decimal).", answer: "24", topic: "Data" },
+        { type: "input", text: "Five whole numbers have a mode of 4 (and no other mode), a median of 5 and a mean of 6. What is the largest possible value of the biggest number?", answer: "11", topic: "Data" }
       ]
     },
     {
@@ -273,6 +274,7 @@ MathMagician.registerChapter(18, {
         { type: "mc", text: "A company survey asks: 'Don't you agree our product is the best?' This question is problematic because it is:", options: ["Too short", "Leading/biased wording", "Numerical", "A census question"], answer: 1, topic: "Interpretation" },
         { type: "mc", text: "A claim is based on a sample of 8 people out of a town of 50 000. The main concern is:", options: ["The sample is too large", "The sample size is too small to be representative", "There is no concern", "8 is an even number"], answer: 1, topic: "Interpretation" },
         { type: "input", text: "Data: 22, 24, 23, 25, 90. Which single value should be investigated as a possible outlier?", answer: "90", topic: "Interpretation" },
+        { type: "input", text: "The mean of four numbers is 15. When a fifth number is added, the mean becomes 17. What is the fifth number?", answer: "25", topic: "Interpretation" }
       ]
     },
     {

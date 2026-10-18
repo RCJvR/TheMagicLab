@@ -212,6 +212,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "Bepaal die omtrek van 'n halfsirkel met middellyn 10 cm, tot 2 desimale plekke. (cm)", "answer": "25.71", "altAnswers": ["25,71"], "topic": "Saamgestelde vorms"},
         {"type": "input", "text": "'n L-vorm bestaan uit 'n reghoek van 6 × 2 en 'n reghoek van 2 × 4 wat sonder oorvleueling aanmekaar is. Wat is sy oppervlakte? (cm²)", "answer": "20", "topic": "Saamgestelde vorms"},
         {"type": "mc", "text": "Wanneer jy die omtrek van 'n saamgestelde vorm bepaal, sluit jy in:", "options": ["elke rand van elke deel", "net die buiterande", "net die geboë rande", "die binnerande twee keer"], "answer": 1, "topic": "Saamgestelde vorms"},
+        { type: "input", text: "'n Atletiekbaan het twee reguit kante van 80 m en 'n halfsirkel met 'n middellyn van 60 m aan elke kant.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[80,0],\"C\":[80,60],\"D\":[0,60],\"M\":[0,30],\"N\":[80,30]},\"seg\":[[\"A\",\"B\",null,null,\"80 m\"],[\"D\",\"C\"],[\"B\",\"C\",\"mu dash\",null,\"60 m\"]],\"arc\":[[\"M\",30,90,270,\"ac\"],[\"N\",30,-90,90,\"ac\"]],\"nolab\":[\"A\",\"B\",\"C\",\"D\",\"M\",\"N\"]}'></div>Wat is die lengte van die binnekant van die baan, tot die naaste meter? (Gebruik π = 3,14)", answer: "348", topic: "Saamgestelde vorms" }
       ]
     },
     {
@@ -244,6 +245,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "Herlei 450 mm² na cm².", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Afmetings en eenhede verander"},
         {"type": "input", "text": "'n Reghoek het 'n oppervlakte van 24 cm². Elke sy word gehalveer. Wat is die nuwe oppervlakte? (cm²)", "answer": "6", "topic": "Afmetings en eenhede verander"},
         {"type": "mc", "text": "1 km² is gelyk aan:", "options": ["1 000 m²", "10 000 m²", "100 000 m²", "1 000 000 m²"], "answer": 3, "topic": "Afmetings en eenhede verander"},
+        { type: "input", text: "'n Reghoek se lengte word met 20% vermeerder en sy breedte met 20% verminder. Met watter persentasie verander sy oppervlakte? (Gee 'n negatiewe getal vir 'n afname.)", answer: "-4", topic: "Afmetings en eenhede verander" }
       ]
     },
     {

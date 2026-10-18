@@ -203,6 +203,7 @@ MathMagician.registerChapter(16, {
         { type: "mc", text: "Om 'n vorm met skaalfaktor 0,5 te verklein, vermenigvuldig die omtrek met:", options: ["0,25", "0,5", "2", "4"], answer: 1, topic: "Transformasies" },
         { type: "input", text: "Punt B(-2; 5) word 90° kloksgewys om die oorsprong gedraai, en die beeld word dan met skaalfaktor 3 vanaf die oorsprong vergroot. Wat is die x-koördinaat van die finale beeld?", answer: "15", topic: "Transformasies" },
         { type: "input", text: "'n Vorm word vanaf die oorsprong met skaalfaktor 4 vergroot, wat 'n beeld met oppervlakte 320 cm² tot gevolg het. Bepaal die oppervlakte van die oorspronklike vorm (in cm²).", answer: "20", topic: "Transformasies" },
+        { type: "input", text: "A(2 ; 5) word 90° kloksgewys om die oorsprong geroteer, en die beeld word dan in die y-as weerkaats. Skryf die finale beeld as (x ; y).", answer: "(-5 ; -2)", topic: "Transformasies" }
       ]
     },
     {
@@ -275,6 +276,7 @@ rotasie 180°                   (x ; y) → (−x ; −y)</div>
         {"type": "input", "text": "A(4 ; −6) word met 'n skaalfaktor van 1/2 om die oorsprong verklein. Skryf A' as (x ; y).", "answer": "(2 ; -3)", "topic": "Vergrotings: omtrek en oppervlakte"},
         {"type": "input", "text": "Na 'n vergroting is die oppervlakte 9 keer so groot. Wat is die skaalfaktor?", "answer": "3", "topic": "Vergrotings: omtrek en oppervlakte"},
         {"type": "input", "text": "Vergroot (−3 ; 2) met 'n skaalfaktor van 3 om die oorsprong. Skryf die beeld as (x ; y).", "answer": "(-9 ; 6)", "topic": "Vergrotings: omtrek en oppervlakte"},
+        { type: "input", text: "'n Foto van 10 cm × 15 cm word vergroot sodat sy oppervlakte 600 cm² word. Wat is die skaalfaktor van die vergroting?", answer: "2", topic: "Vergrotings: omtrek en oppervlakte" }
       ]
     },
     {

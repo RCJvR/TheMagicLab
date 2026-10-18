@@ -17,7 +17,8 @@ MMHelp.add(9, 6, {
     ["K","m4:1","In y = mx + c the gradient is m.","In y = mx + c is die gradiënt m.",["m = 2"],["m = 2"]],
     ["K","m4:2","y = k/x graphs have two branches.","Grafieke van y = k/x het twee takke.",["y = 4/x is a hyperbola."],["y = 4/x is 'n hiperbool."]],
     ["C","i:4","Substitute the point to find k.","Vervang die punt om k te vind.",["8 = k/3 → k = 24","y = 24 ÷ 6 = 4"],["8 = k/3 → k = 24","y = 24 ÷ 6 = 4"]],
-    ["C","i:27","Substitute (2 ; 12) to find a.","Vervang (2 ; 12) om a te vind.",["12 = a(2)² → a = 3","y = 3(−3)² = 27"],["12 = a(2)² → a = 3","y = 3(−3)² = 27"]]
+    ["C","i:27","Substitute (2 ; 12) to find a.","Vervang (2 ; 12) om a te vind.",["12 = a(2)² → a = 3","y = 3(−3)² = 27"],["12 = a(2)² → a = 3","y = 3(−3)² = 27"]],
+    ["P","i:100","Write a formula for each plan and set them equal.","Skryf 'n formule vir elke plan en stel hulle gelyk.",["A = 60 + 0.5x and B = 1.1x","60 + 0.5x = 1.1x → 0.6x = 60 → x = 100 minutes"],["A = 60 + 0,5x en B = 1,1x","60 + 0,5x = 1,1x → 0,6x = 60 → x = 100 minute"]]
   ],
   "601": [
     ["K","m4:1","Multiply first, then subtract.","Vermenigvuldig eers en trek dan af.",["4x, then − 1: y = 4x − 1"],["4x, dan − 1: y = 4x − 1"]],
@@ -25,7 +26,8 @@ MMHelp.add(9, 6, {
     ["R","i:7","Set y = 25.","Stel y = 25.",["3x + 4 = 25 → 3x = 21","x = 7"],["3x + 4 = 25 → 3x = 21","x = 7"]],
     ["R","m4:2","y goes up by 3 each time; at x = 0, y = 1.","y styg elke keer met 3; by x = 0 is y = 1.",["y = 3x + 1"],["y = 3x + 1"]],
     ["K","m4:0","On the y-axis, x = 0.","Op die y-as is x = 0.",["x = 0: y = 2(0) + 3 = 3 → (0 ; 3)"],["x = 0: y = 2(0) + 3 = 3 → (0 ; 3)"]],
-    ["R","i:2","Follow the steps in order.","Volg die stappe in volgorde.",["4 × (−2) = −8","−8 + 10 = 2"],["4 × (−2) = −8","−8 + 10 = 2"]]
+    ["R","i:2","Follow the steps in order.","Volg die stappe in volgorde.",["4 × (−2) = −8","−8 + 10 = 2"],["4 × (−2) = −8","−8 + 10 = 2"]],
+    ["P","i:100","Find the rule first: how much does y grow each time?","Vind eers die reël: hoeveel groei y elke keer?",["y grows by 3 and y = 5 when x = 1 → y = 3x + 2","3x + 2 = 302 → x = 100"],["y groei met 3 en y = 5 as x = 1 → y = 3x + 2","3x + 2 = 302 → x = 100"]]
   ],
   "602": [
     ["R","i:15","Square −4 with brackets.","Kwadreer −4 met hakies.",["y = (−4)² − 1","= 16 − 1 = 15"],["y = (−4)² − 1","= 16 − 1 = 15"]],

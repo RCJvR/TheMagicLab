@@ -230,6 +230,7 @@ MathMagician.registerChapter(4, {
         {"type": "input", "text": "Los op vir x: 5ˣ⁺¹ = 125", "answer": "2", "topic": "Vereenvoudig met verskeie wette"},
         {"type": "input", "text": "Bereken 4⁰ + 4⁻¹ + 4¹. Gee 'n breuk of desimale breuk.", "answer": "5.25", "altAnswers": ["5,25", "21/4", "5 1/4"], "topic": "Vereenvoudig met verskeie wette"},
         {"type": "mc", "text": "Watter een is gelyk aan 1/x³?", "options": ["x⁻⁽¹ᐟ³⁾", "x⁻³", "−x³", "3x⁻¹"], "answer": 1, "topic": "Vereenvoudig met verskeie wette"},
+        { type: "input", text: "Vind x as 2ˣ × 4³ = 8⁵.", answer: "9", topic: "Vereenvoudig met verskeie wette" }
       ]
     },
     {
@@ -267,6 +268,7 @@ MathMagician.registerChapter(4, {
         {"type": "mc", "text": "Suid-Afrika het ongeveer 63 000 000 mense. In wetenskaplike notasie is dit:", "options": ["63 × 10⁶", "6,3 × 10⁶", "6,3 × 10⁷", "0,63 × 10⁸"], "answer": 2, "topic": "Probleme met wetenskaplike notasie"},
         {"type": "input", "text": "'n Virus is 1,2 × 10⁻⁷ m lank. Skryf dit as 'n gewone getal. (m)", "answer": "0.00000012", "altAnswers": ["0,00000012"], "topic": "Probleme met wetenskaplike notasie"},
         {"type": "input", "text": "Klank beweeg 3,4 × 10² m per sekonde. Hoe ver beweeg dit in 5 sekondes? Gee 'n gewone getal. (m)", "answer": "1700", "topic": "Probleme met wetenskaplike notasie"},
+        { type: "input", text: "Lig beweeg teen 3 × 10⁸ m/s. Die Son is 1,5 × 10¹¹ m van die Aarde af. Hoe lank neem sonlig om die Aarde te bereik, tot die naaste minuut?", answer: "8", topic: "Probleme met wetenskaplike notasie" }
       ]
     },
     {

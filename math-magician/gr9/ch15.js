@@ -354,6 +354,7 @@ MathMagician.registerChapter(15, {
         {"type": "input", "text": "A tank is 50 cm × 40 cm × 30 cm. What is its capacity in litres?", "answer": "60", "topic": "Capacity and units of volume"},
         {"type": "input", "text": "A cylinder has r = 10 cm and h = 30 cm. What is its capacity in litres, to 2 decimal places?", "answer": "9.42", "altAnswers": ["9,42"], "topic": "Capacity and units of volume"},
         {"type": "input", "text": "Convert 4 500 mm³ to cm³.", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Capacity and units of volume"},
+        { type: "input", text: "A rectangular fish tank is 60 cm long, 30 cm wide and 40 cm high. It is filled to 5 cm below the top. How many litres of water are in it?", answer: "63", topic: "Capacity and units of volume" }
       ]
     },
     {
@@ -384,6 +385,7 @@ cube side 4 cm: SA = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
         {"type": "input", "text": "The sides of a cube are tripled. By how many times does its surface area increase?", "answer": "9", "topic": "Changing dimensions: volume and surface area"},
         {"type": "input", "text": "A cube has a volume of 27 cm³. Its sides are doubled. What is the new volume? (cm³)", "answer": "216", "topic": "Changing dimensions: volume and surface area"},
         {"type": "input", "text": "A 2 cm × 3 cm × 4 cm box is enlarged with every dimension doubled. What is its new volume? (cm³)", "answer": "192", "topic": "Changing dimensions: volume and surface area"},
+        { type: "input", text: "A cylindrical tin holds 1 litre. A second tin has twice the radius and half the height. How many litres does the second tin hold?", answer: "2", topic: "Changing dimensions: volume and surface area" }
       ]
     },
     {

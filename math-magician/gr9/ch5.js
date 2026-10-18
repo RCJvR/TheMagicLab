@@ -157,6 +157,7 @@ MathMagician.registerChapter(5, {
         {"type": "input", "text": "Tₙ = 2 × 3ⁿ⁻¹. Calculate T₅.", "answer": "162", "topic": "Geometric patterns"},
         {"type": "mc", "text": "The general term of 4 ; 8 ; 16 ; 32 ; … is:", "options": ["Tₙ = 4n", "Tₙ = 4 × 2ⁿ⁻¹", "Tₙ = 2ⁿ", "Tₙ = 4n + 4"], "answer": 1, "topic": "Geometric patterns"},
         {"type": "input", "text": "A bacteria colony doubles every hour. It starts with 50 bacteria. How many are there after 6 hours?", "answer": "3200", "topic": "Geometric patterns"},
+        { type: "input", text: "A message is sent to 3 people in hour 1. In each following hour, everyone who received it in the hour before sends it to 3 new people. In which hour do more than 1 000 new people receive it?", answer: "7", topic: "Geometric patterns" }
       ]
     },
     {
@@ -189,6 +190,7 @@ Matches (Tₙ)  4   7  10  13</div>
         {"type": "mc", "text": "Is 75 a term of Tₙ = 4n − 1?", "options": ["Yes, n = 19", "Yes, n = 18,5", "No, n is not a whole number", "No, the pattern decreases"], "answer": 0, "topic": "Patterns from pictures"},
         {"type": "input", "text": "Dots form triangles: 1 ; 3 ; 6 ; 10 ; … What is the next term?", "answer": "15", "topic": "Patterns from pictures"},
         {"type": "input", "text": "A table: n = 1, 2, 3 gives y = 7, 12, 17. Find y when n = 10.", "answer": "52", "topic": "Patterns from pictures"},
+        { type: "input", text: "Square tables are pushed together in a row. One table seats 4 people, two tables seat 6 and three tables seat 8. How many tables are needed to seat 50 people?", answer: "24", topic: "Patterns from pictures" }
       ]
     },
     {

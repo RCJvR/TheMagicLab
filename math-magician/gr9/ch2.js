@@ -119,6 +119,7 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Calculate: -2 + (-5) × 3 - (-4)", answer: "-13", topic: "Integers" },
         { type: "input", text: "Calculate: [(-3)² - (-2)³] × [(-5) + 6]", answer: "17", topic: "Integers" },
         { type: "input", text: "The temperature at midnight was -4°C. It fell by 3°C every hour for the next 5 hours, then rose by 2°C every hour for the next 3 hours. What was the temperature (in °C) at the end of this period?", answer: "-13", topic: "Integers" },
+        { type: "input", text: "The sum of three consecutive integers is −42. What is the largest of the three?", answer: "-13", topic: "Integers" }
       ]
     },
     {
@@ -235,6 +236,7 @@ MathMagician.registerChapter(2, {
         {"type": "input", "text": "A submarine at −120 m rises 45 m, then dives 30 m. What is its depth now? (m)", "answer": "-105", "topic": "Integers in context"},
         {"type": "input", "text": "Calculate: −3 × (−4) + 18 ÷ (−6)", "answer": "9", "topic": "Integers in context"},
         {"type": "mc", "text": "Which statement is FALSE?", "options": ["(−5) + 8 = 8 + (−5)", "(−2) × 7 = 7 × (−2)", "(−4 + 6) + 1 = −4 + (6 + 1)", "(−9) − 3 = 3 − (−9)"], "answer": 3, "topic": "Integers in context"},
+        { type: "input", text: "A submarine is at −120 m. It rises at 15 m per minute for 4 minutes and then dives at 25 m per minute. After how many minutes of diving is it at −160 m?", answer: "4", topic: "Integers in context" }
       ]
     },
     {

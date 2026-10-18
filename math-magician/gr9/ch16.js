@@ -203,6 +203,7 @@ MathMagician.registerChapter(16, {
         { type: "mc", text: "Reducing a shape by scale factor 0,5 multiplies its perimeter by:", options: ["0,25", "0,5", "2", "4"], answer: 1, topic: "Transformations" },
         { type: "input", text: "Point B(-2; 5) is rotated 90° clockwise about the origin, and the image is then enlarged by scale factor 3 from the origin. What is the x-coordinate of the final image?", answer: "15", topic: "Transformations" },
         { type: "input", text: "A shape is enlarged from the origin by scale factor 4, producing an image with area 320 cm². Find the area of the original shape (in cm²).", answer: "20", topic: "Transformations" },
+        { type: "input", text: "A(2 ; 5) is rotated 90° clockwise about the origin, and the image is then reflected in the y-axis. Write the final image as (x ; y).", answer: "(-5 ; -2)", topic: "Transformations" }
       ]
     },
     {
@@ -275,6 +276,7 @@ rotation 180°                 (x ; y) → (−x ; −y)</div>
         {"type": "input", "text": "A(4 ; −6) is reduced by a scale factor of 1/2 about the origin. Write A' as (x ; y).", "answer": "(2 ; -3)", "topic": "Enlargements: perimeter and area"},
         {"type": "input", "text": "After an enlargement the area is 9 times as big. What is the scale factor?", "answer": "3", "topic": "Enlargements: perimeter and area"},
         {"type": "input", "text": "Enlarge (−3 ; 2) by a scale factor of 3 about the origin. Write the image as (x ; y).", "answer": "(-9 ; 6)", "topic": "Enlargements: perimeter and area"},
+        { type: "input", text: "A photo measuring 10 cm × 15 cm is enlarged so that its area becomes 600 cm². What is the scale factor of the enlargement?", answer: "2", topic: "Enlargements: perimeter and area" }
       ]
     },
     {

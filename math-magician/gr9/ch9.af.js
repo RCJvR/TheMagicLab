@@ -160,6 +160,7 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "Los op: 2x² - 8 = 0", options: ["x = 4", "x = ±2", "x = 2", "x = ±4"], answer: 1, topic: "Vergelykings" },
         { type: "input", text: "Los x² - 2x - 15 = 0 op. Wat is die positiewe oplossing?", answer: "5", topic: "Vergelykings" },
         { type: "input", text: "'n Reghoek het oppervlakte 40 cm² en sy lengte is 3 cm meer as sy breedte. Bepaal die breedte (in cm).", answer: "5", topic: "Vergelykings" },
+        { type: "input", text: "Die produk van twee opeenvolgende positiewe ewe getalle is 288. Vind die grootste getal.", answer: "18", topic: "Vergelykings" }
       ]
     },
     {
@@ -235,6 +236,7 @@ MathMagician.registerChapter(9, {
         {"type": "input", "text": "'n Reghoek se lengte is 5 cm meer as sy breedte. Sy omtrek is 50 cm. Wat is sy breedte? (cm)", "answer": "10", "topic": "Woordprobleme"},
         {"type": "input", "text": "Thandi het R5- en R2-munte, altesaam 20 munte, wat R67 werd is. Hoeveel R5-munte het sy?", "answer": "9", "topic": "Woordprobleme"},
         {"type": "input", "text": "Kaartjies kos R45 vir volwassenes en R25 vir kinders. 'n Groep van 12 het R420 betaal. Hoeveel volwassenes was daar?", "answer": "6", "topic": "Woordprobleme"},
+        { type: "input", text: "'n Boot vaar 24 km stroomaf in 2 uur en kom stroomop in 3 uur terug. Wat is die spoed van die stroom? (km/h)", answer: "2", topic: "Woordprobleme" }
       ]
     },
     {

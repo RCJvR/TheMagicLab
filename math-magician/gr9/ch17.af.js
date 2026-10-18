@@ -75,6 +75,7 @@ MathMagician.registerChapter(17, {
         { type: "input", text: "'n Veelvlak het 10 vlakke en 15 rande. Vind die aantal hoekpunte met behulp van Euler se formule.", answer: "7", topic: "3D-voorwerpe" },
         { type: "input", text: "'n Veelvlak het twee keer soveel rande as vlakke (R = 2V), en 10 hoekpunte. Gebruik Euler se formule om die aantal vlakke, V, te vind.", answer: "8", topic: "3D-voorwerpe" },
         { type: "input", text: "Vir 'n prisma met 'n n-syige veelhoekbasis, V = n + 2, H = 2n en R = 3n (kontroleer: dit stem ooreen met 'n driehoekige prisma met n=3 en 'n sesghoekige prisma met n=6). Gebruik hierdie patroon om die aantal rande van 'n prisma met 'n 9-syige (nonagonale) basis te vind.", answer: "27", topic: "3D-voorwerpe" },
+        { type: "input", text: "'n Piramide het 16 rande. Hoeveel hoekpunte het dit?", answer: "9", topic: "3D-voorwerpe" }
       ]
     },
     {
@@ -169,6 +170,7 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "Die reghoek in die uitslaanpatroon van 'n silinder het 'n wydte gelyk aan:", options: ["2r", "πr", "2πr", "πr²"], answer: 2, topic: "3D-voorwerpe" },
         { type: "input", text: "'n Silinder se uitslaanpatroon het 'n reghoek waarvan die wydte gelyk is aan die omtrek van die sirkelvormige basis. Die basis het radius 7 cm (gebruik π ≈ 22/7) en die silinder se hoogte is 12 cm. Vind die oppervlakte van die reghoekige deel van die uitslaanpatroon (in cm²).", answer: "528", topic: "3D-voorwerpe" },
         { type: "input", text: "'n Vierkantige piramide se uitslaanpatroon bestaan uit 'n vierkantige basis met sy 8 cm en 4 kongruente driehoeke, elk met basis 8 cm en skuinshoogte 10 cm. Vind die totale oppervlakte van die uitslaanpatroon (in cm²).", answer: "224", topic: "3D-voorwerpe" },
+        { type: "input", text: "'n Houtkubus word aan die buitekant geverf en dan in 27 gelyke klein kubussies gesny. Hoeveel kubussies het verf op presies twee vlakke?", answer: "12", topic: "3D-voorwerpe" }
       ]
     },
     {

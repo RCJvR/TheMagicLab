@@ -8,7 +8,8 @@ MMHelp.add(9, 2, {
     ["K","m4:1","In −3² only the 3 is squared.","In −3² word net die 3 gekwadreer.",["−3² = −9 and (−3)² = 9","9 > −9, so (−3)² is greater"],["−3² = −9 en (−3)² = 9","9 > −9, dus is (−3)² groter"]],
     ["R","i:-13","Multiply first.","Vermenigvuldig eers.",["(−5) × 3 = −15","−2 − 15 + 4 = −13"],["(−5) × 3 = −15","−2 − 15 + 4 = −13"]],
     ["C","i:17","Work out each bracket.","Werk elke hakie uit.",["(−3)² − (−2)³ = 9 + 8 = 17","(−5) + 6 = 1","17 × 1 = 17"],["(−3)² − (−2)³ = 9 + 8 = 17","(−5) + 6 = 1","17 × 1 = 17"]],
-    ["C","i:-13","Work out the total change.","Bereken die totale verandering.",["Fall: 5 × 3 = 15 → −4 − 15 = −19","Rise: 3 × 2 = 6 → −19 + 6 = −13 °C"],["Daal: 5 × 3 = 15 → −4 − 15 = −19","Styg: 3 × 2 = 6 → −19 + 6 = −13 °C"]]
+    ["C","i:-13","Work out the total change.","Bereken die totale verandering.",["Fall: 5 × 3 = 15 → −4 − 15 = −19","Rise: 3 × 2 = 6 → −19 + 6 = −13 °C"],["Daal: 5 × 3 = 15 → −4 − 15 = −19","Styg: 3 × 2 = 6 → −19 + 6 = −13 °C"]],
+    ["P","i:-13","Call them n, n + 1 and n + 2.","Noem hulle n, n + 1 en n + 2.",["3n + 3 = −42 → 3n = −45 → n = −15","The integers are −15, −14, −13 → largest −13"],["3n + 3 = −42 → 3n = −45 → n = −15","Die heelgetalle is −15, −14, −13 → grootste −13"]]
   ],
   "4": [
     ["R","i:14","Which number squared is 196?","Watter getal gekwadreer is 196?",["14 × 14 = 196 → √196 = 14"],["14 × 14 = 196 → √196 = 14"]],
@@ -26,7 +27,8 @@ MMHelp.add(9, 2, {
     ["K","m4:2","A number multiplies each term in a bracket.","'n Getal vermenigvuldig elke term in 'n hakie.",["−2(5 + x) = −2(5) + (−2)(x) → distributive property"],["−2(5 + x) = −2(5) + (−2)(x) → distributiewe eienskap"]],
     ["R","i:-105","Rising adds, diving subtracts.","Styg tel by, duik trek af.",["−120 + 45 = −75","−75 − 30 = −105 m"],["−120 + 45 = −75","−75 − 30 = −105 m"]],
     ["R","i:9","Multiply and divide before adding.","Vermenigvuldig en deel voor jy optel.",["−3 × (−4) = 12 and 18 ÷ (−6) = −3","12 + (−3) = 9"],["−3 × (−4) = 12 en 18 ÷ (−6) = −3","12 + (−3) = 9"]],
-    ["C","m4:3","Test each statement.","Toets elke stelling.",["(−9) − 3 = −12 but 3 − (−9) = 12","−12 ≠ 12, so subtraction is not commutative: that statement is false."],["(−9) − 3 = −12 maar 3 − (−9) = 12","−12 ≠ 12, dus is aftrekking nie kommutatief nie: daardie stelling is vals."]]
+    ["C","m4:3","Test each statement.","Toets elke stelling.",["(−9) − 3 = −12 but 3 − (−9) = 12","−12 ≠ 12, so subtraction is not commutative: that statement is false."],["(−9) − 3 = −12 maar 3 − (−9) = 12","−12 ≠ 12, dus is aftrekking nie kommutatief nie: daardie stelling is vals."]],
+    ["P","i:4","Find its depth after rising first.","Vind eers sy diepte nadat dit gestyg het.",["After rising: −120 + 4 × 15 = −60 m","−60 − 25t = −160 → 25t = 100 → t = 4 minutes"],["Na die styging: −120 + 4 × 15 = −60 m","−60 − 25t = −160 → 25t = 100 → t = 4 minute"]]
   ],
   "202": [
     ["R","i:1","−2³ = −8 but (−3)² = 9.","−2³ = −8 maar (−3)² = 9.",["−8 + 9 = 1"],["−8 + 9 = 1"]],

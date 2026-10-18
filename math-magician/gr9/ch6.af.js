@@ -166,6 +166,7 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Die funksie y = 4/x is 'n:", options: ["Lineêre funksie", "Parabool", "Hiperbool", "Eksponensiële funksie"], answer: 2, topic: "Funksies" },
         { type: "input", text: "Die grafiek van y = k/x gaan deur die punt (3;8). Bepaal k, en gebruik dit dan om y te bereken as x = 6.", answer: "4", topic: "Funksies" },
         { type: "input", text: "'n Parabool y = ax² het sy draaipunt by die oorsprong en gaan deur die punt (2;12). Bepaal a, en bereken dan y as x = -3.", answer: "27", topic: "Funksies" },
+        { type: "input", text: "Foonplan A kos R60 per maand plus R0,50 per minuut. Plan B kos R1,10 per minuut en het geen maandfooi nie. Vir hoeveel minute in 'n maand kos die twee planne dieselfde?", answer: "100", topic: "Funksies" }
       ]
     },
     {
@@ -201,6 +202,7 @@ y │ 3   5   7   9  11</div>
         {"type": "mc", "text": "'n Tabel: x = 0, 1, 2, 3 gee y = 1, 4, 7, 10. Die formule is:", "options": ["y = x + 3", "y = 4x", "y = 3x + 1", "y = x + 1"], "answer": 2, "topic": "Een verwantskap, vier beskrywings"},
         {"type": "mc", "text": "Vir y = 2x + 3, waar sny die grafiek die y-as?", "options": ["(0 ; 3)", "(3 ; 0)", "(0 ; 2)", "(−1,5 ; 0)"], "answer": 0, "topic": "Een verwantskap, vier beskrywings"},
         {"type": "input", "text": "'n Vloeidiagram: inset x → × (−2) → + 10 → uitset. Wat is die uitset wanneer x = 4?", "answer": "2", "topic": "Een verwantskap, vier beskrywings"},
+        { type: "input", text: "'n Tabel van waardes wys x = 1, 2, 3, 4 met y = 5, 8, 11, 14. Die patroon gaan voort. Vir watter waarde van x is y = 302?", answer: "100", topic: "Een verwantskap, vier beskrywings" }
       ]
     },
     {

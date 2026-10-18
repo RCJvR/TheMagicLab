@@ -90,6 +90,7 @@ MathMagician.registerChapter(18, {
         { type: "input", text: "Klasintervalle 0-10 (f=5, middelpunt 5) en 10-20 (f=5, middelpunt 15). Skat die gemiddelde.", answer: "10", topic: "Data" },
         { type: "mc", text: "'n Gegroepeerde frekwensietabel is die geskikste wanneer:", options: ["Data slegs 3 verskillende waardes het", "Data kategories is", "Data kontinu is en 'n wye reeks dek", "Daar minder as 10 datawaardes is"], answer: 2, topic: "Data" },
         { type: "input", text: "Klasse 0-20 (f=3, middelpunt=10), 20-40 (f=7, middelpunt=30). Skat die gemiddelde (rond af tot 1 desimaal).", answer: "24", topic: "Data" },
+        { type: "input", text: "Vyf heelgetalle het 'n modus van 4 (en geen ander modus nie), 'n mediaan van 5 en 'n gemiddeld van 6. Wat is die grootste moontlike waarde van die grootste getal?", answer: "11", topic: "Data" }
       ]
     },
     {
@@ -273,6 +274,7 @@ MathMagician.registerChapter(18, {
         { type: "mc", text: "'n Maatskappy se opname vra: 'Stem jy nie saam dat ons produk die beste is nie?' Hierdie vraag is problematies omdat dit:", options: ["Te kort is", "Lei-end/bevooroordeelde bewoording het", "Numeries is", "'n Sensusvraag is"], answer: 1, topic: "Interpretasie" },
         { type: "mc", text: "'n Bewering is gebaseer op 'n steekproef van 8 mense uit 'n dorp van 50 000. Die hoofbekommernis is:", options: ["Die steekproef is te groot", "Die steekproefgrootte is te klein om verteenwoordigend te wees", "Daar is geen bekommernis nie", "8 is 'n ewe getal"], answer: 1, topic: "Interpretasie" },
         { type: "input", text: "Data: 22, 24, 23, 25, 90. Watter enkele waarde behoort ondersoek te word as 'n moontlike uitskieter?", answer: "90", topic: "Interpretasie" },
+        { type: "input", text: "Die gemiddeld van vier getalle is 15. As 'n vyfde getal bygevoeg word, word die gemiddeld 17. Wat is die vyfde getal?", answer: "25", topic: "Interpretasie" }
       ]
     },
     {

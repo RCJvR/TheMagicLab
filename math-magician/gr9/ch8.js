@@ -149,6 +149,7 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Factorise completely: 2x² - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Factorisation" },
         { type: "input", text: "Factorise fully: 5x² - 5x - 60. Give the constant term in the linear factor with the smaller absolute value (give a positive number).", answer: "3", topic: "Factorisation" },
         { type: "mc", text: "Factorise fully: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Factorisation" },
+        { type: "input", text: "x² − y² = 48 and x + y = 12. Find x.", answer: "8", topic: "Factorisation" }
       ]
     },
     {
@@ -221,6 +222,7 @@ MathMagician.registerChapter(8, {
         {"type": "mc", "text": "Simplify (x² − 1)/(x² + 2x + 1):", "options": ["−1", "1", "(x + 1)/(x − 1)", "(x − 1)/(x + 1)"], "answer": 3, "topic": "Simplifying algebraic fractions"},
         {"type": "mc", "text": "Which simplification is WRONG?", "options": ["2x/x = 2", "(x + 5)/5 = x + 1", "(3x − 6)/3 = x − 2", "(x² + x)/x = x + 1"], "answer": 1, "topic": "Simplifying algebraic fractions"},
         {"type": "mc", "text": "Simplify (2x² − 18)/(x² − 3x):", "options": ["2(x + 3)/x", "2(x − 3)/x", "2/x", "(x + 3)/x"], "answer": 0, "topic": "Simplifying algebraic fractions"},
+        { type: "input", text: "Simplify (x² − 9)/(x² + 5x + 6), and then find its value when x = 7. Give a fraction.", answer: "4/9", topic: "Simplifying algebraic fractions" }
       ]
     },
     {

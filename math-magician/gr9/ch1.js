@@ -221,6 +221,7 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "If y is directly proportional to x and y = 18 when x = 6, find y when x = 10.", options: ["30", "60", "3", "108"], answer: 0, topic: "Ratios" },
         { type: "input", text: "A recipe needs flour, sugar and butter in the ratio 5 : 2 : 3. You have 800 g of flour (enough for a full batch) but only 250 g of butter. How many more grams of butter do you need to buy?", answer: "230", topic: "Ratios" },
         { type: "input", text: "12 workers can build a wall in 18 days. They work for 6 days, then 4 workers leave the job. Using the fact that total worker-days stays constant, calculate the total number of days (from the start) needed to finish the wall.", answer: "24", topic: "Rates" },
+        { type: "input", text: "A car uses 7,5 litres of petrol per 100 km and petrol costs R23,40 per litre. Sipho drives 360 km to Durban and back again on the same road. What does the petrol cost, to the nearest rand?", answer: "1264", topic: "Rates" }
       ]
     },
     {
@@ -372,6 +373,7 @@ MathMagician.registerChapter(1, {
         {"type": "mc", "text": "The graph of two quantities is a straight line through the origin. They are in:", "options": ["direct proportion", "indirect proportion", "no proportion", "both"], "answer": 0, "topic": "Direct and indirect proportion"},
         {"type": "input", "text": "A prize is shared equally: with 5 winners each gets R600. How much does each get if there are 8 winners? (R)", "answer": "375", "topic": "Direct and indirect proportion"},
         {"type": "input", "text": "At 80 km/h a trip takes 3 hours. How many hours does it take at 120 km/h?", "answer": "2", "topic": "Direct and indirect proportion"},
+        { type: "input", text: "6 workers can build a wall in 10 days. After 4 days, 3 more workers join them. How many days does the whole job take?", answer: "8", topic: "Direct and indirect proportion" }
       ]
     },
     {

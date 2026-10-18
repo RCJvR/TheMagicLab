@@ -61,6 +61,7 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "Watter breuk is ekwivalent aan 3 3/7?", options: ["24/7", "21/7", "24/3", "21/3"], answer: 0, topic: "Breuke" },
         { type: "input", text: "Bereken (2 1/3 + 1 1/6) ÷ 3/4. Gee net die heelgetal-deel van die gemengde-getal-antwoord.", answer: "4", topic: "Breuke" },
         { type: "input", text: "'n Resep gebruik 2 3/4 koppies meel per bondel koekies. 'n Bakker het 12 koppies meel. Nadat sy soveel volledige bondels as moontlik gemaak het, hoeveel koppies meel bly oor?", answer: "1", topic: "Breuke" },
+        { type: "input", text: "Thabo spandeer 1/3 van sy geld aan 'n boek, en dan 1/4 van wat oorbly aan middagete. Hy het R120 oor. Met hoeveel het hy begin? (R)", answer: "240", topic: "Breuke" }
       ]
     },
     {
@@ -191,6 +192,7 @@ MathMagician.registerChapter(3, {
         {"type": "input", "text": "'n Dorp se bevolking daal van 25 000 tot 23 500. Wat is die persentasie-afname?", "answer": "6", "topic": "Persentasies"},
         {"type": "mc", "text": "0,045 as 'n persentasie is:", "options": ["45%", "4,5%", "0,45%", "0,045%"], "answer": 1, "topic": "Persentasies"},
         {"type": "input", "text": "Na 'n afslag van 20% kos 'n baadjie R640. Wat was die oorspronklike prys? (R)", "answer": "800", "topic": "Persentasies"},
+        { type: "input", text: "'n Hemp se prys word met 20% verhoog, en later word die nuwe prys met 20% verminder. Die finale prys is R480. Wat was die oorspronklike prys? (R)", answer: "500", topic: "Persentasies" }
       ]
     },
     {

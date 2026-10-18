@@ -6,7 +6,8 @@ MMHelp.add(9, 18, {
     ["K","m4:2","Who is easiest to reach?","Wie is die maklikste om te bereik?",["Asking whoever is nearby is convenience sampling, and it is likely to be biased."],["Om net te vra wie naby is, is gerieflikheidsteekproefneming, en dit is waarskynlik sydig."]],
     ["R","i:10","Mean ≈ Σ(f × midpoint) ÷ Σf.","Gemiddeld ≈ Σ(f × middelpunt) ÷ Σf.",["5 × 5 + 5 × 15 = 25 + 75 = 100","100 ÷ 10 = 10"],["5 × 5 + 5 × 15 = 25 + 75 = 100","100 ÷ 10 = 10"]],
     ["K","m4:2","When would listing every value be impractical?","Wanneer sal dit onprakties wees om elke waarde te lys?",["Grouping suits continuous data spread over a wide range."],["Groepering pas by kontinue data wat oor 'n wye omvang versprei is."]],
-    ["R","i:24","Multiply each midpoint by its frequency.","Vermenigvuldig elke middelpunt met sy frekwensie.",["3 × 10 + 7 × 30 = 30 + 210 = 240","240 ÷ 10 = 24.0"],["3 × 10 + 7 × 30 = 30 + 210 = 240","240 ÷ 10 = 24,0"]]
+    ["R","i:24","Multiply each midpoint by its frequency.","Vermenigvuldig elke middelpunt met sy frekwensie.",["3 × 10 + 7 × 30 = 30 + 210 = 240","240 ÷ 10 = 24.0"],["3 × 10 + 7 × 30 = 30 + 210 = 240","240 ÷ 10 = 24,0"]],
+    ["P","i:11","Place the numbers in order: _ _ 5 _ _.","Plaas die getalle in volgorde: _ _ 5 _ _.",["The mode 4 needs two 4s below the median: 4, 4, 5, d, e","Sum = 30 → d + e = 17","d cannot be 5 (5 would also be a mode), so d = 6 → e = 11"],["Die modus 4 vereis twee 4'e onder die mediaan: 4, 4, 5, d, e","Som = 30 → d + e = 17","d kan nie 5 wees nie (5 sou ook 'n modus wees), dus d = 6 → e = 11"]]
   ],
   "36": [
     ["K","m4:1","Look at the gaps between bars.","Kyk na die gapings tussen die stawe.",["Histogram bars touch (continuous data); bar graph bars are separate (categories)."],["Histogramstawe raak aan mekaar (kontinue data); staafgrafiekstawe is apart (kategorieë)."]],
@@ -20,7 +21,8 @@ MMHelp.add(9, 18, {
     ["K","m4:1","Which measure ignores how big the extreme values are?","Watter maatstaf ignoreer hoe groot die uiterste waardes is?",["The median only depends on the middle position, so outliers barely affect it."],["Die mediaan hang net van die middelste posisie af, dus beïnvloed uitskieters dit skaars."]],
     ["K","m4:1","Does the question push you towards an answer?","Druk die vraag jou na 'n antwoord?",["\"Don't you agree…\" is a leading question → biased wording."],["\"Stem jy nie saam nie…\" is 'n leidende vraag → sydige bewoording."]],
     ["K","m4:1","8 out of 50 000 is very few.","8 uit 50 000 is baie min.",["The sample is too small to represent the town."],["Die steekproef is te klein om die dorp te verteenwoordig."]],
-    ["K","i:90","Which value is far from the rest?","Watter waarde is ver van die res?",["The others are 22–25; 90 is far away → possible outlier."],["Die ander is 22–25; 90 is ver weg → moontlike uitskieter."]]
+    ["K","i:90","Which value is far from the rest?","Watter waarde is ver van die res?",["The others are 22–25; 90 is far away → possible outlier."],["Die ander is 22–25; 90 is ver weg → moontlike uitskieter."]],
+    ["P","i:25","Compare the totals, not the means.","Vergelyk die totale, nie die gemiddelds nie.",["Old total: 4 × 15 = 60","New total: 5 × 17 = 85 → fifth number = 25"],["Ou totaal: 4 × 15 = 60","Nuwe totaal: 5 × 17 = 85 → vyfde getal = 25"]]
   ],
   "1801": [
     ["R","i:90","Sector angle = fraction × 360°.","Sektorhoek = breuk × 360°.",["15/60 = ¼","¼ × 360° = 90°"],["15/60 = ¼","¼ × 360° = 90°"]],

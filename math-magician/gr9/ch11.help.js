@@ -25,7 +25,8 @@ MMHelp.add(9, 11, {
     ["R","i:9","Solve (n − 2) × 180 = 1 260.","Los op: (n − 2) × 180 = 1 260.",["n − 2 = 1 260 ÷ 180 = 7","n = 9"],["n − 2 = 1 260 ÷ 180 = 7","n = 9"]],
     ["R","i:115","A pentagon's angles add up to 540°.","'n Vyfhoek se hoeke tel op tot 540°.",["100 + 110 + 95 + 120 = 425","540° − 425° = 115°"],["100 + 110 + 95 + 120 = 425","540° − 425° = 115°"]],
     ["R","i:60","Exterior angles add up to 360°.","Buitehoeke tel op tot 360°.",["360° ÷ 6 = 60°"],["360° ÷ 6 = 60°"]],
-    ["C","m4:2","Use the exterior angle.","Gebruik die buitehoek.",["Exterior angle = 180° − 150° = 30°","n = 360 ÷ 30 = 12"],["Buitehoek = 180° − 150° = 30°","n = 360 ÷ 30 = 12"]]
+    ["C","m4:2","Use the exterior angle.","Gebruik die buitehoek.",["Exterior angle = 180° − 150° = 30°","n = 360 ÷ 30 = 12"],["Buitehoek = 180° − 150° = 30°","n = 360 ÷ 30 = 12"]],
+    ["P","i:10","An interior and an exterior angle add up to 180°.","'n Binnehoek en 'n buitehoek tel op tot 180°.",["4e + e = 180° → e = 36°","n = 360° ÷ 36° = 10 sides"],["4e + e = 180° → e = 36°","n = 360° ÷ 36° = 10 sye"]]
   ],
   "1102": [
     ["R","i:102","Exterior angle = sum of the interior opposite angles.","Buitehoek = som van die teenoorstaande binnehoeke.",["38° + 64° = 102°"],["38° + 64° = 102°"]],
@@ -41,7 +42,8 @@ MMHelp.add(9, 11, {
     ["K","m4:0","Compare the sets of angles.","Vergelyk die stelle hoeke.",["Both have 40°, 60°, 80° (in a different order) → equiangular → similar."],["Albei het 40°, 60°, 80° (in 'n ander volgorde) → gelykhoekig → gelykvormig."]],
     ["R","i:6","Match the sides in order.","Pas die sye in volgorde.",["9 ÷ 6 = 1.5 and 12 ÷ 8 = 1.5","x = 4 × 1.5 = 6"],["9 ÷ 6 = 1,5 en 12 ÷ 8 = 1,5","x = 4 × 1,5 = 6"]],
     ["K","m4:3","Which condition says nothing about size?","Watter voorwaarde sê niks oor grootte nie?",["AAA only proves similarity."],["HHH bewys net gelykvormigheid."]],
-    ["R","i:42","Perimeters grow by the scale factor.","Omtrekke groei met die skaalfaktor.",["14 × 3 = 42 cm"],["14 × 3 = 42 cm"]]
+    ["R","i:42","Perimeters grow by the scale factor.","Omtrekke groei met die skaalfaktor.",["14 × 3 = 42 cm"],["14 × 3 = 42 cm"]],
+    ["P","i:5.4","The person and the lamp post form two similar triangles with the tip of the shadow.","Die persoon en die lamppaal vorm twee gelykvormige driehoeke met die punt van die skaduwee.",["Big triangle base: 4 + 2 = 6 m; small triangle base: 2 m","h/6 = 1.8/2 → h = 5.4 m"],["Groot driehoek se basis: 4 + 2 = 6 m; klein driehoek se basis: 2 m","h/6 = 1,8/2 → h = 5,4 m"]]
   ],
   "1104": [
     ["R","i:80","The angles add up to 180°.","Die hoeke tel op tot 180°.",["2x + 3x + 4x = 180 → x = 20","∠C = 4 × 20 = 80°"],["2x + 3x + 4x = 180 → x = 20","∠C = 4 × 20 = 80°"]],

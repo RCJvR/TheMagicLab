@@ -24,7 +24,8 @@ MMHelp.add(9, 10, {
     ["R","i:71","Exterior angle = sum of the two interior opposite angles.","Buitehoek = som van die twee teenoorstaande binnehoeke.",["118° − 47° = 71°"],["118° − 47° = 71°"]],
     ["C","i:115","The exterior angle next to the third angle equals the other two angles together.","Die buitehoek langs die derde hoek is gelyk aan die ander twee hoeke saam.",["35° + 80° = 115°","(third angle 65°, and 180° − 65° = 115°)"],["35° + 80° = 115°","(derde hoek 65°, en 180° − 65° = 115°)"]],
     ["K","m4:0","Arcs mark points a set distance from A and from B.","Boë merk punte op 'n vaste afstand van A en van B.",["The third vertex is where the two arcs cross."],["Die derde hoekpunt is waar die twee boë mekaar sny."]],
-    ["K","m4:1","All sides are equal.","Al die sye is gelyk.",["An equilateral triangle has three equal angles: 180° ÷ 3 = 60°."],["'n Gelyksydige driehoek het drie gelyke hoeke: 180° ÷ 3 = 60°."]]
+    ["K","m4:1","All sides are equal.","Al die sye is gelyk.",["An equilateral triangle has three equal angles: 180° ÷ 3 = 60°."],["'n Gelyksydige driehoek het drie gelyke hoeke: 180° ÷ 3 = 60°."]],
+    ["P","i:12","The two shorter sides must add up to more than the longest.","Die twee korter sye moet tot meer as die langste optel.",["If the third side is longest: 5 + 8 > c → c < 13","Longest whole number: 12 cm"],["As die derde sy die langste is: 5 + 8 > c → c < 13","Langste heelgetal: 12 cm"]]
   ],
   "1003": [
     ["K","m4:0","Equal, but not at right angles.","Gelyk, maar nie reghoekig nie.",["A rectangle's diagonals are equal and bisect each other, but are not perpendicular."],["'n Reghoek se hoeklyne is gelyk en halveer mekaar, maar is nie loodreg nie."]],
@@ -32,7 +33,8 @@ MMHelp.add(9, 10, {
     ["R","i:7","The diagonals of a rectangle are equal and bisect each other.","Die hoeklyne van 'n reghoek is gelyk en halveer mekaar.",["BD = AC = 14 cm","OB = 14 ÷ 2 = 7 cm"],["BD = AC = 14 cm","OB = 14 ÷ 2 = 7 cm"]],
     ["K","m4:3","Perpendicular, and only one is bisected.","Loodreg, en net een word gehalveer.",["That is a kite: its long diagonal bisects the short one at 90°."],["Dit is 'n vlieër: sy lang hoeklyn halveer die kort een teen 90°."]],
     ["K","m4:1","Which property do rectangles, rhombi and squares share with all parallelograms?","Watter eienskap deel reghoeke, ruite en vierkante met alle parallelogramme?",["The diagonals of every parallelogram bisect each other."],["Die hoeklyne van elke parallelogram halveer mekaar."]],
-    ["C","i:10","The half-diagonals form a right-angled triangle.","Die halwe hoeklyne vorm 'n reghoekige driehoek.",["Halves: 6 cm and 8 cm","side² = 36 + 64 = 100 → side = 10 cm"],["Helftes: 6 cm en 8 cm","sy² = 36 + 64 = 100 → sy = 10 cm"]]
+    ["C","i:10","The half-diagonals form a right-angled triangle.","Die halwe hoeklyne vorm 'n reghoekige driehoek.",["Halves: 6 cm and 8 cm","side² = 36 + 64 = 100 → side = 10 cm"],["Helftes: 6 cm en 8 cm","sy² = 36 + 64 = 100 → sy = 10 cm"]],
+    ["P","m4:0","Test each property one at a time.","Toets elke eienskap een vir een.",["Diagonals bisect each other → parallelogram","Equal diagonals → rectangle","Not perpendicular → not a square"],["Hoeklyne halveer mekaar → parallelogram","Gelyke hoeklyne → reghoek","Nie loodreg nie → nie 'n vierkant nie"]]
   ],
   "1004": [
     ["K","m4:1","45° is half of 90°.","45° is die helfte van 90°.",["Construct 90° and bisect it."],["Konstrueer 90° en halveer dit."]],

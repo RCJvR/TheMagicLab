@@ -135,6 +135,7 @@ MathMagician.registerChapter(13, {
         { type: "mc", text: "'n Driehoek het sye 7, 24, 25. Is dit reghoekig?", options: ["Ja, 7²+24²=625=25²", "Nee", "Ja, 7+24=25", "Kan nie sê nie"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "'n Vierkant het 'n diagonaal van 10√2 cm. Bepaal die sylengte van die vierkant.", answer: "10", topic: "Pythagoras" },
         { type: "input", text: "'n Reghoekige veld is 21 m by 20 m. Hoeveel meter minder loop 'n boer deur diagonaal oor die veld te sny, in vergelyking met langs die twee kante te loop?", answer: "12", topic: "Pythagoras" },
+        { type: "input", text: "'n TV word as \"32 duim\" verkoop: sy skermhoeklyn is 32 duim. Die skerm se breedte en hoogte is in die verhouding 16 : 9. Hoe breed is die skerm, tot 1 desimale plek? (duim)", answer: "27.9", altAnswers: ["27,9"], topic: "Pythagoras" }
       ]
     },
     {
@@ -173,6 +174,7 @@ MathMagician.registerChapter(13, {
         {"type": "mc", "text": "Watter driehoek is reghoekig?", "options": ["4, 5, 6", "8, 15, 17", "5, 6, 8", "7, 8, 10"], "answer": 1, "topic": "Pythagoras in vorms"},
         {"type": "input", "text": "'n Vierkant het 'n hoeklyn van 10 cm. Wat is sy oppervlakte? (cm²)", "answer": "50", "topic": "Pythagoras in vorms"},
         {"type": "input", "text": "'n Leer van 5 m leun teen 'n muur met sy voet 1,4 m van die muur af. Hoe hoog teen die muur reik dit? (m)", "answer": "4.8", "altAnswers": ["4,8"], "topic": "Pythagoras in vorms"},
+        { type: "input", text: "Twee skepe verlaat 'n hawe op dieselfde tyd. Een vaar noord teen 12 km/h en die ander oos teen 16 km/h. Na hoeveel uur is hulle 60 km uitmekaar?", answer: "3", topic: "Pythagoras in vorms" }
       ]
     },
     {

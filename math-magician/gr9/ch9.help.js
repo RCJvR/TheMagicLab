@@ -15,7 +15,8 @@ MMHelp.add(9, 9, {
     ["R","i:4","Take out x.","Haal x uit.",["x(x − 4) = 0","x = 0 or x = 4 → non-zero solution 4"],["x(x − 4) = 0","x = 0 of x = 4 → nie-nul oplossing 4"]],
     ["R","m4:1","Common factor 2 first.","Gemeenskaplike faktor 2 eerste.",["2(x² − 4) = 0 → (x − 2)(x + 2) = 0","x = ±2"],["2(x² − 4) = 0 → (x − 2)(x + 2) = 0","x = ±2"]],
     ["R","i:5","Product −15, sum −2.","Produk −15, som −2.",["(x − 5)(x + 3) = 0","x = 5 or x = −3 → positive solution 5"],["(x − 5)(x + 3) = 0","x = 5 of x = −3 → positiewe oplossing 5"]],
-    ["C","i:5","Let the width be x.","Laat die breedte x wees.",["x(x + 3) = 40 → x² + 3x − 40 = 0","(x + 8)(x − 5) = 0 → x = 5 cm (a width cannot be negative)"],["x(x + 3) = 40 → x² + 3x − 40 = 0","(x + 8)(x − 5) = 0 → x = 5 cm ('n breedte kan nie negatief wees nie)"]]
+    ["C","i:5","Let the width be x.","Laat die breedte x wees.",["x(x + 3) = 40 → x² + 3x − 40 = 0","(x + 8)(x − 5) = 0 → x = 5 cm (a width cannot be negative)"],["x(x + 3) = 40 → x² + 3x − 40 = 0","(x + 8)(x − 5) = 0 → x = 5 cm ('n breedte kan nie negatief wees nie)"]],
+    ["P","i:18","Call them n and n + 2.","Noem hulle n en n + 2.",["n(n + 2) = 288 → n² + 2n − 288 = 0","(n + 18)(n − 16) = 0 → n = 16 → larger number 18"],["n(n + 2) = 288 → n² + 2n − 288 = 0","(n + 18)(n − 16) = 0 → n = 16 → grootste getal 18"]]
   ],
   "901": [
     ["R","i:5","Expand, then collect.","Brei uit en versamel dan.",["2x + 6 = 5x − 9","15 = 3x → x = 5"],["2x + 6 = 5x − 9","15 = 3x → x = 5"]],
@@ -31,7 +32,8 @@ MMHelp.add(9, 9, {
     ["C","i:12","Daughter x, father 4x.","Dogter x, pa 4x.",["In 6 years: 4x + 6 = 3(x + 6)","4x + 6 = 3x + 18 → x = 12"],["Oor 6 jaar: 4x + 6 = 3(x + 6)","4x + 6 = 3x + 18 → x = 12"]],
     ["R","i:10","Perimeter = 2(length + width).","Omtrek = 2(lengte + breedte).",["2(x + 5 + x) = 50","4x + 10 = 50 → x = 10 cm"],["2(x + 5 + x) = 50","4x + 10 = 50 → x = 10 cm"]],
     ["C","i:9","Let the number of R5 coins be x.","Laat die aantal R5-munte x wees.",["R2 coins: 20 − x","5x + 2(20 − x) = 67 → 3x + 40 = 67 → x = 9"],["R2-munte: 20 − x","5x + 2(20 − x) = 67 → 3x + 40 = 67 → x = 9"]],
-    ["C","i:6","Let the number of adults be a.","Laat die aantal volwassenes a wees.",["Children: 12 − a","45a + 25(12 − a) = 420 → 20a + 300 = 420 → a = 6"],["Kinders: 12 − a","45a + 25(12 − a) = 420 → 20a + 300 = 420 → a = 6"]]
+    ["C","i:6","Let the number of adults be a.","Laat die aantal volwassenes a wees.",["Children: 12 − a","45a + 25(12 − a) = 420 → 20a + 300 = 420 → a = 6"],["Kinders: 12 − a","45a + 25(12 − a) = 420 → 20a + 300 = 420 → a = 6"]],
+    ["P","i:2","Downstream speed = boat + current; upstream = boat − current.","Stroomaf-spoed = boot + stroom; stroomop = boot − stroom.",["b + c = 24 ÷ 2 = 12 and b − c = 24 ÷ 3 = 8","Subtract: 2c = 4 → c = 2 km/h"],["b + c = 24 ÷ 2 = 12 en b − c = 24 ÷ 3 = 8","Trek af: 2c = 4 → c = 2 km/h"]]
   ],
   "903": [
     ["R","i:6","Collect like terms.","Versamel gelyksoortige terme.",["7x − 3x = 20 + 4","4x = 24 → x = 6"],["7x − 3x = 20 + 4","4x = 24 → x = 6"]],

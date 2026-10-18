@@ -174,6 +174,7 @@ MathMagician.registerChapter(12, {
         { type: "mc", text: "Which COMPLETE reason would you use for alternate interior angles?", options: ["Alt. ∠s", "Alt. int. ∠s, AB ∥ CD", "Equal angles", "Z-pattern"], answer: 1, topic: "Lines" },
         { type: "input", text: "Two co-interior angles are (2x + 10)° and (3x - 30)°. Find x.", answer: "40", topic: "Lines" },
         { type: "input", text: "Two lines are cut by a transversal so that one pair of co-interior angles are 118° and 62° (confirming the two lines are parallel). A third line, parallel to the first, forms a corresponding angle of (2x + 10)° with the transversal (corresponding to the 118° angle). Find x.", answer: "54", topic: "Lines" },
+        { type: "input", text: "Two parallel lines are cut by a transversal. Angles a and b are co-interior, and a is 30° more than twice b. Find a. (°)", answer: "130", topic: "Lines" }
       ]
     },
     {
@@ -213,6 +214,7 @@ MathMagician.registerChapter(12, {
         {"type": "mc", "text": "Which reason is correct for \"vertically opposite angles are equal\"?", "options": ["vert opp ∠s", "corresp ∠s", "∠s on a str line", "co-int ∠s"], "answer": 0, "topic": "Solving angle problems with reasons"},
         {"type": "input", "text": "Two angles on a straight line are 4x and 5x. Find x. (°)", "answer": "20", "topic": "Solving angle problems with reasons"},
         {"type": "mc", "text": "Corresponding angles are 72° and 72°. What can you conclude?", "options": ["The lines meet", "Nothing", "The lines are parallel", "The lines are perpendicular"], "answer": 2, "topic": "Solving angle problems with reasons"},
+        { type: "input", text: "AB ∥ CD and E lies between the lines, with ∠BAE = 2x, ∠DCE = 3x and ∠AEC = 100°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":180,\"pts\":{\"A\":[0,4],\"B\":[7,4],\"C\":[0,0],\"D\":[7,0],\"E\":[4.2,2.1]},\"seg\":[[\"A\",\"B\"],[\"C\",\"D\"],[\"A\",\"E\",\"ac\"],[\"C\",\"E\",\"ac\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"ang\":[[\"B\",\"A\",\"E\",\"2x\"],[\"E\",\"C\",\"D\",\"3x\"],[\"A\",\"E\",\"C\",\"100°\",\"ac\"]],\"lab\":{\"E\":\"e\"}}'></div>Find x.", answer: "20", topic: "Solving angle problems with reasons" }
       ]
     },
     {

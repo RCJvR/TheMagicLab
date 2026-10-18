@@ -213,6 +213,7 @@ MathMagician.registerChapter(15, {
         {"type": "input", "text": "'n Tenk is 50 cm × 40 cm × 30 cm. Wat is sy inhoudsmaat in liter?", "answer": "60", "topic": "Inhoudsmaat en eenhede van volume"},
         {"type": "input", "text": "'n Silinder het r = 10 cm en h = 30 cm. Wat is sy inhoudsmaat in liter, tot 2 desimale plekke?", "answer": "9.42", "altAnswers": ["9,42"], "topic": "Inhoudsmaat en eenhede van volume"},
         {"type": "input", "text": "Herlei 4 500 mm³ na cm³.", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Inhoudsmaat en eenhede van volume"},
+        { type: "input", text: "'n Reghoekige vistenk is 60 cm lank, 30 cm breed en 40 cm hoog. Dit word gevul tot 5 cm onder die bokant. Hoeveel liter water is daarin?", answer: "63", topic: "Inhoudsmaat en eenhede van volume" }
       ]
     },
     {
@@ -243,6 +244,7 @@ kubus sy 4 cm: BO = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
         {"type": "input", "text": "Die sye van 'n kubus word verdriedubbel. Hoeveel keer neem sy buite-oppervlakte toe?", "answer": "9", "topic": "Afmetings verander: volume en buite-oppervlakte"},
         {"type": "input", "text": "'n Kubus het 'n volume van 27 cm³. Sy sye word verdubbel. Wat is die nuwe volume? (cm³)", "answer": "216", "topic": "Afmetings verander: volume en buite-oppervlakte"},
         {"type": "input", "text": "'n Boks van 2 cm × 3 cm × 4 cm word vergroot sodat elke afmeting verdubbel. Wat is sy nuwe volume? (cm³)", "answer": "192", "topic": "Afmetings verander: volume en buite-oppervlakte"},
+        { type: "input", text: "'n Silindriese blik hou 1 liter. 'n Tweede blik het twee keer die radius en die helfte van die hoogte. Hoeveel liter hou die tweede blik?", answer: "2", topic: "Afmetings verander: volume en buite-oppervlakte" }
       ]
     },
     {

@@ -25,7 +25,8 @@ MMHelp.add(9, 14, {
     ["R","i:71.73","Square minus circle.","Vierkant minus sirkel.",["10² = 100","π × 3² = 28.27","100 − 28.27 = 71.73 cm²"],["10² = 100","π × 3² = 28,27","100 − 28,27 = 71,73 cm²"]],
     ["C","i:25.71","Half the circumference plus the diameter.","Die helfte van die omtrek plus die middellyn.",["½ × π × 10 = 15.71","15.71 + 10 = 25.71 cm"],["½ × π × 10 = 15,71","15,71 + 10 = 25,71 cm"]],
     ["R","i:20","Add the two areas.","Tel die twee oppervlaktes op.",["6 × 2 = 12 and 2 × 4 = 8","12 + 8 = 20 cm²"],["6 × 2 = 12 en 2 × 4 = 8","12 + 8 = 20 cm²"]],
-    ["K","m4:1","Perimeter is the distance around the outside.","Omtrek is die afstand om die buitekant.",["Only the outside edges count; edges where parts join are inside the shape."],["Net die buitekante tel; rande waar dele aanmekaar is, is binne die vorm."]]
+    ["K","m4:1","Perimeter is the distance around the outside.","Omtrek is die afstand om die buitekant.",["Only the outside edges count; edges where parts join are inside the shape."],["Net die buitekante tel; rande waar dele aanmekaar is, is binne die vorm."]],
+    ["P","i:348","The two semicircles together make one full circle.","Die twee halfsirkels maak saam een volle sirkel.",["Straights: 2 × 80 = 160 m","Circle: π × 60 = 188.4 m","Total ≈ 348 m"],["Reguit kante: 2 × 80 = 160 m","Sirkel: π × 60 = 188,4 m","Totaal ≈ 348 m"]]
   ],
   "1402": [
     ["R","i:4","Area depends on two lengths.","Oppervlakte hang van twee lengtes af.",["Area factor = 2 × 2 = 4"],["Oppervlaktefaktor = 2 × 2 = 4"]],
@@ -33,7 +34,8 @@ MMHelp.add(9, 14, {
     ["R","i:30000","1 m² = 100 cm × 100 cm.","1 m² = 100 cm × 100 cm.",["1 m² = 10 000 cm²","3 × 10 000 = 30 000 cm²"],["1 m² = 10 000 cm²","3 × 10 000 = 30 000 cm²"]],
     ["R","i:4.5","1 cm² = 10 mm × 10 mm.","1 cm² = 10 mm × 10 mm.",["1 cm² = 100 mm²","450 ÷ 100 = 4.5 cm²"],["1 cm² = 100 mm²","450 ÷ 100 = 4,5 cm²"]],
     ["R","i:6","Halving both sides divides the area by 4.","As albei sye gehalveer word, word die oppervlakte deur 4 gedeel.",["½ × ½ = ¼","24 × ¼ = 6 cm²"],["½ × ½ = ¼","24 × ¼ = 6 cm²"]],
-    ["K","m4:3","1 km = 1 000 m.","1 km = 1 000 m.",["1 km² = 1 000 m × 1 000 m = 1 000 000 m²"],["1 km² = 1 000 m × 1 000 m = 1 000 000 m²"]]
+    ["K","m4:3","1 km = 1 000 m.","1 km = 1 000 m.",["1 km² = 1 000 m × 1 000 m = 1 000 000 m²"],["1 km² = 1 000 m × 1 000 m = 1 000 000 m²"]],
+    ["P","i:-4","Multiply the two scale factors.","Vermenigvuldig die twee skaalfaktore.",["New area = 1.2 × 0.8 = 0.96 of the old area","Change: −4%"],["Nuwe oppervlakte = 1,2 × 0,8 = 0,96 van die ou oppervlakte","Verandering: −4%"]]
   ],
   "1403": [
     ["R","i:40","A = ½(a + b) × h","A = ½(a + b) × h",["½ × (6 + 10) × 5","= 40 cm²"],["½ × (6 + 10) × 5","= 40 cm²"]],

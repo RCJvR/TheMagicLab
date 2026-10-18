@@ -221,6 +221,7 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "As y direk eweredig is aan x en y = 18 wanneer x = 6, bepaal y wanneer x = 10.", options: ["30", "60", "3", "108"], answer: 0, topic: "Verhoudings" },
         { type: "input", text: "'n Resep benodig meel, suiker en botter in die verhouding 5 : 2 : 3. Jy het 800 g meel (genoeg vir 'n volle porsie) maar slegs 250 g botter. Hoeveel meer gram botter moet jy koop?", answer: "230", topic: "Verhoudings" },
         { type: "input", text: "12 werkers kan 'n muur in 18 dae bou. Hulle werk vir 6 dae, waarna 4 werkers die werk verlaat. Deur die feit te gebruik dat totale werker-dae konstant bly, bereken die totale aantal dae (vanaf die begin) benodig om die muur te voltooi.", answer: "24", topic: "Tempo's" },
+        { type: "input", text: "'n Motor gebruik 7,5 liter petrol per 100 km en petrol kos R23,40 per liter. Sipho ry 360 km Durban toe en weer terug op dieselfde pad. Wat kos die petrol, tot die naaste rand?", answer: "1264", topic: "Tempo's" }
       ]
     },
     {
@@ -372,6 +373,7 @@ MathMagician.registerChapter(1, {
         {"type": "mc", "text": "Die grafiek van twee hoeveelhede is 'n reguit lyn deur die oorsprong. Hulle is in:", "options": ["direkte eweredigheid", "omgekeerde eweredigheid", "geen eweredigheid", "albei"], "answer": 0, "topic": "Direkte en omgekeerde eweredigheid"},
         {"type": "input", "text": "'n Prys word gelykop verdeel: met 5 wenners kry elkeen R600. Hoeveel kry elkeen as daar 8 wenners is? (R)", "answer": "375", "topic": "Direkte en omgekeerde eweredigheid"},
         {"type": "input", "text": "Teen 80 km/h neem 'n rit 3 uur. Hoeveel uur neem dit teen 120 km/h?", "answer": "2", "topic": "Direkte en omgekeerde eweredigheid"},
+        { type: "input", text: "6 werkers kan 'n muur in 10 dae bou. Na 4 dae sluit nog 3 werkers by hulle aan. Hoeveel dae neem die hele werk?", answer: "8", topic: "Direkte en omgekeerde eweredigheid" }
       ]
     },
     {

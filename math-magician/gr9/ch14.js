@@ -212,6 +212,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "Find the perimeter of a semicircle with diameter 10 cm, to 2 decimal places. (cm)", "answer": "25.71", "altAnswers": ["25,71"], "topic": "Composite shapes"},
         {"type": "input", "text": "An L-shape is made of a 6 × 2 rectangle and a 2 × 4 rectangle joined without overlap. What is its area? (cm²)", "answer": "20", "topic": "Composite shapes"},
         {"type": "mc", "text": "When you find the perimeter of a composite shape you include:", "options": ["every edge of every part", "only the outside edges", "only the curved edges", "the inside edges twice"], "answer": 1, "topic": "Composite shapes"},
+        { type: "input", text: "A running track has two straight sides of 80 m and a semicircle with a diameter of 60 m at each end.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[80,0],\"C\":[80,60],\"D\":[0,60],\"M\":[0,30],\"N\":[80,30]},\"seg\":[[\"A\",\"B\",null,null,\"80 m\"],[\"D\",\"C\"],[\"B\",\"C\",\"mu dash\",null,\"60 m\"]],\"arc\":[[\"M\",30,90,270,\"ac\"],[\"N\",30,-90,90,\"ac\"]],\"nolab\":[\"A\",\"B\",\"C\",\"D\",\"M\",\"N\"]}'></div>What is the length of the inside edge of the track, to the nearest metre? (Use π = 3,14)", answer: "348", topic: "Composite shapes" }
       ]
     },
     {
@@ -244,6 +245,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "Convert 450 mm² to cm².", "answer": "4.5", "altAnswers": ["4,5"], "topic": "Changing dimensions and units"},
         {"type": "input", "text": "A rectangle has an area of 24 cm². Each side is halved. What is the new area? (cm²)", "answer": "6", "topic": "Changing dimensions and units"},
         {"type": "mc", "text": "1 km² is equal to:", "options": ["1 000 m²", "10 000 m²", "100 000 m²", "1 000 000 m²"], "answer": 3, "topic": "Changing dimensions and units"},
+        { type: "input", text: "A rectangle's length is increased by 20% and its width is decreased by 20%. By what percentage does its area change? (Give a negative number for a decrease.)", answer: "-4", topic: "Changing dimensions and units" }
       ]
     },
     {
