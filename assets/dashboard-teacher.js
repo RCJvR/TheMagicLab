@@ -6001,6 +6001,7 @@ async function openClassDetail(cls) {
 
   _renderStudentTable(students, progress, cls.id);
   window.TeacherMathResults?.show(cls, students);
+  window.TeacherScienceResults?.show(cls, students);
 }
 
 const TOOL_META = {
@@ -6443,6 +6444,7 @@ async function launchGame() {
 function closeClassDetail() {
   document.getElementById('class-detail-wrap').style.display = 'none';
   window.TeacherMathResults?.clear();
+  window.TeacherScienceResults?.clear();
   _selectedClassId = null;
   document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
 }
