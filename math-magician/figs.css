@@ -168,3 +168,40 @@ html[data-theme="light"] .lesson-body svg:not(.mf):not([data-ml-no-theme]) { fil
   .mx-open-icon { width: 18px; height: 18px; font-size: 11px; }
   .ex-link { margin-left: 0; }
 }
+
+/* ── Phone navigation (mobile-nav.js) ── */
+#mmStick { display: contents; }
+#mmNavRow, #mmNavClose, #mmNavBackdrop { display: none; }
+@media (max-width: 700px) {
+  /* body must not be a scroll container, or the sticky bar cannot stick to the viewport */
+  html body { overflow: visible; }
+  #mmStick { display: block; position: sticky; top: 0; z-index: 40; background-color: #08090b; box-shadow: 0 6px 14px rgba(0,0,0,0.35); }
+  #mmNavRow { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  #mmNavBtn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 10px; border: 1px solid rgba(158,212,60,0.40); background-color: rgba(158,212,60,0.10); color: #c3e56f; font: 700 13px "Cabinet Grotesk", sans-serif; cursor: pointer; }
+  .mm-nav-burger, .mm-nav-burger::before, .mm-nav-burger::after { display: block; width: 14px; height: 2px; border-radius: 2px; background-color: #c3e56f; }
+  .mm-nav-burger { position: relative; }
+  .mm-nav-burger::before, .mm-nav-burger::after { content: ''; position: absolute; left: 0; }
+  .mm-nav-burger::before { top: -5px; }
+  .mm-nav-burger::after { top: 5px; }
+  #mmNavTopic { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 13px "Cabinet Grotesk", sans-serif; color: rgba(226,232,240,0.80); }
+  #tabBar { overflow-x: auto; scrollbar-width: none; }
+  #tabBar::-webkit-scrollbar { display: none; }
+  .tab-btn { flex-shrink: 0; }
+
+  html body #sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 70;
+    width: min(86vw, 340px); max-height: none; border-right: 1px solid rgba(255,255,255,0.10); border-bottom: none;
+    background-color: #0b0d10; transform: translateX(-102%); visibility: hidden;
+    transition: transform 220ms ease, visibility 0s linear 220ms;
+  }
+  body.mm-nav-open #sidebar { transform: none; visibility: visible; transition: transform 220ms ease, visibility 0s; box-shadow: 12px 0 32px rgba(0,0,0,0.45); }
+  #sidebarHeader { position: relative; padding-right: 52px; }
+  #mmNavClose { display: grid; place-items: center; position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(226,232,240,0.16); background-color: transparent; color: #e3e8ef; font-size: 16px; cursor: pointer; }
+  #mmNavBackdrop { display: block; position: fixed; inset: 0; z-index: 65; background-color: rgba(0,0,0,0.55); opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+  body.mm-nav-open #mmNavBackdrop { opacity: 1; pointer-events: auto; }
+  html.mm-nav-lock { overflow: hidden; }
+  #mmNavBtn:focus-visible, #mmNavClose:focus-visible { outline: 2px solid #9ed43c; outline-offset: 2px; }
+}
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  html body #sidebar, #mmNavBackdrop { transition: none; }
+}
