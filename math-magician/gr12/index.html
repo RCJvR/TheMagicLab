@@ -23,6 +23,7 @@
   <script defer src="../plotter-link.js"></script>
   <script src="../answer-check.js"></script>
   <script src="../practice-help.js"></script>
+  <script src="../practice-results.js"></script>
   <script src="../exam-practice.js"></script>
   <script src="../explore-data.js"></script>
   <script src="../lesson-explore.js"></script>
@@ -877,7 +878,7 @@ function buildSidebar() {
         div.innerHTML = `
           <span class="topic-num">${idx + 1}</span>
           <span class="topic-name">${t.name}</span>
-          ${completed.has(t.id) ? '<span class="topic-tick">✓</span>' : ''}
+          ${completed.has(t.id) ? '<span class="topic-tick">✓</span>' : ''}${!completed.has(t.id) && window.MMResults ? MMResults.badge(12, t.id, currentLang) : ''}
         `;
         div.addEventListener('click', () => selectTopic(t.id));
         group.appendChild(div);
@@ -1049,6 +1050,17 @@ function renderQuestion() {
   const ts = topicScores[currentTopicId] || { correct: 0, total: 0 };
 
   if (qIndex >= t.questions.length) {
+    // A topic is complete only at the mastery score; below it, offer a retry.
+    const pctDone = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
+    if (window.MMResults && pctDone < MMResults.MASTERY) {
+      buildSidebar();
+      MMResults.renderRetry({
+        panel: practicePanel, topic: t, topics: TOPICS, score: ts, lang: currentLang,
+        retry: () => { topicScores[currentTopicId] = { correct: 0, total: 0 }; qIndex = 0; answered = false; renderQuestion(); },
+        toLesson: () => switchTab('lesson'), open: id => selectTopic(id)
+      });
+      return;
+    }
     completed.add(currentTopicId);
     buildSidebar();
     updateProgress();
@@ -1160,6 +1172,7 @@ function renderQuestion() {
     topicScores[currentTopicId].total++;
 
     const isCorrect = q.type === 'mc' ? userAnswer === correct : MMAnswer.matches(userAnswer, q);
+    if (window.MMResults) MMResults.record(12, t, qIndex, q, isCorrect);
 
     if (isCorrect) {
       topicScores[currentTopicId].correct++;

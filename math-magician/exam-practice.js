@@ -43,7 +43,11 @@
       again: 'New paper, same chapters',
       change: 'Change chapters',
       short: 'These chapters have too few problem-solving questions for the full mix, so some places went to the next level down.',
-      levels: { K: 'Knowledge', R: 'Routine', C: 'Complex', P: 'Problem solving' }
+      levels: { K: 'Knowledge', R: 'Routine', C: 'Complex', P: 'Problem solving' },
+      mode: 'Questions', fresh: 'A fresh mix', weak: 'My weak spots',
+      weakNote: 'Favours questions you got wrong and topics where you scored under 70%.',
+      noData: 'Answer some practice questions first: then this paper can target your weak spots.',
+      record: 'Your record so far', weakTopics: 'Topics under 70% recently', noWeak: 'No weak topics: every topic you have practised is at 70% or more.'
     },
     af: {
       button: 'Gemengde eksamenoefening',
@@ -74,13 +78,18 @@
       again: 'Nuwe vraestel, dieselfde hoofstukke',
       change: 'Verander hoofstukke',
       short: 'Hierdie hoofstukke het te min probleemoplossingsvrae vir die volle mengsel, dus het sommige plekke na die volgende vlak laer gegaan.',
-      levels: { K: 'Kennis', R: 'Roetine', C: 'Kompleks', P: 'Probleemoplossing' }
+      levels: { K: 'Kennis', R: 'Roetine', C: 'Kompleks', P: 'Probleemoplossing' },
+      mode: 'Vrae', fresh: '\'n Nuwe mengsel', weak: 'My swak plekke',
+      weakNote: 'Verkies vrae wat jy verkeerd gehad het en onderwerpe waar jy onder 70% behaal het.',
+      noData: 'Beantwoord eers \'n paar oefenvrae: dan kan hierdie vraestel jou swak plekke teiken.',
+      record: 'Jou rekord tot dusver', weakTopics: 'Onderwerpe onlangs onder 70%', noWeak: 'Geen swak onderwerpe nie: elke onderwerp wat jy geoefen het, is op 70% of meer.'
     }
   };
 
   let cfg = null;
   let picked = null;          // Set of chapter numbers
   let length = 10;
+  let focus = 'mix';          // 'mix' | 'weak'
   let paper = null;           // { items: [{topic, qIndex, q, level}], i, answers: [bool], short }
   let view = 'setup';         // 'setup' | 'paper'
 
@@ -118,6 +127,18 @@
     return out;
   }
 
+  // Pick `want` items at random, each in proportion to its weak-spot weight.
+  function weightedPick(pool, want) {
+    const left = pool.map(it => ({ it, w: MMResults.weight(cfg.grade, it.topic.id, it.qIndex) }));
+    const out = [];
+    while (out.length < want && left.length) {
+      let r = Math.random() * left.reduce((a, x) => a + x.w, 0), k = 0;
+      while (k < left.length - 1 && (r -= left[k].w) > 0) k++;
+      out.push(left.splice(k, 1)[0].it);
+    }
+    return out;
+  }
+
   async function build(chapters, n) {
     const grade = cfg.grade;
     await Promise.all([...chapters].map(ch => MMHelp.ensure(grade, ch)));
@@ -136,13 +157,14 @@
     let short = false;
     ['P', 'C', 'K', 'R'].forEach(lv => {
       let need = want[lv];
-      const got = spreadPick(pools[lv], need, used);
+      const pick = (pool, k) => focus === 'weak' ? weightedPick(pool, k) : spreadPick(pool, k, used);
+      const got = pick(pools[lv], need);
       got.forEach(it => { pools[lv].splice(pools[lv].indexOf(it), 1); });
       items.push(...got);
       need -= got.length;
       for (const alt of FALLBACK[lv]) {
         if (need <= 0) break;
-        const extra = spreadPick(pools[alt], need, used);
+        const extra = pick(pools[alt], need);
         extra.forEach(it => { pools[alt].splice(pools[alt].indexOf(it), 1); });
         items.push(...extra);
         need -= extra.length;
@@ -154,8 +176,27 @@
   }
 
   // ── Setup screen ─────────────────────────────────────────────
+  // What this learner gets right per level, and their weakest topics.
+  function recordHTML(t) {
+    const sum = MMResults.summary(cfg.grade, cfg.topics());
+    const bars = MIX.map(([lv]) => lv).filter(lv => sum.levels[lv]).map(lv => {
+      const p = sum.levels[lv];
+      return `<div class="mx-bar-row"><span class="mm-level mm-level-${lv}">${t.levels[lv]}</span>
+        <span class="mx-bar"><span class="mx-bar-fill mx-seg-${lv}" style="width:${p.pct}%"></span></span>
+        <span class="mx-bar-num">${p.pct}%</span></div>`;
+    }).join('');
+    const weak = sum.weak.slice(0, 5).map(x => `<button type="button" class="mx-topic" data-id="${x.topic.id}"><span class="mx-chip-num">${MMHelp.chapterOf(x.topic)}</span>${esc(x.topic.name)} · ${x.s.pct}% →</button>`).join('');
+    return `<section class="mx-record">
+      <div class="mx-label">${t.record}</div><div class="mx-bars">${bars}</div>
+      <div class="mx-label">${t.weakTopics}</div>
+      ${weak ? `<div class="mx-review">${weak}</div>` : `<p class="mx-note">${t.noWeak}</p>`}
+    </section>`;
+  }
+
   function renderSetup() {
     const t = L();
+    const hasData = !!(window.MMResults && MMResults.hasData(cfg.grade));
+    if (!hasData) focus = 'mix';
     const chs = chapterList();
     if (!picked) picked = new Set(chs.map(c => c.num));
     const chips = chs.map(c => `
@@ -174,9 +215,18 @@
         <button type="button" class="mx-len${length === 10 ? ' on' : ''}" data-n="10" aria-pressed="${length === 10}">${t.quick(10)}</button>
         <button type="button" class="mx-len${length === 20 ? ' on' : ''}" data-n="20" aria-pressed="${length === 20}">${t.full(20)}</button>
       </div>
+      <div class="mx-row-head"><span class="mx-label">${t.mode}</span></div>
+      <div class="mx-lengths mx-modes">
+        <button type="button" class="mx-len${focus === 'mix' ? ' on' : ''}" data-f="mix" aria-pressed="${focus === 'mix'}">${t.fresh}</button>
+        <button type="button" class="mx-len${focus === 'weak' ? ' on' : ''}" data-f="weak" aria-pressed="${focus === 'weak'}"${hasData ? '' : ' disabled'}>${t.weak}</button>
+      </div>
+      <p class="mx-note mx-mode-note">${hasData ? t.weakNote : t.noData}</p>
       <p class="mx-warn" id="mxWarn" hidden>${t.pickOne}</p>
-      <button type="button" class="lesson-next-btn" id="mxStart">${t.start} →</button>`;
+      <button type="button" class="lesson-next-btn" id="mxStart">${t.start} →</button>
+      ${hasData ? recordHTML(t) : ''}`;
     const P = cfg.panel;
+    P.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => { focus = b.dataset.f; renderSetup(); }));
+    P.querySelectorAll('.mx-record .mx-topic').forEach(b => b.addEventListener('click', () => cfg.openTopic(+b.dataset.id)));
     P.querySelectorAll('.mx-chip').forEach(b => b.addEventListener('click', () => {
       const n = +b.dataset.ch;
       picked.has(n) ? picked.delete(n) : picked.add(n);
@@ -187,7 +237,7 @@
       picked = b.dataset.all === '1' ? new Set(chs.map(c => c.num)) : new Set();
       renderSetup();
     }));
-    P.querySelectorAll('.mx-len').forEach(b => b.addEventListener('click', () => { length = +b.dataset.n; renderSetup(); }));
+    P.querySelectorAll('.mx-len[data-n]').forEach(b => b.addEventListener('click', () => { length = +b.dataset.n; renderSetup(); }));
     P.querySelector('#mxStart').addEventListener('click', start);
   }
 
@@ -246,6 +296,7 @@
     const finish = ok => {
       answered = true;
       paper.answers[slot] = ok;
+      if (window.MMResults) MMResults.record(cfg.grade, it.topic, it.qIndex, q, ok);
       area.style.display = 'block';
       area.className = ok ? 'correct' : 'wrong';
       cfg.panel.querySelector('#feedbackLabel').textContent = ok ? t.correct : t.wrong;

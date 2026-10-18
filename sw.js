@@ -423,6 +423,7 @@ const urlsToCache = [
   '/math-magician/figs.js',
   '/math-magician/figs.css',
   '/math-magician/practice-help.js',
+  '/math-magician/practice-results.js',
   '/math-magician/exam-practice.js',
   '/math-magician/explore-data.js',
   '/math-magician/lesson-explore.js',
