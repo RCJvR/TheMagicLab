@@ -278,22 +278,11 @@ async function updateProfile(updates) {
 async function joinClass(inviteCode) {
   if (!_session) return { error: { message: 'Not logged in' } };
 
-  // Find the class
-  const { data: cls, error: findErr } = await _supabase
-    .from('classes')
-    .select('id, name')
-    .eq('invite_code', inviteCode.toUpperCase())
-    .eq('active', true)
-    .single();
-
-  if (findErr || !cls) return { error: { message: 'Invalid invite code' } };
-
-  // Join it
-  const { error: joinErr } = await _supabase
-    .from('class_members')
-    .insert({ class_id: cls.id, student_id: _session.user.id });
-
-  if (joinErr && joinErr.code !== '23505') return { error: joinErr }; // 23505 = already member
+  // The database looks the code up and adds the learner in one step; classes
+  // and their codes are not readable by people outside the class.
+  const { data, error } = await _supabase.rpc('join_class_by_code', { p_code: String(inviteCode || '') });
+  const cls = Array.isArray(data) ? data[0] : data;
+  if (error || !cls) return { error: { message: 'Invalid invite code' } };
   return { data: cls };
 }
 
