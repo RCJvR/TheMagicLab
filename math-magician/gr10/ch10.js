@@ -154,6 +154,7 @@ Total           30                    720</div>
       {"type": "mc", "text": "For the same table (f = 4, 6, 10), the modal class is:", "options": ["0 ≤ x < 10", "10 ≤ x < 20", "20 ≤ x < 30", "There is none"], "answer": 2, "topic": "Measures of central tendency"},
       {"type": "mc", "text": "Why do the bars of a histogram touch?", "options": ["The classes follow on with no gaps", "To save space", "Because the frequencies are equal", "They only touch for discrete data"], "answer": 0, "topic": "Measures of central tendency"},
       {"type": "mc", "text": "40 times are grouped: 0–10: 5,  10–20: 12,  20–30: 15,  30–40: 8. In which class does the median lie?", "options": ["0 ≤ t < 10", "10 ≤ t < 20", "20 ≤ t < 30", "30 ≤ t < 40"], "answer": 2, "topic": "Measures of central tendency"},
+        { type: "input", text: "Five different positive whole numbers have a mean of 12 and a median of 10. What is the largest possible value of the biggest number?", answer: "36", topic: "Measures of central tendency" }
       ]
     },
     {
@@ -597,7 +598,8 @@ Total           30                    720</div>
           answer: 0,
           topic: "Interpreting statistics in context"
         },
-        { type: "input", text: "Ten learners' marks have a mean of 64. The teacher adds 5 marks to every learner's mark. Afterwards one of the new marks, 100, is found to be wrong and is changed to 80. What is the final mean?", answer: "67", topic: "Interpreting statistics in context" }
+        { type: "input", text: "Ten learners' marks have a mean of 64. The teacher adds 5 marks to every learner's mark. Afterwards one of the new marks, 100, is found to be wrong and is changed to 80. What is the final mean?", answer: "67", topic: "Interpreting statistics in context" },
+        { type: "input", text: "Class A has 30 learners with a mean mark of 60. Class B has 20 learners with a mean mark of 70. What is the mean mark of all 50 learners?", answer: "64", topic: "Interpreting statistics in context" }
       ]
     }
   ],

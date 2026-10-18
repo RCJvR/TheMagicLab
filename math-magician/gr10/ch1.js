@@ -146,7 +146,8 @@ MathMagician.registerChapter(1, {
           answer: "10√2",
           altAnswers: ["10sqrt2", "10√2 cm"],
           topic: "Real numbers & surds"
-        }
+        },
+        { type: "input", text: "A square has an area of 50 cm². Find the exact length of its diagonal. (cm)", answer: "10", topic: "Real numbers & surds" }
       ]
     },
     {
@@ -358,7 +359,8 @@ MathMagician.registerChapter(1, {
           answer: "(x-2)/(2x-3)",
           altAnswers: ["(x−2)/(2x−3)"],
           topic: "Products & factorisation"
-        }
+        },
+        { type: "input", text: "Factorise x³ − x fully, and use it to work out 99³ − 99 without a calculator.", answer: "970200", topic: "Products & factorisation" }
       ]
     },
     {

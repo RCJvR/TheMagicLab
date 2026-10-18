@@ -318,7 +318,8 @@ MathMagician.registerChapter(13, {
           answer: "3:5",
           altAnswers: ["3/5"],
           topic: "Volume & scale factor"
-        }
+        },
+        { type: "input", text: "A model car is built to a scale of 1 : 20. Painting the model takes enough paint to cover 600 cm². How many square metres must be painted on the real car?", answer: "24", topic: "Volume & scale factor" }
       ]
     },
     {
@@ -473,7 +474,8 @@ MathMagician.registerChapter(13, {
           answer: "273.32",
           altAnswers: ["273,32"],
           topic: "Composite solids"
-        }
+        },
+        { type: "input", text: "A cylindrical glass with a radius of 3 cm holds water. A solid metal ball with a radius of 1,5 cm is dropped in and sinks. By how many centimetres does the water level rise?", answer: "0.5", altAnswers: ["0,5","0.50","0,50","1/2"], topic: "Composite solids" }
       ]
     },
     {

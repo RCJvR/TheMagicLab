@@ -290,7 +290,8 @@ MathMagician.registerChapter(12, {
           text: "Quadrilateral PQRS has PQ = 3x − 2, QR = 2x + 6, RS = x + 14, SP = 4x − 10. Given that PQRS is a parallelogram (so PQ = RS and QR = SP), find x.",
           answer: "8",
           topic: "Proving parallelogram properties"
-        }
+        },
+        { type: "input", text: "ABCD is a parallelogram. The bisectors of ∠A and ∠B meet at P. Find ∠APB. (°)", answer: "90", topic: "Proving parallelogram properties" }
       ]
     },
     {
@@ -425,7 +426,8 @@ MathMagician.registerChapter(12, {
           text: "Right triangles ABC and DEF are congruent by RHS (right angles at B and E). The hypotenuses AC = DF = 13, and AB = 5. Use the Theorem of Pythagoras in △ABC to find BC, and hence state EF.",
           answer: "12",
           topic: "Congruency proofs"
-        }
+        },
+        { type: "input", text: "ABCD is a rhombus with ∠ABC = 70°. Find ∠BAC. (°)", answer: "55", topic: "Congruency proofs" }
       ]
     },
     {

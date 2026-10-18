@@ -8,7 +8,8 @@ MMHelp.add(10, 3, {
     ["R","i:3","Four steps of d from T₃ to T₇.","Vier stappe van d van T₃ na T₇.",["4d = 22 − 10 = 12","d = 3"],["4d = 22 − 10 = 12","d = 3"]],
     ["R","m4:0","Tₙ = T₁ + (n − 1)d.","Tₙ = T₁ + (n − 1)d.",["T₅ = 8 + 4(−3)","= −4"],["T₅ = 8 + 4(−3)","= −4"]],
     ["C","i:88","Find d, then T₁.","Vind d en dan T₁.",["6d = 58 − 22 = 36 → d = 6","T₁ = 22 − 3(6) = 4","T₁₅ = 4 + 14(6) = 88"],["6d = 58 − 22 = 36 → d = 6","T₁ = 22 − 3(6) = 4","T₁₅ = 4 + 14(6) = 88"]],
-    ["C","i:101","Solve the inequality.","Los die ongelykheid op.",["5n − 3 > 500 → n > 100.6","The smallest whole number is n = 101"],["5n − 3 > 500 → n > 100,6","Die kleinste heelgetal is n = 101"]]
+    ["C","i:101","Solve the inequality.","Los die ongelykheid op.",["5n − 3 > 500 → n > 100.6","The smallest whole number is n = 101"],["5n − 3 > 500 → n > 100,6","Die kleinste heelgetal is n = 101"]],
+    ["P","i:2","Write each term in terms of a and d.","Skryf elke term in terme van a en d.",["a + 4d = 3(a + d) → d = 2a","T₁₀ = a + 9d = a + 18a = 19a = 38 → a = 2"],["a + 4d = 3(a + d) → d = 2a","T₁₀ = a + 9d = a + 18a = 19a = 38 → a = 2"]]
   ],
   "301": [
     ["R","m4:1","Each extra triangle adds 2 matches.","Elke ekstra driehoek voeg 2 vuurhoutjies by.",["d = 2 and T₁ = 3","Tₙ = 2n + 1"],["d = 2 en T₁ = 3","Tₙ = 2n + 1"]],
@@ -17,7 +18,8 @@ MMHelp.add(10, 3, {
     ["K","m4:0","Gradient → d; y-intercept → constant.","Gradiënt → d; y-afsnit → konstante.",["Tₙ = 4n + 1"],["Tₙ = 4n + 1"]],
     ["R","i:3","Subtract the two equations.","Trek die twee vergelykings van mekaar af.",["2a + b = 9 and 5a + b = 18","3a = 9 → a = 3"],["2a + b = 9 en 5a + b = 18","3a = 9 → a = 3"]],
     ["R","i:61","Each stage adds 5 tiles.","Elke stadium voeg 5 teëls by.",["Tₙ = 5n + 1","T₁₂ = 61"],["Tₙ = 5n + 1","T₁₂ = 61"]],
-    ["C","m4:0","Find the gradient between the two points.","Vind die gradiënt tussen die twee punte.",["a = (21 − 9) ÷ (5 − 2) = 4","9 = 4(2) + b → b = 1 → Tₙ = 4n + 1"],["a = (21 − 9) ÷ (5 − 2) = 4","9 = 4(2) + b → b = 1 → Tₙ = 4n + 1"]]
+    ["C","m4:0","Find the gradient between the two points.","Vind die gradiënt tussen die twee punte.",["a = (21 − 9) ÷ (5 − 2) = 4","9 = 4(2) + b → b = 1 → Tₙ = 4n + 1"],["a = (21 − 9) ÷ (5 − 2) = 4","9 = 4(2) + b → b = 1 → Tₙ = 4n + 1"]],
+    ["P","i:32","The rows form a linear sequence: Tₙ = 20 + 3(n − 1).","Die rye vorm 'n lineêre ry: Tₙ = 20 + 3(n − 1).",["20 + 3(n − 1) = 113 → 3(n − 1) = 93","n − 1 = 31 → n = 32 rows"],["20 + 3(n − 1) = 113 → 3(n − 1) = 93","n − 1 = 31 → n = 32 rye"]]
   ],
   "302": [
     ["R","i:","The cycle has length 3.","Die siklus het lengte 3.",["100 ÷ 3 = 33 remainder 1","Position 1 in the cycle → A"],["100 ÷ 3 = 33 res 1","Posisie 1 in die siklus → A"]],

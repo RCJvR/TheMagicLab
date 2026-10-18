@@ -154,6 +154,7 @@ Totaal           30                    720</div>
       {"type": "mc", "text": "Vir dieselfde tabel (f = 4, 6, 10) is die modale klas:", "options": ["0 ≤ x < 10", "10 ≤ x < 20", "20 ≤ x < 30", "Daar is nie een nie"], "answer": 2, "topic": "Maatstawwe van sentrale neiging"},
       {"type": "mc", "text": "Hoekom raak die stawe van 'n histogram aan mekaar?", "options": ["Die klasse volg sonder gapings op mekaar", "Om plek te spaar", "Omdat die frekwensies gelyk is", "Hulle raak net vir diskrete data"], "answer": 0, "topic": "Maatstawwe van sentrale neiging"},
       {"type": "mc", "text": "40 tye is gegroepeer: 0–10: 5,  10–20: 12,  20–30: 15,  30–40: 8. In watter klas lê die mediaan?", "options": ["0 ≤ t < 10", "10 ≤ t < 20", "20 ≤ t < 30", "30 ≤ t < 40"], "answer": 2, "topic": "Maatstawwe van sentrale neiging"},
+        { type: "input", text: "Vyf verskillende positiewe heelgetalle het 'n gemiddeld van 12 en 'n mediaan van 10. Wat is die grootste moontlike waarde van die grootste getal?", answer: "36", topic: "Maatstawwe van sentrale neiging" }
       ]
     },
     {
@@ -597,7 +598,8 @@ Totaal           30                    720</div>
           answer: 0,
           topic: "Interpreteer statistiek in konteks"
         },
-        { type: "input", text: "Tien leerders se punte het 'n gemiddeld van 64. Die onderwyser tel 5 punte by elke leerder se punt. Daarna word gevind dat een van die nuwe punte, 100, verkeerd is, en dit word na 80 verander. Wat is die finale gemiddeld?", answer: "67", topic: "Interpreteer statistiek in konteks" }
+        { type: "input", text: "Tien leerders se punte het 'n gemiddeld van 64. Die onderwyser tel 5 punte by elke leerder se punt. Daarna word gevind dat een van die nuwe punte, 100, verkeerd is, en dit word na 80 verander. Wat is die finale gemiddeld?", answer: "67", topic: "Interpreteer statistiek in konteks" },
+        { type: "input", text: "Klas A het 30 leerders met 'n gemiddelde punt van 60. Klas B het 20 leerders met 'n gemiddelde punt van 70. Wat is die gemiddelde punt van al 50 leerders?", answer: "64", topic: "Interpreteer statistiek in konteks" }
       ]
     }
   ],

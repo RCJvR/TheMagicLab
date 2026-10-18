@@ -121,7 +121,8 @@ MathMagician.registerChapter(9, {
           text: "R12 000 is invested and grows to R16 325.87 after 4 years of compound interest. Find the annual interest rate (as a %).",
           answer: "8",
           topic: "Simple & compound interest"
-        }
+        },
+        { type: "input", text: "R5 000 is invested at 10% p.a. compound interest. After how many whole years is it first worth more than R10 000?", answer: "8", topic: "Simple & compound interest" }
       ]
     },
     {
@@ -437,7 +438,8 @@ MathMagician.registerChapter(9, {
           text: "A town's population was 15 000 four years ago and grew at a constant annual rate to reach 16 882,63 today. Find the annual growth rate (as a %).",
           answer: "3",
           topic: "Inflation & population growth"
-        }
+        },
+        { type: "input", text: "A town's population of 50 000 falls by 2% every year. What will the population be in 5 years, to the nearest whole number?", answer: "45196", topic: "Inflation & population growth" }
       ]
     },
     {

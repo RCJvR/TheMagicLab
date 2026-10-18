@@ -17,7 +17,8 @@ MMHelp.add(10, 13, {
     ["R","m4:2","Volume scales by k³.","Volume skaal met k³.",["(½)³ = ⅛","120 × ⅛ = 15 cm³"],["(½)³ = ⅛","120 × ⅛ = 15 cm³"]],
     ["K","i:60","V = l × b × h","V = l × b × h",["4 × 3 × 5 = 60 cm³"],["4 × 3 × 5 = 60 cm³"]],
     ["C","i:5","V = ⅓πr²h","V = ⅓πr²h",["⅓πr² × 12 = 100π → 4r² = 100","r² = 25 → r = 5 cm"],["⅓πr² × 12 = 100π → 4r² = 100","r² = 25 → r = 5 cm"]],
-    ["C","i:35","Length ratio = cube root of the volume ratio.","Lengteverhouding = derdemagswortel van die volumeverhouding.",["∛27 = 3 and ∛125 = 5","3 : 5"],["∛27 = 3 en ∛125 = 5","3 : 5"]]
+    ["C","i:35","Length ratio = cube root of the volume ratio.","Lengteverhouding = derdemagswortel van die volumeverhouding.",["∛27 = 3 and ∛125 = 5","3 : 5"],["∛27 = 3 en ∛125 = 5","3 : 5"]],
+    ["P","i:24","Areas scale by the square of 20.","Oppervlaktes skaal met die kwadraat van 20.",["600 × 20² = 240 000 cm²","1 m² = 10 000 cm² → 24 m²"],["600 × 20² = 240 000 cm²","1 m² = 10 000 cm² → 24 m²"]]
   ],
   "1302": [
     ["R","m4:0","Cylinder + half a sphere.","Silinder + halwe sfeer.",["π × 9 × 8 = 72π","⅔π × 27 = 18π","90π ≈ 282.7 cm³"],["π × 9 × 8 = 72π","⅔π × 27 = 18π","90π ≈ 282,7 cm³"]],
@@ -26,7 +27,8 @@ MMHelp.add(10, 13, {
     ["R","m4:0","Cube + pyramid.","Kubus + piramide.",["4³ = 64","⅓ × 16 × 3 = 16","64 + 16 = 80 cm³"],["4³ = 64","⅓ × 16 × 3 = 16","64 + 16 = 80 cm³"]],
     ["K","m4:2","Which face is hidden inside?","Watter vlak is binne versteek?",["The flat circle where the hemisphere meets the cylinder."],["Die plat sirkel waar die halfsfeer die silinder ontmoet."]],
     ["R","i:160","Add the two volumes.","Tel die twee volumes op.",["Cylinder: π × 16 × 9 = 144π","Cone: ⅓π × 16 × 3 = 16π","160π"],["Silinder: π × 16 × 9 = 144π","Keël: ⅓π × 16 × 3 = 16π","160π"]],
-    ["C","i:273.32","Add only the outside surfaces.","Tel net die buitenste oppervlakke op.",["Curved cylinder: 2π × 3 × 10 = 60π","Bottom: 9π; hemisphere: 2π × 9 = 18π","87π ≈ 273.32 cm²"],["Geboë silinder: 2π × 3 × 10 = 60π","Onderkant: 9π; halfsfeer: 2π × 9 = 18π","87π ≈ 273,32 cm²"]]
+    ["C","i:273.32","Add only the outside surfaces.","Tel net die buitenste oppervlakke op.",["Curved cylinder: 2π × 3 × 10 = 60π","Bottom: 9π; hemisphere: 2π × 9 = 18π","87π ≈ 273.32 cm²"],["Geboë silinder: 2π × 3 × 10 = 60π","Onderkant: 9π; halfsfeer: 2π × 9 = 18π","87π ≈ 273,32 cm²"]],
+    ["P","i:0.5","The rise in water has the same volume as the ball.","Die water wat styg, het dieselfde volume as die bal.",["Ball: (4/3)π × 1.5³ = 4.5π cm³","Water: π × 3² × h = 9πh","9πh = 4.5π → h = 0.5 cm"],["Bal: (4/3)π × 1,5³ = 4,5π cm³","Water: π × 3² × h = 9πh","9πh = 4,5π → h = 0,5 cm"]]
   ],
   "1303": [
     ["R","m4:0","V = ⅓ × base area × height.","V = ⅓ × basisoppervlakte × hoogte.",["⅓ × 8² × 3","= 64 cm³"],["⅓ × 8² × 3","= 64 cm³"]],

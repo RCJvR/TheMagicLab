@@ -121,7 +121,8 @@ MathMagician.registerChapter(9, {
           text: "R12 000 word belê en groei tot R16 325.87 na 4 jaar se saamgestelde rente. Bereken die jaarlikse rentekoers (as 'n %).",
           answer: "8",
           topic: "Enkelvoudige & saamgestelde rente"
-        }
+        },
+        { type: "input", text: "R5 000 word teen 10% p.j. saamgestelde rente belê. Na hoeveel volle jare is dit vir die eerste keer meer as R10 000 werd?", answer: "8", topic: "Enkelvoudige & saamgestelde rente" }
       ]
     },
     {
@@ -437,7 +438,8 @@ MathMagician.registerChapter(9, {
           text: "'n Dorp se bevolking was 15 000 vier jaar gelede en het teen 'n konstante jaarlikse koers gegroei om vandag 16 882,63 te bereik. Bereken die jaarlikse groeikoers (as 'n %).",
           answer: "3",
           topic: "Inflasie & bevolkingsgroei"
-        }
+        },
+        { type: "input", text: "'n Dorp se bevolking van 50 000 daal elke jaar met 2%. Wat sal die bevolking oor 5 jaar wees, tot die naaste heelgetal?", answer: "45196", topic: "Inflasie & bevolkingsgroei" }
       ]
     },
     {

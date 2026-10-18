@@ -7,7 +7,8 @@ MMHelp.add(10, 6, {
     ["K","m4:1","The constant shifts the graph up or down.","Die konstante skuif die grafiek op of af.",["y = 3/x − 2 → horizontal asymptote y = −2"],["y = 3/x − 2 → horisontale asimptoot y = −2"]],
     ["R","i:9","Find the axis of symmetry, then substitute.","Vind die simmetrie-as en vervang dan.",["x = −4 ÷ (−2) = 2","y = −4 + 8 + 5 = 9"],["x = −4 ÷ (−2) = 2","y = −4 + 8 + 5 = 9"]],
     ["K","m4:0","A square is never negative.","'n Kwadraat is nooit negatief nie.",["(x − 2)² ≥ 0, so y ≥ 0 + 3","Range: y ≥ 3"],["(x − 2)² ≥ 0, dus y ≥ 0 + 3","Waardeversameling: y ≥ 3"]],
-    ["R","i:2","Substitute the y-intercept (0 ; −6).","Vervang die y-afsnit (0 ; −6).",["−6 = a(0 + 1)(0 − 3) = −3a","a = 2"],["−6 = a(0 + 1)(0 − 3) = −3a","a = 2"]]
+    ["R","i:2","Substitute the y-intercept (0 ; −6).","Vervang die y-afsnit (0 ; −6).",["−6 = a(0 + 1)(0 − 3) = −3a","a = 2"],["−6 = a(0 + 1)(0 − 3) = −3a","a = 2"]],
+    ["P","i:1","Substitute both points to get two equations.","Vervang albei punte om twee vergelykings te kry.",["a + q = 5 and a/2 + q = 3","Subtract: a/2 = 2 → a = 4 → q = 1"],["a + q = 5 en a/2 + q = 3","Trek af: a/2 = 2 → a = 4 → q = 1"]]
   ],
   "601": [
     ["K","m4:1","The asymptote is y = q.","Die asimptoot is y = q.",["q = −4 → y = −4"],["q = −4 → y = −4"]],
@@ -32,6 +33,7 @@ MMHelp.add(10, 6, {
     ["K","m4:0","0 < a < 1","0 < a < 1",["A smaller a makes the parabola wider (vertically compressed)."],["'n Kleiner a maak die parabool wyer (vertikaal saamgedruk)."]],
     ["K","i:-3","y = ax² + q has turning point (0 ; q).","y = ax² + q het draaipunt (0 ; q).",["q = −3"],["q = −3"]],
     ["C","i:-4","The axis of symmetry is x = −2.","Die simmetrie-as is x = −2.",["x = 0 is 2 units right of the axis","The mirror point is 2 units left: x = −4"],["x = 0 is 2 eenhede regs van die as","Die spieëlpunt is 2 eenhede links: x = −4"]],
-    ["P","m4:0","Where is the parabola on or above the line?","Waar is die parabool op of bo die lyn?",["Intersections: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 or x = 1","Between them the parabola is above the line: −2 ≤ x ≤ 1"],["Snypunte: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 of x = 1","Tussen hulle is die parabool bo die lyn: −2 ≤ x ≤ 1"]]
+    ["P","m4:0","Where is the parabola on or above the line?","Waar is die parabool op of bo die lyn?",["Intersections: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 or x = 1","Between them the parabola is above the line: −2 ≤ x ≤ 1"],["Snypunte: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 of x = 1","Tussen hulle is die parabool bo die lyn: −2 ≤ x ≤ 1"]],
+    ["P","i:-2","The turning point gives q; the x-intercept gives a.","Die draaipunt gee q; die x-afsnit gee a.",["q = 8 → y = ax² + 8","0 = a(2)² + 8 → 4a = −8 → a = −2"],["q = 8 → y = ax² + 8","0 = a(2)² + 8 → 4a = −8 → a = −2"]]
   ]
 });

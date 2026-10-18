@@ -17,7 +17,8 @@ MMHelp.add(10, 2, {
     ["C","m4:2","25 = 5²; solve the quadratic.","25 = 5²; los die kwadratiese vergelyking op.",["x² − x = 2 → x² − x − 2 = 0","(x − 2)(x + 1) = 0 → x = 2 or x = −1"],["x² − x = 2 → x² − x − 2 = 0","(x − 2)(x + 1) = 0 → x = 2 of x = −1"]],
     ["K","m4:0","9^x = (3^x)².","9^x = (3^x)².",["With k = 3^x: k² − 4k + 3 = 0"],["Met k = 3^x: k² − 4k + 3 = 0"]],
     ["C","i:2","Take out the common factor 3^(x − 1).","Haal die gemeenskaplike faktor 3^(x − 1) uit.",["3^(x − 1)(3² + 1) = 30 → 3^(x − 1) × 10 = 30","3^(x − 1) = 3 → x − 1 = 1 → x = 2"],["3^(x − 1)(3² + 1) = 30 → 3^(x − 1) × 10 = 30","3^(x − 1) = 3 → x − 1 = 1 → x = 2"]],
-    ["R","i:6","Set P(t) = 512.","Stel P(t) = 512.",["8 × 2^t = 512 → 2^t = 64","2^t = 2⁶ → t = 6 hours"],["8 × 2^t = 512 → 2^t = 64","2^t = 2⁶ → t = 6 uur"]]
+    ["R","i:6","Set P(t) = 512.","Stel P(t) = 512.",["8 × 2^t = 512 → 2^t = 64","2^t = 2⁶ → t = 6 hours"],["8 × 2^t = 512 → 2^t = 64","2^t = 2⁶ → t = 6 uur"]],
+    ["P","i:8","Write the growth as 200 × 3ⁿ, with n the number of 2-hour periods.","Skryf die groei as 200 × 3ⁿ, met n die aantal tydperke van 2 uur.",["200 × 3ⁿ = 16 200 → 3ⁿ = 81 = 3⁴ → n = 4","4 periods × 2 hours = 8 hours"],["200 × 3ⁿ = 16 200 → 3ⁿ = 81 = 3⁴ → n = 4","4 tydperke × 2 uur = 8 uur"]]
   ],
   "202": [
     ["R","m4:0","Simplify the bracket first.","Vereenvoudig eers die hakie.",["2 × 9 = 18","18² ÷ 18 = 18"],["2 × 9 = 18","18² ÷ 18 = 18"]],
@@ -26,7 +27,8 @@ MMHelp.add(10, 2, {
     ["R","m4:0","2²ˣ − 1 = (2ˣ)² − 1².","2²ˣ − 1 = (2ˣ)² − 1².",["(2ˣ − 1)(2ˣ + 1)/(2ˣ − 1)","= 2ˣ + 1"],["(2ˣ − 1)(2ˣ + 1)/(2ˣ − 1)","= 2ˣ + 1"]],
     ["R","i:4","Write 4ˣ and 8 as powers of 2.","Skryf 4ˣ en 8 as magte van 2.",["2^(2x) × 2³ / 2^(2x + 1)","= 2^(2x + 3 − 2x − 1) = 2² = 4"],["2^(2x) × 2³ / 2^(2x + 1)","= 2^(2x + 3 − 2x − 1) = 2² = 4"]],
     ["R","i:5","Take out 5^x on top.","Haal 5^x bo uit.",["5^x(5 + 25) / (6 × 5^x)","= 30/6 = 5"],["5^x(5 + 25) / (6 × 5^x)","= 30/6 = 5"]],
-    ["C","i:3/2","Take out 2^(2x) on top.","Haal 2^(2x) bo uit.",["2^(2x)(2 − ½) / 2^(2x)","= 3/2"],["2^(2x)(2 − ½) / 2^(2x)","= 3/2"]]
+    ["C","i:3/2","Take out 2^(2x) on top.","Haal 2^(2x) bo uit.",["2^(2x)(2 − ½) / 2^(2x)","= 3/2"],["2^(2x)(2 − ½) / 2^(2x)","= 3/2"]],
+    ["P","i:3","Take out the common factor 3ⁿ on top.","Haal die gemeenskaplike faktor 3ⁿ bo uit.",["Top: 3ⁿ(9 − 1) = 8 · 3ⁿ","8 · 3ⁿ ÷ (8 · 3ⁿ⁻¹) = 3ⁿ⁻⁽ⁿ⁻¹⁾ = 3"],["Bo: 3ⁿ(9 − 1) = 8 · 3ⁿ","8 · 3ⁿ ÷ (8 · 3ⁿ⁻¹) = 3ⁿ⁻⁽ⁿ⁻¹⁾ = 3"]]
   ],
   "203": [
     ["R","i:2","Take out 2^x.","Haal 2^x uit.",["2^x(4 − 1) = 12 → 2^x = 4","x = 2"],["2^x(4 − 1) = 12 → 2^x = 4","x = 2"]],

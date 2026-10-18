@@ -329,7 +329,8 @@ MathMagician.registerChapter(7, {
           text: "Reghoek ABCD het diagonale AC = 3x − 2 en BD = x + 10. Gebruik die feit dat 'n reghoek se diagonale gelyk is om AC te vind.",
           answer: "16",
           topic: "Vierhoeke & middellynstelling"
-        }
+        },
+        { type: "input", text: "P, Q, R en S is die middelpunte van die sye AB, BC, CD en DA van vierhoek ABCD. Die hoeklyne is AC = 10 en BD = 14.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[8,-1],\"C\":[10,6],\"D\":[2,7],\"P\":[4,-0.5],\"Q\":[9,2.5],\"R\":[6,6.5],\"S\":[1,3.5]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"mu dash\"],[\"B\",\"D\",\"mu dash\"],[\"P\",\"Q\",\"ac\"],[\"Q\",\"R\",\"ac\"],[\"R\",\"S\",\"ac\"],[\"S\",\"P\",\"ac\"]],\"dots\":[\"P\",\"Q\",\"R\",\"S\"],\"txt\":[[8.3,4.3,\"10\",\"len\"],[7.1,0.9,\"14\",\"len\"]]}'></div>Bereken die omtrek van PQRS.", answer: "24", topic: "Vierhoeke & middellynstelling" }
       ]
     },
     {
@@ -433,7 +434,8 @@ MathMagician.registerChapter(7, {
           answer: "80",
           altAnswers: ["80°"],
           topic: "Spesiale vierhoeke — vlieër & trapesium"
-        }
+        },
+        { type: "input", text: "In vlieër ABCD is AB = AD = 10, CB = CD = 17 en die kort hoeklyn BD = 16. Bereken die lengte van die lang hoeklyn AC.", answer: "21", topic: "Spesiale vierhoeke — vlieër & trapesium" }
       ]
     },
     {

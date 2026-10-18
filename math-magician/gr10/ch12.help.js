@@ -17,7 +17,8 @@ MMHelp.add(10, 12, {
     ["K","m4:2","What is special about rhombus diagonals?","Wat is spesiaal aan ruit-hoeklyne?",["They are always perpendicular: PR ⊥ QS."],["Hulle is altyd loodreg: PR ⊥ QS."]],
     ["K","m4:2","∠B and ∠D are opposite each other.","∠B en ∠D is oorkant mekaar.",["Opposite angles of a parallelogram are equal."],["Oorstaande hoeke van 'n parallelogram is gelyk."]],
     ["R","i:34","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["(2x + 15) + (3x − 5) = 180","5x = 170 → x = 34"],["(2x + 15) + (3x − 5) = 180","5x = 170 → x = 34"]],
-    ["R","i:8","Opposite sides are equal.","Oorstaande sye is gelyk.",["3x − 2 = x + 14 → x = 8","Check: QR = 22 = SP ✓"],["3x − 2 = x + 14 → x = 8","Kontrole: QR = 22 = SP ✓"]]
+    ["R","i:8","Opposite sides are equal.","Oorstaande sye is gelyk.",["3x − 2 = x + 14 → x = 8","Check: QR = 22 = SP ✓"],["3x − 2 = x + 14 → x = 8","Kontrole: QR = 22 = SP ✓"]],
+    ["P","i:90","∠A and ∠B are co-interior angles.","∠A en ∠B is ko-binnehoeke.",["∠A + ∠B = 180° (co-int ∠s, AD ∥ BC)","∠PAB + ∠PBA = ½ × 180° = 90°","∠APB = 180° − 90° = 90°"],["∠A + ∠B = 180° (ko-binne ∠e, AD ∥ BC)","∠PAB + ∠PBA = ½ × 180° = 90°","∠APB = 180° − 90° = 90°"]]
   ],
   "1202": [
     ["K","m4:2","Which one fixes the size?","Watter een bepaal die grootte?",["SAS is valid; SSA and AAA are not."],["SHS is geldig; SSH en HHH is nie."]],
@@ -26,7 +27,8 @@ MMHelp.add(10, 12, {
     ["K","m4:1","\"Included\" means between.","\"Ingeslote\" beteken tussen.",["The angle must be between the two equal sides."],["Die hoek moet tussen die twee gelyke sye lê."]],
     ["K","m4:0","Is ∠Q between PQ and QR?","Lê ∠Q tussen PQ en QR?",["Yes → SAS → △PQR ≡ △XYZ"],["Ja → SHS → △PQR ≡ △XYZ"]],
     ["R","i:5","Corresponding sides are equal.","Ooreenstemmende sye is gelyk.",["3x + 1 = 5x − 9","2x = 10 → x = 5"],["3x + 1 = 5x − 9","2x = 10 → x = 5"]],
-    ["R","i:12","Pythagoras in △ABC.","Pythagoras in △ABC.",["BC = √(13² − 5²) = √144 = 12","EF = BC = 12 (≡ △s)"],["BC = √(13² − 5²) = √144 = 12","EF = BC = 12 (≡ △e)"]]
+    ["R","i:12","Pythagoras in △ABC.","Pythagoras in △ABC.",["BC = √(13² − 5²) = √144 = 12","EF = BC = 12 (≡ △s)"],["BC = √(13² − 5²) = √144 = 12","EF = BC = 12 (≡ △e)"]],
+    ["P","i:55","Which sides of triangle ABC are equal?","Watter sye van driehoek ABC is gelyk?",["AB = BC (sides of a rhombus), so △ABC is isosceles","∠BAC = ∠BCA = (180° − 70°) ÷ 2 = 55°"],["AB = BC (sye van 'n ruit), dus is △ABC gelykbenig","∠BAC = ∠BCA = (180° − 70°) ÷ 2 = 55°"]]
   ],
   "1203": [
     ["K","m4:1","Start with what you know.","Begin met wat jy weet.",["Mark every given fact on the diagram first."],["Merk eers elke gegewe feit op die diagram."]],

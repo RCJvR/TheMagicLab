@@ -322,7 +322,8 @@ MathMagician.registerChapter(6, {
           text: "'n Parabool het x-afsnitte by x = −1 en x = 3, en 'n y-afsnit van −6. Bepaal die waarde van a in y = a(x+1)(x−3).",
           answer: "2",
           topic: "Lineêre, kwadratiese & hiperboliese funksies"
-        }
+        },
+        { type: "input", text: "Die hiperbool y = a/x + q gaan deur (1 ; 5) en (2 ; 3). Vind q.", answer: "1", topic: "Lineêre, kwadratiese & hiperboliese funksies" }
       ]
     },
     {
@@ -947,7 +948,8 @@ MathMagician.registerChapter(6, {
           altAnswers: ["−4"],
           topic: "Effek van parameters a en q"
         },
-        { type: "mc", text: "Die grafieke van f(x) = −x² + 4 en g(x) = x + 2 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-3,-2,3,5],\"pad\":24,\"axes\":{\"ticks\":1},\"pts\":{\"P\":[-2,0],\"Q\":[1,3]},\"nolab\":[\"P\",\"Q\"],\"dots\":[\"P\",\"Q\"],\"fn\":[{\"f\":\"-x*x+4\",\"lab\":[-2.6,-1.4,\"f\"]},{\"f\":\"x+2\",\"c\":\"hl\",\"lab\":[2.2,4.6,\"g\"]}]}'></div>Vir watter waardes van x is f(x) ≥ g(x)?", options: ["−2 ≤ x ≤ 1","x ≤ −2 of x ≥ 1","−1 ≤ x ≤ 2","x ≥ 1"], answer: 0, topic: "Effek van parameters a en q" }
+        { type: "mc", text: "Die grafieke van f(x) = −x² + 4 en g(x) = x + 2 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-3,-2,3,5],\"pad\":24,\"axes\":{\"ticks\":1},\"pts\":{\"P\":[-2,0],\"Q\":[1,3]},\"nolab\":[\"P\",\"Q\"],\"dots\":[\"P\",\"Q\"],\"fn\":[{\"f\":\"-x*x+4\",\"lab\":[-2.6,-1.4,\"f\"]},{\"f\":\"x+2\",\"c\":\"hl\",\"lab\":[2.2,4.6,\"g\"]}]}'></div>Vir watter waardes van x is f(x) ≥ g(x)?", options: ["−2 ≤ x ≤ 1","x ≤ −2 of x ≥ 1","−1 ≤ x ≤ 2","x ≥ 1"], answer: 0, topic: "Effek van parameters a en q" },
+        { type: "input", text: "Die parabool y = ax² + q het sy draaipunt by (0 ; 8) en sny die x-as by x = 2. Vind a.", answer: "-2", topic: "Effek van parameters a en q" }
       ]
     }
   ],

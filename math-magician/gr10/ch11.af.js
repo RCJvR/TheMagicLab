@@ -267,7 +267,8 @@ MathMagician.registerChapter(11, {
           answer: "16.80",
           altAnswers: ["16.8", "16,80", "16,8"],
           topic: "Meervoudige-driehoek-probleme"
-        }
+        },
+        { type: "input", text: "Vanaf die bopunt van 'n gebou van 20 m is die dieptehoeke na twee motors X en Y, in 'n reguit lyn aan dieselfde kant van die gebou, 45° en 30°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":180,\"pts\":{\"F\":[0,0],\"T\":[0,20],\"X\":[20,0],\"Y\":[34.64,0],\"H\":[16,20]},\"seg\":[[\"F\",\"Y\"],[\"T\",\"H\",\"mu dash\"],[\"T\",\"X\",\"ac dash\"],[\"T\",\"Y\",\"ac dash\"],[\"F\",\"T\",null,null,\"20 m\"]],\"ra\":[[\"T\",\"F\",\"Y\"]],\"ang\":[[\"H\",\"T\",\"X\",\"45°\",null,26],[\"H\",\"T\",\"Y\",\"30°\",\"ac\",64]],\"nolab\":[\"F\",\"T\",\"H\"],\"lab\":{\"X\":\"s\",\"Y\":\"s\"}}'></div>Hoe ver is die motors van mekaar, tot 2 desimale plekke? (m)", answer: "14.64", altAnswers: ["14,64"], topic: "Meervoudige-driehoek-probleme" }
       ]
     },
     {
@@ -398,7 +399,8 @@ MathMagician.registerChapter(11, {
           answer: "058",
           altAnswers: ["58", "058°", "58°"],
           topic: "Rigtings- & navigasieprobleme"
-        }
+        },
+        { type: "input", text: "'n Skip vaar 10 km op 'n peiling van 060° en dan 10 km op 'n peiling van 150°. Hoe ver is dit van sy beginpunt, tot 2 desimale plekke? (km)", answer: "14.14", altAnswers: ["14,14"], topic: "Rigtings- & navigasieprobleme" }
       ]
     },
     {

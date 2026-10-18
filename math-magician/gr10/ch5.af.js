@@ -322,7 +322,8 @@ MathMagician.registerChapter(5, {
           text: "Los op vir θ ∈ [0°; 360°]: 2sinθ + 1 = 0. Gee die kleiner oplossing.",
           answer: "210",
           topic: "Trig-vergelykings & Cartesiese vlak"
-        }
+        },
+        { type: "input", text: "tan θ = −5/12 en θ lê in die vierde kwadrant. Bepaal die waarde van 13 sin θ + 13 cos θ sonder 'n sakrekenaar.", answer: "7", topic: "Trig-vergelykings & Cartesiese vlak" }
       ]
     },
     {
@@ -430,7 +431,8 @@ MathMagician.registerChapter(5, {
           answer: "22.40",
           altAnswers: ["22.4"],
           topic: "Oplos van reghoekige driehoeke"
-        }
+        },
+        { type: "input", text: "'n Leer maak 'n hoek van 65° met die grond en reik 6 m teen 'n vertikale muur op. Hoe lank is die leer, tot 2 desimale plekke? (m)", answer: "6.62", altAnswers: ["6,62"], topic: "Oplos van reghoekige driehoeke" }
       ]
     },
     {

@@ -146,7 +146,8 @@ MathMagician.registerChapter(1, {
           answer: "10√2",
           altAnswers: ["10sqrt2", "10√2 cm"],
           topic: "Reële getalle & wortelvorme"
-        }
+        },
+        { type: "input", text: "'n Vierkant het 'n oppervlakte van 50 cm². Bepaal die presiese lengte van sy hoeklyn. (cm)", answer: "10", topic: "Reële getalle & wortelvorme" }
       ]
     },
     {
@@ -358,7 +359,8 @@ MathMagician.registerChapter(1, {
           answer: "(x-2)/(2x-3)",
           altAnswers: ["(x−2)/(2x−3)"],
           topic: "Produkte & faktorisering"
-        }
+        },
+        { type: "input", text: "Faktoriseer x³ − x volledig, en gebruik dit om 99³ − 99 sonder 'n sakrekenaar uit te werk.", answer: "970200", topic: "Produkte & faktorisering" }
       ]
     },
     {

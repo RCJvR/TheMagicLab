@@ -236,7 +236,8 @@ MathMagician.registerChapter(8, {
           text: "Die middelpunt van AB is M(3; −2). As A (7; 1) is, vind B, en bereken dan die afstand MB.",
           answer: "5",
           topic: "Afstand & middelpunt"
-        }
+        },
+        { type: "input", text: "AB is 'n middellyn van 'n sirkel, met A(−2 ; 1) en B(4 ; 9). Bereken die radius van die sirkel.", answer: "5", topic: "Afstand & middelpunt" }
       ]
     },
     {
@@ -818,7 +819,8 @@ MathMagician.registerChapter(8, {
           answer: 1,
           topic: "Analitiese meetkunde van vierhoeke"
         },
-        { type: "input", text: "A(1 ; 2) en B(7 ; 2) is gegee. C lê bo AB sodat AC = BC = 5. Bereken die oppervlakte van driehoek ABC.", answer: "12", topic: "Analitiese meetkunde van vierhoeke" }
+        { type: "input", text: "A(1 ; 2) en B(7 ; 2) is gegee. C lê bo AB sodat AC = BC = 5. Bereken die oppervlakte van driehoek ABC.", answer: "12", topic: "Analitiese meetkunde van vierhoeke" },
+        { type: "input", text: "Drie hoekpunte van parallelogram ABCD is A(1 ; 1), B(6 ; 2) en C(8 ; 6). Vind D. Skryf (x ; y).", answer: "(3 ; 5)", topic: "Analitiese meetkunde van vierhoeke" }
       ]
     }
   ],

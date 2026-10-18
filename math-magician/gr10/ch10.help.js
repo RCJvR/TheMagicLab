@@ -12,7 +12,8 @@ MMHelp.add(10, 10, {
     ["R","i:18","Midpoints 5, 15, 25.","Middelpunte 5, 15, 25.",["Σfx = 20 + 90 + 250 = 360","360 ÷ 20 = 18"],["Σfx = 20 + 90 + 250 = 360","360 ÷ 20 = 18"]],
     ["K","m4:2","The modal class has the highest frequency.","Die modale klas het die hoogste frekwensie.",["f = 10 is highest → 20 ≤ x < 30"],["f = 10 is die hoogste → 20 ≤ x < 30"]],
     ["K","m4:0","Grouped continuous data has no gaps.","Gegroepeerde kontinue data het geen gapings nie.",["One class ends where the next begins, so the bars touch."],["Een klas eindig waar die volgende begin, dus raak die stawe aan mekaar."]],
-    ["R","m4:2","Find the 20th–21st value with cumulative frequency.","Vind die 20ste–21ste waarde met kumulatiewe frekwensie.",["Cumulative: 5, 17, 32, 40","The 20th and 21st values are in 20 ≤ t < 30"],["Kumulatief: 5, 17, 32, 40","Die 20ste en 21ste waardes is in 20 ≤ t < 30"]]
+    ["R","m4:2","Find the 20th–21st value with cumulative frequency.","Vind die 20ste–21ste waarde met kumulatiewe frekwensie.",["Cumulative: 5, 17, 32, 40","The 20th and 21st values are in 20 ≤ t < 30"],["Kumulatief: 5, 17, 32, 40","Die 20ste en 21ste waardes is in 20 ≤ t < 30"]],
+    ["P","i:36","Make the other numbers as small as possible.","Maak die ander getalle so klein moontlik.",["Total = 5 × 12 = 60; in order: a, b, 10, d, e","Smallest choices: a = 1, b = 2, d = 11","e = 60 − 1 − 2 − 10 − 11 = 36"],["Totaal = 5 × 12 = 60; in volgorde: a, b, 10, d, e","Kleinste keuses: a = 1, b = 2, d = 11","e = 60 − 1 − 2 − 10 − 11 = 36"]]
   ],
   "1001": [
     ["R","m4:1","Split the data into a lower and an upper half.","Verdeel die data in 'n onderste en boonste helfte.",["Lower: 3, 7, 9 → Q1 = 7; upper: 12, 15, 20 → Q3 = 15","IQR = 15 − 7 = 8"],["Onder: 3, 7, 9 → Q1 = 7; bo: 12, 15, 20 → Q3 = 15","IKO = 15 − 7 = 8"]],
@@ -44,6 +45,7 @@ MMHelp.add(10, 10, {
     ["K","m4:1","What pulls a mean up?","Wat trek 'n gemiddeld op?",["A few very high salaries are outliers that raise the mean."],["'n Paar baie hoë salarisse is uitskieters wat die gemiddeld verhoog."]],
     ["R","i:5","Find the mean and the median.","Vind die gemiddeld en die mediaan.",["Mean = 217 ÷ 7 = 31; median = 26","31 − 26 = 5"],["Gemiddeld = 217 ÷ 7 = 31; mediaan = 26","31 − 26 = 5"]],
     ["K","m4:0","A smaller range means less spread.","'n Kleiner omvang beteken minder verspreiding.",["Class X (range 12) is more tightly clustered."],["Klas X (omvang 12) is digter saamgegroepeer."]],
-    ["P","i:67","Adding 5 to every value adds 5 to the mean.","As 5 by elke waarde getel word, word 5 by die gemiddeld getel.",["After adding 5: mean 69, total 690","Changing 100 to 80: total 690 − 20 = 670","Mean = 670 ÷ 10 = 67"],["Na die byvoeging: gemiddeld 69, totaal 690","100 na 80: totaal 690 − 20 = 670","Gemiddeld = 670 ÷ 10 = 67"]]
+    ["P","i:67","Adding 5 to every value adds 5 to the mean.","As 5 by elke waarde getel word, word 5 by die gemiddeld getel.",["After adding 5: mean 69, total 690","Changing 100 to 80: total 690 − 20 = 670","Mean = 670 ÷ 10 = 67"],["Na die byvoeging: gemiddeld 69, totaal 690","100 na 80: totaal 690 − 20 = 670","Gemiddeld = 670 ÷ 10 = 67"]],
+    ["P","i:64","The bigger class counts more: use the totals.","Die groter klas tel meer: gebruik die totale.",["Totals: 30 × 60 = 1 800 and 20 × 70 = 1 400","(1 800 + 1 400) ÷ 50 = 64 (not 65)"],["Totale: 30 × 60 = 1 800 en 20 × 70 = 1 400","(1 800 + 1 400) ÷ 50 = 64 (nie 65 nie)"]]
   ]
 });

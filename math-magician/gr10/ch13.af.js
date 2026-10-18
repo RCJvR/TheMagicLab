@@ -318,7 +318,8 @@ MathMagician.registerChapter(13, {
           answer: "3:5",
           altAnswers: ["3/5"],
           topic: "Volume & skaalfaktor"
-        }
+        },
+        { type: "input", text: "'n Modelmotor word op 'n skaal van 1 : 20 gebou. Om die model te verf, is genoeg verf nodig om 600 cm² te bedek. Hoeveel vierkante meter moet op die regte motor geverf word?", answer: "24", topic: "Volume & skaalfaktor" }
       ]
     },
     {
@@ -473,7 +474,8 @@ MathMagician.registerChapter(13, {
           answer: "273.32",
           altAnswers: ["273,32"],
           topic: "Saamgestelde voorwerpe"
-        }
+        },
+        { type: "input", text: "'n Silindriese glas met 'n radius van 3 cm bevat water. 'n Soliede metaalbal met 'n radius van 1,5 cm word daarin laat val en sink. Met hoeveel sentimeter styg die watervlak?", answer: "0.5", altAnswers: ["0,5","0.50","0,50","1/2"], topic: "Saamgestelde voorwerpe" }
       ]
     },
     {

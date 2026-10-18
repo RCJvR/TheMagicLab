@@ -290,7 +290,8 @@ MathMagician.registerChapter(12, {
           text: "Vierhoek PQRS het PQ = 3x − 2, QR = 2x + 6, RS = x + 14, SP = 4x − 10. Gegee dat PQRS 'n parallelogram is (dus PQ = RS en QR = SP), bepaal x.",
           answer: "8",
           topic: "Bewys van parallelogram-eienskappe"
-        }
+        },
+        { type: "input", text: "ABCD is 'n parallelogram. Die halveerlyne van ∠A en ∠B sny by P. Bereken ∠APB. (°)", answer: "90", topic: "Bewys van parallelogram-eienskappe" }
       ]
     },
     {
@@ -425,7 +426,8 @@ MathMagician.registerChapter(12, {
           text: "Regte driehoeke ABC en DEF is kongruent volgens RSS (regte hoeke by B en E). Die skuinssye AC = DF = 13, en AB = 5. Gebruik die Stelling van Pythagoras in △ABC om BC te bepaal, en gee dan EF.",
           answer: "12",
           topic: "Kongruensiebewyse"
-        }
+        },
+        { type: "input", text: "ABCD is 'n ruit met ∠ABC = 70°. Bereken ∠BAC. (°)", answer: "55", topic: "Kongruensiebewyse" }
       ]
     },
     {

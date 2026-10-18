@@ -150,7 +150,8 @@ MathMagician.registerChapter(3, {
           text: "For the sequence with Tₙ = 5n − 3, find the smallest value of n for which Tₙ > 500.",
           answer: "101",
           topic: "Linear sequences"
-        }
+        },
+        { type: "input", text: "In a linear sequence, T₅ is three times T₂, and T₁₀ = 38. Find T₁.", answer: "2", topic: "Linear sequences" }
       ]
     },
     {
@@ -313,7 +314,8 @@ MathMagician.registerChapter(3, {
           options: ["4n + 1", "4n − 3", "3n + 3", "4n + 5"],
           answer: 0,
           topic: "Patterns in context"
-        }
+        },
+        { type: "input", text: "A theatre has 20 seats in the front row, and every row has 3 more seats than the row in front of it. The back row has 113 seats. How many rows are there?", answer: "32", topic: "Patterns in context" }
       ]
     },
     {

@@ -236,7 +236,8 @@ MathMagician.registerChapter(8, {
           text: "The midpoint of AB is M(3; −2). If A is (7; 1), find B, then calculate the distance MB.",
           answer: "5",
           topic: "Distance & midpoint"
-        }
+        },
+        { type: "input", text: "AB is a diameter of a circle, with A(−2 ; 1) and B(4 ; 9). Find the radius of the circle.", answer: "5", topic: "Distance & midpoint" }
       ]
     },
     {
@@ -818,7 +819,8 @@ MathMagician.registerChapter(8, {
           answer: 1,
           topic: "Analytical geometry of quadrilaterals"
         },
-        { type: "input", text: "A(1 ; 2) and B(7 ; 2) are given. C lies above AB so that AC = BC = 5. Find the area of triangle ABC.", answer: "12", topic: "Analytical geometry of quadrilaterals" }
+        { type: "input", text: "A(1 ; 2) and B(7 ; 2) are given. C lies above AB so that AC = BC = 5. Find the area of triangle ABC.", answer: "12", topic: "Analytical geometry of quadrilaterals" },
+        { type: "input", text: "Three vertices of parallelogram ABCD are A(1 ; 1), B(6 ; 2) and C(8 ; 6). Find D. Write (x ; y).", answer: "(3 ; 5)", topic: "Analytical geometry of quadrilaterals" }
       ]
     }
   ],

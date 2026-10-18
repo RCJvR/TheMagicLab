@@ -17,7 +17,8 @@ MMHelp.add(10, 7, {
     ["R","m4:1","A diagonal and two sides form a right triangle.","'n Hoeklyn en twee sye vorm 'n reghoekige driehoek.",["b² = 10² − 6² = 64","b = 8 cm"],["b² = 10² − 6² = 64","b = 8 cm"]],
     ["K","m4:1","\"Bisect\" = cut in half.","\"Halveer\" = in die helfte sny.",["AO = ½ × 20 = 10"],["AO = ½ × 20 = 10"]],
     ["C","i:26","YZ = 2 × DE.","YZ = 2 × DE.",["5x − 4 = 2(2x + 1) → x = 6","YZ = 5(6) − 4 = 26"],["5x − 4 = 2(2x + 1) → x = 6","YZ = 5(6) − 4 = 26"]],
-    ["R","i:16","Set the diagonals equal.","Stel die hoeklyne gelyk.",["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"],["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"]]
+    ["R","i:16","Set the diagonals equal.","Stel die hoeklyne gelyk.",["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"],["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"]],
+    ["P","i:24","Use the midpoint theorem in the triangles formed by each diagonal.","Gebruik die middelpuntstelling in die driehoeke wat elke hoeklyn vorm.",["In △ABC and △ADC: PQ = RS = ½AC = 5","In △ABD and △CBD: SP = QR = ½BD = 7","Perimeter = 5 + 7 + 5 + 7 = 24"],["In △ABC en △ADC: PQ = RS = ½AC = 5","In △ABD en △CBD: SP = QR = ½BD = 7","Omtrek = 5 + 7 + 5 + 7 = 24"]]
   ],
   "702": [
     ["K","m4:0","Picture the kite shape.","Stel jou die vlieërvorm voor.",["A kite has two pairs of adjacent sides equal."],["'n Vlieër het twee pare aangrensende sye gelyk."]],
@@ -26,7 +27,8 @@ MMHelp.add(10, 7, {
     ["K","m4:0","The symmetry axis acts like a mirror.","Die simmetrie-as werk soos 'n spieël.",["It bisects the other diagonal at 90°."],["Dit halveer die ander hoeklyn teen 90°."]],
     ["K","m4:0","A conjecture claims \"every\".","'n Vermoede beweer \"elke\".",["One counter-example is enough to show it is false."],["Een teenvoorbeeld is genoeg om te wys dit is vals."]],
     ["R","i:60","The angles of a quadrilateral add up to 360°.","Die hoeke van 'n vierhoek tel op tot 360°.",["70° + 115° + 115° = 300°","∠C = 360° − 300° = 60°"],["70° + 115° + 115° = 300°","∠C = 360° − 300° = 60°"]],
-    ["C","i:80","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["(2x + 10) + (3x − 5) = 180 → 5x = 175 → x = 35","∠P = 2(35) + 10 = 80°"],["(2x + 10) + (3x − 5) = 180 → 5x = 175 → x = 35","∠P = 2(35) + 10 = 80°"]]
+    ["C","i:80","Co-interior angles add up to 180°.","Ko-binnehoeke tel op tot 180°.",["(2x + 10) + (3x − 5) = 180 → 5x = 175 → x = 35","∠P = 2(35) + 10 = 80°"],["(2x + 10) + (3x − 5) = 180 → 5x = 175 → x = 35","∠P = 2(35) + 10 = 80°"]],
+    ["P","i:21","AC bisects BD at 90°. Use Pythagoras on each side of BD.","AC halveer BD teen 90°. Gebruik Pythagoras aan elke kant van BD.",["Half of BD = 8","From A: √(10² − 8²) = 6; from C: √(17² − 8²) = 15","AC = 6 + 15 = 21"],["Helfte van BD = 8","Vanaf A: √(10² − 8²) = 6; vanaf C: √(17² − 8²) = 15","AC = 6 + 15 = 21"]]
   ],
   "703": [
     ["K","m4:0","What is special about a rhombus's diagonals?","Wat is spesiaal aan 'n ruit se hoeklyne?",["Only the rhombus has diagonals that are perpendicular; all parallelograms have the others."],["Net die ruit het hoeklyne wat loodreg is; alle parallelogramme het die ander."]],

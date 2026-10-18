@@ -322,7 +322,8 @@ MathMagician.registerChapter(6, {
           text: "A parabola has x-intercepts at x = −1 and x = 3, and a y-intercept of −6. Find the value of a in y = a(x+1)(x−3).",
           answer: "2",
           topic: "Linear, quadratic & hyperbolic functions"
-        }
+        },
+        { type: "input", text: "The hyperbola y = a/x + q passes through (1 ; 5) and (2 ; 3). Find q.", answer: "1", topic: "Linear, quadratic & hyperbolic functions" }
       ]
     },
     {
@@ -947,7 +948,8 @@ MathMagician.registerChapter(6, {
           altAnswers: ["−4"],
           topic: "Effect of parameters a and q"
         },
-        { type: "mc", text: "The graphs of f(x) = −x² + 4 and g(x) = x + 2 are shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-3,-2,3,5],\"pad\":24,\"axes\":{\"ticks\":1},\"pts\":{\"P\":[-2,0],\"Q\":[1,3]},\"nolab\":[\"P\",\"Q\"],\"dots\":[\"P\",\"Q\"],\"fn\":[{\"f\":\"-x*x+4\",\"lab\":[-2.6,-1.4,\"f\"]},{\"f\":\"x+2\",\"c\":\"hl\",\"lab\":[2.2,4.6,\"g\"]}]}'></div>For which values of x is f(x) ≥ g(x)?", options: ["−2 ≤ x ≤ 1","x ≤ −2 or x ≥ 1","−1 ≤ x ≤ 2","x ≥ 1"], answer: 0, topic: "Effect of parameters a and q" }
+        { type: "mc", text: "The graphs of f(x) = −x² + 4 and g(x) = x + 2 are shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-3,-2,3,5],\"pad\":24,\"axes\":{\"ticks\":1},\"pts\":{\"P\":[-2,0],\"Q\":[1,3]},\"nolab\":[\"P\",\"Q\"],\"dots\":[\"P\",\"Q\"],\"fn\":[{\"f\":\"-x*x+4\",\"lab\":[-2.6,-1.4,\"f\"]},{\"f\":\"x+2\",\"c\":\"hl\",\"lab\":[2.2,4.6,\"g\"]}]}'></div>For which values of x is f(x) ≥ g(x)?", options: ["−2 ≤ x ≤ 1","x ≤ −2 or x ≥ 1","−1 ≤ x ≤ 2","x ≥ 1"], answer: 0, topic: "Effect of parameters a and q" },
+        { type: "input", text: "The parabola y = ax² + q has its turning point at (0 ; 8) and cuts the x-axis at x = 2. Find a.", answer: "-2", topic: "Effect of parameters a and q" }
       ]
     }
   ],

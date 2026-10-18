@@ -365,6 +365,7 @@ x ≤ −3         →  (−∞ ; −3]
       {"type": "mc", "text": "Solve 3x − 4 ≥ 8 and give the answer in interval notation.", "options": ["(4 ; ∞)", "[4 ; ∞)", "(−∞ ; 4]", "[4 ; ∞]"], "answer": 1, "topic": "Word problems & inequalities"},
       {"type": "mc", "text": "Solve −2x + 1 > 7 and give the answer in interval notation.", "options": ["(−∞ ; −3)", "(−3 ; ∞)", "(−∞ ; −3]", "[−3 ; ∞)"], "answer": 0, "topic": "Word problems & inequalities"},
       {"type": "mc", "text": "On a number line, an open circle at 2 with the line shaded to the right shows:", "options": ["x ≥ 2", "x > 2", "x < 2", "x ≤ 2"], "answer": 1, "topic": "Word problems & inequalities"},
+        { type: "input", text: "A taxi charges R15 plus R8 per kilometre. Thandi has R100. What is the greatest whole number of kilometres she can travel?", answer: "10", topic: "Word problems & inequalities" }
       ]
     },
     {
@@ -462,7 +463,8 @@ x ≤ −3         →  (−∞ ; −3]
           text: "Solve simultaneously: x/2 − y/3 = 2 and x + y = 9. Find x.",
           answer: "6",
           topic: "Simultaneous equations — deeper practice"
-        }
+        },
+        { type: "input", text: "3 adult and 2 child tickets cost R190. 2 adult and 5 child tickets cost R200. What does one child ticket cost? (R)", answer: "20", topic: "Simultaneous equations — deeper practice" }
       ]
     },
     {

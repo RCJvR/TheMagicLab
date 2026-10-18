@@ -310,7 +310,8 @@ MathMagician.registerChapter(2, {
           text: "A colony of bacteria doubles every hour, modelled by P(t) = 8 × 2^t, where P is the population (in bacteria) after t hours. After how many hours will the population reach 512?",
           answer: "6",
           topic: "Exponential equations"
-        }
+        },
+        { type: "input", text: "A culture of bacteria triples every 2 hours. It starts with 200 bacteria. After how many hours are there 16 200 bacteria?", answer: "8", topic: "Exponential equations" }
       ]
     },
     {
@@ -408,7 +409,8 @@ MathMagician.registerChapter(2, {
           answer: "3/2",
           altAnswers: ["1.5", "1,5"],
           topic: "Simplifying complex exponential expressions"
-        }
+        },
+        { type: "input", text: "Simplify (3ⁿ⁺² − 3ⁿ) ÷ (8 · 3ⁿ⁻¹).", answer: "3", topic: "Simplifying complex exponential expressions" }
       ]
     },
     {

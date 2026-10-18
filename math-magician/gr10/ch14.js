@@ -145,7 +145,8 @@ MathMagician.registerChapter(14, {
           text: "In a survey of 60 people, 35 like coffee (C), 28 like tea (T), and 10 like neither. Find n(C ∩ T).",
           answer: "13",
           topic: "Probability basics & Venn diagrams"
-        }
+        },
+        { type: "input", text: "In a group of 60 people, 35 own a cat, 28 own a dog and 12 own neither. One person is chosen at random. What is the probability that they own a dog but not a cat? Give a fraction.", answer: "13/60", topic: "Probability basics & Venn diagrams" }
       ]
     },
     {
@@ -455,7 +456,8 @@ MathMagician.registerChapter(14, {
           text: "A fair spinner has 5 equal sectors. It is spun 200 times. Find the expected (theoretical) number of times it lands on a particular sector.",
           answer: "40",
           topic: "Relative frequency vs theoretical probability"
-        }
+        },
+        { type: "input", text: "A die is weighted so that a 6 is twice as likely as each of the other numbers, which are all equally likely. What is P(6)? Give a fraction.", answer: "2/7", topic: "Relative frequency vs theoretical probability" }
       ]
     },
     {

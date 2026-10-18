@@ -267,7 +267,8 @@ MathMagician.registerChapter(11, {
           answer: "16.80",
           altAnswers: ["16.8", "16,80", "16,8"],
           topic: "Multi-triangle problems"
-        }
+        },
+        { type: "input", text: "From the top of a 20 m building, the angles of depression to two cars X and Y, in a straight line on the same side of the building, are 45° and 30°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":180,\"pts\":{\"F\":[0,0],\"T\":[0,20],\"X\":[20,0],\"Y\":[34.64,0],\"H\":[16,20]},\"seg\":[[\"F\",\"Y\"],[\"T\",\"H\",\"mu dash\"],[\"T\",\"X\",\"ac dash\"],[\"T\",\"Y\",\"ac dash\"],[\"F\",\"T\",null,null,\"20 m\"]],\"ra\":[[\"T\",\"F\",\"Y\"]],\"ang\":[[\"H\",\"T\",\"X\",\"45°\",null,26],[\"H\",\"T\",\"Y\",\"30°\",\"ac\",64]],\"nolab\":[\"F\",\"T\",\"H\"],\"lab\":{\"X\":\"s\",\"Y\":\"s\"}}'></div>How far apart are the cars, to 2 decimal places? (m)", answer: "14.64", altAnswers: ["14,64"], topic: "Multi-triangle problems" }
       ]
     },
     {
@@ -398,7 +399,8 @@ MathMagician.registerChapter(11, {
           answer: "058",
           altAnswers: ["58", "058°", "58°"],
           topic: "Bearings & navigation problems"
-        }
+        },
+        { type: "input", text: "A ship sails 10 km on a bearing of 060° and then 10 km on a bearing of 150°. How far is it from its starting point, to 2 decimal places? (km)", answer: "14.14", altAnswers: ["14,14"], topic: "Bearings & navigation problems" }
       ]
     },
     {

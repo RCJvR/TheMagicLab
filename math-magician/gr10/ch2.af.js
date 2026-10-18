@@ -310,7 +310,8 @@ MathMagician.registerChapter(2, {
           text: "'n Kolonie bakterieë verdubbel elke uur, gemodelleer deur P(t) = 8 × 2^t, waar P die bevolking (in bakterieë) na t ure is. Na hoeveel ure sal die bevolking 512 bereik?",
           answer: "6",
           topic: "Eksponensiële vergelykings"
-        }
+        },
+        { type: "input", text: "'n Kultuur bakterieë verdriedubbel elke 2 uur. Dit begin met 200 bakterieë. Na hoeveel uur is daar 16 200 bakterieë?", answer: "8", topic: "Eksponensiële vergelykings" }
       ]
     },
     {
@@ -408,7 +409,8 @@ MathMagician.registerChapter(2, {
           answer: "3/2",
           altAnswers: ["1.5", "1,5"],
           topic: "Vereenvoudiging van komplekse eksponensiële uitdrukkings"
-        }
+        },
+        { type: "input", text: "Vereenvoudig (3ⁿ⁺² − 3ⁿ) ÷ (8 · 3ⁿ⁻¹).", answer: "3", topic: "Vereenvoudiging van komplekse eksponensiële uitdrukkings" }
       ]
     },
     {

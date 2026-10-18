@@ -21,7 +21,8 @@ MMHelp.add(10, 4, {
     ["K","m4:0","Round bracket = not included; square bracket = included.","Ronde hakie = nie ingesluit nie; vierkantige hakie = ingesluit.",["−2 not included, 5 included → (−2 ; 5]"],["−2 nie ingesluit nie, 5 ingesluit → (−2 ; 5]"]],
     ["R","m4:1","Solve, then write the interval.","Los op en skryf dan die interval.",["3x ≥ 12 → x ≥ 4","[4 ; ∞) (∞ always gets a round bracket)"],["3x ≥ 12 → x ≥ 4","[4 ; ∞) (∞ kry altyd 'n ronde hakie)"]],
     ["R","m4:0","Dividing by −2 flips the sign.","Deling deur −2 draai die teken om.",["−2x > 6 → x < −3","(−∞ ; −3)"],["−2x > 6 → x < −3","(−∞ ; −3)"]],
-    ["K","m4:1","Open circle = not included.","Oop sirkel = nie ingesluit nie.",["Shaded to the right of an open circle at 2 → x > 2"],["Regs van 'n oop sirkel by 2 ingekleur → x > 2"]]
+    ["K","m4:1","Open circle = not included.","Oop sirkel = nie ingesluit nie.",["Shaded to the right of an open circle at 2 → x > 2"],["Regs van 'n oop sirkel by 2 ingekleur → x > 2"]],
+    ["P","i:10","Write and solve an inequality.","Skryf en los 'n ongelykheid op.",["15 + 8k ≤ 100 → 8k ≤ 85 → k ≤ 10.6","Greatest whole number: 10 km"],["15 + 8k ≤ 100 → 8k ≤ 85 → k ≤ 10,6","Grootste heelgetal: 10 km"]]
   ],
   "402": [
     ["R","i:12/5","Make x the subject of the simple equation.","Maak x die onderwerp van die eenvoudige vergelyking.",["x = y + 2 → 2(y + 2) + 3y = 16","5y = 12 → y = 12/5"],["x = y + 2 → 2(y + 2) + 3y = 16","5y = 12 → y = 12/5"]],
@@ -30,7 +31,8 @@ MMHelp.add(10, 4, {
     ["R","m4:0","Set 2x = x² − 3x + 4.","Stel 2x = x² − 3x + 4.",["x² − 5x + 4 = 0","(x − 1)(x − 4) = 0 → x = 1 or x = 4"],["x² − 5x + 4 = 0","(x − 1)(x − 4) = 0 → x = 1 of x = 4"]],
     ["R","i:9","x + y = 15 and x − y = 3.","x + y = 15 en x − y = 3.",["2x = 18","x = 9"],["2x = 18","x = 9"]],
     ["C","m4:0","Equate and use the formula.","Stel gelyk en gebruik die formule.",["2x − 3 = x² − 4x + 1 → x² − 6x + 4 = 0","x = [6 ± √20] ÷ 2 = 3 ± √5"],["2x − 3 = x² − 4x + 1 → x² − 6x + 4 = 0","x = [6 ± √20] ÷ 2 = 3 ± √5"]],
-    ["C","i:6","Clear the fractions first (× 6).","Verwyder eers die breuke (× 6).",["3x − 2y = 12 and y = 9 − x","3x − 18 + 2x = 12 → 5x = 30 → x = 6"],["3x − 2y = 12 en y = 9 − x","3x − 18 + 2x = 12 → 5x = 30 → x = 6"]]
+    ["C","i:6","Clear the fractions first (× 6).","Verwyder eers die breuke (× 6).",["3x − 2y = 12 and y = 9 − x","3x − 18 + 2x = 12 → 5x = 30 → x = 6"],["3x − 2y = 12 en y = 9 − x","3x − 18 + 2x = 12 → 5x = 30 → x = 6"]],
+    ["P","i:20","Write two equations and eliminate the adult price.","Skryf twee vergelykings en elimineer die volwasseneprys.",["3a + 2c = 190 and 2a + 5c = 200","× 2 and × 3: 6a + 4c = 380 and 6a + 15c = 600 → 11c = 220 → c = R20 (a = R50)"],["3a + 2c = 190 en 2a + 5c = 200","× 2 en × 3: 6a + 4c = 380 en 6a + 15c = 600 → 11c = 220 → c = R20 (a = R50)"]]
   ],
   "403": [
     ["R","i:15","Let the number be x.","Laat die getal x wees.",["x + 2x = 45","3x = 45 → x = 15"],["x + 2x = 45","3x = 45 → x = 15"]],

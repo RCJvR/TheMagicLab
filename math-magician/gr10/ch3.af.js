@@ -150,7 +150,8 @@ MathMagician.registerChapter(3, {
           text: "Vir die ry met Tₙ = 5n − 3, vind die kleinste waarde van n waarvoor Tₙ > 500.",
           answer: "101",
           topic: "Lineêre rye"
-        }
+        },
+        { type: "input", text: "In 'n lineêre ry is T₅ drie keer T₂, en T₁₀ = 38. Vind T₁.", answer: "2", topic: "Lineêre rye" }
       ]
     },
     {
@@ -313,7 +314,8 @@ MathMagician.registerChapter(3, {
           options: ["4n + 1", "4n − 3", "3n + 3", "4n + 5"],
           answer: 0,
           topic: "Patrone in konteks"
-        }
+        },
+        { type: "input", text: "'n Teater het 20 sitplekke in die voorste ry, en elke ry het 3 sitplekke meer as die ry voor hom. Die agterste ry het 113 sitplekke. Hoeveel rye is daar?", answer: "32", topic: "Patrone in konteks" }
       ]
     },
     {

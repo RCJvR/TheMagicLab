@@ -365,6 +365,7 @@ x ≤ −3         →  (−∞ ; −3]
       {"type": "mc", "text": "Los op: 3x − 4 ≥ 8, en gee die antwoord in intervalnotasie.", "options": ["(4 ; ∞)", "[4 ; ∞)", "(−∞ ; 4]", "[4 ; ∞]"], "answer": 1, "topic": "Woordprobleme & ongelykhede"},
       {"type": "mc", "text": "Los op: −2x + 1 > 7, en gee die antwoord in intervalnotasie.", "options": ["(−∞ ; −3)", "(−3 ; ∞)", "(−∞ ; −3]", "[−3 ; ∞)"], "answer": 0, "topic": "Woordprobleme & ongelykhede"},
       {"type": "mc", "text": "Op 'n getallelyn wys 'n oop sirkel by 2 met die lyn regs daarvan ingekleur:", "options": ["x ≥ 2", "x > 2", "x < 2", "x ≤ 2"], "answer": 1, "topic": "Woordprobleme & ongelykhede"},
+        { type: "input", text: "'n Taxi vra R15 plus R8 per kilometer. Thandi het R100. Wat is die grootste heel aantal kilometer wat sy kan ry?", answer: "10", topic: "Woordprobleme & ongelykhede" }
       ]
     },
     {
@@ -462,7 +463,8 @@ x ≤ −3         →  (−∞ ; −3]
           text: "Los gelyktydig op: x/2 − y/3 = 2 en x + y = 9. Bepaal x.",
           answer: "6",
           topic: "Gelyktydige vergelykings — verdere oefening"
-        }
+        },
+        { type: "input", text: "3 volwassene- en 2 kinderkaartjies kos R190. 2 volwassene- en 5 kinderkaartjies kos R200. Wat kos een kinderkaartjie? (R)", answer: "20", topic: "Gelyktydige vergelykings — verdere oefening" }
       ]
     },
     {

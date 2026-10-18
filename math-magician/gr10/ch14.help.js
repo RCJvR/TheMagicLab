@@ -8,7 +8,8 @@ MMHelp.add(10, 14, {
     ["R","m4:0","List the outcomes; don't count any twice.","Lys die uitkomste; moenie enige twee keer tel nie.",["Even: 2, 4, 6; greater than 4: 5, 6","Together: 2, 4, 5, 6 → 4/6"],["Ewe: 2, 4, 6; groter as 4: 5, 6","Saam: 2, 4, 5, 6 → 4/6"]],
     ["R","i:0.2","Rearrange the addition rule.","Herrangskik die optelreël.",["P(A∩B) = 0.6 + 0.4 − 0.8","= 0.2"],["P(A∩B) = 0,6 + 0,4 − 0,8","= 0,2"]],
     ["C","i:10","All the regions add up to 40.","Al die streke tel op tot 40.",["x + 2x + 6 + 4 = 40","3x = 30 → x = 10"],["x + 2x + 6 + 4 = 40","3x = 30 → x = 10"]],
-    ["C","i:13","n(C ∪ T) = 60 − 10 = 50.","n(K ∪ T) = 60 − 10 = 50.",["50 = 35 + 28 − n(C ∩ T)","n(C ∩ T) = 13"],["50 = 35 + 28 − n(K ∩ T)","n(K ∩ T) = 13"]]
+    ["C","i:13","n(C ∪ T) = 60 − 10 = 50.","n(K ∪ T) = 60 − 10 = 50.",["50 = 35 + 28 − n(C ∩ T)","n(C ∩ T) = 13"],["50 = 35 + 28 − n(K ∩ T)","n(K ∩ T) = 13"]],
+    ["P","i:13/60","Find how many own both first.","Vind eers hoeveel albei besit.",["At least one: 60 − 12 = 48 → both = 35 + 28 − 48 = 15","Dog only: 28 − 15 = 13","P = 13/60"],["Ten minste een: 60 − 12 = 48 → albei = 35 + 28 − 48 = 15","Net hond: 28 − 15 = 13","P = 13/60"]]
   ],
   "1401": [
     ["R","m4:1","Mutually exclusive: just add.","Onderling uitsluitend: tel net op.",["0.3 + 0.4","= 0.7"],["0,3 + 0,4","= 0,7"]],
@@ -26,7 +27,8 @@ MMHelp.add(10, 14, {
     ["K","m4:1","5 tosses is a tiny sample.","5 gooie is 'n baie klein steekproef.",["Large deviations are normal for few trials."],["Groot afwykings is normaal vir min proewe."]],
     ["K","m4:0","What is it based on?","Waarop is dit gebaseer?",["Counting equally likely outcomes."],["Om ewe waarskynlike uitkomste te tel."]],
     ["R","i:0.20","Combine all the trials.","Kombineer al die proewe.",["9 + 11 = 20 sixes in 40 + 60 = 100 rolls","20 ÷ 100 = 0.20"],["9 + 11 = 20 sesse in 40 + 60 = 100 gooie","20 ÷ 100 = 0,20"]],
-    ["R","i:40","Expected number = P × trials.","Verwagte aantal = P × proewe.",["1/5 × 200","= 40"],["1/5 × 200","= 40"]]
+    ["R","i:40","Expected number = P × trials.","Verwagte aantal = P × proewe.",["1/5 × 200","= 40"],["1/5 × 200","= 40"]],
+    ["P","i:2/7","All six probabilities must add up to 1.","Al ses waarskynlikhede moet tot 1 optel.",["Let each of 1–5 have probability p; then P(6) = 2p","5p + 2p = 1 → p = 1/7 → P(6) = 2/7"],["Laat elk van 1–5 waarskynlikheid p hê; dan P(6) = 2p","5p + 2p = 1 → p = 1/7 → P(6) = 2/7"]]
   ],
   "1403": [
     ["K","m4:1","Where do the totals meet?","Waar ontmoet die totale?",["The bottom-right cell is the grand total n(S)."],["Die sel regs onder is die groottotaal n(S)."]],

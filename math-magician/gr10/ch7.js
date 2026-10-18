@@ -329,7 +329,8 @@ MathMagician.registerChapter(7, {
           text: "Rectangle ABCD has diagonals AC = 3x − 2 and BD = x + 10. Using the fact that a rectangle's diagonals are equal, find AC.",
           answer: "16",
           topic: "Quadrilaterals & midpoint theorem"
-        }
+        },
+        { type: "input", text: "P, Q, R and S are the midpoints of the sides AB, BC, CD and DA of quadrilateral ABCD. The diagonals are AC = 10 and BD = 14.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[8,-1],\"C\":[10,6],\"D\":[2,7],\"P\":[4,-0.5],\"Q\":[9,2.5],\"R\":[6,6.5],\"S\":[1,3.5]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"mu dash\"],[\"B\",\"D\",\"mu dash\"],[\"P\",\"Q\",\"ac\"],[\"Q\",\"R\",\"ac\"],[\"R\",\"S\",\"ac\"],[\"S\",\"P\",\"ac\"]],\"dots\":[\"P\",\"Q\",\"R\",\"S\"],\"txt\":[[8.3,4.3,\"10\",\"len\"],[7.1,0.9,\"14\",\"len\"]]}'></div>Find the perimeter of PQRS.", answer: "24", topic: "Quadrilaterals & midpoint theorem" }
       ]
     },
     {
@@ -433,7 +434,8 @@ MathMagician.registerChapter(7, {
           answer: "80",
           altAnswers: ["80°"],
           topic: "Special quadrilaterals — kite & trapezium"
-        }
+        },
+        { type: "input", text: "In kite ABCD, AB = AD = 10, CB = CD = 17 and the short diagonal BD = 16. Find the length of the long diagonal AC.", answer: "21", topic: "Special quadrilaterals — kite & trapezium" }
       ]
     },
     {

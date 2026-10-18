@@ -7,7 +7,8 @@ MMHelp.add(10, 8, {
     ["R","i:5","Use the distance formula.","Gebruik die afstandsformule.",["√(3² + 4²)","= √25 = 5"],["√(3² + 4²)","= √25 = 5"]],
     ["R","m4:0","B = 2M − A for each coordinate.","B = 2M − A vir elke koördinaat.",["x = 2(2) − (−1) = 5","y = 2(−1) − 3 = −5 → B(5 ; −5)"],["x = 2(2) − (−1) = 5","y = 2(−1) − 3 = −5 → B(5 ; −5)"]],
     ["K","m4:1","A midpoint is an average.","'n Middelpunt is 'n gemiddeld.",["y_M = (y₁ + y₂)/2"],["y_M = (y₁ + y₂)/2"]],
-    ["C","i:5","Find B first, then the distance.","Vind eers B, dan die afstand.",["B = (2 × 3 − 7 ; 2 × (−2) − 1) = (−1 ; −5)","MB = √[(3 + 1)² + (−2 + 5)²] = √25 = 5"],["B = (2 × 3 − 7 ; 2 × (−2) − 1) = (−1 ; −5)","MB = √[(3 + 1)² + (−2 + 5)²] = √25 = 5"]]
+    ["C","i:5","Find B first, then the distance.","Vind eers B, dan die afstand.",["B = (2 × 3 − 7 ; 2 × (−2) − 1) = (−1 ; −5)","MB = √[(3 + 1)² + (−2 + 5)²] = √25 = 5"],["B = (2 × 3 − 7 ; 2 × (−2) − 1) = (−1 ; −5)","MB = √[(3 + 1)² + (−2 + 5)²] = √25 = 5"]],
+    ["P","i:5","The radius is half the diameter AB.","Die radius is die helfte van die middellyn AB.",["AB = √(6² + 8²) = √100 = 10","r = 10 ÷ 2 = 5"],["AB = √(6² + 8²) = √100 = 10","r = 10 ÷ 2 = 5"]]
   ],
   "801": [
     ["R","m4:0","m = (y₂ − y₁) ÷ (x₂ − x₁)","m = (y₂ − y₁) ÷ (x₂ − x₁)",["(9 − 1) ÷ (6 − 2)","= 8 ÷ 4 = 2"],["(9 − 1) ÷ (6 − 2)","= 8 ÷ 4 = 2"]],
@@ -33,6 +34,7 @@ MMHelp.add(10, 8, {
     ["R","i:7.21","Use the distance formula.","Gebruik die afstandsformule.",["AC = √(6² + 4²) = √52","≈ 7.21"],["AC = √(6² + 4²) = √52","≈ 7,21"]],
     ["K","m4:2","A rhombus has equal sides.","'n Ruit het gelyke sye.",["Show all four sides are equal (or the diagonals are perpendicular)."],["Toon dat al vier sye gelyk is (of dat die hoeklyne loodreg is)."]],
     ["C","m4:1","Compare the gradients of adjacent sides.","Vergelyk die gradiënte van aangrensende sye.",["m_AB = m_DC = ½ and m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → no right angle, so not a rectangle (it is in fact a rhombus)"],["m_AB = m_DC = ½ en m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → geen regte hoek nie, dus nie 'n reghoek nie (dit is eintlik 'n ruit)"]],
-    ["P","i:12","C is on the perpendicular bisector of AB.","C lê op die middelloodlyn van AB.",["Midpoint of AB = (4 ; 2), so C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Area = ½ × 6 × 4 = 12"],["Middelpunt van AB = (4 ; 2), dus C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Oppervlakte = ½ × 6 × 4 = 12"]]
+    ["P","i:12","C is on the perpendicular bisector of AB.","C lê op die middelloodlyn van AB.",["Midpoint of AB = (4 ; 2), so C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Area = ½ × 6 × 4 = 12"],["Middelpunt van AB = (4 ; 2), dus C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Oppervlakte = ½ × 6 × 4 = 12"]],
+    ["P","i:35","The diagonals of a parallelogram bisect each other.","Die hoeklyne van 'n parallelogram halveer mekaar.",["Midpoint of AC = (4.5 ; 3.5) = midpoint of BD","D = (2 × 4.5 − 6 ; 2 × 3.5 − 2) = (3 ; 5)"],["Middelpunt van AC = (4,5 ; 3,5) = middelpunt van BD","D = (2 × 4,5 − 6 ; 2 × 3,5 − 2) = (3 ; 5)"]]
   ]
 });

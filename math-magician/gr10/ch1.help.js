@@ -8,7 +8,8 @@ MMHelp.add(10, 1, {
     ["K","m4:1","Which perfect squares are on either side of 30?","Watter volkome vierkante lê aan weerskante van 30?",["25 < 30 < 36","so 5 < √30 < 6"],["25 < 30 < 36","dus 5 < √30 < 6"]],
     ["R","i:15","Multiply first.","Vermenigvuldig eers.",["3 × 75 = 225","√225 = 15"],["3 × 75 = 225","√225 = 15"]],
     ["R","i:42","Write each surd in terms of √2.","Skryf elke wortelvorm in terme van √2.",["√8 = 2√2, √50 = 5√2, √18 = 3√2","2√2 + 5√2 − 3√2 = 4√2"],["√8 = 2√2, √50 = 5√2, √18 = 3√2","2√2 + 5√2 − 3√2 = 4√2"]],
-    ["C","i:102","Side = √area.","Sy = √oppervlakte.",["s = √200","= √(100 × 2) = 10√2 cm"],["s = √200","= √(100 × 2) = 10√2 cm"]]
+    ["C","i:102","Side = √area.","Sy = √oppervlakte.",["s = √200","= √(100 × 2) = 10√2 cm"],["s = √200","= √(100 × 2) = 10√2 cm"]],
+    ["P","i:10","Find the side in surd form, then use Pythagoras.","Vind die sy in wortelvorm en gebruik dan Pythagoras.",["side = √50 = 5√2 cm","d² = (5√2)² + (5√2)² = 50 + 50 = 100 → d = 10 cm"],["sy = √50 = 5√2 cm","d² = (5√2)² + (5√2)² = 50 + 50 = 100 → d = 10 cm"]]
   ],
   "101": [
     ["R","m4:2","(a − b)² = a² − 2ab + b²","(a − b)² = a² − 2ab + b²",["(2x)² − 2(2x)(3) + 3²","= 4x² − 12x + 9"],["(2x)² − 2(2x)(3) + 3²","= 4x² − 12x + 9"]],
@@ -17,7 +18,8 @@ MMHelp.add(10, 1, {
     ["R","m4:1","Check each option by expanding.","Kontroleer elke opsie deur uit te brei.",["(3x + 2)(2x − 1) = 6x² − 3x + 4x − 2","= 6x² + x − 2 ✓"],["(3x + 2)(2x − 1) = 6x² − 3x + 4x − 2","= 6x² + x − 2 ✓"]],
     ["K","m4:1","Difference of cubes: a³ − b³ = (a − b)(a² + ab + b²).","Verskil van derdemagte: a³ − b³ = (a − b)(a² + ab + b²).",["a³ − 2³ = (a − 2)(a² + 2a + 4)"],["a³ − 2³ = (a − 2)(a² + 2a + 4)"]],
     ["C","m4:0","Group the first two and the last two terms.","Groepeer die eerste twee en die laaste twee terme.",["x²(x − 1) − 4(x − 1) = (x − 1)(x² − 4)","= (x − 1)(x − 2)(x + 2)"],["x²(x − 1) − 4(x − 1) = (x − 1)(x² − 4)","= (x − 1)(x − 2)(x + 2)"]],
-    ["C","i:-2/2-3","Factorise top and bottom.","Faktoriseer teller en noemer.",["2x² − x − 6 = (2x + 3)(x − 2) and 4x² − 9 = (2x − 3)(2x + 3)","Cancel (2x + 3): (x − 2)/(2x − 3)"],["2x² − x − 6 = (2x + 3)(x − 2) en 4x² − 9 = (2x − 3)(2x + 3)","Kanselleer (2x + 3): (x − 2)/(2x − 3)"]]
+    ["C","i:-2/2-3","Factorise top and bottom.","Faktoriseer teller en noemer.",["2x² − x − 6 = (2x + 3)(x − 2) and 4x² − 9 = (2x − 3)(2x + 3)","Cancel (2x + 3): (x − 2)/(2x − 3)"],["2x² − x − 6 = (2x + 3)(x − 2) en 4x² − 9 = (2x − 3)(2x + 3)","Kanselleer (2x + 3): (x − 2)/(2x − 3)"]],
+    ["P","i:970200","Take out x, then use the difference of squares.","Haal x uit en gebruik dan die verskil van vierkante.",["x³ − x = x(x² − 1) = (x − 1)x(x + 1)","x = 99: 98 × 99 × 100 = 9 702 × 100 = 970 200"],["x³ − x = x(x² − 1) = (x − 1)x(x + 1)","x = 99: 98 × 99 × 100 = 9 702 × 100 = 970 200"]]
   ],
   "102": [
     ["R","m4:0","Multiply x by each term, then 1 by each term.","Vermenigvuldig x met elke term, dan 1 met elke term.",["x³ + 2x² − 3x + x² + 2x − 3","= x³ + 3x² − x − 3"],["x³ + 2x² − 3x + x² + 2x − 3","= x³ + 3x² − x − 3"]],

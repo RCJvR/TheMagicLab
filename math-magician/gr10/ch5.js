@@ -322,7 +322,8 @@ MathMagician.registerChapter(5, {
           text: "Solve for θ ∈ [0°; 360°]: 2sinθ + 1 = 0. Give the smaller solution.",
           answer: "210",
           topic: "Trig equations & Cartesian plane"
-        }
+        },
+        { type: "input", text: "tan θ = −5/12 and θ lies in the fourth quadrant. Find the value of 13 sin θ + 13 cos θ without a calculator.", answer: "7", topic: "Trig equations & Cartesian plane" }
       ]
     },
     {
@@ -430,7 +431,8 @@ MathMagician.registerChapter(5, {
           answer: "22.40",
           altAnswers: ["22.4"],
           topic: "Solving right-angled triangles"
-        }
+        },
+        { type: "input", text: "A ladder makes an angle of 65° with the ground and reaches 6 m up a vertical wall. How long is the ladder, to 2 decimal places? (m)", answer: "6.62", altAnswers: ["6,62"], topic: "Solving right-angled triangles" }
       ]
     },
     {

@@ -7,7 +7,8 @@ MMHelp.add(10, 9, {
     ["K","m4:1","Compound interest earns interest on interest.","Saamgestelde rente verdien rente op rente.",["With the same rate and time, compound interest gives more."],["Met dieselfde koers en tyd gee saamgestelde rente meer."]],
     ["R","m4:0","P = A ÷ (1 + i)ⁿ","P = A ÷ (1 + i)ⁿ",["15 000 ÷ 1.08³","≈ R11 907"],["15 000 ÷ 1,08³","≈ R11 907"]],
     ["R","i:5","Interest = A − P = P × i × n.","Rente = A − P = P × i × n.",["1 500 = 6 000 × i × 5","i = 0.05 = 5%"],["1 500 = 6 000 × i × 5","i = 0,05 = 5%"]],
-    ["C","i:8","Solve (1 + i)⁴ = A ÷ P.","Los op: (1 + i)⁴ = A ÷ P.",["16 325.87 ÷ 12 000 = 1.36049","1 + i = ⁴√1.36049 = 1.08 → i = 8%"],["16 325,87 ÷ 12 000 = 1,36049","1 + i = ⁴√1,36049 = 1,08 → i = 8%"]]
+    ["C","i:8","Solve (1 + i)⁴ = A ÷ P.","Los op: (1 + i)⁴ = A ÷ P.",["16 325.87 ÷ 12 000 = 1.36049","1 + i = ⁴√1.36049 = 1.08 → i = 8%"],["16 325,87 ÷ 12 000 = 1,36049","1 + i = ⁴√1,36049 = 1,08 → i = 8%"]],
+    ["P","i:8","Find when 1.1ⁿ first passes 2.","Vind wanneer 1,1ⁿ eers 2 verbysteek.",["1.1⁷ ≈ 1.95 (R9 744 — not yet)","1.1⁸ ≈ 2.14 (R10 718) → 8 years"],["1,1⁷ ≈ 1,95 (R9 744 — nog nie)","1,1⁸ ≈ 2,14 (R10 718) → 8 jaar"]]
   ],
   "901": [
     ["R","m4:0","Rand ÷ rate = dollars.","Rand ÷ koers = dollars.",["3 500 ÷ 17.50","= $200"],["3 500 ÷ 17,50","= $200"]],
@@ -23,7 +24,8 @@ MMHelp.add(10, 9, {
     ["C","m4:0","Go back in time: divide by (1 + i)ⁿ.","Gaan terug in tyd: deel deur (1 + i)ⁿ.",["210 000 ÷ 1.06³","≈ R176 320"],["210 000 ÷ 1,06³","≈ R176 320"]],
     ["K","m4:1","Going back means a negative exponent.","Teruggaan beteken 'n negatiewe eksponent.",["P = A(1 + i)⁻ⁿ"],["P = A(1 + i)⁻ⁿ"]],
     ["R","i:56570","A = P(1 + i)ⁿ","A = P(1 + i)ⁿ",["50 000 × 1.025⁵ = 56 570.4","≈ 56 570"],["50 000 × 1,025⁵ = 56 570,4","≈ 56 570"]],
-    ["C","i:3","Solve (1 + i)⁴ = A ÷ P.","Los op: (1 + i)⁴ = A ÷ P.",["16 882.63 ÷ 15 000 = 1.12551","⁴√1.12551 = 1.03 → i = 3%"],["16 882,63 ÷ 15 000 = 1,12551","⁴√1,12551 = 1,03 → i = 3%"]]
+    ["C","i:3","Solve (1 + i)⁴ = A ÷ P.","Los op: (1 + i)⁴ = A ÷ P.",["16 882.63 ÷ 15 000 = 1.12551","⁴√1.12551 = 1.03 → i = 3%"],["16 882,63 ÷ 15 000 = 1,12551","⁴√1,12551 = 1,03 → i = 3%"]],
+    ["P","i:45196","A decrease of 2% multiplies by 0.98 each year.","'n Afname van 2% vermenigvuldig elke jaar met 0,98.",["A = 50 000 × 0.98⁵","≈ 50 000 × 0.90392 ≈ 45 196"],["A = 50 000 × 0,98⁵","≈ 50 000 × 0,90392 ≈ 45 196"]]
   ],
   "903": [
     ["C","m4:0","Solve (1 + i)⁴ = 7 986 ÷ 6 000.","Los op: (1 + i)⁴ = 7 986 ÷ 6 000.",["7 986 ÷ 6 000 = 1.331","⁴√1.331 ≈ 1.074 → i ≈ 7.4%"],["7 986 ÷ 6 000 = 1,331","⁴√1,331 ≈ 1,074 → i ≈ 7,4%"]],

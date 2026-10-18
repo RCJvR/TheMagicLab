@@ -145,7 +145,8 @@ MathMagician.registerChapter(14, {
           text: "In 'n opname van 60 mense hou 35 van koffie (C), 28 hou van tee (T), en 10 hou van geen van die twee nie. Bepaal n(C ∩ T).",
           answer: "13",
           topic: "Waarskynlikheidsgrondbeginsels en Venn-diagramme"
-        }
+        },
+        { type: "input", text: "In 'n groep van 60 mense besit 35 'n kat, 28 'n hond en 12 geeneen nie. Een persoon word lukraak gekies. Wat is die waarskynlikheid dat hulle 'n hond maar nie 'n kat nie besit? Gee 'n breuk.", answer: "13/60", topic: "Waarskynlikheidsgrondbeginsels en Venn-diagramme" }
       ]
     },
     {
@@ -455,7 +456,8 @@ MathMagician.registerChapter(14, {
           text: "'n Regverdige wentelskyf het 5 gelyke sektore. Dit word 200 keer gedraai. Bepaal die verwagte (teoretiese) aantal kere wat dit op 'n bepaalde sektor land.",
           answer: "40",
           topic: "Relatiewe frekwensie teenoor teoretiese waarskynlikheid"
-        }
+        },
+        { type: "input", text: "'n Dobbelsteen is so gelaai dat 'n 6 twee keer so waarskynlik is as elk van die ander getalle, wat almal ewe waarskynlik is. Wat is P(6)? Gee 'n breuk.", answer: "2/7", topic: "Relatiewe frekwensie teenoor teoretiese waarskynlikheid" }
       ]
     },
     {

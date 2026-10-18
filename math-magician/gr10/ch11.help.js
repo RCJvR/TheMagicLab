@@ -16,7 +16,8 @@ MMHelp.add(10, 11, {
     ["R","m4:1","The string is the hypotenuse.","Die tou is die skuinssy.",["h = 80 sin 50°","≈ 61 m"],["h = 80 sin 50°","≈ 61 m"]],
     ["K","m4:1","Rounding early adds error.","Vroeë afronding voeg foute by.",["Keep full calculator values and round only at the end."],["Hou volle sakrekenaarwaardes en rond net aan die einde af."]],
     ["K","i:","SOH.","SOH.",["sin = opposite ÷ hypotenuse"],["sin = teenoorstaande ÷ skuinssy"]],
-    ["P","i:16.80","Write h two ways with d = distance from A.","Skryf h op twee maniere met d = afstand vanaf A.",["h = d tan 50° = (d + 15) tan 30°","d(tan 50° − tan 30°) = 15 tan 30° → d ≈ 14.10 m","h = 14.10 × tan 50° ≈ 16.80 m"],["h = d tan 50° = (d + 15) tan 30°","d(tan 50° − tan 30°) = 15 tan 30° → d ≈ 14,10 m","h = 14,10 × tan 50° ≈ 16,80 m"]]
+    ["P","i:16.80","Write h two ways with d = distance from A.","Skryf h op twee maniere met d = afstand vanaf A.",["h = d tan 50° = (d + 15) tan 30°","d(tan 50° − tan 30°) = 15 tan 30° → d ≈ 14.10 m","h = 14.10 × tan 50° ≈ 16.80 m"],["h = d tan 50° = (d + 15) tan 30°","d(tan 50° − tan 30°) = 15 tan 30° → d ≈ 14,10 m","h = 14,10 × tan 50° ≈ 16,80 m"]],
+    ["P","i:14.64","Find each car's distance from the building, then subtract.","Vind elke motor se afstand van die gebou af, en trek dan af.",["X: 20 ÷ tan 45° = 20 m","Y: 20 ÷ tan 30° ≈ 34.64 m","XY ≈ 34.64 − 20 = 14.64 m"],["X: 20 ÷ tan 45° = 20 m","Y: 20 ÷ tan 30° ≈ 34,64 m","XY ≈ 34,64 − 20 = 14,64 m"]]
   ],
   "1102": [
     ["K","m4:1","Bearings are measured clockwise from North.","Peilings word kloksgewys vanaf Noord gemeet.",["90° = East, 180° = South → 135° is South-East"],["90° = Oos, 180° = Suid → 135° is Suidoos"]],
@@ -25,7 +26,8 @@ MMHelp.add(10, 11, {
     ["R","m4:1","Equal legs at right angles.","Gelyke bene teen regte hoeke.",["tan θ = 50/50 = 1","θ = 45°"],["tan θ = 50/50 = 1","θ = 45°"]],
     ["K","m4:1","All North lines point the same way.","Alle Noordlyne wys dieselfde kant toe.",["North lines are parallel, so alternate angles are equal."],["Noordlyne is ewewydig, dus is verwisselende hoeke gelyk."]],
     ["C","i:30","060° to 150° is a 90° turn.","060° na 150° is 'n draai van 90°.",["The two legs are perpendicular","d = √(18² + 24²) = √900 = 30 km"],["Die twee bene is loodreg","d = √(18² + 24²) = √900 = 30 km"]],
-    ["C","i:058","Find the angle from North towards East.","Vind die hoek van Noord na Oos.",["tan θ = East ÷ North = 45/28","θ = tan⁻¹(1.607) ≈ 58° → bearing 058°"],["tan θ = Oos ÷ Noord = 45/28","θ = tan⁻¹(1,607) ≈ 58° → peiling 058°"]]
+    ["C","i:058","Find the angle from North towards East.","Vind die hoek van Noord na Oos.",["tan θ = East ÷ North = 45/28","θ = tan⁻¹(1.607) ≈ 58° → bearing 058°"],["tan θ = Oos ÷ Noord = 45/28","θ = tan⁻¹(1,607) ≈ 58° → peiling 058°"]],
+    ["P","i:14.14","What angle is there between the two legs?","Watter hoek is daar tussen die twee bene?",["150° − 60° = 90°, so the legs are perpendicular","d = √(10² + 10²) = √200 ≈ 14.14 km"],["150° − 60° = 90°, dus is die bene loodreg","d = √(10² + 10²) = √200 ≈ 14,14 km"]]
   ],
   "1103": [
     ["C","m4:0","Crossing height = (a × b) ÷ (a + b).","Kruishoogte = (a × b) ÷ (a + b).",["(12 × 8) ÷ (12 + 8)","= 96 ÷ 20 = 4.8 m"],["(12 × 8) ÷ (12 + 8)","= 96 ÷ 20 = 4,8 m"]],
