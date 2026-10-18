@@ -330,7 +330,8 @@ MathMagician.registerChapter(8, {
           text: "Vanaf buitepunt P raak raaklyn PT = 12 cm 'n sirkel by T. Sekans PAB (A nader aan P) sny die sirkel met PA = 8 cm. Gebruik PT² = PA × PB om die lengte van AB te bereken.",
           answer: "10",
           topic: "Raaklynstellings & koordbewyse"
-        }
+        },
+        { type: "input", text: "Raaklyne PA en PB word vanaf 'n buitepunt P aan 'n sirkel met middelpunt O getrek. ∠APB = 40° en C is 'n punt op die groot boog AB. Bereken ∠ACB. (°)", answer: "70", topic: "Raaklynstellings & koordbewyse" }
       ]
     },
     {
@@ -462,7 +463,8 @@ MathMagician.registerChapter(8, {
           text: "'n Sirkelvormige dam het deursnee 34 m. 'n Reguit houtbrug (a koord) kruis die dam met sy twee uiteindes 30 m uitmekaar. Bereken die loodregte afstand vanaf die middelpunt van die dam na die brug, in meter.",
           answer: "8",
           topic: "Koord-, radius- en afstandberekeninge"
-        }
+        },
+        { type: "input", text: "Twee ewewydige koorde van 24 cm en 10 cm lê aan weerskante van die middelpunt van 'n sirkel met radius 13 cm.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":220,\"pts\":{\"O\":[0,0],\"A\":[-12,5],\"B\":[12,5],\"C\":[-5,-12],\"D\":[5,-12],\"M\":[0,5],\"N\":[0,-12]},\"circ\":[[\"O\",13]],\"seg\":[[\"A\",\"B\",\"ac\",null,\"24\"],[\"C\",\"D\",\"ac\",null,\"10\"],[\"M\",\"N\",\"mu dash\"],[\"O\",\"B\",\"mu dash\",null,\"13\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"dots\":[\"O\"],\"nolab\":[\"M\",\"N\",\"A\",\"B\",\"C\",\"D\"]}'></div>Hoe ver is die koorde van mekaar? (cm)", answer: "17", topic: "Koord-, radius- en afstandberekeninge" }
       ]
     },
     {

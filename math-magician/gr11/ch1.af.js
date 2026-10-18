@@ -180,7 +180,8 @@ MathMagician.registerChapter(1, {
           text: "Vereenvoudig tot 'n enkele rasionale getal: (3 − √5)/(3 + √5) + (3 + √5)/(3 − √5)",
           answer: "7",
           topic: "Rasionale eksponente & wortelvorm-bewerkings"
-        }
+        },
+        { type: "input", text: "Vereenvoudig 1/(√3 − √2) + 1/(√3 + √2). Gee die antwoord in eenvoudigste wortelvorm.", answer: "2√3", topic: "Rasionale eksponente & wortelvorm-bewerkings" }
       ]
     },
     {
@@ -338,7 +339,8 @@ MathMagician.registerChapter(1, {
           answer: "20%",
           altAnswers: ["20", "20 %"],
           topic: "Wortelvormvergelykings & eksponensiële toepassings"
-        }
+        },
+        { type: "input", text: "Onder water halveer die intensiteit van lig met elke 3 m diepte. Op watter diepte is die intensiteit 1/16 van die intensiteit by die oppervlak? (m)", answer: "12", topic: "Wortelvormvergelykings & eksponensiële toepassings" }
       ]
     },
     {

@@ -273,7 +273,8 @@ MathMagician.registerChapter(11, {
           text: "Vir die datastel 12, 15, 18, 20, 22, 24, 60: bepaal Q1, Q3, en die IKW, en sê dan of 60 'n uitskieter is volgens die 1.5×IKW-reël. Antwoord 'ja' of 'nee'.",
           answer: "ja",
           topic: "Skeefheid, uitskieters & data-interpretasie"
-        }
+        },
+        { type: "input", text: "'n Datastel het Q1 = 20, mediaan 25 en Q3 = 40. Wat is die kleinste heelgetal wat as 'n boonste uitskieter sou tel?", answer: "71", topic: "Skeefheid, uitskieters & data-interpretasie" }
       ]
     },
     {
@@ -400,7 +401,8 @@ MathMagician.registerChapter(11, {
           text: "Klas P se punte: 50, 52, 54, 56, 58. Klas Q se punte: 20, 40, 54, 68, 88. Albei klasse het dieselfde gemiddelde (54). Bereken σ vir elke klas en bepaal σ_Q − σ_P, korrek tot 2 desimale plekke.",
           answer: "20.43",
           topic: "Vergelyking van datastelle met standaardafwyking"
-        }
+        },
+        { type: "input", text: "Vyf waardes het 'n gemiddeld van 10. Vier daarvan is 8, 9, 11 en 12. Bereken die standaardafwyking van al vyf waardes, tot 2 desimale plekke.", answer: "1.41", altAnswers: ["1,41","√2"], topic: "Vergelyking van datastelle met standaardafwyking" }
       ]
     },
     {

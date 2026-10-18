@@ -134,7 +134,8 @@ MathMagician.registerChapter(4, {
           answer: "-1",
           altAnswers: ["−1"],
           topic: "Vergelyking van 'n lyn & hellingshoek"
-        }
+        },
+        { type: "input", text: "'n Lyn met 'n inklinasiehoek van 135° gaan deur (2 ; 5). Bereken die oppervlakte van die driehoek wat dit met die twee asse vorm.", answer: "24.5", altAnswers: ["24,5","49/2"], topic: "Vergelyking van 'n lyn & hellingshoek" }
       ]
     },
     {
@@ -292,7 +293,8 @@ MathMagician.registerChapter(4, {
           answer: "-1",
           altAnswers: ["−1"],
           topic: "Parallelle, loodregte & komplekse probleme"
-        }
+        },
+        { type: "input", text: "A(0 ; 0), B(4 ; 2) en C(k ; 8) is gegee. Vir watter waarde van k is ∠ABC = 90°?", answer: "1", topic: "Parallelle, loodregte & komplekse probleme" }
       ]
     },
     {

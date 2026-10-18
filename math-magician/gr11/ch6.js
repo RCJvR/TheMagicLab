@@ -350,7 +350,8 @@ MathMagician.registerChapter(6, {
           text: "In triangle ABC, a = 10, c = 8, and A = 75°. Use the sine rule to find angle C (to the nearest degree).",
           answer: "51",
           topic: "Sine rule, cosine rule & area rule"
-        }
+        },
+        { type: "input", text: "A triangle has sides 5, 7 and 8.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":190,\"pts\":{\"A\":[0,0],\"B\":[8,0],\"C\":[2.5,4.33]},\"seg\":[[\"A\",\"B\",null,null,\"8\"],[\"B\",\"C\",null,null,\"7\"],[\"C\",\"A\",null,null,\"5\"]]}'></div>Find its area, to 2 decimal places.", answer: "17.32", altAnswers: ["17,32","10√3"], topic: "Sine rule, cosine rule & area rule" }
       ]
     },
     {
@@ -504,7 +505,8 @@ MathMagician.registerChapter(6, {
           answer: "60",
           topic: "Solving trigonometric equations"
         },
-        { type: "input", text: "Solve sin x = cos x for x ∈ [0° ; 360°]. What is the sum of all the solutions? (°)", answer: "270", topic: "Solving trigonometric equations" }
+        { type: "input", text: "Solve sin x = cos x for x ∈ [0° ; 360°]. What is the sum of all the solutions? (°)", answer: "270", topic: "Solving trigonometric equations" },
+        { type: "input", text: "How many solutions does 2 sin x = 1 have for x ∈ [−360° ; 360°]?", answer: "4", topic: "Solving trigonometric equations" }
       ]
     }
   ],

@@ -141,7 +141,8 @@ MathMagician.registerChapter(3, {
           answer: "2n² − n + 3",
           altAnswers: ["2n²-n+3", "2n² - n + 3", "Tₙ = 2n² − n + 3"],
           topic: "Kwadratiese rye"
-        }
+        },
+        { type: "input", text: "Die kwadratiese ry 1 ; 6 ; 15 ; 28 ; … gaan voort. Watter term is die eerste een groter as 500? Gee sy posisie n.", answer: "17", topic: "Kwadratiese rye" }
       ]
     },
     {
@@ -289,7 +290,8 @@ MathMagician.registerChapter(3, {
           options: ["A is kwadraties, B is meetkundig", "Albei is kwadraties", "A is meetkundig, B is kwadraties", "Albei is lineêr"],
           answer: 0,
           topic: "Werk met kwadratiese rye"
-        }
+        },
+        { type: "input", text: "Die eerste verskille van 'n kwadratiese ry is 3 ; 7 ; 11 ; … en T₁ = 2. Vind T₁₀.", answer: "173", topic: "Werk met kwadratiese rye" }
       ]
     },
     {

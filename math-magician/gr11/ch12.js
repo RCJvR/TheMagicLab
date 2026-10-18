@@ -258,7 +258,8 @@ MathMagician.registerChapter(12, {
           answer: "(10 ; 6)",
           altAnswers: ["(10;6)", "10;6", "x=10, y=6"],
           topic: "Setting up linear programming problems"
-        }
+        },
+        { type: "input", text: "A farmer has 100 ha. Maize needs 2 workers per hectare and wheat needs 1 worker per hectare; 160 workers are available. Maize gives a profit of R600 per hectare and wheat R400 per hectare. What is the maximum profit? (R)", answer: "52000", topic: "Setting up linear programming problems" }
       ]
     },
     {
@@ -521,7 +522,8 @@ MathMagician.registerChapter(12, {
           answer: "590",
           topic: "Optimisation — solving LP problems"
         },
-        { type: "input", text: "The constraints are x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 and y ≥ 0. The feasible region is shaded.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Find the maximum value of P = 3x + 2y.", answer: "24", topic: "Optimisation — solving LP problems" }
+        { type: "input", text: "The constraints are x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 and y ≥ 0. The feasible region is shaded.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Find the maximum value of P = 3x + 2y.", answer: "24", topic: "Optimisation — solving LP problems" },
+        { type: "input", text: "The feasible region is given by x + y ≤ 10, x ≤ 6, y ≤ 8, x ≥ 0 and y ≥ 0. For which value of k does P = kx + y reach its maximum at both (6 ; 4) and (2 ; 8)?", answer: "1", topic: "Optimisation — solving LP problems" }
       ]
     }
   ],

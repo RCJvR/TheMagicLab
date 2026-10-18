@@ -273,7 +273,8 @@ MathMagician.registerChapter(11, {
           text: "For the data set 12, 15, 18, 20, 22, 24, 60: find Q1, Q3, and the IQR, then state whether 60 is an outlier using the 1.5×IQR rule. Answer 'yes' or 'no'.",
           answer: "yes",
           topic: "Skewness, outliers & data interpretation"
-        }
+        },
+        { type: "input", text: "A data set has Q1 = 20, median 25 and Q3 = 40. What is the smallest whole number that would count as an upper outlier?", answer: "71", topic: "Skewness, outliers & data interpretation" }
       ]
     },
     {
@@ -400,7 +401,8 @@ MathMagician.registerChapter(11, {
           text: "Class P scores: 50, 52, 54, 56, 58. Class Q scores: 20, 40, 54, 68, 88. Both classes have the same mean (54). Calculate σ for each class and find σ_Q − σ_P, correct to 2 decimal places.",
           answer: "20.43",
           topic: "Comparing datasets with standard deviation"
-        }
+        },
+        { type: "input", text: "Five values have a mean of 10. Four of them are 8, 9, 11 and 12. Find the standard deviation of all five values, to 2 decimal places.", answer: "1.41", altAnswers: ["1,41","√2"], topic: "Comparing datasets with standard deviation" }
       ]
     },
     {

@@ -287,7 +287,8 @@ MathMagician.registerChapter(5, {
           text: "'n Hiperbool y = a/(x−p) + q het asimptote x = 3 en y = −2, en gaan deur (5; −1). Vind a.",
           answer: "2",
           topic: "Kwadratiese, hiperboliese en eksponensiële funksies"
-        }
+        },
+        { type: "input", text: "Die grafieke van f(x) = 2ˣ en g(x) = 8 − 2ˣ sny by P. Bepaal die x-koördinaat van P.", answer: "2", topic: "Kwadratiese, hiperboliese en eksponensiële funksies" }
       ]
     },
     {
@@ -735,7 +736,8 @@ MathMagician.registerChapter(5, {
           altAnswers: ["−4"],
           topic: "Skets van funksies: afsnitte, domein en waardeversameling"
         },
-        { type: "input", text: "Die grafiek van f(x) = 2/(x − 1) + 3 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>Die lyn y = −x + k is 'n simmetrie-as van f. Bepaal k.", answer: "4", topic: "Skets van funksies: afsnitte, domein en waardeversameling" }
+        { type: "input", text: "Die grafiek van f(x) = 2/(x − 1) + 3 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>Die lyn y = −x + k is 'n simmetrie-as van f. Bepaal k.", answer: "4", topic: "Skets van funksies: afsnitte, domein en waardeversameling" },
+        { type: "mc", text: "f(x) = −2(x − 1)² + 8. Vir watter waardes van k het die vergelyking f(x) = k twee verskillende reële wortels?", options: ["k < 8","k > 8","k = 8","k ≤ 8"], answer: 0, topic: "Skets van funksies: afsnitte, domein en waardeversameling" }
       ]
     }
   ],

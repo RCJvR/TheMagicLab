@@ -324,7 +324,8 @@ MathMagician.registerChapter(7, {
           answer: "4.16",
           altAnswers: ["4,16"],
           topic: "Volume & die effek van skaalfaktor k"
-        }
+        },
+        { type: "input", text: "'n Keël en 'n silinder het dieselfde radius en dieselfde volume. Die silinder is 5 cm hoog. Hoe hoog is die keël? (cm)", answer: "15", topic: "Volume & die effek van skaalfaktor k" }
       ]
     },
     {
@@ -469,7 +470,8 @@ MathMagician.registerChapter(7, {
           text: "'n Waterreservoir is in die vorm van 'n keël met die punt na onder, boradius 3 m en hoogte 4 m. Dit word met water gevul tot 'n diepte van 2 m (gemeet vanaf die punt). Bepaal die volume water, in terme van π (gebruik gelykvormige driehoeke om eers die radius van die watervlak te vind).",
           answer: "1.5π",
           topic: "Saamgestelde vorms in konteks"
-        }
+        },
+        { type: "input", text: "'n Halfsferiese bak met 'n radius van 9 cm is vol sop. Die sop word in silindriese bekers met 'n radius van 3 cm en 'n hoogte van 6 cm geskink. Hoeveel bekers kan heeltemal vol gemaak word?", answer: "9", topic: "Saamgestelde vorms in konteks" }
       ]
     },
     {

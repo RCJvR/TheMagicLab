@@ -8,7 +8,8 @@ MMHelp.add(11, 1, {
     ["R","m4:1","Multiply by the conjugate (1 − √3).","Vermenigvuldig met die toegevoegde (1 − √3).",["(1 − √3)/(1 − 3) = (1 − √3)/(−2)","= (√3 − 1)/2"],["(1 − √3)/(1 − 3) = (1 − √3)/(−2)","= (√3 − 1)/2"]],
     ["R","m4:0","(2√3)² = 4 × 3.","(2√3)² = 4 × 3.",["12 + 12","= 24"],["12 + 12","= 24"]],
     ["C","i:421","(a + b)² − (a − b)² = 4ab.","(a + b)² − (a − b)² = 4ab.",["4 × √7 × √3","= 4√21"],["4 × √7 × √3","= 4√21"]],
-    ["C","i:7","Use a common denominator (3 + √5)(3 − √5) = 4.","Gebruik 'n gemene noemer (3 + √5)(3 − √5) = 4.",["(3 − √5)² + (3 + √5)² = (14 − 6√5) + (14 + 6√5) = 28","28 ÷ 4 = 7"],["(3 − √5)² + (3 + √5)² = (14 − 6√5) + (14 + 6√5) = 28","28 ÷ 4 = 7"]]
+    ["C","i:7","Use a common denominator (3 + √5)(3 − √5) = 4.","Gebruik 'n gemene noemer (3 + √5)(3 − √5) = 4.",["(3 − √5)² + (3 + √5)² = (14 − 6√5) + (14 + 6√5) = 28","28 ÷ 4 = 7"],["(3 − √5)² + (3 + √5)² = (14 − 6√5) + (14 + 6√5) = 28","28 ÷ 4 = 7"]],
+    ["P","i:23","Use a common denominator: (√3 − √2)(√3 + √2).","Gebruik 'n gemene noemer: (√3 − √2)(√3 + √2).",["Denominator: 3 − 2 = 1","Numerator: (√3 + √2) + (√3 − √2) = 2√3","Answer: 2√3"],["Noemer: 3 − 2 = 1","Teller: (√3 + √2) + (√3 − √2) = 2√3","Antwoord: 2√3"]]
   ],
   "101": [
     ["R","m4:0","Square both sides.","Kwadreer albei kante.",["x + 5 = 9","x = 4 (check: √9 = 3 ✓)"],["x + 5 = 9","x = 4 (kontrole: √9 = 3 ✓)"]],
@@ -17,7 +18,8 @@ MMHelp.add(11, 1, {
     ["K","m4:0","What can squaring do?","Wat kan kwadrering doen?",["Squaring can create extra (extraneous) roots that do not satisfy the original equation."],["Kwadrering kan ekstra (vreemde) wortels skep wat nie die oorspronklike vergelyking bevredig nie."]],
     ["R","m4:1","Square both sides.","Kwadreer albei kante.",["x² − 5 = 4 → x² = 9","x = ±3 (both check)"],["x² − 5 = 4 → x² = 9","x = ±3 (albei klop)"]],
     ["P","i:9","Move one surd across before squaring.","Skuif een wortel oor voor jy kwadreer.",["√(x + 7) = 2 + √(x − 5) → x + 7 = 4 + 4√(x − 5) + x − 5","8 = 4√(x − 5) → √(x − 5) = 2 → x = 9","Check: √16 − √4 = 2 ✓"],["√(x + 7) = 2 + √(x − 5) → x + 7 = 4 + 4√(x − 5) + x − 5","8 = 4√(x − 5) → √(x − 5) = 2 → x = 9","Kontrole: √16 − √4 = 2 ✓"]],
-    ["C","i:20","Solve (1 − r)³ = A ÷ P.","Los op: (1 − r)³ = A ÷ P.",["128 000 ÷ 250 000 = 0.512","∛0.512 = 0.8 → 1 − r = 0.8 → r = 20%"],["128 000 ÷ 250 000 = 0,512","∛0,512 = 0,8 → 1 − r = 0,8 → r = 20%"]]
+    ["C","i:20","Solve (1 − r)³ = A ÷ P.","Los op: (1 − r)³ = A ÷ P.",["128 000 ÷ 250 000 = 0.512","∛0.512 = 0.8 → 1 − r = 0.8 → r = 20%"],["128 000 ÷ 250 000 = 0,512","∛0,512 = 0,8 → 1 − r = 0,8 → r = 20%"]],
+    ["P","i:12","Write the intensity as (½)^(d/3) of the surface value.","Skryf die intensiteit as (½)^(d/3) van die oppervlakwaarde.",["(½)^(d/3) = 1/16 = (½)⁴","d/3 = 4 → d = 12 m"],["(½)^(d/3) = 1/16 = (½)⁴","d/3 = 4 → d = 12 m"]]
   ],
   "102": [
     ["K","m4:0","Add the exponents.","Tel die eksponente op.",["3/4 + 1/4 = 1 → x"],["3/4 + 1/4 = 1 → x"]],

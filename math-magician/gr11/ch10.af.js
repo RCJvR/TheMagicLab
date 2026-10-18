@@ -388,7 +388,8 @@ MathMagician.registerChapter(10, {
           text: "'n Opname onder 150 leerders het bevind: 60 speel skaak, 55 speel dambord, 50 speel kaarte. 15 speel skaak en kaarte, 8 speel dambord en kaarte, 8 speel al drie, en 10 speel geeneen van die drie nie. Bereken hoeveel leerders slegs skaak speel.",
           answer: "43",
           topic: "Venn-diagramme vir drie gebeurtenisse"
-        }
+        },
+        { type: "input", text: "Van 100 leerders neem 45 Wiskunde, 40 Wetenskap en 35 Kuns. 15 neem Wiskunde en Wetenskap, 10 neem Wiskunde en Kuns, 12 neem Wetenskap en Kuns, en 5 neem al drie. Hoeveel neem nie een van die drie nie?", answer: "12", topic: "Venn-diagramme vir drie gebeurtenisse" }
       ]
     },
     {
@@ -510,7 +511,8 @@ MathMagician.registerChapter(10, {
           answer: "1560000",
           topic: "Fundamentele telbeginsel"
         },
-        { type: "input", text: "Hoeveel 4-syfer ewe getalle kan met die syfers 1, 2, 3, 4, 5, 6 en 7 gevorm word as geen syfer herhaal mag word nie?", answer: "360", topic: "Fundamentele telbeginsel" }
+        { type: "input", text: "Hoeveel 4-syfer ewe getalle kan met die syfers 1, 2, 3, 4, 5, 6 en 7 gevorm word as geen syfer herhaal mag word nie?", answer: "360", topic: "Fundamentele telbeginsel" },
+        { type: "input", text: "Drieletterkodes word van die letters A, B, C, D en E gemaak sonder dat 'n letter herhaal word. Hoeveel kodes bevat die letter A?", answer: "36", topic: "Fundamentele telbeginsel" }
       ]
     }
   ],

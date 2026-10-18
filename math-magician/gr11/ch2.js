@@ -316,7 +316,8 @@ MathMagician.registerChapter(2, {
           options: ["(4 ; 3) and (−3 ; −4)", "(4 ; 3) and (3 ; 4)", "(5 ; 4) and (−4 ; −5)", "(3 ; 2) and (−2 ; −3)"],
           answer: 0,
           topic: "Quadratic inequalities & simultaneous equations"
-        }
+        },
+        { type: "mc", text: "For which values of k does the line y = x + k cut the parabola y = x² at two different points?", options: ["k > −1/4","k < −1/4","k > 1/4","k ≥ −1/4"], answer: 0, topic: "Quadratic inequalities & simultaneous equations" }
       ]
     },
     {
@@ -575,7 +576,8 @@ MathMagician.registerChapter(2, {
           answer: "8",
           topic: "Solving problems with quadratic equations"
         },
-        { type: "input", text: "The sum of a positive number and its reciprocal is 13/6. Find the larger of the two possible numbers.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Solving problems with quadratic equations" }
+        { type: "input", text: "The sum of a positive number and its reciprocal is 13/6. Find the larger of the two possible numbers.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Solving problems with quadratic equations" },
+        { type: "input", text: "A rectangular garden has a perimeter of 34 m and a diagonal of 13 m. Find its area. (m²)", answer: "60", topic: "Solving problems with quadratic equations" }
       ]
     }
   ],

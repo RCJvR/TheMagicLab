@@ -330,7 +330,8 @@ MathMagician.registerChapter(8, {
           text: "From external point P, tangent PT = 12 cm touches a circle at T. Secant PAB (A nearer to P) cuts the circle with PA = 8 cm. Using PT² = PA × PB, find the length of AB.",
           answer: "10",
           topic: "Tangent theorems & chord proofs"
-        }
+        },
+        { type: "input", text: "Tangents PA and PB are drawn from an external point P to a circle with centre O. ∠APB = 40° and C is a point on the major arc AB. Find ∠ACB. (°)", answer: "70", topic: "Tangent theorems & chord proofs" }
       ]
     },
     {
@@ -462,7 +463,8 @@ MathMagician.registerChapter(8, {
           text: "A circular pond has diameter 34 m. A straight wooden bridge (a chord) crosses the pond with its two ends 30 m apart. Find the perpendicular distance from the centre of the pond to the bridge, in metres.",
           answer: "8",
           topic: "Chord, radius & distance calculations"
-        }
+        },
+        { type: "input", text: "Two parallel chords of 24 cm and 10 cm lie on opposite sides of the centre of a circle with radius 13 cm.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":220,\"pts\":{\"O\":[0,0],\"A\":[-12,5],\"B\":[12,5],\"C\":[-5,-12],\"D\":[5,-12],\"M\":[0,5],\"N\":[0,-12]},\"circ\":[[\"O\",13]],\"seg\":[[\"A\",\"B\",\"ac\",null,\"24\"],[\"C\",\"D\",\"ac\",null,\"10\"],[\"M\",\"N\",\"mu dash\"],[\"O\",\"B\",\"mu dash\",null,\"13\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"dots\":[\"O\"],\"nolab\":[\"M\",\"N\",\"A\",\"B\",\"C\",\"D\"]}'></div>How far apart are the chords? (cm)", answer: "17", topic: "Chord, radius & distance calculations" }
       ]
     },
     {

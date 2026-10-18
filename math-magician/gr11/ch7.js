@@ -321,7 +321,8 @@ MathMagician.registerChapter(7, {
           text: "A sphere and a cone have equal volumes. The cone has r = 6 cm and h = 8 cm. Find the radius of the sphere, correct to 2 decimal places.",
           answer: "4.16",
           topic: "Volume & the effect of scale factor k"
-        }
+        },
+        { type: "input", text: "A cone and a cylinder have the same radius and the same volume. The cylinder is 5 cm high. How high is the cone? (cm)", answer: "15", topic: "Volume & the effect of scale factor k" }
       ]
     },
     {
@@ -466,7 +467,8 @@ MathMagician.registerChapter(7, {
           text: "A water reservoir is shaped like a cone with the point facing down, top radius 3 m and height 4 m. It is filled with water to a depth of 2 m (measured from the point). Find the volume of water, in terms of π (use similar triangles to find the water surface radius first).",
           answer: "1.5π",
           topic: "Composite shapes in context"
-        }
+        },
+        { type: "input", text: "A hemispherical bowl with a radius of 9 cm is full of soup. The soup is poured into cylindrical mugs with a radius of 3 cm and a height of 6 cm. How many mugs can be filled completely?", answer: "9", topic: "Composite shapes in context" }
       ]
     },
     {

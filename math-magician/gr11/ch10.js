@@ -388,7 +388,8 @@ MathMagician.registerChapter(10, {
           text: "A survey of 150 learners found: 60 play chess, 55 play checkers, 50 play cards. 15 play chess and cards, 8 play checkers and cards, 8 play all three, and 10 play none of the three sports. Find how many learners play chess only.",
           answer: "43",
           topic: "Venn diagrams for three events"
-        }
+        },
+        { type: "input", text: "Of 100 learners, 45 take Maths, 40 take Science and 35 take Art. 15 take Maths and Science, 10 take Maths and Art, 12 take Science and Art, and 5 take all three. How many take none of the three?", answer: "12", topic: "Venn diagrams for three events" }
       ]
     },
     {
@@ -510,7 +511,8 @@ MathMagician.registerChapter(10, {
           answer: "1560000",
           topic: "Fundamental counting principle"
         },
-        { type: "input", text: "How many 4-digit even numbers can be formed from the digits 1, 2, 3, 4, 5, 6 and 7 if no digit may be repeated?", answer: "360", topic: "Fundamental counting principle" }
+        { type: "input", text: "How many 4-digit even numbers can be formed from the digits 1, 2, 3, 4, 5, 6 and 7 if no digit may be repeated?", answer: "360", topic: "Fundamental counting principle" },
+        { type: "input", text: "Three-letter codes are made from the letters A, B, C, D and E with no letter repeated. How many codes contain the letter A?", answer: "36", topic: "Fundamental counting principle" }
       ]
     }
   ],

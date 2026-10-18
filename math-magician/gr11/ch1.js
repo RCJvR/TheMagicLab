@@ -180,7 +180,8 @@ MathMagician.registerChapter(1, {
           text: "Simplify to a single rational number: (3 − √5)/(3 + √5) + (3 + √5)/(3 − √5)",
           answer: "7",
           topic: "Rational exponents & surd operations"
-        }
+        },
+        { type: "input", text: "Simplify 1/(√3 − √2) + 1/(√3 + √2). Give the answer in simplest surd form.", answer: "2√3", topic: "Rational exponents & surd operations" }
       ]
     },
     {
@@ -338,7 +339,8 @@ MathMagician.registerChapter(1, {
           answer: "20%",
           altAnswers: ["20", "20 %"],
           topic: "Surd equations & exponential applications"
-        }
+        },
+        { type: "input", text: "Under water, the intensity of light halves every 3 m of depth. At what depth is the intensity 1/16 of the intensity at the surface? (m)", answer: "12", topic: "Surd equations & exponential applications" }
       ]
     },
     {

@@ -141,7 +141,8 @@ MathMagician.registerChapter(3, {
           answer: "2n² − n + 3",
           altAnswers: ["2n²-n+3", "2n² - n + 3", "Tₙ = 2n² − n + 3"],
           topic: "Quadratic sequences"
-        }
+        },
+        { type: "input", text: "The quadratic sequence 1 ; 6 ; 15 ; 28 ; … continues. Which term is the first one greater than 500? Give its position n.", answer: "17", topic: "Quadratic sequences" }
       ]
     },
     {
@@ -289,7 +290,8 @@ MathMagician.registerChapter(3, {
           options: ["A is quadratic, B is geometric", "Both are quadratic", "A is geometric, B is quadratic", "Both are linear"],
           answer: 0,
           topic: "Working with quadratic sequences"
-        }
+        },
+        { type: "input", text: "The first differences of a quadratic sequence are 3 ; 7 ; 11 ; … and T₁ = 2. Find T₁₀.", answer: "173", topic: "Working with quadratic sequences" }
       ]
     },
     {

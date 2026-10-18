@@ -128,7 +128,8 @@ MathMagician.registerChapter(9, {
           answer: "10%",
           altAnswers: ["10", "10 %"],
           topic: "Depreciation & timelines"
-        }
+        },
+        { type: "input", text: "A machine bought for R200 000 depreciates at 12% p.a. on the reducing balance. After how many whole years is its value first less than half of what it cost?", answer: "6", topic: "Depreciation & timelines" }
       ]
     },
     {
@@ -278,7 +279,8 @@ MathMagician.registerChapter(9, {
           answer: "8.00",
           altAnswers: ["8", "8%", "8.00%"],
           topic: "Nominal & effective interest rates"
-        }
+        },
+        { type: "input", text: "Bank A offers 12% p.a. compounded monthly. Bank B offers 12,5% p.a. compounded annually. By how many percentage points is the better effective rate higher? (2 decimal places)", answer: "0.18", altAnswers: ["0,18"], topic: "Nominal & effective interest rates" }
       ]
     },
     {

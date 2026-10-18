@@ -15,7 +15,8 @@ MMHelp.add(11, 6, {
     ["R","m4:0","cos A = (b² + c² − a²) ÷ 2bc.","cos A = (b² + c² − a²) ÷ 2bc.",["(49 + 36 − 25) ÷ (2 × 7 × 6)","= (49 + 36 − 25)/84"],["(49 + 36 − 25) ÷ (2 × 7 × 6)","= (49 + 36 − 25)/84"]],
     ["R","i:12","Area = ½bc sin A.","Oppervlakte = ½bc sin A.",["½ × 4 × 6 × sin 90°","= 12"],["½ × 4 × 6 × sin 90°","= 12"]],
     ["K","m4:1","When can the sine rule not be used?","Wanneer kan die sinusreël nie gebruik word nie?",["With SAS or SSS there is no side-angle pair, so use the cosine rule."],["Met SHS of SSS is daar geen sy-hoek-paar nie, dus gebruik die cosinusreël."]],
-    ["R","i:51","sin C/c = sin A/a.","sin C/c = sin A/a.",["sin C = 8 sin 75° ÷ 10 ≈ 0.7727","C ≈ 50.6° ≈ 51°"],["sin C = 8 sin 75° ÷ 10 ≈ 0,7727","C ≈ 50,6° ≈ 51°"]]
+    ["R","i:51","sin C/c = sin A/a.","sin C/c = sin A/a.",["sin C = 8 sin 75° ÷ 10 ≈ 0.7727","C ≈ 50.6° ≈ 51°"],["sin C = 8 sin 75° ÷ 10 ≈ 0,7727","C ≈ 50,6° ≈ 51°"]],
+    ["P","i:17.32","Find one angle with the cosine rule, then use the area rule.","Vind een hoek met die cosinusreël en gebruik dan die oppervlaktereël.",["Angle between 5 and 8: cos A = (25 + 64 − 49) ÷ 80 = ½ → A = 60°","Area = ½ × 5 × 8 × sin 60° = 10√3 ≈ 17.32"],["Hoek tussen 5 en 8: cos A = (25 + 64 − 49) ÷ 80 = ½ → A = 60°","Oppervlakte = ½ × 5 × 8 × sin 60° = 10√3 ≈ 17,32"]]
   ],
   "602": [
     ["K","m4:0","cos is positive in Q1 and Q4.","cos is positief in K1 en K4.",["θ = ±40° + 360°n"],["θ = ±40° + 360°n"]],
@@ -25,6 +26,7 @@ MMHelp.add(11, 6, {
     ["K","m4:0","1/cos θ is undefined when cos θ = 0.","1/cos θ is ongedefinieerd as cos θ = 0.",["cos θ = 0 at 90° and 270°"],["cos θ = 0 by 90° en 270°"]],
     ["K","i:60","cos 60° = ½.","cos 60° = ½.",["θ = 60°"],["θ = 60°"]],
     ["C","i:60","Let k = cos θ and factorise.","Laat k = cos θ en faktoriseer.",["(2k − 1)(k − 1) = 0 → cos θ = ½ or cos θ = 1","cos θ = 1 gives 0° or 360° (not in the open interval)","cos θ = ½ → θ = 60° (smallest)"],["(2k − 1)(k − 1) = 0 → cos θ = ½ of cos θ = 1","cos θ = 1 gee 0° of 360° (nie in die oop interval nie)","cos θ = ½ → θ = 60° (kleinste)"]],
-    ["P","i:270","Divide both sides by cos x (cos x = 0 is not a solution).","Deel albei kante deur cos x (cos x = 0 is nie 'n oplossing nie).",["tan x = 1 → reference angle 45°","tan is positive in Q1 and Q3: x = 45° or 225°","Sum = 270°"],["tan x = 1 → verwysingshoek 45°","tan is positief in K1 en K3: x = 45° of 225°","Som = 270°"]]
+    ["P","i:270","Divide both sides by cos x (cos x = 0 is not a solution).","Deel albei kante deur cos x (cos x = 0 is nie 'n oplossing nie).",["tan x = 1 → reference angle 45°","tan is positive in Q1 and Q3: x = 45° or 225°","Sum = 270°"],["tan x = 1 → verwysingshoek 45°","tan is positief in K1 en K3: x = 45° of 225°","Som = 270°"]],
+    ["P","i:4","Write the general solution, then list the values in the interval.","Skryf die algemene oplossing en lys dan die waardes in die interval.",["sin x = ½ → x = 30° + 360°k or x = 150° + 360°k","In [−360° ; 360°]: −330°, −210°, 30°, 150° → 4 solutions"],["sin x = ½ → x = 30° + 360°k of x = 150° + 360°k","In [−360° ; 360°]: −330°, −210°, 30°, 150° → 4 oplossings"]]
   ]
 });

@@ -134,7 +134,8 @@ MathMagician.registerChapter(4, {
           answer: "-1",
           altAnswers: ["−1"],
           topic: "Equation of a line & inclination"
-        }
+        },
+        { type: "input", text: "A line with an angle of inclination of 135° passes through (2 ; 5). Find the area of the triangle it forms with the two axes.", answer: "24.5", altAnswers: ["24,5","49/2"], topic: "Equation of a line & inclination" }
       ]
     },
     {
@@ -292,7 +293,8 @@ MathMagician.registerChapter(4, {
           answer: "-1",
           altAnswers: ["−1"],
           topic: "Parallel, perpendicular & complex problems"
-        }
+        },
+        { type: "input", text: "A(0 ; 0), B(4 ; 2) and C(k ; 8) are given. For which value of k is ∠ABC = 90°?", answer: "1", topic: "Parallel, perpendicular & complex problems" }
       ]
     },
     {

@@ -316,7 +316,8 @@ MathMagician.registerChapter(2, {
           options: ["(4 ; 3) en (−3 ; −4)", "(4 ; 3) en (3 ; 4)", "(5 ; 4) en (−4 ; −5)", "(3 ; 2) en (−2 ; −3)"],
           answer: 0,
           topic: "Kwadratiese ongelykhede & gelyktydige vergelykings"
-        }
+        },
+        { type: "mc", text: "Vir watter waardes van k sny die lyn y = x + k die parabool y = x² by twee verskillende punte?", options: ["k > −1/4","k < −1/4","k > 1/4","k ≥ −1/4"], answer: 0, topic: "Kwadratiese ongelykhede & gelyktydige vergelykings" }
       ]
     },
     {
@@ -575,7 +576,8 @@ MathMagician.registerChapter(2, {
           answer: "8",
           topic: "Oplossing van probleme met kwadratiese vergelykings"
         },
-        { type: "input", text: "Die som van 'n positiewe getal en sy omgekeerde is 13/6. Bepaal die grootste van die twee moontlike getalle.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Oplossing van probleme met kwadratiese vergelykings" }
+        { type: "input", text: "Die som van 'n positiewe getal en sy omgekeerde is 13/6. Bepaal die grootste van die twee moontlike getalle.", answer: "3/2", altAnswers: ["1.5","1,5"], topic: "Oplossing van probleme met kwadratiese vergelykings" },
+        { type: "input", text: "'n Reghoekige tuin het 'n omtrek van 34 m en 'n hoeklyn van 13 m. Bereken sy oppervlakte. (m²)", answer: "60", topic: "Oplossing van probleme met kwadratiese vergelykings" }
       ]
     }
   ],

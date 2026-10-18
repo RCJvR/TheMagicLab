@@ -16,7 +16,8 @@ MMHelp.add(11, 11, {
     ["K","m4:2","Which measure resists outliers?","Watter maatstaf weerstaan uitskieters?",["The median"],["Die mediaan"]],
     ["R","i:2.5","(value − mean) ÷ σ.","(waarde − gemiddeld) ÷ σ.",["(30 − 20) ÷ 4","= 2.5"],["(30 − 20) ÷ 4","= 2,5"]],
     ["K","m4:2","The long tail is on the right.","Die lang stert is regs.",["High values pull the mean above the median → the mean is largest."],["Hoë waardes trek die gemiddeld bo die mediaan → die gemiddeld is die grootste."]],
-    ["C","i:","n = 7: the median is the 4th value.","n = 7: die mediaan is die 4de waarde.",["Q1 = 15, Q3 = 24 → IQR = 9","Upper fence = 24 + 13.5 = 37.5","60 > 37.5 → yes"],["Q1 = 15, Q3 = 24 → IKO = 9","Boonste grens = 24 + 13,5 = 37,5","60 > 37,5 → ja"]]
+    ["C","i:","n = 7: the median is the 4th value.","n = 7: die mediaan is die 4de waarde.",["Q1 = 15, Q3 = 24 → IQR = 9","Upper fence = 24 + 13.5 = 37.5","60 > 37.5 → yes"],["Q1 = 15, Q3 = 24 → IKO = 9","Boonste grens = 24 + 13,5 = 37,5","60 > 37,5 → ja"]],
+    ["P","i:71","Outliers lie beyond Q3 + 1.5 × IQR.","Uitskieters lê verder as Q3 + 1,5 × IKO.",["IQR = 40 − 20 = 20","Upper fence = 40 + 1.5 × 20 = 70","Values above 70 → smallest whole number 71"],["IKO = 40 − 20 = 20","Boonste grens = 40 + 1,5 × 20 = 70","Waardes bo 70 → kleinste heelgetal 71"]]
   ],
   "1102": [
     ["K","m4:0","Smaller σ = less spread.","Kleiner σ = minder verspreiding.",["Class X"],["Klas X"]],
@@ -24,7 +25,8 @@ MMHelp.add(11, 11, {
     ["K","i:","Which values stay close together?","Watter waardes bly naby mekaar?",["Town P varies between 39 and 43; Town Q between 10 and 80 → P"],["Dorp P wissel tussen 39 en 43; Dorp Q tussen 10 en 80 → P"]],
     ["K","m4:0","Real-life contexts.","Werklike kontekste.",["Health, social, economic, cultural, political and environmental issues"],["Gesondheids-, sosiale, ekonomiese, kulturele, politieke en omgewingskwessies"]],
     ["R","m4:0","How many σ is 54 from the mean?","Hoeveel σ is 54 van die gemiddeld?",["A: 4 ÷ 2 = 2σ away (unusual)","B: 4 ÷ 9 ≈ 0.44σ away (ordinary)"],["A: 4 ÷ 2 = 2σ weg (ongewoon)","B: 4 ÷ 9 ≈ 0,44σ weg (gewoon)"]],
-    ["C","i:20.43","Use the deviations from 54.","Gebruik die afwykings van 54.",["P: (−4)², (−2)², 0, 2², 4² → 40 → σ_P = √8 ≈ 2.83","Q: 34², 14², 0, 14², 34² → 2 704 → σ_Q = √540.8 ≈ 23.26","23.26 − 2.83 ≈ 20.43"],["P: (−4)², (−2)², 0, 2², 4² → 40 → σ_P = √8 ≈ 2,83","Q: 34², 14², 0, 14², 34² → 2 704 → σ_Q = √540,8 ≈ 23,26","23,26 − 2,83 ≈ 20,43"]]
+    ["C","i:20.43","Use the deviations from 54.","Gebruik die afwykings van 54.",["P: (−4)², (−2)², 0, 2², 4² → 40 → σ_P = √8 ≈ 2.83","Q: 34², 14², 0, 14², 34² → 2 704 → σ_Q = √540.8 ≈ 23.26","23.26 − 2.83 ≈ 20.43"],["P: (−4)², (−2)², 0, 2², 4² → 40 → σ_P = √8 ≈ 2,83","Q: 34², 14², 0, 14², 34² → 2 704 → σ_Q = √540,8 ≈ 23,26","23,26 − 2,83 ≈ 20,43"]],
+    ["P","i:1.41","Find the fifth value first.","Vind eers die vyfde waarde.",["Total 50 → fifth value = 50 − 40 = 10","Squared deviations: 4, 1, 1, 4, 0 → sum 10","σ = √(10/5) = √2 ≈ 1.41"],["Totaal 50 → vyfde waarde = 50 − 40 = 10","Gekwadreerde afwykings: 4, 1, 1, 4, 0 → som 10","σ = √(10/5) = √2 ≈ 1,41"]]
   ],
   "1103": [
     ["K","m4:0","Each value counts f times.","Elke waarde tel f keer.",["x̄ = Σ(fx) ÷ Σf"],["x̄ = Σ(fx) ÷ Σf"]],

@@ -258,7 +258,8 @@ MathMagician.registerChapter(12, {
           answer: "(10 ; 6)",
           altAnswers: ["(10;6)", "10;6", "x=10, y=6"],
           topic: "Opstel van lineêre-programmeringprobleme"
-        }
+        },
+        { type: "input", text: "'n Boer het 100 ha. Mielies het 2 werkers per hektaar nodig en koring 1 werker per hektaar; 160 werkers is beskikbaar. Mielies gee 'n wins van R600 per hektaar en koring R400 per hektaar. Wat is die maksimum wins? (R)", answer: "52000", topic: "Opstel van lineêre-programmeringprobleme" }
       ]
     },
     {
@@ -521,7 +522,8 @@ MathMagician.registerChapter(12, {
           answer: "590",
           topic: "Optimering — oplos van LP-probleme"
         },
-        { type: "input", text: "Die beperkings is x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 en y ≥ 0. Die haalbare gebied is ingekleur.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Bepaal die maksimum waarde van P = 3x + 2y.", answer: "24", topic: "Optimering — oplos van LP-probleme" }
+        { type: "input", text: "Die beperkings is x + 2y ≤ 16, 2x + y ≤ 14, x ≥ 0 en y ≥ 0. Die haalbare gebied is ingekleur.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":250,\"view\":[0,0,16,14],\"pad\":26,\"axes\":{\"tx\":2,\"ty\":2,\"o\":false},\"pts\":{\"P\":[0,8],\"Q\":[16,0],\"R\":[0,14],\"S\":[7,0],\"K\":[4,6]},\"poly\":[[[0,0],[7,0],\"K\",[0,8]]],\"seg\":[[\"P\",\"Q\",\"ac\"],[\"R\",\"S\",\"hl\"]],\"txt\":[[11.5,3.6,\"x + 2y = 16\",\"ac\"],[6.2,10,\"2x + y = 14\",\"hl\"]],\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":[\"K\"]}'></div>Bepaal die maksimum waarde van P = 3x + 2y.", answer: "24", topic: "Optimering — oplos van LP-probleme" },
+        { type: "input", text: "Die haalbare gebied word gegee deur x + y ≤ 10, x ≤ 6, y ≤ 8, x ≥ 0 en y ≥ 0. Vir watter waarde van k bereik P = kx + y sy maksimum by albei (6 ; 4) en (2 ; 8)?", answer: "1", topic: "Optimering — oplos van LP-probleme" }
       ]
     }
   ],

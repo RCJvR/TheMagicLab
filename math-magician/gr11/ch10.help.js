@@ -23,7 +23,8 @@ MMHelp.add(11, 10, {
     ["K","m4:0","Work from the inside out.","Werk van binne na buite.",["Start with the centre region A ∩ B ∩ C."],["Begin met die middelste streek A ∩ B ∩ C."]],
     ["C","i:10","Use the three-event addition rule.","Gebruik die optelreël vir drie gebeurtenisse.",["n(S ∪ R ∪ C) = 60 + 50 + 45 − 20 − 15 − 18 + 8 = 110","None: 120 − 110 = 10"],["n(S ∪ R ∪ K) = 60 + 50 + 45 − 20 − 15 − 18 + 8 = 110","Geeneen: 120 − 110 = 10"]],
     ["K","m4:0","Every learner is in exactly one region.","Elke leerder is in presies een streek.",["All regions add up to n(S)."],["Al die streke tel op tot n(S)."]],
-    ["P","i:43","Find the missing chess-and-checkers number first.","Vind eers die ontbrekende skaak-en-dambord-getal.",["At least one: 150 − 10 = 140 → 140 = 60 + 55 + 50 − x − 15 − 8 + 8 → x = 10","Chess only = 60 − (10 − 8) − (15 − 8) − 8 = 43"],["Ten minste een: 150 − 10 = 140 → 140 = 60 + 55 + 50 − x − 15 − 8 + 8 → x = 10","Net skaak = 60 − (10 − 8) − (15 − 8) − 8 = 43"]]
+    ["P","i:43","Find the missing chess-and-checkers number first.","Vind eers die ontbrekende skaak-en-dambord-getal.",["At least one: 150 − 10 = 140 → 140 = 60 + 55 + 50 − x − 15 − 8 + 8 → x = 10","Chess only = 60 − (10 − 8) − (15 − 8) − 8 = 43"],["Ten minste een: 150 − 10 = 140 → 140 = 60 + 55 + 50 − x − 15 − 8 + 8 → x = 10","Net skaak = 60 − (10 − 8) − (15 − 8) − 8 = 43"]],
+    ["P","i:12","Use the addition rule for three sets.","Gebruik die optelreël vir drie versamelings.",["At least one: 45 + 40 + 35 − 15 − 10 − 12 + 5 = 88","None: 100 − 88 = 12"],["Ten minste een: 45 + 40 + 35 − 15 − 10 − 12 + 5 = 88","Geeneen: 100 − 88 = 12"]]
   ],
   "1003": [
     ["R","m4:1","Multiply the choices.","Vermenigvuldig die keuses.",["4 × 5 × 3","= 60"],["4 × 5 × 3","= 60"]],
@@ -32,6 +33,7 @@ MMHelp.add(11, 10, {
     ["K","m4:0","Letters and digits are chosen independently.","Letters en syfers word onafhanklik gekies.",["26 × 26 × 26 × 10 × 10 × 10 = 26³ × 10³"],["26 × 26 × 26 × 10 × 10 × 10 = 26³ × 10³"]],
     ["R","i:5040","Count all the PINs.","Tel al die PIN'e.",["10 × 9 × 8 × 7 = 5 040","P('1234') = 1/5 040"],["10 × 9 × 8 × 7 = 5 040","P('1234') = 1/5 040"]],
     ["C","i:1560000","Count each part, then multiply.","Tel elke deel en vermenigvuldig dan.",["Letters: 26 × 25 × 24 = 15 600","Digits: 10 × 10 = 100","15 600 × 100 = 1 560 000"],["Letters: 26 × 25 × 24 = 15 600","Syfers: 10 × 10 = 100","15 600 × 100 = 1 560 000"]],
-    ["P","i:360","Fill the restricted place (the last digit) first.","Vul eers die beperkte plek (die laaste syfer).",["Last digit: 2, 4 or 6 → 3 choices","The other three places: 6 × 5 × 4 = 120","3 × 120 = 360"],["Laaste syfer: 2, 4 of 6 → 3 keuses","Die ander drie plekke: 6 × 5 × 4 = 120","3 × 120 = 360"]]
+    ["P","i:360","Fill the restricted place (the last digit) first.","Vul eers die beperkte plek (die laaste syfer).",["Last digit: 2, 4 or 6 → 3 choices","The other three places: 6 × 5 × 4 = 120","3 × 120 = 360"],["Laaste syfer: 2, 4 of 6 → 3 keuses","Die ander drie plekke: 6 × 5 × 4 = 120","3 × 120 = 360"]],
+    ["P","i:36","Count all codes, then subtract those without A.","Tel al die kodes en trek dan dié sonder A af.",["All codes: 5 × 4 × 3 = 60","Without A: 4 × 3 × 2 = 24","With A: 60 − 24 = 36"],["Alle kodes: 5 × 4 × 3 = 60","Sonder A: 4 × 3 × 2 = 24","Met A: 60 − 24 = 36"]]
   ]
 });

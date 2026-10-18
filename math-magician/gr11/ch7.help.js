@@ -17,7 +17,8 @@ MMHelp.add(11, 7, {
     ["K","m4:0","V = πr²h is directly proportional to h.","V = πr²h is direk eweredig aan h.",["h × 3 → V × 3"],["h × 3 → V × 3"]],
     ["R","i:113.10","V = (4/3)πr³","V = (4/3)πr³",["(4/3) × π × 27 = 36π","≈ 113.10 cm³"],["(4/3) × π × 27 = 36π","≈ 113,10 cm³"]],
     ["R","m4:0","Combine both changes.","Kombineer albei veranderinge.",["r × 2 → r² × 4","4 × ½ = 2"],["r × 2 → r² × 4","4 × ½ = 2"]],
-    ["C","i:4.16","Set the volumes equal.","Stel die volumes gelyk.",["Cone: ⅓π × 36 × 8 = 96π","(4/3)πr³ = 96π → r³ = 72 → r ≈ 4.16 cm"],["Keël: ⅓π × 36 × 8 = 96π","(4/3)πr³ = 96π → r³ = 72 → r ≈ 4,16 cm"]]
+    ["C","i:4.16","Set the volumes equal.","Stel die volumes gelyk.",["Cone: ⅓π × 36 × 8 = 96π","(4/3)πr³ = 96π → r³ = 72 → r ≈ 4.16 cm"],["Keël: ⅓π × 36 × 8 = 96π","(4/3)πr³ = 96π → r³ = 72 → r ≈ 4,16 cm"]],
+    ["P","i:15","Set the two volume formulas equal.","Stel die twee volumeformules gelyk.",["⅓πr²h = πr² × 5","⅓h = 5 → h = 15 cm"],["⅓πr²h = πr² × 5","⅓h = 5 → h = 15 cm"]]
   ],
   "702": [
     ["R","m4:0","1 ℓ = 1 000 cm³.","1 ℓ = 1 000 cm³.",["40 × 30 × 20 = 24 000 cm³","24 000 ÷ 1 000 = 24 ℓ"],["40 × 30 × 20 = 24 000 cm³","24 000 ÷ 1 000 = 24 ℓ"]],
@@ -27,7 +28,8 @@ MMHelp.add(11, 7, {
     ["R","i:968","SA = 2πr² + 2πrh.","BO = 2πr² + 2πrh.",["2 × 3.142 × 49 ≈ 307.9","2 × 3.142 × 7 × 15 ≈ 659.8","Total ≈ 968 cm²"],["2 × 3,142 × 49 ≈ 307,9","2 × 3,142 × 7 × 15 ≈ 659,8","Totaal ≈ 968 cm²"]],
     ["R","m4:0","1 kℓ = 1 m³.","1 kℓ = 1 m³.",["8 × 4 × 1.5 = 48 m³","= 48 kℓ"],["8 × 4 × 1,5 = 48 m³","= 48 kℓ"]],
     ["C","i:6","Find the area, divide by 6, then round up.","Vind die oppervlakte, deel deur 6 en rond dan op.",["SA = 2π(1.4)² + 2π(1.4)(2.5) ≈ 12.32 + 21.99 = 34.31 m²","34.31 ÷ 6 ≈ 5.72 → 6 litres"],["BO = 2π(1,4)² + 2π(1,4)(2,5) ≈ 12,32 + 21,99 = 34,31 m²","34,31 ÷ 6 ≈ 5,72 → 6 liter"]],
-    ["P","i:1.5","The water forms a smaller similar cone.","Die water vorm 'n kleiner gelykvormige keël.",["r/2 = 3/4 → r = 1.5 m","V = ⅓π × 1.5² × 2 = ⅓π × 4.5 = 1.5π m³"],["r/2 = 3/4 → r = 1,5 m","V = ⅓π × 1,5² × 2 = ⅓π × 4,5 = 1,5π m³"]]
+    ["P","i:1.5","The water forms a smaller similar cone.","Die water vorm 'n kleiner gelykvormige keël.",["r/2 = 3/4 → r = 1.5 m","V = ⅓π × 1.5² × 2 = ⅓π × 4.5 = 1.5π m³"],["r/2 = 3/4 → r = 1,5 m","V = ⅓π × 1,5² × 2 = ⅓π × 4,5 = 1,5π m³"]],
+    ["P","i:9","Compare the two volumes in terms of π.","Vergelyk die twee volumes in terme van π.",["Bowl: ⅔π × 9³ = 486π cm³","Mug: π × 3² × 6 = 54π cm³","486π ÷ 54π = 9 mugs"],["Bak: ⅔π × 9³ = 486π cm³","Beker: π × 3² × 6 = 54π cm³","486π ÷ 54π = 9 bekers"]]
   ],
   "703": [
     ["R","m4:0","The height is opposite the 60° angle.","Die hoogte is teenoor die 60°-hoek.",["tan 60° = h/5","h = 5 tan 60°"],["tan 60° = h/5","h = 5 tan 60°"]],

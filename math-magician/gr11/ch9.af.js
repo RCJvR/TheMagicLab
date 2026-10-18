@@ -128,7 +128,8 @@ MathMagician.registerChapter(9, {
           answer: "10%",
           altAnswers: ["10", "10 %"],
           topic: "Waardevermindering & tydlyne"
-        }
+        },
+        { type: "input", text: "'n Masjien wat vir R200 000 gekoop is, verminder in waarde teen 12% p.j. op die verminderende saldo. Na hoeveel volle jare is sy waarde vir die eerste keer minder as die helfte van wat dit gekos het?", answer: "6", topic: "Waardevermindering & tydlyne" }
       ]
     },
     {
@@ -278,7 +279,8 @@ MathMagician.registerChapter(9, {
           answer: "8.00",
           altAnswers: ["8", "8%", "8.00%"],
           topic: "Nominale & effektiewe rentekoerse"
-        }
+        },
+        { type: "input", text: "Bank A bied 12% p.j. maandeliks saamgestel. Bank B bied 12,5% p.j. jaarliks saamgestel. Met hoeveel persentasiepunte is die beter effektiewe koers hoër? (2 desimale plekke)", answer: "0.18", altAnswers: ["0,18"], topic: "Nominale & effektiewe rentekoerse" }
       ]
     },
     {

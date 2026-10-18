@@ -350,7 +350,8 @@ MathMagician.registerChapter(6, {
           text: "In driehoek ABC is a = 10, c = 8, en A = 75°. Gebruik die sinusreël om hoek C te vind (tot die naaste graad).",
           answer: "51",
           topic: "Sinusreël, kosinusreël en oppervlakte-reël"
-        }
+        },
+        { type: "input", text: "'n Driehoek het sye 5, 7 en 8.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":190,\"pts\":{\"A\":[0,0],\"B\":[8,0],\"C\":[2.5,4.33]},\"seg\":[[\"A\",\"B\",null,null,\"8\"],[\"B\",\"C\",null,null,\"7\"],[\"C\",\"A\",null,null,\"5\"]]}'></div>Bereken sy oppervlakte, tot 2 desimale plekke.", answer: "17.32", altAnswers: ["17,32","10√3"], topic: "Sinusreël, kosinusreël en oppervlakte-reël" }
       ]
     },
     {
@@ -504,7 +505,8 @@ MathMagician.registerChapter(6, {
           answer: "60",
           topic: "Oplos van trigonometriese vergelykings"
         },
-        { type: "input", text: "Los sin x = cos x op vir x ∈ [0° ; 360°]. Wat is die som van al die oplossings? (°)", answer: "270", topic: "Oplos van trigonometriese vergelykings" }
+        { type: "input", text: "Los sin x = cos x op vir x ∈ [0° ; 360°]. Wat is die som van al die oplossings? (°)", answer: "270", topic: "Oplos van trigonometriese vergelykings" },
+        { type: "input", text: "Hoeveel oplossings het 2 sin x = 1 vir x ∈ [−360° ; 360°]?", answer: "4", topic: "Oplos van trigonometriese vergelykings" }
       ]
     }
   ],

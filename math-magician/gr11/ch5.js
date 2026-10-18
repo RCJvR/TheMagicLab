@@ -287,7 +287,8 @@ MathMagician.registerChapter(5, {
           text: "A hyperbola y = a/(x−p) + q has asymptotes x = 3 and y = −2, and passes through (5; −1). Find a.",
           answer: "2",
           topic: "Quadratic, hyperbolic & exponential functions"
-        }
+        },
+        { type: "input", text: "The graphs of f(x) = 2ˣ and g(x) = 8 − 2ˣ intersect at P. Find the x-coordinate of P.", answer: "2", topic: "Quadratic, hyperbolic & exponential functions" }
       ]
     },
     {
@@ -735,7 +736,8 @@ MathMagician.registerChapter(5, {
           altAnswers: ["−4"],
           topic: "Sketching functions: intercepts, domain & range"
         },
-        { type: "input", text: "The graph of f(x) = 2/(x − 1) + 3 is shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>The line y = −x + k is an axis of symmetry of f. Find k.", answer: "4", topic: "Sketching functions: intercepts, domain & range" }
+        { type: "input", text: "The graph of f(x) = 2/(x − 1) + 3 is shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>The line y = −x + k is an axis of symmetry of f. Find k.", answer: "4", topic: "Sketching functions: intercepts, domain & range" },
+        { type: "mc", text: "f(x) = −2(x − 1)² + 8. For which values of k does the equation f(x) = k have two different real roots?", options: ["k < 8","k > 8","k = 8","k ≤ 8"], answer: 0, topic: "Sketching functions: intercepts, domain & range" }
       ]
     }
   ],

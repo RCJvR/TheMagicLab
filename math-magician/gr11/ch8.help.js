@@ -17,7 +17,8 @@ MMHelp.add(11, 8, {
     ["K","m4:0","A converse proves the starting condition.","'n Omgekeerde bewys die beginvoorwaarde.",["If the angle condition holds, the line is a tangent."],["As die hoekvoorwaarde geld, is die lyn 'n raaklyn."]],
     ["K","m4:0","Think about the isosceles triangle with two radii.","Dink aan die gelykbenige driehoek met twee radiusse.",["The perpendicular from the centre bisects the chord."],["Die loodlyn vanaf die middelpunt halveer die koord."]],
     ["R","i:130","The angles of OAPB add up to 360°.","Die hoeke van OAPB tel op tot 360°.",["∠OAP = ∠OBP = 90° (tan ⊥ radius)","∠AOB = 360° − 180° − 50° = 130°"],["∠OAP = ∠OBP = 90° (raakl ⊥ radius)","∠AOB = 360° − 180° − 50° = 130°"]],
-    ["C","i:10","Find PB first.","Vind eers PB.",["12² = 8 × PB → PB = 144 ÷ 8 = 18 cm","AB = 18 − 8 = 10 cm"],["12² = 8 × PB → PB = 144 ÷ 8 = 18 cm","AB = 18 − 8 = 10 cm"]]
+    ["C","i:10","Find PB first.","Vind eers PB.",["12² = 8 × PB → PB = 144 ÷ 8 = 18 cm","AB = 18 − 8 = 10 cm"],["12² = 8 × PB → PB = 144 ÷ 8 = 18 cm","AB = 18 − 8 = 10 cm"]],
+    ["P","i:70","Find ∠AOB in quadrilateral OAPB first.","Vind eers ∠AOB in vierhoek OAPB.",["∠OAP = ∠OBP = 90° (tan ⊥ radius) → ∠AOB = 360° − 180° − 40° = 140°","∠ACB = ½ × 140° = 70° (∠ at centre = 2 × ∠ at circumference)"],["∠OAP = ∠OBP = 90° (raakl ⊥ radius) → ∠AOB = 360° − 180° − 40° = 140°","∠ACB = ½ × 140° = 70° (∠ by middelpunt = 2 × ∠ by omtrek)"]]
   ],
   "802": [
     ["R","m4:0","Half the chord, the distance and the radius form a right triangle.","Die helfte van die koord, die afstand en die radius vorm 'n reghoekige driehoek.",["Half chord = 15 mm","r = √(15² + 8²) = √289 = 17 mm"],["Halwe koord = 15 mm","r = √(15² + 8²) = √289 = 17 mm"]],
@@ -26,7 +27,8 @@ MMHelp.add(11, 8, {
     ["R","i:8.0","Half chord = 6 cm.","Halwe koord = 6 cm.",["d = √(10² − 6²) = √64","= 8.0 cm"],["d = √(10² − 6²) = √64","= 8,0 cm"]],
     ["K","m4:0","Equal chords...","Gelyke koorde...",["...are equidistant from the centre."],["...is ewe ver van die middelpunt."]],
     ["C","i:2","Find each chord's distance from the centre.","Vind elke koord se afstand vanaf die middelpunt.",["AB: √(100 − 64) = 6 cm; CD: √(100 − 36) = 8 cm","Same side: 8 − 6 = 2 cm"],["AB: √(100 − 64) = 6 cm; CD: √(100 − 36) = 8 cm","Dieselfde kant: 8 − 6 = 2 cm"]],
-    ["R","i:8","r = 17 m and half the chord = 15 m.","r = 17 m en halwe koord = 15 m.",["d = √(17² − 15²) = √64","= 8 m"],["d = √(17² − 15²) = √64","= 8 m"]]
+    ["R","i:8","r = 17 m and half the chord = 15 m.","r = 17 m en halwe koord = 15 m.",["d = √(17² − 15²) = √64","= 8 m"],["d = √(17² − 15²) = √64","= 8 m"]],
+    ["P","i:17","The perpendicular from the centre bisects each chord.","Die loodlyn vanaf die middelpunt halveer elke koord.",["24 cm chord: √(13² − 12²) = 5 cm from O","10 cm chord: √(13² − 5²) = 12 cm from O","Opposite sides: 5 + 12 = 17 cm"],["24 cm-koord: √(13² − 12²) = 5 cm van O af","10 cm-koord: √(13² − 5²) = 12 cm van O af","Weerskante: 5 + 12 = 17 cm"]]
   ],
   "803": [
     ["K","m4:0","What do you know about OA and OB?","Wat weet jy van OA en OB?",["OA = OB (radii) → isosceles"],["OA = OB (radiusse) → gelykbenig"]],

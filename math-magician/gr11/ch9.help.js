@@ -8,7 +8,8 @@ MMHelp.add(11, 9, {
     ["R","m4:0","Annual depreciation ÷ cost.","Jaarlikse waardevermindering ÷ koste.",["(200 000 − 50 000) ÷ 5 = R30 000 per year","30 000 ÷ 200 000 = 15%"],["(200 000 − 50 000) ÷ 5 = R30 000 per jaar","30 000 ÷ 200 000 = 15%"]],
     ["K","m4:1","Money at different times can't be added directly.","Geld op verskillende tye kan nie direk opgetel word nie.",["A timeline moves all amounts to the same point in time."],["'n Tydlyn skuif alle bedrae na dieselfde tydstip."]],
     ["C","i:6","Try values of n in 180 000(0.82)ⁿ.","Probeer waardes van n in 180 000(0,82)ⁿ.",["n = 5: ≈ R66 733 (still above)","n = 6: ≈ R54 721 → year 6"],["n = 5: ≈ R66 733 (nog bo)","n = 6: ≈ R54 721 → jaar 6"]],
-    ["C","i:10","Solve (1 − i)³ = A ÷ P.","Los op: (1 − i)³ = A ÷ P.",["255 150 ÷ 350 000 = 0.729","∛0.729 = 0.9 → i = 10%"],["255 150 ÷ 350 000 = 0,729","∛0,729 = 0,9 → i = 10%"]]
+    ["C","i:10","Solve (1 − i)³ = A ÷ P.","Los op: (1 − i)³ = A ÷ P.",["255 150 ÷ 350 000 = 0.729","∛0.729 = 0.9 → i = 10%"],["255 150 ÷ 350 000 = 0,729","∛0,729 = 0,9 → i = 10%"]],
+    ["P","i:6","Solve 0.88ⁿ < 0.5.","Los op: 0,88ⁿ < 0,5.",["n > log 0.5 ÷ log 0.88 ≈ 5.42","So after 6 whole years (0.88⁵ ≈ 0.53, 0.88⁶ ≈ 0.46)"],["n > log 0,5 ÷ log 0,88 ≈ 5,42","Dus na 6 volle jare (0,88⁵ ≈ 0,53; 0,88⁶ ≈ 0,46)"]]
   ],
   "901": [
     ["R","m4:0","i = 8% ÷ 4 = 2% per quarter, n = 12 quarters.","i = 8% ÷ 4 = 2% per kwartaal, n = 12 kwartale.",["5 000 × 1.02¹²","≈ R6 341"],["5 000 × 1,02¹²","≈ R6 341"]],
@@ -17,7 +18,8 @@ MMHelp.add(11, 9, {
     ["K","m4:0","Rate per period = nominal ÷ n.","Koers per periode = nominaal ÷ n.",["18% ÷ 12 = 1.5%"],["18% ÷ 12 = 1,5%"]],
     ["K","m4:2","Interest on interest more often.","Meer gereeld rente op rente.",["More interest is earned."],["Meer rente word verdien."]],
     ["R","i:9.38","1 + i_eff = (1 + 0.09/12)¹².","1 + i_eff = (1 + 0,09/12)¹².",["1.0075¹² ≈ 1.0938","i_eff ≈ 9.38%"],["1,0075¹² ≈ 1,0938","i_eff ≈ 9,38%"]],
-    ["C","i:8.00","Work backwards: (1 + i/4)⁴ = 1.0824.","Werk terug: (1 + i/4)⁴ = 1,0824.",["1 + i/4 = ⁴√1.0824 ≈ 1.02","i = 4 × 0.02 = 8.00%"],["1 + i/4 = ⁴√1,0824 ≈ 1,02","i = 4 × 0,02 = 8,00%"]]
+    ["C","i:8.00","Work backwards: (1 + i/4)⁴ = 1.0824.","Werk terug: (1 + i/4)⁴ = 1,0824.",["1 + i/4 = ⁴√1.0824 ≈ 1.02","i = 4 × 0.02 = 8.00%"],["1 + i/4 = ⁴√1,0824 ≈ 1,02","i = 4 × 0,02 = 8,00%"]],
+    ["P","i:0.18","Convert Bank A to an effective annual rate.","Herlei Bank A na 'n effektiewe jaarkoers.",["A: (1 + 0.12/12)¹² − 1 = 1.01¹² − 1 ≈ 12.68%","B: 12.50%","Difference: 12.68 − 12.50 = 0.18 percentage points (Bank A is better)"],["A: (1 + 0,12/12)¹² − 1 = 1,01¹² − 1 ≈ 12,68%","B: 12,50%","Verskil: 12,68 − 12,50 = 0,18 persentasiepunte (Bank A is beter)"]]
   ],
   "902": [
     ["K","m4:1","When does the situation change?","Wanneer verander die situasie?",["A timeline is needed when the rate changes or money is added/withdrawn."],["'n Tydlyn is nodig as die koers verander of geld bygevoeg/onttrek word."]],
