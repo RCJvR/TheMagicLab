@@ -24,6 +24,7 @@
   <script src="../answer-check.js"></script>
   <script src="../practice-help.js"></script>
   <script src="../practice-results.js"></script>
+  <script src="/my-assignments.js"></script>
   <script src="../exam-practice.js"></script>
   <script src="../explore-data.js"></script>
   <script src="../lesson-explore.js"></script>
@@ -882,7 +883,7 @@ function buildSidebar() {
         div.innerHTML = `
           <span class="topic-num">${idx + 1}</span>
           <span class="topic-name">${t.name}</span>
-          ${completed.has(t.id) ? '<span class="topic-tick">✓</span>' : ''}${!completed.has(t.id) && window.MMResults ? MMResults.badge(11, t.id, currentLang) : ''}
+          ${completed.has(t.id) ? '<span class="topic-tick">✓</span>' : ''}${window.MLAssigned ? MLAssigned.badge('mm:11:' + t.id, currentLang, completed.has(t.id)) : ''}${!completed.has(t.id) && window.MMResults ? MMResults.badge(11, t.id, currentLang) : ''}
         `;
         div.addEventListener('click', () => selectTopic(t.id));
         group.appendChild(div);
@@ -1621,6 +1622,8 @@ async function _restoreProgress() {
 document.addEventListener('magiclab:progress:ready', _restoreProgress);
 // Results pulled from the learner's account can change the weak-spot flags.
 document.addEventListener('mm:results:sync', () => buildSidebar());
+// Lessons the teacher has assigned get a due badge once they load.
+document.addEventListener('ml:assigned', () => buildSidebar());
 if (window.MagicLabProgress) _restoreProgress();
 
 </script>

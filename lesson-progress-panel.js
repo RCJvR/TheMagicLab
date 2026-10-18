@@ -13,6 +13,7 @@
   MLResults.use(TOOL);
   // Each grade's block of lessons on the home page.
   const SECTIONS = TOOL === 'tech-tower' ? '#gradeSection8, #gradeSection9' : '.grade-section';
+  const PREFIX = TOOL === 'tech-tower' ? 'tt' : 'ss';   // lesson ids in assignments
 
   const TXT = {
     en: { title: 'My progress', local: 'Saved on this device only. Sign in to keep it on any device and share it with your teacher.', synced: 'Saved to your account.',
@@ -37,7 +38,7 @@
   }
   function nameOf(a) {
     const c = a.cloneNode(true);
-    c.querySelectorAll('.sr-badge, .topic-visited').forEach(x => x.remove());
+    c.querySelectorAll('.sr-badge, .ml-due, .topic-visited').forEach(x => x.remove());
     return c.textContent.trim();
   }
   const strandName = (s, g) => L().strands[s === 'life' && g >= 10 ? 'lifesci' : s] || s;
@@ -45,8 +46,14 @@
   function badges() {
     const t = L();
     document.querySelectorAll('a.strand-topic').forEach(a => {
-      a.querySelector('.sr-badge')?.remove();
+      a.querySelectorAll('.sr-badge, .ml-due').forEach(x => x.remove());
       const l = lessonOf(a); if (!l) return;
+      const assigned = window.MLAssigned && MLAssigned.get(PREFIX + ':' + l.g + ':' + l.key);
+      if (assigned) {
+        // Done once the quiz is finished after the assignment was set.
+        const fin = (MLResults.all(TOOL, l.g)[l.key] || {}).d;
+        a.insertAdjacentHTML('beforeend', MLAssigned.badge(PREFIX + ':' + l.g + ':' + l.key, document.documentElement.lang === 'af' ? 'af' : 'en', !!fin && fin >= assigned.created));
+      }
       const s = MLResults.lesson(TOOL, l.g, l.key); if (!s) return;
       const weak = MLResults.isWeak(TOOL, l.g, l.key);
       const b = document.createElement('span');
@@ -203,6 +210,7 @@
   addStyle();
   render();
   document.addEventListener('ml:results:sync', render);
+  document.addEventListener('ml:assigned', badges);
   document.addEventListener('magiclab:auth:ready', panels);
   // The page rewrites the lesson links when the language changes, which removes the badges.
   new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });

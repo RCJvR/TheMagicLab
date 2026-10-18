@@ -463,6 +463,7 @@ const urlsToCache = [
   '/lesson-progress-observer.js',
   '/lesson-results.js',
   '/lesson-progress-panel.js',
+  '/my-assignments.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',
