@@ -2,6 +2,9 @@
 // Each lesson link gets its recent score, flagged when under 70%, and each
 // grade gets a "My progress" card: lessons finished, questions answered,
 // accuracy, accuracy per strand and the lessons to practise again.
+// On a wide screen the card is a column beside the lessons that stays in view
+// while scrolling; on narrower screens it sits above them, folded to its
+// three numbers until "Show more" is tapped.
 // Nothing shows until the learner has answered a quiz in that grade.
 (function () {
   if (!window.MLResults) return;
@@ -11,11 +14,11 @@
   const TXT = {
     en: { title: 'My progress', local: 'Saved on this device only. Sign in to keep it on any device and share it with your teacher.', synced: 'Saved to your account.',
           finished: 'lessons finished', answered: 'questions answered', accuracy: 'accuracy', byStrand: 'By strand', weak: 'Practise again: under 70% recently',
-          noWeak: 'Nothing under 70%. Well done.', notYet: 'not practised', badge: (p, n) => `${p}% of your last ${n} answers right`, weakTip: 'Under 70% recently: practise again',
+          noWeak: 'Nothing under 70%. Well done.', more: 'Show more', less: 'Show less', notYet: 'not practised', badge: (p, n) => `${p}% of your last ${n} answers right`, weakTip: 'Under 70% recently: practise again',
           strands: { life: 'Life & Living', matter: 'Matter & Materials', energy: 'Energy & Change', earth: 'Planet Earth & Beyond', physics: 'Physics', chemistry: 'Chemistry', lifesci: 'Life Sciences' } },
     af: { title: 'My vordering', local: 'Slegs op hierdie toestel gestoor. Meld aan om dit op enige toestel te hou en met jou onderwyser te deel.', synced: 'In jou rekening gestoor.',
           finished: 'lesse voltooi', answered: 'vrae beantwoord', accuracy: 'akkuraatheid', byStrand: 'Volgens strand', weak: 'Oefen weer: onlangs onder 70%',
-          noWeak: 'Niks onder 70% nie. Mooi so.', notYet: 'nog nie geoefen nie', badge: (p, n) => `${p}% van jou laaste ${n} antwoorde reg`, weakTip: 'Onlangs onder 70%: oefen weer',
+          noWeak: 'Niks onder 70% nie. Mooi so.', more: 'Wys meer', less: 'Wys minder', notYet: 'nog nie geoefen nie', badge: (p, n) => `${p}% van jou laaste ${n} antwoorde reg`, weakTip: 'Onlangs onder 70%: oefen weer',
           strands: { life: 'Lewe en Lewende Dinge', matter: 'Materie en Materiale', energy: 'Energie en Verandering', earth: 'Planeet Aarde en die Ruimte', physics: 'Fisika', chemistry: 'Chemie', lifesci: 'Lewenswetenskappe' } }
   };
   const L = () => TXT[document.documentElement.lang === 'af' ? 'af' : 'en'];
@@ -49,10 +52,12 @@
     });
   }
 
+  let open = false;   // narrow screens: the folded card's state, shared by every grade
   function panels() {
     const t = L(), signedIn = !!(window.MagicLabAuth && MagicLabAuth.isLoggedIn());
     document.querySelectorAll('.grade-section').forEach(sec => {
       sec.querySelector('.sr-prog')?.remove();
+      sec.classList.remove('sr-has-prog');
       const seen = new Set(), lessons = [];
       sec.querySelectorAll('a.strand-topic').forEach(a => {
         const l = lessonOf(a); if (!l || seen.has(l.key)) return;
@@ -75,8 +80,9 @@
       const finished = practised.filter(x => x.s.done).length;
       const acc = Math.round(c / n * 100);
       const weak = practised.filter(x => MLResults.isWeak(TOOL, x.g, x.key)).sort((p, q) => p.s.pct - q.s.pct);
-      const el = document.createElement('section');
-      el.className = 'sr-prog';
+      const el = document.createElement('aside');
+      el.className = 'sr-prog' + (open ? ' sr-open' : '');
+      el.setAttribute('aria-label', t.title);
       el.innerHTML = `
         <div class="sr-head"><h3 class="sr-title">${t.title}</h3><span class="sr-save${signedIn ? ' on' : ''}">${signedIn ? t.synced : t.local}</span></div>
         <div class="sr-stats">
@@ -84,6 +90,7 @@
           <div class="sr-stat"><span class="sr-v">${answered}</span><span class="sr-l">${t.answered}</span></div>
           <div class="sr-stat"><span class="sr-v sr-${tone(acc)}">${acc}%</span><span class="sr-l">${t.accuracy}</span></div>
         </div>
+        <button type="button" class="sr-toggle" aria-expanded="${open}">${open ? t.less : t.more}</button>
         <div class="sr-cols">
           <div>
             <div class="sr-label">${t.byStrand}</div>
@@ -99,6 +106,16 @@
         </div>`;
       const anchor = sec.querySelector('.section-row');
       anchor.parentNode.insertBefore(el, anchor.nextSibling);
+      sec.classList.add('sr-has-prog');
+      el.querySelector('.sr-toggle').addEventListener('click', () => {
+        open = !open;
+        document.querySelectorAll('.sr-prog').forEach(p => {
+          p.classList.toggle('sr-open', open);
+          const b = p.querySelector('.sr-toggle');
+          b.setAttribute('aria-expanded', open);
+          b.textContent = open ? t.less : t.more;
+        });
+      });
     });
   }
 
@@ -136,6 +153,33 @@
       .sr-weak-link span { font: 600 12px var(--font-mono, monospace); color: var(--crit, #ef5b5b); }
       .sr-weak-link:focus-visible { outline: 2px solid var(--accent, #4acf7f); outline-offset: 2px; }
       .sr-note { margin: 0; font-size: 13px; color: var(--text-3, #8b95a5); }
+      .sr-toggle { display: none; padding: 0; border: 0; background: none; color: var(--accent, #4acf7f); font: 600 13px var(--font-body, sans-serif); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+      .sr-toggle:focus-visible { outline: 2px solid var(--accent, #4acf7f); outline-offset: 2px; }
+      /* Wide screens: a column beside the lessons that stays in view. */
+      @media (min-width: 1100px) {
+        /* Same width and right edge as the rest of the page. */
+        .grade-section.active.sr-has-prog { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: var(--space-5, 24px); align-items: start; max-width: var(--measure, 1360px); margin-inline: auto; }
+        .grade-section.sr-has-prog > * { grid-column: 1; }
+        .grade-section.sr-has-prog > .section-row { grid-column: 1 / -1; }
+        .grade-section.sr-has-prog > .strands { padding-right: 0; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .grade-section.sr-has-prog > .sr-prog { grid-column: 2; grid-row: 2 / span 20; position: sticky; top: 84px; margin: 0 var(--gutter, 52px) 28px 0; max-height: calc(100vh - 100px); overflow-y: auto; }
+        .sr-prog .sr-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+        .sr-prog .sr-stats { grid-template-columns: minmax(0, 1fr); }
+        .sr-prog .sr-stat { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 10px; padding: 8px 12px; }
+        .sr-prog .sr-stat + .sr-stat { border-left: none; border-top: 1px solid var(--line-soft, rgba(255,255,255,.07)); }
+        .sr-prog .sr-v { order: 2; font-size: 20px; }
+        .sr-prog .sr-cols { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .sr-prog .sr-strand { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name p" "bar bar"; gap: 4px 10px; }
+        .sr-prog .sr-strand-name { grid-area: name; }
+        .sr-prog .sr-strand-p { grid-area: p; }
+        .sr-prog .sr-bar { grid-area: bar; }
+      }
+      /* Narrower screens: above the lessons, folded to the three numbers. */
+      @media (max-width: 1099px) {
+        .sr-toggle { display: inline-block; }
+        .sr-prog:not(.sr-open) .sr-cols { display: none; }
+        .sr-prog .sr-cols { margin-top: 14px; }
+      }
       @media (max-width: 700px) {
         .sr-prog { margin-left: 16px; margin-right: 16px; padding: 14px; }
         .sr-cols { grid-template-columns: minmax(0, 1fr); }
