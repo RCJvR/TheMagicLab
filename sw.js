@@ -462,6 +462,7 @@ const urlsToCache = [
   '/work-autosave.js',
   '/lesson-progress-observer.js',
   '/lesson-results.js',
+  '/science-sage/learner-progress.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',
