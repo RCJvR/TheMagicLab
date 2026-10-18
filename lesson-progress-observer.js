@@ -20,6 +20,13 @@
   else if (path.includes('/tech-tower/')) tool = 'tech-tower';
   if (!tool) return; // not one of the pages this script is meant for
 
+  // Science Sage also records every quiz answer (lesson-results.js).
+  if (tool === 'science-sage' && !window.MLResults && !document.querySelector('script[src="/lesson-results.js"]')) {
+    const s = document.createElement('script');
+    s.src = '/lesson-results.js';
+    document.head.appendChild(s);
+  }
+
   const gradeMatch = path.match(/\/gr(\d+)\//);
   const grade = gradeMatch ? parseInt(gradeMatch[1], 10) : null;
 

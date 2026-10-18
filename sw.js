@@ -461,6 +461,7 @@ const urlsToCache = [
   '/topic-memory.js',
   '/work-autosave.js',
   '/lesson-progress-observer.js',
+  '/lesson-results.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',
