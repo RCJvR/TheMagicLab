@@ -1,5 +1,5 @@
 /* Science Sage lesson names by grade: "strand/file" → English name.
-   Generated from the Science Sage home page; used by the teacher dashboard. */
+   Generated from the Science Sage home page by scripts/build-lesson-index.js; used by the teacher dashboard. */
 window.SS_LESSON_INDEX = {
   7: {
     "life/biodiversity": "Biodiversity & classification",

@@ -1,9 +1,9 @@
 // ============================================================
 // THE MAGIC LAB — lesson-results.js
 // What each learner gets right and wrong in lesson quizzes, per tool and
-// grade (Science Sage now; any lesson-page tool can use it).
+// grade (Science Sage and Tech Tower).
 //
-// On a lesson page (…/science-sage/gr{N}/{strand}/{file}.html) it records
+// On a lesson page (…/science-sage/ or …/tech-tower/gr{N}/{strand}/{file}.html) it records
 // every quiz answer by watching the shared .mc-opt answer buttons, so no
 // lesson file needs its own code: after a click it reads the result from
 // the classes the page's own quiz code adds (correct / wrong, or ok / bad
@@ -149,7 +149,7 @@
   };
 
   // ── On a lesson page: record answers ──────────────────────────
-  const m = location.pathname.match(/\/(science-sage)\/gr(\d+)\/([^/]+)\/([^/]+?)(?:\.af)?\.html$/);
+  const m = location.pathname.match(/\/(science-sage|tech-tower)\/gr(\d+)\/([^/]+)\/([^/]+?)(?:\.af)?\.html$/);
   if (!m) return;
   const TOOL = m[1], GRADE = +m[2], LESSON = m[3] + '/' + m[4], AF = /\.af\.html$/.test(location.pathname);
   MLResults.use(TOOL);

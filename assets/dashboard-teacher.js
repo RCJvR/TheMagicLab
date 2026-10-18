@@ -6002,6 +6002,7 @@ async function openClassDetail(cls) {
   _renderStudentTable(students, progress, cls.id);
   window.TeacherMathResults?.show(cls, students);
   window.TeacherScienceResults?.show(cls, students);
+  window.TeacherTechResults?.show(cls, students);
 }
 
 const TOOL_META = {
@@ -6445,6 +6446,7 @@ function closeClassDetail() {
   document.getElementById('class-detail-wrap').style.display = 'none';
   window.TeacherMathResults?.clear();
   window.TeacherScienceResults?.clear();
+  window.TeacherTechResults?.clear();
   _selectedClassId = null;
   document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
 }

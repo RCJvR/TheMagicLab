@@ -1,4 +1,4 @@
-// Science Sage home page — the learner's own quiz results (from lesson-results.js).
+// Science Sage and Tech Tower home pages — the learner's own quiz results (from lesson-results.js).
 // Each lesson link gets its recent score, flagged when under 70%, and each
 // grade gets a "My progress" card: lessons finished, questions answered,
 // accuracy, accuracy per strand and the lessons to practise again.
@@ -8,18 +8,23 @@
 // Nothing shows until the learner has answered a quiz in that grade.
 (function () {
   if (!window.MLResults) return;
-  const TOOL = 'science-sage';
+  const TOOL = (location.pathname.match(/\/(science-sage|tech-tower)\//) || [])[1];
+  if (!TOOL) return;
   MLResults.use(TOOL);
+  // Each grade's block of lessons on the home page.
+  const SECTIONS = TOOL === 'tech-tower' ? '#gradeSection8, #gradeSection9' : '.grade-section';
 
   const TXT = {
     en: { title: 'My progress', local: 'Saved on this device only. Sign in to keep it on any device and share it with your teacher.', synced: 'Saved to your account.',
           finished: 'lessons finished', answered: 'questions answered', accuracy: 'accuracy', byStrand: 'By strand', weak: 'Practise again: under 70% recently',
           noWeak: 'Nothing under 70%. Well done.', more: 'Show more', less: 'Show less', notYet: 'not practised', badge: (p, n) => `${p}% of your last ${n} answers right`, weakTip: 'Under 70% recently: practise again',
-          strands: { life: 'Life & Living', matter: 'Matter & Materials', energy: 'Energy & Change', earth: 'Planet Earth & Beyond', physics: 'Physics', chemistry: 'Chemistry', lifesci: 'Life Sciences' } },
+          strands: { life: 'Life & Living', matter: 'Matter & Materials', energy: 'Energy & Change', earth: 'Planet Earth & Beyond', physics: 'Physics', chemistry: 'Chemistry', lifesci: 'Life Sciences',
+                     structures: 'Structures', mechanical: 'Mechanical Systems', electrical: 'Electrical Systems', processing: 'Processing' } },
     af: { title: 'My vordering', local: 'Slegs op hierdie toestel gestoor. Meld aan om dit op enige toestel te hou en met jou onderwyser te deel.', synced: 'In jou rekening gestoor.',
           finished: 'lesse voltooi', answered: 'vrae beantwoord', accuracy: 'akkuraatheid', byStrand: 'Volgens strand', weak: 'Oefen weer: onlangs onder 70%',
           noWeak: 'Niks onder 70% nie. Mooi so.', more: 'Wys meer', less: 'Wys minder', notYet: 'nog nie geoefen nie', badge: (p, n) => `${p}% van jou laaste ${n} antwoorde reg`, weakTip: 'Onlangs onder 70%: oefen weer',
-          strands: { life: 'Lewe en Lewende Dinge', matter: 'Materie en Materiale', energy: 'Energie en Verandering', earth: 'Planeet Aarde en die Ruimte', physics: 'Fisika', chemistry: 'Chemie', lifesci: 'Lewenswetenskappe' } }
+          strands: { life: 'Lewe en Lewende Dinge', matter: 'Materie en Materiale', energy: 'Energie en Verandering', earth: 'Planeet Aarde en die Ruimte', physics: 'Fisika', chemistry: 'Chemie', lifesci: 'Lewenswetenskappe',
+                     structures: 'Strukture', mechanical: 'Meganiese Stelsels', electrical: 'Elektriese Stelsels', processing: 'Verwerking' } }
   };
   const L = () => TXT[document.documentElement.lang === 'af' ? 'af' : 'en'];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -55,7 +60,11 @@
   let open = false;   // narrow screens: the folded card's state, shared by every grade
   function panels() {
     const t = L(), signedIn = !!(window.MagicLabAuth && MagicLabAuth.isLoggedIn());
-    document.querySelectorAll('.grade-section').forEach(sec => {
+    document.querySelectorAll(SECTIONS).forEach(outer => {
+      // The card and the lessons share a grid inside the section, so the page's
+      // own show/hide of a section is left alone.
+      let sec = outer.querySelector(':scope > .sr-grid');
+      if (!sec) { sec = document.createElement('div'); sec.className = 'sr-grid'; sec.append(...outer.childNodes); outer.appendChild(sec); }
       sec.querySelector('.sr-prog')?.remove();
       sec.classList.remove('sr-has-prog');
       const seen = new Set(), lessons = [];
@@ -158,11 +167,11 @@
       /* Wide screens: a column beside the lessons that stays in view. */
       @media (min-width: 1100px) {
         /* Same width and right edge as the rest of the page. */
-        .grade-section.active.sr-has-prog { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: var(--space-5, 24px); align-items: start; max-width: var(--measure, 1360px); margin-inline: auto; }
-        .grade-section.sr-has-prog > * { grid-column: 1; }
-        .grade-section.sr-has-prog > .section-row { grid-column: 1 / -1; }
-        .grade-section.sr-has-prog > .strands { padding-right: 0; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-        .grade-section.sr-has-prog > .sr-prog { grid-column: 2; grid-row: 2 / span 20; position: sticky; top: 84px; margin: 0 var(--gutter, 52px) 28px 0; max-height: calc(100vh - 100px); overflow-y: auto; }
+        .sr-grid.sr-has-prog { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: var(--space-5, 24px); align-items: start; max-width: var(--measure, 1360px); margin-inline: auto; }
+        .sr-grid.sr-has-prog > * { grid-column: 1; }
+        .sr-grid.sr-has-prog > .section-row { grid-column: 1 / -1; }
+        .sr-grid.sr-has-prog > .strands { padding-right: 0; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .sr-grid.sr-has-prog > .sr-prog { grid-column: 2; grid-row: 2 / span 20; position: sticky; top: 84px; margin: 0 var(--gutter, 52px) 28px 0; max-height: calc(100vh - 100px); overflow-y: auto; }
         .sr-prog .sr-head { flex-direction: column; align-items: flex-start; gap: 4px; }
         .sr-prog .sr-stats { grid-template-columns: minmax(0, 1fr); }
         .sr-prog .sr-stat { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 10px; padding: 8px 12px; }
