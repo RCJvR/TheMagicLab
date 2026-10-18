@@ -1,0 +1,87 @@
+/* Math Magician results in the teacher dashboard's class view (teacher-math-results.js).
+   Colour is status only: good / warn / crit for accuracy against the 70% mastery mark. */
+.mmr:empty { display: none; }
+.mmr {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 32px;
+}
+.mmr-head {
+  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 20px;
+  padding: 18px 22px; border-bottom: 1px solid var(--border2);
+}
+.mmr-title { font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--text); }
+.mmr-sub { margin-top: 4px; max-width: 62ch; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.mmr-grades { display: flex; flex-wrap: wrap; gap: 6px; }
+.mmr-grade {
+  padding: 5px 12px; border-radius: var(--radius-full); border: 1px solid var(--border2);
+  background: none; color: var(--text2); font: 700 12px var(--mono); cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.mmr-grade.empty { font-weight: 400; color: var(--muted); }
+.mmr-grade:hover { background: var(--surface); color: var(--text); }
+.mmr-grade.on { background: rgba(43,184,207,0.14); border-color: rgba(43,184,207,0.45); color: var(--teacher); }
+.mmr-grade:focus-visible { outline: 2px solid var(--teacher); outline-offset: 2px; }
+.mmr-empty { padding: 26px 22px; font-size: 14px; color: var(--muted); }
+
+.mmr-summary {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border2);
+}
+.mmr-stat { padding: 16px 22px; }
+.mmr-stat + .mmr-stat { border-left: 1px solid var(--border2); }
+.mmr-stat-v { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); font-variant-numeric: tabular-nums; }
+.mmr-stat-v span { margin-left: 3px; font-size: 15px; font-weight: 600; color: var(--muted); }
+.mmr-stat-l { margin-top: 2px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+.mmr-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); border-bottom: 1px solid var(--border2); }
+.mmr-block { padding: 18px 22px; min-width: 0; }
+.mmr-block + .mmr-block { border-left: 1px solid var(--border2); }
+.mmr-h { margin-bottom: 12px; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.mmr-note { font-size: 13px; color: var(--muted); }
+
+.mmr-levels { display: flex; flex-direction: column; gap: 10px; }
+.mmr-level { display: grid; grid-template-columns: 112px minmax(0, 1fr) 44px 40px; align-items: center; gap: 10px; font-size: 13px; }
+.mmr-level-name { color: var(--text2); }
+.mmr-bar { height: 6px; border-radius: var(--radius-full); background: rgba(255,255,255,0.08); overflow: hidden; }
+.mmr-bar-fill { display: block; height: 100%; border-radius: var(--radius-full); background: var(--muted); }
+.mmr-bar-fill.mmr-good { background: var(--good); }
+.mmr-bar-fill.mmr-warn { background: var(--warn); }
+.mmr-bar-fill.mmr-crit { background: var(--crit); }
+.mmr-level-p { text-align: right; font: 600 12px var(--mono); color: var(--text); }
+.mmr-level-n { text-align: right; font: 11px var(--mono); color: var(--muted); }
+
+.mmr-topics { list-style: none; display: flex; flex-direction: column; }
+.mmr-topic { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border2); font-size: 13px; }
+.mmr-topic:last-child { border-bottom: none; }
+.mmr-topic-name { color: var(--text); overflow-wrap: anywhere; }
+.mmr-ch { margin-right: 8px; font: 600 10px var(--mono); color: var(--muted); }
+.mmr-topic-p { font: 700 12px var(--mono); }
+.mmr-topic-n { min-width: 72px; text-align: right; font: 11px var(--mono); color: var(--muted); }
+
+.mmr-good { color: var(--good); }
+.mmr-warn { color: var(--warn); }
+.mmr-crit { color: var(--crit); }
+
+.mmr-table-wrap { overflow-x: auto; }
+.mmr-table td { white-space: nowrap; }
+.mmr-th-note { margin-left: 6px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+.mmr-num { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.mmr-of { color: var(--muted); }
+.mmr-pill { padding: 2px 8px; border-radius: var(--radius-full); border: 1px solid currentColor; font-weight: 700; }
+.mmr-lv span { display: inline-block; min-width: 32px; text-align: right; }
+.mmr-weak-list { display: inline-flex; flex-wrap: wrap; gap: 4px; min-width: 280px; max-width: 380px; white-space: normal; }
+.mmr-chip { padding: 2px 8px; border-radius: var(--radius-xs); background: rgba(239,91,91,0.10); border: 1px solid rgba(239,91,91,0.28); color: var(--text); font-size: 12px; }
+.mmr-more { align-self: center; font: 11px var(--mono); color: var(--muted); }
+.mmr-none { color: var(--muted); }
+.mmr-when { font-size: 12px; }
+.mmr-when.stale { color: var(--warn); }
+
+@media (max-width: 760px) {
+  .mmr-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mmr-stat:nth-child(3) { border-left: none; }
+  .mmr-stat:nth-child(n+3) { border-top: 1px solid var(--border2); }
+  .mmr-cols { grid-template-columns: minmax(0, 1fr); }
+  .mmr-block + .mmr-block { border-left: none; border-top: 1px solid var(--border2); }
+  .mmr-head, .mmr-stat, .mmr-block { padding-left: 16px; padding-right: 16px; }
+  .mmr-level { grid-template-columns: 96px minmax(0, 1fr) 40px 32px; }
+}
