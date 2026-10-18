@@ -437,7 +437,8 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "y = log_b(x) het 'n vertikale asimptoot by x = ___.", answer: "0", topic: "Grafieke van eksponensiële & logaritmiese funksies" },
         { type: "mc", text: "Die grafieke van y = bˣ en y = log_b(x) is spieëlbeelde van mekaar in die lyn:", options: ["x = 0", "y = 0", "y = x", "y = −x"], answer: 2, topic: "Grafieke van eksponensiële & logaritmiese funksies" },
         { type: "input", text: "Bepaal die inverse van f(x) = 2ˣ⁺¹.", answer: "log₂(x) − 1", altAnswers: ["log2(x)-1", "log_2(x) - 1", "log₂x − 1", "log₂(x)-1"], topic: "Grafieke van eksponensiële & logaritmiese funksies" },
-        { type: "input", text: "Die grafiek van y = log₃(x) word gespieël in die lyn y = x, en dan 2 eenhede af geskuif om h(x) te vorm. Skryf h(x) neer.", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Grafieke van eksponensiële & logaritmiese funksies" }
+        { type: "input", text: "Die grafiek van y = log₃(x) word gespieël in die lyn y = x, en dan 2 eenhede af geskuif om h(x) te vorm. Skryf h(x) neer.", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Grafieke van eksponensiële & logaritmiese funksies" },
+        { type: "input", text: "Bepaal sonder 'n sakrekenaar die waarde van log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Grafieke van eksponensiële & logaritmiese funksies" }
       ]
     }
   ],

@@ -387,7 +387,8 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "A pyramid scheme is unsustainable because:", options: ["It pays no interest at all", "Returns are paid from new investors' money, not real profit", "It always uses compound interest", "It is illegal to advertise"], answer: 1, topic: "Comparing investment & loan options" },
         { type: "input", text: "Find the effective annual rate for 12% p.a. compounded quarterly, to 2 decimal places (%).", answer: "12.55", altAnswers: ["12,55"], topic: "Comparing investment & loan options" },
         { type: "mc", text: "Bank A offers 10.4% p.a. compounded quarterly. Bank B offers 10.3% p.a. compounded monthly. Which offers the better effective annual rate?", options: ["Bank A", "Bank B", "They are equal", "Cannot be determined without more information"], answer: 0, topic: "Comparing investment & loan options" },
-        { type: "input", text: "Using the effective annual rate formula, calculate the effective annual rate for Bank A (10.4% p.a. compounded quarterly), to 2 decimal places (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Comparing investment & loan options" }
+        { type: "input", text: "Using the effective annual rate formula, calculate the effective annual rate for Bank A (10.4% p.a. compounded quarterly), to 2 decimal places (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Comparing investment & loan options" },
+        { type: "input", text: "Sipho borrows R800 000 at 11% p.a. compounded monthly. The required instalment over 20 years is about R8 258, but he pays R10 000 at the end of every month instead. How many payments does he make (the last one may be smaller)?", answer: "145", topic: "Comparing investment & loan options" }
       ]
     }
   ],

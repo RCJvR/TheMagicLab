@@ -388,7 +388,8 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "'n Kubieke met a > 0 en slegs een reële wortel (geen herhaalde wortels) sal:", options: ["Links val, regs styg, en die x-as presies een keer kruis", "Links styg, regs val", "Die x-as twee keer raak", "Geen y-afsnit hê nie"], answer: 0, topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
         { type: "mc", text: "Die maksimum aantal draaipunte wat 'n kubieke grafiek kan hê is:", options: ["1", "2", "3", "0"], answer: 1, topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
         { type: "input", text: "Die grafiek van 'n kubieke het x-afsnitte by x = −3 en x = 2 (dubbele wortel), en 'n y-afsnit by (0; −24). Bepaal die waarde van a in y = a(x+3)(x−2)².", answer: "-2", altAnswers: ["−2"], topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
-        { type: "input", text: "'n Kubieke grafiek het 'n dubbele wortel by x = −1, 'n enkele wortel by x = 3, en gaan deur die punt (1; −16). Bepaal die waarde van a in y = a(x+1)²(x−3).", answer: "2", topic: "Skets van kubieke grafieke uit sleutelkenmerke" }
+        { type: "input", text: "'n Kubieke grafiek het 'n dubbele wortel by x = −1, 'n enkele wortel by x = 3, en gaan deur die punt (1; −16). Bepaal die waarde van a in y = a(x+1)²(x−3).", answer: "2", topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
+        { type: "input", text: "Die kubiese funksie f het x-afsnitte by −1, 2 en 3, en sy y-afsnit is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Bepaal f(1).", answer: "8", topic: "Skets van kubieke grafieke uit sleutelkenmerke" }
       ]
     }
   ],

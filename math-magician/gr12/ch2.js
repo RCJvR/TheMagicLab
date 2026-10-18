@@ -437,7 +437,8 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "y = log_b(x) has a vertical asymptote at x = ___.", answer: "0", topic: "Graphing exponential & logarithmic functions" },
         { type: "mc", text: "The graphs of y = bˣ and y = log_b(x) are reflections of each other in the line:", options: ["x = 0", "y = 0", "y = x", "y = −x"], answer: 2, topic: "Graphing exponential & logarithmic functions" },
         { type: "input", text: "Determine the inverse of f(x) = 2ˣ⁺¹.", answer: "log₂(x) − 1", altAnswers: ["log2(x)-1", "log_2(x) - 1", "log₂x − 1", "log₂(x)-1"], topic: "Graphing exponential & logarithmic functions" },
-        { type: "input", text: "The graph of y = log₃(x) is reflected in the line y = x, then shifted 2 units down to form h(x). Write down h(x).", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Graphing exponential & logarithmic functions" }
+        { type: "input", text: "The graph of y = log₃(x) is reflected in the line y = x, then shifted 2 units down to form h(x). Write down h(x).", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Graphing exponential & logarithmic functions" },
+        { type: "input", text: "Without a calculator, find the value of log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Graphing exponential & logarithmic functions" }
       ]
     }
   ],

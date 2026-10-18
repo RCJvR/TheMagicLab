@@ -388,7 +388,8 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "'n Piramideskema is onvolhoubaar omdat:", options: ["Dit hoegenaamd geen rente betaal nie", "Opbrengste uit nuwe beleggers se geld betaal word, nie werklike wins nie", "Dit altyd saamgestelde rente gebruik", "Dit onwettig is om te adverteer"], answer: 1, topic: "Vergelyking van belegging- & leningsopsies" },
         { type: "input", text: "Bepaal die effektiewe jaarlikse koers vir 12% p.j. kwartaalliks saamgestel, tot 2 desimale plekke (%).", answer: "12.55", altAnswers: ["12,55"], topic: "Vergelyking van belegging- & leningsopsies" },
         { type: "mc", text: "Bank A bied 10.4% p.j. kwartaalliks saamgestel. Bank B bied 10.3% p.j. maandeliks saamgestel. Watter een bied die beter effektiewe jaarlikse koers?", options: ["Bank A", "Bank B", "Hulle is gelyk", "Kan nie bepaal word sonder meer inligting nie"], answer: 0, topic: "Vergelyking van belegging- & leningsopsies" },
-        { type: "input", text: "Gebruik die effektiewe jaarlikse koers-formule om die effektiewe jaarlikse koers vir Bank A (10.4% p.j. kwartaalliks saamgestel) te bereken, tot 2 desimale plekke (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Vergelyking van belegging- & leningsopsies" }
+        { type: "input", text: "Gebruik die effektiewe jaarlikse koers-formule om die effektiewe jaarlikse koers vir Bank A (10.4% p.j. kwartaalliks saamgestel) te bereken, tot 2 desimale plekke (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Vergelyking van belegging- & leningsopsies" },
+        { type: "input", text: "Sipho leen R800 000 teen 11% p.j. maandeliks saamgestel. Die vereiste paaiement oor 20 jaar is sowat R8 258, maar hy betaal eerder R10 000 aan die einde van elke maand. Hoeveel betalings maak hy (die laaste een kan kleiner wees)?", answer: "145", topic: "Vergelyking van belegging- & leningsopsies" }
       ]
     }
   ],

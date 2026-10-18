@@ -430,7 +430,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "A two-way table is most useful for finding:", options: ["ₙCᵣ values", "Conditional probabilities from two categorical variables", "Factorials", "The correlation coefficient"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
         { type: "mc", text: "With replacement, drawing twice from a bag of 4 red and 6 blue balls means the events are:", options: ["Dependent", "Independent", "Mutually exclusive", "Impossible"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
         { type: "input", text: "A coin is tossed twice (independent). Find P(exactly one head) as a fraction.", answer: "1/2", altAnswers: ["0.5", "0,5"], topic: "Tree diagrams, tables & dependent events" },
-        { type: "input", text: "A bag contains 4 red and 6 blue balls. Three balls are drawn without replacement. Find P(all three red), as a fraction in lowest terms.", answer: "1/30", altAnswers: ["0.0333", "0,03"], topic: "Tree diagrams, tables & dependent events" }
+        { type: "input", text: "A bag contains 4 red and 6 blue balls. Three balls are drawn without replacement. Find P(all three red), as a fraction in lowest terms.", answer: "1/30", altAnswers: ["0.0333", "0,03"], topic: "Tree diagrams, tables & dependent events" },
+        { type: "input", text: "The letters of the word EXAMS are arranged in a random order. What is the probability that the two vowels are next to each other? Give a fraction.", answer: "2/5", topic: "Tree diagrams, tables & dependent events" }
       ]
     }
   ],

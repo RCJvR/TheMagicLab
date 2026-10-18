@@ -35,6 +35,7 @@ MMHelp.add(12, 5, {
     ["K","m4:0","a > 0: down on the left, up on the right.","a > 0: af aan die linkerkant, op aan die regterkant.",["It crosses the x-axis exactly once."],["Dit sny die x-as presies een keer."]],
     ["K","m4:1","f'(x) is a quadratic.","f'(x) is 'n kwadratiese funksie.",["A quadratic has at most 2 roots → at most 2 turning points"],["'n Kwadratiese funksie het hoogstens 2 wortels → hoogstens 2 draaipunte"]],
     ["R","i:-2","Substitute (0 ; −24).","Vervang (0 ; −24).",["−24 = a(3)(4) = 12a","a = −2"],["−24 = a(3)(4) = 12a","a = −2"]],
-    ["R","i:2","Substitute (1 ; −16).","Vervang (1 ; −16).",["−16 = a(2)²(1 − 3) = −8a","a = 2"],["−16 = a(2)²(1 − 3) = −8a","a = 2"]]
+    ["R","i:2","Substitute (1 ; −16).","Vervang (1 ; −16).",["−16 = a(2)²(1 − 3) = −8a","a = 2"],["−16 = a(2)²(1 − 3) = −8a","a = 2"]],
+    ["P","i:8","Write f(x) = a(x + 1)(x − 2)(x − 3) and use the y-intercept to find a.","Skryf f(x) = a(x + 1)(x − 2)(x − 3) en gebruik die y-afsnit om a te vind.",["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"],["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"]]
   ]
 });

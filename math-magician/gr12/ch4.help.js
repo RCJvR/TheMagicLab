@@ -32,6 +32,7 @@ MMHelp.add(12, 4, {
     ["R","m4:1","Expand the square.","Brei die kwadraat uit.",["cos²A − 2 sin A cos A + sin²A","= 1 − sin 2A"],["cos²A − 2 sin A cos A + sin²A","= 1 − sin 2A"]],
     ["R","i:2","Expand and use sin²A + cos²A = 1.","Brei uit en gebruik sin²A + cos²A = 1.",["1 + 2 sin A cos A − 1","= sin 2A"],["1 + 2 sin A cos A − 1","= sin 2A"]],
     ["K","m4:3","Which one is sin 2A instead?","Watter een is eerder sin 2A?",["2 cos A sin A = sin 2A, not cos 2A"],["2 cos A sin A = sin 2A, nie cos 2A nie"]],
-    ["C","i:","1 − cos 2A = 2sin²A.","1 − cos 2A = 2sin²A.",["2sin²A / (2 sin A cos A)","= sin A/cos A = tan A"],["2sin²A / (2 sin A cos A)","= sin A/cos A = tan A"]]
+    ["C","i:","1 − cos 2A = 2sin²A.","1 − cos 2A = 2sin²A.",["2sin²A / (2 sin A cos A)","= sin A/cos A = tan A"],["2sin²A / (2 sin A cos A)","= sin A/cos A = tan A"]],
+    ["P","i:1.26","Square sin θ + cos θ.","Kwadreer sin θ + cos θ.",["(sin θ + cos θ)² = sin²θ + cos²θ + 2 sin θ cos θ = 1 + sin 2θ = 1.6","θ acute → sin θ + cos θ > 0 → √1.6 ≈ 1.26"],["(sin θ + cos θ)² = sin²θ + cos²θ + 2 sin θ cos θ = 1 + sin 2θ = 1,6","θ skerp → sin θ + cos θ > 0 → √1,6 ≈ 1,26"]]
   ]
 });

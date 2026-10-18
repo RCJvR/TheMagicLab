@@ -430,7 +430,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "'n Tweerigtingtabel is die nuttigste om te bepaal:", options: ["ₙCᵣ-waardes", "Voorwaardelike waarskynlikhede uit twee kategoriese veranderlikes", "Faktoriale", "Die korrelasiekoëffisiënt"], answer: 1, topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" },
         { type: "mc", text: "Met terugplasing, beteken twee keer trek uit 'n sak van 4 rooi en 6 blou balle dat die gebeurtenisse:", options: ["Afhanklik is", "Onafhanklik is", "Wedersyds uitsluitend is", "Onmoontlik is"], answer: 1, topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" },
         { type: "input", text: "'n Muntstuk word twee keer gegooi (onafhanklik). Bepaal P(presies een kop) as 'n breuk.", answer: "1/2", altAnswers: ["0.5", "0,5"], topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" },
-        { type: "input", text: "'n Sak bevat 4 rooi en 6 blou balle. Drie balle word sonder terugplasing getrek. Bepaal P(al drie rooi), as 'n breuk in laagste terme.", answer: "1/30", altAnswers: ["0.0333", "0,03"], topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" }
+        { type: "input", text: "'n Sak bevat 4 rooi en 6 blou balle. Drie balle word sonder terugplasing getrek. Bepaal P(al drie rooi), as 'n breuk in laagste terme.", answer: "1/30", altAnswers: ["0.0333", "0,03"], topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" },
+        { type: "input", text: "Die letters van die woord EXAMS word in 'n lukrake volgorde gerangskik. Wat is die waarskynlikheid dat die twee vokale langs mekaar is? Gee 'n breuk.", answer: "2/5", topic: "Boomdiagramme, tabelle & afhanklike gebeurtenisse" }
       ]
     }
   ],

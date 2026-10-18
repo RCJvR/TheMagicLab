@@ -395,7 +395,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "(cosA − sinA)² simplifies to:", options: ["1 + sin2A", "1 − sin2A", "cos2A", "1 − 2cos2A"], answer: 1, topic: "Proving trigonometric identities" },
         { type: "input", text: "Simplify (sinA + cosA)² − 1 in terms of a double angle.", answer: "sin2A", altAnswers: ["sin(2A)"], topic: "Proving trigonometric identities" },
         { type: "mc", text: "Which identity is NOT a valid form of cos2A?", options: ["cos²A − sin²A", "1 − 2sin²A", "2cos²A − 1", "2cosA·sinA"], answer: 3, topic: "Proving trigonometric identities" },
-        { type: "input", text: "Simplify (1 − cos2A)/sin2A to a single trig ratio.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Proving trigonometric identities" }
+        { type: "input", text: "Simplify (1 − cos2A)/sin2A to a single trig ratio.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Proving trigonometric identities" },
+        { type: "input", text: "θ is acute and sin 2θ = 0.6. Find sin θ + cos θ, correct to 2 decimal places, without finding θ.", answer: "1.26", altAnswers: ["1,26"], topic: "Proving trigonometric identities" }
       ]
     }
   ],

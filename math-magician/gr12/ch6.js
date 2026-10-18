@@ -435,7 +435,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "If f'(x) &gt; 0 for all x &lt; 1 and f'(x) &lt; 0 for all x &gt; 1, then at x = 1, f has a:", options: ["Local minimum", "Local maximum", "Point of inflection", "x-intercept"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" },
         { type: "input", text: "f(x) = x³ − 12x. Find the x-value(s) where f is at a local minimum (give the positive value).", answer: "2", topic: "Cubic graphs: full analysis & interpretation" },
         { type: "mc", text: "A cubic with a &gt; 0 has turning points at x = −1 (max) and x = 3 (min). f is decreasing on:", options: ["x &lt; −1", "−1 &lt; x &lt; 3", "x &gt; 3", "All real x"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" },
-        { type: "input", text: "A cubic function f has derivative f'(x) = 6x² − 6x − 36. Find the positive x-coordinate of its stationary point.", answer: "3", topic: "Cubic graphs: full analysis & interpretation" }
+        { type: "input", text: "A cubic function f has derivative f'(x) = 6x² − 6x − 36. Find the positive x-coordinate of its stationary point.", answer: "3", topic: "Cubic graphs: full analysis & interpretation" },
+        { type: "input", text: "An open box is made from a 30 cm × 30 cm sheet of cardboard by cutting a square of side x cm from each corner and folding up the sides. Which value of x gives the largest volume? (cm)", answer: "5", topic: "Cubic graphs: full analysis & interpretation" }
       ]
     }
   ],

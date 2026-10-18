@@ -32,6 +32,7 @@ MMHelp.add(12, 6, {
     ["K","m4:1","Increasing then decreasing.","Stygend dan dalend.",["f goes up, then down → local maximum"],["f gaan op, dan af → lokale maksimum"]],
     ["R","i:2","Set f'(x) = 0.","Stel f'(x) = 0.",["3x² − 12 = 0 → x = ±2","f''(2) = 12 > 0 → minimum at x = 2"],["3x² − 12 = 0 → x = ±2","f''(2) = 12 > 0 → minimum by x = 2"]],
     ["K","m4:1","Between a max and the next min.","Tussen 'n maks en die volgende min.",["Decreasing on −1 < x < 3"],["Dalend op −1 < x < 3"]],
-    ["R","i:3","Set f'(x) = 0.","Stel f'(x) = 0.",["6(x² − x − 6) = 0 → (x − 3)(x + 2) = 0","x = 3 (positive)"],["6(x² − x − 6) = 0 → (x − 3)(x + 2) = 0","x = 3 (positief)"]]
+    ["R","i:3","Set f'(x) = 0.","Stel f'(x) = 0.",["6(x² − x − 6) = 0 → (x − 3)(x + 2) = 0","x = 3 (positive)"],["6(x² − x − 6) = 0 → (x − 3)(x + 2) = 0","x = 3 (positief)"]],
+    ["P","i:5","Write the volume in terms of x, then set V'(x) = 0.","Skryf die volume in terme van x en stel dan V'(x) = 0.",["V = x(30 − 2x)² = 4x³ − 120x² + 900x","V'(x) = 12x² − 240x + 900 = 0 → x² − 20x + 75 = 0 → (x − 5)(x − 15) = 0","x = 15 gives no box, so x = 5 cm (V = 2 000 cm³)"],["V = x(30 − 2x)² = 4x³ − 120x² + 900x","V'(x) = 12x² − 240x + 900 = 0 → x² − 20x + 75 = 0 → (x − 5)(x − 15) = 0","x = 15 gee geen boks nie, dus x = 5 cm (V = 2 000 cm³)"]]
   ]
 });

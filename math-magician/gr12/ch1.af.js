@@ -422,7 +422,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Druk 0,555... uit as 'n breuk deur die oneindige meetkundige reeks te gebruik (a=0.5, r=0.1).", answer: "5/9", topic: "Aflei van reeksformules & toepassings" },
         { type: "mc", text: "Soos n → ∞ met −1 < r < 1, streef rⁿ na:", options: ["1", "r", "0", "∞"], answer: 2, topic: "Aflei van reeksformules & toepassings" },
         { type: "input", text: "Druk 0,181818... uit as 'n breuk in eenvoudigste vorm.", answer: "2/11", topic: "Aflei van reeksformules & toepassings" },
-        { type: "input", text: "'n Meetkundige reeks het a = 9 en S∞ = 12. Vind r.", answer: "1/4", topic: "Aflei van reeksformules & toepassings" }
+        { type: "input", text: "'n Meetkundige reeks het a = 9 en S∞ = 12. Vind r.", answer: "1/4", topic: "Aflei van reeksformules & toepassings" },
+        { type: "input", text: "'n Oneindige meetkundige reeks het 'n som van 27, en die som van sy eerste twee terme is 24. Bepaal die eerste term as r > 0.", answer: "18", topic: "Aflei van reeksformules & toepassings" }
       ]
     }
   ],

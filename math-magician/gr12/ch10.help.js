@@ -36,6 +36,7 @@ MMHelp.add(12, 10, {
     ["K","m4:1","Two categories at once.","Twee kategorieë tegelyk.",["Conditional probabilities from two categorical variables"],["Voorwaardelike waarskynlikhede uit twee kategoriese veranderlikes"]],
     ["K","m4:1","The bag is the same each time.","Die sak is elke keer dieselfde.",["With replacement → independent"],["Met terugplasing → onafhanklik"]],
     ["R","i:1/2","HT or TH.","KS of SK.",["½ × ½ + ½ × ½","= 1/2"],["½ × ½ + ½ × ½","= 1/2"]],
-    ["R","i:1/30","4/10, then 3/9, then 2/8.","4/10, dan 3/9, dan 2/8.",["4/10 × 3/9 × 2/8 = 24/720","= 1/30"],["4/10 × 3/9 × 2/8 = 24/720","= 1/30"]]
+    ["R","i:1/30","4/10, then 3/9, then 2/8.","4/10, dan 3/9, dan 2/8.",["4/10 × 3/9 × 2/8 = 24/720","= 1/30"],["4/10 × 3/9 × 2/8 = 24/720","= 1/30"]],
+    ["P","i:2/5","Glue the vowels together into one block.","Plak die vokale saam in een blok.",["All arrangements: 5! = 120","Block EA + X, M, S: 4! = 24 arrangements, × 2 for EA or AE = 48","P = 48/120 = 2/5"],["Alle rangskikkings: 5! = 120","Blok EA + X, M, S: 4! = 24 rangskikkings, × 2 vir EA of AE = 48","P = 48/120 = 2/5"]]
   ]
 });

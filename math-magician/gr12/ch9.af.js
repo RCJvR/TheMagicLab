@@ -290,7 +290,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "'n Verdeling het gemiddelde = 40, mediaan = 40, modus = 40. Hoeveel van die drie maatstawwe is gelyk (as 'n getal)?", answer: "3", topic: "Simmetriese & skewe data" },
         { type: "mc", text: "Salarisdata vir 'n maatskappy is gewoonlik sterk positief skeef. Dit beteken:", options: ["Die meeste salarisse is hoog, met 'n paar baie laag", "Die meeste salarisse is laag tot matig, met 'n paar baie hoog wat die gemiddelde optrek", "Alle salarisse is dieselfde", "Die mediaan is groter as die gemiddelde"], answer: 1, topic: "Simmetriese & skewe data" },
         { type: "mc", text: "'n Datastel het mediaan = 50 en modus = 58. Die verdeling is bekend om negatief skeef te wees. Watter een van die volgende is 'n aanneemlike waarde vir die gemiddelde?", options: ["45", "50", "55", "60"], answer: 0, topic: "Simmetriese & skewe data" },
-        { type: "mc", text: "'n Boksplot het: Minimum = 10, Q1 = 42, Mediaan = 48, Q3 = 50, Maksimum = 52. Beskryf die skeefheid van die verdeling.", options: ["Positief skeef", "Negatief skeef", "Simmetries", "Kan nie uit hierdie data bepaal word nie"], answer: 1, topic: "Simmetriese & skewe data" }
+        { type: "mc", text: "'n Boksplot het: Minimum = 10, Q1 = 42, Mediaan = 48, Q3 = 50, Maksimum = 52. Beskryf die skeefheid van die verdeling.", options: ["Positief skeef", "Negatief skeef", "Simmetries", "Kan nie uit hierdie data bepaal word nie"], answer: 1, topic: "Simmetriese & skewe data" },
+        { type: "input", text: "Vir 10 leerders is Σx = 60 (studie-ure) en Σy = 620 (punte). Die kleinstekwadrate-regressielyn is ŷ = a + 4,5x. Bepaal a.", answer: "35", topic: "Simmetriese & skewe data" }
       ]
     }
   ],

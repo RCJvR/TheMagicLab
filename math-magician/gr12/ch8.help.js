@@ -26,6 +26,7 @@ MMHelp.add(12, 8, {
     ["R","m4:1","Area × k².","Oppervlakte × k².",["12 × 3²","= 108 cm²"],["12 × 3²","= 108 cm²"]],
     ["K","m4:2","A square vs a rectangle; a square vs a rhombus.","'n Vierkant teenoor 'n reghoek; 'n vierkant teenoor 'n ruit.",["Polygons with more than 3 sides need both conditions."],["Veelhoeke met meer as 3 sye het albei voorwaardes nodig."]],
     ["C","i:12.5","Length ratio = √(area ratio).","Lengteverhouding = √(oppervlakteverhouding).",["√(200/32) = √6.25 = 2.5","5 × 2.5 = 12.5 cm"],["√(200/32) = √6,25 = 2,5","5 × 2,5 = 12,5 cm"]],
-    ["C","i:216","Find k from the volumes, then use k² for area.","Vind k uit die volumes en gebruik dan k² vir oppervlakte.",["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"],["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"]]
+    ["C","i:216","Find k from the volumes, then use k² for area.","Vind k uit die volumes en gebruik dan k² vir oppervlakte.",["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"],["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"]],
+    ["P","i:39","△ACD ||| △CBD, so CD² = AD × DB.","△ACD ||| △CBD, dus CD² = AD × DB.",["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Area = ½ × 13 × 6 = 39"],["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Oppervlakte = ½ × 13 × 6 = 39"]]
   ]
 });

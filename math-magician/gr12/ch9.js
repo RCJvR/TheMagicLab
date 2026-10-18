@@ -290,7 +290,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "A distribution has mean = 40, median = 40, mode = 40. How many of the three measures are equal (as a number)?", answer: "3", topic: "Symmetric & skewed data" },
         { type: "mc", text: "Salary data for a company is usually strongly positively skewed. This means:", options: ["Most salaries are high, with a few very low", "Most salaries are low to moderate, with a few very high pulling the mean up", "All salaries are the same", "The median is greater than the mean"], answer: 1, topic: "Symmetric & skewed data" },
         { type: "mc", text: "A dataset has median = 50 and mode = 58. The distribution is known to be negatively skewed. Which of the following is a plausible value for the mean?", options: ["45", "50", "55", "60"], answer: 0, topic: "Symmetric & skewed data" },
-        { type: "mc", text: "A box plot has: Minimum = 10, Q1 = 42, Median = 48, Q3 = 50, Maximum = 52. Describe the skewness of the distribution.", options: ["Positively skewed", "Negatively skewed", "Symmetric", "Cannot be determined from this data"], answer: 1, topic: "Symmetric & skewed data" }
+        { type: "mc", text: "A box plot has: Minimum = 10, Q1 = 42, Median = 48, Q3 = 50, Maximum = 52. Describe the skewness of the distribution.", options: ["Positively skewed", "Negatively skewed", "Symmetric", "Cannot be determined from this data"], answer: 1, topic: "Symmetric & skewed data" },
+        { type: "input", text: "For 10 learners, Σx = 60 (hours of study) and Σy = 620 (marks). The least squares regression line is ŷ = a + 4.5x. Find a.", answer: "35", topic: "Symmetric & skewed data" }
       ]
     }
   ],

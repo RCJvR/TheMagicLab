@@ -395,7 +395,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "(cosA − sinA)² vereenvoudig na:", options: ["1 + sin2A", "1 − sin2A", "cos2A", "1 − 2cos2A"], answer: 1, topic: "Bewys van trigonometriese identiteite" },
         { type: "input", text: "Vereenvoudig (sinA + cosA)² − 1 in terme van 'n dubbelhoek.", answer: "sin2A", altAnswers: ["sin(2A)"], topic: "Bewys van trigonometriese identiteite" },
         { type: "mc", text: "Watter identiteit is NIE 'n geldige vorm van cos2A nie?", options: ["cos²A − sin²A", "1 − 2sin²A", "2cos²A − 1", "2cosA·sinA"], answer: 3, topic: "Bewys van trigonometriese identiteite" },
-        { type: "input", text: "Vereenvoudig (1 − cos2A)/sin2A na 'n enkele trig-verhouding.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Bewys van trigonometriese identiteite" }
+        { type: "input", text: "Vereenvoudig (1 − cos2A)/sin2A na 'n enkele trig-verhouding.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Bewys van trigonometriese identiteite" },
+        { type: "input", text: "θ is skerp en sin 2θ = 0,6. Bepaal sin θ + cos θ, korrek tot 2 desimale plekke, sonder om θ te bereken.", answer: "1.26", altAnswers: ["1,26"], topic: "Bewys van trigonometriese identiteite" }
       ]
     }
   ],

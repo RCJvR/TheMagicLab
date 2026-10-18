@@ -33,6 +33,7 @@ MMHelp.add(12, 1, {
     ["R","i:5/9","S∞ = a/(1 − r).","S∞ = a/(1 − r).",["0.5 ÷ (1 − 0.1) = 0.5 ÷ 0.9","= 5/9"],["0,5 ÷ (1 − 0,1) = 0,5 ÷ 0,9","= 5/9"]],
     ["K","m4:2","Multiply a fraction by itself many times.","Vermenigvuldig 'n breuk baie keer met homself.",["rⁿ → 0"],["rⁿ → 0"]],
     ["C","i:2/11","a = 0.18 and r = 0.01.","a = 0,18 en r = 0,01.",["S∞ = 0.18 ÷ 0.99 = 18/99","= 2/11"],["S∞ = 0,18 ÷ 0,99 = 18/99","= 2/11"]],
-    ["R","i:1/4","Solve a/(1 − r) = 12.","Los op: a/(1 − r) = 12.",["9 = 12(1 − r) → 1 − r = ¾","r = 1/4"],["9 = 12(1 − r) → 1 − r = ¾","r = 1/4"]]
+    ["R","i:1/4","Solve a/(1 − r) = 12.","Los op: a/(1 − r) = 12.",["9 = 12(1 − r) → 1 − r = ¾","r = 1/4"],["9 = 12(1 − r) → 1 − r = ¾","r = 1/4"]],
+    ["P","i:18","Write two equations in a and r, then divide one by the other.","Skryf twee vergelykings in a en r, en deel dan die een deur die ander.",["a/(1 − r) = 27 and a(1 + r) = 24","Divide: (1 − r)(1 + r) = 24/27 → 1 − r² = 8/9 → r = 1/3","a = 27(1 − 1/3) = 18"],["a/(1 − r) = 27 en a(1 + r) = 24","Deel: (1 − r)(1 + r) = 24/27 → 1 − r² = 8/9 → r = 1/3","a = 27(1 − 1/3) = 18"]]
   ]
 });

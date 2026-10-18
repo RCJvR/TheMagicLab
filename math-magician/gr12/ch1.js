@@ -422,7 +422,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Express 0,555... as a fraction using the infinite geometric series (a=0.5, r=0.1).", answer: "5/9", topic: "Deriving series formulae & applications" },
         { type: "mc", text: "As n → ∞ with −1 < r < 1, rⁿ approaches:", options: ["1", "r", "0", "∞"], answer: 2, topic: "Deriving series formulae & applications" },
         { type: "input", text: "Express 0,181818... as a fraction in simplest form.", answer: "2/11", topic: "Deriving series formulae & applications" },
-        { type: "input", text: "A geometric series has a = 9 and S∞ = 12. Find r.", answer: "1/4", topic: "Deriving series formulae & applications" }
+        { type: "input", text: "A geometric series has a = 9 and S∞ = 12. Find r.", answer: "1/4", topic: "Deriving series formulae & applications" },
+        { type: "input", text: "An infinite geometric series has a sum of 27, and the sum of its first two terms is 24. Find the first term if r > 0.", answer: "18", topic: "Deriving series formulae & applications" }
       ]
     }
   ],

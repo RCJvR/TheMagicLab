@@ -388,7 +388,8 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "A cubic with a > 0 and only one real root (no repeated roots) will:", options: ["Fall left, rise right, crossing the x-axis exactly once", "Rise left, fall right", "Touch the x-axis twice", "Have no y-intercept"], answer: 0, topic: "Sketching cubic graphs from key features" },
         { type: "mc", text: "The maximum number of turning points a cubic graph can have is:", options: ["1", "2", "3", "0"], answer: 1, topic: "Sketching cubic graphs from key features" },
         { type: "input", text: "The graph of a cubic has x-intercepts at x = −3 and x = 2 (double root), and a y-intercept at (0; −24). Determine the value of a in y = a(x+3)(x−2)².", answer: "-2", altAnswers: ["−2"], topic: "Sketching cubic graphs from key features" },
-        { type: "input", text: "A cubic graph has a double root at x = −1, a single root at x = 3, and passes through the point (1; −16). Determine the value of a in y = a(x+1)²(x−3).", answer: "2", topic: "Sketching cubic graphs from key features" }
+        { type: "input", text: "A cubic graph has a double root at x = −1, a single root at x = 3, and passes through the point (1; −16). Determine the value of a in y = a(x+1)²(x−3).", answer: "2", topic: "Sketching cubic graphs from key features" },
+        { type: "input", text: "The cubic f has x-intercepts at −1, 2 and 3, and its y-intercept is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Find f(1).", answer: "8", topic: "Sketching cubic graphs from key features" }
       ]
     }
   ],

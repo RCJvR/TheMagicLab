@@ -388,7 +388,8 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Bepaal c &gt; 0: y = x + c is 'n raaklyn aan x² + y² = 8.", answer: "4", topic: "Raaklyne vanaf 'n buitepunt" },
         { type: "mc", text: "Om raaklyne aan 'n sirkel parallel aan 'n gegewe lyn te vind, doen jy die volgende:", options: ["Gebruik dieselfde gradiënt en los Δ=0 op vir die y-afsnit", "Gebruik 'n loodregte gradiënt", "Vind slegs die middelpunt", "Gebruik die middelpunt van die lyn"], answer: 0, topic: "Raaklyne vanaf 'n buitepunt" },
         { type: "mc", text: "Sirkel x² + y² = 20. Raaklyne parallel aan y = 2x is y = 2x + c. Die twee waardes van c is:", options: ["±5", "±10", "±20", "±4"], answer: 1, topic: "Raaklyne vanaf 'n buitepunt" },
-        { type: "input", text: "Bepaal die vergelykings van die raaklyne aan x² + y² = 25 wat parallel is aan die lyn 3x + 4y = 7, in die vorm 3x + 4y = k. Gee die positiewe waarde van k.", answer: "25", topic: "Raaklyne vanaf 'n buitepunt" }
+        { type: "input", text: "Bepaal die vergelykings van die raaklyne aan x² + y² = 25 wat parallel is aan die lyn 3x + 4y = 7, in die vorm 3x + 4y = k. Gee die positiewe waarde van k.", answer: "25", topic: "Raaklyne vanaf 'n buitepunt" },
+        { type: "input", text: "'n Raaklyn word vanaf P(7 ; 1) aan die sirkel x² + y² − 2x + 4y − 4 = 0 getrek, en raak dit by T.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":240,\"view\":[-3,-5.5,9.5,3],\"axes\":{\"ticks\":2},\"pts\":{\"C\":[1,-2],\"P\":[7,1],\"T\":[1,1]},\"circ\":[[\"C\",3]],\"seg\":[[\"P\",\"T\",\"ac\"],[\"C\",\"T\",\"mu dash\"],[\"C\",\"P\",\"mu dash\"]],\"ra\":[[\"C\",\"T\",\"P\"]],\"dots\":true,\"lab\":{\"T\":\"n\",\"P\":\"n\",\"C\":\"s\"}}'></div>Bereken die lengte van PT.", answer: "6", topic: "Raaklyne vanaf 'n buitepunt" }
       ]
     }
   ],

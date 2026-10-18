@@ -36,6 +36,7 @@ MMHelp.add(12, 2, {
     ["K","i:0","log_b x needs x > 0.","log_b x vereis x > 0.",["x = 0"],["x = 0"]],
     ["K","m4:2","They are inverses.","Hulle is inverses.",["Reflect in y = x"],["Weerkaats in y = x"]],
     ["R","i:1","Swap x and y, then take log₂.","Ruil x en y om en neem dan log₂.",["x = 2^(y + 1) → y + 1 = log₂x","f⁻¹(x) = log₂(x) − 1"],["x = 2^(y + 1) → y + 1 = log₂x","f⁻¹(x) = log₂(x) − 1"]],
-    ["R","i:32","Reflecting in y = x gives the inverse.","Weerkaatsing in y = x gee die inverse.",["Inverse of log₃x is 3ˣ","2 units down: h(x) = 3ˣ − 2"],["Inverse van log₃x is 3ˣ","2 eenhede af: h(x) = 3ˣ − 2"]]
+    ["R","i:32","Reflecting in y = x gives the inverse.","Weerkaatsing in y = x gee die inverse.",["Inverse of log₃x is 3ˣ","2 units down: h(x) = 3ˣ − 2"],["Inverse van log₃x is 3ˣ","2 eenhede af: h(x) = 3ˣ − 2"]],
+    ["P","i:4","Change every log to base 10 and look for cancelling.","Verander elke log na grondtal 10 en soek wat kanselleer.",["log₂3 × log₃4 × … = (log 3/log 2) × (log 4/log 3) × … × (log 16/log 15)","Everything cancels except log 16/log 2","log₂16 = 4"],["log₂3 × log₃4 × … = (log 3/log 2) × (log 4/log 3) × … × (log 16/log 15)","Alles kanselleer behalwe log 16/log 2","log₂16 = 4"]]
   ]
 });

@@ -435,7 +435,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "As f'(x) &gt; 0 vir alle x &lt; 1 en f'(x) &lt; 0 vir alle x &gt; 1, dan het f by x = 1 'n:", options: ["Plaaslike minimum", "Plaaslike maksimum", "Buigpunt", "x-afsnit"], answer: 1, topic: "Kubieke grafieke: volledige ontleding & interpretasie" },
         { type: "input", text: "f(x) = x³ − 12x. Bepaal die x-waarde(s) waar f 'n plaaslike minimum het (gee die positiewe waarde).", answer: "2", topic: "Kubieke grafieke: volledige ontleding & interpretasie" },
         { type: "mc", text: "'n Kubieke met a &gt; 0 het draaipunte by x = −1 (maks) en x = 3 (min). f is afnemend op:", options: ["x &lt; −1", "−1 &lt; x &lt; 3", "x &gt; 3", "Alle reële x"], answer: 1, topic: "Kubieke grafieke: volledige ontleding & interpretasie" },
-        { type: "input", text: "'n Kubieke funksie f het afgeleide f'(x) = 6x² − 6x − 36. Bepaal die positiewe x-koördinaat van sy stilstandspunt.", answer: "3", topic: "Kubieke grafieke: volledige ontleding & interpretasie" }
+        { type: "input", text: "'n Kubieke funksie f het afgeleide f'(x) = 6x² − 6x − 36. Bepaal die positiewe x-koördinaat van sy stilstandspunt.", answer: "3", topic: "Kubieke grafieke: volledige ontleding & interpretasie" },
+        { type: "input", text: "'n Oop boks word van 'n 30 cm × 30 cm stuk karton gemaak deur 'n vierkant met sy x cm uit elke hoek te sny en die kante op te vou. Watter waarde van x gee die grootste volume? (cm)", answer: "5", topic: "Kubieke grafieke: volledige ontleding & interpretasie" }
       ]
     }
   ],

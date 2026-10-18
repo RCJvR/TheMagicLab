@@ -26,6 +26,7 @@ MMHelp.add(12, 9, {
     ["K","i:3","Count the equal measures.","Tel die gelyke maatstawwe.",["Mean, median and mode are all 40 → 3"],["Gemiddeld, mediaan en modus is almal 40 → 3"]],
     ["K","m4:1","A few very large salaries.","'n Paar baie groot salarisse.",["Most salaries are moderate; a few very high ones pull the mean up."],["Die meeste salarisse is matig; 'n paar baie hoë trek die gemiddeld op."]],
     ["R","m4:0","Negative skew: mean < median < mode.","Negatiewe skeefheid: gemiddeld < mediaan < modus.",["Mean < 50","Only 45 fits"],["Gemiddeld < 50","Net 45 pas"]],
-    ["C","m4:1","Compare the two halves of the box and the whiskers.","Vergelyk die twee helftes van die boks en die snorre.",["Median − Q1 = 6 but Q3 − median = 2","Left whisker 32, right whisker 2 → long left tail → negatively skewed"],["Mediaan − Q1 = 6 maar Q3 − mediaan = 2","Linkersnor 32, regtersnor 2 → lang linkerstert → negatief skeef"]]
+    ["C","m4:1","Compare the two halves of the box and the whiskers.","Vergelyk die twee helftes van die boks en die snorre.",["Median − Q1 = 6 but Q3 − median = 2","Left whisker 32, right whisker 2 → long left tail → negatively skewed"],["Mediaan − Q1 = 6 maar Q3 − mediaan = 2","Linkersnor 32, regtersnor 2 → lang linkerstert → negatief skeef"]],
+    ["P","i:35","The least squares line always passes through (x̄ ; ȳ).","Die kleinstekwadratelyn gaan altyd deur (x̄ ; ȳ).",["x̄ = 60 ÷ 10 = 6 and ȳ = 620 ÷ 10 = 62","62 = a + 4.5 × 6 → a = 62 − 27 = 35"],["x̄ = 60 ÷ 10 = 6 en ȳ = 620 ÷ 10 = 62","62 = a + 4,5 × 6 → a = 62 − 27 = 35"]]
   ]
 });

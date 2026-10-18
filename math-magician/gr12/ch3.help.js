@@ -36,6 +36,7 @@ MMHelp.add(12, 3, {
     ["K","m4:1","Where does the money come from?","Waar kom die geld vandaan?",["Returns are paid from new investors' money, not real profit."],["Opbrengste word uit nuwe beleggers se geld betaal, nie uit werklike wins nie."]],
     ["R","i:12.55","(1 + 0.12/4)⁴ − 1.","(1 + 0,12/4)⁴ − 1.",["1.03⁴ ≈ 1.1255","≈ 12.55%"],["1,03⁴ ≈ 1,1255","≈ 12,55%"]],
     ["C","m4:0","Work out both effective rates.","Bereken albei effektiewe koerse.",["A: (1 + 0.104/4)⁴ − 1 ≈ 10.81%","B: (1 + 0.103/12)¹² − 1 ≈ 10.80% → Bank A"],["A: (1 + 0,104/4)⁴ − 1 ≈ 10,81%","B: (1 + 0,103/12)¹² − 1 ≈ 10,80% → Bank A"]],
-    ["R","i:10.81","(1 + 0.104/4)⁴ − 1.","(1 + 0,104/4)⁴ − 1.",["1.026⁴ ≈ 1.1081","≈ 10.81%"],["1,026⁴ ≈ 1,1081","≈ 10,81%"]]
+    ["R","i:10.81","(1 + 0.104/4)⁴ − 1.","(1 + 0,104/4)⁴ − 1.",["1.026⁴ ≈ 1.1081","≈ 10.81%"],["1,026⁴ ≈ 1,1081","≈ 10,81%"]],
+    ["P","i:145","Solve the present-value formula for n with logs.","Los die huidige-waarde-formule op vir n met logs.",["800 000 = 10 000[1 − (1 + 0.11/12)⁻ⁿ] ÷ (0.11/12)","(1.009167)⁻ⁿ = 1 − 0.7333 = 0.2667 → n = −log 0.2667 ÷ log 1.009167 ≈ 144.85","So 145 payments (about 12 years instead of 20)"],["800 000 = 10 000[1 − (1 + 0,11/12)⁻ⁿ] ÷ (0,11/12)","(1,009167)⁻ⁿ = 1 − 0,7333 = 0,2667 → n = −log 0,2667 ÷ log 1,009167 ≈ 144,85","Dus 145 betalings (sowat 12 jaar in plaas van 20)"]]
   ]
 });

@@ -388,7 +388,8 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Find c &gt; 0: y = x + c is tangent to x² + y² = 8.", answer: "4", topic: "Tangents from an external point" },
         { type: "mc", text: "To find tangents to a circle parallel to a given line, you:", options: ["Use the same gradient and solve Δ=0 for the y-intercept", "Use a perpendicular gradient", "Find the centre only", "Use the midpoint of the line"], answer: 0, topic: "Tangents from an external point" },
         { type: "mc", text: "Circle x² + y² = 20. Tangents parallel to y = 2x are y = 2x + c. The two values of c are:", options: ["±5", "±10", "±20", "±4"], answer: 1, topic: "Tangents from an external point" },
-        { type: "input", text: "Find the equations of the tangents to x² + y² = 25 that are parallel to the line 3x + 4y = 7, in the form 3x + 4y = k. Give the positive value of k.", answer: "25", topic: "Tangents from an external point" }
+        { type: "input", text: "Find the equations of the tangents to x² + y² = 25 that are parallel to the line 3x + 4y = 7, in the form 3x + 4y = k. Give the positive value of k.", answer: "25", topic: "Tangents from an external point" },
+        { type: "input", text: "A tangent is drawn from P(7 ; 1) to the circle x² + y² − 2x + 4y − 4 = 0, touching it at T.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":240,\"view\":[-3,-5.5,9.5,3],\"axes\":{\"ticks\":2},\"pts\":{\"C\":[1,-2],\"P\":[7,1],\"T\":[1,1]},\"circ\":[[\"C\",3]],\"seg\":[[\"P\",\"T\",\"ac\"],[\"C\",\"T\",\"mu dash\"],[\"C\",\"P\",\"mu dash\"]],\"ra\":[[\"C\",\"T\",\"P\"]],\"dots\":true,\"lab\":{\"T\":\"n\",\"P\":\"n\",\"C\":\"s\"}}'></div>Find the length of PT.", answer: "6", topic: "Tangents from an external point" }
       ]
     }
   ],
