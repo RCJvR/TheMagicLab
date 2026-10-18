@@ -485,7 +485,7 @@
       #progressBar { width: 80px; }
       .home-btn { font-size: 10px; padding: 5px 10px; }
       #mainLayout { flex-direction: column; overflow: visible; height: auto; }
-      #sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); max-height: 220px; }
+      #sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); max-height: 42vh; }
       #contentArea { overflow: visible; height: auto; }
       .content-panel { padding: 16px; }
       #practicePanel { padding: 16px; }
@@ -976,6 +976,9 @@ function selectTopic(id) {
   const ch = TOPICS.find(t => t.id === id)?.chapter || 1;
   collapsedChapters.delete(ch);
   buildSidebar();
+  // Keep the chosen topic in view in the (often scrolled) chapter list.
+  const activeItem = sidebarList.querySelector('.topic-item.active');
+  if (activeItem) sidebarList.scrollTop += activeItem.getBoundingClientRect().top - sidebarList.getBoundingClientRect().top - 60;
   renderLesson();
   switchTab('lesson');
 }
@@ -1200,6 +1203,9 @@ function renderQuestion() {
         });
       }
     }
+    // Update the score straight away rather than on the next question.
+    const pill = practicePanel.querySelectorAll('.score-pill')[1], sc = topicScores[currentTopicId];
+    if (pill && sc) pill.innerHTML = T().scoreLabel(sc.correct, sc.total);
   }
 
   if (q.type === 'mc') {

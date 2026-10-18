@@ -297,6 +297,8 @@
       answered = true;
       paper.answers[slot] = ok;
       if (window.MMResults) MMResults.record(cfg.grade, it.topic, it.qIndex, q, ok);
+      const pill = cfg.panel.querySelectorAll('.score-pill')[1];
+      if (pill) pill.innerHTML = t.score(paper.answers.filter(x => x === true).length, paper.answers.filter(x => x !== undefined).length);
       area.style.display = 'block';
       area.className = ok ? 'correct' : 'wrong';
       cfg.panel.querySelector('#feedbackLabel').textContent = ok ? t.correct : t.wrong;
