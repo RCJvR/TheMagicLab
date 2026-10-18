@@ -93,7 +93,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Exact value of cos 15° = cos(45° − 30°):", options: ["(√6+√2)/4", "(√6−√2)/4", "(√3+1)/4", "(√3−1)/4"], answer: 0, topic: "Compound angle identities" },
         { type: "mc", text: "cos(2x) in terms of sinx only:", options: ["2cos²x−1", "1−2sin²x", "cos²x−sin²x", "2sinxcosx"], answer: 1, topic: "Compound angle identities" },
         { type: "input", text: "If sinα = 3/5 (α acute), find sin(2α).", answer: "24/25", topic: "Compound angle identities" },
-        { type: "input", text: "If sinA = 3/5 and cosB = 12/13, with A and B both acute, find sin(A+B) as a fraction.", answer: "56/65", topic: "Compound angle identities" }
+        { type: "input", text: "If sinA = 3/5 and cosB = 12/13, with A and B both acute, find sin(A+B) as a fraction.", answer: "56/65", topic: "Compound angle identities" },
+        { type: "input", text: "Without a calculator, find the value of sin 75° cos 15° + cos 75° sin 15°.", answer: "1", topic: "Compound angle identities" }
       ]
     },
     {
@@ -289,7 +290,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "In a typical 3D tower problem, after finding a horizontal side using the sine or cosine rule, the height is usually found using:", options: ["The area rule", "Right-triangle trig (e.g. tan)", "The compound angle identities", "Another cosine rule application"], answer: 1, topic: "Sine, cosine & area rules in 2D and 3D" },
         { type: "input", text: "Triangle with sides a = 6, b = 8, c = 10. Use the cosine rule to find angle C (opposite side c), to the nearest degree.", answer: "90", topic: "Sine, cosine & area rules in 2D and 3D" },
         { type: "mc", text: "The sine rule states a/sinA = b/sinB = c/sinC. This ratio also equals:", options: ["2R (R = circumradius)", "The triangle's area", "a + b + c", "The perimeter divided by 2"], answer: 0, topic: "Sine, cosine & area rules in 2D and 3D" },
-        { type: "input", text: "TP is a vertical tower. Q is a point on the ground with angle of elevation to T equal to 42°. R is another point on the ground with QR = 60 m, angle PQR = 130°, and angle QRP = 30°. Find the height of the tower TP (2 d.p.).", answer: "78.98", altAnswers: ["78,98"], topic: "Sine, cosine & area rules in 2D and 3D" }
+        { type: "input", text: "TP is a vertical tower. Q is a point on the ground with angle of elevation to T equal to 42°. R is another point on the ground with QR = 60 m, angle PQR = 130°, and angle QRP = 30°. Find the height of the tower TP (2 d.p.).", answer: "78.98", altAnswers: ["78,98"], topic: "Sine, cosine & area rules in 2D and 3D" },
+        { type: "input", text: "AB is a vertical tower with its foot A on level ground. C and D are on the ground with CD = 50 m, ∠ACD = 60° and ∠ADC = 50°. The angle of elevation of B from C is 30°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[0,4.2],\"C\":[-3.4,-1.6],\"D\":[3.2,-2.3]},\"seg\":[[\"A\",\"B\",\"ac\"],[\"C\",\"D\",null,null,\"50 m\"],[\"A\",\"C\",\"mu dash\"],[\"A\",\"D\",\"mu dash\"],[\"C\",\"B\",\"hl dash\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"ang\":[[\"D\",\"C\",\"A\",\"60°\",null,22],[\"A\",\"D\",\"C\",\"50°\",null,22],[\"A\",\"C\",\"B\",\"30°\",\"hl\",40]],\"lab\":{\"A\":\"se\",\"B\":\"n\",\"C\":\"w\",\"D\":\"e\"}}'></div>Find the height of the tower, to 2 decimal places. (m)", answer: "23.53", altAnswers: ["23,53"], topic: "Sine, cosine & area rules in 2D and 3D" }
       ]
     },
     {

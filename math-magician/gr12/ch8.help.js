@@ -17,7 +17,8 @@ MMHelp.add(12, 8, {
     ["R","i:15","AC² = AB · AD.","AC² = AB · AD.",["AC² = 25 × 9 = 225","AC = 15"],["AC² = 25 × 9 = 225","AC = 15"]],
     ["R","m4:1","Area scales by (scale factor)².","Oppervlakte skaal met (skaalfaktor)².",["PQ = 2AB → area × 4","18 × 4 = 72 cm²"],["PQ = 2AB → area × 4","18 × 4 = 72 cm²"]],
     ["C","i:35","AB = AD + DB.","AB = AD + DB.",["AB = 15 → AC² = 15 × 3 = 45","AC = √45 = 3√5"],["AB = 15 → AC² = 15 × 3 = 45","AC = √45 = 3√5"]],
-    ["C","i:8","Side ratio = √(area ratio).","Syverhouding = √(oppervlakteverhouding).",["√(20/45) = √(4/9) = 2/3","EF = 12 × 2/3 = 8 cm"],["√(20/45) = √(4/9) = 2/3","EF = 12 × 2/3 = 8 cm"]]
+    ["C","i:8","Side ratio = √(area ratio).","Syverhouding = √(oppervlakteverhouding).",["√(20/45) = √(4/9) = 2/3","EF = 12 × 2/3 = 8 cm"],["√(20/45) = √(4/9) = 2/3","EF = 12 × 2/3 = 8 cm"]],
+    ["P","i:25","CD² = AD × DB (similar triangles).","CD² = AD × DB (gelykvormige driehoeke).",["x(x + 7) = 144 → x² + 7x − 144 = 0 → (x + 16)(x − 9) = 0 → x = 9","AB = 9 + 16 = 25"],["x(x + 7) = 144 → x² + 7x − 144 = 0 → (x + 16)(x − 9) = 0 → x = 9","AB = 9 + 16 = 25"]]
   ],
   "802": [
     ["K","m4:2","Triangles are special.","Driehoeke is spesiaal.",["For triangles, either condition alone is enough."],["Vir driehoeke is enige een voorwaarde alleen genoeg."]],
@@ -27,6 +28,7 @@ MMHelp.add(12, 8, {
     ["K","m4:2","A square vs a rectangle; a square vs a rhombus.","'n Vierkant teenoor 'n reghoek; 'n vierkant teenoor 'n ruit.",["Polygons with more than 3 sides need both conditions."],["Veelhoeke met meer as 3 sye het albei voorwaardes nodig."]],
     ["C","i:12.5","Length ratio = √(area ratio).","Lengteverhouding = √(oppervlakteverhouding).",["√(200/32) = √6.25 = 2.5","5 × 2.5 = 12.5 cm"],["√(200/32) = √6,25 = 2,5","5 × 2,5 = 12,5 cm"]],
     ["C","i:216","Find k from the volumes, then use k² for area.","Vind k uit die volumes en gebruik dan k² vir oppervlakte.",["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"],["k³ = 216/27 = 8 → k = 2","Area × 4: 54 × 4 = 216 cm²"]],
-    ["P","i:39","△ACD ||| △CBD, so CD² = AD × DB.","△ACD ||| △CBD, dus CD² = AD × DB.",["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Area = ½ × 13 × 6 = 39"],["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Oppervlakte = ½ × 13 × 6 = 39"]]
+    ["P","i:39","△ACD ||| △CBD, so CD² = AD × DB.","△ACD ||| △CBD, dus CD² = AD × DB.",["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Area = ½ × 13 × 6 = 39"],["CD² = 4 × 9 = 36 → CD = 6","AB = 4 + 9 = 13","Oppervlakte = ½ × 13 × 6 = 39"]],
+    ["P","i:3","Convert the scale to km first: 1 cm stands for 0.5 km.","Herlei eers die skaal na km: 1 cm stel 0,5 km voor.",["1 cm² stands for 0.5 × 0.5 = 0.25 km²","12 × 0.25 = 3 km²"],["1 cm² stel 0,5 × 0,5 = 0,25 km² voor","12 × 0,25 = 3 km²"]]
   ]
 });

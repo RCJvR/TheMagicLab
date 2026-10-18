@@ -199,7 +199,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "In the Pythagorean proof: AC² = AB · AD. If AB = 25 and AD = 9, find AC.", answer: "15", topic: "Similarity & Pythagorean theorem proofs" },
         { type: "mc", text: "△ABC ||| △PQR. If area of △ABC = 18 cm² and AB/PQ = 1/2, area of △PQR =", options: ["36 cm²", "72 cm²", "9 cm²", "4.5 cm²"], answer: 1, topic: "Similarity & Pythagorean theorem proofs" },
         { type: "input", text: "In right △ABC (right angle at C), altitude CD meets AB at D, with AD = 3 and DB = 12. Calculate AC (using AC² = AB · AD), leaving your answer in simplest surd form.", answer: "3√5", altAnswers: ["3sqrt5", "3√(5)", "sqrt(45)", "√45"], topic: "Similarity & Pythagorean theorem proofs" },
-        { type: "input", text: "△ABC ||| △DEF. The area of △ABC is 45 cm² and the area of △DEF is 20 cm². If BC = 12 cm, determine the length of EF.", answer: "8", topic: "Similarity & Pythagorean theorem proofs" }
+        { type: "input", text: "△ABC ||| △DEF. The area of △ABC is 45 cm² and the area of △DEF is 20 cm². If BC = 12 cm, determine the length of EF.", answer: "8", topic: "Similarity & Pythagorean theorem proofs" },
+        { type: "input", text: "In △ABC, ∠ACB = 90° and CD ⊥ AB. AD = x, DB = x + 7 and CD = 12. Find AB.", answer: "25", topic: "Similarity & Pythagorean theorem proofs" }
       ]
     },
     {
@@ -298,7 +299,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "For polygons with more than 3 sides, which statement is TRUE?", options: ["Equal angles alone guarantees similarity", "Proportional sides alone guarantees similarity", "Both equal angles AND proportional sides are needed", "Neither condition is ever required"], answer: 2, topic: "Similar polygons & scale factor problems" },
         { type: "input", text: "Two similar trapezoids have areas 32 cm² and 200 cm². If the shorter parallel side of the smaller trapezoid is 5 cm, find the corresponding side of the larger trapezoid.", answer: "12.5", altAnswers: ["12,5"], topic: "Similar polygons & scale factor problems" },
         { type: "input", text: "Two similar cylinders (similar solids) have volumes 27 cm³ and 216 cm³. If the surface area of the smaller cylinder is 54 cm², find the surface area of the larger cylinder.", answer: "216", topic: "Similar polygons & scale factor problems" },
-        { type: "input", text: "In △ABC, ∠ACB = 90° and CD ⊥ AB, with AD = 4 and DB = 9.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[13,0],\"D\":[4,0],\"C\":[4,6]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"C\",\"D\",\"ac\"],[\"A\",\"D\",null,null,\"4\"],[\"D\",\"B\",null,null,\"9\"]],\"ra\":[[\"A\",\"C\",\"B\"],[\"C\",\"D\",\"B\"]],\"lab\":{\"C\":\"n\",\"D\":\"s\"}}'></div>Find the area of △ABC.", answer: "39", topic: "Similar polygons & scale factor problems" }
+        { type: "input", text: "In △ABC, ∠ACB = 90° and CD ⊥ AB, with AD = 4 and DB = 9.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[13,0],\"D\":[4,0],\"C\":[4,6]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"C\",\"D\",\"ac\"],[\"A\",\"D\",null,null,\"4\"],[\"D\",\"B\",null,null,\"9\"]],\"ra\":[[\"A\",\"C\",\"B\"],[\"C\",\"D\",\"B\"]],\"lab\":{\"C\":\"n\",\"D\":\"s\"}}'></div>Find the area of △ABC.", answer: "39", topic: "Similar polygons & scale factor problems" },
+        { type: "input", text: "A map has a scale of 1 : 50 000. A farm covers 12 cm² on the map. What is the real area of the farm in km²?", answer: "3", topic: "Similar polygons & scale factor problems" }
       ]
     }
   ],

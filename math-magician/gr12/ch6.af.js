@@ -213,7 +213,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "f(x) = x² − 4x + 3. Bepaal die x-koördinaat van die minimum.", answer: "2", topic: "Raaklyne, kurweskets & optimering" },
         { type: "mc", text: "Raaklyn aan y = x² by x = 3 het gradiënt:", options: ["9", "6", "3", "12"], answer: 1, topic: "Raaklyne, kurweskets & optimering" },
         { type: "mc", text: "'n Houer met 'n vierkantige basis van sy x en hoogte h het volume 500 = x²h. Om die oppervlak te minimeer, is die eerste stap om:", options: ["Onmiddellik O te differensieer", "h in terme van x uit te druk deur V=500 te gebruik", "O = 0 te stel", "V te differensieer"], answer: 1, topic: "Raaklyne, kurweskets & optimering" },
-        { type: "input", text: "Bepaal die y-afsnit van die raaklyn aan f(x) = x² − 6x + 5 by die punt waar die gradiënt van die raaklyn 4 is.", answer: "-20", altAnswers: ["−20"], topic: "Raaklyne, kurweskets & optimering" }
+        { type: "input", text: "Bepaal die y-afsnit van die raaklyn aan f(x) = x² − 6x + 5 by die punt waar die gradiënt van die raaklyn 4 is.", answer: "-20", altAnswers: ["−20"], topic: "Raaklyne, kurweskets & optimering" },
+        { type: "input", text: "'n Boer het 120 m heining om 'n reghoekige kamp langs 'n reguit rivier te maak. Langs die rivier is geen heining nodig nie. Wat is die grootste moontlike oppervlakte van die kamp? (m²)", answer: "1800", topic: "Raaklyne, kurweskets & optimering" }
       ]
     },
     {
@@ -324,7 +325,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Die gemiddelde tempo van verandering van f(x) = x² tussen x = 1 en x = 4 is:", options: ["5", "15", "3", "16"], answer: 0, topic: "Tempo van verandering & bewegingsrekene" },
         { type: "mc", text: "As v(t) &lt; 0 vir 'n voorwerp wat langs 'n lyn beweeg, beteken dit die voorwerp is:", options: ["Aan die versnel", "Beweeg in die negatiewe rigting", "In rus", "Aan die positief versnel"], answer: 1, topic: "Tempo van verandering & bewegingsrekene" },
         { type: "input", text: "s(t) = t² − 8t + 20. Bepaal die minimum verplasing (die waarde van s by die stilstandspunt).", answer: "4", topic: "Tempo van verandering & bewegingsrekene" },
-        { type: "input", text: "s(t) = 2t³ − 15t² + 24t beskryf die verplasing (m) van 'n voorwerp vir t ≥ 0. Bepaal die versnelling by t = 3 sekondes (in m/s²).", answer: "6", topic: "Tempo van verandering & bewegingsrekene" }
+        { type: "input", text: "s(t) = 2t³ − 15t² + 24t beskryf die verplasing (m) van 'n voorwerp vir t ≥ 0. Bepaal die versnelling by t = 3 sekondes (in m/s²).", answer: "6", topic: "Tempo van verandering & bewegingsrekene" },
+        { type: "input", text: "'n Bal word opwaarts gegooi. Sy hoogte na t sekondes is h(t) = 20t − 5t² meter. Teen watter spoed tref dit die grond? (m/s)", answer: "20", topic: "Tempo van verandering & bewegingsrekene" }
       ]
     },
     {

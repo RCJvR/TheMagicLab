@@ -8,7 +8,8 @@ MMHelp.add(12, 9, {
     ["R","i:9.2","Substitute x = 4.","Vervang x met 4.",["3.2 + 1.5 × 4","= 3.2 + 6 = 9.2"],["3,2 + 1,5 × 4","= 3,2 + 6 = 9,2"]],
     ["K","m4:1","\"Least squares\".","\"Kleinste kwadrate\".",["It minimises the sum of the squared residuals."],["Dit minimeer die som van die gekwadreerde residue."]],
     ["C","i:2","b = (nΣxy − ΣxΣy) ÷ (nΣx² − (Σx)²).","b = (nΣxy − ΣxΣy) ÷ (nΣx² − (Σx)²).",["Top: 5(220) − 20(50) = 100","Bottom: 5(90) − 400 = 50 → b = 2"],["Bo: 5(220) − 20(50) = 100","Onder: 5(90) − 400 = 50 → b = 2"]],
-    ["C","m4:0","Solve ŷ = 57 for x.","Los ŷ = 57 op vir x.",["12 + 2.5x = 57 → x = 18","18 > 15 → outside the data → extrapolation"],["12 + 2,5x = 57 → x = 18","18 > 15 → buite die data → ekstrapolasie"]]
+    ["C","m4:0","Solve ŷ = 57 for x.","Los ŷ = 57 op vir x.",["12 + 2.5x = 57 → x = 18","18 > 15 → outside the data → extrapolation"],["12 + 2,5x = 57 → x = 18","18 > 15 → buite die data → ekstrapolasie"]],
+    ["P","m4:1","Solve for x, then compare it with the range of the data.","Los op vir x en vergelyk dit dan met die omvang van die data.",["40 + 2.5x = 75 → x = 14 hours","The data only covers 0–10 hours → extrapolation, so the prediction is unreliable"],["40 + 2,5x = 75 → x = 14 uur","Die data dek net 0–10 uur → ekstrapolasie, dus is die voorspelling onbetroubaar"]]
   ],
   "901": [
     ["K","m4:2","The sign gives direction; the size gives strength.","Die teken gee rigting; die grootte gee sterkte.",["−0.92 is close to −1 → strong negative"],["−0,92 is naby −1 → sterk negatief"]],
@@ -27,6 +28,7 @@ MMHelp.add(12, 9, {
     ["K","m4:1","A few very large salaries.","'n Paar baie groot salarisse.",["Most salaries are moderate; a few very high ones pull the mean up."],["Die meeste salarisse is matig; 'n paar baie hoë trek die gemiddeld op."]],
     ["R","m4:0","Negative skew: mean < median < mode.","Negatiewe skeefheid: gemiddeld < mediaan < modus.",["Mean < 50","Only 45 fits"],["Gemiddeld < 50","Net 45 pas"]],
     ["C","m4:1","Compare the two halves of the box and the whiskers.","Vergelyk die twee helftes van die boks en die snorre.",["Median − Q1 = 6 but Q3 − median = 2","Left whisker 32, right whisker 2 → long left tail → negatively skewed"],["Mediaan − Q1 = 6 maar Q3 − mediaan = 2","Linkersnor 32, regtersnor 2 → lang linkerstert → negatief skeef"]],
-    ["P","i:35","The least squares line always passes through (x̄ ; ȳ).","Die kleinstekwadratelyn gaan altyd deur (x̄ ; ȳ).",["x̄ = 60 ÷ 10 = 6 and ȳ = 620 ÷ 10 = 62","62 = a + 4.5 × 6 → a = 62 − 27 = 35"],["x̄ = 60 ÷ 10 = 6 en ȳ = 620 ÷ 10 = 62","62 = a + 4,5 × 6 → a = 62 − 27 = 35"]]
+    ["P","i:35","The least squares line always passes through (x̄ ; ȳ).","Die kleinstekwadratelyn gaan altyd deur (x̄ ; ȳ).",["x̄ = 60 ÷ 10 = 6 and ȳ = 620 ÷ 10 = 62","62 = a + 4.5 × 6 → a = 62 − 27 = 35"],["x̄ = 60 ÷ 10 = 6 en ȳ = 620 ÷ 10 = 62","62 = a + 4,5 × 6 → a = 62 − 27 = 35"]],
+    ["P","m4:1","The new value sits exactly on the mean.","Die nuwe waarde lê presies op die gemiddeld.",["The mean stays 15 and the sum of squared deviations stays 20 × 4 = 80","σ = √(80/21) ≈ 1.95 < 2 → it decreases slightly"],["Die gemiddeld bly 15 en die som van gekwadreerde afwykings bly 20 × 4 = 80","σ = √(80/21) ≈ 1,95 < 2 → dit neem effens af"]]
   ]
 });

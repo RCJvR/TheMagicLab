@@ -113,7 +113,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "'n Meetkundige ry het T₂ = 6 en T₅ = 48. Vind r.", options: ["2", "3", "4", "8"], answer: 0, topic: "Rekenkundige & meetkundige rye" },
         { type: "mc", text: "Watter ry is meetkundig? ", options: ["1, 3, 5, 7, …", "2, 6, 18, 54, …", "1, 4, 9, 16, …", "3, 6, 9, 12, …"], answer: 1, topic: "Rekenkundige & meetkundige rye" },
         { type: "input", text: "Meetkundig: a = 5, r = −2. Vind T₄.", answer: "-40", altAnswers: ["−40"], topic: "Rekenkundige & meetkundige rye" },
-        { type: "input", text: "Die 3de term van 'n meetkundige ry is 20 en die 6de term is 160. Vind die eerste term a.", answer: "5", topic: "Rekenkundige & meetkundige rye" }
+        { type: "input", text: "Die 3de term van 'n meetkundige ry is 20 en die 6de term is 160. Vind die eerste term a.", answer: "5", topic: "Rekenkundige & meetkundige rye" },
+        { type: "input", text: "In 'n rekenkundige ry is T₃ = 7 en T₇ is drie keer T₂. Bereken die som van die eerste 20 terme.", answer: "440", topic: "Rekenkundige & meetkundige rye" }
       ]
     },
     {
@@ -243,7 +244,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "Oneindige meetkundige reeks: a = 12, r = ⅓. Vind S∞.", options: ["18", "24", "36", "6"], answer: 0, topic: "Reekse — rekenkundig, meetkundig & oneindig" },
         { type: "mc", text: "Σᵢ₌₁⁴ (3i) = ", options: ["30", "24", "36", "42"], answer: 0, topic: "Reekse — rekenkundig, meetkundig & oneindig" },
         { type: "mc", text: "Vir watter waarde van r konvergeer 'n oneindige meetkundige reeks?", options: ["r = 1", "r = −2", "r = 0.8", "r = −1.1"], answer: 2, topic: "Reekse — rekenkundig, meetkundig & oneindig" },
-        { type: "input", text: "Die som van die eerste n terme van 'n rekenkundige reeks is Sₙ = 4n² + 3n. Vind die 5de term (T₅).", answer: "39", topic: "Reekse — rekenkundig, meetkundig & oneindig" }
+        { type: "input", text: "Die som van die eerste n terme van 'n rekenkundige reeks is Sₙ = 4n² + 3n. Vind die 5de term (T₅).", answer: "39", topic: "Reekse — rekenkundig, meetkundig & oneindig" },
+        { type: "input", text: "'n Bal word van 'n hoogte van 8 m laat val. Na elke bons styg dit tot 3/4 van die hoogte waarvan dit geval het. Watter totale vertikale afstand beweeg dit voordat dit tot rus kom? (m)", answer: "56", topic: "Reekse — rekenkundig, meetkundig & oneindig" }
       ]
     },
     {

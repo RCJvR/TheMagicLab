@@ -26,7 +26,8 @@ MMHelp.add(12, 5, {
     ["K","m4:1","One equation per unknown.","Een vergelyking per onbekende.",["Two unknowns → two conditions"],["Twee onbekendes → twee voorwaardes"]],
     ["R","i:-6","Subtract the equations.","Trek die vergelykings van mekaar af.",["(2a + b) − (a + b) = −1 − 5","a = −6"],["(2a + b) − (a + b) = −1 − 5","a = −6"]],
     ["C","m4:0","Form two equations.","Vorm twee vergelykings.",["p(1) = 0: 1 + a + b − 4 = 0 → a + b = 3","p(−1) = −6: −1 + a − b − 4 = −6 → a − b = −1","a = 1, b = 2"],["p(1) = 0: 1 + a + b − 4 = 0 → a + b = 3","p(−1) = −6: −1 + a − b − 4 = −6 → a − b = −1","a = 1, b = 2"]],
-    ["C","m4:0","Use p(2) = 0, then divide.","Gebruik p(2) = 0 en deel dan.",["24 + 4k + 4 = 0 → k = −7","3x³ − 7x² + 4 = (x − 2)(3x² − x − 2) = (x − 2)(3x + 2)(x − 1)","Roots: −⅔, 1, 2"],["24 + 4k + 4 = 0 → k = −7","3x³ − 7x² + 4 = (x − 2)(3x² − x − 2) = (x − 2)(3x + 2)(x − 1)","Wortels: −⅔, 1, 2"]]
+    ["C","m4:0","Use p(2) = 0, then divide.","Gebruik p(2) = 0 en deel dan.",["24 + 4k + 4 = 0 → k = −7","3x³ − 7x² + 4 = (x − 2)(3x² − x − 2) = (x − 2)(3x + 2)(x − 1)","Roots: −⅔, 1, 2"],["24 + 4k + 4 = 0 → k = −7","3x³ − 7x² + 4 = (x − 2)(3x² − x − 2) = (x − 2)(3x + 2)(x − 1)","Wortels: −⅔, 1, 2"]],
+    ["P","i:0","Use f(1) = 0 and f(2) = 0.","Gebruik f(1) = 0 en f(2) = 0.",["f(1) = 1 + p + q + 6 = 0 → p + q = −7","f(2) = 8 + 4p + 2q + 6 = 0 → 2p + q = −7","Subtract: p = 0 (q = −7)"],["f(1) = 1 + p + q + 6 = 0 → p + q = −7","f(2) = 8 + 4p + 2q + 6 = 0 → 2p + q = −7","Trek af: p = 0 (q = −7)"]]
   ],
   "503": [
     ["K","m4:1","A squared factor doesn't change sign.","'n Gekwadreerde faktor verander nie van teken nie.",["The graph touches the x-axis and turns back."],["Die grafiek raak die x-as en draai terug."]],
@@ -36,6 +37,7 @@ MMHelp.add(12, 5, {
     ["K","m4:1","f'(x) is a quadratic.","f'(x) is 'n kwadratiese funksie.",["A quadratic has at most 2 roots → at most 2 turning points"],["'n Kwadratiese funksie het hoogstens 2 wortels → hoogstens 2 draaipunte"]],
     ["R","i:-2","Substitute (0 ; −24).","Vervang (0 ; −24).",["−24 = a(3)(4) = 12a","a = −2"],["−24 = a(3)(4) = 12a","a = −2"]],
     ["R","i:2","Substitute (1 ; −16).","Vervang (1 ; −16).",["−16 = a(2)²(1 − 3) = −8a","a = 2"],["−16 = a(2)²(1 − 3) = −8a","a = 2"]],
-    ["P","i:8","Write f(x) = a(x + 1)(x − 2)(x − 3) and use the y-intercept to find a.","Skryf f(x) = a(x + 1)(x − 2)(x − 3) en gebruik die y-afsnit om a te vind.",["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"],["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"]]
+    ["P","i:8","Write f(x) = a(x + 1)(x − 2)(x − 3) and use the y-intercept to find a.","Skryf f(x) = a(x + 1)(x − 2)(x − 3) en gebruik die y-afsnit om a te vind.",["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"],["f(0) = a(1)(−2)(−3) = 6a = 12 → a = 2","f(1) = 2(2)(−1)(−2) = 8"]],
+    ["P","i:27","Find the x-value of the local minimum, then make f equal to 0 there.","Vind die x-waarde van die lokale minimum en maak f daar gelyk aan 0.",["f'(x) = 3x² − 6x − 9 = 3(x − 3)(x + 1) → minimum at x = 3 (f''(3) = 12 > 0)","f(3) = 27 − 27 − 27 + k = 0 → k = 27"],["f'(x) = 3x² − 6x − 9 = 3(x − 3)(x + 1) → minimum by x = 3 (f''(3) = 12 > 0)","f(3) = 27 − 27 − 27 + k = 0 → k = 27"]]
   ]
 });

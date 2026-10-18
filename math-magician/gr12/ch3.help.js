@@ -8,7 +8,8 @@ MMHelp.add(12, 3, {
     ["R","i:1515.05","Substitute into the formula.","Vervang in die formule.",["500[(1.01)³ − 1] ÷ 0.01","= 500 × 3.0301 = R1 515.05"],["500[(1,01)³ − 1] ÷ 0,01","= 500 × 3,0301 = R1 515,05"]],
     ["K","m4:2","Rearrange the formula.","Herrangskik die formule.",["Both forms say the same thing: B is A with x made the subject."],["Albei vorms sê dieselfde: B is A met x as die onderwerp."]],
     ["R","i:204337","i = 0.084 ÷ 12 = 0.007, n = 96.","i = 0,084 ÷ 12 = 0,007, n = 96.",["F = 1 500[(1.007)⁹⁶ − 1] ÷ 0.007","≈ R204 337"],["F = 1 500[(1,007)⁹⁶ − 1] ÷ 0,007","≈ R204 337"]],
-    ["C","i:68","Solve 1 000[(1.005)ⁿ − 1]/0.005 ≥ 80 000 with logs.","Los op: 1 000[(1,005)ⁿ − 1]/0,005 ≥ 80 000 met logs.",["(1.005)ⁿ ≥ 1 + 80 000 × 0.005/1 000 = 1.4","n ≥ log 1.4 ÷ log 1.005 ≈ 67.5 → 68 months"],["(1,005)ⁿ ≥ 1 + 80 000 × 0,005/1 000 = 1,4","n ≥ log 1,4 ÷ log 1,005 ≈ 67,5 → 68 maande"]]
+    ["C","i:68","Solve 1 000[(1.005)ⁿ − 1]/0.005 ≥ 80 000 with logs.","Los op: 1 000[(1,005)ⁿ − 1]/0,005 ≥ 80 000 met logs.",["(1.005)ⁿ ≥ 1 + 80 000 × 0.005/1 000 = 1.4","n ≥ log 1.4 ÷ log 1.005 ≈ 67.5 → 68 months"],["(1,005)ⁿ ≥ 1 + 80 000 × 0,005/1 000 = 1,4","n ≥ log 1,4 ÷ log 1,005 ≈ 67,5 → 68 maande"]],
+    ["P","i:55","Solve the future value formula for n with logs.","Los die toekomstige-waarde-formule op vir n met logs.",["100 000 = 1 500[(1.0075)ⁿ − 1] ÷ 0.0075 → (1.0075)ⁿ = 1.5","n = log 1.5 ÷ log 1.0075 ≈ 54.3 → 55 months"],["100 000 = 1 500[(1,0075)ⁿ − 1] ÷ 0,0075 → (1,0075)ⁿ = 1,5","n = log 1,5 ÷ log 1,0075 ≈ 54,3 → 55 maande"]]
   ],
   "301": [
     ["R","m4:0","x = Pi ÷ [1 − (1 + i)⁻ⁿ] with i = 0.085/12, n = 240.","x = Pi ÷ [1 − (1 + i)⁻ⁿ] met i = 0,085/12, n = 240.",["x = 1 000 000 × (0.085/12) ÷ [1 − (1 + 0.085/12)⁻²⁴⁰]"],["x = 1 000 000 × (0,085/12) ÷ [1 − (1 + 0,085/12)⁻²⁴⁰]"]],
@@ -17,7 +18,8 @@ MMHelp.add(12, 3, {
     ["R","i:888","Substitute into the formula.","Vervang in die formule.",["x = 10 000 × 0.01 ÷ [1 − 1.01⁻¹²]","≈ R888"],["x = 10 000 × 0,01 ÷ [1 − 1,01⁻¹²]","≈ R888"]],
     ["K","m4:1","What did you pay in total?","Wat het jy altesaam betaal?",["Total repayments − amount borrowed"],["Totale terugbetalings − bedrag geleen"]],
     ["P","i:296438","Find x, then the PV of the remaining 80 payments.","Vind x en dan die HW van die oorblywende 80 betalings.",["i = 0.01, n = 180 → x = 450 000 × 0.01 ÷ [1 − 1.01⁻¹⁸⁰] ≈ R5 400.76","Balance = x[1 − 1.01⁻⁸⁰] ÷ 0.01","≈ R296 438"],["i = 0,01, n = 180 → x = 450 000 × 0,01 ÷ [1 − 1,01⁻¹⁸⁰] ≈ R5 400,76","Balance = x[1 − 1,01⁻⁸⁰] ÷ 0,01","≈ R296 438"]],
-    ["C","i:119","Solve PV = 200 000 for n with logs.","Los PV = 200 000 op vir n met logs.",["200 000 = 3 000[1 − (1 + 0.13/12)⁻ⁿ] ÷ (0.13/12)","(1.010833)⁻ⁿ = 1 − 0.7222 → n ≈ 118.9 → 119 payments"],["200 000 = 3 000[1 − (1 + 0,13/12)⁻ⁿ] ÷ (0,13/12)","(1,010833)⁻ⁿ = 1 − 0,7222 → n ≈ 118,9 → 119 betalings"]]
+    ["C","i:119","Solve PV = 200 000 for n with logs.","Los PV = 200 000 op vir n met logs.",["200 000 = 3 000[1 − (1 + 0.13/12)⁻ⁿ] ÷ (0.13/12)","(1.010833)⁻ⁿ = 1 − 0.7222 → n ≈ 118.9 → 119 payments"],["200 000 = 3 000[1 − (1 + 0,13/12)⁻ⁿ] ÷ (0,13/12)","(1,010833)⁻ⁿ = 1 − 0,7222 → n ≈ 118,9 → 119 betalings"]],
+    ["P","i:83667","Find the instalment, then compare the total paid with the loan.","Vind die paaiement en vergelyk dan die totaal betaal met die lening.",["x = 250 000 × 0.01 ÷ [1 − 1.01⁻⁶⁰] ≈ R5 561.11","Total paid: 60 × 5 561.11 ≈ R333 667","Interest ≈ 333 667 − 250 000 = R83 667"],["x = 250 000 × 0,01 ÷ [1 − 1,01⁻⁶⁰] ≈ R5 561,11","Totaal betaal: 60 × 5 561,11 ≈ R333 667","Rente ≈ 333 667 − 250 000 = R83 667"]]
   ],
   "302": [
     ["K","m4:1","\"Simple\" = on the original only.","\"Enkelvoudig\" = net op die oorspronklike.",["The original principal only"],["Net die oorspronklike hoofsom"]],

@@ -121,7 +121,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "₇P₂ = ", options: ["21", "42", "14", "49"], answer: 1, topic: "Fundamentele telbeginsel & faktoriaalnotasie" },
         { type: "mc", text: "6 mense in 'n ry, met A en B altyd aan die punte. Hoeveel rangskikkings is moontlik?", options: ["48", "24", "12", "96"], answer: 0, topic: "Fundamentele telbeginsel & faktoriaalnotasie" },
         { type: "input", text: "Hoeveel verskillende 5-letter-rangskikkings kan gemaak word uit die letters van die woord MOUSE as die rangskikking met 'n vokaal moet begin en met 'n konsonant moet eindig? (Al die letters is verskillend; vokale: O, U, E; konsonante: M, S.)", answer: "36", topic: "Fundamentele telbeginsel & faktoriaalnotasie" },
-        { type: "input", text: "5 verskillende boeke word op 'n rak gerangskik. Op hoeveel maniere kan dit gedoen word as twee spesifieke boeke NIE langs mekaar mag wees NIE?", answer: "72", topic: "Fundamentele telbeginsel & faktoriaalnotasie" }
+        { type: "input", text: "5 verskillende boeke word op 'n rak gerangskik. Op hoeveel maniere kan dit gedoen word as twee spesifieke boeke NIE langs mekaar mag wees NIE?", answer: "72", topic: "Fundamentele telbeginsel & faktoriaalnotasie" },
+        { type: "input", text: "Hoeveel verskillende rangskikkings kan van al die letters in die woord BANANA gemaak word?", answer: "60", topic: "Fundamentele telbeginsel & faktoriaalnotasie" }
       ]
     },
     {
@@ -225,7 +226,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Pak van 52 kaarte. P(5-kaart-hand met almal harte):", options: ["₁₃C₅/₅₂C₅", "13/52", "₁₃P₅/₅₂P₅", "5/52"], answer: 0, topic: "Kombinasies & waarskynlikheidstoepassings" },
         { type: "mc", text: "Uit 5 seuns en 3 meisies, kies 4. P(presies 2 seuns en 2 meisies)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Beide A en C"], answer: 0, topic: "Kombinasies & waarskynlikheidstoepassings" },
         { type: "input", text: "'n Span van 4 word gekies uit 7 seuns en 5 meisies. Hoeveel spanne bevat ten minste 3 seuns?", answer: "210", topic: "Kombinasies & waarskynlikheidstoepassings" },
-        { type: "input", text: "'n Sak bevat 6 rooi en 4 blou albasters. As 3 albasters lukraak sonder terugplasing getrek word, bepaal P(ten minste 2 rooi), as 'n breuk in laagste terme.", answer: "2/3", altAnswers: ["0.6666666667", "0,67", "0.67"], topic: "Kombinasies & waarskynlikheidstoepassings" }
+        { type: "input", text: "'n Sak bevat 6 rooi en 4 blou albasters. As 3 albasters lukraak sonder terugplasing getrek word, bepaal P(ten minste 2 rooi), as 'n breuk in laagste terme.", answer: "2/3", altAnswers: ["0.6666666667", "0,67", "0.67"], topic: "Kombinasies & waarskynlikheidstoepassings" },
+        { type: "input", text: "'n Komitee van 3 word lukraak uit 6 mans en 4 vroue gekies. Wat is die waarskynlikheid dat dit ten minste een vrou insluit? Gee 'n breuk.", answer: "5/6", topic: "Kombinasies & waarskynlikheidstoepassings" }
       ]
     },
     {

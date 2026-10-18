@@ -107,7 +107,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "Regression line: ŷ = 3.2 + 1.5x. Predict y when x = 4.", answer: "9.2", altAnswers: ["9,2"], topic: "Scatter plots & regression" },
         { type: "mc", text: "The least squares line minimises:", options: ["The sum of residuals", "The sum of squared residuals", "The product of x and y", "The range of y"], answer: 1, topic: "Scatter plots & regression" },
         { type: "input", text: "A dataset of 5 points has: Σx = 20, Σy = 50, Σxy = 220, Σx² = 90, n = 5. Calculate the gradient b of the least squares regression line.", answer: "2", topic: "Scatter plots & regression" },
-        { type: "mc", text: "The regression line for a dataset is ŷ = 12 + 2.5x, based on data with x between 3 and 15. A predicted value of 57 was read off this line. What x-value was used, and is this prediction an interpolation or extrapolation?", options: ["x = 18; extrapolation (18 is outside the data range)", "x = 18; interpolation (18 is within the data range)", "x = 22.8; extrapolation", "x = 8; interpolation"], answer: 0, topic: "Scatter plots & regression" }
+        { type: "mc", text: "The regression line for a dataset is ŷ = 12 + 2.5x, based on data with x between 3 and 15. A predicted value of 57 was read off this line. What x-value was used, and is this prediction an interpolation or extrapolation?", options: ["x = 18; extrapolation (18 is outside the data range)", "x = 18; interpolation (18 is within the data range)", "x = 22.8; extrapolation", "x = 8; interpolation"], answer: 0, topic: "Scatter plots & regression" },
+        { type: "mc", text: "Data for hours of study (from 0 to 10 hours) and marks give the regression line ŷ = 40 + 2,5x. A learner wants 75%. What does the model suggest, and how reliable is it?", options: ["14 hours, and it is reliable because it comes from the regression line","14 hours, but this is extrapolation beyond the data, so it is unreliable","35 hours, and it is reliable","The model cannot give an answer"], answer: 1, topic: "Scatter plots & regression" }
       ]
     },
     {
@@ -291,7 +292,8 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "Salary data for a company is usually strongly positively skewed. This means:", options: ["Most salaries are high, with a few very low", "Most salaries are low to moderate, with a few very high pulling the mean up", "All salaries are the same", "The median is greater than the mean"], answer: 1, topic: "Symmetric & skewed data" },
         { type: "mc", text: "A dataset has median = 50 and mode = 58. The distribution is known to be negatively skewed. Which of the following is a plausible value for the mean?", options: ["45", "50", "55", "60"], answer: 0, topic: "Symmetric & skewed data" },
         { type: "mc", text: "A box plot has: Minimum = 10, Q1 = 42, Median = 48, Q3 = 50, Maximum = 52. Describe the skewness of the distribution.", options: ["Positively skewed", "Negatively skewed", "Symmetric", "Cannot be determined from this data"], answer: 1, topic: "Symmetric & skewed data" },
-        { type: "input", text: "For 10 learners, Σx = 60 (hours of study) and Σy = 620 (marks). The least squares regression line is ŷ = a + 4.5x. Find a.", answer: "35", topic: "Symmetric & skewed data" }
+        { type: "input", text: "For 10 learners, Σx = 60 (hours of study) and Σy = 620 (marks). The least squares regression line is ŷ = a + 4.5x. Find a.", answer: "35", topic: "Symmetric & skewed data" },
+        { type: "mc", text: "20 values have a mean of 15 and a standard deviation of 2. One more value, 15, is added. What happens to the standard deviation?", options: ["It increases","It decreases slightly","It stays exactly the same","It becomes 0"], answer: 1, topic: "Symmetric & skewed data" }
       ]
     }
   ],

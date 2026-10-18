@@ -293,7 +293,8 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "As 'n polinoom TWEE onbekende koëffisiënte het, hoeveel bekende faktor-/res-voorwaardes benodig jy oor die algemeen?", options: ["Een", "Twee", "Drie", "Geen — een is altyd genoeg"], answer: 1, topic: "Bepaal onbekende koëffisiënte" },
         { type: "input", text: "p(x) = x³ + ax² + bx − 6. (x−1) en (x−2) is faktore, wat a+b=5 en 2a+b=−1 gee. Bepaal a.", answer: "-6", altAnswers: ["−6"], topic: "Bepaal onbekende koëffisiënte" },
         { type: "mc", text: "p(x) = x³ + ax² + bx − 4. (x − 1) is 'n faktor, en p(x) laat 'n res van −6 wanneer gedeel deur (x + 1). Bepaal a en b.", options: ["a = 1, b = 2", "a = 2, b = 1", "a = −1, b = 4", "a = 3, b = 0"], answer: 0, topic: "Bepaal onbekende koëffisiënte" },
-        { type: "mc", text: "p(x) = 3x³ + kx² + 4, en (x − 2) is 'n faktor. Bepaal k, en bepaal dus al drie wortels van p(x) = 0.", options: ["k = −7; wortels: −⅔, 1, 2", "k = 7; wortels: ⅔, −1, −2", "k = −7; wortels: −1, 2, 3", "k = 4; wortels: −2, 1, 2"], answer: 0, topic: "Bepaal onbekende koëffisiënte" }
+        { type: "mc", text: "p(x) = 3x³ + kx² + 4, en (x − 2) is 'n faktor. Bepaal k, en bepaal dus al drie wortels van p(x) = 0.", options: ["k = −7; wortels: −⅔, 1, 2", "k = 7; wortels: ⅔, −1, −2", "k = −7; wortels: −1, 2, 3", "k = 4; wortels: −2, 1, 2"], answer: 0, topic: "Bepaal onbekende koëffisiënte" },
+        { type: "input", text: "f(x) = x³ + px² + qx + 6 is deelbaar deur albei (x − 1) en (x − 2). Vind p.", answer: "0", topic: "Bepaal onbekende koëffisiënte" }
       ]
     },
     {
@@ -389,7 +390,8 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "Die maksimum aantal draaipunte wat 'n kubieke grafiek kan hê is:", options: ["1", "2", "3", "0"], answer: 1, topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
         { type: "input", text: "Die grafiek van 'n kubieke het x-afsnitte by x = −3 en x = 2 (dubbele wortel), en 'n y-afsnit by (0; −24). Bepaal die waarde van a in y = a(x+3)(x−2)².", answer: "-2", altAnswers: ["−2"], topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
         { type: "input", text: "'n Kubieke grafiek het 'n dubbele wortel by x = −1, 'n enkele wortel by x = 3, en gaan deur die punt (1; −16). Bepaal die waarde van a in y = a(x+1)²(x−3).", answer: "2", topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
-        { type: "input", text: "Die kubiese funksie f het x-afsnitte by −1, 2 en 3, en sy y-afsnit is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Bepaal f(1).", answer: "8", topic: "Skets van kubieke grafieke uit sleutelkenmerke" }
+        { type: "input", text: "Die kubiese funksie f het x-afsnitte by −1, 2 en 3, en sy y-afsnit is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Bepaal f(1).", answer: "8", topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
+        { type: "input", text: "Die grafiek van f(x) = x³ − 3x² − 9x + k raak die x-as by sy lokale minimum. Vind k.", answer: "27", topic: "Skets van kubieke grafieke uit sleutelkenmerke" }
       ]
     }
   ],

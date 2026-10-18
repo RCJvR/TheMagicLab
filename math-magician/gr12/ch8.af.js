@@ -199,7 +199,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "In die Pythagoras-bewys: AC² = AB · AD. As AB = 25 en AD = 9, bepaal AC.", answer: "15", topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" },
         { type: "mc", text: "△ABC ||| △PQR. As die oppervlakte van △ABC = 18 cm² en AB/PQ = 1/2, is die oppervlakte van △PQR =", options: ["36 cm²", "72 cm²", "9 cm²", "4.5 cm²"], answer: 1, topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" },
         { type: "input", text: "In reghoekige △ABC (regte hoek by C), ontmoet hoogtelyn CD AB by D, met AD = 3 en DB = 12. Bereken AC (met AC² = AB · AD), en laat jou antwoord in eenvoudigste wortelvorm.", answer: "3√5", altAnswers: ["3sqrt5", "3√(5)", "sqrt(45)", "√45"], topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" },
-        { type: "input", text: "△ABC ||| △DEF. Die oppervlakte van △ABC is 45 cm² en die oppervlakte van △DEF is 20 cm². As BC = 12 cm, bepaal die lengte van EF.", answer: "8", topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" }
+        { type: "input", text: "△ABC ||| △DEF. Die oppervlakte van △ABC is 45 cm² en die oppervlakte van △DEF is 20 cm². As BC = 12 cm, bepaal die lengte van EF.", answer: "8", topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" },
+        { type: "input", text: "In △ABC is ∠ACB = 90° en CD ⊥ AB. AD = x, DB = x + 7 en CD = 12. Bereken AB.", answer: "25", topic: "Gelykvormigheid & bewyse van die Stelling van Pythagoras" }
       ]
     },
     {
@@ -298,7 +299,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Vir veelhoeke met meer as 3 sye, watter stelling is WAAR?", options: ["Gelyke hoeke alleen waarborg gelykvormigheid", "Eweredige sye alleen waarborg gelykvormigheid", "Beide gelyke hoeke ÉN eweredige sye word benodig", "Geen voorwaarde word ooit vereis nie"], answer: 2, topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" },
         { type: "input", text: "Twee gelykvormige trapesiums het oppervlaktes 32 cm² en 200 cm². As die korter parallelle sy van die kleiner trapesium 5 cm is, bepaal die ooreenstemmende sy van die groter trapesium.", answer: "12.5", altAnswers: ["12,5"], topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" },
         { type: "input", text: "Twee gelykvormige silinders (gelykvormige voorwerpe) het volumes 27 cm³ en 216 cm³. As die oppervlak van die kleiner silinder 54 cm² is, bepaal die oppervlak van die groter silinder.", answer: "216", topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" },
-        { type: "input", text: "In △ABC is ∠ACB = 90° en CD ⊥ AB, met AD = 4 en DB = 9.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[13,0],\"D\":[4,0],\"C\":[4,6]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"C\",\"D\",\"ac\"],[\"A\",\"D\",null,null,\"4\"],[\"D\",\"B\",null,null,\"9\"]],\"ra\":[[\"A\",\"C\",\"B\"],[\"C\",\"D\",\"B\"]],\"lab\":{\"C\":\"n\",\"D\":\"s\"}}'></div>Bereken die oppervlakte van △ABC.", answer: "39", topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" }
+        { type: "input", text: "In △ABC is ∠ACB = 90° en CD ⊥ AB, met AD = 4 en DB = 9.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[13,0],\"D\":[4,0],\"C\":[4,6]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"C\",\"D\",\"ac\"],[\"A\",\"D\",null,null,\"4\"],[\"D\",\"B\",null,null,\"9\"]],\"ra\":[[\"A\",\"C\",\"B\"],[\"C\",\"D\",\"B\"]],\"lab\":{\"C\":\"n\",\"D\":\"s\"}}'></div>Bereken die oppervlakte van △ABC.", answer: "39", topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" },
+        { type: "input", text: "'n Kaart het 'n skaal van 1 : 50 000. 'n Plaas beslaan 12 cm² op die kaart. Wat is die werklike oppervlakte van die plaas in km²?", answer: "3", topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" }
       ]
     }
   ],

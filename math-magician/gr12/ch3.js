@@ -106,7 +106,8 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Using F = x[(1+i)ⁿ−1]/i with x=500, i=0.01, n=3: find F.", answer: "1515.05", altAnswers: ["1515"], topic: "Future value annuities" },
         { type: "mc", text: "To accumulate R100 000 in 10 years at 8% p.a. compounded annually, the annual payment x satisfies:", options: ["100000 = x[(1.08)¹⁰−1]/0.08", "x = 100000·0.08/[(1.08)¹⁰−1]", "Both A and B", "Neither"], answer: 2, topic: "Future value annuities" },
         { type: "input", text: "Sipho saves R1 500 at the end of each month for 8 years in an account earning 8.4% p.a. compounded monthly. Calculate the future value of his savings (nearest rand).", answer: "204337", altAnswers: ["204336", "204336.62"], topic: "Future value annuities" },
-        { type: "input", text: "Monthly savings of R1 000 (end of month, 6% p.a. compounded monthly) are made towards a target of R80 000. What is the minimum number of months required?", answer: "68", topic: "Future value annuities" }
+        { type: "input", text: "Monthly savings of R1 000 (end of month, 6% p.a. compounded monthly) are made towards a target of R80 000. What is the minimum number of months required?", answer: "68", topic: "Future value annuities" },
+        { type: "input", text: "Thandi saves R1 500 at the end of every month in an account paying 9% p.a. compounded monthly. After how many months does her savings first reach R100 000?", answer: "55", topic: "Future value annuities" }
       ]
     },
     {
@@ -191,7 +192,8 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "P = 10000, i = 0.01 per month, n = 12. Find x (monthly payment) to nearest rand. Use x = Pi/[1−(1.01)⁻¹²]. ", answer: "888", altAnswers: ["888.49", "888,49"], topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "Total interest paid on a loan = ", options: ["Principal × rate × time", "Total repayments − original loan amount", "Monthly payment × n", "Future value − present value"], answer: 1, topic: "Present value annuities & loan repayments" },
         { type: "input", text: "A loan of R450 000 is repaid with equal monthly instalments over 15 years at 12% p.a. compounded monthly. Calculate the outstanding balance immediately after the 100th payment (nearest rand).", answer: "296438", altAnswers: ["296437", "296437.82"], topic: "Present value annuities & loan repayments" },
-        { type: "input", text: "A loan of R200 000 at 13% p.a. compounded monthly is repaid with monthly instalments of R3 000. Determine the minimum number of monthly payments required to settle the loan.", answer: "119", topic: "Present value annuities & loan repayments" }
+        { type: "input", text: "A loan of R200 000 at 13% p.a. compounded monthly is repaid with monthly instalments of R3 000. Determine the minimum number of monthly payments required to settle the loan.", answer: "119", topic: "Present value annuities & loan repayments" },
+        { type: "input", text: "A car loan of R250 000 at 12% p.a. compounded monthly is repaid in equal monthly instalments over 5 years. How much interest is paid altogether, to the nearest rand?", answer: "83667", topic: "Present value annuities & loan repayments" }
       ]
     },
     {

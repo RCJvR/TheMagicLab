@@ -93,7 +93,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Presiese waarde van cos 15° = cos(45° − 30°):", options: ["(√6+√2)/4", "(√6−√2)/4", "(√3+1)/4", "(√3−1)/4"], answer: 0, topic: "Saamgestelde-hoek-identiteite" },
         { type: "mc", text: "cos(2x) uitgedruk slegs in terme van sinx:", options: ["2cos²x−1", "1−2sin²x", "cos²x−sin²x", "2sinxcosx"], answer: 1, topic: "Saamgestelde-hoek-identiteite" },
         { type: "input", text: "As sinα = 3/5 (α skerp), bepaal sin(2α).", answer: "24/25", topic: "Saamgestelde-hoek-identiteite" },
-        { type: "input", text: "As sinA = 3/5 en cosB = 12/13, met A en B albei skerp, bepaal sin(A+B) as 'n breuk.", answer: "56/65", topic: "Saamgestelde-hoek-identiteite" }
+        { type: "input", text: "As sinA = 3/5 en cosB = 12/13, met A en B albei skerp, bepaal sin(A+B) as 'n breuk.", answer: "56/65", topic: "Saamgestelde-hoek-identiteite" },
+        { type: "input", text: "Bepaal sonder 'n sakrekenaar die waarde van sin 75° cos 15° + cos 75° sin 15°.", answer: "1", topic: "Saamgestelde-hoek-identiteite" }
       ]
     },
     {
@@ -289,7 +290,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "In 'n tipiese 3D-toringprobleem, nadat 'n horisontale sy met die sinus- of kosinusreël gevind is, word die hoogte gewoonlik gevind deur:", options: ["Die oppervlakte-reël", "Reghoekige-driehoek-trig (bv. tan)", "Die saamgestelde-hoek-identiteite", "Nog 'n toepassing van die kosinusreël"], answer: 1, topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" },
         { type: "input", text: "Driehoek met sye a = 6, b = 8, c = 10. Gebruik die kosinusreël om hoek C (teenoor sy c) te bepaal, tot die naaste graad.", answer: "90", topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" },
         { type: "mc", text: "Die sinusreël sê a/sinA = b/sinB = c/sinC. Hierdie verhouding is ook gelyk aan:", options: ["2R (R = omgeskrewe radius)", "Die driehoek se oppervlakte", "a + b + c", "Die omtrek gedeel deur 2"], answer: 0, topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" },
-        { type: "input", text: "TP is 'n vertikale toring. Q is 'n punt op die grond met 'n hoek van hoogte na T gelyk aan 42°. R is 'n ander punt op die grond met QR = 60 m, hoek PQR = 130°, en hoek QRP = 30°. Bepaal die hoogte van die toring TP (2 d.p.).", answer: "78.98", altAnswers: ["78,98"], topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" }
+        { type: "input", text: "TP is 'n vertikale toring. Q is 'n punt op die grond met 'n hoek van hoogte na T gelyk aan 42°. R is 'n ander punt op die grond met QR = 60 m, hoek PQR = 130°, en hoek QRP = 30°. Bepaal die hoogte van die toring TP (2 d.p.).", answer: "78.98", altAnswers: ["78,98"], topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" },
+        { type: "input", text: "AB is 'n vertikale toring met sy voet A op gelyk grond. C en D is op die grond met CD = 50 m, ∠ACD = 60° en ∠ADC = 50°. Die hoogtehoek van B vanaf C is 30°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[0,4.2],\"C\":[-3.4,-1.6],\"D\":[3.2,-2.3]},\"seg\":[[\"A\",\"B\",\"ac\"],[\"C\",\"D\",null,null,\"50 m\"],[\"A\",\"C\",\"mu dash\"],[\"A\",\"D\",\"mu dash\"],[\"C\",\"B\",\"hl dash\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"ang\":[[\"D\",\"C\",\"A\",\"60°\",null,22],[\"A\",\"D\",\"C\",\"50°\",null,22],[\"A\",\"C\",\"B\",\"30°\",\"hl\",40]],\"lab\":{\"A\":\"se\",\"B\":\"n\",\"C\":\"w\",\"D\":\"e\"}}'></div>Bereken die hoogte van die toring, tot 2 desimale plekke. (m)", answer: "23.53", altAnswers: ["23,53"], topic: "Sinus-, kosinus- & oppervlakte-reël in 2D en 3D" }
       ]
     },
     {

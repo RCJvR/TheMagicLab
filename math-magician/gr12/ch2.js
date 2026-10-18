@@ -93,7 +93,8 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "The graph of f⁻¹ is obtained from f by reflecting in:", options: ["The x-axis", "The y-axis", "The line y = x", "The origin"], answer: 2, topic: "Inverse functions" },
         { type: "mc", text: "log(100) + log(10) = ", options: ["2", "3", "log(1000)", "Both B and C"], answer: 3, topic: "Inverse functions" },
         { type: "input", text: "If f(x) = 4x − 3 and h(x) = f⁻¹(x), determine the value of x for which h(2x + 5) = 6.", answer: "8", topic: "Inverse functions" },
-        { type: "input", text: "Solve for x: log₃(x) = 2log₃(5) − log₃(x)", answer: "5", topic: "Inverse functions" }
+        { type: "input", text: "Solve for x: log₃(x) = 2log₃(5) − log₃(x)", answer: "5", topic: "Inverse functions" },
+        { type: "input", text: "f(x) = 3x − 4. The graphs of f and f⁻¹ intersect at P. Find the x-coordinate of P without finding f⁻¹.", answer: "2", topic: "Inverse functions" }
       ]
     },
     {
@@ -215,7 +216,8 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "The vertical asymptote of y = log(x + 2) is:", options: ["x = 0", "x = 2", "x = −2", "y = 0"], answer: 2, topic: "Logarithmic functions & equations" },
         { type: "mc", text: "log(a²b³) expressed using log a and log b:", options: ["2log a + 3log b", "5log(ab)", "6log(ab)", "log a² + log b³ only"], answer: 0, topic: "Logarithmic functions & equations" },
         { type: "input", text: "Solve for x: log₂(x) + log₂(x + 6) = 4", answer: "2", topic: "Logarithmic functions & equations" },
-        { type: "input", text: "An investment of R12 500 grows at 11% p.a. compounded annually. Determine the minimum number of full years for the investment to exceed R30 000.", answer: "9", topic: "Logarithmic functions & equations" }
+        { type: "input", text: "An investment of R12 500 grows at 11% p.a. compounded annually. Determine the minimum number of full years for the investment to exceed R30 000.", answer: "9", topic: "Logarithmic functions & equations" },
+        { type: "input", text: "Solve log₂(x − 2) + log₂(x + 5) = 3.", answer: "3", topic: "Logarithmic functions & equations" }
       ]
     },
     {

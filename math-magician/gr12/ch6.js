@@ -213,7 +213,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "f(x) = x² − 4x + 3. Find the x-coordinate of the minimum.", answer: "2", topic: "Tangents, curve sketching & optimisation" },
         { type: "mc", text: "Tangent to y = x² at x = 3 has gradient:", options: ["9", "6", "3", "12"], answer: 1, topic: "Tangents, curve sketching & optimisation" },
         { type: "mc", text: "A box with square base of side x and height h has volume 500 = x²h. To minimise surface area, the first step is to:", options: ["Differentiate SA immediately", "Express h in terms of x using V=500", "Set SA = 0", "Differentiate V"], answer: 1, topic: "Tangents, curve sketching & optimisation" },
-        { type: "input", text: "Find the y-intercept of the tangent to f(x) = x² − 6x + 5 at the point where the gradient of the tangent is 4.", answer: "-20", altAnswers: ["−20"], topic: "Tangents, curve sketching & optimisation" }
+        { type: "input", text: "Find the y-intercept of the tangent to f(x) = x² − 6x + 5 at the point where the gradient of the tangent is 4.", answer: "-20", altAnswers: ["−20"], topic: "Tangents, curve sketching & optimisation" },
+        { type: "input", text: "A farmer has 120 m of fencing to make a rectangular camp next to a straight river. No fence is needed along the river. What is the largest possible area of the camp? (m²)", answer: "1800", topic: "Tangents, curve sketching & optimisation" }
       ]
     },
     {
@@ -324,7 +325,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "The average rate of change of f(x) = x² between x = 1 and x = 4 is:", options: ["5", "15", "3", "16"], answer: 0, topic: "Rates of change & calculus of motion" },
         { type: "mc", text: "If v(t) &lt; 0 for an object moving along a line, this means the object is:", options: ["Speeding up", "Moving in the negative direction", "At rest", "Accelerating positively"], answer: 1, topic: "Rates of change & calculus of motion" },
         { type: "input", text: "s(t) = t² − 8t + 20. Find the minimum displacement (the value of s at the stationary point).", answer: "4", topic: "Rates of change & calculus of motion" },
-        { type: "input", text: "s(t) = 2t³ − 15t² + 24t describes the displacement (m) of an object for t ≥ 0. Find the acceleration at t = 3 seconds (in m/s²).", answer: "6", topic: "Rates of change & calculus of motion" }
+        { type: "input", text: "s(t) = 2t³ − 15t² + 24t describes the displacement (m) of an object for t ≥ 0. Find the acceleration at t = 3 seconds (in m/s²).", answer: "6", topic: "Rates of change & calculus of motion" },
+        { type: "input", text: "A ball is thrown upwards. Its height after t seconds is h(t) = 20t − 5t² metres. At what speed does it hit the ground? (m/s)", answer: "20", topic: "Rates of change & calculus of motion" }
       ]
     },
     {

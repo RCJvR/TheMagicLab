@@ -7,7 +7,8 @@ MMHelp.add(12, 4, {
     ["R","m4:0","Expand cos(45° − 30°).","Brei cos(45° − 30°) uit.",["(√2/2)(√3/2) + (√2/2)(½)","= √6/4 + √2/4 = (√6 + √2)/4"],["(√2/2)(√3/2) + (√2/2)(½)","= √6/4 + √2/4 = (√6 + √2)/4"]],
     ["K","m4:1","Replace cos²x with 1 − sin²x.","Vervang cos²x met 1 − sin²x.",["cos 2x = 1 − 2sin²x"],["cos 2x = 1 − 2sin²x"]],
     ["R","i:24/25","Find cos α, then use 2 sin α cos α.","Vind cos α en gebruik dan 2 sin α cos α.",["cos α = 4/5","sin 2α = 2 × 3/5 × 4/5 = 24/25"],["cos α = 4/5","sin 2α = 2 × 3/5 × 4/5 = 24/25"]],
-    ["C","i:56/65","sin(A + B) = sin A cos B + cos A sin B.","sin(A + B) = sin A cos B + cos A sin B.",["cos A = 4/5 and sin B = 5/13","3/5 × 12/13 + 4/5 × 5/13 = 36/65 + 20/65 = 56/65"],["cos A = 4/5 en sin B = 5/13","3/5 × 12/13 + 4/5 × 5/13 = 36/65 + 20/65 = 56/65"]]
+    ["C","i:56/65","sin(A + B) = sin A cos B + cos A sin B.","sin(A + B) = sin A cos B + cos A sin B.",["cos A = 4/5 and sin B = 5/13","3/5 × 12/13 + 4/5 × 5/13 = 36/65 + 20/65 = 56/65"],["cos A = 4/5 en sin B = 5/13","3/5 × 12/13 + 4/5 × 5/13 = 36/65 + 20/65 = 56/65"]],
+    ["P","i:1","Recognise a compound angle expansion.","Herken 'n saamgestelde-hoek-uitbreiding.",["sin A cos B + cos A sin B = sin(A + B)","sin(75° + 15°) = sin 90° = 1"],["sin A cos B + cos A sin B = sin(A + B)","sin(75° + 15°) = sin 90° = 1"]]
   ],
   "401": [
     ["K","m4:1","tan repeats every 180°.","tan herhaal elke 180°.",["x = 45° + 180°n, n ∈ ℤ"],["x = 45° + 180°n, n ∈ ℤ"]],
@@ -24,7 +25,8 @@ MMHelp.add(12, 4, {
     ["K","m4:1","The tower stands at 90° to the ground.","Die toring staan teen 90° met die grond.",["Right-triangle trig, e.g. tan"],["Reghoekdriehoek-trig, bv. tan"]],
     ["R","i:90","cos C = (a² + b² − c²) ÷ 2ab.","cos C = (a² + b² − c²) ÷ 2ab.",["(36 + 64 − 100) ÷ 96 = 0","C = 90°"],["(36 + 64 − 100) ÷ 96 = 0","C = 90°"]],
     ["K","m4:0","A circle through all three vertices.","'n Sirkel deur al drie hoekpunte.",["The common ratio equals 2R (the circumcircle's diameter)."],["Die gemeenskaplike verhouding is 2R (die omsirkel se middellyn)."]],
-    ["P","i:78.98","Find QP in △PQR, then use tan 42°.","Vind QP in △PQR en gebruik dan tan 42°.",["∠QPR = 180° − 130° − 30° = 20°","QP = 60 sin 30° ÷ sin 20° ≈ 87.71 m","TP = QP tan 42° ≈ 78.98 m"],["∠QPR = 180° − 130° − 30° = 20°","QP = 60 sin 30° ÷ sin 20° ≈ 87,71 m","TP = QP tan 42° ≈ 78,98 m"]]
+    ["P","i:78.98","Find QP in △PQR, then use tan 42°.","Vind QP in △PQR en gebruik dan tan 42°.",["∠QPR = 180° − 130° − 30° = 20°","QP = 60 sin 30° ÷ sin 20° ≈ 87.71 m","TP = QP tan 42° ≈ 78.98 m"],["∠QPR = 180° − 130° − 30° = 20°","QP = 60 sin 30° ÷ sin 20° ≈ 87,71 m","TP = QP tan 42° ≈ 78,98 m"]],
+    ["P","i:23.53","Find AC in the horizontal triangle ACD first, then use the vertical triangle ABC.","Vind eers AC in die horisontale driehoek ACD, en gebruik dan die vertikale driehoek ABC.",["∠CAD = 180° − 60° − 50° = 70°","AC = 50 sin 50° ÷ sin 70° ≈ 40.76 m (sine rule)","AB = AC tan 30° ≈ 23.53 m"],["∠CAD = 180° − 60° − 50° = 70°","AC = 50 sin 50° ÷ sin 70° ≈ 40,76 m (sinusreël)","AB = AC tan 30° ≈ 23,53 m"]]
   ],
   "403": [
     ["K","m4:1","Start from the harder side.","Begin by die moeiliker kant.",["Work from the more complex side to the other side."],["Werk van die meer komplekse kant na die ander kant."]],

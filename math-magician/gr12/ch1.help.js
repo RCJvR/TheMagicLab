@@ -7,7 +7,8 @@ MMHelp.add(12, 1, {
     ["R","m4:0","T₅ ÷ T₂ = r³.","T₅ ÷ T₂ = r³.",["r³ = 48 ÷ 6 = 8","r = 2"],["r³ = 48 ÷ 6 = 8","r = 2"]],
     ["K","m4:1","Look for a constant ratio.","Soek 'n konstante verhouding.",["6 ÷ 2 = 18 ÷ 6 = 54 ÷ 18 = 3 → geometric"],["6 ÷ 2 = 18 ÷ 6 = 54 ÷ 18 = 3 → meetkundig"]],
     ["R","i:-40","Tₙ = arⁿ⁻¹.","Tₙ = arⁿ⁻¹.",["T₄ = 5 × (−2)³","= 5 × (−8) = −40"],["T₄ = 5 × (−2)³","= 5 × (−8) = −40"]],
-    ["C","i:5","Divide T₆ by T₃ to find r.","Deel T₆ deur T₃ om r te vind.",["r³ = 160 ÷ 20 = 8 → r = 2","ar² = 20 → 4a = 20 → a = 5"],["r³ = 160 ÷ 20 = 8 → r = 2","ar² = 20 → 4a = 20 → a = 5"]]
+    ["C","i:5","Divide T₆ by T₃ to find r.","Deel T₆ deur T₃ om r te vind.",["r³ = 160 ÷ 20 = 8 → r = 2","ar² = 20 → 4a = 20 → a = 5"],["r³ = 160 ÷ 20 = 8 → r = 2","ar² = 20 → 4a = 20 → a = 5"]],
+    ["P","i:440","Write T₃, T₇ and T₂ in terms of a and d.","Skryf T₃, T₇ en T₂ in terme van a en d.",["a + 6d = 3(a + d) → 3d = 2a; and a + 2d = 7","a = 1.5d → 3.5d = 7 → d = 2, a = 3","S₂₀ = 20/2 × [2(3) + 19(2)] = 10 × 44 = 440"],["a + 6d = 3(a + d) → 3d = 2a; en a + 2d = 7","a = 1,5d → 3,5d = 7 → d = 2, a = 3","S₂₀ = 20/2 × [2(3) + 19(2)] = 10 × 44 = 440"]]
   ],
   "101": [
     ["R","m4:0","Sₙ = n/2 [2a + (n − 1)d].","Sₙ = n/2 [2a + (n − 1)d].",["10/2 × [10 + 9 × 3]","= 5 × 37 = 185"],["10/2 × [10 + 9 × 3]","= 5 × 37 = 185"]],
@@ -15,7 +16,8 @@ MMHelp.add(12, 1, {
     ["R","m4:0","S∞ = a/(1 − r).","S∞ = a/(1 − r).",["12 ÷ (1 − ⅓) = 12 ÷ ⅔","= 18"],["12 ÷ (1 − ⅓) = 12 ÷ ⅔","= 18"]],
     ["K","m4:0","Write out the terms.","Skryf die terme uit.",["3 + 6 + 9 + 12 = 30"],["3 + 6 + 9 + 12 = 30"]],
     ["K","m4:2","Convergence needs −1 < r < 1.","Konvergensie vereis −1 < r < 1.",["Only r = 0.8 lies between −1 and 1."],["Net r = 0,8 lê tussen −1 en 1."]],
-    ["C","i:39","Tₙ = Sₙ − Sₙ₋₁.","Tₙ = Sₙ − Sₙ₋₁.",["S₅ = 100 + 15 = 115 and S₄ = 64 + 12 = 76","T₅ = 115 − 76 = 39"],["S₅ = 100 + 15 = 115 en S₄ = 64 + 12 = 76","T₅ = 115 − 76 = 39"]]
+    ["C","i:39","Tₙ = Sₙ − Sₙ₋₁.","Tₙ = Sₙ − Sₙ₋₁.",["S₅ = 100 + 15 = 115 and S₄ = 64 + 12 = 76","T₅ = 115 − 76 = 39"],["S₅ = 100 + 15 = 115 en S₄ = 64 + 12 = 76","T₅ = 115 − 76 = 39"]],
+    ["P","i:56","After the first drop, every height is travelled twice: up and down.","Na die eerste val word elke hoogte twee keer afgelê: op en af.",["First drop: 8 m","Bounces: 6 + 4.5 + … with S∞ = 6 ÷ (1 − ¾) = 24, travelled twice = 48","Total: 8 + 48 = 56 m"],["Eerste val: 8 m","Bonse: 6 + 4,5 + … met S∞ = 6 ÷ (1 − ¾) = 24, twee keer afgelê = 48","Totaal: 8 + 48 = 56 m"]]
   ],
   "102": [
     ["R","i:24","Substitute i = 1, 2, 3, 4.","Vervang i = 1, 2, 3, 4.",["3 + 5 + 7 + 9","= 24"],["3 + 5 + 7 + 9","= 24"]],

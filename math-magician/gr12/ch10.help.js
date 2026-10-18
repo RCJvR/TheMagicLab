@@ -8,7 +8,8 @@ MMHelp.add(12, 10, {
     ["R","m4:1","ₙPᵣ = n!/(n − r)!.","ₙPᵣ = n!/(n − r)!.",["7 × 6","= 42"],["7 × 6","= 42"]],
     ["C","m4:0","Place A and B first, then the rest.","Plaas eers A en B, dan die res.",["A and B at the ends: 2 ways","Middle 4 people: 4! = 24 → 2 × 24 = 48"],["A en B aan die ente: 2 maniere","Middelste 4 mense: 4! = 24 → 2 × 24 = 48"]],
     ["C","i:36","Fill the restricted positions first.","Vul eers die beperkte posisies.",["First letter: 3 vowels; last letter: 2 consonants","Middle 3 letters: 3! = 6 → 3 × 2 × 6 = 36"],["Eerste letter: 3 vokale; laaste letter: 2 konsonante","Middelste 3 letters: 3! = 6 → 3 × 2 × 6 = 36"]],
-    ["C","i:72","Total minus \"together\".","Totaal minus \"saam\".",["Total: 5! = 120","Together: treat as one block → 4! × 2 = 48","120 − 48 = 72"],["Totaal: 5! = 120","Saam: behandel as een blok → 4! × 2 = 48","120 − 48 = 72"]]
+    ["C","i:72","Total minus \"together\".","Totaal minus \"saam\".",["Total: 5! = 120","Together: treat as one block → 4! × 2 = 48","120 − 48 = 72"],["Totaal: 5! = 120","Saam: behandel as een blok → 4! × 2 = 48","120 − 48 = 72"]],
+    ["P","i:60","Divide by the arrangements of the repeated letters.","Deel deur die rangskikkings van die herhaalde letters.",["6 letters: 6! = 720","A repeats 3 times and N twice: 720 ÷ (3! × 2!) = 720 ÷ 12 = 60"],["6 letters: 6! = 720","A herhaal 3 keer en N twee keer: 720 ÷ (3! × 2!) = 720 ÷ 12 = 60"]]
   ],
   "1001": [
     ["R","m4:1","ₙCᵣ = n!/(r!(n − r)!).","ₙCᵣ = n!/(r!(n − r)!).",["(8 × 7 × 6) ÷ 3!","= 336 ÷ 6 = 56"],["(8 × 7 × 6) ÷ 3!","= 336 ÷ 6 = 56"]],
@@ -17,7 +18,8 @@ MMHelp.add(12, 10, {
     ["R","m4:0","Favourable hands ÷ all hands.","Gunstige hande ÷ alle hande.",["Hearts hands: ₁₃C₅; all hands: ₅₂C₅","P = ₁₃C₅/₅₂C₅"],["Harte-hande: ₁₃C₅; alle hande: ₅₂C₅","P = ₁₃C₅/₅₂C₅"]],
     ["R","m4:0","Choose boys and girls separately.","Kies seuns en meisies apart.",["₅C₂ × ₃C₂ = 10 × 3 = 30","₈C₄ = 70 → P = 30/70 (not 10/70)"],["₅C₂ × ₃C₂ = 10 × 3 = 30","₈C₄ = 70 → P = 30/70 (nie 10/70 nie)"]],
     ["C","i:210","\"At least 3\" = exactly 3 or exactly 4.","\"Ten minste 3\" = presies 3 of presies 4.",["3 boys: ₇C₃ × ₅C₁ = 35 × 5 = 175","4 boys: ₇C₄ = 35","175 + 35 = 210"],["3 seuns: ₇C₃ × ₅C₁ = 35 × 5 = 175","4 seuns: ₇C₄ = 35","175 + 35 = 210"]],
-    ["C","i:2/3","Exactly 2 red or exactly 3 red.","Presies 2 rooi of presies 3 rooi.",["₆C₂ × ₄C₁ = 60 and ₆C₃ = 20 → 80","₁₀C₃ = 120 → 80/120 = 2/3"],["₆C₂ × ₄C₁ = 60 en ₆C₃ = 20 → 80","₁₀C₃ = 120 → 80/120 = 2/3"]]
+    ["C","i:2/3","Exactly 2 red or exactly 3 red.","Presies 2 rooi of presies 3 rooi.",["₆C₂ × ₄C₁ = 60 and ₆C₃ = 20 → 80","₁₀C₃ = 120 → 80/120 = 2/3"],["₆C₂ × ₄C₁ = 60 en ₆C₃ = 20 → 80","₁₀C₃ = 120 → 80/120 = 2/3"]],
+    ["P","i:5/6","Use the complement: no women at all.","Gebruik die komplement: glad geen vroue nie.",["All committees: ₁₀C₃ = 120; all men: ₆C₃ = 20","P(no women) = 20/120 = 1/6","P(at least one woman) = 1 − 1/6 = 5/6"],["Alle komitees: ₁₀C₃ = 120; net mans: ₆C₃ = 20","P(geen vroue) = 20/120 = 1/6","P(ten minste een vrou) = 1 − 1/6 = 5/6"]]
   ],
   "1002": [
     ["R","m4:1","P(A or B) = P(A) + P(B) − P(A and B).","P(A of B) = P(A) + P(B) − P(A en B).",["0.5 + 0.3 − 0.1","= 0.7"],["0,5 + 0,3 − 0,1","= 0,7"]],

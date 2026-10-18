@@ -121,7 +121,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "₇P₂ = ", options: ["21", "42", "14", "49"], answer: 1, topic: "Fundamental counting principle & factorial notation" },
         { type: "mc", text: "6 people in a row, with A and B always at the ends. How many arrangements?", options: ["48", "24", "12", "96"], answer: 0, topic: "Fundamental counting principle & factorial notation" },
         { type: "input", text: "How many distinct 5-letter arrangements can be made from the letters of the word MOUSE if the arrangement must start with a vowel and end with a consonant? (All letters are distinct; vowels: O, U, E; consonants: M, S.)", answer: "36", topic: "Fundamental counting principle & factorial notation" },
-        { type: "input", text: "5 different books are arranged on a shelf. In how many ways can this be done if two specific books must NOT be next to each other?", answer: "72", topic: "Fundamental counting principle & factorial notation" }
+        { type: "input", text: "5 different books are arranged on a shelf. In how many ways can this be done if two specific books must NOT be next to each other?", answer: "72", topic: "Fundamental counting principle & factorial notation" },
+        { type: "input", text: "How many different arrangements can be made of all the letters in the word BANANA?", answer: "60", topic: "Fundamental counting principle & factorial notation" }
       ]
     },
     {
@@ -225,7 +226,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Deck of 52 cards. P(5-card hand with all hearts):", options: ["₁₃C₅/₅₂C₅", "13/52", "₁₃P₅/₅₂P₅", "5/52"], answer: 0, topic: "Combinations & probability applications" },
         { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 0, topic: "Combinations & probability applications" },
         { type: "input", text: "A team of 4 is chosen from 7 boys and 5 girls. How many teams contain at least 3 boys?", answer: "210", topic: "Combinations & probability applications" },
-        { type: "input", text: "A bag contains 6 red and 4 blue marbles. If 3 marbles are drawn at random without replacement, find P(at least 2 red), as a fraction in lowest terms.", answer: "2/3", altAnswers: ["0.6666666667", "0,67", "0.67"], topic: "Combinations & probability applications" }
+        { type: "input", text: "A bag contains 6 red and 4 blue marbles. If 3 marbles are drawn at random without replacement, find P(at least 2 red), as a fraction in lowest terms.", answer: "2/3", altAnswers: ["0.6666666667", "0,67", "0.67"], topic: "Combinations & probability applications" },
+        { type: "input", text: "A committee of 3 is chosen at random from 6 men and 4 women. What is the probability that it includes at least one woman? Give a fraction.", answer: "5/6", topic: "Combinations & probability applications" }
       ]
     },
     {

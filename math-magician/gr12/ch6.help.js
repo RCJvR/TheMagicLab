@@ -15,7 +15,8 @@ MMHelp.add(12, 6, {
     ["R","i:2","Set f'(x) = 0.","Stel f'(x) = 0.",["2x − 4 = 0","x = 2"],["2x − 4 = 0","x = 2"]],
     ["R","m4:1","The gradient of the tangent is f'(3).","Die gradiënt van die raaklyn is f'(3).",["dy/dx = 2x","2(3) = 6"],["dy/dx = 2x","2(3) = 6"]],
     ["K","m4:1","SA must have only one variable.","BO mag net een veranderlike hê.",["Use V = 500 to write h in terms of x first."],["Gebruik V = 500 om eers h in terme van x te skryf."]],
-    ["C","i:-20","Find where f'(x) = 4, then the point, then c.","Vind waar f'(x) = 4, dan die punt, dan c.",["2x − 6 = 4 → x = 5; f(5) = 25 − 30 + 5 = 0","y = 4x + c through (5 ; 0): 0 = 20 + c → c = −20"],["2x − 6 = 4 → x = 5; f(5) = 25 − 30 + 5 = 0","y = 4x + c through (5 ; 0): 0 = 20 + c → c = −20"]]
+    ["C","i:-20","Find where f'(x) = 4, then the point, then c.","Vind waar f'(x) = 4, dan die punt, dan c.",["2x − 6 = 4 → x = 5; f(5) = 25 − 30 + 5 = 0","y = 4x + c through (5 ; 0): 0 = 20 + c → c = −20"],["2x − 6 = 4 → x = 5; f(5) = 25 − 30 + 5 = 0","y = 4x + c through (5 ; 0): 0 = 20 + c → c = −20"]],
+    ["P","i:1800","Let x be each side at right angles to the river.","Laat x elke sy loodreg op die rivier wees.",["A = x(120 − 2x) = 120x − 2x²","A'(x) = 120 − 4x = 0 → x = 30","A = 30 × 60 = 1 800 m²"],["A = x(120 − 2x) = 120x − 2x²","A'(x) = 120 − 4x = 0 → x = 30","A = 30 × 60 = 1 800 m²"]]
   ],
   "602": [
     ["K","m4:0","Velocity = s'(t).","Snelheid = s'(t).",["v(t) = 40 − 10t"],["v(t) = 40 − 10t"]],
@@ -24,7 +25,8 @@ MMHelp.add(12, 6, {
     ["R","m4:0","[f(4) − f(1)] ÷ (4 − 1).","[f(4) − f(1)] ÷ (4 − 1).",["(16 − 1) ÷ 3","= 5"],["(16 − 1) ÷ 3","= 5"]],
     ["K","m4:1","The sign of v gives the direction.","Die teken van v gee die rigting.",["v < 0 → moving in the negative direction"],["v < 0 → beweeg in die negatiewe rigting"]],
     ["R","i:4","Set s'(t) = 0.","Stel s'(t) = 0.",["2t − 8 = 0 → t = 4","s(4) = 16 − 32 + 20 = 4"],["2t − 8 = 0 → t = 4","s(4) = 16 − 32 + 20 = 4"]],
-    ["R","i:6","Differentiate twice.","Differensieer twee keer.",["v = 6t² − 30t + 24 → a = 12t − 30","a(3) = 36 − 30 = 6 m/s²"],["v = 6t² − 30t + 24 → a = 12t − 30","a(3) = 36 − 30 = 6 m/s²"]]
+    ["R","i:6","Differentiate twice.","Differensieer twee keer.",["v = 6t² − 30t + 24 → a = 12t − 30","a(3) = 36 − 30 = 6 m/s²"],["v = 6t² − 30t + 24 → a = 12t − 30","a(3) = 36 − 30 = 6 m/s²"]],
+    ["P","i:20","Find when it lands, then the velocity at that time.","Vind wanneer dit land en dan die snelheid op daardie tyd.",["h = 0: 5t(4 − t) = 0 → t = 4 s","v(t) = h'(t) = 20 − 10t → v(4) = −20 m/s","Speed = 20 m/s (the minus sign means downwards)"],["h = 0: 5t(4 − t) = 0 → t = 4 s","v(t) = h'(t) = 20 − 10t → v(4) = −20 m/s","Spoed = 20 m/s (die minusteken beteken afwaarts)"]]
   ],
   "603": [
     ["C","m4:3","Find where f'(x) > 0.","Vind waar f'(x) > 0.",["f'(x) = 3x² − 6x = 3x(x − 2)","f' > 0 for x < 0 and x > 2 → both A and C"],["f'(x) = 3x² − 6x = 3x(x − 2)","f' > 0 vir x < 0 en x > 2 → albei A en C"]],

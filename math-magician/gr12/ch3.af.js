@@ -106,7 +106,8 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Gebruik F = x[(1+i)ⁿ−1]/i met x=500, i=0.01, n=3: bepaal F.", answer: "1515.05", altAnswers: ["1515"], topic: "Toekomswaarde-annuïteite" },
         { type: "mc", text: "Om R100 000 in 10 jaar teen 8% p.j. jaarliks saamgestel op te hoop, voldoen die jaarlikse betaling x aan:", options: ["100000 = x[(1.08)¹⁰−1]/0.08", "x = 100000·0.08/[(1.08)¹⁰−1]", "Beide A en B", "Nie een nie"], answer: 2, topic: "Toekomswaarde-annuïteite" },
         { type: "input", text: "Sipho spaar R1 500 aan die einde van elke maand vir 8 jaar in 'n rekening wat 8.4% p.j. maandeliks saamgestel verdien. Bereken die toekomswaarde van sy spaargeld (naaste rand).", answer: "204337", altAnswers: ["204336", "204336.62"], topic: "Toekomswaarde-annuïteite" },
-        { type: "input", text: "Maandelikse spaargeld van R1 000 (einde van maand, 6% p.j. maandeliks saamgestel) word gemaak na 'n teiken van R80 000. Wat is die minimum aantal maande wat benodig word?", answer: "68", topic: "Toekomswaarde-annuïteite" }
+        { type: "input", text: "Maandelikse spaargeld van R1 000 (einde van maand, 6% p.j. maandeliks saamgestel) word gemaak na 'n teiken van R80 000. Wat is die minimum aantal maande wat benodig word?", answer: "68", topic: "Toekomswaarde-annuïteite" },
+        { type: "input", text: "Thandi spaar R1 500 aan die einde van elke maand in 'n rekening wat 9% p.j. maandeliks saamgestel betaal. Na hoeveel maande bereik haar spaargeld vir die eerste keer R100 000?", answer: "55", topic: "Toekomswaarde-annuïteite" }
       ]
     },
     {
@@ -191,7 +192,8 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "P = 10000, i = 0.01 per maand, n = 12. Bepaal x (maandelikse betaling) tot naaste rand. Gebruik x = Pi/[1−(1.01)⁻¹²]. ", answer: "888", altAnswers: ["888.49", "888,49"], topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "mc", text: "Totale rente betaal op 'n lening = ", options: ["Hoofsom × koers × tyd", "Totale terugbetalings − oorspronklike leningsbedrag", "Maandelikse betaling × n", "Toekomswaarde − huidige waarde"], answer: 1, topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
         { type: "input", text: "'n Lening van R450 000 word terugbetaal met gelyke maandelikse paaiemente oor 15 jaar teen 12% p.j. maandeliks saamgestel. Bereken die uitstaande saldo onmiddellik na die 100ste betaling (naaste rand).", answer: "296438", altAnswers: ["296437", "296437.82"], topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
-        { type: "input", text: "'n Lening van R200 000 teen 13% p.j. maandeliks saamgestel word terugbetaal met maandelikse paaiemente van R3 000. Bepaal die minimum aantal maandelikse betalings benodig om die lening te delg.", answer: "119", topic: "Huidige waarde-annuïteite & leningsterugbetalings" }
+        { type: "input", text: "'n Lening van R200 000 teen 13% p.j. maandeliks saamgestel word terugbetaal met maandelikse paaiemente van R3 000. Bepaal die minimum aantal maandelikse betalings benodig om die lening te delg.", answer: "119", topic: "Huidige waarde-annuïteite & leningsterugbetalings" },
+        { type: "input", text: "'n Motorlening van R250 000 teen 12% p.j. maandeliks saamgestel word in gelyke maandelikse paaiemente oor 5 jaar terugbetaal. Hoeveel rente word altesaam betaal, tot die naaste rand?", answer: "83667", topic: "Huidige waarde-annuïteite & leningsterugbetalings" }
       ]
     },
     {

@@ -97,7 +97,8 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Skryf die vergelyking van 'n sirkel met middelpunt (−1, 4) en radius 3.", answer: "(x+1)²+(y-4)²=9", altAnswers: ["(x+1)² + (y-4)² = 9"], topic: "Vergelyking van 'n sirkel" },
         { type: "mc", text: "x² + y² − 4x + 6y − 12 = 0 in standaardvorm:", options: ["(x−2)²+(y+3)²=25", "(x+2)²+(y−3)²=25", "(x−2)²+(y+3)²=16", "(x−4)²+(y+6)²=12"], answer: 0, topic: "Vergelyking van 'n sirkel" },
         { type: "mc", text: "'n Sirkel het middelpunt (0, 0) en gaan deur (5, 12). Sy radius is:", options: ["17", "13", "7", "√17"], answer: 1, topic: "Vergelyking van 'n sirkel" },
-        { type: "input", text: "'n Sirkel gaan deur A(1; 2) en B(1; −4), en sy middelpunt lê op die lyn y = x − 2. Bepaal die middelpunt van die sirkel. Gee slegs die x-koördinaat.", answer: "1", topic: "Vergelyking van 'n sirkel" }
+        { type: "input", text: "'n Sirkel gaan deur A(1; 2) en B(1; −4), en sy middelpunt lê op die lyn y = x − 2. Bepaal die middelpunt van die sirkel. Gee slegs die x-koördinaat.", answer: "1", topic: "Vergelyking van 'n sirkel" },
+        { type: "input", text: "'n Sirkel gaan deur O(0 ; 0), B(8 ; 0) en C(0 ; 6). Bereken sy radius.", answer: "5", topic: "Vergelyking van 'n sirkel" }
       ]
     },
     {
@@ -198,7 +199,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Sirkel: x² + y² = 10. Raaklyn by (1, 3):", options: ["x + 3y = 10", "3x + y = 10", "x + 3y = 10 en 3x + y = 10", "x − 3y = 10"], answer: 0, topic: "Raaklyn aan 'n sirkel" },
         { type: "mc", text: "Sirkelmiddelpunt (2, −1), punt P(5, 3) op sirkel. Gradiënt van radius CP:", options: ["3/4", "4/3", "−3/4", "−4/3"], answer: 1, topic: "Raaklyn aan 'n sirkel" },
         { type: "input", text: "Raaklyn by (0, 4) op sirkel x² + (y−1)² = 9. Wat is die gradiënt van die raaklyn?", answer: "0", topic: "Raaklyn aan 'n sirkel" },
-        { type: "mc", text: "Sirkel: x² + y² = 20. Is die lyn y = 2x − 10 'n raaklyn, 'n sekans, of mis dit die sirkel?", options: ["Raaklyn (raak by (4; −2))", "Sekans (twee snypunte)", "Mis die sirkel heeltemal", "Gaan deur die middelpunt"], answer: 0, topic: "Raaklyn aan 'n sirkel" }
+        { type: "mc", text: "Sirkel: x² + y² = 20. Is die lyn y = 2x − 10 'n raaklyn, 'n sekans, of mis dit die sirkel?", options: ["Raaklyn (raak by (4; −2))", "Sekans (twee snypunte)", "Mis die sirkel heeltemal", "Gaan deur die middelpunt"], answer: 0, topic: "Raaklyn aan 'n sirkel" },
+        { type: "input", text: "Die lyn y = 3x + 10 is 'n raaklyn aan die sirkel x² + y² = 10. Vind die raakpunt. Skryf (x ; y).", answer: "(-3 ; 1)", topic: "Raaklyn aan 'n sirkel" }
       ]
     },
     {

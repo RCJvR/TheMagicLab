@@ -7,7 +7,8 @@ MMHelp.add(12, 7, {
     ["K","i:1-49","Substitute the centre and radius.","Vervang die middelpunt en radius.",["(x + 1)² + (y − 4)² = 9"],["(x + 1)² + (y − 4)² = 9"]],
     ["R","m4:0","Complete the square for x and for y.","Voltooi die vierkant vir x en vir y.",["(x² − 4x + 4) + (y² + 6y + 9) = 12 + 4 + 9","(x − 2)² + (y + 3)² = 25"],["(x² − 4x + 4) + (y² + 6y + 9) = 12 + 4 + 9","(x − 2)² + (y + 3)² = 25"]],
     ["R","m4:1","Distance from the centre to the point.","Afstand vanaf die middelpunt na die punt.",["r = √(5² + 12²) = √169","= 13"],["r = √(5² + 12²) = √169","= 13"]],
-    ["C","i:1","The centre is on the perpendicular bisector of AB.","Die middelpunt lê op die middelloodlyn van AB.",["AB is vertical with midpoint (1 ; −1), so its perpendicular bisector is y = −1","−1 = x − 2 → x = 1 → centre (1 ; −1)"],["AB is vertikaal met middelpunt (1 ; −1), dus is die middelloodlyn y = −1","−1 = x − 2 → x = 1 → middelpunt (1 ; −1)"]]
+    ["C","i:1","The centre is on the perpendicular bisector of AB.","Die middelpunt lê op die middelloodlyn van AB.",["AB is vertical with midpoint (1 ; −1), so its perpendicular bisector is y = −1","−1 = x − 2 → x = 1 → centre (1 ; −1)"],["AB is vertikaal met middelpunt (1 ; −1), dus is die middelloodlyn y = −1","−1 = x − 2 → x = 1 → middelpunt (1 ; −1)"]],
+    ["P","i:5","∠BOC = 90°. What does that tell you about BC?","∠BOC = 90°. Wat sê dit vir jou van BC?",["A right angle on a circle stands on a diameter, so BC is a diameter","BC = √(8² + 6²) = 10 → radius 5"],["'n Regte hoek op 'n sirkel staan op 'n middellyn, dus is BC 'n middellyn","BC = √(8² + 6²) = 10 → radius 5"]]
   ],
   "701": [
     ["R","m4:2","Tangent ⊥ radius.","Raaklyn ⊥ radius.",["m_radius × m_tangent = −1","m_tangent = −1 ÷ 4/3 = −3/4"],["m_radius × m_tangent = −1","m_tangent = −1 ÷ 4/3 = −3/4"]],
@@ -15,7 +16,8 @@ MMHelp.add(12, 7, {
     ["R","m4:0","Radius gradient 3; tangent gradient −⅓.","Radiusgradiënt 3; raaklyngradiënt −⅓.",["y − 3 = −⅓(x − 1) → 3y − 9 = −x + 1","x + 3y = 10"],["y − 3 = −⅓(x − 1) → 3y − 9 = −x + 1","x + 3y = 10"]],
     ["R","m4:1","m = Δy ÷ Δx.","m = Δy ÷ Δx.",["(3 − (−1)) ÷ (5 − 2)","= 4/3"],["(3 − (−1)) ÷ (5 − 2)","= 4/3"]],
     ["C","i:0","The radius from (0 ; 1) to (0 ; 4) is vertical.","Die radius van (0 ; 1) na (0 ; 4) is vertikaal.",["A tangent ⊥ a vertical radius is horizontal","gradient 0"],["'n Raaklyn ⊥ 'n vertikale radius is horisontaal","gradiënt 0"]],
-    ["C","m4:0","Substitute the line and check Δ.","Vervang die lyn en kontroleer Δ.",["x² + (2x − 10)² = 20 → 5x² − 40x + 80 = 0 → x² − 8x + 16 = 0","(x − 4)² = 0 → one point (4 ; −2) → tangent"],["x² + (2x − 10)² = 20 → 5x² − 40x + 80 = 0 → x² − 8x + 16 = 0","(x − 4)² = 0 → een punt (4 ; −2) → raaklyn"]]
+    ["C","m4:0","Substitute the line and check Δ.","Vervang die lyn en kontroleer Δ.",["x² + (2x − 10)² = 20 → 5x² − 40x + 80 = 0 → x² − 8x + 16 = 0","(x − 4)² = 0 → one point (4 ; −2) → tangent"],["x² + (2x − 10)² = 20 → 5x² − 40x + 80 = 0 → x² − 8x + 16 = 0","(x − 4)² = 0 → een punt (4 ; −2) → raaklyn"]],
+    ["P","i:-31","Substitute the line into the circle: the equal root is the point of contact.","Vervang die lyn in die sirkel: die gelyke wortel is die raakpunt.",["x² + (3x + 10)² = 10 → 10x² + 60x + 90 = 0 → x² + 6x + 9 = 0","(x + 3)² = 0 → x = −3, y = 3(−3) + 10 = 1 → (−3 ; 1)"],["x² + (3x + 10)² = 10 → 10x² + 60x + 90 = 0 → x² + 6x + 9 = 0","(x + 3)² = 0 → x = −3, y = 3(−3) + 10 = 1 → (−3 ; 1)"]]
   ],
   "702": [
     ["K","m4:1","The number of solutions tells you how they meet.","Die aantal oplossings sê hoe hulle ontmoet.",["Δ > 0 secant, Δ = 0 tangent, Δ < 0 misses"],["Δ > 0 snylyn, Δ = 0 raaklyn, Δ < 0 mis"]],

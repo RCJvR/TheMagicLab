@@ -113,7 +113,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "A geometric sequence has T₂ = 6 and T₅ = 48. Find r.", options: ["2", "3", "4", "8"], answer: 0, topic: "Arithmetic & geometric sequences" },
         { type: "mc", text: "Which sequence is geometric? ", options: ["1, 3, 5, 7, …", "2, 6, 18, 54, …", "1, 4, 9, 16, …", "3, 6, 9, 12, …"], answer: 1, topic: "Arithmetic & geometric sequences" },
         { type: "input", text: "Geometric: a = 5, r = −2. Find T₄.", answer: "-40", altAnswers: ["−40"], topic: "Arithmetic & geometric sequences" },
-        { type: "input", text: "The 3rd term of a geometric sequence is 20 and the 6th term is 160. Find the first term a.", answer: "5", topic: "Arithmetic & geometric sequences" }
+        { type: "input", text: "The 3rd term of a geometric sequence is 20 and the 6th term is 160. Find the first term a.", answer: "5", topic: "Arithmetic & geometric sequences" },
+        { type: "input", text: "In an arithmetic sequence, T₃ = 7 and T₇ is three times T₂. Find the sum of the first 20 terms.", answer: "440", topic: "Arithmetic & geometric sequences" }
       ]
     },
     {
@@ -243,7 +244,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "Infinite geometric series: a = 12, r = ⅓. Find S∞.", options: ["18", "24", "36", "6"], answer: 0, topic: "Series — arithmetic, geometric & infinite" },
         { type: "mc", text: "Σᵢ₌₁⁴ (3i) = ", options: ["30", "24", "36", "42"], answer: 0, topic: "Series — arithmetic, geometric & infinite" },
         { type: "mc", text: "For which value of r does an infinite geometric series converge?", options: ["r = 1", "r = −2", "r = 0.8", "r = −1.1"], answer: 2, topic: "Series — arithmetic, geometric & infinite" },
-        { type: "input", text: "The sum of the first n terms of an arithmetic series is Sₙ = 4n² + 3n. Find the 5th term (T₅).", answer: "39", topic: "Series — arithmetic, geometric & infinite" }
+        { type: "input", text: "The sum of the first n terms of an arithmetic series is Sₙ = 4n² + 3n. Find the 5th term (T₅).", answer: "39", topic: "Series — arithmetic, geometric & infinite" },
+        { type: "input", text: "A ball is dropped from a height of 8 m. After each bounce it rises to 3/4 of the height it fell from. What total vertical distance does it travel before it comes to rest? (m)", answer: "56", topic: "Series — arithmetic, geometric & infinite" }
       ]
     },
     {

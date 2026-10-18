@@ -93,7 +93,8 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "Die grafiek van f⁻¹ word van f verkry deur te spieël in:", options: ["Die x-as", "Die y-as", "Die lyn y = x", "Die oorsprong"], answer: 2, topic: "Inverse funksies" },
         { type: "mc", text: "log(100) + log(10) = ", options: ["2", "3", "log(1000)", "Beide B en C"], answer: 3, topic: "Inverse funksies" },
         { type: "input", text: "As f(x) = 4x − 3 en h(x) = f⁻¹(x), bepaal die waarde van x waarvoor h(2x + 5) = 6.", answer: "8", topic: "Inverse funksies" },
-        { type: "input", text: "Los op vir x: log₃(x) = 2log₃(5) − log₃(x)", answer: "5", topic: "Inverse funksies" }
+        { type: "input", text: "Los op vir x: log₃(x) = 2log₃(5) − log₃(x)", answer: "5", topic: "Inverse funksies" },
+        { type: "input", text: "f(x) = 3x − 4. Die grafieke van f en f⁻¹ sny by P. Bepaal die x-koördinaat van P sonder om f⁻¹ te vind.", answer: "2", topic: "Inverse funksies" }
       ]
     },
     {
@@ -215,7 +216,8 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "Die vertikale asimptoot van y = log(x + 2) is:", options: ["x = 0", "x = 2", "x = −2", "y = 0"], answer: 2, topic: "Logaritmiese funksies & vergelykings" },
         { type: "mc", text: "log(a²b³) uitgedruk met behulp van log a en log b:", options: ["2log a + 3log b", "5log(ab)", "6log(ab)", "log a² + log b³ slegs"], answer: 0, topic: "Logaritmiese funksies & vergelykings" },
         { type: "input", text: "Los op vir x: log₂(x) + log₂(x + 6) = 4", answer: "2", topic: "Logaritmiese funksies & vergelykings" },
-        { type: "input", text: "'n Belegging van R12 500 groei teen 11% p.j. jaarliks saamgestel. Bepaal die minimum aantal volle jare vir die belegging om R30 000 te oorskry.", answer: "9", topic: "Logaritmiese funksies & vergelykings" }
+        { type: "input", text: "'n Belegging van R12 500 groei teen 11% p.j. jaarliks saamgestel. Bepaal die minimum aantal volle jare vir die belegging om R30 000 te oorskry.", answer: "9", topic: "Logaritmiese funksies & vergelykings" },
+        { type: "input", text: "Los op: log₂(x − 2) + log₂(x + 5) = 3.", answer: "3", topic: "Logaritmiese funksies & vergelykings" }
       ]
     },
     {

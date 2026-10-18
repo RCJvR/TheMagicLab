@@ -97,7 +97,8 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Write the equation of a circle with centre (−1, 4) and radius 3.", answer: "(x+1)²+(y-4)²=9", altAnswers: ["(x+1)² + (y-4)² = 9"], topic: "Equation of a circle" },
         { type: "mc", text: "x² + y² − 4x + 6y − 12 = 0 in standard form:", options: ["(x−2)²+(y+3)²=25", "(x+2)²+(y−3)²=25", "(x−2)²+(y+3)²=16", "(x−4)²+(y+6)²=12"], answer: 0, topic: "Equation of a circle" },
         { type: "mc", text: "A circle has centre (0, 0) and passes through (5, 12). Its radius is:", options: ["17", "13", "7", "√17"], answer: 1, topic: "Equation of a circle" },
-        { type: "input", text: "A circle passes through A(1; 2) and B(1; −4), and its centre lies on the line y = x − 2. Find the centre of the circle. Give just the x-coordinate.", answer: "1", topic: "Equation of a circle" }
+        { type: "input", text: "A circle passes through A(1; 2) and B(1; −4), and its centre lies on the line y = x − 2. Find the centre of the circle. Give just the x-coordinate.", answer: "1", topic: "Equation of a circle" },
+        { type: "input", text: "A circle passes through O(0 ; 0), B(8 ; 0) and C(0 ; 6). Find its radius.", answer: "5", topic: "Equation of a circle" }
       ]
     },
     {
@@ -198,7 +199,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Circle: x² + y² = 10. Tangent at (1, 3):", options: ["x + 3y = 10", "3x + y = 10", "x + 3y = 10 and 3x + y = 10", "x − 3y = 10"], answer: 0, topic: "Tangent to a circle" },
         { type: "mc", text: "Circle centre (2, −1), point P(5, 3) on circle. Gradient of radius CP:", options: ["3/4", "4/3", "−3/4", "−4/3"], answer: 1, topic: "Tangent to a circle" },
         { type: "input", text: "Tangent at (0, 4) on circle x² + (y−1)² = 9. What is the gradient of the tangent?", answer: "0", topic: "Tangent to a circle" },
-        { type: "mc", text: "Circle: x² + y² = 20. Is the line y = 2x − 10 a tangent, a secant, or does it miss the circle?", options: ["Tangent (touches at (4; −2))", "Secant (two intersection points)", "Misses the circle entirely", "Passes through the centre"], answer: 0, topic: "Tangent to a circle" }
+        { type: "mc", text: "Circle: x² + y² = 20. Is the line y = 2x − 10 a tangent, a secant, or does it miss the circle?", options: ["Tangent (touches at (4; −2))", "Secant (two intersection points)", "Misses the circle entirely", "Passes through the centre"], answer: 0, topic: "Tangent to a circle" },
+        { type: "input", text: "The line y = 3x + 10 is a tangent to the circle x² + y² = 10. Find the point of contact. Write (x ; y).", answer: "(-3 ; 1)", topic: "Tangent to a circle" }
       ]
     },
     {

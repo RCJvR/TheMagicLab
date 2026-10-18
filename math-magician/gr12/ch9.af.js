@@ -107,7 +107,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "Regressielyn: ŷ = 3.2 + 1.5x. Voorspel y wanneer x = 4.", answer: "9.2", altAnswers: ["9,2"], topic: "Spreidingsdiagramme & regressie" },
         { type: "mc", text: "Die kleinste-kwadrate-lyn minimeer:", options: ["Die som van residue", "Die som van gekwadreerde residue", "Die produk van x en y", "Die variasiewydte van y"], answer: 1, topic: "Spreidingsdiagramme & regressie" },
         { type: "input", text: "'n Datastel van 5 punte het: Σx = 20, Σy = 50, Σxy = 220, Σx² = 90, n = 5. Bereken die gradiënt b van die kleinste-kwadrate-regressielyn.", answer: "2", topic: "Spreidingsdiagramme & regressie" },
-        { type: "mc", text: "Die regressielyn vir 'n datastel is ŷ = 12 + 2.5x, gebaseer op data met x tussen 3 en 15. 'n Voorspelde waarde van 57 is van hierdie lyn afgelees. Watter x-waarde is gebruik, en is hierdie voorspelling 'n interpolasie of ekstrapolasie?", options: ["x = 18; ekstrapolasie (18 is buite die databereik)", "x = 18; interpolasie (18 is binne die databereik)", "x = 22.8; ekstrapolasie", "x = 8; interpolasie"], answer: 0, topic: "Spreidingsdiagramme & regressie" }
+        { type: "mc", text: "Die regressielyn vir 'n datastel is ŷ = 12 + 2.5x, gebaseer op data met x tussen 3 en 15. 'n Voorspelde waarde van 57 is van hierdie lyn afgelees. Watter x-waarde is gebruik, en is hierdie voorspelling 'n interpolasie of ekstrapolasie?", options: ["x = 18; ekstrapolasie (18 is buite die databereik)", "x = 18; interpolasie (18 is binne die databereik)", "x = 22.8; ekstrapolasie", "x = 8; interpolasie"], answer: 0, topic: "Spreidingsdiagramme & regressie" },
+        { type: "mc", text: "Data vir studie-ure (van 0 tot 10 uur) en punte gee die regressielyn ŷ = 40 + 2,5x. 'n Leerder wil 75% hê. Wat stel die model voor, en hoe betroubaar is dit?", options: ["14 uur, en dit is betroubaar want dit kom van die regressielyn","14 uur, maar dit is ekstrapolasie buite die data, dus is dit onbetroubaar","35 uur, en dit is betroubaar","Die model kan nie 'n antwoord gee nie"], answer: 1, topic: "Spreidingsdiagramme & regressie" }
       ]
     },
     {
@@ -291,7 +292,8 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "Salarisdata vir 'n maatskappy is gewoonlik sterk positief skeef. Dit beteken:", options: ["Die meeste salarisse is hoog, met 'n paar baie laag", "Die meeste salarisse is laag tot matig, met 'n paar baie hoog wat die gemiddelde optrek", "Alle salarisse is dieselfde", "Die mediaan is groter as die gemiddelde"], answer: 1, topic: "Simmetriese & skewe data" },
         { type: "mc", text: "'n Datastel het mediaan = 50 en modus = 58. Die verdeling is bekend om negatief skeef te wees. Watter een van die volgende is 'n aanneemlike waarde vir die gemiddelde?", options: ["45", "50", "55", "60"], answer: 0, topic: "Simmetriese & skewe data" },
         { type: "mc", text: "'n Boksplot het: Minimum = 10, Q1 = 42, Mediaan = 48, Q3 = 50, Maksimum = 52. Beskryf die skeefheid van die verdeling.", options: ["Positief skeef", "Negatief skeef", "Simmetries", "Kan nie uit hierdie data bepaal word nie"], answer: 1, topic: "Simmetriese & skewe data" },
-        { type: "input", text: "Vir 10 leerders is Σx = 60 (studie-ure) en Σy = 620 (punte). Die kleinstekwadrate-regressielyn is ŷ = a + 4,5x. Bepaal a.", answer: "35", topic: "Simmetriese & skewe data" }
+        { type: "input", text: "Vir 10 leerders is Σx = 60 (studie-ure) en Σy = 620 (punte). Die kleinstekwadrate-regressielyn is ŷ = a + 4,5x. Bepaal a.", answer: "35", topic: "Simmetriese & skewe data" },
+        { type: "mc", text: "20 waardes het 'n gemiddeld van 15 en 'n standaardafwyking van 2. Nog een waarde, 15, word bygevoeg. Wat gebeur met die standaardafwyking?", options: ["Dit neem toe","Dit neem effens af","Dit bly presies dieselfde","Dit word 0"], answer: 1, topic: "Simmetriese & skewe data" }
       ]
     }
   ],

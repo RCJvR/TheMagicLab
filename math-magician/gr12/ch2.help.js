@@ -8,7 +8,8 @@ MMHelp.add(12, 2, {
     ["K","m4:2","Inverses swap x and y.","Inverses ruil x en y om.",["Reflect in y = x"],["Weerkaats in y = x"]],
     ["R","m4:3","Evaluate each log.","Bereken elke log.",["log 100 = 2 and log 10 = 1 → 3","log 100 + log 10 = log 1 000 = 3 → both B and C"],["log 100 = 2 en log 10 = 1 → 3","log 100 + log 10 = log 1 000 = 3 → albei B en C"]],
     ["C","i:8","Find h(x) = f⁻¹(x) first.","Vind eers h(x) = f⁻¹(x).",["h(x) = (x + 3)/4","h(2x + 5) = (2x + 8)/4 = 6 → 2x + 8 = 24 → x = 8"],["h(x) = (x + 3)/4","h(2x + 5) = (2x + 8)/4 = 6 → 2x + 8 = 24 → x = 8"]],
-    ["C","i:5","Collect the log terms on one side.","Versamel die logterme aan een kant.",["2log₃x = 2log₃5","log₃x = log₃5 → x = 5"],["2log₃x = 2log₃5","log₃x = log₃5 → x = 5"]]
+    ["C","i:5","Collect the log terms on one side.","Versamel die logterme aan een kant.",["2log₃x = 2log₃5","log₃x = log₃5 → x = 5"],["2log₃x = 2log₃5","log₃x = log₃5 → x = 5"]],
+    ["P","i:2","f and f⁻¹ are reflections in y = x, so they meet on that line.","f en f⁻¹ is weerkaatsings in y = x, dus sny hulle op daardie lyn.",["On y = x: 3x − 4 = x","2x = 4 → x = 2 (P is (2 ; 2))"],["Op y = x: 3x − 4 = x","2x = 4 → x = 2 (P is (2 ; 2))"]]
   ],
   "201": [
     ["K","m4:1","125 = 5³.","125 = 5³.",["x = 3"],["x = 3"]],
@@ -17,7 +18,8 @@ MMHelp.add(12, 2, {
     ["K","m4:2","The argument may not be 0.","Die argument mag nie 0 wees nie.",["x + 2 = 0 → x = −2"],["x + 2 = 0 → x = −2"]],
     ["R","m4:0","Use log(ab) = log a + log b and log aⁿ = n log a.","Gebruik log(ab) = log a + log b en log aⁿ = n log a.",["log a² + log b³","= 2log a + 3log b"],["log a² + log b³","= 2log a + 3log b"]],
     ["C","i:2","Combine the logs, then check the domain.","Kombineer die logs en kontroleer dan die definisieversameling.",["log₂[x(x + 6)] = 4 → x² + 6x = 16","(x + 8)(x − 2) = 0 → x = 2 (x = −8 is not allowed)"],["log₂[x(x + 6)] = 4 → x² + 6x = 16","(x + 8)(x − 2) = 0 → x = 2 (x = −8 is nie toegelaat nie)"]],
-    ["C","i:9","Solve 12 500(1.11)ⁿ > 30 000 with logs.","Los op: 12 500(1,11)ⁿ > 30 000 met logs.",["1.11ⁿ > 2.4 → n > log 2.4 ÷ log 1.11 ≈ 8.39","Minimum full years: 9"],["1,11ⁿ > 2,4 → n > log 2,4 ÷ log 1,11 ≈ 8,39","Minimum volle jare: 9"]]
+    ["C","i:9","Solve 12 500(1.11)ⁿ > 30 000 with logs.","Los op: 12 500(1,11)ⁿ > 30 000 met logs.",["1.11ⁿ > 2.4 → n > log 2.4 ÷ log 1.11 ≈ 8.39","Minimum full years: 9"],["1,11ⁿ > 2,4 → n > log 2,4 ÷ log 1,11 ≈ 8,39","Minimum volle jare: 9"]],
+    ["P","i:3","Combine the logs, then check the answers in the original equation.","Kombineer die logs en kontroleer dan die antwoorde in die oorspronklike vergelyking.",["log₂[(x − 2)(x + 5)] = 3 → (x − 2)(x + 5) = 8 → x² + 3x − 18 = 0","(x + 6)(x − 3) = 0 → x = 3 (x = −6 makes x − 2 negative)"],["log₂[(x − 2)(x + 5)] = 3 → (x − 2)(x + 5) = 8 → x² + 3x − 18 = 0","(x + 6)(x − 3) = 0 → x = 3 (x = −6 maak x − 2 negatief)"]]
   ],
   "202": [
     ["K","m4:1","Do two x-values give the same y?","Gee twee x-waardes dieselfde y?",["f(2) = f(−2) = 4 → many-to-one"],["f(2) = f(−2) = 4 → many-to-one"]],
