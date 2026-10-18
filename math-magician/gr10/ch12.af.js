@@ -291,7 +291,8 @@ MathMagician.registerChapter(12, {
           answer: "8",
           topic: "Bewys van parallelogram-eienskappe"
         },
-        { type: "input", text: "ABCD is 'n parallelogram. Die halveerlyne van ∠A en ∠B sny by P. Bereken ∠APB. (°)", answer: "90", topic: "Bewys van parallelogram-eienskappe" }
+        { type: "input", text: "ABCD is 'n parallelogram. Die halveerlyne van ∠A en ∠B sny by P. Bereken ∠APB. (°)", answer: "90", topic: "Bewys van parallelogram-eienskappe" },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[5,0],\"C\":[6.5,3],\"D\":[1.5,3],\"O\":[3.25,1.5]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"ac\"],[\"B\",\"D\",\"ac\"]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1]],\"lab\":{\"O\":\"s\"}}'></div>ABCD is 'n parallelogram met hoeklyne wat by O sny. Bewys dat die hoeklyne mekaar halveer (AO = OC en BO = OD).", answer: "proof", steps: [{"s":"AB = DC","r":"oppsides"},{"s":"∠BAO = ∠DCO","r":"alt"},{"s":"∠ABO = ∠CDO","r":"alt"},{"s":"△AOB ≡ △COD","r":"AAS","d":[0,1,2]},{"s":"AO = OC en BO = OD","r":"congr","d":[3]}], extra: ["AO = BO","∠AOB = 90°"], reasons: ["oppsides","alt","corr","vertopp","AAS","SAS","SSS","congr","given"], topic: "Bewys van parallelogram-eienskappe" }
       ]
     },
     {
@@ -427,7 +428,8 @@ MathMagician.registerChapter(12, {
           answer: "12",
           topic: "Kongruensiebewyse"
         },
-        { type: "input", text: "ABCD is 'n ruit met ∠ABC = 70°. Bereken ∠BAC. (°)", answer: "55", topic: "Kongruensiebewyse" }
+        { type: "input", text: "ABCD is 'n ruit met ∠ABC = 70°. Bereken ∠BAC. (°)", answer: "55", topic: "Kongruensiebewyse" },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":180,\"pts\":{\"O\":[0,0],\"A\":[-3,1.5],\"B\":[3,-1.5],\"C\":[-2,-1.8],\"D\":[2,1.8]},\"seg\":[[\"A\",\"B\"],[\"C\",\"D\"],[\"A\",\"C\",\"ac\"],[\"D\",\"B\",\"ac\"]],\"tick\":[[\"A\",\"O\",1],[\"O\",\"B\",1],[\"C\",\"O\",2],[\"O\",\"D\",2]],\"lab\":{\"O\":\"n\"}}'></div>AB en CD halveer mekaar by O. Bewys dat △AOC ≡ △BOD en dat AC ∥ DB.", answer: "proof", steps: [{"s":"AO = OB","r":"given"},{"s":"CO = OD","r":"given"},{"s":"∠AOC = ∠BOD","r":"vertopp"},{"s":"△AOC ≡ △BOD","r":"SAS","d":[0,1,2]},{"s":"∠CAO = ∠DBO","r":"congr","d":[3]},{"s":"AC ∥ DB","r":"altconv","d":[4]}], extra: ["AC = AO","∠AOC = ∠AOD"], reasons: ["given","vertopp","SAS","SSS","AAS","congr","alt","altconv","strline"], topic: "Kongruensiebewyse" }
       ]
     },
     {
@@ -522,7 +524,8 @@ MathMagician.registerChapter(12, {
           answer: "22",
           topic: "Gemengde vraagstukke met vierhoeke"
         },
-        { type: "input", text: "ABCD is 'n trapesium met AB ∥ DC, AB = 14 en DC = 8. M en N is die middelpunte van AD en BC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[14,0],\"C\":[11,5],\"D\":[3,5],\"M\":[1.5,2.5],\"N\":[12.5,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"M\",\"N\",\"ac\"],[\"A\",\"B\",null,null,\"14\"],[\"D\",\"C\",null,null,\"8\"],[\"A\",\"D\"],[\"B\",\"C\"]],\"par\":[[\"A\",\"B\"],[\"D\",\"C\"]],\"tick\":[[\"A\",\"M\"],[\"M\",\"D\"],[\"B\",\"N\",2],[\"N\",\"C\",2]],\"dots\":[\"M\",\"N\"]}'></div>Bereken MN. (Wenk: trek hoeklyn AC.)", answer: "11", topic: "Gemengde vraagstukke met vierhoeke" }
+        { type: "input", text: "ABCD is 'n trapesium met AB ∥ DC, AB = 14 en DC = 8. M en N is die middelpunte van AD en BC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[14,0],\"C\":[11,5],\"D\":[3,5],\"M\":[1.5,2.5],\"N\":[12.5,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"M\",\"N\",\"ac\"],[\"A\",\"B\",null,null,\"14\"],[\"D\",\"C\",null,null,\"8\"],[\"A\",\"D\"],[\"B\",\"C\"]],\"par\":[[\"A\",\"B\"],[\"D\",\"C\"]],\"tick\":[[\"A\",\"M\"],[\"M\",\"D\"],[\"B\",\"N\",2],[\"N\",\"C\",2]],\"dots\":[\"M\",\"N\"]}'></div>Bereken MN. (Wenk: trek hoeklyn AC.)", answer: "11", topic: "Gemengde vraagstukke met vierhoeke" },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":180,\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[8,3.5],\"D\":[2,3.5],\"O\":[4,1.75],\"E\":[5,0.875],\"F\":[3,2.625]},\"seg\":[[\"A\",\"B\",\"mu\"],[\"B\",\"C\",\"mu\"],[\"C\",\"D\",\"mu\"],[\"D\",\"A\",\"mu\"],[\"A\",\"C\"],[\"B\",\"D\"],[\"A\",\"E\",\"ac\"],[\"E\",\"C\",\"ac\"],[\"C\",\"F\",\"ac\"],[\"F\",\"A\",\"ac\"]],\"tick\":[[\"B\",\"E\",1],[\"D\",\"F\",1]],\"lab\":{\"O\":\"s\",\"E\":\"e\",\"F\":\"w\"}}'></div>ABCD is 'n parallelogram met hoeklyne wat by O sny. E en F lê op BD met BE = DF. Bewys dat AECF 'n parallelogram is.", answer: "proof", steps: [{"s":"AO = OC","r":"diagbis"},{"s":"BO = OD","r":"diagbis"},{"s":"BE = DF","r":"given"},{"s":"EO = OF","r":"above","d":[1,2]},{"s":"AECF is 'n parallelogram","r":"diagconv","d":[0,3]}], extra: ["AE = EC","AC = BD"], reasons: ["diagbis","diagconv","oppsides","given","above","bothpar","common","alt"], topic: "Gemengde vraagstukke met vierhoeke" }
       ]
     }
   ],

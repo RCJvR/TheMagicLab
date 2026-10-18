@@ -165,7 +165,8 @@ MathMagician.registerChapter(7, {
           answer: "80",
           altAnswers: ["80°"],
           topic: "Driehoeke"
-        }
+        },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":170,\"pts\":{\"A\":[3,4],\"B\":[0,0],\"C\":[6,0],\"D\":[3,0]},\"seg\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"C\"],[\"A\",\"D\",\"ac\"]],\"tick\":[[\"A\",\"B\",1],[\"A\",\"C\",1],[\"B\",\"D\",2],[\"D\",\"C\",2]],\"lab\":{\"A\":\"n\",\"D\":\"s\"}}'></div>In △ABC is AB = AC en D is die middelpunt van BC. Bewys dat AD ⊥ BC.", answer: "proof", steps: [{"s":"AB = AC","r":"given"},{"s":"BD = DC","r":"given"},{"s":"AD = AD","r":"common"},{"s":"△ABD ≡ △ACD","r":"SSS","d":[0,1,2]},{"s":"∠ADB = ∠ADC","r":"congr","d":[3]},{"s":"∠ADB + ∠ADC = 180°","r":"strline"},{"s":"∠ADB = 90°, dus AD ⊥ BC","r":"above","d":[4,5]}], extra: ["∠B = ∠BAD","AD = BD"], reasons: ["given","common","SSS","SAS","RHS","congr","strline","isos","above"], topic: "Driehoeke" }
       ]
     },
     {
@@ -330,7 +331,8 @@ MathMagician.registerChapter(7, {
           answer: "16",
           topic: "Vierhoeke & middellynstelling"
         },
-        { type: "input", text: "P, Q, R en S is die middelpunte van die sye AB, BC, CD en DA van vierhoek ABCD. Die hoeklyne is AC = 10 en BD = 14.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[8,-1],\"C\":[10,6],\"D\":[2,7],\"P\":[4,-0.5],\"Q\":[9,2.5],\"R\":[6,6.5],\"S\":[1,3.5]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"mu dash\"],[\"B\",\"D\",\"mu dash\"],[\"P\",\"Q\",\"ac\"],[\"Q\",\"R\",\"ac\"],[\"R\",\"S\",\"ac\"],[\"S\",\"P\",\"ac\"]],\"dots\":[\"P\",\"Q\",\"R\",\"S\"],\"txt\":[[8.3,4.3,\"10\",\"len\"],[7.1,0.9,\"14\",\"len\"]]}'></div>Bereken die omtrek van PQRS.", answer: "24", topic: "Vierhoeke & middellynstelling" }
+        { type: "input", text: "P, Q, R en S is die middelpunte van die sye AB, BC, CD en DA van vierhoek ABCD. Die hoeklyne is AC = 10 en BD = 14.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"pts\":{\"A\":[0,0],\"B\":[8,-1],\"C\":[10,6],\"D\":[2,7],\"P\":[4,-0.5],\"Q\":[9,2.5],\"R\":[6,6.5],\"S\":[1,3.5]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"mu dash\"],[\"B\",\"D\",\"mu dash\"],[\"P\",\"Q\",\"ac\"],[\"Q\",\"R\",\"ac\"],[\"R\",\"S\",\"ac\"],[\"S\",\"P\",\"ac\"]],\"dots\":[\"P\",\"Q\",\"R\",\"S\"],\"txt\":[[8.3,4.3,\"10\",\"len\"],[7.1,0.9,\"14\",\"len\"]]}'></div>Bereken die omtrek van PQRS.", answer: "24", topic: "Vierhoeke & middellynstelling" },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":160,\"pts\":{\"A\":[2,4],\"B\":[0,0],\"C\":[7,0],\"D\":[1,2],\"E\":[4.5,2],\"F\":[3.5,0]},\"seg\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"C\"],[\"D\",\"E\",\"ac\"],[\"E\",\"F\",\"ac\"]],\"tick\":[[\"A\",\"D\",1],[\"D\",\"B\",1],[\"A\",\"E\",2],[\"E\",\"C\",2],[\"B\",\"F\",3],[\"F\",\"C\",3]],\"lab\":{\"A\":\"n\",\"D\":\"w\",\"E\":\"e\",\"F\":\"s\"}}'></div>D, E en F is die middelpunte van AB, AC en BC van △ABC. Bewys dat BDEF 'n parallelogram is.", answer: "proof", steps: [{"s":"DE ∥ BC, dus DE ∥ BF","r":"midpt"},{"s":"EF ∥ AB, dus EF ∥ BD","r":"midpt"},{"s":"BDEF is 'n parallelogram","r":"bothpar","d":[0,1]}], extra: ["DE = BC","BD = BF"], reasons: ["midpt","given","bothpar","oppsides","diagconv","corr","above"], topic: "Vierhoeke & middellynstelling" }
       ]
     },
     {
@@ -540,7 +542,8 @@ MathMagician.registerChapter(7, {
           answer: "22",
           topic: "Spesiale vierhoeke — parallelogramfamilie"
         },
-        { type: "input", text: "ABCD is 'n parallelogram met AB = 10 en AD = 6. Die halveerlyn van ∠DAB sny DC by E.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[10,0],\"C\":[13,5.2],\"D\":[3,5.2],\"E\":[9,5.2]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"E\",\"ac\"],[\"A\",\"B\",null,null,\"10\"],[\"A\",\"D\",null,null,\"6\"],[\"D\",\"C\"],[\"C\",\"B\"]],\"ang\":[[\"B\",\"A\",\"E\",null,null,22],[\"E\",\"A\",\"D\",null,null,26]]}'></div>Bereken die lengte van EC.", answer: "4", topic: "Spesiale vierhoeke — parallelogramfamilie" }
+        { type: "input", text: "ABCD is 'n parallelogram met AB = 10 en AD = 6. Die halveerlyn van ∠DAB sny DC by E.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[10,0],\"C\":[13,5.2],\"D\":[3,5.2],\"E\":[9,5.2]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"E\",\"ac\"],[\"A\",\"B\",null,null,\"10\"],[\"A\",\"D\",null,null,\"6\"],[\"D\",\"C\"],[\"C\",\"B\"]],\"ang\":[[\"B\",\"A\",\"E\",null,null,22],[\"E\",\"A\",\"D\",null,null,26]]}'></div>Bereken die lengte van EC.", answer: "4", topic: "Spesiale vierhoeke — parallelogramfamilie" },
+        { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[5,0],\"C\":[6.5,3],\"D\":[1.5,3]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"B\",\"D\",\"ac\"]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1],[\"A\",\"D\",2],[\"B\",\"C\",2]]}'></div>ABCD is 'n parallelogram. Gebruik die hoeklyn BD om te bewys dat ∠A = ∠C.", answer: "proof", steps: [{"s":"AB = CD","r":"oppsides"},{"s":"AD = CB","r":"oppsides"},{"s":"BD = BD","r":"common"},{"s":"△ABD ≡ △CDB","r":"SSS","d":[0,1,2]},{"s":"∠A = ∠C","r":"congr","d":[3]}], extra: ["AB = AD","BD = AC"], reasons: ["oppsides","common","SSS","SAS","congr","alt","diagbis","given"], topic: "Spesiale vierhoeke — parallelogramfamilie" }
       ]
     }
   ],

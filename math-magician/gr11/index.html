@@ -28,6 +28,7 @@
   <script src="../explore-data.js"></script>
   <script src="../lesson-explore.js"></script>
   <script src="../mobile-nav.js"></script>
+  <script src="../proof-practice.js"></script>
   <link rel="stylesheet" href="../figs.css">
   <script defer src="../figs.js"></script>
   <style>
@@ -1117,6 +1118,8 @@ function renderQuestion() {
         <span class="mc-text">${o}</span>
       </div>`).join('');
     questionHTML = `<div class="mc-options" id="mcOptions">${opts}</div>`;
+  } else if (q.type === 'proof') {
+    questionHTML = '<div class="mm-proof" id="mmProof"></div>';
   } else {
     questionHTML = `
       <div class="input-row">
@@ -1177,7 +1180,7 @@ function renderQuestion() {
     topicScores[currentTopicId] = topicScores[currentTopicId] || { correct: 0, total: 0 };
     topicScores[currentTopicId].total++;
 
-    const isCorrect = q.type === 'mc' ? userAnswer === correct : MMAnswer.matches(userAnswer, q);
+    const isCorrect = q.type === 'mc' || q.type === 'proof' ? userAnswer === correct : MMAnswer.matches(userAnswer, q);
     if (window.MMResults) MMResults.record(11, t, qIndex, q, isCorrect);
 
     if (isCorrect) {
@@ -1207,7 +1210,9 @@ function renderQuestion() {
     if (pill && sc) pill.innerHTML = T().scoreLabel(sc.correct, sc.total);
   }
 
-  if (q.type === 'mc') {
+  if (q.type === 'proof') {
+    MMProof.mount(document.getElementById('mmProof'), q, currentLang, ok => checkAnswer(ok, true));
+  } else if (q.type === 'mc') {
     document.querySelectorAll('.mc-option').forEach(opt => {
       opt.addEventListener('click', () => {
         if (answered) return;

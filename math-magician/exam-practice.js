@@ -145,6 +145,7 @@
     const pools = { K: [], R: [], C: [], P: [] };
     topicsIn(chapters).forEach(topic => {
       (topic.questions || []).forEach((q, qIndex) => {
+        if (q.type === 'proof') return;   // proofs are built step by step in topic practice only
         const level = MMHelp.level(grade, topic, qIndex, q) || 'R';
         pools[level].push({ topic, qIndex, q, level });
       });

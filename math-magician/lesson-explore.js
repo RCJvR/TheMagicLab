@@ -71,7 +71,7 @@
     const lv = i => MMHelp.level(o.grade, o.topic, i, qs[i]);
     const score = i => (lv(i) === 'K' ? 0 : lv(i) === 'R' ? 1 : 3) + (qs[i].type === 'mc' ? 0 : 0.5) + i * 0.01;
     let best = -1;
-    qs.forEach((q, i) => { if (!/mf-fig|<canvas|<svg/.test(q.text) && (best < 0 || score(i) < score(best))) best = i; });
+    qs.forEach((q, i) => { if (q.type !== 'proof' && !/mf-fig|<canvas|<svg/.test(q.text) && (best < 0 || score(i) < score(best))) best = i; });
     return best;
   }
 

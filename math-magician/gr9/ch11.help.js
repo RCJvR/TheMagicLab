@@ -17,7 +17,8 @@ MMHelp.add(9, 11, {
     ["R","m4:0","Find the scale factor DE ÷ AB.","Vind die skaalfaktor DE ÷ AB.",["k = 6 ÷ 4 = 1.5","EF = 5 × 1.5 = 7.5"],["k = 6 ÷ 4 = 1,5","EF = 5 × 1,5 = 7,5"]],
     ["K","m4:2","The angle must be between the two sides.","Die hoek moet tussen die twee sye lê.",["SAS needs two sides and the included angle."],["SHS vereis twee sye en die ingeslote hoek."]],
     ["C","i:40","Area ratio = (length ratio)².","Oppervlakteverhouding = (lengteverhouding)².",["18 : 50 = 9 : 25, so the length ratio is 3 : 5","Perimeter = 24 × 5/3 = 40 cm"],["18 : 50 = 9 : 25, dus is die lengteverhouding 3 : 5","Omtrek = 24 × 5/3 = 40 cm"]],
-    ["C","i:9","Take the square root of the area ratio.","Neem die vierkantswortel van die oppervlakteverhouding.",["4 : 9 → lengths 2 : 3","6 × 3/2 = 9 cm"],["4 : 9 → lengtes 2 : 3","6 × 3/2 = 9 cm"]]
+    ["C","i:9","Take the square root of the area ratio.","Neem die vierkantswortel van die oppervlakteverhouding.",["4 : 9 → lengths 2 : 3","6 × 3/2 = 9 cm"],["4 : 9 → lengtes 2 : 3","6 × 3/2 = 9 cm"]],
+    ["C","p5","Find three pairs of equal sides in △ABC and △ADC. One side belongs to both triangles.","Vind drie pare gelyke sye in △ABC en △ADC. Een sy behoort aan albei driehoeke.",["AB = AD (Given)","CB = CD (Given)","AC = AC (Common)","△ABC ≡ △ADC (SSS)","∠B = ∠D (≡ △s)"],["AB = AD (Gegee)","CB = CD (Gegee)","AC = AC (Gemeen)","△ABC ≡ △ADC (SSS)","∠B = ∠D (≡ △e)"]]
   ],
   "1101": [
     ["R","i:720","Sum of interior angles = (n − 2) × 180°.","Som van binnehoeke = (n − 2) × 180°.",["(6 − 2) × 180°","= 720°"],["(6 − 2) × 180°","= 720°"]],
@@ -34,7 +35,8 @@ MMHelp.add(9, 11, {
     ["C","i:40","Find the base angle first.","Vind eers die basishoek.",["Base angle = 180° − 110° = 70°","Both base angles are 70° → apex = 180° − 140° = 40°"],["Basishoek = 180° − 110° = 70°","Albei basishoeke is 70° → tophoek = 180° − 140° = 40°"]],
     ["R","i:35","Set up the exterior angle equation.","Stel die buitehoekvergelyking op.",["3x = (x + 20) + 50","2x = 70 → x = 35"],["3x = (x + 20) + 50","2x = 70 → x = 35"]],
     ["K","m4:1","The exterior angle is the sum of two positive angles.","Die buitehoek is die som van twee positiewe hoeke.",["So it is bigger than each of the interior opposite angles."],["Dus is dit groter as elk van die teenoorstaande binnehoeke."]],
-    ["R","i:120","Each interior angle is 60°.","Elke binnehoek is 60°.",["180° − 60° = 120°"],["180° − 60° = 120°"]]
+    ["R","i:120","Each interior angle is 60°.","Elke binnehoek is 60°.",["180° − 60° = 120°"],["180° − 60° = 120°"]],
+    ["R","p4","AC and BD are both transversals of the parallel lines CE and BA. Which angle pair does each one make?","AC en BD is albei snylyne van die ewewydige lyne CE en BA. Watter hoekpaar maak elkeen?",["CE ∥ BA (Construction)","∠ACE = ∠A (Alt ∠s, ∥ lines)","∠ECD = ∠B (Corr ∠s, ∥ lines)","∠ACD = ∠ACE + ∠ECD = ∠A + ∠B (From the statements above)"],["CE ∥ BA (Konstruksie)","∠ACE = ∠A (Verw ∠e, ∥ lyne)","∠ECD = ∠B (Ooreenk ∠e, ∥ lyne)","∠ACD = ∠ACE + ∠ECD = ∠A + ∠B (Uit bostaande)"]]
   ],
   "1103": [
     ["R","i:21","Scale factor = PQ ÷ AB.","Skaalfaktor = PQ ÷ AB.",["k = 15 ÷ 5 = 3","QR = 7 × 3 = 21"],["k = 15 ÷ 5 = 3","QR = 7 × 3 = 21"]],

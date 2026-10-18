@@ -12,12 +12,13 @@
     P: { en: 'Problem solving', af: 'Probleemoplossing' }
   };
   const TXT = {
-    en: { hint: 'Hint', showSol: 'Show worked solution', sol: 'Worked solution', answerIs: 'The correct answer is', review: 'Have another look at the worked example in the lesson.', well: 'Well done!' },
-    af: { hint: 'Wenk', showSol: 'Wys uitgewerkte oplossing', sol: 'Uitgewerkte oplossing', answerIs: 'Die korrekte antwoord is', review: 'Kyk weer na die uitgewerkte voorbeeld in die les.', well: 'Goed gedoen!' }
+    en: { hint: 'Hint', showSol: 'Show worked solution', sol: 'Worked solution', answerIs: 'The correct answer is', proof: 'Compare your proof with this one:', review: 'Have another look at the worked example in the lesson.', well: 'Well done!' },
+    af: { hint: 'Wenk', showSol: 'Wys uitgewerkte oplossing', sol: 'Uitgewerkte oplossing', answerIs: 'Die korrekte antwoord is', proof: 'Vergelyk jou bewys met hierdie een:', review: 'Kyk weer na die uitgewerkte voorbeeld in die les.', well: 'Goed gedoen!' }
   };
 
   function fingerprint(q) {
     if (q.type === 'mc') return 'm' + (q.options || []).length + ':' + q.answer;
+    if (q.type === 'proof') return 'p' + (q.steps || []).length;
     return 'i:' + String(q.answer).replace(/,/g, '.').replace(/[^0-9.\-\/]/g, '');
   }
 
@@ -101,6 +102,7 @@
     wrongHTML(o) {
       const L = TXT[o.lang] || TXT.en;
       const e = entry(o.grade, chapterOf(o.topic), o.topic.id, o.qIndex, o.q);
+      if (o.q.type === 'proof' && e) return L.proof + stepsHTML(e, o.lang);
       const head = L.answerIs + ' <strong>' + correctText(o.q) + '</strong>.';
       if (!e) return head + ' ' + L.review;
       return head + '<div class="mm-sol-title">' + L.sol + '</div>' + stepsHTML(e, o.lang);

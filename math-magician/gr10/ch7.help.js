@@ -8,7 +8,8 @@ MMHelp.add(10, 7, {
     ["R","i:12","Find the scale factor DE ÷ AB.","Vind die skaalfaktor DE ÷ AB.",["k = 9 ÷ 6 = 1.5","EF = 8 × 1.5 = 12"],["k = 9 ÷ 6 = 1,5","EF = 8 × 1,5 = 12"]],
     ["R","m4:0","The angles add up to 180°.","Die hoeke tel op tot 180°.",["180° − 2 × 52°","= 76°"],["180° − 2 × 52°","= 76°"]],
     ["C","i:20","Side ratio = √(area ratio).","Syverhouding = √(oppervlakteverhouding).",["√9 : √25 = 3 : 5","EF = 12 × 5/3 = 20"],["√9 : √25 = 3 : 5","EF = 12 × 5/3 = 20"]],
-    ["C","i:80","Find ∠C, then use the equal base angles.","Vind ∠C en gebruik dan die gelyke basishoeke.",["∠ACB = 180° − 130° = 50°","AB = AC, so ∠B = ∠C = 50° → ∠A = 180° − 100° = 80°"],["∠ACB = 180° − 130° = 50°","AB = AC, dus ∠B = ∠C = 50° → ∠A = 180° − 100° = 80°"]]
+    ["C","i:80","Find ∠C, then use the equal base angles.","Vind ∠C en gebruik dan die gelyke basishoeke.",["∠ACB = 180° − 130° = 50°","AB = AC, so ∠B = ∠C = 50° → ∠A = 180° − 100° = 80°"],["∠ACB = 180° − 130° = 50°","AB = AC, dus ∠B = ∠C = 50° → ∠A = 180° − 100° = 80°"]],
+    ["C","p7","Prove the two halves congruent first. Then use the two angles at D, which lie on a straight line.","Bewys eers dat die twee helftes kongruent is. Gebruik dan die twee hoeke by D, wat op 'n reguit lyn lê.",["AB = AC (Given)","BD = DC (Given)","AD = AD (Common)","△ABD ≡ △ACD (SSS)","∠ADB = ∠ADC (≡ △s)","∠ADB + ∠ADC = 180° (∠s on a str line)","∠ADB = 90°, so AD ⊥ BC (From the statements above)"],["AB = AC (Gegee)","BD = DC (Gegee)","AD = AD (Gemeen)","△ABD ≡ △ACD (SSS)","∠ADB = ∠ADC (≡ △e)","∠ADB + ∠ADC = 180° (∠e op 'n reguit lyn)","∠ADB = 90°, dus AD ⊥ BC (Uit bostaande)"]]
   ],
   "701": [
     ["K","m4:1","Adjacent angles of a parallelogram are co-interior.","Aangrensende hoeke van 'n parallelogram is ko-binnehoeke.",["180° − 70° = 110°"],["180° − 70° = 110°"]],
@@ -18,7 +19,8 @@ MMHelp.add(10, 7, {
     ["K","m4:1","\"Bisect\" = cut in half.","\"Halveer\" = in die helfte sny.",["AO = ½ × 20 = 10"],["AO = ½ × 20 = 10"]],
     ["C","i:26","YZ = 2 × DE.","YZ = 2 × DE.",["5x − 4 = 2(2x + 1) → x = 6","YZ = 5(6) − 4 = 26"],["5x − 4 = 2(2x + 1) → x = 6","YZ = 5(6) − 4 = 26"]],
     ["R","i:16","Set the diagonals equal.","Stel die hoeklyne gelyk.",["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"],["3x − 2 = x + 10 → x = 6","AC = 3(6) − 2 = 16"]],
-    ["P","i:24","Use the midpoint theorem in the triangles formed by each diagonal.","Gebruik die middelpuntstelling in die driehoeke wat elke hoeklyn vorm.",["In △ABC and △ADC: PQ = RS = ½AC = 5","In △ABD and △CBD: SP = QR = ½BD = 7","Perimeter = 5 + 7 + 5 + 7 = 24"],["In △ABC en △ADC: PQ = RS = ½AC = 5","In △ABD en △CBD: SP = QR = ½BD = 7","Omtrek = 5 + 7 + 5 + 7 = 24"]]
+    ["P","i:24","Use the midpoint theorem in the triangles formed by each diagonal.","Gebruik die middelpuntstelling in die driehoeke wat elke hoeklyn vorm.",["In △ABC and △ADC: PQ = RS = ½AC = 5","In △ABD and △CBD: SP = QR = ½BD = 7","Perimeter = 5 + 7 + 5 + 7 = 24"],["In △ABC en △ADC: PQ = RS = ½AC = 5","In △ABD en △CBD: SP = QR = ½BD = 7","Omtrek = 5 + 7 + 5 + 7 = 24"]],
+    ["C","p3","Each of DE and EF joins the midpoints of two sides of the triangle.","DE en EF verbind elk die middelpunte van twee sye van die driehoek.",["DE ∥ BC, so DE ∥ BF (Midpt theorem)","EF ∥ AB, so EF ∥ BD (Midpt theorem)","BDEF is a parallelogram (Both pairs of opp sides ∥)"],["DE ∥ BC, dus DE ∥ BF (Middelpuntstelling)","EF ∥ AB, dus EF ∥ BD (Middelpuntstelling)","BDEF is 'n parallelogram (Albei pare teenoorst sye ∥)"]]
   ],
   "702": [
     ["K","m4:0","Picture the kite shape.","Stel jou die vlieërvorm voor.",["A kite has two pairs of adjacent sides equal."],["'n Vlieër het twee pare aangrensende sye gelyk."]],
@@ -38,6 +40,7 @@ MMHelp.add(10, 7, {
     ["R","i:8","The diagonals bisect each other.","Die hoeklyne halveer mekaar.",["PO = 16 ÷ 2 = 8"],["PO = 16 ÷ 2 = 8"]],
     ["C","i:10","The half-diagonals form a right triangle.","Die halwe hoeklyne vorm 'n reghoekige driehoek.",["Halves: 8 cm and 6 cm","side = √(64 + 36) = 10 cm"],["Helftes: 8 cm en 6 cm","sy = √(64 + 36) = 10 cm"]],
     ["R","i:22","Diagonals of a rectangle are equal.","Hoeklyne van 'n reghoek is gelyk.",["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"],["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"]],
-    ["P","i:4","Look for equal angles in triangle ADE.","Soek gelyke hoeke in driehoek ADE.",["∠DAE = ∠EAB (bisector) and ∠EAB = ∠AED (alt ∠s, DC ∥ AB)","So ∠DAE = ∠AED → △ADE is isosceles → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"],["∠DAE = ∠EAB (halveerlyn) en ∠EAB = ∠AED (verw ∠e, DC ∥ AB)","Dus ∠DAE = ∠AED → △ADE is gelykbenig → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"]]
+    ["P","i:4","Look for equal angles in triangle ADE.","Soek gelyke hoeke in driehoek ADE.",["∠DAE = ∠EAB (bisector) and ∠EAB = ∠AED (alt ∠s, DC ∥ AB)","So ∠DAE = ∠AED → △ADE is isosceles → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"],["∠DAE = ∠EAB (halveerlyn) en ∠EAB = ∠AED (verw ∠e, DC ∥ AB)","Dus ∠DAE = ∠AED → △ADE is gelykbenig → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"]],
+    ["C","p5","BD splits the parallelogram into two triangles. Show they are congruent.","BD verdeel die parallelogram in twee driehoeke. Toon aan dat hulle kongruent is.",["AB = CD (Opp sides of ∥m)","AD = CB (Opp sides of ∥m)","BD = BD (Common)","△ABD ≡ △CDB (SSS)","∠A = ∠C (≡ △s)"],["AB = CD (Teenoorst sye van ∥m)","AD = CB (Teenoorst sye van ∥m)","BD = BD (Gemeen)","△ABD ≡ △CDB (SSS)","∠A = ∠C (≡ △e)"]]
   ]
 });
