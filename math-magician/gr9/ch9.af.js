@@ -257,6 +257,7 @@ MathMagician.registerChapter(9, {
         {"type": "input", "text": "Los op vir x: 2ˣ = 32", "answer": "5", "topic": "Hfst 9 Eksamenfokus"},
         {"type": "input", "text": "Los op vir x: x² = 49, x > 0", "answer": "7", "topic": "Hfst 9 Eksamenfokus"},
         {"type": "input", "text": "Los op vir x: 3(x − 2) = 2(x + 4)", "answer": "14", "topic": "Hfst 9 Eksamenfokus"},
+        { type: "input", text: "Penne kos R7 en potlode kos R4. Nomsa spandeer presies R59 en koop ten minste 2 penne en ten minste 6 potlode. Hoeveel penne koop sy?", answer: "5", topic: "Hfst 9 Eksamenfokus" }
       ]
     },
   ],

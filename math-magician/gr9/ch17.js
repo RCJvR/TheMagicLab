@@ -227,6 +227,7 @@ icosahedron     triangles      20   12   30</div>
         {"type": "mc", "text": "Which net folds into a cube?", "options": ["a cross shape of 6 squares", "6 squares in a straight row", "5 squares in a cross", "4 triangles"], "answer": 0, "topic": "Ch 17 Exam focus"},
         {"type": "input", "text": "A polyhedron has 8 vertices and 12 edges. How many faces does it have?", "answer": "6", "topic": "Ch 17 Exam focus"},
         {"type": "mc", "text": "Which solid has no vertices at all?", "options": ["cube", "tetrahedron", "cone", "sphere"], "answer": 3, "topic": "Ch 17 Exam focus"},
+        { type: "input", text: "One corner of a cube is sliced off with a flat cut through the three edges that meet at that corner. How many edges does the new solid have?", answer: "15", topic: "Ch 17 Exam focus" }
       ]
     },
   ],

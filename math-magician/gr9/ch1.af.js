@@ -446,6 +446,7 @@ Spaargeld: 12 400 − 11 200 = R1 200</div>
         {"type": "input", "text": "Bepaal die KGV van 14 en 21.", "answer": "42", "topic": "Hfst 1 Eksamenfokus"},
         {"type": "input", "text": "12 leerders maak die skool in 3 uur skoon. Hoeveel uur neem 9 leerders?", "answer": "4", "topic": "Hfst 1 Eksamenfokus"},
         {"type": "mc", "text": "'n Prys van R480 word met 15% verhoog en dan met 15% verlaag. Die finale prys is:", "options": ["R480", "R469,20", "R552", "R408"], "answer": 1, "topic": "Hfst 1 Eksamenfokus"},
+        { type: "input", text: "Thandi en Sipho deel R1 800 in die verhouding 4 : 5. Sipho gee toe van sy geld vir Thandi sodat hulle ewe veel het. Hoeveel gee Sipho vir Thandi? (R)", answer: "100", topic: "Hfst 1 Eksamenfokus" }
       ]
     },
   ],

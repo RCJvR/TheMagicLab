@@ -42,6 +42,7 @@ MMHelp.add(9, 3, {
     ["R","m4:2","Two repeating digits: multiply by 100.","Twee herhalende syfers: vermenigvuldig met 100.",["100x − x = 36,3636… − 0,3636… = 36","x = 36/99 = 4/11"],["100x − x = 36,3636… − 0,3636… = 36","x = 36/99 = 4/11"]],
     ["R","i:0.06","Count the decimal places.","Tel die desimale plekke.",["12 × 5 = 60","3 decimal places → 0,060 = 0,06"],["12 × 5 = 60","3 desimale plekke → 0,060 = 0,06"]],
     ["R","i:7/12","Work out each part.","Werk elke deel uit.",["(1/2)² = 1/4 and √(1/9) = 1/3","3/12 + 4/12 = 7/12"],["(1/2)² = 1/4 en √(1/9) = 1/3","3/12 + 4/12 = 7/12"]],
-    ["R","i:1680","Multiply by 1,12.","Vermenigvuldig met 1,12.",["1 500 × 1,12","= R1 680"],["1 500 × 1,12","= R1 680"]]
+    ["R","i:1680","Multiply by 1,12.","Vermenigvuldig met 1,12.",["1 500 × 1,12","= R1 680"],["1 500 × 1,12","= R1 680"]],
+    ["P","i:90","What fraction of the tank is 24 litres?","Watter breuk van die tenk is 24 liter?",["3/5 − 1/3 = 9/15 − 5/15 = 4/15 of the tank","4/15 of the tank = 24 ℓ → 1/15 = 6 ℓ","Full tank = 15 × 6 = 90 ℓ"],["3/5 − 1/3 = 9/15 − 5/15 = 4/15 van die tenk","4/15 van die tenk = 24 ℓ → 1/15 = 6 ℓ","Vol tenk = 15 × 6 = 90 ℓ"]]
   ]
 });

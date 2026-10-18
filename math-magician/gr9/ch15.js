@@ -405,6 +405,7 @@ cube side 4 cm: SA = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
         {"type": "input", "text": "A cylinder has r = 3 cm and h = 7 cm. What is its volume, to 2 decimal places? (cm³)", "answer": "197.92", "altAnswers": ["197,92"], "topic": "Ch 15 Exam focus"},
         {"type": "input", "text": "What is the surface area of an 8 cm × 5 cm × 3 cm rectangular prism? (cm²)", "answer": "158", "topic": "Ch 15 Exam focus"},
         {"type": "mc", "text": "1 kl is equal to:", "options": ["100 l", "1 000 cm³", "1 m³", "10 m³"], "answer": 2, "topic": "Ch 15 Exam focus"},
+        { type: "input", text: "A cylindrical glass (radius 3 cm, height 10 cm) is full of water. The water is poured into an empty rectangular container with a base of 10 cm × 6 cm. How deep is the water in the container, to 1 decimal place? (cm, use π = 3,14)", answer: "4.7", altAnswers: ["4,7"], topic: "Ch 15 Exam focus" }
       ]
     },
   ],

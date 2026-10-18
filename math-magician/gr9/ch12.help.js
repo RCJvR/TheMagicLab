@@ -32,6 +32,7 @@ MMHelp.add(9, 12, {
     ["K","i:62","Complementary: add up to 90°.","Komplementêr: tel op tot 90°.",["90° − 28° = 62°"],["90° − 28° = 62°"]],
     ["R","i:25","Vertically opposite angles are equal.","Regoorstaande hoeke is gelyk.",["5x − 20 = 3x + 30","2x = 50 → x = 25"],["5x − 20 = 3x + 30","2x = 50 → x = 25"]],
     ["C","m4:1","Do they add up to 180°?","Tel hulle op tot 180°?",["110° + 75° = 185° ≠ 180°","So the lines are not parallel."],["110° + 75° = 185° ≠ 180°","Dus is die lyne nie ewewydig nie."]],
-    ["R","i:37.5","Angles on a straight line add up to 180°.","Hoeke op 'n reguit lyn tel op tot 180°.",["x + (x + 30) + 2x = 180","4x = 150 → x = 37.5°"],["x + (x + 30) + 2x = 180","4x = 150 → x = 37,5°"]]
+    ["R","i:37.5","Angles on a straight line add up to 180°.","Hoeke op 'n reguit lyn tel op tot 180°.",["x + (x + 30) + 2x = 180","4x = 150 → x = 37.5°"],["x + (x + 30) + 2x = 180","4x = 150 → x = 37,5°"]],
+    ["P","i:75","Draw a third line through E, parallel to AB and CD.","Trek 'n derde lyn deur E, ewewydig aan AB en CD.",["The new line splits ∠AEC into two parts","Top part = 40° (alt ∠s) and bottom part = 35° (alt ∠s)","∠AEC = 40° + 35° = 75°"],["Die nuwe lyn verdeel ∠AEC in twee dele","Boonste deel = 40° (verw ∠e) en onderste deel = 35° (verw ∠e)","∠AEC = 40° + 35° = 75°"]]
   ]
 });

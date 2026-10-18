@@ -30,6 +30,7 @@ MMHelp.add(9, 19, {
     ["R","i:0.3","18 out of 60.","18 uit 60.",["18 ÷ 60 = 0.3"],["18 ÷ 60 = 0,3"]],
     ["K","i:0.65","P(not A) = 1 − P(A).","P(nie A) = 1 − P(A).",["1 − 0.35 = 0.65"],["1 − 0,35 = 0,65"]],
     ["C","i:1/6","List the pairs that add to 7.","Lys die pare wat tot 7 optel.",["(1;6), (2;5), (3;4), (4;3), (5;2), (6;1) → 6 pairs","6/36 = 1/6"],["(1;6), (2;5), (3;4), (4;3), (5;2), (6;1) → 6 pare","6/36 = 1/6"]],
-    ["K","m4:0","The law of large numbers.","Die wet van groot getalle.",["Relative frequency settles close to the theoretical probability."],["Relatiewe frekwensie kom naby die teoretiese waarskynlikheid te lê."]]
+    ["K","m4:0","The law of large numbers.","Die wet van groot getalle.",["Relative frequency settles close to the theoretical probability."],["Relatiewe frekwensie kom naby die teoretiese waarskynlikheid te lê."]],
+    ["P","i:16","Let n be the number at first; then there are 3n/8 red.","Laat n die getal aan die begin wees; dan is daar 3n/8 rooi.",["(3n/8 + 4) ÷ (n + 4) = 1/2 → 3n/4 + 8 = n + 4","n/4 = 4 → n = 16 (6 red, 10 blue)"],["(3n/8 + 4) ÷ (n + 4) = 1/2 → 3n/4 + 8 = n + 4","n/4 = 4 → n = 16 (6 rooi, 10 blou)"]]
   ]
 });

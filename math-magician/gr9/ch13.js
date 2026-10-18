@@ -194,6 +194,7 @@ MathMagician.registerChapter(13, {
         {"type": "input", "text": "A TV screen is 48 cm wide and 36 cm high. What is its diagonal? (cm)", "answer": "60", "topic": "Ch 13 Exam focus"},
         {"type": "mc", "text": "In △ABC, ∠B = 90°. The hypotenuse is:", "options": ["AB", "BC", "AC", "the shortest side"], "answer": 2, "topic": "Ch 13 Exam focus"},
         {"type": "input", "text": "A ship sails 9 km east and then 12 km north. How far is it from its start? (km)", "answer": "15", "topic": "Ch 13 Exam focus"},
+        { type: "input", text: "A closed box measures 12 cm × 4 cm × 3 cm.<div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"cuboid\",\"labels\":{\"l\":\"12 cm\",\"b\":\"4 cm\",\"h\":\"3 cm\"}}'></div>What is the length of the longest straight rod that fits inside it? (cm)", answer: "13", topic: "Ch 13 Exam focus" }
       ]
     },
   ],

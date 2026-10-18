@@ -223,6 +223,7 @@ MathMagician.registerChapter(7, {
         {"type": "mc", "text": "Simplify 3(x − 2) − 2(x − 5):", "options": ["x − 16", "x + 4", "x − 4", "5x + 4"], "answer": 1, "topic": "Ch 7 Exam focus"},
         {"type": "input", "text": "Find (2x + 1)(x − 4) when x = 3.", "answer": "-7", "topic": "Ch 7 Exam focus"},
         {"type": "mc", "text": "Expand −2x(3x² − x + 4):", "options": ["−6x³ − 2x² − 8x", "6x³ + 2x² + 8x", "−6x² + 2x − 8", "−6x³ + 2x² − 8x"], "answer": 3, "topic": "Ch 7 Exam focus"},
+        { type: "input", text: "A square has sides of x cm. One pair of sides is made 3 cm longer and the other pair 2 cm shorter, forming a rectangle. The rectangle's area is 4 cm² more than the square's. Find x.", answer: "10", topic: "Ch 7 Exam focus" }
       ]
     },
   ],

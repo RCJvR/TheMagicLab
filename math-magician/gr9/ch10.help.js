@@ -39,6 +39,7 @@ MMHelp.add(9, 10, {
     ["K","m4:0","\"Perpendicular\" and \"bisector\".","\"Loodreg\" en \"halveerlyn\".",["It passes through the midpoint of AB and is at 90° to AB."],["Dit gaan deur die middelpunt van AB en is teen 90° met AB."]],
     ["R","i:30","The angles add up to 180°.","Die hoeke tel op tot 180°.",["x + 2x + 3x = 180","6x = 180 → x = 30°"],["x + 2x + 3x = 180","6x = 180 → x = 30°"]],
     ["K","m4:2","What does a bisector do to the angle?","Wat doen 'n halveerlyn aan die hoek?",["Every point on an angle bisector is the same distance from both arms."],["Elke punt op 'n hoekhalveerlyn is ewe ver van albei bene."]],
-    ["C","i:120","Area of a kite = ½ × d₁ × d₂.","Oppervlakte van 'n vlieër = ½ × d₁ × d₂.",["½ × 10 × 24","= 120 cm²"],["½ × 10 × 24","= 120 cm²"]]
+    ["C","i:120","Area of a kite = ½ × d₁ × d₂.","Oppervlakte van 'n vlieër = ½ × d₁ × d₂.",["½ × 10 × 24","= 120 cm²"],["½ × 10 × 24","= 120 cm²"]],
+    ["P","m4:0","75° lies halfway between two angles you can construct.","75° lê halfpad tussen twee hoeke wat jy kan konstrueer.",["The angle between the 60° and 90° lines is 30°; half of it is 15°","60° + 15° = 75°","The others give 30°, 105° and 11.25°"],["Die hoek tussen die 60°- en 90°-lyne is 30°; die helfte daarvan is 15°","60° + 15° = 75°","Die ander gee 30°, 105° en 11,25°"]]
   ]
 });

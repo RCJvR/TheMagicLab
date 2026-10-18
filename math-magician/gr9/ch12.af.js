@@ -234,6 +234,7 @@ MathMagician.registerChapter(12, {
         {"type": "input", "text": "Regoorstaande hoeke is 5x − 20° en 3x + 30°. Bepaal x. (°)", "answer": "25", "topic": "Hfst 12 Eksamenfokus"},
         {"type": "mc", "text": "Ko-binnehoeke van 110° en 75° wys dat die lyne:", "options": ["parallel is", "nie parallel is nie", "loodreg is", "dieselfde lyn is"], "answer": 1, "topic": "Hfst 12 Eksamenfokus"},
         {"type": "input", "text": "Drie hoeke op 'n reguit lyn is x, x + 30° en 2x. Bepaal x. (°)", "answer": "37.5", "altAnswers": ["37,5"], "topic": "Hfst 12 Eksamenfokus"},
+        { type: "input", text: "AB ∥ CD. Punt E lê tussen die ewewydige lyne, met ∠BAE = 40° en ∠DCE = 35°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":180,\"pts\":{\"A\":[0,4],\"B\":[7,4],\"C\":[0,0],\"D\":[7,0],\"E\":[4.2,2.1]},\"seg\":[[\"A\",\"B\"],[\"C\",\"D\"],[\"A\",\"E\",\"ac\"],[\"C\",\"E\",\"ac\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"ang\":[[\"B\",\"A\",\"E\",\"40°\"],[\"E\",\"C\",\"D\",\"35°\"],[\"A\",\"E\",\"C\",\"?\",\"ac\"]],\"lab\":{\"E\":\"e\"}}'></div>Bereken ∠AEC. (°)", answer: "75", topic: "Hfst 12 Eksamenfokus" }
       ]
     },
   ],

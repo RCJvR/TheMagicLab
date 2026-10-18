@@ -289,6 +289,7 @@ MathMagician.registerChapter(4, {
         {"type": "input", "text": "Los op vir x: 10ˣ = 0,001", "answer": "-3", "topic": "Hfst 4 Eksamenfokus"},
         {"type": "mc", "text": "0,000 506 in wetenskaplike notasie is:", "options": ["5,06 × 10⁴", "5,06 × 10⁻⁴", "50,6 × 10⁻⁵", "5,06 × 10⁻³"], "answer": 1, "topic": "Hfst 4 Eksamenfokus"},
         {"type": "mc", "text": "Vereenvoudig 2ⁿ × 4ⁿ ÷ 8ⁿ:", "options": ["1", "2ⁿ", "8ⁿ", "0"], "answer": 0, "topic": "Hfst 4 Eksamenfokus"},
+        { type: "input", text: "'n Bakterie verdeel elke 20 minute in twee. 'n Bakkie begin met 5 bakterieë. Na hoeveel uur sal daar 5 × 2¹² bakterieë wees?", answer: "4", topic: "Hfst 4 Eksamenfokus" }
       ]
     },
   ],

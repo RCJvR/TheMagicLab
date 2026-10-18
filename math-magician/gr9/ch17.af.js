@@ -227,6 +227,7 @@ ikosaëder       driehoeke      20   12   30</div>
         {"type": "mc", "text": "Watter net vou in 'n kubus?", "options": ["'n kruisvorm van 6 vierkante", "6 vierkante in 'n reguit ry", "5 vierkante in 'n kruis", "4 driehoeke"], "answer": 0, "topic": "Hfst 17 Eksamenfokus"},
         {"type": "input", "text": "'n Veelvlak het 8 hoekpunte en 12 rande. Hoeveel vlakke het dit?", "answer": "6", "topic": "Hfst 17 Eksamenfokus"},
         {"type": "mc", "text": "Watter liggaam het glad nie hoekpunte nie?", "options": ["kubus", "tetraëder", "keël", "sfeer"], "answer": 3, "topic": "Hfst 17 Eksamenfokus"},
+        { type: "input", text: "Een hoek van 'n kubus word afgesny met 'n plat snit deur die drie rande wat by daardie hoek ontmoet. Hoeveel rande het die nuwe liggaam?", answer: "15", topic: "Hfst 17 Eksamenfokus" }
       ]
     },
   ],

@@ -194,6 +194,7 @@ MathMagician.registerChapter(13, {
         {"type": "input", "text": "'n TV-skerm is 48 cm breed en 36 cm hoog. Wat is sy hoeklyn? (cm)", "answer": "60", "topic": "Hfst 13 Eksamenfokus"},
         {"type": "mc", "text": "In △ABC is ∠B = 90°. Die skuinssy is:", "options": ["AB", "BC", "AC", "die kortste sy"], "answer": 2, "topic": "Hfst 13 Eksamenfokus"},
         {"type": "input", "text": "'n Skip vaar 9 km oos en dan 12 km noord. Hoe ver is dit van sy begin? (km)", "answer": "15", "topic": "Hfst 13 Eksamenfokus"},
+        { type: "input", text: "'n Toe boks meet 12 cm × 4 cm × 3 cm.<div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"cuboid\",\"labels\":{\"l\":\"12 cm\",\"b\":\"4 cm\",\"h\":\"3 cm\"}}'></div>Wat is die lengte van die langste reguit staaf wat daarin pas? (cm)", answer: "13", topic: "Hfst 13 Eksamenfokus" }
       ]
     },
   ],

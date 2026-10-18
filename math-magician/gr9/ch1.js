@@ -446,6 +446,7 @@ Savings: 12 400 − 11 200 = R1 200</div>
         {"type": "input", "text": "Find the LCM of 14 and 21.", "answer": "42", "topic": "Ch 1 Exam focus"},
         {"type": "input", "text": "12 learners clean the school in 3 hours. How many hours do 9 learners take?", "answer": "4", "topic": "Ch 1 Exam focus"},
         {"type": "mc", "text": "A price of R480 is increased by 15%, then decreased by 15%. The final price is:", "options": ["R480", "R469,20", "R552", "R408"], "answer": 1, "topic": "Ch 1 Exam focus"},
+        { type: "input", text: "Thandi and Sipho share R1 800 in the ratio 4 : 5. Sipho then gives Thandi some of his money so that they have equal amounts. How much does Sipho give Thandi? (R)", answer: "100", topic: "Ch 1 Exam focus" }
       ]
     },
   ],

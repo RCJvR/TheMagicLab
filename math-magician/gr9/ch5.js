@@ -211,6 +211,7 @@ Matches (Tₙ)  4   7  10  13</div>
         {"type": "input", "text": "Tₙ = 50 − 3n. Calculate T₂₀.", "answer": "-10", "topic": "Ch 5 Exam focus"},
         {"type": "input", "text": "A geometric pattern has T₁ = 81 and r = 1/3. Calculate T₄.", "answer": "3", "topic": "Ch 5 Exam focus"},
         {"type": "input", "text": "Find the missing term: 7 ; 11 ; __ ; 19 ; 23", "answer": "15", "topic": "Ch 5 Exam focus"},
+        { type: "input", text: "A matchstick pattern uses 5 matches for figure 1, 9 for figure 2 and 13 for figure 3. Lerato has 250 matches. What is the largest figure number she can build completely?", answer: "62", topic: "Ch 5 Exam focus" }
       ]
     },
   ],

@@ -48,6 +48,7 @@ MMHelp.add(9, 11, {
     ["R","i:115","Adjacent angles of a parallelogram are co-interior.","Aangrensende hoeke van 'n parallelogram is ko-binnehoeke.",["180° − 65° = 115°"],["180° − 65° = 115°"]],
     ["K","m4:2","\"Exactly one pair\" of parallel sides.","\"Presies een paar\" ewewydige sye.",["A trapezium has exactly one pair of parallel sides."],["'n Trapesium het presies een paar ewewydige sye."]],
     ["R","i:1440","(n − 2) × 180°","(n − 2) × 180°",["(10 − 2) × 180°","= 1 440°"],["(10 − 2) × 180°","= 1 440°"]],
-    ["R","i:36","Angles in a triangle add up to 180°.","Hoeke in 'n driehoek tel op tot 180°.",["72° + 72° = 144°","180° − 144° = 36°"],["72° + 72° = 144°","180° − 144° = 36°"]]
+    ["R","i:36","Angles in a triangle add up to 180°.","Hoeke in 'n driehoek tel op tot 180°.",["72° + 72° = 144°","180° − 144° = 36°"],["72° + 72° = 144°","180° − 144° = 36°"]],
+    ["P","i:15","Look at triangle ADE: which sides are equal?","Kyk na driehoek ADE: watter sye is gelyk?",["∠ADE = 90° + 60° = 150°","AD = DC = DE, so △ADE is isosceles","∠AED = (180° − 150°) ÷ 2 = 15°"],["∠ADE = 90° + 60° = 150°","AD = DC = DE, dus is △ADE gelykbenig","∠AED = (180° − 150°) ÷ 2 = 15°"]]
   ]
 });

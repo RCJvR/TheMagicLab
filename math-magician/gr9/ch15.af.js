@@ -264,6 +264,7 @@ kubus sy 4 cm: BO = 6 × 16 = 96 cm² (× 4),  V = 64 cm³ (× 8)</div>
         {"type": "input", "text": "'n Silinder het r = 3 cm en h = 7 cm. Wat is sy volume, tot 2 desimale plekke? (cm³)", "answer": "197.92", "altAnswers": ["197,92"], "topic": "Hfst 15 Eksamenfokus"},
         {"type": "input", "text": "Wat is die buite-oppervlakte van 'n reghoekige prisma van 8 cm × 5 cm × 3 cm? (cm²)", "answer": "158", "topic": "Hfst 15 Eksamenfokus"},
         {"type": "mc", "text": "1 kl is gelyk aan:", "options": ["100 l", "1 000 cm³", "1 m³", "10 m³"], "answer": 2, "topic": "Hfst 15 Eksamenfokus"},
+        { type: "input", text: "'n Silindriese glas (radius 3 cm, hoogte 10 cm) is vol water. Die water word in 'n leë reghoekige houer met 'n basis van 10 cm × 6 cm gegooi. Hoe diep is die water in die houer, tot 1 desimale plek? (cm, gebruik π = 3,14)", answer: "4.7", altAnswers: ["4,7"], topic: "Hfst 15 Eksamenfokus" }
       ]
     },
   ],

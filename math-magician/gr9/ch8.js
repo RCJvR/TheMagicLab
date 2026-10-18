@@ -242,6 +242,7 @@ MathMagician.registerChapter(8, {
         {"type": "mc", "text": "Factorise ax + ay − 3x − 3y:", "options": ["(x + y)(a − 3)", "(x − y)(a + 3)", "a(x + y) − 3", "(a + 3)(x + y)"], "answer": 0, "topic": "Ch 8 Exam focus"},
         {"type": "mc", "text": "Factorise 6x²y − 9xy²:", "options": ["3(2x²y − 3xy²)", "xy(6x − 9y)", "3x(2xy − 3y²)", "3xy(2x − 3y)"], "answer": 3, "topic": "Ch 8 Exam focus"},
         {"type": "mc", "text": "Factorise x² + 4x − 32:", "options": ["(x − 8)(x + 4)", "(x + 8)(x − 4)", "(x + 16)(x − 2)", "(x − 4)²"], "answer": 1, "topic": "Ch 8 Exam focus"},
+        { type: "input", text: "Without a calculator, find the value of 1 003² − 997².", answer: "12000", topic: "Ch 8 Exam focus" }
       ]
     },
   ],

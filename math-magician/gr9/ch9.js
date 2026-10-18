@@ -257,6 +257,7 @@ MathMagician.registerChapter(9, {
         {"type": "input", "text": "Solve for x: 2ˣ = 32", "answer": "5", "topic": "Ch 9 Exam focus"},
         {"type": "input", "text": "Solve for x: x² = 49, x > 0", "answer": "7", "topic": "Ch 9 Exam focus"},
         {"type": "input", "text": "Solve for x: 3(x − 2) = 2(x + 4)", "answer": "14", "topic": "Ch 9 Exam focus"},
+        { type: "input", text: "Pens cost R7 and pencils cost R4. Nomsa spends exactly R59 and buys at least 2 pens and at least 6 pencils. How many pens does she buy?", answer: "5", topic: "Ch 9 Exam focus" }
       ]
     },
   ],

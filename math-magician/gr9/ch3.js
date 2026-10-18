@@ -213,6 +213,7 @@ MathMagician.registerChapter(3, {
         {"type": "input", "text": "Calculate 1,2 × 0,05.", "answer": "0.06", "altAnswers": ["0,06"], "topic": "Ch 3 Exam focus"},
         {"type": "input", "text": "Calculate (1/2)² + √(1/9). Give a fraction.", "answer": "7/12", "topic": "Ch 3 Exam focus"},
         {"type": "input", "text": "A R1 500 cellphone is marked up by 12%. What is the new price? (R)", "answer": "1680", "topic": "Ch 3 Exam focus"},
+        { type: "input", text: "A water tank is 3/5 full. After 24 litres are used, it is 1/3 full. How many litres does the full tank hold?", answer: "90", topic: "Ch 3 Exam focus" }
       ]
     },
   ],

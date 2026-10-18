@@ -32,6 +32,7 @@ MMHelp.add(9, 6, {
     ["K","m4:3","The cost per km multiplies k.","Die koste per km vermenigvuldig k.",["R8 per km → 8k, plus the fixed R15 → C = 8k + 15"],["R8 per km → 8k, plus die vaste R15 → C = 8k + 15"]],
     ["R","i:10","Set C = 95.","Stel C = 95.",["8k + 15 = 95 → 8k = 80","k = 10 km"],["8k + 15 = 95 → 8k = 80","k = 10 km"]],
     ["C","m4:1","Is y doubling?","Verdubbel y?",["y doubles each time: 2 = 2¹, 4 = 2², 8 = 2³","y = 2ˣ"],["y verdubbel elke keer: 2 = 2¹, 4 = 2², 8 = 2³","y = 2ˣ"]],
-    ["R","i:2","Set y = 0.","Stel y = 0.",["−3x + 6 = 0 → 3x = 6","x = 2"],["−3x + 6 = 0 → 3x = 6","x = 2"]]
+    ["R","i:2","Set y = 0.","Stel y = 0.",["−3x + 6 = 0 → 3x = 6","x = 2"],["−3x + 6 = 0 → 3x = 6","x = 2"]],
+    ["P","i:5","Where do the two graphs cross?","Waar sny die twee grafieke?",["Cost A = 20 + 8x and cost B = 12x","20 + 8x = 12x → 20 = 4x → x = 5 km (both cost R60)"],["Koste A = 20 + 8x en koste B = 12x","20 + 8x = 12x → 20 = 4x → x = 5 km (albei kos R60)"]]
   ]
 });

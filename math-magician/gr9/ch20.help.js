@@ -37,6 +37,7 @@ MMHelp.add(9, 20, {
     ["C","i:23","Set the two expressions equal.","Stel die twee uitdrukkings gelyk.",["x + 1 = −x + 5 → 2x = 4 → x = 2","y = 2 + 1 = 3 → (2 ; 3)"],["x + 1 = −x + 5 → 2x = 4 → x = 2","y = 2 + 1 = 3 → (2 ; 3)"]],
     ["K","m4:1","The graph turns from going down to going up.","Die grafiek draai van afgaan na opgaan.",["That lowest turning point is a minimum."],["Daardie laagste draaipunt is 'n minimum."]],
     ["K","i:0","A horizontal line does not rise.","'n Horisontale lyn styg nie.",["Change in y = 0, so m = 0."],["Verandering in y = 0, dus m = 0."]],
-    ["R","i:5","Substitute (1 ; 7).","Vervang (1 ; 7).",["7 = 2(1) + c","c = 5"],["7 = 2(1) + c","c = 5"]]
+    ["R","i:5","Substitute (1 ; 7).","Vervang (1 ; 7).",["7 = 2(1) + c","c = 5"],["7 = 2(1) + c","c = 5"]],
+    ["P","i:1.5","They meet where the two graphs cross.","Hulle ontmoet waar die twee grafieke sny.",["Tom: d = 4t; Sam: d = 12(t − 1)","4t = 12t − 12 → 8t = 12 → t = 1.5 h (both 6 km from home)"],["Tom: d = 4t; Sam: d = 12(t − 1)","4t = 12t − 12 → 8t = 12 → t = 1,5 h (albei 6 km van die huis af)"]]
   ]
 });

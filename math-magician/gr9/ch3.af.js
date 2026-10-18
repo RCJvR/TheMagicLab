@@ -213,6 +213,7 @@ MathMagician.registerChapter(3, {
         {"type": "input", "text": "Bereken 1,2 × 0,05.", "answer": "0.06", "altAnswers": ["0,06"], "topic": "Hfst 3 Eksamenfokus"},
         {"type": "input", "text": "Bereken (1/2)² + √(1/9). Gee 'n breuk.", "answer": "7/12", "topic": "Hfst 3 Eksamenfokus"},
         {"type": "input", "text": "'n Selfoon van R1 500 word met 12% opgemerk. Wat is die nuwe prys? (R)", "answer": "1680", "topic": "Hfst 3 Eksamenfokus"},
+        { type: "input", text: "'n Watertenk is 3/5 vol. Nadat 24 liter gebruik is, is dit 1/3 vol. Hoeveel liter hou die vol tenk?", answer: "90", topic: "Hfst 3 Eksamenfokus" }
       ]
     },
   ],

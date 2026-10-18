@@ -35,6 +35,7 @@ MMHelp.add(9, 18, {
     ["R","i:15","Add, then divide by 5.","Tel op en deel dan deur 5.",["3 + 8 + 8 + 10 + 46 = 75","75 ÷ 5 = 15"],["3 + 8 + 8 + 10 + 46 = 75","75 ÷ 5 = 15"]],
     ["C","m4:1","Compare the mean with most of the data.","Vergelyk die gemiddeld met die meeste van die data.",["The mean (15) is bigger than four of the five values because of 46","The median (8) describes the middle better."],["Die gemiddeld (15) is groter as vier van die vyf waardes weens 46","Die mediaan (8) beskryf die middel beter."]],
     ["K","i:28","Range = largest − smallest.","Omvang = grootste − kleinste.",["40 − 12 = 28"],["40 − 12 = 28"]],
-    ["K","m4:2","Who is at a taxi rank?","Wie is by 'n taxistaanplek?",["Mostly taxi users, so the sample is biased."],["Meestal taxigebruikers, dus is die steekproef sydig."]]
+    ["K","m4:2","Who is at a taxi rank?","Wie is by 'n taxistaanplek?",["Mostly taxi users, so the sample is biased."],["Meestal taxigebruikers, dus is die steekproef sydig."]],
+    ["P","i:57","Work with the total, not the mean.","Werk met die totaal, nie die gemiddeld nie.",["Total = 5 × 62 = 310","Correct total = 310 − 80 + 55 = 285","Correct mean = 285 ÷ 5 = 57"],["Totaal = 5 × 62 = 310","Korrekte totaal = 310 − 80 + 55 = 285","Korrekte gemiddeld = 285 ÷ 5 = 57"]]
   ]
 });

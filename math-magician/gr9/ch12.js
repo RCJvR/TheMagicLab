@@ -234,6 +234,7 @@ MathMagician.registerChapter(12, {
         {"type": "input", "text": "Vertically opposite angles are 5x − 20° and 3x + 30°. Find x. (°)", "answer": "25", "topic": "Ch 12 Exam focus"},
         {"type": "mc", "text": "Co-interior angles 110° and 75° show that the lines are:", "options": ["parallel", "not parallel", "perpendicular", "the same line"], "answer": 1, "topic": "Ch 12 Exam focus"},
         {"type": "input", "text": "Three angles on a straight line are x, x + 30° and 2x. Find x. (°)", "answer": "37.5", "altAnswers": ["37,5"], "topic": "Ch 12 Exam focus"},
+        { type: "input", text: "AB ∥ CD. Point E lies between the parallel lines, with ∠BAE = 40° and ∠DCE = 35°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":180,\"pts\":{\"A\":[0,4],\"B\":[7,4],\"C\":[0,0],\"D\":[7,0],\"E\":[4.2,2.1]},\"seg\":[[\"A\",\"B\"],[\"C\",\"D\"],[\"A\",\"E\",\"ac\"],[\"C\",\"E\",\"ac\"]],\"par\":[[\"A\",\"B\"],[\"C\",\"D\"]],\"ang\":[[\"B\",\"A\",\"E\",\"40°\"],[\"E\",\"C\",\"D\",\"35°\"],[\"A\",\"E\",\"C\",\"?\",\"ac\"]],\"lab\":{\"E\":\"e\"}}'></div>Find ∠AEC. (°)", answer: "75", topic: "Ch 12 Exam focus" }
       ]
     },
   ],

@@ -330,6 +330,7 @@ MathMagician.registerChapter(18, {
         {"type": "mc", "text": "For the data 3, 8, 8, 10, 46, which measure describes the middle best?", "options": ["the mean, because it uses all the values", "the median, because 46 is an outlier", "the range", "none of them"], "answer": 1, "topic": "Ch 18 Exam focus"},
         {"type": "input", "text": "Data: 12, 18, 25, 31, 40. What is the range?", "answer": "28", "topic": "Ch 18 Exam focus"},
         {"type": "mc", "text": "A survey about school transport is done only at a taxi rank. This sample is:", "options": ["random", "representative", "biased", "too big"], "answer": 2, "topic": "Ch 18 Exam focus"},
+        { type: "input", text: "Five test marks have a mean of 62. Later the teacher finds that a mark of 80 was captured wrongly; the correct mark is 55. What is the correct mean?", answer: "57", topic: "Ch 18 Exam focus" }
       ]
     },
   ],

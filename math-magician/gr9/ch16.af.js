@@ -296,6 +296,7 @@ rotasie 180°                   (x ; y) → (−x ; −y)</div>
         {"type": "mc", "text": "Watter transformasie behou NIE dieselfde grootte nie?", "options": ["refleksie", "translasie", "rotasie", "vergroting"], "answer": 3, "topic": "Hfst 16 Eksamenfokus"},
         {"type": "input", "text": "Roteer (3 ; 1) deur 90° kloksgewys om die oorsprong. Skryf die beeld as (x ; y).", "answer": "(1 ; -3)", "topic": "Hfst 16 Eksamenfokus"},
         {"type": "input", "text": "'n Vierkant met sye van 4 cm word met 'n skaalfaktor van 1/4 verklein. Wat is die nuwe oppervlakte? (cm²)", "answer": "1", "topic": "Hfst 16 Eksamenfokus"},
+        { type: "input", text: "Punt P word in die lyn y = x weerkaats, en die beeld word dan in die x-as weerkaats. Die finale beeld is (3 ; −5). Wat is die koördinate van P? Skryf (x ; y).", answer: "(5 ; 3)", topic: "Hfst 16 Eksamenfokus" }
       ]
     },
   ],

@@ -31,6 +31,7 @@ MMHelp.add(9, 7, {
     ["R","m4:2","(a − b)² = a² − 2ab + b²","(a − b)² = a² − 2ab + b²",["(2a)² − 2(2a)(5) + 5²","= 4a² − 20a + 25"],["(2a)² − 2(2a)(5) + 5²","= 4a² − 20a + 25"]],
     ["R","m4:1","Expand both brackets.","Brei albei hakies uit.",["3x − 6 − 2x + 10","= x + 4"],["3x − 6 − 2x + 10","= x + 4"]],
     ["R","i:-7","Substitute x = 3.","Vervang x met 3.",["(2(3) + 1)(3 − 4)","= 7 × (−1) = −7"],["(2(3) + 1)(3 − 4)","= 7 × (−1) = −7"]],
-    ["R","m4:3","Multiply each term by −2x.","Vermenigvuldig elke term met −2x.",["−2x × 3x² = −6x³, −2x × (−x) = 2x², −2x × 4 = −8x","−6x³ + 2x² − 8x"],["−2x × 3x² = −6x³, −2x × (−x) = 2x², −2x × 4 = −8x","−6x³ + 2x² − 8x"]]
+    ["R","m4:3","Multiply each term by −2x.","Vermenigvuldig elke term met −2x.",["−2x × 3x² = −6x³, −2x × (−x) = 2x², −2x × 4 = −8x","−6x³ + 2x² − 8x"],["−2x × 3x² = −6x³, −2x × (−x) = 2x², −2x × 4 = −8x","−6x³ + 2x² − 8x"]],
+    ["P","i:10","Write both areas in terms of x and compare.","Skryf albei oppervlaktes in terme van x en vergelyk.",["Rectangle: (x + 3)(x − 2) = x² + x − 6","x² + x − 6 = x² + 4 → x = 10 cm"],["Reghoek: (x + 3)(x − 2) = x² + x − 6","x² + x − 6 = x² + 4 → x = 10 cm"]]
   ]
 });

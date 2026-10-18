@@ -330,6 +330,7 @@ MathMagician.registerChapter(18, {
         {"type": "mc", "text": "Vir die data 3, 8, 8, 10, 46, watter maatstaf beskryf die middel die beste?", "options": ["die gemiddelde, want dit gebruik al die waardes", "die mediaan, want 46 is 'n uitskieter", "die variasiewydte", "nie een nie"], "answer": 1, "topic": "Hfst 18 Eksamenfokus"},
         {"type": "input", "text": "Data: 12, 18, 25, 31, 40. Wat is die variasiewydte?", "answer": "28", "topic": "Hfst 18 Eksamenfokus"},
         {"type": "mc", "text": "'n Opname oor skoolvervoer word net by 'n taxistaanplek gedoen. Hierdie steekproef is:", "options": ["ewekansig", "verteenwoordigend", "bevooroordeeld", "te groot"], "answer": 2, "topic": "Hfst 18 Eksamenfokus"},
+        { type: "input", text: "Vyf toetspunte het 'n gemiddeld van 62. Later vind die onderwyser dat 'n punt van 80 verkeerd ingevoer is; die korrekte punt is 55. Wat is die korrekte gemiddeld?", answer: "57", topic: "Hfst 18 Eksamenfokus" }
       ]
     },
   ],

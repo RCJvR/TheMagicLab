@@ -30,6 +30,7 @@ MMHelp.add(9, 13, {
     ["R","i:24","Subtract the squares.","Trek die kwadrate af.",["b² = 625 − 49 = 576","b = 24"],["b² = 625 − 49 = 576","b = 24"]],
     ["R","i:60","The diagonal is the hypotenuse.","Die hoeklyn is die skuinssy.",["d² = 48² + 36² = 2 304 + 1 296 = 3 600","d = 60 cm"],["d² = 48² + 36² = 2 304 + 1 296 = 3 600","d = 60 cm"]],
     ["K","m4:2","The hypotenuse is opposite the right angle.","Die skuinssy is oorkant die regte hoek.",["∠B = 90°, so the hypotenuse is AC."],["∠B = 90°, dus is die skuinssy AC."]],
-    ["R","i:15","East and north are at right angles.","Oos en noord is reghoekig.",["d² = 9² + 12² = 81 + 144 = 225","d = 15 km"],["d² = 9² + 12² = 81 + 144 = 225","d = 15 km"]]
+    ["R","i:15","East and north are at right angles.","Oos en noord is reghoekig.",["d² = 9² + 12² = 81 + 144 = 225","d = 15 km"],["d² = 9² + 12² = 81 + 144 = 225","d = 15 km"]],
+    ["P","i:13","The longest rod runs from one bottom corner to the opposite top corner. Use Pythagoras twice.","Die langste staaf loop van een onderste hoek na die teenoorstaande boonste hoek. Gebruik Pythagoras twee keer.",["Diagonal of the base: √(12² + 4²) = √160","Space diagonal: √(160 + 3²) = √169 = 13 cm"],["Hoeklyn van die basis: √(12² + 4²) = √160","Ruimtehoeklyn: √(160 + 3²) = √169 = 13 cm"]]
   ]
 });

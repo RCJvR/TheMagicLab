@@ -155,6 +155,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "'n Grafiek daal, bereik 'n laagste punt en styg dan. Die laagste punt is 'n:", "options": ["maksimum", "minimum", "y-afsnit", "gradiënt"], "answer": 1, "topic": "Hfst 20 Eksamenfokus"},
         {"type": "input", "text": "Wat is die gradiënt van 'n horisontale lyn?", "answer": "0", "topic": "Hfst 20 Eksamenfokus"},
         {"type": "input", "text": "y = 2x + c gaan deur (1 ; 7). Bepaal c.", "answer": "5", "topic": "Hfst 20 Eksamenfokus"},
+        { type: "input", text: "Tom stap van die huis af teen 4 km/h. Een uur later vertrek Sam van dieselfde huis af op 'n fiets teen 12 km/h, langs dieselfde pad.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,3,12],\"pad\":28,\"axes\":{\"x\":\"h\",\"y\":\"km\",\"o\":false,\"tx\":0.5,\"ty\":2},\"fn\":[{\"f\":\"4*x\",\"dom\":[0,3],\"lab\":[2.6,9,\"Tom\"]},{\"f\":\"12*(x-1)\",\"c\":\"hl\",\"dom\":[1,2],\"lab\":[1.45,10,\"Sam\"]}]}'></div>Hoeveel uur nadat Tom vertrek het, haal Sam hom in?", answer: "1.5", altAnswers: ["1,5","3/2"], topic: "Hfst 20 Eksamenfokus" }
       ]
     },
   ],

@@ -40,6 +40,7 @@ MMHelp.add(9, 8, {
     ["R","m4:1","49 = 7² and 4y² = (2y)².","49 = 7² en 4y² = (2y)².",["(7 − 2y)(7 + 2y)"],["(7 − 2y)(7 + 2y)"]],
     ["R","m4:0","Group in pairs.","Groepeer in pare.",["a(x + y) − 3(x + y)","= (x + y)(a − 3)"],["a(x + y) − 3(x + y)","= (x + y)(a − 3)"]],
     ["R","m4:3","Take out the full HCF.","Haal die volle GGF uit.",["HCF = 3xy","3xy(2x − 3y)"],["GGF = 3xy","3xy(2x − 3y)"]],
-    ["R","m4:1","Product −32, sum 4.","Produk −32, som 4.",["8 × (−4) = −32 and 8 − 4 = 4","(x + 8)(x − 4)"],["8 × (−4) = −32 en 8 − 4 = 4","(x + 8)(x − 4)"]]
+    ["R","m4:1","Product −32, sum 4.","Produk −32, som 4.",["8 × (−4) = −32 and 8 − 4 = 4","(x + 8)(x − 4)"],["8 × (−4) = −32 en 8 − 4 = 4","(x + 8)(x − 4)"]],
+    ["P","i:12000","Factorise before you calculate.","Faktoriseer voor jy bereken.",["a² − b² = (a − b)(a + b)","(1 003 − 997)(1 003 + 997) = 6 × 2 000 = 12 000"],["a² − b² = (a − b)(a + b)","(1 003 − 997)(1 003 + 997) = 6 × 2 000 = 12 000"]]
   ]
 });

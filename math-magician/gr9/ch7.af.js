@@ -223,6 +223,7 @@ MathMagician.registerChapter(7, {
         {"type": "mc", "text": "Vereenvoudig 3(x − 2) − 2(x − 5):", "options": ["x − 16", "x + 4", "x − 4", "5x + 4"], "answer": 1, "topic": "Hfst 7 Eksamenfokus"},
         {"type": "input", "text": "Bepaal (2x + 1)(x − 4) wanneer x = 3.", "answer": "-7", "topic": "Hfst 7 Eksamenfokus"},
         {"type": "mc", "text": "Brei uit −2x(3x² − x + 4):", "options": ["−6x³ − 2x² − 8x", "6x³ + 2x² + 8x", "−6x² + 2x − 8", "−6x³ + 2x² − 8x"], "answer": 3, "topic": "Hfst 7 Eksamenfokus"},
+        { type: "input", text: "'n Vierkant het sye van x cm. Een paar sye word 3 cm langer gemaak en die ander paar 2 cm korter, sodat 'n reghoek gevorm word. Die reghoek se oppervlakte is 4 cm² meer as die vierkant s'n. Vind x.", answer: "10", topic: "Hfst 7 Eksamenfokus" }
       ]
     },
   ],

@@ -34,6 +34,7 @@ MMHelp.add(9, 2, {
     ["R","i:14","Divide and multiply first.","Deel en vermenigvuldig eers.",["(−12) ÷ (−3) = 4 and 5 × (−2) = −10","4 − (−10) = 14"],["(−12) ÷ (−3) = 4 en 5 × (−2) = −10","4 − (−10) = 14"]],
     ["R","m4:1","Goals scored − goals conceded.","Doele aangeteken − doele afgestaan.",["18 − 25 = −7"],["18 − 25 = −7"]],
     ["R","i:27","Range = highest − lowest.","Omvang = hoogste − laagste.",["23 − (−4) = 27 °C"],["23 − (−4) = 27 °C"]],
-    ["K","m4:3","Can a square be negative?","Kan 'n kwadraat negatief wees?",["No real number squared gives −36, so √(−36) is not a real number."],["Geen reële getal gekwadreer gee −36 nie, dus is √(−36) nie 'n reële getal nie."]]
+    ["K","m4:3","Can a square be negative?","Kan 'n kwadraat negatief wees?",["No real number squared gives −36, so √(−36) is not a real number."],["Geen reële getal gekwadreer gee −36 nie, dus is √(−36) nie 'n reële getal nie."]],
+    ["P","i:0","Split the day into the rising part and the falling part.","Verdeel die dag in die stygende deel en die dalende deel.",["06:00 to 11:00 is 5 hours: −7 + 5 × 3 = 8 °C","11:00 to 15:00 is 4 hours: 8 + 4 × (−2) = 0 °C"],["06:00 tot 11:00 is 5 uur: −7 + 5 × 3 = 8 °C","11:00 tot 15:00 is 4 uur: 8 + 4 × (−2) = 0 °C"]]
   ]
 });

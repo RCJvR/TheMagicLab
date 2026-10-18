@@ -40,6 +40,7 @@ MMHelp.add(9, 16, {
     ["R","i:4-1","Add 5 to x and 3 to y.","Tel 5 by x en 3 by y.",["(−1 + 5 ; −4 + 3)","= (4 ; −1)"],["(−1 + 5 ; −4 + 3)","= (4 ; −1)"]],
     ["K","m4:3","Which one changes lengths?","Watter een verander lengtes?",["Reflections, translations and rotations keep size; an enlargement changes it."],["Weerkaatsings, translasies en rotasies behou grootte; 'n vergroting verander dit."]],
     ["R","i:1-3","90° clockwise: (x ; y) → (y ; −x).","90° kloksgewys: (x ; y) → (y ; −x).",["(3 ; 1) → (1 ; −3)"],["(3 ; 1) → (1 ; −3)"]],
-    ["R","i:1","New side = 4 × ¼.","Nuwe sy = 4 × ¼.",["New side = 1 cm","Area = 1² = 1 cm²"],["Nuwe sy = 1 cm","Oppervlakte = 1² = 1 cm²"]]
+    ["R","i:1","New side = 4 × ¼.","Nuwe sy = 4 × ¼.",["New side = 1 cm","Area = 1² = 1 cm²"],["Nuwe sy = 1 cm","Oppervlakte = 1² = 1 cm²"]],
+    ["P","i:53","Work backwards: undo the last step first.","Werk terug: maak eers die laaste stap ongedaan.",["Undo the x-axis reflection: (3 ; −5) → (3 ; 5)","Undo the y = x reflection (swap): (3 ; 5) → (5 ; 3)","Check: (5 ; 3) → (3 ; 5) → (3 ; −5) ✓"],["Maak die x-as-weerkaatsing ongedaan: (3 ; −5) → (3 ; 5)","Maak die y = x-weerkaatsing ongedaan (ruil om): (3 ; 5) → (5 ; 3)","Kontrole: (5 ; 3) → (3 ; 5) → (3 ; −5) ✓"]]
   ]
 });

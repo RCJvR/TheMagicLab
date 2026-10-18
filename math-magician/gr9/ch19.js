@@ -206,6 +206,7 @@ MathMagician.registerChapter(19, {
         {"type": "input", "text": "P(rain) = 0,35. What is P(no rain)?", "answer": "0.65", "altAnswers": ["0,65"], "topic": "Ch 19 Exam focus"},
         {"type": "input", "text": "Two dice are rolled. What is P(a total of 7)? Give a fraction.", "answer": "1/6", "altAnswers": ["6/36"], "topic": "Ch 19 Exam focus"},
         {"type": "mc", "text": "When the number of trials gets very large, the relative frequency:", "options": ["gets close to the theoretical probability", "becomes 0", "becomes 1", "changes more and more"], "answer": 0, "topic": "Ch 19 Exam focus"},
+        { type: "input", text: "A bag holds red and blue counters, and P(red) = 3/8. After 4 more red counters are added, P(red) = 1/2. How many counters were in the bag at first?", answer: "16", topic: "Ch 19 Exam focus" }
       ]
     },
   ],

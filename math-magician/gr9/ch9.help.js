@@ -39,6 +39,7 @@ MMHelp.add(9, 9, {
     ["R","i:3-7","A product is 0 when a factor is 0.","'n Produk is 0 as 'n faktor 0 is.",["x − 3 = 0 or x + 7 = 0","x = 3 or x = −7"],["x − 3 = 0 of x + 7 = 0","x = 3 of x = −7"]],
     ["R","i:5","32 is a power of 2.","32 is 'n mag van 2.",["32 = 2⁵","x = 5"],["32 = 2⁵","x = 5"]],
     ["R","i:7","Which positive number squared is 49?","Watter positiewe getal gekwadreer is 49?",["x = ±7, and x > 0","x = 7"],["x = ±7, en x > 0","x = 7"]],
-    ["R","i:14","Expand both sides.","Brei albei kante uit.",["3x − 6 = 2x + 8","x = 14"],["3x − 6 = 2x + 8","x = 14"]]
+    ["R","i:14","Expand both sides.","Brei albei kante uit.",["3x − 6 = 2x + 8","x = 14"],["3x − 6 = 2x + 8","x = 14"]],
+    ["P","i:5","Write 7p + 4q = 59 and try whole-number values of p.","Skryf 7p + 4q = 59 en probeer heelgetalwaardes vir p.",["59 − 7p must be a multiple of 4: p = 1 (q = 13) or p = 5 (q = 6)","At least 2 pens → p = 5, and q = 6 pencils ✓"],["59 − 7p moet 'n veelvoud van 4 wees: p = 1 (q = 13) of p = 5 (q = 6)","Ten minste 2 penne → p = 5, en q = 6 potlode ✓"]]
   ]
 });

@@ -32,6 +32,7 @@ MMHelp.add(9, 5, {
     ["K","m4:2","Square numbers.","Vierkantsgetalle.",["1 = 1², 4 = 2², 9 = 3², 16 = 4² → Tₙ = n²"],["1 = 1², 4 = 2², 9 = 3², 16 = 4² → Tₙ = n²"]],
     ["R","i:-10","Substitute n = 20.","Vervang n met 20.",["50 − 3(20)","= 50 − 60 = −10"],["50 − 3(20)","= 50 − 60 = −10"]],
     ["R","i:3","Multiply by 1/3 three times.","Vermenigvuldig drie keer met 1/3.",["81 → 27 → 9 → 3","T₄ = 3"],["81 → 27 → 9 → 3","T₄ = 3"]],
-    ["R","i:15","The difference is 4.","Die verskil is 4.",["11 + 4 = 15 (check: 15 + 4 = 19 ✓)"],["11 + 4 = 15 (kontroleer: 15 + 4 = 19 ✓)"]]
+    ["R","i:15","The difference is 4.","Die verskil is 4.",["11 + 4 = 15 (check: 15 + 4 = 19 ✓)"],["11 + 4 = 15 (kontroleer: 15 + 4 = 19 ✓)"]],
+    ["P","i:62","Find the rule, then use an inequality.","Vind die reël en gebruik dan 'n ongelykheid.",["The pattern grows by 4: Tₙ = 4n + 1","4n + 1 ≤ 250 → 4n ≤ 249 → n ≤ 62.25","Largest complete figure: 62 (it uses 249 matches)"],["Die patroon groei met 4: Tₙ = 4n + 1","4n + 1 ≤ 250 → 4n ≤ 249 → n ≤ 62,25","Grootste volledige figuur: 62 (dit gebruik 249 vuurhoutjies)"]]
   ]
 });

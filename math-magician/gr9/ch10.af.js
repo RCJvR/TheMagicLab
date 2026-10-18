@@ -317,6 +317,7 @@ MathMagician.registerChapter(10, {
         {"type": "input", "text": "Die binnehoeke van 'n driehoek is x, 2x en 3x. Bepaal x. (°)", "answer": "30", "topic": "Hfst 10 Eksamenfokus"},
         {"type": "mc", "text": "Elke punt op die halveerlyn van 'n hoek is:", "options": ["op een been", "nader aan een been", "ewe ver van albei bene", "by die hoekpunt"], "answer": 2, "topic": "Hfst 10 Eksamenfokus"},
         {"type": "input", "text": "'n Vlieër het hoeklyne van 10 cm en 24 cm. Wat is sy oppervlakte? (cm²)", "answer": "120", "topic": "Hfst 10 Eksamenfokus"},
+        { type: "mc", text: "Jy mag net 'n passer en 'n liniaal gebruik. Hoe kan jy 'n hoek van 75° konstrueer?", options: ["Konstrueer 90° en 60° op dieselfde been, en halveer dan die hoek tussen die 60°- en 90°-lyne","Konstrueer 120° en halveer dit twee keer","Konstrueer 45° en tel dan 60° daarby","Halveer 90° drie keer"], answer: 0, topic: "Hfst 10 Eksamenfokus" }
       ]
     },
   ],

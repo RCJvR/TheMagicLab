@@ -222,6 +222,7 @@ y │ 3   5   7   9  11</div>
         {"type": "input", "text": "Gebruik C = 8k + 15. Hoeveel km kan jy vir R95 ry?", "answer": "10", "topic": "Hfst 6 Eksamenfokus"},
         {"type": "mc", "text": "Watter formule gee die tabel x: 1, 2, 3 → y: 2, 4, 8?", "options": ["y = 2x", "y = 2ˣ", "y = x + 1", "y = x²"], "answer": 1, "topic": "Hfst 6 Eksamenfokus"},
         {"type": "input", "text": "y = −3x + 6. Bepaal x wanneer y = 0.", "answer": "2", "topic": "Hfst 6 Eksamenfokus"},
+        { type: "input", text: "Taxi A vra R20 plus R8 per km. Taxi B vra R12 per km en geen vaste fooi nie.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,10,130],\"pad\":28,\"axes\":{\"x\":\"km\",\"y\":\"R\",\"o\":false,\"tx\":2,\"ty\":20},\"fn\":[{\"f\":\"20+8*x\",\"lab\":[9.3,82,\"A\"]},{\"f\":\"12*x\",\"c\":\"hl\",\"dom\":[0,10],\"lab\":[8.6,116,\"B\"]}]}'></div>By watter afstand kos die twee taxi's dieselfde? (km)", answer: "5", topic: "Hfst 6 Eksamenfokus" }
       ]
     },
   ],

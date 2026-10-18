@@ -257,6 +257,7 @@ MathMagician.registerChapter(2, {
         {"type": "mc", "text": "'n Span het 18 doele aangeteken en 25 afgestaan. Sy doelverskil is:", "options": ["7", "−7", "43", "−43"], "answer": 1, "topic": "Hfst 2 Eksamenfokus"},
         {"type": "input", "text": "Die laagste temperatuur in 'n week was −4 °C en die hoogste 23 °C. Wat is die variasiewydte? (°C)", "answer": "27", "topic": "Hfst 2 Eksamenfokus"},
         {"type": "mc", "text": "√(−36) is:", "options": ["6", "−6", "±6", "nie 'n reële getal nie"], "answer": 3, "topic": "Hfst 2 Eksamenfokus"},
+        { type: "input", text: "Om 06:00 was die temperatuur −7 °C. Dit het elke uur met 3 °C gestyg tot 11:00, en daarna elke uur met 2 °C gedaal. Wat was die temperatuur om 15:00? (°C)", answer: "0", topic: "Hfst 2 Eksamenfokus" }
       ]
     },
   ],

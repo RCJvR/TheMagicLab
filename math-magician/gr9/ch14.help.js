@@ -40,6 +40,7 @@ MMHelp.add(9, 14, {
     ["R","i:153.94","The radius is half the diameter.","Die radius is die helfte van die middellyn.",["r = 7 cm","π × 7² = 153.94 cm²"],["r = 7 cm","π × 7² = 153,94 cm²"]],
     ["C","i:77","Find the width from the perimeter first.","Vind eers die breedte uit die omtrek.",["l + b = 36 ÷ 2 = 18 → b = 7 cm","Area = 11 × 7 = 77 cm²"],["l + b = 36 ÷ 2 = 18 → b = 7 cm","Oppervlakte = 11 × 7 = 77 cm²"]],
     ["R","i:5","C = 2πr","O = 2πr",["2 × 3.14 × r = 31.4","6.28r = 31.4 → r = 5 cm"],["2 × 3,14 × r = 31,4","6,28r = 31,4 → r = 5 cm"]],
-    ["R","i:36","A = base × perpendicular height","A = basis × loodregte hoogte",["9 × 4","= 36 cm²"],["9 × 4","= 36 cm²"]]
+    ["R","i:36","A = base × perpendicular height","A = basis × loodregte hoogte",["9 × 4","= 36 cm²"],["9 × 4","= 36 cm²"]],
+    ["P","i:5495","Path area = big circle − pond.","Paadjie se oppervlakte = groot sirkel − dam.",["Big circle: π × 4² = 16π; pond: π × 3² = 9π","Path: 7π = 7 × 3.14 = 21.98 m²","Cost: 21.98 × R250 = R5 495"],["Groot sirkel: π × 4² = 16π; dam: π × 3² = 9π","Paadjie: 7π = 7 × 3,14 = 21,98 m²","Koste: 21,98 × R250 = R5 495"]]
   ]
 });

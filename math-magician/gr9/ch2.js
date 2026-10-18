@@ -257,6 +257,7 @@ MathMagician.registerChapter(2, {
         {"type": "mc", "text": "A team scored 18 goals and conceded 25. Its goal difference is:", "options": ["7", "−7", "43", "−43"], "answer": 1, "topic": "Ch 2 Exam focus"},
         {"type": "input", "text": "The lowest temperature in a week was −4 °C and the highest 23 °C. What is the range? (°C)", "answer": "27", "topic": "Ch 2 Exam focus"},
         {"type": "mc", "text": "√(−36) is:", "options": ["6", "−6", "±6", "not a real number"], "answer": 3, "topic": "Ch 2 Exam focus"},
+        { type: "input", text: "At 06:00 the temperature was −7 °C. It rose by 3 °C every hour until 11:00, and then fell by 2 °C every hour. What was the temperature at 15:00? (°C)", answer: "0", topic: "Ch 2 Exam focus" }
       ]
     },
   ],

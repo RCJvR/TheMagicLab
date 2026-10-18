@@ -317,6 +317,7 @@ MathMagician.registerChapter(10, {
         {"type": "input", "text": "The interior angles of a triangle are x, 2x and 3x. Find x. (°)", "answer": "30", "topic": "Ch 10 Exam focus"},
         {"type": "mc", "text": "Every point on the bisector of an angle is:", "options": ["on one arm", "closer to one arm", "the same distance from both arms", "at the vertex"], "answer": 2, "topic": "Ch 10 Exam focus"},
         {"type": "input", "text": "A kite has diagonals 10 cm and 24 cm. What is its area? (cm²)", "answer": "120", "topic": "Ch 10 Exam focus"},
+        { type: "mc", text: "You may use only a compass and a ruler. How can you construct an angle of 75°?", options: ["Construct 90° and 60° on the same arm, then bisect the angle between the 60° and 90° lines","Construct 120° and bisect it twice","Construct 45° and then add 60° to it","Bisect 90° three times"], answer: 0, topic: "Ch 10 Exam focus" }
       ]
     },
   ],

@@ -155,6 +155,7 @@ MathMagician.registerChapter(20, {
         {"type": "mc", "text": "A graph decreases, reaches a lowest point and then increases. The lowest point is a:", "options": ["maximum", "minimum", "y-intercept", "gradient"], "answer": 1, "topic": "Ch 20 Exam focus"},
         {"type": "input", "text": "What is the gradient of a horizontal line?", "answer": "0", "topic": "Ch 20 Exam focus"},
         {"type": "input", "text": "y = 2x + c passes through (1 ; 7). Find c.", "answer": "5", "topic": "Ch 20 Exam focus"},
+        { type: "input", text: "Tom walks from home at 4 km/h. One hour later Sam leaves the same home on a bicycle at 12 km/h, along the same road.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,3,12],\"pad\":28,\"axes\":{\"x\":\"h\",\"y\":\"km\",\"o\":false,\"tx\":0.5,\"ty\":2},\"fn\":[{\"f\":\"4*x\",\"dom\":[0,3],\"lab\":[2.6,9,\"Tom\"]},{\"f\":\"12*(x-1)\",\"c\":\"hl\",\"dom\":[1,2],\"lab\":[1.45,10,\"Sam\"]}]}'></div>How many hours after Tom left does Sam catch up with him?", answer: "1.5", altAnswers: ["1,5","3/2"], topic: "Ch 20 Exam focus" }
       ]
     },
   ],

@@ -206,6 +206,7 @@ MathMagician.registerChapter(19, {
         {"type": "input", "text": "P(reën) = 0,35. Wat is P(geen reën)?", "answer": "0.65", "altAnswers": ["0,65"], "topic": "Hfst 19 Eksamenfokus"},
         {"type": "input", "text": "Twee dobbelstene word gegooi. Wat is P('n totaal van 7)? Gee 'n breuk.", "answer": "1/6", "altAnswers": ["6/36"], "topic": "Hfst 19 Eksamenfokus"},
         {"type": "mc", "text": "Wanneer die aantal proewe baie groot word, kom die relatiewe frekwensie:", "options": ["naby aan die teoretiese waarskynlikheid", "op 0 uit", "op 1 uit", "al hoe meer verander"], "answer": 0, "topic": "Hfst 19 Eksamenfokus"},
+        { type: "input", text: "'n Sak bevat rooi en blou tellers, en P(rooi) = 3/8. Nadat nog 4 rooi tellers bygesit is, is P(rooi) = 1/2. Hoeveel tellers was eers in die sak?", answer: "16", topic: "Hfst 19 Eksamenfokus" }
       ]
     },
   ],

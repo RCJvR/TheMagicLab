@@ -61,6 +61,7 @@ MMHelp.add(9, 1, {
     ["R","i:1500","3 + 5 = 8 parts.","3 + 5 = 8 dele.",["1 part = 2 400 ÷ 8 = R300","Bigger share = 5 × 300 = R1 500"],["1 deel = 2 400 ÷ 8 = R300","Groter deel = 5 × 300 = R1 500"]],
     ["R","i:42","Use prime factors.","Gebruik priemfaktore.",["14 = 2 × 7 and 21 = 3 × 7","LCM = 2 × 3 × 7 = 42"],["14 = 2 × 7 en 21 = 3 × 7","KGV = 2 × 3 × 7 = 42"]],
     ["R","i:4","The work stays the same.","Die werk bly dieselfde.",["12 × 3 = 36 learner-hours","36 ÷ 9 = 4 hours"],["12 × 3 = 36 leerder-ure","36 ÷ 9 = 4 uur"]],
-    ["C","m4:1","The decrease is 15% of the new price.","Die afname is 15% van die nuwe prys.",["480 × 1,15 = 552","552 × 0,85 = R469,20"],["480 × 1,15 = 552","552 × 0,85 = R469,20"]]
+    ["C","m4:1","The decrease is 15% of the new price.","Die afname is 15% van die nuwe prys.",["480 × 1,15 = 552","552 × 0,85 = R469,20"],["480 × 1,15 = 552","552 × 0,85 = R469,20"]],
+    ["P","i:100","First find what each has, then what each should end up with.","Vind eers wat elkeen het, en dan wat elkeen uiteindelik moet hê.",["Thandi: 4/9 × 1 800 = R800; Sipho: 5/9 × 1 800 = R1 000","Equal shares: 1 800 ÷ 2 = R900 each","Sipho gives 1 000 − 900 = R100"],["Thandi: 4/9 × 1 800 = R800; Sipho: 5/9 × 1 800 = R1 000","Gelyke dele: 1 800 ÷ 2 = R900 elk","Sipho gee 1 000 − 900 = R100"]]
   ]
 });

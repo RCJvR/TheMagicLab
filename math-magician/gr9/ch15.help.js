@@ -40,6 +40,7 @@ MMHelp.add(9, 15, {
     ["R","i:150","6 equal square faces.","6 gelyke vierkantige vlakke.",["6 × 5²","= 150 cm²"],["6 × 5²","= 150 cm²"]],
     ["R","i:197.92","V = πr²h","V = πr²h",["π × 9 × 7","= 197.92 cm³"],["π × 9 × 7","= 197,92 cm³"]],
     ["R","i:158","SA = 2(lw + lh + wh)","BO = 2(lw + lh + wh)",["2(40 + 24 + 15)","= 158 cm²"],["2(40 + 24 + 15)","= 158 cm²"]],
-    ["K","m4:2","1 kl = 1 000 l.","1 kl = 1 000 l.",["1 000 l = 1 000 000 cm³ = 1 m³"],["1 000 l = 1 000 000 cm³ = 1 m³"]]
+    ["K","m4:2","1 kl = 1 000 l.","1 kl = 1 000 l.",["1 000 l = 1 000 000 cm³ = 1 m³"],["1 000 l = 1 000 000 cm³ = 1 m³"]],
+    ["P","i:4.7","The volume of water stays the same.","Die volume water bly dieselfde.",["Glass: 3.14 × 3² × 10 = 282.6 cm³","Container: 10 × 6 × depth = 282.6","depth = 282.6 ÷ 60 ≈ 4.7 cm"],["Glas: 3,14 × 3² × 10 = 282,6 cm³","Houer: 10 × 6 × diepte = 282,6","diepte = 282,6 ÷ 60 ≈ 4,7 cm"]]
   ]
 });

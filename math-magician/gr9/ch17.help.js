@@ -32,6 +32,7 @@ MMHelp.add(9, 17, {
     ["K","i:6","Base plus one triangle per side.","Basis plus een driehoek per sy.",["1 pentagon + 5 triangles = 6 faces"],["1 vyfhoek + 5 driehoeke = 6 vlakke"]],
     ["K","m4:0","Fold it in your mind.","Vou dit in jou gedagtes.",["A cross of 6 squares folds into a cube; a straight row of 6 overlaps."],["'n Kruis van 6 vierkante vou in 'n kubus; 'n reguit ry van 6 oorvleuel."]],
     ["R","i:6","F = 2 − V + E.","F = 2 − V + E.",["F = 2 − 8 + 12","= 6"],["F = 2 − 8 + 12","= 6"]],
-    ["K","m4:3","A sphere has no flat faces and no corners.","'n Sfeer het geen plat vlakke en geen hoeke nie.",["Sphere: 0 vertices"],["Sfeer: 0 hoekpunte"]]
+    ["K","m4:3","A sphere has no flat faces and no corners.","'n Sfeer het geen plat vlakke en geen hoeke nie.",["Sphere: 0 vertices"],["Sfeer: 0 hoekpunte"]],
+    ["P","i:15","Count what the cut adds and removes, then check with Euler.","Tel wat die snit byvoeg en wegneem, en kontroleer dan met Euler.",["Faces: 6 + 1 new triangle = 7","Vertices: 8 − 1 + 3 new = 10","Edges: 12 + 3 new = 15; check F + V − E = 7 + 10 − 15 = 2 ✓"],["Vlakke: 6 + 1 nuwe driehoek = 7","Hoekpunte: 8 − 1 + 3 nuwe = 10","Rande: 12 + 3 nuwe = 15; kontrole F + V − E = 7 + 10 − 15 = 2 ✓"]]
   ]
 });

@@ -242,6 +242,7 @@ MathMagician.registerChapter(8, {
         {"type": "mc", "text": "Faktoriseer ax + ay − 3x − 3y:", "options": ["(x + y)(a − 3)", "(x − y)(a + 3)", "a(x + y) − 3", "(a + 3)(x + y)"], "answer": 0, "topic": "Hfst 8 Eksamenfokus"},
         {"type": "mc", "text": "Faktoriseer 6x²y − 9xy²:", "options": ["3(2x²y − 3xy²)", "xy(6x − 9y)", "3x(2xy − 3y²)", "3xy(2x − 3y)"], "answer": 3, "topic": "Hfst 8 Eksamenfokus"},
         {"type": "mc", "text": "Faktoriseer x² + 4x − 32:", "options": ["(x − 8)(x + 4)", "(x + 8)(x − 4)", "(x + 16)(x − 2)", "(x − 4)²"], "answer": 1, "topic": "Hfst 8 Eksamenfokus"},
+        { type: "input", text: "Bereken sonder 'n sakrekenaar die waarde van 1 003² − 997².", answer: "12000", topic: "Hfst 8 Eksamenfokus" }
       ]
     },
   ],

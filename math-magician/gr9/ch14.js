@@ -265,6 +265,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "A rectangle has a perimeter of 36 cm and a length of 11 cm. What is its area? (cm²)", "answer": "77", "topic": "Ch 14 Exam focus"},
         {"type": "input", "text": "A circle has a circumference of 31,4 cm. Use π = 3,14 to find its radius. (cm)", "answer": "5", "topic": "Ch 14 Exam focus"},
         {"type": "input", "text": "A parallelogram has base 9 cm and perpendicular height 4 cm. What is its area? (cm²)", "answer": "36", "topic": "Ch 14 Exam focus"},
+        { type: "input", text: "A circular pond with radius 3 m has a path 1 m wide all around it.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":200,\"h\":200,\"pts\":{\"O\":[0,0],\"P\":[3,0],\"Q\":[4,0]},\"circ\":[[\"O\",4,\"fl\"],[\"O\",3,\"ac\"]],\"seg\":[[\"O\",\"P\",\"ac\",\"\",\"3 m\"],[\"P\",\"Q\",\"hl\",\"\",\"1 m\"]],\"nolab\":[\"P\",\"Q\"],\"dots\":[\"O\"]}'></div>Paving costs R250 per m². What does it cost to pave the path, to the nearest rand? (Use π = 3,14)", answer: "5495", topic: "Ch 14 Exam focus" }
       ]
     },
   ],

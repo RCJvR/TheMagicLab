@@ -40,6 +40,7 @@ MMHelp.add(9, 4, {
     ["R","i:0","Odd power or even power?","Onewe of ewe mag?",["(−1)¹⁰¹ = −1 and (−1)¹⁰⁰ = 1","−1 + 1 = 0"],["(−1)¹⁰¹ = −1 en (−1)¹⁰⁰ = 1","−1 + 1 = 0"]],
     ["R","i:-3","Write 0,001 as a power of 10.","Skryf 0,001 as 'n mag van 10.",["0,001 = 1/1 000 = 10⁻³","x = −3"],["0,001 = 1/1 000 = 10⁻³","x = −3"]],
     ["R","m4:1","Move the comma 4 places right.","Skuif die komma 4 plekke na regs.",["0,000 506 → 5,06","5,06 × 10⁻⁴"],["0,000 506 → 5,06","5,06 × 10⁻⁴"]],
-    ["C","m4:0","Write 4 and 8 as powers of 2.","Skryf 4 en 8 as magte van 2.",["2ⁿ × 2²ⁿ ÷ 2³ⁿ","= 2ⁿ⁺²ⁿ⁻³ⁿ = 2⁰ = 1"],["2ⁿ × 2²ⁿ ÷ 2³ⁿ","= 2ⁿ⁺²ⁿ⁻³ⁿ = 2⁰ = 1"]]
+    ["C","m4:0","Write 4 and 8 as powers of 2.","Skryf 4 en 8 as magte van 2.",["2ⁿ × 2²ⁿ ÷ 2³ⁿ","= 2ⁿ⁺²ⁿ⁻³ⁿ = 2⁰ = 1"],["2ⁿ × 2²ⁿ ÷ 2³ⁿ","= 2ⁿ⁺²ⁿ⁻³ⁿ = 2⁰ = 1"]],
+    ["P","i:4","Each split multiplies the number by 2.","Elke verdeling vermenigvuldig die getal met 2.",["After n splits there are 5 × 2ⁿ bacteria, so n = 12 splits","12 × 20 min = 240 min = 4 hours"],["Na n verdelings is daar 5 × 2ⁿ bakterieë, dus n = 12 verdelings","12 × 20 min = 240 min = 4 uur"]]
   ]
 });

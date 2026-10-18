@@ -211,6 +211,7 @@ Vuurhoutjies (Tₙ)  4   7  10  13</div>
         {"type": "input", "text": "Tₙ = 50 − 3n. Bereken T₂₀.", "answer": "-10", "topic": "Hfst 5 Eksamenfokus"},
         {"type": "input", "text": "'n Meetkundige patroon het T₁ = 81 en r = 1/3. Bereken T₄.", "answer": "3", "topic": "Hfst 5 Eksamenfokus"},
         {"type": "input", "text": "Bepaal die ontbrekende term: 7 ; 11 ; __ ; 19 ; 23", "answer": "15", "topic": "Hfst 5 Eksamenfokus"},
+        { type: "input", text: "'n Vuurhoutjiepatroon gebruik 5 vuurhoutjies vir figuur 1, 9 vir figuur 2 en 13 vir figuur 3. Lerato het 250 vuurhoutjies. Wat is die grootste figuurnommer wat sy volledig kan bou?", answer: "62", topic: "Hfst 5 Eksamenfokus" }
       ]
     },
   ],

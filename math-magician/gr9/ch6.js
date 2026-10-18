@@ -222,6 +222,7 @@ y │ 3   5   7   9  11</div>
         {"type": "input", "text": "Use C = 8k + 15. How many km can you travel for R95?", "answer": "10", "topic": "Ch 6 Exam focus"},
         {"type": "mc", "text": "Which formula gives the table x: 1, 2, 3 → y: 2, 4, 8?", "options": ["y = 2x", "y = 2ˣ", "y = x + 1", "y = x²"], "answer": 1, "topic": "Ch 6 Exam focus"},
         {"type": "input", "text": "y = −3x + 6. Find x when y = 0.", "answer": "2", "topic": "Ch 6 Exam focus"},
+        { type: "input", text: "Taxi A charges R20 plus R8 per km. Taxi B charges R12 per km and no fixed fee.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":300,\"h\":200,\"view\":[0,0,10,130],\"pad\":28,\"axes\":{\"x\":\"km\",\"y\":\"R\",\"o\":false,\"tx\":2,\"ty\":20},\"fn\":[{\"f\":\"20+8*x\",\"lab\":[9.3,82,\"A\"]},{\"f\":\"12*x\",\"c\":\"hl\",\"dom\":[0,10],\"lab\":[8.6,116,\"B\"]}]}'></div>For what distance do the two taxis cost the same? (km)", answer: "5", topic: "Ch 6 Exam focus" }
       ]
     },
   ],

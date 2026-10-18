@@ -296,6 +296,7 @@ rotation 180°                 (x ; y) → (−x ; −y)</div>
         {"type": "mc", "text": "Which transformation does NOT keep the same size?", "options": ["reflection", "translation", "rotation", "enlargement"], "answer": 3, "topic": "Ch 16 Exam focus"},
         {"type": "input", "text": "Rotate (3 ; 1) through 90° clockwise about the origin. Write the image as (x ; y).", "answer": "(1 ; -3)", "topic": "Ch 16 Exam focus"},
         {"type": "input", "text": "A square with sides 4 cm is reduced by a scale factor of 1/4. What is the new area? (cm²)", "answer": "1", "topic": "Ch 16 Exam focus"},
+        { type: "input", text: "Point P is reflected in the line y = x, and the image is then reflected in the x-axis. The final image is (3 ; −5). What are the coordinates of P? Write (x ; y).", answer: "(5 ; 3)", topic: "Ch 16 Exam focus" }
       ]
     },
   ],

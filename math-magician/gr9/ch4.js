@@ -289,6 +289,7 @@ MathMagician.registerChapter(4, {
         {"type": "input", "text": "Solve for x: 10ˣ = 0,001", "answer": "-3", "topic": "Ch 4 Exam focus"},
         {"type": "mc", "text": "0,000 506 in scientific notation is:", "options": ["5,06 × 10⁴", "5,06 × 10⁻⁴", "50,6 × 10⁻⁵", "5,06 × 10⁻³"], "answer": 1, "topic": "Ch 4 Exam focus"},
         {"type": "mc", "text": "Simplify 2ⁿ × 4ⁿ ÷ 8ⁿ:", "options": ["1", "2ⁿ", "8ⁿ", "0"], "answer": 0, "topic": "Ch 4 Exam focus"},
+        { type: "input", text: "A bacterium splits into two every 20 minutes. A dish starts with 5 bacteria. After how many hours will there be 5 × 2¹² bacteria?", answer: "4", topic: "Ch 4 Exam focus" }
       ]
     },
   ],

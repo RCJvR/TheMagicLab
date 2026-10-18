@@ -265,6 +265,7 @@ MathMagician.registerChapter(14, {
         {"type": "input", "text": "'n Reghoek het 'n omtrek van 36 cm en 'n lengte van 11 cm. Wat is sy oppervlakte? (cm²)", "answer": "77", "topic": "Hfst 14 Eksamenfokus"},
         {"type": "input", "text": "'n Sirkel het 'n omtrek van 31,4 cm. Gebruik π = 3,14 om sy radius te bepaal. (cm)", "answer": "5", "topic": "Hfst 14 Eksamenfokus"},
         {"type": "input", "text": "'n Parallelogram het basis 9 cm en loodregte hoogte 4 cm. Wat is sy oppervlakte? (cm²)", "answer": "36", "topic": "Hfst 14 Eksamenfokus"},
+        { type: "input", text: "'n Sirkelvormige dam met radius 3 m het 'n paadjie van 1 m breed rondom.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":200,\"h\":200,\"pts\":{\"O\":[0,0],\"P\":[3,0],\"Q\":[4,0]},\"circ\":[[\"O\",4,\"fl\"],[\"O\",3,\"ac\"]],\"seg\":[[\"O\",\"P\",\"ac\",\"\",\"3 m\"],[\"P\",\"Q\",\"hl\",\"\",\"1 m\"]],\"nolab\":[\"P\",\"Q\"],\"dots\":[\"O\"]}'></div>Plaveisel kos R250 per m². Wat kos dit om die paadjie te plavei, tot die naaste rand? (Gebruik π = 3,14)", answer: "5495", topic: "Hfst 14 Eksamenfokus" }
       ]
     },
   ],
