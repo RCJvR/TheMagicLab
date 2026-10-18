@@ -47,7 +47,16 @@
       mode: 'Questions', fresh: 'A fresh mix', weak: 'My weak spots',
       weakNote: 'Favours questions you got wrong and topics where you scored under 70%.',
       noData: 'Answer some practice questions first: then this paper can target your weak spots.',
-      record: 'Your record so far', weakTopics: 'Topics under 70% recently', noWeak: 'No weak topics: every topic you have practised is at 70% or more.'
+      record: 'Your record so far', weakTopics: 'Topics under 70% recently', noWeak: 'No weak topics: every topic you have practised is at 70% or more.',
+      progress: 'My progress',
+      progIntro: 'Everything you have answered in this grade: topic practice and exam papers. A topic is complete at 70% or more.',
+      local: 'Saved on this device only. Sign in to keep your progress on any device and share it with your teacher.',
+      synced: 'Saved to your account.',
+      topicsDone: 'topics completed', answered: 'questions answered', accuracy: 'accuracy',
+      practiseWeak: 'Practise my weak spots', orMixed: 'Or a fresh exam paper',
+      byChapter: 'By chapter', notYet: 'not practised',
+      chDone: (d, n) => `${d}/${n} done`,
+      empty: 'Nothing yet. Answer some practice questions, and your progress per level and chapter will show here.'
     },
     af: {
       button: 'Gemengde eksamenoefening',
@@ -82,7 +91,16 @@
       mode: 'Vrae', fresh: '\'n Nuwe mengsel', weak: 'My swak plekke',
       weakNote: 'Verkies vrae wat jy verkeerd gehad het en onderwerpe waar jy onder 70% behaal het.',
       noData: 'Beantwoord eers \'n paar oefenvrae: dan kan hierdie vraestel jou swak plekke teiken.',
-      record: 'Jou rekord tot dusver', weakTopics: 'Onderwerpe onlangs onder 70%', noWeak: 'Geen swak onderwerpe nie: elke onderwerp wat jy geoefen het, is op 70% of meer.'
+      record: 'Jou rekord tot dusver', weakTopics: 'Onderwerpe onlangs onder 70%', noWeak: 'Geen swak onderwerpe nie: elke onderwerp wat jy geoefen het, is op 70% of meer.',
+      progress: 'My vordering',
+      progIntro: 'Alles wat jy in hierdie graad beantwoord het: onderwerpoefening en eksamenvraestelle. \'n Onderwerp is voltooi by 70% of meer.',
+      local: 'Slegs op hierdie toestel gestoor. Meld aan om jou vordering op enige toestel te hou en met jou onderwyser te deel.',
+      synced: 'In jou rekening gestoor.',
+      topicsDone: 'onderwerpe voltooi', answered: 'vrae beantwoord', accuracy: 'akkuraatheid',
+      practiseWeak: 'Oefen my swak plekke', orMixed: 'Of \'n nuwe eksamenvraestel',
+      byChapter: 'Volgens hoofstuk', notYet: 'nog nie geoefen nie',
+      chDone: (d, n) => `${d}/${n} klaar`,
+      empty: 'Nog niks nie. Beantwoord \'n paar oefenvrae, en jou vordering per vlak en hoofstuk sal hier verskyn.'
     }
   };
 
@@ -91,7 +109,7 @@
   let length = 10;
   let focus = 'mix';          // 'mix' | 'weak'
   let paper = null;           // { items: [{topic, qIndex, q, level}], i, answers: [bool], short }
-  let view = 'setup';         // 'setup' | 'paper'
+  let view = 'setup';         // 'setup' | 'paper' | 'progress'
 
   const L = () => TXT[cfg.lang()] || TXT.en;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -343,6 +361,66 @@
     }
   }
 
+  // ── My progress ──────────────────────────────────────────────
+  // The learner's own record for this grade: totals, accuracy per CAPS level,
+  // accuracy and completion per chapter, weak topics, and a way straight into
+  // a "My weak spots" paper.
+  function renderProgress() {
+    const t = L(), g = cfg.grade, topics = cfg.topics();
+    const sum = MMResults.summary(g, topics);
+    const lv = Object.values(sum.levels), c = lv.reduce((a, x) => a + x.c, 0), n = lv.reduce((a, x) => a + x.n, 0);
+    const done = cfg.completed ? cfg.completed() : new Set();
+    const total = cfg.chapters().reduce((a, m) => a + (m.topics || 0), 0) || topics.length;
+    const signedIn = !!(window.MagicLabAuth && MagicLabAuth.isLoggedIn());
+    const tone = p => p == null ? '' : p >= MMResults.MASTERY ? ' good' : p >= 50 ? ' warn' : ' crit';
+    const chapters = chapterList().map(ch => {
+      const tps = topics.filter(tp => MMHelp.chapterOf(tp) === ch.num);
+      let cc = 0, nn = 0;
+      tps.forEach(tp => { const s = MMResults.topic(g, tp.id); if (s) { cc += s.pct * s.n / 100; nn += s.n; } });
+      return { ...ch, p: nn ? Math.round(cc / nn * 100) : null, done: tps.filter(tp => done.has(tp.id)).length, n: tps.length };
+    });
+    const bars = MIX.map(([k]) => k).filter(k => sum.levels[k]).map(k => `<div class="mx-bar-row"><span class="mm-level mm-level-${k}">${t.levels[k]}</span>
+        <span class="mx-bar"><span class="mx-bar-fill mx-seg-${k}" style="width:${sum.levels[k].pct}%"></span></span>
+        <span class="mx-bar-num">${sum.levels[k].pct}%</span></div>`).join('');
+    const weak = sum.weak.map(x => `<button type="button" class="mx-topic" data-id="${x.topic.id}"><span class="mx-chip-num">${MMHelp.chapterOf(x.topic)}</span>${esc(x.topic.name)} · ${x.s.pct}% →</button>`).join('');
+    cfg.panel.innerHTML = `
+      <div class="lesson-heading">${t.progress}</div>
+      <p class="mx-intro">${t.progIntro}</p>
+      <p class="mx-note mp-save${signedIn ? ' on' : ''}">${signedIn ? t.synced : t.local}</p>
+      <div class="mp-stats">
+        <div class="mp-stat"><span class="mp-v">${done.size}<small>/${total}</small></span><span class="mp-l">${t.topicsDone}</span></div>
+        <div class="mp-stat"><span class="mp-v">${n}</span><span class="mp-l">${t.answered}</span></div>
+        <div class="mp-stat"><span class="mp-v${tone(n ? Math.round(c / n * 100) : null)}">${n ? Math.round(c / n * 100) + '%' : '—'}</span><span class="mp-l">${t.accuracy}</span></div>
+      </div>
+      ${n ? `
+      <div class="mx-actions mp-actions">
+        <button type="button" class="lesson-next-btn" id="mpWeak">${t.practiseWeak} →</button>
+        <button type="button" class="mx-link" id="mpMixed">${t.orMixed}</button>
+      </div>
+      <div class="mx-label">${t.byLevel}</div>
+      <div class="mx-bars">${bars}</div>
+      <div class="mx-label">${t.weakTopics}</div>
+      ${weak ? `<div class="mx-review">${weak}</div>` : `<p class="mx-note">${t.noWeak}</p>`}
+      <div class="mx-label">${t.byChapter}</div>
+      <div class="mp-chapters">${chapters.map(ch => `
+        <div class="mp-ch${tone(ch.p)}">
+          <span class="mp-ch-num">${ch.num}</span>
+          <span class="mp-ch-name">${esc(ch.name)}</span>
+          <span class="mp-ch-p">${ch.p == null ? t.notYet : ch.p + '%'}</span>
+          <span class="mp-ch-done">${t.chDone(ch.done, ch.n)}</span>
+        </div>`).join('')}</div>` : `<p class="mx-intro">${t.empty}</p>`}`;
+    const P = cfg.panel;
+    P.querySelectorAll('.mx-topic').forEach(b => b.addEventListener('click', () => cfg.openTopic(+b.dataset.id)));
+    const w = P.querySelector('#mpWeak');
+    if (w) w.addEventListener('click', () => {
+      focus = 'weak';
+      picked = new Set(chapterList().map(ch => ch.num));
+      MMExam.open('exam'); start();
+    });
+    const m = P.querySelector('#mpMixed');
+    if (m) m.addEventListener('click', () => { focus = 'mix'; MMExam.open('exam'); });
+  }
+
   // ── Results screen ───────────────────────────────────────────
   function renderResults() {
     const t = L();
@@ -391,34 +469,44 @@
   function mountButton() {
     const list = document.getElementById('sidebarList');
     if (!list || document.getElementById('mxOpen')) return;
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.id = 'mxOpen';
-    b.className = 'mx-open';
-    b.innerHTML = '<span class="mx-open-icon" aria-hidden="true">✎</span><span class="mx-open-text"></span>';
-    b.addEventListener('click', () => MMExam.open());
-    list.parentNode.insertBefore(b, list);
+    const make = (id, icon, which) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.id = id;
+      b.className = 'mx-open';
+      b.innerHTML = `<span class="mx-open-icon" aria-hidden="true">${icon}</span><span class="mx-open-text"></span>`;
+      b.addEventListener('click', () => MMExam.open(which));
+      list.parentNode.insertBefore(b, list);
+    };
+    make('mxOpen', '✎', 'exam');
+    make('mpOpen', '◔', 'progress');
     MMExam.relabel();
   }
 
   window.MMExam = {
     active: false,
     init(o) { cfg = o; mountButton(); },
-    open() {
+    // which: 'exam' (mixed exam practice) or 'progress' (My progress).
+    open(which) {
       this.active = true;
-      view = paper && paper.i < paper.items.length ? view : 'setup';
-      document.getElementById('mxOpen')?.classList.add('on');
+      if (which === 'progress') view = 'progress';
+      else view = paper && paper.i < paper.items.length ? 'paper' : 'setup';
+      document.getElementById('mxOpen')?.classList.toggle('on', view !== 'progress');
+      document.getElementById('mpOpen')?.classList.toggle('on', view === 'progress');
       document.querySelectorAll('#sidebarList .topic-item.active').forEach(el => el.classList.remove('active'));
       cfg.showPractice();
     },
     stop() {
       this.active = false;
       document.getElementById('mxOpen')?.classList.remove('on');
+      document.getElementById('mpOpen')?.classList.remove('on');
     },
-    render() { view === 'paper' && paper ? renderPaper() : renderSetup(); },
+    render() { view === 'progress' ? renderProgress() : view === 'paper' && paper ? renderPaper() : renderSetup(); },
     relabel() {
-      const el = document.querySelector('#mxOpen .mx-open-text');
-      if (el && cfg) el.textContent = L().button;
+      if (!cfg) return;
+      const a = document.querySelector('#mxOpen .mx-open-text'), b = document.querySelector('#mpOpen .mx-open-text');
+      if (a) a.textContent = L().button;
+      if (b) b.textContent = L().progress;
     }
   };
 })();

@@ -8,8 +8,8 @@
  * by itself. Wider screens keep the normal sidebar; nothing here applies. */
 (function () {
   const TXT = {
-    en: { chapters: 'Chapters', close: 'Close chapters', choose: 'Choose a topic', exam: 'Mixed exam practice' },
-    af: { chapters: 'Hoofstukke', close: 'Maak hoofstukke toe', choose: 'Kies \'n onderwerp', exam: 'Gemengde eksamenoefening' }
+    en: { chapters: 'Chapters', close: 'Close chapters', choose: 'Choose a topic', exam: 'Mixed exam practice', progress: 'My progress' },
+    af: { chapters: 'Hoofstukke', close: 'Maak hoofstukke toe', choose: 'Kies \'n onderwerp', exam: 'Gemengde eksamenoefening', progress: 'My vordering' }
   };
   const SEEN = 'mm_nav_seen';
   const phone = window.matchMedia('(max-width: 700px)');
@@ -79,9 +79,9 @@
     backdrop.addEventListener('click', () => shut());
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && isOpen()) { shut(); btn.focus({ preventScroll: true }); } });
     window.addEventListener('popstate', () => shut(true));
-    // Choosing a topic or the exam closes the panel.
+    // Choosing a topic, the exam or My progress closes the panel.
     sidebar.addEventListener('click', e => {
-      if (e.target.closest('.topic-item, #mxOpen')) { shut(); setTimeout(toLessonTop, 0); }
+      if (e.target.closest('.topic-item, #mxOpen, #mpOpen')) { shut(); setTimeout(toLessonTop, 0); }
     });
     phone.addEventListener('change', () => { if (!phone.matches) shut(); setInert(); });
 
@@ -93,7 +93,9 @@
       close.setAttribute('aria-label', t.close);
       const exam = document.getElementById('mxOpen');
       let label = t.choose;
+      const prog = document.getElementById('mpOpen');
       if (exam && exam.classList.contains('on')) label = t.exam;
+      else if (prog && prog.classList.contains('on')) label = t.progress;
       else {
         const active = list.querySelector('.topic-item.active');
         if (active) {
