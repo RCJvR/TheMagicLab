@@ -6,7 +6,11 @@
  * complete only at MASTERY % or better; topics below it are flagged in the
  * sidebar and weighted up in "My weak spots" exam papers.
  *
- * Data lives in localStorage ("mm_results_g<grade>"), so it is per device. */
+ * Data lives in localStorage ("mm_results_g<grade>"). For a signed-in learner it
+ * is also kept in the mm_results table (one row per grade), so it follows them
+ * to other devices: the two copies are merged on sign-in and each change is
+ * saved a few seconds later. The browser copy is tagged with its owner, so on
+ * a shared device one learner never inherits another's results. */
 (function () {
   const MASTERY = 70, RECENT = 12, MIN_FOR_STATUS = 3;
   const TXT = {
@@ -30,12 +34,83 @@
   }
   function save(g) { try { localStorage.setItem(key(g), JSON.stringify(cache[g])); } catch (_) {} }
 
+  // ── Account sync ──
+  const SYNC_DELAY = 3000;
+  const dirty = new Set();
+  let timer = null;
+  const pageGrade = +((location.pathname.match(/\/gr(\d+)\//) || [])[1]) || null;
+
+  function account() {
+    const A = window.MagicLabAuth;
+    if (!A || !A.isLoggedIn()) return null;
+    const s = A.getSession(), uid = s && s.user && s.user.id;
+    return uid ? { sb: A._supabase(), uid } : null;
+  }
+  // Newer copy wins where both have a value; the other fills the gaps.
+  function merge(a, b) {
+    const [base, other] = (b.u || 0) > (a.u || 0) ? [b, a] : [a, b];
+    return { t: Object.assign({}, other.t, base.t), q: Object.assign({}, other.q, base.q),
+             l: Object.assign({}, other.l, base.l), u: Math.max(a.u || 0, b.u || 0) };
+  }
+  const same = (a, b) => JSON.stringify([a.t, a.q, a.l]) === JSON.stringify([b.t, b.q, b.l]);
+
+  async function pull(g) {
+    const acc = account();
+    if (!acc) return;
+    const { data: row, error } = await acc.sb.from('mm_results').select('data').eq('user_id', acc.uid).eq('grade', g).maybeSingle();
+    if (error) { console.warn('[MathMagician] results load failed:', error.message); return; }
+    const local = load(g);
+    // Results left by someone else on this device are dropped, not merged.
+    const mine = !local.o || local.o === acc.uid ? local : { t: {}, q: {}, l: {} };
+    const server = row && row.data && typeof row.data === 'object' ? Object.assign({ t: {}, q: {}, l: {} }, row.data) : null;
+    const merged = server ? merge(mine, server) : mine;
+    merged.o = acc.uid;
+    cache[g] = merged;
+    save(g);
+    if (!server || !same(merged, server)) { dirty.add(g); schedule(); }
+    if (!same(merged, local)) document.dispatchEvent(new CustomEvent('mm:results:sync', { detail: { grade: g } }));
+  }
+  async function push() {
+    timer = null;
+    const acc = account();
+    if (!acc) return;
+    for (const g of [...dirty]) {
+      dirty.delete(g);
+      const d = load(g);
+      const { o, ...data } = d;
+      const { error } = await acc.sb.from('mm_results').upsert({ user_id: acc.uid, grade: g, data, updated_at: new Date().toISOString() }, { onConflict: 'user_id,grade' });
+      if (error) { console.warn('[MathMagician] results save failed:', error.message); dirty.add(g); }
+    }
+  }
+  function schedule() { if (!timer) timer = setTimeout(push, SYNC_DELAY); }
+
+  function onSignIn() { if (pageGrade) pull(pageGrade); }
+  function onSignOut() {
+    // Clear this device's copy of the learner's results when they sign out.
+    for (let g = 8; g <= 12; g++) {
+      let d = null;
+      try { d = JSON.parse(localStorage.getItem(key(g)) || 'null'); } catch (_) {}
+      if (d && d.o) { try { localStorage.removeItem(key(g)); } catch (_) {} delete cache[g]; }
+    }
+    dirty.clear();
+  }
+  document.addEventListener('magiclab:auth:ready', () => { if (account()) onSignIn(); });
+  document.addEventListener('magiclab:auth:change', e => {
+    const ev = e.detail && e.detail.event;
+    if (ev === 'SIGNED_IN') onSignIn();
+    else if (ev === 'SIGNED_OUT') onSignOut();
+  });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && dirty.size) { clearTimeout(timer); push(); } });
+
   const pct = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length * 100) : null;
 
   window.MMResults = {
     MASTERY,
 
     record(g, topic, qIndex, q, ok) {
+      const acc = account();
+      // Never add to results another learner left on this device.
+      if (acc && load(g).o && load(g).o !== acc.uid) cache[g] = { t: {}, q: {}, l: {} };
       const d = load(g), tid = String(topic.id);
       const r = ok ? 1 : 0;
       (d.t[tid] = d.t[tid] || []).push(r);
@@ -43,6 +118,8 @@
       d.q[tid + ':' + qIndex] = r;
       const lv = (window.MMHelp && MMHelp.level(g, topic, qIndex, q)) || null;
       if (lv) { const L = d.l[lv] = d.l[lv] || [0, 0]; L[0] += r; L[1] += 1; }
+      d.u = Date.now();
+      if (acc) { d.o = acc.uid; dirty.add(g); schedule(); }
       save(g);
     },
 

@@ -1556,19 +1556,29 @@ if (window.MLLang) {
 }
 
 // ── Restore completed topics from Supabase ─────────────────────────────────
-// Runs once progress SDK is ready. Matches saved topic titles back to IDs.
+// Runs once progress SDK is ready. Matches this grade's saved topic ids (or,
+// for events without one, the topic title) back to topics, so a topic
+// finished in either language, in this grade only, shows as done.
 async function _restoreProgress() {
-  if (!window.MagicLabProgress) return;
-  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.MATH_MAGICIAN);
-  if (!history.size) return;
+  if (!window.MagicLabProgress || !MagicLabProgress.getLessonEvents) return;
+  const rows = await MagicLabProgress.getLessonEvents(ML_TOOLS.MATH_MAGICIAN);
+  const ids = new Set(), names = new Set();
+  rows.forEach(r => {
+    const id = r.metadata && r.metadata.topicId;
+    if (id != null) { if (r.grade === 8) ids.add(id); }
+    else if (r.topic && (r.grade == null || r.grade === 8)) names.add(r.topic);
+  });
+  if (!ids.size && !names.size) return;
   TOPICS.forEach(t => {
-    if (history.has(t.name || t.title || t.id)) completed.add(t.id);
+    if (ids.has(t.id) || names.has(t.name)) completed.add(t.id);
   });
   buildSidebar();
   updateProgress();
 }
 
 document.addEventListener('magiclab:progress:ready', _restoreProgress);
+// Results pulled from the learner's account can change the weak-spot flags.
+document.addEventListener('mm:results:sync', () => buildSidebar());
 if (window.MagicLabProgress) _restoreProgress();
 
 </script>

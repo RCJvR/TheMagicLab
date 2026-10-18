@@ -13,7 +13,8 @@ document.addEventListener('magiclab:auth:ready', () => {
     getAllProgress,
     getRecentEvents,
     getLessonHistory,
-    getLessonHistoryByGrade
+    getLessonHistoryByGrade,
+    getLessonEvents
   };
   document.dispatchEvent(new CustomEvent('magiclab:progress:ready'));
 });
@@ -218,7 +219,7 @@ async function getLessonHistoryByGrade(tool) {
 
   const { data, error } = await supabase
     .from('progress_events')
-    .select('topic, grade')
+    .select('topic, grade, metadata')
     .eq('user_id', userId)
     .eq('tool', tool)
     .eq('event_type', 'lesson_complete')
@@ -227,10 +228,34 @@ async function getLessonHistoryByGrade(tool) {
 
   if (error) { console.warn('[MagicLab] getLessonHistoryByGrade error:', error.message); return {}; }
 
+  // Count a topic once, by its id when the event has one: the same topic
+  // finished in English and in Afrikaans has two different names.
   const byGrade = {};
   (data ?? []).forEach(r => {
     const g = String(r.grade);
-    (byGrade[g] ??= new Set()).add(r.topic);
+    const id = r.metadata?.topicId;
+    (byGrade[g] ??= new Set()).add(id != null ? 'id:' + id : r.topic);
   });
   return byGrade;
+}
+
+// Every lesson_complete event for a tool, as { topic, grade, metadata } rows,
+// so a page can match on a stored topic id rather than a translated name.
+async function getLessonEvents(tool) {
+  if (!window.MagicLabAuth?.isLoggedIn()) return [];
+  const supabase = window.MagicLabAuth._supabase();
+  const profile  = window.MagicLabAuth.getProfile();
+  const session  = window.MagicLabAuth.getSession();
+  const userId   = profile?.id ?? session?.user?.id;
+  if (!userId) return [];
+
+  const { data, error } = await supabase
+    .from('progress_events')
+    .select('topic, grade, metadata')
+    .eq('user_id', userId)
+    .eq('tool', tool)
+    .eq('event_type', 'lesson_complete');
+
+  if (error) { console.warn('[MagicLab] getLessonEvents error:', error.message); return []; }
+  return data ?? [];
 }
