@@ -23,6 +23,7 @@
   <script defer src="../plotter-link.js"></script>
   <script src="../answer-check.js"></script>
   <script src="../practice-help.js"></script>
+  <script src="../exam-practice.js"></script>
   <link rel="stylesheet" href="../figs.css">
   <script defer src="../figs.js"></script>
   <style>
@@ -728,6 +729,7 @@ const CHROME_T = {
 function T() { return CHROME_T[currentLang] || CHROME_T.en; }
 
 function applyChrome() {
+  if (window.MMExam) MMExam.relabel();
   const t = T();
   const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
   set('lblGrades', t.grades);
@@ -963,6 +965,7 @@ function updateProgress() {
 // TOPIC SELECTION
 // ═══════════════════════════════════════════════════════════════
 function selectTopic(id) {
+  if (window.MMExam) MMExam.stop();
   currentTopicId = id;
   qIndex = 0;
   answered = false;
@@ -1042,6 +1045,7 @@ function renderLesson() {
 // QUESTION RENDERER
 // ═══════════════════════════════════════════════════════════════
 function renderQuestion() {
+  if (window.MMExam && MMExam.active) return MMExam.render();
   const t = getTopicById(currentTopicId);
   const ts = topicScores[currentTopicId] || { correct: 0, total: 0 };
 
@@ -1493,6 +1497,11 @@ function buildAnswerKey() {
 // ═══════════════════════════════════════════════════════════════
 async function init() {
   applyChrome();
+  MMExam.init({
+    grade: 10, panel: practicePanel, lang: () => currentLang,
+    topics: () => TOPICS, chapters: () => CHAPTER_MANIFEST,
+    showPractice: () => switchTab('practice'), openTopic: id => selectTopic(id)
+  });
   // Load all chapters in parallel — the files are local so this is fast
   const loads = CHAPTER_MANIFEST.filter(m => m.file).map(m => MathMagician.load(m.num).catch(() => null));
   await Promise.all(loads);

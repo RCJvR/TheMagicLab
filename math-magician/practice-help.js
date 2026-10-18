@@ -61,6 +61,14 @@
   window.MMHelp = {
     add(grade, ch, data) { store[grade + ':' + ch] = data; },
     fingerprint,
+    chapterOf,
+    ensure,
+
+    // CAPS level (K/R/C/P) of a question, once its chapter's help has loaded.
+    level(grade, topic, qIndex, q) {
+      const e = entry(grade, chapterOf(topic), topic.id, qIndex, q);
+      return e ? e.level : null;
+    },
 
     // Fill the level badge and hint slots for the current question.
     mount(o) {
