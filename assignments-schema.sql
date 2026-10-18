@@ -75,3 +75,42 @@ create policy "Students read topics of visible assignments" on assignment_topics
       and   class_members.student_id = auth.uid()
     )
   );
+
+-- ── 2026-10: fixed topic ids, learner subsets, and a tighter teacher rule ──
+-- ref: a fixed id for each assigned topic or lesson, the same in English and
+--   Afrikaans: mm:<grade>:<topic id> (Math Magician), ss:<grade>:<strand/file>
+--   (Science Sage), tt:<grade>:<strand/file> (Tech Tower). Older rows have none
+--   and are matched by name as before.
+-- student_ids: when set, only these learners of the class get the assignment.
+alter table public.assignment_topics add column if not exists ref text
+  check (ref is null or ref ~ '^(mm|ss|tt):[0-9]{1,2}:[a-z0-9/_-]{1,120}$');
+alter table public.assignments add column if not exists student_ids uuid[]
+  check (student_ids is null or cardinality(student_ids) between 1 and 200);
+
+alter policy "Students read class assignments" on public.assignments
+  using (
+    (student_ids is null or (select auth.uid()) = any (student_ids))
+    and exists (
+      select 1 from public.class_members
+      where class_members.class_id = assignments.class_id
+        and class_members.student_id = (select auth.uid())
+    )
+  );
+
+alter policy "Students read topics of visible assignments" on public.assignment_topics
+  using (
+    exists (
+      select 1 from public.assignments
+      join public.class_members on class_members.class_id = assignments.class_id
+      where assignments.id = assignment_topics.assignment_id
+        and class_members.student_id = (select auth.uid())
+        and (assignments.student_ids is null or (select auth.uid()) = any (assignments.student_ids))
+    )
+  );
+
+-- A teacher may only create or move an assignment into a class they teach
+-- (before, any signed-in user could create one in any class by naming
+-- themselves as its teacher).
+alter policy "Teachers manage own assignments" on public.assignments
+  using (teacher_id = (select auth.uid()))
+  with check (teacher_id = (select auth.uid()) and public.is_class_teacher(class_id));

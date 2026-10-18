@@ -7,16 +7,21 @@
 // assignments.js matches against it verbatim (case/whitespace-insensitive),
 // so if a tool's lesson data changes, this file needs regenerating too.
 //
+// Math Magician, Science Sage and Tech Tower entries also carry `ref`, the
+// lesson's fixed id (mm:<grade>:<topic id>, ss:/tt:<grade>:<strand/file>).
+// Assignments made with a ref are matched on it instead of the name, so a
+// lesson done in Afrikaans counts, and they also get scores. Those sections
+// are written by scripts/build-math-catalog.js and scripts/build-lesson-index.js.
+//
 // java-genie and web-wizard are single continuous walkthroughs rather
 // than discrete lessons, so each has exactly one selectable entry
 // representing the whole tutorial; completion fires when a learner
 // reaches and closes the last slide (see the lesson_complete track()
 // calls added to those two files).
 //
-// Not included: robot-realm, science-sage, model-mage, tech-tower,
-// spike-spellcaster — these tools don't yet call progress.js's track()
-// with lesson_complete events, so there is nothing here to pick from
-// until that's added.
+// Not included: robot-realm, model-mage, spike-spellcaster — these tools
+// don't yet call progress.js's track() with lesson_complete events, so
+// there is nothing here to pick from until that's added.
 // ============================================================
 
 window.ML_LESSON_CATALOG = {
@@ -1038,39 +1043,48 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "The four operations",
-          "label": "The four operations"
+          "label": "The four operations",
+          "ref": "mm:8:101"
         },
         {
           "value": "Properties of whole numbers",
-          "label": "Properties of whole numbers"
+          "label": "Properties of whole numbers",
+          "ref": "mm:8:102"
         },
         {
           "value": "Calculation techniques",
-          "label": "Calculation techniques"
+          "label": "Calculation techniques",
+          "ref": "mm:8:103"
         },
         {
           "value": "Simplifying calculations",
-          "label": "Simplifying calculations"
+          "label": "Simplifying calculations",
+          "ref": "mm:8:104"
         },
         {
           "value": "Factors and multiples",
-          "label": "Factors and multiples"
+          "label": "Factors and multiples",
+          "ref": "mm:8:105"
         },
         {
           "value": "Ratios",
-          "label": "Ratios"
+          "label": "Ratios",
+          "ref": "mm:8:106"
         },
         {
           "value": "Rates",
-          "label": "Rates"
+          "label": "Rates",
+          "ref": "mm:8:107"
         },
         {
           "value": "Financial contexts",
-          "label": "Financial contexts"
+          "label": "Financial contexts",
+          "ref": "mm:8:108"
         },
         {
           "value": "Exam focus",
-          "label": "Exam focus"
+          "label": "Exam focus",
+          "ref": "mm:8:109"
         }
       ]
     },
@@ -1079,43 +1093,53 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Counting in integers",
-          "label": "Counting in integers"
+          "label": "Counting in integers",
+          "ref": "mm:8:201"
         },
         {
           "value": "Ordering integers",
-          "label": "Ordering integers"
+          "label": "Ordering integers",
+          "ref": "mm:8:202"
         },
         {
           "value": "Addition of integers",
-          "label": "Addition of integers"
+          "label": "Addition of integers",
+          "ref": "mm:8:203"
         },
         {
           "value": "Subtraction of integers",
-          "label": "Subtraction of integers"
+          "label": "Subtraction of integers",
+          "ref": "mm:8:204"
         },
         {
           "value": "Multiplication of integers",
-          "label": "Multiplication of integers"
+          "label": "Multiplication of integers",
+          "ref": "mm:8:205"
         },
         {
           "value": "Division of integers",
-          "label": "Division of integers"
+          "label": "Division of integers",
+          "ref": "mm:8:206"
         },
         {
           "value": "Commutative, associative & distributive",
-          "label": "Commutative, associative & distributive"
+          "label": "Commutative, associative & distributive",
+          "ref": "mm:8:207"
         },
         {
           "value": "Squares, cubes & roots",
-          "label": "Squares, cubes & roots"
+          "label": "Squares, cubes & roots",
+          "ref": "mm:8:208"
         },
         {
           "value": "Mixed operations with integers",
-          "label": "Mixed operations with integers"
+          "label": "Mixed operations with integers",
+          "ref": "mm:8:209"
         },
         {
           "value": "Ch 2 Exam focus",
-          "label": "Ch 2 Exam focus"
+          "label": "Ch 2 Exam focus",
+          "ref": "mm:8:210"
         }
       ]
     },
@@ -1124,23 +1148,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Exponential form",
-          "label": "Exponential form"
+          "label": "Exponential form",
+          "ref": "mm:8:301"
         },
         {
           "value": "Laws of exponents",
-          "label": "Laws of exponents"
+          "label": "Laws of exponents",
+          "ref": "mm:8:302"
         },
         {
           "value": "Mixed operations — exponents",
-          "label": "Mixed operations — exponents"
+          "label": "Mixed operations — exponents",
+          "ref": "mm:8:303"
         },
         {
           "value": "Scientific notation",
-          "label": "Scientific notation"
+          "label": "Scientific notation",
+          "ref": "mm:8:304"
         },
         {
           "value": "Ch 3 Exam focus",
-          "label": "Ch 3 Exam focus"
+          "label": "Ch 3 Exam focus",
+          "ref": "mm:8:305"
         }
       ]
     },
@@ -1149,19 +1178,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Numeric number patterns",
-          "label": "Numeric number patterns"
+          "label": "Numeric number patterns",
+          "ref": "mm:8:401"
         },
         {
           "value": "Geometric number patterns",
-          "label": "Geometric number patterns"
+          "label": "Geometric number patterns",
+          "ref": "mm:8:402"
         },
         {
           "value": "Visual geometric patterns",
-          "label": "Visual geometric patterns"
+          "label": "Visual geometric patterns",
+          "ref": "mm:8:403"
         },
         {
           "value": "Ch 4 Exam focus",
-          "label": "Ch 4 Exam focus"
+          "label": "Ch 4 Exam focus",
+          "ref": "mm:8:404"
         }
       ]
     },
@@ -1170,23 +1203,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Input, output & flow diagrams",
-          "label": "Input, output & flow diagrams"
+          "label": "Input, output & flow diagrams",
+          "ref": "mm:8:501"
         },
         {
           "value": "Tables of values",
-          "label": "Tables of values"
+          "label": "Tables of values",
+          "ref": "mm:8:502"
         },
         {
           "value": "Word & symbolic formulae",
-          "label": "Word & symbolic formulae"
+          "label": "Word & symbolic formulae",
+          "ref": "mm:8:503"
         },
         {
           "value": "Equivalent forms",
-          "label": "Equivalent forms"
+          "label": "Equivalent forms",
+          "ref": "mm:8:504"
         },
         {
           "value": "Ch 5 Exam focus",
-          "label": "Ch 5 Exam focus"
+          "label": "Ch 5 Exam focus",
+          "ref": "mm:8:505"
         }
       ]
     },
@@ -1195,31 +1233,38 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Algebraic language & terms",
-          "label": "Algebraic language & terms"
+          "label": "Algebraic language & terms",
+          "ref": "mm:8:601"
         },
         {
           "value": "Like and unlike terms",
-          "label": "Like and unlike terms"
+          "label": "Like and unlike terms",
+          "ref": "mm:8:602"
         },
         {
           "value": "Adding & subtracting expressions",
-          "label": "Adding & subtracting expressions"
+          "label": "Adding & subtracting expressions",
+          "ref": "mm:8:603"
         },
         {
           "value": "Multiplying expressions",
-          "label": "Multiplying expressions"
+          "label": "Multiplying expressions",
+          "ref": "mm:8:604"
         },
         {
           "value": "Dividing expressions",
-          "label": "Dividing expressions"
+          "label": "Dividing expressions",
+          "ref": "mm:8:605"
         },
         {
           "value": "Substitution",
-          "label": "Substitution"
+          "label": "Substitution",
+          "ref": "mm:8:606"
         },
         {
           "value": "Ch 6 Exam focus",
-          "label": "Ch 6 Exam focus"
+          "label": "Ch 6 Exam focus",
+          "ref": "mm:8:607"
         }
       ]
     },
@@ -1228,27 +1273,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "What is an equation?",
-          "label": "What is an equation?"
+          "label": "What is an equation?",
+          "ref": "mm:8:701"
         },
         {
           "value": "Solving by inspection",
-          "label": "Solving by inspection"
+          "label": "Solving by inspection",
+          "ref": "mm:8:702"
         },
         {
           "value": "Solving using inverses",
-          "label": "Solving using inverses"
+          "label": "Solving using inverses",
+          "ref": "mm:8:703"
         },
         {
           "value": "Variables on both sides",
-          "label": "Variables on both sides"
+          "label": "Variables on both sides",
+          "ref": "mm:8:704"
         },
         {
           "value": "Word problems",
-          "label": "Word problems"
+          "label": "Word problems",
+          "ref": "mm:8:705"
         },
         {
           "value": "Ch 7 Exam focus",
-          "label": "Ch 7 Exam focus"
+          "label": "Ch 7 Exam focus",
+          "ref": "mm:8:706"
         }
       ]
     },
@@ -1257,27 +1308,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Notation and terminology",
-          "label": "Notation and terminology"
+          "label": "Notation and terminology",
+          "ref": "mm:8:801"
         },
         {
           "value": "Perpendicular lines",
-          "label": "Perpendicular lines"
+          "label": "Perpendicular lines",
+          "ref": "mm:8:802"
         },
         {
           "value": "Constructing angles",
-          "label": "Constructing angles"
+          "label": "Constructing angles",
+          "ref": "mm:8:803"
         },
         {
           "value": "Constructing triangles",
-          "label": "Constructing triangles"
+          "label": "Constructing triangles",
+          "ref": "mm:8:804"
         },
         {
           "value": "Constructing quadrilaterals",
-          "label": "Constructing quadrilaterals"
+          "label": "Constructing quadrilaterals",
+          "ref": "mm:8:805"
         },
         {
           "value": "Ch 8 Exam focus",
-          "label": "Ch 8 Exam focus"
+          "label": "Ch 8 Exam focus",
+          "ref": "mm:8:806"
         }
       ]
     },
@@ -1286,19 +1343,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Lines and angles",
-          "label": "Lines and angles"
+          "label": "Lines and angles",
+          "ref": "mm:8:901"
         },
         {
           "value": "Angle relationships",
-          "label": "Angle relationships"
+          "label": "Angle relationships",
+          "ref": "mm:8:902"
         },
         {
           "value": "Parallel lines and angles",
-          "label": "Parallel lines and angles"
+          "label": "Parallel lines and angles",
+          "ref": "mm:8:903"
         },
         {
           "value": "Ch 9 Exam focus",
-          "label": "Ch 9 Exam focus"
+          "label": "Ch 9 Exam focus",
+          "ref": "mm:8:904"
         }
       ]
     },
@@ -1307,27 +1368,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Geometry of triangles",
-          "label": "Geometry of triangles"
+          "label": "Geometry of triangles",
+          "ref": "mm:8:1001"
         },
         {
           "value": "Geometry of quadrilaterals",
-          "label": "Geometry of quadrilaterals"
+          "label": "Geometry of quadrilaterals",
+          "ref": "mm:8:1002"
         },
         {
           "value": "Triangles and quadrilaterals",
-          "label": "Triangles and quadrilaterals"
+          "label": "Triangles and quadrilaterals",
+          "ref": "mm:8:1003"
         },
         {
           "value": "Congruent shapes",
-          "label": "Congruent shapes"
+          "label": "Congruent shapes",
+          "ref": "mm:8:1004"
         },
         {
           "value": "Similar shapes",
-          "label": "Similar shapes"
+          "label": "Similar shapes",
+          "ref": "mm:8:1005"
         },
         {
           "value": "Ch 10 Exam focus",
-          "label": "Ch 10 Exam focus"
+          "label": "Ch 10 Exam focus",
+          "ref": "mm:8:1006"
         }
       ]
     },
@@ -1336,43 +1403,53 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Revision of fractions",
-          "label": "Revision of fractions"
+          "label": "Revision of fractions",
+          "ref": "mm:8:1101"
         },
         {
           "value": "Adding and subtracting fractions",
-          "label": "Adding and subtracting fractions"
+          "label": "Adding and subtracting fractions",
+          "ref": "mm:8:1102"
         },
         {
           "value": "Multiplying fractions",
-          "label": "Multiplying fractions"
+          "label": "Multiplying fractions",
+          "ref": "mm:8:1103"
         },
         {
           "value": "Dividing fractions",
-          "label": "Dividing fractions"
+          "label": "Dividing fractions",
+          "ref": "mm:8:1104"
         },
         {
           "value": "Squares, cubes, roots",
-          "label": "Squares, cubes, roots"
+          "label": "Squares, cubes, roots",
+          "ref": "mm:8:1105"
         },
         {
           "value": "Mixed calculations",
-          "label": "Mixed calculations"
+          "label": "Mixed calculations",
+          "ref": "mm:8:1106"
         },
         {
           "value": "Numbers as fractions",
-          "label": "Numbers as fractions"
+          "label": "Numbers as fractions",
+          "ref": "mm:8:1107"
         },
         {
           "value": "Fractions and percentages",
-          "label": "Fractions and percentages"
+          "label": "Fractions and percentages",
+          "ref": "mm:8:1108"
         },
         {
           "value": "Percentage increase and decrease",
-          "label": "Percentage increase and decrease"
+          "label": "Percentage increase and decrease",
+          "ref": "mm:8:1109"
         },
         {
           "value": "Ch 11 Exam focus",
-          "label": "Ch 11 Exam focus"
+          "label": "Ch 11 Exam focus",
+          "ref": "mm:8:1110"
         }
       ]
     },
@@ -1381,27 +1458,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "The decimal system",
-          "label": "The decimal system"
+          "label": "The decimal system",
+          "ref": "mm:8:1201"
         },
         {
           "value": "Adding and subtracting decimals",
-          "label": "Adding and subtracting decimals"
+          "label": "Adding and subtracting decimals",
+          "ref": "mm:8:1202"
         },
         {
           "value": "Multiplying and dividing decimals",
-          "label": "Multiplying and dividing decimals"
+          "label": "Multiplying and dividing decimals",
+          "ref": "mm:8:1203"
         },
         {
           "value": "Squares, cubes and roots of decimals",
-          "label": "Squares, cubes and roots of decimals"
+          "label": "Squares, cubes and roots of decimals",
+          "ref": "mm:8:1204"
         },
         {
           "value": "Rounding and estimating",
-          "label": "Rounding and estimating"
+          "label": "Rounding and estimating",
+          "ref": "mm:8:1205"
         },
         {
           "value": "Ch 12 Exam focus",
-          "label": "Ch 12 Exam focus"
+          "label": "Ch 12 Exam focus",
+          "ref": "mm:8:1206"
         }
       ]
     },
@@ -1410,19 +1493,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Pythagoras in right-angled triangles",
-          "label": "Pythagoras in right-angled triangles"
+          "label": "Pythagoras in right-angled triangles",
+          "ref": "mm:8:1301"
         },
         {
           "value": "Sides and angles not right-angled",
-          "label": "Sides and angles not right-angled"
+          "label": "Sides and angles not right-angled",
+          "ref": "mm:8:1302"
         },
         {
           "value": "Applications of Pythagoras",
-          "label": "Applications of Pythagoras"
+          "label": "Applications of Pythagoras",
+          "ref": "mm:8:1303"
         },
         {
           "value": "Ch 13 Exam focus",
-          "label": "Ch 13 Exam focus"
+          "label": "Ch 13 Exam focus",
+          "ref": "mm:8:1304"
         }
       ]
     },
@@ -1431,23 +1518,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Perimeter of 2D shapes",
-          "label": "Perimeter of 2D shapes"
+          "label": "Perimeter of 2D shapes",
+          "ref": "mm:8:1401"
         },
         {
           "value": "Areas of 2D shapes",
-          "label": "Areas of 2D shapes"
+          "label": "Areas of 2D shapes",
+          "ref": "mm:8:1402"
         },
         {
           "value": "Equations using formulae",
-          "label": "Equations using formulae"
+          "label": "Equations using formulae",
+          "ref": "mm:8:1403"
         },
         {
           "value": "SI unit conversions",
-          "label": "SI unit conversions"
+          "label": "SI unit conversions",
+          "ref": "mm:8:1404"
         },
         {
           "value": "Ch 14 Exam focus",
-          "label": "Ch 14 Exam focus"
+          "label": "Ch 14 Exam focus",
+          "ref": "mm:8:1405"
         }
       ]
     },
@@ -1456,27 +1548,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Surface area of cubes and prisms",
-          "label": "Surface area of cubes and prisms"
+          "label": "Surface area of cubes and prisms",
+          "ref": "mm:8:1501"
         },
         {
           "value": "Surface area of triangular prisms",
-          "label": "Surface area of triangular prisms"
+          "label": "Surface area of triangular prisms",
+          "ref": "mm:8:1502"
         },
         {
           "value": "Volume of cubes and prisms",
-          "label": "Volume of cubes and prisms"
+          "label": "Volume of cubes and prisms",
+          "ref": "mm:8:1503"
         },
         {
           "value": "Volume of triangular prisms",
-          "label": "Volume of triangular prisms"
+          "label": "Volume of triangular prisms",
+          "ref": "mm:8:1504"
         },
         {
           "value": "Effect of scale factors",
-          "label": "Effect of scale factors"
+          "label": "Effect of scale factors",
+          "ref": "mm:8:1505"
         },
         {
           "value": "Ch 15 Exam focus",
-          "label": "Ch 15 Exam focus"
+          "label": "Ch 15 Exam focus",
+          "ref": "mm:8:1506"
         }
       ]
     },
@@ -1485,23 +1583,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Collecting and organising data",
-          "label": "Collecting and organising data"
+          "label": "Collecting and organising data",
+          "ref": "mm:8:1601"
         },
         {
           "value": "Measures of central tendency",
-          "label": "Measures of central tendency"
+          "label": "Measures of central tendency",
+          "ref": "mm:8:1602"
         },
         {
           "value": "Representing data",
-          "label": "Representing data"
+          "label": "Representing data",
+          "ref": "mm:8:1603"
         },
         {
           "value": "Interpreting data",
-          "label": "Interpreting data"
+          "label": "Interpreting data",
+          "ref": "mm:8:1604"
         },
         {
           "value": "Ch 16 Exam focus",
-          "label": "Ch 16 Exam focus"
+          "label": "Ch 16 Exam focus",
+          "ref": "mm:8:1605"
         }
       ]
     },
@@ -1510,23 +1613,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Probability concepts",
-          "label": "Probability concepts"
+          "label": "Probability concepts",
+          "ref": "mm:8:1701"
         },
         {
           "value": "Listing outcomes",
-          "label": "Listing outcomes"
+          "label": "Listing outcomes",
+          "ref": "mm:8:1702"
         },
         {
           "value": "Relative frequency",
-          "label": "Relative frequency"
+          "label": "Relative frequency",
+          "ref": "mm:8:1703"
         },
         {
           "value": "Tree diagrams",
-          "label": "Tree diagrams"
+          "label": "Tree diagrams",
+          "ref": "mm:8:1704"
         },
         {
           "value": "Ch 17 Exam focus",
-          "label": "Ch 17 Exam focus"
+          "label": "Ch 17 Exam focus",
+          "ref": "mm:8:1705"
         }
       ]
     },
@@ -1535,11 +1643,13 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Translations and reflections",
-          "label": "Translations and reflections"
+          "label": "Translations and reflections",
+          "ref": "mm:8:1801"
         },
         {
           "value": "Rotations and enlargements",
-          "label": "Rotations and enlargements"
+          "label": "Rotations and enlargements",
+          "ref": "mm:8:1802"
         }
       ]
     },
@@ -1548,11 +1658,13 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Classifying 3D objects",
-          "label": "Classifying 3D objects"
+          "label": "Classifying 3D objects",
+          "ref": "mm:8:1901"
         },
         {
           "value": "Nets of prisms and pyramids",
-          "label": "Nets of prisms and pyramids"
+          "label": "Nets of prisms and pyramids",
+          "ref": "mm:8:1902"
         }
       ]
     },
@@ -1561,19 +1673,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Interpreting global graphs",
-          "label": "Interpreting global graphs"
+          "label": "Interpreting global graphs",
+          "ref": "mm:8:2001"
         },
         {
           "value": "Drawing global graphs",
-          "label": "Drawing global graphs"
+          "label": "Drawing global graphs",
+          "ref": "mm:8:2002"
         },
         {
           "value": "Plotting points and drawing graphs",
-          "label": "Plotting points and drawing graphs"
+          "label": "Plotting points and drawing graphs",
+          "ref": "mm:8:2003"
         },
         {
           "value": "Ch 20 Exam focus",
-          "label": "Ch 20 Exam focus"
+          "label": "Ch 20 Exam focus",
+          "ref": "mm:8:2004"
         }
       ]
     },
@@ -1582,31 +1698,38 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Number systems",
-          "label": "Number systems"
+          "label": "Number systems",
+          "ref": "mm:9:0"
         },
         {
           "value": "Ratios and rates",
-          "label": "Ratios and rates"
+          "label": "Ratios and rates",
+          "ref": "mm:9:1"
         },
         {
           "value": "Financial mathematics",
-          "label": "Financial mathematics"
+          "label": "Financial mathematics",
+          "ref": "mm:9:2"
         },
         {
           "value": "Prime factors, HCF and LCM",
-          "label": "Prime factors, HCF and LCM"
+          "label": "Prime factors, HCF and LCM",
+          "ref": "mm:9:101"
         },
         {
           "value": "Direct and indirect proportion",
-          "label": "Direct and indirect proportion"
+          "label": "Direct and indirect proportion",
+          "ref": "mm:9:102"
         },
         {
           "value": "Financial contexts",
-          "label": "Financial contexts"
+          "label": "Financial contexts",
+          "ref": "mm:9:103"
         },
         {
           "value": "Ch 1 Exam focus",
-          "label": "Ch 1 Exam focus"
+          "label": "Ch 1 Exam focus",
+          "ref": "mm:9:104"
         }
       ]
     },
@@ -1615,19 +1738,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Operations with integers",
-          "label": "Operations with integers"
+          "label": "Operations with integers",
+          "ref": "mm:9:3"
         },
         {
           "value": "Properties of integers",
-          "label": "Properties of integers"
+          "label": "Properties of integers",
+          "ref": "mm:9:4"
         },
         {
           "value": "Integers in context",
-          "label": "Integers in context"
+          "label": "Integers in context",
+          "ref": "mm:9:201"
         },
         {
           "value": "Ch 2 Exam focus",
-          "label": "Ch 2 Exam focus"
+          "label": "Ch 2 Exam focus",
+          "ref": "mm:9:202"
         }
       ]
     },
@@ -1636,23 +1763,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Common fractions",
-          "label": "Common fractions"
+          "label": "Common fractions",
+          "ref": "mm:9:5"
         },
         {
           "value": "Decimal fractions",
-          "label": "Decimal fractions"
+          "label": "Decimal fractions",
+          "ref": "mm:9:6"
         },
         {
           "value": "Squares, cubes and roots of fractions",
-          "label": "Squares, cubes and roots of fractions"
+          "label": "Squares, cubes and roots of fractions",
+          "ref": "mm:9:301"
         },
         {
           "value": "Percentages",
-          "label": "Percentages"
+          "label": "Percentages",
+          "ref": "mm:9:302"
         },
         {
           "value": "Ch 3 Exam focus",
-          "label": "Ch 3 Exam focus"
+          "label": "Ch 3 Exam focus",
+          "ref": "mm:9:303"
         }
       ]
     },
@@ -1661,23 +1793,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Laws of exponents",
-          "label": "Laws of exponents"
+          "label": "Laws of exponents",
+          "ref": "mm:9:7"
         },
         {
           "value": "Scientific notation",
-          "label": "Scientific notation"
+          "label": "Scientific notation",
+          "ref": "mm:9:8"
         },
         {
           "value": "Simplifying with several laws",
-          "label": "Simplifying with several laws"
+          "label": "Simplifying with several laws",
+          "ref": "mm:9:401"
         },
         {
           "value": "Problems with scientific notation",
-          "label": "Problems with scientific notation"
+          "label": "Problems with scientific notation",
+          "ref": "mm:9:402"
         },
         {
           "value": "Ch 4 Exam focus",
-          "label": "Ch 4 Exam focus"
+          "label": "Ch 4 Exam focus",
+          "ref": "mm:9:403"
         }
       ]
     },
@@ -1686,19 +1823,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Numeric patterns",
-          "label": "Numeric patterns"
+          "label": "Numeric patterns",
+          "ref": "mm:9:9"
         },
         {
           "value": "Geometric patterns",
-          "label": "Geometric patterns"
+          "label": "Geometric patterns",
+          "ref": "mm:9:501"
         },
         {
           "value": "Patterns from pictures",
-          "label": "Patterns from pictures"
+          "label": "Patterns from pictures",
+          "ref": "mm:9:502"
         },
         {
           "value": "Ch 5 Exam focus",
-          "label": "Ch 5 Exam focus"
+          "label": "Ch 5 Exam focus",
+          "ref": "mm:9:503"
         }
       ]
     },
@@ -1707,19 +1848,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Functions and mappings",
-          "label": "Functions and mappings"
+          "label": "Functions and mappings",
+          "ref": "mm:9:11"
         },
         {
           "value": "Linear and non-linear functions",
-          "label": "Linear and non-linear functions"
+          "label": "Linear and non-linear functions",
+          "ref": "mm:9:12"
         },
         {
           "value": "One relationship, four descriptions",
-          "label": "One relationship, four descriptions"
+          "label": "One relationship, four descriptions",
+          "ref": "mm:9:601"
         },
         {
           "value": "Ch 6 Exam focus",
-          "label": "Ch 6 Exam focus"
+          "label": "Ch 6 Exam focus",
+          "ref": "mm:9:602"
         }
       ]
     },
@@ -1728,19 +1873,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Expanding and simplifying",
-          "label": "Expanding and simplifying"
+          "label": "Expanding and simplifying",
+          "ref": "mm:9:13"
         },
         {
           "value": "Algebraic language",
-          "label": "Algebraic language"
+          "label": "Algebraic language",
+          "ref": "mm:9:701"
         },
         {
           "value": "Dividing, substituting and roots of terms",
-          "label": "Dividing, substituting and roots of terms"
+          "label": "Dividing, substituting and roots of terms",
+          "ref": "mm:9:702"
         },
         {
           "value": "Ch 7 Exam focus",
-          "label": "Ch 7 Exam focus"
+          "label": "Ch 7 Exam focus",
+          "ref": "mm:9:703"
         }
       ]
     },
@@ -1749,23 +1898,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Common factors and grouping",
-          "label": "Common factors and grouping"
+          "label": "Common factors and grouping",
+          "ref": "mm:9:15"
         },
         {
           "value": "Difference of squares and trinomials",
-          "label": "Difference of squares and trinomials"
+          "label": "Difference of squares and trinomials",
+          "ref": "mm:9:16"
         },
         {
           "value": "Trinomials with a common factor",
-          "label": "Trinomials with a common factor"
+          "label": "Trinomials with a common factor",
+          "ref": "mm:9:801"
         },
         {
           "value": "Simplifying algebraic fractions",
-          "label": "Simplifying algebraic fractions"
+          "label": "Simplifying algebraic fractions",
+          "ref": "mm:9:802"
         },
         {
           "value": "Ch 8 Exam focus",
-          "label": "Ch 8 Exam focus"
+          "label": "Ch 8 Exam focus",
+          "ref": "mm:9:803"
         }
       ]
     },
@@ -1774,23 +1928,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Linear equations",
-          "label": "Linear equations"
+          "label": "Linear equations",
+          "ref": "mm:9:17"
         },
         {
           "value": "Quadratic equations",
-          "label": "Quadratic equations"
+          "label": "Quadratic equations",
+          "ref": "mm:9:18"
         },
         {
           "value": "Equations with brackets and fractions",
-          "label": "Equations with brackets and fractions"
+          "label": "Equations with brackets and fractions",
+          "ref": "mm:9:901"
         },
         {
           "value": "Word problems",
-          "label": "Word problems"
+          "label": "Word problems",
+          "ref": "mm:9:902"
         },
         {
           "value": "Ch 9 Exam focus",
-          "label": "Ch 9 Exam focus"
+          "label": "Ch 9 Exam focus",
+          "ref": "mm:9:903"
         }
       ]
     },
@@ -1799,23 +1958,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Bisectors and perpendiculars",
-          "label": "Bisectors and perpendiculars"
+          "label": "Bisectors and perpendiculars",
+          "ref": "mm:9:19"
         },
         {
           "value": "Constructing special angles",
-          "label": "Constructing special angles"
+          "label": "Constructing special angles",
+          "ref": "mm:9:1001"
         },
         {
           "value": "Constructing triangles",
-          "label": "Constructing triangles"
+          "label": "Constructing triangles",
+          "ref": "mm:9:1002"
         },
         {
           "value": "Quadrilaterals and their diagonals",
-          "label": "Quadrilaterals and their diagonals"
+          "label": "Quadrilaterals and their diagonals",
+          "ref": "mm:9:1003"
         },
         {
           "value": "Ch 10 Exam focus",
-          "label": "Ch 10 Exam focus"
+          "label": "Ch 10 Exam focus",
+          "ref": "mm:9:1004"
         }
       ]
     },
@@ -1824,27 +1988,33 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Triangles and quadrilaterals",
-          "label": "Triangles and quadrilaterals"
+          "label": "Triangles and quadrilaterals",
+          "ref": "mm:9:21"
         },
         {
           "value": "Similar and congruent shapes",
-          "label": "Similar and congruent shapes"
+          "label": "Similar and congruent shapes",
+          "ref": "mm:9:22"
         },
         {
           "value": "Angles of polygons",
-          "label": "Angles of polygons"
+          "label": "Angles of polygons",
+          "ref": "mm:9:1101"
         },
         {
           "value": "Exterior angles of triangles",
-          "label": "Exterior angles of triangles"
+          "label": "Exterior angles of triangles",
+          "ref": "mm:9:1102"
         },
         {
           "value": "Problems with similar triangles",
-          "label": "Problems with similar triangles"
+          "label": "Problems with similar triangles",
+          "ref": "mm:9:1103"
         },
         {
           "value": "Ch 11 Exam focus",
-          "label": "Ch 11 Exam focus"
+          "label": "Ch 11 Exam focus",
+          "ref": "mm:9:1104"
         }
       ]
     },
@@ -1853,19 +2023,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Angle relationships",
-          "label": "Angle relationships"
+          "label": "Angle relationships",
+          "ref": "mm:9:23"
         },
         {
           "value": "Proving parallel lines",
-          "label": "Proving parallel lines"
+          "label": "Proving parallel lines",
+          "ref": "mm:9:24"
         },
         {
           "value": "Solving angle problems with reasons",
-          "label": "Solving angle problems with reasons"
+          "label": "Solving angle problems with reasons",
+          "ref": "mm:9:1201"
         },
         {
           "value": "Ch 12 Exam focus",
-          "label": "Ch 12 Exam focus"
+          "label": "Ch 12 Exam focus",
+          "ref": "mm:9:1202"
         }
       ]
     },
@@ -1874,19 +2048,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Pythagoras' theorem",
-          "label": "Pythagoras' theorem"
+          "label": "Pythagoras' theorem",
+          "ref": "mm:9:25"
         },
         {
           "value": "Applications of Pythagoras",
-          "label": "Applications of Pythagoras"
+          "label": "Applications of Pythagoras",
+          "ref": "mm:9:26"
         },
         {
           "value": "Pythagoras in shapes",
-          "label": "Pythagoras in shapes"
+          "label": "Pythagoras in shapes",
+          "ref": "mm:9:1301"
         },
         {
           "value": "Ch 13 Exam focus",
-          "label": "Ch 13 Exam focus"
+          "label": "Ch 13 Exam focus",
+          "ref": "mm:9:1302"
         }
       ]
     },
@@ -1895,23 +2073,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Perimeter",
-          "label": "Perimeter"
+          "label": "Perimeter",
+          "ref": "mm:9:27"
         },
         {
           "value": "Area",
-          "label": "Area"
+          "label": "Area",
+          "ref": "mm:9:28"
         },
         {
           "value": "Composite shapes",
-          "label": "Composite shapes"
+          "label": "Composite shapes",
+          "ref": "mm:9:1401"
         },
         {
           "value": "Changing dimensions and units",
-          "label": "Changing dimensions and units"
+          "label": "Changing dimensions and units",
+          "ref": "mm:9:1402"
         },
         {
           "value": "Ch 14 Exam focus",
-          "label": "Ch 14 Exam focus"
+          "label": "Ch 14 Exam focus",
+          "ref": "mm:9:1403"
         }
       ]
     },
@@ -1920,23 +2103,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Surface area",
-          "label": "Surface area"
+          "label": "Surface area",
+          "ref": "mm:9:29"
         },
         {
           "value": "Volume",
-          "label": "Volume"
+          "label": "Volume",
+          "ref": "mm:9:30"
         },
         {
           "value": "Capacity and units of volume",
-          "label": "Capacity and units of volume"
+          "label": "Capacity and units of volume",
+          "ref": "mm:9:1501"
         },
         {
           "value": "Changing dimensions: volume and surface area",
-          "label": "Changing dimensions: volume and surface area"
+          "label": "Changing dimensions: volume and surface area",
+          "ref": "mm:9:1502"
         },
         {
           "value": "Ch 15 Exam focus",
-          "label": "Ch 15 Exam focus"
+          "label": "Ch 15 Exam focus",
+          "ref": "mm:9:1503"
         }
       ]
     },
@@ -1945,23 +2133,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Translations and reflections",
-          "label": "Translations and reflections"
+          "label": "Translations and reflections",
+          "ref": "mm:9:31"
         },
         {
           "value": "Rotations and enlargements",
-          "label": "Rotations and enlargements"
+          "label": "Rotations and enlargements",
+          "ref": "mm:9:32"
         },
         {
           "value": "Describing transformations from coordinates",
-          "label": "Describing transformations from coordinates"
+          "label": "Describing transformations from coordinates",
+          "ref": "mm:9:1601"
         },
         {
           "value": "Enlargements: perimeter and area",
-          "label": "Enlargements: perimeter and area"
+          "label": "Enlargements: perimeter and area",
+          "ref": "mm:9:1602"
         },
         {
           "value": "Ch 16 Exam focus",
-          "label": "Ch 16 Exam focus"
+          "label": "Ch 16 Exam focus",
+          "ref": "mm:9:1603"
         }
       ]
     },
@@ -1970,19 +2163,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Polyhedra",
-          "label": "Polyhedra"
+          "label": "Polyhedra",
+          "ref": "mm:9:33"
         },
         {
           "value": "Nets and cross-sections",
-          "label": "Nets and cross-sections"
+          "label": "Nets and cross-sections",
+          "ref": "mm:9:34"
         },
         {
           "value": "Platonic solids, spheres and cylinders",
-          "label": "Platonic solids, spheres and cylinders"
+          "label": "Platonic solids, spheres and cylinders",
+          "ref": "mm:9:1701"
         },
         {
           "value": "Ch 17 Exam focus",
-          "label": "Ch 17 Exam focus"
+          "label": "Ch 17 Exam focus",
+          "ref": "mm:9:1702"
         }
       ]
     },
@@ -1991,23 +2188,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Collect, organise and summarise data",
-          "label": "Collect, organise and summarise data"
+          "label": "Collect, organise and summarise data",
+          "ref": "mm:9:35"
         },
         {
           "value": "Represent data",
-          "label": "Represent data"
+          "label": "Represent data",
+          "ref": "mm:9:36"
         },
         {
           "value": "Interpret, analyse and report data",
-          "label": "Interpret, analyse and report data"
+          "label": "Interpret, analyse and report data",
+          "ref": "mm:9:37"
         },
         {
           "value": "Choosing and drawing graphs",
-          "label": "Choosing and drawing graphs"
+          "label": "Choosing and drawing graphs",
+          "ref": "mm:9:1801"
         },
         {
           "value": "Ch 18 Exam focus",
-          "label": "Ch 18 Exam focus"
+          "label": "Ch 18 Exam focus",
+          "ref": "mm:9:1802"
         }
       ]
     },
@@ -2016,19 +2218,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Probability of events, relative frequency",
-          "label": "Probability of events, relative frequency"
+          "label": "Probability of events, relative frequency",
+          "ref": "mm:9:38"
         },
         {
           "value": "Probability models and two-way tables",
-          "label": "Probability models and two-way tables"
+          "label": "Probability models and two-way tables",
+          "ref": "mm:9:39"
         },
         {
           "value": "Tree diagrams",
-          "label": "Tree diagrams"
+          "label": "Tree diagrams",
+          "ref": "mm:9:1901"
         },
         {
           "value": "Ch 19 Exam focus",
-          "label": "Ch 19 Exam focus"
+          "label": "Ch 19 Exam focus",
+          "ref": "mm:9:1902"
         }
       ]
     },
@@ -2037,23 +2243,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Interpreting graphs",
-          "label": "Interpreting graphs"
+          "label": "Interpreting graphs",
+          "ref": "mm:9:2001"
         },
         {
           "value": "Drawing global graphs",
-          "label": "Drawing global graphs"
+          "label": "Drawing global graphs",
+          "ref": "mm:9:2002"
         },
         {
           "value": "Drawing straight-line graphs",
-          "label": "Drawing straight-line graphs"
+          "label": "Drawing straight-line graphs",
+          "ref": "mm:9:2003"
         },
         {
           "value": "The equation of a straight line",
-          "label": "The equation of a straight line"
+          "label": "The equation of a straight line",
+          "ref": "mm:9:2004"
         },
         {
           "value": "Ch 20 Exam focus",
-          "label": "Ch 20 Exam focus"
+          "label": "Ch 20 Exam focus",
+          "ref": "mm:9:2005"
         }
       ]
     },
@@ -2062,23 +2273,28 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Real numbers & surds",
-          "label": "Real numbers & surds"
+          "label": "Real numbers & surds",
+          "ref": "mm:10:100"
         },
         {
           "value": "Products & factorisation",
-          "label": "Products & factorisation"
+          "label": "Products & factorisation",
+          "ref": "mm:10:101"
         },
         {
           "value": "Multiplying binomials by trinomials",
-          "label": "Multiplying binomials by trinomials"
+          "label": "Multiplying binomials by trinomials",
+          "ref": "mm:10:102"
         },
         {
           "value": "Sum and difference of cubes",
-          "label": "Sum and difference of cubes"
+          "label": "Sum and difference of cubes",
+          "ref": "mm:10:103"
         },
         {
           "value": "Algebraic fractions with cube denominators",
-          "label": "Algebraic fractions with cube denominators"
+          "label": "Algebraic fractions with cube denominators",
+          "ref": "mm:10:104"
         }
       ]
     },
@@ -2087,19 +2303,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Exponent laws",
-          "label": "Exponent laws"
+          "label": "Exponent laws",
+          "ref": "mm:10:200"
         },
         {
           "value": "Exponential equations",
-          "label": "Exponential equations"
+          "label": "Exponential equations",
+          "ref": "mm:10:201"
         },
         {
           "value": "Simplifying complex exponential expressions",
-          "label": "Simplifying complex exponential expressions"
+          "label": "Simplifying complex exponential expressions",
+          "ref": "mm:10:202"
         },
         {
           "value": "Advanced exponential equations",
-          "label": "Advanced exponential equations"
+          "label": "Advanced exponential equations",
+          "ref": "mm:10:203"
         }
       ]
     },
@@ -2108,15 +2328,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Linear sequences",
-          "label": "Linear sequences"
+          "label": "Linear sequences",
+          "ref": "mm:10:300"
         },
         {
           "value": "Patterns in context",
-          "label": "Patterns in context"
+          "label": "Patterns in context",
+          "ref": "mm:10:301"
         },
         {
           "value": "Non-obvious pattern problems",
-          "label": "Non-obvious pattern problems"
+          "label": "Non-obvious pattern problems",
+          "ref": "mm:10:302"
         }
       ]
     },
@@ -2125,19 +2348,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Linear & quadratic equations",
-          "label": "Linear & quadratic equations"
+          "label": "Linear & quadratic equations",
+          "ref": "mm:10:400"
         },
         {
           "value": "Word problems & inequalities",
-          "label": "Word problems & inequalities"
+          "label": "Word problems & inequalities",
+          "ref": "mm:10:401"
         },
         {
           "value": "Simultaneous equations — deeper practice",
-          "label": "Simultaneous equations — deeper practice"
+          "label": "Simultaneous equations — deeper practice",
+          "ref": "mm:10:402"
         },
         {
           "value": "Word problems in context",
-          "label": "Word problems in context"
+          "label": "Word problems in context",
+          "ref": "mm:10:403"
         }
       ]
     },
@@ -2146,19 +2373,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Trig ratios & special angles",
-          "label": "Trig ratios & special angles"
+          "label": "Trig ratios & special angles",
+          "ref": "mm:10:500"
         },
         {
           "value": "Trig equations & Cartesian plane",
-          "label": "Trig equations & Cartesian plane"
+          "label": "Trig equations & Cartesian plane",
+          "ref": "mm:10:501"
         },
         {
           "value": "Solving right-angled triangles",
-          "label": "Solving right-angled triangles"
+          "label": "Solving right-angled triangles",
+          "ref": "mm:10:502"
         },
         {
           "value": "Reciprocal ratios & trig identities",
-          "label": "Reciprocal ratios & trig identities"
+          "label": "Reciprocal ratios & trig identities",
+          "ref": "mm:10:503"
         }
       ]
     },
@@ -2167,19 +2398,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Linear, quadratic & hyperbolic functions",
-          "label": "Linear, quadratic & hyperbolic functions"
+          "label": "Linear, quadratic & hyperbolic functions",
+          "ref": "mm:10:600"
         },
         {
           "value": "Exponential & trig functions",
-          "label": "Exponential & trig functions"
+          "label": "Exponential & trig functions",
+          "ref": "mm:10:601"
         },
         {
           "value": "The concept of a function",
-          "label": "The concept of a function"
+          "label": "The concept of a function",
+          "ref": "mm:10:602"
         },
         {
           "value": "Effect of parameters a and q",
-          "label": "Effect of parameters a and q"
+          "label": "Effect of parameters a and q",
+          "ref": "mm:10:603"
         }
       ]
     },
@@ -2188,19 +2423,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Triangles",
-          "label": "Triangles"
+          "label": "Triangles",
+          "ref": "mm:10:700"
         },
         {
           "value": "Quadrilaterals & midpoint theorem",
-          "label": "Quadrilaterals & midpoint theorem"
+          "label": "Quadrilaterals & midpoint theorem",
+          "ref": "mm:10:701"
         },
         {
           "value": "Special quadrilaterals — kite & trapezium",
-          "label": "Special quadrilaterals — kite & trapezium"
+          "label": "Special quadrilaterals — kite & trapezium",
+          "ref": "mm:10:702"
         },
         {
           "value": "Special quadrilaterals — parallelogram family",
-          "label": "Special quadrilaterals — parallelogram family"
+          "label": "Special quadrilaterals — parallelogram family",
+          "ref": "mm:10:703"
         }
       ]
     },
@@ -2209,19 +2448,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Distance & midpoint",
-          "label": "Distance & midpoint"
+          "label": "Distance & midpoint",
+          "ref": "mm:10:800"
         },
         {
           "value": "Gradient of a line",
-          "label": "Gradient of a line"
+          "label": "Gradient of a line",
+          "ref": "mm:10:801"
         },
         {
           "value": "Equation of a line",
-          "label": "Equation of a line"
+          "label": "Equation of a line",
+          "ref": "mm:10:802"
         },
         {
           "value": "Analytical geometry of quadrilaterals",
-          "label": "Analytical geometry of quadrilaterals"
+          "label": "Analytical geometry of quadrilaterals",
+          "ref": "mm:10:803"
         }
       ]
     },
@@ -2230,19 +2473,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Simple & compound interest",
-          "label": "Simple & compound interest"
+          "label": "Simple & compound interest",
+          "ref": "mm:10:900"
         },
         {
           "value": "Exchange rates & hire purchase",
-          "label": "Exchange rates & hire purchase"
+          "label": "Exchange rates & hire purchase",
+          "ref": "mm:10:901"
         },
         {
           "value": "Inflation & population growth",
-          "label": "Inflation & population growth"
+          "label": "Inflation & population growth",
+          "ref": "mm:10:902"
         },
         {
           "value": "Solving for rate or time period",
-          "label": "Solving for rate or time period"
+          "label": "Solving for rate or time period",
+          "ref": "mm:10:903"
         }
       ]
     },
@@ -2251,19 +2498,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Measures of central tendency",
-          "label": "Measures of central tendency"
+          "label": "Measures of central tendency",
+          "ref": "mm:10:1000"
         },
         {
           "value": "Dispersion & five-number summary",
-          "label": "Dispersion & five-number summary"
+          "label": "Dispersion & five-number summary",
+          "ref": "mm:10:1001"
         },
         {
           "value": "Box-and-whisker diagrams",
-          "label": "Box-and-whisker diagrams"
+          "label": "Box-and-whisker diagrams",
+          "ref": "mm:10:1002"
         },
         {
           "value": "Interpreting statistics in context",
-          "label": "Interpreting statistics in context"
+          "label": "Interpreting statistics in context",
+          "ref": "mm:10:1003"
         }
       ]
     },
@@ -2272,19 +2523,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "2D trig problems",
-          "label": "2D trig problems"
+          "label": "2D trig problems",
+          "ref": "mm:10:1100"
         },
         {
           "value": "Multi-triangle problems",
-          "label": "Multi-triangle problems"
+          "label": "Multi-triangle problems",
+          "ref": "mm:10:1101"
         },
         {
           "value": "Bearings & navigation problems",
-          "label": "Bearings & navigation problems"
+          "label": "Bearings & navigation problems",
+          "ref": "mm:10:1102"
         },
         {
           "value": "Mixed 2D trigonometry applications",
-          "label": "Mixed 2D trigonometry applications"
+          "label": "Mixed 2D trigonometry applications",
+          "ref": "mm:10:1103"
         }
       ]
     },
@@ -2293,19 +2548,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Proofs & conjectures",
-          "label": "Proofs & conjectures"
+          "label": "Proofs & conjectures",
+          "ref": "mm:10:1200"
         },
         {
           "value": "Proving parallelogram properties",
-          "label": "Proving parallelogram properties"
+          "label": "Proving parallelogram properties",
+          "ref": "mm:10:1201"
         },
         {
           "value": "Congruency proofs",
-          "label": "Congruency proofs"
+          "label": "Congruency proofs",
+          "ref": "mm:10:1202"
         },
         {
           "value": "Mixed riders with quadrilaterals",
-          "label": "Mixed riders with quadrilaterals"
+          "label": "Mixed riders with quadrilaterals",
+          "ref": "mm:10:1203"
         }
       ]
     },
@@ -2314,19 +2573,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Area & surface area",
-          "label": "Area & surface area"
+          "label": "Area & surface area",
+          "ref": "mm:10:1300"
         },
         {
           "value": "Volume & scale factor",
-          "label": "Volume & scale factor"
+          "label": "Volume & scale factor",
+          "ref": "mm:10:1301"
         },
         {
           "value": "Composite solids",
-          "label": "Composite solids"
+          "label": "Composite solids",
+          "ref": "mm:10:1302"
         },
         {
           "value": "Pyramids and cones in depth",
-          "label": "Pyramids and cones in depth"
+          "label": "Pyramids and cones in depth",
+          "ref": "mm:10:1303"
         }
       ]
     },
@@ -2335,19 +2598,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Probability basics & Venn diagrams",
-          "label": "Probability basics & Venn diagrams"
+          "label": "Probability basics & Venn diagrams",
+          "ref": "mm:10:1400"
         },
         {
           "value": "Mutually exclusive & complementary events",
-          "label": "Mutually exclusive & complementary events"
+          "label": "Mutually exclusive & complementary events",
+          "ref": "mm:10:1401"
         },
         {
           "value": "Relative frequency vs theoretical probability",
-          "label": "Relative frequency vs theoretical probability"
+          "label": "Relative frequency vs theoretical probability",
+          "ref": "mm:10:1402"
         },
         {
           "value": "Two-way tables",
-          "label": "Two-way tables"
+          "label": "Two-way tables",
+          "ref": "mm:10:1403"
         }
       ]
     },
@@ -2356,15 +2623,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Rational exponents & surd operations",
-          "label": "Rational exponents & surd operations"
+          "label": "Rational exponents & surd operations",
+          "ref": "mm:11:100"
         },
         {
           "value": "Surd equations & exponential applications",
-          "label": "Surd equations & exponential applications"
+          "label": "Surd equations & exponential applications",
+          "ref": "mm:11:101"
         },
         {
           "value": "Laws of exponents & exponential equations",
-          "label": "Laws of exponents & exponential equations"
+          "label": "Laws of exponents & exponential equations",
+          "ref": "mm:11:102"
         }
       ]
     },
@@ -2373,19 +2643,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Completing the square, formula & nature of roots",
-          "label": "Completing the square, formula & nature of roots"
+          "label": "Completing the square, formula & nature of roots",
+          "ref": "mm:11:200"
         },
         {
           "value": "Quadratic inequalities & simultaneous equations",
-          "label": "Quadratic inequalities & simultaneous equations"
+          "label": "Quadratic inequalities & simultaneous equations",
+          "ref": "mm:11:201"
         },
         {
           "value": "Quadratic formula & derivation",
-          "label": "Quadratic formula & derivation"
+          "label": "Quadratic formula & derivation",
+          "ref": "mm:11:202"
         },
         {
           "value": "Solving problems with quadratic equations",
-          "label": "Solving problems with quadratic equations"
+          "label": "Solving problems with quadratic equations",
+          "ref": "mm:11:203"
         }
       ]
     },
@@ -2394,15 +2668,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Quadratic sequences",
-          "label": "Quadratic sequences"
+          "label": "Quadratic sequences",
+          "ref": "mm:11:300"
         },
         {
           "value": "Working with quadratic sequences",
-          "label": "Working with quadratic sequences"
+          "label": "Working with quadratic sequences",
+          "ref": "mm:11:301"
         },
         {
           "value": "Quadratic patterns in context",
-          "label": "Quadratic patterns in context"
+          "label": "Quadratic patterns in context",
+          "ref": "mm:11:302"
         }
       ]
     },
@@ -2411,15 +2688,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Equation of a line & inclination",
-          "label": "Equation of a line & inclination"
+          "label": "Equation of a line & inclination",
+          "ref": "mm:11:400"
         },
         {
           "value": "Parallel, perpendicular & complex problems",
-          "label": "Parallel, perpendicular & complex problems"
+          "label": "Parallel, perpendicular & complex problems",
+          "ref": "mm:11:401"
         },
         {
           "value": "Angle between two lines",
-          "label": "Angle between two lines"
+          "label": "Angle between two lines",
+          "ref": "mm:11:402"
         }
       ]
     },
@@ -2428,15 +2708,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Quadratic, hyperbolic & exponential functions",
-          "label": "Quadratic, hyperbolic & exponential functions"
+          "label": "Quadratic, hyperbolic & exponential functions",
+          "ref": "mm:11:500"
         },
         {
           "value": "Trigonometric functions — period, amplitude & phase shift",
-          "label": "Trigonometric functions — period, amplitude & phase shift"
+          "label": "Trigonometric functions — period, amplitude & phase shift",
+          "ref": "mm:11:501"
         },
         {
           "value": "Sketching functions: intercepts, domain & range",
-          "label": "Sketching functions: intercepts, domain & range"
+          "label": "Sketching functions: intercepts, domain & range",
+          "ref": "mm:11:502"
         }
       ]
     },
@@ -2445,15 +2728,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Trig identities & reduction formulae",
-          "label": "Trig identities & reduction formulae"
+          "label": "Trig identities & reduction formulae",
+          "ref": "mm:11:600"
         },
         {
           "value": "Sine rule, cosine rule & area rule",
-          "label": "Sine rule, cosine rule & area rule"
+          "label": "Sine rule, cosine rule & area rule",
+          "ref": "mm:11:601"
         },
         {
           "value": "Solving trigonometric equations",
-          "label": "Solving trigonometric equations"
+          "label": "Solving trigonometric equations",
+          "ref": "mm:11:602"
         }
       ]
     },
@@ -2462,19 +2748,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Surface area of complex solids",
-          "label": "Surface area of complex solids"
+          "label": "Surface area of complex solids",
+          "ref": "mm:11:700"
         },
         {
           "value": "Volume & the effect of scale factor k",
-          "label": "Volume & the effect of scale factor k"
+          "label": "Volume & the effect of scale factor k",
+          "ref": "mm:11:701"
         },
         {
           "value": "Composite shapes in context",
-          "label": "Composite shapes in context"
+          "label": "Composite shapes in context",
+          "ref": "mm:11:702"
         },
         {
           "value": "Measurement with trigonometry",
-          "label": "Measurement with trigonometry"
+          "label": "Measurement with trigonometry",
+          "ref": "mm:11:703"
         }
       ]
     },
@@ -2483,19 +2773,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Circle theorems",
-          "label": "Circle theorems"
+          "label": "Circle theorems",
+          "ref": "mm:11:800"
         },
         {
           "value": "Tangent theorems & chord proofs",
-          "label": "Tangent theorems & chord proofs"
+          "label": "Tangent theorems & chord proofs",
+          "ref": "mm:11:801"
         },
         {
           "value": "Chord, radius & distance calculations",
-          "label": "Chord, radius & distance calculations"
+          "label": "Chord, radius & distance calculations",
+          "ref": "mm:11:802"
         },
         {
           "value": "Circle geometry riders",
-          "label": "Circle geometry riders"
+          "label": "Circle geometry riders",
+          "ref": "mm:11:803"
         }
       ]
     },
@@ -2504,19 +2798,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Depreciation & timelines",
-          "label": "Depreciation & timelines"
+          "label": "Depreciation & timelines",
+          "ref": "mm:11:900"
         },
         {
           "value": "Nominal & effective interest rates",
-          "label": "Nominal & effective interest rates"
+          "label": "Nominal & effective interest rates",
+          "ref": "mm:11:901"
         },
         {
           "value": "Multi-stage investments with timelines",
-          "label": "Multi-stage investments with timelines"
+          "label": "Multi-stage investments with timelines",
+          "ref": "mm:11:902"
         },
         {
           "value": "Solving for n and i",
-          "label": "Solving for n and i"
+          "label": "Solving for n and i",
+          "ref": "mm:11:903"
         }
       ]
     },
@@ -2525,19 +2823,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Independent & dependent events",
-          "label": "Independent & dependent events"
+          "label": "Independent & dependent events",
+          "ref": "mm:11:1000"
         },
         {
           "value": "Venn diagrams, tree diagrams & contingency tables",
-          "label": "Venn diagrams, tree diagrams & contingency tables"
+          "label": "Venn diagrams, tree diagrams & contingency tables",
+          "ref": "mm:11:1001"
         },
         {
           "value": "Venn diagrams for three events",
-          "label": "Venn diagrams for three events"
+          "label": "Venn diagrams for three events",
+          "ref": "mm:11:1002"
         },
         {
           "value": "Fundamental counting principle",
-          "label": "Fundamental counting principle"
+          "label": "Fundamental counting principle",
+          "ref": "mm:11:1003"
         }
       ]
     },
@@ -2546,19 +2848,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Histograms, ogives & standard deviation",
-          "label": "Histograms, ogives & standard deviation"
+          "label": "Histograms, ogives & standard deviation",
+          "ref": "mm:11:1100"
         },
         {
           "value": "Skewness, outliers & data interpretation",
-          "label": "Skewness, outliers & data interpretation"
+          "label": "Skewness, outliers & data interpretation",
+          "ref": "mm:11:1101"
         },
         {
           "value": "Comparing datasets with standard deviation",
-          "label": "Comparing datasets with standard deviation"
+          "label": "Comparing datasets with standard deviation",
+          "ref": "mm:11:1102"
         },
         {
           "value": "Standard deviation from a frequency table",
-          "label": "Standard deviation from a frequency table"
+          "label": "Standard deviation from a frequency table",
+          "ref": "mm:11:1103"
         }
       ]
     },
@@ -2567,11 +2873,13 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Setting up linear programming problems",
-          "label": "Setting up linear programming problems"
+          "label": "Setting up linear programming problems",
+          "ref": "mm:11:1200"
         },
         {
           "value": "Optimisation — solving LP problems",
-          "label": "Optimisation — solving LP problems"
+          "label": "Optimisation — solving LP problems",
+          "ref": "mm:11:1201"
         }
       ]
     },
@@ -2580,19 +2888,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Arithmetic & geometric sequences",
-          "label": "Arithmetic & geometric sequences"
+          "label": "Arithmetic & geometric sequences",
+          "ref": "mm:12:100"
         },
         {
           "value": "Series — arithmetic, geometric & infinite",
-          "label": "Series — arithmetic, geometric & infinite"
+          "label": "Series — arithmetic, geometric & infinite",
+          "ref": "mm:12:101"
         },
         {
           "value": "Sigma notation & number patterns",
-          "label": "Sigma notation & number patterns"
+          "label": "Sigma notation & number patterns",
+          "ref": "mm:12:102"
         },
         {
           "value": "Deriving series formulae & applications",
-          "label": "Deriving series formulae & applications"
+          "label": "Deriving series formulae & applications",
+          "ref": "mm:12:103"
         }
       ]
     },
@@ -2601,19 +2913,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Inverse functions",
-          "label": "Inverse functions"
+          "label": "Inverse functions",
+          "ref": "mm:12:200"
         },
         {
           "value": "Logarithmic functions & equations",
-          "label": "Logarithmic functions & equations"
+          "label": "Logarithmic functions & equations",
+          "ref": "mm:12:201"
         },
         {
           "value": "Restricting domains for inverses",
-          "label": "Restricting domains for inverses"
+          "label": "Restricting domains for inverses",
+          "ref": "mm:12:202"
         },
         {
           "value": "Graphing exponential & logarithmic functions",
-          "label": "Graphing exponential & logarithmic functions"
+          "label": "Graphing exponential & logarithmic functions",
+          "ref": "mm:12:203"
         }
       ]
     },
@@ -2622,19 +2938,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Future value annuities",
-          "label": "Future value annuities"
+          "label": "Future value annuities",
+          "ref": "mm:12:300"
         },
         {
           "value": "Present value annuities & loan repayments",
-          "label": "Present value annuities & loan repayments"
+          "label": "Present value annuities & loan repayments",
+          "ref": "mm:12:301"
         },
         {
           "value": "Simple & compound growth vs decay",
-          "label": "Simple & compound growth vs decay"
+          "label": "Simple & compound growth vs decay",
+          "ref": "mm:12:302"
         },
         {
           "value": "Comparing investment & loan options",
-          "label": "Comparing investment & loan options"
+          "label": "Comparing investment & loan options",
+          "ref": "mm:12:303"
         }
       ]
     },
@@ -2643,19 +2963,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Compound angle identities",
-          "label": "Compound angle identities"
+          "label": "Compound angle identities",
+          "ref": "mm:12:400"
         },
         {
           "value": "Trig equations & 3D applications",
-          "label": "Trig equations & 3D applications"
+          "label": "Trig equations & 3D applications",
+          "ref": "mm:12:401"
         },
         {
           "value": "Sine, cosine & area rules in 2D and 3D",
-          "label": "Sine, cosine & area rules in 2D and 3D"
+          "label": "Sine, cosine & area rules in 2D and 3D",
+          "ref": "mm:12:402"
         },
         {
           "value": "Proving trigonometric identities",
-          "label": "Proving trigonometric identities"
+          "label": "Proving trigonometric identities",
+          "ref": "mm:12:403"
         }
       ]
     },
@@ -2664,19 +2988,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Remainder & factor theorems",
-          "label": "Remainder & factor theorems"
+          "label": "Remainder & factor theorems",
+          "ref": "mm:12:500"
         },
         {
           "value": "Cubic polynomials — sketching & solving",
-          "label": "Cubic polynomials — sketching & solving"
+          "label": "Cubic polynomials — sketching & solving",
+          "ref": "mm:12:501"
         },
         {
           "value": "Finding unknown coefficients",
-          "label": "Finding unknown coefficients"
+          "label": "Finding unknown coefficients",
+          "ref": "mm:12:502"
         },
         {
           "value": "Sketching cubic graphs from key features",
-          "label": "Sketching cubic graphs from key features"
+          "label": "Sketching cubic graphs from key features",
+          "ref": "mm:12:503"
         }
       ]
     },
@@ -2685,19 +3013,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Limits, first principles & rules",
-          "label": "Limits, first principles & rules"
+          "label": "Limits, first principles & rules",
+          "ref": "mm:12:600"
         },
         {
           "value": "Tangents, curve sketching & optimisation",
-          "label": "Tangents, curve sketching & optimisation"
+          "label": "Tangents, curve sketching & optimisation",
+          "ref": "mm:12:601"
         },
         {
           "value": "Rates of change & calculus of motion",
-          "label": "Rates of change & calculus of motion"
+          "label": "Rates of change & calculus of motion",
+          "ref": "mm:12:602"
         },
         {
           "value": "Cubic graphs: full analysis & interpretation",
-          "label": "Cubic graphs: full analysis & interpretation"
+          "label": "Cubic graphs: full analysis & interpretation",
+          "ref": "mm:12:603"
         }
       ]
     },
@@ -2706,19 +3038,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Equation of a circle",
-          "label": "Equation of a circle"
+          "label": "Equation of a circle",
+          "ref": "mm:12:700"
         },
         {
           "value": "Tangent to a circle",
-          "label": "Tangent to a circle"
+          "label": "Tangent to a circle",
+          "ref": "mm:12:701"
         },
         {
           "value": "Lines, chords & circles",
-          "label": "Lines, chords & circles"
+          "label": "Lines, chords & circles",
+          "ref": "mm:12:702"
         },
         {
           "value": "Tangents from an external point",
-          "label": "Tangents from an external point"
+          "label": "Tangents from an external point",
+          "ref": "mm:12:703"
         }
       ]
     },
@@ -2727,15 +3063,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Proportion, polygons & triangle theorems",
-          "label": "Proportion, polygons & triangle theorems"
+          "label": "Proportion, polygons & triangle theorems",
+          "ref": "mm:12:800"
         },
         {
           "value": "Similarity & Pythagorean theorem proofs",
-          "label": "Similarity & Pythagorean theorem proofs"
+          "label": "Similarity & Pythagorean theorem proofs",
+          "ref": "mm:12:801"
         },
         {
           "value": "Similar polygons & scale factor problems",
-          "label": "Similar polygons & scale factor problems"
+          "label": "Similar polygons & scale factor problems",
+          "ref": "mm:12:802"
         }
       ]
     },
@@ -2744,15 +3083,18 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Scatter plots & regression",
-          "label": "Scatter plots & regression"
+          "label": "Scatter plots & regression",
+          "ref": "mm:12:900"
         },
         {
           "value": "Correlation coefficient",
-          "label": "Correlation coefficient"
+          "label": "Correlation coefficient",
+          "ref": "mm:12:901"
         },
         {
           "value": "Symmetric & skewed data",
-          "label": "Symmetric & skewed data"
+          "label": "Symmetric & skewed data",
+          "ref": "mm:12:902"
         }
       ]
     },
@@ -2761,19 +3103,23 @@ window.ML_LESSON_CATALOG = {
       "lessons": [
         {
           "value": "Fundamental counting principle & factorial notation",
-          "label": "Fundamental counting principle & factorial notation"
+          "label": "Fundamental counting principle & factorial notation",
+          "ref": "mm:12:1000"
         },
         {
           "value": "Combinations & probability applications",
-          "label": "Combinations & probability applications"
+          "label": "Combinations & probability applications",
+          "ref": "mm:12:1001"
         },
         {
           "value": "Revision: probability identities & Venn diagrams",
-          "label": "Revision: probability identities & Venn diagrams"
+          "label": "Revision: probability identities & Venn diagrams",
+          "ref": "mm:12:1002"
         },
         {
           "value": "Tree diagrams, tables & dependent events",
-          "label": "Tree diagrams, tables & dependent events"
+          "label": "Tree diagrams, tables & dependent events",
+          "ref": "mm:12:1003"
         }
       ]
     }
@@ -2796,6 +3142,820 @@ window.ML_LESSON_CATALOG = {
         {
           "value": "HTML & CSS Tutorial",
           "label": "HTML & CSS Tutorial (whole walkthrough)"
+        }
+      ]
+    }
+  ],
+  "science-sage": [
+    {
+      "group": "Grade 7 — Life & Living",
+      "lessons": [
+        {
+          "value": "Biodiversity & classification",
+          "label": "Biodiversity & classification",
+          "ref": "ss:7:life/biodiversity"
+        }
+      ]
+    },
+    {
+      "group": "Grade 7 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "Separating mixtures",
+          "label": "Separating mixtures",
+          "ref": "ss:7:matter/separating-mixtures"
+        }
+      ]
+    },
+    {
+      "group": "Grade 7 — Energy & Change",
+      "lessons": [
+        {
+          "value": "Forms of energy (KE & PE)",
+          "label": "Forms of energy (KE & PE)",
+          "ref": "ss:7:energy/energy-forms"
+        }
+      ]
+    },
+    {
+      "group": "Grade 7 — Planet Earth & Beyond",
+      "lessons": [
+        {
+          "value": "Seasons & Earth's tilt",
+          "label": "Seasons & Earth's tilt",
+          "ref": "ss:7:earth/seasons"
+        },
+        {
+          "value": "Moon, gravity & tides",
+          "label": "Moon, gravity & tides",
+          "ref": "ss:7:earth/earth-moon"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Life & Living",
+      "lessons": [
+        {
+          "value": "Photosynthesis & respiration",
+          "label": "Photosynthesis & respiration",
+          "ref": "ss:8:life/photosynthesis"
+        },
+        {
+          "value": "Ecosystems & food webs",
+          "label": "Ecosystems & food webs",
+          "ref": "ss:8:life/ecosystems"
+        },
+        {
+          "value": "Micro-organisms",
+          "label": "Micro-organisms",
+          "ref": "ss:8:life/microorganisms"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "The atom & atomic models",
+          "label": "The atom & atomic models",
+          "ref": "ss:8:matter/atoms"
+        },
+        {
+          "value": "The periodic table",
+          "label": "The periodic table",
+          "ref": "ss:8:matter/periodic-table"
+        },
+        {
+          "value": "Compounds & mixtures",
+          "label": "Compounds & mixtures",
+          "ref": "ss:8:matter/compounds-mixtures"
+        },
+        {
+          "value": "Particle model of matter",
+          "label": "Particle model of matter",
+          "ref": "ss:8:matter/particle-model"
+        },
+        {
+          "value": "Metals & non-metals",
+          "label": "Metals & non-metals",
+          "ref": "ss:8:matter/metals-non-metals"
+        },
+        {
+          "value": "Chemical reactions",
+          "label": "Chemical reactions",
+          "ref": "ss:8:matter/chemical-reactions"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Energy & Change",
+      "lessons": [
+        {
+          "value": "Static electricity",
+          "label": "Static electricity",
+          "ref": "ss:8:energy/static-electricity"
+        },
+        {
+          "value": "Electric circuits",
+          "label": "Electric circuits",
+          "ref": "ss:8:energy/electricity"
+        },
+        {
+          "value": "Energy & the national electricity grid",
+          "label": "Energy & the national electricity grid",
+          "ref": "ss:8:energy/electricity-grid"
+        },
+        {
+          "value": "Visible light",
+          "label": "Visible light",
+          "ref": "ss:8:energy/light"
+        },
+        {
+          "value": "Sound as energy",
+          "label": "Sound as energy",
+          "ref": "ss:8:energy/sound"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Planet Earth & Beyond",
+      "lessons": [
+        {
+          "value": "The solar system",
+          "label": "The solar system",
+          "ref": "ss:8:earth/solar-system"
+        },
+        {
+          "value": "Beyond the solar system",
+          "label": "Beyond the solar system",
+          "ref": "ss:8:earth/beyond-solar-system"
+        },
+        {
+          "value": "Telescopes & constellations",
+          "label": "Telescopes & constellations",
+          "ref": "ss:8:earth/telescopes"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Life & Living",
+      "lessons": [
+        {
+          "value": "Cell structure & function",
+          "label": "Cell structure & function",
+          "ref": "ss:9:life/cells"
+        },
+        {
+          "value": "Nutrients & digestion",
+          "label": "Nutrients & digestion",
+          "ref": "ss:9:life/nutrients"
+        },
+        {
+          "value": "Systems in the human body",
+          "label": "Systems in the human body",
+          "ref": "ss:9:life/systems-human-body"
+        },
+        {
+          "value": "Reproduction in plants",
+          "label": "Reproduction in plants",
+          "ref": "ss:9:life/reproduction-plants"
+        },
+        {
+          "value": "Reproduction in animals",
+          "label": "Reproduction in animals",
+          "ref": "ss:9:life/reproduction-animals"
+        },
+        {
+          "value": "Genetics & heredity",
+          "label": "Genetics & heredity",
+          "ref": "ss:9:life/genetics"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Matter & Materials",
+      "lessons": [
+        {
+          "value": "Atoms & electron arrangement",
+          "label": "Atoms & electron arrangement",
+          "ref": "ss:9:matter/atoms-electrons"
+        },
+        {
+          "value": "Chemical bonding",
+          "label": "Chemical bonding",
+          "ref": "ss:9:matter/chemical-bonding"
+        },
+        {
+          "value": "Acids, bases & pH scale",
+          "label": "Acids, bases & pH scale",
+          "ref": "ss:9:matter/acids-bases"
+        },
+        {
+          "value": "Types of chemical reactions",
+          "label": "Types of chemical reactions",
+          "ref": "ss:9:matter/types-of-reactions"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Energy & Change",
+      "lessons": [
+        {
+          "value": "Forces",
+          "label": "Forces",
+          "ref": "ss:9:energy/forces"
+        },
+        {
+          "value": "Magnetism & forces",
+          "label": "Magnetism & forces",
+          "ref": "ss:9:energy/magnetism"
+        },
+        {
+          "value": "Waves & EM spectrum",
+          "label": "Waves & EM spectrum",
+          "ref": "ss:9:energy/waves"
+        },
+        {
+          "value": "Electromagnetic induction",
+          "label": "Electromagnetic induction",
+          "ref": "ss:9:energy/electromagnetic-induction"
+        },
+        {
+          "value": "Electric cells, resistance & circuits",
+          "label": "Electric cells, resistance & circuits",
+          "ref": "ss:9:energy/electric-circuits"
+        },
+        {
+          "value": "National electricity supply system",
+          "label": "National electricity supply system",
+          "ref": "ss:9:energy/national-electricity-supply"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Planet Earth & Beyond",
+      "lessons": [
+        {
+          "value": "The Earth as a system",
+          "label": "The Earth as a system",
+          "ref": "ss:9:earth/earth-as-a-system"
+        },
+        {
+          "value": "Earth's atmosphere",
+          "label": "Earth's atmosphere",
+          "ref": "ss:9:earth/atmosphere"
+        },
+        {
+          "value": "Climate change & global warming",
+          "label": "Climate change & global warming",
+          "ref": "ss:9:earth/climate-change"
+        },
+        {
+          "value": "Lithosphere & mining of mineral resources",
+          "label": "Lithosphere & mining of mineral resources",
+          "ref": "ss:9:earth/lithosphere-mining"
+        },
+        {
+          "value": "Fossils & geological history",
+          "label": "Fossils & geological history",
+          "ref": "ss:9:earth/geological-history"
+        },
+        {
+          "value": "Birth, life & death of a star",
+          "label": "Birth, life & death of a star",
+          "ref": "ss:9:earth/life-cycle-of-stars"
+        }
+      ]
+    },
+    {
+      "group": "Grade 10 — Life Sciences",
+      "lessons": [
+        {
+          "value": "Chemistry of life",
+          "label": "Chemistry of life",
+          "ref": "ss:10:life/chemistry-of-life"
+        },
+        {
+          "value": "The cell — structure & function",
+          "label": "The cell — structure & function",
+          "ref": "ss:10:life/cell-structure"
+        },
+        {
+          "value": "Cell division — mitosis",
+          "label": "Cell division — mitosis",
+          "ref": "ss:10:life/cell-division-mitosis"
+        },
+        {
+          "value": "Plant & animal tissues",
+          "label": "Plant & animal tissues",
+          "ref": "ss:10:life/plant-animal-tissues"
+        },
+        {
+          "value": "Support & transport in plants",
+          "label": "Support & transport in plants",
+          "ref": "ss:10:life/transport-in-plants"
+        },
+        {
+          "value": "Support systems in animals",
+          "label": "Support systems in animals",
+          "ref": "ss:10:life/support-systems-animals"
+        },
+        {
+          "value": "Transport system in mammals",
+          "label": "Transport system in mammals",
+          "ref": "ss:10:life/transport-in-mammals"
+        },
+        {
+          "value": "Biosphere to ecosystems",
+          "label": "Biosphere to ecosystems",
+          "ref": "ss:10:life/biosphere-ecosystems"
+        },
+        {
+          "value": "Biodiversity & classification",
+          "label": "Biodiversity & classification",
+          "ref": "ss:10:life/biodiversity-classification"
+        },
+        {
+          "value": "History of life on Earth",
+          "label": "History of life on Earth",
+          "ref": "ss:10:life/history-of-life"
+        }
+      ]
+    },
+    {
+      "group": "Grade 10 — Physics",
+      "lessons": [
+        {
+          "value": "Vectors & scalars",
+          "label": "Vectors & scalars",
+          "ref": "ss:10:physics/vectors-scalars"
+        },
+        {
+          "value": "Motion in one dimension",
+          "label": "Motion in one dimension",
+          "ref": "ss:10:physics/motion-1d"
+        },
+        {
+          "value": "Energy & conservation",
+          "label": "Energy & conservation",
+          "ref": "ss:10:physics/energy"
+        },
+        {
+          "value": "Waves, sound & light",
+          "label": "Waves, sound & light",
+          "ref": "ss:10:physics/waves-sound-light"
+        },
+        {
+          "value": "Electrostatics",
+          "label": "Electrostatics",
+          "ref": "ss:10:physics/electrostatics"
+        },
+        {
+          "value": "Electric circuits",
+          "label": "Electric circuits",
+          "ref": "ss:10:physics/circuits"
+        }
+      ]
+    },
+    {
+      "group": "Grade 10 — Chemistry",
+      "lessons": [
+        {
+          "value": "Classification of matter",
+          "label": "Classification of matter",
+          "ref": "ss:10:chemistry/classification-matter"
+        },
+        {
+          "value": "Atomic structure",
+          "label": "Atomic structure",
+          "ref": "ss:10:chemistry/atomic-structure"
+        },
+        {
+          "value": "The periodic table",
+          "label": "The periodic table",
+          "ref": "ss:10:chemistry/periodic-table"
+        },
+        {
+          "value": "Chemical bonding",
+          "label": "Chemical bonding",
+          "ref": "ss:10:chemistry/chemical-bonding"
+        },
+        {
+          "value": "Intermolecular forces",
+          "label": "Intermolecular forces",
+          "ref": "ss:10:chemistry/intermolecular-forces"
+        },
+        {
+          "value": "Physical & chemical change",
+          "label": "Physical & chemical change",
+          "ref": "ss:10:chemistry/physical-chemical-change"
+        },
+        {
+          "value": "Representing chemical change",
+          "label": "Representing chemical change",
+          "ref": "ss:10:chemistry/representing-chemical-change"
+        },
+        {
+          "value": "Reactions in aqueous solution",
+          "label": "Reactions in aqueous solution",
+          "ref": "ss:10:chemistry/reactions-aqueous-solution"
+        },
+        {
+          "value": "Stoichiometry",
+          "label": "Stoichiometry",
+          "ref": "ss:10:chemistry/stoichiometry"
+        },
+        {
+          "value": "The hydrosphere",
+          "label": "The hydrosphere",
+          "ref": "ss:10:chemistry/hydrosphere"
+        }
+      ]
+    },
+    {
+      "group": "Grade 11 — Life Sciences",
+      "lessons": [
+        {
+          "value": "Classification of micro-organisms",
+          "label": "Classification of micro-organisms",
+          "ref": "ss:11:life/microorganisms-classification"
+        },
+        {
+          "value": "Biodiversity of plants",
+          "label": "Biodiversity of plants",
+          "ref": "ss:11:life/biodiversity-plants"
+        },
+        {
+          "value": "Reproduction in plants",
+          "label": "Reproduction in plants",
+          "ref": "ss:11:life/reproduction-plants"
+        },
+        {
+          "value": "Biodiversity of animals",
+          "label": "Biodiversity of animals",
+          "ref": "ss:11:life/biodiversity-animals"
+        },
+        {
+          "value": "Photosynthesis",
+          "label": "Photosynthesis",
+          "ref": "ss:11:life/photosynthesis"
+        },
+        {
+          "value": "Animal nutrition",
+          "label": "Animal nutrition",
+          "ref": "ss:11:life/animal-nutrition"
+        },
+        {
+          "value": "Respiration",
+          "label": "Respiration",
+          "ref": "ss:11:life/respiration"
+        },
+        {
+          "value": "Gas exchange",
+          "label": "Gas exchange",
+          "ref": "ss:11:life/gas-exchange"
+        },
+        {
+          "value": "Excretion",
+          "label": "Excretion",
+          "ref": "ss:11:life/excretion"
+        },
+        {
+          "value": "Population ecology",
+          "label": "Population ecology",
+          "ref": "ss:11:life/population-ecology"
+        },
+        {
+          "value": "Human impact on the environment",
+          "label": "Human impact on the environment",
+          "ref": "ss:11:life/human-impact-environment"
+        }
+      ]
+    },
+    {
+      "group": "Grade 11 — Physics",
+      "lessons": [
+        {
+          "value": "Vectors in 2D",
+          "label": "Vectors in 2D",
+          "ref": "ss:11:physics/vectors-2d"
+        },
+        {
+          "value": "Newton's laws applied",
+          "label": "Newton's laws applied",
+          "ref": "ss:11:physics/newtons-laws"
+        },
+        {
+          "value": "Momentum & impulse",
+          "label": "Momentum & impulse",
+          "ref": "ss:11:physics/momentum-impulse"
+        },
+        {
+          "value": "Work, energy & power",
+          "label": "Work, energy & power",
+          "ref": "ss:11:physics/work-energy-power"
+        },
+        {
+          "value": "Electrostatics",
+          "label": "Electrostatics",
+          "ref": "ss:11:physics/electrostatics"
+        },
+        {
+          "value": "Electric circuits",
+          "label": "Electric circuits",
+          "ref": "ss:11:physics/electric-circuits"
+        },
+        {
+          "value": "Electromagnetic induction",
+          "label": "Electromagnetic induction",
+          "ref": "ss:11:physics/electromagnetic-induction"
+        },
+        {
+          "value": "Optical phenomena & EM radiation",
+          "label": "Optical phenomena & EM radiation",
+          "ref": "ss:11:physics/optical-phenomena"
+        }
+      ]
+    },
+    {
+      "group": "Grade 11 — Chemistry",
+      "lessons": [
+        {
+          "value": "Intermolecular forces & properties",
+          "label": "Intermolecular forces & properties",
+          "ref": "ss:11:chemistry/intermolecular-forces"
+        },
+        {
+          "value": "Quantitative aspects",
+          "label": "Quantitative aspects",
+          "ref": "ss:11:chemistry/stoichiometry"
+        },
+        {
+          "value": "Acids & bases",
+          "label": "Acids & bases",
+          "ref": "ss:11:chemistry/acids-bases"
+        },
+        {
+          "value": "Redox reactions",
+          "label": "Redox reactions",
+          "ref": "ss:11:chemistry/redox"
+        },
+        {
+          "value": "Energy & chemical change",
+          "label": "Energy & chemical change",
+          "ref": "ss:11:chemistry/energy-chemical-change"
+        },
+        {
+          "value": "Rate of reaction",
+          "label": "Rate of reaction",
+          "ref": "ss:11:chemistry/rate-of-reaction"
+        },
+        {
+          "value": "Chemical equilibrium",
+          "label": "Chemical equilibrium",
+          "ref": "ss:11:chemistry/chemical-equilibrium"
+        }
+      ]
+    },
+    {
+      "group": "Grade 12 — Life Sciences",
+      "lessons": [
+        {
+          "value": "DNA — the code of life",
+          "label": "DNA — the code of life",
+          "ref": "ss:12:life/dna-code-of-life"
+        },
+        {
+          "value": "Genetic engineering & biotechnology",
+          "label": "Genetic engineering & biotechnology",
+          "ref": "ss:12:life/genetic-engineering"
+        },
+        {
+          "value": "Meiosis",
+          "label": "Meiosis",
+          "ref": "ss:12:life/meiosis"
+        },
+        {
+          "value": "Reproduction in vertebrates",
+          "label": "Reproduction in vertebrates",
+          "ref": "ss:12:life/reproduction-vertebrates"
+        },
+        {
+          "value": "Human reproduction",
+          "label": "Human reproduction",
+          "ref": "ss:12:life/human-reproduction"
+        },
+        {
+          "value": "Nervous system & senses",
+          "label": "Nervous system & senses",
+          "ref": "ss:12:life/nervous-system-senses"
+        },
+        {
+          "value": "Human endocrine system",
+          "label": "Human endocrine system",
+          "ref": "ss:12:life/human-endocrine-system"
+        },
+        {
+          "value": "Homeostasis",
+          "label": "Homeostasis",
+          "ref": "ss:12:life/homeostasis"
+        },
+        {
+          "value": "Osmoregulation & excretion",
+          "label": "Osmoregulation & excretion",
+          "ref": "ss:12:life/osmoregulation-excretion"
+        },
+        {
+          "value": "Responding to the environment — plants",
+          "label": "Responding to the environment — plants",
+          "ref": "ss:12:life/plant-responses"
+        },
+        {
+          "value": "Darwinism & natural selection",
+          "label": "Darwinism & natural selection",
+          "ref": "ss:12:life/darwinism-natural-selection"
+        },
+        {
+          "value": "Evolution — evidence & human evolution",
+          "label": "Evolution — evidence & human evolution",
+          "ref": "ss:12:life/evolution-human-evolution"
+        },
+        {
+          "value": "Genetics & inheritance",
+          "label": "Genetics & inheritance",
+          "ref": "ss:12:life/genetics-inheritance"
+        }
+      ]
+    },
+    {
+      "group": "Grade 12 — Physics",
+      "lessons": [
+        {
+          "value": "Vertical projectile motion",
+          "label": "Vertical projectile motion",
+          "ref": "ss:12:physics/vertical-projectile"
+        },
+        {
+          "value": "The Doppler effect",
+          "label": "The Doppler effect",
+          "ref": "ss:12:physics/doppler-effect"
+        },
+        {
+          "value": "Electrodynamics",
+          "label": "Electrodynamics",
+          "ref": "ss:12:physics/electrodynamics"
+        },
+        {
+          "value": "Electric circuits — internal resistance",
+          "label": "Electric circuits — internal resistance",
+          "ref": "ss:12:physics/electric-circuits-gr12"
+        },
+        {
+          "value": "Optical phenomena & photoelectric effect",
+          "label": "Optical phenomena & photoelectric effect",
+          "ref": "ss:12:physics/photoelectric-effect"
+        }
+      ]
+    },
+    {
+      "group": "Grade 12 — Chemistry",
+      "lessons": [
+        {
+          "value": "Organic chemistry — structure & naming",
+          "label": "Organic chemistry — structure & naming",
+          "ref": "ss:12:chemistry/organic-chemistry"
+        },
+        {
+          "value": "Organic reactions",
+          "label": "Organic reactions",
+          "ref": "ss:12:chemistry/organic-reactions"
+        },
+        {
+          "value": "Electrochemistry",
+          "label": "Electrochemistry",
+          "ref": "ss:12:chemistry/electrochemistry"
+        },
+        {
+          "value": "Acids & bases — quantitative",
+          "label": "Acids & bases — quantitative",
+          "ref": "ss:12:chemistry/acids-bases-gr12"
+        },
+        {
+          "value": "The chemical industry",
+          "label": "The chemical industry",
+          "ref": "ss:12:chemistry/chemical-industry"
+        }
+      ]
+    }
+  ],
+  "tech-tower": [
+    {
+      "group": "Grade 8 — Structures",
+      "lessons": [
+        {
+          "value": "Frame structures & forces",
+          "label": "Frame structures & forces",
+          "ref": "tt:8:structures/frame-structures-and-forces"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Mechanical Systems",
+      "lessons": [
+        {
+          "value": "Simple machines & gears",
+          "label": "Simple machines & gears",
+          "ref": "tt:8:mechanical/simple-machines-and-gears"
+        },
+        {
+          "value": "Mechanical advantage calculations",
+          "label": "Mechanical advantage calculations",
+          "ref": "tt:8:mechanical/mechanical-advantage-calculations"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Processing",
+      "lessons": [
+        {
+          "value": "The impact of technology",
+          "label": "The impact of technology",
+          "ref": "tt:8:processing/impact-of-technology"
+        }
+      ]
+    },
+    {
+      "group": "Grade 8 — Electrical Systems",
+      "lessons": [
+        {
+          "value": "Circuits & electrochemical cells",
+          "label": "Circuits & electrochemical cells",
+          "ref": "tt:8:electrical/circuits-and-cells"
+        },
+        {
+          "value": "Generating electricity & logic gates",
+          "label": "Generating electricity & logic gates",
+          "ref": "tt:8:electrical/generating-electricity-and-logic-gates"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Structures",
+      "lessons": [
+        {
+          "value": "First-angle orthographic projection",
+          "label": "First-angle orthographic projection",
+          "ref": "tt:9:structures/orthographic-projection"
+        },
+        {
+          "value": "Forces & material properties",
+          "label": "Forces & material properties",
+          "ref": "tt:9:structures/forces-and-materials"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Mechanical Systems",
+      "lessons": [
+        {
+          "value": "Hydraulics & pneumatics",
+          "label": "Hydraulics & pneumatics",
+          "ref": "tt:9:mechanical/hydraulics-and-pneumatics"
+        },
+        {
+          "value": "Pulleys & control systems",
+          "label": "Pulleys & control systems",
+          "ref": "tt:9:mechanical/pulleys-and-control-systems"
+        },
+        {
+          "value": "Advanced gear systems",
+          "label": "Advanced gear systems",
+          "ref": "tt:9:mechanical/advanced-gear-systems"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Electrical Systems",
+      "lessons": [
+        {
+          "value": "Ohm's Law & resistor colour codes",
+          "label": "Ohm's Law & resistor colour codes",
+          "ref": "tt:9:electrical/ohms-law-and-resistors"
+        },
+        {
+          "value": "Electronic components & sensors",
+          "label": "Electronic components & sensors",
+          "ref": "tt:9:electrical/electronic-components-and-sensors"
+        }
+      ]
+    },
+    {
+      "group": "Grade 9 — Processing",
+      "lessons": [
+        {
+          "value": "Preserving materials & plastics",
+          "label": "Preserving materials & plastics",
+          "ref": "tt:9:processing/preserving-materials-and-plastics"
         }
       ]
     }

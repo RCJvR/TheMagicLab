@@ -6170,6 +6170,7 @@ function _renderAssignmentsList(assignments, classId) {
             <div class="assignment-meta">
               <span>${_toolLabel(a.tool)}</span>
               ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : '<span>· whole tool</span>'}
+              ${a.student_ids?.length ? `<span>· for ${a.totalCount} learner${a.totalCount === 1 ? '' : 's'}</span>` : ''}
               ${a.due_date ? `<span class="assignment-due${overdue ? ' overdue' : ''}">Due ${_fmtDate(a.due_date)}</span>` : ''}
             </div>
           </div>
@@ -6181,7 +6182,7 @@ function _renderAssignmentsList(assignments, classId) {
         ${a.instructions ? `<div class="assignment-instructions">${a.instructions}</div>` : ''}
         <div class="assignment-progress-row">
           <div class="assignment-progress-bar"><div class="assignment-progress-fill" style="width:${pct}%"></div></div>
-          <div class="assignment-progress-label">${a.completedCount}/${a.totalCount} done</div>
+          <div class="assignment-progress-label">${a.completedCount}/${a.totalCount} done${a.classScore != null ? ` · <span class="assign-score">class score ${a.classScore}%</span>` : ''}</div>
         </div>
         <div class="assignment-student-list" id="assign-students-${a.id}"></div>
       </div>`;
@@ -6193,6 +6194,7 @@ function _toolLabel(tool) {
   const names = {
     'java-genie':'Java Genie', 'web-wizard':'Web Wizard', 'code-conjurer':'Code Conjurer',
     'math-magician':'Math Magician', 'computer-codex':'Computer Codex',
+    'science-sage':'Science Sage', 'tech-tower':'Tech Tower',
     'ai-oracle':'AI Oracle', 'drawing-druid':'Drawing Druid'
   };
   return names[tool] || tool;
@@ -6209,10 +6211,13 @@ async function toggleAssignmentDetail(assignmentId) {
   const detail = await window.MagicLabAssignments.getAssignmentCompletion(assignmentId, _assignSelectedClassId);
   if (!detail) { el.innerHTML = '<div style="font-size:12px;color:var(--muted);">Could not load learner list.</div>'; return; }
 
+  // One chip per lesson: the learner's recent score on it, ✓ once finished since the assignment was set.
+  const tone = p => p == null ? '' : p >= 70 ? 'good' : p >= 50 ? 'warn' : 'crit';
   el.innerHTML = detail.students.map(s => `
     <div class="assignment-student-row">
-      <span>${s.display_name || s.email?.split('@')[0] || 'Student'}</span>
-      ${s.done ? '<span class="assignment-student-done">✓ Done</span>' : '<span class="assignment-student-pending">Not yet</span>'}
+      <span>${_esc(s.display_name || s.email?.split('@')[0] || 'Student')}</span>
+      ${(s.items || []).length ? `<span class="assign-chips">${s.items.map(i => `<span class="assign-chip ${tone(i.score)}" title="${_esc(i.topic)}${i.n ? ` · last ${i.n} answers` : ''}">${_esc(i.topic.length > 28 ? i.topic.slice(0, 27) + '…' : i.topic)} ${i.score == null ? '—' : i.score + '%'}${i.done ? ' ✓' : ''}</span>`).join('')}</span>` : ''}
+      ${s.done ? '<span class="assignment-student-done">✓ Done</span>' : `<span class="assignment-student-pending">${s.started ? 'Started' : 'Not yet'}</span>`}
     </div>`).join('') || '<div style="font-size:12px;color:var(--muted);">No learners in this class.</div>';
 }
 
@@ -6221,23 +6226,65 @@ function confirmDeleteAssignment(assignmentId, classId, title) {
   window.MagicLabAssignments.deleteAssignment(assignmentId).then(() => _loadClassAssignmentsTab(classId));
 }
 
-function openCreateAssignmentModal() {
+// prefill (optional): { classId, tool, title, refs: [lesson ids], studentIds } — used by
+// "Assign" on the class view's reteach lists.
+function openCreateAssignmentModal(prefill) {
   if (!_classes.length) return;
+  const p = prefill && typeof prefill === 'object' && !(prefill instanceof Event) ? prefill : {};
   const toolSelect = document.getElementById('ca-tool');
   if (window.ML_TOOLS && !toolSelect.options.length) {
     toolSelect.innerHTML = Object.values(window.ML_TOOLS)
       .map(t => `<option value="${t}">${_toolLabel(t)}</option>`).join('');
   }
-  document.getElementById('ca-class').value = _assignSelectedClassId || _classes[0].id;
+  document.getElementById('ca-class').value = p.classId || _assignSelectedClassId || _classes[0].id;
+  if (p.tool) toolSelect.value = p.tool;
+  if (p.title) document.getElementById('ca-title').value = p.title;
   document.getElementById('createAssignmentModal').classList.add('open');
   document.getElementById('ca-title').focus();
   document.getElementById('ca-msg').textContent = '';
   _populateLessonPicker();
+  (p.refs || []).forEach(ref => {
+    const cb = document.querySelector(`.ca-lesson-cb[data-ref="${CSS.escape(ref)}"]`);
+    if (cb) cb.checked = true;
+  });
+  document.querySelector('.ca-lesson-cb:checked')?.closest('.lesson-item-row')?.scrollIntoView({ block: 'nearest' });
+  _updateLessonCount();
+  document.querySelector(`input[name="ca-who"][value="${p.studentIds?.length ? 'some' : 'class'}"]`).checked = true;
+  _loadModalLearners(p.studentIds);
 }
 function closeCreateAssignmentModal() {
   document.getElementById('createAssignmentModal').classList.remove('open');
   ['ca-title', 'ca-instructions', 'ca-due', 'ca-lesson-search'].forEach(id => document.getElementById(id).value = '');
+  document.querySelector('input[name="ca-who"][value="class"]').checked = true;
+  _updateWho();
 }
+
+// ── Learner picker: whole class, or selected learners ────────────────
+let _modalLearnerSeq = 0;
+async function _loadModalLearners(checkedIds) {
+  const wrap = document.getElementById('ca-learners');
+  const classId = document.getElementById('ca-class').value;
+  const my = ++_modalLearnerSeq;
+  wrap.innerHTML = '<div class="lesson-picker-empty">Loading learners…</div>';
+  _updateWho();
+  const students = classId ? await window.MagicLabAuth.getClassStudents(classId) : [];
+  if (my !== _modalLearnerSeq) return;
+  const keep = new Set(checkedIds || []);
+  wrap.innerHTML = students.length ? students
+    .sort((a, b) => (a.display_name || a.email || '').localeCompare(b.display_name || b.email || ''))
+    .map(s => `<label class="lesson-item-row"><input type="checkbox" class="ca-learner-cb" value="${s.id}"${keep.has(s.id) ? ' checked' : ''} onchange="_updateWho()"> ${_esc(s.display_name || s.email?.split('@')[0] || 'Learner')}</label>`).join('')
+    : '<div class="lesson-picker-empty">No learners in this class yet.</div>';
+  _updateWho();
+}
+function _updateWho() {
+  const some = document.querySelector('input[name="ca-who"]:checked')?.value === 'some';
+  document.getElementById('ca-learners').hidden = !some;
+  const count = document.getElementById('ca-learner-count');
+  count.hidden = !some;
+  const n = document.querySelectorAll('.ca-learner-cb:checked').length;
+  count.textContent = n ? `${n} learner${n > 1 ? 's' : ''} selected — only they will see this assignment` : 'Tick the learners this is for';
+}
+function _esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
 // ── Lesson picker (populated from lesson-catalog.js) ────────────────────
 function _populateLessonPicker() {
@@ -6260,7 +6307,7 @@ function _populateLessonPicker() {
       </label>
       ${g.lessons.map((l, li) => `
         <label class="lesson-item-row" data-label="${l.label.toLowerCase()}">
-          <input type="checkbox" class="ca-lesson-cb" data-gi="${gi}" value="${l.value.replace(/"/g, '&quot;')}" onchange="_updateLessonCount()">
+          <input type="checkbox" class="ca-lesson-cb" data-gi="${gi}" value="${l.value.replace(/"/g, '&quot;')}"${l.ref ? ` data-ref="${l.ref}"` : ''} onchange="_updateLessonCount()">
           ${l.label}
         </label>`).join('')}
     </div>`).join('');
@@ -6300,20 +6347,24 @@ async function submitCreateAssignment() {
   const classId      = document.getElementById('ca-class').value;
   const tool         = document.getElementById('ca-tool').value;
   const title        = document.getElementById('ca-title').value.trim();
-  const topics       = [...document.querySelectorAll('.ca-lesson-cb:checked')].map(cb => cb.value);
+  const topics       = [...document.querySelectorAll('.ca-lesson-cb:checked')].map(cb => ({ topic: cb.value, ref: cb.dataset.ref || null }));
+  const forSome      = document.querySelector('input[name="ca-who"]:checked')?.value === 'some';
+  const studentIds   = forSome ? [...document.querySelectorAll('.ca-learner-cb:checked')].map(cb => cb.value) : null;
   const instructions = document.getElementById('ca-instructions').value.trim();
   const dueDate      = document.getElementById('ca-due').value;
   const btn = document.getElementById('ca-submit');
   const msg = document.getElementById('ca-msg');
 
   if (!classId || !tool || !title) { msg.textContent = 'Class, tool, and title are required.'; msg.className = 'msg err'; return; }
+  if (forSome && !studentIds.length) { msg.textContent = 'Tick at least one learner, or choose Whole class.'; msg.className = 'msg err'; return; }
 
   btn.disabled = true; btn.textContent = 'Creating…';
   const { error } = await window.MagicLabAssignments.createAssignment({
     classId, tool, title,
     instructions: instructions || null,
     dueDate: dueDate || null,
-    topics
+    topics,
+    studentIds
   });
 
   if (error) {

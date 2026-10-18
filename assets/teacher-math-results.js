@@ -58,9 +58,9 @@
     const lv = {}; active.forEach(x => Object.entries(x.levels).forEach(([k, v]) => { lv[k] = lv[k] || [0, 0]; lv[k][0] += v[0]; lv[k][1] += v[1]; }));
     const topics = {};
     active.forEach(x => Object.entries(x.row.data.t || {}).forEach(([tid, arr]) => {
-      const t = topics[tid] = topics[tid] || { tid, c: 0, n: 0, learners: 0, weak: 0 };
+      const t = topics[tid] = topics[tid] || { tid, c: 0, n: 0, learners: 0, weak: 0, weakIds: [] };
       t.c += sum(arr); t.n += arr.length; t.learners++;
-      if (arr.length >= MIN_FOR_STATUS && pct(sum(arr), arr.length) < MASTERY) t.weak++;
+      if (arr.length >= MIN_FOR_STATUS && pct(sum(arr), arr.length) < MASTERY) { t.weak++; t.weakIds.push(x.s.id); }
     }));
     const reteach = Object.values(topics)
       .filter(t => t.n >= 6 || t.learners >= 2)
@@ -112,6 +112,7 @@
               <span class="mmr-topic-name">${tn.ch ? `<span class="mmr-ch">Ch ${tn.ch}</span>` : ''}${esc(tn.name)}</span>
               <span class="mmr-topic-p mmr-${tone(t.p)}">${t.p}%</span>
               <span class="mmr-topic-n">${t.weak} of ${t.learners} weak</span>
+              ${t.weak ? `<button type="button" class="mmr-assign" data-tid="${t.tid}" title="Set this topic as an assignment for the ${t.weak} weak learner${t.weak > 1 ? 's' : ''}">Assign</button>` : '<span></span>'}
             </li>`; }).join('')}</ol>` : `<p class="mmr-note">No topic is below ${MASTERY}% for the class.</p>`}
         </section>
       </div>`}
@@ -138,6 +139,13 @@
         </table>
       </div>`;
     wrap.querySelectorAll('.mmr-grade').forEach(b => b.addEventListener('click', () => { state.grade = +b.dataset.g; render(); }));
+    // Assign a weak topic to just the learners who are weak in it (assignments form, pre-filled).
+    wrap.querySelectorAll('.mmr-assign').forEach(b => b.addEventListener('click', () => {
+      const t = reteach.find(x => String(x.tid) === b.dataset.tid);
+      if (!t || typeof window.openCreateAssignmentModal !== 'function') return;
+      window.openCreateAssignmentModal({ classId: state.cls.id, tool: 'math-magician', title: 'Practise: ' + topicName(g, t.tid).name,
+        refs: [`mm:${g}:${t.tid}`], studentIds: t.weakIds });
+    }));
   }
 
   async function show(cls, students) {

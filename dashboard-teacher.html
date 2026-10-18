@@ -334,6 +334,7 @@
     .modal-box{
       background:#0d1226;border:1px solid rgba(255,255,255,0.10);
       border-radius:var(--radius-xl);padding:32px;width:100%;max-width:420px;
+      max-height:calc(100vh - 40px);overflow-y:auto; /* tall forms scroll on short screens */
       box-shadow:0 32px 80px rgba(0,0,0,0.60);
       transform:translateY(12px);transition:transform 200ms;
     }
@@ -436,6 +437,16 @@
     }
     .assignment-student-done{color:#6ee7b7;font-size:12px;font-weight:600;}
     .assignment-student-pending{color:var(--muted);font-size:12px;}
+    .assignment-student-row{gap:12px;flex-wrap:wrap;}
+    .assign-chips{display:flex;flex-wrap:wrap;gap:4px;flex:1;justify-content:flex-end;}
+    .assign-chip{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:var(--radius-full);border:1px solid var(--border2);color:var(--muted);white-space:nowrap;}
+    .assign-chip.good{color:var(--good);border-color:rgba(74,207,127,0.40);}
+    .assign-chip.warn{color:var(--warn);border-color:rgba(245,178,61,0.40);}
+    .assign-chip.crit{color:var(--crit);border-color:rgba(239,91,91,0.40);}
+    .assign-score{font-weight:700;}
+    .ca-who{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--text2);margin-bottom:8px;}
+    .ca-who label{display:flex;align-items:center;gap:6px;cursor:pointer;}
+    .ca-learners .lesson-item-row{padding-left:10px;}
 
     /* ══════════════════════════════════════════
        TEACHER TRAINING SECTION
@@ -1690,10 +1701,10 @@
   <div class="modal-overlay" id="createAssignmentModal">
     <div class="modal-box" style="max-width:480px;">
       <div class="modal-title">New assignment</div>
-      <div class="modal-sub">Completion is detected from your learners' lesson activity — no separate submission step needed.</div>
+      <div class="modal-sub">Completion and scores come from your learners' lesson activity — no separate submission step needed.</div>
       <div class="form-field">
         <label for="ca-class" class="form-label">Class</label>
-        <select class="form-input" id="ca-class"></select>
+        <select class="form-input" id="ca-class" onchange="_loadModalLearners()"></select>
       </div>
       <div class="form-field">
         <label for="ca-tool" class="form-label">Tool</label>
@@ -1708,6 +1719,15 @@
         <input class="form-input" id="ca-lesson-search" placeholder="Filter lessons…" style="margin-bottom:8px;" oninput="_filterLessonPicker()">
         <div id="ca-lesson-picker" class="lesson-picker"></div>
         <div id="ca-lesson-count" class="lesson-picker-count">Whole tool — no specific lessons selected</div>
+      </div>
+      <div class="form-field">
+        <span class="form-label" id="ca-who-label">Who</span>
+        <div class="ca-who" role="radiogroup" aria-labelledby="ca-who-label">
+          <label><input type="radio" name="ca-who" value="class" checked onchange="_updateWho()"> Whole class</label>
+          <label><input type="radio" name="ca-who" value="some" onchange="_updateWho()"> Selected learners</label>
+        </div>
+        <div id="ca-learners" class="lesson-picker ca-learners" hidden></div>
+        <div id="ca-learner-count" class="lesson-picker-count" hidden></div>
       </div>
       <div class="form-field">
         <label for="ca-instructions" class="form-label">Instructions (optional)</label>

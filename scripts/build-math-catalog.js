@@ -7,6 +7,7 @@
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..'), MM = path.join(ROOT, 'math-magician');
+const { setCatalogSection } = require('./lesson-catalog-file');
 
 const groups = [], totals = {};
 for (const g of [8, 9, 10, 11, 12]) {
@@ -19,22 +20,17 @@ for (const g of [8, 9, 10, 11, 12]) {
     let reg = null;
     vm.runInNewContext(fs.readFileSync(path.join(MM, 'gr' + g, file), 'utf8'), { MathMagician: { registerChapter: (n, o) => { reg = o; } }, window: {} });
     const names = reg.topics.map(t => t.name);
+    // ref: the topic's fixed id, which assignments match on (the name is shown and kept for older assignments).
     total += names.length;
     if (+m[3] !== names.length) idx = idx.replace(m[0], m[0].replace(/topics:(\s*)\d+/, (x, sp) => 'topics:' + sp + names.length));
-    groups.push({ group: `Grade ${g} — Ch ${num} — ${name}`, lessons: names.map(n => ({ value: n, label: n })) });
+    groups.push({ group: `Grade ${g} — Ch ${num} — ${name}`, lessons: reg.topics.map(t => ({ value: t.name, label: t.name, ref: `mm:${g}:${t.id}` })) });
   }
   fs.writeFileSync(idxPath, idx);
   totals[g] = total;
 }
 
-// lesson-catalog.js: replace the math-magician array
-const catPath = path.join(ROOT, 'lesson-catalog.js');
-let cat = fs.readFileSync(catPath, 'utf8');
-const start = cat.indexOf('  "math-magician": [');
-const end = cat.indexOf('\n  ],\n', start) + '\n  ],\n'.length;
-const body = JSON.stringify(groups, null, 2).split('\n').map((l, i) => (i === 0 ? l : '  ' + l)).join('\n');
-cat = cat.slice(0, start) + '  "math-magician": ' + body + ',\n' + cat.slice(end);
-fs.writeFileSync(catPath, cat);
+// lesson-catalog.js: replace the math-magician section
+setCatalogSection('math-magician', groups);
 
 // grade cards
 const homePath = path.join(MM, 'index.html');
