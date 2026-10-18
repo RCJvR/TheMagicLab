@@ -559,7 +559,8 @@ x ≤ −3         →  (−∞ ; −3]
           text: "Two consecutive even numbers have a product of 168. Find the larger number.",
           answer: "14",
           topic: "Word problems in context"
-        }
+        },
+        { type: "input", text: "240 chairs are set out in equal rows. If each row had 4 more chairs, 3 fewer rows would be needed. How many chairs are in each row?", answer: "16", topic: "Word problems in context" }
       ]
     }
   ],

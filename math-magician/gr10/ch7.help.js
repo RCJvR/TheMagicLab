@@ -35,6 +35,7 @@ MMHelp.add(10, 7, {
     ["K","m4:0","A rhombus is a parallelogram with all sides equal.","'n Ruit is 'n parallelogram met al die sye gelyk.",["In a parallelogram opposite sides are equal, so one pair of equal adjacent sides makes all four equal."],["In 'n parallelogram is oorstaande sye gelyk, dus maak een paar gelyke aangrensende sye al vier gelyk."]],
     ["R","i:8","The diagonals bisect each other.","Die hoeklyne halveer mekaar.",["PO = 16 ÷ 2 = 8"],["PO = 16 ÷ 2 = 8"]],
     ["C","i:10","The half-diagonals form a right triangle.","Die halwe hoeklyne vorm 'n reghoekige driehoek.",["Halves: 8 cm and 6 cm","side = √(64 + 36) = 10 cm"],["Helftes: 8 cm en 6 cm","sy = √(64 + 36) = 10 cm"]],
-    ["R","i:22","Diagonals of a rectangle are equal.","Hoeklyne van 'n reghoek is gelyk.",["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"],["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"]]
+    ["R","i:22","Diagonals of a rectangle are equal.","Hoeklyne van 'n reghoek is gelyk.",["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"],["5x − 3 = 2x + 12 → x = 5","PR = 5(5) − 3 = 22"]],
+    ["P","i:4","Look for equal angles in triangle ADE.","Soek gelyke hoeke in driehoek ADE.",["∠DAE = ∠EAB (bisector) and ∠EAB = ∠AED (alt ∠s, DC ∥ AB)","So ∠DAE = ∠AED → △ADE is isosceles → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"],["∠DAE = ∠EAB (halveerlyn) en ∠EAB = ∠AED (verw ∠e, DC ∥ AB)","Dus ∠DAE = ∠AED → △ADE is gelykbenig → DE = AD = 6","EC = DC − DE = 10 − 6 = 4"]]
   ]
 });

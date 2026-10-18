@@ -24,6 +24,7 @@ MMHelp.add(10, 3, {
     ["K","m4:0","Look at 1, 2, 3, 4, 5 squared.","Kyk na 1, 2, 3, 4, 5 gekwadreer.",["Tₙ = n²"],["Tₙ = n²"]],
     ["R","i:","The cycle has length 3.","Die siklus het lengte 3.",["250 ÷ 3 = 83 remainder 1","Position 1 → S"],["250 ÷ 3 = 83 res 1","Posisie 1 → S"]],
     ["K","m4:0","Constant first differences mean linear.","Konstante eerste verskille beteken lineêr.",["The first differences change, but the second differences are constant (2) → quadratic."],["Die eerste verskille verander, maar die tweede verskille is konstant (2) → kwadraties."]],
-    ["R","i:7","Odd positions are 7, even positions are 14.","Onewe posisies is 7, ewe posisies is 14.",["41 is odd","T₄₁ = 7"],["41 is onewe","T₄₁ = 7"]]
+    ["R","i:7","Odd positions are 7, even positions are 14.","Onewe posisies is 7, ewe posisies is 14.",["41 is odd","T₄₁ = 7"],["41 is onewe","T₄₁ = 7"]],
+    ["P","i:15","Find both general terms and solve an inequality.","Vind albei algemene terme en los 'n ongelykheid op.",["A: Tₙ = 4n − 1; B: Tₙ = 103 − 3n","4n − 1 > 103 − 3n → 7n > 104 → n > 14.9","n = 15 (A: 59, B: 58)"],["A: Tₙ = 4n − 1; B: Tₙ = 103 − 3n","4n − 1 > 103 − 3n → 7n > 104 → n > 14,9","n = 15 (A: 59, B: 58)"]]
   ]
 });

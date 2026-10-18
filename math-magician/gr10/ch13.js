@@ -606,7 +606,8 @@ MathMagician.registerChapter(13, {
           text: "A cone has volume 150π cm³ and radius 5 cm. Find its height.",
           answer: "18",
           topic: "Pyramids and cones in depth"
-        }
+        },
+        { type: "input", text: "A solid metal cone with radius 6 cm and height 8 cm is melted down and recast into solid spheres of radius 2 cm. How many complete spheres can be made?", answer: "9", topic: "Pyramids and cones in depth" }
       ]
     }
   ],

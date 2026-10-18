@@ -443,7 +443,8 @@ MathMagician.registerChapter(3, {
           text: "Die patroon 7;14;7;14;7;14;… herhaal met sikluslengte 2. Wat is die 41ste term?",
           answer: "7",
           topic: "Nie-voor-die-hand-liggende patroonprobleme"
-        }
+        },
+        { type: "input", text: "Ry A is 3 ; 7 ; 11 ; … en ry B is 100 ; 97 ; 94 ; … Watter termnommer is die eerste een waar A se term groter as B se term is?", answer: "15", topic: "Nie-voor-die-hand-liggende patroonprobleme" }
       ]
     }
   ],

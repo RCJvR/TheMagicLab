@@ -606,7 +606,8 @@ MathMagician.registerChapter(13, {
           text: "'n Keël het 'n volume van 150π cm³ en radius 5 cm. Bereken sy hoogte.",
           answer: "18",
           topic: "Piramides en keëls in diepte"
-        }
+        },
+        { type: "input", text: "'n Soliede metaalkeël met radius 6 cm en hoogte 8 cm word gesmelt en in soliede sfere met radius 2 cm gegiet. Hoeveel volledige sfere kan gemaak word?", answer: "9", topic: "Piramides en keëls in diepte" }
       ]
     }
   ],

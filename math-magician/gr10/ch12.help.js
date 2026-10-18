@@ -35,6 +35,7 @@ MMHelp.add(10, 12, {
     ["K","m4:0","Ask \"what would I need?\"","Vra \"wat sal ek nodig hê?\"",["Work backwards from what must be proved."],["Werk terug vanaf wat bewys moet word."]],
     ["K","m4:1","Statement → reason.","Bewering → rede.",["Each statement needs a reason."],["Elke bewering het 'n rede nodig."]],
     ["R","i:15","MF = EF − EM.","MF = EF − EM.",["24 − 9","= 15"],["24 − 9","= 15"]],
-    ["R","i:22","The diagonals bisect each other.","Die hoeklyne halveer mekaar.",["2x + 3 = 5x − 9 → x = 4","PO = 11 → PR = 22"],["2x + 3 = 5x − 9 → x = 4","PO = 11 → PR = 22"]]
+    ["R","i:22","The diagonals bisect each other.","Die hoeklyne halveer mekaar.",["2x + 3 = 5x − 9 → x = 4","PO = 11 → PR = 22"],["2x + 3 = 5x − 9 → x = 4","PO = 11 → PR = 22"]],
+    ["P","i:11","Let AC cut MN at P and use the midpoint theorem in two triangles.","Laat AC vir MN by P sny en gebruik die middelpuntstelling in twee driehoeke.",["In △ADC: MP = ½ DC = 4","In △ACB: PN = ½ AB = 7","MN = 4 + 7 = 11 (the average of the parallel sides)"],["In △ADC: MP = ½ DC = 4","In △ACB: PN = ½ AB = 7","MN = 4 + 7 = 11 (die gemiddeld van die ewewydige sye)"]]
   ]
 });

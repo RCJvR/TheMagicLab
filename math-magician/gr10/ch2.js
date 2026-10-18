@@ -501,7 +501,8 @@ MathMagician.registerChapter(2, {
           options: ["x = 9 or x = −7", "x = 9 only", "x = ±8", "x = 8 or x = −9"],
           answer: 0,
           topic: "Advanced exponential equations"
-        }
+        },
+        { type: "mc", text: "Without a calculator, which is larger: 2³⁰ or 3²⁰?", options: ["2³⁰","3²⁰","They are equal","It cannot be decided without a calculator"], answer: 1, topic: "Advanced exponential equations" }
       ]
     }
   ],

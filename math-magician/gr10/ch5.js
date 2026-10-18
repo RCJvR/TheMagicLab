@@ -527,7 +527,8 @@ MathMagician.registerChapter(5, {
           text: "Given 5cosθ − 3 = 0 and θ is acute, find tanθ as a fraction.",
           answer: "4/3",
           topic: "Reciprocal ratios & trig identities"
-        }
+        },
+        { type: "input", text: "Given 5 cos θ + 3 = 0 and 180° < θ < 360°, find the value of sin θ + tan θ without a calculator. Give a fraction.", answer: "8/15", topic: "Reciprocal ratios & trig identities" }
       ]
     }
   ],

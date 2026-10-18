@@ -537,7 +537,8 @@ MathMagician.registerChapter(7, {
           text: "Reghoek PQRS het diagonale PR = 5x − 3 en QS = 2x + 12. Vind PR.",
           answer: "22",
           topic: "Spesiale vierhoeke — parallelogramfamilie"
-        }
+        },
+        { type: "input", text: "ABCD is 'n parallelogram met AB = 10 en AD = 6. Die halveerlyn van ∠DAB sny DC by E.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[10,0],\"C\":[13,5.2],\"D\":[3,5.2],\"E\":[9,5.2]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"E\",\"ac\"],[\"A\",\"B\",null,null,\"10\"],[\"A\",\"D\",null,null,\"6\"],[\"D\",\"C\"],[\"C\",\"B\"]],\"ang\":[[\"B\",\"A\",\"E\",null,null,22],[\"E\",\"A\",\"D\",null,null,26]]}'></div>Bereken die lengte van EC.", answer: "4", topic: "Spesiale vierhoeke — parallelogramfamilie" }
       ]
     }
   ],

@@ -594,7 +594,8 @@ MathMagician.registerChapter(9, {
           text: "Find the number of years (smallest whole number) it takes for R9 000 to grow to at least R13 500 at 9% p.a. compound interest.",
           answer: "5",
           topic: "Solving for rate or time period"
-        }
+        },
+        { type: "input", text: "Thabo invests R10 000 at 8% p.a. simple interest. Lerato invests R10 000 at 6% p.a. compound interest. After how many whole years is Lerato's investment first worth more than Thabo's?", answer: "11", topic: "Solving for rate or time period" }
       ]
     }
   ],

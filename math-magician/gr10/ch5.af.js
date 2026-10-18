@@ -527,7 +527,8 @@ MathMagician.registerChapter(5, {
           text: "Gegewe 5cosθ − 3 = 0 en θ is skerp, vind tanθ as 'n breuk.",
           answer: "4/3",
           topic: "Wederkerige verhoudings & trig-identiteite"
-        }
+        },
+        { type: "input", text: "Gegee 5 cos θ + 3 = 0 en 180° < θ < 360°. Bepaal die waarde van sin θ + tan θ sonder 'n sakrekenaar. Gee 'n breuk.", answer: "8/15", topic: "Wederkerige verhoudings & trig-identiteite" }
       ]
     }
   ],

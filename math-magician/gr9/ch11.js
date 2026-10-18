@@ -294,7 +294,7 @@ MathMagician.registerChapter(11, {
         {"type": "mc", "text": "Which quadrilateral has exactly one pair of parallel sides?", "options": ["parallelogram", "kite", "trapezium", "rhombus"], "answer": 2, "topic": "Ch 11 Exam focus"},
         {"type": "input", "text": "What is the sum of the interior angles of a decagon (10 sides)? (°)", "answer": "1440", "topic": "Ch 11 Exam focus"},
         {"type": "input", "text": "In an isosceles triangle the two equal angles are each 72°. What is the third angle? (°)", "answer": "36", "topic": "Ch 11 Exam focus"},
-        { type: "input", text: "ABCD is a square and CDE is an equilateral triangle built on DC, outside the square.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":230,\"pts\":{\"A\":[0,0],\"B\":[4,0],\"C\":[4,4],\"D\":[0,4],\"E\":[2,7.46]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"D\",\"E\"],[\"C\",\"E\"],[\"A\",\"E\",\"ac\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"tick\":[[\"A\",\"D\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"D\",\"C\"]]}'></div>Find ∠AED. (°)", answer: "15", topic: "Ch 11 Exam focus" }
+        { type: "input", text: "ABCD is a square and CDE is an equilateral triangle built on DC, outside the square.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":230,\"pts\":{\"A\":[0,0],\"B\":[4,0],\"C\":[4,4],\"D\":[0,4],\"E\":[2,7.46]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"A\",\"E\",\"ac\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"tick\":[[\"A\",\"D\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"D\",\"C\"]]}'></div>Find ∠AED. (°)", answer: "15", topic: "Ch 11 Exam focus" }
       ]
     },
   ],

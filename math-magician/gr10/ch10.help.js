@@ -43,6 +43,7 @@ MMHelp.add(10, 10, {
     ["K","i:","Look at the 90.","Kyk na die 90.",["90 is an outlier that pulls the mean to 25","The median (12.5) is more typical → median"],["90 is 'n uitskieter wat die gemiddeld na 25 trek","Die mediaan (12,5) is meer tipies → mediaan"]],
     ["K","m4:1","What pulls a mean up?","Wat trek 'n gemiddeld op?",["A few very high salaries are outliers that raise the mean."],["'n Paar baie hoë salarisse is uitskieters wat die gemiddeld verhoog."]],
     ["R","i:5","Find the mean and the median.","Vind die gemiddeld en die mediaan.",["Mean = 217 ÷ 7 = 31; median = 26","31 − 26 = 5"],["Gemiddeld = 217 ÷ 7 = 31; mediaan = 26","31 − 26 = 5"]],
-    ["K","m4:0","A smaller range means less spread.","'n Kleiner omvang beteken minder verspreiding.",["Class X (range 12) is more tightly clustered."],["Klas X (omvang 12) is digter saamgegroepeer."]]
+    ["K","m4:0","A smaller range means less spread.","'n Kleiner omvang beteken minder verspreiding.",["Class X (range 12) is more tightly clustered."],["Klas X (omvang 12) is digter saamgegroepeer."]],
+    ["P","i:67","Adding 5 to every value adds 5 to the mean.","As 5 by elke waarde getel word, word 5 by die gemiddeld getel.",["After adding 5: mean 69, total 690","Changing 100 to 80: total 690 − 20 = 670","Mean = 670 ÷ 10 = 67"],["Na die byvoeging: gemiddeld 69, totaal 690","100 na 80: totaal 690 − 20 = 670","Gemiddeld = 670 ÷ 10 = 67"]]
   ]
 });

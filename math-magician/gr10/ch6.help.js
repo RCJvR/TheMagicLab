@@ -31,6 +31,7 @@ MMHelp.add(10, 6, {
     ["K","i:-4","The horizontal asymptote is y = q.","Die horisontale asimptoot is y = q.",["y = −4"],["y = −4"]],
     ["K","m4:0","0 < a < 1","0 < a < 1",["A smaller a makes the parabola wider (vertically compressed)."],["'n Kleiner a maak die parabool wyer (vertikaal saamgedruk)."]],
     ["K","i:-3","y = ax² + q has turning point (0 ; q).","y = ax² + q het draaipunt (0 ; q).",["q = −3"],["q = −3"]],
-    ["C","i:-4","The axis of symmetry is x = −2.","Die simmetrie-as is x = −2.",["x = 0 is 2 units right of the axis","The mirror point is 2 units left: x = −4"],["x = 0 is 2 eenhede regs van die as","Die spieëlpunt is 2 eenhede links: x = −4"]]
+    ["C","i:-4","The axis of symmetry is x = −2.","Die simmetrie-as is x = −2.",["x = 0 is 2 units right of the axis","The mirror point is 2 units left: x = −4"],["x = 0 is 2 eenhede regs van die as","Die spieëlpunt is 2 eenhede links: x = −4"]],
+    ["P","m4:0","Where is the parabola on or above the line?","Waar is die parabool op of bo die lyn?",["Intersections: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 or x = 1","Between them the parabola is above the line: −2 ≤ x ≤ 1"],["Snypunte: −x² + 4 = x + 2 → x² + x − 2 = 0 → (x + 2)(x − 1) = 0","x = −2 of x = 1","Tussen hulle is die parabool bo die lyn: −2 ≤ x ≤ 1"]]
   ]
 });

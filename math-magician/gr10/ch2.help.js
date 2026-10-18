@@ -35,6 +35,7 @@ MMHelp.add(10, 2, {
     ["R","i:1","Take out 5^x.","Haal 5^x uit.",["5^x(5 + 1) = 30 → 5^x = 5","x = 1"],["5^x(5 + 1) = 30 → 5^x = 5","x = 1"]],
     ["R","m4:0","Raise both sides to the power 3/2.","Verhef albei kante tot die mag 3/2.",["x = 9^(3/2)","= 3³ = 27"],["x = 9^(3/2)","= 3³ = 27"]],
     ["C","i:3","Let k = 2^x; note 2^(x + 2) = 4k.","Laat k = 2^x; let op 2^(x + 2) = 4k.",["k² − 4k − 32 = 0 → (k − 8)(k + 4) = 0","2^x = 8 → x = 3 (2^x = −4 has no solution)"],["k² − 4k − 32 = 0 → (k − 8)(k + 4) = 0","2^x = 8 → x = 3 (2^x = −4 het geen oplossing nie)"]],
-    ["C","m4:0","Cube both sides, then take the square root.","Verhef albei kante tot die derde mag en neem dan die vierkantswortel.",["(x − 1)² = 4³ = 64","x − 1 = ±8 → x = 9 or x = −7"],["(x − 1)² = 4³ = 64","x − 1 = ±8 → x = 9 of x = −7"]]
+    ["C","m4:0","Cube both sides, then take the square root.","Verhef albei kante tot die derde mag en neem dan die vierkantswortel.",["(x − 1)² = 4³ = 64","x − 1 = ±8 → x = 9 or x = −7"],["(x − 1)² = 4³ = 64","x − 1 = ±8 → x = 9 of x = −7"]],
+    ["P","m4:1","Write both with the same exponent.","Skryf albei met dieselfde eksponent.",["2³⁰ = (2³)¹⁰ = 8¹⁰","3²⁰ = (3²)¹⁰ = 9¹⁰","9¹⁰ > 8¹⁰, so 3²⁰ is larger"],["2³⁰ = (2³)¹⁰ = 8¹⁰","3²⁰ = (3²)¹⁰ = 9¹⁰","9¹⁰ > 8¹⁰, dus is 3²⁰ groter"]]
   ]
 });

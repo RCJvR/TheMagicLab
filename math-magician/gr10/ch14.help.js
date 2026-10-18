@@ -35,6 +35,7 @@ MMHelp.add(10, 14, {
     ["K","m4:1","Same data, different picture.","Dieselfde data, ander prentjie.",["They give the same probabilities."],["Hulle gee dieselfde waarskynlikhede."]],
     ["K","m4:2","\"AND\" is the overlap.","\"EN\" is die oorvleueling.",["Female AND Pass → the intersection of Female and Pass"],["Vroulik EN Slaag → die snyding van Vroulik en Slaag"]],
     ["R","i:16","All cells add up to 70.","Al die selle tel op tot 70.",["24 + x + 18 + 12 = 70","x = 16"],["24 + x + 18 + 12 = 70","x = 16"]],
-    ["C","i:5/16","Sport but no instrument.","Sport maar geen instrument.",["45 − 20 = 25","25/80 = 5/16"],["45 − 20 = 25","25/80 = 5/16"]]
+    ["C","i:5/16","Sport but no instrument.","Sport maar geen instrument.",["45 − 20 = 25","25/80 = 5/16"],["45 − 20 = 25","25/80 = 5/16"]],
+    ["P","i:27/40","Find how many like both first.","Vind eers hoeveel van albei hou.",["At least one: 40 − 5 = 35 → both = 25 + 18 − 35 = 8","Exactly one: 35 − 8 = 27","P = 27/40"],["Ten minste een: 40 − 5 = 35 → albei = 25 + 18 − 35 = 8","Presies een: 35 − 8 = 27","P = 27/40"]]
   ]
 });

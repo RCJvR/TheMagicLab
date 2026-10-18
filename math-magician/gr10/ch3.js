@@ -443,7 +443,8 @@ MathMagician.registerChapter(3, {
           text: "The pattern 7;14;7;14;7;14;… repeats with cycle length 2. What is the 41st term?",
           answer: "7",
           topic: "Non-obvious pattern problems"
-        }
+        },
+        { type: "input", text: "Sequence A is 3 ; 7 ; 11 ; … and sequence B is 100 ; 97 ; 94 ; … Which term number is the first one where A's term is bigger than B's term?", answer: "15", topic: "Non-obvious pattern problems" }
       ]
     }
   ],

@@ -32,6 +32,7 @@ MMHelp.add(10, 8, {
     ["K","m4:0","Check the side lengths and the corners.","Kontroleer die sylengtes en die hoeke.",["All sides are 4 and the angles are 90° → square"],["Al die sye is 4 en die hoeke is 90° → vierkant"]],
     ["R","i:7.21","Use the distance formula.","Gebruik die afstandsformule.",["AC = √(6² + 4²) = √52","≈ 7.21"],["AC = √(6² + 4²) = √52","≈ 7,21"]],
     ["K","m4:2","A rhombus has equal sides.","'n Ruit het gelyke sye.",["Show all four sides are equal (or the diagonals are perpendicular)."],["Toon dat al vier sye gelyk is (of dat die hoeklyne loodreg is)."]],
-    ["C","m4:1","Compare the gradients of adjacent sides.","Vergelyk die gradiënte van aangrensende sye.",["m_AB = m_DC = ½ and m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → no right angle, so not a rectangle (it is in fact a rhombus)"],["m_AB = m_DC = ½ en m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → geen regte hoek nie, dus nie 'n reghoek nie (dit is eintlik 'n ruit)"]]
+    ["C","m4:1","Compare the gradients of adjacent sides.","Vergelyk die gradiënte van aangrensende sye.",["m_AB = m_DC = ½ and m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → no right angle, so not a rectangle (it is in fact a rhombus)"],["m_AB = m_DC = ½ en m_BC = m_AD = 2 → parallelogram","½ × 2 = 1 ≠ −1 → geen regte hoek nie, dus nie 'n reghoek nie (dit is eintlik 'n ruit)"]],
+    ["P","i:12","C is on the perpendicular bisector of AB.","C lê op die middelloodlyn van AB.",["Midpoint of AB = (4 ; 2), so C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Area = ½ × 6 × 4 = 12"],["Middelpunt van AB = (4 ; 2), dus C = (4 ; k)","AC² = 3² + (k − 2)² = 25 → k − 2 = 4 → C(4 ; 6)","Oppervlakte = ½ × 6 × 4 = 12"]]
   ]
 });

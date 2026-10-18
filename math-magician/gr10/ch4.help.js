@@ -39,6 +39,7 @@ MMHelp.add(10, 4, {
     ["C","m4:0","Let a be adult tickets; child tickets are 60 − a.","Laat a die volwassenekaartjies wees; kinderkaartjies is 60 − a.",["50a + 20(60 − a) = 2 400","30a + 1 200 = 2 400 → a = 40"],["50a + 20(60 − a) = 2 400","30a + 1 200 = 2 400 → a = 40"]],
     ["R","i:11","n(n + 1) = 132","n(n + 1) = 132",["n² + n − 132 = 0 → (n + 12)(n − 11) = 0","n = 11 (positive)"],["n² + n − 132 = 0 → (n + 12)(n − 11) = 0","n = 11 (positief)"]],
     ["C","i:6","Let the numbers be x and 2x + 3.","Laat die getalle x en 2x + 3 wees.",["x(2x + 3) = 90 → 2x² + 3x − 90 = 0","(2x + 15)(x − 6) = 0 → x = 6 (the numbers are 6 and 15)"],["x(2x + 3) = 90 → 2x² + 3x − 90 = 0","(2x + 15)(x − 6) = 0 → x = 6 (die getalle is 6 en 15)"]],
-    ["C","i:14","Let the numbers be n and n + 2.","Laat die getalle n en n + 2 wees.",["n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0","n = 12 → larger number 14"],["n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0","n = 12 → groter getal 14"]]
+    ["C","i:14","Let the numbers be n and n + 2.","Laat die getalle n en n + 2 wees.",["n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0","n = 12 → larger number 14"],["n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0","n = 12 → groter getal 14"]],
+    ["P","i:16","Let c be the chairs per row; then there are 240/c rows.","Laat c die stoele per ry wees; dan is daar 240/c rye.",["(c + 4)(240/c − 3) = 240","240 − 3c + 960/c − 12 = 240 → 3c² + 12c − 960 = 0 → c² + 4c − 320 = 0","(c + 20)(c − 16) = 0 → c = 16 (15 rows; check: 20 × 12 = 240 ✓)"],["(c + 4)(240/c − 3) = 240","240 − 3c + 960/c − 12 = 240 → 3c² + 12c − 960 = 0 → c² + 4c − 320 = 0","(c + 20)(c − 16) = 0 → c = 16 (15 rye; kontrole: 20 × 12 = 240 ✓)"]]
   ]
 });

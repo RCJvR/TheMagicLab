@@ -33,6 +33,7 @@ MMHelp.add(10, 11, {
     ["R","i:12.0","Use h = ab ÷ (a + b).","Gebruik h = ab ÷ (a + b).",["(20 × 30) ÷ 50","= 12.0 m"],["(20 × 30) ÷ 50","= 12,0 m"]],
     ["K","m4:1","Try the formula.","Probeer die formule.",["h = ab ÷ (a + b) does not contain the distance → it cancels out."],["h = ab ÷ (a + b) bevat nie die afstand nie → dit kanselleer uit."]],
     ["K","m4:0","Each boat gives its own horizontal distance.","Elke boot gee sy eie horisontale afstand.",["Distance between boats = far distance − near distance"],["Afstand tussen bote = ver afstand − naby afstand"]],
-    ["P","i:54.72","First the horizontal distance, then the extra height.","Eers die horisontale afstand, dan die ekstra hoogte.",["d = 36 ÷ tan 32° ≈ 57.61 m","extra = d × tan 18° ≈ 18.72 m","height = 36 + 18.72 = 54.72 m"],["d = 36 ÷ tan 32° ≈ 57,61 m","ekstra = d × tan 18° ≈ 18,72 m","hoogte = 36 + 18,72 = 54,72 m"]]
+    ["P","i:54.72","First the horizontal distance, then the extra height.","Eers die horisontale afstand, dan die ekstra hoogte.",["d = 36 ÷ tan 32° ≈ 57.61 m","extra = d × tan 18° ≈ 18.72 m","height = 36 + 18.72 = 54.72 m"],["d = 36 ÷ tan 32° ≈ 57,61 m","ekstra = d × tan 18° ≈ 18,72 m","hoogte = 36 + 18,72 = 54,72 m"]],
+    ["P","i:15.01","Find the height to the top of the pole first.","Vind eers die hoogte tot by die bopunt van die paal.",["tan 35° = h/30 → h = 30 tan 35° ≈ 21.006 m","Building = 21.006 − 6 ≈ 15.01 m"],["tan 35° = h/30 → h = 30 tan 35° ≈ 21,006 m","Gebou = 21,006 − 6 ≈ 15,01 m"]]
   ]
 });

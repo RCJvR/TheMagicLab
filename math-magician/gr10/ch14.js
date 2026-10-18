@@ -583,7 +583,8 @@ MathMagician.registerChapter(14, {
           answer: "5/16",
           altAnswers: ["0.3125", "0,3125"],
           topic: "Two-way tables"
-        }
+        },
+        { type: "input", text: "In a class of 40, 25 like soccer, 18 like netball and 5 like neither. A learner is chosen at random. What is the probability that the learner likes exactly one of the two sports? Give a fraction.", answer: "27/40", topic: "Two-way tables" }
       ]
     }
   ],

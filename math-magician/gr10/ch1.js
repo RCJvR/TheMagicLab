@@ -680,7 +680,8 @@ MathMagician.registerChapter(1, {
           answer: "(x²-x+1)/(x-1)",
           altAnswers: ["(x^2-x+1)/(x-1)", "(x² − x + 1)/(x − 1)"],
           topic: "Algebraic fractions with cube denominators"
-        }
+        },
+        { type: "input", text: "If x − 1/x = 3, find the value of x³ − 1/x³ without solving for x.", answer: "36", topic: "Algebraic fractions with cube denominators" }
       ]
     }
   ],

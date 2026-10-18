@@ -31,6 +31,7 @@ MMHelp.add(10, 5, {
     ["R","m4:0","cos²θ = 1 − sin²θ.","cos²θ = 1 − sin²θ.",["1 − 0.36","= 0.64"],["1 − 0,36","= 0,64"]],
     ["R","i:4/3","cot θ = 1/tan θ.","cot θ = 1/tan θ.",["1 ÷ 3/4","= 4/3"],["1 ÷ 3/4","= 4/3"]],
     ["K","m4:0","The square identity.","Die kwadraat-identiteit.",["sin²θ + cos²θ = 1"],["sin²θ + cos²θ = 1"]],
-    ["C","i:4/3","Find cos θ, then draw the triangle.","Vind cos θ en teken dan die driehoek.",["cos θ = 3/5 → adj = 3, hyp = 5 → opp = 4","tan θ = 4/3"],["cos θ = 3/5 → aangr = 3, sk = 5 → tt = 4","tan θ = 4/3"]]
+    ["C","i:4/3","Find cos θ, then draw the triangle.","Vind cos θ en teken dan die driehoek.",["cos θ = 3/5 → adj = 3, hyp = 5 → opp = 4","tan θ = 4/3"],["cos θ = 3/5 → aangr = 3, sk = 5 → tt = 4","tan θ = 4/3"]],
+    ["P","i:8/15","Decide the quadrant first, then draw the triangle.","Besluit eers in watter kwadrant, en teken dan die driehoek.",["cos θ = −3/5 and 180° < θ < 360° → Quadrant 3","x = −3, r = 5 → y = −4","sin θ + tan θ = −4/5 + 4/3 = −12/15 + 20/15 = 8/15"],["cos θ = −3/5 en 180° < θ < 360° → Kwadrant 3","x = −3, r = 5 → y = −4","sin θ + tan θ = −4/5 + 4/3 = −12/15 + 20/15 = 8/15"]]
   ]
 });

@@ -583,7 +583,8 @@ MathMagician.registerChapter(14, {
           answer: "5/16",
           altAnswers: ["0.3125", "0,3125"],
           topic: "Twee-rigting-tabelle"
-        }
+        },
+        { type: "input", text: "In 'n klas van 40 hou 25 van sokker, 18 van netbal en 5 van geeneen. 'n Leerder word lukraak gekies. Wat is die waarskynlikheid dat die leerder van presies een van die twee sportsoorte hou? Gee 'n breuk.", answer: "27/40", topic: "Twee-rigting-tabelle" }
       ]
     }
   ],

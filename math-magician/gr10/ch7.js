@@ -537,7 +537,8 @@ MathMagician.registerChapter(7, {
           text: "Rectangle PQRS has diagonals PR = 5x − 3 and QS = 2x + 12. Find PR.",
           answer: "22",
           topic: "Special quadrilaterals — parallelogram family"
-        }
+        },
+        { type: "input", text: "ABCD is a parallelogram with AB = 10 and AD = 6. The bisector of ∠DAB meets DC at E.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":160,\"pts\":{\"A\":[0,0],\"B\":[10,0],\"C\":[13,5.2],\"D\":[3,5.2],\"E\":[9,5.2]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"E\",\"ac\"],[\"A\",\"B\",null,null,\"10\"],[\"A\",\"D\",null,null,\"6\"],[\"D\",\"C\"],[\"C\",\"B\"]],\"ang\":[[\"B\",\"A\",\"E\",null,null,22],[\"E\",\"A\",\"D\",null,null,26]]}'></div>Find the length of EC.", answer: "4", topic: "Special quadrilaterals — parallelogram family" }
       ]
     }
   ],

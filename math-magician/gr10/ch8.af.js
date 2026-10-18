@@ -817,7 +817,8 @@ MathMagician.registerChapter(8, {
           options: ["Ja, dit is 'n reghoek", "Nee — dit is 'n parallelogram maar nie 'n reghoek nie", "Nee — dit is net 'n trapesium", "Nee — dit is geensins 'n spesiale vierhoek nie"],
           answer: 1,
           topic: "Analitiese meetkunde van vierhoeke"
-        }
+        },
+        { type: "input", text: "A(1 ; 2) en B(7 ; 2) is gegee. C lê bo AB sodat AC = BC = 5. Bereken die oppervlakte van driehoek ABC.", answer: "12", topic: "Analitiese meetkunde van vierhoeke" }
       ]
     }
   ],

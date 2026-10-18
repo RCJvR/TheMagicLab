@@ -519,7 +519,8 @@ MathMagician.registerChapter(12, {
           text: "PQRS is 'n parallelogram met diagonale wat mekaar by O sny, sodat PO = OR. As PO = 2x + 3 en OR = 5x − 9, bepaal die lengte van die volle diagonaal PR.",
           answer: "22",
           topic: "Gemengde vraagstukke met vierhoeke"
-        }
+        },
+        { type: "input", text: "ABCD is 'n trapesium met AB ∥ DC, AB = 14 en DC = 8. M en N is die middelpunte van AD en BC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[14,0],\"C\":[11,5],\"D\":[3,5],\"M\":[1.5,2.5],\"N\":[12.5,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"M\",\"N\",\"ac\"],[\"A\",\"B\",null,null,\"14\"],[\"D\",\"C\",null,null,\"8\"],[\"A\",\"D\"],[\"B\",\"C\"]],\"par\":[[\"A\",\"B\"],[\"D\",\"C\"]],\"tick\":[[\"A\",\"M\"],[\"M\",\"D\"],[\"B\",\"N\",2],[\"N\",\"C\",2]],\"dots\":[\"M\",\"N\"]}'></div>Bereken MN. (Wenk: trek hoeklyn AC.)", answer: "11", topic: "Gemengde vraagstukke met vierhoeke" }
       ]
     }
   ],

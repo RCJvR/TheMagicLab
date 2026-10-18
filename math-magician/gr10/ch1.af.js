@@ -680,7 +680,8 @@ MathMagician.registerChapter(1, {
           answer: "(x²-x+1)/(x-1)",
           altAnswers: ["(x^2-x+1)/(x-1)", "(x² − x + 1)/(x − 1)"],
           topic: "Algebraïese breuke met kubusnoemers"
-        }
+        },
+        { type: "input", text: "As x − 1/x = 3, bepaal die waarde van x³ − 1/x³ sonder om vir x op te los.", answer: "36", topic: "Algebraïese breuke met kubusnoemers" }
       ]
     }
   ],

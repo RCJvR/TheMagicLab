@@ -559,7 +559,8 @@ x ≤ −3         →  (−∞ ; −3]
           text: "Twee opeenvolgende ewe getalle het 'n produk van 168. Bepaal die grootste getal.",
           answer: "14",
           topic: "Woordprobleme in konteks"
-        }
+        },
+        { type: "input", text: "240 stoele word in gelyke rye uitgepak. As elke ry 4 stoele meer gehad het, sou 3 rye minder nodig gewees het. Hoeveel stoele is in elke ry?", answer: "16", topic: "Woordprobleme in konteks" }
       ]
     }
   ],

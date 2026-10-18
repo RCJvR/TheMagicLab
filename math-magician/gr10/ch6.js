@@ -946,7 +946,8 @@ MathMagician.registerChapter(6, {
           answer: "-4",
           altAnswers: ["−4"],
           topic: "Effect of parameters a and q"
-        }
+        },
+        { type: "mc", text: "The graphs of f(x) = −x² + 4 and g(x) = x + 2 are shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-3,-2,3,5],\"pad\":24,\"axes\":{\"ticks\":1},\"pts\":{\"P\":[-2,0],\"Q\":[1,3]},\"nolab\":[\"P\",\"Q\"],\"dots\":[\"P\",\"Q\"],\"fn\":[{\"f\":\"-x*x+4\",\"lab\":[-2.6,-1.4,\"f\"]},{\"f\":\"x+2\",\"c\":\"hl\",\"lab\":[2.2,4.6,\"g\"]}]}'></div>For which values of x is f(x) ≥ g(x)?", options: ["−2 ≤ x ≤ 1","x ≤ −2 or x ≥ 1","−1 ≤ x ≤ 2","x ≥ 1"], answer: 0, topic: "Effect of parameters a and q" }
       ]
     }
   ],

@@ -513,7 +513,8 @@ MathMagician.registerChapter(11, {
           answer: "54.72",
           altAnswers: ["54,72"],
           topic: "Mixed 2D trigonometry applications"
-        }
+        },
+        { type: "input", text: "A 6 m flagpole stands on top of a building. From a point A on the ground, 30 m from the foot of the building, the angle of elevation to the top of the pole is 35°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":220,\"pts\":{\"F\":[0,0],\"T\":[0,15],\"P\":[0,21],\"A\":[30,0],\"W\":[-5,0],\"V\":[-5,15]},\"poly\":[[\"W\",\"F\",\"T\",\"V\",\"fl\"]],\"seg\":[[\"A\",\"F\",null,null,\"30 m\"],[\"T\",\"P\",\"hl\",null,\"6 m\"],[\"A\",\"P\",\"ac dash\"]],\"ra\":[[\"A\",\"F\",\"T\"]],\"ang\":[[\"F\",\"A\",\"P\",\"35°\"]],\"nolab\":[\"W\",\"V\",\"F\",\"T\"],\"lab\":{\"P\":\"n\"}}'></div>Find the height of the building, to 2 decimal places. (m)", answer: "15.01", altAnswers: ["15,01"], topic: "Mixed 2D trigonometry applications" }
       ]
     }
   ],

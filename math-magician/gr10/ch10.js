@@ -596,7 +596,8 @@ Total           30                    720</div>
           options: ["Class X", "Class Y", "Both equally clustered", "Cannot be determined"],
           answer: 0,
           topic: "Interpreting statistics in context"
-        }
+        },
+        { type: "input", text: "Ten learners' marks have a mean of 64. The teacher adds 5 marks to every learner's mark. Afterwards one of the new marks, 100, is found to be wrong and is changed to 80. What is the final mean?", answer: "67", topic: "Interpreting statistics in context" }
       ]
     }
   ],

@@ -31,6 +31,7 @@ MMHelp.add(10, 9, {
     ["K","m4:1","Without logarithms...","Sonder logaritmes...",["Try whole numbers for n until A is reached."],["Probeer heelgetalle vir n totdat A bereik word."]],
     ["C","m4:1","Try values of n.","Probeer waardes vir n.",["1.15⁴ ≈ 1.75 (not yet double)","1.15⁵ ≈ 2.01 → 5 years"],["1,15⁴ ≈ 1,75 (nog nie dubbel nie)","1,15⁵ ≈ 2,01 → 5 jaar"]],
     ["R","i:10.0","(1 + i)³ = A ÷ P.","(1 + i)³ = A ÷ P.",["19 965 ÷ 15 000 = 1.331","∛1.331 = 1.1 → i = 10.0%"],["19 965 ÷ 15 000 = 1,331","∛1,331 = 1,1 → i = 10,0%"]],
-    ["C","i:5","Try values of n until A ≥ R13 500.","Probeer waardes vir n totdat A ≥ R13 500.",["n = 4: 9 000 × 1.09⁴ ≈ R12 704 (too small)","n = 5: 9 000 × 1.09⁵ ≈ R13 848 → 5 years"],["n = 4: 9 000 × 1,09⁴ ≈ R12 704 (te klein)","n = 5: 9 000 × 1,09⁵ ≈ R13 848 → 5 jaar"]]
+    ["C","i:5","Try values of n until A ≥ R13 500.","Probeer waardes vir n totdat A ≥ R13 500.",["n = 4: 9 000 × 1.09⁴ ≈ R12 704 (too small)","n = 5: 9 000 × 1.09⁵ ≈ R13 848 → 5 years"],["n = 4: 9 000 × 1,09⁴ ≈ R12 704 (te klein)","n = 5: 9 000 × 1,09⁵ ≈ R13 848 → 5 jaar"]],
+    ["P","i:11","Compare 1 + 0.08n with 1.06ⁿ for whole n.","Vergelyk 1 + 0,08n met 1,06ⁿ vir heel n.",["n = 10: 1.80 vs 1.06¹⁰ ≈ 1.79 (Thabo still ahead)","n = 11: 1.88 vs 1.06¹¹ ≈ 1.90 → Lerato ahead after 11 years"],["n = 10: 1,80 teenoor 1,06¹⁰ ≈ 1,79 (Thabo nog voor)","n = 11: 1,88 teenoor 1,06¹¹ ≈ 1,90 → Lerato voor na 11 jaar"]]
   ]
 });

@@ -596,7 +596,8 @@ Totaal           30                    720</div>
           options: ["Klas X", "Klas Y", "Albei ewe gegroepeer", "Kan nie bepaal word nie"],
           answer: 0,
           topic: "Interpreteer statistiek in konteks"
-        }
+        },
+        { type: "input", text: "Tien leerders se punte het 'n gemiddeld van 64. Die onderwyser tel 5 punte by elke leerder se punt. Daarna word gevind dat een van die nuwe punte, 100, verkeerd is, en dit word na 80 verander. Wat is die finale gemiddeld?", answer: "67", topic: "Interpreteer statistiek in konteks" }
       ]
     }
   ],

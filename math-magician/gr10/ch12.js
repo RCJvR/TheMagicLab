@@ -519,7 +519,8 @@ MathMagician.registerChapter(12, {
           text: "PQRS is a parallelogram with diagonals intersecting at O, so PO = OR. If PO = 2x + 3 and OR = 5x − 9, find the length of the full diagonal PR.",
           answer: "22",
           topic: "Mixed riders with quadrilaterals"
-        }
+        },
+        { type: "input", text: "ABCD is a trapezium with AB ∥ DC, AB = 14 and DC = 8. M and N are the midpoints of AD and BC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[14,0],\"C\":[11,5],\"D\":[3,5],\"M\":[1.5,2.5],\"N\":[12.5,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"M\",\"N\",\"ac\"],[\"A\",\"B\",null,null,\"14\"],[\"D\",\"C\",null,null,\"8\"],[\"A\",\"D\"],[\"B\",\"C\"]],\"par\":[[\"A\",\"B\"],[\"D\",\"C\"]],\"tick\":[[\"A\",\"M\"],[\"M\",\"D\"],[\"B\",\"N\",2],[\"N\",\"C\",2]],\"dots\":[\"M\",\"N\"]}'></div>Find MN. (Hint: draw diagonal AC.)", answer: "11", topic: "Mixed riders with quadrilaterals" }
       ]
     }
   ],

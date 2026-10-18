@@ -294,7 +294,7 @@ MathMagician.registerChapter(11, {
         {"type": "mc", "text": "Watter vierhoek het presies een paar parallelle sye?", "options": ["parallelogram", "vlieër", "trapesium", "ruit"], "answer": 2, "topic": "Hfst 11 Eksamenfokus"},
         {"type": "input", "text": "Wat is die som van die binnehoeke van 'n tienhoek (10 sye)? (°)", "answer": "1440", "topic": "Hfst 11 Eksamenfokus"},
         {"type": "input", "text": "In 'n gelykbenige driehoek is die twee gelyke hoeke elk 72°. Wat is die derde hoek? (°)", "answer": "36", "topic": "Hfst 11 Eksamenfokus"},
-        { type: "input", text: "ABCD is 'n vierkant en CDE is 'n gelyksydige driehoek wat op DC gebou is, buite die vierkant.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":230,\"pts\":{\"A\":[0,0],\"B\":[4,0],\"C\":[4,4],\"D\":[0,4],\"E\":[2,7.46]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"D\",\"E\"],[\"C\",\"E\"],[\"A\",\"E\",\"ac\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"tick\":[[\"A\",\"D\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"D\",\"C\"]]}'></div>Bereken ∠AED. (°)", answer: "15", topic: "Hfst 11 Eksamenfokus" }
+        { type: "input", text: "ABCD is 'n vierkant en CDE is 'n gelyksydige driehoek wat op DC gebou is, buite die vierkant.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":220,\"h\":230,\"pts\":{\"A\":[0,0],\"B\":[4,0],\"C\":[4,4],\"D\":[0,4],\"E\":[2,7.46]},\"poly\":[[\"A\",\"B\",\"C\",\"D\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"A\",\"E\",\"ac\"]],\"ra\":[[\"B\",\"A\",\"D\"]],\"tick\":[[\"A\",\"D\"],[\"D\",\"E\"],[\"C\",\"E\"],[\"D\",\"C\"]]}'></div>Bereken ∠AED. (°)", answer: "15", topic: "Hfst 11 Eksamenfokus" }
       ]
     },
   ],

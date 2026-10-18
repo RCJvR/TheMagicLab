@@ -594,7 +594,8 @@ MathMagician.registerChapter(9, {
           text: "Bereken die aantal jare (kleinste heelgetal) wat dit neem vir R9 000 om te groei tot minstens R13 500 teen 9% p.j. saamgestelde rente.",
           answer: "5",
           topic: "Oplos vir koers of tydperk"
-        }
+        },
+        { type: "input", text: "Thabo belê R10 000 teen 8% p.j. enkelvoudige rente. Lerato belê R10 000 teen 6% p.j. saamgestelde rente. Na hoeveel volle jare is Lerato se belegging vir die eerste keer meer werd as Thabo s'n?", answer: "11", topic: "Oplos vir koers of tydperk" }
       ]
     }
   ],

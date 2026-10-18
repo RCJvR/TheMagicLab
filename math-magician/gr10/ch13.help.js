@@ -35,6 +35,7 @@ MMHelp.add(10, 13, {
     ["R","m4:0","Area = (√3/4) × side².","Oppervlakte = (√3/4) × sy².",["(√3/4) × 36","= 9√3 cm²"],["(√3/4) × 36","= 9√3 cm²"]],
     ["R","i:60","Total − base.","Totaal − basis.",["96 − 36","= 60 cm²"],["96 − 36","= 60 cm²"]],
     ["C","i:92.38","Base area first, then V = ⅓Ah.","Eers basisoppervlakte, dan V = ⅓Ah.",["A = (√3/4) × 64 ≈ 27.71 cm²","V = ⅓ × 27.71 × 10 ≈ 92.38 cm³"],["A = (√3/4) × 64 ≈ 27,71 cm²","V = ⅓ × 27,71 × 10 ≈ 92,38 cm³"]],
-    ["R","i:18","V = ⅓πr²h","V = ⅓πr²h",["⅓π × 25 × h = 150π","h = 450 ÷ 25 = 18 cm"],["⅓π × 25 × h = 150π","h = 450 ÷ 25 = 18 cm"]]
+    ["R","i:18","V = ⅓πr²h","V = ⅓πr²h",["⅓π × 25 × h = 150π","h = 450 ÷ 25 = 18 cm"],["⅓π × 25 × h = 150π","h = 450 ÷ 25 = 18 cm"]],
+    ["P","i:9","The volume of metal stays the same.","Die volume metaal bly dieselfde.",["Cone: ⅓π × 36 × 8 = 96π cm³","Sphere: (4/3)π × 2³ = 32π/3 cm³","96π ÷ (32π/3) = 9 spheres"],["Keël: ⅓π × 36 × 8 = 96π cm³","Sfeer: (4/3)π × 2³ = 32π/3 cm³","96π ÷ (32π/3) = 9 sfere"]]
   ]
 });

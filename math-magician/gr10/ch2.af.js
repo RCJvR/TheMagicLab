@@ -501,7 +501,8 @@ MathMagician.registerChapter(2, {
           options: ["x = 9 of x = −7", "Slegs x = 9", "x = ±8", "x = 8 of x = −9"],
           answer: 0,
           topic: "Gevorderde eksponensiële vergelykings"
-        }
+        },
+        { type: "mc", text: "Watter een is groter, sonder 'n sakrekenaar: 2³⁰ of 3²⁰?", options: ["2³⁰","3²⁰","Hulle is gelyk","Dit kan nie sonder 'n sakrekenaar bepaal word nie"], answer: 1, topic: "Gevorderde eksponensiële vergelykings" }
       ]
     }
   ],

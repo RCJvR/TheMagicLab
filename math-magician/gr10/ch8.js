@@ -817,7 +817,8 @@ MathMagician.registerChapter(8, {
           options: ["Yes, it is a rectangle", "No — it is a parallelogram but not a rectangle", "No — it is only a trapezium", "No — it is not a special quadrilateral at all"],
           answer: 1,
           topic: "Analytical geometry of quadrilaterals"
-        }
+        },
+        { type: "input", text: "A(1 ; 2) and B(7 ; 2) are given. C lies above AB so that AC = BC = 5. Find the area of triangle ABC.", answer: "12", topic: "Analytical geometry of quadrilaterals" }
       ]
     }
   ],

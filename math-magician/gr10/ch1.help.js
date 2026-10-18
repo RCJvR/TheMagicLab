@@ -41,6 +41,7 @@ MMHelp.add(10, 1, {
     ["R","m4:0","Factorise top and bottom.","Faktoriseer teller en noemer.",["(x − 2)(x + 2) / ((x − 2)(x² + 2x + 4))","= (x + 2)/(x² + 2x + 4)"],["(x − 2)(x + 2) / ((x − 2)(x² + 2x + 4))","= (x + 2)/(x² + 2x + 4)"]],
     ["K","m4:0","The original denominator may not be 0.","Die oorspronklike noemer mag nie 0 wees nie.",["x² − 4 = 0 when x = 2 or x = −2","so x ≠ 2 and x ≠ −2"],["x² − 4 = 0 as x = 2 of x = −2","dus x ≠ 2 en x ≠ −2"]],
     ["R","i:2","Common factor 2, then a sum of cubes.","Gemeenskaplike faktor 2, dan 'n som van derdemagte.",["2(x + 1)(x² − x + 1)/(x + 1)","= 2x² − 2x + 2 → constant 2"],["2(x + 1)(x² − x + 1)/(x + 1)","= 2x² − 2x + 2 → konstante 2"]],
-    ["C","i:-1/-1","Sum of cubes on top, difference of squares below.","Som van derdemagte bo, verskil van vierkante onder.",["(x + 1)(x² − x + 1) / ((x − 1)(x + 1))","= (x² − x + 1)/(x − 1)"],["(x + 1)(x² − x + 1) / ((x − 1)(x + 1))","= (x² − x + 1)/(x − 1)"]]
+    ["C","i:-1/-1","Sum of cubes on top, difference of squares below.","Som van derdemagte bo, verskil van vierkante onder.",["(x + 1)(x² − x + 1) / ((x − 1)(x + 1))","= (x² − x + 1)/(x − 1)"],["(x + 1)(x² − x + 1) / ((x − 1)(x + 1))","= (x² − x + 1)/(x − 1)"]],
+    ["P","i:36","Use a³ − b³ = (a − b)(a² + ab + b²) with a = x and b = 1/x.","Gebruik a³ − b³ = (a − b)(a² + ab + b²) met a = x en b = 1/x.",["Square: (x − 1/x)² = x² − 2 + 1/x² = 9 → x² + 1/x² = 11","x³ − 1/x³ = (x − 1/x)(x² + 1 + 1/x²)","= 3 × (11 + 1) = 36"],["Kwadreer: (x − 1/x)² = x² − 2 + 1/x² = 9 → x² + 1/x² = 11","x³ − 1/x³ = (x − 1/x)(x² + 1 + 1/x²)","= 3 × (11 + 1) = 36"]]
   ]
 });
