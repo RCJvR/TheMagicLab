@@ -164,17 +164,20 @@
     if (!window.MagicLabAuth.isTeacher()) return { error: { message: 'Only teachers can do that' } };
     return null;
   }
+  // Each date belongs to a school; the database only lets that school's teachers change it.
+  const SCHOOL_ONLY = 'Only teachers at the school this calendar belongs to can change it. Check that your profile lists your school.';
+  const schoolCheck = res => res.error && res.error.code === '42501' ? { ...res, error: { message: SCHOOL_ONLY } } : res;
 
   async function addAssessment(row) {
     const denied = requireTeacher();
     if (denied) return denied;
-    return supabase().from('assessments').insert({ ...row, created_by: profile.id }).select().single();
+    return schoolCheck(await supabase().from('assessments').insert({ ...row, created_by: profile.id }).select().single());
   }
 
   async function bulkAddAssessments(rows) {
     const denied = requireTeacher();
     if (denied) return denied;
-    return supabase().from('assessments').insert(rows.map(r => ({ ...r, created_by: profile.id })));
+    return schoolCheck(await supabase().from('assessments').insert(rows.map(r => ({ ...r, created_by: profile.id }))));
   }
 
   async function getAllAssessments(grade) {
@@ -188,7 +191,10 @@
   async function deleteAssessment(id) {
     const denied = requireTeacher();
     if (denied) return denied;
-    return supabase().from('assessments').delete().eq('id', id);
+    // A delete the database refuses removes nothing without an error, so check what went.
+    const res = await supabase().from('assessments').delete().eq('id', id).select('id');
+    if (!res.error && !(res.data || []).length) return { ...res, error: { message: SCHOOL_ONLY } };
+    return res;
   }
 
   // ── CSV / pasted-table parsing ───────────────────────────────
@@ -654,7 +660,8 @@
     box.querySelectorAll('[data-del-assess]').forEach(btn => {
       btn.addEventListener('click', async () => {
         if (!confirm('Delete this assessment?')) return;
-        await deleteAssessment(btn.dataset.delAssess);
+        const { error } = await deleteAssessment(btn.dataset.delAssess);
+        if (error) alert(error.message);
         refreshManageList();
       });
     });

@@ -116,3 +116,46 @@ begin
 
   return jsonb_build_object('correct', v_is_correct, 'points', v_points, 'correctOptionIndex', v_correct_index);
 end $$;
+
+-- ── 4. Assessment dates and the bell schedule belong to a school ─────────
+-- Before: any teacher on the platform could edit or delete every assessment
+-- date and the bell schedule. Now each row carries its school (the existing
+-- ones are Curro Durbanville's), new rows take the teacher's school, and
+-- only teachers at that school (and the admin) can change them. Everyone
+-- signed in can still read them. The bell schedule is still one schedule
+-- per platform (unique per day type and period).
+alter table public.assessments add column if not exists school text;
+alter table public.period_schedule add column if not exists school text;
+update public.assessments set school = 'Curro Durbanville' where school is null;
+update public.period_schedule set school = 'Curro Durbanville' where school is null;
+
+-- The signed-in teacher's school, normalised; null for anyone else.
+create or replace function public.my_teacher_school()
+returns text language sql stable set search_path = public as $$
+  select lower(trim(school)) from profiles
+   where id = auth.uid() and role = 'teacher' and nullif(trim(school), '') is not null
+$$;
+
+create or replace function public._stamp_school()
+returns trigger language plpgsql set search_path = public as $$
+begin
+  if new.school is null then
+    select p.school into new.school from profiles p where p.id = auth.uid();
+  end if;
+  return new;
+end $$;
+create trigger assessments_stamp_school before insert on public.assessments
+  for each row execute function public._stamp_school();
+create trigger period_schedule_stamp_school before insert on public.period_schedule
+  for each row execute function public._stamp_school();
+
+alter policy "Teachers manage assessments" on public.assessments
+  using ((select auth.uid()) = '31a201b0-f426-455a-973a-b1862001b748'::uuid
+         or lower(trim(school)) = (select public.my_teacher_school()))
+  with check ((select auth.uid()) = '31a201b0-f426-455a-973a-b1862001b748'::uuid
+              or lower(trim(school)) = (select public.my_teacher_school()));
+alter policy "Teachers manage period schedule" on public.period_schedule
+  using ((select auth.uid()) = '31a201b0-f426-455a-973a-b1862001b748'::uuid
+         or lower(trim(school)) = (select public.my_teacher_school()))
+  with check ((select auth.uid()) = '31a201b0-f426-455a-973a-b1862001b748'::uuid
+              or lower(trim(school)) = (select public.my_teacher_school()));

@@ -64,8 +64,10 @@
   async function savePeriod(dayType, period, start, end) {
     const denied = requireTeacher();
     if (denied) return denied;
-    const { error } = await supabase().from('period_schedule')
+    let { error } = await supabase().from('period_schedule')
       .upsert({ day_type: dayType, period, start_time: start, end_time: end, updated_by: profile.id }, { onConflict: 'day_type,period' });
+    // The bell schedule belongs to a school; the database only lets that school's teachers change it.
+    if (error && error.code === '42501') error = { message: 'Only teachers at the school this bell schedule belongs to can change it. Check that your profile lists your school.' };
     if (!error) schedule[dayType][period] = { start, end };
     return { error };
   }
