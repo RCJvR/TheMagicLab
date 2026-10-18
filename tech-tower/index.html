@@ -69,6 +69,7 @@
                   background var(--dur-fast) var(--ease-standard);
     }
     .nav-back:hover { color: var(--paper); border-color: var(--line-hard); background: rgba(255,255,255,0.04); }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
 
     /* ── Hero ───────────────────────────────────────────────────────────── */
     .hero {
@@ -233,6 +234,11 @@
     @media (max-width: 640px) {
       nav { min-height: 60px; }
       .grade-filter { flex-wrap: wrap; }
+      /* The top bar overflowed a phone screen. "Back to Magic Lab" becomes its
+         arrow alone (the words stay for screen readers), and the row may wrap. */
+      .nav-right { flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+      .nav-back-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      a.nav-back { padding: 8px 11px; }
     }
   </style>
 <link rel="stylesheet" href="../auth-modal.css">
@@ -245,9 +251,9 @@
   <a class="ml-skip" href="#ml-main">Skip to content</a>
   <nav>
     <a href="../index.html" class="nav-logo"><i data-lucide="wrench" style="width:18px;height:18px;flex-shrink:0"></i> The Tech Tower</a>
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div class="nav-right">
       <span id="mlLangToggle"></span>
-      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug na Magic Lab'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back to Magic Lab</a>
+      <a href="../index.html" class="nav-back" data-af-html='<i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span class="nav-back-text">Terug na Magic Lab</span>'><i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span class="nav-back-text">Back to Magic Lab</span></a>
       <button class="nav-back" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px"></i> Sign In</button>
     </div>
   </nav>
