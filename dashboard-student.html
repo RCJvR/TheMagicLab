@@ -803,8 +803,9 @@
 
     // Where an assigned lesson lives, from its fixed id (see lesson-catalog.js).
     function _lessonHref(ref) {
-      const m = ref && ref.match(/^(mm|ss|tt):(\d+):(.+)$/);
+      const m = ref && ref.match(/^(mm|ss|tt|cc):(\d+):(.+)$/);
       if (!m) return null;
+      if (m[1] === 'cc') return `computer-codex.html?key=${encodeURIComponent(m[3])}`;
       if (m[1] === 'mm') return `math-magician/gr${m[2]}/index.html?topic=${encodeURIComponent(m[3])}`;
       return `${m[1] === 'ss' ? 'science-sage' : 'tech-tower'}/gr${m[2]}/${m[3]}.html`;
     }

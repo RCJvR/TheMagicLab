@@ -27,667 +27,867 @@
 window.ML_LESSON_CATALOG = {
   "computer-codex": [
     {
-      "group": "Coding & Robotics (Gr 8-9)",
+      "group": "Coding & Robotics (Gr 8–9)",
       "lessons": [
         {
           "value": "What is an Operating System?",
-          "label": "What is an Operating System?"
+          "label": "What is an Operating System?",
+          "ref": "cc:8:coding/what-is-an-operating-system"
         },
         {
           "value": "Navigating Windows",
-          "label": "Navigating Windows"
+          "label": "Navigating Windows",
+          "ref": "cc:8:coding/navigating-windows"
         },
         {
           "value": "Working with Files and Folders",
-          "label": "Working with Files and Folders"
+          "label": "Working with Files and Folders",
+          "ref": "cc:8:coding/working-with-files-and-folders"
         },
         {
           "value": "What is a File Extension?",
-          "label": "What is a File Extension?"
+          "label": "What is a File Extension?",
+          "ref": "cc:8:coding/what-is-a-file-extension"
         },
         {
           "value": "Understanding the Ribbon Interface",
-          "label": "Understanding the Ribbon Interface"
+          "label": "Understanding the Ribbon Interface",
+          "ref": "cc:8:coding/understanding-the-ribbon-interface"
         },
         {
           "value": "Creating and Saving Word Documents",
-          "label": "Creating and Saving Word Documents"
+          "label": "Creating and Saving Word Documents",
+          "ref": "cc:8:coding/creating-and-saving-word-documents"
         },
         {
           "value": "Text Formatting and Styles",
-          "label": "Text Formatting and Styles"
+          "label": "Text Formatting and Styles",
+          "ref": "cc:8:coding/text-formatting-and-styles"
         },
         {
           "value": "Introduction to Spreadsheets",
-          "label": "Introduction to Spreadsheets"
+          "label": "Introduction to Spreadsheets",
+          "ref": "cc:8:coding/introduction-to-spreadsheets"
         },
         {
           "value": "Excel Formulas and Functions",
-          "label": "Excel Formulas and Functions"
+          "label": "Excel Formulas and Functions",
+          "ref": "cc:8:coding/excel-formulas-and-functions"
         },
         {
           "value": "COUNTIF and SUMIF",
-          "label": "COUNTIF and SUMIF"
+          "label": "COUNTIF and SUMIF",
+          "ref": "cc:8:coding/countif-and-sumif"
         },
         {
           "value": "Relative vs Absolute Cell References",
-          "label": "Relative vs Absolute Cell References"
+          "label": "Relative vs Absolute Cell References",
+          "ref": "cc:8:coding/relative-vs-absolute-cell-references"
         },
         {
           "value": "Creating Charts in Excel",
-          "label": "Creating Charts in Excel"
+          "label": "Creating Charts in Excel",
+          "ref": "cc:8:coding/creating-charts-in-excel"
         },
         {
           "value": "What is Computational Thinking?",
-          "label": "What is Computational Thinking?"
+          "label": "What is Computational Thinking?",
+          "ref": "cc:8:coding/what-is-computational-thinking"
         },
         {
           "value": "Decomposition",
-          "label": "Decomposition"
+          "label": "Decomposition",
+          "ref": "cc:8:coding/decomposition"
         },
         {
           "value": "Pattern Recognition",
-          "label": "Pattern Recognition"
+          "label": "Pattern Recognition",
+          "ref": "cc:8:coding/pattern-recognition"
         },
         {
           "value": "Abstraction",
-          "label": "Abstraction"
+          "label": "Abstraction",
+          "ref": "cc:8:coding/abstraction"
         },
         {
           "value": "Algorithm Design",
-          "label": "Algorithm Design"
+          "label": "Algorithm Design",
+          "ref": "cc:8:coding/algorithm-design"
         },
         {
           "value": "Practical Examples",
-          "label": "Practical Examples"
+          "label": "Practical Examples",
+          "ref": "cc:8:coding/practical-examples"
         },
         {
           "value": "What is Pseudo Code?",
-          "label": "What is Pseudo Code?"
+          "label": "What is Pseudo Code?",
+          "ref": "cc:8:coding/what-is-pseudo-code"
         },
         {
           "value": "Pseudo Code — Practical Examples",
-          "label": "Pseudo Code — Practical Examples"
+          "label": "Pseudo Code — Practical Examples",
+          "ref": "cc:8:coding/pseudo-code-practical-examples"
         },
         {
           "value": "What is a Flow Diagram?",
-          "label": "What is a Flow Diagram?"
+          "label": "What is a Flow Diagram?",
+          "ref": "cc:8:coding/what-is-a-flow-diagram"
         },
         {
           "value": "Flow Diagram Examples and Builder",
-          "label": "Flow Diagram Examples and Builder"
+          "label": "Flow Diagram Examples and Builder",
+          "ref": "cc:8:coding/flow-diagram-examples-and-builder"
         },
         {
           "value": "What is Artificial Intelligence?",
-          "label": "What is Artificial Intelligence?"
+          "label": "What is Artificial Intelligence?",
+          "ref": "cc:8:coding/what-is-artificial-intelligence"
         },
         {
           "value": "How Machine Learning Works",
-          "label": "How Machine Learning Works"
+          "label": "How Machine Learning Works",
+          "ref": "cc:8:coding/how-machine-learning-works"
         },
         {
           "value": "Large Language Models & GPT",
-          "label": "Large Language Models & GPT"
+          "label": "Large Language Models & GPT",
+          "ref": "cc:8:coding/large-language-models-and-gpt"
         },
         {
           "value": "Generative AI — Images, Audio & Beyond",
-          "label": "Generative AI — Images, Audio & Beyond"
+          "label": "Generative AI — Images, Audio & Beyond",
+          "ref": "cc:8:coding/generative-ai-images-audio-and-beyond"
         },
         {
           "value": "Using AI Ethically",
-          "label": "Using AI Ethically"
+          "label": "Using AI Ethically",
+          "ref": "cc:8:coding/using-ai-ethically"
         }
       ]
     },
     {
-      "group": "CAT — CAPS (Gr 10-12)",
+      "group": "CAT — CAPS · Grade 10",
       "lessons": [
         {
           "value": "What Is a Computer System?",
-          "label": "What Is a Computer System?"
+          "label": "What Is a Computer System?",
+          "ref": "cc:10:cat-caps/what-is-a-computer-system"
         },
         {
           "value": "Hardware Essentials — Input, Output, Storage and Processing",
-          "label": "Hardware Essentials — Input, Output, Storage and Processing"
+          "label": "Hardware Essentials — Input, Output, Storage and Processing",
+          "ref": "cc:10:cat-caps/hardware-essentials-input-output-storage-and-processing"
         },
         {
           "value": "System Software vs Application Software",
-          "label": "System Software vs Application Software"
+          "label": "System Software vs Application Software",
+          "ref": "cc:10:cat-caps/system-software-vs-application-software"
         },
         {
           "value": "Organising Files and Folders",
-          "label": "Organising Files and Folders"
+          "label": "Organising Files and Folders",
+          "ref": "cc:10:cat-caps/organising-files-and-folders"
         },
         {
           "value": "Networks — Connecting Computers Together",
-          "label": "Networks — Connecting Computers Together"
+          "label": "Networks — Connecting Computers Together",
+          "ref": "cc:10:cat-caps/networks-connecting-computers-together"
         },
         {
           "value": "The Internet, the Web, and Search Engines",
-          "label": "The Internet, the Web, and Search Engines"
+          "label": "The Internet, the Web, and Search Engines",
+          "ref": "cc:10:cat-caps/the-internet-the-web-and-search-engines"
         },
         {
           "value": "E-Communication, Netiquette and Online Safety",
-          "label": "E-Communication, Netiquette and Online Safety"
+          "label": "E-Communication, Netiquette and Online Safety",
+          "ref": "cc:10:cat-caps/e-communication-netiquette-and-online-safety"
         },
         {
           "value": "Word Processing, Spreadsheet and Presentation Theory",
-          "label": "Word Processing, Spreadsheet and Presentation Theory"
+          "label": "Word Processing, Spreadsheet and Presentation Theory",
+          "ref": "cc:10:cat-caps/word-processing-spreadsheet-and-presentation-theory"
         },
         {
           "value": "Finding, Evaluating and Presenting Information",
-          "label": "Finding, Evaluating and Presenting Information"
+          "label": "Finding, Evaluating and Presenting Information",
+          "ref": "cc:10:cat-caps/finding-evaluating-and-presenting-information"
         },
         {
           "value": "Ergonomics, Green Computing and Digital Citizenship",
-          "label": "Ergonomics, Green Computing and Digital Citizenship"
-        },
+          "label": "Ergonomics, Green Computing and Digital Citizenship",
+          "ref": "cc:10:cat-caps/ergonomics-green-computing-and-digital-citizenship"
+        }
+      ]
+    },
+    {
+      "group": "CAT — CAPS · Grade 11",
+      "lessons": [
         {
           "value": "Extending Hardware Knowledge",
-          "label": "Extending Hardware Knowledge"
+          "label": "Extending Hardware Knowledge",
+          "ref": "cc:11:cat-caps/extending-hardware-knowledge"
         },
         {
           "value": "Inside the System Unit — Storage and Processing",
-          "label": "Inside the System Unit — Storage and Processing"
-        },
-        {
-          "value": "LANs, WLANs and Network Components",
-          "label": "LANs, WLANs and Network Components"
+          "label": "Inside the System Unit — Storage and Processing",
+          "ref": "cc:11:cat-caps/inside-the-system-unit-storage-and-processing"
         },
         {
           "value": "Software, Cloud Storage and Computer Management",
-          "label": "Software, Cloud Storage and Computer Management"
+          "label": "Software, Cloud Storage and Computer Management",
+          "ref": "cc:11:cat-caps/software-cloud-storage-and-computer-management"
+        },
+        {
+          "value": "LANs, WLANs and Network Components",
+          "label": "LANs, WLANs and Network Components",
+          "ref": "cc:11:cat-caps/lans-wlans-and-network-components"
         },
         {
           "value": "Spreadsheet Skills — Conditional Formatting, Functions and Charts",
-          "label": "Spreadsheet Skills — Conditional Formatting, Functions and Charts"
+          "label": "Spreadsheet Skills — Conditional Formatting, Functions and Charts",
+          "ref": "cc:11:cat-caps/spreadsheet-skills-conditional-formatting-functions-and-charts"
         },
         {
           "value": "Introduction to Databases",
-          "label": "Introduction to Databases"
+          "label": "Introduction to Databases",
+          "ref": "cc:11:cat-caps/introduction-to-databases"
         },
         {
           "value": "HTML and Web Design Basics",
-          "label": "HTML and Web Design Basics"
+          "label": "HTML and Web Design Basics",
+          "ref": "cc:11:cat-caps/html-and-web-design-basics"
         },
         {
           "value": "Digital Communication and Online Services",
-          "label": "Digital Communication and Online Services"
+          "label": "Digital Communication and Online Services",
+          "ref": "cc:11:cat-caps/digital-communication-and-online-services"
         },
         {
           "value": "Evaluating Information Quality",
-          "label": "Evaluating Information Quality"
+          "label": "Evaluating Information Quality",
+          "ref": "cc:11:cat-caps/evaluating-information-quality"
         },
         {
           "value": "Security, Ethics and the Changing Workplace",
-          "label": "Security, Ethics and the Changing Workplace"
-        },
+          "label": "Security, Ethics and the Changing Workplace",
+          "ref": "cc:11:cat-caps/security-ethics-and-the-changing-workplace"
+        }
+      ]
+    },
+    {
+      "group": "CAT — CAPS · Grade 12",
+      "lessons": [
         {
           "value": "Choosing the Right System for Every User",
-          "label": "Choosing the Right System for Every User"
+          "label": "Choosing the Right System for Every User",
+          "ref": "cc:12:cat-caps/choosing-the-right-system-for-every-user"
         },
         {
           "value": "Software for Accessibility and Productivity",
-          "label": "Software for Accessibility and Productivity"
-        },
-        {
-          "value": "User-Centred Design and the Environment",
-          "label": "User-Centred Design and the Environment"
-        },
-        {
-          "value": "WANs, Internet Services and Getting Connected",
-          "label": "WANs, Internet Services and Getting Connected"
-        },
-        {
-          "value": "Cybercrime, Malware and Online Safety",
-          "label": "Cybercrime, Malware and Online Safety"
+          "label": "Software for Accessibility and Productivity",
+          "ref": "cc:12:cat-caps/software-for-accessibility-and-productivity"
         },
         {
           "value": "The Operating System and Computer Management",
-          "label": "The Operating System and Computer Management"
+          "label": "The Operating System and Computer Management",
+          "ref": "cc:12:cat-caps/the-operating-system-and-computer-management"
         },
         {
-          "value": "Browsers, Communication and Mobile Devices",
-          "label": "Browsers, Communication and Mobile Devices"
+          "value": "User-Centred Design and the Environment",
+          "label": "User-Centred Design and the Environment",
+          "ref": "cc:12:cat-caps/user-centred-design-and-the-environment"
+        },
+        {
+          "value": "Cybercrime, Malware and Online Safety",
+          "label": "Cybercrime, Malware and Online Safety",
+          "ref": "cc:12:cat-caps/cybercrime-malware-and-online-safety"
         },
         {
           "value": "Social Networking, Privacy and Emerging Realities",
-          "label": "Social Networking, Privacy and Emerging Realities"
+          "label": "Social Networking, Privacy and Emerging Realities",
+          "ref": "cc:12:cat-caps/social-networking-privacy-and-emerging-realities"
+        },
+        {
+          "value": "WANs, Internet Services and Getting Connected",
+          "label": "WANs, Internet Services and Getting Connected",
+          "ref": "cc:12:cat-caps/wans-internet-services-and-getting-connected"
+        },
+        {
+          "value": "Browsers, Communication and Mobile Devices",
+          "label": "Browsers, Communication and Mobile Devices",
+          "ref": "cc:12:cat-caps/browsers-communication-and-mobile-devices"
         },
         {
           "value": "Advanced Spreadsheet and Database Concepts",
-          "label": "Advanced Spreadsheet and Database Concepts"
+          "label": "Advanced Spreadsheet and Database Concepts",
+          "ref": "cc:12:cat-caps/advanced-spreadsheet-and-database-concepts"
         },
         {
           "value": "Professional Reports and Final Exam Readiness",
-          "label": "Professional Reports and Final Exam Readiness"
+          "label": "Professional Reports and Final Exam Readiness",
+          "ref": "cc:12:cat-caps/professional-reports-and-final-exam-readiness"
         }
       ]
     },
     {
-      "group": "CAT — IEB (Gr 10-12)",
+      "group": "CAT — IEB · Grade 10",
       "lessons": [
         {
           "value": "Computer Systems and Computer Types",
-          "label": "Computer Systems and Computer Types"
+          "label": "Computer Systems and Computer Types",
+          "ref": "cc:10:cat-ieb/computer-systems-and-computer-types"
         },
         {
           "value": "Input, Output and Storage Devices",
-          "label": "Input, Output and Storage Devices"
+          "label": "Input, Output and Storage Devices",
+          "ref": "cc:10:cat-ieb/input-output-and-storage-devices"
         },
         {
           "value": "Software, Licensing and the Operating System",
-          "label": "Software, Licensing and the Operating System"
+          "label": "Software, Licensing and the Operating System",
+          "ref": "cc:10:cat-ieb/software-licensing-and-the-operating-system"
         },
         {
           "value": "Windows Basics and File Organisation",
-          "label": "Windows Basics and File Organisation"
+          "label": "Windows Basics and File Organisation",
+          "ref": "cc:10:cat-ieb/windows-basics-and-file-organisation"
         },
         {
           "value": "Types of Networks",
-          "label": "Types of Networks"
+          "label": "Types of Networks",
+          "ref": "cc:10:cat-ieb/types-of-networks"
         },
         {
           "value": "The Web, Browsers and Online Services",
-          "label": "The Web, Browsers and Online Services"
+          "label": "The Web, Browsers and Online Services",
+          "ref": "cc:10:cat-ieb/the-web-browsers-and-online-services"
         },
         {
           "value": "E-Communication and Netiquette",
-          "label": "E-Communication and Netiquette"
+          "label": "E-Communication and Netiquette",
+          "ref": "cc:10:cat-ieb/e-communication-and-netiquette"
         },
         {
           "value": "Finding, Sifting and Presenting Information",
-          "label": "Finding, Sifting and Presenting Information"
+          "label": "Finding, Sifting and Presenting Information",
+          "ref": "cc:10:cat-ieb/finding-sifting-and-presenting-information"
         },
         {
           "value": "Digital Citizenship — Society, Ethics and Safety",
-          "label": "Digital Citizenship — Society, Ethics and Safety"
-        },
+          "label": "Digital Citizenship — Society, Ethics and Safety",
+          "ref": "cc:10:cat-ieb/digital-citizenship-society-ethics-and-safety"
+        }
+      ]
+    },
+    {
+      "group": "CAT — IEB · Grade 11",
+      "lessons": [
         {
           "value": "Devices for Every User",
-          "label": "Devices for Every User"
+          "label": "Devices for Every User",
+          "ref": "cc:11:cat-ieb/devices-for-every-user"
         },
         {
           "value": "Storage, the System Unit and Troubleshooting",
-          "label": "Storage, the System Unit and Troubleshooting"
+          "label": "Storage, the System Unit and Troubleshooting",
+          "ref": "cc:11:cat-ieb/storage-the-system-unit-and-troubleshooting"
         },
         {
           "value": "Software Installation and Management",
-          "label": "Software Installation and Management"
+          "label": "Software Installation and Management",
+          "ref": "cc:11:cat-ieb/software-installation-and-management"
         },
         {
           "value": "Windows Features and File Sharing",
-          "label": "Windows Features and File Sharing"
+          "label": "Windows Features and File Sharing",
+          "ref": "cc:11:cat-ieb/windows-features-and-file-sharing"
         },
         {
           "value": "Network Security and Topologies",
-          "label": "Network Security and Topologies"
+          "label": "Network Security and Topologies",
+          "ref": "cc:11:cat-ieb/network-security-and-topologies"
         },
         {
           "value": "Mobile Internet and Digital Communication",
-          "label": "Mobile Internet and Digital Communication"
+          "label": "Mobile Internet and Digital Communication",
+          "ref": "cc:11:cat-ieb/mobile-internet-and-digital-communication"
         },
         {
           "value": "Cloud, IoT and Web Applications",
-          "label": "Cloud, IoT and Web Applications"
+          "label": "Cloud, IoT and Web Applications",
+          "ref": "cc:11:cat-ieb/cloud-iot-and-web-applications"
         },
         {
           "value": "Browser Privacy and Effective Searching",
-          "label": "Browser Privacy and Effective Searching"
+          "label": "Browser Privacy and Effective Searching",
+          "ref": "cc:11:cat-ieb/browser-privacy-and-effective-searching"
         },
         {
           "value": "Preparing for the PAT",
-          "label": "Preparing for the PAT"
+          "label": "Preparing for the PAT",
+          "ref": "cc:11:cat-ieb/preparing-for-the-pat"
         },
         {
           "value": "Economy, Security and Data Integrity",
-          "label": "Economy, Security and Data Integrity"
-        },
+          "label": "Economy, Security and Data Integrity",
+          "ref": "cc:11:cat-ieb/economy-security-and-data-integrity"
+        }
+      ]
+    },
+    {
+      "group": "CAT — IEB · Grade 12",
+      "lessons": [
         {
           "value": "Recommending Systems for Real Scenarios",
-          "label": "Recommending Systems for Real Scenarios"
+          "label": "Recommending Systems for Real Scenarios",
+          "ref": "cc:12:cat-ieb/recommending-systems-for-real-scenarios"
         },
         {
           "value": "Performance, Troubleshooting and the Task Manager",
-          "label": "Performance, Troubleshooting and the Task Manager"
+          "label": "Performance, Troubleshooting and the Task Manager",
+          "ref": "cc:12:cat-ieb/performance-troubleshooting-and-the-task-manager"
         },
         {
           "value": "File Mastery and Choosing the Right Application",
-          "label": "File Mastery and Choosing the Right Application"
+          "label": "File Mastery and Choosing the Right Application",
+          "ref": "cc:12:cat-ieb/file-mastery-and-choosing-the-right-application"
         },
         {
           "value": "Getting Connected and Buying Decisions",
-          "label": "Getting Connected and Buying Decisions"
+          "label": "Getting Connected and Buying Decisions",
+          "ref": "cc:12:cat-ieb/getting-connected-and-buying-decisions"
         },
         {
           "value": "Cloud Computing and the Internet of Things",
-          "label": "Cloud Computing and the Internet of Things"
+          "label": "Cloud Computing and the Internet of Things",
+          "ref": "cc:12:cat-ieb/cloud-computing-and-the-internet-of-things"
         },
         {
           "value": "Security, Privacy and the Deep Web",
-          "label": "Security, Privacy and the Deep Web"
+          "label": "Security, Privacy and the Deep Web",
+          "ref": "cc:12:cat-ieb/security-privacy-and-the-deep-web"
         },
         {
           "value": "Databases, Reports and the PAT",
-          "label": "Databases, Reports and the PAT"
+          "label": "Databases, Reports and the PAT",
+          "ref": "cc:12:cat-ieb/databases-reports-and-the-pat"
         },
         {
           "value": "Society, Social Media and Emerging Tech",
-          "label": "Society, Social Media and Emerging Tech"
+          "label": "Society, Social Media and Emerging Tech",
+          "ref": "cc:12:cat-ieb/society-social-media-and-emerging-tech"
         },
         {
           "value": "Ethics, Law and the Information Age",
-          "label": "Ethics, Law and the Information Age"
+          "label": "Ethics, Law and the Information Age",
+          "ref": "cc:12:cat-ieb/ethics-law-and-the-information-age"
         },
         {
           "value": "Staying Safe Online",
-          "label": "Staying Safe Online"
+          "label": "Staying Safe Online",
+          "ref": "cc:12:cat-ieb/staying-safe-online"
         }
       ]
     },
     {
-      "group": "IT — CAPS (Gr 10-12)",
+      "group": "IT — CAPS · Grade 10",
       "lessons": [
         {
           "value": "What Is Information Technology?",
-          "label": "What Is Information Technology?"
+          "label": "What Is Information Technology?",
+          "ref": "cc:10:it-caps/what-is-information-technology"
         },
         {
           "value": "Bits, Bytes and Number Systems",
-          "label": "Bits, Bytes and Number Systems"
+          "label": "Bits, Bytes and Number Systems",
+          "ref": "cc:10:it-caps/bits-bytes-and-number-systems"
         },
         {
           "value": "File Management and Data Storage",
-          "label": "File Management and Data Storage"
+          "label": "File Management and Data Storage",
+          "ref": "cc:10:it-caps/file-management-and-data-storage"
         },
         {
           "value": "Licensing, Piracy and the Digital Divide",
-          "label": "Licensing, Piracy and the Digital Divide"
+          "label": "Licensing, Piracy and the Digital Divide",
+          "ref": "cc:10:it-caps/licensing-piracy-and-the-digital-divide"
         },
         {
           "value": "What Is an Algorithm?",
-          "label": "What Is an Algorithm?"
+          "label": "What Is an Algorithm?",
+          "ref": "cc:10:it-caps/what-is-an-algorithm"
         },
         {
           "value": "Variables, Data Types and Operators",
-          "label": "Variables, Data Types and Operators"
+          "label": "Variables, Data Types and Operators",
+          "ref": "cc:10:it-caps/variables-data-types-and-operators"
         },
         {
           "value": "Conditionals, Loops and Events",
-          "label": "Conditionals, Loops and Events"
+          "label": "Conditionals, Loops and Events",
+          "ref": "cc:10:it-caps/conditionals-loops-and-events"
         },
         {
           "value": "Hardware In Depth and Computer Management",
-          "label": "Hardware In Depth and Computer Management"
+          "label": "Hardware In Depth and Computer Management",
+          "ref": "cc:10:it-caps/hardware-in-depth-and-computer-management"
         },
         {
           "value": "Software Engineering Principles — Solving Real Problems",
-          "label": "Software Engineering Principles — Solving Real Problems"
+          "label": "Software Engineering Principles — Solving Real Problems",
+          "ref": "cc:10:it-caps/software-engineering-principles-solving-real-problems"
         },
         {
           "value": "Networks and Electronic Communication",
-          "label": "Networks and Electronic Communication"
+          "label": "Networks and Electronic Communication",
+          "ref": "cc:10:it-caps/networks-and-electronic-communication"
         },
         {
           "value": "The Web, Search, and Evaluating Sources",
-          "label": "The Web, Search, and Evaluating Sources"
+          "label": "The Web, Search, and Evaluating Sources",
+          "ref": "cc:10:it-caps/the-web-search-and-evaluating-sources"
         },
         {
           "value": "Introduction to HTML",
-          "label": "Introduction to HTML"
-        },
-        {
-          "value": "Inside the Motherboard",
-          "label": "Inside the Motherboard"
-        },
-        {
-          "value": "Operating Systems and Virtualisation",
-          "label": "Operating Systems and Virtualisation"
-        },
-        {
-          "value": "Networks, Topology and Innovation",
-          "label": "Networks, Topology and Innovation"
-        },
-        {
-          "value": "Mobile, Wireless and Secure Communication",
-          "label": "Mobile, Wireless and Secure Communication"
-        },
-        {
-          "value": "Computer Management and Security Threats",
-          "label": "Computer Management and Security Threats"
-        },
-        {
-          "value": "Introduction to OOP and GUI Programming",
-          "label": "Introduction to OOP and GUI Programming"
-        },
-        {
-          "value": "Variables, Decisions and Debugging",
-          "label": "Variables, Decisions and Debugging"
-        },
-        {
-          "value": "Software Engineering and Problem-Solving Tools",
-          "label": "Software Engineering and Problem-Solving Tools"
-        },
-        {
-          "value": "Arrays, Loops and File Handling",
-          "label": "Arrays, Loops and File Handling"
-        },
-        {
-          "value": "Databases — From Concepts to Programming",
-          "label": "Databases — From Concepts to Programming"
-        },
-        {
-          "value": "Relational Database Design",
-          "label": "Relational Database Design"
-        },
-        {
-          "value": "The Web, Careers and Ethics",
-          "label": "The Web, Careers and Ethics"
-        },
-        {
-          "value": "Relational Database Design",
-          "label": "Relational Database Design"
-        },
-        {
-          "value": "Managing and Protecting Data",
-          "label": "Managing and Protecting Data"
-        },
-        {
-          "value": "Mobile Technology and Performance",
-          "label": "Mobile Technology and Performance"
-        },
-        {
-          "value": "Setting Up a Network and Staying Secure",
-          "label": "Setting Up a Network and Staying Secure"
-        },
-        {
-          "value": "OOP — Classes, Objects and Method Types",
-          "label": "OOP — Classes, Objects and Method Types"
-        },
-        {
-          "value": "Programming with Relational Databases",
-          "label": "Programming with Relational Databases"
-        },
-        {
-          "value": "Software Engineering Methodologies",
-          "label": "Software Engineering Methodologies"
-        },
-        {
-          "value": "Cloud Computing and Virtualisation",
-          "label": "Cloud Computing and Virtualisation"
-        },
-        {
-          "value": "2D Arrays and Advanced SQL",
-          "label": "2D Arrays and Advanced SQL"
-        },
-        {
-          "value": "Cybercriminals and Cybercrime",
-          "label": "Cybercriminals and Cybercrime"
-        },
-        {
-          "value": "Big Data, Data Mining and the Semantic Web",
-          "label": "Big Data, Data Mining and the Semantic Web"
-        },
-        {
-          "value": "How the Web Actually Works",
-          "label": "How the Web Actually Works"
+          "label": "Introduction to HTML",
+          "ref": "cc:10:it-caps/introduction-to-html"
         }
       ]
     },
     {
-      "group": "IT — IEB (Gr 10-12)",
+      "group": "IT — CAPS · Grade 11",
+      "lessons": [
+        {
+          "value": "Inside the Motherboard",
+          "label": "Inside the Motherboard",
+          "ref": "cc:11:it-caps/inside-the-motherboard"
+        },
+        {
+          "value": "Operating Systems and Virtualisation",
+          "label": "Operating Systems and Virtualisation",
+          "ref": "cc:11:it-caps/operating-systems-and-virtualisation"
+        },
+        {
+          "value": "Computer Management and Security Threats",
+          "label": "Computer Management and Security Threats",
+          "ref": "cc:11:it-caps/computer-management-and-security-threats"
+        },
+        {
+          "value": "Networks, Topology and Innovation",
+          "label": "Networks, Topology and Innovation",
+          "ref": "cc:11:it-caps/networks-topology-and-innovation"
+        },
+        {
+          "value": "Mobile, Wireless and Secure Communication",
+          "label": "Mobile, Wireless and Secure Communication",
+          "ref": "cc:11:it-caps/mobile-wireless-and-secure-communication"
+        },
+        {
+          "value": "Introduction to OOP and GUI Programming",
+          "label": "Introduction to OOP and GUI Programming",
+          "ref": "cc:11:it-caps/introduction-to-oop-and-gui-programming"
+        },
+        {
+          "value": "Variables, Decisions and Debugging",
+          "label": "Variables, Decisions and Debugging",
+          "ref": "cc:11:it-caps/variables-decisions-and-debugging"
+        },
+        {
+          "value": "Software Engineering and Problem-Solving Tools",
+          "label": "Software Engineering and Problem-Solving Tools",
+          "ref": "cc:11:it-caps/software-engineering-and-problem-solving-tools"
+        },
+        {
+          "value": "Arrays, Loops and File Handling",
+          "label": "Arrays, Loops and File Handling",
+          "ref": "cc:11:it-caps/arrays-loops-and-file-handling"
+        },
+        {
+          "value": "Databases — From Concepts to Programming",
+          "label": "Databases — From Concepts to Programming",
+          "ref": "cc:11:it-caps/databases-from-concepts-to-programming"
+        },
+        {
+          "value": "Relational Database Design",
+          "label": "Relational Database Design",
+          "ref": "cc:11:it-caps/relational-database-design"
+        },
+        {
+          "value": "The Web, Careers and Ethics",
+          "label": "The Web, Careers and Ethics",
+          "ref": "cc:11:it-caps/the-web-careers-and-ethics"
+        }
+      ]
+    },
+    {
+      "group": "IT — CAPS · Grade 12",
+      "lessons": [
+        {
+          "value": "Relational Database Design",
+          "label": "Relational Database Design",
+          "ref": "cc:12:it-caps/relational-database-design-g12"
+        },
+        {
+          "value": "Managing and Protecting Data",
+          "label": "Managing and Protecting Data",
+          "ref": "cc:12:it-caps/managing-and-protecting-data"
+        },
+        {
+          "value": "Big Data, Data Mining and the Semantic Web",
+          "label": "Big Data, Data Mining and the Semantic Web",
+          "ref": "cc:12:it-caps/big-data-data-mining-and-the-semantic-web"
+        },
+        {
+          "value": "Mobile Technology and Performance",
+          "label": "Mobile Technology and Performance",
+          "ref": "cc:12:it-caps/mobile-technology-and-performance"
+        },
+        {
+          "value": "Cloud Computing and Virtualisation",
+          "label": "Cloud Computing and Virtualisation",
+          "ref": "cc:12:it-caps/cloud-computing-and-virtualisation"
+        },
+        {
+          "value": "Setting Up a Network and Staying Secure",
+          "label": "Setting Up a Network and Staying Secure",
+          "ref": "cc:12:it-caps/setting-up-a-network-and-staying-secure"
+        },
+        {
+          "value": "OOP — Classes, Objects and Method Types",
+          "label": "OOP — Classes, Objects and Method Types",
+          "ref": "cc:12:it-caps/oop-classes-objects-and-method-types"
+        },
+        {
+          "value": "Programming with Relational Databases",
+          "label": "Programming with Relational Databases",
+          "ref": "cc:12:it-caps/programming-with-relational-databases"
+        },
+        {
+          "value": "Software Engineering Methodologies",
+          "label": "Software Engineering Methodologies",
+          "ref": "cc:12:it-caps/software-engineering-methodologies"
+        },
+        {
+          "value": "2D Arrays and Advanced SQL",
+          "label": "2D Arrays and Advanced SQL",
+          "ref": "cc:12:it-caps/2d-arrays-and-advanced-sql"
+        },
+        {
+          "value": "Cybercriminals and Cybercrime",
+          "label": "Cybercriminals and Cybercrime",
+          "ref": "cc:12:it-caps/cybercriminals-and-cybercrime"
+        },
+        {
+          "value": "How the Web Actually Works",
+          "label": "How the Web Actually Works",
+          "ref": "cc:12:it-caps/how-the-web-actually-works"
+        }
+      ]
+    },
+    {
+      "group": "IT — IEB · Grade 10",
       "lessons": [
         {
           "value": "Hardware, Software and Computer Types",
-          "label": "Hardware, Software and Computer Types"
+          "label": "Hardware, Software and Computer Types",
+          "ref": "cc:10:it-ieb/hardware-software-and-computer-types"
         },
         {
           "value": "Inside the System Unit",
-          "label": "Inside the System Unit"
+          "label": "Inside the System Unit",
+          "ref": "cc:10:it-ieb/inside-the-system-unit"
         },
         {
           "value": "Operating Systems and System Software",
-          "label": "Operating Systems and System Software"
+          "label": "Operating Systems and System Software",
+          "ref": "cc:10:it-ieb/operating-systems-and-system-software"
         },
         {
           "value": "Managing and Securing Your Computer",
-          "label": "Managing and Securing Your Computer"
+          "label": "Managing and Securing Your Computer",
+          "ref": "cc:10:it-ieb/managing-and-securing-your-computer"
         },
         {
           "value": "Networking Fundamentals",
-          "label": "Networking Fundamentals"
+          "label": "Networking Fundamentals",
+          "ref": "cc:10:it-ieb/networking-fundamentals"
         },
         {
           "value": "Getting Online and Communicating Responsibly",
-          "label": "Getting Online and Communicating Responsibly"
+          "label": "Getting Online and Communicating Responsibly",
+          "ref": "cc:10:it-ieb/getting-online-and-communicating-responsibly"
         },
         {
           "value": "Website Design and Effective Searching",
-          "label": "Website Design and Effective Searching"
+          "label": "Website Design and Effective Searching",
+          "ref": "cc:10:it-ieb/website-design-and-effective-searching"
         },
         {
           "value": "Using Computers Responsibly",
-          "label": "Using Computers Responsibly"
+          "label": "Using Computers Responsibly",
+          "ref": "cc:10:it-ieb/using-computers-responsibly"
         },
         {
           "value": "Computational Thinking",
-          "label": "Computational Thinking"
+          "label": "Computational Thinking",
+          "ref": "cc:10:it-ieb/computational-thinking"
         },
         {
           "value": "Data Types, Operators and Boolean Logic",
-          "label": "Data Types, Operators and Boolean Logic"
+          "label": "Data Types, Operators and Boolean Logic",
+          "ref": "cc:10:it-ieb/data-types-operators-and-boolean-logic"
         },
         {
           "value": "Methods, Objects and Passing Data",
-          "label": "Methods, Objects and Passing Data"
+          "label": "Methods, Objects and Passing Data",
+          "ref": "cc:10:it-ieb/methods-objects-and-passing-data"
         },
         {
           "value": "Selection and Looping Algorithms",
-          "label": "Selection and Looping Algorithms"
+          "label": "Selection and Looping Algorithms",
+          "ref": "cc:10:it-ieb/selection-and-looping-algorithms"
         },
         {
           "value": "Introduction to Databases and SQL",
-          "label": "Introduction to Databases and SQL"
+          "label": "Introduction to Databases and SQL",
+          "ref": "cc:10:it-ieb/introduction-to-databases-and-sql"
         },
         {
           "value": "User Interface Design and Testing",
-          "label": "User Interface Design and Testing"
-        },
+          "label": "User Interface Design and Testing",
+          "ref": "cc:10:it-ieb/user-interface-design-and-testing"
+        }
+      ]
+    },
+    {
+      "group": "IT — IEB · Grade 11",
+      "lessons": [
         {
           "value": "CPU Design and the Machine Cycle",
-          "label": "CPU Design and the Machine Cycle"
+          "label": "CPU Design and the Machine Cycle",
+          "ref": "cc:11:it-ieb/cpu-design-and-the-machine-cycle"
         },
         {
           "value": "Storage Compared and Programming Tools",
-          "label": "Storage Compared and Programming Tools"
+          "label": "Storage Compared and Programming Tools",
+          "ref": "cc:11:it-ieb/storage-compared-and-programming-tools"
         },
         {
           "value": "LAN and WAN Configuration",
-          "label": "LAN and WAN Configuration"
+          "label": "LAN and WAN Configuration",
+          "ref": "cc:11:it-ieb/lan-and-wan-configuration"
         },
         {
           "value": "Multimedia and the Evolving Web",
-          "label": "Multimedia and the Evolving Web"
+          "label": "Multimedia and the Evolving Web",
+          "ref": "cc:11:it-ieb/multimedia-and-the-evolving-web"
         },
         {
           "value": "Search, Errors and Data Validation",
-          "label": "Search, Errors and Data Validation"
+          "label": "Search, Errors and Data Validation",
+          "ref": "cc:11:it-ieb/search-errors-and-data-validation"
         },
         {
           "value": "Threats to Data Integrity and Security",
-          "label": "Threats to Data Integrity and Security"
+          "label": "Threats to Data Integrity and Security",
+          "ref": "cc:11:it-ieb/threats-to-data-integrity-and-security"
         },
         {
           "value": "Cybercrime and the Changing Workplace",
-          "label": "Cybercrime and the Changing Workplace"
+          "label": "Cybercrime and the Changing Workplace",
+          "ref": "cc:11:it-ieb/cybercrime-and-the-changing-workplace"
         },
         {
           "value": "Computational Thinking with Objects",
-          "label": "Computational Thinking with Objects"
+          "label": "Computational Thinking with Objects",
+          "ref": "cc:11:it-ieb/computational-thinking-with-objects"
         },
         {
           "value": "Representing Data and Data Structures",
-          "label": "Representing Data and Data Structures"
+          "label": "Representing Data and Data Structures",
+          "ref": "cc:11:it-ieb/representing-data-and-data-structures"
         },
         {
           "value": "Boolean Logic and Designing Classes",
-          "label": "Boolean Logic and Designing Classes"
+          "label": "Boolean Logic and Designing Classes",
+          "ref": "cc:11:it-ieb/boolean-logic-and-designing-classes"
         },
         {
           "value": "Passing Data, Persistence and Algorithms",
-          "label": "Passing Data, Persistence and Algorithms"
+          "label": "Passing Data, Persistence and Algorithms",
+          "ref": "cc:11:it-ieb/passing-data-persistence-and-algorithms"
         },
         {
           "value": "Databases, SQL and Software Quality",
-          "label": "Databases, SQL and Software Quality"
-        },
+          "label": "Databases, SQL and Software Quality",
+          "ref": "cc:11:it-ieb/databases-sql-and-software-quality"
+        }
+      ]
+    },
+    {
+      "group": "IT — IEB · Grade 12",
+      "lessons": [
         {
           "value": "Making Informed Hardware Decisions",
-          "label": "Making Informed Hardware Decisions"
+          "label": "Making Informed Hardware Decisions",
+          "ref": "cc:12:it-ieb/making-informed-hardware-decisions"
         },
         {
           "value": "Distributed Processing and Cloud Extension",
-          "label": "Distributed Processing and Cloud Extension"
+          "label": "Distributed Processing and Cloud Extension",
+          "ref": "cc:12:it-ieb/distributed-processing-and-cloud-extension"
         },
         {
           "value": "The Deep Web and Anonymous Browsing",
-          "label": "The Deep Web and Anonymous Browsing"
+          "label": "The Deep Web and Anonymous Browsing",
+          "ref": "cc:12:it-ieb/the-deep-web-and-anonymous-browsing"
         },
         {
           "value": "Cloud Services, Security and Digital Currency",
-          "label": "Cloud Services, Security and Digital Currency"
+          "label": "Cloud Services, Security and Digital Currency",
+          "ref": "cc:12:it-ieb/cloud-services-security-and-digital-currency"
         },
         {
           "value": "Identifying and Solving Security Risks",
-          "label": "Identifying and Solving Security Risks"
+          "label": "Identifying and Solving Security Risks",
+          "ref": "cc:12:it-ieb/identifying-and-solving-security-risks"
         },
         {
           "value": "Global Challenges and Green Computing",
-          "label": "Global Challenges and Green Computing"
+          "label": "Global Challenges and Green Computing",
+          "ref": "cc:12:it-ieb/global-challenges-and-green-computing"
         },
         {
           "value": "Law, Privacy and Digital Responsibility",
-          "label": "Law, Privacy and Digital Responsibility"
+          "label": "Law, Privacy and Digital Responsibility",
+          "ref": "cc:12:it-ieb/law-privacy-and-digital-responsibility"
         },
         {
           "value": "Complex Problem Solving with Inheritance",
-          "label": "Complex Problem Solving with Inheritance"
+          "label": "Complex Problem Solving with Inheritance",
+          "ref": "cc:12:it-ieb/complex-problem-solving-with-inheritance"
         },
         {
           "value": "Advanced Data Structures and Inheritance",
-          "label": "Advanced Data Structures and Inheritance"
+          "label": "Advanced Data Structures and Inheritance",
+          "ref": "cc:12:it-ieb/advanced-data-structures-and-inheritance"
         },
         {
           "value": "Persistence with JSON, and Array Algorithms",
-          "label": "Persistence with JSON, and Array Algorithms"
+          "label": "Persistence with JSON, and Array Algorithms",
+          "ref": "cc:12:it-ieb/persistence-with-json-and-array-algorithms"
         },
         {
           "value": "Data Strategy — Warehousing, Mining and NoSQL",
-          "label": "Data Strategy — Warehousing, Mining and NoSQL"
+          "label": "Data Strategy — Warehousing, Mining and NoSQL",
+          "ref": "cc:12:it-ieb/data-strategy-warehousing-mining-and-nosql"
         },
         {
           "value": "Designing and Querying Multi-Table Databases",
-          "label": "Designing and Querying Multi-Table Databases"
+          "label": "Designing and Querying Multi-Table Databases",
+          "ref": "cc:12:it-ieb/designing-and-querying-multi-table-databases"
         }
       ]
     }

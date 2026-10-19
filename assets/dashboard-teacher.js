@@ -6003,6 +6003,7 @@ async function openClassDetail(cls) {
   window.TeacherMathResults?.show(cls, students);
   window.TeacherScienceResults?.show(cls, students);
   window.TeacherTechResults?.show(cls, students);
+  window.TeacherCodexResults?.show(cls, students);
 }
 
 const TOOL_META = {
@@ -6010,7 +6011,7 @@ const TOOL_META = {
   'web-wizard':    { icon:'globe',     name:'Web',  total:10 },
   'code-conjurer': { icon:'wand-2',    name:'Code', total:18 },
   'math-magician': { icon:'calculator',name:'Math', total:19 },
-  'computer-codex':{ icon:'book-open', name:'Codex',total:25 },
+  'computer-codex':{ icon:'book-open', name:'Codex',total:160 },
 };
 
 function icon(name, size) {
@@ -6498,6 +6499,7 @@ function closeClassDetail() {
   window.TeacherMathResults?.clear();
   window.TeacherScienceResults?.clear();
   window.TeacherTechResults?.clear();
+  window.TeacherCodexResults?.clear();
   _selectedClassId = null;
   document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
 }

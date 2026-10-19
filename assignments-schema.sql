@@ -79,11 +79,12 @@ create policy "Students read topics of visible assignments" on assignment_topics
 -- ── 2026-10: fixed topic ids, learner subsets, and a tighter teacher rule ──
 -- ref: a fixed id for each assigned topic or lesson, the same in English and
 --   Afrikaans: mm:<grade>:<topic id> (Math Magician), ss:<grade>:<strand/file>
---   (Science Sage), tt:<grade>:<strand/file> (Tech Tower). Older rows have none
+--   (Science Sage), tt:<grade>:<strand/file> (Tech Tower), cc:<grade>:<track>/<slug>
+--   (Computer Codex, added later in 2026-10; grade 8 = Coding & Robotics). Older rows have none
 --   and are matched by name as before.
 -- student_ids: when set, only these learners of the class get the assignment.
 alter table public.assignment_topics add column if not exists ref text
-  check (ref is null or ref ~ '^(mm|ss|tt):[0-9]{1,2}:[a-z0-9/_-]{1,120}$');
+  check (ref is null or ref ~ '^(mm|ss|tt|cc):[0-9]{1,2}:[a-z0-9/_-]{1,120}$');
 alter table public.assignments add column if not exists student_ids uuid[]
   check (student_ids is null or cardinality(student_ids) between 1 and 200);
 
@@ -114,3 +115,8 @@ alter policy "Students read topics of visible assignments" on public.assignment_
 alter policy "Teachers manage own assignments" on public.assignments
   using (teacher_id = (select auth.uid()))
   with check (teacher_id = (select auth.uid()) and public.is_class_teacher(class_id));
+
+-- ── 2026-10: Computer Codex lesson ids (cc:<grade>:<track>/<slug>) ──
+alter table public.assignment_topics drop constraint if exists assignment_topics_ref_check;
+alter table public.assignment_topics add constraint assignment_topics_ref_check
+  check (ref is null or ref ~ '^(mm|ss|tt|cc):[0-9]{1,2}:[a-z0-9/_-]{1,120}$');

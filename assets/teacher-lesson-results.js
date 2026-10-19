@@ -1,17 +1,19 @@
 // ══════════════════════════════════════════════════════════
-// SCIENCE SAGE and TECH TOWER RESULTS — class detail view
+// SCIENCE SAGE, TECH TOWER and COMPUTER CODEX RESULTS — class detail view
 // What a class has answered in a tool's lesson quizzes, read from the
 // lesson_results table (one row per learner, tool and grade, written by
 // /lesson-results.js). Shows class accuracy per strand, the lessons most
 // worth reteaching and, per learner, lessons finished, accuracy, weak
 // lessons and when they last practised. Uses the same layout classes as the
 // Math Magician card (teacher-math-results.css).
-// One card per tool: window.TeacherScienceResults and window.TeacherTechResults.
+// One card per tool: window.TeacherScienceResults, window.TeacherTechResults
+// and window.TeacherCodexResults.
 // ══════════════════════════════════════════════════════════
 (function () {
   const MASTERY = 70, MIN_FOR_STATUS = 3, IDLE_DAYS = 7;
   const STRANDS = { life: 'Life & Living', matter: 'Matter & Materials', energy: 'Energy & Change', earth: 'Planet Earth & Beyond', physics: 'Physics', chemistry: 'Chemistry',
-                    structures: 'Structures', mechanical: 'Mechanical Systems', electrical: 'Electrical Systems', processing: 'Processing' };
+                    structures: 'Structures', mechanical: 'Mechanical Systems', electrical: 'Electrical Systems', processing: 'Processing',
+                    coding: 'Coding & Robotics', 'cat-caps': 'CAT (CAPS)', 'cat-ieb': 'CAT (IEB)', 'it-caps': 'IT (CAPS)', 'it-ieb': 'IT (IEB)' };
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const pct = (c, n) => n ? Math.round(c / n * 100) : null;
   const sum = arr => arr.reduce((a, b) => a + b, 0);
@@ -24,8 +26,12 @@
     return days <= 0 ? 'today' : days === 1 ? 'yesterday' : days + ' days ago';
   }
 
-  function card({ tool, title, grades, index, containerId }) {
+  // prefix: the assignment ref prefix (ss, tt, cc); gradeLabels: button text for a grade, where not "Gr <n>".
+  // byTrack: a learner follows one or two tracks (Computer Codex: CAT or IT, CAPS or IEB), so
+  // "lessons finished" counts out of the lessons in the tracks they have worked in.
+  function card({ tool, title, grades, index, containerId, prefix, gradeLabels = {}, byTrack = false }) {
     const TOOL = tool;
+    const gradeName = g => gradeLabels[g] || 'Gr ' + g;
     const lessonName = (g, k) => (window[index] || {})[g]?.[k] || k.split('/').pop().replace(/-/g, ' ');
     let state = null, seq = 0;
 
@@ -49,7 +55,12 @@
       const wrap = document.getElementById(containerId);
       if (!wrap || !state) return;
       const g = state.grade;
-      const total = Object.keys((window[index] || {})[g] || {}).length;
+      const keys = Object.keys((window[index] || {})[g] || {});
+      const totalFor = x => {
+        if (!byTrack) return keys.length;
+        const tracks = new Set(Object.keys(x.lessons).map(k => k.split('/')[0]));
+        return tracks.size ? keys.filter(k => tracks.has(k.split('/')[0])).length : null;
+      };
       const stats = state.students.map(s => learnerStats(s, g));
       const active = stats.filter(x => x.n > 0);
 
@@ -79,10 +90,10 @@
             <div class="mmr-sub">Lesson quiz answers by learners in this class while signed in. A lesson is weak below ${MASTERY}% over the learner's last 12 answers in it.</div>
           </div>
           <div class="mmr-grades" role="group" aria-label="Grade">
-            ${grades.map(x => `<button type="button" class="mmr-grade${x === g ? ' on' : ''}${has.has(x) ? '' : ' empty'}" data-g="${x}" aria-pressed="${x === g}">Gr ${x}</button>`).join('')}
+            ${grades.map(x => `<button type="button" class="mmr-grade${x === g ? ' on' : ''}${has.has(x) ? '' : ' empty'}" data-g="${x}" aria-pressed="${x === g}">${gradeName(x)}</button>`).join('')}
           </div>
         </div>
-        ${!active.length ? `<div class="mmr-empty">No learner in this class has answered a Grade ${g} ${title} quiz while signed in yet.${has.size ? ' Grades with results are shown in bold above.' : ''}</div>` : `
+        ${!active.length ? `<div class="mmr-empty">No learner in this class has answered a ${gradeName(g).replace('Gr ', 'Grade ')} ${title} quiz while signed in yet.${has.size ? ' Grades with results are shown in bold above.' : ''}</div>` : `
         <div class="mmr-summary">
           <div class="mmr-stat"><div class="mmr-stat-v">${active.length}<span>/${state.students.length}</span></div><div class="mmr-stat-l">learners practising</div></div>
           <div class="mmr-stat"><div class="mmr-stat-v">${sum(active.map(x => x.answered)).toLocaleString()}</div><div class="mmr-stat-l">questions answered</div></div>
@@ -123,7 +134,7 @@
               const name = x.s.display_name || x.s.email?.split('@')[0] || 'Learner';
               return `<tr>
                 <td><span class="student-name">${esc(name)}</span></td>
-                <td class="mmr-num">${x.finished}<span class="mmr-of">/${total}</span></td>
+                <td class="mmr-num">${totalFor(x) == null ? '—' : `${x.finished}<span class="mmr-of">/${totalFor(x)}</span>`}</td>
                 <td class="mmr-num">${x.answered || '—'}</td>
                 <td class="mmr-num">${x.acc == null ? '—' : `<span class="mmr-pill mmr-${tone(x.acc)}">${x.acc}%</span>`}</td>
                 <td>${x.weak.length ? `<span class="mmr-weak-list">${x.weak.slice(0, 3).map(w => `<span class="mmr-chip" title="${w.p}% over the last ${w.n} answers">${esc(lessonName(g, w.k))}</span>`).join('')}${x.weak.length > 3 ? `<span class="mmr-more">+${x.weak.length - 3}</span>` : ''}</span>` : (x.n ? '<span class="mmr-none">None</span>' : '—')}</td>
@@ -137,7 +148,7 @@
         const t = reteach.find(x => x.k === b.dataset.k);
         if (!t || typeof window.openCreateAssignmentModal !== 'function') return;
         window.openCreateAssignmentModal({ classId: state.cls.id, tool: TOOL, title: 'Practise: ' + lessonName(g, t.k),
-          refs: [`${TOOL === 'science-sage' ? 'ss' : 'tt'}:${g}:${t.k}`], studentIds: t.weakIds });
+          refs: [`${prefix}:${g}:${t.k}`], studentIds: t.weakIds });
       }));
     }
 
@@ -167,6 +178,8 @@
     return { show, clear };
   }
 
-  window.TeacherScienceResults = card({ tool: 'science-sage', title: 'Science Sage', grades: [7, 8, 9, 10, 11, 12], index: 'SS_LESSON_INDEX', containerId: 'ss-class-results' });
-  window.TeacherTechResults = card({ tool: 'tech-tower', title: 'Tech Tower', grades: [8, 9], index: 'TT_LESSON_INDEX', containerId: 'tt-class-results' });
+  window.TeacherScienceResults = card({ tool: 'science-sage', title: 'Science Sage', grades: [7, 8, 9, 10, 11, 12], index: 'SS_LESSON_INDEX', containerId: 'ss-class-results', prefix: 'ss' });
+  window.TeacherTechResults = card({ tool: 'tech-tower', title: 'Tech Tower', grades: [8, 9], index: 'TT_LESSON_INDEX', containerId: 'tt-class-results', prefix: 'tt' });
+  window.TeacherCodexResults = card({ tool: 'computer-codex', title: 'Computer Codex', grades: [8, 10, 11, 12], index: 'CC_LESSON_INDEX', containerId: 'cc-class-results', prefix: 'cc',
+                                      gradeLabels: { 8: 'Gr 8–9' }, byTrack: true });
 })();

@@ -205,7 +205,7 @@ function _targets(a, classIds) {
   return a.student_ids && a.student_ids.length ? classIds.filter(id => a.student_ids.includes(id)) : classIds;
 }
 function _parseRef(ref) {
-  const m = ref && ref.match(/^(mm|ss|tt):(\d+):(.+)$/);
+  const m = ref && ref.match(/^(mm|ss|tt|cc):(\d+):(.+)$/);
   return m ? { kind: m[1], grade: +m[2], key: m[3] } : null;
 }
 const _pct = arr => Array.isArray(arr) && arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length * 100) : null;
@@ -232,7 +232,7 @@ async function _loadProgress(assignments, studentIds) {
   if (kinds.has('mm')) jobs.push(
     supabase.from('mm_results').select('user_id, grade, data').in('user_id', studentIds)
       .then(r => { if (!r.error) out.mm = r.data || []; }));
-  if (kinds.has('ss') || kinds.has('tt')) jobs.push(
+  if (kinds.has('ss') || kinds.has('tt') || kinds.has('cc')) jobs.push(
     supabase.from('lesson_results').select('user_id, tool, grade, data').in('user_id', studentIds)
       .then(r => { if (!r.error) out.lessons = r.data || []; }));
   await Promise.all(jobs);
@@ -243,7 +243,7 @@ async function _loadProgress(assignments, studentIds) {
  * Completion and scores for one assignment.
  * - A lesson with a ref is done once it is finished after the assignment was
  *   set: a lesson_complete event with that topic id and grade (Math Magician),
- *   or the lesson's quiz finished (Science Sage, Tech Tower). Its score is the
+ *   or the lesson's quiz finished (Science Sage, Tech Tower, Computer Codex). Its score is the
  *   learner's recent accuracy on it.
  * - A lesson without a ref is done once there is a lesson_complete event with
  *   that name (case/whitespace-insensitive) after the assignment was set.
@@ -277,7 +277,7 @@ function _computeCompletion(assignment, items, studentIds, data) {
           return { ...it, done: mine.some(e => e.grade === r.grade && +e.metadata?.topicId === tid),
                    score: _pct(arr), n: Array.isArray(arr) ? arr.length : 0 };
         }
-        const tool = r.kind === 'ss' ? 'science-sage' : 'tech-tower';
+        const tool = { ss: 'science-sage', tt: 'tech-tower', cc: 'computer-codex' }[r.kind];
         const row = data.lessons.find(x => x.user_id === id && x.tool === tool && x.grade === r.grade);
         const L = row?.data?.l?.[r.key];
         return { ...it, done: !!(L && L.d && L.d >= created), score: _pct(L?.r), n: L?.r?.length || 0 };

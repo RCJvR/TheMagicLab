@@ -17249,6 +17249,33 @@ const TRACKS = {
     emptyBody: 'Information Technology (IEB) theory hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
   },
 };
+// ── Fixed lesson ids and grades ─────────────────────────────────────────────
+// Each lesson gets a grade (Coding & Robotics counts as Grade 8) and a fixed
+// id, "<track>/<title-slug>", used for saved results, teacher reports and
+// assignments ("cc:<grade>:<id>"), so they survive reordering. CAT and IT
+// lessons are put in unit order, so each unit shows once in the sidebar.
+const CC_TOOL = 'computer-codex';
+function ccSlug(t) {
+  return t.toLowerCase().replace(/&amp;|&/g, ' and ').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+}
+function ccUnitNum(les) { const m = les.unit.match(/Unit (\d+)/); return m ? +m[1] : 0; }
+Object.entries(TRACKS).forEach(([track, t]) => {
+  if (track !== 'coding') {
+    const ordered = t.lessons.map((les, i) => [les, i])
+      .sort((a, b) => ccUnitNum(a[0]) - ccUnitNum(b[0]) || a[1] - b[1]).map(x => x[0]);
+    t.lessons.splice(0, t.lessons.length, ...ordered);
+  }
+  const seen = new Set();
+  t.lessons.forEach(les => {
+    les.grade = track === 'coding' ? 8 : +gradeOf(les);
+    let key = track + '/' + ccSlug(les.title);
+    if (seen.has(key)) key += '-g' + les.grade;   // the same title in two grades
+    seen.add(key);
+    les.key = key;
+  });
+});
+
 let activeTrack = 'coding';
 let activeSubject = 'coding';       // 'coding' | 'cat' | 'it'
 let activeCurriculum = 'caps';      // 'caps' | 'ieb' — only meaningful for cat/it
@@ -17274,6 +17301,7 @@ function switchTrack(track) {
   _unitGroups = computeUnitGroups();
   _collapsedGroups = new Set(_unitGroups.map((_, gi) => gi));
   currentLesson = 0;
+  ccRefreshCompleted();
   const badge = document.getElementById('gradeBadge');
   if (badge) badge.textContent = TRACKS[track].grade;
   buildSidebar();
@@ -17480,6 +17508,8 @@ function buildSidebar() {
       item.innerHTML =
         `<span class="lesson-num">${i + 1}</span>` +
         `<span class="lesson-name">${les.title}</span>` +
+        (window.MLAssigned ? MLAssigned.badge(`cc:${les.grade}:${les.key}`, 'en', isDone) : '') +
+        ccScoreBadge(les) +
         (isDone ? '<span class="lesson-done">✓</span>' : '');
 
       item.addEventListener('click', function () { goTo(i); });
@@ -17536,44 +17566,7 @@ function renderLesson() {
     <div class="lesson-body">${les.content}</div>
   `;
 
-  // Wire up quizzes
-  document.querySelectorAll('.quiz-opt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const box = btn.closest('.quiz-box');
-      const fb  = box.querySelector('.quiz-feedback');
-      box.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('correct','wrong'));
-      if (btn.dataset.correct === 'true') {
-        btn.classList.add('correct');
-        fb.textContent = '✅ Correct!'; fb.className = 'quiz-feedback correct';
-        completed.add(currentLesson);
-        updateProgress();
-        updateSidebarActive();
-        // Track correct answer
-        if (window.MagicLabProgress) {
-          const les = LESSONS[currentLesson];
-          MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'quiz_correct', {
-            topic: les.title,
-            grade: (TRACKS[activeTrack] && TRACKS[activeTrack].gradeNum) || 8,
-            score: 1,
-            metadata: { unit: les.unit, question: box.querySelector('.quiz-q')?.textContent?.trim() }
-          });
-        }
-      } else {
-        btn.classList.add('wrong');
-        fb.textContent = '❌ Not quite — try again!'; fb.className = 'quiz-feedback wrong';
-        // Track wrong answer
-        if (window.MagicLabProgress) {
-          const les = LESSONS[currentLesson];
-          MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'quiz_wrong', {
-            topic: les.title,
-            grade: (TRACKS[activeTrack] && TRACKS[activeTrack].gradeNum) || 8,
-            score: 0,
-            metadata: { unit: les.unit, question: box.querySelector('.quiz-q')?.textContent?.trim() }
-          });
-        }
-      }
-    });
-  });
+  ccSetupQuiz(les);
 
   // Update nav
   document.getElementById('prevBtn').style.visibility = currentLesson === 0 ? 'hidden' : 'visible';
@@ -17874,8 +17867,8 @@ function goTo(idx) {
     const les = LESSONS[currentLesson];
     MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'topic_started', {
       topic: les.title,
-      grade: (TRACKS[activeTrack] && TRACKS[activeTrack].gradeNum) || 8,
-      metadata: { unit: les.unit }
+      grade: les.grade,
+      metadata: { unit: les.unit, lessonKey: les.key, track: activeTrack }
     });
   }
 }
@@ -17905,43 +17898,21 @@ function restoreTrack(track) {
 }
 function resumeLastLesson(saved) {
   if (saved.track !== activeTrack) restoreTrack(saved.track);
-  goTo(saved.lessonIndex);
+  const byTitle = LESSONS.findIndex(l => l.title === saved.title);
+  goTo(byTitle !== -1 ? byTitle : saved.lessonIndex);
 }
 
 document.getElementById('prevBtn').addEventListener('click', () => goTo(currentLesson - 1));
+// Moving on doesn't complete a lesson: passing its quiz does (ccFinishQuiz).
 document.getElementById('nextBtn').addEventListener('click', () => {
   if (!LESSONS.length) return;
-  completed.add(currentLesson);
-  updateProgress();
-  // Track lesson complete
-  if (window.MagicLabProgress) {
-    const les = LESSONS[currentLesson];
-    MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
-      topic: les.title,
-      grade: (TRACKS[activeTrack] && TRACKS[activeTrack].gradeNum) || 8,
-      metadata: { unit: les.unit, lesson_index: currentLesson }
-    });
-  }
   if (currentLesson < LESSONS.length - 1) goTo(currentLesson + 1);
   else { /* finished */ document.getElementById('nextBtn').textContent = 'Complete! ✓'; }
 });
 
 document.addEventListener('keydown', e => {
   if (!LESSONS.length) return;
-  if (e.key === 'ArrowRight') {
-    completed.add(currentLesson);
-    updateProgress();
-    // Track lesson complete via keyboard
-    if (window.MagicLabProgress) {
-      const les = LESSONS[currentLesson];
-      MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
-        topic: les.title,
-        grade: (TRACKS[activeTrack] && TRACKS[activeTrack].gradeNum) || 8,
-        metadata: { unit: les.unit, via: 'keyboard' }
-      });
-    }
-    goTo(currentLesson+1);
-  }
+  if (e.key === 'ArrowRight') goTo(currentLesson+1);
   if (e.key === 'ArrowLeft')  goTo(currentLesson-1);
 });
 
@@ -17952,27 +17923,113 @@ function toggleQuiz(btn) {
   inner.classList.toggle('open');
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
-renderLesson();
+// ── Lesson quiz ─────────────────────────────────────────────────────────────
+// Options are shuffled each time, the first answer to a question counts (the
+// right answer is then shown), and finishing the quiz with CC_PASS % or more
+// completes the lesson. Every answer is saved through lesson-results.js.
+const CC_PASS = 70;
+function ccShuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-// ── Restore completed lessons from Supabase on page load ──────────────────
-// getLessonHistory returns a Set of topic title strings previously saved via
-// lesson_complete events. We map them back to lesson indices to restore ticks.
-async function _restoreProgress() {
-  if (!window.MagicLabProgress) return;
-  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.COMPUTER_CODEX);
-  if (!history.size) return;
-  LESSONS.forEach((les, i) => {
-    if (history.has(les.title)) completed.add(i);
+function ccRefreshCompleted() {
+  completed.clear();
+  if (!window.MLResults) return;
+  LESSONS.forEach((les, i) => { const L = MLResults.all(CC_TOOL, les.grade)[les.key]; if (L && L.d) completed.add(i); });
+}
+function ccScoreBadge(les) {
+  const s = window.MLResults && MLResults.lesson(CC_TOOL, les.grade, les.key);
+  if (!s) return '';
+  const weak = MLResults.isWeak(CC_TOOL, les.grade, les.key);
+  const tone = weak ? 'crit' : s.pct >= CC_PASS ? 'good' : 'warn';
+  return `<span class="cc-score ${tone}" title="${s.pct}% of your last ${s.n} answers right${weak ? ' — practise again' : ''}">${s.pct}%</span>`;
+}
+
+function ccSetupQuiz(les) {
+  const root = document.getElementById('lessonContent');
+  const boxes = [...root.querySelectorAll('.quiz-box')];
+  if (!boxes.length) return;
+  const answers = new Array(boxes.length).fill(null);
+
+  const toggle = root.querySelector('.quiz-toggle');
+  if (toggle) toggle.innerHTML = `🧩 Lesson quiz — ${boxes.length} questions <span class="quiz-req">score ${CC_PASS}% to complete the lesson</span><span class="toggle-icon">▾</span>`;
+
+  // What happened last time, above the first question.
+  const last = window.MLResults && MLResults.lesson(CC_TOOL, les.grade, les.key);
+  if (last) {
+    const note = document.createElement('p');
+    note.className = 'quiz-last' + (MLResults.isWeak(CC_TOOL, les.grade, les.key) ? ' weak' : '');
+    note.textContent = `Last time: ${last.pct}% of your last ${last.n} answers right.` +
+      (last.wrong.length ? ` Questions to try again: ${last.wrong.map(i => i + 1).join(', ')}.` : ' Every question right on your last try.');
+    boxes[0].parentNode.insertBefore(note, boxes[0]);
+  }
+
+  boxes.forEach((box, qi) => {
+    const opts = box.querySelector('.quiz-opts');
+    ccShuffle([...opts.querySelectorAll('.quiz-opt')]).forEach(b => opts.appendChild(b));
+    opts.querySelectorAll('.quiz-opt').forEach(btn => btn.addEventListener('click', () => {
+      if (answers[qi] !== null) return;
+      const ok = btn.dataset.correct === 'true';
+      answers[qi] = ok;
+      const rightBtn = opts.querySelector('.quiz-opt[data-correct="true"]');
+      opts.querySelectorAll('.quiz-opt').forEach(b => { b.disabled = true; });
+      rightBtn.classList.add('correct');
+      if (!ok) btn.classList.add('wrong');
+      const fb = box.querySelector('.quiz-feedback');
+      fb.textContent = ok ? '✅ Correct!' : `❌ Not quite — the answer is: ${rightBtn.textContent.trim()}`;
+      fb.className = 'quiz-feedback ' + (ok ? 'correct' : 'wrong');
+      if (window.MLResults) MLResults.record(CC_TOOL, les.grade, les.key, qi, ok);
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, ok ? 'quiz_correct' : 'quiz_wrong', {
+          topic: les.title, grade: les.grade, score: ok ? 1 : 0,
+          metadata: { unit: les.unit, lessonKey: les.key, question: box.querySelector('.quiz-q')?.textContent?.trim() }
+        });
+      }
+      if (answers.every(a => a !== null)) ccFinishQuiz(les, answers, boxes[boxes.length - 1]);
+    }));
   });
+}
+
+function ccFinishQuiz(les, answers, lastBox) {
+  const right = answers.filter(Boolean).length, total = answers.length;
+  const pct = Math.round(right / total * 100), pass = pct >= CC_PASS;
+  const el = document.createElement('div');
+  el.className = 'quiz-score ' + (pass ? 'pass' : 'retry');
+  el.innerHTML = `<div><strong>${right} / ${total}</strong> (${pct}%) — ${pass ? 'Lesson complete ✓' : `score ${CC_PASS}% or more to complete this lesson.`}</div>
+    <button type="button" class="quiz-retry">${pass ? 'Do the quiz again' : 'Try again'}</button>`;
+  lastBox.after(el);
+  el.querySelector('.quiz-retry').addEventListener('click', () => {
+    renderLesson();
+    const t = document.querySelector('#lessonContent .quiz-toggle');
+    if (t && !t.classList.contains('open')) toggleQuiz(t);
+    t?.scrollIntoView({ block: 'start' });
+  });
+  if (pass) {
+    if (window.MLResults) MLResults.finished(CC_TOOL, les.grade, les.key);
+    if (window.MagicLabProgress) {
+      MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
+        topic: les.title, grade: les.grade, score: pct,
+        metadata: { unit: les.unit, lessonKey: les.key, track: activeTrack }
+      });
+    }
+  }
+  ccRefreshCompleted();
+  buildSidebar();
   updateSidebarActive();
   updateProgress();
 }
 
-// magiclab:progress:ready fires once auth + progress SDK are both initialised
-document.addEventListener('magiclab:progress:ready', _restoreProgress);
-// Also handle the case where the SDK was already ready before this ran
-if (window.MagicLabProgress) _restoreProgress();
+// ── Init ──────────────────────────────────────────────────────────────────
+renderLesson();
+
+// ── Completed lessons come from the saved quiz results (lesson-results.js) ──
+// They are kept in this browser and, for a signed-in learner, in their
+// account; "ml:results:sync" fires when the account copy arrives.
+if (window.MLResults) MLResults.use(CC_TOOL);
+document.addEventListener('ml:results:sync', e => {
+  if (e.detail && e.detail.tool !== CC_TOOL) return;
+  ccRefreshCompleted(); buildSidebar(); updateSidebarActive(); updateProgress();
+});
+document.addEventListener('ml:assigned', () => { buildSidebar(); updateSidebarActive(); });
+ccRefreshCompleted(); buildSidebar(); updateSidebarActive(); updateProgress();
 
 // Deep link from the Teacher Training / Lesson Planning tool-link mapping:
 // ?track=<track-key>&lesson=<url-encoded lesson title>. Takes priority over
@@ -17980,6 +18037,17 @@ if (window.MagicLabProgress) _restoreProgress();
 // the teacher wants that exact lesson, not wherever they left off.
 function _tryDeepLinkFromURL() {
   const params = new URLSearchParams(window.location.search);
+  // ?key=<track>/<slug>: a lesson's fixed id (assignment links).
+  const key = params.get('key');
+  if (key) {
+    const tk = key.split('/')[0];
+    if (TRACKS[tk]) {
+      if (tk !== activeTrack) restoreTrack(tk);
+      const idx = LESSONS.findIndex(l => l.key === key);
+      if (idx !== -1) goTo(idx);
+      return true;
+    }
+  }
   const track = params.get('track');
   const lessonTitle = params.get('lesson');
   if (!track || !TRACKS[track]) return false;

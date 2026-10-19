@@ -512,6 +512,22 @@
     .quiz-feedback { font-size: 13px; margin-top: 9px; min-height: 18px; }
     .quiz-feedback.correct { color: var(--good); }
     .quiz-feedback.wrong   { color: #f5a3a3; }
+    .quiz-opt:disabled { cursor: default; }
+    .quiz-opt:disabled:not(.correct):not(.wrong) { opacity: 0.6; }
+    .quiz-opt:focus-visible, .quiz-retry:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+    .quiz-req { margin-left: 6px; opacity: 0.6; font-weight: 400; }
+    .quiz-last { margin: 4px 0 0; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(74,207,127,0.30); background: rgba(74,207,127,0.08); color: var(--text2); font-size: 13.5px; }
+    .quiz-last.weak { border-color: rgba(245,178,61,0.40); background: rgba(245,178,61,0.09); }
+    .quiz-score { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 6px 0 20px; padding: 14px 18px; border-radius: 12px; font-size: 14.5px; color: var(--text); }
+    .quiz-score.pass { border: 1px solid rgba(74,207,127,0.40); background: rgba(74,207,127,0.10); }
+    .quiz-score.retry { border: 1px solid rgba(245,178,61,0.45); background: rgba(245,178,61,0.10); }
+    .quiz-retry { padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border2); background: var(--surface); color: var(--text); font: 600 13px var(--font-body); cursor: pointer; }
+    .quiz-retry:hover { background: rgba(255,255,255,0.09); }
+    .cc-score { flex-shrink: 0; margin-left: auto; padding: 1px 6px; border-radius: 99px; border: 1px solid currentColor; font: 600 10px var(--font-mono, monospace); }
+    .cc-score.good { color: var(--good, #4acf7f); }
+    .cc-score.warn { color: var(--warn, #f5b23d); }
+    .cc-score.crit { color: var(--crit, #ef5b5b); }
+    .lesson-item .ml-due + .cc-score, .lesson-item .cc-score + .lesson-done { margin-left: 6px; }
 
     /* Bottom nav */
     #bottomNav {
@@ -690,6 +706,8 @@
   </div>
 </div>
 
+<script src="/lesson-results.js"></script>
+<script src="/my-assignments.js"></script>
 <script src="assets/computer-codex.js"></script>
   <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
   <script src="/contact-button.js" defer></script>
