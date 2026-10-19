@@ -63,7 +63,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pressing Delete only moves a file to the Recycle Bin, so you can still restore it.">
   <div class="quiz-q">🧩 Q1: Where do deleted files go first in Windows?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">They are permanently deleted immediately</button>
@@ -73,17 +73,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The OS sits between you and the hardware: it manages memory, storage and devices, and runs your programs.">
   <div class="quiz-q">🧩 Q2: What does an operating system do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Connects you to the internet</button>
+    <button class="quiz-opt" data-correct="false">Connects you to the internet and blocks viruses for you</button>
     <button class="quiz-opt" data-correct="true">Manages hardware and lets you run programs</button>
-    <button class="quiz-opt" data-correct="false">Creates documents and spreadsheets</button>
+    <button class="quiz-opt" data-correct="false">Creates documents, spreadsheets and presentations</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Windows is Microsoft's OS; macOS is Apple's and Linux is a free, open-source OS.">
   <div class="quiz-q">🧩 Q3: What is the name of Microsoft's operating system?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">macOS</button>
@@ -93,7 +93,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The taskbar runs along the bottom of the screen with the Start button and your open programs.">
   <div class="quiz-q">🧩 Q4: Which part of the desktop shows open programs and the Start button?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">The Notification Area</button>
@@ -103,27 +103,27 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Windows logo key (⊞) opens the Start Menu; Ctrl and Alt are used in shortcuts with other keys.">
   <div class="quiz-q">🧩 Q5: What keyboard key opens the Start Menu?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Ctrl</button>
-    <button class="quiz-opt" data-correct="false">Alt</button>
+    <button class="quiz-opt" data-correct="false">Ctrl key (^)</button>
+    <button class="quiz-opt" data-correct="false">Alt key (⌥)</button>
     <button class="quiz-opt" data-correct="true">Win key (⊞)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The system tray (notification area) sits at the bottom-right and shows the clock, network and volume icons.">
   <div class="quiz-q">🧩 Q6: What is the System Tray?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The area in the bottom-right showing clock, Wi-Fi, and volume</button>
-    <button class="quiz-opt" data-correct="false">The folder where system files are stored</button>
-    <button class="quiz-opt" data-correct="false">A special type of recycling bin</button>
+    <button class="quiz-opt" data-correct="false">The hidden folder where Windows keeps its system files</button>
+    <button class="quiz-opt" data-correct="false">A special area of the Recycle Bin for system files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A double-click opens a desktop icon; a single click only selects it and a right-click shows a menu.">
   <div class="quiz-q">🧩 Q7: How do you open a program from a desktop icon?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Single click</button>
@@ -133,32 +133,32 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Right-clicking shows a context menu with actions for that spot, like New Folder, View and Display settings.">
   <div class="quiz-q">🧩 Q8: What appears when you right-click on the desktop?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The computer restarts</button>
+    <button class="quiz-opt" data-correct="false">The computer restarts and opens the Settings app</button>
     <button class="quiz-opt" data-correct="true">A context menu with options like New Folder</button>
-    <button class="quiz-opt" data-correct="false">The screensaver turns on</button>
+    <button class="quiz-opt" data-correct="false">The screensaver turns on and the screen locks</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Minimising hides the window to the taskbar; the program keeps running and you can bring it back.">
   <div class="quiz-q">🧩 Q9: What does it mean to minimise a window?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Close the program permanently</button>
-    <button class="quiz-opt" data-correct="false">Delete the file</button>
-    <button class="quiz-opt" data-correct="true">Hide the window to the taskbar while the program keeps running</button>
+    <button class="quiz-opt" data-correct="false">Close the program and save all of your work first</button>
+    <button class="quiz-opt" data-correct="false">Delete the file and send it to the Recycle Bin</button>
+    <button class="quiz-opt" data-correct="true">Hide the window on the taskbar; the program keeps running</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Files stay in the Recycle Bin, and can be restored, until you empty it.">
   <div class="quiz-q">🧩 Q10: Which statement about the Recycle Bin is TRUE?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Files in the Recycle Bin are permanently deleted</button>
+    <button class="quiz-opt" data-correct="false">Files in the Recycle Bin are permanently deleted straight away</button>
     <button class="quiz-opt" data-correct="true">Files in the Recycle Bin can be restored until you empty it</button>
-    <button class="quiz-opt" data-correct="false">The Recycle Bin stores downloaded files</button>
+    <button class="quiz-opt" data-correct="false">The Recycle Bin stores the files you download from the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -244,7 +244,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="File Explorer is the program for browsing drives, folders and files.">
   <div class="quiz-q">🧩 Q1: You want to browse your files and folders. Which program do you open?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Control Panel</button>
@@ -254,7 +254,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Win + E opens File Explorer (E for Explorer).">
   <div class="quiz-q">🧩 Q2: What is the keyboard shortcut to open File Explorer?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + E</button>
@@ -264,17 +264,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Navigation Pane is a folder tree of your drives, This PC and Quick Access, for jumping between locations.">
   <div class="quiz-q">🧩 Q3: In File Explorer, what does the left Navigation Pane show?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Your recent documents only</button>
+    <button class="quiz-opt" data-correct="false">Your recently opened documents and nothing else</button>
     <button class="quiz-opt" data-correct="true">A folder tree showing your drives and common locations</button>
-    <button class="quiz-opt" data-correct="false">Your internet bookmarks</button>
+    <button class="quiz-opt" data-correct="false">Your internet bookmarks and browsing history</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + Z undoes your last action; Ctrl + Y redoes it.">
   <div class="quiz-q">🧩 Q4: What does Ctrl + Z do?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Redo the last action</button>
@@ -284,7 +284,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The X closes the window; the minus minimises it and the square maximises or restores it.">
   <div class="quiz-q">🧩 Q5: Which button in the top-right of a window CLOSES it completely?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">The minus button</button>
@@ -294,7 +294,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Win + D shows the desktop and pressing it again brings your windows back.">
   <div class="quiz-q">🧩 Q6: What shortcut shows or hides the Desktop instantly?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Win + D</button>
@@ -304,17 +304,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + C copies the selection to the clipboard so you can paste it with Ctrl + V.">
   <div class="quiz-q">🧩 Q7: What does Ctrl + C do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Close the program</button>
+    <button class="quiz-opt" data-correct="false">Close the program you are using</button>
     <button class="quiz-opt" data-correct="true">Copy the selected item</button>
-    <button class="quiz-opt" data-correct="false">Create a new file</button>
+    <button class="quiz-opt" data-correct="false">Create a new, empty file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Alt + F4 closes the window that is currently active.">
   <div class="quiz-q">🧩 Q8: What does Alt + F4 do?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Opens File Explorer</button>
@@ -324,17 +324,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Minimise only hides the window and the program keeps running; Close ends the program.">
   <div class="quiz-q">🧩 Q9: What is the difference between Minimise and Close?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">There is no difference</button>
-    <button class="quiz-opt" data-correct="true">Minimise hides the window but the program keeps running; Close ends the program</button>
-    <button class="quiz-opt" data-correct="false">Minimise deletes the file; Close saves it</button>
+    <button class="quiz-opt" data-correct="false">There is no difference; both close the program and its window</button>
+    <button class="quiz-opt" data-correct="true">Minimise hides the window and the program keeps running; Close ends it</button>
+    <button class="quiz-opt" data-correct="false">Minimise deletes the file, while Close saves it and then exits</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + S saves; Ctrl + P prints and Ctrl + F finds text.">
   <div class="quiz-q">🧩 Q10: Which shortcut do you use to save a file?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + P</button>
@@ -394,7 +394,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="To move a file you Cut (Ctrl + X) and then Paste; the original is removed from the old place.">
   <div class="quiz-q">🧩 Q1: You want to MOVE a file to a new folder. Which shortcut do you use first?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + C (Copy)</button>
@@ -404,7 +404,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Copy then Paste leaves the original where it was and puts a duplicate in the new place.">
   <div class="quiz-q">🧩 Q2: You want to keep the original AND put a copy elsewhere. Which do you use?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Cut then Paste</button>
@@ -414,7 +414,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Shift + Delete skips the Recycle Bin, so the file is gone for good.">
   <div class="quiz-q">🧩 Q3: What shortcut permanently deletes a file, skipping the Recycle Bin?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + Delete</button>
@@ -424,7 +424,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Select the file and press F2 (or right-click > Rename) to type a new name.">
   <div class="quiz-q">🧩 Q4: How do you rename a file in File Explorer?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Double-click it</button>
@@ -434,37 +434,37 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A file path is the full address of a file, e.g. C:\\Users\\Thandi\\Documents\\Essay.docx.">
   <div class="quiz-q">🧩 Q5: What is a file path?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The speed at which a file opens</button>
-    <button class="quiz-opt" data-correct="true">The full address showing where a file is stored on the computer</button>
-    <button class="quiz-opt" data-correct="false">The size of a file in megabytes</button>
+    <button class="quiz-opt" data-correct="false">The speed at which the computer can open a file</button>
+    <button class="quiz-opt" data-correct="true">The full address of where a file is stored</button>
+    <button class="quiz-opt" data-correct="false">The size of the file, measured in megabytes</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pressing the Win key and typing searches apps, files and settings straight away.">
   <div class="quiz-q">🧩 Q6: Which shortcut opens Windows Search?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Press the Win key and start typing</button>
-    <button class="quiz-opt" data-correct="false">Press F1</button>
-    <button class="quiz-opt" data-correct="false">Press Ctrl + H</button>
+    <button class="quiz-opt" data-correct="false">Press F1 and type the name of the file</button>
+    <button class="quiz-opt" data-correct="false">Press Ctrl + H and type in the search box</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Clear names without spaces or special characters, like Grade_10_IT, are easy to find and work everywhere.">
   <div class="quiz-q">🧩 Q7: What is best practice for naming folders?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Use spaces and special characters freely</button>
+    <button class="quiz-opt" data-correct="false">Use spaces and special characters freely, e.g. My Work!! #1</button>
     <button class="quiz-opt" data-correct="true">Use clear names with underscores, e.g. Grade_10_IT</button>
-    <button class="quiz-opt" data-correct="false">Use only numbers</button>
+    <button class="quiz-opt" data-correct="false">Use only numbers, e.g. 001, 002, 003, so names stay short</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + V pastes what you copied or cut into the new location.">
   <div class="quiz-q">🧩 Q8: After copying a file, what do you press to place it in a new location?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + X</button>
@@ -474,7 +474,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Delete without Shift sends the file to the Recycle Bin, where it can still be restored.">
   <div class="quiz-q">🧩 Q9: Where is a file stored after you press Delete (without Shift)?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">It is permanently gone</button>
@@ -484,12 +484,12 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Extracting decompresses a .zip so you can open and use the files inside it.">
   <div class="quiz-q">🧩 Q10: What does it mean to extract a .zip file?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Delete the compressed file</button>
+    <button class="quiz-opt" data-correct="false">Delete the compressed file to free up space</button>
     <button class="quiz-opt" data-correct="true">Decompress the contents so you can use the files inside</button>
-    <button class="quiz-opt" data-correct="false">Send the file by email</button>
+    <button class="quiz-opt" data-correct="false">Attach the compressed file to an email and send it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -549,17 +549,17 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="PDF (Portable Document Format) keeps its layout on any device and is meant for reading, not editing.">
   <div class="quiz-q">🧩 Q1: A teacher sends you Notes.pdf. What does .pdf tell you?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It is a Word document you can edit easily</button>
-    <button class="quiz-opt" data-correct="true">It is a Portable Document Format that looks the same on any device</button>
-    <button class="quiz-opt" data-correct="false">It is an image file</button>
+    <button class="quiz-opt" data-correct="false">It is a Word document that anyone can edit easily</button>
+    <button class="quiz-opt" data-correct="true">It is a fixed-layout document that looks the same everywhere</button>
+    <button class="quiz-opt" data-correct="false">It is a picture file that opens in the Photos app</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why=".docx is the modern Word format; .txt is plain text and .pdf is a fixed-layout document.">
   <div class="quiz-q">🧩 Q2: Which extension is used by modern Microsoft Word documents?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">.txt</button>
@@ -569,7 +569,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="PNG supports transparency; JPG and BMP do not.">
   <div class="quiz-q">🧩 Q3: Which image format supports transparent backgrounds?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">.jpg</button>
@@ -579,7 +579,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A PDF keeps its layout and is hard to edit, so it suits a final version.">
   <div class="quiz-q">🧩 Q4: You want to share a final version that cannot easily be edited. Which format?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.docx</button>
@@ -589,17 +589,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A .zip archive packs one or more files into one compressed file that is smaller and easier to send.">
   <div class="quiz-q">🧩 Q5: What does a .zip file contain?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A virus scanner</button>
+    <button class="quiz-opt" data-correct="false">A virus scanner that checks files when you open them</button>
     <button class="quiz-opt" data-correct="true">One or more files compressed into a single archive</button>
-    <button class="quiz-opt" data-correct="false">A Windows system file</button>
+    <button class="quiz-opt" data-correct="false">A Windows system file that starts the computer up</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why=".exe files are programs that run code, so one from an unknown source could be malware.">
   <div class="quiz-q">🧩 Q6: Which file type should you be CAREFUL about running from an unknown source?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.jpg</button>
@@ -609,7 +609,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why=".xlsx is Excel, .docx is Word and .pptx is PowerPoint.">
   <div class="quiz-q">🧩 Q7: What is the extension for a Microsoft Excel spreadsheet?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.pptx</button>
@@ -619,7 +619,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="JPG uses lossy compression, which makes photos much smaller with little visible loss.">
   <div class="quiz-q">🧩 Q8: Which image format is best for photographs because it produces small file sizes?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.png</button>
@@ -629,17 +629,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="With extensions showing, a file like photo.jpg.exe can't pretend to be something it isn't.">
   <div class="quiz-q">🧩 Q9: Why should you enable Show file name extensions in Windows?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It makes files open faster</button>
+    <button class="quiz-opt" data-correct="false">It makes files open faster in their programs</button>
     <button class="quiz-opt" data-correct="true">So you can always see what type a file really is</button>
-    <button class="quiz-opt" data-correct="false">It is required for printing</button>
+    <button class="quiz-opt" data-correct="false">Windows needs it before it can print documents</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why=".pptx is PowerPoint; .xlsx is Excel and .docx is Word.">
   <div class="quiz-q">🧩 Q10: What is the file extension for a Microsoft PowerPoint presentation?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.xlsx</button>
@@ -743,7 +743,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Font size, font type, bold and colour are all in the Font group on the Home tab.">
   <div class="quiz-q">🧩 Q1: You want to change the font size in Word. Which Ribbon group on the Home tab?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Paragraph</button>
@@ -753,17 +753,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The File tab opens Backstage View, with Save, Save As, Open, Print and Export.">
   <div class="quiz-q">🧩 Q2: What opens when you click the File tab?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The Font dialog box</button>
+    <button class="quiz-opt" data-correct="false">The Font dialog box with every text option</button>
     <button class="quiz-opt" data-correct="true">The Backstage View with file management options</button>
-    <button class="quiz-opt" data-correct="false">The Insert toolbar</button>
+    <button class="quiz-opt" data-correct="false">The Insert toolbar for adding pictures and tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Insert tab holds pictures, tables, shapes, charts and other objects you add to the document.">
   <div class="quiz-q">🧩 Q3: Which tab would you use to insert a picture or table?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Home</button>
@@ -773,27 +773,27 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Quick Access Toolbar sits above the Ribbon, holds commands like Save and Undo, and you can add your own.">
   <div class="quiz-q">🧩 Q4: What is the Quick Access Toolbar?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A floating toolbar that follows your cursor</button>
+    <button class="quiz-opt" data-correct="false">A floating toolbar that follows your mouse pointer around the page</button>
     <button class="quiz-opt" data-correct="true">A customisable toolbar above the Ribbon with frequently used commands</button>
-    <button class="quiz-opt" data-correct="false">The tab bar at the top</button>
+    <button class="quiz-opt" data-correct="false">The row of tab names (Home, Insert, Layout) at the top of the window</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each tab is divided into groups (e.g. Font, Paragraph) that keep related commands together.">
   <div class="quiz-q">🧩 Q5: What are Groups on the Ribbon?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The individual command buttons</button>
+    <button class="quiz-opt" data-correct="false">The individual command buttons, such as Bold and Italic</button>
     <button class="quiz-opt" data-correct="true">Sections within a tab that organise related commands</button>
-    <button class="quiz-opt" data-correct="false">The colour themes for Office</button>
+    <button class="quiz-opt" data-correct="false">The colour themes you can choose for Office programs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="F12 opens Save As; Ctrl + S saves the current file under its name.">
   <div class="quiz-q">🧩 Q6: Which shortcut opens the Save As dialog?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + S</button>
@@ -803,17 +803,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The small arrow (dialog box launcher) opens a dialog with all the options for that group.">
   <div class="quiz-q">🧩 Q7: What does the small arrow in the bottom-right of a Ribbon group do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It collapses the Ribbon</button>
+    <button class="quiz-opt" data-correct="false">It collapses the Ribbon so you see more of the page</button>
     <button class="quiz-opt" data-correct="true">It opens a dialog with more detailed options</button>
-    <button class="quiz-opt" data-correct="false">It saves the document</button>
+    <button class="quiz-opt" data-correct="false">It saves the document and closes the group</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Margins, orientation, size and columns are on the Layout tab.">
   <div class="quiz-q">🧩 Q8: Which Ribbon tab contains options for changing page margins?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Home</button>
@@ -823,17 +823,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Close shuts the current file but leaves Word open for other documents.">
   <div class="quiz-q">🧩 Q9: What does Close do in the File Backstage View?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Closes Word completely</button>
+    <button class="quiz-opt" data-correct="false">Closes Word completely, with all open documents</button>
     <button class="quiz-opt" data-correct="true">Closes the current file but keeps Word open</button>
-    <button class="quiz-opt" data-correct="false">Saves and closes the file</button>
+    <button class="quiz-opt" data-correct="false">Saves the file and then closes it automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Save As lets you pick a new name, location or file type; Save keeps the current ones.">
   <div class="quiz-q">🧩 Q10: Which option lets you save with a new name or different format?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Save (Ctrl+S)</button>
@@ -907,17 +907,17 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Use Save As (or Export) and choose PDF; renaming the extension does not change the file's format.">
   <div class="quiz-q">🧩 Q1: You need to submit a Word assignment as a PDF. What do you do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Rename the file from .docx to .pdf</button>
+    <button class="quiz-opt" data-correct="false">Rename the file from Essay.docx to Essay.pdf</button>
     <button class="quiz-opt" data-correct="true">File > Save As > change type to PDF > Save</button>
-    <button class="quiz-opt" data-correct="false">Press Ctrl + P to print it</button>
+    <button class="quiz-opt" data-correct="false">Press Ctrl + P and print it on paper to hand in</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + N creates a new blank document; Ctrl + O opens an existing one.">
   <div class="quiz-q">🧩 Q2: What keyboard shortcut creates a new document in Word?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + O</button>
@@ -927,27 +927,27 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Save updates the same file; Save As lets you choose a new name, location or format.">
   <div class="quiz-q">🧩 Q3: What is the difference between Save and Save As?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">There is no difference</button>
-    <button class="quiz-opt" data-correct="true">Save updates the existing file; Save As lets you choose name, location, or format</button>
-    <button class="quiz-opt" data-correct="false">Save As is only for PDFs</button>
+    <button class="quiz-opt" data-correct="false">There is no difference; both save the file in the same place and format</button>
+    <button class="quiz-opt" data-correct="true">Save keeps the same file; Save As lets you pick a new name, place or format</button>
+    <button class="quiz-opt" data-correct="false">Save As only saves the file as a PDF, while Save keeps it as a Word document</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Once a file has a name, Ctrl + S simply saves the changes to that same file.">
   <div class="quiz-q">🧩 Q4: You open a document, make changes, and press Ctrl+S. What happens?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A Save As dialog always opens</button>
+    <button class="quiz-opt" data-correct="false">A Save As dialog always opens to ask for a new name</button>
     <button class="quiz-opt" data-correct="true">The changes are saved to the same file with the same name</button>
-    <button class="quiz-opt" data-correct="false">The file is saved as a PDF</button>
+    <button class="quiz-opt" data-correct="false">The file is automatically saved as a PDF instead</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why=".docx keeps all formatting and stays fully editable in Word.">
   <div class="quiz-q">🧩 Q5: Which file format should you use if you need to keep editing the document?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.pdf</button>
@@ -957,17 +957,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="AutoSave saves your changes every few seconds when the file is stored on OneDrive or SharePoint.">
   <div class="quiz-q">🧩 Q6: What does AutoSave do in Word?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Automatically emails your document</button>
+    <button class="quiz-opt" data-correct="false">Automatically emails a copy of your document to you</button>
     <button class="quiz-opt" data-correct="true">Saves automatically every few seconds when stored on OneDrive</button>
-    <button class="quiz-opt" data-correct="false">Creates a backup PDF</button>
+    <button class="quiz-opt" data-correct="false">Creates a backup PDF of the document every hour</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="F12 opens Save As in Word.">
   <div class="quiz-q">🧩 Q7: What keyboard shortcut is Save As in Word?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + S</button>
@@ -977,17 +977,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A .txt file holds plain text only, which almost any program can open.">
   <div class="quiz-q">🧩 Q8: Why would you save a document as .txt?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">To make it smaller with all formatting intact</button>
+    <button class="quiz-opt" data-correct="false">To make it smaller while keeping all of its formatting</button>
     <button class="quiz-opt" data-correct="true">When you need plain text only with no formatting</button>
-    <button class="quiz-opt" data-correct="false">To share with iPhone users</button>
+    <button class="quiz-opt" data-correct="false">To share it with people who use iPhones or iPads</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A PDF keeps fonts and layout the same on every device and printer.">
   <div class="quiz-q">🧩 Q9: Which format looks the same on any device or printer?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">*.docx</button>
@@ -997,12 +997,12 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + O opens a file you already have; Ctrl + N starts a new one.">
   <div class="quiz-q">🧩 Q10: What does Ctrl + O do in Word?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Opens a new blank document</button>
+    <button class="quiz-opt" data-correct="false">Opens a new, blank document to start typing in</button>
     <button class="quiz-opt" data-correct="true">Opens the Open dialog to load an existing file</button>
-    <button class="quiz-opt" data-correct="false">Opens the Options menu</button>
+    <button class="quiz-opt" data-correct="false">Opens the Options menu to change Word's settings</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -1078,17 +1078,17 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Heading styles keep headings consistent and let Word build a Table of Contents from them.">
   <div class="quiz-q">🧩 Q1: What is the main advantage of using Heading styles?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It makes the text larger automatically</button>
+    <button class="quiz-opt" data-correct="false">It makes the heading text larger and bold automatically</button>
     <button class="quiz-opt" data-correct="true">Ensures consistent formatting and enables an automatic Table of Contents</button>
-    <button class="quiz-opt" data-correct="false">It saves the document as a PDF</button>
+    <button class="quiz-opt" data-correct="false">It saves the document as a PDF with bookmarks for headings</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + B is Bold; Ctrl + I is Italic and Ctrl + U is Underline.">
   <div class="quiz-q">🧩 Q2: Which shortcut applies Bold formatting?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + I</button>
@@ -1098,17 +1098,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Justify lines text up with both the left and right margins.">
   <div class="quiz-q">🧩 Q3: What does Ctrl + J do?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Justifies text so it aligns on both left and right margins</button>
-    <button class="quiz-opt" data-correct="false">Centers the text</button>
-    <button class="quiz-opt" data-correct="false">Indents the paragraph</button>
+    <button class="quiz-opt" data-correct="false">Centres the text between the margins on the page</button>
+    <button class="quiz-opt" data-correct="false">Indents the first line of the paragraph by one tab</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + E centres; Ctrl + L aligns left and Ctrl + R aligns right.">
   <div class="quiz-q">🧩 Q4: You want to centre a heading. Which shortcut?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + L</button>
@@ -1118,7 +1118,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + I is Italic.">
   <div class="quiz-q">🧩 Q5: Which shortcut applies Italic formatting?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + B</button>
@@ -1128,7 +1128,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Styles are on the Home tab in the Styles group.">
   <div class="quiz-q">🧩 Q6: Where are Styles found in Word?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Insert tab, Text group</button>
@@ -1138,17 +1138,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A paragraph style applies to the whole paragraph, so just click in it and choose the style.">
   <div class="quiz-q">🧩 Q7: What is the correct way to apply a Style to a paragraph?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Select every character, then apply</button>
+    <button class="quiz-opt" data-correct="false">Select every character in the paragraph first, then apply</button>
     <button class="quiz-opt" data-correct="true">Click anywhere in the paragraph, then click the style name</button>
-    <button class="quiz-opt" data-correct="false">Type the style name in the font box</button>
+    <button class="quiz-opt" data-correct="false">Type the style's name in the font box on the Home tab</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + A selects all the content in the document.">
   <div class="quiz-q">🧩 Q8: Which shortcut selects ALL content in a Word document?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + S</button>
@@ -1158,22 +1158,22 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ctrl + U underlines the selected text.">
   <div class="quiz-q">🧩 Q9: What does Ctrl + U do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Removes all formatting</button>
+    <button class="quiz-opt" data-correct="false">Removes all the formatting from the selection</button>
     <button class="quiz-opt" data-correct="true">Draws a line beneath selected text</button>
-    <button class="quiz-opt" data-correct="false">Changes font colour to blue</button>
+    <button class="quiz-opt" data-correct="false">Changes the font colour of the selection to blue</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Changing a style updates every paragraph that uses it, so headings stay consistent.">
   <div class="quiz-q">🧩 Q10: Why is using Styles better than manually formatting each heading?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Styles are the only way to change font size</button>
-    <button class="quiz-opt" data-correct="true">Styles ensure consistency and changing one style updates all matching headings at once</button>
-    <button class="quiz-opt" data-correct="false">Styles automatically save the document</button>
+    <button class="quiz-opt" data-correct="false">Styles are the only way to change the font size of a heading</button>
+    <button class="quiz-opt" data-correct="true">Changing one style updates every heading that uses it, so they stay consistent</button>
+    <button class="quiz-opt" data-correct="false">Styles save the document automatically each time you apply them</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -1257,7 +1257,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cell reference is the column letter and then the row number, so column C, row 5 is C5.">
   <div class="quiz-q">🧩 Q1: What is the cell reference for column C, row 5?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">5C</button>
@@ -1267,7 +1267,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Columns run up and down and are labelled with letters; rows run across and are numbered.">
   <div class="quiz-q">🧩 Q2: In Excel, which way do columns run?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Horizontally, left to right</button>
@@ -1277,7 +1277,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Every formula starts with = so Excel knows to calculate it instead of showing it as text.">
   <div class="quiz-q">🧩 Q3: What symbol must every Excel formula start with?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">+</button>
@@ -1287,47 +1287,47 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tab confirms the entry and moves one cell right; Enter confirms and moves one cell down.">
   <div class="quiz-q">🧩 Q4: You type data in a cell and press Tab. What happens?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The text is deleted</button>
-    <button class="quiz-opt" data-correct="true">The text is confirmed and the cursor moves one cell to the right</button>
-    <button class="quiz-opt" data-correct="false">A new row is inserted</button>
+    <button class="quiz-opt" data-correct="false">The text is deleted and the cell is left empty for new data</button>
+    <button class="quiz-opt" data-correct="true">The entry is confirmed and the cursor moves one cell right</button>
+    <button class="quiz-opt" data-correct="false">A new row is inserted below the current cell and the cursor moves there</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A1:C4 is every cell in the rectangle from A1 to C4: 3 columns × 4 rows = 12 cells.">
   <div class="quiz-q">🧩 Q5: What does the range A1:C4 refer to?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Only cells A1 and C4</button>
-    <button class="quiz-opt" data-correct="false">A single column from A to C</button>
+    <button class="quiz-opt" data-correct="false">Only the two cells A1 and C4 and nothing in between</button>
+    <button class="quiz-opt" data-correct="false">The single column of cells running from A down to C</button>
     <button class="quiz-opt" data-correct="true">A rectangular block of cells from A1 to C4</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Excel right-aligns numbers and dates and left-aligns text, which helps you spot numbers saved as text.">
   <div class="quiz-q">🧩 Q6: Which type of data is aligned to the RIGHT in Excel by default?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Text labels</button>
+    <button class="quiz-opt" data-correct="false">Text labels, such as names</button>
     <button class="quiz-opt" data-correct="true">Numbers and dates</button>
-    <button class="quiz-opt" data-correct="false">Formulas only</button>
+    <button class="quiz-opt" data-correct="false">Formulas only, not typed values</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Name Box, left of the formula bar, shows the address of the active cell, such as B3.">
   <div class="quiz-q">🧩 Q7: What is the Name Box in Excel?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A box where you type the spreadsheet title</button>
+    <button class="quiz-opt" data-correct="false">The box at the top where you type the spreadsheet's title</button>
     <button class="quiz-opt" data-correct="true">The box in the top-left showing the address of the active cell</button>
-    <button class="quiz-opt" data-correct="false">The search box</button>
+    <button class="quiz-opt" data-correct="false">The search box you use to find words in the sheet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Modern Excel has 1,048,576 rows (2^20) and 16,384 columns; 65,536 was the old limit.">
   <div class="quiz-q">🧩 Q8: How many rows does Excel have?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">65,536</button>
@@ -1337,17 +1337,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The cell holds the formula =6*7 and shows its result, 42; the formula bar shows what is really in the cell.">
   <div class="quiz-q">🧩 Q9: A cell shows 42 and the formula bar shows =6*7. What is in the cell?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The text 42</button>
+    <button class="quiz-opt" data-correct="false">The number 42, typed in as text</button>
     <button class="quiz-opt" data-correct="true">A formula that calculates to 42</button>
-    <button class="quiz-opt" data-correct="false">An error</button>
+    <button class="quiz-opt" data-correct="false">An error, because the two don't match</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Enter confirms the entry and moves down; Tab moves right.">
   <div class="quiz-q">🧩 Q10: What shortcut confirms a cell entry and moves the cursor DOWN?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Tab</button>
@@ -1438,7 +1438,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="MAX returns the highest value; MIN returns the lowest.">
   <div class="quiz-q">🧩 Q1: Which function finds the highest value in D2:D50?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=SUM(D2:D50)</button>
@@ -1448,7 +1448,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNT counts only cells that hold numbers; COUNTA counts every cell that isn't empty.">
   <div class="quiz-q">🧩 Q2: What does =COUNT(B2:B20) count?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">All cells including empty ones</button>
@@ -1458,17 +1458,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNT counts only numbers, while COUNTA counts any cell that isn't empty, text included.">
   <div class="quiz-q">🧩 Q3: What is the difference between COUNT and COUNTA?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">There is no difference</button>
+    <button class="quiz-opt" data-correct="false">There is no difference; both count every cell in the range</button>
     <button class="quiz-opt" data-correct="true">COUNT counts numbers only; COUNTA counts any non-empty cell</button>
-    <button class="quiz-opt" data-correct="false">COUNTA counts empty cells; COUNT counts full cells</button>
+    <button class="quiz-opt" data-correct="false">COUNTA counts the empty cells, while COUNT counts the full ones</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="SUM adds up all the values in a range.">
   <div class="quiz-q">🧩 Q4: Which function adds all values in a range?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=AVERAGE()</button>
@@ -1478,17 +1478,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTBLANK counts the empty cells in the range.">
   <div class="quiz-q">🧩 Q5: What does =COUNTBLANK(A1:A10) return?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The number of cells with numbers</button>
+    <button class="quiz-opt" data-correct="false">The number of cells that contain numbers</button>
     <button class="quiz-opt" data-correct="true">The number of empty cells in the range</button>
-    <button class="quiz-opt" data-correct="false">The total of all blank values</button>
+    <button class="quiz-opt" data-correct="false">The total of all the values in the blank cells</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Alt + = inserts AutoSum (=SUM) for the cells next to the active cell.">
   <div class="quiz-q">🧩 Q6: Which shortcut inserts a SUM formula automatically?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + S</button>
@@ -1498,17 +1498,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="AVERAGE adds the values and divides by how many there are.">
   <div class="quiz-q">🧩 Q7: What does =AVERAGE(C2:C10) calculate?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The largest value</button>
+    <button class="quiz-opt" data-correct="false">The largest value in the range</button>
     <button class="quiz-opt" data-correct="true">The total divided by the count</button>
-    <button class="quiz-opt" data-correct="false">The number of values</button>
+    <button class="quiz-opt" data-correct="false">The number of values in the range</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="MIN gives the smallest value; LOW and MINIMUM are not Excel functions.">
   <div class="quiz-q">🧩 Q8: Which function finds the smallest value?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=LOW()</button>
@@ -1518,7 +1518,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="SUM(A1:A5) adds the five cells, the same as typing out A1+A2+A3+A4+A5.">
   <div class="quiz-q">🧩 Q9: =SUM(A1:A5) gives the same result as which?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">=A1+A2+A3+A4+A5</button>
@@ -1528,7 +1528,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="AVERAGE(B2:B30) adds the scores and divides by how many there are.">
   <div class="quiz-q">🧩 Q10: Test scores in B2:B30. Which formula gives the class average?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=SUM(B2:B30)</button>
@@ -1610,17 +1610,17 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="SUMIF checks the region in column A and adds only the matching amounts from column B.">
   <div class="quiz-q">🧩 Q1: Sales by region in col A, amounts in col B. Which formula totals only Cape Town sales?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">=COUNTIF(A2:A20,"Cape Town")</button>
-    <button class="quiz-opt" data-correct="false">=SUM(B2:B20) filtered</button>
+    <button class="quiz-opt" data-correct="false">=COUNTIF(A2:A20,"Cape Town",B2:B20)</button>
+    <button class="quiz-opt" data-correct="false">=SUM(B2:B20,"Cape Town")</button>
     <button class="quiz-opt" data-correct="true">=SUMIF(A2:A20,"Cape Town",B2:B20)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTIF takes the range to check and then the criteria.">
   <div class="quiz-q">🧩 Q2: What is the syntax of COUNTIF?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=COUNTIF(sum_range, criteria, range)</button>
@@ -1630,27 +1630,27 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTIF with &quot;>=50&quot; counts every score of 50 or more; &quot;>50&quot; would leave out the 50s.">
   <div class="quiz-q">🧩 Q3: Count students scoring 50 or more. Scores in C2:C30. Which is correct?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">=COUNTIF(C2:C30,">=50")</button>
-    <button class="quiz-opt" data-correct="false">=COUNT(C2:C30,50)</button>
-    <button class="quiz-opt" data-correct="false">=SUMIF(C2:C30,">50")</button>
+    <button class="quiz-opt" data-correct="false">=COUNT(C2:C30,">=50")</button>
+    <button class="quiz-opt" data-correct="false">=SUMIF(C2:C30,">=50")</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTIF counts the matching cells; SUMIF adds up the matching values from a second range.">
   <div class="quiz-q">🧩 Q4: What is the difference between COUNTIF and SUMIF?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">COUNTIF adds values; SUMIF counts them</button>
+    <button class="quiz-opt" data-correct="false">COUNTIF adds up the matching values; SUMIF counts the matching cells instead</button>
     <button class="quiz-opt" data-correct="true">COUNTIF counts matching cells; SUMIF adds values from a second range based on a match</button>
-    <button class="quiz-opt" data-correct="false">They are the same</button>
+    <button class="quiz-opt" data-correct="false">They are the same, except that SUMIF works on text and COUNTIF on numbers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The sum_range is the third argument, B2:B10: the values that get added.">
   <div class="quiz-q">🧩 Q5: In =SUMIF(A2:A10, "Fruit", B2:B10) — what is the sum_range?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A2:A10</button>
@@ -1660,7 +1660,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="<> means &quot;not equal to&quot;, so &quot;<>0&quot; counts cells that are not zero.">
   <div class="quiz-q">🧩 Q6: Which criteria counts cells NOT equal to zero?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">"=0"</button>
@@ -1670,7 +1670,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTIF(range, &quot;Pass&quot;) counts the cells that contain the text Pass.">
   <div class="quiz-q">🧩 Q7: Count cells in B2:B20 containing "Pass". Which is correct?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=COUNT(B2:B20,"Pass")</button>
@@ -1680,17 +1680,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The quotes tell Excel that Pass is text to match, not a cell name or a number.">
   <div class="quiz-q">🧩 Q8: Why must text criteria in COUNTIF be in double quotes?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It is optional</button>
+    <button class="quiz-opt" data-correct="false">It is optional; Excel works the same with or without them</button>
     <button class="quiz-opt" data-correct="true">Excel needs quotes to recognise text vs cell references or numbers</button>
-    <button class="quiz-opt" data-correct="false">Quotes change the text to uppercase</button>
+    <button class="quiz-opt" data-correct="false">The quotes make Excel ignore uppercase and lowercase</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;>100&quot; counts only values greater than 100; 100 itself is not counted.">
   <div class="quiz-q">🧩 Q9: What does =COUNTIF(D2:D20, ">100") count?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Cells equal to 100</button>
@@ -1700,7 +1700,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="SUMIF checks B2:B10 for North and adds the matching values from C2:C10.">
   <div class="quiz-q">🧩 Q10: =SUMIF(B2:B10,"North",C2:C10). Where does Excel get the numbers to add?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">From B2:B10</button>
@@ -1773,27 +1773,27 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Relative references shift when copied, so moving down one row changes both to B3 and C2.">
   <div class="quiz-q">🧩 Q1: You type =B2*C1 in D2 and copy it to D3. What does D3 contain?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">=B2*C1 unchanged</button>
+    <button class="quiz-opt" data-correct="false">=B2*C1, unchanged</button>
     <button class="quiz-opt" data-correct="true">=B3*C2 — both shift down by 1 row</button>
-    <button class="quiz-opt" data-correct="false">=B3*C1 — only B adjusts</button>
+    <button class="quiz-opt" data-correct="false">=B3*C1, where only B adjusts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="$ locks the column and row, so the reference stays the same when you copy the formula.">
   <div class="quiz-q">🧩 Q2: What does the $ symbol do in $B$1?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Formats the cell as currency</button>
-    <button class="quiz-opt" data-correct="true">Locks the reference so it does not change when the formula is copied</button>
-    <button class="quiz-opt" data-correct="false">Multiplies by 100</button>
+    <button class="quiz-opt" data-correct="false">Formats the cell as currency, e.g. R 1 000</button>
+    <button class="quiz-opt" data-correct="true">Locks the reference so it stays the same when copied</button>
+    <button class="quiz-opt" data-correct="false">Multiplies the value in the cell by 100</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="F4 cycles a reference through $A$1, A$1, $A1 and A1.">
   <div class="quiz-q">🧩 Q3: Which shortcut adds $ signs to a cell reference in the formula bar?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">F2</button>
@@ -1803,7 +1803,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="$A$1 locks both the column and the row, so it always points at A1.">
   <div class="quiz-q">🧩 Q4: You have a VAT rate in A1. Which reference ensures it does NOT shift when copied?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A1</button>
@@ -1813,7 +1813,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="C5 has no $ signs, so it is relative and shifts when copied.">
   <div class="quiz-q">🧩 Q5: What type of reference is C5?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Absolute</button>
@@ -1823,7 +1823,7 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="$C$5 locks both the column and the row, so it is absolute.">
   <div class="quiz-q">🧩 Q6: What type of reference is $C$5?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Absolute</button>
@@ -1833,17 +1833,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The $ is in front of the column only, so the column stays A and the row number changes.">
   <div class="quiz-q">🧩 Q7: In $A1, what is fixed and what adjusts when the formula is copied?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Both column and row are fixed</button>
+    <button class="quiz-opt" data-correct="false">Both the column and the row stay fixed</button>
     <button class="quiz-opt" data-correct="true">Column A is fixed; the row number adjusts</button>
-    <button class="quiz-opt" data-correct="false">Row 1 is fixed; the column adjusts</button>
+    <button class="quiz-opt" data-correct="false">Row 1 stays fixed and the column letter adjusts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A2 is relative and becomes A3; $B$1 is absolute and stays the same.">
   <div class="quiz-q">🧩 Q8: You copy =A2*$B$1 from C2 down to C3. What is the formula in C3?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=A2*$B$1</button>
@@ -1853,22 +1853,22 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Use relative references when each row should use its own cells, e.g. =A2*B2 copied down becomes =A3*B3.">
   <div class="quiz-q">🧩 Q9: When should you use a relative reference?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">When the referenced cell should stay fixed wherever you copy</button>
-    <button class="quiz-opt" data-correct="false">When referring to a shared constant like a tax rate</button>
+    <button class="quiz-opt" data-correct="false">When a cell must stay fixed wherever you copy the formula, such as a VAT rate</button>
+    <button class="quiz-opt" data-correct="false">When every row must refer to one shared constant at the top of the sheet</button>
     <button class="quiz-opt" data-correct="true">When each row should use its own corresponding cell, like =A2*B2 copied down</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A mixed reference, like $A1 or A$1, locks either the column or the row, but not both.">
   <div class="quiz-q">🧩 Q10: What is a mixed reference?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A reference using both letters and numbers</button>
+    <button class="quiz-opt" data-correct="false">A reference written with both a letter and a number, like B7</button>
     <button class="quiz-opt" data-correct="true">A reference where either the column OR the row is locked, but not both</button>
-    <button class="quiz-opt" data-correct="false">A reference to two different cells</button>
+    <button class="quiz-opt" data-correct="false">A reference that points to two different cells at the same time</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -1939,7 +1939,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A line chart shows how one value changes over time, like usage month by month.">
   <div class="quiz-q">🧩 Q1: Monthly electricity usage over 12 months. Which chart type is most appropriate?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Pie chart</button>
@@ -1949,17 +1949,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Column and bar charts make comparing separate categories easy.">
   <div class="quiz-q">🧩 Q2: Comparing sales per product across categories. Which chart is best?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Line chart</button>
-    <button class="quiz-opt" data-correct="false">Pie chart</button>
+    <button class="quiz-opt" data-correct="false">Pie chart, one slice per product</button>
     <button class="quiz-opt" data-correct="true">Column or Bar chart</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A pie chart shows how one whole is split into parts, using a single data series.">
   <div class="quiz-q">🧩 Q3: When is a pie chart most appropriate?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">When comparing many data series over time</button>
@@ -1969,17 +1969,17 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Select the data, with headings, first; Excel then builds the chart from that selection.">
   <div class="quiz-q">🧩 Q4: What is the first step to creating a chart in Excel?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Click Insert without selecting anything</button>
+    <button class="quiz-opt" data-correct="false">Click Insert > Chart without selecting anything first</button>
     <button class="quiz-opt" data-correct="true">Select the data you want to chart including headers</button>
-    <button class="quiz-opt" data-correct="false">Choose a chart type from the Home tab</button>
+    <button class="quiz-opt" data-correct="false">Choose a chart type from the Home tab and then add data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Charts are inserted from the Insert tab, in the Charts group.">
   <div class="quiz-q">🧩 Q5: Which Ribbon tab do you use to insert a chart?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Home</button>
@@ -1989,52 +1989,52 @@ let LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A clear title tells the reader what the chart shows.">
   <div class="quiz-q">🧩 Q6: What should every chart always have?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">At least 3 data series</button>
+    <button class="quiz-opt" data-correct="false">At least three different data series</button>
     <button class="quiz-opt" data-correct="true">A clear descriptive title</button>
-    <button class="quiz-opt" data-correct="false">A scatter trendline</button>
+    <button class="quiz-opt" data-correct="false">A trendline through the data points</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="The legend shows which colour or line stands for which series.">
   <div class="quiz-q">🧩 Q7: What does a Legend on a chart explain?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The title of the chart</button>
-    <button class="quiz-opt" data-correct="false">The source of the data</button>
+    <button class="quiz-opt" data-correct="false">The title of the chart and what it is about</button>
+    <button class="quiz-opt" data-correct="false">The source the data in the chart comes from</button>
     <button class="quiz-opt" data-correct="true">What each colour or line in the chart represents</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="A data label shows the exact value on a bar, slice or point.">
   <div class="quiz-q">🧩 Q8: What is a Data Label on a chart?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The chart title</button>
-    <button class="quiz-opt" data-correct="true">The actual value shown on a bar, slice, or data point</button>
-    <button class="quiz-opt" data-correct="false">The axis title</button>
+    <button class="quiz-opt" data-correct="false">The title shown above the chart</button>
+    <button class="quiz-opt" data-correct="true">The value shown on a bar, slice or point</button>
+    <button class="quiz-opt" data-correct="false">The text naming each axis of the chart</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="With many slices a pie chart is very hard to read, so a bar chart is a better choice.">
   <div class="quiz-q">🧩 Q9: You have 15 product categories. Why should you avoid a pie chart?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Pie charts can only show 5 slices</button>
-    <button class="quiz-opt" data-correct="true">With too many categories it becomes very hard to read — use a bar chart</button>
-    <button class="quiz-opt" data-correct="false">Pie charts only work with negative numbers</button>
+    <button class="quiz-opt" data-correct="false">Pie charts can only show five slices, so the rest would be lost</button>
+    <button class="quiz-opt" data-correct="true">Too many slices make it hard to read; a bar chart works better</button>
+    <button class="quiz-opt" data-correct="false">Pie charts only work when every value in the data is negative</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 
-<div class="quiz-box">
+<div class="quiz-box" data-why="Right-click the chart (or use Chart Design) > Move Chart > New sheet.">
   <div class="quiz-q">🧩 Q10: How do you move a chart to its own worksheet?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Cut and paste it into a new sheet</button>
+    <button class="quiz-opt" data-correct="false">Cut and paste it into a new sheet's cell A1</button>
     <button class="quiz-opt" data-correct="true">Right-click the chart, choose Move Chart, then New Sheet</button>
-    <button class="quiz-opt" data-correct="false">Drag it to the sheet tab at the bottom</button>
+    <button class="quiz-opt" data-correct="false">Drag it onto the sheet tab at the bottom of the window</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2094,16 +2094,16 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computational thinking is a structured way of solving problems, used both with and without a computer.">
   <div class="quiz-q">🧩 Q1: Computational Thinking is best described as:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Typing code into a computer quickly</button>
+    <button class="quiz-opt" data-correct="false">Typing code into a computer quickly and accurately</button>
     <button class="quiz-opt" data-correct="true">A structured, logical approach to solving problems</button>
-    <button class="quiz-opt" data-correct="false">Using a calculator to solve maths problems</button>
+    <button class="quiz-opt" data-correct="false">Using a calculator to work through maths problems</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Decomposition is breaking a big problem into smaller parts.">
   <div class="quiz-q">🧩 Q2: Which pillar involves breaking a big problem into smaller parts?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition</button>
@@ -2112,7 +2112,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Abstraction keeps the details that matter and leaves out the rest.">
   <div class="quiz-q">🧩 Q3: Which pillar involves ignoring unimportant details?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Algorithm Design</button>
@@ -2121,7 +2121,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A checklist is a set of steps followed in order, which is an algorithm.">
   <div class="quiz-q">🧩 Q4: A doctor who uses a standard checklist to diagnose a patient is using which pillar?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
@@ -2130,12 +2130,12 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="It is a way of thinking you can use in any subject, with or without a computer.">
   <div class="quiz-q">🧩 Q5: Do you need a computer to apply Computational Thinking?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Yes — it only applies when coding</button>
+    <button class="quiz-opt" data-correct="false">Yes, because it only applies when you write code</button>
     <button class="quiz-opt" data-correct="true">No — it is a thinking approach used in any field</button>
-    <button class="quiz-opt" data-correct="false">Only when using Python or Java</button>
+    <button class="quiz-opt" data-correct="false">Only when you use a programming language like Python</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2202,25 +2202,25 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Decomposition breaks a complex problem into smaller sub-problems that you can solve one at a time.">
   <div class="quiz-q">🧩 Q1: Decomposition means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Writing code without planning first</button>
-    <button class="quiz-opt" data-correct="true">Breaking a complex problem into smaller, manageable sub-problems</button>
-    <button class="quiz-opt" data-correct="false">Deleting parts of a program that don't work</button>
+    <button class="quiz-opt" data-correct="false">Writing code straight away, without planning first</button>
+    <button class="quiz-opt" data-correct="true">Breaking a big problem into smaller sub-problems</button>
+    <button class="quiz-opt" data-correct="false">Deleting the parts of a program that don't work</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good decomposition lists clear, separate tasks that together cover the whole job.">
   <div class="quiz-q">🧩 Q2: Which of these is a good decomposition of "Plan a school sports day"?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Think about sports, plan it, do it</button>
-    <button class="quiz-opt" data-correct="true">Book venue → choose events → invite participants → arrange equipment → set schedule → plan catering</button>
-    <button class="quiz-opt" data-correct="false">Just start and figure it out as you go</button>
+    <button class="quiz-opt" data-correct="false">Think about the sports, plan the day, then hold it</button>
+    <button class="quiz-opt" data-correct="true">Book venue, choose events, invite teams, get equipment, set times</button>
+    <button class="quiz-opt" data-correct="false">Start on the day and figure out each event as you go along</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each method in Java solves one sub-problem, which is decomposition in code.">
   <div class="quiz-q">🧩 Q3: In Java, decomposition is most closely related to:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Variables</button>
@@ -2229,30 +2229,30 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Separate sub-problems can be shared out and worked on at the same time.">
   <div class="quiz-q">🧩 Q4: One advantage of decomposition is:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It makes programs run faster</button>
-    <button class="quiz-opt" data-correct="true">Different people can work on different sub-problems at the same time</button>
-    <button class="quiz-opt" data-correct="false">It removes the need for testing</button>
+    <button class="quiz-opt" data-correct="false">It makes the finished program run much faster</button>
+    <button class="quiz-opt" data-correct="true">Different people can work on different parts at once</button>
+    <button class="quiz-opt" data-correct="false">It means the program no longer needs to be tested</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good sub-problem does one clear job, with a clear start and end.">
   <div class="quiz-q">🧩 Q5: A well-decomposed sub-problem should:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Solve the entire original problem on its own</button>
-    <button class="quiz-opt" data-correct="true">Have a single, clear purpose with a defined start and end</button>
-    <button class="quiz-opt" data-correct="false">Always be written in Java</button>
+    <button class="quiz-opt" data-correct="false">Solve the whole original problem on its own</button>
+    <button class="quiz-opt" data-correct="true">Have one clear purpose, with a clear start and end</button>
+    <button class="quiz-opt" data-correct="false">Be written in Java, so it can be reused later</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Breaking a task into smaller steps is decomposition, even outside a computer.">
   <div class="quiz-q">🧩 Q6: "Make breakfast" is decomposed into: boil eggs, make toast, pour juice, set the table. This is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition applied to an everyday task</button>
-    <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
-    <button class="quiz-opt" data-correct="false">Abstraction</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition, because breakfast is made every day</button>
+    <button class="quiz-opt" data-correct="false">Abstraction, because the less important steps are hidden</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2315,16 +2315,16 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pattern recognition means noticing what is the same in different problems or parts of one.">
   <div class="quiz-q">🧩 Q1: Pattern Recognition in Computational Thinking means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Drawing patterns with turtle graphics</button>
-    <button class="quiz-opt" data-correct="true">Noticing similarities and repeated structures within or across problems</button>
-    <button class="quiz-opt" data-correct="false">Following instructions in a specific order</button>
+    <button class="quiz-opt" data-correct="false">Drawing repeating patterns with turtle graphics</button>
+    <button class="quiz-opt" data-correct="true">Noticing similarities and repeats within or across problems</button>
+    <button class="quiz-opt" data-correct="false">Following a set of instructions in a fixed order</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spotting the same input-process-output shape in every program is pattern recognition.">
   <div class="quiz-q">🧩 Q2: A programmer notices that getting input, processing it, and displaying output appears in every program they write. This is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Decomposition</button>
@@ -2333,7 +2333,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each number doubles, so after 32 comes 64.">
   <div class="quiz-q">🧩 Q3: The sequence 2, 4, 8, 16, 32 — what is the next number?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">48</button>
@@ -2342,16 +2342,16 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Once you recognise a pattern you can reuse a solution that already works.">
   <div class="quiz-q">🧩 Q4: Why is pattern recognition useful in programming?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It makes programs look more attractive</button>
+    <button class="quiz-opt" data-correct="false">It makes your programs look neater and more attractive</button>
     <button class="quiz-opt" data-correct="true">It allows you to reuse solutions that already worked, saving time</button>
-    <button class="quiz-opt" data-correct="false">It automatically fixes bugs in your code</button>
+    <button class="quiz-opt" data-correct="false">It finds and fixes the bugs in your code automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Seeing that all three shapes use the same loop is pattern recognition.">
   <div class="quiz-q">🧩 Q5: A square, triangle, and hexagon all use the same "move forward, turn, repeat" loop. Recognising this is:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Abstraction</button>
@@ -2433,25 +2433,25 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Abstraction keeps the details that matter for the problem and leaves out the rest.">
   <div class="quiz-q">🧩 Q1: Abstraction in Computational Thinking means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Drawing abstract art using code</button>
-    <button class="quiz-opt" data-correct="true">Focusing on essential details and ignoring irrelevant information</button>
-    <button class="quiz-opt" data-correct="false">Breaking a problem into smaller parts</button>
+    <button class="quiz-opt" data-correct="false">Drawing abstract art and patterns with code</button>
+    <button class="quiz-opt" data-correct="true">Keeping the essential details and ignoring the rest</button>
+    <button class="quiz-opt" data-correct="false">Breaking a problem into smaller, manageable parts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A library app doesn't need the weight or cover colour of a book, so those are left out.">
   <div class="quiz-q">🧩 Q2: A programmer building a library app needs to store book information. Which of these details should be ABSTRACTED AWAY (ignored)?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Book title and author</button>
-    <button class="quiz-opt" data-correct="false">ISBN number and publication year</button>
-    <button class="quiz-opt" data-correct="true">The weight of the book and the colour of its cover</button>
+    <button class="quiz-opt" data-correct="false">The title and the author of the book</button>
+    <button class="quiz-opt" data-correct="false">The ISBN and the year it was published</button>
+    <button class="quiz-opt" data-correct="true">The book's weight and the colour of its cover</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A map shows only what you need to get around, which is abstraction.">
   <div class="quiz-q">🧩 Q3: A road map does not show every tree and building. This is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Abstraction — only relevant details are shown</button>
@@ -2460,7 +2460,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="You use println without knowing how it works inside; those details are hidden, which is abstraction.">
   <div class="quiz-q">🧩 Q4: When you call System.out.println() in Java without knowing how it converts text to pixels, you are benefiting from:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Decomposition</button>
@@ -2469,20 +2469,20 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each layer hides the detail of the one below, so you can use it without knowing how it works.">
   <div class="quiz-q">🧩 Q5: Technology uses layers of abstraction so that:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Programs run faster</button>
-    <button class="quiz-opt" data-correct="true">Each layer hides the complexity of the layer below it, making systems easier to use and build</button>
-    <button class="quiz-opt" data-correct="false">Code is easier to copy</button>
+    <button class="quiz-opt" data-correct="false">Each layer makes the program run faster than the layer below</button>
+    <button class="quiz-opt" data-correct="true">Each layer hides the complexity of the one below it</button>
+    <button class="quiz-opt" data-correct="false">Code can be copied easily from one layer to another</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Abstraction manages complexity by focusing only on what is essential.">
   <div class="quiz-q">🧩 Q6: Which of the following best describes the purpose of abstraction?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">To make a problem more complicated</button>
-    <button class="quiz-opt" data-correct="false">To find patterns in data</button>
+    <button class="quiz-opt" data-correct="false">To make a problem more detailed so nothing is missed</button>
+    <button class="quiz-opt" data-correct="false">To find the patterns that repeat across different problems</button>
     <button class="quiz-opt" data-correct="true">To manage complexity by focusing only on what is essential</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -2564,25 +2564,25 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good algorithm is clear, in order, finite, workable and gives the right answer.">
   <div class="quiz-q">🧩 Q1: An algorithm must be:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Written in Java or Python</button>
+    <button class="quiz-opt" data-correct="false">Written in a programming language such as Java or Python</button>
     <button class="quiz-opt" data-correct="true">Unambiguous, ordered, finite, effective, and correct</button>
-    <button class="quiz-opt" data-correct="false">At least 10 steps long</button>
+    <button class="quiz-opt" data-correct="false">At least ten steps long, with every step numbered</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="It is ambiguous: there could be many robots and schools, so the steps can be read in more than one way.">
   <div class="quiz-q">🧩 Q2: "Turn left at the robot, then right at the school" is an algorithm that has a problem. What is it?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It is too long</button>
-    <button class="quiz-opt" data-correct="true">It is ambiguous — "the robot" and "the school" are not uniquely identified</button>
-    <button class="quiz-opt" data-correct="false">It does not use proper programming language</button>
+    <button class="quiz-opt" data-correct="false">It is too long and has too many separate steps</button>
+    <button class="quiz-opt" data-correct="true">It is ambiguous: which robot, and which school?</button>
+    <button class="quiz-opt" data-correct="false">It is not written in a proper programming language</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="IF…THEN…ELSE chooses between two paths, which is selection.">
   <div class="quiz-q">🧩 Q3: IF mark >= 50 THEN print "Pass" ELSE print "Fail" — this is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Iteration</button>
@@ -2591,7 +2591,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="WHILE repeats a step while a condition is true, which is iteration.">
   <div class="quiz-q">🧩 Q4: WHILE count < 10, add 1 to count — this is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Selection</button>
@@ -2600,7 +2600,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An algorithm must be finite: it has to end after a set number of steps.">
   <div class="quiz-q">🧩 Q5: An algorithm that never stops running has a problem with which property?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Unambiguous</button>
@@ -2609,11 +2609,11 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A precise step gives exact amounts and times, so it can only be read one way.">
   <div class="quiz-q">🧩 Q6: Which of these is the most precise algorithmic instruction?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Add some sugar</button>
-    <button class="quiz-opt" data-correct="false">Make it a bit warmer</button>
+    <button class="quiz-opt" data-correct="false">Add some sugar and stir it in well</button>
+    <button class="quiz-opt" data-correct="false">Make it a bit warmer, then leave it to stand</button>
     <button class="quiz-opt" data-correct="true">Add exactly 5ml of sugar and stir for 10 seconds</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -2725,7 +2725,7 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Splitting the app into separate modules is decomposition.">
   <div class="quiz-q">🧩 Q1: A developer breaks a banking app into: login, check balance, transfer money, and logout modules. This is:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition</button>
@@ -2734,7 +2734,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spotting that every screen follows the same steps is pattern recognition.">
   <div class="quiz-q">🧩 Q2: A programmer notices every screen in their app follows: load data → display → handle user input. This is:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Decomposition</button>
@@ -2743,7 +2743,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Keeping only the measurements the app needs and dropping the rest is abstraction.">
   <div class="quiz-q">🧩 Q3: A weather app only stores temperature, rainfall, and wind speed — not the colour of the sky or the smell after rain. This is:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Algorithm Design</button>
@@ -2752,16 +2752,16 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Exact, ordered steps that solve the problem and then stop make an algorithm.">
   <div class="quiz-q">🧩 Q4: "1. Read number. 2. IF number > 0 THEN print Positive ELSE print Negative. 3. STOP." — this is an example of:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Decomposition</button>
-    <button class="quiz-opt" data-correct="false">Abstraction</button>
+    <button class="quiz-opt" data-correct="false">Decomposition, because the problem has three numbered parts</button>
+    <button class="quiz-opt" data-correct="false">Abstraction, because only the sign of the number matters</button>
     <button class="quiz-opt" data-correct="true">Algorithm Design</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Start by breaking the problem into parts; you can then simplify and plan each part.">
   <div class="quiz-q">🧩 Q5: Which pillar would you apply first when starting to solve a large, complex problem?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition — break it into smaller parts first</button>
@@ -2770,7 +2770,7 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;Some water&quot; can be read in many ways, so the step is ambiguous.">
   <div class="quiz-q">🧩 Q6: An algorithm that says "add some water" rather than "add exactly 200ml of water" violates which property?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Unambiguous</button>
@@ -2779,20 +2779,20 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computational thinking works for any complex problem, from planning events to diagnosing illness.">
   <div class="quiz-q">🧩 Q7: Computational Thinking can ONLY be applied to computer programming problems.</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">True</button>
+    <button class="quiz-opt" data-correct="false">True, it only applies to computer programs and code</button>
     <button class="quiz-opt" data-correct="true">False — it applies to any complex problem in any field</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Address, logo size and printer settings don't affect the report's marks, so they were left out.">
   <div class="quiz-q">🧩 Q8: In the school report example, which details were abstracted away?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Learner name and subject marks</button>
-    <button class="quiz-opt" data-correct="true">Learner's home address, school logo dimensions, and printer settings</button>
-    <button class="quiz-opt" data-correct="false">The grading symbol system</button>
+    <button class="quiz-opt" data-correct="false">The learner's name and their subject marks</button>
+    <button class="quiz-opt" data-correct="true">Home address, logo size and printer settings</button>
+    <button class="quiz-opt" data-correct="false">The symbols used to grade each subject</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2844,16 +2844,16 @@ let LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pseudo code describes a program's logic in plain language, without the rules of any one programming language.">
   <div class="quiz-q">🧩 Q1: What is pseudo code?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A simplified version of Java used in schools</button>
-    <button class="quiz-opt" data-correct="true">A plain English description of a program's logic, not tied to any specific language</button>
-    <button class="quiz-opt" data-correct="false">Code that contains deliberate errors for students to fix</button>
+    <button class="quiz-opt" data-correct="false">A simplified version of Java that schools use for tests</button>
+    <button class="quiz-opt" data-correct="true">A plain-language outline of a program's logic, for any language</button>
+    <button class="quiz-opt" data-correct="false">Code with deliberate errors in it for learners to find and fix</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="INPUT receives data from the user; OUTPUT shows data to the user.">
   <div class="quiz-q">🧩 Q2: Which keyword is used to receive data from a user in pseudo code?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">OUTPUT</button>
@@ -2862,30 +2862,30 @@ let LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="WHILE repeats its block for as long as the condition stays true.">
   <div class="quiz-q">🧩 Q3: What does the WHILE keyword create?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A decision that runs once</button>
+    <button class="quiz-opt" data-correct="false">A decision that runs once and then moves on</button>
     <button class="quiz-opt" data-correct="true">A loop that repeats as long as a condition is true</button>
-    <button class="quiz-opt" data-correct="false">A variable that stores a value</button>
+    <button class="quiz-opt" data-correct="false">A variable that stores one value for later</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pseudo code lets you get the logic right first, without worrying about syntax.">
   <div class="quiz-q">🧩 Q4: Why is pseudo code useful before writing real code?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It runs faster than real code</button>
-    <button class="quiz-opt" data-correct="true">It lets you plan logic and catch errors without worrying about syntax</button>
-    <button class="quiz-opt" data-correct="false">It automatically generates Java code</button>
+    <button class="quiz-opt" data-correct="false">It runs faster than code written in a real programming language</button>
+    <button class="quiz-opt" data-correct="true">You can plan the logic and catch errors before worrying about syntax</button>
+    <button class="quiz-opt" data-correct="false">It turns itself into working Java code automatically once it is checked</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Indenting shows which lines belong inside a loop or IF block.">
   <div class="quiz-q">🧩 Q5: In pseudo code, indentation is used to:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Make the file smaller</button>
-    <button class="quiz-opt" data-correct="true">Show which statements are inside loops or IF blocks, making structure clear</button>
-    <button class="quiz-opt" data-correct="false">Indicate comments</button>
+    <button class="quiz-opt" data-correct="false">Make the file smaller so it saves faster</button>
+    <button class="quiz-opt" data-correct="true">Show which statements are inside loops or IF blocks</button>
+    <button class="quiz-opt" data-correct="false">Mark which lines are comments and not instructions</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2969,34 +2969,34 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A sequence is a set of steps that run in order, one after another.">
   <div class="quiz-q">🧩 Q1: A sequence in pseudo code means:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Steps that repeat until a condition is met</button>
     <button class="quiz-opt" data-correct="true">Steps that execute in order, one after another</button>
-    <button class="quiz-opt" data-correct="false">A decision that branches in two directions</button>
+    <button class="quiz-opt" data-correct="false">A decision that splits the program into two paths</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The grade calculator picks a grade with IF / ELSE IF / ENDIF.">
   <div class="quiz-q">🧩 Q2: In the grade calculator example, what structure is used?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">WHILE loop</button>
-    <button class="quiz-opt" data-correct="false">FOR loop</button>
+    <button class="quiz-opt" data-correct="false">WHILE loop that repeats until the grade is found</button>
+    <button class="quiz-opt" data-correct="false">FOR loop that runs once for each grade symbol</button>
     <button class="quiz-opt" data-correct="true">IF / ELSE IF / ENDIF</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SET highest = 0 gives the variable a starting value before the loop compares scores with it.">
   <div class="quiz-q">🧩 Q3: In the highest score example, what does SET highest = 0 do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Resets the loop counter</button>
-    <button class="quiz-opt" data-correct="true">Initialises the variable to a starting value before the loop begins</button>
-    <button class="quiz-opt" data-correct="false">Outputs the highest score</button>
+    <button class="quiz-opt" data-correct="false">Resets the loop counter to zero for the next pass</button>
+    <button class="quiz-opt" data-correct="true">Gives the variable a starting value before the loop</button>
+    <button class="quiz-opt" data-correct="false">Outputs the highest score found so far to the screen</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each block has its own closing keyword: WHILE ends with ENDWHILE and IF with ENDIF.">
   <div class="quiz-q">🧩 Q4: What keyword must always close a WHILE block?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">END</button>
@@ -3005,7 +3005,7 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The VAT is the subtotal × 15%, so vat = subtotal * 0.15.">
   <div class="quiz-q">🧩 Q5: In the VAT example, which line calculates the VAT amount?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">SET subtotal = price * quantity</button>
@@ -3014,12 +3014,12 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pseudo code is language-neutral, so the same logic can be written in Java, Python or JavaScript.">
   <div class="quiz-q">🧩 Q6: Pseudo code examples translate directly into:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Flow diagrams only — not actual code</button>
-    <button class="quiz-opt" data-correct="true">Real programming code in any language such as Java, Python, or JavaScript</button>
-    <button class="quiz-opt" data-correct="false">HTML and CSS for websites only</button>
+    <button class="quiz-opt" data-correct="false">Flow diagrams only, not actual program code</button>
+    <button class="quiz-opt" data-correct="true">Real code in any language, such as Java or Python</button>
+    <button class="quiz-opt" data-correct="false">HTML and CSS, the languages used to build websites</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -3093,34 +3093,34 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Start and End are ovals (rounded rectangles).">
   <div class="quiz-q">🧩 Q1: Which shape represents the START or END of a flow diagram?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Rectangle</button>
+    <button class="quiz-opt" data-correct="false">Rectangle with square corners</button>
     <button class="quiz-opt" data-correct="true">Oval or rounded rectangle</button>
-    <button class="quiz-opt" data-correct="false">Diamond</button>
+    <button class="quiz-opt" data-correct="false">Diamond with Yes and No exits</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A diamond is a decision with two exits, Yes and No.">
   <div class="quiz-q">🧩 Q2: A diamond shape in a flow diagram represents:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A calculation or process step</button>
-    <button class="quiz-opt" data-correct="false">Input or output</button>
+    <button class="quiz-opt" data-correct="false">A calculation or a process step</button>
+    <button class="quiz-opt" data-correct="false">An input or an output of data</button>
     <button class="quiz-opt" data-correct="true">A decision with YES and NO exits</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Input and output use a parallelogram.">
   <div class="quiz-q">🧩 Q3: Which shape is used for INPUT and OUTPUT?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Rectangle</button>
     <button class="quiz-opt" data-correct="true">Parallelogram</button>
-    <button class="quiz-opt" data-correct="false">Oval</button>
+    <button class="quiz-opt" data-correct="false">Oval, or rounded rectangle</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A decision diamond always has exactly two exits, Yes and No.">
   <div class="quiz-q">🧩 Q4: How many exits must a decision diamond always have?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">One</button>
@@ -3129,21 +3129,21 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A loop is an arrow that goes back up to an earlier step.">
   <div class="quiz-q">🧩 Q5: In a flow diagram, a loop is shown by:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Drawing a circle around the repeated steps</button>
+    <button class="quiz-opt" data-correct="false">Drawing a circle around the steps that repeat</button>
     <button class="quiz-opt" data-correct="true">An arrow that loops back up to an earlier step</button>
-    <button class="quiz-opt" data-correct="false">Using a second START symbol</button>
+    <button class="quiz-opt" data-correct="false">Adding a second START symbol before the repeat</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tracing means following the arrows with real input values and writing down what happens.">
   <div class="quiz-q">🧩 Q6: Tracing a flow diagram means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Copying the diagram onto a new page</button>
-    <button class="quiz-opt" data-correct="true">Following the arrows with given input values and recording the output</button>
-    <button class="quiz-opt" data-correct="false">Drawing the diagram neatly in pencil</button>
+    <button class="quiz-opt" data-correct="false">Copying the diagram neatly onto a new page so others can read it</button>
+    <button class="quiz-opt" data-correct="true">Following the arrows with test values and recording the output</button>
+    <button class="quiz-opt" data-correct="false">Drawing the diagram in pencil first, before going over it in pen</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -3254,7 +3254,7 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="4 MOD 2 = 0 (no remainder), so the output is Even.">
   <div class="quiz-q">🧩 Q1: In the Even/Odd flow diagram, what happens if the input is 4?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">OUTPUT "Odd" because 4 is not 2</button>
@@ -3263,7 +3263,7 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="MOD gives the remainder after dividing, e.g. 7 MOD 2 = 1.">
   <div class="quiz-q">🧩 Q2: What does MOD mean in a flow diagram condition?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Multiply or divide</button>
@@ -3272,30 +3272,30 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A calculation is a process, shown as a rectangle.">
   <div class="quiz-q">🧩 Q3: In the builder, which shape represents a calculation like SET total = price * qty?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Start / End</button>
+    <button class="quiz-opt" data-correct="false">Start / End (oval)</button>
     <button class="quiz-opt" data-correct="true">Process (rectangle)</button>
     <button class="quiz-opt" data-correct="false">Decision (diamond)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A tracer follows the arrows step by step with given values and records each result.">
   <div class="quiz-q">🧩 Q4: When tracing a flow diagram, what does the tracer do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Redraws the diagram neatly</button>
-    <button class="quiz-opt" data-correct="true">Follows the arrows step by step with given values and records the output</button>
-    <button class="quiz-opt" data-correct="false">Writes pseudo code from the diagram</button>
+    <button class="quiz-opt" data-correct="false">Redraws the diagram more neatly so it is easier to read</button>
+    <button class="quiz-opt" data-correct="true">Follows the arrows with given values and records the output</button>
+    <button class="quiz-opt" data-correct="false">Writes the matching pseudo code from the diagram</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A flow diagram has exactly one Start and at least one End.">
   <div class="quiz-q">🧩 Q5: Every flow diagram must have:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">At least three decision diamonds</button>
+    <button class="quiz-opt" data-correct="false">At least three decision diamonds to branch</button>
     <button class="quiz-opt" data-correct="true">Exactly one START and at least one END</button>
-    <button class="quiz-opt" data-correct="false">An INPUT and OUTPUT on every path</button>
+    <button class="quiz-opt" data-correct="false">An INPUT and an OUTPUT on every single path</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -3355,16 +3355,16 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Traditional programs follow fixed rules; AI learns patterns from data.">
   <div class="quiz-q">🧩 Q1: What makes AI different from traditional programs?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">AI uses faster processors</button>
+    <button class="quiz-opt" data-correct="false">AI uses faster processors than normal programs</button>
     <button class="quiz-opt" data-correct="true">AI learns patterns from data instead of following fixed rules</button>
-    <button class="quiz-opt" data-correct="false">AI is written in a special programming language</button>
+    <button class="quiz-opt" data-correct="false">AI is written in its own special programming language</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Today's AI is narrow: each system is good at specific tasks only.">
   <div class="quiz-q">🧩 Q2: Which type of AI exists today?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Narrow AI</button>
@@ -3373,25 +3373,25 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Transformer architecture from that paper powers today's language models.">
   <div class="quiz-q">🧩 Q3: The 2017 "Transformer" paper was important because:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It was the first time computers could play chess</button>
+    <button class="quiz-opt" data-correct="false">It was the first time a computer beat a person at chess</button>
     <button class="quiz-opt" data-correct="true">It introduced the architecture used by modern AI language models</button>
-    <button class="quiz-opt" data-correct="false">It created the first robot that could walk</button>
+    <button class="quiz-opt" data-correct="false">It described the first robot that could walk on two legs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Turing proposed a test of whether a machine's answers can be told apart from a human's.">
   <div class="quiz-q">🧩 Q4: Alan Turing's contribution to AI was:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Inventing the first computer chip</button>
+    <button class="quiz-opt" data-correct="false">Inventing the first computer chip in the 1950s</button>
     <button class="quiz-opt" data-correct="true">Proposing the Turing Test — whether a machine can fool a human</button>
-    <button class="quiz-opt" data-correct="false">Writing the first AI chatbot program</button>
+    <button class="quiz-opt" data-correct="false">Writing the first AI chatbot program for the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A spam filter does one job well, which makes it narrow AI.">
   <div class="quiz-q">🧩 Q5: A spam filter in your email is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Narrow AI</button>
@@ -3477,16 +3477,16 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Training adjusts the model's internal numbers (weights) to reduce its errors on many examples.">
   <div class="quiz-q">🧩 Q1: In Machine Learning, what does "training" mean?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A programmer writes thousands of rules for the computer</button>
     <button class="quiz-opt" data-correct="true">The model adjusts its internal numbers to reduce errors on many examples</button>
-    <button class="quiz-opt" data-correct="false">The computer downloads a pre-built solution from the internet</button>
+    <button class="quiz-opt" data-correct="false">The computer downloads a ready-made answer from the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Neural networks are loosely modelled on how neurons connect in the brain.">
   <div class="quiz-q">🧩 Q2: What is a neural network inspired by?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">The structure of the internet</button>
@@ -3495,7 +3495,7 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Supervised learning learns from examples with the right answer (label) attached.">
   <div class="quiz-q">🧩 Q3: Supervised Learning requires:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Labelled training examples</button>
@@ -3504,21 +3504,21 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AlphaGo improved by playing and getting rewards for wins, which is reinforcement learning.">
   <div class="quiz-q">🧩 Q4: AlphaGo (the game-playing AI) was trained using:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Supervised Learning with labelled moves</button>
-    <button class="quiz-opt" data-correct="false">Unsupervised clustering</button>
-    <button class="quiz-opt" data-correct="true">Reinforcement Learning — rewards for good moves, penalties for bad</button>
+    <button class="quiz-opt" data-correct="false">Supervised learning from moves labelled good or bad</button>
+    <button class="quiz-opt" data-correct="false">Unsupervised clustering of similar board positions</button>
+    <button class="quiz-opt" data-correct="true">Reinforcement learning: rewards for good moves</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A model learns whatever patterns are in its data, unfair ones included.">
   <div class="quiz-q">🧩 Q5: What happens if training data is biased?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">The model ignores the bias and learns fairly</button>
+    <button class="quiz-opt" data-correct="false">The model ignores the bias and learns fairly anyway</button>
     <button class="quiz-opt" data-correct="true">The model learns and repeats those biases in its predictions</button>
-    <button class="quiz-opt" data-correct="false">The training automatically stops and asks for better data</button>
+    <button class="quiz-opt" data-correct="false">Training stops by itself and asks for better data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -3607,43 +3607,43 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An LLM predicts the most likely next token, over and over, from patterns it learned.">
   <div class="quiz-q">🧩 Q1: What does an LLM fundamentally do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Searches the internet for answers</button>
-    <button class="quiz-opt" data-correct="true">Predicts likely next tokens (words) based on patterns in training data</button>
-    <button class="quiz-opt" data-correct="false">Stores a database of every fact ever written</button>
+    <button class="quiz-opt" data-correct="false">Searches the internet and copies the best answer</button>
+    <button class="quiz-opt" data-correct="true">Predicts the most likely next word (token) from patterns</button>
+    <button class="quiz-opt" data-correct="false">Looks up every answer in a stored database of facts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;Attention Is All You Need&quot; (2017) introduced the Transformer.">
   <div class="quiz-q">🧩 Q2: The 2017 paper "Attention Is All You Need" introduced:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Neural networks for the first time</button>
+    <button class="quiz-opt" data-correct="false">Neural networks, for the very first time</button>
     <button class="quiz-opt" data-correct="true">The Transformer architecture used by modern LLMs</button>
-    <button class="quiz-opt" data-correct="false">The first AI that could beat a human at chess</button>
+    <button class="quiz-opt" data-correct="false">The first AI that beat a human chess champion</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="GPT stands for Generative Pre-trained Transformer.">
   <div class="quiz-q">🧩 Q3: What does GPT stand for?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">General Purpose Technology</button>
+    <button class="quiz-opt" data-correct="false">General Pre-processed Technology</button>
     <button class="quiz-opt" data-correct="true">Generative Pre-trained Transformer</button>
-    <button class="quiz-opt" data-correct="false">Guided Pattern Trainer</button>
+    <button class="quiz-opt" data-correct="false">Guided Pattern Transformer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="RLHF uses human ratings to steer the model towards safer, more helpful answers.">
   <div class="quiz-q">🧩 Q4: What does RLHF do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It makes the model faster at generating text</button>
-    <button class="quiz-opt" data-correct="true">It fine-tunes the model to produce responses humans prefer, making it safer and more helpful</button>
-    <button class="quiz-opt" data-correct="false">It gives the model access to real-time internet data</button>
+    <button class="quiz-opt" data-correct="false">It makes the model faster at writing long answers</button>
+    <button class="quiz-opt" data-correct="true">Trains the model towards answers people rate as better and safer</button>
+    <button class="quiz-opt" data-correct="false">It connects the model to live data from the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A confident but false answer is called a hallucination.">
   <div class="quiz-q">🧩 Q5: When an LLM says something false but confident, this is called:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A database error</button>
@@ -3652,12 +3652,12 @@ END</pre>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="LLMs learned statistical patterns from huge amounts of text; they don't look facts up.">
   <div class="quiz-q">🧩 Q6: LLMs "know" facts because they:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Have a live connection to Wikipedia</button>
-    <button class="quiz-opt" data-correct="false">Store every fact in a lookup table</button>
-    <button class="quiz-opt" data-correct="true">Learned statistical patterns from huge amounts of text during training</button>
+    <button class="quiz-opt" data-correct="false">Have a live connection to Wikipedia and other websites</button>
+    <button class="quiz-opt" data-correct="false">Store every fact they were taught in a lookup table</button>
+    <button class="quiz-opt" data-correct="true">Learned statistical patterns from huge amounts of text</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -3721,47 +3721,47 @@ END</pre>
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Generative AI creates new content: text, images, music or code.">
   <div class="quiz-q">🧩 Q1: What is "generative AI"?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">AI that only classifies or labels existing content</button>
+    <button class="quiz-opt" data-correct="false">AI that only sorts or labels content that already exists</button>
     <button class="quiz-opt" data-correct="true">AI that creates new content such as text, images, music, or code</button>
-    <button class="quiz-opt" data-correct="false">AI built specifically for robotics</button>
+    <button class="quiz-opt" data-correct="false">AI built specifically to control robots and machines</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Diffusion models learn to turn random noise step by step into an image.">
   <div class="quiz-q">🧩 Q2: DALL·E and Stable Diffusion use which technique to generate images?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Reinforcement Learning</button>
+    <button class="quiz-opt" data-correct="false">Reinforcement learning, with rewards for good pictures</button>
     <button class="quiz-opt" data-correct="true">Diffusion — learning to remove noise from images</button>
-    <button class="quiz-opt" data-correct="false">Decision trees</button>
+    <button class="quiz-opt" data-correct="false">Decision trees that pick each pixel's colour</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A deepfake is AI-made video or audio of a real person saying or doing something they never did.">
   <div class="quiz-q">🧩 Q3: A "deepfake" is:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A very detailed real photograph</button>
-    <button class="quiz-opt" data-correct="true">AI-generated fake video or audio of a real person saying something they never said</button>
-    <button class="quiz-opt" data-correct="false">A password used to access AI systems</button>
+    <button class="quiz-opt" data-correct="false">A very detailed photograph taken with a real camera</button>
+    <button class="quiz-opt" data-correct="true">AI-made video or audio of a real person that isn't real</button>
+    <button class="quiz-opt" data-correct="false">A secret password that unlocks AI systems</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Copilot suggests code from patterns it learned from huge amounts of existing code.">
   <div class="quiz-q">🧩 Q4: GitHub Copilot helps developers by:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Running their code on a supercomputer</button>
-    <button class="quiz-opt" data-correct="true">Suggesting and generating code based on patterns from billions of lines of training code</button>
-    <button class="quiz-opt" data-correct="false">Checking code against copyright law automatically</button>
+    <button class="quiz-opt" data-correct="false">Running their programs on a supercomputer in the cloud</button>
+    <button class="quiz-opt" data-correct="true">Suggesting code based on patterns learned from lots of existing code</button>
+    <button class="quiz-opt" data-correct="false">Checking their code against copyright law before it is shared</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AI can state false things confidently, so check against a trusted source.">
   <div class="quiz-q">🧩 Q5: Why should you always verify AI-generated information?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Because AI charges money for wrong answers</button>
-    <button class="quiz-opt" data-correct="true">Because AI can "hallucinate" — confidently stating things that are false</button>
+    <button class="quiz-opt" data-correct="false">Because AI charges money for each wrong answer</button>
+    <button class="quiz-opt" data-correct="true">AI can confidently state things that are false</button>
     <button class="quiz-opt" data-correct="false">Because AI is always out of date by exactly one year</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -3875,57 +3875,57 @@ function ethicsAnswer(btn, type) {
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Handing in AI work as your own, without saying so, is plagiarism.">
   <div class="quiz-q">🧩 Q1: Using AI to write your entire essay without disclosure is:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Acceptable — AI is just a tool</button>
+    <button class="quiz-opt" data-correct="false">Acceptable, because AI is just another tool like a calculator</button>
     <button class="quiz-opt" data-correct="true">Academic dishonesty — equivalent to plagiarism</button>
-    <button class="quiz-opt" data-correct="false">Fine as long as you fix spelling errors first</button>
+    <button class="quiz-opt" data-correct="false">Fine, as long as you fix the spelling mistakes first</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A model trained on one group's data can treat other groups unfairly.">
   <div class="quiz-q">🧩 Q2: An AI hiring system trained mostly on data from one demographic group may:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Be fairer than humans because it uses maths</button>
+    <button class="quiz-opt" data-correct="false">Be fairer than people, because it only uses maths</button>
     <button class="quiz-opt" data-correct="true">Discriminate unfairly against underrepresented groups</button>
-    <button class="quiz-opt" data-correct="false">Automatically correct for bias using AI</button>
+    <button class="quiz-opt" data-correct="false">Correct its own bias automatically while it works</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="What you type into a chatbot may be stored or used for training, which puts your privacy at risk.">
   <div class="quiz-q">🧩 Q3: Why should you never share your ID number with a public AI chatbot?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Because AI cannot process numbers</button>
-    <button class="quiz-opt" data-correct="true">Because inputs may be stored or used in ways that risk your privacy</button>
-    <button class="quiz-opt" data-correct="false">Because AI will automatically post it online</button>
+    <button class="quiz-opt" data-correct="false">Because AI cannot read or process numbers</button>
+    <button class="quiz-opt" data-correct="true">What you type may be stored or used in ways that risk your privacy</button>
+    <button class="quiz-opt" data-correct="false">Because AI will post it on social media straight away</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="POPIA governs how personal information is collected, used and protected, including in AI systems.">
   <div class="quiz-q">🧩 Q4: POPIA (South Africa) relates to AI by:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Making all AI tools free for students</button>
-    <button class="quiz-opt" data-correct="true">Governing how personal data — including data used in AI — must be handled</button>
-    <button class="quiz-opt" data-correct="false">Banning AI use in schools</button>
+    <button class="quiz-opt" data-correct="false">Making all AI tools free for South African students</button>
+    <button class="quiz-opt" data-correct="true">Governing how personal data, including AI data, is handled</button>
+    <button class="quiz-opt" data-correct="false">Banning the use of AI tools in all South African schools</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Use AI to explain and give feedback, but do the thinking yourself.">
   <div class="quiz-q">🧩 Q5: The best way to use AI for learning is:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Have it do all tasks so you can focus on other things</button>
-    <button class="quiz-opt" data-correct="true">Use it to explain, give feedback, and check work — while you do the core thinking yourself</button>
-    <button class="quiz-opt" data-correct="false">Only use it for tasks teachers cannot check</button>
+    <button class="quiz-opt" data-correct="false">Have it do all your tasks so you can focus on other things</button>
+    <button class="quiz-opt" data-correct="true">Let it explain and give feedback, while you do the thinking</button>
+    <button class="quiz-opt" data-correct="false">Only use it for the tasks your teacher is not able to check</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AI can be confidently wrong, so check facts in a trusted source.">
   <div class="quiz-q">🧩 Q6: If an AI confidently gives you a historical date for your History assignment, you should:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Trust it — AI is always accurate for factual questions</button>
+    <button class="quiz-opt" data-correct="false">Trust it, because AI is always accurate on facts and dates</button>
     <button class="quiz-opt" data-correct="true">Verify it using your textbook or a trusted source before using it</button>
-    <button class="quiz-opt" data-correct="false">Ask the AI three more times until it gives the same answer</button>
+    <button class="quiz-opt" data-correct="false">Ask the AI three more times until it gives the same date</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -4116,7 +4116,7 @@ const CAT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="IPO stands for Input, Processing, Output: data goes in, is processed, and results come out.">
   <div class="quiz-q">🧩 Q1: What does the IPO model stand for?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Internet, Processor, Output</button>
@@ -4125,7 +4125,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An ATM is built for one set of tasks, which makes it a dedicated device.">
   <div class="quiz-q">🧩 Q2: Which of these is a dedicated (embedded) device?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A laptop</button>
@@ -4134,7 +4134,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data is raw facts; information is data that has been processed to have meaning.">
   <div class="quiz-q">🧩 Q3: Raw, unprocessed facts and figures are called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data</button>
@@ -4143,7 +4143,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Hardware needs software (at least an OS) to do anything.">
   <div class="quiz-q">🧩 Q4: A computer system cannot function with only...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Hardware and software together</button>
@@ -4152,7 +4152,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cellphone does many jobs (calls, camera, apps), so it is multi-purpose.">
   <div class="quiz-q">🧩 Q5: A cellphone is best described as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Multi-purpose device</button>
@@ -4161,7 +4161,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An average is processed data with meaning, which makes it information.">
   <div class="quiz-q">🧩 Q6: "The class average is 70.5%" is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Data</button>
@@ -4248,16 +4248,16 @@ const CAT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A scanner (barcode or QR reader) captures the code as input.">
   <div class="quiz-q">🧩 Q1: Which device reads printed barcodes or QR codes as input?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A laser printer</button>
     <button class="quiz-opt" data-correct="true">A scanning device</button>
-    <button class="quiz-opt" data-correct="false">A monitor</button>
+    <button class="quiz-opt" data-correct="false">A monitor or display screen</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An SSD stores data on flash chips, with no spinning disk or moving head.">
   <div class="quiz-q">🧩 Q2: An SSD is generally faster than an HDD because...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">It has no moving mechanical parts</button>
@@ -4266,7 +4266,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="1 GB = 1024 MB and 1 MB = 1024 KB.">
   <div class="quiz-q">🧩 Q3: Which unit is bigger?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">1 MB</button>
@@ -4275,7 +4275,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="CPU clock speed is measured in gigahertz (GHz), billions of cycles per second.">
   <div class="quiz-q">🧩 Q4: CPU speed is typically measured in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">MB</button>
@@ -4284,7 +4284,7 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Printed output on paper is hard copy; output on screen is soft copy.">
   <div class="quiz-q">🧩 Q5: A printed document is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Soft copy output</button>
@@ -4293,12 +4293,12 @@ const CAT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The motherboard connects the CPU, memory, storage and other parts so they can communicate.">
   <div class="quiz-q">🧩 Q6: The motherboard's job is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Connect and allow communication between all the main components</button>
-    <button class="quiz-opt" data-correct="false">Store printed documents</button>
-    <button class="quiz-opt" data-correct="false">Display graphics on screen only</button>
+    <button class="quiz-opt" data-correct="true">Connect all the main components so they can communicate</button>
+    <button class="quiz-opt" data-correct="false">Store all of the computer's documents and files</button>
+    <button class="quiz-opt" data-correct="false">Display graphics on the screen and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -4356,7 +4356,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The operating system is system software: it runs the computer itself.">
   <div class="quiz-q">🧩 Q1: The operating system is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">System software</button>
@@ -4365,7 +4365,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="With radio buttons you can choose only one option in the group.">
   <div class="quiz-q">🧩 Q2: A round button where only one option in a group can be chosen is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Checkbox</button>
@@ -4374,7 +4374,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Open-source code is public, so anyone can view and change it.">
   <div class="quiz-q">🧩 Q3: Software whose source code is publicly available to view and modify is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Proprietary software</button>
@@ -4383,7 +4383,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Shareware is free to try for a while, then you must pay.">
   <div class="quiz-q">🧩 Q4: Software you can try free for a limited time, then must pay for, is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Freeware</button>
@@ -4392,7 +4392,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Checking a username and password confirms who you are, which is authentication.">
   <div class="quiz-q">🧩 Q5: Logging in with a username and password is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Authentication</button>
@@ -4401,7 +4401,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Word is an application: it does a task for the user.">
   <div class="quiz-q">🧩 Q6: Microsoft Word is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">System software</button>
@@ -4457,7 +4457,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The extension is the part after the dot, here .docx.">
   <div class="quiz-q">🧩 Q1: In "Report.docx", what is the file extension?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Report</button>
@@ -4466,16 +4466,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A file specification is the drive, path, filename and extension; screen colour isn't part of it.">
   <div class="quiz-q">🧩 Q2: A file specification includes all of the following EXCEPT...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Drive</button>
-    <button class="quiz-opt" data-correct="false">Path</button>
-    <button class="quiz-opt" data-correct="true">The colour of the screen</button>
+    <button class="quiz-opt" data-correct="false">Drive letter, e.g. C:</button>
+    <button class="quiz-opt" data-correct="false">Folder path to the file</button>
+    <button class="quiz-opt" data-correct="true">The colour of the desktop</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why=".xlsx is an Excel spreadsheet; .docx is Word and .pptx is PowerPoint.">
   <div class="quiz-q">🧩 Q3: Which extension belongs to a spreadsheet file?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">.docx</button>
@@ -4484,7 +4484,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A folder can hold both files and other folders (subfolders).">
   <div class="quiz-q">🧩 Q4: A folder can contain...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Only files, never other folders</button>
@@ -4493,16 +4493,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A .zip file is a compressed archive of one or more files.">
   <div class="quiz-q">🧩 Q5: A .zip extension usually indicates a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Compressed/archived file</button>
     <button class="quiz-opt" data-correct="false">Presentation file</button>
-    <button class="quiz-opt" data-correct="false">System driver</button>
+    <button class="quiz-opt" data-correct="false">System driver file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Deleted files go to the Recycle Bin first and can be restored.">
   <div class="quiz-q">🧩 Q6: Where do deleted files usually go first?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">They are gone permanently</button>
@@ -4559,7 +4559,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An ISP (Internet Service Provider) connects you to the internet.">
   <div class="quiz-q">🧩 Q1: What does ISP stand for?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Internal System Processor</button>
@@ -4568,7 +4568,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A small home network is a PAN or HAN; a WAN covers a wide area.">
   <div class="quiz-q">🧩 Q2: A network connecting a small number of devices at home is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">PAN/HAN</button>
@@ -4577,7 +4577,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The internet links millions of networks around the world.">
   <div class="quiz-q">🧩 Q3: The Internet is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">A single company's private network</button>
@@ -4586,16 +4586,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A connected device can be reached by others, so security and privacy risks go up.">
   <div class="quiz-q">🧩 Q4: A key disadvantage of using networks is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Increased security and privacy risks</button>
-    <button class="quiz-opt" data-correct="false">You can no longer share a printer</button>
-    <button class="quiz-opt" data-correct="false">Computers can no longer work offline</button>
+    <button class="quiz-opt" data-correct="false">You can no longer share one printer between computers</button>
+    <button class="quiz-opt" data-correct="false">The computers can no longer be used while offline</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A switch connects the wired computers on a local network.">
   <div class="quiz-q">🧩 Q5: Which device connects multiple wired computers on the same local network?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Modem</button>
@@ -4604,7 +4604,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="EFT stands for Electronic Funds Transfer, paying money electronically between accounts.">
   <div class="quiz-q">🧩 Q6: EFT stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Electronic Funds Transfer</button>
@@ -4672,16 +4672,16 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A URL is the unique address of a webpage, e.g. https://www.example.co.za.">
   <div class="quiz-q">🧩 Q1: A URL is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The unique address of a webpage</button>
-    <button class="quiz-opt" data-correct="false">A type of virus</button>
-    <button class="quiz-opt" data-correct="false">A storage device</button>
+    <button class="quiz-opt" data-correct="false">A type of virus that spreads through links</button>
+    <button class="quiz-opt" data-correct="false">A storage device that holds web pages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A wiki is a site that many users write and edit together.">
   <div class="quiz-q">🧩 Q2: Wikipedia is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Social network</button>
@@ -4690,7 +4690,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Chrome is a browser; Google Search is a search engine and Docs is a word processor.">
   <div class="quiz-q">🧩 Q3: Which of these is a web browser?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Google Search</button>
@@ -4699,7 +4699,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sending a file up to a server is uploading; getting one is downloading.">
   <div class="quiz-q">🧩 Q4: Sending a file from your computer up to a website is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Downloading</button>
@@ -4708,7 +4708,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A hyperlink takes you to another page when you click it.">
   <div class="quiz-q">🧩 Q5: Clickable text that takes you to another page is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Hyperlink</button>
@@ -4717,12 +4717,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The internet is the global network; the Web is one service (web pages) that runs on it, like email does.">
   <div class="quiz-q">🧩 Q6: The Internet and the World Wide Web are...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Exactly the same thing</button>
+    <button class="quiz-opt" data-correct="false">Exactly the same thing with two different names</button>
     <button class="quiz-opt" data-correct="true">Different — the Web runs on top of the Internet</button>
-    <button class="quiz-opt" data-correct="false">Unrelated to each other</button>
+    <button class="quiz-opt" data-correct="false">Unrelated: one is for email and one for websites</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -4774,7 +4774,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bcc (blind carbon copy) recipients are hidden from everyone else.">
   <div class="quiz-q">🧩 Q1: Which email field hides a recipient's address from everyone else?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Cc</button>
@@ -4783,16 +4783,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="All capitals reads as shouting, which is poor netiquette.">
   <div class="quiz-q">🧩 Q2: Typing an email in ALL CAPITAL LETTERS is considered...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Poor netiquette — it reads as shouting</button>
-    <button class="quiz-opt" data-correct="false">Good practice for emphasis</button>
-    <button class="quiz-opt" data-correct="false">Required for formal emails</button>
+    <button class="quiz-opt" data-correct="false">Good practice when you want to stress a point</button>
+    <button class="quiz-opt" data-correct="false">Required for formal emails to teachers or companies</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Phishing messages pretend to be from a trusted source to steal your details.">
   <div class="quiz-q">🧩 Q3: A fake email designed to trick you into giving up personal details is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Spam</button>
@@ -4801,7 +4801,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ransomware encrypts or locks your files and demands payment.">
   <div class="quiz-q">🧩 Q4: Malware that locks your files until you pay is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Spyware</button>
@@ -4810,7 +4810,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spam is unwanted bulk email.">
   <div class="quiz-q">🧩 Q5: Unwanted bulk/junk email is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Spam</button>
@@ -4819,12 +4819,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Webmail lives on the provider's servers, so you can use it from any browser with internet access.">
   <div class="quiz-q">🧩 Q6: A web-based email account (like Gmail) can be accessed...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Only from the computer it was created on</button>
+    <button class="quiz-opt" data-correct="false">Only from the computer the account was created on</button>
     <button class="quiz-opt" data-correct="true">From any device with a browser and internet access</button>
-    <button class="quiz-opt" data-correct="false">Only through a dedicated ISP connection</button>
+    <button class="quiz-opt" data-correct="false">Only through the ISP that you pay for your internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -4881,7 +4881,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="SUM is a built-in function: a ready-made formula with a name.">
   <div class="quiz-q">🧩 Q1: <code>=SUM(A1:A10)</code> is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Function</button>
@@ -4890,16 +4890,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="With cell references, the result recalculates automatically when the data changes.">
   <div class="quiz-q">🧩 Q2: Why should you use cell references instead of typed constants in formulae?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The formula updates automatically when the source data changes</button>
-    <button class="quiz-opt" data-correct="false">It makes the spreadsheet file smaller</button>
-    <button class="quiz-opt" data-correct="false">It is required by law</button>
+    <button class="quiz-opt" data-correct="true">The result updates when the data changes</button>
+    <button class="quiz-opt" data-correct="false">It makes the spreadsheet file much smaller</button>
+    <button class="quiz-opt" data-correct="false">It is required by spreadsheet licence rules</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="#DIV/0! appears when a formula divides by zero or by an empty cell.">
   <div class="quiz-q">🧩 Q3: Which error appears when a formula divides by zero?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">#REF!</button>
@@ -4908,16 +4908,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="##### means the column is too narrow to show the number; widen it.">
   <div class="quiz-q">🧩 Q4: A column showing ####### means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The column is too narrow to display the value</button>
-    <button class="quiz-opt" data-correct="false">The formula is broken</button>
+    <button class="quiz-opt" data-correct="false">The formula in the cell is broken</button>
     <button class="quiz-opt" data-correct="false">The cell contains text instead of a number</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A transition is the effect between slides; an animation is the effect on an object.">
   <div class="quiz-q">🧩 Q5: In presentation software, the effect that plays between two slides is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Transition</button>
@@ -4926,7 +4926,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A calculation you build yourself with operators is a formula; a function is a built-in one like SUM.">
   <div class="quiz-q">🧩 Q6: A formula you type yourself, like =A1+A2, is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Formula</button>
@@ -4984,7 +4984,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sifting means keeping only the information that is relevant to your problem.">
   <div class="quiz-q">🧩 Q1: The process of keeping only the information that helps solve your problem is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Sifting</button>
@@ -4993,7 +4993,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using someone else's work as your own, without acknowledging it, is plagiarism.">
   <div class="quiz-q">🧩 Q2: Presenting someone else's work as your own is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Plagiarism</button>
@@ -5002,39 +5002,39 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A survey gives first-hand (primary) data aimed at your exact question.">
   <div class="quiz-q">🧩 Q3: A key advantage of gathering data through a survey is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">It gives first-hand data directly relevant to your problem</button>
+    <button class="quiz-opt" data-correct="true">It gives first-hand data aimed at your problem</button>
     <button class="quiz-opt" data-correct="false">It is always faster than searching online</button>
-    <button class="quiz-opt" data-correct="false">It never needs analysis</button>
+    <button class="quiz-opt" data-correct="false">The results never need to be analysed</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good report has an introduction, body, conclusion and bibliography.">
   <div class="quiz-q">🧩 Q4: A well-structured report should include...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An introduction, body, conclusion and bibliography</button>
-    <button class="quiz-opt" data-correct="false">Only a list of raw data</button>
-    <button class="quiz-opt" data-correct="false">Copied text with no references</button>
+    <button class="quiz-opt" data-correct="false">Only a list of the raw data that was collected</button>
+    <button class="quiz-opt" data-correct="false">Text copied from sources, without references</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="First make sure you understand the task: what is known, what is missing and what is asked.">
   <div class="quiz-q">🧩 Q5: Before solving a problem, the first step is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Understand what needs to be done and what is known/missing</button>
-    <button class="quiz-opt" data-correct="false">Immediately start typing a report</button>
-    <button class="quiz-opt" data-correct="false">Choose your font and colours</button>
+    <button class="quiz-opt" data-correct="false">Start typing the report straight away to save time</button>
+    <button class="quiz-opt" data-correct="false">Choose the fonts and colours for the final document</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Printed books can't be updated after printing and are slower to search than digital sources.">
   <div class="quiz-q">🧩 Q6: A disadvantage of printed books as an information source is that they...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Can go out of date and are slower to search</button>
-    <button class="quiz-opt" data-correct="false">Are always inaccurate</button>
-    <button class="quiz-opt" data-correct="false">Cannot be referenced in a bibliography</button>
+    <button class="quiz-opt" data-correct="false">Are always inaccurate and can't be trusted</button>
+    <button class="quiz-opt" data-correct="false">Cannot be listed as sources in a bibliography</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5078,7 +5078,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ergonomics is designing the workspace to fit the body and reduce strain.">
   <div class="quiz-q">🧩 Q1: Designing a workspace to reduce physical strain is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Ergonomics</button>
@@ -5087,16 +5087,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Recycling e-waste responsibly reduces harm to the environment, which is green computing.">
   <div class="quiz-q">🧩 Q2: Responsibly recycling old computer parts instead of sending them to landfill is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Green computing</button>
-    <button class="quiz-opt" data-correct="false">Software piracy</button>
-    <button class="quiz-opt" data-correct="false">Phishing</button>
+    <button class="quiz-opt" data-correct="false">Software piracy, because parts are reused</button>
+    <button class="quiz-opt" data-correct="false">Phishing, because the parts are handed over</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using or copying software without a licence is software piracy.">
   <div class="quiz-q">🧩 Q3: Using software without a valid licence is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Netiquette</button>
@@ -5105,25 +5105,25 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="RSI comes from repeating the same movements, like typing with poor posture, for long periods.">
   <div class="quiz-q">🧩 Q4: Repetitive strain injury (RSI) is most commonly linked to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Poor typing posture over long periods</button>
-    <button class="quiz-opt" data-correct="false">Recycling e-waste</button>
-    <button class="quiz-opt" data-correct="false">Using cell references in formulae</button>
+    <button class="quiz-opt" data-correct="false">Handling old parts while recycling e-waste</button>
+    <button class="quiz-opt" data-correct="false">Using too many cell references in formulae</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computers make work faster, more accurate and more reliable.">
   <div class="quiz-q">🧩 Q5: A key economic reason businesses adopt computers is that they...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Improve efficiency, accuracy and reliability</button>
-    <button class="quiz-opt" data-correct="false">Always eliminate the need for staff</button>
-    <button class="quiz-opt" data-correct="false">Guarantee zero electricity costs</button>
+    <button class="quiz-opt" data-correct="false">Always remove the need for any staff at all</button>
+    <button class="quiz-opt" data-correct="false">Guarantee that electricity costs drop to zero</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Stealing someone's identity using a computer is computer crime.">
   <div class="quiz-q">🧩 Q6: Identity theft is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Computer crime</button>
@@ -5177,7 +5177,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Duty cycle is how many pages a printer is designed to print per month.">
   <div class="quiz-q">🧩 Q1: Duty cycle is a quality factor most relevant to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Printers</button>
@@ -5186,16 +5186,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A screen reader reads the screen aloud for blind and visually impaired users.">
   <div class="quiz-q">🧩 Q2: A screen reader is an example of a tool that helps with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Accessibility for visually impaired users</button>
-    <button class="quiz-opt" data-correct="false">Network security</button>
-    <button class="quiz-opt" data-correct="false">File compression</button>
+    <button class="quiz-opt" data-correct="false">Network security, by reading out passwords</button>
+    <button class="quiz-opt" data-correct="false">File compression, by reading files faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Colour depth and refresh rate describe the quality of a monitor's picture.">
   <div class="quiz-q">🧩 Q3: Colour depth and refresh frequency are quality factors for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Monitors</button>
@@ -5204,7 +5204,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A UPS (uninterruptible power supply) keeps the computer running for a while when the power fails.">
   <div class="quiz-q">🧩 Q4: A UPS mainly protects a computer against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Power failure</button>
@@ -5213,7 +5213,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="PPM is pages per minute, a printer's speed.">
   <div class="quiz-q">🧩 Q5: PPM, when describing a printer, measures...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Pages printed per minute</button>
@@ -5222,12 +5222,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Built-in options like the on-screen keyboard help people with disabilities use a computer.">
   <div class="quiz-q">🧩 Q6: On-screen keyboards and adjustable mouse settings are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Accessibility options</button>
     <button class="quiz-opt" data-correct="false">Network topologies</button>
-    <button class="quiz-opt" data-correct="false">Database fields</button>
+    <button class="quiz-opt" data-correct="false">Database field types</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5268,7 +5268,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="RAM is primary storage: the CPU works with it directly.">
   <div class="quiz-q">🧩 Q1: RAM is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Primary storage</button>
@@ -5277,7 +5277,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="ROM holds permanent start-up instructions (firmware) that remain when the power is off.">
   <div class="quiz-q">🧩 Q2: ROM's main purpose is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Store permanent start-up instructions</button>
@@ -5286,16 +5286,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Check simple causes first (cables, power, a restart) before costly fixes.">
   <div class="quiz-q">🧩 Q3: When troubleshooting, the recommended approach is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Check the simplest explanation first</button>
-    <button class="quiz-opt" data-correct="false">Immediately replace the motherboard</button>
-    <button class="quiz-opt" data-correct="false">Ignore the problem and restart later</button>
+    <button class="quiz-opt" data-correct="false">Replace the motherboard first, since it is most likely</button>
+    <button class="quiz-opt" data-correct="false">Ignore the problem for now and restart much later</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A disk error points to a problem with the storage device.">
   <div class="quiz-q">🧩 Q4: A disk error message relates to a problem with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Storage</button>
@@ -5304,16 +5304,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Secondary storage keeps data without power but is slower than RAM.">
   <div class="quiz-q">🧩 Q5: Secondary storage is generally...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Slower than primary storage, but permanent</button>
-    <button class="quiz-opt" data-correct="false">Faster than primary storage</button>
-    <button class="quiz-opt" data-correct="false">Erased every time the computer restarts</button>
+    <button class="quiz-opt" data-correct="false">Faster than primary storage, but temporary</button>
+    <button class="quiz-opt" data-correct="false">Erased every time the computer is restarted</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Understanding the specs lets you judge real-world performance and value for money.">
   <div class="quiz-q">🧩 Q6: Correctly interpreting a hardware advert's specifications is important because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Helps you judge real-world performance and value</button>
@@ -5375,43 +5375,43 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A WLAN connects devices wirelessly (Wi-Fi) rather than with cables.">
   <div class="quiz-q">🧩 Q1: A WLAN differs from a LAN mainly in that it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Connects devices wirelessly instead of by cable</button>
-    <button class="quiz-opt" data-correct="false">Only works across entire countries</button>
-    <button class="quiz-opt" data-correct="false">Cannot include a router</button>
+    <button class="quiz-opt" data-correct="false">Only works when it spans a whole country</button>
+    <button class="quiz-opt" data-correct="false">Cannot include a router or an access point</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An intranet is a private network that works like the web but only inside one organisation.">
   <div class="quiz-q">🧩 Q2: An intranet is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A private network internal to one organisation</button>
-    <button class="quiz-opt" data-correct="false">The public global Internet</button>
-    <button class="quiz-opt" data-correct="false">A type of printer</button>
+    <button class="quiz-opt" data-correct="false">The public internet that anyone can join</button>
+    <button class="quiz-opt" data-correct="false">A type of network printer shared by an office</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A NIC (network interface card) lets a device connect to a network.">
   <div class="quiz-q">🧩 Q3: A NIC is required for a device to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Connect to a network</button>
-    <button class="quiz-opt" data-correct="false">Display graphics</button>
-    <button class="quiz-opt" data-correct="false">Store backup files</button>
+    <button class="quiz-opt" data-correct="false">Show graphics on a second screen</button>
+    <button class="quiz-opt" data-correct="false">Store its backup files on a disk</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Access rights decide what each user may read, change or delete on the network.">
   <div class="quiz-q">🧩 Q4: Access rights on a network control...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">What each authenticated user is allowed to do</button>
-    <button class="quiz-opt" data-correct="false">The physical colour of network cables</button>
-    <button class="quiz-opt" data-correct="false">The speed of the CPU</button>
+    <button class="quiz-opt" data-correct="false">The colour of the cables used on the network</button>
+    <button class="quiz-opt" data-correct="false">How fast the CPU in each computer can run</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fibre-optic cable is a wired medium that carries data as light.">
   <div class="quiz-q">🧩 Q5: Fibre optic cabling is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Wired communication medium</button>
@@ -5420,7 +5420,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In client-server networks, dedicated servers provide services to the clients.">
   <div class="quiz-q">🧩 Q6: A network arrangement where dedicated machines provide services to others is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Client-server</button>
@@ -5467,25 +5467,25 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A patch is a small update that fixes bugs or security holes after release.">
   <div class="quiz-q">🧩 Q1: A software patch is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A fix released after the main version</button>
-    <button class="quiz-opt" data-correct="false">A brand new operating system</button>
-    <button class="quiz-opt" data-correct="false">A type of network cable</button>
+    <button class="quiz-opt" data-correct="false">A brand new version of the operating system</button>
+    <button class="quiz-opt" data-correct="false">A type of network cable used between buildings</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cloud files are on the internet, so you can reach them from any device that is online.">
   <div class="quiz-q">🧩 Q2: A key advantage of cloud storage is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Accessing your files from anywhere with an internet connection</button>
-    <button class="quiz-opt" data-correct="false">Never needing an internet connection</button>
-    <button class="quiz-opt" data-correct="false">Guaranteed unlimited free storage</button>
+    <button class="quiz-opt" data-correct="false">You never need an internet connection to reach them</button>
+    <button class="quiz-opt" data-correct="false">You always get unlimited storage space for free</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Read-only is a file attribute: a property that controls what can be done with the file.">
   <div class="quiz-q">🧩 Q3: A "read-only" setting is an example of a file...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Attribute</button>
@@ -5494,7 +5494,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Google Docs runs in the browser and saves to the cloud.">
   <div class="quiz-q">🧩 Q4: Google Docs is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cloud-based application</button>
@@ -5503,21 +5503,21 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="System requirements tell you whether a computer can run the software properly.">
   <div class="quiz-q">🧩 Q5: System requirements like minimum RAM tell you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Whether a computer can actually run the software</button>
-    <button class="quiz-opt" data-correct="false">The software's exact retail price</button>
-    <button class="quiz-opt" data-correct="false">Nothing useful about performance</button>
+    <button class="quiz-opt" data-correct="false">The software's exact price in the shops</button>
+    <button class="quiz-opt" data-correct="false">Nothing useful about how well it performs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Software and hardware/OS that don't work together properly have a compatibility issue.">
   <div class="quiz-q">🧩 Q6: Compatibility issues occur when...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Software doesn't run correctly on a given hardware/OS combination</button>
-    <button class="quiz-opt" data-correct="false">A file is renamed</button>
-    <button class="quiz-opt" data-correct="false">A network cable is disconnected</button>
+    <button class="quiz-opt" data-correct="true">Software doesn't run properly on a given hardware or OS</button>
+    <button class="quiz-opt" data-correct="false">A file is renamed and its extension is changed</button>
+    <button class="quiz-opt" data-correct="false">A network cable comes loose and is disconnected</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5568,34 +5568,34 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="$ makes a reference absolute, so it doesn't shift when the formula is copied.">
   <div class="quiz-q">🧩 Q1: The $ symbol in a cell reference is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Lock the reference so it doesn't change when copied</button>
-    <button class="quiz-opt" data-correct="false">Format the cell as currency</button>
-    <button class="quiz-opt" data-correct="false">Delete the cell's contents</button>
+    <button class="quiz-opt" data-correct="true">Lock it so it doesn't change when copied</button>
+    <button class="quiz-opt" data-correct="false">Format the cell as currency in Rand</button>
+    <button class="quiz-opt" data-correct="false">Delete the contents of the locked cell</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Conditional formatting changes a cell's look (colour, icons) based on its value.">
   <div class="quiz-q">🧩 Q2: Conditional formatting automatically...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Changes a cell's appearance based on its value</button>
-    <button class="quiz-opt" data-correct="false">Deletes cells that contain errors</button>
-    <button class="quiz-opt" data-correct="false">Converts formulas to functions</button>
+    <button class="quiz-opt" data-correct="false">Deletes the cells that contain errors</button>
+    <button class="quiz-opt" data-correct="false">Converts every formula into a function</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A formula that uses its own cell creates a circular reference.">
   <div class="quiz-q">🧩 Q3: A formula that refers back to its own cell causes a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Circular reference error</button>
-    <button class="quiz-opt" data-correct="false">#DIV/0! error</button>
-    <button class="quiz-opt" data-correct="false">#NAME! error</button>
+    <button class="quiz-opt" data-correct="false">#DIV/0! error in the cell</button>
+    <button class="quiz-opt" data-correct="false">#NAME! error in the cell</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTBLANK counts the empty cells in a range.">
   <div class="quiz-q">🧩 Q4: COUNTBLANK counts...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Empty cells in a range</button>
@@ -5604,7 +5604,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="ROUND changes the value that is stored; formatting only changes what you see.">
   <div class="quiz-q">🧩 Q5: Rounding a value, unlike formatting, actually...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Changes the number that is stored</button>
@@ -5613,12 +5613,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The legend shows what each colour or series in a chart stands for.">
   <div class="quiz-q">🧩 Q6: A chart legend's purpose is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Explain what each colour/series in the chart represents</button>
-    <button class="quiz-opt" data-correct="false">Round numbers automatically</button>
-    <button class="quiz-opt" data-correct="false">Lock a cell reference</button>
+    <button class="quiz-opt" data-correct="false">Round the numbers in the chart automatically</button>
+    <button class="quiz-opt" data-correct="false">Lock a cell reference so it can't be changed</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5681,7 +5681,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A form is a user-friendly screen for entering and viewing records.">
   <div class="quiz-q">🧩 Q1: A user-friendly screen for entering data is a database...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Form</button>
@@ -5690,7 +5690,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A primary key holds a unique value for every record.">
   <div class="quiz-q">🧩 Q2: A field that uniquely identifies every record is the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Primary key</button>
@@ -5699,7 +5699,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="ID numbers aren't used in calculations and can start with 0, so store them as text.">
   <div class="quiz-q">🧩 Q3: Which data type is best for storing a South African ID number?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Short Text</button>
@@ -5708,16 +5708,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A query asks a question of the data and returns only the matching records.">
   <div class="quiz-q">🧩 Q4: A query's purpose is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Ask a question of the data and return matching results</button>
-    <button class="quiz-opt" data-correct="false">Store the raw data permanently</button>
-    <button class="quiz-opt" data-correct="false">Print a formatted document</button>
+    <button class="quiz-opt" data-correct="false">Store the raw data in the database permanently</button>
+    <button class="quiz-opt" data-correct="false">Print the data as a formatted document</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each row of a table is one record.">
   <div class="quiz-q">🧩 Q5: A record in a database table corresponds to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">One row</button>
@@ -5726,12 +5726,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Databases enforce structure (data types, keys) and query large related data far better.">
   <div class="quiz-q">🧩 Q6: A key reason to use a database instead of a spreadsheet for large, related data is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Enforced structure and far more powerful querying</button>
-    <button class="quiz-opt" data-correct="false">Databases never need a primary key</button>
-    <button class="quiz-opt" data-correct="false">Spreadsheets cannot store numbers</button>
+    <button class="quiz-opt" data-correct="false">Databases never need a primary key for their tables</button>
+    <button class="quiz-opt" data-correct="false">Spreadsheets cannot store or calculate with numbers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5798,7 +5798,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="&lt;ol&gt; is an ordered (numbered) list; &lt;ul&gt; is a bulleted list.">
   <div class="quiz-q">🧩 Q1: Which tag creates a numbered list?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">&lt;ol&gt;</button>
@@ -5807,34 +5807,34 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Alt text describes the image for screen readers and shows if the image fails to load.">
   <div class="quiz-q">🧩 Q2: Alternate text on an image tag is mainly used for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Accessibility and as a fallback if the image fails to load</button>
-    <button class="quiz-opt" data-correct="false">Changing the image's file size</button>
-    <button class="quiz-opt" data-correct="false">Compressing the image</button>
+    <button class="quiz-opt" data-correct="false">Changing the image's width and height on the page</button>
+    <button class="quiz-opt" data-correct="false">Compressing the image so the page loads faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Comments are notes for people reading the code; the browser doesn't display them.">
   <div class="quiz-q">🧩 Q3: HTML comments are...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Ignored by the browser and not displayed</button>
-    <button class="quiz-opt" data-correct="false">Always shown in bold on the page</button>
-    <button class="quiz-opt" data-correct="false">Required for every tag</button>
+    <button class="quiz-opt" data-correct="false">Always shown in bold at the top of the page</button>
+    <button class="quiz-opt" data-correct="false">Required after every tag for the page to work</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tags like &lt;br /&gt; wrap no content, so they have no separate closing tag.">
   <div class="quiz-q">🧩 Q4: A self-closing tag like &lt;br /&gt; is used because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Doesn't wrap any content, so needs no separate closing tag</button>
-    <button class="quiz-opt" data-correct="false">Is not valid HTML</button>
-    <button class="quiz-opt" data-correct="false">Only works inside forms</button>
+    <button class="quiz-opt" data-correct="true">It wraps no content, so needs no closing tag</button>
+    <button class="quiz-opt" data-correct="false">Is not valid HTML, but browsers allow it</button>
+    <button class="quiz-opt" data-correct="false">Only works inside forms, between input fields</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&lt;li&gt; is one list item; it goes inside &lt;ol&gt; or &lt;ul&gt;.">
   <div class="quiz-q">🧩 Q5: Which HTML element wraps an individual entry inside a list?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">&lt;li&gt;</button>
@@ -5843,7 +5843,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The href attribute gives the link's destination; src is for images and alt for alt text.">
   <div class="quiz-q">🧩 Q6: A link's destination is set using which attribute?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">href</button>
@@ -5892,34 +5892,34 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="VoIP (Voice over IP) carries voice calls over the internet.">
   <div class="quiz-q">🧩 Q1: VoIP allows users to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Make voice calls over the Internet</button>
-    <button class="quiz-opt" data-correct="false">Store files in the cloud</button>
-    <button class="quiz-opt" data-correct="false">Compress video files</button>
+    <button class="quiz-opt" data-correct="false">Store files online in the cloud</button>
+    <button class="quiz-opt" data-correct="false">Compress video files for streaming</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The IoT is everyday objects (fridges, watches, sensors) connected to the internet.">
   <div class="quiz-q">🧩 Q2: The Internet of Things refers to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Everyday physical devices connected to send and receive data</button>
-    <button class="quiz-opt" data-correct="false">A type of database query</button>
-    <button class="quiz-opt" data-correct="false">A network topology</button>
+    <button class="quiz-opt" data-correct="true">Everyday objects connected to send and receive data</button>
+    <button class="quiz-opt" data-correct="false">A type of database query that joins tables</button>
+    <button class="quiz-opt" data-correct="false">A network topology shaped like a star</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tethering or a hotspot uses the phone's mobile data to give the laptop internet access.">
   <div class="quiz-q">🧩 Q3: A cellphone acting as a modem for a laptop is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Mobile/portable internet access</button>
-    <button class="quiz-opt" data-correct="false">A database object</button>
-    <button class="quiz-opt" data-correct="false">HTML markup</button>
+    <button class="quiz-opt" data-correct="true">Mobile internet access (tethering)</button>
+    <button class="quiz-opt" data-correct="false">A database object linked to the laptop</button>
+    <button class="quiz-opt" data-correct="false">HTML markup sent over the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spreading fake news is a harmful practice on social networks.">
   <div class="quiz-q">🧩 Q4: Fake news spreading on social networks is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Bad practice associated with social networking</button>
@@ -5928,7 +5928,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Consistency and easy navigation make a website usable.">
   <div class="quiz-q">🧩 Q5: Evaluating a website's "consistency" and "navigation" relates to its...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Usability</button>
@@ -5937,12 +5937,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bluetooth and NFC both connect devices wirelessly over short distances.">
   <div class="quiz-q">🧩 Q6: Bluetooth and NFC are both examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Short-range wireless technologies</button>
-    <button class="quiz-opt" data-correct="false">Database data types</button>
-    <button class="quiz-opt" data-correct="false">HTML tags</button>
+    <button class="quiz-opt" data-correct="false">Database data types used for devices</button>
+    <button class="quiz-opt" data-correct="false">HTML tags for wireless pages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -5985,7 +5985,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;What if…?&quot; asks you to predict what might happen.">
   <div class="quiz-q">🧩 Q1: A question starting with "What if...?" is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Predictive</button>
@@ -5994,7 +5994,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Currency is how up to date the information is.">
   <div class="quiz-q">🧩 Q2: Checking "is this information up to date?" evaluates a source's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Currency</button>
@@ -6003,7 +6003,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Authority is about who created the information and how qualified they are.">
   <div class="quiz-q">🧩 Q3: "Who created this information?" checks a source's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Authority</button>
@@ -6012,7 +6012,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;Why…?&quot; opens up an exploratory investigation into causes.">
   <div class="quiz-q">🧩 Q4: A question like "Why do learners struggle with maths?" is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Exploratory</button>
@@ -6021,7 +6021,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Purely factual questions are answered quickly and don't lead to deep analysis.">
   <div class="quiz-q">🧩 Q5: Weak, purely factual research questions typically lead to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A shallow investigation</button>
@@ -6030,7 +6030,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Objectivity is whether the source is fair and free of bias.">
   <div class="quiz-q">🧩 Q6: Checking whether a source shows any bias evaluates its...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Objectivity</button>
@@ -6080,7 +6080,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="GIGO: Garbage In, Garbage Out. Bad input gives bad output.">
   <div class="quiz-q">🧩 Q1: GIGO stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Garbage In, Garbage Out</button>
@@ -6089,16 +6089,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="BYOD (Bring Your Own Device) policies cover personal devices used on the organisation's network.">
   <div class="quiz-q">🧩 Q2: BYOD policies specifically address...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Personal devices being used on an organisation's network</button>
-    <button class="quiz-opt" data-correct="false">Backup schedules only</button>
-    <button class="quiz-opt" data-correct="false">Database normalisation</button>
+    <button class="quiz-opt" data-correct="true">Personal devices used on an organisation's network</button>
+    <button class="quiz-opt" data-correct="false">Backup schedules for the company's servers</button>
+    <button class="quiz-opt" data-correct="false">Database normalisation rules for staff</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spyware secretly records what you do and sends it to someone else.">
   <div class="quiz-q">🧩 Q3: Software that secretly monitors your activity is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Spyware</button>
@@ -6107,30 +6107,30 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cryptocurrency is decentralised: no central bank controls it.">
   <div class="quiz-q">🧩 Q4: Cryptocurrency differs from normal currency mainly because it is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decentralised and not controlled by a central bank</button>
-    <button class="quiz-opt" data-correct="false">Always more stable in value</button>
-    <button class="quiz-opt" data-correct="false">Only usable in one country</button>
+    <button class="quiz-opt" data-correct="false">Always more stable in value than normal money</button>
+    <button class="quiz-opt" data-correct="false">Only usable inside the country that issued it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Office automation means software does routine tasks (like scheduling and filing) instead of people.">
   <div class="quiz-q">🧩 Q5: Office automation refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Routine tasks being handled by software instead of people</button>
-    <button class="quiz-opt" data-correct="false">Employees working only from a single office</button>
-    <button class="quiz-opt" data-correct="false">A type of network topology</button>
+    <button class="quiz-opt" data-correct="false">Employees working only from one central office</button>
+    <button class="quiz-opt" data-correct="false">A type of network topology used in offices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A balanced answer covers both the benefits and the costs.">
   <div class="quiz-q">🧩 Q6: A balanced exam answer on ICT's effect on the workplace should mention...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both the benefits and the costs</button>
-    <button class="quiz-opt" data-correct="false">Only the benefits</button>
-    <button class="quiz-opt" data-correct="false">Only hardware specifications</button>
+    <button class="quiz-opt" data-correct="false">Only the benefits, with examples</button>
+    <button class="quiz-opt" data-correct="false">Only the hardware specifications needed</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6174,16 +6174,16 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Power users run demanding software, so they need a strong CPU, plenty of RAM and storage.">
   <div class="quiz-q">🧩 Q1: A "power user" typically needs a system with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">High CPU, RAM and storage for demanding tasks</button>
-    <button class="quiz-opt" data-correct="false">The lowest possible specifications</button>
-    <button class="quiz-opt" data-correct="false">No storage device at all</button>
+    <button class="quiz-opt" data-correct="false">The lowest specifications, to save money</button>
+    <button class="quiz-opt" data-correct="false">No storage device, as files are online</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Mobile users need a light device with long battery life.">
   <div class="quiz-q">🧩 Q2: A mobile user's priorities usually include...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Lightweight design and long battery life</button>
@@ -6192,16 +6192,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Justify your choices using details from the scenario.">
   <div class="quiz-q">🧩 Q3: A strong exam answer recommending hardware should always...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Justify the recommendation using details from the scenario</button>
-    <button class="quiz-opt" data-correct="false">Simply list the most expensive components</button>
-    <button class="quiz-opt" data-correct="false">Avoid mentioning the user's actual needs</button>
+    <button class="quiz-opt" data-correct="false">List the most expensive components on the market</button>
+    <button class="quiz-opt" data-correct="false">Avoid the user's needs and focus on the hardware</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A hanging program is a software or processing problem.">
   <div class="quiz-q">🧩 Q4: A non-responding ("hanging") program is a problem related to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Software/processing</button>
@@ -6210,7 +6210,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A small or home office needs a reliable system with good connectivity.">
   <div class="quiz-q">🧩 Q5: A SOHO user's setup should especially prioritise...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reliability and good connectivity</button>
@@ -6219,12 +6219,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fit for purpose means the hardware matches what the user really needs.">
   <div class="quiz-q">🧩 Q6: "Fit for purpose" as a buying principle means...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Choosing hardware that actually matches the user's real needs</button>
-    <button class="quiz-opt" data-correct="false">Always buying the newest model available</button>
-    <button class="quiz-opt" data-correct="false">Ignoring budget entirely</button>
+    <button class="quiz-opt" data-correct="true">Choosing hardware that matches the user's real needs</button>
+    <button class="quiz-opt" data-correct="false">Always buying the newest model that is available</button>
+    <button class="quiz-opt" data-correct="false">Ignoring the budget so the best is bought</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6269,57 +6269,57 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Web apps run in the browser, so they need an internet connection to work fully.">
   <div class="quiz-q">🧩 Q1: A key disadvantage of web-based applications is that they...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Require an internet connection to use fully</button>
-    <button class="quiz-opt" data-correct="false">Can never be shared with others</button>
+    <button class="quiz-opt" data-correct="false">Can never be shared with other people</button>
     <button class="quiz-opt" data-correct="false">Always cost more than installed software</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A patch fixes bugs or security holes in software you already have.">
   <div class="quiz-q">🧩 Q2: A patch is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">An update that fixes problems in existing software</button>
+    <button class="quiz-opt" data-correct="true">An update that fixes problems in software</button>
     <button class="quiz-opt" data-correct="false">A completely new operating system</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware port</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware port on the computer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Voice recognition allows hands-free input, which helps users who can't type.">
   <div class="quiz-q">🧩 Q3: Voice recognition software mainly assists with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Hands-free input and accessibility</button>
-    <button class="quiz-opt" data-correct="false">Video compression</button>
-    <button class="quiz-opt" data-correct="false">Database normalisation</button>
+    <button class="quiz-opt" data-correct="false">Compressing video for sharing</button>
+    <button class="quiz-opt" data-correct="false">Normalising database tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Comparing the requirements with your specs shows whether the software will run properly.">
   <div class="quiz-q">🧩 Q4: Before installing software, comparing its system requirements to your computer's specifications tells you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Whether the software will actually run properly</button>
-    <button class="quiz-opt" data-correct="false">The exact retail price</button>
-    <button class="quiz-opt" data-correct="false">Nothing useful</button>
+    <button class="quiz-opt" data-correct="false">The exact price you will pay in the shops</button>
+    <button class="quiz-opt" data-correct="false">Nothing useful about how the software will run</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Unpatched software has known security holes and bugs.">
   <div class="quiz-q">🧩 Q5: Running outdated, unpatched software mainly risks...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Security vulnerabilities and instability</button>
-    <button class="quiz-opt" data-correct="false">Nothing, if the program still opens</button>
-    <button class="quiz-opt" data-correct="false">Automatically better performance</button>
+    <button class="quiz-opt" data-correct="false">Nothing, as long as the program still opens</button>
+    <button class="quiz-opt" data-correct="false">Better performance, since old versions are lighter</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="PDF software shares and preserves documents in a fixed, portable format.">
   <div class="quiz-q">🧩 Q6: PDF-based document management software is mainly used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Share and preserve documents in a consistent, portable format</button>
-    <button class="quiz-opt" data-correct="false">Compile source code</button>
-    <button class="quiz-opt" data-correct="false">Manage a network's IP addresses</button>
+    <button class="quiz-opt" data-correct="true">Share and preserve documents in a portable, fixed format</button>
+    <button class="quiz-opt" data-correct="false">Compile program source code into an app that runs anywhere</button>
+    <button class="quiz-opt" data-correct="false">Manage a network's IP addresses and connected devices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6353,25 +6353,25 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="User-centred design starts from the real needs and abilities of the users.">
   <div class="quiz-q">🧩 Q1: User-centred design means designing software primarily around...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The real needs and abilities of the people who will use it</button>
-    <button class="quiz-opt" data-correct="false">Whatever is technically easiest to build</button>
-    <button class="quiz-opt" data-correct="false">The developer's personal preferences only</button>
+    <button class="quiz-opt" data-correct="false">Whatever is quickest and easiest for the developers to build</button>
+    <button class="quiz-opt" data-correct="false">The developer's own personal preferences and favourite tools</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A user-friendly form has fields in a logical order with clear labels.">
   <div class="quiz-q">🧩 Q2: A database form designed with user-centred principles should have...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Logical field order and helpful labels</button>
     <button class="quiz-opt" data-correct="false">Fields in random order with no labels</button>
-    <button class="quiz-opt" data-correct="false">No validation of any kind</button>
+    <button class="quiz-opt" data-correct="false">No validation of any kind on input</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Most e-waste is created when devices are thrown away at the end of their life.">
   <div class="quiz-q">🧩 Q3: E-waste is generated mainly during a device's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Disposal at end-of-life</button>
@@ -6380,30 +6380,30 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Designing for the audience means readable text and a pace they can follow.">
   <div class="quiz-q">🧩 Q4: A presentation designed with the audience in mind should prioritise...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Legible text and appropriate pacing</button>
-    <button class="quiz-opt" data-correct="false">As much text as possible on each slide</button>
-    <button class="quiz-opt" data-correct="false">Ignoring the audience's needs entirely</button>
+    <button class="quiz-opt" data-correct="false">As much text as possible on every slide</button>
+    <button class="quiz-opt" data-correct="false">Bright effects on every slide to keep attention</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Durable devices that are recycled properly mean less e-waste and fewer resources used.">
   <div class="quiz-q">🧩 Q5: Reducing technology's environmental footprint includes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Designing for durability and recycling responsibly</button>
-    <button class="quiz-opt" data-correct="false">Replacing all hardware as often as possible</button>
-    <button class="quiz-opt" data-correct="false">Avoiding energy-efficient hardware</button>
+    <button class="quiz-opt" data-correct="false">Replacing all the hardware as often as you can afford</button>
+    <button class="quiz-opt" data-correct="false">Avoiding energy-efficient hardware because it costs more</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Software that is easy to use causes fewer errors and fewer frustrated replacements, so less waste.">
   <div class="quiz-q">🧩 Q6: Good user-centred design can indirectly reduce waste because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduces errors and frustration-driven replacement</button>
-    <button class="quiz-opt" data-correct="false">Always requires more paper printing</button>
-    <button class="quiz-opt" data-correct="false">Has no connection to environmental impact</button>
+    <button class="quiz-opt" data-correct="false">Always needs more pages to be printed for users</button>
+    <button class="quiz-opt" data-correct="false">Has no link at all to the effect on the environment</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6459,34 +6459,34 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The internet links networks across the world, making it the largest WAN.">
   <div class="quiz-q">🧩 Q1: The Internet is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A WAN of WANs, spanning the globe</button>
-    <button class="quiz-opt" data-correct="false">A single company's private LAN</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware device</button>
+    <button class="quiz-opt" data-correct="false">A single company's private LAN that others can join</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware device that every computer contains</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bandwidth is how much data a connection can carry per second.">
   <div class="quiz-q">🧩 Q2: Bandwidth refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The maximum amount of data a connection can carry per second</button>
-    <button class="quiz-opt" data-correct="false">The physical length of a network cable</button>
-    <button class="quiz-opt" data-correct="false">The number of devices in a house</button>
+    <button class="quiz-opt" data-correct="false">The physical length of a network cable in metres</button>
+    <button class="quiz-opt" data-correct="false">The number of devices connected in one house</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Throttling deliberately slows some traffic to manage the load on the network.">
   <div class="quiz-q">🧩 Q3: ISPs use throttling to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Deliberately slow certain traffic to manage network load</button>
-    <button class="quiz-opt" data-correct="false">Permanently disconnect all users</button>
-    <button class="quiz-opt" data-correct="false">Increase everyone's speed simultaneously</button>
+    <button class="quiz-opt" data-correct="false">Permanently disconnect users who download too much</button>
+    <button class="quiz-opt" data-correct="false">Increase everyone's speed at the same time at night</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Connection speed is measured in megabits per second (Mbps).">
   <div class="quiz-q">🧩 Q4: Data transmission speed for internet connections is measured in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mbps</button>
@@ -6495,7 +6495,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Filing tax online (e.g. SARS eFiling) is a government service on the internet.">
   <div class="quiz-q">🧩 Q5: Filing a tax return online is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Government internet service</button>
@@ -6504,7 +6504,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cap is a fixed data limit on your internet package.">
   <div class="quiz-q">🧩 Q6: A "CAP" on an internet package refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A fixed data limit</button>
@@ -6553,56 +6553,56 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A DDoS attack floods a server with traffic from many devices, so real users can't get through.">
   <div class="quiz-q">🧩 Q1: A DDoS attack works by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Overwhelming a server with traffic so it can't respond to real users</button>
-    <button class="quiz-opt" data-correct="false">Physically stealing a hard drive</button>
-    <button class="quiz-opt" data-correct="false">Compressing files to save space</button>
+    <button class="quiz-opt" data-correct="false">Physically stealing the hard drive from the server</button>
+    <button class="quiz-opt" data-correct="false">Compressing the server's files until it runs out of space</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A keylogger secretly records every key you press, including passwords.">
   <div class="quiz-q">🧩 Q2: Key logging is dangerous because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Secretly records everything typed, including passwords</button>
-    <button class="quiz-opt" data-correct="false">Deletes all files on a computer</button>
-    <button class="quiz-opt" data-correct="false">Only affects printers</button>
+    <button class="quiz-opt" data-correct="false">Deletes all the files on the computer at once</button>
+    <button class="quiz-opt" data-correct="false">Only affects printers that are on the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Clickjacking hides a different button or link under what you think you are clicking.">
   <div class="quiz-q">🧩 Q3: Clickjacking tricks a user into...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Clicking something different from what they think they're clicking</button>
-    <button class="quiz-opt" data-correct="false">Typing their password twice</button>
-    <button class="quiz-opt" data-correct="false">Updating their operating system</button>
+    <button class="quiz-opt" data-correct="true">Clicking something other than what they see</button>
+    <button class="quiz-opt" data-correct="false">Typing their password in twice to confirm it</button>
+    <button class="quiz-opt" data-correct="false">Updating their operating system without permission</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A zombie computer is secretly controlled by an attacker as part of a botnet.">
   <div class="quiz-q">🧩 Q4: A "zombie" computer in a botnet is one that has been...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Taken over remotely by an attacker without the owner's knowledge</button>
-    <button class="quiz-opt" data-correct="false">Physically destroyed</button>
-    <button class="quiz-opt" data-correct="false">Upgraded with new RAM</button>
+    <button class="quiz-opt" data-correct="true">Taken over remotely without the owner knowing</button>
+    <button class="quiz-opt" data-correct="false">Physically damaged so that it can no longer start</button>
+    <button class="quiz-opt" data-correct="false">Upgraded with new RAM so that it can run faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Good security layers many safeguards: firewall, antivirus, updates, passwords and backups.">
   <div class="quiz-q">🧩 Q5: Effective security relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Multiple layered safeguards working together</button>
-    <button class="quiz-opt" data-correct="false">A single firewall and nothing else</button>
-    <button class="quiz-opt" data-correct="false">Ignoring software updates</button>
+    <button class="quiz-opt" data-correct="false">A single firewall and nothing else on the network</button>
+    <button class="quiz-opt" data-correct="false">Turning off software updates so nothing can change</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Right to access versus right to privacy is the central question in misuse of personal information.">
   <div class="quiz-q">🧩 Q6: Balancing "right to access" against "right to privacy" is most relevant when discussing...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Misuse of personal information</button>
-    <button class="quiz-opt" data-correct="false">Choosing a printer</button>
+    <button class="quiz-opt" data-correct="false">Choosing the right printer</button>
     <button class="quiz-opt" data-correct="false">Installing a graphics card</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -6651,25 +6651,25 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spooling queues print jobs so you can keep working while the printer prints.">
   <div class="quiz-q">🧩 Q1: Spooling lets a computer...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Queue print jobs without freezing while waiting for the printer</button>
-    <button class="quiz-opt" data-correct="false">Delete old files automatically</button>
-    <button class="quiz-opt" data-correct="false">Compress a folder</button>
+    <button class="quiz-opt" data-correct="false">Delete old files automatically when the disk is full</button>
+    <button class="quiz-opt" data-correct="false">Compress a folder so it takes up less space</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Task Manager shows the running programs and processes and lets you end ones that hang.">
   <div class="quiz-q">🧩 Q2: The Windows Task Manager is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">See and control currently running programs and processes</button>
-    <button class="quiz-opt" data-correct="false">Design a database schema</button>
-    <button class="quiz-opt" data-correct="false">Write HTML pages</button>
+    <button class="quiz-opt" data-correct="true">See and control the programs and processes running</button>
+    <button class="quiz-opt" data-correct="false">Design the tables and fields of a database</button>
+    <button class="quiz-opt" data-correct="false">Write and test HTML pages for a website</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Metadata is data about the file, like its author, title and date.">
   <div class="quiz-q">🧩 Q3: A document's author and title, stored alongside the file, are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Metadata</button>
@@ -6678,7 +6678,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Multitasking is running several programs at once by switching between them quickly.">
   <div class="quiz-q">🧩 Q4: Running several programs seemingly at once is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Multitasking</button>
@@ -6687,21 +6687,21 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Malware running in the background uses CPU, RAM and network, which slows the computer.">
   <div class="quiz-q">🧩 Q5: Malware can affect system performance by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Consuming resources in the background, slowing everything down</button>
-    <button class="quiz-opt" data-correct="false">Always speeding up the CPU</button>
-    <button class="quiz-opt" data-correct="false">Physically damaging the monitor</button>
+    <button class="quiz-opt" data-correct="true">Using resources in the background, slowing things down</button>
+    <button class="quiz-opt" data-correct="false">Making the CPU run faster than it was designed to</button>
+    <button class="quiz-opt" data-correct="false">Physically damaging the monitor and the keyboard</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The OS starts the computer, manages resources and provides the user interface.">
   <div class="quiz-q">🧩 Q6: One of the operating system's core roles is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Start the computer and provide the user interface</button>
-    <button class="quiz-opt" data-correct="false">Physically print documents</button>
-    <button class="quiz-opt" data-correct="false">Manufacture hardware</button>
+    <button class="quiz-opt" data-correct="false">Physically print the documents that you send</button>
+    <button class="quiz-opt" data-correct="false">Manufacture new hardware for the computer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6764,34 +6764,34 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Private mode doesn't keep history or cookies after you close it; the sites and your ISP still see you.">
   <div class="quiz-q">🧩 Q1: Private browsing mode mainly...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Doesn't save your history locally after the window closes</button>
-    <button class="quiz-opt" data-correct="false">Makes you completely anonymous online</button>
-    <button class="quiz-opt" data-correct="false">Blocks all websites automatically</button>
+    <button class="quiz-opt" data-correct="false">Makes you completely anonymous to everyone online</button>
+    <button class="quiz-opt" data-correct="false">Blocks all websites that might be unsafe automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An RSS feed delivers new posts from websites you follow automatically.">
   <div class="quiz-q">🧩 Q2: RSS feeds are used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Automatically deliver updates from followed websites</button>
-    <button class="quiz-opt" data-correct="false">Compress video files</button>
-    <button class="quiz-opt" data-correct="false">Encrypt network traffic</button>
+    <button class="quiz-opt" data-correct="false">Compress video files so they stream faster</button>
+    <button class="quiz-opt" data-correct="false">Encrypt network traffic between two computers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cache stores page files locally so the page loads faster next time.">
   <div class="quiz-q">🧩 Q3: A browser caching a page means it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Stores page data locally for faster reloading</button>
-    <button class="quiz-opt" data-correct="false">Permanently deletes the page</button>
-    <button class="quiz-opt" data-correct="false">Blocks the page entirely</button>
+    <button class="quiz-opt" data-correct="false">Permanently deletes the page from the web server</button>
+    <button class="quiz-opt" data-correct="false">Blocks the page from ever being opened again</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Geo-tagging adds location data to photos and posts.">
   <div class="quiz-q">🧩 Q4: Attaching location data to a photo or post is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Geo-tagging</button>
@@ -6800,7 +6800,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A pop-up blocker adds a feature to the browser, which makes it a plug-in.">
   <div class="quiz-q">🧩 Q5: A pop-up blocker is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Browser plug-in</button>
@@ -6809,11 +6809,11 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A wiki is written and edited by many users together.">
   <div class="quiz-q">🧩 Q6: A wiki is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Collaboratively edited reference content</button>
-    <button class="quiz-opt" data-correct="false">A single-author blog only</button>
+    <button class="quiz-opt" data-correct="false">A blog that only one author writes</button>
     <button class="quiz-opt" data-correct="false">A type of network protocol</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -6854,16 +6854,16 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Your digital footprint is the lasting trail of everything you do and share online.">
   <div class="quiz-q">🧩 Q1: A "digital footprint" refers to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The lasting trace of your online activity and identity</button>
-    <button class="quiz-opt" data-correct="false">A type of network cable</button>
-    <button class="quiz-opt" data-correct="false">A printer's resolution setting</button>
+    <button class="quiz-opt" data-correct="true">The lasting trail of your activity online</button>
+    <button class="quiz-opt" data-correct="false">A type of network cable used in homes</button>
+    <button class="quiz-opt" data-correct="false">A printer's resolution setting in dpi</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AR adds digital information to the real world; VR replaces it with a simulated world.">
   <div class="quiz-q">🧩 Q2: Augmented reality differs from virtual reality because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Overlays digital information onto the real world</button>
@@ -6872,39 +6872,39 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Crowdfunding raises money from many people giving small amounts online.">
   <div class="quiz-q">🧩 Q3: Crowdfunding works by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Raising money from many small contributors online</button>
-    <button class="quiz-opt" data-correct="false">A single bank providing all funding</button>
-    <button class="quiz-opt" data-correct="false">Government tax collection</button>
+    <button class="quiz-opt" data-correct="false">A single bank lending all of the money</button>
+    <button class="quiz-opt" data-correct="false">The government collecting it through taxes</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Remote access lets people work from home over the internet (e-commuting).">
   <div class="quiz-q">🧩 Q4: E-commuting is made possible mainly by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Remote access technology</button>
-    <button class="quiz-opt" data-correct="false">Faster printers</button>
-    <button class="quiz-opt" data-correct="false">Larger monitors only</button>
+    <button class="quiz-opt" data-correct="false">Faster printers in the home office</button>
+    <button class="quiz-opt" data-correct="false">Larger monitors and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Information overload is when there is so much information that it becomes hard to use.">
   <div class="quiz-q">🧩 Q5: Information overload describes the problem of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Too much available information becoming overwhelming</button>
-    <button class="quiz-opt" data-correct="false">Having too little information available</button>
-    <button class="quiz-opt" data-correct="false">A hard drive running out of space</button>
+    <button class="quiz-opt" data-correct="false">Having too little information available to decide</button>
+    <button class="quiz-opt" data-correct="false">A hard drive running out of space to store files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A strong answer weighs both the benefits and the harms, with examples.">
   <div class="quiz-q">🧩 Q6: A strong exam answer about technology's effect on society usually...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Shows both benefits and harms</button>
-    <button class="quiz-opt" data-correct="false">Only ever lists benefits</button>
-    <button class="quiz-opt" data-correct="false">Avoids giving any examples</button>
+    <button class="quiz-opt" data-correct="false">Only ever lists the benefits</button>
+    <button class="quiz-opt" data-correct="false">Avoids giving any examples at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -6943,52 +6943,52 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="#N/A from a lookup means it couldn't find a matching value.">
   <div class="quiz-q">🧩 Q1: A #N/A error from a lookup function means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">No matching value was found</button>
-    <button class="quiz-opt" data-correct="false">The formula divided by zero</button>
-    <button class="quiz-opt" data-correct="false">The cell is too narrow</button>
+    <button class="quiz-opt" data-correct="false">The formula divided a number by zero</button>
+    <button class="quiz-opt" data-correct="false">The column is too narrow to show it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each extra IF adds another outcome, so nested IFs handle more than two outcomes.">
   <div class="quiz-q">🧩 Q2: A nested IF is used when you need...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">More than two possible outcomes</button>
-    <button class="quiz-opt" data-correct="false">Exactly one possible outcome</button>
-    <button class="quiz-opt" data-correct="false">To delete a row</button>
+    <button class="quiz-opt" data-correct="false">Exactly one possible outcome for every row</button>
+    <button class="quiz-opt" data-correct="false">To delete a row once its outcome is known</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A grouped report puts records into categories, with totals for each group.">
   <div class="quiz-q">🧩 Q3: A grouped database report differs from a flat list because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Organises records into categories with per-group calculations</button>
-    <button class="quiz-opt" data-correct="false">Shows only one record total</button>
-    <button class="quiz-opt" data-correct="false">Cannot include any calculations</button>
+    <button class="quiz-opt" data-correct="false">Shows only one record in total, the most recent</button>
+    <button class="quiz-opt" data-correct="false">Cannot include any calculations, only the records</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The * wildcard matches any number of characters, e.g. &quot;Jo*&quot; finds John and Jones.">
   <div class="quiz-q">🧩 Q4: A wildcard (*) in a database query is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Match flexible or partial text patterns</button>
-    <button class="quiz-opt" data-correct="false">Delete all records</button>
-    <button class="quiz-opt" data-correct="false">Sort a column numerically</button>
+    <button class="quiz-opt" data-correct="false">Delete all the records in the table at once</button>
+    <button class="quiz-opt" data-correct="false">Sort a column numerically from small to large</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="COUNTIFS can check several conditions at once; COUNTIF only one.">
   <div class="quiz-q">🧩 Q5: COUNTIFS differs from COUNTIF because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Counts based on multiple conditions at once</button>
-    <button class="quiz-opt" data-correct="false">Can only count blank cells</button>
-    <button class="quiz-opt" data-correct="false">Only works with text values</button>
+    <button class="quiz-opt" data-correct="false">Can only count the blank cells in a range</button>
+    <button class="quiz-opt" data-correct="false">Only works with text values, never numbers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="ROUNDUP always rounds up (away from zero), e.g. 2.1 becomes 3.">
   <div class="quiz-q">🧩 Q6: ROUNDUP always rounds a number...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Up, regardless of the decimal value</button>
@@ -7034,57 +7034,57 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A professional report has a clear structure, accurate data and language that suits the audience.">
   <div class="quiz-q">🧩 Q1: A professional report differs from a casual write-up mainly through...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Clear structure, accurate data, and audience-appropriate language</button>
-    <button class="quiz-opt" data-correct="false">Using the largest possible font</button>
-    <button class="quiz-opt" data-correct="false">Avoiding any data or evidence</button>
+    <button class="quiz-opt" data-correct="true">Clear structure, accurate data and suitable language</button>
+    <button class="quiz-opt" data-correct="false">Using the largest font possible for every heading</button>
+    <button class="quiz-opt" data-correct="false">Avoiding data and evidence so it is easy to read</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spreadsheets and databases supply the calculated, sorted and filtered data behind the findings.">
   <div class="quiz-q">🧩 Q2: Spreadsheets and databases support professional reports by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Supplying the calculated, sorted, filtered data behind the findings</button>
-    <button class="quiz-opt" data-correct="false">Replacing the need for any writing</button>
-    <button class="quiz-opt" data-correct="false">Only formatting the report's cover page</button>
+    <button class="quiz-opt" data-correct="true">Supplying the calculated, sorted and filtered data</button>
+    <button class="quiz-opt" data-correct="false">Replacing the need for any writing in the report</button>
+    <button class="quiz-opt" data-correct="false">Only formatting the cover page of the report</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Case studies test whether you can apply all three years of knowledge to a real scenario.">
   <div class="quiz-q">🧩 Q3: CAT's final case-study style questions mainly test whether you can...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Apply three years of knowledge together to a real scenario</button>
-    <button class="quiz-opt" data-correct="false">Recite isolated facts with no context</button>
-    <button class="quiz-opt" data-correct="false">Only remember Grade 10 content</button>
+    <button class="quiz-opt" data-correct="false">Recite isolated facts from memory with no context</button>
+    <button class="quiz-opt" data-correct="false">Remember the Grade 10 content and nothing more</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Know when a problem is beyond you and ask for help, rather than guessing and making it worse.">
   <div class="quiz-q">🧩 Q4: When troubleshooting in a case study, a key skill is knowing...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">When to ask for help rather than guess</button>
     <button class="quiz-opt" data-correct="false">To always replace the entire computer</button>
-    <button class="quiz-opt" data-correct="false">To ignore the problem</button>
+    <button class="quiz-opt" data-correct="false">To ignore the problem until it goes away</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Weigh the cost, the user's needs and how well the current system still performs.">
   <div class="quiz-q">🧩 Q5: Deciding whether to upgrade existing equipment or buy new depends on...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Weighing cost, needs and how well the current system still performs</button>
-    <button class="quiz-opt" data-correct="false">Always choosing to upgrade, regardless of cost</button>
-    <button class="quiz-opt" data-correct="false">Flipping a coin</button>
+    <button class="quiz-opt" data-correct="true">Cost, needs and how well the current system still works</button>
+    <button class="quiz-opt" data-correct="false">Always upgrading the old equipment, whatever it costs</button>
+    <button class="quiz-opt" data-correct="false">Always buying the newest system, whatever it costs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The key specs are the processor, memory (RAM) and storage size.">
   <div class="quiz-q">🧩 Q6: Identifying a computer's hardware configuration typically includes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Processor, memory and hard drive size</button>
-    <button class="quiz-opt" data-correct="false">Only the case colour</button>
-    <button class="quiz-opt" data-correct="false">Only the monitor brand</button>
+    <button class="quiz-opt" data-correct="false">Only the colour and size of the case</button>
+    <button class="quiz-opt" data-correct="false">Only the brand and size of the monitor</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7140,7 +7140,7 @@ const CAT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A Raspberry Pi is a full computer on one small circuit board.">
   <div class="quiz-q">🧩 Q1: A Raspberry Pi is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Server</button>
@@ -7149,7 +7149,7 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A smartwatch is worn on the body, so it is smart wear.">
   <div class="quiz-q">🧩 Q2: A smartwatch is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Smart wear</button>
@@ -7158,16 +7158,16 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A computer that does one job inside a machine is embedded (dedicated).">
   <div class="quiz-q">🧩 Q3: A washing machine's built-in computer that only controls wash cycles is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An embedded (dedicated) computer</button>
     <button class="quiz-opt" data-correct="false">A multi-purpose device</button>
-    <button class="quiz-opt" data-correct="false">A GAN</button>
+    <button class="quiz-opt" data-correct="false">A GAN (global area network)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Portable versus non-portable is about mobility.">
   <div class="quiz-q">🧩 Q4: Classifying computers by "portable vs non-portable" is classifying by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mobility</button>
@@ -7176,7 +7176,7 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Ranking classes by attendance turns data into information.">
   <div class="quiz-q">🧩 Q5: "The class with the best attendance rate this term" is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Data</button>
@@ -7185,12 +7185,12 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Hardware does nothing without software telling it what to do.">
   <div class="quiz-q">🧩 Q6: A computer system needs both hardware and software because...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Hardware needs software's instructions to do anything useful</button>
-    <button class="quiz-opt" data-correct="false">Software can run without any hardware</button>
-    <button class="quiz-opt" data-correct="false">They are actually the same thing</button>
+    <button class="quiz-opt" data-correct="false">Software can run without any hardware at all</button>
+    <button class="quiz-opt" data-correct="false">They are the same thing, with two different names</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7238,7 +7238,7 @@ const CAT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A fingerprint scanner reads a body feature, so it is biometric input.">
   <div class="quiz-q">🧩 Q1: A fingerprint scanner is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Biometric input</button>
@@ -7247,7 +7247,7 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A printed page is hard-copy output.">
   <div class="quiz-q">🧩 Q2: A printed page from a printer is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Hard copy output</button>
@@ -7256,16 +7256,16 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="RAM is primary storage: temporary working memory that is cleared when the power goes off.">
   <div class="quiz-q">🧩 Q3: RAM is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Primary storage / temporary working memory</button>
-    <button class="quiz-opt" data-correct="false">Permanent secondary storage</button>
-    <button class="quiz-opt" data-correct="false">An output device</button>
+    <button class="quiz-opt" data-correct="true">Primary storage: temporary working memory</button>
+    <button class="quiz-opt" data-correct="false">Permanent secondary storage, like a hard drive</button>
+    <button class="quiz-opt" data-correct="false">An output device that displays data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The order is KB, MB, GB, TB, so a terabyte comes after a gigabyte.">
   <div class="quiz-q">🧩 Q4: Which unit comes right after a gigabyte (GB) in size?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Megabyte (MB)</button>
@@ -7274,7 +7274,7 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The motherboard holds and connects the CPU, RAM and other components.">
   <div class="quiz-q">🧩 Q5: The component that houses and connects all the main parts of a computer is the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Motherboard</button>
@@ -7283,7 +7283,7 @@ const CAT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="CPU clock speed is measured in GHz.">
   <div class="quiz-q">🧩 Q6: CPU speed is measured in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">GHz</button>
@@ -7337,16 +7337,16 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A site licence covers many computers at one organisation.">
   <div class="quiz-q">🧩 Q1: A site licence typically covers...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Many computers at one organisation, e.g. a school</button>
-    <button class="quiz-opt" data-correct="false">Exactly one single computer forever</button>
-    <button class="quiz-opt" data-correct="false">Only open source software</button>
+    <button class="quiz-opt" data-correct="false">Exactly one computer, for as long as you own it</button>
+    <button class="quiz-opt" data-correct="false">Only open-source software, at no cost</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Shareware is free to try, then you must pay.">
   <div class="quiz-q">🧩 Q2: Software that's free to try but requires payment after a trial period is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Freeware</button>
@@ -7355,7 +7355,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Only one radio button in a group can be selected.">
   <div class="quiz-q">🧩 Q3: A round button where only one option can be selected in a group is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Radio button</button>
@@ -7364,7 +7364,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Backup software is a utility: it maintains or protects the system.">
   <div class="quiz-q">🧩 Q4: Backup software is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Utility program</button>
@@ -7373,21 +7373,21 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Open source means the source code is public and can be viewed and changed.">
   <div class="quiz-q">🧩 Q5: Open source software means the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Source code is publicly available to view and modify</button>
-    <button class="quiz-opt" data-correct="false">Software is always completely free</button>
-    <button class="quiz-opt" data-correct="false">Software cannot be installed on more than one PC</button>
+    <button class="quiz-opt" data-correct="false">The software is always completely free to use</button>
+    <button class="quiz-opt" data-correct="false">It can only be installed on one PC at a time</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A Creative Commons licence states how a creative work may be reused.">
   <div class="quiz-q">🧩 Q6: A licence that specifies exactly how a piece of creative work may be reused is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A creative commons licence</button>
-    <button class="quiz-opt" data-correct="false">A site licence</button>
-    <button class="quiz-opt" data-correct="false">A GUI licence</button>
+    <button class="quiz-opt" data-correct="false">A site licence for a school</button>
+    <button class="quiz-opt" data-correct="false">A GUI licence for the screen</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7422,7 +7422,7 @@ ${GUI_REF_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Deleted files go to the Recycle Bin first and can be restored.">
   <div class="quiz-q">🧩 Q1: In Windows, deleted files are usually first sent to the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Recycle Bin</button>
@@ -7431,16 +7431,16 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A full file specification is the drive, path, filename and extension.">
   <div class="quiz-q">🧩 Q2: A full file specification includes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Drive, path, filename and extension</button>
-    <button class="quiz-opt" data-correct="false">Only the filename</button>
-    <button class="quiz-opt" data-correct="false">The file's colour and icon</button>
+    <button class="quiz-opt" data-correct="false">Only the filename, without the extension</button>
+    <button class="quiz-opt" data-correct="false">The file's colour and icon in File Explorer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="File Explorer is used to browse and organise files and folders.">
   <div class="quiz-q">🧩 Q3: The tool used to browse, organise and manage files in Windows is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">File Explorer</button>
@@ -7449,7 +7449,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A folder can hold files and other folders.">
   <div class="quiz-q">🧩 Q4: A folder can contain...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Files and other folders</button>
@@ -7458,7 +7458,7 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Clear names make files easy to find later.">
   <div class="quiz-q">🧩 Q5: Why should you use clear, consistent file names?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">It makes files much easier to find later</button>
@@ -7467,12 +7467,12 @@ ${GUI_REF_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Start button opens your installed apps and the settings.">
   <div class="quiz-q">🧩 Q6: The Start button is mainly used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Access installed apps and system settings</button>
-    <button class="quiz-opt" data-correct="false">Permanently delete files</button>
-    <button class="quiz-opt" data-correct="false">Connect to a printer</button>
+    <button class="quiz-opt" data-correct="false">Permanently delete files you have selected</button>
+    <button class="quiz-opt" data-correct="false">Connect the computer to a nearby printer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7537,7 +7537,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A network inside one building is a LAN (local area network).">
   <div class="quiz-q">🧩 Q1: A network covering all the computers in one school building is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">LAN</button>
@@ -7546,7 +7546,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The internet spans the globe, which makes it a GAN.">
   <div class="quiz-q">🧩 Q2: The Internet is the classic real-world example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">HAN</button>
@@ -7555,7 +7555,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A home network is a HAN (home area network).">
   <div class="quiz-q">🧩 Q3: A network of all the devices in your house is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">HAN</button>
@@ -7564,30 +7564,30 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A NIC (network interface card) connects a device to a network.">
   <div class="quiz-q">🧩 Q4: The hardware that lets a device join a network is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Network Interface Card (NIC)</button>
-    <button class="quiz-opt" data-correct="false">GUI</button>
-    <button class="quiz-opt" data-correct="false">ROM chip</button>
+    <button class="quiz-opt" data-correct="false">Graphical user interface (GUI)</button>
+    <button class="quiz-opt" data-correct="false">Read-only memory (ROM) chip</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A WAN covers a large area, such as a country.">
   <div class="quiz-q">🧩 Q5: A WAN typically covers...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A wide area such as a whole country</button>
-    <button class="quiz-opt" data-correct="false">One single room</button>
-    <button class="quiz-opt" data-correct="false">One person's own devices only</button>
+    <button class="quiz-opt" data-correct="false">One single room in an office</button>
+    <button class="quiz-opt" data-correct="false">One person's own personal devices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An ISP subscription gives you the connection to the internet.">
   <div class="quiz-q">🧩 Q6: What do you need, along with the right hardware and software, to connect to the Internet?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A subscription with an ISP</button>
-    <button class="quiz-opt" data-correct="false">A Recycle Bin</button>
-    <button class="quiz-opt" data-correct="false">A creative commons licence</button>
+    <button class="quiz-opt" data-correct="false">A Recycle Bin with enough free space</button>
+    <button class="quiz-opt" data-correct="false">A Creative Commons licence for each site</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7638,7 +7638,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A website is a collection of related webpages.">
   <div class="quiz-q">🧩 Q1: A collection of related webpages is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Website</button>
@@ -7647,7 +7647,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Buying, selling and banking online are e-commerce.">
   <div class="quiz-q">🧩 Q2: Online banking and shopping are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">E-commerce</button>
@@ -7656,7 +7656,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Copying a file from the internet to your device is downloading.">
   <div class="quiz-q">🧩 Q3: Copying a file from the Internet to your own device is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Downloading</button>
@@ -7665,7 +7665,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tabbed browsing keeps several pages open in one window.">
   <div class="quiz-q">🧩 Q4: Having several webpages open in one browser window is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Tabbed browsing</button>
@@ -7674,7 +7674,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A wiki is a reference site that many users edit together.">
   <div class="quiz-q">🧩 Q5: A collaboratively edited reference site is best classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Wiki</button>
@@ -7683,12 +7683,12 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="EFT is an online banking service that moves money electronically.">
   <div class="quiz-q">🧩 Q6: EFT (electronic funds transfer) is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An online banking service</button>
-    <button class="quiz-opt" data-correct="false">A file extension</button>
-    <button class="quiz-opt" data-correct="false">A type of printer</button>
+    <button class="quiz-opt" data-correct="false">A file extension for bank files</button>
+    <button class="quiz-opt" data-correct="false">A type of printer for receipts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7725,7 +7725,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cc addresses can be seen by everyone who receives the email.">
   <div class="quiz-q">🧩 Q1: Which email field is visible to all recipients?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cc</button>
@@ -7734,25 +7734,25 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Concise messages with small attachments are good netiquette.">
   <div class="quiz-q">🧩 Q2: Which of these is good netiquette?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Keeping attachments small and messages concise</button>
     <button class="quiz-opt" data-correct="false">Typing your whole message in capital letters</button>
-    <button class="quiz-opt" data-correct="false">Forwarding every chain message you receive</button>
+    <button class="quiz-opt" data-correct="false">Forwarding every chain message you receive to everyone</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Webmail can be used from any device with a browser and internet access.">
   <div class="quiz-q">🧩 Q3: A web-based email account can be accessed...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">From any device with a browser and internet connection</button>
-    <button class="quiz-opt" data-correct="false">Only from the original computer it was set up on</button>
-    <button class="quiz-opt" data-correct="false">Only through the school's own network</button>
+    <button class="quiz-opt" data-correct="false">Only from the computer it was first set up on</button>
+    <button class="quiz-opt" data-correct="false">Only through the school's own network connection</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bcc hides each recipient's address from the others.">
   <div class="quiz-q">🧩 Q4: Sending a copy of a message where the recipient's address is hidden from others uses...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Bcc</button>
@@ -7761,7 +7761,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The address book stores your contacts' email addresses.">
   <div class="quiz-q">🧩 Q5: The address book in an email application is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Store your contacts' email addresses</button>
@@ -7770,7 +7770,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="All capitals reads as shouting, which is rude.">
   <div class="quiz-q">🧩 Q6: Typing a whole email in capital letters is generally seen as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Rude — it reads as shouting</button>
@@ -7818,7 +7818,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sifting keeps only the information that meets your criteria.">
   <div class="quiz-q">🧩 Q1: Keeping only the gathered information that meets your criteria is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Sifting</button>
@@ -7827,7 +7827,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Knowledge is what you understand and can apply after interpreting information.">
   <div class="quiz-q">🧩 Q2: What you understand and can apply after interpreting information is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Knowledge</button>
@@ -7836,16 +7836,16 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A survey collects first-hand data aimed at your exact problem.">
   <div class="quiz-q">🧩 Q3: A survey is a good source of information because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Gathers first-hand data specific to your problem</button>
-    <button class="quiz-opt" data-correct="false">Never needs to be summarised</button>
-    <button class="quiz-opt" data-correct="false">Requires no design or planning</button>
+    <button class="quiz-opt" data-correct="false">Never needs to be summarised or analysed</button>
+    <button class="quiz-opt" data-correct="false">Requires no design or planning beforehand</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using someone else's words without acknowledging them is plagiarism.">
   <div class="quiz-q">🧩 Q4: Copying text from a website into your report without acknowledging the source is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Plagiarism</button>
@@ -7854,21 +7854,21 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good report has an introduction, body, conclusion and bibliography.">
   <div class="quiz-q">🧩 Q5: A well-structured report should include...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Introduction, body, conclusion and bibliography</button>
-    <button class="quiz-opt" data-correct="false">Only raw data with no explanation</button>
-    <button class="quiz-opt" data-correct="false">Unreferenced copied text</button>
+    <button class="quiz-opt" data-correct="false">Only raw data, with no explanation of it</button>
+    <button class="quiz-opt" data-correct="false">Copied text with no references to sources</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An average can be calculated in a spreadsheet, so it is a data question.">
   <div class="quiz-q">🧩 Q6: "What is the average?" is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data question you could answer using a spreadsheet</button>
-    <button class="quiz-opt" data-correct="false">Netiquette rule</button>
-    <button class="quiz-opt" data-correct="false">Type of network</button>
+    <button class="quiz-opt" data-correct="false">Netiquette rule for using online data</button>
+    <button class="quiz-opt" data-correct="false">Type of network for sharing spreadsheet data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -7918,7 +7918,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The digital divide is the gap between people who have good technology access and those who don't.">
   <div class="quiz-q">🧩 Q1: The gap between people with good technology access and those without is called the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Digital divide</button>
@@ -7927,7 +7927,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cracker breaks into systems with malicious intent.">
   <div class="quiz-q">🧩 Q2: Someone who breaks into systems with clearly malicious intent is best described as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cracker</button>
@@ -7936,25 +7936,25 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Recycling old parts properly is green computing.">
   <div class="quiz-q">🧩 Q3: Properly recycling old computer parts instead of landfilling them is called...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Green computing (green disposal)</button>
-    <button class="quiz-opt" data-correct="false">Cracking</button>
-    <button class="quiz-opt" data-correct="false">Sifting</button>
+    <button class="quiz-opt" data-correct="true">Green computing</button>
+    <button class="quiz-opt" data-correct="false">Cracking old hardware</button>
+    <button class="quiz-opt" data-correct="false">Sifting through e-waste</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Repeatedly targeting or intimidating someone online is harassment or cyberstalking.">
   <div class="quiz-q">🧩 Q4: Repeatedly using technology to target or intimidate someone is called...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Online harassment / cyberstalking</button>
-    <button class="quiz-opt" data-correct="false">Netiquette</button>
-    <button class="quiz-opt" data-correct="false">Green computing</button>
+    <button class="quiz-opt" data-correct="true">Online harassment</button>
+    <button class="quiz-opt" data-correct="false">Poor netiquette</button>
+    <button class="quiz-opt" data-correct="false">Spam filtering</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using unlicensed software is software piracy.">
   <div class="quiz-q">🧩 Q5: Using software without a valid licence is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Software piracy</button>
@@ -7963,7 +7963,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bitcoin is a cryptocurrency.">
   <div class="quiz-q">🧩 Q6: Bitcoin is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cryptocurrency</button>
@@ -8006,57 +8006,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A screen reader reads the screen aloud for visually impaired users.">
   <div class="quiz-q">🧩 Q1: A screen reader is an output tool primarily designed for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Physically challenged (visually impaired) users</button>
-    <button class="quiz-opt" data-correct="false">Gamers only</button>
-    <button class="quiz-opt" data-correct="false">Network administrators</button>
+    <button class="quiz-opt" data-correct="false">Gamers who want spoken game instructions</button>
+    <button class="quiz-opt" data-correct="false">Network administrators checking servers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Name the device and explain why its advantages fit this user's scenario.">
   <div class="quiz-q">🧩 Q2: When answering a "recommend a device" exam question, you should always...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Justify your answer with real advantages/disadvantages for the scenario</button>
-    <button class="quiz-opt" data-correct="false">Just name the most expensive device</button>
-    <button class="quiz-opt" data-correct="false">Only mention the device's colour</button>
+    <button class="quiz-opt" data-correct="true">Justify the choice with advantages for this scenario</button>
+    <button class="quiz-opt" data-correct="false">Name the newest and most expensive device on the market</button>
+    <button class="quiz-opt" data-correct="false">List the device's colour, brand and screen size only</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Small handheld controls are less precise than a full keyboard and mouse.">
   <div class="quiz-q">🧩 Q3: A key limitation of many handheld input devices is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Limited precision compared to a full keyboard/mouse</button>
-    <button class="quiz-opt" data-correct="false">They can never connect wirelessly</button>
-    <button class="quiz-opt" data-correct="false">They cannot be used for input at all</button>
+    <button class="quiz-opt" data-correct="false">They can never connect to a computer wirelessly</button>
+    <button class="quiz-opt" data-correct="false">They cannot actually be used to input data at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Reading an advert's specs lets you judge whether a device suits a particular need.">
   <div class="quiz-q">🧩 Q4: Interpreting adverts is a skill mainly used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Judge whether a device's real-world performance suits a need</button>
-    <button class="quiz-opt" data-correct="false">Memorise brand names</button>
-    <button class="quiz-opt" data-correct="false">Design a network topology</button>
+    <button class="quiz-opt" data-correct="true">Judge whether a device suits a particular need</button>
+    <button class="quiz-opt" data-correct="false">Memorise the brand names of popular devices</button>
+    <button class="quiz-opt" data-correct="false">Design the topology of a home network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Accuracy matters most for scanners and cameras used to identify people.">
   <div class="quiz-q">🧩 Q5: Biometric input accuracy is a relevant quality factor for...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Scanners and digital cameras used for identification</button>
-    <button class="quiz-opt" data-correct="false">HTML tags</button>
-    <button class="quiz-opt" data-correct="false">Cell references</button>
+    <button class="quiz-opt" data-correct="true">Scanners and cameras used for identification</button>
+    <button class="quiz-opt" data-correct="false">HTML tags on website login pages</button>
+    <button class="quiz-opt" data-correct="false">Cell references in spreadsheet formulas</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Devices for users with disabilities (accessibility) are part of the Systems Technologies syllabus.">
   <div class="quiz-q">🧩 Q6: Devices adapted for physically challenged users are examinable because...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Accessible design is an explicit part of the Systems Technologies syllabus</button>
-    <button class="quiz-opt" data-correct="false">They are never actually used in practice</button>
-    <button class="quiz-opt" data-correct="false">They replace all standard input/output devices</button>
+    <button class="quiz-opt" data-correct="true">Accessible design is part of the syllabus</button>
+    <button class="quiz-opt" data-correct="false">They are never actually used in real workplaces</button>
+    <button class="quiz-opt" data-correct="false">They replace all the standard input and output devices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -8098,7 +8098,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Combining many devices' functions into one is convergence.">
   <div class="quiz-q">🧩 Q1: A smartphone combining a camera, GPS and music player into one device is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Convergence</button>
@@ -8107,7 +8107,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="ROM stores the permanent start-up instructions.">
   <div class="quiz-q">🧩 Q2: ROM stores...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Start-up instructions</button>
@@ -8116,16 +8116,16 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Without internet access you can't reach your cloud files.">
   <div class="quiz-q">🧩 Q3: A key disadvantage of cloud storage is that it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Requires an internet connection to access your files</button>
-    <button class="quiz-opt" data-correct="false">Cannot ever be backed up</button>
-    <button class="quiz-opt" data-correct="false">Is always slower than a USB drive</button>
+    <button class="quiz-opt" data-correct="false">Cannot ever be backed up to another location</button>
+    <button class="quiz-opt" data-correct="false">Is always slower than copying to a USB flash drive</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="OCR (optical character recognition) turns a scanned image of text into editable text.">
   <div class="quiz-q">🧩 Q4: A scanner typically needs which type of software to convert a scanned image into editable text?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">OCR software</button>
@@ -8134,16 +8134,16 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Something that won't respond is a non-responding program or device.">
   <div class="quiz-q">🧩 Q5: "The computer won't respond to the mouse" is an example of a problem in which troubleshooting category?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Non-responding programs/devices</button>
-    <button class="quiz-opt" data-correct="false">Disk errors</button>
+    <button class="quiz-opt" data-correct="true">Non-responding programs or devices</button>
+    <button class="quiz-opt" data-correct="false">Disk errors and storage faults</button>
     <button class="quiz-opt" data-correct="false">Printing problems</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="DRAM and SRAM are two kinds of RAM; SRAM is faster and is used for cache.">
   <div class="quiz-q">🧩 Q6: DRAM and SRAM are both types of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">RAM</button>
@@ -8192,7 +8192,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A firewall is a utility that protects the system by filtering network traffic.">
   <div class="quiz-q">🧩 Q1: A firewall is best classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Utility program</button>
@@ -8201,43 +8201,43 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Checking the minimum requirements tells you whether your computer can run the program properly.">
   <div class="quiz-q">🧩 Q2: Checking a program's minimum RAM requirement before installing tells you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Whether your computer can run it properly</button>
-    <button class="quiz-opt" data-correct="false">Its exact retail price</button>
-    <button class="quiz-opt" data-correct="false">Nothing useful</button>
+    <button class="quiz-opt" data-correct="false">The exact price you will pay in the shops</button>
+    <button class="quiz-opt" data-correct="false">Nothing useful about how the program runs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Disk Cleanup and troubleshooting wizards fix common system software problems.">
   <div class="quiz-q">🧩 Q3: Disk cleanup and wizards are commonly used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Troubleshoot common system software problems</button>
-    <button class="quiz-opt" data-correct="false">Physically clean the keyboard</button>
-    <button class="quiz-opt" data-correct="false">Design a database schema</button>
+    <button class="quiz-opt" data-correct="false">Physically clean the keyboard and screen</button>
+    <button class="quiz-opt" data-correct="false">Design the tables of a database schema</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Voice recognition helps users who can't use a keyboard or mouse easily.">
   <div class="quiz-q">🧩 Q4: Voice recognition software is an example of software designed for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Physically challenged users</button>
     <button class="quiz-opt" data-correct="false">Network administrators only</button>
-    <button class="quiz-opt" data-correct="false">Database design</button>
+    <button class="quiz-opt" data-correct="false">Database designers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A service pack bundles many fixes and updates into one installation.">
   <div class="quiz-q">🧩 Q5: A service pack is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A bundle of fixes released after the main software version</button>
-    <button class="quiz-opt" data-correct="false">A completely new operating system</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware component</button>
+    <button class="quiz-opt" data-correct="false">A completely new version of the operating system</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware component on the motherboard</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Running a downloaded installer is installing by internet download.">
   <div class="quiz-q">🧩 Q6: Installing software from a downloaded installer file uses which method?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Internet download</button>
@@ -8285,52 +8285,52 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Task View (Win + Tab) shows all open windows and your virtual desktops.">
   <div class="quiz-q">🧩 Q1: Task View is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">See all open windows and virtual desktops at once</button>
-    <button class="quiz-opt" data-correct="false">Permanently delete files</button>
-    <button class="quiz-opt" data-correct="false">Install new hardware drivers</button>
+    <button class="quiz-opt" data-correct="false">Permanently delete the files you have selected</button>
+    <button class="quiz-opt" data-correct="false">Install new hardware drivers from the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Hidden is a file attribute (property).">
   <div class="quiz-q">🧩 Q2: Marking a file as "hidden" is an example of changing its...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Attributes/properties</button>
+    <button class="quiz-opt" data-correct="true">Attributes</button>
     <button class="quiz-opt" data-correct="false">Extension</button>
-    <button class="quiz-opt" data-correct="false">Primary key</button>
+    <button class="quiz-opt" data-correct="false">File path</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Compression makes the file smaller, so it sends and downloads faster.">
   <div class="quiz-q">🧩 Q3: Compressing a file before emailing it mainly helps because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Makes the file smaller and faster to send</button>
-    <button class="quiz-opt" data-correct="false">Deletes unnecessary content automatically</button>
-    <button class="quiz-opt" data-correct="false">Encrypts the file permanently</button>
+    <button class="quiz-opt" data-correct="false">Deletes content the file doesn't need automatically</button>
+    <button class="quiz-opt" data-correct="false">Encrypts the file so no one else can ever open it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Action Center shows notifications and quick toggles like Wi-Fi and Bluetooth.">
   <div class="quiz-q">🧩 Q4: The Action Center / Quick Actions panel is mainly used for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Notifications and quick settings toggles</button>
-    <button class="quiz-opt" data-correct="false">Writing SQL queries</button>
-    <button class="quiz-opt" data-correct="false">Formatting a hard drive</button>
+    <button class="quiz-opt" data-correct="false">Writing and running database SQL queries</button>
+    <button class="quiz-opt" data-correct="false">Formatting a hard drive and partitions</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The print queue lets you pause, cancel or reorder waiting print jobs.">
   <div class="quiz-q">🧩 Q5: Managing the printer queue lets you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Control and reorder pending print jobs</button>
-    <button class="quiz-opt" data-correct="false">Change a file's primary key</button>
+    <button class="quiz-opt" data-correct="false">Change the primary key of a file</button>
     <button class="quiz-opt" data-correct="false">Compress a folder automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A password limits who can open the file.">
   <div class="quiz-q">🧩 Q6: Password-protecting a file is a way to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Restrict who can open or view its contents</button>
@@ -8401,16 +8401,16 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A VPN creates an encrypted tunnel across a public network such as the internet.">
   <div class="quiz-q">🧩 Q1: A VPN's main purpose is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Create a secure, encrypted connection over a public network</button>
-    <button class="quiz-opt" data-correct="false">Increase a printer's DPI</button>
-    <button class="quiz-opt" data-correct="false">Store files permanently in the cloud</button>
+    <button class="quiz-opt" data-correct="true">Create a secure, encrypted connection over the internet</button>
+    <button class="quiz-opt" data-correct="false">Increase the print quality of a network printer</button>
+    <button class="quiz-opt" data-correct="false">Store files permanently on a cloud server</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In a star topology every device connects to one central switch.">
   <div class="quiz-q">🧩 Q2: In a star topology, all devices connect to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">One central hub/switch</button>
@@ -8419,7 +8419,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Attenuation is a signal getting weaker over distance.">
   <div class="quiz-q">🧩 Q3: Signal strength weakening over a long cable run is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Attenuation</button>
@@ -8428,7 +8428,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fibre optic carries light, so it is fast and immune to electrical interference.">
   <div class="quiz-q">🧩 Q4: Which cabling type is generally fastest and most resistant to interference?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Fibre optic</button>
@@ -8437,7 +8437,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Secretly listening in on network traffic is eavesdropping.">
   <div class="quiz-q">🧩 Q5: Someone secretly intercepting network data is engaging in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Eavesdropping</button>
@@ -8446,12 +8446,12 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A mesh has many paths, so the network keeps working if one link fails.">
   <div class="quiz-q">🧩 Q6: A mesh topology's main benefit is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Redundancy — many alternate paths between devices</button>
-    <button class="quiz-opt" data-correct="false">Requiring the least cabling of any topology</button>
-    <button class="quiz-opt" data-correct="false">Eliminating the need for network security</button>
+    <button class="quiz-opt" data-correct="false">Using the least cabling of any network topology</button>
+    <button class="quiz-opt" data-correct="false">Removing the need for any network security</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -8491,57 +8491,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An intranet is private: only an organisation's authorised users can use it.">
   <div class="quiz-q">🧩 Q1: An intranet differs from the Internet in that it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Is restricted to authorised users of one organisation</button>
-    <button class="quiz-opt" data-correct="false">Uses completely different technology</button>
-    <button class="quiz-opt" data-correct="false">Cannot include email</button>
+    <button class="quiz-opt" data-correct="false">Uses completely different technology from the internet</button>
+    <button class="quiz-opt" data-correct="false">Cannot be used to send or receive email</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An IP address identifies each device, so data reaches the right one.">
   <div class="quiz-q">🧩 Q2: An IP address is needed so that...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data knows exactly which device to reach</button>
-    <button class="quiz-opt" data-correct="false">Files can be compressed</button>
-    <button class="quiz-opt" data-correct="false">Printers can print faster</button>
+    <button class="quiz-opt" data-correct="false">Files can be compressed before sending</button>
+    <button class="quiz-opt" data-correct="false">Printers on the network can print faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Internet speeds are measured in megabits per second (Mbps).">
   <div class="quiz-q">🧩 Q3: Data transmission speed for internet connections is typically measured in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mbps (megabits per second)</button>
-    <button class="quiz-opt" data-correct="false">GHz</button>
-    <button class="quiz-opt" data-correct="false">DPI</button>
+    <button class="quiz-opt" data-correct="false">GHz (gigahertz)</button>
+    <button class="quiz-opt" data-correct="false">DPI (dots per inch)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The phone acts as a modem, sharing its cellular data (a hotspot).">
   <div class="quiz-q">🧩 Q4: A cell phone sharing its data connection with a laptop is using...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cellular data service (as a modem)</button>
-    <button class="quiz-opt" data-correct="false">A VPN</button>
-    <button class="quiz-opt" data-correct="false">A ring topology</button>
+    <button class="quiz-opt" data-correct="false">A VPN, which encrypts the connection</button>
+    <button class="quiz-opt" data-correct="false">A ring topology between the two devices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="FTP (File Transfer Protocol) transfers files between computers.">
   <div class="quiz-q">🧩 Q5: FTP is primarily used for...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Transferring files between computers over a network</button>
-    <button class="quiz-opt" data-correct="false">Making voice calls</button>
-    <button class="quiz-opt" data-correct="false">Compressing images</button>
+    <button class="quiz-opt" data-correct="true">Transferring files between computers</button>
+    <button class="quiz-opt" data-correct="false">Making voice calls over the internet</button>
+    <button class="quiz-opt" data-correct="false">Compressing images for websites</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="5G is faster and has lower latency (delay) than 4G.">
   <div class="quiz-q">🧩 Q6: Generally, moving from 4G to 5G provides...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Higher speed and lower latency</button>
-    <button class="quiz-opt" data-correct="false">A completely wired connection</button>
-    <button class="quiz-opt" data-correct="false">No change in performance</button>
+    <button class="quiz-opt" data-correct="false">A completely wired connection to the tower</button>
+    <button class="quiz-opt" data-correct="false">No change in speed or performance at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -8577,57 +8577,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cloud computing means using storage, software or processing over the internet.">
   <div class="quiz-q">🧩 Q1: Cloud computing means...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Using computing resources delivered over the Internet</button>
-    <button class="quiz-opt" data-correct="false">Only storing weather data</button>
-    <button class="quiz-opt" data-correct="false">A type of network topology</button>
+    <button class="quiz-opt" data-correct="true">Using computing resources over the internet</button>
+    <button class="quiz-opt" data-correct="false">Storing and forecasting weather data only</button>
+    <button class="quiz-opt" data-correct="false">A type of network topology for offices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Checking an app or source before you trust it is good practice.">
   <div class="quiz-q">🧩 Q2: Verifying an app or source before trusting it is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Good practice on social networks</button>
     <button class="quiz-opt" data-correct="false">Bad practice on social networks</button>
-    <button class="quiz-opt" data-correct="false">Network topology</button>
+    <button class="quiz-opt" data-correct="false">A type of network topology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In peer-to-peer, users share directly with each other; there is no central server.">
   <div class="quiz-q">🧩 Q3: In a peer-to-peer network, files are shared...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Directly between users, without a central server</button>
-    <button class="quiz-opt" data-correct="false">Only through one dedicated server</button>
-    <button class="quiz-opt" data-correct="false">Never, by definition</button>
+    <button class="quiz-opt" data-correct="false">Only through one dedicated central server</button>
+    <button class="quiz-opt" data-correct="false">Never, since peers cannot share files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Google Docs runs in the browser and stores files in the cloud.">
   <div class="quiz-q">🧩 Q4: Google Docs is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cloud-based web application</button>
-    <button class="quiz-opt" data-correct="false">Network topology</button>
-    <button class="quiz-opt" data-correct="false">Firewall</button>
+    <button class="quiz-opt" data-correct="false">Network topology for offices</button>
+    <button class="quiz-opt" data-correct="false">Firewall program for browsers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sorting, flags and rules help you manage your email.">
   <div class="quiz-q">🧩 Q5: Sorting, flagging and creating message rules are all ways to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Manage and organise an email account</button>
-    <button class="quiz-opt" data-correct="false">Configure a network topology</button>
-    <button class="quiz-opt" data-correct="false">Compress a video file</button>
+    <button class="quiz-opt" data-correct="false">Configure the topology of a network</button>
+    <button class="quiz-opt" data-correct="false">Compress a video file before sending</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Streaming plays as the data arrives, without downloading the whole file first.">
   <div class="quiz-q">🧩 Q6: Streaming media differs from downloading because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Plays continuously without a full download first</button>
-    <button class="quiz-opt" data-correct="false">Always requires torrenting</button>
-    <button class="quiz-opt" data-correct="false">Cannot be used for video</button>
+    <button class="quiz-opt" data-correct="true">Plays as it arrives, without a full download first</button>
+    <button class="quiz-opt" data-correct="false">Always requires torrenting the file from other users</button>
+    <button class="quiz-opt" data-correct="false">Cannot be used for video files, only for audio</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -8683,57 +8683,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Incognito mode only hides your activity from other people on the same device; your ISP and the sites still see it.">
   <div class="quiz-q">🧩 Q1: Private/incognito browsing mainly hides your activity from...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Other users of the same computer</button>
-    <button class="quiz-opt" data-correct="false">Your ISP</button>
-    <button class="quiz-opt" data-correct="false">The websites you visit</button>
+    <button class="quiz-opt" data-correct="false">Your internet service provider (ISP)</button>
+    <button class="quiz-opt" data-correct="false">The websites you visit while browsing</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cookie stores information about you so the site remembers you between visits.">
   <div class="quiz-q">🧩 Q2: A cookie is used by a website to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Remember information about you between visits</button>
     <button class="quiz-opt" data-correct="false">Permanently delete your browsing history</button>
-    <button class="quiz-opt" data-correct="false">Encrypt your hard drive</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the files on your hard drive</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Encryption keeps data private while it travels between you and the site.">
   <div class="quiz-q">🧩 Q3: SSL/encryption on a website mainly protects...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Data in transit from being read by unauthorised parties</button>
-    <button class="quiz-opt" data-correct="false">The website's visual design</button>
-    <button class="quiz-opt" data-correct="false">Your computer's storage capacity</button>
+    <button class="quiz-opt" data-correct="true">Data while it travels between you and the site</button>
+    <button class="quiz-opt" data-correct="false">The website's visual design and layout</button>
+    <button class="quiz-opt" data-correct="false">The storage capacity of your computer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A digital certificate proves the website is who it claims to be.">
   <div class="quiz-q">🧩 Q4: A digital certificate helps verify...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">That a website is genuinely who it claims to be</button>
-    <button class="quiz-opt" data-correct="false">A file's compression ratio</button>
-    <button class="quiz-opt" data-correct="false">Your computer's IP address</button>
+    <button class="quiz-opt" data-correct="false">A file's compression ratio after zipping</button>
+    <button class="quiz-opt" data-correct="false">Your computer's IP address on the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Filtering by date, file type or site are advanced search techniques.">
   <div class="quiz-q">🧩 Q5: Refining a search by date or time is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An advanced search technique</button>
-    <button class="quiz-opt" data-correct="false">A network topology</button>
-    <button class="quiz-opt" data-correct="false">A database data type</button>
+    <button class="quiz-opt" data-correct="false">A network topology for searches</button>
+    <button class="quiz-opt" data-correct="false">A database data type for dates</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Accessible sites can be used by people with different needs, e.g. with screen readers.">
   <div class="quiz-q">🧩 Q6: Website accessibility is important because...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">It ensures the site is usable by people with different needs</button>
-    <button class="quiz-opt" data-correct="false">It automatically increases loading speed</button>
-    <button class="quiz-opt" data-correct="false">It is only relevant to mobile sites</button>
+    <button class="quiz-opt" data-correct="true">People with different needs can use the site</button>
+    <button class="quiz-opt" data-correct="false">It makes the site load faster automatically</button>
+    <button class="quiz-opt" data-correct="false">It only matters for sites viewed on phones</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -8775,7 +8775,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;Why&quot; questions explore causes, so they are exploratory.">
   <div class="quiz-q">🧩 Q1: A question starting with "Why...?" is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Exploratory</button>
@@ -8784,16 +8784,16 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Markers want to see that you judged your sources critically, not just collected them.">
   <div class="quiz-q">🧩 Q2: Markers specifically look for evidence that you have...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Critically evaluated your sources, not just collected them</button>
-    <button class="quiz-opt" data-correct="false">Used the maximum possible number of sources</button>
-    <button class="quiz-opt" data-correct="false">Only used one single source</button>
+    <button class="quiz-opt" data-correct="false">Used as many sources as you could possibly find</button>
+    <button class="quiz-opt" data-correct="false">Used only one source so the facts stay consistent</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The audience criterion asks who the content is written for.">
   <div class="quiz-q">🧩 Q3: For a website specifically, "audience" as an evaluation criterion asks...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Who the content is written for</button>
@@ -8802,25 +8802,25 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="First define the task, so you know what data will answer it.">
   <div class="quiz-q">🧩 Q4: Before gathering data, you should first...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Clearly define the task and what data will answer it</button>
-    <button class="quiz-opt" data-correct="false">Immediately open a spreadsheet</button>
-    <button class="quiz-opt" data-correct="false">Choose your report's font</button>
+    <button class="quiz-opt" data-correct="false">Open a spreadsheet and start typing data</button>
+    <button class="quiz-opt" data-correct="false">Choose the fonts and colours for your report</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Both process data into useful information.">
   <div class="quiz-q">🧩 Q5: Spreadsheets and databases both exist to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Process and manipulate data into useful information</button>
-    <button class="quiz-opt" data-correct="false">Only store images</button>
+    <button class="quiz-opt" data-correct="true">Turn data into useful information</button>
+    <button class="quiz-opt" data-correct="false">Only store images and other media files</button>
     <button class="quiz-opt" data-correct="false">Replace the need for a PAT entirely</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Asking for a recommendation asks you to judge, which is evaluative.">
   <div class="quiz-q">🧩 Q6: "What recommendation would you make?" is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Evaluative question</button>
@@ -8870,16 +8870,16 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Social engineering tricks people, not computers, into giving access or information.">
   <div class="quiz-q">🧩 Q1: Social engineering primarily works by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Manipulating people, not exploiting technical system flaws</button>
-    <button class="quiz-opt" data-correct="false">Breaking encryption algorithms</button>
-    <button class="quiz-opt" data-correct="false">Overloading a server with traffic</button>
+    <button class="quiz-opt" data-correct="false">Breaking encryption algorithms with powerful computers</button>
+    <button class="quiz-opt" data-correct="false">Overloading a server with traffic until it crashes</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Working away from the office using remote access is e-commuting.">
   <div class="quiz-q">🧩 Q2: Working productively away from a physical office, enabled by remote access, is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">E-commuting</button>
@@ -8888,7 +8888,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="https means the connection is encrypted.">
   <div class="quiz-q">🧩 Q3: Seeing "https" before entering your card details on a shopping site indicates...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The connection is encrypted/secured</button>
@@ -8897,16 +8897,16 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An AUP sets the rules for using an organisation's network and computers.">
   <div class="quiz-q">🧩 Q4: An acceptable use policy sets out...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Rules for how a network may be used within an organisation</button>
-    <button class="quiz-opt" data-correct="false">Hardware purchase prices</button>
-    <button class="quiz-opt" data-correct="false">Database normalisation rules</button>
+    <button class="quiz-opt" data-correct="false">The prices the organisation pays for hardware</button>
+    <button class="quiz-opt" data-correct="false">The normalisation rules for the organisation's database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Office automation is software doing routine tasks instead of people.">
   <div class="quiz-q">🧩 Q5: Office automation refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Software taking over routine manual tasks</button>
@@ -8915,7 +8915,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Validation and verification both help keep data accurate and complete.">
   <div class="quiz-q">🧩 Q6: Verification and validation of data both help ensure...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data accuracy and integrity</button>
@@ -8953,57 +8953,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Marks are lost when you don't explain why the device fits the scenario.">
   <div class="quiz-q">🧩 Q1: The most common way marks are lost on a "recommend a device" question is by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Not explaining why the choice fits the scenario</button>
-    <button class="quiz-opt" data-correct="false">Choosing any device at all</button>
-    <button class="quiz-opt" data-correct="false">Writing too much detail</button>
+    <button class="quiz-opt" data-correct="false">Choosing a device that is not the newest one</button>
+    <button class="quiz-opt" data-correct="false">Writing too much detail about the specifications</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Video editing needs fast storage and a strong CPU with plenty of RAM.">
   <div class="quiz-q">🧩 Q2: Someone who edits video professionally would most benefit from an upgrade to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A faster SSD and strong CPU/RAM</button>
-    <button class="quiz-opt" data-correct="false">A slower, smaller hard drive</button>
-    <button class="quiz-opt" data-correct="false">Removing all storage devices</button>
+    <button class="quiz-opt" data-correct="false">A slower, larger hard drive for storing the video files</button>
+    <button class="quiz-opt" data-correct="false">A bigger monitor and a better keyboard, keeping the rest</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fit for purpose means the device matches what the user really needs.">
   <div class="quiz-q">🧩 Q3: "Fit for purpose" as a recommendation principle means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The device genuinely matches what the user actually needs</button>
-    <button class="quiz-opt" data-correct="false">Always recommending the cheapest option</button>
-    <button class="quiz-opt" data-correct="false">Ignoring the user's needs</button>
+    <button class="quiz-opt" data-correct="false">Always recommending the cheapest option that works</button>
+    <button class="quiz-opt" data-correct="false">Always recommending the newest and fastest model</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cost per page is the long-term running cost, beyond the price you pay for the printer.">
   <div class="quiz-q">🧩 Q4: When comparing printers, cost per page is most relevant to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Long-term running costs, not just the upfront price</button>
-    <button class="quiz-opt" data-correct="false">The printer's physical size</button>
-    <button class="quiz-opt" data-correct="false">Wireless range only</button>
+    <button class="quiz-opt" data-correct="true">Long-term running costs, not just the purchase price</button>
+    <button class="quiz-opt" data-correct="false">The printer's physical size on the desk and how heavy it is</button>
+    <button class="quiz-opt" data-correct="false">The wireless range of the printer and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Understanding CPU and RAM specs lets you judge whether a system suits a scenario.">
   <div class="quiz-q">🧩 Q5: Interpreting CPU and RAM specs in an advert helps you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Judge whether a system suits a specific scenario</button>
-    <button class="quiz-opt" data-correct="false">Automatically lower the price</button>
-    <button class="quiz-opt" data-correct="false">Change the device's warranty</button>
+    <button class="quiz-opt" data-correct="false">Lower the price you pay automatically</button>
+    <button class="quiz-opt" data-correct="false">Change how long the device's warranty lasts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="First identify the need, then match a device, then explain why it fits.">
   <div class="quiz-q">🧩 Q6: The correct order for answering a device recommendation question is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Identify the need, match a device, explain why it fits</button>
-    <button class="quiz-opt" data-correct="false">Name a device, then ignore the scenario</button>
-    <button class="quiz-opt" data-correct="false">Explain why first, then never name a device</button>
+    <button class="quiz-opt" data-correct="false">Name a device first, then describe the user in general</button>
+    <button class="quiz-opt" data-correct="false">Explain the benefits of computers, then name a device</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9042,16 +9042,16 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Task Manager shows which processes use the CPU, memory and disk, and the basic hardware.">
   <div class="quiz-q">🧩 Q1: The Windows Task Manager can be used to identify...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Which processes are consuming resources, and basic hardware config</button>
-    <button class="quiz-opt" data-correct="false">A file's creation date only</button>
-    <button class="quiz-opt" data-correct="false">Network cabling type</button>
+    <button class="quiz-opt" data-correct="true">Which processes use the most resources</button>
+    <button class="quiz-opt" data-correct="false">Only the date a file was created</button>
+    <button class="quiz-opt" data-correct="false">The type of network cabling used</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A fragmented, nearly full drive takes longer to read and write files.">
   <div class="quiz-q">🧩 Q2: A fragmented, nearly-full disk typically causes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Slower file access</button>
@@ -9060,39 +9060,39 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Open programs compete for the same CPU and RAM, which slows everything down.">
   <div class="quiz-q">🧩 Q3: Having many applications open at once affects performance by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Making programs compete for the same resources</button>
-    <button class="quiz-opt" data-correct="false">Always speeding up the CPU</button>
-    <button class="quiz-opt" data-correct="false">Increasing hard drive capacity</button>
+    <button class="quiz-opt" data-correct="false">Making the CPU run faster than its rated speed</button>
+    <button class="quiz-opt" data-correct="false">Increasing the capacity of the hard drive</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Try the simple tools, Disk Cleanup or a troubleshooting wizard, before deeper fixes.">
   <div class="quiz-q">🧩 Q4: Before deeper investigation, a good first troubleshooting step is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Running disk cleanup or a troubleshooting wizard</button>
-    <button class="quiz-opt" data-correct="false">Immediately replacing the motherboard</button>
-    <button class="quiz-opt" data-correct="false">Ignoring the problem</button>
+    <button class="quiz-opt" data-correct="false">Replacing the motherboard straight away</button>
+    <button class="quiz-opt" data-correct="false">Ignoring the problem until it goes away</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Justify every recommendation with the needs in the scenario.">
   <div class="quiz-q">🧩 Q5: Recommending software for a scenario should always be backed by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A justification tied to the scenario's actual needs</button>
-    <button class="quiz-opt" data-correct="false">The software's brand name alone</button>
-    <button class="quiz-opt" data-correct="false">No justification is needed</button>
+    <button class="quiz-opt" data-correct="false">The software's brand name and price alone</button>
+    <button class="quiz-opt" data-correct="false">Nothing, since software choices need no reason</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="More cores and more cache let the CPU do more work per second.">
   <div class="quiz-q">🧩 Q6: Processor cores and cache both affect...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">How much work the CPU can process per second</button>
-    <button class="quiz-opt" data-correct="false">The monitor's resolution</button>
-    <button class="quiz-opt" data-correct="false">The printer's DPI</button>
+    <button class="quiz-opt" data-correct="false">The resolution and refresh rate of the monitor</button>
+    <button class="quiz-opt" data-correct="false">The DPI of the printer and its paper tray size</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9129,7 +9129,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Author and title are metadata: data about the file.">
   <div class="quiz-q">🧩 Q1: A document's author and title properties are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Metadata</button>
@@ -9138,7 +9138,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Conversion changes the format (e.g. .docx to .pdf) and keeps the content.">
   <div class="quiz-q">🧩 Q2: File conversion changes a file's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Format, while preserving its content</button>
@@ -9147,7 +9147,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A database stores structured records you can query.">
   <div class="quiz-q">🧩 Q3: For structured, queryable records, the best application choice is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Database</button>
@@ -9156,25 +9156,25 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Wildcards match patterns, e.g. *.pdf finds every PDF.">
   <div class="quiz-q">🧩 Q4: Wildcard search is useful because it lets you...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Find files using flexible patterns instead of exact names</button>
-    <button class="quiz-opt" data-correct="false">Delete files automatically</button>
-    <button class="quiz-opt" data-correct="false">Compress a whole drive</button>
+    <button class="quiz-opt" data-correct="true">Find files using patterns instead of exact names</button>
+    <button class="quiz-opt" data-correct="false">Delete files automatically when they are old</button>
+    <button class="quiz-opt" data-correct="false">Compress a whole drive to save space</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Good typing skills make you faster in every program you use.">
   <div class="quiz-q">🧩 Q5: Strong typing/keyboarding skills mainly improve...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Efficiency across every application you use</button>
-    <button class="quiz-opt" data-correct="false">Only your spreadsheet formulas</button>
-    <button class="quiz-opt" data-correct="false">Your internet connection speed</button>
+    <button class="quiz-opt" data-correct="false">Only your spreadsheet formulas and functions</button>
+    <button class="quiz-opt" data-correct="false">Your internet connection speed at home</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Presentation software is designed to communicate visually to an audience.">
   <div class="quiz-q">🧩 Q6: For communicating visually to an audience, the best application choice is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Presentation software</button>
@@ -9232,16 +9232,16 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bandwidth is the maximum amount of data a connection can carry per second.">
   <div class="quiz-q">🧩 Q1: Bandwidth measures...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The maximum data a connection can carry per second</button>
-    <button class="quiz-opt" data-correct="false">The physical distance data travels</button>
+    <button class="quiz-opt" data-correct="true">The data a connection can carry per second</button>
+    <button class="quiz-opt" data-correct="false">The physical distance the data travels</button>
     <button class="quiz-opt" data-correct="false">The number of devices in a house</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cap is a fixed limit on how much data you can use.">
   <div class="quiz-q">🧩 Q2: A "CAP" on a data package means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A fixed data limit</button>
@@ -9250,25 +9250,25 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A server provides services such as files, printing or logins to the clients.">
   <div class="quiz-q">🧩 Q3: In a client-server network, the server's role is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Provide services like files or authentication to clients</button>
-    <button class="quiz-opt" data-correct="false">Only receive services, never provide them</button>
-    <button class="quiz-opt" data-correct="false">Replace the need for an ISP</button>
+    <button class="quiz-opt" data-correct="false">Only receive services from the clients, never provide them</button>
+    <button class="quiz-opt" data-correct="false">Replace the need for an ISP to reach the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A fair use policy limits heavy users so everyone gets a fair share of the capacity.">
   <div class="quiz-q">🧩 Q4: A fair use policy exists to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Set reasonable limits so all users share network capacity fairly</button>
-    <button class="quiz-opt" data-correct="false">Guarantee unlimited speed for one single user</button>
-    <button class="quiz-opt" data-correct="false">Ban all internet use after 6pm</button>
+    <button class="quiz-opt" data-correct="false">Guarantee unlimited speed for the user who pays the most</button>
+    <button class="quiz-opt" data-correct="false">Block all internet use on the network after 6pm</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Home internet speeds are measured in Mbps.">
   <div class="quiz-q">🧩 Q5: Data transmission speed for a home connection is typically measured in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mbps</button>
@@ -9277,12 +9277,12 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Paying a TV licence online is a government internet service.">
   <div class="quiz-q">🧩 Q6: Paying a TV licence online is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A government internet service</button>
-    <button class="quiz-opt" data-correct="false">A network topology</button>
-    <button class="quiz-opt" data-correct="false">A database join</button>
+    <button class="quiz-opt" data-correct="false">A network topology used by government</button>
+    <button class="quiz-opt" data-correct="false">A database join between two tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9317,34 +9317,34 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="With processing in the cloud, the local device needs less powerful hardware.">
   <div class="quiz-q">🧩 Q1: Cloud computing's effect on local hardware needs is generally to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduce them, since processing happens remotely</button>
-    <button class="quiz-opt" data-correct="false">Always increase local hardware requirements</button>
-    <button class="quiz-opt" data-correct="false">Have no effect at all</button>
+    <button class="quiz-opt" data-correct="false">Always increase the local hardware you need</button>
+    <button class="quiz-opt" data-correct="false">Have no effect at all on local hardware</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Once data is on someone else's servers, who owns and controls it becomes a real question.">
   <div class="quiz-q">🧩 Q2: A key question raised by cloud storage is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Who actually owns the data once it's stored remotely</button>
-    <button class="quiz-opt" data-correct="false">What colour the servers are</button>
-    <button class="quiz-opt" data-correct="false">How fast your printer is</button>
+    <button class="quiz-opt" data-correct="false">What colour the servers in the data centre are</button>
+    <button class="quiz-opt" data-correct="false">How fast your home printer can print pages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each IoT device is another way into the network that attackers can try.">
   <div class="quiz-q">🧩 Q3: Every additional IoT device connected to a network is best understood as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A potential additional entry point for attackers</button>
-    <button class="quiz-opt" data-correct="false">Guaranteed to improve network security</button>
-    <button class="quiz-opt" data-correct="false">Irrelevant to network security</button>
+    <button class="quiz-opt" data-correct="false">Guaranteed to make the network more secure</button>
+    <button class="quiz-opt" data-correct="false">Irrelevant to the security of the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Location-based services use the device's physical position (GPS).">
   <div class="quiz-q">🧩 Q4: Location Based Services rely on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A device's physical position</button>
@@ -9353,7 +9353,7 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Office 365 and G Suite are cloud services.">
   <div class="quiz-q">🧩 Q5: Office 365 and G Suite are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cloud services</button>
@@ -9362,12 +9362,12 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Mention the privacy and security trade-offs as well as the convenience.">
   <div class="quiz-q">🧩 Q6: A well-rounded discussion of cloud/IoT convenience should also mention...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The associated privacy or security trade-offs</button>
-    <button class="quiz-opt" data-correct="false">Only the benefits, with no downsides</button>
-    <button class="quiz-opt" data-correct="false">Nothing about data at all</button>
+    <button class="quiz-opt" data-correct="false">Only the benefits, since there are no downsides</button>
+    <button class="quiz-opt" data-correct="false">Nothing about data, only about the devices</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9411,57 +9411,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A digital certificate proves the website is genuine.">
   <div class="quiz-q">🧩 Q1: A digital certificate helps verify...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">That a website is genuinely who it claims to be</button>
-    <button class="quiz-opt" data-correct="false">A file's compression ratio</button>
-    <button class="quiz-opt" data-correct="false">A printer's paper size</button>
+    <button class="quiz-opt" data-correct="true">That a website is who it claims to be</button>
+    <button class="quiz-opt" data-correct="false">A file's compression ratio after zipping</button>
+    <button class="quiz-opt" data-correct="false">A printer's paper size and type</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A blockchain is a shared ledger copied across many computers, so records are hard to change.">
   <div class="quiz-q">🧩 Q2: Blockchain is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A distributed database recording transactions in a shared ledger</button>
-    <button class="quiz-opt" data-correct="false">A single centralised bank server</button>
-    <button class="quiz-opt" data-correct="false">A type of printer</button>
+    <button class="quiz-opt" data-correct="true">A shared ledger of transactions, copied across many computers</button>
+    <button class="quiz-opt" data-correct="false">A single central bank server that records payments</button>
+    <button class="quiz-opt" data-correct="false">A type of printer used for printing receipts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The deep web is anything search engines don't index, like your email inbox or bank pages.">
   <div class="quiz-q">🧩 Q3: The deep web refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Any content not indexed by standard search engines</button>
-    <button class="quiz-opt" data-correct="false">Only illegal content</button>
-    <button class="quiz-opt" data-correct="false">The homepage of a website</button>
+    <button class="quiz-opt" data-correct="false">Only illegal content that is hidden from police</button>
+    <button class="quiz-opt" data-correct="false">The homepage of every website</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Dark-web tools let people communicate where news or social media is censored.">
   <div class="quiz-q">🧩 Q4: A legitimate use of dark web technology is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Enabling communication where social media/news access is restricted</button>
-    <button class="quiz-opt" data-correct="false">It has no legitimate uses whatsoever</button>
-    <button class="quiz-opt" data-correct="false">Printing documents faster</button>
+    <button class="quiz-opt" data-correct="true">Communicating where news and social media are censored</button>
+    <button class="quiz-opt" data-correct="false">It has no legitimate uses whatsoever, only criminal ones</button>
+    <button class="quiz-opt" data-correct="false">Printing documents faster on a shared office network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Encryption scrambles data so only the intended recipient can read it.">
   <div class="quiz-q">🧩 Q5: SSL encryption mainly protects data by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Scrambling it so only the intended recipient can read it</button>
-    <button class="quiz-opt" data-correct="false">Deleting it after use</button>
-    <button class="quiz-opt" data-correct="false">Compressing it for storage</button>
+    <button class="quiz-opt" data-correct="true">Scrambling it so only the recipient can read it</button>
+    <button class="quiz-opt" data-correct="false">Deleting it as soon as it has been received by the server</button>
+    <button class="quiz-opt" data-correct="false">Compressing it so it takes up less space while it travels</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A balanced answer covers both the risks and the legitimate uses.">
   <div class="quiz-q">🧩 Q6: A well-rounded exam answer about the dark web should acknowledge...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both its risks and its legitimate uses</button>
-    <button class="quiz-opt" data-correct="false">Only that it is entirely illegal</button>
-    <button class="quiz-opt" data-correct="false">That it doesn't actually exist</button>
+    <button class="quiz-opt" data-correct="false">Only that it is entirely illegal to use</button>
+    <button class="quiz-opt" data-correct="false">That it doesn't actually exist at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9521,43 +9521,43 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="1NF removes repeating groups, so each field holds only one value.">
   <div class="quiz-q">🧩 Q1: 1NF specifically addresses...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Removing repeating groups so each field holds one value</button>
-    <button class="quiz-opt" data-correct="false">Deleting the primary key</button>
-    <button class="quiz-opt" data-correct="false">Encrypting the database</button>
+    <button class="quiz-opt" data-correct="true">Removing repeating groups so each field has one value</button>
+    <button class="quiz-opt" data-correct="false">Deleting the primary key from the table to save space</button>
+    <button class="quiz-opt" data-correct="false">Encrypting the database so only the owner can read it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Normalisation reduces repeated data and the update errors it causes.">
   <div class="quiz-q">🧩 Q2: The main reason to care about normalisation is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduce data redundancy and anomalies</button>
-    <button class="quiz-opt" data-correct="false">Make queries impossible</button>
-    <button class="quiz-opt" data-correct="false">Increase duplicate data on purpose</button>
+    <button class="quiz-opt" data-correct="false">Make queries impossible to run</button>
+    <button class="quiz-opt" data-correct="false">Add duplicate data on purpose</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Better questions give better, more useful data.">
   <div class="quiz-q">🧩 Q3: A well-designed questionnaire mainly improves...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The quality and usefulness of the data gathered</button>
-    <button class="quiz-opt" data-correct="false">The colour of the final report</button>
-    <button class="quiz-opt" data-correct="false">Nothing measurable</button>
+    <button class="quiz-opt" data-correct="true">The quality of the data gathered</button>
+    <button class="quiz-opt" data-correct="false">The colour scheme of the final report</button>
+    <button class="quiz-opt" data-correct="false">Nothing that can be measured</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A professional report has a clear structure and findings backed by evidence.">
   <div class="quiz-q">🧩 Q4: A professional report differs from a casual write-up mainly by having...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Clear structure and evidence-based findings</button>
-    <button class="quiz-opt" data-correct="false">The largest possible font size</button>
-    <button class="quiz-opt" data-correct="false">No data or evidence at all</button>
+    <button class="quiz-opt" data-correct="false">The largest possible font for headings</button>
+    <button class="quiz-opt" data-correct="false">No data or evidence at all, only opinions</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data is gathered, processed, analysed and then presented.">
   <div class="quiz-q">🧩 Q5: The information management pipeline, in order, is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Gather, process, analyse, present</button>
@@ -9566,12 +9566,12 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="3NF removes fields that depend on another non-key field instead of on the primary key.">
   <div class="quiz-q">🧩 Q6: 3NF specifically removes data that depends on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A non-key field, rather than the primary key itself</button>
-    <button class="quiz-opt" data-correct="false">Nothing at all</button>
-    <button class="quiz-opt" data-correct="false">The database's file size</button>
+    <button class="quiz-opt" data-correct="false">Nothing at all, since 2NF already removes it</button>
+    <button class="quiz-opt" data-correct="false">The size of the database file on the disk</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9610,7 +9610,7 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="AR adds digital information to the real world; VR replaces it with a simulated one.">
   <div class="quiz-q">🧩 Q1: Augmented reality differs from virtual reality because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Overlays digital information onto the real world</button>
@@ -9619,48 +9619,48 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A drone is an unmanned aerial vehicle (UAV).">
   <div class="quiz-q">🧩 Q2: A drone is more formally known as a...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">UAV (Unmanned Aerial Vehicle)</button>
-    <button class="quiz-opt" data-correct="false">DBMS</button>
-    <button class="quiz-opt" data-correct="false">ISP</button>
+    <button class="quiz-opt" data-correct="true">UAV (unmanned aerial vehicle)</button>
+    <button class="quiz-opt" data-correct="false">DBMS (database management system)</button>
+    <button class="quiz-opt" data-correct="false">ISP (internet service provider)</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Distributed computing splits one problem across many machines working together.">
   <div class="quiz-q">🧩 Q3: Distributed computing power means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Many machines working together on one problem</button>
-    <button class="quiz-opt" data-correct="false">A single supercomputer working alone</button>
-    <button class="quiz-opt" data-correct="false">A network with no computers at all</button>
+    <button class="quiz-opt" data-correct="false">A single supercomputer working alone on it</button>
+    <button class="quiz-opt" data-correct="false">A network that has no computers in it at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Second Life is a fully built online world, not just an extension of the real one.">
   <div class="quiz-q">🧩 Q4: A "virtual community" like Second Life demonstrates that online spaces can be...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Entirely constructed environments, not just real-world extensions</button>
-    <button class="quiz-opt" data-correct="false">Only used for banking</button>
-    <button class="quiz-opt" data-correct="false">Illegal in most countries</button>
+    <button class="quiz-opt" data-correct="true">Fully built worlds, not just copies of real life</button>
+    <button class="quiz-opt" data-correct="false">Only used for online banking and payments</button>
+    <button class="quiz-opt" data-correct="false">Illegal in most countries around the world</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Information overload is when there is so much information that it becomes overwhelming.">
   <div class="quiz-q">🧩 Q5: Information overload describes...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Too much available information becoming overwhelming</button>
-    <button class="quiz-opt" data-correct="false">A hard drive being completely empty</button>
-    <button class="quiz-opt" data-correct="false">A database having too few records</button>
+    <button class="quiz-opt" data-correct="true">So much information that it becomes overwhelming</button>
+    <button class="quiz-opt" data-correct="false">A hard drive becoming completely empty</button>
+    <button class="quiz-opt" data-correct="false">A database having too few records in it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Recommendations for millions of users need huge amounts of computing power, spread over many servers.">
   <div class="quiz-q">🧩 Q6: AI-driven content recommendation on social platforms typically relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Distributed computing at massive scale</button>
-    <button class="quiz-opt" data-correct="false">A single personal computer</button>
-    <button class="quiz-opt" data-correct="false">No computing power at all</button>
+    <button class="quiz-opt" data-correct="false">A single personal computer in an office</button>
+    <button class="quiz-opt" data-correct="false">No computing power, only human editors</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9697,16 +9697,16 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fake news is deliberately false information presented as if it were real.">
   <div class="quiz-q">🧩 Q1: Fake news is best defined as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Deliberately false information spread as if genuine</button>
-    <button class="quiz-opt" data-correct="false">Any news you personally disagree with</button>
-    <button class="quiz-opt" data-correct="false">A type of encryption</button>
+    <button class="quiz-opt" data-correct="false">Any news story that you personally disagree with</button>
+    <button class="quiz-opt" data-correct="false">A type of encryption used by news websites</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An extra verification step stops someone who only has your password from logging in.">
   <div class="quiz-q">🧩 Q2: Multi-step verification is used as a defence against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Unauthorised account access</button>
@@ -9715,39 +9715,39 @@ ${NETWORK_SCALE_DIAGRAM}
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using personal data for a purpose the person never agreed to is misuse.">
   <div class="quiz-q">🧩 Q3: Using someone's personal data for a purpose they never agreed to is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Misuse of personal information</button>
-    <button class="quiz-opt" data-correct="false">Data warehousing</button>
-    <button class="quiz-opt" data-correct="false">Normalisation</button>
+    <button class="quiz-opt" data-correct="false">Data warehousing for marketing</button>
+    <button class="quiz-opt" data-correct="false">Normalisation of a customer table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cryptocurrencies work outside the oversight of banks and regulators.">
   <div class="quiz-q">🧩 Q4: Cryptocurrencies raise ethical/legal questions mainly because they...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Operate outside traditional banking oversight</button>
-    <button class="quiz-opt" data-correct="false">Are always completely illegal everywhere</button>
-    <button class="quiz-opt" data-correct="false">Are identical to normal bank accounts</button>
+    <button class="quiz-opt" data-correct="false">Are always completely illegal in every country</button>
+    <button class="quiz-opt" data-correct="false">Are exactly the same as normal bank accounts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A DDoS attack is a crime that makes a service unavailable.">
   <div class="quiz-q">🧩 Q5: A DDoS attack is a form of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Computer crime targeting service availability</button>
-    <button class="quiz-opt" data-correct="false">Legitimate network testing only</button>
-    <button class="quiz-opt" data-correct="false">A database normalisation technique</button>
+    <button class="quiz-opt" data-correct="false">Legitimate network testing done by the ISP</button>
+    <button class="quiz-opt" data-correct="false">A technique for normalising a database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Widely spread fake news can sway elections, health choices and markets.">
   <div class="quiz-q">🧩 Q6: At scale, fake news can influence...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Elections, public health decisions and financial markets</button>
-    <button class="quiz-opt" data-correct="false">Only a single user's desktop wallpaper</button>
-    <button class="quiz-opt" data-correct="false">Nothing of real consequence</button>
+    <button class="quiz-opt" data-correct="false">Only one user's desktop wallpaper and settings</button>
+    <button class="quiz-opt" data-correct="false">Nothing that has any real consequence</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9789,57 +9789,57 @@ ${NETWORK_SCALE_DIAGRAM}
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A chatbot is software that simulates conversation.">
   <div class="quiz-q">🧩 Q1: A chatbot is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Software designed to simulate conversation</button>
-    <button class="quiz-opt" data-correct="false">A type of network cable</button>
-    <button class="quiz-opt" data-correct="false">A database normal form</button>
+    <button class="quiz-opt" data-correct="false">A type of network cable for servers</button>
+    <button class="quiz-opt" data-correct="false">A database normal form for chats</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Social engineering relies on pressure, so pause and verify before you act.">
   <div class="quiz-q">🧩 Q2: The single most effective defence against social engineering is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Pausing to verify before acting on urgency or pressure</button>
-    <button class="quiz-opt" data-correct="false">Responding instantly to every request</button>
-    <button class="quiz-opt" data-correct="false">Sharing your password to prove trust</button>
+    <button class="quiz-opt" data-correct="false">Responding instantly to every urgent request</button>
+    <button class="quiz-opt" data-correct="false">Sharing your password to show you can be trusted</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Validation and verification catch errors before they cause harm.">
   <div class="quiz-q">🧩 Q3: Verification and validation of data both help to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Catch errors before they cause harm</button>
     <button class="quiz-opt" data-correct="false">Guarantee faster internet speeds</button>
-    <button class="quiz-opt" data-correct="false">Increase a printer's DPI</button>
+    <button class="quiz-opt" data-correct="false">Increase a printer's print quality</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Look at its purpose, advantages, disadvantages and impact on society.">
   <div class="quiz-q">🧩 Q4: When evaluating any genuinely new technology, CAT trains you to consider...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Its purpose, advantages, disadvantages and wider social impact</button>
-    <button class="quiz-opt" data-correct="false">Only whether it looks impressive</button>
-    <button class="quiz-opt" data-correct="false">Only its retail price</button>
+    <button class="quiz-opt" data-correct="true">Its purpose, pros, cons and impact on society</button>
+    <button class="quiz-opt" data-correct="false">Only whether it looks impressive and new</button>
+    <button class="quiz-opt" data-correct="false">Only how much it costs to buy in the shops</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="If everything else fails, a backup is how you get your data back.">
   <div class="quiz-q">🧩 Q5: Backup is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The last line of defence against data loss</button>
-    <button class="quiz-opt" data-correct="false">A type of social engineering</button>
-    <button class="quiz-opt" data-correct="false">A chatbot feature</button>
+    <button class="quiz-opt" data-correct="true">The last line of defence against losing data</button>
+    <button class="quiz-opt" data-correct="false">A type of social engineering attack on a company</button>
+    <button class="quiz-opt" data-correct="false">A feature built into chatbots that saves your chats</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Social engineering targets people, not technical flaws.">
   <div class="quiz-q">🧩 Q6: Social engineering primarily targets...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">People, rather than technical system flaws</button>
-    <button class="quiz-opt" data-correct="false">Only hardware components</button>
-    <button class="quiz-opt" data-correct="false">Only database schemas</button>
+    <button class="quiz-opt" data-correct="false">Only the hardware components of a computer</button>
+    <button class="quiz-opt" data-correct="false">Only the design of database schemas</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -9892,7 +9892,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="IPO is Input, Processing, Output.">
   <div class="quiz-q">🧩 Q1: The IPO model stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Input, Processing, Output</button>
@@ -9901,7 +9901,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The CPU and RAM do the processing.">
   <div class="quiz-q">🧩 Q2: RAM and the CPU are examples of physical components used for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Processing</button>
@@ -9910,16 +9910,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The OS is software, a non-physical component.">
   <div class="quiz-q">🧩 Q3: The operating system is an example of a...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Non-physical (software) component</button>
+    <button class="quiz-opt" data-correct="true">Software component</button>
     <button class="quiz-opt" data-correct="false">Physical output component</button>
     <button class="quiz-opt" data-correct="false">Communication device</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computers are classified by things like portability and processing power, not case colour.">
   <div class="quiz-q">🧩 Q4: Computers can be classified by all of these EXCEPT...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Portability</button>
@@ -9928,7 +9928,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data is raw facts; information is processed data with meaning.">
   <div class="quiz-q">🧩 Q5: Raw, unprocessed facts and figures are called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data</button>
@@ -9937,7 +9937,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A till combines hardware, software and data to process sales, which makes it an ICT system.">
   <div class="quiz-q">🧩 Q6: A point-of-sale till is a good example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An ICT system</button>
@@ -10002,7 +10002,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A byte is 8 bits.">
   <div class="quiz-q">🧩 Q1: How many bits are in one byte?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">4</button>
@@ -10011,7 +10011,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Binary uses only 0 and 1, so its base is 2.">
   <div class="quiz-q">🧩 Q2: Binary is a number system with a base of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">2</button>
@@ -10020,7 +10020,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Unicode (UTF-8) can represent the characters of almost every language; ASCII covers only basic English.">
   <div class="quiz-q">🧩 Q3: Which character encoding standard can represent almost every language in the world?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">ASCII only</button>
@@ -10029,7 +10029,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A whole number is stored as an integer.">
   <div class="quiz-q">🧩 Q4: Which data type would you use to store a person's age as a whole number?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Integer</button>
@@ -10038,7 +10038,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Hexadecimal is base 16: 0–9 and then A–F (10–15).">
   <div class="quiz-q">🧩 Q5: Hexadecimal digits range from...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">0–9 only</button>
@@ -10047,7 +10047,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="00001101 = 8 + 4 + 1 = 13.">
   <div class="quiz-q">🧩 Q6: Binary 00001101 equals which decimal number?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">11</button>
@@ -10096,7 +10096,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A full file specification is the drive, path, filename and extension.">
   <div class="quiz-q">🧩 Q1: A full file specification includes the drive, path, filename and...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Extension</button>
@@ -10105,7 +10105,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Executable and source-code files are programming files.">
   <div class="quiz-q">🧩 Q2: Executable files and source code both fall under which file category?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Programming files</button>
@@ -10114,39 +10114,39 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A .zip file is an archived (compressed) file.">
   <div class="quiz-q">🧩 Q3: A .zip file is an example of a(n)...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Archived/compressed file</button>
+    <button class="quiz-opt" data-correct="true">Compressed archive</button>
     <button class="quiz-opt" data-correct="false">Font file</button>
     <button class="quiz-opt" data-correct="false">Executable file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Stored data can be retrieved, shared and reused later.">
   <div class="quiz-q">🧩 Q4: Storing data in files and databases is important mainly because...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">It allows the data to be retrieved, shared and reused later</button>
-    <button class="quiz-opt" data-correct="false">It makes the CPU run faster</button>
-    <button class="quiz-opt" data-correct="false">It is legally required for all files</button>
+    <button class="quiz-opt" data-correct="true">Data can be retrieved, shared and reused later</button>
+    <button class="quiz-opt" data-correct="false">It makes the CPU process the data faster</button>
+    <button class="quiz-opt" data-correct="false">The law requires every file to be stored twice</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A group of related data items is a collection, or data structure.">
   <div class="quiz-q">🧩 Q5: A group of related data items handled together is called a...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Collection / data structure</button>
+    <button class="quiz-opt" data-correct="true">Data structure</button>
     <button class="quiz-opt" data-correct="false">Number system</button>
     <button class="quiz-opt" data-correct="false">Netiquette rule</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Descriptive names make files easy to find as a project grows.">
   <div class="quiz-q">🧩 Q6: Consistent, descriptive file naming matters most because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Makes files far easier to find and manage as a project grows</button>
-    <button class="quiz-opt" data-correct="false">Is the only way to open a file</button>
-    <button class="quiz-opt" data-correct="false">Automatically compresses the file</button>
+    <button class="quiz-opt" data-correct="false">Is the only way that the computer can open a file</button>
+    <button class="quiz-opt" data-correct="false">Compresses the file automatically to save space</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -10186,7 +10186,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The digital divide is the gap in access to technology.">
   <div class="quiz-q">🧩 Q1: The gap between people with good technology access and those without is called the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Digital divide</button>
@@ -10195,7 +10195,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Using or sharing software without permission is piracy.">
   <div class="quiz-q">🧩 Q2: Using or distributing software without permission is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Piracy</button>
@@ -10204,7 +10204,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Copyleft requires works based on it to stay free and open too.">
   <div class="quiz-q">🧩 Q3: A licensing approach requiring derivative works to stay free/open is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Copyleft</button>
@@ -10213,30 +10213,30 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computers save labour and communication costs and improve accuracy.">
   <div class="quiz-q">🧩 Q4: A key economic reason for using computers is that they...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Save labour and communication costs while improving accuracy</button>
-    <button class="quiz-opt" data-correct="false">Are always cheaper to buy than paper</button>
-    <button class="quiz-opt" data-correct="false">Eliminate the need for all licences</button>
+    <button class="quiz-opt" data-correct="false">Are always cheaper to buy than paper and printing</button>
+    <button class="quiz-opt" data-correct="false">Remove the need for any software licences at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="No network coverage and expensive data keep people offline.">
   <div class="quiz-q">🧩 Q5: Which of these is a cause of the digital divide?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Lack of infrastructure and high data costs</button>
-    <button class="quiz-opt" data-correct="false">Too many creative commons licences</button>
-    <button class="quiz-opt" data-correct="false">Overuse of binary numbers</button>
+    <button class="quiz-opt" data-correct="false">Too many Creative Commons licences in use</button>
+    <button class="quiz-opt" data-correct="false">Overuse of binary numbers in computers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Creative Commons lets creators state how their work may be reused.">
   <div class="quiz-q">🧩 Q6: Creative commons licensing lets creators...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Specify exactly how their work may legally be reused</button>
-    <button class="quiz-opt" data-correct="false">Prevent all reuse of their work forever</button>
-    <button class="quiz-opt" data-correct="false">Automatically pirate other people's work</button>
+    <button class="quiz-opt" data-correct="false">Prevent all reuse of their work, forever</button>
+    <button class="quiz-opt" data-correct="false">Freely reuse anyone else's work without asking</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -10298,16 +10298,16 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An algorithm is a clear, ordered set of steps that solves a problem.">
   <div class="quiz-q">🧩 Q1: An algorithm is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A clear, ordered set of steps to solve a problem</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware device</button>
-    <button class="quiz-opt" data-correct="false">A file extension</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware device inside the computer</button>
+    <button class="quiz-opt" data-correct="false">A file extension used for program files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A diamond is a decision with Yes and No paths.">
   <div class="quiz-q">🧩 Q2: A diamond shape in a flowchart usually represents...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A decision</button>
@@ -10316,25 +10316,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A trace table records variable values step by step to check an algorithm by hand.">
   <div class="quiz-q">🧩 Q3: A trace table is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Manually step through an algorithm and check the values it produces</button>
-    <button class="quiz-opt" data-correct="false">Convert binary to hexadecimal</button>
-    <button class="quiz-opt" data-correct="false">Compress a file</button>
+    <button class="quiz-opt" data-correct="true">Step through an algorithm by hand to check its values</button>
+    <button class="quiz-opt" data-correct="false">Convert binary numbers into hexadecimal and back again</button>
+    <button class="quiz-opt" data-correct="false">Compress a file before it is sent over a network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Pseudocode describes the steps in plain, structured language, without the rules of a real language.">
   <div class="quiz-q">🧩 Q4: Pseudocode is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Plain, structured text describing the steps of an algorithm</button>
-    <button class="quiz-opt" data-correct="false">Actual runnable Python code</button>
-    <button class="quiz-opt" data-correct="false">A type of file extension</button>
+    <button class="quiz-opt" data-correct="true">Structured plain language describing an algorithm's steps</button>
+    <button class="quiz-opt" data-correct="false">Actual Python code that can be run directly by the computer</button>
+    <button class="quiz-opt" data-correct="false">A type of file extension used to save program files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Compare the order of the steps, how precise they are and how efficient they are.">
   <div class="quiz-q">🧩 Q5: When comparing two algorithms that solve the same problem, CAPS wants you to consider...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Order, precision and efficiency</button>
@@ -10343,7 +10343,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A recipe is a set of ordered steps that produces a result, which is an algorithm.">
   <div class="quiz-q">🧩 Q6: A recipe to bake a cake is a good real-life example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An algorithm</button>
@@ -10395,7 +10395,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A global variable can be used anywhere in the program; a local one only inside its block.">
   <div class="quiz-q">🧩 Q1: A variable accessible anywhere in the program is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Global variable</button>
@@ -10404,7 +10404,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A Boolean holds true or false.">
   <div class="quiz-q">🧩 Q2: Which data type would store the value true or false?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Integer</button>
@@ -10413,16 +10413,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Modulus gives the remainder, e.g. 17 % 5 = 2.">
   <div class="quiz-q">🧩 Q3: What does the modulus operator return?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The remainder after division</button>
     <button class="quiz-opt" data-correct="false">The square root of a number</button>
-    <button class="quiz-opt" data-correct="false">A random number</button>
+    <button class="quiz-opt" data-correct="false">A random number between limits</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Multiplication and division happen before addition and subtraction (BODMAS).">
   <div class="quiz-q">🧩 Q4: In order of precedence, which happens first?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Multiplication, before addition</button>
@@ -10431,16 +10431,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Meaningful names make code easier to read and debug.">
   <div class="quiz-q">🧩 Q5: Why use a meaningful variable name like totalPrice instead of x?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">It makes the code easier to read and debug later</button>
-    <button class="quiz-opt" data-correct="false">It makes the program run faster</button>
-    <button class="quiz-opt" data-correct="false">It is required by all programming languages</button>
+    <button class="quiz-opt" data-correct="true">It makes the code easier to read and debug</button>
+    <button class="quiz-opt" data-correct="false">It makes the program run faster when compiled</button>
+    <button class="quiz-opt" data-correct="false">All programming languages require long names</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="3.14 has a decimal part, so it is a float (real number).">
   <div class="quiz-q">🧩 Q6: 3.14 is an example of which data type?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Integer</button>
@@ -10503,7 +10503,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A for loop is used when you know how many times to repeat.">
   <div class="quiz-q">🧩 Q1: Which loop is best when you know exactly how many times to repeat?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">For loop</button>
@@ -10512,7 +10512,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AND (Boolean logic) needs both conditions to be true.">
   <div class="quiz-q">🧩 Q2: "age >= 13 AND age <= 19" combines two conditions using...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Boolean logic (AND)</button>
@@ -10521,7 +10521,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;When clicked&quot; starts code when an event happens, so it is an event trigger.">
   <div class="quiz-q">🧩 Q3: "When clicked" is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An event trigger</button>
@@ -10530,16 +10530,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="If-then-else chooses one of two paths based on a condition.">
   <div class="quiz-q">🧩 Q4: An if-then-else statement is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Choose between two different paths based on a condition</button>
-    <button class="quiz-opt" data-correct="false">Repeat a block of code forever</button>
-    <button class="quiz-opt" data-correct="false">Convert binary to decimal</button>
+    <button class="quiz-opt" data-correct="false">Repeat a block of code over and over forever</button>
+    <button class="quiz-opt" data-correct="false">Convert a number from binary into decimal</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Repeat until keeps looping until its condition becomes true.">
   <div class="quiz-q">🧩 Q5: A loop that keeps going until a condition becomes true is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Repeat until</button>
@@ -10548,12 +10548,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Broadcast sends a message; &quot;when I receive&quot; starts the code that listens for it.">
   <div class="quiz-q">🧩 Q6: "Broadcast" and "When I receive" are used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Let one part of a program signal another part to start</button>
-    <button class="quiz-opt" data-correct="false">Store a Boolean value</button>
-    <button class="quiz-opt" data-correct="false">Compress a file</button>
+    <button class="quiz-opt" data-correct="true">Let one part of the program start another</button>
+    <button class="quiz-opt" data-correct="false">Store a Boolean value for later in the program</button>
+    <button class="quiz-opt" data-correct="false">Compress a file before saving it to the computer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -10598,7 +10598,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Defragmentation puts the pieces of each file back together so the disk reads faster.">
   <div class="quiz-q">🧩 Q1: Reorganising data on a disk so it can be read more efficiently is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Defragmentation</button>
@@ -10607,16 +10607,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Memory (RAM) is temporary working space; storage keeps data permanently.">
   <div class="quiz-q">🧩 Q2: The main difference between memory and storage is that memory is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Temporary working space, while storage holds data permanently</button>
-    <button class="quiz-opt" data-correct="false">Always bigger than storage</button>
-    <button class="quiz-opt" data-correct="false">The same thing as storage</button>
+    <button class="quiz-opt" data-correct="true">Temporary working space; storage keeps data permanently</button>
+    <button class="quiz-opt" data-correct="false">Always bigger than the storage on the computer</button>
+    <button class="quiz-opt" data-correct="false">The same thing as storage, just faster to reach</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A device driver lets the OS talk to a specific piece of hardware.">
   <div class="quiz-q">🧩 Q3: Software that lets the OS communicate with a specific piece of hardware is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Device driver</button>
@@ -10625,7 +10625,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A firewall is a security feature that filters network traffic.">
   <div class="quiz-q">🧩 Q4: A firewall is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Security feature</button>
@@ -10634,7 +10634,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Compression reduces a file's size.">
   <div class="quiz-q">🧩 Q5: Reducing a file's size for easier storage or transfer is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Compression</button>
@@ -10643,10 +10643,10 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An interactive whiteboard shows output and also takes touch input.">
   <div class="quiz-q">🧩 Q6: An interactive whiteboard is an example of an...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Output device</button>
+    <button class="quiz-opt" data-correct="true">Input and output device</button>
     <button class="quiz-opt" data-correct="false">Input-only device</button>
     <button class="quiz-opt" data-correct="false">Storage device</button>
   </div>
@@ -10696,7 +10696,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Polya's first step is to understand the problem.">
   <div class="quiz-q">🧩 Q1: What is the first step in Polya's problem-solving method?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Understand the problem</button>
@@ -10705,43 +10705,43 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Verbs describe actions, so they point to the program's methods (behaviour).">
   <div class="quiz-q">🧩 Q2: In noun-verb analysis, verbs typically identify...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The program's behaviour/actions</button>
-    <button class="quiz-opt" data-correct="false">The program's data types only</button>
-    <button class="quiz-opt" data-correct="false">The file extensions to use</button>
+    <button class="quiz-opt" data-correct="false">The program's data types and nothing else</button>
+    <button class="quiz-opt" data-correct="false">The file extensions to use when saving</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An acceptance test checks that the finished program meets the client's requirements.">
   <div class="quiz-q">🧩 Q3: An acceptance test checks whether...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The finished program meets the client's original requirements</button>
-    <button class="quiz-opt" data-correct="false">The CPU is fast enough</button>
-    <button class="quiz-opt" data-correct="false">The file has the correct extension</button>
+    <button class="quiz-opt" data-correct="false">The CPU in the client's computer is fast enough</button>
+    <button class="quiz-opt" data-correct="false">The program files are saved with the right extension</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A user story is a short description of what a user needs the software to do.">
   <div class="quiz-q">🧩 Q4: A user story is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A short description from the client of what they need the software to do</button>
-    <button class="quiz-opt" data-correct="false">A type of loop</button>
-    <button class="quiz-opt" data-correct="false">A hardware specification sheet</button>
+    <button class="quiz-opt" data-correct="true">A short description of what a user needs the software to do</button>
+    <button class="quiz-opt" data-correct="false">A type of loop that repeats once for each user of the program</button>
+    <button class="quiz-opt" data-correct="false">A sheet listing the hardware specifications the software needs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Look back: check that the result makes sense for the original problem.">
   <div class="quiz-q">🧩 Q5: "Look back / test" as Polya's final step means you should...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Check the result makes sense against the original problem</button>
-    <button class="quiz-opt" data-correct="false">Immediately start a brand new unrelated project</button>
-    <button class="quiz-opt" data-correct="false">Delete all your working files</button>
+    <button class="quiz-opt" data-correct="true">Check the answer makes sense for the original problem</button>
+    <button class="quiz-opt" data-correct="false">Start a brand new project that is not related</button>
+    <button class="quiz-opt" data-correct="false">Delete all your working files to tidy up</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Nouns, like coins, point to objects; verbs, like collects, point to actions.">
   <div class="quiz-q">🧩 Q6: In "The player collects coins", which word is a noun pointing to an object?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Coins</button>
@@ -10798,7 +10798,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A network in one building is a LAN.">
   <div class="quiz-q">🧩 Q1: A network covering just one school building is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">LAN</button>
@@ -10807,25 +10807,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A server provides services such as files and logins to the clients.">
   <div class="quiz-q">🧩 Q2: In a client-server network, a dedicated server...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Provides services like files or authentication to client computers</button>
-    <button class="quiz-opt" data-correct="false">Is identical in role to every other computer</button>
-    <button class="quiz-opt" data-correct="false">Can only be used for printing</button>
+    <button class="quiz-opt" data-correct="true">Provides services like files or logins to the clients</button>
+    <button class="quiz-opt" data-correct="false">Has exactly the same role as every other computer</button>
+    <button class="quiz-opt" data-correct="false">Can only be used to share a printer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In peer-to-peer every computer is equal; there is no dedicated server.">
   <div class="quiz-q">🧩 Q3: In a peer-to-peer network...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Every computer is equal, with no dedicated server</button>
-    <button class="quiz-opt" data-correct="false">Only one computer is ever allowed online</button>
-    <button class="quiz-opt" data-correct="false">A server must approve every file</button>
+    <button class="quiz-opt" data-correct="false">Only one computer may be online at a time</button>
+    <button class="quiz-opt" data-correct="false">A server must approve every file that is shared</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="VoIP is Voice over Internet Protocol: calls over the internet.">
   <div class="quiz-q">🧩 Q4: VoIP stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Voice over Internet Protocol</button>
@@ -10834,7 +10834,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Logging in proves who you are and controls what you can reach, which is access control.">
   <div class="quiz-q">🧩 Q5: Logging into a network to verify who you are is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Access control</button>
@@ -10843,12 +10843,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="FTP (File Transfer Protocol) moves files between computers.">
   <div class="quiz-q">🧩 Q6: FTP is mainly used for...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Transferring files between computers over a network</button>
-    <button class="quiz-opt" data-correct="false">Compressing image files</button>
-    <button class="quiz-opt" data-correct="false">Converting binary to hexadecimal</button>
+    <button class="quiz-opt" data-correct="true">Transferring files between computers</button>
+    <button class="quiz-opt" data-correct="false">Compressing image files on the network</button>
+    <button class="quiz-opt" data-correct="false">Converting binary numbers to hexadecimal</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -10906,7 +10906,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Authority asks who wrote it and how qualified they are.">
   <div class="quiz-q">🧩 Q1: Asking "who is the author and what are their credentials?" checks a website's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Authority</button>
@@ -10915,7 +10915,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Currency is how up to date the information is.">
   <div class="quiz-q">🧩 Q2: Checking whether information is up to date evaluates a website's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Currency</button>
@@ -10924,16 +10924,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The W3C develops the standards that the web is built on, like HTML and CSS.">
   <div class="quiz-q">🧩 Q3: The W3C is responsible for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Developing and maintaining web standards</button>
-    <button class="quiz-opt" data-correct="false">Selling domain names only</button>
-    <button class="quiz-opt" data-correct="false">Manufacturing routers</button>
+    <button class="quiz-opt" data-correct="false">Selling domain names to websites</button>
+    <button class="quiz-opt" data-correct="false">Manufacturing routers and network cables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A wiki is edited collaboratively by its users.">
   <div class="quiz-q">🧩 Q4: A collaboratively edited reference site is best classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Wiki</button>
@@ -10942,7 +10942,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Objectivity is whether the content is fair and unbiased.">
   <div class="quiz-q">🧩 Q5: Whether a website shows obvious bias relates to its...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Objectivity</button>
@@ -10951,7 +10951,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A URL is a webpage's unique address.">
   <div class="quiz-q">🧩 Q6: The unique address of a webpage is called its...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">URL</button>
@@ -11022,7 +11022,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="HTML is HyperText Markup Language.">
   <div class="quiz-q">🧩 Q1: HTML stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">HyperText Markup Language</button>
@@ -11031,7 +11031,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&lt;p&gt; defines a paragraph.">
   <div class="quiz-q">🧩 Q2: Which tag defines a paragraph of text?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">&lt;html&gt;</button>
@@ -11040,16 +11040,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The &lt;title&gt; in the head is shown on the browser tab.">
   <div class="quiz-q">🧩 Q3: What appears in the browser's title bar / tab?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The content of the &lt;title&gt; tag</button>
-    <button class="quiz-opt" data-correct="false">The content of the &lt;body&gt; tag</button>
-    <button class="quiz-opt" data-correct="false">The image alt text</button>
+    <button class="quiz-opt" data-correct="false">The first heading inside the &lt;body&gt; tag</button>
+    <button class="quiz-opt" data-correct="false">The alt text of the first image on the page</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="&lt;a href&gt; creates a hyperlink to the given address.">
   <div class="quiz-q">🧩 Q4: The &lt;a href="..."&gt; tag is used to create a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Hyperlink</button>
@@ -11058,19 +11058,19 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The browser reads the tags but shows only their effect, not the tags themselves.">
   <div class="quiz-q">🧩 Q5: HTML tags themselves are...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Not visible on the rendered page — only their effect is</button>
-    <button class="quiz-opt" data-correct="false">Always shown in bold on the page</button>
-    <button class="quiz-opt" data-correct="false">Only used inside images</button>
+    <button class="quiz-opt" data-correct="false">Always shown in bold so you can see the structure</button>
+    <button class="quiz-opt" data-correct="false">Only used inside images, as their captions</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Consistency, readability and clear navigation are principles of good web design.">
   <div class="quiz-q">🧩 Q6: Consistency, readability and clear navigation are all part of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Good web design / usability principles</button>
+    <button class="quiz-opt" data-correct="true">Good web design</button>
     <button class="quiz-opt" data-correct="false">Boolean logic</button>
     <button class="quiz-opt" data-correct="false">Number systems</button>
   </div>
@@ -11116,25 +11116,25 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Plug-and-Play devices are detected and set up automatically.">
   <div class="quiz-q">🧩 Q1: Plug-and-Play (PnP) lets a device...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Work automatically once connected, without manual setup</button>
-    <button class="quiz-opt" data-correct="false">Run only after a full system reinstall</button>
-    <button class="quiz-opt" data-correct="false">Bypass the need for a motherboard</button>
+    <button class="quiz-opt" data-correct="false">Run only after the whole system is reinstalled</button>
+    <button class="quiz-opt" data-correct="false">Bypass the motherboard and connect to the CPU</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cache keeps frequently used data close to the CPU, so it waits less.">
   <div class="quiz-q">🧩 Q2: Cache memory exists mainly to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduce wait time by storing frequently used data close to the CPU</button>
-    <button class="quiz-opt" data-correct="false">Permanently archive old files</button>
-    <button class="quiz-opt" data-correct="false">Replace the need for RAM entirely</button>
+    <button class="quiz-opt" data-correct="false">Permanently archive old files the CPU no longer needs</button>
+    <button class="quiz-opt" data-correct="false">Replace the need for RAM in the computer entirely</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An SSD uses solid-state flash memory chips.">
   <div class="quiz-q">🧩 Q3: An SSD uses which underlying storage technology?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Solid state</button>
@@ -11143,7 +11143,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A graphics card plugs into an expansion slot, so it is an expansion card.">
   <div class="quiz-q">🧩 Q4: A graphics card is an example of a(n)...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Expansion card</button>
@@ -11152,7 +11152,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Web caching stores pages you visited so they load faster next time.">
   <div class="quiz-q">🧩 Q5: Storing recently visited web pages for faster reloading is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Web caching</button>
@@ -11161,12 +11161,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A point-to-point link is direct and isn't shared, so it is faster than a shared bus.">
   <div class="quiz-q">🧩 Q6: A point-to-point connection is generally faster than a shared bus because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Provides a direct, dedicated link between two components</button>
-    <button class="quiz-opt" data-correct="false">Uses no electricity</button>
-    <button class="quiz-opt" data-correct="false">Only works with USB devices</button>
+    <button class="quiz-opt" data-correct="true">It is a direct link that isn't shared with other parts</button>
+    <button class="quiz-opt" data-correct="false">Uses no electricity to send its signals</button>
+    <button class="quiz-opt" data-correct="false">Only works with USB devices and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -11209,34 +11209,34 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A compiler translates the whole program first; an interpreter translates as it runs.">
   <div class="quiz-q">🧩 Q1: A compiler differs from an interpreter because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Translates the whole program before it runs</button>
-    <button class="quiz-opt" data-correct="false">Only runs one line of code ever</button>
+    <button class="quiz-opt" data-correct="false">Only ever runs a single line of the code</button>
     <button class="quiz-opt" data-correct="false">Cannot be used with high-level languages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Virtual memory uses disk space as extra RAM when physical RAM runs out.">
   <div class="quiz-q">🧩 Q2: Virtual memory uses part of secondary storage as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Extra RAM when physical RAM is full</button>
     <button class="quiz-opt" data-correct="false">A permanent replacement for the CPU</button>
-    <button class="quiz-opt" data-correct="false">A backup power source</button>
+    <button class="quiz-opt" data-correct="false">A backup power source when the power fails</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A virtual machine is a software computer running inside a real one.">
   <div class="quiz-q">🧩 Q3: A virtual machine is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A simulated computer running inside a real, physical one</button>
-    <button class="quiz-opt" data-correct="false">A type of expansion card</button>
-    <button class="quiz-opt" data-correct="false">A network cable</button>
+    <button class="quiz-opt" data-correct="true">A software computer running inside a real one</button>
+    <button class="quiz-opt" data-correct="false">A type of expansion card for servers</button>
+    <button class="quiz-opt" data-correct="false">A network cable between two computers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Multi-processing uses several CPUs or cores at the same time; multitasking switches between programs.">
   <div class="quiz-q">🧩 Q4: Using more than one physical CPU core at the same time is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Multi-processing</button>
@@ -11245,16 +11245,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Weighing cost, size, hardware and platform shows which OS suits a scenario.">
   <div class="quiz-q">🧩 Q5: Comparing operating systems by cost, size, hardware and platform helps you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Choose the right OS for a given scenario</button>
-    <button class="quiz-opt" data-correct="false">Convert binary to hexadecimal</button>
-    <button class="quiz-opt" data-correct="false">Design an HTML page</button>
+    <button class="quiz-opt" data-correct="false">Convert numbers from binary into hexadecimal</button>
+    <button class="quiz-opt" data-correct="false">Design and lay out the pages of an HTML website</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Virtualisation lets one physical server run many separate virtual machines.">
   <div class="quiz-q">🧩 Q6: One physical server hosting many separate isolated "computers" relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Virtualisation</button>
@@ -11316,25 +11316,25 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bandwidth is the maximum rate a network can transfer data.">
   <div class="quiz-q">🧩 Q1: Bandwidth refers to a network's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Maximum data transfer rate</button>
-    <button class="quiz-opt" data-correct="false">Physical cable colour</button>
-    <button class="quiz-opt" data-correct="false">Number of users allowed</button>
+    <button class="quiz-opt" data-correct="false">Physical colour of the cables</button>
+    <button class="quiz-opt" data-correct="false">Number of users allowed on it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A VPN gives a secure, encrypted connection across a public network.">
   <div class="quiz-q">🧩 Q2: A VPN provides...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A secure, encrypted connection over a public network</button>
-    <button class="quiz-opt" data-correct="false">Unlimited free bandwidth</button>
-    <button class="quiz-opt" data-correct="false">A physical network topology</button>
+    <button class="quiz-opt" data-correct="false">Unlimited free bandwidth for every user on it</button>
+    <button class="quiz-opt" data-correct="false">A physical topology for connecting the network cables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Location-based computing combines a mobile data connection, wireless and GPS.">
   <div class="quiz-q">🧩 Q3: Location-based computing typically combines...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">3G, wireless and GPS</button>
@@ -11343,7 +11343,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A census affects planning for the whole country, which is a problem of national importance.">
   <div class="quiz-q">🧩 Q4: Census data collection is an example of ICT solving problems of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">National importance</button>
@@ -11352,16 +11352,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A bridge joins two network segments into one.">
   <div class="quiz-q">🧩 Q5: A bridge, in a network, is a device used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Connect network segments</button>
-    <button class="quiz-opt" data-correct="false">Compile source code</button>
+    <button class="quiz-opt" data-correct="false">Compile program code</button>
     <button class="quiz-opt" data-correct="false">Store backups</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Every ICT solution has limitations as well as capabilities.">
   <div class="quiz-q">🧩 Q6: Every ICT solution has both capabilities and...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Limitations</button>
@@ -11407,7 +11407,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="SMTP (Simple Mail Transfer Protocol) sends email.">
   <div class="quiz-q">🧩 Q1: SMTP is a protocol primarily used for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Sending email</button>
@@ -11416,25 +11416,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An access point lets wireless devices join a wired network.">
   <div class="quiz-q">🧩 Q2: An access point's role is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Let wireless devices join a wired network</button>
-    <button class="quiz-opt" data-correct="false">Compile a program</button>
-    <button class="quiz-opt" data-correct="false">Store backups</button>
+    <button class="quiz-opt" data-correct="false">Compile a program for the network</button>
+    <button class="quiz-opt" data-correct="false">Store the backups of every device</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A protocol is a set of agreed rules for how data is sent and received.">
   <div class="quiz-q">🧩 Q3: A protocol is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A set of agreed rules that control how data moves</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware component</button>
-    <button class="quiz-opt" data-correct="false">A file extension</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware component inside a router</button>
+    <button class="quiz-opt" data-correct="false">A file extension used for network files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Passwords, encryption and firewalls protect communication.">
   <div class="quiz-q">🧩 Q4: The three pillars of communication security mentioned are passwords, encryption and...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Firewalls</button>
@@ -11443,7 +11443,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Bluetooth works over a few metres; 4G covers kilometres.">
   <div class="quiz-q">🧩 Q5: Bluetooth is best characterised, compared to 4G, as having...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Much shorter range</button>
@@ -11452,7 +11452,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Micro-blogging is posting short updates, as on X (Twitter).">
   <div class="quiz-q">🧩 Q6: Micro-blogging refers to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Sharing short-form posts</button>
@@ -11503,7 +11503,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A worm spreads by itself across a network; a virus needs a host file.">
   <div class="quiz-q">🧩 Q1: Malware that spreads across a network without needing a host file is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Worm</button>
@@ -11512,7 +11512,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A UPS keeps the computer running when the power fails.">
   <div class="quiz-q">🧩 Q2: A UPS is the correct remedy against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Power failure</button>
@@ -11521,7 +11521,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A Trojan pretends to be legitimate software.">
   <div class="quiz-q">🧩 Q3: Malware disguised as legitimate software is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Trojan</button>
@@ -11530,7 +11530,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="GIGO: Garbage In, Garbage Out.">
   <div class="quiz-q">🧩 Q4: GIGO stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Garbage In, Garbage Out</button>
@@ -11539,21 +11539,21 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A rootkit hides deep in the system and gives an attacker hidden access.">
   <div class="quiz-q">🧩 Q5: A rootkit is dangerous mainly because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Hides deep in the system to maintain hidden ongoing access</button>
-    <button class="quiz-opt" data-correct="false">Only affects printers</button>
-    <button class="quiz-opt" data-correct="false">Cannot spread between files</button>
+    <button class="quiz-opt" data-correct="true">It hides deep in the system and gives secret access</button>
+    <button class="quiz-opt" data-correct="false">Only affects printers and other output devices</button>
+    <button class="quiz-opt" data-correct="false">Cannot spread from one file to another</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Validation stops bad or impossible data from being entered.">
   <div class="quiz-q">🧩 Q6: Data validation is the correct remedy against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Bad or inaccurate data entry</button>
-    <button class="quiz-opt" data-correct="false">Physical hardware theft</button>
-    <button class="quiz-opt" data-correct="false">Power surges</button>
+    <button class="quiz-opt" data-correct="false">Physical theft of hardware</button>
+    <button class="quiz-opt" data-correct="false">Power surges and spikes</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -11597,25 +11597,25 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A class is a blueprint from which objects are created.">
   <div class="quiz-q">🧩 Q1: A class is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A blueprint for creating objects</button>
-    <button class="quiz-opt" data-correct="false">A specific instance of an object</button>
-    <button class="quiz-opt" data-correct="false">A type of network cable</button>
+    <button class="quiz-opt" data-correct="false">One specific object made from a blueprint</button>
+    <button class="quiz-opt" data-correct="false">A type of network cable between computers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An event handler is the method that runs when an event, like a click, happens.">
   <div class="quiz-q">🧩 Q2: Code that runs in response to a button click is called a(n)...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Event handler / method</button>
+    <button class="quiz-opt" data-correct="true">Event handler</button>
     <button class="quiz-opt" data-correct="false">Property</button>
     <button class="quiz-opt" data-correct="false">Class</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Creating an object from a class is instantiation.">
   <div class="quiz-q">🧩 Q3: Creating a real, specific object from a class is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Instantiation</button>
@@ -11624,16 +11624,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A paper prototype lets you test an interface idea cheaply before coding it.">
   <div class="quiz-q">🧩 Q4: A paper prototype is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Sketch and test an interface idea cheaply before coding it</button>
-    <button class="quiz-opt" data-correct="false">Print the final program</button>
-    <button class="quiz-opt" data-correct="false">Replace the need for testing</button>
+    <button class="quiz-opt" data-correct="true">Test an interface idea cheaply before coding</button>
+    <button class="quiz-opt" data-correct="false">Print the final program for the client to sign</button>
+    <button class="quiz-opt" data-correct="false">Replace the need to test the finished program</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Text and colour describe the button, so they are properties.">
   <div class="quiz-q">🧩 Q5: A button's text or colour is an example of one of its...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Properties</button>
@@ -11642,12 +11642,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Event-driven code runs in response to events such as clicks and key presses.">
   <div class="quiz-q">🧩 Q6: Event-driven programming means code primarily runs...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">In response to things happening, like clicks or key presses</button>
-    <button class="quiz-opt" data-correct="false">Only once, from top to bottom, and never again</button>
-    <button class="quiz-opt" data-correct="false">Only when the computer is restarted</button>
+    <button class="quiz-opt" data-correct="true">In response to events, like clicks or key presses</button>
+    <button class="quiz-opt" data-correct="false">Once, from top to bottom, and then never again</button>
+    <button class="quiz-opt" data-correct="false">Only when the computer is restarted by the user</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -11688,7 +11688,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Converting between data types is casting, e.g. a string to an integer.">
   <div class="quiz-q">🧩 Q1: Converting a value from one data type to another is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Casting</button>
@@ -11697,48 +11697,48 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A constructor gives a new object's attributes their starting values.">
   <div class="quiz-q">🧩 Q2: A constructor's job is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Initialise an object's attributes when it is created</button>
-    <button class="quiz-opt" data-correct="false">Delete a variable permanently</button>
-    <button class="quiz-opt" data-correct="false">Compile the entire program</button>
+    <button class="quiz-opt" data-correct="true">Give a new object's attributes their starting values</button>
+    <button class="quiz-opt" data-correct="false">Delete a variable permanently from memory when it is done</button>
+    <button class="quiz-opt" data-correct="false">Compile the entire program before it runs for the first time</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A watch shows a variable's value as you step through the code.">
   <div class="quiz-q">🧩 Q3: A watch, used for debugging, lets you...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Monitor a variable's value as the code runs</button>
-    <button class="quiz-opt" data-correct="false">Automatically fix all syntax errors</button>
-    <button class="quiz-opt" data-correct="false">Delete unused variables</button>
+    <button class="quiz-opt" data-correct="false">Fix all the syntax errors in the code automatically</button>
+    <button class="quiz-opt" data-correct="false">Delete the variables that are not used anywhere</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Checking for zero before dividing is validation that prevents a crash.">
   <div class="quiz-q">🧩 Q4: Testing for division by zero before a calculation is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Basic input/processing validation</button>
+    <button class="quiz-opt" data-correct="true">Validation</button>
     <button class="quiz-opt" data-correct="false">Casting</button>
     <button class="quiz-opt" data-correct="false">Instantiation</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A class-level attribute can be used anywhere in that class.">
   <div class="quiz-q">🧩 Q5: A variable declared as a form class attribute has...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Broader scope — accessible throughout that class</button>
-    <button class="quiz-opt" data-correct="false">No scope at all</button>
-    <button class="quiz-opt" data-correct="false">Scope limited to a single line of code</button>
+    <button class="quiz-opt" data-correct="false">No scope at all, until the form is closed</button>
+    <button class="quiz-opt" data-correct="false">Scope limited to the single line it is declared on</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Modulus returns the remainder, e.g. 10 % 3 = 1.">
   <div class="quiz-q">🧩 Q6: The modulus operator returns...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The remainder after division</button>
     <button class="quiz-opt" data-correct="false">The square root of a number</button>
-    <button class="quiz-opt" data-correct="false">A random Boolean value</button>
+    <button class="quiz-opt" data-correct="false">A random true or false value</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -11786,7 +11786,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="TOE: Task, Object, Event, a planning chart for GUI programs.">
   <div class="quiz-q">🧩 Q1: TOE stands for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Task, Objects, Events</button>
@@ -11795,7 +11795,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Nouns suggest the objects and data the program needs.">
   <div class="quiz-q">🧩 Q2: In noun-verb analysis, nouns in a description typically suggest...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Objects and data</button>
@@ -11804,25 +11804,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A use case diagram shows how different users (actors) interact with the system.">
   <div class="quiz-q">🧩 Q3: A UML use case diagram is used to visualise...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">How different users interact with a system</button>
-    <button class="quiz-opt" data-correct="false">The physical layout of network cabling</button>
-    <button class="quiz-opt" data-correct="false">A spreadsheet's cell formulas</button>
+    <button class="quiz-opt" data-correct="false">The physical layout of the network cabling</button>
+    <button class="quiz-opt" data-correct="false">The formulas used in a spreadsheet's cells</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An IPO chart lists the inputs, the processing and the outputs.">
   <div class="quiz-q">🧩 Q4: An IPO diagram maps out...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Input, Processing and Output for a solution</button>
-    <button class="quiz-opt" data-correct="false">Only the final output</button>
-    <button class="quiz-opt" data-correct="false">Network topology</button>
+    <button class="quiz-opt" data-correct="false">Only the final output of the program</button>
+    <button class="quiz-opt" data-correct="false">The topology of the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Without a design, unclear requirements turn into bugs.">
   <div class="quiz-q">🧩 Q5: Skipping the design stage and jumping straight to coding usually leads to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">More bugs caused by unclear requirements</button>
@@ -11831,12 +11831,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Documenting and maintaining keeps the program usable and understandable over time.">
   <div class="quiz-q">🧩 Q6: "Document, implement and maintain" is a stage focused on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Keeping the program usable and understandable long-term</button>
-    <button class="quiz-opt" data-correct="false">Writing the very first line of code</button>
-    <button class="quiz-opt" data-correct="false">Choosing a font for the report</button>
+    <button class="quiz-opt" data-correct="false">Writing the very first line of the program code</button>
+    <button class="quiz-opt" data-correct="false">Choosing the font for the final written report</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -11875,7 +11875,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A linear search checks each item in turn until it finds the target.">
   <div class="quiz-q">🧩 Q1: A linear search checks items...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">One by one, in order, until found</button>
@@ -11884,7 +11884,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A sentinel loop stops when a special stop value is entered, e.g. -1.">
   <div class="quiz-q">🧩 Q2: A sentinel-controlled loop repeats until...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A special stop value is entered</button>
@@ -11893,34 +11893,34 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An exception handler catches an error, like a missing file, without crashing the program.">
   <div class="quiz-q">🧩 Q3: An exception is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Gracefully catch and handle an error, like a missing file</button>
-    <button class="quiz-opt" data-correct="false">Permanently crash the program</button>
-    <button class="quiz-opt" data-correct="false">Compile the program faster</button>
+    <button class="quiz-opt" data-correct="true">Catch and handle an error, like a missing file</button>
+    <button class="quiz-opt" data-correct="false">Make the program stop and crash on purpose</button>
+    <button class="quiz-opt" data-correct="false">Compile the program so it runs faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An array stores many related values under one name, each with an index.">
   <div class="quiz-q">🧩 Q4: An array lets you...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Store multiple related values under one name</button>
+    <button class="quiz-opt" data-correct="true">Store many related values under one name</button>
     <button class="quiz-opt" data-correct="false">Store only one value at a time</button>
-    <button class="quiz-opt" data-correct="false">Connect to a network</button>
+    <button class="quiz-opt" data-correct="false">Connect the program to a network server</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Switch/case picks between many possible values of one variable.">
   <div class="quiz-q">🧩 Q5: A switch/case structure is most useful when...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Choosing between many possible values of one variable</button>
-    <button class="quiz-opt" data-correct="false">You need exactly one condition</button>
-    <button class="quiz-opt" data-correct="false">Reading a text file</button>
+    <button class="quiz-opt" data-correct="true">Choosing between many values of one variable</button>
+    <button class="quiz-opt" data-correct="false">You need to test exactly one condition</button>
+    <button class="quiz-opt" data-correct="false">Reading lines from a text file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A loop inside a loop is a nested loop.">
   <div class="quiz-q">🧩 Q6: Placing one loop inside another is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Nesting</button>
@@ -11985,16 +11985,16 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A database administrator (DBA) manages, secures and maintains databases.">
   <div class="quiz-q">🧩 Q1: A DBA's main responsibility is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Manage, secure and maintain databases</button>
-    <button class="quiz-opt" data-correct="false">Design network cabling</button>
-    <button class="quiz-opt" data-correct="false">Write HTML pages only</button>
+    <button class="quiz-opt" data-correct="false">Design the cabling for the network</button>
+    <button class="quiz-opt" data-correct="false">Write HTML pages for the website</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="MySQL and PostgreSQL are open-source database management systems.">
   <div class="quiz-q">🧩 Q2: MySQL and PostgreSQL are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Open source DBMS software</button>
@@ -12003,7 +12003,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A range check (e.g. age 0–120) is data validation.">
   <div class="quiz-q">🧩 Q3: A range check is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data validation</button>
@@ -12012,16 +12012,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data stored across several locations is managed as a distributed database.">
   <div class="quiz-q">🧩 Q4: A database distributed across multiple locations, like Google's, is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Distributed database management</button>
-    <button class="quiz-opt" data-correct="false">A desktop database</button>
-    <button class="quiz-opt" data-correct="false">A single-user database</button>
+    <button class="quiz-opt" data-correct="true">Distributed database</button>
+    <button class="quiz-opt" data-correct="false">Desktop database</button>
+    <button class="quiz-opt" data-correct="false">Single-user database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SELECT … FROM … WHERE is a basic SQL query.">
   <div class="quiz-q">🧩 Q5: <code>SELECT * FROM table_name WHERE criteria</code> is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A simple SQL query</button>
@@ -12030,7 +12030,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Quality data is accurate, current, complete and relevant.">
   <div class="quiz-q">🧩 Q6: Quality data should be accurate, current, complete and...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Relevant to its purpose</button>
@@ -12106,57 +12106,57 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A foreign key points to another table's primary key, which links the two tables.">
   <div class="quiz-q">🧩 Q1: A foreign key's purpose is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Refer to the primary key of another table, creating a relationship</button>
-    <button class="quiz-opt" data-correct="false">Encrypt a database</button>
-    <button class="quiz-opt" data-correct="false">Compile a program</button>
+    <button class="quiz-opt" data-correct="true">Point to another table's primary key, linking the tables</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the data stored in a table so it stays private</button>
+    <button class="quiz-opt" data-correct="false">Compile a program that uses the table so it runs faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Normalisation restructures tables to remove repeated data and anomalies.">
   <div class="quiz-q">🧩 Q2: Normalisation is the process of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Restructuring tables to remove anomalies and redundancy</button>
-    <button class="quiz-opt" data-correct="false">Deleting all the data in a table</button>
-    <button class="quiz-opt" data-correct="false">Adding more fields to increase redundancy</button>
+    <button class="quiz-opt" data-correct="true">Restructuring tables to remove redundancy</button>
+    <button class="quiz-opt" data-correct="false">Deleting all of the data stored in a table</button>
+    <button class="quiz-opt" data-correct="false">Adding more fields so the data is repeated</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An ERD shows the tables (entities) and how they relate.">
   <div class="quiz-q">🧩 Q3: An ERD is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Visually map tables and their relationships</button>
-    <button class="quiz-opt" data-correct="false">Encrypt network traffic</button>
-    <button class="quiz-opt" data-correct="false">Write HTML pages</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the traffic that travels on a network</button>
+    <button class="quiz-opt" data-correct="false">Write and test the HTML pages for a website</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The &quot;many&quot; table holds a foreign key that points to the &quot;one&quot; table.">
   <div class="quiz-q">🧩 Q4: A one-to-many relationship, e.g. one class linking to many pupils, is implemented using...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A foreign key in the "many" table</button>
-    <button class="quiz-opt" data-correct="false">Deleting the primary key</button>
-    <button class="quiz-opt" data-correct="false">A single unrelated table</button>
+    <button class="quiz-opt" data-correct="false">Removing the primary key from the "one" table</button>
+    <button class="quiz-opt" data-correct="false">Putting both tables' fields in one table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A composite key combines two or more fields to identify each record uniquely.">
   <div class="quiz-q">🧩 Q5: A composite key is made up of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Two or more fields combined to uniquely identify a record</button>
-    <button class="quiz-opt" data-correct="false">Only one single field, always</button>
-    <button class="quiz-opt" data-correct="false">A network protocol</button>
+    <button class="quiz-opt" data-correct="true">Two or more fields that together identify a record</button>
+    <button class="quiz-opt" data-correct="false">Only one single field, always, which must be a number</button>
+    <button class="quiz-opt" data-correct="false">A network protocol for sending records between tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Related tables store each fact once instead of repeating it.">
   <div class="quiz-q">🧩 Q6: Splitting data into related tables mainly helps to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Avoid duplicating the same information repeatedly</button>
-    <button class="quiz-opt" data-correct="false">Make queries impossible</button>
-    <button class="quiz-opt" data-correct="false">Increase data redundancy on purpose</button>
+    <button class="quiz-opt" data-correct="true">Avoid storing the same information many times</button>
+    <button class="quiz-opt" data-correct="false">Make queries impossible to run on the data</button>
+    <button class="quiz-opt" data-correct="false">Increase the amount of repeated data on purpose</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -12199,34 +12199,34 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Web 2.0 is interactive, with content created by users.">
   <div class="quiz-q">🧩 Q1: Web 2.0 is characterised mainly by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Interactive, user-generated content</button>
-    <button class="quiz-opt" data-correct="false">Static, read-only pages only</button>
-    <button class="quiz-opt" data-correct="false">No internet connection required</button>
+    <button class="quiz-opt" data-correct="false">Static pages that can only be read</button>
+    <button class="quiz-opt" data-correct="false">Sites that need no internet connection</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An extranet extends an intranet to trusted outside partners, like suppliers.">
   <div class="quiz-q">🧩 Q2: An extranet is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A controlled extension of an intranet to trusted outside parties</button>
-    <button class="quiz-opt" data-correct="false">Exactly the same as the public Internet</button>
+    <button class="quiz-opt" data-correct="true">An intranet extended to trusted outside partners</button>
+    <button class="quiz-opt" data-correct="false">Exactly the same as the public internet</button>
     <button class="quiz-opt" data-correct="false">A type of compression technology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SEO (search engine optimisation) helps a site appear higher in search results.">
   <div class="quiz-q">🧩 Q3: SEO refers to techniques used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Improve how easily a site is found in search results</button>
-    <button class="quiz-opt" data-correct="false">Encrypt a database</button>
-    <button class="quiz-opt" data-correct="false">Compress video files</button>
+    <button class="quiz-opt" data-correct="true">Help a site appear higher in search results</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the website's database and its passwords</button>
+    <button class="quiz-opt" data-correct="false">Compress the video files on the site so they load faster</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="MP3 (audio) and JPEG (images) are compression formats.">
   <div class="quiz-q">🧩 Q4: MP3 and JPEG are both examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Compression technologies</button>
@@ -12235,21 +12235,21 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A systems analyst works out the requirements and designs IT solutions.">
   <div class="quiz-q">🧩 Q5: A systems analyst's role is closely connected to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Understanding requirements and designing IT solutions</button>
-    <button class="quiz-opt" data-correct="false">Only fixing printers</button>
-    <button class="quiz-opt" data-correct="false">Only teaching typing</button>
+    <button class="quiz-opt" data-correct="true">Working out requirements and designing solutions</button>
+    <button class="quiz-opt" data-correct="false">Only fixing the printers and scanners in an office</button>
+    <button class="quiz-opt" data-correct="false">Only teaching typing to new staff members</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Video on demand and IPTV stream compressed video over the internet.">
   <div class="quiz-q">🧩 Q6: Video on-demand and IPTV both rely heavily on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Streaming and compression technology</button>
-    <button class="quiz-opt" data-correct="false">Only static HTML pages</button>
-    <button class="quiz-opt" data-correct="false">Database normalisation</button>
+    <button class="quiz-opt" data-correct="false">Only static HTML pages and images</button>
+    <button class="quiz-opt" data-correct="false">Database normalisation of video tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -12317,57 +12317,57 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Normalisation reduces repeated data and limits anomalies.">
   <div class="quiz-q">🧩 Q1: Normalisation's main goal is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduce data redundancy and limit anomalies</button>
-    <button class="quiz-opt" data-correct="false">Increase duplicate data on purpose</button>
-    <button class="quiz-opt" data-correct="false">Delete all keys from a table</button>
+    <button class="quiz-opt" data-correct="false">Add duplicate data on purpose for safety</button>
+    <button class="quiz-opt" data-correct="false">Delete all the keys from every table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Finding entities in a till slip means identifying entities in un-normalised data.">
   <div class="quiz-q">🧩 Q2: Analysing a till slip to find data entities is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Identifying entities in un-normalised data</button>
-    <button class="quiz-opt" data-correct="false">SQL injection</button>
+    <button class="quiz-opt" data-correct="true">Finding entities in un-normalised data</button>
+    <button class="quiz-opt" data-correct="false">SQL injection through a till</button>
     <button class="quiz-opt" data-correct="false">A transaction processing system</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A transaction completes fully and correctly, or not at all.">
   <div class="quiz-q">🧩 Q3: A transaction processing system ensures a transaction...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Completes fully and correctly, or not at all</button>
+    <button class="quiz-opt" data-correct="true">Completes fully, or not at all</button>
     <button class="quiz-opt" data-correct="false">Always partially completes</button>
     <button class="quiz-opt" data-correct="false">Is never recorded</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="With data independence, the structure can change without breaking every program that uses it.">
   <div class="quiz-q">🧩 Q4: Data independence means...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The database structure can change without breaking every program using it</button>
-    <button class="quiz-opt" data-correct="false">Data is never backed up</button>
-    <button class="quiz-opt" data-correct="false">Every table must be identical</button>
+    <button class="quiz-opt" data-correct="true">The structure can change without breaking the programs that use it</button>
+    <button class="quiz-opt" data-correct="false">The data is never backed up anywhere outside the database</button>
+    <button class="quiz-opt" data-correct="false">Every table in the database must have identical fields</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Low redundancy means facts aren't stored more than once.">
   <div class="quiz-q">🧩 Q5: Low data redundancy means...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Facts aren't needlessly duplicated across the database</button>
-    <button class="quiz-opt" data-correct="false">The database has no records at all</button>
-    <button class="quiz-opt" data-correct="false">Every field is duplicated in every table</button>
+    <button class="quiz-opt" data-correct="true">Facts aren't stored more than once</button>
+    <button class="quiz-opt" data-correct="false">The database has no records in it at all</button>
+    <button class="quiz-opt" data-correct="false">Every field is copied into every table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Badly designed tables cause problems when you insert, update or delete data.">
   <div class="quiz-q">🧩 Q6: Anomalies typically appear when...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Inserting, updating or deleting data in a poorly designed table</button>
-    <button class="quiz-opt" data-correct="false">A table is perfectly normalised</button>
-    <button class="quiz-opt" data-correct="false">A database has no data in it</button>
+    <button class="quiz-opt" data-correct="true">Data is inserted, updated or deleted in a badly designed table</button>
+    <button class="quiz-opt" data-correct="false">A table is perfectly normalised and has a primary key</button>
+    <button class="quiz-opt" data-correct="false">The database has no data in it yet, only empty tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -12415,25 +12415,25 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="SQL injection slips malicious SQL in through an input field, and the database runs it.">
   <div class="quiz-q">🧩 Q1: SQL injection works by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Inserting malicious code through an input field the database executes</button>
-    <button class="quiz-opt" data-correct="false">Physically stealing a hard drive</button>
-    <button class="quiz-opt" data-correct="false">Compressing a database file</button>
+    <button class="quiz-opt" data-correct="true">Slipping malicious SQL in through an input field</button>
+    <button class="quiz-opt" data-correct="false">Physically stealing the hard drive from the server</button>
+    <button class="quiz-opt" data-correct="false">Compressing a database file until it is damaged</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An audit trail logs every change so the history can be reviewed.">
   <div class="quiz-q">🧩 Q2: An audit trail's purpose is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Log every change so history can be reviewed</button>
-    <button class="quiz-opt" data-correct="false">Delete old data automatically</button>
-    <button class="quiz-opt" data-correct="false">Speed up query execution</button>
+    <button class="quiz-opt" data-correct="true">Log every change so it can be reviewed</button>
+    <button class="quiz-opt" data-correct="false">Delete old data automatically each month</button>
+    <button class="quiz-opt" data-correct="false">Speed up the running of queries</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A DBA manages, secures and maintains the database.">
   <div class="quiz-q">🧩 Q3: A DBA's main responsibility is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Manage, secure and maintain the database</button>
@@ -12442,16 +12442,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Verification checks that data was entered or copied correctly, e.g. by double entry.">
   <div class="quiz-q">🧩 Q4: Verification, in the context of data protection, means...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Confirming data was entered or copied correctly</button>
+    <button class="quiz-opt" data-correct="true">Checking data was entered or copied correctly</button>
     <button class="quiz-opt" data-correct="false">Deleting invalid data permanently</button>
-    <button class="quiz-opt" data-correct="false">Encrypting the entire database</button>
+    <button class="quiz-opt" data-correct="false">Encrypting the entire database at night</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Parallel data sets keep duplicate copies for safety and comparison.">
   <div class="quiz-q">🧩 Q5: Maintaining duplicate copies of data for safety/comparison describes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Parallel data sets</button>
@@ -12460,11 +12460,11 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data has value because it reveals patterns and supports decisions.">
   <div class="quiz-q">🧩 Q6: Organisations treat data as valuable mainly because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Enables insights, patterns and decisions</button>
-    <button class="quiz-opt" data-correct="false">Takes up physical space</button>
+    <button class="quiz-opt" data-correct="false">Takes up physical space on servers</button>
     <button class="quiz-opt" data-correct="false">Has no real value at all</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -12521,43 +12521,43 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="More computing power uses more battery, so mobile devices must balance the two.">
   <div class="quiz-q">🧩 Q1: A key constraint of mobile devices is the trade-off between...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Computing power and power consumption</button>
-    <button class="quiz-opt" data-correct="false">Colour and weight only</button>
-    <button class="quiz-opt" data-correct="false">Price and warranty length</button>
+    <button class="quiz-opt" data-correct="false">Colour and weight of the case only</button>
+    <button class="quiz-opt" data-correct="false">Price and length of the warranty</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Several cores let work happen in parallel.">
   <div class="quiz-q">🧩 Q2: Multi-processing improves performance mainly by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Allowing work to happen in parallel across cores</button>
-    <button class="quiz-opt" data-correct="false">Increasing screen resolution</button>
-    <button class="quiz-opt" data-correct="false">Reducing battery capacity</button>
+    <button class="quiz-opt" data-correct="true">Letting work run in parallel on several cores</button>
+    <button class="quiz-opt" data-correct="false">Increasing the resolution of the screen</button>
+    <button class="quiz-opt" data-correct="false">Reducing the battery capacity to save power</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The question tests whether you link performance factors to this user's real needs.">
   <div class="quiz-q">🧩 Q3: A "motivate the hardware needed" question is really testing whether you can...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Connect performance factors to a specific user's real needs</button>
-    <button class="quiz-opt" data-correct="false">Recite specifications with no context</button>
-    <button class="quiz-opt" data-correct="false">Recommend the cheapest device regardless of fit</button>
+    <button class="quiz-opt" data-correct="true">Link performance factors to the user's needs</button>
+    <button class="quiz-opt" data-correct="false">Recite the specifications with no context</button>
+    <button class="quiz-opt" data-correct="false">Recommend the cheapest device whatever the fit</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Storage speed is how fast data is read from or written to the device.">
   <div class="quiz-q">🧩 Q4: Storage speed mainly affects...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">How quickly data can be read from or written to a device</button>
-    <button class="quiz-opt" data-correct="false">The device's screen size</button>
-    <button class="quiz-opt" data-correct="false">Network bandwidth only</button>
+    <button class="quiz-opt" data-correct="true">How fast data is read from or written to the device</button>
+    <button class="quiz-opt" data-correct="false">The size of the device's screen and its resolution</button>
+    <button class="quiz-opt" data-correct="false">The bandwidth of the network and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An e-book reader is a portable, mobile device.">
   <div class="quiz-q">🧩 Q5: An e-book reader is best classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mobile device</button>
@@ -12566,7 +12566,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Thinner, lighter laptops usually give up battery life or processing power.">
   <div class="quiz-q">🧩 Q6: A thinner, lighter laptop typically comes at the cost of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Battery life or processing power</button>
@@ -12620,16 +12620,16 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A home router usually combines a modem, router, switch and wireless access point.">
   <div class="quiz-q">🧩 Q1: An "all-in-one" home networking device typically combines...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Modem, router, switch and wireless base station</button>
-    <button class="quiz-opt" data-correct="false">Only a printer and scanner</button>
-    <button class="quiz-opt" data-correct="false">A monitor and keyboard</button>
+    <button class="quiz-opt" data-correct="true">Modem, router, switch and wireless access point</button>
+    <button class="quiz-opt" data-correct="false">Only a printer, a scanner and a photocopier</button>
+    <button class="quiz-opt" data-correct="false">A monitor, a keyboard, a mouse and speakers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="BitTorrent shares files directly between users (peer-to-peer).">
   <div class="quiz-q">🧩 Q2: BitTorrent is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Peer-to-peer file sharing protocol</button>
@@ -12638,25 +12638,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SSL uses a public key and a private key to set up encryption.">
   <div class="quiz-q">🧩 Q3: SSL uses a combination of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Private and public keys</button>
-    <button class="quiz-opt" data-correct="false">Only usernames</button>
-    <button class="quiz-opt" data-correct="false">Only a firewall</button>
+    <button class="quiz-opt" data-correct="false">Only usernames and passwords</button>
+    <button class="quiz-opt" data-correct="false">Only a firewall and antivirus</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A digital certificate verifies that the site is who it claims to be.">
   <div class="quiz-q">🧩 Q4: A digital certificate's purpose is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Verify a site or service is genuinely who it claims to be</button>
-    <button class="quiz-opt" data-correct="false">Compress data for transfer</button>
-    <button class="quiz-opt" data-correct="false">Speed up a network connection</button>
+    <button class="quiz-opt" data-correct="true">Verify a site is who it claims to be</button>
+    <button class="quiz-opt" data-correct="false">Compress data before it is transferred</button>
+    <button class="quiz-opt" data-correct="false">Speed up the network connection to the site</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Remote access over the internet opens more security risks than access inside a local network.">
   <div class="quiz-q">🧩 Q5: Remote access through the Internet, compared to on a local network, generally has...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Greater security implications to consider</button>
@@ -12665,7 +12665,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="User rights control who can open or change shared files and folders.">
   <div class="quiz-q">🧩 Q6: Controlling who can access shared files and folders relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">User rights</button>
@@ -12710,7 +12710,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An accessor (getter) only reads and returns a field's value.">
   <div class="quiz-q">🧩 Q1: A method that only reads and returns a field's value is a(n)...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Accessor</button>
@@ -12719,7 +12719,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A mutator (setter) changes a field's value, often after validating it.">
   <div class="quiz-q">🧩 Q2: A method that changes a field's value, often validating input first, is a(n)...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mutator</button>
@@ -12728,7 +12728,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A constructor runs once, when a new object is created.">
   <div class="quiz-q">🧩 Q3: A constructor runs...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">When a new object is created</button>
@@ -12737,7 +12737,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A helper method that fits none of those types is an auxiliary method.">
   <div class="quiz-q">🧩 Q4: A method supporting the class's job but not fitting accessor/mutator/constructor is a(n)...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Auxiliary method</button>
@@ -12746,21 +12746,21 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Instantiating means creating a real object from a class.">
   <div class="quiz-q">🧩 Q5: Instantiating an object means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Creating a real object from a class</button>
     <button class="quiz-opt" data-correct="false">Deleting a class permanently</button>
-    <button class="quiz-opt" data-correct="false">Compiling the entire program</button>
+    <button class="quiz-opt" data-correct="false">Compiling the whole program</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A method call needs the right object, method name and parameters.">
   <div class="quiz-q">🧩 Q6: Correctly invoking a method requires matching...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The right object, method name and parameters</button>
-    <button class="quiz-opt" data-correct="false">Only the method's colour in the IDE</button>
-    <button class="quiz-opt" data-correct="false">Nothing — any call works identically</button>
+    <button class="quiz-opt" data-correct="false">Only the method's colour in the IDE editor</button>
+    <button class="quiz-opt" data-correct="false">Nothing, as any call works the same way</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -12798,16 +12798,16 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Defensive programming validates input before it can cause problems.">
   <div class="quiz-q">🧩 Q1: Defensive programming means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Validating input before it can cause problems</button>
-    <button class="quiz-opt" data-correct="false">Never validating any input</button>
-    <button class="quiz-opt" data-correct="false">Only checking data after it causes an error</button>
+    <button class="quiz-opt" data-correct="false">Never validating any input from users</button>
+    <button class="quiz-opt" data-correct="false">Only checking data once it has caused an error</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A multi-form GUI spans several screens (forms).">
   <div class="quiz-q">🧩 Q2: A multi-form GUI is an application that...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Spans several screens</button>
@@ -12816,25 +12816,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sharing data between forms lets one screen use what was entered on another.">
   <div class="quiz-q">🧩 Q3: Sharing data between forms lets a program...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Use information entered on one screen elsewhere in the app</button>
-    <button class="quiz-opt" data-correct="false">Delete the database automatically</button>
-    <button class="quiz-opt" data-correct="false">Compile faster</button>
+    <button class="quiz-opt" data-correct="false">Delete the database automatically when it closes</button>
+    <button class="quiz-opt" data-correct="false">Compile the program faster than a single form would</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A dataset event handler responds to events on the dataset, such as a record changing.">
   <div class="quiz-q">🧩 Q4: A dataset event handler is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Respond to actions happening on the dataset as part of the solution</button>
+    <button class="quiz-opt" data-correct="true">Respond to events on the dataset</button>
     <button class="quiz-opt" data-correct="false">Format text in a word processor</button>
-    <button class="quiz-opt" data-correct="false">Design network topology</button>
+    <button class="quiz-opt" data-correct="false">Design a network's topology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Removing duplicates needs comparing items and rebuilding the list: a more complex algorithm.">
   <div class="quiz-q">🧩 Q5: Removing duplicates from a list is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A more complex algorithm</button>
@@ -12843,7 +12843,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The WHERE clause filters the joined records by the criteria.">
   <div class="quiz-q">🧩 Q6: Querying two joined tables with multiple criteria uses SQL's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">WHERE clause</button>
@@ -12893,34 +12893,34 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Waterfall completes each stage fully, in order, before the next begins.">
   <div class="quiz-q">🧩 Q1: Waterfall methodology is characterised by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Strict, sequential stages completed one at a time</button>
-    <button class="quiz-opt" data-correct="false">Constant, unplanned changes with no structure</button>
-    <button class="quiz-opt" data-correct="false">Skipping all planning entirely</button>
+    <button class="quiz-opt" data-correct="false">Constant, unplanned changes with no fixed structure</button>
+    <button class="quiz-opt" data-correct="false">Skipping all planning and starting with the code</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Agile works in short cycles, with feedback from the client after each one.">
   <div class="quiz-q">🧩 Q2: Agile development is built around...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Short cycles with continuous feedback and flexibility</button>
-    <button class="quiz-opt" data-correct="false">One single, unchangeable plan from the start</button>
-    <button class="quiz-opt" data-correct="false">Never testing until the very end</button>
+    <button class="quiz-opt" data-correct="false">One fixed plan from the start that can never be changed</button>
+    <button class="quiz-opt" data-correct="false">Testing only once, at the very end of the whole project</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="CRC cards list a class, its responsibilities and its collaborators.">
   <div class="quiz-q">🧩 Q3: CRC cards help plan a class's...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Responsibilities and which other classes it collaborates with</button>
-    <button class="quiz-opt" data-correct="false">Physical hardware requirements</button>
-    <button class="quiz-opt" data-correct="false">Network topology</button>
+    <button class="quiz-opt" data-correct="true">Responsibilities and collaborators</button>
+    <button class="quiz-opt" data-correct="false">Hardware requirements and costs</button>
+    <button class="quiz-opt" data-correct="false">Network cabling and topology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Incremental development delivers working pieces of the system over time.">
   <div class="quiz-q">🧩 Q4: Incremental development delivers a system by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Building it in working pieces over time</button>
@@ -12929,7 +12929,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Waterfall suits projects whose requirements are clear and won't change.">
   <div class="quiz-q">🧩 Q5: Waterfall is best suited to projects where requirements are...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Well understood and stable</button>
@@ -12938,12 +12938,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A use case diagram shows how users (actors) interact with the system.">
   <div class="quiz-q">🧩 Q6: A UML use case diagram is used to visualise...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">How users interact with a system</button>
-    <button class="quiz-opt" data-correct="false">A spreadsheet's cell formulas</button>
-    <button class="quiz-opt" data-correct="false">Network cabling</button>
+    <button class="quiz-opt" data-correct="false">The formulas used in a spreadsheet</button>
+    <button class="quiz-opt" data-correct="false">The cabling of the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -12981,52 +12981,52 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="SaaS is software delivered over the internet, usually by subscription.">
   <div class="quiz-q">🧩 Q1: SaaS delivers software...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Over the Internet, typically via subscription</button>
-    <button class="quiz-opt" data-correct="false">Only via physical disc installation</button>
-    <button class="quiz-opt" data-correct="false">As a one-time purchase with no updates ever</button>
+    <button class="quiz-opt" data-correct="false">Only by installing it from a physical disc</button>
+    <button class="quiz-opt" data-correct="false">As a one-time purchase that never gets updates</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Virtualisation lets one physical server run many independent virtual servers.">
   <div class="quiz-q">🧩 Q2: Virtualising a server lets one physical machine...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Run multiple independent virtual servers</button>
-    <button class="quiz-opt" data-correct="false">Run exactly one operating system, ever</button>
-    <button class="quiz-opt" data-correct="false">Stop needing any hardware at all</button>
+    <button class="quiz-opt" data-correct="false">Run exactly one operating system and nothing else</button>
+    <button class="quiz-opt" data-correct="false">Work without needing any hardware at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The cloud depends on internet access and on another company controlling your data.">
   <div class="quiz-q">🧩 Q3: A key argument against cloud computing is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Dependency on internet access and third-party control</button>
     <button class="quiz-opt" data-correct="false">It always costs more upfront than buying hardware</button>
-    <button class="quiz-opt" data-correct="false">It cannot be used by businesses</button>
+    <button class="quiz-opt" data-correct="false">Businesses are not allowed to use it at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The cloud lowers hardware costs and makes it easy to scale up or down.">
   <div class="quiz-q">🧩 Q4: A key argument for cloud computing is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Lower hardware costs and easier scaling</button>
-    <button class="quiz-opt" data-correct="false">Guaranteed permanent offline access</button>
-    <button class="quiz-opt" data-correct="false">No ongoing costs whatsoever</button>
+    <button class="quiz-opt" data-correct="false">Guaranteed access to your files while offline</button>
+    <button class="quiz-opt" data-correct="false">No ongoing monthly costs at all for the service</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A strong answer argues both for and against.">
   <div class="quiz-q">🧩 Q5: A strong exam answer on cloud computing should...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Argue both for and against</button>
-    <button class="quiz-opt" data-correct="false">Only argue for it</button>
-    <button class="quiz-opt" data-correct="false">Avoid taking any position</button>
+    <button class="quiz-opt" data-correct="false">Only argue in favour of it</button>
+    <button class="quiz-opt" data-correct="false">Avoid taking any position at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="With SaaS your data sits on someone else's servers, so who owns it becomes a question.">
   <div class="quiz-q">🧩 Q6: Data ownership becomes a real question specifically with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">SaaS and other cloud-hosted services</button>
@@ -13080,16 +13080,16 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A 2D array is a grid of rows and columns.">
   <div class="quiz-q">🧩 Q1: A 2D array organises data as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Rows and columns, like a grid</button>
-    <button class="quiz-opt" data-correct="false">A single list of values only</button>
-    <button class="quiz-opt" data-correct="false">A network topology</button>
+    <button class="quiz-opt" data-correct="false">A single list of values, one after the other</button>
+    <button class="quiz-opt" data-correct="false">A network topology for connecting computers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SELECT DISTINCT removes duplicate rows from the results.">
   <div class="quiz-q">🧩 Q2: SELECT DISTINCT is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Remove duplicate results</button>
@@ -13098,25 +13098,25 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A subquery is a query nested inside another query.">
   <div class="quiz-q">🧩 Q3: A subquery is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A query nested inside another query</button>
-    <button class="quiz-opt" data-correct="false">A query that never returns results</button>
-    <button class="quiz-opt" data-correct="false">A type of database table</button>
+    <button class="quiz-opt" data-correct="false">A query that never returns any results</button>
+    <button class="quiz-opt" data-correct="false">A type of table that holds only one record</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="GROUP BY groups the rows; HAVING filters on totals such as SUM or COUNT.">
   <div class="quiz-q">🧩 Q4: GROUP BY combined with HAVING is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Group rows and filter on aggregated results</button>
-    <button class="quiz-opt" data-correct="false">Sort text alphabetically</button>
-    <button class="quiz-opt" data-correct="false">Delete duplicate rows automatically</button>
+    <button class="quiz-opt" data-correct="false">Sort the text in a column alphabetically</button>
+    <button class="quiz-opt" data-correct="false">Delete duplicate rows from a table automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Adding up each row of a 2D array gives a row aggregate.">
   <div class="quiz-q">🧩 Q5: Calculating the total of each row in a 2D array is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Row aggregate</button>
@@ -13125,7 +13125,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="LIKE matches text patterns using wildcards, e.g. LIKE 'Jo%'.">
   <div class="quiz-q">🧩 Q6: The LIKE operator in SQL is used for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Pattern-based text matching</button>
@@ -13177,34 +13177,34 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cracker breaks into systems with malicious intent.">
   <div class="quiz-q">🧩 Q1: A cracker is best distinguished by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Specifically malicious intent</button>
-    <button class="quiz-opt" data-correct="false">Working only for governments</button>
+    <button class="quiz-opt" data-correct="false">Working only for the government</button>
     <button class="quiz-opt" data-correct="false">Never using a computer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A back door is a hidden way into a system that bypasses normal security.">
   <div class="quiz-q">🧩 Q2: A back door is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A hidden way into a system that bypasses normal security</button>
-    <button class="quiz-opt" data-correct="false">A physical entrance to a data centre</button>
-    <button class="quiz-opt" data-correct="false">A type of encryption</button>
+    <button class="quiz-opt" data-correct="false">A physical entrance at the back of a data centre</button>
+    <button class="quiz-opt" data-correct="false">A type of encryption used to protect passwords</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A DoS attack overwhelms a system so real users can't use it.">
   <div class="quiz-q">🧩 Q3: A denial of service attack aims to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Overwhelm a system so legitimate users can't access it</button>
-    <button class="quiz-opt" data-correct="false">Physically steal hardware</button>
-    <button class="quiz-opt" data-correct="false">Compress files for storage</button>
+    <button class="quiz-opt" data-correct="true">Overwhelm a system so real users can't get in</button>
+    <button class="quiz-opt" data-correct="false">Physically steal the server's hardware</button>
+    <button class="quiz-opt" data-correct="false">Compress files on the server for storage</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cybercrime causes real financial and personal harm.">
   <div class="quiz-q">🧩 Q4: Cybercrime effects are best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Real financial and personal harm to victims</button>
@@ -13213,7 +13213,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Defence needs both technical controls and aware users.">
   <div class="quiz-q">🧩 Q5: Effective cybercrime defence relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both technical controls and human awareness</button>
@@ -13222,12 +13222,12 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cyber gang is an organised group that commits crime together, often for profit.">
   <div class="quiz-q">🧩 Q6: A cyber gang is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">An organised group committing crime collectively, often for profit</button>
-    <button class="quiz-opt" data-correct="false">A single, isolated individual acting alone always</button>
-    <button class="quiz-opt" data-correct="false">A legitimate software company</button>
+    <button class="quiz-opt" data-correct="true">An organised group committing crime, often for profit</button>
+    <button class="quiz-opt" data-correct="false">Always one individual acting completely alone</button>
+    <button class="quiz-opt" data-correct="false">A legitimate company that sells security software</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13270,57 +13270,57 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A data warehouse is built to analyse and report on historical data.">
   <div class="quiz-q">🧩 Q1: A data warehouse is specifically structured for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Analysis and reporting on historical data</button>
-    <button class="quiz-opt" data-correct="false">Everyday transaction processing only</button>
-    <button class="quiz-opt" data-correct="false">Physically storing paper documents</button>
+    <button class="quiz-opt" data-correct="false">Everyday processing of transactions only</button>
+    <button class="quiz-opt" data-correct="false">Physically storing paper documents and files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data mining extracts useful patterns from large datasets.">
   <div class="quiz-q">🧩 Q2: Data mining's main purpose is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Extract useful patterns and knowledge from large datasets</button>
-    <button class="quiz-opt" data-correct="false">Physically dig for hardware components</button>
-    <button class="quiz-opt" data-correct="false">Delete old data automatically</button>
+    <button class="quiz-opt" data-correct="false">Physically digging for metals to build hardware</button>
+    <button class="quiz-opt" data-correct="false">Deleting old data automatically when space runs low</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A toll pass records your trips automatically, without you doing anything: invisible data collection.">
   <div class="quiz-q">🧩 Q3: A toll road pass is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">"Invisible" data collection</button>
-    <button class="quiz-opt" data-correct="false">A form-based survey</button>
-    <button class="quiz-opt" data-correct="false">A network protocol</button>
+    <button class="quiz-opt" data-correct="true">Invisible data collection</button>
+    <button class="quiz-opt" data-correct="false">A form-based survey of drivers</button>
+    <button class="quiz-opt" data-correct="false">A network protocol for roads</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Semantic search tries to understand meaning and context, not just match keywords.">
   <div class="quiz-q">🧩 Q4: Semantic search aims to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Understand meaning and context, not just keywords</button>
-    <button class="quiz-opt" data-correct="false">Only match exact keyword strings</button>
+    <button class="quiz-opt" data-correct="false">Only match the exact keywords that were typed in</button>
     <button class="quiz-opt" data-correct="false">Replace the need for search engines entirely</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="RFID readers pick up radio tags automatically from a distance.">
   <div class="quiz-q">🧩 Q5: RFID data collection works by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reading radio tags automatically at a distance</button>
-    <button class="quiz-opt" data-correct="false">Requiring the user to type in data manually</button>
-    <button class="quiz-opt" data-correct="false">Scanning printed barcodes only</button>
+    <button class="quiz-opt" data-correct="false">The user has to type in the data by hand</button>
+    <button class="quiz-opt" data-correct="false">It can only scan barcodes printed on labels</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Web 3.0 aims to make web content understandable to machines as well as people.">
   <div class="quiz-q">🧩 Q6: Web 3.0 is primarily focused on making web content...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Understandable by machines, not just humans</button>
-    <button class="quiz-opt" data-correct="false">Static and unchangeable</button>
-    <button class="quiz-opt" data-correct="false">Impossible to search</button>
+    <button class="quiz-opt" data-correct="false">Static so that it can never be changed</button>
+    <button class="quiz-opt" data-correct="false">Impossible for search engines to index</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13377,7 +13377,7 @@ const IT_CAPS_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="CSS controls how a page looks: colours, fonts and layout.">
   <div class="quiz-q">🧩 Q1: CSS is primarily responsible for a webpage's...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Visual formatting</button>
@@ -13386,16 +13386,16 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AJAX fetches new data in the background without reloading the page.">
   <div class="quiz-q">🧩 Q2: AJAX allows a webpage to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Fetch new data without reloading the whole page</button>
-    <button class="quiz-opt" data-correct="false">Permanently disable JavaScript</button>
-    <button class="quiz-opt" data-correct="false">Compress images automatically</button>
+    <button class="quiz-opt" data-correct="false">Permanently disable JavaScript on the page</button>
+    <button class="quiz-opt" data-correct="false">Compress the images on the page automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cookies are small files stored in your browser on your own device.">
   <div class="quiz-q">🧩 Q3: A cookie is data stored...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Locally, on the user's own device</button>
@@ -13404,7 +13404,7 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="PHP (server side) and JavaScript (in the browser) are scripting languages.">
   <div class="quiz-q">🧩 Q4: PHP and JavaScript are both examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Scripting languages</button>
@@ -13413,21 +13413,21 @@ const IT_CAPS_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A wiki shows how many people can build knowledge together.">
   <div class="quiz-q">🧩 Q5: A wiki demonstrates...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Collaborative, crowd-built knowledge at scale</button>
-    <button class="quiz-opt" data-correct="false">Single-author content only</button>
+    <button class="quiz-opt" data-correct="true">Knowledge built together by many people</button>
+    <button class="quiz-opt" data-correct="false">Content written by one author only</button>
     <button class="quiz-opt" data-correct="false">A type of network topology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A GUID is a unique identifier that can track a specific device or account.">
   <div class="quiz-q">🧩 Q6: A Global Unique Identifier is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Track a specific device or account</button>
-    <button class="quiz-opt" data-correct="false">Format a webpage's visual style</button>
-    <button class="quiz-opt" data-correct="false">Store printed documents</button>
+    <button class="quiz-opt" data-correct="false">Format the visual style of a webpage</button>
+    <button class="quiz-opt" data-correct="false">Store printed documents in a database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13475,7 +13475,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A Raspberry Pi is a single-board computer.">
   <div class="quiz-q">🧩 Q1: A Raspberry Pi is classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Single board computer</button>
@@ -13484,7 +13484,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Smartphones run a mobile OS such as Android or iOS.">
   <div class="quiz-q">🧩 Q2: Which operating system category would a smartphone typically run?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Desktop OS</button>
@@ -13493,7 +13493,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A network application only works when it communicates with a server.">
   <div class="quiz-q">🧩 Q3: An application that only works when communicating with a server is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Network application</button>
@@ -13502,16 +13502,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data becomes information once it is processed into something meaningful.">
   <div class="quiz-q">🧩 Q4: Data becomes information once it has been...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Processed and organised into something meaningful</button>
-    <button class="quiz-opt" data-correct="false">Deleted</button>
+    <button class="quiz-opt" data-correct="true">Processed into something meaningful</button>
+    <button class="quiz-opt" data-correct="false">Deleted from the database</button>
     <button class="quiz-opt" data-correct="false">Compressed into a zip file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Server, desktop and mobile differ in processing power.">
   <div class="quiz-q">🧩 Q5: Classifying devices by "server vs desktop vs mobile" is classifying by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Processing power</button>
@@ -13520,12 +13520,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Synchronisation keeps the same data up to date on all your devices.">
   <div class="quiz-q">🧩 Q6: Keeping your contacts and files consistent across your phone and laptop relies on...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Data transfer and synchronisation</button>
+    <button class="quiz-opt" data-correct="true">Synchronisation</button>
     <button class="quiz-opt" data-correct="false">A trace table</button>
-    <button class="quiz-opt" data-correct="false">SQL</button>
+    <button class="quiz-opt" data-correct="false">SQL queries</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13573,7 +13573,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The ALU (arithmetic logic unit) does calculations and comparisons.">
   <div class="quiz-q">🧩 Q1: Which CPU component actually performs calculations?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The ALU</button>
@@ -13582,7 +13582,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An SSD keeps data without power, which makes it secondary storage.">
   <div class="quiz-q">🧩 Q2: An SSD is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Secondary storage</button>
@@ -13591,7 +13591,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="RAM is volatile: its contents are lost when the power goes off.">
   <div class="quiz-q">🧩 Q3: RAM loses its contents...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">When the computer is powered off</button>
@@ -13600,7 +13600,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An accelerometer senses movement, so it is an input device.">
   <div class="quiz-q">🧩 Q4: An accelerometer sensor is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An input device</button>
@@ -13609,16 +13609,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The control unit directs the CPU's operations: fetching, decoding and executing.">
   <div class="quiz-q">🧩 Q5: The Control Unit's role is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Direct the operations of the CPU</button>
-    <button class="quiz-opt" data-correct="false">Store files permanently</button>
-    <button class="quiz-opt" data-correct="false">Display graphics on screen</button>
+    <button class="quiz-opt" data-correct="false">Store the computer's files permanently</button>
+    <button class="quiz-opt" data-correct="false">Display the graphics on the screen</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="USB and HDMI are ports for connecting devices.">
   <div class="quiz-q">🧩 Q6: USB and HDMI are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Ports</button>
@@ -13676,16 +13676,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An OS manages resources and provides the interface; it doesn't write programs for you.">
   <div class="quiz-q">🧩 Q1: Which of these is NOT a general function of an operating system?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Managing resources</button>
+    <button class="quiz-opt" data-correct="false">Managing memory and devices</button>
     <button class="quiz-opt" data-correct="false">Providing the user interface</button>
-    <button class="quiz-opt" data-correct="true">Writing new application software for the user</button>
+    <button class="quiz-opt" data-correct="true">Writing new apps for the user</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Code that people can read is source code.">
   <div class="quiz-q">🧩 Q2: Human-readable code written by a programmer is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Source code</button>
@@ -13694,7 +13694,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Freemium has a free basic version, with paid extras.">
   <div class="quiz-q">🧩 Q3: Software with a free basic tier and paid extra features is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Freemium software</button>
@@ -13703,25 +13703,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A device driver lets the OS talk to a specific piece of hardware.">
   <div class="quiz-q">🧩 Q4: A device driver's job is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Let the OS communicate with a specific piece of hardware</button>
-    <button class="quiz-opt" data-correct="false">Compile source code into a program</button>
+    <button class="quiz-opt" data-correct="true">Let the OS talk to a specific piece of hardware</button>
+    <button class="quiz-opt" data-correct="false">Compile source code into a working program</button>
     <button class="quiz-opt" data-correct="false">Replace the need for an operating system</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Open source means the source code is public and can be changed.">
   <div class="quiz-q">🧩 Q5: Open source software means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The source code is public and can be modified</button>
-    <button class="quiz-opt" data-correct="false">The software is always paid for</button>
+    <button class="quiz-opt" data-correct="false">The software always has to be paid for</button>
     <button class="quiz-opt" data-correct="false">Only the developer may ever run it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Backup software is a utility that protects the system.">
   <div class="quiz-q">🧩 Q6: Backup software is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Utility program</button>
@@ -13765,57 +13765,57 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A firewall filters network traffic and blocks unauthorised access.">
   <div class="quiz-q">🧩 Q1: A firewall's main job is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Monitor and control network traffic to block unauthorised access</button>
-    <button class="quiz-opt" data-correct="false">Compress files for storage</button>
-    <button class="quiz-opt" data-correct="false">Write source code</button>
+    <button class="quiz-opt" data-correct="false">Compress files so they take up less storage space</button>
+    <button class="quiz-opt" data-correct="false">Write source code for programs that run on the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sharing settings and permissions control who can access a file or folder.">
   <div class="quiz-q">🧩 Q2: Controlling who can access a shared file or folder is called...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Setting sharing and permissions</button>
-    <button class="quiz-opt" data-correct="false">Defragmenting</button>
-    <button class="quiz-opt" data-correct="false">Compiling</button>
+    <button class="quiz-opt" data-correct="true">Sharing and permissions</button>
+    <button class="quiz-opt" data-correct="false">Defragmenting the shared drive</button>
+    <button class="quiz-opt" data-correct="false">Compiling the folder</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Consider its effect on different societies, including gender, race, culture and economics.">
   <div class="quiz-q">🧩 Q3: When discussing the impact of a new technology, the syllabus wants you to consider...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Its effect across different societies, factoring in gender, race, culture and economics</button>
-    <button class="quiz-opt" data-correct="false">Only its processor speed</button>
-    <button class="quiz-opt" data-correct="false">Only its retail price</button>
+    <button class="quiz-opt" data-correct="true">Its effect on different societies, including gender, race, culture and economics</button>
+    <button class="quiz-opt" data-correct="false">Only how fast its processor runs compared to older models, and nothing else</button>
+    <button class="quiz-opt" data-correct="false">Only how much it costs in the shops and how quickly it sells out</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Anti-malware detects and removes malicious programs.">
   <div class="quiz-q">🧩 Q4: Anti-malware software is designed to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Detect and remove malicious programs</button>
-    <button class="quiz-opt" data-correct="false">Manage desktop icons</button>
-    <button class="quiz-opt" data-correct="false">Install printer drivers</button>
+    <button class="quiz-opt" data-correct="false">Manage the icons on the desktop</button>
+    <button class="quiz-opt" data-correct="false">Install drivers for new printers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A custom install lets you choose which components to install.">
   <div class="quiz-q">🧩 Q5: A custom installation, as opposed to a full installation, typically...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Lets the user choose which components to install</button>
     <button class="quiz-opt" data-correct="false">Always installs every possible component</button>
-    <button class="quiz-opt" data-correct="false">Is only available for open source software</button>
+    <button class="quiz-opt" data-correct="false">Is only available for open-source software</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Scheduled updates keep software current and secure without you having to remember.">
   <div class="quiz-q">🧩 Q6: Scheduling automatic updates mainly helps to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Keep software current and secure without manual effort</button>
-    <button class="quiz-opt" data-correct="false">Permanently delete old files</button>
-    <button class="quiz-opt" data-correct="false">Increase RAM capacity</button>
+    <button class="quiz-opt" data-correct="false">Permanently delete old files from the computer</button>
+    <button class="quiz-opt" data-correct="false">Increase the amount of RAM the computer has</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13882,7 +13882,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cable guides the signal, so fibre optic is bounded media.">
   <div class="quiz-q">🧩 Q1: Fibre optic cabling is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Bounded media</button>
@@ -13891,7 +13891,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A switch connects wired computers on a LAN.">
   <div class="quiz-q">🧩 Q2: A device that connects several wired computers on the same local network is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Switch</button>
@@ -13900,25 +13900,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A computer can be a server for one task and a client for another.">
   <div class="quiz-q">🧩 Q3: A single computer can act as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both a server and a client, at different times</button>
-    <button class="quiz-opt" data-correct="false">Only ever a server</button>
-    <button class="quiz-opt" data-correct="false">Only ever a client</button>
+    <button class="quiz-opt" data-correct="false">Only ever a server, once it is set up</button>
+    <button class="quiz-opt" data-correct="false">Only ever a client, unless it is replaced</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A home router usually combines an access point, firewall and switch, with a modem.">
   <div class="quiz-q">🧩 Q4: A home ADSL router typically combines the functions of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Wireless access point, firewall and switch</button>
-    <button class="quiz-opt" data-correct="false">Only a printer</button>
-    <button class="quiz-opt" data-correct="false">Only a monitor</button>
+    <button class="quiz-opt" data-correct="false">Only a printer, scanner and copier</button>
+    <button class="quiz-opt" data-correct="false">Only a monitor, speakers and webcam</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A network of one person's own devices is a PAN.">
   <div class="quiz-q">🧩 Q5: A network covering just one person's own devices is classified as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">PAN</button>
@@ -13927,12 +13927,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Profiles, rights and permissions control exactly what each user can access.">
   <div class="quiz-q">🧩 Q6: User profiles, rights and permissions on a network control...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Exactly what each user is allowed to access</button>
-    <button class="quiz-opt" data-correct="false">The colour scheme of the desktop</button>
-    <button class="quiz-opt" data-correct="false">The CPU's clock speed</button>
+    <button class="quiz-opt" data-correct="false">The colour scheme of each user's desktop</button>
+    <button class="quiz-opt" data-correct="false">The clock speed of each computer's CPU</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -13974,16 +13974,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An IP address identifies a device so that data can reach it.">
   <div class="quiz-q">🧩 Q1: An IP address is needed because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Uniquely identifies a device so data can reach it</button>
-    <button class="quiz-opt" data-correct="false">Encrypts all your files</button>
-    <button class="quiz-opt" data-correct="false">Is only used for printing</button>
+    <button class="quiz-opt" data-correct="false">Encrypts all the files that you send</button>
+    <button class="quiz-opt" data-correct="false">Is only used when printing over a network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A personal hotspot shares your phone's data connection.">
   <div class="quiz-q">🧩 Q2: Sharing one phone's data connection with another device is called using a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Personal hotspot</button>
@@ -13992,16 +13992,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cloud tools let several people edit the same document at the same time.">
   <div class="quiz-q">🧩 Q3: Tools like Google Docs allow multiple people to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Collaborate on the same document in real time</button>
     <button class="quiz-opt" data-correct="false">Only view a document, never edit it</button>
-    <button class="quiz-opt" data-correct="false">Compress files automatically</button>
+    <button class="quiz-opt" data-correct="false">Compress files automatically when saved</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A balanced answer covers both the benefits and the risks.">
   <div class="quiz-q">🧩 Q4: A well-rounded answer about communication technology's impact should mention...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both benefits and risks</button>
@@ -14010,16 +14010,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A SIM card connects the device to a mobile network.">
   <div class="quiz-q">🧩 Q5: A SIM card is primarily used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Connect a cellular device to a mobile network</button>
-    <button class="quiz-opt" data-correct="false">Store backup files</button>
-    <button class="quiz-opt" data-correct="false">Run a search engine</button>
+    <button class="quiz-opt" data-correct="true">Connect a phone to a mobile network</button>
+    <button class="quiz-opt" data-correct="false">Store the device's backup files</button>
+    <button class="quiz-opt" data-correct="false">Run a search engine on the phone</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Checking and organising your inbox is responsible email management.">
   <div class="quiz-q">🧩 Q6: Monitoring your inbox regularly and organising it well is part of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Responsible email management</button>
@@ -14088,7 +14088,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The three-click rule is about navigation: any page within three clicks.">
   <div class="quiz-q">🧩 Q1: The "three-click rule" relates to which usability factor?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Navigation</button>
@@ -14097,7 +14097,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="AND requires both terms to appear.">
   <div class="quiz-q">🧩 Q2: A search for "cats AND dogs" will return pages that mention...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both cats and dogs</button>
@@ -14106,7 +14106,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A website is a collection of related webpages.">
   <div class="quiz-q">🧩 Q3: A collection of related web pages is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Website</button>
@@ -14115,7 +14115,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Elements that look and behave the same on every page show consistency.">
   <div class="quiz-q">🧩 Q4: Menus and colours behaving the same way on every page of a site demonstrates good...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Consistency</button>
@@ -14124,7 +14124,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="NOT excludes a term from the results.">
   <div class="quiz-q">🧩 Q5: The NOT operator in a search is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Exclude a term from the results</button>
@@ -14133,12 +14133,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Search AND/OR/NOT is the same Boolean logic used in program conditions and SQL.">
   <div class="quiz-q">🧩 Q6: The Boolean logic used in search engines is the same logic later used in...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Programming conditions and SQL queries</button>
-    <button class="quiz-opt" data-correct="false">Only image compression</button>
-    <button class="quiz-opt" data-correct="false">Only hardware installation</button>
+    <button class="quiz-opt" data-correct="true">Program conditions and SQL queries</button>
+    <button class="quiz-opt" data-correct="false">Only image and video compression</button>
+    <button class="quiz-opt" data-correct="false">Only hardware installation steps</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14177,16 +14177,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="RSI comes from poor posture and repeating the same movements over time.">
   <div class="quiz-q">🧩 Q1: RSI is most closely linked to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Poor posture and repetitive movements over time</button>
-    <button class="quiz-opt" data-correct="false">Software piracy</button>
-    <button class="quiz-opt" data-correct="false">The digital divide</button>
+    <button class="quiz-opt" data-correct="true">Poor posture and repeated movements</button>
+    <button class="quiz-opt" data-correct="false">Copying software without a licence</button>
+    <button class="quiz-opt" data-correct="false">The gap in access to technology</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Disposing of old parts responsibly is green disposal.">
   <div class="quiz-q">🧩 Q2: Responsibly recycling old computer parts instead of sending them to landfill is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Green disposal</button>
@@ -14195,25 +14195,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The digital divide is the gap between people with reliable technology access and those without.">
   <div class="quiz-q">🧩 Q3: The digital divide is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The gap between those with reliable tech access and those without</button>
-    <button class="quiz-opt" data-correct="false">A type of network cable</button>
-    <button class="quiz-opt" data-correct="false">A programming error</button>
+    <button class="quiz-opt" data-correct="true">The gap between those with technology access and those without</button>
+    <button class="quiz-opt" data-correct="false">A type of network cable that is used only in rural areas</button>
+    <button class="quiz-opt" data-correct="false">A programming error found in older software that divides data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computers make work more efficient, accurate and reliable.">
   <div class="quiz-q">🧩 Q4: A key economic reason for adopting computers is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Improved efficiency, accuracy and reliability</button>
-    <button class="quiz-opt" data-correct="false">Guaranteed elimination of all costs</button>
-    <button class="quiz-opt" data-correct="false">Removing the need for electricity</button>
+    <button class="quiz-opt" data-correct="false">Guaranteed removal of all business costs</button>
+    <button class="quiz-opt" data-correct="false">No longer needing any electricity to work</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Saving power while you use a device is green use.">
   <div class="quiz-q">🧩 Q5: Reducing electrical consumption while actively using a device is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Green use</button>
@@ -14222,12 +14222,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Rural areas often have worse infrastructure than cities.">
   <div class="quiz-q">🧩 Q6: One cause of the digital divide is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Uneven infrastructure between rural and urban areas</button>
-    <button class="quiz-opt" data-correct="false">Too much open source software</button>
-    <button class="quiz-opt" data-correct="false">Excessive use of trace tables</button>
+    <button class="quiz-opt" data-correct="true">Poor infrastructure in rural areas</button>
+    <button class="quiz-opt" data-correct="false">Too much open-source software in schools</button>
+    <button class="quiz-opt" data-correct="false">Excessive use of trace tables in class</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14277,7 +14277,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Breaking a problem into smaller parts is decomposition.">
   <div class="quiz-q">🧩 Q1: Breaking a big problem into smaller, manageable parts is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition</button>
@@ -14286,7 +14286,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Repeated steps point to a loop.">
   <div class="quiz-q">🧩 Q2: Noticing that a problem needs repeated steps is a strong clue you'll need a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Loop</button>
@@ -14295,7 +14295,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Abstraction ignores irrelevant detail and keeps what matters.">
   <div class="quiz-q">🧩 Q3: Ignoring irrelevant detail and focusing only on what matters is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Abstraction</button>
@@ -14304,7 +14304,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Code efficiency means no repeated code; execution efficiency is about speed.">
   <div class="quiz-q">🧩 Q4: "No unnecessary duplication of code" describes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Code efficiency</button>
@@ -14313,21 +14313,21 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Decompose, recognise patterns, abstract, then design the algorithm.">
   <div class="quiz-q">🧩 Q5: The four computational thinking stages, in order, are...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Decomposition, pattern recognition, abstraction, algorithm</button>
+    <button class="quiz-opt" data-correct="true">Decompose, find patterns, abstract, design the algorithm</button>
     <button class="quiz-opt" data-correct="false">Algorithm, decomposition, testing, submission</button>
     <button class="quiz-opt" data-correct="false">Input, processing, output, storage</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Computational thinking is iterative: you go back to earlier stages as you learn more.">
   <div class="quiz-q">🧩 Q6: Computational thinking is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">An iterative process you cycle back through as you learn more</button>
-    <button class="quiz-opt" data-correct="false">A strict one-way pipeline used only once per project</button>
-    <button class="quiz-opt" data-correct="false">A type of hardware component</button>
+    <button class="quiz-opt" data-correct="true">An iterative process you return to as you learn more</button>
+    <button class="quiz-opt" data-correct="false">A strict one-way pipeline used once per project</button>
+    <button class="quiz-opt" data-correct="false">A type of hardware component in the CPU</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14376,7 +14376,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="ID numbers aren't calculated with and may start with 0, so store them as strings.">
   <div class="quiz-q">🧩 Q1: An ID number is usually best stored as a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">String</button>
@@ -14385,7 +14385,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Going from a real to an integer loses information, which makes it a narrowing conversion.">
   <div class="quiz-q">🧩 Q2: Converting a real number to an integer (losing the decimal part) is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A narrowing conversion</button>
@@ -14394,7 +14394,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="mod returns the remainder; div returns the whole-number quotient.">
   <div class="quiz-q">🧩 Q3: Which operator returns the remainder after division?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">div</button>
@@ -14403,7 +14403,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="NOT, AND and OR are logical operators.">
   <div class="quiz-q">🧩 Q4: NOT, AND and OR are examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Logical operators</button>
@@ -14412,7 +14412,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A truth table checks a Boolean expression for every combination of inputs.">
   <div class="quiz-q">🧩 Q5: A tool used to manually verify a complex Boolean expression is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Truth table</button>
@@ -14421,12 +14421,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Unicode covers the characters of almost every language, plus many symbols.">
   <div class="quiz-q">🧩 Q6: Unicode is important because it can represent...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Characters from virtually every language and symbol set</button>
-    <button class="quiz-opt" data-correct="false">Only English letters</button>
-    <button class="quiz-opt" data-correct="false">Only whole numbers</button>
+    <button class="quiz-opt" data-correct="true">Characters from almost every language</button>
+    <button class="quiz-opt" data-correct="false">Only the letters of the English alphabet</button>
+    <button class="quiz-opt" data-correct="false">Only whole numbers and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14472,7 +14472,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A void method (procedure) does something but returns nothing.">
   <div class="quiz-q">🧩 Q1: A method that performs an action but returns no value is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Void method / procedure</button>
@@ -14481,16 +14481,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A constructor sets up a new object when it is created.">
   <div class="quiz-q">🧩 Q2: A constructor method's job is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Set up a new object when it is created</button>
-    <button class="quiz-opt" data-correct="false">Delete an object permanently</button>
-    <button class="quiz-opt" data-correct="false">Convert binary to hexadecimal</button>
+    <button class="quiz-opt" data-correct="false">Delete an object permanently from memory</button>
+    <button class="quiz-opt" data-correct="false">Convert numbers from binary to hexadecimal</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Values passed into a method are parameters (arguments).">
   <div class="quiz-q">🧩 Q3: Data sent into a method is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Parameter</button>
@@ -14499,7 +14499,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A maximum function (e.g. Math.max) returns the largest value.">
   <div class="quiz-q">🧩 Q4: Which built-in function would you use to find the largest of several values?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Maximum</button>
@@ -14508,16 +14508,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An object is an instance of a class: data and behaviour together.">
   <div class="quiz-q">🧩 Q5: An object is best described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">An instance of a class bundling data and behaviour together</button>
-    <button class="quiz-opt" data-correct="false">A type of network device</button>
-    <button class="quiz-opt" data-correct="false">A file extension</button>
+    <button class="quiz-opt" data-correct="true">An instance of a class, with data and behaviour</button>
+    <button class="quiz-opt" data-correct="false">A device that connects two different networks</button>
+    <button class="quiz-opt" data-correct="false">A file extension used for saving programs</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The arguments must match the parameters in number, type and order.">
   <div class="quiz-q">🧩 Q6: When passing parameters to a method, what must match what the method expects?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The number, type and order of the parameters</button>
@@ -14567,7 +14567,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="do…while checks after the body, so the body always runs at least once.">
   <div class="quiz-q">🧩 Q1: Which loop is guaranteed to run its body at least once?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">do...while (post-check)</button>
@@ -14576,25 +14576,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Switch/case picks between many possible values of one variable.">
   <div class="quiz-q">🧩 Q2: A switch/case structure is most useful when...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Choosing between many possible values of one variable</button>
-    <button class="quiz-opt" data-correct="false">You need to repeat code exactly once</button>
-    <button class="quiz-opt" data-correct="false">You need to convert binary to decimal</button>
+    <button class="quiz-opt" data-correct="false">You need to repeat a block of code exactly once</button>
+    <button class="quiz-opt" data-correct="false">You need to convert a binary number to decimal</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Use a for loop when you know how many times to repeat.">
   <div class="quiz-q">🧩 Q3: A "for" loop is best used when...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">You know exactly how many times to repeat</button>
-    <button class="quiz-opt" data-correct="false">You never know how many times to repeat</button>
-    <button class="quiz-opt" data-correct="false">You only need to run code once</button>
+    <button class="quiz-opt" data-correct="false">You have no way of knowing how many times to repeat</button>
+    <button class="quiz-opt" data-correct="false">You only need the code to run once, with no repeats</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A loop inside another loop is a nested loop.">
   <div class="quiz-q">🧩 Q4: Putting a loop inside another loop is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Nesting</button>
@@ -14603,21 +14603,21 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A while loop checks its condition before every pass, so it may not run at all.">
   <div class="quiz-q">🧩 Q5: A "while" loop checks its condition...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Before each pass through the loop</button>
     <button class="quiz-opt" data-correct="false">Only after the loop has run once</button>
-    <button class="quiz-opt" data-correct="false">Never — it always runs forever</button>
+    <button class="quiz-opt" data-correct="false">Never, so the loop always runs forever</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Splitting a number into its digits is a classic algorithm, using mod 10 and div 10 in a loop.">
   <div class="quiz-q">🧩 Q6: Isolating the digits of an integer is an example of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A classic algorithm problem solved with selection and looping</button>
-    <button class="quiz-opt" data-correct="false">A hardware fault</button>
-    <button class="quiz-opt" data-correct="false">A netiquette rule</button>
+    <button class="quiz-opt" data-correct="true">A classic algorithm using a loop and mod/div</button>
+    <button class="quiz-opt" data-correct="false">A hardware fault in the ALU of the CPU</button>
+    <button class="quiz-opt" data-correct="false">A netiquette rule for typing numbers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14681,7 +14681,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A primary key uniquely identifies each record.">
   <div class="quiz-q">🧩 Q1: A field that uniquely identifies each record in a table is called the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Primary key</button>
@@ -14690,7 +14690,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="One row in a table is a record; one column is a field.">
   <div class="quiz-q">🧩 Q2: One complete row of data in a table is called a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Record</button>
@@ -14699,7 +14699,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="DISTINCT removes duplicate rows from the results.">
   <div class="quiz-q">🧩 Q3: Which SQL keyword removes duplicate results from a query?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">DISTINCT</button>
@@ -14708,7 +14708,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="INSERT adds a new record.">
   <div class="quiz-q">🧩 Q4: Which SQL statement adds a brand new record to a table?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">INSERT</button>
@@ -14717,7 +14717,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Without WHERE, UPDATE changes every record in the table.">
   <div class="quiz-q">🧩 Q5: Running an UPDATE without a WHERE clause will...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Change every record in the table</button>
@@ -14726,12 +14726,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The schema is the table's design (fields and types), separate from the data stored in it.">
   <div class="quiz-q">🧩 Q6: The database schema refers to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The structure/design of the table, separate from the actual data</button>
-    <button class="quiz-opt" data-correct="false">A type of loop</button>
-    <button class="quiz-opt" data-correct="false">A physical network cable</button>
+    <button class="quiz-opt" data-correct="true">The design of the tables, separate from the data</button>
+    <button class="quiz-opt" data-correct="false">A type of loop that reads each table</button>
+    <button class="quiz-opt" data-correct="false">A physical cable that connects database servers</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -14785,7 +14785,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A runtime error happens while the program runs, e.g. dividing by zero.">
   <div class="quiz-q">🧩 Q1: An error where the code is valid but fails while running (e.g. divide by zero) is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Runtime error</button>
@@ -14794,7 +14794,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="It runs, but the logic is wrong, so it is a logical error.">
   <div class="quiz-q">🧩 Q2: A program that runs fine but gives the wrong answer has a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Logical error</button>
@@ -14803,7 +14803,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Abnormal (invalid) data checks that the program rejects bad input.">
   <div class="quiz-q">🧩 Q3: Testing with invalid input your program should reject uses...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Abnormal data</button>
@@ -14812,7 +14812,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tolerance means the interface copes with unexpected input without crashing.">
   <div class="quiz-q">🧩 Q4: A UI design that prevents crashes from unexpected input demonstrates...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Tolerance</button>
@@ -14821,7 +14821,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Feedback keeps users informed of what is happening and of any errors.">
   <div class="quiz-q">🧩 Q5: Keeping users informed of actions, states and errors is the UI principle of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Feedback</button>
@@ -14830,7 +14830,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Breaking the language's grammar rules is a syntax error.">
   <div class="quiz-q">🧩 Q6: A code error that breaks the language's grammar rules, so the program won't even run, is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Syntax error</button>
@@ -14888,7 +14888,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The CPU fetches an instruction, decodes it, executes it and stores the result.">
   <div class="quiz-q">🧩 Q1: The four stages of the machine cycle, in order, are...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Fetch, Decode, Execute, Store</button>
@@ -14897,25 +14897,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Hyper-threading makes one physical core appear as two logical cores.">
   <div class="quiz-q">🧩 Q2: Hyper-threading works by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Making one physical core present as two logical cores</button>
+    <button class="quiz-opt" data-correct="true">Making one core appear as two logical cores</button>
     <button class="quiz-opt" data-correct="false">Adding a second physical CPU</button>
-    <button class="quiz-opt" data-correct="false">Deleting unused registers</button>
+    <button class="quiz-opt" data-correct="false">Removing registers that aren't used</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An interrupt signals the CPU that a device needs attention.">
   <div class="quiz-q">🧩 Q3: An interrupt is used by hardware to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Signal the CPU that it needs attention</button>
-    <button class="quiz-opt" data-correct="false">Permanently disable the CPU</button>
-    <button class="quiz-opt" data-correct="false">Compress a file</button>
+    <button class="quiz-opt" data-correct="true">Signal that it needs the CPU's attention</button>
+    <button class="quiz-opt" data-correct="false">Permanently switch off the CPU when idle</button>
+    <button class="quiz-opt" data-correct="false">Compress a file stored in memory</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Virtual memory uses the much slower disk, so it costs speed.">
   <div class="quiz-q">🧩 Q4: Virtual memory extends usable memory at the cost of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Processing speed</button>
@@ -14924,16 +14924,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="UEFI is the modern firmware that replaced the older BIOS.">
   <div class="quiz-q">🧩 Q5: UEFI is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The modern replacement for the older BIOS firmware standard</button>
-    <button class="quiz-opt" data-correct="false">A type of RAM</button>
-    <button class="quiz-opt" data-correct="false">A network protocol</button>
+    <button class="quiz-opt" data-correct="false">A fast type of RAM used for cache</button>
+    <button class="quiz-opt" data-correct="false">A network protocol for booting over the internet</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SRAM is extremely fast (and expensive), so it is used for cache and registers.">
   <div class="quiz-q">🧩 Q6: SRAM is used for processor cache and registers mainly because it is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Extremely fast</button>
@@ -14983,7 +14983,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Registers, cache and RAM are primary memory that the CPU uses directly.">
   <div class="quiz-q">🧩 Q1: Registers, CPU cache and RAM are all examples of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Primary memory</button>
@@ -14992,34 +14992,34 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An assembler turns assembly language into machine code.">
   <div class="quiz-q">🧩 Q2: An assembler's job is to translate...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Low-level assembly language into machine code</button>
-    <button class="quiz-opt" data-correct="false">HTML into CSS</button>
-    <button class="quiz-opt" data-correct="false">SQL into a spreadsheet</button>
+    <button class="quiz-opt" data-correct="true">Assembly language into machine code</button>
+    <button class="quiz-opt" data-correct="false">HTML into CSS for websites</button>
+    <button class="quiz-opt" data-correct="false">SQL into a spreadsheet's formulas</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An interpreter translates and runs one line at a time; a compiler translates everything first.">
   <div class="quiz-q">🧩 Q3: An interpreter differs from a compiler because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Translates and runs code line by line</button>
-    <button class="quiz-opt" data-correct="false">Never translates any code at all</button>
-    <button class="quiz-opt" data-correct="false">Only works with low-level languages</button>
+    <button class="quiz-opt" data-correct="false">Never translates any of the code at all</button>
+    <button class="quiz-opt" data-correct="false">Only works with low-level assembly languages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Comparing these factors helps you pick the right storage for a scenario.">
   <div class="quiz-q">🧩 Q4: Comparing storage on speed, bandwidth, capacity and reliability helps you...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Choose the right storage solution for a scenario</button>
-    <button class="quiz-opt" data-correct="false">Write better pseudocode</button>
-    <button class="quiz-opt" data-correct="false">Design an HTML page</button>
+    <button class="quiz-opt" data-correct="true">Choose the right storage for a scenario</button>
+    <button class="quiz-opt" data-correct="false">Write better pseudocode for a program</button>
+    <button class="quiz-opt" data-correct="false">Design the layout of an HTML page</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="High-level languages are closer to English, so they are easier to read and write.">
   <div class="quiz-q">🧩 Q5: A high-level programming language is generally...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Easier to read and write than a low-level language</button>
@@ -15028,7 +15028,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cloud storage keeps data permanently, so it is secondary storage.">
   <div class="quiz-q">🧩 Q6: Cloud storage is best classified as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Secondary storage</button>
@@ -15091,34 +15091,34 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="DNS translates domain names (like google.com) into IP addresses.">
   <div class="quiz-q">🧩 Q1: DNS is responsible for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Translating domain names into IP addresses</button>
-    <button class="quiz-opt" data-correct="false">Assigning MAC addresses</button>
-    <button class="quiz-opt" data-correct="false">Compressing video files</button>
+    <button class="quiz-opt" data-correct="false">Assigning MAC addresses to network cards</button>
+    <button class="quiz-opt" data-correct="false">Compressing video files for streaming</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="DHCP assigns IP addresses automatically to devices that join the network.">
   <div class="quiz-q">🧩 Q2: DHCP's role is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Automatically assign IP addresses to devices joining a network</button>
-    <button class="quiz-opt" data-correct="false">Encrypt web traffic</button>
-    <button class="quiz-opt" data-correct="false">Store backup files</button>
+    <button class="quiz-opt" data-correct="true">Assign IP addresses to devices automatically</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the web traffic on the network</button>
+    <button class="quiz-opt" data-correct="false">Store backup files for every device</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A MAC address is the unique hardware address of a network card.">
   <div class="quiz-q">🧩 Q3: A MAC address is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A unique, hardware-level identifier for a device</button>
-    <button class="quiz-opt" data-correct="false">A password for a website</button>
-    <button class="quiz-opt" data-correct="false">A type of file extension</button>
+    <button class="quiz-opt" data-correct="false">A password used to log in to a website</button>
+    <button class="quiz-opt" data-correct="false">A type of file extension for Apple files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="HTTPS is HTTP with encryption.">
   <div class="quiz-q">🧩 Q4: HTTPS differs from HTTP because it is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Encrypted</button>
@@ -15127,16 +15127,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Crosstalk is a signal from one wire interfering with a neighbouring one.">
   <div class="quiz-q">🧩 Q5: Crosstalk refers to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Signal from one cable/circuit bleeding into another</button>
+    <button class="quiz-opt" data-correct="true">Signal from one wire leaking into another</button>
     <button class="quiz-opt" data-correct="false">A network device failing completely</button>
     <button class="quiz-opt" data-correct="false">A type of database join</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="IPv4 has about 4.3 billion addresses, and they were running out.">
   <div class="quiz-q">🧩 Q6: IPv6 was introduced mainly because...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">IPv4 addresses were running out</button>
@@ -15199,43 +15199,43 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Lossy compression throws away some detail for good to make the file much smaller.">
   <div class="quiz-q">🧩 Q1: Lossy compression differs from lossless because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Permanently discards some quality to reduce file size</button>
-    <button class="quiz-opt" data-correct="false">Never reduces file size</button>
-    <button class="quiz-opt" data-correct="false">Only works on text files</button>
+    <button class="quiz-opt" data-correct="true">Throws away some detail for good to make it smaller</button>
+    <button class="quiz-opt" data-correct="false">Never reduces the size of the file at all</button>
+    <button class="quiz-opt" data-correct="false">Only works on text files, not on media files</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A dynamic site builds pages on the fly, often from a database, so they can be personalised.">
   <div class="quiz-q">🧩 Q2: A dynamic website differs from a static one because it...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Generates personalised content on the fly</button>
-    <button class="quiz-opt" data-correct="false">Cannot ever use images</button>
-    <button class="quiz-opt" data-correct="false">Never uses a database</button>
+    <button class="quiz-opt" data-correct="false">Cannot ever display any images</button>
+    <button class="quiz-opt" data-correct="false">Never uses a database for its content</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A native app is built for one platform (e.g. Android) and installed from its app store.">
   <div class="quiz-q">🧩 Q3: A native mobile app is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Built specifically for one platform and installed from an app store</button>
-    <button class="quiz-opt" data-correct="false">Always identical to a web app</button>
-    <button class="quiz-opt" data-correct="false">Never able to access device hardware</button>
+    <button class="quiz-opt" data-correct="true">Built for one platform and installed from its store</button>
+    <button class="quiz-opt" data-correct="false">Always identical to the web version of the app</button>
+    <button class="quiz-opt" data-correct="false">Never able to use the phone's camera or GPS</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Streaming plays as the data arrives, without waiting for the whole file.">
   <div class="quiz-q">🧩 Q4: Streaming media differs from downloading because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Plays continuously as data arrives, rather than waiting for the full file</button>
-    <button class="quiz-opt" data-correct="false">Always uses less bandwidth than downloading</button>
-    <button class="quiz-opt" data-correct="false">Cannot be used for audio</button>
+    <button class="quiz-opt" data-correct="true">Plays as the data arrives, without waiting for the file</button>
+    <button class="quiz-opt" data-correct="false">Always uses much less bandwidth than downloading does</button>
+    <button class="quiz-opt" data-correct="false">Cannot be used for music or for any other audio</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Client-side scripts (JavaScript) run in the user's browser.">
   <div class="quiz-q">🧩 Q5: Client-side scripting runs on the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">User's own browser</button>
@@ -15244,12 +15244,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Mobile apps must work within limited screen size, processing, storage and bandwidth.">
   <div class="quiz-q">🧩 Q6: Mobile app design must account for constraints including...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Screen size, processing power, storage and bandwidth</button>
-    <button class="quiz-opt" data-correct="false">Only the app's colour scheme</button>
-    <button class="quiz-opt" data-correct="false">Only the developer's preferred language</button>
+    <button class="quiz-opt" data-correct="false">Only the colour scheme chosen for the app</button>
+    <button class="quiz-opt" data-correct="false">Only the developer's favourite programming language</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -15298,7 +15298,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Verification checks that data was entered exactly as intended, e.g. typing a password twice.">
   <div class="quiz-q">🧩 Q1: Checking that data was entered exactly as intended (e.g. re-typing a password) is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Verification</button>
@@ -15307,7 +15307,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A type check makes sure the data is the right type, e.g. a real date.">
   <div class="quiz-q">🧩 Q2: A check that a date field actually contains a valid date (not text) is a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Type check</button>
@@ -15316,16 +15316,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Reverse image search uses a picture instead of keywords.">
   <div class="quiz-q">🧩 Q3: Reverse image lookup lets you search using...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">An image instead of keywords</button>
-    <button class="quiz-opt" data-correct="false">Only sound files</button>
-    <button class="quiz-opt" data-correct="false">Only exact URLs</button>
+    <button class="quiz-opt" data-correct="true">A picture instead of keywords</button>
+    <button class="quiz-opt" data-correct="false">Only sound files and recordings</button>
+    <button class="quiz-opt" data-correct="false">Only exact website addresses</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A parity bit detects errors in data sent over a connection.">
   <div class="quiz-q">🧩 Q4: A parity check is specifically used to detect...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Data transmission errors</button>
@@ -15334,16 +15334,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A check digit is calculated from the other digits; if it doesn't match, the data is wrong.">
   <div class="quiz-q">🧩 Q5: A check digit works by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Using a calculated value to confirm data wasn't corrupted</button>
+    <button class="quiz-opt" data-correct="true">A calculated digit shows if the data was changed</button>
     <button class="quiz-opt" data-correct="false">Deleting invalid records automatically</button>
-    <button class="quiz-opt" data-correct="false">Encrypting the entire database</button>
+    <button class="quiz-opt" data-correct="false">Encrypting the whole database for safety</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A logical error in the code is a programming error.">
   <div class="quiz-q">🧩 Q6: An undetected logical error in the program's own code is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Programming error</button>
@@ -15401,52 +15401,52 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Mirroring (RAID 1) writes the same data to two drives at once.">
   <div class="quiz-q">🧩 Q1: RAID mirroring works by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Writing identical copies of data to two drives simultaneously</button>
+    <button class="quiz-opt" data-correct="true">Writing the same data to two drives at once</button>
     <button class="quiz-opt" data-correct="false">Deleting duplicate files automatically</button>
-    <button class="quiz-opt" data-correct="false">Compressing all stored data</button>
+    <button class="quiz-opt" data-correct="false">Compressing all the stored data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An audit trail records who did what and when.">
   <div class="quiz-q">🧩 Q2: An audit trail's purpose is to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Record who did what, so it can be reviewed later</button>
-    <button class="quiz-opt" data-correct="false">Physically back up hardware</button>
-    <button class="quiz-opt" data-correct="false">Increase network bandwidth</button>
+    <button class="quiz-opt" data-correct="true">Record who did what, for later review</button>
+    <button class="quiz-opt" data-correct="false">Physically back up the hardware</button>
+    <button class="quiz-opt" data-correct="false">Increase the network's bandwidth</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A botnet attack uses many compromised devices controlled together.">
   <div class="quiz-q">🧩 Q3: A botnet/zombie army attack relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Many compromised devices being controlled together</button>
-    <button class="quiz-opt" data-correct="false">A single unmodified device</button>
-    <button class="quiz-opt" data-correct="false">A hardware firewall alone</button>
+    <button class="quiz-opt" data-correct="false">A single device that has not been changed</button>
+    <button class="quiz-opt" data-correct="false">A hardware firewall and nothing else</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each defence covers certain threats, so you layer them.">
   <div class="quiz-q">🧩 Q4: Why is "defence in depth" (multiple layered defences) recommended?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Each solution only protects against a specific category of threat</button>
-    <button class="quiz-opt" data-correct="false">A single firewall protects against every possible threat</button>
-    <button class="quiz-opt" data-correct="false">Layering defences is required by law only</button>
+    <button class="quiz-opt" data-correct="false">One good firewall protects against every possible threat</button>
+    <button class="quiz-opt" data-correct="false">Layering defences is only done because the law requires it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A remote backup survives a fire or theft that destroys the local site.">
   <div class="quiz-q">🧩 Q5: A remote backup, compared to a local one, mainly protects against...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Disasters that destroy the local site entirely</button>
-    <button class="quiz-opt" data-correct="false">Slow typing speed</button>
-    <button class="quiz-opt" data-correct="false">Software licensing costs</button>
+    <button class="quiz-opt" data-correct="true">A disaster that destroys the local site</button>
+    <button class="quiz-opt" data-correct="false">The slow typing speed of the staff</button>
+    <button class="quiz-opt" data-correct="false">The cost of software licences</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Firewalls filter traffic by port.">
   <div class="quiz-q">🧩 Q6: Port filtering is a function typically performed by a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Firewall</button>
@@ -15501,7 +15501,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Watching someone enter a PIN is shoulder surfing.">
   <div class="quiz-q">🧩 Q1: Watching someone type their PIN at an ATM is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Shoulder surfing</button>
@@ -15510,7 +15510,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A cracker hacks with malicious intent.">
   <div class="quiz-q">🧩 Q2: A cracker is best distinguished from a general hacker by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Specifically malicious intent</button>
@@ -15519,16 +15519,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An AUP sets the rules for how staff may use the company's systems.">
   <div class="quiz-q">🧩 Q3: An Acceptable Use Policy sets out...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Rules governing how staff may use company systems</button>
-    <button class="quiz-opt" data-correct="false">Hardware purchase prices</button>
-    <button class="quiz-opt" data-correct="false">Database normalisation steps</button>
+    <button class="quiz-opt" data-correct="false">The prices the company pays for hardware</button>
+    <button class="quiz-opt" data-correct="false">The steps for normalising the company's database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Searching through discarded paperwork is dumpster diving.">
   <div class="quiz-q">🧩 Q4: Searching through someone's discarded paperwork for sensitive information is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Dumpster diving</button>
@@ -15537,16 +15537,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Most attacks succeed by tricking a person rather than breaking the technology.">
   <div class="quiz-q">🧩 Q5: Most successful cyberattacks succeed by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Tricking a person, not defeating technical defences</button>
-    <button class="quiz-opt" data-correct="false">Always breaking strong encryption directly</button>
-    <button class="quiz-opt" data-correct="false">Physically destroying a data centre</button>
+    <button class="quiz-opt" data-correct="false">Breaking strong encryption directly every time</button>
+    <button class="quiz-opt" data-correct="false">Physically destroying the target's data centre</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Machines doing work people used to do is workforce replacement.">
   <div class="quiz-q">🧩 Q6: Robots and AI replacing tasks once done by people is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Workforce replacement</button>
@@ -15590,25 +15590,25 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Information hiding stops outside code from changing a class's data incorrectly.">
   <div class="quiz-q">🧩 Q1: Information hiding is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Protect a class's internal data from being changed incorrectly from outside</button>
-    <button class="quiz-opt" data-correct="false">Permanently delete unused variables</button>
-    <button class="quiz-opt" data-correct="false">Speed up network transfer</button>
+    <button class="quiz-opt" data-correct="true">Stop outside code changing a class's data incorrectly</button>
+    <button class="quiz-opt" data-correct="false">Permanently delete variables that are not used</button>
+    <button class="quiz-opt" data-correct="false">Speed up the transfer of data over the network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Reusing or adapting an existing class saves time and avoids duplication.">
   <div class="quiz-q">🧩 Q2: Before writing a new class, good practice is to first...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Check whether an existing class can be reused or adapted</button>
-    <button class="quiz-opt" data-correct="false">Always start completely from scratch</button>
-    <button class="quiz-opt" data-correct="false">Delete all other classes in the project</button>
+    <button class="quiz-opt" data-correct="false">Always start the new class completely from scratch</button>
+    <button class="quiz-opt" data-correct="false">Delete all the other classes in the project first</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Stopping as soon as the target is found avoids wasted work: execution efficiency.">
   <div class="quiz-q">🧩 Q3: A search algorithm that stops the moment it finds its target demonstrates...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Execution efficiency</button>
@@ -15617,7 +15617,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Separating the interface from the logic splits the problem into parts, which is decomposition.">
   <div class="quiz-q">🧩 Q4: Separating the interface from the backend logic is part of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Decomposition</button>
@@ -15626,7 +15626,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Choosing only the fields and methods a class needs is abstraction.">
   <div class="quiz-q">🧩 Q5: Designing a class to encapsulate the right fields and methods is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Abstraction</button>
@@ -15635,7 +15635,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Reusable methods avoid duplicated logic, improving code efficiency.">
   <div class="quiz-q">🧩 Q6: Using methods and parameters to avoid duplicating logic improves...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Code efficiency</button>
@@ -15687,34 +15687,34 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Overflow is a value too large for the number of bits available.">
   <div class="quiz-q">🧩 Q1: An overflow error occurs when...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A value exceeds what a fixed number of bits can represent</button>
-    <button class="quiz-opt" data-correct="false">A file is compressed too much</button>
-    <button class="quiz-opt" data-correct="false">A network cable is too long</button>
+    <button class="quiz-opt" data-correct="true">A value is too big for the number of bits available</button>
+    <button class="quiz-opt" data-correct="false">A file is compressed more often than it can be</button>
+    <button class="quiz-opt" data-correct="false">A network cable is longer than the allowed limit</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="One hex digit stands for four bits, so long binary becomes short and readable.">
   <div class="quiz-q">🧩 Q2: Hexadecimal digits are used mainly to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Shorten long binary numbers into a more readable form</button>
-    <button class="quiz-opt" data-correct="false">Replace decimal numbers entirely</button>
-    <button class="quiz-opt" data-correct="false">Encrypt network traffic</button>
+    <button class="quiz-opt" data-correct="false">Replace decimal numbers entirely in programs</button>
+    <button class="quiz-opt" data-correct="false">Encrypt the traffic sent over a network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In parallel arrays, index i in each array describes the same item.">
   <div class="quiz-q">🧩 Q3: In parallel arrays, the same index across arrays...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Describes attributes of the same single entity</button>
-    <button class="quiz-opt" data-correct="false">Always refers to unrelated data</button>
-    <button class="quiz-opt" data-correct="false">Is not allowed in programming</button>
+    <button class="quiz-opt" data-correct="false">Always refers to completely unrelated data</button>
+    <button class="quiz-opt" data-correct="false">Is not allowed in most programming languages</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Real (floating-point) numbers are stored as a mantissa and an exponent.">
   <div class="quiz-q">🧩 Q4: A real number is typically represented using a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Mantissa and exponent</button>
@@ -15723,7 +15723,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An array of objects keeps each item's data together, which is safer than parallel arrays.">
   <div class="quiz-q">🧩 Q5: An array of objects, compared to parallel arrays, mainly offers...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Related data bundled together more safely</button>
@@ -15732,12 +15732,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="IPv6 uses 128 bits instead of 32, giving vastly more addresses.">
   <div class="quiz-q">🧩 Q6: IPv6 uses more bits per address than IPv4, mainly to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Allow for vastly more possible addresses</button>
-    <button class="quiz-opt" data-correct="false">Slow down network traffic on purpose</button>
-    <button class="quiz-opt" data-correct="false">Remove the need for MAC addresses</button>
+    <button class="quiz-opt" data-correct="false">Slow down the network traffic on purpose</button>
+    <button class="quiz-opt" data-correct="false">Remove the need for MAC addresses on cards</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -15783,7 +15783,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="An accessor (getter) returns a field's value.">
   <div class="quiz-q">🧩 Q1: An accessor method's job is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Read a field's value</button>
@@ -15792,25 +15792,25 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Encapsulation bundles data with its methods and hides the internal details.">
   <div class="quiz-q">🧩 Q2: Encapsulation is the practice of...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Bundling data and its methods together, hiding internal details</button>
-    <button class="quiz-opt" data-correct="false">Deleting all private fields</button>
-    <button class="quiz-opt" data-correct="false">Making every field public</button>
+    <button class="quiz-opt" data-correct="true">Bundling data with its methods and hiding the details</button>
+    <button class="quiz-opt" data-correct="false">Deleting all the private fields from a class</button>
+    <button class="quiz-opt" data-correct="false">Making every field public so it is easy to use</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A static field belongs to the class and is shared by every object.">
   <div class="quiz-q">🧩 Q3: A static field belongs to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The class itself, shared across all objects</button>
-    <button class="quiz-opt" data-correct="false">Only one specific object</button>
-    <button class="quiz-opt" data-correct="false">The network layer</button>
+    <button class="quiz-opt" data-correct="false">Only one specific object of the class</button>
+    <button class="quiz-opt" data-correct="false">The network layer of the program</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="At Grade 11, truth tables cover expressions with up to four variables (16 rows).">
   <div class="quiz-q">🧩 Q4: A truth table at Grade 11 level can be used to verify Boolean expressions with up to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Four variables</button>
@@ -15819,21 +15819,21 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A mutator (setter) changes a field's value, often after validating it.">
   <div class="quiz-q">🧩 Q5: A mutator method typically...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Changes a field's value, often with validation</button>
-    <button class="quiz-opt" data-correct="false">Only reads a field's value</button>
-    <button class="quiz-opt" data-correct="false">Deletes the entire class</button>
+    <button class="quiz-opt" data-correct="false">Only reads a field's value and returns it</button>
+    <button class="quiz-opt" data-correct="false">Deletes the whole class from the program</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A private helper is used only inside the class.">
   <div class="quiz-q">🧩 Q6: A private helper method is used...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Internally within the class, not as part of its public interface</button>
-    <button class="quiz-opt" data-correct="false">Only by other unrelated classes</button>
-    <button class="quiz-opt" data-correct="false">To replace constructors entirely</button>
+    <button class="quiz-opt" data-correct="true">Only inside the class, not by other classes</button>
+    <button class="quiz-opt" data-correct="false">Only by other classes that are unrelated</button>
+    <button class="quiz-opt" data-correct="false">To replace all of the class's constructors</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -15875,7 +15875,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Binary search halves the list each time, so the list must be sorted.">
   <div class="quiz-q">🧩 Q1: A binary search requires the list to be...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Sorted</button>
@@ -15884,16 +15884,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The flag notes whether any swap happened; with no swaps the list is sorted, so it stops.">
   <div class="quiz-q">🧩 Q2: A bubble sort with a flag improves efficiency by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Stopping early once the list is already sorted</button>
-    <button class="quiz-opt" data-correct="false">Always making exactly one pass</button>
-    <button class="quiz-opt" data-correct="false">Skipping the comparison step entirely</button>
+    <button class="quiz-opt" data-correct="false">Always making exactly one pass through the list</button>
+    <button class="quiz-opt" data-correct="false">Skipping the step that compares two items</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="null means no object or value is returned.">
   <div class="quiz-q">🧩 Q3: A method returning "null" means it is returning...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Nothing / no value</button>
@@ -15902,7 +15902,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Check that the file exists first, so the program doesn't crash.">
   <div class="quiz-q">🧩 Q4: Before reading from a text file, good practice is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Test whether the file actually exists</button>
@@ -15911,7 +15911,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Move the repeated code into one reusable method.">
   <div class="quiz-q">🧩 Q5: Noticing the same lines of code repeated in several places suggests you should...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Extract them into a shared, reusable method</button>
@@ -15920,11 +15920,11 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Passing an object hands over many related values at once.">
   <div class="quiz-q">🧩 Q6: A parameter passed as a whole object (rather than a single variable) lets a method...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Receive multiple related pieces of data at once</button>
-    <button class="quiz-opt" data-correct="false">Never return a value</button>
+    <button class="quiz-opt" data-correct="true">Receive many related values at once</button>
+    <button class="quiz-opt" data-correct="false">Never return a value to the caller</button>
     <button class="quiz-opt" data-correct="false">Skip exception handling entirely</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -15986,52 +15986,52 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="GROUP BY groups the rows; HAVING filters on totals such as COUNT or SUM.">
   <div class="quiz-q">🧩 Q1: GROUP BY combined with HAVING is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Group rows and filter on aggregated results</button>
     <button class="quiz-opt" data-correct="false">Sort a single column alphabetically</button>
-    <button class="quiz-opt" data-correct="false">Delete a table</button>
+    <button class="quiz-opt" data-correct="false">Delete a table from the database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SQL injection uses malicious input to manipulate the database.">
   <div class="quiz-q">🧩 Q2: SQL injection is a threat that a DBMS's security features should defend against because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Attempts to manipulate a database through malicious input</button>
-    <button class="quiz-opt" data-correct="false">Only affects hardware components</button>
-    <button class="quiz-opt" data-correct="false">Is a type of network topology</button>
+    <button class="quiz-opt" data-correct="true">It manipulates the database through malicious input</button>
+    <button class="quiz-opt" data-correct="false">Only affects the server's hardware components</button>
+    <button class="quiz-opt" data-correct="false">Is a type of network topology for databases</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Extreme and abnormal data find edge-case bugs that typical data misses.">
   <div class="quiz-q">🧩 Q3: Testing a program with extreme and abnormal data, not just typical data, helps to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reveal edge-case bugs a typical test would miss</button>
-    <button class="quiz-opt" data-correct="false">Slow down the testing process for no benefit</button>
+    <button class="quiz-opt" data-correct="false">Slow down the testing for no real benefit</button>
     <button class="quiz-opt" data-correct="false">Replace the need for a trace table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good error message says what went wrong and how to fix it.">
   <div class="quiz-q">🧩 Q4: A descriptive error message, done well, should...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Indicate a solution, not just that something went wrong</button>
-    <button class="quiz-opt" data-correct="false">Always be a generic "Error" with no detail</button>
+    <button class="quiz-opt" data-correct="true">Say what went wrong and how to fix it</button>
+    <button class="quiz-opt" data-correct="false">Always be a generic "Error", with no detail</button>
     <button class="quiz-opt" data-correct="false">Be hidden from the user entirely</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A breakpoint pauses the program at a line so you can inspect the values.">
   <div class="quiz-q">🧩 Q5: A breakpoint, used while debugging, is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Pause execution at a specific line to inspect the program's state</button>
-    <button class="quiz-opt" data-correct="false">Permanently stop the program forever</button>
-    <button class="quiz-opt" data-correct="false">Automatically fix bugs</button>
+    <button class="quiz-opt" data-correct="true">Pause the program at a line to inspect values</button>
+    <button class="quiz-opt" data-correct="false">Permanently stop the program from ever running</button>
+    <button class="quiz-opt" data-correct="false">Automatically find and fix the bugs in the code</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Complex desktop applications need help that matches what you are doing.">
   <div class="quiz-q">🧩 Q6: Context-sensitive help is more likely to be needed in...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A complex desktop application</button>
@@ -16088,16 +16088,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="&quot;Motivate&quot; means link a specific need to a specific, justified choice.">
   <div class="quiz-q">🧩 Q1: A "motivate" question is really testing whether you can...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Connect a specific need to a specific, justified choice</button>
     <button class="quiz-opt" data-correct="false">List every possible specification with no context</button>
-    <button class="quiz-opt" data-correct="false">Recommend the cheapest option regardless of fit</button>
+    <button class="quiz-opt" data-correct="false">Recommend the cheapest option, whatever the fit</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="More computing power uses more battery.">
   <div class="quiz-q">🧩 Q2: Battery life is a constraint most directly traded off against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Computing power</button>
@@ -16106,16 +16106,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Small devices have little room for cooling, a big battery or a full keyboard.">
   <div class="quiz-q">🧩 Q3: A smaller mobile device typically has less room for...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Cooling, battery and a full-size keyboard</button>
-    <button class="quiz-opt" data-correct="false">Software installed</button>
-    <button class="quiz-opt" data-correct="false">Internet access</button>
+    <button class="quiz-opt" data-correct="true">Cooling, a big battery and a full keyboard</button>
+    <button class="quiz-opt" data-correct="false">Software and apps installed on it</button>
+    <button class="quiz-opt" data-correct="false">Internet access and Wi-Fi signal</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Always tie the solution back to the specific user's needs.">
   <div class="quiz-q">🧩 Q4: Motivating a computer-based solution should always tie back to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The needs of the specified user</button>
@@ -16124,16 +16124,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Specs with no justification score poorly; link each one to the scenario.">
   <div class="quiz-q">🧩 Q5: Listing impressive specifications with no justification for a scenario...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Scores poorly on "motivate" questions</button>
-    <button class="quiz-opt" data-correct="false">Is exactly what examiners want</button>
-    <button class="quiz-opt" data-correct="false">Guarantees full marks</button>
+    <button class="quiz-opt" data-correct="false">Is exactly what examiners want to see</button>
+    <button class="quiz-opt" data-correct="false">Guarantees full marks for the question</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Powerful components use more power, so the battery drains faster.">
   <div class="quiz-q">🧩 Q6: More powerful mobile components typically...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Drain the battery faster</button>
@@ -16200,7 +16200,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A thin client relies on a central server to do the processing.">
   <div class="quiz-q">🧩 Q1: A thin client relies heavily on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A central server for processing</button>
@@ -16209,7 +16209,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A fat client does a lot of processing itself.">
   <div class="quiz-q">🧩 Q2: A fat client is characterised by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Substantial local processing power</button>
@@ -16218,16 +16218,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A VPN creates a secure, encrypted connection to a private network over the internet.">
   <div class="quiz-q">🧩 Q3: A VPN provides remote access by...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Creating a secure connection to a private network</button>
-    <button class="quiz-opt" data-correct="false">Physically extending network cables</button>
-    <button class="quiz-opt" data-correct="false">Removing the need for any authentication</button>
+    <button class="quiz-opt" data-correct="true">A secure connection to a private network</button>
+    <button class="quiz-opt" data-correct="false">Physically extending the network cables</button>
+    <button class="quiz-opt" data-correct="false">Removing the need to log in at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="BitTorrent shares files directly between users: peer-to-peer.">
   <div class="quiz-q">🧩 Q4: BitTorrent is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Peer-to-peer file sharing</button>
@@ -16236,7 +16236,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The cloud is like extra LAN resources that are hosted somewhere else.">
   <div class="quiz-q">🧩 Q5: Cloud computing can be usefully understood as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An extension of your LAN's resources hosted elsewhere</button>
@@ -16245,12 +16245,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Each IoT device adds convenience, and another possible way in for attackers.">
   <div class="quiz-q">🧩 Q6: Each additional IoT device connected to a network represents...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Both added convenience and a potential vulnerability</button>
-    <button class="quiz-opt" data-correct="false">Pure convenience with zero risk</button>
-    <button class="quiz-opt" data-correct="false">Pure risk with zero benefit</button>
+    <button class="quiz-opt" data-correct="true">Convenience and a possible vulnerability</button>
+    <button class="quiz-opt" data-correct="false">Pure convenience with zero risk at all</button>
+    <button class="quiz-opt" data-correct="false">Pure risk with zero benefit to users</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -16286,34 +16286,34 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="The dark web is a deliberately hidden part of the deep web, reached with tools like Tor.">
   <div class="quiz-q">🧩 Q1: The dark web is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A deliberately hidden portion of the deep web</button>
-    <button class="quiz-opt" data-correct="false">Every page not on the first search result</button>
-    <button class="quiz-opt" data-correct="false">A synonym for the entire Internet</button>
+    <button class="quiz-opt" data-correct="false">Every page that is not on the first page of search results</button>
+    <button class="quiz-opt" data-correct="false">Another name for the whole internet and everything on it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Tor routes traffic through several relays, each adding a layer of encryption.">
   <div class="quiz-q">🧩 Q2: Tor (the onion router) provides anonymity by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Routing traffic through multiple encrypted layers</button>
-    <button class="quiz-opt" data-correct="false">Disabling the Internet connection entirely</button>
+    <button class="quiz-opt" data-correct="false">Switching off the internet connection entirely</button>
     <button class="quiz-opt" data-correct="false">Deleting all browser history automatically</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Anonymity tools protect journalists and activists under repressive governments.">
   <div class="quiz-q">🧩 Q3: A legitimate use of anonymity tools is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Protecting journalists and activists under restrictive regimes</button>
-    <button class="quiz-opt" data-correct="false">There are no legitimate uses whatsoever</button>
-    <button class="quiz-opt" data-correct="false">Speeding up a printer</button>
+    <button class="quiz-opt" data-correct="true">Protecting journalists and activists under repression</button>
+    <button class="quiz-opt" data-correct="false">There are no legitimate uses whatsoever for them</button>
+    <button class="quiz-opt" data-correct="false">Speeding up printers that are shared on a network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Content behind logins or paywalls isn't indexed, so it is part of the deep web.">
   <div class="quiz-q">🧩 Q4: Content behind a login or paywall, invisible to standard search engines, is part of the...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Deep web</button>
@@ -16322,20 +16322,20 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A balanced answer covers both the dangers and the legitimate uses.">
   <div class="quiz-q">🧩 Q5: A balanced exam answer about the dark web should discuss...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Both its dangers and its legitimate applications</button>
     <button class="quiz-opt" data-correct="false">Only its dangers, with no other perspective</button>
-    <button class="quiz-opt" data-correct="false">Neither dangers nor benefits</button>
+    <button class="quiz-opt" data-correct="false">Neither its dangers nor its benefits, only facts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A VPN encrypts your traffic and sends it through its server, so sites see the VPN's IP address.">
   <div class="quiz-q">🧩 Q6: A VPN provides anonymity by...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Routing and encrypting traffic through a different server</button>
-    <button class="quiz-opt" data-correct="false">Physically disconnecting your device</button>
+    <button class="quiz-opt" data-correct="false">Physically disconnecting your device from the network</button>
     <button class="quiz-opt" data-correct="false">Deleting your device's IP address permanently</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -16383,34 +16383,34 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A blockchain is a shared ledger that is very hard to tamper with.">
   <div class="quiz-q">🧩 Q1: Blockchain is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A shared, tamper-resistant ledger technology</button>
-    <button class="quiz-opt" data-correct="false">A single centralised bank database</button>
-    <button class="quiz-opt" data-correct="false">A type of printer driver</button>
+    <button class="quiz-opt" data-correct="false">A single central database run by one bank</button>
+    <button class="quiz-opt" data-correct="false">A type of printer driver for receipts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A distributed ledger is copied across many computers, so no single owner controls it.">
   <div class="quiz-q">🧩 Q2: A distributed database, in the context of blockchain, means...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">No single central owner controls it</button>
-    <button class="quiz-opt" data-correct="false">Only one bank can access it</button>
-    <button class="quiz-opt" data-correct="false">It cannot record transactions</button>
+    <button class="quiz-opt" data-correct="false">Only one bank is allowed to access it</button>
+    <button class="quiz-opt" data-correct="false">It cannot be used to record transactions</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="GPS gives the position, and location-based services use it in apps.">
   <div class="quiz-q">🧩 Q3: LBS and GPS together enable...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Location-aware apps and services</button>
+    <button class="quiz-opt" data-correct="true">Location-aware apps</button>
     <button class="quiz-opt" data-correct="false">Faster CPU processing</button>
     <button class="quiz-opt" data-correct="false">Database normalisation</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Processing moves to the cloud, so less local hardware is needed.">
   <div class="quiz-q">🧩 Q4: Moving to the cloud generally has what effect on local hardware needs?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reduces them</button>
@@ -16419,7 +16419,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A digital certificate verifies identity online.">
   <div class="quiz-q">🧩 Q5: A digital certificate's role is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Verify identity online</button>
@@ -16428,12 +16428,12 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In each case, the question is who controls the infrastructure and how that affects users.">
   <div class="quiz-q">🧩 Q6: A recurring theme across cloud services, location tracking and digital currency is...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Who controls the infrastructure and what that means for users</button>
-    <button class="quiz-opt" data-correct="false">The exact cost of a printer</button>
-    <button class="quiz-opt" data-correct="false">Nothing — they are entirely unrelated topics</button>
+    <button class="quiz-opt" data-correct="true">Who controls the infrastructure, and what that means for users</button>
+    <button class="quiz-opt" data-correct="false">The exact cost of the printers and other hardware involved</button>
+    <button class="quiz-opt" data-correct="false">Nothing, since the three topics are entirely unrelated to each other</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -16468,16 +16468,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A good solution is affordable, practical and fits the specific risk.">
   <div class="quiz-q">🧩 Q1: When recommending a security solution, you should always consider...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Cost, practicality, and fit to the specific risk</button>
-    <button class="quiz-opt" data-correct="false">Only whether it sounds impressive</button>
-    <button class="quiz-opt" data-correct="false">Nothing — any solution works for any threat</button>
+    <button class="quiz-opt" data-correct="false">Only whether the solution sounds impressive</button>
+    <button class="quiz-opt" data-correct="false">Nothing, since any solution works for any threat</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Fake sites pushed up in search results are used for phishing.">
   <div class="quiz-q">🧩 Q2: A fake website optimised to impersonate a real one is a risk related to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Malicious SEO / phishing</button>
@@ -16486,39 +16486,39 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="These questions test whether you can combine three years of security knowledge.">
   <div class="quiz-q">🧩 Q3: "Identify potential threats" questions at Grade 12 level mainly test...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Your ability to synthesise three years of security knowledge</button>
-    <button class="quiz-opt" data-correct="false">Only memorised definitions with no application</button>
-    <button class="quiz-opt" data-correct="false">Typing speed</button>
+    <button class="quiz-opt" data-correct="true">Combining three years of security knowledge</button>
+    <button class="quiz-opt" data-correct="false">Only memorised definitions, with no application</button>
+    <button class="quiz-opt" data-correct="false">How fast and accurately you can type the answer</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Solutions must fit the specific threat; a firewall doesn't stop phishing or theft.">
   <div class="quiz-q">🧩 Q4: "Add a firewall" as a universal answer to every security scenario is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Too generic — solutions should fit the specific threat</button>
-    <button class="quiz-opt" data-correct="false">Always the single correct answer</button>
-    <button class="quiz-opt" data-correct="false">Irrelevant to security entirely</button>
+    <button class="quiz-opt" data-correct="false">Always the single correct answer in any scenario</button>
+    <button class="quiz-opt" data-correct="false">Irrelevant to security, since firewalls don't help</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Poor SEO makes a legitimate site hard to find, which is a business risk.">
   <div class="quiz-q">🧩 Q5: A neglected SEO strategy can itself become a risk because it...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Reduces a legitimate site's visibility and discoverability</button>
-    <button class="quiz-opt" data-correct="false">Automatically causes data loss</button>
-    <button class="quiz-opt" data-correct="false">Has no real-world consequence</button>
+    <button class="quiz-opt" data-correct="true">It makes a real site hard to find</button>
+    <button class="quiz-opt" data-correct="false">Automatically causes the site to lose its data</button>
+    <button class="quiz-opt" data-correct="false">Has no real-world consequence for the business</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Cover its purpose, how it works, its advantages, disadvantages and social impact.">
   <div class="quiz-q">🧩 Q6: Evaluating a new communication technology should include...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Its purpose, mechanism, advantages, disadvantages and social impact</button>
-    <button class="quiz-opt" data-correct="false">Only its release date</button>
-    <button class="quiz-opt" data-correct="false">Only its marketing slogan</button>
+    <button class="quiz-opt" data-correct="true">Its purpose, how it works, pros, cons and social impact</button>
+    <button class="quiz-opt" data-correct="false">Only the date it was first released to the public</button>
+    <button class="quiz-opt" data-correct="false">Only the slogan that was used to market it</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -16561,43 +16561,43 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Digital heritage is about who owns your data and accounts after you die.">
   <div class="quiz-q">🧩 Q1: Digital heritage concerns...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Legal rights to your data and applications after death</button>
-    <button class="quiz-opt" data-correct="false">Only ancient computer museums</button>
+    <button class="quiz-opt" data-correct="true">Rights to your data and accounts after death</button>
+    <button class="quiz-opt" data-correct="false">Only ancient computers kept in museums</button>
     <button class="quiz-opt" data-correct="false">A type of database normalisation</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Sensor networks feed huge amounts of data to AI, which spots warning patterns quickly.">
   <div class="quiz-q">🧩 Q2: AI can help predict natural disasters mainly through...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Sensor networks and rapid large-scale data processing</button>
-    <button class="quiz-opt" data-correct="false">Manually reading printed reports</button>
-    <button class="quiz-opt" data-correct="false">Random guessing</button>
+    <button class="quiz-opt" data-correct="true">Sensor networks and fast data processing</button>
+    <button class="quiz-opt" data-correct="false">Manually reading printed weather reports</button>
+    <button class="quiz-opt" data-correct="false">Random guessing, checked later by experts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Green computing reduces computing's impact on the environment.">
   <div class="quiz-q">🧩 Q3: Green computing is concerned with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Reducing computing's environmental impact</button>
     <button class="quiz-opt" data-correct="false">Making computer cases green in colour</button>
-    <button class="quiz-opt" data-correct="false">Increasing e-waste production</button>
+    <button class="quiz-opt" data-correct="false">Increasing the amount of e-waste produced</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data that makes life convenient can also be misused.">
   <div class="quiz-q">🧩 Q4: The same digital footprint that enables convenience also enables...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Potential misuse of personal information</button>
     <button class="quiz-opt" data-correct="false">Zero privacy risk of any kind</button>
-    <button class="quiz-opt" data-correct="false">Guaranteed data security</button>
+    <button class="quiz-opt" data-correct="false">Guaranteed security for all data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Spotting coordinated fake accounts helps fight propaganda on social media.">
   <div class="quiz-q">🧩 Q5: Detecting coordinated inauthentic behaviour is most relevant to fighting...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Social media propaganda</button>
@@ -16606,7 +16606,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Big data decisions rely on patterns found across huge datasets.">
   <div class="quiz-q">🧩 Q6: Big data-driven decision making relies on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Patterns found across massive datasets</button>
@@ -16655,16 +16655,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="POPI regulates how organisations collect, store and use personal information.">
   <div class="quiz-q">🧩 Q1: POPI specifically regulates...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">How organisations collect, store and use personal information</button>
-    <button class="quiz-opt" data-correct="false">Only hardware import taxes</button>
-    <button class="quiz-opt" data-correct="false">Only network cabling standards</button>
+    <button class="quiz-opt" data-correct="true">How personal information is collected and used</button>
+    <button class="quiz-opt" data-correct="false">Only the taxes paid on imported hardware</button>
+    <button class="quiz-opt" data-correct="false">Only the standards for network cabling</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The Protection from Harassment Act covers harassment, including cyberstalking.">
   <div class="quiz-q">🧩 Q2: The Protection from Harassment Act provides legal protection against...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Harassment, including cyberstalking</button>
@@ -16673,39 +16673,39 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Errors in medical devices or cars can physically hurt people.">
   <div class="quiz-q">🧩 Q3: A software error in a hospital device or car is dangerous mainly because...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">It poses a genuine physical safety risk, not just inconvenience</button>
-    <button class="quiz-opt" data-correct="false">It only affects billing systems</button>
-    <button class="quiz-opt" data-correct="false">It has no real-world consequence</button>
+    <button class="quiz-opt" data-correct="true">It can physically hurt people</button>
+    <button class="quiz-opt" data-correct="false">It only affects the billing systems behind them</button>
+    <button class="quiz-opt" data-correct="false">It has no real-world consequence for anyone</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The ECT Act governs electronic transactions and communications.">
   <div class="quiz-q">🧩 Q4: The ECT Act broadly governs...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Electronic transactions and communications</button>
-    <button class="quiz-opt" data-correct="false">Only television broadcasting</button>
-    <button class="quiz-opt" data-correct="false">Only agricultural exports</button>
+    <button class="quiz-opt" data-correct="false">Only television and radio broadcasting</button>
+    <button class="quiz-opt" data-correct="false">Only agricultural exports and imports</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Distributing harmful, illegal content is a serious crime.">
   <div class="quiz-q">🧩 Q5: Distributing harmful, illegal content online is treated as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A serious crime, not harmless internet activity</button>
     <button class="quiz-opt" data-correct="false">A minor inconvenience with no legal weight</button>
-    <button class="quiz-opt" data-correct="false">Something only relevant outside South Africa</button>
+    <button class="quiz-opt" data-correct="false">Something that only matters outside South Africa</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="More connected devices mean ongoing security and privacy concerns.">
   <div class="quiz-q">🧩 Q6: Additional IoT devices connecting to the internet mainly raise...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Ongoing security and privacy implications</button>
-    <button class="quiz-opt" data-correct="false">No implications of any kind</button>
-    <button class="quiz-opt" data-correct="false">Only cosmetic design questions</button>
+    <button class="quiz-opt" data-correct="false">No implications of any kind for users</button>
+    <button class="quiz-opt" data-correct="false">Only questions about their cosmetic design</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -16744,7 +16744,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="At this level, decomposition includes working with stakeholders and identifying sub-goals.">
   <div class="quiz-q">🧩 Q1: At Grade 12 level, decomposition of a large problem specifically includes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Working with stakeholders and identifying sub-goals</button>
@@ -16753,16 +16753,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Inheritance lets related classes share common structure without duplicating it.">
   <div class="quiz-q">🧩 Q2: Inheritance is used as an abstraction tool mainly to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Let related classes share common structure without duplication</button>
-    <button class="quiz-opt" data-correct="false">Force every class to be identical</button>
-    <button class="quiz-opt" data-correct="false">Remove the need for testing</button>
+    <button class="quiz-opt" data-correct="true">Let related classes share structure without duplication</button>
+    <button class="quiz-opt" data-correct="false">Force every class in the program to be identical</button>
+    <button class="quiz-opt" data-correct="false">Remove the need to test the subclasses</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Reusing classes and inheriting avoids duplicated code, improving code efficiency.">
   <div class="quiz-q">🧩 Q3: "Reuse of classes and inheritance to avoid duplication" describes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Code efficiency</button>
@@ -16771,7 +16771,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Check that it works alongside external, existing or previous solutions.">
   <div class="quiz-q">🧩 Q4: At Grade 12 level, testing a solution should include checking it works with...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">External, existing or previous solutions</button>
@@ -16780,7 +16780,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Matching the data structure to the data and its behaviour is pattern recognition.">
   <div class="quiz-q">🧩 Q5: Selecting the best data structure based on data, behaviour and goals is part of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Pattern recognition</button>
@@ -16789,7 +16789,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Execution efficiency means no unnecessary processing.">
   <div class="quiz-q">🧩 Q6: "No unnecessary processing" describes...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Execution efficiency</button>
@@ -16848,7 +16848,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="A dynamic array (like ArrayList) can grow or shrink.">
   <div class="quiz-q">🧩 Q1: A dynamic array, unlike a static array, can...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Grow or shrink as needed</button>
@@ -16857,7 +16857,7 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Overriding is a subclass giving its own version of an inherited method.">
   <div class="quiz-q">🧩 Q2: A subclass providing its own version of an inherited method is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Overriding</button>
@@ -16866,39 +16866,39 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The method that runs depends on the object's actual type at runtime.">
   <div class="quiz-q">🧩 Q3: Polymorphism/dynamic binding means the correct overridden method runs based on...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">The object's actual type at runtime</button>
-    <button class="quiz-opt" data-correct="false">Alphabetical order of method names</button>
-    <button class="quiz-opt" data-correct="false">The file's compression level</button>
+    <button class="quiz-opt" data-correct="false">The alphabetical order of the method names</button>
+    <button class="quiz-opt" data-correct="false">The order the classes were written in the file</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Car extends Vehicle: Vehicle is the superclass and Car the subclass.">
   <div class="quiz-q">🧩 Q4: "Car inherits from Vehicle" describes a(n)...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Superclass/subclass relationship</button>
-    <button class="quiz-opt" data-correct="false">Static array</button>
-    <button class="quiz-opt" data-correct="false">Database join</button>
+    <button class="quiz-opt" data-correct="true">Superclass and subclass</button>
+    <button class="quiz-opt" data-correct="false">Static array of vehicles</button>
+    <button class="quiz-opt" data-correct="false">Database join on two tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The School has a field that is an array of Learner objects.">
   <div class="quiz-q">🧩 Q5: A School object containing an array of Learner objects is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">An object with an array of objects as a field</button>
-    <button class="quiz-opt" data-correct="false">A dynamic array only</button>
-    <button class="quiz-opt" data-correct="false">A superclass with no subclasses</button>
+    <button class="quiz-opt" data-correct="false">A dynamic array of numbers and nothing else</button>
+    <button class="quiz-opt" data-correct="false">A superclass that has no subclasses at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="instanceof checks an object's actual type at runtime.">
   <div class="quiz-q">🧩 Q6: instanceof is used to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Check what type an object actually is at runtime</button>
+    <button class="quiz-opt" data-correct="true">Check an object's actual type at runtime</button>
     <button class="quiz-opt" data-correct="false">Delete an object permanently</button>
-    <button class="quiz-opt" data-correct="false">Compress an array</button>
+    <button class="quiz-opt" data-correct="false">Compress an array in memory to save space</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -16946,16 +16946,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="JSON stores and transfers structured data as text.">
   <div class="quiz-q">🧩 Q1: JSON is best described as a format for...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Storing and transferring structured, complex data</button>
-    <button class="quiz-opt" data-correct="false">Compressing video files</button>
-    <button class="quiz-opt" data-correct="false">Designing network topology</button>
+    <button class="quiz-opt" data-correct="true">Storing and transferring structured data</button>
+    <button class="quiz-opt" data-correct="false">Compressing video files for streaming</button>
+    <button class="quiz-opt" data-correct="false">Designing the topology of a network</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="JSON handles structured, nested data that plain text can't easily hold.">
   <div class="quiz-q">🧩 Q2: Compared to a plain text file, JSON is generally better suited to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Structured, nested data</button>
@@ -16964,16 +16964,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="The same algorithms work; you compare a field of each object instead of plain values.">
   <div class="quiz-q">🧩 Q3: Applying search and sort algorithms to arrays of objects, rather than simple values, requires...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">The same classic algorithms, adapted to compare object fields</button>
-    <button class="quiz-opt" data-correct="false">Entirely different, unrelated algorithms</button>
-    <button class="quiz-opt" data-correct="false">No algorithm at all — objects can't be sorted</button>
+    <button class="quiz-opt" data-correct="true">The same algorithms, comparing a field of each object</button>
+    <button class="quiz-opt" data-correct="false">Entirely different algorithms that are unrelated</button>
+    <button class="quiz-opt" data-correct="false">No algorithm, since objects can't be sorted</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="In this syllabus JSON is taught, but it is not examined in the practical exam.">
   <div class="quiz-q">🧩 Q4: JSON content in the IEB IT syllabus is...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Not examinable in the practical exam</button>
@@ -16982,21 +16982,21 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="JSON fields are key-value pairs, e.g. &quot;grade&quot;: 12.">
   <div class="quiz-q">🧩 Q5: A JSON object's fields are written as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Key-value pairs, e.g. "grade": 12</button>
-    <button class="quiz-opt" data-correct="false">Binary numbers only</button>
-    <button class="quiz-opt" data-correct="false">SQL statements</button>
+    <button class="quiz-opt" data-correct="false">Binary numbers only, in pairs</button>
+    <button class="quiz-opt" data-correct="false">SQL statements, one per line</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A database is best for querying large amounts of related data.">
   <div class="quiz-q">🧩 Q6: A full database is generally the best choice when you need to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Query large volumes of related data efficiently</button>
-    <button class="quiz-opt" data-correct="false">Store a single unrelated text note</button>
-    <button class="quiz-opt" data-correct="false">Avoid using any structure at all</button>
+    <button class="quiz-opt" data-correct="false">Store one short text note on its own</button>
+    <button class="quiz-opt" data-correct="false">Avoid using any structure for the data</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -17037,7 +17037,7 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="MongoDB stores documents, not tables, which makes it a NoSQL database.">
   <div class="quiz-q">🧩 Q1: MongoDB is an example of a...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">NoSQL database</button>
@@ -17046,16 +17046,16 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Data that was never checked before entry is unvalidated.">
   <div class="quiz-q">🧩 Q2: Data that was never properly checked before entry is described as...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Invalidated</button>
+    <button class="quiz-opt" data-correct="true">Unvalidated</button>
     <button class="quiz-opt" data-correct="false">Normalised</button>
     <button class="quiz-opt" data-correct="false">Distributed</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="NoSQL handles unstructured or changing data more flexibly.">
   <div class="quiz-q">🧩 Q3: NoSQL databases are generally more flexible than SQL for...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Unstructured or rapidly changing data</button>
@@ -17064,30 +17064,30 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="SQL injection is a vulnerability that threatens the quality of data.">
   <div class="quiz-q">🧩 Q4: SQL injection is a specific example of a...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Vulnerability threatening data quality</button>
+    <button class="quiz-opt" data-correct="true">Vulnerability that threatens data</button>
     <button class="quiz-opt" data-correct="false">Data warehousing technique</button>
     <button class="quiz-opt" data-correct="false">Type of NoSQL database</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Social media, activity logs and audit trails all produce big data.">
   <div class="quiz-q">🧩 Q5: Big data sources for data mining include...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Social media, activity logs and audit trails</button>
-    <button class="quiz-opt" data-correct="false">Only a single printed document</button>
-    <button class="quiz-opt" data-correct="false">Nothing measurable</button>
+    <button class="quiz-opt" data-correct="false">Only one single printed document</button>
+    <button class="quiz-opt" data-correct="false">Nothing that can be measured at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Analysing in a separate warehouse doesn't slow down live transactions.">
   <div class="quiz-q">🧩 Q6: A data warehouse is kept separate from day-to-day transaction systems mainly to...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">Support analysis without interfering with live operations</button>
-    <button class="quiz-opt" data-correct="false">Save on electricity costs only</button>
-    <button class="quiz-opt" data-correct="false">Avoid ever storing historical data</button>
+    <button class="quiz-opt" data-correct="true">Analysis doesn't slow down live operations</button>
+    <button class="quiz-opt" data-correct="false">Save on electricity costs and nothing more</button>
+    <button class="quiz-opt" data-correct="false">Avoid storing any historical data at all</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -17154,16 +17154,16 @@ const IT_IEB_LESSONS = [
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
-<div class="quiz-box">
+<div class="quiz-box" data-why="Referential integrity means every foreign key points to a record that exists.">
   <div class="quiz-q">🧩 Q1: Referential integrity ensures that...</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="true">A foreign key always points to a record that actually exists</button>
-    <button class="quiz-opt" data-correct="false">Every table has exactly one field</button>
-    <button class="quiz-opt" data-correct="false">Data is never backed up</button>
+    <button class="quiz-opt" data-correct="true">Every foreign key points to a record that exists</button>
+    <button class="quiz-opt" data-correct="false">Every table has exactly one field in it</button>
+    <button class="quiz-opt" data-correct="false">Data is never backed up to another table</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A field with several values in it is non-atomic and should be split.">
   <div class="quiz-q">🧩 Q2: A field holding multiple values that should really be split apart is called...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Non-atomic</button>
@@ -17172,39 +17172,39 @@ const IT_IEB_LESSONS = [
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="An outer join with NOT IN finds records that have no match in the other table.">
   <div class="quiz-q">🧩 Q3: A LEFT or RIGHT JOIN combined with NOT IN is used to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Find records with no related match in another table</button>
-    <button class="quiz-opt" data-correct="false">Delete all matching records</button>
+    <button class="quiz-opt" data-correct="false">Delete all the records that have a match</button>
     <button class="quiz-opt" data-correct="false">Always return every record from both tables</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Many-to-many is a relationship type, built with a linking table.">
   <div class="quiz-q">🧩 Q4: A many-to-many relationship is an example of...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A relationship type in multi-table database design</button>
-    <button class="quiz-opt" data-correct="false">A single-table-only concept</button>
-    <button class="quiz-opt" data-correct="false">A type of SQL error</button>
+    <button class="quiz-opt" data-correct="false">A concept that only applies to single tables</button>
+    <button class="quiz-opt" data-correct="false">A type of SQL error caused by joins</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="A subquery is a query nested inside another one.">
   <div class="quiz-q">🧩 Q5: A subquery is best described as...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">A query nested inside another query</button>
-    <button class="quiz-opt" data-correct="false">A query that always fails</button>
-    <button class="quiz-opt" data-correct="false">A type of database table</button>
+    <button class="quiz-opt" data-correct="false">A query that always fails to run</button>
+    <button class="quiz-opt" data-correct="false">A type of table that holds results</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
-<div class="quiz-box">
+<div class="quiz-box" data-why="Normalising removes redundancy and prevents insert, update and delete anomalies.">
   <div class="quiz-q">🧩 Q6: The main reason to normalise a database's design is to...</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="true">Eliminate redundancy and prevent anomalies</button>
-    <button class="quiz-opt" data-correct="false">Make every table identical</button>
-    <button class="quiz-opt" data-correct="false">Increase duplicate data intentionally</button>
+    <button class="quiz-opt" data-correct="false">Make every table in the database identical</button>
+    <button class="quiz-opt" data-correct="false">Add duplicate data on purpose for safety</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -17975,6 +17975,13 @@ function ccSetupQuiz(les) {
       if (!ok) btn.classList.add('wrong');
       const fb = box.querySelector('.quiz-feedback');
       fb.textContent = ok ? '✅ Correct!' : `❌ Not quite — the answer is: ${rightBtn.textContent.trim()}`;
+      // Why that is the answer (data-why on the question), on its own line.
+      if (box.dataset.why) {
+        const why = document.createElement('span');
+        why.className = 'quiz-why';
+        why.textContent = box.dataset.why;
+        fb.appendChild(why);
+      }
       fb.className = 'quiz-feedback ' + (ok ? 'correct' : 'wrong');
       if (window.MLResults) MLResults.record(CC_TOOL, les.grade, les.key, qi, ok);
       if (window.MagicLabProgress) {
