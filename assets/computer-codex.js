@@ -661,60 +661,9 @@ let LESSONS = [
   content: `
 <p>All Microsoft Office programs (Word, Excel, PowerPoint) use the same <strong>Ribbon</strong> interface — a toolbar at the top organised into <em>tabs</em> and <em>groups</em>.</p>
 
-<div class="visual-box">
-  <div class="visual-box-title">The Ribbon (Microsoft Word — Home tab shown)</div>
-  <div class="ribbon">
-    <div class="ribbon-tabs">
-      <div class="ribbon-tab">File</div>
-      <div class="ribbon-tab active">Home</div>
-      <div class="ribbon-tab">Insert</div>
-      <div class="ribbon-tab">Design</div>
-      <div class="ribbon-tab">Layout</div>
-      <div class="ribbon-tab">References</div>
-      <div class="ribbon-tab">Review</div>
-      <div class="ribbon-tab">View</div>
-    </div>
-    <div class="ribbon-body">
-      <div class="ribbon-group">
-        <div class="ribbon-btns">
-          <div class="ribbon-btn big"><div class="ribbon-btn-icon">📋</div><div class="ribbon-btn-label">Paste</div></div>
-          <div style="display:flex;flex-direction:column;gap:2px;">
-            <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">✂️</div><div class="ribbon-btn-label">Cut</div></div>
-            <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">📄</div><div class="ribbon-btn-label">Copy</div></div>
-          </div>
-        </div>
-        <div class="ribbon-group-label">Clipboard</div>
-      </div>
-      <div class="ribbon-group">
-        <div class="ribbon-btns">
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-family:serif;font-weight:bold;">A</div><div class="ribbon-btn-label">Font</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-weight:bold;">B</div><div class="ribbon-btn-label">Bold</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-style:italic;">I</div><div class="ribbon-btn-label">Italic</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;text-decoration:underline;">U</div><div class="ribbon-btn-label">Underline</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">12</div><div class="ribbon-btn-label">Size</div></div>
-        </div>
-        <div class="ribbon-group-label">Font</div>
-      </div>
-      <div class="ribbon-group">
-        <div class="ribbon-btns">
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">≡</div><div class="ribbon-btn-label">Left</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">☰</div><div class="ribbon-btn-label">Centre</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">≡</div><div class="ribbon-btn-label">Right</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">•</div><div class="ribbon-btn-label">List</div></div>
-        </div>
-        <div class="ribbon-group-label">Paragraph</div>
-      </div>
-      <div class="ribbon-group">
-        <div class="ribbon-btns">
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">H1</div><div class="ribbon-btn-label">Heading 1</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">H2</div><div class="ribbon-btn-label">Heading 2</div></div>
-          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">Aa</div><div class="ribbon-btn-label">Normal</div></div>
-        </div>
-        <div class="ribbon-group-label">Styles</div>
-      </div>
-    </div>
-  </div>
-</div>
+<p>Below is a working Word window. Click the tabs, try the buttons, and work through the tasks — each one ticks itself off when you have done it.</p>
+
+<div class="mini-word" data-set="ribbon"></div>
 
 <h3><i data-lucide="layers" style="width:14px;height:14px;"></i> Ribbon Structure</h3>
 <ul>
@@ -901,6 +850,10 @@ let LESSONS = [
 
 <div class="callout warn"><strong>Important:</strong> When you are given a .docx file to work on and asked to submit it as a PDF, always use <strong>Save As → PDF</strong>. Do NOT just rename the file extension — that doesn't actually convert it.</div>
 
+<h3><i data-lucide="mouse-pointer-click" style="width:14px;height:14px;"></i> Try it yourself</h3>
+<p>Practise it: create a document, save it in different formats, close it and open it again.</p>
+<div class="mini-word" data-set="save"></div>
+
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz(this)">
     🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
@@ -1071,6 +1024,10 @@ let LESSONS = [
 </ul>
 
 <div class="callout tip"><strong>How to apply a style:</strong> Click anywhere in the paragraph (no need to select the whole line), then click the style name in the Styles gallery on the Home tab.</div>
+
+<h3><i data-lucide="mouse-pointer-click" style="width:14px;height:14px;"></i> Try it yourself</h3>
+<p>Practise it: format this short article using the ribbon and the shortcuts above.</p>
+<div class="mini-word" data-set="format"></div>
 
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz(this)">
@@ -17567,6 +17524,7 @@ function renderLesson() {
   `;
 
   ccSetupQuiz(les);
+  if (window.MiniWord) MiniWord.mountAll(document.getElementById('lessonContent'));
 
   // Update nav
   document.getElementById('prevBtn').style.visibility = currentLesson === 0 ? 'hidden' : 'visible';
