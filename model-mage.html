@@ -64,8 +64,8 @@
 
     /* ── Picker ─────────────────────────────────────────────────────────── */
     .picker { display: grid; gap: var(--space-4); padding-bottom: clamp(48px, 8vw, 96px); }
-    /* One workshop today, so it runs full width rather than sitting alone in
-       half a row. Add a second and this becomes repeat(2, 1fr). */
+    /* data-cols follows the number of workshops: one runs full width
+       rather than sitting alone in half a row. */
     .picker[data-cols="1"] { grid-template-columns: 1fr; }
     .picker[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     @media (max-width: 760px) { .picker[data-cols="2"] { grid-template-columns: 1fr; } }
@@ -159,23 +159,20 @@
     <section class="ml-shell lead">
       <div class="lead-eyebrow">
         <span class="dot"></span>
-        <span class="ml-label">Design &amp; Graphics · Grade 9–12</span>
+        <span class="ml-label">Design &amp; Build · Grade 8–12</span>
       </div>
-      <h1>The CAD workshop.</h1>
-      <p>Sketch and 3D-print real physical parts, without installing anything. Parametric modelling running on OpenCascade, in a browser tab.</p>
+      <h1>Two workshops. One toolbox.</h1>
+      <p>Sketch and 3D-print real physical parts in the CAD workshop, or build working circuits and program a microcontroller in the Circuit Simulator. Nothing to install.</p>
       <div class="lead-specs ml-label">
         <span>Parametric CAD</span>
         <span>STL export</span>
+        <span>Live circuit simulation</span>
         <span>Runs in the browser</span>
       </div>
     </section>
 
-    <!-- Circuit Simulator is hidden until its bugs are fixed — see
-         model-mage-circuits.html, which redirects back here so a bookmarked
-         or old link cannot reach it either. When it returns, set
-         data-cols="2" above and add its card back here. -->
     <section class="ml-shell">
-      <div class="picker" data-cols="1">
+      <div class="picker" data-cols="2">
         <a class="pick" href="model-mage-cad.html">
           <div class="pick-head">
             <span class="pick-icon"><i data-lucide="hexagon" style="width:24px;height:24px;"></i></span>
@@ -188,6 +185,22 @@
               <span class="ml-tag">Extrude &amp; cut</span>
               <span class="ml-tag">Fillets</span>
               <span class="ml-tag">STL export</span>
+            </div>
+          </div>
+          <span class="pick-go">Open<i data-lucide="arrow-right"></i></span>
+        </a>
+        <a class="pick" href="model-mage-circuits.html">
+          <div class="pick-head">
+            <span class="pick-icon"><i data-lucide="plug" style="width:24px;height:24px;"></i></span>
+            <h2 class="pick-title">Circuit Simulator</h2>
+          </div>
+          <div class="pick-body">
+            <p class="pick-desc">Wire batteries, switches, resistors, LEDs, sensors and motors on a virtual breadboard and watch a real electrical simulation run — LEDs glow, buzzers sound, meters read real values. Add a microcontroller and program it in code or blocks.</p>
+            <div class="pick-tags">
+              <span class="ml-tag">Breadboard</span>
+              <span class="ml-tag">Live simulation</span>
+              <span class="ml-tag">Microcontroller</span>
+              <span class="ml-tag">Tutorials</span>
             </div>
           </div>
           <span class="pick-go">Open<i data-lucide="arrow-right"></i></span>

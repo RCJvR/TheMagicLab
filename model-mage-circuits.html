@@ -4,10 +4,6 @@
 <head>
 <script src="/assets/theme.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
-<!-- Temporarily disabled: still broken, hidden from the Model Mage picker until
-     fixed and redeployed. This guard covers anyone hitting the URL directly
-     (bookmark, browser history, old link) since the picker no longer links here. -->
-<script>location.replace('model-mage.html');</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Model Mage — Circuit Simulator</title>
@@ -21,9 +17,8 @@
     /* ══════════════════════════════════════════════════════════════════════
        Model Mage — Circuit Simulator.
 
-       Currently unreachable: line 9 redirects to model-mage.html while the
-       tool's bugs are outstanding. Brought onto the system anyway so the
-       Model Mage family is consistent whenever it returns.
+       Rebuilt and re-enabled 2026-10-20 (parts redrawn, touch input,
+       solver fixes); linked again from the Model Mage picker.
 
        NOT TOUCHED: every wire and component colour in the script below. Red
        for live, black for ground and the rest are electronics convention,
@@ -51,18 +46,25 @@
     .nav-link:hover{color:var(--text);border-color:var(--text-3);}
 
     .toolbar{flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
-             display:flex;flex-direction:column;padding:8px 10px;gap:8px;max-height:340px;overflow-y:auto;}
-    #compScroll{display:flex;flex-direction:column;gap:10px;}
+             display:flex;padding:8px 10px;}
+    /* Parts tray: a sidebar beside the board, so the board keeps the
+       height of the screen (it used to sit above the board and take up to
+       340px of it). On phones it becomes one sideways-scrolling strip. */
+    .parts-panel{width:216px;flex-shrink:0;overflow-y:auto;background:var(--bg2);
+                 border-right:1px solid var(--border);padding:10px 8px;
+                 display:flex;flex-direction:column;gap:12px;}
     .comp-cat-row{display:flex;flex-direction:column;gap:4px;}
-    .comp-cat-strip{display:flex;flex-wrap:wrap;gap:4px;}
-    .toolbar-actions{flex-shrink:0;display:flex;align-items:center;gap:6px;}
+    .comp-cat-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
+    .toolbar-actions{flex:1;display:flex;align-items:center;gap:6px;}
+    .toolbar-actions .examples-sel{flex:0 1 300px;min-width:0;}
+    .toolbar-actions .run-btn{margin-left:auto;}
     .examples-sel{height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border);
               background:var(--surface);color:var(--text);font-size:0.76rem;font-weight:600;
               cursor:pointer;font-family:inherit;}
     .examples-sel:focus:not(:focus-visible){outline:none;border-color:rgba(245,158,11,0.5);}
-    .comp-btn{height:52px;min-width:56px;padding:4px 8px;border-radius:8px;border:1px solid transparent;
-            background:none;color:var(--text2);font-size:0.62rem;font-weight:600;
-            cursor:grab;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    .comp-btn{min-height:56px;min-width:0;padding:5px 3px;border-radius:8px;border:1px solid transparent;
+            background:none;color:var(--text2);font-size:0.62rem;font-weight:600;line-height:1.15;text-align:center;
+            cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
             font-family:inherit;transition:background 100ms,color 100ms;flex-shrink:0;}
     .comp-btn:hover{background:var(--surface);color:var(--text);}
     .comp-btn.active{background:rgba(245,158,11,0.18);color:var(--accent2);border-color:rgba(245,158,11,0.4);}
@@ -218,11 +220,18 @@
     /* SVG component styling */
     .comp-group{cursor:grab;}
     .comp-group.dragging{cursor:grabbing;opacity:0.85;}
-    .comp-group.selected .comp-body{stroke:var(--accent2)!important;stroke-width:2.5px!important;}
-    .pin-dot{fill:#3a3f52;stroke:#0a0e1f;stroke-width:1;cursor:crosshair;}
-    .pin-dot:hover{fill:var(--accent2);}
-    .pin-dot.connected{fill:#22c55e;}
-    .pin-dot.wiring-from{fill:var(--accent2);stroke:var(--accent2);}
+    .comp-hit{transition:fill 120ms;}
+    .comp-group:hover .comp-hit{fill:rgba(255,255,255,0.035);}
+    .sel-outline{fill:none;stroke:var(--accent2);stroke-width:1.5;stroke-dasharray:5 4;pointer-events:none;}
+    /* pin terminal: .pin-dot is the large invisible target, .pin-term the
+       small visible ring drawn right after it */
+    .pin-dot{fill:transparent;cursor:crosshair;}
+    .pin-term{fill:#e2e8f0;stroke:#0b1020;stroke-width:1.5;pointer-events:none;transition:r 100ms,fill 100ms;}
+    .pin-dot.connected + .pin-term{fill:#34d399;}
+    .pin-dot:hover + .pin-term{fill:var(--accent2);r:6px;}
+    .pin-dot.wiring-from + .pin-term{fill:var(--accent2);r:6px;}
+    .part-text{font-family:'Cabinet Grotesk',system-ui,sans-serif;pointer-events:none;}
+    .part-icon{display:block;overflow:visible;}
     .bb-hole{fill:#1a1f33;stroke:#0a0e1f;stroke-width:0.5;cursor:pointer;}
     .bb-hole:hover{fill:#33405c;}
     .bb-hole.bus-highlight{fill:#fbbf24!important;filter:drop-shadow(0 0 3px rgba(251,191,36,0.85));}
@@ -243,12 +252,27 @@
     .meter-unit-badge{font-family:'JetBrains Mono',monospace;font-weight:800;fill:#fff;text-anchor:middle;}
     .callout-text{font-family:'JetBrains Mono',monospace;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
     .wire-waypoint{fill:#fff;opacity:0.85;pointer-events:none;}
-    .comp-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--text2);text-anchor:middle;pointer-events:none;}
+    .comp-label{font-family:'Cabinet Grotesk',system-ui,sans-serif;font-size:11.5px;font-weight:700;fill:#d5dbe6;text-anchor:middle;pointer-events:none;
+                paint-order:stroke;stroke:#05081a;stroke-width:3px;stroke-linejoin:round;}
+    .comp-label .v{fill:#fbbf24;font-weight:800;}
     .comp-value{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--accent2);text-anchor:middle;pointer-events:none;font-weight:700;}
+
+    #circuit-svg{touch-action:none;}
+    .sim-warnings{position:sticky;top:8px;left:8px;z-index:5;display:flex;flex-direction:column;gap:6px;
+                  width:max-content;max-width:min(420px,calc(100% - 16px));height:0;overflow:visible;pointer-events:none;}
+    .sim-warn{background:#2a1212;border:1px solid #b45353;color:#fde2e2;border-radius:8px;padding:8px 11px;
+              font-size:0.74rem;line-height:1.5;box-shadow:0 6px 18px rgba(0,0,0,.4);}
+    .sim-warn b{color:#fff;}
 
     @media (max-width:820px){
       header{padding:8px 10px;flex-wrap:wrap;row-gap:6px;}
       .hdr-right{flex-wrap:wrap;gap:5px;}
+      .main{flex-direction:column;}
+      .parts-panel{width:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;gap:14px;
+                   border-right:none;border-bottom:1px solid var(--border);padding:6px 8px;}
+      .comp-cat-row{flex-shrink:0;}
+      .comp-cat-strip{display:flex;gap:2px;}
+      .comp-btn{width:64px;min-height:50px;}
       .right-panel{position:absolute;right:0;top:0;bottom:0;z-index:20;width:min(320px,92vw);
                    box-shadow:-8px 0 24px rgba(0,0,0,0.45);}
     }
@@ -304,11 +328,12 @@
     <div class="tb-sep"></div>
     <button class="run-btn go" id="btn-run"><i data-lucide="play"></i> Run</button>
   </div>
-  <div id="compScroll"><!-- populated by JS from COMPONENT_DEFS, one row per category --></div>
 </div>
 
 <div class="main">
+  <aside class="parts-panel" id="compScroll" aria-label="Parts"><!-- populated by JS from COMPONENT_DEFS, one row per category --></aside>
   <div class="canvas-wrap" id="canvasWrap">
+    <div class="sim-warnings" id="simWarnings" role="status" aria-live="polite"></div>
     <div id="svgScaleBox">
       <svg id="circuit-svg"></svg>
     </div>
@@ -493,290 +518,308 @@ document.getElementById('hintToggle').addEventListener('click', ()=>{
   applyHintOpenState();
 });
 applyHintOpenState();
+// The tips are for an empty board. Once there's a circuit they'd sit on
+// top of it, so fold them away (just for now — the "?" brings them back,
+// and the student's own choice is still what's remembered).
+function foldHintForCircuit(){
+  if (hintOpen){ hintOpen = false; applyHintOpenState(); }
+}
 
 /* ───────────────────────────────────────────────────────────────
    COMPONENT DEFINITIONS
-   Each type defines its pins (dx,dy from the component's origin,
-   in grid units), default props, an SVG renderer, and (if it's an
-   electrical branch) a stampBranch(sim, comp) function used by the
-   solver.
+   Each type defines its footprint (w × h grid units), its pins (dx,dy in
+   grid units from the footprint's top-left), default props, an SVG
+   renderer and the flags the solver reads.
+
+   Drawing rules, shared by every part so the kit reads as one set:
+   - every pin sits on a whole grid point, 0.1" apart like real parts, so
+     anything plugs straight into the breadboard
+   - flat colours with one dark outline and at most one soft highlight
+     (no gloss, no gradients) — clean at any zoom, readable on a projector
+   - labels in the page font: the part's name, then its value in amber
+   - polarity shown as plain + / − beside the pin it belongs to
+   The pin terminals themselves are drawn by renderComponent(), and a
+   renderer called with c._icon set (the parts tray) leaves out the text.
 ─────────────────────────────────────────────────────────────── */
+const PART_INK = '#0b1020', PART_LEAD = '#b9c2cf';
+function pLead(g, x1,y1,x2,y2, col){ g.appendChild(el('line',{x1,y1,x2,y2,stroke:col||PART_LEAD,'stroke-width':2.4,'stroke-linecap':'round'})); }
+function pPath(g, d, col, w){ g.appendChild(el('path',{d, fill:'none', stroke:col||PART_LEAD,'stroke-width':w||2.4,'stroke-linecap':'round','stroke-linejoin':'round'})); }
+function pBox(g, x,y,w,h,r, fill, stroke){ const e = el('rect',{x,y,width:w,height:h,rx:r,fill,stroke:stroke===undefined?PART_INK:stroke,'stroke-width':1.3}); g.appendChild(e); return e; }
+function pDisc(g, cx,cy,r, fill, stroke){ const e = el('circle',{cx,cy,r,fill,stroke:stroke===undefined?PART_INK:stroke,'stroke-width':1.3}); g.appendChild(e); return e; }
+function pShine(g, x,y,w,h,r){ g.appendChild(el('rect',{x:x+2.5,y:y+2,width:Math.max(0,w-5),height:Math.max(0,h*0.3),rx:Math.max(0,r-2),fill:'#fff',opacity:0.1})); }
+/* Text on a rotated or mirrored part is turned back upright about its own
+   anchor point, so it never reads sideways, upside down or back to front.
+   renderComponent() sets uprightFor to the part being drawn. */
+let uprightFor = null;
+function keepUpright(t, x, y){
+  const c = uprightFor; if (!c) return;
+  const rot = ((c.rotation||0)%360+360)%360;
+  let tf = '';
+  if (c.mirrored) tf += `translate(${2*x},0) scale(-1,1) `;
+  if (rot) tf += `rotate(${-rot} ${x} ${y})`;
+  // rotating about the baseline would shift the text off its spot; pivot on its middle instead
+  if (tf) t.setAttribute('transform', tf.replace(`rotate(${-rot} ${x} ${y})`, `rotate(${-rot} ${x} ${y-4})`));
+}
+function pText(g, x,y, str, size, fill, weight, anchor){
+  const t = el('text',{x,y,'font-size':size,fill,'font-weight':weight||700,'text-anchor':anchor||'middle',class:'part-text'});
+  t.textContent = str; keepUpright(t, x, y); g.appendChild(t); return t;
+}
+function partLabel(g, c, cx, y, name, value){
+  if (c._icon) return;
+  // a part turned on its side shows just its value — a long name would
+  // run across its neighbours
+  if ((c.rotation||0)%180 && value) name = '';
+  const t = el('text',{x:cx, y, class:'comp-label'});
+  if (name){ const a = el('tspan',{}); a.textContent = name; t.appendChild(a); }
+  if (value!=null && value!==''){ const b = el('tspan',{class:'v', dx:name?5:0}); b.textContent = value; t.appendChild(b); }
+  keepUpright(t, cx, y); g.appendChild(t);
+}
+function pPol(g, c, x, y, sign){
+  if (c._icon) return;
+  pText(g, x, y+4, sign==='+'?'+':'−', 13, sign==='+'?'#fca5a5':'#93c5fd', 800);
+}
+/* A cylindrical cell lying on its side: − terminal on the left pin (0,1),
+   + terminal (the end with the nub and the coloured band) on the right. */
+function drawCell(g, c, o){
+  const G = GRID, y = G - o.h/2, len = o.x1-o.x0, bw = len*0.24;
+  pLead(g, 0, G, o.x0, G); pLead(g, o.x1+4, G, 4*G, G);
+  pBox(g, o.x1, G-o.h*0.22, 4.5, o.h*0.44, 1.5, '#cbd5e1');
+  pBox(g, o.x0, y, len, o.h, o.h*0.3, o.body, 'none');
+  g.appendChild(el('rect',{x:o.x1-bw, y, width:bw, height:o.h, fill:o.band}));
+  pShine(g, o.x0, y, len, o.h, o.h*0.3);
+  pBox(g, o.x0, y, len, o.h, o.h*0.3, 'none');
+  pText(g, o.x0+(len-bw)/2, G+o.h*0.17, o.text, o.size||11, '#f8fafc', 800);
+  pPol(g, c, 7, G-11, '−'); pPol(g, c, 4*G-7, G-11, '+');
+}
+const LED_PIN_NAMES = [{id:'a', name:'Anode (+), the longer leg'}, {id:'c', name:'Cathode (−), the flat side'}];
+/* LED dome, front view: a bullet shape on a rim, tinted by its colour and
+   brighter as current flows; a lit LED gets a soft halo the size of its
+   brightness (a light source, so the one place a halo belongs). */
+function drawLedDome(g, cx, yt, yb, r, col, glow, blown){
+  if (glow>0.03 && !blown) g.appendChild(el('circle',{cx, cy:yt+r+2, r:r+5+glow*9, fill:col, opacity:0.12+glow*0.22}));
+  const d = `M${cx-r} ${yb} L${cx-r} ${yt+r} A${r} ${r} 0 0 1 ${cx+r} ${yt+r} L${cx+r} ${yb} Z`;
+  g.appendChild(el('path',{d, fill:'#151a26'}));
+  g.appendChild(el('path',{d, fill:blown?'#3a3a3a':col, opacity:blown?1:0.38+glow*0.62}));
+  // the two little lead frames inside the epoxy
+  g.appendChild(el('path',{d:`M${cx-3.5} ${yb} L${cx-3.5} ${yt+r+3}`, stroke:'#d1d5db', 'stroke-width':1.4, opacity:0.55}));
+  g.appendChild(el('path',{d:`M${cx+3.5} ${yb} L${cx+3.5} ${yt+r+1} L${cx} ${yt+r+3}`, fill:'none', stroke:'#d1d5db', 'stroke-width':1.4, opacity:0.55}));
+  g.appendChild(el('path',{d:`M${cx-r+3} ${yb-3} L${cx-r+3} ${yt+r}`, stroke:'#fff', 'stroke-width':2, 'stroke-linecap':'round', opacity:0.28}));
+  if (blown) g.appendChild(el('polyline',{points:`${cx-5},${yt+5} ${cx-1},${yt+r} ${cx-3},${yt+r+4} ${cx+4},${yb-3}`, fill:'none', stroke:'#f8fafc', 'stroke-width':1.2}));
+  g.appendChild(el('path',{d, fill:'none', stroke:PART_INK, 'stroke-width':1.3}));
+  pBox(g, cx-r-2, yb, 2*r+4, 3.5, 1, blown?'#3a3a3a':col);
+}
+
 const COMPONENT_DEFS = {
   battery: {
-    label:'Battery', icon:'🔋', w:3, h:1.4, category:'power',
-    pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:3, dy:0.7}],
+    label:'Battery', w:4, h:2, category:'power',
+    pins:[{id:'+', dx:4, dy:1, name:'Positive (+)'},{id:'-', dx:0, dy:1, name:'Negative (−)'}], // + first: the solver reads a source's first pin as +
     defaultProps:{voltage:6},
     props:[{key:'voltage', label:'Voltage (V)', type:'select', options:[1.5,3,4.5,6,9,12]}],
     render(g,c){
-      const w=3*GRID, h=1.4*GRID;
-      g.appendChild(line(0,h/2,6,h/2,'url(#metalGrad)',2));
-      g.appendChild(line(w-6,h/2,w,h/2,'url(#metalGrad)',2));
-      const body = rect(3,1,w-6,h-2,4,'url(#battGrad)','#0a0c10');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(3,1,w-6,(h-2)*0.4,4,'url(#sheenGrad)'));
-      g.appendChild(rect(w-11,3,7,h-6,2,'#facc15','#8a6108'));
-      g.appendChild(text(w-7.5,h/2+3.5,'+','comp-value',9));
-      g.appendChild(rect(4,3,6,h-6,2,'#374151'));
-      g.appendChild(text(7,h/2+3.5,'–','comp-value',9));
-      g.appendChild(text(w/2,-6,`${c.props.voltage}V Battery`,'comp-label'));
-      polarityCallout(g, w-7.5, h/2, '+', 0, 16, '#16a34a');
-      polarityCallout(g, 7, h/2, '−', 0, 16, '#dc2626');
+      drawCell(g, c, {x0:0.5*GRID, x1:3.4*GRID, h:1.2*GRID, body:'#2b3242', band:'#e0a526', text:`${c.props.voltage} V`, size:12});
+      partLabel(g, c, 2*GRID, -2, 'Battery', `${c.props.voltage} V`);
     },
     isSource:true, internalR:0.3,
   },
-  battery9v: {
-    label:'9V Battery', icon:'🔋', w:2.6, h:2.3, category:'power',
-    pins:[{id:'+', dx:0.85, dy:0},{id:'-', dx:1.75, dy:0}],
-    defaultProps:{voltage:9},
-    render(g,c){
-      // real 9V batteries have BOTH terminals on the same face (the snap
-      // connectors on top) — unlike an AA/D cell's opposite-end poles
-      const w=2.6*GRID, topY=0.35*GRID, h=2.3*GRID;
-      g.appendChild(line(0.85*GRID,0,0.85*GRID,topY,'url(#metalGradV)',2));
-      g.appendChild(line(1.75*GRID,0,1.75*GRID,topY,'url(#metalGradV)',2));
-      const body = rect(0,topY,w,h-topY,5,'url(#battGrad)','#0a0c10');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(0,topY,w,(h-topY)*0.35,5,'url(#sheenGrad)'));
-      g.appendChild(circleShape(1.75*GRID,topY,6.5,'url(#metalKnob)')); // larger female snap = negative
-      g.appendChild(circleShape(0.85*GRID,topY,4.5,'url(#metalKnob)')); // smaller male snap = positive
-      g.appendChild(text(w/2,-6,'9V Battery','comp-label'));
-      polarityCallout(g, 0.85*GRID, topY, '+', -15, 8, '#16a34a');
-      polarityCallout(g, 1.75*GRID, topY, '−', 15, 8, '#dc2626');
-    },
-    isSource:true, internalR:1.8,
-  },
   batteryAA: {
-    label:'AA Battery', icon:'🔋', w:2.4, h:1.1, category:'power',
-    pins:[{id:'+', dx:0, dy:0.55},{id:'-', dx:2.4, dy:0.55}],
+    label:'AA Cell', w:4, h:2, category:'power',
+    pins:[{id:'+', dx:4, dy:1, name:'Positive (+)'},{id:'-', dx:0, dy:1, name:'Negative (−)'}], // + first: the solver reads a source's first pin as +
     defaultProps:{voltage:1.5},
     render(g,c){
-      const w=2.4*GRID, h=1.1*GRID;
-      g.appendChild(line(0,h/2,5,h/2,'url(#metalGrad)',2));
-      g.appendChild(line(w-5,h/2,w,h/2,'url(#metalGrad)',2));
-      const body = rect(2.5,1,w-5,h-2,4,'url(#battGrad)','#0a0c10');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(2.5,1,w-5,(h-2)*0.4,4,'url(#sheenGrad)'));
-      g.appendChild(rect(w-9,3,6,h-6,2,'#facc15','#8a6108'));
-      g.appendChild(rect(2.5,3,5,h-6,2,'#374151'));
-      g.appendChild(text(w/2,-6,'AA Battery (1.5V)','comp-label'));
-      polarityCallout(g, w-6, h/2, '+', 0, 14, '#16a34a');
-      polarityCallout(g, 5, h/2, '−', 0, 14, '#dc2626');
+      drawCell(g, c, {x0:0.75*GRID, x1:3.2*GRID, h:0.95*GRID, body:'#1f2430', band:'#c2410c', text:'AA', size:10});
+      partLabel(g, c, 2*GRID, 2, 'AA cell', '1.5 V');
     },
     isSource:true, internalR:0.2,
   },
   batteryAAA: {
-    label:'AAA Battery', icon:'🔋', w:2, h:0.9, category:'power',
-    pins:[{id:'+', dx:0, dy:0.45},{id:'-', dx:2, dy:0.45}],
+    label:'AAA Cell', w:4, h:2, category:'power',
+    pins:[{id:'+', dx:4, dy:1, name:'Positive (+)'},{id:'-', dx:0, dy:1, name:'Negative (−)'}], // + first: the solver reads a source's first pin as +
     defaultProps:{voltage:1.5},
     render(g,c){
-      const w=2*GRID, h=0.9*GRID;
-      g.appendChild(line(0,h/2,4,h/2,'url(#metalGrad)',1.6));
-      g.appendChild(line(w-4,h/2,w,h/2,'url(#metalGrad)',1.6));
-      const body = rect(2,0.8,w-4,h-1.6,3,'url(#battGrad)','#0a0c10');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(2,0.8,w-4,(h-1.6)*0.4,3,'url(#sheenGrad)'));
-      g.appendChild(rect(w-7,2.4,5,h-4.8,2,'#facc15','#8a6108'));
-      g.appendChild(rect(2,2.4,4,h-4.8,2,'#374151'));
-      g.appendChild(text(w/2,-6,'AAA Battery (1.5V)','comp-label'));
-      polarityCallout(g, w-4.5, h/2, '+', 0, 12, '#16a34a');
-      polarityCallout(g, 4, h/2, '−', 0, 12, '#dc2626');
+      drawCell(g, c, {x0:0.95*GRID, x1:3.05*GRID, h:0.78*GRID, body:'#3b4558', band:'#94a3b8', text:'AAA', size:9});
+      partLabel(g, c, 2*GRID, 4, 'AAA cell', '1.5 V');
     },
     isSource:true, internalR:0.35,
   },
+  battery9v: {
+    label:'9V Battery', w:3, h:3, category:'power',
+    pins:[{id:'+', dx:1, dy:0, name:'Positive (+), small round snap'},{id:'-', dx:2, dy:0, name:'Negative (−), large hex snap'}],
+    defaultProps:{voltage:9},
+    render(g,c){
+      const G = GRID;
+      pLead(g, G, 0, G, 0.55*G); pLead(g, 2*G, 0, 2*G, 0.55*G);
+      pBox(g, 0.2*G, 0.6*G, 2.6*G, 2.3*G, 5, '#2b3242');
+      pBox(g, 0.2*G, 1.35*G, 2.6*G, 0.95*G, 0, '#e0a526', 'none');
+      pShine(g, 0.2*G, 0.6*G, 2.6*G, 0.75*G, 5);
+      pBox(g, 0.2*G, 0.6*G, 2.6*G, 2.3*G, 5, 'none');
+      pDisc(g, G, 0.6*G, 5, '#cbd5e1');
+      const hx = 2*G, hy = 0.6*G, hr = 6.5;
+      g.appendChild(el('polygon',{points:[0,1,2,3,4,5].map(i=>`${hx+hr*Math.cos(i*Math.PI/3)},${hy+hr*Math.sin(i*Math.PI/3)}`).join(' '), fill:'#cbd5e1', stroke:PART_INK, 'stroke-width':1.3}));
+      pText(g, 1.5*G, 2.05*G, '9 V', 13, '#1a1205', 900);
+      pPol(g, c, G-13, 0.35*G, '+'); pPol(g, c, 2*G+13, 0.35*G, '−');
+      partLabel(g, c, 1.5*G, 3*G+14, 'Battery', '9 V');
+    },
+    isSource:true, internalR:1.8,
+  },
   battery2032: {
-    label:'CR2032 Coin Cell', icon:'🔋', w:1.6, h:1.6, category:'power',
-    pins:[{id:'+', dx:0.4, dy:1.6},{id:'-', dx:1.2, dy:1.6}],
+    label:'Coin Cell', w:2, h:2, category:'power',
+    pins:[{id:'+', dx:0, dy:2, name:'Positive (+)'},{id:'-', dx:2, dy:2, name:'Negative (−)'}],
     defaultProps:{voltage:3},
     render(g,c){
-      const cx=0.8*GRID, cy=0.75*GRID, r=13;
-      g.appendChild(line(0.4*GRID,cy+r*0.6,0.4*GRID,1.6*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(line(1.2*GRID,cy+r*0.6,1.2*GRID,1.6*GRID,'url(#metalGrad)',1.6));
-      const body = circleShape(cx,cy,r,'url(#metalKnob)');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(el('circle',{cx,cy,r:r*0.55,fill:'#1e293b'}));
-      g.appendChild(text(cx,cy+3,'3V','comp-value',8));
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
-      g.appendChild(text(cx,-6,'CR2032 (3V)','comp-label'));
-      polarityCallout(g, 0.4*GRID, 1.6*GRID, '+', -10, 10, '#16a34a');
-      polarityCallout(g, 1.2*GRID, 1.6*GRID, '−', 10, 10, '#dc2626');
+      const G = GRID, cx = G, cy = 0.85*G;
+      pPath(g, `M0 ${2*G} L0 ${1.5*G} L${0.42*G} ${1.32*G}`); pPath(g, `M${2*G} ${2*G} L${2*G} ${1.5*G} L${1.58*G} ${1.32*G}`);
+      pDisc(g, cx, cy, 0.8*G, '#c9d0da');
+      g.appendChild(el('circle',{cx, cy, r:0.62*G, fill:'none', stroke:'#8d97a6', 'stroke-width':1.2}));
+      pText(g, cx, cy-1, 'CR2032', 7, '#334155', 800);
+      pText(g, cx, cy+9, '3 V', 8.5, '#334155', 800);
+      pPol(g, c, -9, 1.7*G, '+'); pPol(g, c, 2*G+9, 1.7*G, '−');
+      partLabel(g, c, G, -2, 'Coin cell', '3 V');
     },
     isSource:true, internalR:15,
   },
   batteryLiPo: {
-    label:'LiPo Battery (3.7V)', icon:'🔋', w:2.6, h:1.6, category:'power',
-    pins:[{id:'+', dx:0.4, dy:1.6},{id:'-', dx:1.2, dy:1.6}],
+    label:'LiPo Battery', w:3, h:3, category:'power',
+    pins:[{id:'+', dx:1, dy:3, name:'Positive (+), red lead'},{id:'-', dx:2, dy:3, name:'Negative (−), black lead'}],
     defaultProps:{voltage:3.7},
     render(g,c){
-      const w=2.6*GRID, bodyH=1.4*GRID;
-      g.appendChild(line(0.4*GRID,bodyH,0.4*GRID,1.6*GRID,'#dc2626',1.8));
-      g.appendChild(line(1.2*GRID,bodyH,1.2*GRID,1.6*GRID,'#1f2937',1.8));
-      const body = rect(0,0,w,bodyH,8,'url(#darkPlasticGrad)','#000');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(2,2,w-4,bodyH*0.35,6,'url(#sheenGrad)'));
-      g.appendChild(text(w/2,bodyH/2+4,'LiPo 3.7V','comp-value',8));
-      g.appendChild(text(w/2,-6,'LiPo Battery (3.7V)','comp-label'));
-      polarityCallout(g, 0.4*GRID, 1.6*GRID, '+', -12, 8, '#16a34a');
-      polarityCallout(g, 1.2*GRID, 1.6*GRID, '−', 12, 8, '#dc2626');
+      const G = GRID;
+      pLead(g, G, 2.1*G, G, 3*G, '#ef4444'); pLead(g, 2*G, 2.1*G, 2*G, 3*G, '#64748b');
+      pBox(g, 0, 0.1*G, 3*G, 2*G, 6, '#8796ad');
+      pShine(g, 0, 0.1*G, 3*G, 2*G, 6);
+      pBox(g, 0.3*G, 0.45*G, 2.4*G, 0.95*G, 3, '#1e293b', 'none');
+      pText(g, 1.5*G, 0.92*G+1, 'LiPo', 10, '#f8fafc', 800);
+      pText(g, 1.5*G, 1.3*G, '3.7 V', 8.5, '#cbd5e1', 700);
+      pBox(g, 0.7*G, 1.75*G, 1.6*G, 0.35*G, 1.5, '#166534');
+      pPol(g, c, G-10, 2.7*G, '+'); pPol(g, c, 2*G+10, 2.7*G, '−');
+      partLabel(g, c, 1.5*G, -2, 'LiPo battery', '3.7 V');
     },
     isSource:true, internalR:0.08,
   },
   switch: {
-    label:'Switch', icon:'🔘', w:2.5, h:1, category:'input',
-    pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.5, dy:0.5}],
+    label:'Switch', w:4, h:2, category:'input',
+    pins:[{id:'a', dx:0, dy:1},{id:'b', dx:4, dy:1}],
     defaultProps:{closed:false},
     render(g,c){
-      const on = c.props.closed, midY=0.5*GRID, cx=1.25*GRID;
-      g.appendChild(line(0,midY,0.55*GRID,midY,'url(#metalGrad)',2));
-      g.appendChild(line(1.95*GRID,midY,2.5*GRID,midY,'url(#metalGrad)',2));
-      // moulded housing — a real toggle switch's base, not a bare wire
-      // standing in for the whole part
-      const housing = rect(0.5*GRID,midY-7,1.5*GRID,14,3,'url(#darkPlasticGrad)','#000');
-      g.appendChild(housing);
-      g.appendChild(rect(0.5*GRID,midY-7,1.5*GRID,5,3,'url(#sheenGrad)'));
-      // threaded bushing the paddle actually pivots through
-      g.appendChild(circleShape(cx,midY-1,5.5,'url(#metalKnob)'));
-      g.appendChild(el('circle',{cx,cy:midY-1,r:5.5,fill:'none',stroke:'#1e293b','stroke-width':1}));
-      // the paddle: flips left (off) / right (on), like a real bat-handle
-      // toggle — not a line that just connects the two terminals
-      const tilt = (on ? 24 : -24) * Math.PI/180;
-      const tipX = cx + Math.sin(tilt)*13, tipY = midY-1 - Math.cos(tilt)*13;
-      g.appendChild(line(cx,midY-1,tipX,tipY, on?'#34d399':'#f87171',4));
-      g.appendChild(circleShape(tipX,tipY,2.6, on?'#34d399':'#f87171'));
-      g.appendChild(text(2.5*GRID/2,-6, on?'Switch: ON':'Switch: OFF','comp-label'));
+      const G = GRID, on = !!c.props.closed;
+      pLead(g, 0, G, 0.75*G, G); pLead(g, 3.25*G, G, 4*G, G);
+      pBox(g, 0.75*G, 0.4*G, 2.5*G, 1.2*G, 6, '#2b3242');
+      pShine(g, 0.75*G, 0.4*G, 2.5*G, 1.2*G, 6);
+      pBox(g, 1.0*G, 0.78*G, 2.0*G, 0.44*G, 0.22*G, '#0d111b');
+      // the slider: grey and left when off, green and right when on
+      const kx = on ? 2.0*G : 1.0*G;
+      pBox(g, kx, 0.62*G, 1.0*G, 0.76*G, 4, on?'#22c55e':'#9aa4b2');
+      for (let i=-1;i<=1;i++) g.appendChild(el('line',{x1:kx+0.5*G+i*4, y1:0.78*G, x2:kx+0.5*G+i*4, y2:1.22*G, stroke:'rgba(0,0,0,0.35)', 'stroke-width':1.2}));
+      partLabel(g, c, 2*G, 0.2*G, 'Switch', on?'ON':'OFF');
     },
     onClick(c){ c.props.closed = !c.props.closed; },
   },
   button: {
-    label:'Push Button', icon:'⏺', w:2, h:1, category:'input',
-    pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2, dy:0.5}],
+    label:'Push Button', w:2, h:2, category:'input',
+    pins:[{id:'a', dx:0, dy:1},{id:'b', dx:2, dy:1}],
     defaultProps:{pressed:false},
     render(g,c){
-      const pressed = c.props.pressed;
-      g.appendChild(line(0,GRID/2,0.3*GRID,GRID/2,'url(#metalGrad)',1.6));
-      g.appendChild(line(1.7*GRID,GRID/2,2*GRID,GRID/2,'url(#metalGrad)',1.6));
-      // a real 4-leg tactile button's other two legs — not separately
-      // wired (only these two nodes are electrically meaningful), but
-      // drawn short so the part doesn't look like it's missing hardware
-      g.appendChild(line(0.2*GRID,0.05*GRID,0.06*GRID,-3,'#94a3b8',1.3));
-      g.appendChild(line(1.8*GRID,0.05*GRID,1.94*GRID,-3,'#94a3b8',1.3));
-      g.appendChild(rect(0.15*GRID,0.05*GRID,1.7*GRID,0.9*GRID,3,'url(#darkPlasticGrad)','#000'));
-      // cap seam — the ring where a real button's cap meets its base
-      g.appendChild(el('circle',{cx:GRID,cy:GRID/2,r:(pressed?7:8.5)+1.5,fill:'none',stroke:'#000','stroke-width':1.2,opacity:0.5}));
-      const cap = circleShape(GRID,GRID/2, pressed?7:8.5, pressed?'#164e3a':'#2f3846');
-      cap.setAttribute('filter','url(#softShadow)');
-      g.appendChild(cap);
-      g.appendChild(el('circle',{cx:GRID,cy:GRID/2,r:pressed?7:8.5,fill:'url(#domeShine)'}));
-      g.appendChild(text(GRID,GRID/2+3,'PUSH','comp-value',7));
+      const G = GRID, p = !!c.props.pressed;
+      pLead(g, 0, G, 0.3*G, G); pLead(g, 1.7*G, G, 2*G, G);
+      pBox(g, 0.25*G, 0.25*G, 1.5*G, 1.5*G, 4, '#2b3242');
+      [[0.45,0.45],[1.55,0.45],[0.45,1.55],[1.55,1.55]].forEach(([x,y])=>pDisc(g, x*G, y*G, 1.8, '#5b6478', 'none'));
+      pDisc(g, G, G, 0.52*G, '#1a1f2b');
+      pDisc(g, G, G, p?0.4*G:0.47*G, p?'#b45309':'#f59e0b');
+      if (!p) g.appendChild(el('circle',{cx:G-3, cy:G-3, r:0.18*G, fill:'#fff', opacity:0.18}));
+      partLabel(g, c, G, -2, 'Button', p?'pressed':'');
     },
     onDown(c){ c.props.pressed = true; },
     onUp(c){ c.props.pressed = false; },
   },
   resistor: {
-    label:'Resistor', icon:'🟫', w:3, h:1, category:'passive',
-    pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:3, dy:0.5}],
+    label:'Resistor', w:4, h:2, category:'passive',
+    pins:[{id:'a', dx:0, dy:1},{id:'b', dx:4, dy:1}],
     defaultProps:{ohms:220},
     props:[{key:'ohms', label:'Resistance (Ω)', type:'select', options:[100,220,330,470,1000,2200,4700,10000,20000]}],
     render(g,c){
-      const bodyX=0.55*GRID, bodyW=1.9*GRID, bodyY=0.12*GRID, bodyH=0.76*GRID;
-      g.appendChild(line(0,0.5*GRID,bodyX,0.5*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(bodyX+bodyW,0.5*GRID,3*GRID,0.5*GRID,'url(#metalGrad)',2));
-      const body = rect(bodyX,bodyY,bodyW,bodyH,bodyH/2,'url(#resistorBodyGrad)','#8a7548');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(bodyX,bodyY,bodyW,bodyH*0.4,bodyH/2,'url(#sheenGrad)'));
-      const bands = [...resistorBands(c.props.ohms), '#d4af17'];
-      bands.forEach((col,i)=>{
-        g.appendChild(rect(bodyX+bodyW*0.14+i*bodyW*0.19, bodyY+0.5, bodyW*0.09, bodyH-1, 0, col));
+      const G = GRID, x0 = 0.85*G, x1 = 3.15*G, yc = G, hb = 0.4*G, hm = 0.3*G;
+      pLead(g, 0, G, x0+2, G); pLead(g, x1-2, G, 4*G, G);
+      // dog-bone body: fat end caps, slimmer middle, like a real resistor
+      const d = `M${x0+7} ${yc-hb} Q${x0} ${yc-hb} ${x0} ${yc} Q${x0} ${yc+hb} ${x0+7} ${yc+hb} L${x0+13} ${yc+hb} Q${x0+16} ${yc+hm} ${x0+19} ${yc+hm} L${x1-19} ${yc+hm} Q${x1-16} ${yc+hm} ${x1-13} ${yc+hb} L${x1-7} ${yc+hb} Q${x1} ${yc+hb} ${x1} ${yc} Q${x1} ${yc-hb} ${x1-7} ${yc-hb} L${x1-13} ${yc-hb} Q${x1-16} ${yc-hm} ${x1-19} ${yc-hm} L${x0+19} ${yc-hm} Q${x0+16} ${yc-hm} ${x0+13} ${yc-hb} Z`;
+      const clipId = 'rclip-'+(c.id||'x');
+      const cp = el('clipPath',{id:clipId}); cp.appendChild(el('path',{d})); g.appendChild(cp);
+      g.appendChild(el('path',{d, fill:'#dcc79c'}));
+      const bands = el('g',{'clip-path':`url(#${clipId})`});
+      [...resistorBands(c.props.ohms), '#c8a12a'].forEach((col,i)=>{
+        const bx = i<3 ? x0+7+i*9.5 : x1-13;
+        bands.appendChild(el('rect',{x:bx, y:yc-hb, width:4.5, height:2*hb, fill:col}));
       });
-      g.appendChild(text(1.5*GRID,-6,`${fmtOhms(c.props.ohms)}`,'comp-label'));
+      bands.appendChild(el('rect',{x:x0, y:yc-hb, width:x1-x0, height:hb*0.55, fill:'#fff', opacity:0.16}));
+      g.appendChild(bands);
+      g.appendChild(el('path',{d, fill:'none', stroke:PART_INK, 'stroke-width':1.3}));
+      // on its side the value sits further out, clear of the body
+      partLabel(g, c, 2*G, (c.rotation||0)%180 ? -0.35*G : 0.35*G, 'Resistor', fmtOhms(c.props.ohms));
     },
   },
   led: {
-    label:'LED', icon:'💡', w:1.6, h:1.6, category:'output',
-    pins:[{id:'a', dx:0.3, dy:1.6},{id:'c', dx:1.3, dy:1.6}],
+    label:'LED', w:1, h:3, category:'output',
+    pins:[{id:'a', dx:0, dy:3, name:'Anode (+), the longer leg'},{id:'c', dx:1, dy:3, name:'Cathode (−), flat side'}],
     defaultProps:{color:'red'},
     props:[{key:'color', label:'Colour', type:'select', options:['red','green','yellow','blue','white']}],
     render(g,c){
-      const col = LED_COLORS[c.props.color].hex;
-      const glow = c._glow||0;
-      const cx=0.8*GRID, cy=0.66*GRID, r=8.5;
-      const flangeY = cy+r*0.6;
-      // anode (A) leg is longer and reaches further down than cathode (K) —
-      // matches every real through-hole LED, so this alone tells polarity
-      // even before you read the callout chips.
-      g.appendChild(line(0.3*GRID,flangeY,0.3*GRID,1.6*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(line(1.3*GRID,flangeY,1.3*GRID,1.32*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(rect(cx-r-1.5,flangeY-2,(r+1.5)*2,4,1.5,'#3f4552'));
-      if (glow>0.02) g.appendChild(circleShape(cx,cy,r+glow*15,col,glow*0.55));
-      g.appendChild(circleShape(cx,cy,r,col,0.32+glow*0.68));
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
-      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#00000055','stroke-width':1}));
-      // flat-edge cue on the rim, cathode side — real 5mm LEDs are moulded
-      // with a flat notch here so polarity is readable even once it's wired in
-      g.appendChild(line(cx+r*0.6,cy-r*0.65,cx+r*0.6,cy+r*0.65,'rgba(0,0,0,0.35)',1.4));
-      g.appendChild(text(cx,-6,`LED (${c.props.color})`,'comp-label'));
-      polarityCallout(g, 0.3*GRID, 1.6*GRID, 'A', -9, 11, '#16a34a');
-      polarityCallout(g, 1.3*GRID, 1.32*GRID, 'K', 9, 11, '#dc2626');
+      const G = GRID, cx = 0.5*G, r = 0.5*G, yt = 0.1*G, yb = 1.45*G;
+      // anode leg kinked (it's the longer one on a real LED)
+      pPath(g, `M${cx-4} ${yb+3} L${cx-4} ${2.0*G} L0 ${2.35*G} L0 ${3*G}`);
+      pPath(g, `M${cx+4} ${yb+3} L${cx+4} ${2.15*G} L${G} ${2.5*G} L${G} ${3*G}`);
+      drawLedDome(g, cx, yt, yb, r, LED_COLORS[c.props.color].hex, c._glow||0, c._blown);
+      pPol(g, c, -10, 2.7*G, '+'); pPol(g, c, G+10, 2.7*G, '−');
+      partLabel(g, c, cx, -4, 'LED', c._blown ? 'burnt out' : c.props.color);
     },
     isNonlinear:true,
   },
-  buzzer: {
-    label:'Buzzer', icon:'🔊', w:2, h:2, category:'output',
-    pins:[{id:'+', dx:0.4, dy:2},{id:'-', dx:1.6, dy:2}],
+  rgbled: {
+    label:'RGB LED', w:3, h:3, category:'output',
+    pins:[{id:'r', dx:0, dy:3, name:'Red'},{id:'gnd', dx:1, dy:3, name:'Common cathode (−), longest leg'},{id:'g', dx:2, dy:3, name:'Green'},{id:'b', dx:3, dy:3, name:'Blue'}],
     defaultProps:{},
     render(g,c){
-      const on = (c._current||0) > 0.002;
-      g.appendChild(line(0.4*GRID,GRID+13,0.4*GRID,2*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(line(1.6*GRID,GRID+13,1.6*GRID,2*GRID,'url(#metalGrad)',1.6));
-      const can = circleShape(GRID,GRID,15,'url(#darkPlasticGrad)');
-      can.setAttribute('filter','url(#softShadow)');
-      g.appendChild(can);
-      g.appendChild(el('circle',{cx:GRID,cy:GRID,r:15,fill:'none',stroke:'#9ca3af','stroke-width':1}));
-      // resonance-hole ring, like a real piezo buzzer's perforated cap
-      for (let i=0;i<8;i++){
-        const a = i/8*Math.PI*2;
-        g.appendChild(circleShape(GRID+Math.cos(a)*10,GRID+Math.sin(a)*10,1.1,'#0b0d11'));
-      }
-      g.appendChild(circleShape(GRID,GRID,7,on?'#fbbf24':'#4b5563'));
-      g.appendChild(el('circle',{cx:GRID,cy:GRID,r:15,fill:'url(#domeShine)'}));
-      g.appendChild(text(GRID,-6,'Buzzer','comp-label'));
-      if (on){
-        g.appendChild(el('circle',{cx:GRID,cy:GRID,r:19,fill:'none',stroke:'#fbbf24','stroke-width':1,opacity:0.6}));
-      }
+      const G = GRID, gr=c._glowR||0, gg=c._glowG||0, gb=c._glowB||0, cx = 1.5*G;
+      const tot = Math.max(gr,gg,gb);
+      const mixed = tot>0.03 ? `rgb(${Math.round(70+185*gr)},${Math.round(70+185*gg)},${Math.round(70+185*gb)})` : '#c7cdd6';
+      [[cx-7,0],[cx-2.5,G],[cx+2.5,2*G],[cx+7,3*G]].forEach(([x,px])=>pPath(g, `M${x} ${1.5*G} L${x} ${2.05*G} L${px} ${2.45*G} L${px} ${3*G}`));
+      drawLedDome(g, cx, 0.05*G, 1.45*G, 0.6*G, mixed, tot, false);
+      if (!c._icon) ['R','−','G','B'].forEach((t,i)=>pText(g, i*G+(i===0?-8:8), 2.95*G, t, 9, '#cbd5e1', 800));
+      partLabel(g, c, cx, -4, 'RGB LED', '');
+    },
+    isRgbLed:true,
+  },
+  buzzer: {
+    label:'Buzzer', w:2, h:2, category:'output',
+    pins:[{id:'+', dx:0, dy:2, name:'Positive (+), longer leg'},{id:'-', dx:2, dy:2, name:'Negative (−)'}],
+    defaultProps:{},
+    render(g,c){
+      const G = GRID, cx = G, cy = 0.85*G, on = (c._current||0) > 0.002;
+      pPath(g, `M0 ${2*G} L0 ${1.55*G} L${0.42*G} ${1.32*G}`); pPath(g, `M${2*G} ${2*G} L${2*G} ${1.55*G} L${1.58*G} ${1.32*G}`);
+      pDisc(g, cx, cy, 0.82*G, '#1d2230');
+      g.appendChild(el('circle',{cx, cy, r:0.52*G, fill:'none', stroke:'#3b4458', 'stroke-width':1.5}));
+      pDisc(g, cx, cy, 0.16*G, on?'#f59e0b':'#05070d', 'none');
+      pText(g, cx, cy-0.55*G+3, '+', 8, '#7c8599', 800);
+      if (on) [0.95,1.2].forEach((k,i)=>g.appendChild(el('path',{d:`M${cx+k*G*0.6} ${cy-k*G*0.8} A${k*G} ${k*G} 0 0 1 ${cx+k*G*0.6} ${cy+k*G*0.8}`, fill:'none', stroke:'#f59e0b', 'stroke-width':2, 'stroke-linecap':'round', opacity:0.9-i*0.3})));
+      pPol(g, c, -9, 1.75*G, '+'); pPol(g, c, 2*G+9, 1.75*G, '−');
+      partLabel(g, c, cx, -2, 'Buzzer', on?'beeping':'');
     },
     fixedResistance:42,
   },
   ldr: {
-    label:'LDR', icon:'👁', w:2.2, h:1, category:'input',
-    pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.2, dy:0.5}],
+    label:'LDR', w:4, h:2, category:'input',
+    pins:[{id:'a', dx:0, dy:1},{id:'b', dx:4, dy:1}],
     defaultProps:{light:50},
     props:[{key:'light', label:'Light level (%)', type:'range', min:0, max:100}],
     render(g,c){
-      const cx=1.1*GRID, cy=0.5*GRID, r=0.75*GRID;
-      g.appendChild(line(0,cy,cx-r,cy,'url(#metalGrad)',2));
-      g.appendChild(line(cx+r,cy,2.2*GRID,cy,'url(#metalGrad)',2));
-      const disc = circleShape(cx,cy,r,'#e8d78a',0.9);
-      disc.setAttribute('filter','url(#softShadow)');
-      g.appendChild(disc);
-      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#a16207','stroke-width':1.5}));
-      // serpentine CdS meander track, like the real photoresistor's zig-zag light-sensing element
-      const rows=4, trackW=r*1.3, trackH=r*1.0;
-      const pts=[];
-      for (let row=0; row<rows; row++){
-        const ry = cy - trackH/2 + row*(trackH/(rows-1));
-        const xa = row%2===0 ? cx-trackW/2 : cx+trackW/2;
-        const xb = row%2===0 ? cx+trackW/2 : cx-trackW/2;
-        pts.push(`${xa},${ry}`, `${xb},${ry}`);
-      }
-      g.appendChild(el('polyline',{points:pts.join(' '),fill:'none',stroke:'#78716c','stroke-width':1.3}));
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
-      g.appendChild(text(cx,-6,`LDR (${Math.round(c.props.light)}% light)`,'comp-label'));
+      const G = GRID, cx = 2*G, cy = G, r = 0.72*G;
+      pLead(g, 0, G, cx-r, G); pLead(g, cx+r, G, 4*G, G);
+      pDisc(g, cx, cy, r, '#ead18a');
+      // the zig-zag light-sensitive track of a real photoresistor
+      const pts = [];
+      for (let i=0;i<5;i++){ const y = cy-0.42*G+i*0.21*G; pts.push(`${cx-0.45*G},${y}`, `${cx+0.45*G},${y}`); }
+      g.appendChild(el('polyline',{points:pts.map((p,i)=>i%4<2?p:p).join(' '), fill:'none', stroke:'#9a3412', 'stroke-width':1.8, 'stroke-linejoin':'round'}));
+      // darker when less light falls on it
+      g.appendChild(el('circle',{cx, cy, r, fill:'#000', opacity:(1-c.props.light/100)*0.45}));
+      pDisc(g, cx, cy, r, 'none');
+      partLabel(g, c, cx, 0.2*G-2, 'LDR', `${Math.round(c.props.light)}% light`);
     },
     resistanceFn(c){
       const t = c.props.light/100;
@@ -784,26 +827,20 @@ const COMPONENT_DEFS = {
     },
   },
   thermistor: {
-    label:'Thermistor', icon:'🌡', w:2.2, h:1, category:'input',
-    pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.2, dy:0.5}],
-    defaultProps:{temp:25, type:'+t'},
+    label:'Thermistor', w:4, h:2, category:'input',
+    pins:[{id:'a', dx:0, dy:1},{id:'b', dx:4, dy:1}],
+    defaultProps:{temp:25, type:'-t'},
     props:[
-      {key:'type', label:'Type', type:'select', options:['+t','-t']},
+      {key:'type', label:'Type (−t gets less resistive when hot)', type:'select', options:['-t','+t']},
       {key:'temp', label:'Temperature (°C)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      const cx=1.1*GRID, cy=0.5*GRID, rx=0.52*GRID, ry=0.64*GRID;
-      g.appendChild(line(0,cy,cx-rx*0.85,cy,'url(#metalGrad)',1.8));
-      g.appendChild(line(cx+rx*0.85,cy,2.2*GRID,cy,'url(#metalGrad)',1.8));
-      // epoxy-dipped bead — taller than wide, unlike the LDR's flat disc,
-      // with the dip-moulding seam where the two lead wires were sealed in
-      const bead = el('ellipse',{cx,cy,rx,ry,fill:'#1e3a8a'});
-      bead.setAttribute('filter','url(#softShadow)');
-      g.appendChild(bead);
-      g.appendChild(el('ellipse',{cx,cy,rx,ry,fill:'none',stroke:'#0f2050','stroke-width':1.5}));
-      g.appendChild(el('line',{x1:cx-rx*0.8,y1:cy,x2:cx+rx*0.8,y2:cy,stroke:'#0f2050','stroke-width':1,opacity:0.6}));
-      g.appendChild(el('ellipse',{cx,cy:cy-ry*0.35,rx:rx*0.6,ry:ry*0.3,fill:'url(#domeShine)'}));
-      g.appendChild(text(cx,-6,`${c.props.type} Thermistor (${Math.round(c.props.temp)}°C)`,'comp-label'));
+      const G = GRID, cx = 2*G, cy = G, ntc = c.props.type!=='+t';
+      pLead(g, 0, G, cx-0.5*G, G); pLead(g, cx+0.5*G, G, 4*G, G);
+      g.appendChild(el('ellipse',{cx, cy, rx:0.62*G, ry:0.5*G, fill:ntc?'#1f5f8b':'#9a3412', stroke:PART_INK, 'stroke-width':1.3}));
+      g.appendChild(el('ellipse',{cx:cx-4, cy:cy-5, rx:0.3*G, ry:0.14*G, fill:'#fff', opacity:0.14}));
+      pText(g, cx, cy+3.5, ntc?'NTC':'PTC', 9, '#f8fafc', 800);
+      partLabel(g, c, cx, 0.3*G, 'Thermistor', `${Math.round(c.props.temp)} °C`);
     },
     resistanceFn(c){
       const t = c.props.temp/100;
@@ -811,309 +848,236 @@ const COMPONENT_DEFS = {
     },
   },
   potentiometer: {
-    label:'Potentiometer', icon:'🎛', w:2.4, h:1.8, category:'input',
-    pins:[{id:'a', dx:0, dy:1.8},{id:'wiper', dx:1.2, dy:0},{id:'b', dx:2.4, dy:1.8}],
+    label:'Potentiometer', w:2, h:2, category:'input',
+    pins:[{id:'a', dx:0, dy:2, name:'End a'},{id:'wiper', dx:1, dy:2, name:'Wiper (middle leg)'},{id:'b', dx:2, dy:2, name:'End b'}],
     defaultProps:{maxOhms:10000, wiperPos:50},
     props:[
       {key:'maxOhms', label:'Max resistance (Ω)', type:'select', options:[1000,5000,10000,20000,100000]},
-      {key:'wiperPos', label:'Wiper position (%)', type:'range', min:0, max:100},
+      {key:'wiperPos', label:'Knob position (%)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      const bodyY=0.5*GRID, bodyH=1.1*GRID, knobCx=1.2*GRID, knobCy=bodyY+bodyH/2, knobR=13;
-      g.appendChild(line(0,1.8*GRID,0.2*GRID,1.8*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(2.4*GRID,1.8*GRID,2.2*GRID,1.8*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(1.2*GRID,0,1.2*GRID,bodyY,'url(#metalGradV)',2));
-      const body = rect(0.2*GRID,bodyY,2*GRID,bodyH,3,'url(#darkPlasticGrad)','#000');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(0.2*GRID,bodyY,2*GRID,bodyH*0.35,3,'url(#sheenGrad)'));
-      // a bigger dial, easier to read the setting on at a glance — the
-      // knob used to be barely wider than its own leads
-      g.appendChild(circleShape(knobCx,knobCy,knobR,'url(#metalKnob)'));
-      g.appendChild(el('circle',{cx:knobCx,cy:knobCy,r:knobR,fill:'none',stroke:'#334155','stroke-width':1}));
-      // knurled rim — the machined grip ridges a real pot/trimmer knob
-      // has, not a bare disc
-      for (let i=0;i<18;i++){
-        const a = i/18*Math.PI*2;
-        g.appendChild(el('line',{
-          x1:knobCx+Math.cos(a)*knobR*0.82, y1:knobCy+Math.sin(a)*knobR*0.82,
-          x2:knobCx+Math.cos(a)*knobR*0.98, y2:knobCy+Math.sin(a)*knobR*0.98,
-          stroke:'#1e293b','stroke-width':1, opacity:0.55,
-        }));
-      }
-      // dimly mark the two ends of travel so the pointer's position reads
-      // against the full sweep, not just in isolation
-      [-135, 135].forEach(deg=>{
-        const a = deg*Math.PI/180;
-        g.appendChild(el('line',{
-          x1:knobCx+Math.cos(a)*knobR*1.08, y1:knobCy+Math.sin(a)*knobR*1.08,
-          x2:knobCx+Math.cos(a)*knobR*1.28, y2:knobCy+Math.sin(a)*knobR*1.28,
-          stroke:'#64748b','stroke-width':1.4, opacity:0.6,
-        }));
-      });
-      const ang = (-135 + (c.props.wiperPos/100)*270) * Math.PI/180;
-      // a bright, high-contrast pointer (not a dark slot barely visible
-      // against a metal knob) so the current setting is legible at a glance
-      g.appendChild(line(knobCx,knobCy, knobCx+Math.cos(ang)*knobR*0.85, knobCy+Math.sin(ang)*knobR*0.85, '#fbbf24',3));
-      g.appendChild(circleShape(knobCx+Math.cos(ang)*knobR*0.85, knobCy+Math.sin(ang)*knobR*0.85, 2.6, '#fbbf24'));
-      g.appendChild(circleShape(knobCx,knobCy,3,'#1e293b'));
-      g.appendChild(text(1.2*GRID,-6,`Pot ${Math.round(c.props.wiperPos)}%`,'comp-label'));
+      const G = GRID, cx = G, cy = 0.78*G, r = 0.5*G;
+      [0,1,2].forEach(i=>pLead(g, i*G, 1.5*G, i*G, 2*G));
+      pBox(g, -0.3*G, 0, 2.6*G, 1.55*G, 5, '#1e40af');
+      pShine(g, -0.3*G, 0, 2.6*G, 1.55*G, 5);
+      // travel arc: where the knob can turn from and to
+      const a0 = 135*Math.PI/180, a1 = 405*Math.PI/180, R = r+4;
+      g.appendChild(el('path',{d:`M${cx+R*Math.cos(a0)} ${cy+R*Math.sin(a0)} A${R} ${R} 0 1 1 ${cx+R*Math.cos(a1)} ${cy+R*Math.sin(a1)}`, fill:'none', stroke:'#93c5fd', 'stroke-width':1.4, opacity:0.6}));
+      pDisc(g, cx, cy, r, '#e5e7eb');
+      const ang = a0 + (c.props.wiperPos/100)*(a1-a0);
+      g.appendChild(el('line',{x1:cx-Math.cos(ang)*r*0.55, y1:cy-Math.sin(ang)*r*0.55, x2:cx+Math.cos(ang)*r*0.85, y2:cy+Math.sin(ang)*r*0.85, stroke:'#111827', 'stroke-width':3, 'stroke-linecap':'round'}));
+      if (!c._icon) ['a','w','b'].forEach((t,i)=>pText(g, i*G+(i===1?0:i===0?-8:8), 1.95*G, t, 8.5, '#cbd5e1', 800));
+      partLabel(g, c, cx, -4, 'Potentiometer', `${fmtOhms(c.props.maxOhms)} · ${Math.round(c.props.wiperPos)}%`);
     },
     isPot:true,
   },
   capacitor: {
-    label:'Capacitor', icon:'⏸', w:1.2, h:1.4, category:'passive',
-    // radial layout — both legs close together on the bottom — instead of
-    // one lead per side: real electrolytics in this µF range are almost
-    // always a can standing on two close-set legs, not an axial part.
-    pins:[{id:'+', dx:0, dy:1.4},{id:'-', dx:1.2, dy:1.4}],
+    label:'Capacitor', w:1, h:3, category:'passive',
+    pins:[{id:'+', dx:0, dy:3, name:'Positive (+), longer leg'},{id:'-', dx:1, dy:3, name:'Negative (−), striped side'}],
     defaultProps:{uf:100},
     props:[{key:'uf', label:'Capacitance (µF)', type:'select', options:[1,10,100,470,1000,4700]}],
     render(g,c){
-      const W=1.2*GRID, legTop=1.12*GRID, bodyH=0.92*GRID, bodyY=legTop-bodyH;
-      g.appendChild(line(0,legTop,0,1.4*GRID,'url(#metalGrad)',1.8));
-      g.appendChild(line(W,legTop,W,1.4*GRID,'url(#metalGrad)',1.8));
-      // the can itself, seen from the front — not a flat disc
-      const can = rect(0,bodyY,W,bodyH,W*0.22,'#1d4ed8','#0f2a6b');
-      can.setAttribute('filter','url(#softShadow)');
-      g.appendChild(can);
-      g.appendChild(rect(0,bodyY,W,bodyH*0.3,W*0.22,'url(#sheenGrad)'));
-      // printed negative-polarity stripe, on the '-' lead's side
-      g.appendChild(rect(W*0.6,bodyY+2,W*0.32,bodyH-4,2,'#0b0d11'));
-      g.appendChild(text(W*0.76,bodyY+bodyH*0.58,'–','comp-value',8));
-      // vent-notch score lines embossed into the top, like a real can
-      g.appendChild(line(W*0.32,bodyY+3,W*0.32,bodyY+bodyH*0.24,'#0f2a6b',1.4));
-      g.appendChild(line(W*0.47,bodyY+3,W*0.47,bodyY+bodyH*0.24,'#0f2a6b',1.4));
-      g.appendChild(text(W/2,-6,`${c.props.uf}µF`,'comp-label'));
+      const G = GRID, x = -0.2*G, w = 1.4*G, y = 0.1*G, h = 1.8*G;
+      pLead(g, 0, y+h, 0, 3*G); pLead(g, G, y+h, G, 3*G);
+      pBox(g, x, y, w, h, 6, '#1d4ed8', 'none');
+      // the printed stripe marks the negative leg
+      g.appendChild(el('rect',{x:x+w*0.62, y, width:w*0.3, height:h, fill:'#93c5fd'}));
+      [0.35,0.6,0.85].forEach(k=>pText(g, x+w*0.77, y+h*k+3, '−', 10, '#1e3a8a', 900));
+      pShine(g, x, y, w, h, 6);
+      pBox(g, x, y, w, h, 6, 'none');
+      g.appendChild(el('path',{d:`M${x+w*0.3} ${y+3} l0 6 M${x+w*0.3-3} ${y+6} l6 0`, stroke:'#0f2a6b', 'stroke-width':1.3}));
+      pPol(g, c, -10, 2.7*G, '+'); pPol(g, c, G+10, 2.7*G, '−');
+      partLabel(g, c, 0.5*G, -4, 'Capacitor', `${c.props.uf} µF`);
     },
     isCapacitor:true,
   },
   transistor: {
-    label:'NPN Transistor', icon:'⏚', w:1.8, h:2, category:'passive',
-    pins:[{id:'b', dx:0, dy:1}, {id:'c', dx:1.2, dy:0}, {id:'e', dx:1.2, dy:2}],
+    label:'NPN Transistor', w:2, h:2, category:'passive',
+    pins:[{id:'e', dx:0, dy:2, name:'Emitter (E)'},{id:'b', dx:1, dy:2, name:'Base (B)'},{id:'c', dx:2, dy:2, name:'Collector (C)'}],
     defaultProps:{},
     render(g,c){
-      g.appendChild(line(0,GRID,0.5*GRID,GRID,'url(#metalGrad)',2));
-      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,0.35*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.35*GRID,'url(#metalGradV)',2));
-      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,1.65*GRID,'url(#metalGrad)',2));
-      g.appendChild(line(1.2*GRID,2*GRID,1.2*GRID,1.65*GRID,'url(#metalGradV)',2));
-      // TO-92 package: black plastic dome with a flat front face
-      const cx=0.9*GRID, cy=GRID, r=16;
-      const body = el('path',{d:`M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy} L ${cx-r} ${cy} Z`, fill:'url(#darkPlasticGrad)'});
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
-      g.appendChild(el('path',{d:`M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy}`, fill:'none',stroke:'#000','stroke-width':1}));
-      g.appendChild(text(0.9*GRID,-6,'NPN','comp-label'));
-      g.appendChild(text(0,GRID+11,'B','comp-value',8));
-      g.appendChild(text(1.2*GRID,-3,'C','comp-value',8));
-      g.appendChild(text(1.2*GRID,2*GRID+11,'E','comp-value',8));
+      const G = GRID;
+      pPath(g, `M${0.55*G} ${1.35*G} L0 ${1.7*G} L0 ${2*G}`); pLead(g, G, 1.35*G, G, 2*G); pPath(g, `M${1.45*G} ${1.35*G} L${2*G} ${1.7*G} L${2*G} ${2*G}`);
+      // TO-92 package seen from the flat (labelled) face
+      g.appendChild(el('path',{d:`M${0.25*G} ${1.38*G} L${0.25*G} ${0.6*G} Q${0.25*G} ${0.05*G} ${G} ${0.05*G} Q${1.75*G} ${0.05*G} ${1.75*G} ${0.6*G} L${1.75*G} ${1.38*G} Z`, fill:'#1f2430', stroke:PART_INK, 'stroke-width':1.3}));
+      pText(g, G, 0.62*G, 'NPN', 9, '#f8fafc', 800);
+      if (!c._icon) ['E','B','C'].forEach((t,i)=>pText(g, (0.5+i*0.5)*G, 1.22*G, t, 8, '#9aa4b2', 800));
+      partLabel(g, c, G, -4, 'Transistor', 'NPN');
     },
     isTransistor:true,
   },
-  mcu: {
-    label:'Microcontroller', icon:'🧠', w:8, h:5, category:'control',
-    pins:(() => {
-      const p = [];
-      for (let i=0;i<=13;i++) p.push({id:'D'+i, dx: 7 - i*0.5, dy:0});
-      for (let i=0;i<=5;i++) p.push({id:'A'+i, dx: 0.5 + i*0.6, dy:5});
-      p.push({id:'5V', dx:6, dy:5});
-      p.push({id:'GND', dx:7, dy:5});
-      return p;
-    })(),
-    defaultProps:{},
-    render(g,c){
-      const W=8*GRID, H=5*GRID;
-      // PCB substrate — recognisable "dev board" blue rather than a plain
-      // generic-green rectangle, with mounting holes at each corner like a
-      // real board's screw holes.
-      const board = rect(0,0,W,H,7,'url(#pcbBlueGrad)','#08153d');
-      board.setAttribute('filter','url(#softShadow)');
-      g.appendChild(board);
-      g.appendChild(rect(0,0,W,H*0.3,7,'url(#sheenGrad)'));
-      [[9,9],[W-9,9],[9,H-9],[W-9,H-9]].forEach(([mx,my])=>{
-        g.appendChild(el('circle',{cx:mx,cy:my,r:3.4,fill:'#08153d'}));
-        g.appendChild(el('circle',{cx:mx,cy:my,r:3.4,fill:'none',stroke:'#5b7fe0','stroke-width':0.8}));
-      });
-      // USB-B port, protruding off the left edge
-      g.appendChild(rect(-9,0.25*GRID,15,1.05*GRID,2,'url(#metalGrad)','#4b5563'));
-      g.appendChild(rect(-5,0.42*GRID,9,0.7*GRID,1,'#1f2937'));
-      // barrel power jack, protruding off the left edge below the USB port
-      g.appendChild(rect(-7,3.15*GRID,13,0.95*GRID,3,'#0f172a','#000'));
-      g.appendChild(el('circle',{cx:-0.5,cy:3.6*GRID,r:5,fill:'url(#metalKnob)'}));
-      // header-pin strips: black plastic connector blocks along the top
-      // (digital) and bottom (analog/power) edges, with the actual pin
-      // holes poking through — not just bare metal ticks.
-      g.appendChild(rect(0.15*GRID,-5,6.95*GRID,10,2,'url(#darkPlasticGrad)','#000'));
-      g.appendChild(rect(0.15*GRID,H-5,6.95*GRID,10,2,'url(#darkPlasticGrad)','#000'));
-      for (let i=0;i<=13;i++) g.appendChild(el('circle',{cx:(7-i*0.5)*GRID,cy:0,r:2,fill:'url(#metalGradV)'}));
-      for (let i=0;i<=5;i++) g.appendChild(el('circle',{cx:(0.5+i*0.6)*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
-      g.appendChild(el('circle',{cx:6*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
-      g.appendChild(el('circle',{cx:7*GRID,cy:H,r:2,fill:'url(#metalGradV)'}));
-      // main IC chip (DIP package) in the centre
-      const chip = rect(2.75*GRID,1.55*GRID,2.5*GRID,1.35*GRID,2,'#0b0d11','#000');
-      g.appendChild(chip);
-      g.appendChild(el('circle',{cx:2.95*GRID,cy:1.75*GRID,r:2.2,fill:'#374151'})); // pin-1 dimple
-      for (let i=0;i<7;i++){
-        g.appendChild(rect(2.85*GRID+i*0.33*GRID,1.45*GRID,0.1*GRID,0.14*GRID,0,'url(#metalGrad)'));
-        g.appendChild(rect(2.85*GRID+i*0.33*GRID,2.86*GRID,0.1*GRID,0.14*GRID,0,'url(#metalGrad)'));
-      }
-      // reset button + power LED, like a real board's silkscreen extras
-      const resetBtn = circleShape(7.55*GRID,0.85*GRID,4.3,'#dc2626');
-      g.appendChild(resetBtn);
-      g.appendChild(el('circle',{cx:7.55*GRID,cy:0.85*GRID,r:4.3,fill:'url(#domeShine)'}));
-      g.appendChild(circleShape(1.0*GRID,3.65*GRID,2.2,'#22c55e'));
-      g.appendChild(text(4*GRID,-16,'MICROCONTROLLER','comp-label',9));
-      g.appendChild(text(4.05*GRID,2.38*GRID,'MCU','comp-value',9));
-      for (let i=0;i<=13;i++) g.appendChild(text((7-i*0.5)*GRID,-8,'D'+i,'comp-value',6.5));
-      for (let i=0;i<=5;i++) g.appendChild(text((0.5+i*0.6)*GRID,H+15,'A'+i,'comp-value',6.5));
-      g.appendChild(text(6*GRID,H+15,'5V','comp-value',6.5));
-      g.appendChild(text(7*GRID,H+15,'GND','comp-value',6.5));
-    },
-    isMcu:true,
-  },
   dcmotor: {
-    label:'DC Motor', icon:'⚙️', w:2.2, h:2.2, category:'output',
-    pins:[{id:'+', dx:0, dy:2.2},{id:'-', dx:2.2, dy:2.2}],
+    label:'DC Motor', w:3, h:3, category:'output',
+    pins:[{id:'+', dx:1, dy:3, name:'Terminal +'},{id:'-', dx:2, dy:3, name:'Terminal −'}],
     defaultProps:{},
     render(g,c){
-      const cx=1.1*GRID, cy=1.1*GRID;
-      g.appendChild(line(0,2.2*GRID,0,1.9*GRID,'url(#metalGrad)',1.8));
-      g.appendChild(line(2.2*GRID,2.2*GRID,2.2*GRID,1.9*GRID,'url(#metalGrad)',1.8));
-      // cylindrical metal can body
-      const can = circleShape(cx,cy,20,'url(#motorCan)');
-      can.setAttribute('filter','url(#softShadow)');
-      g.appendChild(can);
-      g.appendChild(el('circle',{cx,cy,r:20,fill:'none',stroke:'#1e293b','stroke-width':1.5}));
-      g.appendChild(rect(cx-5,cy-24,10,7,1,'#78350f','#4a220a'));
-      g.appendChild(circleShape(cx,cy,5,'#1e293b'));
-      const angle = c._spinAngle||0;
-      g.appendChild(line(cx,cy, cx+16*Math.cos(angle), cy+16*Math.sin(angle), '#fbbf24', 3));
-      g.appendChild(el('circle',{cx,cy,r:20,fill:'url(#domeShine)'}));
-      g.appendChild(text(cx,-6,'DC Motor','comp-label'));
+      const G = GRID, cx = 1.5*G, cy = 1.25*G;
+      pLead(g, G, 2.2*G, G, 3*G); pLead(g, 2*G, 2.2*G, 2*G, 3*G);
+      pBox(g, 0.8*G, 2.05*G, 1.4*G, 0.3*G, 1.5, '#b45309');
+      pDisc(g, cx, cy, 1.12*G, '#aeb7c4');
+      g.appendChild(el('circle',{cx, cy, r:0.75*G, fill:'#8f99a8', stroke:'#6b7585', 'stroke-width':1}));
+      // the propeller turns with the current (and backwards if reversed)
+      const a = c._spinAngle||0, L = 1.0*G;
+      g.appendChild(el('line',{x1:cx-Math.cos(a)*L, y1:cy-Math.sin(a)*L, x2:cx+Math.cos(a)*L, y2:cy+Math.sin(a)*L, stroke:'#f59e0b', 'stroke-width':5, 'stroke-linecap':'round'}));
+      pDisc(g, cx, cy, 3.5, '#e5e7eb');
+      pPol(g, c, G-10, 2.75*G, '+'); pPol(g, c, 2*G+10, 2.75*G, '−');
+      partLabel(g, c, cx, -4, 'Motor', Math.abs(c._current||0)>0.005 ? 'spinning' : '');
     },
     fixedResistance:25,
   },
-  rgbled: {
-    label:'RGB LED', icon:'🌈', w:2.4, h:1.8, category:'output',
-    pins:[{id:'r', dx:0, dy:1.8},{id:'g', dx:0.8, dy:1.8},{id:'b', dx:1.6, dy:1.8},{id:'gnd', dx:2.4, dy:1.8}],
-    defaultProps:{},
-    render(g,c){
-      const gr=c._glowR||0, gg=c._glowG||0, gb=c._glowB||0;
-      const mixed = `rgb(${Math.round(255*gr)},${Math.round(255*gg)},${Math.round(255*gb)})`;
-      const totalGlow = Math.max(gr,gg,gb);
-      const cx=1.2*GRID, cy=0.7*GRID, r=10;
-      [0,0.8*GRID,1.6*GRID,2.4*GRID].forEach(dx=>{
-        g.appendChild(line(dx,1.4*GRID,dx,1.8*GRID,'url(#metalGrad)',1.6));
-      });
-      g.appendChild(rect(cx-r-2,1.25*GRID,(r+2)*2,3,1,'#4b5563'));
-      if (totalGlow>0.05) g.appendChild(circleShape(cx,cy,r+totalGlow*14,mixed,totalGlow*0.6));
-      // clear/diffused dome — greyish translucent plastic when unlit, tinted by whichever channels are on
-      g.appendChild(circleShape(cx,cy,r, totalGlow>0.05?mixed:'#9ca3af', totalGlow>0.05 ? 0.35+totalGlow*0.65 : 0.5));
-      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
-      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#00000055','stroke-width':1}));
-      g.appendChild(text(cx,-6,'RGB LED','comp-label'));
-      g.appendChild(text(0,1.8*GRID+11,'R','comp-value',7));
-      g.appendChild(text(0.8*GRID,1.8*GRID+11,'G','comp-value',7));
-      g.appendChild(text(1.6*GRID,1.8*GRID+11,'B','comp-value',7));
-      g.appendChild(text(2.4*GRID,1.8*GRID+11,'–','comp-value',7));
-    },
-    isRgbLed:true,
-  },
   servo: {
-    label:'Servo Motor', icon:'🕹️', w:2.4, h:2, category:'output',
-    pins:[{id:'vcc', dx:0, dy:2},{id:'gnd', dx:1.2, dy:2},{id:'sig', dx:2.4, dy:2}],
+    label:'Servo Motor', w:4, h:2, category:'output',
+    pins:[{id:'gnd', dx:1, dy:2, name:'GND (brown wire)'},{id:'vcc', dx:2, dy:2, name:'5V (red wire)'},{id:'sig', dx:3, dy:2, name:'Signal (orange wire)'}],
     defaultProps:{},
     render(g,c){
-      const angle = c._angle==null ? 90 : c._angle;
-      // three colour-coded leads, matching a real servo cable (red/brown/orange)
-      g.appendChild(line(0,1.6*GRID,0,2*GRID,'#dc2626',1.8));
-      g.appendChild(line(1.2*GRID,1.6*GRID,1.2*GRID,2*GRID,'#57534e',1.8));
-      g.appendChild(line(2.4*GRID,1.6*GRID,2.4*GRID,2*GRID,'#f97316',1.8));
-      // moulded plastic case — not the same glossy laminate a PCB uses
-      const body = rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'url(#servoCaseGrad)','#0a0e1c');
-      body.setAttribute('filter','url(#softShadow)');
-      g.appendChild(body);
-      g.appendChild(rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID*0.35,4,'url(#sheenGrad)'));
-      // case seam — the top-cover/bottom-case split every moulded servo
-      // shell has — and its spec sticker
-      g.appendChild(line(0.3*GRID,0.2*GRID+1.4*GRID*0.6,2.1*GRID,0.2*GRID+1.4*GRID*0.6,'#0a0e1c',1));
-      g.appendChild(rect(0.55*GRID,0.2*GRID+1.4*GRID*0.68,1.3*GRID,1.4*GRID*0.2,1,'#e5e7eb'));
-      // mounting flange tabs, like a real micro-servo's ears
-      g.appendChild(rect(-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
-      g.appendChild(rect(2.4*GRID-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
-      const rad = (angle-90)*Math.PI/180;
-      const cx=1.2*GRID, cy=0.9*GRID;
-      // white plastic servo horn (output spline)
-      g.appendChild(line(cx,cy,cx+22*Math.sin(rad),cy-22*Math.cos(rad),'#f8fafc',3.5));
-      g.appendChild(line(cx,cy,cx-14*Math.sin(rad),cy+14*Math.cos(rad),'#f8fafc',3.5));
-      g.appendChild(circleShape(cx,cy,4.5,'url(#metalKnob)'));
-      g.appendChild(text(1.2*GRID,-6,`Servo (${Math.round(angle)}°)`,'comp-label'));
-      g.appendChild(text(0,2*GRID+11,'V','comp-value',7));
-      g.appendChild(text(1.2*GRID,2*GRID+11,'G','comp-value',7));
-      g.appendChild(text(2.4*GRID,2*GRID+11,'S','comp-value',7));
+      const G = GRID, angle = c._angle==null ? 90 : c._angle;
+      pLead(g, G, 1.4*G, G, 2*G, '#a16207'); pLead(g, 2*G, 1.4*G, 2*G, 2*G, '#ef4444'); pLead(g, 3*G, 1.4*G, 3*G, 2*G, '#f97316');
+      pBox(g, -0.15*G, 0.5*G, 4.3*G, 0.45*G, 2, '#1e40af');
+      pBox(g, 0.35*G, 0.1*G, 3.3*G, 1.3*G, 4, '#1d4ed8');
+      pShine(g, 0.35*G, 0.1*G, 3.3*G, 1.3*G, 4);
+      pText(g, 3.1*G, 1.0*G, 'SG90', 8.5, '#dbeafe', 800);
+      // white horn on the output shaft, pointing at the commanded angle
+      const cx = 1.25*G, cy = 0.75*G, rad = (angle-90)*Math.PI/180;
+      g.appendChild(el('line',{x1:cx-Math.sin(rad)*0.45*G, y1:cy+Math.cos(rad)*0.45*G, x2:cx+Math.sin(rad)*1.05*G, y2:cy-Math.cos(rad)*1.05*G, stroke:'#f8fafc', 'stroke-width':6, 'stroke-linecap':'round'}));
+      pDisc(g, cx, cy, 4.5, '#cbd5e1');
+      if (!c._icon) ['−','+','S'].forEach((t,i)=>pText(g, (i+1)*G+8, 1.85*G, t, 9, '#cbd5e1', 800));
+      partLabel(g, c, 2*G, -0.6*G, 'Servo', `${Math.round(angle)}°`);
     },
     isServo:true,
   },
   ultrasonic: {
-    label:'Ultrasonic Sensor', icon:'📡', w:3, h:1.6, category:'input',
-    pins:[{id:'vcc', dx:0, dy:1.6},{id:'trig', dx:1, dy:1.6},{id:'echo', dx:2, dy:1.6},{id:'gnd', dx:3, dy:1.6}],
+    label:'Distance Sensor', w:5, h:3, category:'input',
+    pins:[{id:'vcc', dx:1, dy:3, name:'VCC (5V)'},{id:'trig', dx:2, dy:3, name:'TRIG'},{id:'echo', dx:3, dy:3, name:'ECHO'},{id:'gnd', dx:4, dy:3, name:'GND'}],
     defaultProps:{distance:50},
     props:[{key:'distance', label:'Object distance (cm)', type:'range', min:2, max:400}],
     render(g,c){
-      const board = rect(0,0,3*GRID,1.4*GRID,6,'url(#pcbBlueGrad)','#0a1a4a');
-      board.setAttribute('filter','url(#softShadow)');
-      g.appendChild(board);
-      g.appendChild(rect(0,0,3*GRID,1.4*GRID*0.3,6,'url(#sheenGrad)'));
-      [0.9*GRID,2.1*GRID].forEach(cx=>{
-        g.appendChild(circleShape(cx,0.7*GRID,10,'url(#metalKnob)'));
-        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:7,fill:'none',stroke:'#1e293b','stroke-width':1}));
-        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:4,fill:'#1e293b'}));
-        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:10,fill:'url(#domeShine)'}));
+      const G = GRID;
+      [1,2,3,4].forEach(i=>pLead(g, i*G, 2.4*G, i*G, 3*G));
+      pBox(g, 0, 0, 5*G, 2.45*G, 5, '#1e40af');
+      [1.25*G, 3.75*G].forEach(cx=>{
+        pDisc(g, cx, 1.0*G, 0.85*G, '#cbd5e1');
+        pDisc(g, cx, 1.0*G, 0.62*G, '#3f4859', 'none');
+        for (let i=-2;i<=2;i++) for (let j=-2;j<=2;j++) if (i*i+j*j<=5) g.appendChild(el('circle',{cx:cx+i*4, cy:1.0*G+j*4, r:1, fill:'#9aa4b2'}));
       });
-      g.appendChild(text(1.5*GRID,-6,`Ultrasonic (${Math.round(c.props.distance)}cm)`,'comp-label'));
-      g.appendChild(text(0,1.6*GRID+11,'V','comp-value',7));
-      g.appendChild(text(1*GRID,1.6*GRID+11,'T','comp-value',7));
-      g.appendChild(text(2*GRID,1.6*GRID+11,'E','comp-value',7));
-      g.appendChild(text(3*GRID,1.6*GRID+11,'G','comp-value',7));
+      pBox(g, 2.15*G, 0.8*G, 0.7*G, 0.38*G, 2, '#d1d5db');
+      if (!c._icon) ['VCC','TRIG','ECHO','GND'].forEach((t,i)=>pText(g, (i+1)*G, 2.25*G, t, 6.5, '#dbeafe', 800));
+      partLabel(g, c, 2.5*G, -4, 'Distance sensor', `${Math.round(c.props.distance)} cm`);
     },
     isUltrasonic:true,
   },
   voltmeter: {
-    label:'Voltmeter', icon:'📏', w:3.4, h:2.4, category:'tools',
-    pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
+    label:'Voltmeter', w:4, h:4, category:'tools',
+    pins:[{id:'+', dx:1, dy:4, name:'Red probe (+)'},{id:'-', dx:3, dy:4, name:'Black probe (−)'}],
     defaultProps:{},
-    render(g,c){ renderMeterBody(g,c,'V','#16a34a'); },
+    render(g,c){ drawMeter(g, c, 'V'); },
     isMeter:'voltage', highImpedance:true,
   },
   ammeter: {
-    label:'Ammeter', icon:'🧭', w:3.4, h:2.4, category:'tools',
-    pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
+    label:'Ammeter', w:4, h:4, category:'tools',
+    pins:[{id:'+', dx:1, dy:4, name:'Red probe (+), current in'},{id:'-', dx:3, dy:4, name:'Black probe (−), current out'}],
     defaultProps:{},
-    render(g,c){ renderMeterBody(g,c,'A','#dc2626'); },
+    render(g,c){ drawMeter(g, c, 'A'); },
     isMeter:'current', fixedResistance:0.01,
+  },
+  mcu: {
+    label:'Microcontroller', w:16, h:8, category:'control',
+    // Arduino-style layout: digital pins along the top (D0 on the right),
+    // power and analog pins along the bottom
+    pins:(() => {
+      const p = [];
+      for (let i=0;i<=13;i++) p.push({id:'D'+i, dx:15-i, dy:0, name:'Digital pin D'+i});
+      p.push({id:'GNDT', dx:1, dy:0, name:'GND (0 V), joined to the other GND pin'});
+      p.push({id:'5V', dx:3, dy:8, name:'5V supply out'});
+      p.push({id:'GND', dx:4, dy:8, name:'GND (0 V)'});
+      for (let i=0;i<=5;i++) p.push({id:'A'+i, dx:10+i, dy:8, name:'Analog input A'+i});
+      return p;
+    })(),
+    defaultProps:{},
+    render(g,c){
+      const G = GRID;
+      pBox(g, -0.4*G, 1.3*G, 2.1*G, 1.5*G, 2, '#cbd5e1');
+      pBox(g, -0.15*G, 1.6*G, 1.3*G, 0.9*G, 1, '#8b95a5', 'none');
+      pBox(g, -0.3*G, 5.0*G, 1.9*G, 1.5*G, 3, '#111827');
+      pBox(g, 0, 0.3*G, 16*G, 7.4*G, 10, '#0f766e');
+      pShine(g, 0, 0.3*G, 16*G, 7.4*G, 10);
+      [[0.6,1.0],[15.4,1.0],[0.6,7.0],[15.4,7.0]].forEach(([x,y])=>pDisc(g, x*G, y*G, 4, '#0a2f2c', '#5eead4'));
+      // header strips, a socket at every pin
+      pBox(g, 1.5*G, -0.38*G, 14*G, 0.76*G, 2, '#111827');
+      pBox(g, 2.5*G, 7.62*G, 2*G, 0.76*G, 2, '#111827');
+      pBox(g, 9.5*G, 7.62*G, 6*G, 0.76*G, 2, '#111827');
+      COMPONENT_DEFS.mcu.pins.forEach(p=>g.appendChild(el('rect',{x:p.dx*G-3, y:p.dy*G-3, width:6, height:6, fill:'#000'})));
+      // the chip
+      pBox(g, 6.5*G, 3.9*G, 6*G, 1.5*G, 2, '#111827');
+      for (let i=0;i<14;i++){
+        g.appendChild(el('rect',{x:6.75*G+i*0.4*G, y:3.9*G-4, width:4, height:4, fill:'#cbd5e1'}));
+        g.appendChild(el('rect',{x:6.75*G+i*0.4*G, y:5.4*G, width:4, height:4, fill:'#cbd5e1'}));
+      }
+      pDisc(g, 6.8*G, 4.2*G, 2.5, '#374151', 'none');
+      // the "L" LED wired to D13 on a real board lights with it
+      // (the tray icon is drawn before the simulator state exists)
+      const live = !c._icon && running;
+      const l13 = live && mcuState.pinModes.D13==='OUTPUT' && mcuState.pinValues.D13>0;
+      pBox(g, 13.6*G, 2.3*G, 9, 5, 1, l13?'#fbbf24':'#5b4a1a', 'none');
+      pBox(g, 14.6*G, 2.3*G, 9, 5, 1, live?'#4ade80':'#1f4d33', 'none');
+      pDisc(g, 15.0*G, 5.6*G, 6, '#dc2626');
+      if (c._icon) return;
+      pText(g, 13.8*G, 2.15*G, 'L', 8, '#ccfbf1', 800);
+      pText(g, 14.8*G, 2.15*G, 'ON', 8, '#ccfbf1', 800);
+      pText(g, 9.5*G, 2.6*G, 'Microcontroller', 14, '#f0fdfa', 800);
+      pText(g, 9.5*G, 3.2*G, '5 V board · 14 digital pins · 6 analog inputs', 8.5, '#99f6e4', 600);
+      pText(g, 9.5*G, 4.8*G, 'ATmega328', 8.5, '#6b7280', 700);
+      COMPONENT_DEFS.mcu.pins.forEach(p=>{
+        pText(g, p.dx*G, p.dy===0 ? 0.95*G : 7.25*G, p.id==='GNDT'?'GND':p.id, 7.5, '#ccfbf1', 800);
+      });
+      pText(g, 8.5*G, 1.5*G, 'DIGITAL', 7, '#5eead4', 800);
+      pText(g, 3.5*G, 6.6*G, 'POWER', 7, '#5eead4', 800);
+      pText(g, 12.5*G, 6.6*G, 'ANALOG IN', 7, '#5eead4', 800);
+    },
+    isMcu:true,
   },
 };
 
-/* Shared multimeter-style body for the voltmeter/ammeter: a real LCD
-   panel with big digits, not a tiny letter in a circle — the reading
-   needs to be readable from across a classroom, not just up close. */
-function renderMeterBody(g, c, unit, accentColor){
-  const w=3.4*GRID, h=1.9*GRID;
-  g.appendChild(line(0.5*GRID,h,0.5*GRID,2.4*GRID,'url(#metalGradV)',2));
-  g.appendChild(line(2.9*GRID,h,2.9*GRID,2.4*GRID,'url(#metalGradV)',2));
-  const body = rect(0,0,w,h,7,'url(#darkPlasticGrad)','#000');
-  body.setAttribute('filter','url(#softShadow)');
-  g.appendChild(body);
-  g.appendChild(rect(0,0,w,h*0.28,7,'url(#sheenGrad)'));
-  const scrX=7, scrY=9, scrW=w-14, scrH=h-18;
-  g.appendChild(rect(scrX,scrY,scrW,scrH,3,'#c9e8c2'));
-  g.appendChild(el('rect',{x:scrX,y:scrY,width:scrW,height:scrH,rx:3,fill:'none',stroke:'#00000030','stroke-width':1}));
-  g.appendChild(el('circle',{cx:scrX+10,cy:scrY+10,r:6,fill:accentColor,opacity:0.85}));
-  g.appendChild(text(scrX+10,scrY+13,unit,'meter-unit-badge',8));
-  g.appendChild(text(scrX+scrW/2+6, scrY+scrH/2+6, fmtVal(c._reading,unit), 'meter-lcd-text', 16));
-  g.appendChild(text(w/2,-6,unit==='V'?'Voltmeter':'Ammeter','comp-label'));
+/* Multimeter set to volts or amps: yellow case, LCD with the reading in
+   digits big enough to read from the back of a classroom, a range dial
+   and the red (+) / black (−) probe sockets the two pins come from. */
+function drawMeter(g, c, unit){
+  const G = GRID;
+  pLead(g, G, 3.3*G, G, 4*G, '#ef4444'); pLead(g, 3*G, 3.3*G, 3*G, 4*G, '#64748b');
+  pBox(g, 0, 0, 4*G, 3.4*G, 8, '#f2b705');
+  pBox(g, 0.2*G, 0.2*G, 3.6*G, 3.0*G, 6, '#1f2430', 'none');
+  pBox(g, 0.42*G, 0.42*G, 3.16*G, 1.3*G, 3, '#b9d4a8');
+  const reading = c._icon ? (unit==='V'?'1.80V':'19.1mA') : fmtVal(c._reading, unit);
+  const t = pText(g, 2*G, 1.38*G, reading, 16, '#14210d', 800);
+  t.setAttribute('font-family', "'JetBrains Mono', monospace");
+  if (!c._icon) pText(g, 0.6*G, 0.8*G, unit==='V'?'DC V':'DC A', 7, '#3f5232', 800, 'start');
+  pDisc(g, 2*G, 2.3*G, 0.42*G, '#3a4256');
+  const pa = unit==='V' ? -2.3 : -0.85;
+  g.appendChild(el('line',{x1:2*G, y1:2.3*G, x2:2*G+Math.cos(pa)*0.38*G, y2:2.3*G+Math.sin(pa)*0.38*G, stroke:'#f8fafc', 'stroke-width':2.5, 'stroke-linecap':'round'}));
+  if (!c._icon){ pText(g, 1.35*G, 1.95*G, 'V', 8, unit==='V'?'#fde68a':'#6b7280', 800); pText(g, 2.65*G, 1.95*G, 'A', 8, unit==='A'?'#fde68a':'#6b7280', 800); }
+  pDisc(g, G, 2.9*G, 5.5, '#dc2626'); pDisc(g, 3*G, 2.9*G, 5.5, '#111827', '#64748b');
+  pPol(g, c, G-11, 3.75*G, '+'); pPol(g, c, 3*G+11, 3.75*G, '−');
+  partLabel(g, c, 2*G, -4, unit==='V'?'Voltmeter':'Ammeter', '');
+}
+
+/* Small picture of a part for the parts tray, drawn by its own renderer
+   so the tray and the board always match. */
+function partIconSvg(type){
+  const def = COMPONENT_DEFS[type];
+  const pad = 0.45*GRID, w = def.w*GRID, h = def.h*GRID;
+  const s = el('svg',{viewBox:`${-pad} ${-pad} ${w+2*pad} ${h+2*pad}`, width:46, height:34, 'aria-hidden':'true', class:'part-icon'});
+  const g = el('g',{});
+  def.render(g, { id:'icon-'+type, type, x:0, y:0, props:JSON.parse(JSON.stringify(def.defaultProps)), _icon:true });
+  s.appendChild(g);
+  return s;
+}
+function breadboardIconSvg(cols){
+  const s = el('svg',{viewBox:'0 0 46 34', width:46, height:34, 'aria-hidden':'true', class:'part-icon'});
+  s.appendChild(el('rect',{x:1, y:4, width:44, height:26, rx:3, fill:'#efe7d2', stroke:PART_INK, 'stroke-width':1}));
+  s.appendChild(el('rect',{x:1, y:16, width:44, height:2, fill:'#d8cdb0'}));
+  [7,27].forEach(y=>{ s.appendChild(el('line',{x1:4, y1:y-2, x2:42, y2:y-2, stroke:'#ef4444', 'stroke-width':1})); });
+  const n = Math.min(cols, 12);
+  for (let i=0;i<n;i++) for (const y of [10,13,21,24]) s.appendChild(el('rect',{x:4+i*(38/n), y, width:1.8, height:1.8, fill:'#5b5444'}));
+  return s;
 }
 
 const LED_COLORS = {
@@ -1366,8 +1330,11 @@ function renderAll(){
   svg.appendChild(componentDefs());
   const totalW = BOARD_X*2 + BOARD_COLS*GRID;
   const totalH = boardBottomY + 220;
-  svg.setAttribute('width', Math.max(totalW, 1100));
-  svg.setAttribute('height', Math.max(totalH, 700));
+  // grow with the circuit, so parts placed or loaded low down or far right
+  // are never clipped off the edge of the drawing
+  const ext = contentBounds(false);
+  svg.setAttribute('width', Math.max(totalW, 1100, ext ? ext.x1+240 : 0));
+  svg.setAttribute('height', Math.max(totalH, 700, ext ? ext.y1+240 : 0));
 
   if (breadboardPresent) renderBreadboard();
 
@@ -1386,7 +1353,7 @@ function renderPlacementGhost(){
   if (!placingType || !placingPreviewPos) return;
   const def = COMPONENT_DEFS[placingType];
   const ghost = el('g',{class:'placement-ghost', transform:`translate(${placingPreviewPos.x},${placingPreviewPos.y})`});
-  def.render(ghost, { x:placingPreviewPos.x, y:placingPreviewPos.y, props:JSON.parse(JSON.stringify(def.defaultProps)) });
+  def.render(ghost, { id:'ghost', x:placingPreviewPos.x, y:placingPreviewPos.y, props:JSON.parse(JSON.stringify(def.defaultProps)) });
   svg.appendChild(ghost);
 }
 
@@ -1496,25 +1463,43 @@ function renderComponent(c){
   const def = COMPONENT_DEFS[c.type];
   const g = el('g',{class:'comp-group'+(selected===c.id?' selected':''), transform:componentTransform(c, def)});
   g.dataset.id = c.id;
+  // the whole footprint is clickable, not just the painted strokes — gaps
+  // in a drawing (between a switch's housing and paddle) are easy to miss
+  // with a finger
+  g.appendChild(el('rect',{x:0, y:0, width:def.w*GRID, height:def.h*GRID, fill:'transparent', class:'comp-hit'}));
   const bodyWrap = el('g',{class:'comp-body'});
-  def.render(bodyWrap, c);
+  uprightFor = c;
+  try { def.render(bodyWrap, c); } finally { uprightFor = null; }
   g.appendChild(bodyWrap);
 
+  if (selected===c.id) g.appendChild(el('rect',{x:-7, y:-7, width:def.w*GRID+14, height:def.h*GRID+14, rx:6, class:'sel-outline'}));
+
+  // Pin terminal: a small ring that doesn't bury the drawing, sitting on a
+  // much larger invisible target so it's easy to hit with a finger. The
+  // tooltip names the pin (anode, collector, D13 ...).
   for (const pin of def.pins){
-    const dot = el('circle',{cx:pin.dx*GRID, cy:pin.dy*GRID, r:6, class:'pin-dot'});
+    const cx = pin.dx*GRID, cy = pin.dy*GRID;
+    const dot = el('circle',{cx, cy, r:10, class:'pin-dot'});
     dot.dataset.pin = pin.id;
+    if (wiringFrom && wiringFrom.kind==='pin' && wiringFrom.compId===c.id && wiringFrom.pinId===pin.id) dot.classList.add('wiring-from');
+    const tip = el('title',{}); tip.textContent = pin.name || pin.id; dot.appendChild(tip);
     dot.addEventListener('click', (e)=>{ e.stopPropagation(); onPinClick(c.id, pin.id); });
     g.appendChild(dot);
+    g.appendChild(el('circle',{cx, cy, r:4, class:'pin-term'}));
   }
 
-  g.addEventListener('mousedown', (e)=>{
+  // Pointer events so mouse, pen and touch all drag, press and toggle the
+  // same way. A press that doesn't move counts as a click (the switch
+  // toggles), and a push button is held only while the pointer is down —
+  // both handled in startDrag's release, not with per-render listeners.
+  g.addEventListener('pointerdown', (e)=>{
     if (e.target.classList.contains('pin-dot')) return;
+    if (e.button>0) return;
     e.stopPropagation();
     selectComponent(c.id);
+    if (def.onDown) { def.onDown(c); scheduleRender(); }
     startDrag(c, e);
   });
-  g.addEventListener('mousedown', ()=>{ if (def.onDown) { def.onDown(c); scheduleRender(); } });
-  window.addEventListener('mouseup', ()=>{ if (def.onUp && c._wasDown) { def.onUp(c); c._wasDown=false; scheduleRender(); } });
 
   svg.appendChild(g);
   c._el = g;
@@ -1568,10 +1553,29 @@ function updatePinConnectionStyles(){
 }
 
 let renderScheduled = false;
+// Every render rebuilds the SVG, and while the simulation runs that's 50
+// times a second. A browser only fires "click" when press and release land
+// on the same element, so a rebuild between the two silently swallows a
+// click on a pin, hole, wire or handle. Hold rendering for the length of
+// such a press (parts themselves are handled on pointerup, so they're free
+// to keep animating while held — a push button has to show it's pressed).
+let renderHeld = false, renderHeldTimer = null;
+window.addEventListener('pointerdown', (e)=>{
+  const t = e.target;
+  if (!t.closest || !t.closest('#circuit-svg')) return;
+  if (t.closest('.comp-group') && !t.classList.contains('pin-dot')) return;
+  renderHeld = true; clearTimeout(renderHeldTimer);
+}, true);
+['pointerup','pointercancel'].forEach(type=>window.addEventListener(type, ()=>{
+  if (!renderHeld) return;
+  // touch taps deliver their click a moment after the finger lifts
+  clearTimeout(renderHeldTimer);
+  renderHeldTimer = setTimeout(()=>{ renderHeld = false; scheduleRender(); }, 120);
+}, true));
 function scheduleRender(){
   if (renderScheduled) return;
   renderScheduled = true;
-  requestAnimationFrame(()=>{ renderScheduled=false; renderAll(); });
+  requestAnimationFrame(()=>{ renderScheduled=false; if (renderHeld) return; renderAll(); });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1583,6 +1587,7 @@ function addComponent(type, x, y){
   const snappedY = Math.round((y-BOARD_Y)/GRID)*GRID+BOARD_Y;
   const c = { id:newId(), type, x:snappedX, y:snappedY, props: JSON.parse(JSON.stringify(def.defaultProps)) };
   components.push(c);
+  foldHintForCircuit();
   selectComponent(c.id);
   scheduleRender();
   return c;
@@ -1611,21 +1616,33 @@ function removeWire(id){
 
 let dragState = null;
 function startDrag(comp, e){
-  dragState = { comp, startX: e.clientX, startY: e.clientY, origX: comp.x, origY: comp.y };
+  dragState = { comp, startX: e.clientX, startY: e.clientY, origX: comp.x, origY: comp.y, moved:false, pointerId:e.pointerId };
   function onMove(ev){
-    if (!dragState) return;
+    if (!dragState || ev.pointerId!==dragState.pointerId) return;
     const dx = (ev.clientX - dragState.startX)/zoomLevel, dy = (ev.clientY - dragState.startY)/zoomLevel;
-    dragState.comp.x = Math.round((dragState.origX+dx)/(GRID/2))*(GRID/2);
-    dragState.comp.y = Math.round((dragState.origY+dy)/(GRID/2))*(GRID/2);
+    // a few pixels of wobble is still a tap, not a drag
+    if (!dragState.moved && Math.hypot(dx,dy)*zoomLevel < 5) return;
+    dragState.moved = true;
+    // snap to the breadboard's own grid, so pins drop exactly into holes
+    dragState.comp.x = BOARD_X + Math.round((dragState.origX+dx-BOARD_X)/GRID)*GRID;
+    dragState.comp.y = BOARD_Y + Math.round((dragState.origY+dy-BOARD_Y)/GRID)*GRID;
     scheduleRender();
   }
-  function onUp(){
+  function onUp(ev){
+    if (ev.pointerId!==e.pointerId) return;
+    const def = COMPONENT_DEFS[comp.type];
+    if (def.onUp) def.onUp(comp);
+    // dragState is cleared if a second finger turned this into a pinch
+    if (dragState && !dragState.moved && def.onClick && ev.type==='pointerup'){ def.onClick(comp); renderPropPanel(); }
     dragState = null;
-    window.removeEventListener('mousemove', onMove);
-    window.removeEventListener('mouseup', onUp);
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointercancel', onUp);
+    scheduleRender();
   }
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup', onUp);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  window.addEventListener('pointercancel', onUp);
 }
 
 function cancelWiring(){
@@ -1735,7 +1752,8 @@ CATEGORY_ORDER.forEach(cat=>{
     const sizes = [{key:'small', label:'Small Breadboard'}, {key:'medium', label:'Medium Breadboard'}, {key:'large', label:'Large Breadboard'}];
     sizes.forEach(s=>{
       const boardBtn = el2('button', {class:'comp-btn', id:'btn-breadboard-'+s.key, title:'Show/hide a '+s.key+' breadboard'});
-      boardBtn.innerHTML = `<span class="ci">🍞</span><span>${s.label}</span>`;
+      boardBtn.appendChild(breadboardIconSvg(BOARD_SIZE_COLS[s.key]));
+      boardBtn.appendChild(Object.assign(document.createElement('span'), {textContent:s.label}));
       if (breadboardPresent && breadboardSize===s.key) boardBtn.classList.add('active');
       boardBtn.addEventListener('click', ()=>setBreadboardSize(s.key));
       strip.appendChild(boardBtn);
@@ -1744,7 +1762,8 @@ CATEGORY_ORDER.forEach(cat=>{
   (byCategory[cat]||[]).forEach(type=>{
     const def = COMPONENT_DEFS[type];
     const btn = el2('button', {class:'comp-btn', title:'Click, then click the board to place a '+def.label});
-    btn.innerHTML = `<span class="ci">${def.icon}</span><span>${def.label}</span>`;
+    btn.appendChild(partIconSvg(type));
+    btn.appendChild(Object.assign(document.createElement('span'), {textContent:def.label}));
     btn.addEventListener('click', ()=>{
       document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
       if (placingType===type){ placingType=null; return; }
@@ -1783,7 +1802,54 @@ document.getElementById('canvasWrap').addEventListener('click', (e)=>{
   placingPreviewPos = null;
   document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
 });
-document.getElementById('canvasWrap').addEventListener('mousemove', (e)=>{
+/* Touch panning. The board turns off the browser's own touch scrolling
+   (touch-action:none) so dragging a part doesn't scroll the page out from
+   under the finger; a one-finger drag on empty board scrolls it instead,
+   and two fingers pinch-zoom. The click a pan ends with is swallowed so it
+   doesn't place a part or drop a wire bend. */
+const touchPts = new Map();
+let touchPan = null, suppressClickUntil = 0;
+document.getElementById('circuit-svg').addEventListener('pointerdown', (e)=>{
+  if (e.pointerType!=='touch') return;
+  touchPts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  const onPart = e.target.closest('.comp-group') && !e.target.classList.contains('pin-dot');
+  const wrap = document.getElementById('canvasWrap');
+  if (touchPts.size===2){
+    const [a,b] = [...touchPts.values()];
+    touchPan = { pinch:true, d0:Math.hypot(a.x-b.x,a.y-b.y), z0:zoomLevel, moved:true };
+    dragState = null;
+  } else if (!onPart){
+    touchPan = { id:e.pointerId, x:e.clientX, y:e.clientY, sl:wrap.scrollLeft, st:wrap.scrollTop, moved:false };
+  }
+});
+window.addEventListener('pointermove', (e)=>{
+  if (e.pointerType!=='touch' || !touchPts.has(e.pointerId)) return;
+  touchPts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (!touchPan) return;
+  const wrap = document.getElementById('canvasWrap');
+  if (touchPan.pinch){
+    if (touchPts.size<2) return;
+    const [a,b] = [...touchPts.values()];
+    setZoom(touchPan.z0 * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,touchPan.d0));
+    return;
+  }
+  if (e.pointerId!==touchPan.id) return;
+  const dx = e.clientX-touchPan.x, dy = e.clientY-touchPan.y;
+  if (!touchPan.moved && Math.hypot(dx,dy) < 8) return;
+  touchPan.moved = true;
+  wrap.scrollLeft = touchPan.sl - dx; wrap.scrollTop = touchPan.st - dy;
+});
+['pointerup','pointercancel'].forEach(type=>window.addEventListener(type, (e)=>{
+  if (e.pointerType!=='touch') return;
+  touchPts.delete(e.pointerId);
+  if (touchPan && touchPan.moved) suppressClickUntil = performance.now()+400;
+  if (touchPts.size===0) touchPan = null;
+}));
+document.getElementById('canvasWrap').addEventListener('click', (e)=>{
+  if (performance.now() < suppressClickUntil){ e.stopPropagation(); e.preventDefault(); }
+}, true);
+
+document.getElementById('canvasWrap').addEventListener('pointermove', (e)=>{
   if (wiringFrom){
     liveMousePos = clientToSvgPos(e);
     liveMouseCtrl = e.ctrlKey;
@@ -1839,7 +1905,7 @@ function renderPropPanel(){
   const c = components.find(x=>x.id===selected);
   if (!c){ panel.innerHTML = ''; return; }
   const def = COMPONENT_DEFS[c.type];
-  let html = `<div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">${def.icon} ${def.label}</div>`;
+  let html = `<div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">${def.label}</div>`;
   html += `<div class="btn-row" style="margin-bottom:12px;">
       <button class="mini-btn" id="btnRotateSel" style="flex:1;" title="Keyboard shortcut: R">⟳ Rotate</button>
       <button class="mini-btn" id="btnMirrorSel" style="flex:1;${c.mirrored?'background:rgba(245,158,11,.18);color:var(--accent2);':''}" title="Keyboard shortcut: M">⇋ Mirror</button>
@@ -1856,6 +1922,9 @@ function renderPropPanel(){
         <input type="range" min="${p.min}" max="${p.max}" value="${val}" data-key="${p.key}" class="propInput" aria-label="${p.label}"></div>`;
     }
   });
+  if (c.type==='switch'){
+    html += `<button class="mini-btn${c.props.closed?' active':''}" id="btnToggleSwitch" style="width:100%;height:32px;margin-bottom:10px;" aria-pressed="${!!c.props.closed}">${c.props.closed?'Switch is ON (closed) — turn it off':'Switch is OFF (open) — turn it on'}</button>`;
+  }
   if (c.type==='mcu'){
     html += `<p class="empty-hint">Digital/analog pins act as OUTPUT or INPUT according to your code's <code>pinMode()</code> calls. Wire 5V/GND to power your breadboard components.</p>`;
   }
@@ -1875,6 +1944,8 @@ function renderPropPanel(){
     });
   });
   document.getElementById('btnDelSel').addEventListener('click', ()=>removeComponent(c.id));
+  const tog = document.getElementById('btnToggleSwitch');
+  if (tog) tog.addEventListener('click', ()=>{ c.props.closed = !c.props.closed; scheduleRender(); renderPropPanel(); });
   document.getElementById('btnRotateSel').addEventListener('click', ()=>{ c.rotation = ((c.rotation||0)+90)%360; scheduleRender(); });
   document.getElementById('btnMirrorSel').addEventListener('click', ()=>{ c.mirrored = !c.mirrored; scheduleRender(); renderPropPanel(); });
 }
@@ -1971,7 +2042,7 @@ function solveCircuit(){
         const closed = c.type==='switch' ? c.props.closed : c.props.pressed;
         if (closed) uf.union(na, nb);
       }
-      else if (def.isNonlinear) branches.push({ comp:c, kind:'led', na, nb });
+      else if (def.isNonlinear){ if (!c._blown) branches.push({ comp:c, kind:'led', na, nb }); }
       else if (def.isCapacitor) branches.push({ comp:c, kind:'capacitor', uf:c.props.uf, na, nb });
       else if (def.highImpedance) branches.push({ comp:c, kind:'resistor', ohms:10000000, na, nb });
       else if (def.fixedResistance!=null) branches.push({ comp:c, kind:'resistor', ohms:def.fixedResistance, na, nb });
@@ -1985,11 +2056,16 @@ function solveCircuit(){
     const gndNode = pinKey(c.id,'GND');
     for (const pin of COMPONENT_DEFS[c.type].pins){
       if (pin.id==='GND' || pin.id==='5V') continue;
+      if (pin.id==='GNDT'){ branches.push({ comp:null, kind:'resistor', ohms:0.001, na:pinKey(c.id,'GNDT'), nb:gndNode }); continue; }
       const mode = mcuState.pinModes[pin.id] || 'INPUT';
       const node = pinKey(c.id, pin.id);
       if (mode==='OUTPUT'){
+        // a real output pin isn't ideal either: about 25 Ω of driver
+        // resistance, which is what limits an LED wired with no resistor
         const v = (mcuState.pinValues[pin.id]||0);
-        branches.push({ comp:null, kind:'vsource', v, na:node, nb:gndNode, mcuPin:pin.id });
+        const drv = pinKey(c.id, '_drv_'+pin.id);
+        branches.push({ comp:null, kind:'vsource', v, na:drv, nb:gndNode, mcuPin:pin.id });
+        branches.push({ comp:null, kind:'resistor', ohms:25, na:drv, nb:node });
       } else if (mode==='INPUT_PULLUP'){
         branches.push({ comp:null, kind:'resistor', ohms:20000, na:node, nb:pinKey(c.id,'5V') });
       }
@@ -1997,6 +2073,15 @@ function solveCircuit(){
     }
     // 5V pin acts as a fixed 5V source relative to GND
     branches.push({ comp:null, kind:'vsource', v:5, na:pinKey(c.id,'5V'), nb:gndNode });
+  }
+
+  // A voltage source whose two ends are joined by plain wire (a 5V pin wired
+  // straight to GND, an output pin wired to GND) has no solution at all —
+  // drop it from the solve and report it instead.
+  const shortedSources = [];
+  for (let i=branches.length-1; i>=0; i--){
+    const b = branches[i];
+    if (b.kind==='vsource' && uf.find(b.na)===uf.find(b.nb)){ shortedSources.push(b); branches.splice(i,1); }
   }
 
   // resolve every branch endpoint to its union-find root, build node index (excluding a chosen ground)
@@ -2008,7 +2093,7 @@ function solveCircuit(){
     if (b.ne) nodeRoots.add(uf.find(b.ne));
   });
   const nodeList = Array.from(nodeRoots);
-  if (nodeList.length===0) return { uf, branches, voltages:new Map(), currents:new Map() };
+  if (nodeList.length===0) return { uf, branches, voltages:new Map(), vsrcCurrents:new Map(), shortedSources };
   // ground = the node touching any vsource negative terminal if present, else node 0
   let groundNode = nodeList[0];
   const vsrc = branches.find(b=>b.kind==='vsource');
@@ -2021,7 +2106,7 @@ function solveCircuit(){
   let transState = new Map(); // comp.id -> 'sat'|'cutoff'
   let voltages = new Map(), vsrcCurrents = new Map();
 
-  for (let iter=0; iter<25; iter++){
+  for (let iter=0; iter<80; iter++){
     const activeVSources = branches.filter(b=>b.kind==='vsource');
     // build extra unknowns for each independent vsource branch (merge vsources whose both nodes already unioned to avoid singular matrix duplicates)
     const vsIdx = new Map();
@@ -2063,24 +2148,18 @@ function solveCircuit(){
         stampG(b.na, b.nb, gEq);
         stampI(b.na, b.nb, -gEq*prevV);
       } else if (b.kind==='led'){
+        // Exponential diode, linearised about the last guess (Newton's
+        // method): a conductance G plus a current source Ieq, so that
+        // I = G·V + Ieq is the tangent to the diode curve there. stampI
+        // draws current out of na into nb, the way a diode conducts.
+        // Unlike an on/off switch this gives a real dimming curve — a
+        // capacitor discharging through an LED fades it out over a second
+        // or so instead of cutting it off in one step.
         const col = LED_COLORS[b.vfColor || b.comp.props.color];
-        const state = ledState.get(b.subKey || b.comp.id) || 'off';
-        if (state==='on'){
-          // Companion model: small series resistance + Vf source. stampI's
-          // sign convention withdraws current from na and injects it at nb
-          // — that's backwards for a diode, where na (anode) must end up
-          // HIGHER than nb (cathode) by Vf. Without the minus sign here,
-          // solving the isolated branch gives Va-Vb = -Vf instead of +Vf:
-          // the diode "turns on" into the wrong polarity, the convergence
-          // check (which expects a POSITIVE Va-Vb to confirm "on") always
-          // sees a negative value and immediately flips it back to "off"
-          // next iteration — the LED never actually lights.
-          const Ron = 12;
-          stampG(b.na,b.nb,1/Ron);
-          stampI(b.na,b.nb, -col.vf/Ron);
-        } else {
-          stampG(b.na,b.nb, 1/2000000);
-        }
+        const vd = diodeV.get(b.subKey || b.comp.id) || 0;
+        const { I, G } = ledIV(col.vf, vd);
+        stampG(b.na, b.nb, G);
+        stampI(b.na, b.nb, I - G*vd);
       } else if (b.kind==='transistor'){
         const state = transState.get(b.comp.id) || 'cutoff';
         // base-emitter behaves like a diode (small fixed drop when
@@ -2120,11 +2199,11 @@ function solveCircuit(){
       if (b.kind==='led'){
         const va = voltages.get(uf.find(b.na))||0, vb = voltages.get(uf.find(b.nb))||0;
         const col = LED_COLORS[b.vfColor || b.comp.props.color];
-        const stateKey = b.subKey || b.comp.id;
-        const wasOn = ledState.get(stateKey)==='on';
-        const threshold = col.vf * (wasOn ? 0.8 : 0.9);
-        const newState = (va-vb) > threshold ? 'on' : 'off';
-        if (ledState.get(stateKey)!==newState){ ledState.set(stateKey,newState); changed=true; }
+        const key = b.subKey || b.comp.id;
+        const vold = diodeV.get(key) || 0;
+        const vnew = limitDiodeStep(va-vb, vold, col.vf);
+        diodeV.set(key, vnew);
+        if (Math.abs(vnew-vold) > 1e-4) changed = true;
       }
       if (b.kind==='transistor'){
         const vb = voltages.get(uf.find(b.nb))||0, ve = voltages.get(uf.find(b.ne))||0;
@@ -2140,8 +2219,43 @@ function solveCircuit(){
     if (!changed) break;
   }
 
-  return { uf, branches, voltages, vsrcCurrents, groundNode };
+  return { uf, branches, voltages, vsrcCurrents, groundNode, shortedSources };
 }
+
+/* LED as a diode: I = Is·(e^(V/nVt) − 1), with Is set so the LED carries
+   20 mA at its rated forward voltage vf. nVt = 0.05 V (ideality ≈ 2) gives
+   the familiar shape: ~1 mA about 0.15 V below vf, almost nothing below
+   that. diodeV holds each LED's last voltage across ticks, so a steady
+   circuit converges in a step or two. */
+const LED_NVT = 0.05;
+const diodeV = new Map();
+function ledIV(vf, v){
+  const Is = 0.02*Math.exp(-vf/LED_NVT);
+  const vc = Math.min(v, vf+0.5);            // keep exp() finite on a wild guess
+  const e = Math.exp(vc/LED_NVT);
+  let I = Is*(e-1), G = Is*e/LED_NVT;
+  if (v>vc) I += G*(v-vc);                   // straight-line beyond the clamp
+  return { I, G:G+1e-9 };
+}
+function ledCurrent(vf, v){ return Math.max(0, ledIV(vf, v).I); }
+// SPICE's pnjlim: stop a Newton step from leaping far up the exponential
+function limitDiodeStep(vnew, vold, vf){
+  const Is = 0.02*Math.exp(-vf/LED_NVT);
+  const vcrit = LED_NVT*Math.log(LED_NVT/(Math.SQRT2*Is));
+  if (vnew > vcrit && Math.abs(vnew-vold) > 2*LED_NVT){
+    if (vold > 0){
+      const arg = 1 + (vnew-vold)/LED_NVT;
+      vnew = arg>0 ? vold + LED_NVT*Math.log(arg) : vcrit;
+    } else {
+      vnew = LED_NVT*Math.log(vnew/LED_NVT);
+    }
+  }
+  return vnew;
+}
+// perceived brightness: a few mA already looks clearly lit
+// perceived brightness grows roughly with the log of the current: 10 µA is
+// a faint glimmer, 1 mA already clearly lit, 15 mA and up full brightness
+function ledGlow(I){ return I<=1e-5 ? 0 : Math.min(1, Math.log10(I/1e-5)/Math.log10(0.015/1e-5)); }
 
 function solveLinear(A, z){
   const n = z.length;
@@ -2170,16 +2284,22 @@ function solveLinear(A, z){
 function simTick(){
   const result = solveCircuit();
   const { uf, voltages } = result;
+  const warnings = [];
   for (const c of components){
     const def = COMPONENT_DEFS[c.type];
     if (def.isNonlinear){
       const na = uf.find(pinKey(c.id,'a')), nb = uf.find(pinKey(c.id,'c'));
       const va = voltages.get(na)||0, vb = voltages.get(nb)||0;
       const col = LED_COLORS[c.props.color];
-      const v = va-vb;
-      const current = v>col.vf*0.9 ? Math.max(0,(v-col.vf)/12) : 0;
+      const current = c._blown ? 0 : ledCurrent(col.vf, va-vb);
       c._current = current;
-      c._glow = (c._glow||0)*0.7 + Math.min(1,current*30)*0.3;
+      c._glow = (c._glow||0)*0.7 + ledGlow(current)*0.3;
+      // A real 5 mm LED is rated about 20 mA; well past that it burns out
+      // within moments. It then stays dead (open circuit) until Run is
+      // pressed again, the way a student would have to fit a new one.
+      c._overTicks = current > 0.1 ? (c._overTicks||0)+1 : 0;
+      if (!c._blown && c._overTicks >= 5){ c._blown = true; c._blownAt = current; c._glow = 0; }
+      if (c._blown) warnings.push(`<b>The ${c.props.color} LED burnt out.</b> About ${c._blownAt>=1 ? c._blownAt.toFixed(1)+' A' : Math.round(c._blownAt*1000)+' mA'} went through it; a real LED is rated about 20 mA. Put a resistor in series with it (220 Ω to 470 Ω), then press Run again.`);
     }
     if (c.type==='buzzer'){
       const na = uf.find(pinKey(c.id,'+')), nb = uf.find(pinKey(c.id,'-'));
@@ -2205,9 +2325,9 @@ function simTick(){
         const col = LED_COLORS[colorName];
         const pn = uf.find(pinKey(c.id,ch));
         const v = (voltages.get(pn)||0) - (voltages.get(gnd)||0);
-        const current = v>col.vf*0.9 ? Math.max(0,(v-col.vf)/12) : 0;
+        const current = ledCurrent(col.vf, v);
         const glowKey = '_glow'+ch.toUpperCase();
-        c[glowKey] = (c[glowKey]||0)*0.7 + Math.min(1,current*30)*0.3;
+        c[glowKey] = (c[glowKey]||0)*0.7 + ledGlow(current)*0.3;
       });
     }
     if (c.type==='servo'){
@@ -2237,7 +2357,33 @@ function simTick(){
       mcuState.pinReadings[pin.id] = v;
     }
   }
+  // Short circuits and overloaded pins. Battery limits are rough "this
+  // would get hot" levels; 40 mA is the absolute maximum of an Arduino pin.
+  for (const [b, i] of (result.vsrcCurrents||new Map())){
+    const amps = Math.abs(i);
+    if (b.comp && amps > (b.comp.type==='battery2032' ? 0.15 : 1.5)){
+      warnings.push(`<b>Short circuit!</b> ${Math.abs(amps).toFixed(1)} A is flowing out of the ${COMPONENT_DEFS[b.comp.type].label.toLowerCase()}, almost nothing in its way. A real battery would get hot and go flat fast. Check for a wire or closed switch joining + straight to −.`);
+    } else if (!b.comp && b.mcuPin && amps > 0.04){
+      warnings.push(`<b>Pin ${b.mcuPin} is overloaded:</b> ${Math.round(amps*1000)} mA. A real microcontroller pin can give 40 mA at most and would be damaged. Add a resistor (220 Ω or more) in series.`);
+    } else if (!b.comp && !b.mcuPin && amps > 0.5){
+      warnings.push(`<b>Short circuit on the microcontroller's 5V pin:</b> ${amps.toFixed(1)} A. Check for a wire joining 5V straight to GND.`);
+    }
+  }
+  for (const b of (result.shortedSources||[])){
+    if (b.comp) continue;
+    warnings.push(b.mcuPin
+      ? (b.v>0 ? `<b>Pin ${b.mcuPin} is wired straight to GND</b> while your code sets it HIGH. That is a short circuit; a real pin would be damaged.` : '')
+      : `<b>The microcontroller's 5V pin is wired straight to GND.</b> That is a short circuit; remove that wire.`);
+  }
+  showSimWarnings(warnings.filter(Boolean));
   scheduleRender();
+}
+let lastWarningsHtml = '';
+function showSimWarnings(list){
+  const html = [...new Set(list)].map(w=>`<div class="sim-warn">${w}</div>`).join('');
+  if (html===lastWarningsHtml) return;
+  lastWarningsHtml = html;
+  document.getElementById('simWarnings').innerHTML = html;
 }
 
 document.getElementById('btn-run').addEventListener('click', ()=>{
@@ -2246,6 +2392,9 @@ document.getElementById('btn-run').addEventListener('click', ()=>{
   if (running){
     btn.innerHTML = '<i data-lucide="square"></i> Stop';
     btn.classList.remove('go'); btn.classList.add('stop');
+    // start from a fresh state: new LEDs fitted, capacitors empty
+    diodeV.clear();
+    components.forEach(c=>{ c._blown = false; c._overTicks = 0; if (c.type==='capacitor') c._capV = 0; });
     simTimer = setInterval(simTick, 20);
     // The big toolbar Run button is the one thing every student reaches
     // for first — a circuit with a microcontroller on it does nothing at
@@ -2258,6 +2407,7 @@ document.getElementById('btn-run').addEventListener('click', ()=>{
     btn.classList.remove('stop'); btn.classList.add('go');
     clearInterval(simTimer);
     codeRunning = false;
+    showSimWarnings([]);
   }
   if (window.lucide) lucide.createIcons();
 });
@@ -2629,22 +2779,22 @@ const EXAMPLE_CIRCUITS = {
   ledBlink: {
     code: document.getElementById('code-editor').value,
     components: [
-      {id:'c1', type:'mcu', x:380, y:480, props:{}},
-      {id:'c2', type:'resistor', x:260, y:480, props:{ohms:470}},
-      {id:'c3', type:'led', x:360, y:580, props:{color:'red'}},
+      {id:'c1', type:'mcu', x:232, y:212, props:{}},
+      {id:'c2', type:'resistor', x:16, y:236, props:{ohms:470}},
+      {id:'c3', type:'led', x:136, y:188, props:{color:'red'}},
     ],
     wires: [
       {id:'w1', from:{kind:'pin', compId:'c1', pinId:'D13'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
       {id:'w2', from:{kind:'pin', compId:'c2', pinId:'b'}, to:{kind:'pin', compId:'c3', pinId:'a'}},
-      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'c'}, to:{kind:'pin', compId:'c1', pinId:'GND'}},
+      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'c'}, to:{kind:'pin', compId:'c1', pinId:'GNDT'}},
     ],
   },
   ldrAlarm: {
     code: '',
     components: [
-      {id:'c1', type:'battery', x:100, y:480, props:{voltage:3}},
-      {id:'c2', type:'ldr', x:220, y:480, props:{light:50}},
-      {id:'c3', type:'buzzer', x:360, y:460, props:{}},
+      {id:'c1', type:'battery', x:40, y:140, props:{voltage:3}},
+      {id:'c2', type:'ldr', x:184, y:140, props:{light:50}},
+      {id:'c3', type:'buzzer', x:328, y:116, props:{}},
     ],
     wires: [
       {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
@@ -2655,12 +2805,12 @@ const EXAMPLE_CIRCUITS = {
   tempAlarm: {
     code: '',
     components: [
-      {id:'c1', type:'battery', x:80, y:650, props:{voltage:6}},
-      {id:'c2', type:'thermistor', x:180, y:650, props:{temp:25, type:'-t'}},
-      {id:'c3', type:'potentiometer', x:260, y:650, props:{maxOhms:1000, wiperPos:50}},
-      {id:'c4', type:'resistor', x:180, y:720, props:{ohms:1000}},
-      {id:'c5', type:'transistor', x:380, y:700, props:{}},
-      {id:'c6', type:'buzzer', x:380, y:600, props:{}},
+      {id:'c1', type:'battery', x:40, y:236, props:{voltage:6}},
+      {id:'c2', type:'thermistor', x:184, y:140, props:{temp:25, type:'-t'}},
+      {id:'c3', type:'potentiometer', x:304, y:212, props:{maxOhms:1000, wiperPos:50}},
+      {id:'c4', type:'resistor', x:376, y:308, props:{ohms:1000}},
+      {id:'c5', type:'transistor', x:496, y:308, props:{}},
+      {id:'c6', type:'buzzer', x:520, y:164, props:{}},
     ],
     wires: [
       {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
@@ -2676,11 +2826,11 @@ const EXAMPLE_CIRCUITS = {
   capacitorLed: {
     code: '',
     components: [
-      {id:'c1', type:'battery', x:80, y:480, props:{voltage:6}},
-      {id:'c2', type:'switch', x:180, y:470, props:{closed:true}},
-      {id:'c3', type:'resistor', x:280, y:470, props:{ohms:470}},
-      {id:'c4', type:'capacitor', x:400, y:460, props:{uf:1000}},
-      {id:'c5', type:'led', x:400, y:560, props:{color:'red'}},
+      {id:'c1', type:'battery', x:40, y:140, props:{voltage:6}},
+      {id:'c2', type:'switch', x:160, y:140, props:{closed:true}},
+      {id:'c3', type:'resistor', x:280, y:140, props:{ohms:470}},
+      {id:'c4', type:'capacitor', x:424, y:92, props:{uf:1000}},
+      {id:'c5', type:'led', x:520, y:92, props:{color:'red'}},
     ],
     wires: [
       {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
@@ -2696,7 +2846,7 @@ document.getElementById('examplesSel').addEventListener('change', (e)=>{
   const key = e.target.value;
   if (!key) return;
   if (components.length && !confirm('Load this example? It will replace what\'s currently on the board.')) { e.target.value=''; return; }
-  loadCircuitData(EXAMPLE_CIRCUITS[key]);
+  loadCircuitData(EXAMPLE_CIRCUITS[key], {builtIn:true});
   e.target.value = '';
 });
 
@@ -2726,10 +2876,10 @@ const TUTORIALS = [
       { title:'Close the switch and run', body:`Click the switch on the board so it shows <b>ON</b> (green), then press the green <b>Run</b> button in the toolbar. The LED should light up! Click the switch again while it's running to turn the light on and off.` },
     ],
     solution:{ code:'', components:[
-      {id:'c1', type:'battery', x:100, y:460, props:{voltage:6}},
-      {id:'c2', type:'switch', x:220, y:470, props:{closed:true}},
-      {id:'c3', type:'resistor', x:320, y:470, props:{ohms:220}},
-      {id:'c4', type:'led', x:420, y:460, props:{color:'red'}},
+      {id:'c1', type:'battery', x:40, y:140, props:{voltage:6}},
+      {id:'c2', type:'switch', x:160, y:140, props:{closed:true}},
+      {id:'c3', type:'resistor', x:280, y:140, props:{ohms:220}},
+      {id:'c4', type:'led', x:400, y:92, props:{color:'red'}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'+'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
       {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
@@ -2748,12 +2898,12 @@ const TUTORIALS = [
       { title:'Read the current', body:`Press <b>Run</b> again. The ammeter shows how many milliamps are actually flowing around the loop. Click the Resistor and change its value — Run again and watch the ammeter change too, while the voltmeter barely moves. That's the resistor controlling ("limiting") the current while the LED's own voltage stays fixed.` },
     ],
     solution:{ code:'', components:[
-      {id:'c1', type:'battery', x:80, y:460, props:{voltage:6}},
-      {id:'c2', type:'switch', x:200, y:470, props:{closed:true}},
-      {id:'c3', type:'resistor', x:300, y:470, props:{ohms:220}},
-      {id:'c4', type:'ammeter', x:420, y:470, props:{}},
-      {id:'c5', type:'led', x:520, y:460, props:{color:'red'}},
-      {id:'c6', type:'voltmeter', x:520, y:560, props:{}},
+      {id:'c1', type:'battery', x:40, y:140, props:{voltage:6}},
+      {id:'c2', type:'switch', x:160, y:140, props:{closed:true}},
+      {id:'c3', type:'resistor', x:280, y:140, props:{ohms:220}},
+      {id:'c4', type:'ammeter', x:400, y:68, props:{}},
+      {id:'c5', type:'led', x:520, y:92, props:{color:'red'}},
+      {id:'c6', type:'voltmeter', x:592, y:68, props:{}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'+'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
       {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
@@ -2794,13 +2944,13 @@ void loop() {
   digitalWrite(13, LOW);
   delay(500);
 }`, components:[
-      {id:'c1', type:'mcu', x:380, y:480, props:{}},
-      {id:'c2', type:'resistor', x:260, y:480, props:{ohms:470}},
-      {id:'c3', type:'led', x:360, y:580, props:{color:'red'}},
+      {id:'c1', type:'mcu', x:232, y:212, props:{}},
+      {id:'c2', type:'resistor', x:16, y:236, props:{ohms:470}},
+      {id:'c3', type:'led', x:136, y:188, props:{color:'red'}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
       {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
-      {id:'w3', from:{kind:'pin',compId:'c3',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w3', from:{kind:'pin',compId:'c3',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GNDT'}},
     ]},
   },
   {
@@ -2830,16 +2980,16 @@ void loop() {
   int pressed = digitalRead(2);
   digitalWrite(13, pressed == 0 ? HIGH : LOW);
 }`, components:[
-      {id:'c1', type:'mcu', x:400, y:460, props:{}},
-      {id:'c2', type:'button', x:220, y:460, props:{pressed:false}},
-      {id:'c3', type:'resistor', x:300, y:560, props:{ohms:470}},
-      {id:'c4', type:'led', x:400, y:560, props:{color:'red'}},
+      {id:'c1', type:'mcu', x:232, y:212, props:{}},
+      {id:'c2', type:'button', x:352, y:116, props:{pressed:false}},
+      {id:'c3', type:'resistor', x:16, y:236, props:{ohms:470}},
+      {id:'c4', type:'led', x:136, y:188, props:{color:'red'}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c2',pinId:'a'}, to:{kind:'pin',compId:'c1',pinId:'D2'}},
-      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'GNDT'}},
       {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
       {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
-      {id:'w5', from:{kind:'pin',compId:'c4',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w5', from:{kind:'pin',compId:'c4',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GNDT'}},
     ]},
   },
   {
@@ -2874,11 +3024,11 @@ void loop() {
     digitalWrite(13, LOW);
   }
 }`, components:[
-      {id:'c1', type:'mcu', x:400, y:460, props:{}},
-      {id:'c2', type:'ldr', x:220, y:460, props:{light:50}},
-      {id:'c3', type:'resistor', x:220, y:560, props:{ohms:10000}},
-      {id:'c4', type:'resistor', x:300, y:620, props:{ohms:470}},
-      {id:'c5', type:'led', x:400, y:620, props:{color:'red'}},
+      {id:'c1', type:'mcu', x:232, y:212, props:{}},
+      {id:'c2', type:'ldr', x:304, y:452, props:{light:50}},
+      {id:'c3', type:'resistor', x:424, y:452, props:{ohms:10000}},
+      {id:'c4', type:'resistor', x:16, y:236, props:{ohms:470}},
+      {id:'c5', type:'led', x:136, y:188, props:{color:'red'}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'5V'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
       {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
@@ -2886,7 +3036,7 @@ void loop() {
       {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
       {id:'w5', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
       {id:'w6', from:{kind:'pin',compId:'c4',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'a'}},
-      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GNDT'}},
     ]},
   },
   {
@@ -2894,46 +3044,46 @@ void loop() {
     desc:'Drive the three channels of an RGB LED separately and mix colours with analogWrite().',
     steps:[
       { title:'Place the parts', body:`Place a <b>Microcontroller</b>, an <b>RGB LED</b>, and three separate <b>Resistors</b> (220Ω each) — one per colour channel. An RGB LED needs its own resistor on every channel, just like a normal LED needs one.` },
-      { title:'Wire each channel', body:`Wire: <b>D9</b> → Resistor1 <b>a</b> → Resistor1 <b>b</b> → RGB LED <b>R</b>; <b>D10</b> → Resistor2 → RGB LED <b>G</b>; <b>D11</b> → Resistor3 → RGB LED <b>B</b>. Then wire RGB LED <b>−</b> (the shared leg) → Microcontroller <b>GND</b>.` },
+      { title:'Wire each channel', body:`Wire: <b>D9</b> → Resistor1 <b>a</b> → Resistor1 <b>b</b> → RGB LED <b>R</b>; <b>D6</b> → Resistor2 → RGB LED <b>G</b>; <b>D3</b> → Resistor3 → RGB LED <b>B</b>. Then wire RGB LED <b>−</b> (the shared leg) → Microcontroller <b>GND</b>.` },
       { title:'Write the code', body:`<pre>void setup() {
   pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(3, OUTPUT);
 }
 
 void loop() {
-  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 0);   delay(1000);
-  analogWrite(9, 0);   analogWrite(10, 255); analogWrite(11, 0);   delay(1000);
-  analogWrite(9, 0);   analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
-  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
-}</pre><code>analogWrite(pin, value)</code> takes a value from 0–255 and outputs a proportional voltage — you must call <code>pinMode(pin, OUTPUT)</code> first, same as digitalWrite.` },
+  analogWrite(9, 255); analogWrite(6, 0);   analogWrite(3, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(6, 255); analogWrite(3, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(6, 0);   analogWrite(3, 255); delay(1000);
+  analogWrite(9, 255); analogWrite(6, 0);   analogWrite(3, 255); delay(1000);
+}</pre>Only some pins can do this (marked ~ on a real board: D3, D5, D6, D9, D10, D11). <code>analogWrite(pin, value)</code> takes a value from 0–255 and outputs a proportional voltage — you must call <code>pinMode(pin, OUTPUT)</code> first, same as digitalWrite.` },
       { title:'Run it', body:`Press <b>Run</b> and <b>Run code</b>. Watch the RGB LED cycle through red, green, blue, then a mixed magenta — that last one is red and blue both lit at once.` },
     ],
     solution:{ code:`void setup() {
   pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(3, OUTPUT);
 }
 
 void loop() {
-  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 0);   delay(1000);
-  analogWrite(9, 0);   analogWrite(10, 255); analogWrite(11, 0);   delay(1000);
-  analogWrite(9, 0);   analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
-  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
+  analogWrite(9, 255); analogWrite(6, 0);   analogWrite(3, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(6, 255); analogWrite(3, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(6, 0);   analogWrite(3, 255); delay(1000);
+  analogWrite(9, 255); analogWrite(6, 0);   analogWrite(3, 255); delay(1000);
 }`, components:[
-      {id:'c1', type:'mcu', x:420, y:460, props:{}},
-      {id:'c2', type:'resistor', x:220, y:560, props:{ohms:220}},
-      {id:'c3', type:'resistor', x:300, y:560, props:{ohms:220}},
-      {id:'c4', type:'resistor', x:380, y:560, props:{ohms:220}},
-      {id:'c5', type:'rgbled', x:300, y:640, props:{}},
+      {id:'c1', type:'mcu', x:40, y:332, props:{}},
+      {id:'c2', type:'resistor', x:136, y:236, rotation:270, props:{ohms:220}},
+      {id:'c3', type:'resistor', x:208, y:236, rotation:270, props:{ohms:220}},
+      {id:'c4', type:'resistor', x:280, y:236, rotation:270, props:{ohms:220}},
+      {id:'c5', type:'rgbled', x:208, y:92, props:{}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'D9'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
       {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'r'}},
-      {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D10'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D6'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
       {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'g'}},
-      {id:'w5', from:{kind:'pin',compId:'c1',pinId:'D11'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
+      {id:'w5', from:{kind:'pin',compId:'c1',pinId:'D3'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
       {id:'w6', from:{kind:'pin',compId:'c4',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'b'}},
-      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'gnd'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'gnd'}, to:{kind:'pin',compId:'c1',pinId:'GNDT'}},
     ]},
   },
   {
@@ -2962,8 +3112,8 @@ void loop() {
   analogWrite(9, 128); delay(600);
   analogWrite(9, 255); delay(600);
 }`, components:[
-      {id:'c1', type:'mcu', x:380, y:460, props:{}},
-      {id:'c2', type:'servo', x:260, y:560, props:{}},
+      {id:'c1', type:'mcu', x:232, y:212, props:{}},
+      {id:'c2', type:'servo', x:88, y:68, props:{}},
     ], wires:[
       {id:'w1', from:{kind:'pin',compId:'c1',pinId:'5V'}, to:{kind:'pin',compId:'c2',pinId:'vcc'}},
       {id:'w2', from:{kind:'pin',compId:'c1',pinId:'GND'}, to:{kind:'pin',compId:'c2',pinId:'gnd'}},
@@ -3031,17 +3181,134 @@ document.getElementById('tutFinish').addEventListener('click', closeTutorials);
 document.getElementById('tutSolution').addEventListener('click', ()=>{
   if (!tutState.tutorial) return;
   if (components.length && !confirm('Load the finished circuit for this tutorial? It will replace what\'s currently on the board.')) return;
-  loadCircuitData(tutState.tutorial.solution);
+  loadCircuitData(tutState.tutorial.solution, {builtIn:true});
   closeTutorials();
 });
 
-function loadCircuitData(data){
+/* Extent of everything drawn: parts (with room for their labels), wire
+   bends and hole ends, and the breadboard if includeBoard. */
+function contentBounds(includeBoard){
+  let x0=Infinity, y0=Infinity, x1=-Infinity, y1=-Infinity;
+  const add = (x,y)=>{ x0=Math.min(x0,x); y0=Math.min(y0,y); x1=Math.max(x1,x); y1=Math.max(y1,y); };
+  for (const c of components){
+    const def = COMPONENT_DEFS[c.type]; if (!def) continue;
+    const w = def.w*GRID, h = def.h*GRID, r = Math.max(w,h)/2, cx = c.x+w/2, cy = c.y+h/2;
+    const rot = ((c.rotation||0)%180+180)%180;
+    const hw = rot ? r : w/2, hh = rot ? r : h/2;
+    add(cx-hw-14, cy-hh-22); add(cx+hw+14, cy+hh+14);
+  }
+  for (const w of wires){
+    [w.from, w.to].forEach(end=>{ if (end.kind==='hole') add(end.x, end.y); });
+    (w.waypoints||[]).forEach(p=>add(p.x,p.y));
+  }
+  if (includeBoard && breadboardPresent){ add(BOARD_X-30, BOARD_Y-80); add(BOARD_X+BOARD_COLS*GRID+30, boardBottomY+40); }
+  return isFinite(x0) ? {x0,y0,x1,y1} : null;
+}
+/* Zoom and scroll so the whole circuit is in view — loaded circuits used to
+   open scrolled to the top-left corner, often with nothing visible at all. */
+function fitToContent(){
+  renderAll();
+  const b = contentBounds(true); if (!b) return;
+  const wrap = document.getElementById('canvasWrap');
+  const pad = 30, bw = b.x1-b.x0, bh = b.y1-b.y0;
+  const z = Math.min(1.6, (wrap.clientWidth-2*pad)/bw, (wrap.clientHeight-2*pad)/bh);
+  setZoom(z);
+  wrap.scrollLeft = Math.max(0, b.x0*zoomLevel - Math.max(pad, (wrap.clientWidth-bw*zoomLevel)/2));
+  wrap.scrollTop = Math.max(0, b.y0*zoomLevel - Math.max(pad, (wrap.clientHeight-bh*zoomLevel)/2));
+}
+
+/* The built-in circuits are stored as pin-to-pin wires with no bends.
+   Route each one on a half-grid: the path with the fewest bends that goes
+   around every part and every other pin, and that keeps off wires already
+   laid where it can. */
+function routeAroundParts(){
+  const step = GRID/2;
+  const boxes = components.map(c=>contentBoundsOf(c, COMPONENT_DEFS[c.type]));
+  const pins = [];
+  components.forEach(c=>COMPONENT_DEFS[c.type].pins.forEach(pin=>pins.push(pinWorldPos(c, pin.id))));
+  const ext = contentBounds(false);
+  const gx0 = Math.floor((ext.x0-BOARD_X)/step)-6, gy0 = Math.floor((ext.y0-BOARD_Y)/step)-6;
+  const W = Math.ceil((ext.x1-ext.x0)/step)+14, H = Math.ceil((ext.y1-ext.y0)/step)+14;
+  const toXY = (i,j)=>({x:BOARD_X+(gx0+i)*step, y:BOARD_Y+(gy0+j)*step});
+  const toIJ = p=>[Math.round((p.x-BOARD_X)/step)-gx0, Math.round((p.y-BOARD_Y)/step)-gy0];
+  const blocked = new Uint8Array(W*H), used = new Uint8Array(W*H);
+  for (let i=0;i<W;i++) for (let j=0;j<H;j++){
+    const {x,y} = toXY(i,j);
+    if (boxes.some(b=>x>b.x0-2 && x<b.x1+2 && y>b.y0-2 && y<b.y1+2)) blocked[j*W+i] = 1;
+  }
+  pins.forEach(pp=>{ const [i,j] = toIJ(pp); if (i>=0&&j>=0&&i<W&&j<H) blocked[j*W+i] = 1; });
+  const DIRS = [[1,0],[-1,0],[0,1],[0,-1]];
+  function route(p1, p2){
+    const [si,sj] = toIJ(p1), [ti,tj] = toIJ(p2);
+    const N = W*H*4, cost = new Float64Array(N).fill(Infinity), prev = new Int32Array(N).fill(-1);
+    const heap = [];
+    const push = (c,s)=>{ heap.push([c,s]); let k=heap.length-1; while(k>0){ const q=(k-1)>>1; if(heap[q][0]<=heap[k][0]) break; [heap[q],heap[k]]=[heap[k],heap[q]]; k=q; } };
+    const pop = ()=>{ const top=heap[0], last=heap.pop(); if(heap.length){ heap[0]=last; let k=0; for(;;){ const a=2*k+1,b=a+1; let m=k; if(a<heap.length&&heap[a][0]<heap[m][0]) m=a; if(b<heap.length&&heap[b][0]<heap[m][0]) m=b; if(m===k) break; [heap[m],heap[k]]=[heap[k],heap[m]]; k=m; } } return top; };
+    for (let d=0;d<4;d++){ const st=(sj*W+si)*4+d; cost[st]=0; push(0,st); }
+    let goal = -1;
+    while (heap.length){
+      const [c,st] = pop();
+      if (c>cost[st]) continue;
+      const cell = st>>2, d = st&3, i = cell%W, j = (cell/W)|0;
+      if (i===ti && j===tj){ goal = st; break; }
+      for (let nd=0;nd<4;nd++){
+        const ni = i+DIRS[nd][0], nj = j+DIRS[nd][1];
+        if (ni<0||nj<0||ni>=W||nj>=H) continue;
+        const ncell = nj*W+ni;
+        if (blocked[ncell] && !(ni===ti && nj===tj)) continue;
+        const nc = c + 1 + (nd!==d && !(i===si&&j===sj) ? 6 : 0) + (used[ncell] ? 4 : 0);
+        const ns = ncell*4+nd;
+        if (nc < cost[ns]){ cost[ns] = nc; prev[ns] = st; push(nc, ns); }
+      }
+    }
+    if (goal<0) return null;
+    const cells = [];
+    for (let st=goal; st>=0; st=prev[st]) cells.push(st>>2);
+    cells.reverse();
+    cells.forEach(cl=>used[cl]=1);
+    // keep only the corners
+    const pts = cells.map(cl=>toXY(cl%W, (cl/W)|0));
+    const corners = [];
+    for (let k=1;k<pts.length-1;k++){
+      const a=pts[k-1], b=pts[k], c=pts[k+1];
+      if ((a.x===b.x) !== (b.x===c.x)) corners.push(b);
+    }
+    return corners;
+  }
+  for (const w of wires){
+    if (w.waypoints && w.waypoints.length) continue;
+    const p1 = wireEndpointPos(w.from), p2 = wireEndpointPos(w.to);
+    if (!p1 || !p2) continue;
+    const r = route(p1, p2);
+    if (r) w.waypoints = r;
+  }
+}
+function contentBoundsOf(c, def){
+  const w = def.w*GRID, h = def.h*GRID, cx = c.x+w/2, cy = c.y+h/2;
+  const rot = ((c.rotation||0)%180+180)%180;
+  const hw = rot ? h/2 : w/2, hh = rot ? w/2 : h/2;
+  return {x0:cx-hw, y0:cy-hh, x1:cx+hw, y1:cy+hh};
+}
+
+function loadCircuitData(data, opts){
+  // work on a copy: the built-in examples and tutorial solutions must stay
+  // as written, however the student then changes the loaded circuit
+  data = JSON.parse(JSON.stringify(data));
+  if (running) document.getElementById('btn-run').click();
   components = data.components||[];
   let maxId = 0;
   components.forEach(c=>{ const n=parseInt(c.id.slice(1)); if(n>maxId) maxId=n; });
   nextId = maxId+1;
   wires = data.wires||[];
   wires.forEach((w,i)=>{ if (!w.color) w.color = DEFAULT_WIRE_PALETTE[i % DEFAULT_WIRE_PALETTE.length]; });
+  if (opts && opts.builtIn){
+    const b = contentBounds(false);
+    if (b){
+      const dx = b.x0 < 30 ? Math.ceil((30-b.x0)/GRID)*GRID : 0, dy = b.y0 < 40 ? Math.ceil((40-b.y0)/GRID)*GRID : 0;
+      components.forEach(c=>{ c.x += dx; c.y += dy; });
+    }
+    routeAroundParts();
+  }
   document.getElementById('code-editor').value = data.code || '';
   blockProgram = data.blockProgram || defaultBlockProgram();
   const st = {max:0}; scanMaxBlockId(blockProgram.setup, st); scanMaxBlockId(blockProgram.loop, st);
@@ -3050,7 +3317,9 @@ function loadCircuitData(data){
   document.getElementById('serial-out').textContent = '';
   document.getElementById('codeErr').textContent = '';
   selected = null;
-  scheduleRender(); renderPropPanel();
+  renderPropPanel();
+  foldHintForCircuit();
+  fitToContent();
 }
 
 document.getElementById('btn-load').addEventListener('click', ()=>document.getElementById('file-load').click());
@@ -3073,6 +3342,8 @@ document.getElementById('btn-clear').addEventListener('click', ()=>{
    INIT
 ═══════════════════════════════════════════════════════════════ */
 renderAll();
+// start a little zoomed in on bigger screens, so parts are a comfortable size to work with
+setZoom(window.matchMedia('(max-width:820px)').matches ? 1 : 1.25);
 document.addEventListener('DOMContentLoaded', ()=>{ if (window.lucide) lucide.createIcons(); });
 if (window.lucide) lucide.createIcons();
 setInterval(()=>{ if (window.lucide) lucide.createIcons(); }, 500);
