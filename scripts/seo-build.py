@@ -21,6 +21,36 @@ import html, json, os, re, subprocess, sys
 SITE = 'https://themagiclab.co.za'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OG_IMAGE = SITE + '/assets/og-card.png'
+# Per-tool social cards (rendered by scripts/build-og-cards.js into assets/og/).
+# A page uses its tool's card, the Afrikaans one on .af.html pages when it
+# exists, and the site card otherwise.
+OG_CARDS = ['code-conjurer', 'ai-oracle', 'java-genie', 'computer-codex', 'web-wizard', 'model-mage',
+            'drawing-druid', 'science-sage', 'math-magician', 'spike-spellcaster', 'tech-tower',
+            'robot-realm', 'time-turner']
+# App pages that stay behind sign-in and out of Google, but still get a
+# description and a card: link previews (WhatsApp, Facebook, Teams) read the
+# page's tags without signing in, so a shared link shows the tool properly.
+SHARE_ONLY = {
+    'code-conjurer.html': 'Advanced Java for IT learners, Grades 10–12: classes, arrays, algorithms, exception handling and full OOP, in a browser-based IDE.',
+    'ai-oracle.html': 'Understand how AI really works, learn to prompt well, and use AI ethically for studying, research and assignments. Grades 8–12.',
+    'java-genie.html': 'Learn Java visually with turtle graphics, loops and interactive tutorials. Write real programs from day one. Grades 8–9.',
+    'computer-codex.html': 'Digital literacy for Grades 8–12: Windows, Office, file management, Excel and Word, and a unit on using AI responsibly.',
+    'web-wizard.html': 'Build websites in HTML and CSS with a live preview, in the browser. No server, no setup. Grades 8–9.',
+    'model-mage-cad.html': 'Browser-based parametric CAD: sketch a profile, extrude it, cut holes and fillet edges, then export it for 3D printing.',
+    'model-mage-circuits.html': 'Build circuits on a virtual breadboard, run a live simulation and program a microcontroller in code or blocks.',
+    'spike-spellcaster/index.html': 'Code a LEGO® SPIKE Prime in Python or blocks, in the built-in simulator or on the real robot over Bluetooth. Built for WRO RoboMission.',
+    'robot-realm/index.html': 'Program and simulate robots in a 2D arena: motors, sensors, obstacles and line following. No hardware needed.',
+    'time-turner.html': 'A weekly time-management planner: school, homework, activities, meals, chores and rest, planned around what the week is missing.',
+}
+
+
+def og_image(rel):
+    base = rel.split('/')[0].replace('.html', '')
+    tool = next((t for t in OG_CARDS if base == t or base.startswith(t + '-')), None)
+    if not tool: return OG_IMAGE
+    if rel.endswith('.af.html') and os.path.exists(os.path.join(ROOT, 'assets', 'og', tool + '-af.png')):
+        tool += '-af'
+    return SITE + '/assets/og/' + tool + '.png'
 ORG = {'@type': 'Organization', 'name': 'The Magic Lab', 'url': SITE + '/',
        'logo': SITE + '/assets/logo-prism.svg'}
 CHECK = '--check' in sys.argv
@@ -153,7 +183,7 @@ def build_block(rel, s, kind, title, desc, extra=None):
         lines.append(f'<link rel="alternate" hreflang="af-ZA" href="{url(tw[1])}">')
         lines.append(f'<link rel="alternate" hreflang="x-default" href="{url(tw[0])}">')
     og = {'og:type': 'article' if kind == 'lesson' else 'website', 'og:site_name': 'The Magic Lab',
-          'og:title': title, 'og:description': desc, 'og:url': url(rel), 'og:image': OG_IMAGE,
+          'og:title': title, 'og:description': desc, 'og:url': url(rel), 'og:image': og_image(rel),
           'og:image:width': '1200', 'og:image:height': '630', 'og:locale': 'af_ZA' if af else 'en_ZA'}
     lines += [f'<meta property="{k}" content="{attr(v)}">' for k, v in og.items()]
     lines.append('<meta name="twitter:card" content="summary_large_image">')
@@ -267,6 +297,15 @@ def main():
         s = put_block(s, build_block(rel, s, 'page', title, desc, ld))
         save(rel, s, orig)
         indexable.append(rel)
+
+    for rel, desc in SHARE_ONLY.items():
+        p = os.path.join(ROOT, rel)
+        if not os.path.exists(p): continue
+        orig = s = open(p, encoding='utf-8').read()
+        title = text(first(r'<title>(.*?)</title>', s))
+        s = re.sub(r'\n?\s*<meta\s+name="description"\s+content="[^"]*">', '', s, count=1) if '<!-- ml-seo' not in s else s
+        s = put_block(s, build_block(rel, s, 'page', title, desc))
+        save(rel, s, orig)
 
     for rel in NOINDEX:
         p = os.path.join(ROOT, rel)
