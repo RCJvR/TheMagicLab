@@ -8,169 +8,8 @@
   const CONSTRUCTIONS = {};
   const D2R = Math.PI / 180;
 
-  // ── 1. Interpenetration of Two Equal-Diameter Cylinders ──
-  (function () {
-    const mainCX = 100, R1 = 25, mainTop = 30, mainBottom = 150;
-    const branchAxisY = 105, R2 = 25, branchLeft = mainCX + R1, branchRight = 190;
-    const N = 12;
-    const pts = Array.from({ length: N + 1 }, (_, i) => {
-      const th = i * (360 / N) * D2R;
-      const Z = R2 * Math.cos(th), Yoff = R2 * Math.sin(th);
-      const X = Math.sqrt(Math.max(0, R1 * R1 - Z * Z));
-      return [mainCX + X, branchAxisY - Yoff];
-    });
-
-    CONSTRUCTIONS['interpenetration-equal-cylinders'] = {
-      id: 'interpenetration-equal-cylinders', title: 'Interpenetration of Two Equal-Diameter Cylinders',
-      summary: 'Two pipes of the SAME diameter meeting at right angles — a special case where the curve of interpenetration turns out to be two straight lines, not a curve at all.',
-      bounds: { w: 220, h: 175 },
-      workbookPrompt: 'Draw the main cylinder (50 mm diameter) and the branch cylinder (also 50 mm diameter) meeting at right angles, and construct the curve of interpenetration where their surfaces meet.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the main cylinder (vertical) and the branch cylinder (horizontal), both the SAME diameter, meeting at right angles.',
-          calloutAt: [mainCX, branchAxisY],
-          reveals: [
-            { kind: 'line', p1: [mainCX - R1, mainTop], p2: [mainCX - R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX + R1, mainTop], p2: [mainCX + R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY - R2], p2: [branchRight, branchAxisY - R2], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY + R2], p2: [branchRight, branchAxisY + R2], lineType: 'A' },
-            { kind: 'line', p1: [branchLeft, mainTop], p2: [branchLeft, branchAxisY - R2], lineType: 'construction' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Divide the branch\'s circular end into 12 equal parts — the same "equal divisions" method used throughout this course for anything that can\'t be measured directly.',
-          calloutAt: [branchLeft, branchAxisY],
-          reveals: pts.slice(0, N).map((p, i) => ({ kind: 'point', at: [branchLeft, branchAxisY - R2 * Math.sin(i * 30 * D2R)], size: 1.1, color: '#eab308' })),
-        },
-        {
-          id: 3,
-          instruction: 'For each division, find where that point actually lies on the MAIN cylinder\'s surface — using its depth offset and the main cylinder\'s own true radius — and plot it in the front view.',
-          calloutAt: pts[3],
-          reveals: pts.map(p => ({ kind: 'point', at: p, size: 1.3, color: '#f472b6' })),
-        },
-        {
-          id: 4,
-          instruction: 'Join the points. Because both cylinders share the SAME diameter, every point lands exactly on one of two straight lines — a genuine special case, not an approximation.',
-          calloutAt: [branchLeft + 15, branchAxisY],
-          reveals: [
-            { kind: 'line', p1: pts[0], p2: pts[6], lineType: 'A' },
-            { kind: 'line', p1: pts[6], p2: pts[12], lineType: 'A' },
-            { kind: 'label', at: [branchLeft, mainTop + 10], text: 'EQUAL DIAMETERS → STRAIGHT LINES', size: 4, anchor: 'start', color: '#fde047' },
-          ],
-        },
-      ],
-    };
-  })();
-
-  // ── 2. Interpenetration of Two Different-Diameter Cylinders ──
-  (function () {
-    const mainCX = 100, R1 = 32, mainTop = 20, mainBottom = 150;
-    const branchAxisY = 95, R2 = 16, branchLeft = mainCX + R1, branchRight = 185;
-    const N = 12;
-    const pts = Array.from({ length: N + 1 }, (_, i) => {
-      const th = i * (360 / N) * D2R;
-      const Z = R2 * Math.cos(th), Yoff = R2 * Math.sin(th);
-      const X = Math.sqrt(Math.max(0, R1 * R1 - Z * Z));
-      return [mainCX + X, branchAxisY - Yoff];
-    });
-    const smooth = G.catmullRomExpand(pts, 6);
-
-    CONSTRUCTIONS['interpenetration-unequal-cylinders'] = {
-      id: 'interpenetration-unequal-cylinders', title: 'Interpenetration of Two Different-Diameter Cylinders',
-      summary: 'The general method: when the two pipes are different sizes, the curve of interpenetration is a genuine curve, found point by point.',
-      bounds: { w: 215, h: 170 },
-      workbookPrompt: 'Draw a 64 mm main cylinder and a 32 mm branch cylinder meeting at right angles, and construct the true curve of interpenetration using 12 points.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the main cylinder (64 mm diameter, vertical) and the smaller branch cylinder (32 mm diameter, horizontal), meeting at right angles.',
-          calloutAt: [mainCX, branchAxisY],
-          reveals: [
-            { kind: 'line', p1: [mainCX - R1, mainTop], p2: [mainCX - R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX + R1, mainTop], p2: [mainCX + R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY - R2], p2: [branchRight, branchAxisY - R2], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY + R2], p2: [branchRight, branchAxisY + R2], lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Divide the branch\'s circular end into 12 equal parts.',
-          calloutAt: [branchLeft, branchAxisY],
-          reveals: Array.from({ length: N }, (_, i) => ({ kind: 'point', at: [branchLeft, branchAxisY - R2 * Math.sin(i * 30 * D2R)], size: 1.1, color: '#eab308' })),
-        },
-        {
-          id: 3,
-          instruction: 'For each division, find its true position on the main cylinder\'s surface (using its depth offset and the main cylinder\'s radius) and plot the point in the front view.',
-          calloutAt: pts[3],
-          reveals: pts.map(p => ({ kind: 'point', at: p, size: 1.3, color: '#f472b6' })),
-        },
-        {
-          id: 4,
-          instruction: 'Join the 12 points with a smooth curve — this time a genuine curve, since the two diameters differ. The curve is always steepest where the branch is widest (at its own centre line).',
-          calloutAt: [branchLeft + 15, branchAxisY],
-          reveals: [{ kind: 'polyline', points: smooth, lineType: 'A' }],
-        },
-      ],
-    };
-  })();
-
-  // ── 3. Interpenetration — Square Prism Through a Cylinder ──
-  (function () {
-    const mainCX = 100, R1 = 28, mainTop = 25, mainBottom = 145;
-    const branchAxisY = 90, half = 16, branchLeft = mainCX + R1, branchRight = 185;
-    function ptFor(Z, Yoff) {
-      const X = Math.sqrt(Math.max(0, R1 * R1 - Z * Z));
-      return [mainCX + X, branchAxisY - Yoff];
-    }
-    const corners = [ptFor(half, half), ptFor(half, -half), ptFor(-half, -half), ptFor(-half, half)];
-
-    CONSTRUCTIONS['interpenetration-square-prism'] = {
-      id: 'interpenetration-square-prism', title: 'Interpenetration — Square Prism Through a Cylinder',
-      summary: 'When the branch has flat faces instead of a round one, only its CORNERS need to be plotted — straight edges only need their end points.',
-      bounds: { w: 215, h: 165 },
-      workbookPrompt: 'A 32 mm square prism penetrates a 56 mm diameter cylinder at right angles. Plot the four corner points and join them to find the curve (in this case, a set of straight edges) of interpenetration.',
-      steps: [
-        {
-          id: 1,
-          instruction: 'Draw the main cylinder and the square branch prism, meeting at right angles.',
-          calloutAt: [mainCX, branchAxisY],
-          reveals: [
-            { kind: 'line', p1: [mainCX - R1, mainTop], p2: [mainCX - R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX + R1, mainTop], p2: [mainCX + R1, mainBottom], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY - half], p2: [branchRight, branchAxisY - half], lineType: 'A' },
-            { kind: 'line', p1: [mainCX - R1, branchAxisY + half], p2: [branchRight, branchAxisY + half], lineType: 'A' },
-          ],
-        },
-        {
-          id: 2,
-          instruction: 'Since a square has flat sides, not a curve, only the FOUR CORNERS of its cross-section need to be plotted — no in-between points are needed for a straight edge.',
-          calloutAt: [branchLeft, branchAxisY],
-          reveals: [
-            { kind: 'point', at: [branchLeft, branchAxisY - half], label: '' }, { kind: 'point', at: [branchLeft, branchAxisY + half], label: '' },
-          ],
-        },
-        {
-          id: 3,
-          instruction: 'Find each corner\'s true position on the main cylinder\'s surface, exactly as before — using its depth offset and the main cylinder\'s radius.',
-          calloutAt: corners[0],
-          reveals: corners.map(p => ({ kind: 'point', at: p, size: 1.3, color: '#f472b6' })),
-        },
-        {
-          id: 4,
-          instruction: 'Join the four points with STRAIGHT lines, not a smooth curve — the prism\'s flat faces produce a faceted intersection, not a rounded one.',
-          calloutAt: [branchLeft + 15, branchAxisY],
-          reveals: [
-            { kind: 'line', p1: corners[0], p2: corners[1], lineType: 'A' },
-            { kind: 'line', p1: corners[1], p2: corners[2], lineType: 'A' },
-            { kind: 'line', p1: corners[2], p2: corners[3], lineType: 'A' },
-            { kind: 'line', p1: corners[3], p2: corners[0], lineType: 'A' },
-          ],
-        },
-      ],
-    };
-  })();
+  // Exercises 1-3 (cylinders and a square pipe meeting a cylinder at right angles) are built by
+  // cylBranch() in interpenetration-gr12.data.js; their ids stay first in CONSTRUCTION_ORDER below.
 
   // ── 4. Development of a Cylinder (Stretch-Out Method) ──
   (function () {
@@ -233,11 +72,14 @@
     const R = 20, H = 55, DROP = 26, N = 12;
     const FV_CX = 55, FV_LEFT = FV_CX - R, FV_RIGHT = FV_CX + R, FV_BOTTOM = 130, FV_TOP_FULL = FV_BOTTOM - H;
     const circumference = 2 * Math.PI * R;
+    // generator i stands at θ = 30i round the circle from the left-hand (highest) side; the cutting
+    // plane is seen edge-on, so in the front view the cut is a straight line and each generator's
+    // height falls on it
     function cutHeight(thetaDeg) { return H - (DROP / 2) * (1 - Math.cos(thetaDeg * D2R)); }
-    const cutPts = Array.from({ length: N + 1 }, (_, i) => {
-      const th = i * 30;
-      return [FV_LEFT + i * (2 * R / N), FV_BOTTOM - cutHeight(th)];
-    });
+    const genX = th => FV_CX - R * Math.cos(th * D2R);
+    const TV_CY = FV_BOTTOM + R + 12;
+    const planPts = Array.from({ length: N }, (_, i) => [genX(i * 30), TV_CY - R * Math.sin(i * 30 * D2R)]);
+    const cutPts = Array.from({ length: N }, (_, i) => [genX(i * 30), FV_BOTTOM - cutHeight(i * 30)]);
 
     const DEV_LEFT = 105, DEV_BOTTOM = FV_BOTTOM, DEV_RIGHT = DEV_LEFT + circumference;
     const devPts = Array.from({ length: N + 1 }, (_, i) => {
@@ -249,17 +91,22 @@
     CONSTRUCTIONS['development-oblique-cylinder'] = {
       id: 'development-oblique-cylinder', title: 'Development of an Obliquely Cut Cylinder',
       summary: 'When a cylinder is cut on the slant, its development is no longer a plain rectangle — the top edge becomes a smooth wave, one full wave per revolution.',
-      bounds: { w: 260, h: 150 },
+      bounds: { w: 260, h: 190 },
       workbookPrompt: 'Given a cylinder (40 mm diameter) cut by an inclined plane (26 mm drop across the diameter), develop its surface, transferring each of 12 points\' true height onto the stretch-out line.',
       steps: [
         {
           id: 1,
-          instruction: 'Given the cylinder cut by an inclined plane, divide the front view into 12 equal divisions across the diameter, and read the cut\'s height at each.',
+          instruction: 'Draw the front view of the cylinder with the cut (a straight line: the cutting plane is seen edge-on), and the top view, a circle, below it. Divide the circle into 12 equal parts and project each point up to the cut: these are the 12 generators.',
           calloutAt: [FV_CX, FV_TOP_FULL + 10],
           reveals: [
-            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_LEFT, FV_TOP_FULL], lineType: 'A' }, { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [FV_RIGHT, FV_TOP_FULL], lineType: 'A' },
-            { kind: 'polyline', points: cutPts, lineType: 'A' },
+            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_LEFT, FV_BOTTOM - cutHeight(0)], lineType: 'A' }, { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [FV_RIGHT, FV_BOTTOM - cutHeight(180)], lineType: 'A' },
+            { kind: 'line', p1: [FV_LEFT, FV_BOTTOM - cutHeight(0)], p2: [FV_RIGHT, FV_BOTTOM - cutHeight(180)], lineType: 'A' },
             { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_RIGHT, FV_BOTTOM], lineType: 'A' },
+            { kind: 'circle', center: [FV_CX, TV_CY], r: R, lineType: 'A' },
+            { kind: 'line', p1: [FV_LEFT - 4, TV_CY], p2: [FV_RIGHT + 4, TV_CY], lineType: 'centre' }, { kind: 'line', p1: [FV_CX, TV_CY - R - 4], p2: [FV_CX, TV_CY + R + 4], lineType: 'centre' },
+            ...planPts.map(p => ({ kind: 'point', at: p, size: 1 })),
+            ...planPts.map((p, i) => ({ kind: 'line', p1: p, p2: cutPts[i], lineType: 'construction' })),
+            ...cutPts.map(p => ({ kind: 'point', at: p, size: 1 })),
           ],
         },
         {
@@ -275,7 +122,10 @@
           id: 3,
           instruction: 'At each division, erect a vertical equal to THAT point\'s true height, read directly from the front view — never the same height twice.',
           calloutAt: devPts[3],
-          reveals: devPts.map(p => ({ kind: 'point', at: p, size: 1.2, color: '#f472b6' })),
+          reveals: [
+            ...devPts.map((p, i) => ({ kind: 'line', p1: cutPts[i % N], p2: p, lineType: 'construction' })),
+            ...devPts.map(p => ({ kind: 'point', at: p, size: 1.2, color: '#f472b6' })),
+          ],
         },
         {
           id: 4,
@@ -404,13 +254,18 @@
     const base = 30, H = 40;
     const halfDiag = base * Math.SQRT2 / 2;
     const trueEdge = Math.sqrt(H * H + halfDiag * halfDiag);
-    const FV_CX = 50, FV_BOTTOM = 120, FV_TOP = FV_BOTTOM - H;
-    const apex = [160, 35];
-    const N = 4;
+    const FV_CX = 50, FV_BOTTOM = 80, FV_TOP = FV_BOTTOM - H;
+    // top view below: the base square with its edges parallel to the VP; corner A at the front right.
+    // True length: swing the plan of edge OA (half the diagonal) round to level, project it up to the
+    // base line and join it to the apex.
+    const TV_CY = FV_BOTTOM + 12 + base / 2;
+    const plA = [FV_CX + base / 2, TV_CY + base / 2], swung = [FV_CX + halfDiag, TV_CY], tlFoot = [FV_CX + halfDiag, FV_BOTTOM];
+    // the fan: each triangle's angle at the apex is 2·asin(half the base side / true edge)
+    const apex = [160, 30];
+    const N = 4, tri = 2 * Math.asin(base / 2 / trueEdge) / D2R, a0 = 90 - N * tri / 2;
     const pts = [apex];
-    let ang = -90 - 25;
     for (let i = 0; i <= N; i++) {
-      const a = (-90 - 25) + i * 50;
+      const a = a0 + i * tri;
       pts.push([apex[0] + trueEdge * Math.cos(a * D2R), apex[1] + trueEdge * Math.sin(a * D2R)]);
     }
 
@@ -427,6 +282,16 @@
           calloutAt: [FV_CX, FV_TOP + H / 2],
           reveals: [
             { kind: 'polygon', points: [[FV_CX - base / 2, FV_BOTTOM], [FV_CX + base / 2, FV_BOTTOM], [FV_CX, FV_TOP]], lineType: 'A' },
+            { kind: 'polygon', points: [[FV_CX - base / 2, TV_CY - base / 2], [FV_CX + base / 2, TV_CY - base / 2], [FV_CX + base / 2, TV_CY + base / 2], [FV_CX - base / 2, TV_CY + base / 2]], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX - base / 2, TV_CY - base / 2], p2: [FV_CX + base / 2, TV_CY + base / 2], lineType: 'A' },
+            { kind: 'line', p1: [FV_CX + base / 2, TV_CY - base / 2], p2: [FV_CX - base / 2, TV_CY + base / 2], lineType: 'A' },
+            { kind: 'arc-construction', center: [FV_CX, TV_CY], r: halfDiag, startDeg: 0, endDeg: 45, lineType: 'construction' },
+            { kind: 'line', p1: [FV_CX, TV_CY], p2: swung, lineType: 'construction' },
+            { kind: 'line', p1: swung, p2: tlFoot, lineType: 'construction' },
+            { kind: 'line', p1: [FV_CX + base / 2, FV_BOTTOM], p2: tlFoot, lineType: 'construction' },
+            { kind: 'line', p1: [FV_CX, FV_TOP], p2: tlFoot, lineType: 'B' },
+            { kind: 'label', at: [(FV_CX + tlFoot[0]) / 2 + 4, (FV_TOP + FV_BOTTOM) / 2], text: 'TL', size: 3.2, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [plA[0] + 2, plA[1] + 3], text: 'A', size: 3, anchor: 'start' },
           ],
         },
         {
@@ -435,7 +300,7 @@
           calloutAt: [apex[0], apex[1] + trueEdge / 2],
           reveals: [
             { kind: 'point', at: apex, label: '' },
-            { kind: 'arc-construction', center: apex, r: trueEdge, startDeg: -140, endDeg: 25, lineType: 'construction' },
+            { kind: 'arc-construction', center: apex, r: trueEdge, startDeg: a0 - 8, endDeg: a0 + N * tri + 8, lineType: 'construction' },
           ],
         },
         {
@@ -453,6 +318,7 @@
             { kind: 'line', p1: pts[1], p2: pts[2], lineType: 'A' },
             { kind: 'line', p1: pts[2], p2: pts[3], lineType: 'A' },
             { kind: 'line', p1: pts[3], p2: pts[4], lineType: 'A' },
+            { kind: 'line', p1: pts[4], p2: pts[5], lineType: 'A' },
           ],
         },
       ],
