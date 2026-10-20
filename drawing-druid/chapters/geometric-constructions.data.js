@@ -494,56 +494,73 @@
     };
   })();
 
-  // ── 9. Helix / spring curve (plan + elevation projection) ──
+  // ── 9. Helix / spring curve (top view + front view) ──
+  // The top view (a circle) sits above the front view, as in the Loci helices. Its 12 divisions are
+  // numbered from the left in the direction of rotation (anticlockwise from above: a right-hand helix
+  // that rises). Each point drops straight down to ITS height line on the pitch; the curve is a wave,
+  // seen on the front half of the cylinder and hidden on the back half.
   (function () {
-    const planCenter = [60, 150], planR = 20; // 40mm diameter
-    const planPts = G.regularPolygonInCircle(planCenter, planR, 12, -90);
-    const elevX0 = 110, elevWidth = 90, pitch = 20, elevBaseY = 150;
-    const elevPts = planPts.map((p, i) => [elevX0 + i * (elevWidth / 12), elevBaseY - (i / 12) * pitch]);
-    const curvePts = G.catmullRomExpand(elevPts, 8);
+    const R = 20, PITCH = 48, N = 12, D2R = Math.PI / 180;      // Ø40, one turn rises 48 mm
+    const CX = 70, TY = 34, BASE = 128, TOP = BASE - PITCH, SIDE = CX + R + 12;
+    // point k (0..12) round the circle: k = 0 on the left, then towards the front (down the page)
+    const plan = k => { const a = (180 + 30 * k) * D2R; return [CX + R * Math.cos(a), TY - R * Math.sin(a)]; };
+    const lvl = k => BASE - PITCH * k / N;
+    const elev = k => [plan(k)[0], lvl(k)];
+    const lab = k => String(k % N + 1);
+    // a smooth curve: the true helix x = CX − R·cos θ, z rising with θ, sampled finely
+    const curve = (k0, k1) => Array.from({ length: (k1 - k0) * 8 + 1 }, (_, i) => { const k = k0 + i / 8; return [CX - R * Math.cos(30 * k * D2R), lvl(k)]; });
 
     CONSTRUCTIONS['helix-spring'] = {
       id: 'helix-spring', title: 'Helix / Spring Curve',
       summary: 'Project one full turn of a helix from its plan (circle) and elevation (pitch) views — the method used to draw springs and screw threads.',
-      bounds: { w: 220, h: 190 },
-      workbookPrompt: 'Project one full turn of a helix curve (base circle 40 mm diameter, pitch 20 mm) from its plan and elevation views.',
+      bounds: { w: 160, h: 145 },
+      workbookPrompt: 'Project one full turn of a helix curve (base circle 40 mm diameter, pitch 48 mm) from its plan and elevation views.',
       steps: [
         {
           id: 1,
-          instruction: 'Draw the plan view: a circle of 40 mm diameter, centre O, divided into 12 equal parts (30° apart).',
+          instruction: 'TOP VIEW: draw a circle of 40 mm diameter with its centre lines, and divide it into 12 equal parts (30° apart). Number the points from 1 on the left, anticlockwise: a right-hand helix that rises turns anticlockwise seen from above.',
           measurement: { label: '12 × 30° = 360°' },
-          calloutAt: planCenter,
+          calloutAt: [CX, TY],
           reveals: [
-            { kind: 'circle', center: planCenter, r: planR, lineType: 'A' },
-            { kind: 'point', at: planCenter, label: 'O' },
-            ...planPts.map((p, i) => ({ kind: 'point', at: p, label: String(i + 1) })),
+            { kind: 'circle', center: [CX, TY], r: R, lineType: 'A' },
+            { kind: 'line', p1: [CX - R - 5, TY], p2: [CX + R + 5, TY], lineType: 'centre' },
+            { kind: 'line', p1: [CX, TY - R - 5], p2: [CX, TY + R + 5], lineType: 'centre' },
+            ...Array.from({ length: N }, (_, k) => ({ kind: 'line', p1: [CX, TY], p2: plan(k), lineType: 'construction' })),
+            ...Array.from({ length: N }, (_, k) => ({ kind: 'point', at: plan(k), label: lab(k) })),
           ],
         },
         {
           id: 2,
-          instruction: 'Draw the elevation baseline to the right, and a vertical line one pitch high (20 mm). Divide the pitch line into 12 equal parts.',
-          measurement: { label: 'pitch = 20 mm' },
-          calloutAt: [elevX0, elevBaseY],
+          instruction: 'FRONT VIEW, below the top view: draw the base line and the outline of the cylinder. Mark the pitch (48 mm, one full turn) up the side, divide it into 12 equal parts and draw thin horizontal lines through the marks.',
+          measurement: { label: 'pitch = 48 mm' },
+          calloutAt: [CX, BASE],
           reveals: [
-            { kind: 'line', p1: [elevX0, elevBaseY], p2: [elevX0 + elevWidth, elevBaseY], lineType: 'B' },
-            { kind: 'line', p1: [elevX0, elevBaseY], p2: [elevX0, elevBaseY - pitch], lineType: 'A' },
-            { kind: 'dimension', p1: [elevX0, elevBaseY], p2: [elevX0, elevBaseY - pitch], offset: -16, text: '20' },
+            { kind: 'line', p1: [CX - R - 6, BASE], p2: [SIDE + 6, BASE], lineType: 'B' },
+            { kind: 'line', p1: [CX - R, BASE], p2: [CX - R, TOP], lineType: 'construction' },
+            { kind: 'line', p1: [CX + R, BASE], p2: [CX + R, TOP], lineType: 'construction' },
+            { kind: 'line', p1: [CX, BASE + 4], p2: [CX, TOP - 4], lineType: 'centre' },
+            ...Array.from({ length: N + 1 }, (_, k) => ({ kind: 'line', p1: [CX - R, lvl(k)], p2: [SIDE, lvl(k)], lineType: 'construction' })),
+            ...Array.from({ length: N + 1 }, (_, k) => ({ kind: 'label', at: [SIDE + 2, lvl(k) + 1.2], text: String(k), size: 2.6, anchor: 'start', color: '#94a3b8' })),
+            { kind: 'dimension', p1: [SIDE + 10, BASE], p2: [SIDE + 10, TOP], offset: 0, text: String(PITCH) },
           ],
         },
         {
           id: 3,
-          instruction: 'Project each of the 12 plan points horizontally across to the elevation, marking each at its correct rise — point 1 at 0 mm, point 2 at 1/12 of a pitch, and so on.',
-          calloutAt: elevPts[6],
+          instruction: 'Project each point of the top view straight down to ITS OWN height line: point 1 on line 0, point 2 on line 1, point 3 on line 2, and so on up to point 1 again on line 12. Mark where each projector crosses its line.',
+          calloutAt: elev(3),
           reveals: [
-            ...planPts.map((p, i) => ({ kind: 'line', p1: p, p2: [elevPts[i][0], p[1]], lineType: 'construction' })),
-            ...elevPts.map((p, i) => ({ kind: 'point', at: p, label: String(i + 1) })),
+            ...Array.from({ length: N + 1 }, (_, k) => ({ kind: 'line', p1: plan(k), p2: elev(k), lineType: 'construction' })),
+            ...Array.from({ length: N + 1 }, (_, k) => ({ kind: 'point', at: elev(k), label: lab(k) })),
           ],
         },
         {
           id: 4,
-          instruction: 'Join the 12 elevation points with a smooth curve. This is one full turn of the helix.',
-          calloutAt: elevPts[elevPts.length - 1],
-          reveals: [{ kind: 'polyline', points: curvePts, lineType: 'A' }],
+          instruction: 'Join the points with a smooth curve. Points 1 to 7 are on the FRONT of the cylinder (seen); points 7 to 1 are on the back (hidden). The front view of a helix is always a wave: one full wave per turn.',
+          calloutAt: elev(3),
+          reveals: [
+            { kind: 'polyline', points: curve(0, 6), lineType: 'A' },
+            { kind: 'polyline', points: curve(6, 12), lineType: 'hidden' },
+          ],
         },
       ],
     };
