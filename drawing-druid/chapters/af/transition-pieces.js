@@ -95,3 +95,12 @@
     "Name the fold lines by their length in the top view: lines of the same plan length get the same letter (a, b, c, d, e).": NAME + "(a, b, c, d, e)."
   };
 })();
+// Added with the 2026-10-20 drawing corrections
+Object.assign(window.DD_AF, {
+  "Draw the top view of a round-to-square transition ({0} mm square base, {1} mm diameter top), and construct the triangulation: each square corner joined to the circle points of its own quarter.": "Teken die boaansig van 'n rond-na-vierkant-oorgangstuk ({0} mm vierkantige basis, {1} mm middellyn bo), en konstrueer die triangulasie: elke hoek van die vierkant verbind met die sirkelpunte van sy eie kwart.",
+  "Join each SQUARE CORNER only to the circle points of its own quarter, never across the circle: first the two points in the middle of the quarter.": "Verbind elke HOEK VAN DIE VIERKANT net met die sirkelpunte van sy eie kwart, nooit oor die sirkel nie: eers die twee punte in die middel van die kwart.",
+  "Then join the circle point in the middle of each side to both corners of that side. Each corner now has a fan of three CORNER triangles, and each side a flat SIDE triangle between two fans.": "Verbind dan die sirkelpunt in die middel van elke sy met albei hoeke van daardie sy. Elke hoek het nou 'n waaier van drie HOEKDRIEHOEKE, en elke sy 'n plat SYDRIEHOEK tussen twee waaiers.",
+  "Draw the first known edge of the fan at its true length: corner C to circle point {0} (found as in the previous exercise).": "Trek die eerste bekende rand van die waaier op sy ware lengte: hoek C na sirkelpunt {0} (gevind soos in die vorige oefening).",
+  "Triangle C-{0}-{1}: from C swing an arc of the true length C-{2}, and from point {3} an arc of the chord {4}-{5} (true length, because the circle is level). Where they cross is point {6}.": "Driehoek C-{0}-{1}: swaai vanaf C 'n boog met die ware lengte C-{2}, en vanaf punt {3} 'n boog met die koord {4}-{5} (ware lengte, omdat die sirkel horisontaal is). Waar hulle kruis, is punt {6}.",
+  "The SECOND triangle, C-{0}-{1}, shares the edge C-{2} that is already drawn: from C swing the true length C-{3}, and from point {4} the chord {5}-{6}. Where they cross is point {7}.": "Die TWEEDE driehoek, C-{0}-{1}, deel die rand C-{2} wat reeds getrek is: swaai vanaf C die ware lengte C-{3}, en vanaf punt {4} die koord {5}-{6}. Waar hulle kruis, is punt {7}."
+});

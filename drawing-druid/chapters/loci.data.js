@@ -543,7 +543,7 @@
           instruction: 'All three reach exactly half the lift at exactly half the time — the difference is entirely in HOW they get there. Choosing the right motion law is a real design decision: uniform velocity is simplest but harshest; SHM is smoothest; uniform acceleration/retardation splits the difference.',
           calloutAt: [GX0 + PW / 2, 20],
           reveals: [
-            { kind: 'label', at: [GX0, 20], text: 'SAME RISE · SAME LIFT · THREE DIFFERENT SHAPES', size: 4.4, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [GX0, 6], text: 'SAME RISE · SAME LIFT · THREE DIFFERENT SHAPES', size: 4.4, anchor: 'start', color: '#fde047' },
           ],
         },
       ],

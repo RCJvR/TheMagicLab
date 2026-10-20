@@ -434,8 +434,11 @@
   function renderAngleArc(r, ctx) {
     const g = el('g', { class: 'ce-angle' });
     const [vx, vy] = r.vertex;
-    const a1 = Math.atan2(r.p1[1] - vy, r.p1[0] - vx) * 180 / Math.PI;
-    const a2 = Math.atan2(r.p2[1] - vy, r.p2[0] - vx) * 180 / Math.PI;
+    let a1 = Math.atan2(r.p1[1] - vy, r.p1[0] - vx) * 180 / Math.PI;
+    let a2 = Math.atan2(r.p2[1] - vy, r.p2[0] - vx) * 180 / Math.PI;
+    // an angle mark is the angle BETWEEN the arms: always the smaller side, whichever arm is given first
+    let sw0 = a2 - a1; while (sw0 < 0) sw0 += 360;
+    if (sw0 > 180) { const t = a1; a1 = a2; a2 = t; }
     const radius = r.radius || 10;
     g.appendChild(el('path', Object.assign({ d: arcPath(vx, vy, radius, a1, a2) }, strokeAttrs('B', ctx))));
     if (r.text) {

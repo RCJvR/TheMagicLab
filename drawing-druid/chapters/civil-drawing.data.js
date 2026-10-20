@@ -425,54 +425,62 @@
   })();
 
   // ── 6. Window Detail — Sill, Frame and Lintel ──
+  // A vertical section through a 222 mm wall at a window (about 1:10): outside on the left. The lintel
+  // bears on the wall above the opening; the frame and glass sit in the middle of the wall thickness;
+  // the sill slopes down and out past the outside face so rain runs off.
   (function () {
-    const wallL = 60, wallR = 140, wallT = 30, wallB = 130;
-    const openL = 75, openR = 125, openT = 55, openB = 95;
-    const lintelT = openT - 10;
-    const sillB = openB + 10;
+    const wO = 70, wI = 92;                                  // outside and inside faces of the wall
+    const top = 14, lintelT = 40, openT = 52, openB = 100, sillB = 110, bottom = 136;
+    const fx = 79, fw = 4;                                   // the frame, centred in the wall
+    const rectP = (x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+    const sill = [[fx, openB], [wO - 8, openB + 5], [wO - 8, sillB], [wI, sillB], [wI, openB]];
 
     CONSTRUCTIONS['window-detail'] = {
       id: 'window-detail', title: 'Window Detail — Sill, Frame and Lintel', scale: 'NTS',
       summary: 'A cross-section through a window opening: the lintel carrying the wall load above the gap, the frame and glazing, and the sill sloped to shed water.',
-      bounds: { w: 200, h: 160 },
+      bounds: { w: 170, h: 150 },
       workbookPrompt: 'Draw the wall in section with a window opening: the lintel above, the frame and glazing within the opening, and the sloped sill below.',
       steps: [
         {
           id: 1,
           instruction: 'Draw the wall with the window opening left as a gap.',
-          calloutAt: [wallL + 8, wallT + 10],
+          calloutAt: [wO - 6, top + 10],
           reveals: [
-            ...hatchRect(wallL, wallT, openL - wallL, wallB - wallT, 5),
-            ...hatchRect(openR, wallT, wallR - openR, wallB - wallT, 5),
-            { kind: 'polygon', points: [[wallL, wallT], [wallR, wallT], [wallR, wallB], [wallL, wallB]], lineType: 'A' },
+            { kind: 'polygon', points: rectP(wO, top, wI, lintelT), lineType: 'A' }, ...hatchRect(wO, top, wI - wO, lintelT - top, 3),
+            { kind: 'polygon', points: rectP(wO, sillB, wI, bottom), lineType: 'A' }, ...hatchRect(wO, sillB, wI - wO, bottom - sillB, 3),
+            { kind: 'label', at: [wO - 14, openT + 10], text: 'OUTSIDE', size: 3.4, anchor: 'end', color: '#94a3b8' },
+            { kind: 'label', at: [wI + 14, openT + 10], text: 'INSIDE', size: 3.4, anchor: 'start', color: '#94a3b8' },
           ],
         },
         {
           id: 2,
           instruction: 'Draw the LINTEL above the opening — a concrete or steel beam spanning across the gap, carrying the wall\'s weight above it so the wall does not need a support directly under it.',
-          calloutAt: [(openL + openR) / 2, (lintelT + openT) / 2],
+          calloutAt: [(wO + wI) / 2, (lintelT + openT) / 2],
           reveals: [
-            ...hatchRect(wallL, lintelT, wallR - wallL, openT - lintelT, 5),
-            { kind: 'polygon', points: [[wallL, lintelT], [wallR, lintelT], [wallR, openT], [wallL, openT]], lineType: 'A' },
-            { kind: 'label', at: [wallR + 5, (lintelT + openT) / 2], text: 'LINTEL', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'polygon', points: rectP(wO, lintelT, wI, openT), lineType: 'A' },
+            ...[[74, 44], [80, 47.5], [86, 43.5], [89, 49], [76, 49.5], [83, 45]].map(c => ({ kind: 'polygon', points: [[c[0] - 1, c[1] + 0.8], [c[0] + 1, c[1] + 0.8], [c[0], c[1] - 1]], lineType: 'B' })),
+            { kind: 'label', at: [wI + 6, (lintelT + openT) / 2 + 1], text: 'LINTEL', size: 4, anchor: 'start', color: '#fde047' },
           ],
         },
         {
           id: 3,
           instruction: 'Draw the window frame and glazing within the opening.',
-          calloutAt: [(openL + openR) / 2, (openT + openB) / 2],
+          calloutAt: [fx + fw / 2, (openT + openB) / 2],
           reveals: [
-            { kind: 'polygon', points: [[openL, openT], [openR, openT], [openR, openB], [openL, openB]], lineType: 'A' },
-            { kind: 'line', p1: [(openL + openR) / 2, openT], p2: [(openL + openR) / 2, openB], lineType: 'B' },
+            { kind: 'polygon', points: rectP(fx, openT, fx + fw, openT + 3), lineType: 'A' },
+            { kind: 'polygon', points: rectP(fx, openB - 3, fx + fw, openB), lineType: 'A' },
+            { kind: 'line', p1: [fx + fw / 2, openT + 3], p2: [fx + fw / 2, openB - 3], lineType: 'B' },
+            { kind: 'label', at: [wI + 6, (openT + openB) / 2], text: 'FRAME + GLASS', size: 3.4, anchor: 'start', color: '#94a3b8' },
           ],
         },
         {
           id: 4,
           instruction: 'Draw the SILL at the bottom, sloped outward and downward — this sheds rainwater away from the wall face instead of letting it pool and seep in.',
-          calloutAt: [(openL + openR) / 2, sillB],
+          calloutAt: [wO - 4, openB + 6],
           reveals: [
-            { kind: 'polygon', points: [[openL - 4, openB], [openR + 4, openB], [openR + 8, sillB], [openL - 8, sillB]], lineType: 'A' },
-            { kind: 'label', at: [wallR + 5, sillB - 4], text: 'SILL', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'polygon', points: sill, lineType: 'A' },
+            ...hatchRect(wO - 8, openB + 5, wI - wO + 8, sillB - openB - 5, 3),
+            { kind: 'label', at: [wI + 6, sillB - 3], text: 'SILL', size: 4, anchor: 'start', color: '#fde047' },
           ],
         },
       ],
@@ -519,9 +527,9 @@
         {
           id: 4,
           instruction: 'Label the pipe diameter and the required fall (gradient) — the minimum slope needed to keep waste flowing without blockages.',
-          calloutAt: [70, 55],
+          calloutAt: [80, 40],
           reveals: [
-            { kind: 'label', at: [50, 60], text: '110 Ø PVC PIPE, FALL 1:60', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [64, 42], text: '110 Ø PVC PIPE, FALL 1:60', size: 4, anchor: 'start', color: '#fde047' },
             { kind: 'label', at: [manholeP[0] - 10, manholeP[1] + 16], text: 'MANHOLE', size: 3.8, anchor: 'start', color: '#94a3b8' },
           ],
         },
@@ -635,7 +643,7 @@
     const IW = 2400, IH = 1800, ext = 222, int = 111;
     const X0 = 20, Y0 = 20;                                   // inside top-left corner
     const P = (x, y) => [X0 + u(x), Y0 + u(y)];               // y downwards on the sheet
-    const door = [1300, 800];                                 // in the bottom (internal) wall
+    const door = [200, 800];                                  // in the bottom (internal) wall, left end; it swings clear of the fittings
     const win = [500, 1200];                                  // in the top (external) wall
     const rect = (x0, y0, x1, y1) => [P(x0, y0), P(x1, y0), P(x1, y1), P(x0, y1)];
     const walls = [
@@ -656,19 +664,19 @@
           { kind: 'polyline', points: [P(win[0] - 50, -ext), P(win[0] - 50, -ext - 60), P(win[0] + win[1] + 50, -ext - 60), P(win[0] + win[1] + 50, -ext)], lineType: 'B' }] },
         { id: 4, instruction: 'The door in the internal wall: frames, the leaf open against the wall, and its swing into the bathroom.', calloutAt: P(door[0] + door[1] / 2, IH - 200), reveals: [
           { kind: 'polygon', points: rect(door[0], IH, door[0] + 40, IH + int), lineType: 'A' }, { kind: 'polygon', points: rect(door[0] + door[1] - 40, IH, door[0] + door[1], IH + int), lineType: 'A' },
-          { kind: 'polygon', points: rect(door[0] + door[1] - 80, IH - 720, door[0] + door[1] - 40, IH), lineType: 'A' },
-          { kind: 'arc-construction', center: P(door[0] + door[1] - 40, IH), r: u(720), startDeg: 180, endDeg: 270, lineType: 'C' }] },
+          { kind: 'polygon', points: rect(door[0] + 40, IH - 720, door[0] + 80, IH), lineType: 'A' },
+          { kind: 'arc-construction', center: P(door[0] + 40, IH), r: u(720), startDeg: 270, endDeg: 360, lineType: 'C' }] },
         { id: 5, instruction: 'The BATH (1700 x 750) along the top wall from the left corner.', calloutAt: P(850, 375), reveals: [
           { kind: 'polygon', points: rect(0, 0, 1700, 750), lineType: 'A' }, { kind: 'polygon', points: rect(80, 70, 1640, 680), lineType: 'B' }, { kind: 'circle', center: P(180, 375), r: u(40), lineType: 'B' },
           lbl(P(850, 420), 'B', { size: 3.2 })] },
-        { id: 6, instruction: 'The WC (500 x 850) against the right wall, and the WASH BASIN (600 x 450) against the left wall.', calloutAt: P(IW - 425, 1100), reveals: [
+        { id: 6, instruction: 'The WC (500 x 850) against the right wall, and the WASH BASIN (600 x 450) against the top wall, beside the bath.', calloutAt: P(IW - 425, 1100), reveals: [
           { kind: 'polygon', points: rect(IW - 250, 900, IW, 1400), lineType: 'A' },
           { kind: 'polyline', points: Array.from({ length: 25 }, (_, i) => { const a = Math.PI / 2 + Math.PI * i / 24; return P(IW - 250 + 600 * Math.cos(a), 1150 + 230 * Math.sin(a)); }), lineType: 'A' },
-          { kind: 'polygon', points: rect(0, 1050, 450, 1650), lineType: 'A' },
-          { kind: 'polyline', points: Array.from({ length: 33 }, (_, i) => { const a = 2 * Math.PI * i / 32; return P(210 + 150 * Math.cos(a), 1350 + 220 * Math.sin(a)); }), lineType: 'B' },
-          lbl(P(IW - 420, 1180), 'WC', { size: 2.8 }), lbl(P(225, 1380), 'WB', { size: 2.8 })] },
+          { kind: 'polygon', points: rect(1750, 0, 2350, 450), lineType: 'A' },
+          { kind: 'polyline', points: Array.from({ length: 33 }, (_, i) => { const a = 2 * Math.PI * i / 32; return P(2050 + 220 * Math.cos(a), 240 + 150 * Math.sin(a)); }), lineType: 'B' },
+          lbl(P(IW - 420, 1180), 'WC', { size: 2.8 }), lbl(P(2050, 270), 'WB', { size: 2.8 })] },
         { id: 7, instruction: 'Label the room and its floor finish, dimension the inside sizes, and complete the schedule of areas: floor area 2.4 x 1.8 = 4.32 m², perimeter 2 x (2.4 + 1.8) = 8.4 m.', calloutAt: P(IW / 2, IH / 2 + 300), reveals: [
-          lbl(P(830, 1000), 'BATHROOM / BADKAMER', { size: 2.8 }), lbl(P(830, 1150), 'TILES / TEËLS', { size: 2.4, color: '#94a3b8' }),
+          lbl(P(900, 990), 'BATHROOM / BADKAMER', { size: 2.8 }), lbl(P(900, 1110), 'TILES / TEËLS', { size: 2.4, color: '#94a3b8' }),
           { kind: 'dimension', p1: P(0, -ext), p2: P(IW, -ext), offset: -8, text: '2400' }, { kind: 'dimension', p1: P(IW + ext, 0), p2: P(IW + ext, IH), offset: -8, text: '1800' },
           lbl([X0 + u(IW) + 26, Y0 + 30], 'SCHEDULE OF AREAS', { anchor: 'start', size: 3, color: '#fde047' }),
           lbl([X0 + u(IW) + 26, Y0 + 36], 'Area: 2.4 x 1.8 = 4.32 m²', { anchor: 'start', size: 2.8 }),

@@ -257,9 +257,13 @@
           instruction: 'Draw the underground tank chamber, split into two compartments by a BAFFLE WALL — solid waste settles in the first chamber, and only the clarified liquid above passes under or over the baffle into the second.',
           calloutAt: [baffleX, (tankTop + tankBot) / 2],
           reveals: [
-            { kind: 'polygon', points: [[tankX0, tankTop], [tankX1, tankTop], [tankX1, tankBot], [tankX0, tankBot]], lineType: 'A' },
-            { kind: 'line', p1: [baffleX, tankTop + 8], p2: [baffleX, tankBot], lineType: 'A' },
-            ...hatchRect(tankX0, tankTop, tankX1 - tankX0, tankBot - tankTop, 7),
+            // only the walls, floor, cover slab and baffle are cut solid material: hatch them, not the liquid
+            ...[[tankX0 - 4, tankTop - 4, tankX1 - tankX0 + 8, 4], [tankX0 - 4, tankBot, tankX1 - tankX0 + 8, 4],
+              [tankX0 - 4, tankTop, 4, tankBot - tankTop], [tankX1, tankTop, 4, tankBot - tankTop],
+              [baffleX - 1.5, tankTop + 8, 3, outletY + 14 - tankTop - 8], [baffleX - 1.5, outletY + 24, 3, tankBot - outletY - 24]].flatMap(([x, y, w, h]) => [
+              { kind: 'polygon', points: [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], lineType: 'A' }, ...hatchRect(x, y, w, h, 2)]),
+            // the liquid level, set by the outlet; the clarified liquid passes through the gap in the baffle below it
+            { kind: 'line', p1: [tankX0, outletY], p2: [baffleX - 1.5, outletY], lineType: 'B' }, { kind: 'line', p1: [baffleX + 1.5, outletY], p2: [tankX1, outletY], lineType: 'B' },
           ],
         },
         {

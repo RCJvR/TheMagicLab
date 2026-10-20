@@ -84,3 +84,8 @@ window.DD_AF = {
   "QUESTION {0}: Who drew the drawing, who checked it, and what is the drawing number?  ANSWER: Drawn by T. Mokoena, checked by A. van Wyk; drawing number MLE-{1}.": "VRAAG {0}: Wie het die tekening geteken, wie het dit gekontroleer, en wat is die tekeningnommer?  ANTWOORD: Geteken deur T. Mokoena, gekontroleer deur A. van Wyk; tekeningnommer MLE-{1}.",
   "QUESTION {0}: How thick is the upright, and how wide is the base from front to back?  ANSWER: The upright is {1} mm thick; the base is {2} mm deep (both from the top view).": "VRAAG {0}: Hoe dik is die staander, en hoe breed is die basis van voor na agter?  ANTWOORD: Die staander is {1} mm dik; die basis is {2} mm diep (albei uit die boaansig)."
 };
+// Added with the 2026-10-20 drawing corrections
+Object.assign(window.DD_AF, {
+  "Given a feature control frame reading \"flatness | {0}\" applied to the top face of a block, and a datum symbol \"A\" on its base, explain in your own words what the top face is required to do.": "Gegee 'n vormbeheerraam wat \"platheid | {0}\" lees, toegepas op die bovlak van 'n blok, en 'n verwysingsimbool \"A\" op sy basis, verduidelik in jou eie woorde wat die bovlak moet doen.",
+  "Balloon {0}: when a tolerance relates one surface to another (e.g. perpendicularity to datum A), a THIRD compartment holds the datum letter. Flatness is a pure FORM tolerance and never refers to a datum, so its frame has only two compartments.": "Ballon {0}: wanneer 'n toleransie een oppervlak aan 'n ander verbind (bv. loodregtheid op verwysing A), hou 'n DERDE kompartement die verwysingsletter. Platheid is 'n suiwer VORMtoleransie en verwys nooit na 'n verwysing nie, dus het sy raam net twee kompartemente."
+});
