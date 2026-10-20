@@ -274,15 +274,29 @@
     };
   })();
 
+  // Helices 5 and 6: the top view sits above the front view, numbered from the left in the direction of
+  // rotation (anticlockwise from above: right-hand, rising). Each top-view point drops to ITS height
+  // line; the front half of each turn (points 1 to 7) is seen, the back half is hidden.
+  function helixKit(cx, ty, r, pitch, base) {
+    const plan = k => { const a = (180 + 30 * k) * D2R; return [cx + r * Math.cos(a), ty - r * Math.sin(a)]; };
+    const lvl = k => base - pitch * k / 12;
+    const front = k => [plan(k)[0], lvl(k)];
+    // the true curve between two numbered points, finely sampled
+    const curve = (k0, k1) => Array.from({ length: Math.round((k1 - k0) * 8) + 1 }, (_, i) => { const k = k0 + i / 8; return [cx - r * Math.cos(30 * k * D2R), lvl(k)]; });
+    // the curve over n turns as reveals: seen on the front half, hidden on the back half
+    const turns = (n, which) => Array.from({ length: n }, (_, t) => which === 'front'
+      ? { kind: 'polyline', points: curve(12 * t, 12 * t + 6), lineType: 'A' }
+      : { kind: 'polyline', points: curve(12 * t + 6, 12 * t + 12), lineType: 'hidden' });
+    return { plan, lvl, front, curve, turns };
+  }
+
   // ── 5. Helix Construction — Auger / Helicoid Principle ──
   (function () {
-    const TOP_CX = 70, TOP_CY = 50, BASE_R = 22, PITCH = 60;
-    const hp = G.helixPoints(BASE_R, PITCH, 1, 12); // 13 points, one full turn
-    const topPts = hp.map(p => [TOP_CX + p.x, TOP_CY + p.y]);
-    const FRONT_BASE_Y = TOP_CY + BASE_R + 35, FRONT_TOP_Y = FRONT_BASE_Y - PITCH;
+    const TOP_CX = 70, TOP_CY = 34, BASE_R = 22, PITCH = 60;
+    const FRONT_BASE_Y = TOP_CY + BASE_R + 14 + PITCH, FRONT_TOP_Y = FRONT_BASE_Y - PITCH;
+    const H = helixKit(TOP_CX, TOP_CY, BASE_R, PITCH, FRONT_BASE_Y);
+    const K = Array.from({ length: 13 }, (_, k) => k);
     const SCALE_X = TOP_CX - BASE_R - 15;
-    const frontPts = hp.map(p => [TOP_CX + p.x, FRONT_BASE_Y - p.rise]);
-    const smoothFront = G.catmullRomExpand(frontPts, 8);
 
     CONSTRUCTIONS['helix-auger'] = {
       id: 'helix-auger', title: 'Helix Construction — Auger / Helicoid Principle',
@@ -294,10 +308,10 @@
           id: 1,
           instruction: 'Draw the top view: a circle representing the cylinder, divided into 12 equal 30° parts with radial construction lines. Use the 30°/60° set square on the T-square (or ruler) for the lines through the centre.',
           calloutAt: [TOP_CX, TOP_CY],
-          reveals: [...TOOL.squareOn([TOP_CX, TOP_CY], [TOP_CX + 40 * Math.cos(30 * D2R), TOP_CY - 40 * Math.sin(30 * D2R)], { deg: 30, size: 38 }), 
+          reveals: [...TOOL.squareOn([TOP_CX, TOP_CY], [TOP_CX + 40 * Math.cos(30 * D2R), TOP_CY - 40 * Math.sin(30 * D2R)], { deg: 30, size: 38 }),
             { kind: 'circle', center: [TOP_CX, TOP_CY], r: BASE_R, lineType: 'A' },
-            ...topPts.slice(0, 12).map(p => ({ kind: 'line', p1: [TOP_CX, TOP_CY], p2: p, lineType: 'construction' })),
-            ...topPts.slice(0, 12).map(p => ({ kind: 'point', at: p, size: 1.1, color: '#eab308' })),
+            ...K.slice(0, 12).map(k => ({ kind: 'line', p1: [TOP_CX, TOP_CY], p2: H.plan(k), lineType: 'construction' })),
+            ...K.slice(0, 12).map(k => ({ kind: 'point', at: H.plan(k), size: 1.1, color: '#eab308', label: String(k + 1) })),
           ],
         },
         {
@@ -306,27 +320,30 @@
           calloutAt: [SCALE_X, (FRONT_BASE_Y + FRONT_TOP_Y) / 2],
           reveals: [
             { kind: 'line', p1: [SCALE_X, FRONT_BASE_Y], p2: [SCALE_X, FRONT_TOP_Y], lineType: 'A' },
-            ...Array.from({ length: 13 }, (_, i) => ({ kind: 'line', p1: [SCALE_X - 3, FRONT_BASE_Y - PITCH * i / 12], p2: [SCALE_X + 3, FRONT_BASE_Y - PITCH * i / 12], lineType: 'construction' })),
+            ...K.map(k => ({ kind: 'line', p1: [SCALE_X - 3, H.lvl(k)], p2: [SCALE_X + 3, H.lvl(k)], lineType: 'construction' })),
+            { kind: 'line', p1: [TOP_CX - BASE_R, FRONT_BASE_Y], p2: [TOP_CX + BASE_R, FRONT_BASE_Y], lineType: 'construction' },
+            { kind: 'line', p1: [TOP_CX - BASE_R, FRONT_BASE_Y], p2: [TOP_CX - BASE_R, FRONT_TOP_Y], lineType: 'construction' },
+            { kind: 'line', p1: [TOP_CX + BASE_R, FRONT_BASE_Y], p2: [TOP_CX + BASE_R, FRONT_TOP_Y], lineType: 'construction' },
             { kind: 'dimension', p1: [SCALE_X - 12, FRONT_BASE_Y], p2: [SCALE_X - 12, FRONT_TOP_Y], offset: -6, text: PITCH.toFixed(0) },
           ],
         },
         {
           id: 3,
           instruction: 'Project each top-view point straight down, and each height division straight across — where a pair meets is a point on the helix.',
-          calloutAt: frontPts[6],
+          calloutAt: H.front(3),
           reveals: [
-            ...topPts.slice(0, 12).map((p, i) => ({ kind: 'line', p1: p, p2: [p[0], frontPts[i][1]], lineType: 'construction' })),
-            ...frontPts.map((p, i) => ({ kind: 'line', p1: [SCALE_X, p[1]], p2: p, lineType: 'construction' })),
-            ...frontPts.map(p => ({ kind: 'point', at: p, size: 1.2, color: '#f472b6' })),
+            ...K.map(k => ({ kind: 'line', p1: H.plan(k % 12), p2: H.front(k), lineType: 'construction' })),
+            ...K.map(k => ({ kind: 'line', p1: [SCALE_X, H.lvl(k)], p2: H.front(k), lineType: 'construction' })),
+            ...K.map(k => ({ kind: 'point', at: H.front(k), size: 1.2, color: '#f472b6' })),
           ],
         },
         {
           id: 4,
           instruction: 'Join the 13 points with a smooth curve — the front-view of a helix is always a sine-like wave, one full wave per turn. This is the principle behind augers, spiral chutes, screw threads and coil springs.',
-          calloutAt: [frontPts[3][0] + 8, frontPts[3][1]],
+          calloutAt: H.front(3),
           reveals: [
-            { kind: 'polyline', points: smoothFront, lineType: 'A' },
-            { kind: 'label', at: [frontPts[0][0] + 6, frontPts[0][1] - 4], text: 'HELIX (1 TURN)', size: 3.8, anchor: 'start', color: '#fde047' },
+            ...H.turns(1, 'front'), ...H.turns(1, 'back'),
+            { kind: 'label', at: [TOP_CX + BASE_R + 4, FRONT_TOP_Y + 4], text: 'HELIX (1 TURN)', size: 3.8, anchor: 'start', color: '#fde047' },
           ],
         },
       ],
@@ -335,51 +352,56 @@
 
   // ── 6. Helix Application — Single-Start Coil Spring ──
   (function () {
-    const CX = 70, BASE_R = 16, PITCH = 22, TURNS = 2, STEPS = 24;
-    function phaseHelix(phaseDeg) {
-      const pts = [];
-      for (let i = 0; i <= STEPS; i++) {
-        const t = i / (STEPS / TURNS);
-        const a = t * 2 * Math.PI + phaseDeg * D2R;
-        pts.push({ x: BASE_R * Math.cos(a), rise: t * PITCH });
-      }
-      return pts;
-    }
-    const FRONT_BASE_Y = 150, TOTAL_RISE = PITCH * TURNS, FRONT_TOP_Y = FRONT_BASE_Y - TOTAL_RISE;
-    const front = phaseHelix(0).map(p => [CX + p.x, FRONT_BASE_Y - p.rise]);
-    const back = phaseHelix(180).map(p => [CX + p.x, FRONT_BASE_Y - p.rise]);
-    const smoothFront = G.catmullRomExpand(front, 5);
-    const smoothBack = G.catmullRomExpand(back, 5);
+    const CX = 60, TY = 26, BASE_R = 16, PITCH = 22, TURNS = 2;
+    const FRONT_BASE_Y = TY + BASE_R + 14 + PITCH * TURNS, FRONT_TOP_Y = FRONT_BASE_Y - PITCH * TURNS;
+    const H = helixKit(CX, TY, BASE_R, PITCH, FRONT_BASE_Y);
+    const K = Array.from({ length: 12 * TURNS + 1 }, (_, k) => k);
+    const SIDE = CX + BASE_R + 8;
 
     CONSTRUCTIONS['coil-spring-helix'] = {
       id: 'coil-spring-helix', title: 'Helix Application — Single-Start Coil Spring',
-      summary: 'Two helices, half a turn out of phase, trace the front and back wire of a coil spring — the same divide-and-project principle as the auger, applied twice.',
-      bounds: { w: 100, h: 165 },
-      workbookPrompt: 'Construct a single-start, right-hand coil spring: 2 full turns, 32 mm outer diameter, 22 mm pitch. Plot the front-wire helix, then the back-wire helix offset by half a turn.',
+      summary: 'One wire, one helix, two turns: where the wire passes in front of the axis it is seen, where it passes behind it is hidden. The same divide-and-project method as the auger, carried on for a second turn.',
+      bounds: { w: 170, h: 150 },
+      workbookPrompt: 'Construct a single-start, right-hand coil spring: 2 full turns, 32 mm diameter (to the centre of the wire), 22 mm pitch. Plot the helix of the wire and show the parts behind the axis as hidden lines.',
       steps: [
         {
           id: 1,
-          instruction: 'Mark the pitch divisions down the centre line for 2 full turns (24 divisions of 30° each) and dimension the outer diameter and pitch.',
-          calloutAt: [CX, (FRONT_BASE_Y + FRONT_TOP_Y) / 2],
+          instruction: 'TOP VIEW: draw a circle of 32 mm diameter (the centre of the wire) and divide it into 12 equal parts. Number the points from 1 on the left, anticlockwise: a right-hand spring rises as it turns anticlockwise seen from above.',
+          calloutAt: [CX, TY],
           reveals: [
-            { kind: 'line', p1: [CX, FRONT_BASE_Y + 4], p2: [CX, FRONT_TOP_Y - 4], lineType: 'centre' },
-            { kind: 'dimension', p1: [CX - BASE_R - 10, FRONT_BASE_Y], p2: [CX + BASE_R + 10, FRONT_BASE_Y], offset: 8, text: '⌀' + (BASE_R * 2) },
-            { kind: 'dimension', p1: [CX + BASE_R + 14, FRONT_BASE_Y], p2: [CX + BASE_R + 14, FRONT_BASE_Y - PITCH], offset: 6, text: PITCH.toFixed(0) },
+            { kind: 'circle', center: [CX, TY], r: BASE_R, lineType: 'A' },
+            ...K.slice(0, 12).map(k => ({ kind: 'line', p1: [CX, TY], p2: H.plan(k), lineType: 'construction' })),
+            ...K.slice(0, 12).map(k => ({ kind: 'point', at: H.plan(k), size: 1.1, label: String(k + 1) })),
           ],
         },
         {
           id: 2,
-          instruction: 'Plot the FRONT wire — the same divide-the-circle-and-project method as the auger, run twice (once per turn), joined with a smooth curve.',
-          calloutAt: front[6],
-          reveals: [{ kind: 'polyline', points: smoothFront, lineType: 'A' }],
+          instruction: 'Mark the pitch divisions down the centre line for 2 full turns (24 divisions of 30° each) and dimension the outer diameter and pitch.',
+          calloutAt: [CX, (FRONT_BASE_Y + FRONT_TOP_Y) / 2],
+          reveals: [
+            { kind: 'line', p1: [CX, FRONT_BASE_Y + 4], p2: [CX, FRONT_TOP_Y - 4], lineType: 'centre' },
+            ...K.map(k => ({ kind: 'line', p1: [CX - BASE_R, H.lvl(k)], p2: [SIDE, H.lvl(k)], lineType: 'construction' })),
+            { kind: 'dimension', p1: [CX - BASE_R, FRONT_BASE_Y], p2: [CX + BASE_R, FRONT_BASE_Y], offset: 8, text: '⌀' + (BASE_R * 2) },
+            { kind: 'dimension', p1: [SIDE + 6, FRONT_BASE_Y], p2: [SIDE + 6, FRONT_BASE_Y - PITCH], offset: 0, text: PITCH.toFixed(0) },
+          ],
         },
         {
           id: 3,
-          instruction: 'Plot the BACK wire — an identical helix, but starting half a turn (180°) out of phase. Together the two curves weave into the familiar coil-spring silhouette. This is a SINGLE-START, right-hand spring: one continuous wire, winding in one direction only.',
-          calloutAt: back[6],
+          instruction: 'Project each top-view point down to its own height line (point 1 on line 0, point 2 on line 1, and so on through both turns). Join the points of the FRONT of the wire, 1 to 7 in each turn, with a smooth curve: these parts are seen.',
+          calloutAt: H.front(3),
           reveals: [
-            { kind: 'polyline', points: smoothBack, lineType: 'A' },
-            { kind: 'label', at: [CX - BASE_R - 6, FRONT_TOP_Y + 4], text: 'SINGLE-START · RIGHT-HAND', size: 3.8, anchor: 'start', color: '#fde047' },
+            ...K.map(k => ({ kind: 'line', p1: H.plan(k % 12), p2: H.front(k), lineType: 'construction' })),
+            ...K.map(k => ({ kind: 'point', at: H.front(k), size: 1.1 })),
+            ...H.turns(TURNS, 'front'),
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Join points 7 to 1 of each turn, where the wire passes BEHIND the axis, as hidden lines. It is still the same wire: a SINGLE-START, right-hand spring winds in one direction only.',
+          calloutAt: H.front(9),
+          reveals: [
+            ...H.turns(TURNS, 'back'),
+            { kind: 'label', at: [SIDE + 14, (FRONT_TOP_Y + FRONT_BASE_Y) / 2], text: 'SINGLE-START · RIGHT-HAND', size: 3.8, anchor: 'start', color: '#fde047' },
           ],
         },
       ],
