@@ -57,14 +57,14 @@
           reveals: [
             { kind: 'line', p1: [x0, y0], p2: [x1, y0], lineType: 'A' }, { kind: 'line', p1: [x0, y1], p2: [x1, y1], lineType: 'A' },
             { kind: 'line', p1: [x0, y0], p2: [x0, y1], lineType: 'A' },
-            { kind: 'line', p1: [x1, y0 + 8], p2: [x2, y0 + 8], lineType: 'A' }, { kind: 'line', p1: [x1, y1 - 8], p2: [x2, y1 - 8], lineType: 'A' },
-            { kind: 'line', p1: [x1, y0], p2: [x1, y0 + 8], lineType: 'A' }, { kind: 'line', p1: [x1, y1], p2: [x1, y1 - 8], lineType: 'A' },
+            // the small diameter, with an R3 fillet (drawn r 4 at this scale) in each inside corner at the shoulder
+            { kind: 'line', p1: [x1 + 4, y0 + 8], p2: [x2, y0 + 8], lineType: 'A' }, { kind: 'line', p1: [x1 + 4, y1 - 8], p2: [x2, y1 - 8], lineType: 'A' },
+            { kind: 'line', p1: [x1, y0], p2: [x1, y0 + 4], lineType: 'A' }, { kind: 'line', p1: [x1, y1], p2: [x1, y1 - 4], lineType: 'A' },
             { kind: 'line', p1: [x2, y0 + 8], p2: [x2, y1 - 8], lineType: 'A' },
-            { kind: 'arc-construction', center: [x1, y0 + 8], r: 4, startDeg: 180, endDeg: 270, lineType: 'B' },
-            { kind: 'arc-construction', center: [x1, y1 - 8], r: 4, startDeg: 90, endDeg: 180, lineType: 'B' },
+            { kind: 'arc-construction', center: [x1 + 4, y0 + 4], r: 4, startDeg: 90, endDeg: 180, lineType: 'A' },
+            { kind: 'arc-construction', center: [x1 + 4, y1 - 4], r: 4, startDeg: 180, endDeg: 270, lineType: 'A' },
             { kind: 'line', p1: [10, 75], p2: [x3, 75], lineType: 'centre' },
             { kind: 'dimension', p1: [x0, 45], p2: [x2, 45], offset: 0, text: '110 ±0.20' },
-            { kind: 'label', at: [x3 + 12, 39], text: '← 1', size: 4, anchor: 'start', color: '#eab308' },
           ],
         },
         {
@@ -77,19 +77,23 @@
           id: 3,
           instruction: 'Balloon 3: "h7" is a tolerance-grade symbol (an ISO limits-and-fits code) — it tells a machinist the exact permitted upper and lower size limits from a standard reference table, without having to write both numbers out by hand.',
           calloutAt: [x1 + 15, 60],
-          reveals: [{ kind: 'dimension', p1: [x1 + 4, y0 + 8], p2: [x1 + 4, y1 - 8], offset: 0, text: '⌀ 15 ±0.05' }],
+          reveals: [{ kind: 'dimension', p1: [x2 + 10, y0 + 8], p2: [x2 + 10, y1 - 8], offset: 0, text: '⌀ 15 ±0.05' }],
         },
         {
           id: 4,
           instruction: 'Balloon 4: "±0.05" is a plus/minus (bilateral) tolerance — the finished part may measure anywhere from 14.95 mm to 15.05 mm and still be accepted. Written-out tolerances like this are common where a matching ISO grade doesn\'t apply.',
-          calloutAt: [x1 + 4, y0 - 4],
+          calloutAt: [x2 + 10, y0 - 4],
           reveals: [],
         },
         {
           id: 5,
           instruction: 'Balloon 5: "R3" at the step always uses a leader that touches the arc itself, and always starts with R — this instantly distinguishes a radius (measured from the centre to the edge) from a diameter (measured straight across).',
-          calloutAt: [x1 + 10, y1 + 10],
-          reveals: [{ kind: 'label', at: [x1 + 6, y1 + 16], text: 'R3', size: 4.2, anchor: 'start', color: '#fde047' }],
+          calloutAt: [x1 + 14, y0 - 8],
+          // the leader touches the arc itself
+          reveals: [
+            { kind: 'line', p1: [x1 + 13, y0 - 3], p2: [x1 + 4 - 4 * Math.SQRT1_2, y0 + 4 + 4 * Math.SQRT1_2], lineType: 'B' },
+            { kind: 'label', at: [x1 + 14, y0 - 4], text: 'R3', size: 4.2, anchor: 'start', color: '#fde047' },
+          ],
         },
         {
           id: 6,
@@ -117,7 +121,7 @@
             { kind: 'line', p1: [20, 50], p2: [90, 50], lineType: 'A' }, { kind: 'line', p1: [20, 90], p2: [90, 90], lineType: 'A' },
             { kind: 'line', p1: [20, 53], p2: [90, 53], lineType: 'B' }, { kind: 'line', p1: [20, 87], p2: [90, 87], lineType: 'B' },
             { kind: 'line', p1: [20, 50], p2: [20, 90], lineType: 'A' }, { kind: 'line', p1: [90, 50], p2: [90, 90], lineType: 'A' },
-            { kind: 'line', p1: [55, 65], p2: [55, 75], lineType: 'centre' },
+            { kind: 'line', p1: [14, 70], p2: [96, 70], lineType: 'centre' },
           ],
         },
         {
@@ -218,7 +222,7 @@
           calloutAt: [55, 35],
           reveals: [
             { kind: 'line', p1: [20, 90], p2: [80, 90], lineType: 'A' }, { kind: 'line', p1: [50, 60], p2: [50, 90], lineType: 'A' },
-            { kind: 'line', p1: [40, 75], p2: [65, 45], lineType: 'B' }, { kind: 'line', p1: [65, 45], p2: [110, 45], lineType: 'B' },
+            { kind: 'line', p1: [47, 83], p2: [65, 45], lineType: 'B' }, { kind: 'line', p1: [65, 45], p2: [110, 45], lineType: 'B' },
             { kind: 'polygon', points: [[40, 90], [48, 90], [48, 82]], lineType: 'A' },
           ],
         },
@@ -247,10 +251,11 @@
           instruction: 'Balloon 5: on the right, two plates meet edge-to-edge. This symbol — a flat bar sitting on the reference line — is the square-groove (butt) weld symbol: a full-penetration weld straight across the joined edges.',
           calloutAt: [150, 65],
           reveals: [
-            { kind: 'line', p1: [130, 90], p2: [130, 50], lineType: 'A' }, { kind: 'line', p1: [134, 90], p2: [134, 50], lineType: 'A' },
-            { kind: 'line', p1: [140, 70], p2: [165, 45], lineType: 'B' }, { kind: 'line', p1: [165, 45], p2: [195, 45], lineType: 'B' },
-            { kind: 'line', p1: [185, 42], p2: [185, 48], lineType: 'A' },
-            { kind: 'label', at: [178, 40], text: '4', size: 4.4, anchor: 'start', color: '#fde047' },
+            { kind: 'polygon', points: [[112, 60], [131, 60], [131, 90], [112, 90]], lineType: 'A' },
+            { kind: 'polygon', points: [[133, 60], [152, 60], [152, 90], [133, 90]], lineType: 'A' },
+            { kind: 'line', p1: [132, 62], p2: [165, 45], lineType: 'B' }, { kind: 'line', p1: [165, 45], p2: [195, 45], lineType: 'B' },
+            { kind: 'line', p1: [181, 45], p2: [181, 51], lineType: 'A' }, { kind: 'line', p1: [185, 45], p2: [185, 51], lineType: 'A' },
+            { kind: 'label', at: [178, 51], text: '4', size: 4.4, anchor: 'end', color: '#fde047' },
           ],
         },
         {
@@ -270,7 +275,7 @@
       id: 'gdt-basics', title: 'Reading a Geometric Tolerance (Feature Control Frame)',
       summary: 'A feature control frame replaces a vague ± dimension with an exact, unambiguous tolerance ZONE — read it left to right: characteristic, then tolerance, then datum.',
       bounds: { w: 190, h: 135 },
-      workbookPrompt: 'Given a feature control frame reading "flatness | 0.05 | –" applied to the top face of a block, and a datum symbol "A" on its base, explain in your own words what the top face is required to do.',
+      workbookPrompt: 'Given a feature control frame reading "flatness | 0.05" applied to the top face of a block, and a datum symbol "A" on its base, explain in your own words what the top face is required to do.',
       steps: [
         {
           id: 1,
@@ -296,11 +301,9 @@
         },
         {
           id: 3,
-          instruction: 'Balloon 3: the THIRD compartment holds a DATUM reference letter — used when the tolerance needs to relate to another reference surface (e.g. perpendicularity to datum A). Flatness is a pure FORM tolerance, so this compartment is left blank here.',
-          calloutAt: [fx + 2.5 * cw, fy - 8],
-          reveals: [
-            { kind: 'polygon', points: [[fx + 2 * cw, fy], [fx + 3 * cw, fy], [fx + 3 * cw, fy + ch], [fx + 2 * cw, fy + ch]], lineType: 'A' },
-          ],
+          instruction: 'Balloon 3: when a tolerance relates one surface to another (e.g. perpendicularity to datum A), a THIRD compartment holds the datum letter. Flatness is a pure FORM tolerance and never refers to a datum, so its frame has only two compartments.',
+          calloutAt: [fx + 2 * cw + 6, fy + ch / 2],
+          reveals: [],
         },
         {
           id: 4,
@@ -414,8 +417,9 @@
           calloutAt: [95, 20],
           reveals: [
             { kind: 'line', p1: [40, 15], p2: [150, 15], lineType: 'centre' },
-            { kind: 'polygon', points: [[40, 15], [46, 12], [46, 18]], lineType: 'A' },
-            { kind: 'polygon', points: [[150, 15], [144, 12], [144, 18]], lineType: 'A' },
+            { kind: 'line', p1: [40, 15], p2: [47, 15], lineType: 'A' }, { kind: 'line', p1: [143, 15], p2: [150, 15], lineType: 'A' },
+            { kind: 'line', p1: [40, 15], p2: [40, 25], lineType: 'B' }, { kind: 'polygon', points: [[38.2, 21.5], [41.8, 21.5], [40, 25]], lineType: 'A' },
+            { kind: 'line', p1: [150, 15], p2: [150, 25], lineType: 'B' }, { kind: 'polygon', points: [[148.2, 21.5], [151.8, 21.5], [150, 25]], lineType: 'A' },
           ],
         },
         {
@@ -435,6 +439,14 @@
   // ── 8. Reading a Complete Assembly Drawing & Parts List ──
   (function () {
     const tblX = 130, tblY = 30, rowH = 12, colW = [12, 38, 14];
+    // an item balloon: a circle with the item number, and a leader ending in a dot on the part
+    const balloon = (n, on, at) => {
+      const d = [on[0] - at[0], on[1] - at[1]], l = Math.hypot(d[0], d[1]), r = 4;
+      return [{ kind: 'circle', center: at, r, lineType: 'B' },
+        { kind: 'label', at: [at[0], at[1] + 1.4], text: String(n), size: 3.6, anchor: 'middle', color: '#e8eaf2' },
+        { kind: 'line', p1: [at[0] + d[0] / l * r, at[1] + d[1] / l * r], p2: on, lineType: 'B' },
+        { kind: 'circle', center: on, r: 0.7, lineType: 'B' }];
+    };
     CONSTRUCTIONS['reading-assembly-bom'] = {
       id: 'reading-assembly-bom', title: 'Reading a Complete Assembly Drawing & Parts List',
       summary: 'Numbered balloons on the assembly view cross-reference the item numbers in the parts list — together they tell you exactly what to build and how many of each part you need.',
@@ -447,6 +459,7 @@
           calloutAt: [40, 60],
           reveals: [
             { kind: 'polygon', points: [[20, 50], [60, 50], [60, 60], [30, 60], [30, 100], [20, 100]], lineType: 'A' },
+            ...balloon(1, [25, 85], [10, 108]),
             { kind: 'line', p1: [tblX, tblY], p2: [tblX + colW[0] + colW[1] + colW[2], tblY], lineType: 'A' },
             { kind: 'line', p1: [tblX, tblY], p2: [tblX, tblY + rowH * 5], lineType: 'A' },
             { kind: 'line', p1: [tblX + colW[0], tblY], p2: [tblX + colW[0], tblY + rowH * 5], lineType: 'A' },
@@ -464,9 +477,10 @@
         {
           id: 2,
           instruction: 'Balloon 2 points to the bolt passing through the bracket. Row 2 of the table: "M10 Bolt, QTY 1" — the QTY column tells you exactly how many of that part this one assembly needs.',
-          calloutAt: [45, 75],
+          calloutAt: [80, 40],
           reveals: [
-            { kind: 'line', p1: [45, 40], p2: [45, 90], lineType: 'A' }, { kind: 'polygon', points: [[40, 35], [50, 35], [50, 40], [40, 40]], lineType: 'A' },
+            { kind: 'polygon', points: [[43, 50], [47, 50], [47, 74], [43, 74]], lineType: 'A' }, { kind: 'polygon', points: [[39, 44], [51, 44], [51, 50], [39, 50]], lineType: 'A' },
+            ...balloon(2, [51, 47], [80, 40]),
             { kind: 'label', at: [tblX + colW[0] / 2, tblY + 2 * rowH + 8], text: '2', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] / 2, tblY + 2 * rowH + 8], text: 'M10 Bolt', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] + colW[2] / 2, tblY + 2 * rowH + 8], text: '1', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
@@ -475,9 +489,10 @@
         {
           id: 3,
           instruction: 'Balloon 3 points to the washer under the nut. Even a small standard part like a washer gets its own item number and its own table row — nothing in an assembly is left unlisted.',
-          calloutAt: [45, 93],
+          calloutAt: [80, 58],
           reveals: [
-            { kind: 'line', p1: [40, 90], p2: [50, 90], lineType: 'A' }, { kind: 'line', p1: [40, 92], p2: [50, 92], lineType: 'A' },
+            { kind: 'polygon', points: [[38, 60], [52, 60], [52, 62], [38, 62]], lineType: 'A' },
+            ...balloon(3, [52, 61], [80, 58]),
             { kind: 'label', at: [tblX + colW[0] / 2, tblY + 3 * rowH + 8], text: '3', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] / 2, tblY + 3 * rowH + 8], text: 'Washer', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] + colW[2] / 2, tblY + 3 * rowH + 8], text: '1', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
@@ -486,9 +501,10 @@
         {
           id: 4,
           instruction: 'Balloon 4 points to the hex nut at the bottom. Row 4: "M10 Nut, QTY 1" — with all four rows read, this table is now the complete bill of materials for the assembly: exactly what to order and how many of each.',
-          calloutAt: [45, 98],
+          calloutAt: [80, 76],
           reveals: [
-            { kind: 'polygon', points: [[38, 96], [52, 96], [52, 100], [38, 100]], lineType: 'A' },
+            { kind: 'polygon', points: [[39, 62], [51, 62], [51, 69], [39, 69]], lineType: 'A' },
+            ...balloon(4, [51, 66], [80, 76]),
             { kind: 'label', at: [tblX + colW[0] / 2, tblY + 4 * rowH + 8], text: '4', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] / 2, tblY + 4 * rowH + 8], text: 'M10 Nut', size: 3.4, anchor: 'middle', color: '#e8eaf2' },
             { kind: 'label', at: [tblX + colW[0] + colW[1] + colW[2] / 2, tblY + 4 * rowH + 8], text: '1', size: 3.4, anchor: 'middle', color: '#e8eaf2' },

@@ -220,3 +220,7 @@
     "PERIMETER: add up the length of every OUTSIDE wall face, going right round the building: {0} + {1} + {2} + {3} + {4} + {5} + {6} + {7} = {8} m.": PERIM + " {0} + {1} + {2} + {3} + {4} + {5} + {6} + {7} = {8} m."
   };
 })();
+// Added with the 2026-10-20 drawing corrections
+Object.assign(window.DD_AF, {
+  "The WC ({0} x {1}) against the right wall, and the WASH BASIN ({2} x {3}) against the top wall, beside the bath.": "Die WC ({0} x {1}) teen die regtermuur, en die WASBAK ({2} x {3}) teen die boonste muur, langs die bad."
+});

@@ -113,11 +113,9 @@
           instruction: 'A simple two-room floor plan. Balloon 1: the double parallel lines forming the outer wall are drawn at the wall\'s TRUE thickness to the plan\'s scale — the gap between the two lines is the actual brickwork, not empty space.',
           calloutAt: [23, 25],
           reveals: [
-            { kind: 'polygon', points: [[20, 30], [170, 30], [170, 120], [20, 120]], lineType: 'A' },
-            { kind: 'polygon', points: [[26, 36], [164, 36], [164, 114], [26, 114]], lineType: 'A' },
-            { kind: 'line', p1: [97, 36], p2: [97, 114], lineType: 'A' }, { kind: 'line', p1: [103, 36], p2: [103, 114], lineType: 'A' },
-            { kind: 'line', p1: [20, 30], p2: [26, 36], lineType: 'A' }, { kind: 'line', p1: [170, 30], p2: [164, 36], lineType: 'A' },
-            { kind: 'line', p1: [20, 120], p2: [26, 114], lineType: 'A' }, { kind: 'line', p1: [170, 120], p2: [164, 114], lineType: 'A' },
+            // walls cut by the plan are hatched; the window (top) and door (internal wall) are left open
+            ...[[20, 30, 35, 6], [85, 30, 85, 6], [20, 114, 150, 6], [20, 36, 6, 78], [164, 36, 6, 78], [97, 36, 6, 52], [97, 100, 6, 14]].flatMap(([x, y, w, h]) => [
+              { kind: 'polygon', points: [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], lineType: 'A' }, ...hatchRect(x, y, w, h, 2.2)]),
           ],
         },
         {
@@ -131,9 +129,9 @@
           instruction: 'Balloon 3: in the internal wall, a gap with a straight line and a quarter-circle arc is a DOOR symbol — the straight line is the door leaf, and the arc traces its swing path, showing exactly which way and how far it opens.',
           calloutAt: [100, 95],
           reveals: [
-            { kind: 'line', p1: [97, 88], p2: [97, 100], lineType: 'B' }, { kind: 'line', p1: [103, 88], p2: [103, 100], lineType: 'B' },
-            { kind: 'line', p1: [100, 100], p2: [110, 100], lineType: 'A' },
-            { kind: 'arc-construction', center: [100, 100], r: 10, startDeg: -90, endDeg: 0, lineType: 'B' },
+            // hinged at the bottom of the opening, open at 90° into the bathroom; the arc is the swing
+            { kind: 'polygon', points: [[103, 99], [115, 99], [115, 100], [103, 100]], lineType: 'A' },
+            { kind: 'arc-construction', center: [103, 100], r: 12, startDeg: -90, endDeg: 0, lineType: 'B' },
           ],
         },
         {
@@ -141,9 +139,8 @@
           instruction: 'Balloon 4: the gap in the exterior wall with two thin parallel lines spanning it is a WINDOW symbol — the lines represent the glazing, always drawn at the wall\'s true thickness, never as a simple blank gap.',
           calloutAt: [70, 33],
           reveals: [
-            { kind: 'line', p1: [60, 33], p2: [60, 33] },
-            { kind: 'line', p1: [55, 36], p2: [85, 36], lineType: 'A' }, { kind: 'line', p1: [55, 30], p2: [85, 30], lineType: 'A' },
-            { kind: 'line', p1: [58, 32], p2: [82, 32], lineType: 'B' }, { kind: 'line', p1: [58, 34], p2: [82, 34], lineType: 'B' },
+            { kind: 'line', p1: [55, 32], p2: [85, 32], lineType: 'B' }, { kind: 'line', p1: [55, 34], p2: [85, 34], lineType: 'B' },
+            { kind: 'polyline', points: [[53, 30], [53, 27], [87, 27], [87, 30]], lineType: 'B' },
           ],
         },
         {
@@ -224,44 +221,42 @@
       id: 'electrical-symbols-plan', title: 'Reading Electrical Symbols on a Plan',
       summary: 'A handful of simple symbols represent every light, switch, socket and distribution point on a building — and a thin control line quietly tells you which switch operates which light.',
       bounds: { w: 185, h: 130 },
-      workbookPrompt: 'Given a plan with one light point, one switch, one socket outlet and a DB, with a control line linking the switch to the light, describe what each symbol represents and what the control line shows.',
+      workbookPrompt: 'Given a plan with one light point, one switch, one socket outlet and a DB, with a broken control line linking the switch to the light, describe what each symbol represents and what the control line shows.',
       steps: [
         {
           id: 1,
-          instruction: 'A room with four standard electrical symbols. Balloon 1: a small circle with a cross is a CEILING LIGHT POINT — the position where a light fitting is mounted, wired back to the distribution board.',
+          instruction: 'A room with four standard electrical symbols. Balloon 1: a cross is a CEILING LIGHT POINT — the position where a light fitting is mounted, wired back to the distribution board.',
           calloutAt: [90, 45],
           reveals: [
             { kind: 'polygon', points: [[20, 30], [160, 30], [160, 100], [20, 100]], lineType: 'A' },
-            { kind: 'circle', center: [90, 55], r: 5, lineType: 'B' },
-            { kind: 'line', p1: [86, 51], p2: [94, 59], lineType: 'B' }, { kind: 'line', p1: [94, 51], p2: [86, 59], lineType: 'B' },
+            { kind: 'line', p1: [86, 51], p2: [94, 59], lineType: 'A' }, { kind: 'line', p1: [94, 51], p2: [86, 59], lineType: 'A' },
           ],
         },
         {
           id: 2,
-          instruction: 'Balloon 2: a small square marked "S" on the wall is a ONE-WAY SWITCH. The thin dashed line curving from the switch to the light point is a CONTROL line — it shows which switch operates which light, not a physical wire route.',
-          calloutAt: [35, 90],
+          instruction: 'Balloon 2: a small circle on the wall with a short line at 45° is a ONE-WAY SWITCH. The curved broken line from the switch to the light point is a CONTROL line — it shows which switch operates which light, not a physical wire route.',
+          calloutAt: [30, 86],
           reveals: [
-            { kind: 'polygon', points: [[32, 88], [40, 88], [40, 94], [32, 94]], lineType: 'B' },
-            { kind: 'label', at: [36, 92], text: 'S', size: 3.6, anchor: 'middle', color: '#e8eaf2' },
-            { kind: 'arc-construction', center: [63, 71], r: 32, startDeg: 200, endDeg: 300, lineType: 'centre' },
+            { kind: 'circle', center: [23, 82], r: 1.6, lineType: 'A' }, { kind: 'line', p1: [24.1, 80.9], p2: [28.4, 76.6], lineType: 'A' },
+            { kind: 'polyline', points: Array.from({ length: 21 }, (_, i) => { const t = i / 20, a = [26, 79], c = [45, 45], b = [85, 54]; return [(1 - t) * (1 - t) * a[0] + 2 * t * (1 - t) * c[0] + t * t * b[0], (1 - t) * (1 - t) * a[1] + 2 * t * (1 - t) * c[1] + t * t * b[1]]; }), lineType: 'hidden' },
           ],
         },
         {
           id: 3,
-          instruction: 'Balloon 3: a circle with two short prongs is a SOCKET OUTLET — a wall power point where appliances plug in.',
+          instruction: 'Balloon 3: a half circle against the wall, with a short stem, is a SOCKET OUTLET — a wall power point where appliances plug in.',
           calloutAt: [140, 90],
           reveals: [
-            { kind: 'circle', center: [140, 88], r: 4, lineType: 'B' },
-            { kind: 'line', p1: [138, 84], p2: [138, 80], lineType: 'B' }, { kind: 'line', p1: [142, 84], p2: [142, 80], lineType: 'B' },
+            { kind: 'arc-construction', center: [140, 100], r: 4, startDeg: 180, endDeg: 360, lineType: 'A' }, { kind: 'line', p1: [136, 100], p2: [144, 100], lineType: 'A' },
+            { kind: 'line', p1: [140, 96], p2: [140, 92], lineType: 'A' },
           ],
         },
         {
           id: 4,
-          instruction: 'Balloon 4: a small rectangle marked "DB" is the DISTRIBUTION BOARD — where every circuit in the building originates. On a complete electrical plan, every light and socket traces back to a DB, directly or indirectly.',
+          instruction: 'Balloon 4: the half-hatched rectangle marked "DB" is the DISTRIBUTION BOARD — where every circuit in the building originates. On a complete electrical plan, every light and socket traces back to a DB, directly or indirectly.',
           calloutAt: [140, 40],
           reveals: [
-            { kind: 'polygon', points: [[132, 35], [148, 35], [148, 45], [132, 45]], lineType: 'A' },
-            { kind: 'label', at: [140, 41], text: 'DB', size: 3.6, anchor: 'middle', color: '#fde047' },
+            { kind: 'polygon', points: [[132, 32], [148, 32], [148, 40], [132, 40]], lineType: 'A' }, ...hatchRect(140, 32, 8, 8, 1.6),
+            { kind: 'label', at: [140, 47], text: 'DB', size: 3.6, anchor: 'middle', color: '#fde047' },
           ],
         },
       ],
@@ -341,8 +336,12 @@
           instruction: 'Balloon 2: DPC — Damp-Proof Course, a thin waterproof membrane built into the wall just above ground level. It stops rising damp from being drawn up into the brickwork by capillary action.',
           calloutAt: [85, groundY - 4],
           reveals: [
-            { kind: 'line', p1: [60, groundY - 8], p2: [120, groundY - 8], lineType: 'A' },
-            { kind: 'label', at: [122, groundY - 6], text: 'DPC', size: 3.6, anchor: 'start', color: '#fde047' },
+            // the walls (4 thick) stand on the ground; the DPC runs across each wall at floor level
+            { kind: 'polygon', points: [[56, groundY - 15], [60, groundY - 15], [60, groundY], [56, groundY]], lineType: 'A' },
+            { kind: 'polygon', points: [[120, groundY - 15], [124, groundY - 15], [124, groundY], [120, groundY]], lineType: 'A' },
+            { kind: 'line', p1: [55, groundY - 15], p2: [61, groundY - 15], lineType: 'A' }, { kind: 'line', p1: [119, groundY - 15], p2: [125, groundY - 15], lineType: 'A' },
+            { kind: 'line', p1: [125, groundY - 15], p2: [134, groundY - 7], lineType: 'B' },
+            { kind: 'label', at: [135, groundY - 5], text: 'DPC', size: 3.6, anchor: 'start', color: '#fde047' },
           ],
         },
         {
@@ -351,8 +350,9 @@
           calloutAt: [85, groundY - 20],
           reveals: [
             { kind: 'line', p1: [60, groundY - 15], p2: [120, groundY - 15], lineType: 'A' },
-            { kind: 'label', at: [122, groundY - 13], text: 'FFL +0.150', size: 3.6, anchor: 'start', color: '#fde047' },
-            { kind: 'line', p1: [60, groundY - 15], p2: [60, 30], lineType: 'A' }, { kind: 'line', p1: [120, groundY - 15], p2: [120, 30], lineType: 'A' },
+            { kind: 'label', at: [127, groundY - 17], text: 'FFL +0.150', size: 3.6, anchor: 'start', color: '#fde047' },
+            { kind: 'polygon', points: [[56, 30], [60, 30], [60, groundY - 15], [56, groundY - 15]], lineType: 'A' },
+            { kind: 'polygon', points: [[120, 30], [124, 30], [124, groundY - 15], [120, groundY - 15]], lineType: 'A' },
           ],
         },
         {
@@ -369,8 +369,8 @@
           instruction: 'Balloon 5: the roof\'s PITCH ANGLE (here 17.5°) is the slope measured from horizontal. It directly determines which roofing material may be used — concrete tiles need a steeper minimum pitch than corrugated sheeting.',
           calloutAt: [90, 15],
           reveals: [
-            { kind: 'line', p1: [58, 30], p2: [90, 12], lineType: 'A' }, { kind: 'line', p1: [122, 30], p2: [90, 12], lineType: 'A' },
-            { kind: 'angle-arc', vertex: [58, 30], p1: [122, 30], p2: [90, 12], radius: 12, text: '17.5°' },
+            { kind: 'line', p1: [58, 30], p2: [90, 30 - 32 * Math.tan(17.5 * Math.PI / 180)], lineType: 'A' }, { kind: 'line', p1: [122, 30], p2: [90, 30 - 32 * Math.tan(17.5 * Math.PI / 180)], lineType: 'A' },
+            { kind: 'angle-arc', vertex: [58, 30], p1: [122, 30], p2: [90, 30 - 32 * Math.tan(17.5 * Math.PI / 180)], radius: 16, text: '17.5°' },
           ],
         },
         {
@@ -394,10 +394,11 @@
         {
           id: 1,
           instruction: 'A simple hip-roof plan, viewed from directly above. Balloon 1: the central horizontal line is the RIDGE — the roof\'s highest line, where the two main opposing roof planes meet at the top.',
-          calloutAt: [95, 45],
+          calloutAt: [95, 65],
           reveals: [
+            { kind: 'polygon', points: [[15, 25], [175, 25], [175, 105], [15, 105]], lineType: 'A' },
             { kind: 'polygon', points: [[20, 30], [170, 30], [170, 100], [20, 100]], lineType: 'hidden' },
-            { kind: 'line', p1: [55, 45], p2: [135, 45], lineType: 'A' },
+            { kind: 'line', p1: [55, 65], p2: [135, 65], lineType: 'A' },
           ],
         },
         {
@@ -405,24 +406,26 @@
           instruction: 'Balloon 2: the diagonal lines running from each corner of the building to the ends of the ridge are HIP lines — the sloping line formed where two roof planes meet at an EXTERNAL corner (as opposed to a valley, which is an internal corner).',
           calloutAt: [35, 40],
           reveals: [
-            { kind: 'line', p1: [20, 30], p2: [55, 45], lineType: 'A' }, { kind: 'line', p1: [20, 100], p2: [55, 45], lineType: 'A' },
-            { kind: 'line', p1: [170, 30], p2: [135, 45], lineType: 'A' }, { kind: 'line', p1: [170, 100], p2: [135, 45], lineType: 'A' },
+            { kind: 'line', p1: [15, 25], p2: [55, 65], lineType: 'A' }, { kind: 'line', p1: [15, 105], p2: [55, 65], lineType: 'A' },
+            { kind: 'line', p1: [175, 25], p2: [135, 65], lineType: 'A' }, { kind: 'line', p1: [175, 105], p2: [135, 65], lineType: 'A' },
           ],
         },
         {
           id: 3,
           instruction: 'Balloon 3: the small arrows on each roof plane are FALL/DRAINAGE arrows — they always point AWAY from the ridge, down toward the eaves and gutter, showing which way rainwater runs off that particular plane.',
-          calloutAt: [40, 65],
+          calloutAt: [38, 72],
           reveals: [
-            { kind: 'line', p1: [40, 55], p2: [30, 70], lineType: 'B' }, { kind: 'polygon', points: [[30, 70], [34, 65], [36, 71]], lineType: 'B' },
-            { kind: 'line', p1: [95, 55], p2: [95, 90], lineType: 'B' }, { kind: 'polygon', points: [[95, 90], [92, 84], [98, 84]], lineType: 'B' },
+            { kind: 'line', p1: [45, 65], p2: [26, 65], lineType: 'B' }, { kind: 'polygon', points: [[26, 65], [32, 62], [32, 68]], lineType: 'B' },
+            { kind: 'line', p1: [95, 70], p2: [95, 96], lineType: 'B' }, { kind: 'polygon', points: [[95, 96], [92, 90], [98, 90]], lineType: 'B' },
           ],
         },
         {
           id: 4,
-          instruction: 'Balloon 4: the dashed outline beyond the solid wall line is the EAVES OVERHANG, dimensioned here at 500 mm — the roof projects past the wall face specifically to shed rainwater clear of the wall and any windows below.',
-          calloutAt: [95, 110],
-          reveals: [{ kind: 'dimension', p1: [20, 105], p2: [15, 105], offset: 0, text: '500' }],
+          instruction: 'Balloon 4: the solid outer outline is the EAVES; the dashed line inside it is the outside face of the WALLS, hidden under the roof. The gap between them is the EAVES OVERHANG, here 500 mm — the roof projects past the wall to shed rainwater clear of the wall and any windows below.',
+          calloutAt: [17, 114],
+          reveals: [
+            { kind: 'line', p1: [15, 105], p2: [15, 114], lineType: 'B' }, { kind: 'line', p1: [20, 100], p2: [20, 114], lineType: 'B' },
+            { kind: 'dimension', p1: [15, 112], p2: [20, 112], offset: 0, text: '500' }],
         },
         {
           id: 5,

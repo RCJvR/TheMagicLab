@@ -19,6 +19,20 @@
     return Math.min(raw, 360 - raw);
   }
 
+  // The XY line between the front view (above) and the top view (below), with its X and Y labels and
+  // the projectors joining each point's two views (1st angle).
+  function xyLine(Ap, Bp, App, Bpp) {
+    const y = (Math.max(Ap[1], Bp[1]) + Math.min(App[1], Bpp[1])) / 2;
+    const x0 = Math.min(Ap[0], Bp[0], App[0], Bpp[0]) - 16, x1 = Math.max(Ap[0], Bp[0], App[0], Bpp[0]) + 16;
+    return [
+      { kind: 'line', p1: [x0, y], p2: [x1, y], lineType: 'B' },
+      { kind: 'label', at: [x0 - 2, y + 1.3], text: 'X', size: 3.6, anchor: 'end', color: '#94a3b8' },
+      { kind: 'label', at: [x1 + 2, y + 1.3], text: 'Y', size: 3.6, anchor: 'start', color: '#94a3b8' },
+      { kind: 'line', p1: Ap, p2: App, lineType: 'construction' },
+      { kind: 'line', p1: Bp, p2: Bpp, lineType: 'construction' },
+    ];
+  }
+
   // ── 1. Oblique Line: True Length & True Inclination ──
   (function () {
     const Xb = 50, Yb = 25, Zb = 35; // 3D offset from A to B
@@ -47,7 +61,7 @@
           id: 1,
           instruction: 'Draw the front view (A\'B\') and top view (A\'\'B\'\') of an oblique line — one that runs diagonally in width, depth AND height, so neither view shows its true length.',
           calloutAt: [(Ap[0] + Bp[0]) / 2, (Ap[1] + Bp[1]) / 2],
-          reveals: [
+          reveals: [...xyLine(Ap, Bp, App, Bpp), 
             { kind: 'line', p1: Ap, p2: Bp, lineType: 'A' },
             { kind: 'point', at: Ap, label: 'A\'' }, { kind: 'point', at: Bp, label: 'B\'' },
             { kind: 'line', p1: App, p2: Bpp, lineType: 'A' },
@@ -95,8 +109,8 @@
     const types = [
       { name: 'Horizontal', dX: 26, dY: 18, dZ: 0, trueIn: 'TOP view only' },
       { name: 'Frontal', dX: 26, dY: 0, dZ: 18, trueIn: 'FRONT view only' },
-      { name: 'Profile', dX: 0, dY: 22, dZ: 14, trueIn: 'NEITHER (needs a side/auxiliary view)' },
-      { name: 'Oblique', dX: 26, dY: 16, dZ: 18, trueIn: 'NEITHER (needs the true-length construction)' },
+      { name: 'Profile', dX: 0, dY: 22, dZ: 14, trueIn: 'NEITHER', more: '(needs a side view)' },
+      { name: 'Oblique', dX: 26, dY: 16, dZ: 18, trueIn: 'NEITHER', more: '(needs the TL construction)' },
     ];
     const reveals = [];
     const colW = 42;
@@ -110,21 +124,22 @@
         { kind: 'line', p1: fvA, p2: fvB, lineType: 'A' },
         { kind: 'line', p1: tvA, p2: tvB, lineType: 'A' },
         { kind: 'label', at: [ox, 18], text: t.name, size: 4.2, anchor: 'start', color: '#fde047' },
-        { kind: 'label', at: [ox, 95], text: 'True length in:', size: 3.2, anchor: 'start', color: '#94a3b8' },
-        { kind: 'label', at: [ox, 100.5], text: t.trueIn, size: 3.2, anchor: 'start', color: '#94a3b8' }
+        { kind: 'label', at: [ox, 104], text: 'True length in:', size: 3.2, anchor: 'start', color: '#94a3b8' },
+        { kind: 'label', at: [ox, 109.5], text: t.trueIn, size: 3.2, anchor: 'start', color: '#94a3b8' }
       );
+      if (t.more) reveals.push({ kind: 'label', at: [ox, 115], text: t.more, size: 3.2, anchor: 'start', color: '#94a3b8' });
     });
 
     CONSTRUCTIONS['line-classification'] = {
       id: 'line-classification', title: 'Line Classification',
       summary: 'Four kinds of line, and which view (if any) shows each one at its true length.',
-      bounds: { w: 190, h: 110 },
+      bounds: { w: 190, h: 122 },
       workbookPrompt: 'For each of the four line types shown, sketch its front and top view, and state which view (if any) shows the true length.',
       steps: [
-        { id: 1, instruction: 'A horizontal line is parallel to the HP (no height change) — only the TOP view shows its true length; the front view is foreshortened.', calloutAt: [30, 52], reveals: [reveals[0], reveals[1], reveals[2], reveals[3], reveals[4]] },
+        { id: 1, instruction: 'A horizontal line is parallel to the HP (no height change) — only the TOP view shows its true length; the front view is foreshortened.', calloutAt: [30, 52], reveals: [{ kind: 'line', p1: [8, 52], p2: [182, 52], lineType: 'B' }, { kind: 'label', at: [6, 53.3], text: 'X', size: 3.6, anchor: 'end', color: '#94a3b8' }, { kind: 'label', at: [184, 53.3], text: 'Y', size: 3.6, anchor: 'start', color: '#94a3b8' }, reveals[0], reveals[1], reveals[2], reveals[3], reveals[4]] },
         { id: 2, instruction: 'A frontal line is parallel to the VP (no depth change) — only the FRONT view shows its true length; the top view is foreshortened.', calloutAt: [72, 52], reveals: [reveals[5], reveals[6], reveals[7], reveals[8], reveals[9]] },
-        { id: 3, instruction: 'A profile line is parallel to the side (profile) plane (no width change) — NEITHER the front nor top view shows its true length; you would need an actual side view.', calloutAt: [114, 52], reveals: [reveals[10], reveals[11], reveals[12], reveals[13], reveals[14]] },
-        { id: 4, instruction: 'An oblique line runs diagonally to every plane — NEITHER view shows its true length, which is exactly why the true-length construction from the previous topic is needed.', calloutAt: [156, 52], reveals: [reveals[15], reveals[16], reveals[17], reveals[18], reveals[19]] },
+        { id: 3, instruction: 'A profile line is parallel to the side (profile) plane (no width change) — NEITHER the front nor top view shows its true length; you would need an actual side view.', calloutAt: [114, 52], reveals: [reveals[10], reveals[11], reveals[12], reveals[13], reveals[14], reveals[15]] },
+        { id: 4, instruction: 'An oblique line runs diagonally to every plane — NEITHER view shows its true length, which is exactly why the true-length construction from the previous topic is needed.', calloutAt: [156, 52], reveals: [reveals[16], reveals[17], reveals[18], reveals[19], reveals[20], reveals[21]] },
       ],
     };
   })();
@@ -153,7 +168,7 @@
           id: 1,
           instruction: 'Draw the front and top views of the same kind of oblique line as before.',
           calloutAt: G.midpoint(Ap, Bp),
-          reveals: [
+          reveals: [...xyLine(Ap, Bp, App, Bpp), 
             { kind: 'line', p1: Ap, p2: Bp, lineType: 'A' }, { kind: 'point', at: Ap, label: 'A\'' }, { kind: 'point', at: Bp, label: 'B\'' },
             { kind: 'line', p1: App, p2: Bpp, lineType: 'A' }, { kind: 'point', at: App, label: 'A\'\'' }, { kind: 'point', at: Bpp, label: 'B\'\'' },
           ],
@@ -211,7 +226,7 @@
           id: 1,
           instruction: 'Draw the front and top views of the oblique line.',
           calloutAt: G.midpoint(Ap, Bp),
-          reveals: [
+          reveals: [...xyLine(Ap, Bp, App, Bpp), 
             { kind: 'line', p1: Ap, p2: Bp, lineType: 'A' }, { kind: 'point', at: Ap, label: 'A\'' }, { kind: 'point', at: Bp, label: 'B\'' },
             { kind: 'line', p1: App, p2: Bpp, lineType: 'A' }, { kind: 'point', at: App, label: 'A\'\'' }, { kind: 'point', at: Bpp, label: 'B\'\'' },
           ],
@@ -275,7 +290,7 @@
           id: 1,
           instruction: 'Start with the true-length construction already built for line AB (front view, top view, and the true-length hypotenuse).',
           calloutAt: G.midpoint(App, P),
-          reveals: [
+          reveals: [...xyLine(Ap, Bp, App, Bpp), 
             { kind: 'line', p1: Ap, p2: Bp, lineType: 'A' }, { kind: 'point', at: Ap, label: 'A\'' }, { kind: 'point', at: Bp, label: 'B\'' },
             { kind: 'line', p1: App, p2: Bpp, lineType: 'A' }, { kind: 'point', at: App, label: 'A\'\'' }, { kind: 'point', at: Bpp, label: 'B\'\'' },
             { kind: 'line', p1: Bpp, p2: P, lineType: 'construction' },
@@ -334,7 +349,7 @@
           instruction: 'GIVEN: two oblique lines from a common point V, with their true lengths already found (49.5 mm and 45 mm, using the true-length method earlier in this chapter) and the true 3D distance AB calculated as 35.7 mm.',
           calloutAt: O,
           reveals: [
-            { kind: 'label', at: [O[0] - 10, O[1] - 20], text: 'TL(VA)=49.5  TL(VB)=45  AB=35.7', size: 4, anchor: 'start', color: '#94a3b8' },
+            { kind: 'label', at: [O[0], O[1] + 14], text: 'TL(VA)=49.5  TL(VB)=45  AB=35.7', size: 4, anchor: 'start', color: '#94a3b8' },
           ],
         },
         {
@@ -351,8 +366,8 @@
           instruction: 'From A, swing an arc of radius TL(VA); from B, swing an arc of radius TL(VB). Their intersection is the true position of V.',
           calloutAt: V6,
           reveals: [
-            { kind: 'arc-construction', center: O, r: TL_VA, startDeg: -110, endDeg: -70, lineType: 'construction' },
-            { kind: 'arc-construction', center: A6, r: TL_VB, startDeg: -110, endDeg: -70, lineType: 'construction' },
+            { kind: 'arc-construction', center: O, r: TL_VA, startDeg: Math.atan2(V6[1] - O[1], V6[0] - O[0]) * 180 / Math.PI - 12, endDeg: Math.atan2(V6[1] - O[1], V6[0] - O[0]) * 180 / Math.PI + 12, lineType: 'construction' },
+            { kind: 'arc-construction', center: A6, r: TL_VB, startDeg: Math.atan2(V6[1] - A6[1], V6[0] - A6[0]) * 180 / Math.PI - 12, endDeg: Math.atan2(V6[1] - A6[1], V6[0] - A6[0]) * 180 / Math.PI + 12, lineType: 'construction' },
             { kind: 'point', at: V6, label: 'V' },
           ],
         },
@@ -391,7 +406,7 @@
           id: 1,
           instruction: 'Draw the front and top views of the strut, from the wall-plate point A to the ridge point B — width, depth AND height all differ, so this is a genuinely oblique member.',
           calloutAt: G.midpoint(Ap, Bp),
-          reveals: [
+          reveals: [...xyLine(Ap, Bp, App, Bpp), 
             { kind: 'line', p1: Ap, p2: Bp, lineType: 'A' }, { kind: 'point', at: Ap, label: 'A' }, { kind: 'point', at: Bp, label: 'B' },
             { kind: 'line', p1: App, p2: Bpp, lineType: 'A' }, { kind: 'point', at: App, label: 'A' }, { kind: 'point', at: Bpp, label: 'B' },
           ],
@@ -409,7 +424,7 @@
           calloutAt: G.midpoint(App, P),
           reveals: [
             { kind: 'line', p1: App, p2: P, lineType: 'A' },
-            { kind: 'label', at: [App[0] - 4, App[1] + 14], text: 'TL = ' + TL.toFixed(1) + ' mm', size: 4.5, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [(App[0] + P[0]) / 2 - 5, (App[1] + P[1]) / 2 + 4], text: 'TL = ' + TL.toFixed(1) + ' mm', size: 4.5, anchor: 'end', color: '#fde047' },
           ],
         },
         {
@@ -435,20 +450,41 @@
     const Xb = 30, Yb = 14, Zb = 20;
     const TL = Math.sqrt(Xb * Xb + Yb * Yb + Zb * Zb);
 
+    // One oblique line AB (30 along, 14 deep, 20 high; plan length Lp = 33.1), found three ways.
+    const Lp = Math.hypot(Xb, Yb), D2R = Math.PI / 180;
+    const L = (p1, p2, lineType) => ({ kind: 'line', p1, p2, lineType });
+    const pt = (at, label) => ({ kind: 'point', at, label, size: 0.9 });
+    // right-triangle: the plan length as the base, the height square to it, the hypotenuse is TL
     function trianglePanel(ox) {
-      const A = [ox, 60], B = [ox + Xb, 60 - Zb];
-      const P = [B[0], B[1] - Yb];
-      return [
-        { kind: 'line', p1: A, p2: B, lineType: 'construction' },
-        { kind: 'line', p1: B, p2: P, lineType: 'construction' },
-        { kind: 'line', p1: A, p2: P, lineType: 'A' },
-      ];
+      const A = [ox, 72], B = [ox + Lp, 72], P = [ox + Lp, 72 - Zb];
+      return [L(A, B, 'A'), L(B, P, 'construction'), L(A, P, 'A'), { kind: 'right-angle-marker', at: B, rotationDeg: -90, size: 2.5 },
+        { kind: 'label', at: [(A[0] + B[0]) / 2, 77], text: 'plan', size: 2.8, anchor: 'middle', color: '#94a3b8' },
+        { kind: 'label', at: [B[0] + 2, (B[1] + P[1]) / 2], text: 'h', size: 2.8, anchor: 'start', color: '#94a3b8' }];
+    }
+    // rotation: swing the top view about A'' until level, project up to B's height: A' to the new point is TL
+    function rotationPanel(ox) {
+      const Af = [ox, 46], Bf = [ox + Xb, 46 - Zb], Ap = [ox, 60], Bp = [ox + Xb, 60 + Yb], Br = [ox + Lp, 60], Bfr = [ox + Lp, 46 - Zb];
+      const a0 = Math.atan2(Bp[1] - Ap[1], Bp[0] - Ap[0]) / D2R;
+      return [L([ox - 4, 53], [ox + Lp + 6, 53], 'B'), L(Af, Bf, 'A'), L(Ap, Bp, 'A'), pt(Af, "A'"), pt(Ap, "A''"),
+        { kind: 'arc-construction', center: Ap, r: Lp, startDeg: 0, endDeg: a0, lineType: 'construction' },
+        L(Br, Bfr, 'construction'), L(Bf, Bfr, 'construction'), L(Af, Bfr, 'A')];
+    }
+    // auxiliary view: a fold line parallel to the top view; heights from the front view are set off
+    // square to it, and the new view of AB is TL
+    function auxPanel(ox) {
+      const Af = [ox, 40], Bf = [ox + Xb, 40 - Zb], XY = 48, Ap = [ox, 56], Bp = [ox + Xb, 56 + Yb];
+      const d = [Xb / Lp, Yb / Lp], n = [-d[1], d[0]], off = 5;
+      const at = (p, k) => [p[0] + n[0] * k, p[1] + n[1] * k];
+      const hA = XY - Af[1], hB = XY - Bf[1], A1 = at(Ap, off + hA), B1 = at(Bp, off + hB);
+      return [L([ox - 4, XY], [ox + Xb + 6, XY], 'B'), L(Af, Bf, 'A'), L(Ap, Bp, 'A'), pt(Af, "A'"), pt(Ap, "A''"),
+        L(at([Ap[0] - d[0] * 6, Ap[1] - d[1] * 6], off), at([Bp[0] + d[0] * 6, Bp[1] + d[1] * 6], off), 'B'),
+        L(Ap, A1, 'construction'), L(Bp, B1, 'construction'), L(A1, B1, 'A'), pt(A1, 'A1')];
     }
 
     CONSTRUCTIONS['three-methods-comparison'] = {
       id: 'three-methods-comparison', title: 'Comparing the Three True-Length Methods',
       summary: 'The right-triangle method, the rotation method, and the auxiliary-view method are three completely different construction routes — all three must always agree on the same true length.',
-      bounds: { w: 190, h: 90 },
+      bounds: { w: 215, h: 110 },
       workbookPrompt: 'Using the same oblique line, find its true length by all three methods covered in this chapter, and confirm all three answers match.',
       steps: [
         {
@@ -458,7 +494,7 @@
           calloutAt: [panels[0].ox + Xb / 2, 40],
           reveals: [
             ...trianglePanel(panels[0].ox),
-            { kind: 'label', at: [panels[0].ox, 20], text: panels[0].label, size: 3.6, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [panels[0].ox, 8], text: panels[0].label, size: 3.6, anchor: 'start', color: '#fde047' },
           ],
         },
         {
@@ -467,8 +503,8 @@
           measurement: { label: 'TL = ' + TL.toFixed(1) + ' mm' },
           calloutAt: [panels[1].ox + Xb / 2, 40],
           reveals: [
-            ...trianglePanel(panels[1].ox),
-            { kind: 'label', at: [panels[1].ox, 20], text: panels[1].label, size: 3.6, anchor: 'start', color: '#fde047' },
+            ...rotationPanel(panels[1].ox),
+            { kind: 'label', at: [panels[1].ox, 8], text: panels[1].label, size: 3.6, anchor: 'start', color: '#fde047' },
           ],
         },
         {
@@ -477,16 +513,16 @@
           measurement: { label: 'TL = ' + TL.toFixed(1) + ' mm' },
           calloutAt: [panels[2].ox + Xb / 2, 40],
           reveals: [
-            ...trianglePanel(panels[2].ox),
-            { kind: 'label', at: [panels[2].ox, 20], text: panels[2].label, size: 3.6, anchor: 'start', color: '#fde047' },
+            ...auxPanel(panels[2].ox),
+            { kind: 'label', at: [panels[2].ox, 8], text: panels[2].label, size: 3.6, anchor: 'start', color: '#fde047' },
           ],
         },
         {
           id: 4,
           instruction: 'All three constructions are different ROUTES to the same physical quantity — so all three must agree. Getting matching answers from two different methods is a genuinely useful way to check your own work in an exam.',
-          calloutAt: [95, 78],
+          calloutAt: [95, 100],
           reveals: [
-            { kind: 'label', at: [15, 78], text: 'THREE METHODS, ONE ANSWER: ' + TL.toFixed(1) + ' mm', size: 4.2, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [15, 104], text: 'THREE METHODS, ONE ANSWER: ' + TL.toFixed(1) + ' mm', size: 4.2, anchor: 'start', color: '#fde047' },
           ],
         },
       ],

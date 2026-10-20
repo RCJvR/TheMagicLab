@@ -109,15 +109,16 @@
           instruction: 'Draw the front view of the upright square prism.',
           calloutAt: [(FV_LEFT + FV_RIGHT) / 2, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
-            { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'construction' },
           ],
         },
         {
           id: 2,
           instruction: 'Draw the cutting plane as a straight line across the front face. Because this plane does not vary through the prism\'s depth, it appears here at its TRUE LENGTH — but its width across the page (foreshortened) is NOT its true shape.',
           calloutAt: [(cutP1[0] + cutP2[0]) / 2, (cutP1[1] + cutP2[1]) / 2 - 8],
+          // what is left below the cut is lined in; the piece above it is removed and stays thin
           reveals: [
-            { kind: 'line', p1: cutP1, p2: cutP2, lineType: 'A' },
+            { kind: 'polygon', points: [cutP1, cutP2, [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
           ],
         },
         {
@@ -309,7 +310,7 @@
           instruction: 'Draw the front view (a plain rectangle — a cylinder standing upright has no sloped edges) and the top view (the true-size circle).',
           calloutAt: [FV_CX, (FV_TOP + FV_BOTTOM) / 2],
           reveals: [
-            { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
+            { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'construction' },
             { kind: 'circle', center: [FV_CX, TV_CY], r: R, lineType: 'A' },
             { kind: 'line', p1: [FV_LEFT, FV_BOTTOM], p2: [FV_LEFT, TV_CY - R], lineType: 'construction' },
             { kind: 'line', p1: [FV_RIGHT, FV_BOTTOM], p2: [FV_RIGHT, TV_CY - R], lineType: 'construction' },
@@ -320,7 +321,7 @@
           instruction: 'Draw the inclined cutting line across the front view — true length here, since it does not vary through the depth. Divide the top-view circle into 12 equal parts.',
           calloutAt: G.midpoint(cutP1, cutP2),
           reveals: [
-            { kind: 'line', p1: cutP1, p2: cutP2, lineType: 'A' },
+            { kind: 'polygon', points: [cutP1, cutP2, [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
             ...topPts.map(p => ({ kind: 'point', at: [FV_CX + p.x, TV_CY + p.y], size: 1.1, color: '#eab308' })),
           ],
         },
@@ -346,13 +347,16 @@
 
   // ── 6. Block with a Prismatic (Square) Hole — Sectional View ──
   (function () {
-    const block = { x: 65, y: 55, w: 70, h: 45 };
-    const hole = { x: 90, y: 55, w: 20, h: 45 };
-    const tv = { x: 65, y: 27, w: 70, h: 14 };
-    const holeTv = { x: 90, y: 27, w: 20, h: 14 };
+    // 3rd angle: the top view above the front view. The block is 70 × 40 (deep) × 45 high with a 20 mm
+    // square hole straight down through the middle, so the top view shows the hole as a square.
+    const block = { x: 65, y: 66, w: 70, h: 45 };
+    const hole = { x: 90, y: 66, w: 20, h: 45 };
+    const tv = { x: 65, y: 10, w: 70, h: 40 };
+    const holeTv = { x: 90, y: 20, w: 20, h: 20 };
+    const planeY = tv.y + tv.h / 2;
 
     CONSTRUCTIONS['prismatic-hole-block'] = {
-      id: 'prismatic-hole-block', title: 'Block with a Prismatic Hole — Sectional View',
+      id: 'prismatic-hole-block', projection: 'third', title: 'Block with a Prismatic Hole — Sectional View',
       summary: 'A straight-sided (prismatic) hole running through a block — hidden in the front view until a cutting plane reveals its true rectangular section.',
       bounds: { w: 150, h: 130 },
       workbookPrompt: 'Draw the front view of the block as a full section through the square prismatic hole, and the top view showing the hole in true shape.',
@@ -364,7 +368,9 @@
           reveals: [
             { kind: 'polygon', points: [[block.x, block.y], [block.x + block.w, block.y], [block.x + block.w, block.y + block.h], [block.x, block.y + block.h]], lineType: 'A' },
             { kind: 'polygon', points: [[tv.x, tv.y], [tv.x + tv.w, tv.y], [tv.x + tv.w, tv.y + tv.h], [tv.x, tv.y + tv.h]], lineType: 'A' },
-            { kind: 'polygon', points: [[holeTv.x, tv.y], [holeTv.x + holeTv.w, tv.y], [holeTv.x + holeTv.w, tv.y + tv.h], [holeTv.x, tv.y + tv.h]], lineType: 'A' },
+            { kind: 'polygon', points: [[holeTv.x, holeTv.y], [holeTv.x + holeTv.w, holeTv.y], [holeTv.x + holeTv.w, holeTv.y + holeTv.h], [holeTv.x, holeTv.y + holeTv.h]], lineType: 'A' },
+            { kind: 'line', p1: [block.x, tv.y + tv.h], p2: [block.x, block.y], lineType: 'construction' },
+            { kind: 'line', p1: [block.x + block.w, tv.y + tv.h], p2: [block.x + block.w, block.y], lineType: 'construction' },
           ],
         },
         {
@@ -379,11 +385,19 @@
         {
           id: 3,
           instruction: 'Mark cutting plane A-A across the top view, through the hole, then redraw the front view as the section on A-A: the hole\'s edges are now exposed, so they become solid Type A lines.',
-          calloutAt: [100, 20],
+          calloutAt: [100, planeY],
+          // a chain line across the top view through the hole, thick at the ends, arrows pointing the way
+          // you look (from the front towards the back: up, away from the front view in 3rd angle)
           reveals: [
-            { kind: 'line', p1: [50, 20], p2: [150, 20], lineType: 'centre' },
-            { kind: 'label', at: [46, 18], text: 'A', size: 5, anchor: 'end', color: '#fde047' },
-            { kind: 'label', at: [150, 18], text: 'A', size: 5, anchor: 'start', color: '#fde047' },
+            { kind: 'line', p1: [57, planeY], p2: [143, planeY], lineType: 'centre' },
+            { kind: 'line', p1: [57, planeY], p2: [63, planeY], lineType: 'A' },
+            { kind: 'line', p1: [137, planeY], p2: [143, planeY], lineType: 'A' },
+            { kind: 'line', p1: [57, planeY], p2: [57, planeY - 9], lineType: 'B' },
+            { kind: 'line', p1: [143, planeY], p2: [143, planeY - 9], lineType: 'B' },
+            { kind: 'polyline', points: [[55.2, planeY - 6], [57, planeY - 9], [58.8, planeY - 6]], lineType: 'B' },
+            { kind: 'polyline', points: [[141.2, planeY - 6], [143, planeY - 9], [144.8, planeY - 6]], lineType: 'B' },
+            { kind: 'label', at: [53, planeY - 6], text: 'A', size: 5, anchor: 'end', color: '#fde047' },
+            { kind: 'label', at: [147, planeY - 6], text: 'A', size: 5, anchor: 'start', color: '#fde047' },
             { kind: 'line', p1: [hole.x, hole.y], p2: [hole.x, hole.y + hole.h], lineType: 'A' },
             { kind: 'line', p1: [hole.x + hole.w, hole.y], p2: [hole.x + hole.w, hole.y + hole.h], lineType: 'A' },
           ],
@@ -445,7 +459,10 @@
           calloutAt: [FV_CX, cutTV_CY],
           reveals: [
             { kind: 'line', p1: [cutLeft, cutY], p2: [cutRight, cutY], lineType: 'A' },
+            // the frustum's flat top, seen from above inside the base circle, and its true shape below
+            { kind: 'circle', center: [FV_CX, TV_CY], r: cutR, lineType: 'A' },
             { kind: 'circle', center: [FV_CX, cutTV_CY], r: cutR, lineType: 'A' },
+            { kind: 'label', at: [FV_CX + cutR + 4, cutTV_CY], text: 'TRUE SHAPE OF THE CUT', size: 3.6, anchor: 'start', color: '#fde047' },
             { kind: 'line', p1: [cutLeft, cutY], p2: [FV_CX - cutR, cutTV_CY - cutR], lineType: 'construction' },
             { kind: 'line', p1: [cutRight, cutY], p2: [FV_CX + cutR, cutTV_CY - cutR], lineType: 'construction' },
           ],

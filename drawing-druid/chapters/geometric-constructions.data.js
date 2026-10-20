@@ -373,6 +373,8 @@
         measurement: i === 1 ? { label: '360° ÷ 5 = 72°' } : undefined,
         calloutAt: verts[i],
         reveals: [
+          ...(i === 1 ? [{ kind: 'line', p1: center, p2: verts[0], lineType: 'construction' }] : []),
+          { kind: 'line', p1: center, p2: verts[i], lineType: 'construction' },
           { kind: 'point', at: verts[i], label: String(i + 1) },
           { kind: 'angle-arc', vertex: center, p1: verts[i - 1], p2: verts[i], radius: 12, text: i === 1 ? '72°' : '' },
         ],
@@ -668,7 +670,9 @@
           reveals: [
             { kind: 'line', p1: [LEFT_CX, CY - HALF_W], p2: [RIGHT_CX, CY - HALF_W], lineType: 'A' },
             { kind: 'line', p1: [LEFT_CX, CY + HALF_W], p2: [RIGHT_CX, CY + HALF_W], lineType: 'A' },
-            { kind: 'right-angle-marker', at: [LEFT_CX, CY - HALF_W], rotationDeg: 180 },
+            // the radius to the tangent point is square to the side: mark the corner between them
+            { kind: 'line', p1: [LEFT_CX, CY], p2: [LEFT_CX, CY - HALF_W], lineType: 'construction' },
+            { kind: 'right-angle-marker', at: [LEFT_CX, CY - HALF_W], rotationDeg: 90 },
           ],
         },
         {
@@ -678,7 +682,9 @@
           reveals: [
             { kind: 'arc-construction', center: [LEFT_CX, CY], r: HALF_W, startDeg: 90, endDeg: 270, lineType: 'A' },
             { kind: 'arc-construction', center: [RIGHT_CX, CY], r: HALF_W, startDeg: -90, endDeg: 90, lineType: 'A' },
-            { kind: 'dimension', p1: [LEFT_CX, CY + HALF_W + 10], p2: [LEFT_CX, CY - HALF_W - 10], offset: 0, text: (HALF_W * 2).toFixed(0) },
+            { kind: 'line', p1: [RIGHT_CX + 2, CY - HALF_W], p2: [RIGHT_CX + HALF_W + 12, CY - HALF_W], lineType: 'B' },
+            { kind: 'line', p1: [RIGHT_CX + 2, CY + HALF_W], p2: [RIGHT_CX + HALF_W + 12, CY + HALF_W], lineType: 'B' },
+            { kind: 'dimension', p1: [RIGHT_CX + HALF_W + 10, CY + HALF_W], p2: [RIGHT_CX + HALF_W + 10, CY - HALF_W], offset: 0, text: (HALF_W * 2).toFixed(0) },
           ],
         },
       ],

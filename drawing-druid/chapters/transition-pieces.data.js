@@ -11,13 +11,14 @@
   // ── 1. Square-to-Square Hopper — Front and Top Views ──
   (function () {
     const baseHalf = 30, topHalf = 14, H = 45;
-    const FV_CX = 90, FV_BOTTOM = 130, FV_TOP = FV_BOTTOM - H;
-    const TV_CX = 90, TV_CY = 55;
+    // 3rd angle: the top view above the front view, with a gap between them
+    const TV_CX = 90, TV_CY = 40;
+    const FV_CX = 90, FV_TOP = TV_CY + baseHalf + 16, FV_BOTTOM = FV_TOP + H;
 
     CONSTRUCTIONS['hopper-views'] = {
-      id: 'hopper-views', title: 'Square-to-Square Hopper — Front and Top Views',
+      id: 'hopper-views', projection: 'third', title: 'Square-to-Square Hopper — Front and Top Views',
       summary: 'A transition piece (hopper) connects two different cross-sections — here, a wide square base narrowing to a smaller square top, exactly like a chute or funnel.',
-      bounds: { w: 180, h: 175 },
+      bounds: { w: 180, h: 185 },
       workbookPrompt: 'Draw the front and top views of a hopper: 60 mm square base, 28 mm square top (aligned, concentric), 45 mm tall.',
       steps: [
         {
@@ -99,7 +100,7 @@
           calloutAt: G.midpoint(App, P),
           reveals: [
             { kind: 'line', p1: App, p2: P, lineType: 'A' },
-            { kind: 'label', at: [App[0] - 4, App[1] + 14], text: 'TL = ' + TL.toFixed(1), size: 4.5, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [(App[0] + P[0]) / 2 - 5, (App[1] + P[1]) / 2], text: 'TL = ' + TL.toFixed(1), size: 4.5, anchor: 'end', color: '#fde047' },
           ],
         },
         {
@@ -107,7 +108,7 @@
           instruction: 'This true length becomes the compass radius used to construct the development — exactly like the true edge of a full pyramid.',
           calloutAt: [App[0], App[1] + 20],
           reveals: [
-            { kind: 'label', at: [App[0] - 4, App[1] + 26], text: 'USED AS THE COMPASS RADIUS NEXT', size: 3.8, anchor: 'start', color: '#94a3b8' },
+            { kind: 'label', at: [P[0], P[1] + 10], text: 'USED AS THE COMPASS RADIUS NEXT', size: 3.8, anchor: 'start', color: '#94a3b8' },
           ],
         },
       ],
@@ -121,7 +122,9 @@
     const virtualFull = trueEdge * baseHalfDiag / (baseHalfDiag - topHalfDiag);
     const cutLen = virtualFull - trueEdge;
     const apex = [130, 85];
-    const angStart = -140, angStep = 50;
+    // each face subtends 2·asin(half the base side / the full edge) at the apex, so every outer chord is
+    // exactly one base side and every inner chord one top side; the fan is centred on -40°
+    const angStep = 2 * Math.asin(baseSide / 2 / virtualFull) / D2R, angStart = -40 - 2 * angStep;
     const outerPts = Array.from({ length: 5 }, (_, i) => {
       const a = angStart + i * angStep;
       return [apex[0] + virtualFull * Math.cos(a * D2R), apex[1] + virtualFull * Math.sin(a * D2R)];
@@ -172,6 +175,8 @@
             { kind: 'line', p1: outerPts[2], p2: outerPts[3], lineType: 'A' }, { kind: 'line', p1: outerPts[3], p2: outerPts[4], lineType: 'A' },
             { kind: 'line', p1: innerPts[0], p2: innerPts[1], lineType: 'A' }, { kind: 'line', p1: innerPts[1], p2: innerPts[2], lineType: 'A' },
             { kind: 'line', p1: innerPts[2], p2: innerPts[3], lineType: 'A' }, { kind: 'line', p1: innerPts[3], p2: innerPts[4], lineType: 'A' },
+            { kind: 'line', p1: innerPts[0], p2: outerPts[0], lineType: 'A' }, { kind: 'line', p1: innerPts[4], p2: outerPts[4], lineType: 'A' },
+            ...[1, 2, 3].map(k => ({ kind: 'line', p1: innerPts[k], p2: outerPts[k], lineType: 'B' })),
           ],
         },
       ],
@@ -182,16 +187,17 @@
   (function () {
     const TV_CX = 100, TV_CY = 95, sq = 35, R = 24, N = 12;
     const corners = [[TV_CX - sq, TV_CY - sq], [TV_CX + sq, TV_CY - sq], [TV_CX + sq, TV_CY + sq], [TV_CX - sq, TV_CY + sq]];
-    const circlePts = Array.from({ length: N }, (_, i) => {
-      const a = (i * 360 / N - 45) * D2R;
-      return [TV_CX + R * Math.cos(a), TV_CY + R * Math.sin(a)];
-    });
+    // 12 points from the right-hand side, 30° apart: points 0, 3, 6 and 9 face the middles of the sides
+    const circlePts = Array.from({ length: N }, (_, i) => { const a = i * 30 * D2R; return [TV_CX + R * Math.cos(a), TV_CY + R * Math.sin(a)]; });
+    // how far round (degrees) point i is from the direction of corner c; a corner's own quarter is ≤ 45°
+    const off = (c, i) => { const a = Math.atan2(c[1] - TV_CY, c[0] - TV_CX) / D2R; return Math.abs(((i * 30 - a) % 360 + 540) % 360 - 180); };
+    const join = (pred, lt) => corners.flatMap(c => circlePts.filter((p, i) => pred(off(c, i))).map(p => ({ kind: 'line', p1: c, p2: p, lineType: lt })));
 
     CONSTRUCTIONS['triangulation-principle'] = {
       id: 'triangulation-principle', title: 'Round-to-Square Transition — the Triangulation Principle',
       summary: 'A round-to-square transition can\'t be developed as a simple cone or prism — it has to be broken into a mesh of small TRIANGLES, alternating between the square\'s corners and the circle\'s points.',
       bounds: { w: 200, h: 155 },
-      workbookPrompt: 'Draw the top view of a round-to-square transition (60 mm square base, 48 mm diameter top), and construct the full triangulation mesh connecting every square corner and circle point.',
+      workbookPrompt: 'Draw the top view of a round-to-square transition (70 mm square base, 48 mm diameter top), and construct the triangulation: each square corner joined to the circle points of its own quarter.',
       steps: [
         {
           id: 1,
@@ -205,23 +211,15 @@
         },
         {
           id: 2,
-          instruction: 'From each SQUARE CORNER, join to its two nearest circle points — these form the "corner" triangles, one at each corner of the square.',
-          calloutAt: corners[0],
-          reveals: corners.flatMap((c, ci) => {
-            const near = circlePts.filter((p, i) => i === (ci * 3 + 11) % 12 || i === (ci * 3) % 12);
-            return near.map(p => ({ kind: 'line', p1: c, p2: p, lineType: 'A' }));
-          }),
+          instruction: 'Join each SQUARE CORNER only to the circle points of its own quarter, never across the circle: first the two points in the middle of the quarter.',
+          calloutAt: corners[1],
+          reveals: join(d => d < 30, 'B'),
         },
         {
           id: 3,
-          instruction: 'From each remaining circle point, join to the NEAREST square edge — these form the "side" triangles, filling the gaps between the corner triangles.',
-          calloutAt: circlePts[1],
-          reveals: circlePts.flatMap((p, i) => {
-            const cornerIdx = Math.floor(((i + 1) % 12) / 3);
-            const c1 = corners[cornerIdx % 4], c2 = corners[(cornerIdx + 3) % 4];
-            const useC = (i % 3 === 1) ? c1 : c2;
-            return [{ kind: 'line', p1: p, p2: useC, lineType: 'construction' }];
-          }),
+          instruction: 'Then join the circle point in the middle of each side to both corners of that side. Each corner now has a fan of three CORNER triangles, and each side a flat SIDE triangle between two fans.',
+          calloutAt: circlePts[9],
+          reveals: join(d => Math.abs(d - 45) < 1e-6, 'B'),
         },
         {
           id: 4,
@@ -240,7 +238,7 @@
     const cornerFront = [55, 130], H = 40, radialOffset = 32;
     const cornerTop = [55, 170];
     const circlePtTop = [cornerTop[0] + radialOffset, cornerTop[1] - 8];
-    const circlePtFront = [circlePtTop[0], cornerFront[1]];
+    const circlePtFront = [circlePtTop[0], cornerFront[1] - H];   // the circle (top) is H above the square (base)
     const dirTop = unitVec2(circlePtTop, cornerTop);
     const perpTop = [-dirTop[1], dirTop[0]];
     const topLen = G.distance(cornerTop, circlePtTop);
@@ -276,7 +274,7 @@
           calloutAt: G.midpoint(cornerTop, P),
           reveals: [
             { kind: 'line', p1: cornerTop, p2: P, lineType: 'A' },
-            { kind: 'label', at: [cornerTop[0] - 4, cornerTop[1] + 14], text: 'TL = ' + TL.toFixed(1), size: 4.5, anchor: 'start', color: '#fde047' },
+            { kind: 'label', at: [(cornerTop[0] + P[0]) / 2 - 5, (cornerTop[1] + P[1]) / 2 + 4], text: 'TL = ' + TL.toFixed(1), size: 4.5, anchor: 'end', color: '#fde047' },
           ],
         },
         {
@@ -290,9 +288,12 @@
   })();
 
   // ── 6. Development of Two Representative Triangles ──
+  // One corner fan of a square-to-round transition (60 mm square base, Ø48 top, 50 high): corner C and
+  // circle points 1, 2, 3 of its quarter. Plan lengths C-1 = 30.6, C-2 = C-3 = 20.2; with the height 50
+  // the true lengths are 58.6, 53.9 and 53.9. The chords 1-2 and 2-3 are true length (the circle is
+  // level): 2 × 24 × sin 15° = 12.4. Each new triangle shares its sloping edge with the one before.
   (function () {
-    const baseEdge = 18, trueEdge1 = 34, trueEdge2 = 33;
-    const P1 = [70, 100], P2 = [P1[0] + baseEdge, P1[1]];
+    const TL1 = 58.6, TL2 = 53.9, TL3 = 53.9, CH = 12.4;
     function thirdPoint(a, b, ra, rb, sign) {
       const d = G.distance(a, b);
       const x = (ra * ra - rb * rb + d * d) / (2 * d);
@@ -301,9 +302,13 @@
       const mx = a[0] + x * ux, my = a[1] + x * uy;
       return [mx - sign * h * uy, my + sign * h * ux];
     }
-    const apex1 = thirdPoint(P1, P2, trueEdge1, trueEdge2, 1);
-    const P3 = [P2[0] + baseEdge * 0.9, P2[1] + 2];
-    const apex2 = thirdPoint(P2, P3, trueEdge2, trueEdge1 * 0.95, 1);
+    const C = [60, 115];
+    const P1 = [C[0] + TL1 * Math.cos(-105 * D2R), C[1] + TL1 * Math.sin(-105 * D2R)];
+    const P2 = thirdPoint(C, P1, TL2, CH, 1);
+    const P3 = thirdPoint(C, P2, TL3, CH, 1);
+    const angOf = (o, p) => Math.atan2(p[1] - o[1], p[0] - o[0]) / D2R;
+    const arcAt = (o, r, p) => ({ kind: 'arc-construction', center: o, r, startDeg: angOf(o, p) - (o === C ? 6 : 30), endDeg: angOf(o, p) + (o === C ? 6 : 30), lineType: 'construction' });
+    const edge = G.catmullRomExpand([P1, P2, P3], 6);
 
     CONSTRUCTIONS['two-triangles-development'] = {
       id: 'two-triangles-development', title: 'Development of Two Representative Triangles',
@@ -313,37 +318,40 @@
       steps: [
         {
           id: 1,
-          instruction: 'Draw the first known edge (the base of the first triangle) at its true length.',
-          calloutAt: G.midpoint(P1, P2),
+          instruction: 'Draw the first known edge of the fan at its true length: corner C to circle point 1 (found as in the previous exercise).',
+          measurement: { label: 'C-1 = ' + TL1 + ' mm (true length)' },
+          calloutAt: G.midpoint(C, P1),
           reveals: [
-            { kind: 'line', p1: P1, p2: P2, lineType: 'A' }, { kind: 'point', at: P1, label: '' }, { kind: 'point', at: P2, label: '' },
+            { kind: 'line', p1: C, p2: P1, lineType: 'B' }, { kind: 'point', at: C, label: 'C' }, { kind: 'point', at: P1, label: '1' },
           ],
         },
         {
           id: 2,
-          instruction: 'From each end, swing an arc of that triangle\'s two true sloping-edge lengths — their intersection is the third point of the first triangle.',
-          calloutAt: apex1,
+          instruction: 'Triangle C-1-2: from C swing an arc of the true length C-2, and from point 1 an arc of the chord 1-2 (true length, because the circle is level). Where they cross is point 2.',
+          measurement: { label: 'C-2 = ' + TL2 + ' mm, 1-2 = ' + CH + ' mm' },
+          calloutAt: P2,
           reveals: [
-            { kind: 'arc-construction', center: P1, r: trueEdge1, startDeg: -110, endDeg: -70, lineType: 'construction' },
-            { kind: 'arc-construction', center: P2, r: trueEdge2, startDeg: -110, endDeg: -70, lineType: 'construction' },
-            { kind: 'line', p1: P1, p2: apex1, lineType: 'A' }, { kind: 'line', p1: P2, p2: apex1, lineType: 'A' },
+            arcAt(C, TL2, P2), arcAt(P1, CH, P2),
+            { kind: 'line', p1: C, p2: P2, lineType: 'B' }, { kind: 'point', at: P2, label: '2' },
           ],
         },
         {
           id: 3,
-          instruction: 'Continue to the SECOND triangle: its shared edge is already drawn (P2 to the same reference), so swing its own two true lengths from there.',
-          calloutAt: apex2,
+          instruction: 'The SECOND triangle, C-2-3, shares the edge C-2 that is already drawn: from C swing the true length C-3, and from point 2 the chord 2-3. Where they cross is point 3.',
+          measurement: { label: 'C-3 = ' + TL3 + ' mm, 2-3 = ' + CH + ' mm' },
+          calloutAt: P3,
           reveals: [
-            { kind: 'line', p1: P2, p2: P3, lineType: 'A' }, { kind: 'point', at: P3, label: '' },
-            { kind: 'line', p1: P2, p2: apex2, lineType: 'A' }, { kind: 'line', p1: P3, p2: apex2, lineType: 'A' },
+            arcAt(C, TL3, P3), arcAt(P2, CH, P3),
+            { kind: 'line', p1: C, p2: P3, lineType: 'B' }, { kind: 'point', at: P3, label: '3' },
           ],
         },
         {
           id: 4,
           instruction: 'Each new triangle attaches to the one before it along a shared true-length edge — continuing this all the way around eventually completes the full transition-piece development.',
-          calloutAt: [P1[0], P1[1] + 20],
+          calloutAt: [C[0] + 20, C[1] - 10],
           reveals: [
-            { kind: 'label', at: [P1[0], P1[1] + 20], text: 'CONTINUE AROUND THE FULL MESH', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'polyline', points: edge, lineType: 'A' },
+            { kind: 'label', at: [C[0] + 12, C[1] + 6], text: 'CONTINUE AROUND THE FULL MESH', size: 4, anchor: 'start', color: '#fde047' },
           ],
         },
       ],
@@ -412,7 +420,9 @@
 
     const FV_CX = 55, FV_BOTTOM = 130, FV_TOP = FV_BOTTOM - H;
     const apex = [135, 80];
-    const angStart = -140, angStep = 50;
+    // each face subtends 2·asin(half the base side / the full edge) at the apex, so every outer chord is
+    // exactly one base side and every inner chord one top side; the fan is centred on -40°
+    const angStep = 2 * Math.asin(baseSide / 2 / virtualFull) / D2R, angStart = -40 - 2 * angStep;
     const outerPts = Array.from({ length: 5 }, (_, i) => {
       const a = angStart + i * angStep;
       return [apex[0] + virtualFull * Math.cos(a * D2R), apex[1] + virtualFull * Math.sin(a * D2R)];
@@ -462,7 +472,9 @@
             { kind: 'line', p1: outerPts[2], p2: outerPts[3], lineType: 'A' }, { kind: 'line', p1: outerPts[3], p2: outerPts[4], lineType: 'A' },
             { kind: 'line', p1: innerPts[0], p2: innerPts[1], lineType: 'A' }, { kind: 'line', p1: innerPts[1], p2: innerPts[2], lineType: 'A' },
             { kind: 'line', p1: innerPts[2], p2: innerPts[3], lineType: 'A' }, { kind: 'line', p1: innerPts[3], p2: innerPts[4], lineType: 'A' },
-            { kind: 'label', at: [outerPts[0][0], outerPts[0][1] + 10], text: 'READY TO CUT & FOLD', size: 4, anchor: 'start', color: '#fde047' },
+            { kind: 'line', p1: innerPts[0], p2: outerPts[0], lineType: 'A' }, { kind: 'line', p1: innerPts[4], p2: outerPts[4], lineType: 'A' },
+            ...[1, 2, 3].map(k => ({ kind: 'line', p1: innerPts[k], p2: outerPts[k], lineType: 'B' })),
+            { kind: 'label', at: [outerPts[4][0] + 6, outerPts[4][1] + 2], text: 'READY TO CUT & FOLD', size: 4, anchor: 'start', color: '#fde047' },
           ],
         },
       ],
