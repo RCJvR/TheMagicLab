@@ -163,7 +163,7 @@
 
   // Parts list / lys van onderdele.
   function partsList(x, y, rows) {
-    const w = [10, 40, 20, 50], H = 5.4;
+    const w = [10, 38, 22, 64], H = 5.4;
     const X = [x, x + w[0], x + w[0] + w[1], x + w[0] + w[1] + w[2], x + w[0] + w[1] + w[2] + w[3]];
     const out = [];
     const head = ['No', 'PART / ONDERDEEL', 'QTY / HVHD', 'MATERIAL / MATERIAAL'];

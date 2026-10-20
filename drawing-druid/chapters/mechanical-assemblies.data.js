@@ -315,7 +315,7 @@
         { note: 'Part 4, the PULLEY (cast iron): hub Ø28 x 24 with a Ø16 bore, a web 8 thick, and a rim Ø80 x 20 with a V-groove.', at: [240, 50], draw: () => partDetail(4, 'PULLEY', pulley, 214, 12, { section: true }) },
         { note: 'Part 5, the WASHER (Ø32 x 3), and part 6, the M16 NUT: across flats 1.5D = 24, 0.8D = 12.8 thick.', at: [232, 136], draw: () => [...partDetail(5, 'WASHER', washer, 214, 132, { section: true }), ...A.nutEnd(292, 148, D, {}), lbl([292, 133], '(6) M16 NUT', { size: 3, color: '#fde047' })] },
       ],
-      listAt: [16, 170],
+      listAt: [16, 186],
     });
   })();
 
