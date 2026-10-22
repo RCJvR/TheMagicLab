@@ -1,0 +1,296 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#08090b">
+  <title>Skills Seer — CAT teacher readiness | The Magic Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+  <link rel="stylesheet" href="/assets/magic-lab.css">
+  <link rel="stylesheet" href="/assets/skills-seer.css">
+  <link rel="stylesheet" href="/auth-modal.css">
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="tool-brand" href="/skills-seer.html"><span class="ico"><i data-lucide="radar"></i></span>Skills Seer</a>
+      <div class="ml-nav-right">
+        <a class="ml-pill" href="/skills-seer-check.html"><i data-lucide="clipboard-check"></i>Take the teacher check</a>
+        <a class="ml-pill" href="/dashboard-teacher.html"><i data-lucide="arrow-left"></i>Teacher dashboard</a>
+        <button class="ml-pill ml-pill--solid ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">Sign in</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="ml-main" tabindex="-1" class="ml-shell">
+    <section class="sk-lead">
+      <div class="eyebrow ml-label"><span class="dot"></span>Curriculum lead · Computer Applications Technology</div>
+      <h1>Is every CAT teacher ready to teach the technical work?</h1>
+      <p>Readiness for each CAT skill across your schools, built from each teacher’s own confidence rating and a short practical check. Find the gaps, see who needs support, and plan training where it matters.</p>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px">
+        <div class="sk-seg" id="srcSeg"><button type="button" data-s="demo" aria-pressed="true">Demo network</button><button type="button" data-s="live" aria-pressed="false">My schools (live)</button></div>
+        <span class="demo-pill" id="demoPill"><i data-lucide="flask-conical" style="width:14px;height:14px"></i>Fictional demo data</span>
+      </div>
+    </section>
+
+    <div id="liveNote" class="sk-note warn sk-section" hidden></div>
+
+    <div class="sk-section" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <div class="sk-seg" id="scopeSeg"><button type="button" data-v="tech" aria-pressed="true">Technical skills</button><button type="button" data-v="all" aria-pressed="false">All skills</button></div>
+      <div class="sk-seg" id="curSeg"><button type="button" data-v="all" aria-pressed="true">CAPS + IEB</button><button type="button" data-v="CAPS" aria-pressed="false">CAPS</button><button type="button" data-v="IEB" aria-pressed="false">IEB</button></div>
+      <span style="flex:1"></span>
+      <button type="button" class="sk-btn" id="csvBtn"><i data-lucide="download"></i>Export CSV</button>
+    </div>
+
+    <div class="tiles sk-section" id="tiles"></div>
+
+    <section class="sk-card sk-section">
+      <h2>Readiness by school</h2>
+      <p class="sub">Each cell is the share of teachers at <em>Ready</em> or better for that strand, coloured by the average level. Click a school to see its teachers.</p>
+      <div class="legend" style="margin-bottom:12px"><span><i class="cell c1" style="min-height:14px;width:22px"></i>Not yet</span><span><i class="cell c2" style="min-height:14px;width:22px"></i>Developing</span><span><i class="cell c3" style="min-height:14px;width:22px"></i>Ready</span><span><i class="cell c4" style="min-height:14px;width:22px"></i>Can lead</span><span><i class="cell c0" style="min-height:14px;width:22px"></i>No data</span></div>
+      <div class="sk-table-wrap"><table class="sk" id="heat"></table></div>
+    </section>
+
+    <section class="sk-card sk-section" id="schoolCard" hidden>
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div><h2 id="schoolName"></h2><p class="sub" id="schoolSub"></p></div>
+        <button type="button" class="sk-btn" id="schoolClose">Back to all schools</button>
+      </div>
+      <div class="legend" id="lvLegend" style="margin-bottom:12px"></div>
+      <div class="sk-table-wrap"><table class="sk" id="teacherTable"></table></div>
+    </section>
+
+    <section class="sk-card sk-section">
+      <h2>Biggest gaps across the network</h2>
+      <p class="sub">Skills ordered from least to most ready. These are the training priorities.</p>
+      <div id="gaps"></div>
+    </section>
+
+    <div class="sk-grid sk-section" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+      <section class="sk-card">
+        <h2>Opt-out requests</h2>
+        <p class="sub">Taking part is expected; teachers can ask to be excused, and you decide.</p>
+        <div id="optouts"></div>
+      </section>
+      <section class="sk-card">
+        <h2>How readiness is worked out</h2>
+        <p class="sub" style="margin-bottom:8px">For each skill a teacher rates their confidence from 1 to 4, then answers a short practical check.</p>
+        <ul style="margin:0 0 0 18px;font-size:13.5px;line-height:1.7;color:var(--text-2)">
+          <li>The level starts at the confidence rating: <i class="lv lv-1">Not yet</i> <i class="lv lv-2">Developing</i> <i class="lv lv-3">Ready</i> <i class="lv lv-4">Can lead</i></li>
+          <li>A wrong check answer caps the skill at <i class="lv lv-2">Developing</i>, and is flagged <span class="flag">!</span> when the teacher felt confident.</li>
+          <li>A right answer with low confidence is flagged too: that teacher may need encouragement more than training.</li>
+          <li>Teachers who opted out (approved) are left out of every figure.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <aside class="drawer" id="drawer" aria-hidden="true"><button type="button" class="sk-btn x" id="drClose">Close</button><div id="drBody"></div></aside>
+
+  <footer class="ml-footer">
+    <div class="ml-shell ml-footer-inner">
+      <div><div class="ml-footer-brand"><img src="/assets/logo-prism.svg" alt="">The Magic Lab</div>
+        <p class="ml-footer-line">Skills Seer · teacher readiness for Computer Applications Technology. Prototype.</p></div>
+      <div class="ml-footer-legal ml-label">© 2026 Ruhan Janse van Rensburg · All rights reserved</div>
+    </div>
+  </footer>
+
+<script defer src="/auth.js"></script>
+<script>window.MLSkipPaywall = true;</script>
+<script defer src="/require-auth.js"></script>
+<script defer src="/auth-modal.js"></script>
+<script src="/assets/skills-seer.js"></script>
+<script>
+(function () {
+  const S = window.SkillsSeer;
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  let source = 'demo', scope = 'tech', curFilter = 'all', schools = [], openSchool = null;
+  const demoData = S.demo();
+
+  const applies = (k, cur) => k.cur === 'both' || k.cur.toUpperCase() === cur;
+  const skillsIn = (cur, strandId) => S.SKILLS.filter(k => applies(k, cur) && (!strandId || k.strand === strandId) && (scope === 'all' || k.tech));
+  const active = t => t.optOut !== 'approved';
+  const assessed = t => active(t) && Object.keys(t.answers).length > 0;
+  const shown = () => schools.filter(s => curFilter === 'all' || s.curriculum === curFilter);
+  const lvl = (t, k) => { const a = t.answers[k.id] || {}; return S.level(a.conf, a.check); };
+  const cls = avg => avg == null ? 'c0' : avg < 1.75 ? 'c1' : avg < 2.5 ? 'c2' : avg < 3.25 ? 'c3' : 'c4';
+
+  // share of (teacher, skill) pairs at Ready+ and their mean level, over assessed teachers
+  function stats(teachers, skillsOf) {
+    let n = 0, ready = 0, sum = 0;
+    teachers.filter(assessed).forEach(t => skillsOf(t).forEach(k => { const L = lvl(t, k).v; if (!L) return; n++; sum += L; if (L >= 3) ready++; }));
+    return n ? { pct: Math.round(100 * ready / n), avg: sum / n, n } : { pct: null, avg: null, n: 0 };
+  }
+
+  function tiles() {
+    const sc = shown(), teachers = sc.flatMap(s => s.teachers.map(t => Object.assign({ cur: s.curriculum, school: s.name }, t)));
+    const act = teachers.filter(active), done = act.filter(assessed);
+    const pend = teachers.filter(t => t.optOut === 'pending').length, out = teachers.filter(t => t.optOut === 'approved').length;
+    const all = stats(teachers, t => skillsIn(t.cur));
+    let flags = 0; done.forEach(t => skillsIn(t.cur).forEach(k => { if (lvl(t, k).flag === 'overconfident') flags++; }));
+    const g = gapRows()[0];
+    $('tiles').innerHTML = `
+      <div class="tile"><div class="k">Schools</div><div class="v">${sc.length}</div><div class="s">${sc.filter(s => s.curriculum === 'CAPS').length} CAPS · ${sc.filter(s => s.curriculum === 'IEB').length} IEB</div></div>
+      <div class="tile"><div class="k">CAT teachers assessed</div><div class="v">${done.length}<span style="font-size:18px;color:var(--text-3)"> / ${act.length}</span></div><div class="s">${out} opted out${pend ? ` · ${pend} request pending` : ''}</div></div>
+      <div class="tile"><div class="k">${scope === 'tech' ? 'Technical skills' : 'All skills'} at Ready or better</div><div class="v">${all.pct == null ? '—' : all.pct + '%'}</div><div class="s">across every assessed teacher</div></div>
+      <div class="tile"><div class="k">Biggest gap</div><div class="v" style="font-size:20px;line-height:1.25">${g ? esc(g.k.short) : '—'}</div><div class="s">${g ? `${g.ready}% ready · ${g.below} teachers below` : ''}</div></div>
+      <div class="tile"><div class="k">Confident but check wrong</div><div class="v">${flags}</div><div class="s">skill ratings to follow up</div></div>`;
+  }
+
+  function heat() {
+    const strands = S.FRAMEWORK.strands.filter(st => st.skills.some(k => scope === 'all' || k.tech));
+    let h = `<thead><tr><th>School</th>${strands.map(st => `<th class="rot">${esc(st.name)}</th>`).join('')}<th class="rot">Overall</th></tr></thead><tbody>`;
+    shown().forEach(s => {
+      const cells = strands.map(st => { const r = stats(s.teachers, () => skillsIn(s.curriculum, st.id)); return `<td><div class="cell ${cls(r.avg)}">${r.pct == null ? '—' : r.pct + '%'}</div></td>`; }).join('');
+      const o = stats(s.teachers, () => skillsIn(s.curriculum));
+      const act = s.teachers.filter(active).length, done = s.teachers.filter(assessed).length;
+      h += `<tr class="click" data-id="${esc(s.id)}"><td class="name">${esc(s.name)}<small>${esc(s.region || '')} · ${esc(s.curriculum || '')} · ${done}/${act} assessed</small></td>${cells}<td><div class="cell ${cls(o.avg)}">${o.pct == null ? '—' : o.pct + '%'}</div></td></tr>`;
+    });
+    $('heat').innerHTML = h + '</tbody>';
+    $('heat').querySelectorAll('tr.click').forEach(r => r.addEventListener('click', () => showSchool(r.dataset.id)));
+  }
+
+  function gapRows() {
+    const sc = shown(), rows = [];
+    S.SKILLS.filter(k => scope === 'all' || k.tech).forEach(k => {
+      const counts = [0, 0, 0, 0, 0], who = [];
+      sc.forEach(s => { if (!applies(k, s.curriculum)) return; s.teachers.filter(assessed).forEach(t => { const L = lvl(t, k).v; counts[L]++; if (L && L < 3) who.push(`${t.name} (${s.name.replace(' (demo)', '')})`); }); });
+      const n = counts[1] + counts[2] + counts[3] + counts[4];
+      if (!n) return;
+      rows.push({ k, counts, n, ready: Math.round(100 * (counts[3] + counts[4]) / n), below: counts[1] + counts[2], who });
+    });
+    return rows.sort((a, b) => a.ready - b.ready);
+  }
+  function gaps() {
+    const rows = gapRows();
+    $('gaps').innerHTML = rows.length ? rows.map((r, i) => `
+      <div class="gap-row">
+        <div class="gap-name">${esc(r.k.short)}<small>${esc(S.FRAMEWORK.strands.find(s => s.id === r.k.strand).name)} · from Grade ${r.k.grade}</small></div>
+        <div><div class="bar">${[1, 2, 3, 4].map(v => r.counts[v] ? `<i class="lv-${v}" style="width:${100 * r.counts[v] / r.n}%" title="${S.LEVELS[v].name}: ${r.counts[v]}"></i>` : '').join('')}</div></div>
+        <div class="gap-n">${r.ready}% ready · <button type="button" class="sk-btn" style="min-height:30px;padding:4px 10px" data-g="${i}">${r.below} below</button></div>
+      </div>`).join('') : '<p class="sub">No assessments yet.</p>';
+    $('gaps').querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => {
+      const r = rows[+b.dataset.g];
+      openDrawer(`<h3>${esc(r.k.name)}</h3><p class="sub" style="margin:6px 0 14px">${r.below} teacher${r.below === 1 ? '' : 's'} below Ready. A natural group for one training session.</p>
+        ${r.who.map(w => `<div class="dr-skill"><span>${esc(w)}</span></div>`).join('') || '<p class="sub">Nobody.</p>'}
+        <div style="margin-top:16px">${r.k.lessons.map(l => `<a class="sk-btn" style="margin:0 8px 8px 0" href="${S.lessonUrl(l)}">${l.startsWith('cat-ieb') ? 'IEB' : 'CAPS'} lesson in Computer Codex</a>`).join('')}</div>`);
+    }));
+  }
+
+  function showSchool(id) {
+    openSchool = id;
+    const s = schools.find(x => x.id === id); if (!s) return;
+    $('schoolCard').hidden = false;
+    $('schoolName').textContent = s.name;
+    $('schoolSub').textContent = `${s.region || ''} · ${s.curriculum} · click a teacher for their full profile`;
+    $('lvLegend').innerHTML = S.LEVELS.map(l => `<span><i class="lv lv-${l.v}">${l.short}</i>${l.v ? '' : ' not assessed'}</span>`).join('') + '<span><span class="flag">!</span> confident, but check answer wrong</span>';
+    const ks = skillsIn(s.curriculum);
+    let h = `<thead><tr><th>Teacher</th>${ks.map(k => `<th class="rot" title="${esc(k.name)}">${esc(k.short)}</th>`).join('')}</tr></thead><tbody>`;
+    s.teachers.forEach(t => {
+      const status = t.optOut === 'approved' ? 'Opted out' : t.optOut === 'pending' ? 'Opt-out requested' : !assessed(t) ? 'Not started' : 'Updated ' + new Date(t.updated).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' });
+      h += `<tr class="click" data-t="${esc(t.id)}"><td class="name">${esc(t.name)}<small>${status}</small></td>${ks.map(k => {
+        if (!active(t)) return '<td><div class="cell c0">·</div></td>';
+        const L = lvl(t, k);
+        return `<td><div class="cell ${L.v ? 'c' + L.v : 'c0'}" title="${esc(k.name)}: ${S.LEVELS[L.v].name}">${L.flag === 'overconfident' ? '!' : L.v || '—'}</div></td>`;
+      }).join('')}</tr>`;
+    });
+    $('teacherTable').innerHTML = h + '</tbody>';
+    $('teacherTable').querySelectorAll('tr.click').forEach(r => r.addEventListener('click', () => showTeacher(s, s.teachers.find(t => t.id === r.dataset.t))));
+    $('schoolCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showTeacher(s, t) {
+    if (!t) return;
+    const ks = skillsIn(s.curriculum === 'IEB' ? 'IEB' : 'CAPS');
+    const pref = s.curriculum === 'IEB' ? 'cat-ieb/' : 'cat-caps/';
+    let body = `<h3>${esc(t.name)}</h3><p class="sub" style="margin:6px 0 14px">${esc(s.name)} · ${s.curriculum}</p>`;
+    if (!active(t)) body += '<div class="sk-note">Opted out (approved): not included in any figure.</div>';
+    else if (!assessed(t)) body += '<div class="sk-note warn">Has not started the readiness check yet.</div>';
+    else {
+      S.FRAMEWORK.strands.forEach(st => {
+        const these = ks.filter(k => k.strand === st.id); if (!these.length) return;
+        body += `<h4 style="font-size:13px;color:var(--text-3);margin:14px 0 4px">${esc(st.name)}</h4>` + these.map(k => {
+          const a = t.answers[k.id] || {}, L = lvl(t, k);
+          const note = L.flag === 'overconfident' ? ' <span class="flag" title="Confident, but the check answer was wrong">!</span>' : L.flag === 'underconfident' ? ' <span title="Got the check right; more confident than they rate themselves" style="color:#7fc7d0">↑</span>' : '';
+          return `<div class="dr-skill"><span>${esc(k.name)}<br><small style="color:var(--text-3)">confidence ${a.conf || '—'}/4 · check ${a.check === true ? 'right' : a.check === false ? 'wrong' : 'n/a'}</small></span><span>${note} <i class="lv lv-${L.v}">${S.LEVELS[L.v].short}</i></span></div>`;
+        }).join('');
+      });
+      const todo = ks.filter(k => { const L = lvl(t, k).v; return L && L < 3; });
+      if (todo.length) body += `<div class="sk-note" style="margin-top:16px"><strong>Suggested training</strong><ul style="margin:8px 0 0 18px">${todo.map(k => { const ls = k.lessons.filter(l => l.startsWith(pref)); return `<li style="margin:4px 0">${esc(k.short)} — <a style="color:var(--fam)" href="${S.lessonUrl((ls[0] || k.lessons[0]))}">Computer Codex</a></li>`; }).join('')}</ul></div>`;
+    }
+    openDrawer(body);
+  }
+  function openDrawer(html) { $('drBody').innerHTML = html; $('drawer').classList.add('open'); $('drawer').setAttribute('aria-hidden', 'false'); }
+  $('drClose').addEventListener('click', () => { $('drawer').classList.remove('open'); $('drawer').setAttribute('aria-hidden', 'true'); });
+  $('schoolClose').addEventListener('click', () => { openSchool = null; $('schoolCard').hidden = true; });
+
+  function optouts() {
+    const rows = [];
+    schools.forEach(s => s.teachers.forEach(t => { if (t.optOut) rows.push({ s, t }); }));
+    $('optouts').innerHTML = rows.length ? rows.map((r, i) => `<div class="dr-skill"><span><strong style="color:var(--paper)">${esc(r.t.name)}</strong><br><small style="color:var(--text-3)">${esc(r.s.name)}${r.t.optReason ? ' · “' + esc(r.t.optReason) + '”' : r.t.optOut === 'pending' && source === 'demo' ? ' · “Moving to the Maths department next term.”' : ''}</small></span>
+      <span>${r.t.optOut === 'pending' ? `<button type="button" class="sk-btn" data-o="${i}" data-a="1" style="min-height:30px;padding:4px 10px">Approve</button> <button type="button" class="sk-btn" data-o="${i}" data-a="0" style="min-height:30px;padding:4px 10px">Decline</button>` : `<i class="lv lv-0">${r.t.optOut === 'approved' ? 'Approved' : 'Declined'}</i>`}</span></div>`).join('') : '<p class="sub">No requests.</p>';
+    $('optouts').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', async () => {
+      const r = rows[+b.dataset.o], approve = b.dataset.a === '1';
+      if (source === 'live' && !(await S.live.decideOptOut(r.t.id, approve))) return;
+      r.t.optOut = approve ? 'approved' : null;
+      draw();
+    }));
+  }
+
+  function csv() {
+    const lines = [['School', 'Region', 'Curriculum', 'Teacher', 'Status', 'Strand', 'Skill', 'Technical', 'Confidence', 'Check', 'Level']];
+    shown().forEach(s => s.teachers.forEach(t => {
+      const status = t.optOut === 'approved' ? 'Opted out' : !assessed(t) ? 'Not started' : 'Assessed';
+      if (!assessed(t)) { lines.push([s.name, s.region, s.curriculum, t.name, status, '', '', '', '', '', '']); return; }
+      skillsIn(s.curriculum).forEach(k => {
+        const a = t.answers[k.id] || {}, L = lvl(t, k);
+        lines.push([s.name, s.region, s.curriculum, t.name, status, S.FRAMEWORK.strands.find(x => x.id === k.strand).name, k.name, k.tech ? 'yes' : 'no', a.conf || '', a.check === true ? 'right' : a.check === false ? 'wrong' : '', S.LEVELS[L.v].name]);
+      });
+    }));
+    const text = lines.map(r => r.map(v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + text], { type: 'text/csv' }));
+    a.download = `skills-seer-cat-${source}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+  }
+
+  function draw() {
+    tiles(); heat(); gaps(); optouts();
+    if (openSchool) showSchool(openSchool);
+  }
+  function seg(id, fn) {
+    $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); fn(b.dataset.v || b.dataset.s); });
+  }
+  seg('scopeSeg', v => { scope = v; draw(); });
+  seg('curSeg', v => { curFilter = v; draw(); });
+  seg('srcSeg', async v => {
+    source = v; openSchool = null; $('schoolCard').hidden = true;
+    $('demoPill').hidden = v !== 'demo';
+    const note = $('liveNote');
+    if (v === 'demo') { note.hidden = true; schools = demoData; draw(); return; }
+    const r = await S.live.overview();
+    if (r.ok) { schools = r.schools; note.hidden = !!schools.length; note.innerHTML = '<strong>No schools assigned yet.</strong> An admin assigns schools to curriculum leads.'; draw(); return; }
+    schools = [];
+    note.hidden = false;
+    note.innerHTML = r.reason === 'not-installed'
+      ? '<strong>Live data isn’t switched on yet.</strong> The Skills Seer database tables still have to be installed; until then, teachers’ check results are saved on their own device only. Showing no live schools.'
+      : r.reason === 'signed-out' ? '<strong>Sign in</strong> to see your schools.' : '<strong>You are not a curriculum lead for any school yet.</strong> Ask an admin to assign you.';
+    draw();
+  });
+  $('csvBtn').addEventListener('click', csv);
+  schools = demoData; draw();
+  if (window.lucide) lucide.createIcons();
+})();
+</script>
+<script src="/contact-button.js" defer></script>
+</body>
+</html>

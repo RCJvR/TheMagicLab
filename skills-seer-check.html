@@ -1,0 +1,201 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#08090b">
+  <title>CAT readiness check — Skills Seer | The Magic Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo-prism.svg">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+  <link rel="stylesheet" href="/assets/magic-lab.css">
+  <link rel="stylesheet" href="/assets/skills-seer.css">
+  <link rel="stylesheet" href="/auth-modal.css">
+</head>
+<body>
+  <a class="ml-skip" href="#ml-main">Skip to content</a>
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="tool-brand" href="/dashboard-teacher.html"><span class="ico"><i data-lucide="radar"></i></span>Skills Seer</a>
+      <div class="ml-nav-right">
+        <a class="ml-pill" href="/dashboard-teacher.html"><i data-lucide="arrow-left"></i>Teacher dashboard</a>
+        <button class="ml-pill ml-pill--solid ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">Sign in</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="ml-main" tabindex="-1" class="ml-shell">
+    <section class="sk-lead">
+      <div class="eyebrow ml-label"><span class="dot"></span>Computer Applications Technology · teacher readiness</div>
+      <h1>How ready do you feel to teach each part of CAT?</h1>
+      <p>Rate your confidence on each skill, and answer the short check question where there is one. You get your own readiness profile straight away, with the Computer Codex lessons that cover anything you want to brush up on. It takes about 15 minutes, and you can stop and carry on later.</p>
+    </section>
+
+    <div class="sk-note sk-section" id="privacyNote">
+      <strong>Who sees this?</strong> You, and the CAT curriculum lead assigned to your school. It is used to plan training and support, not to appraise performance. If you have a good reason not to take part, you can <a href="#optout" style="color:var(--paper)">request to opt out</a>; your lead approves it.
+    </div>
+
+    <div class="sticky-bar">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px"><span class="ml-label">My school follows</span>
+          <div class="sk-seg" id="curSeg"><button type="button" data-c="CAPS" aria-pressed="true">CAPS</button><button type="button" data-c="IEB" aria-pressed="false">IEB</button></div></div>
+        <div style="flex:1;min-width:180px"><div class="progress"><i id="prog"></i></div></div>
+        <span class="ml-label" id="progTxt"></span>
+        <span class="ml-label" id="saveTxt"></span>
+      </div>
+    </div>
+
+    <div id="strands" class="sk-grid sk-section"></div>
+
+    <section class="sk-card sk-section" id="profile">
+      <h2>Your readiness profile</h2>
+      <p class="sub">Updates as you answer. A wrong check answer keeps a skill at <em>Developing</em> however confident you feel: the check is what makes the profile trustworthy.</p>
+      <div class="legend" id="legend" style="margin-bottom:14px"></div>
+      <div id="profileBody"></div>
+    </section>
+
+    <section class="sk-card sk-section" id="optout">
+      <h2>Request to opt out</h2>
+      <p class="sub">Taking part is expected of all CAT teachers. If you have a reason not to (for example, you are leaving CAT this year), tell your curriculum lead here; they approve or decline it.</p>
+      <textarea id="optReason" rows="3" style="width:100%;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--paper);padding:10px;font:inherit" placeholder="Your reason"></textarea>
+      <div style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="sk-btn" id="optBtn">Send request</button><span class="ml-label" id="optTxt"></span></div>
+    </section>
+  </main>
+
+  <footer class="ml-footer">
+    <div class="ml-shell ml-footer-inner">
+      <div><div class="ml-footer-brand"><img src="/assets/logo-prism.svg" alt="">The Magic Lab</div>
+        <p class="ml-footer-line">Skills Seer · teacher readiness for Computer Applications Technology.</p></div>
+      <div class="ml-footer-legal ml-label">© 2026 Ruhan Janse van Rensburg · All rights reserved</div>
+    </div>
+  </footer>
+
+<script defer src="/auth.js"></script>
+<script>window.MLSkipPaywall = true;</script>
+<script defer src="/require-auth.js"></script>
+<script defer src="/auth-modal.js"></script>
+<script src="/assets/skills-seer.js"></script>
+<script>
+(function () {
+  const S = window.SkillsSeer;
+  let answers = {}, curriculum = 'CAPS', where = 'local';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const skillsFor = () => S.SKILLS.filter(k => k.cur === 'both' || k.cur.toUpperCase() === curriculum);
+
+  function render() {
+    const box = $('strands'); box.innerHTML = '';
+    S.FRAMEWORK.strands.forEach(st => {
+      const skills = st.skills.filter(k => k.cur === 'both' || k.cur.toUpperCase() === curriculum);
+      if (!skills.length) return;
+      const card = document.createElement('section'); card.className = 'sk-card';
+      card.innerHTML = `<h2>${esc(st.name)}</h2>`;
+      skills.forEach(k => {
+        const a = answers[k.id] || {};
+        const q = document.createElement('div'); q.className = 'q-skill';
+        q.innerHTML = `<div class="q-head"><span class="q-name">${esc(k.name)}${k.tech ? '<span class="q-tag">technical</span>' : ''}</span><span class="q-meta">from Grade ${k.grade}</span></div>
+          <div class="conf">${S.CONFIDENCE.map(c => `<button type="button" data-v="${c.v}" aria-pressed="${a.conf === c.v}"><b>${c.v}</b>${esc(c.label)}</button>`).join('')}</div>`;
+        q.querySelectorAll('.conf button').forEach(b => b.addEventListener('click', () => {
+          answers[k.id] = Object.assign({}, answers[k.id], { conf: +b.dataset.v });
+          q.querySelectorAll('.conf button').forEach(x => x.setAttribute('aria-pressed', x === b));
+          showCheck(q, k); changed();
+        }));
+        card.appendChild(q);
+        if (a.conf) showCheck(q, k);
+      });
+      box.appendChild(card);
+    });
+    profile(); progress();
+  }
+  function showCheck(q, k) {
+    if (!k.check || q.querySelector('.check')) return;
+    const [question, opts, right, why] = k.check, a = answers[k.id] || {};
+    const c = document.createElement('div'); c.className = 'check';
+    c.innerHTML = `<div class="lbl">Quick check</div><p>${esc(question)}</p><div class="opts">${opts.map((o, i) => `<button type="button" data-i="${i}">${esc(o)}</button>`).join('')}</div><div class="why"></div>`;
+    const mark = picked => {
+      c.querySelectorAll('.opts button').forEach((b, i) => { b.disabled = true; if (i === right) b.classList.add('right'); else if (i === picked) b.classList.add('wrong'); });
+      c.querySelector('.why').textContent = (picked === right ? '✓ Correct. ' : '✗ Not quite. ') + why;
+    };
+    if (a.check !== undefined && a.check !== null) mark(a.check ? right : (a.pick != null ? a.pick : -1));
+    c.querySelectorAll('.opts button').forEach(b => b.addEventListener('click', () => {
+      const i = +b.dataset.i;
+      // only the first answer counts as evidence
+      answers[k.id] = Object.assign({}, answers[k.id], { check: i === right, pick: i });
+      mark(i); changed();
+    }));
+    q.appendChild(c);
+  }
+  function progress() {
+    const ks = skillsFor(), done = ks.filter(k => answers[k.id] && answers[k.id].conf && (!k.check || answers[k.id].check !== undefined)).length;
+    $('prog').style.width = (100 * done / ks.length) + '%';
+    $('progTxt').textContent = `${done} of ${ks.length} skills done`;
+  }
+  function profile() {
+    $('legend').innerHTML = S.LEVELS.slice(1).map(l => `<span><i class="lv lv-${l.v}">${l.short}</i></span>`).join('') + '<span><span class="flag">!</span> confident, but check answer wrong</span><span><span style="color:#7fc7d0;font-weight:800">↑</span> check right, confidence low</span>';
+    const body = $('profileBody'); body.innerHTML = '';
+    const todo = [];
+    S.FRAMEWORK.strands.forEach(st => {
+      const ks = st.skills.filter(k => k.cur === 'both' || k.cur.toUpperCase() === curriculum);
+      if (!ks.length) return;
+      const rows = ks.map(k => {
+        const a = answers[k.id] || {}, L = S.level(a.conf, a.check);
+        if (a.conf && L.v < 3) todo.push(k);
+        const flag = L.flag === 'overconfident' ? '<span class="flag" title="Confident, but the check answer was wrong">!</span> '
+          : L.flag === 'underconfident' ? '<span title="You answered the check correctly: you may know more than you think" style="color:#7fc7d0;font-weight:800">↑</span> ' : '';
+        return `<div class="dr-skill"><span>${esc(k.name)}</span><span>${flag}<i class="lv lv-${L.v}">${S.LEVELS[L.v].short}</i></span></div>`;
+      }).join('');
+      body.insertAdjacentHTML('beforeend', `<h3 style="font-size:14px;color:var(--text-3);margin:14px 0 2px">${esc(st.name)}</h3>${rows}`);
+    });
+    if (todo.length) {
+      const pref = curriculum === 'IEB' ? 'cat-ieb/' : 'cat-caps/';
+      const items = todo.map(k => {
+        const ls = k.lessons.filter(l => l.startsWith(pref)); const use = ls.length ? ls : k.lessons;
+        return `<li style="margin:6px 0"><strong style="color:var(--paper)">${esc(k.name)}</strong> — ${use.map(l => `<a href="${S.lessonUrl(l)}" style="color:var(--fam)">Computer Codex lesson</a>`).join(', ')}</li>`;
+      }).join('');
+      body.insertAdjacentHTML('beforeend', `<div class="sk-note" style="margin-top:16px"><strong>Brush up next</strong><ul style="margin:8px 0 0 18px">${items}</ul></div>`);
+    }
+  }
+  let t = null;
+  function changed() {
+    profile(); progress();
+    clearTimeout(t);
+    $('saveTxt').textContent = 'Saving…';
+    t = setTimeout(async () => {
+      where = await S.store.save(answers);
+      $('saveTxt').textContent = where === 'db' ? 'Saved to your account' : 'Saved on this device';
+    }, 500);
+  }
+  $('curSeg').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    curriculum = b.dataset.c;
+    $('curSeg').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    try { localStorage.setItem('ml_skills_seer_cur', curriculum); } catch (e) {}
+    render();
+  });
+  $('optBtn').addEventListener('click', async () => {
+    const r = $('optReason').value.trim();
+    if (!r) { $('optTxt').textContent = 'Please give a reason.'; return; }
+    const ok = await S.store.requestOptOut(r);
+    $('optTxt').textContent = ok ? 'Request sent to your curriculum lead.' : 'The live system isn’t switched on yet, so requests can’t be sent in this prototype.';
+  });
+  async function start() {
+    try { const c = localStorage.getItem('ml_skills_seer_cur'); if (c) { curriculum = c; $('curSeg').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x.dataset.c === c)); } } catch (e) {}
+    const r = await S.store.load(); answers = r.answers; where = r.where;
+    $('saveTxt').textContent = Object.keys(answers).length ? (where === 'db' ? 'Saved to your account' : 'Saved on this device') : '';
+    render();
+  }
+  let started = false;
+  const go = () => { if (!started) { started = true; start(); } };
+  document.addEventListener('magiclab:auth:ready', go);
+  setTimeout(go, 2500);
+  if (window.lucide) lucide.createIcons();
+})();
+</script>
+<script src="/contact-button.js" defer></script>
+</body>
+</html>
