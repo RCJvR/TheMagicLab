@@ -256,15 +256,50 @@
         }
       }
     }
-    if (e.target.closest('#printPlan')) printOnly('print-plan');
+    if (e.target.closest('#printPlan')) printDoc('Training plan', document.getElementById('planDoc').outerHTML, 'plan');
   });
   // print just one part of the page (the plan, or the leadership report)
-  function printOnly(cls) {
-    document.body.classList.add(cls);
-    const done = () => { document.body.classList.remove(cls); window.removeEventListener('afterprint', done); };
-    window.addEventListener('afterprint', done);
-    window.print();
-    setTimeout(done, 1500);
+  /* Print in a clean tab: just the report (or the plan) and its styles,
+     none of the dashboard's scripts, overlays or dark theme. Printing the
+     live dashboard with everything else hidden was too heavy for some
+     browsers' print preview. */
+  const PRINT_CSS = `
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    html,body{background:#fff;color:#1d2433;font-family:"Cabinet Grotesk",system-ui,sans-serif}
+    body{padding:24px}
+    .bar{display:flex;gap:10px;align-items:center;margin:0 auto 18px;max-width:820px;font-size:13px;color:#4a5468}
+    .bar button{font:700 13px inherit;padding:8px 14px;border-radius:8px;border:1px solid #0b1220;background:#0b1220;color:#fff;cursor:pointer}
+    .paper,.plan{max-width:820px;margin:0 auto}
+    .plan h3{font-size:24px;font-weight:900;color:#0b1220;margin:4px 0 6px;letter-spacing:-.02em}
+    .plan .ml-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#0e7490}
+    .plan .sub{font-size:13px;color:#4a5468}
+    .plan .sk-note{border:1px solid #d5dae3;background:#f4f6f9;border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.55;margin-bottom:10px}
+    .plan ul{margin:6px 0 0 18px}.plan li{margin:2px 0}.plan small{color:#6b7487}
+    .plan table{width:100%;border-collapse:collapse;margin:10px 0 12px}
+    .plan td{border-top:1px solid #e3e7ee;padding:8px 10px;font-size:13px;line-height:1.5;vertical-align:top;color:#1d2433}
+    .plan td.name{width:70px;font-weight:800;white-space:nowrap}
+    .plan strong{color:#0b1220} .plan a{color:#0e7490}
+    @page{size:A4;margin:12mm}
+    @media print{body{padding:0}.bar{display:none}
+      .paper{padding:0;font-size:95%;max-width:none}.paper h1{font-size:24px}.paper section{margin-bottom:12px}
+      .rp-head{padding-bottom:8px;margin-bottom:12px}.donut svg{width:68px;height:68px}.rp-heat .cell{min-height:19px}
+      .rp-actions{font-size:11.5px;line-height:1.45}.rp-gap{margin-bottom:5px}.rp-foot{padding-top:6px}}`;
+  function printDoc(title, html, kind) {
+    const w = window.open('', '_blank');
+    if (!w) { alert('Your browser blocked the print tab. Allow pop-ups for this site, then try again.'); return; }
+    const body = kind === 'plan' ? `<div class="plan">${html}</div>` : html;
+    w.document.open();
+    w.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><base href="${location.origin}/"><title>${esc(title)}</title>
+      <link rel="stylesheet" href="${location.origin}/assets/skills-seer.css">
+      <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+      <style>${PRINT_CSS}</style></head><body>
+      <div class="bar"><button type="button" onclick="window.print()">Print or save as PDF</button><span>Choose “Save as PDF” as the printer to keep a copy.</span></div>
+      ${body}
+      <script>
+        // print once fonts and styles are in; a manual button stays for blocked dialogs
+        window.addEventListener('load', function () { (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(function () { window.print(); }, 250); }); });
+      <\/script></body></html>`);
+    w.document.close();
   }
 
   function showSchool(id) {
@@ -414,7 +449,13 @@
   }
   $('reportBtn').addEventListener('click', report);
   $('reportClose').addEventListener('click', () => { $('report').hidden = true; document.body.style.overflow = ''; });
-  $('reportPrint').addEventListener('click', () => printOnly('print-report'));
+  $('reportPrint').addEventListener('click', () => printDoc('Termly readiness report', $('reportPaper').outerHTML, 'report'));
+  // Ctrl+P on the dashboard: print just the open report or plan, not the whole page
+  window.addEventListener('beforeprint', () => {
+    if (!$('report').hidden) document.body.classList.add('print-report');
+    else if ($('drawer').classList.contains('open') && document.getElementById('planDoc')) document.body.classList.add('print-plan');
+  });
+  window.addEventListener('afterprint', () => document.body.classList.remove('print-report', 'print-plan'));
 
   function draw() {
     $('curSeg').hidden = new Set(schools.map(sch => sch.curriculum)).size < 2;
