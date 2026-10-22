@@ -1149,9 +1149,10 @@
       if (detail.profile) {
         if (safeNext) location.replace(safeNext);
       } else {
-        window.MagicLabModal?.open('signin');
+        // tool pages' "Create a free account" asks for the sign-up tab
+        window.MagicLabModal?.open(params.get('mode') === 'signup' ? 'signup' : 'signin');
         const sub = document.getElementById('ml-modal-sub');
-        if (sub) sub.textContent = 'Sign in to continue to that tool.';
+        if (sub && params.get('mode') !== 'signup') sub.textContent = 'Sign in to continue to that tool.';
       }
     }, { once: true });
 

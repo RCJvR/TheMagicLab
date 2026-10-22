@@ -176,7 +176,21 @@
     })(0);
   }
 
+  // Apps with a public page under /tools/: a signed-out visitor goes there
+  // (what the tool is, and a way to sign up) instead of a bare sign-in form.
+  const TOOL_PAGES = {
+    '/code-conjurer.html': 'code-conjurer', '/ai-oracle.html': 'ai-oracle', '/java-genie.html': 'java-genie',
+    '/computer-codex.html': 'computer-codex', '/web-wizard.html': 'web-wizard', '/time-turner.html': 'time-turner',
+    '/robot-realm/': 'robot-realm', '/robot-realm/index.html': 'robot-realm',
+    '/spike-spellcaster/': 'spike-spellcaster', '/spike-spellcaster/index.html': 'spike-spellcaster',
+  };
+
   function redirectToSignIn() {
+    const tool = TOOL_PAGES[location.pathname];
+    if (tool && !(window.MagicLabAuth && window.MagicLabAuth.getProfile && window.MagicLabAuth.getProfile())) {
+      location.replace('/tools/' + tool + '.html');
+      return;
+    }
     const next = encodeURIComponent(location.pathname + location.search);
     location.replace('/index.html?auth=required&next=' + next);
   }

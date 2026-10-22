@@ -45,7 +45,7 @@ SHARE_ONLY = {
 
 
 def og_image(rel):
-    base = rel.split('/')[0].replace('.html', '')
+    base = (rel.split('/')[1] if rel.startswith('tools/') else rel.split('/')[0]).replace('.html', '')
     tool = next((t for t in OG_CARDS if base == t or base.startswith(t + '-')), None)
     if not tool: return OG_IMAGE
     if rel.endswith('.af.html') and os.path.exists(os.path.join(ROOT, 'assets', 'og', tool + '-af.png')):
@@ -277,7 +277,10 @@ def main():
         save(rel, s, orig)
         indexable.append(rel)
 
-    for rel, (title, desc) in list(PAGES.items()) + list(HUBS.items()):
+    # public tool pages from scripts/build-tool-pages.py: their own title and description
+    tool_pages = {'tools/' + f: (None, None) for f in sorted(os.listdir(os.path.join(ROOT, 'tools')))
+                  if f.endswith('.html')} if os.path.isdir(os.path.join(ROOT, 'tools')) else {}
+    for rel, (title, desc) in list(PAGES.items()) + list(HUBS.items()) + list(tool_pages.items()):
         p = os.path.join(ROOT, rel)
         if not os.path.exists(p): continue
         orig = s = open(p, encoding='utf-8').read()
