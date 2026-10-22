@@ -10,7 +10,7 @@
 const puppeteer = require('puppeteer-core');
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..');
-const SERVER = 'http://localhost:8770/';
+const SERVER = process.env.OG_SERVER || 'http://localhost:8770/';
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 
 // the catalogue's own order and colours (assets/magic-lab.css --t-*)
@@ -19,7 +19,7 @@ const TOOLS = [
   { id:'code-conjurer', name:'Code Conjurer', icon:'wand-2', hue:0, grades:'Gr 10–12 · IT', line:'Advanced Java for IT learners: classes, arrays, algorithms, exception handling and full OOP.' },
   { id:'ai-oracle', name:'AI Oracle', icon:'sparkles', hue:1, grades:'Gr 8–12', line:'Understand how AI really works, learn to prompt well, and use AI ethically for school.' },
   { id:'java-genie', name:'Java Genie', icon:'code-2', hue:2, grades:'Gr 8–9', line:'Learn Java visually with turtle graphics, loops and interactive tutorials.' },
-  { id:'computer-codex', name:'Computer Codex', icon:'book-open', hue:3, grades:'Gr 8–12', line:'Digital literacy: Windows, Office, files, Excel and Word, and using AI responsibly.' },
+  { id:'computer-codex', name:'Computer Codex', icon:'book-open', hue:3, grades:'Gr 8–12 · CAPS & IEB', line:'Theory for Coding & Robotics, CAT and IT: 160 lessons, Grades 8 to 12.' },
   { id:'web-wizard', name:'Web Wizard', icon:'globe', hue:4, grades:'Gr 8–9', line:'Build websites in HTML and CSS with a live preview. No server, no setup.' },
   { id:'model-mage', name:'Model Mage', icon:'hexagon', hue:5, grades:'Gr 8–12', line:'CAD for 3D printing, and a circuit simulator with a microcontroller you can program.' },
   { id:'drawing-druid', name:'Drawing Druid', icon:'compass', hue:6, grades:'Gr 10–12 · EGD', line:'Engineering Graphics & Design, step by step: constructions, projections, perspective and more.' },
