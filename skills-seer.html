@@ -47,6 +47,7 @@
       <div class="sk-seg" id="scopeSeg"><button type="button" data-v="tech" aria-pressed="true">Technical skills</button><button type="button" data-v="all" aria-pressed="false">All skills</button></div>
       <div class="sk-seg" id="curSeg"><button type="button" data-v="all" aria-pressed="true">CAPS + IEB</button><button type="button" data-v="CAPS" aria-pressed="false">CAPS</button><button type="button" data-v="IEB" aria-pressed="false">IEB</button></div>
       <span style="flex:1"></span>
+      <button type="button" class="sk-btn primary" id="reportBtn"><i data-lucide="file-text"></i>Leadership report</button>
       <button type="button" class="sk-btn" id="csvBtn"><i data-lucide="download"></i>Export CSV</button>
     </div>
 
@@ -92,6 +93,16 @@
       </section>
     </div>
   </main>
+
+  <section class="report-overlay" id="report" hidden aria-label="Leadership report">
+    <div class="report-bar no-print">
+      <span class="ml-label">One-page leadership report · prints on A4</span>
+      <span style="flex:1"></span>
+      <button type="button" class="sk-btn primary" id="reportPrint"><i data-lucide="printer"></i>Print or save as PDF</button>
+      <button type="button" class="sk-btn" id="reportClose">Close</button>
+    </div>
+    <div class="paper" id="reportPaper"></div>
+  </section>
 
   <aside class="drawer" id="drawer" aria-hidden="true"><button type="button" class="sk-btn x" id="drClose">Close</button><div id="drBody"></div></aside>
 
@@ -139,7 +150,7 @@
     let flags = 0; done.forEach(t => skillsIn(t.cur).forEach(k => { if (lvl(t, k).flag === 'overconfident') flags++; }));
     const g = gapRows()[0];
     $('tiles').innerHTML = `
-      <div class="tile"><div class="k">Schools</div><div class="v">${sc.length}</div><div class="s">${sc.filter(s => s.curriculum === 'CAPS').length} CAPS · ${sc.filter(s => s.curriculum === 'IEB').length} IEB</div></div>
+      <div class="tile"><div class="k">Schools</div><div class="v">${sc.length}</div><div class="s">${[['CAPS', sc.filter(s => s.curriculum === 'CAPS').length], ['IEB', sc.filter(s => s.curriculum === 'IEB').length]].filter(x => x[1]).map(x => x[1] + ' ' + x[0]).join(' · ')}</div></div>
       <div class="tile"><div class="k">CAT teachers assessed</div><div class="v">${done.length}<span style="font-size:18px;color:var(--text-3)"> / ${act.length}</span></div><div class="s">${out} opted out${pend ? ` · ${pend} request pending` : ''}</div></div>
       <div class="tile"><div class="k">${scope === 'tech' ? 'Technical skills' : 'All skills'} at Ready or better</div><div class="v">${all.pct == null ? '—' : all.pct + '%'}</div><div class="s">across every assessed teacher</div></div>
       <div class="tile"><div class="k">Biggest gap</div><div class="v" style="font-size:20px;line-height:1.25">${g ? esc(g.k.short) : '—'}</div><div class="s">${g ? `${g.ready}% ready · ${g.below} teachers below` : ''}</div></div>
@@ -163,7 +174,7 @@
     const sc = shown(), rows = [];
     S.SKILLS.filter(k => scope === 'all' || k.tech).forEach(k => {
       const counts = [0, 0, 0, 0, 0], who = [];
-      sc.forEach(s => { if (!applies(k, s.curriculum)) return; s.teachers.filter(assessed).forEach(t => { const L = lvl(t, k).v; counts[L]++; if (L && L < 3) who.push(`${t.name} (${s.name.replace(' (demo)', '')})`); }); });
+      sc.forEach(s => { if (!applies(k, s.curriculum)) return; s.teachers.filter(assessed).forEach(t => { const L = lvl(t, k).v; counts[L]++; if (L && L < 3) who.push({ name: t.name, school: s.name.replace(' (demo)', ''), region: s.region || '' }); }); });
       const n = counts[1] + counts[2] + counts[3] + counts[4];
       if (!n) return;
       rows.push({ k, counts, n, ready: Math.round(100 * (counts[3] + counts[4]) / n), below: counts[1] + counts[2], who });
@@ -180,10 +191,80 @@
       </div>`).join('') : '<p class="sub">No assessments yet.</p>';
     $('gaps').querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => {
       const r = rows[+b.dataset.g];
-      openDrawer(`<h3>${esc(r.k.name)}</h3><p class="sub" style="margin:6px 0 14px">${r.below} teacher${r.below === 1 ? '' : 's'} below Ready. A natural group for one training session.</p>
-        ${r.who.map(w => `<div class="dr-skill"><span>${esc(w)}</span></div>`).join('') || '<p class="sub">Nobody.</p>'}
+      openDrawer(`<h3>${esc(r.k.name)}</h3><p class="sub" style="margin:6px 0 14px">${r.below} teacher${r.below === 1 ? '' : 's'} below Ready: a natural group for one training session.</p>
+        <button type="button" class="sk-btn primary" id="planBtn" style="margin-bottom:14px"><i data-lucide="calendar-plus"></i>Plan a training session</button>
+        ${r.who.map(w => `<div class="dr-skill"><span>${esc(w.name)}<br><small style="color:var(--text-3)">${esc(w.school)} · ${esc(w.region)}</small></span></div>`).join('') || '<p class="sub">Nobody.</p>'}
         <div style="margin-top:16px">${r.k.lessons.map(l => `<a class="sk-btn" style="margin:0 8px 8px 0" href="${S.lessonUrl(l)}">${l.startsWith('cat-ieb') ? 'IEB' : 'CAPS'} lesson in Computer Codex</a>`).join('')}</div>`);
+      $('planBtn').addEventListener('click', () => openDrawer(planHtml(r)));
     }));
+  }
+
+  /* ── Training plan for one gap ──────────────────────────────────
+     Follows the hub model: teachers in Gauteng meet in person at the hub,
+     everyone else joins the same session online. */
+  const HUB = 'Gauteng';
+  let plan = null;
+  function nextSession() {
+    const d = new Date(); d.setDate(d.getDate() + ((10 - d.getDay()) % 7 || 7) + 7);   // the Wednesday after next
+    return d.toLocaleDateString('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' }) + ', 14:30 to 16:00';
+  }
+  function planHtml(r) {
+    const k = r.k, when = nextSession();
+    const hub = r.who.filter(w => w.region === HUB), away = r.who.filter(w => w.region !== HUB);
+    const list = ws => ws.map(w => `<li>${esc(w.name)} <small style="color:var(--text-3)">(${esc(w.school)}${w.region !== HUB ? ', ' + esc(w.region) : ''})</small></li>`).join('');
+    const lesson = (k.lessons.find(l => l.startsWith('cat-caps/')) || k.lessons[0]);
+    const check = k.check ? k.check[0] : 'Each teacher rates their confidence again.';
+    const rows = [
+      ['10 min', 'Warm-up', `The Skills Seer check question, answered cold: “${esc(check)}”`],
+      ['20 min', 'Where learners lose marks', esc(k.pitfall || 'Common errors in this skill, from recent papers and our own item analysis.')],
+      ['35 min', 'Hands-on', esc(k.practice)],
+      ['15 min', 'Teaching it', `Walk through the <a style="color:var(--fam)" href="${S.lessonUrl(lesson)}">Computer Codex lesson</a> and agree how to pace it in class.`],
+      ['10 min', 'Re-check', 'Everyone retakes this skill in Skills Seer, so the dashboard shows the change straight away.'],
+    ];
+    plan = { k, when, hub, away };
+    return `<div id="planDoc">
+      <p class="ml-label" style="margin-bottom:6px">Training plan</p>
+      <h3>${esc(k.short)} clinic for CAT teachers</h3>
+      <p class="sub" style="margin:6px 0 14px">${r.below} teacher${r.below === 1 ? '' : 's'} below Ready · 90 minutes · ${esc(when)}</p>
+      ${hub.length ? `<div class="sk-note" style="margin-bottom:10px"><strong>In person at the ${HUB} hub</strong> (${hub.length})<ul style="margin:6px 0 0 18px">${list(hub)}</ul></div>` : ''}
+      ${away.length ? `<div class="sk-note" style="margin-bottom:10px"><strong>Online, same session</strong> (${away.length}), recorded for anyone who can’t join live<ul style="margin:6px 0 0 18px">${list(away)}</ul></div>` : ''}
+      <table class="sk" style="margin:8px 0 12px"><tbody>${rows.map(x => `<tr><td class="name" style="width:70px">${x[0]}</td><td style="padding:8px 10px;font-size:13.5px;color:var(--text-2);line-height:1.55"><strong style="color:var(--paper)">${x[1]}.</strong> ${x[2]}</td></tr>`).join('')}</tbody></table>
+      <div class="sk-note"><strong>Follow-up.</strong> A second re-check three weeks later, with the result in the next termly readiness report to principals.</div>
+    </div>
+    <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      <button type="button" class="sk-btn primary" id="copyInvite"><i data-lucide="mail"></i>Copy invitation</button>
+      <button type="button" class="sk-btn" id="printPlan"><i data-lucide="printer"></i>Print plan</button>
+      <span class="ml-label" id="copyMsg" style="align-self:center"></span>
+    </div>`;
+  }
+  function invitation() {
+    const { k, when, hub, away } = plan;
+    return `Subject: CAT teacher clinic: ${k.short} (${when})\n\nDear colleagues\n\nYou are invited to a 90-minute CAT clinic on ${k.name.toLowerCase()}, on ${when}.\n`
+      + (hub.length ? `\nGauteng colleagues: in person at the hub (${hub.map(w => w.name).join(', ')}).` : '')
+      + (away.length ? `\nColleagues in other provinces: please join online; the link follows in the calendar invitation (${away.map(w => w.name).join(', ')}).` : '')
+      + `\n\nWe will look at where learners lose marks on this skill, practise it hands-on, and agree how to teach it. Please bring a laptop with Microsoft Office.\n\nKind regards\nCAT Curriculum Lead`;
+  }
+  document.addEventListener('click', async e => {
+    if (e.target.closest('#copyInvite')) {
+      try { await navigator.clipboard.writeText(invitation()); $('copyMsg').textContent = 'Invitation copied: paste it into an email or calendar invite.'; }
+      catch (err) {
+        $('copyMsg').textContent = 'Copy the invitation below.';
+        if (!document.getElementById('inviteText')) {
+          const ta = document.createElement('textarea'); ta.id = 'inviteText'; ta.rows = 12; ta.value = invitation();
+          ta.style.cssText = 'width:100%;margin-top:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--paper);padding:10px;font:inherit;font-size:13px';
+          e.target.closest('.no-print').after(ta); ta.select();
+        }
+      }
+    }
+    if (e.target.closest('#printPlan')) printOnly('print-plan');
+  });
+  // print just one part of the page (the plan, or the leadership report)
+  function printOnly(cls) {
+    document.body.classList.add(cls);
+    const done = () => { document.body.classList.remove(cls); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    window.print();
+    setTimeout(done, 1500);
   }
 
   function showSchool(id) {
@@ -229,7 +310,7 @@
     }
     openDrawer(body);
   }
-  function openDrawer(html) { $('drBody').innerHTML = html; $('drawer').classList.add('open'); $('drawer').setAttribute('aria-hidden', 'false'); }
+  function openDrawer(html) { $('drBody').innerHTML = html; $('drawer').classList.add('open'); $('drawer').setAttribute('aria-hidden', 'false'); $('drawer').scrollTop = 0; if (window.lucide) lucide.createIcons(); }
   $('drClose').addEventListener('click', () => { $('drawer').classList.remove('open'); $('drawer').setAttribute('aria-hidden', 'true'); });
   $('schoolClose').addEventListener('click', () => { openSchool = null; $('schoolCard').hidden = true; });
 
@@ -263,7 +344,80 @@
     a.click();
   }
 
+  /* ── One-page leadership report (the termly readiness report) ───── */
+  function donut(pct, label, sub) {
+    const r = 38, c = 2 * Math.PI * r, v = pct == null ? 0 : Math.max(0, Math.min(100, pct));
+    return `<figure class="donut"><svg viewBox="0 0 100 100" role="img" aria-label="${esc(label)}: ${pct == null ? 'no data' : pct + '%'}">
+      <circle cx="50" cy="50" r="${r}" fill="none" stroke="#e3e7ee" stroke-width="12"/>
+      <circle cx="50" cy="50" r="${r}" fill="none" stroke="#0e7490" stroke-width="12" stroke-linecap="round"
+        stroke-dasharray="${(c * v / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 50 50)"/>
+      <text x="50" y="55" text-anchor="middle" font-size="20" font-weight="800" fill="#0b1220">${pct == null ? '—' : pct + '%'}</text></svg>
+      <figcaption><strong>${esc(label)}</strong><span>${esc(sub)}</span></figcaption></figure>`;
+  }
+  function report() {
+    const sc = shown(), teachers = sc.flatMap(sch => sch.teachers.map(t => Object.assign({ cur: sch.curriculum, schoolName: sch.name, region: sch.region }, t)));
+    const act = teachers.filter(active), done = act.filter(assessed);
+    const tech = t => S.SKILLS.filter(k => k.tech && applies(k, t.cur));
+    let n = 0, ready = 0, clear = 0, flags = 0;
+    done.forEach(t => {
+      let allOk = true;
+      tech(t).forEach(k => { const L = lvl(t, k); if (!L.v) return; n++; if (L.v >= 3) ready++; else allOk = false; if (L.flag === 'overconfident') flags++; });
+      if (allOk) clear++;
+    });
+    const pctAssessed = act.length ? Math.round(100 * done.length / act.length) : null;
+    const pctReady = n ? Math.round(100 * ready / n) : null;
+    const pctClear = done.length ? Math.round(100 * clear / done.length) : null;
+    const prevScope = scope; scope = 'tech';
+    const strands = S.FRAMEWORK.strands.filter(st => st.skills.some(k => k.tech));
+    const heatRows = sc.map(sch => {
+      const cells = strands.map(st => { const r = stats(sch.teachers, () => skillsIn(sch.curriculum, st.id)); return `<td><span class="cell ${cls(r.avg)}">${r.pct == null ? '—' : r.pct + '%'}</span></td>`; }).join('');
+      const o = stats(sch.teachers, () => skillsIn(sch.curriculum));
+      return `<tr><th>${esc(sch.name.replace(' (demo)', ''))}<small>${esc(sch.region || '')}</small></th>${cells}<td><span class="cell ${cls(o.avg)}">${o.pct == null ? '—' : o.pct + '%'}</span></td></tr>`;
+    }).join('');
+    const gapsTop = gapRows().slice(0, 5);
+    scope = prevScope;
+    const hubN = g => g.who.filter(w => w.region === HUB).length;
+    const notStarted = sc.flatMap(sch => sch.teachers.filter(t => active(t) && !assessed(t)).map(t => t.name + ' (' + sch.name.replace(' (demo)', '') + ')'));
+    const pending = teachers.filter(t => t.optOut === 'pending').length;
+    const today = new Date().toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+    $('reportPaper').innerHTML = `
+      <header class="rp-head">
+        <div><p class="rp-kicker">Computer Applications Technology · teacher readiness</p>
+        <h1>Termly readiness report</h1>
+        <p class="rp-meta">${sc.length} campuses · ${act.length} CAT teachers · prepared ${today}${source === 'demo' ? ' · <strong>demonstration data (fictional campuses and teachers)</strong>' : ''}</p></div>
+        <img src="/assets/logo-prism.svg" alt="" width="40" height="40">
+      </header>
+      <section class="rp-donuts">
+        ${donut(pctAssessed, 'Teachers assessed', `${done.length} of ${act.length} active CAT teachers`)}
+        ${donut(pctReady, 'Technical skills at Ready', 'across all assessed teachers')}
+        ${donut(pctClear, 'Teachers with no technical gaps', `${clear} of ${done.length} teachers`)}
+      </section>
+      <section><h2>Readiness by campus <span>share of teachers at Ready or better, technical skills</span></h2>
+        <table class="rp-heat"><colgroup><col class="first"></colgroup><thead><tr><th></th>${strands.map(st => `<th>${esc(st.name)}</th>`).join('')}<th>Overall</th></tr></thead><tbody>${heatRows}</tbody></table>
+      </section>
+      <div class="rp-cols">
+        <section><h2>Five biggest gaps</h2>
+          ${gapsTop.map(g => `<div class="rp-gap"><span>${esc(g.k.short)}</span><span class="rp-bar"><i style="width:${g.ready}%"></i></span><span>${g.ready}%</span></div>`).join('')}
+          <p class="rp-note">Share of assessed teachers at Ready or better on each skill.</p>
+        </section>
+        <section><h2>Actions this term</h2>
+          <ol class="rp-actions">${gapsTop.slice(0, 3).map(g => `<li><strong>${esc(g.k.short)} clinic</strong> for ${g.below} teacher${g.below === 1 ? '' : 's'}: ${hubN(g)} in person at the ${HUB} hub, ${g.below - hubN(g)} online. Re-check after three weeks.</li>`).join('')}
+            ${notStarted.length ? `<li><strong>Follow up</strong> with ${notStarted.length} teacher${notStarted.length === 1 ? '' : 's'} who ha${notStarted.length === 1 ? 's' : 've'} not taken the check: ${esc(notStarted.join(', '))}.</li>` : ''}
+            ${flags ? `<li><strong>Coach ${flags} over-confident ratings:</strong> skills rated confidently where the check answer was wrong.</li>` : ''}
+            ${pending ? `<li><strong>Decide ${pending} opt-out request${pending === 1 ? '' : 's'}.</strong></li>` : ''}
+          </ol>
+        </section>
+      </div>
+      <footer class="rp-foot">How readiness is measured: each teacher rates their confidence on every CAT skill (1 to 4) and answers a short practical check. A wrong check answer caps the skill at Developing. Teachers with an approved opt-out are left out. Skills Seer · The Magic Lab.</footer>`;
+    $('report').hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  $('reportBtn').addEventListener('click', report);
+  $('reportClose').addEventListener('click', () => { $('report').hidden = true; document.body.style.overflow = ''; });
+  $('reportPrint').addEventListener('click', () => printOnly('print-report'));
+
   function draw() {
+    $('curSeg').hidden = new Set(schools.map(sch => sch.curriculum)).size < 2;
     tiles(); heat(); gaps(); optouts();
     if (openSchool) showSchool(openSchool);
   }

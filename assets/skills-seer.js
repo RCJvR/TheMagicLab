@@ -183,7 +183,31 @@
     'wp-merge': 'Mail merge', 'wp-review': 'Review & references', 'web-structure': 'HTML structure', 'web-links': 'Links, images & tables',
     'th-hardware': 'Hardware', 'th-networks': 'Networks', 'th-internet': 'Internet & cloud', 'th-security': 'Security',
     'as-pat': 'The PAT', 'as-exam': 'Exam practicals' };
-  FRAMEWORK.strands.forEach(s => s.skills.forEach(k => { k.short = SHORT[k.id] || k.name; }));
+  // For the training planner: where learners lose marks (in line with the NSC
+  // Chief Marker's reports) and a hands-on task for a teacher session.
+  const COACH = {
+    'ss-if': ['Nested IFs without AND / OR where one outcome needs two tests; missing quotes around text; no building blocks, so no partial marks.', 'Grade a mark list with a nested IF that also uses AND, built up step by step so each part earns marks.'],
+    'ss-countifs': ['Criteria with operators not in quotes (">=70"); criteria ranges of different sizes.', 'Count and total learners by grade and mark band with COUNTIFS and SUMIFS.'],
+    'ss-lookup': ['FALSE / 0 left out, giving approximate matches; the lookup value not in the first column; ranges not made absolute before copying.', 'Look up prices from a price list with VLOOKUP, then rewrite the same lookup with XLOOKUP.'],
+    'ss-text': ['Positions in MID and LEFT miscounted; numbers left stored as text.', 'Build usernames from names and ID numbers with LEFT, MID and CONCAT.'],
+    'ss-errors': ['Learners recreate a given formula instead of editing it, and lose the marks for the original.', 'Edit, don’t recreate: fix five broken formulas in a given sheet without retyping any of them.'],
+    'db-validation': ['Validation rule and validation text confused; forgetting that Between includes both ends.', 'Add validation rules and helpful messages to a learner table.'],
+    'db-queries': ['AND criteria on one row versus OR on separate rows; wildcards used without Like.', 'Query “surname starts with S and in Grade 11”, then “Grade 10 or Grade 11”.'],
+    'db-calc': ['Field names without square brackets; grouping on the wrong field.', 'Add a calculated total, then a grouped count of learners per class.'],
+    'db-relations': ['Foreign key of a different data type; referential integrity not enforced.', 'Join Classes and Learners one-to-many and enforce referential integrity.'],
+    'wp-merge': ['Rules such as Skip Record If in the wrong place; merge fields without spaces or punctuation.', 'Merge a letter to Grade 12 parents only, using a rule and a filter.'],
+    'wp-review': ['Captions typed by hand, so cross-references cannot update.', 'Caption three figures, cross-reference them, insert a fourth and update the fields.'],
+    'web-structure': ['Unclosed or wrongly nested tags; headings used for size instead of structure.', 'Fix and extend a given HTML page: headings, paragraphs and formatting.'],
+    'web-links': ['href and src mixed up; table rows and cells mis-nested.', 'Add a list, a table, a link and an image to the same page.'],
+    'th-networks': ['One-word answers such as “faster” that earn no marks; vague terminology.', 'Explain router, switch and access point in full-sentence answers worth two marks each.'],
+    'as-exam': ['Mark allocation ignored; memos not built around building-block marking.', 'Moderate one Paper 1 question together against the memo.'],
+  };
+  FRAMEWORK.strands.forEach(s => s.skills.forEach(k => {
+    k.short = SHORT[k.id] || k.name;
+    const c = COACH[k.id];
+    k.pitfall = c ? c[0] : '';
+    k.practice = c ? c[1] : 'Work through the Computer Codex lesson and its quiz together, then plan how to teach it.';
+  }));
   const SKILLS = FRAMEWORK.strands.flatMap(s => s.skills.map(k => Object.assign({ strand: s.id }, k)));
 
   /* ── Readiness level for one skill ─────────────────────────────────
@@ -266,11 +290,14 @@
   function demo() {
     let seed = 20261023;
     const rnd = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    // shaped like the Curro DBE group (Academy and Meridian, NSC / CAPS):
+    // mostly Gauteng, single campuses elsewhere. Names are invented.
     const schools = [
-      ['Riverside', 'Western Cape', 'CAPS'], ['Hillcrest', 'Gauteng', 'CAPS'], ['Lakeview', 'Gauteng', 'IEB'],
-      ['Mountainview', 'KwaZulu-Natal', 'CAPS'], ['Seaview', 'Eastern Cape', 'CAPS'], ['Westridge', 'Western Cape', 'IEB'],
-      ['Oakdale', 'Free State', 'CAPS'], ['Sunnyvale', 'Limpopo', 'CAPS'],
-    ];
+      ['Academy Northcliff', 'Gauteng'], ['Academy Eastgate', 'Gauteng'], ['Meridian Southview', 'Gauteng'],
+      ['Academy Westfield', 'Gauteng'], ['Meridian Highveld', 'Gauteng'], ['Academy Bayside', 'Western Cape'],
+      ['Meridian Boland', 'Western Cape'], ['Meridian Coastlands', 'KwaZulu-Natal'], ['Academy Lowveld', 'Mpumalanga'],
+      ['Meridian Bushveld', 'Limpopo'],
+    ].map(([n, r]) => [n, r, 'CAPS']);
     const names = ['Thandi Mokoena', 'Pieter van Wyk', 'Aisha Patel', 'Sipho Dlamini', 'Megan Botha', 'Johan Pretorius',
       'Lerato Nkosi', 'Priya Naidoo', 'Kobus Steyn', 'Nomvula Khumalo', 'Ricardo Adams', 'Fatima Jacobs', 'Liezl du Plessis',
       'Themba Zulu', 'Sarah Peters', 'Andile Mthembu', 'Marisa Coetzee', 'Kagiso Molefe', 'Zanele Ndlovu', 'Hennie Swanepoel',
@@ -281,15 +308,18 @@
       'db-validation': 0.9, 'wp-merge': 0.7, 'wp-review': 0.6, 'web-structure': 0.5, 'web-links': 0.6, 'th-networks': 0.4, 'as-exam': 0.8 };
     let n = 0;
     return schools.map(([name, region, curriculum], si) => {
-      const count = 2 + Math.floor(rnd() * 3);
-      const strength = 0.4 + rnd() * 1.1 - (si === 4 ? 0.5 : 0);     // one school clearly needs support
+      // Gauteng campuses have small CAT departments; elsewhere often one teacher
+      const count = region === 'Gauteng' ? 2 + Math.floor(rnd() * 3) : 1 + Math.floor(rnd() * 2);
+      // campus strength, chosen so the demo tells a believable story: most campuses
+      // solid, a couple clearly in need of support, nobody flat at zero
+      const strength = [1.45, 0.95, 1.15, 0.8, 1.0, 1.2, 1.3, 1.4, 0.9, 0.75][si] + (rnd() - 0.5) * 0.3;
       const teachers = [];
       for (let i = 0; i < count; i++) {
         const t = { id: 'demo-' + n, name: names[n++ % names.length], answers: {}, optOut: null, updated: null };
-        const skill = strength + (rnd() - 0.5) * 1.4;
+        const skill = strength + (rnd() - 0.5) * 0.9;
         const notStarted = rnd() < 0.08;
-        if (si === 2 && i === 1) t.optOut = 'approved';
-        if (si === 6 && i === 0) t.optOut = 'pending';
+        if (si === 0 && i === 1) { t.optOut = 'approved'; t.optReason = 'Moving to Mathematical Literacy full-time from next term.'; }
+        if (si === 3 && i === 0) { t.optOut = 'pending'; t.optReason = 'On maternity leave for Term 4.'; }
         if (!notStarted && t.optOut !== 'approved') {
           SKILLS.forEach(k => {
             if (k.cur !== 'both' && k.cur.toUpperCase() !== curriculum) return;
@@ -306,7 +336,7 @@
         }
         teachers.push(t);
       }
-      return { id: 'demo-school-' + si, name: 'Curro ' + name + ' (demo)', region, curriculum, teachers };
+      return { id: 'demo-school-' + si, name: name + ' (demo)', region, curriculum, teachers };
     });
   }
 
