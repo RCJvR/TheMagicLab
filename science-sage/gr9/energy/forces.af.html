@@ -261,41 +261,8 @@
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Resulterende-krag-simulator</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel die twee teenoorgestelde horisontale kragte wat op die boks inwerk met behulp van die skuiwers. Kyk hoe die resulterende-krag-pyl opdateer en sien of die boks na links versnel, na regs versnel, of gebalanseerd bly.</p>
-  <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> As albei kragte 50 N is, sal die boks beweeg? <strong style="color:#fde68a">Toets dit dan:</strong> Stel albei skuiwe op 50 N en maak hulle dan ongelyk.</div>
-  <div class="explore-top">
-    <div class="sim-canvas-wrap">
-      <h3>Kragdiagram</h3>
-      <canvas id="forceCanvas" height="320" role="img" aria-label="Resulterende-krag-simulator: interaktiewe simulasie"></canvas>
-    </div>
-    <div class="controls">
-      <div class="ctrl-card">
-        <div class="ctrl-label">Krag wat LINKS druk (op die boks)</div>
-        <div class="slider-row">
-          <label for="leftSlider">Linkerkrag</label>
-          <input type="range" id="leftSlider" min="0" max="50" value="20" oninput="updateForces()">
-          <span class="slider-val" id="leftVal">20 N</span>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Krag wat REGS druk (op die boks)</div>
-        <div class="slider-row">
-          <label for="rightSlider">Regterkrag</label>
-          <input type="range" id="rightSlider" min="0" max="50" value="20" oninput="updateForces()">
-          <span class="slider-val" id="rightVal">20 N</span>
-        </div>
-      </div>
-      <div class="ctrl-card">
-        <div class="ctrl-label">Resultaat</div>
-        <div class="readout-grid">
-          <div class="readout"><div class="readout-label">Resultante</div><div class="readout-val" id="readResultant" style="color:#fbbf24">0<span>N</span></div></div>
-          <div class="readout"><div class="readout-label">Rigting</div><div class="readout-val" id="readDirection" style="font-size:14px">Gebalanseer</div></div>
-        </div>
-        <div class="result-banner balanced" id="resultBanner">Die kragte is gebalanseer — die boks bly stil.</div>
-      </div>
-    </div>
-  </div>
+  <!-- three sims, built by forces-sims.js (English and Afrikaans text both live there) -->
+  <div id="forceSims"></div>
 </div>
 
 <!-- PRACTICE -->
@@ -345,172 +312,10 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'explore') { resizeForce(); drawForce(); }
+  if (id === 'explore' && window.ForceSims) ForceSims.show();
 }
 
 /* ---- Canvas ---- */
-const forceCanvas = document.getElementById('forceCanvas');
-const forceCtx = forceCanvas.getContext('2d');
-const FH = 320;
-let leftF = 20, rightF = 20;
-let boxOffset = 0;
-
-function resizeForce() {
-  const dpr = window.devicePixelRatio || 1;
-  const W = forceCanvas.offsetWidth || 480;
-  forceCanvas.width = W * dpr;
-  forceCanvas.height = FH * dpr;
-  forceCtx.setTransform(1, 0, 0, 1, 0, 0);
-  forceCtx.scale(dpr, dpr);
-}
-
-function updateForces() {
-  leftF = +document.getElementById('leftSlider').value;
-  rightF = +document.getElementById('rightSlider').value;
-  document.getElementById('leftVal').textContent = leftF + ' N';
-  document.getElementById('rightVal').textContent = rightF + ' N';
-
-  const resultant = rightF - leftF; // positive = net right, negative = net left
-  const mag = Math.abs(resultant);
-  document.getElementById('readResultant').innerHTML = mag + '<span>N</span>';
-
-  const banner = document.getElementById('resultBanner');
-  const dirEl = document.getElementById('readDirection');
-
-  if (mag < 0.5) {
-    dirEl.textContent = 'Gebalanseer';
-    dirEl.style.color = '#93c5fd';
-    banner.className = 'result-banner balanced';
-    banner.textContent = 'Die kragte is gebalanseer — die boks bly stil (of beweeg teen \'n konstante spoed).';
-  } else if (resultant > 0) {
-    dirEl.textContent = 'Regs →';
-    dirEl.style.color = '#86efac';
-    banner.className = 'result-banner right';
-    banner.textContent = `Ongebalanseerd! Resulterende krag van ${mag} N na REGS — die boks versnel na regs.`;
-  } else {
-    dirEl.textContent = '← Links';
-    dirEl.style.color = '#fcd34d';
-    banner.className = 'result-banner left';
-    banner.textContent = `Ongebalanseerd! Resulterende krag van ${mag} N na LINKS — die boks versnel na links.`;
-  }
-}
-
-function drawArrow(ctx, x1, y, len, color, pointRight) {
-  const x2 = pointRight ? x1 + len : x1 - len;
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = 4;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x1, y);
-  ctx.lineTo(x2, y);
-  ctx.stroke();
-  // arrowhead
-  const headLen = 12;
-  const dir = pointRight ? 1 : -1;
-  ctx.beginPath();
-  ctx.moveTo(x2, y);
-  ctx.lineTo(x2 - dir * headLen, y - 7);
-  ctx.lineTo(x2 - dir * headLen, y + 7);
-  ctx.closePath();
-  ctx.fill();
-}
-
-function drawForce() {
-  const W = forceCanvas.offsetWidth || 480;
-  forceCtx.clearRect(0, 0, W, FH);
-  const cx = W / 2 + boxOffset;
-  const cy = FH / 2;
-
-  // ground line
-  forceCtx.strokeStyle = 'rgba(255,255,255,0.10)';
-  forceCtx.lineWidth = 1.5;
-  forceCtx.beginPath();
-  forceCtx.moveTo(0, cy + 40);
-  forceCtx.lineTo(W, cy + 40);
-  forceCtx.stroke();
-
-  // box
-  const boxSize = 64;
-  forceCtx.fillStyle = 'rgba(251,191,36,0.18)';
-  forceCtx.strokeStyle = 'rgba(251,191,36,0.55)';
-  forceCtx.lineWidth = 2;
-  forceCtx.beginPath();
-  forceCtx.roundRect(cx - boxSize / 2, cy + 40 - boxSize, boxSize, boxSize, 8);
-  forceCtx.fill();
-  forceCtx.stroke();
-  forceCtx.fillStyle = 'rgba(255,255,255,0.85)';
-  forceCtx.font = '600 12px "Cabinet Grotesk", sans-serif';
-  forceCtx.textAlign = 'center';
-  forceCtx.fillText('Boks', cx, cy + 40 - boxSize / 2 + 4);
-
-  const boxMidY = cy + 40 - boxSize / 2;
-  const maxLen = Math.min(W / 2 - 70, 170);
-
-  // left force arrow (pointing right, i.e. pushing box rightwards from the left side)
-  if (leftF > 0) {
-    const len = (leftF / 50) * maxLen;
-    drawArrow(forceCtx, cx - boxSize / 2 - 8, boxMidY - 18, len, '#fbbf24', false);
-    forceCtx.fillStyle = '#fcd34d';
-    forceCtx.font = '600 11px "JetBrains Mono", monospace';
-    forceCtx.textAlign = 'right';
-    forceCtx.fillText(`${leftF} N`, cx - boxSize / 2 - 12 - len, boxMidY - 30);
-  }
-
-  // right force arrow
-  if (rightF > 0) {
-    const len = (rightF / 50) * maxLen;
-    drawArrow(forceCtx, cx + boxSize / 2 + 8, boxMidY - 18, len, '#4ade80', true);
-    forceCtx.fillStyle = '#86efac';
-    forceCtx.font = '600 11px "JetBrains Mono", monospace';
-    forceCtx.textAlign = 'left';
-    forceCtx.fillText(`${rightF} N`, cx + boxSize / 2 + 12 + len, boxMidY - 30);
-  }
-
-  // resultant arrow (below box)
-  const resultant = rightF - leftF;
-  if (Math.abs(resultant) > 0.5) {
-    const rlen = (Math.abs(resultant) / 50) * maxLen;
-    const resColor = resultant > 0 ? 'rgba(96,165,250,0.9)' : 'rgba(96,165,250,0.9)';
-    drawArrow(forceCtx, cx, boxMidY + 55, rlen, resColor, resultant > 0);
-    forceCtx.fillStyle = '#93c5fd';
-    forceCtx.font = '700 12px "JetBrains Mono", monospace';
-    forceCtx.textAlign = 'center';
-    forceCtx.fillText(`Resultante: ${Math.abs(resultant)} N`, cx, boxMidY + 75);
-  } else {
-    forceCtx.fillStyle = 'rgba(210,218,245,0.4)';
-    forceCtx.font = '600 12px "JetBrains Mono", monospace';
-    forceCtx.textAlign = 'center';
-    forceCtx.fillText('Gebalanseer — resultante = 0 N', cx, boxMidY + 65);
-  }
-
-  // gentle animation nudge to suggest motion direction when unbalanced
-  if (Math.abs(resultant) > 0.5) {
-    boxOffset += resultant > 0 ? 0.3 : -0.3;
-    const limit = W * 0.15;
-    if (boxOffset > limit) boxOffset = limit;
-    if (boxOffset < -limit) boxOffset = -limit;
-  }
-}
-
-function animateForce() {
-  if (document.getElementById('tab-explore').classList.contains('active')) {
-    drawForce();
-  }
-  requestAnimationFrame(animateForce);
-}
-
-window.addEventListener('resize', () => {
-  if (document.getElementById('tab-explore').classList.contains('active')) {
-    resizeForce();
-    drawForce();
-  }
-});
-
-resizeForce();
-updateForces();
-animateForce();
-
 /* ---- Practice ---- */
 const QUESTIONS = [
   {
@@ -630,6 +435,7 @@ function answer(qi, oi) {
 
 buildPractice();
 </script>
+<script src="forces-sims.js"></script>
 <script>lucide.createIcons()</script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
   <script>
