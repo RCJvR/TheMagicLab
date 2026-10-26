@@ -472,6 +472,11 @@ const urlsToCache = [
   '/games.js',
   '/arena-host.html',
   '/arena.html',
+  '/memory-mirror.html',
+  '/assets/memory-mirror/manifest.json',
+  '/assets/memory-mirror/science-sage-gr12-physics.json',
+  '/assets/memory-mirror/science-sage-gr12-chemistry.json',
+  '/assets/memory-mirror/science-sage-gr12-life.json',
   '/assets/vendor/lucide-1.56.0.min.js',
   '/assets/vendor/supabase-2.117.3.min.js',
 

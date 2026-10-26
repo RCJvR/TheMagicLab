@@ -56,7 +56,31 @@
     });
     toc.appendChild(title); toc.appendChild(list);
     document.body.appendChild(toc);
+    addRevise();
     return true;
+  }
+
+  // Under the list, a link into Memory Mirror when this lesson has a
+  // flashcard deck (assets/memory-mirror/). Lessons without one get nothing.
+  function addRevise() {
+    if (!window.fetch) return;
+    var key = location.pathname.replace(/^\/+/, '').replace(/(\.af)?\.html$/, '');
+    var dir = key.slice(0, key.lastIndexOf('/')), slug = key.slice(key.lastIndexOf('/') + 1);
+    var base = '/assets/memory-mirror/';
+    fetch(base + 'manifest.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+      var g = m && m.groups.filter(function (x) { return x.path === dir; })[0];
+      return g ? fetch(base + g.file).then(function (r) { return r.ok ? r.json() : null; }) : null;
+    }).then(function (d) {
+      var deck = d && d.decks.filter(function (x) { return x.lesson === slug; })[0];
+      if (!deck) return;
+      var a = document.createElement('a');
+      a.className = 'ml-toc-revise';
+      a.href = '/memory-mirror.html?lesson=' + encodeURIComponent(key);
+      a.innerHTML = '<span>' + (af ? 'Hersien met flitskaarte' : 'Revise with flashcards') + '</span><small>' +
+        deck.cards.length + (af ? ' kaarte · Memory Mirror' : ' cards · Memory Mirror') + '</small>';
+      toc.appendChild(a);
+      place();
+    }).catch(function () {});
   }
 
   function setActive(i) {
@@ -104,6 +128,9 @@
       '.ml-toc a:hover{color:rgba(226,232,240,.95)}' +
       '.ml-toc a[aria-current]{color:var(--toc-accent,#e3e8ef);border-left-color:var(--toc-accent,#e3e8ef);font-weight:600}' +
       '.ml-toc a:focus-visible{outline:2px solid var(--toc-accent,#e3e8ef);outline-offset:2px}' +
+      '.ml-toc a.ml-toc-revise{margin:16px 0 0;padding:10px 12px;border:1px solid rgba(255,255,255,.16);border-radius:8px;color:rgba(226,232,240,.95);font-weight:600}' +
+      '.ml-toc a.ml-toc-revise:hover{border-color:var(--toc-accent,#e3e8ef)}' +
+      '.ml-toc-revise small{display:block;font-weight:400;font-size:12px;color:rgba(226,232,240,.62);margin-top:2px}' +
       '@media print{.ml-toc{display:none!important}}';
     document.head.appendChild(css);
     place();

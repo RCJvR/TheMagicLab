@@ -1,0 +1,673 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Memory Mirror — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   Memory Mirror — flashcard revision for exams.
+
+   Decks live in assets/memory-mirror/ (manifest.json + one file per grade
+   and subject strand). Progress is per browser (localStorage), a simple
+   Leitner schedule: a card you know moves up a box and comes back later;
+   a card you miss drops to box 0 and comes back in the same session.
+
+   Like The Arena it is not a catalogue tool, so it stays neutral and spends
+   colour only where it means something: the three rating buttons.
+   ════════════════════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-display); background: var(--ink-900); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+.hidden { display: none !important; }
+.ml-nav-inner svg { flex-shrink: 0; }
+.mm-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-weight: 800; font-size: 18px; letter-spacing: -0.025em; }
+
+.mm-main { width: 100%; max-width: 860px; margin: 0 auto; padding: var(--space-6, 32px) 16px 64px; flex: 1; }
+
+/* ── Intro ─────────────────────────────────────────────────────────── */
+.mm-title { font-weight: 900; font-size: clamp(26px, 5vw, 34px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 8px; }
+.mm-sub { font-size: 15px; line-height: 1.6; color: var(--text-2); max-width: 600px; margin: 0 0 28px; }
+.mm-from {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px; margin-bottom: 20px;
+  background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-size: 14px; color: var(--text-2);
+}
+.mm-from strong { color: var(--text); }
+.mm-from button { margin-left: auto; }
+
+/* ── Setup ─────────────────────────────────────────────────────────── */
+.mm-section { margin-bottom: 22px; }
+.mm-label { display: block; font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 8px; }
+.mm-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.mm-chip {
+  font: inherit; font-size: 14px; font-weight: 600;
+  padding: 8px 14px; border-radius: var(--radius-full);
+  border: 1px solid var(--line-hard); background: transparent; color: var(--text-2);
+  cursor: pointer; transition: border-color var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+}
+.mm-chip:hover { color: var(--paper); border-color: var(--paper); }
+.mm-chip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.mm-chip:focus-visible, .mm-topic input:focus-visible, .mm-card:focus-visible, .mm-rate:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+.mm-topics { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.mm-topics-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--text-2); }
+.mm-link { font: inherit; font-size: 13px; font-weight: 600; background: none; border: none; color: var(--text); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 0; }
+.mm-part { padding: 10px 14px 2px; font-size: 12px; font-weight: 700; color: var(--text-3); }
+.mm-topic { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 9px 14px; cursor: pointer; }
+.mm-topic + .mm-topic { border-top: 1px solid var(--line-soft); }
+.mm-topic input { width: 18px; height: 18px; accent-color: var(--paper); margin: 0; }
+.mm-topic-name { font-size: 15px; color: var(--text); }
+.mm-topic-meta { display: block; font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
+.mm-meter { width: 72px; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.mm-meter > span { display: block; height: 100%; background: var(--good); }
+.mm-empty { padding: 18px 14px; font-size: 14px; color: var(--text-3); }
+
+.mm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 22px 0; }
+.mm-stat { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.mm-stat b { display: block; font-size: 22px; font-weight: 800; color: var(--paper); letter-spacing: -0.02em; }
+.mm-stat span { font-size: 12.5px; color: var(--text-3); }
+
+.mm-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.mm-actions .ml-btn { padding: 12px 20px; font-size: 15px; }
+.mm-actions .ml-btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+.mm-actions .ml-btn i { width: 16px; height: 16px; }
+.mm-print-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--text-3); }
+.mm-print-row .ml-btn { padding: 9px 14px; font-size: 14px; }
+.mm-print-row .ml-btn i { width: 15px; height: 15px; }
+.mm-note { font-size: 12.5px; color: var(--text-3); margin-top: 14px; line-height: 1.5; }
+
+/* ── Study ─────────────────────────────────────────────────────────── */
+.mm-study-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 13.5px; color: var(--text-2); }
+.mm-progress { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.mm-progress > span { display: block; height: 100%; background: var(--paper); transition: width var(--dur-med) var(--ease-standard); }
+.mm-card {
+  all: unset; box-sizing: border-box; display: flex; flex-direction: column; width: 100%;
+  min-height: 280px; padding: 28px clamp(18px, 4vw, 36px);
+  background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-md, 14px);
+  cursor: pointer; text-align: left;
+}
+.mm-card-topic { font-size: 12.5px; font-weight: 600; color: var(--text-3); margin-bottom: 16px; }
+.mm-card-q { font-size: clamp(19px, 3.4vw, 23px); font-weight: 700; line-height: 1.4; color: var(--paper); letter-spacing: -0.015em; white-space: pre-line; }
+.mm-card-a { margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--line-hard); font-family: var(--font-body, inherit); font-size: 17px; line-height: 1.65; color: var(--text); white-space: pre-line; }
+.mm-card-hint { margin-top: auto; padding-top: 22px; font-size: 13px; color: var(--text-3); }
+.mm-rates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.mm-rate {
+  font: inherit; font-size: 15px; font-weight: 700; padding: 14px 10px; border-radius: var(--radius-sm);
+  background: var(--ink-850); border: 1px solid var(--line-hard); color: var(--text); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.mm-rate small { font-size: 12px; font-weight: 500; color: var(--text-3); }
+.mm-rate--again { border-color: var(--crit); }
+.mm-rate--hard  { border-color: var(--warn); }
+.mm-rate--good  { border-color: var(--good); }
+.mm-rate:hover { background: rgba(255,255,255,0.05); }
+.mm-study-foot { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; font-size: 13px; color: var(--text-3); }
+
+/* ── Done ──────────────────────────────────────────────────────────── */
+.mm-done { text-align: center; padding: 30px 0; }
+.mm-done h2 { font-size: 26px; font-weight: 900; color: var(--paper); letter-spacing: -0.03em; margin: 0 0 8px; }
+.mm-done p { color: var(--text-2); font-size: 15px; margin: 0 0 22px; }
+.mm-done .mm-stats { max-width: 520px; margin: 0 auto 26px; grid-template-columns: repeat(3, 1fr); }
+.mm-done .mm-actions { justify-content: center; }
+
+@media (max-width: 560px) {
+  .mm-stats { grid-template-columns: repeat(2, 1fr); }
+  .mm-meter { width: 48px; }
+  .mm-card { min-height: 240px; }
+  .mm-rate { font-size: 14px; padding: 12px 6px; }
+}
+
+/* ── Print: cut-out cards or a question/answer list ────────────────── */
+#mmPrint { display: none; }
+@media print {
+  @page { size: A4; margin: 10mm; }
+  html, body { background: #fff !important; color: #000 !important; }
+  body > *:not(#mmPrint) { display: none !important; }
+  #mmPrint { display: block; font-family: Arial, Helvetica, sans-serif; color: #000; }
+  .pp-page { page-break-after: always; break-after: page; }
+  .pp-page:last-child { page-break-after: auto; break-after: auto; }
+  .pp-head { font-size: 9pt; color: #444; margin: 0 0 3mm; display: flex; justify-content: space-between; }
+  .pp-grid { display: grid; grid-template-columns: 95mm 95mm; grid-auto-rows: 66mm; }
+  .pp-card { border: 0.3mm dashed #888; padding: 5mm; display: flex; flex-direction: column; overflow: hidden; }
+  .pp-card .pp-topic { font-size: 7.5pt; color: #555; margin-bottom: 3mm; }
+  .pp-card .pp-text { font-size: 11pt; line-height: 1.35; white-space: pre-line; margin: auto 0; }
+  .pp-card.pp-q .pp-text { font-weight: 700; font-size: 12pt; }
+  .pp-card .pp-num { font-size: 7pt; color: #777; text-align: right; }
+  .pp-list h1 { font-size: 15pt; margin: 0 0 2mm; }
+  .pp-list .pp-sub { font-size: 9pt; color: #444; margin: 0 0 5mm; }
+  .pp-list h2 { font-size: 11.5pt; margin: 6mm 0 2mm; border-bottom: 0.3mm solid #000; padding-bottom: 1mm; }
+  .pp-list table { width: 100%; border-collapse: collapse; }
+  .pp-list td { vertical-align: top; border-bottom: 0.2mm solid #bbb; padding: 2mm 2mm 2mm 0; font-size: 9.5pt; line-height: 1.35; white-space: pre-line; }
+  .pp-list td:first-child { width: 42%; font-weight: 700; }
+  .pp-list tr { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+  <a class="ml-skip" href="#mm-main">Skip to content</a>
+
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="mm-brand" href="memory-mirror.html">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="5" y="7" width="15" height="17" rx="2.5" stroke="currentColor" stroke-opacity="0.45" stroke-width="1.5"/>
+          <rect x="9" y="3.5" width="15" height="17" rx="2.5" stroke="currentColor" stroke-opacity="0.9" stroke-width="1.6" fill="var(--ink-900)"/>
+          <line x1="16.5" y1="3.5" x2="16.5" y2="20.5" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2" stroke-dasharray="2 2"/>
+        </svg>
+        Memory Mirror
+      </a>
+      <div class="ml-nav-right">
+        <span id="mlLangToggle"></span>
+        <a class="ml-pill" href="dashboard-student.html"><i data-lucide="arrow-left"></i><span data-t="back">Dashboard</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mm-main" id="mm-main" tabindex="-1">
+
+    <!-- Setup -->
+    <section id="viewSetup">
+      <h1 class="mm-title">Memory Mirror</h1>
+      <p class="mm-sub" data-t="intro">Flashcards for exam revision. Pick a subject and the topics in your exam, then work through the cards. Cards you know come back later; cards you miss come back sooner.</p>
+
+      <div class="mm-from hidden" id="fromBanner"></div>
+
+      <div class="mm-section">
+        <span class="mm-label" data-t="subject">Subject</span>
+        <div class="mm-chips" id="subjectChips" role="group"></div>
+      </div>
+
+      <div class="mm-section">
+        <span class="mm-label" data-t="scope">Exam scope</span>
+        <div class="mm-chips" id="scopeChips" role="group"></div>
+      </div>
+
+      <div class="mm-section">
+        <div class="mm-topics">
+          <div class="mm-topics-head">
+            <span id="topicCount"></span>
+            <span><button class="mm-link" id="btnAll" data-t="selectAll">Select all</button> · <button class="mm-link" id="btnNone" data-t="selectNone">Clear</button></span>
+          </div>
+          <div id="topicList"></div>
+        </div>
+      </div>
+
+      <div class="mm-stats" id="stats"></div>
+
+      <div class="mm-actions">
+        <button class="ml-btn ml-btn--primary" id="btnStudy"><i data-lucide="play"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnWeak"><i data-lucide="target"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnShuffle"><i data-lucide="shuffle"></i><span></span></button>
+      </div>
+
+      <div class="mm-print-row">
+        <span data-t="printLabel">Print the selected topics:</span>
+        <button class="ml-btn ml-btn--ghost" id="btnPrintCards"><i data-lucide="scissors"></i><span data-t="printCards">Cut-out cards</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnPrintList"><i data-lucide="list"></i><span data-t="printList">Question and answer list</span></button>
+      </div>
+      <p class="mm-note" data-t="printNote">Cut-out cards print questions on one page and answers on the next. Print double-sided, flipping on the long edge, and each answer lands behind its question.</p>
+      <p class="mm-note" data-t="storeNote">Your progress is saved in this browser on this device.</p>
+    </section>
+
+    <!-- Study -->
+    <section id="viewStudy" class="hidden">
+      <div class="mm-study-top">
+        <span id="studyCount"></span>
+        <div class="mm-progress"><span id="studyBar" style="width:0"></span></div>
+      </div>
+      <button class="mm-card" id="card" aria-describedby="cardHint">
+        <span class="mm-card-topic" id="cardTopic"></span>
+        <span class="mm-card-q" id="cardQ"></span>
+        <span class="mm-card-a hidden" id="cardA" aria-live="polite"></span>
+        <span class="mm-card-hint" id="cardHint"></span>
+      </button>
+      <div class="mm-rates hidden" id="rates">
+        <button class="mm-rate mm-rate--again" data-rate="0"><span data-t="again">Didn't know</span><small data-t="againSub">see it again soon</small></button>
+        <button class="mm-rate mm-rate--hard" data-rate="1"><span data-t="hard">Unsure</span><small data-t="hardSub">tomorrow</small></button>
+        <button class="mm-rate mm-rate--good" data-rate="2"><span data-t="good">Knew it</span><small id="goodSub"></small></button>
+      </div>
+      <div class="mm-study-foot">
+        <button class="mm-link" id="btnEnd" data-t="end">End session</button>
+        <span data-t="keys">Space: flip · 1 2 3: rate</span>
+      </div>
+    </section>
+
+    <!-- Done -->
+    <section id="viewDone" class="hidden">
+      <div class="mm-done">
+        <h2 data-t="doneTitle">Session complete</h2>
+        <p id="doneText"></p>
+        <div class="mm-stats" id="doneStats"></div>
+        <div class="mm-actions">
+          <button class="ml-btn ml-btn--primary" id="btnAgain"><i data-lucide="rotate-ccw"></i><span data-t="another">Study more</span></button>
+          <button class="ml-btn ml-btn--ghost" id="btnBack"><i data-lucide="arrow-left"></i><span data-t="backTopics">Back to topics</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="mmPrint" aria-hidden="true"></div>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script src="lang-toggle.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BASE = 'assets/memory-mirror/';
+  var STORE_KEY = 'ml-memory-mirror-v1';
+  var DAY = 86400000;
+  var INTERVALS = [0, 1, 3, 7, 14, 30];   // days until a card comes back, by box
+  var MASTERED = 4;                       // box at which a card counts as mastered
+  var NEW_PER_SESSION = 20;
+
+  var T = {
+    en: {
+      back: 'Dashboard', intro: 'Flashcards for exam revision. Pick a subject and the topics in your exam, then work through the cards. Cards you know come back later; cards you miss come back sooner.',
+      subject: 'Subject', scope: 'Exam scope', all: 'All topics', paper: 'Paper', term: 'Term',
+      selectAll: 'Select all', selectNone: 'Clear', topicsSel: '{n} of {t} topics selected',
+      cards: '{n} cards', mastered: '{n} mastered', noTopics: 'No topics in this scope.',
+      stDue: 'Due now', stNew: 'Not seen yet', stWeak: 'Weak cards', stMastered: 'Mastered',
+      study: 'Study ({n})', studyNone: 'Nothing due', weak: 'Weak cards ({n})', shuffle: 'All cards, shuffled',
+      printLabel: 'Print the selected topics:', printCards: 'Cut-out cards', printList: 'Question and answer list',
+      printNote: 'Cut-out cards print questions on one page and answers on the next. Print double-sided, flipping on the long edge, and each answer lands behind its question.',
+      storeNote: 'Your progress is saved in this browser on this device.',
+      tapFlip: 'Tap or press Space to show the answer', tapRate: 'How well did you know it?',
+      again: "Didn't know", againSub: 'see it again soon', hard: 'Unsure', hardSub: 'tomorrow', good: 'Knew it',
+      inDays: 'in {n} days', inDay: 'in 1 day', end: 'End session', keys: 'Space: flip · 1 2 3: rate',
+      cardOf: 'Card {i} of {n}', doneTitle: 'Session complete', doneText: 'You went through {n} cards.',
+      dKnew: 'Knew it', dUnsure: 'Unsure', dMissed: "Didn't know", another: 'Study more', backTopics: 'Back to topics',
+      from: 'Revising <strong>{t}</strong> from your lesson.', showAll: 'Show all topics',
+      loadErr: 'The flashcards could not be loaded. Check your connection and refresh the page.',
+      printTitle: 'Memory Mirror', printQ: 'Questions', printA: 'Answers', printSheet: 'Sheet {i} of {n}',
+      p1: 'Paper 1', p2: 'Paper 2', t1: 'Term 1', t2: 'Term 2', t3: 'Term 3'
+    },
+    af: {
+      back: 'Paneelbord', intro: 'Flitskaarte vir eksamenhersiening. Kies \'n vak en die onderwerpe in jou eksamen, en werk dan deur die kaarte. Kaarte wat jy ken, kom later terug; kaarte wat jy nie ken nie, kom gouer terug.',
+      subject: 'Vak', scope: 'Eksamenomvang', all: 'Alle onderwerpe', paper: 'Vraestel', term: 'Kwartaal',
+      selectAll: 'Kies almal', selectNone: 'Maak skoon', topicsSel: '{n} van {t} onderwerpe gekies',
+      cards: '{n} kaarte', mastered: '{n} bemeester', noTopics: 'Geen onderwerpe in hierdie omvang nie.',
+      stDue: 'Nou aan die beurt', stNew: 'Nog nie gesien nie', stWeak: 'Swak kaarte', stMastered: 'Bemeester',
+      study: 'Leer ({n})', studyNone: 'Niks aan die beurt nie', weak: 'Swak kaarte ({n})', shuffle: 'Alle kaarte, geskommel',
+      printLabel: 'Druk die gekose onderwerpe:', printCards: 'Uitknipkaarte', printList: 'Vraag-en-antwoordlys',
+      printNote: 'Uitknipkaarte druk vrae op een bladsy en antwoorde op die volgende. Druk dubbelkantig en draai om die lang kant, dan land elke antwoord agter sy vraag.',
+      storeNote: 'Jou vordering word in hierdie blaaier op hierdie toestel gestoor.',
+      tapFlip: 'Tik of druk Spasie om die antwoord te wys', tapRate: 'Hoe goed het jy dit geken?',
+      again: 'Nie geken nie', againSub: 'sien dit gou weer', hard: 'Onseker', hardSub: 'môre', good: 'Geken',
+      inDays: 'oor {n} dae', inDay: 'oor 1 dag', end: 'Beëindig sessie', keys: 'Spasie: draai · 1 2 3: gradeer',
+      cardOf: 'Kaart {i} van {n}', doneTitle: 'Sessie voltooi', doneText: 'Jy het deur {n} kaarte gewerk.',
+      dKnew: 'Geken', dUnsure: 'Onseker', dMissed: 'Nie geken nie', another: 'Leer meer', backTopics: 'Terug na onderwerpe',
+      from: 'Hersien <strong>{t}</strong> uit jou les.', showAll: 'Wys alle onderwerpe',
+      loadErr: 'Die flitskaarte kon nie gelaai word nie. Kontroleer jou verbinding en herlaai die bladsy.',
+      printTitle: 'Memory Mirror', printQ: 'Vrae', printA: 'Antwoorde', printSheet: 'Vel {i} van {n}',
+      p1: 'Vraestel 1', p2: 'Vraestel 2', t1: 'Kwartaal 1', t2: 'Kwartaal 2', t3: 'Kwartaal 3'
+    }
+  };
+
+  var lang = (window.MLLang && MLLang.getLang()) || 'en';
+  var groups = [];        // manifest groups, each with .decks loaded
+  var decks = [];         // flat: { key, group, deck }
+  var subjects = [];      // [{ key, label: {en,af}, decks: [...] }]
+  var state = { subject: null, scope: 'all', selected: {}, from: null };
+  var store = loadStore();
+  var session = null;
+
+  function t(k, vars) {
+    var s = (T[lang] && T[lang][k]) || T.en[k] || k;
+    if (vars) Object.keys(vars).forEach(function (v) { s = s.replace('{' + v + '}', vars[v]); });
+    return s;
+  }
+  function L(obj) { return obj ? (obj[lang] || obj.en) : ''; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function cardQ(c) { return lang === 'af' && c.qAf ? c.qAf : c.q; }
+  function cardA(c) { return lang === 'af' && c.aAf ? c.aAf : c.a; }
+  function icons() { if (window.lucide) lucide.createIcons(); }
+
+  // ── Progress store ────────────────────────────────────────────────
+  function loadStore() {
+    try {
+      var s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+      if (s && s.cards) return s;
+    } catch (e) {}
+    return { v: 1, cards: {} };
+  }
+  function saveStore() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+  function rec(key) { return store.cards[key]; }
+  function isDue(r, now) { return r && r.due <= now; }
+  function isWeak(r) { return r && r.lapses > 0 && r.box <= 2; }
+
+  // ── Loading ───────────────────────────────────────────────────────
+  function load() {
+    fetch(BASE + 'manifest.json').then(function (r) { return r.json(); }).then(function (m) {
+      groups = m.groups;
+      return Promise.all(groups.map(function (g) {
+        return fetch(BASE + g.file).then(function (r) { return r.json(); }).then(function (d) { g.decks = d.decks; });
+      }));
+    }).then(function () {
+      groups.forEach(function (g) {
+        g.decks.forEach(function (d) {
+          d.cards.forEach(function (c) { c.key = g.id + ':' + d.lesson + ':' + c.id; });
+          decks.push({ key: g.path + '/' + d.lesson, group: g, deck: d });
+        });
+        var sk = g.grade + '|' + g.subject.en;
+        var sub = subjects.filter(function (s) { return s.key === sk; })[0];
+        if (!sub) { sub = { key: sk, grade: g.grade, label: g.subject, decks: [] }; subjects.push(sub); }
+      });
+      decks.forEach(function (x) {
+        subjects.filter(function (s) { return s.key === x.group.grade + '|' + x.group.subject.en; })[0].decks.push(x);
+      });
+      applyParams();
+      renderSetup();
+    }).catch(function () {
+      $('topicList').innerHTML = '<div class="mm-empty">' + esc(t('loadErr')) + '</div>';
+    });
+  }
+
+  // ?lesson=science-sage/gr12/physics/doppler-effect opens on that one topic
+  function applyParams() {
+    var p = new URLSearchParams(location.search).get('lesson');
+    var hit = p && decks.filter(function (x) { return x.key === p.replace(/^\/+/, '').replace(/(\.af)?\.html$/, ''); })[0];
+    if (hit) {
+      state.subject = subjects.filter(function (s) { return s.decks.indexOf(hit) >= 0; })[0].key;
+      state.selected = {}; state.selected[hit.key] = true;
+      state.from = hit;
+    } else {
+      state.subject = subjects[0] && subjects[0].key;
+      selectScope();
+    }
+  }
+
+  function currentSubject() { return subjects.filter(function (s) { return s.key === state.subject; })[0]; }
+  function inScope(x) {
+    var d = x.deck;
+    if (state.scope === 'all') return true;
+    if (state.scope[0] === 'p') return d.papers.indexOf(+state.scope.slice(1)) >= 0;
+    return d.term === +state.scope.slice(1);
+  }
+  function scopeDecks() { var s = currentSubject(); return s ? s.decks.filter(inScope) : []; }
+  function selectScope() {
+    state.selected = {};
+    scopeDecks().forEach(function (x) { state.selected[x.key] = true; });
+  }
+  function selectedCards() {
+    var out = [];
+    scopeDecks().forEach(function (x) {
+      if (state.selected[x.key]) x.deck.cards.forEach(function (c) { out.push({ card: c, x: x }); });
+    });
+    return out;
+  }
+
+  // ── Setup view ────────────────────────────────────────────────────
+  function chip(label, pressed, onClick) {
+    var b = document.createElement('button');
+    b.className = 'mm-chip'; b.type = 'button';
+    b.textContent = label; b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function renderSetup() {
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+    var sc = $('subjectChips'); sc.innerHTML = '';
+    subjects.forEach(function (s) {
+      sc.appendChild(chip((lang === 'af' ? 'Gr ' : 'Gr ') + s.grade + ' ' + L(s.label), s.key === state.subject, function () {
+        state.subject = s.key; state.scope = 'all'; state.from = null; selectScope(); renderSetup();
+      }));
+    });
+
+    var sub = currentSubject();
+    var scopes = ['all'];
+    if (sub) {
+      var papers = {}, terms = {};
+      sub.decks.forEach(function (x) { x.deck.papers.forEach(function (p) { papers[p] = 1; }); terms[x.deck.term] = 1; });
+      Object.keys(papers).sort().forEach(function (p) { scopes.push('p' + p); });
+      Object.keys(terms).sort().forEach(function (n) { scopes.push('t' + n); });
+    }
+    var pc = $('scopeChips'); pc.innerHTML = '';
+    scopes.forEach(function (s) {
+      pc.appendChild(chip(s === 'all' ? t('all') : t(s), state.scope === s && !state.from, function () {
+        state.scope = s; state.from = null; selectScope(); renderSetup();
+      }));
+    });
+
+    var fb = $('fromBanner');
+    if (state.from) {
+      fb.innerHTML = '<i data-lucide="book-open" style="width:16px;height:16px"></i><span>' + t('from', { t: esc(L(state.from.deck.title)) }) + '</span>';
+      var all = document.createElement('button');
+      all.className = 'mm-link'; all.textContent = t('showAll');
+      all.addEventListener('click', function () { state.from = null; state.scope = 'all'; selectScope(); renderSetup(); });
+      fb.appendChild(all);
+      fb.classList.remove('hidden');
+    } else fb.classList.add('hidden');
+
+    renderTopics();
+    renderStats();
+    icons();
+  }
+
+  function renderTopics() {
+    var list = $('topicList'); list.innerHTML = '';
+    var ds = scopeDecks();
+    if (!ds.length) { list.innerHTML = '<div class="mm-empty">' + esc(t('noTopics')) + '</div>'; }
+    var lastPart = null, now = Date.now();
+    var multiPart = ds.some(function (x) { return x.group !== ds[0].group; });
+    ds.forEach(function (x) {
+      if (multiPart && x.group !== lastPart) {
+        var h = document.createElement('div'); h.className = 'mm-part'; h.textContent = L(x.group.part);
+        list.appendChild(h); lastPart = x.group;
+      }
+      var n = x.deck.cards.length;
+      var m = x.deck.cards.filter(function (c) { var r = rec(c.key); return r && r.box >= MASTERED; }).length;
+      var lab = document.createElement('label'); lab.className = 'mm-topic';
+      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!state.selected[x.key];
+      cb.addEventListener('change', function () { state.selected[x.key] = cb.checked; renderStats(); });
+      var name = document.createElement('span');
+      name.innerHTML = '<span class="mm-topic-name">' + esc(L(x.deck.title)) + '</span><span class="mm-topic-meta">' +
+        esc(t('cards', { n: n })) + ' · ' + esc(t('mastered', { n: m })) + ' · ' + esc(t('t' + x.deck.term)) + '</span>';
+      var meter = document.createElement('span'); meter.className = 'mm-meter';
+      meter.setAttribute('aria-hidden', 'true');
+      meter.innerHTML = '<span style="width:' + Math.round(100 * m / n) + '%"></span>';
+      lab.appendChild(cb); lab.appendChild(name); lab.appendChild(meter);
+      list.appendChild(lab);
+    });
+  }
+
+  function counts() {
+    var now = Date.now(), c = { all: 0, due: 0, fresh: 0, weak: 0, mastered: 0 };
+    selectedCards().forEach(function (o) {
+      var r = rec(o.card.key); c.all++;
+      if (!r) c.fresh++; else if (isDue(r, now)) c.due++;
+      if (isWeak(r)) c.weak++;
+      if (r && r.box >= MASTERED) c.mastered++;
+    });
+    return c;
+  }
+
+  function renderStats() {
+    var c = counts(), selN = 0, tot = scopeDecks().length;
+    scopeDecks().forEach(function (x) { if (state.selected[x.key]) selN++; });
+    $('topicCount').textContent = t('topicsSel', { n: selN, t: tot });
+    $('stats').innerHTML = [['due', 'stDue'], ['fresh', 'stNew'], ['weak', 'stWeak'], ['mastered', 'stMastered']].map(function (p) {
+      return '<div class="mm-stat"><b>' + c[p[0]] + '</b><span>' + esc(t(p[1])) + '</span></div>';
+    }).join('');
+    var studyN = c.due + Math.min(c.fresh, NEW_PER_SESSION);
+    setBtn('btnStudy', studyN ? t('study', { n: studyN }) : t('studyNone'), !studyN);
+    setBtn('btnWeak', t('weak', { n: c.weak }), !c.weak);
+    setBtn('btnShuffle', t('shuffle'), !c.all);
+    $('btnPrintCards').disabled = $('btnPrintList').disabled = !c.all;
+  }
+  function setBtn(id, label, disabled) { var b = $(id); b.querySelector('span').textContent = label; b.disabled = disabled; }
+
+  // ── Study ─────────────────────────────────────────────────────────
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+
+  function start(mode) {
+    var now = Date.now(), all = selectedCards(), q;
+    if (mode === 'weak') q = shuffle(all.filter(function (o) { return isWeak(rec(o.card.key)); }));
+    else if (mode === 'shuffle') q = shuffle(all.slice());
+    else {
+      var due = all.filter(function (o) { return isDue(rec(o.card.key), now); });
+      var fresh = all.filter(function (o) { return !rec(o.card.key); });
+      // overdue cards first, then new cards in lesson order
+      due.sort(function (a, b) { return rec(a.card.key).due - rec(b.card.key).due; });
+      q = due.concat(fresh.slice(0, NEW_PER_SESSION));
+    }
+    if (!q.length) return;
+    session = { mode: mode, queue: q, pos: 0, total: q.length, seen: {}, tally: [0, 0, 0], repeats: {} };
+    show('viewStudy');
+    renderCard();
+  }
+
+  function renderCard() {
+    var o = session.queue[session.pos];
+    session.flipped = false;
+    $('cardTopic').textContent = L(o.x.deck.title);
+    $('cardQ').textContent = cardQ(o.card);
+    $('cardA').textContent = cardA(o.card);
+    $('cardA').classList.add('hidden');
+    $('rates').classList.add('hidden');
+    $('cardHint').textContent = t('tapFlip');
+    var done = Object.keys(session.seen).length;
+    $('studyCount').textContent = t('cardOf', { i: Math.min(done + 1, session.total), n: session.total });
+    $('studyBar').style.width = Math.round(100 * done / session.total) + '%';
+    var r = rec(o.card.key), nb = Math.min(5, (r ? r.box : 0) + 1);
+    $('goodSub').textContent = INTERVALS[nb] === 1 ? t('inDay') : t('inDays', { n: INTERVALS[nb] });
+    $('card').focus({ preventScroll: true });
+  }
+
+  function flip() {
+    if (!session || session.flipped) return;
+    session.flipped = true;
+    $('cardA').classList.remove('hidden');
+    $('rates').classList.remove('hidden');
+    $('cardHint').textContent = t('tapRate');
+  }
+
+  function rate(n) {
+    if (!session || !session.flipped) return;
+    var o = session.queue[session.pos], k = o.card.key, now = Date.now();
+    var r = rec(k) || { box: 0, due: now, lapses: 0, reviews: 0 };
+    r.reviews++; r.last = now;
+    if (n === 0) { r.box = 0; r.lapses++; r.due = now; }
+    else if (n === 1) { r.box = Math.max(1, Math.min(r.box, 2)); r.due = now + DAY; }
+    else { r.box = Math.min(5, r.box + 1); r.due = now + INTERVALS[r.box] * DAY; }
+    store.cards[k] = r; saveStore();
+    if (!session.seen[k]) { session.seen[k] = true; session.tally[n]++; }
+    // a missed card comes back a few cards later, at most twice per session
+    if (n === 0 && (session.repeats[k] || 0) < 2) {
+      session.repeats[k] = (session.repeats[k] || 0) + 1;
+      session.queue.splice(Math.min(session.queue.length, session.pos + 4), 0, o);
+    }
+    session.pos++;
+    if (session.pos >= session.queue.length) finish(); else renderCard();
+  }
+
+  function finish() {
+    var s = session; session = null;
+    $('doneText').textContent = t('doneText', { n: s.total });
+    $('doneStats').innerHTML = [[2, 'dKnew'], [1, 'dUnsure'], [0, 'dMissed']].map(function (p) {
+      return '<div class="mm-stat"><b>' + s.tally[p[0]] + '</b><span>' + esc(t(p[1])) + '</span></div>';
+    }).join('');
+    show('viewDone');
+  }
+
+  function show(id) {
+    ['viewSetup', 'viewStudy', 'viewDone'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
+    if (id === 'viewSetup') renderSetup();
+    window.scrollTo(0, 0);
+    icons();
+  }
+
+  // ── Print ─────────────────────────────────────────────────────────
+  function printCards() {
+    var cards = selectedCards(), per = 8, sheets = Math.ceil(cards.length / per), html = '';
+    var subj = currentSubject();
+    for (var s = 0; s < sheets; s++) {
+      var chunk = cards.slice(s * per, s * per + per);
+      while (chunk.length < per) chunk.push(null);
+      var head = '<div class="pp-head"><span>' + esc(t('printTitle') + ' · Gr ' + subj.grade + ' ' + L(subj.label)) + '</span><span>' +
+        esc(t('printSheet', { i: s + 1, n: sheets })) + ' · ';
+      html += '<div class="pp-page">' + head + esc(t('printQ')) + '</span></div><div class="pp-grid">' +
+        chunk.map(function (o, i) { return ppCard(o, s * per + i + 1, 'q'); }).join('') + '</div></div>';
+      // back of the sheet: swap the two columns of every row so a long-edge
+      // duplex print puts each answer directly behind its question
+      var back = [];
+      for (var i = 0; i < per; i += 2) { back.push(chunk[i + 1], chunk[i]); }
+      html += '<div class="pp-page">' + head + esc(t('printA')) + '</span></div><div class="pp-grid">' +
+        back.map(function (o, i) { var idx = s * per + (i % 2 ? i - 1 : i + 1) + 1; return ppCard(o, idx, 'a'); }).join('') + '</div></div>';
+    }
+    doPrint(html);
+  }
+  function ppCard(o, num, side) {
+    if (!o) return '<div class="pp-card"></div>';
+    return '<div class="pp-card pp-' + side + '"><div class="pp-topic">' + esc(L(o.x.deck.title)) + '</div><div class="pp-text">' +
+      esc(side === 'q' ? cardQ(o.card) : cardA(o.card)) + '</div><div class="pp-num">' + num + '</div></div>';
+  }
+  function printList() {
+    var subj = currentSubject(), html = '<div class="pp-list"><h1>' + esc(t('printTitle') + ' · Gr ' + subj.grade + ' ' + L(subj.label)) + '</h1>' +
+      '<p class="pp-sub">' + esc(state.scope === 'all' ? t('all') : t(state.scope)) + '</p>';
+    scopeDecks().forEach(function (x) {
+      if (!state.selected[x.key]) return;
+      html += '<h2>' + esc(L(x.deck.title)) + '</h2><table>' + x.deck.cards.map(function (c) {
+        return '<tr><td>' + esc(cardQ(c)) + '</td><td>' + esc(cardA(c)) + '</td></tr>';
+      }).join('') + '</table>';
+    });
+    doPrint(html + '</div>');
+  }
+  function doPrint(html) { $('mmPrint').innerHTML = html; window.print(); }
+
+  // ── Wiring ────────────────────────────────────────────────────────
+  $('btnAll').addEventListener('click', function () { selectScope(); state.from = null; renderSetup(); });
+  $('btnNone').addEventListener('click', function () { state.selected = {}; state.from = null; renderSetup(); });
+  $('btnStudy').addEventListener('click', function () { start('due'); });
+  $('btnWeak').addEventListener('click', function () { start('weak'); });
+  $('btnShuffle').addEventListener('click', function () { start('shuffle'); });
+  $('btnPrintCards').addEventListener('click', printCards);
+  $('btnPrintList').addEventListener('click', printList);
+  $('card').addEventListener('click', flip);
+  $('rates').addEventListener('click', function (e) { var b = e.target.closest('[data-rate]'); if (b) rate(+b.getAttribute('data-rate')); });
+  $('btnEnd').addEventListener('click', function () { if (session && Object.keys(session.seen).length) finish(); else { session = null; show('viewSetup'); } });
+  $('btnAgain').addEventListener('click', function () { show('viewSetup'); start('due'); });
+  $('btnBack').addEventListener('click', function () { show('viewSetup'); });
+  document.addEventListener('keydown', function (e) {
+    if (!session || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === ' ' || e.key === 'Enter') { if (!session.flipped) { e.preventDefault(); flip(); } }
+    else if (e.key === '1' || e.key === '2' || e.key === '3') rate(+e.key - 1);
+  });
+
+  if (window.MLLang) MLLang.mount('mlLangToggle', { onChange: function (next) {
+    lang = next; document.documentElement.lang = next;
+    if (session) renderCard(); else if (!$('viewSetup').classList.contains('hidden')) renderSetup();
+    else document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+  } });
+  document.documentElement.lang = lang;
+  // the bar is transparent at the top of the page and solid once scrolled
+  var nav = $('site-nav');
+  var syncNav = function () { nav.classList.toggle('is-stuck', window.scrollY > 8); };
+  syncNav();
+  window.addEventListener('scroll', syncNav, { passive: true });
+  icons();
+  load();
+})();
+</script>
+<script src="/contact-button.js" defer></script>
+</body>
+</html>

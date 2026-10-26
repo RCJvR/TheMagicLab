@@ -557,6 +557,15 @@
         </div>
       </div>
 
+      <!-- Memory Mirror -->
+      <div class="class-panel">
+        <div class="class-panel-text">
+          <div class="class-panel-title" style="display:flex;align-items:center;gap:8px;"><i data-lucide="layers" style="width:16px;height:16px;"></i>Memory Mirror</div>
+          <div class="class-panel-sub" id="mm-due-sub">Flashcards for exam revision</div>
+        </div>
+        <a class="class-join-btn" href="memory-mirror.html" style="text-decoration:none;display:inline-flex;align-items:center;">Revise</a>
+      </div>
+
       <!-- Friends + Lesson Invites (students only) -->
       <div id="social-section" style="display:none;">
         <div class="section-hdr">Friends</div>
@@ -1046,6 +1055,12 @@
       document.getElementById('game-code-input')?.addEventListener('keydown', e => {
         if (e.key === 'Enter') document.getElementById('game-join-btn').click();
       });
+      // Memory Mirror: how many cards this browser has due (progress is local)
+      try {
+        const mm = JSON.parse(localStorage.getItem('ml-memory-mirror-v1') || 'null');
+        const due = mm ? Object.values(mm.cards).filter(r => r.due <= Date.now()).length : 0;
+        if (due) document.getElementById('mm-due-sub').textContent = `${due} card${due === 1 ? '' : 's'} due for review`;
+      } catch (e) {}
       lucide.createIcons();
 
       // Add-friend-by-code wiring
