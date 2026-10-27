@@ -92,6 +92,14 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
 }
 .seg button:hover { color: var(--paper); border-color: var(--paper); }
 .seg button[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tgroup { font-size: 12px; font-weight: 700; color: var(--text-3); margin: 10px 0 7px; }
+.tmark { font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 99px; background: color-mix(in srgb, var(--tool) 22%, transparent); color: var(--text); }
+.seg button[aria-pressed="true"] .tmark { background: var(--ink-900); color: var(--paper); }
+.seg .tdel { padding: 7px 8px; margin-left: -4px; }
+.seg .tdel i { width: 13px; height: 13px; }
+.savebox { display: flex; gap: 8px; }
+.savebox .ml-btn { padding: 8px 14px; font-size: 14px; flex-shrink: 0; }
+.savebox .ml-btn i { width: 15px; height: 15px; }
 .swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.35); display: inline-block; }
 .mode:focus-visible, .seg button:focus-visible, .check input:focus-visible { outline: 2px solid var(--tool); outline-offset: 2px; }
 
@@ -225,14 +233,19 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             <label class="check"><input type="checkbox" data-k="sound"><span data-t="cSound">Chime when time is up</span></label>
           </div>
 
-          <div class="field" style="margin-bottom:8px"><span data-t="fTheme">Colour theme</span></div>
-          <div class="seg" id="themes"></div>
+          <div class="field" style="margin-bottom:4px"><span data-t="fTheme">Colour theme</span></div>
+          <div id="themes"></div>
           <div class="row" style="--n:5">
             <label class="field"><span data-t="cBg">Background</span><input class="inp" type="color" data-k="look.bg"></label>
             <label class="field"><span data-t="cFg">Text</span><input class="inp" type="color" data-k="look.fg"></label>
             <label class="field"><span data-t="cAccent">Accent</span><input class="inp" type="color" data-k="look.accent"></label>
             <label class="field"><span data-t="cWarn">Warning</span><input class="inp" type="color" data-k="look.warnc"></label>
             <label class="field"><span data-t="cFace">Clock face</span><input class="inp" type="color" data-k="look.face"></label>
+          </div>
+          <div class="field" style="margin-bottom:14px">
+            <label for="themeName" data-t="fSaveTheme" style="font-size:12.5px;font-weight:700;color:var(--text-2)">Save these colours as a theme</label>
+            <div class="savebox"><input class="inp" id="themeName" type="text" maxlength="30" data-tp="pThemeName"><button class="ml-btn ml-btn--ghost" type="button" id="btnSaveTheme"><i data-lucide="bookmark-plus"></i><span data-t="save">Save</span></button></div>
+            <small data-t="fSaveNote">For example your school's colours. Saved in this browser.</small>
           </div>
           <div class="row" style="--n:1">
             <label class="field"><span data-t="fFont">Font</span>
@@ -288,13 +301,36 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false }
   };
+  // Every preset keeps text at 7:1 or better against the background and the
+  // clock face, the warning colour at 4.5:1 and the accent at 3:1, so a timer
+  // stays readable from the back of a classroom. Fixed-date South African
+  // days carry their date, so the one coming up can be pointed out.
   var THEMES = [
-    { id: 'night', en: 'Night', af: 'Nag', bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418' },
-    { id: 'day', en: 'Day', af: 'Dag', bg: '#f7f5f0', fg: '#14161a', accent: '#c2185b', warnc: '#b45309', face: '#ffffff' },
-    { id: 'contrast', en: 'High contrast', af: 'Hoë kontras', bg: '#000000', fg: '#ffff00', accent: '#ffffff', warnc: '#ff5c5c', face: '#000000' },
-    { id: 'chalk', en: 'Chalkboard', af: 'Swartbord', bg: '#1f3a2d', fg: '#f4f1e8', accent: '#f2d16b', warnc: '#ff9e7a', face: '#264837' },
-    { id: 'ocean', en: 'Ocean', af: 'See', bg: '#0b1d33', fg: '#e8f1fb', accent: '#4fb3ff', warnc: '#ffb347', face: '#10294a' }
+    { g: 'everyday', id: 'night', en: "Night", af: "Nag", bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418' },
+    { g: 'everyday', id: 'day', en: "Day", af: "Dag", bg: '#f7f5f0', fg: '#14161a', accent: '#c2185b', warnc: '#b45309', face: '#ffffff' },
+    { g: 'everyday', id: 'contrast', en: "High contrast", af: "Hoë kontras", bg: '#000000', fg: '#ffff00', accent: '#ffffff', warnc: '#ff5c5c', face: '#000000' },
+    { g: 'everyday', id: 'chalk', en: "Chalkboard", af: "Swartbord", bg: '#1f3a2d', fg: '#f4f1e8', accent: '#f2d16b', warnc: '#ff9e7a', face: '#264837' },
+    { g: 'everyday', id: 'ocean', en: "Ocean", af: "See", bg: '#0b1d33', fg: '#e8f1fb', accent: '#4fb3ff', warnc: '#ffb347', face: '#10294a' },
+    { g: 'temp', id: 'hot', en: "Hot", af: "Warm", bg: '#2a0a05', fg: '#fff3e6', accent: '#ff6b1a', warnc: '#ffd23f', face: '#3a120a' },
+    { g: 'temp', id: 'cold', en: "Cold", af: "Koud", bg: '#06182b', fg: '#eaf6ff', accent: '#7fd6ff', warnc: '#ffb4a2', face: '#0b2440' },
+    { g: 'season', id: 'summer', en: "Summer", af: "Somer", bg: '#fff8e7', fg: '#1d2a33', accent: '#c25e00', warnc: '#c62828', face: '#ffffff' },
+    { g: 'season', id: 'autumn', en: "Autumn", af: "Herfs", bg: '#2b1810', fg: '#f6e7d7', accent: '#e8853a', warnc: '#f2c14e', face: '#3a2216' },
+    { g: 'season', id: 'winter', en: "Winter", af: "Winter", bg: '#e9eef4', fg: '#1b2733', accent: '#2f5f96', warnc: '#b3261e', face: '#ffffff' },
+    { g: 'season', id: 'spring', en: "Spring", af: "Lente", bg: '#f3f8ee', fg: '#1f2d1d', accent: '#c2386c', warnc: '#a14a00', face: '#ffffff' },
+    { g: 'holiday', id: 'newyear', en: "New Year", af: "Nuwejaar", bg: '#0b0b14', fg: '#f5f1e6', accent: '#d4af37', warnc: '#ff7a7a', face: '#15152a', date: '01-01' },
+    { g: 'holiday', id: 'valentine', en: "Valentine's Day", af: "Valentynsdag", bg: '#2b0a14', fg: '#ffeef3', accent: '#ff5c87', warnc: '#ffd166', face: '#3d1020', date: '02-14' },
+    { g: 'holiday', id: 'easter', en: "Easter", af: "Paasfees", bg: '#f8f3fb', fg: '#2a2233', accent: '#7a52b3', warnc: '#b43c0c', face: '#ffffff' },
+    { g: 'holiday', id: 'freedom', en: "Freedom Day", af: "Vryheidsdag", bg: '#001b6e', fg: '#ffffff', accent: '#ffb612', warnc: '#ff7a6e', face: '#062684', date: '04-27' },
+    { g: 'holiday', id: 'youth', en: "Youth Day", af: "Jeugdag", bg: '#141414', fg: '#ffffff', accent: '#ff8c1a', warnc: '#ff6b6b', face: '#222222', date: '06-16' },
+    { g: 'holiday', id: 'mandela', en: "Mandela Day", af: "Mandeladag", bg: '#1a1206', fg: '#fff8ec', accent: '#f2a900', warnc: '#ff7b6b', face: '#2a1d0a', date: '07-18' },
+    { g: 'holiday', id: 'women', en: "Women's Day", af: "Vrouedag", bg: '#2a0f2a', fg: '#fbeefa', accent: '#d38ddb', warnc: '#ffb347', face: '#3a1640', date: '08-09' },
+    { g: 'holiday', id: 'heritage', en: "Heritage Day", af: "Erfenisdag", bg: '#0d1b12', fg: '#fff8ea', accent: '#ffb612', warnc: '#ff6a5c', face: '#13281a', date: '09-24' },
+    { g: 'holiday', id: 'diwali', en: "Diwali", af: "Diwali", bg: '#1c0b2e', fg: '#fff3d6', accent: '#ffb000', warnc: '#ff7a6b', face: '#2a1245' },
+    { g: 'holiday', id: 'eid', en: "Eid", af: "Eid", bg: '#0b2a26', fg: '#f4efe2', accent: '#d9b44a', warnc: '#ff8a65', face: '#12382f' },
+    { g: 'holiday', id: 'christmas', en: "Christmas", af: "Kersfees", bg: '#0e2a1c', fg: '#fbf6ee', accent: '#ff4d5e', warnc: '#f2c14e', face: '#143a27', date: '12-25' }
   ];
+  var GROUPS = [['everyday', 'gEveryday'], ['temp', 'gTemp'], ['season', 'gSeason'], ['holiday', 'gHoliday'], ['mine', 'gMine']];
+  var MINE_KEY = 'ml-timer-talisman-themes-v1', COLOURS = ['bg', 'fg', 'accent', 'warnc', 'face'];
   var CD_PRESETS = [1, 5, 10, 15, 30, 45, 60, 90];
   var T = {
     en: {
@@ -307,7 +343,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fWarnEx: 'Warn when this many minutes are left', fInfo: 'Additional information', fTitle: 'Heading',
       fWarn: 'Warning colour when this many minutes are left', fWarnNote: '0 turns the warning off.', fShowDate: 'Show the date',
       sLook: 'Display', dDigital: 'Digital', dAnalogue: 'Analogue', dBoth: 'Both', cSecs: 'Show seconds', cH24: '24-hour clock',
-      cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme',
+      cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme', gEveryday: 'Everyday', gTemp: 'Hot and cold', gSeason: 'Seasons', gHoliday: 'Holidays and special days', gMine: 'My themes', now: 'now', soon: 'soon', fSaveTheme: 'Save these colours as a theme', pThemeName: 'e.g. School colours', fSaveNote: "For example your school's colours. Saved in this browser.", save: 'Save', del: 'Delete {n}', saveFull: 'You can keep up to 8 themes. Delete one first.',
       cBg: 'Background', cFg: 'Text', cAccent: 'Accent', cWarn: 'Warning', cFace: 'Clock face', fFont: 'Font', fSize: 'Timer size', fTsize: 'Text size',
       fLang: 'Language on the timer', pLabel: 'Live preview', defaults: 'Reset settings', open: 'Open in a new tab', copy: 'Copy link', copied: 'Link copied',
       keys: 'In the timer: <kbd>Space</kbd> start or pause, <kbd>R</kbd> reset, <kbd>F</kbd> full screen, <kbd>+</kbd> <kbd>−</kbd> add or take off a minute, <kbd>L</kbd> lap. The controls hide while the timer runs; move the mouse to bring them back.',
@@ -325,7 +361,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fWarnEx: 'Waarsku wanneer soveel minute oor is', fInfo: 'Bykomende inligting', fTitle: 'Opskrif',
       fWarn: 'Waarskuwingskleur wanneer soveel minute oor is', fWarnNote: '0 skakel die waarskuwing af.', fShowDate: 'Wys die datum',
       sLook: 'Vertoning', dDigital: 'Digitaal', dAnalogue: 'Analoog', dBoth: 'Albei', cSecs: 'Wys sekondes', cH24: '24-uur-horlosie',
-      cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema',
+      cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema', gEveryday: 'Alledaags', gTemp: 'Warm en koud', gSeason: 'Seisoene', gHoliday: 'Vakansie- en spesiale dae', gMine: 'My temas', now: 'nou', soon: 'binnekort', fSaveTheme: "Stoor hierdie kleure as 'n tema", pThemeName: 'bv. Skoolkleure', fSaveNote: 'Byvoorbeeld jou skool se kleure. Gestoor in hierdie blaaier.', save: 'Stoor', del: 'Skrap {n}', saveFull: 'Jy kan tot 8 temas hou. Skrap eers een.',
       cBg: 'Agtergrond', cFg: 'Teks', cAccent: 'Aksent', cWarn: 'Waarskuwing', cFace: 'Wyserplaat', fFont: 'Lettertipe', fSize: 'Grootte van tydhouer', fTsize: 'Teksgrootte',
       fLang: 'Taal op die tydhouer', pLabel: 'Lewendige voorskou', defaults: 'Herstel instellings', open: "Maak oop in 'n nuwe oortjie", copy: 'Kopieer skakel', copied: 'Skakel gekopieer',
       keys: 'In die tydhouer: <kbd>Spasie</kbd> begin of pouseer, <kbd>R</kbd> herstel, <kbd>F</kbd> volskerm, <kbd>+</kbd> <kbd>−</kbd> tel \'n minuut by of af, <kbd>L</kbd> tussentyd. Die knoppies verdwyn terwyl die tydhouer loop; beweeg die muis om hulle terug te bring.',
@@ -368,15 +404,41 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     $('sizeRange').disabled = !!cfg.look.fit;
     renderThemes(); renderPresets();
   }
+  function mine() { try { return JSON.parse(localStorage.getItem(MINE_KEY) || '[]'); } catch (e) { return []; } }
+  function saveMine(list) { try { localStorage.setItem(MINE_KEY, JSON.stringify(list)); } catch (e) {} }
+  // the season now (southern hemisphere) and fixed-date days in the next two weeks
+  function marker(th) {
+    var now = new Date(), mo = now.getMonth();
+    if (th.g === 'season') return th.id === ['summer', 'autumn', 'winter', 'spring'][Math.floor(((mo + 1) % 12) / 3)] ? t('now') : '';
+    if (!th.date) return '';
+    var p = th.date.split('-'), d = new Date(now.getFullYear(), +p[0] - 1, +p[1]), days = (d - now) / 864e5;
+    if (days < -1) { d.setFullYear(d.getFullYear() + 1); days = (d - now) / 864e5; }
+    return days >= -1 && days <= 14 ? t('soon') : '';
+  }
   function renderThemes() {
     var box = $('themes'); box.innerHTML = '';
-    THEMES.forEach(function (th) {
-      var b = document.createElement('button'); b.type = 'button';
-      var on = ['bg', 'fg', 'accent', 'warnc', 'face'].every(function (k) { return cfg.look[k].toLowerCase() === th[k]; });
-      b.setAttribute('aria-pressed', on);
-      b.innerHTML = '<span class="swatch" style="background:' + th.bg + ';box-shadow:inset 0 0 0 4px ' + th.bg + ', inset 0 0 0 7px ' + th.accent + '"></span>' + th[uiLang];
-      b.addEventListener('click', function () { ['bg', 'fg', 'accent', 'warnc', 'face'].forEach(function (k) { cfg.look[k] = th[k]; }); changed(true); });
-      box.appendChild(b);
+    var all = THEMES.concat(mine().map(function (m) { m.g = 'mine'; return m; }));
+    GROUPS.forEach(function (gr) {
+      var list = all.filter(function (th) { return th.g === gr[0]; });
+      if (!list.length) return;
+      var h = document.createElement('div'); h.className = 'tgroup'; h.textContent = t(gr[1]); box.appendChild(h);
+      var seg = document.createElement('div'); seg.className = 'seg'; box.appendChild(seg);
+      list.forEach(function (th) {
+        var b = document.createElement('button'); b.type = 'button';
+        b.setAttribute('aria-pressed', COLOURS.every(function (k) { return cfg.look[k].toLowerCase() === th[k].toLowerCase(); }));
+        var name = th.name || th[uiLang] || th.en, mk = th.g === 'mine' ? '' : marker(th);
+        b.innerHTML = '<span class="swatch" style="background:' + th.bg + ';box-shadow:inset 0 0 0 4px ' + th.bg + ', inset 0 0 0 7px ' + th.accent + '"></span><span></span>' + (mk ? '<span class="tmark">' + mk + '</span>' : '');
+        b.children[1].textContent = name;
+        b.addEventListener('click', function () { COLOURS.forEach(function (k) { cfg.look[k] = th[k]; }); changed(true); });
+        seg.appendChild(b);
+        if (th.g === 'mine') {
+          var x = document.createElement('button'); x.type = 'button'; x.className = 'tdel';
+          x.setAttribute('aria-label', t('del').replace('{n}', name)); x.title = x.getAttribute('aria-label');
+          x.innerHTML = '<i data-lucide="x"></i>';
+          x.addEventListener('click', function () { saveMine(mine().filter(function (m) { return m.id !== th.id; })); renderThemes(); icons(); });
+          seg.appendChild(x);
+        }
+      });
     });
   }
   function renderPresets() {
@@ -442,6 +504,14 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   });
   document.querySelectorAll('#displaySeg button').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.display = b.getAttribute('data-v'); changed(true); });
+  });
+  $('btnSaveTheme').addEventListener('click', function () {
+    var name = $('themeName').value.trim(), list = mine();
+    if (!name) { $('themeName').focus(); return; }
+    if (list.length >= 8) { alert(t('saveFull')); return; }
+    var th = { id: 'u' + Date.now(), name: name };
+    COLOURS.forEach(function (k) { th[k] = cfg.look[k]; });
+    list.push(th); saveMine(list); $('themeName').value = ''; renderThemes(); icons();
   });
   $('btnOpen').addEventListener('click', function () { window.open(link(), '_blank', 'noopener'); });
   $('btnCopy').addEventListener('click', function () {
