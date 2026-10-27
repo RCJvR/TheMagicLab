@@ -328,8 +328,12 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     { g: 'holiday', id: 'diwali', en: "Diwali", af: "Diwali", bg: '#1c0b2e', fg: '#fff3d6', accent: '#ffb000', warnc: '#ff7a6b', face: '#2a1245' },
     { g: 'holiday', id: 'eid', en: "Eid", af: "Eid", bg: '#0b2a26', fg: '#f4efe2', accent: '#d9b44a', warnc: '#ff8a65', face: '#12382f' },
     { g: 'holiday', id: 'christmas', en: "Christmas", af: "Kersfees", bg: '#0e2a1c', fg: '#fbf6ee', accent: '#ff4d5e', warnc: '#f2c14e', face: '#143a27', date: '12-25' }
+,
+    // school colours, measured from the school's own logo (blue #003b6f, gold #eeae30)
+    { g: 'school', id: 'curro-blue', en: "Curro blue", af: "Curro-blou", bg: '#003b6f', fg: '#ffffff', accent: '#eeae30', warnc: '#ff8f80', face: '#002b52' },
+    { g: 'school', id: 'curro-gold', en: "Curro gold", af: "Curro-goud", bg: '#eeae30', fg: '#002b52', accent: '#003b6f', warnc: '#8a1409', face: '#f6d27e' }
   ];
-  var GROUPS = [['everyday', 'gEveryday'], ['temp', 'gTemp'], ['season', 'gSeason'], ['holiday', 'gHoliday'], ['mine', 'gMine']];
+  var GROUPS = [['everyday', 'gEveryday'], ['temp', 'gTemp'], ['season', 'gSeason'], ['holiday', 'gHoliday'], ['school', 'gSchool'], ['mine', 'gMine']];
   var MINE_KEY = 'ml-timer-talisman-themes-v1', COLOURS = ['bg', 'fg', 'accent', 'warnc', 'face'];
   var CD_PRESETS = [1, 5, 10, 15, 30, 45, 60, 90];
   var T = {
@@ -343,7 +347,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fWarnEx: 'Warn when this many minutes are left', fInfo: 'Additional information', fTitle: 'Heading',
       fWarn: 'Warning colour when this many minutes are left', fWarnNote: '0 turns the warning off.', fShowDate: 'Show the date',
       sLook: 'Display', dDigital: 'Digital', dAnalogue: 'Analogue', dBoth: 'Both', cSecs: 'Show seconds', cH24: '24-hour clock',
-      cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme', gEveryday: 'Everyday', gTemp: 'Hot and cold', gSeason: 'Seasons', gHoliday: 'Holidays and special days', gMine: 'My themes', now: 'now', soon: 'soon', fSaveTheme: 'Save these colours as a theme', pThemeName: 'e.g. School colours', fSaveNote: "For example your school's colours. Saved in this browser.", save: 'Save', del: 'Delete {n}', saveFull: 'You can keep up to 8 themes. Delete one first.',
+      cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme', gEveryday: 'Everyday', gTemp: 'Hot and cold', gSeason: 'Seasons', gHoliday: 'Holidays and special days', gSchool: 'Schools', gMine: 'My themes', now: 'now', soon: 'soon', fSaveTheme: 'Save these colours as a theme', pThemeName: 'e.g. School colours', fSaveNote: "For example your school's colours. Saved in this browser.", save: 'Save', del: 'Delete {n}', saveFull: 'You can keep up to 8 themes. Delete one first.',
       cBg: 'Background', cFg: 'Text', cAccent: 'Accent', cWarn: 'Warning', cFace: 'Clock face', fFont: 'Font', fSize: 'Timer size', fTsize: 'Text size',
       fLang: 'Language on the timer', pLabel: 'Live preview', defaults: 'Reset settings', open: 'Open in a new tab', copy: 'Copy link', copied: 'Link copied',
       keys: 'In the timer: <kbd>Space</kbd> start or pause, <kbd>R</kbd> reset, <kbd>F</kbd> full screen, <kbd>+</kbd> <kbd>−</kbd> add or take off a minute, <kbd>L</kbd> lap. The controls hide while the timer runs; move the mouse to bring them back.',
@@ -361,7 +365,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fWarnEx: 'Waarsku wanneer soveel minute oor is', fInfo: 'Bykomende inligting', fTitle: 'Opskrif',
       fWarn: 'Waarskuwingskleur wanneer soveel minute oor is', fWarnNote: '0 skakel die waarskuwing af.', fShowDate: 'Wys die datum',
       sLook: 'Vertoning', dDigital: 'Digitaal', dAnalogue: 'Analoog', dBoth: 'Albei', cSecs: 'Wys sekondes', cH24: '24-uur-horlosie',
-      cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema', gEveryday: 'Alledaags', gTemp: 'Warm en koud', gSeason: 'Seisoene', gHoliday: 'Vakansie- en spesiale dae', gMine: 'My temas', now: 'nou', soon: 'binnekort', fSaveTheme: "Stoor hierdie kleure as 'n tema", pThemeName: 'bv. Skoolkleure', fSaveNote: 'Byvoorbeeld jou skool se kleure. Gestoor in hierdie blaaier.', save: 'Stoor', del: 'Skrap {n}', saveFull: 'Jy kan tot 8 temas hou. Skrap eers een.',
+      cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema', gEveryday: 'Alledaags', gTemp: 'Warm en koud', gSeason: 'Seisoene', gHoliday: 'Vakansie- en spesiale dae', gSchool: 'Skole', gMine: 'My temas', now: 'nou', soon: 'binnekort', fSaveTheme: "Stoor hierdie kleure as 'n tema", pThemeName: 'bv. Skoolkleure', fSaveNote: 'Byvoorbeeld jou skool se kleure. Gestoor in hierdie blaaier.', save: 'Stoor', del: 'Skrap {n}', saveFull: 'Jy kan tot 8 temas hou. Skrap eers een.',
       cBg: 'Agtergrond', cFg: 'Teks', cAccent: 'Aksent', cWarn: 'Waarskuwing', cFace: 'Wyserplaat', fFont: 'Lettertipe', fSize: 'Grootte van tydhouer', fTsize: 'Teksgrootte',
       fLang: 'Taal op die tydhouer', pLabel: 'Lewendige voorskou', defaults: 'Herstel instellings', open: "Maak oop in 'n nuwe oortjie", copy: 'Kopieer skakel', copied: 'Skakel gekopieer',
       keys: 'In die tydhouer: <kbd>Spasie</kbd> begin of pouseer, <kbd>R</kbd> herstel, <kbd>F</kbd> volskerm, <kbd>+</kbd> <kbd>−</kbd> tel \'n minuut by of af, <kbd>L</kbd> tussentyd. Die knoppies verdwyn terwyl die tydhouer loop; beweeg die muis om hulle terug te bring.',
