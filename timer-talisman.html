@@ -359,6 +359,10 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   function $(id) { return document.getElementById(id); }
   function t(k) { return (T[uiLang] && T[uiLang][k]) || T.en[k] || k; }
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  // An exam date left empty means "today": the box shows today's date and the
+  // timer gets it, and it moves on by itself each day until a date is picked.
+  function today() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function effective() { var c = clone(cfg); if (!c.exam.date) c.exam.date = today(); return c; }
   function merge(a, b) { var o = {}; for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]); return o; }
   function load() {
     var base = clone(DEF); base.lang = uiLang;
@@ -371,9 +375,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   function num(v, lo, hi) { v = Math.round(+v || 0); return Math.max(lo, Math.min(hi, v)); }
   var shareLink = '';
   function makeLink() {
-    TTLink.encode(cfg).then(function (h) { shareLink = new URL('timer-talisman-display.html', location.href).href + '#' + h; });
+    TTLink.encode(effective()).then(function (h) { shareLink = new URL('timer-talisman-display.html', location.href).href + '#' + h; });
   }
-  function link() { return shareLink || new URL('timer-talisman-display.html', location.href).href + '#' + encodeURIComponent(JSON.stringify(cfg)); }
+  function link() { return shareLink || new URL('timer-talisman-display.html', location.href).href + '#' + encodeURIComponent(JSON.stringify(effective())); }
   function icons() { if (window.lucide) lucide.createIcons(); }
 
   // ── Fill the form from cfg ──
@@ -391,6 +395,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     $('sizeRange').disabled = !!cfg.look.fit;
     picker.set(cfg.look.font, uiLang);
     TTSounds.fill($('chimeSel'), cfg.chime.id, uiLang); $('volOut').textContent = cfg.chime.vol + '%';
+    if (!cfg.exam.date) document.querySelector('[data-k="exam.date"]').value = today();
     renderThemes(); renderPresets();
   }
   var picker = TH.fontPicker($('fontPick'), { value: cfg.look.font, lang: uiLang, label: t('fFont'), onPick: function (id) { cfg.look.font = id; changed(false); } });
@@ -425,7 +430,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   function refreshPreview() {
     clearTimeout(pending);
     pending = setTimeout(function () {
-      var f = $('preview'), h = '#' + encodeURIComponent(JSON.stringify(cfg));
+      var f = $('preview'), h = '#' + encodeURIComponent(JSON.stringify(effective()));
       if (f.dataset.ready) f.contentWindow.location.hash = h;
       else { f.src = 'timer-talisman-display.html?preview=1' + h; f.dataset.ready = '1'; }
     }, 150);
@@ -467,6 +472,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   document.querySelectorAll('#displaySeg button').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.display = b.getAttribute('data-v'); changed(true); });
   });
+  // a cleared date box shows today again once you leave it
+  document.querySelector('[data-k="exam.date"]').addEventListener('blur', function () { if (!this.value) this.value = today(); });
   $('chimeSel').addEventListener('change', function () { cfg.chime.id = this.value; TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); changed(false); });
   $('btnPlay').addEventListener('click', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); });
   $('themeSelect').addEventListener('change', function () {

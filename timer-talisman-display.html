@@ -488,10 +488,10 @@ body.hide-cursor { cursor: none; }
   var relayout = false;
   function setDigits(s) {
     if (view.digits === s) return;
-    var cells = /^[0-9:.+ ]+$/.test(s);
-    if ((view.digits || '').length !== s.length || view.cells !== cells) relayout = true;
-    view.digits = s; view.cells = cells;
-    $('digital').innerHTML = cells ? s.replace(/[0-9]/g, '<span class="dc">$&</span>') : esc(s);
+    if ((view.digits || '').length !== s.length) relayout = true;
+    view.digits = s;
+    // every digit gets a slot, whatever surrounds it ("10:52:30 pm", "5 min")
+    $('digital').innerHTML = esc(s).replace(/[0-9]/g, '<span class="dc">$&</span>');
   }
   function measureDigits() {
     var p = document.createElement('span'), mx = 0;
@@ -648,6 +648,9 @@ body.hide-cursor { cursor: none; }
     else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
     else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);
   });
+  // slots are measured from the real font, so measure again once the page's
+  // fonts (Cabinet Grotesk comes from Fontshare) have arrived
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (cfg) { measureDigits(); fit(); } });
   init();
 })();
 </script>
