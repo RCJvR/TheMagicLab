@@ -179,6 +179,8 @@ table.aa-grid textarea.aa-in { min-height: 70px; }
 .aa-pick input { margin-top: 3px; flex: 0 0 auto; }
 .aa-dlg { border: 1px solid var(--line-hard); border-radius: var(--radius-md); background: var(--ink-850); color: var(--text); padding: 0; width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; }
 .aa-dlg::backdrop { background: rgba(0,0,0,0.6); }
+/* the page-wide margin reset also removed a dialog's own auto margins, which centre it */
+.aa-dlg[open] { margin: auto; }
 .aa-dlg-in { padding: var(--space-5); }
 .aa-dlg-h { font-family: var(--font-display); font-weight: 800; font-size: 20px; margin-bottom: var(--space-2); color: var(--paper); }
 .aa-privacy { margin-bottom: var(--space-5); padding: var(--space-4); border: 1px solid var(--line-hard); border-left: 3px solid var(--warn); border-radius: var(--radius-sm); font-size: 13.5px; line-height: 1.65; color: var(--text-2); }
@@ -263,4 +265,61 @@ details.aa-card > summary.aa-sum { cursor: pointer; font-family: var(--font-disp
   #print-area table.aa-cl th { background: #dbe2f3; font-weight: 700; height: 8mm; }
   #print-area table.aa-cl .aa-cl-n { width: 11mm; text-align: center; }
   #print-area table.aa-cl .aa-cl-b { width: 9mm; padding: 0; text-align: center; font-size: 0.75em; }
+}
+
+/* ── classroom tools: tags and rules, big screen, Seat Sorcerer ── */
+.aa-dlg--wide { width: min(760px, calc(100vw - 32px)); }
+.aa-pairbox { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--line); }
+.aa-pairbox h3 { margin-bottom: 2px; }
+.aa-pairs { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.aa-pairs li { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
+.aa-tagtable { max-height: 300px; overflow: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.aa-tagtable table { width: 100%; border-collapse: collapse; }
+.aa-tagtable td { padding: 4px 8px; border-bottom: 1px solid var(--line-soft); font-size: 14px; color: var(--text); }
+.aa-tagtable td:first-child { width: 42%; }
+.aa-warn { margin-top: 8px; font-size: 13.5px; color: var(--warn); }
+.aa-warn:empty { display: none; }
+.aa-pick-name.aa-spinning { color: var(--text-2); }
+
+.aa-big { position: fixed; inset: 0; z-index: 2000; display: flex; flex-direction: column; background: var(--ink-900); color: var(--text); }
+.aa-big-bar { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-bottom: 1px solid var(--line); }
+.aa-big-title { flex: 1; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--paper); }
+.aa-big-body { flex: 1; overflow: auto; padding: 3vmin 4vw; display: flex; flex-direction: column; justify-content: center; }
+.aa-big .aa-pick-stage { border: 0; min-height: 55vh; }
+.aa-big .aa-pick-name { font-size: clamp(60px, 13vw, 240px); }
+.aa-big .aa-groups { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2vmin; margin: 0; }
+.aa-big .aa-group { font-size: clamp(18px, 1.6vmin + 12px, 34px); padding: 2vmin 2.4vmin; }
+.aa-big .aa-group-h { font-size: 0.6em; }
+
+.aa-st-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: var(--space-3); }
+.aa-st-title { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--paper); margin: 0 0 4px; }
+.aa-st-room { margin: var(--space-3) 0; padding: var(--space-3) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.aa-st-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: var(--space-3) 0 4px; }
+.aa-st-tools [aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.aa-st-turn { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-2); margin: 4px 0 var(--space-3); cursor: pointer; }
+.aa-st-turn input { width: 16px; height: 16px; accent-color: var(--paper); }
+.aa-st-front { text-align: center; font-size: 12px; font-weight: 700; color: var(--text-3); padding: 6px; border: 1px dashed var(--line-hard); border-radius: var(--radius-sm); margin: var(--space-3) 0 8px; }
+.aa-st-grid { display: grid; gap: 4px; user-select: none; touch-action: none; }
+.aa-st-cell { all: unset; box-sizing: border-box; position: relative; min-height: 46px; padding: 3px 4px; border-radius: 6px; border: 1px dashed var(--line-soft);
+  display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11.5px; line-height: 1.2; color: var(--text); overflow: hidden; overflow-wrap: anywhere; cursor: pointer; }
+.aa-st-cell.desk { background: var(--ink-800); border: 1px solid var(--line-hard); }
+.aa-st-cell.teacher { border: 1px solid var(--paper); background: rgba(255,255,255,0.08); font-weight: 700; }
+.aa-st-cell.pinned::after { content: ''; position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--warn); }
+.aa-st-cell.clash { border-color: var(--crit); box-shadow: inset 0 0 0 1px var(--crit); }
+.aa-st-cell.sel { outline: 2px solid var(--paper); outline-offset: 1px; }
+.aa-st-cell:focus-visible { outline: 2px solid var(--paper); outline-offset: 1px; }
+.aa-st-unseated { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.aa-st-chip { all: unset; box-sizing: border-box; padding: 5px 11px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); font-size: 13px; color: var(--text-2); cursor: pointer; }
+.aa-st-chip.sel { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.aa-st-chip:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+.aa-big .aa-st-bigwrap { width: 100%; }
+.aa-big .aa-st-grid { gap: 0.8vmin; }
+.aa-big .aa-st-cell { min-height: 7vh; font-size: clamp(12px, 1.2vmin + 6px, 24px); cursor: default; }
+.aa-big .aa-st-front { font-size: 15px; }
+@media print {
+  #print-area .aa-pr-front { text-align: center; font-weight: 700; border: 0.75pt dashed #000; padding: 1.5mm; margin: 3mm 0; }
+  #print-area table.aa-pr-seat { width: 100%; border-collapse: separate; border-spacing: 1.2mm; table-layout: fixed; }
+  #print-area table.aa-pr-seat td { height: 13mm; text-align: center; vertical-align: middle; font-size: 0.95em; padding: 0 1mm; overflow-wrap: anywhere; }
+  #print-area table.aa-pr-seat td.d { border: 0.75pt solid #000; }
+  #print-area table.aa-pr-seat td.t { border: 1.5pt solid #000; font-weight: 700; }
 }

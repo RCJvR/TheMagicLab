@@ -37,7 +37,7 @@
   }
   function shuffle(list) { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-  /* ═══════════ CLASSROOM TOOLS: picker, groups, timer ═══════════ */
+  /* ═══════════ CLASSROOM TOOLS: picker, groups, timer (seating: teacher-seating.js) ═══════════ */
   subTabs('tab-classroom');
 
   // ── random picker ──
@@ -67,16 +67,25 @@
     }
     const winner = pool[rnd(pool.length)];
     used.add(winner);
-    // a short shuffle for suspense, then the answer; reduced motion gets it at once
+    // Spin: names flick past fast, then slow down and land, about 2.5 s in all.
+    // "Straight away", or reduced motion, shows the answer at once.
     const out = $('pk-name'), reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    $('pk-go').disabled = true;
-    let t = 0;
+    if (reduce || $('pk-spin').value === 'quick' || pool.length < 2) { out.textContent = winner; out.classList.remove('aa-spinning'); renderPicker(); return; }
+    $('pk-go').disabled = true; out.classList.add('aa-spinning');
+    const STEPS = 24; let t = 0, last = '';
     const tick = () => {
-      if (reduce || t++ >= 10) { out.textContent = winner; $('pk-go').disabled = false; renderPicker(); return; }
-      out.textContent = pool[rnd(pool.length)];
-      setTimeout(tick, 40 + t * 8);
+      if (t++ >= STEPS) { out.textContent = winner; out.classList.remove('aa-spinning'); $('pk-go').disabled = false; renderPicker(); return; }
+      let n; do { n = pool[rnd(pool.length)]; } while (n === last && pool.length > 1);
+      out.textContent = last = n;
+      const k = t / STEPS;
+      setTimeout(tick, 45 + 330 * k * k * k);   // ease out: the gaps grow towards the end
     };
     tick();
+  });
+  $('pk-big').addEventListener('click', () => {
+    const cls = M.classes.current();
+    M.bigScreen('Random picker' + (cls ? ' — ' + cls.name : ''), [$('pk-area')]);
+    $('pk-go').focus();
   });
   $('pk-reset').addEventListener('click', () => { used = new Set(); $('pk-name').textContent = '—'; renderPicker(); });
   ['pk-skip', 'pk-norepeat'].forEach(id => $(id).addEventListener('change', renderPicker));
@@ -94,6 +103,52 @@
       el('div', { text: g.join('\n'), style: 'white-space:pre-wrap' })
     ])));
   }
+  // Learners joined by "keep together" travel as one cluster. Clusters with
+  // the chosen tag are dealt first, each to the group with fewest of that tag;
+  // the rest go to the groups with most room. Every placement avoids a group
+  // holding a "keep apart" partner when it can. Many random tries; the best
+  // (fewest broken rules, then most even) wins.
+  function makeGroups(pool, count, rules, tag) {
+    const parent = new Map(pool.map(n => [n, n]));
+    const find = n => parent.get(n) === n ? n : find(parent.get(n));
+    if (rules) rules.together.forEach(([a, b]) => { if (parent.has(a) && parent.has(b)) parent.set(find(a), find(b)); });
+    const byRoot = new Map(); pool.forEach(n => { const r = find(n); if (!byRoot.has(r)) byRoot.set(r, []); byRoot.get(r).push(n); });
+    const clusters = [...byRoot.values()];
+    const apart = new Map();
+    if (rules) rules.apart.forEach(([a, b]) => { (apart.get(a) || apart.set(a, new Set()).get(a)).add(b); (apart.get(b) || apart.set(b, new Set()).get(b)).add(a); });
+    const hasTag = n => tag && rules && (rules.tags[n] || []).includes(tag);
+    const cap = Math.ceil(pool.length / count);
+    let best = null;
+    for (let attempt = 0; attempt < 300; attempt++) {
+      const groups = Array.from({ length: count }, () => []), tagN = new Array(count).fill(0);
+      const clash = (g, cl) => cl.reduce((s, n) => s + groups[g].filter(m => apart.has(n) && apart.get(n).has(m)).length, 0);
+      const order = shuffle(clusters).sort((a, b) => (b.some(hasTag) - a.some(hasTag)) || (b.length - a.length));
+      order.forEach(cl => {
+        const tagged = cl.some(hasTag);
+        const ranked = shuffle(groups.map((_, i) => i)).sort((x, y) =>
+          (clash(x, cl) - clash(y, cl)) ||
+          ((groups[x].length + cl.length > cap) - (groups[y].length + cl.length > cap)) ||
+          (tagged ? tagN[x] - tagN[y] : 0) ||
+          (groups[x].length - groups[y].length));
+        const g = ranked[0];
+        groups[g].push(...cl); if (tagged) tagN[g] += cl.filter(hasTag).length;
+      });
+      const broken = groups.reduce((s, g) => s + g.reduce((t, n) => t + g.filter(m => apart.has(n) && apart.get(n).has(m)).length, 0), 0) / 2;
+      const sizes = groups.map(g => g.length), spread = Math.max(...sizes) - Math.min(...sizes);
+      const tagSpread = tag ? Math.max(...tagN) - Math.min(...tagN) : 0;
+      const score = broken * 1000 + Math.max(0, spread - 1) * 10 + Math.max(0, tagSpread - 1);
+      if (!best || score < best.score) best = { groups: groups.filter(g => g.length), broken, score };
+      if (score === 0) break;
+    }
+    return best;
+  }
+  function fillBalance(cls) {
+    const sel = $('gr-balance'), keep = sel.value;
+    sel.textContent = '';
+    sel.appendChild(el('option', { value: '', text: 'Nothing in particular' }));
+    if (cls) M.rules.tags(M.rules.get(cls)).forEach(t => sel.appendChild(el('option', { value: t, text: 'Tag: ' + t })));
+    sel.value = [...sel.options].some(o => o.value === keep) ? keep : '';
+  }
   $('gr-go').addEventListener('click', () => {
     const cls = M.classes.current();
     if (!sameClass(cls)) return toast('Add a class list first');
@@ -102,10 +157,18 @@
     if (!pool.length) return toast('Nobody to put in groups');
     const n = Math.max(1, Math.min(50, parseInt($('gr-n').value, 10) || 1));
     const count = $('gr-mode').value === 'count' ? Math.min(n, pool.length) : Math.ceil(pool.length / n);
-    const groups = Array.from({ length: count }, () => []);
-    shuffle(pool).forEach((name, i) => groups[i % count].push(name)); // deal round-robin so sizes differ by at most one
-    lastGroups = groups; renderGroups();
+    const rules = $('gr-rules').value === 'yes' || $('gr-balance').value ? M.rules.get(cls) : null;
+    const res = makeGroups(pool, count, $('gr-rules').value === 'yes' ? rules : (rules && { tags: rules.tags, apart: [], together: [] }), $('gr-balance').value);
+    lastGroups = res.groups;
+    $('gr-warn').textContent = res.broken ? res.broken + (res.broken === 1 ? ' "keep apart" pair' : ' "keep apart" pairs') + ' had to share a group. Try more groups, or press Make groups again.' : '';
+    renderGroups();
   });
+  $('gr-big').addEventListener('click', () => {
+    if (!lastGroups.length) return toast('Make groups first');
+    const cls = M.classes.current();
+    M.bigScreen('Groups' + (cls ? ' — ' + cls.name : ''), [$('gr-out')], [el('button', { class: 'aa-btn aa-btn--primary', type: 'button', text: 'Make groups again', onclick: () => $('gr-go').click() })]);
+  });
+  $('gr-tags').addEventListener('click', () => M.rules.manage());
   $('gr-copy').addEventListener('click', () => lastGroups.length ? copy(lastGroups.map((g, i) => 'Group ' + (i + 1) + '\n' + g.join('\n')).join('\n\n')) : toast('Make groups first'));
   $('gr-print').addEventListener('click', () => {
     if (!lastGroups.length) return toast('Make groups first');
@@ -117,62 +180,22 @@
       pa.appendChild(wrap);
     });
   });
-  wireClass('gr-class', 'gr-manage', () => { lastGroups = []; renderGroups(); });
+  wireClass('gr-class', 'gr-manage', cls => { lastGroups = []; $('gr-warn').textContent = ''; fillBalance(cls); renderGroups(); });
   renderGroups();
 
-  // ── timer ──
-  const T = { mode: 'down', total: 5 * 60000, remaining: 5 * 60000, elapsed: 0, running: false, ref: 0, iv: null, ctx: null };
-  const fmt = ms => {
-    const s = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
-    return (h ? h + ':' + String(m).padStart(2, '0') : String(m).padStart(2, '0')) + ':' + String(x).padStart(2, '0');
-  };
-  function showTime() { $('tm-display').textContent = fmt(T.mode === 'down' ? T.remaining : T.elapsed); }
-  function beep() {
-    if ($('tm-sound').value !== 'on') return;
-    try {
-      const ctx = T.ctx || (T.ctx = new (window.AudioContext || window.webkitAudioContext)());
-      [0, 0.35, 0.7].forEach(d => {
-        const o = ctx.createOscillator(), g = ctx.createGain();
-        o.frequency.value = 880; o.connect(g); g.connect(ctx.destination);
-        const t = ctx.currentTime + d; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.4, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
-        o.start(t); o.stop(t + 0.32);
-      });
-    } catch (e) { /* no audio available */ }
+  // ── timer: Timer Talisman ──
+  // A quick countdown opens the timer in a new tab, filling the screen. The
+  // link uses Timer Talisman's short form: "j" + base64url of the settings
+  // that differ from its defaults (a countdown is the default type).
+  function talismanLink(secs) {
+    const cfg = { cd: { secs }, look: { fit: true } }, title = $('tm-label').value.trim();
+    if (title) cfg.title = title;
+    const bytes = new TextEncoder().encode(JSON.stringify(cfg));
+    let bin = ''; bytes.forEach(b => { bin += String.fromCharCode(b); });
+    return 'timer-talisman-display.html#j' + btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
-  function stopTimer() { T.running = false; clearInterval(T.iv); T.iv = null; $('tm-start').textContent = 'Start'; }
-  function tickTimer() {
-    const now = Date.now();
-    if (T.mode === 'down') {
-      T.remaining = Math.max(0, T.ref - now);
-      if (T.remaining === 0) {
-        stopTimer(); showTime(); $('tm-stage').classList.add('aa-tm-done'); $('tm-live').textContent = 'Time is up'; beep(); return;
-      }
-    } else T.elapsed = now - T.ref;
-    showTime();
-  }
-  function startTimer() {
-    if (T.running) { // pause
-      if (T.mode === 'down') T.remaining = Math.max(0, T.ref - Date.now()); else T.elapsed = Date.now() - T.ref;
-      stopTimer(); return;
-    }
-    if (T.mode === 'down' && T.remaining <= 0) resetTimer();
-    $('tm-stage').classList.remove('aa-tm-done'); $('tm-live').textContent = '';
-    if (T.mode === 'down') T.ref = Date.now() + T.remaining; else T.ref = Date.now() - T.elapsed;
-    try { T.ctx = T.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (T.ctx.state === 'suspended') T.ctx.resume(); } catch (e) { /* ignore */ }
-    T.running = true; $('tm-start').textContent = 'Pause';
-    T.iv = setInterval(tickTimer, 200); tickTimer();
-  }
-  function resetTimer() { stopTimer(); T.remaining = T.total; T.elapsed = 0; $('tm-stage').classList.remove('aa-tm-done'); $('tm-live').textContent = ''; showTime(); }
-  function setLength(ms) { T.total = ms; if (!T.running) { T.remaining = ms; showTime(); } else { T.remaining = ms; T.ref = Date.now() + ms; } }
-  [1, 2, 5, 10, 15, 20, 30, 45, 60].forEach(m => $('tm-presets').appendChild(el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: m + ' min', onclick: () => { $('tm-min').value = m; $('tm-sec').value = 0; $('tm-mode').value = 'down'; T.mode = 'down'; setLength(m * 60000); } })));
-  const customLength = () => { const m = Math.min(600, Math.max(0, parseInt($('tm-min').value, 10) || 0)), s = Math.min(59, Math.max(0, parseInt($('tm-sec').value, 10) || 0)); setLength((m * 60 + s) * 1000); };
-  $('tm-min').addEventListener('input', customLength); $('tm-sec').addEventListener('input', customLength);
-  $('tm-mode').addEventListener('change', () => { T.mode = $('tm-mode').value; resetTimer(); });
-  $('tm-start').addEventListener('click', startTimer);
-  $('tm-reset').addEventListener('click', resetTimer);
-  $('tm-label').addEventListener('input', () => { $('tm-title').textContent = $('tm-label').value; });
-  $('tm-full').addEventListener('click', () => { const s = $('tm-stage'); if (document.fullscreenElement) document.exitFullscreen(); else if (s.requestFullscreen) s.requestFullscreen().catch(() => toast('Full screen is not available here')); });
-  showTime();
+  [1, 2, 3, 5, 10, 15, 20, 30, 45, 60].forEach(m => $('tm-quick').appendChild(el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: m + ' min',
+    onclick: () => window.open(talismanLink(m * 60), '_blank', 'noopener') })));
 
   /* ═══════════ CLASS LOG: attendance + behaviour ═══════════ */
   const showLog = subTabs('tab-log', name => { if (name === 'attendance') renderAttendance(); else renderBehaviour(); });

@@ -163,8 +163,103 @@
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
   }
 
+  /* ── learner tags and pairing rules ───────────────────────────────────── */
+  // Per class: { tags: { name: ['strong reader', …] }, apart: [[a, b]], together: [[a, b]] }.
+  // Groups and seating read them; like the lists, they stay in this browser.
+  function rulesFor(cls) {
+    const r = (store.get('class-rules', {})[cls && cls.id]) || {}, has = new Set(cls ? cls.learners : []);
+    const pairs = list => (Array.isArray(list) ? list : []).filter(p => Array.isArray(p) && p.length === 2 && has.has(p[0]) && has.has(p[1]) && p[0] !== p[1]);
+    const tags = {};
+    Object.keys(r.tags || {}).forEach(n => { if (has.has(n)) tags[n] = (r.tags[n] || []).map(t => str(t, 30).trim()).filter(Boolean).slice(0, 6); });
+    return { tags, apart: pairs(r.apart), together: pairs(r.together) };
+  }
+  function saveRules(cls, r) { const all = store.get('class-rules', {}); all[cls.id] = r; store.set('class-rules', all); notify(); }
+  const tagList = r => [...new Set(Object.values(r.tags).flat())].sort((a, b) => a.localeCompare(b));
+
+  let rdlg = null;
+  function manageRules() {
+    const cls = currentClass();
+    if (!cls || !cls.learners.length) return toast('Add a class list first');
+    if (!rdlg) {
+      rdlg = el('dialog', { class: 'aa-dlg aa-dlg--wide', 'aria-label': 'Tags and seating rules' });
+      rdlg.addEventListener('click', e => { if (e.target === rdlg) rdlg.close(); });
+      document.body.appendChild(rdlg);
+    }
+    const r = rulesFor(cls);
+    const draw = () => {
+      rdlg.textContent = '';
+      const dl = el('datalist', { id: 'mlt-tag-list' }); tagList(r).forEach(t => dl.appendChild(el('option', { value: t })));
+      const rows = cls.learners.map(n => el('tr', {}, [
+        el('td', { text: n }),
+        el('td', {}, [el('input', { class: 'aa-in', list: 'mlt-tag-list', 'aria-label': 'Tags for ' + n, placeholder: 'e.g. strong reader', value: (r.tags[n] || []).join(', '),
+          onchange: e => { const v = e.target.value.split(',').map(s => s.trim()).filter(Boolean); if (v.length) r.tags[n] = v; else delete r.tags[n]; } })])
+      ]));
+      const pairBox = (key, title, hint) => {
+        const a = el('select', { class: 'aa-in', 'aria-label': title + ': first learner' }), b = el('select', { class: 'aa-in', 'aria-label': title + ': second learner' });
+        cls.learners.forEach(n => { a.appendChild(el('option', { value: n, text: n })); b.appendChild(el('option', { value: n, text: n })); });
+        if (cls.learners[1]) b.value = cls.learners[1];
+        const list = el('ul', { class: 'aa-pairs' });
+        r[key].forEach((p, i) => list.appendChild(el('li', {}, [el('span', { text: p[0] + '  ·  ' + p[1] }),
+          el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: 'Remove', 'aria-label': 'Remove ' + p[0] + ' and ' + p[1], onclick: () => { r[key].splice(i, 1); draw(); } })])));
+        return el('div', { class: 'aa-pairbox' }, [
+          el('h3', { class: 'aa-lbl', text: title }), el('p', { class: 'aa-hint', text: hint }),
+          el('div', { class: 'aa-row' }, [a, b, el('button', { class: 'aa-btn', type: 'button', text: 'Add', onclick: () => {
+            if (a.value === b.value) return toast('Choose two different learners');
+            if (r[key].some(p => (p[0] === a.value && p[1] === b.value) || (p[0] === b.value && p[1] === a.value))) return toast('That pair is already there');
+            r[key].push([a.value, b.value]); draw();
+          } })]), list
+        ]);
+      };
+      rdlg.appendChild(el('div', { class: 'aa-dlg-in' }, [
+        el('h2', { class: 'aa-dlg-h', text: 'Tags and rules — ' + cls.name }),
+        el('p', { class: 'aa-hint', text: 'Used by Groups and Seating. Kept only in this browser. Use neutral working labels (e.g. "strong reader", "needs front row"), not sensitive information.' }),
+        pairBox('apart', 'Keep apart', 'Never in the same group, and not seated next to or behind each other.'),
+        pairBox('together', 'Keep together', 'In the same group, and seated side by side where possible.'),
+        el('h3', { class: 'aa-lbl', text: 'Tags', style: 'margin-top:14px' }),
+        el('p', { class: 'aa-hint', text: 'Separate several tags with commas. Groups can spread a tag evenly across the groups.' }),
+        dl, el('div', { class: 'aa-tagtable' }, [el('table', {}, [el('tbody', {}, rows)])]),
+        el('div', { class: 'aa-actions' }, [
+          el('button', { class: 'aa-btn aa-btn--primary', type: 'button', text: 'Save', onclick: () => { saveRules(cls, r); toast('Tags and rules saved'); rdlg.close(); } }),
+          el('button', { class: 'aa-btn', type: 'button', text: 'Cancel', onclick: () => rdlg.close() })
+        ])
+      ]));
+    };
+    draw();
+    if (typeof rdlg.showModal === 'function') rdlg.showModal(); else rdlg.setAttribute('open', '');
+  }
+
+  /* ── big screen ───────────────────────────────────────────────────────── */
+  // Show the given nodes full screen for the projector, on a plain page with
+  // no dashboard around them. The nodes are moved, not copied (so their
+  // buttons keep working), and go back where they came from on close.
+  // extras: buttons for the top bar. Returns close().
+  function bigScreen(title, nodes, extras) {
+    const ov = el('div', { class: 'aa-big', role: 'dialog', 'aria-modal': 'true', 'aria-label': title });
+    const body = el('div', { class: 'aa-big-body' });
+    const homes = nodes.map(n => [n, n.parentNode, n.nextSibling]);
+    let done = false;
+    const close = () => {
+      if (done) return; done = true;
+      homes.forEach(([n, p, s]) => { if (p) p.insertBefore(n, s); });   // nodes built just for the big screen have no home
+      document.removeEventListener('keydown', onKey); document.removeEventListener('fullscreenchange', onFs);
+      ov.remove();
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    };
+    const onKey = e => { if (e.key === 'Escape' && !document.fullscreenElement) close(); };
+    const onFs = () => { if (!document.fullscreenElement) close(); };   // Esc in full screen leaves both
+    ov.appendChild(el('div', { class: 'aa-big-bar' }, [el('div', { class: 'aa-big-title', text: title })].concat(extras || [], [
+      el('button', { class: 'aa-btn', type: 'button', text: 'Close', onclick: close })])));
+    ov.appendChild(body);
+    nodes.forEach(n => body.appendChild(n));
+    document.body.appendChild(ov);
+    document.addEventListener('keydown', onKey);
+    if (ov.requestFullscreen) ov.requestFullscreen().then(() => document.addEventListener('fullscreenchange', onFs)).catch(() => {});
+    return close;
+  }
+
   window.MLT = {
-    $, el, store, toast, copy, uid, str, today, csv, capsLevel, downloadJson, wireOpen, printDoc,
-    classes: { all: () => classes, current: currentClass, get: getClass, bind: bindClassSelect, manage, replaceAll(list) { classes = cleanClasses(list); if (!getClass(current)) current = classes[0] ? classes[0].id : null; saveClasses(); }, cleanLearners, cleanClasses }
+    $, el, store, toast, copy, uid, str, today, csv, capsLevel, downloadJson, wireOpen, printDoc, bigScreen,
+    classes: { all: () => classes, current: currentClass, get: getClass, bind: bindClassSelect, manage, replaceAll(list) { classes = cleanClasses(list); if (!getClass(current)) current = classes[0] ? classes[0].id : null; saveClasses(); }, cleanLearners, cleanClasses },
+    rules: { get: rulesFor, save: saveRules, tags: tagList, manage: manageRules }
   };
 })();
