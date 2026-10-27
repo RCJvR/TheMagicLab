@@ -68,6 +68,7 @@ PAGES = {
     'french-tutor.html': ('French Tutor — Listening, reading, writing and speaking practice | The Magic Lab',
                           'Practise French listening, reading, writing and speaking with real corrections, and a conversation partner whenever you need one.'),
     'mosaic-mage.html': (None, 'Mosaic Mage: design colourful pixel mosaics and patterns in the browser.'),
+    'timer-talisman.html': (None, None),
     'math-magician/calculator.html': ('Free online scientific calculator — Math Magician',
                                       'A free scientific calculator in the browser, laid out like the ones South African learners use in class and exams.'),
     'wro-mat-planner/index.html': (None, None),
@@ -88,7 +89,7 @@ HUBS = {
 }
 NOINDEX = ['account.html', 'admin.html', 'dashboard-student.html', 'dashboard-teacher.html',
            'payment-success.html', 'payment-cancelled.html', 'reset-password.html',
-           'arena.html', 'arena-host.html', 'time-turner.html', 'time-turner-checkin.html', 'pitch-deck.html', 'memory-mirror.html']
+           'arena.html', 'arena-host.html', 'time-turner.html', 'time-turner-checkin.html', 'pitch-deck.html', 'memory-mirror.html', 'timer-talisman-display.html']
 # interactive Drawing Druid chapters (resources and exam tasks stay members-only)
 TOOLS = {'science-sage': 'Science Sage', 'tech-tower': 'The Tech Tower', 'drawing-druid': 'Drawing Druid'}
 DD_SKIP = {'resources.html', 'course-drawings.html', 'practical-assessment-task.html'}

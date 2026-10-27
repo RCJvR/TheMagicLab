@@ -473,6 +473,8 @@ const urlsToCache = [
   '/arena-host.html',
   '/arena.html',
   '/memory-mirror.html',
+  '/timer-talisman.html',
+  '/timer-talisman-display.html',
   '/assets/memory-mirror/manifest.json',
   '/assets/memory-mirror/science-sage-gr12-physics.json',
   '/assets/memory-mirror/science-sage-gr12-chemistry.json',
