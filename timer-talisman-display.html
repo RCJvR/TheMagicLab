@@ -90,6 +90,49 @@ body.hide-cursor { cursor: none; }
 .bar button.icon-only { padding: 9px 11px; }
 .preview .bar button { font-size: 12px; padding: 6px 10px; }
 .preview .bar button svg { width: 13px; height: 13px; }
+
+/* ── Display settings panel ── */
+.panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 20; box-sizing: border-box;
+  width: min(340px, 92vw); overflow-y: auto; padding: 18px 18px 28px;
+  background: color-mix(in srgb, var(--fg) 7%, var(--bg)); color: var(--fg);
+  border-left: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.28);
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 14px;
+}
+.panel[hidden] { display: none; }
+/* while the panel is open the timer moves aside, so changes stay in view */
+.panel-open .stage { padding-right: calc(min(340px, 92vw) + 3vw); }
+.panel-open .now { right: calc(min(340px, 92vw) + 3vw); }
+.panel-open .bar { left: calc((100vw - min(340px, 92vw)) / 2); }
+.ph { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ph h2 { font-size: 17px; font-weight: 800; margin: 0; }
+.pf { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
+.pf > span, .plabel { font-size: 12.5px; font-weight: 700; opacity: 0.8; }
+.pf[hidden] { display: none; }
+.panel select, .panel input[type="color"] {
+  font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 8px;
+}
+.panel input[type="color"] { padding: 2px; height: 34px; cursor: pointer; }
+.pcols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.pcols label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; opacity: 0.9; }
+.pseg { display: flex; gap: 6px; }
+.pseg button, .pclose {
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent); border-radius: 999px; padding: 7px 8px;
+}
+.pseg button { flex: 1; }
+.pseg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.pclose { display: inline-flex; padding: 7px; }
+.pclose svg { width: 16px; height: 16px; }
+.pchk { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; cursor: pointer; }
+.pchk input { width: 16px; height: 16px; margin: 0; }
+.panel input[type="checkbox"], .panel input[type="range"] { accent-color: var(--accent); }
+.panel input[type="range"] { width: 100%; }
+.panel input:disabled { opacity: 0.4; }
+.pnote { font-size: 12px; line-height: 1.45; opacity: 0.75; margin: 12px 0 0; }
+.panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -106,7 +149,9 @@ body.hide-cursor { cursor: none; }
   </main>
   <div class="now" id="now"></div>
   <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
+  <aside class="panel" id="panel" hidden></aside>
 
+<script src="assets/timer-talisman-themes.js"></script>
 <script>
 (function () {
   'use strict';
@@ -119,14 +164,6 @@ body.hide-cursor { cursor: none; }
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false }
   };
-  var FONTS = {
-    cabinet: "'Cabinet Grotesk', system-ui, sans-serif",
-    mono: "'JetBrains Mono', ui-monospace, monospace",
-    serif: "'Instrument Serif', Georgia, serif",
-    sans: 'Arial, Helvetica, sans-serif',
-    georgia: "Georgia, 'Times New Roman', serif",
-    courier: "'Courier New', Courier, monospace"
-  };
   var S = {
     en: {
       reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
@@ -136,7 +173,13 @@ body.hide-cursor { cursor: none; }
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
       lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
-      h: 'h', min: 'min'
+      h: 'h', min: 'min',
+      pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
+      c_bg: 'Back', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Face',
+      pStyle: 'Display', d_digital: 'Digital', d_analogue: 'Analogue', d_both: 'Both', pFont: 'Font', pMore: 'More fonts',
+      pFit: 'Fill the screen', pSize: 'Timer size', pTsize: 'Text size',
+      k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
+      pLang: 'Language', pNote: "Changes are kept in this tab's address, so a bookmark or a copied link keeps them. A running timer carries on."
     },
     af: {
       reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is verby. Penne neer.',
@@ -146,11 +189,17 @@ body.hide-cursor { cursor: none; }
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
       lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Herstel', skip: 'Slaan oor',
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Herstel hierdie tydhouer?',
-      h: 'h', min: 'min'
+      h: 'h', min: 'min',
+      pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
+      c_bg: 'Agter', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarsku', c_face: 'Wyser',
+      pStyle: 'Vertoning', d_digital: 'Digitaal', d_analogue: 'Analoog', d_both: 'Albei', pFont: 'Lettertipe', pMore: 'Meer lettertipes',
+      pFit: 'Vul die skerm', pSize: 'Grootte van tydhouer', pTsize: 'Teksgrootte',
+      k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
+      pLang: 'Taal', pNote: "Veranderinge word in hierdie oortjie se adres gehou, so 'n boekmerk of gekopieerde skakel hou dit. 'n Lopende tydhouer gaan aan."
     }
   };
   var preview = /[?&]preview=1/.test(location.search);
-  var cfg, st, key, view = {}, lastPhase = null, wakeLock = null, idleTimer = null;
+  var cfg, st, key, view = {}, lastPhase = null, wakeLock = null, idleTimer = null, panelOpen = false, themeList = [];
 
   function $(id) { return document.getElementById(id); }
   function t(k, v) { var s = (S[cfg.lang] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
@@ -409,6 +458,7 @@ body.hide-cursor { cursor: none; }
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
+    if (!preview) bar.appendChild(btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true));
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
@@ -421,7 +471,7 @@ body.hide-cursor { cursor: none; }
     var bar = $('bar'); bar.classList.remove('idle'); document.body.classList.remove('hide-cursor');
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      if (running() || cfg.mode === 'clock' || (cfg.mode === 'exam' && st.started)) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      if (!panelOpen && (running() || cfg.mode === 'clock' || (cfg.mode === 'exam' && st.started))) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
     }, preview ? 2500 : 3000);
   }
 
@@ -481,17 +531,88 @@ body.hide-cursor { cursor: none; }
     var L = cfg.look, r = document.documentElement.style;
     r.setProperty('--bg', L.bg); r.setProperty('--fg', L.fg); r.setProperty('--accent', L.accent);
     r.setProperty('--warn', L.warnc); r.setProperty('--face', L.face);
-    r.setProperty('--font', FONTS[L.font] || FONTS.cabinet);
-    r.setProperty('--dweight', L.font === 'serif' ? 400 : 700);
+    var f = TTThemes.font(L.font);   // fonts: assets/timer-talisman-themes.js
+    r.setProperty('--font', TTThemes.fontCss(f));
+    r.setProperty('--dweight', f.w);
+    TTThemes.loadFont(L.font, function () { if (cfg.look.font === f.id) { view.headHtml = null; fit(); } });
     r.setProperty('--dsize', Math.max(0.3, Math.min(3, L.size / 100)));
     r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
     document.documentElement.lang = cfg.lang;
     document.body.classList.toggle('preview', preview);
   }
 
+  // ── Display settings panel: edits cfg.look in place and keeps the link in step ──
+  function lookChanged() {
+    history.replaceState(null, '', location.pathname + location.search + '#' + encodeURIComponent(JSON.stringify(cfg)));
+    applyLook(); view.faceKind = null; view.headHtml = null; render(true);
+  }
+  function opt(v, label, on) { return '<option value="' + v + '"' + (on ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+  function buildPanel() {
+    var L = cfg.look, p = $('panel');
+    p.setAttribute('aria-label', t('pTitle'));
+    p.innerHTML =
+      '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
+      '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
+        TTThemes.colours.map(function (k) { return '<label>' + esc(t('c_' + k)) + '<input type="color" data-l="' + k + '" value="' + esc(L[k]) + '"></label>'; }).join('') + '</div></div>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pStyle')) + '</span><div class="pseg" id="pStyle">' +
+        ['digital', 'analogue', 'both'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.display === v) + '">' + esc(t('d_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      '<label class="pf"><span>' + esc(t('pFont')) + '</span><select id="pFont"></select></label>' +
+      '<label class="pf" id="pMoreWrap"><span>' + esc(t('pMore')) + '</span><select id="pMore"></select></label>' +
+      '<label class="pchk"><input type="checkbox" data-l="fit"' + (L.fit ? ' checked' : '') + '>' + esc(t('pFit')) + '</label>' +
+      '<label class="pf"><span>' + esc(t('pSize')) + ' · <output id="pSizeOut">' + (L.fit ? '—' : L.size + '%') + '</output></span><input type="range" id="pSize" min="40" max="300" step="5" data-l="size" value="' + L.size + '"' + (L.fit ? ' disabled' : '') + '></label>' +
+      '<label class="pf"><span>' + esc(t('pTsize')) + ' · <output id="pTsizeOut">' + L.tsize + '%</output></span><input type="range" min="50" max="200" step="5" data-l="tsize" value="' + L.tsize + '"></label>' +
+      ['secs', 'h24', 'nums', 'now'].map(function (k) { return '<label class="pchk"><input type="checkbox" data-l="' + k + '"' + (L[k] ? ' checked' : '') + '>' + esc(t('k_' + k)) + '</label>'; }).join('') +
+      '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
+      '<p class="pnote">' + esc(t('pNote')) + '</p>';
+    themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+    $('pMoreWrap').hidden = !TTThemes.fillFonts($('pFont'), $('pMore'), L.font, cfg.lang);
+    if (window.lucide) lucide.createIcons({ root: p });
+
+    $('pClose').addEventListener('click', function () { togglePanel(false); });
+    $('pTheme').addEventListener('change', function () {
+      var th = TTThemes.find(themeList, this.value);
+      if (th) { TTThemes.apply(th, L); lookChanged(); buildPanel(); $('pTheme').focus(); }
+    });
+    $('pFont').addEventListener('change', function () {
+      var more = this.value === 'more';
+      $('pMoreWrap').hidden = !more;
+      L.font = more ? $('pMore').value : this.value;
+      lookChanged();
+    });
+    $('pMore').addEventListener('change', function () { L.font = this.value; lookChanged(); });
+    $('pLang').addEventListener('change', function () { cfg.lang = this.value; lookChanged(); buildBar(); buildPanel(); $('pLang').focus(); });
+    [].forEach.call(p.querySelectorAll('#pStyle button'), function (b) {
+      b.addEventListener('click', function () {
+        L.display = b.getAttribute('data-v');
+        [].forEach.call(p.querySelectorAll('#pStyle button'), function (x) { x.setAttribute('aria-pressed', x === b); });
+        lookChanged();
+      });
+    });
+    [].forEach.call(p.querySelectorAll('[data-l]'), function (inp) {
+      var ev = inp.type === 'range' || inp.type === 'color' ? 'input' : 'change';
+      inp.addEventListener(ev, function () {
+        var k = inp.getAttribute('data-l');
+        L[k] = inp.type === 'checkbox' ? inp.checked : inp.type === 'range' ? +inp.value : inp.value;
+        if (k === 'size' || k === 'fit') { $('pSizeOut').textContent = L.fit ? '—' : L.size + '%'; $('pSize').disabled = !!L.fit; }
+        if (k === 'tsize') $('pTsizeOut').textContent = L.tsize + '%';
+        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+        lookChanged();
+      });
+    });
+  }
+  function togglePanel(open) {
+    panelOpen = open === undefined ? !panelOpen : open;
+    if (panelOpen) { buildPanel(); $('panel').hidden = false; $('pTheme').focus(); }
+    else { $('panel').hidden = true; }
+    document.body.classList.toggle('panel-open', panelOpen);
+    fit(); wake();
+  }
+
   function init() {
     cfg = parse();
-    key = 'ml-timer-talisman:' + hash(location.hash);
+    var x = cfg.exam;
+    key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
     st = loadState(); lastPhase = null; view = {};
     applyLook(); render(true); wake();
     if (running()) keepAwake();
@@ -502,6 +623,8 @@ body.hide-cursor { cursor: none; }
   document.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     wake();
+    if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
+    if (e.target.closest && (e.target.closest('#panel') || (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')))) return;
     var k = e.key.toLowerCase();
     if (k === ' ') { e.preventDefault(); if (!(cfg.mode === 'exam' && examStart() && !st.started)) toggle(); }
     else if (k === 'r') reset();
