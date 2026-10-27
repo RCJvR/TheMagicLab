@@ -56,7 +56,8 @@
   var FONTS = [
     { id: 'cabinet', name: 'Cabinet Grotesk', css: "'Cabinet Grotesk', system-ui, sans-serif", w: 700 },
     { id: 'mono', name: 'JetBrains Mono', css: "'JetBrains Mono', ui-monospace, monospace", w: 700 },
-    { id: 'serif', name: 'Instrument Serif', css: "'Instrument Serif', Georgia, serif", w: 400 },
+    { id: 'serif', name: 'Instrument Serif', css: "'Instrument Serif', Georgia, serif", w: 400, gf: true },
+    { id: 'orbitron', name: 'Orbitron', css: "'Orbitron', Impact, sans-serif", w: 700, lazy: true, gf: true },
     { id: 'sans', name: 'Arial', css: 'Arial, Helvetica, sans-serif', w: 700 },
     { id: 'georgia', name: 'Georgia', css: "Georgia, 'Times New Roman', serif", w: 700 },
     { id: 'courier', name: 'Courier New', css: "'Courier New', Courier, monospace", w: 700 },
@@ -77,7 +78,6 @@
     { id: 'anton', g: 'display', name: 'Anton', w: 400 },
     { id: 'archivo-black', g: 'display', name: 'Archivo Black', w: 400 },
     { id: 'righteous', g: 'display', name: 'Righteous', w: 400 },
-    { id: 'orbitron', g: 'display', name: 'Orbitron', w: 700 },
     { id: 'caveat', g: 'hand', name: 'Caveat', w: 700 },
     { id: 'kalam', g: 'hand', name: 'Kalam', w: 700 },
     { id: 'patrick-hand', g: 'hand', name: 'Patrick Hand', w: 400 },
@@ -104,11 +104,11 @@
   // done() when the font is ready to measure (so a filled screen re-fits).
   function loadFont(id, done) {
     var f = font(id), cb = done || function () {};
-    if (!f.g) { cb(); return; }
+    if (!f.g && !f.lazy) { cb(); return; }
     var lid = 'ttfont-' + f.id, l = document.getElementById(lid);
     if (!l) {
       l = document.createElement('link'); l.id = lid; l.rel = 'stylesheet';
-      l.href = 'https://fonts.googleapis.com/css2?family=' + f.name.replace(/ /g, '+') + (f.w !== 400 ? ':wght@400;' + f.w : '') + '&display=swap';
+      l.href = cssUrl(f, f.w !== 400 ? ':wght@400;' + f.w : '', '');
       document.head.appendChild(l);
     }
     var ready = function () {
@@ -116,22 +116,148 @@
     };
     if (l.sheet) ready(); else { l.addEventListener('load', ready); l.addEventListener('error', cb); }
   }
-  // Fill the main font <select> (first six plus "More fonts…") and the more
-  // fonts <select>. Returns true when the current font is one of the extras.
-  function fillFonts(main, more, cur, lang) {
-    main.innerHTML = ''; more.innerHTML = '';
-    FONTS.filter(function (f) { return !f.g; }).forEach(function (f) { main.appendChild(new Option(f.name, f.id)); });
-    main.appendChild(new Option(word('moreFonts', lang) + '…', 'more'));
-    FONT_GROUPS.forEach(function (gr) {
-      var og = document.createElement('optgroup'); og.label = gr[lang] || gr.en;
-      FONTS.filter(function (f) { return f.g === gr.id; }).forEach(function (f) { og.appendChild(new Option(f.name, f.id)); });
-      more.appendChild(og);
-    });
-    var f = font(cur);
-    main.value = f.g ? 'more' : f.id;
-    if (f.g) more.value = f.id;
-    return !!f.g;
+  function cssUrl(f, weights, extra) {
+    return 'https://fonts.googleapis.com/css2?family=' + f.name.replace(/ /g, '+') + weights + extra + '&display=swap';
   }
+
+  // ── Font picker ───────────────────────────────────────────────────────
+  // A dropdown that shows every font name, and a sample time, in that font.
+  // The main fonts come first; "More fonts" expands inside the same list.
+  // Previews load as tiny subsets (just the letters shown) under their own
+  // family names, so they never interfere with the timer's real font.
+  var PREVIEW_TEXT = '0123456789:';
+  var previewed = {};
+  function previewFamily(f) { return f.g || f.gf ? "'ttprev-" + f.id + "', " + fontCss(f).split(', ').slice(1).join(', ') : fontCss(f); }
+  function loadPreview(f) {
+    if (!(f.g || f.gf) || previewed[f.id] || !window.FontFace) return;
+    previewed[f.id] = 1;
+    fetch(cssUrl(f, f.w !== 400 ? ':wght@' + f.w : '', '&text=' + encodeURIComponent(f.name + PREVIEW_TEXT)))
+      .then(function (r) { return r.text(); })
+      .then(function (css) {
+        var m = css.match(/url\((https:[^)]+)\)/);
+        if (!m) return;
+        return new FontFace('ttprev-' + f.id, 'url(' + m[1] + ')', { weight: String(f.w) }).load().then(function (ff) { document.fonts.add(ff); });
+      }).catch(function () { previewed[f.id] = 0; });
+  }
+  var FP_CSS = '.fontpick{position:relative}' +
+    '.fp-btn{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;cursor:pointer;color:var(--fp-fg);background:var(--fp-bg);border:1px solid var(--fp-line);border-radius:8px}' +
+    '.fp-btn:focus-visible,.fp-list:focus-visible{outline:2px solid var(--fp-accent);outline-offset:1px}' +
+    '.fp-cur{flex:1;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '.fp-btn svg{flex-shrink:0;opacity:.7}' +
+    '.fp-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:50;max-height:min(340px,60vh);overflow-y:auto;padding:4px;box-sizing:border-box;' +
+      'color:var(--fp-fg);background:var(--fp-bg);border:1px solid var(--fp-line);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.35)}' +
+    '.fp-list[hidden]{display:none}' +
+    '.fp-opt{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:17px;line-height:1.25}' +
+    '.fp-opt .fp-sample{font-size:15px;opacity:.65;font-variant-numeric:tabular-nums}' +
+    '.fp-opt.active{background:var(--fp-hl)}' +
+    '.fp-opt[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--fp-accent)}' +
+    '.fp-more{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding:8px 10px;border-top:1px solid var(--fp-line);font:600 13.5px/1.2 inherit;cursor:pointer;border-radius:0 0 6px 6px}' +
+    '.fp-more.active{background:var(--fp-hl)}' +
+    '.fp-more svg{transition:transform .15s}.fp-more[aria-expanded="true"] svg{transform:rotate(90deg)}' +
+    '.fp-group{padding:10px 10px 3px;font:700 11.5px/1.2 inherit;opacity:.6}';
+  var CHEVRON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  var DOWN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var pickers = 0;
+  // host: an empty element. o: { value, lang, label, onPick(id) }. Returns { set(id, lang) }.
+  function fontPicker(host, o) {
+    if (!document.getElementById('tt-fontpick-css')) {
+      var st = document.createElement('style'); st.id = 'tt-fontpick-css'; st.textContent = FP_CSS; document.head.appendChild(st);
+    }
+    var uid = 'fp' + (++pickers), cur = o.value, lang = o.lang || 'en', active = null, expanded = false;
+    host.classList.add('fontpick'); host.innerHTML = '';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'fp-btn';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<span class="fp-cur"></span>' + DOWN;
+    var list = document.createElement('div'); list.className = 'fp-list'; list.id = uid + '-list';
+    list.setAttribute('role', 'listbox'); list.tabIndex = -1; list.hidden = true;
+    btn.setAttribute('aria-controls', list.id);
+    host.appendChild(btn); host.appendChild(list);
+
+    function item(f) {
+      var d = document.createElement('div'); d.className = 'fp-opt'; d.id = uid + '-' + f.id;
+      d.setAttribute('role', 'option'); d.dataset.id = f.id;
+      d.style.fontFamily = previewFamily(f); d.style.fontWeight = f.w;
+      d.innerHTML = '<span class="fp-name"></span><span class="fp-sample" aria-hidden="true">12:45</span>';
+      d.firstChild.textContent = f.name;
+      return d;
+    }
+    var more, moreBox;
+    function build() {
+      list.innerHTML = '';
+      FONTS.filter(function (f) { return !f.g; }).forEach(function (f) { list.appendChild(item(f)); });
+      more = document.createElement('div'); more.className = 'fp-more'; more.id = uid + '-more';
+      more.setAttribute('role', 'option'); more.setAttribute('aria-expanded', String(expanded));
+      more.innerHTML = '<span></span>' + CHEVRON; more.firstChild.textContent = word('moreFonts', lang);
+      list.appendChild(more);
+      moreBox = document.createElement('div'); moreBox.setAttribute('role', 'group'); moreBox.hidden = !expanded;
+      FONT_GROUPS.forEach(function (gr) {
+        var h = document.createElement('div'); h.className = 'fp-group'; h.setAttribute('role', 'presentation'); h.textContent = gr[lang] || gr.en;
+        moreBox.appendChild(h);
+        FONTS.filter(function (f) { return f.g === gr.id; }).forEach(function (f) { moreBox.appendChild(item(f)); });
+      });
+      list.appendChild(moreBox);
+      paint();
+    }
+    function paint() {
+      var f = font(cur), c = btn.firstChild;
+      c.textContent = f.name; c.style.fontFamily = previewFamily(f); c.style.fontWeight = f.w;
+      loadPreview(f);
+      btn.setAttribute('aria-label', (o.label ? o.label + ': ' : '') + f.name);
+      [].forEach.call(list.querySelectorAll('.fp-opt'), function (d) { d.setAttribute('aria-selected', String(d.dataset.id === cur)); });
+    }
+    function visible() { return [].filter.call(list.querySelectorAll('.fp-opt, .fp-more'), function (d) { return !d.closest('[hidden]'); }); }
+    function setActive(d) {
+      if (active) active.classList.remove('active');
+      active = d;
+      if (d) { d.classList.add('active'); list.setAttribute('aria-activedescendant', d.id); d.scrollIntoView({ block: 'nearest' }); }
+    }
+    function expand(on) {
+      expanded = on; moreBox.hidden = !on; more.setAttribute('aria-expanded', String(on));
+      if (on) FONTS.forEach(function (f) { if (f.g) loadPreview(f); });
+    }
+    function open() {
+      if (font(cur).g) expand(true);
+      list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      FONTS.forEach(function (f) { if (!f.g || expanded) loadPreview(f); });
+      setActive(document.getElementById(uid + '-' + cur) || visible()[0]);
+      list.focus();
+    }
+    function close(refocus) {
+      if (list.hidden) return;
+      list.hidden = true; btn.setAttribute('aria-expanded', 'false'); setActive(null);
+      if (refocus) btn.focus();
+    }
+    function choose(d) {
+      if (!d) return;
+      if (d === more) { expand(!expanded); setActive(more); return; }
+      cur = d.dataset.id; paint(); close(true);
+      if (o.onPick) o.onPick(cur);
+    }
+    btn.addEventListener('click', function () { list.hidden ? open() : close(true); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); e.stopPropagation(); open(); }
+    });
+    list.addEventListener('click', function (e) { var d = e.target.closest('.fp-opt, .fp-more'); if (d) choose(d); });
+    list.addEventListener('mousemove', function (e) { var d = e.target.closest('.fp-opt, .fp-more'); if (d && d !== active) setActive(d); });
+    list.addEventListener('keydown', function (e) {
+      var v = visible(), i = v.indexOf(active), k = e.key;
+      if (k === 'ArrowDown') setActive(v[Math.min(v.length - 1, i + 1)]);
+      else if (k === 'ArrowUp') setActive(v[Math.max(0, i - 1)]);
+      else if (k === 'Home') setActive(v[0]);
+      else if (k === 'End') setActive(v[v.length - 1]);
+      else if (k === 'Enter' || k === ' ') choose(active);
+      else if (k === 'ArrowRight' && active === more && !expanded) expand(true);
+      else if (k === 'ArrowLeft' && active === more && expanded) expand(false);
+      else if (k === 'Escape') close(true);
+      else if (k === 'Tab') { close(false); return; }
+      else return;
+      e.preventDefault(); e.stopPropagation();
+    });
+    document.addEventListener('pointerdown', function (e) { if (!host.contains(e.target)) close(false); });
+    build();
+    return { set: function (id, lg) { cur = id; if (lg && lg !== lang) { lang = lg; build(); } else paint(); } };
+  }
+
   var KEY = 'ml-timer-talisman-themes-v1';
   var COLOURS = ['bg', 'fg', 'accent', 'warnc', 'face'];
 
@@ -178,6 +304,122 @@
   function find(shown, id) { return shown.filter(function (th) { return th.id === id; })[0]; }
   function apply(th, look) { COLOURS.forEach(function (k) { look[k] = th[k]; }); }
 
+  // ── Short links ─────────────────────────────────────────────────────
+  // A link carries only the settings that differ from BASE, compressed
+  // (deflate) and written in URL-safe base64: "#z…". Older links, which carry
+  // the whole settings object as JSON, still open. BASE must never change
+  // its values, or old short links would change meaning; add new keys only.
+  var BASE = {
+    mode: 'countdown', lang: 'en', title: '', showDate: true, warn: 5, sound: true,
+    chime: { id: 'bell', vol: 70, rep: 3 },
+    pomo: { work: 1500, short: 300, long: 900, every: 4, auto: true },
+    cd: { secs: 600 },
+    exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
+    look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
+            bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
+            font: 'cabinet', size: 100, tsize: 100, fit: false }
+  };
+  function diff(a, b) {
+    var o = {}, any = false;
+    for (var k in a) {
+      if (a[k] && typeof a[k] === 'object') { var d = diff(a[k], b[k] || {}); if (d) { o[k] = d; any = true; } }
+      else if (a[k] !== b[k]) { o[k] = a[k]; any = true; }
+    }
+    return any ? o : null;
+  }
+  function merge(a, b) {
+    var o = {};
+    for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
+    return o;
+  }
+  function b64u(bytes) {
+    var s = ''; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function unb64u(str) {
+    str = str.replace(/-/g, '+').replace(/_/g, '/'); while (str.length % 4) str += '=';
+    var s = atob(str), b = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) b[i] = s.charCodeAt(i);
+    return b;
+  }
+  function pipe(bytes, stream) {
+    return new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+  }
+  var canZip = typeof CompressionStream === 'function' && typeof DecompressionStream === 'function';
+  // settings → "z…" (compressed) or "j…" (plain), whichever is shorter
+  function encode(cfg) {
+    var d = diff(cfg, BASE) || {};
+    // colours that match a preset travel as the preset's id ("t") instead
+    var preset = LIST.filter(function (th) { return matches(th, cfg.look); })[0];
+    if (preset && d.look) {
+      COLOURS.forEach(function (k) { delete d.look[k]; });
+      if (!Object.keys(d.look).length) delete d.look;
+      if (preset.id !== 'night') d.t = preset.id;   // night is the default look
+    }
+    var json = JSON.stringify(d), raw = new TextEncoder().encode(json), plain = 'j' + b64u(raw);
+    if (!canZip) return Promise.resolve(plain);
+    return pipe(raw, new CompressionStream('deflate-raw')).then(function (z) {
+      var zz = 'z' + b64u(z); return zz.length < plain.length ? zz : plain;
+    }, function () { return plain; });
+  }
+  // the part after "#" → full settings (BASE filled in for anything missing)
+  function decode(h) {
+    var done = function (obj) {
+      obj = obj || {};
+      var preset = obj.t && LIST.filter(function (th) { return th.id === obj.t; })[0];
+      if (preset) { obj.look = obj.look || {}; COLOURS.forEach(function (k) { obj.look[k] = preset[k]; }); }
+      delete obj.t;
+      return merge(BASE, obj);
+    };
+    try {
+      if (h[0] === 'z' && canZip) return pipe(unb64u(h.slice(1)), new DecompressionStream('deflate-raw'))
+        .then(function (b) { return done(JSON.parse(new TextDecoder().decode(b))); }, function () { return done(); });
+      if (h[0] === 'j') return Promise.resolve(done(JSON.parse(new TextDecoder().decode(unb64u(h.slice(1))))));
+      if (h) return Promise.resolve(done(JSON.parse(decodeURIComponent(h))));   // older, long links
+    } catch (e) {}
+    return Promise.resolve(done());
+  }
+
+  // ── Chime sounds, made with Web Audio (no sound files) ─────────────────
+  var SOUNDS = [
+    { id: 'bell', en: 'Bell', af: 'Klok', len: 1.6, play: function (c, o, t) { tone(c, o, t, 880, 1.5, 'sine', 0.5); tone(c, o, t, 1760, 0.9, 'sine', 0.16); tone(c, o, t, 2640, 0.5, 'sine', 0.07); } },
+    { id: 'chime', en: 'Soft chime', af: 'Sagte klokkie', len: 1.1, play: function (c, o, t) { tone(c, o, t, 660, 0.9, 'sine', 0.4); tone(c, o, t + 0.18, 880, 0.9, 'sine', 0.4); } },
+    { id: 'dingdong', en: 'Ding-dong', af: 'Ding-dong', len: 1.7, play: function (c, o, t) { tone(c, o, t, 659, 1.0, 'sine', 0.45); tone(c, o, t, 1318, 0.6, 'sine', 0.1); tone(c, o, t + 0.5, 523, 1.1, 'sine', 0.45); tone(c, o, t + 0.5, 1046, 0.6, 'sine', 0.1); } },
+    { id: 'marimba', en: 'Marimba', af: 'Marimba', len: 0.9, play: function (c, o, t) { [523, 659, 784].forEach(function (f, i) { tone(c, o, t + i * 0.12, f, 0.4, 'triangle', 0.45); }); } },
+    { id: 'gong', en: 'Gong', af: 'Gong', len: 3, play: function (c, o, t) { tone(c, o, t, 110, 2.8, 'sine', 0.6); tone(c, o, t, 165, 2.2, 'sine', 0.25); tone(c, o, t, 223, 1.6, 'sine', 0.15); tone(c, o, t, 331, 1.0, 'sine', 0.08); } },
+    { id: 'beep', en: 'Beep', af: 'Piep', len: 0.5, play: function (c, o, t) { tone(c, o, t, 1000, 0.12, 'square', 0.16); tone(c, o, t + 0.2, 1000, 0.12, 'square', 0.16); } },
+    { id: 'alarm', en: 'Alarm', af: 'Alarm', len: 0.95, play: function (c, o, t) { for (var i = 0; i < 4; i++) tone(c, o, t + i * 0.22, i % 2 ? 720 : 960, 0.18, 'square', 0.14); } },
+    { id: 'chirp', en: 'Bird chirp', af: 'Voëltjie', len: 0.6, play: function (c, o, t) { [0, 0.16, 0.32].forEach(function (d) { tone(c, o, t + d, 2200, 0.12, 'sine', 0.3, 3600); }); } }
+  ];
+  function tone(c, out, t0, f, dur, type, peak, sweepTo) {
+    var osc = c.createOscillator(), g = c.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(f, t0);
+    if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, t0 + dur * 0.75);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(out); osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+  var actx = null;
+  // Browsers only allow sound after the user has clicked or pressed a key on
+  // the page; call this from such an event so a later chime can play.
+  function unlock() {
+    try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {}
+    return actx;
+  }
+  function playSound(id, vol, times) {
+    var c = unlock(); if (!c) return;
+    var snd = SOUNDS.filter(function (x) { return x.id === id; })[0] || SOUNDS[0];
+    var master = c.createGain(); master.gain.value = Math.pow(Math.max(0, Math.min(100, vol)) / 100, 1.6); master.connect(c.destination);
+    var t = c.currentTime + 0.03;
+    for (var i = 0; i < Math.max(1, times || 1); i++) { snd.play(c, master, t); t += snd.len + 0.15; }
+  }
+  function fillSounds(sel, cur, lang) {
+    sel.innerHTML = '';
+    SOUNDS.forEach(function (x) { sel.appendChild(new Option(x[lang] || x.en, x.id)); });
+    sel.value = cur;
+  }
+
+  window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge };
+  window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,
-                      font: font, fontCss: fontCss, loadFont: loadFont, fillFonts: fillFonts };
+                      font: font, fontCss: fontCss, loadFont: loadFont, fontPicker: fontPicker };
 })();

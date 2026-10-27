@@ -64,12 +64,15 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
   display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-align: center; line-height: 1.2;
 }
 .mode i { width: 20px; height: 20px; }
+.mode span { overflow-wrap: anywhere; hyphens: auto; }
 .mode:hover { color: var(--paper); border-color: var(--paper); }
 .mode[aria-pressed="true"] { border-color: var(--tool); color: var(--paper); background: color-mix(in srgb, var(--tool) 14%, transparent); }
 .mode[aria-pressed="true"] i { color: var(--tool); }
 
 .row { display: grid; gap: 10px; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); margin-bottom: 12px; }
 .row:last-child { margin-bottom: 0; }
+.row > .field { justify-content: flex-start; }
+.row > .field > span:first-child { min-height: 1.25em; }
 .field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .field > span { font-size: 12.5px; font-weight: 700; color: var(--text-2); }
 .field small { font-size: 12px; color: var(--text-3); line-height: 1.4; }
@@ -92,6 +95,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
 }
 .seg button:hover { color: var(--paper); border-color: var(--paper); }
 .seg button[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+#fontPick { --fp-bg: var(--ink-900); --fp-fg: var(--text); --fp-line: var(--line-hard); --fp-hl: rgba(255,255,255,0.07); --fp-accent: var(--tool); }
 .themebox { display: flex; align-items: center; gap: 8px; }
 .tswatch { width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius-xs, 8px); border: 1px solid var(--line-hard); box-sizing: border-box; }
 .themebox .ml-btn { padding: 8px 12px; font-size: 14px; flex-shrink: 0; }
@@ -231,6 +235,14 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             <label class="check"><input type="checkbox" data-k="look.now"><span data-t="cNow">Small clock in the corner</span></label>
             <label class="check"><input type="checkbox" data-k="sound"><span data-t="cSound">Chime when time is up</span></label>
           </div>
+          <div class="field" style="margin-bottom:12px">
+            <label for="chimeSel" data-t="fChime" style="font-size:12.5px;font-weight:700;color:var(--text-2)">Chime sound</label>
+            <div class="savebox"><select class="inp" id="chimeSel"></select><button class="ml-btn ml-btn--ghost" type="button" id="btnPlay"><i data-lucide="play"></i><span data-t="play">Play</span></button></div>
+          </div>
+          <div class="row">
+            <label class="field"><span><span data-t="fVol">Volume</span> · <output id="volOut"></output></span><input type="range" min="0" max="100" step="5" data-k="chime.vol"></label>
+            <label class="field"><span data-t="fRep">Rings when time is up</span><select class="inp" data-k="chime.rep" data-num><option value="1">1×</option><option value="2">2×</option><option value="3">3×</option><option value="5">5×</option></select></label>
+          </div>
 
           <div class="field" style="margin-bottom:12px">
             <label for="themeSelect" data-t="fTheme" style="font-size:12.5px;font-weight:700;color:var(--text-2)">Colour theme</label>
@@ -252,11 +264,10 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             <div class="savebox"><input class="inp" id="themeName" type="text" maxlength="30" data-tp="pThemeName"><button class="ml-btn ml-btn--ghost" type="button" id="btnSaveTheme"><i data-lucide="bookmark-plus"></i><span data-t="save">Save</span></button></div>
             <small data-t="fSaveNote">For example your school's colours. Saved in this browser.</small>
           </div>
-          <div class="row" style="--n:1">
-            <label class="field"><span data-t="fFont">Font</span><select class="inp" id="fontMain"></select></label>
-          </div>
-          <div class="row hidden" style="--n:1" id="fontMoreRow">
-            <label class="field"><span data-t="fMore">More fonts</span><select class="inp" id="fontMore"></select><small data-t="fMoreNote">Loaded from Google Fonts when you pick one.</small></label>
+          <div class="field" style="margin-bottom:12px">
+            <span data-t="fFont" id="fontLbl">Font</span>
+            <div id="fontPick"></div>
+            <small data-t="fMoreNote">Fonts under "More fonts" load from Google Fonts when you pick one.</small>
           </div>
           <div class="row">
             <label class="field"><span><span data-t="fSize">Timer size</span> · <output id="sizeOut"></output></span><input type="range" min="40" max="300" step="5" data-k="look.size" id="sizeRange"></label>
@@ -294,6 +305,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   var STORE = 'ml-timer-talisman-settings-v1';
   var DEF = {
     mode: 'exam', lang: 'en', title: '', showDate: true, warn: 15, sound: true,
+    chime: { id: 'bell', vol: 70, rep: 3 },
     pomo: { work: 1500, short: 300, long: 900, every: 4, auto: true },
     cd: { secs: 600 },
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
@@ -311,11 +323,11 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fHours: 'Hours', fMinutes: 'Minutes', fSeconds: 'Seconds', fSubject: 'Subject', fPaper: 'Paper or extra line', fDate: 'Date',
       fReading: 'Reading (min)', fWriteH: 'Writing (h)', fWriteM: 'Writing (min)', fStart: 'Start time',
       fStartNote: 'Optional. The timer starts by itself at this time. Leave empty to start it by hand.',
-      fWarnEx: 'Warn when this many minutes are left', fInfo: 'Additional information', fTitle: 'Heading',
-      fWarn: 'Warning colour when this many minutes are left', fWarnNote: '0 turns the warning off.', fShowDate: 'Show the date',
+      fWarnEx: 'Warn at (minutes left)', fInfo: 'Additional information', fTitle: 'Heading',
+      fWarn: 'Warning colour at (minutes left)', fWarnNote: '0 turns the warning off.', fShowDate: 'Show the date',
       sLook: 'Display', dDigital: 'Digital', dAnalogue: 'Analogue', dBoth: 'Both', cSecs: 'Show seconds', cH24: '24-hour clock',
       cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme', delShort: 'Delete', fSaveTheme: 'Save these colours as a theme', pThemeName: 'e.g. School colours', fSaveNote: "For example your school's colours. Saved in this browser.", save: 'Save', saveFull: 'You can keep up to 8 themes. Delete one first.',
-      cBg: 'Background', cFg: 'Text', cAccent: 'Accent', cWarn: 'Warning', cFace: 'Clock face', fFont: 'Font', fMore: 'More fonts', fMoreNote: 'Loaded from Google Fonts when you pick one.', fSize: 'Timer size', fTsize: 'Text size',
+      cBg: 'Background', cFg: 'Text', cAccent: 'Accent', cWarn: 'Warning', cFace: 'Clock face', fChime: 'Chime sound', play: 'Play', fVol: 'Volume', fRep: 'Rings when time is up', fFont: 'Font', fMore: 'More fonts', fMoreNote: 'Fonts under "More fonts" load from Google Fonts when you pick one.', fSize: 'Timer size', fTsize: 'Text size',
       fLang: 'Language on the timer', pLabel: 'Live preview', defaults: 'Reset settings', open: 'Open in a new tab', copy: 'Copy link', copied: 'Link copied',
       keys: 'In the timer: <kbd>Space</kbd> start or pause, <kbd>R</kbd> reset, <kbd>F</kbd> full screen, <kbd>+</kbd> <kbd>−</kbd> add or take off a minute, <kbd>L</kbd> lap. The controls hide while the timer runs; move the mouse to bring them back.',
       linkNote: 'The link holds all your settings, so you can open it on another computer, such as the one connected to the projector. Your settings here are remembered in this browser.',
@@ -323,22 +335,22 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       min: 'min', h: 'h', confirmDefaults: 'Reset all settings to the defaults?'
     },
     af: {
-      allTools: 'Alle hulpmiddels', intro: "'n Eksamen- en studietydhouer. Kies 'n tydhouer, stel dit op en maak dit in 'n nuwe oortjie oop vir die bord of projektor. Die voorskou regs is die regte ding, so jy kan dit toets voordat jy dit oopmaak.",
-      sType: 'Soort tydhouer', mPomodoro: 'Pomodoro', mCountdown: 'Aftelling', mClock: 'Horlosie', mStopwatch: 'Stophorlosie', mExam: 'Eksamentydhouer',
+      allTools: 'Alle hulpmiddels', intro: "'n Eksamen- en studietydhouer. Kies 'n tydhouer, stel dit op en maak dit in 'n nuwe oortjie oop vir die bord of projektor. Die voorskou regs werk presies soos die tydhouer self, so jy kan dit eers uittoets.",
+      sType: 'Soort tydhouer', mPomodoro: 'Pomodoro', mCountdown: 'Aftelling', mClock: 'Horlosie', mStopwatch: 'Stophorlosie', mExam: 'Eksamen',
       sSettings: 'Instellings', fFocus: 'Fokus (min)', fShort: 'Kort pouse (min)', fLong: 'Lang pouse (min)', fEvery: 'Lang pouse ná', fEveryNote: 'fokusrondtes', fAuto: 'Begin die volgende rondte vanself',
       fHours: 'Ure', fMinutes: 'Minute', fSeconds: 'Sekondes', fSubject: 'Vak', fPaper: 'Vraestel of ekstra reël', fDate: 'Datum',
-      fReading: 'Leestyd (min)', fWriteH: 'Skryftyd (h)', fWriteM: 'Skryftyd (min)', fStart: 'Begintyd',
-      fStartNote: 'Opsioneel. Die tydhouer begin vanself op hierdie tyd. Laat leeg om dit self te begin.',
-      fWarnEx: 'Waarsku wanneer soveel minute oor is', fInfo: 'Bykomende inligting', fTitle: 'Opskrif',
-      fWarn: 'Waarskuwingskleur wanneer soveel minute oor is', fWarnNote: '0 skakel die waarskuwing af.', fShowDate: 'Wys die datum',
+      fReading: 'Leestyd (min)', fWriteH: 'Skryftyd (uur)', fWriteM: 'Skryftyd (min)', fStart: 'Begintyd',
+      fStartNote: 'Opsioneel. Die tydhouer begin dan vanself op dié tyd. Los dit leeg as jy self wil begin.',
+      fWarnEx: 'Waarsku by (minute oor)', fInfo: 'Bykomende inligting', fTitle: 'Opskrif',
+      fWarn: 'Waarskuwingskleur by (minute oor)', fWarnNote: '0 skakel die waarskuwing af.', fShowDate: 'Wys die datum',
       sLook: 'Vertoning', dDigital: 'Digitaal', dAnalogue: 'Analoog', dBoth: 'Albei', cSecs: 'Wys sekondes', cH24: '24-uur-horlosie',
       cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema', delShort: 'Skrap', fSaveTheme: "Stoor hierdie kleure as 'n tema", pThemeName: 'bv. Skoolkleure', fSaveNote: 'Byvoorbeeld jou skool se kleure. Gestoor in hierdie blaaier.', save: 'Stoor', saveFull: 'Jy kan tot 8 temas hou. Skrap eers een.',
-      cBg: 'Agtergrond', cFg: 'Teks', cAccent: 'Aksent', cWarn: 'Waarskuwing', cFace: 'Wyserplaat', fFont: 'Lettertipe', fMore: 'Meer lettertipes', fMoreNote: "Word van Google Fonts gelaai wanneer jy een kies.", fSize: 'Grootte van tydhouer', fTsize: 'Teksgrootte',
-      fLang: 'Taal op die tydhouer', pLabel: 'Lewendige voorskou', defaults: 'Herstel instellings', open: "Maak oop in 'n nuwe oortjie", copy: 'Kopieer skakel', copied: 'Skakel gekopieer',
-      keys: 'In die tydhouer: <kbd>Spasie</kbd> begin of pouseer, <kbd>R</kbd> herstel, <kbd>F</kbd> volskerm, <kbd>+</kbd> <kbd>−</kbd> tel \'n minuut by of af, <kbd>L</kbd> tussentyd. Die knoppies verdwyn terwyl die tydhouer loop; beweeg die muis om hulle terug te bring.',
-      linkNote: "Die skakel hou al jou instellings, so jy kan dit op 'n ander rekenaar oopmaak, soos die een wat aan die projektor gekoppel is. Jou instellings hier word in hierdie blaaier onthou.",
+      cBg: 'Agtergrond', cFg: 'Teks', cAccent: 'Aksent', cWarn: 'Waarskuwing', cFace: 'Wyserplaat', fChime: 'Klokklank', play: 'Speel', fVol: 'Volume', fRep: 'Herhalings as die tyd om is', fFont: 'Lettertipe', fMore: 'Meer lettertipes', fMoreNote: 'Lettertipes onder "Meer lettertipes" word van Google Fonts gelaai wanneer jy een kies.', fSize: 'Tydhouergrootte', fTsize: 'Teksgrootte',
+      fLang: 'Taal op die tydhouer', pLabel: 'Voorskou', defaults: 'Stel instellings terug', open: "Maak oop in 'n nuwe oortjie", copy: 'Kopieer skakel', copied: 'Skakel gekopieer',
+      keys: 'In die tydhouer: <kbd>Spasie</kbd> begin of pouseer, <kbd>R</kbd> stel terug, <kbd>F</kbd> volskerm, <kbd>+</kbd> <kbd>−</kbd> tel \'n minuut by of af, <kbd>L</kbd> tussentyd. Die knoppies verdwyn terwyl die tydhouer loop; beweeg die muis om hulle terug te kry.',
+      linkNote: "Die skakel bevat al jou instellings, so jy kan dit op 'n ander rekenaar oopmaak, soos dié wat aan die projektor gekoppel is. Jou instellings word in hierdie blaaier onthou.",
       pSubject: 'bv. Fisiese Wetenskappe', pPaper: 'bv. Vraestel 1', pInfo: "bv. Beantwoord al die vrae. Gebruik 'n blou of swart pen. Sakrekenaars word toegelaat.", pTitle: 'bv. Huiswerkblok',
-      min: 'min', h: 'h', confirmDefaults: 'Herstel al die instellings na die verstek?'
+      min: 'min', h: 'uur', confirmDefaults: 'Stel al die instellings terug na die verstek?'
     }
   };
 
@@ -357,7 +369,11 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   function get(path) { return path.split('.').reduce(function (o, k) { return o[k]; }, cfg); }
   function set(path, v) { var ks = path.split('.'), o = cfg; for (var i = 0; i < ks.length - 1; i++) o = o[ks[i]]; o[ks[ks.length - 1]] = v; }
   function num(v, lo, hi) { v = Math.round(+v || 0); return Math.max(lo, Math.min(hi, v)); }
-  function link() { return new URL('timer-talisman-display.html', location.href).href + '#' + encodeURIComponent(JSON.stringify(cfg)); }
+  var shareLink = '';
+  function makeLink() {
+    TTLink.encode(cfg).then(function (h) { shareLink = new URL('timer-talisman-display.html', location.href).href + '#' + h; });
+  }
+  function link() { return shareLink || new URL('timer-talisman-display.html', location.href).href + '#' + encodeURIComponent(JSON.stringify(cfg)); }
   function icons() { if (window.lucide) lucide.createIcons(); }
 
   // ── Fill the form from cfg ──
@@ -373,9 +389,11 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     document.querySelectorAll('[data-for]').forEach(function (s) { s.classList.toggle('hidden', s.getAttribute('data-for').split(' ').indexOf(cfg.mode) < 0); });
     $('sizeOut').textContent = cfg.look.fit ? '—' : cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%';
     $('sizeRange').disabled = !!cfg.look.fit;
-    $('fontMoreRow').classList.toggle('hidden', !TH.fillFonts($('fontMain'), $('fontMore'), cfg.look.font, uiLang));
+    picker.set(cfg.look.font, uiLang);
+    TTSounds.fill($('chimeSel'), cfg.chime.id, uiLang); $('volOut').textContent = cfg.chime.vol + '%';
     renderThemes(); renderPresets();
   }
+  var picker = TH.fontPicker($('fontPick'), { value: cfg.look.font, lang: uiLang, label: t('fFont'), onPick: function (id) { cfg.look.font = id; changed(false); } });
   var shown = [];   // the themes in the dropdown, for the change handler
   function renderThemes() {
     var r = TH.fill($('themeSelect'), cfg.look, uiLang), cur = r.cur;
@@ -399,6 +417,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     document.querySelectorAll('[data-t-html]').forEach(function (e) { e.innerHTML = t(e.getAttribute('data-t-html')); });
     document.querySelectorAll('[data-tp]').forEach(function (e) { e.placeholder = t(e.getAttribute('data-tp')); });
     document.documentElement.lang = uiLang;
+    document.title = uiLang === 'af' ? 'Timer Talisman — eksamen- en studietydhouer | The Magic Lab' : 'Timer Talisman — exam and study timer | The Magic Lab';
   }
 
   // ── Preview: the display page in an iframe, updated through its hash ──
@@ -411,7 +430,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       else { f.src = 'timer-talisman-display.html?preview=1' + h; f.dataset.ready = '1'; }
     }, 150);
   }
-  function changed(refill) { store(); if (refill) fill(); refreshPreview(); }
+  function changed(refill) { store(); if (refill) fill(); refreshPreview(); makeLink(); }
 
   // ── Wiring ──
   document.querySelectorAll('[data-k]').forEach(function (inp) {
@@ -419,11 +438,11 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       var k = inp.getAttribute('data-k'), u = +inp.getAttribute('data-u') || 1, v;
       if (inp.type === 'checkbox') v = inp.checked;
       else if (inp.type === 'number' || inp.type === 'range') v = num(inp.value, +inp.min || 0, +inp.max || 1e6) * u;
-      else v = inp.value;
+      else v = inp.hasAttribute('data-num') ? +inp.value : inp.value;
       set(k, v);
       if (inp.type === 'color') renderThemes();
       if (k === 'look.fit') fill();
-      if (inp.type === 'range') { $('sizeOut').textContent = cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%'; }
+      if (inp.type === 'range') { $('sizeOut').textContent = cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%'; $('volOut').textContent = cfg.chime.vol + '%'; }
       changed(false);
     });
     if (inp.type === 'color') inp.addEventListener('input', function () { set(inp.getAttribute('data-k'), inp.value); changed(false); });
@@ -448,13 +467,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   document.querySelectorAll('#displaySeg button').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.display = b.getAttribute('data-v'); changed(true); });
   });
-  $('fontMain').addEventListener('change', function () {
-    var more = this.value === 'more';
-    $('fontMoreRow').classList.toggle('hidden', !more);
-    cfg.look.font = more ? $('fontMore').value : this.value;
-    changed(false);
-  });
-  $('fontMore').addEventListener('change', function () { cfg.look.font = this.value; changed(false); });
+  $('chimeSel').addEventListener('change', function () { cfg.chime.id = this.value; TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); changed(false); });
+  $('btnPlay').addEventListener('click', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); });
   $('themeSelect').addEventListener('change', function () {
     var th = TH.find(shown, this.value);
     if (th) { TH.apply(th, cfg.look); changed(true); }
@@ -492,7 +506,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   var syncNav = function () { nav.classList.toggle('is-stuck', window.scrollY > 8); };
   syncNav(); window.addEventListener('scroll', syncNav, { passive: true });
 
-  translate(); fill(); icons(); refreshPreview();
+  translate(); fill(); icons(); refreshPreview(); makeLink();
 })();
 </script>
 <script src="/contact-button.js" defer></script>
