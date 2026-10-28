@@ -60,7 +60,10 @@ body.hide-cursor { cursor: none; }
 }
 .both .digital { font-size: calc(14vmin * var(--dsize)); }
 .analogue { width: calc(48vmin * var(--dsize)); height: calc(48vmin * var(--dsize)); max-width: 88vw; max-height: 60vh; }
-.both .analogue { width: calc(40vmin * var(--dsize)); height: calc(40vmin * var(--dsize)); }
+.both .analogue { width: calc(50vmin * var(--dsize)); height: calc(50vmin * var(--dsize)); max-height: 66vh; }
+/* with a clock beside the digits, the status lines sit above and below the
+   digits in this column, so the clock can use their height as well */
+.dcol { display: flex; flex-direction: column; align-items: center; gap: 1.6vmin; min-width: 0; }
 .sub { font-size: calc(2.7vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; }
 .info {
   font-size: calc(2.7vmin * var(--tsize)); line-height: 1.45; white-space: pre-line;
@@ -152,7 +155,7 @@ body.hide-cursor { cursor: none; }
     <div class="phase" id="phase"></div>
     <div class="faces" id="faces">
       <svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg>
-      <div class="digital" id="digital"></div>
+      <div class="dcol" id="dcol"><div class="digital" id="digital"></div></div>
     </div>
     <div class="sub" id="sub"></div>
     <div class="laps" id="laps"></div>
@@ -474,11 +477,14 @@ body.hide-cursor { cursor: none; }
     var showA = an.style.display !== 'none', showD = dg.style.display !== 'none';
     faces.style.flexWrap = 'nowrap';
     var fgap = showA && showD ? Math.min(W * 0.04, 48) : 0, a = 0;
-    if (showA) { a = showD ? Math.min(H, W * 0.42) : Math.min(H, W); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    if (showA) { a = showD ? Math.min(H, W * 0.48) : Math.min(H, W); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
+      // the digits share their column with the status lines beside a clock
+      var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
+      [].forEach.call(col.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
       dg.style.fontSize = '100px';
       var w = dg.scrollWidth || 1, h = dg.offsetHeight || 1;
-      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w, H / h) * 100 * 0.97) + 'px';
+      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w, Math.max(20, H - ch) / h) * 100 * 0.97) + 'px';
     }
   }
   window.addEventListener('resize', function () { fit(); });
@@ -521,7 +527,12 @@ body.hide-cursor { cursor: none; }
     $('analogue').style.display = d === 'digital' ? 'none' : '';
     $('digital').style.display = d === 'analogue' && cfg.mode !== 'exam' ? 'none' : '';
     // an exam always shows the time left in words or digits, even with an analogue face
-    $('faces').classList.toggle('both', d === 'both' || (d === 'analogue' && cfg.mode === 'exam'));
+    var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
+    $('faces').classList.toggle('both', both);
+    // beside a clock, "Ready"/"Paused" and the end time move next to the digits
+    var dcol = $('dcol'), ph = $('phase'), sb = $('sub');
+    if (both && ph.parentNode !== dcol) { dcol.insertBefore(ph, $('digital')); dcol.appendChild(sb); relayout = true; }
+    if (!both && ph.parentNode === dcol) { stage.insertBefore(ph, $('faces')); stage.insertBefore(sb, $('laps')); relayout = true; }
     if (d !== 'digital') drawFace(m);
     if (relayout || force) { relayout = false; fit(); }
     var showNow = cfg.look.now && cfg.mode !== 'clock';
