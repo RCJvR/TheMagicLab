@@ -185,14 +185,14 @@
 
   // ── timer: Timer Talisman ──
   // A quick countdown opens the timer in a new tab, filling the screen. The
-  // link uses Timer Talisman's short form: "j" + base64url of the settings
-  // that differ from its defaults (a countdown is the default type).
+  // link uses Timer Talisman's readable form (TTLink in
+  // timer-talisman-themes.js): "c" the countdown, "x" fill the screen,
+  // "n" the heading, with "_" for a space.
   function talismanLink(secs) {
-    const cfg = { cd: { secs }, look: { fit: true } }, title = $('tm-label').value.trim();
-    if (title) cfg.title = title;
-    const bytes = new TextEncoder().encode(JSON.stringify(cfg));
-    let bin = ''; bytes.forEach(b => { bin += String.fromCharCode(b); });
-    return 'timer-talisman-display.html#j' + btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const title = $('tm-label').value.trim();
+    const live = location.protocol === 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    return (live ? 'timer' : 'timer.html') + '#c=' + (secs / 60) + 'm&x=1' +
+      (title ? '&n=' + encodeURIComponent(title).replace(/_/g, '%5F').replace(/%20/g, '_').replace(/[.!'()*]$/, c => '%' + c.charCodeAt(0).toString(16).toUpperCase()) : '');
   }
   [1, 2, 3, 5, 10, 15, 20, 30, 45, 60].forEach(m => $('tm-quick').appendChild(el('button', { class: 'aa-btn aa-btn--sm', type: 'button', text: m + ' min',
     onclick: () => window.open(talismanLink(m * 60), '_blank', 'noopener') })));

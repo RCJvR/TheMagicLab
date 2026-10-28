@@ -474,6 +474,7 @@ const urlsToCache = [
   '/arena.html',
   '/memory-mirror.html',
   '/timer-talisman.html',
+  '/timer.html',
   '/timer-talisman-display.html',
   '/assets/timer-talisman-themes.js',
   '/assets/memory-mirror/manifest.json',
@@ -554,7 +555,10 @@ self.addEventListener('fetch', event => {
       }
       return response;
     }).catch(() => {
-      return caches.match(event.request).then(cached => cached || caches.match('/index.html'));
+      // "/timer" is timer.html on the live site; look for it under either name
+      return caches.match(event.request)
+        .then(cached => cached || (/\/[\w-]+$/.test(new URL(url).pathname) && caches.match(new URL(url).pathname + '.html')))
+        .then(cached => cached || caches.match('/index.html'));
     })
   );
 });

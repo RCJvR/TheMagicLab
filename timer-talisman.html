@@ -31,9 +31,9 @@
 /* ════════════════════════════════════════════════════════════════════════
    Timer Talisman — setup.
 
-   This page only collects settings. The timer itself is
-   timer-talisman-display.html, which reads everything from its link (JSON
-   in the URL hash). The preview on the right is that same page in an
+   This page only collects settings. The timer itself is timer.html
+   (served as /timer), which reads everything from its link (the settings
+   in the URL hash, see TTLink). The preview on the right is that same page in an
    iframe, so what you see here is exactly what opens in the new tab.
 
    It sits in the Study & Planning family beside Time Turner and shares its
@@ -68,6 +68,11 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 .mode:hover { color: var(--paper); border-color: var(--paper); }
 .mode[aria-pressed="true"] { border-color: var(--tool); color: var(--paper); background: color-mix(in srgb, var(--tool) 14%, transparent); }
 .mode[aria-pressed="true"] i { color: var(--tool); }
+.layouts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 480px) { .layouts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.layouts .mode small { font-weight: 500; font-size: 11.5px; color: var(--text-3); line-height: 1.3; }
+.layouts .mode[aria-pressed="true"] small { color: var(--text-2); }
+.tt-note { font-size: 12.5px; color: var(--text-3); margin: 10px 0 0; line-height: 1.4; }
 
 .row { display: grid; gap: 10px; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); margin-bottom: 12px; }
 .row:last-child { margin-bottom: 0; }
@@ -158,7 +163,20 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
           </div>
         </section>
 
-        <!-- 2. Timer settings, one block per type -->
+        <!-- 2. Layout: how much the timer shows. Settings the chosen layout
+             does not show are hidden below (data-lay lists where each shows). -->
+        <section class="tt-card">
+          <h2><i data-lucide="layout-template"></i><span data-t="sLayout">Layout</span></h2>
+          <div class="modes layouts" id="layouts" role="group">
+            <button class="mode" data-v="minimal"><i data-lucide="square"></i><span data-t="yMinimal">Minimal</span><small data-t="yMinimalD">Only the time</small></button>
+            <button class="mode" data-v="simple"><i data-lucide="align-center"></i><span data-t="ySimple">Simple</span><small data-t="ySimpleD">Heading and time</small></button>
+            <button class="mode" data-v="standard"><i data-lucide="layout-template"></i><span data-t="yStandard">Standard</span><small data-t="yStandardD">Adds end times and notes</small></button>
+            <button class="mode" data-v="detailed"><i data-lucide="panel-right"></i><span data-t="yDetailed">Detailed</span><small data-t="yDetailedD">Adds a panel of times</small></button>
+          </div>
+          <p class="tt-note" data-t="layNote">Settings this layout does not show are hidden below. Change the layout to see them again.</p>
+        </section>
+
+        <!-- 3. Timer settings, one block per type -->
         <section class="tt-card">
           <h2><i data-lucide="sliders-horizontal"></i><span data-t="sSettings">Settings</span></h2>
 
@@ -185,10 +203,10 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
 
           <div data-for="exam">
             <div class="row" style="--n:1">
-              <label class="field"><span data-t="fSubject">Subject</span><input class="inp" type="text" maxlength="80" data-k="exam.subject" data-tp="pSubject"></label>
+              <label class="field" data-lay="simple standard detailed"><span data-t="fSubject">Subject</span><input class="inp" type="text" maxlength="80" data-k="exam.subject" data-tp="pSubject"></label>
             </div>
             <div class="row">
-              <label class="field"><span data-t="fPaper">Paper or extra line</span><input class="inp" type="text" maxlength="80" data-k="exam.paper" data-tp="pPaper"></label>
+              <label class="field" data-lay="standard detailed"><span data-t="fPaper">Paper or extra line</span><input class="inp" type="text" maxlength="80" data-k="exam.paper" data-tp="pPaper"></label>
               <label class="field"><span data-t="fDate">Date</span><input class="inp" type="date" data-k="exam.date"></label>
             </div>
             <div class="row" style="--n:3">
@@ -200,13 +218,13 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
               <label class="field"><span data-t="fStart">Start time</span><input class="inp" type="time" data-k="exam.start"><small data-t="fStartNote">Optional. The timer starts by itself at this time. Leave empty to start it by hand.</small></label>
               <label class="field"><span data-t="fWarnEx">Warn when this many minutes are left</span><input class="inp" type="number" min="0" max="120" data-k="warn"></label>
             </div>
-            <div class="row" style="--n:1">
+            <div class="row" style="--n:1" data-lay="standard detailed">
               <label class="field"><span data-t="fInfo">Additional information</span><textarea class="inp" maxlength="600" data-k="exam.info" data-tp="pInfo"></textarea></label>
             </div>
           </div>
 
           <div data-for="pomodoro countdown clock stopwatch">
-            <div class="row" style="--n:1">
+            <div class="row" style="--n:1" data-lay="simple standard detailed">
               <label class="field"><span data-t="fTitle">Heading</span><input class="inp" type="text" maxlength="80" data-k="title" data-tp="pTitle"></label>
             </div>
           </div>
@@ -216,11 +234,11 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             </div>
           </div>
           <div data-for="clock">
-            <label class="check"><input type="checkbox" data-k="showDate"><span data-t="fShowDate">Show the date</span></label>
+            <label class="check" data-lay="standard detailed"><input type="checkbox" data-k="showDate"><span data-t="fShowDate">Show the date</span></label>
           </div>
         </section>
 
-        <!-- 3. Look -->
+        <!-- 4. Look -->
         <section class="tt-card">
           <h2><i data-lucide="palette"></i><span data-t="sLook">Display</span></h2>
           <div class="seg" id="displaySeg">
@@ -232,7 +250,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             <label class="check"><input type="checkbox" data-k="look.secs"><span data-t="cSecs">Show seconds</span></label>
             <label class="check"><input type="checkbox" data-k="look.h24"><span data-t="cH24">24-hour clock</span></label>
             <label class="check"><input type="checkbox" data-k="look.nums"><span data-t="cNums">Numbers on the dial</span></label>
-            <label class="check"><input type="checkbox" data-k="look.now"><span data-t="cNow">Small clock in the corner</span></label>
+            <label class="check" data-lay="simple standard"><input type="checkbox" data-k="look.now"><span data-t="cNow">Small clock in the corner</span></label>
             <label class="check"><input type="checkbox" data-k="sound"><span data-t="cSound">Chime when time is up</span></label>
           </div>
           <div class="field" style="margin-bottom:12px">
@@ -271,7 +289,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
           </div>
           <div class="row">
             <label class="field"><span><span data-t="fSize">Timer size</span> · <output id="sizeOut"></output></span><input type="range" min="40" max="300" step="5" data-k="look.size" id="sizeRange"></label>
-            <label class="field"><span><span data-t="fTsize">Text size</span> · <output id="tsizeOut"></output></span><input type="range" min="50" max="200" step="5" data-k="look.tsize"></label>
+            <label class="field" data-lay="simple standard detailed"><span><span data-t="fTsize">Text size</span> · <output id="tsizeOut"></output></span><input type="range" min="50" max="200" step="5" data-k="look.tsize"></label>
           </div>
           <label class="check" style="margin-bottom:12px"><input type="checkbox" data-k="look.fit"><span data-t="cFit">Fill the screen: make the timer as big as the screen allows</span></label>
           <div class="row" style="--n:1">
@@ -311,7 +329,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
     look: { display: 'both', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard' }
   };
   var TH = window.TTThemes, COLOURS = TH.colours;   // themes: assets/timer-talisman-themes.js
   var CD_PRESETS = [1, 5, 10, 15, 30, 45, 60, 90];
@@ -319,6 +337,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     en: {
       allTools: 'All tools', intro: 'An exam and study timer. Choose a timer, set it up, and open it in a new tab for the board or projector. The preview on the right is the real thing, so you can try it before you open it.',
       sType: 'Timer type', mPomodoro: 'Pomodoro', mCountdown: 'Countdown', mClock: 'Clock', mStopwatch: 'Timer', mExam: 'Exam timer',
+      sLayout: 'Layout', yMinimal: 'Minimal', yMinimalD: 'Only the time', ySimple: 'Simple', ySimpleD: 'Heading and time',
+      yStandard: 'Standard', yStandardD: 'Adds end times and notes', yDetailed: 'Detailed', yDetailedD: 'Adds a panel of times',
+      layNote: 'Settings this layout does not show are hidden below. Change the layout to see them again.',
       sSettings: 'Settings', fFocus: 'Focus (min)', fShort: 'Short break (min)', fLong: 'Long break (min)', fEvery: 'Long break after', fEveryNote: 'focus rounds', fAuto: 'Start the next round by itself',
       fHours: 'Hours', fMinutes: 'Minutes', fSeconds: 'Seconds', fSubject: 'Subject', fPaper: 'Paper or extra line', fDate: 'Date',
       fReading: 'Reading (min)', fWriteH: 'Writing (h)', fWriteM: 'Writing (min)', fStart: 'Start time',
@@ -337,6 +358,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     af: {
       allTools: 'Alle hulpmiddels', intro: "'n Eksamen- en studietydhouer. Kies 'n tydhouer, stel dit op en maak dit in 'n nuwe oortjie oop vir die bord of projektor. Die voorskou regs werk presies soos die tydhouer self, so jy kan dit eers uittoets.",
       sType: 'Soort tydhouer', mPomodoro: 'Pomodoro', mCountdown: 'Aftelling', mClock: 'Horlosie', mStopwatch: 'Stophorlosie', mExam: 'Eksamen',
+      sLayout: 'Uitleg', yMinimal: 'Minimaal', yMinimalD: 'Net die tyd', ySimple: 'Eenvoudig', ySimpleD: 'Opskrif en tyd',
+      yStandard: 'Standaard', yStandardD: 'Met eindtye en notas', yDetailed: 'Uitgebreid', yDetailedD: "Met 'n paneel van tye",
+      layNote: 'Instellings wat hierdie uitleg nie wys nie, is hieronder versteek. Kies ’n ander uitleg om hulle weer te sien.',
       sSettings: 'Instellings', fFocus: 'Fokus (min)', fShort: 'Kort pouse (min)', fLong: 'Lang pouse (min)', fEvery: 'Lang pouse ná', fEveryNote: 'fokusrondtes', fAuto: 'Begin die volgende rondte vanself',
       fHours: 'Ure', fMinutes: 'Minute', fSeconds: 'Sekondes', fSubject: 'Vak', fPaper: 'Vraestel of ekstra reël', fDate: 'Datum',
       fReading: 'Leestyd (min)', fWriteH: 'Skryftyd (uur)', fWriteM: 'Skryftyd (min)', fStart: 'Begintyd',
@@ -375,9 +399,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   function num(v, lo, hi) { v = Math.round(+v || 0); return Math.max(lo, Math.min(hi, v)); }
   var shareLink = '';
   function makeLink() {
-    TTLink.encode(effective()).then(function (h) { shareLink = new URL('timer-talisman-display.html', location.href).href + '#' + h; });
+    TTLink.encode(effective()).then(function (h) { shareLink = TTLink.page() + (h ? '#' + h : ''); });
   }
-  function link() { return shareLink || new URL('timer-talisman-display.html', location.href).href + '#' + encodeURIComponent(JSON.stringify(effective())); }
+  function link() { return shareLink || TTLink.page() + '#' + encodeURIComponent(JSON.stringify(effective())); }
   function icons() { if (window.lucide) lucide.createIcons(); }
 
   // ── Fill the form from cfg ──
@@ -390,6 +414,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     $('exH').value = Math.floor(cfg.exam.writing / 3600); $('exM').value = Math.floor(cfg.exam.writing % 3600 / 60);
     document.querySelectorAll('#modes .mode').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === cfg.mode); });
     document.querySelectorAll('#displaySeg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cfg.look.display); });
+    document.querySelectorAll('#layouts .mode').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cfg.look.layout); });
+    document.querySelectorAll('[data-lay]').forEach(function (e) { e.classList.toggle('hidden', e.getAttribute('data-lay').split(' ').indexOf(cfg.look.layout) < 0); });
     document.querySelectorAll('[data-for]').forEach(function (s) { s.classList.toggle('hidden', s.getAttribute('data-for').split(' ').indexOf(cfg.mode) < 0); });
     $('sizeOut').textContent = cfg.look.fit ? '—' : cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%';
     $('sizeRange').disabled = !!cfg.look.fit;
@@ -432,7 +458,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     pending = setTimeout(function () {
       var f = $('preview'), h = '#' + encodeURIComponent(JSON.stringify(effective()));
       if (f.dataset.ready) f.contentWindow.location.hash = h;
-      else { f.src = 'timer-talisman-display.html?preview=1' + h; f.dataset.ready = '1'; }
+      else { f.src = 'timer.html?preview=1' + h; f.dataset.ready = '1'; }
     }, 150);
   }
   function changed(refill) { store(); if (refill) fill(); refreshPreview(); makeLink(); }
@@ -468,6 +494,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       if (cfg.mode === 'exam' && cfg.warn < 5) cfg.warn = 15;
       changed(true);
     });
+  });
+  document.querySelectorAll('#layouts .mode').forEach(function (b) {
+    b.addEventListener('click', function () { cfg.look.layout = b.getAttribute('data-v'); changed(true); });
   });
   document.querySelectorAll('#displaySeg button').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.display = b.getAttribute('data-v'); changed(true); });

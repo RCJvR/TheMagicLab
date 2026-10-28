@@ -305,10 +305,9 @@
   function apply(th, look) { COLOURS.forEach(function (k) { look[k] = th[k]; }); }
 
   // ── Short links ─────────────────────────────────────────────────────
-  // A link carries only the settings that differ from BASE, compressed
-  // (deflate) and written in URL-safe base64: "#z…". Older links, which carry
-  // the whole settings object as JSON, still open. BASE must never change
-  // its values, or old short links would change meaning; add new keys only.
+  // A link carries only the settings that differ from BASE (see KEYS below).
+  // Older links (compressed "#z…", "#j…" and plain JSON) still open. BASE
+  // must never change its values, or links would change meaning.
   var BASE = {
     mode: 'countdown', lang: 'en', title: '', showDate: true, warn: 5, sound: true,
     chime: { id: 'bell', vol: 70, rep: 3 },
@@ -317,24 +316,12 @@
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard' }
   };
-  function diff(a, b) {
-    var o = {}, any = false;
-    for (var k in a) {
-      if (a[k] && typeof a[k] === 'object') { var d = diff(a[k], b[k] || {}); if (d) { o[k] = d; any = true; } }
-      else if (a[k] !== b[k]) { o[k] = a[k]; any = true; }
-    }
-    return any ? o : null;
-  }
   function merge(a, b) {
     var o = {};
     for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
     return o;
-  }
-  function b64u(bytes) {
-    var s = ''; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
-    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
   function unb64u(str) {
     str = str.replace(/-/g, '+').replace(/_/g, '/'); while (str.length % 4) str += '=';
@@ -345,21 +332,97 @@
     return new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
   }
   var canZip = typeof CompressionStream === 'function' && typeof DecompressionStream === 'function';
-  // settings → "z…" (compressed) or "j…" (plain), whichever is shorter
+
+  // Readable links: "m=e&s=Maths&w=2h30m&t=curro-blue". One short key per
+  // setting, and only the settings that differ from BASE. Times read like
+  // "5m", "1h30m" or "45s"; on/off is 1/0; a space is "_". A key never
+  // changes meaning once published; add new keys only.
+  var KEYS = [
+    ['mode', 'm', 'mode'], ['lang', 'l'], ['title', 'n'], ['showDate', 'sd', 'bool'], ['warn', 'wn', 'num'], ['sound', 'sn', 'bool'],
+    ['chime.id', 'ch'], ['chime.vol', 'cv', 'num'], ['chime.rep', 'cr', 'num'],
+    ['pomo.work', 'pw', 'dur'], ['pomo.short', 'ps', 'dur'], ['pomo.long', 'pl', 'dur'], ['pomo.every', 'pe', 'num'], ['pomo.auto', 'pa', 'bool'],
+    ['cd.secs', 'c', 'dur'],
+    ['exam.subject', 's'], ['exam.paper', 'p'], ['exam.date', 'd'], ['exam.start', 'st'],
+    ['exam.reading', 'r', 'dur'], ['exam.writing', 'w', 'dur'], ['exam.info', 'i'],
+    ['look.display', 'v', 'view'], ['look.secs', 'ss', 'bool'], ['look.h24', 'h', 'bool'], ['look.nums', 'nu', 'bool'], ['look.now', 'nw', 'bool'],
+    ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
+    ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
+    ['look.layout', 'y', 'layout']
+  ];
+  var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
+  var VIEWS = { digital: 'd', analogue: 'a', both: 'b' };
+  var LAYOUTS = { minimal: 'm', simple: 's', standard: 'n', detailed: 'd' };
+  function flip(o) { var r = {}; for (var k in o) r[o[k]] = k; return r; }
+  function getPath(o, p) { return p.split('.').reduce(function (x, k) { return x && x[k]; }, o); }
+  function setPath(o, p, v) { var ks = p.split('.'), last = ks.pop(); ks.reduce(function (x, k) { return x[k] = x[k] || {}; }, o)[last] = v; }
+  function durOut(s) {
+    var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+    return (h ? h + 'h' : '') + (m ? m + 'm' : '') + (x || !s ? x + 's' : '');
+  }
+  function durIn(v) {
+    var t = 0, re = /(\d+(?:\.\d+)?)([hms]?)/g, mm;
+    while ((mm = re.exec(v))) t += parseFloat(mm[1]) * ({ h: 3600, m: 60, s: 1 }[mm[2]] || 1);
+    return Math.round(t);
+  }
+  // text: letters, digits and a few safe marks stay as they are; a space is "_"
+  function textOut(s) {
+    return String(s).replace(/[^A-Za-z0-9 \-.~!$'()*,;:@\/]/gu, function (c) { return c === '_' ? '%5F' : encodeURIComponent(c); }).replace(/ /g, '_');
+  }
+  function textIn(s) { return decodeURIComponent(s.replace(/_/g, ' ')); }
+  function valOut(kind, v) {
+    if (kind === 'bool') return v ? '1' : '0';
+    if (kind === 'dur') return durOut(v);
+    if (kind === 'mode') return MODES[v] || textOut(v);
+    if (kind === 'view') return VIEWS[v] || textOut(v);
+    if (kind === 'layout') return LAYOUTS[v] || textOut(v);
+    if (kind === 'hex') return String(v).replace(/^#/, '');
+    return textOut(v);
+  }
+  function valIn(kind, v) {
+    if (kind === 'bool') return v !== '0';
+    if (kind === 'dur') return durIn(v);
+    if (kind === 'num') return parseFloat(v) || 0;
+    if (kind === 'mode') return flip(MODES)[v] || textIn(v);
+    if (kind === 'view') return flip(VIEWS)[v] || textIn(v);
+    if (kind === 'layout') return flip(LAYOUTS)[v] || textIn(v);
+    if (kind === 'hex') return '#' + v;
+    return textIn(v);
+  }
+
+  // settings → the part after "#"
   function encode(cfg) {
-    var d = diff(cfg, BASE) || {};
+    var parts = [];
     // colours that match a preset travel as the preset's id ("t") instead
     var preset = LIST.filter(function (th) { return matches(th, cfg.look); })[0];
-    if (preset && d.look) {
-      COLOURS.forEach(function (k) { delete d.look[k]; });
-      if (!Object.keys(d.look).length) delete d.look;
-      if (preset.id !== 'night') d.t = preset.id;   // night is the default look
-    }
-    var json = JSON.stringify(d), raw = new TextEncoder().encode(json), plain = 'j' + b64u(raw);
-    if (!canZip) return Promise.resolve(plain);
-    return pipe(raw, new CompressionStream('deflate-raw')).then(function (z) {
-      var zz = 'z' + b64u(z); return zz.length < plain.length ? zz : plain;
-    }, function () { return plain; });
+    KEYS.forEach(function (k) {
+      var v = getPath(cfg, k[0]);
+      if (v === undefined || v === getPath(BASE, k[0])) return;
+      if (preset && k[2] === 'hex') return;
+      parts.push(k[1] + '=' + valOut(k[2], v));
+    });
+    if (preset && preset.id !== 'night') parts.push('t=' + preset.id);   // night is the default look
+    var h = parts.join('&');
+    // chat apps leave a final full stop or bracket out of a link; keep it in
+    h = h.replace(/[.,!?:;)'*]$/, function (c) { return '%' + c.charCodeAt(0).toString(16).toUpperCase(); });
+    return Promise.resolve(h);
+  }
+  function decodeKeys(h) {
+    var obj = {}, byKey = {};
+    KEYS.forEach(function (k) { byKey[k[1]] = k; });
+    h.split('&').forEach(function (pair) {
+      var i = pair.indexOf('='), key = i < 0 ? pair : pair.slice(0, i), v = i < 0 ? '1' : pair.slice(i + 1);
+      try {
+        if (key === 't') obj.t = textIn(v);
+        else if (byKey[key]) setPath(obj, byKey[key][0], valIn(byKey[key][2], v));
+      } catch (e) {}
+    });
+    return obj;
+  }
+  // The timer's own address. The live site serves timer.html as plain
+  // "/timer"; a local copy needs the ".html".
+  function page() {
+    var live = location.protocol === 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    return new URL(live ? 'timer' : 'timer.html', location.href).href;
   }
   // the part after "#" → full settings (BASE filled in for anything missing)
   function decode(h) {
@@ -371,6 +434,8 @@
       return merge(BASE, obj);
     };
     try {
+      if (/^[a-z]{1,2}(=|&|$)/.test(h)) return Promise.resolve(done(decodeKeys(h)));
+      // earlier link forms: "z…" (compressed JSON), "j…" (base64 JSON), "%7B…" (JSON)
       if (h[0] === 'z' && canZip) return pipe(unb64u(h.slice(1)), new DecompressionStream('deflate-raw'))
         .then(function (b) { return done(JSON.parse(new TextDecoder().decode(b))); }, function () { return done(); });
       if (h[0] === 'j') return Promise.resolve(done(JSON.parse(new TextDecoder().decode(unb64u(h.slice(1))))));
@@ -418,7 +483,7 @@
     sel.value = cur;
   }
 
-  window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge };
+  window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,
                       font: font, fontCss: fontCss, loadFont: loadFont, fontPicker: fontPicker };

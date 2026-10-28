@@ -89,7 +89,7 @@ HUBS = {
 }
 NOINDEX = ['account.html', 'admin.html', 'dashboard-student.html', 'dashboard-teacher.html',
            'payment-success.html', 'payment-cancelled.html', 'reset-password.html',
-           'arena.html', 'arena-host.html', 'time-turner.html', 'time-turner-checkin.html', 'pitch-deck.html', 'memory-mirror.html', 'timer-talisman-display.html']
+           'arena.html', 'arena-host.html', 'time-turner.html', 'time-turner-checkin.html', 'pitch-deck.html', 'memory-mirror.html', 'timer-talisman-display.html', 'timer.html']
 # interactive Drawing Druid chapters (resources and exam tasks stay members-only)
 TOOLS = {'science-sage': 'Science Sage', 'tech-tower': 'The Tech Tower', 'drawing-druid': 'Drawing Druid'}
 DD_SKIP = {'resources.html', 'course-drawings.html', 'practical-assessment-task.html'}

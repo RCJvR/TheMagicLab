@@ -1,0 +1,738 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Timer Talisman</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-prism.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif&display=swap">
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   Timer Talisman — the display.
+
+   Everything it shows comes from the link: the settings are in the URL
+   hash (TTLink in assets/timer-talisman-themes.js), written by
+   timer-talisman.html. So a teacher can open it in a
+   new tab, or copy the link to the projector laptop, and get the same
+   timer. A running timer's state (start time, pauses, laps) is kept in
+   localStorage under a key made from the link, so a refresh does not lose
+   it.
+
+   The colours are the user's own, so this page does not load theme.js.
+   Times are always worked out from the clock (Date.now), never by counting
+   ticks, so a timer in a background tab stays correct.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg: #08090b; --fg: #f2f5f9; --accent: #ed5c86; --warn: #f5b041; --face: #111418;
+  --font: 'Cabinet Grotesk', system-ui, sans-serif; --dsize: 1; --tsize: 1; --dweight: 800;
+}
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font);
+  display: flex; flex-direction: column; overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body.hide-cursor { cursor: none; }
+.stage {
+  flex: 1; min-height: 0; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2.4vmin; padding: 5vmin 4vw 12vmin; text-align: center;
+}
+.head:empty, .info:empty { display: none; }
+/* the status lines keep their space even when empty, so nothing jumps up or
+   down when "Paused" or an end time appears; a clock never uses them */
+.phase, .sub { min-height: 1.3em; }
+.mode-clock .phase, .mode-clock .sub { display: none; }
+/* every digit sits in a slot as wide as the font's widest digit (--dw), so
+   the time keeps one width while it counts and the layout never re-centres */
+.digital .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.head .title { font-weight: 800; font-size: calc(5.4vmin * var(--tsize)); line-height: 1.1; letter-spacing: -0.02em; }
+.head .meta { font-size: calc(2.9vmin * var(--tsize)); opacity: 0.75; margin-top: 0.8vmin; }
+.phase { font-size: calc(3.4vmin * var(--tsize)); font-weight: 700; color: var(--accent); }
+.faces { display: flex; align-items: center; justify-content: center; gap: 6vw; flex-wrap: wrap; min-height: 0; }
+.digital {
+  font-size: calc(19vmin * var(--dsize)); font-weight: var(--dweight); line-height: 1;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap;
+}
+.both .digital { font-size: calc(14vmin * var(--dsize)); }
+.analogue { width: calc(48vmin * var(--dsize)); height: calc(48vmin * var(--dsize)); max-width: 88vw; max-height: 60vh; }
+.both .analogue { width: calc(50vmin * var(--dsize)); height: calc(50vmin * var(--dsize)); max-height: 66vh; }
+/* with a clock beside the digits, the status lines sit above and below the
+   digits in this column, so the clock can use their height as well */
+.dcol { display: flex; flex-direction: column; align-items: center; gap: 1.6vmin; min-width: 0; }
+.sub { font-size: calc(2.7vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; }
+.info {
+  font-size: calc(2.7vmin * var(--tsize)); line-height: 1.45; white-space: pre-line;
+  max-width: min(80vw, 60em); opacity: 0.9;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin;
+}
+.laps { font-size: calc(2.4vmin * var(--tsize)); font-variant-numeric: tabular-nums; opacity: 0.85; columns: 2; column-gap: 4vw; max-height: 18vh; overflow: hidden; }
+.laps:empty { display: none; }
+.now { position: fixed; top: 2.4vmin; right: 3vw; font-size: calc(2.6vmin * var(--tsize)); opacity: 0.7; font-variant-numeric: tabular-nums; }
+/* Layouts (look.layout), from least to most information. "standard" is
+   the original page and needs no rules. */
+.lay-minimal .head, .lay-minimal .phase, .lay-minimal .sub, .lay-minimal .info,
+.lay-minimal .laps, .lay-minimal .now { display: none; }
+.lay-simple .head .meta, .lay-simple .sub, .lay-simple .info, .lay-simple .laps { display: none; }
+.lay-detailed .sub, .lay-detailed .info, .lay-detailed .now { display: none; }
+.facts { display: none; }
+.lay-detailed .facts {
+  display: block; text-align: left; flex: 0 0 auto; width: clamp(200px, 24vw, 440px); min-width: 0;
+  border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-left: 3vw;
+  font-size: calc(2.4vmin * var(--tsize)); overflow: hidden;
+}
+.facts dl { display: grid; grid-template-columns: auto 1fr; gap: 1.6vmin 2vw; margin: 0; align-items: baseline; }
+.facts dt { opacity: 0.7; }
+.facts dd { margin: 0; text-align: right; font-weight: 700; font-size: 1.45em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.facts .fnote { white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
+.facts .fnote:empty { display: none; }
+/* a tall, narrow screen puts the side panel under the timer */
+.lay-detailed .stage.narrow .faces { flex-wrap: wrap; row-gap: 3vmin; }
+.lay-detailed .stage.narrow .facts { flex-basis: 100%; width: auto; max-width: 560px; border-left: 0; padding-left: 0;
+  border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin; }
+.warn .digital, .warn .phase { color: var(--warn); }
+.done .digital { animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { 50% { opacity: 0.3; } }
+@media (prefers-reduced-motion: reduce) { .done .digital { animation: none; } }
+
+.bar {
+  position: fixed; left: 50%; bottom: 2.4vmin; transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 8px;
+  border-radius: 999px; max-width: calc(100vw - 24px); box-sizing: border-box;
+  background: color-mix(in srgb, var(--fg) 9%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif;
+  transition: opacity 0.3s;
+}
+.bar.idle { opacity: 0; pointer-events: none; }
+.bar button {
+  font: inherit; font-size: 15px; font-weight: 700; color: var(--fg); background: transparent;
+  border: 1px solid color-mix(in srgb, var(--fg) 26%, transparent); border-radius: 999px;
+  padding: 9px 15px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+}
+.bar button:hover { border-color: var(--fg); }
+.bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.bar button svg { width: 16px; height: 16px; }
+.bar button.icon-only { padding: 9px 11px; }
+.preview .bar button { font-size: 12px; padding: 6px 10px; }
+.preview .bar button svg { width: 13px; height: 13px; }
+
+/* ── Display settings panel ── */
+.panel {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 20; box-sizing: border-box;
+  width: min(340px, 92vw); overflow-y: auto; padding: 18px 18px 28px;
+  background: color-mix(in srgb, var(--fg) 7%, var(--bg)); color: var(--fg);
+  border-left: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.28);
+  font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 14px;
+}
+.panel[hidden] { display: none; }
+/* while the panel is open the timer moves aside, so changes stay in view */
+.panel-open .stage { padding-right: calc(min(340px, 92vw) + 3vw); }
+.panel-open .now { right: calc(min(340px, 92vw) + 3vw); }
+.panel-open .bar { left: calc((100vw - min(340px, 92vw)) / 2); }
+.ph { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ph h2 { font-size: 17px; font-weight: 800; margin: 0; }
+.pf { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
+.pf > span, .plabel { font-size: 12.5px; font-weight: 700; opacity: 0.8; }
+.pf[hidden] { display: none; }
+.prow { display: flex; gap: 6px; }
+#pFontPick { --fp-bg: var(--bg); --fp-fg: var(--fg); --fp-line: color-mix(in srgb, var(--fg) 30%, transparent); --fp-hl: color-mix(in srgb, var(--fg) 12%, transparent); --fp-accent: var(--accent); }
+.prow select { flex: 1; min-width: 0; }
+.panel select, .panel input[type="color"] {
+  font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 8px;
+}
+.panel input[type="color"] { padding: 2px; height: 34px; cursor: pointer; }
+.pcols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+.pcols label { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+.pcols input[type="color"] { width: 38px; height: 28px; flex-shrink: 0; }
+.pseg { display: flex; gap: 6px; }
+.pseg button, .pclose {
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent); border-radius: 999px; padding: 7px 8px;
+}
+.pseg button { flex: 1; }
+.pseg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.pclose { display: inline-flex; padding: 7px; }
+.pclose svg { width: 16px; height: 16px; }
+.pchk { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; cursor: pointer; }
+.pchk input { width: 16px; height: 16px; margin: 0; }
+.panel input[type="checkbox"], .panel input[type="range"] { accent-color: var(--accent); }
+.panel input[type="range"] { width: 100%; }
+.panel input:disabled { opacity: 0.4; }
+.pnote { font-size: 12px; line-height: 1.45; opacity: 0.75; margin: 12px 0 0; }
+.panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <div class="head" id="head"></div>
+    <div class="phase" id="phase"></div>
+    <div class="faces" id="faces">
+      <svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg>
+      <div class="dcol" id="dcol"><div class="digital" id="digital"></div></div>
+      <aside class="facts" id="facts"></aside>
+    </div>
+    <div class="sub" id="sub"></div>
+    <div class="laps" id="laps"></div>
+    <div class="info" id="info"></div>
+  </main>
+  <div class="now" id="now"></div>
+  <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
+  <aside class="panel" id="panel" hidden></aside>
+
+<script src="assets/timer-talisman-themes.js"></script>
+<script>
+(function () {
+  'use strict';
+  var DEF = TTLink.BASE;   // defaults: assets/timer-talisman-themes.js
+  var S = {
+    en: {
+      reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
+      ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
+      readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
+      plan: 'Reading {r} · Writing {w}', paused: 'Paused', timeUp: "Time's up", over: 'over',
+      focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
+      lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
+      minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
+      h: 'h', min: 'min',
+      fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
+      fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDate: 'Date',
+      pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
+      pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
+      c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
+      pStyle: 'Display', d_digital: 'Digital', d_analogue: 'Analogue', d_both: 'Both', pFont: 'Font', pMore: 'More fonts',
+      pFit: 'Fill the screen', pSize: 'Timer size', pTsize: 'Text size',
+      k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
+      pSound: 'Chime sound', pPlay: 'Play', pVol: 'Volume', pRep: "Rings when time's up", pLang: 'Language', pNote: "Changes are kept in this tab's address, so a bookmark or a copied link keeps them. A running timer carries on."
+    },
+    af: {
+      reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is om. Penne neer.',
+      ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
+      readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
+      plan: 'Leestyd {r} · Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', over: 'oor',
+      focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
+      lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Stel terug', skip: 'Slaan oor',
+      minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
+      h: 'uur', min: 'min',
+      fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
+      fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDate: 'Datum',
+      pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
+      pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
+      c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
+      pStyle: 'Vertoning', d_digital: 'Digitaal', d_analogue: 'Analoog', d_both: 'Albei', pFont: 'Lettertipe', pMore: 'Meer lettertipes',
+      pFit: 'Vul die skerm', pSize: 'Tydhouergrootte', pTsize: 'Teksgrootte',
+      k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
+      pSound: 'Klokklank', pPlay: 'Speel', pVol: 'Volume', pRep: 'Herhalings as die tyd om is', pLang: 'Taal', pNote: "Veranderinge word in hierdie oortjie se adres gehou, so 'n boekmerk of gekopieerde skakel hou dit. 'n Lopende tydhouer gaan aan."
+    }
+  };
+  var preview = /[?&]preview=1/.test(location.search);
+  var cfg, st, key, view = {}, lastPhase = null, wakeLock = null, idleTimer = null, panelOpen = false, themeList = [];
+
+  function $(id) { return document.getElementById(id); }
+  function t(k, v) { var s = (S[cfg.lang] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
+  function merge(a, b) {
+    var o = {};
+    for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
+    return o;
+  }
+  function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+  function locale() { return cfg.lang === 'af' ? 'af-ZA' : 'en-ZA'; }
+
+  // ── State: accumulated running time plus the moment it last resumed ──
+  function freshState() { return { acc: 0, since: null, started: false, phase: 0, laps: [], adj: 0 }; }
+  function loadState() {
+    if (preview) return freshState();
+    try { var s = JSON.parse(localStorage.getItem(key) || 'null'); if (s) return s; } catch (e) {}
+    return freshState();
+  }
+  function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} }
+  function elapsed() { return st.acc + (st.since ? Date.now() - st.since : 0) - st.adj; }
+  function running() { return !!st.since; }
+  function play() { if (!st.since) { st.since = Date.now(); if (!st.started) st.t0 = st.since; st.started = true; save(); keepAwake(); } }
+  function pause() { if (st.since) { st.acc += Date.now() - st.since; st.since = null; save(); } }
+  function toggle() { if (cfg.mode === 'clock') return; running() ? pause() : play(); render(true); }
+  function reset() {
+    if (cfg.mode === 'clock') return;
+    if (st.started && (cfg.mode === 'exam' || cfg.mode === 'countdown') && !confirm(t('confirmReset'))) return;
+    st = freshState(); lastPhase = null; save(); render(true);
+  }
+  function adjust(min) { st.adj += min * 60000; save(); render(true); }
+
+  // ── Formatting ──
+  function dur(ms, mode) {
+    // mode 'down' rounds up (a countdown shows 10:00 at the start and 0:00 at the end)
+    var neg = ms < 0; ms = Math.abs(ms);
+    var secs = cfg.look.secs, total;
+    if (mode === 'down') total = secs ? Math.ceil(ms / 1000) : Math.ceil(ms / 60000) * 60;
+    else total = secs ? Math.floor(ms / 1000) : Math.floor(ms / 60000) * 60;
+    var h = Math.floor(total / 3600), m = Math.floor(total % 3600 / 60), s = total % 60;
+    var out = secs
+      ? (h ? h + ':' + pad(m) + ':' + pad(s) : pad(m) + ':' + pad(s))
+      : (h ? h + ':' + pad(m) : m + ' ' + t('min'));
+    return (neg ? '+' : '') + out;
+  }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function clock(d, secs) {
+    return d.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit', second: secs ? '2-digit' : undefined, hour12: !cfg.look.h24 });
+  }
+  function hm(d) { return clock(d, false); }
+  function longDate(d) { return d.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+  function span(sec) {
+    var h = Math.floor(sec / 3600), m = Math.round(sec % 3600 / 60);
+    return (h ? h + ' ' + t('h') : '') + (h && m ? ' ' : '') + (m || !h ? m + ' ' + t('min') : '');
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  // ── Sound: the chosen chime (assets/timer-talisman-themes.js) ──
+  function chime(times) { if (cfg.sound && !preview) TTSounds.play(cfg.chime.id, cfg.chime.vol, times); }
+
+  // ── Keep the screen awake while a timer runs (projectors, phones) ──
+  function keepAwake() {
+    if (preview || !('wakeLock' in navigator) || wakeLock) return;
+    navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; l.addEventListener('release', function () { wakeLock = null; }); }).catch(function () {});
+  }
+  document.addEventListener('visibilitychange', function () { if (cfg && document.visibilityState === 'visible' && (running() || cfg.mode === 'clock' || cfg.mode === 'exam')) keepAwake(); });
+
+  // ── What each mode shows ──
+  // m.facts: the rows of the side panel in the Detailed layout
+  var DASH = '—';
+  function started(e) { return st.t0 ? hm(new Date(st.t0)) : st.started && running() ? hm(new Date(Date.now() - e)) : DASH; }
+  function examStart() {
+    var e = cfg.exam;
+    if (!e.start) return null;
+    var d = e.date ? new Date(e.date + 'T' + e.start) : new Date();
+    if (!e.date) { var p = e.start.split(':'); d.setHours(+p[0], +p[1], 0, 0); }
+    return isNaN(d) ? null : d.getTime();
+  }
+
+  function model() {
+    var now = Date.now(), m = { kind: cfg.mode };
+    if (cfg.mode === 'clock') {
+      m.head = [cfg.title, cfg.showDate ? longDate(new Date()) : ''];
+      m.digital = clock(new Date(), cfg.look.secs);
+      m.face = 'clock';
+      m.facts = [['fDate', longDate(new Date())]];
+      return m;
+    }
+    if (cfg.mode === 'stopwatch') {
+      var e = elapsed();
+      m.head = [cfg.title];
+      m.digital = dur(e, 'up') + (cfg.look.secs && e < 3600000 ? '.' + Math.floor(e % 1000 / 100) : '');
+      m.phase = !running() && st.started ? t('paused') : '';
+      m.face = 'stopwatch'; m.e = e;
+      m.facts = [['fNow', hm(new Date(now))], ['fStarted', started(e)], ['fLaps', String(st.laps.length)]];
+      return m;
+    }
+    if (cfg.mode === 'countdown') {
+      var total = cfg.cd.secs * 1000, r = total - elapsed();
+      m.head = [cfg.title];
+      m.digital = dur(r, 'down');
+      m.done = r <= 0; m.warn = !m.done && cfg.warn && r <= cfg.warn * 60000;
+      m.phase = m.done ? t('timeUp') : (!running() && st.started ? t('paused') : '');
+      m.sub = running() && !m.done ? t('ends', { t: hm(new Date(now + r)) }) : '';
+      m.face = total <= 3600000 ? 'wedge60' : 'wedge'; m.frac = Math.max(0, r) / (total <= 3600000 ? 3600000 : total);
+      if (m.done && !st.fin) { st.fin = now + r; save(); }
+      m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed())],
+        ['fEnds', m.done ? hm(new Date(st.fin)) : running() ? hm(new Date(now + r)) : DASH]];
+      if (m.done && lastPhase === 'run') chime(cfg.chime.rep);
+      lastPhase = m.done ? 'done' : 'run';
+      return m;
+    }
+    if (cfg.mode === 'pomodoro') {
+      var p = cfg.pomo, every = Math.max(1, p.every | 0);
+      var type = function (i) { return i % 2 === 0 ? 'focus' : ((i + 1) % (2 * every) === 0 ? 'long' : 'short'); };
+      var len = function (i) { var k = type(i); return (k === 'focus' ? p.work : k === 'long' ? p.long : p.short) * 1000; };
+      var rem = len(st.phase) - elapsed();
+      if (rem <= 0 && running()) {
+        chime(1);
+        st.phase++; st.acc = 0; st.adj = 0; st.since = p.auto ? Date.now() : null; save();
+        rem = len(st.phase);
+      }
+      var k = type(st.phase);
+      m.head = [cfg.title];
+      m.phase = t(k) + (k === 'focus' ? ' · ' + t('round', { i: Math.floor(st.phase / 2) % every + 1, n: every }) : '') + (!running() && st.started ? ' · ' + t('paused') : '');
+      m.digital = dur(rem, 'down');
+      m.sub = t('next', { p: t(type(st.phase + 1)) });
+      m.facts = [['fNow', hm(new Date(now))], ['fRound', (Math.floor(st.phase / 2) % every + 1) + ' / ' + every],
+        ['fEnds', running() ? hm(new Date(now + rem)) : DASH], ['fNext', t(type(st.phase + 1))]];
+      var L0 = len(st.phase); m.face = L0 <= 3600000 ? 'wedge60' : 'wedge'; m.frac = rem / (L0 <= 3600000 ? 3600000 : L0); m.alt = k !== 'focus';
+      return m;
+    }
+    // exam
+    var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
+    m.head = [x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
+    m.info = x.info; m.face = 'clock';
+    var examFacts = function (start, rEnd, end) {
+      m.facts = [['fNow', hm(new Date(now))], [st.started ? 'fStarted' : 'fStarts', start ? hm(new Date(start)) : DASH]];
+      if (R) m.facts.push(['fReading', span(x.reading)], ['fReadEnds', rEnd ? hm(new Date(rEnd)) : DASH]);
+      m.facts.push(['fWriting', span(x.writing)], ['fFinish', end ? hm(new Date(end)) : DASH]);
+    };
+    if (sched && !st.started) {
+      if (now < sched) {
+        m.phase = t('startsIn'); m.digital = dur(sched - now, 'down');
+        m.sub = t('startsAt', { t: hm(new Date(sched)) }) + ' · ' + t('plan', { r: span(x.reading), w: span(x.writing) });
+        m.arcFrom = sched; m.arcTo = sched + R + W; m.arcMark = R ? sched + R : null;
+        examFacts(sched, sched + R, sched + R + W);
+        return m;
+      }
+      st.started = true; st.acc = 0; st.since = sched; st.t0 = sched; save(); keepAwake();
+    }
+    if (!st.started) {
+      m.phase = t('ready'); m.digital = dur(R || W, 'down');
+      m.sub = t('plan', { r: span(x.reading), w: span(x.writing) });
+      examFacts(null, null, null);
+      return m;
+    }
+    var el = elapsed(), phase, left;
+    if (el < R) { phase = 'reading'; left = R - el; }
+    else if (el < R + W) { phase = 'writing'; left = R + W - el; }
+    else { phase = 'finished'; left = R + W - el; }
+    if (lastPhase && lastPhase !== phase) chime(phase === 'finished' ? cfg.chime.rep : 1);
+    lastPhase = phase;
+    m.phase = t(phase) + (!running() && phase !== 'finished' ? ' · ' + t('paused') : '');
+    m.digital = phase === 'finished' ? t('timeUp') : dur(left, 'down');
+    m.done = phase === 'finished';
+    m.warn = phase === 'writing' && cfg.warn && left <= cfg.warn * 60000;
+    var end = now + (R + W - el), bits = [];
+    if (phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
+    bits.push(m.done ? t('endedAt', { t: hm(new Date(end)) }) : t('ends', { t: hm(new Date(end)) }));
+    m.sub = running() || m.done ? bits.join(' · ') : '';
+    if (!m.done) { m.arcFrom = now; m.arcTo = end; m.arcMark = phase === 'reading' ? now + left : null; }
+    // times already past are written down, so a pause does not move them
+    if (phase !== 'reading' && R && !st.rEnd && running()) { st.rEnd = now - (el - R); save(); }
+    if (m.done && !st.fin) { st.fin = end; save(); }
+    examFacts(st.t0 || (running() ? now - el : null),
+      phase === 'reading' ? (running() ? now + left : null) : st.rEnd,
+      m.done ? st.fin : running() ? end : null);
+    return m;
+  }
+
+  // ── Analogue faces (SVG, 200 × 200) ──
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var a in attrs) e.setAttribute(a, attrs[a]); if (parent) parent.appendChild(e); return e; }
+  function polar(deg, r) { var a = (deg - 90) * Math.PI / 180; return [100 + r * Math.cos(a), 100 + r * Math.sin(a)]; }
+  function sector(deg, r) {
+    if (deg <= 0.01) return '';
+    if (deg >= 359.99) return 'M100 ' + (100 - r) + ' A' + r + ' ' + r + ' 0 1 1 99.99 ' + (100 - r) + ' Z';
+    var p = polar(deg, r);
+    return 'M100 100 L100 ' + (100 - r) + ' A' + r + ' ' + r + ' 0 ' + (deg > 180 ? 1 : 0) + ' 1 ' + p[0] + ' ' + p[1] + ' Z';
+  }
+  function arc(a0, sweep, r) {
+    if (sweep <= 0.01) return '';
+    sweep = Math.min(sweep, 359.5);
+    var p0 = polar(a0, r), p1 = polar(a0 + sweep, r);
+    return 'M' + p0[0] + ' ' + p0[1] + ' A' + r + ' ' + r + ' 0 ' + (sweep > 180 ? 1 : 0) + ' 1 ' + p1[0] + ' ' + p1[1];
+  }
+  function buildFace(kind) {
+    var svg = $('analogue'); svg.innerHTML = '';
+    el('circle', { cx: 100, cy: 100, r: 96, fill: 'var(--face)', stroke: 'color-mix(in srgb, var(--fg) 30%, transparent)', 'stroke-width': 1.5 }, svg);
+    view.wedge = el('path', { fill: 'var(--accent)', 'fill-opacity': 0.85 }, svg);
+    view.arc = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.9 }, svg);
+    view.mark = el('circle', { r: 4.5, fill: 'var(--fg)' }, svg);
+    for (var i = 0; i < 60; i++) {
+      var big = i % 5 === 0, p0 = polar(i * 6, big ? 80 : 85), p1 = polar(i * 6, 90);
+      el('line', { x1: p0[0], y1: p0[1], x2: p1[0], y2: p1[1], stroke: 'var(--fg)', 'stroke-width': big ? 2.6 : 1, 'stroke-opacity': big ? 0.95 : 0.5, 'stroke-linecap': 'round' }, svg);
+    }
+    if (cfg.look.nums && kind !== 'wedge') {
+      for (var n = 1; n <= 12; n++) {
+        var lbl = kind === 'clock' ? n : n * 5;   // stopwatch seconds, or minutes on a 60-minute dial
+        var q = polar(n * 30, 67);
+        var tx = el('text', { x: q[0], y: q[1], 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: 'var(--fg)', 'font-size': kind === 'clock' ? 15 : 12, 'font-weight': 700, 'font-family': 'var(--font)' }, svg);
+        tx.textContent = lbl;
+      }
+    }
+    view.hHour = el('line', { x1: 100, y1: 108, x2: 100, y2: 52, stroke: 'var(--fg)', 'stroke-width': 6, 'stroke-linecap': 'round' }, svg);
+    view.hMin = el('line', { x1: 100, y1: 112, x2: 100, y2: 30, stroke: 'var(--fg)', 'stroke-width': 4, 'stroke-linecap': 'round' }, svg);
+    view.hSec = el('line', { x1: 100, y1: 118, x2: 100, y2: 22, stroke: 'var(--accent)', 'stroke-width': 1.8, 'stroke-linecap': 'round' }, svg);
+    el('circle', { cx: 100, cy: 100, r: 5, fill: 'var(--accent)' }, svg);
+    view.faceKind = kind;
+  }
+  function rot(e, deg, show) { e.setAttribute('transform', 'rotate(' + deg + ' 100 100)'); e.style.display = show === false ? 'none' : ''; }
+  function drawFace(m) {
+    if (view.faceKind !== m.face) buildFace(m.face);
+    var now = new Date();
+    view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); view.mark.style.display = 'none';
+    if (m.face === 'clock') {
+      var h = now.getHours() % 12, mi = now.getMinutes(), s = now.getSeconds() + now.getMilliseconds() / 1000;
+      rot(view.hHour, (h + mi / 60) * 30); rot(view.hMin, (mi + s / 60) * 6); rot(view.hSec, Math.floor(s) * 6, cfg.look.secs);
+      // exam: the stretch of the clock face the exam still covers
+      if (m.arcFrom) {
+        var toDeg = function (ms) { var d = new Date(ms); return ((d.getHours() % 12) + d.getMinutes() / 60 + d.getSeconds() / 3600) * 30; };
+        view.arc.setAttribute('d', arc(toDeg(m.arcFrom), (m.arcTo - m.arcFrom) / 43200000 * 360, 93));
+        if (m.arcMark) { var pm = polar(toDeg(m.arcMark), 93); view.mark.setAttribute('cx', pm[0]); view.mark.setAttribute('cy', pm[1]); view.mark.style.display = ''; }
+      }
+    } else if (m.face === 'wedge' || m.face === 'wedge60') {
+      view.wedge.setAttribute('d', sector(Math.max(0, Math.min(1, m.frac)) * 360, 90));
+      view.wedge.setAttribute('fill', m.warn ? 'var(--warn)' : 'var(--accent)');
+      view.wedge.setAttribute('fill-opacity', m.alt ? 0.5 : 0.85);
+      rot(view.hHour, 0, false); rot(view.hMin, Math.max(0, Math.min(1, m.frac)) * 360, true); rot(view.hSec, 0, false);
+    } else {
+      var e = m.e || 0;
+      rot(view.hHour, 0, false); rot(view.hMin, (e / 60000 % 60) * 6, true); rot(view.hSec, (e / 1000 % 60) * 6, true);
+    }
+  }
+
+  // ── Controls ──
+  function btn(icon, label, fn, cls, iconOnly) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
+    b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
+    b.setAttribute('aria-label', label); b.title = label;
+    b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
+    return b;
+  }
+  function buildBar() {
+    var bar = $('bar'); bar.innerHTML = ''; var md = cfg.mode;
+    var waiting = md === 'exam' && examStart() && !st.started;
+    if (md !== 'clock' && !waiting) bar.appendChild(btn(running() ? 'pause' : 'play', running() ? t('pause') : (st.started ? t('resume') : t('start')), toggle, 'primary'));
+    if (md === 'stopwatch') bar.appendChild(btn('flag', t('lap'), function () { if (running()) { st.laps.push(elapsed()); save(); render(true); } }));
+    if (md === 'pomodoro') bar.appendChild(btn('skip-forward', t('skip'), function () { st.phase++; st.acc = 0; st.adj = 0; if (st.since) st.since = Date.now(); save(); render(true); }));
+    if ((md === 'countdown' || md === 'exam') && st.started) {
+      bar.appendChild(btn('minus', t('minus'), function () { adjust(-1); }));
+      bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
+    }
+    if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
+    if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
+    if (!preview) bar.appendChild(btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true));
+    if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
+    if (window.lucide) lucide.createIcons({ root: bar });
+    view.barKey = barKey();
+  }
+  function barKey() { return [cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started].join(); }
+  function fullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
+  }
+  function wake() {
+    var bar = $('bar'); bar.classList.remove('idle'); document.body.classList.remove('hide-cursor');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      if (!panelOpen && (running() || cfg.mode === 'clock' || (cfg.mode === 'exam' && st.started))) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+    }, preview ? 2500 : 3000);
+  }
+
+  // ── Fill the screen: size the faces to the space the other lines leave ──
+  function fit() {
+    var dg = $('digital'), an = $('analogue'), faces = $('faces'), stage = $('stage');
+    stage.classList.toggle('narrow', stage.clientWidth < stage.clientHeight * 1.15);
+    if (!cfg.look.fit) { dg.style.fontSize = ''; an.style.width = an.style.height = ''; an.style.maxHeight = ''; faces.style.flexWrap = ''; return; }
+    var cs = getComputedStyle(stage), gap = parseFloat(cs.rowGap) || 0;
+    var W = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    [].forEach.call(stage.children, function (c) { if (c !== faces && c.offsetParent) H -= c.offsetHeight + gap; });
+    H = Math.max(40, H);
+    var showA = an.style.display !== 'none', showD = dg.style.display !== 'none';
+    // the Detailed layout's side panel: beside the timer, or under it on a tall screen
+    var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
+    faces.style.flexWrap = under ? 'wrap' : 'nowrap';
+    if (facts.offsetParent) {
+      if (under) H = Math.max(40, H - facts.offsetHeight - (parseFloat(getComputedStyle(faces).rowGap) || 0));
+      else W -= facts.offsetWidth + Math.min(W * 0.04, 48);
+    }
+    var fgap = showA && showD ? Math.min(W * 0.04, 48) : 0, a = 0;
+    if (showA) { a = showD ? Math.min(H, W * 0.48) : Math.min(H, W); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    if (showD) {
+      // the digits share their column with the status lines beside a clock
+      var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
+      [].forEach.call(col.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
+      dg.style.fontSize = '100px';
+      var w = dg.scrollWidth || 1, h = dg.offsetHeight || 1;
+      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w, Math.max(20, H - ch) / h) * 100 * 0.97) + 'px';
+    }
+  }
+  window.addEventListener('resize', function () { fit(); });
+  document.addEventListener('fullscreenchange', function () { setTimeout(fit, 60); });
+
+  // ── Render ──
+  var relayout = false;
+  function setDigits(s) {
+    if (view.digits === s) return;
+    if ((view.digits || '').length !== s.length) relayout = true;
+    view.digits = s;
+    // every digit gets a slot, whatever surrounds it ("10:52:30 pm", "5 min")
+    $('digital').innerHTML = esc(s).replace(/[0-9]/g, '<span class="dc">$&</span>');
+  }
+  function measureDigits() {
+    var p = document.createElement('span'), mx = 0;
+    p.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:100px;font-family:var(--font);font-weight:var(--dweight)';
+    document.body.appendChild(p);
+    for (var d = 0; d < 10; d++) { p.textContent = String(d); mx = Math.max(mx, p.getBoundingClientRect().width); }
+    p.remove();
+    if (mx) document.documentElement.style.setProperty('--dw', (mx / 100).toFixed(3) + 'em');
+  }
+  function setText(id, s) { var e = $(id); if (e.textContent !== s) { if (id !== 'digital' || e.textContent.length !== s.length) relayout = true; e.textContent = s; } }
+  function render(force) {
+    var m = model();
+    if (force || view.barKey !== barKey()) buildBar();
+    var head = (m.head || []).filter(Boolean);
+    var headHtml = head.length ? '<div class="title">' + esc(head[0]) + '</div>' + (head[1] ? '<div class="meta">' + esc(head[1]) + '</div>' : '') : '';
+    if (cfg.mode === 'exam' && !cfg.exam.subject && head.length) headHtml = '<div class="meta">' + esc(head[0]) + '</div>';
+    if (view.headHtml !== headHtml) { $('head').innerHTML = headHtml; view.headHtml = headHtml; relayout = true; }
+    setText('phase', m.phase || '');
+    setDigits(m.digital || '');
+    setText('sub', m.sub || '');
+    setText('info', m.info || '');
+    var factsHtml = cfg.look.layout === 'detailed'
+      ? '<dl>' + (m.facts || []).map(function (f) { return '<dt>' + esc(t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('') + '</dl>' +
+        '<div class="fnote">' + esc(m.info || '') + '</div>'
+      : '';
+    if (view.facts !== factsHtml) { $('facts').innerHTML = factsHtml; view.facts = factsHtml; relayout = true; }
+    var laps = cfg.mode === 'stopwatch' ? st.laps.map(function (l, i) { return '<div>' + esc(t('lap')) + ' ' + (i + 1) + ' · ' + esc(dur(l - (st.laps[i - 1] || 0), 'up')) + '</div>'; }).reverse().join('') : '';
+    if (view.laps !== laps) { $('laps').innerHTML = laps; view.laps = laps; relayout = true; }
+    var stage = $('stage');
+    stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
+    var d = cfg.look.display;
+    $('analogue').style.display = d === 'digital' ? 'none' : '';
+    $('digital').style.display = d === 'analogue' && cfg.mode !== 'exam' ? 'none' : '';
+    // an exam always shows the time left in words or digits, even with an analogue face
+    var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
+    $('faces').classList.toggle('both', both);
+    // beside a clock, "Ready"/"Paused" and the end time move next to the digits
+    var dcol = $('dcol'), ph = $('phase'), sb = $('sub');
+    if (both && ph.parentNode !== dcol) { dcol.insertBefore(ph, $('digital')); dcol.appendChild(sb); relayout = true; }
+    if (!both && ph.parentNode === dcol) { stage.insertBefore(ph, $('faces')); stage.insertBefore(sb, $('laps')); relayout = true; }
+    if (d !== 'digital') drawFace(m);
+    if (relayout || force) { relayout = false; fit(); }
+    var showNow = cfg.look.now && cfg.mode !== 'clock';
+    setText('now', showNow ? clock(new Date(), false) : '');
+    document.title = (m.digital ? m.digital + ' · ' : '') + 'Timer Talisman';
+  }
+
+  function applyLook() {
+    var L = cfg.look, r = document.documentElement.style;
+    r.setProperty('--bg', L.bg); r.setProperty('--fg', L.fg); r.setProperty('--accent', L.accent);
+    r.setProperty('--warn', L.warnc); r.setProperty('--face', L.face);
+    var f = TTThemes.font(L.font);   // fonts: assets/timer-talisman-themes.js
+    r.setProperty('--font', TTThemes.fontCss(f));
+    r.setProperty('--dweight', f.w);
+    measureDigits();
+    TTThemes.loadFont(L.font, function () { if (cfg.look.font === f.id) { measureDigits(); fit(); } });
+    r.setProperty('--dsize', Math.max(0.3, Math.min(3, L.size / 100)));
+    r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
+    document.documentElement.lang = cfg.lang;
+    document.body.classList.toggle('preview', preview);
+    document.body.className = document.body.className.replace(/\b(mode|lay)-\S+/g, '').trim() + ' mode-' + cfg.mode + ' lay-' + (L.layout || 'standard');
+  }
+
+  // ── Display settings panel: edits cfg.look in place and keeps the link in step ──
+  function lookChanged() {
+    var snap = cfg;
+    TTLink.encode(cfg).then(function (h) { if (snap === cfg) history.replaceState(null, '', location.pathname + location.search + '#' + h); });
+    applyLook(); view.faceKind = null; view.headHtml = null; render(true);
+  }
+  function opt(v, label, on) { return '<option value="' + v + '"' + (on ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+  function buildPanel() {
+    var L = cfg.look, p = $('panel');
+    p.setAttribute('aria-label', t('pTitle'));
+    p.innerHTML =
+      '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
+      '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
+        TTThemes.colours.map(function (k) { return '<label>' + esc(t('c_' + k)) + '<input type="color" data-l="' + k + '" value="' + esc(L[k]) + '"></label>'; }).join('') + '</div></div>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pLayout')) + '</span><div class="pseg" id="pLayout">' +
+        ['minimal', 'simple', 'standard', 'detailed'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.layout === v) + '">' + esc(t('y_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pStyle')) + '</span><div class="pseg" id="pStyle">' +
+        ['digital', 'analogue', 'both'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.display === v) + '">' + esc(t('d_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pFont')) + '</span><div id="pFontPick"></div></div>' +
+      '<label class="pchk"><input type="checkbox" data-l="fit"' + (L.fit ? ' checked' : '') + '>' + esc(t('pFit')) + '</label>' +
+      '<label class="pf"><span>' + esc(t('pSize')) + ' · <output id="pSizeOut">' + (L.fit ? '—' : L.size + '%') + '</output></span><input type="range" id="pSize" min="40" max="300" step="5" data-l="size" value="' + L.size + '"' + (L.fit ? ' disabled' : '') + '></label>' +
+      '<label class="pf"><span>' + esc(t('pTsize')) + ' · <output id="pTsizeOut">' + L.tsize + '%</output></span><input type="range" min="50" max="200" step="5" data-l="tsize" value="' + L.tsize + '"></label>' +
+      ['secs', 'h24', 'nums', 'now'].map(function (k) { return '<label class="pchk"><input type="checkbox" data-l="' + k + '"' + (L[k] ? ' checked' : '') + '>' + esc(t('k_' + k)) + '</label>'; }).join('') +
+      '<div class="pf"><span class="plabel" id="pSoundL">' + esc(t('pSound')) + '</span><div class="prow"><select id="pSound" aria-labelledby="pSoundL"></select>' +
+        '<button type="button" class="pclose" id="pPlay" aria-label="' + esc(t('pPlay')) + '" title="' + esc(t('pPlay')) + '"><i data-lucide="play"></i></button></div></div>' +
+      '<label class="pf"><span>' + esc(t('pVol')) + ' · <output id="pVolOut">' + cfg.chime.vol + '%</output></span><input type="range" id="pVol" min="0" max="100" step="5" value="' + cfg.chime.vol + '"></label>' +
+      '<label class="pf"><span>' + esc(t('pRep')) + '</span><select id="pRep">' + [1, 2, 3, 5].map(function (n) { return opt(n, n + '×', cfg.chime.rep === n); }).join('') + '</select></label>' +
+      '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
+      '<p class="pnote">' + esc(t('pNote')) + '</p>';
+    themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+    TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: cfg.lang, label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
+    TTSounds.fill($('pSound'), cfg.chime.id, cfg.lang);
+    if (window.lucide) lucide.createIcons({ root: p });
+
+    $('pClose').addEventListener('click', function () { togglePanel(false); });
+    $('pTheme').addEventListener('change', function () {
+      var th = TTThemes.find(themeList, this.value);
+      if (th) { TTThemes.apply(th, L); lookChanged(); buildPanel(); $('pTheme').focus(); }
+    });
+    $('pSound').addEventListener('change', function () { cfg.chime.id = this.value; TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); lookChanged(); });
+    $('pPlay').addEventListener('click', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); });
+    $('pVol').addEventListener('input', function () { cfg.chime.vol = +this.value; $('pVolOut').textContent = this.value + '%'; });
+    $('pVol').addEventListener('change', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); lookChanged(); });
+    $('pRep').addEventListener('change', function () { cfg.chime.rep = +this.value; lookChanged(); });
+    $('pLang').addEventListener('change', function () { cfg.lang = this.value; lookChanged(); buildBar(); buildPanel(); $('pLang').focus(); });
+    [['#pStyle', 'display'], ['#pLayout', 'layout']].forEach(function (g) {
+      [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {
+        b.addEventListener('click', function () {
+          L[g[1]] = b.getAttribute('data-v');
+          [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (x) { x.setAttribute('aria-pressed', x === b); });
+          lookChanged();
+        });
+      });
+    });
+    [].forEach.call(p.querySelectorAll('[data-l]'), function (inp) {
+      var ev = inp.type === 'range' || inp.type === 'color' ? 'input' : 'change';
+      inp.addEventListener(ev, function () {
+        var k = inp.getAttribute('data-l');
+        L[k] = inp.type === 'checkbox' ? inp.checked : inp.type === 'range' ? +inp.value : inp.value;
+        if (k === 'size' || k === 'fit') { $('pSizeOut').textContent = L.fit ? '—' : L.size + '%'; $('pSize').disabled = !!L.fit; }
+        if (k === 'tsize') $('pTsizeOut').textContent = L.tsize + '%';
+        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+        lookChanged();
+      });
+    });
+  }
+  function togglePanel(open) {
+    panelOpen = open === undefined ? !panelOpen : open;
+    if (panelOpen) { buildPanel(); $('panel').hidden = false; $('pTheme').focus(); }
+    else { $('panel').hidden = true; }
+    document.body.classList.toggle('panel-open', panelOpen);
+    fit(); wake();
+  }
+
+  var ticking = null;
+  function init() {
+    TTLink.decode(location.hash.slice(1)).then(start);
+  }
+  function start(c) {
+    cfg = c;
+    var x = cfg.exam;
+    key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
+    st = loadState(); lastPhase = null; view = {};
+    applyLook(); render(true); wake();
+    if (running()) keepAwake();
+    if (!ticking) ticking = setInterval(function () { render(false); }, 100);
+  }
+
+  window.addEventListener('hashchange', init);
+  ['mousemove', 'pointerdown', 'touchstart'].forEach(function (ev) { document.addEventListener(ev, function () { if (cfg) wake(); }, { passive: true }); });
+  // a click anywhere lets the browser play the chime later
+  document.addEventListener('pointerdown', function () { TTSounds.unlock(); }, { passive: true });
+  document.addEventListener('keydown', function (e) {
+    if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
+    TTSounds.unlock();
+    wake();
+    if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
+    if (e.target.closest && (e.target.closest('#panel') || (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')))) return;
+    var k = e.key.toLowerCase();
+    if (k === ' ') { e.preventDefault(); if (!(cfg.mode === 'exam' && examStart() && !st.started)) toggle(); }
+    else if (k === 'r') reset();
+    else if (k === 'f') fullscreen();
+    else if (k === 'l' && cfg.mode === 'stopwatch' && running()) { st.laps.push(elapsed()); save(); render(true); }
+    else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
+    else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);
+  });
+  // slots are measured from the real font, so measure again once the page's
+  // fonts (Cabinet Grotesk comes from Fontshare) have arrived
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (cfg) { measureDigits(); fit(); } });
+  init();
+})();
+</script>
+</body>
+</html>
