@@ -89,6 +89,9 @@ body.hide-cursor { cursor: none; }
 .facts dl { display: grid; grid-template-columns: auto 1fr; gap: 1.6vmin 2vw; margin: 0; align-items: baseline; }
 .facts dt { opacity: 0.7; }
 .facts dd { margin: 0; text-align: right; font-weight: 700; font-size: 1.45em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* with a long value (a date) every value goes under its label and may wrap */
+.facts dl.stack { grid-template-columns: 1fr; row-gap: 0.4vmin; }
+.facts dl.stack dd { text-align: left; white-space: normal; line-height: 1.2; margin-bottom: 1.6vmin; }
 .facts .fnote { white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
 .facts .fnote:empty { display: none; }
@@ -205,7 +208,7 @@ body.hide-cursor { cursor: none; }
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
-      fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDate: 'Date',
+      fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
@@ -224,7 +227,7 @@ body.hide-cursor { cursor: none; }
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
-      fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDate: 'Datum',
+      fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
@@ -320,7 +323,9 @@ body.hide-cursor { cursor: none; }
       m.head = [cfg.title, cfg.showDate ? longDate(new Date()) : ''];
       m.digital = clock(new Date(), cfg.look.secs);
       m.face = 'clock';
-      m.facts = [['fDate', longDate(new Date())]];
+      var today = new Date();
+      m.facts = [['fDay', today.toLocaleDateString(locale(), { weekday: 'long' })],
+        ['fDate', today.toLocaleDateString(locale(), { day: 'numeric', month: 'long', year: 'numeric' })]];
       return m;
     }
     if (cfg.mode === 'stopwatch') {
@@ -580,7 +585,7 @@ body.hide-cursor { cursor: none; }
     setText('sub', m.sub || '');
     setText('info', m.info || '');
     var factsHtml = cfg.look.layout === 'detailed'
-      ? '<dl>' + (m.facts || []).map(function (f) { return '<dt>' + esc(t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('') + '</dl>' +
+      ? '<dl' + ((m.facts || []).some(function (f) { return f[1].length > 9; }) ? ' class="stack"' : '') + '>' + (m.facts || []).map(function (f) { return '<dt>' + esc(t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('') + '</dl>' +
         '<div class="fnote">' + esc(m.info || '') + '</div>'
       : '';
     if (view.facts !== factsHtml) { $('facts').innerHTML = factsHtml; view.facts = factsHtml; relayout = true; }
