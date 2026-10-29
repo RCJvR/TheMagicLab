@@ -414,7 +414,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   var lang = (window.MLLang && MLLang.getLang()) || 'en';
   var manifest = [];
-  var quiz = null, items = [], att = null, clockTimer = null, reviewFilter = 'all';
+  var rawQuiz = null, quiz = null, items = [], att = null, clockTimer = null, reviewFilter = 'all';
   var store = loadStore();
 
   function t(k, vars) {
@@ -434,6 +434,22 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // ── Store: one attempt per test, kept in this browser ────────────────
   function loadStore() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch (e) { return {}; } }
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+
+  // ── Language: a test file keeps its Afrikaans beside the English, as
+  // qAf, optionsAf, pairsAf, explainAf and so on, in the same order. In
+  // Afrikaans each field is swapped for its "Af" twin when there is one.
+  // Marking only uses positions (answer, pairs, steps), so it never changes.
+  function loc(o) {
+    if (Array.isArray(o)) return o.map(loc);
+    if (!o || typeof o !== 'object') return o;
+    var r = {};
+    Object.keys(o).forEach(function (k) {
+      if (/Af$/.test(k)) return;
+      r[k] = loc(lang === 'af' && o[k + 'Af'] != null ? o[k + 'Af'] : o[k]);
+    });
+    return r;
+  }
+  function relocalise() { quiz = loc(rawQuiz); items = buildItems(quiz); }
 
   // ── Questions: the leaves of the test, numbered like an exam paper ───
   function maxMarks(q) {
@@ -518,7 +534,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (window.TT_PUBLIC) { show('viewList'); return; }
     if (!manifest.length) { box.innerHTML = '<p class="tt-empty">' + esc(t('noTests')) + '</p>'; show('viewList'); return; }
     var grades = {};
-    manifest.forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
+    loc(manifest).forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
     Object.keys(grades).sort(function (a, b) { return a - b; }).forEach(function (g) {
       var h = document.createElement('div'); h.className = 'tt-grade'; h.textContent = t('grade', { g: g }); box.appendChild(h);
       var list = document.createElement('div'); list.className = 'tt-list';
@@ -546,7 +562,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (window.TT_PUBLIC && window.TT_OPEN.indexOf(id) < 0) m = null;
     if (!m) return window.TT_PUBLIC ? loadError() : renderList();
     fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
-      quiz = qz; quiz.id = m.id; items = buildItems(qz);
+      rawQuiz = qz; rawQuiz.id = m.id; relocalise();
       setUrl(m.id); renderIntro();
     }).catch(loadError);
   }
@@ -957,6 +973,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   if (window.MLLang) MLLang.mount('mlLangToggle', { onChange: function (next) {
     lang = next; applyLang();
+    if (rawQuiz) relocalise();
     if (!$('viewList').classList.contains('hidden')) renderList();
     else if (!$('viewIntro').classList.contains('hidden')) renderIntro();
     else if (!$('viewTest').classList.contains('hidden')) { var y = scrollY; startTest(false); scrollTo(0, y); }

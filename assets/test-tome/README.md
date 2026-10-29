@@ -28,6 +28,15 @@ Every question can carry `"skill": "knowledge"` (the default) or
 
 Scenario sub-questions count as application unless they say otherwise.
 `match`, `order` and `pairs` may set `marks` to scale their total.
+## Afrikaans
+
+Every text field can have an Afrikaans twin with `Af` on the end, in the same
+order as the English: `titleAf`, `subjectAf`, `introAf`, `qAf`, `optionsAf`,
+`pairsAf`, `extraAf`, `stepsAf`, `scenarioAf`, `explainAf` (and `titleAf` /
+`subjectAf` in manifest.json). The EN/AF toggle swaps them in; a field without
+a twin stays English. Code, formulas and tags stay as they are. Use a decimal
+comma in Afrikaans text (0,03 A), but keep the point inside code (1.65).
+
 A question or a scenario may add `"code"`: a block of program code shown
 exactly as written (keep the indentation; use \n for new lines).
 
