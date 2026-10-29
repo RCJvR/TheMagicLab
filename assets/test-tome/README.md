@@ -24,9 +24,17 @@ Every question can carry `"skill": "knowledge"` (the default) or
 | `match` | `q`, `pairs` [[A, B], ..], optional `extra` [B distractors] | 1 per pair |
 | `order` | `q`, `steps` [in the correct order] | 1 per step in its right place |
 | `pairs` | `q`, `pairs` [[term, partner], ..] (cards, find the pairs) | 1 per pair |
+| `fill` | `q`, `fill` (code with `[[]]` for each blank), `blanks` [answer, or [accepted, …]] | 1 per blank; exact match, spaces ignored, case counts |
 | `scenario` | `scenario` (text), `questions` [any of the types above] | the sum of its parts |
 
 Scenario sub-questions count as application unless they say otherwise.
+A test file's `"rev"` number goes up when its questions change; an attempt saved
+for an older rev starts again instead of mixing old answers with new questions.
+
+Blueprint (rev 2, 50 marks): Java 10 (loops weighted most), HTML & CSS 8 (incl.
+the three comment styles), Excel 8 (formulas + charts), computational thinking 8
+(pillars + IPO), FreeCAD 8 (DOF; fully/under/over constrained), TinkerCAD 8
+(Ohm's law resistor for an LED with a 2 V drop; digital vs analog, PWM in Gr 9).
 `match`, `order` and `pairs` may set `marks` to scale their total.
 ## Afrikaans
 

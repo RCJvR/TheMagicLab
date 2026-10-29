@@ -275,6 +275,21 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tr-wrap { overflow-x: auto; }
 .tt-empty-sm { color: var(--text-3); font-size: 14px; padding: 8px 0; }
 
+/* code shows every character as typed: no ligatures turning <!-- or ++ into arrows */
+.tt-code, .tt-fill, .tt-blank { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+/* fill in the missing syntax: blanks inside a line of code */
+.tt-fill { margin: 0; padding: 12px 14px; background: var(--ink-900); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: 15px; line-height: 2.1; color: var(--text); white-space: pre-wrap; overflow-x: auto; }
+.tt-blank { font: inherit; font-weight: 600; color: var(--paper); background: var(--ink-850); border: 1px solid var(--line-hard); border-bottom: 2px solid var(--paper);
+  border-radius: 4px; padding: 1px 4px; margin: 0 2px; text-align: center; min-width: 2.2ch; }
+.tt-blank:focus { outline: 2px solid var(--paper); outline-offset: 1px; }
+.fb { display: inline-block; font-weight: 700; border-radius: 4px; padding: 0 4px; margin: 0 1px; }
+.fb.ok { color: var(--good); border: 1px solid var(--good); }
+.fb.no { color: var(--crit); border: 1px solid var(--crit); }
+.fb.no s { opacity: 0.85; margin-right: 4px; }
+.fb .fb-right { color: var(--good); }
+@media print { #ttPrint .tt-fill { border: 0.75pt solid #999; font-size: 10pt; } #ttPrint .fb.ok, #ttPrint .fb .fb-right { color: #1a7f37 !important; } #ttPrint .fb.no { color: #c62828 !important; } }
+
 /* The feedback report: built into #ttPrint and printed, so a learner can keep
    it as a PDF ("Save as PDF" in the print window). Nothing is stored anywhere. */
 #ttPrint { display: none; }
@@ -525,7 +540,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       tsLost: 'lost', tsLostOf: '{l} of {n} learners lost marks', tsCommon: 'Most common wrong answer:', tsShowExplain: 'Explanation', tsShowAll: 'Show all {n} questions',
       tsName: 'Name', tsVersion: 'Version', tsMark: 'Mark', tsPct: '%', tsLevel: 'Level', tsWhen: 'Submitted',
       topic_html: 'HTML & CSS', topic_excel: 'Excel', topic_ct: 'Computational thinking', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD & Arduino',
-      teacherOnly: 'Class results are for teacher accounts.'
+      teacherOnly: 'Class results are for teacher accounts.',
+      blankN: 'Blank {n}', fillHint: 'Type the missing symbol or word in each box, exactly as it is written in code.', empty: 'empty'
     },
     af: {
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
@@ -570,7 +586,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       tsLost: 'verloor', tsLostOf: '{l} van {n} leerders het punte verloor', tsCommon: 'Algemeenste verkeerde antwoord:', tsShowExplain: 'Verduideliking', tsShowAll: 'Wys al {n} vrae',
       tsName: 'Naam', tsVersion: 'Weergawe', tsMark: 'Punt', tsPct: '%', tsLevel: 'Vlak', tsWhen: 'Ingedien',
       topic_html: 'HTML en CSS', topic_excel: 'Excel', topic_ct: 'Berekeningsdenke', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD en Arduino',
-      teacherOnly: 'Klasuitslae is vir onderwyserrekeninge.'
+      teacherOnly: 'Klasuitslae is vir onderwyserrekeninge.',
+      blankN: 'Spasie {n}', fillHint: 'Tik die simbool of woord wat ontbreek in elke blokkie, presies soos dit in kode geskryf word.', empty: 'leeg'
     }
   };
 
@@ -615,7 +632,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   // ── Questions: the leaves of the test, numbered like an exam paper ───
   function maxMarks(q) {
-    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : 1;
+    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : q.type === 'fill' ? q.blanks.length : 1;
     return q.marks || n;
   }
   function buildItems(qz) {
@@ -650,7 +667,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       if (q.type === 'order') mixes[it.id] = mix(q.steps.length);
       if (q.type === 'pairs') mixes[it.id] = mix(q.pairs.length * 2);
     });
-    return { started: Date.now(), mixes: mixes, answers: {}, done: null };
+    return { started: Date.now(), rev: rawQuiz.rev || 1, mixes: mixes, answers: {}, done: null };
   }
 
   // ── Marking ──────────────────────────────────────────────────────────
@@ -663,13 +680,20 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (q.type === 'match') { var r = 0; q.pairs.forEach(function (p, i) { if (a[i] === i) r++; }); return scale(r, q.pairs.length, it.max); }
     if (q.type === 'order') { var o = 0; a.forEach(function (s, i) { if (s === i) o++; }); return scale(o, q.steps.length, it.max); }
     if (q.type === 'pairs') { var c = 0; for (var i = 0; i < q.pairs.length; i++) if (a[i * 2] === i * 2 + 1) c++; return scale(c, q.pairs.length, it.max); }
+    if (q.type === 'fill') { var f = 0; q.blanks.forEach(function (b, i) { if (blankOk(b, a[i])) f++; }); return scale(f, q.blanks.length, it.max); }
     return 0;
   }
+  // a blank is right when it matches one accepted answer exactly, spaces aside
+  // (case counts: Java is case-sensitive)
+  function blankOk(b, v) { var acc = Array.isArray(b) ? b : [b]; v = (v || '').replace(/\s+/g, ''); return acc.some(function (x) { return x.replace(/\s+/g, '') === v; }); }
+  function blankShow(b) { return Array.isArray(b) ? b[0] : b; }
+  function fillParts(q) { return q.fill.split('[[]]'); }
   function answered(it) {
     var a = att.answers[it.id], q = it.q;
     if (a == null) return false;
     if (q.type === 'match') return Object.keys(a).length > 0;
     if (q.type === 'pairs') return Object.keys(a).length > 0;
+    if (q.type === 'fill') return a.some(function (v) { return v && v.trim(); });
     return true;
   }
   function levelOf(p) { return p >= 80 ? 7 : p >= 70 ? 6 : p >= 60 ? 5 : p >= 50 ? 4 : p >= 40 ? 3 : p >= 30 ? 2 : 1; }
@@ -735,6 +759,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (!m) return window.TT_PUBLIC ? loadError() : renderList();
     fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
       rawQuiz = qz; rawQuiz.id = m.id; meta = m; relocalise();
+      // the questions changed since this attempt was saved: start it again
+      if (store[m.id] && (store[m.id].rev || 1) !== (qz.rev || 1)) { delete store[m.id]; save(); }
       setUrl(m.id); renderIntro();
     }).catch(loadError);
   }
@@ -835,6 +861,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       body.appendChild(orderEl(it));
     } else if (q.type === 'pairs') {
       body.appendChild(pairsEl(it));
+    } else if (q.type === 'fill') {
+      body.appendChild(fillEl(it));
     }
     return el;
   }
@@ -920,6 +948,31 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     draw();
     wrap.appendChild(ul);
     var hint = document.createElement('p'); hint.className = 'tt-hint'; hint.textContent = t('orderHint'); wrap.appendChild(hint);
+    return wrap;
+  }
+
+  // Fill in the missing syntax: the line of code with a typing box per blank.
+  // Phones must not capitalise or "correct" what is typed.
+  function fillEl(it) {
+    var q = it.q, parts = fillParts(q), a = att.answers[it.id] || [];
+    var pre = document.createElement('pre'); pre.className = 'tt-fill';
+    parts.forEach(function (txt, i) {
+      pre.appendChild(document.createTextNode(txt));
+      if (i < parts.length - 1) {
+        var inp = document.createElement('input'); inp.className = 'tt-blank'; inp.type = 'text';
+        inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('autocorrect', 'off'); inp.spellcheck = false;
+        inp.setAttribute('aria-label', t('blankN', { n: i + 1 }));
+        var w = Math.max(2, blankShow(q.blanks[i]).length + 1); inp.style.width = (w + 1.5) + 'ch'; inp.maxLength = w + 6;
+        inp.value = a[i] || '';
+        inp.addEventListener('input', function () {
+          var cur = (att.answers[it.id] || []).slice(); while (cur.length < q.blanks.length) cur.push('');
+          cur[i] = inp.value; setAnswer(it, cur.some(function (v) { return v.trim(); }) ? cur : null);
+        });
+        pre.appendChild(inp);
+      }
+    });
+    var wrap = document.createElement('div'); wrap.appendChild(pre);
+    var hint = document.createElement('p'); hint.className = 'tt-hint'; hint.textContent = t('fillHint'); wrap.appendChild(hint);
     return wrap;
   }
 
@@ -1113,6 +1166,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         h += '<tr><td class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</td><td>' + (i + 1) + '. ' + (ok ? esc(q.steps[s]) : '<span class="r-was">' + esc(q.steps[s]) + '</span>') + '</td><td>' + (i + 1) + '. ' + esc(q.steps[i]) + '</td></tr>';
       });
       h += '</tbody></table>';
+    } else if (q.type === 'fill') {
+      var parts = fillParts(q), fa = a || [];
+      h += '<pre class="tt-fill">' + parts.map(function (txt, i) {
+        if (i === parts.length - 1) return esc(txt);
+        var v = (fa[i] || '').trim(), ok = blankOk(q.blanks[i], v), right = blankShow(q.blanks[i]);
+        return esc(txt) + (ok ? '<span class="fb ok">' + esc(right) + '</span>'
+          : '<span class="fb no">' + (v ? '<s>' + esc(v) + '</s>' : '<s>' + esc(t('empty')) + '</s>') + '<span class="fb-right">' + esc(right) + '</span></span>');
+      }).join('') + '</pre>';
     } else if (q.type === 'pairs') {
       // each correct pair has its own colour; the learner's links use the
       // colour of the pair they got right, and a dashed red edge when wrong
@@ -1302,6 +1363,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       }
       else if (q.type === 'order' && a) {
         a.forEach(function (st, pos) { if (st !== pos) { var k = q.steps[st] + ' (' + (pos + 1) + ')'; c[k] = (c[k] || 0) + 1; } });
+      }
+      else if (q.type === 'fill' && a) {
+        q.blanks.forEach(function (b, i) { var v = (a[i] || '').trim(); if (!blankOk(b, v)) { var k = (i + 1) + ': ' + (v || '—') + ' (≠ ' + blankShow(b) + ')'; c[k] = (c[k] || 0) + 1; } });
       }
       else if (q.type === 'pairs' && a) {
         Object.keys(a).forEach(function (x) { x = +x; var y = a[x]; if (x % 2 === 0 && Math.floor(x / 2) !== Math.floor(y / 2)) { var k = cardText(q, x) + ' ↔ ' + cardText(q, y); c[k] = (c[k] || 0) + 1; } });
