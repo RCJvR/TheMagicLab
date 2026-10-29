@@ -72,6 +72,10 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 @media (max-width: 480px) { .layouts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .layouts .mode small { font-weight: 500; font-size: 11.5px; color: var(--text-3); line-height: 1.3; }
 .layouts .mode[aria-pressed="true"] small { color: var(--text-2); }
+.pic-box { margin: 0 0 14px; }
+.pic-row [hidden] { display: none !important; }
+.pic-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.pic-row img { width: 96px; height: 54px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line-hard); }
 .tt-note { font-size: 12.5px; color: var(--text-3); margin: 10px 0 0; line-height: 1.4; }
 
 .row { display: grid; gap: 10px; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); margin-bottom: 12px; }
@@ -246,6 +250,26 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             <button data-v="analogue"><i data-lucide="clock-3" style="width:15px;height:15px"></i><span data-t="dAnalogue">Analogue</span></button>
             <button data-v="both"><i data-lucide="columns-2" style="width:15px;height:15px"></i><span data-t="dBoth">Both</span></button>
           </div>
+          <label class="field" data-for="pomodoro countdown exam" style="margin-bottom:12px"><span data-t="fFill">Screen fill</span>
+            <select class="inp" data-k="look.fill">
+              <option value="off" data-t="flOff">Off</option>
+              <option value="across" data-t="flAcross">Fills left to right as time runs out</option>
+              <option value="up" data-t="flUp">Fills from the bottom up as time runs out</option>
+            </select></label>
+          <div data-for="pomodoro countdown exam">
+            <div class="pic-box" id="picBox">
+              <label class="check"><input type="checkbox" data-k="look.pic"><span data-t="cPic">Fill with a picture: it starts pale and its colours come back as the time runs out</span></label>
+              <div class="pic-row">
+                <img id="picThumb" alt="" hidden>
+                <div class="savebox">
+                  <button class="ml-btn ml-btn--ghost" type="button" id="btnPic"><i data-lucide="image-up"></i><span data-t="picPick">Choose a picture</span></button>
+                  <button class="ml-btn ml-btn--ghost" type="button" id="btnPicOff" hidden><i data-lucide="trash-2"></i><span data-t="picOff">Remove</span></button>
+                </div>
+                <input type="file" accept="image/*" id="picFile" hidden>
+              </div>
+              <p class="tt-note" data-t="picNote">The picture stays in this browser and is not part of the link. On another computer, choose it again in the timer's settings.</p>
+            </div>
+          </div>
           <div class="checks">
             <label class="check"><input type="checkbox" data-k="look.secs"><span data-t="cSecs">Show seconds</span></label>
             <label class="check"><input type="checkbox" data-k="look.h24"><span data-t="cH24">24-hour clock</span></label>
@@ -329,7 +353,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
     look: { display: 'both', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard' }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
   };
   var TH = window.TTThemes, COLOURS = TH.colours;   // themes: assets/timer-talisman-themes.js
   var CD_PRESETS = [1, 5, 10, 15, 30, 45, 60, 90];
@@ -346,6 +370,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fStartNote: 'Optional. The timer starts by itself at this time. Leave empty to start it by hand.',
       fWarnEx: 'Warn at (minutes left)', fInfo: 'Additional information', fTitle: 'Heading',
       fWarn: 'Warning colour at (minutes left)', fWarnNote: '0 turns the warning off.', fShowDate: 'Show the date',
+      cPic: 'Fill with a picture: it starts pale and its colours come back as the time runs out', picPick: 'Choose a picture', picOff: 'Remove',
+      picNote: "The picture stays in this browser and is not part of the link. On another computer, choose it again in the timer's settings.", picBad: 'That picture could not be used. Try a JPEG or PNG.',
+      fFill: 'Screen fill', flOff: 'Off', flAcross: 'Fills left to right as time runs out', flUp: 'Fills from the bottom up as time runs out',
       sLook: 'Display', dDigital: 'Digital', dAnalogue: 'Analogue', dBoth: 'Both', cSecs: 'Show seconds', cH24: '24-hour clock',
       cNums: 'Numbers on the dial', cNow: 'Small clock in the corner', cSound: 'Chime when time is up', cFit: 'Fill the screen: make the timer as big as the screen allows', fTheme: 'Colour theme', delShort: 'Delete', fSaveTheme: 'Save these colours as a theme', pThemeName: 'e.g. School colours', fSaveNote: "For example your school's colours. Saved in this browser.", save: 'Save', saveFull: 'You can keep up to 8 themes. Delete one first.',
       cBg: 'Background', cFg: 'Text', cAccent: 'Accent', cWarn: 'Warning', cFace: 'Clock face', fChime: 'Chime sound', play: 'Play', fVol: 'Volume', fRep: 'Rings when time is up', fFont: 'Font', fMore: 'More fonts', fMoreNote: 'Fonts under "More fonts" load from Google Fonts when you pick one.', fSize: 'Timer size', fTsize: 'Text size',
@@ -367,6 +394,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fStartNote: 'Opsioneel. Die tydhouer begin dan vanself op dié tyd. Los dit leeg as jy self wil begin.',
       fWarnEx: 'Waarsku by (minute oor)', fInfo: 'Bykomende inligting', fTitle: 'Opskrif',
       fWarn: 'Waarskuwingskleur by (minute oor)', fWarnNote: '0 skakel die waarskuwing af.', fShowDate: 'Wys die datum',
+      cPic: "Vul met 'n prent: dit begin bleek en sy kleure kom terug soos die tyd verbygaan", picPick: "Kies 'n prent", picOff: 'Verwyder',
+      picNote: "Die prent bly in hierdie blaaier en is nie deel van die skakel nie. Op 'n ander rekenaar, kies dit weer in die tydhouer se instellings.", picBad: "Daardie prent kon nie gebruik word nie. Probeer 'n JPEG of PNG.",
+      fFill: 'Skermvulling', flOff: 'Af', flAcross: 'Vul van links na regs soos die tyd verbygaan', flUp: 'Vul van onder af op soos die tyd verbygaan',
       sLook: 'Vertoning', dDigital: 'Digitaal', dAnalogue: 'Analoog', dBoth: 'Albei', cSecs: 'Wys sekondes', cH24: '24-uur-horlosie',
       cNums: 'Getalle op die wyserplaat', cNow: 'Klein horlosie in die hoek', cSound: 'Klokkie wanneer die tyd om is', cFit: 'Vul die skerm: maak die tydhouer so groot as wat die skerm toelaat', fTheme: 'Kleurtema', delShort: 'Skrap', fSaveTheme: "Stoor hierdie kleure as 'n tema", pThemeName: 'bv. Skoolkleure', fSaveNote: 'Byvoorbeeld jou skool se kleure. Gestoor in hierdie blaaier.', save: 'Stoor', saveFull: 'Jy kan tot 8 temas hou. Skrap eers een.',
       cBg: 'Agtergrond', cFg: 'Teks', cAccent: 'Aksent', cWarn: 'Waarskuwing', cFace: 'Wyserplaat', fChime: 'Klokklank', play: 'Speel', fVol: 'Volume', fRep: 'Herhalings as die tyd om is', fFont: 'Lettertipe', fMore: 'Meer lettertipes', fMoreNote: 'Lettertipes onder "Meer lettertipes" word van Google Fonts gelaai wanneer jy een kies.', fSize: 'Tydhouergrootte', fTsize: 'Teksgrootte',
@@ -415,6 +445,10 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     document.querySelectorAll('#modes .mode').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === cfg.mode); });
     document.querySelectorAll('#displaySeg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cfg.look.display); });
     document.querySelectorAll('#layouts .mode').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cfg.look.layout); });
+    var pic = TTPicture.get();
+    $('picBox').classList.toggle('hidden', cfg.look.fill === 'off');
+    $('picThumb').hidden = !pic; if (pic) $('picThumb').src = pic;
+    $('btnPicOff').hidden = !pic;
     document.querySelectorAll('[data-lay]').forEach(function (e) { e.classList.toggle('hidden', e.getAttribute('data-lay').split(' ').indexOf(cfg.look.layout) < 0); });
     document.querySelectorAll('[data-for]').forEach(function (s) { s.classList.toggle('hidden', s.getAttribute('data-for').split(' ').indexOf(cfg.mode) < 0); });
     $('sizeOut').textContent = cfg.look.fit ? '—' : cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%';
@@ -472,7 +506,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       else v = inp.hasAttribute('data-num') ? +inp.value : inp.value;
       set(k, v);
       if (inp.type === 'color') renderThemes();
-      if (k === 'look.fit') fill();
+      if (k === 'look.fit' || k === 'look.fill') fill();
       if (inp.type === 'range') { $('sizeOut').textContent = cfg.look.size + '%'; $('tsizeOut').textContent = cfg.look.tsize + '%'; $('volOut').textContent = cfg.chime.vol + '%'; }
       changed(false);
     });
@@ -498,6 +532,15 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   document.querySelectorAll('#layouts .mode').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.layout = b.getAttribute('data-v'); changed(true); });
   });
+  $('btnPic').addEventListener('click', function () { $('picFile').click(); });
+  $('picFile').addEventListener('change', function () {
+    var file = this.files && this.files[0]; this.value = ''; if (!file) return;
+    TTPicture.save(file, function (ok) {
+      if (!ok) { alert(t('picBad')); return; }
+      cfg.look.pic = true; changed(true);
+    });
+  });
+  $('btnPicOff').addEventListener('click', function () { TTPicture.clear(); cfg.look.pic = false; changed(true); });
   document.querySelectorAll('#displaySeg button').forEach(function (b) {
     b.addEventListener('click', function () { cfg.look.display = b.getAttribute('data-v'); changed(true); });
   });

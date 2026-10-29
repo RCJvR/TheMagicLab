@@ -316,7 +316,7 @@
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard' }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
   };
   function merge(a, b) {
     var o = {};
@@ -347,11 +347,12 @@
     ['look.display', 'v', 'view'], ['look.secs', 'ss', 'bool'], ['look.h24', 'h', 'bool'], ['look.nums', 'nu', 'bool'], ['look.now', 'nw', 'bool'],
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
-    ['look.layout', 'y', 'layout']
+    ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool']
   ];
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
   var VIEWS = { digital: 'd', analogue: 'a', both: 'b' };
   var LAYOUTS = { minimal: 'm', simple: 's', standard: 'n', detailed: 'd' };
+  var FILLS = { off: '0', across: 'a', up: 'u' };
   function flip(o) { var r = {}; for (var k in o) r[o[k]] = k; return r; }
   function getPath(o, p) { return p.split('.').reduce(function (x, k) { return x && x[k]; }, o); }
   function setPath(o, p, v) { var ks = p.split('.'), last = ks.pop(); ks.reduce(function (x, k) { return x[k] = x[k] || {}; }, o)[last] = v; }
@@ -375,6 +376,7 @@
     if (kind === 'mode') return MODES[v] || textOut(v);
     if (kind === 'view') return VIEWS[v] || textOut(v);
     if (kind === 'layout') return LAYOUTS[v] || textOut(v);
+    if (kind === 'fill') return FILLS[v] || textOut(v);
     if (kind === 'hex') return String(v).replace(/^#/, '');
     return textOut(v);
   }
@@ -385,6 +387,7 @@
     if (kind === 'mode') return flip(MODES)[v] || textIn(v);
     if (kind === 'view') return flip(VIEWS)[v] || textIn(v);
     if (kind === 'layout') return flip(LAYOUTS)[v] || textIn(v);
+    if (kind === 'fill') return flip(FILLS)[v] || textIn(v);
     if (kind === 'hex') return '#' + v;
     return textIn(v);
   }
@@ -483,6 +486,33 @@
     sel.value = cur;
   }
 
+  // ── The screen-fill picture ──
+  // A picture is far too big for a link, so it stays in this browser
+  // (localStorage), shrunk to a JPEG. The link only says "use the picture";
+  // on another computer the teacher chooses it again in the timer's settings.
+  var PIC_KEY = 'tt-fill-picture';
+  function picGet() { try { return localStorage.getItem(PIC_KEY); } catch (e) { return null; } }
+  function picClear() { try { localStorage.removeItem(PIC_KEY); } catch (e) {} }
+  function picSave(file, done) {
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      // try a large copy first, then smaller ones if the browser's storage is full
+      var tries = [[1920, 0.82], [1440, 0.75], [1024, 0.7]];
+      for (var i = 0; i < tries.length; i++) {
+        var k = Math.min(1, tries[i][0] / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        try { localStorage.setItem(PIC_KEY, c.toDataURL('image/jpeg', tries[i][1])); return done(true); } catch (e) {}
+      }
+      done(false);
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); done(false); };
+    img.src = url;
+  }
+
+  window.TTPicture = { get: picGet, save: picSave, clear: picClear, key: PIC_KEY };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,

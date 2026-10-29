@@ -42,7 +42,32 @@ body.hide-cursor { cursor: none; }
   flex: 1; min-height: 0; box-sizing: border-box;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 2.4vmin; padding: 5vmin 4vw 12vmin; text-align: center;
+  position: relative;   /* above the screen fill */
 }
+/* Screen fill (look.fill): the background fills like a loading bar as the
+   time runs out, left to right or bottom to top. The thin line marks where
+   reading time ends in an exam. */
+.fill { position: fixed; inset: 0; pointer-events: none; display: none; }
+.fill-across .fill, .fill-up .fill { display: block; }
+.fill i, .fill b { position: absolute; display: block; }
+.fill i { background: color-mix(in srgb, var(--accent) 24%, var(--bg)); }
+.fill-across .fill i { left: 0; top: 0; bottom: 0; border-right: 0.6vmin solid var(--accent); }
+.fill-up .fill i { left: 0; right: 0; bottom: 0; border-top: 0.6vmin solid var(--accent); }
+.fill i.zero { border: 0; }
+.fill.alt i { background: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
+.fill.warn i { background: color-mix(in srgb, var(--warn) 26%, var(--bg)); border-color: var(--warn); }
+/* with a picture: a pale, grey copy under the full-colour one, which is
+   uncovered as the time runs out; a light veil of the background colour keeps
+   the text readable */
+.fill .pic { position: absolute; inset: 0; background-size: cover; background-position: center; display: none; }
+.has-pic .fill .pic { display: block; }
+.fill .pic0 { filter: grayscale(1) contrast(0.45) brightness(1.7); opacity: 0.7; }
+.fill .veil { position: absolute; inset: 0; display: none; background: color-mix(in srgb, var(--bg) 38%, transparent); }
+.has-pic .fill .veil { display: block; }
+.has-pic .fill i, .has-pic .fill.alt i, .has-pic .fill.warn i { background: transparent; }
+.has-pic .stage, .has-pic .now { text-shadow: 0 0.2vmin 1vmin color-mix(in srgb, var(--bg) 85%, transparent); }
+.fill-across .fill b { top: 0; bottom: 0; border-left: 2px dashed color-mix(in srgb, var(--fg) 35%, transparent); }
+.fill-up .fill b { left: 0; right: 0; border-top: 2px dashed color-mix(in srgb, var(--fg) 35%, transparent); }
 .head:empty, .info:empty { display: none; }
 /* a long heading wraps before it reaches the time in the top corner */
 .head { max-width: calc(100vw - 6vw - 18vmin * var(--tsize)); }
@@ -168,6 +193,7 @@ body.hide-cursor { cursor: none; }
 .pseg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .pclose { display: inline-flex; padding: 7px; }
 .pclose svg { width: 16px; height: 16px; }
+.pclose[hidden] { display: none; }
 .pchk { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; cursor: pointer; }
 .pchk input { width: 16px; height: 16px; margin: 0; }
 .panel input[type="checkbox"], .panel input[type="range"] { accent-color: var(--accent); }
@@ -178,6 +204,7 @@ body.hide-cursor { cursor: none; }
 </style>
 </head>
 <body>
+  <div class="fill" id="fill" aria-hidden="true"><div class="pic pic0" id="pic0"></div><div class="pic" id="pic1"></div><div class="veil"></div><i id="fillIn"></i><b id="fillMark"></b></div>
   <main class="stage" id="stage">
     <div class="head" id="head"></div>
     <div class="phase" id="phase"></div>
@@ -211,6 +238,8 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
+      pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
+      pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
@@ -230,6 +259,8 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
+      pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
+      pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
@@ -346,6 +377,7 @@ body.hide-cursor { cursor: none; }
       m.done = r <= 0; m.warn = !m.done && cfg.warn && r <= cfg.warn * 60000;
       m.phase = m.done ? t('timeUp') : (!running() && st.started ? t('paused') : '');
       m.sub = running() && !m.done ? t('ends', { t: hm(new Date(now + r)) }) : '';
+      m.prog = st.started ? 1 - Math.max(0, r) / total : 0;
       m.face = total <= 3600000 ? 'wedge60' : 'wedge'; m.frac = Math.max(0, r) / (total <= 3600000 ? 3600000 : total);
       if (m.done && !st.fin) { st.fin = now + r; save(); }
       m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed())],
@@ -371,13 +403,15 @@ body.hide-cursor { cursor: none; }
       m.sub = t('next', { p: t(type(st.phase + 1)) });
       m.facts = [['fNow', hm(new Date(now))], ['fRound', (Math.floor(st.phase / 2) % every + 1) + ' / ' + every],
         ['fEnds', running() ? hm(new Date(now + rem)) : DASH], ['fNext', t(type(st.phase + 1))]];
-      var L0 = len(st.phase); m.face = L0 <= 3600000 ? 'wedge60' : 'wedge'; m.frac = rem / (L0 <= 3600000 ? 3600000 : L0); m.alt = k !== 'focus';
+      var L0 = len(st.phase); m.prog = st.started ? 1 - Math.max(0, rem) / L0 : 0;
+      m.face = L0 <= 3600000 ? 'wedge60' : 'wedge'; m.frac = rem / (L0 <= 3600000 ? 3600000 : L0); m.alt = k !== 'focus';
       return m;
     }
     // exam
     var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
     m.head = [x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
+    m.prog = 0; m.progMark = R && W ? R / (R + W) : null;
     var examFacts = function (start, rEnd, end) {
       m.facts = [['fNow', hm(new Date(now))], [st.started ? 'fStarted' : 'fStarts', start ? hm(new Date(start)) : DASH]];
       if (R) m.facts.push(['fReading', span(x.reading)], ['fReadEnds', rEnd ? hm(new Date(rEnd)) : DASH]);
@@ -408,6 +442,7 @@ body.hide-cursor { cursor: none; }
     m.phase = t(phase) + (!running() && phase !== 'finished' ? ' · ' + t('paused') : '');
     m.digital = phase === 'finished' ? t('timeUp') : dur(left, 'down');
     m.done = phase === 'finished';
+    m.prog = Math.min(1, el / (R + W || 1));
     m.warn = phase === 'writing' && cfg.warn && left <= cfg.warn * 60000;
     var end = now + (R + W - el), bits = [];
     if (phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
@@ -603,6 +638,7 @@ body.hide-cursor { cursor: none; }
     if (view.laps !== laps) { $('laps').innerHTML = laps; view.laps = laps; relayout = true; }
     var stage = $('stage');
     stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
+    drawFill(m);
     var d = cfg.look.display;
     $('analogue').style.display = d === 'digital' ? 'none' : '';
     $('digital').style.display = d === 'analogue' && cfg.mode !== 'exam' ? 'none' : '';
@@ -618,6 +654,35 @@ body.hide-cursor { cursor: none; }
     var showNow = cfg.look.now && cfg.mode !== 'clock';
     setText('now', showNow ? clock(new Date(), false) : '');
     document.title = (m.digital ? m.digital + ' · ' : '') + 'Timer Talisman';
+  }
+
+  // the teacher's picture for the screen fill (TTPicture, in this browser only)
+  var picture = null;
+  function loadPicture() {
+    picture = TTPicture.get();
+    ['pic0', 'pic1'].forEach(function (id) { $(id).style.backgroundImage = picture ? 'url("' + picture + '")' : ''; });
+  }
+  window.addEventListener('storage', function (e) { if (e.key === TTPicture.key) { loadPicture(); render(true); } });
+  function drawFill(m) {
+    var how = cfg.look.fill, on = (how === 'across' || how === 'up') && m.prog != null;
+    document.body.classList.toggle('fill-across', on && how === 'across');
+    document.body.classList.toggle('fill-up', on && how === 'up');
+    var pic = on && cfg.look.pic && picture;
+    document.body.classList.toggle('has-pic', !!pic);
+    if (!on) return;
+    if (pic) {
+      var gone = (1 - Math.max(0, Math.min(1, m.prog))) * 100 + '%';
+      $('pic1').style.clipPath = how === 'across' ? 'inset(0 ' + gone + ' 0 0)' : 'inset(' + gone + ' 0 0 0)';
+    }
+    var f = $('fill'), inner = $('fillIn'), mk = $('fillMark'), pc = Math.max(0, Math.min(1, m.prog)) * 100 + '%';
+    var side = how === 'across' ? 'width' : 'height';
+    inner.style.width = inner.style.height = '';
+    inner.style[side] = pc;
+    inner.classList.toggle('zero', m.prog <= 0 || m.prog >= 1);
+    f.classList.toggle('warn', !!(m.warn || m.done)); f.classList.toggle('alt', !!m.alt);
+    mk.style.display = m.progMark ? '' : 'none';
+    mk.style.left = how === 'across' && m.progMark ? m.progMark * 100 + '%' : '';
+    mk.style.bottom = how === 'up' && m.progMark ? m.progMark * 100 + '%' : '';
   }
 
   function applyLook() {
@@ -655,6 +720,12 @@ body.hide-cursor { cursor: none; }
         ['minimal', 'simple', 'standard', 'detailed'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.layout === v) + '">' + esc(t('y_' + v)) + '</button>'; }).join('') + '</div></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pStyle')) + '</span><div class="pseg" id="pStyle">' +
         ['digital', 'analogue', 'both'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.display === v) + '">' + esc(t('d_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      (cfg.mode === 'clock' || cfg.mode === 'stopwatch' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pFill')) + '</span><div class="pseg" id="pFill">' +
+        ['off', 'across', 'up'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + ((L.fill || 'off') === v) + '">' + esc(t('fl_' + v)) + '</button>'; }).join('') + '</div></div>' +
+        '<div class="pf" id="pPicRow"' + ((L.fill || 'off') === 'off' ? ' hidden' : '') + '><span class="plabel">' + esc(t('pPic')) + '</span>' +
+        '<div class="prow"><button type="button" class="pclose" id="pPicPick" style="flex:1;justify-content:center">' + esc(t('pPicPick')) + '</button>' +
+        '<button type="button" class="pclose" id="pPicOff" style="flex:1;justify-content:center"' + (L.pic && picture ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
+        '<input type="file" accept="image/*" id="pPicFile" hidden></div>') +
       '<div class="pf"><span class="plabel">' + esc(t('pFont')) + '</span><div id="pFontPick"></div></div>' +
       '<label class="pchk"><input type="checkbox" data-l="fit"' + (L.fit ? ' checked' : '') + '>' + esc(t('pFit')) + '</label>' +
       '<label class="pf"><span>' + esc(t('pSize')) + ' · <output id="pSizeOut">' + (L.fit ? '—' : L.size + '%') + '</output></span><input type="range" id="pSize" min="40" max="300" step="5" data-l="size" value="' + L.size + '"' + (L.fit ? ' disabled' : '') + '></label>' +
@@ -682,7 +753,18 @@ body.hide-cursor { cursor: none; }
     $('pVol').addEventListener('change', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); lookChanged(); });
     $('pRep').addEventListener('change', function () { cfg.chime.rep = +this.value; lookChanged(); });
     $('pLang').addEventListener('change', function () { cfg.lang = this.value; lookChanged(); buildBar(); buildPanel(); $('pLang').focus(); });
-    [['#pStyle', 'display'], ['#pLayout', 'layout']].forEach(function (g) {
+    if ($('pPicPick')) {
+      $('pPicPick').addEventListener('click', function () { $('pPicFile').click(); });
+      $('pPicFile').addEventListener('change', function () {
+        var file = this.files && this.files[0]; if (!file) return;
+        TTPicture.save(file, function (ok) {
+          if (!ok) { alert(t('pPicBad')); return; }
+          loadPicture(); L.pic = true; lookChanged(); buildPanel(); $('pPicPick').focus();
+        });
+      });
+      $('pPicOff').addEventListener('click', function () { TTPicture.clear(); loadPicture(); L.pic = false; lookChanged(); buildPanel(); $('pPicPick').focus(); });
+    }
+    [['#pStyle', 'display'], ['#pLayout', 'layout'], ['#pFill', 'fill']].forEach(function (g) {
       [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {
         b.addEventListener('click', function () {
           L[g[1]] = b.getAttribute('data-v');
@@ -717,6 +799,7 @@ body.hide-cursor { cursor: none; }
   }
   function start(c) {
     cfg = c;
+    loadPicture();
     var x = cfg.exam;
     key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
     st = loadState(); lastPhase = null; view = {};
