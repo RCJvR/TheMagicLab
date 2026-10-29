@@ -70,6 +70,7 @@ body {
 .tt-quiz:hover { border-color: var(--line-hard); }
 .tt-quiz strong { display: block; font-size: calc(16 * var(--k)); }
 .tt-quiz small { display: block; font-size: calc(13 * var(--k)); color: var(--text-3); margin-top: 3px; }
+.tt-draft { font-style: normal; font-size: calc(12 * var(--k)); font-weight: 700; color: var(--text-2); border: 1px solid var(--line-hard); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
 .tt-quiz .tt-last { font-size: calc(13 * var(--k)); color: var(--text-2); font-variant-numeric: tabular-nums; }
 
 /* ── Intro ───────────────────────────────────────────────────────────── */
@@ -379,6 +380,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     <section id="viewIntro" class="hidden">
       <h1 class="tt-title" id="introTitle"></h1>
       <p class="tt-sub" id="introSub"></p>
+      <p class="tt-status hidden" id="introDraft" data-t="draftNote">Draft: only teachers can see this test until it is published.</p>
       <div class="tt-versions hidden" id="introVersions"></div>
       <div class="tt-facts" id="introFacts"></div>
       <div class="tt-outline" id="introOutline"></div>
@@ -391,6 +393,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div class="tt-actions">
         <button class="ml-btn ml-btn--primary" id="btnStart"><i data-lucide="play"></i><span></span></button>
         <button class="ml-btn ml-btn--ghost hidden" id="btnLastReview"><i data-lucide="list-checks"></i><span data-t="reviewLast">Review my last attempt</span></button>
+        <button class="ml-btn ml-btn--ghost hidden" id="btnKey"><i data-lucide="key-round"></i><span data-t="answerKey">Print answer key</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnShare"><i data-lucide="qr-code"></i><span data-t="share">Share this test</span></button>
         <button class="ml-btn ml-btn--ghost tt-members" id="btnToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
       </div>
@@ -527,6 +530,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Your name (optional)', nameNote: 'Your name only appears on your own results screen. Nothing is sent anywhere.',
       share: 'Share this test', shareSub: 'Scan the code with a phone camera, or type the link.', copy: 'Copy link', copied: 'Copied', close: 'Close',
       membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.',
+      draft: 'Draft', draftNote: 'Draft: only teachers can see this test until it is published.', answerKey: 'Print answer key', keyTitle: 'Answer key',
       loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again',
       version: 'Version {v}', chooseVersion: 'Choose a version', nVersions: '{n} versions', tryVersion: 'Try Version {v}', notTried: 'Not written yet',
       print: 'Print or save as PDF', printNote: 'To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.',
@@ -573,6 +577,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Jou naam (opsioneel)', nameNote: 'Jou naam verskyn net op jou eie uitslagskerm. Niks word êrens heen gestuur nie.',
       share: 'Deel hierdie toets', shareSub: "Skandeer die kode met 'n foon se kamera, of tik die skakel in.", copy: 'Kopieer skakel', copied: 'Gekopieer', close: 'Maak toe',
       membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.',
+      draft: 'Konsep', draftNote: 'Konsep: net onderwysers kan hierdie toets sien totdat dit gepubliseer word.', answerKey: 'Druk antwoordsleutel', keyTitle: 'Antwoordsleutel',
       loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer',
       version: 'Weergawe {v}', chooseVersion: 'Kies ’n weergawe', nVersions: '{n} weergawes', tryVersion: 'Probeer Weergawe {v}', notTried: 'Nog nie geskryf nie',
       print: 'Druk of stoor as PDF', printNote: 'Om jou terugvoer as ’n lêer te hou, kies “Save as PDF” (Stoor as PDF) in die drukvenster. Dit word net op jou toestel gestoor.',
@@ -730,7 +735,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // Versions: manifest entries that share a "set" are versions (A, B, C …) of
   // one paper. The list shows the set once; the start screen picks a version.
   var meta = null;
-  function siblings(m) { return m && m.set ? manifest.filter(function (x) { return x.set === m.set; }) : []; }
+  function siblings(m) { return m && m.set ? manifest.filter(function (x) { return x.set === m.set && canSee(x); }) : []; }
+  // a draft test (manifest "draft": true) is only listed for teachers, so it
+  // can be checked before learners see it
+  function canSee(m) { return !m.draft || isTeacher(); }
+  // topic names come from the test file ("topics": {key: name}), so every
+  // subject brings its own; the Coding & Robotics papers use the built-in ones
+  function topicName(k, qz) { return (qz && qz.topics && qz.topics[k]) || t('topic_' + (k || 'other')); }
   function versionName(m) { return m && m.version ? t('version', { v: m.version }) : ''; }
   function fullTitle() { return quiz.title + (meta && meta.version && siblings(meta).length > 1 ? ' · ' + versionName(meta) : ''); }
 
@@ -739,9 +750,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var box = $('quizList'); box.innerHTML = '';
     // signed out on an open test: the other tests are members-only
     if (window.TT_PUBLIC) { show('viewList'); return; }
-    if (!manifest.length) { box.innerHTML = '<p class="tt-empty">' + esc(t('noTests')) + '</p>'; show('viewList'); return; }
+    if (!manifest.filter(canSee).length) { box.innerHTML = '<p class="tt-empty">' + esc(t('noTests')) + '</p>'; show('viewList'); return; }
     var grades = {};
-    loc(manifest).forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
+    loc(manifest.filter(canSee)).forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
     Object.keys(grades).sort(function (a, b) { return a - b; }).forEach(function (g) {
       var h = document.createElement('div'); h.className = 'tt-grade'; h.textContent = t('grade', { g: g }); box.appendChild(h);
       var list = document.createElement('div'); list.className = 'tt-list';
@@ -751,7 +762,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var s = store[m.id], last = s && s.done ? t('last', { s: s.done.score, t: s.done.total }) : s && s.started ? t('inProgress') : '';
         var n = siblings(m).length, sub = m.subject + (n > 1 ? ' · ' + t('nVersions', { n: n }) : '');
         var b = document.createElement('button'); b.className = 'tt-quiz';
-        b.innerHTML = '<span><strong>' + esc(m.title) + '</strong><small>' + esc(sub) + '</small></span><span class="tt-last">' + esc(n > 1 ? '' : last) + '</span>';
+        b.innerHTML = '<span><strong>' + esc(m.title) + (m.draft ? ' <em class="tt-draft">' + esc(t('draft')) + '</em>' : '') + '</strong><small>' + esc(sub) + '</small></span><span class="tt-last">' + esc(n > 1 ? '' : last) + '</span>';
         b.addEventListener('click', function () { openQuiz(m.id); });
         list.appendChild(b);
       });
@@ -770,6 +781,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function openQuiz(id) {
     var m = manifest.filter(function (x) { return x.id === id; })[0];
     if (window.TT_PUBLIC && window.TT_OPEN.indexOf(id) < 0) m = null;
+    if (m && !canSee(m)) m = null;
     if (!m) return window.TT_PUBLIC ? loadError() : renderList();
     fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
       rawQuiz = qz; rawQuiz.id = m.id; meta = m; relocalise();
@@ -783,6 +795,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var s = store[quiz.id];
     $('introTitle').textContent = quiz.title;
     $('introSub').textContent = quiz.subject + ' · ' + t('grade', { g: quiz.grade }) + (versionName(meta) && siblings(meta).length > 1 ? ' · ' + versionName(meta) : '');
+    $('introDraft').classList.toggle('hidden', !meta.draft);
+    $('btnKey').classList.toggle('hidden', !isTeacher());
     var sib = siblings(meta), vb = $('introVersions');
     vb.classList.toggle('hidden', sib.length < 2);
     vb.innerHTML = sib.length < 2 ? '' : '<span>' + esc(t('chooseVersion')) + '</span><div class="tt-vchips">' + sib.map(function (x) {
@@ -1155,6 +1169,40 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     setTimeout(function () { window.print(); document.title = old; }, 50);
   }
 
+  // Teachers: every question with its correct answer, marks, topic and
+  // explanation, to check a test (a draft especially) before learners write it
+  function keyAnswer(q) {
+    if (q.type === 'mcq') return q.options.map(function (o, i) {
+      var ok = i === q.answer;
+      return '<div class="r-opt' + (ok ? ' right' : '') + '"><span class="tt-letter">' + letter(i) + '</span><span>' + esc(o) + '</span>' + (ok ? '<em>' + esc(t('correct')) + '</em>' : '') + '</div>';
+    }).join('');
+    if (q.type === 'tf') return '<div class="r-opt right"><span>' + esc(q.answer ? t('tTrue') : t('tFalse')) + '</span></div>';
+    if (q.type === 'match' || q.type === 'pairs') return '<table class="r-table"><tbody>' + q.pairs.map(function (p) { return '<tr><td>' + esc(p[0]) + '</td><td>' + esc(p[1]) + '</td></tr>'; }).join('') +
+      (q.extra || []).map(function (e) { return '<tr><td></td><td><s>' + esc(e) + '</s></td></tr>'; }).join('') + '</tbody></table>';
+    if (q.type === 'order') return '<table class="r-table"><tbody>' + q.steps.map(function (st, i) { return '<tr><td>' + (i + 1) + '.</td><td>' + esc(st) + '</td></tr>'; }).join('') + '</tbody></table>';
+    if (q.type === 'fill') return '<pre class="tt-fill">' + fillParts(q).map(function (txt, i, all) {
+      return esc(txt) + (i < all.length - 1 ? '<span class="fb ok">' + esc([].concat(q.blanks[i]).join(' / ')) + '</span>' : '');
+    }).join('') + '</pre>';
+    return '';
+  }
+  function printKey() {
+    var h = '<div class="p-head"><h1>' + esc(fullTitle()) + '</h1><p>' + esc(t('keyTitle')) + ' · ' + esc(marksText(total())) + '</p></div>', lastScen = null;
+    quiz.sections.forEach(function (sec, si) {
+      h += '<section class="tt-section"><div class="tt-section-head"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</h2><span>' + secTotal(si) + '</span></div>';
+      items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
+        if (it.scen && it.scen !== lastScen) h += '<div class="tt-scenario">' + scenarioHtml(it) + '</div>';
+        lastScen = it.scen || null;
+        h += '<div class="tt-q' + (it.scen ? ' tt-sub-q' : '') + '"><div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(it.q.q) + '</span><span class="tt-got full">' +
+          esc(marksText(it.max) + ' · ' + topicName(it.topic, quiz) + ' · ' + t(it.skill)) + '</span></div><div class="tt-body">' + code(it.q.code) + keyAnswer(it.q) +
+          (it.q.explain ? '<div class="tt-explain">' + esc(it.q.explain) + '</div>' : '') + '</div></div>';
+      });
+      h += '</section>';
+    });
+    $('ttPrint').innerHTML = h;
+    var old = document.title; document.title = fullTitle() + ' - ' + t('keyTitle');
+    setTimeout(function () { window.print(); document.title = old; }, 50);
+  }
+
   function reviewEl(it, got) {
     var q = it.q, a = att.answers[it.id], el = document.createElement('div');
     el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
@@ -1414,10 +1462,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         });
       });
     });
-    var h = '';
+    var h = '', anyQuiz = vs[Object.keys(vs)[0]].quiz;
     // weakest topics
     h += '<h3 class="tt-h3">' + esc(t('tsTopics')) + '</h3><div class="tt-rows">' + Object.keys(topic).sort(function (a, b) { return topic[a].got / topic[a].max - topic[b].got / topic[b].max; })
-      .map(function (k) { return row(t('topic_' + k) + ' · ' + pctOf(topic[k].got, topic[k].max) + '%', topic[k].got, topic[k].max); }).join('') + '</div>';
+      .map(function (k) { return row(topicName(k, anyQuiz) + ' · ' + pctOf(topic[k].got, topic[k].max) + '%', topic[k].got, topic[k].max); }).join('') + '</div>';
     // most-missed questions
     var missed = Object.keys(Q).map(function (k) { return Q[k]; }).filter(function (q) { return q.got < q.max; })
       .sort(function (a, b) { return (b.max - b.got) / b.max - (a.max - a.got) / a.max || b.n - a.n; });
@@ -1427,7 +1475,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       var it = q.it, cw = commonWrong(it, q.answers), lostPct = pctOf(q.max - q.got, q.max);
       var vname = Object.keys(vs).length > 1 ? t('version', { v: q.v.version }) + ' · ' : '';
       return '<div class="tm-item"><div class="tm-top"><div class="tm-pct">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
-        '<div class="tm-meta">' + esc(vname + it.num + ' · ' + t('topic_' + (it.topic || 'other')) + ' · ' + t('tsLostOf', { l: q.lost, n: q.n })) + '</div>' +
+        '<div class="tm-meta">' + esc(vname + it.num + ' · ' + topicName(it.topic, q.v.quiz) + ' · ' + t('tsLostOf', { l: q.lost, n: q.n })) + '</div>' +
         (it.scen ? '<div class="tm-meta">' + esc(it.scen.scenario).slice(0, 160) + (it.scen.scenario.length > 160 ? '…' : '') + '</div>' : '') +
         '<div class="tm-q">' + esc(it.q.q) + '</div>' +
         (cw ? '<div class="tm-wrong">' + esc(t('tsCommon')) + ' <b>' + esc(cw.text) + '</b> (' + cw.n + ')</div>' : '') +
@@ -1552,6 +1600,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnRetry').addEventListener('click', function () { startTest(true); });
   $('btnPrint').addEventListener('click', printReport);
   $('btnRevPrint').addEventListener('click', printReport);
+  $('btnKey').addEventListener('click', printKey);
   $('btnNextVersion').addEventListener('click', function () { openQuiz(this.dataset.id); });
   $('btnRevRetry').addEventListener('click', function () { startTest(true); });
   [].forEach.call($('reviewFilter').children, function (b) {
@@ -1595,6 +1644,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     else if (wantResults && window.MagicLabAuth) { if (isTeacher()) renderTeacher(); else renderList(); }
     else if (wantResults) { renderList(); document.addEventListener('magiclab:auth:ready', function () { if (isTeacher()) renderTeacher(); }, { once: true }); }
     else renderList();
+    document.addEventListener('magiclab:auth:ready', function () {
+      syncTeacherEntry();
+      if (!$('viewList').classList.contains('hidden')) renderList();
+      if (!$('viewIntro').classList.contains('hidden') && quiz) renderIntro();
+    });
   }).catch(loadError);
 })();
 </script>

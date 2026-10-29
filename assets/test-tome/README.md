@@ -57,10 +57,20 @@ Share links point to the set's first version.
 
 ## Topics and class results
 
-Every top-level question has a `"topic"`: html, excel, ct, java, freecad or
-tinkercad (scenario sub-questions inherit it). The teacher's Class results
-view groups marks by topic. Results reach a teacher through a class code; see
-supabase-test-tome-results.sql.
+Every top-level question has a `"topic"` key (scenario sub-questions inherit
+it). The teacher's Class results view groups marks by topic. A test names its
+own topics with `"topics": {"life": "Life and Living", …}` plus a `topicsAf`
+twin; the Natural Sciences papers use life, matter, energy and earth (the four
+CAPS strands). Without `"topics"`, the built-in Coding & Robotics names apply
+(html, excel, ct, java, freecad, tinkercad). Results reach a teacher through a
+class code; see supabase-test-tome-results.sql.
+
+## Drafts and the answer key
+
+A manifest entry with `"draft": true` is listed only for teacher accounts, and
+a learner's link to it falls back to the list. Remove the flag to publish it.
+Teachers also get a "Print answer key" button on every test's start screen:
+each question with its correct answer, marks, topic, skill and explanation.
 
 ## Open tests (no sign-in)
 
