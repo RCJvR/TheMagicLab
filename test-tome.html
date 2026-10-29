@@ -246,10 +246,13 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tt-send { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 18px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); font-size: 14.5px; }
 .tt-send.ok { border-color: var(--good); } .tt-send.bad { border-color: var(--crit); }
 .tt-teacher-entry { margin: 0 0 18px; }
-.tr-new { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto; gap: 10px; align-items: end; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.tr-new { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto; gap: 10px; align-items: end; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
 @media (max-width: 640px) { .tr-new { grid-template-columns: 1fr; } }
-.tr-new label { display: grid; gap: 6px; font-size: 13px; font-weight: 700; color: var(--text-2); }
-.tr-new select, .tr-new input { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.tr-new label { display: grid; gap: 6px; min-width: 0; font-size: 13px; font-weight: 700; color: var(--text-2); }
+.tr-new select, .tr-new input { font: inherit; font-size: 15px; font-weight: 500; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 0 12px;
+  /* fill the column at one height: a select otherwise sizes to its longest option and spills out */
+  box-sizing: border-box; width: 100%; min-width: 0; height: 44px; text-overflow: ellipsis; }
+.tr-new .ml-btn { height: 44px; box-sizing: border-box; white-space: nowrap; }
 .tr-list { display: grid; gap: 8px; margin-top: 18px; }
 .tr-session { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
 .tr-session strong { display: block; font-size: 16px; color: var(--paper); }
