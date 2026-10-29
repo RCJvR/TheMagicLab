@@ -683,9 +683,17 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (q.type === 'fill') { var f = 0; q.blanks.forEach(function (b, i) { if (blankOk(b, a[i])) f++; }); return scale(f, q.blanks.length, it.max); }
     return 0;
   }
-  // a blank is right when it matches one accepted answer exactly, spaces aside
-  // (case counts: Java is case-sensitive)
-  function blankOk(b, v) { var acc = Array.isArray(b) ? b : [b]; v = (v || '').replace(/\s+/g, ''); return acc.some(function (x) { return x.replace(/\s+/g, '') === v; }); }
+  // A blank is right when it has the same pieces as an accepted answer. Spaces
+  // between pieces are fine (counter = counter + 1, counter=counter+1), but a
+  // space inside a word or a symbol is not (c ounter, + +, <! --, / /).
+  // Case counts: Java is case-sensitive.
+  function codeTokens(s) {
+    return (s || '').trim().match(/<!--|-->|\/\/|\/\*|\*\/|\+\+|--|\+=|-=|==|!=|<=|>=|[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?|\S/g) || [];
+  }
+  function blankOk(b, v) {
+    var acc = Array.isArray(b) ? b : [b], mine = codeTokens(v).join('\u0001');
+    return mine !== '' && acc.some(function (x) { return codeTokens(x).join('\u0001') === mine; });
+  }
   function blankShow(b) { return Array.isArray(b) ? b[0] : b; }
   function fillParts(q) { return q.fill.split('[[]]'); }
   function answered(it) {
