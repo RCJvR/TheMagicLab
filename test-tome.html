@@ -381,7 +381,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourOrder: 'Your order', rightOrder: 'Correct order', got: '{s}/{t}',
       yourName: 'Your name (optional)', nameNote: 'Your name only appears on your own results screen. Nothing is sent anywhere.',
       share: 'Share this test', shareSub: 'Scan the code with a phone camera, or type the link.', copy: 'Copy link', copied: 'Copied', close: 'Close',
-      membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.'
+      membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.',
+      loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again'
     },
     af: {
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
@@ -406,7 +407,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourOrder: 'Jou volgorde', rightOrder: 'Korrekte volgorde', got: '{s}/{t}',
       yourName: 'Jou naam (opsioneel)', nameNote: 'Jou naam verskyn net op jou eie uitslagskerm. Niks word êrens heen gestuur nie.',
       share: 'Deel hierdie toets', shareSub: "Skandeer die kode met 'n foon se kamera, of tik die skakel in.", copy: 'Kopieer skakel', copied: 'Gekopieer', close: 'Maak toe',
-      membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.'
+      membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.',
+      loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer'
     }
   };
 
@@ -532,14 +534,21 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     show('viewList');
   }
 
+  // a test that cannot load (no connection, or the site mid-update) says so,
+  // rather than leaving a learner on an empty page
+  function loadError() {
+    $('quizList').innerHTML = '<p class="tt-empty">' + esc(t('loadFail')) + '</p><button class="ml-btn ml-btn--primary" id="btnReload"><i data-lucide="rotate-ccw"></i><span>' + esc(t('tryAgain')) + '</span></button>';
+    $('btnReload').addEventListener('click', function () { location.reload(); });
+    show('viewList');
+  }
   function openQuiz(id) {
     var m = manifest.filter(function (x) { return x.id === id; })[0];
     if (window.TT_PUBLIC && window.TT_OPEN.indexOf(id) < 0) m = null;
-    if (!m) return renderList();
+    if (!m) return window.TT_PUBLIC ? loadError() : renderList();
     fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
       quiz = qz; quiz.id = m.id; items = buildItems(qz);
       setUrl(m.id); renderIntro();
-    }).catch(function () { renderList(); });
+    }).catch(loadError);
   }
 
   function renderIntro() {
@@ -970,8 +979,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     manifest = m.quizzes || [];
     var want = new URLSearchParams(location.search).get('quiz');
     if (want) openQuiz(want); else renderList();
-
-  }).catch(function () { renderList(); });
+  }).catch(loadError);
 })();
 </script>
 <script src="/contact-button.js" defer></script>
