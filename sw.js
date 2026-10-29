@@ -479,6 +479,7 @@ const urlsToCache = [
   '/assets/timer-talisman-themes.js',
   '/test-tome.html',
   '/assets/test-tome/manifest.json',
+  '/assets/test-tome/gr8-coro-exam-practice.json',
   '/assets/test-tome/gr9-coro-exam-practice.json',
   '/assets/memory-mirror/manifest.json',
   '/assets/memory-mirror/science-sage-gr12-physics.json',
