@@ -1,0 +1,979 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<script>
+  // Open tests (e.g. for a workshop): a link to one of these works without
+  // signing in; the list of tests and every other test stay behind the
+  // login. Remove an id to make that test members-only again.
+  window.TT_OPEN = ['gr9-coro-exam-practice'];
+  window.TT_PUBLIC = window.TT_OPEN.indexOf(new URLSearchParams(location.search).get('quiz')) >= 0;
+  if (window.TT_PUBLIC) window.MLPublicPreview = true;
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Test Tome — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   Test Tome — exam-style practice tests that mark themselves.
+
+   Tests live in assets/test-tome/ (manifest.json + one file per test; the
+   README there describes the format). Question types: multiple choice,
+   true/false, match column A to B, put steps in order, find the matching
+   pairs, and scenarios that group any of these. Everything is marked the
+   moment the learner submits, so there are no written answers.
+
+   Answers and results stay in this browser (localStorage), so a refresh
+   does not lose a test in progress.
+
+   Like The Arena and Memory Mirror it is not a catalogue tool, so it stays
+   neutral and spends colour only where it means something: right, wrong,
+   and the colour that ties each correct pair together in the review.
+   ════════════════════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-display); background: var(--ink-900); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+.hidden { display: none !important; }
+.ml-nav-inner svg { flex-shrink: 0; }
+.tt-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-weight: 800; font-size: 18px; letter-spacing: -0.025em; }
+.tt-main { width: 100%; max-width: 860px; margin: 0 auto; padding: var(--space-6, 32px) 16px 96px; flex: 1; box-sizing: border-box; }
+.tt-title { font-weight: 900; font-size: clamp(26px, 5vw, 34px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 8px; }
+.tt-sub { font-size: 15px; line-height: 1.6; color: var(--text-2); max-width: 620px; margin: 0 0 24px; }
+.tt-note { font-size: 13px; color: var(--text-3); line-height: 1.5; margin: 14px 0 0; }
+.tt-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+/* ── Test list ───────────────────────────────────────────────────────── */
+.tt-grade { font-size: 13px; font-weight: 700; color: var(--text-3); margin: 22px 0 8px; }
+.tt-list { display: grid; gap: 8px; }
+.tt-quiz {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; text-align: left;
+  font: inherit; color: var(--text); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 14px 16px; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.tt-quiz:hover { border-color: var(--line-hard); }
+.tt-quiz strong { display: block; font-size: 16px; }
+.tt-quiz small { display: block; font-size: 13px; color: var(--text-3); margin-top: 3px; }
+.tt-quiz .tt-last { font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* ── Intro ───────────────────────────────────────────────────────────── */
+.tt-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 20px; }
+.tt-fact { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; }
+.tt-fact b { display: block; font-size: 22px; font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; }
+.tt-fact span { font-size: 13px; color: var(--text-3); }
+.tt-outline { border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.tt-outline div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; font-size: 15px; }
+.tt-outline div + div { border-top: 1px solid var(--line-soft); }
+.tt-outline span:last-child { color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ── The test ────────────────────────────────────────────────────────── */
+.tt-bar {
+  position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 14px;
+  background: var(--ink-900); border-bottom: 1px solid var(--line); padding: 10px 16px;
+}
+.tt-bar-inner { width: 100%; max-width: 860px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+.tt-bar .tt-count { font-size: 14px; color: var(--text-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-bar .tt-meter { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; min-width: 40px; }
+.tt-bar .tt-meter span { display: block; height: 100%; background: var(--paper); transition: width var(--dur-med) var(--ease-standard); }
+.tt-bar .tt-clock { font-size: 14px; color: var(--text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tt-bar .tt-clock.over { color: var(--warn); }
+
+.tt-section { margin: 30px 0 0; }
+.tt-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line-hard); padding-bottom: 8px; margin-bottom: 4px; }
+.tt-section-head h2 { font-size: 20px; font-weight: 800; color: var(--paper); margin: 0; letter-spacing: -0.02em; }
+.tt-section-head span { font-size: 14px; color: var(--text-3); white-space: nowrap; }
+.tt-section-intro { font-size: 14px; color: var(--text-2); margin: 8px 0 0; }
+
+.tt-q { padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
+.tt-q-head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; margin-bottom: 12px; }
+.tt-num { font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; min-width: 2.6em; }
+.tt-text { font-size: 16.5px; line-height: 1.5; color: var(--text); }
+.tt-marks { font-size: 14px; color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-body { padding-left: calc(2.6em + 12px); }
+@media (max-width: 560px) { .tt-body { padding-left: 0; } .tt-facts { grid-template-columns: 1fr 1fr; } }
+
+.tt-scenario { margin: 18px 0 0; padding: 16px 18px; background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.tt-scenario .tt-scen-label { font-size: 12.5px; font-weight: 700; color: var(--text-3); margin-bottom: 6px; }
+.tt-scenario p { margin: 0; font-size: 16px; line-height: 1.6; white-space: pre-line; }
+.tt-scenario + .tt-q { border-top: 0; }
+.tt-sub-q { padding-left: 18px; border-left: 2px solid var(--line); margin-left: 4px; }
+
+/* multiple choice and true/false */
+.tt-opts { display: grid; gap: 8px; }
+.tt-tf { grid-template-columns: repeat(2, minmax(0, 160px)); }
+.tt-opt {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer;
+  border: 1px solid var(--line-hard); border-radius: var(--radius-sm); font-size: 15.5px; line-height: 1.4;
+  transition: border-color var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard);
+}
+.tt-opt:hover { border-color: var(--text-3); }
+.tt-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.tt-opt .tt-letter {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line-hard); font-size: 13px; font-weight: 700; color: var(--text-2);
+}
+.tt-opt:has(input:checked) { border-color: var(--paper); background: var(--ink-850); }
+.tt-opt:has(input:checked) .tt-letter { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-opt:has(input:focus-visible) { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+/* match column A to B */
+.tt-match { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 640px) { .tt-match { grid-template-columns: 1fr; } }
+.tt-col h3 { font-size: 13px; font-weight: 700; color: var(--text-3); margin: 0 0 8px; }
+.tt-arow { display: grid; grid-template-columns: 1fr 92px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: 15.5px; }
+.tt-arow select, .tt-sel {
+  font: inherit; font-size: 15px; color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard);
+  border-radius: var(--radius-xs, 6px); padding: 6px 8px; width: 100%;
+}
+.tt-brow { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: 15.5px; line-height: 1.4; }
+.tt-brow b { flex-shrink: 0; width: 1.4em; color: var(--text-2); }
+
+/* put the steps in order */
+.tt-order { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tt-step {
+  display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px; align-items: center;
+  padding: 8px 10px; background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm);
+  font-size: 15.5px; line-height: 1.4; touch-action: none; user-select: none;
+}
+.tt-step.dragging { border-color: var(--paper); box-shadow: var(--elevation-md); position: relative; z-index: 2; }
+.tt-grip { cursor: grab; color: var(--text-3); display: grid; place-items: center; padding: 2px; }
+.tt-step .tt-pos { font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; min-width: 1.4em; }
+.tt-moves { display: flex; gap: 4px; }
+.tt-move { font: inherit; background: transparent; color: var(--text-2); border: 1px solid var(--line-hard); border-radius: 6px; width: 30px; height: 30px; display: grid; place-items: center; cursor: pointer; }
+.tt-move:disabled { opacity: 0.3; cursor: default; }
+.tt-move svg { width: 16px; height: 16px; }
+
+/* find the matching pairs */
+.tt-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.tt-card {
+  position: relative; font: inherit; text-align: left; font-size: 15px; line-height: 1.35; color: var(--text);
+  min-height: 72px; padding: 12px 14px; background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); cursor: pointer;
+}
+.tt-card:hover { border-color: var(--text-3); }
+.tt-card[aria-pressed="true"] { border-color: var(--paper); box-shadow: inset 0 0 0 1px var(--paper); }
+.tt-card.linked { border-style: solid; border-color: var(--text-2); }
+.tt-card .tt-tag {
+  position: absolute; top: -9px; right: 10px; min-width: 22px; height: 20px; padding: 0 6px; border-radius: 99px;
+  display: grid; place-items: center; font-size: 12px; font-weight: 800; background: var(--paper); color: var(--ink-900);
+}
+.tt-hint { font-size: 13px; color: var(--text-3); margin: 8px 0 0; }
+
+/* ── Results ─────────────────────────────────────────────────────────── */
+.tt-score { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin: 6px 0 18px; }
+.tt-score b { font-size: clamp(48px, 10vw, 72px); font-weight: 900; color: var(--paper); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; }
+.tt-score span { font-size: 18px; color: var(--text-2); }
+.tt-score .tt-pct { font-size: 28px; font-weight: 800; color: var(--paper); }
+.tt-rows { display: grid; gap: 10px; margin: 8px 0 0; }
+.tt-row { display: grid; grid-template-columns: minmax(0, 1fr) 140px 64px; gap: 12px; align-items: center; font-size: 15px; }
+.tt-row .tt-track { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.tt-row .tt-track span { display: block; height: 100%; background: var(--paper); }
+.tt-row > span:last-child { text-align: right; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.tt-h3 { font-size: 14px; font-weight: 700; color: var(--text-3); margin: 26px 0 10px; }
+@media (max-width: 520px) { .tt-row { grid-template-columns: minmax(0, 1fr) 80px 56px; } }
+
+/* ── Review ──────────────────────────────────────────────────────────── */
+.tt-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; }
+.tt-chip { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); cursor: pointer; }
+.tt-chip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-got { font-weight: 800; font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-got.full { color: var(--good); } .tt-got.part { color: var(--warn); } .tt-got.none { color: var(--crit); }
+.r-opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 15px; line-height: 1.4; }
+.r-opt + .r-opt { margin-top: 6px; }
+.r-opt .tt-letter { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-hard); font-size: 12.5px; font-weight: 700; color: var(--text-2); }
+.r-opt.right { border-color: var(--good); }
+.r-opt.right .tt-letter { background: var(--good); border-color: var(--good); color: var(--ink-900); }
+.r-opt.wrong { border-color: var(--crit); }
+.r-opt.wrong .tt-letter { background: var(--crit); border-color: var(--crit); color: var(--ink-900); }
+.r-opt em { margin-left: auto; font-style: normal; font-size: 12.5px; font-weight: 700; white-space: nowrap; padding-left: 8px; }
+.r-opt.right em { color: var(--good); } .r-opt.wrong em { color: var(--crit); }
+.r-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.r-table th { text-align: left; font-size: 12.5px; font-weight: 700; color: var(--text-3); padding: 0 8px 6px 0; }
+.r-table td { padding: 8px 8px 8px 0; border-top: 1px solid var(--line-soft); vertical-align: top; line-height: 1.4; }
+.r-mark { font-weight: 800; width: 1.4em; }
+.r-mark.ok { color: var(--good); } .r-mark.no { color: var(--crit); }
+.r-was { color: var(--crit); text-decoration: line-through; text-decoration-thickness: 1px; }
+.r-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 6px; }
+.r-pair > div { padding: 8px 12px; border-radius: var(--radius-sm); border: 2px solid var(--pc, var(--line-hard)); font-size: 14.5px; line-height: 1.35; }
+.r-pair > span { align-self: center; color: var(--text-3); }
+.r-pair.bad > div { border-style: dashed; border-color: var(--crit); }
+.r-pair .r-mark { align-self: center; }
+.r-pairs-wrap { display: grid; gap: 4px; }
+.tt-explain { margin-top: 12px; padding: 10px 14px; border-left: 3px solid var(--line-hard); background: var(--ink-850); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14.5px; line-height: 1.55; color: var(--text-2); }
+.tt-explain b { color: var(--text); }
+.tt-empty { padding: 26px 0; color: var(--text-3); }
+
+.tt-code { margin: 12px 0 0; padding: 12px 14px; background: var(--ink-900); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55; color: var(--text); overflow-x: auto; white-space: pre; }
+.tt-q .tt-code { margin: 0 0 12px; }
+.tt-name { display: grid; gap: 6px; max-width: 360px; margin: 20px 0 0; }
+.tt-name span { font-size: 13px; font-weight: 700; color: var(--text-2); }
+.tt-name input { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.tt-who { font-size: 15px; color: var(--text-2); margin: 0 0 2px; }
+.tt-who b { color: var(--paper); }
+dialog.tt-share { max-width: 560px; text-align: center; }
+.tt-qr { background: #fff; border-radius: var(--radius-sm); padding: 14px; width: min(340px, 70vw); margin: 16px auto 12px; }
+.tt-qr svg { display: block; width: 100%; height: auto; }
+.tt-link { font-family: var(--font-mono); font-size: 14px; color: var(--paper); word-break: break-all; margin: 0 0 4px; }
+.public .tt-members { display: none !important; }
+dialog.tt-dialog { position: fixed; inset: 0; margin: auto; height: fit-content; background: var(--ink-850); color: var(--text); border: 1px solid var(--line-hard); border-radius: var(--radius-md, 12px); padding: 22px; max-width: 420px; width: calc(100% - 32px); }
+dialog.tt-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+dialog.tt-dialog h2 { margin: 0 0 8px; font-size: 20px; color: var(--paper); }
+dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
+</style>
+</head>
+<body>
+  <a class="ml-skip" href="#tt-main">Skip to content</a>
+
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="tt-brand" href="test-tome.html">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M6 5.5h12.5a3 3 0 0 1 3 3V23H9a3 3 0 0 1-3-3V5.5Z" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M6 20a3 3 0 0 1 3-3h12.5" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.4"/>
+          <path d="m10.5 10.5 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Test Tome
+      </a>
+      <div class="ml-nav-right">
+        <span id="mlLangToggle"></span>
+        <a class="ml-pill tt-members" href="dashboard-student.html"><i data-lucide="arrow-left"></i><span data-t="back">Dashboard</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="tt-bar hidden" id="testBar">
+    <div class="tt-bar-inner">
+      <span class="tt-count" id="barCount"></span>
+      <div class="tt-meter"><span id="barMeter" style="width:0"></span></div>
+      <span class="tt-clock hidden" id="barClock"></span>
+      <button class="ml-btn ml-btn--primary" id="btnSubmitTop"><i data-lucide="send"></i><span data-t="submit">Submit</span></button>
+    </div>
+  </div>
+
+  <main class="tt-main" id="tt-main" tabindex="-1">
+    <section id="viewList">
+      <h1 class="tt-title">Test Tome</h1>
+      <p class="tt-sub" data-t="intro">Practice tests set out like the exam. Every question marks itself: submit, see your mark straight away, then go through each answer with its explanation.</p>
+      <div id="quizList"></div>
+      <p class="tt-note" data-t="storeNote">Your answers and results are saved in this browser on this device.</p>
+    </section>
+
+    <section id="viewIntro" class="hidden">
+      <h1 class="tt-title" id="introTitle"></h1>
+      <p class="tt-sub" id="introSub"></p>
+      <div class="tt-facts" id="introFacts"></div>
+      <div class="tt-outline" id="introOutline"></div>
+      <label class="tt-name"><span data-t="yourName">Your name (optional)</span><input id="nameBox" type="text" maxlength="60" autocomplete="name"></label>
+      <p class="tt-note" id="introLast"></p>
+      <div class="tt-actions">
+        <button class="ml-btn ml-btn--primary" id="btnStart"><i data-lucide="play"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost hidden" id="btnLastReview"><i data-lucide="list-checks"></i><span data-t="reviewLast">Review my last attempt</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnShare"><i data-lucide="qr-code"></i><span data-t="share">Share this test</span></button>
+        <button class="ml-btn ml-btn--ghost tt-members" id="btnToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
+      </div>
+      <p class="tt-note" data-t="nameNote">Your name only appears on your own results screen. Nothing is sent anywhere.</p>
+    </section>
+
+    <section id="viewTest" class="hidden">
+      <h1 class="tt-title" id="testTitle"></h1>
+      <div id="testBody"></div>
+      <div class="tt-actions">
+        <button class="ml-btn ml-btn--primary" id="btnSubmit"><i data-lucide="send"></i><span data-t="submitTest">Submit my test</span></button>
+      </div>
+    </section>
+
+    <section id="viewResult" class="hidden">
+      <p class="tt-who hidden" id="resultWho"></p>
+      <p class="tt-sub" id="resultTitle" style="margin-bottom:4px"></p>
+      <div class="tt-score" id="resultScore"></div>
+      <div class="tt-actions" style="margin-top:0">
+        <button class="ml-btn ml-btn--primary" id="btnReview"><i data-lucide="list-checks"></i><span data-t="review">Review my answers</span></button>
+      </div>
+      <h3 class="tt-h3" data-t="bySection">By section</h3>
+      <div class="tt-rows" id="resultSections"></div>
+      <h3 class="tt-h3" data-t="bySkill">Knowledge and application</h3>
+      <div class="tt-rows" id="resultSkills"></div>
+      <div class="tt-actions">
+        <button class="ml-btn ml-btn--ghost" id="btnRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
+        <button class="ml-btn ml-btn--ghost tt-members" id="btnResToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
+      </div>
+    </section>
+
+    <section id="viewReview" class="hidden">
+      <h1 class="tt-title" data-t="reviewTitle">Review your answers</h1>
+      <p class="tt-sub" id="reviewSub"></p>
+      <div class="tt-filter" id="reviewFilter" role="group">
+        <button class="tt-chip" data-f="all" aria-pressed="true" data-t="fAll">All questions</button>
+        <button class="tt-chip" data-f="lost" aria-pressed="false" data-t="fLost">Only where I lost marks</button>
+      </div>
+      <div id="reviewBody"></div>
+      <div class="tt-actions">
+        <button class="ml-btn ml-btn--primary" id="btnRevResult"><i data-lucide="award"></i><span data-t="backResult">Back to my mark</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnRevRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="tt-dialog tt-share" id="shareDlg">
+    <h2 id="shareTitle"></h2>
+    <p data-t="shareSub">Scan the code with a phone camera, or type the link.</p>
+    <div class="tt-qr" id="shareQr"></div>
+    <p class="tt-link" id="shareLink"></p>
+    <div class="tt-actions" style="justify-content:center">
+      <button class="ml-btn ml-btn--primary" id="btnCopyLink"><i data-lucide="copy"></i><span data-t="copy">Copy link</span></button>
+      <button class="ml-btn ml-btn--ghost" id="btnShareClose"><span data-t="close">Close</span></button>
+    </div>
+  </dialog>
+
+  <dialog class="tt-dialog" id="confirmDlg">
+    <h2 data-t="sureTitle">Submit your test?</h2>
+    <p id="confirmText"></p>
+    <div class="tt-actions">
+      <button class="ml-btn ml-btn--primary" id="btnConfirm"><span data-t="submitNow">Submit</span></button>
+      <button class="ml-btn ml-btn--ghost" id="btnCancel"><span data-t="keepGoing">Keep working</span></button>
+    </div>
+  </dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script src="lang-toggle.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BASE = 'assets/test-tome/';
+  var STORE_KEY = 'ml-test-tome-v1';
+  // one colour per correct pair in the review, chosen to stay apart on dark and light grounds
+  var PAIR_COLOURS = ['#4f9dff', '#f0a63a', '#b07cff', '#2fc1b0', '#ff6fa8', '#8cc63f', '#ff8a4c', '#d9cc3f', '#5fd0ff', '#e07cd9'];
+
+  var T = {
+    en: {
+      back: 'Dashboard', intro: 'Practice tests set out like the exam. Every question marks itself: submit, see your mark straight away, then go through each answer with its explanation.',
+      storeNote: 'Your answers and results are saved in this browser on this device.',
+      grade: 'Grade {g}', marks: '{n} marks', mark1: '1 mark', minutes: '{n} minutes', questions: 'questions', totalMarks: 'marks', time: 'minutes',
+      noTests: 'No tests yet.', last: 'Last: {s}/{t}', inProgress: 'In progress',
+      start: 'Start the test', resume: 'Carry on with my test', reviewLast: 'Review my last attempt', allTests: 'All tests',
+      lastResult: 'Your last result: {s} out of {t} ({p}%).',
+      submit: 'Submit', submitTest: 'Submit my test', answered: '{a} of {n} answered', left: '{t} left', over: 'Time is up',
+      question: 'Question {n}', scenario: 'Scenario', colA: 'Column A', colB: 'Column B', pick: 'Choose',
+      orderHint: 'Drag the steps, or use the arrows, until they are in the right order.',
+      pairsHint: 'Tap a card, then tap the card that belongs with it. Tap a linked card to undo.',
+      up: 'Move up', down: 'Move down', tTrue: 'True', tFalse: 'False',
+      sureTitle: 'Submit your test?', sureAll: 'You have answered every question. Once you submit, your test is marked and you can see your answers.',
+      sureSome: 'You have not answered {n} of the questions yet. Unanswered questions get no marks.', submitNow: 'Submit', keepGoing: 'Keep working',
+      yourMark: 'Your mark for {t}', outOf: 'out of {t}', level: 'Level {l}', review: 'Review my answers',
+      bySection: 'By section', bySkill: 'Knowledge and application', knowledge: 'Knowledge', application: 'Application',
+      retry: 'Write it again', reviewTitle: 'Review your answers', reviewSub: 'Green is right, red is wrong. Each answer has an explanation underneath.',
+      fAll: 'All questions', fLost: 'Only where I lost marks', noneLost: 'You did not lose a mark anywhere. Well done!', backResult: 'Back to my mark',
+      yours: 'Your answer', correct: 'Correct answer', notAnswered: 'Not answered', why: 'Why:',
+      youLinked: 'Your pairs', rightPairs: 'The correct pairs', noPairs: 'You did not link any pairs.',
+      yourOrder: 'Your order', rightOrder: 'Correct order', got: '{s}/{t}',
+      yourName: 'Your name (optional)', nameNote: 'Your name only appears on your own results screen. Nothing is sent anywhere.',
+      share: 'Share this test', shareSub: 'Scan the code with a phone camera, or type the link.', copy: 'Copy link', copied: 'Copied', close: 'Close',
+      membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.'
+    },
+    af: {
+      back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
+      storeNote: 'Jou antwoorde en uitslae word in hierdie blaaier op hierdie toestel gestoor.',
+      grade: 'Graad {g}', marks: '{n} punte', mark1: '1 punt', minutes: '{n} minute', questions: 'vrae', totalMarks: 'punte', time: 'minute',
+      noTests: 'Nog geen toetse nie.', last: 'Laaste: {s}/{t}', inProgress: 'Besig',
+      start: 'Begin die toets', resume: 'Gaan voort met my toets', reviewLast: 'Hersien my laaste poging', allTests: 'Alle toetse',
+      lastResult: 'Jou laaste uitslag: {s} uit {t} ({p}%).',
+      submit: 'Dien in', submitTest: 'Dien my toets in', answered: '{a} van {n} beantwoord', left: '{t} oor', over: 'Die tyd is om',
+      question: 'Vraag {n}', scenario: 'Scenario', colA: 'Kolom A', colB: 'Kolom B', pick: 'Kies',
+      orderHint: 'Sleep die stappe, of gebruik die pyltjies, totdat hulle in die regte volgorde is.',
+      pairsHint: "Tik op 'n kaart, en dan op die kaart wat daarby hoort. Tik op 'n gekoppelde kaart om dit te ontkoppel.",
+      up: 'Skuif op', down: 'Skuif af', tTrue: 'Waar', tFalse: 'Onwaar',
+      sureTitle: 'Dien jou toets in?', sureAll: 'Jy het elke vraag beantwoord. Sodra jy indien, word jou toets gemerk en kan jy jou antwoorde sien.',
+      sureSome: 'Jy het {n} van die vrae nog nie beantwoord nie. Onbeantwoorde vrae kry geen punte nie.', submitNow: 'Dien in', keepGoing: 'Werk verder',
+      yourMark: 'Jou punt vir {t}', outOf: 'uit {t}', level: 'Vlak {l}', review: 'Hersien my antwoorde',
+      bySection: 'Per afdeling', bySkill: 'Kennis en toepassing', knowledge: 'Kennis', application: 'Toepassing',
+      retry: 'Skryf dit weer', reviewTitle: 'Hersien jou antwoorde', reviewSub: 'Groen is reg, rooi is verkeerd. Elke antwoord het ’n verduideliking daaronder.',
+      fAll: 'Alle vrae', fLost: 'Net waar ek punte verloor het', noneLost: 'Jy het nêrens ’n punt verloor nie. Mooi so!', backResult: 'Terug na my punt',
+      yours: 'Jou antwoord', correct: 'Korrekte antwoord', notAnswered: 'Nie beantwoord nie', why: 'Hoekom:',
+      youLinked: 'Jou pare', rightPairs: 'Die korrekte pare', noPairs: 'Jy het geen pare gekoppel nie.',
+      yourOrder: 'Jou volgorde', rightOrder: 'Korrekte volgorde', got: '{s}/{t}',
+      yourName: 'Jou naam (opsioneel)', nameNote: 'Jou naam verskyn net op jou eie uitslagskerm. Niks word êrens heen gestuur nie.',
+      share: 'Deel hierdie toets', shareSub: "Skandeer die kode met 'n foon se kamera, of tik die skakel in.", copy: 'Kopieer skakel', copied: 'Gekopieer', close: 'Maak toe',
+      membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.'
+    }
+  };
+
+  var lang = (window.MLLang && MLLang.getLang()) || 'en';
+  var manifest = [];
+  var quiz = null, items = [], att = null, clockTimer = null, reviewFilter = 'all';
+  var store = loadStore();
+
+  function t(k, vars) {
+    var s = (T[lang] && T[lang][k]) || T.en[k] || k;
+    if (vars) Object.keys(vars).forEach(function (v) { s = s.split('{' + v + '}').join(vars[v]); });
+    return s;
+  }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function icons() { if (window.lucide) lucide.createIcons(); }
+  function letter(i) { return String.fromCharCode(65 + i); }
+  function marksText(n) { return n === 1 ? t('mark1') : t('marks', { n: n }); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+  // a shuffle that never leaves everything where it started
+  function mix(n) { var idx = [], i; for (i = 0; i < n; i++) idx.push(i); if (n < 2) return idx; var s; do { s = shuffle(idx); } while (s.every(function (v, k) { return v === k; })); return s; }
+
+  // ── Store: one attempt per test, kept in this browser ────────────────
+  function loadStore() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+
+  // ── Questions: the leaves of the test, numbered like an exam paper ───
+  function maxMarks(q) {
+    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : 1;
+    return q.marks || n;
+  }
+  function buildItems(qz) {
+    var out = [];
+    qz.sections.forEach(function (sec, si) {
+      var n = 0;
+      sec.questions.forEach(function (q) {
+        n++;
+        if (q.type === 'scenario') {
+          q.questions.forEach(function (sq, k) {
+            out.push({ id: si + '.' + n + '.' + (k + 1), num: (si + 1) + '.' + n + '.' + (k + 1), q: sq, sec: si, scen: q, first: k === 0, scenNum: (si + 1) + '.' + n,
+              max: maxMarks(sq), skill: sq.skill || 'application' });
+          });
+        } else {
+          out.push({ id: si + '.' + n, num: (si + 1) + '.' + n, q: q, sec: si, max: maxMarks(q), skill: q.skill || 'knowledge' });
+        }
+      });
+    });
+    return out;
+  }
+  function total() { return items.reduce(function (s, it) { return s + it.max; }, 0); }
+  function secTotal(si) { return items.filter(function (it) { return it.sec === si; }).reduce(function (s, it) { return s + it.max; }, 0); }
+
+  // the fixed shuffles of one attempt, so a refresh shows the same test
+  function newAttempt() {
+    var mixes = {};
+    items.forEach(function (it) {
+      var q = it.q;
+      // multiple-choice options are shuffled too, so the right answer is not always B
+      if (q.type === 'mcq' && !q.keepOrder) mixes[it.id] = shuffle(q.options.map(function (o, i) { return i; }));
+      if (q.type === 'match') mixes[it.id] = mix(q.pairs.length + (q.extra || []).length);
+      if (q.type === 'order') mixes[it.id] = mix(q.steps.length);
+      if (q.type === 'pairs') mixes[it.id] = mix(q.pairs.length * 2);
+    });
+    return { started: Date.now(), mixes: mixes, answers: {}, done: null };
+  }
+
+  // ── Marking ──────────────────────────────────────────────────────────
+  function scale(right, n, max) { return n === max ? right : Math.round(right * max / n); }
+  function mark(it, a) {
+    var q = it.q;
+    if (a == null) return 0;
+    if (q.type === 'mcq') return a === q.answer ? it.max : 0;
+    if (q.type === 'tf') return a === q.answer ? it.max : 0;
+    if (q.type === 'match') { var r = 0; q.pairs.forEach(function (p, i) { if (a[i] === i) r++; }); return scale(r, q.pairs.length, it.max); }
+    if (q.type === 'order') { var o = 0; a.forEach(function (s, i) { if (s === i) o++; }); return scale(o, q.steps.length, it.max); }
+    if (q.type === 'pairs') { var c = 0; for (var i = 0; i < q.pairs.length; i++) if (a[i * 2] === i * 2 + 1) c++; return scale(c, q.pairs.length, it.max); }
+    return 0;
+  }
+  function answered(it) {
+    var a = att.answers[it.id], q = it.q;
+    if (a == null) return false;
+    if (q.type === 'match') return Object.keys(a).length > 0;
+    if (q.type === 'pairs') return Object.keys(a).length > 0;
+    return true;
+  }
+  function levelOf(p) { return p >= 80 ? 7 : p >= 70 ? 6 : p >= 60 ? 5 : p >= 50 ? 4 : p >= 40 ? 3 : p >= 30 ? 2 : 1; }
+
+  // ── Views ────────────────────────────────────────────────────────────
+  function show(id) {
+    ['viewList', 'viewIntro', 'viewTest', 'viewResult', 'viewReview'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
+    $('testBar').classList.toggle('hidden', id !== 'viewTest');
+    placeBar();
+    if (id !== 'viewTest') stopClock();
+    window.scrollTo(0, 0);
+    icons();
+  }
+  function setUrl(id) {
+    var u = new URL(location.href);
+    if (id) u.searchParams.set('quiz', id); else u.searchParams.delete('quiz');
+    history.replaceState(null, '', u.pathname + u.search);
+  }
+
+  function renderList() {
+    setUrl(null);
+    var box = $('quizList'); box.innerHTML = '';
+    // signed out on an open test: the other tests are members-only
+    if (window.TT_PUBLIC) { show('viewList'); return; }
+    if (!manifest.length) { box.innerHTML = '<p class="tt-empty">' + esc(t('noTests')) + '</p>'; show('viewList'); return; }
+    var grades = {};
+    manifest.forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
+    Object.keys(grades).sort(function (a, b) { return a - b; }).forEach(function (g) {
+      var h = document.createElement('div'); h.className = 'tt-grade'; h.textContent = t('grade', { g: g }); box.appendChild(h);
+      var list = document.createElement('div'); list.className = 'tt-list';
+      grades[g].forEach(function (m) {
+        var s = store[m.id], last = s && s.done ? t('last', { s: s.done.score, t: s.done.total }) : s && s.started ? t('inProgress') : '';
+        var b = document.createElement('button'); b.className = 'tt-quiz';
+        b.innerHTML = '<span><strong>' + esc(m.title) + '</strong><small>' + esc(m.subject) + '</small></span><span class="tt-last">' + esc(last) + '</span>';
+        b.addEventListener('click', function () { openQuiz(m.id); });
+        list.appendChild(b);
+      });
+      box.appendChild(list);
+    });
+    show('viewList');
+  }
+
+  function openQuiz(id) {
+    var m = manifest.filter(function (x) { return x.id === id; })[0];
+    if (window.TT_PUBLIC && window.TT_OPEN.indexOf(id) < 0) m = null;
+    if (!m) return renderList();
+    fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
+      quiz = qz; quiz.id = m.id; items = buildItems(qz);
+      setUrl(m.id); renderIntro();
+    }).catch(function () { renderList(); });
+  }
+
+  function renderIntro() {
+    var s = store[quiz.id];
+    $('introTitle').textContent = quiz.title;
+    $('introSub').textContent = quiz.subject + ' · ' + t('grade', { g: quiz.grade });
+    var facts = [[total(), t('totalMarks')], [items.length, t('questions')]];
+    if (quiz.minutes) facts.push([quiz.minutes, t('time')]);
+    $('introFacts').innerHTML = facts.map(function (f) { return '<div class="tt-fact"><b>' + f[0] + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('');
+    $('introOutline').innerHTML = quiz.sections.map(function (sec, si) {
+      return '<div><span>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</span><span>' + esc(marksText(secTotal(si))) + '</span></div>';
+    }).join('');
+    var inProg = s && s.started && !s.done;
+    $('btnStart').querySelector('span').textContent = inProg ? t('resume') : t('start');
+    $('btnLastReview').classList.toggle('hidden', !(s && s.done));
+    $('nameBox').value = (s && s.name) || lastName();
+    $('introLast').textContent = s && s.done ? t('lastResult', { s: s.done.score, t: s.done.total, p: Math.round(s.done.score / s.done.total * 100) }) : '';
+    show('viewIntro');
+  }
+
+  // ── The test ─────────────────────────────────────────────────────────
+  function startTest(fresh) {
+    var s = store[quiz.id];
+    if (fresh || !s || !s.started || s.done) { s = store[quiz.id] = newAttempt(); }
+    var nm = $('nameBox').value.trim(); if (nm || !s.name) s.name = nm;
+    save();
+    att = s;
+    $('testTitle').textContent = quiz.title;
+    var body = $('testBody'); body.innerHTML = '';
+    quiz.sections.forEach(function (sec, si) {
+      var wrap = document.createElement('section'); wrap.className = 'tt-section';
+      wrap.innerHTML = '<div class="tt-section-head"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</h2><span>' + esc(marksText(secTotal(si))) + '</span></div>' +
+        (sec.intro ? '<p class="tt-section-intro">' + esc(sec.intro) + '</p>' : '');
+      items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
+        if (it.scen && it.first) {
+          var sc = document.createElement('div'); sc.className = 'tt-scenario';
+          sc.innerHTML = scenarioHtml(it);
+          wrap.appendChild(sc);
+        }
+        wrap.appendChild(questionEl(it));
+      });
+      body.appendChild(wrap);
+    });
+    show('viewTest');
+    updateBar(); startClock();
+  }
+
+  function head(it) {
+    return '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(it.q.q) + '</span><span class="tt-marks">(' + it.max + ')</span></div>';
+  }
+  function code(c) { return c ? '<pre class="tt-code">' + esc(c) + '</pre>' : ''; }
+  function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + code(it.scen.code); }
+  // the order an attempt shows the options in: [[label, value], ...]
+  function choices(it) {
+    var q = it.q;
+    if (q.type === 'tf') return [[t('tTrue'), true, 'T'], [t('tFalse'), false, 'F']];
+    var order = (att.mixes && att.mixes[it.id]) || q.options.map(function (o, i) { return i; });
+    return order.map(function (oi, k) { return [q.options[oi], oi, letter(k)]; });
+  }
+  function setAnswer(it, v) { att.answers[it.id] = v; save(); updateBar(); }
+
+  function questionEl(it) {
+    var q = it.q, el = document.createElement('div'), a = att.answers[it.id];
+    el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : ''); el.id = 'q-' + it.id;
+    el.innerHTML = head(it) + '<div class="tt-body">' + code(q.code) + '</div>';
+    var body = el.querySelector('.tt-body'), name = 'q' + it.id.replace(/\./g, '_');
+    if (q.type === 'mcq' || q.type === 'tf') {
+      var g = document.createElement('div'); g.className = 'tt-opts' + (q.type === 'tf' ? ' tt-tf' : ''); g.setAttribute('role', 'radiogroup');
+      choices(it).forEach(function (c) {
+        var val = c[1];
+        var lab = document.createElement('label'); lab.className = 'tt-opt';
+        lab.innerHTML = '<input type="radio" name="' + name + '"' + (a === val ? ' checked' : '') + '><span class="tt-letter">' + c[2] + '</span><span>' + esc(c[0]) + '</span>';
+        lab.querySelector('input').addEventListener('change', function () { setAnswer(it, val); });
+        g.appendChild(lab);
+      });
+      body.appendChild(g);
+    } else if (q.type === 'match') {
+      body.appendChild(matchEl(it));
+    } else if (q.type === 'order') {
+      body.appendChild(orderEl(it));
+    } else if (q.type === 'pairs') {
+      body.appendChild(pairsEl(it));
+    }
+    return el;
+  }
+
+  // Column B lists the right answers and any extras, shuffled; a choice is
+  // stored as the B item's place in pairs/extra, so marking is "A[i] → B[i]".
+  function bItems(q) { return q.pairs.map(function (p) { return p[1]; }).concat(q.extra || []); }
+  function matchEl(it) {
+    var q = it.q, order = att.mixes[it.id], bs = bItems(q), a = att.answers[it.id] || {};
+    var box = document.createElement('div'); box.className = 'tt-match';
+    var colA = '<div class="tt-col"><h3>' + esc(t('colA')) + '</h3>';
+    q.pairs.forEach(function (p, i) {
+      colA += '<div class="tt-arow"><span>' + (i + 1) + '. ' + esc(p[0]) + '</span><select class="tt-sel" data-i="' + i + '" aria-label="' + esc(p[0]) + '"><option value="">' + esc(t('pick')) + '</option>' +
+        order.map(function (bi, k) { return '<option value="' + bi + '"' + (a[i] === bi ? ' selected' : '') + '>' + letter(k) + '</option>'; }).join('') + '</select></div>';
+    });
+    colA += '</div>';
+    var colB = '<div class="tt-col"><h3>' + esc(t('colB')) + '</h3>' + order.map(function (bi, k) { return '<div class="tt-brow"><b>' + letter(k) + '</b><span>' + esc(bs[bi]) + '</span></div>'; }).join('') + '</div>';
+    box.innerHTML = colA + colB;
+    [].forEach.call(box.querySelectorAll('select'), function (s) {
+      s.addEventListener('change', function () {
+        var cur = Object.assign({}, att.answers[it.id] || {}), i = +s.getAttribute('data-i');
+        if (s.value === '') delete cur[i]; else cur[i] = +s.value;
+        setAnswer(it, Object.keys(cur).length ? cur : null);
+      });
+    });
+    return box;
+  }
+
+  // An order question counts as answered once the learner moves a step;
+  // until then it shows the attempt's shuffled order.
+  function orderEl(it) {
+    var q = it.q;
+    var wrap = document.createElement('div');
+    var ul = document.createElement('ol'); ul.className = 'tt-order';
+    function draw() {
+      var cur = att.answers[it.id] || att.mixes[it.id]; ul.innerHTML = '';
+      cur.forEach(function (si, pos) {
+        var li = document.createElement('li'); li.className = 'tt-step'; li.dataset.s = si;
+        li.innerHTML = '<span class="tt-grip" aria-hidden="true"><i data-lucide="grip-vertical"></i></span><span class="tt-pos">' + (pos + 1) + '</span><span>' + esc(q.steps[si]) + '</span>' +
+          '<span class="tt-moves"><button type="button" class="tt-move" data-d="-1" aria-label="' + esc(t('up')) + '"' + (pos === 0 ? ' disabled' : '') + '><i data-lucide="chevron-up"></i></button>' +
+          '<button type="button" class="tt-move" data-d="1" aria-label="' + esc(t('down')) + '"' + (pos === cur.length - 1 ? ' disabled' : '') + '><i data-lucide="chevron-down"></i></button></span>';
+        [].forEach.call(li.querySelectorAll('.tt-move'), function (b) {
+          b.addEventListener('click', function () {
+            var c = (att.answers[it.id] || att.mixes[it.id]).slice(), to = pos + +b.getAttribute('data-d');
+            c.splice(to, 0, c.splice(pos, 1)[0]); setAnswer(it, c); draw();
+            var again = ul.children[to].querySelector('.tt-move[data-d="' + b.getAttribute('data-d') + '"]');
+            (again && !again.disabled ? again : ul.children[to].querySelector('.tt-move:not(:disabled)')).focus();
+          });
+        });
+        li.querySelector('.tt-grip').addEventListener('pointerdown', function (e) { drag(e, li); });
+        ul.appendChild(li);
+      });
+      if (window.lucide) lucide.createIcons({ root: ul });
+    }
+    // drag by the grip: the step follows the pointer and the others make room
+    function drag(e, li) {
+      e.preventDefault();
+      var startY = e.clientY, rect = li.getBoundingClientRect();
+      // listen on the document: moving the step in the list would drop a pointer capture
+      li.classList.add('dragging');
+      function move(ev) {
+        li.style.transform = 'translateY(' + (ev.clientY - startY) + 'px)';
+        var mid = rect.top + rect.height / 2 + (ev.clientY - startY);
+        var sibs = [].filter.call(ul.children, function (c) { return c !== li; });
+        var before = sibs.filter(function (c) { var r = c.getBoundingClientRect(); return mid > r.top + r.height / 2; }).length;
+        var curIdx = [].indexOf.call(ul.children, li);
+        if (before !== curIdx) {
+          var ref = sibs[before] || null;
+          var old = li.getBoundingClientRect().top;
+          ul.insertBefore(li, ref);
+          var now = li.getBoundingClientRect().top;
+          startY += now - old; rect = { top: rect.top + (now - old), height: rect.height };
+          li.style.transform = 'translateY(' + (ev.clientY - startY) + 'px)';
+        }
+      }
+      function up() {
+        document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
+        li.classList.remove('dragging'); li.style.transform = '';
+        setAnswer(it, [].map.call(ul.children, function (c) { return +c.dataset.s; })); draw();
+      }
+      document.addEventListener('pointermove', move); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+    }
+    draw();
+    wrap.appendChild(ul);
+    var hint = document.createElement('p'); hint.className = 'tt-hint'; hint.textContent = t('orderHint'); wrap.appendChild(hint);
+    return wrap;
+  }
+
+  // Cards: pair i is cards 2i (term) and 2i+1 (partner). The answer maps each
+  // linked card to the card it is linked with (both ways round).
+  function cardText(q, c) { return q.pairs[Math.floor(c / 2)][c % 2]; }
+  function pairsEl(it) {
+    var q = it.q, order = att.mixes[it.id], sel = null;
+    var wrap = document.createElement('div');
+    var grid = document.createElement('div'); grid.className = 'tt-cards';
+    function links() { return att.answers[it.id] || {}; }
+    function draw() {
+      var L = links(), tags = {}, n = 0;
+      // number each link in card order, so the badges read 1, 2, 3 across the grid
+      order.forEach(function (c) { if (L[c] != null && tags[c] == null) { n++; tags[c] = tags[L[c]] = n; } });
+      grid.innerHTML = '';
+      order.forEach(function (c) {
+        var b = document.createElement('button'); b.type = 'button';
+        b.className = 'tt-card' + (L[c] != null ? ' linked' : '');
+        b.setAttribute('aria-pressed', String(sel === c));
+        b.innerHTML = esc(cardText(q, c)) + (tags[c] ? '<span class="tt-tag">' + tags[c] + '</span>' : '');
+        b.addEventListener('click', function () { tap(c); });
+        grid.appendChild(b);
+      });
+    }
+    function tap(c) {
+      var L = Object.assign({}, links());
+      if (L[c] != null) { delete L[L[c]]; delete L[c]; sel = null; }
+      else if (sel === null) sel = c;
+      else if (sel === c) sel = null;
+      else { L[sel] = c; L[c] = sel; sel = null; }
+      setAnswer(it, Object.keys(L).length ? L : null);
+      var idx = order.indexOf(c); draw();
+      grid.children[idx].focus();
+    }
+    draw();
+    wrap.appendChild(grid);
+    var hint = document.createElement('p'); hint.className = 'tt-hint'; hint.textContent = t('pairsHint'); wrap.appendChild(hint);
+    return wrap;
+  }
+
+  function updateBar() {
+    var n = items.length, a = items.filter(answered).length;
+    $('barCount').textContent = t('answered', { a: a, n: n });
+    $('barMeter').style.width = (a / n * 100) + '%';
+  }
+  function startClock() {
+    stopClock();
+    if (!quiz.minutes) { $('barClock').classList.add('hidden'); return; }
+    $('barClock').classList.remove('hidden');
+    function tick() {
+      var left = att.started + quiz.minutes * 60000 - Date.now(), el = $('barClock');
+      if (left <= 0) { el.textContent = t('over'); el.classList.add('over'); return; }
+      var m = Math.floor(left / 60000), s = Math.floor(left % 60000 / 1000);
+      el.textContent = t('left', { t: m + ':' + ('0' + s).slice(-2) }); el.classList.toggle('over', left < 60000);
+    }
+    tick(); clockTimer = setInterval(tick, 1000);
+  }
+  function stopClock() { clearInterval(clockTimer); clockTimer = null; }
+
+  function askSubmit() {
+    var missing = items.filter(function (it) { return !answered(it); }).length;
+    $('confirmText').textContent = missing ? t('sureSome', { n: missing }) : t('sureAll');
+    var d = $('confirmDlg');
+    if (d.showModal) d.showModal(); else if (confirm($('confirmText').textContent)) submit();
+  }
+  function submit() {
+    var per = {}, score = 0;
+    items.forEach(function (it) { var m = mark(it, att.answers[it.id]); per[it.id] = m; score += m; });
+    att.done = { at: Date.now(), score: score, total: total(), per: per };
+    save();
+    renderResult();
+  }
+
+  // ── Results ──────────────────────────────────────────────────────────
+  function row(label, got, max) {
+    return '<div class="tt-row"><span>' + esc(label) + '</span><span class="tt-track"><span style="width:' + (max ? got / max * 100 : 0) + '%"></span></span><span>' + got + '/' + max + '</span></div>';
+  }
+  function renderResult() {
+    var d = att.done, p = Math.round(d.score / d.total * 100);
+    $('resultTitle').textContent = t('yourMark', { t: quiz.title });
+    $('resultWho').classList.toggle('hidden', !att.name);
+    $('resultWho').innerHTML = att.name ? '<b>' + esc(att.name) + '</b> · ' + esc(new Date(d.at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })) : '';
+    $('resultScore').innerHTML = '<b>' + d.score + '</b><span>' + esc(t('outOf', { t: d.total })) + '</span><span class="tt-pct">' + p + '%</span><span>' + esc(t('level', { l: levelOf(p) })) + '</span>';
+    $('resultSections').innerHTML = quiz.sections.map(function (sec, si) {
+      var its = items.filter(function (it) { return it.sec === si; });
+      return row(t('question', { n: si + 1 }) + ': ' + sec.title, its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), secTotal(si));
+    }).join('');
+    $('resultSkills').innerHTML = ['knowledge', 'application'].map(function (k) {
+      var its = items.filter(function (it) { return it.skill === k; });
+      if (!its.length) return '';
+      return row(t(k), its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), its.reduce(function (s, it) { return s + it.max; }, 0));
+    }).join('');
+    show('viewResult');
+  }
+
+  // ── Review ───────────────────────────────────────────────────────────
+  function renderReview() {
+    var d = att.done, body = $('reviewBody'); body.innerHTML = '';
+    $('reviewSub').textContent = t('reviewSub');
+    [].forEach.call($('reviewFilter').children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === reviewFilter)); });
+    var shown = 0;
+    quiz.sections.forEach(function (sec, si) {
+      var its = items.filter(function (it) { return it.sec === si && (reviewFilter === 'all' || d.per[it.id] < it.max); });
+      if (!its.length) return;
+      var wrap = document.createElement('section'); wrap.className = 'tt-section';
+      var got = items.filter(function (it) { return it.sec === si; }).reduce(function (s, it) { return s + d.per[it.id]; }, 0);
+      wrap.innerHTML = '<div class="tt-section-head"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</h2><span>' + got + '/' + secTotal(si) + '</span></div>';
+      var lastScen = null;
+      its.forEach(function (it) {
+        if (it.scen && it.scen !== lastScen) {
+          var sc = document.createElement('div'); sc.className = 'tt-scenario';
+          sc.innerHTML = scenarioHtml(it);
+          wrap.appendChild(sc);
+        }
+        lastScen = it.scen || null;
+        wrap.appendChild(reviewEl(it, d.per[it.id])); shown++;
+      });
+      body.appendChild(wrap);
+    });
+    if (!shown) body.innerHTML = '<p class="tt-empty">' + esc(t('noneLost')) + '</p>';
+    show('viewReview');
+  }
+
+  function reviewEl(it, got) {
+    var q = it.q, a = att.answers[it.id], el = document.createElement('div');
+    el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
+    var cls = got === it.max ? 'full' : got > 0 ? 'part' : 'none';
+    el.innerHTML = '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(q.q) + '</span><span class="tt-got ' + cls + '">' + esc(t('got', { s: got, t: it.max })) + '</span></div><div class="tt-body"></div>';
+    var body = el.querySelector('.tt-body'), h = code(q.code);
+    if (q.type === 'mcq' || q.type === 'tf') {
+      choices(it).forEach(function (ch) {
+        var o = ch[0], val = ch[1], isRight = val === q.answer, picked = a === val;
+        var c = isRight ? 'right' : picked ? 'wrong' : '';
+        var note = isRight ? t('correct') : picked ? t('yours') : '';
+        if (isRight && picked) note = t('yours') + ' ✓';
+        h += '<div class="r-opt ' + c + '"><span class="tt-letter">' + ch[2] + '</span><span>' + esc(o) + '</span>' + (note ? '<em>' + esc(note) + '</em>' : '') + '</div>';
+      });
+      if (a == null) h += '<p class="tt-hint">' + esc(t('notAnswered')) + '</p>';
+    } else if (q.type === 'match') {
+      var bs = bItems(q), aa = a || {};
+      h += '<table class="r-table"><thead><tr><th></th><th>' + esc(t('colA')) + '</th><th>' + esc(t('yours')) + '</th><th>' + esc(t('correct')) + '</th></tr></thead><tbody>';
+      q.pairs.forEach(function (p, i) {
+        var ok = aa[i] === i, yours = aa[i] == null ? '<span class="r-was">' + esc(t('notAnswered')) + '</span>' : ok ? esc(bs[aa[i]]) : '<span class="r-was">' + esc(bs[aa[i]]) + '</span>';
+        h += '<tr><td class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</td><td>' + esc(p[0]) + '</td><td>' + yours + '</td><td>' + esc(p[1]) + '</td></tr>';
+      });
+      h += '</tbody></table>';
+    } else if (q.type === 'order') {
+      var cur = a || att.mixes[it.id];
+      h += '<table class="r-table"><thead><tr><th></th><th>' + esc(t('yourOrder')) + '</th><th>' + esc(t('rightOrder')) + '</th></tr></thead><tbody>';
+      cur.forEach(function (s, i) {
+        var ok = s === i;
+        h += '<tr><td class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</td><td>' + (i + 1) + '. ' + (ok ? esc(q.steps[s]) : '<span class="r-was">' + esc(q.steps[s]) + '</span>') + '</td><td>' + (i + 1) + '. ' + esc(q.steps[i]) + '</td></tr>';
+      });
+      h += '</tbody></table>';
+    } else if (q.type === 'pairs') {
+      // each correct pair has its own colour; the learner's links use the
+      // colour of the pair they got right, and a dashed red edge when wrong
+      var L = a || {}, seen = {}, mine = '';
+      att.mixes[it.id].forEach(function (c) {
+        if (L[c] == null || seen[c]) return;
+        var d2 = L[c]; seen[c] = seen[d2] = 1;
+        var ok = Math.floor(c / 2) === Math.floor(d2 / 2), col = ok ? PAIR_COLOURS[Math.floor(c / 2) % PAIR_COLOURS.length] : '';
+        var first = c % 2 === 0 || !ok ? c : d2, second = first === c ? d2 : c;
+        mine += '<div class="r-pair' + (ok ? '' : ' bad') + '" style="' + (col ? '--pc:' + col : '') + '"><div>' + esc(cardText(q, first)) + '</div><span class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</span><div>' + esc(cardText(q, second)) + '</div></div>';
+      });
+      h += '<div class="tt-h3" style="margin-top:0">' + esc(t('youLinked')) + '</div><div class="r-pairs-wrap">' + (mine || '<p class="tt-hint">' + esc(t('noPairs')) + '</p>') + '</div>';
+      h += '<div class="tt-h3">' + esc(t('rightPairs')) + '</div><div class="r-pairs-wrap">' + q.pairs.map(function (p, i) {
+        return '<div class="r-pair" style="--pc:' + PAIR_COLOURS[i % PAIR_COLOURS.length] + '"><div>' + esc(p[0]) + '</div><span aria-hidden="true">↔</span><div>' + esc(p[1]) + '</div></div>';
+      }).join('') + '</div>';
+    }
+    if (q.explain) h += '<div class="tt-explain"><b>' + esc(t('why')) + '</b> ' + esc(q.explain) + '</div>';
+    body.innerHTML = h;
+    return el;
+  }
+
+  function lastName() { var n = ''; Object.keys(store).forEach(function (k) { if (store[k] && store[k].name) n = store[k].name; }); return n; }
+
+  // ── Share: a big QR code and the short link, for a projector ─────────
+  function shareUrl() {
+    var live = location.protocol === 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    return location.origin + (live ? '/test-tome' : '/test-tome.html') + '?quiz=' + encodeURIComponent(quiz.id);
+  }
+  var qrLib = null;
+  function withQr(cb) {
+    if (window.qrcode) return cb();
+    if (!qrLib) {
+      qrLib = document.createElement('script');
+      qrLib.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';
+      document.head.appendChild(qrLib);
+    }
+    qrLib.addEventListener('load', cb);
+    qrLib.addEventListener('error', cb);
+  }
+  function openShare() {
+    var url = shareUrl();
+    $('shareTitle').textContent = quiz.title;
+    $('shareLink').textContent = url.replace(/^https?:\/\//, '');
+    $('shareQr').innerHTML = '';
+    var open = (window.TT_OPEN || []).indexOf(quiz.id) >= 0;
+    $('shareDlg').querySelector('[data-t="shareSub"]').textContent = t('shareSub') + (open ? '' : ' ' + t('membersOnly'));
+    withQr(function () {
+      if (!window.qrcode) { $('shareQr').classList.add('hidden'); return; }
+      $('shareQr').classList.remove('hidden');
+      var q = qrcode(0, 'M'); q.addData(url); q.make();
+      $('shareQr').innerHTML = q.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+    });
+    $('shareDlg').showModal();
+    icons();
+  }
+
+  // ── Wiring ───────────────────────────────────────────────────────────
+  $('btnStart').addEventListener('click', function () { startTest(false); });
+  $('btnLastReview').addEventListener('click', function () { att = store[quiz.id]; reviewFilter = 'all'; renderReview(); });
+  $('btnToList').addEventListener('click', renderList);
+  $('btnShare').addEventListener('click', openShare);
+  $('btnShareClose').addEventListener('click', function () { $('shareDlg').close(); });
+  $('btnCopyLink').addEventListener('click', function () {
+    var b = this;
+    navigator.clipboard.writeText(shareUrl()).then(function () { b.querySelector('span').textContent = t('copied'); setTimeout(function () { b.querySelector('span').textContent = t('copy'); }, 1500); }).catch(function () {});
+  });
+  $('nameBox').addEventListener('change', function () { var s = store[quiz.id]; if (s && !s.done) { s.name = this.value.trim(); save(); } });
+  $('btnResToList').addEventListener('click', renderList);
+  $('btnSubmit').addEventListener('click', askSubmit);
+  $('btnSubmitTop').addEventListener('click', askSubmit);
+  $('btnConfirm').addEventListener('click', function () { $('confirmDlg').close(); submit(); });
+  $('btnCancel').addEventListener('click', function () { $('confirmDlg').close(); });
+  $('btnReview').addEventListener('click', function () { reviewFilter = 'all'; renderReview(); });
+  $('btnRevResult').addEventListener('click', renderResult);
+  $('btnRetry').addEventListener('click', function () { startTest(true); });
+  $('btnRevRetry').addEventListener('click', function () { startTest(true); });
+  [].forEach.call($('reviewFilter').children, function (b) {
+    b.addEventListener('click', function () { reviewFilter = b.getAttribute('data-f'); renderReview(); });
+  });
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t(el.getAttribute('data-t')); });
+  }
+  if (window.MLLang) MLLang.mount('mlLangToggle', { onChange: function (next) {
+    lang = next; applyLang();
+    if (!$('viewList').classList.contains('hidden')) renderList();
+    else if (!$('viewIntro').classList.contains('hidden')) renderIntro();
+    else if (!$('viewTest').classList.contains('hidden')) { var y = scrollY; startTest(false); scrollTo(0, y); }
+    else if (!$('viewResult').classList.contains('hidden')) renderResult();
+    else if (!$('viewReview').classList.contains('hidden')) renderReview();
+  } });
+  applyLang();
+  if (window.TT_PUBLIC) document.body.classList.add('public');
+  var nav = $('site-nav');
+  // the test bar sticks just under the site's own sticky nav
+  function placeBar() { $('testBar').style.top = nav.offsetHeight + 'px'; }
+  // the nav changes height when its theme button moves to the corner on a phone
+  if (window.ResizeObserver) new ResizeObserver(placeBar).observe(nav); else window.addEventListener('resize', placeBar);
+  var syncNav = function () { nav.classList.toggle('is-stuck', window.scrollY > 8); };
+  syncNav();
+  window.addEventListener('scroll', syncNav, { passive: true });
+  icons();
+
+  fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (m) {
+    manifest = m.quizzes || [];
+    var want = new URLSearchParams(location.search).get('quiz');
+    if (want) openQuiz(want); else renderList();
+
+  }).catch(function () { renderList(); });
+})();
+</script>
+<script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# Test Tome quiz files
+
+`manifest.json` lists the quizzes; each quiz is one JSON file in this folder.
+Adding a file plus a manifest entry is all it takes.
+
+```json
+{
+  "id": "gr8-example", "title": "Grade 8 Example Test", "grade": 8,
+  "subject": "Natural Sciences", "minutes": 45,
+  "sections": [
+    { "title": "Multiple choice", "intro": "Choose the best answer.",
+      "questions": [ ...question objects... ] }
+  ]
+}
+```
+
+Every question can carry `"skill": "knowledge"` (the default) or
+`"application"`, and an `"explain"` shown in the review after the test.
+
+| type | fields | marks |
+|---|---|---|
+| `mcq` | `q`, `options` [..], `answer` (0-based index); options are shuffled per attempt unless `"keepOrder": true` | `marks`, default 1 |
+| `tf` | `q` (a statement), `answer` true/false | `marks`, default 1 |
+| `match` | `q`, `pairs` [[A, B], ..], optional `extra` [B distractors] | 1 per pair |
+| `order` | `q`, `steps` [in the correct order] | 1 per step in its right place |
+| `pairs` | `q`, `pairs` [[term, partner], ..] (cards, find the pairs) | 1 per pair |
+| `scenario` | `scenario` (text), `questions` [any of the types above] | the sum of its parts |
+
+Scenario sub-questions count as application unless they say otherwise.
+`match`, `order` and `pairs` may set `marks` to scale their total.
+A question or a scenario may add `"code"`: a block of program code shown
+exactly as written (keep the indentation; use \n for new lines).
+
+## Open tests (no sign-in)
+
+`window.TT_OPEN` at the top of `test-tome.html` lists the tests that work
+without signing in, through their own link (`/test-tome?quiz=<id>`). The list
+of tests and every other test stay behind the login. The Share button on a
+test shows its link as a QR code for a projector.
+
+These JSON files can be opened by anyone who knows their address, gated or
+not, so write practice questions here, never a copy of a real exam paper.
