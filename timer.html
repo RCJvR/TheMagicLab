@@ -44,6 +44,8 @@ body.hide-cursor { cursor: none; }
   gap: 2.4vmin; padding: 5vmin 4vw 12vmin; text-align: center;
 }
 .head:empty, .info:empty { display: none; }
+/* a long heading wraps before it reaches the time in the top corner */
+.head { max-width: calc(100vw - 6vw - 18vmin * var(--tsize)); }
 /* the status lines keep their space even when empty, so nothing jumps up or
    down when "Paused" or an end time appears; a clock never uses them */
 .phase, .sub { min-height: 1.3em; }
@@ -82,7 +84,7 @@ body.hide-cursor { cursor: none; }
 .lay-detailed .sub, .lay-detailed .info, .lay-detailed .now { display: none; }
 .facts { display: none; }
 .lay-detailed .facts {
-  display: block; text-align: left; flex: 0 0 auto; width: clamp(200px, 24vw, 440px); min-width: 0;
+  display: block; text-align: left; flex: 0 0 auto; width: clamp(200px, calc(24vw * var(--tsize)), 36vw); min-width: 0;
   border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-left: 3vw;
   font-size: calc(2.4vmin * var(--tsize)); overflow: hidden;
 }
@@ -527,7 +529,8 @@ body.hide-cursor { cursor: none; }
   function fit() {
     var dg = $('digital'), an = $('analogue'), faces = $('faces'), stage = $('stage');
     stage.classList.toggle('narrow', stage.clientWidth < stage.clientHeight * 1.15);
-    if (!cfg.look.fit) { dg.style.fontSize = ''; an.style.width = an.style.height = ''; an.style.maxHeight = ''; faces.style.flexWrap = ''; return; }
+    // "Fill the screen" makes the timer as big as the room allows; otherwise
+    // the size slider sets it, but never bigger than that room
     var cs = getComputedStyle(stage), gap = parseFloat(cs.rowGap) || 0;
     var W = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     var H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
@@ -537,19 +540,26 @@ body.hide-cursor { cursor: none; }
     // the Detailed layout's side panel: beside the timer, or under it on a tall screen
     var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
     faces.style.flexWrap = under ? 'wrap' : 'nowrap';
+    // big text on a small screen: the panel's text shrinks until it fits
+    facts.style.fontSize = '';
     if (facts.offsetParent) {
+      var room = under ? H * 0.45 : H;
+      var shrink = Math.min(1, room / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
+      if (shrink < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * shrink * 0.95 + 'px';
       if (under) H = Math.max(40, H - facts.offsetHeight - (parseFloat(getComputedStyle(faces).rowGap) || 0));
       else W -= facts.offsetWidth + Math.min(W * 0.04, 48);
     }
+    var vmin = Math.min(window.innerWidth, window.innerHeight) / 100, own = cfg.look.fit ? Infinity : vmin * Math.max(0.3, Math.min(3, cfg.look.size / 100));
     var fgap = showA && showD ? Math.min(W * 0.04, 48) : 0, a = 0;
-    if (showA) { a = showD ? Math.min(H, W * 0.48) : Math.min(H, W); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    faces.style.columnGap = Math.min(W * 0.04, 48) + 'px';
+    if (showA) { a = Math.min(showD ? Math.min(H, W * 0.48) : Math.min(H, W), own * (showD ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
       // the digits share their column with the status lines beside a clock
       var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
       [].forEach.call(col.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
       dg.style.fontSize = '100px';
       var w = dg.scrollWidth || 1, h = dg.offsetHeight || 1;
-      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w, Math.max(20, H - ch) / h) * 100 * 0.97) + 'px';
+      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w * 97, Math.max(20, H - ch) / h * 97, own * (showA ? 14 : 19))) + 'px';
     }
   }
   window.addEventListener('resize', function () { fit(); });
