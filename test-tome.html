@@ -8,7 +8,8 @@
   // Open tests (e.g. for a workshop): a link to one of these works without
   // signing in; the list of tests and every other test stay behind the
   // login. Remove an id to make that test members-only again.
-  window.TT_OPEN = ['gr8-coro-exam-practice', 'gr9-coro-exam-practice'];
+  window.TT_OPEN = ['gr8-coro-exam-practice', 'gr8-coro-exam-practice-b', 'gr8-coro-exam-practice-c', 'gr8-coro-exam-practice-d',
+    'gr9-coro-exam-practice', 'gr9-coro-exam-practice-b', 'gr9-coro-exam-practice-c', 'gr9-coro-exam-practice-d'];
   window.TT_PUBLIC = window.TT_OPEN.indexOf(new URLSearchParams(location.search).get('quiz')) >= 0;
   if (window.TT_PUBLIC) window.MLPublicPreview = true;
 </script>
@@ -227,6 +228,48 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tt-qr svg { display: block; width: 100%; height: auto; }
 .tt-link { font-family: var(--font-mono); font-size: 14px; color: var(--paper); word-break: break-all; margin: 0 0 4px; }
 .public .tt-members { display: none !important; }
+.tt-versions { margin: 0 0 20px; }
+.tt-versions > span { display: block; font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 8px; }
+.tt-vchips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tt-vchip { font: inherit; font-size: 14px; font-weight: 700; padding: 8px 14px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); cursor: pointer; text-align: left; }
+.tt-vchip small { display: block; font-size: 12px; font-weight: 500; color: var(--text-3); }
+.tt-vchip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-vchip[aria-pressed="true"] small { color: var(--ink-800); }
+
+/* The feedback report: built into #ttPrint and printed, so a learner can keep
+   it as a PDF ("Save as PDF" in the print window). Nothing is stored anywhere. */
+#ttPrint { display: none; }
+@media print {
+  @page { margin: 14mm; }
+  body > *:not(#ttPrint) { display: none !important; }
+  html, body { background: #fff !important; }
+  body { display: block; min-height: 0; }
+  #ttPrint { display: block; color: #000; font-family: var(--font-display); font-size: 11pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #ttPrint * { color: #000 !important; background: transparent !important; box-shadow: none !important; }
+  #ttPrint .p-head { border-bottom: 1.5pt solid #000; padding-bottom: 6pt; margin-bottom: 10pt; }
+  #ttPrint .p-head h1 { font-size: 17pt; margin: 0 0 2pt; }
+  #ttPrint .p-head p { margin: 0; font-size: 10.5pt; }
+  #ttPrint .p-score { font-size: 15pt; font-weight: 800; margin: 8pt 0 4pt; }
+  #ttPrint .tt-h3 { margin: 12pt 0 4pt; font-size: 11pt; }
+  #ttPrint .tt-row { grid-template-columns: minmax(0, 1fr) 120px 50px; font-size: 10.5pt; gap: 8px; }
+  #ttPrint .tt-track { border: 0.75pt solid #777; height: 7px; }
+  #ttPrint .tt-track span { background: #000 !important; }
+  #ttPrint .tt-section { margin-top: 14pt; }
+  #ttPrint .tt-section-head { border-bottom-color: #000; }
+  #ttPrint .tt-q { padding: 8pt 0; border-bottom: 0.5pt solid #bbb; break-inside: avoid; }
+  #ttPrint .tt-scenario { border: 0.75pt solid #999; break-inside: avoid; }
+  #ttPrint .tt-body { padding-left: 2.2em; }
+  #ttPrint .r-opt { padding: 4pt 8pt; font-size: 10.5pt; border-color: #ccc; }
+  #ttPrint .r-opt.right { border: 1.5pt solid #1a7f37; }
+  #ttPrint .r-opt.wrong { border: 1.5pt solid #c62828; }
+  #ttPrint .r-opt.right .tt-letter, #ttPrint .r-opt.right em, #ttPrint .r-mark.ok, #ttPrint .tt-got.full { color: #1a7f37 !important; }
+  #ttPrint .r-opt.wrong .tt-letter, #ttPrint .r-opt.wrong em, #ttPrint .r-mark.no, #ttPrint .r-was, #ttPrint .tt-got.none { color: #c62828 !important; }
+  #ttPrint .tt-got.part { color: #b26a00 !important; }
+  #ttPrint .r-pair.bad > div { border-color: #c62828; }
+  #ttPrint .tt-code { border: 0.75pt solid #999; white-space: pre-wrap; font-size: 9.5pt; }
+  #ttPrint .tt-explain { border-left: 2pt solid #999; font-size: 10pt; }
+  #ttPrint .tt-hint { font-size: 9.5pt; }
+}
 dialog.tt-dialog { position: fixed; inset: 0; margin: auto; height: fit-content; background: var(--ink-850); color: var(--text); border: 1px solid var(--line-hard); border-radius: var(--radius-md, 12px); padding: 22px; max-width: 420px; width: calc(100% - 32px); }
 dialog.tt-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
 dialog.tt-dialog h2 { margin: 0 0 8px; font-size: 20px; color: var(--paper); }
@@ -273,6 +316,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     <section id="viewIntro" class="hidden">
       <h1 class="tt-title" id="introTitle"></h1>
       <p class="tt-sub" id="introSub"></p>
+      <div class="tt-versions hidden" id="introVersions"></div>
       <div class="tt-facts" id="introFacts"></div>
       <div class="tt-outline" id="introOutline"></div>
       <label class="tt-name"><span data-t="yourName">Your name (optional)</span><input id="nameBox" type="text" maxlength="60" autocomplete="name"></label>
@@ -306,9 +350,12 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <h3 class="tt-h3" data-t="bySkill">Knowledge and application</h3>
       <div class="tt-rows" id="resultSkills"></div>
       <div class="tt-actions">
+        <button class="ml-btn ml-btn--ghost" id="btnPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
+        <button class="ml-btn ml-btn--ghost hidden" id="btnNextVersion"><i data-lucide="shuffle"></i><span></span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
         <button class="ml-btn ml-btn--ghost tt-members" id="btnResToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
       </div>
+      <p class="tt-note" data-t="printNote">To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.</p>
     </section>
 
     <section id="viewReview" class="hidden">
@@ -321,10 +368,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div id="reviewBody"></div>
       <div class="tt-actions">
         <button class="ml-btn ml-btn--primary" id="btnRevResult"><i data-lucide="award"></i><span data-t="backResult">Back to my mark</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnRevPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRevRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
       </div>
     </section>
   </main>
+
+  <div id="ttPrint" aria-hidden="true"></div>
 
   <dialog class="tt-dialog tt-share" id="shareDlg">
     <h2 id="shareTitle"></h2>
@@ -382,7 +432,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Your name (optional)', nameNote: 'Your name only appears on your own results screen. Nothing is sent anywhere.',
       share: 'Share this test', shareSub: 'Scan the code with a phone camera, or type the link.', copy: 'Copy link', copied: 'Copied', close: 'Close',
       membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.',
-      loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again'
+      loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again',
+      version: 'Version {v}', chooseVersion: 'Choose a version', nVersions: '{n} versions', tryVersion: 'Try Version {v}', notTried: 'Not written yet',
+      print: 'Print or save as PDF', printNote: 'To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.',
+      reportTitle: 'Feedback report', allAnswers: 'Every answer, with the correct answer and why'
     },
     af: {
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
@@ -408,7 +461,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Jou naam (opsioneel)', nameNote: 'Jou naam verskyn net op jou eie uitslagskerm. Niks word êrens heen gestuur nie.',
       share: 'Deel hierdie toets', shareSub: "Skandeer die kode met 'n foon se kamera, of tik die skakel in.", copy: 'Kopieer skakel', copied: 'Gekopieer', close: 'Maak toe',
       membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.',
-      loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer'
+      loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer',
+      version: 'Weergawe {v}', chooseVersion: 'Kies ’n weergawe', nVersions: '{n} weergawes', tryVersion: 'Probeer Weergawe {v}', notTried: 'Nog nie geskryf nie',
+      print: 'Druk of stoor as PDF', printNote: 'Om jou terugvoer as ’n lêer te hou, kies “Save as PDF” (Stoor as PDF) in die drukvenster. Dit word net op jou toestel gestoor.',
+      reportTitle: 'Terugvoerverslag', allAnswers: 'Elke antwoord, met die korrekte antwoord en hoekom'
     }
   };
 
@@ -527,6 +583,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     history.replaceState(null, '', u.pathname + u.search);
   }
 
+  // Versions: manifest entries that share a "set" are versions (A, B, C …) of
+  // one paper. The list shows the set once; the start screen picks a version.
+  var meta = null;
+  function siblings(m) { return m && m.set ? manifest.filter(function (x) { return x.set === m.set; }) : []; }
+  function versionName(m) { return m && m.version ? t('version', { v: m.version }) : ''; }
+  function fullTitle() { return quiz.title + (meta && meta.version && siblings(meta).length > 1 ? ' · ' + versionName(meta) : ''); }
+
   function renderList() {
     setUrl(null);
     var box = $('quizList'); box.innerHTML = '';
@@ -538,10 +601,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     Object.keys(grades).sort(function (a, b) { return a - b; }).forEach(function (g) {
       var h = document.createElement('div'); h.className = 'tt-grade'; h.textContent = t('grade', { g: g }); box.appendChild(h);
       var list = document.createElement('div'); list.className = 'tt-list';
+      var seen = {};
       grades[g].forEach(function (m) {
+        if (m.set) { if (seen[m.set]) return; seen[m.set] = 1; }
         var s = store[m.id], last = s && s.done ? t('last', { s: s.done.score, t: s.done.total }) : s && s.started ? t('inProgress') : '';
+        var n = siblings(m).length, sub = m.subject + (n > 1 ? ' · ' + t('nVersions', { n: n }) : '');
         var b = document.createElement('button'); b.className = 'tt-quiz';
-        b.innerHTML = '<span><strong>' + esc(m.title) + '</strong><small>' + esc(m.subject) + '</small></span><span class="tt-last">' + esc(last) + '</span>';
+        b.innerHTML = '<span><strong>' + esc(m.title) + '</strong><small>' + esc(sub) + '</small></span><span class="tt-last">' + esc(n > 1 ? '' : last) + '</span>';
         b.addEventListener('click', function () { openQuiz(m.id); });
         list.appendChild(b);
       });
@@ -562,7 +628,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (window.TT_PUBLIC && window.TT_OPEN.indexOf(id) < 0) m = null;
     if (!m) return window.TT_PUBLIC ? loadError() : renderList();
     fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
-      rawQuiz = qz; rawQuiz.id = m.id; relocalise();
+      rawQuiz = qz; rawQuiz.id = m.id; meta = m; relocalise();
       setUrl(m.id); renderIntro();
     }).catch(loadError);
   }
@@ -570,7 +636,16 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function renderIntro() {
     var s = store[quiz.id];
     $('introTitle').textContent = quiz.title;
-    $('introSub').textContent = quiz.subject + ' · ' + t('grade', { g: quiz.grade });
+    $('introSub').textContent = quiz.subject + ' · ' + t('grade', { g: quiz.grade }) + (versionName(meta) && siblings(meta).length > 1 ? ' · ' + versionName(meta) : '');
+    var sib = siblings(meta), vb = $('introVersions');
+    vb.classList.toggle('hidden', sib.length < 2);
+    vb.innerHTML = sib.length < 2 ? '' : '<span>' + esc(t('chooseVersion')) + '</span><div class="tt-vchips">' + sib.map(function (x) {
+      var sx = store[x.id], note = sx && sx.done ? t('last', { s: sx.done.score, t: sx.done.total }) : sx && sx.started ? t('inProgress') : t('notTried');
+      return '<button class="tt-vchip" data-id="' + esc(x.id) + '" aria-pressed="' + (x.id === quiz.id) + '">' + esc(versionName(x)) + '<small>' + esc(note) + '</small></button>';
+    }).join('') + '</div>';
+    [].forEach.call(vb.querySelectorAll('.tt-vchip'), function (b) {
+      b.addEventListener('click', function () { if (b.getAttribute('data-id') !== quiz.id) openQuiz(b.getAttribute('data-id')); });
+    });
     var facts = [[total(), t('totalMarks')], [items.length, t('questions')]];
     if (quiz.minutes) facts.push([quiz.minutes, t('time')]);
     $('introFacts').innerHTML = facts.map(function (f) { return '<div class="tt-fact"><b>' + f[0] + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('');
@@ -592,7 +667,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var nm = $('nameBox').value.trim(); if (nm || !s.name) s.name = nm;
     save();
     att = s;
-    $('testTitle').textContent = quiz.title;
+    $('testTitle').textContent = fullTitle();
     var body = $('testBody'); body.innerHTML = '';
     quiz.sections.forEach(function (sec, si) {
       var wrap = document.createElement('section'); wrap.className = 'tt-section';
@@ -812,30 +887,50 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   function renderResult() {
     var d = att.done, p = Math.round(d.score / d.total * 100);
-    $('resultTitle').textContent = t('yourMark', { t: quiz.title });
+    $('resultTitle').textContent = t('yourMark', { t: fullTitle() });
+    // suggest the next version the learner has not finished yet
+    var sib = siblings(meta), nb = $('btnNextVersion'), next = null;
+    if (sib.length > 1) {
+      var i = sib.map(function (x) { return x.id; }).indexOf(quiz.id);
+      for (var k = 1; k < sib.length && !next; k++) { var c = sib[(i + k) % sib.length]; if (!(store[c.id] && store[c.id].done)) next = c; }
+      if (!next) next = sib[(i + 1) % sib.length];
+    }
+    nb.classList.toggle('hidden', !next);
+    if (next) { nb.querySelector('span').textContent = t('tryVersion', { v: next.version }); nb.dataset.id = next.id; }
     $('resultWho').classList.toggle('hidden', !att.name);
     $('resultWho').innerHTML = att.name ? '<b>' + esc(att.name) + '</b> · ' + esc(new Date(d.at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })) : '';
     $('resultScore').innerHTML = '<b>' + d.score + '</b><span>' + esc(t('outOf', { t: d.total })) + '</span><span class="tt-pct">' + p + '%</span><span>' + esc(t('level', { l: levelOf(p) })) + '</span>';
-    $('resultSections').innerHTML = quiz.sections.map(function (sec, si) {
+    $('resultSections').innerHTML = sectionRows(d);
+    $('resultSkills').innerHTML = skillRows(d);
+    show('viewResult');
+  }
+  function sectionRows(d) {
+    return quiz.sections.map(function (sec, si) {
       var its = items.filter(function (it) { return it.sec === si; });
       return row(t('question', { n: si + 1 }) + ': ' + sec.title, its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), secTotal(si));
     }).join('');
-    $('resultSkills').innerHTML = ['knowledge', 'application'].map(function (k) {
+  }
+  function skillRows(d) {
+    return ['knowledge', 'application'].map(function (k) {
       var its = items.filter(function (it) { return it.skill === k; });
       if (!its.length) return '';
       return row(t(k), its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), its.reduce(function (s, it) { return s + it.max; }, 0));
     }).join('');
-    show('viewResult');
   }
 
   // ── Review ───────────────────────────────────────────────────────────
   function renderReview() {
-    var d = att.done, body = $('reviewBody'); body.innerHTML = '';
+    var body = $('reviewBody'); body.innerHTML = '';
     $('reviewSub').textContent = t('reviewSub');
     [].forEach.call($('reviewFilter').children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === reviewFilter)); });
-    var shown = 0;
+    var shown = buildReview(body, reviewFilter);
+    if (!shown) body.innerHTML = '<p class="tt-empty">' + esc(t('noneLost')) + '</p>';
+    show('viewReview');
+  }
+  function buildReview(body, filter) {
+    var d = att.done, shown = 0;
     quiz.sections.forEach(function (sec, si) {
-      var its = items.filter(function (it) { return it.sec === si && (reviewFilter === 'all' || d.per[it.id] < it.max); });
+      var its = items.filter(function (it) { return it.sec === si && (filter === 'all' || d.per[it.id] < it.max); });
       if (!its.length) return;
       var wrap = document.createElement('section'); wrap.className = 'tt-section';
       var got = items.filter(function (it) { return it.sec === si; }).reduce(function (s, it) { return s + d.per[it.id]; }, 0);
@@ -852,8 +947,22 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       });
       body.appendChild(wrap);
     });
-    if (!shown) body.innerHTML = '<p class="tt-empty">' + esc(t('noneLost')) + '</p>';
-    show('viewReview');
+    return shown;
+  }
+
+  // The printed report: name, mark, sections, then every answer with the
+  // correct answer and its explanation. "Save as PDF" keeps it as a file.
+  function printReport() {
+    var d = att.done, p = Math.round(d.score / d.total * 100), box = $('ttPrint');
+    var when = new Date(d.at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    box.innerHTML = '<div class="p-head"><h1>' + esc(fullTitle()) + '</h1><p>' + esc(t('reportTitle')) + (att.name ? ' · ' + esc(att.name) : '') + ' · ' + esc(when) + '</p></div>' +
+      '<div class="p-score">' + d.score + ' ' + esc(t('outOf', { t: d.total })) + ' · ' + p + '% · ' + esc(t('level', { l: levelOf(p) })) + '</div>' +
+      '<div class="tt-h3">' + esc(t('bySection')) + '</div><div class="tt-rows">' + sectionRows(d) + '</div>' +
+      '<div class="tt-h3">' + esc(t('bySkill')) + '</div><div class="tt-rows">' + skillRows(d) + '</div>' +
+      '<div class="tt-h3">' + esc(t('allAnswers')) + '</div>';
+    var wrap = document.createElement('div'); buildReview(wrap, 'all'); box.appendChild(wrap);
+    var old = document.title; document.title = fullTitle() + (att.name ? ' - ' + att.name : '');
+    setTimeout(function () { window.print(); document.title = old; }, 50);
   }
 
   function reviewEl(it, got) {
@@ -913,7 +1022,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // ── Share: a big QR code and the short link, for a projector ─────────
   function shareUrl() {
     var live = location.protocol === 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-    return location.origin + (live ? '/test-tome' : '/test-tome.html') + '?quiz=' + encodeURIComponent(quiz.id);
+    var first = siblings(meta)[0] || meta || { id: quiz.id };
+    return location.origin + (live ? '/test-tome' : '/test-tome.html') + '?quiz=' + encodeURIComponent(first.id);
   }
   var qrLib = null;
   function withQr(cb) {
@@ -962,6 +1072,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnReview').addEventListener('click', function () { reviewFilter = 'all'; renderReview(); });
   $('btnRevResult').addEventListener('click', renderResult);
   $('btnRetry').addEventListener('click', function () { startTest(true); });
+  $('btnPrint').addEventListener('click', printReport);
+  $('btnRevPrint').addEventListener('click', printReport);
+  $('btnNextVersion').addEventListener('click', function () { openQuiz(this.dataset.id); });
   $('btnRevRetry').addEventListener('click', function () { startTest(true); });
   [].forEach.call($('reviewFilter').children, function (b) {
     b.addEventListener('click', function () { reviewFilter = b.getAttribute('data-f'); renderReview(); });

@@ -40,6 +40,13 @@ comma in Afrikaans text (0,03 A), but keep the point inside code (1.65).
 A question or a scenario may add `"code"`: a block of program code shown
 exactly as written (keep the indentation; use \n for new lines).
 
+## Versions
+
+Entries in manifest.json that share a `"set"` are versions of one paper, each
+with a `"version"` letter (A, B, C, D). The list shows the set once; the start
+screen lets the learner pick a version, and the results suggest the next one.
+Share links point to the set's first version.
+
 ## Open tests (no sign-in)
 
 `window.TT_OPEN` at the top of `test-tome.html` lists the tests that work
