@@ -962,8 +962,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var inp = document.createElement('input'); inp.className = 'tt-blank'; inp.type = 'text';
         inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('autocorrect', 'off'); inp.spellcheck = false;
         inp.setAttribute('aria-label', t('blankN', { n: i + 1 }));
-        var w = Math.max(2, blankShow(q.blanks[i]).length + 1); inp.style.width = (w + 1.5) + 'ch'; inp.maxLength = w + 6;
-        inp.value = a[i] || '';
+        // the box fits the shortest answer, but takes the longest accepted one (e.g. counter = counter + 1)
+        var acc = Array.isArray(q.blanks[i]) ? q.blanks[i] : [q.blanks[i]];
+        var w = Math.max(2, blankShow(q.blanks[i]).length + 1), longest = Math.max.apply(null, acc.map(function (x) { return x.length; }));
+        inp.style.width = (w + 1.5) + 'ch'; inp.maxLength = longest + 8;
+        // and grows as the learner types, so a longer answer stays readable
+        var grow = function () { inp.style.width = (Math.max(w, inp.value.length + 1) + 1.5) + 'ch'; };
+        inp.addEventListener('input', grow);
+        inp.value = a[i] || ''; grow();
         inp.addEventListener('input', function () {
           var cur = (att.answers[it.id] || []).slice(); while (cur.length < q.blanks.length) cur.push('');
           cur[i] = inp.value; setAnswer(it, cur.some(function (v) { return v.trim(); }) ? cur : null);
