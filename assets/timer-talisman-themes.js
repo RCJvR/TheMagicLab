@@ -147,6 +147,7 @@
     '.fp-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:50;max-height:min(340px,60vh);overflow-y:auto;padding:4px;box-sizing:border-box;' +
       'color:var(--fp-fg);background:var(--fp-bg);border:1px solid var(--fp-line);border-radius:10px;box-shadow:0 14px 34px rgba(0,0,0,.35)}' +
     '.fp-list[hidden]{display:none}' +
+    '.fp-list.up{top:auto;bottom:calc(100% + 4px)}' +
     '.fp-opt{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:17px;line-height:1.25}' +
     '.fp-opt .fp-sample{font-size:15px;opacity:.65;font-variant-numeric:tabular-nums}' +
     '.fp-opt.active{background:var(--fp-hl)}' +
@@ -206,10 +207,16 @@
       [].forEach.call(list.querySelectorAll('.fp-opt'), function (d) { d.setAttribute('aria-selected', String(d.dataset.id === cur)); });
     }
     function visible() { return [].filter.call(list.querySelectorAll('.fp-opt, .fp-more'), function (d) { return !d.closest('[hidden]'); }); }
-    function setActive(d) {
+    // keep the active font in view by scrolling the list itself; scrollIntoView
+    // would scroll the whole page too, which made it jump
+    function setActive(d, noScroll) {
       if (active) active.classList.remove('active');
       active = d;
-      if (d) { d.classList.add('active'); list.setAttribute('aria-activedescendant', d.id); d.scrollIntoView({ block: 'nearest' }); }
+      if (!d) return;
+      d.classList.add('active'); list.setAttribute('aria-activedescendant', d.id);
+      if (noScroll) return;
+      if (d.offsetTop < list.scrollTop) list.scrollTop = d.offsetTop - 4;
+      else if (d.offsetTop + d.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = d.offsetTop + d.offsetHeight - list.clientHeight + 4;
     }
     function expand(on) {
       expanded = on; moreBox.hidden = !on; more.setAttribute('aria-expanded', String(on));
@@ -217,15 +224,19 @@
     }
     function open() {
       if (font(cur).g) expand(true);
+      list.classList.remove('up');
       list.hidden = false; btn.setAttribute('aria-expanded', 'true');
+      // open upwards when there is more room above the button than below it
+      var r = btn.getBoundingClientRect(), below = window.innerHeight - r.bottom;
+      if (below < list.offsetHeight + 8 && r.top > below) list.classList.add('up');
       FONTS.forEach(function (f) { if (!f.g || expanded) loadPreview(f); });
       setActive(document.getElementById(uid + '-' + cur) || visible()[0]);
-      list.focus();
+      list.focus({ preventScroll: true });
     }
     function close(refocus) {
       if (list.hidden) return;
       list.hidden = true; btn.setAttribute('aria-expanded', 'false'); setActive(null);
-      if (refocus) btn.focus();
+      if (refocus) btn.focus({ preventScroll: true });
     }
     function choose(d) {
       if (!d) return;
@@ -238,7 +249,7 @@
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); e.stopPropagation(); open(); }
     });
     list.addEventListener('click', function (e) { var d = e.target.closest('.fp-opt, .fp-more'); if (d) choose(d); });
-    list.addEventListener('mousemove', function (e) { var d = e.target.closest('.fp-opt, .fp-more'); if (d && d !== active) setActive(d); });
+    list.addEventListener('mousemove', function (e) { var d = e.target.closest('.fp-opt, .fp-more'); if (d && d !== active) setActive(d, true); });
     list.addEventListener('keydown', function (e) {
       var v = visible(), i = v.indexOf(active), k = e.key;
       if (k === 'ArrowDown') setActive(v[Math.min(v.length - 1, i + 1)]);
