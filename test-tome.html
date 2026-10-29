@@ -1583,7 +1583,12 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     manifest = m.quizzes || [];
     syncTeacherEntry();
     var want = new URLSearchParams(location.search).get('quiz');
-    if (want) openQuiz(want); else renderList();
+    // ?view=results opens a teacher's Class results (from the teacher dashboard)
+    var wantResults = new URLSearchParams(location.search).get('view') === 'results';
+    if (want) openQuiz(want);
+    else if (wantResults && window.MagicLabAuth) { if (isTeacher()) renderTeacher(); else renderList(); }
+    else if (wantResults) { renderList(); document.addEventListener('magiclab:auth:ready', function () { if (isTeacher()) renderTeacher(); }, { once: true }); }
+    else renderList();
   }).catch(loadError);
 })();
 </script>
