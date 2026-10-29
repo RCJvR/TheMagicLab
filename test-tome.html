@@ -236,6 +236,45 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tt-vchip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
 .tt-vchip[aria-pressed="true"] small { color: var(--ink-800); }
 
+/* ── Class results: class code on the start screen, and the teacher view ── */
+.tt-code-row { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 14px; align-items: end; margin: 14px 0 0; }
+@media (max-width: 640px) { .tt-code-row { grid-template-columns: 1fr; } }
+.tt-code-row .tt-name { margin: 0; }
+.tt-code-row input#codeBox { text-transform: uppercase; letter-spacing: 0.12em; font-family: var(--font-mono); }
+.tt-status { font-size: 14px; line-height: 1.45; color: var(--text-2); margin: 8px 0 0; min-height: 1.4em; }
+.tt-status.ok { color: var(--good); } .tt-status.bad { color: var(--crit); }
+.tt-send { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 18px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); font-size: 14.5px; }
+.tt-send.ok { border-color: var(--good); } .tt-send.bad { border-color: var(--crit); }
+.tt-teacher-entry { margin: 0 0 18px; }
+.tr-new { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto; gap: 10px; align-items: end; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+@media (max-width: 640px) { .tr-new { grid-template-columns: 1fr; } }
+.tr-new label { display: grid; gap: 6px; font-size: 13px; font-weight: 700; color: var(--text-2); }
+.tr-new select, .tr-new input { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.tr-list { display: grid; gap: 8px; margin-top: 18px; }
+.tr-session { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.tr-session strong { display: block; font-size: 16px; color: var(--paper); }
+.tr-session small { display: block; font-size: 13px; color: var(--text-3); margin-top: 3px; }
+.tr-code { font-family: var(--font-mono); font-size: 18px; font-weight: 600; letter-spacing: 0.14em; color: var(--paper); }
+.tr-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tr-actions .ml-btn { padding: 7px 12px; font-size: 13.5px; }
+.tr-closed { opacity: 0.7; }
+.tm-item { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.tm-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; }
+.tm-pct { font-size: 22px; font-weight: 800; color: var(--crit); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tm-pct small { display: block; font-size: 11.5px; font-weight: 600; color: var(--text-3); }
+.tm-meta { font-size: 12.5px; color: var(--text-3); margin-bottom: 4px; }
+.tm-q { font-size: 15.5px; line-height: 1.45; color: var(--text); }
+.tm-wrong { font-size: 14px; color: var(--text-2); margin-top: 6px; }
+.tm-wrong b { color: var(--crit); font-weight: 700; }
+.tm-item details { margin-top: 6px; font-size: 14px; color: var(--text-2); }
+.tm-item summary { cursor: pointer; color: var(--text-3); font-size: 13px; }
+.tr-table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.tr-table th { text-align: left; font-size: 12.5px; font-weight: 700; color: var(--text-3); padding: 6px 8px; cursor: pointer; white-space: nowrap; border-bottom: 1px solid var(--line-hard); }
+.tr-table td { padding: 8px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+.tr-table td:first-child { color: var(--paper); }
+.tr-wrap { overflow-x: auto; }
+.tt-empty-sm { color: var(--text-3); font-size: 14px; padding: 8px 0; }
+
 /* The feedback report: built into #ttPrint and printed, so a learner can keep
    it as a PDF ("Save as PDF" in the print window). Nothing is stored anywhere. */
 #ttPrint { display: none; }
@@ -309,6 +348,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     <section id="viewList">
       <h1 class="tt-title">Test Tome</h1>
       <p class="tt-sub" data-t="intro">Practice tests set out like the exam. Every question marks itself: submit, see your mark straight away, then go through each answer with its explanation.</p>
+      <div class="tt-teacher-entry hidden" id="teacherEntry">
+        <button class="ml-btn ml-btn--ghost" id="btnTeacher"><i data-lucide="users"></i><span data-t="classResults">Class results</span></button>
+      </div>
       <div id="quizList"></div>
       <p class="tt-note" data-t="storeNote">Your answers and results are saved in this browser on this device.</p>
     </section>
@@ -319,7 +361,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div class="tt-versions hidden" id="introVersions"></div>
       <div class="tt-facts" id="introFacts"></div>
       <div class="tt-outline" id="introOutline"></div>
-      <label class="tt-name"><span data-t="yourName">Your name (optional)</span><input id="nameBox" type="text" maxlength="60" autocomplete="name"></label>
+      <div class="tt-code-row">
+        <label class="tt-name"><span data-t="yourName">Your name (optional)</span><input id="nameBox" type="text" maxlength="60" autocomplete="name"></label>
+        <label class="tt-name"><span data-t="classCode">Class code from your teacher (optional)</span><input id="codeBox" type="text" maxlength="8" autocomplete="off" spellcheck="false"></label>
+      </div>
+      <p class="tt-status" id="codeStatus" aria-live="polite"></p>
       <p class="tt-note" id="introLast"></p>
       <div class="tt-actions">
         <button class="ml-btn ml-btn--primary" id="btnStart"><i data-lucide="play"></i><span></span></button>
@@ -339,6 +385,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     </section>
 
     <section id="viewResult" class="hidden">
+      <div class="tt-send hidden" id="sendBox" aria-live="polite"><span id="sendText"></span><button class="ml-btn ml-btn--ghost hidden" id="btnResend"><i data-lucide="rotate-ccw"></i><span data-t="sendAgain">Send again</span></button></div>
       <p class="tt-who hidden" id="resultWho"></p>
       <p class="tt-sub" id="resultTitle" style="margin-bottom:4px"></p>
       <div class="tt-score" id="resultScore"></div>
@@ -365,12 +412,39 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <button class="tt-chip" data-f="all" aria-pressed="true" data-t="fAll">All questions</button>
         <button class="tt-chip" data-f="lost" aria-pressed="false" data-t="fLost">Only where I lost marks</button>
       </div>
+      <p class="tt-note" id="reviewCount" aria-live="polite" style="margin:4px 0 0"></p>
       <div id="reviewBody"></div>
       <div class="tt-actions">
         <button class="ml-btn ml-btn--primary" id="btnRevResult"><i data-lucide="award"></i><span data-t="backResult">Back to my mark</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRevPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRevRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
       </div>
+    </section>
+    <section id="viewTeacher" class="hidden">
+      <h1 class="tt-title" data-t="classResults">Class results</h1>
+      <p class="tt-sub" data-t="trIntro">Start a results session and show its code or QR code to the class. Every learner who writes with the code appears here, and only you can see the results.</p>
+      <div class="tr-new">
+        <label><span data-t="trTest">Test</span><select id="trSet"></select></label>
+        <label><span data-t="trName">Session name</span><input id="trTitle" type="text" maxlength="120"></label>
+        <button class="ml-btn ml-btn--primary" id="btnTrCreate"><i data-lucide="plus"></i><span data-t="trStart">Start session</span></button>
+      </div>
+      <p class="tt-status" id="trStatus" aria-live="polite"></p>
+      <div class="tr-list" id="trSessions"></div>
+      <div class="tt-actions"><button class="ml-btn ml-btn--ghost" id="btnTrBack"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button></div>
+    </section>
+
+    <section id="viewSession" class="hidden">
+      <h1 class="tt-title" id="tsTitle"></h1>
+      <p class="tt-sub" id="tsSub"></p>
+      <div class="tt-actions" style="margin-top:0">
+        <button class="ml-btn ml-btn--primary" id="btnTsQr"><i data-lucide="qr-code"></i><span data-t="trShowQr">Show code and QR</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsRefresh"><i data-lucide="refresh-cw"></i><span data-t="trRefresh">Refresh</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsOpen"><i data-lucide="lock"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsCsv"><i data-lucide="download"></i><span data-t="trCsv">Download marks (CSV)</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsBack"><i data-lucide="arrow-left"></i><span data-t="trSessionsBack">All sessions</span></button>
+      </div>
+      <div class="tt-facts" id="tsFacts" style="margin-top:20px"></div>
+      <div id="tsBody"></div>
     </section>
   </main>
 
@@ -435,7 +509,23 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again',
       version: 'Version {v}', chooseVersion: 'Choose a version', nVersions: '{n} versions', tryVersion: 'Try Version {v}', notTried: 'Not written yet',
       print: 'Print or save as PDF', printNote: 'To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.',
-      reportTitle: 'Feedback report', allAnswers: 'Every answer, with the correct answer and why'
+      reportTitle: 'Feedback report', allAnswers: 'Every answer, with the correct answer and why',
+      showingAll: 'Showing all {n} questions.', showingLost: 'Showing the {s} questions where you lost marks. The {h} you got fully right are hidden.',
+      classCode: 'Class code from your teacher (optional)', codeChecking: 'Checking the code…', codeOk: 'Your mark will be sent to: {t}',
+      codeBad: 'This code was not found, or the session is closed. Check it with your teacher.', codeWrongTest: 'This code is for a different test.',
+      needName: 'Type your name, so your teacher knows whose result it is.',
+      sending: 'Sending your mark to your teacher…', sent: 'Your mark was sent to: {t}', sendFail: 'Your mark could not be sent ({e}). Check your connection and try again.', sendAgain: 'Send again',
+      classResults: 'Class results', trIntro: 'Start a results session and show its code or QR code to the class. Every learner who writes with the code appears here, and only you can see the results.',
+      trTest: 'Test', trName: 'Session name', trNamePh: 'e.g. Grade 9 workshop, 4 November', trStart: 'Start session', trNone: 'No sessions yet.',
+      trResults: '{n} results', trOpen: 'Open', trClosed: 'Closed', trView: 'View results', trDelete: 'Delete', trSureDelete: 'Delete this session and all its results? This cannot be undone.',
+      trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
+      trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
+      tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
+      tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
+      tsLost: 'lost', tsLostOf: '{l} of {n} learners lost marks', tsCommon: 'Most common wrong answer:', tsShowExplain: 'Explanation', tsShowAll: 'Show all {n} questions',
+      tsName: 'Name', tsVersion: 'Version', tsMark: 'Mark', tsPct: '%', tsLevel: 'Level', tsWhen: 'Submitted',
+      topic_html: 'HTML & CSS', topic_excel: 'Excel', topic_ct: 'Computational thinking', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD & Arduino',
+      teacherOnly: 'Class results are for teacher accounts.'
     },
     af: {
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
@@ -464,7 +554,23 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer',
       version: 'Weergawe {v}', chooseVersion: 'Kies ’n weergawe', nVersions: '{n} weergawes', tryVersion: 'Probeer Weergawe {v}', notTried: 'Nog nie geskryf nie',
       print: 'Druk of stoor as PDF', printNote: 'Om jou terugvoer as ’n lêer te hou, kies “Save as PDF” (Stoor as PDF) in die drukvenster. Dit word net op jou toestel gestoor.',
-      reportTitle: 'Terugvoerverslag', allAnswers: 'Elke antwoord, met die korrekte antwoord en hoekom'
+      reportTitle: 'Terugvoerverslag', allAnswers: 'Elke antwoord, met die korrekte antwoord en hoekom',
+      showingAll: 'Al {n} vrae word gewys.', showingLost: 'Die {s} vrae waar jy punte verloor het, word gewys. Die {h} wat heeltemal reg was, is versteek.',
+      classCode: 'Klaskode van jou onderwyser (opsioneel)', codeChecking: 'Die kode word nagegaan…', codeOk: 'Jou punt sal gestuur word na: {t}',
+      codeBad: 'Hierdie kode is nie gevind nie, of die sessie is gesluit. Gaan dit met jou onderwyser na.', codeWrongTest: 'Hierdie kode is vir ’n ander toets.',
+      needName: 'Tik jou naam, sodat jou onderwyser weet wie se uitslag dit is.',
+      sending: 'Jou punt word na jou onderwyser gestuur…', sent: 'Jou punt is gestuur na: {t}', sendFail: 'Jou punt kon nie gestuur word nie ({e}). Gaan jou verbinding na en probeer weer.', sendAgain: 'Stuur weer',
+      classResults: 'Klasuitslae', trIntro: 'Begin ’n uitslagsessie en wys sy kode of QR-kode aan die klas. Elke leerder wat met die kode skryf, verskyn hier, en net jy kan die uitslae sien.',
+      trTest: 'Toets', trName: 'Sessienaam', trNamePh: 'bv. Graad 9-werkswinkel, 4 November', trStart: 'Begin sessie', trNone: 'Nog geen sessies nie.',
+      trResults: '{n} uitslae', trOpen: 'Oop', trClosed: 'Gesluit', trView: 'Sien uitslae', trDelete: 'Skrap', trSureDelete: 'Skrap hierdie sessie en al sy uitslae? Dit kan nie ongedaan gemaak word nie.',
+      trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
+      trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
+      tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
+      tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
+      tsLost: 'verloor', tsLostOf: '{l} van {n} leerders het punte verloor', tsCommon: 'Algemeenste verkeerde antwoord:', tsShowExplain: 'Verduideliking', tsShowAll: 'Wys al {n} vrae',
+      tsName: 'Naam', tsVersion: 'Weergawe', tsMark: 'Punt', tsPct: '%', tsLevel: 'Vlak', tsWhen: 'Ingedien',
+      topic_html: 'HTML en CSS', topic_excel: 'Excel', topic_ct: 'Berekeningsdenke', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD en Arduino',
+      teacherOnly: 'Klasuitslae is vir onderwyserrekeninge.'
     }
   };
 
@@ -521,10 +627,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         if (q.type === 'scenario') {
           q.questions.forEach(function (sq, k) {
             out.push({ id: si + '.' + n + '.' + (k + 1), num: (si + 1) + '.' + n + '.' + (k + 1), q: sq, sec: si, scen: q, first: k === 0, scenNum: (si + 1) + '.' + n,
-              max: maxMarks(sq), skill: sq.skill || 'application' });
+              max: maxMarks(sq), skill: sq.skill || 'application', topic: sq.topic || q.topic });
           });
         } else {
-          out.push({ id: si + '.' + n, num: (si + 1) + '.' + n, q: q, sec: si, max: maxMarks(q), skill: q.skill || 'knowledge' });
+          out.push({ id: si + '.' + n, num: (si + 1) + '.' + n, q: q, sec: si, max: maxMarks(q), skill: q.skill || 'knowledge', topic: q.topic });
         }
       });
     });
@@ -570,7 +676,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   // ── Views ────────────────────────────────────────────────────────────
   function show(id) {
-    ['viewList', 'viewIntro', 'viewTest', 'viewResult', 'viewReview'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
+    ['viewList', 'viewIntro', 'viewTest', 'viewResult', 'viewReview', 'viewTeacher', 'viewSession'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
     $('testBar').classList.toggle('hidden', id !== 'viewTest');
     placeBar();
     if (id !== 'viewTest') stopClock();
@@ -656,15 +762,22 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     $('btnStart').querySelector('span').textContent = inProg ? t('resume') : t('start');
     $('btnLastReview').classList.toggle('hidden', !(s && s.done));
     $('nameBox').value = (s && s.name) || lastName();
+    $('codeBox').value = classCode || (s && !s.done && s.code) || '';
+    checkCode();
     $('introLast').textContent = s && s.done ? t('lastResult', { s: s.done.score, t: s.done.total, p: Math.round(s.done.score / s.done.total * 100) }) : '';
     show('viewIntro');
   }
 
   // ── The test ─────────────────────────────────────────────────────────
   function startTest(fresh) {
+    // with a class code the teacher needs a name
+    if ($('codeBox').value.trim() && !$('nameBox').value.trim() && !$('viewIntro').classList.contains('hidden')) {
+      $('codeStatus').textContent = t('needName'); $('codeStatus').className = 'tt-status bad'; $('nameBox').focus(); return;
+    }
     var s = store[quiz.id];
     if (fresh || !s || !s.started || s.done) { s = store[quiz.id] = newAttempt(); }
     var nm = $('nameBox').value.trim(); if (nm || !s.name) s.name = nm;
+    if (!s.done && $('codeBox').value.trim()) { s.code = $('codeBox').value.trim().toUpperCase(); s.codeTitle = codeInfo && codeInfo.title || ''; }
     save();
     att = s;
     $('testTitle').textContent = fullTitle();
@@ -879,6 +992,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     att.done = { at: Date.now(), score: score, total: total(), per: per };
     save();
     renderResult();
+    if (att.code) sendResult(att);
   }
 
   // ── Results ──────────────────────────────────────────────────────────
@@ -888,6 +1002,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function renderResult() {
     var d = att.done, p = Math.round(d.score / d.total * 100);
     $('resultTitle').textContent = t('yourMark', { t: fullTitle() });
+    paintSend(att);
     // suggest the next version the learner has not finished yet
     var sib = siblings(meta), nb = $('btnNextVersion'), next = null;
     if (sib.length > 1) {
@@ -925,6 +1040,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     [].forEach.call($('reviewFilter').children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === reviewFilter)); });
     var shown = buildReview(body, reviewFilter);
     if (!shown) body.innerHTML = '<p class="tt-empty">' + esc(t('noneLost')) + '</p>';
+    // say what the filter did, so it is clear even when most questions lost marks
+    $('reviewCount').textContent = reviewFilter === 'lost' ? t('showingLost', { s: shown, n: items.length, h: items.length - shown }) : t('showingAll', { n: items.length });
     show('viewReview');
   }
   function buildReview(body, filter) {
@@ -1017,6 +1134,262 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     return el;
   }
 
+  // ── Class code: a learner's result goes to their teacher's session ────
+  var classCode = (new URLSearchParams(location.search).get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+  var codeInfo = null, codeTimer = null;
+  function db() {
+    return new Promise(function (res) {
+      if (window.MagicLabAuth && MagicLabAuth._supabase) return res(MagicLabAuth._supabase());
+      document.addEventListener('magiclab:auth:ready', function () { res(MagicLabAuth._supabase()); }, { once: true });
+    });
+  }
+  function checkCode() {
+    clearTimeout(codeTimer);
+    var code = $('codeBox').value.trim().toUpperCase(), st = $('codeStatus');
+    codeInfo = null;
+    if (!code) { st.textContent = ''; st.className = 'tt-status'; return; }
+    st.textContent = t('codeChecking'); st.className = 'tt-status';
+    codeTimer = setTimeout(function () {
+      db().then(function (c) { return c.rpc('tome_session_info', { p_code: code }); }).then(function (r) {
+        if ($('codeBox').value.trim().toUpperCase() !== code) return;
+        var row = r && r.data && r.data[0];
+        if (!row) { st.textContent = t('codeBad'); st.className = 'tt-status bad'; return; }
+        if (quiz && meta && meta.set && row.quiz_set !== meta.set) { st.textContent = t('codeWrongTest'); st.className = 'tt-status bad'; return; }
+        codeInfo = row; classCode = code; st.textContent = t('codeOk', { t: row.title }); st.className = 'tt-status ok';
+      }).catch(function () { st.textContent = ''; });
+    }, 350);
+  }
+  function sendResult(a) {
+    a.sent = 'sending'; paintSend(a);
+    db().then(function (c) {
+      return c.rpc('submit_tome_result', {
+        p_code: a.code, p_name: a.name || '?', p_quiz_id: quiz.id, p_version: (meta && meta.version) || '', p_lang: lang,
+        p_score: a.done.score, p_total: a.done.total, p_per: a.done.per, p_answers: a.answers
+      });
+    }).then(function (r) {
+      if (r.error) throw r.error;
+      a.sent = 'ok'; delete a.sendError; save(); paintSend(a);
+    }).catch(function (e) {
+      a.sent = 'fail'; a.sendError = (e && e.message) || 'error'; save(); paintSend(a);
+    });
+  }
+  function paintSend(a) {
+    var box = $('sendBox');
+    box.classList.toggle('hidden', !(a && a.code && a.done));
+    if (!a || !a.code || !a.done) return;
+    var title = a.codeTitle || a.code;
+    box.className = 'tt-send' + (a.sent === 'ok' ? ' ok' : a.sent === 'fail' ? ' bad' : '');
+    $('sendText').textContent = a.sent === 'ok' ? t('sent', { t: title }) : a.sent === 'fail' ? t('sendFail', { e: a.sendError }) : t('sending');
+    $('btnResend').classList.toggle('hidden', a.sent !== 'fail');
+  }
+
+  // ── Teacher view: results sessions and what the class got wrong ──────
+  var sessions = [], curSession = null, curResults = [], showAllMissed = false, markSort = { k: 'name', d: 1 };
+  function isTeacher() { return !window.TT_PUBLIC && window.MagicLabAuth && MagicLabAuth.isTeacher && MagicLabAuth.isTeacher(); }
+  function syncTeacherEntry() { $('teacherEntry').classList.toggle('hidden', !isTeacher()); }
+  function sets() {
+    var seen = {}, out = [];
+    loc(manifest).forEach(function (m) { if (m.set && !seen[m.set]) { seen[m.set] = 1; out.push({ set: m.set, title: m.title, grade: m.grade }); } });
+    return out;
+  }
+  function setTitle(set) { var x = sets().filter(function (s) { return s.set === set; })[0]; return x ? x.title : set; }
+  function sessionUrl(se) {
+    var live = location.protocol === 'https:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    var first = manifest.filter(function (m) { return m.set === se.quiz_set; })[0];
+    return location.origin + (live ? '/test-tome' : '/test-tome.html') + '?quiz=' + encodeURIComponent(first ? first.id : '') + '&code=' + se.join_code;
+  }
+  function renderTeacher() {
+    setUrl(null);
+    if (!isTeacher()) { renderList(); return; }
+    $('trSet').innerHTML = sets().map(function (x) { return '<option value="' + esc(x.set) + '">' + esc(x.title) + '</option>'; }).join('');
+    $('trTitle').placeholder = t('trNamePh');
+    show('viewTeacher');
+    loadSessions();
+  }
+  function loadSessions() {
+    var box = $('trSessions'); box.innerHTML = '<p class="tt-empty-sm">…</p>';
+    db().then(function (c) {
+      return Promise.all([
+        c.from('tome_sessions').select('*').order('created_at', { ascending: false }),
+        c.from('tome_results').select('session_id')
+      ]);
+    }).then(function (r) {
+      sessions = (r[0].data || []);
+      var counts = {}; (r[1].data || []).forEach(function (x) { counts[x.session_id] = (counts[x.session_id] || 0) + 1; });
+      if (!sessions.length) { box.innerHTML = '<p class="tt-empty-sm">' + esc(t('trNone')) + '</p>'; return; }
+      box.innerHTML = '';
+      sessions.forEach(function (se) {
+        var d = document.createElement('div'); d.className = 'tr-session' + (se.is_open ? '' : ' tr-closed');
+        d.innerHTML = '<div><strong>' + esc(se.title) + '</strong><small>' + esc(setTitle(se.quiz_set)) + ' · ' +
+          esc(new Date(se.created_at).toLocaleDateString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })) + ' · ' +
+          esc(t('trResults', { n: counts[se.id] || 0 })) + ' · ' + esc(se.is_open ? t('trOpen') : t('trClosed')) + '</small></div>' +
+          '<div class="tr-actions"><span class="tr-code">' + esc(se.join_code) + '</span>' +
+          '<button class="ml-btn ml-btn--primary" data-a="view">' + esc(t('trView')) + '</button>' +
+          '<button class="ml-btn ml-btn--ghost" data-a="qr" aria-label="' + esc(t('trShowQr')) + '"><i data-lucide="qr-code"></i></button>' +
+          '<button class="ml-btn ml-btn--ghost" data-a="del" aria-label="' + esc(t('trDelete')) + '"><i data-lucide="trash-2"></i></button></div>';
+        d.querySelector('[data-a="view"]').addEventListener('click', function () { openSession(se); });
+        d.querySelector('[data-a="qr"]').addEventListener('click', function () { showSessionQr(se); });
+        d.querySelector('[data-a="del"]').addEventListener('click', function () {
+          if (!confirm(t('trSureDelete'))) return;
+          db().then(function (c) { return c.from('tome_sessions').delete().eq('id', se.id); }).then(loadSessions);
+        });
+        box.appendChild(d);
+      });
+      icons();
+    });
+  }
+  function createSession() {
+    var set = $('trSet').value, title = $('trTitle').value.trim() || setTitle(set), st = $('trStatus');
+    st.textContent = ''; st.className = 'tt-status';
+    db().then(function (c) { return c.rpc('create_tome_session', { p_set: set, p_title: title }); }).then(function (r) {
+      if (r.error) { st.textContent = r.error.message; st.className = 'tt-status bad'; return; }
+      $('trTitle').value = '';
+      loadSessions();
+      showSessionQr(r.data);
+    });
+  }
+  function showSessionQr(se) {
+    openShareFor(sessionUrl(se), se.title + ' · ' + se.join_code, t('trCodeNote', { c: se.join_code }));
+  }
+  function openSession(se) {
+    curSession = se; showAllMissed = false;
+    $('tsTitle').textContent = se.title;
+    $('tsSub').textContent = setTitle(se.quiz_set);
+    paintOpenBtn();
+    show('viewSession');
+    loadSessionResults();
+  }
+  function paintOpenBtn() {
+    var b = $('btnTsOpen');
+    b.querySelector('span').textContent = curSession.is_open ? t('trClose') : t('trReopen');
+    b.querySelector('i, svg').outerHTML = '<i data-lucide="' + (curSession.is_open ? 'lock' : 'lock-open') + '"></i>';
+    icons();
+  }
+  // every version of the session's test, with its items, for reading the results
+  var setCache = {};
+  function loadSet(set) {
+    if (setCache[set + lang]) return Promise.resolve(setCache[set + lang]);
+    var ms = manifest.filter(function (m) { return m.set === set; });
+    return Promise.all(ms.map(function (m) {
+      return fetch(BASE + m.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
+        var lq = loc(qz); return { id: m.id, version: m.version, quiz: lq, items: buildItems(lq) };
+      });
+    })).then(function (v) { var o = {}; v.forEach(function (x) { o[x.id] = x; }); setCache[set + lang] = o; return o; });
+  }
+  function loadSessionResults() {
+    $('tsBody').innerHTML = '<p class="tt-empty-sm">…</p>'; $('tsFacts').innerHTML = '';
+    Promise.all([
+      db().then(function (c) { return c.from('tome_results').select('*').eq('session_id', curSession.id).order('created_at'); }),
+      loadSet(curSession.quiz_set)
+    ]).then(function (r) { curResults = r[0].data || []; renderSession(r[1]); });
+  }
+  function pctOf(a, b) { return b ? Math.round(a / b * 100) : 0; }
+  function answerText(it, a) {
+    var q = it.q;
+    if (a == null) return t('notAnswered');
+    if (q.type === 'tf') return a ? t('tTrue') : t('tFalse');
+    if (q.type === 'mcq') return q.options[a];
+    return '';
+  }
+  // the most common wrong answer: a chosen option, or for matching the most common wrong pairing
+  function commonWrong(it, answers) {
+    var q = it.q, c = {};
+    answers.forEach(function (a) {
+      if (q.type === 'mcq' || q.type === 'tf') { if (a !== q.answer) { var k = answerText(it, a); c[k] = (c[k] || 0) + 1; } }
+      else if (q.type === 'match' && a) {
+        var bs = bItems(q);
+        q.pairs.forEach(function (p, i) { if (a[i] != null && a[i] !== i) { var k = p[0] + ' → ' + bs[a[i]]; c[k] = (c[k] || 0) + 1; } });
+      }
+      else if (q.type === 'order' && a) {
+        a.forEach(function (st, pos) { if (st !== pos) { var k = q.steps[st] + ' (' + (pos + 1) + ')'; c[k] = (c[k] || 0) + 1; } });
+      }
+      else if (q.type === 'pairs' && a) {
+        Object.keys(a).forEach(function (x) { x = +x; var y = a[x]; if (x % 2 === 0 && Math.floor(x / 2) !== Math.floor(y / 2)) { var k = cardText(q, x) + ' ↔ ' + cardText(q, y); c[k] = (c[k] || 0) + 1; } });
+      }
+    });
+    var best = null; Object.keys(c).forEach(function (k) { if (!best || c[k] > c[best]) best = k; });
+    return best ? { text: best, n: c[best] } : null;
+  }
+  function renderSession(vs) {
+    var R = curResults, body = $('tsBody');
+    var tot = R.reduce(function (s, r) { return s + r.score; }, 0), max = R.reduce(function (s, r) { return s + r.total; }, 0);
+    $('tsFacts').innerHTML = [[R.length, t('tsLearners')], [R.length ? pctOf(tot, max) + '%' : '—', t('tsAverage')], [curSession.join_code, t('tsCode')]]
+      .map(function (f) { return '<div class="tt-fact"><b>' + esc(f[0]) + '</b><span>' + esc(f[1]) + '</span></div>'; }).join('');
+    if (!R.length) { body.innerHTML = '<p class="tt-empty-sm">' + esc(t('tsNoResults')) + '</p>'; return; }
+
+    // per question, per topic, per skill and per section, across every result
+    var Q = {}, topic = {}, skill = {}, section = {};
+    R.forEach(function (r) {
+      var v = vs[r.quiz_id]; if (!v) return;
+      v.items.forEach(function (it) {
+        var got = +(r.per[it.id] || 0), key = r.quiz_id + '|' + it.id;
+        var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
+        q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
+        [[topic, it.topic || 'other'], [skill, it.skill], [section, it.sec]].forEach(function (g) {
+          var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
+        });
+      });
+    });
+    var h = '';
+    // weakest topics
+    h += '<h3 class="tt-h3">' + esc(t('tsTopics')) + '</h3><div class="tt-rows">' + Object.keys(topic).sort(function (a, b) { return topic[a].got / topic[a].max - topic[b].got / topic[b].max; })
+      .map(function (k) { return row(t('topic_' + k) + ' · ' + pctOf(topic[k].got, topic[k].max) + '%', topic[k].got, topic[k].max); }).join('') + '</div>';
+    // most-missed questions
+    var missed = Object.keys(Q).map(function (k) { return Q[k]; }).filter(function (q) { return q.got < q.max; })
+      .sort(function (a, b) { return (b.max - b.got) / b.max - (a.max - a.got) / a.max || b.n - a.n; });
+    var list = showAllMissed ? missed : missed.slice(0, 10);
+    h += '<h3 class="tt-h3">' + esc(t('tsMissed')) + '</h3>';
+    h += list.map(function (q) {
+      var it = q.it, cw = commonWrong(it, q.answers), lostPct = pctOf(q.max - q.got, q.max);
+      var vname = Object.keys(vs).length > 1 ? t('version', { v: q.v.version }) + ' · ' : '';
+      return '<div class="tm-item"><div class="tm-top"><div class="tm-pct">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
+        '<div class="tm-meta">' + esc(vname + it.num + ' · ' + t('topic_' + (it.topic || 'other')) + ' · ' + t('tsLostOf', { l: q.lost, n: q.n })) + '</div>' +
+        (it.scen ? '<div class="tm-meta">' + esc(it.scen.scenario).slice(0, 160) + (it.scen.scenario.length > 160 ? '…' : '') + '</div>' : '') +
+        '<div class="tm-q">' + esc(it.q.q) + '</div>' +
+        (cw ? '<div class="tm-wrong">' + esc(t('tsCommon')) + ' <b>' + esc(cw.text) + '</b> (' + cw.n + ')</div>' : '') +
+        (it.q.explain ? '<details><summary>' + esc(t('tsShowExplain')) + '</summary>' + esc(it.q.explain) + '</details>' : '') +
+        '</div></div></div>';
+    }).join('');
+    if (!showAllMissed && missed.length > 10) h += '<div class="tt-actions" style="margin-top:12px"><button class="ml-btn ml-btn--ghost" id="btnMissedAll">' + esc(t('tsShowAll', { n: missed.length })) + '</button></div>';
+    // knowledge and application; sections
+    h += '<h3 class="tt-h3">' + esc(t('tsSkills')) + '</h3><div class="tt-rows">' + ['knowledge', 'application'].filter(function (k) { return skill[k]; })
+      .map(function (k) { return row(t(k) + ' · ' + pctOf(skill[k].got, skill[k].max) + '%', skill[k].got, skill[k].max); }).join('') + '</div>';
+    var anyQuiz = vs[Object.keys(vs)[0]].quiz;
+    h += '<h3 class="tt-h3">' + esc(t('tsSections')) + '</h3><div class="tt-rows">' + Object.keys(section).sort().map(function (k) {
+      return row(t('question', { n: +k + 1 }) + ': ' + anyQuiz.sections[k].title + ' · ' + pctOf(section[k].got, section[k].max) + '%', section[k].got, section[k].max);
+    }).join('') + '</div>';
+    // mark list
+    h += '<h3 class="tt-h3">' + esc(t('tsMarks')) + '</h3><div class="tr-wrap"><table class="tr-table"><thead><tr>' +
+      [['name', 'tsName'], ['version', 'tsVersion'], ['score', 'tsMark'], ['pct', 'tsPct'], ['level', 'tsLevel'], ['at', 'tsWhen']].map(function (c) {
+        return '<th data-k="' + c[0] + '">' + esc(t(c[1])) + (markSort.k === c[0] ? (markSort.d > 0 ? ' ▲' : ' ▼') : '') + '</th>';
+      }).join('') + '</tr></thead><tbody>' + markRows().map(function (m) {
+        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.version) + '</td><td>' + m.score + '/' + m.total + '</td><td>' + m.pct + '%</td><td>' + m.level + '</td><td>' + esc(m.when) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+    body.innerHTML = h;
+    if ($('btnMissedAll')) $('btnMissedAll').addEventListener('click', function () { showAllMissed = true; renderSession(vs); });
+    [].forEach.call(body.querySelectorAll('.tr-table th'), function (th) {
+      th.addEventListener('click', function () { var k = th.getAttribute('data-k'); markSort = { k: k, d: markSort.k === k ? -markSort.d : 1 }; renderSession(vs); });
+    });
+  }
+  function markRows() {
+    var rows = curResults.map(function (r) {
+      var p = pctOf(r.score, r.total);
+      return { name: r.learner_name, version: r.version || '', score: r.score, total: r.total, pct: p, level: levelOf(p), at: r.created_at,
+        when: new Date(r.created_at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) };
+    });
+    var k = markSort.k, d = markSort.d;
+    return rows.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * d; });
+  }
+  function downloadCsv() {
+    var lines = [[t('tsName'), t('tsVersion'), t('tsMark'), 'Total', t('tsPct'), t('tsLevel'), t('tsWhen')]];
+    markRows().forEach(function (m) { lines.push([m.name, m.version, m.score, m.total, m.pct, m.level, m.at]); });
+    var csv = '\ufeff' + lines.map(function (l) { return l.map(function (v) { v = String(v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(','); }).join('\r\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = (curSession.title || 'results').replace(/[^\w\- ]+/g, '').trim() + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
   function lastName() { var n = ''; Object.keys(store).forEach(function (k) { if (store[k] && store[k].name) n = store[k].name; }); return n; }
 
   // ── Share: a big QR code and the short link, for a projector ─────────
@@ -1036,13 +1409,17 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     qrLib.addEventListener('load', cb);
     qrLib.addEventListener('error', cb);
   }
+  var shareTarget = '';
   function openShare() {
-    var url = shareUrl();
-    $('shareTitle').textContent = quiz.title;
+    var open = (window.TT_OPEN || []).indexOf(quiz.id) >= 0;
+    openShareFor(shareUrl(), quiz.title, t('shareSub') + (open ? '' : ' ' + t('membersOnly')));
+  }
+  function openShareFor(url, title, sub) {
+    shareTarget = url;
+    $('shareTitle').textContent = title;
     $('shareLink').textContent = url.replace(/^https?:\/\//, '');
     $('shareQr').innerHTML = '';
-    var open = (window.TT_OPEN || []).indexOf(quiz.id) >= 0;
-    $('shareDlg').querySelector('[data-t="shareSub"]').textContent = t('shareSub') + (open ? '' : ' ' + t('membersOnly'));
+    $('shareDlg').querySelector('[data-t="shareSub"]').textContent = sub;
     withQr(function () {
       if (!window.qrcode) { $('shareQr').classList.add('hidden'); return; }
       $('shareQr').classList.remove('hidden');
@@ -1058,10 +1435,27 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnLastReview').addEventListener('click', function () { att = store[quiz.id]; reviewFilter = 'all'; renderReview(); });
   $('btnToList').addEventListener('click', renderList);
   $('btnShare').addEventListener('click', openShare);
+  $('codeBox').addEventListener('input', checkCode);
+  $('btnResend').addEventListener('click', function () { sendResult(att); });
+  $('btnTeacher').addEventListener('click', renderTeacher);
+  $('btnTrBack').addEventListener('click', renderList);
+  $('btnTrCreate').addEventListener('click', createSession);
+  $('btnTsBack').addEventListener('click', renderTeacher);
+  $('btnTsRefresh').addEventListener('click', loadSessionResults);
+  $('btnTsQr').addEventListener('click', function () { showSessionQr(curSession); });
+  $('btnTsCsv').addEventListener('click', downloadCsv);
+  $('btnTsOpen').addEventListener('click', function () {
+    var to = !curSession.is_open;
+    db().then(function (c) { return c.from('tome_sessions').update({ is_open: to }).eq('id', curSession.id); }).then(function (r) {
+      if (!r.error) { curSession.is_open = to; paintOpenBtn(); }
+    });
+  });
+  document.addEventListener('magiclab:auth:ready', syncTeacherEntry);
+  document.addEventListener('magiclab:auth:change', syncTeacherEntry);
   $('btnShareClose').addEventListener('click', function () { $('shareDlg').close(); });
   $('btnCopyLink').addEventListener('click', function () {
     var b = this;
-    navigator.clipboard.writeText(shareUrl()).then(function () { b.querySelector('span').textContent = t('copied'); setTimeout(function () { b.querySelector('span').textContent = t('copy'); }, 1500); }).catch(function () {});
+    navigator.clipboard.writeText(shareTarget || shareUrl()).then(function () { b.querySelector('span').textContent = t('copied'); setTimeout(function () { b.querySelector('span').textContent = t('copy'); }, 1500); }).catch(function () {});
   });
   $('nameBox').addEventListener('change', function () { var s = store[quiz.id]; if (s && !s.done) { s.name = this.value.trim(); save(); } });
   $('btnResToList').addEventListener('click', renderList);
@@ -1092,6 +1486,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     else if (!$('viewTest').classList.contains('hidden')) { var y = scrollY; startTest(false); scrollTo(0, y); }
     else if (!$('viewResult').classList.contains('hidden')) renderResult();
     else if (!$('viewReview').classList.contains('hidden')) renderReview();
+    else if (!$('viewTeacher').classList.contains('hidden')) renderTeacher();
+    else if (!$('viewSession').classList.contains('hidden')) loadSessionResults();
   } });
   applyLang();
   if (window.TT_PUBLIC) document.body.classList.add('public');
@@ -1107,6 +1503,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (m) {
     manifest = m.quizzes || [];
+    syncTeacherEntry();
     var want = new URLSearchParams(location.search).get('quiz');
     if (want) openQuiz(want); else renderList();
   }).catch(loadError);

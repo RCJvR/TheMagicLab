@@ -47,6 +47,13 @@ with a `"version"` letter (A, B, C, D). The list shows the set once; the start
 screen lets the learner pick a version, and the results suggest the next one.
 Share links point to the set's first version.
 
+## Topics and class results
+
+Every top-level question has a `"topic"`: html, excel, ct, java, freecad or
+tinkercad (scenario sub-questions inherit it). The teacher's Class results
+view groups marks by topic. Results reach a teacher through a class code; see
+supabase-test-tome-results.sql.
+
 ## Open tests (no sign-in)
 
 `window.TT_OPEN` at the top of `test-tome.html` lists the tests that work
