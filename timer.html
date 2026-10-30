@@ -654,7 +654,7 @@ body.hide-cursor { cursor: none; }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
     if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio));
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
-    if (!preview) bar.appendChild(btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true));
+    if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
@@ -1087,6 +1087,13 @@ body.hide-cursor { cursor: none; }
     });
     show();
   }
+  // A press anywhere outside the settings panel closes it. The settings button
+  // has its own toggle, so it is left out here. Listening in the capture phase
+  // means the bar's buttons, which stop their clicks, still close the panel.
+  document.addEventListener('pointerdown', function (e) {
+    if (!panelOpen || e.target.closest('#panel') || e.target.closest('[data-role="settings"]')) return;
+    togglePanel(false);
+  }, true);
   function togglePanel(open) {
     panelOpen = open === undefined ? !panelOpen : open;
     if (panelOpen) { buildPanel(); $('panel').hidden = false; $('pTheme').focus(); }
