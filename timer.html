@@ -452,10 +452,16 @@ body.hide-cursor { cursor: none; }
         done: done, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
       m.facts.push([s.name || DASH, done ? hm(new Date(st.ends[i] || end)) : go ? hm(new Date(end)) : DASH, true]);
     });
-    // a chime whenever any subject moves on: once for the end of reading, the
-    // full ring when a subject's time is up
+    // the chime: once when reading ends, and the full ring only when the last
+    // subject's time is up. A subject that ends while others are still
+    // writing ends quietly, so it does not disturb them.
     var key = phases.join();
-    if (lastPhase && lastPhase !== key) chime(phases.some(function (p, i) { return p === 'finished' && lastPhase.split(',')[i] !== 'finished'; }) ? cfg.chime.rep : 1);
+    if (lastPhase && lastPhase !== key) {
+      var was = lastPhase.split(',');
+      var ended = phases.some(function (p, i) { return p === 'finished' && was[i] !== 'finished'; });
+      if (ended) { if (allDone) chime(cfg.chime.rep); }
+      else chime(1);
+    }
     lastPhase = key;
     m.phase = !go && !allDone ? t('paused') : '';
     m.done = allDone;
