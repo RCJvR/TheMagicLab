@@ -216,6 +216,7 @@ body.hide-cursor { cursor: none; }
 .panel input:disabled { opacity: 0.4; }
 .pnote { font-size: 14px; line-height: 1.5; opacity: 0.8; margin: 16px 0 0; }
 .ttp-what { font-size: 14px; line-height: 1.45; opacity: 0.85; white-space: pre-line; }
+.panel input[type="number"] { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; }
 .panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
@@ -255,7 +256,7 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
-      pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
+      pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
@@ -280,7 +281,7 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
-      pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
+      pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
@@ -908,6 +909,7 @@ body.hide-cursor { cursor: none; }
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
         ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      lengthHtml() +
       ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
       '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
@@ -939,6 +941,7 @@ body.hide-cursor { cursor: none; }
       '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
     ttPanelWire();
+    lengthWire();
     // a new type has its own saved progress, so the timer starts again with it
     [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
       b.addEventListener('click', function () {
@@ -1010,6 +1013,35 @@ body.hide-cursor { cursor: none; }
       });
     });
   }
+  // ── The lengths of the countdown and Pomodoro, from this panel ──
+  // A new length starts the timer again: its saved progress belongs to the old length.
+  function lengthHtml() {
+    var num = function (id, label, v, max) {
+      return '<label class="pf"><span>' + esc(label) + '</span><input type="number" id="' + id + '" min="1" max="' + max + '" value="' + v + '"></label>';
+    };
+    if (cfg.mode === 'countdown') return '<div class="pf ttp">' + num('pLenCd', t('pLen'), Math.round(cfg.cd.secs / 60), 720) + '</div>';
+    if (cfg.mode === 'pomodoro') {
+      var p = cfg.pomo;
+      return '<div class="pf ttp">' + num('pLenW', t('pFocus'), Math.round(p.work / 60), 180) + num('pLenS', t('pShort'), Math.round(p.short / 60), 60) +
+        num('pLenL', t('pLong'), Math.round(p.long / 60), 120) + num('pLenE', t('pEvery'), p.every, 12) + '</div>';
+    }
+    return '';
+  }
+  function lengthWire() {
+    var fixed = function (el, lo, hi) { return Math.max(lo, Math.min(hi, Math.round(+el.value || lo))); };
+    var cd = $('pLenCd');
+    if (cd) cd.addEventListener('change', function () { cfg.cd.secs = fixed(cd, 1, 720) * 60; lookChanged(); start(cfg); buildPanel(); });
+    var w = $('pLenW');
+    if (w) {
+      var pomo = function () {
+        cfg.pomo.work = fixed($('pLenW'), 1, 180) * 60; cfg.pomo.short = fixed($('pLenS'), 1, 60) * 60;
+        cfg.pomo.long = fixed($('pLenL'), 1, 120) * 60; cfg.pomo.every = fixed($('pLenE'), 1, 12);
+        lookChanged(); start(cfg); buildPanel();
+      };
+      ['pLenW', 'pLenS', 'pLenL', 'pLenE'].forEach(function (id) { $(id).addEventListener('change', pomo); });
+    }
+  }
+
   // ── Fill in the exam from the timetable, from this panel ──
   var TT = null;   // the timetable, once it has loaded (TTTimetable, in the themes file)
   function ttToday() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
