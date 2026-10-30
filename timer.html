@@ -169,10 +169,11 @@ body.hide-cursor { cursor: none; }
 .bar button svg { width: 26px; height: 26px; }
 .bar button.icon-only { padding: 18px 20px; }
 
-/* Phones only: one strip along the bottom instead of a block over the timer.
-   The primary control keeps its label; the rest are 44px icon buttons with
-   their names still set as aria-label and title. Larger screens are unchanged. */
-@media (max-width: 600px) {
+/* Phones only, in portrait or landscape: one strip along the bottom instead of
+   a block over the timer. The primary control keeps its label; the rest are
+   44px icon buttons with their names still set as aria-label and title.
+   Larger screens are unchanged. */
+@media (max-width: 600px), (max-height: 500px) and (pointer: coarse) {
   .bar {
     left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); transform: none;
     width: auto; max-width: none; justify-content: center;
@@ -977,14 +978,14 @@ body.hide-cursor { cursor: none; }
     $('pClose').addEventListener('click', function () { togglePanel(false); });
     $('pTheme').addEventListener('change', function () {
       var th = TTThemes.find(themeList, this.value);
-      if (th) { TTThemes.apply(th, L); lookChanged(); buildPanel(); $('pTheme').focus(); }
+      if (th) { TTThemes.apply(th, L); lookChanged(); buildPanel(); focusControl('pTheme'); }
     });
     $('pSound').addEventListener('change', function () { cfg.chime.id = this.value; TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); lookChanged(); });
     $('pPlay').addEventListener('click', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); });
     $('pVol').addEventListener('input', function () { cfg.chime.vol = +this.value; $('pVolOut').textContent = this.value + '%'; });
     $('pVol').addEventListener('change', function () { TTSounds.play(cfg.chime.id, cfg.chime.vol, 1); lookChanged(); });
     $('pRep').addEventListener('change', function () { cfg.chime.rep = +this.value; lookChanged(); });
-    $('pLang').addEventListener('change', function () { cfg.lang = this.value; lookChanged(); buildBar(); buildPanel(); $('pLang').focus(); });
+    $('pLang').addEventListener('change', function () { cfg.lang = this.value; lookChanged(); buildBar(); buildPanel(); focusControl('pLang'); });
     if ($('pPicPick')) {
       $('pPicPick').addEventListener('click', function () { $('pPicFile').click(); });
       $('pPicFile').addEventListener('change', function () {
@@ -1135,9 +1136,16 @@ body.hide-cursor { cursor: none; }
     if (!panelOpen || e.target.closest('#panel') || e.target.closest('[data-role="settings"]')) return;
     togglePanel(false);
   }, true);
+  // Focusing a <select> on a touch screen opens its picker at once, so on touch
+  // the focus goes to the panel's close button instead. Keyboard and mouse
+  // users keep focus on the control they just used.
+  function focusControl(id) {
+    var touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    $(touch ? 'pClose' : id).focus({ preventScroll: true });
+  }
   function togglePanel(open) {
     panelOpen = open === undefined ? !panelOpen : open;
-    if (panelOpen) { buildPanel(); $('panel').hidden = false; $('pTheme').focus(); }
+    if (panelOpen) { buildPanel(); $('panel').hidden = false; focusControl('pTheme'); }
     else { $('panel').hidden = true; }
     document.body.classList.toggle('panel-open', panelOpen);
     fit(); wake();
