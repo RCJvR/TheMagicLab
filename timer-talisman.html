@@ -47,74 +47,87 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 
 .tt-main { width: 100%; max-width: 1240px; margin: 0 auto; padding: 28px 16px 64px; box-sizing: border-box; flex: 1; }
 .tt-title { font-weight: 900; font-size: clamp(26px, 4.6vw, 36px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 6px; }
-.tt-intro { font-size: 15px; line-height: 1.6; color: var(--text-2); max-width: 640px; margin: 0 0 26px; }
+.tt-intro { font-size: 15px; line-height: 1.6; color: var(--text-2); max-width: 640px; margin: 0 0 20px; }
 
 .tt-grid { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 28px; align-items: start; }
 @media (max-width: 920px) { .tt-grid { grid-template-columns: 1fr; } .tt-preview { position: static !important; } }
 
 /* ── Form ── */
-.tt-card { border: 1px solid var(--line); border-radius: var(--radius-md, 14px); background: var(--ink-850); padding: 18px; margin-bottom: 16px; }
-.tt-card h2 { font-size: 15px; font-weight: 800; color: var(--paper); margin: 0 0 14px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
-.tt-card h2 i { width: 16px; height: 16px; color: var(--tool); }
+.tt-card { border: 1px solid var(--line); border-radius: var(--radius-md, 14px); background: var(--ink-850); padding: 12px 14px; margin-bottom: 10px; }
+.tt-card h2 { font-size: 15px; font-weight: 800; color: var(--paper); margin: 0 0 10px; letter-spacing: -0.01em; }
+/* every card folds away from its heading; Display starts folded (see foldCards) */
+.tt-card h2 button {
+  font: inherit; color: inherit; background: none; border: 0; padding: 2px 0; margin: 0; width: 100%;
+  display: flex; align-items: center; gap: 8px; cursor: pointer; text-align: left; letter-spacing: inherit;
+}
+.tt-card h2 button:focus-visible { outline: 2px solid var(--tool); outline-offset: 3px; border-radius: 4px; }
+.tt-card h2 .fold { margin-left: auto; width: 16px; height: 16px; color: var(--text-3); transition: transform 0.2s; }
+.tt-card.closed h2 { margin-bottom: 0; }
+.tt-card.closed h2 .fold { transform: rotate(-90deg); }
+.tt-card.closed > :not(h2) { display: none !important; }
+.tt-card h2 i:not(.fold), .tt-card h2 svg:not(.fold) { width: 16px; height: 16px; color: var(--tool); }
 .modes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
 @media (max-width: 480px) { .modes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .mode {
   font: inherit; font-size: 12.5px; font-weight: 700; color: var(--text-2); background: transparent;
-  border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 10px 4px;
-  display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-align: center; line-height: 1.2;
+  border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 7px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; text-align: center; line-height: 1.2;
 }
-.mode i { width: 20px; height: 20px; }
+.mode i, .mode svg { width: 18px; height: 18px; }
 .mode span { overflow-wrap: anywhere; hyphens: auto; }
 .mode:hover { color: var(--paper); border-color: var(--paper); }
 .mode[aria-pressed="true"] { border-color: var(--tool); color: var(--paper); background: color-mix(in srgb, var(--tool) 14%, transparent); }
 .mode[aria-pressed="true"] i { color: var(--tool); }
 .layouts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 480px) { .layouts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.layouts .mode small { font-weight: 500; font-size: 11.5px; color: var(--text-3); line-height: 1.3; }
+.layouts .mode small { display: none; }
 .layouts .mode[aria-pressed="true"] small { color: var(--text-2); }
 .pic-box { margin: 0 0 14px; }
-.ttf { border: 1px solid var(--line-hard); border-radius: var(--radius-md, 14px); padding: 14px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ttf { border: 1px solid var(--line-hard); border-radius: var(--radius-md, 14px); padding: 10px 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
 .ttf.hidden { display: none; }
 .ttf .row { margin-bottom: 0; }
 .ttf-h { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--text); }
 .ttf-h i { width: 17px; height: 17px; }
-.ttf-what { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--text-2); white-space: pre-line; min-height: 1.5em; }
+.ttf-what { margin: 0; font-size: 13px; line-height: 1.45; color: var(--text-2); white-space: pre-line; min-height: 1.45em; }
 .ttf .ml-btn { align-self: flex-start; padding: 9px 16px; font-size: 14px; }
 .ttf .ml-btn i { width: 15px; height: 15px; }
-.ttf small { font-size: 12.5px; color: var(--text-3); line-height: 1.5; }
-.subj { border-top: 1px solid var(--line-hard); padding-top: 12px; margin-top: 4px; }
-.subj-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text); }
-.subj-h .ml-btn, .subj-add .ml-btn { padding: 6px 12px; font-size: 13.5px; }
+.ttf small { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+.ttf-go { display: flex; align-items: center; gap: 12px; }
+.ttf-go small { flex: 1; }
+.subj { border-top: 1px solid var(--line-hard); padding-top: 9px; margin-top: 2px; }
+.subj-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 14px; font-weight: 700; color: var(--text); }
+.subj-h .ml-btn, .subj-add .ml-btn { padding: 5px 11px; font-size: 13px; }
 .subj-h .ml-btn i, .subj-add .ml-btn i { width: 15px; height: 15px; }
-.subj-add { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin: 0 0 14px; }
-.subj-add small, .aud-box .tt-note { font-size: 12.5px; color: var(--text-3); line-height: 1.5; }
-.aud-box { border-top: 1px solid var(--line-hard); padding-top: 12px; margin-top: 12px; }
+.subj-add { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; }
+.subj-add small, .aud-box .tt-note { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+.subj-add small { flex: 1; }
+.aud-box { border-top: 1px solid var(--line-hard); padding-top: 9px; margin-top: 9px; }
 .aud-label { font-size: 13.5px; font-weight: 600; color: var(--text-2); }
 .aud-name { font-size: 14px; color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
 .pic-row [hidden] { display: none !important; }
-.pic-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.pic-row { display: flex; align-items: center; gap: 12px; margin-top: 6px; flex-wrap: wrap; }
 .pic-row img { width: 96px; height: 54px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line-hard); }
-.tt-note { font-size: 12.5px; color: var(--text-3); margin: 10px 0 0; line-height: 1.4; }
+.tt-note { font-size: 12px; color: var(--text-3); margin: 8px 0 0; line-height: 1.4; }
 
-.row { display: grid; gap: 10px; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); margin-bottom: 12px; }
+.row { display: grid; gap: 8px; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); margin-bottom: 9px; }
 .row:last-child { margin-bottom: 0; }
 .row > .field { justify-content: flex-start; }
 .row > .field > span:first-child { min-height: 1.25em; }
-.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .field > span { font-size: 12.5px; font-weight: 700; color: var(--text-2); }
 .field small { font-size: 12px; color: var(--text-3); line-height: 1.4; }
 .inp {
   font: inherit; font-size: 15px; color: var(--text); background: var(--ink-900);
-  border: 1px solid var(--line-hard); border-radius: var(--radius-xs, 8px); padding: 9px 10px; min-width: 0; width: 100%; box-sizing: border-box;
+  border: 1px solid var(--line-hard); border-radius: var(--radius-xs, 8px); padding: 7px 9px; min-width: 0; width: 100%; box-sizing: border-box;
 }
-textarea.inp { resize: vertical; min-height: 84px; line-height: 1.45; }
+textarea.inp { resize: vertical; min-height: 58px; line-height: 1.45; }
 .inp:focus { outline: 2px solid var(--tool); outline-offset: 1px; border-color: transparent; }
 input[type="color"].inp { padding: 3px; height: 40px; cursor: pointer; }
 input[type="range"] { accent-color: var(--tool); width: 100%; }
 .check { display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--text); cursor: pointer; }
 .check input { width: 17px; height: 17px; accent-color: var(--tool); margin: 0; }
-.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; margin-bottom: 12px; }
-.seg { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; margin-bottom: 10px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .seg button {
   font: inherit; font-size: 13.5px; font-weight: 600; color: var(--text-2); background: transparent;
   border: 1px solid var(--line-hard); border-radius: var(--radius-full); padding: 7px 13px; cursor: pointer;
@@ -174,7 +187,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     <div class="tt-grid">
       <div>
         <!-- 1. Timer type -->
-        <section class="tt-card">
+        <section class="tt-card" data-card="type">
           <h2><i data-lucide="list-checks"></i><span data-t="sType">Timer type</span></h2>
           <div class="modes" id="modes" role="group">
             <button class="mode" data-mode="pomodoro"><i data-lucide="repeat"></i><span data-t="mPomodoro">Pomodoro</span></button>
@@ -187,7 +200,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
 
         <!-- 2. Layout: how much the timer shows. Settings the chosen layout
              does not show are hidden below (data-lay lists where each shows). -->
-        <section class="tt-card">
+        <section class="tt-card" data-card="layout">
           <h2><i data-lucide="layout-template"></i><span data-t="sLayout">Layout</span></h2>
           <div class="modes layouts" id="layouts" role="group">
             <button class="mode" data-v="minimal"><i data-lucide="square"></i><span data-t="yMinimal">Minimal</span><small data-t="yMinimalD">Only the time</small></button>
@@ -199,7 +212,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
         </section>
 
         <!-- 3. Timer settings, one block per type -->
-        <section class="tt-card">
+        <section class="tt-card" data-card="settings">
           <h2><i data-lucide="sliders-horizontal"></i><span data-t="sSettings">Settings</span></h2>
 
           <div data-for="pomodoro">
@@ -232,8 +245,10 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
                 <label class="field"><span data-t="ttVenue">Venue</span><select class="inp" id="ttVenue"></select></label>
               </div>
               <p class="ttf-what" id="ttWhat"></p>
-              <button class="ml-btn ml-btn--primary" type="button" id="btnTtFill"><i data-lucide="wand-sparkles"></i><span data-t="ttFill">Fill in</span></button>
-              <small data-t="ttNote">Fills in the date, the start (10 minutes of reading before the writing starts) and every subject writing in that venue. Subjects with the same writing time share a column. Check it against the latest timetable: venues can change.</small>
+              <div class="ttf-go">
+                <button class="ml-btn ml-btn--primary" type="button" id="btnTtFill"><i data-lucide="wand-sparkles"></i><span data-t="ttFill">Fill in</span></button>
+                <small data-t="ttNote">Sets the date, a start 10 minutes before writing (reading time) and every subject in that venue. Venues can change: check the latest timetable.</small>
+              </div>
             </div>
             <div class="row" style="--n:1">
               <label class="field" data-lay="simple standard detailed"><span data-t="fSubject">Subject</span><input class="inp" type="text" maxlength="80" data-k="exam.subject" data-tp="pSubject"></label>
@@ -271,7 +286,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
             </div>
             <div class="subj-add">
               <button class="ml-btn ml-btn--ghost" type="button" id="btnAddSubj"><i data-lucide="plus"></i><span data-t="subjAdd">Add another subject in this venue</span></button>
-              <small data-t="subjNote">Up to three subjects. They share the start and the reading time; each has its own writing time, and its own column with the time left and finish time.</small>
+              <small data-t="subjNote">Up to three. They share the start and reading time; each has its own writing time and column.</small>
             </div>
             <div class="row">
               <label class="field"><span data-t="fStart">Start time</span><input class="inp" type="time" data-k="exam.start"><small data-t="fStartNote">Optional. The timer starts by itself at this time. Leave empty to start it by hand.</small></label>
@@ -290,7 +305,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
                 </div>
                 <input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="audFile" hidden>
               </div>
-              <p class="tt-note" data-t="audNote">The built-in recording is the Grade 8–11 exam regulations. The timer shows a big play button until the exam starts, and a small one in its controls after that. A recording you choose yourself stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings, or that computer uses the built-in one.</p>
+              <p class="tt-note" data-t="audNote">Built in: the Grade 8–11 exam regulations. A recording you choose stays in this browser only; other computers use the built-in one.</p>
             </div>
           </div>
 
@@ -310,7 +325,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
         </section>
 
         <!-- 4. Look -->
-        <section class="tt-card">
+        <section class="tt-card" data-card="look">
           <h2><i data-lucide="palette"></i><span data-t="sLook">Display</span></h2>
           <div class="seg" id="displaySeg">
             <button data-v="digital"><i data-lucide="hash" style="width:15px;height:15px"></i><span data-t="dDigital">Digital</span></button>
@@ -448,13 +463,13 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       keys: 'In the timer: <kbd>Space</kbd> start or pause, <kbd>R</kbd> reset, <kbd>F</kbd> full screen, <kbd>+</kbd> <kbd>−</kbd> add or take off a minute, <kbd>L</kbd> lap. The controls hide while the timer runs; move the mouse to bring them back.',
       linkNote: 'The link holds all your settings, so you can open it on another computer, such as the one connected to the projector. Your settings here are remembered in this browser.',
       ttTitle: 'Fill in from the exam timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in',
-      ttNote: 'Fills in the date, the start (10 minutes of reading before the writing starts) and every subject writing in that venue. Subjects with the same writing time share a column. Check it against the latest timetable: venues can change.',
+      ttNote: 'Sets the date, a start 10 minutes before writing (reading time) and every subject in that venue. Venues can change: check the latest timetable.',
       ttGrade: 'Grade {g}', ttPaper: 'Paper {n}', ttPrac: 'Practical', ttDone: 'Filled in. Check the subjects below.', ttMany: 'This venue has more than three writing times; only the first three fit.',
       fSubj2: 'Subject 2', fSubj3: 'Subject 3', subjDel: 'Remove', subjAdd: 'Add another subject in this venue',
-      subjNote: 'Up to three subjects. They share the start and the reading time; each has its own writing time, and its own column with the time left and finish time.',
+      subjNote: 'Up to three. They share the start and reading time; each has its own writing time and column.',
       pSubject2: 'e.g. Life Sciences', pSubject3: 'e.g. Geography',
       fAudioOn: 'Play an instructions recording before the exam', audPick: 'Choose another recording', audBuiltin: 'Use the built-in one', builtin: 'built in', audBad: 'That file could not be used. Try an MP3 or M4A.',
-      audNote: "The built-in recording is the Grade 8–11 exam regulations. The timer shows a big play button until the exam starts, and a small one in its controls after that. A recording you choose yourself stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings, or that computer uses the built-in one.",
+      audNote: 'Built in: the Grade 8–11 exam regulations. A recording you choose stays in this browser only; other computers use the built-in one.',
       pSubject: 'e.g. Physical Sciences', pPaper: 'e.g. Paper 1', pInfo: 'e.g. Answer all the questions. Use a blue or black pen. Calculators are allowed.', pTitle: 'e.g. Homework block',
       min: 'min', h: 'h', confirmDefaults: 'Reset all settings to the defaults?'
     },
@@ -480,13 +495,13 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       keys: 'In die tydhouer: <kbd>Spasie</kbd> begin of pouseer, <kbd>R</kbd> stel terug, <kbd>F</kbd> volskerm, <kbd>+</kbd> <kbd>−</kbd> tel \'n minuut by of af, <kbd>L</kbd> tussentyd. Die knoppies verdwyn terwyl die tydhouer loop; beweeg die muis om hulle terug te kry.',
       linkNote: "Die skakel bevat al jou instellings, so jy kan dit op 'n ander rekenaar oopmaak, soos dié wat aan die projektor gekoppel is. Jou instellings word in hierdie blaaier onthou.",
       ttTitle: 'Vul in uit die eksamenrooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in',
-      ttNote: "Vul die datum, die begintyd (10 minute leestyd voordat die skryf begin) en elke vak wat in daardie lokaal skryf, in. Vakke met dieselfde skryftyd deel 'n kolom. Kontroleer dit teen die nuutste rooster: lokale kan verander.",
+      ttNote: 'Stel die datum, ’n begintyd 10 minute voor die skryf (leestyd) en elke vak in daardie lokaal. Lokale kan verander: kontroleer die nuutste rooster.',
       ttGrade: 'Graad {g}', ttPaper: 'Vraestel {n}', ttPrac: 'Prakties', ttDone: 'Ingevul. Kontroleer die vakke hieronder.', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       fSubj2: 'Vak 2', fSubj3: 'Vak 3', subjDel: 'Verwyder', subjAdd: "Voeg nog 'n vak in hierdie lokaal by",
-      subjNote: 'Tot drie vakke. Hulle deel die begintyd en die leestyd; elkeen het sy eie skryftyd, en sy eie kolom met die oorblywende tyd en eindtyd.',
+      subjNote: 'Tot drie. Hulle deel die begin- en leestyd; elkeen het sy eie skryftyd en kolom.',
       pSubject2: 'bv. Lewenswetenskappe', pSubject3: 'bv. Geografie',
       fAudioOn: "Speel 'n instruksie-opname voor die eksamen", audPick: "Kies 'n ander opname", audBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', audBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
-      audNote: "Die ingeboude opname is die Graad 8–11-eksamenreëls. Die tydhouer wys 'n groot speelknoppie totdat die eksamen begin, en daarna 'n klein een tussen sy kontroles. 'n Opname wat jy self kies, bly in hierdie blaaier en is nie deel van die skakel nie; op 'n ander rekenaar, kies dit weer in die tydhouer se instellings, of daardie rekenaar gebruik die ingeboude een.",
+      audNote: "Ingebou: die Graad 8–11-eksamenreëls. 'n Opname wat jy kies, bly net in hierdie blaaier; ander rekenaars gebruik die ingeboude een.",
       pSubject: 'bv. Fisiese Wetenskappe', pPaper: 'bv. Vraestel 1', pInfo: "bv. Beantwoord al die vrae. Gebruik 'n blou of swart pen. Sakrekenaars word toegelaat.", pTitle: 'bv. Huiswerkblok',
       min: 'min', h: 'uur', confirmDefaults: 'Stel al die instellings terug na die verstek?'
     }
@@ -571,6 +586,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     document.querySelectorAll('[data-t]').forEach(function (e) { e.textContent = t(e.getAttribute('data-t')); });
     document.querySelectorAll('[data-t-html]').forEach(function (e) { e.innerHTML = t(e.getAttribute('data-t-html')); });
     document.querySelectorAll('[data-tp]').forEach(function (e) { e.placeholder = t(e.getAttribute('data-tp')); });
+    // a layout's one-line description shows as its tooltip, to keep the buttons short
+    document.querySelectorAll('.layouts .mode').forEach(function (b) { var d = b.querySelector('small'); if (d) b.title = d.textContent; });
     document.documentElement.lang = uiLang;
     document.title = uiLang === 'af' ? 'Timer Talisman — eksamen- en studietydhouer | The Magic Lab' : 'Timer Talisman — exam and study timer | The Magic Lab';
   }
@@ -646,10 +663,12 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     var d = $('ttDate').value, st = $('ttSession').value, v = $('ttVenue').value;
     return TT.entries.filter(function (e) { return e.date === d && e.start === st && e.venues.indexOf(v) >= 0; });
   }
-  function ttName(code) { return code.split('/').map(function (c) { var n = TT.names[c]; return n ? n[uiLang === 'af' ? 1 : 0] : c; }).join(' / '); }
+  // subjects and papers are written in the timer's language, which can differ from this page's
+  function tl(k) { return (T[cfg.lang] || T.en)[k] || T.en[k]; }
+  function ttName(code) { return code.split('/').map(function (c) { var n = TT.names[c]; return n ? n[cfg.lang === 'af' ? 1 : 0] : c; }).join(' / '); }
   function ttPaperOf(e) {
-    var pp = e.paper === 'PRAC' ? t('ttPrac') : e.paper ? t('ttPaper').replace('{n}', e.paper.replace(/^P/, '')) : '';
-    return t('ttGrade').replace('{g}', e.grade) + (pp ? ' · ' + pp : '');
+    var pp = e.paper === 'PRAC' ? tl('ttPrac') : e.paper ? tl('ttPaper').replace('{n}', e.paper.replace(/^P/, '')) : '';
+    return tl('ttGrade').replace('{g}', e.grade) + (pp ? ' · ' + pp : '');
   }
   function ttLen(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + ' ' + t('h') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : ''); }
   // the subjects in this venue as timer columns: one per writing time
@@ -702,6 +721,30 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     $('ttWhat').textContent = t('ttDone') + '\n' + $('ttWhat').textContent.replace(t('ttDone') + '\n', '');
   });
   ttLoad();
+
+  // ── Fold the cards away from their headings, so the preview stays near ──
+  // Display (colours, fonts, sound) starts folded: it is set once and kept.
+  var FOLD_KEY = 'ml-timer-talisman-folded';
+  function foldCards() {
+    var folded;
+    try { folded = JSON.parse(localStorage.getItem(FOLD_KEY) || 'null'); } catch (e) {}
+    if (!Array.isArray(folded)) folded = ['look'];
+    document.querySelectorAll('.tt-card[data-card]').forEach(function (card) {
+      var id = card.getAttribute('data-card'), h = card.querySelector('h2');
+      var b = document.createElement('button'); b.type = 'button';
+      while (h.firstChild) b.appendChild(h.firstChild);
+      b.insertAdjacentHTML('beforeend', '<i class="fold" data-lucide="chevron-down"></i>');
+      h.appendChild(b);
+      var set = function (closed) { card.classList.toggle('closed', closed); b.setAttribute('aria-expanded', String(!closed)); };
+      set(folded.indexOf(id) >= 0);
+      b.addEventListener('click', function () {
+        set(!card.classList.contains('closed'));
+        var now = [].map.call(document.querySelectorAll('.tt-card.closed[data-card]'), function (c) { return c.getAttribute('data-card'); });
+        try { localStorage.setItem(FOLD_KEY, JSON.stringify(now)); } catch (e) {}
+      });
+    });
+  }
+  foldCards();
 
   $('btnAud').addEventListener('click', function () { $('audFile').click(); });
   $('audFile').addEventListener('change', function () {

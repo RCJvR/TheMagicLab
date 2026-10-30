@@ -541,7 +541,9 @@ body.hide-cursor { cursor: none; }
     if (subjects().length > 1) return examMulti(m, now, sched);
     m.head =[x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
-    m.prog = 0; m.progMark = R && W ? R / (R + W) : null;
+    // the dashed line on the screen fill marks where reading ends; it only
+    // means something while reading time runs, so it shows only then
+    m.prog = 0; m.progMark = null;
     var examFacts = function (start, rEnd, end) {
       m.facts = [['fNow', hm(new Date(now))], [st.started ? 'fStarted' : 'fStarts', start ? hm(new Date(start)) : DASH]];
       if (R) m.facts.push(['fReading', span(x.reading)], ['fReadEnds', rEnd ? hm(new Date(rEnd)) : DASH]);
@@ -573,6 +575,7 @@ body.hide-cursor { cursor: none; }
     m.digital = phase === 'finished' ? t('timeUp') : dur(left, 'down');
     m.done = phase === 'finished';
     m.prog = Math.min(1, el / (R + W || 1));
+    if (phase === 'reading' && W) m.progMark = R / (R + W);
     m.warn = phase === 'writing' && cfg.warn && left <= cfg.warn * 60000;
     var end = now + (R + W - el), bits = [];
     if (phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
