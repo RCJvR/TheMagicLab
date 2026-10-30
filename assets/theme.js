@@ -15,6 +15,11 @@
  * the maths tools (graph paper, the worksheet page). Mark anything else that
  * must not change with data-ml-no-theme.
  *
+ * Prism is a third palette on the same dark ground. Each tool's pages take
+ * that tool's colour from the index page: every accent is recoloured to the
+ * tool's hue and keeps its own lightness and alpha, so emphasis still reads as
+ * emphasis. Pages outside the tools keep their colours.
+ *
  * The choice is stored per browser in localStorage ('ml-theme').
  */
 (function () {
@@ -26,7 +31,8 @@
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
-  var theme = stored() === 'light' ? 'light' : 'dark';
+  var THEMES = ['dark', 'light', 'prism'];
+  var theme = THEMES.indexOf(stored()) > -1 ? stored() : 'dark';
   root.setAttribute('data-theme', theme);
 
   // Early styles: light ground straight away, and keep the body hidden until
@@ -46,7 +52,7 @@
     'html[data-theme="light"] .ml-theme-toggle.is-floating{background:#fff;color:#16181d}' +
     '@media print{.ml-theme-toggle{display:none!important}}';
   (document.head || root).appendChild(early);
-  if (theme === 'light') {
+  if (theme !== 'dark') {
     root.classList.add('ml-theming');
     setTimeout(function () { root.classList.remove('ml-theming'); }, 1500);
   }
@@ -106,11 +112,42 @@
   // of their tint, so pale lavender text becomes dark grey, not purple.
   function isNeutral(hsl) { return hsl[1] < 0.22 || hsl[2] < 0.16 || hsl[2] > 0.8; }
 
+  // ── prism ─────────────────────────────────────────────────────────────
+  // The palette the current pass maps to: 'light' or 'prism'. Prism's accent
+  // is the tool's index colour for this page, as HSL; null when the page is
+  // not one of the tools, in which case prism leaves the colours alone.
+  var PALETTE = 'light', ACCENT = null;
+  var TOOL_ACCENT = [
+    ['/code-conjurer', '#9b6bff'], ['/ai-oracle', '#7a7dff'], ['/java-genie', '#5b93ff'],
+    ['/computer-codex', '#35a6f0'], ['/web-wizard', '#1fb8dc'], ['/model-mage', '#17c4c0'],
+    ['/drawing-druid/', '#1fc98e'], ['/science-sage/', '#4acf6b'], ['/math-magician/', '#9ed43c'],
+    ['/spike-spellcaster/', '#e8c63a'], ['/tech-tower/', '#eda13c'], ['/robot-realm/', '#ee7544'],
+    ['/time-turner', '#ed5c86'], ['/timer-talisman', '#ed5c86']
+  ];
+  function accentFor(path) {
+    for (var i = 0; i < TOOL_ACCENT.length; i++) {
+      if (path.indexOf(TOOL_ACCENT[i][0]) === 0) {
+        var c = parse(TOOL_ACCENT[i][1]);
+        return rgb2hsl(c[0], c[1], c[2]);
+      }
+    }
+    return null;
+  }
+  // Text and lines are lifted to a lightness that reads on the dark ground;
+  // fills keep the lightness they were designed with.
+  function prismColor(c, mode, hsl) {
+    if (!ACCENT || isNeutral(hsl)) return c;
+    var l = mode === 'text' || mode === 'fg' ? Math.max(hsl[2], 0.62) : hsl[2];
+    var o = hsl2rgb(ACCENT[0], ACCENT[1], l);
+    return [o[0], o[1], o[2], c[3]];
+  }
+
   // mode: 'fg' text/lines, 'bg' fills, 'shadow', 'keepfg' (dark text sitting on a kept accent fill)
   function mapColor(c, mode) {
     var hsl = rgb2hsl(c[0], c[1], c[2]), h = hsl[0], s = hsl[1], l = hsl[2], a = c[3];
     if (mode === 'shadow') return [c[0], c[1], c[2], a * (l < 0.2 ? 0.45 : 0.5)];
     if (mode === 'keepfg') return c;
+    if (PALETTE === 'prism') return prismColor(c, mode, hsl);
     if (isNeutral(hsl)) {
       l = Math.min(0.975, Math.max(0.07, 1 - l));
       s = Math.min(s, 0.18);
@@ -287,7 +324,10 @@
     observer.observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['style'] });
   }
 
-  function applyLight() {
+  // Applies the current palette ('light' or 'prism') to this page.
+  function applyPalette() {
+    PALETTE = theme;
+    ACCENT = theme === 'prism' ? accentFor(location.pathname) : null;
     try {
       buildStyles();
       themeTree(document.body);
@@ -306,18 +346,23 @@
   // ── toggle ────────────────────────────────────────────────────────────
   var SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
   var MOON = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+  var PRISM = '<path d="M12 4 20 18H4Z"/><path d="M12 9v4"/>';
+  var ICON = { dark: MOON, light: SUN, prism: PRISM };
+  var NEXT = { dark: 'light', light: 'prism', prism: 'dark' };
   var af = /\.af\.html$/.test(location.pathname) || (root.lang || '').indexOf('af') === 0;
   function label() {
-    return theme === 'dark' ? (af ? 'Skakel oor na ligte tema' : 'Switch to light theme') : (af ? 'Skakel oor na donker tema' : 'Switch to dark theme');
+    var NAME = af ? { dark: 'Donker', light: 'Lig', prism: 'Prisma' } : { dark: 'Dark', light: 'Light', prism: 'Prism' };
+    return (af ? 'Tema: ' : 'Theme: ') + NAME[theme] + (af ? '. Skakel oor na ' : '. Change to ') + NAME[NEXT[theme]];
   }
   function paint(btn) {
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (theme === 'dark' ? SUN : MOON) + '</svg>';
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[theme] + '</svg>';
     btn.setAttribute('aria-label', label()); btn.title = label();
   }
   function setTheme(next) {
     if (next === theme) return;
     theme = next; store(theme); root.setAttribute('data-theme', theme);
-    if (theme === 'light') applyLight(); else removeLight();
+    removeLight();
+    if (theme !== 'dark') applyPalette();
     document.querySelectorAll('.ml-theme-toggle').forEach(paint);
     document.dispatchEvent(new CustomEvent('magiclab:theme', { detail: { theme: theme } }));
   }
@@ -325,7 +370,7 @@
     if (document.querySelector('.ml-theme-toggle')) return;
     var btn = document.createElement('button');
     btn.type = 'button'; btn.className = 'ml-theme-toggle';
-    btn.addEventListener('click', function () { setTheme(theme === 'dark' ? 'light' : 'dark'); });
+    btn.addEventListener('click', function () { setTheme(NEXT[theme]); });
     paint(btn);
     var anchor = document.querySelector('nav [data-ml-auth], nav .ml-user-chip-wrap, header [data-ml-auth]') || document.getElementById('mlLangToggle');
     var box = document.querySelector('.ml-nav-right, .nav-right');
@@ -359,12 +404,12 @@
 
   function ready() {
     mount();
-    if (theme === 'light') applyLight();
+    if (theme !== 'dark') applyPalette();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
   else ready();
   // stylesheets that finish loading late (or are added by scripts)
-  window.addEventListener('load', function () { if (theme === 'light') buildStyles(); });
+  window.addEventListener('load', function () { if (theme !== 'dark') buildStyles(); });
 
   window.MagicLabTheme = { get: function () { return theme; }, set: setTheme };
 })();
