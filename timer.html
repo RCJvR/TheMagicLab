@@ -256,7 +256,7 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
-      pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
+      pStart: 'Start time', pStartNow: 'Start now (late start)', pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
@@ -281,7 +281,7 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
-      pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
+      pStart: 'Begintyd', pStartNow: 'Begin nou (laat begin)', pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
@@ -909,6 +909,7 @@ body.hide-cursor { cursor: none; }
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
         ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      startHtml() +
       lengthHtml() +
       ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
@@ -942,6 +943,7 @@ body.hide-cursor { cursor: none; }
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
     ttPanelWire();
     lengthWire();
+    startWire();
     // a new type has its own saved progress, so the timer starts again with it
     [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
       b.addEventListener('click', function () {
@@ -1013,6 +1015,28 @@ body.hide-cursor { cursor: none; }
       });
     });
   }
+  // ── The start time of an exam, and a late start ──
+  // Changing the start time reschedules the exam. "Start now" begins the reading
+  // time at this moment, so a late session still gets its full reading and writing.
+  function startHtml() {
+    if (cfg.mode !== 'exam') return '';
+    return '<div class="pf ttp"><label class="pf"><span>' + esc(t('pStart')) + '</span><input type="time" id="pStartT" value="' + esc(cfg.exam.start) + '"></label>' +
+      '<button type="button" class="pclose" id="pStartNow" style="justify-content:center">' + esc(t('pStartNow')) + '</button></div>';
+  }
+  function startWire() {
+    var tIn = $('pStartT');
+    if (tIn) tIn.addEventListener('change', function () { cfg.exam.start = tIn.value; lookChanged(); start(cfg); buildPanel(); });
+    var now = $('pStartNow');
+    if (now) now.addEventListener('click', function () {
+      var d = new Date();
+      cfg.exam.start = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+      lookChanged(); start(cfg);
+      // the minute just begun is the start: the reading time runs from this moment
+      st = freshState(); st.started = true; st.since = st.t0 = Date.now(); save();
+      lastPhase = null; render(true); buildPanel();
+    });
+  }
+
   // ── The lengths of the countdown and Pomodoro, from this panel ──
   // A new length starts the timer again: its saved progress belongs to the old length.
   function lengthHtml() {
