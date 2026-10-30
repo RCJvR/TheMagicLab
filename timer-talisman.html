@@ -647,78 +647,45 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       changed(true); $('btnAddSubj').focus();
     });
   });
-  // ── The exam timetable (assets/timer-talisman/timetable.json) ──
-  // Pick a date, the session and a venue; "Fill in" sets the date, the start
-  // (reading time before the writing starts) and the subjects in that venue.
+  // ── The exam timetable: the shared module (assets/timer-talisman-themes.js) ──
   var TT = null;
   function ttDay(d) { return new Date(d + 'T12:00').toLocaleDateString(uiLang === 'af' ? 'af-ZA' : 'en-ZA', { weekday: 'short', day: 'numeric', month: 'long' }); }
-  function ttOpts(sel, list, label, keep) {
-    var cur = keep ? sel.value : '';
+  function ttOpts(sel, list, label, cur) {
     sel.innerHTML = '';
     list.forEach(function (v) { sel.appendChild(new Option(label(v), v)); });
     if (list.indexOf(cur) >= 0) sel.value = cur;
   }
-  function uniq(a) { return a.filter(function (v, i) { return a.indexOf(v) === i; }); }
-  function ttHere() {
-    var d = $('ttDate').value, st = $('ttSession').value, v = $('ttVenue').value;
-    return TT.entries.filter(function (e) { return e.date === d && e.start === st && e.venues.indexOf(v) >= 0; });
-  }
-  // subjects and papers are written in the timer's language, which can differ from this page's
-  function tl(k) { return (T[cfg.lang] || T.en)[k] || T.en[k]; }
-  function ttName(code) { return code.split('/').map(function (c) { var n = TT.names[c]; return n ? n[cfg.lang === 'af' ? 1 : 0] : c; }).join(' / '); }
-  function ttPaperOf(e) {
-    var pp = e.paper === 'PRAC' ? tl('ttPrac') : e.paper ? tl('ttPaper').replace('{n}', e.paper.replace(/^P/, '')) : '';
-    return tl('ttGrade').replace('{g}', e.grade) + (pp ? ' · ' + pp : '');
-  }
   function ttLen(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + ' ' + t('h') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : ''); }
-  // the subjects in this venue as timer columns: one per writing time
-  function ttColumns() {
-    var by = {};
-    ttHere().forEach(function (e) { (by[e.mins] = by[e.mins] || []).push(e); });
-    return Object.keys(by).map(Number).sort(function (a, b) { return a - b; }).map(function (m) {
-      var es = by[m].sort(function (a, b) { return a.grade - b.grade; });
-      return { mins: m, name: uniq(es.map(function (e) { return ttName(e.code); })).join(' / '), paper: uniq(es.map(ttPaperOf)).join(' / '), grade: es[0].grade };
-    }).sort(function (a, b) { return a.grade - b.grade || a.mins - b.mins; });
+  function ttListText() {
+    return TTTimetable.columns(TT, $('ttDate').value, $('ttSession').value, $('ttVenue').value, cfg.lang)
+      .map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
   }
   function ttRefresh(level) {
     if (!TT) return;
-    if (level < 1) ttOpts($('ttSession'), uniq(TT.entries.filter(function (e) { return e.date === $('ttDate').value; }).map(function (e) { return e.start; })).sort(), function (v) { return v; }, true);
-    if (level < 2) {
-      var vs = [];
-      TT.entries.forEach(function (e) { if (e.date === $('ttDate').value && e.start === $('ttSession').value) e.venues.forEach(function (v) { if (vs.indexOf(v) < 0) vs.push(v); }); });
-      vs.sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
-      ttOpts($('ttVenue'), vs, function (v) { return v; }, true);
-    }
-    $('ttWhat').textContent = ttColumns().map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
+    var d = $('ttDate').value;
+    if (level < 1) ttOpts($('ttSession'), TTTimetable.sessions(TT, d), function (v) { return v; }, $('ttSession').value);
+    if (level < 2) ttOpts($('ttVenue'), TTTimetable.venues(TT, d, $('ttSession').value), function (v) { return v; }, $('ttVenue').value);
+    $('ttWhat').textContent = ttListText();
   }
   function ttLoad() {
-    fetch('assets/timer-talisman/timetable.json').then(function (r) { return r.json(); }).then(function (data) {
+    TTTimetable.load(function (data) {
+      if (!data) return;
       TT = data;
-      var dates = uniq(TT.entries.map(function (e) { return e.date; })).sort();
-      ttOpts($('ttDate'), dates, ttDay, false);
-      var next = dates.filter(function (d) { return d >= today(); })[0];
-      $('ttDate').value = next || dates[dates.length - 1];
+      var dates = TTTimetable.days(data), next = dates.filter(function (d) { return d >= today(); })[0];
+      ttOpts($('ttDate'), dates, ttDay, next || dates[dates.length - 1]);
       ttRefresh(0);
       $('ttFill').classList.remove('hidden');
-    }).catch(function () {});
+    });
   }
   $('ttDate').addEventListener('change', function () { ttRefresh(0); });
   $('ttSession').addEventListener('change', function () { ttRefresh(1); });
   $('ttVenue').addEventListener('change', function () { ttRefresh(2); });
   $('btnTtFill').addEventListener('click', function () {
-    var cols = ttColumns(); if (!cols.length) return;
-    if (cols.length > 3) { alert(t('ttMany')); cols = cols.slice(0, 3); }
-    var x = cfg.exam, R = TT.reading || 600, p = $('ttSession').value.split(':');
-    var mins = +p[0] * 60 + +p[1] - Math.round(R / 60);
-    x.date = $('ttDate').value; x.reading = R;
-    x.start = ('0' + Math.floor(mins / 60)).slice(-2) + ':' + ('0' + mins % 60).slice(-2);
-    x.count = cols.length;
-    cols.forEach(function (c, i) {
-      var k = i ? String(i + 1) : '';
-      x['subject' + k] = c.name; x['paper' + k] = c.paper; x['writing' + k] = c.mins * 60;
-    });
-    changed(true); icons();
-    $('ttWhat').textContent = t('ttDone') + '\n' + $('ttWhat').textContent.replace(t('ttDone') + '\n', '');
+    var f = TTTimetable.fill(TT, $('ttDate').value, $('ttSession').value, $('ttVenue').value, cfg.lang);
+    if (!f) return;
+    if (f.more) alert(t('ttMany'));
+    Object.assign(cfg.exam, f.exam); changed(true); icons();
+    $('ttWhat').textContent = t('ttDone') + '\n' + ttListText();
   });
   ttLoad();
 

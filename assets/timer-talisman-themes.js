@@ -576,6 +576,57 @@
   window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
+  // ── The exam timetable (assets/timer-talisman/timetable.json) ──
+  // Shared by the setup page and the timer's settings panel: the data, and
+  // turning a date, a writing start and a venue into the exam settings.
+  var TT_WORDS = {
+    en: { grade: 'Grade {g}', paper: 'Paper {n}', prac: 'Practical' },
+    af: { grade: 'Graad {g}', paper: 'Vraestel {n}', prac: 'Prakties' }
+  };
+  var TT_DATA = null, TT_WAIT = [];
+  function ttLoad(done) {
+    if (TT_DATA) return done(TT_DATA);
+    TT_WAIT.push(done);
+    if (TT_WAIT.length > 1) return;
+    fetch('assets/timer-talisman/timetable.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
+      .then(function (d) { TT_DATA = d; TT_WAIT.splice(0).forEach(function (f) { f(d); }); })
+      .catch(function () { TT_WAIT.splice(0).forEach(function (f) { f(null); }); });
+  }
+  function ttUniq(a) { return a.filter(function (v, i) { return a.indexOf(v) === i; }); }
+  function ttDays(d) { return ttUniq(d.entries.map(function (e) { return e.date; })).sort(); }
+  function ttSessions(d, date) { return ttUniq(d.entries.filter(function (e) { return e.date === date; }).map(function (e) { return e.start; })).sort(); }
+  function ttVenues(d, date, start) {
+    var v = [];
+    d.entries.forEach(function (e) { if (e.date === date && e.start === start) e.venues.forEach(function (x) { if (v.indexOf(x) < 0) v.push(x); }); });
+    return v.sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+  }
+  function ttHere(d, date, start, venue) { return d.entries.filter(function (e) { return e.date === date && e.start === start && e.venues.indexOf(venue) >= 0; }); }
+  // the subjects in one venue: one column per writing time, so equal lengths share a column
+  function ttColumns(d, date, start, venue, lang) {
+    var W = TT_WORDS[lang] || TT_WORDS.en, by = {};
+    ttHere(d, date, start, venue).forEach(function (e) { (by[e.mins] = by[e.mins] || []).push(e); });
+    var name = function (code) { return code.split('/').map(function (c) { var n = d.names[c]; return n ? n[lang === 'af' ? 1 : 0] : c; }).join(' / '); };
+    var paper = function (e) {
+      var pp = e.paper === 'PRAC' ? W.prac : e.paper ? W.paper.replace('{n}', e.paper.replace(/^P/, '')) : '';
+      return W.grade.replace('{g}', e.grade) + (pp ? ' · ' + pp : '');
+    };
+    return Object.keys(by).map(Number).map(function (m) {
+      var es = by[m].sort(function (a, b) { return a.grade - b.grade; });
+      return { mins: m, name: ttUniq(es.map(function (e) { return name(e.code); })).join(' / '), paper: ttUniq(es.map(paper)).join(' / '), grade: es[0].grade };
+    }).sort(function (a, b) { return a.grade - b.grade || a.mins - b.mins; });
+  }
+  // the exam settings for a date, writing start and venue. The reading time
+  // comes first, so the timer's start is the writing start minus it.
+  function ttFill(d, date, start, venue, lang) {
+    var cols = ttColumns(d, date, start, venue, lang);
+    if (!cols.length) return null;
+    var R = d.reading || 600, p = start.split(':'), mins = +p[0] * 60 + +p[1] - Math.round(R / 60);
+    var exam = { date: date, reading: R, start: ('0' + Math.floor(mins / 60)).slice(-2) + ':' + ('0' + mins % 60).slice(-2), count: Math.min(3, cols.length) };
+    cols.slice(0, 3).forEach(function (c, i) { var k = i ? String(i + 1) : ''; exam['subject' + k] = c.name; exam['paper' + k] = c.paper; exam['writing' + k] = c.mins * 60; });
+    return { exam: exam, columns: cols, more: cols.length > 3 };
+  }
+  window.TTTimetable = { load: ttLoad, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill };
+
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,
                       font: font, fontCss: fontCss, loadFont: loadFont, fontPicker: fontPicker };
 })();

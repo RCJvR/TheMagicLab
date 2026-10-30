@@ -218,6 +218,7 @@ body.hide-cursor { cursor: none; }
 .panel input[type="range"] { width: 100%; height: 22px; }
 .panel input:disabled { opacity: 0.4; }
 .pnote { font-size: 14px; line-height: 1.5; opacity: 0.8; margin: 16px 0 0; }
+.ttp-what { font-size: 14px; line-height: 1.45; opacity: 0.85; white-space: pre-line; }
 .panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
@@ -257,6 +258,7 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
+      ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
@@ -280,6 +282,7 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
+      ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
@@ -904,6 +907,7 @@ body.hide-cursor { cursor: none; }
     p.setAttribute('aria-label', t('pTitle'));
     p.innerHTML =
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
+      ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
       '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
         TTThemes.colours.map(function (k) { return '<label>' + esc(t('c_' + k)) + '<input type="color" data-l="' + k + '" value="' + esc(L[k]) + '"></label>'; }).join('') + '</div></div>' +
@@ -933,6 +937,7 @@ body.hide-cursor { cursor: none; }
       '<label class="pf"><span>' + esc(t('pRep')) + '</span><select id="pRep">' + [1, 2, 3, 5].map(function (n) { return opt(n, n + '×', cfg.chime.rep === n); }).join('') + '</select></label>' +
       '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
+    ttPanelWire();
     themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
     TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: cfg.lang, label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
     TTSounds.fill($('pSound'), cfg.chime.id, cfg.lang);
@@ -996,6 +1001,51 @@ body.hide-cursor { cursor: none; }
       });
     });
   }
+  // ── Fill in the exam from the timetable, from this panel ──
+  var TT = null;   // the timetable, once it has loaded (TTTimetable, in the themes file)
+  function ttToday() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function ttDayLabel(d) { return new Date(d + 'T12:00').toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'long' }); }
+  function ttOpts(list, label, cur) { return list.map(function (v) { return '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(label(v)) + '</option>'; }).join(''); }
+  function ttLen(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + ' ' + t('h') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : ''); }
+  function ttListText(date, start, venue) {
+    return TTTimetable.columns(TT, date, start, venue, cfg.lang).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
+  }
+  function ttPanelHtml() {
+    if (cfg.mode !== 'exam' || !TT) return '';
+    var days = TTTimetable.days(TT), date = days.indexOf(cfg.exam.date) >= 0 ? cfg.exam.date : (days.filter(function (d) { return d >= ttToday(); })[0] || days[days.length - 1]);
+    var starts = TTTimetable.sessions(TT, date), start = starts[0], venues = TTTimetable.venues(TT, date, start);
+    var same = function (v) { return v; };
+    return '<div class="pf ttp"><span class="plabel">' + esc(t('ttTitle')) + '</span>' +
+      '<select id="pTtDate">' + ttOpts(days, ttDayLabel, date) + '</select>' +
+      '<select id="pTtSession">' + ttOpts(starts, same, start) + '</select>' +
+      '<select id="pTtVenue">' + ttOpts(venues, same, venues[0]) + '</select>' +
+      '<div class="ttp-what" id="pTtWhat"></div>' +
+      '<button type="button" class="pclose" id="pTtFill" style="justify-content:center">' + esc(t('ttFill')) + '</button></div>';
+  }
+  function ttPanelWire() {
+    if (!$('pTtDate')) return;
+    var d = $('pTtDate'), s = $('pTtSession'), v = $('pTtVenue'), same = function (x) { return x; };
+    var show = function (prefix) {
+      $('pTtWhat').textContent = (prefix ? prefix + '\n' : '') + (d.value && s.value && v.value ? ttListText(d.value, s.value, v.value) : '');
+    };
+    d.addEventListener('change', function () {
+      var starts = TTTimetable.sessions(TT, d.value);
+      s.innerHTML = ttOpts(starts, same, starts[0]);
+      v.innerHTML = ttOpts(TTTimetable.venues(TT, d.value, s.value), same);
+      show();
+    });
+    s.addEventListener('change', function () { v.innerHTML = ttOpts(TTTimetable.venues(TT, d.value, s.value), same); show(); });
+    v.addEventListener('change', function () { show(); });
+    $('pTtFill').addEventListener('click', function () {
+      var f = TTTimetable.fill(TT, d.value, s.value, v.value, cfg.lang);
+      if (!f) return;
+      if (f.more) alert(t('ttMany'));
+      Object.assign(cfg.exam, f.exam);
+      lookChanged(); start(cfg);   // a new exam has its own saved progress, so start again
+      show(t('ttDone'));
+    });
+    show();
+  }
   function togglePanel(open) {
     panelOpen = open === undefined ? !panelOpen : open;
     if (panelOpen) { buildPanel(); $('panel').hidden = false; $('pTheme').focus(); }
@@ -1010,6 +1060,7 @@ body.hide-cursor { cursor: none; }
   }
   function start(c) {
     cfg = c;
+    TTTimetable.load(function (data) { TT = data; });
     loadPicture();
     if (!audioAsked) { audioAsked = true; loadAudio(); }
     var x = cfg.exam;
