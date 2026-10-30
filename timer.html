@@ -255,6 +255,7 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
+      pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
@@ -279,6 +280,7 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
+      pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
@@ -904,6 +906,8 @@ body.hide-cursor { cursor: none; }
     p.setAttribute('aria-label', t('pTitle'));
     p.innerHTML =
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
+      '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
+        ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
       ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
       '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
@@ -935,6 +939,14 @@ body.hide-cursor { cursor: none; }
       '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
     ttPanelWire();
+    // a new type has its own saved progress, so the timer starts again with it
+    [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
+      b.addEventListener('click', function () {
+        cfg.mode = b.getAttribute('data-v');
+        lookChanged(); start(cfg); buildPanel();
+        $('pMode').querySelector('[data-v="' + cfg.mode + '"]').focus();
+      });
+    });
     themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
     TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: cfg.lang, label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
     TTSounds.fill($('pSound'), cfg.chime.id, cfg.lang);
