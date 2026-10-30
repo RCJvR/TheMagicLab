@@ -1,0 +1,52 @@
+/* The Magic Lab — focus reading for lessons. See assets/focus-reading.js.
+   Colours come from the page's own variables, so light mode follows the
+   page the same way it does everywhere else. */
+
+.ml-focus-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 12px; margin: 0 0 24px;
+}
+
+.ml-focus-toggle {
+  font: inherit; font-size: 13px; font-weight: 600; line-height: 1;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border, rgba(255,255,255,0.12));
+  background: transparent; color: var(--muted, #8b93a1);
+}
+.ml-focus-toggle[aria-pressed="true"] { color: var(--text, #e3e8ef); border-color: currentColor; }
+
+.ml-focus-nav {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  font-size: 13px; color: var(--muted, #8b93a1);
+}
+.ml-focus-nav[hidden] { display: none; }
+.ml-focus-nav button {
+  font: inherit; font-size: 13px; font-weight: 600;
+  padding: 6px 2px; border: 0; background: none; cursor: pointer;
+  color: var(--text, #e3e8ef);
+}
+.ml-focus-nav button:disabled { opacity: 0.35; cursor: default; }
+
+.ml-focus-toggle:focus-visible,
+.ml-focus-nav button:focus-visible {
+  outline: 2px solid var(--blue, #60a5fa); outline-offset: 3px; border-radius: 4px;
+}
+
+/* While the view is on, sections are set apart by a hairline and breathing
+   room, so the segments are visible as units rather than as a wall of text. */
+.ml-focus-on .ml-focus-seg { padding-block: 28px; border-top: 1px solid var(--border, rgba(255,255,255,0.075)); }
+.ml-focus-on .ml-focus-seg:first-child { border-top: 0; padding-top: 0; }
+
+.ml-focus-seg { transition: filter 0.5s ease, opacity 0.5s ease; }
+.ml-focus-on .ml-focus-seg.is-blurred { filter: blur(6px); opacity: 0.4; cursor: pointer; }
+.ml-focus-on .ml-focus-seg.is-blurred:hover { opacity: 0.6; }
+.ml-focus-on .ml-focus-seg.is-current { filter: none; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ml-focus-seg { transition: none; }
+}
+
+@media print {
+  .ml-focus-bar { display: none; }
+  .ml-focus-on .ml-focus-seg { filter: none !important; opacity: 1 !important; }
+}
