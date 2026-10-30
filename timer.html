@@ -144,32 +144,6 @@ body.hide-cursor { cursor: none; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 .multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
-/* The exam instructions recording: a compact button in the top-left corner,
-   out of the timer's way (the clock in the top-right corner mirrors it). It
-   is fixed, so the timer's layout never makes room for it; the heading only
-   keeps clear of it. The ring round the button fills as the recording plays. */
-.brief {
-  display: none; position: fixed; top: 2.4vmin; left: 3vw; z-index: 5;
-  align-items: center; gap: 1.2vmin; max-width: 30vmin;
-}
-.has-brief .brief { display: flex; }
-.has-brief .head { max-width: calc(100vw - 2 * (3vw + 31vmin)); }
-.brief button {
-  --p: 0; flex: 0 0 auto; width: clamp(48px, 7.5vmin, 96px); height: clamp(48px, 7.5vmin, 96px);
-  border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center; padding: 0;
-  color: var(--bg); background: var(--accent);
-  box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px color-mix(in srgb, var(--fg) 22%, transparent);
-  background-image: conic-gradient(color-mix(in srgb, var(--fg) 30%, var(--accent)) calc(var(--p) * 1turn), transparent 0);
-}
-.brief button:hover { filter: brightness(1.08); }
-.brief button:focus-visible { outline: 3px solid var(--fg); outline-offset: 8px; }
-.brief button svg { width: 46%; height: 46%; }
-.brief button.play svg { margin-left: 8%; }   /* a play triangle looks centred a little to the right */
-.brief .btext { min-width: 0; text-align: left; line-height: 1.2; }
-.brief .blabel { font-size: clamp(12px, 1.9vmin, 22px); font-weight: 700; overflow-wrap: break-word; }
-.brief .btime { font-size: clamp(11px, 1.6vmin, 19px); opacity: 0.75; font-variant-numeric: tabular-nums; margin-top: 0.3em; }
-.brief .btime:empty { display: none; }
-.has-pic .brief { text-shadow: 0 0.2vmin 1vmin color-mix(in srgb, var(--bg) 85%, transparent); }
 .warn .digital, .warn .phase { color: var(--warn); }
 .done .digital { animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0.3; } }
@@ -177,8 +151,8 @@ body.hide-cursor { cursor: none; }
 
 .bar {
   position: fixed; left: 50%; bottom: 2.4vmin; transform: translateX(-50%);
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 8px;
-  border-radius: 999px; max-width: calc(100vw - 24px); box-sizing: border-box;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 10px;
+  border-radius: 999px; width: max-content; max-width: calc(100vw - 24px); box-sizing: border-box;
   background: color-mix(in srgb, var(--fg) 9%, var(--bg));
   border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
   font-family: 'Cabinet Grotesk', system-ui, sans-serif;
@@ -186,15 +160,15 @@ body.hide-cursor { cursor: none; }
 }
 .bar.idle { opacity: 0; pointer-events: none; }
 .bar button {
-  font: inherit; font-size: 15px; font-weight: 700; color: var(--fg); background: transparent;
+  font: inherit; font-size: 18px; font-weight: 700; color: var(--fg); background: transparent;
   border: 1px solid color-mix(in srgb, var(--fg) 26%, transparent); border-radius: 999px;
-  padding: 9px 15px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  padding: 12px 18px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
 }
 .bar button:hover { border-color: var(--fg); }
 .bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .bar button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.bar button svg { width: 16px; height: 16px; }
-.bar button.icon-only { padding: 9px 11px; }
+.bar button svg { width: 20px; height: 20px; }
+.bar button.icon-only { padding: 12px 14px; }
 .preview .bar button { font-size: 12px; padding: 6px 10px; }
 .preview .bar button svg { width: 13px; height: 13px; }
 
@@ -263,7 +237,6 @@ body.hide-cursor { cursor: none; }
     <div class="info" id="info"></div>
   </main>
   <div class="now" id="now"></div>
-  <div class="brief" id="brief"><button type="button" id="briefBtn" class="play"></button><div class="btext"><div class="blabel" id="briefLabel"></div><div class="btime" id="briefTime"></div></div></div>
   <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
   <aside class="panel" id="panel" hidden></aside>
 
@@ -284,7 +257,7 @@ body.hide-cursor { cursor: none; }
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
-      instr: 'Exam instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
+      instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
@@ -307,7 +280,7 @@ body.hide-cursor { cursor: none; }
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
-      instr: 'Eksameninstruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
+      instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
@@ -676,7 +649,7 @@ body.hide-cursor { cursor: none; }
       bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
-    if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'circle-pause' : 'megaphone', audioPlaying() ? t('instrPause') : t('instrPlay'), toggleAudio, '', true));
+    if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio));
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) bar.appendChild(btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true));
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
@@ -810,7 +783,6 @@ body.hide-cursor { cursor: none; }
     var laps = cfg.mode === 'stopwatch' ? st.laps.map(function (l, i) { return '<div>' + esc(t('lap')) + ' ' + (i + 1) + ' · ' + esc(dur(l - (st.laps[i - 1] || 0), 'up')) + '</div>'; }).reverse().join('') : '';
     if (view.laps !== laps) { $('laps').innerHTML = laps; view.laps = laps; relayout = true; }
     drawMulti(m);
-    drawBrief();
     var stage = $('stage');
     stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
     drawFill(m);
@@ -860,8 +832,7 @@ body.hide-cursor { cursor: none; }
         audioOwn = rec.own; audioName = rec.name || '';
         if (rec.blob) audioUrl = URL.createObjectURL(rec.blob);
         audio = new Audio(audioUrl || rec.url); audio.preload = 'metadata';
-        ['play', 'pause', 'ended', 'loadedmetadata'].forEach(function (ev) { audio.addEventListener(ev, function () { if (ev === 'ended') audio.currentTime = 0; drawBrief(); if (cfg) buildBar(); }); });
-        audio.addEventListener('timeupdate', drawBrief);
+        ['play', 'pause', 'ended', 'loadedmetadata'].forEach(function (ev) { audio.addEventListener(ev, function () { if (ev === 'ended') audio.currentTime = 0; if (cfg) buildBar(); }); });
       }
       if (cfg) { relayout = true; render(true); }
       if (then) then();
@@ -875,27 +846,6 @@ body.hide-cursor { cursor: none; }
     if (audio.paused) { audio.play().catch(function () {}); } else audio.pause();
   }
   function mmss(sec) { sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + pad(sec % 60); }
-  function drawBrief() {
-    if (!cfg) return;
-    var show = hasAudio() && (!st.started || audioPlaying());
-    if (document.body.classList.contains('has-brief') !== show) { document.body.classList.toggle('has-brief', show); relayout = true; }
-    if (!show) return;
-    var b = $('briefBtn'), playing = audioPlaying(), lbl = playing ? t('instrPause') : t('instrPlay');
-    var icon = playing ? 'pause' : 'play';
-    if (b.dataset.icon !== icon) {
-      b.dataset.icon = icon; b.className = icon;
-      b.innerHTML = '<i data-lucide="' + icon + '"></i>';
-      if (window.lucide) lucide.createIcons({ root: b });
-    }
-    b.setAttribute('aria-label', lbl); b.title = lbl;
-    var d = audio.duration, p = isFinite(d) && d > 0 ? audio.currentTime / d : 0;
-    b.style.setProperty('--p', p.toFixed(4));
-    var label = audioName || t('instr');
-    if ($('briefLabel').textContent !== label) $('briefLabel').textContent = label;
-    var tm = isFinite(d) && d > 0 ? (audio.currentTime > 0 ? mmss(audio.currentTime) + ' / ' : '') + mmss(d) : '';
-    if ($('briefTime').textContent !== tm) $('briefTime').textContent = tm;
-  }
-  $('briefBtn').addEventListener('click', function (e) { e.stopPropagation(); TTSounds.unlock(); toggleAudio(); });
 
   // the teacher's picture for the screen fill (TTPicture, in this browser only)
   var picture = null;
