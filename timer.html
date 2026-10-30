@@ -143,23 +143,32 @@ body.hide-cursor { cursor: none; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 .multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
-/* The exam instructions recording: one big button to play it before the
-   start. The ring round it fills as the recording plays. */
-.brief { display: none; flex-direction: column; align-items: center; gap: 1.4vmin; }
+/* The exam instructions recording: a compact button in the top-left corner,
+   out of the timer's way (the clock in the top-right corner mirrors it). It
+   is fixed, so the timer's layout never makes room for it; the heading only
+   keeps clear of it. The ring round the button fills as the recording plays. */
+.brief {
+  display: none; position: fixed; top: 2.4vmin; left: 3vw; z-index: 5;
+  align-items: center; gap: 1.2vmin; max-width: 30vmin;
+}
 .has-brief .brief { display: flex; }
+.has-brief .head { max-width: calc(100vw - 2 * (3vw + 31vmin)); }
 .brief button {
-  --p: 0; width: calc(17vmin * var(--tsize)); height: calc(17vmin * var(--tsize)); min-width: 88px; min-height: 88px;
+  --p: 0; flex: 0 0 auto; width: clamp(48px, 7.5vmin, 96px); height: clamp(48px, 7.5vmin, 96px);
   border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center; padding: 0;
   color: var(--bg); background: var(--accent);
-  box-shadow: 0 0 0 0.9vmin var(--bg), 0 0 0 1.5vmin color-mix(in srgb, var(--fg) 18%, transparent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px color-mix(in srgb, var(--fg) 22%, transparent);
   background-image: conic-gradient(color-mix(in srgb, var(--fg) 30%, var(--accent)) calc(var(--p) * 1turn), transparent 0);
 }
 .brief button:hover { filter: brightness(1.08); }
-.brief button:focus-visible { outline: 3px solid var(--fg); outline-offset: 1.8vmin; }
-.brief button svg { width: 44%; height: 44%; }
+.brief button:focus-visible { outline: 3px solid var(--fg); outline-offset: 8px; }
+.brief button svg { width: 46%; height: 46%; }
 .brief button.play svg { margin-left: 8%; }   /* a play triangle looks centred a little to the right */
-.brief .blabel { font-size: calc(3vmin * var(--tsize)); font-weight: 700; }
-.brief .btime { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.75; font-variant-numeric: tabular-nums; min-height: 1.3em; }
+.brief .btext { min-width: 0; text-align: left; line-height: 1.2; }
+.brief .blabel { font-size: clamp(12px, 1.9vmin, 22px); font-weight: 700; overflow-wrap: break-word; }
+.brief .btime { font-size: clamp(11px, 1.6vmin, 19px); opacity: 0.75; font-variant-numeric: tabular-nums; margin-top: 0.3em; }
+.brief .btime:empty { display: none; }
+.has-pic .brief { text-shadow: 0 0.2vmin 1vmin color-mix(in srgb, var(--bg) 85%, transparent); }
 .warn .digital, .warn .phase { color: var(--warn); }
 .done .digital { animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0.3; } }
@@ -249,11 +258,11 @@ body.hide-cursor { cursor: none; }
       <aside class="facts" id="facts"></aside>
     </div>
     <div class="sub" id="sub"></div>
-    <div class="brief" id="brief"><button type="button" id="briefBtn" class="play"></button><div class="blabel" id="briefLabel"></div><div class="btime" id="briefTime"></div></div>
     <div class="laps" id="laps"></div>
     <div class="info" id="info"></div>
   </main>
   <div class="now" id="now"></div>
+  <div class="brief" id="brief"><button type="button" id="briefBtn" class="play"></button><div class="btext"><div class="blabel" id="briefLabel"></div><div class="btime" id="briefTime"></div></div></div>
   <div class="bar" id="bar" role="toolbar" aria-label="Timer controls"></div>
   <aside class="panel" id="panel" hidden></aside>
 
