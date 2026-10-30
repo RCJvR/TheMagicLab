@@ -275,7 +275,7 @@ body.hide-cursor { cursor: none; }
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
       instr: 'Exam instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
-      pAudio: 'Instructions recording', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
+      pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
@@ -298,7 +298,7 @@ body.hide-cursor { cursor: none; }
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
       instr: 'Eksameninstruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
-      pAudio: 'Instruksie-opname', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
+      pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
@@ -829,17 +829,18 @@ body.hide-cursor { cursor: none; }
     $('multi').innerHTML = html; view.multi = html;
   }
 
-  // ── The exam instructions recording (TTAudio, in this browser only) ──
+  // ── The exam instructions recording (TTAudio: this browser's own file, or the built-in one) ──
   // One big button plays it before the exam starts; once the exam is under
   // way it is only offered in the toolbar, so it never covers the time.
-  var audio = null, audioName = '', audioUrl = null, audioAsked = false;
+  var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false;
   function loadAudio(then) {
-    TTAudio.get(function (rec) {
+    TTAudio.resolve(function (rec) {
       if (audio) { audio.pause(); audio = null; }
       if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
-      if (rec && rec.blob) {
-        audioUrl = URL.createObjectURL(rec.blob); audioName = rec.name || '';
-        audio = new Audio(audioUrl); audio.preload = 'metadata';
+      if (rec) {
+        audioOwn = rec.own; audioName = rec.name || '';
+        if (rec.blob) audioUrl = URL.createObjectURL(rec.blob);
+        audio = new Audio(audioUrl || rec.url); audio.preload = 'metadata';
         ['play', 'pause', 'ended', 'loadedmetadata'].forEach(function (ev) { audio.addEventListener(ev, function () { if (ev === 'ended') audio.currentTime = 0; drawBrief(); if (cfg) buildBar(); }); });
         audio.addEventListener('timeupdate', drawBrief);
       }
@@ -947,9 +948,10 @@ body.hide-cursor { cursor: none; }
         '<div class="prow"><button type="button" class="pclose" id="pPicPick" style="flex:1;justify-content:center">' + esc(t('pPicPick')) + '</button>' +
         '<button type="button" class="pclose" id="pPicOff" style="flex:1;justify-content:center"' + (L.pic && picture ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
         '<input type="file" accept="image/*" id="pPicFile" hidden></div>') +
-      (cfg.mode !== 'exam' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pAudio')) + (audio ? ' · ' + esc(audioName || t('instr')) : '') + '</span>' +
-        '<div class="prow"><button type="button" class="pclose" id="pAudPick" style="flex:1;justify-content:center">' + esc(t('pPicPick')) + '</button>' +
-        '<button type="button" class="pclose" id="pAudOff" style="flex:1;justify-content:center"' + (audio ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
+      (cfg.mode !== 'exam' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pAudio')) + (audio ? ' · ' + esc(audioName || t('instr')) + (audioOwn ? '' : ' (' + esc(t('builtin')) + ')') : '') + '</span>' +
+        '<label class="pchk"><input type="checkbox" id="pAudOn"' + (cfg.exam.audio ? ' checked' : '') + '>' + esc(t('pAudioOn')) + '</label>' +
+        '<div class="prow"><button type="button" class="pclose" id="pAudPick" style="flex:1;justify-content:center">' + esc(t('pAudioOwn')) + '</button>' +
+        '<button type="button" class="pclose" id="pAudOff" style="flex:1;justify-content:center"' + (audioOwn ? '' : ' hidden') + '>' + esc(t('pAudioBuiltin')) + '</button></div>' +
         '<input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="pAudFile" hidden></div>') +
       '<div class="pf"><span class="plabel">' + esc(t('pFont')) + '</span><div id="pFontPick"></div></div>' +
       '<label class="pchk"><input type="checkbox" data-l="fit"' + (L.fit ? ' checked' : '') + '>' + esc(t('pFit')) + '</label>' +
@@ -1000,8 +1002,9 @@ body.hide-cursor { cursor: none; }
         });
       });
       $('pAudOff').addEventListener('click', function () {
-        TTAudio.clear(function () { cfg.exam.audio = false; lookChanged(); loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
+        TTAudio.clear(function () { loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
       });
+      $('pAudOn').addEventListener('change', function () { cfg.exam.audio = this.checked; if (!this.checked && audio) audio.pause(); lookChanged(); });
     }
     [['#pStyle', 'display'], ['#pLayout', 'layout'], ['#pFill', 'fill']].forEach(function (g) {
       [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {

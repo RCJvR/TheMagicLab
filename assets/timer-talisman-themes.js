@@ -531,11 +531,14 @@
 
   // ── The exam instructions recording ──
   // A sound file is far too big for a link or localStorage, so it stays in
-  // this browser's IndexedDB. The link only says "offer the recording"; on
-  // another computer the teacher chooses the file again in the timer's
-  // settings. Saving or removing it bumps AUDIO_KEY in localStorage, so an
-  // open timer tab hears about it through the storage event.
+  // this browser's IndexedDB. The link only says "offer the recording". With
+  // no file of its own, a browser uses the built-in one (BUILTIN), so any
+  // computer, such as the projector's, has a recording straight away.
+  // Saving or removing a file bumps AUDIO_KEY in localStorage, so an open
+  // timer tab hears about it through the storage event.
   var AUDIO_KEY = 'tt-audio-changed';
+  // the Grade 8–11 exam regulations, read out before the start
+  var BUILTIN = { url: 'assets/timer-talisman/exam-regulations-gr8-11.m4a', name: 'Gr 8-11 Exam regulations' };
   function audioDb(fn, done) {
     var req;
     try { req = indexedDB.open('tt-audio', 1); } catch (e) { return done(null); }
@@ -558,12 +561,19 @@
     audioDb(function (st) { return st.put({ blob: file, name: name, type: file.type }, 'instructions'); },
       function (ok) { if (ok) audioTouched(); done(!!ok); });
   }
+  // the recording to play: this browser's own file, or else the built-in one
+  function audioResolve(done) {
+    audioGet(function (rec) {
+      if (rec && rec.blob) done({ blob: rec.blob, name: rec.name || '', own: true });
+      else done({ url: BUILTIN.url, name: BUILTIN.name, own: false });
+    });
+  }
   function audioClear(done) {
     audioDb(function (st) { return st.delete('instructions'); }, function () { audioTouched(); if (done) done(); });
   }
 
   window.TTPicture = { get: picGet, save: picSave, clear: picClear, key: PIC_KEY };
-  window.TTAudio = { get: audioGet, save: audioSave, clear: audioClear, key: AUDIO_KEY };
+  window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,

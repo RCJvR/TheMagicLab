@@ -261,16 +261,16 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
               <label class="field"><span data-t="fInfo">Additional information</span><textarea class="inp" maxlength="600" data-k="exam.info" data-tp="pInfo"></textarea></label>
             </div>
             <div class="aud-box">
-              <span class="aud-label" data-t="fAudio">Instructions recording</span>
+              <label class="check"><input type="checkbox" data-k="exam.audio"><span data-t="fAudioOn">Play an instructions recording before the exam</span></label>
               <div class="pic-row">
-                <span class="aud-name" id="audName" hidden></span>
+                <span class="aud-name" id="audName"></span>
                 <div class="savebox">
-                  <button class="ml-btn ml-btn--ghost" type="button" id="btnAud"><i data-lucide="audio-lines"></i><span data-t="audPick">Choose a recording</span></button>
-                  <button class="ml-btn ml-btn--ghost" type="button" id="btnAudOff" hidden><i data-lucide="trash-2"></i><span data-t="picOff">Remove</span></button>
+                  <button class="ml-btn ml-btn--ghost" type="button" id="btnAud"><i data-lucide="audio-lines"></i><span data-t="audPick">Choose another recording</span></button>
+                  <button class="ml-btn ml-btn--ghost" type="button" id="btnAudOff" hidden><i data-lucide="rotate-ccw"></i><span data-t="audBuiltin">Use the built-in one</span></button>
                 </div>
                 <input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="audFile" hidden>
               </div>
-              <p class="tt-note" data-t="audNote">For example the exam rules, read out before the start. The timer shows a big play button until the exam starts, and a small one in its controls after that. The recording stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings.</p>
+              <p class="tt-note" data-t="audNote">The built-in recording is the Grade 8–11 exam regulations. The timer shows a big play button until the exam starts, and a small one in its controls after that. A recording you choose yourself stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings, or that computer uses the built-in one.</p>
             </div>
           </div>
 
@@ -398,7 +398,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     pomo: { work: 1500, short: 300, long: 900, every: 4, auto: true },
     cd: { secs: 600 },
     exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '',
-            count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800, audio: false },
+            count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800, audio: true },
     look: { display: 'both', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
@@ -430,8 +430,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fSubj2: 'Subject 2', fSubj3: 'Subject 3', subjDel: 'Remove', subjAdd: 'Add another subject in this venue',
       subjNote: 'Up to three subjects. They share the start and the reading time; each has its own writing time, and its own column with the time left and finish time.',
       pSubject2: 'e.g. Life Sciences', pSubject3: 'e.g. Geography',
-      fAudio: 'Instructions recording', audPick: 'Choose a recording', audBad: 'That file could not be used. Try an MP3 or M4A.',
-      audNote: "For example the exam rules, read out before the start. The timer shows a big play button until the exam starts, and a small one in its controls after that. The recording stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings.",
+      fAudioOn: 'Play an instructions recording before the exam', audPick: 'Choose another recording', audBuiltin: 'Use the built-in one', builtin: 'built in', audBad: 'That file could not be used. Try an MP3 or M4A.',
+      audNote: "The built-in recording is the Grade 8–11 exam regulations. The timer shows a big play button until the exam starts, and a small one in its controls after that. A recording you choose yourself stays in this browser and is not part of the link; on another computer, choose it again in the timer's settings, or that computer uses the built-in one.",
       pSubject: 'e.g. Physical Sciences', pPaper: 'e.g. Paper 1', pInfo: 'e.g. Answer all the questions. Use a blue or black pen. Calculators are allowed.', pTitle: 'e.g. Homework block',
       min: 'min', h: 'h', confirmDefaults: 'Reset all settings to the defaults?'
     },
@@ -459,8 +459,8 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       fSubj2: 'Vak 2', fSubj3: 'Vak 3', subjDel: 'Verwyder', subjAdd: "Voeg nog 'n vak in hierdie lokaal by",
       subjNote: 'Tot drie vakke. Hulle deel die begintyd en die leestyd; elkeen het sy eie skryftyd, en sy eie kolom met die oorblywende tyd en eindtyd.',
       pSubject2: 'bv. Lewenswetenskappe', pSubject3: 'bv. Geografie',
-      fAudio: 'Instruksie-opname', audPick: "Kies 'n opname", audBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
-      audNote: "Byvoorbeeld die eksamenreëls, wat voor die begin voorgelees word. Die tydhouer wys 'n groot speelknoppie totdat die eksamen begin, en daarna 'n klein een tussen sy kontroles. Die opname bly in hierdie blaaier en is nie deel van die skakel nie; op 'n ander rekenaar, kies dit weer in die tydhouer se instellings.",
+      fAudioOn: "Speel 'n instruksie-opname voor die eksamen", audPick: "Kies 'n ander opname", audBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', audBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
+      audNote: "Die ingeboude opname is die Graad 8–11-eksamenreëls. Die tydhouer wys 'n groot speelknoppie totdat die eksamen begin, en daarna 'n klein een tussen sy kontroles. 'n Opname wat jy self kies, bly in hierdie blaaier en is nie deel van die skakel nie; op 'n ander rekenaar, kies dit weer in die tydhouer se instellings, of daardie rekenaar gebruik die ingeboude een.",
       pSubject: 'bv. Fisiese Wetenskappe', pPaper: 'bv. Vraestel 1', pInfo: "bv. Beantwoord al die vrae. Gebruik 'n blou of swart pen. Sakrekenaars word toegelaat.", pTitle: 'bv. Huiswerkblok',
       min: 'min', h: 'uur', confirmDefaults: 'Stel al die instellings terug na die verstek?'
     }
@@ -502,9 +502,9 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     ['', '2', '3'].forEach(function (k) { $('exH' + k).value = Math.floor(cfg.exam['writing' + k] / 3600); $('exM' + k).value = Math.floor(cfg.exam['writing' + k] % 3600 / 60); });
     document.querySelectorAll('.subj').forEach(function (b) { b.classList.toggle('hidden', +b.getAttribute('data-n') > cfg.exam.count); });
     $('btnAddSubj').classList.toggle('hidden', cfg.exam.count >= 3);
-    TTAudio.get(function (rec) {
-      $('audName').hidden = !rec; $('audName').textContent = rec ? rec.name || t('fAudio') : '';
-      $('btnAudOff').hidden = !rec;
+    TTAudio.resolve(function (rec) {
+      $('audName').textContent = rec.name + (rec.own ? '' : ' (' + t('builtin') + ')');
+      $('btnAudOff').hidden = !rec.own;
     });
     document.querySelectorAll('#modes .mode').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === cfg.mode); });
     document.querySelectorAll('#displaySeg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === cfg.look.display); });
@@ -612,7 +612,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
       cfg.exam.audio = true; changed(true);
     });
   });
-  $('btnAudOff').addEventListener('click', function () { TTAudio.clear(function () { cfg.exam.audio = false; changed(true); }); });
+  $('btnAudOff').addEventListener('click', function () { TTAudio.clear(function () { changed(true); }); });
   document.querySelectorAll('#modes .mode').forEach(function (b) {
     b.addEventListener('click', function () {
       cfg.mode = b.getAttribute('data-mode');
