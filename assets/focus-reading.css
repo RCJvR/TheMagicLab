@@ -46,7 +46,64 @@
   .ml-focus-seg { transition: none; }
 }
 
+/* "Still want this?" prompt, shown above the lesson when it is due. */
+.ml-focus-ask {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+  margin: 0 0 16px; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid var(--border, rgba(255,255,255,0.12));
+  font-size: 14px; color: var(--text-2, var(--text, #e3e8ef));
+}
+.ml-focus-ask span { flex: 1 1 220px; }
+
+/* Introduction dialog. */
+.ml-focus-modal {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  background: rgba(0,0,0,0.55);
+}
+.ml-focus-card {
+  width: min(460px, 100%); max-height: calc(100vh - 40px); overflow: auto;
+  padding: 28px; border-radius: 16px; box-sizing: border-box;
+  background: var(--bg, #111418); color: var(--text, #e3e8ef);
+  border: 1px solid var(--border, rgba(255,255,255,0.12));
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.85);
+  font-family: inherit;
+}
+.ml-focus-card .ml-focus-title {
+  font-size: 20px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em;
+  margin: 0 0 10px; color: var(--text, #e3e8ef);
+}
+.ml-focus-card p {
+  margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: var(--text-2, var(--muted, #8b93a1));
+}
+.ml-focus-card p.ml-focus-note { margin: 14px 0 0; font-size: 13px; color: var(--muted, #8b93a1); }
+
+.ml-focus-demo {
+  display: flex; flex-direction: column; gap: 12px; margin: 0 0 16px;
+  padding: 16px 18px; border-radius: 12px;
+  border: 1px solid var(--border, rgba(255,255,255,0.12));
+}
+.ml-focus-demo .ml-focus-demo-seg {
+  margin: 0; font-size: 15px; line-height: 1.5; color: var(--text, #e3e8ef);
+  transition: filter 0.5s ease, opacity 0.5s ease;
+}
+.ml-focus-demo .ml-focus-demo-seg.is-blurred { filter: blur(4px); opacity: 0.4; }
+
+.ml-focus-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+.ml-focus-actions button,
+.ml-focus-ask button {
+  font: inherit; font-size: 14px; font-weight: 600; line-height: 1;
+  padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border, rgba(255,255,255,0.12));
+  background: transparent; color: var(--text, #e3e8ef);
+}
+.ml-focus-actions .ml-focus-primary { background: var(--text, #e3e8ef); color: var(--bg, #08090b); border-color: var(--text, #e3e8ef); }
+.ml-focus-modal button:focus-visible,
+.ml-focus-ask button:focus-visible {
+  outline: 2px solid var(--blue, #60a5fa); outline-offset: 3px;
+}
+
 @media print {
-  .ml-focus-bar { display: none; }
+  .ml-focus-bar, .ml-focus-ask, .ml-focus-modal { display: none; }
   .ml-focus-on .ml-focus-seg { filter: none !important; opacity: 1 !important; }
 }
