@@ -224,6 +224,12 @@ body.hide-cursor { cursor: none; }
 }
 .pseg button { flex: 1; }
 .pseg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+/* Phones: a segmented row that is too wide for the panel wraps, rather than
+   pushing its buttons past the panel's edge. */
+@media (max-width: 600px), (max-height: 500px) and (pointer: coarse) {
+  .pseg { flex-wrap: wrap; }
+  .pseg button { flex: 1 1 auto; min-width: 0; }
+}
 .pclose { display: inline-flex; padding: 7px; }
 .pclose svg { width: 20px; height: 20px; }
 .pclose[hidden] { display: none; }
