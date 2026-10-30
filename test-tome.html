@@ -511,7 +511,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       back: 'Dashboard', intro: 'Practice tests set out like the exam. Every question marks itself: submit, see your mark straight away, then go through each answer with its explanation.',
       storeNote: 'Your answers and results are saved in this browser on this device.',
       grade: 'Grade {g}', marks: '{n} marks', mark1: '1 mark', minutes: '{n} minutes', questions: 'questions', totalMarks: 'marks', time: 'minutes',
-      noTests: 'No tests yet.', last: 'Last: {s}/{t}', inProgress: 'In progress',
+      noTests: 'No tests yet.', opensOn: 'The practice tests open on Monday, 2 November.', last: 'Last: {s}/{t}', inProgress: 'In progress',
       start: 'Start the test', resume: 'Carry on with my test', reviewLast: 'Review my last attempt', allTests: 'All tests',
       lastResult: 'Your last result: {s} out of {t} ({p}%).',
       submit: 'Submit', submitTest: 'Submit my test', answered: '{a} of {n} answered', left: '{t} left', over: 'Time is up',
@@ -558,7 +558,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
       storeNote: 'Jou antwoorde en uitslae word in hierdie blaaier op hierdie toestel gestoor.',
       grade: 'Graad {g}', marks: '{n} punte', mark1: '1 punt', minutes: '{n} minute', questions: 'vrae', totalMarks: 'punte', time: 'minute',
-      noTests: 'Nog geen toetse nie.', last: 'Laaste: {s}/{t}', inProgress: 'Besig',
+      noTests: 'Nog geen toetse nie.', opensOn: 'Die oefentoetse open Maandag, 2 November.', last: 'Laaste: {s}/{t}', inProgress: 'Besig',
       start: 'Begin die toets', resume: 'Gaan voort met my toets', reviewLast: 'Hersien my laaste poging', allTests: 'Alle toetse',
       lastResult: 'Jou laaste uitslag: {s} uit {t} ({p}%).',
       submit: 'Dien in', submitTest: 'Dien my toets in', answered: '{a} van {n} beantwoord', left: '{t} oor', over: 'Die tyd is om',
@@ -739,7 +739,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function siblings(m) { return m && m.set ? manifest.filter(function (x) { return x.set === m.set && canSee(x); }) : []; }
   // a draft test (manifest "draft": true) is only listed for teachers, so it
   // can be checked before learners see it
-  function canSee(m) { return !m.draft || isTeacher(); }
+  // The practice tests open for learners on this day (local date); teachers see them any time
+  var OPEN_FROM = '2026-11-02';
+  function localDay() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function openNow() { return isTeacher() || localDay() >= OPEN_FROM; }
+  function canSee(m) { return openNow() && (!m.draft || isTeacher()); }
   // topic names come from the test file ("topics": {key: name}), so every
   // subject brings its own; the Coding & Robotics papers use the built-in ones
   function topicName(k, qz) { return (qz && qz.topics && qz.topics[k]) || t('topic_' + (k || 'other')); }
@@ -751,6 +755,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var box = $('quizList'); box.innerHTML = '';
     // signed out on an open test: the other tests are members-only
     if (window.TT_PUBLIC) { show('viewList'); return; }
+    if (!openNow()) { box.innerHTML = '<p class="tt-empty">' + esc(t('opensOn', { d: OPEN_FROM })) + '</p>'; show('viewList'); return; }
     if (!manifest.filter(canSee).length) { box.innerHTML = '<p class="tt-empty">' + esc(t('noTests')) + '</p>'; show('viewList'); return; }
     var grades = {};
     loc(manifest.filter(canSee)).forEach(function (m) { (grades[m.grade] = grades[m.grade] || []).push(m); });
