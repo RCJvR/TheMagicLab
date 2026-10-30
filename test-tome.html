@@ -394,6 +394,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <button class="ml-btn ml-btn--primary" id="btnStart"><i data-lucide="play"></i><span></span></button>
         <button class="ml-btn ml-btn--ghost hidden" id="btnLastReview"><i data-lucide="list-checks"></i><span data-t="reviewLast">Review my last attempt</span></button>
         <button class="ml-btn ml-btn--ghost hidden" id="btnKey"><i data-lucide="key-round"></i><span data-t="answerKey">Print answer key</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnDownload"><i data-lucide="download"></i><span data-t="dlPaper">Download the paper</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnShare"><i data-lucide="qr-code"></i><span data-t="share">Share this test</span></button>
         <button class="ml-btn ml-btn--ghost tt-members" id="btnToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
       </div>
@@ -530,7 +531,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Your name (optional)', nameNote: 'Your name only appears on your own results screen. Nothing is sent anywhere.',
       share: 'Share this test', shareSub: 'Scan the code with a phone camera, or type the link.', copy: 'Copy link', copied: 'Copied', close: 'Close',
       membersOnly: 'Anyone with this link must sign in to the Magic Lab to write it.',
-      draft: 'Draft', draftNote: 'Draft: only teachers can see this test until it is published.', answerKey: 'Print answer key', keyTitle: 'Answer key',
+      draft: 'Draft', draftNote: 'Draft: only teachers can see this test until it is published.', answerKey: 'Print answer key', dlPaper: 'Download the paper', dlName: 'Name', dlClass: 'Class', keyTitle: 'Answer key',
       loadFail: 'This test could not be loaded. Check your internet connection and try again.', tryAgain: 'Try again',
       version: 'Version {v}', chooseVersion: 'Choose a version', nVersions: '{n} versions', tryVersion: 'Try Version {v}', notTried: 'Not written yet',
       print: 'Print or save as PDF', printNote: 'To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.',
@@ -577,7 +578,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       yourName: 'Jou naam (opsioneel)', nameNote: 'Jou naam verskyn net op jou eie uitslagskerm. Niks word êrens heen gestuur nie.',
       share: 'Deel hierdie toets', shareSub: "Skandeer die kode met 'n foon se kamera, of tik die skakel in.", copy: 'Kopieer skakel', copied: 'Gekopieer', close: 'Maak toe',
       membersOnly: 'Enigeen met hierdie skakel moet by die Magic Lab aanteken om dit te skryf.',
-      draft: 'Konsep', draftNote: 'Konsep: net onderwysers kan hierdie toets sien totdat dit gepubliseer word.', answerKey: 'Druk antwoordsleutel', keyTitle: 'Antwoordsleutel',
+      draft: 'Konsep', draftNote: 'Konsep: net onderwysers kan hierdie toets sien totdat dit gepubliseer word.', answerKey: 'Druk antwoordsleutel', dlPaper: 'Laai die vraestel af', dlName: 'Naam', dlClass: 'Klas', keyTitle: 'Antwoordsleutel',
       loadFail: 'Hierdie toets kon nie gelaai word nie. Kontroleer jou internetverbinding en probeer weer.', tryAgain: 'Probeer weer',
       version: 'Weergawe {v}', chooseVersion: 'Kies ’n weergawe', nVersions: '{n} weergawes', tryVersion: 'Probeer Weergawe {v}', notTried: 'Nog nie geskryf nie',
       print: 'Druk of stoor as PDF', printNote: 'Om jou terugvoer as ’n lêer te hou, kies “Save as PDF” (Stoor as PDF) in die drukvenster. Dit word net op jou toestel gestoor.',
@@ -1185,6 +1186,66 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     }).join('') + '</pre>';
     return '';
   }
+  // ── Download the paper: one HTML file with the questions and no answers, to
+  // do on paper or print (save as PDF). It is made from the test already on the
+  // page, so it needs no connection once the test has opened.
+  var PAPER_CSS = 'body{font-family:system-ui,Arial,sans-serif;color:#111;max-width:760px;margin:24px auto;padding:0 18px;line-height:1.5}' +
+    'h1{font-size:24px;margin:0 0 4px}header p{margin:0;color:#444}' +
+    '.p-fill{display:flex;gap:28px;margin:18px 0 6px}' +
+    '.p-sec{margin-top:26px;border-top:2px solid #111;padding-top:10px}' +
+    '.p-sec h2{font-size:18px;margin:0 0 4px}.p-sec h2 span{float:right;font-weight:600;font-size:15px}' +
+    '.p-intro{color:#444;margin:0 0 8px}' +
+    '.p-q{margin:14px 0;break-inside:avoid}' +
+    '.p-head{display:flex;gap:10px}.p-num{font-weight:700;min-width:44px}.p-text{flex:1}.p-marks{white-space:nowrap;color:#444;font-size:14px}' +
+    '.p-opts{list-style:none;padding:0;margin:6px 0 0 54px}.p-opts li{margin:3px 0}' +
+    '.p-tf{margin:6px 0 0 54px}' +
+    '.p-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:8px 0 0 54px}.p-cols h4{margin:0 0 4px}' +
+    '.p-cols ol{padding-left:0;list-style:none;margin:0}.p-cols li{margin:4px 0}' +
+    '.p-blank{display:inline-block;min-width:60px;border-bottom:1px solid #111}' +
+    '.p-order{margin:6px 0 0 54px;padding-left:0;list-style:none}.p-order li{margin:4px 0}' +
+    '.p-code{background:#f4f4f4;border:1px solid #ddd;padding:8px;white-space:pre-wrap;font-family:Consolas,monospace;font-size:14px;margin:8px 0 0 54px}' +
+    '.p-scen{border:1px solid #bbb;padding:10px 12px;margin:14px 0;break-inside:avoid}.p-scen-label{font-weight:700;margin-bottom:4px}' +
+    '@media print{body{margin:0}}';
+  function paperBody(it) {
+    var q = it.q, h = '<div class="p-q"><div class="p-head"><span class="p-num">' + esc(it.num) + '</span><span class="p-text">' + esc(q.q) + '</span><span class="p-marks">' + esc(marksText(it.max)) + '</span></div>';
+    if (q.code) h += '<pre class="p-code">' + esc(q.code) + '</pre>';
+    if (q.type === 'mcq') {
+      h += '<ol class="p-opts">' + q.options.map(function (o, k) { return '<li><b>' + letter(k) + '</b> ' + esc(o) + '</li>'; }).join('') + '</ol>';
+    } else if (q.type === 'tf') {
+      h += '<p class="p-tf">☐ ' + esc(t('tTrue')) + '&nbsp;&nbsp;&nbsp;&nbsp;☐ ' + esc(t('tFalse')) + '</p>';
+    } else if (q.type === 'match' || q.type === 'pairs') {
+      var bs = q.pairs.map(function (p) { return p[1]; }).concat(q.type === 'match' ? (q.extra || []) : []).reverse();
+      h += '<div class="p-cols"><div><h4>' + esc(t('colA')) + '</h4><ol>' + q.pairs.map(function (p) { return '<li>' + esc(p[0]) + ' <span class="p-blank">&nbsp;</span></li>'; }).join('') +
+        '</ol></div><div><h4>' + esc(t('colB')) + '</h4><ol>' + bs.map(function (b, k) { return '<li><b>' + letter(k) + '</b> ' + esc(b) + '</li>'; }).join('') + '</ol></div></div>';
+    } else if (q.type === 'order') {
+      h += '<ol class="p-order">' + q.steps.slice().reverse().map(function (st) { return '<li><span class="p-blank">&nbsp;&nbsp;&nbsp;&nbsp;</span> ' + esc(st) + '</li>'; }).join('') + '</ol>';
+    } else if (q.type === 'fill') {
+      h += '<pre class="p-code">' + fillParts(q).map(esc).join(' ______ ') + '</pre>';
+    }
+    return h + '</div>';
+  }
+  function paperHtml() {
+    var lastScen = null, body = '';
+    quiz.sections.forEach(function (sec, si) {
+      body += '<section class="p-sec"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '<span>' + esc(marksText(secTotal(si))) + '</span></h2>' + (sec.intro ? '<p class="p-intro">' + esc(sec.intro) + '</p>' : '');
+      items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
+        if (it.scen && it.scen !== lastScen) body += '<div class="p-scen"><div class="p-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + (it.scen.code ? '<pre class="p-code">' + esc(it.scen.code) + '</pre>' : '') + '</div>';
+        lastScen = it.scen || null;
+        body += paperBody(it);
+      });
+      body += '</section>';
+    });
+    return '<!doctype html><html lang="' + esc(lang) + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(fullTitle()) + '</title><style>' + PAPER_CSS + '</style></head><body>' +
+      '<header><h1>' + esc(fullTitle()) + '</h1><p>' + esc(quiz.subject) + ' · ' + esc(t('grade', { g: quiz.grade })) + ' · ' + esc(t('minutes', { n: quiz.minutes })) + ' · ' + esc(marksText(total())) + '</p>' +
+      '<p class="p-fill"><span>' + esc(t('dlName')) + ' ________________________</span><span>' + esc(t('dlClass')) + ' ______________</span></p></header>' + body + '</body></html>';
+  }
+  function downloadPaper() {
+    var a = document.createElement('a'), url = URL.createObjectURL(new Blob([paperHtml()], { type: 'text/html;charset=utf-8' }));
+    a.href = url; a.download = (quiz.id || 'test') + (lang === 'af' ? '-af' : '') + '.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
   function printKey() {
     var h = '<div class="p-head"><h1>' + esc(fullTitle()) + '</h1><p>' + esc(t('keyTitle')) + ' · ' + esc(marksText(total())) + '</p></div>', lastScen = null;
     quiz.sections.forEach(function (sec, si) {
@@ -1601,6 +1662,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnPrint').addEventListener('click', printReport);
   $('btnRevPrint').addEventListener('click', printReport);
   $('btnKey').addEventListener('click', printKey);
+  $('btnDownload').addEventListener('click', downloadPaper);
   $('btnNextVersion').addEventListener('click', function () { openQuiz(this.dataset.id); });
   $('btnRevRetry').addEventListener('click', function () { startTest(true); });
   [].forEach.call($('reviewFilter').children, function (b) {
