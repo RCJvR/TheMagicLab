@@ -324,7 +324,11 @@
     chime: { id: 'bell', vol: 70, rep: 3 },
     pomo: { work: 1500, short: 300, long: 900, every: 4, auto: true },
     cd: { secs: 600 },
-    exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '' },
+    exam: { subject: '', paper: '', date: '', start: '', reading: 600, writing: 10800, info: '',
+            // up to two more subjects writing in the same venue: the same start
+            // and reading time, but each with its own writing time and finish
+            count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800,
+            audio: false },   // play the instructions recording (TTAudio) before the start
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
@@ -355,6 +359,8 @@
     ['cd.secs', 'c', 'dur'],
     ['exam.subject', 's'], ['exam.paper', 'p'], ['exam.date', 'd'], ['exam.start', 'st'],
     ['exam.reading', 'r', 'dur'], ['exam.writing', 'w', 'dur'], ['exam.info', 'i'],
+    ['exam.count', 'xn', 'num'], ['exam.subject2', 's2'], ['exam.paper2', 'p2'], ['exam.writing2', 'w2', 'dur'],
+    ['exam.subject3', 's3'], ['exam.paper3', 'p3'], ['exam.writing3', 'w3', 'dur'], ['exam.audio', 'au', 'bool'],
     ['look.display', 'v', 'view'], ['look.secs', 'ss', 'bool'], ['look.h24', 'h', 'bool'], ['look.nums', 'nu', 'bool'], ['look.now', 'nw', 'bool'],
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
@@ -523,7 +529,41 @@
     img.src = url;
   }
 
+  // ── The exam instructions recording ──
+  // A sound file is far too big for a link or localStorage, so it stays in
+  // this browser's IndexedDB. The link only says "offer the recording"; on
+  // another computer the teacher chooses the file again in the timer's
+  // settings. Saving or removing it bumps AUDIO_KEY in localStorage, so an
+  // open timer tab hears about it through the storage event.
+  var AUDIO_KEY = 'tt-audio-changed';
+  function audioDb(fn, done) {
+    var req;
+    try { req = indexedDB.open('tt-audio', 1); } catch (e) { return done(null); }
+    req.onupgradeneeded = function () { req.result.createObjectStore('files'); };
+    req.onerror = function () { done(null); };
+    req.onsuccess = function () {
+      var db = req.result, tx;
+      try { tx = db.transaction('files', fn ? 'readwrite' : 'readonly'); } catch (e) { db.close(); return done(null); }
+      var store = tx.objectStore('files'), r = fn ? fn(store) : store.get('instructions');
+      tx.oncomplete = function () { db.close(); done(fn ? true : (r && r.result) || null); };
+      tx.onerror = tx.onabort = function () { db.close(); done(null); };
+    };
+  }
+  function audioTouched() { try { localStorage.setItem(AUDIO_KEY, String(Date.now())); } catch (e) {} }
+  function audioGet(done) { audioDb(null, done); }
+  function audioSave(file, done) {
+    // .m4a files are often reported as video/mp4, or with no type at all
+    if (!file || !/^(audio|video)\//.test(file.type || 'audio/')) return done(false);
+    var name = String(file.name || '').replace(/\.[^.]+$/, '');
+    audioDb(function (st) { return st.put({ blob: file, name: name, type: file.type }, 'instructions'); },
+      function (ok) { if (ok) audioTouched(); done(!!ok); });
+  }
+  function audioClear(done) {
+    audioDb(function (st) { return st.delete('instructions'); }, function () { audioTouched(); if (done) done(); });
+  }
+
   window.TTPicture = { get: picGet, save: picSave, clear: picClear, key: PIC_KEY };
+  window.TTAudio = { get: audioGet, save: audioSave, clear: audioClear, key: AUDIO_KEY };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,

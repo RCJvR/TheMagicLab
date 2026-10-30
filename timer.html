@@ -126,6 +126,40 @@ body.hide-cursor { cursor: none; }
 .lay-detailed .stage.narrow .faces { flex-wrap: wrap; row-gap: 3vmin; }
 .lay-detailed .stage.narrow .facts { flex-basis: 100%; width: auto; max-width: 560px; border-left: 0; padding-left: 0;
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin; }
+/* Several subjects in one venue (exam.count): one column each, with its own
+   time left and finish time, in place of the single time */
+.multi { display: none; justify-content: center; align-items: stretch; min-width: 0; }
+.is-multi .multi { display: flex; }
+.multi .col { flex: 1 1 0; min-width: 0; padding: 0 2vw; display: flex; flex-direction: column; align-items: center; gap: 1vmin; }
+.multi .col + .col { border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
+.multi .cname { font-weight: 800; font-size: var(--cname, calc(4.4vmin * var(--tsize))); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; }
+.multi .cpaper { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.75; }
+.multi .cphase { font-size: calc(2.9vmin * var(--tsize)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
+.multi .ctime { font-size: var(--ctime, 12vmin); font-weight: var(--dweight); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
+.multi .ctime:empty { display: none; }
+.multi .ctime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.multi .csub { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 1.3em; }
+.multi .cpaper:empty { display: none; }
+.multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
+.multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
+.lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
+/* The exam instructions recording: one big button to play it before the
+   start. The ring round it fills as the recording plays. */
+.brief { display: none; flex-direction: column; align-items: center; gap: 1.4vmin; }
+.has-brief .brief { display: flex; }
+.brief button {
+  --p: 0; width: calc(17vmin * var(--tsize)); height: calc(17vmin * var(--tsize)); min-width: 88px; min-height: 88px;
+  border-radius: 50%; border: 0; cursor: pointer; display: grid; place-items: center; padding: 0;
+  color: var(--bg); background: var(--accent);
+  box-shadow: 0 0 0 0.9vmin var(--bg), 0 0 0 1.5vmin color-mix(in srgb, var(--fg) 18%, transparent);
+  background-image: conic-gradient(color-mix(in srgb, var(--fg) 30%, var(--accent)) calc(var(--p) * 1turn), transparent 0);
+}
+.brief button:hover { filter: brightness(1.08); }
+.brief button:focus-visible { outline: 3px solid var(--fg); outline-offset: 1.8vmin; }
+.brief button svg { width: 44%; height: 44%; }
+.brief button.play svg { margin-left: 8%; }   /* a play triangle looks centred a little to the right */
+.brief .blabel { font-size: calc(3vmin * var(--tsize)); font-weight: 700; }
+.brief .btime { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.75; font-variant-numeric: tabular-nums; min-height: 1.3em; }
 .warn .digital, .warn .phase { color: var(--warn); }
 .done .digital { animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0.3; } }
@@ -211,9 +245,11 @@ body.hide-cursor { cursor: none; }
     <div class="faces" id="faces">
       <svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg>
       <div class="dcol" id="dcol"><div class="digital" id="digital"></div></div>
+      <div class="multi" id="multi"></div>
       <aside class="facts" id="facts"></aside>
     </div>
     <div class="sub" id="sub"></div>
+    <div class="brief" id="brief"><button type="button" id="briefBtn" class="play"></button><div class="blabel" id="briefLabel"></div><div class="btime" id="briefTime"></div></div>
     <div class="laps" id="laps"></div>
     <div class="info" id="info"></div>
   </main>
@@ -231,13 +267,15 @@ body.hide-cursor { cursor: none; }
       reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
       ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
-      plan: 'Reading {r} · Writing {w}', paused: 'Paused', timeUp: "Time's up", over: 'over',
+      plan: 'Reading {r} · Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
       lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
+      instr: 'Exam instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
+      pAudio: 'Instructions recording', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
@@ -252,13 +290,15 @@ body.hide-cursor { cursor: none; }
       reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is om. Penne neer.',
       ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
-      plan: 'Leestyd {r} · Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', over: 'oor',
+      plan: 'Leestyd {r} · Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
       lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Stel terug', skip: 'Slaan oor',
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
+      instr: 'Eksameninstruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
+      pAudio: 'Instruksie-opname', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
@@ -350,6 +390,80 @@ body.hide-cursor { cursor: none; }
     return isNaN(d) ? null : d.getTime();
   }
 
+  // the subjects writing in this venue: the first one, plus up to two more
+  function subjects() {
+    var x = cfg.exam, n = cfg.mode === 'exam' ? Math.max(1, Math.min(3, x.count | 0)) : 1, out = [];
+    for (var i = 1; i <= n; i++) {
+      var k = i === 1 ? '' : String(i);
+      out.push({ name: x['subject' + k], paper: x['paper' + k], R: x.reading * 1000, W: x['writing' + k] * 1000 });
+    }
+    return out;
+  }
+  // Several subjects share one start and one reading time, and so one clock,
+  // pause and ±1 min, but each has its own writing time and finish, in a
+  // column of its own. While a set start time is still ahead, the big time counts
+  // down to it and the columns show when each subject will end.
+  function examMulti(m, now, sched) {
+    var x = cfg.exam, subs = subjects();
+    var longest = Math.max.apply(null, subs.map(function (s) { return s.R + s.W; }));
+    m.head = [x.date ? longDate(new Date(x.date + 'T12:00')) : ''];
+    m.info = x.info; m.face = 'clock'; m.multi = []; m.prog = 0; m.progMark = null;
+    m.facts = [['fNow', hm(new Date(now))]];
+    var plan = function (s) { return t('plan', { r: span(s.R / 1000), w: span(s.W / 1000) }); };
+    if (sched && !st.started) {
+      if (now < sched) {
+        m.phase = t('startsIn'); m.digital = dur(sched - now, 'down'); m.waiting = true;
+        m.sub = t('startsAt', { t: hm(new Date(sched)) });
+        m.arcFrom = sched; m.arcTo = sched + longest;
+        m.facts.push(['fStarts', hm(new Date(sched))]);
+        subs.forEach(function (s) {
+          m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }) });
+          m.facts.push([s.name || DASH, hm(new Date(sched + s.R + s.W)), true]);
+        });
+        return m;
+      }
+      st.started = true; st.acc = 0; st.since = sched; st.t0 = sched; save(); keepAwake();
+    }
+    if (!st.started) {
+      m.phase = '';
+      m.facts.push(['fStarts', DASH]);
+      subs.forEach(function (s) {
+        m.multi.push({ name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.R || s.W, 'down'), sub: plan(s) });
+        m.facts.push([s.name || DASH, DASH, true]);
+      });
+      return m;
+    }
+    var el = elapsed(), go = running(), allDone = true, phases = [];
+    st.ends = st.ends || {};
+    m.facts.push(['fStarted', st.t0 ? hm(new Date(st.t0)) : DASH]);
+    subs.forEach(function (s, i) {
+      var phase, left;
+      if (el < s.R) { phase = 'reading'; left = s.R - el; }
+      else if (el < s.R + s.W) { phase = 'writing'; left = s.R + s.W - el; }
+      else { phase = 'finished'; left = s.R + s.W - el; }
+      phases.push(phase);
+      var done = phase === 'finished', end = now + (s.R + s.W - el);
+      if (done) { if (!st.ends[i] && go) { st.ends[i] = end; save(); } } else allDone = false;
+      var bits = [];
+      if (go && phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
+      if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
+      else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
+      m.multi.push({ name: s.name, paper: s.paper, phase: done ? t('timeUp') : t(phase), time: done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
+        done: done, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
+      m.facts.push([s.name || DASH, done ? hm(new Date(st.ends[i] || end)) : go ? hm(new Date(end)) : DASH, true]);
+    });
+    // a chime whenever any subject moves on: once for the end of reading, the
+    // full ring when a subject's time is up
+    var key = phases.join();
+    if (lastPhase && lastPhase !== key) chime(phases.some(function (p, i) { return p === 'finished' && lastPhase.split(',')[i] !== 'finished'; }) ? cfg.chime.rep : 1);
+    lastPhase = key;
+    m.phase = !go && !allDone ? t('paused') : '';
+    m.done = allDone;
+    m.prog = Math.min(1, el / (longest || 1));
+    if (!allDone) { m.arcFrom = now; m.arcTo = now + longest - el; }
+    return m;
+  }
+
   function model() {
     var now = Date.now(), m = { kind: cfg.mode };
     if (cfg.mode === 'clock') {
@@ -409,7 +523,8 @@ body.hide-cursor { cursor: none; }
     }
     // exam
     var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
-    m.head = [x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
+    if (subjects().length > 1) return examMulti(m, now, sched);
+    m.head =[x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
     m.prog = 0; m.progMark = R && W ? R / (R + W) : null;
     var examFacts = function (start, rEnd, end) {
@@ -542,13 +657,14 @@ body.hide-cursor { cursor: none; }
       bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
+    if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'circle-pause' : 'megaphone', audioPlaying() ? t('instrPause') : t('instrPlay'), toggleAudio, '', true));
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) bar.appendChild(btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true));
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
   }
-  function barKey() { return [cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started].join(); }
+  function barKey() { return [cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
   function fullscreen() {
     if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
   }
@@ -572,9 +688,13 @@ body.hide-cursor { cursor: none; }
     [].forEach.call(stage.children, function (c) { if (c !== faces && c.offsetParent) H -= c.offsetHeight + gap; });
     H = Math.max(40, H);
     var showA = an.style.display !== 'none', showD = dg.style.display !== 'none';
+    var mu = $('multi'), showM = !!mu.offsetParent && mu.children.length > 0;
     // the Detailed layout's side panel: beside the timer, or under it on a tall screen
     var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
-    faces.style.flexWrap = under ? 'wrap' : 'nowrap';
+    // several subjects before a set start: the countdown to the start on top, the columns under it
+    var stack = showM && showD;
+    faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
+    var Hd = stack ? H * 0.5 : H;
     // big text on a small screen: the panel's text shrinks until it fits
     facts.style.fontSize = '';
     if (facts.offsetParent) {
@@ -585,17 +705,51 @@ body.hide-cursor { cursor: none; }
       else W -= facts.offsetWidth + Math.min(W * 0.04, 48);
     }
     var vmin = Math.min(window.innerWidth, window.innerHeight) / 100, own = cfg.look.fit ? Infinity : vmin * Math.max(0.3, Math.min(3, cfg.look.size / 100));
-    var fgap = showA && showD ? Math.min(W * 0.04, 48) : 0, a = 0;
+    var side = showD || showM, fgap = showA && side ? Math.min(W * 0.04, 48) : 0, a = 0;
     faces.style.columnGap = Math.min(W * 0.04, 48) + 'px';
-    if (showA) { a = Math.min(showD ? Math.min(H, W * 0.48) : Math.min(H, W), own * (showD ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    // beside several subject columns the clock takes a smaller share of the width
+    var share = showM ? 0.3 : 0.48;
+    if (showA) { a = Math.min(side ? Math.min(Hd, W * share) : Math.min(Hd, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
       // the digits share their column with the status lines beside a clock
       var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
       [].forEach.call(col.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
       dg.style.fontSize = '100px';
       var w = dg.scrollWidth || 1, h = dg.offsetHeight || 1;
-      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w * 97, Math.max(20, H - ch) / h * 97, own * (showA ? 14 : 19))) + 'px';
+      dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w * 97, Math.max(20, Hd - ch) / h * 97, own * (showA ? 14 : 19))) + 'px';
+      // above the columns while a set start is still ahead: the columns need their room too
+      if (stack) H = Math.max(40, H - Math.max(a, $('dcol').offsetHeight) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     }
+    if (showM) {
+      // a subject's name wraps between words but never inside one: on a narrow
+      // screen all the names shrink together until the longest word fits
+      // (the sizes go on #multi as --cname and --ctime, because the columns
+      // are redrawn as the seconds tick)
+      var names = [].slice.call(mu.querySelectorAll('.cname'));
+      mu.style.removeProperty('--cname');
+      mu.style.width = Math.max(80, stack ? W : W - a - fgap) + 'px';
+      var nk = Math.min.apply(null, names.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; }));
+      if (nk < 1) mu.style.setProperty('--cname', parseFloat(getComputedStyle(names[0]).fontSize) * nk * 0.97 + 'px');
+      // every column's time gets one size: the largest that fits the widest
+      // time in its column and the height the other lines leave
+      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W : W - a - fgap);
+      var times = cols.map(function (c) { return c.querySelector('.ctime'); }).filter(function (e) { return e.offsetParent; });
+      if (times.length) {
+        mu.style.setProperty('--ctime', '100px');
+        var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
+        mu.style.removeProperty('--cdone');
+        // "Pens down" is sized on its own, so it does not shrink the times still running
+        var live = times.filter(function (e) { return !e.parentNode.classList.contains('done'); });
+        var dn = times.filter(function (e) { return e.parentNode.classList.contains('done'); });
+        var tw = Math.max.apply(null, (live.length ? live : times).map(function (e) { return e.scrollWidth || 1; }));
+        var dw = dn.length ? Math.max.apply(null, dn.map(function (e) { return e.scrollWidth || 1; })) : 0;
+        var th = Math.max.apply(null, times.map(function (e) { return e.offsetHeight || 1; }));
+        var rest = Math.max.apply(null, cols.map(function (c) { return c.offsetHeight; })) - th;
+        var fs = Math.floor(Math.min(cw / tw * 96, Math.max(20, H - rest) / th * 96, own * (showA ? 11 : 15)));
+        mu.style.setProperty('--ctime', Math.max(16, fs) + 'px');
+        if (dw) mu.style.setProperty('--cdone', Math.max(16, Math.min(fs, Math.floor(cw / dw * 96))) + 'px');
+      }
+    } else mu.style.width = '';
   }
   window.addEventListener('resize', function () { fit(); });
   document.addEventListener('fullscreenchange', function () { setTimeout(fit, 60); });
@@ -623,25 +777,27 @@ body.hide-cursor { cursor: none; }
     if (force || view.barKey !== barKey()) buildBar();
     var head = (m.head || []).filter(Boolean);
     var headHtml = head.length ? '<div class="title">' + esc(head[0]) + '</div>' + (head[1] ? '<div class="meta">' + esc(head[1]) + '</div>' : '') : '';
-    if (cfg.mode === 'exam' && !cfg.exam.subject && head.length) headHtml = '<div class="meta">' + esc(head[0]) + '</div>';
+    if (cfg.mode === 'exam' && (!cfg.exam.subject || m.multi) && head.length) headHtml = '<div class="meta">' + esc(head[0]) + '</div>';
     if (view.headHtml !== headHtml) { $('head').innerHTML = headHtml; view.headHtml = headHtml; relayout = true; }
     setText('phase', m.phase || '');
     setDigits(m.digital || '');
     setText('sub', m.sub || '');
     setText('info', m.info || '');
     var factsHtml = cfg.look.layout === 'detailed'
-      ? '<dl' + ((m.facts || []).some(function (f) { return f[1].length > 9; }) ? ' class="stack"' : '') + '>' + (m.facts || []).map(function (f) { return '<dt>' + esc(t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('') + '</dl>' +
+      ? '<dl' + ((m.facts || []).some(function (f) { return f[1].length > 9; }) ? ' class="stack"' : '') + '>' + (m.facts || []).map(function (f) { return '<dt>' + esc(f[2] ? f[0] : t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join('') + '</dl>' +
         '<div class="fnote">' + esc(m.info || '') + '</div>'
       : '';
     if (view.facts !== factsHtml) { $('facts').innerHTML = factsHtml; view.facts = factsHtml; relayout = true; }
     var laps = cfg.mode === 'stopwatch' ? st.laps.map(function (l, i) { return '<div>' + esc(t('lap')) + ' ' + (i + 1) + ' · ' + esc(dur(l - (st.laps[i - 1] || 0), 'up')) + '</div>'; }).reverse().join('') : '';
     if (view.laps !== laps) { $('laps').innerHTML = laps; view.laps = laps; relayout = true; }
+    drawMulti(m);
+    drawBrief();
     var stage = $('stage');
     stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
     drawFill(m);
     var d = cfg.look.display;
     $('analogue').style.display = d === 'digital' ? 'none' : '';
-    $('digital').style.display = d === 'analogue' && cfg.mode !== 'exam' ? 'none' : '';
+    $('digital').style.display = (d === 'analogue' && cfg.mode !== 'exam') || (m.multi && !m.waiting) ? 'none' : '';
     // an exam always shows the time left in words or digits, even with an analogue face
     var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
     $('faces').classList.toggle('both', both);
@@ -655,6 +811,71 @@ body.hide-cursor { cursor: none; }
     setText('now', showNow ? clock(new Date(), false) : '');
     document.title = (m.digital ? m.digital + ' · ' : '') + 'Timer Talisman';
   }
+
+  // ── Several subjects: one column each ──
+  function digitsHtml(s) { return esc(s).replace(/[0-9]/g, '<span class="dc">$&</span>'); }
+  function drawMulti(m) {
+    var on = !!m.multi;
+    document.body.classList.toggle('is-multi', on);
+    var html = on ? m.multi.map(function (c) {
+      return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
+        '<div class="cpaper">' + esc(c.paper || '') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
+        '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' + esc(c.sub) + '</div></div>';
+    }).join('') : '';
+    if (view.multi === html) return;
+    // the layout is measured again only when more than the digits changed
+    var shape = html.replace(/[0-9]/g, '0');
+    if (view.multiShape !== shape) { relayout = true; view.multiShape = shape; }
+    $('multi').innerHTML = html; view.multi = html;
+  }
+
+  // ── The exam instructions recording (TTAudio, in this browser only) ──
+  // One big button plays it before the exam starts; once the exam is under
+  // way it is only offered in the toolbar, so it never covers the time.
+  var audio = null, audioName = '', audioUrl = null, audioAsked = false;
+  function loadAudio(then) {
+    TTAudio.get(function (rec) {
+      if (audio) { audio.pause(); audio = null; }
+      if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
+      if (rec && rec.blob) {
+        audioUrl = URL.createObjectURL(rec.blob); audioName = rec.name || '';
+        audio = new Audio(audioUrl); audio.preload = 'metadata';
+        ['play', 'pause', 'ended', 'loadedmetadata'].forEach(function (ev) { audio.addEventListener(ev, function () { if (ev === 'ended') audio.currentTime = 0; drawBrief(); if (cfg) buildBar(); }); });
+        audio.addEventListener('timeupdate', drawBrief);
+      }
+      if (cfg) { relayout = true; render(true); }
+      if (then) then();
+    });
+  }
+  window.addEventListener('storage', function (e) { if (e.key === TTAudio.key) loadAudio(); });
+  function hasAudio() { return !!audio && cfg.mode === 'exam' && cfg.exam.audio; }
+  function audioPlaying() { return !!audio && !audio.paused; }
+  function toggleAudio() {
+    if (!hasAudio()) return;
+    if (audio.paused) { audio.play().catch(function () {}); } else audio.pause();
+  }
+  function mmss(sec) { sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + pad(sec % 60); }
+  function drawBrief() {
+    if (!cfg) return;
+    var show = hasAudio() && (!st.started || audioPlaying());
+    if (document.body.classList.contains('has-brief') !== show) { document.body.classList.toggle('has-brief', show); relayout = true; }
+    if (!show) return;
+    var b = $('briefBtn'), playing = audioPlaying(), lbl = playing ? t('instrPause') : t('instrPlay');
+    var icon = playing ? 'pause' : 'play';
+    if (b.dataset.icon !== icon) {
+      b.dataset.icon = icon; b.className = icon;
+      b.innerHTML = '<i data-lucide="' + icon + '"></i>';
+      if (window.lucide) lucide.createIcons({ root: b });
+    }
+    b.setAttribute('aria-label', lbl); b.title = lbl;
+    var d = audio.duration, p = isFinite(d) && d > 0 ? audio.currentTime / d : 0;
+    b.style.setProperty('--p', p.toFixed(4));
+    var label = audioName || t('instr');
+    if ($('briefLabel').textContent !== label) $('briefLabel').textContent = label;
+    var tm = isFinite(d) && d > 0 ? (audio.currentTime > 0 ? mmss(audio.currentTime) + ' / ' : '') + mmss(d) : '';
+    if ($('briefTime').textContent !== tm) $('briefTime').textContent = tm;
+  }
+  $('briefBtn').addEventListener('click', function (e) { e.stopPropagation(); TTSounds.unlock(); toggleAudio(); });
 
   // the teacher's picture for the screen fill (TTPicture, in this browser only)
   var picture = null;
@@ -726,6 +947,10 @@ body.hide-cursor { cursor: none; }
         '<div class="prow"><button type="button" class="pclose" id="pPicPick" style="flex:1;justify-content:center">' + esc(t('pPicPick')) + '</button>' +
         '<button type="button" class="pclose" id="pPicOff" style="flex:1;justify-content:center"' + (L.pic && picture ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
         '<input type="file" accept="image/*" id="pPicFile" hidden></div>') +
+      (cfg.mode !== 'exam' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pAudio')) + (audio ? ' · ' + esc(audioName || t('instr')) : '') + '</span>' +
+        '<div class="prow"><button type="button" class="pclose" id="pAudPick" style="flex:1;justify-content:center">' + esc(t('pPicPick')) + '</button>' +
+        '<button type="button" class="pclose" id="pAudOff" style="flex:1;justify-content:center"' + (audio ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
+        '<input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="pAudFile" hidden></div>') +
       '<div class="pf"><span class="plabel">' + esc(t('pFont')) + '</span><div id="pFontPick"></div></div>' +
       '<label class="pchk"><input type="checkbox" data-l="fit"' + (L.fit ? ' checked' : '') + '>' + esc(t('pFit')) + '</label>' +
       '<label class="pf"><span>' + esc(t('pSize')) + ' · <output id="pSizeOut">' + (L.fit ? '—' : L.size + '%') + '</output></span><input type="range" id="pSize" min="40" max="300" step="5" data-l="size" value="' + L.size + '"' + (L.fit ? ' disabled' : '') + '></label>' +
@@ -764,6 +989,20 @@ body.hide-cursor { cursor: none; }
       });
       $('pPicOff').addEventListener('click', function () { TTPicture.clear(); loadPicture(); L.pic = false; lookChanged(); buildPanel(); $('pPicPick').focus(); });
     }
+    if ($('pAudPick')) {
+      $('pAudPick').addEventListener('click', function () { $('pAudFile').click(); });
+      $('pAudFile').addEventListener('change', function () {
+        var file = this.files && this.files[0]; if (!file) return;
+        TTAudio.save(file, function (ok) {
+          if (!ok) { alert(t('pAudioBad')); return; }
+          cfg.exam.audio = true; lookChanged();
+          loadAudio(function () { buildPanel(); $('pAudPick').focus(); });
+        });
+      });
+      $('pAudOff').addEventListener('click', function () {
+        TTAudio.clear(function () { cfg.exam.audio = false; lookChanged(); loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
+      });
+    }
     [['#pStyle', 'display'], ['#pLayout', 'layout'], ['#pFill', 'fill']].forEach(function (g) {
       [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {
         b.addEventListener('click', function () {
@@ -800,6 +1039,7 @@ body.hide-cursor { cursor: none; }
   function start(c) {
     cfg = c;
     loadPicture();
+    if (!audioAsked) { audioAsked = true; loadAudio(); }
     var x = cfg.exam;
     key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
     st = loadState(); lastPhase = null; view = {};
@@ -822,6 +1062,7 @@ body.hide-cursor { cursor: none; }
     if (k === ' ') { e.preventDefault(); if (!(cfg.mode === 'exam' && examStart() && !st.started)) toggle(); }
     else if (k === 'r') reset();
     else if (k === 'f') fullscreen();
+    else if (k === 'i') toggleAudio();
     else if (k === 'l' && cfg.mode === 'stopwatch' && running()) { st.laps.push(elapsed()); save(); render(true); }
     else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
     else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);
