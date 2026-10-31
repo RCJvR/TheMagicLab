@@ -332,12 +332,31 @@
       buildStyles();
       themeTree(document.body);
       if (!observer) watch();
+      prismLayer();
     } catch (e) { if (window.console) console.warn('theme', e); }
     root.classList.remove('ml-theming');
+  }
+
+  // Prism's own additions, on top of the recoloured page: a faint wash of the
+  // tool's colour in the ground, and a short rule of that colour above each
+  // lesson heading. Both are removed with the rest of prism.
+  var prismEl = null;
+  function prismLayer() {
+    if (!ACCENT) return;
+    var c = hsl2rgb(ACCENT[0], ACCENT[1], Math.max(ACCENT[2], 0.62));
+    var ground = [8, 9, 11];
+    var wash = fmt([ground[0] + (c[0] - ground[0]) * 0.04, ground[1] + (c[1] - ground[1]) * 0.04, ground[2] + (c[2] - ground[2]) * 0.04, 1]);
+    var accent = fmt([c[0], c[1], c[2], 1]);
+    if (!prismEl) { prismEl = document.createElement('style'); prismEl.id = 'ml-theme-prism'; }
+    prismEl.textContent =
+      'html[data-theme="prism"], html[data-theme="prism"] body{background-color:' + wash + ' !important}' +
+      'html[data-theme="prism"] .lesson-body h2::before{content:"";display:block;width:28px;height:3px;border-radius:2px;background:' + accent + ';margin-bottom:12px}';
+    document.head.appendChild(prismEl);
   }
   function removeLight() {
     if (observer) { observer.disconnect(); observer = null; }
     if (lightEl) { lightEl.remove(); lightEl = null; }
+    if (prismEl) { prismEl.remove(); prismEl = null; }
     done = new WeakSet();
     originals.forEach(function (orig, el) { el.setAttribute('style', orig); });
     originals.clear(); mapped = new WeakMap();
