@@ -345,12 +345,12 @@
     if (!ACCENT) return;
     var c = hsl2rgb(ACCENT[0], ACCENT[1], Math.max(ACCENT[2], 0.62));
     var ground = [8, 9, 11];
-    var wash = fmt([ground[0] + (c[0] - ground[0]) * 0.04, ground[1] + (c[1] - ground[1]) * 0.04, ground[2] + (c[2] - ground[2]) * 0.04, 1]);
+    var wash = fmt([ground[0] + (c[0] - ground[0]) * 0.10, ground[1] + (c[1] - ground[1]) * 0.10, ground[2] + (c[2] - ground[2]) * 0.10, 1]);
     var accent = fmt([c[0], c[1], c[2], 1]);
     if (!prismEl) { prismEl = document.createElement('style'); prismEl.id = 'ml-theme-prism'; }
     prismEl.textContent =
       'html[data-theme="prism"], html[data-theme="prism"] body{background-color:' + wash + ' !important}' +
-      'html[data-theme="prism"] .lesson-body h2::before{content:"";display:block;width:28px;height:3px;border-radius:2px;background:' + accent + ';margin-bottom:12px}';
+      'html[data-theme="prism"] .lesson-body h2::before{content:"";display:block;width:48px;height:4px;border-radius:2px;background:' + accent + ';margin-bottom:14px}';
     document.head.appendChild(prismEl);
   }
   function removeLight() {
