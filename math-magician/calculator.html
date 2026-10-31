@@ -98,6 +98,8 @@
     .k.sh { color: var(--shift); } .k.al { color: var(--alpha); }
     .k.sel { outline: 2px solid currentColor; outline-offset: -2px; }
     .k.pend { box-shadow: 0 0 0 2px var(--accent); }
+    .kb-note { margin: 10px 2px 0; text-align: right; font-size: 11px; color: var(--muted, #8a8f9a); }
+    .kb-note kbd { font: inherit; font-family: JetBrains Mono, monospace; font-size: 10px; padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,.18); }
     /* While SHIFT or ALPHA is on, the keypad shows the alternate layer: the
        normal label steps back, and each key's alternate label moves to the
        middle of the key, as on a touch keyboard's alternate layout. */
@@ -206,6 +208,7 @@
 
       <div id="modePanel"></div>
       <div class="keys" id="keys" aria-label="Keypad"></div>
+      <p class="kb-note">Keyboard: <kbd>Shift</kbd> = SHIFT &nbsp;·&nbsp; <kbd>Alt</kbd> = ALPHA</p>
     </section>
 
     <aside class="side">
@@ -782,6 +785,12 @@
       s: 'sin', c: 'cos', t: 'tan', l: 'log', n: 'ln', r: 'sqrt', a: 'ans', E: 'exp', x: 'mul',
     };
     document.addEventListener('keydown', e => {
+      // The physical Shift and Alt keys work as the calculator's SHIFT and ALPHA.
+      if ((e.key === 'Shift' || e.key === 'Alt') && !e.repeat) {
+        const t = (e.target.tagName || '').toLowerCase();
+        if (t === 'input' || t === 'select' || t === 'textarea' || S.mode === 'stat' || S.mode === 'eqn' || document.querySelector('.overlay.open')) return;
+        e.preventDefault(); press(e.key === 'Shift' ? 'shift' : 'alpha'); return;
+      }
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const tag = (e.target.tagName || '').toLowerCase();
       if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
