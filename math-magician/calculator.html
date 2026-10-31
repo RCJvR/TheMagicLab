@@ -404,7 +404,8 @@
     function input(tokens) {
       if (S.mode !== 'comp' && S.mode !== 'table') return;
       const first = tokens[0];
-      const needsAns = BINARY_START.has(first) || POSTFIX_START.has(first) || (first === '-' && tokens.sub);
+      // A variable typed with ALPHA (even C, which is also the nCr operator) is a value, never an operator.
+      const needsAns = !tokens.variable && (BINARY_START.has(first) || POSTFIX_START.has(first) || (first === '-' && tokens.sub));
       if (S.done) {
         if (needsAns && S.ans) { S.tokens = ['Ans']; S.cur = 1; } else { S.tokens = []; S.cur = 0; }
       } else if (!S.tokens.length && needsAns && S.mode === 'comp') { S.tokens = ['Ans']; S.cur = 1; }
@@ -470,12 +471,13 @@
       }
       let spec = a.p;
       if (wasShift && a.s) spec = a.s;
-      else if (wasAlpha && a.a) spec = a.a;
+      else if (wasAlpha && a.a) spec = Object.assign(a.a.slice(), { variable: true });
       else if ((wasShift || wasAlpha) && !['shift', 'alpha'].includes(id) && !a.s && !a.a) spec = a.p;
       if (id !== 'shift' && id !== 'alpha' && id !== 'hyp') { S.shift = false; S.alpha = false; }
       if (typeof spec === 'string') command(spec, id);
       else {
         let toks = spec.slice();
+        if (spec.variable) toks.variable = true;
         if (S.hyp && toks.length === 1 && HYPABLE[toks[0]]) { toks = [HYPABLE[toks[0]]]; S.hyp = false; }
         else if (S.hyp && id !== 'hyp') S.hyp = false;
         if (a.sub && !wasShift) toks.sub = true;
