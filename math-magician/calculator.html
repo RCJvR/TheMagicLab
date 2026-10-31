@@ -98,6 +98,21 @@
     .k.sh { color: var(--shift); } .k.al { color: var(--alpha); }
     .k.sel { outline: 2px solid currentColor; outline-offset: -2px; }
     .k.pend { box-shadow: 0 0 0 2px var(--accent); }
+    /* While SHIFT or ALPHA is on, the keypad shows the alternate layer: the
+       normal label steps back, and each key's alternate label moves to the
+       middle of the key, as on a touch keyboard's alternate layout. */
+    .k .s, .k .a, .k .m { transition: opacity .15s, top .15s, left .15s, transform .15s, font-size .15s; }
+    .keys.kb-shift .k.has-s .m, .keys.kb-alpha .k.has-a .m { opacity: 0; }
+    .keys.kb-shift .k:not(.has-s), .keys.kb-alpha .k:not(.has-a) { opacity: .45; }
+    .keys.kb-shift .k.has-s .s, .keys.kb-alpha .k.has-a .a {
+      top: 50%; left: 50%; right: auto; transform: translate(-50%, -50%);
+      font-size: 13px; font-weight: 800;
+    }
+    .keys.kb-shift .k.has-s .s { color: var(--shift); }
+    .keys.kb-alpha .k.has-a .a { color: var(--alpha); }
+    .keys.kb-shift .k.has-s, .keys.kb-alpha .k.has-a { opacity: 1; }
+    .keys.kb-shift .k[data-k="shift"], .keys.kb-alpha .k[data-k="alpha"] { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { .k .s, .k .a, .k .m { transition: none; } }
 
     /* ── Mode panels (STAT / EQN / TABLE) ───────────────────────────────── */
     .panel { margin-top: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
@@ -304,7 +319,7 @@
 
     function buildKeys() {
       const mk = (rows, cls) => rows.map(r => `<div class="${cls}">` + r.map(([id, m, s, a, c]) =>
-        `<button type="button" class="k ${c || ''}" data-k="${id}" aria-label="${(ARIA[id] || m).replace(/"/g, '&quot;')}">` +
+        `<button type="button" class="k ${c || ''}${s ? ' has-s' : ''}${a ? ' has-a' : ''}" data-k="${id}" aria-label="${(ARIA[id] || m).replace(/"/g, '&quot;')}">` +
         (s ? `<span class="s">${s}</span>` : '') + (a ? `<span class="a">${a}</span>` : '') + `<span class="m">${m}</span></button>`).join('') + '</div>').join('');
       $('keys').innerHTML = mk(TOP, 'row6') + '<div class="sep"></div>' + mk(BOTTOM, 'row5');
     }
@@ -366,6 +381,8 @@
       $('indRight').textContent = [{ deg: 'D', rad: 'R', gra: 'G' }[settings.angle], f, settings.mixed ? '' : 'd/c'].filter(Boolean).join('  ');
       document.querySelector('[data-k="shift"]').classList.toggle('sel', S.shift);
       document.querySelector('[data-k="alpha"]').classList.toggle('sel', S.alpha);
+      $('keys').classList.toggle('kb-shift', S.shift);
+      $('keys').classList.toggle('kb-alpha', S.alpha);
       document.querySelector('[data-k="hyp"]').classList.toggle('sel', S.hyp);
       ['rcl'].forEach(id => document.querySelector(`[data-k="${id}"]`).classList.toggle('pend', S.pending === 'RCL'));
       $('modeName').textContent = (MODES.find(m => m[0] === S.mode) || [])[1];
