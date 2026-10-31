@@ -99,6 +99,7 @@
     .k.sel { outline: 2px solid currentColor; outline-offset: -2px; }
     .k.pend { box-shadow: 0 0 0 2px var(--accent); }
     .kb-note { margin: 10px 2px 0; text-align: right; font-size: 11px; color: var(--muted, #8a8f9a); }
+    .exam-bar { margin: 0 0 14px; padding: 8px 12px; border-radius: 8px; background: rgba(245,158,11,.12); color: #fcd34d; font-size: 12px; font-weight: 600; }
     .kb-note kbd { font: inherit; font-family: JetBrains Mono, monospace; font-size: 10px; padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(255,255,255,.18); }
     /* While SHIFT or ALPHA is on, the keypad shows the alternate layer: the
        normal label steps back, and each key's alternate label moves to the
@@ -806,6 +807,44 @@
     });
 
     // ── Go ─────────────────────────────────────────────────────────────────
+    // ── Exam mode: calculator.html?exam=1 ───────────────────────────────────
+    // A web page cannot stop a learner switching apps or devices. This mode
+    // takes away the way out of the calculator, asks before the page is left,
+    // blocks the right-click menu, asks for full screen, and counts each time
+    // the page is hidden or loses focus, so a teacher can see it afterwards.
+    (function examMode() {
+      if (new URLSearchParams(location.search).get('exam') !== '1') return;
+      const KEY = 'mm-calc-exam-leaves';
+      let leaves = Number(sessionStorage.getItem(KEY)) || 0;
+      let away = false;
+      const nav = document.querySelector('nav');
+      if (nav) nav.remove();
+      const bar = document.createElement('div');
+      bar.className = 'exam-bar';
+      bar.setAttribute('role', 'status');
+      const show = () => { bar.textContent = `Exam mode · calculator only · left the page ${leaves} time${leaves === 1 ? '' : 's'}`; };
+      show();
+      document.querySelector('main').prepend(bar);
+      const leave = () => {
+        if (away) return;
+        away = true; leaves++;
+        sessionStorage.setItem(KEY, String(leaves)); show();
+      };
+      const back = () => { away = false; };
+      document.addEventListener('visibilitychange', () => (document.hidden ? leave() : back()));
+      window.addEventListener('blur', leave);
+      window.addEventListener('focus', back);
+      // The browser's back button would leave the calculator, so it is kept here.
+      history.pushState(null, '', location.href);
+      window.addEventListener('popstate', () => history.pushState(null, '', location.href));
+      window.addEventListener('beforeunload', e => { e.preventDefault(); e.returnValue = ''; });
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('pointerdown', () => {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+      }, { once: true });
+    })();
     buildKeys(); renderHist(); setMode('comp');
     window.__calc = { S, press, settings, E }; // handy for tests / debugging
   })();
