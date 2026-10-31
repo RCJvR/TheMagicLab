@@ -28,7 +28,7 @@
   var root = document.documentElement;
   // Rules kept as written: printable and simulated surfaces, and the calculator's
   // alpha keys, whose pink is a fixed colour so every theme shows it.
-  var KEEP_SEL = /plot-wrap|#paper\b|paper-wrap|math-field|\.ib img|data-ml-no-theme|\.k\.al\b|kb-alpha|\.k\.sh\b|kb-shift/;
+  var KEEP_SEL = /plot-wrap|#paper\b|paper-wrap|math-field|\.ib img|data-ml-no-theme|\.k\.al\b|kb-alpha|\.k\.sh\b|kb-shift|\.k \.[sa]\b/;
   var KEEP_ZONE = '.plot-wrap, #paper, [data-ml-no-theme]';
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
