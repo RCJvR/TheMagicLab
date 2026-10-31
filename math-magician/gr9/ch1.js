@@ -149,13 +149,13 @@ MathMagician.registerChapter(1, {
           <div class="tip-box"><span class="tip-icon">💡</span><span>For inverse proportion, the product stays constant: <span class="math"> x1y1 = x2y2</span>.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Ratio & Proportion Calculator</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Share an amount in a ratio, solve direct or inverse proportion, or work with a unit rate.</p>
-            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9rpMode">Type</label><select id="g9rpMode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;">
+            <p style="font-size:12px;color:rgba(221,225,240,0.62);margin-bottom:10px;">Share an amount in a ratio, solve direct or inverse proportion, or work with a unit rate.</p>
+            <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px;"><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:12px;color:rgba(221,225,240,0.72);" for="g9rpMode">Type</label><select id="g9rpMode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;">
               <option value="share">Share in a ratio</option>
               <option value="direct">Direct proportion</option>
               <option value="inverse">Inverse proportion</option>
               <option value="rate">Unit rate</option></select></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9rpA" id="g9rpAL"></label><input id="g9rpA" type="number" value="720" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9rpB" id="g9rpBL"></label><input id="g9rpB" type="text" value="3:5:4" autocomplete="off" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" for="g9rpC" id="g9rpCL"></label><input id="g9rpC" type="number" value="" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:12px;color:rgba(221,225,240,0.72);" for="g9rpA" id="g9rpAL"></label><input id="g9rpA" type="number" value="720" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:12px;color:rgba(221,225,240,0.72);" for="g9rpB" id="g9rpBL"></label><input id="g9rpB" type="text" value="3:5:4" autocomplete="off" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div><div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:12px;color:rgba(221,225,240,0.72);" for="g9rpC" id="g9rpCL"></label><input id="g9rpC" type="number" value="" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div></div>
             <div id="g9rpOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
           <script>
@@ -168,7 +168,7 @@ MathMagician.registerChapter(1, {
     $('g9rpB').type = m === 'share' ? 'text' : 'number';
     if (m === 'share') { $('g9rpA').value = 720; $('g9rpB').value = '3:5:4'; $('g9rpC').parentNode.style.display = 'none'; }
     else {
-      $('g9rpC').parentNode.style.display = '';
+      $('g9rpC').parentNode.style.display = 'flex';
       var d = { direct: [5, 60, 8], inverse: [5, 12, 4], rate: [252, 18, 30] }[m];
       $('g9rpA').value = d[0]; $('g9rpB').value = d[1]; $('g9rpC').value = d[2];
     }
