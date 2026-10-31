@@ -95,7 +95,10 @@
     .k.eq:hover { background: #fbb83a; }
     .k.mod { background: #20242b; }
     .k.nav { background: #20242b; padding-top: 0; display: grid; place-items: center; font-size: 12px; height: 34px; }
-    .k.sh { color: var(--shift); } .k.al { color: var(--alpha); background: var(--alpha); color: #2a0b14; }
+    /* The alpha pink is a fixed colour here, not a variable: the site's light and prism themes
+       remap variables, which turned the ALPHA key grey or green. These rules are kept as written. */
+    .k.sh { color: var(--shift); } .k.al { color: #ef6f8a; background: #ef6f8a; color: #2a0b14; }
+    .keys .k.al { color: #2a0b14; background: #ef6f8a; }
     .k.has-a:not(.al) { background: color-mix(in srgb, var(--alpha) 16%, var(--key)); }
     .k.sel { outline: 2px solid currentColor; outline-offset: -2px; }
     .k.pend { box-shadow: 0 0 0 2px var(--accent); }
@@ -113,10 +116,10 @@
       font-size: 13px; font-weight: 800;
     }
     .keys.kb-shift .k.has-s .s { color: var(--shift); }
-    .keys.kb-alpha .k.has-a .a { color: var(--alpha); }
+    .keys.kb-alpha .k.has-a .a { color: #ef6f8a; }
     /* In the alpha layer the associated keys themselves turn pink: their text and face. */
-    .keys.kb-alpha .k.has-a { color: var(--alpha); background: color-mix(in srgb, var(--alpha) 24%, var(--key)); }
-    .keys.kb-alpha .k.has-a .m { color: var(--alpha); }
+    .keys.kb-alpha .k.has-a { color: #ef6f8a; background: color-mix(in srgb, #ef6f8a 24%, var(--key)); }
+    .keys.kb-alpha .k.has-a .m { color: #ef6f8a; }
     .keys.kb-shift .k.has-s, .keys.kb-alpha .k.has-a { opacity: 1; }
     .keys.kb-shift .k[data-k="shift"], .keys.kb-alpha .k[data-k="alpha"] { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .k .s, .k .a, .k .m { transition: none; } }

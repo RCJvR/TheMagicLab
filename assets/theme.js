@@ -26,7 +26,9 @@
   'use strict';
   var KEY = 'ml-theme';
   var root = document.documentElement;
-  var KEEP_SEL = /plot-wrap|#paper\b|paper-wrap|math-field|\.ib img|data-ml-no-theme/;
+  // Rules kept as written: printable and simulated surfaces, and the calculator's
+  // alpha keys, whose pink is a fixed colour so every theme shows it.
+  var KEEP_SEL = /plot-wrap|#paper\b|paper-wrap|math-field|\.ib img|data-ml-no-theme|\.k\.al\b|kb-alpha/;
   var KEEP_ZONE = '.plot-wrap, #paper, [data-ml-no-theme]';
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
