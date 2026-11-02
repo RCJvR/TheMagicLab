@@ -503,7 +503,7 @@ body.hide-cursor { cursor: none; }
     m.prog = Math.min(1, el / (longest || 1));
     if (!allDone) {
       m.arcFrom = now; m.arcTo = now + longest - el;
-      m.arcMark = el < subs[0].R ? now + subs[0].R - el : null;
+      m.arcMark = el < subs[0].R ? now + subs[0].R - el : null; m.readFrom = now - el;
     }
     return m;
   }
@@ -610,7 +610,7 @@ body.hide-cursor { cursor: none; }
     if (phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
     bits.push(m.done ? t('endedAt', { t: hm(new Date(end)) }) : t('ends', { t: hm(new Date(end)) }));
     m.sub = running() || m.done ? bits.join(' · ') : '';
-    if (!m.done) { m.arcFrom = now; m.arcTo = end; m.arcMark = phase === 'reading' ? now + left : null; }
+    if (!m.done) { m.arcFrom = now; m.arcTo = end; m.arcMark = phase === 'reading' ? now + left : null; m.readFrom = now - el; }
     // times already past are written down, so a pause does not move them
     if (phase !== 'reading' && R && !st.rEnd && running()) { st.rEnd = now - (el - R); save(); }
     if (m.done && !st.fin) { st.fin = end; save(); }
@@ -641,6 +641,7 @@ body.hide-cursor { cursor: none; }
     el('circle', { cx: 100, cy: 100, r: 96, fill: 'var(--face)', stroke: 'color-mix(in srgb, var(--fg) 30%, transparent)', 'stroke-width': 1.5 }, svg);
     view.wedge = el('path', { fill: 'var(--accent)', 'fill-opacity': 0.85 }, svg);
     // exam: the reading time as a line on the minute track (see drawRing)
+    view.track = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.25 }, svg);
     view.arc = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.9 }, svg);
     view.mark = el('circle', { r: 4.5, fill: 'var(--fg)' }, svg);
     for (var i = 0; i < 60; i++) {
@@ -663,23 +664,24 @@ body.hide-cursor { cursor: none; }
   }
   function rot(e, deg, show) { e.setAttribute('transform', 'rotate(' + deg + ' 100 100)'); e.style.display = show === false ? 'none' : ''; }
   // Exam reading time, read by the minute hand: while reading time runs, a
-  // line on the minute track from the minute hand to where it will be when
-  // reading ends. Its start moves with the minute hand, so it shrinks every
-  // minute. Nothing is drawn before the start or once writing begins.
-  // (Reading longer than an hour would need more than one turn; it is capped
-  // at a full ring.)
+  // faint track on the minute track from where reading started (08:40) to
+  // where it ends (08:50), and a solid line from the start to the minute
+  // hand, which grows with the hand until it reaches the end. Nothing is
+  // drawn before the start or once writing begins. (Reading longer than an
+  // hour is capped at a full turn.)
   var HOUR = 3600000;
   function minDeg(ms) { var d = new Date(ms); return ((d.getMinutes() + d.getSeconds() / 60 + d.getMilliseconds() / 60000) % 60) * 6; }
   function drawRing(m) {
-    var from = m.arcFrom, to = m.arcMark;
-    if (!from || !to || to <= from || m.arcPreview) return;
-    view.arc.setAttribute('stroke', 'var(--accent)'); view.arc.setAttribute('stroke-opacity', 0.9);
-    view.arc.setAttribute('d', arc(minDeg(from), Math.min(HOUR - 1000, to - from) / HOUR * 360, 93));
+    var now = m.arcFrom, start = m.readFrom, to = m.arcMark;
+    if (!now || !to || !start || to <= now || m.arcPreview) return;
+    var cap = function (ms) { return Math.min(HOUR - 1000, ms) / HOUR * 360; };
+    view.track.setAttribute('d', arc(minDeg(start), cap(to - start), 93));
+    if (now - start > 1000) view.arc.setAttribute('d', arc(minDeg(start), cap(now - start), 93));
   }
   function drawFace(m) {
     if (view.faceKind !== m.face) buildFace(m.face);
     var now = new Date();
-    view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); view.mark.style.display = 'none';
+    view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); if (view.track) view.track.setAttribute('d', ''); view.mark.style.display = 'none';
     if (m.face === 'clock') {
       var h = now.getHours() % 12, mi = now.getMinutes(), s = now.getSeconds() + now.getMilliseconds() / 1000;
       rot(view.hHour, (h + mi / 60) * 30); rot(view.hMin, (mi + s / 60) * 6); rot(view.hSec, Math.floor(s) * 6, cfg.look.secs);
