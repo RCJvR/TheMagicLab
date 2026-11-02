@@ -318,6 +318,13 @@ dialog.tt-share { max-width: 560px; text-align: center; }
   #ttPrint .tt-section { margin-top: 14pt; }
   #ttPrint .tt-section-head { border-bottom-color: #000; }
   #ttPrint .tt-q { padding: 8pt 0; border-bottom: 0.5pt solid #bbb; break-inside: avoid; }
+  #ttPrint .pt-topic { margin: 0 0 11pt; break-inside: avoid; }
+  #ttPrint .pt-topic h2 { font-size: 12.5pt; margin: 0 0 3pt; }
+  #ttPrint .pt-list { margin: 4pt 0 0 15pt; padding: 0; }
+  #ttPrint .pt-list li { margin: 0 0 4pt; font-size: 10pt; line-height: 1.35; }
+  #ttPrint .pt-list small { display: block; font-size: 9.2pt; }
+  #ttPrint .pt-none { font-size: 10pt; margin: 3pt 0 0; }
+  #ttPrint .pt-foot { margin-top: 12pt; font-size: 9pt; border-top: 0.5pt solid #999; padding-top: 5pt; }
   #ttPrint .tt-scenario { border: 0.75pt solid #999; break-inside: avoid; }
   #ttPrint .tt-body { padding-left: 2.2em; }
   #ttPrint .r-opt { padding: 4pt 8pt; font-size: 10.5pt; border-color: #ccc; }
@@ -466,6 +473,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <button class="ml-btn ml-btn--ghost" id="btnTsRefresh"><i data-lucide="refresh-cw"></i><span data-t="trRefresh">Refresh</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsOpen"><i data-lucide="lock"></i><span></span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsCsv"><i data-lucide="download"></i><span data-t="trCsv">Download marks (CSV)</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsTopics"><i data-lucide="list-checks"></i><span data-t="trTopicsBtn">Print topics to revisit</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsBack"><i data-lucide="arrow-left"></i><span data-t="trSessionsBack">All sessions</span></button>
       </div>
       <div class="tt-facts" id="tsFacts" style="margin-top:20px"></div>
@@ -544,7 +552,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       classResults: 'Class results', trIntro: 'Start a results session and show its code or QR code to the class. Every learner who writes with the code appears here, and only you can see the results.',
       trTest: 'Test', trName: 'Session name', trNamePh: 'e.g. Grade 9 workshop, 4 November', trStart: 'Start session', trNone: 'No sessions yet.',
       trResults: '{n} results', trOpen: 'Open', trClosed: 'Closed', trView: 'View results', trDelete: 'Delete', trSureDelete: 'Delete this session and all its results? This cannot be undone.',
-      trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
+      trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session',
+      trTopicsBtn: 'Print topics to revisit', ptTitle: 'Topics to revisit', ptSub: '{n} results · class average {a}%', ptNone: 'No single question stood out in this topic.',
+      ptLost: '{p}% of learners lost marks', ptRevise: 'Revise:', ptMarks: 'of the marks in this topic were earned', ptFoot: 'Worked out from the marks learners submitted, in their browsers. Use it as a guide to what to teach again.', ptPrinted: 'Printed {d}', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
       trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
       tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
       tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
@@ -591,7 +601,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       classResults: 'Klasuitslae', trIntro: 'Begin ’n uitslagsessie en wys sy kode of QR-kode aan die klas. Elke leerder wat met die kode skryf, verskyn hier, en net jy kan die uitslae sien.',
       trTest: 'Toets', trName: 'Sessienaam', trNamePh: 'bv. Graad 9-werkswinkel, 4 November', trStart: 'Begin sessie', trNone: 'Nog geen sessies nie.',
       trResults: '{n} uitslae', trOpen: 'Oop', trClosed: 'Gesluit', trView: 'Sien uitslae', trDelete: 'Skrap', trSureDelete: 'Skrap hierdie sessie en al sy uitslae? Dit kan nie ongedaan gemaak word nie.',
-      trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
+      trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie',
+      trTopicsBtn: 'Druk onderwerpe om te hersien', ptTitle: 'Onderwerpe om te hersien', ptSub: '{n} uitslae · klasgemiddeld {a}%', ptNone: 'Geen enkele vraag het in hierdie onderwerp uitgestaan nie.',
+      ptLost: '{p}% van die leerders het punte verloor', ptRevise: 'Hersien:', ptMarks: 'van die punte in hierdie onderwerp is behaal', ptFoot: 'Bereken uit die punte wat leerders in hul blaaiers ingedien het. Gebruik dit as ’n gids oor wat weer geleer moet word.', ptPrinted: 'Gedruk {d}', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
       trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
       tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
       tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
@@ -1379,7 +1391,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
 
   // ── Teacher view: results sessions and what the class got wrong ──────
-  var sessions = [], curSession = null, curResults = [], showAllMissed = false, markSort = { k: 'name', d: 1 };
+  var sessions = [], curSession = null, curResults = [], curVs = null, showAllMissed = false, markSort = { k: 'name', d: 1 };
   function isTeacher() { return !window.TT_PUBLIC && window.MagicLabAuth && MagicLabAuth.isTeacher && MagicLabAuth.isTeacher(); }
   function syncTeacherEntry() { $('teacherEntry').classList.toggle('hidden', !isTeacher()); }
   function sets() {
@@ -1476,7 +1488,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     Promise.all([
       db().then(function (c) { return c.from('tome_results').select('*').eq('session_id', curSession.id).order('created_at'); }),
       loadSet(curSession.quiz_set)
-    ]).then(function (r) { curResults = r[0].data || []; renderSession(r[1]); });
+    ]).then(function (r) { curResults = r[0].data || []; curVs = r[1]; renderSession(r[1]); });
   }
   function pctOf(a, b) { return b ? Math.round(a / b * 100) : 0; }
   function answerText(it, a) {
@@ -1508,6 +1520,54 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var best = null; Object.keys(c).forEach(function (k) { if (!best || c[k] > c[best]) best = k; });
     return best ? { text: best, n: c[best] } : null;
   }
+  // per question, per topic, per skill and per section, across every result
+  function tally(vs) {
+    var Q = {}, topic = {}, skill = {}, section = {};
+    curResults.forEach(function (r) {
+      var v = vs[r.quiz_id]; if (!v) return;
+      v.items.forEach(function (it) {
+        var got = +((r.per || {})[it.id] || 0), key = r.quiz_id + '|' + it.id;
+        var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
+        q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
+        [[topic, it.topic || 'other'], [skill, it.skill], [section, (v.quiz.sections[it.sec] || {}).title || String(it.sec + 1)]].forEach(function (g) {
+          var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
+        });
+      });
+    });
+    return { Q: Q, topic: topic, skill: skill, section: section };
+  }
+  // A one-page reference of what most of the class found hard: the weakest topics
+  // (under 70%, and at least the weakest three), each with its most-missed
+  // questions and what to revise. Printed through the same sheet as the answer key.
+  function printTopics() {
+    var vs = curVs; if (!vs || !curResults.length || !Object.keys(vs).length) return;
+    var tl = tally(vs), anyQuiz = vs[Object.keys(vs)[0]].quiz;
+    var tot = curResults.reduce(function (a, r) { return a + r.score; }, 0), max = curResults.reduce(function (a, r) { return a + r.total; }, 0);
+    var list = Object.keys(tl.topic).map(function (k) { return { k: k, pct: pctOf(tl.topic[k].got, tl.topic[k].max) }; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = list.filter(function (x) { return x.pct < 70; });
+    if (need.length < 3) need = list.slice(0, Math.min(3, list.length));
+    need = need.slice(0, 8);
+    var missed = Object.keys(tl.Q).map(function (k) { return tl.Q[k]; }).filter(function (q) { return q.got < q.max; });
+    var short = function (x, n) { x = String(x || '').replace(/\s+/g, ' ').trim(); return x.length > n ? x.slice(0, n - 1) + '…' : x; };
+    var h = '<div class="p-head"><h1>' + esc(t('ptTitle')) + ' · ' + esc(curSession.title) + '</h1><p>' + esc(setTitle(curSession.quiz_set)) + ' · ' +
+      esc(t('ptSub', { n: curResults.length, a: pctOf(tot, max) })) + ' · ' + esc(t('ptPrinted', { d: new Date().toLocaleDateString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric' }) })) + '</p></div>';
+    need.forEach(function (x) {
+      var o = tl.topic[x.k], qs = missed.filter(function (q) { return (q.it.topic || 'other') === x.k; })
+        .sort(function (a, b) { return (b.max - b.got) / b.max - (a.max - a.got) / a.max || b.n - a.n; })
+        .filter(function (q) { return pctOf(q.max - q.got, q.max) >= 25; }).slice(0, 4);
+      h += '<div class="pt-topic"><h2>' + esc(topicName(x.k, anyQuiz)) + ' · ' + x.pct + '%</h2><div class="tt-rows">' + row(x.pct + '% ' + t('ptMarks'), o.got, o.max) + '</div>';
+      if (!qs.length) h += '<p class="pt-none">' + esc(t('ptNone')) + '</p>';
+      else h += '<ul class="pt-list">' + qs.map(function (q) {
+        return '<li><b>' + esc(q.it.num) + '</b> ' + esc(short(q.it.q.q, 150)) + ' <i>(' + esc(t('ptLost', { p: pctOf(q.max - q.got, q.max) })) + ')</i>' +
+          (q.it.q.explain ? '<small>' + esc(t('ptRevise')) + ' ' + esc(short(q.it.q.explain, 200)) + '</small>' : '') + '</li>';
+      }).join('') + '</ul>';
+      h += '</div>';
+    });
+    h += '<p class="pt-foot">' + esc(t('ptFoot')) + '</p>';
+    $('ttPrint').innerHTML = h;
+    var old = document.title; document.title = t('ptTitle') + ' - ' + curSession.title;
+    setTimeout(function () { window.print(); document.title = old; }, 50);
+  }
   function renderSession(vs) {
     var R = curResults, body = $('tsBody');
     var tot = R.reduce(function (s, r) { return s + r.score; }, 0), max = R.reduce(function (s, r) { return s + r.total; }, 0);
@@ -1516,18 +1576,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (!R.length) { body.innerHTML = '<p class="tt-empty-sm">' + esc(t('tsNoResults')) + '</p>'; return; }
 
     // per question, per topic, per skill and per section, across every result
-    var Q = {}, topic = {}, skill = {}, section = {};
-    R.forEach(function (r) {
-      var v = vs[r.quiz_id]; if (!v) return;
-      v.items.forEach(function (it) {
-        var got = +(r.per[it.id] || 0), key = r.quiz_id + '|' + it.id;
-        var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
-        q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
-        [[topic, it.topic || 'other'], [skill, it.skill], [section, (v.quiz.sections[it.sec] || {}).title || String(it.sec + 1)]].forEach(function (g) {
-          var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
-        });
-      });
-    });
+    var tl = tally(vs), Q = tl.Q, topic = tl.topic, skill = tl.skill, section = tl.section;
+    $('btnTsTopics').disabled = !R.length;
     var h = '', anyQuiz = vs[Object.keys(vs)[0]].quiz;
     // weakest topics
     h += '<h3 class="tt-h3">' + esc(t('tsTopics')) + '</h3><div class="tt-rows">' + Object.keys(topic).sort(function (a, b) { return topic[a].got / topic[a].max - topic[b].got / topic[b].max; })
@@ -1668,6 +1718,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnPrint').addEventListener('click', printReport);
   $('btnRevPrint').addEventListener('click', printReport);
   $('btnKey').addEventListener('click', printKey);
+  $('btnTsTopics').addEventListener('click', printTopics);
   $('btnDownload').addEventListener('click', downloadPaper);
   $('btnNextVersion').addEventListener('click', function () { openQuiz(this.dataset.id); });
   $('btnRevRetry').addEventListener('click', function () { startTest(true); });
