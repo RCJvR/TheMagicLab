@@ -265,6 +265,9 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tr-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .tr-actions .ml-btn { padding: 7px 12px; font-size: calc(13.5 * var(--k)); }
 .tr-closed { opacity: 0.7; }
+.shr-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(14.5 * var(--k)); }
+#shrEmail { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.shr-row small { color: var(--text-3); display: block; }
 .tm-item { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
 .tm-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; }
 .tm-pct { font-size: calc(22 * var(--k)); font-weight: 800; color: var(--crit); font-variant-numeric: tabular-nums; line-height: 1.1; }
@@ -476,6 +479,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <button class="ml-btn ml-btn--primary" id="btnTsQr"><i data-lucide="qr-code"></i><span data-t="trShowQr">Show code and QR</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsRefresh"><i data-lucide="refresh-cw"></i><span data-t="trRefresh">Refresh</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsOpen"><i data-lucide="lock"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsShare"><i data-lucide="user-plus"></i><span data-t="shBtn">Share with a teacher</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsCsv"><i data-lucide="download"></i><span data-t="trCsv">Download marks (CSV)</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsTopics"><i data-lucide="list-checks"></i><span data-t="trTopicsBtn">Print topics to revisit</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsBack"><i data-lucide="arrow-left"></i><span data-t="trSessionsBack">All sessions</span></button>
@@ -496,6 +500,18 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <button class="ml-btn ml-btn--primary" id="btnCopyLink"><i data-lucide="copy"></i><span data-t="copy">Copy link</span></button>
       <button class="ml-btn ml-btn--ghost" id="btnShareClose"><span data-t="close">Close</span></button>
     </div>
+  </dialog>
+
+  <dialog class="tt-dialog" id="shrDlg">
+    <h2 data-t="shTitle">Share these results</h2>
+    <p data-t="shSub"></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="email" id="shrEmail" class="tt-input" style="flex:1 1 220px;min-width:0" autocomplete="off">
+      <button class="ml-btn ml-btn--primary" id="btnShrAdd"><span data-t="shAdd">Share</span></button>
+    </div>
+    <p class="tt-status" id="shrStatus" aria-live="polite"></p>
+    <div id="shrList"></div>
+    <div class="tt-actions"><button class="ml-btn ml-btn--ghost" id="btnShrClose"><span data-t="close">Close</span></button></div>
   </dialog>
 
   <dialog class="tt-dialog" id="confirmDlg">
@@ -558,7 +574,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       trResults: '{n} results', trOpen: 'Open', trClosed: 'Closed', trView: 'View results', trDelete: 'Delete', trSureDelete: 'Delete this session and all its results? This cannot be undone.',
       trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session',
       trTopicsBtn: 'Print topics to revisit', ptTitle: 'Topics to revisit', ptSub: '{n} results · class average {a}%', ptNone: 'No single question stood out in this topic.',
-      ptLost: '{p}% of learners lost marks', ptRevise: 'Revise:', ptMarks: 'of the marks in this topic were earned', ptFoot: 'Worked out from the marks learners submitted, in their browsers. Use it as a guide to what to teach again.', ptPrinted: 'Printed {d}', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
+      ptLost: '{p}% of learners lost marks', ptRevise: 'Revise:', ptMarks: 'of the marks in this topic were earned', ptFoot: 'Worked out from the marks learners submitted, in their browsers. Use it as a guide to what to teach again.', ptPrinted: 'Printed {d}',
+      shBtn: 'Share with a teacher', shTitle: 'Share these results', shSub: 'Another teacher will see this session in their Class results and can read the marks and print the topics list. They cannot close, reopen, delete or share it.', shEmail: 'Their email address', shAdd: 'Share', shNone: 'Not shared with anyone yet.', shRemove: 'Stop sharing with {n}', shBy: 'Shared with you by {n}', shLeave: 'Remove from my list', shSureLeave: 'Remove this session from your list? The teacher who shared it keeps it.', shDone: 'Shared with {n}.', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
       trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
       tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
       tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
@@ -607,7 +624,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       trResults: '{n} uitslae', trOpen: 'Oop', trClosed: 'Gesluit', trView: 'Sien uitslae', trDelete: 'Skrap', trSureDelete: 'Skrap hierdie sessie en al sy uitslae? Dit kan nie ongedaan gemaak word nie.',
       trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie',
       trTopicsBtn: 'Druk onderwerpe om te hersien', ptTitle: 'Onderwerpe om te hersien', ptSub: '{n} uitslae · klasgemiddeld {a}%', ptNone: 'Geen enkele vraag het in hierdie onderwerp uitgestaan nie.',
-      ptLost: '{p}% van die leerders het punte verloor', ptRevise: 'Hersien:', ptMarks: 'van die punte in hierdie onderwerp is behaal', ptFoot: 'Bereken uit die punte wat leerders in hul blaaiers ingedien het. Gebruik dit as ’n gids oor wat weer geleer moet word.', ptPrinted: 'Gedruk {d}', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
+      ptLost: '{p}% van die leerders het punte verloor', ptRevise: 'Hersien:', ptMarks: 'van die punte in hierdie onderwerp is behaal', ptFoot: 'Bereken uit die punte wat leerders in hul blaaiers ingedien het. Gebruik dit as ’n gids oor wat weer geleer moet word.', ptPrinted: 'Gedruk {d}',
+      shBtn: 'Deel met ’n onderwyser', shTitle: 'Deel hierdie uitslae', shSub: 'Nog ’n onderwyser sal hierdie sessie in hul Klasuitslae sien en kan die punte lees en die onderwerplys druk. Hulle kan dit nie sluit, heropen, uitvee of verder deel nie.', shEmail: 'Hul e-posadres', shAdd: 'Deel', shNone: 'Nog met niemand gedeel nie.', shRemove: 'Hou op deel met {n}', shBy: 'Met jou gedeel deur {n}', shLeave: 'Verwyder van my lys', shSureLeave: 'Verwyder hierdie sessie van jou lys? Die onderwyser wat dit gedeel het, hou dit.', shDone: 'Gedeel met {n}.', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
       trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
       tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
       tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
@@ -1395,7 +1413,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
 
   // ── Teacher view: results sessions and what the class got wrong ──────
-  var sessions = [], curSession = null, curResults = [], curVs = null, showAllMissed = false, markSort = { k: 'name', d: 1 };
+  var myId = null, owners = {}, sessions = [], curSession = null, curResults = [], curVs = null, showAllMissed = false, markSort = { k: 'name', d: 1 };
   function isTeacher() { return !window.TT_PUBLIC && window.MagicLabAuth && MagicLabAuth.isTeacher && MagicLabAuth.isTeacher(); }
   function syncTeacherEntry() { $('teacherEntry').classList.toggle('hidden', !isTeacher()); }
   function sets() {
@@ -1422,10 +1440,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     db().then(function (c) {
       return Promise.all([
         c.from('tome_sessions').select('*').order('created_at', { ascending: false }),
-        c.from('tome_results').select('session_id')
+        c.from('tome_results').select('session_id'),
+        c.rpc('tome_session_owners'),
+        c.auth.getUser()
       ]);
     }).then(function (r) {
       sessions = (r[0].data || []);
+      owners = {}; (r[2].data || []).forEach(function (o) { owners[o.r_session] = o.r_name; });
+      myId = r[3] && r[3].data && r[3].data.user ? r[3].data.user.id : null;
       var counts = {}; (r[1].data || []).forEach(function (x) { counts[x.session_id] = (counts[x.session_id] || 0) + 1; });
       if (!sessions.length) { box.innerHTML = '<p class="tt-empty-sm">' + esc(t('trNone')) + '</p>'; return; }
       box.innerHTML = '';
@@ -1433,20 +1455,54 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var d = document.createElement('div'); d.className = 'tr-session' + (se.is_open ? '' : ' tr-closed');
         d.innerHTML = '<div><strong>' + esc(se.title) + '</strong><small>' + esc(setTitle(se.quiz_set)) + ' · ' +
           esc(new Date(se.created_at).toLocaleDateString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })) + ' · ' +
-          esc(t('trResults', { n: counts[se.id] || 0 })) + ' · ' + esc(se.is_open ? t('trOpen') : t('trClosed')) + '</small></div>' +
-          '<div class="tr-actions"><span class="tr-code">' + esc(se.join_code) + '</span>' +
+          esc(t('trResults', { n: counts[se.id] || 0 })) + ' · ' + esc(se.is_open ? t('trOpen') : t('trClosed')) + (isShared(se) ? ' · ' + esc(t('shBy', { n: owners[se.id] || '' })) : '') + '</small></div>' +
+          '<div class="tr-actions">' + (isShared(se) ? '' : '<span class="tr-code">' + esc(se.join_code) + '</span>') +
           '<button class="ml-btn ml-btn--primary" data-a="view">' + esc(t('trView')) + '</button>' +
-          '<button class="ml-btn ml-btn--ghost" data-a="qr" aria-label="' + esc(t('trShowQr')) + '"><i data-lucide="qr-code"></i></button>' +
-          '<button class="ml-btn ml-btn--ghost" data-a="del" aria-label="' + esc(t('trDelete')) + '"><i data-lucide="trash-2"></i></button></div>';
+          (isShared(se)
+            ? '<button class="ml-btn ml-btn--ghost" data-a="leave" aria-label="' + esc(t('shLeave')) + '" title="' + esc(t('shLeave')) + '"><i data-lucide="x"></i></button>'
+            : '<button class="ml-btn ml-btn--ghost" data-a="qr" aria-label="' + esc(t('trShowQr')) + '"><i data-lucide="qr-code"></i></button>' +
+              '<button class="ml-btn ml-btn--ghost" data-a="del" aria-label="' + esc(t('trDelete')) + '"><i data-lucide="trash-2"></i></button>') + '</div>';
         d.querySelector('[data-a="view"]').addEventListener('click', function () { openSession(se); });
-        d.querySelector('[data-a="qr"]').addEventListener('click', function () { showSessionQr(se); });
-        d.querySelector('[data-a="del"]').addEventListener('click', function () {
-          if (!confirm(t('trSureDelete'))) return;
-          db().then(function (c) { return c.from('tome_sessions').delete().eq('id', se.id); }).then(loadSessions);
+        if (isShared(se)) d.querySelector('[data-a="leave"]').addEventListener('click', function () {
+          if (!confirm(t('shSureLeave'))) return;
+          db().then(function (c) { return c.from('tome_session_shares').delete().eq('session_id', se.id).eq('teacher_id', myId); }).then(loadSessions);
+        });
+        else {
+          d.querySelector('[data-a="qr"]').addEventListener('click', function () { showSessionQr(se); });
+          d.querySelector('[data-a="del"]').addEventListener('click', function () {
+            if (!confirm(t('trSureDelete'))) return;
+            db().then(function (c) { return c.from('tome_sessions').delete().eq('id', se.id); }).then(loadSessions);
+          });
+        }
+        box.appendChild(d);
+      });
+      icons();
+    });
+  }
+  // a session another teacher started and shared with me
+  function isShared(se) { return !!myId && se.teacher_id !== myId; }
+  function loadShares() {
+    var box = $('shrList'); box.innerHTML = '';
+    db().then(function (c) { return c.rpc('tome_session_shares_of', { p_session: curSession.id }); }).then(function (r) {
+      var rows = r.data || [];
+      if (!rows.length) { box.innerHTML = '<p class="tt-empty-sm">' + esc(t('shNone')) + '</p>'; return; }
+      rows.forEach(function (x) {
+        var d = document.createElement('div'); d.className = 'shr-row';
+        d.innerHTML = '<div>' + esc(x.r_name) + '<small>' + esc(x.r_email) + '</small></div><button class="ml-btn ml-btn--ghost" aria-label="' + esc(t('shRemove', { n: x.r_name })) + '"><i data-lucide="x"></i></button>';
+        d.querySelector('button').addEventListener('click', function () {
+          db().then(function (c) { return c.from('tome_session_shares').delete().eq('session_id', curSession.id).eq('teacher_id', x.r_teacher); }).then(loadShares);
         });
         box.appendChild(d);
       });
       icons();
+    });
+  }
+  function addShare() {
+    var st = $('shrStatus'), em = $('shrEmail').value.trim(); if (!em) return;
+    st.textContent = ''; st.className = 'tt-status';
+    db().then(function (c) { return c.rpc('share_tome_session', { p_session: curSession.id, p_email: em }); }).then(function (r) {
+      if (r.error) { st.textContent = r.error.message; st.className = 'tt-status bad'; return; }
+      $('shrEmail').value = ''; st.textContent = t('shDone', { n: (r.data && r.data[0] && r.data[0].r_name) || em }); loadShares();
     });
   }
   function createSession() {
@@ -1467,6 +1523,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     $('tsTitle').textContent = se.title;
     $('tsSub').textContent = setTitle(se.quiz_set);
     paintOpenBtn();
+    var sh = isShared(se);
+    if (sh) $('tsSub').textContent += ' · ' + t('shBy', { n: owners[se.id] || '' });
+    ['btnTsOpen', 'btnTsShare', 'btnTsQr'].forEach(function (id) { $(id).classList.toggle('hidden', sh); });
     show('viewSession');
     loadSessionResults();
   }
@@ -1697,6 +1756,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnTsRefresh').addEventListener('click', loadSessionResults);
   $('btnTsQr').addEventListener('click', function () { showSessionQr(curSession); });
   $('btnTsCsv').addEventListener('click', downloadCsv);
+  $('btnTsShare').addEventListener('click', function () { $('shrStatus').textContent = ''; $('shrEmail').value = ''; $('shrEmail').placeholder = t('shEmail'); $('shrDlg').showModal(); loadShares(); });
+  $('btnShrAdd').addEventListener('click', addShare);
+  $('shrEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') addShare(); });
+  $('btnShrClose').addEventListener('click', function () { $('shrDlg').close(); });
   $('btnTsOpen').addEventListener('click', function () {
     var to = !curSession.is_open;
     db().then(function (c) { return c.from('tome_sessions').update({ is_open: to }).eq('id', curSession.id); }).then(function (r) {
