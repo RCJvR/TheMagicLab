@@ -124,7 +124,7 @@
     ['/computer-codex', '#35a6f0'], ['/web-wizard', '#1fb8dc'], ['/model-mage', '#17c4c0'],
     ['/drawing-druid/', '#1fc98e'], ['/science-sage/', '#4acf6b'], ['/math-magician/', '#9ed43c'],
     ['/spike-spellcaster/', '#e8c63a'], ['/tech-tower/', '#eda13c'], ['/robot-realm/', '#ee7544'],
-    ['/time-turner', '#ed5c86'], ['/timer-talisman', '#ed5c86']
+    ['/time-turner', '#ed5c86'], ['/timer-talisman', '#ed5c86'], ['/exam-enchanter', '#ed5c86']
   ];
   function accentFor(path) {
     for (var i = 0; i < TOOL_ACCENT.length; i++) {
