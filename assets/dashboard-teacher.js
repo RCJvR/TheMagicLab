@@ -5870,6 +5870,13 @@ async function _initDashboard() {
       studentEl.querySelector('h2').textContent = 'Teacher access pending';
       studentEl.querySelector('p').textContent =
         'Your request for a teacher account has been sent. You will get access to this dashboard once it has been approved. Until then you can use the site as a student.';
+      if (!document.getElementById('vcMount')) {
+        const box = document.createElement('div'); box.id = 'vcMount'; box.style.width = '100%';
+        studentEl.appendChild(box);
+        const s = document.createElement('script'); s.src = 'assets/verify-chat.js';
+        s.onload = () => window.MLVerifyChat.mount(box);
+        document.body.appendChild(s);
+      }
     }
     guestEl.style.display   = 'none';
     studentEl.style.display = 'flex';
