@@ -1523,7 +1523,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var got = +(r.per[it.id] || 0), key = r.quiz_id + '|' + it.id;
         var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
         q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
-        [[topic, it.topic || 'other'], [skill, it.skill], [section, it.sec]].forEach(function (g) {
+        [[topic, it.topic || 'other'], [skill, it.skill], [section, (v.quiz.sections[it.sec] || {}).title || String(it.sec + 1)]].forEach(function (g) {
           var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
         });
       });
@@ -1553,8 +1553,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     h += '<h3 class="tt-h3">' + esc(t('tsSkills')) + '</h3><div class="tt-rows">' + ['knowledge', 'application'].filter(function (k) { return skill[k]; })
       .map(function (k) { return row(t(k) + ' · ' + pctOf(skill[k].got, skill[k].max) + '%', skill[k].got, skill[k].max); }).join('') + '</div>';
     var anyQuiz = vs[Object.keys(vs)[0]].quiz;
-    h += '<h3 class="tt-h3">' + esc(t('tsSections')) + '</h3><div class="tt-rows">' + Object.keys(section).sort().map(function (k) {
-      return row(t('question', { n: +k + 1 }) + ': ' + anyQuiz.sections[k].title + ' · ' + pctOf(section[k].got, section[k].max) + '%', section[k].got, section[k].max);
+    // (by title, in the order first met, so tests with different sections still add up)
+    h += '<h3 class="tt-h3">' + esc(t('tsSections')) + '</h3><div class="tt-rows">' + Object.keys(section).map(function (k) {
+      return row(k + ' · ' + pctOf(section[k].got, section[k].max) + '%', section[k].got, section[k].max);
     }).join('') + '</div>';
     // mark list
     h += '<h3 class="tt-h3">' + esc(t('tsMarks')) + '</h3><div class="tr-wrap"><table class="tr-table"><thead><tr>' +
