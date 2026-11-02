@@ -63,6 +63,10 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 }
 .inp:focus-visible { outline: 2px solid var(--tool); outline-offset: 1px; border-color: transparent; }
 .inp:disabled { opacity: 0.5; }
+.ee-plan { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 18px; }
+.ee-plan .ee-seg { margin: 0; }
+.ee-plan-l { font-size: 12.5px; font-weight: 700; color: var(--text-2); }
+.ee-plan .inp { padding: 8px 12px; font-size: 14px; width: 210px; max-width: 100%; }
 .ee-chips { display: flex; flex-wrap: wrap; gap: 8px; min-height: 42px; align-items: center; margin-bottom: 18px; }
 .ee-empty { font-size: 14px; color: var(--text-3); }
 .chip { --c: #ccc; display: inline-flex; align-items: center; gap: 4px; background: var(--c); color: #0b0d12; border-radius: 999px; border: 2px solid transparent; font-weight: 700; font-size: 14px; }
@@ -115,6 +119,8 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 .grip { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; cursor: ns-resize; touch-action: none; display: flex; align-items: center; justify-content: center; }
 .grip::after { content: ''; width: 28px; height: 3px; border-radius: 2px; background: rgba(11, 13, 18, 0.5); }
 .blk.short .grip { height: 10px; }
+.blk.win { border-style: dashed; border-color: rgba(11, 13, 18, 0.55); }
+.blk.win.sel { border-color: var(--paper); }
 .blk.exam { cursor: default; border-color: #0b0d12; z-index: 2;
   background-image: repeating-linear-gradient(135deg, rgba(11, 13, 18, 0.16) 0 6px, transparent 6px 12px); }
 .blk.exam em { font-style: normal; font-weight: 800; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -146,6 +152,7 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
   .ee-bar .ee-grow { flex-basis: 100%; height: 0; }
   .cal { grid-template-columns: 40px minmax(0, 1fr); }
   .chip-main { padding-left: 12px; }
+  .ee-plan .inp { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } .ee-msg { transition: none; } }
 @media print {
@@ -205,13 +212,24 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 
   <main class="ee-main" id="ee-main" tabindex="-1">
     <h1 class="ee-title">Exam Enchanter</h1>
-    <p class="ee-intro" data-t="intro">Plan your study time around your exams. Add your subjects, click the calendar to add a study session, then drag it to move it, or drag its bottom edge to change how long it is.</p>
+    <p class="ee-intro" data-t="intro">Plan your study time around your exams. Add your subjects, then click the calendar to add study sessions, study windows, breaks or other activities, and drag them to fit.</p>
 
     <div class="ee-setup">
       <label class="ee-field"><span data-t="grade">Grade</span><select class="inp" id="grade"></select></label>
       <label class="ee-field"><span data-t="addSubject">Add a subject</span><select class="inp" id="addSubject"></select></label>
     </div>
     <div class="ee-chips" id="chips" data-ml-no-theme></div>
+    <div class="ee-plan">
+      <span class="ee-plan-l" data-t="kPlan">Add to the calendar</span>
+      <div class="ee-seg" id="kindSeg" role="group" aria-label="Add to the calendar">
+        <button type="button" data-kind="study" data-t="kStudy">Study</button>
+        <button type="button" data-kind="window" data-t="kWindow">Study window</button>
+        <button type="button" data-kind="break" data-t="kBreak">Break</button>
+        <button type="button" data-kind="other" data-t="kOther">Other activity</button>
+      </div>
+      <input class="inp hidden" id="otherLabel" type="text" maxlength="40" list="otherList" autocomplete="off" aria-label="Activity name">
+      <datalist id="otherList"></datalist>
+    </div>
 
     <div class="ee-bar">
       <button class="ml-btn ml-btn--ghost" type="button" id="prev"><i data-lucide="chevron-left"></i><span data-t="prev">Earlier</span></button>
@@ -225,12 +243,13 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     <div class="ee-sel" id="selBar">
       <span id="selText"></span>
       <select class="inp" id="selSubject" aria-label="Subject"></select>
+      <input class="inp hidden" id="selLabel" type="text" maxlength="40" list="otherList" autocomplete="off" aria-label="Activity name">
       <button class="ml-btn ml-btn--ghost" type="button" id="selDel"><i data-lucide="trash-2"></i><span data-t="del">Delete session</span></button>
     </div>
     <p class="ee-msg" id="msg" role="status" aria-live="polite"></p>
 
     <div class="cal" id="cal" data-ml-no-theme></div>
-    <p class="ee-note" data-t="hint">Click an empty slot to add a session. Drag a session to move it, or drag its bottom edge to change its length. With the keyboard: arrow keys move a selected session, Shift and the arrows change its length, Delete removes it.</p>
+    <p class="ee-note" data-t="hint">Choose what to add above, then click an empty slot. Drag a block to move it, or drag its bottom edge to change its length. With the keyboard: arrow keys move a selected block, Shift and the arrows change its length, Delete removes it.</p>
     <p class="ee-note" data-t="source">Exam dates come from the Curro Durbanville November 2026 timetable. Check them against your own, and note that venues can change. Your plan is saved on this device only.</p>
   </main>
 
@@ -239,40 +258,44 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 (function () {
   'use strict';
   var STORE = 'ml-exam-enchanter-v1';
-  var DAY0 = 6 * 60, DAY1 = 22 * 60, HP = 56, SNAP = 15, MINLEN = 30, DEFLEN = 60;
+  var DAY0 = 6 * 60, DAY1 = 22 * 60, HP = 56, SNAP = 15, MINLEN = 30;
   // one colour per subject; all take dark text (contrast 8:1 or better on each)
   var PAL = ['#ff8fa3', '#ffb454', '#f2d84a', '#7fdc7f', '#4fd6c4', '#67c2ff', '#8ea6ff', '#c39bff', '#ff9be0', '#c4d86a'];
 
   var T = {
     en: {
-      allTools: 'All tools', intro: 'Plan your study time around your exams. Add your subjects, click the calendar to add a study session, then drag it to move it, or drag its bottom edge to change how long it is.',
+      allTools: 'All tools', intro: 'Plan your study time around your exams. Add your subjects, then click the calendar to add study sessions, study windows, breaks or other activities, and drag them to fit.',
       grade: 'Grade', chooseGrade: 'Choose…', gradeN: 'Grade {g}', addSubject: 'Add a subject', pickSubject: 'Choose a subject…', noSubjects: 'Add the subjects you write. Your exams then appear on the calendar.',
       prev: 'Earlier', next: 'Later', today: 'Today', addSession: 'Add session', save: 'Save my plan', saveTitle: 'Save my plan', fmtPhone: 'Phone wallpaper', fmtPc: 'Computer wallpaper', savePng: 'Save picture', savePdf: 'Save as PDF', close: 'Close',
       helpPhone: 'Save the picture, open it in your photos and choose Set as wallpaper. On an iPhone, choose Save Image when the share sheet opens, then Use as Wallpaper. The top of the picture is left clear for the lock-screen clock.',
       helpPc: 'Save the picture, then right-click it and choose Set as desktop background (Windows), or open Settings, Personalisation, Background. Desktop icons sit on the left, so the plan keeps clear of them.',
       pdfHelp: 'In the print window, choose Save as PDF as the printer.', myPlan: 'My exam plan', nothing: 'Nothing is planned for this week yet.', weekOf: 'Week of {a} to {b}', examTag: 'EXAM', brand: 'Exam Enchanter · themagiclab.co.za', subject: 'Subject', del: 'Delete session',
-      hint: 'Click an empty slot to add a session. Drag a session to move it, or drag its bottom edge to change its length. With the keyboard: arrow keys move a selected session, Shift and the arrows change its length, Delete removes it.',
+      hint: 'Choose what to add above, then click an empty slot. Drag a block to move it, or drag its bottom edge to change its length. With the keyboard: arrow keys move a selected block, Shift and the arrows change its length, Delete removes it.',
       source: 'Exam dates come from the Curro Durbanville November 2026 timetable. Check them against your own, and note that venues can change. Your plan is saved on this device only.',
       exam: 'Exam', study: 'Study', planned: 'planned', h: 'h', min: 'min', remove: 'Remove {s}', confirmRemove: 'Remove {s} and its {n} study sessions?',
       confirmGrade: 'Changing grade removes the subjects that grade does not write, and their study sessions. Carry on?',
       msgNoSubject: 'Add a subject first, then add a session.', msgNoGrade: 'Choose your grade first.', msgExam: 'That time is taken by an exam.', msgTaken: 'That time is already planned.', msgFull: 'There is no free time left to add a session.',
       msgAdded: 'Session added. Drag it to move it, or drag its bottom edge to change its length.', loadFail: 'The exam timetable could not be loaded. Check your connection and refresh the page.',
-      sessionOf: '{s}, {d}, {a} to {b}', selected: 'Selected'
+      sessionOf: '{s}, {d}, {a} to {b}', selected: 'Selected',
+      kPlan: 'Add to the calendar', kStudy: 'Study', kWindow: 'Study window', kBreak: 'Break', kOther: 'Other activity', activity: 'Activity', otherPh: 'e.g. Meal, Sport, Rest', anySubject: 'Any subject',
+      sugg: ['Meal', 'Exercise', 'Rest', 'Travel', 'Chores', 'Free time']
     },
     af: {
-      allTools: 'Alle hulpmiddels', intro: 'Beplan jou studietyd rondom jou eksamens. Voeg jou vakke by, klik op die kalender om ’n studiesessie by te voeg, en sleep dit dan om dit te skuif, of sleep sy onderkant om te verander hoe lank dit is.',
+      allTools: 'Alle hulpmiddels', intro: 'Beplan jou studietyd rondom jou eksamens. Voeg jou vakke by, klik dan op die kalender om studiesessies, studievensters, pouses of ander aktiwiteite by te voeg, en sleep hulle om te pas.',
       grade: 'Graad', chooseGrade: 'Kies…', gradeN: 'Graad {g}', addSubject: 'Voeg ’n vak by', pickSubject: 'Kies ’n vak…', noSubjects: 'Voeg die vakke by wat jy skryf. Jou eksamens verskyn dan op die kalender.',
       prev: 'Vroeër', next: 'Later', today: 'Vandag', addSession: 'Voeg sessie by', save: 'Stoor my plan', saveTitle: 'Stoor my plan', fmtPhone: 'Foon-agtergrond', fmtPc: 'Rekenaar-agtergrond', savePng: 'Stoor prent', savePdf: 'Stoor as PDF', close: 'Maak toe',
       helpPhone: 'Stoor die prent, maak dit in jou foto’s oop en kies Stel as agtergrond. Op ’n iPhone, kies Save Image wanneer die deelskerm oopmaak, en dan Use as Wallpaper. Die bokant van die prent is oop gelaat vir die sluitskerm se horlosie.',
       helpPc: 'Stoor die prent, regsklik dit en kies Set as desktop background (Windows), of maak Settings, Personalisation, Background oop. Werkskermikone is aan die linkerkant, so die plan bly daarvan weg.',
       pdfHelp: 'Kies Save as PDF as die drukker in die drukvenster.', myPlan: 'My eksamenplan', nothing: 'Daar is nog niks vir hierdie week beplan nie.', weekOf: 'Week van {a} tot {b}', examTag: 'EKSAMEN', brand: 'Exam Enchanter · themagiclab.co.za', subject: 'Vak', del: 'Skrap sessie',
-      hint: 'Klik op ’n leë gleuf om ’n sessie by te voeg. Sleep ’n sessie om dit te skuif, of sleep sy onderkant om sy lengte te verander. Met die sleutelbord: pyltjies skuif ’n gekose sessie, Shift en die pyltjies verander sy lengte, Delete verwyder dit.',
+      hint: 'Kies hierbo wat jy wil byvoeg, en klik dan op ’n leë gleuf. Sleep ’n blok om dit te skuif, of sleep sy onderkant om sy lengte te verander. Met die sleutelbord: pyltjies skuif ’n gekose blok, Shift en die pyltjies verander sy lengte, Delete verwyder dit.',
       source: 'Eksamendatums kom uit die Curro Durbanville Novembers 2026-rooster. Kontroleer dit teen jou eie, en let daarop dat lokale kan verander. Jou plan word net op hierdie toestel gestoor.',
       exam: 'Eksamen', study: 'Studeer', planned: 'beplan', h: 'uur', min: 'min', remove: 'Verwyder {s}', confirmRemove: 'Verwyder {s} en sy {n} studiesessies?',
       confirmGrade: 'As jy die graad verander, word die vakke wat daardie graad nie skryf nie, en hul studiesessies, verwyder. Gaan voort?',
       msgNoSubject: 'Voeg eers ’n vak by, en voeg dan ’n sessie by.', msgNoGrade: 'Kies eers jou graad.', msgExam: 'Daardie tyd word deur ’n eksamen ingeneem.', msgTaken: 'Daardie tyd is reeds beplan.', msgFull: 'Daar is geen vrye tyd oor om ’n sessie by te voeg nie.',
       msgAdded: 'Sessie bygevoeg. Sleep dit om dit te skuif, of sleep sy onderkant om sy lengte te verander.', loadFail: 'Die eksamenrooster kon nie gelaai word nie. Kontroleer jou verbinding en herlaai die bladsy.',
-      sessionOf: '{s}, {d}, {a} tot {b}', selected: 'Gekies'
+      sessionOf: '{s}, {d}, {a} tot {b}', selected: 'Gekies',
+      kPlan: 'Voeg by op die kalender', kStudy: 'Studeer', kWindow: 'Studievenster', kBreak: 'Pouse', kOther: 'Ander aktiwiteit', activity: 'Aktiwiteit', otherPh: 'bv. Ete, Sport, Rus', anySubject: 'Enige vak',
+      sugg: ['Ete', 'Oefening', 'Rus', 'Reis', 'Huistake', 'Vrye tyd']
     }
   };
   var lang = (window.MLLang && MLLang.getLang()) || 'en';
@@ -287,12 +310,13 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
 
   // ── What is saved: grade, the subjects and their colours, and the sessions ──
   function load() {
-    var d = { grade: 0, subjects: [], colour: {}, current: '', sessions: [] };
+    var d = { grade: 0, subjects: [], colour: {}, current: '', kind: 'study', label: '', sessions: [] };
     try {
       var s = JSON.parse(localStorage.getItem(STORE) || 'null');
       if (s && typeof s === 'object') {
         d.grade = +s.grade || 0; d.subjects = Array.isArray(s.subjects) ? s.subjects : []; d.colour = s.colour || {};
         d.current = s.current || ''; d.sessions = Array.isArray(s.sessions) ? s.sessions : [];
+        d.kind = ['study', 'window', 'break', 'other'].indexOf(s.kind) >= 0 ? s.kind : 'study'; d.label = s.label || '';
       }
     } catch (e) {}
     return d;
@@ -351,7 +375,22 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     return out;
   }
   function find(id) { return state.sessions.filter(function (s) { return s.id === id; })[0]; }
-  function plannedMins(n) { return state.sessions.filter(function (s) { return s.s === n; }).reduce(function (a, s) { return a + s.len; }, 0); }
+  // A block is a study session (a subject), a study window (time set aside, a subject if you like),
+  // a break, or another activity with its own name. Older saved sessions have no kind: they are study.
+  var BREAK_C = '#a8c8d8', OTHER_C = '#d9c4a0', WIN_C = '#e3e6f0', LENS = { study: 60, window: 120, 'break': 30, other: 60 };
+  function kindOf(x) { return x.k || 'study'; }
+  function defLen() { return LENS[state.kind] || 60; }
+  function sColour(x) { var k = kindOf(x); return k === 'study' ? colourOf(x.s) : k === 'window' ? (x.s ? colourOf(x.s) : WIN_C) : k === 'break' ? BREAK_C : OTHER_C; }
+  function sName(x) {
+    var k = kindOf(x);
+    return k === 'study' ? dn(x.s) : k === 'window' ? t('kWindow') + (x.s ? ' · ' + dn(x.s) : '') : k === 'break' ? t('kBreak') : (x.label || t('activity'));
+  }
+  // after the subjects change: study sessions need their subject; a window just loses it
+  function keepSessions() {
+    state.sessions = state.sessions.filter(function (x) { return kindOf(x) !== 'study' || state.subjects.indexOf(x.s) >= 0; });
+    state.sessions.forEach(function (x) { if (kindOf(x) === 'window' && x.s && state.subjects.indexOf(x.s) < 0) x.s = ''; });
+  }
+  function plannedMins(n) { return state.sessions.filter(function (x) { return x.s === n && (kindOf(x) === 'study' || kindOf(x) === 'window'); }).reduce(function (a, x) { return a + x.len; }, 0); }
   // what is in the way of [st, st+len) on a date: 'exam', 'session' or null
   function blocker(date, st, len, ignore) {
     var hit = null;
@@ -394,9 +433,13 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     a.disabled = !state.grade || !have.length;
     var c = $('chips');
     c.innerHTML = state.subjects.length ? state.subjects.map(function (n) {
-      return '<span class="chip' + (state.current === n ? ' on' : '') + '" style="--c:' + colourOf(n) + '"><button type="button" class="chip-main" data-pick="' + esc(n) + '" aria-pressed="' + (state.current === n) + '">' +
+      var on = state.kind === 'study' && state.current === n;
+      return '<span class="chip' + (on ? ' on' : '') + '" style="--c:' + colourOf(n) + '"><button type="button" class="chip-main" data-pick="' + esc(n) + '" aria-pressed="' + on + '">' +
         esc(dn(n)) + '<small>' + (plannedMins(n) ? esc(span(plannedMins(n))) : '') + '</small></button><button type="button" class="chip-x" data-drop="' + esc(n) + '" aria-label="' + esc(t('remove', { s: dn(n) })) + '">×</button></span>';
     }).join('') : '<span class="ee-empty">' + esc(t('noSubjects')) + '</span>';
+    [].forEach.call($('kindSeg').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.dataset.kind === state.kind); });
+    var ol = $('otherLabel'); ol.classList.toggle('hidden', state.kind !== 'other'); ol.placeholder = t('otherPh'); ol.value = state.label;
+    $('otherList').innerHTML = (T[lang] || T.en).sugg.map(function (x) { return '<option value="' + esc(x) + '">'; }).join('');
   }
   function renderBar() {
     var d = visible(), a = d[0], b = d[d.length - 1];
@@ -410,13 +453,15 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     bar.classList.toggle('on', !!s);
     if (!s) return;
     $('selText').innerHTML = '<b>' + esc(dayName(s.d, true)) + ' · ' + hm(s.st) + '–' + hm(s.st + s.len) + ' · ' + esc(span(s.len)) + '</b>';
-    var o = $('selSubject');
-    o.innerHTML = state.subjects.map(function (n) { return '<option value="' + esc(n) + '"' + (n === s.s ? ' selected' : '') + '>' + esc(dn(n)) + '</option>'; }).join('');
+    var o = $('selSubject'), k = kindOf(s), l = $('selLabel');
+    o.classList.toggle('hidden', k !== 'study' && k !== 'window'); l.classList.toggle('hidden', k !== 'other'); l.value = s.label || ''; l.placeholder = t('otherPh');
+    o.innerHTML = (k === 'window' ? '<option value="">' + esc(t('anySubject')) + '</option>' : '') +
+      state.subjects.map(function (n) { return '<option value="' + esc(n) + '"' + (n === s.s ? ' selected' : '') + '>' + esc(dn(n)) + '</option>'; }).join('');
   }
   function blockHtml(s) {
     var short = s.len < 50;
-    return '<div class="blk' + (short ? ' short' : '') + (sel === s.id ? ' sel' : '') + '" data-id="' + s.id + '" style="--c:' + colourOf(s.s) + ';top:' + px(s.st) + 'px;height:' + (s.len / 60 * HP) + 'px" tabindex="0" role="button" aria-label="' +
-      esc(t('sessionOf', { s: dn(s.s), d: dayName(s.d, true), a: hm(s.st), b: hm(s.st + s.len) })) + '"><b>' + esc(dn(s.s)) + '</b>' + (short ? '' : '<span>' + hm(s.st) + '–' + hm(s.st + s.len) + ' · ' + esc(span(s.len)) + '</span>') + '<i class="grip" data-grip aria-hidden="true"></i></div>';
+    return '<div class="blk' + (short ? ' short' : '') + (kindOf(s) === 'window' ? ' win' : '') + (sel === s.id ? ' sel' : '') + '" data-id="' + s.id + '" style="--c:' + sColour(s) + ';top:' + px(s.st) + 'px;height:' + (s.len / 60 * HP) + 'px" tabindex="0" role="button" aria-label="' +
+      esc(t('sessionOf', { s: sName(s), d: dayName(s.d, true), a: hm(s.st), b: hm(s.st + s.len) })) + '"><b>' + esc(sName(s)) + '</b>' + (short ? '' : '<span>' + hm(s.st) + '–' + hm(s.st + s.len) + ' · ' + esc(span(s.len)) + '</span>') + '<i class="grip" data-grip aria-hidden="true"></i></div>';
   }
   function renderCal() {
     var cal = $('cal'), days = visible(), today = todayStr(), hours = [];
@@ -448,23 +493,26 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     renderSel();
   }
   function addSessionAt(date, st) {
-    if (!state.grade) { say('msgNoGrade'); $('grade').focus(); return; }
-    if (!state.current) { say('msgNoSubject'); if (!$('addSubject').disabled) $('addSubject').focus(); return; }
+    var kind = state.kind || 'study';
+    if (kind === 'study') {
+      if (!state.grade) { say('msgNoGrade'); $('grade').focus(); return; }
+      if (!state.current) { say('msgNoSubject'); if (!$('addSubject').disabled) $('addSubject').focus(); return; }
+    }
     st = clamp(snap(st), DAY0, DAY1 - MINLEN);
-    var len = DEFLEN, why = null;
+    var len = defLen(), why = null;
     for (; len >= MINLEN; len -= SNAP) { if (st + len <= DAY1) { why = blocker(date, st, len); if (!why) break; } }
     if (len < MINLEN) { say(why === 'exam' ? 'msgExam' : 'msgTaken'); return; }
-    var s = { id: uid(), s: state.current, d: date, st: st, len: len };
+    var s = { id: uid(), k: kind, s: kind === 'study' ? state.current : '', label: kind === 'other' ? state.label.trim() : '', d: date, st: st, len: len };
     state.sessions.push(s); sel = s.id; save(); say('msgAdded'); render();
   }
   // the first free hour, looking at the visible days from mid-afternoon
   function addNextFree() {
     var days = visible(), order = [];
-    if (!state.grade || !state.current) { addSessionAt(days[0], 15 * 60); return; }
-    for (var m = 15 * 60; m + DEFLEN <= DAY1; m += SNAP) order.push(m);
+    if (state.kind === 'study' && (!state.grade || !state.current)) { addSessionAt(days[0], 15 * 60); return; }
+    for (var m = 15 * 60; m + defLen() <= DAY1; m += SNAP) order.push(m);
     for (m = DAY0; m < 15 * 60; m += SNAP) order.push(m);
     for (var i = 0; i < days.length; i++) for (var j = 0; j < order.length; j++) {
-      if (!blocker(days[i], order[j], DEFLEN)) { addSessionAt(days[i], order[j]); return; }
+      if (!blocker(days[i], order[j], defLen())) { addSessionAt(days[i], order[j]); return; }
     }
     say('msgFull');
   }
@@ -550,7 +598,7 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
   function dayItems(date) {
     var items = [];
     examsOn(date).forEach(function (x) { items.push({ st: x.st, len: x.len, name: x.names.map(dn).join(' / ') + (x.paper ? ' ' + x.paper : ''), colour: colourOf(x.names[0]), exam: true }); });
-    state.sessions.filter(function (s) { return s.d === date; }).forEach(function (s) { items.push({ st: s.st, len: s.len, name: dn(s.s), colour: colourOf(s.s), exam: false }); });
+    state.sessions.filter(function (s) { return s.d === date; }).forEach(function (s) { items.push({ st: s.st, len: s.len, name: sName(s), colour: sColour(s), exam: false }); });
     return items.sort(function (a, b) { return a.st - b.st; });
   }
   function rr(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
@@ -633,7 +681,10 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
       x.items.forEach(function (it) {
         var bx = x0 + gut + i * cw + 5, by = y0 + head + (it.st - lo) / 60 * ph + 2, bw = cw - 10, bh = it.len / 60 * ph - 4;
         block(g, bx, by, bw, bh, it, 24);
-        g.textBaseline = 'top'; g.fillStyle = '#0b0d12'; g.font = '800 22px ' + FONT; g.fillText(clip(g, it.name, bw - 22), bx + 12, by + 10);
+        g.textBaseline = 'top'; g.fillStyle = '#0b0d12';
+        // a short block (a 30 minute break) gets one smaller line, centred, so nothing is cut off
+        if (bh < 46) { var fs = Math.max(12, Math.min(22, bh - 12)); g.font = '800 ' + fs + 'px ' + FONT; g.fillText(clip(g, it.name, bw - 22), bx + 12, by + (bh - fs) / 2 - 1); return; }
+        g.font = '800 22px ' + FONT; g.fillText(clip(g, it.name, bw - 22), bx + 12, by + 10);
         if (bh > 62) { g.font = '600 18px ' + MONO; g.fillText(clip(g, (it.exam ? t('examTag') + ' · ' : '') + hm(it.st) + '–' + hm(it.st + it.len), bw - 22), bx + 12, by + 40); }
       });
     });
@@ -676,9 +727,9 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
   $('grade').addEventListener('change', function () {
     var g = +this.value, keep = g ? gradeSubjects(g) : [];
     var drop = state.subjects.filter(function (n) { return keep.indexOf(n) < 0; });
-    if (drop.length && state.sessions.some(function (s) { return drop.indexOf(s.s) >= 0; }) && !confirm(t('confirmGrade'))) { this.value = state.grade; return; }
+    if (drop.length && state.sessions.some(function (s) { return kindOf(s) === 'study' && drop.indexOf(s.s) >= 0; }) && !confirm(t('confirmGrade'))) { this.value = state.grade; return; }
     state.grade = g; state.subjects = state.subjects.filter(function (n) { return keep.indexOf(n) >= 0; });
-    state.sessions = state.sessions.filter(function (s) { return state.subjects.indexOf(s.s) >= 0; });
+    keepSessions();
     if (state.current && state.subjects.indexOf(state.current) < 0) state.current = state.subjects[0] || '';
     sel = null; save(); say(''); render();
   });
@@ -689,18 +740,29 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
   });
   $('chips').addEventListener('click', function (e) {
     var pick = e.target.closest('[data-pick]'), drop = e.target.closest('[data-drop]');
-    if (pick) { state.current = pick.dataset.pick; save(); renderSetup(); return; }
+    if (pick) { state.current = pick.dataset.pick; state.kind = 'study'; save(); renderSetup(); return; }
     if (drop) {
-      var n = drop.dataset.drop, count = state.sessions.filter(function (s) { return s.s === n; }).length;
+      var n = drop.dataset.drop, count = state.sessions.filter(function (s) { return kindOf(s) === 'study' && s.s === n; }).length;
       if (count && !confirm(t('confirmRemove', { s: dn(n), n: count }))) return;
       state.subjects = state.subjects.filter(function (x) { return x !== n; });
-      state.sessions = state.sessions.filter(function (s) { return s.s !== n; });
+      keepSessions();
       if (state.current === n) state.current = state.subjects[0] || '';
       if (sel && !find(sel)) sel = null;
       save(); render();
     }
   });
-  $('selSubject').addEventListener('change', function () { var s = sel && find(sel); if (!s) return; s.s = this.value; state.current = this.value; save(); render(); });
+  $('selSubject').addEventListener('change', function () {
+    var s = sel && find(sel); if (!s) return;
+    s.s = this.value; if (kindOf(s) === 'study' && this.value) state.current = this.value; save(); render();
+  });
+  $('selLabel').addEventListener('input', function () { var s = sel && find(sel); if (s) { s.label = this.value; save(); } });
+  $('selLabel').addEventListener('change', function () { render(); });
+  $('kindSeg').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-kind]'); if (!b) return;
+    state.kind = b.dataset.kind; save(); renderSetup();
+    if (state.kind === 'other') $('otherLabel').focus();
+  });
+  $('otherLabel').addEventListener('input', function () { state.label = this.value; save(); });
   $('selDel').addEventListener('click', function () { if (sel) removeSession(sel); });
   $('addSession').addEventListener('click', addNextFree);
   $('prev').addEventListener('click', function () { view.start = clamp2(addDays(view.start, -view.days), rangeMin(), rangeMax()); sel = null; render(); });
@@ -735,7 +797,7 @@ body { font-family: var(--font-display); background: var(--ink-900); color: var(
     TT = data;
     Object.keys(TT.names).forEach(function (c) { AF[TT.names[c][0]] = TT.names[c][1]; });
     // forget subjects that are no longer in the timetable
-    if (state.grade) { var ok = gradeSubjects(state.grade); state.subjects = state.subjects.filter(function (n) { return ok.indexOf(n) >= 0; }); state.sessions = state.sessions.filter(function (s) { return state.subjects.indexOf(s.s) >= 0; }); }
+    if (state.grade) { var ok = gradeSubjects(state.grade); state.subjects = state.subjects.filter(function (n) { return ok.indexOf(n) >= 0; }); keepSessions(); }
     fitDays(); if (!view.start) { view.start = defaultStart(); }
     render();
   }).catch(function () { $('msg').textContent = t('loadFail'); });
