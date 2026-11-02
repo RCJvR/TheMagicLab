@@ -351,6 +351,7 @@ async function vcOpen(card) {
       : '<span class="vcp-hint">No messages yet. They will see yours the next time they open the site.</span>';
     log.scrollTop = log.scrollHeight;
     delete vcSummary[id]; const dot = card.querySelector('.vc-dot'); if (dot) dot.remove();
+    vcPoll();
   }
   panel.addEventListener('click', async (e) => {
     const fill = e.target.closest('[data-fill]');
@@ -548,11 +549,27 @@ document.querySelectorAll('.section-btn').forEach(btn => {
   });
 });
 
+// ── Unread replies: badge on the section button and in the tab title ──
+let vcTotal = null, vcPolling = false;
+async function vcPoll() {
+  const { data } = await window.MagicLabAuth._supabase().rpc('admin_verify_summary');
+  const total = (data || []).reduce((n, r) => n + Number(r.r_from_applicant_unread || 0), 0);
+  const btn = document.querySelector('.section-btn[data-section="teachers"]');
+  btn.querySelector('.vc-dot')?.remove();
+  if (total > 0) btn.insertAdjacentHTML('beforeend', `<span class="vc-dot" title="Unread replies">${total}</span>`);
+  document.title = (total > 0 ? `(${total}) ` : '') + document.title.replace(/^\(\d+\) /, '');
+  const grew = vcTotal !== null && total > vcTotal;
+  vcTotal = total;
+  // a new reply while the list is showing and nothing is open: refresh so the card badge appears
+  if (grew && teacherLoaded && !document.getElementById('teacherSection').hidden && !document.querySelector('#teacherList .vcp')) loadTeacherList();
+}
+
 function init() {
   const uid = window.MagicLabAuth?.getSession()?.user?.id;
   if (uid === ADMIN_UID) {
     document.getElementById('adminView').hidden = false;
     loadList();
+    if (!vcPolling) { vcPolling = true; vcPoll(); setInterval(() => { if (!document.hidden) vcPoll(); }, 60000); }
   } else {
     document.getElementById('deniedView').hidden = false;
   }

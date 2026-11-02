@@ -57,6 +57,8 @@
         btn.disabled = false;
         if (r.error) { msg.textContent = r.error.message; msg.className = 'vc-st bad'; return; }
         txt.value = ''; count = -1; load();
+        // best effort: email the admin; the chat message is already saved
+        try { sb().functions.invoke('verify-email', { body: { action: 'notify-admin' } }); } catch (e) {}
       });
     }
     btn.addEventListener('click', send);
