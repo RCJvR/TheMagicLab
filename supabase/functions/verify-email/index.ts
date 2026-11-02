@@ -1,0 +1,72 @@
+// ============================================================
+// THE MAGIC LAB — verify-email
+//
+// The admin's "Also email them" on a teacher-verification message. Sends
+// the message to the applicant's address from the admin mailbox over
+// Titan's SMTP. Only the admin account may call it.
+//
+// Secrets (Supabase > Edge Functions > Secrets):
+//   TITAN_SMTP_USER   the mailbox, e.g. ruhan@themagiclab.co.za
+//   TITAN_SMTP_PASS   that mailbox's password
+// Deploy WITH JWT verification on:
+//   supabase functions deploy verify-email
+// ============================================================
+
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SITE_URL = Deno.env.get("SITE_URL") ?? "https://themagiclab.co.za";
+const SMTP_USER = Deno.env.get("TITAN_SMTP_USER") ?? "ruhan@themagiclab.co.za";
+const SMTP_PASS = Deno.env.get("TITAN_SMTP_PASS");
+const ADMIN_ID = "31a201b0-f426-455a-973a-b1862001b748"; // same admin as supabase-profile-role-guard.sql
+
+const CORS_HEADERS: Record<string, string> = {
+  "Access-Control-Allow-Origin": SITE_URL,
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } });
+}
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: CORS_HEADERS });
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) return json({ error: "Not authenticated" }, 401);
+  const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: authHeader } } });
+  const { data: { user }, error: userErr } = await userClient.auth.getUser();
+  if (userErr || !user || user.id !== ADMIN_ID) return json({ error: "Not authorized" }, 403);
+  if (!SMTP_PASS) return json({ error: "TITAN_SMTP_PASS is not set" }, 500);
+
+  let payload: { user_id?: string; body?: string };
+  try { payload = await req.json(); } catch { return json({ error: "Bad request" }, 400); }
+  const body = String(payload.body ?? "").trim();
+  if (!payload.user_id || !body || body.length > 2000) return json({ error: "Bad request" }, 400);
+
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const { data: p } = await admin.from("profiles").select("email, display_name").eq("id", payload.user_id).maybeSingle();
+  if (!p?.email) return json({ error: "No email address for that user" }, 404);
+
+  const link = `${SITE_URL}/dashboard-teacher.html`;
+  const text = `Hi ${p.display_name ?? ""},\n\n${body}\n\nTo reply, sign in and open your teacher dashboard:\n${link}\n\nThe Magic Lab`;
+  const html = `<p>Hi ${esc(p.display_name ?? "")},</p><p style="white-space:pre-wrap">${esc(body)}</p>` +
+    `<p>To reply, <a href="${link}">sign in and open your teacher dashboard</a>.</p><p>The Magic Lab</p>`;
+
+  const client = new SMTPClient({
+    connection: { hostname: "smtp.titan.email", port: 465, tls: true, auth: { username: SMTP_USER, password: SMTP_PASS } },
+  });
+  try {
+    await client.send({ from: `The Magic Lab <${SMTP_USER}>`, to: p.email, replyTo: SMTP_USER, subject: "Your Magic Lab teacher account", content: text, html });
+  } catch (e) {
+    return json({ error: "The email could not be sent: " + (e as Error).message }, 502);
+  } finally {
+    try { await client.close(); } catch { /* ignore */ }
+  }
+  return json({ sent: true });
+});

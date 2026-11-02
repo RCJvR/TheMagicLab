@@ -340,7 +340,7 @@ async function vcOpen(card) {
   const id = card.dataset.id, supabase = window.MagicLabAuth._supabase();
   panel = document.createElement('div'); panel.className = 'vcp';
   panel.innerHTML = '<div class="vcp-log">Loading\u2026</div><textarea maxlength="2000" placeholder="Write a message\u2026" aria-label="Message"></textarea>' +
-    '<div class="vcp-row"><button class="btn btn-verify" data-send="1">Send</button><button class="btn" data-fill="1">Use suggested message</button><span class="vcp-hint"></span></div>';
+    '<div class="vcp-row"><button class="btn btn-verify" data-send="1">Send</button><button class="btn" data-fill="1">Use suggested message</button><label class="vcp-hint"><input type="checkbox" data-mail="1" checked> Also email them</label><span class="vcp-hint"></span></div>';
   card.appendChild(panel);
   const log = panel.querySelector('.vcp-log'), txt = panel.querySelector('textarea'), hint = panel.querySelector('.vcp-hint');
   async function load() {
@@ -357,9 +357,16 @@ async function vcOpen(card) {
     const body = txt.value.trim(); if (!body) return;
     send.disabled = true; hint.textContent = '';
     const { error } = await supabase.rpc('admin_verify_send', { p_user: id, p_body: body });
-    send.disabled = false;
-    if (error) { hint.textContent = error.message; return; }
+    if (error) { send.disabled = false; hint.textContent = error.message; return; }
     txt.value = ''; load();
+    if (panel.querySelector('[data-mail]').checked) {
+      hint.textContent = 'Sending email…';
+      const r = await supabase.functions.invoke('verify-email', { body: { user_id: id, body } });
+      let msg = r.error ? 'Chat message sent, but the email failed.' : 'Sent in the chat and by email.';
+      if (r.error && r.error.context && r.error.context.json) { try { msg += ' ' + (await r.error.context.json()).error; } catch (_) {} }
+      hint.textContent = msg;
+    }
+    send.disabled = false;
   });
   load();
 }
