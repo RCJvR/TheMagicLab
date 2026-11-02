@@ -286,7 +286,7 @@ body.hide-cursor { cursor: none; }
   var S = {
     en: {
       reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
-      plusH: '+{n} h', ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
+      ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
       plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
@@ -311,7 +311,7 @@ body.hide-cursor { cursor: none; }
     },
     af: {
       reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is om. Penne neer.',
-      plusH: '+{n} uur', ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
+      ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
       plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
@@ -441,7 +441,6 @@ body.hide-cursor { cursor: none; }
         m.sub = t('startsAt', { t: hm(new Date(sched)) });
         m.arcFrom = sched; m.arcTo = sched + longest; m.arcPreview = true;
         m.arcMark = subs[0].R ? sched + subs[0].R : null;
-        m.arcEnds = subs.map(function (s) { return sched + s.R + s.W; });
         m.facts.push(['fStarts', hm(new Date(sched))]);
         subs.forEach(function (s) {
           m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }) });
@@ -505,7 +504,6 @@ body.hide-cursor { cursor: none; }
     if (!allDone) {
       m.arcFrom = now; m.arcTo = now + longest - el;
       m.arcMark = el < subs[0].R ? now + subs[0].R - el : null;
-      m.arcEnds = subs.map(function (s) { return now + s.R + s.W - el; });
     }
     return m;
   }
@@ -642,13 +640,9 @@ body.hide-cursor { cursor: none; }
     var svg = $('analogue'); svg.innerHTML = '';
     el('circle', { cx: 100, cy: 100, r: 96, fill: 'var(--face)', stroke: 'color-mix(in srgb, var(--fg) 30%, transparent)', 'stroke-width': 1.5 }, svg);
     view.wedge = el('path', { fill: 'var(--accent)', 'fill-opacity': 0.85 }, svg);
-    // exam: the time left as a ring on the minute track (see drawRing)
-    view.ringBase = el('circle', { cx: 100, cy: 100, r: 93, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-opacity': 0.28 }, svg);
+    // exam: the reading time as a line on the minute track (see drawRing)
     view.arc = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.9 }, svg);
-    view.arcRead = el('path', { fill: 'none', stroke: 'var(--fg)', 'stroke-width': 6, 'stroke-linecap': 'butt', 'stroke-opacity': 0.55 }, svg);
-    view.ends = el('g', {}, svg);
     view.mark = el('circle', { r: 4.5, fill: 'var(--fg)' }, svg);
-    view.hrs = el('text', { x: 100, y: 143, 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: 'var(--accent)', 'font-size': 14, 'font-weight': 800, 'font-family': 'var(--font)' }, svg);
     for (var i = 0; i < 60; i++) {
       var big = i % 5 === 0, p0 = polar(i * 6, big ? 80 : 85), p1 = polar(i * 6, 90);
       el('line', { x1: p0[0], y1: p0[1], x2: p1[0], y2: p1[1], stroke: 'var(--fg)', 'stroke-width': big ? 2.6 : 1, 'stroke-opacity': big ? 0.95 : 0.5, 'stroke-linecap': 'round' }, svg);
@@ -668,45 +662,24 @@ body.hide-cursor { cursor: none; }
     view.faceKind = kind;
   }
   function rot(e, deg, show) { e.setAttribute('transform', 'rotate(' + deg + ' 100 100)'); e.style.display = show === false ? 'none' : ''; }
-  // Exam time left, read the way people read a clock: by the minute hand.
-  // The ring runs on the minute track from the minute hand (or the set start)
-  // to where the minute hand will be at the finish, so it visibly shrinks
-  // every minute. Each extra hour shows as a faint full ring with a "+1 h"
-  // label; during reading time the ring shows only the reading time; dots mark where an
-  // earlier subject finishes. (It used to run on the hour scale, beside the
-  // hour hand, where it moved half a degree a minute and looked frozen.)
+  // Exam reading time, read by the minute hand: while reading time runs, a
+  // line on the minute track from the minute hand to where it will be when
+  // reading ends. Its start moves with the minute hand, so it shrinks every
+  // minute. Nothing is drawn before the start or once writing begins.
+  // (Reading longer than an hour would need more than one turn; it is capped
+  // at a full ring.)
   var HOUR = 3600000;
   function minDeg(ms) { var d = new Date(ms); return ((d.getMinutes() + d.getSeconds() / 60 + d.getMilliseconds() / 60000) % 60) * 6; }
   function drawRing(m) {
-    var from = m.arcFrom, to = m.arcTo;
-    // during reading time the ring is just the reading time, counting down;
-    // the writing time takes over once it ends
-    var reading = m.arcMark && m.arcMark > from;
-    if (reading) to = m.arcMark;
-    var left = to - from;
-    if (!from || left <= 0) return;
-    var extra = Math.ceil(left / HOUR) - 1;              // whole hours beyond the first
-    var part = left - extra * HOUR;                       // 0 < part <= 1 hour
-    var col = m.warn ? 'var(--warn)' : 'var(--accent)';
-    view.arc.setAttribute('stroke', col); view.ringBase.setAttribute('stroke', col);
-    view.arc.setAttribute('stroke-opacity', m.arcPreview ? 0.5 : 0.9);
-    view.ringBase.style.display = extra > 0 ? '' : 'none';
-    view.arc.setAttribute('d', part >= HOUR - 500 ? '' : arc(minDeg(from), part / HOUR * 360, 93));
-    if (part >= HOUR - 500) view.ringBase.style.display = '', view.ringBase.setAttribute('stroke-opacity', m.arcPreview ? 0.5 : 0.9);
-    else view.ringBase.setAttribute('stroke-opacity', 0.28);
-    view.hrs.textContent = extra > 0 ? t('plusH', { n: extra }) : '';
-    if (reading) return;
-    (m.arcEnds || []).forEach(function (e) {
-      if (e <= from || e >= to) return;
-      var q = polar(minDeg(e), 93);
-      el('circle', { cx: q[0], cy: q[1], r: 4, fill: 'var(--face)', stroke: 'var(--fg)', 'stroke-width': 2 }, view.ends);
-    });
+    var from = m.arcFrom, to = m.arcMark;
+    if (!from || !to || to <= from || m.arcPreview) return;
+    view.arc.setAttribute('stroke', 'var(--accent)'); view.arc.setAttribute('stroke-opacity', 0.9);
+    view.arc.setAttribute('d', arc(minDeg(from), Math.min(HOUR - 1000, to - from) / HOUR * 360, 93));
   }
   function drawFace(m) {
     if (view.faceKind !== m.face) buildFace(m.face);
     var now = new Date();
     view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); view.mark.style.display = 'none';
-    view.arcRead.setAttribute('d', ''); view.ringBase.style.display = 'none'; view.hrs.textContent = ''; view.ends.innerHTML = '';
     if (m.face === 'clock') {
       var h = now.getHours() % 12, mi = now.getMinutes(), s = now.getSeconds() + now.getMilliseconds() / 1000;
       rot(view.hHour, (h + mi / 60) * 30); rot(view.hMin, (mi + s / 60) * 6); rot(view.hSec, Math.floor(s) * 6, cfg.look.secs);
