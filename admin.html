@@ -386,7 +386,8 @@ function renderTeacherRow(p) {
       <div class="card-actions">
         ${teacherStatus === 'approved' ? '' : `<button class="btn" data-chat="1">Message${vcBadge(p.id)}</button>`}
         ${teacherStatus !== 'approved' ? `<button class="btn btn-verify" data-action="approved">Approve</button>` : ''}
-        ${teacherStatus !== 'rejected' ? `<button class="btn btn-reject" data-action="rejected">${teacherStatus === 'approved' ? 'Revoke' : 'Reject'}</button>` : ''}
+        ${teacherStatus === 'approved' ? `<button class="btn btn-reject" data-action="pending" title="Removes teacher access and moves them back to Pending so you can message them">Revoke</button>` : ''}
+        ${teacherStatus === 'pending' ? `<button class="btn btn-reject" data-action="rejected">Reject</button>` : ''}
       </div>
     </div>`;
 }
@@ -420,6 +421,16 @@ document.getElementById('teacherList').addEventListener('click', async (e) => {
   if (error) {
     alert('Failed: ' + error.message);
     card.querySelectorAll('button').forEach(b => b.disabled = false);
+    return;
+  }
+  if (btn.dataset.action === 'pending') {
+    // revoked: jump to Pending and open the chat so they can be asked to verify again
+    const id = card.dataset.id;
+    teacherStatus = 'pending';
+    document.querySelectorAll('#teacherSection .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.status === 'pending'));
+    await loadTeacherList();
+    const again = document.querySelector('#teacherList .card[data-id="' + id + '"]');
+    if (again) { await vcOpen(again); again.scrollIntoView({ block: 'center' }); }
     return;
   }
   card.remove();
