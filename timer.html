@@ -672,13 +672,18 @@ body.hide-cursor { cursor: none; }
   // The ring runs on the minute track from the minute hand (or the set start)
   // to where the minute hand will be at the finish, so it visibly shrinks
   // every minute. Each extra hour shows as a faint full ring with a "+1 h"
-  // label; reading time is the lighter first stretch; dots mark where an
+  // label; during reading time the ring shows only the reading time; dots mark where an
   // earlier subject finishes. (It used to run on the hour scale, beside the
   // hour hand, where it moved half a degree a minute and looked frozen.)
   var HOUR = 3600000;
   function minDeg(ms) { var d = new Date(ms); return ((d.getMinutes() + d.getSeconds() / 60 + d.getMilliseconds() / 60000) % 60) * 6; }
   function drawRing(m) {
-    var from = m.arcFrom, to = m.arcTo, left = to - from;
+    var from = m.arcFrom, to = m.arcTo;
+    // during reading time the ring is just the reading time, counting down;
+    // the writing time takes over once it ends
+    var reading = m.arcMark && m.arcMark > from;
+    if (reading) to = m.arcMark;
+    var left = to - from;
     if (!from || left <= 0) return;
     var extra = Math.ceil(left / HOUR) - 1;              // whole hours beyond the first
     var part = left - extra * HOUR;                       // 0 < part <= 1 hour
@@ -690,10 +695,7 @@ body.hide-cursor { cursor: none; }
     if (part >= HOUR - 500) view.ringBase.style.display = '', view.ringBase.setAttribute('stroke-opacity', m.arcPreview ? 0.5 : 0.9);
     else view.ringBase.setAttribute('stroke-opacity', 0.28);
     view.hrs.textContent = extra > 0 ? t('plusH', { n: extra }) : '';
-    if (m.arcMark && m.arcMark > from) {
-      view.arcRead.setAttribute('d', arc(minDeg(from), Math.min(HOUR, m.arcMark - from) / HOUR * 360, 93));
-      var pm = polar(minDeg(m.arcMark), 93); view.mark.setAttribute('cx', pm[0]); view.mark.setAttribute('cy', pm[1]); view.mark.style.display = '';
-    }
+    if (reading) return;
     (m.arcEnds || []).forEach(function (e) {
       if (e <= from || e >= to) return;
       var q = polar(minDeg(e), 93);
