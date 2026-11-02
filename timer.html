@@ -82,7 +82,7 @@ body.hide-cursor { cursor: none; }
 .head .title { font-weight: 800; font-size: calc(5.4vmin * var(--tsize)); line-height: 1.1; letter-spacing: -0.02em; }
 .head .meta { font-size: calc(2.9vmin * var(--tsize)); opacity: 0.75; margin-top: 0.8vmin; }
 .phase { font-size: calc(3.4vmin * var(--tsize)); font-weight: 700; color: var(--accent); }
-.faces { display: flex; align-items: center; justify-content: center; gap: 6vw; flex-wrap: wrap; min-height: 0; }
+.faces { display: flex; align-items: center; align-content: center; justify-content: center; gap: 6vw; row-gap: 3vmin; flex-wrap: wrap; min-height: 0; }
 .digital {
   font-size: calc(19vmin * var(--dsize)); font-weight: var(--dweight); line-height: 1;
   font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap;
@@ -128,18 +128,30 @@ body.hide-cursor { cursor: none; }
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin; }
 /* Several subjects in one venue (exam.count): one column each, with its own
    time left and finish time, in place of the single time */
-.multi { display: none; justify-content: center; align-items: stretch; min-width: 0; }
-.is-multi .multi { display: flex; }
-.multi .col { flex: 1 1 0; min-width: 0; padding: 0 2vw; display: flex; flex-direction: column; align-items: center; gap: 1vmin; }
+/* the columns share their rows (subgrid), so a long name in one column keeps
+   every column's paper, phase, time and end time level with the others */
+.multi { display: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: repeat(5, auto); min-width: 0; }
+.is-multi .multi { display: grid; }
+.multi .col { grid-row: span 5; display: grid; grid-template-rows: subgrid; justify-items: center; align-items: start; row-gap: 1vmin; min-width: 0; padding: 0 2vw; }
+/* while the shared reading time (or the start) shows above, the columns have
+   no time of their own: just the name, paper and their writing time and finish */
+.multi.notime { grid-template-rows: repeat(3, auto); }
+.multi.notime .col { grid-row: span 3; }
+.multi.notime .cphase, .multi.notime .ctime { display: none; }
 .multi .col + .col { border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
-.multi .cname { font-weight: 800; font-size: var(--cname, calc(4.4vmin * var(--tsize))); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; }
+.multi .cname { font-weight: 800; font-size: var(--cname, calc(4.4vmin * var(--tsize))); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: end; }
 .multi .cpaper { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.75; }
 .multi .cphase { font-size: calc(2.9vmin * var(--tsize)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
 .multi .ctime { font-size: var(--ctime, 12vmin); font-weight: var(--dweight); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
-.multi .ctime:empty { display: none; }
 .multi .ctime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
-.multi .csub { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 1.3em; }
-.multi .cpaper:empty { display: none; }
+/* one fact a line ("Reading ends 15:47", "Ends 18:17"), never broken mid-fact */
+.multi .csub { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 2.6em; line-height: 1.3; }
+.multi .csub span { display: block; white-space: nowrap; font-size: var(--csub, 1em); }
+.multi .cpaper span { display: inline-block; white-space: nowrap; }
+.multi .cname { text-wrap: balance; }
+/* beside the columns the Detailed panel holds only the clock time, the start
+   and the note (each column shows its own finish), so it can be narrower */
+.is-multi.lay-detailed .facts { width: clamp(220px, calc(22vw * var(--tsize)), 34vw); }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 .multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
@@ -273,7 +285,7 @@ body.hide-cursor { cursor: none; }
       reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
       plusH: '+{n} h', ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
-      plan: 'Reading {r} · Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
+      plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
       lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
@@ -298,7 +310,7 @@ body.hide-cursor { cursor: none; }
       reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is om. Penne neer.',
       plusH: '+{n} uur', ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
-      plan: 'Leestyd {r} · Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
+      plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
       lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Stel terug', skip: 'Slaan oor',
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
@@ -430,24 +442,29 @@ body.hide-cursor { cursor: none; }
         m.facts.push(['fStarts', hm(new Date(sched))]);
         subs.forEach(function (s) {
           m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }) });
-          m.facts.push([s.name || DASH, hm(new Date(sched + s.R + s.W)), true]);
         });
         return m;
       }
       st.started = true; st.acc = 0; st.since = sched; st.t0 = sched; save(); keepAwake();
     }
+    // the reading time is shared, so while it lasts (or before the start) it
+    // is shown once, above the columns, and each column shows only its own
+    // writing time and finish
+    var R0 = subs[0].R, wfor = function (s) { return t('writeFor', { w: span(s.W / 1000) }); };
     if (!st.started) {
       m.phase = '';
       m.facts.push(['fStarts', DASH]);
+      if (R0) { m.phase = t('ready'); m.digital = dur(R0, 'down'); m.waiting = true; m.sub = t('plan', { r: span(R0 / 1000), w: '' }).split(' · ')[0]; }
       subs.forEach(function (s) {
-        m.multi.push({ name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.R || s.W, 'down'), sub: plan(s) });
-        m.facts.push([s.name || DASH, DASH, true]);
+        m.multi.push(R0 ? { name: s.name, paper: s.paper, phase: '', time: '', sub: wfor(s) }
+          : { name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) });
       });
       return m;
     }
     var el = elapsed(), go = running(), allDone = true, phases = [];
     st.ends = st.ends || {};
     m.facts.push(['fStarted', st.t0 ? hm(new Date(st.t0)) : DASH]);
+    var reading = el < R0;
     subs.forEach(function (s, i) {
       var phase, left;
       if (el < s.R) { phase = 'reading'; left = s.R - el; }
@@ -457,12 +474,11 @@ body.hide-cursor { cursor: none; }
       var done = phase === 'finished', end = now + (s.R + s.W - el);
       if (done) { if (!st.ends[i] && go) { st.ends[i] = end; save(); } } else allDone = false;
       var bits = [];
-      if (go && phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
+      if (reading) bits.push(wfor(s));
       if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
       else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
-      m.multi.push({ name: s.name, paper: s.paper, phase: done ? t('timeUp') : t(phase), time: done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
+      m.multi.push({ name: s.name, paper: s.paper, phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
         done: done, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
-      m.facts.push([s.name || DASH, done ? hm(new Date(st.ends[i] || end)) : go ? hm(new Date(end)) : DASH, true]);
     });
     // the chime: once when reading ends, and the full ring only when the last
     // subject's time is up. A subject that ends while others are still
@@ -476,6 +492,11 @@ body.hide-cursor { cursor: none; }
     }
     lastPhase = key;
     m.phase = !go && !allDone ? t('paused') : '';
+    if (reading) {
+      m.waiting = true; m.digital = dur(R0 - el, 'down');
+      m.phase = go ? t('reading') : t('paused');
+      m.sub = go ? t('readingEnds', { t: hm(new Date(now + R0 - el)) }) : '';
+    }
     m.done = allDone;
     m.prog = Math.min(1, el / (longest || 1));
     if (!allDone) {
@@ -745,12 +766,15 @@ body.hide-cursor { cursor: none; }
     var H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     [].forEach.call(stage.children, function (c) { if (c !== faces && c.offsetParent) H -= c.offsetHeight + gap; });
     H = Math.max(40, H);
+    var W0 = W;
     var showA = an.style.display !== 'none', showD = dg.style.display !== 'none';
     var mu = $('multi'), showM = !!mu.offsetParent && mu.children.length > 0;
     // the Detailed layout's side panel: beside the timer, or under it on a tall screen
     var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
     // several subjects before a set start: the countdown to the start on top, the columns under it
     var stack = showM && showD;
+    // ...and then the Detailed panel sits up top beside the clock, and the columns get the full width
+    mu.style.order = stack ? '1' : '';
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
     var Hd = stack ? H * 0.5 : H;
     // big text on a small screen: the panel's text shrinks until it fits
@@ -766,7 +790,8 @@ body.hide-cursor { cursor: none; }
     var side = showD || showM, fgap = showA && side ? Math.min(W * 0.04, 48) : 0, a = 0;
     faces.style.columnGap = Math.min(W * 0.04, 48) + 'px';
     // beside several subject columns the clock takes a smaller share of the width
-    var share = showM ? 0.3 : 0.48;
+    // (and smaller again when the Detailed panel shares the row as well)
+    var share = showM ? (facts.offsetParent && !stack ? 0.24 : 0.3) : 0.48;
     if (showA) { a = Math.min(side ? Math.min(Hd, W * share) : Math.min(Hd, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
       // the digits share their column with the status lines beside a clock
@@ -785,12 +810,28 @@ body.hide-cursor { cursor: none; }
       // are redrawn as the seconds tick)
       var names = [].slice.call(mu.querySelectorAll('.cname'));
       mu.style.removeProperty('--cname');
-      mu.style.width = Math.max(80, stack ? W : W - a - fgap) + 'px';
+      mu.style.width = Math.max(80, stack ? W0 : W - a - fgap) + 'px';
       var nk = Math.min.apply(null, names.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; }));
       if (nk < 1) mu.style.setProperty('--cname', parseFloat(getComputedStyle(names[0]).fontSize) * nk * 0.97 + 'px');
+      // and a long name ("Afrikaans FAL / African Language") keeps to two lines,
+      // shrinking up to a third, so it leaves the time its room
+      var nf0 = parseFloat(getComputedStyle(names[0]).fontSize), nf1 = nf0;
+      var tall = function () { return names.some(function (e) { return e.offsetHeight > nf1 * 1.1 * 2.5; }); };
+      while (tall() && nf1 > nf0 * 0.67) { nf1 *= 0.9; mu.style.setProperty('--cname', nf1 + 'px'); }
+      // the same for the end-time lines, which never wrap
+      mu.style.removeProperty('--csub');
+      var subs = [].slice.call(mu.querySelectorAll('.csub span'));
+      var sk = Math.min.apply(null, [1].concat(subs.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; })));
+      if (sk < 1) mu.style.setProperty('--csub', (sk * 0.97).toFixed(3) + 'em');
+      // under the shared time there is no column time to shrink, so names
+      // that would push the columns off the screen shrink instead
+      if (mu.classList.contains('notime') && mu.offsetHeight > H) {
+        var nf = parseFloat(getComputedStyle(names[0]).fontSize), k = H / mu.offsetHeight;
+        mu.style.setProperty('--cname', Math.max(14, nf * k * 0.95) + 'px');
+      }
       // every column's time gets one size: the largest that fits the widest
       // time in its column and the height the other lines leave
-      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W : W - a - fgap);
+      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W0 : W - a - fgap);
       var times = cols.map(function (c) { return c.querySelector('.ctime'); }).filter(function (e) { return e.offsetParent; });
       if (times.length) {
         mu.style.setProperty('--ctime', '100px');
@@ -876,14 +917,16 @@ body.hide-cursor { cursor: none; }
     document.body.classList.toggle('is-multi', on);
     var html = on ? m.multi.map(function (c) {
       return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
-        '<div class="cpaper">' + esc(c.paper || '') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
-        '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' + esc(c.sub) + '</div></div>';
+        '<div class="cpaper">' + (c.paper || '').split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join(' · ') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
+        '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' +
+        (c.sub ? c.sub.split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join('') : '') + '</div></div>';
     }).join('') : '';
     if (view.multi === html) return;
     // the layout is measured again only when more than the digits changed
     var shape = html.replace(/[0-9]/g, '0');
     if (view.multiShape !== shape) { relayout = true; view.multiShape = shape; }
     $('multi').innerHTML = html; view.multi = html;
+    $('multi').classList.toggle('notime', on && m.multi.every(function (c) { return !c.time; }));
   }
 
   // ── The exam instructions recording (TTAudio: this browser's own file, or the built-in one) ──
