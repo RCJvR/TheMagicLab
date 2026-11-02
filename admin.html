@@ -333,6 +333,7 @@ function vcBadge(id) {
   const s = vcSummary[id];
   return s && s.r_from_applicant_unread > 0 ? `<span class="vc-dot" title="New reply">${s.r_from_applicant_unread}</span>` : '';
 }
+const VC_REENGAGE = 'We noticed your free trial of The Magic Lab has ended, and we’d love to know how it went. If something got in the way, such as time, a missing topic or a tool that didn’t fit your class, tell us and we’ll do our best to fix it. There are also many new features since you last visited, and we offer free teacher training if you would find that useful. We build this for teachers, so what you ask for really does shape what we make next. What’s one thing that would make The Magic Lab worth using every week?';
 const VC_HINT = 'Thanks for signing up as a teacher. To approve your account, please reply with the name of your school, the subject(s) you teach, and a school email address (or a link to your school\u2019s staff page) that shows you work there.';
 async function vcOpen(card) {
   let panel = card.querySelector('.vcp');
@@ -340,7 +341,7 @@ async function vcOpen(card) {
   const id = card.dataset.id, supabase = window.MagicLabAuth._supabase();
   panel = document.createElement('div'); panel.className = 'vcp';
   panel.innerHTML = '<div class="vcp-log">Loading\u2026</div><textarea maxlength="2000" placeholder="Write a message\u2026" aria-label="Message"></textarea>' +
-    '<div class="vcp-row"><button class="btn btn-verify" data-send="1">Send</button><button class="btn" data-fill="1">Use suggested message</button><label class="vcp-hint"><input type="checkbox" data-mail="1" checked> Also email them</label><span class="vcp-hint"></span></div>';
+    '<div class="vcp-row"><button class="btn btn-verify" data-send="1">Send</button><button class="btn" data-fill="1">Verification message</button><button class="btn" data-fill="2">Re-engagement message</button><label class="vcp-hint"><input type="checkbox" data-mail="1" checked> Also email them</label><span class="vcp-hint"></span></div>';
   card.appendChild(panel);
   const log = panel.querySelector('.vcp-log'), txt = panel.querySelector('textarea'), hint = panel.querySelector('.vcp-hint');
   async function load() {
@@ -352,7 +353,8 @@ async function vcOpen(card) {
     delete vcSummary[id]; const dot = card.querySelector('.vc-dot'); if (dot) dot.remove();
   }
   panel.addEventListener('click', async (e) => {
-    if (e.target.closest('[data-fill]')) { txt.value = VC_HINT; txt.focus(); return; }
+    const fill = e.target.closest('[data-fill]');
+    if (fill) { txt.value = fill.dataset.fill === '2' ? VC_REENGAGE : VC_HINT; txt.focus(); return; }
     const send = e.target.closest('[data-send]'); if (!send) return;
     const body = txt.value.trim(); if (!body) return;
     send.disabled = true; hint.textContent = '';
