@@ -268,6 +268,10 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tm-item { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
 .tm-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; }
 .tm-pct { font-size: calc(22 * var(--k)); font-weight: 800; color: var(--crit); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tm-pct.hot { color: var(--crit); }
+.tm-pct.warm { color: color-mix(in srgb, var(--crit) 50%, var(--warn)); }
+.tm-pct.mild { color: var(--warn); }
+.tm-pct.cool { color: var(--good); }
 .tm-pct small { display: block; font-size: calc(11.5 * var(--k)); font-weight: 600; color: var(--text-3); }
 .tm-meta { font-size: calc(12.5 * var(--k)); color: var(--text-3); margin-bottom: 4px; }
 .tm-q { font-size: calc(15.5 * var(--k)); line-height: 1.45; color: var(--text); }
@@ -1590,7 +1594,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     h += list.map(function (q) {
       var it = q.it, cw = commonWrong(it, q.answers), lostPct = pctOf(q.max - q.got, q.max);
       var vname = Object.keys(vs).length > 1 ? t('version', { v: q.v.version }) + ' · ' : '';
-      return '<div class="tm-item"><div class="tm-top"><div class="tm-pct">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
+      return '<div class="tm-item"><div class="tm-top"><div class="tm-pct ' + (lostPct >= 70 ? 'hot' : lostPct >= 45 ? 'warm' : lostPct >= 20 ? 'mild' : 'cool') + '">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
         '<div class="tm-meta">' + esc(vname + it.num + ' · ' + topicName(it.topic, q.v.quiz) + ' · ' + t('tsLostOf', { l: q.lost, n: q.n })) + '</div>' +
         (it.scen ? '<div class="tm-meta">' + esc(it.scen.scenario).slice(0, 160) + (it.scen.scenario.length > 160 ? '…' : '') + '</div>' : '') +
         '<div class="tm-q">' + esc(it.q.q) + '</div>' +
