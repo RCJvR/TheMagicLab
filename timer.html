@@ -665,8 +665,8 @@ body.hide-cursor { cursor: none; }
   function rot(e, deg, show) { e.setAttribute('transform', 'rotate(' + deg + ' 100 100)'); e.style.display = show === false ? 'none' : ''; }
   // Exam reading time, read by the minute hand: while reading time runs, a
   // faint track on the minute track from where reading started (08:40) to
-  // where it ends (08:50), and a solid line from the start to the minute
-  // hand, which grows with the hand until it reaches the end. Nothing is
+  // where it ends (08:50), coloured in from the minute hand to the end: full
+  // at the start, it empties with the minute hand as reading runs out. Nothing is
   // drawn before the start or once writing begins. (Reading longer than an
   // hour is capped at a full turn.)
   var HOUR = 3600000;
@@ -676,7 +676,7 @@ body.hide-cursor { cursor: none; }
     if (!now || !to || !start || to <= now || m.arcPreview) return;
     var cap = function (ms) { return Math.min(HOUR - 1000, ms) / HOUR * 360; };
     view.track.setAttribute('d', arc(minDeg(start), cap(to - start), 93));
-    if (now - start > 1000) view.arc.setAttribute('d', arc(minDeg(start), cap(now - start), 93));
+    view.arc.setAttribute('d', arc(minDeg(now), cap(to - now), 93));
   }
   function drawFace(m) {
     if (view.faceKind !== m.face) buildFace(m.face);
