@@ -1629,13 +1629,18 @@ body.hide-cursor { cursor: none; }
     TTSounds.unlock();
     wake();
     if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
+    // S closes the panel from any of its controls except a box being typed in
+    var tg = e.target, typing = tg.isContentEditable || tg.tagName === 'TEXTAREA' || (tg.tagName === 'INPUT' && !/^(checkbox|radio|range|button|color)$/.test(tg.type));
+    if (panelOpen && !typing && e.key.toLowerCase() === 's' && tg.closest && tg.closest('#panel')) { e.preventDefault(); togglePanel(false); return; }
     if (e.target.closest && (e.target.closest('#panel') || (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')))) return;
     var k = e.key.toLowerCase();
     if (k === ' ') { e.preventDefault(); if (!(cfg.mode === 'exam' && examStart() && !st.started)) toggle(); }
     else if (k === 'r') reset();
     else if (k === 'f') fullscreen();
     else if (k === 'i') toggleAudio();
-    else if (k === 's' && !preview) togglePanel();
+    // (the key stops here: the panel puts the focus on its theme list, which
+    // would otherwise take the "s" and jump to the first theme starting with S)
+    else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
     else if (k === 'l' && cfg.mode === 'stopwatch' && running()) { st.laps.push(elapsed()); save(); render(true); }
     else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
     else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);
