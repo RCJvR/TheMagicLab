@@ -139,19 +139,27 @@ body.hide-cursor { cursor: none; }
 .multi.notime .col { grid-row: span 3; }
 .multi.notime .cphase, .multi.notime .ctime { display: none; }
 .multi .col + .col { border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
-.multi .cname { font-weight: 800; font-size: var(--cname, calc(4.4vmin * var(--tsize))); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: end; }
+.multi .cname { font-weight: 800; font-size: calc(4.4vmin * var(--tsize) * var(--ck, 1)); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: end; }
 .multi .cpaper { font-size: calc(2.6vmin * var(--tsize) * var(--ck, 1)); opacity: 0.75; }
-.multi .cphase { font-size: calc(2.9vmin * var(--tsize)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
+.multi .cphase { font-size: calc(2.9vmin * var(--tsize) * var(--ck, 1)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
 .multi .ctime { font-size: var(--ctime, 12vmin); font-weight: var(--dweight); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
 .multi .ctime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
 /* one fact a line ("Reading ends 15:47", "Ends 18:17"), never broken mid-fact */
 .multi .csub { font-size: calc(2.4vmin * var(--tsize) * var(--ck, 1)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 2.6em; line-height: 1.3; }
-.multi .csub span { display: block; white-space: nowrap; font-size: var(--csub, 1em); }
+.multi .csub span { display: block; white-space: nowrap; }
 .multi .cpaper span { display: inline-block; white-space: nowrap; }
 .multi .cname { text-wrap: balance; }
 /* beside the columns the Detailed panel holds only the clock time, the start
    and the note (each column shows its own finish), so it can be narrower */
-.is-multi.lay-detailed .facts { width: clamp(220px, calc(22vw * var(--tsize)), 34vw); }
+/* (its size does not follow the text-size setting all the way up: the papers' columns are what the room reads) */
+.is-multi.lay-detailed .facts { width: clamp(170px, calc(14vw * min(var(--tsize), 1.2)), 22vw); font-size: calc(2.6vmin * min(var(--tsize), 1.2)); }
+/* ...with "Time now" and "Started" one under the other */
+.is-multi .facts dl { grid-template-columns: minmax(0, 1fr); gap: 2.4vmin; }
+/* in the short top row during writing it lies on its side instead:
+   Time now | Started | the note */
+.lay-detailed .facts.row { display: flex; align-items: center; gap: 3vw; width: auto; max-width: 64vw; }
+.facts.row dl { grid-template-columns: repeat(2, auto); gap: 0 3vw; flex: 0 0 auto; }
+.facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 .multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
@@ -755,11 +763,14 @@ body.hide-cursor { cursor: none; }
     // the Detailed layout's side panel: beside the timer, or under it on a tall screen
     var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
     // several subjects before a set start: the countdown to the start on top, the columns under it
-    var stack = showM && showD;
+    // (and during writing too, with a clock or the Detailed panel: those take a
+    // short top row, so the columns get the full width and their times can be big)
+    var stack = showM && (showD || showA || !!facts.offsetParent);
     // ...and then the Detailed panel sits up top beside the clock, and the columns get the full width
     mu.style.order = stack ? '1' : '';
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
-    var Hd = stack ? H * 0.5 : H;
+    var Hd = stack ? H * (showD ? 0.5 : 0.3) : H;
+    facts.classList.toggle('row', stack && !showD);
     // big text on a small screen: the panel's text shrinks until it fits
     facts.style.fontSize = '';
     if (facts.offsetParent) {
@@ -787,43 +798,39 @@ body.hide-cursor { cursor: none; }
       // (the top row is as tall as the tallest of the clock, the digits and the Detailed panel)
       if (stack) H = Math.max(40, H - Math.max(a, $('dcol').offsetHeight, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     }
+    if (stack && !showD) H = Math.max(40, H - Math.max(a, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     if (showM) {
-      // a subject's name wraps between words but never inside one: on a narrow
-      // screen all the names shrink together until the longest word fits
-      // (the sizes go on #multi as --cname and --ctime, because the columns
-      // are redrawn as the seconds tick)
-      var names = [].slice.call(mu.querySelectorAll('.cname'));
-      mu.style.removeProperty('--cname');
-      mu.style.width = Math.max(80, stack ? W0 : W - a - fgap) + 'px';
-      var nk = Math.min.apply(null, names.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; }));
-      if (nk < 1) mu.style.setProperty('--cname', parseFloat(getComputedStyle(names[0]).fontSize) * nk * 0.97 + 'px');
-      // and a long name ("Afrikaans FAL / African Language") keeps to two lines,
-      // shrinking up to a third, so it leaves the time its room
-      var nf0 = parseFloat(getComputedStyle(names[0]).fontSize), nf1 = nf0;
-      var tall = function () { return names.some(function (e) { return e.offsetHeight > nf1 * 1.1 * 2.5; }); };
-      while (tall() && nf1 > nf0 * 0.67) { nf1 *= 0.9; mu.style.setProperty('--cname', nf1 + 'px'); }
-      // the same for the end-time lines, which never wrap
-      mu.style.removeProperty('--csub');
-      var subs = [].slice.call(mu.querySelectorAll('.csub span'));
-      var sk = Math.min.apply(null, [1].concat(subs.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; })));
-      if (sk < 1) mu.style.setProperty('--csub', (sk * 0.97).toFixed(3) + 'em');
-      // under the shared time there is no column time to shrink, so names
-      // that would push the columns off the screen shrink instead
-      // and the paper and end-time lines with them
-      mu.style.removeProperty('--ck');
-      if (mu.classList.contains('notime') && mu.offsetHeight > H) {
-        var nf = parseFloat(getComputedStyle(names[0]).fontSize), k = H / mu.offsetHeight;
-        mu.style.setProperty('--cname', Math.max(14, nf * k * 0.95) + 'px');
-        mu.style.setProperty('--ck', Math.max(0.4, k * 0.95).toFixed(3));
-      }
+      // The columns' text (name, paper, phase, end times) grows to fill the
+      // room it has, on one scale (--ck): the largest that keeps every name's
+      // longest word on its line and a name to two lines, the end-time lines
+      // unbroken, each column's time (at twice the name's size while it is
+      // sized) inside its column, and the columns inside the height left.
+      // A name that cannot keep to two lines may take more. (The sizes go on
+      // #multi as --ck and --ctime, because the columns are redrawn as the
+      // seconds tick.)
+      var names = [].slice.call(mu.querySelectorAll('.cname')), subs = [].slice.call(mu.querySelectorAll('.csub span'));
+      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W0 : W - a - fgap), notime = mu.classList.contains('notime');
+      mu.style.width = mw + 'px';
+      var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
+      var ctimes = notime ? [] : cols.map(function (c) { return c.querySelector('.ctime'); });
+      mu.style.removeProperty('--cdone');
+      var fits = function (k, lines) {
+        mu.style.setProperty('--ck', k.toFixed(3));
+        var nf = parseFloat(getComputedStyle(names[0]).fontSize);
+        if (ctimes.length) mu.style.setProperty('--ctime', nf * 2 + 'px');
+        return !names.some(function (e) { return e.scrollWidth > e.clientWidth + 1 || (lines && e.offsetHeight > nf * 1.1 * (lines + 0.5)); }) &&
+          !subs.some(function (e) { return e.scrollWidth > e.clientWidth + 1; }) &&
+          !ctimes.some(function (e) { return e.scrollWidth > cw + 1; }) && mu.offsetHeight <= H;
+      };
+      var kmax = 1.7, lines = fits(0.45, 2) ? 2 : 0, lo = 0.45, hi = kmax;
+      if (fits(hi, lines)) lo = hi;
+      else for (var it = 0; it < 8; it++) { var mid = (lo + hi) / 2; if (fits(mid, lines)) lo = mid; else hi = mid; }
+      fits(lo, lines);
       // every column's time gets one size: the largest that fits the widest
       // time in its column and the height the other lines leave
-      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W0 : W - a - fgap);
       var times = cols.map(function (c) { return c.querySelector('.ctime'); }).filter(function (e) { return e.offsetParent; });
       if (times.length) {
         mu.style.setProperty('--ctime', '100px');
-        var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
-        mu.style.removeProperty('--cdone');
         // "Pens down" is sized on its own, so it does not shrink the times still running
         var live = times.filter(function (e) { return !e.parentNode.classList.contains('done'); });
         var dn = times.filter(function (e) { return e.parentNode.classList.contains('done'); });
@@ -831,7 +838,7 @@ body.hide-cursor { cursor: none; }
         var dw = dn.length ? Math.max.apply(null, dn.map(function (e) { return e.scrollWidth || 1; })) : 0;
         var th = Math.max.apply(null, times.map(function (e) { return e.offsetHeight || 1; }));
         var rest = Math.max.apply(null, cols.map(function (c) { return c.offsetHeight; })) - th;
-        var fs = Math.floor(Math.min(cw / tw * 96, Math.max(20, H - rest) / th * 96, own * (showA ? 11 : 15)));
+        var fs = Math.floor(Math.min(cw / tw * 96, Math.max(20, H - rest) / th * 96, own * (showA ? 16 : 20)));
         mu.style.setProperty('--ctime', Math.max(16, fs) + 'px');
         if (dw) mu.style.setProperty('--cdone', Math.max(16, Math.min(fs, Math.floor(cw / dw * 96))) + 'px');
       }
