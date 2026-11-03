@@ -331,7 +331,10 @@
             audio: false },   // play the instructions recording (TTAudio) before the start
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false,
+            // several papers in one venue: how the parts are arranged (top, left,
+            // only, bottom), and whether "Time now"/"Started" and the note show
+            arr: 'top', fnow: true, note: true }
   };
   function merge(a, b) {
     var o = {};
@@ -364,7 +367,8 @@
     ['look.display', 'v', 'view'], ['look.secs', 'ss', 'bool'], ['look.h24', 'h', 'bool'], ['look.nums', 'nu', 'bool'], ['look.now', 'nw', 'bool'],
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
-    ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool']
+    ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool']
   ];
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
   var VIEWS = { digital: 'd', analogue: 'a', both: 'b' };

@@ -161,6 +161,22 @@ body.hide-cursor { cursor: none; }
    Time now | Started | the note */
 .lay-detailed .facts.row { display: flex; align-items: center; gap: 3vw; width: auto; max-width: 64vw; }
 .facts.row dl { grid-template-columns: repeat(2, auto); gap: 0 3vw; flex: 0 0 auto; }
+/* the other arrangements of several papers (look.arr; sized in fitArranged) */
+.faces.arr-left { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: center; align-content: center; }
+.faces.arr-left #analogue { grid-column: 1; grid-row: 1 / span 3; }
+.faces.arr-left #dcol { grid-column: 2; grid-row: 1; }
+.faces.arr-left #multi { grid-column: 2; grid-row: 2; }
+.faces.arr-left #facts { grid-column: 2; grid-row: 3; }
+.faces.arr-bottom #dcol { order: 0; }
+.faces.arr-bottom #multi { order: 1; }
+.faces.arr-bottom #analogue { order: 2; }
+.faces.arr-bottom #facts { order: 3; }
+.facts:empty { display: none !important; }
+.no-note .info { display: none; }
+.pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.pgrid button { font: inherit; font-size: 14px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer; border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pgrid button[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.pgrid svg { width: 64px; height: 40px; }
 .facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 .multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
@@ -312,6 +328,8 @@ body.hide-cursor { cursor: none; }
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
+      pArr: 'Arrangement (several papers)', ar_top: 'Papers first', ar_left: 'Clock left', ar_only: 'Papers only', ar_bottom: 'Info at the bottom',
+      pShow: 'Show on the screen', s_clock: 'Clock face', s_date: 'Date', s_fnow: '"Time now" and "Started" (Detailed)', s_note: 'Note',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
       pStyle: 'Display', d_digital: 'Digital', d_analogue: 'Analogue', d_both: 'Both', pFont: 'Font', pMore: 'More fonts',
@@ -337,6 +355,8 @@ body.hide-cursor { cursor: none; }
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
+      pArr: 'Rangskikking (meer as een vraestel)', ar_top: 'Vraestelle eerste', ar_left: 'Klok links', ar_only: 'Net vraestelle', ar_bottom: 'Inligting onder',
+      pShow: 'Wys op die skerm', s_clock: 'Wyserplaat', s_date: 'Datum', s_fnow: '"Tyd nou" en "Begin" (Uitgebreid)', s_note: 'Nota',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
       pStyle: 'Vertoning', d_digital: 'Digitaal', d_analogue: 'Analoog', d_both: 'Albei', pFont: 'Lettertipe', pMore: 'Meer lettertipes',
@@ -468,7 +488,7 @@ body.hide-cursor { cursor: none; }
   function examMulti(m, now, sched) {
     var x = cfg.exam, subs = subjects();
     var longest = Math.max.apply(null, subs.map(function (s) { return s.R + s.W; }));
-    m.head = [x.date ? longDate(new Date(x.date + 'T12:00')) : ''];
+    m.head = [x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''];
     m.info = x.info; m.face = 'clock'; m.multi = []; m.prog = 0; m.progMark = null;
     m.facts = [['fNow', hm(new Date(now))]];
     var plan = function (s) { return t('plan', { r: span(s.R / 1000), w: span(s.W / 1000) }); };
@@ -605,7 +625,7 @@ body.hide-cursor { cursor: none; }
     // exam
     var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
     if (subjects().length > 1) return examMulti(m, now, sched);
-    m.head =[x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
+    m.head =[x.subject, [x.paper, x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
     // the dashed line on the screen fill marks where reading ends; it only
     // means something while reading time runs, so it shows only then
@@ -794,12 +814,15 @@ body.hide-cursor { cursor: none; }
     // several subjects before a set start: the countdown to the start on top, the columns under it
     // (and during writing too, with a clock or the Detailed panel: those take a
     // short top row, so the columns get the full width and their times can be big)
+    var arr = showM ? (cfg.look.arr || 'top') : '';
+    faces.classList.toggle('arr-left', arr === 'left'); faces.classList.toggle('arr-bottom', arr === 'bottom');
+    if (arr === 'left' || arr === 'bottom') { fitArranged(arr, W, H); return; }
     var stack = showM && (showD || showA || !!facts.offsetParent);
     // ...and then the Detailed panel sits up top beside the clock, and the columns get the full width
     mu.style.order = stack ? '1' : '';
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
     var Hd = stack ? H * (showD ? 0.5 : 0.3) : H;
-    facts.classList.toggle('row', stack && !showD);
+    facts.classList.toggle('row', stack && !showD); facts.style.maxWidth = '';
     // big text on a small screen: the panel's text shrinks until it fits
     facts.style.fontSize = '';
     if (facts.offsetParent) {
@@ -828,7 +851,12 @@ body.hide-cursor { cursor: none; }
       if (stack) H = Math.max(40, H - Math.max(a, $('dcol').offsetHeight, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     }
     if (stack && !showD) H = Math.max(40, H - Math.max(a, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
-    if (showM) {
+    if (showM) fillCols(Math.max(80, stack ? W0 : W - a - fgap), H, own, showA);
+    else mu.style.width = '';
+  }
+  // The columns of several papers, mw wide and at most H tall
+  function fillCols(mw, H, own, showA) {
+    var mu = $('multi');
       // The columns' text (name, paper, phase, end times) grows to fill the
       // room it has, on one scale (--ck): the largest that keeps every name's
       // longest word on its line and a name to two lines, the end-time lines
@@ -838,7 +866,7 @@ body.hide-cursor { cursor: none; }
       // #multi as --ck and --ctime, because the columns are redrawn as the
       // seconds tick.)
       var names = [].slice.call(mu.querySelectorAll('.cname')), subs = [].slice.call(mu.querySelectorAll('.csub span'));
-      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W0 : W - a - fgap), notime = mu.classList.contains('notime');
+      var cols = [].slice.call(mu.children), notime = mu.classList.contains('notime');
       mu.style.width = mw + 'px';
       var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
       var ctimes = notime ? [] : cols.map(function (c) { return c.querySelector('.ctime'); });
@@ -871,7 +899,50 @@ body.hide-cursor { cursor: none; }
         mu.style.setProperty('--ctime', Math.max(16, fs) + 'px');
         if (dw) mu.style.setProperty('--cdone', Math.max(16, Math.min(fs, Math.floor(cw / dw * 96))) + 'px');
       }
-    } else mu.style.width = '';
+  }
+  // The other arrangements of several papers (look.arr). "left": a big clock
+  // down the left and, beside it, the shared time (while it shows), the papers
+  // and the Detailed panel on its side. "bottom": the shared time and the
+  // papers, then the clock and the panel in a strip along the bottom.
+  function fitArranged(arr, W, H) {
+    var an = $('analogue'), dg = $('digital'), dcol = $('dcol'), mu = $('multi'), facts = $('facts'), faces = $('faces');
+    var showA = an.style.display !== 'none', showD = dg.style.display !== 'none', showF = !!facts.offsetParent;
+    var vmin = Math.min(window.innerWidth, window.innerHeight) / 100, own = cfg.look.fit ? Infinity : vmin * Math.max(0.3, Math.min(3, cfg.look.size / 100));
+    var g = Math.min(W * 0.04, 48), rg = parseFloat(getComputedStyle(faces).rowGap) || 0;
+    mu.style.order = ''; faces.style.flexWrap = 'wrap'; faces.style.columnGap = g + 'px';
+    facts.classList.add('row'); facts.style.fontSize = ''; facts.style.maxWidth = '';
+    // the panel's text shrinks to its strip
+    var panel = function (w, h) {
+      if (!showF) return 0;
+      facts.style.maxWidth = w + 'px';
+      var k = Math.min(1, h / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
+      if (k < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * k * 0.95 + 'px';
+      return facts.offsetHeight;
+    };
+    // the shared reading (or start) time, as big as w by h allows
+    var digits = function (w, h) {
+      if (!showD) return 0;
+      var ch = 0, cgap = parseFloat(getComputedStyle(dcol).rowGap) || 0;
+      [].forEach.call(dcol.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
+      dg.style.fontSize = '100px';
+      var dw = dg.scrollWidth || 1, dh = dg.offsetHeight || 1;
+      dg.style.fontSize = Math.floor(Math.min(w / dw * 97, Math.max(20, h - ch) / dh * 97, own * 19)) + 'px';
+      return dcol.offsetHeight;
+    };
+    var a = 0;
+    if (arr === 'left') {
+      if (showA) a = Math.min(H, W * 0.36, own * 60);
+      an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
+      var cw = Math.max(80, W - (showA ? a + g : 0));
+      var fh = panel(cw, H * 0.22), dh = digits(cw, H * 0.34);
+      fillCols(cw, Math.max(40, H - (fh ? fh + rg : 0) - (dh ? dh + rg : 0)), own, showA);
+    } else {
+      if (showA) a = Math.min(H * 0.22, W * 0.2);
+      an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
+      var sh = Math.max(a, panel(W - (showA ? a + g : 0), H * 0.22));
+      var dh2 = digits(W, H * 0.32);
+      fillCols(W, Math.max(40, H - (sh ? sh + rg : 0) - (dh2 ? dh2 + rg : 0)), own, showA);
+    }
   }
   window.addEventListener('resize', function () { fit(); });
   document.addEventListener('fullscreenchange', function () { setTimeout(fit, 60); });
@@ -905,9 +976,12 @@ body.hide-cursor { cursor: none; }
     setDigits(m.digital || '');
     setText('sub', m.sub || '');
     setText('info', m.info || '');
-    var factsHtml = cfg.look.layout === 'detailed'
-      ? '<dl>' + (m.facts || []).map(function (f) { return '<div class="fact"><dt>' + esc(f[2] ? f[0] : t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl>' +
-        '<div class="fnote">' + esc(m.info || '') + '</div>'
+    // (the switches under "Show on the screen" leave out "Time now"/"Started"
+    // and the note; "Papers only" leaves out the whole panel)
+    var LK = cfg.look, shown = (m.facts || []).filter(function (f) { return LK.fnow !== false || !/^f(Now|Started|Starts)$/.test(f[0]); });
+    var factsHtml = LK.layout === 'detailed' && !(m.multi && LK.arr === 'only')
+      ? (shown.length ? '<dl>' + shown.map(function (f) { return '<div class="fact"><dt>' + esc(f[2] ? f[0] : t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl>' : '') +
+        (LK.note !== false && m.info ? '<div class="fnote">' + esc(m.info) + '</div>' : '')
       : '';
     if (view.facts !== factsHtml) { $('facts').innerHTML = factsHtml; view.facts = factsHtml; relayout = true; }
     var laps = cfg.mode === 'stopwatch' ? st.laps.map(function (l, i) { return '<div>' + esc(t('lap')) + ' ' + (i + 1) + ' · ' + esc(dur(l - (st.laps[i - 1] || 0), 'up')) + '</div>'; }).reverse().join('') : '';
@@ -917,7 +991,7 @@ body.hide-cursor { cursor: none; }
     stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
     drawFill(m);
     var d = cfg.look.display;
-    $('analogue').style.display = d === 'digital' ? 'none' : '';
+    $('analogue').style.display = d === 'digital' || (m.multi && cfg.look.arr === 'only') ? 'none' : '';
     $('digital').style.display = (d === 'analogue' && cfg.mode !== 'exam') || (m.multi && !m.waiting) ? 'none' : '';
     // an exam always shows the time left in words or digits, even with an analogue face
     var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
@@ -1021,6 +1095,7 @@ body.hide-cursor { cursor: none; }
     r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
     document.documentElement.lang = cfg.lang;
     document.body.classList.toggle('preview', preview);
+    document.body.classList.toggle('no-note', L.note === false);
     document.body.className = document.body.className.replace(/\b(mode|lay)-\S+/g, '').trim() + ' mode-' + cfg.mode + ' lay-' + (L.layout || 'standard');
   }
 
@@ -1048,6 +1123,7 @@ body.hide-cursor { cursor: none; }
         ['minimal', 'simple', 'standard', 'detailed'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.layout === v) + '">' + esc(t('y_' + v)) + '</button>'; }).join('') + '</div></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pStyle')) + '</span><div class="pseg" id="pStyle">' +
         ['digital', 'analogue', 'both'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.display === v) + '">' + esc(t('d_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      arrHtml() + showHtml() +
       (cfg.mode === 'clock' || cfg.mode === 'stopwatch' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pFill')) + '</span><div class="pseg" id="pFill">' +
         ['off', 'across', 'up'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + ((L.fill || 'off') === v) + '">' + esc(t('fl_' + v)) + '</button>'; }).join('') + '</div></div>' +
         '<div class="pf" id="pPicRow"' + ((L.fill || 'off') === 'off' ? ' hidden' : '') + '><span class="plabel">' + esc(t('pPic')) + '</span>' +
@@ -1073,6 +1149,7 @@ body.hide-cursor { cursor: none; }
     ttPanelWire();
     lengthWire();
     startWire();
+    showWire();
     // a new type has its own saved progress, so the timer starts again with it
     [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
       b.addEventListener('click', function () {
@@ -1143,6 +1220,43 @@ body.hide-cursor { cursor: none; }
         lookChanged();
       });
     });
+  }
+  // ── Several papers: the arrangement, with a small picture of each ──
+  var ARR_PIC = {
+    top: '<circle cx="14" cy="10" r="6"/><rect x="26" y="6" width="30" height="8" rx="2"/><rect x="4" y="20" width="26" height="16" rx="2"/><rect x="34" y="20" width="26" height="16" rx="2"/>',
+    left: '<circle cx="15" cy="20" r="11"/><rect x="31" y="5" width="13" height="30" rx="2"/><rect x="47" y="5" width="13" height="30" rx="2"/>',
+    only: '<rect x="4" y="5" width="26" height="30" rx="2"/><rect x="34" y="5" width="26" height="30" rx="2"/>',
+    bottom: '<rect x="4" y="4" width="26" height="18" rx="2"/><rect x="34" y="4" width="26" height="18" rx="2"/><circle cx="14" cy="30" r="6"/><rect x="26" y="26" width="30" height="8" rx="2"/>'
+  };
+  function arrHtml() {
+    if (cfg.mode !== 'exam' || (cfg.exam.count | 0) < 2) return '';
+    var cur = cfg.look.arr || 'top';
+    return '<div class="pf"><span class="plabel">' + esc(t('pArr')) + '</span><div class="pgrid" id="pArr">' +
+      ['top', 'left', 'only', 'bottom'].map(function (v) {
+        return '<button type="button" data-v="' + v + '" aria-pressed="' + (cur === v) + '"><svg viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' + ARR_PIC[v] + '</svg>' + esc(t('ar_' + v)) + '</button>';
+      }).join('') + '</div></div>';
+  }
+  // switches for the parts of an exam screen; the clock face is the same as Style: Digital
+  function showHtml() {
+    if (cfg.mode !== 'exam') return '';
+    var L = cfg.look, box = function (id, on, label, dl) { return '<label class="pchk"><input type="checkbox" ' + (dl ? 'data-l="' + dl + '"' : 'id="' + id + '"') + (on ? ' checked' : '') + '>' + esc(label) + '</label>'; };
+    return '<div class="pf"><span class="plabel">' + esc(t('pShow')) + '</span>' +
+      box('pShClock', L.display !== 'digital', t('s_clock')) + box('pShDate', cfg.showDate, t('s_date')) +
+      box('', L.fnow !== false, t('s_fnow'), 'fnow') + box('', L.note !== false, t('s_note'), 'note') + '</div>';
+  }
+  function showWire() {
+    var p = $('panel');
+    [].forEach.call(p.querySelectorAll('#pArr button'), function (b) {
+      b.addEventListener('click', function () {
+        cfg.look.arr = b.getAttribute('data-v');
+        [].forEach.call(p.querySelectorAll('#pArr button'), function (x) { x.setAttribute('aria-pressed', x === b); });
+        lookChanged();
+      });
+    });
+    if ($('pShClock')) $('pShClock').addEventListener('change', function () {
+      cfg.look.display = this.checked ? 'both' : 'digital'; lookChanged(); buildPanel(); focusControl('pShClock');
+    });
+    if ($('pShDate')) $('pShDate').addEventListener('change', function () { cfg.showDate = this.checked; lookChanged(); });
   }
   // ── The start time of an exam, and a late start ──
   // Changing the start time reschedules the exam. "Start now" begins the reading
