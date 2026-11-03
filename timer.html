@@ -281,6 +281,8 @@ body.hide-cursor { cursor: none; }
 .panel input:disabled { opacity: 0.4; }
 .pnote { font-size: 14px; line-height: 1.5; opacity: 0.8; margin: 16px 0 0; }
 .ttp-what { font-size: 14px; line-height: 1.45; opacity: 0.85; white-space: pre-line; }
+.panel #pStartT { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; font-variant-numeric: tabular-nums; }
+.panel #pStartT[aria-invalid="true"] { border-color: var(--warn); }
 .panel input[type="number"] { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; }
 .panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
@@ -386,23 +388,24 @@ body.hide-cursor { cursor: none; }
     return freshState();
   }
   function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} writeGo(); }
-  // The running state in the link: "go=<start>.<t0>" while it runs, where
+  // The running state in the link: "go=<start>.<t0>.<settings>" while it runs, where
   // <start> is when it would have started had it never paused or been moved
-  // by ±1 min, or "go=p<elapsed>.<t0>" while paused (milliseconds, base 36;
+  // by ±1 min, or "go=p<elapsed>.<t0>.<settings>" while paused (milliseconds, base 36;
   // the elapsed time is below 0 when +1 min was pressed early on).
   // Older pages ignore the key.
   function goOf(h) { var m = /(?:^|&)go=([^&]*)/.exec(h); return m ? m[1] : ''; }
   function writeGo() {
     if (preview || !cfg || cfg.mode === 'clock') return;
     var h = location.hash.slice(1).replace(/(^|&)go=[^&]*/g, '').replace(/^&/, ''), go = '';
-    if (st.started) go = (running() ? (Date.now() - elapsed()).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36);
+    if (st.started) go = (running() ? (Date.now() - elapsed()).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36) + '.' + key.split(':').pop();
     var nh = go ? (h ? h + '&' : '') + 'go=' + go : h;
     if (nh !== location.hash.slice(1)) history.replaceState(null, '', location.pathname + location.search + '#' + nh);
   }
   // no saved state on this device (another laptop, a private window): take it from the link
   function readGo() {
-    var g = goOf(location.hash.slice(1)), m = /^(p?)(-?[0-9a-z]+)\.([0-9a-z]+)$/.exec(g);
-    if (!m) return null;
+    var g = goOf(location.hash.slice(1)), m = /^(p?)(-?[0-9a-z]+)\.([0-9a-z]+)\.([0-9a-z]+)$/.exec(g);
+    // (only for these settings: a new start time or length is a new exam)
+    if (!m || m[4] !== key.split(':').pop()) return null;
     var a = parseInt(m[2], 36), t0 = parseInt(m[3], 36), s = freshState();
     s.started = true; s.t0 = t0 || null;
     if (m[1]) s.acc = a; else s.since = a;
@@ -1263,12 +1266,29 @@ body.hide-cursor { cursor: none; }
   // time at this moment, so a late session still gets its full reading and writing.
   function startHtml() {
     if (cfg.mode !== 'exam') return '';
-    return '<div class="pf ttp"><label class="pf"><span>' + esc(t('pStart')) + '</span><input type="time" id="pStartT" value="' + esc(cfg.exam.start) + '"></label>' +
+    return '<div class="pf ttp"><label class="pf"><span>' + esc(t('pStart')) + '</span><input type="text" id="pStartT" inputmode="numeric" autocomplete="off" placeholder="08:20" value="' + esc(cfg.exam.start) + '"></label>' +
       '<button type="button" class="pclose" id="pStartNow" style="justify-content:center">' + esc(t('pStartNow')) + '</button></div>';
   }
   function startWire() {
     var tIn = $('pStartT');
-    if (tIn) tIn.addEventListener('change', function () { cfg.exam.start = tIn.value; lookChanged(); start(cfg); buildPanel(); });
+    // typed freely ("8:22", "822", "08.22") and applied on Enter or on leaving
+    // the box, so it never jumps out while the minutes are still being typed
+    var apply = function () {
+      var v = tIn.value.trim(), m = /^(\d{1,2})\s*[:.hH]?\s*(\d{2})$/.exec(v);
+      if (!v) { if (cfg.exam.start) { cfg.exam.start = ''; lookChanged(); start(cfg); buildPanel(); } return; }
+      if (!m || +m[1] > 23 || +m[2] > 59) { tIn.setAttribute('aria-invalid', 'true'); return; }
+      tIn.removeAttribute('aria-invalid');
+      var hm = ('0' + +m[1]).slice(-2) + ':' + m[2];
+      tIn.value = hm;
+      if (hm === cfg.exam.start) return;
+      cfg.exam.start = hm; lookChanged(); start(cfg); buildPanel(); focusControl('pStartT');
+    };
+    if (tIn) {
+      tIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); apply(); var b = $('pStartT'); if (b) b.select(); } });
+      tIn.addEventListener('blur', apply);
+      // a click selects the whole time, so the new one is simply typed over it
+      tIn.addEventListener('focus', function () { setTimeout(function () { tIn.select(); }, 0); });
+    }
     var now = $('pStartNow');
     if (now) now.addEventListener('click', function () {
       var d = new Date();
