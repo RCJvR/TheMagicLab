@@ -694,7 +694,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
   $('ttSession').addEventListener('change', function () { ttRefresh(1); });
   $('ttVenue').addEventListener('change', function () { ttRefresh(2); });
   $('btnTtFill').addEventListener('click', function () {
-    var f = TTTimetable.fill(TT, $('ttDate').value, $('ttSession').value, $('ttVenue').value, cfg.lang);
+    var f = TTTimetable.fillAuto(TT, $('ttDate').value, $('ttSession').value, $('ttVenue').value, cfg.lang);
     if (!f) return;
     if (f.more) alert(t('ttMany'));
     TTTimetable.setVenue($('ttVenue').value);   // this device's venue, for the next session

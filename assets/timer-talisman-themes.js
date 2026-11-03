@@ -335,7 +335,9 @@
             font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false,
             // several papers in one venue: how the parts are arranged (top, left,
             // only, bottom), and whether "Time now"/"Started" and the note show
-            arr: 'top', fnow: true, note: true }
+            arr: 'top', fnow: true, note: true,
+            // an exam whose papers are all Afrikaans shows its screen in Afrikaans
+            afAuto: true }
   };
   // A catch-up session can have many papers in one venue (up to MAX_PAPERS):
   // subject4…, paper4…, writing4… follow the same pattern as 2 and 3.
@@ -373,7 +375,7 @@
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
     ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
-    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool']
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool']
   ];
   for (var kn = 4; kn <= MAX_PAPERS; kn++) KEYS.push(['exam.subject' + kn, 's' + kn], ['exam.paper' + kn, 'p' + kn], ['exam.writing' + kn, 'w' + kn, 'dur']);
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
@@ -671,7 +673,17 @@
     Object.keys(by).forEach(function (k) { var s = by[k]; if (s.end > now && (!best || s.at < best.at)) best = s; });
     return best ? { date: best.date, start: best.start } : null;
   }
-  window.TTTimetable = { load: ttLoad, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill, papers: ttPapers, max: MAX_PAPERS,
+  // Afrikaans papers: every paper's name starts with "Afrikaans"
+  // ("Afrikaans FAL / African Language" counts: it is written in an Afrikaans venue)
+  function ttAllAf(names) { return names.length > 0 && names.every(function (n) { return /^\s*afrikaans\b/i.test(n || ''); }); }
+  // Fill in, with the names in Afrikaans when the venue writes only Afrikaans
+  // papers (and afAuto is not switched off)
+  function ttFillAuto(d, date, start, venue, lang, afAuto) {
+    var f = ttFill(d, date, start, venue, lang);
+    if (f && afAuto !== false && lang !== 'af' && ttAllAf(f.columns.map(function (c) { return c.name; }))) f = ttFill(d, date, start, venue, 'af');
+    return f;
+  }
+  window.TTTimetable = { load: ttLoad, fillAuto: ttFillAuto, allAf: ttAllAf, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill, papers: ttPapers, max: MAX_PAPERS,
     next: ttNext, venue: ttVenueGet, setVenue: ttVenueSet, auto: ttAutoGet, setAuto: ttAutoSet };
 
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,

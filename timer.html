@@ -382,7 +382,7 @@ body.hide-cursor { cursor: none; }
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
       pStyle: 'Display', d_digital: 'Digital', d_analogue: 'Analogue', d_both: 'Both', pFont: 'Font', pMore: 'More fonts',
       pFit: 'Fill the screen', pSize: 'Timer size', pTsize: 'Text size',
-      k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
+      k_afAuto: 'Afrikaans papers: show the screen in Afrikaans', k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
       pSound: 'Chime sound', pPlay: 'Play', pVol: 'Volume', pRep: "Rings when time's up", pLang: 'Language', pNote: "Changes are kept in this tab's address, so a bookmark or a copied link keeps them. A running timer carries on."
     },
     af: {
@@ -413,7 +413,7 @@ body.hide-cursor { cursor: none; }
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
       pStyle: 'Vertoning', d_digital: 'Digitaal', d_analogue: 'Analoog', d_both: 'Albei', pFont: 'Lettertipe', pMore: 'Meer lettertipes',
       pFit: 'Vul die skerm', pSize: 'Tydhouergrootte', pTsize: 'Teksgrootte',
-      k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
+      k_afAuto: 'Afrikaanse vraestelle: wys die skerm in Afrikaans', k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
       pSound: 'Klokklank', pPlay: 'Speel', pVol: 'Volume', pRep: 'Herhalings as die tyd om is', pLang: 'Taal', pNote: "Veranderinge word in hierdie oortjie se adres gehou, so 'n boekmerk of gekopieerde skakel hou dit. 'n Lopende tydhouer gaan aan."
     }
   };
@@ -421,14 +421,34 @@ body.hide-cursor { cursor: none; }
   var cfg, st, key, view = {}, lastPhase = null, wakeLock = null, idleTimer = null, panelOpen = false, themeList = [];
 
   function $(id) { return document.getElementById(id); }
-  function t(k, v) { var s = (S[cfg.lang] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
+  // The language the screen shows: the chosen one, or Afrikaans for an exam
+  // whose papers are all Afrikaans (look.afAuto)
+  function lang() {
+    if (cfg.lang === 'af' || cfg.mode !== 'exam' || cfg.look.afAuto === false) return cfg.lang;
+    return TTTimetable.allAf(subjects().map(function (s) { return s.name; })) ? 'af' : cfg.lang;
+  }
+  // On an Afrikaans screen, a paper's English timetable words show in
+  // Afrikaans: subject names the timetable knows ("Afrikaans HL" becomes
+  // "Afrikaans HT") and "Grade 11 · Paper 1" ("Graad 11 · Vraestel 1").
+  // Other typed text, like the note, shows as typed.
+  var afNames = null;
+  function trName(n) {
+    if (!n || !TT || lang() !== 'af') return n;
+    if (!afNames) { afNames = {}; for (var c in TT.names) afNames[TT.names[c][0].toLowerCase()] = TT.names[c][1]; }
+    return n.split(' / ').map(function (p) { return afNames[p.trim().toLowerCase()] || p; }).join(' / ');
+  }
+  function trPaper(p) {
+    if (!p || lang() !== 'af') return p;
+    return p.replace(/\bGrade\b/g, 'Graad').replace(/\bPaper\b/g, 'Vraestel').replace(/\bPractical\b/g, 'Prakties');
+  }
+  function t(k, v) { var s = (S[lang()] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
   function merge(a, b) {
     var o = {};
     for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
     return o;
   }
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
-  function locale() { return cfg.lang === 'af' ? 'af-ZA' : 'en-ZA'; }
+  function locale() { return lang() === 'af' ? 'af-ZA' : 'en-ZA'; }
 
   // ── State: accumulated running time plus the moment it last resumed ──
   function freshState() { return { acc: 0, since: null, started: false, phase: 0, laps: [], adj: 0 }; }
@@ -559,7 +579,7 @@ body.hide-cursor { cursor: none; }
         m.arcMark = subs[0].R ? sched + subs[0].R : null;
         m.facts.push(['fStarts', hm(new Date(sched))]);
         subs.forEach(function (s) {
-          m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }),
+          m.multi.push({ name: trName(s.name), paper: trPaper(s.paper), phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }),
             wlen: span(s.W / 1000), endTxt: t('ends', { t: hm(new Date(sched + s.R + s.W)) }), at: sched + s.R + s.W });
         });
         return m;
@@ -575,8 +595,8 @@ body.hide-cursor { cursor: none; }
       m.facts.push(['fStarts', DASH]);
       if (R0) { m.phase = t('ready'); m.digital = dur(R0, 'down'); m.waiting = true; m.sub = t('plan', { r: span(R0 / 1000), w: '' }).split(' · ')[0]; }
       subs.forEach(function (s) {
-        var c = R0 ? { name: s.name, paper: s.paper, phase: '', time: '', sub: wfor(s) }
-          : { name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) };
+        var c = R0 ? { name: trName(s.name), paper: trPaper(s.paper), phase: '', time: '', sub: wfor(s) }
+          : { name: trName(s.name), paper: trPaper(s.paper), phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) };
         c.wlen = span(s.W / 1000); c.endTxt = ''; c.at = s.R + s.W;
         m.multi.push(c);
       });
@@ -598,7 +618,7 @@ body.hide-cursor { cursor: none; }
       if (reading) bits.push(wfor(s));
       if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
       else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
-      m.multi.push({ name: s.name, paper: s.paper, phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
+      m.multi.push({ name: trName(s.name), paper: trPaper(s.paper), phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
         done: done, flash: done && now - (st.ends[i] || end) < FLASH_MS, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000,
         wlen: span(s.W / 1000), endTxt: done ? t('endedAt', { t: hm(new Date(st.ends[i] || end)) }) : go ? t('ends', { t: hm(new Date(end)) }) : '', at: st.ends[i] || end });
     });
@@ -688,7 +708,7 @@ body.hide-cursor { cursor: none; }
     // exam
     var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
     if (subjects().length > 1) return examMulti(m, now, sched);
-    m.head =[x.subject, [x.paper, x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
+    m.head =[trName(x.subject), [trPaper(x.paper), x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
     // the dashed line on the screen fill marks where reading ends; it only
     // means something while reading time runs, so it shows only then
@@ -849,7 +869,7 @@ body.hide-cursor { cursor: none; }
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
   }
-  function barKey() { return [cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
+  function barKey() { return [lang(), cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
   function fullscreen() {
     if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
   }
@@ -1206,7 +1226,7 @@ body.hide-cursor { cursor: none; }
     TTThemes.loadFont(L.font, function () { if (cfg.look.font === f.id) { measureDigits(); fit(); } });
     r.setProperty('--dsize', Math.max(0.3, Math.min(3, L.size / 100)));
     r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
-    document.documentElement.lang = cfg.lang;
+    document.documentElement.lang = lang();
     document.body.classList.toggle('preview', preview);
     document.body.classList.toggle('no-note', L.note === false);
     document.body.className = document.body.className.replace(/\b(mode|lay)-\S+/g, '').trim() + ' mode-' + cfg.mode + ' lay-' + (L.layout || 'standard');
@@ -1262,6 +1282,7 @@ body.hide-cursor { cursor: none; }
       '<label class="pf"><span>' + esc(t('pVol')) + ' · <output id="pVolOut">' + cfg.chime.vol + '%</output></span><input type="range" id="pVol" min="0" max="100" step="5" value="' + cfg.chime.vol + '"></label>' +
       '<label class="pf"><span>' + esc(t('pRep')) + '</span><select id="pRep">' + [1, 2, 3, 5].map(function (n) { return opt(n, n + '×', cfg.chime.rep === n); }).join('') + '</select></label>' +
       '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
+      (cfg.mode !== 'exam' ? '' : '<label class="pchk"><input type="checkbox" data-l="afAuto"' + (L.afAuto !== false ? ' checked' : '') + '>' + esc(t('k_afAuto')) + '</label>') +
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
     ttPanelWire();
     lengthWire();
@@ -1276,9 +1297,9 @@ body.hide-cursor { cursor: none; }
         $('pMode').querySelector('[data-v="' + cfg.mode + '"]').focus();
       });
     });
-    themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
-    TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: cfg.lang, label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
-    TTSounds.fill($('pSound'), cfg.chime.id, cfg.lang);
+    themeList = TTThemes.fill($('pTheme'), L, lang()).shown;
+    TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: lang(), label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
+    TTSounds.fill($('pSound'), cfg.chime.id, lang());
     if (window.lucide) lucide.createIcons({ root: p });
 
     $('pClose').addEventListener('click', function () { togglePanel(false); });
@@ -1334,7 +1355,7 @@ body.hide-cursor { cursor: none; }
         L[k] = inp.type === 'checkbox' ? inp.checked : inp.type === 'range' ? +inp.value : inp.value;
         if (k === 'size' || k === 'fit') { $('pSizeOut').textContent = L.fit ? '—' : L.size + '%'; $('pSize').disabled = !!L.fit; }
         if (k === 'tsize') $('pTsizeOut').textContent = L.tsize + '%';
-        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, lang()).shown;
         lookChanged();
       });
     });
@@ -1443,7 +1464,7 @@ body.hide-cursor { cursor: none; }
     });
     var find = $('pPaperFind'), pick = $('pPaperPick');
     if (find && pick && TT) {
-      var all = TTTimetable.papers(TT, cfg.lang);
+      var all = TTTimetable.papers(TT, lang());
       var list = function () {
         var q = find.value.trim().toLowerCase();
         pick.innerHTML = '';
@@ -1544,7 +1565,7 @@ body.hide-cursor { cursor: none; }
   function ttOpts(list, label, cur) { return list.map(function (v) { return '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(label(v)) + '</option>'; }).join(''); }
   function ttLen(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + ' ' + t('h') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : ''); }
   function ttListText(date, start, venue) {
-    return TTTimetable.columns(TT, date, start, venue, cfg.lang).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
+    return TTTimetable.columns(TT, date, start, venue, lang()).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
   }
   function ttPanelHtml() {
     if (cfg.mode !== 'exam' || !TT) return '';
@@ -1579,7 +1600,7 @@ body.hide-cursor { cursor: none; }
     v.addEventListener('change', function () { show(); });
     $('pTtAuto').addEventListener('change', function () { TTTimetable.setAuto(this.checked); if (this.checked) autoNext(); });
     $('pTtFill').addEventListener('click', function () {
-      var f = TTTimetable.fill(TT, d.value, s.value, v.value, cfg.lang);
+      var f = TTTimetable.fillAuto(TT, d.value, s.value, v.value, cfg.lang, cfg.look.afAuto);
       if (!f) return;
       if (f.more) alert(t('ttMany'));
       TTTimetable.setVenue(v.value);   // this device's venue, for the next session
@@ -1625,7 +1646,7 @@ body.hide-cursor { cursor: none; }
     if (preview || !cfg || cfg.mode !== 'exam' || !TT || !TTTimetable.auto()) return;
     var venue = TTTimetable.venue(), nx = venue && TTTimetable.next(TT, venue);
     if (!nx) return;
-    var f = TTTimetable.fill(TT, nx.date, nx.start, venue, cfg.lang), x = cfg.exam;
+    var f = TTTimetable.fillAuto(TT, nx.date, nx.start, venue, cfg.lang, cfg.look.afAuto), x = cfg.exam;
     if (!f || (x.date === f.exam.date && x.start === f.exam.start)) return;
     var hand = x.subject && !(x.date && x.start);
     var later = !x.date || !x.start || (f.exam.date + 'T' + f.exam.start) > (x.date + 'T' + x.start);
