@@ -812,10 +812,16 @@ body.hide-cursor { cursor: none; }
   }
 
   // ── Controls ──
+  // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
+  var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
+    megaphone: ['I', 'I'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
-    b.setAttribute('aria-label', label); b.title = label;
+    // its keyboard shortcut, if it has one, shows in the tooltip: "Display settings (S)"
+    var key = KEYS_OF[icon];
+    b.setAttribute('aria-label', label); b.title = label + (key ? ' (' + key[0] + ')' : '');
+    if (key) b.setAttribute('aria-keyshortcuts', key[1]);
     b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
     return b;
   }
@@ -830,7 +836,7 @@ body.hide-cursor { cursor: none; }
       bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
-    if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio));
+    if (hasAudio()) { var ab = btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio); ab.title = t('instrBtn') + ' (I)'; ab.setAttribute('aria-keyshortcuts', 'I'); bar.appendChild(ab); }
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
@@ -1629,6 +1635,7 @@ body.hide-cursor { cursor: none; }
     else if (k === 'r') reset();
     else if (k === 'f') fullscreen();
     else if (k === 'i') toggleAudio();
+    else if (k === 's' && !preview) togglePanel();
     else if (k === 'l' && cfg.mode === 'stopwatch' && running()) { st.laps.push(elapsed()); save(); render(true); }
     else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
     else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);
