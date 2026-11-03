@@ -21,7 +21,9 @@
    new tab, or copy the link to the projector laptop, and get the same
    timer. A running timer's state (start time, pauses, laps) is kept in
    localStorage under a key made from the link, so a refresh does not lose
-   it.
+   it. Once it is under way the link itself carries it too ("go=", see
+   writeGo), so the same address opened on another laptop (the first one
+   died) carries on where it was, and leaving a running timer asks first.
 
    The colours are the user's own, so this page does not load theme.js.
    Times are always worked out from the clock (Date.now), never by counting
@@ -363,7 +365,34 @@ body.hide-cursor { cursor: none; }
     try { var s = JSON.parse(localStorage.getItem(key) || 'null'); if (s) return s; } catch (e) {}
     return freshState();
   }
-  function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} }
+  function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} writeGo(); }
+  // The running state in the link: "go=<start>.<t0>" while it runs, where
+  // <start> is when it would have started had it never paused or been moved
+  // by ±1 min, or "go=p<elapsed>.<t0>" while paused (milliseconds, base 36;
+  // the elapsed time is below 0 when +1 min was pressed early on).
+  // Older pages ignore the key.
+  function goOf(h) { var m = /(?:^|&)go=([^&]*)/.exec(h); return m ? m[1] : ''; }
+  function writeGo() {
+    if (preview || !cfg || cfg.mode === 'clock') return;
+    var h = location.hash.slice(1).replace(/(^|&)go=[^&]*/g, '').replace(/^&/, ''), go = '';
+    if (st.started) go = (running() ? (Date.now() - elapsed()).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36);
+    var nh = go ? (h ? h + '&' : '') + 'go=' + go : h;
+    if (nh !== location.hash.slice(1)) history.replaceState(null, '', location.pathname + location.search + '#' + nh);
+  }
+  // no saved state on this device (another laptop, a private window): take it from the link
+  function readGo() {
+    var g = goOf(location.hash.slice(1)), m = /^(p?)(-?[0-9a-z]+)\.([0-9a-z]+)$/.exec(g);
+    if (!m) return null;
+    var a = parseInt(m[2], 36), t0 = parseInt(m[3], 36), s = freshState();
+    s.started = true; s.t0 = t0 || null;
+    if (m[1]) s.acc = a; else s.since = a;
+    return s;
+  }
+  // a running timer asks before the page is refreshed or closed
+  window.addEventListener('beforeunload', function (e) {
+    if (preview || !cfg || cfg.mode === 'clock' || !running()) return;
+    e.preventDefault(); e.returnValue = '';
+  });
   function elapsed() { return st.acc + (st.since ? Date.now() - st.since : 0) - st.adj; }
   function running() { return !!st.since; }
   function play() { if (!st.since) { st.since = Date.now(); if (!st.started) st.t0 = st.since; st.started = true; save(); keepAwake(); } }
@@ -998,7 +1027,7 @@ body.hide-cursor { cursor: none; }
   // ── Display settings panel: edits cfg.look in place and keeps the link in step ──
   function lookChanged() {
     var snap = cfg;
-    TTLink.encode(cfg).then(function (h) { if (snap === cfg) history.replaceState(null, '', location.pathname + location.search + '#' + h); });
+    TTLink.encode(cfg).then(function (h) { if (snap === cfg) { history.replaceState(null, '', location.pathname + location.search + '#' + h); writeGo(); } });
     applyLook(); view.faceKind = null; view.headHtml = null; render(true);
   }
   function opt(v, label, on) { return '<option value="' + v + '"' + (on ? ' selected' : '') + '>' + esc(label) + '</option>'; }
@@ -1245,6 +1274,7 @@ body.hide-cursor { cursor: none; }
     var x = cfg.exam;
     key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
     st = loadState(); lastPhase = null; view = {};
+    if (!st.started && !preview) { var g = readGo(); if (g) { st = g; save(); } }
     applyLook(); render(true); wake();
     if (running()) keepAwake();
     if (!ticking) ticking = setInterval(function () { render(false); }, 100);
