@@ -185,6 +185,24 @@ body.hide-cursor { cursor: none; }
 .pgrid svg { width: 64px; height: 40px; }
 .facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
+/* the departure board (four or more papers): rows that share their columns
+   (subgrid), so every end time and time left lines up; sized with --bk */
+.is-multi .multi.board { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-auto-flow: row; text-align: left;
+  font-size: calc(3vmin * var(--tsize) * var(--bk, 1)); column-gap: 1.6em; }
+.board .brow { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 0.32em 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, transparent); }
+.board .brow:last-child { border-bottom: 0; }
+.board .bname { min-width: 0; line-height: 1.12; }
+.board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.board .bname span { display: block; font-size: 0.62em; opacity: 0.75; margin-top: 0.15em; }
+.board .bend { font-size: 0.8em; opacity: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
+.board .btime { font-size: 1.9em; font-weight: var(--dweight); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; letter-spacing: -0.02em; }
+.board .btime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.board .btime.wait { font-size: 1.1em; font-weight: 700; opacity: 0.7; }
+.board .warn .btime { color: var(--warn); }
+.board .flash .btime { animation: blink 1s steps(2, start) infinite; }
+.board .done:not(.flash) { opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) { .board .flash .btime { animation: none; } }
 .multi .done .ctime { font-size: var(--cdone, var(--ctime, 12vmin)); }
 /* a paper whose time is up flashes "Pens down" for a few seconds only, then
    stays still, so it does not distract the papers still writing */
@@ -290,6 +308,17 @@ body.hide-cursor { cursor: none; }
 .panel input:disabled { opacity: 0.4; }
 .pnote { font-size: 14px; line-height: 1.5; opacity: 0.8; margin: 16px 0 0; }
 .ttp-what { font-size: 14px; line-height: 1.45; opacity: 0.85; white-space: pre-line; }
+.pp-head { display: flex; justify-content: space-between; font-size: 13px; opacity: 0.7; }
+.pp-row { display: flex; flex-direction: column; gap: 4px; padding: 8px 0; border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
+.pp-sub { display: flex; gap: 6px; }
+.panel .pp-sub input[data-f="paper"] { flex: 1 1 auto; min-width: 0; width: auto; }
+.panel .pp-sub input[data-f="mins"] { width: 84px; flex: 0 0 84px; }
+.panel .pp-sub .pclose { flex: 0 0 auto; }
+.panel .pp-row input[type="text"], .panel #pPaperFind, .panel #pInfo, .panel #pPaperPick { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 9px 10px; }
+.panel .pp-row input[data-f="subject"] { font-weight: 700; }
+.panel #pPaperPick { padding: 4px; font-size: 15px; }
+.panel #pInfo { resize: vertical; line-height: 1.4; }
 .panel #pStartT { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; font-variant-numeric: tabular-nums; }
 .panel #pStartT[aria-invalid="true"] { border-color: var(--warn); }
 .panel input[type="number"] { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; }
@@ -340,6 +369,9 @@ body.hide-cursor { cursor: none; }
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
       pArr: 'Arrangement (several papers)', ar_top: 'Papers first', ar_left: 'Clock left', ar_only: 'Papers only', ar_bottom: 'Info at the bottom',
+      pPapers: 'Papers in this venue', ppSubject: 'Subject', ppPaper: 'Grade · paper', ppMins: 'Writing (min)', ppDel: 'Remove this paper',
+      ppAdd: 'Type in a paper', ppFind: 'Find a paper in the exam timetable', ppPick: 'Add from the timetable', ppHint: 'Four or more papers show as a list beside the clock, the next to finish at the top.',
+      ppFull: 'A venue can have up to {n} papers.', pInfo: 'Note on the screen',
       pShow: 'Show on the screen', s_clock: 'Clock face', s_date: 'Date', s_fnow: '"Time now" and "Started" (Detailed)', s_note: 'Note',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
@@ -367,6 +399,9 @@ body.hide-cursor { cursor: none; }
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
       pArr: 'Rangskikking (meer as een vraestel)', ar_top: 'Vraestelle eerste', ar_left: 'Klok links', ar_only: 'Net vraestelle', ar_bottom: 'Inligting onder',
+      pPapers: 'Vraestelle in hierdie lokaal', ppSubject: 'Vak', ppPaper: 'Graad · vraestel', ppMins: 'Skryftyd (min)', ppDel: 'Verwyder hierdie vraestel',
+      ppAdd: 'Tik ’n vraestel in', ppFind: 'Soek ’n vraestel in die eksamenrooster', ppPick: 'Voeg by uit die rooster', ppHint: 'Vier of meer vraestelle wys as ’n lys langs die horlosie, die eerste een wat klaarmaak bo-aan.',
+      ppFull: '’n Lokaal kan tot {n} vraestelle hê.', pInfo: 'Nota op die skerm',
       pShow: 'Wys op die skerm', s_clock: 'Wyserplaat', s_date: 'Datum', s_fnow: '"Tyd nou" en "Begin" (Uitgebreid)', s_note: 'Nota',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
@@ -489,7 +524,7 @@ body.hide-cursor { cursor: none; }
 
   // the subjects writing in this venue: the first one, plus up to two more
   function subjects() {
-    var x = cfg.exam, n = cfg.mode === 'exam' ? Math.max(1, Math.min(3, x.count | 0)) : 1, out = [];
+    var x = cfg.exam, n = cfg.mode === 'exam' ? Math.max(1, Math.min(TTTimetable.max, x.count | 0)) : 1, out = [];
     for (var i = 1; i <= n; i++) {
       var k = i === 1 ? '' : String(i);
       out.push({ name: x['subject' + k], paper: x['paper' + k], R: x.reading * 1000, W: x['writing' + k] * 1000 });
@@ -506,6 +541,8 @@ body.hide-cursor { cursor: none; }
     var longest = Math.max.apply(null, subs.map(function (s) { return s.R + s.W; }));
     m.head = [x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''];
     m.info = x.info; m.face = 'clock'; m.multi = []; m.prog = 0; m.progMark = null;
+    // four or more papers: a list beside the clock (a departure board) instead of columns
+    m.board = subs.length >= 4;
     m.facts = [['fNow', hm(new Date(now))]];
     var plan = function (s) { return t('plan', { r: span(s.R / 1000), w: span(s.W / 1000) }); };
     if (sched && !st.started) {
@@ -516,7 +553,8 @@ body.hide-cursor { cursor: none; }
         m.arcMark = subs[0].R ? sched + subs[0].R : null;
         m.facts.push(['fStarts', hm(new Date(sched))]);
         subs.forEach(function (s) {
-          m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }) });
+          m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }),
+            wlen: span(s.W / 1000), endTxt: t('ends', { t: hm(new Date(sched + s.R + s.W)) }), at: sched + s.R + s.W });
         });
         return m;
       }
@@ -531,8 +569,10 @@ body.hide-cursor { cursor: none; }
       m.facts.push(['fStarts', DASH]);
       if (R0) { m.phase = t('ready'); m.digital = dur(R0, 'down'); m.waiting = true; m.sub = t('plan', { r: span(R0 / 1000), w: '' }).split(' · ')[0]; }
       subs.forEach(function (s) {
-        m.multi.push(R0 ? { name: s.name, paper: s.paper, phase: '', time: '', sub: wfor(s) }
-          : { name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) });
+        var c = R0 ? { name: s.name, paper: s.paper, phase: '', time: '', sub: wfor(s) }
+          : { name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) };
+        c.wlen = span(s.W / 1000); c.endTxt = ''; c.at = s.R + s.W;
+        m.multi.push(c);
       });
       return m;
     }
@@ -553,7 +593,8 @@ body.hide-cursor { cursor: none; }
       if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
       else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
       m.multi.push({ name: s.name, paper: s.paper, phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
-        done: done, flash: done && now - (st.ends[i] || end) < FLASH_MS, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
+        done: done, flash: done && now - (st.ends[i] || end) < FLASH_MS, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000,
+        wlen: span(s.W / 1000), endTxt: done ? t('endedAt', { t: hm(new Date(st.ends[i] || end)) }) : go ? t('ends', { t: hm(new Date(end)) }) : '', at: st.ends[i] || end });
     });
     // the chime: once when reading ends, and the full ring only when the last
     // subject's time is up. A subject that ends while others are still
@@ -830,7 +871,8 @@ body.hide-cursor { cursor: none; }
     // several subjects before a set start: the countdown to the start on top, the columns under it
     // (and during writing too, with a clock or the Detailed panel: those take a
     // short top row, so the columns get the full width and their times can be big)
-    var arr = showM ? (cfg.look.arr || 'top') : '';
+    // (the departure board always has the clock on the left, unless there is no clock)
+    var arr = showM ? (mu.classList.contains('board') ? 'left' : cfg.look.arr || 'top') : '';
     faces.classList.toggle('arr-left', arr === 'left'); faces.classList.toggle('arr-bottom', arr === 'bottom');
     if (arr === 'left' || arr === 'bottom') { fitArranged(arr, W, H); return; }
     $('dcol').style.display = '';
@@ -919,6 +961,17 @@ body.hide-cursor { cursor: none; }
         if (dw) mu.style.setProperty('--cdone', Math.max(16, Math.min(fs, Math.floor(cw / dw * 96))) + 'px');
       }
   }
+  // The departure board, mw wide and at most H tall: one scale (--bk) for all
+  // its text, the largest at which every row fits
+  function fillBoard(mw, H) {
+    var mu = $('multi');
+    mu.style.width = mw + 'px';
+    var fits = function (k) { mu.style.setProperty('--bk', k.toFixed(3)); return mu.offsetHeight <= H && mu.scrollWidth <= mw + 1; };
+    var lo = 0.3, hi = 2.6;
+    if (fits(hi)) lo = hi;
+    else for (var it = 0; it < 9; it++) { var mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+    fits(lo);
+  }
   // The other arrangements of several papers (look.arr). "left": a big clock
   // down the left and, beside it, the shared time (while it shows), the papers
   // and the Detailed panel on its side. "bottom": the shared time and the
@@ -957,8 +1010,9 @@ body.hide-cursor { cursor: none; }
       if (showA) a = Math.min(H - dt, W * 0.36, own * 60);
       an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
       var cw = Math.max(80, W - (showA ? a + g : 0));
-      var fh = panel(cw, H * 0.22), dh = digits(cw, H * 0.34);
-      fillCols(cw, Math.max(40, H - (fh ? fh + rg : 0) - (dh ? dh + rg : 0)), own, showA);
+      // (beside a departure board the shared reading time takes less height, so the rows stay readable)
+      var fh = panel(cw, H * 0.22), dh = digits(cw, H * (mu.classList.contains('board') ? 0.2 : 0.34));
+      (mu.classList.contains('board') ? fillBoard : fillCols)(cw, Math.max(40, H - (fh ? fh + rg : 0) - (dh ? dh + rg : 0)), own, showA);
     } else {
       if (showA) a = Math.min(H * 0.22, W * 0.2);
       an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
@@ -1038,10 +1092,28 @@ body.hide-cursor { cursor: none; }
 
   // ── Several subjects: one column each ──
   function digitsHtml(s) { return esc(s).replace(/[0-9]/g, '<span class="dc">$&</span>'); }
+  // The departure board: one row a paper, the next to finish at the top; a
+  // finished paper flashes "Pens down", then greys out and drops to the bottom.
+  // During reading (and before the start) the time column shows each paper's
+  // writing time.
+  function boardHtml(list) {
+    var rows = list.map(function (c, i) { return { c: c, i: i }; }).sort(function (a, b) {
+      var da = a.c.done && !a.c.flash, db = b.c.done && !b.c.flash;
+      return (da - db) || (a.c.at - b.c.at) || (a.i - b.i);
+    });
+    return rows.map(function (r) {
+      var c = r.c, wait = !c.time;
+      return '<div class="brow' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '">' +
+        '<div class="bname"><b>' + esc(c.name || DASH) + '</b>' + (c.paper ? '<span>' + esc(c.paper) + '</span>' : '') + '</div>' +
+        '<div class="bend">' + esc(c.endTxt || '') + '</div>' +
+        '<div class="btime' + (wait ? ' wait' : '') + '">' + (wait ? esc(c.wlen) : digitsHtml(c.time)) + '</div></div>';
+    }).join('');
+  }
   function drawMulti(m) {
     var on = !!m.multi;
     document.body.classList.toggle('is-multi', on);
-    var html = on ? m.multi.map(function (c) {
+    $('multi').classList.toggle('board', on && !!m.board);
+    var html = on && m.board ? boardHtml(m.multi) : on ? m.multi.map(function (c) {
       return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
         '<div class="cpaper">' + (c.paper || '').split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join(' · ') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
         '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' +
@@ -1052,7 +1124,7 @@ body.hide-cursor { cursor: none; }
     var shape = html.replace(/[0-9]/g, '0');
     if (view.multiShape !== shape) { relayout = true; view.multiShape = shape; }
     $('multi').innerHTML = html; view.multi = html;
-    $('multi').classList.toggle('notime', on && m.multi.every(function (c) { return !c.time; }));
+    $('multi').classList.toggle('notime', on && !m.board && m.multi.every(function (c) { return !c.time; }));
   }
 
   // ── The exam instructions recording (TTAudio: this browser's own file, or the built-in one) ──
@@ -1143,6 +1215,7 @@ body.hide-cursor { cursor: none; }
       '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
         ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
       startHtml() +
+      papersHtml() + noteHtml() +
       lengthHtml() +
       ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
@@ -1179,6 +1252,7 @@ body.hide-cursor { cursor: none; }
     lengthWire();
     startWire();
     showWire();
+    papersWire();
     // a new type has its own saved progress, so the timer starts again with it
     [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
       b.addEventListener('click', function () {
@@ -1286,6 +1360,99 @@ body.hide-cursor { cursor: none; }
       cfg.look.display = this.checked ? 'both' : 'digital'; lookChanged(); buildPanel(); focusControl('pShClock');
     });
     if ($('pShDate')) $('pShDate').addEventListener('change', function () { cfg.showDate = this.checked; lookChanged(); });
+  }
+  // ── The papers in the venue, typed in or picked from the exam timetable ──
+  // Each row edits subjectN / paperN / writingN in place, applied when the box
+  // is left, so typing is never interrupted. Removing a paper moves the ones
+  // after it up.
+  function pk(i) { return i === 1 ? '' : String(i); }
+  function papersHtml() {
+    if (cfg.mode !== 'exam') return '';
+    var x = cfg.exam, n = Math.max(1, Math.min(TTTimetable.max, x.count | 0)), rows = '';
+    for (var i = 1; i <= n; i++) {
+      var k = pk(i);
+      rows += '<div class="pp-row" data-i="' + i + '">' +
+        '<input type="text" maxlength="80" data-f="subject" aria-label="' + esc(t('ppSubject')) + ' ' + i + '" placeholder="' + esc(t('ppSubject')) + '" value="' + esc(x['subject' + k] || '') + '">' +
+        '<div class="pp-sub"><input type="text" maxlength="80" data-f="paper" aria-label="' + esc(t('ppPaper')) + ' ' + i + '" placeholder="' + esc(t('ppPaper')) + '" value="' + esc(x['paper' + k] || '') + '">' +
+        '<input type="number" min="1" max="600" data-f="mins" aria-label="' + esc(t('ppMins')) + ' ' + i + '" title="' + esc(t('ppMins')) + '" value="' + Math.round((x['writing' + k] || 0) / 60) + '">' +
+        (n > 1 ? '<button type="button" class="pclose" data-del="' + i + '" aria-label="' + esc(t('ppDel')) + '" title="' + esc(t('ppDel')) + '"><i data-lucide="x"></i></button>' : '') + '</div></div>';
+    }
+    var full = n >= TTTimetable.max;
+    return '<div class="pf ttp"><span class="plabel">' + esc(t('pPapers')) + ' · ' + n + '</span>' +
+      '<div class="pp-head"><span>' + esc(t('ppSubject')) + '</span><span>' + esc(t('ppMins')) + '</span></div>' + rows +
+      (full ? '<p class="pnote">' + esc(t('ppFull', { n: TTTimetable.max })) + '</p>' :
+        '<button type="button" class="pclose" id="pPaperAdd" style="justify-content:center">' + esc(t('ppAdd')) + '</button>' +
+        (TT ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
+          '<select id="pPaperPick" size="6" aria-label="' + esc(t('ppFind')) + '"></select>' +
+          '<button type="button" class="pclose" id="pPaperPickAdd" style="justify-content:center">' + esc(t('ppPick')) + '</button>' : '')) +
+      '<p class="pnote">' + esc(t('ppHint')) + '</p></div>';
+  }
+  function noteHtml() {
+    if (cfg.mode !== 'exam') return '';
+    return '<label class="pf"><span>' + esc(t('pInfo')) + '</span><textarea id="pInfo" rows="3" maxlength="600">' + esc(cfg.exam.info || '') + '</textarea></label>';
+  }
+  function papersChanged(rebuild, focusSel) {
+    rekey(); lookChanged();
+    if (rebuild) { buildPanel(); var f = focusSel && $('panel').querySelector(focusSel); if (f) f.focus(); }
+  }
+  function addPaper(name, paper, secs) {
+    var x = cfg.exam, n = Math.max(1, x.count | 0);
+    // the first, still empty row is filled rather than a new one added
+    if (n === 1 && !x.subject) n = 0;
+    if (n >= TTTimetable.max) return false;
+    var k = pk(n + 1);
+    x['subject' + k] = name; x['paper' + k] = paper; x['writing' + k] = secs || x.writing;
+    x.count = n + 1;
+    return n + 1;
+  }
+  function papersWire() {
+    var p = $('panel');
+    [].forEach.call(p.querySelectorAll('.pp-row input'), function (inp) {
+      inp.addEventListener('change', function () {
+        var k = pk(+inp.closest('.pp-row').getAttribute('data-i')), f = inp.getAttribute('data-f'), x = cfg.exam;
+        if (f === 'mins') { var m = Math.max(1, Math.min(600, Math.round(+inp.value) || 0)); inp.value = m; x['writing' + k] = m * 60; }
+        else x[f + k] = inp.value.trim();
+        papersChanged(false);
+      });
+    });
+    [].forEach.call(p.querySelectorAll('.pp-row [data-del]'), function (b) {
+      b.addEventListener('click', function () {
+        var x = cfg.exam, n = x.count | 0, i = +b.getAttribute('data-del');
+        for (var j = i; j < n; j++) ['subject', 'paper', 'writing'].forEach(function (f) { x[f + pk(j)] = x[f + pk(j + 1)]; });
+        x.count = Math.max(1, n - 1);
+        papersChanged(true, '#pPaperAdd');
+      });
+    });
+    if ($('pPaperAdd')) $('pPaperAdd').addEventListener('click', function () {
+      var i = addPaper('', '', 0); if (i) papersChanged(true, '.pp-row[data-i="' + i + '"] [data-f="subject"]');
+    });
+    var find = $('pPaperFind'), pick = $('pPaperPick');
+    if (find && pick && TT) {
+      var all = TTTimetable.papers(TT, cfg.lang);
+      var list = function () {
+        var q = find.value.trim().toLowerCase();
+        pick.innerHTML = '';
+        all.forEach(function (e, i) {
+          var label = e.name + ' · ' + e.paper + ' · ' + span(e.mins * 60);
+          if (!q || label.toLowerCase().indexOf(q) >= 0) pick.appendChild(new Option(label, i));
+        });
+      };
+      list();
+      find.addEventListener('input', list);
+      var add = function () {
+        var e = all[+pick.value]; if (!e) return;
+        var i = addPaper(e.name, e.paper, e.mins * 60);
+        if (i) papersChanged(true, '#pPaperFind');
+      };
+      $('pPaperPickAdd').addEventListener('click', add);
+      pick.addEventListener('dblclick', add);
+      pick.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); add(); } });
+    }
+    var note = $('pInfo'), timer = null;
+    if (note) note.addEventListener('input', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { cfg.exam.info = note.value; lookChanged(); }, 300);
+    });
   }
   // ── The start time of an exam, and a late start ──
   // Changing the start time reschedules the exam. "Start now" begins the reading
@@ -1422,6 +1589,10 @@ body.hide-cursor { cursor: none; }
     fit(); wake();
   }
 
+  function keyOf(c) { var x = c.exam; return 'ml-timer-talisman:' + hash(JSON.stringify([c.mode, c.cd, c.pomo, x.reading, x.writing, x.start, x.date, x.subject])); }
+  // Editing the papers (a name, a length) keeps a running exam running: its
+  // progress moves to the key the new settings give.
+  function rekey() { var k = keyOf(cfg); if (k !== key) { try { localStorage.removeItem(key); } catch (e) {} key = k; save(); } }
   var ticking = null;
   function init() {
     TTLink.decode(location.hash.slice(1)).then(start);
@@ -1432,7 +1603,7 @@ body.hide-cursor { cursor: none; }
     loadPicture();
     if (!audioAsked) { audioAsked = true; loadAudio(); }
     var x = cfg.exam;
-    key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
+    key = keyOf(cfg);
     st = loadState(); lastPhase = null; view = {};
     if (!st.started && !preview) { var g = readGo(); if (g) { st = g; save(); } }
     applyLook(); render(true); wake();
