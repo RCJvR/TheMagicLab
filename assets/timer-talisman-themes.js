@@ -35,12 +35,13 @@
     { g: 'school', id: 'curro-blue', en: 'Curro blue', af: 'Curro-blou', bg: '#003b6f', fg: '#ffffff', accent: '#eeae30', warnc: '#ff8f80', face: '#002b52' },
     { g: 'school', id: 'curro-gold', en: 'Curro gold', af: 'Curro-goud', bg: '#eeae30', fg: '#002b52', accent: '#003b6f', warnc: '#8a1409', face: '#f6d27e' }
   ];
+  // the school's own colours first (Curro blue, then gold): the ones most used
   var GROUPS = [
+    { id: 'school', en: 'Schools', af: 'Skole' },
     { id: 'everyday', en: 'Everyday', af: 'Alledaags' },
     { id: 'temp', en: 'Hot and cold', af: 'Warm en koud' },
     { id: 'season', en: 'Seasons', af: 'Seisoene' },
     { id: 'holiday', en: 'Holidays and special days', af: 'Vakansie- en spesiale dae' },
-    { id: 'school', en: 'Schools', af: 'Skole' },
     { id: 'mine', en: 'My themes', af: 'My temas' }
   ];
   var WORDS = {
