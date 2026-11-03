@@ -397,7 +397,8 @@ body.hide-cursor { cursor: none; }
   function writeGo() {
     if (preview || !cfg || cfg.mode === 'clock') return;
     var h = location.hash.slice(1).replace(/(^|&)go=[^&]*/g, '').replace(/^&/, ''), go = '';
-    if (st.started) go = (running() ? (Date.now() - elapsed()).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36) + '.' + key.split(':').pop();
+    var at = Date.now();
+    if (st.started) go = (running() ? (at - elapsed(at)).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36) + '.' + key.split(':').pop();
     var nh = go ? (h ? h + '&' : '') + 'go=' + go : h;
     if (nh !== location.hash.slice(1)) history.replaceState(null, '', location.pathname + location.search + '#' + nh);
   }
@@ -416,7 +417,9 @@ body.hide-cursor { cursor: none; }
     if (preview || !cfg || cfg.mode === 'clock' || !running()) return;
     e.preventDefault(); e.returnValue = '';
   });
-  function elapsed() { return st.acc + (st.since ? Date.now() - st.since : 0) - st.adj; }
+  // (at: the moment to read it for; one moment per redraw, so a finish time
+  // worked out as now + time left cannot flicker between two minutes)
+  function elapsed(at) { return st.acc + (st.since ? (at || Date.now()) - st.since : 0) - st.adj; }
   function running() { return !!st.since; }
   function play() { if (!st.since) { st.since = Date.now(); if (!st.started) st.t0 = st.since; st.started = true; save(); keepAwake(); } }
   function pause() { if (st.since) { st.acc += Date.now() - st.since; st.since = null; save(); } }
@@ -523,7 +526,7 @@ body.hide-cursor { cursor: none; }
       });
       return m;
     }
-    var el = elapsed(), go = running(), allDone = true, phases = [];
+    var el = elapsed(now), go = running(), allDone = true, phases = [];
     st.ends = st.ends || {};
     m.facts.push(['fStarted', st.t0 ? hm(new Date(st.t0)) : DASH]);
     var reading = el < R0;
@@ -580,7 +583,7 @@ body.hide-cursor { cursor: none; }
       return m;
     }
     if (cfg.mode === 'stopwatch') {
-      var e = elapsed();
+      var e = elapsed(now);
       m.head = [cfg.title];
       m.digital = dur(e, 'up') + (cfg.look.secs && e < 3600000 ? '.' + Math.floor(e % 1000 / 100) : '');
       m.phase = !running() && st.started ? t('paused') : '';
@@ -589,7 +592,7 @@ body.hide-cursor { cursor: none; }
       return m;
     }
     if (cfg.mode === 'countdown') {
-      var total = cfg.cd.secs * 1000, r = total - elapsed();
+      var total = cfg.cd.secs * 1000, r = total - elapsed(now);
       m.head = [cfg.title];
       m.digital = dur(r, 'down');
       m.done = r <= 0; m.warn = !m.done && cfg.warn && r <= cfg.warn * 60000;
@@ -598,7 +601,7 @@ body.hide-cursor { cursor: none; }
       m.prog = st.started ? 1 - Math.max(0, r) / total : 0;
       m.face = total <= 3600000 ? 'wedge60' : 'wedge'; m.frac = Math.max(0, r) / (total <= 3600000 ? 3600000 : total);
       if (m.done && !st.fin) { st.fin = now + r; save(); }
-      m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed())],
+      m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed(now))],
         ['fEnds', m.done ? hm(new Date(st.fin)) : running() ? hm(new Date(now + r)) : DASH]];
       if (m.done && lastPhase === 'run') chime(cfg.chime.rep);
       lastPhase = m.done ? 'done' : 'run';
@@ -608,7 +611,7 @@ body.hide-cursor { cursor: none; }
       var p = cfg.pomo, every = Math.max(1, p.every | 0);
       var type = function (i) { return i % 2 === 0 ? 'focus' : ((i + 1) % (2 * every) === 0 ? 'long' : 'short'); };
       var len = function (i) { var k = type(i); return (k === 'focus' ? p.work : k === 'long' ? p.long : p.short) * 1000; };
-      var rem = len(st.phase) - elapsed();
+      var rem = len(st.phase) - elapsed(now);
       if (rem <= 0 && running()) {
         chime(1);
         st.phase++; st.acc = 0; st.adj = 0; st.since = p.auto ? Date.now() : null; save();
@@ -654,7 +657,7 @@ body.hide-cursor { cursor: none; }
       examFacts(null, null, null);
       return m;
     }
-    var el = elapsed(), phase, left;
+    var el = elapsed(now), phase, left;
     if (el < R) { phase = 'reading'; left = R - el; }
     else if (el < R + W) { phase = 'writing'; left = R + W - el; }
     else { phase = 'finished'; left = R + W - el; }
