@@ -185,12 +185,15 @@ body.hide-cursor { cursor: none; }
 .pgrid svg { width: 64px; height: 40px; }
 .facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
-.multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
+.multi .done .ctime { font-size: var(--cdone, var(--ctime, 12vmin)); }
+/* a paper whose time is up flashes "Pens down" for a few seconds only, then
+   stays still, so it does not distract the papers still writing */
+.multi .flash .ctime { animation: blink 1s steps(2, start) infinite; }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
 .warn .digital, .warn .phase { color: var(--warn); }
 .done .digital { animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0.3; } }
-@media (prefers-reduced-motion: reduce) { .done .digital { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .done .digital, .multi .flash .ctime { animation: none; } }
 
 .bar {
   position: fixed; left: 50%; bottom: 2.4vmin; transform: translateX(-50%);
@@ -497,6 +500,7 @@ body.hide-cursor { cursor: none; }
   // pause and ±1 min, but each has its own writing time and finish, in a
   // column of its own. While a set start time is still ahead, the big time counts
   // down to it and the columns show when each subject will end.
+  var FLASH_MS = 10000;   // how long a paper's "Pens down" flashes
   function examMulti(m, now, sched) {
     var x = cfg.exam, subs = subjects();
     var longest = Math.max.apply(null, subs.map(function (s) { return s.R + s.W; }));
@@ -549,7 +553,7 @@ body.hide-cursor { cursor: none; }
       if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
       else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
       m.multi.push({ name: s.name, paper: s.paper, phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
-        done: done, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
+        done: done, flash: done && now - (st.ends[i] || end) < FLASH_MS, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
     });
     // the chime: once when reading ends, and the full ring only when the last
     // subject's time is up. A subject that ends while others are still
@@ -1038,7 +1042,7 @@ body.hide-cursor { cursor: none; }
     var on = !!m.multi;
     document.body.classList.toggle('is-multi', on);
     var html = on ? m.multi.map(function (c) {
-      return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
+      return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
         '<div class="cpaper">' + (c.paper || '').split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join(' · ') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
         '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' +
         (c.sub ? c.sub.split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join('') : '') + '</div></div>';
