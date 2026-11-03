@@ -679,9 +679,14 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     TTTimetable.load(function (data) {
       if (!data) return;
       TT = data;
+      // it opens on the next session (not over yet), in this device's venue
+      // (the last one filled in here) when that venue has it
       var dates = TTTimetable.days(data), next = dates.filter(function (d) { return d >= today(); })[0];
-      ttOpts($('ttDate'), dates, ttDay, next || dates[dates.length - 1]);
+      var mine = TTTimetable.venue(), nx = TTTimetable.next(data, mine) || TTTimetable.next(data, '');
+      ttOpts($('ttDate'), dates, ttDay, nx ? nx.date : next || dates[dates.length - 1]);
       ttRefresh(0);
+      if (nx && TTTimetable.sessions(data, nx.date).indexOf(nx.start) >= 0) { $('ttSession').value = nx.start; ttRefresh(1); }
+      if (mine && TTTimetable.venues(data, $('ttDate').value, $('ttSession').value).indexOf(mine) >= 0) { $('ttVenue').value = mine; ttRefresh(2); }
       $('ttFill').classList.remove('hidden');
     });
   }
@@ -692,6 +697,7 @@ input[type="range"] { accent-color: var(--tool); width: 100%; }
     var f = TTTimetable.fill(TT, $('ttDate').value, $('ttSession').value, $('ttVenue').value, cfg.lang);
     if (!f) return;
     if (f.more) alert(t('ttMany'));
+    TTTimetable.setVenue($('ttVenue').value);   // this device's venue, for the next session
     Object.assign(cfg.exam, f.exam); changed(true); icons();
     $('ttWhat').textContent = t('ttDone') + '\n' + ttListText();
   });

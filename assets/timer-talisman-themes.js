@@ -648,7 +648,31 @@
     });
     return out.sort(function (a, b) { return a.grade - b.grade || a.name.localeCompare(b.name) || a.paper.localeCompare(b.paper); });
   }
-  window.TTTimetable = { load: ttLoad, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill, papers: ttPapers, max: MAX_PAPERS };
+  // This device's venue (the last one filled in here) and whether the timer
+  // loads that venue's next session by itself; kept per browser, not in the link.
+  var VENUE_KEY = 'ml-timer-talisman-venue', AUTO_KEY = 'ml-timer-talisman-autonext';
+  function ttVenueGet() { try { return localStorage.getItem(VENUE_KEY) || ''; } catch (e) { return ''; } }
+  function ttVenueSet(v) { try { localStorage.setItem(VENUE_KEY, v || ''); } catch (e) {} }
+  function ttAutoGet() { try { return localStorage.getItem(AUTO_KEY) !== '0'; } catch (e) { return true; } }
+  function ttAutoSet(on) { try { localStorage.setItem(AUTO_KEY, on ? '1' : '0'); } catch (e) {} }
+  // The next session (for a venue, if given): the earliest, today or later,
+  // whose longest paper has not finished yet. { date, start } (writing start).
+  function ttNext(d, venue, nowMs) {
+    var now = nowMs || Date.now(), t = new Date(now);
+    var today = t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2);
+    var by = {};
+    d.entries.forEach(function (e) {
+      if (e.date < today || (venue && e.venues.indexOf(venue) < 0)) return;
+      var k = e.date + ' ' + e.start, at = new Date(e.date + 'T' + e.start).getTime();
+      var end = at + e.mins * 60000;
+      if (!by[k] || end > by[k].end) by[k] = { date: e.date, start: e.start, at: at, end: end };
+    });
+    var best = null;
+    Object.keys(by).forEach(function (k) { var s = by[k]; if (s.end > now && (!best || s.at < best.at)) best = s; });
+    return best ? { date: best.date, start: best.start } : null;
+  }
+  window.TTTimetable = { load: ttLoad, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill, papers: ttPapers, max: MAX_PAPERS,
+    next: ttNext, venue: ttVenueGet, setVenue: ttVenueSet, auto: ttAutoGet, setAuto: ttAutoSet };
 
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,
                       font: font, fontCss: fontCss, loadFont: loadFont, fontPicker: fontPicker };

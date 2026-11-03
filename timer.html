@@ -319,6 +319,10 @@ body.hide-cursor { cursor: none; }
 .panel .pp-row input[data-f="subject"] { font-weight: 700; }
 .panel #pPaperPick { padding: 4px; font-size: 15px; }
 .panel #pInfo { resize: vertical; line-height: 1.4; }
+.toast { position: fixed; top: 2.4vmin; left: 50%; transform: translateX(-50%); z-index: 30; max-width: calc(100vw - 32px); box-sizing: border-box;
+  padding: 12px 20px; border-radius: 999px; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700;
+  background: var(--fg); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.toast.on { opacity: 1; }
 .panel #pStartT { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; font-variant-numeric: tabular-nums; }
 .panel #pStartT[aria-invalid="true"] { border-color: var(--warn); }
 .panel input[type="number"] { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; }
@@ -362,6 +366,7 @@ body.hide-cursor { cursor: none; }
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
       pStart: 'Start time', pStartNow: 'Start now (early/late start)', pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
+      ttAuto: 'Load the next session for this venue by itself', ttAutoDone: 'Next session loaded: {s}',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
@@ -392,6 +397,7 @@ body.hide-cursor { cursor: none; }
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
       pStart: 'Begintyd', pStartNow: 'Begin nou (vroeë/laat begin)', pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
+      ttAuto: 'Laai die volgende sessie vir hierdie lokaal vanself', ttAutoDone: 'Volgende sessie gelaai: {s}',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
@@ -1542,15 +1548,20 @@ body.hide-cursor { cursor: none; }
   }
   function ttPanelHtml() {
     if (cfg.mode !== 'exam' || !TT) return '';
-    var days = TTTimetable.days(TT), date = days.indexOf(cfg.exam.date) >= 0 ? cfg.exam.date : (days.filter(function (d) { return d >= ttToday(); })[0] || days[days.length - 1]);
-    var starts = TTTimetable.sessions(TT, date), start = starts[0], venues = TTTimetable.venues(TT, date, start);
+    // it opens on the next session (today or later, not over yet), in this
+    // device's venue (the last one filled in here) when that venue has it
+    var myVenue = TTTimetable.venue(), nx = TTTimetable.next(TT, myVenue) || TTTimetable.next(TT, '');
+    var days = TTTimetable.days(TT), date = nx ? nx.date : (days.filter(function (d) { return d >= ttToday(); })[0] || days[days.length - 1]);
+    var starts = TTTimetable.sessions(TT, date), start = nx && starts.indexOf(nx.start) >= 0 ? nx.start : starts[0], venues = TTTimetable.venues(TT, date, start);
+    var venue = venues.indexOf(myVenue) >= 0 ? myVenue : venues[0];
     var same = function (v) { return v; };
     return '<div class="pf ttp"><span class="plabel">' + esc(t('ttTitle')) + '</span>' +
       '<select id="pTtDate">' + ttOpts(days, ttDayLabel, date) + '</select>' +
       '<select id="pTtSession">' + ttOpts(starts, same, start) + '</select>' +
-      '<select id="pTtVenue">' + ttOpts(venues, same, venues[0]) + '</select>' +
+      '<select id="pTtVenue">' + ttOpts(venues, same, venue) + '</select>' +
       '<div class="ttp-what" id="pTtWhat"></div>' +
-      '<button type="button" class="pclose" id="pTtFill" style="justify-content:center">' + esc(t('ttFill')) + '</button></div>';
+      '<button type="button" class="pclose" id="pTtFill" style="justify-content:center">' + esc(t('ttFill')) + '</button>' +
+      '<label class="pchk"><input type="checkbox" id="pTtAuto"' + (TTTimetable.auto() ? ' checked' : '') + '>' + esc(t('ttAuto')) + '</label></div>';
   }
   function ttPanelWire() {
     if (!$('pTtDate')) return;
@@ -1566,10 +1577,12 @@ body.hide-cursor { cursor: none; }
     });
     s.addEventListener('change', function () { v.innerHTML = ttOpts(TTTimetable.venues(TT, d.value, s.value), same); show(); });
     v.addEventListener('change', function () { show(); });
+    $('pTtAuto').addEventListener('change', function () { TTTimetable.setAuto(this.checked); if (this.checked) autoNext(); });
     $('pTtFill').addEventListener('click', function () {
       var f = TTTimetable.fill(TT, d.value, s.value, v.value, cfg.lang);
       if (!f) return;
       if (f.more) alert(t('ttMany'));
+      TTTimetable.setVenue(v.value);   // this device's venue, for the next session
       Object.assign(cfg.exam, f.exam);
       lookChanged(); start(cfg);   // a new exam has its own saved progress, so start again
       show(t('ttDone'));
@@ -1598,6 +1611,37 @@ body.hide-cursor { cursor: none; }
     fit(); wake();
   }
 
+  // ── The next session, by itself ──
+  // With "Load the next session by itself" on and a venue filled in on this
+  // device, the timer fills in that venue's next session when the one on the
+  // screen is over (or is from an earlier day). Never during an exam, never
+  // back to an earlier session, and never over papers typed in by hand
+  // without a start time.
+  function examOver() {
+    var longest = Math.max.apply(null, subjects().map(function (s) { return s.R + s.W; }));
+    return st.started && elapsed() >= longest;
+  }
+  function autoNext() {
+    if (preview || !cfg || cfg.mode !== 'exam' || !TT || !TTTimetable.auto()) return;
+    var venue = TTTimetable.venue(), nx = venue && TTTimetable.next(TT, venue);
+    if (!nx) return;
+    var f = TTTimetable.fill(TT, nx.date, nx.start, venue, cfg.lang), x = cfg.exam;
+    if (!f || (x.date === f.exam.date && x.start === f.exam.start)) return;
+    var hand = x.subject && !(x.date && x.start);
+    var later = !x.date || !x.start || (f.exam.date + 'T' + f.exam.start) > (x.date + 'T' + x.start);
+    if (hand || !later || (st.started && !examOver())) return;
+    Object.assign(cfg.exam, f.exam); lookChanged(); start(cfg);
+    note(t('ttAutoDone', { s: ttDayLabel(nx.date) + ' · ' + nx.start + ' · ' + venue }));
+    if (panelOpen) buildPanel();
+  }
+  setInterval(autoNext, 20000);
+  // a short notice at the top of the screen
+  var noteTimer = null;
+  function note(text) {
+    var n = $('toast'); if (!n) { n = document.createElement('div'); n.id = 'toast'; n.className = 'toast'; n.setAttribute('role', 'status'); document.body.appendChild(n); }
+    n.textContent = text; n.classList.add('on');
+    clearTimeout(noteTimer); noteTimer = setTimeout(function () { n.classList.remove('on'); }, 10000);
+  }
   function keyOf(c) { var x = c.exam; return 'ml-timer-talisman:' + hash(JSON.stringify([c.mode, c.cd, c.pomo, x.reading, x.writing, x.start, x.date, x.subject])); }
   // Editing the papers (a name, a length) keeps a running exam running: its
   // progress moves to the key the new settings give.
@@ -1608,7 +1652,7 @@ body.hide-cursor { cursor: none; }
   }
   function start(c) {
     cfg = c;
-    TTTimetable.load(function (data) { TT = data; });
+    TTTimetable.load(function (data) { TT = data; autoNext(); });
     loadPicture();
     if (!audioAsked) { audioAsked = true; loadAudio(); }
     var x = cfg.exam;
