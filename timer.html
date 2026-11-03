@@ -136,7 +136,8 @@ body.hide-cursor { cursor: none; }
 /* Several subjects in one venue (exam.count): one column each, with its own
    time left and finish time, in place of the single time */
 /* the columns share their rows (subgrid), so a long name in one column keeps
-   every column's paper, phase, time and end time level with the others */
+   every column's paper, phase, time and end time level with the others; the
+   names line up at the top, and a shorter one leaves space under it */
 .multi { display: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: repeat(5, auto); min-width: 0; }
 .is-multi .multi { display: grid; }
 .multi .col { grid-row: span 5; display: grid; grid-template-rows: subgrid; justify-items: center; align-items: start; row-gap: 1vmin; min-width: 0; padding: 0 2vw; }
@@ -146,7 +147,7 @@ body.hide-cursor { cursor: none; }
 .multi.notime .col { grid-row: span 3; }
 .multi.notime .cphase, .multi.notime .ctime { display: none; }
 .multi .col + .col { border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
-.multi .cname { font-weight: 800; font-size: calc(4.4vmin * var(--tsize) * var(--ck, 1)); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: end; }
+.multi .cname { font-weight: 800; font-size: calc(4.4vmin * var(--tsize) * var(--ck, 1)); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: start; }
 .multi .cpaper { font-size: calc(2.6vmin * var(--tsize) * var(--ck, 1)); opacity: 0.75; }
 .multi .cphase { font-size: calc(2.9vmin * var(--tsize) * var(--ck, 1)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
 .multi .ctime { font-size: var(--ctime, 12vmin); font-weight: var(--dweight); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
