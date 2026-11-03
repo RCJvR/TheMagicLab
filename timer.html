@@ -1214,10 +1214,11 @@ body.hide-cursor { cursor: none; }
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
         ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      // an exam's most used controls first: fill in from the timetable, then the start time and a late start
+      ttPanelHtml() +
       startHtml() +
       papersHtml() + noteHtml() +
       lengthHtml() +
-      ttPanelHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
       '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
         TTThemes.colours.map(function (k) { return '<label>' + esc(t('c_' + k)) + '<input type="color" data-l="' + k + '" value="' + esc(L[k]) + '"></label>'; }).join('') + '</div></div>' +
