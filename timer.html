@@ -91,6 +91,11 @@ body.hide-cursor { cursor: none; }
 }
 .both .digital { font-size: calc(14vmin * var(--dsize)); }
 .analogue { width: calc(48vmin * var(--dsize)); height: calc(48vmin * var(--dsize)); max-width: 88vw; max-height: 60vh; }
+/* the clock and, for several papers, the date under it */
+.aw { display: flex; flex-direction: column; align-items: center; gap: 1.4vmin; min-width: 0; }
+.aw.off { display: none; }
+.adate { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.8; white-space: nowrap; }
+.adate:empty { display: none; }
 .both .analogue { width: calc(50vmin * var(--dsize)); height: calc(50vmin * var(--dsize)); max-height: 66vh; }
 /* with a clock beside the digits, the status lines sit above and below the
    digits in this column, so the clock can use their height as well */
@@ -163,13 +168,13 @@ body.hide-cursor { cursor: none; }
 .facts.row dl { grid-template-columns: repeat(2, auto); gap: 0 3vw; flex: 0 0 auto; }
 /* the other arrangements of several papers (look.arr; sized in fitArranged) */
 .faces.arr-left { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: center; align-content: center; }
-.faces.arr-left #analogue { grid-column: 1; grid-row: 1 / span 3; }
+.faces.arr-left #aw { grid-column: 1; grid-row: 1 / span 3; }
 .faces.arr-left #dcol { grid-column: 2; grid-row: 1; }
 .faces.arr-left #multi { grid-column: 2; grid-row: 2; }
 .faces.arr-left #facts { grid-column: 2; grid-row: 3; }
 .faces.arr-bottom #dcol { order: 0; }
 .faces.arr-bottom #multi { order: 1; }
-.faces.arr-bottom #analogue { order: 2; }
+.faces.arr-bottom #aw { order: 2; }
 .faces.arr-bottom #facts { order: 3; }
 .facts:empty { display: none !important; }
 .no-note .info { display: none; }
@@ -293,7 +298,7 @@ body.hide-cursor { cursor: none; }
     <div class="head" id="head"></div>
     <div class="phase" id="phase"></div>
     <div class="faces" id="faces">
-      <svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg>
+      <div class="aw" id="aw"><svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg><div class="adate" id="adate"></div></div>
       <div class="dcol" id="dcol"><div class="digital" id="digital"></div></div>
       <div class="multi" id="multi"></div>
       <aside class="facts" id="facts"></aside>
@@ -823,6 +828,7 @@ body.hide-cursor { cursor: none; }
     var arr = showM ? (cfg.look.arr || 'top') : '';
     faces.classList.toggle('arr-left', arr === 'left'); faces.classList.toggle('arr-bottom', arr === 'bottom');
     if (arr === 'left' || arr === 'bottom') { fitArranged(arr, W, H); return; }
+    $('dcol').style.display = '';
     var stack = showM && (showD || showA || !!facts.offsetParent);
     // ...and then the Detailed panel sits up top beside the clock, and the columns get the full width
     mu.style.order = stack ? '1' : '';
@@ -844,7 +850,9 @@ body.hide-cursor { cursor: none; }
     // beside several subject columns the clock takes a smaller share of the width
     // (and smaller again when the Detailed panel shares the row as well)
     var share = showM ? (facts.offsetParent && !stack ? 0.24 : 0.3) : 0.48;
-    if (showA) { a = Math.min(side ? Math.min(Hd, W * share) : Math.min(Hd, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    // (less the date under it, when it is there)
+    var Ha = Math.max(40, Hd - ($('adate').offsetHeight ? $('adate').offsetHeight + 12 : 0));
+    if (showA) { a = Math.min(side ? Math.min(Ha, W * share) : Math.min(Ha, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
       // the digits share their column with the status lines beside a clock
       var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
@@ -854,9 +862,9 @@ body.hide-cursor { cursor: none; }
       dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w * 97, Math.max(20, Hd - ch) / h * 97, own * (showA ? 14 : 19))) + 'px';
       // above the columns while a set start is still ahead: the columns need their room too
       // (the top row is as tall as the tallest of the clock, the digits and the Detailed panel)
-      if (stack) H = Math.max(40, H - Math.max(a, $('dcol').offsetHeight, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
+      if (stack) H = Math.max(40, H - Math.max(showA ? $('aw').offsetHeight : 0, $('dcol').offsetHeight, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     }
-    if (stack && !showD) H = Math.max(40, H - Math.max(a, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
+    if (stack && !showD) H = Math.max(40, H - Math.max(showA ? $('aw').offsetHeight : 0, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     if (showM) fillCols(Math.max(80, stack ? W0 : W - a - fgap), H, own, showA);
     else mu.style.width = '';
   }
@@ -926,8 +934,11 @@ body.hide-cursor { cursor: none; }
       return facts.offsetHeight;
     };
     // the shared reading (or start) time, as big as w by h allows
+    // (with no shared time, its column holds only "Paused" when paused, and
+    // is left out when empty)
+    dcol.style.display = showD || dcol.textContent.trim() ? '' : 'none';
     var digits = function (w, h) {
-      if (!showD) return 0;
+      if (!showD) return dcol.offsetParent ? dcol.offsetHeight : 0;
       var ch = 0, cgap = parseFloat(getComputedStyle(dcol).rowGap) || 0;
       [].forEach.call(dcol.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
       dg.style.fontSize = '100px';
@@ -937,7 +948,8 @@ body.hide-cursor { cursor: none; }
     };
     var a = 0;
     if (arr === 'left') {
-      if (showA) a = Math.min(H, W * 0.36, own * 60);
+      var dt = $('adate').offsetHeight ? $('adate').offsetHeight + 12 : 0;
+      if (showA) a = Math.min(H - dt, W * 0.36, own * 60);
       an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
       var cw = Math.max(80, W - (showA ? a + g : 0));
       var fh = panel(cw, H * 0.22), dh = digits(cw, H * 0.34);
@@ -945,7 +957,7 @@ body.hide-cursor { cursor: none; }
     } else {
       if (showA) a = Math.min(H * 0.22, W * 0.2);
       an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
-      var sh = Math.max(a, panel(W - (showA ? a + g : 0), H * 0.22));
+      var sh = Math.max(showA ? $('aw').offsetHeight : 0, panel(W - (showA ? a + g : 0), H * 0.22));
       var dh2 = digits(W, H * 0.32);
       fillCols(W, Math.max(40, H - (sh ? sh + rg : 0) - (dh2 ? dh2 + rg : 0)), own, showA);
     }
@@ -977,6 +989,11 @@ body.hide-cursor { cursor: none; }
     var head = (m.head || []).filter(Boolean);
     var headHtml = head.length ? '<div class="title">' + esc(head[0]) + '</div>' + (head[1] ? '<div class="meta">' + esc(head[1]) + '</div>' : '') : '';
     if (cfg.mode === 'exam' && (!cfg.exam.subject || m.multi) && head.length) headHtml = '<div class="meta">' + esc(head[0]) + '</div>';
+    // several papers with a clock: the date sits under the clock, not at the top
+    var dateUnder = !!m.multi && cfg.look.display !== 'digital' && cfg.look.arr !== 'only';
+    var adate = dateUnder && head.length ? head[0] : '';
+    if (dateUnder) headHtml = '';
+    setText('adate', adate);
     if (view.headHtml !== headHtml) { $('head').innerHTML = headHtml; view.headHtml = headHtml; relayout = true; }
     setText('phase', m.phase || '');
     setDigits(m.digital || '');
@@ -998,6 +1015,7 @@ body.hide-cursor { cursor: none; }
     drawFill(m);
     var d = cfg.look.display;
     $('analogue').style.display = d === 'digital' || (m.multi && cfg.look.arr === 'only') ? 'none' : '';
+    $('aw').classList.toggle('off', $('analogue').style.display === 'none');
     $('digital').style.display = (d === 'analogue' && cfg.mode !== 'exam') || (m.multi && !m.waiting) ? 'none' : '';
     // an exam always shows the time left in words or digits, even with an analogue face
     var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
