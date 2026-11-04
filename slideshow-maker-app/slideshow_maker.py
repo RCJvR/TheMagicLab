@@ -18,6 +18,9 @@ from PIL import Image, ImageOps
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.opc.constants import RELATIONSHIP_TYPE as RT
+from pptx.oxml import parse_xml
+from pptx.oxml.ns import nsdecls
 from pptx.util import Emu, Inches, Pt
 
 try:  # modern Windows 11-style look; the app still works with plain Tk if this is missing
@@ -54,6 +57,7 @@ class Options:
     extras: object = None        # extra items: [("file", path) | ("url", link)]
     extras_first: bool = False   # put the extra items before the zip's files
     section_slides: bool = False  # add a heading slide before each section
+    youtube_embed: bool = True    # YouTube links play inside the slide (else: click to open)
 
 
 @dataclass
@@ -337,6 +341,56 @@ def quality_unticks(names, prefer):
     return {n for n in names if pat.search(os.path.basename(n))}
 
 
+def youtube_embed_url(url):
+    """The player address PowerPoint's 'Online Video' uses, or None if this is not YouTube."""
+    p = urllib.parse.urlparse(url)
+    vid = youtube_id(url)
+    lst = (urllib.parse.parse_qs(p.query).get("list") or [None])[0] if youtube_playlist(url) else None
+    if not vid and not lst:
+        return None
+    base = f"https://www.youtube.com/embed/{vid}" if vid else "https://www.youtube.com/embed/videoseries"
+    params = ([f"list={urllib.parse.quote(lst)}"] if lst else []) + ["feature=oembed"]
+    return base + "?" + "&".join(params)
+
+
+def make_poster(thumb):
+    """16:9 JPEG for the video's cover: the thumbnail (black bars trimmed) or a plain play button."""
+    img = None
+    if thumb:
+        try:
+            img = Image.open(io.BytesIO(thumb)).convert("RGB")
+            if abs(img.width / img.height - 4 / 3) < 0.03:  # YouTube pads 16:9 thumbnails to 4:3
+                nh = round(img.width * 9 / 16); y = (img.height - nh) // 2
+                img = img.crop((0, y, img.width, y + nh))
+        except Exception:
+            img = None
+    if img is None:
+        from PIL import ImageDraw
+        img = Image.new("RGB", (1280, 720), (24, 24, 28))
+        ImageDraw.Draw(img).polygon([(560, 290), (560, 430), (700, 360)], fill=(255, 255, 255))
+    buf = io.BytesIO(); img.save(buf, "JPEG", quality=88)
+    return buf.getvalue()
+
+
+def add_online_video(slide, embed_url, poster_jpeg, x, y, w, h, title=""):
+    """Add a PowerPoint 'Online Video' (plays from the web inside the slide) as a cover picture
+    that carries the video links PowerPoint itself writes."""
+    pic = slide.shapes.add_picture(io.BytesIO(poster_jpeg), x, y, w, h)
+    rid_video = slide.part.relate_to(embed_url, RT.VIDEO, is_external=True)
+    rid_media = slide.part.relate_to(embed_url, "http://schemas.microsoft.com/office/2007/relationships/media", is_external=True)
+    el = pic._element
+    c_nv = el.nvPicPr.cNvPr
+    c_nv.set("descr", "Online video" + (f": {title}" if title else ""))
+    c_nv.append(parse_xml(f'<a:hlinkClick {nsdecls("a", "r")} r:id="" action="ppaction://media"/>'))
+    nv = el.nvPicPr.nvPr
+    nv.append(parse_xml(f'<a:videoFile {nsdecls("a", "r")} r:link="{rid_video}"/>'))
+    nv.append(parse_xml(
+        f'<p:extLst {nsdecls("p", "r")}><p:ext uri="{{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}}">'
+        f'<p14:media xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" r:link="{rid_media}"/>'
+        f'</p:ext></p:extLst>'))
+    return pic
+
+
 def build(zip_path, out_path, opts=None, progress=None):
     """Single-section convenience wrapper: a zip (optional) plus opts.extras."""
     opts = opts or Options()
@@ -432,7 +486,14 @@ def build_sections(sections, out_path, opts=None, progress=None):
                             info = fetch_link_info(src)
                             slide = new_slide()
                             bar_h = Inches(0.9)
-                            if info["thumb"]:  # full-page thumbnail; clicking anywhere on it opens the link
+                            emb = youtube_embed_url(src) if opts.youtube_embed else None
+                            if emb:  # plays inside the slide; the bar underneath is a fallback link
+                                bar_h = Inches(0.8)
+                                pw, ph = fit_box(16, 9, W, H - bar_h, "contain")
+                                add_online_video(slide, emb, make_poster(info["thumb"]), int((W - pw) / 2), int((H - bar_h - ph) / 2),
+                                                 int(pw), int(ph), info["title"])
+                                text(slide, f"{info['title']}  —  if it does not play, click here to open it", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 18, False, src)
+                            elif info["thumb"]:  # full-page thumbnail; clicking anywhere on it opens the link
                                 place_picture(slide, info["thumb"], 0, 0, W, H - bar_h, "contain", src)
                                 text(slide, f"{info['title']}  —  click to open", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 22, True, src)
                             else:
@@ -756,7 +817,7 @@ def run_gui(initial_zip=None):
     fb = ttk.Button(t2, text="Add files from this computer…"); fb.grid(row=2, column=1, sticky="w", padx=8, pady=3)
     muted(t2, wraplength=560, justify="left", text=(
         "A Dropbox link can be a folder (you tick its files) or a single video or image (added as it is). "
-        "YouTube links become a full-page slide you click to open; nothing is downloaded from YouTube.")
+        "YouTube links play inside the slide when you present (internet needed); nothing is downloaded from YouTube.")
     ).grid(row=3, column=0, columnspan=4, sticky="w")
     W = Checklist(t2, 4, "Remove all")
     counter = {"n": 0}
@@ -810,16 +871,18 @@ def run_gui(initial_zip=None):
     op.grid(row=2, column=0, sticky="we", pady=6)
     title = tk.StringVar(); bgc = tk.StringVar(value="#000000")
     order = tk.StringVar(value="File name"); fit = tk.StringVar(value="Fit whole picture"); size = tk.StringVar(value="2560")
+    ytmode = tk.StringVar(value="Play inside the slide")
     b = {k: tk.BooleanVar(value=d) for k, d in (("title_slide", True), ("sections", True), ("captions", False), ("notes", False), ("wide", True))}
     ttk.Label(op, text="Presentation title (optional)").grid(row=0, column=0, sticky="w")
     ttk.Entry(op, textvariable=title, width=34).grid(row=0, column=1, columnspan=3, sticky="we", padx=8, pady=2)
     for i, (lab, var, vals) in enumerate((("Order of files in a folder", order, ["File name", "Date in zip", "Order in zip"]),
                                           ("Image fit", fit, ["Fit whole picture", "Fill slide (crops edges)"]),
-                                          ("Max image size (px)", size, ["1920", "2560", "Original"]))):
+                                          ("Max image size (px)", size, ["1920", "2560", "Original"]),
+                                          ("YouTube links", ytmode, ["Play inside the slide", "Open in the browser"]))):
         ttk.Label(op, text=lab).grid(row=1 + i // 2, column=(i % 2) * 2, sticky="w", pady=2)
         ttk.Combobox(op, textvariable=var, values=vals, state="readonly", width=22).grid(row=1 + i // 2, column=(i % 2) * 2 + 1, padx=8, sticky="w")
-    bgb = ttk.Button(op, text="Background colour…"); bgb.grid(row=2, column=2, sticky="w", pady=2)
-    bgl = tk.Label(op, textvariable=bgc, width=10, bg="#000000", fg="#ffffff"); bgl.grid(row=2, column=3, sticky="w", padx=8)
+    bgb = ttk.Button(op, text="Background colour…"); bgb.grid(row=3, column=0, sticky="w", pady=2)
+    bgl = tk.Label(op, textvariable=bgc, width=10, bg="#000000", fg="#ffffff"); bgl.grid(row=3, column=1, sticky="w", padx=8)
 
     def pick_bg():
         c = colorchooser.askcolor(color=bgc.get())[1]
@@ -829,7 +892,7 @@ def run_gui(initial_zip=None):
     for i, (lab, k) in enumerate((("Add a title slide", "title_slide"), ("Add a heading slide for each section", "sections"),
                                   ("Widescreen 16:9", "wide"), ("Caption slides with file names", "captions"),
                                   ("File name in speaker notes", "notes"))):
-        ttk.Checkbutton(op, text=lab, variable=b[k]).grid(row=3 + i // 2, column=(i % 2) * 2, columnspan=2, sticky="w")
+        ttk.Checkbutton(op, text=lab, variable=b[k]).grid(row=4 + i // 2, column=(i % 2) * 2, columnspan=2, sticky="w")
 
     # ================= create
     bar = ttk.Progressbar(frm, maximum=100); bar.grid(row=3, column=0, sticky="we", pady=(8, 2))
@@ -862,7 +925,8 @@ def run_gui(initial_zip=None):
                     order={"File name": "name", "Date in zip": "date", "Order in zip": "zip"}[order.get()],
                     fit="cover" if fit.get().startswith("Fill") else "contain", widescreen=b["wide"].get(),
                     background=bgc.get().lstrip("#"), max_px=0 if size.get() == "Original" else int(size.get()),
-                    captions=b["captions"].get(), notes=b["notes"].get())
+                    captions=b["captions"].get(), notes=b["notes"].get(),
+                    youtube_embed=ytmode.get().startswith("Play"))
         go.config(state="disabled")
         threading.Thread(target=work, args=(sections, out, o), daemon=True).start()
     go.config(command=start)

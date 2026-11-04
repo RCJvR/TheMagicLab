@@ -24,13 +24,14 @@ Choose "More info → Run anyway".
 
 ## Worship tab
 Add anything, in any mix. Items appear in the tick-list in the order you add them.
-- **YouTube or web link**: becomes a full-page slide showing the video's thumbnail and title.
-  Clicking it during the slideshow opens the video in the browser. The video or song itself is
-  **not downloaded**; only the small public thumbnail and title are fetched. The computer
-  showing the slides needs internet to play it.
-  A **playlist** link works too: it becomes one slide for the whole playlist, and clicking it
-  opens the playlist in the browser, which plays the songs one after another. (It does not
-  make one slide per song.)
+- **YouTube link or playlist**: becomes a full-page slide with the video **playing inside
+  PowerPoint** (PowerPoint's "Online Video"), so you do not have to leave the slideshow. Nothing
+  is downloaded from YouTube; the video streams from YouTube when you present, so that computer
+  needs internet and a recent PowerPoint for Windows or Mac (Keynote and Google Slides will not
+  play it). A playlist link plays the whole playlist in order. Under the video is a line saying
+  "if it does not play, click here to open it", which opens it in the browser instead. If you
+  prefer that for everything, set **YouTube links → Open in the browser** in the options.
+- **Other web page links** become a clickable slide that opens the page.
 - A link **straight to a .mp4 / .jpg (etc.) file** is downloaded and embedded like any file.
 - **Dropbox link**: can be a **folder** (downloaded, and its files listed to tick, like
   Announcements) or a link to a **single video or image** (downloaded and added as one item
