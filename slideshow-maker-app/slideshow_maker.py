@@ -300,6 +300,11 @@ def run_gui(initial_zip=None):
 
     root = tk.Tk()
     root.title("Slideshow Maker")
+    try:  # window / taskbar icon; the file sits beside the script or inside the exe
+        here = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+        root.iconphoto(True, tk.PhotoImage(file=os.path.join(here, "icon.png")))
+    except Exception:
+        pass
     root.minsize(600, 0)
     tmp = tempfile.TemporaryDirectory(prefix="slideshow_")
     root.protocol("WM_DELETE_WINDOW", lambda: (tmp.cleanup(), root.destroy()))
