@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Slideshow Maker — The Magic Lab</title>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/magic-lab.css">
+  <style>
+    body { margin: 0; background: var(--bg, #08090b); color: var(--text); font-family: var(--font-body); }
+    main { max-width: 980px; margin: 0 auto; padding: 40px var(--gutter, 16px) 80px; }
+    h1 { font-family: var(--font-display); color: var(--paper); font-size: clamp(28px, 4vw, 40px); margin: 0 0 6px; }
+    .sub { color: #98a2b3; margin: 0 0 28px; max-width: 62ch; line-height: 1.5; }
+    .card { border: 1px solid var(--line, #232830); border-radius: var(--radius-lg, 14px); background: rgba(255,255,255,0.025); padding: 20px; margin-bottom: 18px; }
+    .card h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #98a2b3; margin: 0 0 14px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #b6bfcc; }
+    input[type=text], select { background: #0f1115; color: var(--text); border: 1px solid var(--line, #232830); border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; min-height: 40px; }
+    input[type=color] { width: 100%; height: 40px; background: #0f1115; border: 1px solid var(--line, #232830); border-radius: 8px; padding: 3px; }
+    .check { flex-direction: row; align-items: center; gap: 10px; min-height: 40px; }
+    .check input { width: 18px; height: 18px; }
+    #drop { border: 1.5px dashed #3a4150; border-radius: var(--radius-lg, 14px); padding: 44px 20px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+    #drop:hover, #drop:focus-visible, #drop.over { border-color: var(--accent, #7aa2ff); background: rgba(255,255,255,0.03); outline: none; }
+    #drop strong { display: block; color: var(--paper); font-size: 17px; margin-bottom: 4px; }
+    #drop span { color: #98a2b3; font-size: 14px; }
+    .btn { background: var(--accent, #7aa2ff); color: #08090b; border: 0; border-radius: 10px; padding: 12px 22px; font: inherit; font-weight: 800; font-size: 15px; cursor: pointer; min-height: 44px; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line, #232830); font-weight: 600; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .stat { font-family: var(--font-mono, 'JetBrains Mono', monospace); font-size: 13px; color: #98a2b3; }
+    #thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 14px; }
+    .th { position: relative; aspect-ratio: 16/10; border-radius: 8px; overflow: hidden; background: #0f1115; border: 1px solid var(--line, #232830); }
+    .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .th .n { position: absolute; left: 6px; top: 6px; font: 600 11px var(--font-mono, monospace); background: rgba(0,0,0,.7); color: #fff; padding: 2px 6px; border-radius: 4px; }
+    .th .v { position: absolute; right: 6px; bottom: 6px; font: 600 11px var(--font-mono, monospace); background: rgba(0,0,0,.7); color: #fff; padding: 2px 6px; border-radius: 4px; }
+    .th .x { position: absolute; right: 4px; top: 4px; width: 28px; height: 28px; border-radius: 6px; border: 0; background: rgba(0,0,0,.7); color: #fff; cursor: pointer; font-size: 16px; line-height: 1; }
+    #msg { min-height: 20px; font-size: 14px; color: #b6bfcc; }
+    #msg.err { color: var(--crit, #ff6b6b); }
+    #msg.ok { color: var(--good, #4cd08a); }
+    progress { width: 100%; height: 8px; accent-color: var(--accent, #7aa2ff); }
+    .hide { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Slideshow Maker</h1>
+  <p class="sub">Drop in a zip of images and videos and get a PowerPoint back. Everything is built in your browser; your files are never uploaded.</p>
+
+  <div class="card">
+    <h2>1 · Your zip</h2>
+    <div id="drop" tabindex="0" role="button" aria-label="Choose a zip file">
+      <strong>Drop a .zip here or click to choose</strong>
+      <span>Images (jpg, png, gif, webp) and videos (mp4, mov, m4v, webm)</span>
+    </div>
+    <input id="file" type="file" accept=".zip,application/zip" class="hide">
+    <div id="thumbs"></div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Options</h2>
+    <div class="grid">
+      <label>Presentation title <input id="title" type="text" placeholder="My presentation"></label>
+      <label>Order
+        <select id="order">
+          <option value="name">File name (A → Z, natural)</option>
+          <option value="date">Date in the zip</option>
+          <option value="zip">Order in the zip</option>
+        </select>
+      </label>
+      <label>Image fit
+        <select id="fit">
+          <option value="contain">Fit whole picture</option>
+          <option value="cover">Fill slide (crops edges)</option>
+        </select>
+      </label>
+      <label>Slide size
+        <select id="size">
+          <option value="LAYOUT_WIDE">Widescreen 16:9</option>
+          <option value="LAYOUT_4x3">Standard 4:3</option>
+        </select>
+      </label>
+      <label>Background <input id="bg" type="color" value="#000000"></label>
+      <label>Max image size (px)
+        <select id="maxpx"><option value="1920">1920 (small file)</option><option value="2560" selected>2560</option><option value="0">Original</option></select>
+      </label>
+    </div>
+    <div class="grid" style="margin-top:10px">
+      <label class="check"><input id="titleSlide" type="checkbox" checked> Add a title slide</label>
+      <label class="check"><input id="captions" type="checkbox"> Caption each slide with its file name</label>
+      <label class="check"><input id="notes" type="checkbox"> Put file name in speaker notes</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3 · Build</h2>
+    <div class="row">
+      <button id="build" class="btn" disabled>Create PowerPoint</button>
+      <button id="reset" class="btn ghost hide">Start over</button>
+      <span id="stat" class="stat"></span>
+    </div>
+    <progress id="prog" class="hide" max="100" value="0" style="margin-top:14px"></progress>
+    <p id="msg" role="status" aria-live="polite"></p>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
+<script>
+(function () {
+  'use strict';
+  var IMG = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', bmp: 'image/bmp' };
+  var VID = { mp4: 'video/mp4', m4v: 'video/mp4', mov: 'video/quicktime', webm: 'video/webm' };
+  var MAX_VIDEO_MB = 150, MAX_TOTAL_MB = 600;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var items = []; // {name, kind, mime, entry, date, thumb, w, h, url, size}
+  var zipName = 'slideshow';
+
+  function msg(t, cls) { $('msg').textContent = t || ''; $('msg').className = cls || ''; }
+  function ext(n) { var m = /\.([a-z0-9]+)$/i.exec(n); return m ? m[1].toLowerCase() : ''; }
+  function base(n) { return n.split('/').pop(); }
+  function human(b) { return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
+
+  // ---------- loading ----------
+  var drop = $('drop'), fileIn = $('file');
+  drop.addEventListener('click', function () { fileIn.click(); });
+  drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileIn.click(); } });
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { var f = e.dataTransfer.files[0]; if (f) load(f); });
+  fileIn.addEventListener('change', function () { if (fileIn.files[0]) load(fileIn.files[0]); });
+  $('reset').addEventListener('click', clearAll);
+
+  function clearAll() {
+    items.forEach(function (i) { if (i.url) URL.revokeObjectURL(i.url); });
+    items = []; render(); fileIn.value = ''; msg('');
+    $('reset').classList.add('hide'); $('prog').classList.add('hide');
+  }
+
+  async function load(file) {
+    clearAll();
+    if (!/\.zip$/i.test(file.name)) { msg('That is not a .zip file.', 'err'); return; }
+    zipName = file.name.replace(/\.zip$/i, '');
+    if (!$('title').value) $('title').placeholder = zipName;
+    msg('Reading zip…');
+    try {
+      var zip = await JSZip.loadAsync(file);
+      var entries = [];
+      zip.forEach(function (path, entry) {
+        if (entry.dir || /(^|\/)(__MACOSX|\.DS_Store)/.test(path) || base(path).charAt(0) === '.') return;
+        var e = ext(path);
+        if (IMG[e]) entries.push({ path: path, kind: 'image', mime: IMG[e], entry: entry });
+        else if (VID[e]) entries.push({ path: path, kind: 'video', mime: VID[e], entry: entry });
+      });
+      if (!entries.length) { msg('No supported images or videos found in that zip.', 'err'); return; }
+      var skipped = 0, i = 0;
+      for (var k = 0; k < entries.length; k++) {
+        var en = entries[k];
+        msg('Preparing ' + (k + 1) + ' of ' + entries.length + '…');
+        var blob = await en.entry.async('blob');
+        blob = new Blob([blob], { type: en.mime });
+        var it = { name: en.path, kind: en.kind, mime: en.mime, date: en.entry.date ? +en.entry.date : 0, order: k, blob: blob, size: blob.size };
+        try {
+          if (en.kind === 'image') await probeImage(it); else await probeVideo(it);
+          items.push(it);
+        } catch (err) { skipped++; }
+      }
+      if (!items.length) { msg('None of the files could be read by this browser.', 'err'); return; }
+      sortItems(); render();
+      $('reset').classList.remove('hide');
+      msg(items.length + ' file' + (items.length === 1 ? '' : 's') + ' ready.' + (skipped ? ' ' + skipped + ' could not be read and were skipped.' : ''), 'ok');
+    } catch (err) {
+      msg('Could not open that zip: ' + err.message, 'err');
+    }
+  }
+
+  function probeImage(it) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(it.blob), img = new Image();
+      img.onload = function () { it.w = img.naturalWidth; it.h = img.naturalHeight; it.url = url; it.thumb = url; res(); };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('image')); };
+      img.src = url;
+    });
+  }
+  function probeVideo(it) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(it.blob), v = document.createElement('video');
+      v.muted = true; v.preload = 'auto'; v.playsInline = true;
+      var timer = setTimeout(function () { URL.revokeObjectURL(url); rej(new Error('timeout')); }, 20000);
+      v.onloadedmetadata = function () { try { v.currentTime = Math.min(0.5, (v.duration || 1) / 2); } catch (e) {} };
+      v.onseeked = function () {
+        clearTimeout(timer);
+        it.w = v.videoWidth; it.h = v.videoHeight; it.dur = v.duration;
+        var c = document.createElement('canvas'); c.width = it.w; c.height = it.h;
+        c.getContext('2d').drawImage(v, 0, 0);
+        c.toBlob(function (b) { it.poster = b; it.thumb = URL.createObjectURL(b); it.url = url; res(); }, 'image/jpeg', 0.85);
+      };
+      v.onerror = function () { clearTimeout(timer); URL.revokeObjectURL(url); rej(new Error('video')); };
+      v.src = url;
+    });
+  }
+
+  // ---------- list ----------
+  function natural(a, b) { return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }); }
+  function sortItems() {
+    var o = $('order').value;
+    items.sort(function (a, b) {
+      if (o === 'date') return (a.date - b.date) || natural(a.name, b.name);
+      if (o === 'zip') return a.order - b.order;
+      return natural(a.name, b.name);
+    });
+  }
+  $('order').addEventListener('change', function () { sortItems(); render(); });
+
+  function render() {
+    var t = $('thumbs'); t.innerHTML = '';
+    items.forEach(function (it, idx) {
+      var d = document.createElement('div'); d.className = 'th';
+      var img = document.createElement('img'); img.src = it.thumb; img.alt = base(it.name); img.title = it.name; d.appendChild(img);
+      var n = document.createElement('span'); n.className = 'n'; n.textContent = idx + 1; d.appendChild(n);
+      if (it.kind === 'video') { var v = document.createElement('span'); v.className = 'v'; v.textContent = '▶ ' + Math.round(it.dur || 0) + 's'; d.appendChild(v); }
+      var x = document.createElement('button'); x.className = 'x'; x.textContent = '×'; x.setAttribute('aria-label', 'Remove ' + base(it.name));
+      x.addEventListener('click', function () { items.splice(items.indexOf(it), 1); render(); });
+      d.appendChild(x); t.appendChild(d);
+    });
+    var vids = items.filter(function (i) { return i.kind === 'video'; }).length;
+    var total = items.reduce(function (s, i) { return s + i.size; }, 0);
+    $('stat').textContent = items.length ? (items.length - vids) + ' images · ' + vids + ' videos · ' + human(total) : '';
+    $('build').disabled = !items.length;
+  }
+
+  // ---------- build ----------
+  function blobToDataURL(b) {
+    return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(r.result); }; r.onerror = rej; r.readAsDataURL(b); });
+  }
+  // Downscale large images; returns a data URL and final pixel size.
+  async function prepImage(it, maxpx) {
+    var needs = maxpx && Math.max(it.w, it.h) > maxpx;
+    var animated = it.mime === 'image/gif'; // keep GIFs intact so they stay animated
+    if (!needs || animated) return { data: await blobToDataURL(it.blob), w: it.w, h: it.h };
+    var s = maxpx / Math.max(it.w, it.h), w = Math.round(it.w * s), h = Math.round(it.h * s);
+    var img = await new Promise(function (r, j) { var i = new Image(); i.onload = function () { r(i); }; i.onerror = j; i.src = it.url; });
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var ctx = c.getContext('2d'), png = it.mime === 'image/png' || it.mime === 'image/webp';
+    if (!png) { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); }
+    ctx.drawImage(img, 0, 0, w, h);
+    return { data: c.toDataURL(png ? 'image/png' : 'image/jpeg', 0.9), w: w, h: h };
+  }
+  // Compute placement in a box. mode 'contain' fits all; 'cover' fills (cropped via sizing).
+  function place(w, h, bx, by, bw, bh, mode) {
+    var r = w / h, br = bw / bh, pw, ph;
+    if ((mode === 'contain') === (r > br)) { pw = bw; ph = bw / r; } else { ph = bh; pw = bh * r; }
+    return { x: bx + (bw - pw) / 2, y: by + (bh - ph) / 2, w: pw, h: ph };
+  }
+
+  $('build').addEventListener('click', async function () {
+    var btn = $('build'); btn.disabled = true;
+    var prog = $('prog'); prog.classList.remove('hide'); prog.value = 0;
+    try {
+      var totalMB = items.reduce(function (s, i) { return s + i.size; }, 0) / 1048576;
+      if (totalMB > MAX_TOTAL_MB) throw new Error('Content is ' + totalMB.toFixed(0) + ' MB; the limit in the browser is about ' + MAX_TOTAL_MB + ' MB. Remove some files or split the zip.');
+      var big = items.filter(function (i) { return i.kind === 'video' && i.size / 1048576 > MAX_VIDEO_MB; });
+      if (big.length) throw new Error('"' + base(big[0].name) + '" is over ' + MAX_VIDEO_MB + ' MB. Remove it or compress it first.');
+
+      var pptx = new PptxGenJS();
+      pptx.layout = $('size').value;
+      var W = pptx.layout === 'LAYOUT_4x3' ? 10 : 13.333, H = pptx.layout === 'LAYOUT_4x3' ? 7.5 : 7.5;
+      var bg = $('bg').value.replace('#', '').toUpperCase();
+      var light = (parseInt(bg.substr(0, 2), 16) * 0.299 + parseInt(bg.substr(2, 2), 16) * 0.587 + parseInt(bg.substr(4, 2), 16) * 0.114) > 150;
+      var fg = light ? '111111' : 'FFFFFF';
+      var title = $('title').value.trim() || zipName;
+      var fit = $('fit').value, maxpx = +$('maxpx').value, caps = $('captions').checked, notes = $('notes').checked;
+      pptx.title = title;
+
+      if ($('titleSlide').checked) {
+        var ts = pptx.addSlide(); ts.background = { color: bg };
+        ts.addText(title, { x: 0.8, y: H / 2 - 1, w: W - 1.6, h: 2, align: 'center', valign: 'middle', fontSize: 44, bold: true, color: fg, fontFace: 'Calibri' });
+      }
+      var capH = caps ? 0.5 : 0, boxY = 0, boxH = H - capH;
+      for (var i = 0; i < items.length; i++) {
+        var it = items[i];
+        $('msg').textContent = 'Adding ' + (i + 1) + ' of ' + items.length + '…'; $('msg').className = '';
+        prog.value = (i / items.length) * 90;
+        await new Promise(function (r) { setTimeout(r, 0); });
+        var s = pptx.addSlide(); s.background = { color: bg };
+        if (it.kind === 'image') {
+          var p = await prepImage(it, maxpx);
+          var o = { data: p.data };
+          if (fit === 'cover') {
+            // crop to the box using sizing so nothing is stretched
+            var pl = place(p.w, p.h, 0, boxY, W, boxH, 'cover');
+            o.x = 0; o.y = boxY; o.w = W; o.h = boxH;
+            o.sizing = { type: 'cover', w: W, h: boxH };
+          } else {
+            var q = place(p.w, p.h, 0, boxY, W, boxH, 'contain');
+            o.x = q.x; o.y = q.y; o.w = q.w; o.h = q.h;
+          }
+          s.addImage(o);
+        } else {
+          var q2 = place(it.w, it.h, 0, boxY, W, boxH, 'contain');
+          var vdata = await blobToDataURL(it.blob);
+          var cdata = await blobToDataURL(it.poster);
+          s.addMedia({ type: 'video', data: vdata.replace(/^data:/, ''), cover: cdata.replace(/^data:/, ''), x: q2.x, y: q2.y, w: q2.w, h: q2.h, extn: ext(it.name) === 'mov' ? 'mov' : 'mp4' });
+        }
+        if (caps) s.addText(base(it.name), { x: 0.4, y: H - capH, w: W - 0.8, h: capH, fontSize: 14, color: fg, align: 'center', valign: 'middle', fontFace: 'Calibri' });
+        if (notes) s.addNotes(it.name);
+      }
+      $('msg').textContent = 'Packing the file…'; prog.value = 95;
+      var out = await pptx.write({ outputType: 'blob' });
+      prog.value = 100;
+      var a = document.createElement('a'); a.href = URL.createObjectURL(out);
+      a.download = (title || zipName).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pptx';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+      msg('Done — ' + a.download + ' (' + human(out.size) + ') has been downloaded.', 'ok');
+    } catch (err) {
+      msg('Could not build the presentation: ' + err.message, 'err');
+    } finally {
+      btn.disabled = !items.length;
+    }
+  });
+})();
+</script>
+</body>
+</html>
