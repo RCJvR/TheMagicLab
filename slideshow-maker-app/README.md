@@ -40,6 +40,12 @@ Add anything, in any mix. Items appear in the tick-list in the order you add the
 - **Files from this computer**: offline videos or images. Large videos are used where they are,
   not copied into memory.
 
+## How the added slides look
+The title slide, the numbered section slides ("01 Announcements", "02 Worship") and the link
+slides share one design: bold white (or dark, on a light background) text, softer grey secondary
+text and a short orange accent bar. The title slide lists the sections under the title. Pictures
+and videos are never decorated. Colours follow the background colour you pick in the options.
+
 ## Troubleshooting
 - **"Cannot Play Media" on a YouTube slide.** The slide is set up the way PowerPoint's own
   Insert → Video → Online Video does it, but playing it depends on PowerPoint's built-in web

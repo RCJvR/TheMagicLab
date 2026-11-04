@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from PIL import Image, ImageOps
 from pptx import Presentation
 from pptx.dml.color import RGBColor
+from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 from pptx.oxml import parse_xml
@@ -59,6 +60,7 @@ class Options:
     extras_first: bool = False   # put the extra items before the zip's files
     section_slides: bool = False  # add a heading slide before each section
     youtube_embed: bool = True    # YouTube links play inside the slide (else: click to open)
+    accent: str = "FF8C3A"        # accent colour of the slides the app adds (hex RGB)
 
 
 @dataclass
@@ -459,14 +461,42 @@ def build_sections(sections, out_path, opts=None, progress=None):
         s.background.fill.solid(); s.background.fill.fore_color.rgb = bg
         return s
 
-    def text(slide, s, x, y, w, h, size, bold=False, link=None):
+    accent = RGBColor.from_string(opts.accent.lstrip("#").upper())
+    muted = RGBColor(*[round(f * 0.55 + g * 0.45) for f, g in zip(fg, bg)])  # softer text colour
+
+    def text(slide, s, x, y, w, h, size, bold=False, link=None, color=None, runs=None, align="center"):
+        """One paragraph. runs=[(text, size, bold, color), ...] mixes styles on one line."""
         tb = slide.shapes.add_textbox(x, y, w, h); tf = tb.text_frame; tf.word_wrap = True
         tf.vertical_anchor = MSO_ANCHOR.MIDDLE
-        p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
-        r = p.add_run(); r.text = s; r.font.size = Pt(size); r.font.bold = bold; r.font.color.rgb = fg
+        p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER if align == "center" else PP_ALIGN.LEFT
+        for t_, sz, bd, col in (runs or [(s, size, bold, color)]):
+            r = p.add_run(); r.text = t_; r.font.size = Pt(sz); r.font.bold = bd
+            r.font.name = "Calibri"; r.font.color.rgb = col or fg
         if link:  # whole box is clickable, so the text keeps our colour
             tb.click_action.hyperlink.address = link
         return tb
+
+    def accent_bar(slide, cx, y, w=Inches(1.4), h=Inches(0.09)):
+        bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, int(cx - w / 2), int(y), int(w), int(h))
+        bar.fill.solid(); bar.fill.fore_color.rgb = accent; bar.line.fill.background()
+        bar.shadow.inherit = False
+        return bar
+
+    def size_for(s_, big, mid, small):  # shrink long text so it stays on two lines at most
+        return big if len(s_) <= 26 else mid if len(s_) <= 46 else small
+
+    def title_slide(title_, subtitle_):
+        sl = new_slide(); cx = W / 2
+        accent_bar(sl, cx, H / 2 - Inches(1.55))
+        text(sl, title_, Inches(0.9), H / 2 - Inches(1.35), W - Inches(1.8), Inches(1.7), size_for(title_, 60, 46, 36), True)
+        if subtitle_:
+            text(sl, subtitle_, Inches(0.9), H / 2 + Inches(0.45), W - Inches(1.8), Inches(0.6), 24, False, color=muted)
+
+    def section_slide(num, name_):
+        sl = new_slide(); cx = W / 2
+        text(sl, f"{num:02d}", Inches(0.9), H / 2 - Inches(1.75), W - Inches(1.8), Inches(0.6), 28, True, color=accent)
+        text(sl, name_, Inches(0.9), H / 2 - Inches(1.15), W - Inches(1.8), Inches(1.7), size_for(name_, 72, 54, 40), True)
+        accent_bar(sl, cx, H / 2 + Inches(0.7))
 
     def place_picture(slide, data, bx, by, bw, bh, mode, link=None):
         jpg, w, h = prep_image(data, opts, bw / bh)
@@ -509,11 +539,12 @@ def build_sections(sections, out_path, opts=None, progress=None):
             default_title = os.path.splitext(os.path.basename(first_zip))[0] if first_zip else "Slideshow"
             title = opts.title.strip() or default_title
             prs.core_properties.title = title
+            names = [n_ for n_, _ in plan if n_]
             if opts.title_slide:
-                text(new_slide(), title, Inches(0.8), H // 2 - Inches(1), W - Inches(1.6), Inches(2), 44, True)
-            for sec_name, items in plan:
+                title_slide(title, "  ·  ".join(names) if len(names) > 1 else "")
+            for sec_i, (sec_name, items) in enumerate(plan, 1):
                 if opts.section_slides and sec_name:
-                    text(new_slide(), sec_name, Inches(0.8), H // 2 - Inches(1), W - Inches(1.6), Inches(2), 54, True)
+                    section_slide(sec_i, sec_name)
                 for kind, name, note, (how, src, zf) in items:
                     n += 1
                     say(n - 1, total, f"Adding {n} of {total}: {name}")
@@ -531,13 +562,18 @@ def build_sections(sections, out_path, opts=None, progress=None):
                                 pw, ph = fit_box(16, 9, W, H - bar_h, "contain")
                                 add_online_video(slide, emb, make_poster(info["thumb"]), int((W - pw) / 2), int((H - bar_h - ph) / 2),
                                                  int(pw), int(ph), info["title"])
-                                text(slide, f"{info['title']}  —  if it does not play, click here to open it", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 18, False, src)
+                                text(slide, "", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 0, link=src, runs=[
+                                    (info["title"], 22, True, fg), ("   if it does not play, click here to open it", 16, False, muted)])
                             elif info["thumb"]:  # full-page thumbnail; clicking anywhere on it opens the link
                                 place_picture(slide, info["thumb"], 0, 0, W, H - bar_h, "contain", src)
-                                text(slide, f"{info['title']}  —  click to open", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 22, True, src)
+                                text(slide, "", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 0, link=src, runs=[
+                                    (info["title"], 22, True, fg), ("   click to open", 16, False, muted)])
                             else:
-                                text(slide, info["title"], Inches(0.6), H / 2 - Inches(1.2), W - Inches(1.2), Inches(1.4), 40, True, src)
-                                text(slide, "Click to open: " + src, Inches(0.6), H / 2 + Inches(0.3), W - Inches(1.2), Inches(0.7), 16, False, src)
+                                accent_bar(slide, W / 2, H / 2 - Inches(1.45))
+                                text(slide, info["title"], Inches(0.9), H / 2 - Inches(1.25), W - Inches(1.8), Inches(1.4), size_for(info["title"], 54, 42, 34), True, src)
+                                shown = src if len(src) <= 70 else src[:67] + "…"
+                                text(slide, "Click to open", Inches(0.9), H / 2 + Inches(0.3), W - Inches(1.8), Inches(0.5), 24, True, src, color=accent)
+                                text(slide, shown, Inches(0.9), H / 2 + Inches(0.85), W - Inches(1.8), Inches(0.5), 16, False, src, color=muted)
                             name = info["title"]
                         elif kind == "image":
                             if how == "zip":
@@ -576,7 +612,7 @@ def build_sections(sections, out_path, opts=None, progress=None):
                             slide.shapes.add_movie(vpath, int((W - pw) / 2), int((box_h - ph) / 2), int(pw), int(ph),
                                                    poster_frame_image=io.BytesIO(poster), mime_type=MIME.get(ext, "video/mp4"))
                         if opts.captions and kind != "link":
-                            text(slide, name, Inches(0.4), H - cap_h, W - Inches(0.8), cap_h, 14)
+                            text(slide, name, Inches(0.4), H - cap_h, W - Inches(0.8), cap_h, 14, color=muted)
                         if opts.notes:
                             slide.notes_slide.notes_text_frame.text = note
                         made += 1
