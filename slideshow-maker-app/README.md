@@ -40,6 +40,19 @@ Add anything, in any mix. Items appear in the tick-list in the order you add the
 - **Files from this computer**: offline videos or images. Large videos are used where they are,
   not copied into memory.
 
+## Troubleshooting
+- **"Cannot Play Media" on a YouTube slide.** The slide is set up the way PowerPoint's own
+  Insert → Video → Online Video does it, but playing it depends on PowerPoint's built-in web
+  player and on YouTube allowing it. Test: in the same PowerPoint, use Insert → Video →
+  Online Video and paste the same link. If that fails too, it is PowerPoint, the PowerPoint
+  version, the internet connection or YouTube blocking embedding for that video (common for
+  some music videos). Use **YouTube links → Open in the browser** in the options, or click the
+  line under the video, which opens it in the browser.
+- **"Saved" but the old file is still there.** The app saves to a temporary file and then swaps
+  it in, and tells you the file size and time it saved. If Windows will not let it replace the
+  file (usually because it is open in PowerPoint) the app now says so. Close the presentation
+  first, or save under a new name.
+
 ## Look
 A modern Windows 11-style theme, dark by default. The **Dark** switch at the top right changes
 it to light, and the choice is remembered.

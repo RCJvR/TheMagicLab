@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 import zipfile
@@ -359,9 +360,17 @@ def make_poster(thumb):
     if thumb:
         try:
             img = Image.open(io.BytesIO(thumb)).convert("RGB")
-            if abs(img.width / img.height - 4 / 3) < 0.03:  # YouTube pads 16:9 thumbnails to 4:3
+            ratio = img.width / img.height
+            if abs(ratio - 4 / 3) < 0.03:  # YouTube pads 16:9 thumbnails to 4:3
                 nh = round(img.width * 9 / 16); y = (img.height - nh) // 2
                 img = img.crop((0, y, img.width, y + nh))
+            elif abs(ratio - 16 / 9) > 0.05:  # e.g. square album art from YouTube Music: centre it on 16:9
+                cw, ch = 1280, 720
+                scale = min(cw / img.width, ch / img.height)
+                art = img.resize((max(1, round(img.width * scale)), max(1, round(img.height * scale))), Image.LANCZOS)
+                canvas = Image.new("RGB", (cw, ch), (0, 0, 0))
+                canvas.paste(art, ((cw - art.width) // 2, (ch - art.height) // 2))
+                img = canvas
         except Exception:
             img = None
     if img is None:
@@ -389,6 +398,36 @@ def add_online_video(slide, embed_url, poster_jpeg, x, y, w, h, title=""):
         f'<p14:media xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" r:link="{rid_media}"/>'
         f'</p:ext></p:extLst>'))
     return pic
+
+
+def save_presentation(prs, out_path):
+    """Save next to the target first, then swap it in, so a failure never leaves a half-written
+    file and a locked file gives a clear message instead of a silent no-op."""
+    out_path = os.path.abspath(out_path)
+    folder = os.path.dirname(out_path)
+    try:
+        fd, tmp_path = tempfile.mkstemp(suffix=".tmp", prefix=".slideshow_", dir=folder)
+        os.close(fd)
+    except OSError as e:
+        raise OSError(f"Cannot write in the folder {folder}: {e.strerror or e}") from None
+    try:
+        prs.save(tmp_path)
+        size = os.path.getsize(tmp_path)
+        try:
+            os.replace(tmp_path, out_path)
+        except PermissionError:
+            raise PermissionError(
+                f"Windows will not let the app replace \"{os.path.basename(out_path)}\". "
+                "It is probably open in PowerPoint or another program. Close it and try again, "
+                "or save under a different name.") from None
+        if not os.path.exists(out_path) or os.path.getsize(out_path) != size:
+            raise OSError("The file was written but could not be checked on disk. Please try again.")
+    finally:
+        if os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except OSError:
+                pass
 
 
 def build(zip_path, out_path, opts=None, progress=None):
@@ -546,7 +585,7 @@ def build_sections(sections, out_path, opts=None, progress=None):
                         if slide is not None:
                             _drop_last(prs)
             say(total, total, "Saving…")
-            prs.save(out_path)  # must happen before temp videos are deleted
+            save_presentation(prs, out_path)  # must happen before temp videos are deleted
     finally:
         for z in zips.values():
             z.close()
@@ -817,7 +856,8 @@ def run_gui(initial_zip=None):
     fb = ttk.Button(t2, text="Add files from this computer…"); fb.grid(row=2, column=1, sticky="w", padx=8, pady=3)
     muted(t2, wraplength=560, justify="left", text=(
         "A Dropbox link can be a folder (you tick its files) or a single video or image (added as it is). "
-        "YouTube links play inside the slide when you present (internet needed); nothing is downloaded from YouTube.")
+        "YouTube links play inside the slide when you present (internet needed; nothing is downloaded from YouTube). "
+        "If PowerPoint says \"Cannot Play Media\", set YouTube links to \"Open in the browser\" in the options.")
     ).grid(row=3, column=0, columnspan=4, sticky="w")
     W = Checklist(t2, 4, "Remove all")
     counter = {"n": 0}
@@ -905,8 +945,10 @@ def run_gui(initial_zip=None):
     def work(sections, out, o):
         try:
             made, skipped = build_sections(sections, out, o, on_progress)
+            when = time.strftime("%H:%M:%S", time.localtime(os.path.getmtime(out)))
+            detail = f"{out}\n{human(os.path.getsize(out))}, {made} slides, saved at {when}"
             note = f"\n\nSkipped {len(skipped)}:\n" + "\n".join(skipped[:8]) if skipped else ""
-            ui(lambda: (status.config(text=f"Done: {made} slides."), messagebox.showinfo("Slideshow Maker", f"Saved {out}{note}")))
+            ui(lambda: (status.config(text=f"Done: {made} slides."), messagebox.showinfo("Slideshow Maker", f"Saved:\n{detail}{note}")))
         except Exception as e:
             err = str(e)
             ui(lambda: (status.config(text="Failed."), messagebox.showerror("Slideshow Maker", err)))
