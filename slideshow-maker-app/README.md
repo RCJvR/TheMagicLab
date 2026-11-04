@@ -28,6 +28,21 @@ Command line, no window: `SlideshowMaker.exe --url "<Dropbox link>" out.pptx --p
 Limits: the folder must be a public shared link, and Dropbox will not zip folders over roughly
 20 GB or 10,000 files (you get an error message in that case).
 
+## Adding your own videos, images and links
+Under **Add your own** you can add, on top of (or instead of) a zip or Dropbox folder:
+- **Files from this computer** (videos or images). Large videos are used straight from where
+  they are, not copied into memory.
+- **A link.** Paste it and click **Add link**:
+  - a **YouTube** link (or any web page) becomes a full-page slide showing the video's
+    thumbnail and title; clicking it during the slideshow opens the video in the browser.
+    The video or song itself is **not downloaded**; only the small public thumbnail and title
+    are fetched. The computer showing the slides needs internet to play it.
+  - a link **straight to a .mp4 / .jpg (etc.) file** is downloaded and embedded like any file.
+- Choose whether added items go before or after the folder's files. They appear in the tick-list
+  so you can untick any, or use **Remove added items**.
+
+On the command line add `--add <file or link>` (repeat it as needed).
+
 ## Run from source (any OS with Python 3.10+)
 ```
 pip install -r requirements.txt
