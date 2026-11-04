@@ -32,7 +32,10 @@ Add anything, in any mix. Items appear in the tick-list in the order you add the
   opens the playlist in the browser, which plays the songs one after another. (It does not
   make one slide per song.)
 - A link **straight to a .mp4 / .jpg (etc.) file** is downloaded and embedded like any file.
-- **Dropbox folder link**: downloads that folder and lists its files to tick, like Announcements.
+- **Dropbox link**: can be a **folder** (downloaded, and its files listed to tick, like
+  Announcements) or a link to a **single video or image** (downloaded and added as one item
+  under its own file name). The app works out which one it is by itself. Links must be public
+  shared links.
 - **Files from this computer**: offline videos or images. Large videos are used where they are,
   not copied into memory.
 

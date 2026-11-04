@@ -194,6 +194,12 @@ MAX_DOWNLOAD = 1024 ** 3  # refuse single downloads over 1 GB
 
 def download_file(url, dest, progress=None, max_bytes=MAX_DOWNLOAD):
     """Download an http(s) url to dest."""
+    _download(url, dest, progress, max_bytes)
+    return dest
+
+
+def _download(url, dest, progress=None, max_bytes=MAX_DOWNLOAD):
+    """Download url to dest and return the response headers."""
     if urllib.parse.urlparse(url).scheme not in ("http", "https"):
         raise ValueError("Only http and https links are supported.")
     req = urllib.request.Request(url, headers={"User-Agent": "SlideshowMaker/1.0"})
@@ -212,7 +218,45 @@ def download_file(url, dest, progress=None, max_bytes=MAX_DOWNLOAD):
             f.write(chunk)
             if progress:
                 progress(done, total)
-    return dest
+        return r.headers
+
+
+def header_filename(headers):
+    """File name from a Content-Disposition header, or None."""
+    cd = headers.get("Content-Disposition") or ""
+    m = re.search(r"filename\*\s*=\s*[\w-]+'[^']*'([^;]+)", cd, re.I)
+    if m:
+        return os.path.basename(urllib.parse.unquote(m.group(1).strip().strip('"')))
+    m = re.search(r'filename\s*=\s*"?([^";]+)"?', cd, re.I)
+    return os.path.basename(m.group(1).strip()) if m else None
+
+
+def safe_name(name):
+    name = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", os.path.basename(name or "")).strip(" .")
+    return name or "download"
+
+
+def download_dropbox(url, dest_dir, progress=None, check_host=True):
+    """Download a Dropbox link that may be a folder (comes as a zip) or one file.
+    Returns ("zip", path) for a folder, or ("file", path) for a single video/image."""
+    if check_host:
+        url = dropbox_zip_url(url)
+    os.makedirs(dest_dir, exist_ok=True)
+    part = os.path.join(dest_dir, "download.part")
+    headers = _download(url, part, progress, max_bytes=4 * 1024 ** 3)
+    name = safe_name(header_filename(headers) or urllib.parse.unquote(os.path.basename(urllib.parse.urlparse(url).path)))
+    ext = os.path.splitext(name)[1].lower()
+    if ext in IMAGE_EXT or ext in VIDEO_EXT:
+        final = os.path.join(dest_dir, name)
+        os.replace(part, final)
+        return "file", final
+    if zipfile.is_zipfile(part):
+        final = os.path.join(dest_dir, "folder.zip")
+        os.replace(part, final)
+        return "zip", final
+    os.remove(part)
+    raise ValueError("That link is not a folder, or a video or image file this app supports"
+                     + (f" ({ext})." if ext else ". Check that it is a public shared link."))
 
 
 def download_zip(url, dest, progress=None, check_host=True):
@@ -607,8 +651,9 @@ def run_gui(initial_zip=None):
             cl.count.config(text=f"{n} of {len(cl.rows)} ticked." if cl.rows else "Nothing here yet.")
         go.config(state="normal" if (A.ticked() or W.ticked()) else "disabled")
 
-    def fetch_zip(url, label, dest, on_done, buttons):
-        """Download a Dropbox folder zip in the background, then call on_done(path) on the main thread."""
+    def fetch_zip(url, label, dest, on_done, buttons, fetcher=None):
+        """Download in the background, then call on_done(result) on the main thread.
+        Default result is the zip's path; a custom fetcher(url, dest, progress) can return anything."""
         for bt in buttons:
             bt.config(state="disabled")
         status.config(text=f"Downloading {label}…")
@@ -619,8 +664,8 @@ def run_gui(initial_zip=None):
 
         def work():
             try:
-                download_zip(url, dest, prog)
-                ui(lambda: on_done(dest))
+                result = fetcher(url, dest, prog) if fetcher else download_zip(url, dest, prog)
+                ui(lambda: on_done(result))
             except Exception as e:
                 err = str(e)  # 'e' is deleted when this block ends, before the queued call runs
                 ui(lambda: (status.config(text="Download failed."), messagebox.showerror("Slideshow Maker", f"Could not download {label}:\n{err}")))
@@ -704,14 +749,14 @@ def run_gui(initial_zip=None):
     ttk.Label(t2, text="YouTube or web link").grid(row=0, column=0, sticky="w")
     ye = ttk.Entry(t2, textvariable=yt); ye.grid(row=0, column=1, sticky="we", padx=8, pady=3)
     yb = ttk.Button(t2, text="Add link", style="Accent.TButton"); yb.grid(row=0, column=2)
-    ttk.Label(t2, text="Dropbox folder link").grid(row=1, column=0, sticky="w")
+    ttk.Label(t2, text="Dropbox link").grid(row=1, column=0, sticky="w")
     de = ttk.Entry(t2, textvariable=dbx); de.grid(row=1, column=1, sticky="we", padx=8, pady=3)
     db = ttk.Button(t2, text="Download & add", style="Accent.TButton"); db.grid(row=1, column=2)
     ttk.Label(t2, text="Videos or images").grid(row=2, column=0, sticky="w")
     fb = ttk.Button(t2, text="Add files from this computer…"); fb.grid(row=2, column=1, sticky="w", padx=8, pady=3)
     muted(t2, wraplength=560, justify="left", text=(
-        "YouTube links become a full-page slide you click to open in the browser; nothing is downloaded "
-        "from YouTube. A link straight to a .mp4 or .jpg file is downloaded and embedded.")
+        "A Dropbox link can be a folder (you tick its files) or a single video or image (added as it is). "
+        "YouTube links become a full-page slide you click to open; nothing is downloaded from YouTube.")
     ).grid(row=3, column=0, columnspan=4, sticky="w")
     W = Checklist(t2, 4, "Remove all")
     counter = {"n": 0}
@@ -733,13 +778,22 @@ def run_gui(initial_zip=None):
         except ValueError as e:
             messagebox.showwarning("Slideshow Maker", str(e)); return
         counter["n"] += 1
-        label = f"Dropbox folder {counter['n']}"
+        label = f"Dropbox link {counter['n']}"
 
-        def done(path):
-            if list_zip_into(W, path, "  — Dropbox"):
+        def done(res):
+            kind, path = res
+            if kind == "zip":
+                ok = list_zip_into(W, path, "  — Dropbox")
+            else:  # a single video or image
+                k = "video" if os.path.splitext(path)[1].lower() in VIDEO_EXT else "image"
+                nm = os.path.basename(path)
+                W.add("file", nm, f"[{k}]  {nm}   ({human(os.path.getsize(path))})  — Dropbox", path)
+                ok = True
+            if ok:
                 dbx.set("")
             W.render()
-        fetch_zip(u, label, os.path.join(tmp.name, f"worship{counter['n']}.zip"), done, [db])
+        fetch_zip(u, label, os.path.join(tmp.name, f"worship{counter['n']}"), done, [db],
+                  fetcher=lambda url, dest, prog: download_dropbox(url, dest, prog))
     db.config(command=add_dropbox); de.bind("<Return>", lambda e: add_dropbox())
 
     def add_files():
