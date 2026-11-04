@@ -28,6 +28,9 @@ Add anything, in any mix. Items appear in the tick-list in the order you add the
   Clicking it during the slideshow opens the video in the browser. The video or song itself is
   **not downloaded**; only the small public thumbnail and title are fetched. The computer
   showing the slides needs internet to play it.
+  A **playlist** link works too: it becomes one slide for the whole playlist, and clicking it
+  opens the playlist in the browser, which plays the songs one after another. (It does not
+  make one slide per song.)
 - A link **straight to a .mp4 / .jpg (etc.) file** is downloaded and embedded like any file.
 - **Dropbox folder link**: downloads that folder and lists its files to tick, like Announcements.
 - **Files from this computer**: offline videos or images. Large videos are used where they are,

@@ -230,6 +230,13 @@ def youtube_id(url):
     return m.group(1) if m else None
 
 
+def youtube_playlist(url):
+    """True for a YouTube playlist link (…/playlist?list=… or a watch link carrying list=…)."""
+    p = urllib.parse.urlparse(url)
+    host = (p.hostname or "").lower()
+    return host.endswith("youtube.com") and "list" in urllib.parse.parse_qs(p.query)
+
+
 def url_media_kind(url):
     """'image' / 'video' when the link points straight at such a file, else None."""
     ext = os.path.splitext(urllib.parse.urlparse(url).path)[1].lower()
@@ -247,21 +254,23 @@ def fetch_link_info(url):
     import json
     title, thumb = None, None
     vid = youtube_id(url)
+    playlist = youtube_playlist(url)
     thumb_url = None
-    if vid:
+    if vid or playlist:
         try:
             info = json.loads(_fetch("https://www.youtube.com/oembed?format=json&url=" + urllib.parse.quote(url, safe="")))
             title, thumb_url = info.get("title"), info.get("thumbnail_url")
         except Exception:
             pass
-        thumb_url = thumb_url or f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
+        if not thumb_url and vid:
+            thumb_url = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
     if thumb_url:
         try:
             thumb = _fetch(thumb_url)
         except Exception:
             thumb = None
     if not title:
-        title = urllib.parse.urlparse(url).hostname or url
+        title = "YouTube playlist" if playlist and not vid else (urllib.parse.urlparse(url).hostname or url)
     return {"title": title, "thumb": thumb}
 
 
@@ -667,7 +676,7 @@ def run_gui(initial_zip=None):
         if not re.match(r"^https?://\S+$", u):
             messagebox.showwarning("Slideshow Maker", "Paste a full link that starts with http:// or https://"); return
         kind = url_media_kind(u)
-        tag = {"image": "[image link]", "video": "[video link]"}.get(kind, "[web link]")
+        tag = {"image": "[image link]", "video": "[video link]"}.get(kind) or ("[YouTube playlist]" if youtube_playlist(u) else "[web link]")
         W.add("url", os.path.basename(u) or u, f"{tag}  {u}", u)
         yt.set(""); W.render()
     yb.config(command=add_link); ye.bind("<Return>", lambda e: add_link())
