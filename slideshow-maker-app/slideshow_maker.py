@@ -12,7 +12,7 @@ import tempfile
 import urllib.parse
 import urllib.request
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from PIL import Image, ImageOps
 from pptx import Presentation
@@ -48,6 +48,15 @@ class Options:
     include: object = None       # optional set of zip member names to use (None = all)
     extras: object = None        # extra items: [("file", path) | ("url", link)]
     extras_first: bool = False   # put the extra items before the zip's files
+    section_slides: bool = False  # add a heading slide before each section
+
+
+@dataclass
+class Section:
+    """One part of the deck, e.g. Announcements or Worship.
+    sources, in order: ("zip", path, include_names_or_None) | ("file", path) | ("url", link)"""
+    name: str = ""
+    sources: list = field(default_factory=list)
 
 
 def natural_key(s):
@@ -271,7 +280,16 @@ def quality_unticks(names, prefer):
 
 
 def build(zip_path, out_path, opts=None, progress=None):
-    """Build the presentation from a zip (optional) plus extra files and links.
+    """Single-section convenience wrapper: a zip (optional) plus opts.extras."""
+    opts = opts or Options()
+    zips = [("zip", zip_path, opts.include)] if zip_path else []
+    extras = [tuple(e) for e in (opts.extras or [])]
+    sec = Section("", (extras + zips) if opts.extras_first else (zips + extras))
+    return build_sections([sec], out_path, opts, progress)
+
+
+def build_sections(sections, out_path, opts=None, progress=None):
+    """Build the presentation from one or more sections.
     progress(done, total, text) is optional. Returns (slides_made, [skipped])."""
     opts = opts or Options()
     say = progress or (lambda *a: None)
@@ -307,104 +325,112 @@ def build(zip_path, out_path, opts=None, progress=None):
             pic.click_action.hyperlink.address = link
         return pic
 
-    # ---- work list: (kind, display name, notes text, source)
-    items = []
-    zf = zipfile.ZipFile(zip_path) if zip_path else None
+    zips = {}  # path -> open ZipFile
     try:
-        zip_items = []
-        if zf:
-            media = list_media(zf, opts.order)
-            if opts.include is not None:
-                media = [(k, i) for k, i in media if i.filename in opts.include]
-            zip_items = [(k, os.path.basename(i.filename), i.filename, ("zip", i)) for k, i in media]
-        extra_items = []
-        for how, val in (opts.extras or []):
-            if how == "file":
-                ext = os.path.splitext(val)[1].lower()
-                kind = "image" if ext in IMAGE_EXT else "video" if ext in VIDEO_EXT else None
-                extra_items.append((kind or "bad", os.path.basename(val), val, ("path", val)))
-            else:
-                kind = url_media_kind(val)
-                nm = os.path.basename(urllib.parse.urlparse(val).path) or val
-                extra_items.append((kind or "link", nm if kind else val, val, ("url", val)))
-        items = (extra_items + zip_items) if opts.extras_first else (zip_items + extra_items)
-        if not items:
+        # ---- plan: [(section name, [(kind, display name, note, (how, src, zf))])]
+        plan = []
+        for sec in sections:
+            items = []
+            for src in sec.sources:
+                if src[0] == "zip":
+                    zf = zips.get(src[1]) or zips.setdefault(src[1], zipfile.ZipFile(src[1]))
+                    media = list_media(zf, opts.order)
+                    if src[2] is not None:
+                        media = [(k, i) for k, i in media if i.filename in src[2]]
+                    items += [(k, os.path.basename(i.filename), i.filename, ("zip", i, zf)) for k, i in media]
+                elif src[0] == "file":
+                    ext = os.path.splitext(src[1])[1].lower()
+                    kind = "image" if ext in IMAGE_EXT else "video" if ext in VIDEO_EXT else "bad"
+                    items.append((kind, os.path.basename(src[1]), src[1], ("path", src[1], None)))
+                else:
+                    kind = url_media_kind(src[1])
+                    nm = os.path.basename(urllib.parse.urlparse(src[1]).path) or src[1]
+                    items.append((kind or "link", nm if kind else src[1], src[1], ("url", src[1], None)))
+            if items:
+                plan.append((sec.name, items))
+        total = sum(len(i) for _, i in plan)
+        if not total:
             raise ValueError("Nothing to add: no supported images, videos or links were chosen.")
 
-        skipped, made = [], 0
+        skipped, made, n = [], 0, 0
         with tempfile.TemporaryDirectory() as tmp:
-            default_title = os.path.splitext(os.path.basename(zip_path))[0] if zip_path else "Slideshow"
+            first_zip = next(iter(zips), None)
+            default_title = os.path.splitext(os.path.basename(first_zip))[0] if first_zip else "Slideshow"
             title = opts.title.strip() or default_title
             prs.core_properties.title = title
             if opts.title_slide:
                 text(new_slide(), title, Inches(0.8), H // 2 - Inches(1), W - Inches(1.6), Inches(2), 44, True)
-            for n, (kind, name, note, (how, src)) in enumerate(items):
-                say(n, len(items), f"Adding {n + 1} of {len(items)}: {name}")
-                slide = None
-                try:
-                    if kind == "bad":
-                        raise ValueError("not an image or video type")
-                    if kind == "link":
-                        info = fetch_link_info(src)
-                        slide = new_slide()
-                        bar_h = Inches(0.9)
-                        if info["thumb"]:  # full-page thumbnail; clicking anywhere on it opens the link
-                            place_picture(slide, info["thumb"], 0, 0, W, H - bar_h, "contain", src)
-                            text(slide, f"{info['title']}  —  click to open", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 22, True, src)
-                        else:
-                            text(slide, info["title"], Inches(0.6), H / 2 - Inches(1.2), W - Inches(1.2), Inches(1.4), 40, True, src)
-                            text(slide, "Click to open: " + src, Inches(0.6), H / 2 + Inches(0.3), W - Inches(1.2), Inches(0.7), 16, False, src)
-                        name = info["title"]
-                    elif kind == "image":
-                        if how == "zip":
-                            if src.file_size > MAX_ZIP_MEMBER:
-                                raise ValueError("file too large")
-                            data = zf.read(src)
-                        elif how == "path":
-                            with open(src, "rb") as f:
-                                data = f.read()
-                        else:
-                            p = download_file(src, os.path.join(tmp, f"i{n}"))
-                            with open(p, "rb") as f:
-                                data = f.read()
-                        slide = new_slide()
-                        place_picture(slide, data, 0, 0, W, box_h, opts.fit)
-                    else:  # video
-                        ext = os.path.splitext(name)[1].lower() or ".mp4"
-                        if how == "path":
-                            vpath = src
-                        else:
-                            vpath = os.path.join(tmp, f"v{n}{ext}")  # our own name: no path tricks
+            for sec_name, items in plan:
+                if opts.section_slides and sec_name:
+                    text(new_slide(), sec_name, Inches(0.8), H // 2 - Inches(1), W - Inches(1.6), Inches(2), 54, True)
+                for kind, name, note, (how, src, zf) in items:
+                    n += 1
+                    say(n - 1, total, f"Adding {n} of {total}: {name}")
+                    slide = None
+                    try:
+                        if kind == "bad":
+                            raise ValueError("not an image or video type")
+                        if kind == "link":
+                            info = fetch_link_info(src)
+                            slide = new_slide()
+                            bar_h = Inches(0.9)
+                            if info["thumb"]:  # full-page thumbnail; clicking anywhere on it opens the link
+                                place_picture(slide, info["thumb"], 0, 0, W, H - bar_h, "contain", src)
+                                text(slide, f"{info['title']}  —  click to open", Inches(0.4), H - bar_h, W - Inches(0.8), bar_h, 22, True, src)
+                            else:
+                                text(slide, info["title"], Inches(0.6), H / 2 - Inches(1.2), W - Inches(1.2), Inches(1.4), 40, True, src)
+                                text(slide, "Click to open: " + src, Inches(0.6), H / 2 + Inches(0.3), W - Inches(1.2), Inches(0.7), 16, False, src)
+                            name = info["title"]
+                        elif kind == "image":
                             if how == "zip":
                                 if src.file_size > MAX_ZIP_MEMBER:
                                     raise ValueError("file too large")
-                                with zf.open(src) as r, open(vpath, "wb") as f:
-                                    while True:
-                                        chunk = r.read(1 << 20)
-                                        if not chunk:
-                                            break
-                                        f.write(chunk)
+                                data = zf.read(src)
+                            elif how == "path":
+                                with open(src, "rb") as f:
+                                    data = f.read()
                             else:
-                                download_file(src, vpath)
-                        w, h, poster = video_info(vpath)
-                        slide = new_slide()
-                        pw, ph = fit_box(w, h, W, box_h, "contain")
-                        slide.shapes.add_movie(vpath, int((W - pw) / 2), int((box_h - ph) / 2), int(pw), int(ph),
-                                               poster_frame_image=io.BytesIO(poster), mime_type=MIME.get(ext, "video/mp4"))
-                    if opts.captions and kind != "link":
-                        text(slide, name, Inches(0.4), H - cap_h, W - Inches(0.8), cap_h, 14)
-                    if opts.notes:
-                        slide.notes_slide.notes_text_frame.text = note
-                    made += 1
-                except Exception as e:  # skip unreadable items but keep going
-                    skipped.append(f"{name} ({e})")
-                    if slide is not None:
-                        _drop_last(prs)
-            say(len(items), len(items), "Saving…")
+                                p = download_file(src, os.path.join(tmp, f"i{n}"))
+                                with open(p, "rb") as f:
+                                    data = f.read()
+                            slide = new_slide()
+                            place_picture(slide, data, 0, 0, W, box_h, opts.fit)
+                        else:  # video
+                            ext = os.path.splitext(name)[1].lower() or ".mp4"
+                            if how == "path":
+                                vpath = src
+                            else:
+                                vpath = os.path.join(tmp, f"v{n}{ext}")  # our own name: no path tricks
+                                if how == "zip":
+                                    if src.file_size > MAX_ZIP_MEMBER:
+                                        raise ValueError("file too large")
+                                    with zf.open(src) as r, open(vpath, "wb") as f:
+                                        while True:
+                                            chunk = r.read(1 << 20)
+                                            if not chunk:
+                                                break
+                                            f.write(chunk)
+                                else:
+                                    download_file(src, vpath)
+                            w, h, poster = video_info(vpath)
+                            slide = new_slide()
+                            pw, ph = fit_box(w, h, W, box_h, "contain")
+                            slide.shapes.add_movie(vpath, int((W - pw) / 2), int((box_h - ph) / 2), int(pw), int(ph),
+                                                   poster_frame_image=io.BytesIO(poster), mime_type=MIME.get(ext, "video/mp4"))
+                        if opts.captions and kind != "link":
+                            text(slide, name, Inches(0.4), H - cap_h, W - Inches(0.8), cap_h, 14)
+                        if opts.notes:
+                            slide.notes_slide.notes_text_frame.text = note
+                        made += 1
+                    except Exception as e:  # skip unreadable items but keep going
+                        skipped.append(f"{name} ({e})")
+                        if slide is not None:
+                            _drop_last(prs)
+            say(total, total, "Saving…")
             prs.save(out_path)  # must happen before temp videos are deleted
     finally:
-        if zf:
-            zf.close()
+        for z in zips.values():
+            z.close()
     return made, skipped
 
 
@@ -420,22 +446,23 @@ def human(n):
 
 
 def run_gui(initial_zip=None):
+    import queue
     import threading
     import tkinter as tk
     from tkinter import colorchooser, filedialog, messagebox, ttk
 
     root = tk.Tk()
     root.title("Slideshow Maker")
+    root.minsize(680, 0)
     try:  # window / taskbar icon; the file sits beside the script or inside the exe
         here = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
         root.iconphoto(True, tk.PhotoImage(file=os.path.join(here, "icon.png")))
     except Exception:
         pass
-    root.minsize(600, 0)
     tmp = tempfile.TemporaryDirectory(prefix="slideshow_")
     root.protocol("WM_DELETE_WINDOW", lambda: (tmp.cleanup(), root.destroy()))
     pad = {"padx": 8, "pady": 3}
-    import queue
+
     jobs = queue.Queue()
 
     def ui(fn):  # worker threads hand work to the main thread through this queue
@@ -449,143 +476,157 @@ def run_gui(initial_zip=None):
             pass
         root.after(100, pump)
     root.after(100, pump)
-    st = {"zip": None, "rows": [], "locs": parse_locations(load_locations_text())}
 
     frm = ttk.Frame(root, padding=10); frm.pack(fill="both", expand=True)
     frm.columnconfigure(0, weight=1)
+    nb = ttk.Notebook(frm); nb.grid(row=0, column=0, sticky="we", **pad)
 
-    # --- 1. source
-    src = ttk.LabelFrame(frm, text="1. Choose where the files come from", padding=8)
-    src.grid(row=0, column=0, sticky="we", **pad); src.columnconfigure(1, weight=1)
-    ttk.Label(src, text="Location").grid(row=0, column=0, sticky="w")
-    loc = tk.StringVar()
-    loc_box = ttk.Combobox(src, textvariable=loc, state="readonly")
-    loc_box.grid(row=0, column=1, sticky="we", padx=8)
-    dl_btn = ttk.Button(src, text="Download folder")
-    dl_btn.grid(row=0, column=2)
-    ed_btn = ttk.Button(src, text="Edit locations…")
-    ed_btn.grid(row=0, column=3, padx=(8, 0))
-    ttk.Label(src, text="or a zip").grid(row=1, column=0, sticky="w")
-    zp = tk.StringVar()
-    ttk.Entry(src, textvariable=zp).grid(row=1, column=1, sticky="we", padx=8, pady=4)
-    zb = ttk.Button(src, text="Choose…"); zb.grid(row=1, column=2)
+    # ---- a tick-list used by both tabs
+    class Checklist:
+        def __init__(self, parent, row, clear_text=None):
+            self.rows = []
+            box = ttk.Frame(parent); box.grid(row=row, column=0, columnspan=4, sticky="we", pady=(8, 0))
+            box.columnconfigure(0, weight=1)
+            self.cv = tk.Canvas(box, height=150, highlightthickness=0)
+            sb = ttk.Scrollbar(box, orient="vertical", command=self.cv.yview)
+            self.inner = ttk.Frame(self.cv)
+            self.inner.bind("<Configure>", lambda e: self.cv.configure(scrollregion=self.cv.bbox("all")))
+            self.cv.create_window((0, 0), window=self.inner, anchor="nw"); self.cv.configure(yscrollcommand=sb.set)
+            self.cv.grid(row=0, column=0, sticky="we"); sb.grid(row=0, column=1, sticky="ns")
+            self.cv.bind("<Enter>", lambda e: self.cv.bind_all("<MouseWheel>", lambda ev: self.cv.yview_scroll(-1 * (ev.delta // 120), "units")))
+            self.cv.bind("<Leave>", lambda e: self.cv.unbind_all("<MouseWheel>"))
+            tools = ttk.Frame(box); tools.grid(row=1, column=0, columnspan=2, sticky="w", pady=(6, 0))
+            ttk.Button(tools, text="Tick all", command=lambda: self.set_all(True)).pack(side="left")
+            ttk.Button(tools, text="Untick all", command=lambda: self.set_all(False)).pack(side="left", padx=6)
+            ttk.Button(tools, text="Use HQ versions", command=lambda: self.prefer("HQ")).pack(side="left")
+            ttk.Button(tools, text="Use LQ versions", command=lambda: self.prefer("LQ")).pack(side="left", padx=6)
+            if clear_text:
+                ttk.Button(tools, text=clear_text, command=self.clear).pack(side="left")
+            self.count = ttk.Label(box, text="Nothing here yet."); self.count.grid(row=2, column=0, sticky="w")
 
-    def refresh_locs():
-        st["locs"] = parse_locations(load_locations_text())
-        loc_box["values"] = [n for n, _ in st["locs"]]
-        if st["locs"] and loc.get() not in loc_box["values"]:
-            loc.set(st["locs"][0][0])
-        dl_btn.config(state="normal" if st["locs"] else "disabled")
-    refresh_locs()
+        def add(self, src, name, label, value):
+            self.rows.append({"src": src, "name": name, "label": label, "value": value, "var": tk.BooleanVar(value=True)})
 
-    # --- 2. add your own
-    own = ttk.LabelFrame(frm, text="2. Add your own videos, images or links (optional)", padding=8)
-    own.grid(row=1, column=0, sticky="we", **pad); own.columnconfigure(1, weight=1)
-    ttk.Button(own, text="Add files from this computer…", command=lambda: add_files()).grid(row=0, column=0, sticky="w")
-    link = tk.StringVar()
-    ttk.Label(own, text="Link").grid(row=1, column=0, sticky="w")
-    le = ttk.Entry(own, textvariable=link); le.grid(row=1, column=1, sticky="we", padx=8, pady=4)
-    ttk.Button(own, text="Add link", command=lambda: add_link()).grid(row=1, column=2)
-    ttk.Label(own, wraplength=540, justify="left", foreground="#666666", text=(
-        "YouTube and other web links become a full-page slide you click to open in the browser. "
-        "Nothing is downloaded from YouTube. A link straight to a .mp4 or .jpg file is downloaded and embedded.")
-    ).grid(row=2, column=0, columnspan=3, sticky="w")
-    where = tk.StringVar(value="after the folder's files")
-    ttk.Label(own, text="Added items go").grid(row=3, column=0, sticky="w", pady=(4, 0))
-    ttk.Combobox(own, textvariable=where, values=["after the folder's files", "before the folder's files"],
-                 state="readonly", width=26).grid(row=3, column=1, sticky="w", padx=8, pady=(4, 0))
+        def render(self):
+            for w in self.inner.winfo_children():
+                w.destroy()
+            for r in self.rows:
+                ttk.Checkbutton(self.inner, text=r["label"], variable=r["var"], command=update_state).pack(anchor="w")
+            update_state()
 
-    # --- file picker
-    pick = ttk.LabelFrame(frm, text="3. Tick what to include", padding=8)
-    pick.grid(row=2, column=0, sticky="we", **pad); pick.columnconfigure(0, weight=1)
-    cv = tk.Canvas(pick, height=170, highlightthickness=0)
-    sb = ttk.Scrollbar(pick, orient="vertical", command=cv.yview)
-    inner = ttk.Frame(cv)
-    inner.bind("<Configure>", lambda e: cv.configure(scrollregion=cv.bbox("all")))
-    cv.create_window((0, 0), window=inner, anchor="nw"); cv.configure(yscrollcommand=sb.set)
-    cv.grid(row=0, column=0, sticky="we"); sb.grid(row=0, column=1, sticky="ns")
-    cv.bind_all("<MouseWheel>", lambda e: cv.yview_scroll(-1 * (e.delta // 120), "units"))
-    tools = ttk.Frame(pick); tools.grid(row=1, column=0, columnspan=2, sticky="w", pady=(6, 0))
-    count = ttk.Label(pick, text="Nothing added yet."); count.grid(row=2, column=0, sticky="w")
+        def ticked(self):
+            return [r for r in self.rows if r["var"].get()]
 
-    def render_rows():
-        for w in inner.winfo_children():
-            w.destroy()
-        for r in st["rows"]:
-            ttk.Checkbutton(inner, text=r["label"], variable=r["var"], command=update_count).pack(anchor="w")
-        update_count()
+        def set_all(self, on):
+            for r in self.rows:
+                r["var"].set(on)
+            update_state()
 
-    def add_row(src, name, label, value):
-        st["rows"].append({"src": src, "name": name, "label": label, "value": value, "var": tk.BooleanVar(value=True)})
+        def prefer(self, q):
+            drop = quality_unticks([r["name"] for r in self.rows], q)
+            if not drop:
+                messagebox.showinfo("Slideshow Maker", "No file names contain HQ or LQ, so tick the ones you want by hand.")
+                return
+            for r in self.rows:
+                r["var"].set(r["name"] not in drop)
+            update_state()
 
-    def set_all(on):
-        for r in st["rows"]:
-            r["var"].set(on)
-        update_count()
+        def clear(self):
+            self.rows = []; self.render()
 
-    def prefer(q):
-        drop = quality_unticks([r["name"] for r in st["rows"]], q)
-        if not drop:
-            messagebox.showinfo("Slideshow Maker", "No file names contain HQ or LQ, so tick the ones you want by hand.")
-            return
-        for r in st["rows"]:
-            r["var"].set(r["name"] not in drop)
-        update_count()
+        def sources(self):
+            """Ticked rows as build_sections() sources, keeping the list order."""
+            out, inc = [], {}
+            for r in self.ticked():
+                if r["src"] == "zip":
+                    path, member = r["value"]
+                    if path not in inc:
+                        inc[path] = set(); out.append(("zip", path, inc[path]))
+                    inc[path].add(member)
+                else:
+                    out.append((r["src"], r["value"]))
+            return out
 
-    def clear_added():
-        st["rows"] = [r for r in st["rows"] if r["src"] == "zip"]
-        render_rows()
+    def update_state():
+        for cl, nm in ((A, "Announcements"), (W, "Worship")):
+            n = len(cl.ticked())
+            cl.count.config(text=f"{n} of {len(cl.rows)} ticked." if cl.rows else "Nothing here yet.")
+        go.config(state="normal" if (A.ticked() or W.ticked()) else "disabled")
 
-    ttk.Button(tools, text="Tick all", command=lambda: set_all(True)).pack(side="left")
-    ttk.Button(tools, text="Untick all", command=lambda: set_all(False)).pack(side="left", padx=6)
-    ttk.Button(tools, text="Use HQ versions", command=lambda: prefer("HQ")).pack(side="left")
-    ttk.Button(tools, text="Use LQ versions", command=lambda: prefer("LQ")).pack(side="left", padx=6)
-    ttk.Button(tools, text="Remove added items", command=clear_added).pack(side="left")
+    def fetch_zip(url, label, dest, on_done, buttons):
+        """Download a Dropbox folder zip in the background, then call on_done(path) on the main thread."""
+        for bt in buttons:
+            bt.config(state="disabled")
+        status.config(text=f"Downloading {label}…")
 
-    def update_count():
-        n = sum(r["var"].get() for r in st["rows"])
-        count.config(text=f"{n} of {len(st['rows'])} items ticked." if st["rows"] else "Nothing added yet.")
-        go.config(state="normal" if n else "disabled")
+        def prog(done, total):
+            ui(lambda: (bar.config(value=100 * done / total if total else 0),
+                        status.config(text=f"Downloading {label}: {human(done)}" + (f" of {human(total)}" if total else ""))))
 
-    def load_zip(path):
+        def work():
+            try:
+                download_zip(url, dest, prog)
+                ui(lambda: on_done(dest))
+            except Exception as e:
+                err = str(e)  # 'e' is deleted when this block ends, before the queued call runs
+                ui(lambda: (status.config(text="Download failed."), messagebox.showerror("Slideshow Maker", f"Could not download {label}:\n{err}")))
+            finally:
+                ui(lambda: ([bt.config(state="normal") for bt in buttons], bar.config(value=0)))
+        threading.Thread(target=work, daemon=True).start()
+
+    def list_zip_into(cl, path, tag=""):
         try:
             media = describe_media(path, "name")
         except Exception as e:
-            messagebox.showerror("Slideshow Maker", f"Could not read that zip: {e}"); return
+            messagebox.showerror("Slideshow Maker", f"Could not read that zip: {e}"); return False
         if not media:
-            messagebox.showwarning("Slideshow Maker", "No supported images or videos in that zip."); return
-        st["zip"] = path
-        extras = [r for r in st["rows"] if r["src"] != "zip"]
-        st["rows"] = []
+            messagebox.showwarning("Slideshow Maker", "No supported images or videos in that zip."); return False
         for name, kind, size in media:
-            add_row("zip", os.path.basename(name), f"[{kind}]  {os.path.basename(name)}   ({human(size)})", name)
-        st["rows"] += extras
-        render_rows()
-        status.config(text="Files loaded. Tick the ones you want, then create the PowerPoint.")
+            cl.add("zip", os.path.basename(name), f"[{kind}]  {os.path.basename(name)}   ({human(size)}){tag}", (path, name))
+        return True
 
-    def add_files():
-        paths = filedialog.askopenfilenames(title="Choose videos or images", filetypes=[
-            ("Videos and images", " ".join("*" + e for e in sorted(IMAGE_EXT | VIDEO_EXT))), ("All files", "*.*")])
-        for p in paths:
-            k = "video" if os.path.splitext(p)[1].lower() in VIDEO_EXT else "image"
-            add_row("file", os.path.basename(p), f"[{k}]  {os.path.basename(p)}   ({human(os.path.getsize(p))})  — from this computer", p)
-        render_rows()
+    # ================= tab 1: Announcements
+    t1 = ttk.Frame(nb, padding=10); nb.add(t1, text="  Announcements  ")
+    t1.columnconfigure(1, weight=1)
+    ttk.Label(t1, text="Location").grid(row=0, column=0, sticky="w")
+    loc = tk.StringVar()
+    loc_box = ttk.Combobox(t1, textvariable=loc, state="readonly"); loc_box.grid(row=0, column=1, sticky="we", padx=8)
+    dl_btn = ttk.Button(t1, text="Download folder"); dl_btn.grid(row=0, column=2)
+    ed_btn = ttk.Button(t1, text="Edit locations…"); ed_btn.grid(row=0, column=3, padx=(8, 0))
+    ttk.Label(t1, text="or a zip").grid(row=1, column=0, sticky="w")
+    zp = tk.StringVar()
+    ttk.Entry(t1, textvariable=zp).grid(row=1, column=1, sticky="we", padx=8, pady=4)
+    zb = ttk.Button(t1, text="Choose…"); zb.grid(row=1, column=2)
+    A = Checklist(t1, 2)
 
-    def add_link():
-        u = link.get().strip()
-        if not re.match(r"^https?://\S+$", u):
-            messagebox.showwarning("Slideshow Maker", "Paste a full link that starts with http:// or https://"); return
-        kind = url_media_kind(u)
-        tag = {"image": "[image link]", "video": "[video link]"}.get(kind, "[web link]")
-        add_row("url", os.path.basename(u) or u, f"{tag}  {u}", u)
-        link.set(""); render_rows()
-    le.bind("<Return>", lambda e: add_link())
+    def refresh_locs():
+        locs = parse_locations(load_locations_text())
+        loc_box["values"] = [n for n, _ in locs]
+        if locs and loc.get() not in loc_box["values"]:
+            loc.set(locs[0][0])
+        dl_btn.config(state="normal" if locs else "disabled")
+        return dict(locs)
+    refresh_locs()
+
+    def load_announcements(path, label):
+        A.rows = []
+        if list_zip_into(A, path):
+            zp.set(label)
+            status.config(text="Announcement files loaded. Tick the ones you want.")
+        A.render()
 
     def choose_zip():
         p = filedialog.askopenfilename(filetypes=[("Zip files", "*.zip")])
         if p:
-            zp.set(p); load_zip(p)
+            load_announcements(p, p)
     zb.config(command=choose_zip)
+
+    def download_loc():
+        name = loc.get(); url = refresh_locs().get(name)
+        if url:
+            fetch_zip(url, name, os.path.join(tmp.name, "announcements.zip"),
+                      lambda p: load_announcements(p, f"{name} (downloaded)"), [dl_btn, zb])
+    dl_btn.config(command=download_loc)
 
     def edit_locations():
         win = tk.Toplevel(root); win.title("Locations"); win.transient(root)
@@ -602,100 +643,124 @@ def run_gui(initial_zip=None):
         ttk.Button(win, text="Save", command=save).pack(pady=8)
     ed_btn.config(command=edit_locations)
 
-    def download():
-        name = loc.get(); url = dict(st["locs"]).get(name)
-        if not url:
-            return
-        dest = os.path.join(tmp.name, "folder.zip")
-        dl_btn.config(state="disabled"); zb.config(state="disabled")
-        status.config(text=f"Downloading {name}…")
+    # ================= tab 2: Worship
+    t2 = ttk.Frame(nb, padding=10); nb.add(t2, text="  Worship  ")
+    t2.columnconfigure(1, weight=1)
+    yt = tk.StringVar(); dbx = tk.StringVar()
+    ttk.Label(t2, text="YouTube or web link").grid(row=0, column=0, sticky="w")
+    ye = ttk.Entry(t2, textvariable=yt); ye.grid(row=0, column=1, sticky="we", padx=8, pady=3)
+    yb = ttk.Button(t2, text="Add link"); yb.grid(row=0, column=2)
+    ttk.Label(t2, text="Dropbox folder link").grid(row=1, column=0, sticky="w")
+    de = ttk.Entry(t2, textvariable=dbx); de.grid(row=1, column=1, sticky="we", padx=8, pady=3)
+    db = ttk.Button(t2, text="Download & add"); db.grid(row=1, column=2)
+    ttk.Label(t2, text="Videos or images").grid(row=2, column=0, sticky="w")
+    fb = ttk.Button(t2, text="Add files from this computer…"); fb.grid(row=2, column=1, sticky="w", padx=8, pady=3)
+    ttk.Label(t2, wraplength=620, justify="left", foreground="#666666", text=(
+        "YouTube links become a full-page slide you click to open in the browser; nothing is downloaded "
+        "from YouTube. A link straight to a .mp4 or .jpg file is downloaded and embedded.")
+    ).grid(row=3, column=0, columnspan=4, sticky="w")
+    W = Checklist(t2, 4, "Remove all")
+    counter = {"n": 0}
 
-        def prog(done, total):
-            ui(lambda: (bar.config(value=100 * done / total if total else 0),
-                                   status.config(text=f"Downloading {name}: {human(done)}" + (f" of {human(total)}" if total else ""))))
+    def add_link():
+        u = yt.get().strip()
+        if not re.match(r"^https?://\S+$", u):
+            messagebox.showwarning("Slideshow Maker", "Paste a full link that starts with http:// or https://"); return
+        kind = url_media_kind(u)
+        tag = {"image": "[image link]", "video": "[video link]"}.get(kind, "[web link]")
+        W.add("url", os.path.basename(u) or u, f"{tag}  {u}", u)
+        yt.set(""); W.render()
+    yb.config(command=add_link); ye.bind("<Return>", lambda e: add_link())
 
-        def work():
-            try:
-                download_zip(url, dest, prog)
-                ui(lambda: (zp.set(f"{name} (downloaded)"), load_zip(dest)))
-            except Exception as e:
-                ui(lambda: (status.config(text="Download failed."), messagebox.showerror("Slideshow Maker", f"Could not download {name}:\n{e}")))
-            finally:
-                ui(lambda: (dl_btn.config(state="normal"), zb.config(state="normal"), bar.config(value=0)))
-        threading.Thread(target=work, daemon=True).start()
-    dl_btn.config(command=download)
+    def add_dropbox():
+        u = dbx.get().strip()
+        try:
+            dropbox_zip_url(u)
+        except ValueError as e:
+            messagebox.showwarning("Slideshow Maker", str(e)); return
+        counter["n"] += 1
+        label = f"Dropbox folder {counter['n']}"
 
-    # --- 3. options
-    op = ttk.LabelFrame(frm, text="4. Options", padding=8)
-    op.grid(row=3, column=0, sticky="we", **pad)
+        def done(path):
+            if list_zip_into(W, path, "  — Dropbox"):
+                dbx.set("")
+            W.render()
+        fetch_zip(u, label, os.path.join(tmp.name, f"worship{counter['n']}.zip"), done, [db])
+    db.config(command=add_dropbox); de.bind("<Return>", lambda e: add_dropbox())
+
+    def add_files():
+        paths = filedialog.askopenfilenames(title="Choose videos or images", filetypes=[
+            ("Videos and images", " ".join("*" + e for e in sorted(IMAGE_EXT | VIDEO_EXT))), ("All files", "*.*")])
+        for p in paths:
+            k = "video" if os.path.splitext(p)[1].lower() in VIDEO_EXT else "image"
+            W.add("file", os.path.basename(p), f"[{k}]  {os.path.basename(p)}   ({human(os.path.getsize(p))})  — from this computer", p)
+        W.render()
+    fb.config(command=add_files)
+
+    # ================= options
+    op = ttk.LabelFrame(frm, text="Options for the whole presentation", padding=8)
+    op.grid(row=1, column=0, sticky="we", **pad)
     title = tk.StringVar(); bgc = tk.StringVar(value="#000000")
     order = tk.StringVar(value="File name"); fit = tk.StringVar(value="Fit whole picture"); size = tk.StringVar(value="2560")
-    b = {k: tk.BooleanVar(value=d) for k, d in (("title_slide", True), ("captions", False), ("notes", False), ("wide", True))}
+    b = {k: tk.BooleanVar(value=d) for k, d in (("title_slide", True), ("sections", True), ("captions", False), ("notes", False), ("wide", True))}
     ttk.Label(op, text="Presentation title (optional)").grid(row=0, column=0, sticky="w")
-    ttk.Entry(op, textvariable=title, width=34).grid(row=0, column=1, columnspan=2, sticky="we", padx=8, pady=2)
-    for r, (lab, var, vals) in enumerate((("Order", order, ["File name", "Date in zip", "Order in zip"]),
+    ttk.Entry(op, textvariable=title, width=34).grid(row=0, column=1, columnspan=3, sticky="we", padx=8, pady=2)
+    for i, (lab, var, vals) in enumerate((("Order of files in a folder", order, ["File name", "Date in zip", "Order in zip"]),
                                           ("Image fit", fit, ["Fit whole picture", "Fill slide (crops edges)"]),
-                                          ("Max image size (px)", size, ["1920", "2560", "Original"])), start=1):
-        ttk.Label(op, text=lab).grid(row=r, column=0, sticky="w")
-        ttk.Combobox(op, textvariable=var, values=vals, state="readonly", width=26).grid(row=r, column=1, padx=8, pady=2, sticky="w")
-    bgb = ttk.Button(op, text="Background colour…"); bgb.grid(row=4, column=0, sticky="w", pady=2)
-    bgl = tk.Label(op, textvariable=bgc, width=10, bg="#000000", fg="#ffffff"); bgl.grid(row=4, column=1, sticky="w", padx=8)
+                                          ("Max image size (px)", size, ["1920", "2560", "Original"]))):
+        ttk.Label(op, text=lab).grid(row=1 + i // 2, column=(i % 2) * 2, sticky="w", pady=2)
+        ttk.Combobox(op, textvariable=var, values=vals, state="readonly", width=22).grid(row=1 + i // 2, column=(i % 2) * 2 + 1, padx=8, sticky="w")
+    bgb = ttk.Button(op, text="Background colour…"); bgb.grid(row=2, column=2, sticky="w", pady=2)
+    bgl = tk.Label(op, textvariable=bgc, width=10, bg="#000000", fg="#ffffff"); bgl.grid(row=2, column=3, sticky="w", padx=8)
 
     def pick_bg():
         c = colorchooser.askcolor(color=bgc.get())[1]
         if c:
             bgc.set(c); bgl.config(bg=c, fg="#111111" if sum(int(c[i:i + 2], 16) for i in (1, 3, 5)) > 450 else "#ffffff")
     bgb.config(command=pick_bg)
-    for r, (lab, k) in enumerate((("Add a title slide", "title_slide"), ("Widescreen 16:9", "wide"),
-                                  ("Caption each slide with its file name", "captions"),
-                                  ("Put file name in speaker notes", "notes")), start=5):
-        ttk.Checkbutton(op, text=lab, variable=b[k]).grid(row=r, column=0, columnspan=3, sticky="w")
+    for i, (lab, k) in enumerate((("Add a title slide", "title_slide"), ("Add a heading slide for each section", "sections"),
+                                  ("Widescreen 16:9", "wide"), ("Caption slides with file names", "captions"),
+                                  ("File name in speaker notes", "notes"))):
+        ttk.Checkbutton(op, text=lab, variable=b[k]).grid(row=3 + i // 2, column=(i % 2) * 2, columnspan=2, sticky="w")
 
-    # --- 4. create
-    bar = ttk.Progressbar(frm, maximum=100); bar.grid(row=4, column=0, sticky="we", **pad)
-    status = ttk.Label(frm, text="", wraplength=560); status.grid(row=5, column=0, sticky="w", **pad)
-    go = ttk.Button(frm, text="Create PowerPoint", state="disabled"); go.grid(row=6, column=0, pady=6)
+    # ================= create
+    bar = ttk.Progressbar(frm, maximum=100); bar.grid(row=2, column=0, sticky="we", **pad)
+    status = ttk.Label(frm, text="", wraplength=640); status.grid(row=3, column=0, sticky="w", **pad)
+    go = ttk.Button(frm, text="Create PowerPoint", state="disabled"); go.grid(row=4, column=0, pady=6)
 
     def on_progress(d, t, txt):
         ui(lambda: (bar.config(value=100 * d / max(t, 1)), status.config(text=txt)))
 
-    def work(zpath, out, o):
+    def work(sections, out, o):
         try:
-            made, skipped = build(zpath, out, o, on_progress)
+            made, skipped = build_sections(sections, out, o, on_progress)
             note = f"\n\nSkipped {len(skipped)}:\n" + "\n".join(skipped[:8]) if skipped else ""
             ui(lambda: (status.config(text=f"Done: {made} slides."), messagebox.showinfo("Slideshow Maker", f"Saved {out}{note}")))
         except Exception as e:
-            ui(lambda: (status.config(text="Failed."), messagebox.showerror("Slideshow Maker", str(e))))
+            err = str(e)
+            ui(lambda: (status.config(text="Failed."), messagebox.showerror("Slideshow Maker", err)))
         finally:
             ui(lambda: go.config(state="normal"))
 
     def start():
-        zip_names = {r["value"] for r in st["rows"] if r["src"] == "zip" and r["var"].get()}
-        extras = [("file" if r["src"] == "file" else "url", r["value"]) for r in st["rows"] if r["src"] != "zip" and r["var"].get()]
-        if not zip_names and not extras:
+        sections = [Section("Announcements", A.sources()), Section("Worship", W.sources())]
+        if not any(s_.sources for s_ in sections):
             messagebox.showwarning("Slideshow Maker", "Tick at least one item."); return
-        zpath = st["zip"] if zip_names else None
-        if "(downloaded)" in zp.get():
-            stem = loc.get()
-        elif zp.get():
-            stem = os.path.splitext(os.path.basename(zp.get()))[0]
-        else:
-            stem = "Slideshow"
+        stem = loc.get() if "(downloaded)" in zp.get() else (os.path.splitext(os.path.basename(zp.get()))[0] if zp.get() else "Slideshow")
         out = filedialog.asksaveasfilename(defaultextension=".pptx", initialfile=f"{stem}.pptx", filetypes=[("PowerPoint", "*.pptx")])
         if not out:
             return
-        o = Options(title=title.get() or stem, title_slide=b["title_slide"].get(),
+        o = Options(title=title.get() or stem, title_slide=b["title_slide"].get(), section_slides=b["sections"].get(),
                     order={"File name": "name", "Date in zip": "date", "Order in zip": "zip"}[order.get()],
                     fit="cover" if fit.get().startswith("Fill") else "contain", widescreen=b["wide"].get(),
                     background=bgc.get().lstrip("#"), max_px=0 if size.get() == "Original" else int(size.get()),
-                    captions=b["captions"].get(), notes=b["notes"].get(), include=zip_names,
-                    extras=extras, extras_first=where.get().startswith("before"))
+                    captions=b["captions"].get(), notes=b["notes"].get())
         go.config(state="disabled")
-        threading.Thread(target=work, args=(zpath, out, o), daemon=True).start()
+        threading.Thread(target=work, args=(sections, out, o), daemon=True).start()
     go.config(command=start)
 
     if initial_zip:
-        zp.set(initial_zip); load_zip(initial_zip)
+        load_announcements(initial_zip, initial_zip)
     root.mainloop()
 
 
