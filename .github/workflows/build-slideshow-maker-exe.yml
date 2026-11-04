@@ -1,0 +1,26 @@
+name: Build Slideshow Maker exe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "slideshow-maker-app/**"
+      - ".github/workflows/build-slideshow-maker-exe.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r slideshow-maker-app/requirements.txt
+      - name: Build exe
+        working-directory: slideshow-maker-app
+        run: pyinstaller --onefile --windowed --name SlideshowMaker --collect-all pillow_heif slideshow_maker.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SlideshowMaker-windows
+          path: slideshow-maker-app/dist/SlideshowMaker.exe
