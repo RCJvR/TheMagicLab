@@ -20,6 +20,11 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.util import Emu, Inches, Pt
 
+try:  # modern Windows 11-style look; the app still works with plain Tk if this is missing
+    import sv_ttk
+except Exception:
+    sv_ttk = None
+
 try:  # iPhone HEIC photos, if the optional package is present
     import pillow_heif
     pillow_heif.register_heif_opener()
@@ -450,6 +455,23 @@ def _drop_last(prs):
 
 
 # ---------------------------------------------------------------- GUI
+def load_theme_pref():
+    try:
+        with open(os.path.join(config_dir(), "theme.txt")) as f:
+            return f.read().strip() != "light"
+    except OSError:
+        return True  # dark by default
+
+
+def save_theme_pref(is_dark):
+    try:
+        os.makedirs(config_dir(), exist_ok=True)
+        with open(os.path.join(config_dir(), "theme.txt"), "w") as f:
+            f.write("dark" if is_dark else "light")
+    except OSError:
+        pass
+
+
 def human(n):
     return f"{n / 1048576:.1f} MB" if n >= 1048576 else f"{max(1, n // 1024)} KB"
 
@@ -462,7 +484,7 @@ def run_gui(initial_zip=None):
 
     root = tk.Tk()
     root.title("Slideshow Maker")
-    root.minsize(680, 0)
+    root.minsize(700, 0)
     try:  # window / taskbar icon; the file sits beside the script or inside the exe
         here = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
         root.iconphoto(True, tk.PhotoImage(file=os.path.join(here, "icon.png")))
@@ -486,17 +508,40 @@ def run_gui(initial_zip=None):
         root.after(100, pump)
     root.after(100, pump)
 
-    frm = ttk.Frame(root, padding=10); frm.pack(fill="both", expand=True)
+    frm = ttk.Frame(root, padding=(18, 14)); frm.pack(fill="both", expand=True)
     frm.columnconfigure(0, weight=1)
-    nb = ttk.Notebook(frm); nb.grid(row=0, column=0, sticky="we", **pad)
+
+    muted_labels = []
+
+    def muted(parent, **kw):  # secondary text in a softer colour (recoloured when the theme changes)
+        lb = tk.Label(parent, anchor="w", **kw); muted_labels.append(lb); return lb
+
+    # ---- header: icon, name, light/dark switch
+    head = ttk.Frame(frm); head.grid(row=0, column=0, sticky="we", pady=(0, 10)); head.columnconfigure(1, weight=1)
+    try:
+        import base64
+        buf = io.BytesIO()
+        Image.open(os.path.join(here, "icon.png")).convert("RGBA").resize((46, 46), Image.LANCZOS).save(buf, "PNG")
+        logo = tk.PhotoImage(data=base64.b64encode(buf.getvalue()))
+        ttk.Label(head, image=logo).grid(row=0, column=0, rowspan=2, padx=(0, 12))
+        head.logo = logo  # keep a reference
+    except Exception:
+        pass
+    ttk.Label(head, text="Slideshow Maker", style="Title.TLabel").grid(row=0, column=1, sticky="w")
+    muted(head, text="Announcements and worship, built into one PowerPoint").grid(row=1, column=1, sticky="w")
+    dark = tk.BooleanVar(value=load_theme_pref())
+    ttk.Checkbutton(head, text="Dark", variable=dark, style="Switch.TCheckbutton",
+                    command=lambda: (save_theme_pref(dark.get()), apply_theme(dark.get()))).grid(row=0, column=2, rowspan=2, sticky="e")
+
+    nb = ttk.Notebook(frm); nb.grid(row=1, column=0, sticky="we", pady=4)
 
     # ---- a tick-list used by both tabs
     class Checklist:
-        def __init__(self, parent, row, clear_text=None):
+        def __init__(self, parent, row, clear_text=None, height=150):
             self.rows = []
             box = ttk.Frame(parent); box.grid(row=row, column=0, columnspan=4, sticky="we", pady=(8, 0))
             box.columnconfigure(0, weight=1)
-            self.cv = tk.Canvas(box, height=150, highlightthickness=0)
+            self.cv = tk.Canvas(box, height=height, highlightthickness=0)
             sb = ttk.Scrollbar(box, orient="vertical", command=self.cv.yview)
             self.inner = ttk.Frame(self.cv)
             self.inner.bind("<Configure>", lambda e: self.cv.configure(scrollregion=self.cv.bbox("all")))
@@ -595,18 +640,18 @@ def run_gui(initial_zip=None):
         return True
 
     # ================= tab 1: Announcements
-    t1 = ttk.Frame(nb, padding=10); nb.add(t1, text="  Announcements  ")
+    t1 = ttk.Frame(nb, padding=14); nb.add(t1, text="  Announcements  ")
     t1.columnconfigure(1, weight=1)
     ttk.Label(t1, text="Location").grid(row=0, column=0, sticky="w")
     loc = tk.StringVar()
     loc_box = ttk.Combobox(t1, textvariable=loc, state="readonly"); loc_box.grid(row=0, column=1, sticky="we", padx=8)
-    dl_btn = ttk.Button(t1, text="Download folder"); dl_btn.grid(row=0, column=2)
+    dl_btn = ttk.Button(t1, text="Download folder", style="Accent.TButton"); dl_btn.grid(row=0, column=2)
     ed_btn = ttk.Button(t1, text="Edit locations…"); ed_btn.grid(row=0, column=3, padx=(8, 0))
     ttk.Label(t1, text="or a zip").grid(row=1, column=0, sticky="w")
     zp = tk.StringVar()
     ttk.Entry(t1, textvariable=zp).grid(row=1, column=1, sticky="we", padx=8, pady=4)
     zb = ttk.Button(t1, text="Choose…"); zb.grid(row=1, column=2)
-    A = Checklist(t1, 2)
+    A = Checklist(t1, 2, height=250)  # taller: this tab has fewer rows above the list
 
     def refresh_locs():
         locs = parse_locations(load_locations_text())
@@ -653,18 +698,18 @@ def run_gui(initial_zip=None):
     ed_btn.config(command=edit_locations)
 
     # ================= tab 2: Worship
-    t2 = ttk.Frame(nb, padding=10); nb.add(t2, text="  Worship  ")
+    t2 = ttk.Frame(nb, padding=14); nb.add(t2, text="  Worship  ")
     t2.columnconfigure(1, weight=1)
     yt = tk.StringVar(); dbx = tk.StringVar()
     ttk.Label(t2, text="YouTube or web link").grid(row=0, column=0, sticky="w")
     ye = ttk.Entry(t2, textvariable=yt); ye.grid(row=0, column=1, sticky="we", padx=8, pady=3)
-    yb = ttk.Button(t2, text="Add link"); yb.grid(row=0, column=2)
+    yb = ttk.Button(t2, text="Add link", style="Accent.TButton"); yb.grid(row=0, column=2)
     ttk.Label(t2, text="Dropbox folder link").grid(row=1, column=0, sticky="w")
     de = ttk.Entry(t2, textvariable=dbx); de.grid(row=1, column=1, sticky="we", padx=8, pady=3)
-    db = ttk.Button(t2, text="Download & add"); db.grid(row=1, column=2)
+    db = ttk.Button(t2, text="Download & add", style="Accent.TButton"); db.grid(row=1, column=2)
     ttk.Label(t2, text="Videos or images").grid(row=2, column=0, sticky="w")
     fb = ttk.Button(t2, text="Add files from this computer…"); fb.grid(row=2, column=1, sticky="w", padx=8, pady=3)
-    ttk.Label(t2, wraplength=620, justify="left", foreground="#666666", text=(
+    muted(t2, wraplength=560, justify="left", text=(
         "YouTube links become a full-page slide you click to open in the browser; nothing is downloaded "
         "from YouTube. A link straight to a .mp4 or .jpg file is downloaded and embedded.")
     ).grid(row=3, column=0, columnspan=4, sticky="w")
@@ -707,8 +752,8 @@ def run_gui(initial_zip=None):
     fb.config(command=add_files)
 
     # ================= options
-    op = ttk.LabelFrame(frm, text="Options for the whole presentation", padding=8)
-    op.grid(row=1, column=0, sticky="we", **pad)
+    op = ttk.LabelFrame(frm, text="  Options for the whole presentation  ", padding=12)
+    op.grid(row=2, column=0, sticky="we", pady=6)
     title = tk.StringVar(); bgc = tk.StringVar(value="#000000")
     order = tk.StringVar(value="File name"); fit = tk.StringVar(value="Fit whole picture"); size = tk.StringVar(value="2560")
     b = {k: tk.BooleanVar(value=d) for k, d in (("title_slide", True), ("sections", True), ("captions", False), ("notes", False), ("wide", True))}
@@ -733,9 +778,9 @@ def run_gui(initial_zip=None):
         ttk.Checkbutton(op, text=lab, variable=b[k]).grid(row=3 + i // 2, column=(i % 2) * 2, columnspan=2, sticky="w")
 
     # ================= create
-    bar = ttk.Progressbar(frm, maximum=100); bar.grid(row=2, column=0, sticky="we", **pad)
-    status = ttk.Label(frm, text="", wraplength=640); status.grid(row=3, column=0, sticky="w", **pad)
-    go = ttk.Button(frm, text="Create PowerPoint", state="disabled"); go.grid(row=4, column=0, pady=6)
+    bar = ttk.Progressbar(frm, maximum=100); bar.grid(row=3, column=0, sticky="we", pady=(8, 2))
+    status = muted(frm, text="", wraplength=680, justify="left"); status.grid(row=4, column=0, sticky="w", pady=2)
+    go = ttk.Button(frm, text="Create PowerPoint", state="disabled", style="Big.Accent.TButton"); go.grid(row=5, column=0, pady=(8, 2))
 
     def on_progress(d, t, txt):
         ui(lambda: (bar.config(value=100 * d / max(t, 1)), status.config(text=txt)))
@@ -767,6 +812,24 @@ def run_gui(initial_zip=None):
         go.config(state="disabled")
         threading.Thread(target=work, args=(sections, out, o), daemon=True).start()
     go.config(command=start)
+
+    def apply_theme(is_dark):
+        if sv_ttk:
+            sv_ttk.set_theme("dark" if is_dark else "light")
+        st_ = ttk.Style()
+        fam = "Segoe UI" if sys.platform == "win32" else "TkDefaultFont"
+        muted = "#9aa0a6" if is_dark else "#5f6368"
+        st_.configure("Muted.TLabel", foreground=muted)
+        st_.map("Muted.TLabel", foreground=[("!disabled", muted)])
+        st_.configure("Title.TLabel", font=(fam, 20, "bold"))
+        st_.configure("Big.Accent.TButton", padding=(34, 10), font=(fam, 11, "bold"))
+        bgc_ = st_.lookup("TFrame", "background") or ("#1c1c1c" if is_dark else "#fafafa")
+        for cl in (A, W):
+            cl.cv.configure(bg=bgc_)
+        font_ = st_.lookup("TLabel", "font") or "TkDefaultFont"
+        for lb in muted_labels:
+            lb.configure(fg=muted, bg=bgc_, font=font_)
+    apply_theme(dark.get())
 
     if initial_zip:
         load_announcements(initial_zip, initial_zip)

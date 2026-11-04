@@ -19,7 +19,7 @@ jobs:
         run: pip install -r slideshow-maker-app/requirements.txt
       - name: Build exe
         working-directory: slideshow-maker-app
-        run: pyinstaller --onefile --windowed --name SlideshowMaker --icon icon.ico --add-data "icon.png;." --collect-all pillow_heif slideshow_maker.py
+        run: pyinstaller --onefile --windowed --name SlideshowMaker --icon icon.ico --add-data "icon.png;." --collect-all pillow_heif --collect-data sv_ttk slideshow_maker.py
       - uses: actions/upload-artifact@v4
         with:
           name: SlideshowMaker-windows

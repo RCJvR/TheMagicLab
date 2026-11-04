@@ -36,6 +36,10 @@ Add anything, in any mix. Items appear in the tick-list in the order you add the
 - **Files from this computer**: offline videos or images. Large videos are used where they are,
   not copied into memory.
 
+## Look
+A modern Windows 11-style theme, dark by default. The **Dark** switch at the top right changes
+it to light, and the choice is remembered.
+
 ## Options (whole presentation)
 Title, a title slide, a **heading slide for each section** ("Announcements", "Worship"; turn off
 if you do not want them), file order, image fit, slide size, background colour, captions,
