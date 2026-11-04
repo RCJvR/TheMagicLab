@@ -11,6 +11,23 @@ It runs entirely on your computer and has nothing to do with the website.
 Windows may warn about an unknown publisher because the exe is not code-signed.
 Choose "More info → Run anyway".
 
+## Pulling a location straight from Dropbox
+1. Click **Edit locations…** and add one line per location: `Name | Dropbox folder link`
+   (for example `Cape Town | https://www.dropbox.com/scl/fo/...`). Get each link from the
+   uGroup Welcome page by clicking the location and copying the Dropbox address.
+   The list is saved on your computer and only needs doing once.
+2. Pick a location and click **Download folder**. Dropbox sends the whole folder as one zip,
+   so this takes as long as the folder is big.
+3. Every image and video in the folder appears in a tick-list with its size. Untick what you
+   do not want. **Use HQ versions / Use LQ versions** untick the other quality when file names
+   contain `HQ` or `LQ` as a separate word; otherwise tick by hand (the larger file is the HQ one).
+4. Click **Create PowerPoint**.
+
+Command line, no window: `SlideshowMaker.exe --url "<Dropbox link>" out.pptx --prefer LQ`
+
+Limits: the folder must be a public shared link, and Dropbox will not zip folders over roughly
+20 GB or 10,000 files (you get an error message in that case).
+
 ## Run from source (any OS with Python 3.10+)
 ```
 pip install -r requirements.txt
