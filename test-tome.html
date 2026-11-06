@@ -901,7 +901,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   function code(c) { return c ? '<pre class="tt-code">' + esc(c) + '</pre>' : ''; }
   // questions flagged calc in the test file need working out: a link opens the scientific calculator in a new tab
-  function calcLink(q) { return q.calc ? '<p class="tt-calc"><a class="ml-btn ml-btn--ghost" href="math-magician/calculator.html" target="_blank" rel="noopener">' + esc(t('calcBtn')) + '</a></p>' : ''; }
+  function calcLink(q) { return q.calc ? '<p class="tt-calc"><button type="button" class="ml-btn ml-btn--ghost" data-calc="1">' + esc(t('calcBtn')) + '</button></p>' : ''; }
+  // one calculator window, reused on every click; a phone browser may show it as a normal tab instead
+  function openCalc() {
+    var w = window.open('math-magician/calculator.html', 'ml-calculator', 'popup=yes,width=420,height=720,resizable=yes,scrollbars=yes');
+    if (!w) window.open('math-magician/calculator.html', '_blank');
+    else w.focus();
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-calc]')) openCalc(); });
   function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + code(it.scen.code); }
   // the order an attempt shows the options in: [[label, value], ...]
   function choices(it) {
