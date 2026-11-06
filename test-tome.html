@@ -454,7 +454,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     </section>
 
     <section id="viewReview" class="hidden">
-      <h1 class="tt-title" data-t="reviewTitle">Review your answers</h1>
+      <h1 class="tt-title" id="reviewTitle" data-t="reviewTitle">Review your answers</h1>
       <p class="tt-sub" id="reviewSub"></p>
       <div class="tt-filter" id="reviewFilter" role="group">
         <button class="tt-chip" data-f="all" aria-pressed="true" data-t="fAll">All questions</button>
@@ -589,7 +589,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       shBtn: 'Share with a teacher', shTitle: 'Share these results', shSub: 'Another teacher will see this session in their Class results and can read the marks and print the topics list. They cannot close, reopen, delete or share it.', shEmail: 'Their email address', shAdd: 'Share', shNone: 'Not shared with anyone yet.', shRemove: 'Stop sharing with {n}', shBy: 'Shared with you by {n}', shLeave: 'Remove from my list', shSureLeave: 'Remove this session from your list? The teacher who shared it keeps it.', shDone: 'Shared with {n}.', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', calcBtn: 'Open calculator (new tab)', trSessionsBack: 'All sessions',
       trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
       tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
-      tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
+      tsView: 'View', backClass: 'Back to class results', tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
       tsLost: 'lost', tsLostOf: '{l} of {n} learners lost marks', tsCommon: 'Most common wrong answer:', tsShowExplain: 'Explanation', tsShowAll: 'Show all {n} questions',
       tsName: 'Name', tsVersion: 'Version', tsMark: 'Mark', tsPct: '%', tsLevel: 'Level', tsWhen: 'Submitted',
       topic_html: 'HTML & CSS', topic_excel: 'Excel', topic_ct: 'Computational thinking', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD & Arduino',
@@ -640,7 +640,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       shBtn: 'Deel met ’n onderwyser', shTitle: 'Deel hierdie uitslae', shSub: 'Nog ’n onderwyser sal hierdie sessie in hul Klasuitslae sien en kan die punte lees en die onderwerplys druk. Hulle kan dit nie sluit, heropen, uitvee of verder deel nie.', shEmail: 'Hul e-posadres', shAdd: 'Deel', shNone: 'Nog met niemand gedeel nie.', shRemove: 'Hou op deel met {n}', shBy: 'Met jou gedeel deur {n}', shLeave: 'Verwyder van my lys', shSureLeave: 'Verwyder hierdie sessie van jou lys? Die onderwyser wat dit gedeel het, hou dit.', shDone: 'Gedeel met {n}.', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', calcBtn: 'Maak sakrekenaar oop (nuwe oortjie)', trSessionsBack: 'Alle sessies',
       trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
       tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
-      tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
+      tsView: 'Bekyk', backClass: 'Terug na klasuitslae', tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
       tsLost: 'verloor', tsLostOf: '{l} van {n} leerders het punte verloor', tsCommon: 'Algemeenste verkeerde antwoord:', tsShowExplain: 'Verduideliking', tsShowAll: 'Wys al {n} vrae',
       tsName: 'Naam', tsVersion: 'Weergawe', tsMark: 'Punt', tsPct: '%', tsLevel: 'Vlak', tsWhen: 'Ingedien',
       topic_html: 'HTML en CSS', topic_excel: 'Excel', topic_ct: 'Berekeningsdenke', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD en Arduino',
@@ -1210,6 +1210,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // ── Review ───────────────────────────────────────────────────────────
   function renderReview() {
     var body = $('reviewBody'); body.innerHTML = '';
+    // a teacher reading a learner's attempt: no retry, and back to the class list
+    var tv = !!att.teacherView;
+    $('btnRevRetry').classList.toggle('hidden', tv);
+    $('btnRevResult').querySelector('span').textContent = tv ? t('backClass') : t('backResult');
+    $('reviewTitle').textContent = tv ? (att.name || '') + ' · ' + fullTitle() : t('reviewTitle');
     $('reviewSub').textContent = t('reviewSub');
     [].forEach.call($('reviewFilter').children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === reviewFilter)); });
     var shown = buildReview(body, reviewFilter);
@@ -1721,8 +1726,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     h += '<h3 class="tt-h3">' + esc(t('tsMarks')) + '</h3><div class="tr-wrap"><table class="tr-table"><thead><tr>' +
       [['name', 'tsName'], ['version', 'tsVersion'], ['score', 'tsMark'], ['pct', 'tsPct'], ['level', 'tsLevel'], ['at', 'tsWhen']].map(function (c) {
         return '<th data-k="' + c[0] + '">' + esc(t(c[1])) + (markSort.k === c[0] ? (markSort.d > 0 ? ' ▲' : ' ▼') : '') + '</th>';
-      }).join('') + '</tr></thead><tbody>' + markRows().map(function (m) {
-        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.version) + '</td><td>' + m.score + '/' + m.total + '</td><td>' + m.pct + '%</td><td>' + m.level + '</td><td>' + esc(m.when) + '</td></tr>';
+      }).join('') + '<th></th></tr></thead><tbody>' + markRows().map(function (m) {
+        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.version) + '</td><td>' + m.score + '/' + m.total + '</td><td>' + m.pct + '%</td><td>' + m.level + '</td><td>' + esc(m.when) + '</td><td><button class="ml-btn ml-btn--ghost tr-view" data-i="' + m.idx + '">' + esc(t('tsView')) + '</button></td></tr>';
       }).join('') + '</tbody></table></div>';
     body.innerHTML = h;
     if ($('btnMissedAll')) $('btnMissedAll').addEventListener('click', function () { showAllMissed = true; renderSession(vs); });
@@ -1730,10 +1735,32 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       th.addEventListener('click', function () { var k = th.getAttribute('data-k'); markSort = { k: k, d: markSort.k === k ? -markSort.d : 1 }; renderSession(vs); });
     });
   }
+  // A teacher reads one learner's submitted answers in the same review the learner had.
+  // Answers are stored against the original option and item positions, so the default
+  // order marks them correctly even though the learner saw a shuffled one.
+  function viewLearner(r) {
+    var m = manifest.filter(function (x) { return x.id === r.quiz_id; })[0];
+    if (!m) return;
+    fetch(BASE + m.file, { cache: 'no-cache' }).then(function (res) { return res.json(); }).then(function (qz) {
+      rawQuiz = qz; rawQuiz.id = m.id; meta = m; relocalise();
+      var mixes = {};
+      function ident(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+      items.forEach(function (it) {
+        var q = it.q;
+        if (q.type === 'mcq') mixes[it.id] = ident(q.options.length);
+        if (q.type === 'match') mixes[it.id] = ident(q.pairs.length + (q.extra || []).length);
+        if (q.type === 'order') mixes[it.id] = ident(q.steps.length);
+        if (q.type === 'pairs') mixes[it.id] = ident(q.pairs.length * 2);
+      });
+      att = { answers: r.answers || {}, mixes: mixes, name: r.learner_name, teacherView: true,
+        done: { at: Date.parse(r.created_at) || Date.now(), score: r.score, total: r.total, per: r.per || {} } };
+      reviewFilter = 'all'; renderReview();
+    });
+  }
   function markRows() {
-    var rows = curResults.map(function (r) {
+    var rows = curResults.map(function (r, i) {
       var p = pctOf(r.score, r.total);
-      return { name: r.learner_name, version: r.version || '', score: r.score, total: r.total, pct: p, level: levelOf(p), at: r.created_at,
+      return { idx: i, name: r.learner_name, version: r.version || '', score: r.score, total: r.total, pct: p, level: levelOf(p), at: r.created_at,
         when: new Date(r.created_at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) };
     });
     var k = markSort.k, d = markSort.d;
@@ -1827,7 +1854,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnConfirm').addEventListener('click', function () { $('confirmDlg').close(); submit(); });
   $('btnCancel').addEventListener('click', function () { $('confirmDlg').close(); });
   $('btnReview').addEventListener('click', function () { reviewFilter = 'all'; renderReview(); });
-  $('btnRevResult').addEventListener('click', renderResult);
+  $('btnRevResult').addEventListener('click', function () { if (att.teacherView) openSession(curSession); else renderResult(); });
+  $('tsBody').addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.tr-view'); if (b) viewLearner(curResults[+b.getAttribute('data-i')]); });
   $('btnRetry').addEventListener('click', function () { startTest(true); });
   $('btnPrint').addEventListener('click', printReport);
   $('btnRevPrint').addEventListener('click', printReport);
