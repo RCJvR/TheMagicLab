@@ -223,6 +223,12 @@ body {
   font-family: var(--font-mono); font-size: calc(13.5 * var(--k)); line-height: 1.55; color: var(--text); overflow-x: auto; white-space: pre; }
 .tt-q .tt-code { margin: 0 0 12px; }
 .tt-calc { margin: 0 0 14px; }
+.tt-study { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin: 0 0 12px; }
+.tt-study-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; color: var(--paper); font-size: calc(16 * var(--k)); }
+.tt-study-head span { color: var(--text-3); font-size: calc(14 * var(--k)); font-variant-numeric: tabular-nums; }
+.tt-study-list { margin: 10px 0 0; padding-left: 20px; line-height: 1.55; color: var(--text-2); font-size: calc(14.5 * var(--k)); }
+.tt-study-list li { margin-bottom: 9px; }
+.tt-study-list small { display: block; color: var(--text-3); font-size: calc(13.5 * var(--k)); }
 .tt-name { display: grid; gap: 6px; max-width: 360px; margin: 20px 0 0; }
 .tt-name span { font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2); }
 .tt-name input { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
@@ -436,6 +442,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div class="tt-rows" id="resultSections"></div>
       <h3 class="tt-h3" data-t="bySkill">Knowledge and application</h3>
       <div class="tt-rows" id="resultSkills"></div>
+      <h3 class="tt-h3" data-t="studyTitle">What to study next</h3>
+      <div id="resultStudy"></div>
       <div class="tt-actions">
         <button class="ml-btn ml-btn--ghost" id="btnPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
         <button class="ml-btn ml-btn--ghost hidden" id="btnNextVersion"><i data-lucide="shuffle"></i><span></span></button>
@@ -551,6 +559,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       up: 'Move up', down: 'Move down', tTrue: 'True', tFalse: 'False',
       sureTitle: 'Submit your test?', sureAll: 'You have answered every question. Once you submit, your test is marked and you can see your answers.',
       sureSome: 'You have not answered {n} of the questions yet. Unanswered questions get no marks.', submitNow: 'Submit', keepGoing: 'Keep working',
+      studyTitle: 'What to study next', studyNote: 'These are the topics where you lost the most marks, weakest first. Under each are the questions you missed, with the explanation to study from.', studyNone: 'You did well in every topic. Look again at the questions you missed below.', studyPct: '{p}% of the marks earned',
       yourMark: 'Your mark for {t}', outOf: 'out of {t}', level: 'Level {l}', review: 'Review my answers',
       bySection: 'By section', bySkill: 'Knowledge and application', knowledge: 'Knowledge', application: 'Application',
       retry: 'Write it again', reviewTitle: 'Review your answers', reviewSub: 'Green is right, red is wrong. Each answer has an explanation underneath.',
@@ -601,6 +610,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       up: 'Skuif op', down: 'Skuif af', tTrue: 'Waar', tFalse: 'Onwaar',
       sureTitle: 'Dien jou toets in?', sureAll: 'Jy het elke vraag beantwoord. Sodra jy indien, word jou toets gemerk en kan jy jou antwoorde sien.',
       sureSome: 'Jy het {n} van die vrae nog nie beantwoord nie. Onbeantwoorde vrae kry geen punte nie.', submitNow: 'Dien in', keepGoing: 'Werk verder',
+      studyTitle: 'Wat om volgende te bestudeer', studyNote: 'Dit is die onderwerpe waar jy die meeste punte verloor het, swakste eerste. Onder elkeen is die vrae wat jy gemis het, met die verduideliking om uit te leer.', studyNone: 'Jy het goed gevaar in elke onderwerp. Kyk weer na die vrae wat jy hieronder gemis het.', studyPct: '{p}% van die punte behaal',
       yourMark: 'Jou punt vir {t}', outOf: 'uit {t}', level: 'Vlak {l}', review: 'Hersien my antwoorde',
       bySection: 'Per afdeling', bySkill: 'Kennis en toepassing', knowledge: 'Kennis', application: 'Toepassing',
       retry: 'Skryf dit weer', reviewTitle: 'Hersien jou antwoorde', reviewSub: 'Groen is reg, rooi is verkeerd. Elke antwoord het ’n verduideliking daaronder.',
@@ -1155,6 +1165,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     $('resultScore').innerHTML = '<b>' + d.score + '</b><span>' + esc(t('outOf', { t: d.total })) + '</span><span class="tt-pct">' + p + '%</span><span>' + esc(t('level', { l: levelOf(p) })) + '</span>';
     $('resultSections').innerHTML = sectionRows(d);
     $('resultSkills').innerHTML = skillRows(d);
+    $('resultStudy').innerHTML = studyHtml(d);
     show('viewResult');
   }
   function sectionRows(d) {
@@ -1162,6 +1173,31 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       var its = items.filter(function (it) { return it.sec === si; });
       return row(t('question', { n: si + 1 }) + ': ' + sec.title, its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), secTotal(si));
     }).join('');
+  }
+  // what to study: the learner's weakest topics, each with the questions they missed most
+  function studyHtml(d) {
+    var by = {};
+    items.forEach(function (it) {
+      var k = it.topic || 'other', o = by[k] = by[k] || { k: k, got: 0, max: 0, its: [] };
+      o.got += d.per[it.id] || 0; o.max += it.max; o.its.push(it);
+    });
+    var list = Object.keys(by).map(function (k) { var o = by[k]; o.pct = pctOf(o.got, o.max); return o; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = list.filter(function (o) { return o.pct < 70; }).slice(0, 3), none = !need.length;
+    if (none) need = list.slice(0, 1);
+    var lost = function (it) { return it.max - (d.per[it.id] || 0); };
+    var h = '<p class="tt-note">' + esc(t(none ? 'studyNone' : 'studyNote')) + '</p>';
+    need.forEach(function (o) {
+      var missed = o.its.filter(function (it) { return lost(it) > 0; })
+        .sort(function (a, b) { return lost(b) / b.max - lost(a) / a.max || (a.num < b.num ? -1 : 1); }).slice(0, 3);
+      h += '<div class="tt-study"><div class="tt-study-head"><b>' + esc(topicName(o.k, quiz)) + '</b><span>' + esc(t('studyPct', { p: o.pct })) + '</span></div>';
+      if (missed.length) h += '<ul class="tt-study-list">' + missed.map(function (it) {
+        var txt = String(it.q.q || '').replace(/\s+/g, ' ').trim();
+        return '<li><b>' + esc(it.num) + '</b> ' + esc(txt.length > 140 ? txt.slice(0, 139) + '…' : txt) +
+          (it.q.explain ? '<small>' + esc(t('ptRevise')) + ' ' + esc(it.q.explain) + '</small>' : '') + '</li>';
+      }).join('') + '</ul>';
+      h += '</div>';
+    });
+    return h;
   }
   function skillRows(d) {
     return ['knowledge', 'application'].map(function (k) {
