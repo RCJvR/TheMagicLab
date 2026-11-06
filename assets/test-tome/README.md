@@ -65,6 +65,25 @@ CAPS strands). Without `"topics"`, the built-in Coding & Robotics names apply
 (html, excel, ct, java, freecad, tinkercad). Results reach a teacher through a
 class code; see supabase-test-tome-results.sql.
 
+## Practice (learner side)
+
+Everything here is kept in the learner's browser and never changes a mark or
+goes to a teacher.
+
+- `"confidence": true` on a paper adds "How sure are you?" ticks under each
+  question. Off unless a paper sets it. The result shows sure-but-wrong
+  questions first.
+- A question can carry `"working": [steps]` and `"workingAf": [steps]`. The
+  review shows them under the answer as Working. Calculation questions
+  (`"calc": true`) should have them.
+- `"whyWrong": {"1": "…"}` and `"whyWrongAf"` (keyed by option index) say why a wrong
+  option is tempting. The review shows the reason under an option the learner picked.
+- Missed questions come back as revisits (2, then 5, 12 and 30 days after each
+  correct practice). Practice runs from the saved copy of each question, so it
+  works across tests.
+- Topic lessons are listed by topic in `LESSONS` and `NS_LESSONS` in
+  test-tome.html. Add a lesson there, with its Afrikaans title.
+
 ## Drafts and the answer key
 
 A manifest entry with `"draft": true` is listed only for teacher accounts, and
