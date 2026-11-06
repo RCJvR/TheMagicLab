@@ -527,7 +527,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var g = +$('qbGrade').value, s = $('qbSubject').value;
     return manifest.filter(function (b) {
       return b.grade === g && b.subject === s;
-    }).sort(function (a, b) { return a.term - b.term || a.topic.localeCompare(b.topic); });
+    }).sort(function (a, b) { return a.topic.localeCompare(b.topic); });
   }
 
   function refreshTopics() {
@@ -552,7 +552,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
           '<select data-bank="' + esc(b.file) + '" data-count="' + esc(sl.slot) + '" aria-label="' + esc(title(sl, 'label')) + '">' + opts + '</select></label>';
       }).join('');
       return '<div class="qb-topic"><label class="qb-row"><input type="checkbox" data-topic="' + esc(b.file) + '" checked> ' +
-        '<span class="qb-label">' + esc(title(b, 'topic')) + '<small>' + esc(t2('termN', { n: b.term })) + '</small></span></label>' +
+        '<span class="qb-label">' + esc(title(b, 'topic')) + '</span></label>' +
         '<div class="qb-slots" data-slots="' + esc(b.file) + '">' + rows + '</div></div>';
     }).join('');
   }
