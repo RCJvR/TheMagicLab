@@ -258,6 +258,8 @@ body {
 .tt-plan-list li { margin: 0 0 10px; color: var(--text-2); font-size: calc(14.5 * var(--k)); line-height: 1.5; }
 .tt-plan-list label { cursor: pointer; }
 .tt-plan-date { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.tt-figure { margin: 10px 0 12px; max-width: 360px; color: var(--text); }
+.tt-figure svg { width: 100%; height: auto; display: block; }
 .tt-info { margin: 12px 0 18px; padding: 14px 16px; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); background: var(--ink-850); color: var(--text-2); font-size: calc(14.5 * var(--k)); }
 .tt-info p { margin: 0 0 8px; }
 .tt-info b { color: var(--paper); }
@@ -645,6 +647,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       teacherOnly: 'Class results are for teacher accounts.',
       blankN: 'Blank {n}', fillHint: 'Type the missing symbol or word in each box, exactly as it is written in code.', empty: 'empty',
       planStart: 'Practise now',
+      buildBtn: 'Build my own paper',
       prLoginAsk: 'Don’t see your progress?', prLoginKeep: 'Log in to keep track of improvement over time.', prLoginOther: 'Completed tests on another device? You will need to log in to keep track.', prLoginBtn: 'Log in',
       confAsk: 'How sure are you?',
       confSure: 'Sure',
@@ -749,6 +752,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       teacherOnly: 'Klasuitslae is vir onderwyserrekeninge.',
       blankN: 'Spasie {n}', fillHint: 'Tik die simbool of woord wat ontbreek in elke blokkie, presies soos dit in kode geskryf word.', empty: 'leeg',
       planStart: 'Oefen nou',
+      buildBtn: 'Bou my eie vraestel',
       prLoginAsk: 'Sien jy nie jou vordering nie?', prLoginKeep: 'Teken in om verbetering oor tyd te hou.', prLoginOther: 'Toetse op ’n ander toestel voltooi? Jy sal moet inteken om dit te hou.', prLoginBtn: 'Teken in',
       confAsk: 'Hoe seker is jy?',
       confSure: 'Seker',
@@ -1070,6 +1074,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     return '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(it.q.q) + '</span><span class="tt-marks">(' + it.max + ')</span></div>';
   }
   function code(c) { return c ? '<pre class="tt-code">' + esc(c) + '</pre>' : ''; }
+  // a diagram written into the question file as SVG (our own content, not learner input)
+  function figure(q) { return q.svg ? '<div class="tt-figure">' + q.svg + '</div>' : ''; }
   // questions flagged calc in the test file need working out: a link opens the scientific calculator in a new tab
   function calcLink(q) { return q.calc ? '<p class="tt-calc"><button type="button" class="ml-btn ml-btn--ghost" data-calc="1">' + esc(t('calcBtn')) + '</button></p>' : ''; }
   // one calculator window, reused on every click; a phone browser may show it as a normal tab instead
@@ -1092,7 +1098,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function questionEl(it) {
     var q = it.q, el = document.createElement('div'), a = att.answers[it.id];
     el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : ''); el.id = 'q-' + it.id;
-    el.innerHTML = head(it) + '<div class="tt-body">' + code(q.code) + calcLink(q) + '</div>' + confRow(it);
+    el.innerHTML = head(it) + '<div class="tt-body">' + figure(q) + code(q.code) + calcLink(q) + '</div>' + confRow(it);
     var body = el.querySelector('.tt-body'), name = 'q' + it.id.replace(/\./g, '_');
     if (q.type === 'mcq' || q.type === 'tf') {
       var g = document.createElement('div'); g.className = 'tt-opts' + (q.type === 'tf' ? ' tt-tf' : ''); g.setAttribute('role', 'radiogroup');
@@ -1525,7 +1531,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
     var cls = got === it.max ? 'full' : got > 0 ? 'part' : 'none';
     el.innerHTML = '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(q.q) + '</span><span class="tt-got ' + cls + '">' + esc(t('got', { s: got, t: it.max })) + '</span></div><div class="tt-body"></div>';
-    var body = el.querySelector('.tt-body'), h = code(q.code);
+    var body = el.querySelector('.tt-body'), h = figure(q) + code(q.code);
     if (q.type === 'mcq' || q.type === 'tf') {
       choices(it).forEach(function (ch) {
         var o = ch[0], val = ch[1], isRight = val === q.answer, picked = a === val;
@@ -2299,7 +2305,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       h += '<p class="tt-hint" style="margin:0">' + esc(t('revNone')) + '</p>';
     }
     h += '<div class="tt-actions tt-tools-row"><button type="button" class="ml-btn ml-btn--ghost" data-tool="progress"><i data-lucide="trending-up"></i><span>' + esc(t('prBtn')) + '</span></button>' +
-      '<button type="button" class="ml-btn ml-btn--ghost" data-tool="plan"><i data-lucide="calendar"></i><span>' + esc(t('planBtn')) + '</span></button></div></div>';
+      '<button type="button" class="ml-btn ml-btn--ghost" data-tool="plan"><i data-lucide="calendar"></i><span>' + esc(t('planBtn')) + '</span></button>' +
+      '<button type="button" class="ml-btn ml-btn--ghost" data-tool="build"><i data-lucide="list-plus"></i><span>' + esc(t('buildBtn')) + '</span></button></div></div>';
     box.innerHTML = h;
     icons();
   }
@@ -2402,6 +2409,17 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (window.MagicLabModal && MagicLabModal.open) MagicLabModal.open(); else location.href = 'index.html';
   });
 
+  // a paper built on the question-bank page: saved in this browser, marked like any test
+  var CUSTOM_PREFIX = 'ml-tome-custom-v1:';
+  function loadCustom(key) {
+    var q = readJ(CUSTOM_PREFIX + key, null);
+    if (!q) return false;
+    rawQuiz = q; rawQuiz.id = q.id;
+    meta = { id: q.id, title: q.title, titleAf: q.titleAf, subject: q.subject, subjectAf: q.subjectAf, grade: q.grade, file: '', custom: true };
+    relocalise(); renderIntro();
+    return true;
+  }
+
   // ── Wiring ───────────────────────────────────────────────────────────
   $('btnStart').addEventListener('click', function () { startTest(false); });
   $('btnLastReview').addEventListener('click', function () { att = store[quiz.id]; reviewFilter = 'all'; renderReview(); });
@@ -2459,6 +2477,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var k = b.getAttribute('data-tool');
     if (k === 'due') startDrill(revEntries().filter(function (x) { return x.due <= Date.now(); }).slice(0, 15), t('drillTitle'));
     else if (k === 'progress') renderProgress();
+    else if (k === 'build') location.href = 'question-bank.html';
     else renderPlan();
   });
   $('planBody').addEventListener('change', function (e) {
@@ -2516,7 +2535,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     var want = new URLSearchParams(location.search).get('quiz');
     // ?view=results opens a teacher's Class results (from the teacher dashboard)
     var wantResults = new URLSearchParams(location.search).get('view') === 'results';
-    if (want) openQuiz(want);
+    var custom = new URLSearchParams(location.search).get('custom');
+    if (custom && loadCustom(custom)) { /* built on the question-bank page */ }
+    else if (want) openQuiz(want);
     else if (wantResults && window.MagicLabAuth) { if (isTeacher()) renderTeacher(); else renderList(); }
     else if (wantResults) { renderList(); document.addEventListener('magiclab:auth:ready', function () { if (isTeacher()) renderTeacher(); }, { once: true }); }
     else renderList();
