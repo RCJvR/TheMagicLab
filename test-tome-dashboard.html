@@ -45,6 +45,14 @@ tr:last-child td, tr:last-child th { border-bottom: 0; }
 .d-q { font-size: 13.5px; color: var(--text-2); max-width: 420px; }
 .d-wrong { font-size: 13px; color: var(--text-3); max-width: 260px; }
 #dMsg { color: var(--text-2); }
+.d-topic { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin-bottom: 12px; }
+.d-topic-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 16px; color: var(--paper); font-variant-numeric: tabular-nums; }
+.d-topic-head span { font-weight: 800; }
+.d-track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; margin: 10px 0 0; }
+.d-track i { display: block; height: 100%; background: var(--text-2); }
+.d-rev { margin: 12px 0 0; padding-left: 20px; font-size: 14.5px; line-height: 1.5; color: var(--text-2); }
+.d-rev li { margin-bottom: 10px; }
+.d-rev small { display: block; color: var(--text-3); font-size: 13.5px; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -69,6 +77,7 @@ tr:last-child td, tr:last-child th { border-bottom: 0; }
   var TOPICS = { html: 'HTML & CSS', excel: 'Excel', ct: 'Computational thinking', java: 'Java (jGRASP)', freecad: 'FreeCAD', tinkercad: 'TinkerCAD & Arduino', other: 'Other', life: 'Life and Living', matter: 'Matter and Materials', energy: 'Energy and Change', earth: 'Planet Earth and Beyond' };
   var state = { sets: [], sessions: {}, results: [], quiz: null, items: [], sort: { k: 'pct', d: 1 }, started: false };
   function $(id) { return document.getElementById(id); }
+  function short(x, n) { x = String(x || '').replace(/\s+/g, ' ').trim(); return x.length > n ? x.slice(0, n - 1) + '…' : x; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
   function cls(p) { return p >= 70 ? 'p-hi' : p >= 50 ? 'p-mid' : 'p-lo'; }
@@ -140,10 +149,30 @@ tr:last-child td, tr:last-child th { border-bottom: 0; }
         if (a != null && (it.q.type === 'mcq' || it.q.type === 'tf') && a !== it.q.answer) { var k = answerText(it.q, a); wrong[k] = (wrong[k] || 0) + 1; }
       });
       var possible = it.max * R.length, top = Object.keys(wrong).sort(function (a, b) { return wrong[b] - wrong[a]; })[0];
-      return { num: it.num, q: it.q.q, topic: TOPICS[it.topic] || it.topic, pct: pct(got, possible), full: pct(full, R.length), wrong: top ? top + ' (' + wrong[top] + ')' : '', fullCount: full };
+      return { num: it.num, q: it.q.q, topic: TOPICS[it.topic] || it.topic, key: it.topic, got: got, possible: possible, pct: pct(got, possible), full: pct(full, R.length), wrong: top ? top + ' (' + wrong[top] + ')' : '', revise: it.q.explain || '' };
     });
     var k = state.sort.k, d = state.sort.d;
     rows.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * d || (a.num < b.num ? -1 : 1); });
+    // What to revise: topics under 70% (at least the weakest three), weakest first,
+    // each with its three lowest questions and the explanation to revise from
+    var byTopic = {};
+    rows.forEach(function (r) {
+      var t = byTopic[r.key] = byTopic[r.key] || { name: r.topic, got: 0, possible: 0, qs: [] };
+      t.got += r.got; t.possible += r.possible; t.qs.push(r);
+    });
+    var topicList = Object.keys(byTopic).map(function (k) { var t = byTopic[k]; t.pct = pct(t.got, t.possible); return t; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = topicList.filter(function (t) { return t.pct < 70; });
+    if (need.length < 3) need = topicList.slice(0, Math.min(3, topicList.length));
+    need = need.slice(0, 8);
+    var rev = '<h2>What to revise</h2><p class="d-note">Topics the class found hardest, weakest first. Under each topic are its three lowest questions, with the explanation to revise from.</p>' + need.map(function (t) {
+      var qs = t.qs.filter(function (q) { return q.pct < 70; }).sort(function (a, b) { return a.pct - b.pct || (a.num < b.num ? -1 : 1); }).slice(0, 3);
+      return '<div class="d-topic"><div class="d-topic-head"><b>' + esc(t.name) + '</b><span class="' + cls(t.pct) + '">' + t.pct + '%</span></div>' +
+        '<div class="d-track"><i style="width:' + t.pct + '%"></i></div>' +
+        (qs.length ? '<ul class="d-rev">' + qs.map(function (q) {
+          return '<li><b>' + esc(q.num) + '</b> ' + esc(short(q.q, 140)) + ' <i>(' + q.pct + '%)</i>' + (q.revise ? '<small>Revise: ' + esc(short(q.revise, 220)) + '</small>' : '') + '</li>';
+        }).join('') + '</ul>' : '<p class="d-note">No single question stood out in this topic.</p>') + '</div>';
+    }).join('');
+
     var qtab = '<h2>Question by question</h2><p class="d-note">Sorted by how many marks were earned. Click a heading to sort. “Most common wrong answer” only applies to multiple-choice and true/false questions.</p><div class="d-scroll"><table><thead><tr>' +
       [['num', 'No.'], ['q', 'Question'], ['topic', 'Topic'], ['pct', 'Marks earned'], ['full', 'Fully correct'], ['wrong', 'Most common wrong answer']].map(function (c) {
         return '<th class="s" scope="col" data-k="' + c[0] + '">' + c[1] + (k === c[0] ? (d > 0 ? ' ▲' : ' ▼') : '') + '</th>';
@@ -163,7 +192,7 @@ tr:last-child td, tr:last-child th { border-bottom: 0; }
         return '<tr><td>' + esc(s.title) + '</td><td>' + esc(s.when ? new Date(s.when).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' }) : '') + '</td><td>' + s.n + '</td><td class="' + cls(s.avg) + '">' + s.avg + '%</td><td>' + s.pass + '%</td></tr>';
       }).join('') + '</tbody></table></div>';
 
-    $('dBody').innerHTML = kpi + hist + qtab + sessTab;
+    $('dBody').innerHTML = kpi + hist + rev + qtab + sessTab;
     [].forEach.call($('dBody').querySelectorAll('th.s'), function (th) {
       th.addEventListener('click', function () { var kk = th.dataset.k; state.sort = { k: kk, d: state.sort.k === kk ? -state.sort.d : (kk === 'pct' || kk === 'full' ? 1 : 1) }; draw(); });
     });
