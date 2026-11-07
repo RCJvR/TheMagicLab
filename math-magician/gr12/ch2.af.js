@@ -442,6 +442,46 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Die grafiek van y = log₃(x) word gespieël in die lyn y = x, en dan 2 eenhede af geskuif om h(x) te vorm. Skryf h(x) neer.", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Grafieke van eksponensiële & logaritmiese funksies" },
         { type: "input", text: "Bepaal sonder 'n sakrekenaar die waarde van log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Grafieke van eksponensiële & logaritmiese funksies" }
       ]
+    },
+    {
+      id: 204,
+      chapter: 2,
+      name: "Transformasie van eksponensiële en logaritmiese grafieke",
+      fullName: "Skuif van eksponensiële en logaritmiese grafieke: asimptote en afsnitte",
+      lesson: {
+        heading: "Transformasie van eksponensiële en logaritmiese grafieke",
+        sub: "Hoofstuk 2 · Onderwerp 5",
+        body: `
+          <p>’n Skuif verander die asimptoot en die afsnitte van ’n grafiek, maar nie die basisvorm nie. Leer om die skuif uit die vergelyking af te lees.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Eksponensiële grafieke</div>
+            <p>
+              <span class="math">y = b^x + q</span>: die grafiek skuif <strong>q op</strong>, dus word die horisontale asimptoot <span class="math">y = q</span>.<br>
+              <span class="math">y = b^(x + p)</span>: die grafiek skuif <strong>p links</strong>, die asimptoot bly <span class="math">y = 0</span> en die y-afsnit word <span class="math">b^p</span>.
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Logaritmiese grafieke</div>
+            <p>
+              <span class="math">y = log_b(x + p)</span>: die grafiek skuif <strong>p links</strong>, dus word die vertikale asimptoot <span class="math">x = −p</span>.<br>
+              <span class="math">y = log_b x + q</span>: die grafiek skuif <strong>q op</strong>, en die asimptoot <span class="math">x = 0</span> bly dieselfde.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld</div>
+            <div class="example-step"><span class="step-num">1</span><span>Vir y = 2^x − 5: die asimptoot is y = −5, dus is die waardeversameling y > −5.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Vir y = log₂(x − 4): die vertikale asimptoot is x = 4, omdat x − 4 = 0.</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Die asimptoot van y = 2^x + 3 is:", options: ["y = 0", "y = 3", "x = 3", "y = −3"], answer: 1, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "Die vertikale asimptoot van y = log₂(x − 4) is:", options: ["x = 4", "x = −4", "y = 4", "x = 0"], answer: 0, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "input", text: "Die grafiek van y = 3^x word 2 eenhede na links geskuif. Wat is die y-afsnit?", answer: "9", topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "y = log₃ x, 2 eenhede opwaarts geskuif, is:", options: ["y = log₃(x + 2)", "y = log₃ x + 2", "y = log₃(x − 2)", "y = log₃ x − 2"], answer: 1, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "input", text: "Vind die x-afsnit van y = log₂ x − 3.", answer: "8", topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "Vir y = 2^x − 5 is die waardeversameling:", options: ["y > −5", "y > 5", "y < −5", "alle reële y"], answer: 0, topic: "Transformasie van eksponensiële en logaritmiese grafieke" }
+      ]
     }
   ],
   workbook: {

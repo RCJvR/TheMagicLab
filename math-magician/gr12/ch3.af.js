@@ -393,6 +393,46 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Gebruik die effektiewe jaarlikse koers-formule om die effektiewe jaarlikse koers vir Bank A (10.4% p.j. kwartaalliks saamgestel) te bereken, tot 2 desimale plekke (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Vergelyking van belegging- & leningsopsies" },
         { type: "input", text: "Sipho leen R800 000 teen 11% p.j. maandeliks saamgestel. Die vereiste paaiement oor 20 jaar is sowat R8 258, maar hy betaal eerder R10 000 aan die einde van elke maand. Hoeveel betalings maak hy (die laaste een kan kleiner wees)?", answer: "145", topic: "Vergelyking van belegging- & leningsopsies" }
       ]
+    },
+    {
+      id: 304,
+      chapter: 3,
+      name: "Annuïteite betaalbaar aan die begin en uitgestelde lenings",
+      fullName: "Betalings aan die begin van elke tydperk (annuïteite betaalbaar aan die begin) en lenings met ’n terugbetalingsverlof",
+      lesson: {
+        heading: "Annuïteite betaalbaar aan die begin en uitgestelde lenings",
+        sub: "Hoofstuk 3 · Onderwerp 5",
+        body: `
+          <p>Tot dusver is betalings aan die <strong>einde</strong> van elke tydperk gemaak. Twee algemene variasies verander die berekening: betalings aan die <strong>begin</strong> van elke tydperk (’n annuïteit betaalbaar aan die begin), en lenings met ’n <strong>uitstel</strong>, waar daar eers geen terugbetalings is nie.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Annuïteit betaalbaar aan die begin</div>
+            <p>
+              Elke betaling verdien een ekstra tydperk rente, dus is die toekomstige waarde van ’n annuïteit betaalbaar aan die begin die gewone toekomstige waarde maal <span class="math">(1 + i)</span>:<br>
+              <span class="math">F(begin) = x[(1 + i)^n − 1]/i × (1 + i)</span>
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Uitgestelde lening</div>
+            <p>
+              Terwyl terugbetalings uitgestel word, word rente by die onbetaalde saldo gevoeg: na k tydperke is die saldo <span class="math">P(1 + i)^k</span>. Die paaiemente word dan uit hierdie saldo bereken, as ’n gewone annuïteit oor die terugbetalingstydperk:<br>
+              <span class="math">P(1 + i)^k = x[1 − (1 + i)^−n]/i</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: uitgestelde lening</div>
+            <div class="example-step"><span class="step-num">1</span><span>R100 000 teen 1% per maand, met geen betalings vir 2 maande nie: saldo = 100 000(1,01)² = R102 010.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Terugbetaal oor 12 maande vanaf die einde van maand 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per maand.</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "R500 word aan die BEGIN van elke maand vir 2 jaar betaal teen 12% p.j., maandeliks saamgestel. Die toekomstige waarde is die naaste aan:", options: ["R13 487", "R13 622", "R13 350", "R14 200"], answer: 1, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Watter tydsberekening gee, al die ander dinge gelyk, die groter toekomstige waarde?", options: ["Betalings aan die begin van elke tydperk", "Betalings aan die einde van elke tydperk", "Hulle is dieselfde", "Dit hang slegs af van die aantal betalings"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "input", text: "’n Lening van R100 000 teen 1% per maand het geen betalings vir 2 maande nie. Wat is die saldo aan die einde van maand 2 (tot die naaste rand)?", answer: "102010", altAnswers: ["102 010", "R102010", "R102 010"], topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Dieselfde lening word terugbetaal deur 12 gelyke betalings aan die einde van maande 3 tot 14. Die maandelikse paaiement is die naaste aan:", options: ["R9 063", "R8 500", "R10 000", "R9 500"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Waarom groei die saldo gedurende ’n uitstelperiode?", options: ["Rente word gehef op die onbetaalde saldo", "Die lening word gekanselleer", "Betalings verminder die lening", "Inflasie verminder die skuld"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "input", text: "Skryf die saldo na k maande sonder betalings op ’n lening van P teen i per maand, in terme van P, i en k.", answer: "P(1+i)^k", altAnswers: ["P(1 + i)^k", "P(1+i)**k"], topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" }
+      ]
     }
   ],
   workbook: {

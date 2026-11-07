@@ -400,6 +400,79 @@ MathMagician.registerChapter(4, {
         { type: "input", text: "Simplify (1 − cos2A)/sin2A to a single trig ratio.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Proving trigonometric identities" },
         { type: "input", text: "θ is acute and sin 2θ = 0.6. Find sin θ + cos θ, correct to 2 decimal places, without finding θ.", answer: "1.26", altAnswers: ["1,26"], topic: "Proving trigonometric identities" }
       ]
+    },
+    {
+      id: 404,
+      chapter: 4,
+      name: "Reduction formulae",
+      fullName: "Reduction formulae: writing any angle as an acute angle",
+      lesson: {
+        heading: "Reduction formulae",
+        sub: "Chapter 4 · Topic 5",
+        body: `
+          <p>A <strong>reduction formula</strong> rewrites the trig ratio of a large or negative angle as the ratio of an acute angle. Use the <strong>ASTC rule</strong> for the sign: in quadrant 1 all ratios are positive; in quadrant 2 only sin is positive; in quadrant 3 only tan is positive; in quadrant 4 only cos is positive.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Key results</div>
+            <p>
+              <span class="math">sin(90° − x) = cos x</span> &nbsp; <span class="math">cos(90° − x) = sin x</span><br>
+              <span class="math">sin(90° + x) = cos x</span> &nbsp; <span class="math">cos(90° + x) = −sin x</span><br>
+              <span class="math">sin(180° − x) = sin x</span> &nbsp; <span class="math">cos(180° − x) = −cos x</span><br>
+              <span class="math">sin(180° + x) = −sin x</span> &nbsp; <span class="math">cos(180° + x) = −cos x</span><br>
+              <span class="math">sin(360° − x) = −sin x</span> &nbsp; <span class="math">cos(360° − x) = cos x</span><br>
+              <span class="math">sin(−x) = −sin x</span> &nbsp; <span class="math">cos(−x) = cos x</span><br>
+              <span class="math">tan(180° − x) = −tan x</span> &nbsp; <span class="math">tan(180° + x) = tan x</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: simplify</div>
+            <div class="example-step"><span class="step-num">1</span><span>sin(540° + x) = sin(180° + x) = −sin x (540° = 360° + 180°)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>cos(90° + x) = −sin x and sin(−x) = −sin x</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>sin(540° + x)·cos(90° + x) ÷ sin(−x) = (−sin x)(−sin x) ÷ (−sin x) = −sin x</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "sin(90° − x) equals:", options: ["sin x", "cos x", "−cos x", "−sin x"], answer: 1, topic: "Reduction formulae" },
+        { type: "mc", text: "cos(90° + x) equals:", options: ["cos x", "−cos x", "sin x", "−sin x"], answer: 3, topic: "Reduction formulae" },
+        { type: "input", text: "Without a calculator, find sin 150° as a fraction.", answer: "1/2", altAnswers: ["0,5", "0.5"], topic: "Reduction formulae" },
+        { type: "mc", text: "sin(540° + x) simplifies to:", options: ["sin x", "−sin x", "cos x", "−cos x"], answer: 1, topic: "Reduction formulae" },
+        { type: "input", text: "Simplify sin(540° + x)·cos(90° + x) ÷ sin(−x) to a single trig ratio.", answer: "-sinx", altAnswers: ["-sin x", "−sin x", "−sinx"], topic: "Reduction formulae" },
+        { type: "mc", text: "tan(180° − x) equals:", options: ["tan x", "−tan x", "cot x", "−cot x"], answer: 1, topic: "Reduction formulae" },
+        { type: "input", text: "Without a calculator, find cos 120° as a fraction.", answer: "-1/2", altAnswers: ["−1/2", "-0,5", "−0,5"], topic: "Reduction formulae" }
+      ]
+    },
+    {
+      id: 405,
+      chapter: 4,
+      name: "Shifted trigonometric graphs",
+      fullName: "Shifts, amplitude and period of trigonometric graphs",
+      lesson: {
+        heading: "Shifted trigonometric graphs",
+        sub: "Chapter 4 · Topic 6",
+        body: `
+          <p>Shifting a trig graph changes its phase, not its shape. A horizontal shift adds an angle inside the brackets; a vertical shift adds a constant outside them.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Reading a trig graph</div>
+            <p>
+              <span class="math">y = a·f(bx + c) + q</span>: amplitude <span class="math">|a|</span>, period <span class="math">360° ÷ |b|</span> (for sin and cos), and the graph shifts <strong>left by c ÷ b</strong> and up by q.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <div class="example-step"><span class="step-num">1</span><span>cos 2x shifted 45° to the left: cos[2(x + 45°)] = cos(2x + 90°) = −sin 2x.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>y = 2 sin x − 1 has amplitude 2 and range −3 ≤ y ≤ 1.</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "The period of y = sin 2x + 3 is:", options: ["360°", "180°", "90°", "720°"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "cos(2x + 90°) equals:", options: ["cos 2x", "−sin 2x", "sin 2x", "−cos 2x"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "The graph of sin x is shifted 90° to the left. Give the new equation in simplest form.", answer: "cosx", altAnswers: ["cos x", "cos(x)"], topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "The range of y = 2 sin x − 1 is:", options: ["[−1; 1]", "[−3; 1]", "[−2; 0]", "[−1; 2]"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "The graph of cos x is shifted 90° to the right. Give the new equation in simplest form.", answer: "sinx", altAnswers: ["sin x", "sin(x)"], topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "The amplitude of y = −3 cos x + 1 is:", options: ["1", "−3", "3", "−1"], answer: 2, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "Simplify cos(x − 90°) + sin(x + 90°).", answer: "sinx+cosx", altAnswers: ["sin x + cos x", "cosx+sinx", "cos x + sin x"], topic: "Shifted trigonometric graphs" }
+      ]
     }
   ],
   workbook: {

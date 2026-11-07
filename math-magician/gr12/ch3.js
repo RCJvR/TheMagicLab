@@ -392,6 +392,46 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Using the effective annual rate formula, calculate the effective annual rate for Bank A (10.4% p.a. compounded quarterly), to 2 decimal places (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Comparing investment & loan options" },
         { type: "input", text: "Sipho borrows R800 000 at 11% p.a. compounded monthly. The required instalment over 20 years is about R8 258, but he pays R10 000 at the end of every month instead. How many payments does he make (the last one may be smaller)?", answer: "145", topic: "Comparing investment & loan options" }
       ]
+    },
+    {
+      id: 304,
+      chapter: 3,
+      name: "Annuities due and deferred loans",
+      fullName: "Payments at the start of each period (annuities due) and loans with a repayment holiday",
+      lesson: {
+        heading: "Annuities due and deferred loans",
+        sub: "Chapter 3 · Topic 5",
+        body: `
+          <p>So far payments were made at the <strong>end</strong> of each period. Two common variations change the calculation: payments made at the <strong>beginning</strong> of each period (an annuity due), and loans with a <strong>deferment</strong>, where no repayments are made at first.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Annuity due (payments at the beginning)</div>
+            <p>
+              Each payment earns one extra period of interest, so the future value of an annuity due is the ordinary future value multiplied by <span class="math">(1 + i)</span>:<br>
+              <span class="math">F(due) = x[(1 + i)^n − 1]/i × (1 + i)</span>
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Deferred loan</div>
+            <p>
+              While repayments are deferred, interest is added to the unpaid balance: after k periods the balance is <span class="math">P(1 + i)^k</span>. The instalments are then calculated from this balance, as an ordinary annuity over the repayment period:<br>
+              <span class="math">P(1 + i)^k = x[1 − (1 + i)^−n]/i</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: deferred loan</div>
+            <div class="example-step"><span class="step-num">1</span><span>R100 000 at 1% per month, with no payments for 2 months: balance = 100 000(1,01)² = R102 010.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Repay over 12 months from the end of month 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per month.</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "R500 is paid at the BEGINNING of each month for 2 years at 12% p.a. compounded monthly. The future value is closest to:", options: ["R13 487", "R13 622", "R13 350", "R14 200"], answer: 1, topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "Other things being equal, which timing gives the larger future value?", options: ["Payments at the beginning of each period", "Payments at the end of each period", "They are the same", "It depends only on the number of payments"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "input", text: "A loan of R100 000 at 1% per month has no payments for 2 months. What is the balance owed at the end of month 2 (to the nearest rand)?", answer: "102010", altAnswers: ["102 010", "R102010", "R102 010"], topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "The same loan is repaid by 12 equal payments at the end of months 3 to 14. The monthly instalment is closest to:", options: ["R9 063", "R8 500", "R10 000", "R9 500"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "Why does the balance grow during a deferment period?", options: ["Interest is charged on the unpaid balance", "The loan is cancelled", "Payments reduce the loan", "Inflation reduces the debt"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "input", text: "Write the balance after k months of no payments on a loan of P at i per month, in terms of P, i and k.", answer: "P(1+i)^k", altAnswers: ["P(1 + i)^k", "P(1+i)**k"], topic: "Annuities due and deferred loans" }
+      ]
     }
   ],
   workbook: {

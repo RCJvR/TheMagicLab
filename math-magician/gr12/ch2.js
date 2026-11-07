@@ -442,6 +442,46 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "The graph of y = log₃(x) is reflected in the line y = x, then shifted 2 units down to form h(x). Write down h(x).", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Graphing exponential & logarithmic functions" },
         { type: "input", text: "Without a calculator, find the value of log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Graphing exponential & logarithmic functions" }
       ]
+    },
+    {
+      id: 204,
+      chapter: 2,
+      name: "Transforming exponential and log graphs",
+      fullName: "Shifting exponential and logarithmic graphs: asymptotes and intercepts",
+      lesson: {
+        heading: "Transforming exponential and log graphs",
+        sub: "Chapter 2 · Topic 5",
+        body: `
+          <p>Shifting a graph changes its asymptote and its intercepts, but not its basic shape. Learn to read the shift from the equation.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Exponential graphs</div>
+            <p>
+              <span class="math">y = b^x + q</span>: the graph moves <strong>up q</strong>, so the horizontal asymptote becomes <span class="math">y = q</span>.<br>
+              <span class="math">y = b^(x + p)</span>: the graph moves <strong>left p</strong>, so the asymptote stays <span class="math">y = 0</span> and the y-intercept becomes <span class="math">b^p</span>.
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Logarithmic graphs</div>
+            <p>
+              <span class="math">y = log_b(x + p)</span>: the graph moves <strong>left p</strong>, so the vertical asymptote becomes <span class="math">x = −p</span>.<br>
+              <span class="math">y = log_b x + q</span>: the graph moves <strong>up q</strong>, and the asymptote <span class="math">x = 0</span> stays the same.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <div class="example-step"><span class="step-num">1</span><span>For y = 2^x − 5: the asymptote is y = −5, so the range is y > −5.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>For y = log₂(x − 4): the vertical asymptote is x = 4, because x − 4 = 0.</span></div>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "The asymptote of y = 2^x + 3 is:", options: ["y = 0", "y = 3", "x = 3", "y = −3"], answer: 1, topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "The vertical asymptote of y = log₂(x − 4) is:", options: ["x = 4", "x = −4", "y = 4", "x = 0"], answer: 0, topic: "Transforming exponential and log graphs" },
+        { type: "input", text: "The graph of y = 3^x is shifted 2 units to the left. What is its y-intercept?", answer: "9", topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "y = log₃ x shifted 2 units up is:", options: ["y = log₃(x + 2)", "y = log₃ x + 2", "y = log₃(x − 2)", "y = log₃ x − 2"], answer: 1, topic: "Transforming exponential and log graphs" },
+        { type: "input", text: "Find the x-intercept of y = log₂ x − 3.", answer: "8", topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "For y = 2^x − 5, the range is:", options: ["y > −5", "y > 5", "y < −5", "all real y"], answer: 0, topic: "Transforming exponential and log graphs" }
+      ]
     }
   ],
   workbook: {
