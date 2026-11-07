@@ -3926,6 +3926,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/dna-code-of-life"
         },
         {
+          "value": "Protein synthesis and mutations",
+          "label": "Protein synthesis and mutations",
+          "ref": "ss:12:life/protein-synthesis"
+        },
+        {
           "value": "Genetic engineering & biotechnology",
           "label": "Genetic engineering & biotechnology",
           "ref": "ss:12:life/genetic-engineering"
@@ -3946,6 +3951,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/human-reproduction"
         },
         {
+          "value": "Gametogenesis, puberty and the menstrual cycle",
+          "label": "Gametogenesis, puberty and the menstrual cycle",
+          "ref": "ss:12:life/gametogenesis-puberty"
+        },
+        {
           "value": "Contraception and sterilisation",
           "label": "Contraception and sterilisation",
           "ref": "ss:12:life/contraception"
@@ -3954,6 +3964,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Nervous system & senses",
           "label": "Nervous system & senses",
           "ref": "ss:12:life/nervous-system-senses"
+        },
+        {
+          "value": "The brain, eye defects, the ear and nervous disorders",
+          "label": "The brain, eye defects, the ear and nervous disorders",
+          "ref": "ss:12:life/brain-eye-ear-disorders"
         },
         {
           "value": "Neurons, impulses and synapses",
@@ -3971,6 +3986,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/homeostasis"
         },
         {
+          "value": "Homeostasis: carbon dioxide, salts and thyroxine",
+          "label": "Homeostasis: carbon dioxide, salts and thyroxine",
+          "ref": "ss:12:life/homeostasis-co2-salts"
+        },
+        {
           "value": "Osmoregulation & excretion",
           "label": "Osmoregulation & excretion",
           "ref": "ss:12:life/osmoregulation-excretion"
@@ -3979,6 +3999,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Responding to the environment — plants",
           "label": "Responding to the environment — plants",
           "ref": "ss:12:life/plant-responses"
+        },
+        {
+          "value": "Plant hormones, experiments and plant defences",
+          "label": "Plant hormones, experiments and plant defences",
+          "ref": "ss:12:life/plant-hormones-defence"
         },
         {
           "value": "Darwinism & natural selection",
@@ -4014,6 +4039,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Genetics & inheritance",
           "label": "Genetics & inheritance",
           "ref": "ss:12:life/genetics-inheritance"
+        },
+        {
+          "value": "Dihybrid crosses, pedigrees and blood groups",
+          "label": "Dihybrid crosses, pedigrees and blood groups",
+          "ref": "ss:12:life/dihybrid-pedigrees"
         },
         {
           "value": "Prenatal diagnosis and trisomies",
