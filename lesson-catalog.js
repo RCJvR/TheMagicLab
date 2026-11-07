@@ -3976,14 +3976,29 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/darwinism-natural-selection"
         },
         {
+          "value": "Population genetics and Hardy-Weinberg",
+          "label": "Population genetics and Hardy-Weinberg",
+          "ref": "ss:12:life/population-genetics"
+        },
+        {
           "value": "Evolution — evidence & human evolution",
           "label": "Evolution — evidence & human evolution",
           "ref": "ss:12:life/evolution-human-evolution"
         },
         {
+          "value": "Evolutionary trees and cladograms",
+          "label": "Evolutionary trees and cladograms",
+          "ref": "ss:12:life/phylogenetics"
+        },
+        {
           "value": "Genetics & inheritance",
           "label": "Genetics & inheritance",
           "ref": "ss:12:life/genetics-inheritance"
+        },
+        {
+          "value": "Prenatal diagnosis and trisomies",
+          "label": "Prenatal diagnosis and trisomies",
+          "ref": "ss:12:life/prenatal-diagnosis"
         }
       ]
     },
