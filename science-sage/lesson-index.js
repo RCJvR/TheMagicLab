@@ -137,6 +137,9 @@ window.SS_LESSON_INDEX = {
     "life/sampling-population-size": "Estimating population size",
     "life/food-webs-niches": "Food webs, energy flow and niches",
     "life/nature-based-farming": "Human impact, succession and nature-based farming",
+    "life/scientific-investigations": "Scientific investigations",
+    "life/graphs-data-skills": "Graphs, tables and calculations",
+    "life/essay-source-based": "Essays and source-based questions",
     "physics/vertical-projectile": "Vertical projectile motion",
     "physics/motion-graphs-bounces": "Motion graphs for vertical motion and bounces",
     "physics/momentum-newton2": "Momentum, impulse and Newton’s second law",
@@ -156,6 +159,8 @@ window.SS_LESSON_INDEX = {
     "chemistry/acids-bases-gr12": "Acids & bases — quantitative",
     "chemistry/equilibrium-calculations": "Chemical equilibrium: Kc, ICE tables and graphs",
     "chemistry/chemical-industry": "The chemical industry",
-    "chemistry/fertiliser-industry": "The fertiliser industry"
+    "chemistry/fertiliser-industry": "The fertiliser industry",
+    "physics/physics-definitions": "Physics definitions and laws",
+    "chemistry/chemistry-definitions": "Chemistry definitions"
   }
 };
