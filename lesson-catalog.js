@@ -3946,9 +3946,19 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/human-reproduction"
         },
         {
+          "value": "Contraception and sterilisation",
+          "label": "Contraception and sterilisation",
+          "ref": "ss:12:life/contraception"
+        },
+        {
           "value": "Nervous system & senses",
           "label": "Nervous system & senses",
           "ref": "ss:12:life/nervous-system-senses"
+        },
+        {
+          "value": "Neurons, impulses and synapses",
+          "label": "Neurons, impulses and synapses",
+          "ref": "ss:12:life/neurons-myelin"
         },
         {
           "value": "Human endocrine system",
@@ -3976,6 +3986,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/darwinism-natural-selection"
         },
         {
+          "value": "Adaptation and starvation resistance",
+          "label": "Adaptation and starvation resistance",
+          "ref": "ss:12:life/adaptation-starvation"
+        },
+        {
           "value": "Population genetics and Hardy-Weinberg",
           "label": "Population genetics and Hardy-Weinberg",
           "ref": "ss:12:life/population-genetics"
@@ -3984,6 +3999,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Evolution — evidence & human evolution",
           "label": "Evolution — evidence & human evolution",
           "ref": "ss:12:life/evolution-human-evolution"
+        },
+        {
+          "value": "Hominid fossils and South African discoveries",
+          "label": "Hominid fossils and South African discoveries",
+          "ref": "ss:12:life/recent-hominids"
         },
         {
           "value": "Evolutionary trees and cladograms",
@@ -3999,6 +4019,21 @@ window.ML_LESSON_CATALOG = {
           "value": "Prenatal diagnosis and trisomies",
           "label": "Prenatal diagnosis and trisomies",
           "ref": "ss:12:life/prenatal-diagnosis"
+        },
+        {
+          "value": "Estimating population size",
+          "label": "Estimating population size",
+          "ref": "ss:12:life/sampling-population-size"
+        },
+        {
+          "value": "Food webs, energy flow and niches",
+          "label": "Food webs, energy flow and niches",
+          "ref": "ss:12:life/food-webs-niches"
+        },
+        {
+          "value": "Human impact, succession and nature-based farming",
+          "label": "Human impact, succession and nature-based farming",
+          "ref": "ss:12:life/nature-based-farming"
         }
       ]
     },
