@@ -739,6 +739,28 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "The graph of f(x) = 2/(x − 1) + 3 is shown.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>The line y = −x + k is an axis of symmetry of f. Find k.", answer: "4", topic: "Sketching functions: intercepts, domain & range" },
         { type: "mc", text: "f(x) = −2(x − 1)² + 8. For which values of k does the equation f(x) = k have two different real roots?", options: ["k < 8","k > 8","k = 8","k ≤ 8"], answer: 0, topic: "Sketching functions: intercepts, domain & range" }
       ]
+    },
+    {
+      id: 503,
+      chapter: 5,
+      name: "Hyperbola: axes of symmetry",
+      fullName: "Finding the axes of symmetry of a hyperbola and using symmetry to find points and unknowns",
+      lesson: {
+        heading: "Hyperbola: axes of symmetry",
+        sub: "Chapter 5 · Topic 4",
+        body: `
+          <p>The hyperbola <span class="math">y = a/(x + p) + q</span> has two lines of symmetry. Both pass through the point where the asymptotes cross, <strong>(−p; q)</strong>, one with gradient 1 and one with gradient −1.</p><div class="def-box"><div class="def-box-title">📖 The axes of symmetry</div><p>Asymptotes: x = −p and y = q.<br>Axes of symmetry: <span class="math">y = (x + p) + q</span> and <span class="math">y = −(x + p) + q</span>.<br>When a &gt; 0 the branches lie in the first and third ‘quadrants’ formed by the asymptotes, and y = x + p + q passes through both branches; when a &lt; 0 it is y = −x − p + q that cuts both branches.</p></div><div class="example-box"><div class="example-box-title">✏️ Example: y = 2/(x − 1) + 3</div><div class="example-step"><span class="step-num">1</span><span>Asymptotes x = 1 and y = 3, so the axes pass through (1; 3).</span></div><div class="example-step"><span class="step-num">2</span><span>Gradient 1: y − 3 = 1(x − 1) ⟹ y = x + 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Gradient −1: y − 3 = −1(x − 1) ⟹ y = −x + 4.</span></div><div class="example-step"><span class="step-num">4</span><span>Symmetry check: (2; 5) is on the graph. Its reflection in y = −x + 4 is (4 − 5; 4 − 2) = (−1; 2), and 2/(−1 − 1) + 3 = 2 ✓.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Example: finding p from an axis of symmetry</div><div class="example-step"><span class="step-num">1</span><span>y = x + 5 is an axis of symmetry of y = 3/(x + p) + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>The point (−p; 1) lies on the axis: 1 = −p + 5, so p = 4.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Reflection rules for the point (a; b): in y = x + c it goes to (b − c; a + c); in y = −x + c it goes to (c − b; c − a).</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "The axes of symmetry of y = a/(x + p) + q pass through:", "options": ["(−p; q)", "(p; q)", "(q; −p)", "the origin"], "answer": 0, "topic": "Hyperbola: axes of symmetry"},
+        {"type": "input", "text": "y = 2/(x − 1) + 3. The axis of symmetry with gradient 1 is y = x + c. Find c.", "answer": "2", "topic": "Hyperbola: axes of symmetry"},
+        {"type": "input", "text": "y = −4/(x + 2) − 1. The axis of symmetry with gradient −1 is y = −x + c. Find c.", "answer": "-3", "altAnswers": ["−3"], "topic": "Hyperbola: axes of symmetry"},
+        {"type": "input", "text": "y = x + 5 is an axis of symmetry of y = 3/(x + p) + 1. Find p.", "answer": "4", "topic": "Hyperbola: axes of symmetry"},
+        {"type": "mc", "text": "The axes of symmetry of y = 1/x are:", "options": ["y = x and y = −x", "x = 0 and y = 0", "y = x + 1 and y = −x + 1", "y = 1"], "answer": 0, "topic": "Hyperbola: axes of symmetry"},
+        {"type": "mc", "text": "(2; 5) lies on a hyperbola with axis of symmetry y = x + 1. Which point must also lie on the hyperbola?", "options": ["(4; 3)", "(5; 2)", "(−2; −5)", "(3; 4)"], "answer": 0, "topic": "Hyperbola: axes of symmetry"},
+        {"type": "input", "text": "Write down the equation of the vertical asymptote of y = 5/(x − 6) + 2 in the form x = k. Give k.", "answer": "6", "topic": "Hyperbola: axes of symmetry"}
+      ]
     }
   ],
   workbook: {

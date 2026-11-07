@@ -739,6 +739,28 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "Die grafiek van f(x) = 2/(x − 1) + 3 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>Die lyn y = −x + k is 'n simmetrie-as van f. Bepaal k.", answer: "4", topic: "Skets van funksies: afsnitte, domein en waardeversameling" },
         { type: "mc", text: "f(x) = −2(x − 1)² + 8. Vir watter waardes van k het die vergelyking f(x) = k twee verskillende reële wortels?", options: ["k < 8","k > 8","k = 8","k ≤ 8"], answer: 0, topic: "Skets van funksies: afsnitte, domein en waardeversameling" }
       ]
+    },
+    {
+      id: 503,
+      chapter: 5,
+      name: "Hiperbool: simmetrie-asse",
+      fullName: "Bepaal die simmetrie-asse van ’n hiperbool en gebruik simmetrie om punte en onbekendes te vind",
+      lesson: {
+        heading: "Hiperbool: simmetrie-asse",
+        sub: "Hoofstuk 5 · Onderwerp 4",
+        body: `
+          <p>Die hiperbool <span class="math">y = a/(x + p) + q</span> het twee simmetrielyne. Albei gaan deur die punt waar die asimptote kruis, <strong>(−p; q)</strong>, een met gradiënt 1 en een met gradiënt −1.</p><div class="def-box"><div class="def-box-title">📖 Die simmetrie-asse</div><p>Asimptote: x = −p en y = q.<br>Simmetrie-asse: <span class="math">y = (x + p) + q</span> en <span class="math">y = −(x + p) + q</span>.<br>Wanneer a &gt; 0 lê die takke in die eerste en derde ‘kwadrante’ wat deur die asimptote gevorm word, en y = x + p + q gaan deur albei takke; wanneer a &lt; 0 is dit y = −x − p + q wat albei takke sny.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld: y = 2/(x − 1) + 3</div><div class="example-step"><span class="step-num">1</span><span>Asimptote x = 1 en y = 3, dus gaan die asse deur (1; 3).</span></div><div class="example-step"><span class="step-num">2</span><span>Gradiënt 1: y − 3 = 1(x − 1) ⟹ y = x + 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Gradiënt −1: y − 3 = −1(x − 1) ⟹ y = −x + 4.</span></div><div class="example-step"><span class="step-num">4</span><span>Simmetriekontrole: (2; 5) is op die grafiek. Die refleksie daarvan in y = −x + 4 is (4 − 5; 4 − 2) = (−1; 2), en 2/(−1 − 1) + 3 = 2 ✓.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld: bepaal p uit ’n simmetrie-as</div><div class="example-step"><span class="step-num">1</span><span>y = x + 5 is ’n simmetrie-as van y = 3/(x + p) + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>Die punt (−p; 1) lê op die as: 1 = −p + 5, dus p = 4.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Refleksiereëls vir die punt (a; b): in y = x + c gaan dit na (b − c; a + c); in y = −x + c gaan dit na (c − b; c − a).</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Die simmetrie-asse van y = a/(x + p) + q gaan deur:", "options": ["(−p; q)", "(p; q)", "(q; −p)", "die oorsprong"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = 2/(x − 1) + 3. Die simmetrie-as met gradiënt 1 is y = x + c. Bepaal c.", "answer": "2", "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = −4/(x + 2) − 1. Die simmetrie-as met gradiënt −1 is y = −x + c. Bepaal c.", "answer": "-3", "altAnswers": ["−3"], "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = x + 5 is ’n simmetrie-as van y = 3/(x + p) + 1. Bepaal p.", "answer": "4", "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "mc", "text": "Die simmetrie-asse van y = 1/x is:", "options": ["y = x en y = −x", "x = 0 en y = 0", "y = x + 1 en y = −x + 1", "y = 1"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "mc", "text": "(2; 5) lê op ’n hiperbool met simmetrie-as y = x + 1. Watter punt moet ook op die hiperbool lê?", "options": ["(4; 3)", "(5; 2)", "(−2; −5)", "(3; 4)"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "Skryf die vergelyking van die vertikale asimptoot van y = 5/(x − 6) + 2 in die vorm x = k. Gee k.", "answer": "6", "topic": "Hiperbool: simmetrie-asse"}
+      ]
     }
   ],
   workbook: {

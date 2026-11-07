@@ -393,6 +393,29 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "The cubic f has x-intercepts at −1, 2 and 3, and its y-intercept is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Find f(1).", answer: "8", topic: "Sketching cubic graphs from key features" },
         { type: "input", text: "The graph of f(x) = x³ − 3x² − 9x + k touches the x-axis at its local minimum. Find k.", answer: "27", topic: "Sketching cubic graphs from key features" }
       ]
+    },
+    {
+      id: 504,
+      chapter: 5,
+      name: "Cubic–line intersections & inequalities",
+      fullName: "Where a cubic meets a line, tangents from repeated roots, and solving inequalities such as x·f′(x) < 0 from a graph",
+      lesson: {
+        heading: "Cubic–line intersections & inequalities",
+        sub: "Chapter 5 · Topic 5",
+        body: `
+          <p>Paper 1 calculus questions often give a cubic f and a line g, then ask where they meet, when one is above the other, and for which x an expression such as <span class="math">x·f′(x)</span> is negative. These are reading-the-sign questions.</p><div class="def-box"><div class="def-box-title">📖 Where a cubic meets a line</div><p>Set f(x) = g(x), move everything to one side and solve the cubic, using the factor theorem. A <strong>repeated root</strong> means the line is a <strong>tangent</strong> at that point.</p></div><div class="example-box"><div class="example-box-title">✏️ Example 1: f(x) = x³ − 4x² + x + 6 and g(x) = x + 6</div><div class="example-step"><span class="step-num">1</span><span>x³ − 4x² + x + 6 = x + 6 ⟹ x³ − 4x² = 0 ⟹ x²(x − 4) = 0</span></div><div class="example-step"><span class="step-num">2</span><span>x = 0 (repeated root: g touches f at (0; 6)) or x = 4, giving (4; 10).</span></div><div class="example-step"><span class="step-num">3</span><span>Check: f′(x) = 3x² − 8x + 1, so f′(0) = 1 = gradient of g. g is the tangent at x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x) ≥ g(x) ⟺ x²(x − 4) ≥ 0 ⟺ x = 0 or x ≥ 4.</span></div></div><div class="def-box"><div class="def-box-title">📖 Reading signs from the graph</div><p>f(x) &gt; 0: graph above the x-axis. &nbsp; f′(x) &gt; 0: graph increasing. &nbsp; f′(x) &lt; 0: graph decreasing. &nbsp; f′′(x) &gt; 0: concave up (right of the point of inflection when a &gt; 0).<br>For a <strong>product</strong> such as x·f′(x) &lt; 0, the two factors must have <strong>opposite signs</strong>; for a product &gt; 0 they must have the <strong>same sign</strong>. Draw two sign lines and compare.</p></div><div class="example-box"><div class="example-box-title">✏️ Example 2: f(x) = x³ − 3x² − 9x + 27 = (x − 3)²(x + 3)</div><div class="example-step"><span class="step-num">1</span><span>f′(x) = 3x² − 6x − 9 = 3(x − 3)(x + 1): turning points at x = −1 (maximum, f(−1) = 32) and x = 3 (minimum, f(3) = 0).</span></div><div class="example-step"><span class="step-num">2</span><span>f(x) &lt; 0 for x &lt; −3. &nbsp; f′(x) &lt; 0 (decreasing) for −1 &lt; x &lt; 3.</span></div><div class="example-step"><span class="step-num">3</span><span>x·f′(x) &gt; 0: both positive for x &gt; 3; both negative for −1 &lt; x &lt; 0. Answer: −1 &lt; x &lt; 0 or x &gt; 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x)·f′(x) ≤ 0: x ≤ −3 or −1 ≤ x ≤ 3.</span></div><div class="example-step"><span class="step-num">5</span><span>f′′(x) = 6x − 6: concave up for x &gt; 1; point of inflection at x = 1.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Include the endpoints only when the inequality has ≤ or ≥, and remember that a repeated root (a touching point) makes the expression zero there without changing sign.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "f(x) = x³ − 4x² + x + 6 and g(x) = x + 6. Find the x-coordinate of the point where g CUTS (not touches) f.", "answer": "4", "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "When f(x) − g(x) has a repeated root at x = a, the line g is:", "options": ["a tangent to f at x = a", "parallel to f", "perpendicular to f at x = a", "an asymptote"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "For f(x) = (x − 3)²(x + 3), for which x is f decreasing?", "options": ["−1 < x < 3", "x < −1", "x > 3", "−3 < x < 3"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "For f(x) = (x − 3)²(x + 3), solve x·f′(x) > 0.", "options": ["−1 < x < 0 or x > 3", "0 < x < 3", "x < −1 or 0 < x < 3", "x > 0"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "input", "text": "f(x) = x³ − 3x² − 9x + 27. Find the x-coordinate of the point of inflection.", "answer": "1", "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "f(x) = x³ − 4x² + x + 6, g(x) = x + 6. For which x is f(x) ≥ g(x)?", "options": ["x = 0 or x ≥ 4", "0 ≤ x ≤ 4", "x ≥ 4", "x ≤ 0"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "A cubic with a > 0 has turning points at x = −2 and x = 1. Where is f′(x) < 0?", "options": ["−2 < x < 1", "x < −2 or x > 1", "x > 1", "x < −2"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "input", "text": "The line y = 2x + k is a tangent to f(x) = x³ − x at the point where x = 1. Find k.", "answer": "-2", "altAnswers": ["−2"], "topic": "Cubic–line intersections & inequalities"}
+      ]
     }
   ],
   workbook: {

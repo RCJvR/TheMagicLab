@@ -30,7 +30,9 @@
     tanrad: ['Tan ⊥ radius', 'Raakl ⊥ radius'], tanchord: ['Tan-chord theorem', 'Raaklyn-koordstelling'],
     semic: ['∠ in semi-circle', '∠ in halwe sirkel'],
     prop: ['Line ∥ one side of △', 'Lyn ∥ een sy van △'], equi: ['∠∠∠ (equiangular △s)', '∠∠∠ (gelykhoekige △e)'],
-    sim: ['Sides of ||| △s in prop', 'Sye van ||| △e in verh']
+    sim: ['Sides of ||| △s in prop', 'Sye van ||| △e in verh'],
+    rndpt: ['∠s around a pt', '∠e om \'n punt'], corrconv: ['Corr ∠s equal', 'Ooreenk ∠e gelyk'],
+    sameh: ['Same height', 'Dieselfde hoogte'], samebase: ['Same base, between ∥ lines', 'Dieselfde basis, tussen ∥ lyne']
   };
   const TXT = {
     en: { how: 'Tap the statements in a logical order, then choose a reason for each line. Leave out any statement that does not belong.',
