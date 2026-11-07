@@ -138,14 +138,24 @@ window.SS_LESSON_INDEX = {
     "life/food-webs-niches": "Food webs, energy flow and niches",
     "life/nature-based-farming": "Human impact, succession and nature-based farming",
     "physics/vertical-projectile": "Vertical projectile motion",
+    "physics/motion-graphs-bounces": "Motion graphs for vertical motion and bounces",
+    "physics/momentum-newton2": "Momentum, impulse and Newton’s second law",
+    "physics/gravitation": "Newton’s law of universal gravitation",
     "physics/doppler-effect": "The Doppler effect",
     "physics/electrodynamics": "Electrodynamics",
+    "physics/electrodynamics-direction-rules": "Electrodynamics: direction rules",
     "physics/electric-circuits-gr12": "Electric circuits — internal resistance",
     "physics/photoelectric-effect": "Optical phenomena & photoelectric effect",
     "chemistry/organic-chemistry": "Organic chemistry — structure & naming",
+    "chemistry/vapour-pressure-investigations": "Physical properties of organic compounds",
+    "chemistry/iupac-naming": "IUPAC naming and isomers",
     "chemistry/organic-reactions": "Organic reactions",
     "chemistry/electrochemistry": "Electrochemistry",
+    "chemistry/electrolysis-industry": "Electrolysis in industry",
+    "chemistry/faraday-calculations": "Electrolysis calculations (Faraday)",
     "chemistry/acids-bases-gr12": "Acids & bases — quantitative",
-    "chemistry/chemical-industry": "The chemical industry"
+    "chemistry/equilibrium-calculations": "Chemical equilibrium: Kc, ICE tables and graphs",
+    "chemistry/chemical-industry": "The chemical industry",
+    "chemistry/fertiliser-industry": "The fertiliser industry"
   }
 };
