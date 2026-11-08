@@ -26,6 +26,23 @@ Every question can carry `"skill": "knowledge"` (the default) or
 | `pairs` | `q`, `pairs` [[term, partner], ..] (cards, find the pairs) | 1 per pair |
 | `fill` | `q`, `fill` (code with `[[]]` for each blank), `blanks` [answer, or [accepted, …]] | 1 per blank; exact match, spaces ignored, case counts |
 | `scenario` | `scenario` (text), `questions` [any of the types above] | the sum of its parts |
+| `word` | `q`, `answer` (a word/term, or [accepted, …]); one typing box | `marks`, default 1 |
+| `blank` | `q` (instruction), `text` (a sentence with `[[]]` per missing word), `blanks` [answer, or [accepted, …]] | 1 per blank |
+| `num` | `q`, `answer` (a number), optional `unit` (shown after the box) and `tol` (allowed error; default 1% of the answer) | `marks`, default 1 |
+| `label` | `q`, `svg` (the diagram), `labels` [[tag, accepted, …], ..] | 1 per label |
+| `written` | `q`, `points` [memo points]; the learner types a full answer and, after handing in, ticks the memo points they earned | 1 per point (or `marks`) |
+
+`word`, `blank` and `label` answers ignore capitals, accents, extra spaces, hyphens and a
+leading article (the, a, an, die, 'n), but the spelling must be right; list every
+acceptable form (plurals, synonyms, British/American spelling). `num` accepts a
+decimal comma or point and a unit typed after the number. Give each of these an
+Afrikaans twin: `answerAf`, `textAf`, `blanksAf`, `labelsAf`, `pointsAf`, `unitAf`.
+`written` questions are never queued as revisits, and a paper with written questions
+shows a "Mark your written answers" step before the result.
+
+Natural Sciences blueprint (rev 2): 10 multiple choice, 6 one-word terms, 3 missing-word
+sentences (6 blanks), up to 5 true/false, matching, steps in order, one calculation
+(`num`) plus one written explanation, then scenarios. Minutes = about one per mark.
 
 Scenario sub-questions count as application unless they say otherwise.
 A test file's `"rev"` number goes up when its questions change; an attempt saved
