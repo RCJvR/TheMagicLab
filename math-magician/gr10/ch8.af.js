@@ -194,6 +194,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: A(−2; 3) en B(4; −5)</div><div class="example-step"><span class="step-num">1</span><span>AB = √((4 + 2)² + (−5 − 3)²) = √(36 + 64) = 10 eenhede.</span></div><div class="example-step"><span class="step-num">2</span><span>Middelpunt M = ((−2 + 4)/2; (3 − 5)/2) = (1; −1).</span></div><div class="example-step"><span class="step-num">3</span><span>Terugwerkend: as M(1; −1) die middelpunt is en A(−2; 3) een eindpunt, dan is B = (2 × 1 − (−2); 2 × (−1) − 3) = (4; −5) ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>’n Sirkel met middellyn AB sou radius 5 en middelpunt (1; −1) hê.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kwadreer die verskille voordat jy optel: (−5 − 3)² = 64, nie −64 nie.</span></div>
         `
       },
       questions: [
@@ -467,6 +468,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Toon dat P(−1; 3), Q(2; −3) en R(5; −9) kollineêr is</div><div class="example-step"><span class="step-num">1</span><span>m(PQ) = (−3 − 3)/(2 + 1) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>m(QR) = (−9 + 3)/(5 − 2) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">3</span><span>Die gradiënte is gelyk en Q is ’n gemeenskaplike punt, dus lê P, Q en R op een reguit lyn.</span></div><div class="example-step"><span class="step-num">4</span><span>Vergelyking: y − 3 = −2(x + 1) → y = −2x + 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Trek in dieselfde volgorde in die teller en noemer af: (y₂ − y₁)/(x₂ − x₁).</span></div>
         `
       },
       questions: [
@@ -622,6 +624,7 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer 'n vraag "ewewydig aan" of "loodreg op" 'n gegewe lyn noem, gee dit jou dadelik die gradiënt — jy het nie 'n tweede punt nodig nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die lyne deur (2; −1) wat parallel en loodreg op y = 3x − 4 is</div><div class="example-step"><span class="step-num">1</span><span>Parallel: m = 3. y + 1 = 3(x − 2) → y = 3x − 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Loodreg: m = −1/3. y + 1 = −⅓(x − 2) → y = −⅓x − ⅓.</span></div><div class="example-step"><span class="step-num">3</span><span>Kontroleer die punt in die tweede lyn: −⅓(2) − ⅓ = −1 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>Die twee lyne kruis by (2; −1) teen regte hoeke.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Parallelle lyne het gelyke gradiënte; loodregte lyne het gradiënte waarvan die produk −1 is.</span></div>
         `
       },
       questions: [

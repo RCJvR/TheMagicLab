@@ -103,6 +103,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always take the root <em>first</em>, then apply the power — smaller numbers are easier to work with. <span class="math">27^(2/3) = (∛27)² = 3² = 9</span> is much easier than <span class="math">∛(27²) = ∛729</span>.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify (2x³y)² × 3x⁻⁴ ÷ (6x²y³)</div><div class="example-step"><span class="step-num">1</span><span>(2x³y)² = 4x⁶y² (square the 2 as well).</span></div><div class="example-step"><span class="step-num">2</span><span>4x⁶y² × 3x⁻⁴ = 12x²y².</span></div><div class="example-step"><span class="step-num">3</span><span>12x²y² ÷ 6x²y³ = 2x⁰y⁻¹.</span></div><div class="example-step"><span class="step-num">4</span><span>= 2/y (with positive exponents).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> (2x³)² = 4x⁶, not 2x⁶ — the power applies to every factor inside the brackets.</span></div>
         `
       },
       questions: [
@@ -263,6 +264,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The same-base method only works when you can express both sides as a power of the same base. If not, use logarithms (Grade 12) or inspection.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve 3ˣ⁺¹ = 27, 4ˣ = 8 and 5ˣ = 1/25</div><div class="example-step"><span class="step-num">1</span><span>3ˣ⁺¹ = 3³ → x + 1 = 3 → x = 2.</span></div><div class="example-step"><span class="step-num">2</span><span>4ˣ = 8 → (2²)ˣ = 2³ → 2x = 3 → x = 3/2.</span></div><div class="example-step"><span class="step-num">3</span><span>5ˣ = 1/25 = 5⁻² → x = −2.</span></div><div class="example-step"><span class="step-num">4</span><span>Check each answer by substituting it back.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Write both sides with the <strong>same base</strong> before equating the exponents.</span></div>
         `
       },
       questions: [
@@ -361,6 +363,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>When you see a sum or difference of exponential terms (like <span class="math">3^(x+2) − 3^x</span>), factor out the smallest power first — it almost always simplifies beautifully.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify (2ˣ⁺² − 2ˣ) ÷ (3 · 2ˣ)</div><div class="example-step"><span class="step-num">1</span><span>2ˣ⁺² = 2ˣ · 2² = 4 · 2ˣ.</span></div><div class="example-step"><span class="step-num">2</span><span>Numerator: 4 · 2ˣ − 2ˣ = 2ˣ(4 − 1) = 3 · 2ˣ.</span></div><div class="example-step"><span class="step-num">3</span><span>(3 · 2ˣ) ÷ (3 · 2ˣ) = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>Common factor first, then cancel.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> 2ˣ⁺² is not 2ˣ + 2² — the exponent law gives a product: 2ˣ · 2².</span></div>
         `
       },
       questions: [
@@ -455,6 +458,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Whenever you see two exponential terms added or subtracted (not multiplied), suspect that factorising out the smallest power is the way in — it's the same strategy as the previous topic, just now inside an equation.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve 2ˣ⁺¹ + 2ˣ = 24 and 9ˣ − 4 · 3ˣ + 3 = 0</div><div class="example-step"><span class="step-num">1</span><span>2ˣ(2 + 1) = 24 → 2ˣ = 8 → x = 3.</span></div><div class="example-step"><span class="step-num">2</span><span>9ˣ = (3ˣ)². Let k = 3ˣ: k² − 4k + 3 = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>(k − 1)(k − 3) = 0 → k = 1 or k = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>3ˣ = 1 → x = 0; 3ˣ = 3 → x = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> When a term like 9ˣ appears with 3ˣ, rewrite it as (3ˣ)² and use k-substitution — you cannot add exponents of different terms.</span></div>
         `
       },
       questions: [

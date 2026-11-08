@@ -101,6 +101,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir hoogte-/depressieprobleme word die hoek altyd vanaf die <strong>horisontaal</strong> gemeet. Die aanliggende sy is die horisontale afstand en die oorstaande is die vertikale hoogte.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Leer van 6 m maak ’n hoek van 70° met die grond; ’n gebou van 30 m is 40 m ver</div><div class="example-step"><span class="step-num">1</span><span>Hoogte bereik: 6 sin 70° = 5,64 m.</span></div><div class="example-step"><span class="step-num">2</span><span>Afstand van die voet van die muur: 6 cos 70° = 2,05 m.</span></div><div class="example-step"><span class="step-num">3</span><span>Hoogtehoek na die bopunt van die gebou: tan θ = 30/40 → θ = 36,9°.</span></div><div class="example-step"><span class="step-num">4</span><span>Teken ’n skets en merk die regte hoek voordat jy die verhouding kies.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Hoogte- en dieptehoeke word vanaf die <strong>horisontaal</strong> gemeet, nie vanaf die vertikaal nie.</span></div>
         `
       },
       questions: [
@@ -224,6 +225,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die formule h = d·tanA·tanB/(tanA − tanB) kom van die opstel van albei tan-vergelykings en die algebraïese eliminasie van d — 'n belangrike eksamentegniek.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vanaf A is die hoogtehoek na die bopunt van ’n toring 30°. Nadat 50 m na die toring gestap is tot by B, is die hoek 45°</div><div class="example-step"><span class="step-num">1</span><span>Laat die hoogte h wees. Vanaf B: afstand na die voet = h/tan 45° = h.</span></div><div class="example-step"><span class="step-num">2</span><span>Vanaf A: afstand = h/tan 30° = 1,732h.</span></div><div class="example-step"><span class="step-num">3</span><span>AB = 1,732h − h = 50 → 0,732h = 50.</span></div><div class="example-step"><span class="step-num">4</span><span>h = 68,3 m.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik die sy wat die twee driehoeke deel (die hoogte h) om hulle te verbind.</span></div>
         `
       },
       questions: [

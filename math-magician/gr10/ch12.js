@@ -241,6 +241,7 @@ MathMagician.registerChapter(12, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Memorise the <strong>five conditions</strong> for a parallelogram — in exam proofs, you only need to prove ONE of them, so choose the one the given information leads to most directly.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Prove that the opposite sides of parallelogram ABCD are equal</div><div class="example-step"><span class="step-num">1</span><span>Draw diagonal AC.</span></div><div class="example-step"><span class="step-num">2</span><span>In △ABC and △CDA: ∠BAC = ∠DCA (alt ∠s, AB ∥ DC) and ∠BCA = ∠DAC (alt ∠s, AD ∥ BC).</span></div><div class="example-step"><span class="step-num">3</span><span>AC = CA (common), so △ABC ≡ △CDA (AAS).</span></div><div class="example-step"><span class="step-num">4</span><span>Therefore AB = CD and BC = DA (≡ △s).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Do not use what you must prove: you may use AB ∥ DC and AD ∥ BC (the definition), but not AB = DC.</span></div>
         `
       },
       questions: [

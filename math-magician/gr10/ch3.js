@@ -266,6 +266,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>If the differences between consecutive terms are <em>not</em> all equal, the sequence is not linear — check for a quadratic or geometric pattern instead.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Matchsticks: 1 square uses 4 matches, 2 squares in a row use 7, 3 squares use 10</div><div class="example-step"><span class="step-num">1</span><span>Constant difference 3, so Tₙ = 3n + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>50 squares: T₅₀ = 3(50) + 1 = 151 matches.</span></div><div class="example-step"><span class="step-num">3</span><span>With 200 matches: 3n + 1 ≤ 200 → n ≤ 66,3.</span></div><div class="example-step"><span class="step-num">4</span><span>So 66 squares can be made (using 199 matches).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The answer to “how many squares” must be a whole number — round down, not up.</span></div>
         `
       },
       questions: [

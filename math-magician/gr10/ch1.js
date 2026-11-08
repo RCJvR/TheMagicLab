@@ -96,6 +96,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>A surd in simplified form has <strong>no perfect square factors</strong> under the root. Always check: can I pull out 4, 9, 16, 25, 36…?</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Classify and estimate real numbers</div><div class="example-step"><span class="step-num">1</span><span>√16 = 4 is rational (an integer); √7 is irrational (non-terminating, non-recurring).</span></div><div class="example-step"><span class="step-num">2</span><span>0,333… = 1/3 is rational (recurring decimal); π is irrational (22/7 is only an approximation).</span></div><div class="example-step"><span class="step-num">3</span><span>√50 lies between 7 and 8, because 7² = 49 and 8² = 64.</span></div><div class="example-step"><span class="step-num">4</span><span>Since 50 is very close to 49, √50 ≈ 7,1 (calculator: 7,07).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> π is not equal to 22/7 or 3,14 — those are rational approximations of an irrational number.</span></div>
         `
       },
       questions: [
@@ -551,6 +552,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The trinomial factor <span class="math">a² ∓ ab + b²</span> never factorises further over the integers — don't waste time trying.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Factorise 8x³ − 27 and 54a³ + 2</div><div class="example-step"><span class="step-num">1</span><span>8x³ − 27 = (2x)³ − 3³ = (2x − 3)(4x² + 6x + 9).</span></div><div class="example-step"><span class="step-num">2</span><span>54a³ + 2: first take out the common factor: 2(27a³ + 1).</span></div><div class="example-step"><span class="step-num">3</span><span>27a³ + 1 = (3a)³ + 1³ = (3a + 1)(9a² − 3a + 1).</span></div><div class="example-step"><span class="step-num">4</span><span>So 54a³ + 2 = 2(3a + 1)(9a² − 3a + 1).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> In the trinomial the middle sign is the opposite of the sign in the binomial: a³ − b³ = (a − b)(a² <strong>+</strong> ab + b²).</span></div>
         `
       },
       questions: [
@@ -640,6 +642,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Before cancelling, always double-check that the trinomial you're left with (like <span class="math">x² + 2x + 4</span>) really has no more common factors with the other side — cube trinomials never factorise further, but always verify with the specific numbers.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify (x³ − 8)/(x² − 4) × (x + 2)/(x² + 2x + 4)</div><div class="example-step"><span class="step-num">1</span><span>Factorise every part: x³ − 8 = (x − 2)(x² + 2x + 4); x² − 4 = (x − 2)(x + 2).</span></div><div class="example-step"><span class="step-num">2</span><span>Expression = (x − 2)(x² + 2x + 4)/((x − 2)(x + 2)) × (x + 2)/(x² + 2x + 4).</span></div><div class="example-step"><span class="step-num">3</span><span>Cancel the common factors (x − 2), (x + 2) and (x² + 2x + 4).</span></div><div class="example-step"><span class="step-num">4</span><span>Answer: 1, for x ≠ 2 and x ≠ −2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Cancel factors only, never terms: (x + 2)/(x + 5) cannot be simplified by crossing out the x’s.</span></div>
         `
       },
       questions: [

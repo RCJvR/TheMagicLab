@@ -241,6 +241,7 @@ MathMagician.registerChapter(12, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Leer die <strong>vyf voorwaardes</strong> vir 'n parallelogram uit jou kop — in eksamenbewyse hoef jy net EEN daarvan te bewys, kies dus die een waartoe die gegewe inligting die mees direk lei.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bewys dat die teenoorstaande sye van parallelogram ABCD gelyk is</div><div class="example-step"><span class="step-num">1</span><span>Trek hoeklyn AC.</span></div><div class="example-step"><span class="step-num">2</span><span>In △ABC en △CDA: ∠BAC = ∠DCA (verw ∠e, AB ∥ DC) en ∠BCA = ∠DAC (verw ∠e, AD ∥ BC).</span></div><div class="example-step"><span class="step-num">3</span><span>AC = CA (gemeen), dus △ABC ≡ △CDA (HHS).</span></div><div class="example-step"><span class="step-num">4</span><span>Dus AB = CD en BC = DA (≡ △e).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moenie gebruik wat jy moet bewys nie: jy mag AB ∥ DC en AD ∥ BC (die definisie) gebruik, maar nie AB = DC nie.</span></div>
         `
       },
       questions: [

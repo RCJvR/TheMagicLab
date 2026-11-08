@@ -119,6 +119,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For a cone, always calculate the <strong>slant height</strong> l = √(r² + h²) first — the SA formula uses l, not the vertical height h.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Surface area of a 4 × 3 × 2 cm box and a cylinder with r = 2 cm, h = 5 cm</div><div class="example-step"><span class="step-num">1</span><span>Box: SA = 2(lb + lh + bh) = 2(12 + 8 + 6) = 52 cm².</span></div><div class="example-step"><span class="step-num">2</span><span>Cylinder: two circles 2πr² = 8π; curved side 2πrh = 20π.</span></div><div class="example-step"><span class="step-num">3</span><span>Total = 28π ≈ 88,0 cm².</span></div><div class="example-step"><span class="step-num">4</span><span>Area answers are in square units (cm²).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Surface area is in square units and volume in cubic units — include the correct unit.</span></div>
         `
       },
       questions: [
@@ -270,6 +271,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Scale factor k affects: length → ×k, area/SA → ×k², volume → ×k³. Doubling all dimensions increases volume by 8, not 2.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A rectangular prism measures 5 × 4 × 3 cm</div><div class="example-step"><span class="step-num">1</span><span>V = 5 × 4 × 3 = 60 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>All three dimensions doubled: V × 2³ = 480 cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>Only the height doubled: V × 2 = 120 cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>All dimensions doubled multiplies the surface area by 2² = 4.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Doubling the dimensions does not double the volume — it multiplies it by 8.</span></div>
         `
       },
       questions: [
@@ -560,6 +562,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Don't confuse the pyramid's perpendicular height (used in the volume formula) with the slant height of a triangular face (used in the surface area formula) — they are different lengths found using different right triangles.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A square pyramid has base 6 cm and perpendicular height 4 cm</div><div class="example-step"><span class="step-num">1</span><span>Slant height of a face: √(4² + 3²) = 5 cm (3 is half the base).</span></div><div class="example-step"><span class="step-num">2</span><span>SA = base + 4 triangles = 36 + 4 × ½ × 6 × 5 = 36 + 60 = 96 cm².</span></div><div class="example-step"><span class="step-num">3</span><span>V = ⅓ × base area × height = ⅓ × 36 × 4 = 48 cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>A prism with the same base and height would have three times this volume.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use the slant height for the surface area of the faces and the perpendicular height for the volume.</span></div>
         `
       },
       questions: [

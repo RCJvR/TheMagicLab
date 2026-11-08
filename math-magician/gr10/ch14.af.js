@@ -96,6 +96,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vul altyd die Venn-diagram van binne na buite in — begin met die deursnee, trek dan af om elke "slegs"-streek te kry, en vind "geeneen" laaste.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: 30 leerders: 18 hou van wiskunde, 12 van wetenskap en 5 van albei</div><div class="example-step"><span class="step-num">1</span><span>Venn-diagram: albei = 5; net wiskunde = 13; net wetenskap = 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Geeneen = 30 − (13 + 5 + 7) = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>P(wiskunde of wetenskap) = 25/30 = 5/6.</span></div><div class="example-step"><span class="step-num">4</span><span>P(net wetenskap) = 7/30.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Begin by die oorvleueling; anders word die 5 leerders wat van albei hou twee keer getel.</span></div>
         `
       },
       questions: [
@@ -288,6 +289,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir probleme oor "ten minste een", gebruik altyd die komplement: P(ten minste een) = 1 − P(geeneen). Dit is baie vinniger as om al die individuele gevalle op te tel.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: P(A) = 0,3 en P(B) = 0,45</div><div class="example-step"><span class="step-num">1</span><span>As A en B onderling uitsluitend is: P(A of B) = 0,3 + 0,45 = 0,75.</span></div><div class="example-step"><span class="step-num">2</span><span>Komplement: P(nie A) = 1 − 0,3 = 0,7.</span></div><div class="example-step"><span class="step-num">3</span><span>As eerder P(A en B) = 0,1: P(A of B) = 0,3 + 0,45 − 0,1 = 0,65.</span></div><div class="example-step"><span class="step-num">4</span><span>Onderling uitsluitende gebeurtenisse het P(A en B) = 0.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Tel waarskynlikhede net direk op wanneer die gebeurtenisse nie saam kan plaasvind nie.</span></div>
         `
       },
       questions: [
@@ -406,6 +408,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Sê nooit dat relatiewe frekwensie na 'n klein aantal pogings presies met teoretiese waarskynlikheid moet ooreenstem nie — variasie word verwag en verminder slegs (gemiddeld) soos pogings toeneem.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Dobbelsteen word 60 keer gegooi en ’n ses kom 14 keer voor</div><div class="example-step"><span class="step-num">1</span><span>Relatiewe frekwensie van ’n ses = 14/60 = 0,23.</span></div><div class="example-step"><span class="step-num">2</span><span>Teoretiese waarskynlikheid = 1/6 ≈ 0,17.</span></div><div class="example-step"><span class="step-num">3</span><span>Verwagte aantal sesse in 60 gooie = 60 × 1/6 = 10.</span></div><div class="example-step"><span class="step-num">4</span><span>Met baie meer gooie behoort die relatiewe frekwensie nader aan 1/6 te kom.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Relatiewe frekwensie kom uit ’n eksperiment en verander met elke proef; teoretiese waarskynlikheid nie.</span></div>
         `
       },
       questions: [
@@ -535,6 +538,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Twee-rigting-tabelle en Venn-diagramme wys presies dieselfde inligting in verskillende uitlegte — as 'n vraag jou een gee, kan jy dit altyd as die ander herteken, watter een ook al jou help om helderder te dink.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Opname van 50 leerders: seuns — stap 12, taxi 18; meisies — stap 15, taxi 5</div><div class="example-step"><span class="step-num">1</span><span>Totale: seuns 30, meisies 20; stap 27, taxi 23.</span></div><div class="example-step"><span class="step-num">2</span><span>P(meisie) = 20/50 = 0,4; P(stap) = 27/50 = 0,54.</span></div><div class="example-step"><span class="step-num">3</span><span>P(meisie en stap) = 15/50 = 0,3.</span></div><div class="example-step"><span class="step-num">4</span><span>P(meisie) × P(stap) = 0,216 ≠ 0,3, dus is ’n meisie wees en stap nie onafhanklik nie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Lees die gesamentlike waarskynlikheid van binne die tabel af; die totale gee die enkelgebeurtenis-waarskynlikhede.</span></div>
         `
       },
       questions: [

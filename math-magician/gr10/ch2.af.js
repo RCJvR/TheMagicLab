@@ -103,6 +103,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Trek altyd <em>eerste</em> die wortel, en pas dan die mag toe — kleiner getalle is makliker om mee te werk. <span class="math">27^(2/3) = (∛27)² = 3² = 9</span> is baie makliker as <span class="math">∛(27²) = ∛729</span>.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig (2x³y)² × 3x⁻⁴ ÷ (6x²y³)</div><div class="example-step"><span class="step-num">1</span><span>(2x³y)² = 4x⁶y² (kwadreer die 2 ook).</span></div><div class="example-step"><span class="step-num">2</span><span>4x⁶y² × 3x⁻⁴ = 12x²y².</span></div><div class="example-step"><span class="step-num">3</span><span>12x²y² ÷ 6x²y³ = 2x⁰y⁻¹.</span></div><div class="example-step"><span class="step-num">4</span><span>= 2/y (met positiewe eksponente).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> (2x³)² = 4x⁶, nie 2x⁶ nie — die mag geld vir elke faktor binne die hakies.</span></div>
         `
       },
       questions: [
@@ -263,6 +264,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die dieselfde-grondtal-metode werk net wanneer jy albei kante as 'n mag van dieselfde grondtal kan uitdruk. Indien nie, gebruik logaritmes (Graad 12) of inspeksie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op 3ˣ⁺¹ = 27, 4ˣ = 8 en 5ˣ = 1/25</div><div class="example-step"><span class="step-num">1</span><span>3ˣ⁺¹ = 3³ → x + 1 = 3 → x = 2.</span></div><div class="example-step"><span class="step-num">2</span><span>4ˣ = 8 → (2²)ˣ = 2³ → 2x = 3 → x = 3/2.</span></div><div class="example-step"><span class="step-num">3</span><span>5ˣ = 1/25 = 5⁻² → x = −2.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer elke antwoord deur dit terug te vervang.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skryf albei kante met <strong>dieselfde grondtal</strong> voordat jy die eksponente gelykstel.</span></div>
         `
       },
       questions: [
@@ -361,6 +363,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer jy 'n som of verskil van eksponensiële terme sien (soos <span class="math">3^(x+2) − 3^x</span>), faktoriseer eers die kleinste mag uit — dit vereenvoudig byna altyd pragtig.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig (2ˣ⁺² − 2ˣ) ÷ (3 · 2ˣ)</div><div class="example-step"><span class="step-num">1</span><span>2ˣ⁺² = 2ˣ · 2² = 4 · 2ˣ.</span></div><div class="example-step"><span class="step-num">2</span><span>Teller: 4 · 2ˣ − 2ˣ = 2ˣ(4 − 1) = 3 · 2ˣ.</span></div><div class="example-step"><span class="step-num">3</span><span>(3 · 2ˣ) ÷ (3 · 2ˣ) = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>Eers gemeenskaplike faktor, dan kanselleer.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> 2ˣ⁺² is nie 2ˣ + 2² nie — die eksponentwet gee ’n produk: 2ˣ · 2².</span></div>
         `
       },
       questions: [
@@ -455,6 +458,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer jy twee eksponensiële terme sien wat opgetel of afgetrek word (nie vermenigvuldig nie), vermoed dat om die kleinste mag uit te faktoriseer die manier in is — dit is dieselfde strategie as in die vorige onderwerp, net nou binne 'n vergelyking.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op 2ˣ⁺¹ + 2ˣ = 24 en 9ˣ − 4 · 3ˣ + 3 = 0</div><div class="example-step"><span class="step-num">1</span><span>2ˣ(2 + 1) = 24 → 2ˣ = 8 → x = 3.</span></div><div class="example-step"><span class="step-num">2</span><span>9ˣ = (3ˣ)². Laat k = 3ˣ: k² − 4k + 3 = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>(k − 1)(k − 3) = 0 → k = 1 of k = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>3ˣ = 1 → x = 0; 3ˣ = 3 → x = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Wanneer ’n term soos 9ˣ saam met 3ˣ voorkom, herskryf dit as (3ˣ)² en gebruik k-vervanging — jy kan nie eksponente van verskillende terme optel nie.</span></div>
         `
       },
       questions: [

@@ -139,6 +139,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir kwadratiese vergelykings, probeer altyd eers faktorisering — dit is vinniger. Gebruik die formule slegs wanneer jy nie die faktore maklik kan sien nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op x(x − 3) = 10, x² = 3x, en maak r die onderwerp van A = πr²</div><div class="example-step"><span class="step-num">1</span><span>x² − 3x − 10 = 0 → (x − 5)(x + 2) = 0 → x = 5 of x = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>x² = 3x → x² − 3x = 0 → x(x − 3) = 0 → x = 0 of x = 3.</span></div><div class="example-step"><span class="step-num">3</span><span>A = πr² → r² = A/π → r = √(A/π) (r &gt; 0 vir ’n lengte).</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer elke oplossing in die oorspronklike vergelyking.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moet nooit deur x deel nie: in x² = 3x verloor dit die oplossing x = 0. Faktoriseer eerder.</span></div>
         `
       },
       questions: [

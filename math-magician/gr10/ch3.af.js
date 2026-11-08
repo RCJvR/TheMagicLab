@@ -266,6 +266,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>As die verskille tussen opeenvolgende terme <em>nie</em> almal gelyk is nie, is die ry nie lineêr nie — kyk eerder vir 'n kwadratiese of meetkundige patroon.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vuurhoutjies: 1 vierkant gebruik 4 vuurhoutjies, 2 vierkante in ’n ry gebruik 7, 3 vierkante gebruik 10</div><div class="example-step"><span class="step-num">1</span><span>Konstante verskil 3, dus Tₙ = 3n + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>50 vierkante: T₅₀ = 3(50) + 1 = 151 vuurhoutjies.</span></div><div class="example-step"><span class="step-num">3</span><span>Met 200 vuurhoutjies: 3n + 1 ≤ 200 → n ≤ 66,3.</span></div><div class="example-step"><span class="step-num">4</span><span>Dus kan 66 vierkante gemaak word (met 199 vuurhoutjies).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die antwoord op “hoeveel vierkante” moet ’n heelgetal wees — rond af, nie op nie.</span></div>
         `
       },
       questions: [

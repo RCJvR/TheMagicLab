@@ -194,6 +194,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A(−2; 3) and B(4; −5)</div><div class="example-step"><span class="step-num">1</span><span>AB = √((4 + 2)² + (−5 − 3)²) = √(36 + 64) = 10 units.</span></div><div class="example-step"><span class="step-num">2</span><span>Midpoint M = ((−2 + 4)/2; (3 − 5)/2) = (1; −1).</span></div><div class="example-step"><span class="step-num">3</span><span>Working backwards: if M(1; −1) is the midpoint and A(−2; 3) one end, then B = (2 × 1 − (−2); 2 × (−1) − 3) = (4; −5) ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>A circle with diameter AB would have radius 5 and centre (1; −1).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Square the differences before adding: (−5 − 3)² = 64, not −64.</span></div>
         `
       },
       questions: [
@@ -467,6 +468,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Show that P(−1; 3), Q(2; −3) and R(5; −9) are collinear</div><div class="example-step"><span class="step-num">1</span><span>m(PQ) = (−3 − 3)/(2 + 1) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>m(QR) = (−9 + 3)/(5 − 2) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">3</span><span>The gradients are equal and Q is a common point, so P, Q and R lie on one straight line.</span></div><div class="example-step"><span class="step-num">4</span><span>Equation: y − 3 = −2(x + 1) → y = −2x + 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Subtract in the same order in the numerator and denominator: (y₂ − y₁)/(x₂ − x₁).</span></div>
         `
       },
       questions: [
@@ -622,6 +624,7 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Whenever a question mentions "parallel to" or "perpendicular to" a given line, that instantly gives you the gradient — you don't need a second point.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the lines through (2; −1) that are parallel and perpendicular to y = 3x − 4</div><div class="example-step"><span class="step-num">1</span><span>Parallel: m = 3. y + 1 = 3(x − 2) → y = 3x − 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Perpendicular: m = −1/3. y + 1 = −⅓(x − 2) → y = −⅓x − ⅓.</span></div><div class="example-step"><span class="step-num">3</span><span>Check the point in the second line: −⅓(2) − ⅓ = −1 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>The two lines cross at (2; −1) at right angles.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Parallel lines have equal gradients; perpendicular lines have gradients whose product is −1.</span></div>
         `
       },
       questions: [

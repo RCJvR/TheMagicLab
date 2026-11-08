@@ -116,6 +116,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>'n Buitehoek is 'n kortpad — dit is direk gelyk aan die som van die twee ver binnehoeke, sonder dat jy eers al drie binnehoeke hoef te vind.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In △ABC is AB = AC en AD halveer ∠BAC, met D op BC. Bewys dat BD = DC</div><div class="example-step"><span class="step-num">1</span><span>In △ABD en △ACD: AB = AC (gegee).</span></div><div class="example-step"><span class="step-num">2</span><span>∠BAD = ∠CAD (AD halveer ∠A).</span></div><div class="example-step"><span class="step-num">3</span><span>AD = AD (gemeen).</span></div><div class="example-step"><span class="step-num">4</span><span>△ABD ≡ △ACD (SHS), dus BD = DC (≡ △e).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> HHH is nie ’n kongruensievoorwaarde nie — gelyke hoeke wys net dat die driehoeke dieselfde vorm het, nie dieselfde grootte nie.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>In gelykvormige driehoeke skaleer sye met faktor k, maar oppervlaktes skaleer met k². As sye verdubbel, verviervoudig die oppervlakte.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: D en E is die middelpunte van AB en AC in △ABC, en BC = 14 cm</div><div class="example-step"><span class="step-num">1</span><span>Middelpuntstelling: DE ∥ BC en DE = ½BC = 7 cm.</span></div><div class="example-step"><span class="step-num">2</span><span>As F die middelpunt van BC is, het driehoek DEF sye gelyk aan die helfte van die sye van △ABC.</span></div><div class="example-step"><span class="step-num">3</span><span>Dus is die omtrek van △DEF die helfte van die omtrek van △ABC.</span></div><div class="example-step"><span class="step-num">4</span><span>Omgekeerde: ’n lyn deur die middelpunt van een sy, parallel aan ’n tweede sy, halveer die derde sy.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die middelpuntstelling vereis dat albei punte middelpunte is; gee “middelpuntstelling” as die rede vir beide DE ∥ BC en DE = ½BC.</span></div>
         `
       },
       questions: [

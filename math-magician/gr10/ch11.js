@@ -101,6 +101,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For elevation/depression problems, the angle is always measured from the <strong>horizontal</strong>. The adjacent side is the horizontal distance and the opposite is the vertical height.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A 6 m ladder makes an angle of 70° with the ground; a 30 m building is 40 m away</div><div class="example-step"><span class="step-num">1</span><span>Height reached: 6 sin 70° = 5,64 m.</span></div><div class="example-step"><span class="step-num">2</span><span>Distance of the foot from the wall: 6 cos 70° = 2,05 m.</span></div><div class="example-step"><span class="step-num">3</span><span>Angle of elevation to the top of the building: tan θ = 30/40 → θ = 36,9°.</span></div><div class="example-step"><span class="step-num">4</span><span>Draw a sketch and mark the right angle before choosing the ratio.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Angles of elevation and depression are measured from the <strong>horizontal</strong>, not from the vertical.</span></div>
         `
       },
       questions: [
@@ -224,6 +225,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The formula h = d·tanA·tanB/(tanA − tanB) comes from setting up both tan equations and eliminating d algebraically — a key exam technique.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: From A the angle of elevation to the top of a tower is 30°. After walking 50 m towards it to B, the angle is 45°</div><div class="example-step"><span class="step-num">1</span><span>Let the height be h. From B: distance to the foot = h/tan 45° = h.</span></div><div class="example-step"><span class="step-num">2</span><span>From A: distance = h/tan 30° = 1,732h.</span></div><div class="example-step"><span class="step-num">3</span><span>AB = 1,732h − h = 50 → 0,732h = 50.</span></div><div class="example-step"><span class="step-num">4</span><span>h = 68,3 m.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use the side the two triangles share (the height h) to link them.</span></div>
         `
       },
       questions: [

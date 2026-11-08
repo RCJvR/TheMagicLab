@@ -131,6 +131,7 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Teken die 30-60-90 (sye: 1, √3, 2) en 45-45-90 (sye: 1, 1, √2) driehoeke uit die geheue — alle spesiale-hoekwaardes kom uit hierdie twee driehoeke.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bereken sonder ’n sakrekenaar</div><div class="example-step"><span class="step-num">1</span><span>(sin 30° + cos 60°) ÷ tan 45° = (½ + ½) ÷ 1 = 1.</span></div><div class="example-step"><span class="step-num">2</span><span>tan² 60° = (√3)² = 3.</span></div><div class="example-step"><span class="step-num">3</span><span>2 sin 45° cos 45° = 2 × (√2/2) × (√2/2) = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>Dus tan² 60° − 2 sin 45° cos 45° = 3 − 1 = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> sin 2A is nie 2 sin A nie, en tan² 60° beteken (tan 60°)².</span></div>
         `
       },
       questions: [
@@ -280,6 +281,7 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span><strong>CAST</strong> — van K4 anti-kloksgewys gelees: Cos, All, Sin, Tan wys jou watter verhouding positief is in elke kwadrant. Die verwysingshoek is altyd die skerp hoek vanaf die x-as.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: 5 sin θ + 3 = 0 met θ ∈ [180°; 270°]. Bepaal cos θ en tan θ; los dan 2 cos x = 1,3 op vir x ∈ [0°; 90°]</div><div class="example-step"><span class="step-num">1</span><span>sin θ = −3/5 = y/r, dus y = −3 en r = 5; θ is in die derde kwadrant, dus is x negatief.</span></div><div class="example-step"><span class="step-num">2</span><span>x² = 25 − 9 = 16 → x = −4.</span></div><div class="example-step"><span class="step-num">3</span><span>cos θ = −4/5; tan θ = (−3)/(−4) = 3/4.</span></div><div class="example-step"><span class="step-num">4</span><span>cos x = 0,65 → x = 49,5°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik die kwadrant om die teken van x of y ná Pythagoras te kies — die vierkantswortel alleen gee net die positiewe waarde.</span></div>
         `
       },
       questions: [

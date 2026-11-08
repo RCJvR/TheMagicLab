@@ -116,6 +116,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>An exterior angle is a shortcut — it equals the sum of the two remote interior angles directly, without needing to find all three interior angles first.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In △ABC, AB = AC and AD bisects ∠BAC, with D on BC. Prove that BD = DC</div><div class="example-step"><span class="step-num">1</span><span>In △ABD and △ACD: AB = AC (given).</span></div><div class="example-step"><span class="step-num">2</span><span>∠BAD = ∠CAD (AD bisects ∠A).</span></div><div class="example-step"><span class="step-num">3</span><span>AD = AD (common).</span></div><div class="example-step"><span class="step-num">4</span><span>△ABD ≡ △ACD (SAS), so BD = DC (≡ △s).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> AAA is not a congruency condition — equal angles only show the triangles have the same shape, not the same size.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>In similar triangles, sides scale by factor k but areas scale by k². If sides double, the area quadruples.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: D and E are the midpoints of AB and AC in △ABC, and BC = 14 cm</div><div class="example-step"><span class="step-num">1</span><span>Midpoint theorem: DE ∥ BC and DE = ½BC = 7 cm.</span></div><div class="example-step"><span class="step-num">2</span><span>If F is the midpoint of BC, the triangle DEF has sides equal to half the sides of △ABC.</span></div><div class="example-step"><span class="step-num">3</span><span>So the perimeter of △DEF is half the perimeter of △ABC.</span></div><div class="example-step"><span class="step-num">4</span><span>Converse: a line through the midpoint of one side, parallel to a second side, bisects the third side.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The midpoint theorem needs both points to be midpoints; state “midpoint theorem” as the reason for both DE ∥ BC and DE = ½BC.</span></div>
         `
       },
       questions: [

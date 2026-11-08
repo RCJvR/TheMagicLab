@@ -80,6 +80,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Compound interest always beats simple interest (for the same P, i, n > 1). The longer the period, the bigger the gap — this is the power of exponential growth.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R12 000 is invested at 8% p.a. for 5 years</div><div class="example-step"><span class="step-num">1</span><span>Simple interest: A = P(1 + in) = 12 000(1 + 0,08 × 5) = R16 800.</span></div><div class="example-step"><span class="step-num">2</span><span>Compound interest: A = P(1 + i)ⁿ = 12 000(1,08)⁵ = R17 631,94.</span></div><div class="example-step"><span class="step-num">3</span><span>Difference: R831,94 more with compound interest, because interest earns interest.</span></div><div class="example-step"><span class="step-num">4</span><span>Interest earned with compound interest: 17 631,94 − 12 000 = R5 631,94.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Write the rate as a decimal (8% = 0,08) and use n in years when the rate is per year.</span></div>
         `
       },
       questions: [
@@ -267,6 +268,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>HP interest is calculated on the <strong>full original loan</strong> — not on the reducing balance. This makes HP significantly more expensive than a reducing-balance loan at the same rate.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Hire purchase and exchange rates</div><div class="example-step"><span class="step-num">1</span><span>A TV costs R9 000 cash. Deposit 10% = R900; balance R8 100.</span></div><div class="example-step"><span class="step-num">2</span><span>Simple interest at 15% p.a. over 2 years: 8 100 × 0,15 × 2 = R2 430; amount owed R10 530.</span></div><div class="example-step"><span class="step-num">3</span><span>Monthly instalment = 10 530 ÷ 24 = R438,75; total cost = 900 + 10 530 = R11 430.</span></div><div class="example-step"><span class="step-num">4</span><span>Exchange: at $1 = R18,40, $250 costs 250 × 18,40 = R4 600.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Hire-purchase interest is charged on the balance after the deposit, not on the full cash price.</span></div>
         `
       },
       questions: [
@@ -397,6 +399,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>"How much did it cost n years ago" always means dividing by (1+i)ⁿ, not multiplying — you're undoing n years of growth.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Inflation and population growth</div><div class="example-step"><span class="step-num">1</span><span>An item costs R50 today. With inflation of 6% p.a.: price in 6 years = 50(1,06)⁶ = R70,93.</span></div><div class="example-step"><span class="step-num">2</span><span>A town of 2 million grows at 1,5% p.a.: after 10 years 2(1,015)¹⁰ = 2,32 million.</span></div><div class="example-step"><span class="step-num">3</span><span>Both use the compound growth formula A = P(1 + i)ⁿ.</span></div><div class="example-step"><span class="step-num">4</span><span>Increase in population: 2,32 − 2 = 0,32 million (about 320 000 people).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Inflation and population growth compound — do not use the simple interest formula.</span></div>
         `
       },
       questions: [
@@ -554,6 +557,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Solving for n by trial and error is a legitimate Grade 10 method — logarithms are only formally introduced in Grade 12. Just test whole-number values of n systematically.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R5 000 grows to R6 500 in 4 years. Find the rate</div><div class="example-step"><span class="step-num">1</span><span>Simple interest: interest = R1 500 = 5 000 × i × 4 → i = 0,075 = 7,5% p.a.</span></div><div class="example-step"><span class="step-num">2</span><span>Compound interest: 6 500 = 5 000(1 + i)⁴ → (1 + i)⁴ = 1,3.</span></div><div class="example-step"><span class="step-num">3</span><span>1 + i = 1,3^(1/4) = 1,0678 → i = 6,78% p.a.</span></div><div class="example-step"><span class="step-num">4</span><span>The compound rate is lower because interest also earns interest.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> To undo a power of 4, take the 4th root (raise to ¼) — do not divide by 4.</span></div>
         `
       },
       questions: [
