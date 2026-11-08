@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/human-body.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -250,7 +251,7 @@
   <div class="explore-top">
     <div class="sim-canvas-wrap">
       <h3>Human Body Outline</h3>
-      <canvas id="bodyCanvas" height="440" role="img" aria-label="Body Systems Explorer: interactive simulation"></canvas>
+      <div id="bodyFigure"></div>
     </div>
     <div class="controls">
       <div class="ctrl-card">
@@ -331,20 +332,20 @@ const regionData = {
   head: {
     title: 'Head & Airway',
     color: '#60a5fa',
-    text: 'Contains the <strong>nose, mouth and trachea</strong> — the start of the respiratory system. Air is warmed, moistened and filtered here before travelling down to the lungs.',
-    organs: '<strong>Organs:</strong> nose, mouth, trachea (windpipe)<br><strong>System:</strong> Respiratory (upper airway)'
+    text: 'Contains the <strong>nasal cavity, mouth, pharynx and larynx</strong> — the start of the respiratory system (and the mouth starts the digestive system). Air is warmed, moistened and filtered here before it travels down the trachea to the lungs. The <strong>brain</strong> (nervous system) is also in the head.',
+    organs: '<strong>Organs:</strong> nasal cavity, mouth, pharynx (throat), larynx (voice box), brain<br><strong>Systems:</strong> Respiratory (upper airway), Digestive, Nervous'
   },
   chest: {
     title: 'Chest (Thorax)',
     color: '#f87171',
-    text: 'Contains the <strong>lungs</strong> (respiratory system) and the <strong>heart</strong> (circulatory system). The lungs perform gas exchange; the heart pumps blood around both the pulmonary and systemic circuits.',
-    organs: '<strong>Organs:</strong> lungs, bronchi, alveoli, heart<br><strong>Systems:</strong> Respiratory &amp; Circulatory'
+    text: 'Contains the <strong>lungs</strong> (respiratory system) and the <strong>heart</strong> (circulatory system). The lungs perform gas exchange; the heart pumps blood around both the pulmonary and systemic circuits. The heart lies between the lungs, slightly to the left, and the dome-shaped <strong>diaphragm</strong> separates the chest from the abdomen.',
+    organs: '<strong>Organs:</strong> trachea, bronchi, lungs (alveoli), heart, aorta; the oesophagus passes through<br><strong>Systems:</strong> Respiratory &amp; Circulatory'
   },
   abdomen: {
     title: 'Abdomen',
     color: '#34d399',
-    text: 'Contains most of the <strong>digestive system</strong> (stomach, small &amp; large intestine, liver, pancreas) as well as the <strong>excretory system</strong> (kidneys, bladder).',
-    organs: '<strong>Organs:</strong> stomach, intestines, liver, kidneys, bladder<br><strong>Systems:</strong> Digestive &amp; Excretory'
+    text: 'Contains most of the <strong>digestive system</strong> (stomach, small &amp; large intestine, liver, pancreas) as well as the <strong>excretory system</strong>. The liver lies on the right under the diaphragm and the stomach on the left; the <strong>kidneys</strong> lie against the back wall, and the <strong>bladder</strong> sits low in the pelvis.',
+    organs: '<strong>Organs:</strong> stomach, liver, gall bladder, pancreas, small &amp; large intestine, kidneys, ureters, bladder<br><strong>Systems:</strong> Digestive &amp; Excretory'
   }
 };
 
@@ -361,166 +362,22 @@ function selectRegion(key, btn) {
   drawBody();
 }
 
-/* ---- Canvas ---- */
-const bodyCanvas = document.getElementById('bodyCanvas');
-const bodyCtx = bodyCanvas.getContext('2d');
-const CH = 440;
-
-let regionBoxes = {};
-
-function resizeBody() {
-  const dpr = window.devicePixelRatio || 1;
-  const W = bodyCanvas.offsetWidth || 420;
-  bodyCanvas.width = W * dpr;
-  bodyCanvas.height = CH * dpr;
-  bodyCtx.setTransform(1, 0, 0, 1, 0, 0);
-  bodyCtx.scale(dpr, dpr);
-}
-
+/* ---- Body figure (assets/explore/human-body.js) ---- */
+let bodyFig = null;
+function resizeBody() {}
 function drawBody() {
-  const W = bodyCanvas.offsetWidth || 420;
-  bodyCtx.clearRect(0, 0, W, CH);
-  const cx = W / 2;
-
-  function fillCol(key) {
-    return selectedRegion === key ? regionData[key].color + 'cc' : 'rgba(255,255,255,0.06)';
-  }
-  function strokeCol(key) {
-    return selectedRegion === key ? regionData[key].color : 'rgba(255,255,255,0.18)';
-  }
-  function txtCol(key) {
-    return selectedRegion === key ? '#fff' : 'rgba(210,218,245,0.55)';
-  }
-
-  bodyCtx.font = '600 12px "Cabinet Grotesk", sans-serif';
-  bodyCtx.textAlign = 'center';
-
-  // Head
-  const headY = 45, headR = 34;
-  bodyCtx.beginPath();
-  bodyCtx.arc(cx, headY, headR, 0, Math.PI * 2);
-  bodyCtx.fillStyle = fillCol('head');
-  bodyCtx.fill();
-  bodyCtx.strokeStyle = strokeCol('head');
-  bodyCtx.lineWidth = 1.5;
-  bodyCtx.stroke();
-  bodyCtx.fillStyle = txtCol('head');
-  bodyCtx.fillText('Head', cx, headY + 4);
-  regionBoxes.head = { x: cx - headR, y: headY - headR, w: headR * 2, h: headR * 2, shape: 'circle', cx: cx, cy: headY, r: headR };
-
-  // Neck
-  bodyCtx.beginPath();
-  bodyCtx.roundRect(cx - 12, headY + headR - 4, 24, 26, 4);
-  bodyCtx.fillStyle = 'rgba(255,255,255,0.06)';
-  bodyCtx.fill();
-
-  // Chest (torso upper)
-  const chestX = cx - 78, chestY = headY + headR + 20, chestW = 156, chestH = 130;
-  bodyCtx.beginPath();
-  bodyCtx.roundRect(chestX, chestY, chestW, chestH, 24);
-  bodyCtx.fillStyle = fillCol('chest');
-  bodyCtx.fill();
-  bodyCtx.strokeStyle = strokeCol('chest');
-  bodyCtx.lineWidth = 1.5;
-  bodyCtx.stroke();
-  bodyCtx.fillStyle = txtCol('chest');
-  bodyCtx.font = '600 13px "Cabinet Grotesk", sans-serif';
-  bodyCtx.fillText('Chest', cx, chestY + chestH / 2 - 4);
-  bodyCtx.font = '500 10px "Cabinet Grotesk", sans-serif';
-  bodyCtx.fillText('(lungs & heart)', cx, chestY + chestH / 2 + 14);
-  regionBoxes.chest = { x: chestX, y: chestY, w: chestW, h: chestH, shape: 'rect' };
-
-  // simple heart + lung glyphs if selected
-  if (selectedRegion === 'chest') {
-    bodyCtx.fillStyle = 'rgba(255,255,255,0.85)';
-    bodyCtx.beginPath();
-    const hx = cx, hy = chestY + 34;
-    bodyCtx.moveTo(hx, hy + 8);
-    bodyCtx.bezierCurveTo(hx - 14, hy - 8, hx - 4, hy - 18, hx, hy - 6);
-    bodyCtx.bezierCurveTo(hx + 4, hy - 18, hx + 14, hy - 8, hx, hy + 8);
-    bodyCtx.fill();
-  }
-
-  // Abdomen
-  const abX = cx - 70, abY = chestY + chestH - 6, abW = 140, abH = 130;
-  bodyCtx.beginPath();
-  bodyCtx.roundRect(abX, abY, abW, abH, 20);
-  bodyCtx.fillStyle = fillCol('abdomen');
-  bodyCtx.fill();
-  bodyCtx.strokeStyle = strokeCol('abdomen');
-  bodyCtx.lineWidth = 1.5;
-  bodyCtx.stroke();
-  bodyCtx.fillStyle = txtCol('abdomen');
-  bodyCtx.font = '600 13px "Cabinet Grotesk", sans-serif';
-  bodyCtx.fillText('Abdomen', cx, abY + abH / 2 - 4);
-  bodyCtx.font = '500 10px "Cabinet Grotesk", sans-serif';
-  bodyCtx.fillText('(gut & kidneys)', cx, abY + abH / 2 + 14);
-  regionBoxes.abdomen = { x: abX, y: abY, w: abW, h: abH, shape: 'rect' };
-
-  // Arms
-  bodyCtx.strokeStyle = 'rgba(255,255,255,0.12)';
-  bodyCtx.lineWidth = 20;
-  bodyCtx.lineCap = 'round';
-  bodyCtx.beginPath();
-  bodyCtx.moveTo(chestX + 6, chestY + 14);
-  bodyCtx.lineTo(chestX - 34, chestY + 110);
-  bodyCtx.stroke();
-  bodyCtx.beginPath();
-  bodyCtx.moveTo(chestX + chestW - 6, chestY + 14);
-  bodyCtx.lineTo(chestX + chestW + 34, chestY + 110);
-  bodyCtx.stroke();
-
-  // Legs
-  bodyCtx.lineWidth = 24;
-  bodyCtx.beginPath();
-  bodyCtx.moveTo(cx - 30, abY + abH - 6);
-  bodyCtx.lineTo(cx - 34, abY + abH + 110);
-  bodyCtx.stroke();
-  bodyCtx.beginPath();
-  bodyCtx.moveTo(cx + 30, abY + abH - 6);
-  bodyCtx.lineTo(cx + 34, abY + abH + 110);
-  bodyCtx.stroke();
-}
-
-function canvasClickPos(e) {
-  const rect = bodyCanvas.getBoundingClientRect();
-  const W = bodyCanvas.offsetWidth || 420;
-  const scaleX = W / rect.width;
-  const scaleY = CH / rect.height;
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  return [(clientX - rect.left) * scaleX, (clientY - rect.top) * scaleY];
-}
-
-function pointInRegion(px, py, box) {
-  if (box.shape === 'circle') {
-    return Math.hypot(px - box.cx, py - box.cy) <= box.r;
-  }
-  return px >= box.x && px <= box.x + box.w && py >= box.y && py <= box.y + box.h;
-}
-
-bodyCanvas.addEventListener('click', (e) => {
-  const [px, py] = canvasClickPos(e);
-  for (const key of ['head', 'chest', 'abdomen']) {
-    const box = regionBoxes[key];
-    if (box && pointInRegion(px, py, box)) {
-      const btnMap = { head: 0, chest: 1, abdomen: 2 };
-      const btns = document.querySelectorAll('.mode-btn');
-      selectRegion(key, btns[btnMap[key]]);
-      return;
+  if (!window.MLBody) return;
+  if (!bodyFig) bodyFig = MLBody.mount(document.getElementById('bodyFigure'), {
+    region: selectedRegion,
+    onSelect: function (key) {
+      const btn = [...document.querySelectorAll('.mode-btn')].find(b => (b.getAttribute('onclick') || '').indexOf(key) >= 0);
+      selectRegion(key, btn);
     }
-  }
-});
+  });
+  bodyFig.select(selectedRegion);
+}
+selectRegion(selectedRegion, document.querySelector('.mode-btn.active'));
 
-window.addEventListener('resize', () => {
-  if (document.getElementById('tab-explore').classList.contains('active')) {
-    resizeBody();
-    drawBody();
-  }
-});
-
-resizeBody();
-drawBody();
 
 /* ---- Practice ---- */
 const QUESTIONS = [
