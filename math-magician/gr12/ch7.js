@@ -436,12 +436,20 @@ MathMagician.registerChapter(7, {
         { label: "a", text: "Substitute the line into the circle equation.", marks: 2 },
         { label: "b", text: "Use Δ = 0 to find k.", marks: 3 },
         { label: "c", text: "Write both tangent equations.", marks: 1 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — A circle has equation x² + y² − 6x + 4y − 12 = 0. P(7; 1) and R(10; 6) are points.", parts: [
+        { label: "a", text: "Find the centre and radius of the circle.", marks: 3 },
+        { label: "b", text: "Show that P lies on the circle.", marks: 1 },
+        { label: "c", text: "Determine the equation of the tangent to the circle at P.", marks: 4 },
+        { label: "d", text: "Find the coordinates of the point where this tangent cuts the x-axis.", marks: 2 },
+        { label: "e", text: "Calculate the length of a tangent drawn from R to the circle.", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "(x−4)²−16+(y+1)²−1+8=0→(x−4)²+(y+1)²=9", b: "Centre (4,−1); r=3", c: "(6−4)²+(−1+1)²=4<9→inside" },
       2: { a: "r=√[(−1−3)²+(4−1)²]=√(16+9)=5", b: "(x−3)²+(y−1)²=25", c: "m_CA=(4−1)/(−1−3)=−3/4; m_tan=4/3; y−4=(4/3)(x+1)→y=(4/3)x+16/3" },
-      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 and y=2x−5" }
+      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 and y=2x−5" },
+      4: { a: "(x − 3)² + (y + 2)² = 25: centre (3; −2), r = 5", b: "49 + 1 − 42 + 4 − 12 = 0 ✓", c: "m(radius) = (1 + 2)/(7 − 3) = ¾, so m(tangent) = −4/3; y − 1 = −4/3(x − 7) → y = −4/3x + 31/3", d: "0 = −4/3x + 31/3 → x = 7,75: (7,75; 0)", e: "CR² = (10 − 3)² + (6 + 2)² = 113; tangent length = √(113 − 25) = √88 = 9,38 units" }
     }
   }
 });

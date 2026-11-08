@@ -441,13 +441,22 @@ MathMagician.registerChapter(5, {
         { label: "b", text: "Write down the y-intercept.", marks: 1 },
         { label: "c", text: "Hence write p(x) in fully factorised form.", marks: 2 },
         { label: "d", text: "Describe the end behaviour of the graph, referring to the table values at x = −2 and x = 4.", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — f(x) = 2x³ − 3x² − 11x + 6", parts: [
+        { label: "a", text: "Show that (x − 3) is a factor of f(x).", marks: 2 },
+        { label: "b", text: "Hence factorise f(x) fully.", marks: 3 },
+        { label: "c", text: "Write down the x-intercepts of the graph of f.", marks: 1 },
+        { label: "d", text: "Solve f(x) ≥ 0.", marks: 3 },
+        { label: "e", text: "Calculate the remainder when f(x) is divided by (x + 1).", marks: 2 },
+        { label: "f", text: "Draw a neat sketch of f, showing the intercepts with the axes.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "p(2)=16+4−26+6=0 ✓", b: "p(x)=(x−2)(2x²+5x−3)=(x−2)(2x−1)(x+3)", c: "x=2, x=½, x=−3" },
       2: { a: "Test x=2: 8−4−16+12=0 ✓; divide: (x−2)(x²+x−6)=(x−2)(x+3)(x−2)=(x−2)²(x+3); x=2(double),x=−3", b: "(0,12)", c: "a=1>0: falls left, rises right", d: "Touches x-axis at 2, cuts at −3, y-int at 12" },
       3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" },
-      4: { a: "x = −1, 1, 3 (the values of x where p(x) = 0 in the table)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leading coefficient a = 1 > 0, so the graph falls to the left and rises to the right — confirmed by the table: p(−2) = −15 (very negative as x decreases) and p(4) = 15 (positive and increasing as x increases)." }
+      4: { a: "x = −1, 1, 3 (the values of x where p(x) = 0 in the table)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leading coefficient a = 1 > 0, so the graph falls to the left and rises to the right — confirmed by the table: p(−2) = −15 (very negative as x decreases) and p(4) = 15 (positive and increasing as x increases)." },
+      5: { a: "f(3) = 54 − 27 − 33 + 6 = 0, so (x − 3) is a factor", b: "f(x) = (x − 3)(2x² + 3x − 2) = (x − 3)(2x − 1)(x + 2)", c: "x = 3, x = ½, x = −2", d: "a &gt; 0: −2 ≤ x ≤ ½ or x ≥ 3", e: "f(−1) = −2 − 3 + 11 + 6 = 12", f: "Cubic rising to the right, cutting the x-axis at −2, ½ and 3 and the y-axis at 6" }
     }
   }
 });

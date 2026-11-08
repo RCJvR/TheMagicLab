@@ -436,12 +436,20 @@ MathMagician.registerChapter(7, {
         { label: "a", text: "Vervang die lyn in die sirkelvergelyking.", marks: 2 },
         { label: "b", text: "Gebruik Δ = 0 om k te bepaal.", marks: 3 },
         { label: "c", text: "Skryf albei raaklynvergelykings.", marks: 1 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ’n Sirkel het vergelyking x² + y² − 6x + 4y − 12 = 0. P(7; 1) en R(10; 6) is punte.", parts: [
+        { label: "a", text: "Bepaal die middelpunt en radius van die sirkel.", marks: 3 },
+        { label: "b", text: "Toon dat P op die sirkel lê.", marks: 1 },
+        { label: "c", text: "Bepaal die vergelyking van die raaklyn aan die sirkel by P.", marks: 4 },
+        { label: "d", text: "Bepaal die koördinate van die punt waar hierdie raaklyn die x-as sny.", marks: 2 },
+        { label: "e", text: "Bereken die lengte van ’n raaklyn vanaf R aan die sirkel getrek.", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "(x−4)²−16+(y+1)²−1+8=0→(x−4)²+(y+1)²=9", b: "Middelpunt (4,−1); r=3", c: "(6−4)²+(−1+1)²=4<9→binne" },
       2: { a: "r=√[(−1−3)²+(4−1)²]=√(16+9)=5", b: "(x−3)²+(y−1)²=25", c: "m_CA=(4−1)/(−1−3)=−3/4; m_raak=4/3; y−4=(4/3)(x+1)→y=(4/3)x+16/3" },
-      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 en y=2x−5" }
+      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 en y=2x−5" },
+      4: { a: "(x − 3)² + (y + 2)² = 25: middelpunt (3; −2), r = 5", b: "49 + 1 − 42 + 4 − 12 = 0 ✓", c: "m(radius) = (1 + 2)/(7 − 3) = ¾, dus m(raaklyn) = −4/3; y − 1 = −4/3(x − 7) → y = −4/3x + 31/3", d: "0 = −4/3x + 31/3 → x = 7,75: (7,75; 0)", e: "CR² = (10 − 3)² + (6 + 2)² = 113; raaklynlengte = √(113 − 25) = √88 = 9,38 eenhede" }
     }
   }
 });

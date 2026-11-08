@@ -346,12 +346,20 @@ MathMagician.registerChapter(8, {
         { label: "a", text: "Bewys △ABD ||| △CAD.", marks: 4 },
         { label: "b", text: "Bewys dus dat AB² = BD · BC.", marks: 3 },
         { label: "c", text: "As BD = 4 en DC = 9, bepaal AB en AC.", marks: 4 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — In △ABC lê D op AB en E op AC met DE ∥ BC. AD = 6, DB = 4, AE = 9 en BC = 15. F lê op BC met DF ∥ AC.", parts: [
+        { label: "a", text: "Bereken EC, met ’n rede.", marks: 3 },
+        { label: "b", text: "Bewys dat △ADE ||| △ABC.", marks: 3 },
+        { label: "c", text: "Bereken dus DE.", marks: 2 },
+        { label: "d", text: "Bereken BF : FC, met ’n rede.", marks: 3 },
+        { label: "e", text: "Bereken BF.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Gegee: AD/DB=AE/EC; TB: DE∥BC", b: "Teken DE'∥BC; volgens ET: AD/DB=AE'/E'C; maar AD/DB=AE/EC(gegewe)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "In △ABD en △CBA: ∠B is gemeen en ∠ADB=∠CAB=90°, dus △ABD|||△CBA (HH) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "In △ABD en △CBA: ∠B is gemeen en ∠ADB=∠CAB=90°, dus △ABD|||△CBA (HH) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" },
+      4: { a: "AD/DB = AE/EC (lyn ∥ een sy van △) → 6/4 = 9/EC → EC = 6", b: "∠A is gemeen; ∠ADE = ∠ABC (ooreenk ∠e, DE ∥ BC); ∠AED = ∠ACB (ooreenk ∠e); dus △ADE ||| △ABC (∠∠∠)", c: "DE/BC = AD/AB → DE/15 = 6/10 → DE = 9", d: "BF/FC = BD/DA (lyn ∥ een sy van △, DF ∥ AC) = 4/6 = 2 : 3", e: "BF = 2/5 × 15 = 6" }
     }
   }
 });

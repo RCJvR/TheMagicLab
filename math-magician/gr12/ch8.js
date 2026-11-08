@@ -346,12 +346,20 @@ MathMagician.registerChapter(8, {
         { label: "a", text: "Prove △ABD ||| △CAD.", marks: 4 },
         { label: "b", text: "Hence prove that AB² = BD · BC.", marks: 3 },
         { label: "c", text: "If BD = 4 and DC = 9, find AB and AC.", marks: 4 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — In △ABC, D lies on AB and E on AC with DE ∥ BC. AD = 6, DB = 4, AE = 9 and BC = 15. F lies on BC with DF ∥ AC.", parts: [
+        { label: "a", text: "Calculate EC, with a reason.", marks: 3 },
+        { label: "b", text: "Prove that △ADE ||| △ABC.", marks: 3 },
+        { label: "c", text: "Hence calculate DE.", marks: 2 },
+        { label: "d", text: "Calculate BF : FC, with a reason.", marks: 3 },
+        { label: "e", text: "Calculate BF.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Given: AD/DB=AE/EC; RTP: DE∥BC", b: "Draw DE'∥BC; by BPT: AD/DB=AE'/E'C; but AD/DB=AE/EC(given)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "In △ABD and △CBA: ∠B is common and ∠ADB=∠CAB=90°, so △ABD|||△CBA (AA) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "In △ABD and △CBA: ∠B is common and ∠ADB=∠CAB=90°, so △ABD|||△CBA (AA) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" },
+      4: { a: "AD/DB = AE/EC (line ∥ one side of △) → 6/4 = 9/EC → EC = 6", b: "∠A is common; ∠ADE = ∠ABC (corr ∠s, DE ∥ BC); ∠AED = ∠ACB (corr ∠s); so △ADE ||| △ABC (∠∠∠)", c: "DE/BC = AD/AB → DE/15 = 6/10 → DE = 9", d: "BF/FC = BD/DA (line ∥ one side of △, DF ∥ AC) = 4/6 = 2 : 3", e: "BF = 2/5 × 15 = 6" }
     }
   }
 });

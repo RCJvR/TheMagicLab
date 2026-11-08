@@ -489,12 +489,18 @@ MathMagician.registerChapter(4, {
       { number: 3, text: "Solve for x ∈ [0°; 360°]:", parts: [
         { label: "a", text: "cos(2x) = cos x", marks: 5 },
         { label: "b", text: "sin(x + 30°) = cos x", marks: 5 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — Answer the trigonometry questions below without a calculator where possible.", parts: [
+        { label: "a", text: "Prove that sin 2x/(1 + cos 2x) = tan x.", marks: 4 },
+        { label: "b", text: "Determine the general solution of cos 2x = sin x.", marks: 6 },
+        { label: "c", text: "PQ is a vertical tower with foot Q. A and B are on level ground with Q, AB = 80 m, ∠QAB = 50° and ∠QBA = 60°. The angle of elevation of P from A is 30°. Calculate AQ and the height PQ.", marks: 5 }
       ]}
     ],
     answers: {
       1: { a: "sin105°=sin60°cos45°+cos60°sin45°=(√3/2)(√2/2)+(½)(√2/2)=√6/4+√2/4=(√6+√2)/4", b: "cos60°=cos²30°−sin²30°=¾−¼=½; =1−2sin²30°=1−½=½; =2cos²30°−1=3/2−1=½ ✓" },
       2: { a: "LHS=(cosxcos45°−sinxsin45°)+(cosxcos45°+sinxsin45°)=2cosxcos45°=2cosx(√2/2)=√2cosx=RHS", b: "LHS=(sinAcosB+cosAsinB)/(sinAcosB−cosAsinB); divide numerator and denominator by cosAcosB → (tanA+tanB)/(tanA−tanB)=RHS" },
-      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½or1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" }
+      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½or1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" },
+      4: { a: "LHS = 2 sin x cos x/(1 + 2cos²x − 1) = 2 sin x cos x/(2cos²x) = sin x/cos x = tan x = RHS", b: "1 − 2sin²x = sin x → 2sin²x + sin x − 1 = 0 → (2 sin x − 1)(sin x + 1) = 0. sin x = ½: x = 30° + k·360° or x = 150° + k·360°; sin x = −1: x = 270° + k·360°, k ∈ ℤ", c: "∠AQB = 180° − 50° − 60° = 70°. Sine rule: AQ = 80 sin 60°/sin 70° = 73,7 m. PQ = AQ tan 30° = 42,6 m" }
     }
   }
 });

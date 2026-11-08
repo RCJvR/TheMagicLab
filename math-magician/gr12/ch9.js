@@ -318,12 +318,21 @@ MathMagician.registerChapter(9, {
         { label: "b", text: "Compare the length of the box on each side of the median (Q1 to Median vs Median to Q3).", marks: 2 },
         { label: "c", text: "Hence describe the skewness of the distribution.", marks: 2 },
         { label: "d", text: "Does the given mean of 50 support your answer in (c)? Explain by comparing the mean and median.", marks: 2 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — Seven learners recorded the hours they studied (x) and their test mark in % (y): (2; 45), (3; 50), (5; 58), (6; 63), (8; 70), (9; 72), (11; 82).", parts: [
+        { label: "a", text: "Determine the equation of the least-squares regression line.", marks: 3 },
+        { label: "b", text: "Calculate the correlation coefficient r.", marks: 2 },
+        { label: "c", text: "Describe the relationship between hours studied and marks.", marks: 1 },
+        { label: "d", text: "Predict the mark of a learner who studies for 7 hours.", marks: 2 },
+        { label: "e", text: "Explain why the line should not be used to predict the mark for 20 hours of study.", marks: 2 },
+        { label: "f", text: "Calculate the standard deviation of the marks.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "Points plotted correctly", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Use calculator: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (very strong positive linear correlation)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolation (7 is within range 2–8)" },
       2: { a: "Moderate to strong positive linear association", b: "Age — older children have both larger feet and higher IQ due to development", c: "Correlation does not imply causation — a third variable (age) drives both" },
-      3: { a: "Lower whisker = 45−32 = 13; Upper whisker = 65−62 = 3 — the lower whisker is much longer", b: "Q1 to Median = 58−45 = 13; Median to Q3 = 62−58 = 4 — the lower half of the box is also longer", c: "Both the whisker and box are longer on the lower (left) side, so the distribution is negatively skewed (skewed left) — a tail of low scores", d: "Yes: mean (50) < median (58), which matches the expected order mean < median for a negatively skewed distribution, confirming the skew" }
+      3: { a: "Lower whisker = 45−32 = 13; Upper whisker = 65−62 = 3 — the lower whisker is much longer", b: "Q1 to Median = 58−45 = 13; Median to Q3 = 62−58 = 4 — the lower half of the box is also longer", c: "Both the whisker and box are longer on the lower (left) side, so the distribution is negatively skewed (skewed left) — a tail of low scores", d: "Yes: mean (50) < median (58), which matches the expected order mean < median for a negatively skewed distribution, confirming the skew" },
+      4: { a: "ŷ = 37,86 + 3,98x (calculator)", b: "r = 0,997", c: "A very strong positive linear relationship", d: "ŷ = 37,86 + 3,98(7) = 65,7 ≈ 66%", e: "20 hours lies far outside the data (extrapolation); the line would predict about 117%, which is impossible", f: "σ = 12,0 (mean 62,86)" }
     }
   }
 });

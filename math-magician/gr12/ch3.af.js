@@ -458,13 +458,20 @@ MathMagician.registerChapter(3, {
         { label: "b", text: "Skryf die waarde van die aanvanklike belegging (by jaar 0) neer.", marks: 1 },
         { label: "c", text: "Skryf dus die algemene formule vir die waarde na n jaar, in die vorm A = P(1+i)ⁿ.", marks: 2 },
         { label: "d", text: "Gebruik jou formule om die waarde aan die einde van jaar 8 te voorspel (naaste rand).", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — Thandi neem ’n huislening van R1 200 000 teen 11,25% p.j. maandeliks saamgestel, terugbetaalbaar oor 20 jaar met maandelikse paaiemente wat een maand nadat die lening toegestaan is, begin.", parts: [
+        { label: "a", text: "Bereken haar maandelikse paaiement.", marks: 4 },
+        { label: "b", text: "Bereken die totale rente wat sy oor die 20 jaar sal betaal.", marks: 3 },
+        { label: "c", text: "Bereken die uitstaande balans onmiddellik ná die 120ste paaiement.", marks: 4 },
+        { label: "d", text: "As sy eerder R14 000 per maand betaal, hoeveel paaiemente sal sy maak?", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
       2: { a: "Lening=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/maand", c: "Saldo=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Totaal betaal=13596×300=R4 078 800; Rente=4078800−1440000≈R2 638 800" },
       3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x teen 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; bespaar R68158−R64804=R3 354" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
+      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" },
+      5: { a: "i = 0,1125/12 = 0,009375; n = 240. 1 200 000 = x[1 − 1,009375⁻²⁴⁰]/0,009375 → x = R12 591,08", b: "Totaal betaal = 240 × 12 591,08 = R3 021 859; rente = 3 021 859 − 1 200 000 = R1 821 859", c: "Huidige waarde van die oorblywende 120 paaiemente: 12 591,08[1 − 1,009375⁻¹²⁰]/0,009375 = R904 736 (aanvaar die toekomstige-waarde-metode)", d: "1 200 000 = 14 000[1 − 1,009375⁻ⁿ]/0,009375 → 1,009375⁻ⁿ = 0,19643 → n = 174,4, dus 175 paaiemente (174 volle paaiemente en ’n kleiner laaste paaiement)" }
     }
   }
 });

@@ -454,6 +454,13 @@ MathMagician.registerChapter(1, {
         { label: "a", text: "Using two consecutive balances from the table, determine the common ratio r.", marks: 2 },
         { label: "b", text: "Write down the general term Tₙ for this sequence in the form Tₙ = a·rⁿ.", marks: 2 },
         { label: "c", text: "Use your formula to predict the balance at the end of year 10 (to the nearest cent).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Exam-style question</strong> — The sum of the first n terms of a sequence is S<sub>n</sub> = 3n² + 2n. A separate geometric series is 24 + 12 + 6 + …", parts: [
+        { label: "a", text: "Write down T₁.", marks: 1 },
+        { label: "b", text: "Calculate T₂.", marks: 2 },
+        { label: "c", text: "Show that the sequence is arithmetic and find a formula for T<sub>n</sub>.", marks: 4 },
+        { label: "d", text: "Find the smallest number of terms of the geometric series whose sum exceeds 47,9.", marks: 4 },
+        { label: "e", text: "Evaluate Σ (6k − 1) from k = 1 to 20.", marks: 3 }
       ]}
     ],
     answers: {
@@ -465,7 +472,8 @@ MathMagician.registerChapter(1, {
         a: "r = 1102,50 ÷ 1050,00 = 1,05",
         b: "a = 1000 (the deposit before interest); Tₙ = 1000(1,05)ⁿ",
         c: "T₁₀ = 1000(1,05)¹⁰ ≈ R1 628,89"
-      }
+      },
+      6: { a: "T₁ = S₁ = 3 + 2 = 5", b: "S₂ = 12 + 4 = 16, so T₂ = S₂ − S₁ = 11", c: "T<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub> = 3n² + 2n − [3(n − 1)² + 2(n − 1)] = 6n − 1. T<sub>n</sub> − T<sub>n−1</sub> = 6, a constant, so the sequence is arithmetic with d = 6.", d: "a = 24, r = ½: S<sub>n</sub> = 48(1 − 0,5ⁿ) &gt; 47,9 → 0,5ⁿ &lt; 0,00208 → n &gt; 8,9, so n = 9 terms", e: "Arithmetic: a = 5, l = 119, n = 20: S = 20/2 × (5 + 119) = 1 240" }
     }
   }
 });

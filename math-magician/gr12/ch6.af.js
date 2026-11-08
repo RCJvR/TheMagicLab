@@ -470,6 +470,14 @@ MathMagician.registerChapter(6, {
         { label: "a", text: "Gebruik die tabel om die x-waardes van die stilstandspunte (draaipunte) van f(x) te identifiseer.", marks: 2 },
         { label: "b", text: "Gee die interval(le) waar f(x) toenemend is, gebaseer op die teken van f'(x) in die tabel.", marks: 3 },
         { label: "c", text: "Gegewe dat f'(x) = 3x² − 6x − 9, bevestig jou antwoord op (a) algebraïes deur f'(x) = 0 op te los.", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — f(x) = x³ − 3x² − 9x + 5", parts: [
+        { label: "a", text: "Bepaal f′(x).", marks: 1 },
+        { label: "b", text: "Bepaal die koördinate van die draaipunte van f en klassifiseer hulle.", marks: 5 },
+        { label: "c", text: "Bepaal die koördinate van die buigpunt.", marks: 2 },
+        { label: "d", text: "Bepaal die vergelyking van die raaklyn aan f by x = 0.", marks: 2 },
+        { label: "e", text: "Vir watter waardes van k sal f(x) = k drie verskillende reële wortels hê?", marks: 2 },
+        { label: "f", text: "Vir watter waardes van x is f dalend en konkaaf af?", marks: 2 }
       ]}
     ],
     answers: {
@@ -481,7 +489,8 @@ MathMagician.registerChapter(6, {
         a: "f'(x) = 0 by x = −1 en x = 3 (die tabel wys f'(x) wat by hierdie x-waardes deur nul gaan)",
         b: "f'(x) &gt; 0 vir x &lt; −1 en vir x &gt; 3, dus is f(x) toenemend op x &lt; −1 en x &gt; 3",
         c: "3x²−6x−9=0 → x²−2x−3=0 → (x−3)(x+1)=0 → x=3 of x=−1, wat (a) bevestig"
-      }
+      },
+      6: { a: "f′(x) = 3x² − 6x − 9", b: "3(x − 3)(x + 1) = 0 → x = 3 of x = −1. f(−1) = 10: lokale maksimum (−1; 10). f(3) = −22: lokale minimum (3; −22)", c: "f″(x) = 6x − 6 = 0 → x = 1; f(1) = −6, dus (1; −6)", d: "m = f′(0) = −9; punt (0; 5): y = −9x + 5", e: "−22 &lt; k &lt; 10 (tussen die minimum- en maksimumwaardes)", f: "Dalend vir −1 &lt; x &lt; 3 en konkaaf af vir x &lt; 1, dus −1 &lt; x &lt; 1" }
     }
   }
 });

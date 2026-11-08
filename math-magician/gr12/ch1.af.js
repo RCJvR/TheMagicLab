@@ -454,6 +454,13 @@ MathMagician.registerChapter(1, {
         { label: "a", text: "Gebruik twee opeenvolgende saldo's uit die tabel om die gemeenskaplike verhouding r te bepaal.", marks: 2 },
         { label: "b", text: "Skryf die algemene term Tₙ vir hierdie ry neer in die vorm Tₙ = a·rⁿ.", marks: 2 },
         { label: "c", text: "Gebruik jou formule om die saldo aan die einde van jaar 10 te voorspel (tot die naaste sent).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Die som van die eerste n terme van ’n ry is S<sub>n</sub> = 3n² + 2n. ’n Aparte meetkundige reeks is 24 + 12 + 6 + …", parts: [
+        { label: "a", text: "Skryf T₁ neer.", marks: 1 },
+        { label: "b", text: "Bereken T₂.", marks: 2 },
+        { label: "c", text: "Toon dat die ry rekenkundig is en bepaal ’n formule vir T<sub>n</sub>.", marks: 4 },
+        { label: "d", text: "Bepaal die kleinste aantal terme van die meetkundige reeks waarvan die som 47,9 oorskry.", marks: 4 },
+        { label: "e", text: "Bereken Σ (6k − 1) van k = 1 tot 20.", marks: 3 }
       ]}
     ],
     answers: {
@@ -465,7 +472,8 @@ MathMagician.registerChapter(1, {
         a: "r = 1102,50 ÷ 1050,00 = 1,05",
         b: "a = 1000 (die deposito voor rente); Tₙ = 1000(1,05)ⁿ",
         c: "T₁₀ = 1000(1,05)¹⁰ ≈ R1 628,89"
-      }
+      },
+      6: { a: "T₁ = S₁ = 3 + 2 = 5", b: "S₂ = 12 + 4 = 16, dus T₂ = S₂ − S₁ = 11", c: "T<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub> = 3n² + 2n − [3(n − 1)² + 2(n − 1)] = 6n − 1. T<sub>n</sub> − T<sub>n−1</sub> = 6, ’n konstante, dus is die ry rekenkundig met d = 6.", d: "a = 24, r = ½: S<sub>n</sub> = 48(1 − 0,5ⁿ) &gt; 47,9 → 0,5ⁿ &lt; 0,00208 → n &gt; 8,9, dus n = 9 terme", e: "Rekenkundig: a = 5, l = 119, n = 20: S = 20/2 × (5 + 119) = 1 240" }
     }
   }
 });

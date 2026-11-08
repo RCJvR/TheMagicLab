@@ -457,13 +457,20 @@ MathMagician.registerChapter(3, {
         { label: "b", text: "Write down the value of the initial investment (at year 0).", marks: 1 },
         { label: "c", text: "Hence write the general formula for the value after n years, in the form A = P(1+i)ⁿ.", marks: 2 },
         { label: "d", text: "Use your formula to predict the value at the end of year 8 (nearest rand).", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — Thandi takes out a home loan of R1 200 000 at 11,25% p.a. compounded monthly, repayable over 20 years by monthly payments starting one month after the loan is granted.", parts: [
+        { label: "a", text: "Calculate her monthly payment.", marks: 4 },
+        { label: "b", text: "Calculate the total interest she will pay over the 20 years.", marks: 3 },
+        { label: "c", text: "Calculate the outstanding balance immediately after the 120th payment.", marks: 4 },
+        { label: "d", text: "If she pays R14 000 per month instead, how many payments will she make?", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
       2: { a: "Loan=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/month", c: "Balance=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Total paid=13596×300=R4 078 800; Interest=4078800−1440000≈R2 638 800" },
       3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; saves R68158−R64804=R3 354" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
+      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" },
+      5: { a: "i = 0,1125/12 = 0,009375; n = 240. 1 200 000 = x[1 − 1,009375⁻²⁴⁰]/0,009375 → x = R12 591,08", b: "Total paid = 240 × 12 591,08 = R3 021 859; interest = 3 021 859 − 1 200 000 = R1 821 859", c: "Present value of the remaining 120 payments: 12 591,08[1 − 1,009375⁻¹²⁰]/0,009375 = R904 736 (accept the future-value method)", d: "1 200 000 = 14 000[1 − 1,009375⁻ⁿ]/0,009375 → 1,009375⁻ⁿ = 0,19643 → n = 174,4, so 175 payments (174 full payments and a smaller final payment)" }
     }
   }
 });

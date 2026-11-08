@@ -470,6 +470,14 @@ MathMagician.registerChapter(6, {
         { label: "a", text: "Using the table, identify the x-values of the stationary (turning) points of f(x).", marks: 2 },
         { label: "b", text: "State the interval(s) where f(x) is increasing, based on the sign of f'(x) in the table.", marks: 3 },
         { label: "c", text: "Given that f'(x) = 3x² − 6x − 9, confirm your answer to (a) algebraically by solving f'(x) = 0.", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Exam-style question</strong> — f(x) = x³ − 3x² − 9x + 5", parts: [
+        { label: "a", text: "Find f′(x).", marks: 1 },
+        { label: "b", text: "Find the coordinates of the turning points of f and classify them.", marks: 5 },
+        { label: "c", text: "Find the coordinates of the point of inflection.", marks: 2 },
+        { label: "d", text: "Determine the equation of the tangent to f at x = 0.", marks: 2 },
+        { label: "e", text: "For which values of k will f(x) = k have three distinct real roots?", marks: 2 },
+        { label: "f", text: "For which values of x is f decreasing and concave down?", marks: 2 }
       ]}
     ],
     answers: {
@@ -481,7 +489,8 @@ MathMagician.registerChapter(6, {
         a: "f'(x) = 0 at x = −1 and x = 3 (the table shows f'(x) crossing zero at these x-values)",
         b: "f'(x) &gt; 0 for x &lt; −1 and for x &gt; 3, so f(x) is increasing on x &lt; −1 and x &gt; 3",
         c: "3x²−6x−9=0 → x²−2x−3=0 → (x−3)(x+1)=0 → x=3 or x=−1, confirming (a)"
-      }
+      },
+      6: { a: "f′(x) = 3x² − 6x − 9", b: "3(x − 3)(x + 1) = 0 → x = 3 or x = −1. f(−1) = 10: local maximum (−1; 10). f(3) = −22: local minimum (3; −22)", c: "f″(x) = 6x − 6 = 0 → x = 1; f(1) = −6, so (1; −6)", d: "m = f′(0) = −9; point (0; 5): y = −9x + 5", e: "−22 &lt; k &lt; 10 (between the minimum and maximum values)", f: "Decreasing for −1 &lt; x &lt; 3 and concave down for x &lt; 1, so −1 &lt; x &lt; 1" }
     }
   }
 });

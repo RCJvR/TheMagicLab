@@ -489,12 +489,18 @@ MathMagician.registerChapter(4, {
       { number: 3, text: "Los op vir x ∈ [0°; 360°]:", parts: [
         { label: "a", text: "cos(2x) = cos x", marks: 5 },
         { label: "b", text: "sin(x + 30°) = cos x", marks: 5 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Beantwoord die trigonometrievrae hieronder sonder ’n sakrekenaar waar moontlik.", parts: [
+        { label: "a", text: "Bewys dat sin 2x/(1 + cos 2x) = tan x.", marks: 4 },
+        { label: "b", text: "Bepaal die algemene oplossing van cos 2x = sin x.", marks: 6 },
+        { label: "c", text: "PQ is ’n vertikale toring met voetpunt Q. A en B is op gelyke grond met Q, AB = 80 m, ∠QAB = 50° en ∠QBA = 60°. Die hoogtehoek van P vanaf A is 30°. Bereken AQ en die hoogte PQ.", marks: 5 }
       ]}
     ],
     answers: {
       1: { a: "sin105°=sin60°cos45°+cos60°sin45°=(√3/2)(√2/2)+(½)(√2/2)=√6/4+√2/4=(√6+√2)/4", b: "cos60°=cos²30°−sin²30°=¾−¼=½; =1−2sin²30°=1−½=½; =2cos²30°−1=3/2−1=½ ✓" },
       2: { a: "LK=(cosxcos45°−sinxsin45°)+(cosxcos45°+sinxsin45°)=2cosxcos45°=2cosx(√2/2)=√2cosx=RK", b: "LK=(sinAcosB+cosAsinB)/(sinAcosB−cosAsinB); deel teller en noemer deur cosAcosB → (tanA+tanB)/(tanA−tanB)=RK" },
-      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½of1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" }
+      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½of1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" },
+      4: { a: "LK = 2 sin x cos x/(1 + 2cos²x − 1) = 2 sin x cos x/(2cos²x) = sin x/cos x = tan x = RK", b: "1 − 2sin²x = sin x → 2sin²x + sin x − 1 = 0 → (2 sin x − 1)(sin x + 1) = 0. sin x = ½: x = 30° + k·360° of x = 150° + k·360°; sin x = −1: x = 270° + k·360°, k ∈ ℤ", c: "∠AQB = 180° − 50° − 60° = 70°. Sinusreël: AQ = 80 sin 60°/sin 70° = 73,7 m. PQ = AQ tan 30° = 42,6 m" }
     }
   }
 });

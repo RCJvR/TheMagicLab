@@ -506,13 +506,21 @@ MathMagician.registerChapter(2, {
         { label: "b", text: "Hence write down f⁻¹(x), the inverse of y = a·bˣ, in logarithmic form.", marks: 3 },
         { label: "c", text: "Use your equation to predict the value of y when x = 5.", marks: 2 },
         { label: "d", text: "Write down the equation of the horizontal asymptote of the graph of y = a·bˣ.", marks: 1 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — f(x) = 2ˣ and h(x) = 2ˣ⁻¹ + 3.", parts: [
+        { label: "a", text: "Write down the equation of f⁻¹ in the form y = …", marks: 2 },
+        { label: "b", text: "Write down the equation of the asymptote of h and calculate its y-intercept.", marks: 3 },
+        { label: "c", text: "Solve h(x) = 11.", marks: 3 },
+        { label: "d", text: "For which values of x is f⁻¹(x) &lt; 3?", marks: 2 },
+        { label: "e", text: "Find the inverse of g(x) = 3x², x ≥ 0, and explain why the restriction x ≥ 0 is needed.", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "x=y²−4→y²=x+4→y=√(x+4); domain x≥−4", b: "Parabola and square root reflection", c: "f⁻¹(5)=√9=3" },
       2: { a: "log₂(x(x−2))=3→x(x−2)=8→x²−2x−8=0→(x−4)(x+2)=0→x=4 (reject x=−2)", b: "(2x−1)log3=log7→x=(log7/log3+1)/2≈1.386", c: "x²−5x=6→x²−5x−6=0→x=6 or x=−1 (check both: x=−1→log(6)✓; x=6→log(6)✓ both valid)" },
       3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 years" },
-      4: { a: "a = 5 (the y-value at x = 0). Ratio between consecutive y-values: 10/5 = 20/10 = 40/20 = 2, so b = 2. Thus y = 5·2ˣ.", b: "Swap x and y: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). So f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" }
+      4: { a: "a = 5 (the y-value at x = 0). Ratio between consecutive y-values: 10/5 = 20/10 = 40/20 = 2, so b = 2. Thus y = 5·2ˣ.", b: "Swap x and y: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). So f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" },
+      5: { a: "y = log₂x", b: "y = 3; h(0) = 2⁻¹ + 3 = 3,5, so (0; 3,5)", c: "2ˣ⁻¹ = 8 = 2³ → x − 1 = 3 → x = 4", d: "log₂x &lt; 3 → 0 &lt; x &lt; 8", e: "Swap x and y: x = 3y² → y = √(x/3), x ≥ 0. Without the restriction, y = 3x² is many-to-one, so its inverse would not be a function (one x would give two y-values)." }
     }
   }
 });

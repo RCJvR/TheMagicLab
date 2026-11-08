@@ -464,6 +464,12 @@ MathMagician.registerChapter(10, {
         { label: "b", text: "Determine P(plays an instrument | plays a sport).", marks: 2 },
         { label: "c", text: "Determine P(plays a sport AND plays an instrument).", marks: 1 },
         { label: "d", text: "Are the events 'plays a sport' and 'plays an instrument' independent? Justify by comparing P(sport)×P(instrument) with P(sport and instrument).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Exam-style question</strong> — Answer the counting and probability questions below.", parts: [
+        { label: "a", text: "How many different arrangements of all the letters of the word MATHEMATICS are possible?", marks: 3 },
+        { label: "b", text: "If one arrangement is chosen at random, what is the probability that it starts and ends with M?", marks: 4 },
+        { label: "c", text: "A and B are independent events with P(A) = 0,4 and P(B) = 0,3. Calculate P(A and B) and P(A or B).", marks: 3 },
+        { label: "d", text: "How many 4-digit codes can be made from the digits 0–9 if digits may not be repeated and the code may not start with 0?", marks: 3 }
       ]}
     ],
     answers: {
@@ -471,7 +477,8 @@ MathMagician.registerChapter(10, {
       2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "The two S's at the ends are identical, so there is 1 way to place them. Arrange the other 8 letters (S×1, T×3, A×1, I×2, C×1): 8!/(3!2!) = 3360" },
       3: { a: "₁₄C₅=2002", b: "₈C₃×₆C₂=56×15=840", c: "P(4W1M)+P(5W)=(₆C₄×₈C₁+₆C₅)/2002=(15×8+6)/2002=126/2002=9/143" },
       4: { a: "7!=5040", b: "Treat PR as unit: 6! arrangements × 2(PR or RP)=1440", c: "Vowels:O,U=2; P(starts with vowel)=2×6!/7!=2/7" },
-      5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport and instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport and instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. This does NOT equal P(sport and instrument) = 0.19, so the events are NOT independent (they are dependent)." }
+      5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport and instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport and instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. This does NOT equal P(sport and instrument) = 0.19, so the events are NOT independent (they are dependent)." },
+      6: { a: "11 letters with M, A and T each twice: 11!/(2! 2! 2!) = 4 989 600", b: "Fix M at both ends; arrange the other 9 letters (A and T twice): 9!/(2! 2!) = 90 720. P = 90 720/4 989 600 = 1/55 ≈ 0,018", c: "P(A and B) = 0,4 × 0,3 = 0,12; P(A or B) = 0,4 + 0,3 − 0,12 = 0,58", d: "9 × 9 × 8 × 7 = 4 536" }
     }
   }
 });

@@ -441,13 +441,22 @@ MathMagician.registerChapter(5, {
         { label: "b", text: "Skryf die y-afsnit neer.", marks: 1 },
         { label: "c", text: "Skryf dus p(x) in volledig gefaktoriseerde vorm.", marks: 2 },
         { label: "d", text: "Beskryf die eindgedrag van die grafiek, met verwysing na die tabelwaardes by x = −2 en x = 4.", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — f(x) = 2x³ − 3x² − 11x + 6", parts: [
+        { label: "a", text: "Toon dat (x − 3) ’n faktor van f(x) is.", marks: 2 },
+        { label: "b", text: "Faktoriseer dus f(x) volledig.", marks: 3 },
+        { label: "c", text: "Skryf die x-afsnitte van die grafiek van f neer.", marks: 1 },
+        { label: "d", text: "Los op f(x) ≥ 0.", marks: 3 },
+        { label: "e", text: "Bereken die res wanneer f(x) deur (x + 1) gedeel word.", marks: 2 },
+        { label: "f", text: "Teken ’n netjiese skets van f en toon die afsnitte met die asse.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "p(2)=16+4−26+6=0 ✓", b: "p(x)=(x−2)(2x²+5x−3)=(x−2)(2x−1)(x+3)", c: "x=2, x=½, x=−3" },
       2: { a: "Toets x=2: 8−4−16+12=0 ✓; deel: (x−2)(x²+x−6)=(x−2)(x+3)(x−2)=(x−2)²(x+3); x=2(dubbel),x=−3", b: "(0,12)", c: "a=1>0: val links, styg regs", d: "Raak die x-as by 2, sny by −3, y-afsnit by 12" },
       3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" },
-      4: { a: "x = −1, 1, 3 (die waardes van x waar p(x) = 0 in die tabel)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leidende koëffisiënt a = 1 > 0, dus val die grafiek na links en styg na regs — bevestig deur die tabel: p(−2) = −15 (baie negatief soos x verminder) en p(4) = 15 (positief en toenemend soos x vermeerder)." }
+      4: { a: "x = −1, 1, 3 (die waardes van x waar p(x) = 0 in die tabel)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leidende koëffisiënt a = 1 > 0, dus val die grafiek na links en styg na regs — bevestig deur die tabel: p(−2) = −15 (baie negatief soos x verminder) en p(4) = 15 (positief en toenemend soos x vermeerder)." },
+      5: { a: "f(3) = 54 − 27 − 33 + 6 = 0, dus is (x − 3) ’n faktor", b: "f(x) = (x − 3)(2x² + 3x − 2) = (x − 3)(2x − 1)(x + 2)", c: "x = 3, x = ½, x = −2", d: "a &gt; 0: −2 ≤ x ≤ ½ of x ≥ 3", e: "f(−1) = −2 − 3 + 11 + 6 = 12", f: "Kubiese grafiek wat regs styg, die x-as by −2, ½ en 3 sny en die y-as by 6" }
     }
   }
 });

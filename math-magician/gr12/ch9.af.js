@@ -318,12 +318,21 @@ MathMagician.registerChapter(9, {
         { label: "b", text: "Vergelyk die lengte van die boks aan elke kant van die mediaan (Q1 tot Mediaan teenoor Mediaan tot Q3).", marks: 2 },
         { label: "c", text: "Beskryf dus die skeefheid van die verdeling.", marks: 2 },
         { label: "d", text: "Ondersteun die gegewe gemiddelde van 50 jou antwoord in (c)? Verduidelik deur die gemiddelde en mediaan te vergelyk.", marks: 2 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Sewe leerders het die ure wat hulle geleer het (x) en hul toetspunt in % (y) aangeteken: (2; 45), (3; 50), (5; 58), (6; 63), (8; 70), (9; 72), (11; 82).", parts: [
+        { label: "a", text: "Bepaal die vergelyking van die kleinstekwadrate-regressielyn.", marks: 3 },
+        { label: "b", text: "Bereken die korrelasiekoëffisiënt r.", marks: 2 },
+        { label: "c", text: "Beskryf die verwantskap tussen ure geleer en punte.", marks: 1 },
+        { label: "d", text: "Voorspel die punt van ’n leerder wat vir 7 uur leer.", marks: 2 },
+        { label: "e", text: "Verduidelik waarom die lyn nie gebruik moet word om die punt vir 20 uur se leer te voorspel nie.", marks: 2 },
+        { label: "f", text: "Bereken die standaardafwyking van die punte.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "Punte korrek geteken", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Gebruik sakrekenaar: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (baie sterk positiewe lineêre korrelasie)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolasie (7 is binne bereik 2–8)" },
       2: { a: "Matige tot sterk positiewe lineêre assosiasie", b: "Ouderdom — ouer kinders het beide groter voete en hoër IK weens ontwikkeling", c: "Korrelasie impliseer nie kousaliteit nie — 'n derde veranderlike (ouderdom) dryf albei" },
-      3: { a: "Onderste snor = 45−32 = 13; Boonste snor = 65−62 = 3 — die onderste snor is baie langer", b: "Q1 tot Mediaan = 58−45 = 13; Mediaan tot Q3 = 62−58 = 4 — die onderste helfte van die boks is ook langer", c: "Beide die snor en boks is langer aan die onderste (linker-) kant, dus is die verdeling negatief skeef (links-skeef) — 'n stert van lae tellings", d: "Ja: gemiddelde (50) < mediaan (58), wat ooreenstem met die verwagte volgorde gemiddelde < mediaan vir 'n negatief skewe verdeling, wat die skeefheid bevestig" }
+      3: { a: "Onderste snor = 45−32 = 13; Boonste snor = 65−62 = 3 — die onderste snor is baie langer", b: "Q1 tot Mediaan = 58−45 = 13; Mediaan tot Q3 = 62−58 = 4 — die onderste helfte van die boks is ook langer", c: "Beide die snor en boks is langer aan die onderste (linker-) kant, dus is die verdeling negatief skeef (links-skeef) — 'n stert van lae tellings", d: "Ja: gemiddelde (50) < mediaan (58), wat ooreenstem met die verwagte volgorde gemiddelde < mediaan vir 'n negatief skewe verdeling, wat die skeefheid bevestig" },
+      4: { a: "ŷ = 37,86 + 3,98x (sakrekenaar)", b: "r = 0,997", c: "’n Baie sterk positiewe lineêre verwantskap", d: "ŷ = 37,86 + 3,98(7) = 65,7 ≈ 66%", e: "20 uur lê ver buite die data (ekstrapolasie); die lyn sou ongeveer 117% voorspel, wat onmoontlik is", f: "σ = 12,0 (gemiddeld 62,86)" }
     }
   }
 });

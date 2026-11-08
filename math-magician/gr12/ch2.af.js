@@ -506,13 +506,21 @@ MathMagician.registerChapter(2, {
         { label: "b", text: "Skryf dus f⁻¹(x), die inverse van y = a·bˣ, in logaritmiese vorm neer.", marks: 3 },
         { label: "c", text: "Gebruik jou vergelyking om die waarde van y te voorspel wanneer x = 5.", marks: 2 },
         { label: "d", text: "Skryf die vergelyking van die horisontale asimptoot van die grafiek van y = a·bˣ neer.", marks: 1 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — f(x) = 2ˣ en h(x) = 2ˣ⁻¹ + 3.", parts: [
+        { label: "a", text: "Skryf die vergelyking van f⁻¹ in die vorm y = … neer.", marks: 2 },
+        { label: "b", text: "Skryf die vergelyking van die asimptoot van h neer en bereken sy y-afsnit.", marks: 3 },
+        { label: "c", text: "Los op h(x) = 11.", marks: 3 },
+        { label: "d", text: "Vir watter waardes van x is f⁻¹(x) &lt; 3?", marks: 2 },
+        { label: "e", text: "Bepaal die inverse van g(x) = 3x², x ≥ 0, en verduidelik waarom die beperking x ≥ 0 nodig is.", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "x=y²−4→y²=x+4→y=√(x+4); domein x≥−4", b: "Parabool en vierkantswortel-spieëling", c: "f⁻¹(5)=√9=3" },
       2: { a: "log₂(x(x−2))=3→x(x−2)=8→x²−2x−8=0→(x−4)(x+2)=0→x=4 (verwerp x=−2)", b: "(2x−1)log3=log7→x=(log7/log3+1)/2≈1.386", c: "x²−5x=6→x²−5x−6=0→x=6 of x=−1 (kontroleer beide: x=−1→log(6)✓; x=6→log(6)✓ altwee geldig)" },
       3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 jaar" },
-      4: { a: "a = 5 (die y-waarde by x = 0). Verhouding tussen opeenvolgende y-waardes: 10/5 = 20/10 = 40/20 = 2, dus b = 2. Dus y = 5·2ˣ.", b: "Ruil x en y om: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). Dus f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" }
+      4: { a: "a = 5 (die y-waarde by x = 0). Verhouding tussen opeenvolgende y-waardes: 10/5 = 20/10 = 40/20 = 2, dus b = 2. Dus y = 5·2ˣ.", b: "Ruil x en y om: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). Dus f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" },
+      5: { a: "y = log₂x", b: "y = 3; h(0) = 2⁻¹ + 3 = 3,5, dus (0; 3,5)", c: "2ˣ⁻¹ = 8 = 2³ → x − 1 = 3 → x = 4", d: "log₂x &lt; 3 → 0 &lt; x &lt; 8", e: "Ruil x en y om: x = 3y² → y = √(x/3), x ≥ 0. Sonder die beperking is y = 3x² veel-tot-een, dus sou die inverse nie ’n funksie wees nie (een x sou twee y-waardes gee)." }
     }
   }
 });
