@@ -115,6 +115,7 @@
   function pr(cls){document.body.classList.add(cls); window.print(); setTimeout(function(){document.body.classList.remove(cls);},500);}
   var a=document.getElementById('mxPrintQ'), b=document.getElementById('mxPrintM');
   if(a)a.addEventListener('click',function(){pr('mx-print-q');}); if(b)b.addEventListener('click',function(){pr('mx-print-m');});
+  var nv=document.getElementById('site-nav');function st(){if(nv)nv.classList.toggle('is-stuck',scrollY>4);} addEventListener('scroll',st,{passive:true}); st();
   if(window.lucide)lucide.createIcons();
   if(window.MLLang){try{MLLang.setLang&&MLLang.setLang('en');}catch(e){}
     MLLang.mount('mlLangToggle',{onChange:function(next){if(next!=='en')location.href='gr12-maths-p2.af.html'+location.hash;}});}
