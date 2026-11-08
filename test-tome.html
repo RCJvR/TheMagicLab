@@ -948,8 +948,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   // One word / missing word / labels: capitals, accents, extra spaces, hyphens and a leading
   // article (the, a, an, die, 'n) do not matter; the spelling does.
+  // Symbols are read as words (\u03b8 = theta, \u03a9 = ohm, \u00d7 = x) and NFKD turns \u00bd, x\u00b2 and \u03b8\u2082 into plain digits.
   function wordNorm(s) {
-    return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019`]/g, "'")
+    return String(s == null ? '' : s).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019`]/g, "'")
+      .replace(/\u2044/g, '/').replace(/\u03b8/g, ' theta ').replace(/\u03c0/g, ' pi ').replace(/\u03c9/g, ' ohm ').replace(/\u03c3/g, ' sigma ')
+      .replace(/\u00d7/g, ' x ').replace(/\u0394|\u03b4/g, ' delta ').replace(/\s+/g, ' ')
       .replace(/^\s*(the|a|an|die|'n)\s+/, '').replace(/[-\u2013_\/]/g, ' ').replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
   }
   function wordOk(acc, v) {

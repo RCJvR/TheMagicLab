@@ -34,7 +34,8 @@ Every question can carry `"skill": "knowledge"` (the default) or
 
 `word`, `blank` and `label` answers ignore capitals, accents, extra spaces, hyphens and a
 leading article (the, a, an, die, 'n), but the spelling must be right; list every
-acceptable form (plurals, synonyms, British/American spelling). `num` accepts a
+acceptable form (plurals, synonyms, British/American spelling). Symbols are read as words
+(θ = theta, π = pi, Ω = ohm, σ = sigma, × = x, Δ = delta), and ½, x² and θ₂ count as plain digits. `num` accepts a
 decimal comma or point and a unit typed after the number. Give each of these an
 Afrikaans twin: `answerAf`, `textAf`, `blanksAf`, `labelsAf`, `pointsAf`, `unitAf`.
 `written` questions are never queued as revisits, and a paper with written questions
