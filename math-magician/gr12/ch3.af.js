@@ -97,6 +97,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Spaar R1 500 aan die einde van elke maand vir 10 jaar teen 8% p.j. maandeliks saamgestel</div><div class="example-step"><span class="step-num">1</span><span>i = 0,08/12; n = 10 × 12 = 120.</span></div><div class="example-step"><span class="step-num">2</span><span>F = 1 500[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) = R274 419.</span></div><div class="example-step"><span class="step-num">3</span><span>Totaal gedeponeer: 120 × 1 500 = R180 000, dus rente verdien = R94 419.</span></div><div class="example-step"><span class="step-num">4</span><span>Om eerder R300 000 te bereik, los op 300 000 = x[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) → x = R1 640 per maand.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik i en n per betalingsperiode: maandelikse paaiemente vereis die maandelikse koers en die aantal maande.</span></div>
         `
       },
       questions: [
@@ -183,6 +184,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Lening van R250 000 teen 12% p.j. maandeliks saamgestel word oor 5 jaar terugbetaal</div><div class="example-step"><span class="step-num">1</span><span>i = 0,12/12 = 0,01; n = 60.</span></div><div class="example-step"><span class="step-num">2</span><span>250 000 = x[1 − 1,01⁻⁶⁰]/0,01 → x = R5 561,11 per maand.</span></div><div class="example-step"><span class="step-num">3</span><span>Balans ná 2 jaar (24 paaiemente gemaak, 36 oor): HW van die oorblywende paaiemente = 5 561,11[1 − 1,01⁻³⁶]/0,01 = R167 431.</span></div><div class="example-step"><span class="step-num">4</span><span>Totale rente = 60 × 5 561,11 − 250 000 = R83 667.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Vir die uitstaande balans, gebruik die aantal paaiemente wat <strong>nog gemaak moet word</strong> (36), nie die oorspronklike 60 nie.</span></div>
         `
       },
       questions: [
@@ -423,6 +425,7 @@ MathMagician.registerChapter(3, {
             <div class="example-step"><span class="step-num">1</span><span>R100 000 teen 1% per maand, met geen betalings vir 2 maande nie: saldo = 100 000(1,01)² = R102 010.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>Terugbetaal oor 12 maande vanaf die einde van maand 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per maand.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: R100 000 word teen 9% p.j. maandeliks saamgestel geleen. Die eerste van 48 maandelikse paaiemente word 6 maande nadat die lening toegestaan is, gemaak</div><div class="example-step"><span class="step-num">1</span><span>i = 0,09/12 = 0,0075.</span></div><div class="example-step"><span class="step-num">2</span><span>Die eerste paaiement is aan die einde van maand 6, dus begin die annuïteit een periode vroeër — aan die einde van maand 5. Laat die lening vir 5 maande groei: 100 000 × 1,0075⁵ = R103 806,72.</span></div><div class="example-step"><span class="step-num">3</span><span>103 806,72 = x[1 − 1,0075⁻⁴⁸]/0,0075 → x = R2 583,24.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontrole: sonder die uitstel sou die paaiement R2 488,50 wees — uitstel kos ekstra rente.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Laat die skuld vir een maand <strong>minder</strong> as die vertraging groei (5, nie 6 nie), omdat die huidige-waarde-formule reeds aanneem dat die eerste paaiement een periode ná sy beginpunt kom.</span></div>
         `
       },
       questions: [

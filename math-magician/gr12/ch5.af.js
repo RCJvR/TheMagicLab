@@ -85,6 +85,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = x³ + px² + qx − 6 het ’n faktor (x − 1) en laat ’n res van −12 wanneer dit deur (x + 2) gedeel word. Bepaal p en q</div><div class="example-step"><span class="step-num">1</span><span>f(1) = 0: 1 + p + q − 6 = 0 → p + q = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>f(−2) = −12: −8 + 4p − 2q − 6 = −12 → 2p − q = 1.</span></div><div class="example-step"><span class="step-num">3</span><span>Tel die vergelykings op: 3p = 6 → p = 2, dus q = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer: f(x) = x³ + 2x² + 3x − 6 en f(1) = 1 + 2 + 3 − 6 = 0 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Om deur (x + 2) te deel, beteken om x = −2 te vervang, nie x = 2 nie.</span></div>
         `
       },
       questions: [
@@ -192,6 +193,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Skets f(x) = −x³ + 3x² + 9x − 27</div><div class="example-step"><span class="step-num">1</span><span>Faktoriseer: f(x) = −(x³ − 3x² − 9x + 27) = −(x − 3)²(x + 3). x-afsnitte: x = −3 en x = 3 (herhaal: die grafiek raak).</span></div><div class="example-step"><span class="step-num">2</span><span>y-afsnit: −27.</span></div><div class="example-step"><span class="step-num">3</span><span>f′(x) = −3x² + 6x + 9 = −3(x − 3)(x + 1) → draaipunte by x = 3: (3; 0) maksimum, en x = −1: (−1; −32) minimum.</span></div><div class="example-step"><span class="step-num">4</span><span>a &lt; 0: die grafiek styg links en daal regs.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Herhaalde wortel beteken die grafiek <strong>raak</strong> die x-as daar en daardie punt is ’n draaipunt.</span></div>
         `
       },
       questions: [

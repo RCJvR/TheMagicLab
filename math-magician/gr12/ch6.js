@@ -97,6 +97,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Use first principles to find f′(x) if f(x) = 2x² − 3x</div><div class="example-step"><span class="step-num">1</span><span>f(x + h) = 2(x + h)² − 3(x + h) = 2x² + 4xh + 2h² − 3x − 3h.</span></div><div class="example-step"><span class="step-num">2</span><span>f(x + h) − f(x) = 4xh + 2h² − 3h.</span></div><div class="example-step"><span class="step-num">3</span><span>Divide by h: 4x + 2h − 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f′(x) = lim (h → 0) (4x + 2h − 3) = 4x − 3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Keep writing “lim h → 0” on every line until you actually let h = 0 — marks are lost for dropping it early.</span></div>
         `
       },
       questions: [
@@ -205,6 +206,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: An open box is made from a 30 cm × 30 cm sheet by cutting equal squares of side x from each corner. Find the maximum volume</div><div class="example-step"><span class="step-num">1</span><span>V(x) = x(30 − 2x)², with 0 &lt; x &lt; 15.</span></div><div class="example-step"><span class="step-num">2</span><span>V′(x) = (30 − 2x)² − 4x(30 − 2x) = (30 − 2x)(30 − 6x).</span></div><div class="example-step"><span class="step-num">3</span><span>V′(x) = 0 → x = 5 (x = 15 gives no box).</span></div><div class="example-step"><span class="step-num">4</span><span>V(5) = 5 × 20² = 2 000 cm³. V″(5) &lt; 0 (or test values on either side), so this is a maximum.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> State the restrictions on x and show that your answer is a maximum, not just a turning point.</span></div>
         `
       },
       questions: [

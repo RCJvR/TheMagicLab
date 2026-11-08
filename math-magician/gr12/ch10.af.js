@@ -112,6 +112,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: 7 verskillende boeke word op ’n rak gerangskik</div><div class="example-step"><span class="step-num">1</span><span>Alle rangskikkings: 7! = 5 040.</span></div><div class="example-step"><span class="step-num">2</span><span>Twee bepaalde boeke moet langs mekaar staan: hanteer hulle as een blok → 6 eenhede: 6! maniere, en die twee boeke ruil om: 2! → 6! × 2! = 1 440.</span></div><div class="example-step"><span class="step-num">3</span><span>Die twee boeke moet NIE langs mekaar staan nie: 5 040 − 1 440 = 3 600.</span></div><div class="example-step"><span class="step-num">4</span><span>Waarskynlikheid dat hulle langs mekaar staan as dit lukraak gerangskik word: 1 440/5 040 = 2/7.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Onthou om met die rangskikkings <strong>binne</strong> die blok (2!) te vermenigvuldig.</span></div>
         `
       },
       questions: [
@@ -217,6 +218,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die letters van NUMBER word lukraak gerangskik. Bepaal die waarskynlikheid dat die twee vokale langs mekaar staan</div><div class="example-step"><span class="step-num">1</span><span>Totale rangskikkings van 6 verskillende letters: 6! = 720.</span></div><div class="example-step"><span class="step-num">2</span><span>Hanteer U en E as een blok: 5 eenhede → 5! rangskikkings, en die vokale kan omruil: 2!.</span></div><div class="example-step"><span class="step-num">3</span><span>Gunstig: 5! × 2! = 240.</span></div><div class="example-step"><span class="step-num">4</span><span>P = 240/720 = 1/3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Waarskynlikheid = gunstige rangskikkings ÷ totale rangskikkings — tel albei op dieselfde manier.</span></div>
         `
       },
       questions: [

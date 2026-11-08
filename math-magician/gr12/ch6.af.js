@@ -97,6 +97,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Gebruik eerste beginsels om f′(x) te bepaal as f(x) = 2x² − 3x</div><div class="example-step"><span class="step-num">1</span><span>f(x + h) = 2(x + h)² − 3(x + h) = 2x² + 4xh + 2h² − 3x − 3h.</span></div><div class="example-step"><span class="step-num">2</span><span>f(x + h) − f(x) = 4xh + 2h² − 3h.</span></div><div class="example-step"><span class="step-num">3</span><span>Deel deur h: 4x + 2h − 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f′(x) = lim (h → 0) (4x + 2h − 3) = 4x − 3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skryf aanhou “lim h → 0” op elke reël totdat jy werklik h = 0 stel — punte gaan verlore as jy dit te vroeg weglaat.</span></div>
         `
       },
       questions: [
@@ -205,6 +206,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Oop doos word gemaak van ’n plaat van 30 cm × 30 cm deur gelyke vierkante met sy x uit elke hoek te sny. Bepaal die maksimum volume</div><div class="example-step"><span class="step-num">1</span><span>V(x) = x(30 − 2x)², met 0 &lt; x &lt; 15.</span></div><div class="example-step"><span class="step-num">2</span><span>V′(x) = (30 − 2x)² − 4x(30 − 2x) = (30 − 2x)(30 − 6x).</span></div><div class="example-step"><span class="step-num">3</span><span>V′(x) = 0 → x = 5 (x = 15 gee geen doos nie).</span></div><div class="example-step"><span class="step-num">4</span><span>V(5) = 5 × 20² = 2 000 cm³. V″(5) &lt; 0 (of toets waardes aan albei kante), dus is dit ’n maksimum.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Noem die beperkings op x en toon dat jou antwoord ’n maksimum is, nie net ’n draaipunt nie.</span></div>
         `
       },
       questions: [

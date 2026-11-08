@@ -97,6 +97,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Save R1 500 at the end of every month for 10 years at 8% p.a. compounded monthly</div><div class="example-step"><span class="step-num">1</span><span>i = 0,08/12; n = 10 × 12 = 120.</span></div><div class="example-step"><span class="step-num">2</span><span>F = 1 500[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) = R274 419.</span></div><div class="example-step"><span class="step-num">3</span><span>Total deposited: 120 × 1 500 = R180 000, so interest earned = R94 419.</span></div><div class="example-step"><span class="step-num">4</span><span>To reach R300 000 instead, solve 300 000 = x[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) → x = R1 640 per month.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use i and n per payment period: monthly payments need the monthly rate and the number of months.</span></div>
         `
       },
       questions: [
@@ -183,6 +184,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A loan of R250 000 at 12% p.a. compounded monthly is repaid over 5 years</div><div class="example-step"><span class="step-num">1</span><span>i = 0,12/12 = 0,01; n = 60.</span></div><div class="example-step"><span class="step-num">2</span><span>250 000 = x[1 − 1,01⁻⁶⁰]/0,01 → x = R5 561,11 per month.</span></div><div class="example-step"><span class="step-num">3</span><span>Balance after 2 years (24 payments made, 36 left): PV of the remaining payments = 5 561,11[1 − 1,01⁻³⁶]/0,01 = R167 431.</span></div><div class="example-step"><span class="step-num">4</span><span>Total interest = 60 × 5 561,11 − 250 000 = R83 667.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> For the outstanding balance, use the number of payments <strong>still to be made</strong> (36), not the original 60.</span></div>
         `
       },
       questions: [
@@ -422,6 +424,7 @@ MathMagician.registerChapter(3, {
             <div class="example-step"><span class="step-num">1</span><span>R100 000 at 1% per month, with no payments for 2 months: balance = 100 000(1,01)² = R102 010.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>Repay over 12 months from the end of month 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per month.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R100 000 is borrowed at 9% p.a. compounded monthly. The first of 48 monthly payments is made 6 months after the loan is granted</div><div class="example-step"><span class="step-num">1</span><span>i = 0,09/12 = 0,0075.</span></div><div class="example-step"><span class="step-num">2</span><span>The first payment is at the end of month 6, so the annuity starts one period earlier — at the end of month 5. Grow the loan for 5 months: 100 000 × 1,0075⁵ = R103 806,72.</span></div><div class="example-step"><span class="step-num">3</span><span>103 806,72 = x[1 − 1,0075⁻⁴⁸]/0,0075 → x = R2 583,24.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: without the deferral the payment would be R2 488,50 — deferring costs extra interest.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Grow the debt for one month <strong>fewer</strong> than the delay (5, not 6), because the present-value formula already assumes the first payment comes one period after its starting point.</span></div>
         `
       },
       questions: [

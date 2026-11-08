@@ -105,6 +105,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Arithmetic and geometric sequences</div><div class="example-step"><span class="step-num">1</span><span>Which term of 3; 7; 11; … is 403? Tₙ = 3 + (n − 1)4 = 4n − 1 = 403 → n = 101.</span></div><div class="example-step"><span class="step-num">2</span><span>A geometric sequence has T₃ = 12 and T₆ = 96. Divide: ar⁵/ar² = r³ = 8 → r = 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Then a = 12/r² = 3, so T₁₀ = 3 × 2⁹ = 1 536.</span></div><div class="example-step"><span class="step-num">4</span><span>Sum of the first 10 terms: S₁₀ = 3(2¹⁰ − 1)/(2 − 1) = 3 069.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Dividing two terms of a geometric sequence eliminates a and gives r — a faster route than substituting.</span></div>
         `
       },
       questions: [
@@ -236,6 +237,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: For which values of x does Σ (2x − 1)ᵏ from k = 1 to ∞ converge? Find the sum when x = ¾</div><div class="example-step"><span class="step-num">1</span><span>This is a geometric series with r = 2x − 1.</span></div><div class="example-step"><span class="step-num">2</span><span>It converges when −1 &lt; r &lt; 1 (r ≠ 0): −1 &lt; 2x − 1 &lt; 1 → 0 &lt; x &lt; 1, x ≠ ½.</span></div><div class="example-step"><span class="step-num">3</span><span>x = ¾: r = ½ and the first term a = ½.</span></div><div class="example-step"><span class="step-num">4</span><span>S∞ = a/(1 − r) = ½ ÷ ½ = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The first term is found by substituting the starting value of k (here k = 1), not k = 0.</span></div>
         `
       },
       questions: [

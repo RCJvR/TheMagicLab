@@ -89,6 +89,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the equation of the circle with diameter AB, where A(−1; 4) and B(5; −4)</div><div class="example-step"><span class="step-num">1</span><span>The centre is the midpoint of AB: ((−1 + 5)/2; (4 − 4)/2) = (2; 0).</span></div><div class="example-step"><span class="step-num">2</span><span>AB = √((5 + 1)² + (−4 − 4)²) = √100 = 10, so r = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>Equation: (x − 2)² + y² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Check with another point, e.g. (5; 4): 9 + 16 = 25 ✓, so (5; 4) is also on the circle.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Watch the signs: a centre at (2; 0) gives (x − 2)², and a centre at (−2; 0) would give (x + 2)².</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the equation of the tangent to x² + y² = 25 at P(3; 4)</div><div class="example-step"><span class="step-num">1</span><span>The centre is O(0; 0). Gradient of radius OP = 4/3.</span></div><div class="example-step"><span class="step-num">2</span><span>The tangent is perpendicular to the radius: m = −3/4.</span></div><div class="example-step"><span class="step-num">3</span><span>y − 4 = −¾(x − 3) → y = −¾x + 25/4.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: substitute P — 4 = −9/4 + 25/4 = 16/4 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The tangent gradient is the <strong>negative reciprocal</strong> of the radius gradient, not just its negative.</span></div>
         `
       },
       questions: [

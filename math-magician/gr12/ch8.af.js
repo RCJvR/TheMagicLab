@@ -97,6 +97,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In △ABC is DE ∥ BC met D op AB en E op AC. AD = x, DB = x + 2, AE = 4 en EC = 6</div><div class="example-step"><span class="step-num">1</span><span>Lyn ∥ een sy van △: AD/DB = AE/EC → x/(x + 2) = 4/6.</span></div><div class="example-step"><span class="step-num">2</span><span>6x = 4x + 8 → x = 4. Dus AD = 4, DB = 6, AB = 10.</span></div><div class="example-step"><span class="step-num">3</span><span>△ADE ||| △ABC (∠∠∠), dus DE/BC = AD/AB = 4/10 = 2/5.</span></div><div class="example-step"><span class="step-num">4</span><span>As BC = 15, dan is DE = 6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> AD/DB vergelyk die twee dele van ’n sy (eweredigheid); DE/BC = AD/AB vergelyk ’n deel met die hele sy (gelykvormige driehoeke). Moenie hulle meng nie.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In reghoekige △ABC (∠C = 90°) is CD ⊥ AB met AD = 4 en DB = 9</div><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △CBD (∠∠∠), dus AD/CD = CD/DB → CD² = AD · DB = 36 → CD = 6.</span></div><div class="example-step"><span class="step-num">2</span><span>△ACD ||| △ABC, dus AC² = AD · AB = 4 × 13 = 52 → AC = 2√13.</span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, dus BC² = DB · AB = 9 × 13 = 117 → BC = 3√13.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer met Pythagoras: 52 + 117 = 169 = 13² ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skryf die gelykvormige driehoeke met die ooreenstemmende hoeke in dieselfde volgorde voordat jy die verhoudings skryf.</span></div>
         `
       },
       questions: [

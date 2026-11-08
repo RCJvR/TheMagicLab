@@ -112,6 +112,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: 7 different books are arranged on a shelf</div><div class="example-step"><span class="step-num">1</span><span>All arrangements: 7! = 5 040.</span></div><div class="example-step"><span class="step-num">2</span><span>Two particular books must stand together: treat them as one block → 6 units: 6! ways, and the two books swap: 2! → 6! × 2! = 1 440.</span></div><div class="example-step"><span class="step-num">3</span><span>The two books must NOT stand together: 5 040 − 1 440 = 3 600.</span></div><div class="example-step"><span class="step-num">4</span><span>Probability that they stand together if arranged at random: 1 440/5 040 = 2/7.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Remember to multiply by the arrangements <strong>inside</strong> the block (2!).</span></div>
         `
       },
       questions: [
@@ -217,6 +218,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: The letters of NUMBER are arranged at random. Find the probability that the two vowels stand next to each other</div><div class="example-step"><span class="step-num">1</span><span>Total arrangements of 6 different letters: 6! = 720.</span></div><div class="example-step"><span class="step-num">2</span><span>Treat U and E as one block: 5 units → 5! arrangements, and the vowels can swap: 2!.</span></div><div class="example-step"><span class="step-num">3</span><span>Favourable: 5! × 2! = 240.</span></div><div class="example-step"><span class="step-num">4</span><span>P = 240/720 = 1/3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Probability = favourable arrangements ÷ total arrangements — count both the same way.</span></div>
         `
       },
       questions: [

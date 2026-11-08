@@ -84,6 +84,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = 2x + 3 en g(x) = x², x ≤ 0</div><div class="example-step"><span class="step-num">1</span><span>f⁻¹: ruil x en y: x = 2y + 3 → y = (x − 3)/2.</span></div><div class="example-step"><span class="step-num">2</span><span>f en f⁻¹ ontmoet op y = x: 2x + 3 = x → x = −3, dus (−3; −3).</span></div><div class="example-step"><span class="step-num">3</span><span>g⁻¹: x = y², y ≤ 0 → y = −√x, x ≥ 0.</span></div><div class="example-step"><span class="step-num">4</span><span>As gevolg van die beperking x ≤ 0 is g een-tot-een en g⁻¹ ’n funksie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Wanneer jy die inverse van ’n parabool bepaal, gebruik die beperking om die korrekte teken van die vierkantswortel te kies.</span></div>
         `
       },
       questions: [
@@ -207,6 +208,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op log₂(x + 3) + log₂(x − 3) = 4</div><div class="example-step"><span class="step-num">1</span><span>Kombineer die logaritmes: log₂[(x + 3)(x − 3)] = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Skakel na eksponensiële vorm: x² − 9 = 2⁴ = 16.</span></div><div class="example-step"><span class="step-num">3</span><span>x² = 25 → x = 5 of x = −5.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer die definisieversameling: log₂(x − 3) vereis x &gt; 3, dus word x = −5 verwerp. Antwoord: x = 5.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kontroleer altyd antwoorde in die oorspronklike vergelyking — die argument van elke logaritme moet positief wees.</span></div>
         `
       },
       questions: [
@@ -472,6 +474,7 @@ MathMagician.registerChapter(2, {
             <div class="example-step"><span class="step-num">1</span><span>Vir y = 2^x − 5: die asimptoot is y = −5, dus is die waardeversameling y > −5.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>Vir y = log₂(x − 4): die vertikale asimptoot is x = 4, omdat x − 4 = 0.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = 3ˣ, g(x) = 3ˣ⁺² − 9 en h(x) = log₃(x − 1)</div><div class="example-step"><span class="step-num">1</span><span>g is f 2 links en 9 af geskuif, dus is sy asimptoot y = −9.</span></div><div class="example-step"><span class="step-num">2</span><span>y-afsnit van g: 3² − 9 = 0; x-afsnit: 3ˣ⁺² = 9 = 3² → x = 0. Die grafiek van g gaan deur die oorsprong.</span></div><div class="example-step"><span class="step-num">3</span><span>f⁻¹(x) = log₃x. h is f⁻¹ 1 eenheid na regs geskuif: definisieversameling x &gt; 1, vertikale asimptoot x = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>x-afsnit van h: log₃(x − 1) = 0 → x − 1 = 1 → x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Horisontale verskuiwing in die eksponent werk teenoorgesteld aan sy teken: 3ˣ⁺² skuif die grafiek 2 eenhede na <strong>links</strong>.</span></div>
         `
       },
       questions: [

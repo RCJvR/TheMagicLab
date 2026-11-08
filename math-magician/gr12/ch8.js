@@ -97,6 +97,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In △ABC, DE ∥ BC with D on AB and E on AC. AD = x, DB = x + 2, AE = 4 and EC = 6</div><div class="example-step"><span class="step-num">1</span><span>Line ∥ one side of △: AD/DB = AE/EC → x/(x + 2) = 4/6.</span></div><div class="example-step"><span class="step-num">2</span><span>6x = 4x + 8 → x = 4. So AD = 4, DB = 6, AB = 10.</span></div><div class="example-step"><span class="step-num">3</span><span>△ADE ||| △ABC (∠∠∠), so DE/BC = AD/AB = 4/10 = 2/5.</span></div><div class="example-step"><span class="step-num">4</span><span>If BC = 15, then DE = 6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> AD/DB compares the two parts of a side (proportionality); DE/BC = AD/AB compares a part with the whole side (similar triangles). Do not mix them.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In right-angled △ABC (∠C = 90°), CD ⊥ AB with AD = 4 and DB = 9</div><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △CBD (∠∠∠), so AD/CD = CD/DB → CD² = AD · DB = 36 → CD = 6.</span></div><div class="example-step"><span class="step-num">2</span><span>△ACD ||| △ABC, so AC² = AD · AB = 4 × 13 = 52 → AC = 2√13.</span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, so BC² = DB · AB = 9 × 13 = 117 → BC = 3√13.</span></div><div class="example-step"><span class="step-num">4</span><span>Check with Pythagoras: 52 + 117 = 169 = 13² ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Write the similar triangles with the matching angles in the same order before you write the ratios.</span></div>
         `
       },
       questions: [

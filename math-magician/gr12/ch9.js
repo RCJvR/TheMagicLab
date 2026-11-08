@@ -98,6 +98,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A regression line for hours studied (x) and mark (y) is ŷ = 12,5 + 3,2x, from data with x between 1 and 10</div><div class="example-step"><span class="step-num">1</span><span>Gradient 3,2: each extra hour of study is linked to about 3,2 more marks.</span></div><div class="example-step"><span class="step-num">2</span><span>Intercept 12,5: the predicted mark for 0 hours — be careful, since 0 is outside the data.</span></div><div class="example-step"><span class="step-num">3</span><span>Predict for 6 hours: ŷ = 12,5 + 19,2 = 31,7 — interpolation, reliable.</span></div><div class="example-step"><span class="step-num">4</span><span>Predict for 30 hours: ŷ = 108,5 — extrapolation, unreliable (and impossible above 100).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> An outlier can pull the regression line strongly; identify it on the scatter plot before trusting predictions.</span></div>
         `
       },
       questions: [
@@ -193,6 +194,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Data: x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 5</div><div class="example-step"><span class="step-num">1</span><span>Means: x̄ = 3, ȳ = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>With the calculator (STAT, A + BX) or by hand: b = 0,6 and a = 4 − 0,6 × 3 = 2,2, so ŷ = 2,2 + 0,6x.</span></div><div class="example-step"><span class="step-num">3</span><span>r = 0,77: a fairly strong positive correlation.</span></div><div class="example-step"><span class="step-num">4</span><span>Prediction for x = 3,5 (interpolation): ŷ = 2,2 + 2,1 = 4,3 — reliable because 3,5 lies inside the data.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> r measures the strength of a <strong>linear</strong> relationship only, and correlation does not prove that x causes y.</span></div>
         `
       },
       questions: [
@@ -282,6 +284,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Five-number summary: minimum 10, Q₁ 15, median 18, Q₃ 26, maximum 40</div><div class="example-step"><span class="step-num">1</span><span>Median − Q₁ = 3 and Q₃ − median = 8: the upper half is more spread out.</span></div><div class="example-step"><span class="step-num">2</span><span>The data is positively skewed (tail to the right), so the mean is greater than the median.</span></div><div class="example-step"><span class="step-num">3</span><span>IQR = 26 − 15 = 11. Upper fence = 26 + 1,5 × 11 = 42,5.</span></div><div class="example-step"><span class="step-num">4</span><span>40 &lt; 42,5, so the maximum is not an outlier.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Skewness is named after the side of the long tail: a long tail to the right is <strong>positive</strong> skew.</span></div>
         `
       },
       questions: [

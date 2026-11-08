@@ -98,6 +98,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Regressielyn vir ure geleer (x) en punt (y) is ŷ = 12,5 + 3,2x, uit data met x tussen 1 en 10</div><div class="example-step"><span class="step-num">1</span><span>Gradiënt 3,2: elke ekstra uur leer hou verband met ongeveer 3,2 punte meer.</span></div><div class="example-step"><span class="step-num">2</span><span>Afsnit 12,5: die voorspelde punt vir 0 uur — wees versigtig, want 0 is buite die data.</span></div><div class="example-step"><span class="step-num">3</span><span>Voorspel vir 6 uur: ŷ = 12,5 + 19,2 = 31,7 — interpolasie, betroubaar.</span></div><div class="example-step"><span class="step-num">4</span><span>Voorspel vir 30 uur: ŷ = 108,5 — ekstrapolasie, onbetroubaar (en onmoontlik bo 100).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Uitskieter kan die regressielyn sterk trek; identifiseer dit op die spreidiagram voordat jy voorspellings vertrou.</span></div>
         `
       },
       questions: [
@@ -193,6 +194,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Data: x = 1, 2, 3, 4, 5 en y = 2, 4, 5, 4, 5</div><div class="example-step"><span class="step-num">1</span><span>Gemiddeldes: x̄ = 3, ȳ = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Met die sakrekenaar (STAT, A + BX) of met die hand: b = 0,6 en a = 4 − 0,6 × 3 = 2,2, dus ŷ = 2,2 + 0,6x.</span></div><div class="example-step"><span class="step-num">3</span><span>r = 0,77: ’n redelik sterk positiewe korrelasie.</span></div><div class="example-step"><span class="step-num">4</span><span>Voorspelling vir x = 3,5 (interpolasie): ŷ = 2,2 + 2,1 = 4,3 — betroubaar omdat 3,5 binne die data lê.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> r meet net die sterkte van ’n <strong>lineêre</strong> verwantskap, en korrelasie bewys nie dat x vir y veroorsaak nie.</span></div>
         `
       },
       questions: [
@@ -282,6 +284,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vyfgetalopsomming: minimum 10, Q₁ 15, mediaan 18, Q₃ 26, maksimum 40</div><div class="example-step"><span class="step-num">1</span><span>Mediaan − Q₁ = 3 en Q₃ − mediaan = 8: die boonste helfte is meer versprei.</span></div><div class="example-step"><span class="step-num">2</span><span>Die data is positief skeef (stert na regs), dus is die gemiddeld groter as die mediaan.</span></div><div class="example-step"><span class="step-num">3</span><span>IKV = 26 − 15 = 11. Boonste grens = 26 + 1,5 × 11 = 42,5.</span></div><div class="example-step"><span class="step-num">4</span><span>40 &lt; 42,5, dus is die maksimum nie ’n uitskieter nie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skeefheid word genoem na die kant van die lang stert: ’n lang stert na regs is <strong>positiewe</strong> skeefheid.</span></div>
         `
       },
       questions: [

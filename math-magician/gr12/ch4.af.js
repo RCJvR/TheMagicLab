@@ -85,6 +85,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal cos 75° sonder ’n sakrekenaar, en bewys sin(A + B) − sin(A − B) = 2 cos A sin B</div><div class="example-step"><span class="step-num">1</span><span>cos 75° = cos(45° + 30°) = cos 45° cos 30° − sin 45° sin 30°.</span></div><div class="example-step"><span class="step-num">2</span><span>= (√2/2)(√3/2) − (√2/2)(½) = (√6 − √2)/4.</span></div><div class="example-step"><span class="step-num">3</span><span>LK = (sin A cos B + cos A sin B) − (sin A cos B − cos A sin B).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2 cos A sin B = RK.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> cos(A + B) is <strong>nie</strong> cos A + cos B nie. Gebruik altyd die uitbreidingsformule.</span></div>
         `
       },
       questions: [
@@ -184,6 +185,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op sin 2x = cos x vir x ∈ [0°; 360°]</div><div class="example-step"><span class="step-num">1</span><span>Gebruik die dubbelhoekformule: 2 sin x cos x = cos x.</span></div><div class="example-step"><span class="step-num">2</span><span>Bring alles na een kant en faktoriseer: cos x(2 sin x − 1) = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>cos x = 0 → x = 90° of 270°.</span></div><div class="example-step"><span class="step-num">4</span><span>sin x = ½ → x = 30° of 150°.</span></div><div class="example-step"><span class="step-num">5</span><span>Oplossings: x = 30°, 90°, 150°, 270°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moet nooit albei kante deur cos x deel nie — jy verloor die oplossings waar cos x = 0. Faktoriseer eerder.</span></div>
         `
       },
       questions: [
@@ -429,6 +431,7 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">2</span><span>cos(90° + x) = −sin x en sin(−x) = −sin x</span></div>
             <div class="example-step"><span class="step-num">3</span><span>sin(540° + x)·cos(90° + x) ÷ sin(−x) = (−sin x)(−sin x) ÷ (−sin x) = −sin x</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig sonder ’n sakrekenaar: [sin(180° − x) · cos(−x)] / [cos(90° + x) · sin(90° − x)]</div><div class="example-step"><span class="step-num">1</span><span>sin(180° − x) = sin x (kwadrant 2, sin positief).</span></div><div class="example-step"><span class="step-num">2</span><span>cos(−x) = cos x.</span></div><div class="example-step"><span class="step-num">3</span><span>cos(90° + x) = −sin x en sin(90° − x) = cos x.</span></div><div class="example-step"><span class="step-num">4</span><span>Uitdrukking = (sin x · cos x)/(−sin x · cos x) = −1.</span></div><div class="example-step"><span class="step-num">5</span><span>Net so: sin 150° · tan 225° / cos 300° = (½ × 1)/(½) = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Besluit die teken uit die kwadrant van die <strong>oorspronklike</strong> hoek (CAST), en verander die verhouding net vir 90° ± x en 270° ± x.</span></div>
         `
       },
       questions: [
@@ -462,6 +465,7 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">1</span><span>cos 2x, 45° na links verskuif: cos[2(x + 45°)] = cos(2x + 90°) = −sin 2x.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>y = 2 sin x − 1 het amplitude 2 en waardeversameling −3 ≤ y ≤ 1.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Sketsvraag: f(x) = 2cos(x − 30°) − 1 vir x ∈ [−180°; 180°]</div><div class="example-step"><span class="step-num">1</span><span>Lees die eienskappe af: amplitude 2, periode 360°, verskuiwing 30° na regs, dan 1 eenheid af.</span></div><div class="example-step"><span class="step-num">2</span><span>Waardeversameling: van −2 − 1 = −3 tot 2 − 1 = 1, dus y ∈ [−3; 1].</span></div><div class="example-step"><span class="step-num">3</span><span>Maksimum waar x − 30° = 0°: (30°; 1). Minimum waar x − 30° = −180°: (−150°; −3).</span></div><div class="example-step"><span class="step-num">4</span><span>x-afsnitte: cos(x − 30°) = ½ → x − 30° = ±60° → x = 90° of x = −30°.</span></div><div class="example-step"><span class="step-num">5</span><span>y-afsnit: f(0) = 2cos(−30°) − 1 = √3 − 1 ≈ 0,73.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> (x − 30°) skuif die grafiek 30° na <strong>regs</strong>, nie links nie. Kontroleer deur die x-waarde van ’n draaipunt te vervang.</span></div>
         `
       },
       questions: [

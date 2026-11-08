@@ -84,6 +84,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = 2x + 3 and g(x) = x², x ≤ 0</div><div class="example-step"><span class="step-num">1</span><span>f⁻¹: swap x and y: x = 2y + 3 → y = (x − 3)/2.</span></div><div class="example-step"><span class="step-num">2</span><span>f and f⁻¹ meet on y = x: 2x + 3 = x → x = −3, so (−3; −3).</span></div><div class="example-step"><span class="step-num">3</span><span>g⁻¹: x = y², y ≤ 0 → y = −√x, x ≥ 0.</span></div><div class="example-step"><span class="step-num">4</span><span>Because of the restriction x ≤ 0, g is one-to-one and g⁻¹ is a function.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> When finding the inverse of a parabola, use the restriction to choose the correct sign of the square root.</span></div>
         `
       },
       questions: [
@@ -207,6 +208,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve log₂(x + 3) + log₂(x − 3) = 4</div><div class="example-step"><span class="step-num">1</span><span>Combine the logs: log₂[(x + 3)(x − 3)] = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Change to exponential form: x² − 9 = 2⁴ = 16.</span></div><div class="example-step"><span class="step-num">3</span><span>x² = 25 → x = 5 or x = −5.</span></div><div class="example-step"><span class="step-num">4</span><span>Check the domain: log₂(x − 3) needs x &gt; 3, so x = −5 is rejected. Answer: x = 5.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Always check answers in the original equation — the argument of every log must be positive.</span></div>
         `
       },
       questions: [
@@ -472,6 +474,7 @@ MathMagician.registerChapter(2, {
             <div class="example-step"><span class="step-num">1</span><span>For y = 2^x − 5: the asymptote is y = −5, so the range is y > −5.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>For y = log₂(x − 4): the vertical asymptote is x = 4, because x − 4 = 0.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = 3ˣ, g(x) = 3ˣ⁺² − 9 and h(x) = log₃(x − 1)</div><div class="example-step"><span class="step-num">1</span><span>g is f shifted 2 left and 9 down, so its asymptote is y = −9.</span></div><div class="example-step"><span class="step-num">2</span><span>y-intercept of g: 3² − 9 = 0; x-intercept: 3ˣ⁺² = 9 = 3² → x = 0. The graph of g passes through the origin.</span></div><div class="example-step"><span class="step-num">3</span><span>f⁻¹(x) = log₃x. h is f⁻¹ shifted 1 unit right: domain x &gt; 1, vertical asymptote x = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>x-intercept of h: log₃(x − 1) = 0 → x − 1 = 1 → x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A horizontal shift inside the exponent works the opposite way to its sign: 3ˣ⁺² moves the graph 2 units <strong>left</strong>.</span></div>
         `
       },
       questions: [

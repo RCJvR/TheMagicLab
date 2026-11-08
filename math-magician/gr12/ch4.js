@@ -85,6 +85,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find cos 75° without a calculator, and prove sin(A + B) − sin(A − B) = 2 cos A sin B</div><div class="example-step"><span class="step-num">1</span><span>cos 75° = cos(45° + 30°) = cos 45° cos 30° − sin 45° sin 30°.</span></div><div class="example-step"><span class="step-num">2</span><span>= (√2/2)(√3/2) − (√2/2)(½) = (√6 − √2)/4.</span></div><div class="example-step"><span class="step-num">3</span><span>LHS = (sin A cos B + cos A sin B) − (sin A cos B − cos A sin B).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2 cos A sin B = RHS.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> cos(A + B) is <strong>not</strong> cos A + cos B. Always use the expansion formula.</span></div>
         `
       },
       questions: [
@@ -184,6 +185,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve sin 2x = cos x for x ∈ [0°; 360°]</div><div class="example-step"><span class="step-num">1</span><span>Use the double-angle formula: 2 sin x cos x = cos x.</span></div><div class="example-step"><span class="step-num">2</span><span>Bring everything to one side and factorise: cos x(2 sin x − 1) = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>cos x = 0 → x = 90° or 270°.</span></div><div class="example-step"><span class="step-num">4</span><span>sin x = ½ → x = 30° or 150°.</span></div><div class="example-step"><span class="step-num">5</span><span>Solutions: x = 30°, 90°, 150°, 270°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Never divide both sides by cos x — you lose the solutions where cos x = 0. Factorise instead.</span></div>
         `
       },
       questions: [
@@ -429,6 +431,7 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">2</span><span>cos(90° + x) = −sin x and sin(−x) = −sin x</span></div>
             <div class="example-step"><span class="step-num">3</span><span>sin(540° + x)·cos(90° + x) ÷ sin(−x) = (−sin x)(−sin x) ÷ (−sin x) = −sin x</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify without a calculator: [sin(180° − x) · cos(−x)] / [cos(90° + x) · sin(90° − x)]</div><div class="example-step"><span class="step-num">1</span><span>sin(180° − x) = sin x (quadrant 2, sin positive).</span></div><div class="example-step"><span class="step-num">2</span><span>cos(−x) = cos x.</span></div><div class="example-step"><span class="step-num">3</span><span>cos(90° + x) = −sin x and sin(90° − x) = cos x.</span></div><div class="example-step"><span class="step-num">4</span><span>Expression = (sin x · cos x)/(−sin x · cos x) = −1.</span></div><div class="example-step"><span class="step-num">5</span><span>Similarly: sin 150° · tan 225° / cos 300° = (½ × 1)/(½) = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Decide the sign from the quadrant of the <strong>original</strong> angle (CAST), then change the ratio only for 90° ± x and 270° ± x.</span></div>
         `
       },
       questions: [
@@ -462,6 +465,7 @@ MathMagician.registerChapter(4, {
             <div class="example-step"><span class="step-num">1</span><span>cos 2x shifted 45° to the left: cos[2(x + 45°)] = cos(2x + 90°) = −sin 2x.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>y = 2 sin x − 1 has amplitude 2 and range −3 ≤ y ≤ 1.</span></div>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Sketch-type question: f(x) = 2cos(x − 30°) − 1 for x ∈ [−180°; 180°]</div><div class="example-step"><span class="step-num">1</span><span>Read off the features: amplitude 2, period 360°, shift 30° to the right, then 1 unit down.</span></div><div class="example-step"><span class="step-num">2</span><span>Range: from −2 − 1 = −3 to 2 − 1 = 1, so y ∈ [−3; 1].</span></div><div class="example-step"><span class="step-num">3</span><span>Maximum where x − 30° = 0°: (30°; 1). Minimum where x − 30° = −180°: (−150°; −3).</span></div><div class="example-step"><span class="step-num">4</span><span>x-intercepts: cos(x − 30°) = ½ → x − 30° = ±60° → x = 90° or x = −30°.</span></div><div class="example-step"><span class="step-num">5</span><span>y-intercept: f(0) = 2cos(−30°) − 1 = √3 − 1 ≈ 0,73.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> (x − 30°) shifts the graph 30° to the <strong>right</strong>, not the left. Check by substituting the x-value of a turning point.</span></div>
         `
       },
       questions: [

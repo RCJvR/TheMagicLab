@@ -89,6 +89,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die vergelyking van die sirkel met middellyn AB, waar A(−1; 4) en B(5; −4)</div><div class="example-step"><span class="step-num">1</span><span>Die middelpunt is die middelpunt van AB: ((−1 + 5)/2; (4 − 4)/2) = (2; 0).</span></div><div class="example-step"><span class="step-num">2</span><span>AB = √((5 + 1)² + (−4 − 4)²) = √100 = 10, dus r = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>Vergelyking: (x − 2)² + y² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer met ’n ander punt, bv. (5; 4): 9 + 16 = 25 ✓, dus is (5; 4) ook op die sirkel.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Let op die tekens: ’n middelpunt by (2; 0) gee (x − 2)², en ’n middelpunt by (−2; 0) sou (x + 2)² gee.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die vergelyking van die raaklyn aan x² + y² = 25 by P(3; 4)</div><div class="example-step"><span class="step-num">1</span><span>Die middelpunt is O(0; 0). Gradiënt van radius OP = 4/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Die raaklyn is loodreg op die radius: m = −3/4.</span></div><div class="example-step"><span class="step-num">3</span><span>y − 4 = −¾(x − 3) → y = −¾x + 25/4.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer: vervang P — 4 = −9/4 + 25/4 = 16/4 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die raaklyngradiënt is die <strong>negatiewe omgekeerde</strong> van die radiusgradiënt, nie net die negatief daarvan nie.</span></div>
         `
       },
       questions: [

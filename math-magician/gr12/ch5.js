@@ -85,6 +85,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = x³ + px² + qx − 6 has a factor (x − 1) and leaves a remainder of −12 when divided by (x + 2). Find p and q</div><div class="example-step"><span class="step-num">1</span><span>f(1) = 0: 1 + p + q − 6 = 0 → p + q = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>f(−2) = −12: −8 + 4p − 2q − 6 = −12 → 2p − q = 1.</span></div><div class="example-step"><span class="step-num">3</span><span>Add the equations: 3p = 6 → p = 2, so q = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: f(x) = x³ + 2x² + 3x − 6 and f(1) = 1 + 2 + 3 − 6 = 0 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Dividing by (x + 2) means substituting x = −2, not x = 2.</span></div>
         `
       },
       questions: [
@@ -192,6 +193,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Sketch f(x) = −x³ + 3x² + 9x − 27</div><div class="example-step"><span class="step-num">1</span><span>Factorise: f(x) = −(x³ − 3x² − 9x + 27) = −(x − 3)²(x + 3). x-intercepts: x = −3 and x = 3 (repeated: the graph touches).</span></div><div class="example-step"><span class="step-num">2</span><span>y-intercept: −27.</span></div><div class="example-step"><span class="step-num">3</span><span>f′(x) = −3x² + 6x + 9 = −3(x − 3)(x + 1) → turning points at x = 3: (3; 0) maximum, and x = −1: (−1; −32) minimum.</span></div><div class="example-step"><span class="step-num">4</span><span>a &lt; 0: the graph rises on the left and falls on the right.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A repeated root means the graph <strong>touches</strong> the x-axis there and that point is a turning point.</span></div>
         `
       },
       questions: [
