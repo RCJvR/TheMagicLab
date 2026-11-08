@@ -22,7 +22,9 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="math-magician/figs.css">
 <script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<script defer src="math-magician/figs.js"></script>
 <style>
 /* Text scale for the test: everything below is sized as N * var(--k), so the
    test reads the same on a laptop and grows on big screens and projectors. */
@@ -104,7 +106,7 @@ body {
 .tt-q { padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
 .tt-q-head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; margin-bottom: 12px; }
 .tt-num { font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; min-width: 2.6em; }
-.tt-text { font-size: calc(16.5 * var(--k)); line-height: 1.5; color: var(--text); }
+.tt-text { font-size: calc(16.5 * var(--k)); line-height: 1.5; color: var(--text); white-space: pre-line; }
 .tt-marks { font-size: calc(14 * var(--k)); color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tt-body { padding-left: calc(2.6em + 12px); }
 @media (max-width: 560px) { .tt-body { padding-left: 0; } .tt-facts { grid-template-columns: 1fr 1fr; } }
@@ -260,6 +262,11 @@ body {
 .tt-plan-date { color: var(--text-3); font-variant-numeric: tabular-nums; }
 .tt-figure { margin: 10px 0 12px; max-width: 360px; color: var(--text); }
 .tt-figure svg { width: 100%; height: auto; display: block; }
+/* data tables in exam papers (our own content) */
+.tt-figure.wide { max-width: none; overflow-x: auto; }
+.tt-figure table { border-collapse: collapse; font-size: calc(14.5 * var(--k)); }
+.tt-figure th, .tt-figure td { border: 1px solid var(--line-hard); padding: 5px 10px; text-align: center; }
+.r-points li span { white-space: pre-line; }
 .tt-info { margin: 12px 0 18px; padding: 14px 16px; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); background: var(--ink-850); color: var(--text-2); font-size: calc(14.5 * var(--k)); }
 .tt-info p { margin: 0 0 8px; }
 .tt-info b { color: var(--paper); }
@@ -664,7 +671,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session',
       trTopicsBtn: 'Print topics to revisit', ptTitle: 'Topics to revisit', ptSub: '{n} results · class average {a}%', ptNone: 'No single question stood out in this topic.',
       ptLost: '{p}% of learners lost marks', ptRevise: 'Revise:', ptMarks: 'of the marks in this topic were earned', ptFoot: 'Worked out from the marks learners submitted, in their browsers. Use it as a guide to what to teach again.', ptPrinted: 'Printed {d}',
-      shBtn: 'Share with a teacher', shTitle: 'Share these results', shSub: 'Another teacher will see this session in their Class results and can read the marks and print the topics list. They cannot close, reopen, delete or share it.', shEmail: 'Their email address', shAdd: 'Share', shNone: 'Not shared with anyone yet.', shRemove: 'Stop sharing with {n}', shBy: 'Shared with you by {n}', shLeave: 'Remove from my list', shSureLeave: 'Remove this session from your list? The teacher who shared it keeps it.', shDone: 'Shared with {n}.', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', calcBtn: 'Open calculator (new tab)', trSessionsBack: 'All sessions',
+      sheetBtn: 'Information sheet (opens in a new tab)', shBtn: 'Share with a teacher', shTitle: 'Share these results', shSub: 'Another teacher will see this session in their Class results and can read the marks and print the topics list. They cannot close, reopen, delete or share it.', shEmail: 'Their email address', shAdd: 'Share', shNone: 'Not shared with anyone yet.', shRemove: 'Stop sharing with {n}', shBy: 'Shared with you by {n}', shLeave: 'Remove from my list', shSureLeave: 'Remove this session from your list? The teacher who shared it keeps it.', shDone: 'Shared with {n}.', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', calcBtn: 'Open calculator (new tab)', trSessionsBack: 'All sessions',
       trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
       tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
       tsView: 'View', backClass: 'Back to class results', tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
@@ -774,7 +781,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie',
       trTopicsBtn: 'Druk onderwerpe om te hersien', ptTitle: 'Onderwerpe om te hersien', ptSub: '{n} uitslae · klasgemiddeld {a}%', ptNone: 'Geen enkele vraag het in hierdie onderwerp uitgestaan nie.',
       ptLost: '{p}% van die leerders het punte verloor', ptRevise: 'Hersien:', ptMarks: 'van die punte in hierdie onderwerp is behaal', ptFoot: 'Bereken uit die punte wat leerders in hul blaaiers ingedien het. Gebruik dit as ’n gids oor wat weer geleer moet word.', ptPrinted: 'Gedruk {d}',
-      shBtn: 'Deel met ’n onderwyser', shTitle: 'Deel hierdie uitslae', shSub: 'Nog ’n onderwyser sal hierdie sessie in hul Klasuitslae sien en kan die punte lees en die onderwerplys druk. Hulle kan dit nie sluit, heropen, uitvee of verder deel nie.', shEmail: 'Hul e-posadres', shAdd: 'Deel', shNone: 'Nog met niemand gedeel nie.', shRemove: 'Hou op deel met {n}', shBy: 'Met jou gedeel deur {n}', shLeave: 'Verwyder van my lys', shSureLeave: 'Verwyder hierdie sessie van jou lys? Die onderwyser wat dit gedeel het, hou dit.', shDone: 'Gedeel met {n}.', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', calcBtn: 'Maak sakrekenaar oop (nuwe oortjie)', trSessionsBack: 'Alle sessies',
+      sheetBtn: 'Inligtingsblad (maak in ’n nuwe oortjie oop)', shBtn: 'Deel met ’n onderwyser', shTitle: 'Deel hierdie uitslae', shSub: 'Nog ’n onderwyser sal hierdie sessie in hul Klasuitslae sien en kan die punte lees en die onderwerplys druk. Hulle kan dit nie sluit, heropen, uitvee of verder deel nie.', shEmail: 'Hul e-posadres', shAdd: 'Deel', shNone: 'Nog met niemand gedeel nie.', shRemove: 'Hou op deel met {n}', shBy: 'Met jou gedeel deur {n}', shLeave: 'Verwyder van my lys', shSureLeave: 'Verwyder hierdie sessie van jou lys? Die onderwyser wat dit gedeel het, hou dit.', shDone: 'Gedeel met {n}.', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', calcBtn: 'Maak sakrekenaar oop (nuwe oortjie)', trSessionsBack: 'Alle sessies',
       trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
       tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
       tsView: 'Bekyk', backClass: 'Terug na klasuitslae', tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
@@ -887,7 +894,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // ── Questions: the leaves of the test, numbered like an exam paper ───
   function maxMarks(q) {
     var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : q.type === 'fill' || q.type === 'blank' ? q.blanks.length :
-      q.type === 'label' ? q.labels.length : q.type === 'written' ? (q.points || []).length || 1 : 1;
+      q.type === 'label' ? q.labels.length : q.type === 'written' ? (q.pointMarks ? q.pointMarks.reduce(function (a, b) { return a + b; }, 0) : (q.points || []).length) || 1 : 1;
     return q.marks || n;
   }
   function buildItems(qz) {
@@ -973,7 +980,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   function numShow(q) { return String(q.answer).replace('.', lang === 'af' ? ',' : '.') + (q.unit ? ' ' + q.unit : ''); }
   // a written answer earns the memo points the learner ticked when marking it
-  function selfScore(it) { var p = (att && att.self && att.self[it.id]) || []; return p.filter(Boolean).length; }
+  function selfScore(it) { var p = (att && att.self && att.self[it.id]) || [], w = it.q.pointMarks; return p.reduce(function (sum, v, i) { return sum + (v ? (w ? (w[i] || 0) : 1) : 0); }, 0); }
+  function pointText(q, p, i) { var w = q.pointMarks && q.pointMarks[i]; return p + (w > 1 ? ' (' + w + ')' : ''); }
+  function memoFig(q) { return q.memoSvg ? '<div class="tt-figure">' + q.memoSvg + '</div>' : ''; }
   // A blank is right when it has the same pieces as an accepted answer. Spaces
   // between pieces are fine (counter = counter + 1, counter=counter+1), but a
   // space inside a word or a symbol is not (c ounter, + +, <! --, / /).
@@ -1124,10 +1133,12 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     att = s;
     $('testTitle').textContent = fullTitle();
     var body = $('testBody'); body.innerHTML = '';
+    // exam papers link to their formula / data sheet on the printable paper page
+    if (quiz.sheet) { var sh = document.createElement('p'); sh.className = 'tt-calc'; sh.innerHTML = '<a class="ml-btn ml-btn--ghost" target="_blank" rel="noopener" href="' + esc(quiz.sheet.replace(/\.html$/, lang === 'af' ? '.af.html' : '.html')) + '#i">' + esc(t('sheetBtn')) + '</a>'; body.appendChild(sh); }
     quiz.sections.forEach(function (sec, si) {
       var wrap = document.createElement('section'); wrap.className = 'tt-section';
       wrap.innerHTML = '<div class="tt-section-head"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</h2><span>' + esc(marksText(secTotal(si))) + '</span></div>' +
-        (sec.intro ? '<p class="tt-section-intro">' + esc(sec.intro) + '</p>' : '');
+        (sec.intro ? '<p class="tt-section-intro">' + esc(sec.intro) + '</p>' : '') + figure(sec);
       items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
         if (it.scen && it.first) {
           var sc = document.createElement('div'); sc.className = 'tt-scenario';
@@ -1147,7 +1158,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   function code(c) { return c ? '<pre class="tt-code">' + esc(c) + '</pre>' : ''; }
   // a diagram written into the question file as SVG (our own content, not learner input)
-  function figure(q) { return q.svg ? '<div class="tt-figure">' + q.svg + '</div>' : ''; }
+  function figure(q) { return q.svg ? '<div class="tt-figure' + (/<table/.test(q.svg) ? ' wide' : '') + '">' + q.svg + '</div>' : ''; }
   // questions flagged calc in the test file need working out: a link opens the scientific calculator in a new tab
   function calcLink(q) { return q.calc ? '<p class="tt-calc"><button type="button" class="ml-btn ml-btn--ghost" data-calc="1">' + esc(t('calcBtn')) + '</button></p>' : ''; }
   // one calculator window, reused on every click; a phone browser may show it as a normal tab instead
@@ -1157,7 +1168,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     else w.focus();
   }
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-calc]')) openCalc(); });
-  function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + code(it.scen.code); }
+  function scenLabel(it) { var lab = it.scen.label != null ? it.scen.label : t('scenario'); return (lab ? lab + ' ' : '') + it.scenNum; }
+  function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(scenLabel(it)) + '</div>' + (it.scen.scenario ? '<p>' + esc(it.scen.scenario) + '</p>' : '') + figure(it.scen) + code(it.scen.code); }
   // the order an attempt shows the options in: [[label, value], ...]
   function choices(it) {
     var q = it.q;
@@ -1263,8 +1275,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function pointsHtml(it, editable) {
     var ticks = (att.self && att.self[it.id]) || [];
     return '<div class="tt-h3" style="margin-top:0">' + esc(t('memoH')) + '</div><ul class="r-points">' + (it.q.points || []).map(function (p, i) {
-      return '<li><input type="checkbox" data-i="' + i + '"' + (ticks[i] ? ' checked' : '') + (editable ? '' : ' disabled') + '><span>' + esc(p) + '</span></li>';
-    }).join('') + '</ul>';
+      return '<li><input type="checkbox" data-i="' + i + '"' + (ticks[i] ? ' checked' : '') + (editable ? '' : ' disabled') + '><span>' + esc(pointText(it.q, p, i)) + '</span></li>';
+    }).join('') + '</ul>' + memoFig(it.q);
   }
 
   // Column B lists the right answers and any extras, shuffled; a choice is
@@ -1621,7 +1633,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       return esc(txt) + (i < all.length - 1 ? '<span class="fb ok">' + esc([].concat(q.blanks[i]).join(' / ')) + '</span>' : '');
     }).join('') + '</p>';
     if (q.type === 'label') return '<table class="r-table"><tbody>' + q.labels.map(function (lb) { return '<tr><td><b>' + esc(lb[0]) + '</b></td><td>' + esc(lb.slice(1).join(' / ')) + '</td></tr>'; }).join('') + '</tbody></table>';
-    if (q.type === 'written') return '<ul class="r-points">' + (q.points || []).map(function (p) { return '<li><span>✓</span><span>' + esc(p) + '</span></li>'; }).join('') + '</ul>';
+    if (q.type === 'written') return '<ul class="r-points">' + (q.points || []).map(function (p, i) { return '<li><span>✓</span><span>' + esc(pointText(q, p, i)) + '</span></li>'; }).join('') + '</ul>' + memoFig(q);
     return '';
   }
   // ── Download the paper: one HTML file with the questions and no answers, to
@@ -1673,9 +1685,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function paperHtml() {
     var lastScen = null, body = '';
     quiz.sections.forEach(function (sec, si) {
-      body += '<section class="p-sec"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '<span>' + esc(marksText(secTotal(si))) + '</span></h2>' + (sec.intro ? '<p class="p-intro">' + esc(sec.intro) + '</p>' : '');
+      body += '<section class="p-sec"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '<span>' + esc(marksText(secTotal(si))) + '</span></h2>' + (sec.intro ? '<p class="p-intro">' + esc(sec.intro) + '</p>' : '') + (sec.svg ? '<div>' + sec.svg + '</div>' : '');
       items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
-        if (it.scen && it.scen !== lastScen) body += '<div class="p-scen"><div class="p-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + (it.scen.code ? '<pre class="p-code">' + esc(it.scen.code) + '</pre>' : '') + '</div>';
+        if (it.scen && it.scen !== lastScen) body += '<div class="p-scen"><div class="p-scen-label">' + esc(scenLabel(it)) + '</div><p>' + esc(it.scen.scenario) + '</p>' + (it.scen.svg ? '<div>' + it.scen.svg + '</div>' : '') + (it.scen.code ? '<pre class="p-code">' + esc(it.scen.code) + '</pre>' : '') + '</div>';
         lastScen = it.scen || null;
         body += paperBody(it);
       });
@@ -2293,7 +2305,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function snapshot(ri) {
     return { key: rawQuiz.id + '|' + ri.id, testId: rawQuiz.id, grade: rawQuiz.grade, num: ri.num, topic: ri.topic || 'other',
       tn: namesFor(ri.topic || 'other'), skill: ri.skill, max: ri.max, q: ri.q,
-      scen: ri.scen ? { scenario: ri.scen.scenario, scenarioAf: ri.scen.scenarioAf, code: ri.scen.code } : null, scenNum: ri.scenNum || null };
+      scen: ri.scen ? { scenario: ri.scen.scenario, scenarioAf: ri.scen.scenarioAf, code: ri.scen.code, svg: ri.scen.svg, label: ri.scen.label } : null, scenNum: ri.scenNum || null };
   }
   function addRevisits(per) {
     var rev = readJ(REV_KEY, {}), now = Date.now();
