@@ -23,6 +23,7 @@
     dig: { c: '#fbbf24', en: 'Digestive', af: 'Vertering' },
     exc: { c: '#c084fc', en: 'Excretory', af: 'Uitskeiding' },
     nerv: { c: '#5eead4', en: 'Nervous', af: 'Senuwee' },
+    endo: { c: '#f472b6', en: 'Endocrine', af: 'Endokrien' },
   };
   const REGION_COLOR = { head: '#60a5fa', chest: '#f87171', abdomen: '#34d399' };
 
@@ -88,7 +89,37 @@
       d: 'M136,304 C130,300 130,290 131,276 C131,264 131,256 134,250 C150,262 172,262 188,248 C192,262 192,280 191,292 C190,302 180,300 172,306 C166,310 163,314 162,324' },
     { id: 'appendix', sys: 'dig', reg: 'abdomen', tube: 2.5, d: 'M134,307 C132,313 134,317 137,317' },
     { id: 'bladder', sys: 'exc', reg: 'abdomen', d: 'M152,306 C152,300 168,300 168,306 C169,314 164,318 160,318 C156,318 151,314 152,306Z' },
+    { id: 'rectum', sys: 'dig', reg: 'abdomen', tube: 6, d: 'M162,316 L161,328' },
+    { id: 'anus', sys: 'dig', reg: 'abdomen', d: 'M157,330 C157,327 163,327 163,330 C163,332 157,332 157,330Z' },
+    { id: 'salivary', sys: 'dig', reg: 'head', d: 'M136,52 C140,51 143,57 142,63 C141,67 137,67 136,63Z M184,52 C180,51 177,57 178,63 C179,67 183,67 184,63Z M146,72 C149,70 153,72 152,75 C150,77 146,76 146,72Z M174,72 C171,70 167,72 168,75 C170,77 174,76 174,72Z' },
+    // endocrine glands (opts.glands) and gonads (opts.sex: 'f' or 'm')
+    { id: 'hypothalamus', sys: 'endo', reg: 'head', gland: true, d: 'M156,39 C156,36 164,36 164,39 C164,42 156,42 156,39Z' },
+    { id: 'pituitary', sys: 'endo', reg: 'head', gland: true, d: 'M158.5,43 C158.5,41.5 161.5,41.5 161.5,43 C161.5,46 158.5,46 158.5,43Z' },
+    { id: 'thyroid', sys: 'endo', reg: 'head', gland: true, d: 'M152,97 C148,98 148,106 153,106 C156,106 158,103 160,103 C162,103 164,106 167,106 C172,106 172,98 168,97 C165,97 164,101 160,101 C156,101 155,97 152,97Z' },
+    { id: 'adrenals', sys: 'endo', reg: 'abdomen', gland: true, d: 'M132,241 C133,234 141,232 145,238 C142,241 137,242 132,241Z M188,234 C187,227 179,225 175,231 C178,234 183,235 188,234Z' },
+    { id: 'islets', sys: 'endo', reg: 'abdomen', gland: true, d: 'M151,250 C161,246 177,244 191,240 C193,244 191,248 187,249 C175,252 163,254 153,257 C148,257 147,253 151,250Z',
+      extra: 'M158,251 L159,251 M168,249 L169,249 M178,246 L179,246 M185,245 L186,245' },
+    { id: 'uterus', sys: 'endo', reg: 'abdomen', sex: 'f', d: 'M154,289 C154,284 166,284 166,289 C166,297 163,303 160,303 C157,303 154,297 154,289Z',
+      extra: 'M155,287 C150,284 146,287 144,292 M165,287 C170,284 174,287 176,292', tone: 0.45 },
+    { id: 'ovaries', sys: 'endo', reg: 'abdomen', sex: 'f', d: 'M139,294 C139,290 147,290 147,294 C147,298 139,298 139,294Z M173,294 C173,290 181,290 181,294 C181,298 173,298 173,294Z' },
+    { id: 'scrotum', sys: 'endo', reg: 'abdomen', sex: 'm', d: 'M150,329 C147,342 151,354 160,354 C169,354 173,342 170,329Z', tone: 0.25 },
+    { id: 'testes', sys: 'endo', reg: 'abdomen', sex: 'm', d: 'M151,342 C151,335 159,335 159,342 C159,349 151,349 151,342Z M161,342 C161,335 169,335 169,342 C169,349 161,349 161,342Z' },
   ];
+  // Default label for each organ in focus mode: [en, af, x, y, side].
+  const LAB = {
+    brain: ['brain', 'brein', 168, 28, 'R'], nasal: ['nasal cavity', 'neusholte', 158, 55, 'L'], mouth: ['mouth', 'mond', 154, 67, 'L'],
+    salivary: ['salivary glands', 'speekselkliere', 183, 60, 'R'], pharynx: ['pharynx', 'farinks', 161, 78, 'R'], larynx: ['larynx', 'larinks', 157, 90, 'L'],
+    oesophagus: ['oesophagus', 'slukderm', 162, 150, 'L'], trachea: ['trachea', 'trachea', 161, 112, 'R'], heart: ['heart', 'hart', 176, 176, 'R'],
+    lungR: ['right lung', 'regterlong', 130, 168, 'L'], lungL: ['left lung', 'linkerlong', 192, 150, 'R'], diaphragm: ['diaphragm', 'diafragma', 125, 206, 'L'],
+    liver: ['liver', 'lewer', 131, 222, 'L'], gallbladder: ['gall bladder', 'galblaas', 145, 235, 'L'], stomach: ['stomach', 'maag', 188, 222, 'R'],
+    pancreas: ['pancreas', 'pankreas', 188, 245, 'R'], duodenum: ['duodenum', 'duodenum', 150, 258, 'L'], smallInt: ['small intestine (ileum)', 'dunderm (ileum)', 172, 290, 'R'],
+    largeInt: ['large intestine (colon)', 'dikderm (kolon)', 191, 278, 'R'], appendix: ['appendix', 'blindedermaanhangsel', 135, 315, 'L'],
+    rectum: ['rectum', 'rektum', 162, 320, 'R'], anus: ['anus', 'anus', 160, 330, 'L'], kidneyR: ['kidney (at the back)', 'nier (agter)', 136, 256, 'L'],
+    bladder: ['bladder', 'blaas', 163, 312, 'R'], hypothalamus: ['hypothalamus', 'hipotalamus', 157, 39, 'L'], pituitary: ['pituitary gland', 'hipofise', 161, 44, 'R'],
+    thyroid: ['thyroid gland', 'skildklier', 169, 102, 'R'], adrenals: ['adrenal glands (on the kidneys)', 'bynierkliere (op die niere)', 136, 238, 'L'],
+    islets: ['pancreas (islets of Langerhans)', 'pankreas (eilande van Langerhans)', 188, 245, 'R'], ovaries: ['ovaries', 'ovaria', 177, 294, 'R'],
+    uterus: ['uterus', 'uterus', 157, 296, 'L'], testes: ['testes (in the scrotum)', 'testes (in die skrotum)', 166, 344, 'R'],
+  };
 
   // Labels: [text, anchor x, anchor y, side] per region.
   const LABELS = {
@@ -135,11 +166,15 @@
     }
     const areaEls = {}, organEls = [];
     for (const k in AREAS) areaEls[k] = el('path', { d: AREAS[k], fill: 'transparent', stroke: 'transparent', 'stroke-width': 1.4, 'stroke-dasharray': '4 3' }, g);
-    ORGANS.forEach(o => {
+    ORGANS.filter(o => (!o.gland || opts.glands) && (!o.sex || o.sex === opts.sex)).forEach(o => {
       const grp = el('g', {}, g);
+      if (opts.onPick) {
+        grp.style.cursor = 'pointer';
+        grp.addEventListener('click', ev => { ev.stopPropagation(); opts.onPick(o.id); });
+      }
       const col = SYS[o.sys].c;
       if (o.tube) el('path', { d: o.d, fill: 'none', stroke: col, 'stroke-width': o.tube, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, grp);
-      else el('path', { d: o.d, fill: col, 'fill-opacity': o.back ? 0.55 : 0.88, stroke: col, 'stroke-width': 1 }, grp);
+      else el('path', { d: o.d, fill: col, 'fill-opacity': o.tone || (o.back ? 0.55 : 0.88), stroke: col, 'stroke-width': 1 }, grp);
       if (o.extra) el('path', { d: o.extra, fill: 'none', stroke: 'rgba(4,7,16,.55)', 'stroke-width': 1 }, grp);
       if (o.rings) for (let y = 98; y <= 126; y += 4) el('path', { d: 'M156.5,' + y + ' L163.5,' + y, stroke: 'rgba(4,7,16,.5)', 'stroke-width': 1 }, grp);
       organEls.push({ o: o, grp: grp });
@@ -148,7 +183,7 @@
     const kidneyTop = el('path', { d: kidney(139, 253, 1) + kidney(181, 246, -1), fill: 'none', stroke: SYS.exc.c, 'stroke-width': 1.1, 'stroke-dasharray': '3 2' }, g);
     const labelLayer = el('g', {}, g);
     // click targets
-    for (const k in AREAS) {
+    if (opts.regions !== false) for (const k in AREAS) {
       const hit = el('path', { d: AREAS[k], fill: 'transparent', style: 'cursor:pointer', tabindex: 0, role: 'button',
         'aria-label': { head: L('Head', 'Kop'), chest: L('Chest', 'Bors'), abdomen: L('Abdomen', 'Buik') }[k] }, g);
       const go = () => { select(k); if (opts.onSelect) opts.onSelect(k); };
@@ -159,13 +194,13 @@
     const note = document.createElement('div');
     note.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:10px;font-size:12px;color:rgba(210,218,245,.7)';
     note.innerHTML = '<span>' + L('Front view: the body’s right side is on your left.', 'Vooraansig: die liggaam se regterkant is aan jou linkerkant.') + '</span>' +
-      Object.keys(SYS).map(s => '<span style="display:inline-flex;align-items:center;gap:5px"><i style="width:10px;height:10px;border-radius:3px;background:' +
+      (opts.legend || ['resp', 'circ', 'dig', 'exc', 'nerv']).map(s => '<span style="display:inline-flex;align-items:center;gap:5px"><i style="width:10px;height:10px;border-radius:3px;background:' +
         SYS[s].c + ';display:inline-block"></i>' + L(SYS[s].en, SYS[s].af) + '</span>').join('');
     host.appendChild(note);
 
-    function drawLabels(region) {
+    function drawLabels(region, given) {
       labelLayer.innerHTML = '';
-      const list = LABELS[region] || [];
+      const list = given || LABELS[region] || [];
       ['L', 'R'].forEach(side => {
         const items = list.filter(l => l[3] === side).sort((a, b) => a[2] - b[2]);
         let last = -1e9;
@@ -191,8 +226,17 @@
       kidneyTop.setAttribute('opacity', region === 'abdomen' ? 1 : 0.2);
       drawLabels(region);
     }
-    select(opts.region || 'chest');
-    return { select: select, svg: svg };
+    // Focus mode: highlight organs by id (same-system organs half-bright, the rest faint) and label them.
+    function focus(ids, labels) {
+      for (const k in areaEls) { areaEls[k].setAttribute('fill', 'transparent'); areaEls[k].setAttribute('stroke', 'transparent'); }
+      const sys = {};
+      organEls.forEach(({ o }) => { if (ids.indexOf(o.id) >= 0) sys[o.sys] = 1; });
+      organEls.forEach(({ o, grp }) => grp.setAttribute('opacity', ids.indexOf(o.id) >= 0 ? 1 : (sys[o.sys] || (opts.dimSys || []).indexOf(o.sys) >= 0) ? 0.4 : 0.12));
+      kidneyTop.setAttribute('opacity', ids.indexOf('kidneyR') >= 0 ? 1 : sys.exc ? 0.4 : 0.12);
+      drawLabels(null, labels || ids.filter(id => LAB[id]).map(id => [L(LAB[id][0], LAB[id][1]), LAB[id][2], LAB[id][3], LAB[id][4]]));
+    }
+    if (opts.focus) focus(opts.focus); else select(opts.region || 'chest');
+    return { select: select, focus: focus, svg: svg };
   }
 
   window.MLBody = { mount: mount, systems: SYS };

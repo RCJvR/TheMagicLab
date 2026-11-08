@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/human-body.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -268,7 +269,7 @@
   <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click a gland on the body diagram (or the list) to see its hormone and effect.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which gland releases insulin when blood glucose rises? <strong style="color:#fde68a">Then test it:</strong> Click the glands to find it.</div>
   <div class="explore-layout">
-    <div class="flower-canvas-wrap"><canvas id="bodyCanvas" height="420" role="img" aria-label="Gland Explorer: interactive simulation"></canvas></div>
+    <div class="flower-canvas-wrap"><div id="endoFigure"></div></div>
     <div>
       <div class="parts-list" id="partsList"></div>
       <div class="part-info" id="partInfo"></div>
@@ -326,6 +327,8 @@ function switchTab(id,btn){
    GLAND EXPLORER
 ═══════════════════════════════════════════════ */
 const PARTS = [
+  {id:'hypothalamus', name:'Hypothalamus', color:'#5eead4',
+   desc:'Part of the brain just above the pituitary. It links the nervous and endocrine systems: it makes ADH and releasing hormones that control the pituitary.'},
   {id:'pituitary', name:'Pituitary gland', color:'#f472b6',
    desc:'The "master gland", at the base of the brain. Releases growth hormone, and hormones that control the thyroid, adrenal glands, and gonads.'},
   {id:'thyroid', name:'Thyroid gland', color:'#fbbf24',
@@ -338,6 +341,7 @@ const PARTS = [
    desc:'Testes secrete testosterone; ovaries secrete oestrogen and progesterone. These control secondary sexual characteristics and reproductive cycles.'},
 ];
 let activePart = null;
+const SEX_LABELS = ['Female', 'Male'];
 
 function buildPartsList(){
   document.getElementById('partsList').innerHTML = PARTS.map(p=>`
@@ -355,66 +359,37 @@ function selectPart(id){
     <div class="part-desc">${activePart.desc}</div>`;
 }
 
-const canvas = document.getElementById('bodyCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 420;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawBody();
-}
-
-const REGIONS = {};
-function computeRegions(){
-  const cx = W/2, topY = 50;
-  REGIONS.pituitary = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY,13,11,0,0,Math.PI*2); }};
-  REGIONS.thyroid    = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY+68,16,12,0,0,Math.PI*2); }};
-  REGIONS.adrenal    = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-26,topY+168,12,10,0,0,Math.PI*2); ctx.ellipse(cx+26,topY+168,12,10,0,0,Math.PI*2); }};
-  REGIONS.pancreas   = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+6,topY+190,24,9,0.25,0,Math.PI*2); }};
-  REGIONS.gonads     = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY+260,15,11,0,0,Math.PI*2); }};
-}
-
-function drawBody(){
-  ctx.clearRect(0,0,W,H);
-  computeRegions();
-  const cx = W/2, topY = 50;
-  // simple body silhouette
-  ctx.strokeStyle='rgba(210,218,245,0.28)'; ctx.lineWidth=2.5;
-  ctx.beginPath();
-  ctx.ellipse(cx,topY,20,24,0,0,Math.PI*2); // head
-  ctx.moveTo(cx,topY+24); ctx.lineTo(cx,topY+300); // spine
-  ctx.moveTo(cx-46,topY+70); ctx.lineTo(cx+46,topY+70); // shoulders
-  ctx.moveTo(cx-46,topY+70); ctx.lineTo(cx-52,topY+180); // left arm
-  ctx.moveTo(cx+46,topY+70); ctx.lineTo(cx+52,topY+180); // right arm
-  ctx.moveTo(cx-40,topY+70); ctx.quadraticCurveTo(cx-55,topY+180,cx-40,topY+300); // torso outline L
-  ctx.moveTo(cx+40,topY+70); ctx.quadraticCurveTo(cx+55,topY+180,cx+40,topY+300); // torso outline R
-  ctx.moveTo(cx-40,topY+300); ctx.lineTo(cx-30,topY+380); // left leg
-  ctx.moveTo(cx+40,topY+300); ctx.lineTo(cx+30,topY+380); // right leg
-  ctx.stroke();
-
-  PARTS.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '77');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
+/* Body figure: assets/explore/human-body.js (glands in their true positions) */
+let endoFig = null, endoSex = 'f';
+const GLAND_IDS = { hypothalamus: ['hypothalamus'], pituitary: ['pituitary'], thyroid: ['thyroid'], adrenal: ['adrenals'], pancreas: ['islets'] };
+function glandIds(id) { return id === 'gonads' ? (endoSex === 'f' ? ['ovaries'] : ['testes']) : (GLAND_IDS[id] || []); }
+function mountEndo() {
+  const host = document.getElementById('endoFigure');
+  endoFig = MLBody.mount(host, {
+    regions: false, glands: true, sex: endoSex, legend: ['endo', 'dig', 'exc', 'nerv'],
+    onPick: function (organ) {
+      for (const k in GLAND_IDS) if (GLAND_IDS[k].indexOf(organ) >= 0) return selectPart(k);
+      if (organ === 'ovaries' || organ === 'testes' || organ === 'scrotum' || organ === 'uterus') selectPart('gonads');
+    }
   });
-
-  requestAnimationFrame(drawBody);
+  const bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;gap:6px;margin:10px 0 0';
+  [['f', SEX_LABELS[0]], ['m', SEX_LABELS[1]]].forEach(function (o) {
+    const b = document.createElement('button');
+    b.className = 'part-btn' + (o[0] === endoSex ? ' active' : '');
+    b.textContent = o[1]; b.dataset.sex = o[0];
+    b.onclick = function () { endoSex = o[0]; mountEndo(); if (activePart) selectPart(activePart.id); };
+    bar.appendChild(b);
+  });
+  host.appendChild(bar);
 }
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX-rect.left, my = e.clientY-rect.top;
-  for (const p of PARTS){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
-  }
-});
+const _selectPart = selectPart;
+selectPart = function (id) {
+  _selectPart(id);
+  document.querySelectorAll('#endoFigure .part-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.sex === endoSex); });
+  if (window.MLBody) { if (!endoFig) mountEndo(); endoFig.focus(glandIds(id)); }
+};
+function resizeCanvas() {}
 
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();

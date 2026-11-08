@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/circulation.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -248,7 +249,7 @@
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Dubbelsirkulasie</h3>
-      <canvas id="heartCanvas" height="320" role="img" aria-label="Hart- en Sirkulasiebekyker: interaktiewe simulasie"></canvas>
+      <div id="heartFigure"></div>
     </div>
     <div class="playbar">
       <span id="lbl-bpmSlider" class="ctrl-label">Harttempo: <span class="bpm-val" id="bpmVal">70 spm</span></span>
@@ -311,115 +312,15 @@ function switchTab(id,btn){
 /* ═══════════════════════════════════════════════
    HEART & CIRCULATION VIEWER
 ═══════════════════════════════════════════════ */
-const canvas = document.getElementById('heartCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
+/* Diagram: assets/explore/circulation.js */
 let bpm = 70;
-let particles = [];
-
-function resizeCanvas(){
-  W = canvas.offsetWidth || 600; H = 320;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  buildPath();
-}
-
-document.getElementById('bpmSlider').addEventListener('input', e=>{
+document.getElementById('bpmSlider').addEventListener('input', e => {
   bpm = +e.target.value;
-  document.getElementById('bpmVal').textContent = bpm+' spm';
+  document.getElementById('bpmVal').textContent = bpm + BPM_UNIT;
 });
+if (window.MLCirc) MLCirc.mount(document.getElementById('heartFigure'), { bpm: () => bpm });
 
-// Path: a simple closed loop figure — heart in the middle, lungs loop on top (pulmonary), body loop below (systemic)
-let path = [];
-function buildPath(){
-  const cx = W/2, cy = H/2;
-  path = [];
-  const steps = 120;
-  for(let i=0;i<steps;i++){
-    const t = i/steps;
-    let x,y,ox=false; // ox = oxygenated (true) at this point
-    if (t < 0.5){
-      // pulmonary loop (top): heart -> lungs -> heart
-      const a = t/0.5 * Math.PI; // 0 -> PI
-      x = cx + Math.cos(Math.PI - a) * W*0.32;
-      y = cy - H*0.28 - Math.sin(a) * H*0.14;
-      ox = t/0.5 > 0.5; // becomes oxygenated after passing through lungs (top of loop)
-    } else {
-      // systemic loop (bottom): heart -> body -> heart
-      const a = (t-0.5)/0.5 * Math.PI;
-      x = cx + Math.cos(Math.PI - a) * W*0.32;
-      y = cy + H*0.28 + Math.sin(a) * H*0.16;
-      ox = (t-0.5)/0.5 < 0.5; // oxygenated leaving heart, deoxygenated returning
-    }
-    path.push({x,y,ox});
-  }
-}
-
-function initParticles(){
-  particles = [];
-  for(let i=0;i<24;i++) particles.push({ pos: (i/24) });
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  const cx = W/2, cy = H/2;
-
-  // heart (centre)
-  ctx.save();
-  const beatT = (Date.now()/1000) * (bpm/60);
-  const pulse = 1 + 0.08*Math.max(0,Math.sin(beatT*Math.PI*2));
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, 46*pulse, 38*pulse, 0, 0, Math.PI*2);
-  ctx.fillStyle='rgba(239,68,68,0.18)'; ctx.fill();
-  ctx.strokeStyle='rgba(239,68,68,0.6)'; ctx.lineWidth=2.5; ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('HART', cx, cy+4);
-  ctx.restore();
-
-  // lungs (top) and body (bottom) labels/shapes
-  ctx.save();
-  ctx.fillStyle='rgba(96,165,250,0.10)';
-  ctx.beginPath(); ctx.ellipse(cx-70, H*0.16, 34, 22, 0, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+70, H*0.16, 34, 22, 0, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(96,165,250,0.4)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.ellipse(cx-70, H*0.16, 34, 22, 0, 0, Math.PI*2); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(cx+70, H*0.16, 34, 22, 0, 0, Math.PI*2); ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
-  ctx.fillText('LONGE', cx, H*0.05);
-
-  ctx.strokeStyle='rgba(74,222,128,0.3)'; ctx.lineWidth=1.5;
-  ctx.strokeRect(cx-90, H*0.82, 180, 36);
-  ctx.fillText('RES VAN LIGGAAM', cx, H*0.98);
-  ctx.restore();
-
-  // path outline
-  ctx.strokeStyle='rgba(255,255,255,0.10)'; ctx.lineWidth=10; ctx.lineJoin='round';
-  ctx.beginPath();
-  path.forEach((p,i)=> i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-  ctx.closePath(); ctx.stroke();
-
-  // particles flowing
-  const speed = (bpm/70) * 0.0035;
-  particles.forEach(p=>{
-    p.pos = (p.pos + speed) % 1;
-    const idx = Math.floor(p.pos * path.length);
-    const pt = path[idx];
-    ctx.beginPath(); ctx.arc(pt.x, pt.y, 5, 0, Math.PI*2);
-    ctx.fillStyle = pt.ox ? 'rgba(248,113,113,0.9)' : 'rgba(96,165,250,0.9)';
-    ctx.fill();
-  });
-
-  requestAnimationFrame(draw);
-}
-
-window.addEventListener('resize', ()=>{ resizeCanvas(); });
-resizeCanvas();
-initParticles();
-draw();
-
-/* ═══════════════════════════════════════════════
-   PRACTICE
-═══════════════════════════════════════════════ */
+/* PRACTICE */
 const QUESTIONS=[
   {text:"Wat beteken \"dubbelsirkulasie\"?",opts:["Bloed vloei in twee rigtings gelyktydig","Bloed gaan twee keer deur die hart in een volledige omloop","Daar is twee harte","Bloed keer nooit na die hart terug nie"],ans:1,exp:"By dubbelsirkulasie gaan bloed twee keer per volledige omloop deur die hart: een keer vir die pulmonale stelsel (na die longe) en een keer vir die sistemiese stelsel (na die liggaam)."},
   {text:"Watter bloedvate vervoer bloed WEG van die hart?",opts:["Are","Haarvate","Slagare","Limfvate"],ans:2,exp:"Slagare vervoer bloed weg van die hart en het dik, gespierde wande om hoë druk te weerstaan."},
@@ -430,6 +331,7 @@ const QUESTIONS=[
   {text:"(Ontleding) Bloed wat die regterkant van die hart verlaat, beweeg na die longe deur die pulmonale slagaar, alhoewel hierdie vat gedeoksigeneerde bloed vervoer. Waarom word hierdie vat steeds korrek as 'n \"slagaar\" geklassifiseer?",opts:["Slagare word slegs gedefinieer deur die vervoer van geoksigeneerde bloed, so dit is 'n uitsondering op die reël","Slagare word gedefinieer deur die rigting waarin bloed vloei — weg van die hart — ongeag of die bloed geoksigeneer of gedeoksigeneerd is","Die pulmonale slagaar is eintlik 'n aar wat verkeerd genoem is","Slagare kan slegs in die sistemiese stelsel gevind word, so die pulmonale slagaar tel nie"],ans:1,exp:"\"Slagaar\" en \"aar\" word gedefinieer deur die rigting van bloedvloei relatief tot die hart, nie deur suurstofinhoud nie. Slagare vervoer bloed WEG van die hart (die pulmonale slagaar vervoer gedeoksigeneerde bloed na die longe), terwyl are bloed NA die hart vervoer (die pulmonale aar vervoer geoksigeneerde bloed van die longe terug) — die enkele uitsondering wat die meeste mense verwag, is eintlik die reël sodra jy op rigting fokus, nie suurstofvlak nie."},
   {text:"(Ontleding) 'n Pasiënt het beskadigde haarvate in sy/haar longweefsel, wat die oppervlakarea beskikbaar vir gasuitruiling daar geweldig verminder. Sy/haar hart en al die ander bloedvate bly struktureel normaal. Watter direkte gevolg sou jy vir die sistemiese stelsel verwag?",opts:["Bloed sou heeltemal ophou vloei deur die sistemiese stelsel","Minder suurstof sou deur bloed opgeneem word terwyl dit deur die longe beweeg, sodat minder suurstof via die sistemiese stelsel na liggaamsweefsels afgelewer word","Die hart sou heeltemal ophou om bloed te pomp","Bloed sou buite die bloedvate begin vloei, en 'n oop sirkulasiestelsel word"],ans:1,exp:"Haarvate in die longe is waar suurstof deur die bloed opgeneem word (gasuitruiling) tydens die pulmonale stelsel. As hul oppervlakarea verminder word, laai minder suurstof daar op die bloed — wat beteken die bloed wat dan via die sistemiese stelsel na liggaamsweefsels afgelewer word, dra minder suurstof, alhoewel die hart en vate self onbeskadig is."},
 ];
+const BPM_UNIT = ' spm';
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
   const div=document.getElementById('questions');

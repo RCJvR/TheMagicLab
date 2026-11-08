@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/repro.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -268,7 +269,7 @@
         <button class="sex-btn active" id="btnMale" onclick="setSex('male')">Manlik</button>
         <button class="sex-btn" id="btnFemale" onclick="setSex('female')">Vroulik</button>
       </div>
-      <canvas id="reproCanvas" height="360" role="img" aria-label="Voortplantingstelsel-verkenner: interaktiewe simulasie"></canvas>
+      <div id="reproFigure"></div>
     </div>
     <div>
       <div class="parts-list" id="partsList"></div>
@@ -332,6 +333,9 @@ const MALE_PARTS = [
   {id:'epididymis', name:"Epididimis", color:'#93c5fd', desc:"'n Opgerolde buis waar sperm ryp word en gestoor word nadat dit in die testis geproduseer is."},
   {id:'vasdeferens', name:"Vas deferens", color:'#fbbf24', desc:"'n Spierbuis wat ryp sperm tydens ejakulasie vanaf die epididimis na die uretra vervoer."},
   {id:'prostate', name:"Prostaatklier", color:'#c084fc', desc:"Voeg vloeistof by semen wat sperm voed en help vervoer."},
+  {id:'seminalvesicle', name:"Saadblasies", color:'#a78bfa', desc:"Kliere agter die blaas wat ’n suikerryke (fruktose) vloeistof by semen voeg, wat sperm energie gee om te swem."},
+  {id:'cowper', name:"Cowper se kliere", color:'#e879f9', desc:"Klein kliere onder die prostaat wat voor ejakulasie ’n helder alkaliese slym vrystel wat suur in die uretra neutraliseer en dit smeer."},
+  {id:'urethra', name:"Uretra", color:'#fbbf24', desc:"Die buis deur die prostaat en penis wat semen (en op ander tye urine) uit die liggaam dra."},
   {id:'penis', name:"Penis", color:'#f472b6', desc:"Die orgaan waardeur semen tydens geslagsgemeenskap in die vagina afgesit word, wat interne bevrugting moontlik maak."},
 ];
 const FEMALE_PARTS = [
@@ -372,62 +376,21 @@ function selectPart(id){
   drawSystem();
 }
 
-const canvas = document.getElementById('reproCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 360;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawSystem();
-}
-
-const REGIONS = {};
-function computeRegionsMale(){
-  const cx = W/2, cy = H*0.5;
-  REGIONS.prostate = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,cy-40,20,16,0,0,Math.PI*2); }};
-  REGIONS.vasdeferens = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-40,cy-10); ctx.lineTo(cx-14,cy-34); ctx.lineTo(cx+2,cy-30); ctx.lineTo(cx-26,cy-4); ctx.closePath(); }};
-  REGIONS.testis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy+10,20,26,0,0,Math.PI*2); }};
-  REGIONS.epididymis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy-16,10,16,0.3,0,Math.PI*2); }};
-  REGIONS.penis = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-10,cy+40,20,90); }};
-}
-function computeRegionsFemale(){
-  const cx = W/2, cy = H*0.42;
-  REGIONS.ovary = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-70,cy,18,14,0,0,Math.PI*2); }};
-  REGIONS.oviduct = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-58,cy); ctx.quadraticCurveTo(cx-30,cy-30,cx-8,cy-6); ctx.lineTo(cx-14,cy+2); ctx.quadraticCurveTo(cx-34,cy-20,cx-54,cy+8); ctx.closePath(); }};
-  REGIONS.uterus = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-30,cy-4); ctx.quadraticCurveTo(cx,cy-40,cx+30,cy-4); ctx.lineTo(cx+16,cy+56); ctx.lineTo(cx-16,cy+56); ctx.closePath(); }};
-  REGIONS.cervix = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-11,cy+56,22,20); }};
-  REGIONS.vagina = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-14,cy+76); ctx.lineTo(cx+14,cy+76); ctx.lineTo(cx+20,cy+140); ctx.lineTo(cx-20,cy+140); ctx.closePath(); }};
-}
-
-function drawSystem(){
-  ctx.clearRect(0,0,W,H);
-  const parts = currentParts();
-  if (currentSex==='male') computeRegionsMale(); else computeRegionsFemale();
-
-  parts.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '55');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
-  });
-
-  requestAnimationFrame(drawSystem);
-}
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX-rect.left)*(W/rect.width), my = (e.clientY-rect.top)*(H/rect.height);
-  for (const p of currentParts()){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
+/* Diagram: assets/explore/repro.js (textbook side view of the male system, front view of the female system) */
+let reproFig = null, reproFigSex = null;
+function drawSystem() {
+  if (!window.MLRepro) return;
+  const sex = currentSex === 'male' ? 'm' : 'f';
+  if (!reproFig || reproFigSex !== sex) {
+    reproFigSex = sex;
+    reproFig = MLRepro.mount(document.getElementById('reproFigure'), {
+      sex: sex,
+      onPick: function (id) { if (currentParts().some(p => p.id === id)) selectPart(id); }
+    });
   }
-});
-
+  reproFig.focus(activePart ? [activePart.id] : []);
+}
+function resizeCanvas() {}
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();

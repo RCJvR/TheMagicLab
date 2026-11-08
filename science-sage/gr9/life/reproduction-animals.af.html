@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/repro.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -285,7 +286,7 @@
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Voortplantingstelselverkenner</h3>
-      <canvas id="reproCanvas" height="460" role="img" aria-label="Voortplantingstelselverkenner: interaktiewe simulasie"></canvas>
+      <div id="reproFigure"></div>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -442,262 +443,30 @@ function buildOrganButtons() {
   });
 }
 
-// ── CANVAS ────────────────────────────────────────────────────────────────────
+// ── DIAGRAM (assets/explore/repro.js) ───────────────────────────────────────
 const H = 460;
-let ctx3;
-
+let reproFig = null, reproFigSex = null;
+const REPRO_IDS = { testes: 'testis', epididymis: 'epididymis', vasdeferens: 'vasdeferens', urethra: 'urethra', penis: 'penis',
+  ovaries: 'ovary', fallopian: 'oviduct', uterus: 'uterus', cervix: 'cervix', vagina: 'vagina' };
 function initSim() {
   simInit = true;
   buildOrganButtons();
   drawSystem();
 }
-
-function setupCanvas() {
-  const canvas = document.getElementById('reproCanvas');
-  const dpr = window.devicePixelRatio || 1;
-  const logicalW = canvas.offsetWidth || 640;
-  canvas.width = logicalW * dpr;
-  canvas.height = H * dpr;
-  ctx3 = canvas.getContext('2d');
-  ctx3.setTransform(1, 0, 0, 1, 0, 0);
-  ctx3.scale(dpr, dpr);
-  return { ctx: ctx3, W: logicalW, H };
-}
-
-function partCol(key, defaultCol) {
-  const data = system === 'male' ? maleOrgans : femaleOrgans;
-  if (selectedOrgan === key) return data[key].col;
-  return defaultCol;
-}
-function partAlpha(key) {
-  if (!selectedOrgan) return 1;
-  return selectedOrgan === key ? 1 : 0.3;
-}
-
 function drawSystem() {
-  const { ctx, W } = setupCanvas();
-  ctx.clearRect(0, 0, W, H);
-  if (system === 'male') drawMale(ctx, W);
-  else drawFemale(ctx, W);
+  if (!window.MLRepro) return;
+  const sex = system === 'male' ? 'm' : 'f';
+  if (!reproFig || reproFigSex !== sex) {
+    reproFigSex = sex;
+    reproFig = MLRepro.mount(document.getElementById('reproFigure'), {
+      sex: sex,
+      onPick: function (id) {
+        for (const k in REPRO_IDS) if (REPRO_IDS[k] === id && (system === 'male' ? maleOrgans : femaleOrgans)[k]) return selectOrgan(k);
+      }
+    });
+  }
+  reproFig.focus(selectedOrgan ? (selectedOrgan === 'uterus' ? ['uterus', 'endometrium'] : [REPRO_IDS[selectedOrgan]]) : []);
 }
-
-function pointer(ctx, ax, ay, lx, ly, text, key) {
-  ctx.save();
-  ctx.strokeStyle = selectedOrgan === key ? 'rgba(252,211,77,0.7)' : 'rgba(210,218,245,0.25)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx - 6, ly - 4); ctx.stroke();
-  ctx.restore();
-  label(ctx, lx, ly, text, key);
-}
-
-function label(ctx, x, y, text, key) {
-  const data = system === 'male' ? maleOrgans : femaleOrgans;
-  const active = selectedOrgan === key;
-  ctx.save();
-  ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
-  ctx.fillStyle = active ? (data[key] ? data[key].col : '#fcd34d') : 'rgba(210,218,245,0.52)';
-  const W = ctx.canvas.offsetWidth || 640;
-  ctx.textAlign = x > W * 0.5 ? 'left' : 'right';
-  ctx.fillText(text, x, y);
-  ctx.restore();
-}
-
-function drawMale(ctx, W) {
-  const cx = W * 0.46;
-  const baseY = 40;
-
-  // — Body outline (torso hint) —
-  ctx.save();
-  ctx.beginPath();
-  ctx.roundRect(cx - 80, baseY, 160, 280, 20);
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Testes (two ovals at bottom) —
-  const testesY = baseY + 300;
-  [-34, 34].forEach((dx, i) => {
-    ctx.save();
-    ctx.globalAlpha = partAlpha('testes');
-    ctx.beginPath();
-    ctx.ellipse(cx + dx, testesY, 22, 30, 0, 0, Math.PI * 2);
-    ctx.fillStyle = partCol('testes', 'rgba(96,165,250,0.25)');
-    ctx.fill();
-    ctx.strokeStyle = partCol('testes', '#60a5fa');
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.restore();
-  });
-  // scrotum outline
-  ctx.save();
-  ctx.globalAlpha = partAlpha('testes') * 0.4;
-  ctx.beginPath();
-  ctx.ellipse(cx, testesY + 4, 60, 38, 0, 0, Math.PI * 2);
-  ctx.strokeStyle = partCol('testes', '#60a5fa');
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Epididymis (coiled on side of each testis) —
-  [cx - 34, cx + 34].forEach(tx => {
-    const side = tx < cx ? -1 : 1;
-    ctx.save();
-    ctx.globalAlpha = partAlpha('epididymis');
-    ctx.beginPath();
-    for (let i = 0; i < 5; i++) {
-      ctx.ellipse(tx + side * 24, testesY - 10 + i * 8, 8, 4, 0, 0, Math.PI * 2);
-    }
-    ctx.strokeStyle = partCol('epididymis', '#a78bfa');
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.restore();
-  });
-
-  // — Vas deferens (curves up from epididymis to pelvis) —
-  ctx.save();
-  ctx.globalAlpha = partAlpha('vasdeferens');
-  ctx.beginPath();
-  ctx.moveTo(cx - 34 - 32, testesY - 10);
-  ctx.bezierCurveTo(cx - 80, testesY - 60, cx - 70, baseY + 220, cx - 20, baseY + 200);
-  ctx.moveTo(cx + 34 + 32, testesY - 10);
-  ctx.bezierCurveTo(cx + 80, testesY - 60, cx + 70, baseY + 220, cx + 20, baseY + 200);
-  ctx.strokeStyle = partCol('vasdeferens', '#34d399');
-  ctx.lineWidth = 3;
-  ctx.lineCap = 'round';
-  ctx.stroke();
-  ctx.restore();
-
-  // — Urethra (vertical line through penis) —
-  const urethraTop = baseY + 200;
-  const urethraBot = baseY + 390;
-  ctx.save();
-  ctx.globalAlpha = partAlpha('urethra');
-  ctx.beginPath();
-  ctx.moveTo(cx, urethraTop);
-  ctx.lineTo(cx, urethraBot - 60);
-  ctx.strokeStyle = partCol('urethra', '#fbbf24');
-  ctx.lineWidth = 3;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Penis (rounded rect) —
-  ctx.save();
-  ctx.globalAlpha = partAlpha('penis');
-  ctx.beginPath();
-  ctx.roundRect(cx - 16, urethraBot - 65, 32, 80, 10);
-  ctx.fillStyle = partCol('penis', 'rgba(248,113,113,0.2)');
-  ctx.fill();
-  ctx.strokeStyle = partCol('penis', '#f87171');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Labels —
-  // Labels sit to the right of the figure (as on the female diagram), each
-  // with a thin pointer to its organ so none of them cover the drawing.
-  const lx = cx + 110;
-  pointer(ctx, cx + 70, baseY + 245, lx, baseY + 215, 'Vas deferens', 'vasdeferens');
-  pointer(ctx, cx + 2,  urethraTop + 45, lx, baseY + 250, 'Uretra',      'urethra');
-  pointer(ctx, cx + 64, testesY - 4, lx, testesY - 14, 'Epididimis',     'epididymis');
-  pointer(ctx, cx + 48, testesY + 10, lx, testesY + 14, 'Testes',        'testes');
-  pointer(ctx, cx + 16, urethraBot - 20, lx, urethraBot - 6, 'Penis',    'penis');
-}
-
-function drawFemale(ctx, W) {
-  const cx = W * 0.46;
-  const baseY = 40;
-
-  // — Body outline —
-  ctx.save();
-  ctx.beginPath();
-  ctx.roundRect(cx - 110, baseY + 60, 220, 300, 20);
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Ovaries (two ovals) —
-  const ovY = baseY + 100;
-  [cx - 80, cx + 80].forEach(ox => {
-    ctx.save();
-    ctx.globalAlpha = partAlpha('ovaries');
-    ctx.beginPath();
-    ctx.ellipse(ox, ovY, 22, 16, 0, 0, Math.PI * 2);
-    ctx.fillStyle = partCol('ovaries', 'rgba(244,114,182,0.2)');
-    ctx.fill();
-    ctx.strokeStyle = partCol('ovaries', '#f472b6');
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.restore();
-  });
-
-  // — Fallopian tubes (arching from ovaries to uterus) —
-  const uterTop = baseY + 150;
-  ctx.save();
-  ctx.globalAlpha = partAlpha('fallopian');
-  ctx.beginPath();
-  // Left tube
-  ctx.moveTo(cx - 80, ovY);
-  ctx.quadraticCurveTo(cx - 80, uterTop - 20, cx - 28, uterTop);
-  // Right tube
-  ctx.moveTo(cx + 80, ovY);
-  ctx.quadraticCurveTo(cx + 80, uterTop - 20, cx + 28, uterTop);
-  ctx.strokeStyle = partCol('fallopian', '#fb923c');
-  ctx.lineWidth = 4;
-  ctx.lineCap = 'round';
-  ctx.stroke();
-  ctx.restore();
-
-  // — Uterus (pear shape) —
-  const uterCX = cx;
-  const uterCY = baseY + 195;
-  ctx.save();
-  ctx.globalAlpha = partAlpha('uterus');
-  ctx.beginPath();
-  ctx.ellipse(uterCX, uterCY, 44, 52, 0, 0, Math.PI * 2);
-  ctx.fillStyle = partCol('uterus', 'rgba(192,132,252,0.2)');
-  ctx.fill();
-  ctx.strokeStyle = partCol('uterus', '#c084fc');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Cervix —
-  const cervY = baseY + 255;
-  ctx.save();
-  ctx.globalAlpha = partAlpha('cervix');
-  ctx.beginPath();
-  ctx.roundRect(cx - 14, cervY, 28, 26, 6);
-  ctx.fillStyle = partCol('cervix', 'rgba(52,211,153,0.2)');
-  ctx.fill();
-  ctx.strokeStyle = partCol('cervix', '#34d399');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Vagina —
-  const vagY = cervY + 26;
-  ctx.save();
-  ctx.globalAlpha = partAlpha('vagina');
-  ctx.beginPath();
-  ctx.roundRect(cx - 18, vagY, 36, 70, 8);
-  ctx.fillStyle = partCol('vagina', 'rgba(251,191,36,0.12)');
-  ctx.fill();
-  ctx.strokeStyle = partCol('vagina', '#fbbf24');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  // — Labels —
-  label(ctx, cx + 110, ovY,        'Ovaria',           'ovaries');
-  label(ctx, cx + 110, ovY + 20,   'Fallopiusbuise',   'fallopian');
-  label(ctx, cx + 110, uterCY,     'Uterus',           'uterus');
-  label(ctx, cx + 110, cervY + 12, 'Serviks',          'cervix');
-  label(ctx, cx + 110, vagY + 35,  'Vagina',           'vagina');
-}
-
-window.addEventListener('resize', () => { if (simInit) drawSystem(); });
 
 // ── PRACTICE ──────────────────────────────────────────────────────────────────
 const questions = [
