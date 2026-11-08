@@ -129,6 +129,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: O is the centre. A, B and C lie on the circle and ∠ACB = 35°. D lies on the major arc</div><div class="example-step"><span class="step-num">1</span><span>∠AOB = 2 × 35° = 70° (∠ at centre = 2 × ∠ at circumference).</span></div><div class="example-step"><span class="step-num">2</span><span>OA = OB (radii), so ∠OAB = ∠OBA = (180° − 70°) ÷ 2 = 55° (∠s opp equal sides).</span></div><div class="example-step"><span class="step-num">3</span><span>∠ADB = ∠ACB = 35° (∠s in the same segment).</span></div><div class="example-step"><span class="step-num">4</span><span>Every statement has a reason in the standard abbreviated form.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The angle at the centre and the angle at the circumference must stand on the <strong>same arc</strong>.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Tangents PA and PB touch a circle with centre O at A and B; ∠APB = 50°. C lies on the major arc</div><div class="example-step"><span class="step-num">1</span><span>PA = PB (tangents from the same point), so ∠PAB = ∠PBA = (180° − 50°) ÷ 2 = 65°.</span></div><div class="example-step"><span class="step-num">2</span><span>∠ACB = ∠PAB = 65° (tan-chord theorem).</span></div><div class="example-step"><span class="step-num">3</span><span>∠OAP = ∠OBP = 90° (tan ⊥ radius), so ∠AOB = 360° − 90° − 90° − 50° = 130°.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: ∠AOB = 2 × ∠ACB = 130° ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The tan-chord angle equals the angle in the <strong>alternate</strong> segment — on the other side of the chord.</span></div>
         `
       },
       questions: [

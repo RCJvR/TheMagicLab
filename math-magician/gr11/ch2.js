@@ -265,6 +265,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For a > 0: the parabola dips <em>below</em> the x-axis <em>between</em> the roots. So ax²+bx+c &lt; 0 → between the roots, and &gt; 0 → outside the roots.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve x² − x − 12 ≤ 0, then solve y = x + 1 and x² + y² = 13 simultaneously</div><div class="example-step"><span class="step-num">1</span><span>Factorise: (x − 4)(x + 3) ≤ 0. Critical values −3 and 4; the parabola opens upwards, so it is ≤ 0 between them: −3 ≤ x ≤ 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Substitute y = x + 1: x² + (x + 1)² = 13 → 2x² + 2x − 12 = 0 → x² + x − 6 = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>x = 2 or x = −3.</span></div><div class="example-step"><span class="step-num">4</span><span>Points: (2; 3) and (−3; −2).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Do not stop at the critical values — use a sketch or sign table to decide whether the answer lies between or outside them.</span></div>
         `
       },
       questions: [
@@ -395,6 +396,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The quadratic formula and the discriminant come from the same derivation — Δ = b² − 4ac is just the part under the square root sign.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve 3x² − 5x − 1 = 0 correct to two decimal places, and describe the roots</div><div class="example-step"><span class="step-num">1</span><span>a = 3, b = −5, c = −1.</span></div><div class="example-step"><span class="step-num">2</span><span>x = [5 ± √(25 + 12)]/6 = (5 ± √37)/6.</span></div><div class="example-step"><span class="step-num">3</span><span>x = (5 + 6,083)/6 = 1,85 or x = (5 − 6,083)/6 = −0,18.</span></div><div class="example-step"><span class="step-num">4</span><span>Δ = 37 &gt; 0 and not a perfect square: the roots are real, unequal and irrational.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> −b with b = −5 gives +5, and the 2a denominator divides the <strong>whole</strong> numerator.</span></div>
         `
       },
       questions: [

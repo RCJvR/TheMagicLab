@@ -517,6 +517,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Eienskappe van y = 3 sin 2x, y = −2 cos x + 1 en y = tan(x + 45°)</div><div class="example-step"><span class="step-num">1</span><span>y = 3 sin 2x: amplitude 3, periode 360° ÷ 2 = 180°.</span></div><div class="example-step"><span class="step-num">2</span><span>y = −2 cos x + 1: in die x-as gereflekteer en 1 op geskuif; waardeversameling [−1; 3].</span></div><div class="example-step"><span class="step-num">3</span><span>y = tan(x + 45°): 45° links geskuif; asimptote waar x + 45° = 90° + k·180°, d.w.s. x = 45° + k·180°.</span></div><div class="example-step"><span class="step-num">4</span><span>Op [−180°; 180°] is daardie asimptote x = −135° en x = 45°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die periode van sin kx en cos kx is 360°/k; vir tan kx is dit 180°/k.</span></div>
         `
       },
       questions: [

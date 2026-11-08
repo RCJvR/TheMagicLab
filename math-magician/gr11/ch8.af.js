@@ -129,6 +129,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: O is die middelpunt. A, B en C lê op die sirkel en ∠ACB = 35°. D lê op die groot boog</div><div class="example-step"><span class="step-num">1</span><span>∠AOB = 2 × 35° = 70° (midpts-∠ = 2 × omtreks-∠).</span></div><div class="example-step"><span class="step-num">2</span><span>OA = OB (radiusse), dus ∠OAB = ∠OBA = (180° − 70°) ÷ 2 = 55° (∠e teenoor gelyke sye).</span></div><div class="example-step"><span class="step-num">3</span><span>∠ADB = ∠ACB = 35° (∠e in dieselfde segm).</span></div><div class="example-step"><span class="step-num">4</span><span>Elke bewering het ’n rede in die standaard afgekorte vorm.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die middelpuntshoek en die omtrekshoek moet op <strong>dieselfde boog</strong> staan.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Raaklyne PA en PB raak ’n sirkel met middelpunt O by A en B; ∠APB = 50°. C lê op die groot boog</div><div class="example-step"><span class="step-num">1</span><span>PA = PB (raaklyne vanaf dieselfde punt), dus ∠PAB = ∠PBA = (180° − 50°) ÷ 2 = 65°.</span></div><div class="example-step"><span class="step-num">2</span><span>∠ACB = ∠PAB = 65° (raaklyn-koordstelling).</span></div><div class="example-step"><span class="step-num">3</span><span>∠OAP = ∠OBP = 90° (raakl ⊥ radius), dus ∠AOB = 360° − 90° − 90° − 50° = 130°.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontrole: ∠AOB = 2 × ∠ACB = 130° ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die raaklyn-koordhoek is gelyk aan die hoek in die <strong>teenoorstaande</strong> segment — aan die ander kant van die koord.</span></div>
         `
       },
       questions: [

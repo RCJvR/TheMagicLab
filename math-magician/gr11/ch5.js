@@ -517,6 +517,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Features of y = 3 sin 2x, y = −2 cos x + 1 and y = tan(x + 45°)</div><div class="example-step"><span class="step-num">1</span><span>y = 3 sin 2x: amplitude 3, period 360° ÷ 2 = 180°.</span></div><div class="example-step"><span class="step-num">2</span><span>y = −2 cos x + 1: reflected in the x-axis and shifted up 1; range [−1; 3].</span></div><div class="example-step"><span class="step-num">3</span><span>y = tan(x + 45°): shifted 45° left; asymptotes where x + 45° = 90° + k·180°, i.e. x = 45° + k·180°.</span></div><div class="example-step"><span class="step-num">4</span><span>On [−180°; 180°] those asymptotes are x = −135° and x = 45°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The period of sin kx and cos kx is 360°/k; for tan kx it is 180°/k.</span></div>
         `
       },
       questions: [

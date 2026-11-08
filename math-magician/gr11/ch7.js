@@ -114,6 +114,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>When two solids share a face, subtract that circular area <strong>twice</strong> (once from each solid's SA). The shared face is internal and not part of the external surface.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A solid is a cylinder (r = 3 cm, h = 10 cm) with a hemisphere on top. Find its total surface area</div><div class="example-step"><span class="step-num">1</span><span>Base (circle): πr² = 9π.</span></div><div class="example-step"><span class="step-num">2</span><span>Curved side of the cylinder: 2πrh = 60π.</span></div><div class="example-step"><span class="step-num">3</span><span>Curved surface of the hemisphere: ½ × 4πr² = 18π.</span></div><div class="example-step"><span class="step-num">4</span><span>Total = 9π + 60π + 18π = 87π ≈ 273,3 cm² (the joined circle is not exposed, so it is left out).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Leave out faces where the parts are joined — they are inside the solid.</span></div>
         `
       },
       questions: [
@@ -272,6 +273,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A cone has radius 4 cm and height 9 cm</div><div class="example-step"><span class="step-num">1</span><span>V = ⅓πr²h = ⅓π(16)(9) = 48π ≈ 150,8 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>If every dimension is multiplied by 3: V × 3³ = 27 × 48π = 1 296π cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>If only the radius is doubled: V × 2² = 4 × 48π = 192π cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>If only the height is doubled: V × 2 = 96π cm³.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Volume scales by k³ only when <strong>all</strong> dimensions are multiplied by k.</span></div>
         `
       },
       questions: [

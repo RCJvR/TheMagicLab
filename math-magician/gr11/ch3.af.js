@@ -241,6 +241,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>n moet 'n <strong>positiewe heelgetal</strong> wees. As die kwadratiese vergelyking n = 8 en n = −10 gee, verwerp −10 outomaties. As geeneen van die wortels 'n positiewe heelgetal is nie, is die teikenwaarde nie in die ry nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die kwadratiese ry 3; 8; 15; 24; …</div><div class="example-step"><span class="step-num">1</span><span>Eerste verskille: 5; 7; 9. Tweede verskil: 2, dus 2a = 2 → a = 1.</span></div><div class="example-step"><span class="step-num">2</span><span>3a + b = 5 → b = 2; a + b + c = 3 → c = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>Tₙ = n² + 2n.</span></div><div class="example-step"><span class="step-num">4</span><span>Watter term is gelyk aan 168? n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0 → n = 12 (n moet positief wees).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die tweede verskil is gelyk aan 2a, nie a nie.</span></div>
         `
       },
       questions: [

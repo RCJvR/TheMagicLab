@@ -135,6 +135,7 @@ MathMagician.registerChapter(6, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Co-ratios (90° ± θ): sin↔cos swap. All other reductions (180° ± θ, 360° − θ, −θ): same ratio, sign determined by the quadrant of the original compound angle.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Prove (1 − cos²x)/(sin x cos x) = tan x and state where it is undefined</div><div class="example-step"><span class="step-num">1</span><span>LHS = sin²x/(sin x cos x) (since 1 − cos²x = sin²x).</span></div><div class="example-step"><span class="step-num">2</span><span>= sin x/cos x = tan x = RHS.</span></div><div class="example-step"><span class="step-num">3</span><span>Undefined where sin x cos x = 0: sin x = 0 or cos x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>For x ∈ [0°; 360°]: x = 0°, 90°, 180°, 270°, 360°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Work on one side only; do not move terms across the equals sign as if solving an equation.</span></div>
         `
       },
       questions: [

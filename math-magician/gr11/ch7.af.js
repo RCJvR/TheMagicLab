@@ -114,6 +114,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer twee vaste stowwe 'n vlak deel, trek daardie sirkelvormige oppervlakte <strong>twee keer</strong> af (een keer van elke vaste stof se SA). Die gedeelde vlak is intern en nie deel van die buite-oppervlak nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Soliede liggaam is ’n silinder (r = 3 cm, h = 10 cm) met ’n halfsfeer bo-op. Bepaal sy totale buite-oppervlakte</div><div class="example-step"><span class="step-num">1</span><span>Basis (sirkel): πr² = 9π.</span></div><div class="example-step"><span class="step-num">2</span><span>Geboë kant van die silinder: 2πrh = 60π.</span></div><div class="example-step"><span class="step-num">3</span><span>Geboë oppervlak van die halfsfeer: ½ × 4πr² = 18π.</span></div><div class="example-step"><span class="step-num">4</span><span>Totaal = 9π + 60π + 18π = 87π ≈ 273,3 cm² (die verbinde sirkel is nie blootgestel nie, dus word dit uitgelaat).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Laat vlakke uit waar die dele verbind is — hulle is binne die liggaam.</span></div>
         `
       },
       questions: [
@@ -274,6 +275,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Keël het radius 4 cm en hoogte 9 cm</div><div class="example-step"><span class="step-num">1</span><span>V = ⅓πr²h = ⅓π(16)(9) = 48π ≈ 150,8 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>As elke afmeting met 3 vermenigvuldig word: V × 3³ = 27 × 48π = 1 296π cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>As net die radius verdubbel word: V × 2² = 4 × 48π = 192π cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>As net die hoogte verdubbel word: V × 2 = 96π cm³.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Volume skaal met k³ net wanneer <strong>alle</strong> afmetings met k vermenigvuldig word.</span></div>
         `
       },
       questions: [

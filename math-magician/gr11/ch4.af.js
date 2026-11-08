@@ -83,6 +83,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer m < 0, gee tan⁻¹ 'n negatiewe hoek — tel 180° by om die korrekte hellingshoek in [0°; 180°) te kry. 'n Negatiewe gradiënt gee altyd 'n stomp hellingshoek.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Lyn deur A(−2; 1) en B(4; 5)</div><div class="example-step"><span class="step-num">1</span><span>m = (5 − 1)/(4 + 2) = 2/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Inklinasie: tan θ = 2/3 → θ = 33,7°.</span></div><div class="example-step"><span class="step-num">3</span><span>Vergelyking: y − 1 = 2/3(x + 2) → y = 2/3x + 7/3.</span></div><div class="example-step"><span class="step-num">4</span><span>Vir ’n lyn met gradiënt −1: tan θ = −1 → θ = 180° − 45° = 135°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Negatiewe gradiënt beteken ’n stomp inklinasie: tel 180° by die sakrekenaarantwoord.</span></div>
         `
       },
       questions: [
@@ -243,6 +244,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die hoogtelyn vanaf hoekpunt V na sy P₁P₂ het gradiënt −1/m(P₁P₂) en gaan deur V. Die middelloodlyn het dieselfde gradiënt, maar gaan deur die <em>middelpunt</em> van P₁P₂.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die lyn deur P(k; 3) en Q(2; −1) is loodreg op y = 2x + 5. Bepaal k</div><div class="example-step"><span class="step-num">1</span><span>Loodregte gradiënte vermenigvuldig tot −1, dus m(PQ) = −½.</span></div><div class="example-step"><span class="step-num">2</span><span>m(PQ) = (3 − (−1))/(k − 2) = 4/(k − 2).</span></div><div class="example-step"><span class="step-num">3</span><span>4/(k − 2) = −½ → k − 2 = −8.</span></div><div class="example-step"><span class="step-num">4</span><span>k = −6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Loodregte gradiënte is negatiewe omgekeerdes (2 → −½), nie net negatiewe (2 → −2) nie.</span></div>
         `
       },
       questions: [

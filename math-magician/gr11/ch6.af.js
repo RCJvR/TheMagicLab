@@ -135,6 +135,7 @@ MathMagician.registerChapter(6, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Ko-verhoudings (90° ± θ): sin↔cos ruil om. Alle ander reduksies (180° ± θ, 360° − θ, −θ): dieselfde verhouding, teken bepaal deur die kwadrant van die oorspronklike saamgestelde hoek.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bewys (1 − cos²x)/(sin x cos x) = tan x en noem waar dit ongedefinieerd is</div><div class="example-step"><span class="step-num">1</span><span>LK = sin²x/(sin x cos x) (aangesien 1 − cos²x = sin²x).</span></div><div class="example-step"><span class="step-num">2</span><span>= sin x/cos x = tan x = RK.</span></div><div class="example-step"><span class="step-num">3</span><span>Ongedefinieerd waar sin x cos x = 0: sin x = 0 of cos x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>Vir x ∈ [0°; 360°]: x = 0°, 90°, 180°, 270°, 360°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Werk net aan een kant; moenie terme oor die gelykaanteken skuif asof jy ’n vergelyking oplos nie.</span></div>
         `
       },
       questions: [

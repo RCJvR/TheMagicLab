@@ -86,6 +86,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Ogives and standard deviation</div><div class="example-step"><span class="step-num">1</span><span>An ogive plots cumulative frequency against the <strong>upper limit</strong> of each class, starting at the lower limit of the first class with frequency 0.</span></div><div class="example-step"><span class="step-num">2</span><span>For 60 learners, read the median at a cumulative frequency of 30; Q₁ at 15 and Q₃ at 45.</span></div><div class="example-step"><span class="step-num">3</span><span>Standard deviation of 4; 8; 6; 5; 7: mean = 6; squared deviations 4; 4; 0; 1; 1 (sum 10).</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √(10 ÷ 5) = 1,41 (check with the calculator’s σx).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Do not plot an ogive at class midpoints — that is for a frequency polygon.</span></div>
         `
       },
       questions: [
@@ -230,6 +231,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Data: 3; 5; 6; 6; 7; 8; 9; 25</div><div class="example-step"><span class="step-num">1</span><span>Median = (6 + 7) ÷ 2 = 6,5. Q₁ = (5 + 6) ÷ 2 = 5,5; Q₃ = (8 + 9) ÷ 2 = 8,5.</span></div><div class="example-step"><span class="step-num">2</span><span>IQR = 3. Upper fence = 8,5 + 1,5 × 3 = 13, so 25 is an outlier.</span></div><div class="example-step"><span class="step-num">3</span><span>Mean = 69 ÷ 8 = 8,6 — larger than the median because the outlier pulls it up.</span></div><div class="example-step"><span class="step-num">4</span><span>The data is positively skewed; the median is the better measure of a typical value here.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The mean is strongly affected by outliers; the median and IQR are not.</span></div>
         `
       },
       questions: [
@@ -359,6 +361,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Class A: mean 62, σ = 5. Class B: mean 62, σ = 14</div><div class="example-step"><span class="step-num">1</span><span>Both classes have the same average performance.</span></div><div class="example-step"><span class="step-num">2</span><span>Class B’s marks are much more spread out; class A is more consistent.</span></div><div class="example-step"><span class="step-num">3</span><span>A mark of 72 is (72 − 62) ÷ 5 = 2 standard deviations above the mean in class A, but only (72 − 62) ÷ 14 = 0,71 in class B.</span></div><div class="example-step"><span class="step-num">4</span><span>So 72 is an outstanding mark in class A but an ordinary good mark in class B.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A larger standard deviation means more spread, not a better or worse average.</span></div>
         `
       },
       questions: [
@@ -482,6 +485,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the standard deviation: x = 1; 2; 3; 4 with frequencies 2; 5; 8; 5</div><div class="example-step"><span class="step-num">1</span><span>n = 20; Σfx = 2 + 10 + 24 + 20 = 56; mean = 2,8.</span></div><div class="example-step"><span class="step-num">2</span><span>Σf(x − x̄)² = 2(3,24) + 5(0,64) + 8(0,04) + 5(1,44) = 6,48 + 3,2 + 0,32 + 7,2 = 17,2.</span></div><div class="example-step"><span class="step-num">3</span><span>Variance = 17,2 ÷ 20 = 0,86.</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √0,86 = 0,93.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Divide by the total frequency (20), not by the number of rows in the table (4).</span></div>
         `
       },
       questions: [

@@ -241,6 +241,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>n must be a <strong>positive integer</strong>. If the quadratic gives n = 8 and n = −10, automatically reject −10. If neither root is a positive integer, the target value is not in the sequence.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: The quadratic sequence 3; 8; 15; 24; …</div><div class="example-step"><span class="step-num">1</span><span>First differences: 5; 7; 9. Second difference: 2, so 2a = 2 → a = 1.</span></div><div class="example-step"><span class="step-num">2</span><span>3a + b = 5 → b = 2; a + b + c = 3 → c = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>Tₙ = n² + 2n.</span></div><div class="example-step"><span class="step-num">4</span><span>Which term equals 168? n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0 → n = 12 (n must be positive).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The second difference equals 2a, not a.</span></div>
         `
       },
       questions: [

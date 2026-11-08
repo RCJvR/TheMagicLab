@@ -86,6 +86,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Ogiewe en standaardafwyking</div><div class="example-step"><span class="step-num">1</span><span>’n Ogief stip kumulatiewe frekwensie teenoor die <strong>boonste grens</strong> van elke klas, en begin by die onderste grens van die eerste klas met frekwensie 0.</span></div><div class="example-step"><span class="step-num">2</span><span>Vir 60 leerders, lees die mediaan af by ’n kumulatiewe frekwensie van 30; Q₁ by 15 en Q₃ by 45.</span></div><div class="example-step"><span class="step-num">3</span><span>Standaardafwyking van 4; 8; 6; 5; 7: gemiddeld = 6; gekwadreerde afwykings 4; 4; 0; 1; 1 (som 10).</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √(10 ÷ 5) = 1,41 (kontroleer met die sakrekenaar se σx).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moenie ’n ogief by klasmiddelpunte stip nie — dit is vir ’n frekwensieveelhoek.</span></div>
         `
       },
       questions: [
@@ -230,6 +231,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Data: 3; 5; 6; 6; 7; 8; 9; 25</div><div class="example-step"><span class="step-num">1</span><span>Mediaan = (6 + 7) ÷ 2 = 6,5. Q₁ = (5 + 6) ÷ 2 = 5,5; Q₃ = (8 + 9) ÷ 2 = 8,5.</span></div><div class="example-step"><span class="step-num">2</span><span>IKV = 3. Boonste grens = 8,5 + 1,5 × 3 = 13, dus is 25 ’n uitskieter.</span></div><div class="example-step"><span class="step-num">3</span><span>Gemiddeld = 69 ÷ 8 = 8,6 — groter as die mediaan omdat die uitskieter dit optrek.</span></div><div class="example-step"><span class="step-num">4</span><span>Die data is positief skeef; die mediaan is hier die beter maatstaf van ’n tipiese waarde.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die gemiddeld word sterk deur uitskieters beïnvloed; die mediaan en IKV nie.</span></div>
         `
       },
       questions: [
@@ -359,6 +361,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Klas A: gemiddeld 62, σ = 5. Klas B: gemiddeld 62, σ = 14</div><div class="example-step"><span class="step-num">1</span><span>Albei klasse het dieselfde gemiddelde prestasie.</span></div><div class="example-step"><span class="step-num">2</span><span>Klas B se punte is baie meer versprei; klas A is meer konsekwent.</span></div><div class="example-step"><span class="step-num">3</span><span>’n Punt van 72 is (72 − 62) ÷ 5 = 2 standaardafwykings bo die gemiddeld in klas A, maar net (72 − 62) ÷ 14 = 0,71 in klas B.</span></div><div class="example-step"><span class="step-num">4</span><span>Dus is 72 ’n uitstaande punt in klas A maar ’n gewone goeie punt in klas B.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Groter standaardafwyking beteken meer verspreiding, nie ’n beter of swakker gemiddeld nie.</span></div>
         `
       },
       questions: [
@@ -482,6 +485,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die standaardafwyking: x = 1; 2; 3; 4 met frekwensies 2; 5; 8; 5</div><div class="example-step"><span class="step-num">1</span><span>n = 20; Σfx = 2 + 10 + 24 + 20 = 56; gemiddeld = 2,8.</span></div><div class="example-step"><span class="step-num">2</span><span>Σf(x − x̄)² = 2(3,24) + 5(0,64) + 8(0,04) + 5(1,44) = 6,48 + 3,2 + 0,32 + 7,2 = 17,2.</span></div><div class="example-step"><span class="step-num">3</span><span>Variansie = 17,2 ÷ 20 = 0,86.</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √0,86 = 0,93.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Deel deur die totale frekwensie (20), nie deur die aantal rye in die tabel (4) nie.</span></div>
         `
       },
       questions: [

@@ -132,6 +132,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir 'n konjugaat-noemer (a + √b), vermenigvuldig met (a − √b)/(a − √b). Die noemer word a² − b — altyd 'n rasionale getal.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig (8^(2/3) × 27^(−1/3)) ÷ 16^(−3/4), en rasionaliseer 6/(√5 − √2)</div><div class="example-step"><span class="step-num">1</span><span>8^(2/3) = (∛8)² = 4; 27^(−1/3) = 1/∛27 = 1/3; 16^(−3/4) = 1/(⁴√16)³ = 1/8.</span></div><div class="example-step"><span class="step-num">2</span><span>(4 × 1/3) ÷ 1/8 = 4/3 × 8 = 32/3.</span></div><div class="example-step"><span class="step-num">3</span><span>6/(√5 − √2) × (√5 + √2)/(√5 + √2) = 6(√5 + √2)/(5 − 2).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2(√5 + √2) = 2√5 + 2√2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Negatiewe eksponent gee ’n omgekeerde, nie ’n negatiewe getal nie: 27^(−1/3) = 1/3, nie −3 nie.</span></div>
         `
       },
       questions: [
@@ -290,6 +291,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Om r te vind: herrangskik A = P(1+r)ⁿ → (A/P)^(1/n) = 1+r → r = (A/P)^(1/n) − 1. Dit werk vir beide groei en verval.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op √(x + 7) = x + 1</div><div class="example-step"><span class="step-num">1</span><span>Kwadreer albei kante: x + 7 = x² + 2x + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>x² + x − 6 = 0 → (x + 3)(x − 2) = 0 → x = −3 of x = 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Kontroleer x = 2: √9 = 3 en 2 + 1 = 3 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer x = −3: √4 = 2 maar −3 + 1 = −2 ✗ — verwerp. Antwoord: x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kwadrering kan vals oplossings skep. Vervang altyd terug in die oorspronklike vergelyking.</span></div>
         `
       },
       questions: [

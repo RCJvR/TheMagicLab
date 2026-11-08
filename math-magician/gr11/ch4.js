@@ -83,6 +83,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>When m < 0, tan⁻¹ gives a negative angle — add 180° to get the correct inclination in [0°; 180°). A negative gradient always gives an obtuse inclination angle.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Line through A(−2; 1) and B(4; 5)</div><div class="example-step"><span class="step-num">1</span><span>m = (5 − 1)/(4 + 2) = 2/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Inclination: tan θ = 2/3 → θ = 33,7°.</span></div><div class="example-step"><span class="step-num">3</span><span>Equation: y − 1 = 2/3(x + 2) → y = 2/3x + 7/3.</span></div><div class="example-step"><span class="step-num">4</span><span>For a line with gradient −1: tan θ = −1 → θ = 180° − 45° = 135°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A negative gradient means an obtuse inclination: add 180° to the calculator answer.</span></div>
         `
       },
       questions: [
@@ -243,6 +244,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The altitude from vertex V to side P₁P₂ has gradient −1/m(P₁P₂) and passes through V. The perpendicular bisector has the same gradient but passes through the <em>midpoint</em> of P₁P₂.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: The line through P(k; 3) and Q(2; −1) is perpendicular to y = 2x + 5. Find k</div><div class="example-step"><span class="step-num">1</span><span>Perpendicular gradients multiply to −1, so m(PQ) = −½.</span></div><div class="example-step"><span class="step-num">2</span><span>m(PQ) = (3 − (−1))/(k − 2) = 4/(k − 2).</span></div><div class="example-step"><span class="step-num">3</span><span>4/(k − 2) = −½ → k − 2 = −8.</span></div><div class="example-step"><span class="step-num">4</span><span>k = −6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Perpendicular gradients are negative reciprocals (2 → −½), not just negatives (2 → −2).</span></div>
         `
       },
       questions: [

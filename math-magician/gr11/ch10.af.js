@@ -85,6 +85,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Onafhanklike gebeurtenisse en trek sonder terugplasing</div><div class="example-step"><span class="step-num">1</span><span>P(A) = 0,5, P(B) = 0,4 en P(A en B) = 0,2. Aangesien 0,5 × 0,4 = 0,2, is A en B onafhanklik.</span></div><div class="example-step"><span class="step-num">2</span><span>’n Sak het 5 rooi en 3 blou balle. Twee word sonder terugplasing getrek.</span></div><div class="example-step"><span class="step-num">3</span><span>P(albei rooi) = 5/8 × 4/7 = 20/56 = 5/14.</span></div><div class="example-step"><span class="step-num">4</span><span>P(een van elke kleur) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Sonder terugplasing verander die tweede waarskynlikheid: die teller en die totaal daal albei met een.</span></div>
         `
       },
       questions: [
@@ -226,6 +227,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In ’n klas van 40 speel 25 sokker, 18 netbal en 7 albei</div><div class="example-step"><span class="step-num">1</span><span>Teken ’n Venn-diagram: albei = 7; net sokker = 25 − 7 = 18; net netbal = 18 − 7 = 11.</span></div><div class="example-step"><span class="step-num">2</span><span>Geeneen = 40 − (18 + 7 + 11) = 4.</span></div><div class="example-step"><span class="step-num">3</span><span>P(net sokker) = 18/40 = 0,45.</span></div><div class="example-step"><span class="step-num">4</span><span>P(sokker of netbal) = 36/40 = 0,9 — of gebruik P(S) + P(N) − P(S en N) = 25/40 + 18/40 − 7/40.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Vul eers die snyding in, sodat leerders in albei groepe nie twee keer getel word nie.</span></div>
         `
       },
       questions: [

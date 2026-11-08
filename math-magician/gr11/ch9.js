@@ -79,6 +79,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A car bought for R250 000 depreciates at 15% p.a.</div><div class="example-step"><span class="step-num">1</span><span>Reducing balance after 5 years: A = 250 000(1 − 0,15)⁵ = R110 926.</span></div><div class="example-step"><span class="step-num">2</span><span>Straight line after 5 years: A = 250 000(1 − 0,15 × 5) = R62 500.</span></div><div class="example-step"><span class="step-num">3</span><span>Time for the reducing-balance value to halve: 0,85ⁿ = 0,5 → n = log 0,5 ÷ log 0,85 = 4,27 years.</span></div><div class="example-step"><span class="step-num">4</span><span>The straight-line value reaches zero after 1 ÷ 0,15 ≈ 6,7 years; reducing balance never reaches zero.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use A = P(1 − in) for straight-line and A = P(1 − i)ⁿ for reducing-balance — read the question carefully.</span></div>
         `
       },
       questions: [
@@ -228,6 +229,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Convert between nominal and effective rates</div><div class="example-step"><span class="step-num">1</span><span>12% p.a. compounded monthly: 1 + i_eff = (1 + 0,12/12)¹² = 1,1268 → i_eff = 12,68%.</span></div><div class="example-step"><span class="step-num">2</span><span>10% effective to a nominal rate compounded quarterly: (1 + i/4)⁴ = 1,10.</span></div><div class="example-step"><span class="step-num">3</span><span>1 + i/4 = 1,10^(1/4) = 1,02411 → i = 4 × 0,02411 = 9,65% p.a.</span></div><div class="example-step"><span class="step-num">4</span><span>The effective rate is always higher than the nominal rate when compounding happens more than once a year.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Divide the nominal rate by the number of periods per year, and raise to that same number.</span></div>
         `
       },
       questions: [
@@ -502,6 +504,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find a time and a rate</div><div class="example-step"><span class="step-num">1</span><span>How long for R5 000 to double at 8% p.a. compounded quarterly? 10 000 = 5 000(1,02)ⁿ → 1,02ⁿ = 2.</span></div><div class="example-step"><span class="step-num">2</span><span>n = log 2 ÷ log 1,02 = 35,0 quarters = 8,75 years.</span></div><div class="example-step"><span class="step-num">3</span><span>R8 000 grows to R12 000 in 5 years, compounded annually: (1 + i)⁵ = 1,5.</span></div><div class="example-step"><span class="step-num">4</span><span>1 + i = 1,5^(1/5) = 1,0845 → i = 8,45% p.a.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> n from the log calculation counts compounding periods — convert quarters or months back to years.</span></div>
         `
       },
       questions: [

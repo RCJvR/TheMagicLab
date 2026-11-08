@@ -132,6 +132,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For a conjugate denominator (a + √b), multiply by (a − √b)/(a − √b). The denominator becomes a² − b — always a rational number.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify (8^(2/3) × 27^(−1/3)) ÷ 16^(−3/4), and rationalise 6/(√5 − √2)</div><div class="example-step"><span class="step-num">1</span><span>8^(2/3) = (∛8)² = 4; 27^(−1/3) = 1/∛27 = 1/3; 16^(−3/4) = 1/(⁴√16)³ = 1/8.</span></div><div class="example-step"><span class="step-num">2</span><span>(4 × 1/3) ÷ 1/8 = 4/3 × 8 = 32/3.</span></div><div class="example-step"><span class="step-num">3</span><span>6/(√5 − √2) × (√5 + √2)/(√5 + √2) = 6(√5 + √2)/(5 − 2).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2(√5 + √2) = 2√5 + 2√2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A negative exponent gives a reciprocal, not a negative number: 27^(−1/3) = 1/3, not −3.</span></div>
         `
       },
       questions: [
@@ -290,6 +291,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>To find r: rearrange A = P(1+r)ⁿ → (A/P)^(1/n) = 1+r → r = (A/P)^(1/n) − 1. This works for both growth and decay.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve √(x + 7) = x + 1</div><div class="example-step"><span class="step-num">1</span><span>Square both sides: x + 7 = x² + 2x + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>x² + x − 6 = 0 → (x + 3)(x − 2) = 0 → x = −3 or x = 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Check x = 2: √9 = 3 and 2 + 1 = 3 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>Check x = −3: √4 = 2 but −3 + 1 = −2 ✗ — reject. Answer: x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Squaring can create false solutions. Always substitute back into the original equation.</span></div>
         `
       },
       questions: [

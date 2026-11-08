@@ -85,6 +85,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Independent events and drawing without replacement</div><div class="example-step"><span class="step-num">1</span><span>P(A) = 0,5, P(B) = 0,4 and P(A and B) = 0,2. Since 0,5 × 0,4 = 0,2, A and B are independent.</span></div><div class="example-step"><span class="step-num">2</span><span>A bag has 5 red and 3 blue balls. Two are drawn without replacement.</span></div><div class="example-step"><span class="step-num">3</span><span>P(both red) = 5/8 × 4/7 = 20/56 = 5/14.</span></div><div class="example-step"><span class="step-num">4</span><span>P(one of each colour) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Without replacement the second probability changes: both the numerator and the total go down by one.</span></div>
         `
       },
       questions: [
@@ -226,6 +227,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In a class of 40, 25 play soccer, 18 play netball and 7 play both</div><div class="example-step"><span class="step-num">1</span><span>Draw a Venn diagram: both = 7; soccer only = 25 − 7 = 18; netball only = 18 − 7 = 11.</span></div><div class="example-step"><span class="step-num">2</span><span>Neither = 40 − (18 + 7 + 11) = 4.</span></div><div class="example-step"><span class="step-num">3</span><span>P(soccer only) = 18/40 = 0,45.</span></div><div class="example-step"><span class="step-num">4</span><span>P(soccer or netball) = 36/40 = 0,9 — or use P(S) + P(N) − P(S and N) = 25/40 + 18/40 − 7/40.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Fill in the intersection first, so that learners in both groups are not counted twice.</span></div>
         `
       },
       questions: [
