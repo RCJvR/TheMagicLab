@@ -960,7 +960,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // A numeric answer is right within q.tol (default 1% of the answer); a decimal comma, spaces
   // and a unit typed after the number are fine.
   function numVal(v) {
-    var m = String(v == null ? '' : v).replace(/\s/g, '').replace(/\u2212/g, '-').replace(',', '.').match(/^[-+]?\d*\.?\d+(e[-+]?\d+)?/i);
+    var m = String(v == null ? '' : v).replace(/\s/g, '').replace(/^[a-z]=/i, '').replace(/\u2212/g, '-').replace(',', '.').match(/^[-+]?\d*\.?\d+(e[-+]?\d+)?/i);
     return m ? parseFloat(m[0]) : NaN;
   }
   function numOk(q, v) {

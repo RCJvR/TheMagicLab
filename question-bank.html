@@ -405,6 +405,17 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 .qb-topic { border-bottom: 1px solid var(--line-hard); padding: 6px 0; }
 .qb-sub { margin: 6px 0 6px 28px; }
 .qb-slots { display: flex; flex-direction: column; }
+.qb-tools { display: flex; gap: 14px; margin: -4px 0 10px; }
+.qb-link { font: inherit; font-size: calc(14 * var(--k)); background: none; border: 0; padding: 0; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.qb-link:hover { color: var(--paper); }
+.qb-row small.qb-kinds { display: block; }
+.qb-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.qb-chip { font: inherit; font-size: calc(14 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.qb-chip[aria-pressed="true"] { color: var(--paper); border-color: var(--paper); }
+.qb-types .qb-row { cursor: default; }
+.qb-types input[type=number] { width: 5.5em; font: inherit; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 6px 8px; }
+.qb-types .qb-row.off { opacity: 0.55; }
+.qb-total { margin: 12px 0 16px; font-weight: 700; color: var(--paper); font-size: calc(15 * var(--k)); }
 </style>
 
   <nav class="ml-nav" id="site-nav">
@@ -433,10 +444,22 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <div class="qb-field"><label for="qbSubject"><span data-t="subject">Subject</span></label><select id="qbSubject"></select></div>
       </div>
       <h3 class="tt-h3" data-t="topics">Topics</h3>
-      <p class="tt-note" data-t="topicsNote">Open a topic to change how many questions come from each part. Set a part to 0 to leave it out.</p>
+      <p class="tt-note" data-t="topicsNote">Tick the topics the paper should cover.</p>
+      <div class="qb-tools"><button type="button" class="qb-link" id="qbAll" data-t="all">Select all</button><button type="button" class="qb-link" id="qbNone" data-t="noneBtn">Clear</button></div>
       <div id="qbChapters" class="qb-list"></div>
+
+      <h3 class="tt-h3" data-t="layout">Questions in the paper</h3>
+      <p class="tt-note" data-t="layoutNote">Start from a layout, then change how many questions of each kind you want. Set a kind to 0 to leave it out.</p>
+      <div class="qb-presets" role="group" aria-label="Layouts">
+        <button type="button" class="qb-chip" data-preset="exam" data-t="pExam">Exam-style</button>
+        <button type="button" class="qb-chip" data-preset="class" data-t="pClass">Class test</button>
+        <button type="button" class="qb-chip" data-preset="terms" data-t="pTerms">Terms and facts</button>
+        <button type="button" class="qb-chip" data-preset="mcq" data-t="pMcq">Multiple choice only</button>
+      </div>
+      <div id="qbTypes" class="qb-list qb-types"></div>
+      <p class="qb-total" id="qbTotal" aria-live="polite"></p>
       <div class="qb-field"><label for="qbMinutes"><span data-t="minutes">Time (minutes)</span></label>
-        <input id="qbMinutes" type="number" min="5" max="120" value="20"></div>
+        <input id="qbMinutes" type="number" min="5" max="180" value="20"></div>
       <p class="tt-note" data-t="seenNote">Questions you have seen recently are only used when there are no others left.</p>
       <p class="tt-status" id="qbMsg" aria-live="polite"></p>
       <div class="tt-actions">
@@ -453,37 +476,77 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 <script>
 (function () {
   'use strict';
-  // Build a practice paper from the question bank. Filter by grade, subject, term and topic,
-  // tick the topics you want and choose how many questions come from each part. The paper is
+  // Build a practice paper from the question bank. Choose grade, subject and topics, then how many
+  // questions of each kind (multiple choice, one word, missing words, true/false, matching, steps in
+  // order, calculations, written answers). The paper is laid out in sections like a school test,
   // saved in this browser and opened in Test Tome, so it is marked, reviewed and revised like any test.
+  //
+  // Bank items carry a "type" (default "mcq") with the same fields as a Test Tome question.
+  // Two kinds are also made from other items, so every topic offers them:
+  //  - calculations: a multiple-choice item whose answer is a single number (with or without a unit)
+  //    can be asked as a typed answer instead (unless it sets "noNum": true);
+  //  - matching: four or five one-word items become a column A / column B question.
   var BASE = 'assets/question-bank/';
-  var SEEN_KEY = 'ml-bank-seen-v1', CUSTOM = 'ml-tome-custom-v1';
+  var SEEN_KEY = 'ml-bank-seen-v1', CUSTOM = 'ml-tome-custom-v1', LAYOUT_KEY = 'ml-bank-layout-v1';
+  var KINDS = ['mcq', 'word', 'blank', 'tf', 'match', 'order', 'num', 'written'];
+  var PRESETS = {
+    exam: { mcq: 10, word: 6, blank: 3, tf: 5, match: 1, order: 1, num: 3, written: 3 },
+    'class': { mcq: 5, word: 4, blank: 2, tf: 4, match: 1, order: 0, num: 2, written: 1 },
+    terms: { mcq: 0, word: 10, blank: 5, tf: 6, match: 2, order: 0, num: 0, written: 0 },
+    mcq: { mcq: 20, word: 0, blank: 0, tf: 0, match: 0, order: 0, num: 0, written: 0 }
+  };
+  var SECTION = {
+    mcq: ['Multiple choice', 'Meervoudige keuse', 'Choose the best answer.', 'Kies die beste antwoord.'],
+    word: ['Give ONE word or term', 'Gee EEN woord of term', 'Write ONE word or term for each description.', 'Skryf EEN woord of term vir elke beskrywing.'],
+    blank: ['Fill in the missing words', 'Vul die ontbrekende woorde in', 'Type the word that is missing in each space.', 'Tik die woord wat in elke spasie ontbreek.'],
+    tf: ['True or false', 'Waar of onwaar', 'Decide whether each statement is true or false.', 'Besluit of elke stelling waar of onwaar is.'],
+    match: ['Matching', 'Pas bymekaar', 'Match column A with column B.', 'Pas kolom A by kolom B.'],
+    order: ['Steps in order', 'Stappe in volgorde', 'Put the steps in the correct order.', 'Rangskik die stappe in die regte volgorde.'],
+    num: ['Calculations', 'Berekeninge', 'Work out each answer and type it in. A decimal comma or point is fine.', 'Bereken elke antwoord en tik dit in. ’n Desimale komma of punt is reg.'],
+    written: ['Short and longer answers', 'Kort en langer antwoorde', 'Write your answer in full sentences. After handing in, you mark it against the memo.', 'Skryf jou antwoord in volsinne. Nadat jy ingehandig het, merk jy dit self volgens die memo.']
+  };
   var T = {
     en: {
       pageTitle: 'Build a practice paper',
-      sub: 'Filter by grade, subject, term and topic, then tick the topics you want. Questions you have not seen recently come first, so each paper is different.',
-      grade: 'Grade', subject: 'Subject', term: 'Term', allTerms: 'All terms', termN: 'Term {n}', gradeN: 'Grade {n}',
-      topics: 'Topics', topicsNote: 'Open a topic to change how many questions come from each part. Set a part to 0 to leave it out.',
-      versions: '{n} versions', minutes: 'Time (minutes)', build: 'Build my paper',
-      none: 'Choose at least one topic with at least one question.', none2: 'No question banks yet.',
+      sub: 'Choose the topics and the kinds of questions, and get a paper laid out in sections like a school test. Questions you have not seen recently come first, so each paper is different.',
+      grade: 'Grade', subject: 'Subject', gradeN: 'Grade {n}',
+      topics: 'Topics', topicsNote: 'Tick the topics the paper should cover.', all: 'Select all', noneBtn: 'Clear',
+      layout: 'Questions in the paper', layoutNote: 'Start from a layout, then change how many questions of each kind you want. Set a kind to 0 to leave it out.',
+      pExam: 'Exam-style', pClass: 'Class test', pTerms: 'Terms and facts', pMcq: 'Multiple choice only',
+      k_mcq: 'Multiple choice', k_word: 'One word or term', k_blank: 'Fill in the missing words', k_tf: 'True or false',
+      k_match: 'Matching (column A and B)', k_order: 'Steps in order', k_num: 'Calculations (typed answer)', k_written: 'Written answers (you mark them with the memo)',
+      avail: '{n} available', availNone: 'None in these topics yet', perQ: 'questions',
+      total: '{q} questions · {m} marks', totalNone: 'Choose at least one kind of question.',
+      kinds: '{n} questions · {k} kinds',
+      minutes: 'Time (minutes)', build: 'Build my paper',
+      none: 'Choose at least one topic and at least one question.', none2: 'No question banks yet.',
       loading: 'Loading topics…', noMatch: 'No topics match these filters.',
       paperName: 'Practice paper', seenNote: 'Questions you have seen recently are only used when there are no others left.',
-      fresh: 'Start fresh', freshDone: 'Your question history is cleared.', back: 'All tests'
+      fresh: 'Start fresh', freshDone: 'Your question history is cleared.', back: 'All tests',
+      matchQ: 'Match each description in column A with the correct term in column B.'
     },
     af: {
       pageTitle: 'Bou ’n oefenvraestel',
-      sub: 'Filter op graad, vak, kwartaal en onderwerp, en merk dan die onderwerpe wat jy wil hê. Vrae wat jy nie onlangs gesien het nie, kom eerste, so elke vraestel is anders.',
-      grade: 'Graad', subject: 'Vak', term: 'Kwartaal', allTerms: 'Alle kwartale', termN: 'Kwartaal {n}', gradeN: 'Graad {n}',
-      topics: 'Onderwerpe', topicsNote: 'Maak ’n onderwerp oop om te verander hoeveel vrae uit elke deel kom. Stel ’n deel op 0 om dit uit te laat.',
-      versions: '{n} weergawes', minutes: 'Tyd (minute)', build: 'Bou my vraestel',
-      none: 'Kies ten minste een onderwerp met ten minste een vraag.', none2: 'Nog geen vraagbanke nie.',
+      sub: 'Kies die onderwerpe en die soorte vrae, en kry ’n vraestel in afdelings soos ’n skooltoets. Vrae wat jy nie onlangs gesien het nie, kom eerste, so elke vraestel is anders.',
+      grade: 'Graad', subject: 'Vak', gradeN: 'Graad {n}',
+      topics: 'Onderwerpe', topicsNote: 'Merk die onderwerpe wat die vraestel moet dek.', all: 'Kies almal', noneBtn: 'Maak skoon',
+      layout: 'Vrae in die vraestel', layoutNote: 'Begin by ’n uitleg en verander dan hoeveel vrae van elke soort jy wil hê. Stel ’n soort op 0 om dit uit te laat.',
+      pExam: 'Eksamenstyl', pClass: 'Klastoets', pTerms: 'Terme en feite', pMcq: 'Net meervoudige keuse',
+      k_mcq: 'Meervoudige keuse', k_word: 'Een woord of term', k_blank: 'Vul die ontbrekende woorde in', k_tf: 'Waar of onwaar',
+      k_match: 'Pas bymekaar (kolom A en B)', k_order: 'Stappe in volgorde', k_num: 'Berekeninge (getikte antwoord)', k_written: 'Geskrewe antwoorde (jy merk dit met die memo)',
+      avail: '{n} beskikbaar', availNone: 'Nog geen in hierdie onderwerpe nie', perQ: 'vrae',
+      total: '{q} vrae · {m} punte', totalNone: 'Kies ten minste een soort vraag.',
+      kinds: '{n} vrae · {k} soorte',
+      minutes: 'Tyd (minute)', build: 'Bou my vraestel',
+      none: 'Kies ten minste een onderwerp en ten minste een vraag.', none2: 'Nog geen vraagbanke nie.',
       loading: 'Laai onderwerpe…', noMatch: 'Geen onderwerpe pas by hierdie filters nie.',
       paperName: 'Oefenvraestel', seenNote: 'Vrae wat jy onlangs gesien het, word net gebruik as daar geen ander meer oor is nie.',
-      fresh: 'Begin vars', freshDone: 'Jou vraaggeskiedenis is uitgevee.', back: 'Alle toetse'
+      fresh: 'Begin vars', freshDone: 'Jou vraaggeskiedenis is uitgevee.', back: 'Alle toetse',
+      matchQ: 'Pas elke beskrywing in kolom A by die regte term in kolom B.'
     }
   };
   var lang = (window.MLLang && MLLang.getLang()) || 'en';
-  var manifest = [], cache = {}, renderSeq = 0;
+  var manifest = [], cache = {}, renderSeq = 0, counts = readJ(LAYOUT_KEY, null) || Object.assign({}, PRESETS.exam), minutesTouched = false;
 
   function t2(k, vars) {
     var s = (T[lang] && T[lang][k]) || T.en[k] || k;
@@ -498,19 +561,64 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function title(obj, key) { return lang === 'af' && obj[key + 'Af'] ? obj[key + 'Af'] : obj[key]; }
   function uniq(list) { return list.filter(function (v, i, a) { return a.indexOf(v) === i; }); }
   function byNum(a, b) { return a - b; }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
-  // Fill a select with options, keeping the preferred value when it is still offered
+  // ---- what an item can be asked as ----
+  var NUM_RX = /^\s*(?:[a-zA-Z]\s*=\s*)?([−-]?\d+(?:[.,]\d+)?)\s*([a-zA-ZΩ°\/%²³· ]{0,12}?)\s*$/;
+  var NOT_NUM = /which|following|statement|best describes|correct|true|false|watter|volgende|stelling|korrek/i;
+  function kindOf(it) { return it.type || 'mcq'; }
+  // a multiple-choice item whose right answer is one number, asked as a typed calculation
+  function asNum(it) {
+    if (kindOf(it) !== 'mcq' || it.noNum || NOT_NUM.test(it.q)) return null;
+    var m = NUM_RX.exec(it.options[it.answer]); if (!m) return null;
+    var mAf = it.optionsAf ? NUM_RX.exec(it.optionsAf[it.answer]) : null;
+    var q = { type: 'num', q: it.q.replace(/:\s*$/, '.'), qAf: (it.qAf || it.q).replace(/:\s*$/, '.'), answer: parseFloat(m[1].replace('−', '-').replace(',', '.')),
+      explain: it.explain, explainAf: it.explainAf, skill: it.skill || 'application' };
+    if (m[2].trim()) { q.unit = m[2].trim(); q.unitAf = mAf && mAf[2].trim() ? mAf[2].trim() : q.unit; }
+    if (it.svg) q.svg = it.svg;
+    return q;
+  }
+  function marksOf(q) {
+    if (q.marks) return q.marks;
+    if (q.type === 'blank' || q.type === 'fill') return q.blanks.length;
+    if (q.type === 'match' || q.type === 'pairs') return q.pairs.length;
+    if (q.type === 'order') return q.steps.length;
+    if (q.type === 'written') return (q.points || []).length || 1;
+    return 1;
+  }
+
+  // pools per kind for the ticked topics: [{bank, item, q}]
+  function pools() {
+    var P = {}; KINDS.forEach(function (k) { P[k] = []; });
+    chosenBanks().forEach(function (d) {
+      d.items.forEach(function (it) {
+        var k = kindOf(it);
+        if (P[k]) P[k].push({ bank: d, item: it });
+        if (k === 'mcq' && asNum(it)) P.num.push({ bank: d, item: it, derived: true });
+      });
+    });
+    return P;
+  }
+  function available(P) {
+    var a = {}; KINDS.forEach(function (k) { a[k] = P[k].length; });
+    a.match = P.match.length + Math.floor(P.word.length / 4);
+    return a;
+  }
+  function chosenBanks() {
+    return [].filter.call(document.querySelectorAll('[data-topic]'), function (cb) { return cb.checked; })
+      .map(function (cb) { return cache[cb.getAttribute('data-topic')]; }).filter(Boolean);
+  }
+
+  // ---- filters ----
   function fillSelect(el, opts, prefer) {
     var keep = prefer === undefined ? el.value : prefer;
     el.innerHTML = opts.map(function (o) { return '<option value="' + esc(o.v) + '">' + esc(o.label) + '</option>'; }).join('');
     el.value = opts.some(function (o) { return o.v === keep; }) ? keep : (opts[0] ? opts[0].v : '');
   }
-
   function subjectLabel(subject) {
     var b = manifest.filter(function (x) { return x.subject === subject; })[0];
     return b ? (lang === 'af' && b.subjectAf ? b.subjectAf : b.subject) : subject;
   }
-
   function refreshGrades() {
     var grades = uniq(manifest.map(function (b) { return b.grade; })).sort(byNum);
     fillSelect($('qbGrade'), grades.map(function (g) { return { v: String(g), label: t2('gradeN', { n: g }) }; }));
@@ -522,75 +630,143 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     fillSelect($('qbSubject'), subs.map(function (s) { return { v: s, label: subjectLabel(s) }; }));
     refreshTopics();
   }
-
   function filtered() {
     var g = +$('qbGrade').value, s = $('qbSubject').value;
-    return manifest.filter(function (b) {
-      return b.grade === g && b.subject === s;
-    }).sort(function (a, b) { return a.topic.localeCompare(b.topic); });
+    return manifest.filter(function (b) { return b.grade === g && b.subject === s; })
+      .sort(function (a, b) { return (a.term || 0) - (b.term || 0) || a.topic.localeCompare(b.topic); });
   }
-
   function refreshTopics() {
     var list = filtered(), seq = ++renderSeq, box = $('qbChapters');
-    if (!list.length) { box.innerHTML = '<p class="tt-note">' + esc(t2('noMatch')) + '</p>'; return; }
+    if (!list.length) { box.innerHTML = '<p class="tt-note">' + esc(t2('noMatch')) + '</p>'; renderTypes(); return; }
     box.innerHTML = '<p class="tt-note">' + esc(t2('loading')) + '</p>';
     Promise.all(list.map(function (b) {
       if (cache[b.file]) return cache[b.file];
       return fetch(BASE + b.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) { cache[b.file] = d; return d; });
     })).then(function () {
-      if (seq === renderSeq) renderTopics(list);
+      if (seq === renderSeq) { renderTopics(list); renderTypes(); }
     }).catch(function () { box.innerHTML = '<p class="tt-note">' + esc(t2('none2')) + '</p>'; });
   }
-
   function renderTopics(list) {
     $('qbChapters').innerHTML = list.map(function (b) {
-      var d = cache[b.file];
-      var rows = d.slots.map(function (sl) {
-        var n = d.items.filter(function (it) { return it.slot === sl.slot; }).length;
-        var opts = ''; for (var k = 0; k <= n; k++) opts += '<option value="' + k + '"' + (k === 1 ? ' selected' : '') + '>' + k + '</option>';
-        return '<label class="qb-row qb-sub"><span class="qb-label">' + esc(title(sl, 'label')) + '<small>' + esc(t2('versions', { n: n })) + '</small></span>' +
-          '<select data-bank="' + esc(b.file) + '" data-count="' + esc(sl.slot) + '" aria-label="' + esc(title(sl, 'label')) + '">' + opts + '</select></label>';
-      }).join('');
-      return '<div class="qb-topic"><label class="qb-row"><input type="checkbox" data-topic="' + esc(b.file) + '" checked> ' +
-        '<span class="qb-label">' + esc(title(b, 'topic')) + '</span></label>' +
-        '<div class="qb-slots" data-slots="' + esc(b.file) + '">' + rows + '</div></div>';
+      var d = cache[b.file], kinds = {};
+      d.items.forEach(function (it) { kinds[kindOf(it)] = 1; if (asNum(it)) kinds.num = 1; });
+      return '<label class="qb-row"><input type="checkbox" data-topic="' + esc(b.file) + '" checked> ' +
+        '<span class="qb-label">' + esc(title(b, 'topic')) + '<small class="qb-kinds">' +
+        esc(t2('kinds', { n: d.items.length, k: Object.keys(kinds).length })) + '</small></span></label>';
     }).join('');
   }
 
-  // Least recently seen first; unseen questions come before any seen before
+  // ---- layout ----
+  function renderTypes() {
+    var A = available(pools());
+    $('qbTypes').innerHTML = KINDS.map(function (k) {
+      var n = A[k], v = Math.min(counts[k] || 0, n);
+      return '<div class="qb-row' + (n ? '' : ' off') + '"><span class="qb-label"><label for="qbK_' + k + '">' + esc(t2('k_' + k)) + '</label>' +
+        '<small>' + esc(n ? t2('avail', { n: n }) : t2('availNone')) + '</small></span>' +
+        '<input type="number" id="qbK_' + k + '" data-kind="' + k + '" min="0" max="' + n + '" value="' + v + '"' + (n ? '' : ' disabled') + '></div>';
+    }).join('');
+    document.querySelectorAll('[data-preset]').forEach(function (b) {
+      var p = PRESETS[b.getAttribute('data-preset')];
+      b.setAttribute('aria-pressed', KINDS.every(function (k) { return (p[k] || 0) === (counts[k] || 0); }) ? 'true' : 'false');
+    });
+    updateTotal();
+  }
+  function wanted() {
+    var w = {};
+    document.querySelectorAll('[data-kind]').forEach(function (inp) {
+      var max = +inp.max || 0; w[inp.getAttribute('data-kind')] = Math.max(0, Math.min(max, Math.floor(+inp.value || 0)));
+    });
+    return w;
+  }
+  // rough mark count for the summary (matching made from one-word items has 4 or 5 pairs)
+  function updateTotal() {
+    var w = wanted(), P = pools(), q = 0, m = 0;
+    KINDS.forEach(function (k) {
+      var n = w[k] || 0; if (!n) return; q += n;
+      var list = P[k].map(function (x) { return x.derived ? 1 : marksOf(x.item); });
+      if (k === 'match' && list.length < n) list = list.concat(new Array(n - list.length + 1).join('4').split('').map(Number));
+      var avg = list.length ? list.reduce(function (s, x) { return s + x; }, 0) / list.length : 1;
+      m += Math.round(avg * n);
+    });
+    $('qbTotal').textContent = q ? t2('total', { q: q, m: m }) : t2('totalNone');
+    if (!minutesTouched && m) $('qbMinutes').value = Math.max(5, Math.min(180, Math.round(m * 1.1 / 5) * 5 || 5));
+  }
+
+  // ---- building ----
+  // Round-robin over the ticked topics; inside a topic, least recently seen first.
+  function draw(list, n, seen, used) {
+    var byBank = {}, order = [];
+    shuffle(list).forEach(function (x) {
+      if (used[x.item.id]) return;
+      if (!byBank[x.bank.id]) { byBank[x.bank.id] = []; order.push(x.bank.id); }
+      byBank[x.bank.id].push(x);
+    });
+    order.forEach(function (id) { byBank[id].sort(function (a, b) { return (seen[a.item.id] || 0) - (seen[b.item.id] || 0); }); });
+    order = shuffle(order);
+    var out = [];
+    while (out.length < n) {
+      var any = false;
+      for (var i = 0; i < order.length && out.length < n; i++) {
+        var x = byBank[order[i]].shift();
+        if (x) { if (!used[x.item.id]) { out.push(x); used[x.item.id] = 1; } any = true; }
+      }
+      if (!any) break;
+    }
+    return out;
+  }
+  function toQuestion(x) {
+    var it = x.item, q;
+    if (x.derived) q = asNum(it);
+    else {
+      q = clone(it);
+      ['id', 'slot', 'variant', 'noNum'].forEach(function (k) { delete q[k]; });
+      q.type = kindOf(it);
+    }
+    q.topic = x.bank.id;
+    return q;
+  }
+  function cap(s) { s = String(s); return s.charAt(0).toUpperCase() + s.slice(1); }
+  // four or five one-word items as a column A / column B question
+  function matchFromWords(words) {
+    var q = { type: 'match', topic: words[0].bank.id, q: T.en.matchQ, qAf: T.af.matchQ, pairs: [], pairsAf: [] };
+    words.forEach(function (x) {
+      var it = x.item;
+      q.pairs.push([it.q.replace(/\s*\.$/, ''), cap([].concat(it.answer)[0])]);
+      q.pairsAf.push([(it.qAf || it.q).replace(/\s*\.$/, ''), cap([].concat(it.answerAf || it.answer)[0])]);
+    });
+    return q;
+  }
+
   function build() {
-    var seen = readJ(SEEN_KEY, {}), now = Date.now(), picks = [], total = 0;
-    [].forEach.call(document.querySelectorAll('[data-topic]'), function (cb) {
-      if (!cb.checked) return;
-      var file = cb.getAttribute('data-topic'), d = cache[file];
-      d.slots.forEach(function (sl) {
-        var sel = document.querySelector('select[data-bank="' + file + '"][data-count="' + sl.slot + '"]');
-        var n = sel ? +sel.value : 0;
-        if (!n) return;
-        var pool = shuffle(d.items.filter(function (it) { return it.slot === sl.slot; }));
-        pool.sort(function (a, b) { return (seen[a.id] || 0) - (seen[b.id] || 0); });
-        var items = pool.slice(0, n);
-        if (!items.length) return;
-        picks.push({ bank: d, slot: sl, items: items });
-        total += items.length;
-      });
+    var w = wanted(), P = pools(), seen = readJ(SEEN_KEY, {}), now = Date.now(), used = {}, sections = [], total = 0;
+    if (!chosenBanks().length) { $('qbMsg').textContent = t2('none'); return; }
+    // explicit pools first, so the derived kinds take what is left over
+    var picked = {};
+    ['mcq', 'word', 'blank', 'tf', 'order', 'written'].forEach(function (k) { picked[k] = draw(P[k], w[k] || 0, seen, used); });
+    picked.num = draw(P.num.filter(function (x) { return !x.derived; }), w.num || 0, seen, used);
+    if (picked.num.length < (w.num || 0)) picked.num = picked.num.concat(draw(P.num.filter(function (x) { return x.derived; }), w.num - picked.num.length, seen, used));
+    var matchQs = draw(P.match, w.match || 0, seen, used).map(toQuestion);
+    var spare = draw(P.word, 1e6, seen, used);
+    while (matchQs.length < (w.match || 0) && spare.length >= 4) {
+      var take = spare.length >= 5 && spare.length !== 8 ? 5 : 4;
+      matchQs.push(matchFromWords(spare.splice(0, take)));
+    }
+    spare.forEach(function (x) { delete used[x.item.id]; });
+
+    KINDS.forEach(function (k) {
+      var qs = k === 'match' ? matchQs : (picked[k] || []).map(toQuestion);
+      if (!qs.length) return;
+      var S = SECTION[k];
+      sections.push({ title: S[0], titleAf: S[1], intro: S[2], introAf: S[3], questions: qs });
+      total += qs.length;
     });
     if (!total) { $('qbMsg').textContent = t2('none'); return; }
+    Object.keys(used).forEach(function (id) { seen[id] = now; });
 
-    var topics = {}, topicsAf = {}, sections = picks.map(function (p) {
-      topics[p.bank.id] = p.bank.topic; topicsAf[p.bank.id] = p.bank.topicAf;
-      return { title: p.bank.topic + ' · ' + p.slot.label, titleAf: p.bank.topicAf + ' · ' + p.slot.labelAf,
-        questions: p.items.map(function (it) {
-          seen[it.id] = now;
-          var q = { type: 'mcq', q: it.q, qAf: it.qAf, options: it.options, optionsAf: it.optionsAf, answer: it.answer,
-            explain: it.explain, explainAf: it.explainAf, skill: it.skill, topic: p.bank.id };
-          if (it.svg) q.svg = it.svg;
-          return q;
-        }) };
-    });
-
-    var first = picks[0].bank, oneTopic = uniq(picks.map(function (p) { return p.bank.id; })).length === 1;
-    var name = oneTopic
+    var banks = chosenBanks(), topics = {}, topicsAf = {};
+    banks.forEach(function (d) { topics[d.id] = d.topic; topicsAf[d.id] = d.topicAf; });
+    var first = banks[0];
+    var name = banks.length === 1
       ? { en: first.topic + ' · ' + T.en.paperName, af: first.topicAf + ' · ' + T.af.paperName }
       : { en: first.subject + ' · Grade ' + first.grade + ' · ' + T.en.paperName, af: first.subjectAf + ' · Graad ' + first.grade + ' · ' + T.af.paperName };
     var key = Date.now().toString(36);
@@ -598,6 +774,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       subject: first.subject, subjectAf: first.subjectAf, grade: first.grade, minutes: +$('qbMinutes').value || null,
       topics: topics, topicsAf: topicsAf, sections: sections };
     writeJ(SEEN_KEY, seen);
+    writeJ(LAYOUT_KEY, w);
     // keep the last few built papers; each is opened from its key
     try { localStorage.setItem(CUSTOM + ':' + key, JSON.stringify(quiz)); } catch (e) {}
     var keys = readJ(CUSTOM + '-keys', []); keys.push(key);
@@ -609,11 +786,19 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function wire() {
     $('qbGrade').addEventListener('change', refreshSubjects);
     $('qbSubject').addEventListener('change', refreshTopics);
-    $('qbChapters').addEventListener('change', function (e) {
-      var cb = e.target; if (!cb.hasAttribute || !cb.hasAttribute('data-topic')) return;
-      var box = document.querySelector('[data-slots="' + cb.getAttribute('data-topic') + '"]');
-      if (box) box.style.display = cb.checked ? '' : 'none';
+    $('qbChapters').addEventListener('change', renderTypes);
+    $('qbAll').addEventListener('click', function () { document.querySelectorAll('[data-topic]').forEach(function (c) { c.checked = true; }); renderTypes(); });
+    $('qbNone').addEventListener('click', function () { document.querySelectorAll('[data-topic]').forEach(function (c) { c.checked = false; }); renderTypes(); });
+    $('qbTypes').addEventListener('input', function (e) {
+      if (!e.target.hasAttribute('data-kind')) return;
+      counts[e.target.getAttribute('data-kind')] = Math.max(0, +e.target.value || 0);
+      document.querySelectorAll('[data-preset]').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      updateTotal();
     });
+    document.querySelectorAll('[data-preset]').forEach(function (b) {
+      b.addEventListener('click', function () { counts = Object.assign({}, PRESETS[b.getAttribute('data-preset')]); renderTypes(); });
+    });
+    $('qbMinutes').addEventListener('input', function () { minutesTouched = true; });
     $('qbBuild').addEventListener('click', build);
     $('qbFresh').addEventListener('click', function () { writeJ(SEEN_KEY, {}); $('qbMsg').textContent = t2('freshDone'); });
     $('qbBack').addEventListener('click', function () { location.href = 'test-tome.html'; });
