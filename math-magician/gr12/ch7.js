@@ -393,6 +393,30 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Find the equations of the tangents to x² + y² = 25 that are parallel to the line 3x + 4y = 7, in the form 3x + 4y = k. Give the positive value of k.", answer: "25", topic: "Tangents from an external point" },
         { type: "input", text: "A tangent is drawn from P(7 ; 1) to the circle x² + y² − 2x + 4y − 4 = 0, touching it at T.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":240,\"view\":[-3,-5.5,9.5,3],\"axes\":{\"ticks\":2},\"pts\":{\"C\":[1,-2],\"P\":[7,1],\"T\":[1,1]},\"circ\":[[\"C\",3]],\"seg\":[[\"P\",\"T\",\"ac\"],[\"C\",\"T\",\"mu dash\"],[\"C\",\"P\",\"mu dash\"]],\"ra\":[[\"C\",\"T\",\"P\"]],\"dots\":true,\"lab\":{\"T\":\"n\",\"P\":\"n\",\"C\":\"s\"}}'></div>Find the length of PT.", answer: "6", topic: "Tangents from an external point" }
       ]
+    },
+    {
+      id: 704,
+      chapter: 7,
+      name: "Shortest distances & translated circles",
+      fullName: "Shortest and longest distances from a circle to an axis or a point, translating circles, and deciding whether two circles meet",
+      lesson: {
+        heading: "Shortest distances & translated circles",
+        sub: "Chapter 7 · Topic 5",
+        body: `
+          <p>Paper 2 analytical geometry often ends with a question that needs a picture in your head rather than a new formula: how far is the circle from an axis or a point, where does it go after a translation, and do two circles touch?</p><div class="def-box"><div class="def-box-title">📖 Key facts</div><p>Circle with centre (a; b) and radius r:<br>• Shortest distance to the x-axis = |b| − r (if |b| &gt; r). If |b| = r the circle touches the x-axis; if |b| &lt; r it cuts it.<br>• Shortest distance to the y-axis = |a| − r.<br>• For a point P outside the circle at distance d from the centre: shortest distance = d − r, longest distance = d + r (both measured along the line through the centre).<br>• A translation moves the centre; the radius does not change.<br>• Two circles with centres d apart: touch externally if d = r₁ + r₂; cut in two points if |r₁ − r₂| &lt; d &lt; r₁ + r₂; do not meet if d &gt; r₁ + r₂; touch internally if d = |r₁ − r₂|.</p></div><div class="example-box"><div class="example-box-title">✏️ Example 1: x² + y² − 4x + 6y − 12 = 0</div><div class="mf-fig" data-fig='{"t":"geo","w":240,"h":220,"view":[-4,-9,12,5],"pts":{"O":[0,0],"C":[2,-3],"P":[10,2],"Q":[6.24,-0.35]},"circ":[["C",5]],"dots":["C","P"],"seg":[["C","P","dash"],["Q","P","ac"]],"lab":{"C":"w","P":"e","Q":"n"},"nolab":["O"]}'></div><div class="example-step"><span class="step-num">1</span><span>Complete the squares: (x − 2)² + (y + 3)² = 25, so the centre is C(2; −3) and r = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>P(10; 2): CP = √((10 − 2)² + (2 + 3)²) = √89 = 9,43. Shortest distance from P to the circle = 9,43 − 5 = 4,43; longest = 14,43.</span></div><div class="example-step"><span class="step-num">3</span><span>The circle is translated 4 units left and 9 units up: (x; y) → (x − 4; y + 9). New centre (−2; 6), radius still 5: (x + 2)² + (y − 6)² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Shortest distance from the new circle to the x-axis = 6 − 5 = 1 unit; to the y-axis = 2 − 5 &lt; 0, so it cuts the y-axis.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Example 2: do two circles meet?</div><div class="example-step"><span class="step-num">1</span><span>Circle A: centre (2; −3), r = 5. Circle B: (x − 8)² + (y + 3)² = 9, centre (8; −3), r = 3.</span></div><div class="example-step"><span class="step-num">2</span><span>Distance between centres d = 6. r₁ + r₂ = 8 and r₁ − r₂ = 2. Since 2 &lt; 6 &lt; 8, the circles cut each other in two points.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Always sketch: mark the centre, draw the radius towards the axis or point, and the shortest distance is what is left over along that line.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "(x − 3)² + (y − 7)² = 16. Find the shortest distance from the circle to the x-axis.", "answer": "3", "topic": "Shortest distances & translated circles"},
+        {"type": "mc", "text": "For (x − 3)² + (y − 7)² = 16, the circle and the y-axis:", "options": ["cut in two points", "touch", "do not meet", "cannot be decided"], "answer": 0, "topic": "Shortest distances & translated circles"},
+        {"type": "mc", "text": "x² + y² = 25 is translated 3 units right and 8 units up. The new centre is:", "options": ["(3; 8)", "(−3; 8)", "(8; 3)", "(3; −8)"], "answer": 0, "topic": "Shortest distances & translated circles"},
+        {"type": "input", "text": "After the translation in the previous question, find the shortest distance from the circle to the x-axis.", "answer": "3", "topic": "Shortest distances & translated circles"},
+        {"type": "input", "text": "P(9; 12) and the circle x² + y² = 25. Find the shortest distance from P to the circle.", "answer": "10", "topic": "Shortest distances & translated circles"},
+        {"type": "input", "text": "P(9; 12) and the circle x² + y² = 25. Find the longest distance from P to a point on the circle.", "answer": "20", "topic": "Shortest distances & translated circles"},
+        {"type": "mc", "text": "For which values of k does (x − k)² + (y − 2)² = 9 touch the y-axis?", "options": ["k = ±3", "k = ±2", "k = ±9", "k = 0"], "answer": 0, "topic": "Shortest distances & translated circles"},
+        {"type": "mc", "text": "Two circles have radii 4 and 6, and their centres are 10 units apart. The circles:", "options": ["touch externally", "cut in two points", "do not meet", "touch internally"], "answer": 0, "topic": "Shortest distances & translated circles"},
+        {"type": "input", "text": "(x + 1)² + (y − 5)² = 4 is translated by (x; y) → (x + 4; y − 2). Find the shortest distance from the new circle to the x-axis.", "answer": "1", "topic": "Shortest distances & translated circles"}
+      ]
     }
   ],
   workbook: {

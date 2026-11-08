@@ -393,6 +393,30 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Bepaal die vergelykings van die raaklyne aan x² + y² = 25 wat parallel is aan die lyn 3x + 4y = 7, in die vorm 3x + 4y = k. Gee die positiewe waarde van k.", answer: "25", topic: "Raaklyne vanaf 'n buitepunt" },
         { type: "input", text: "'n Raaklyn word vanaf P(7 ; 1) aan die sirkel x² + y² − 2x + 4y − 4 = 0 getrek, en raak dit by T.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":240,\"view\":[-3,-5.5,9.5,3],\"axes\":{\"ticks\":2},\"pts\":{\"C\":[1,-2],\"P\":[7,1],\"T\":[1,1]},\"circ\":[[\"C\",3]],\"seg\":[[\"P\",\"T\",\"ac\"],[\"C\",\"T\",\"mu dash\"],[\"C\",\"P\",\"mu dash\"]],\"ra\":[[\"C\",\"T\",\"P\"]],\"dots\":true,\"lab\":{\"T\":\"n\",\"P\":\"n\",\"C\":\"s\"}}'></div>Bereken die lengte van PT.", answer: "6", topic: "Raaklyne vanaf 'n buitepunt" }
       ]
+    },
+    {
+      id: 704,
+      chapter: 7,
+      name: "Kortste afstande & getransleerde sirkels",
+      fullName: "Kortste en langste afstande van ’n sirkel na ’n as of punt, transleer van sirkels, en besluit of twee sirkels ontmoet",
+      lesson: {
+        heading: "Kortste afstande & getransleerde sirkels",
+        sub: "Hoofstuk 7 · Onderwerp 5",
+        body: `
+          <p>Vraestel 2 se analitiese meetkunde eindig dikwels met ’n vraag wat ’n prent in jou kop nodig het eerder as ’n nuwe formule: hoe ver is die sirkel van ’n as of ’n punt, waarheen beweeg dit ná ’n translasie, en raak twee sirkels?</p><div class="def-box"><div class="def-box-title">📖 Kernfeite</div><p>Sirkel met middelpunt (a; b) en radius r:<br>• Kortste afstand na die x-as = |b| − r (as |b| &gt; r). As |b| = r raak die sirkel die x-as; as |b| &lt; r sny dit die x-as.<br>• Kortste afstand na die y-as = |a| − r.<br>• Vir ’n punt P buite die sirkel op afstand d van die middelpunt: kortste afstand = d − r, langste afstand = d + r (albei gemeet langs die lyn deur die middelpunt).<br>• ’n Translasie skuif die middelpunt; die radius verander nie.<br>• Twee sirkels met middelpunte d uitmekaar: raak uitwendig as d = r₁ + r₂; sny in twee punte as |r₁ − r₂| &lt; d &lt; r₁ + r₂; ontmoet nie as d &gt; r₁ + r₂; raak inwendig as d = |r₁ − r₂|.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 1: x² + y² − 4x + 6y − 12 = 0</div><div class="mf-fig" data-fig='{"t":"geo","w":240,"h":220,"view":[-4,-9,12,5],"pts":{"O":[0,0],"C":[2,-3],"P":[10,2],"Q":[6.24,-0.35]},"circ":[["C",5]],"dots":["C","P"],"seg":[["C","P","dash"],["Q","P","ac"]],"lab":{"C":"w","P":"e","Q":"n"},"nolab":["O"]}'></div><div class="example-step"><span class="step-num">1</span><span>Voltooi die vierkante: (x − 2)² + (y + 3)² = 25, dus is die middelpunt C(2; −3) en r = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>P(10; 2): CP = √((10 − 2)² + (2 + 3)²) = √89 = 9,43. Kortste afstand van P na die sirkel = 9,43 − 5 = 4,43; langste = 14,43.</span></div><div class="example-step"><span class="step-num">3</span><span>Die sirkel word 4 eenhede links en 9 eenhede op getransleer: (x; y) → (x − 4; y + 9). Nuwe middelpunt (−2; 6), radius steeds 5: (x + 2)² + (y − 6)² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Kortste afstand van die nuwe sirkel na die x-as = 6 − 5 = 1 eenheid; na die y-as = 2 − 5 &lt; 0, dus sny dit die y-as.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 2: ontmoet twee sirkels?</div><div class="example-step"><span class="step-num">1</span><span>Sirkel A: middelpunt (2; −3), r = 5. Sirkel B: (x − 8)² + (y + 3)² = 9, middelpunt (8; −3), r = 3.</span></div><div class="example-step"><span class="step-num">2</span><span>Afstand tussen middelpunte d = 6. r₁ + r₂ = 8 en r₁ − r₂ = 2. Aangesien 2 &lt; 6 &lt; 8, sny die sirkels mekaar in twee punte.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Maak altyd ’n skets: merk die middelpunt, trek die radius na die as of punt, en die kortste afstand is wat langs daardie lyn oorbly.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "(x − 3)² + (y − 7)² = 16. Bepaal die kortste afstand van die sirkel na die x-as.", "answer": "3", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Vir (x − 3)² + (y − 7)² = 16, die sirkel en die y-as:", "options": ["sny in twee punte", "raak", "ontmoet nie", "kan nie bepaal word nie"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "x² + y² = 25 word 3 eenhede regs en 8 eenhede op getransleer. Die nuwe middelpunt is:", "options": ["(3; 8)", "(−3; 8)", "(8; 3)", "(3; −8)"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "Ná die translasie in die vorige vraag, bepaal die kortste afstand van die sirkel na die x-as.", "answer": "3", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "P(9; 12) en die sirkel x² + y² = 25. Bepaal die kortste afstand van P na die sirkel.", "answer": "10", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "P(9; 12) en die sirkel x² + y² = 25. Bepaal die langste afstand van P na ’n punt op die sirkel.", "answer": "20", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Vir watter waardes van k raak (x − k)² + (y − 2)² = 9 die y-as?", "options": ["k = ±3", "k = ±2", "k = ±9", "k = 0"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Twee sirkels het radiusse 4 en 6, en hul middelpunte is 10 eenhede uitmekaar. Die sirkels:", "options": ["raak uitwendig", "sny in twee punte", "ontmoet nie", "raak inwendig"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "(x + 1)² + (y − 5)² = 4 word getransleer deur (x; y) → (x + 4; y − 2). Bepaal die kortste afstand van die nuwe sirkel na die x-as.", "answer": "1", "topic": "Kortste afstande & getransleerde sirkels"}
+      ]
     }
   ],
   workbook: {
