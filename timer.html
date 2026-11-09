@@ -319,6 +319,17 @@ body.hide-cursor { cursor: none; }
 .panel .pp-row input[data-f="subject"] { font-weight: 700; }
 .panel #pPaperPick { padding: 4px; font-size: 15px; }
 .panel #pInfo { resize: vertical; line-height: 1.4; }
+.recmenu { position: fixed; z-index: 26; transform: translateX(-50%); box-sizing: border-box; width: min(340px, calc(100vw - 24px));
+  padding: 8px; border-radius: 18px; display: flex; flex-direction: column; gap: 2px;
+  background: color-mix(in srgb, var(--fg) 9%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3); font-family: 'Cabinet Grotesk', system-ui, sans-serif; color: var(--fg); }
+.recmenu-h { font-size: 14px; font-weight: 700; opacity: 0.75; padding: 6px 12px 4px; }
+.recmenu button { font: inherit; font-size: 18px; color: var(--fg); background: transparent; border: 0; border-radius: 12px; cursor: pointer;
+  text-align: left; padding: 10px 12px 10px 38px; position: relative; display: flex; flex-direction: column; gap: 2px; }
+.recmenu button:hover, .recmenu button:focus-visible { background: color-mix(in srgb, var(--fg) 10%, transparent); outline: none; }
+.recmenu button[aria-checked="true"] { font-weight: 800; }
+.recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
+.recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
 .toast { position: fixed; top: 2.4vmin; left: 50%; transform: translateX(-50%); z-index: 30; max-width: calc(100vw - 32px); box-sizing: border-box;
   padding: 12px 20px; border-radius: 999px; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700;
   background: var(--fg); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
@@ -369,6 +380,7 @@ body.hide-cursor { cursor: none; }
       ttAuto: 'Load the next session for this venue by itself', ttAutoDone: 'Next session loaded: {s}',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
+      recTitle: 'Instructions recording', recOwn: 'My own recording: {n}', recAuto: 'chosen for these papers',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
@@ -400,6 +412,7 @@ body.hide-cursor { cursor: none; }
       ttAuto: 'Laai die volgende sessie vir hierdie lokaal vanself', ttAutoDone: 'Volgende sessie gelaai: {s}',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
+      recTitle: 'Instruksie-opname', recOwn: 'My eie opname: {n}', recAuto: 'gekies vir hierdie vraestelle',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
@@ -862,7 +875,11 @@ body.hide-cursor { cursor: none; }
       bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
-    if (hasAudio()) { var ab = btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio); ab.title = t('instrBtn') + ' (I)'; ab.setAttribute('aria-keyshortcuts', 'I'); bar.appendChild(ab); }
+    if (hasAudio()) {
+      var ab = btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), recButton);
+      ab.title = t('instrBtn') + ' (I)'; ab.setAttribute('aria-keyshortcuts', 'I'); ab.setAttribute('aria-haspopup', 'menu'); ab.dataset.role = 'rec';
+      bar.appendChild(ab);
+    }
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
@@ -879,7 +896,7 @@ body.hide-cursor { cursor: none; }
     idleTimer = setTimeout(function () {
       // in every state, also before the start: not while the settings are
       // open or the pointer or keyboard focus is on the bar itself
-      if (!panelOpen && !bar.matches(':hover, :focus-within')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      if (!panelOpen && !recOpen && !bar.matches(':hover, :focus-within')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
       else wake();
     }, preview ? 2500 : 3000);
   }
@@ -1162,9 +1179,29 @@ body.hide-cursor { cursor: none; }
   // ── The exam instructions recording (TTAudio: this browser's own file, or the built-in one) ──
   // One big button plays it before the exam starts; once the exam is under
   // way it is only offered in the toolbar, so it never covers the time.
-  var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false;
+  var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false, ownName = '', audioId = '';
+  // The recording for these papers when none is chosen: the CAT & IT practical
+  // one for a venue writing only CAT or IT Paper 1 (or a practical), the IEB
+  // ones when a paper says IEB, otherwise the Grade 8–12 examinations one.
+  function autoRec() {
+    var subs = subjects(), txt = subs.map(function (s) { return (s.name || '') + ' ' + (s.paper || ''); }).join(' | ');
+    var prac = subs.every(function (s) {
+      return /\b(CAT|RTT|IT|Information Technology|Inligtingstegnologie|Computer Applications)\b/i.test(s.name || '') && /(Paper 1|Vraestel 1|P1\b|Practical|Prakties)/i.test(s.paper || '');
+    });
+    var ieb = /\bIEB\b/i.test(txt);
+    return prac ? (ieb ? 'iebprac' : 'prac') : ieb ? 'ieb' : 'exams';
+  }
+  function recChoice() { return cfg.exam.rec || autoRec(); }
+  // other papers (filled in, loaded by themselves, edited) can need another recording
+  function recCheck() { if (audio && !audioPlaying() && audioId !== 'own' && audioId !== recChoice()) loadAudio(); }
   function loadAudio(then) {
-    TTAudio.resolve(function (rec) {
+    TTAudio.get(function (mine) {
+      var own = mine && mine.blob ? mine : null, id = recChoice();
+      ownName = own ? (own.name || t('instr')) : '';
+      if (id === 'own' && !own) id = autoRec();
+      var b = TTAudio.list.filter(function (r) { return r.id === id; })[0] || TTAudio.list[0];
+      var rec = id === 'own' ? { blob: own.blob, name: ownName, own: true } : { url: b.url, name: b[lang()] || b.en, own: false };
+      audioId = id === 'own' ? 'own' : b.id;
       if (audio) { audio.pause(); audio = null; }
       if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
       if (rec) {
@@ -1175,15 +1212,48 @@ body.hide-cursor { cursor: none; }
       }
       if (cfg) { relayout = true; render(true); }
       if (then) then();
+      if (recOpen) recMenu(true);
     });
   }
   window.addEventListener('storage', function (e) { if (e.key === TTAudio.key) loadAudio(); });
-  function hasAudio() { return !!audio && cfg.mode === 'exam' && cfg.exam.audio; }
+  function hasAudio() { return !!audio && cfg.mode === 'exam'; }
   function audioPlaying() { return !!audio && !audio.paused; }
   function toggleAudio() {
     if (!hasAudio()) return;
     if (audio.paused) { audio.play().catch(function () {}); } else audio.pause();
   }
+  // The megaphone opens a small menu of the recordings; picking one plays it
+  // (and the link remembers it). While one plays, the button pauses it.
+  var recOpen = false;
+  function recButton() { if (audioPlaying()) audio.pause(); else recMenu(!recOpen); }
+  function recMenu(open) {
+    var m = $('recMenu');
+    recOpen = !!open;
+    if (!recOpen) { if (m) m.remove(); return; }
+    if (!m) { m = document.createElement('div'); m.id = 'recMenu'; m.className = 'recmenu'; m.setAttribute('role', 'menu'); document.body.appendChild(m); }
+    var auto = !cfg.exam.rec ? autoRec() : '';
+    var item = function (id, label, sub) {
+      return '<button type="button" role="menuitemradio" aria-checked="' + (audioId === id) + '" data-rec="' + id + '"><span>' + esc(label) + '</span>' +
+        (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
+    };
+    m.innerHTML = '<div class="recmenu-h">' + esc(t('recTitle')) + '</div>' +
+      TTAudio.list.map(function (r) { return item(r.id, r[lang()] || r.en, r.id === auto ? t('recAuto') : ''); }).join('') +
+      (ownName ? item('own', t('recOwn', { n: ownName })) : '');
+    var b = $('bar').querySelector('[data-role="rec"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
+    m.style.left = Math.max(170, Math.min(innerWidth - 170, r.left + r.width / 2)) + 'px';
+    m.style.bottom = (innerHeight - r.top + 10) + 'px';
+    [].forEach.call(m.querySelectorAll('[data-rec]'), function (x) {
+      x.addEventListener('click', function (e) {
+        e.stopPropagation();
+        cfg.exam.rec = x.getAttribute('data-rec'); lookChanged(); recMenu(false);
+        loadAudio(function () { if (audio) audio.play().catch(function () {}); });
+      });
+    });
+    var first = m.querySelector('[aria-checked="true"]') || m.querySelector('button'); if (first) first.focus();
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (recOpen && !e.target.closest('#recMenu') && !e.target.closest('[data-role="rec"]')) recMenu(false);
+  }, true);
   function mmss(sec) { sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + pad(sec % 60); }
 
   // the teacher's picture for the screen fill (TTPicture, in this browser only)
@@ -1268,7 +1338,7 @@ body.hide-cursor { cursor: none; }
         '<button type="button" class="pclose" id="pPicOff" style="flex:1;justify-content:center"' + (L.pic && picture ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
         '<input type="file" accept="image/*" id="pPicFile" hidden></div>') +
       (cfg.mode !== 'exam' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pAudio')) + (audio ? ' · ' + esc(audioName || t('instr')) + (audioOwn ? '' : ' (' + esc(t('builtin')) + ')') : '') + '</span>' +
-        '<label class="pchk"><input type="checkbox" id="pAudOn"' + (cfg.exam.audio ? ' checked' : '') + '>' + esc(t('pAudioOn')) + '</label>' +
+
         '<div class="prow"><button type="button" class="pclose" id="pAudPick" style="flex:1;justify-content:center">' + esc(t('pAudioOwn')) + '</button>' +
         '<button type="button" class="pclose" id="pAudOff" style="flex:1;justify-content:center"' + (audioOwn ? '' : ' hidden') + '>' + esc(t('pAudioBuiltin')) + '</button></div>' +
         '<input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="pAudFile" hidden></div>') +
@@ -1330,14 +1400,14 @@ body.hide-cursor { cursor: none; }
         var file = this.files && this.files[0]; if (!file) return;
         TTAudio.save(file, function (ok) {
           if (!ok) { alert(t('pAudioBad')); return; }
-          cfg.exam.audio = true; lookChanged();
+          cfg.exam.rec = 'own'; lookChanged();
           loadAudio(function () { buildPanel(); $('pAudPick').focus(); });
         });
       });
       $('pAudOff').addEventListener('click', function () {
-        TTAudio.clear(function () { loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
+        TTAudio.clear(function () { if (cfg.exam.rec === 'own') { cfg.exam.rec = ''; lookChanged(); } loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
       });
-      $('pAudOn').addEventListener('change', function () { cfg.exam.audio = this.checked; if (!this.checked && audio) audio.pause(); lookChanged(); });
+
     }
     [['#pStyle', 'display'], ['#pLayout', 'layout'], ['#pFill', 'fill']].forEach(function (g) {
       [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {
@@ -1428,7 +1498,7 @@ body.hide-cursor { cursor: none; }
     return '<label class="pf"><span>' + esc(t('pInfo')) + '</span><textarea id="pInfo" rows="3" maxlength="600">' + esc(cfg.exam.info || '') + '</textarea></label>';
   }
   function papersChanged(rebuild, focusSel) {
-    rekey(); lookChanged();
+    rekey(); lookChanged(); recCheck();
     if (rebuild) { buildPanel(); var f = focusSel && $('panel').querySelector(focusSel); if (f) f.focus(); }
   }
   function addPaper(name, paper, secs) {
@@ -1675,7 +1745,7 @@ body.hide-cursor { cursor: none; }
     cfg = c;
     TTTimetable.load(function (data) { TT = data; autoNext(); });
     loadPicture();
-    if (!audioAsked) { audioAsked = true; loadAudio(); }
+    if (!audioAsked) { audioAsked = true; loadAudio(); } else recCheck();
     var x = cfg.exam;
     key = keyOf(cfg);
     st = loadState(); lastPhase = null; view = {};
@@ -1693,7 +1763,16 @@ body.hide-cursor { cursor: none; }
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && recOpen) { recMenu(false); var rb = $('bar').querySelector('[data-role="rec"]'); if (rb) rb.focus(); return; }
     if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
+    if (recOpen && e.target.closest && e.target.closest('#recMenu')) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        var items = [].slice.call($('recMenu').querySelectorAll('button')), i = items.indexOf(document.activeElement);
+        items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+      }
+      return;
+    }
     // S closes the panel from any of its controls except a box being typed in
     var tg = e.target, typing = tg.isContentEditable || tg.tagName === 'TEXTAREA' || (tg.tagName === 'INPUT' && !/^(checkbox|radio|range|button|color)$/.test(tg.type));
     if (panelOpen && !typing && e.key.toLowerCase() === 's' && tg.closest && tg.closest('#panel')) { e.preventDefault(); togglePanel(false); return; }

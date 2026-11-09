@@ -329,7 +329,8 @@
             // up to two more subjects writing in the same venue: the same start
             // and reading time, but each with its own writing time and finish
             count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800,
-            audio: false },   // play the instructions recording (TTAudio) before the start
+            audio: false,     // (older links: offer the instructions recording; now always offered)
+            rec: '' },        // which recording (TTAudio.list id, or 'own'); '' = chosen from the papers
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
             font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false,
@@ -375,7 +376,7 @@
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
     ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
-    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool']
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao']
   ];
   for (var kn = 4; kn <= MAX_PAPERS; kn++) KEYS.push(['exam.subject' + kn, 's' + kn], ['exam.paper' + kn, 'p' + kn], ['exam.writing' + kn, 'w' + kn, 'dur']);
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
@@ -549,8 +550,18 @@
   // Saving or removing a file bumps AUDIO_KEY in localStorage, so an open
   // timer tab hears about it through the storage event.
   var AUDIO_KEY = 'tt-audio-changed';
-  // the Grade 8–11 exam regulations, read out before the start
-  var BUILTIN = { url: 'assets/timer-talisman/exam-regulations-gr8-11.m4a', name: 'Gr 8-11 Exam regulations' };
+  // The built-in recordings, one for each kind of sitting (the timer's
+  // instructions menu offers them all; exam.rec in the link says which one).
+  // The Grade 8–12 examinations one is the default.
+  var A = 'assets/timer-talisman/audio/';
+  var RECORDINGS = [
+    { id: 'exams', url: A + 'gr8-12-examinations.mp3', en: 'Gr 8–12 Examinations', af: 'Gr 8–12 Eksamens' },
+    { id: 'tests', url: A + 'gr8-12-tests.mp3', en: 'Gr 8–12 Tests', af: 'Gr 8–12 Toetse' },
+    { id: 'prac', url: A + 'gr10-12-cat-it-practical.mp3', en: 'Gr 10–12 CAT & IT practical exam', af: 'Gr 10–12 RTT & IT praktiese eksamen' },
+    { id: 'ieb', url: A + 'gr12-ieb-examination.mp3', en: 'Gr 12 IEB Examination', af: 'Gr 12 IEB-eksamen' },
+    { id: 'iebprac', url: A + 'gr12-ieb-cat-it-practical.mp3', en: 'Gr 12 IEB CAT & IT practical exam', af: 'Gr 12 IEB RTT & IT praktiese eksamen' }
+  ];
+  var BUILTIN = { url: RECORDINGS[0].url, name: RECORDINGS[0].en };
   function audioDb(fn, done) {
     var req;
     try { req = indexedDB.open('tt-audio', 1); } catch (e) { return done(null); }
@@ -585,7 +596,7 @@
   }
 
   window.TTPicture = { get: picGet, save: picSave, clear: picClear, key: PIC_KEY };
-  window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN };
+  window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN, list: RECORDINGS };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   // ── The exam timetable (assets/timer-talisman/timetable.json) ──
