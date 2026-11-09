@@ -1182,13 +1182,16 @@ body.hide-cursor { cursor: none; }
   var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false, ownName = '', audioId = '';
   // The recording for these papers when none is chosen: the CAT & IT practical
   // one for a venue writing only CAT or IT Paper 1 (or a practical), the IEB
-  // ones when a paper says IEB, otherwise the Grade 8–12 examinations one.
+  // ones for Grade 12 (all Grade 12 papers are IEB papers; they are typed in,
+  // as the Grade 12 timetable is not in ours) or when a paper says IEB,
+  // otherwise the Grade 8–12 examinations one.
   function autoRec() {
     var subs = subjects(), txt = subs.map(function (s) { return (s.name || '') + ' ' + (s.paper || ''); }).join(' | ');
     var prac = subs.every(function (s) {
       return /\b(CAT|RTT|IT|Information Technology|Inligtingstegnologie|Computer Applications)\b/i.test(s.name || '') && /(Paper 1|Vraestel 1|P1\b|Practical|Prakties)/i.test(s.paper || '');
     });
-    var ieb = /\bIEB\b/i.test(txt);
+    var gr12 = subs.every(function (s) { return /\b(Grade|Graad|Gr)\.?\s*12\b/i.test((s.name || '') + ' ' + (s.paper || '')); });
+    var ieb = gr12 || /\bIEB\b/i.test(txt);
     return prac ? (ieb ? 'iebprac' : 'prac') : ieb ? 'ieb' : 'exams';
   }
   function recChoice() { return cfg.exam.rec || autoRec(); }
