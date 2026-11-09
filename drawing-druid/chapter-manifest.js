@@ -156,6 +156,12 @@ window.DD_CHAPTERS = {
   "belt-crossed",
   "ellipse-rectangle",
   "angles-by-compass",
+  "divide-line-ratio",
+  "square-in-circle",
+  "polygon-in-circle",
+  "arc-acute-angle",
+  "arc-circle-outside-enclose",
+  "ellipse-trammel",
   "fig-rocker-arm",
   "fig-concave-link",
   "fig-mounting-plate",
@@ -165,7 +171,9 @@ window.DD_CHAPTERS = {
   "fig-bell-crank",
   "fig-pedal-arm",
   "fig-clamp-jaw",
-  "fig-hanger"
+  "fig-hanger",
+  "fig-gear-lever",
+  "fig-swing-link"
  ],
  "interpenetration-development": [
   "interpenetration-equal-cylinders",
