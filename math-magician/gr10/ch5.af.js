@@ -583,7 +583,8 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Gebruik die lesing by 10 m om die hoogte van die gebou te bereken. Is dit konsekwent met jou antwoord vir (a)?", marks: 3 },
           { label: "c", text: "Gebruik die hoogte hierbo gevind om die hoek van hoogte te voorspel wat vanaf 'n punt 15 m van die gebou gemeet sou word (2 d.p.).", marks: 3 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Beantwoord (a) en (b) sonder ’n sakrekenaar.", parts: [{ label: "a", text: "Bereken (sin 30° + cos 60°)/tan 45°.", marks: 3 }, { label: "b", text: "As 5 sin θ − 3 = 0 en θ skerp is, gebruik ’n skets om cos θ en tan θ te bepaal.", marks: 4 }, { label: "c", text: "Los op vir x (0° ≤ x ≤ 90°), korrek tot een desimale plek: 2 cos x = 1,4", marks: 2 }, { label: "d", text: "Los op vir x (0° &lt; x &lt; 80°), korrek tot een desimale plek: tan(x + 10°) = 1,5", marks: 2 }, { label: "e", text: "’n Leer van 6 m leun teen ’n muur en maak ’n hoek van 65° met die grond. Bereken hoe hoog teen die muur die leer reik.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -610,7 +611,8 @@ MathMagician.registerChapter(5, {
         a: "tan45° = h/30 → h = 30×tan45° = 30 m",
         b: "tan71,6° = h/10 → h = 10×tan71,6° ≈ 30 m — ja, konsekwent met (a)",
         c: "tanθ = 30/15 = 2 → θ = tan⁻¹(2) ≈ 63,43°"
-      }
+      },
+      6: { a: "(½ + ½)/1 = 1", b: "sin θ = 3/5: teenoorstaande 3, skuinssy 5, dus aangrensende = √(25 − 9) = 4; cos θ = 4/5; tan θ = 3/4", c: "cos x = 0,7 → x = 45,6°", d: "x + 10° = 56,3° → x = 46,3°", e: "sin 65° = h/6 → h = 6 sin 65° = 5,44 m" }
     }
   }
 });

@@ -449,7 +449,8 @@ MathMagician.registerChapter(4, {
           { label: "c", text: "Find the equation of the altitude from B to AC.", marks: 4 },
           { label: "d", text: "Calculate the length of the median AM (leave your answer in simplest surd form).", marks: 3 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Exam-style question</strong> — A(−1; 2), B(3; 4) and C(5; 0) are the vertices of △ABC.", parts: [{ label: "a", text: "Calculate the gradient of AB.", marks: 2 }, { label: "b", text: "Calculate the angle of inclination of AB.", marks: 2 }, { label: "c", text: "Show that AB ⊥ BC.", marks: 3 }, { label: "d", text: "Determine the equation of the line through C parallel to AB.", marks: 3 }, { label: "e", text: "Calculate the area of △ABC.", marks: 3 }, { label: "f", text: "Calculate ∠BAC. Give a reason.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -464,7 +465,8 @@ MathMagician.registerChapter(4, {
         b: "m=(2−1)/(5−(−2))=1/7; y−1=(1/7)(x+2) → y=(1/7)x+9/7",
         c: "m_AC=(−1−1)/(6−(−2))=−1/4; m_alt=4; y−5=4(x−4) → y=4x−11",
         d: "AM = √[(5−(−2))² + (2−1)²] = √(49+1) = √50 = 5√2"
-      }
+      },
+      3: { a: "m = (4 − 2)/(3 + 1) = ½", b: "tan θ = ½ → θ = 26,57°", c: "m(BC) = (0 − 4)/(5 − 3) = −2; ½ × (−2) = −1, so AB ⊥ BC", d: "y = ½x + c; 0 = ½(5) + c → c = −5/2; y = ½x − 5/2", e: "AB = √(16 + 4) = √20; BC = √(4 + 16) = √20; area = ½ × AB × BC = ½ × 20 = 10 square units", f: "∠B = 90° and AB = BC, so △ABC is an isosceles right-angled triangle: ∠BAC = 45°" }
     }
   }
 });

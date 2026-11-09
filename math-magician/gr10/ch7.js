@@ -578,7 +578,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Solve for x.", marks: 2 },
           { label: "c", text: "Find BC.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — In △ABC, D is the midpoint of AB and E is the midpoint of AC. BC = 14 cm and ∠ABC = 62°. Separately, PQRS is a parallelogram with ∠P = 3x + 10° and ∠Q = 2x − 5°.", parts: [{ label: "a", text: "State the midpoint theorem.", marks: 2 }, { label: "b", text: "Calculate the length of DE.", marks: 1 }, { label: "c", text: "Calculate ∠ADE. Give a reason.", marks: 2 }, { label: "d", text: "Calculate x, and hence the sizes of ∠P and ∠R.", marks: 4 }, { label: "e", text: "State TWO properties of a rhombus that are not true of every parallelogram.", marks: 2 }, { label: "f", text: "Name the quadrilateral that has (i) exactly one pair of opposite sides parallel, (ii) two pairs of adjacent sides equal.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -595,7 +596,8 @@ MathMagician.registerChapter(7, {
         a: "MN = ½BC → 3x−2 = ½(4x+6)",
         b: "3x−2=2x+3 → x=5",
         c: "BC = 26"
-      }
+      },
+      4: { a: "The line joining the midpoints of two sides of a triangle is parallel to the third side and equal to half of it", b: "DE = ½BC = 7 cm", c: "∠ADE = 62° (corresponding angles, DE ∥ BC)", d: "Co-interior angles of a parallelogram: 3x + 10 + 2x − 5 = 180 → 5x = 175 → x = 35; ∠P = 115° and ∠R = ∠P = 115° (opposite angles of a parallelogram)", e: "Any two: all four sides are equal; the diagonals bisect each other at right angles; the diagonals bisect the angles", f: "(i) trapezium (ii) kite" }
     }
   }
 });

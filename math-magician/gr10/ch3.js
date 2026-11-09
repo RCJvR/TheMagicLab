@@ -481,7 +481,8 @@ MathMagician.registerChapter(3, {
           { label: "b", text: "Find the formula for the number of sticks for n pentagons.", marks: 3 },
           { label: "c", text: "How many sticks are needed for 15 pentagons?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — A linear pattern is 7; 11; 15; 19; … A second pattern is made of matchsticks: 1 square uses 4 matches, 2 squares in a row use 7 matches and 3 squares use 10 matches.", parts: [{ label: "a", text: "Determine the general term Tₙ of 7; 11; 15; 19; …", marks: 2 }, { label: "b", text: "Calculate T₅₀.", marks: 2 }, { label: "c", text: "Which term of the pattern is equal to 143?", marks: 2 }, { label: "d", text: "Write down a formula for the number of matches needed for n squares.", marks: 2 }, { label: "e", text: "How many squares can be made in a row with 301 matches?", marks: 2 }, { label: "f", text: "Show that 500 cannot be a term of 7; 11; 15; 19; …", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -499,7 +500,8 @@ MathMagician.registerChapter(3, {
         a: "5, 9, 13, 17",
         b: "Tₙ = 4n + 1",
         c: "T₁₅ = 61 sticks"
-      }
+      },
+      4: { a: "d = 4: Tₙ = 4n + 3", b: "T₅₀ = 4(50) + 3 = 203", c: "4n + 3 = 143 → 4n = 140 → n = 35: the 35th term", d: "Matches = 3n + 1", e: "3n + 1 = 301 → n = 100 squares", f: "4n + 3 = 500 → n = 124,25; n must be a natural number, so 500 is not a term" }
     }
   }
 });

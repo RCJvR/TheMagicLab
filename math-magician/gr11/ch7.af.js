@@ -626,7 +626,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Die radius word met 50% vermeerder. Bepaal die nuwe volume (in terme van π).", marks: 3 },
           { label: "c", text: "Met watter faktor het die volume toegeneem?", marks: 2 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Eksamenstyl-vraag</strong> — ’n Graansilo is ’n silinder met ’n halfbol bo-op. Die radius is 3 m en die hoogte van die silindriese deel is 10 m. Gee antwoorde korrek tot twee desimale plekke.", parts: [{ label: "a", text: "Bereken die volume van die silo.", marks: 4 }, { label: "b", text: "Bereken die buite-oppervlakte van die silo, sonder die basis.", marks: 4 }, { label: "c", text: "’n Skaalmodel word gemaak waarin elke lengte 1/50 van die werklike lengte is. Bereken die volume van die model in cm³.", marks: 3 }, { label: "d", text: "’n Regte piramide het ’n vierkantige basis met sye van 6 m en ’n loodregte hoogte van 4 m. Bereken die skuinshoogte van ’n vlak en die totale buite-oppervlakte.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -638,7 +639,8 @@ MathMagician.registerChapter(7, {
         a: "V = (4/3)π(216) = 288π cm³",
         b: "r=9; V=(4/3)π(729)=972π cm³",
         c: "972π/288π = 3.375 = (3/2)³ = k³ waar k=1.5 ✓"
-      }
+      },
+      3: { a: "Silinder: π(3)²(10) = 90π; halfbol: ⅔π(3)³ = 18π; totaal 108π = 339,29 m³", b: "Geboë silinder: 2π(3)(10) = 60π; halfbol: 2π(3)² = 18π; totaal 78π = 245,04 m²", c: "Volumefaktor (1/50)³ = 1/125 000; 339,29 ÷ 125 000 = 0,002714 m³ = 2 714 cm³ (tot die naaste cm³)", d: "Skuinshoogte = √(4² + 3²) = 5 m; totale buite-oppervlakte = 6² + 4 × ½ × 6 × 5 = 36 + 60 = 96 m²" }
     }
   }
 });

@@ -548,7 +548,8 @@ MathMagician.registerChapter(12, {
           { label: "b", text: "Minimise g(x; y) = x + 4y.", marks: 3 },
           { label: "c", text: "Find the value of k such that 2x + ky = 20 gives multiple optimal solutions along BC.", marks: 4 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Exam-style question</strong> — A workshop makes x chairs and y tables per day. It can make at most 10 items a day. A chair takes 2 hours and a table 4 hours, and 32 working hours are available per day. The profit is R30 per chair and R50 per table.", parts: [{ label: "a", text: "Write down the constraints as inequalities.", marks: 4 }, { label: "b", text: "Write down the objective function for the profit P.", marks: 1 }, { label: "c", text: "Determine the coordinates of the vertices of the feasible region.", marks: 4 }, { label: "d", text: "How many chairs and tables should be made each day for maximum profit? State the maximum profit.", marks: 3 }, { label: "e", text: "The profit per table rises to R70. Does the optimal combination change? Show your working.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -561,7 +562,8 @@ MathMagician.registerChapter(12, {
         a: "Evaluate 3x+2y: A=16; B=24; C=21; D=0 → Maximum=24 at B(4;6)",
         b: "Evaluate x+4y: A=32; B=28; C=7; D=0 → Minimum=0 at D(0;0)",
         c: "For parallel gradients: m_BC=−2; objective m=−2/k; −2/k=−2 → k=1"
-      }
+      },
+      3: { a: "x ≥ 0; y ≥ 0; x + y ≤ 10; 2x + 4y ≤ 32 (that is, x + 2y ≤ 16)", b: "P = 30x + 50y", c: "(0; 0), (10; 0), (4; 6) where x + y = 10 meets x + 2y = 16, and (0; 8)", d: "P(10; 0) = 300; P(4; 6) = 420; P(0; 8) = 400: make 4 chairs and 6 tables for a maximum profit of R420", e: "P = 30x + 70y: P(4; 6) = 540 and P(0; 8) = 560, so yes: 0 chairs and 8 tables give the maximum, R560" }
     }
   }
 });

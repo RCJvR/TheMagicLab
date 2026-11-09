@@ -544,7 +544,8 @@ MathMagician.registerChapter(2, {
           { label: "c", text: "5^(x²) = 125^x", marks: 4 },
           { label: "d", text: "4^x − 3·2^x − 4 = 0", marks: 4 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Moenie ’n sakrekenaar gebruik nie. Toon alle bewerkings.", parts: [{ label: "a", text: "Vereenvoudig (2ˣ⁺² − 2ˣ)/(3 · 2ˣ).", marks: 3 }, { label: "b", text: "Vereenvoudig (12ⁿ · 9ⁿ⁺¹)/(18ⁿ · 6ⁿ).", marks: 3 }, { label: "c", text: "Los op vir x: 3ˣ⁺¹ = 1/27", marks: 2 }, { label: "d", text: "Los op vir x: 2²ˣ − 5 · 2ˣ + 4 = 0", marks: 4 }, { label: "e", text: "Los op vir x: x^(3/2) = 8", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -564,7 +565,8 @@ MathMagician.registerChapter(2, {
         b: "x+2 = 3x−3 → x = 5/2",
         c: "x² = 3x → x(x−3) = 0 → x = 0 of x = 3",
         d: "Laat k=2^x: k²−3k−4=0 → (k−4)(k+1)=0 → k=4 → x=2 (k=−1 ongeldig)"
-      }
+      },
+      4: { a: "2ˣ(2² − 1)/(3 · 2ˣ) = 3/3 = 1", b: "(2²ⁿ · 3ⁿ · 3²ⁿ⁺²)/(2ⁿ · 3²ⁿ · 2ⁿ · 3ⁿ) = 2⁰ · 3² = 9", c: "3ˣ⁺¹ = 3⁻³, dus x + 1 = −3 en x = −4", d: "Laat k = 2ˣ: k² − 5k + 4 = 0 → (k − 1)(k − 4) = 0 → 2ˣ = 1 of 2ˣ = 4 → x = 0 of x = 2", e: "x = 8^(2/3) = (∛8)² = 4" }
     }
   }
 });

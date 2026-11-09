@@ -548,7 +548,8 @@ MathMagician.registerChapter(12, {
           { label: "b", text: "Minimeer g(x; y) = x + 4y.", marks: 3 },
           { label: "c", text: "Bepaal die waarde van k sodat 2x + ky = 20 veelvuldige optimale oplossings langs BC gee.", marks: 4 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Eksamenstyl-vraag</strong> — ’n Werkswinkel maak x stoele en y tafels per dag. Dit kan hoogstens 10 items per dag maak. ’n Stoel neem 2 uur en ’n tafel 4 uur, en 32 werksure is per dag beskikbaar. Die wins is R30 per stoel en R50 per tafel.", parts: [{ label: "a", text: "Skryf die beperkings as ongelykhede neer.", marks: 4 }, { label: "b", text: "Skryf die doelfunksie vir die wins P neer.", marks: 1 }, { label: "c", text: "Bepaal die koördinate van die hoekpunte van die toelaatbare gebied.", marks: 4 }, { label: "d", text: "Hoeveel stoele en tafels moet elke dag gemaak word vir maksimum wins? Noem die maksimum wins.", marks: 3 }, { label: "e", text: "Die wins per tafel styg tot R70. Verander die optimale kombinasie? Toon jou bewerking.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -561,7 +562,8 @@ MathMagician.registerChapter(12, {
         a: "Evalueer 3x+2y: A=16; B=24; C=21; D=0 → Maksimum=24 by B(4;6)",
         b: "Evalueer x+4y: A=32; B=28; C=7; D=0 → Minimum=0 by D(0;0)",
         c: "Vir parallelle gradiënte: m_BC=−2; doelfunksie-gradiënt m=−2/k; −2/k=−2 → k=1"
-      }
+      },
+      3: { a: "x ≥ 0; y ≥ 0; x + y ≤ 10; 2x + 4y ≤ 32 (d.w.s. x + 2y ≤ 16)", b: "P = 30x + 50y", c: "(0; 0), (10; 0), (4; 6) waar x + y = 10 en x + 2y = 16 sny, en (0; 8)", d: "P(10; 0) = 300; P(4; 6) = 420; P(0; 8) = 400: maak 4 stoele en 6 tafels vir ’n maksimum wins van R420", e: "P = 30x + 70y: P(4; 6) = 540 en P(0; 8) = 560, dus ja: 0 stoele en 8 tafels gee die maksimum, R560" }
     }
   }
 });

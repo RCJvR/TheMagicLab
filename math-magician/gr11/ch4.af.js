@@ -449,7 +449,8 @@ MathMagician.registerChapter(4, {
           { label: "c", text: "Vind die vergelyking van die hoogtelyn vanaf B na AC.", marks: 4 },
           { label: "d", text: "Bereken die lengte van die mediaan AM (los jou antwoord in eenvoudigste wortelvorm).", marks: 3 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Eksamenstyl-vraag</strong> — A(−1; 2), B(3; 4) en C(5; 0) is die hoekpunte van △ABC.", parts: [{ label: "a", text: "Bereken die gradiënt van AB.", marks: 2 }, { label: "b", text: "Bereken die inklinasiehoek van AB.", marks: 2 }, { label: "c", text: "Toon dat AB ⊥ BC.", marks: 3 }, { label: "d", text: "Bepaal die vergelyking van die lyn deur C parallel aan AB.", marks: 3 }, { label: "e", text: "Bereken die oppervlakte van △ABC.", marks: 3 }, { label: "f", text: "Bereken ∠BAC. Gee ’n rede.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -464,7 +465,8 @@ MathMagician.registerChapter(4, {
         b: "m=(2−1)/(5−(−2))=1/7; y−1=(1/7)(x+2) → y=(1/7)x+9/7",
         c: "m_AC=(−1−1)/(6−(−2))=−1/4; m_alt=4; y−5=4(x−4) → y=4x−11",
         d: "AM = √[(5−(−2))² + (2−1)²] = √(49+1) = √50 = 5√2"
-      }
+      },
+      3: { a: "m = (4 − 2)/(3 + 1) = ½", b: "tan θ = ½ → θ = 26,57°", c: "m(BC) = (0 − 4)/(5 − 3) = −2; ½ × (−2) = −1, dus AB ⊥ BC", d: "y = ½x + c; 0 = ½(5) + c → c = −5/2; y = ½x − 5/2", e: "AB = √(16 + 4) = √20; BC = √(4 + 16) = √20; oppervlakte = ½ × AB × BC = ½ × 20 = 10 vierkante eenhede", f: "∠B = 90° en AB = BC, dus is △ABC ’n gelykbenige reghoekige driehoek: ∠BAC = 45°" }
     }
   }
 });

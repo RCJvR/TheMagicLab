@@ -802,7 +802,8 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Gebruik die asimptote van (a) en die gegewe y = 1, en die punt (3; 7) uit die tabel, om die waarde van a in y = a/(x−p) + q te vind.", marks: 3 },
           { label: "c", text: "Gebruik jou vergelyking om die y-waarde by x = 8 te voorspel (nie in die tabel getoon nie).", marks: 2 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — Gegee f(x) = 2/(x − 1) + 3, h(x) = 2 cos(x − 30°) vir 0° ≤ x ≤ 360°, en k(x) = 2ˣ⁺¹ − 4.", parts: [{ label: "a", text: "Skryf die vergelykings van die asimptote van f neer.", marks: 2 }, { label: "b", text: "Bepaal die koördinate van die afsnitte van f met die asse.", marks: 3 }, { label: "c", text: "Skryf die definisieversameling en terrein van f neer.", marks: 2 }, { label: "d", text: "Bepaal die vergelykings van die twee simmetrie-asse van f.", marks: 2 }, { label: "e", text: "Skryf die amplitude en periode van h neer, en die maksimum waarde van h met die waarde van x waar dit voorkom.", marks: 4 }, { label: "f", text: "Skryf die vergelyking van die asimptoot van k neer en bepaal sy x-afsnit.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -824,7 +825,8 @@ MathMagician.registerChapter(5, {
         a: "x = 2 (die funksie is daar onbepaald — vertikale asimptoot)",
         b: "7 = a/(3−2) + 1 → 7 = a + 1 → a = 6",
         c: "y = 6/(8−2) + 1 = 6/6 + 1 = 2"
-      }
+      },
+      5: { a: "x = 1 en y = 3", b: "y-afsnit: 2/(−1) + 3 = 1 → (0; 1); x-afsnit: 2/(x − 1) = −3 → x − 1 = −⅔ → (⅓; 0)", c: "Definisieversameling: x ∈ ℝ, x ≠ 1; terrein: y ∈ ℝ, y ≠ 3", d: "Albei gaan deur (1; 3): y = x + 2 en y = −x + 4", e: "Amplitude 2; periode 360°; maksimum waarde 2 by x = 30°", f: "Asimptoot y = −4; 2ˣ⁺¹ = 4 = 2² → x = 1: (1; 0)" }
     }
   }
 });

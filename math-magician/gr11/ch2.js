@@ -626,7 +626,8 @@ MathMagician.registerChapter(2, {
           { label: "a", text: "Write the resulting quadratic equation.", marks: 2 },
           { label: "b", text: "Solve for x and hence find y.", marks: 4 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Show all working.", parts: [{ label: "a", text: "Solve by completing the square: x² − 6x + 2 = 0", marks: 4 }, { label: "b", text: "Solve with the quadratic formula, correct to two decimal places: 2x² − 5x − 1 = 0", marks: 3 }, { label: "c", text: "Solve for x: x² − x − 12 &lt; 0", marks: 3 }, { label: "d", text: "Determine the values of k for which x² + kx + 9 = 0 has equal roots.", marks: 2 }, { label: "e", text: "Solve simultaneously: y = x + 1 and x² + y² = 13", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -649,7 +650,8 @@ MathMagician.registerChapter(2, {
       5: {
         a: "3−x=x²−5 → x²+x−8=0",
         b: "x=(−1±√33)/2; y=3−x=(7∓√33)/2, i.e. x≈2,37; y≈0,63 or x≈−3,37; y≈6,37"
-      }
+      },
+      6: { a: "x² − 6x + 9 = 7 → (x − 3)² = 7 → x = 3 ± √7", b: "x = [5 ± √(25 + 8)]/4 = (5 ± √33)/4 → x = 2,69 or x = −0,19", c: "(x − 4)(x + 3) &lt; 0 → −3 &lt; x &lt; 4", d: "Δ = k² − 36 = 0 → k = ±6", e: "x² + (x + 1)² = 13 → 2x² + 2x − 12 = 0 → x² + x − 6 = 0 → x = 2, y = 3 or x = −3, y = −2" }
     }
   }
 });

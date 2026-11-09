@@ -651,7 +651,8 @@ MathMagician.registerChapter(8, {
           { label: "a", text: "Using the tangent-secant relationship PT² = PQ × PR, find PR.", marks: 3 },
           { label: "b", text: "Find QR.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — O is the centre of a circle. A, B, C and D lie on the circle in that order, so ABCD is a cyclic quadrilateral. Arc BCD subtends ∠BOD = 140° at the centre. TD is a tangent to the circle at D, with T on the same side of BD as A, and ∠ABD = 55°. Give reasons for all statements.", parts: [{ label: "a", text: "Calculate ∠BAD.", marks: 2 }, { label: "b", text: "Calculate ∠BCD.", marks: 2 }, { label: "c", text: "Calculate ∠TDA.", marks: 2 }, { label: "d", text: "Calculate ∠ADB.", marks: 2 }, { label: "e", text: "Prove that AB = AD.", marks: 2 }, { label: "f", text: "State the theorem about the line drawn from the centre of a circle perpendicular to a chord.", marks: 2 }, { label: "g", text: "A circle has a radius of 13 cm. Calculate the distance from the centre to a chord of length 24 cm.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -666,7 +667,8 @@ MathMagician.registerChapter(8, {
       3: {
         a: "8² = 4 × PR → PR = 64/4 = 16 cm",
         b: "QR = PR − PQ = 16 − 4 = 12 cm"
-      }
+      },
+      4: { a: "∠BAD = ½ × 140° = 70° (angle at the centre = 2 × angle at the circumference)", b: "∠BCD = 180° − 70° = 110° (opposite angles of a cyclic quadrilateral)", c: "∠TDA = ∠ABD = 55° (tangent–chord theorem: angle between tangent and chord = angle in the alternate segment)", d: "∠ADB = 180° − 70° − 55° = 55° (sum of the angles of a triangle)", e: "∠ABD = ∠ADB = 55°, so AD = AB (sides opposite equal angles)", f: "The line from the centre perpendicular to a chord bisects the chord", g: "Half the chord is 12 cm; d = √(13² − 12²) = √25 = 5 cm (line from centre ⊥ chord bisects it; Pythagoras)" }
     }
   }
 });

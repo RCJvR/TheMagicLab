@@ -651,7 +651,8 @@ MathMagician.registerChapter(9, {
           { label: "b", text: "Gebruik die koers wat in (a) gevind is om die bedrag na 6 jaar te bereken (nie in die tabel getoon nie).", marks: 2 },
           { label: "c", text: "In watter jaar (n) oorskry die belegging vir die eerste keer R11 000?", marks: 2 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Gee geldbedrae tot die naaste sent.", parts: [{ label: "a", text: "R12 000 word teen 8% p.j. enkelvoudige rente vir 5 jaar belê. Bereken die finale bedrag.", marks: 2 }, { label: "b", text: "Bereken die finale bedrag as die R12 000 teen 8% p.j., jaarliks saamgestel, vir 5 jaar belê word.", marks: 2 }, { label: "c", text: "Hoeveel meer rente verdien die belegging met saamgestelde rente?", marks: 1 }, { label: "d", text: "’n TV kos R9 600 op huurkoop. ’n Deposito van 10% word betaal en die balans word oor 3 jaar teen 15% p.j. enkelvoudige rente afbetaal. Bereken die maandelikse paaiement.", marks: 4 }, { label: "e", text: "’n Brood kos vandag R18. Bereken die prys oor 4 jaar as inflasie 6% p.j. is.", marks: 2 }, { label: "f", text: "Hoeveel jaar sal dit neem vir ’n belegging om teen 12% p.j. enkelvoudige rente te verdubbel?", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -677,7 +678,8 @@ MathMagician.registerChapter(9, {
         a: "8640,00/8000,00 = 1,08 en 9331,20/8640,00 = 1,08 — 'n konstante verhouding bevestig saamgestelde groei; koers i = 8%",
         b: "A = 8000(1,08)⁶ = R12 694,99",
         c: "Jaar 4 gee R10 883,91 (onder R11 000) en jaar 5 gee R11 754,62 (bo R11 000), so die belegging oorskry R11 000 vir die eerste keer in jaar 5"
-      }
+      },
+      6: { a: "A = 12 000(1 + 0,08 × 5) = R16 800,00", b: "A = 12 000(1,08)⁵ = R17 631,94", c: "17 631,94 − 16 800 = R831,94", d: "Deposito R960; balans R8 640; A = 8 640(1 + 0,15 × 3) = R12 528; paaiement = 12 528 ÷ 36 = R348,00", e: "A = 18(1,06)⁴ = R22,72", f: "2P = P(1 + 0,12n) → 0,12n = 1 → n = 8,33 jaar" }
     }
   }
 });

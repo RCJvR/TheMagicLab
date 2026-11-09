@@ -802,7 +802,8 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Using the asymptotes from (a) and the given y = 1, and the point (3; 7) from the table, find the value of a in y = a/(x−p) + q.", marks: 3 },
           { label: "c", text: "Use your equation to predict the y-value at x = 8 (not shown in the table).", marks: 2 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Exam-style question</strong> — Given f(x) = 2/(x − 1) + 3, h(x) = 2 cos(x − 30°) for 0° ≤ x ≤ 360°, and k(x) = 2ˣ⁺¹ − 4.", parts: [{ label: "a", text: "Write down the equations of the asymptotes of f.", marks: 2 }, { label: "b", text: "Determine the coordinates of the intercepts of f with the axes.", marks: 3 }, { label: "c", text: "Write down the domain and range of f.", marks: 2 }, { label: "d", text: "Determine the equations of the two axes of symmetry of f.", marks: 2 }, { label: "e", text: "Write down the amplitude and period of h, and the maximum value of h with the value of x where it occurs.", marks: 4 }, { label: "f", text: "Write down the equation of the asymptote of k and determine its x-intercept.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -824,7 +825,8 @@ MathMagician.registerChapter(5, {
         a: "x = 2 (the function is undefined there — vertical asymptote)",
         b: "7 = a/(3−2) + 1 → 7 = a + 1 → a = 6",
         c: "y = 6/(8−2) + 1 = 6/6 + 1 = 2"
-      }
+      },
+      5: { a: "x = 1 and y = 3", b: "y-intercept: 2/(−1) + 3 = 1 → (0; 1); x-intercept: 2/(x − 1) = −3 → x − 1 = −⅔ → (⅓; 0)", c: "Domain: x ∈ ℝ, x ≠ 1; range: y ∈ ℝ, y ≠ 3", d: "Both pass through (1; 3): y = x + 2 and y = −x + 4", e: "Amplitude 2; period 360°; maximum value 2 at x = 30°", f: "Asymptote y = −4; 2ˣ⁺¹ = 4 = 2² → x = 1: (1; 0)" }
     }
   }
 });

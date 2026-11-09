@@ -651,7 +651,8 @@ MathMagician.registerChapter(9, {
           { label: "b", text: "Use the rate found in (a) to calculate the amount after 6 years (not shown in the table).", marks: 2 },
           { label: "c", text: "In which year (n) does the investment first exceed R11 000?", marks: 2 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Give money answers to the nearest cent.", parts: [{ label: "a", text: "R12 000 is invested at 8% p.a. simple interest for 5 years. Calculate the final amount.", marks: 2 }, { label: "b", text: "Calculate the final amount if the R12 000 is invested at 8% p.a. compounded annually for 5 years.", marks: 2 }, { label: "c", text: "How much more interest does the compound-interest investment earn?", marks: 1 }, { label: "d", text: "A TV costs R9 600 on hire purchase. A 10% deposit is paid and the balance is paid off over 3 years at 15% p.a. simple interest. Calculate the monthly instalment.", marks: 4 }, { label: "e", text: "A loaf of bread costs R18 today. Calculate its price in 4 years if inflation is 6% p.a.", marks: 2 }, { label: "f", text: "How many years will it take an investment to double at 12% p.a. simple interest?", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -677,7 +678,8 @@ MathMagician.registerChapter(9, {
         a: "8640,00/8000,00 = 1,08 and 9331,20/8640,00 = 1,08 — a constant ratio confirms compound growth; rate i = 8%",
         b: "A = 8000(1,08)⁶ = R12 694,99",
         c: "Year 4 gives R10 883,91 (below R11 000) and year 5 gives R11 754,62 (above R11 000), so the investment first exceeds R11 000 in year 5"
-      }
+      },
+      6: { a: "A = 12 000(1 + 0,08 × 5) = R16 800,00", b: "A = 12 000(1,08)⁵ = R17 631,94", c: "17 631,94 − 16 800 = R831,94", d: "Deposit R960; balance R8 640; A = 8 640(1 + 0,15 × 3) = R12 528; instalment = 12 528 ÷ 36 = R348,00", e: "A = 18(1,06)⁴ = R22,72", f: "2P = P(1 + 0,12n) → 0,12n = 1 → n = 8,33 years" }
     }
   }
 });

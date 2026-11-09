@@ -549,7 +549,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Bereken die afstand van die basis van die krans na boot B.", marks: 3 },
           { label: "c", text: "Bereken die afstand tussen die twee bote.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Van die bopunt van ’n gebou 40 m hoog is die dieptehoek van ’n motor op die gelyk grond 28°.", parts: [{ label: "a", text: "Bereken die horisontale afstand van die voet van die gebou na die motor.", marks: 3 }, { label: "b", text: "Die motor ry reguit na die gebou totdat die dieptehoek 45° is. Hoe ver het die motor gery?", marks: 3 }, { label: "c", text: "’n Skip vaar 12 km op ’n peiling van 060°. Hoe ver noord en hoe ver oos van sy beginpunt is dit?", marks: 4 }, { label: "d", text: "Verduidelik die verskil tussen ’n hoogtehoek en ’n dieptehoek.", marks: 2 }, { label: "e", text: "’n Oprit van 3 m lank styg 0,5 m. Bereken die hoek wat die oprit met die horisontaal maak.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -564,7 +565,8 @@ MathMagician.registerChapter(11, {
         a: "tan42° = 60/dA → dA = 60/tan42° ≈ 66.64 m",
         b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.84 m",
         c: "AB = 112.84 − 66.64 ≈ 46.20 m"
-      }
+      },
+      4: { a: "tan 28° = 40/d → d = 40/tan 28° = 75,23 m", b: "By 45°: d = 40/tan 45° = 40 m; afstand gery = 75,23 − 40 = 35,23 m", c: "Noord: 12 cos 60° = 6 km; oos: 12 sin 60° = 10,39 km", d: "Albei word vanaf die horisontaal gemeet: ’n hoogtehoek word opwaarts gemeet na ’n voorwerp bo die waarnemer, ’n dieptehoek afwaarts na ’n voorwerp onder", e: "sin θ = 0,5/3 → θ = 9,6°" }
     }
   }
 });

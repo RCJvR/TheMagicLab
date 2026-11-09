@@ -548,7 +548,8 @@ MathMagician.registerChapter(6, {
           { label: "b", text: "Gebruik die sinusreël om die afstand AT te bereken (tot 2 desimale plekke).", marks: 4 },
           { label: "c", text: "Bereken dus die loodregte afstand vanaf die boom tot die basislyn AB — die breedte van die rivier (tot 2 desimale plekke).", marks: 3 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — Beantwoord (a) tot (c) sonder ’n sakrekenaar.", parts: [{ label: "a", text: "Vereenvoudig: sin(180° + x) · cos(90° − x) / tan(−x)", marks: 4 }, { label: "b", text: "Bewys die identiteit: (1 − cos²x)/(sin x cos x) = tan x", marks: 3 }, { label: "c", text: "Bepaal die algemene oplossing van 2 sin x = −1.", marks: 3 }, { label: "d", text: "In △PQR is PQ = 8 cm, QR = 11 cm en ∠Q = 50°. Bereken die lengte van PR en die oppervlakte van △PQR.", marks: 5 }] }
     ],
     answers: {
       1: {
@@ -569,7 +570,8 @@ MathMagician.registerChapter(6, {
         a: "T̂ = 180° − 52° − 61° = 67°",
         b: "AT/sinB = AB/sinT → AT = 120×sin61°/sin67° ≈ 120×0,8746/0,9205 ≈ 114,02 m",
         c: "breedte = AT×sin52° ≈ 114,02×0,7880 ≈ 89,85 m"
-      }
+      },
+      5: { a: "(−sin x)(sin x)/(−tan x) = sin²x · (cos x/sin x) = sin x cos x", b: "LK = sin²x/(sin x cos x) = sin x/cos x = tan x = RK", c: "sin x = −½, verwysingshoek 30°: x = 210° + k·360° of x = 330° + k·360°, k ∈ ℤ", d: "PR² = 8² + 11² − 2(8)(11) cos 50° = 71,87 → PR = 8,48 cm; oppervlakte = ½(8)(11) sin 50° = 33,71 cm²" }
     }
   }
 });

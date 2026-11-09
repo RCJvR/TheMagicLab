@@ -620,7 +620,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "The radius is increased by 50%. Find the new volume (terms of π).", marks: 3 },
           { label: "c", text: "By what factor has the volume increased?", marks: 2 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Exam-style question</strong> — A grain silo is a cylinder with a hemisphere on top. The radius is 3 m and the height of the cylindrical part is 10 m. Give answers correct to two decimal places.", parts: [{ label: "a", text: "Calculate the volume of the silo.", marks: 4 }, { label: "b", text: "Calculate the outside surface area of the silo, excluding the base.", marks: 4 }, { label: "c", text: "A scale model is made in which every length is 1/50 of the real length. Calculate the volume of the model in cm³.", marks: 3 }, { label: "d", text: "A right pyramid has a square base of side 6 m and a perpendicular height of 4 m. Calculate the slant height of a face and the total surface area.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -632,7 +633,8 @@ MathMagician.registerChapter(7, {
         a: "V = (4/3)π(216) = 288π cm³",
         b: "r=9; V=(4/3)π(729)=972π cm³",
         c: "972π/288π = 3.375 = (3/2)³ = k³ where k=1.5 ✓"
-      }
+      },
+      3: { a: "Cylinder: π(3)²(10) = 90π; hemisphere: ⅔π(3)³ = 18π; total 108π = 339,29 m³", b: "Curved cylinder: 2π(3)(10) = 60π; hemisphere: 2π(3)² = 18π; total 78π = 245,04 m²", c: "Volume factor (1/50)³ = 1/125 000; 339,29 ÷ 125 000 = 0,002714 m³ = 2 714 cm³ (to the nearest cm³)", d: "Slant height = √(4² + 3²) = 5 m; total surface area = 6² + 4 × ½ × 6 × 5 = 36 + 60 = 96 m²" }
     }
   }
 });

@@ -643,7 +643,8 @@ MathMagician.registerChapter(13, {
           { label: "a", text: "Bereken die totale volume van die model.", marks: 4 },
           { label: "b", text: "Die werklike gebou is 50 keer groter in elke afmeting. Wat is sy werklike volume?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ’n Geslote silinder het ’n radius van 7 cm en ’n hoogte van 20 cm. Gee antwoorde korrek tot twee desimale plekke.", parts: [{ label: "a", text: "Bereken die volume van die silinder.", marks: 2 }, { label: "b", text: "Bereken die totale buite-oppervlakte van die silinder.", marks: 3 }, { label: "c", text: "’n Keël het dieselfde basis en hoogte as die silinder. Bereken sy volume, en noem hoe dit met die volume van die silinder vergelyk.", marks: 2 }, { label: "d", text: "Bereken die skuinshoogte van die keël en sy geboë buite-oppervlakte.", marks: 3 }, { label: "e", text: "As die radius en hoogte van die silinder albei verdriedubbel word, met watter faktor verander sy volume?", marks: 2 }, { label: "f", text: "Bereken die volume van ’n sfeer met ’n radius van 6 cm.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -658,7 +659,8 @@ MathMagician.registerChapter(13, {
       3: {
         a: "Prisma: 6×4×3=72; Piramide: ⅓×24×2=16; Totaal=88 cm³",
         b: "Skaalfaktor=50; Volume skaleer met 50³=125000; Werklik=88×125000=11 000 000 cm³=11 m³"
-      }
+      },
+      4: { a: "V = πr²h = π(7)²(20) = 3 078,76 cm³", b: "BO = 2πr² + 2πrh = 98π + 280π = 378π = 1 187,52 cm²", c: "V = ⅓πr²h = 1 026,25 cm³, een derde van die silinder se volume", d: "s = √(7² + 20²) = √449 = 21,19 cm; geboë oppervlakte = πrs = π(7)(21,19) = 465,98 cm²", e: "3³ = 27 keer groter", f: "V = (4/3)π(6)³ = 288π = 904,78 cm³" }
     }
   }
 });

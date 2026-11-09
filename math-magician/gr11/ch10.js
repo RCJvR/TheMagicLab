@@ -550,7 +550,8 @@ MathMagician.registerChapter(10, {
           { label: "b", text: "Find the overall probability that a randomly selected bolt is defective.", marks: 3 },
           { label: "c", text: "Given that a bolt is found to be defective, find the probability it came from Machine B (to 3 decimal places).", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Events A and B have P(A) = 0,4 and P(B) = 0,5.", parts: [{ label: "a", text: "If A and B are independent, calculate P(A and B) and P(A or B).", marks: 3 }, { label: "b", text: "If A and B were mutually exclusive instead, calculate P(A or B).", marks: 1 }, { label: "c", text: "A bag holds 5 red and 3 blue beads. Two beads are taken out one after the other without replacement. Use a tree diagram to calculate P(both red) and P(one of each colour).", marks: 5 }, { label: "d", text: "How many 4-digit codes can be made from the digits 0 to 9 if (i) digits may be repeated, (ii) no digit may be repeated?", marks: 3 }, { label: "e", text: "In how many different ways can the letters of the word MATHS be arranged?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -569,7 +570,8 @@ MathMagician.registerChapter(10, {
         a: "P(A)=0,6 branching to defective(0,05)/not(0,95); P(B)=0,4 branching to defective(0,08)/not(0,92). P(A∩defective)=0,6×0,05=0,03",
         b: "P(defective)=0,6×0,05+0,4×0,08=0,03+0,032=0,062",
         c: "P(B|defective)=P(B∩defective)/P(defective)=0,032/0,062≈0,516"
-      }
+      },
+      4: { a: "P(A and B) = 0,4 × 0,5 = 0,2; P(A or B) = 0,4 + 0,5 − 0,2 = 0,7", b: "0,4 + 0,5 = 0,9", c: "P(RR) = 5/8 × 4/7 = 20/56 = 5/14; P(one of each) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28", d: "(i) 10⁴ = 10 000 (ii) 10 × 9 × 8 × 7 = 5 040", e: "5! = 120" }
     }
   }
 });

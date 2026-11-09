@@ -544,7 +544,8 @@ MathMagician.registerChapter(2, {
           { label: "c", text: "5^(x²) = 125^x", marks: 4 },
           { label: "d", text: "4^x − 3·2^x − 4 = 0", marks: 4 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Do not use a calculator. Show all working.", parts: [{ label: "a", text: "Simplify (2ˣ⁺² − 2ˣ)/(3 · 2ˣ).", marks: 3 }, { label: "b", text: "Simplify (12ⁿ · 9ⁿ⁺¹)/(18ⁿ · 6ⁿ).", marks: 3 }, { label: "c", text: "Solve for x: 3ˣ⁺¹ = 1/27", marks: 2 }, { label: "d", text: "Solve for x: 2²ˣ − 5 · 2ˣ + 4 = 0", marks: 4 }, { label: "e", text: "Solve for x: x^(3/2) = 8", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -564,7 +565,8 @@ MathMagician.registerChapter(2, {
         b: "x+2 = 3x−3 → x = 5/2",
         c: "x² = 3x → x(x−3) = 0 → x = 0 or x = 3",
         d: "Let k=2^x: k²−3k−4=0 → (k−4)(k+1)=0 → k=4 → x=2 (k=−1 invalid)"
-      }
+      },
+      4: { a: "2ˣ(2² − 1)/(3 · 2ˣ) = 3/3 = 1", b: "(2²ⁿ · 3ⁿ · 3²ⁿ⁺²)/(2ⁿ · 3²ⁿ · 2ⁿ · 3ⁿ) = 2⁰ · 3² = 9", c: "3ˣ⁺¹ = 3⁻³, so x + 1 = −3 and x = −4", d: "Let k = 2ˣ: k² − 5k + 4 = 0 → (k − 1)(k − 4) = 0 → 2ˣ = 1 or 2ˣ = 4 → x = 0 or x = 2", e: "x = 8^(2/3) = (∛8)² = 4" }
     }
   }
 });

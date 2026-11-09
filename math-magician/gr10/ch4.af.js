@@ -613,7 +613,8 @@ x ≤ −3         →  (−∞ ; −3]
           { label: "b", text: "Bevestig algebraïes dat hierdie x-waardes die gelyktydige vergelykings y = x + 1 en y = x² − 2x − 3 oplos.", marks: 4 },
           { label: "c", text: "Skryf die ooreenstemmende snypunte as koördinaatpare neer.", marks: 2 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Los op vir x (en y). Toon alle bewerkings.", parts: [{ label: "a", text: "x² − 2x − 15 = 0", marks: 3 }, { label: "b", text: "(x + 1)/3 − (x − 2)/4 = 2", marks: 3 }, { label: "c", text: "−3 &lt; 2x + 1 ≤ 7. Stel jou antwoord op ’n getallelyn voor.", marks: 3 }, { label: "d", text: "Los gelyktydig op: 2x + y = 7 en x − 3y = 7", marks: 4 }, { label: "e", text: "Maak r die onderwerp van die formule V = ⅓πr²h (r &gt; 0).", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -639,7 +640,8 @@ x ≤ −3         →  (−∞ ; −3]
         a: "x = −1 en x = 4 (die rye waar f(x) en g(x) ooreenstem)",
         b: "x+1=x²−2x−3 → x²−3x−4=0 → (x−4)(x+1)=0 → x=4 of x=−1",
         c: "(−1, 0) en (4, 5)"
-      }
+      },
+      6: { a: "(x − 5)(x + 3) = 0 → x = 5 of x = −3", b: "Vermenigvuldig met 12: 4(x + 1) − 3(x − 2) = 24 → 4x + 4 − 3x + 6 = 24 → x = 14", c: "−4 &lt; 2x ≤ 6 → −2 &lt; x ≤ 3; oop kolletjie by −2, geslote kolletjie by 3, ingekleur tussenin", d: "y = 7 − 2x; x − 3(7 − 2x) = 7 → 7x = 28 → x = 4; y = −1", e: "r² = 3V/(πh) → r = √(3V/(πh))" }
     }
   }
 });

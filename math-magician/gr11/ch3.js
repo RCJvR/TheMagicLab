@@ -445,7 +445,8 @@ MathMagician.registerChapter(3, {
           { label: "b", text: "How many handshakes occur at a party of 12 people?", marks: 2 },
           { label: "c", text: "How many people are needed for exactly 45 handshakes?", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Consider the sequence 3; 8; 15; 24; …", parts: [{ label: "a", text: "Show that the sequence is quadratic.", marks: 2 }, { label: "b", text: "Determine the general term Tₙ.", marks: 4 }, { label: "c", text: "Calculate T₂₀.", marks: 1 }, { label: "d", text: "Which term of the sequence is equal to 255?", marks: 3 }, { label: "e", text: "Between which two consecutive terms is the first difference equal to 41?", marks: 2 }, { label: "f", text: "Is 99 a term of the sequence? Show your working.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -463,7 +464,8 @@ MathMagician.registerChapter(3, {
         a: "H(1)=0,H(2)=1,H(3)=3,H(4)=6,H(5)=10; 1st diffs:1,2,3,4; 2nd diffs:1,1,1 → constant ✓ quadratic",
         b: "H(12)=66",
         c: "n(n−1)/2=45→n²−n−90=0→(n−10)(n+9)=0→n=10"
-      }
+      },
+      4: { a: "First differences 5; 7; 9; second difference constant at 2, so the sequence is quadratic", b: "2a = 2 → a = 1; 3a + b = 5 → b = 2; a + b + c = 3 → c = 0; Tₙ = n² + 2n", c: "T₂₀ = 400 + 40 = 440", d: "n² + 2n − 255 = 0 → (n + 17)(n − 15) = 0 → n = 15: the 15th term", e: "First difference between Tₙ and Tₙ₊₁ = 2n + 3 = 41 → n = 19: between T₁₉ and T₂₀", f: "n² + 2n − 99 = 0 → (n + 11)(n − 9) = 0 → n = 9, a natural number, so yes: T₉ = 99" }
     }
   }
 });

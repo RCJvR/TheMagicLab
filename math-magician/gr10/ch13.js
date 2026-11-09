@@ -643,7 +643,8 @@ MathMagician.registerChapter(13, {
           { label: "a", text: "Calculate the total volume of the model.", marks: 4 },
           { label: "b", text: "The actual building is 50 times larger in each dimension. What is its actual volume?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — A closed cylinder has a radius of 7 cm and a height of 20 cm. Give answers correct to two decimal places.", parts: [{ label: "a", text: "Calculate the volume of the cylinder.", marks: 2 }, { label: "b", text: "Calculate the total surface area of the cylinder.", marks: 3 }, { label: "c", text: "A cone has the same base and height as the cylinder. Calculate its volume, and state how it compares with the volume of the cylinder.", marks: 2 }, { label: "d", text: "Calculate the slant height of the cone and its curved surface area.", marks: 3 }, { label: "e", text: "If the radius and height of the cylinder are both tripled, by what factor does its volume change?", marks: 2 }, { label: "f", text: "Calculate the volume of a sphere with a radius of 6 cm.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -658,7 +659,8 @@ MathMagician.registerChapter(13, {
       3: {
         a: "Prism: 6×4×3=72; Pyramid: ⅓×24×2=16; Total=88 cm³",
         b: "Scale factor=50; Volume scales by 50³=125000; Actual=88×125000=11 000 000 cm³=11 m³"
-      }
+      },
+      4: { a: "V = πr²h = π(7)²(20) = 3 078,76 cm³", b: "SA = 2πr² + 2πrh = 98π + 280π = 378π = 1 187,52 cm²", c: "V = ⅓πr²h = 1 026,25 cm³, one third of the cylinder’s volume", d: "s = √(7² + 20²) = √449 = 21,19 cm; curved area = πrs = π(7)(21,19) = 465,98 cm²", e: "3³ = 27 times larger", f: "V = (4/3)π(6)³ = 288π = 904,78 cm³" }
     }
   }
 });

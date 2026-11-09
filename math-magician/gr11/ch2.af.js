@@ -626,7 +626,8 @@ MathMagician.registerChapter(2, {
           { label: "a", text: "Skryf die kwadratiese vergelyking wat ontstaan.", marks: 2 },
           { label: "b", text: "Los op vir x en bepaal daarna y.", marks: 4 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Toon alle bewerkings.", parts: [{ label: "a", text: "Los op deur die vierkant te voltooi: x² − 6x + 2 = 0", marks: 4 }, { label: "b", text: "Los op met die kwadratiese formule, korrek tot twee desimale plekke: 2x² − 5x − 1 = 0", marks: 3 }, { label: "c", text: "Los op vir x: x² − x − 12 &lt; 0", marks: 3 }, { label: "d", text: "Bepaal die waardes van k waarvoor x² + kx + 9 = 0 gelyke wortels het.", marks: 2 }, { label: "e", text: "Los gelyktydig op: y = x + 1 en x² + y² = 13", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -649,7 +650,8 @@ MathMagician.registerChapter(2, {
       5: {
         a: "3−x=x²−5 → x²+x−8=0",
         b: "x=(−1±√33)/2; y=3−x=(7∓√33)/2, d.w.s. x≈2,37; y≈0,63 of x≈−3,37; y≈6,37"
-      }
+      },
+      6: { a: "x² − 6x + 9 = 7 → (x − 3)² = 7 → x = 3 ± √7", b: "x = [5 ± √(25 + 8)]/4 = (5 ± √33)/4 → x = 2,69 of x = −0,19", c: "(x − 4)(x + 3) &lt; 0 → −3 &lt; x &lt; 4", d: "Δ = k² − 36 = 0 → k = ±6", e: "x² + (x + 1)² = 13 → 2x² + 2x − 12 = 0 → x² + x − 6 = 0 → x = 2, y = 3 of x = −3, y = −2" }
     }
   }
 });

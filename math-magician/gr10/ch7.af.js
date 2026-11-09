@@ -578,7 +578,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Los op vir x.", marks: 2 },
           { label: "c", text: "Vind BC.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — In △ABC is D die middelpunt van AB en E die middelpunt van AC. BC = 14 cm en ∠ABC = 62°. Afsonderlik is PQRS ’n parallelogram met ∠P = 3x + 10° en ∠Q = 2x − 5°.", parts: [{ label: "a", text: "Stel die middelpuntstelling.", marks: 2 }, { label: "b", text: "Bereken die lengte van DE.", marks: 1 }, { label: "c", text: "Bereken ∠ADE. Gee ’n rede.", marks: 2 }, { label: "d", text: "Bereken x, en dus die groottes van ∠P en ∠R.", marks: 4 }, { label: "e", text: "Noem TWEE eienskappe van ’n ruit wat nie vir elke parallelogram waar is nie.", marks: 2 }, { label: "f", text: "Noem die vierhoek wat (i) presies een paar teenoorstaande sye parallel het, (ii) twee pare aangrensende sye gelyk het.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -595,7 +596,8 @@ MathMagician.registerChapter(7, {
         a: "MN = ½BC → 3x−2 = ½(4x+6)",
         b: "3x−2=2x+3 → x=5",
         c: "BC = 26"
-      }
+      },
+      4: { a: "Die lyn wat die middelpunte van twee sye van ’n driehoek verbind, is parallel aan die derde sy en gelyk aan die helfte daarvan", b: "DE = ½BC = 7 cm", c: "∠ADE = 62° (ooreenkomstige hoeke, DE ∥ BC)", d: "Ko-binnehoeke van ’n parallelogram: 3x + 10 + 2x − 5 = 180 → 5x = 175 → x = 35; ∠P = 115° en ∠R = ∠P = 115° (teenoorstaande hoeke van ’n parallelogram)", e: "Enige twee: al vier sye is gelyk; die hoeklyne halveer mekaar loodreg; die hoeklyne halveer die hoeke", f: "(i) trapesium (ii) vlieër" }
     }
   }
 });

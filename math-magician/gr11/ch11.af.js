@@ -571,7 +571,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Skat Q1 en Q3 vanaf die ogief (lees af by opeengehoopte frekwensie = 15 en 45), en dus die IKW.", marks: 4 },
           { label: "c", text: "Skat die aantal hardlopers ouer as 50.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Datastel: 3; 5; 6; 8; 9; 11. ’n Tweede datastel gee die tye (in minute) wat 30 leerders geneem het om ’n taak te voltooi: 0 ≤ t &lt; 10: 4; 10 ≤ t &lt; 20: 9; 20 ≤ t &lt; 30: 12; 30 ≤ t &lt; 40: 5.", parts: [{ label: "a", text: "Bereken die gemiddelde van 3; 5; 6; 8; 9; 11.", marks: 1 }, { label: "b", text: "Bereken die standaardafwyking van hierdie datastel. Toon jou bewerking in ’n tabel.", marks: 4 }, { label: "c", text: "Hoeveel van die waardes lê binne een standaardafwyking van die gemiddelde?", marks: 2 }, { label: "d", text: "Skat die gemiddelde tyd uit die gegroepeerde data.", marks: 3 }, { label: "e", text: "Skryf die modale klas neer en die klas waarin die mediaan lê.", marks: 2 }, { label: "f", text: "As elke waarde in die eerste datastel met 5 vermeerder word, wat gebeur met die gemiddelde en met die standaardafwyking?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -590,7 +591,8 @@ MathMagician.registerChapter(11, {
         a: "n=60, mediaanposisie = 30ste waarde. 30 lê tussen (30;14) en (40;32): breukdeel=(30−14)/(32−14)=16/18; mediaan ≈ 30 + (16/18)×10 ≈ 38.9 jaar",
         b: "Q1-posisie=15de waarde, tussen (30;14) en (40;32): breukdeel=(15−14)/18=1/18; Q1 ≈ 30 + (1/18)×10 ≈ 30.6. Q3-posisie=45ste waarde, tussen (40;32) en (50;48): breukdeel=(45−32)/16=13/16; Q3 ≈ 40 + (13/16)×10 ≈ 48.1. IKW ≈ 48.1 − 30.6 = 17.5",
         c: "Opeengehoopte frekwensie by 50 is 48, dus hardlopers ouer as 50 = 60 − 48 = 12"
-      }
+      },
+      4: { a: "42 ÷ 6 = 7", b: "Afwykings −4; −2; −1; 1; 2; 4; kwadrate 16; 4; 1; 1; 4; 16 (som 42); σ² = 42/6 = 7; σ = √7 = 2,65", c: "7 ± 2,65 gee 4,35 tot 9,65: die waardes 5; 6; 8; 9, dus 4 waardes", d: "Middelpunte 5; 15; 25; 35: (4×5 + 9×15 + 12×25 + 5×35)/30 = 630/30 = 21 minute", e: "Modale klas 20 ≤ t &lt; 30; die mediaan (15de–16de waarde) lê ook in 20 ≤ t &lt; 30 (kumulatiewe frekwensies 4; 13; 25; 30)", f: "Die gemiddelde neem met 5 toe (tot 12); die standaardafwyking bly dieselfde (2,65)" }
     }
   }
 });

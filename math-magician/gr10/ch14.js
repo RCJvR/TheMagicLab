@@ -636,7 +636,8 @@ MathMagician.registerChapter(14, {
           { label: "d", text: "Use the addition rule, with values read from the table, to find P(plays an instrument OR a sport).", marks: 3 },
           { label: "e", text: "Find P(plays neither).", marks: 1 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Exam-style question</strong> — In a survey of 80 learners, 45 play soccer (S), 30 play netball (N) and 10 play both.", parts: [{ label: "a", text: "Draw a Venn diagram to show this information.", marks: 4 }, { label: "b", text: "Calculate P(S or N).", marks: 2 }, { label: "c", text: "Calculate the probability that a learner plays neither sport.", marks: 1 }, { label: "d", text: "Are S and N mutually exclusive? Give a reason.", marks: 2 }, { label: "e", text: "Show that P(S or N) = P(S) + P(N) − P(S and N).", marks: 2 }, { label: "f", text: "A die is rolled 60 times and a 6 comes up 14 times. Compare the relative frequency with the theoretical probability, and say what you expect if the die is rolled many more times.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -662,7 +663,8 @@ MathMagician.registerChapter(14, {
         c: "P(Instrument ∩ Sport) = 18/120 = 3/20 = 0.15",
         d: "P(Instrument) = 30/120 = 0.25; P(Instrument ∪ Sport) = P(Instrument)+P(Sport)−P(Instrument∩Sport) = 0.25+0.6−0.15 = 0.7",
         e: "P(neither) = 36/120 = 0.3"
-      }
+      },
+      5: { a: "S only: 35; both: 10; N only: 20; neither: 15 (total 80)", b: "(35 + 10 + 20)/80 = 65/80 = 13/16", c: "15/80 = 3/16", d: "No: P(S and N) = 10/80 ≠ 0 (some learners play both)", e: "45/80 + 30/80 − 10/80 = 65/80 = P(S or N)", f: "Relative frequency 14/60 = 0,23; theoretical probability 1/6 = 0,17; with many more rolls the relative frequency should get closer to 1/6" }
     }
   }
 });

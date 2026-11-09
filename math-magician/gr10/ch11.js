@@ -549,7 +549,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Find the distance from the base of the cliff to boat B.", marks: 3 },
           { label: "c", text: "Find the distance between the two boats.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — From the top of a building 40 m high, the angle of depression of a car on the level ground is 28°.", parts: [{ label: "a", text: "Calculate the horizontal distance from the foot of the building to the car.", marks: 3 }, { label: "b", text: "The car drives straight towards the building until the angle of depression is 45°. How far did the car travel?", marks: 3 }, { label: "c", text: "A ship sails 12 km on a bearing of 060°. How far north and how far east of its starting point is it?", marks: 4 }, { label: "d", text: "Explain the difference between an angle of elevation and an angle of depression.", marks: 2 }, { label: "e", text: "A ramp 3 m long rises 0,5 m. Calculate the angle the ramp makes with the horizontal.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -564,7 +565,8 @@ MathMagician.registerChapter(11, {
         a: "tan42° = 60/dA → dA = 60/tan42° ≈ 66.64 m",
         b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.84 m",
         c: "AB = 112.84 − 66.64 ≈ 46.20 m"
-      }
+      },
+      4: { a: "tan 28° = 40/d → d = 40/tan 28° = 75,23 m", b: "At 45°: d = 40/tan 45° = 40 m; distance travelled = 75,23 − 40 = 35,23 m", c: "North: 12 cos 60° = 6 km; east: 12 sin 60° = 10,39 km", d: "Both are measured from the horizontal: an angle of elevation is measured upwards to an object above the observer, an angle of depression downwards to an object below", e: "sin θ = 0,5/3 → θ = 9,6°" }
     }
   }
 });

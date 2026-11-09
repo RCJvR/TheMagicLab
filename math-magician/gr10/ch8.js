@@ -858,7 +858,8 @@ MathMagician.registerChapter(8, {
           { label: "b", text: "Show that AB = DC in length.", marks: 3 },
           { label: "c", text: "What type of quadrilateral is ABCD? Give a reason.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — A(−2; 3), B(4; 7) and C(6; 1) are points on the Cartesian plane.", parts: [{ label: "a", text: "Calculate the length of AB in simplest surd form.", marks: 2 }, { label: "b", text: "Determine the coordinates of M, the midpoint of AC.", marks: 2 }, { label: "c", text: "Calculate the gradient of BC.", marks: 2 }, { label: "d", text: "Determine the equation of the line through A parallel to BC.", marks: 3 }, { label: "e", text: "Determine the coordinates of D such that ABCD is a parallelogram.", marks: 3 }, { label: "f", text: "Show that D lies on the line in (d).", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -877,7 +878,8 @@ MathMagician.registerChapter(8, {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
         b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
         c: "Parallelogram — one pair of opposite sides (AB, DC) is both parallel and equal, which is sufficient to prove a parallelogram. It is in fact a square: AD = BC = √20 (all four sides equal) and AB is perpendicular to BC (AB·BC = 0), so all angles are 90°."
-      }
+      },
+      4: { a: "AB = √[(4 + 2)² + (7 − 3)²] = √52 = 2√13", b: "M = ((−2 + 6)/2; (3 + 1)/2) = (2; 2)", c: "m = (1 − 7)/(6 − 4) = −3", d: "y = −3x + c; 3 = −3(−2) + c → c = −3; y = −3x − 3", e: "The diagonals bisect each other, so M is also the midpoint of BD: (4 + x)/2 = 2 and (7 + y)/2 = 2 → D(0; −3)", f: "y = −3(0) − 3 = −3, so D(0; −3) lies on the line (AD ∥ BC, as expected for a parallelogram)" }
     }
   }
 });

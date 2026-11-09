@@ -539,7 +539,8 @@ MathMagician.registerChapter(1, {
           { label: "b", text: "√(x + 4) = x − 2", marks: 5 },
           { label: "c", text: "√(x² + 12) = 2x − 1", marks: 5 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Moenie ’n sakrekenaar gebruik nie. Toon alle bewerkings.", parts: [{ label: "a", text: "Vereenvoudig (√50 + √18)/√8.", marks: 3 }, { label: "b", text: "Rasionaliseer die noemer: 6/(3 − √3)", marks: 3 }, { label: "c", text: "Los op vir x: √(x + 7) = x + 1", marks: 4 }, { label: "d", text: "Los op vir x: 2x^(3/2) = 54", marks: 2 }, { label: "e", text: "Los op vir x: 5²ˣ − 26 · 5ˣ + 25 = 0", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -557,7 +558,8 @@ MathMagician.registerChapter(1, {
         a: "2x−3=25 → x=14; kontroleer: √25=5 ✓",
         b: "x+4=(x−2)² → x²−5x=0 → x=0 of x=5; kontroleer x=0: √4=2≠−2 ✗; x=5: √9=3=3 ✓",
         c: "x²+12=4x²−4x+1 → 3x²−4x−11=0 → x=(4±√148)/6=(2±√37)/3; x=(2+√37)/3≈2,69 ✓ (x=(2−√37)/3 word verwerp, want dan is 2x−1<0)"
-      }
+      },
+      4: { a: "(5√2 + 3√2)/(2√2) = 8√2/(2√2) = 4", b: "6(3 + √3)/[(3 − √3)(3 + √3)] = 6(3 + √3)/6 = 3 + √3", c: "x + 7 = x² + 2x + 1 → x² + x − 6 = 0 → (x + 3)(x − 2) = 0; x = 2 (x = −3 word verwerp: √4 = 2 ≠ −2)", d: "x^(3/2) = 27 → x = 27^(2/3) = 9", e: "Laat k = 5ˣ: k² − 26k + 25 = 0 → (k − 1)(k − 25) = 0 → 5ˣ = 1 of 5ˣ = 25 → x = 0 of x = 2" }
     }
   }
 });

@@ -1002,7 +1002,8 @@ MathMagician.registerChapter(6, {
           { label: "c", text: "Use the turning point and one other point from the table to determine the equation of f(x) in the form y = a(x−p)² + q.", marks: 4 },
           { label: "d", text: "Use the table to calculate the average gradient between x = −1 and x = 2.", marks: 3 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Given f(x) = −x² + 4, g(x) = 2/x + 1 and h(x) = 2ˣ − 8.", parts: [{ label: "a", text: "Write down the coordinates of the turning point of f and the range of f.", marks: 2 }, { label: "b", text: "Determine the x-intercepts of f.", marks: 2 }, { label: "c", text: "Write down the equations of the asymptotes of g.", marks: 2 }, { label: "d", text: "Determine the x-intercept of g.", marks: 2 }, { label: "e", text: "For which values of x is f(x) ≥ 0?", marks: 2 }, { label: "f", text: "Write down the y-intercept and the equation of the asymptote of h.", marks: 2 }, { label: "g", text: "Describe how the graph of f changes if its equation becomes y = −x² + 1.", marks: 1 }, { label: "h", text: "Show that the graphs of f and g intersect at (−2; 0).", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -1031,7 +1032,8 @@ MathMagician.registerChapter(6, {
         b: "x = 1",
         c: "Using vertex (1,−1) and point (4,8): 8 = a(4−1)²−1 → 9=9a → a=1; y=(x−1)²−1",
         d: "Average gradient = (f(2)−f(−1))/(2−(−1)) = (0−3)/3 = −1"
-      }
+      },
+      6: { a: "Turning point (0; 4); range y ≤ 4", b: "−x² + 4 = 0 → x² = 4 → x = −2 or x = 2", c: "x = 0 and y = 1", d: "2/x + 1 = 0 → 2/x = −1 → x = −2: (−2; 0)", e: "−2 ≤ x ≤ 2", f: "y-intercept: 2⁰ − 8 = −7, so (0; −7); asymptote y = −8", g: "It shifts 3 units down", h: "f(−2) = −4 + 4 = 0 and g(−2) = −1 + 1 = 0, so both graphs pass through (−2; 0)" }
     }
   }
 });

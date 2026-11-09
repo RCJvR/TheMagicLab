@@ -651,7 +651,8 @@ MathMagician.registerChapter(8, {
           { label: "a", text: "Gebruik die raaklyn-sekansverwantskap PT² = PQ × PR om PR te bereken.", marks: 3 },
           { label: "b", text: "Bereken QR.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — O is die middelpunt van ’n sirkel. A, B, C en D lê in daardie volgorde op die sirkel, dus is ABCD ’n koordevierhoek. Boog BCD onderspan ∠BOD = 140° by die middelpunt. TD is ’n raaklyn aan die sirkel by D, met T aan dieselfde kant van BD as A, en ∠ABD = 55°. Gee redes vir alle bewerings.", parts: [{ label: "a", text: "Bereken ∠BAD.", marks: 2 }, { label: "b", text: "Bereken ∠BCD.", marks: 2 }, { label: "c", text: "Bereken ∠TDA.", marks: 2 }, { label: "d", text: "Bereken ∠ADB.", marks: 2 }, { label: "e", text: "Bewys dat AB = AD.", marks: 2 }, { label: "f", text: "Stel die stelling oor die lyn wat vanaf die middelpunt van ’n sirkel loodreg op ’n koord getrek word.", marks: 2 }, { label: "g", text: "’n Sirkel het ’n radius van 13 cm. Bereken die afstand van die middelpunt na ’n koord met ’n lengte van 24 cm.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -666,7 +667,8 @@ MathMagician.registerChapter(8, {
       3: {
         a: "8² = 4 × PR → PR = 64/4 = 16 cm",
         b: "QR = PR − PQ = 16 − 4 = 12 cm"
-      }
+      },
+      4: { a: "∠BAD = ½ × 140° = 70° (middelpuntshoek = 2 × omtrekshoek)", b: "∠BCD = 180° − 70° = 110° (teenoorstaande hoeke van ’n koordevierhoek)", c: "∠TDA = ∠ABD = 55° (raaklyn-koordstelling: hoek tussen raaklyn en koord = hoek in die teenoorstaande segment)", d: "∠ADB = 180° − 70° − 55° = 55° (som van die hoeke van ’n driehoek)", e: "∠ABD = ∠ADB = 55°, dus AD = AB (sye teenoor gelyke hoeke)", f: "Die lyn vanaf die middelpunt loodreg op ’n koord halveer die koord", g: "Die helfte van die koord is 12 cm; d = √(13² − 12²) = √25 = 5 cm (lyn vanaf middelpunt ⊥ koord halveer dit; Pythagoras)" }
     }
   }
 });

@@ -636,7 +636,8 @@ MathMagician.registerChapter(14, {
           { label: "d", text: "Gebruik die optelreël, met waardes van die tabel afgelees, om P(speel 'n instrument OF 'n sport) te bepaal.", marks: 3 },
           { label: "e", text: "Bepaal P(speel geeneen nie).", marks: 1 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — In ’n opname onder 80 leerders speel 45 sokker (S), 30 netbal (N) en 10 albei.", parts: [{ label: "a", text: "Teken ’n Venn-diagram om hierdie inligting te toon.", marks: 4 }, { label: "b", text: "Bereken P(S of N).", marks: 2 }, { label: "c", text: "Bereken die waarskynlikheid dat ’n leerder geen van die twee sportsoorte speel nie.", marks: 1 }, { label: "d", text: "Is S en N onderling uitsluitend? Gee ’n rede.", marks: 2 }, { label: "e", text: "Toon dat P(S of N) = P(S) + P(N) − P(S en N).", marks: 2 }, { label: "f", text: "’n Dobbelsteen word 60 keer gegooi en ’n 6 kom 14 keer op. Vergelyk die relatiewe frekwensie met die teoretiese waarskynlikheid, en sê wat jy verwag as die dobbelsteen baie meer kere gegooi word.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -662,7 +663,8 @@ MathMagician.registerChapter(14, {
         c: "P(Instrument ∩ Sport) = 18/120 = 3/20 = 0.15",
         d: "P(Instrument) = 30/120 = 0.25; P(Instrument ∪ Sport) = P(Instrument)+P(Sport)−P(Instrument∩Sport) = 0.25+0.6−0.15 = 0.7",
         e: "P(geeneen) = 36/120 = 0.3"
-      }
+      },
+      5: { a: "Net S: 35; albei: 10; net N: 20; geeneen: 15 (totaal 80)", b: "(35 + 10 + 20)/80 = 65/80 = 13/16", c: "15/80 = 3/16", d: "Nee: P(S en N) = 10/80 ≠ 0 (sommige leerders speel albei)", e: "45/80 + 30/80 − 10/80 = 65/80 = P(S of N)", f: "Relatiewe frekwensie 14/60 = 0,23; teoretiese waarskynlikheid 1/6 = 0,17; met baie meer gooie behoort die relatiewe frekwensie nader aan 1/6 te kom" }
     }
   }
 });

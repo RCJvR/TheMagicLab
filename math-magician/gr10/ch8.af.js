@@ -858,7 +858,8 @@ MathMagician.registerChapter(8, {
           { label: "b", text: "Wys dat AB = DC in lengte.", marks: 3 },
           { label: "c", text: "Watter tipe vierhoek is ABCD? Gee 'n rede.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — A(−2; 3), B(4; 7) en C(6; 1) is punte op die Cartesiese vlak.", parts: [{ label: "a", text: "Bereken die lengte van AB in eenvoudigste wortelvorm.", marks: 2 }, { label: "b", text: "Bepaal die koördinate van M, die middelpunt van AC.", marks: 2 }, { label: "c", text: "Bereken die gradiënt van BC.", marks: 2 }, { label: "d", text: "Bepaal die vergelyking van die lyn deur A parallel aan BC.", marks: 3 }, { label: "e", text: "Bepaal die koördinate van D sodat ABCD ’n parallelogram is.", marks: 3 }, { label: "f", text: "Toon dat D op die lyn in (d) lê.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -877,7 +878,8 @@ MathMagician.registerChapter(8, {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
         b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
         c: "Parallelogram — een paar opponerende sye (AB, DC) is beide ewewydig en gelyk, wat voldoende is om 'n parallelogram te bewys. Dit is trouens 'n vierkant: AD = BC = √20 (al vier sye gelyk) en AB is loodreg op BC (AB·BC = 0), so al die hoeke is 90°."
-      }
+      },
+      4: { a: "AB = √[(4 + 2)² + (7 − 3)²] = √52 = 2√13", b: "M = ((−2 + 6)/2; (3 + 1)/2) = (2; 2)", c: "m = (1 − 7)/(6 − 4) = −3", d: "y = −3x + c; 3 = −3(−2) + c → c = −3; y = −3x − 3", e: "Die hoeklyne halveer mekaar, dus is M ook die middelpunt van BD: (4 + x)/2 = 2 en (7 + y)/2 = 2 → D(0; −3)", f: "y = −3(0) − 3 = −3, dus lê D(0; −3) op die lyn (AD ∥ BC, soos verwag vir ’n parallelogram)" }
     }
   }
 });

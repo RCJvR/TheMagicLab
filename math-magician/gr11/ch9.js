@@ -586,7 +586,8 @@ MathMagician.registerChapter(9, {
           { label: "a", text: "Draw the timeline and find the value after 3 years.", marks: 3 },
           { label: "b", text: "Find the final value after the full 5 years.", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Give money answers to the nearest cent.", parts: [{ label: "a", text: "A car bought for R250 000 depreciates at 15% p.a. on the reducing balance. Calculate its value after 4 years.", marks: 3 }, { label: "b", text: "Calculate the car’s value after 4 years if it depreciates at 15% p.a. on a straight-line basis.", marks: 2 }, { label: "c", text: "Calculate the effective annual interest rate of 9% p.a. compounded monthly.", marks: 3 }, { label: "d", text: "R20 000 is invested at 8% p.a. compounded quarterly. After 3 years a further R5 000 is deposited. Calculate the total value of the investment 5 years after the first deposit.", marks: 4 }, { label: "e", text: "How many years will it take R10 000 to grow to R18 000 at 7% p.a. compounded annually?", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -602,7 +603,8 @@ MathMagician.registerChapter(9, {
       3: {
         a: "A₃=30000(1.08)³≈30000×1.2597≈R37 791",
         b: "A₅=37791(1+0.10/2)⁴=37791(1.05)⁴≈37791×1.2155≈R45 936"
-      }
+      },
+      4: { a: "A = 250 000(1 − 0,15)⁴ = R130 501,56", b: "A = 250 000(1 − 0,15 × 4) = R100 000,00", c: "i_eff = (1 + 0,09/12)¹² − 1 = 0,0938 = 9,38%", d: "20 000(1,02)²⁰ + 5 000(1,02)⁸ = 29 718,95 + 5 858,30 = R35 577,25", e: "18 000 = 10 000(1,07)ⁿ → 1,07ⁿ = 1,8 → n = log 1,8 / log 1,07 = 8,69 years" }
     }
   }
 });

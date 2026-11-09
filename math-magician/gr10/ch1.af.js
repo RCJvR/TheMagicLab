@@ -740,7 +740,8 @@ MathMagician.registerChapter(1, {
           { label: "b", text: "(2x² + x − 3)/(2x + 3)", marks: 4 },
           { label: "c", text: "3/(x−1) + 2/(x+1)", marks: 4 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Toon alle bewerkings.", parts: [{ label: "a", text: "Brei uit en vereenvoudig (2x − 3)(x² + 4x − 1).", marks: 3 }, { label: "b", text: "Faktoriseer volledig: 3x³ − 24", marks: 3 }, { label: "c", text: "Faktoriseer volledig: x² − y² + 2y − 1", marks: 3 }, { label: "d", text: "Vereenvoudig (x² − 9)/(x² + x − 6) ÷ (x − 3)/(x − 2) en noem die beperkings op x.", marks: 3 }, { label: "e", text: "Tussen watter twee opeenvolgende heelgetalle lê √50? Toon hoe jy weet.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -770,7 +771,8 @@ MathMagician.registerChapter(1, {
         a: "x−2, x≠−2",
         b: "(x−1), x≠−3/2",
         c: "(5x+1)/((x−1)(x+1))"
-      }
+      },
+      6: { a: "2x³ + 8x² − 2x − 3x² − 12x + 3 = 2x³ + 5x² − 14x + 3", b: "3(x³ − 8) = 3(x − 2)(x² + 2x + 4)", c: "x² − (y² − 2y + 1) = x² − (y − 1)² = (x − y + 1)(x + y − 1)", d: "(x − 3)(x + 3)/[(x + 3)(x − 2)] × (x − 2)/(x − 3) = 1; x ≠ −3; 2; 3", e: "49 &lt; 50 &lt; 64, dus √49 &lt; √50 &lt; √64: tussen 7 en 8" }
     }
   }
 });
