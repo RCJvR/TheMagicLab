@@ -147,3 +147,61 @@
     "A block {0} × {1} × {2} has a Ø{3} hole counterbored Ø{4} × {5} deep ({6} from the left, {7} from the front), a Ø{8} hole ({9} from the left, {10} from the front) and a Ø{11} hole counterbored Ø{12} × {13} deep ({14} from the left, {15} from the front). Draw the top view with the stepped cutting plane A-A through all three, and the sectional front view A-A ({16}rd angle).": "'n Blok van {0} × {1} × {2} het 'n Ø{3}-gat wat Ø{4} × {5} diep teengeboor is ({6} van links, {7} van voor), 'n Ø{8}-gat ({9} van links, {10} van voor) en 'n Ø{11}-gat wat Ø{12} × {13} diep teengeboor is ({14} van links, {15} van voor). Teken die boaansig met die getrapte snyvlak A-A deur al drie, en die gesnyde vooraansig A-A (derdehoeks)."
   };
 })();
+
+// Freehand orthographic sketches from an isometric (orthographic-freehand.data.js)
+(function () {
+  const GIVEN_FH = (n) => "GEGEE: die isometriese tekening van die " + n + " op halwe grootte op isometriese roosterpapier (een roosterspasie = {0} mm), met 'n pyl vir die VOORAANSIG. Skets VRYHAND op die vierkantige rooster (een blokkie = {1} mm) die vooraansig, die boaansig en die regteraansig in derdehoekse projeksie. Begin by S.";
+  const EN_FH = (n) => "GIVEN: the isometric drawing of the " + n + " at half size on isometric grid paper (one grid space = {0} mm), with an arrow for the FRONT view. Sketch FREEHAND on the square grid (one square = {1} mm) the front view, the top view and the right view in {2}rd-angle projection. Start at S.";
+  const PROMPT_FH = (n, hid) => "Die isometriese tekening van " + n + " word op isometriese roosterpapier gegee. Skets vryhand op vierkantige roosterpapier die vooraansig, boaansig en regteraansig in derdehoekse projeksie." + (hid ? " Wys versteekte detail." : "");
+  const T = {
+    "Count the squares on the isometric: the object is {0} long, {1} deep and {2} high. Block in three light boxes, {3} squares apart: the front view {4} × {5} from S, the top view {6} × {7} above it and the right view {8} × {9} to its right.":
+      "Tel die blokkies op die isometriese tekening: die voorwerp is {0} lank, {1} diep en {2} hoog. Skets drie ligte reghoeke, {3} blokkies uitmekaar: die vooraansig {4} × {5} vanaf S, die boaansig {6} × {7} daarbo en die regteraansig {8} × {9} regs daarvan.",
+    "FRONT VIEW (looking in the direction of the arrow): sketch the visible outline and edges with firm, dark freehand lines. Count the squares for every corner.":
+      "VOORAANSIG (kyk in die rigting van die pyl): skets die sigbare buitelyn en rande met ferm, donker vryhandlyne. Tel die blokkies vir elke hoek.",
+    "Sketch the hidden edges of the front view as short, even dashes.": "Skets die versteekte rande van die vooraansig as kort, eweredige strepies.",
+    "Carry the widths of the corners lightly straight up from the front view into the top view.": "Dra die breedtes van die hoeke liggies reguit op vanaf die vooraansig na die boaansig.",
+    "TOP VIEW: sketch the visible edges. The front of the object is at the BOTTOM of the top view, nearest the front view.": "BOAANSIG: skets die sigbare rande. Die voorkant van die voorwerp is ONDER in die boaansig, die naaste aan die vooraansig.",
+    "Sketch the hidden edges of the top view.": "Skets die versteekte rande van die boaansig.",
+    "Carry the heights lightly straight across from the front view into the right view.": "Dra die hoogtes liggies reguit oor vanaf die vooraansig na die regteraansig.",
+    "RIGHT VIEW: count the depths from the isometric. The front of the object is on the LEFT of the right view, nearest the front view. Sketch the visible edges.":
+      "REGTERAANSIG: tel die dieptes op die isometriese tekening. Die voorkant van die voorwerp is LINKS in die regteraansig, die naaste aan die vooraansig. Skets die sigbare rande.",
+    "Sketch the hidden edges of the right view.": "Skets die versteekte rande van die regteraansig.",
+    "Check every view against the isometric, darken the outlines and label the views.": "Kontroleer elke aansig teen die isometriese tekening, maak die buitelyne donker en benoem die aansigte.",
+
+    "Freehand Views {0}: Stepped Block": "Vryhand-aansigte {0}: trapblok",
+    "A first freehand sketch: a block with one step. Count the squares on the isometric and sketch three views on square grid paper.": "'n Eerste vryhandskets: 'n blok met een trap. Tel die blokkies op die isometriese tekening en skets drie aansigte op vierkantige roosterpapier.",
+    "The isometric drawing of a stepped block is given on isometric grid paper. Sketch, freehand on square grid paper (one square = {0} mm), the front view, top view and right view in {1}rd-angle projection.":
+      "Die isometriese tekening van 'n trapblok word op isometriese roosterpapier gegee. Skets vryhand op vierkantige roosterpapier (een blokkie = {0} mm) die vooraansig, boaansig en regteraansig in derdehoekse projeksie.",
+
+    "Freehand Views {0}: Block with a Slot": "Vryhand-aansigte {0}: blok met 'n gleuf",
+    "A slot runs from front to back: it is seen in the front view, and the bottom of the slot is a hidden line in the right view.": "'n Gleuf loop van voor na agter: dit word in die vooraansig gesien, en die bodem van die gleuf is 'n versteekte lyn in die regteraansig.",
+    "The isometric drawing of a block with a slot is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection. Show hidden detail.": PROMPT_FH("'n blok met 'n gleuf", true),
+
+    "Freehand Views {0}: Block with a Sloping Face": "Vryhand-aansigte {0}: blok met 'n skuins vlak",
+    "A sloping face at the right-hand end: it shows its true slope in the front view, and only as a line across the top and right views.": "'n Skuins vlak aan die regterkant: dit wys sy ware helling in die vooraansig, en slegs as 'n lyn oor die bo- en regteraansig.",
+    "The isometric drawing of a block with a sloping face is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection.": PROMPT_FH("'n blok met 'n skuins vlak"),
+
+    "Freehand Views {0}: Corner Steps": "Vryhand-aansigte {0}: hoektrappies",
+    "Three steps rising towards the back left-hand corner: each step shows as a new line in every view.": "Drie trappies wat na die linker agterste hoek styg: elke trappie verskyn as 'n nuwe lyn in elke aansig.",
+    "The isometric drawing of corner steps is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection.": PROMPT_FH("hoektrappies"),
+
+    "Freehand Views {0}: Wedge Stop": "Vryhand-aansigte {0}: wigstop",
+    "The slope runs from front to back, so its true shape appears in the right view; the front view shows only a line where the slope starts.": "Die helling loop van voor na agter, dus verskyn sy ware vorm in die regteraansig; die vooraansig wys slegs 'n lyn waar die helling begin.",
+    "The isometric drawing of a wedge stop is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection.": PROMPT_FH("'n wigstop"),
+
+    "Freehand Views {0}: Notched Block": "Vryhand-aansigte {0}: keepblok",
+    "A block with a raised back half and a block at the front left: read each level from the isometric and find it in all three views.": "'n Blok met 'n verhoogde agterste helfte en 'n blok links voor: lees elke vlak op die isometriese tekening af en vind dit in al drie aansigte.",
+    "The isometric drawing of a notched block is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection.": PROMPT_FH("'n keepblok"),
+
+    "Freehand Views {0}: Angle Bracket with a Sloping Top": "Vryhand-aansigte {0}: hoekhakie met 'n skuins bokant",
+    "The upright slopes down towards the back: the slope shows its true shape in the right view and a hidden edge in the front view.": "Die regop deel loop skuins af na agter: die helling wys sy ware vorm in die regteraansig en 'n versteekte rand in die vooraansig.",
+    "The isometric drawing of an angle bracket is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection. Show hidden detail.": PROMPT_FH("'n hoekhakie", true),
+
+    "Freehand Views {0}: Cross Block": "Vryhand-aansigte {0}: kruisblok",
+    "A cross-shaped block with a small block on top in the middle: the cross shape is seen in the top view.": "'n Kruisvormige blok met 'n klein blokkie bo-op in die middel: die kruisvorm word in die boaansig gesien.",
+    "The isometric drawing of a cross block is given on isometric grid paper. Sketch, freehand on square grid paper, the front view, top view and right view in {0}rd-angle projection.": PROMPT_FH("'n kruisblok"),
+  };
+  [["stepped block", "trapblok"], ["slotted block", "gleufblok"], ["block with a sloping face", "blok met 'n skuins vlak"], ["corner steps", "hoektrappies"],
+   ["wedge stop", "wigstop"], ["notched block", "keepblok"], ["angle bracket", "hoekhakie"], ["cross block", "kruisblok"]].forEach(([en, af]) => { T[EN_FH(en)] = GIVEN_FH(af); });
+  Object.assign(window.DD_AF, T);
+})();
