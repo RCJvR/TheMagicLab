@@ -450,7 +450,7 @@ MathMagician.registerChapter(4, {
           { label: "d", text: "Calculate the length of the median AM (leave your answer in simplest surd form).", marks: 3 }
         ]
       },
-      { number: 3, text: "<strong>Exam-style question</strong> — A(−1; 2), B(3; 4) and C(5; 0) are the vertices of △ABC.", parts: [{ label: "a", text: "Calculate the gradient of AB.", marks: 2 }, { label: "b", text: "Calculate the angle of inclination of AB.", marks: 2 }, { label: "c", text: "Show that AB ⊥ BC.", marks: 3 }, { label: "d", text: "Determine the equation of the line through C parallel to AB.", marks: 3 }, { label: "e", text: "Calculate the area of △ABC.", marks: 3 }, { label: "f", text: "Calculate ∠BAC. Give a reason.", marks: 2 }] }
+      { number: 3, text: "<strong>Exam-style question</strong> — A(−1; 2), B(3; 4) and C(5; 0) are the vertices of △ABC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":220,\"view\":[-3.4,-1,6.8,5.5],\"axes\":true,\"pts\":{\"A\":[-1,2],\"B\":[3,4],\"C\":[5,0]},\"dots\":true,\"poly\":[[\"A\",\"B\",\"C\",\"fl\"]],\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"C\",\"A\",\"ac\"]],\"names\":{\"A\":\"A(−1; 2)\",\"B\":\"B(3; 4)\",\"C\":\"C(5; 0)\"},\"lab\":{\"A\":\"nw\",\"B\":\"n\",\"C\":\"se\"}}'></div>", parts: [{ label: "a", text: "Calculate the gradient of AB.", marks: 2 }, { label: "b", text: "Calculate the angle of inclination of AB.", marks: 2 }, { label: "c", text: "Show that AB ⊥ BC.", marks: 3 }, { label: "d", text: "Determine the equation of the line through C parallel to AB.", marks: 3 }, { label: "e", text: "Calculate the area of △ABC.", marks: 3 }, { label: "f", text: "Calculate ∠BAC. Give a reason.", marks: 2 }] }
     ],
     answers: {
       1: {

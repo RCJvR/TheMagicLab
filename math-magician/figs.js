@@ -342,9 +342,12 @@
       : el('ellipse', { cx, cy, rx, ry, class: c || 'mf-ln' }));
     const cx = W / 2, k = s.kind;
     if (k === 'cylinder' || k === 'cone' || k === 'hemisphere' || k === 'sphere') {
-      const rx = 60, ry = 16, top = 40, bot = H - 40;
+      const rx = 60, ry = 16, top = s.dome ? rx + 24 : 40, bot = H - 40;
       if (k === 'cylinder') {
-        E(cx, top, rx, ry); E(cx, bot, rx, ry, 'front'); E(cx, bot, rx, ry, 'back', 'mf-mu mf-dash');
+        // dome: a hemisphere sits on top (a silo), so the top rim's back half is hidden
+        if (s.dome) { svg.appendChild(el('path', { d: `M${cx - rx},${top} A${rx},${rx} 0 0 1 ${cx + rx},${top}`, class: 'mf-ln' })); E(cx, top, rx, ry, 'front'); E(cx, top, rx, ry, 'back', 'mf-mu mf-dash'); }
+        else E(cx, top, rx, ry);
+        E(cx, bot, rx, ry, 'front'); E(cx, bot, rx, ry, 'back', 'mf-mu mf-dash');
         L(cx - rx, top, cx - rx, bot); L(cx + rx, top, cx + rx, bot);
         L(cx, bot, cx + rx, bot, 'mf-ac'); L(cx, top, cx, bot, 'mf-mu mf-dash');
         if (lab.r) T(cx + rx / 2, bot - 6, lab.r); if (lab.h) T(cx + rx + 8, (top + bot) / 2, lab.h, 'start');
