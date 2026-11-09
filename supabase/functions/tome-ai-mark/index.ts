@@ -150,6 +150,10 @@ Deno.serve(async (req) => {
   const items = writtenItems(quiz);
   if (!items.length) return json({ error: "nowritten" }, 400);
 
+  // no key set yet: AI marking is paused (checked before a slot is claimed)
+  const apiKey = Deno.env.get("ANTHROPIC_API_KEY");
+  if (!apiKey) return json({ error: "paused", reason: "no_key" }, 503);
+
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   const { data: profile } = await admin.from("profiles").select("role").eq("id", user.id).maybeSingle();
   const staff = profile?.role === "teacher" || profile?.role === "admin";
@@ -175,7 +179,7 @@ Deno.serve(async (req) => {
     return `<answer id="${it.id}">\n${a || "(no answer)"}\n</answer>`;
   }).join("\n\n");
 
-  const client = new Anthropic({ apiKey: Deno.env.get("ANTHROPIC_API_KEY") });
+  const client = new Anthropic({ apiKey });
   let msg;
   try {
     msg = await client.beta.messages.create({
@@ -196,6 +200,10 @@ Deno.serve(async (req) => {
   } catch (e) {
     console.error("claude call failed", e instanceof Anthropic.APIError ? `${e.status} ${e.message}` : e);
     await release();
+    // the key works but the account has no credit, or the key itself is wrong:
+    // AI marking is paused rather than "try again"
+    if (e instanceof Anthropic.BadRequestError && /credit balance|billing/i.test(e.message)) return json({ error: "paused", reason: "no_credit" }, 503);
+    if (e instanceof Anthropic.AuthenticationError || e instanceof Anthropic.PermissionDeniedError) return json({ error: "paused", reason: "bad_key" }, 503);
     return json({ error: "ai" }, 502);
   }
 

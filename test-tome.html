@@ -696,7 +696,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       aiBtn: 'Mark my written answers with AI', aiNote: 'You get one AI-marked paper a day. The AI ticks the memo points your answers earn and tells you what would have earned the rest. You can still change the ticks.',
       aiWorking: 'Marking your answers. This can take a minute…', aiDone: 'Marked by AI. Check the ticks, change any you disagree with, then finish.', aiFb: 'AI feedback', aiSummary: 'Overall',
       aiErr_used: 'You have already used today’s AI-marked paper. Mark this one yourself, or come back tomorrow.', aiErr_cap: 'AI marking has reached its limit for today. Mark this one yourself, or try again tomorrow.',
-      aiErr_auth: 'Sign in to use AI marking.', aiErr_other: 'AI marking did not work this time, and it has not used up your paper for today. Try again, or mark it yourself.',
+      aiErr_auth: 'Sign in to use AI marking.', aiErr_paused: 'AI marking is paused at the moment. Mark this one yourself; your paper for today has not been used.',
+      aiWhy_no_key: 'For teachers: the ANTHROPIC_API_KEY secret is not set in Supabase.', aiWhy_bad_key: 'For teachers: Anthropic rejected the API key. Check the ANTHROPIC_API_KEY secret.', aiWhy_no_credit: 'For teachers: the API key works and reached Anthropic, but the account has no credit.', aiErr_other: 'AI marking did not work this time, and it has not used up your paper for today. Try again, or mark it yourself.',
       selfDone: 'Finish and see my mark', selfGot: 'You gave yourself {s} of {t}', selfMarked: 'self-marked', acceptAlso: 'also accepted:', answerBox: 'Answer',
       planStart: 'Practise now',
       buildBtn: 'Build my own paper',
@@ -810,7 +811,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       aiBtn: 'Merk my geskrewe antwoorde met KI', aiNote: 'Jy kry een KI-gemerkte vraestel per dag. Die KI merk die memorandumpunte wat jou antwoorde verdien en sê wat die res sou verdien het. Jy kan steeds die regmerkies verander.',
       aiWorking: 'Besig om jou antwoorde te merk. Dit kan ’n minuut neem…', aiDone: 'Deur KI gemerk. Gaan die regmerkies na, verander enige waarmee jy nie saamstem nie, en klik dan klaar.', aiFb: 'KI-terugvoer', aiSummary: 'Oorsig',
       aiErr_used: 'Jy het reeds vandag se KI-gemerkte vraestel gebruik. Merk hierdie een self, of kom môre terug.', aiErr_cap: 'KI-nasien het vandag se limiet bereik. Merk hierdie een self, of probeer môre weer.',
-      aiErr_auth: 'Teken in om KI-nasien te gebruik.', aiErr_other: 'KI-nasien het nie hierdie keer gewerk nie, en dit het nie jou vraestel vir vandag opgebruik nie. Probeer weer, of merk dit self.',
+      aiErr_auth: 'Teken in om KI-nasien te gebruik.', aiErr_paused: 'KI-nasien is tans onderbreek. Merk hierdie een self; jou vraestel vir vandag is nie gebruik nie.',
+      aiWhy_no_key: 'Vir onderwysers: die ANTHROPIC_API_KEY-geheim is nie in Supabase gestel nie.', aiWhy_bad_key: 'Vir onderwysers: Anthropic het die API-sleutel geweier. Gaan die ANTHROPIC_API_KEY-geheim na.', aiWhy_no_credit: 'Vir onderwysers: die API-sleutel werk en het Anthropic bereik, maar die rekening het geen krediet nie.', aiErr_other: 'KI-nasien het nie hierdie keer gewerk nie, en dit het nie jou vraestel vir vandag opgebruik nie. Probeer weer, of merk dit self.',
       selfDone: 'Klaar, wys my punt', selfGot: 'Jy het jouself {s} uit {t} gegee', selfMarked: 'self gemerk', acceptAlso: 'ook aanvaar:', answerBox: 'Antwoord',
       planStart: 'Oefen nou',
       buildBtn: 'Bou my eie vraestel',
@@ -1523,7 +1525,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     }).then(function (r) {
       if (!r.error) return r.data;
       var ctx = r.error.context;
-      return (ctx && ctx.json ? ctx.json().catch(function () { return {}; }) : Promise.resolve({})).then(function (b) { throw new Error((b && b.error) || 'other'); });
+      return (ctx && ctx.json ? ctx.json().catch(function () { return {}; }) : Promise.resolve({})).then(function (b) { var er = new Error((b && b.error) || 'other'); er.reason = b && b.reason; throw er; });
     }).then(function (data) {
       btn.disabled = false;
       if (a !== att) return;
@@ -1538,8 +1540,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       save(); renderSelf(); window.scrollTo(0, 0);
     }).catch(function (e) {
       btn.disabled = false;
-      var k = e && e.message, known = { used: 1, cap: 1, auth: 1 };
-      paintAi(t('aiErr_' + (known[k] ? k : 'other')));
+      var k = e && e.message, known = { used: 1, cap: 1, auth: 1, paused: 1 };
+      var why = k === 'paused' && isTeacher() && { no_key: 1, bad_key: 1, no_credit: 1 }[e.reason] ? ' ' + t('aiWhy_' + e.reason) : '';
+      paintAi(t('aiErr_' + (known[k] ? k : 'other')) + why);
     });
   }
 
