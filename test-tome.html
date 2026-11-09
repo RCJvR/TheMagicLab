@@ -366,6 +366,10 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tt-labels .tt-word { min-width: 0; flex: 1; }
 .tt-written { width: 100%; min-height: 120px; resize: vertical; font: inherit; font-size: calc(15 * var(--k)); line-height: 1.6; color: var(--paper);
   background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+.tt-ai { margin: 0 0 18px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--ink-900); }
+.tt-ai .tt-hint { margin: 10px 0 0; }
+.tt-ai-fb { margin: 6px 0 10px; padding: 10px 12px; border-left: 3px solid var(--paper); background: var(--ink-900); border-radius: 0 8px 8px 0; color: var(--text); line-height: 1.55; }
+.tt-ai-fb b { display: block; margin-bottom: 2px; }
 .r-written { white-space: pre-wrap; background: var(--ink-900); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 4px 0 10px; color: var(--text); }
 .r-points { list-style: none; padding: 0; margin: 4px 0 0; }
 .r-points li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-top: 1px solid var(--line); }
@@ -536,6 +540,11 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     <section id="viewSelf" class="hidden">
       <h1 class="tt-title" data-t="selfTitle">Mark your written answers</h1>
       <p class="tt-sub" data-t="selfSub"></p>
+      <div id="aiBox" class="tt-ai hidden">
+        <button class="ml-btn ml-btn--primary" id="btnAi" type="button"><i data-lucide="sparkles"></i><span data-t="aiBtn">Mark my written answers with AI</span></button>
+        <p class="tt-hint" id="aiStatus" role="status" aria-live="polite"></p>
+        <div id="aiSummary"></div>
+      </div>
       <div id="selfBody"></div>
       <div class="tt-actions tt-dock">
         <button class="ml-btn ml-btn--primary" id="btnSelfDone"><i data-lucide="check"></i><span data-t="selfDone">Finish and see my mark</span></button>
@@ -684,6 +693,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       numHint: 'Type a number only; a decimal comma or point is fine.', labelHint: 'Type the name of each labelled part.',
       writtenHint: 'Write your answer in full. After you hand in, you mark it yourself against the memo.', yourAnswerH: 'Your answer', memoH: 'Memo: tick each point your answer gives',
       selfTitle: 'Mark your written answers', selfSub: 'Compare each answer with the memo and tick the points you got. Be honest: this is how you learn what the examiner wants.',
+      aiBtn: 'Mark my written answers with AI', aiNote: 'You get one AI-marked paper a day. The AI ticks the memo points your answers earn and tells you what would have earned the rest. You can still change the ticks.',
+      aiWorking: 'Marking your answers. This can take a minute…', aiDone: 'Marked by AI. Check the ticks, change any you disagree with, then finish.', aiFb: 'AI feedback', aiSummary: 'Overall',
+      aiErr_used: 'You have already used today’s AI-marked paper. Mark this one yourself, or come back tomorrow.', aiErr_cap: 'AI marking has reached its limit for today. Mark this one yourself, or try again tomorrow.',
+      aiErr_auth: 'Sign in to use AI marking.', aiErr_other: 'AI marking did not work this time, and it has not used up your paper for today. Try again, or mark it yourself.',
       selfDone: 'Finish and see my mark', selfGot: 'You gave yourself {s} of {t}', selfMarked: 'self-marked', acceptAlso: 'also accepted:', answerBox: 'Answer',
       planStart: 'Practise now',
       buildBtn: 'Build my own paper',
@@ -794,6 +807,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       numHint: 'Tik slegs ’n getal; ’n desimale komma of punt is reg.', labelHint: 'Tik die naam van elke benoemde deel.',
       writtenHint: 'Skryf jou antwoord volledig. Nadat jy ingehandig het, merk jy dit self teen die memorandum.', yourAnswerH: 'Jou antwoord', memoH: 'Memorandum: merk elke punt wat jou antwoord gee',
       selfTitle: 'Merk jou geskrewe antwoorde', selfSub: 'Vergelyk elke antwoord met die memorandum en merk die punte wat jy gekry het. Wees eerlik: só leer jy wat die eksaminator wil hê.',
+      aiBtn: 'Merk my geskrewe antwoorde met KI', aiNote: 'Jy kry een KI-gemerkte vraestel per dag. Die KI merk die memorandumpunte wat jou antwoorde verdien en sê wat die res sou verdien het. Jy kan steeds die regmerkies verander.',
+      aiWorking: 'Besig om jou antwoorde te merk. Dit kan ’n minuut neem…', aiDone: 'Deur KI gemerk. Gaan die regmerkies na, verander enige waarmee jy nie saamstem nie, en klik dan klaar.', aiFb: 'KI-terugvoer', aiSummary: 'Oorsig',
+      aiErr_used: 'Jy het reeds vandag se KI-gemerkte vraestel gebruik. Merk hierdie een self, of kom môre terug.', aiErr_cap: 'KI-nasien het vandag se limiet bereik. Merk hierdie een self, of probeer môre weer.',
+      aiErr_auth: 'Teken in om KI-nasien te gebruik.', aiErr_other: 'KI-nasien het nie hierdie keer gewerk nie, en dit het nie jou vraestel vir vandag opgebruik nie. Probeer weer, of merk dit self.',
       selfDone: 'Klaar, wys my punt', selfGot: 'Jy het jouself {s} uit {t} gegee', selfMarked: 'self gemerk', acceptAlso: 'ook aanvaar:', answerBox: 'Antwoord',
       planStart: 'Oefen nou',
       buildBtn: 'Bou my eie vraestel',
@@ -1469,7 +1486,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     items.filter(function (it) { return it.q.type === 'written'; }).forEach(function (it) {
       var el = document.createElement('div'); el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
       el.innerHTML = head(it) + '<div class="tt-body">' + figure(it.q) + code(it.q.code) + '<div class="tt-h3" style="margin-top:0">' + esc(t('yourAnswerH')) + '</div>' +
-        '<div class="r-written">' + esc(att.answers[it.id] || t('notAnswered')) + '</div>' + pointsHtml(it, true) + '<p class="tt-self-total"></p></div>';
+        '<div class="r-written">' + esc(att.answers[it.id] || t('notAnswered')) + '</div>' + aiFbHtml(it) + pointsHtml(it, true) + '<p class="tt-self-total"></p></div>';
       var tot = el.querySelector('.tt-self-total');
       function paint() { tot.textContent = t('selfGot', { s: Math.min(it.max, selfScore(it)), t: it.max }); }
       [].forEach.call(el.querySelectorAll('.r-points input'), function (cb) {
@@ -1480,8 +1497,52 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       paint();
       body.appendChild(el);
     });
+    paintAi();
     show('viewSelf');
   }
+  // ── AI marking: one paper per learner per day, through the tome-ai-mark edge function ──
+  // The function fetches the paper and memo itself and only returns which memo points
+  // each answer earns plus a comment, so the ticks stay the learner's to change.
+  function aiAllowed() { return !!(meta && !meta.custom && !drillMode && !window.TT_PUBLIC && acctUid()); }
+  function aiFbHtml(it) {
+    var a = att.ai && att.ai.answers && att.ai.answers[it.id];
+    return a && a.feedback ? '<div class="tt-ai-fb"><b>' + esc(t('aiFb')) + '</b>' + esc(a.feedback) + '</div>' : '';
+  }
+  function paintAi(msg) {
+    $('aiBox').classList.toggle('hidden', !aiAllowed());
+    $('btnAi').classList.toggle('hidden', !!att.ai);
+    $('aiStatus').textContent = msg || (att.ai ? t('aiDone') : t('aiNote'));
+    $('aiSummary').innerHTML = att.ai && att.ai.summary ? '<div class="tt-ai-fb"><b>' + esc(t('aiSummary')) + '</b>' + esc(att.ai.summary) + '</div>' : '';
+  }
+  function runAi() {
+    var btn = $('btnAi'), a = att, answers = {};
+    items.forEach(function (it) { if (it.q.type === 'written' && a.answers[it.id]) answers[it.id] = String(a.answers[it.id]); });
+    btn.disabled = true; paintAi(t('aiWorking'));
+    db().then(function (c) {
+      return c.functions.invoke('tome-ai-mark', { body: { quiz_id: quiz.id, lang: lang, answers: answers } });
+    }).then(function (r) {
+      if (!r.error) return r.data;
+      var ctx = r.error.context;
+      return (ctx && ctx.json ? ctx.json().catch(function () { return {}; }) : Promise.resolve({})).then(function (b) { throw new Error((b && b.error) || 'other'); });
+    }).then(function (data) {
+      btn.disabled = false;
+      if (a !== att) return;
+      a.self = a.self || {};
+      Object.keys(data.answers || {}).forEach(function (id) {
+        var it = items.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+        var tk = (it.q.points || []).map(function () { return false; });
+        data.answers[id].met.forEach(function (i) { tk[i] = true; });
+        a.self[id] = tk;
+      });
+      a.ai = { answers: data.answers || {}, summary: data.summary || '', at: Date.now() };
+      save(); renderSelf(); window.scrollTo(0, 0);
+    }).catch(function (e) {
+      btn.disabled = false;
+      var k = e && e.message, known = { used: 1, cap: 1, auth: 1 };
+      paintAi(t('aiErr_' + (known[k] ? k : 'other')));
+    });
+  }
+
   function finishSubmit() {
     var per = {}, score = 0;
     items.forEach(function (it) { var m = mark(it, att.answers[it.id]); per[it.id] = m; score += m; });
@@ -1796,7 +1857,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         return '<tr><td class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</td><td><b>' + esc(lb[0]) + '</b></td><td>' + (ok ? esc(v) : '<span class="r-was">' + esc(v || t('empty')) + '</span>') + '</td><td>' + esc(lb[1]) + '</td></tr>';
       }).join('') + '</tbody></table>';
     } else if (q.type === 'written') {
-      h += '<div class="tt-h3" style="margin-top:0">' + esc(t('yourAnswerH')) + '</div><div class="r-written">' + esc(a || t('notAnswered')) + '</div>' + pointsHtml(it, false) +
+      h += '<div class="tt-h3" style="margin-top:0">' + esc(t('yourAnswerH')) + '</div><div class="r-written">' + esc(a || t('notAnswered')) + '</div>' + aiFbHtml(it) + pointsHtml(it, false) +
         '<p class="tt-hint">' + esc(t('selfMarked')) + '</p>';
     }
     if (q.working && q.working.length) h += '<div class="tt-working"><b>' + esc(t('working')) + '</b><ol>' + q.working.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>';
@@ -2648,6 +2709,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   // ── Wiring ───────────────────────────────────────────────────────────
   $('btnStart').addEventListener('click', function () { startTest(false); });
   $('btnSelfDone').addEventListener('click', finishSubmit);
+  $('btnAi').addEventListener('click', runAi);
   $('btnLastReview').addEventListener('click', function () { att = store[quiz.id]; reviewFilter = 'all'; renderReview(); });
   $('btnToList').addEventListener('click', renderList);
   $('btnShare').addEventListener('click', openShare);
