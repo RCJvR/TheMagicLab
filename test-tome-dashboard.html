@@ -1,0 +1,291 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Test version dashboard — The Magic Lab</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<style>
+body { font-family: var(--font-display); background: var(--ink-900); color: var(--text); min-height: 100vh; margin: 0; -webkit-font-smoothing: antialiased; }
+.d-main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 96px; box-sizing: border-box; }
+.d-top { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
+.d-top a { color: var(--text-2); font-size: 14px; text-decoration: none; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 7px 12px; }
+.d-top a:hover { color: var(--paper); }
+h1 { font-weight: 900; font-size: clamp(26px, 5vw, 34px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 8px; }
+h2 { font-size: 18px; color: var(--paper); margin: 30px 0 12px; letter-spacing: -0.02em; }
+.d-sub { color: var(--text-2); line-height: 1.6; max-width: 720px; margin: 0 0 22px; }
+.d-pick { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-bottom: 6px; }
+.d-pick label { color: var(--text-2); font-size: 14px; }
+select { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 8px 12px; max-width: 100%; }
+.d-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 18px 0 4px; }
+.d-kpi { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; }
+.d-kpi b { display: block; font-size: 26px; font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; }
+.d-kpi span { font-size: 13px; color: var(--text-3); }
+.d-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14.5px; }
+th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; vertical-align: top; }
+thead th { color: var(--paper); font-weight: 800; white-space: nowrap; }
+th.s { cursor: pointer; }
+th.s:hover { text-decoration: underline; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+.p-hi { color: var(--good); } .p-mid { color: var(--warn); } .p-lo { color: var(--crit); }
+.d-bars { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; align-items: end; height: 150px; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.d-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; font-size: 12px; color: var(--text-3); }
+.d-bar i { display: block; width: 100%; min-height: 2px; background: var(--text-2); border-radius: 4px 4px 0 0; }
+.d-bar b { font-size: 12px; color: var(--paper); font-weight: 700; margin-bottom: 4px; }
+.d-band { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; font-size: 11px; color: var(--text-3); text-align: center; margin-top: 6px; }
+.d-note { color: var(--text-3); font-size: 13px; line-height: 1.5; margin-top: 12px; max-width: 760px; }
+.d-q { font-size: 13.5px; color: var(--text-2); max-width: 420px; }
+.d-wrong { font-size: 13px; color: var(--text-3); max-width: 260px; }
+#dMsg { color: var(--text-2); }
+.d-topic { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin-bottom: 12px; }
+.d-topic-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 16px; color: var(--paper); font-variant-numeric: tabular-nums; }
+.d-topic-head span { font-weight: 800; }
+.d-track { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; margin: 10px 0 0; }
+.d-track i { display: block; height: 100%; background: var(--text-2); }
+.d-rev { margin: 12px 0 0; padding-left: 20px; font-size: 14.5px; line-height: 1.5; color: var(--text-2); }
+.d-rev li { margin-bottom: 10px; }
+.d-rev small { display: block; color: var(--text-3); font-size: 13.5px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<main class="d-main" id="main">
+  <div class="d-top"><a href="test-tome.html?view=results">← Class results</a><a href="test-tome-results.html">Results by version</a><a href="test-tome-versions.html">Compare the versions</a></div>
+  <h1>Version dashboard</h1>
+  <p class="d-sub">Every attempt at one version of a test, across all the sessions you started or that were shared with you. Use it to see which questions the class found hard and whether the version is fair.</p>
+  <div class="d-pick">
+    <label for="dSet">Test</label><select id="dSet"></select>
+    <label for="dVer">Version</label><select id="dVer"></select>
+    <label for="dSess">Sessions</label><select id="dSess"></select>
+  </div>
+  <p id="dMsg">Loading…</p>
+  <div id="dBody"></div>
+  <div id="dProgress"></div>
+</main>
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BASE = 'assets/test-tome/';
+  var TOPICS = { html: 'HTML & CSS', excel: 'Excel', ct: 'Computational thinking', java: 'Java (jGRASP)', freecad: 'FreeCAD', tinkercad: 'TinkerCAD & Arduino', other: 'Other', life: 'Life and Living', matter: 'Matter and Materials', energy: 'Energy and Change', earth: 'Planet Earth and Beyond' };
+  var state = { sets: [], sessions: {}, results: [], quiz: null, items: [], sort: { k: 'pct', d: 1 }, started: false };
+  function $(id) { return document.getElementById(id); }
+  function short(x, n) { x = String(x || '').replace(/\s+/g, ' ').trim(); return x.length > n ? x.slice(0, n - 1) + '…' : x; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+  function cls(p) { return p >= 70 ? 'p-hi' : p >= 50 ? 'p-mid' : 'p-lo'; }
+  function maxMarks(q) {
+    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : q.type === 'fill' ? q.blanks.length : 1;
+    return q.marks || n;
+  }
+  // the same numbering and ids the test itself uses, so a result's per-question marks line up
+  function items(qz) {
+    var out = [];
+    qz.sections.forEach(function (sec, si) {
+      var n = 0;
+      sec.questions.forEach(function (q) {
+        n++;
+        if (q.type === 'scenario') q.questions.forEach(function (sq, k) {
+          out.push({ id: si + '.' + n + '.' + (k + 1), num: (si + 1) + '.' + n + '.' + (k + 1), q: sq, max: maxMarks(sq), topic: sq.topic || q.topic || 'other' });
+        });
+        else out.push({ id: si + '.' + n, num: (si + 1) + '.' + n, q: q, max: maxMarks(q), topic: q.topic || 'other' });
+      });
+    });
+    return out;
+  }
+  function answerText(q, a) {
+    if (q.type === 'tf') return a ? 'True' : 'False';
+    if (q.type === 'mcq') return q.options[a];
+    return String(a);
+  }
+  function db() {
+    return new Promise(function (res) {
+      if (window.MagicLabAuth && MagicLabAuth._supabase) return res(MagicLabAuth._supabase());
+      document.addEventListener('magiclab:auth:ready', function () { res(MagicLabAuth._supabase()); }, { once: true });
+    });
+  }
+  function median(a) { var s = a.slice().sort(function (x, y) { return x - y; }), n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : Math.round((s[n / 2 - 1] + s[n / 2]) / 2)) : 0; }
+  function versionsOf(set) { return state.sets.filter(function (s) { return s.set === set; })[0]; }
+
+  // Learner progress over time: every result for this test set, grouped by learner.
+  // A learner who was logged in is matched by account; older results by the typed name.
+  function progressHtml(S) {
+    var vers = {}; S.versions.forEach(function (v) { vers[v.id] = v; });
+    var R = state.results.filter(function (r) { return vers[r.quiz_id]; });
+    if (!R.length) return '';
+    var by = {}, order = [];
+    R.slice().sort(function (a, b) { return a.created_at < b.created_at ? -1 : 1; }).forEach(function (r) {
+      var key = r.learner_id || 'name:' + String(r.learner_name || '').trim().toLowerCase();
+      if (!by[key]) { by[key] = { rows: [], linked: !!r.learner_id }; order.push(key); }
+      by[key].rows.push(r); by[key].name = String(r.learner_name || '').trim();
+    });
+    var list = order.map(function (k) {
+      var L = by[k], p = L.rows.map(function (r) { return pct(r.score, r.total); });
+      return { name: L.name, linked: L.linked, rows: L.rows, p: p, n: p.length, first: p[0], last: p[p.length - 1] };
+    }).sort(function (a, b) { return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1; });
+    function spark(p) {
+      var n = p.length, x = function (j) { return n < 2 ? 60 : 6 + j * 108 / (n - 1); }, y = function (v) { return 32 - v / 100 * 28; };
+      var line = n > 1 ? '<polyline fill="none" stroke="currentColor" stroke-width="1.5" points="' + p.map(function (v, j) { return x(j) + ',' + y(v); }).join(' ') + '"/>' : '';
+      return '<svg width="120" height="36" viewBox="0 0 120 36" role="img" aria-label="Trend">' + line +
+        p.map(function (v, j) { return '<circle cx="' + x(j) + '" cy="' + y(v) + '" r="2.5" fill="currentColor"/>'; }).join('') + '</svg>';
+    }
+    var tab = '<div class="d-scroll"><table><thead><tr><th>Learner</th><th>Tests</th><th>First</th><th>Latest</th><th>Change</th><th>Trend</th></tr></thead><tbody>' +
+      list.map(function (L) {
+        var ch = L.last - L.first;
+        return '<tr><td>' + esc(L.name) + (L.linked ? '' : ' <small>(name only)</small>') + '</td><td>' + L.n + '</td><td>' + L.first + '%</td><td class="' + cls(L.last) + '">' + L.last + '%</td><td>' + (ch > 0 ? '+' : '') + ch + '%</td><td>' + spark(L.p) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+    var detail = list.map(function (L) {
+      return '<details class="d-det"><summary>' + esc(L.name) + ' · ' + L.n + ' ' + (L.n === 1 ? 'test' : 'tests') + '</summary><div class="d-scroll"><table><thead><tr><th>Date</th><th>Test</th><th>Mark</th><th>%</th></tr></thead><tbody>' +
+        L.rows.map(function (r) {
+          var V = vers[r.quiz_id] || {};
+          return '<tr><td>' + esc(new Date(r.created_at).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' })) + '</td><td>' + esc(S.title) + ' · Version ' + esc(V.version || '') + '</td><td>' + r.score + '/' + r.total + '</td><td class="' + cls(pct(r.score, r.total)) + '">' + pct(r.score, r.total) + '%</td></tr>';
+        }).join('') + '</tbody></table></div></details>';
+    }).join('');
+    return '<h2>Learner progress over time</h2><p class="d-note">Every learner who has written a test in this set, oldest result first. Results from sessions you made or that were shared with you.</p>' + tab + detail;
+  }
+
+  // The page for the chosen version, over the chosen sessions
+  function draw() {
+    var S = versionsOf($('dSet').value), V = S && S.versions.filter(function (v) { return v.id === $('dVer').value; })[0];
+    $('dProgress').innerHTML = S ? progressHtml(S) : '';
+    if (!V) { $('dBody').innerHTML = ''; return; }
+    var sid = $('dSess').value;
+    var R = state.results.filter(function (r) { return r.quiz_id === V.id && (!sid || r.session_id === sid); });
+    if (!R.length) { $('dBody').innerHTML = '<p class="d-sub">No attempts at this version yet' + (sid ? ' in this session' : '') + '.</p>'; return; }
+    var pcts = R.map(function (r) { return pct(r.score, r.total); });
+    var sessionsUsed = {}; R.forEach(function (r) { sessionsUsed[r.session_id] = 1; });
+    var avg = Math.round(pcts.reduce(function (s, x) { return s + x; }, 0) / pcts.length);
+    var kpi = '<div class="d-kpis">' +
+      '<div class="d-kpi"><b>' + R.length + '</b><span>Attempts</span></div>' +
+      '<div class="d-kpi"><b>' + Object.keys(sessionsUsed).length + '</b><span>Sessions</span></div>' +
+      '<div class="d-kpi"><b class="' + cls(avg) + '">' + avg + '%</b><span>Average</span></div>' +
+      '<div class="d-kpi"><b>' + median(pcts) + '%</b><span>Median</span></div>' +
+      '<div class="d-kpi"><b>' + pct(pcts.filter(function (x) { return x >= 50; }).length, pcts.length) + '%</b><span>Got 50% or more</span></div>' +
+      '<div class="d-kpi"><b>' + Math.min.apply(null, pcts) + '–' + Math.max.apply(null, pcts) + '%</b><span>Lowest to highest</span></div></div>';
+
+    // score bands
+    var bands = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    pcts.forEach(function (p) { bands[Math.min(9, Math.floor(p / 10))]++; });
+    var top = Math.max.apply(null, bands) || 1;
+    var hist = '<h2>How the marks were spread</h2><div class="d-bars">' + bands.map(function (n) {
+      return '<div class="d-bar"><b>' + n + '</b><i style="height:' + Math.round(n / top * 100) + '%"></i></div>';
+    }).join('') + '</div><div class="d-band">' + bands.map(function (n, i) { return '<span>' + (i * 10) + '</span>'; }).join('') + '</div>';
+
+    // questions
+    var rows = state.items.map(function (it) {
+      var got = 0, full = 0, wrong = {};
+      R.forEach(function (r) {
+        var g = Number((r.per || {})[it.id] || 0); got += g; if (g >= it.max) full++;
+        var a = (r.answers || {})[it.id];
+        if (a != null && (it.q.type === 'mcq' || it.q.type === 'tf') && a !== it.q.answer) { var k = answerText(it.q, a); wrong[k] = (wrong[k] || 0) + 1; }
+      });
+      var possible = it.max * R.length, top = Object.keys(wrong).sort(function (a, b) { return wrong[b] - wrong[a]; })[0];
+      return { num: it.num, q: it.q.q, topic: TOPICS[it.topic] || it.topic, key: it.topic, got: got, possible: possible, pct: pct(got, possible), full: pct(full, R.length), wrong: top ? top + ' (' + wrong[top] + ')' : '', revise: it.q.explain || '' };
+    });
+    var k = state.sort.k, d = state.sort.d;
+    rows.sort(function (a, b) { var x = a[k], y = b[k]; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * d || (a.num < b.num ? -1 : 1); });
+    // What to revise: topics under 70% (at least the weakest three), weakest first,
+    // each with its three lowest questions and the explanation to revise from
+    var byTopic = {};
+    rows.forEach(function (r) {
+      var t = byTopic[r.key] = byTopic[r.key] || { name: r.topic, got: 0, possible: 0, qs: [] };
+      t.got += r.got; t.possible += r.possible; t.qs.push(r);
+    });
+    var topicList = Object.keys(byTopic).map(function (k) { var t = byTopic[k]; t.pct = pct(t.got, t.possible); return t; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = topicList.filter(function (t) { return t.pct < 70; });
+    if (need.length < 3) need = topicList.slice(0, Math.min(3, topicList.length));
+    need = need.slice(0, 8);
+    var rev = '<h2>What to revise</h2><p class="d-note">Topics the class found hardest, weakest first. Under each topic are its three lowest questions, with the explanation to revise from.</p>' + need.map(function (t) {
+      var qs = t.qs.filter(function (q) { return q.pct < 70; }).sort(function (a, b) { return a.pct - b.pct || (a.num < b.num ? -1 : 1); }).slice(0, 3);
+      return '<div class="d-topic"><div class="d-topic-head"><b>' + esc(t.name) + '</b><span class="' + cls(t.pct) + '">' + t.pct + '%</span></div>' +
+        '<div class="d-track"><i style="width:' + t.pct + '%"></i></div>' +
+        (qs.length ? '<ul class="d-rev">' + qs.map(function (q) {
+          return '<li><b>' + esc(q.num) + '</b> ' + esc(short(q.q, 140)) + ' <i>(' + q.pct + '%)</i>' + (q.revise ? '<small>Revise: ' + esc(short(q.revise, 220)) + '</small>' : '') + '</li>';
+        }).join('') + '</ul>' : '<p class="d-note">No single question stood out in this topic.</p>') + '</div>';
+    }).join('');
+
+    var qtab = '<h2>Question by question</h2><p class="d-note">Sorted by how many marks were earned. Click a heading to sort. “Most common wrong answer” only applies to multiple-choice and true/false questions.</p><div class="d-scroll"><table><thead><tr>' +
+      [['num', 'No.'], ['q', 'Question'], ['topic', 'Topic'], ['pct', 'Marks earned'], ['full', 'Fully correct'], ['wrong', 'Most common wrong answer']].map(function (c) {
+        return '<th class="s" scope="col" data-k="' + c[0] + '">' + c[1] + (k === c[0] ? (d > 0 ? ' ▲' : ' ▼') : '') + '</th>';
+      }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + esc(r.num) + '</td><td class="d-q">' + esc(String(r.q).slice(0, 160)) + (String(r.q).length > 160 ? '…' : '') + '</td><td>' + esc(r.topic) + '</td><td class="' + cls(r.pct) + '">' + r.pct + '%</td><td>' + r.full + '%</td><td class="d-wrong">' + esc(r.wrong || '—') + '</td></tr>'; }).join('') +
+      '</tbody></table></div>';
+
+    // sessions
+    var bySess = {};
+    R.forEach(function (r) { (bySess[r.session_id] = bySess[r.session_id] || []).push(pct(r.score, r.total)); });
+    var sessRows = Object.keys(bySess).map(function (id) {
+      var s = state.sessions[id] || { title: '—', created_at: '' }, p = bySess[id];
+      return { title: s.title, when: s.created_at, n: p.length, avg: Math.round(p.reduce(function (a, b) { return a + b; }, 0) / p.length), pass: pct(p.filter(function (x) { return x >= 50; }).length, p.length) };
+    }).sort(function (a, b) { return a.when < b.when ? 1 : -1; });
+    var sessTab = '<h2>By session</h2><div class="d-scroll"><table><thead><tr><th>Session</th><th>Date</th><th>Attempts</th><th>Average</th><th>Got 50% or more</th></tr></thead><tbody>' +
+      sessRows.map(function (s) {
+        return '<tr><td>' + esc(s.title) + '</td><td>' + esc(s.when ? new Date(s.when).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' }) : '') + '</td><td>' + s.n + '</td><td class="' + cls(s.avg) + '">' + s.avg + '%</td><td>' + s.pass + '%</td></tr>';
+      }).join('') + '</tbody></table></div>';
+
+    $('dBody').innerHTML = kpi + hist + rev + qtab + sessTab;
+    [].forEach.call($('dBody').querySelectorAll('th.s'), function (th) {
+      th.addEventListener('click', function () { var kk = th.dataset.k; state.sort = { k: kk, d: state.sort.k === kk ? -state.sort.d : (kk === 'pct' || kk === 'full' ? 1 : 1) }; draw(); });
+    });
+  }
+
+  function pickVersions() {
+    var S = versionsOf($('dSet').value);
+    $('dVer').innerHTML = S.versions.map(function (v) { return '<option value="' + esc(v.id) + '">Version ' + esc(v.version) + '</option>'; }).join('');
+    state.quiz = null;
+    loadQuiz();
+  }
+  function loadQuiz() {
+    var id = $('dVer').value;
+    if (state.quizId === id) return draw();
+    state.quizId = id;
+    var V = null; state.sets.forEach(function (S) { S.versions.forEach(function (v) { if (v.id === id) V = v; }); });
+    fetch(BASE + V.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (qz) {
+      state.items = items(qz); draw();
+    });
+  }
+  function fill() {
+    $('dSet').innerHTML = state.sets.map(function (s) { return '<option value="' + esc(s.set) + '">' + esc(s.title) + '</option>'; }).join('');
+    var ids = Object.keys(state.sessions);
+    $('dSess').innerHTML = '<option value="">All sessions</option>' + ids.map(function (id) { return '<option value="' + esc(id) + '">' + esc(state.sessions[id].title) + '</option>'; }).join('');
+    $('dSet').addEventListener('change', pickVersions);
+    $('dVer').addEventListener('change', loadQuiz);
+    $('dSess').addEventListener('change', draw);
+    $('dMsg').textContent = '';
+    pickVersions();
+  }
+  function start() {
+    if (state.started) return;
+    if (!(window.MagicLabAuth && MagicLabAuth.isTeacher)) return;
+    state.started = true;
+    if (!MagicLabAuth.isTeacher()) { $('dMsg').textContent = 'This page is for teachers.'; return; }
+    Promise.all([
+      fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }),
+      db().then(function (c) { return Promise.all([c.from('tome_sessions').select('id,title,quiz_set,created_at'), c.from('tome_results').select('*')]); })
+    ]).then(function (r) {
+      var by = {}, order = [];
+      (r[0].quizzes || []).filter(function (x) { return x.set && x.version; }).forEach(function (x) {
+        if (!by[x.set]) { by[x.set] = { set: x.set, title: x.subject + ' · Grade ' + x.grade, versions: [] }; order.push(x.set); }
+        by[x.set].versions.push({ id: x.id, version: x.version, file: x.file });
+      });
+      state.sets = order.map(function (k) { by[k].versions.sort(function (a, b) { return a.version < b.version ? -1 : 1; }); return by[k]; });
+      (r[1][0].data || []).forEach(function (s) { state.sessions[s.id] = s; });
+      state.results = r[1][1].data || [];
+      fill();
+    });
+  }
+  document.addEventListener('magiclab:auth:ready', start);
+  document.addEventListener('magiclab:auth:change', start);
+  setTimeout(start, 1500);
+})();
+</script>
+</body>
+</html>

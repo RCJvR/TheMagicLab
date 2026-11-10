@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/human-body.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -289,7 +290,7 @@
   <div class="sim-outer">
     <div class="sim-canvas-wrap">
       <h3>Digestive System Explorer</h3>
-      <canvas id="digestCanvas" height="420" role="img" aria-label="Digestive System Explorer: interactive simulation"></canvas>
+      <div id="digestFigure"></div>
     </div>
     <div class="sim-controls-row">
       <div class="ctrl-card">
@@ -442,141 +443,29 @@ function selectOrgan(key, btn) {
   if (simInitialised) drawDigest();
 }
 
-// ── CANVAS ────────────────────────────────────────────────────────────────────
-let simInitialised = false;
-const H = 420;
-
+// ── BODY FIGURE (assets/explore/human-body.js) ───────────────────────────────
+let simInitialised = false, digestFig = null;
+const DIGEST_IDS = {
+  mouth: ['mouth', 'salivary'], oesophagus: ['oesophagus'], stomach: ['stomach'],
+  smallintestine: ['duodenum', 'smallInt'], largeintestine: ['largeInt', 'appendix'], rectum: ['rectum', 'anus']
+};
 function initSim() {
   simInitialised = true;
   drawDigest();
 }
-
 function drawDigest() {
-  const canvas = document.getElementById('digestCanvas');
-  if (!canvas) return;
-  const dpr = window.devicePixelRatio || 1;
-  const logicalW = canvas.offsetWidth || 600;
-  canvas.width = logicalW * dpr;
-  canvas.height = H * dpr;
-  ctx = canvas.getContext('2d');
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.scale(dpr, dpr);
-  ctx.clearRect(0, 0, logicalW, H);
-
-  const cx = logicalW / 2;
-  const active = selectedOrgan;
-
-  function col(key) {
-    return active === key ? organData[key].color : 'rgba(255,255,255,0.1)';
-  }
-  function strokeCol(key) {
-    return active === key ? organData[key].color : 'rgba(255,255,255,0.18)';
-  }
-  function txtCol(key) {
-    return active === key ? '#fff' : 'rgba(210,218,245,0.55)';
-  }
-
-  ctx.font = '600 12px "Cabinet Grotesk", sans-serif';
-  ctx.textAlign = 'center';
-
-  // — Mouth —
-  ctx.beginPath();
-  ctx.ellipse(cx, 38, 52, 20, 0, 0, Math.PI * 2);
-  ctx.fillStyle = col('mouth');
-  ctx.fill();
-  ctx.strokeStyle = strokeCol('mouth');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.fillStyle = txtCol('mouth');
-  ctx.fillText('Mouth', cx, 42);
-
-  // — Oesophagus —
-  ctx.beginPath();
-  ctx.roundRect(cx - 14, 60, 28, 72, 8);
-  ctx.fillStyle = col('oesophagus');
-  ctx.fill();
-  ctx.strokeStyle = strokeCol('oesophagus');
-  ctx.stroke();
-  ctx.save();
-  ctx.translate(cx, 97);
-  ctx.rotate(-Math.PI / 2);
-  ctx.fillStyle = txtCol('oesophagus');
-  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
-  ctx.fillText('Oesophagus', 0, 4);
-  ctx.restore();
-
-  // — Stomach —
-  ctx.beginPath();
-  ctx.ellipse(cx - 30, 170, 68, 42, -0.3, 0, Math.PI * 2);
-  ctx.fillStyle = col('stomach');
-  ctx.fill();
-  ctx.strokeStyle = strokeCol('stomach');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.fillStyle = txtCol('stomach');
-  ctx.font = '600 12px "Cabinet Grotesk", sans-serif';
-  ctx.fillText('Stomach', cx - 30, 174);
-
-  // — Small Intestine (wavy coils) —
-  const siX = cx + 28;
-  const siY = 165;
-  ctx.beginPath();
-  ctx.ellipse(siX + 20, siY + 55, 54, 70, 0, 0, Math.PI * 2);
-  ctx.fillStyle = col('smallintestine');
-  ctx.fill();
-  ctx.strokeStyle = strokeCol('smallintestine');
-  ctx.stroke();
-  // inner coil lines
-  if (active === 'smallintestine') {
-    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-    ctx.lineWidth = 1;
-    for (let i = 0; i < 4; i++) {
-      ctx.beginPath();
-      ctx.ellipse(siX + 20, siY + 38 + i * 22, 34, 10, 0, 0, Math.PI * 2);
-      ctx.stroke();
+  if (!window.MLBody) return;
+  if (!digestFig) digestFig = MLBody.mount(document.getElementById('digestFigure'), {
+    regions: false, legend: ['dig', 'resp', 'circ', 'exc'],
+    onPick: function (id) {
+      for (const k in DIGEST_IDS) if (DIGEST_IDS[k].indexOf(id) >= 0) {
+        selectOrgan(k, [...document.querySelectorAll('.mode-btn')].find(b => (b.getAttribute('onclick') || '').indexOf("'" + k + "'") >= 0));
+        return;
+      }
     }
-  }
-  ctx.fillStyle = txtCol('smallintestine');
-  ctx.font = '600 11px "Cabinet Grotesk", sans-serif';
-  ctx.fillText('Small', siX + 20, siY + 48);
-  ctx.fillText('Intestine', siX + 20, siY + 62);
-
-  // — Large Intestine (U-shape around small intestine) —
-  ctx.beginPath();
-  ctx.moveTo(cx - 90, 220);
-  ctx.lineTo(cx - 90, 310);
-  ctx.quadraticCurveTo(cx - 90, 360, cx - 40, 360);
-  ctx.lineTo(cx + 100, 360);
-  ctx.quadraticCurveTo(cx + 140, 360, cx + 140, 310);
-  ctx.lineTo(cx + 140, 220);
-  ctx.lineWidth = 22;
-  ctx.strokeStyle = col('largeintestine');
-  ctx.lineCap = 'round';
-  ctx.stroke();
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = strokeCol('largeintestine');
-  ctx.lineCap = 'butt';
-  ctx.fillStyle = txtCol('largeintestine');
-  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
-  ctx.fillText('Large Intestine', cx + 10, 375);
-
-  // — Rectum —
-  ctx.beginPath();
-  ctx.roundRect(cx - 14, 370, 28, 40, 6);
-  ctx.fillStyle = col('rectum');
-  ctx.fill();
-  ctx.strokeStyle = strokeCol('rectum');
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.fillStyle = txtCol('rectum');
-  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
-  ctx.fillText('Rectum', cx, 394);
-
-  // Highlight glow for selected
-  ctx.shadowBlur = 0;
+  });
+  digestFig.focus(DIGEST_IDS[selectedOrgan]);
 }
-
-window.addEventListener('resize', () => { if (simInitialised) drawDigest(); });
 
 // ── PRACTICE ──────────────────────────────────────────────────────────────────
 const questions = [

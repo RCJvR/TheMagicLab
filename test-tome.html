@@ -22,7 +22,9 @@
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="math-magician/figs.css">
 <script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<script defer src="math-magician/figs.js"></script>
 <style>
 /* Text scale for the test: everything below is sized as N * var(--k), so the
    test reads the same on a laptop and grows on big screens and projectors. */
@@ -104,7 +106,7 @@ body {
 .tt-q { padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
 .tt-q-head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; margin-bottom: 12px; }
 .tt-num { font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; min-width: 2.6em; }
-.tt-text { font-size: calc(16.5 * var(--k)); line-height: 1.5; color: var(--text); }
+.tt-text { font-size: calc(16.5 * var(--k)); line-height: 1.5; color: var(--text); white-space: pre-line; }
 .tt-marks { font-size: calc(14 * var(--k)); color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tt-body { padding-left: calc(2.6em + 12px); }
 @media (max-width: 560px) { .tt-body { padding-left: 0; } .tt-facts { grid-template-columns: 1fr 1fr; } }
@@ -222,6 +224,54 @@ body {
 .tt-code { margin: 12px 0 0; padding: 12px 14px; background: var(--ink-900); border: 1px solid var(--line); border-radius: var(--radius-sm);
   font-family: var(--font-mono); font-size: calc(13.5 * var(--k)); line-height: 1.55; color: var(--text); overflow-x: auto; white-space: pre; }
 .tt-q .tt-code { margin: 0 0 12px; }
+.tt-calc { margin: 0 0 14px; }
+/* The result and review screens keep their buttons in view, like a frozen row at the bottom */
+.tt-dock { position: sticky; bottom: 0; z-index: 25; margin: 24px -16px -96px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--ink-900); border-top: 1px solid var(--line); box-shadow: 0 -10px 24px -18px rgba(0, 0, 0, .6); }
+.tt-study { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin: 0 0 12px; }
+.tt-study-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; color: var(--paper); font-size: calc(16 * var(--k)); }
+.tt-study-head span { color: var(--text-3); font-size: calc(14 * var(--k)); font-variant-numeric: tabular-nums; }
+.tt-study-list { margin: 10px 0 0; padding-left: 20px; line-height: 1.55; color: var(--text-2); font-size: calc(14.5 * var(--k)); }
+.tt-study-list li { margin-bottom: 9px; }
+.tt-conf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; font-size: calc(14 * var(--k)); color: var(--text-2); }
+.tt-conf > span { margin-right: 4px; }
+.tt-tools { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin: 0 0 18px; }
+.tt-tools-row { margin-top: 12px; }
+.tt-revisit { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; }
+.tt-revisit > div { display: flex; flex-direction: column; gap: 2px; }
+.tt-revisit b { color: var(--paper); }
+.tt-revisit span { color: var(--text-2); font-size: calc(14 * var(--k)); }
+.tt-lessons { margin: 8px 0 0; font-size: calc(13.5 * var(--k)); color: var(--text-3); }
+.tt-lessons span { margin-right: 4px; }
+.tt-lessons a { color: var(--paper); }
+.tt-working { margin-top: 10px; border-left: 3px solid var(--line-hard); padding: 2px 0 2px 12px; font-size: calc(14.5 * var(--k)); color: var(--text-2); }
+.tt-why-wrong { margin: -2px 0 8px 40px; font-size: calc(14 * var(--k)); color: var(--text-2); }
+.tt-working b { display: block; color: var(--paper); margin-bottom: 4px; }
+.tt-working ol { margin: 0; padding-left: 20px; }
+.tt-working li { margin-bottom: 4px; }
+.tt-prog { margin: 6px 0 0; font-size: calc(14 * var(--k)); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.tt-chart { margin: 8px 0 18px; }
+.tt-chart-svg { width: 100%; max-width: 640px; height: auto; display: block; }
+.tt-grid { stroke: var(--line); stroke-width: 1; }
+.tt-axis { fill: var(--text-3); font-size: 11px; }
+.tt-line { stroke: var(--paper); stroke-width: 2; }
+.tt-dot { fill: var(--paper); }
+.tt-plan-top { margin: 6px 0 14px; }
+.tt-plan-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.tt-plan-list li { margin: 0 0 10px; color: var(--text-2); font-size: calc(14.5 * var(--k)); line-height: 1.5; }
+.tt-plan-list label { cursor: pointer; }
+.tt-plan-date { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.tt-figure { margin: 10px 0 12px; max-width: 360px; color: var(--text); }
+.tt-figure svg { width: 100%; height: auto; display: block; }
+/* data tables in exam papers (our own content) */
+.tt-figure.wide { max-width: none; overflow-x: auto; }
+.tt-figure table { border-collapse: collapse; font-size: calc(14.5 * var(--k)); }
+.tt-figure th, .tt-figure td { border: 1px solid var(--line-hard); padding: 5px 10px; text-align: center; }
+.r-points li span { white-space: pre-line; }
+.tt-info { margin: 12px 0 18px; padding: 14px 16px; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); background: var(--ink-850); color: var(--text-2); font-size: calc(14.5 * var(--k)); }
+.tt-info p { margin: 0 0 8px; }
+.tt-info b { color: var(--paper); }
+.tt-plan-go { margin-left: 8px; padding: 4px 10px; font-size: 13px; }
+.tt-study-list small { display: block; color: var(--text-3); font-size: calc(13.5 * var(--k)); }
 .tt-name { display: grid; gap: 6px; max-width: 360px; margin: 20px 0 0; }
 .tt-name span { font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2); }
 .tt-name input { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
@@ -265,9 +315,16 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .tr-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .tr-actions .ml-btn { padding: 7px 12px; font-size: calc(13.5 * var(--k)); }
 .tr-closed { opacity: 0.7; }
+.shr-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(14.5 * var(--k)); }
+#shrEmail { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.shr-row small { color: var(--text-3); display: block; }
 .tm-item { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
 .tm-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; }
 .tm-pct { font-size: calc(22 * var(--k)); font-weight: 800; color: var(--crit); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tm-pct.hot { color: var(--crit); }
+.tm-pct.warm { color: color-mix(in srgb, var(--crit) 50%, var(--warn)); }
+.tm-pct.mild { color: var(--warn); }
+.tm-pct.cool { color: var(--good); }
 .tm-pct small { display: block; font-size: calc(11.5 * var(--k)); font-weight: 600; color: var(--text-3); }
 .tm-meta { font-size: calc(12.5 * var(--k)); color: var(--text-3); margin-bottom: 4px; }
 .tm-q { font-size: calc(15.5 * var(--k)); line-height: 1.45; color: var(--text); }
@@ -295,6 +352,29 @@ dialog.tt-share { max-width: 560px; text-align: center; }
 .fb.no { color: var(--crit); border: 1px solid var(--crit); }
 .fb.no s { opacity: 0.85; margin-right: 4px; }
 .fb .fb-right { color: var(--good); }
+/* one word, fill in the missing word, numeric answer, label the diagram, written answer */
+.tt-word { font: inherit; font-size: calc(16 * var(--k)); color: var(--paper); background: var(--ink-850); border: 1px solid var(--line-hard);
+  border-bottom: 2px solid var(--paper); border-radius: 6px; padding: 6px 10px; min-width: 14ch; max-width: 100%; }
+.tt-word:focus, .tt-written:focus { outline: 2px solid var(--paper); outline-offset: 1px; }
+.tt-wordrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.tt-unit { color: var(--text-2); font-weight: 600; }
+.tt-prose { font-size: calc(16 * var(--k)); line-height: 2.3; color: var(--text); margin: 4px 0 0; }
+.tt-prose .tt-blank { font-family: inherit; min-width: 9ch; }
+.tt-labels { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 16px; margin-top: 8px; }
+.tt-labels label { display: flex; align-items: center; gap: 8px; }
+.tt-labels b { min-width: 1.6em; text-align: center; border: 1px solid var(--line-hard); border-radius: 6px; padding: 2px 6px; }
+.tt-labels .tt-word { min-width: 0; flex: 1; }
+.tt-written { width: 100%; min-height: 120px; resize: vertical; font: inherit; font-size: calc(15 * var(--k)); line-height: 1.6; color: var(--paper);
+  background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: 8px; padding: 10px 12px; margin-top: 6px; }
+.tt-ai { margin: 0 0 18px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--ink-900); }
+.tt-ai .tt-hint { margin: 10px 0 0; }
+.tt-ai-fb { margin: 6px 0 10px; padding: 10px 12px; border-left: 3px solid var(--paper); background: var(--ink-900); border-radius: 0 8px 8px 0; color: var(--text); line-height: 1.55; }
+.tt-ai-fb b { display: block; margin-bottom: 2px; }
+.r-written { white-space: pre-wrap; background: var(--ink-900); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 4px 0 10px; color: var(--text); }
+.r-points { list-style: none; padding: 0; margin: 4px 0 0; }
+.r-points li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-top: 1px solid var(--line); }
+.r-points input { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+.tt-self-total { font-weight: 700; margin-top: 6px; }
 @media print { #ttPrint .tt-fill { border: 0.75pt solid #999; font-size: 10pt; } #ttPrint .fb.ok, #ttPrint .fb .fb-right { color: #1a7f37 !important; } #ttPrint .fb.no { color: #c62828 !important; } }
 
 /* The feedback report: built into #ttPrint and printed, so a learner can keep
@@ -318,6 +398,13 @@ dialog.tt-share { max-width: 560px; text-align: center; }
   #ttPrint .tt-section { margin-top: 14pt; }
   #ttPrint .tt-section-head { border-bottom-color: #000; }
   #ttPrint .tt-q { padding: 8pt 0; border-bottom: 0.5pt solid #bbb; break-inside: avoid; }
+  #ttPrint .pt-topic { margin: 0 0 11pt; break-inside: avoid; }
+  #ttPrint .pt-topic h2 { font-size: 12.5pt; margin: 0 0 3pt; }
+  #ttPrint .pt-list { margin: 4pt 0 0 15pt; padding: 0; }
+  #ttPrint .pt-list li { margin: 0 0 4pt; font-size: 10pt; line-height: 1.35; }
+  #ttPrint .pt-list small { display: block; font-size: 9.2pt; }
+  #ttPrint .pt-none { font-size: 10pt; margin: 3pt 0 0; }
+  #ttPrint .pt-foot { margin-top: 12pt; font-size: 9pt; border-top: 0.5pt solid #999; padding-top: 5pt; }
   #ttPrint .tt-scenario { border: 0.75pt solid #999; break-inside: avoid; }
   #ttPrint .tt-body { padding-left: 2.2em; }
   #ttPrint .r-opt { padding: 4pt 8pt; font-size: 10.5pt; border-color: #ccc; }
@@ -373,6 +460,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div class="tt-teacher-entry hidden" id="teacherEntry">
         <button class="ml-btn ml-btn--ghost" id="btnTeacher"><i data-lucide="users"></i><span data-t="classResults">Class results</span></button>
       </div>
+      <div id="toolsBox"></div>
       <div id="quizList"></div>
       <p class="tt-note" data-t="storeNote">Your answers and results are saved in this browser on this device.</p>
     </section>
@@ -421,17 +509,21 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <div class="tt-rows" id="resultSections"></div>
       <h3 class="tt-h3" data-t="bySkill">Knowledge and application</h3>
       <div class="tt-rows" id="resultSkills"></div>
-      <div class="tt-actions">
+      <div id="resultConf"></div>
+      <h3 class="tt-h3" data-t="studyTitle">What to study next</h3>
+      <div id="resultStudy"></div>
+      <p class="tt-note" data-t="printNote">To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.</p>
+      <div class="tt-actions tt-dock">
         <button class="ml-btn ml-btn--ghost" id="btnPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
         <button class="ml-btn ml-btn--ghost hidden" id="btnNextVersion"><i data-lucide="shuffle"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost hidden" id="btnDrillMiss"><i data-lucide="target"></i><span data-t="drillMissBtn">Practise the questions I missed</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
         <button class="ml-btn ml-btn--ghost tt-members" id="btnResToList"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button>
       </div>
-      <p class="tt-note" data-t="printNote">To keep your feedback as a file, choose “Save as PDF” in the print window. It is saved on your device only.</p>
     </section>
 
     <section id="viewReview" class="hidden">
-      <h1 class="tt-title" data-t="reviewTitle">Review your answers</h1>
+      <h1 class="tt-title" id="reviewTitle" data-t="reviewTitle">Review your answers</h1>
       <p class="tt-sub" id="reviewSub"></p>
       <div class="tt-filter" id="reviewFilter" role="group">
         <button class="tt-chip" data-f="all" aria-pressed="true" data-t="fAll">All questions</button>
@@ -439,11 +531,36 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       </div>
       <p class="tt-note" id="reviewCount" aria-live="polite" style="margin:4px 0 0"></p>
       <div id="reviewBody"></div>
-      <div class="tt-actions">
+      <div class="tt-actions tt-dock">
         <button class="ml-btn ml-btn--primary" id="btnRevResult"><i data-lucide="award"></i><span data-t="backResult">Back to my mark</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRevPrint"><i data-lucide="printer"></i><span data-t="print">Print or save as PDF</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnRevRetry"><i data-lucide="rotate-ccw"></i><span data-t="retry">Write it again</span></button>
       </div>
+    </section>
+    <section id="viewSelf" class="hidden">
+      <h1 class="tt-title" data-t="selfTitle">Mark your written answers</h1>
+      <p class="tt-sub" data-t="selfSub"></p>
+      <div id="aiBox" class="tt-ai hidden">
+        <button class="ml-btn ml-btn--primary" id="btnAi" type="button"><i data-lucide="sparkles"></i><span data-t="aiBtn">Mark my written answers with AI</span></button>
+        <p class="tt-hint" id="aiStatus" role="status" aria-live="polite"></p>
+        <div id="aiSummary"></div>
+      </div>
+      <div id="selfBody"></div>
+      <div class="tt-actions tt-dock">
+        <button class="ml-btn ml-btn--primary" id="btnSelfDone"><i data-lucide="check"></i><span data-t="selfDone">Finish and see my mark</span></button>
+      </div>
+    </section>
+    <section id="viewProgress" class="hidden">
+      <h1 class="tt-title" data-t="prTitle">My progress</h1>
+      <p class="tt-sub" data-t="prSub">Every test you have submitted on this device, in order. Only you can see this.</p>
+      <div id="progressBody"></div>
+      <div class="tt-actions"><button class="ml-btn ml-btn--ghost tt-members" id="btnPrBack"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button></div>
+    </section>
+    <section id="viewPlan" class="hidden">
+      <h1 class="tt-title" data-t="planTitle">My revision plan</h1>
+      <p class="tt-sub" data-t="planSub">Built from your weakest topics, and it follows you from test to test.</p>
+      <div id="planBody"></div>
+      <div class="tt-actions"><button class="ml-btn ml-btn--ghost tt-members" id="btnPlBack"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button></div>
     </section>
     <section id="viewTeacher" class="hidden">
       <h1 class="tt-title" data-t="classResults">Class results</h1>
@@ -455,6 +572,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       </div>
       <p class="tt-status" id="trStatus" aria-live="polite"></p>
       <div class="tr-list" id="trSessions"></div>
+      <div class="tt-actions"><a class="ml-btn ml-btn--ghost" href="test-tome-results.html"><i data-lucide="bar-chart-3"></i><span>Results by version</span></a><a class="ml-btn ml-btn--ghost" href="test-tome-versions.html"><i data-lucide="columns-3"></i><span>Compare versions</span></a><a class="ml-btn ml-btn--ghost" href="test-tome-dashboard.html"><i data-lucide="layout-dashboard"></i><span>Version dashboard</span></a></div>
       <div class="tt-actions"><button class="ml-btn ml-btn--ghost" id="btnTrBack"><i data-lucide="arrow-left"></i><span data-t="allTests">All tests</span></button></div>
     </section>
 
@@ -465,7 +583,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         <button class="ml-btn ml-btn--primary" id="btnTsQr"><i data-lucide="qr-code"></i><span data-t="trShowQr">Show code and QR</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsRefresh"><i data-lucide="refresh-cw"></i><span data-t="trRefresh">Refresh</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsOpen"><i data-lucide="lock"></i><span></span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsShare"><i data-lucide="user-plus"></i><span data-t="shBtn">Share with a teacher</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsCsv"><i data-lucide="download"></i><span data-t="trCsv">Download marks (CSV)</span></button>
+        <button class="ml-btn ml-btn--ghost" id="btnTsTopics"><i data-lucide="list-checks"></i><span data-t="trTopicsBtn">Print topics to revisit</span></button>
         <button class="ml-btn ml-btn--ghost" id="btnTsBack"><i data-lucide="arrow-left"></i><span data-t="trSessionsBack">All sessions</span></button>
       </div>
       <div class="tt-facts" id="tsFacts" style="margin-top:20px"></div>
@@ -484,6 +604,18 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       <button class="ml-btn ml-btn--primary" id="btnCopyLink"><i data-lucide="copy"></i><span data-t="copy">Copy link</span></button>
       <button class="ml-btn ml-btn--ghost" id="btnShareClose"><span data-t="close">Close</span></button>
     </div>
+  </dialog>
+
+  <dialog class="tt-dialog" id="shrDlg">
+    <h2 data-t="shTitle">Share these results</h2>
+    <p data-t="shSub"></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="email" id="shrEmail" class="tt-input" style="flex:1 1 220px;min-width:0" autocomplete="off">
+      <button class="ml-btn ml-btn--primary" id="btnShrAdd"><span data-t="shAdd">Share</span></button>
+    </div>
+    <p class="tt-status" id="shrStatus" aria-live="polite"></p>
+    <div id="shrList"></div>
+    <div class="tt-actions"><button class="ml-btn ml-btn--ghost" id="btnShrClose"><span data-t="close">Close</span></button></div>
   </dialog>
 
   <dialog class="tt-dialog" id="confirmDlg">
@@ -521,6 +653,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       up: 'Move up', down: 'Move down', tTrue: 'True', tFalse: 'False',
       sureTitle: 'Submit your test?', sureAll: 'You have answered every question. Once you submit, your test is marked and you can see your answers.',
       sureSome: 'You have not answered {n} of the questions yet. Unanswered questions get no marks.', submitNow: 'Submit', keepGoing: 'Keep working',
+      studyTitle: 'What to study next', studyNote: 'These are the topics where you lost the most marks, weakest first. Under each are the questions you missed, with the explanation to study from.', studyNone: 'You did well in every topic. Look again at the questions you missed below.', studyPct: '{p}% of the marks earned',
       yourMark: 'Your mark for {t}', outOf: 'out of {t}', level: 'Level {l}', review: 'Review my answers',
       bySection: 'By section', bySkill: 'Knowledge and application', knowledge: 'Knowledge', application: 'Application',
       retry: 'Write it again', reviewTitle: 'Review your answers', reviewSub: 'Green is right, red is wrong. Each answer has an explanation underneath.',
@@ -544,15 +677,82 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       classResults: 'Class results', trIntro: 'Start a results session and show its code or QR code to the class. Every learner who writes with the code appears here, and only you can see the results.',
       trTest: 'Test', trName: 'Session name', trNamePh: 'e.g. Grade 9 workshop, 4 November', trStart: 'Start session', trNone: 'No sessions yet.',
       trResults: '{n} results', trOpen: 'Open', trClosed: 'Closed', trView: 'View results', trDelete: 'Delete', trSureDelete: 'Delete this session and all its results? This cannot be undone.',
-      trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', trSessionsBack: 'All sessions',
+      trShowQr: 'Show code and QR', trRefresh: 'Refresh', trClose: 'Close the session',
+      trTopicsBtn: 'Print topics to revisit', ptTitle: 'Topics to revisit', ptSub: '{n} results · class average {a}%', ptNone: 'No single question stood out in this topic.',
+      ptLost: '{p}% of learners lost marks', ptRevise: 'Revise:', ptMarks: 'of the marks in this topic were earned', ptFoot: 'Worked out from the marks learners submitted, in their browsers. Use it as a guide to what to teach again.', ptPrinted: 'Printed {d}',
+      sheetBtn: 'Information sheet (opens in a new tab)', shBtn: 'Share with a teacher', shTitle: 'Share these results', shSub: 'Another teacher will see this session in their Class results and can read the marks and print the topics list. They cannot close, reopen, delete or share it.', shEmail: 'Their email address', shAdd: 'Share', shNone: 'Not shared with anyone yet.', shRemove: 'Stop sharing with {n}', shBy: 'Shared with you by {n}', shLeave: 'Remove from my list', shSureLeave: 'Remove this session from your list? The teacher who shared it keeps it.', shDone: 'Shared with {n}.', trReopen: 'Reopen the session', trCsv: 'Download marks (CSV)', calcBtn: 'Open calculator (new tab)', trSessionsBack: 'All sessions',
       trCodeNote: 'Class code {c}. Learners type it on the start screen, or scan the QR code, which fills it in.',
       tsLearners: 'results', tsAverage: 'class average', tsCode: 'class code', tsNoResults: 'No results yet. They appear here as learners submit; press Refresh.',
-      tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
+      tsView: 'View', backClass: 'Back to class results', tsTopics: 'Weakest topics', tsMissed: 'Most-missed questions', tsSkills: 'Knowledge and application', tsSections: 'By section', tsMarks: 'Mark list',
       tsLost: 'lost', tsLostOf: '{l} of {n} learners lost marks', tsCommon: 'Most common wrong answer:', tsShowExplain: 'Explanation', tsShowAll: 'Show all {n} questions',
       tsName: 'Name', tsVersion: 'Version', tsMark: 'Mark', tsPct: '%', tsLevel: 'Level', tsWhen: 'Submitted',
       topic_html: 'HTML & CSS', topic_excel: 'Excel', topic_ct: 'Computational thinking', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD & Arduino',
       teacherOnly: 'Class results are for teacher accounts.',
-      blankN: 'Blank {n}', fillHint: 'Type the missing symbol or word in each box, exactly as it is written in code.', empty: 'empty'
+      blankN: 'Blank {n}', fillHint: 'Type the missing symbol or word in each box, exactly as it is written in code.', empty: 'empty',
+      wordHint: 'Type one word or term. Spelling counts, capital letters do not.', blankHint: 'Type the missing word in each space. Spelling counts, capital letters do not.',
+      numHint: 'Type a number only; a decimal comma or point is fine.', labelHint: 'Type the name of each labelled part.',
+      writtenHint: 'Write your answer in full. After you hand in, you mark it yourself against the memo.', yourAnswerH: 'Your answer', memoH: 'Memo: tick each point your answer gives',
+      selfTitle: 'Mark your written answers', selfSub: 'Compare each answer with the memo and tick the points you got. Be honest: this is how you learn what the examiner wants.',
+      aiBtn: 'Mark my written answers with AI', aiNote: 'You get one AI-marked paper a day. The AI ticks the memo points your answers earn and tells you what would have earned the rest. You can still change the ticks.',
+      aiWorking: 'Marking your answers. This can take a minute…', aiDone: 'Marked by AI. Check the ticks, change any you disagree with, then finish.', aiFb: 'AI feedback', aiSummary: 'Overall',
+      aiErr_used: 'You have already used today’s AI-marked paper. Mark this one yourself, or come back tomorrow.', aiErr_cap: 'AI marking has reached its limit for today. Mark this one yourself, or try again tomorrow.',
+      aiErr_auth: 'Sign in to use AI marking.', aiErr_paused: 'AI marking is paused at the moment. Mark this one yourself; your paper for today has not been used.',
+      aiWhy_no_key: 'For teachers: the ANTHROPIC_API_KEY secret is not set in Supabase.', aiWhy_bad_key: 'For teachers: Anthropic rejected the API key. Check the ANTHROPIC_API_KEY secret.', aiWhy_no_credit: 'For teachers: the API key works and reached Anthropic, but the account has no credit.', aiErr_other: 'AI marking did not work this time, and it has not used up your paper for today. Try again, or mark it yourself.',
+      selfDone: 'Finish and see my mark', selfGot: 'You gave yourself {s} of {t}', selfMarked: 'self-marked', acceptAlso: 'also accepted:', answerBox: 'Answer',
+      planStart: 'Practise now',
+      buildBtn: 'Build my own paper',
+      prLoginAsk: 'Don’t see your progress?', prLoginKeep: 'Log in to keep track of improvement over time.', prLoginOther: 'Completed tests on another device? You will need to log in to keep track.', prLoginBtn: 'Log in',
+      confAsk: 'How sure are you?',
+      confSure: 'Sure',
+      confUnsure: 'Not sure',
+      confGuess: 'Guessing',
+      confTitle: 'How sure you were',
+      confSureRight: 'Sure, and right',
+      confSureWrong: 'Sure, but wrong: check these first',
+      confUnsureRight: 'Not sure, but right: go over these again',
+      confUnsureWrong: 'Not sure, and wrong',
+      confNone: 'Tick how sure you are on each question to see this summary.',
+      confYou: 'You said:',
+      working: 'Working',
+      resultRevisit: 'The {n} questions you missed come back for a revisit on {d}.',
+      revTitle: 'Revisits',
+      revDue: '{n} due for a revisit.',
+      revNext: 'Next revisit on {d}. {n} questions saved.',
+      revBtn: 'Practise the due questions',
+      revNone: 'Questions you miss are saved here and come back for a revisit.',
+      drillMissBtn: 'Practise the questions I missed',
+      drillTitle: 'Practice',
+      drillIntro: 'Practice only. This does not change your mark or your class results. Every answer is marked when you finish, with its working and explanation.',
+      drillSubmit: 'Mark my practice',
+      drillDone: 'Practice marked',
+      drillSaved: 'Your revisits are updated. Questions you got right come back less often; the ones you missed come back tomorrow.',
+      drillBack: 'Back to my tests',
+      prBtn: 'My progress',
+      prTitle: 'My progress',
+      prSub: 'Every test you have submitted on this device, in order. Only you can see this.',
+      prNone: 'Submit a test and your progress will show here.',
+      prOverall: 'Your mark in each test, in order',
+      prTopics: 'By topic',
+      prOlder: 'Topics are saved from each test you submit from now on, so older attempts show only the mark.',
+      prTries: '{n} tests',
+      prFirst: 'First',
+      prLatest: 'Latest',
+      prChange: 'Change',
+      prAttempts: 'Your tests',
+      planBtn: 'My revision plan',
+      planTitle: 'My revision plan',
+      planSub: 'Built from your weakest topics, and it follows you from test to test.',
+      planExam: 'My next test is on',
+      planNoTopics: 'Write a test first, and your plan is made from your weakest topics.',
+      planSpan: 'From {a} to {b}.',
+      planProgress: '{n} of {t} done',
+      planTopicPct: '{p}% last time',
+      planTaskRead: 'Read the explanations and the working',
+      planTaskDrill: 'Practise the questions you missed',
+      planTaskRetry: 'Write {t} again',
+      planOpen: 'Open the test',
+      planNoDrill: 'No missed questions saved for this topic yet.',
+      lessonsLabel: 'Lessons'
     },
     af: {
       back: 'Paneelbord', intro: 'Oefentoetse uitgelê soos die eksamen. Elke vraag merk homself: dien in, sien dadelik jou punt, en gaan dan elke antwoord met sy verduideliking deur.',
@@ -568,6 +768,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       up: 'Skuif op', down: 'Skuif af', tTrue: 'Waar', tFalse: 'Onwaar',
       sureTitle: 'Dien jou toets in?', sureAll: 'Jy het elke vraag beantwoord. Sodra jy indien, word jou toets gemerk en kan jy jou antwoorde sien.',
       sureSome: 'Jy het {n} van die vrae nog nie beantwoord nie. Onbeantwoorde vrae kry geen punte nie.', submitNow: 'Dien in', keepGoing: 'Werk verder',
+      studyTitle: 'Wat om volgende te bestudeer', studyNote: 'Dit is die onderwerpe waar jy die meeste punte verloor het, swakste eerste. Onder elkeen is die vrae wat jy gemis het, met die verduideliking om uit te leer.', studyNone: 'Jy het goed gevaar in elke onderwerp. Kyk weer na die vrae wat jy hieronder gemis het.', studyPct: '{p}% van die punte behaal',
       yourMark: 'Jou punt vir {t}', outOf: 'uit {t}', level: 'Vlak {l}', review: 'Hersien my antwoorde',
       bySection: 'Per afdeling', bySkill: 'Kennis en toepassing', knowledge: 'Kennis', application: 'Toepassing',
       retry: 'Skryf dit weer', reviewTitle: 'Hersien jou antwoorde', reviewSub: 'Groen is reg, rooi is verkeerd. Elke antwoord het ’n verduideliking daaronder.',
@@ -591,15 +792,82 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       classResults: 'Klasuitslae', trIntro: 'Begin ’n uitslagsessie en wys sy kode of QR-kode aan die klas. Elke leerder wat met die kode skryf, verskyn hier, en net jy kan die uitslae sien.',
       trTest: 'Toets', trName: 'Sessienaam', trNamePh: 'bv. Graad 9-werkswinkel, 4 November', trStart: 'Begin sessie', trNone: 'Nog geen sessies nie.',
       trResults: '{n} uitslae', trOpen: 'Oop', trClosed: 'Gesluit', trView: 'Sien uitslae', trDelete: 'Skrap', trSureDelete: 'Skrap hierdie sessie en al sy uitslae? Dit kan nie ongedaan gemaak word nie.',
-      trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', trSessionsBack: 'Alle sessies',
+      trShowQr: 'Wys kode en QR', trRefresh: 'Herlaai', trClose: 'Sluit die sessie',
+      trTopicsBtn: 'Druk onderwerpe om te hersien', ptTitle: 'Onderwerpe om te hersien', ptSub: '{n} uitslae · klasgemiddeld {a}%', ptNone: 'Geen enkele vraag het in hierdie onderwerp uitgestaan nie.',
+      ptLost: '{p}% van die leerders het punte verloor', ptRevise: 'Hersien:', ptMarks: 'van die punte in hierdie onderwerp is behaal', ptFoot: 'Bereken uit die punte wat leerders in hul blaaiers ingedien het. Gebruik dit as ’n gids oor wat weer geleer moet word.', ptPrinted: 'Gedruk {d}',
+      sheetBtn: 'Inligtingsblad (maak in ’n nuwe oortjie oop)', shBtn: 'Deel met ’n onderwyser', shTitle: 'Deel hierdie uitslae', shSub: 'Nog ’n onderwyser sal hierdie sessie in hul Klasuitslae sien en kan die punte lees en die onderwerplys druk. Hulle kan dit nie sluit, heropen, uitvee of verder deel nie.', shEmail: 'Hul e-posadres', shAdd: 'Deel', shNone: 'Nog met niemand gedeel nie.', shRemove: 'Hou op deel met {n}', shBy: 'Met jou gedeel deur {n}', shLeave: 'Verwyder van my lys', shSureLeave: 'Verwyder hierdie sessie van jou lys? Die onderwyser wat dit gedeel het, hou dit.', shDone: 'Gedeel met {n}.', trReopen: 'Maak die sessie weer oop', trCsv: 'Laai punte af (CSV)', calcBtn: 'Maak sakrekenaar oop (nuwe oortjie)', trSessionsBack: 'Alle sessies',
       trCodeNote: 'Klaskode {c}. Leerders tik dit op die beginskerm, of skandeer die QR-kode, wat dit invul.',
       tsLearners: 'uitslae', tsAverage: 'klasgemiddelde', tsCode: 'klaskode', tsNoResults: 'Nog geen uitslae nie. Hulle verskyn hier soos leerders indien; druk Herlaai.',
-      tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
+      tsView: 'Bekyk', backClass: 'Terug na klasuitslae', tsTopics: 'Swakste onderwerpe', tsMissed: 'Vrae wat die meeste verkeerd was', tsSkills: 'Kennis en toepassing', tsSections: 'Per afdeling', tsMarks: 'Puntelys',
       tsLost: 'verloor', tsLostOf: '{l} van {n} leerders het punte verloor', tsCommon: 'Algemeenste verkeerde antwoord:', tsShowExplain: 'Verduideliking', tsShowAll: 'Wys al {n} vrae',
       tsName: 'Naam', tsVersion: 'Weergawe', tsMark: 'Punt', tsPct: '%', tsLevel: 'Vlak', tsWhen: 'Ingedien',
       topic_html: 'HTML en CSS', topic_excel: 'Excel', topic_ct: 'Berekeningsdenke', topic_java: 'Java (jGRASP)', topic_freecad: 'FreeCAD', topic_tinkercad: 'TinkerCAD en Arduino',
       teacherOnly: 'Klasuitslae is vir onderwyserrekeninge.',
-      blankN: 'Spasie {n}', fillHint: 'Tik die simbool of woord wat ontbreek in elke blokkie, presies soos dit in kode geskryf word.', empty: 'leeg'
+      blankN: 'Spasie {n}', fillHint: 'Tik die simbool of woord wat ontbreek in elke blokkie, presies soos dit in kode geskryf word.', empty: 'leeg',
+      wordHint: 'Tik een woord of term. Spelling tel, hoofletters nie.', blankHint: 'Tik die woord wat ontbreek in elke spasie. Spelling tel, hoofletters nie.',
+      numHint: 'Tik slegs ’n getal; ’n desimale komma of punt is reg.', labelHint: 'Tik die naam van elke benoemde deel.',
+      writtenHint: 'Skryf jou antwoord volledig. Nadat jy ingehandig het, merk jy dit self teen die memorandum.', yourAnswerH: 'Jou antwoord', memoH: 'Memorandum: merk elke punt wat jou antwoord gee',
+      selfTitle: 'Merk jou geskrewe antwoorde', selfSub: 'Vergelyk elke antwoord met die memorandum en merk die punte wat jy gekry het. Wees eerlik: só leer jy wat die eksaminator wil hê.',
+      aiBtn: 'Merk my geskrewe antwoorde met KI', aiNote: 'Jy kry een KI-gemerkte vraestel per dag. Die KI merk die memorandumpunte wat jou antwoorde verdien en sê wat die res sou verdien het. Jy kan steeds die regmerkies verander.',
+      aiWorking: 'Besig om jou antwoorde te merk. Dit kan ’n minuut neem…', aiDone: 'Deur KI gemerk. Gaan die regmerkies na, verander enige waarmee jy nie saamstem nie, en klik dan klaar.', aiFb: 'KI-terugvoer', aiSummary: 'Oorsig',
+      aiErr_used: 'Jy het reeds vandag se KI-gemerkte vraestel gebruik. Merk hierdie een self, of kom môre terug.', aiErr_cap: 'KI-nasien het vandag se limiet bereik. Merk hierdie een self, of probeer môre weer.',
+      aiErr_auth: 'Teken in om KI-nasien te gebruik.', aiErr_paused: 'KI-nasien is tans onderbreek. Merk hierdie een self; jou vraestel vir vandag is nie gebruik nie.',
+      aiWhy_no_key: 'Vir onderwysers: die ANTHROPIC_API_KEY-geheim is nie in Supabase gestel nie.', aiWhy_bad_key: 'Vir onderwysers: Anthropic het die API-sleutel geweier. Gaan die ANTHROPIC_API_KEY-geheim na.', aiWhy_no_credit: 'Vir onderwysers: die API-sleutel werk en het Anthropic bereik, maar die rekening het geen krediet nie.', aiErr_other: 'KI-nasien het nie hierdie keer gewerk nie, en dit het nie jou vraestel vir vandag opgebruik nie. Probeer weer, of merk dit self.',
+      selfDone: 'Klaar, wys my punt', selfGot: 'Jy het jouself {s} uit {t} gegee', selfMarked: 'self gemerk', acceptAlso: 'ook aanvaar:', answerBox: 'Antwoord',
+      planStart: 'Oefen nou',
+      buildBtn: 'Bou my eie vraestel',
+      prLoginAsk: 'Sien jy nie jou vordering nie?', prLoginKeep: 'Teken in om verbetering oor tyd te hou.', prLoginOther: 'Toetse op ’n ander toestel voltooi? Jy sal moet inteken om dit te hou.', prLoginBtn: 'Teken in',
+      confAsk: 'Hoe seker is jy?',
+      confSure: 'Seker',
+      confUnsure: 'Nie seker nie',
+      confGuess: 'Raai',
+      confTitle: 'Hoe seker jy was',
+      confSureRight: 'Seker, en reg',
+      confSureWrong: 'Seker, maar verkeerd: kyk eers hierna',
+      confUnsureRight: 'Nie seker nie, maar reg: gaan hierdie weer deur',
+      confUnsureWrong: 'Nie seker nie, en verkeerd',
+      confNone: 'Merk hoe seker jy op elke vraag is om hierdie opsomming te sien.',
+      confYou: 'Jy het gesê:',
+      working: 'Berekening',
+      resultRevisit: 'Die {n} vrae wat jy gemis het, kom op {d} terug vir hersiening.',
+      revTitle: 'Hersienings',
+      revDue: '{n} wag vir hersiening.',
+      revNext: 'Volgende hersiening op {d}. {n} vrae gestoor.',
+      revBtn: 'Oefen die vrae wat nou wag',
+      revNone: 'Vrae wat jy mis, word hier gestoor en kom terug vir hersiening.',
+      drillMissBtn: 'Oefen die vrae wat ek gemis het',
+      drillTitle: 'Oefening',
+      drillIntro: 'Net oefening. Dit verander nie jou punt of klasuitslae nie. Elke antwoord word gemerk as jy klaar is, met sy berekening en verduideliking.',
+      drillSubmit: 'Merk my oefening',
+      drillDone: 'Oefening gemerk',
+      drillSaved: 'Jou hersienings is opgedateer. Vrae wat jy reg had, kom minder gereeld terug; die wat jy gemis het, kom môre terug.',
+      drillBack: 'Terug na my toetse',
+      prBtn: 'My vordering',
+      prTitle: 'My vordering',
+      prSub: 'Elke toets wat jy op hierdie toestel ingedien het, in volgorde. Net jy kan dit sien.',
+      prNone: 'Dien ’n toets in, en jou vordering verskyn hier.',
+      prOverall: 'Jou punt in elke toets, in volgorde',
+      prTopics: 'Per onderwerp',
+      prOlder: 'Onderwerpe word vanaf nou gestoor vir elke toets wat jy indien, so ouer pogings wys net die punt.',
+      prTries: '{n} toetse',
+      prFirst: 'Eerste',
+      prLatest: 'Laaste',
+      prChange: 'Verandering',
+      prAttempts: 'Jou toetse',
+      planBtn: 'My hersieningsplan',
+      planTitle: 'My hersieningsplan',
+      planSub: 'Gebou uit jou swakste onderwerpe, en dit volg jou van toets tot toets.',
+      planExam: 'My volgende toets is op',
+      planNoTopics: 'Skryf eers ’n toets, en jou plan word gemaak uit jou swakste onderwerpe.',
+      planSpan: 'Van {a} tot {b}.',
+      planProgress: '{n} van {t} klaar',
+      planTopicPct: '{p}% die vorige keer',
+      planTaskRead: 'Lees die verduidelikings en die berekeninge',
+      planTaskDrill: 'Oefen die vrae wat jy gemis het',
+      planTaskRetry: 'Skryf {t} weer',
+      planOpen: 'Maak die toets oop',
+      planNoDrill: 'Nog geen gemiste vrae vir hierdie onderwerp gestoor nie.',
+      lessonsLabel: 'Lesse'
     }
   };
 
@@ -644,7 +912,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   // ── Questions: the leaves of the test, numbered like an exam paper ───
   function maxMarks(q) {
-    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : q.type === 'fill' ? q.blanks.length : 1;
+    var n = q.type === 'match' || q.type === 'pairs' ? q.pairs.length : q.type === 'order' ? q.steps.length : q.type === 'fill' || q.type === 'blank' ? q.blanks.length :
+      q.type === 'label' ? q.labels.length : q.type === 'written' ? (q.pointMarks ? q.pointMarks.reduce(function (a, b) { return a + b; }, 0) : (q.points || []).length) || 1 : 1;
     return q.marks || n;
   }
   function buildItems(qz) {
@@ -669,9 +938,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function secTotal(si) { return items.filter(function (it) { return it.sec === si; }).reduce(function (s, it) { return s + it.max; }, 0); }
 
   // the fixed shuffles of one attempt, so a refresh shows the same test
-  function newAttempt() {
+  function mixesFor(list) {
     var mixes = {};
-    items.forEach(function (it) {
+    list.forEach(function (it) {
       var q = it.q;
       // multiple-choice options are shuffled too, so the right answer is not always B
       if (q.type === 'mcq' && !q.keepOrder) mixes[it.id] = shuffle(q.options.map(function (o, i) { return i; }));
@@ -679,7 +948,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       if (q.type === 'order') mixes[it.id] = mix(q.steps.length);
       if (q.type === 'pairs') mixes[it.id] = mix(q.pairs.length * 2);
     });
-    return { started: Date.now(), rev: rawQuiz.rev || 1, mixes: mixes, answers: {}, done: null };
+    return mixes;
+  }
+  function newAttempt() {
+    return { started: Date.now(), rev: rawQuiz.rev || 1, mixes: mixesFor(items), answers: {}, done: null, conf: {} };
   }
 
   // ── Marking ──────────────────────────────────────────────────────────
@@ -693,8 +965,43 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (q.type === 'order') { var o = 0; a.forEach(function (s, i) { if (s === i) o++; }); return scale(o, q.steps.length, it.max); }
     if (q.type === 'pairs') { var c = 0; for (var i = 0; i < q.pairs.length; i++) if (a[i * 2] === i * 2 + 1) c++; return scale(c, q.pairs.length, it.max); }
     if (q.type === 'fill') { var f = 0; q.blanks.forEach(function (b, i) { if (blankOk(b, a[i])) f++; }); return scale(f, q.blanks.length, it.max); }
+    if (q.type === 'word') return wordOk(q.answer, a) ? it.max : 0;
+    if (q.type === 'num') return numOk(q, a) ? it.max : 0;
+    if (q.type === 'blank') { var w = 0; q.blanks.forEach(function (b, i) { if (wordOk(b, a[i])) w++; }); return scale(w, q.blanks.length, it.max); }
+    if (q.type === 'label') { var l = 0; q.labels.forEach(function (b, i) { if (wordOk(b.slice(1), a[i])) l++; }); return scale(l, q.labels.length, it.max); }
+    if (q.type === 'written') return Math.min(it.max, selfScore(it));
     return 0;
   }
+  // One word / missing word / labels: capitals, accents, extra spaces, hyphens and a leading
+  // article (the, a, an, die, 'n) do not matter; the spelling does.
+  // Symbols are read as words (\u03b8 = theta, \u03a9 = ohm, \u00d7 = x) and NFKD turns \u00bd, x\u00b2 and \u03b8\u2082 into plain digits.
+  function wordNorm(s) {
+    return String(s == null ? '' : s).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019`]/g, "'")
+      .replace(/\u2044/g, '/').replace(/\u03b8/g, ' theta ').replace(/\u03c0/g, ' pi ').replace(/\u03c9/g, ' ohm ').replace(/\u03c3/g, ' sigma ')
+      .replace(/\u00d7/g, ' x ').replace(/\u0394|\u03b4/g, ' delta ').replace(/\s+/g, ' ')
+      .replace(/^\s*(the|a|an|die|'n)\s+/, '').replace(/[-\u2013_\/]/g, ' ').replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
+  }
+  function wordOk(acc, v) {
+    var mine = wordNorm(v);
+    return mine !== '' && [].concat(acc).some(function (x) { return wordNorm(x) === mine; });
+  }
+  function wordShow(acc) { return [].concat(acc)[0]; }
+  // A numeric answer is right within q.tol (default 1% of the answer); a decimal comma, spaces
+  // and a unit typed after the number are fine.
+  function numVal(v) {
+    var m = String(v == null ? '' : v).replace(/\s/g, '').replace(/^[a-z]=/i, '').replace(/\u2212/g, '-').replace(',', '.').match(/^[-+]?\d*\.?\d+(e[-+]?\d+)?/i);
+    return m ? parseFloat(m[0]) : NaN;
+  }
+  function numOk(q, v) {
+    var x = numVal(v); if (isNaN(x)) return false;
+    var tol = q.tol != null ? q.tol : Math.max(Math.abs(q.answer) * 0.01, 1e-12);
+    return Math.abs(x - q.answer) <= tol + 1e-12;
+  }
+  function numShow(q) { return String(q.answer).replace('.', lang === 'af' ? ',' : '.') + (q.unit ? ' ' + q.unit : ''); }
+  // a written answer earns the memo points the learner ticked when marking it
+  function selfScore(it) { var p = (att && att.self && att.self[it.id]) || [], w = it.q.pointMarks; return p.reduce(function (sum, v, i) { return sum + (v ? (w ? (w[i] || 0) : 1) : 0); }, 0); }
+  function pointText(q, p, i) { var w = q.pointMarks && q.pointMarks[i]; return p + (w > 1 ? ' (' + w + ')' : ''); }
+  function memoFig(q) { return q.memoSvg ? '<div class="tt-figure">' + q.memoSvg + '</div>' : ''; }
   // A blank is right when it has the same pieces as an accepted answer. Spaces
   // between pieces are fine (counter = counter + 1, counter=counter+1), but a
   // space inside a word or a symbol is not (c ounter, + +, <! --, / /).
@@ -713,14 +1020,15 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (a == null) return false;
     if (q.type === 'match') return Object.keys(a).length > 0;
     if (q.type === 'pairs') return Object.keys(a).length > 0;
-    if (q.type === 'fill') return a.some(function (v) { return v && v.trim(); });
+    if (q.type === 'fill' || q.type === 'blank' || q.type === 'label') return a.some(function (v) { return v && String(v).trim(); });
+    if (q.type === 'word' || q.type === 'num' || q.type === 'written') return String(a).trim() !== '';
     return true;
   }
   function levelOf(p) { return p >= 80 ? 7 : p >= 70 ? 6 : p >= 60 ? 5 : p >= 50 ? 4 : p >= 40 ? 3 : p >= 30 ? 2 : 1; }
 
   // ── Views ────────────────────────────────────────────────────────────
   function show(id) {
-    ['viewList', 'viewIntro', 'viewTest', 'viewResult', 'viewReview', 'viewTeacher', 'viewSession'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
+    ['viewList', 'viewIntro', 'viewTest', 'viewResult', 'viewReview', 'viewSelf', 'viewTeacher', 'viewSession', 'viewProgress', 'viewPlan'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); });
     $('testBar').classList.toggle('hidden', id !== 'viewTest');
     placeBar();
     if (id !== 'viewTest') stopClock();
@@ -752,6 +1060,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   function renderList() {
     setUrl(null);
+    renderTools();
     var box = $('quizList'); box.innerHTML = '';
     // signed out on an open test: the other tests are members-only
     if (window.TT_PUBLIC) { show('viewList'); return; }
@@ -830,6 +1139,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   // ── The test ─────────────────────────────────────────────────────────
   function startTest(fresh) {
+    if (drillMode) exitDrill();
     // with a class code the teacher needs a name
     if ($('codeBox').value.trim() && !$('nameBox').value.trim() && !$('viewIntro').classList.contains('hidden')) {
       $('codeStatus').textContent = t('needName'); $('codeStatus').className = 'tt-status bad'; $('nameBox').focus(); return;
@@ -842,10 +1152,12 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     att = s;
     $('testTitle').textContent = fullTitle();
     var body = $('testBody'); body.innerHTML = '';
+    // exam papers link to their formula / data sheet on the printable paper page
+    if (quiz.sheet) { var sh = document.createElement('p'); sh.className = 'tt-calc'; sh.innerHTML = '<a class="ml-btn ml-btn--ghost" target="_blank" rel="noopener" href="' + esc(quiz.sheet.replace(/\.html$/, lang === 'af' ? '.af.html' : '.html')) + '#i">' + esc(t('sheetBtn')) + '</a>'; body.appendChild(sh); }
     quiz.sections.forEach(function (sec, si) {
       var wrap = document.createElement('section'); wrap.className = 'tt-section';
       wrap.innerHTML = '<div class="tt-section-head"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '</h2><span>' + esc(marksText(secTotal(si))) + '</span></div>' +
-        (sec.intro ? '<p class="tt-section-intro">' + esc(sec.intro) + '</p>' : '');
+        (sec.intro ? '<p class="tt-section-intro">' + esc(sec.intro) + '</p>' : '') + figure(sec);
       items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
         if (it.scen && it.first) {
           var sc = document.createElement('div'); sc.className = 'tt-scenario';
@@ -864,7 +1176,19 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     return '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(it.q.q) + '</span><span class="tt-marks">(' + it.max + ')</span></div>';
   }
   function code(c) { return c ? '<pre class="tt-code">' + esc(c) + '</pre>' : ''; }
-  function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + code(it.scen.code); }
+  // a diagram written into the question file as SVG (our own content, not learner input)
+  function figure(q) { return q.svg ? '<div class="tt-figure' + (/<table/.test(q.svg) ? ' wide' : '') + '">' + q.svg + '</div>' : ''; }
+  // questions flagged calc in the test file need working out: a link opens the scientific calculator in a new tab
+  function calcLink(q) { return q.calc ? '<p class="tt-calc"><button type="button" class="ml-btn ml-btn--ghost" data-calc="1">' + esc(t('calcBtn')) + '</button></p>' : ''; }
+  // one calculator window, reused on every click; a phone browser may show it as a normal tab instead
+  function openCalc() {
+    var w = window.open('math-magician/calculator.html', 'ml-calculator', 'popup=yes,width=420,height=720,resizable=yes,scrollbars=yes');
+    if (!w) window.open('math-magician/calculator.html', '_blank');
+    else w.focus();
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-calc]')) openCalc(); });
+  function scenLabel(it) { var lab = it.scen.label != null ? it.scen.label : t('scenario'); return (lab ? lab + ' ' : '') + it.scenNum; }
+  function scenarioHtml(it) { return '<div class="tt-scen-label">' + esc(scenLabel(it)) + '</div>' + (it.scen.scenario ? '<p>' + esc(it.scen.scenario) + '</p>' : '') + figure(it.scen) + code(it.scen.code); }
   // the order an attempt shows the options in: [[label, value], ...]
   function choices(it) {
     var q = it.q;
@@ -877,7 +1201,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   function questionEl(it) {
     var q = it.q, el = document.createElement('div'), a = att.answers[it.id];
     el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : ''); el.id = 'q-' + it.id;
-    el.innerHTML = head(it) + '<div class="tt-body">' + code(q.code) + '</div>';
+    el.innerHTML = head(it) + '<div class="tt-body">' + figure(q) + code(q.code) + calcLink(q) + '</div>' + confRow(it);
     var body = el.querySelector('.tt-body'), name = 'q' + it.id.replace(/\./g, '_');
     if (q.type === 'mcq' || q.type === 'tf') {
       var g = document.createElement('div'); g.className = 'tt-opts' + (q.type === 'tf' ? ' tt-tf' : ''); g.setAttribute('role', 'radiogroup');
@@ -897,8 +1221,81 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       body.appendChild(pairsEl(it));
     } else if (q.type === 'fill') {
       body.appendChild(fillEl(it));
+    } else if (q.type === 'word' || q.type === 'num') {
+      body.appendChild(wordEl(it));
+    } else if (q.type === 'blank') {
+      body.appendChild(proseEl(it));
+    } else if (q.type === 'label') {
+      body.appendChild(labelEl(it));
+    } else if (q.type === 'written') {
+      body.appendChild(writtenEl(it));
     }
     return el;
+  }
+  function plainInput(cls, label, value, onInput) {
+    var inp = document.createElement('input'); inp.className = cls; inp.type = 'text';
+    inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('autocorrect', 'off'); inp.spellcheck = false;
+    inp.setAttribute('aria-label', label); inp.value = value || '';
+    inp.addEventListener('input', function () { onInput(inp.value); });
+    return inp;
+  }
+  function hintEl(key) { var p = document.createElement('p'); p.className = 'tt-hint'; p.textContent = t(key); return p; }
+  // one word or term, or a number (with its unit after the box)
+  function wordEl(it) {
+    var q = it.q, wrap = document.createElement('div'), row = document.createElement('div'); row.className = 'tt-wordrow';
+    var inp = plainInput('tt-word', t('answerBox'), att.answers[it.id], function (v) { setAnswer(it, v.trim() ? v : null); });
+    if (q.type === 'num') { inp.setAttribute('inputmode', 'decimal'); inp.style.minWidth = '10ch'; }
+    row.appendChild(inp);
+    if (q.unit) { var u = document.createElement('span'); u.className = 'tt-unit'; u.textContent = q.unit; row.appendChild(u); }
+    wrap.appendChild(row); wrap.appendChild(hintEl(q.type === 'num' ? 'numHint' : 'wordHint'));
+    return wrap;
+  }
+  function listInput(it, n) {
+    return function (i, v) {
+      var cur = (att.answers[it.id] || []).slice(); while (cur.length < n) cur.push('');
+      cur[i] = v; setAnswer(it, cur.some(function (x) { return String(x).trim(); }) ? cur : null);
+    };
+  }
+  // fill in the missing word: a sentence with a box for each [[]]
+  function proseEl(it) {
+    var q = it.q, parts = q.text.split('[[]]'), a = att.answers[it.id] || [], put = listInput(it, q.blanks.length);
+    var p = document.createElement('p'); p.className = 'tt-prose';
+    parts.forEach(function (txt, i) {
+      p.appendChild(document.createTextNode(txt));
+      if (i < parts.length - 1) {
+        var inp = plainInput('tt-blank', t('blankN', { n: i + 1 }), a[i], function (v) { put(i, v); });
+        inp.style.width = Math.max(9, wordShow(q.blanks[i]).length + 3) + 'ch';
+        p.appendChild(inp);
+      }
+    });
+    var wrap = document.createElement('div'); wrap.appendChild(p); wrap.appendChild(hintEl('blankHint'));
+    return wrap;
+  }
+  // label the diagram: q.labels = [[tag, accepted, ...], ...]; the diagram comes from q.svg
+  function labelEl(it) {
+    var q = it.q, a = att.answers[it.id] || [], put = listInput(it, q.labels.length);
+    var box = document.createElement('div'); box.className = 'tt-labels';
+    q.labels.forEach(function (lb, i) {
+      var l = document.createElement('label'); l.innerHTML = '<b>' + esc(lb[0]) + '</b>';
+      l.appendChild(plainInput('tt-word', lb[0], a[i], function (v) { put(i, v); }));
+      box.appendChild(l);
+    });
+    var wrap = document.createElement('div'); wrap.appendChild(box); wrap.appendChild(hintEl('labelHint'));
+    return wrap;
+  }
+  // written answer: marked by the learner against q.points after handing in
+  function writtenEl(it) {
+    var ta = document.createElement('textarea'); ta.className = 'tt-written'; ta.value = att.answers[it.id] || '';
+    ta.setAttribute('aria-label', t('answerBox')); ta.rows = Math.min(14, 3 + it.max);
+    ta.addEventListener('input', function () { setAnswer(it, ta.value.trim() ? ta.value : null); });
+    var wrap = document.createElement('div'); wrap.appendChild(ta); wrap.appendChild(hintEl('writtenHint'));
+    return wrap;
+  }
+  function pointsHtml(it, editable) {
+    var ticks = (att.self && att.self[it.id]) || [];
+    return '<div class="tt-h3" style="margin-top:0">' + esc(t('memoH')) + '</div><ul class="r-points">' + (it.q.points || []).map(function (p, i) {
+      return '<li><input type="checkbox" data-i="' + i + '"' + (ticks[i] ? ' checked' : '') + (editable ? '' : ' disabled') + '><span>' + esc(pointText(it.q, p, i)) + '</span></li>';
+    }).join('') + '</ul>' + memoFig(it.q);
   }
 
   // Column B lists the right answers and any extras, shuffled; a choice is
@@ -1080,10 +1477,82 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (d.showModal) d.showModal(); else if (confirm($('confirmText').textContent)) submit();
   }
   function submit() {
+    if (drillMode) return submitDrill();
+    if (items.some(function (it) { return it.q.type === 'written'; })) return renderSelf();
+    finishSubmit();
+  }
+  // the learner ticks the memo points of each written answer, then the test is marked
+  function renderSelf() {
+    var body = $('selfBody'); body.innerHTML = '';
+    att.self = att.self || {};
+    items.filter(function (it) { return it.q.type === 'written'; }).forEach(function (it) {
+      var el = document.createElement('div'); el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
+      el.innerHTML = head(it) + '<div class="tt-body">' + figure(it.q) + code(it.q.code) + '<div class="tt-h3" style="margin-top:0">' + esc(t('yourAnswerH')) + '</div>' +
+        '<div class="r-written">' + esc(att.answers[it.id] || t('notAnswered')) + '</div>' + aiFbHtml(it) + pointsHtml(it, true) + '<p class="tt-self-total"></p></div>';
+      var tot = el.querySelector('.tt-self-total');
+      function paint() { tot.textContent = t('selfGot', { s: Math.min(it.max, selfScore(it)), t: it.max }); }
+      [].forEach.call(el.querySelectorAll('.r-points input'), function (cb) {
+        cb.addEventListener('change', function () {
+          var tk = (att.self[it.id] || []).slice(); tk[+cb.getAttribute('data-i')] = cb.checked; att.self[it.id] = tk; save(); paint();
+        });
+      });
+      paint();
+      body.appendChild(el);
+    });
+    paintAi();
+    show('viewSelf');
+  }
+  // ── AI marking: one paper per learner per day, through the tome-ai-mark edge function ──
+  // The function fetches the paper and memo itself and only returns which memo points
+  // each answer earns plus a comment, so the ticks stay the learner's to change.
+  function aiAllowed() { return !!(meta && !meta.custom && !drillMode && !window.TT_PUBLIC && acctUid()); }
+  function aiFbHtml(it) {
+    var a = att.ai && att.ai.answers && att.ai.answers[it.id];
+    return a && a.feedback ? '<div class="tt-ai-fb"><b>' + esc(t('aiFb')) + '</b>' + esc(a.feedback) + '</div>' : '';
+  }
+  function paintAi(msg) {
+    $('aiBox').classList.toggle('hidden', !aiAllowed());
+    $('btnAi').classList.toggle('hidden', !!att.ai);
+    $('aiStatus').textContent = msg || (att.ai ? t('aiDone') : t('aiNote'));
+    $('aiSummary').innerHTML = att.ai && att.ai.summary ? '<div class="tt-ai-fb"><b>' + esc(t('aiSummary')) + '</b>' + esc(att.ai.summary) + '</div>' : '';
+  }
+  function runAi() {
+    var btn = $('btnAi'), a = att, answers = {};
+    items.forEach(function (it) { if (it.q.type === 'written' && a.answers[it.id]) answers[it.id] = String(a.answers[it.id]); });
+    btn.disabled = true; paintAi(t('aiWorking'));
+    db().then(function (c) {
+      return c.functions.invoke('tome-ai-mark', { body: { quiz_id: quiz.id, lang: lang, answers: answers } });
+    }).then(function (r) {
+      if (!r.error) return r.data;
+      var ctx = r.error.context;
+      return (ctx && ctx.json ? ctx.json().catch(function () { return {}; }) : Promise.resolve({})).then(function (b) { var er = new Error((b && b.error) || 'other'); er.reason = b && b.reason; throw er; });
+    }).then(function (data) {
+      btn.disabled = false;
+      if (a !== att) return;
+      a.self = a.self || {};
+      Object.keys(data.answers || {}).forEach(function (id) {
+        var it = items.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+        var tk = (it.q.points || []).map(function () { return false; });
+        data.answers[id].met.forEach(function (i) { tk[i] = true; });
+        a.self[id] = tk;
+      });
+      a.ai = { answers: data.answers || {}, summary: data.summary || '', at: Date.now() };
+      save(); renderSelf(); window.scrollTo(0, 0);
+    }).catch(function (e) {
+      btn.disabled = false;
+      var k = e && e.message, known = { used: 1, cap: 1, auth: 1, paused: 1 };
+      var why = k === 'paused' && isTeacher() && { no_key: 1, bad_key: 1, no_credit: 1 }[e.reason] ? ' ' + t('aiWhy_' + e.reason) : '';
+      paintAi(t('aiErr_' + (known[k] ? k : 'other')) + why);
+    });
+  }
+
+  function finishSubmit() {
     var per = {}, score = 0;
     items.forEach(function (it) { var m = mark(it, att.answers[it.id]); per[it.id] = m; score += m; });
     att.done = { at: Date.now(), score: score, total: total(), per: per };
     save();
+    recordHistory(att.done);
+    addRevisits(per);
     renderResult();
     if (att.code) sendResult(att);
   }
@@ -1110,6 +1579,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     $('resultScore').innerHTML = '<b>' + d.score + '</b><span>' + esc(t('outOf', { t: d.total })) + '</span><span class="tt-pct">' + p + '%</span><span>' + esc(t('level', { l: levelOf(p) })) + '</span>';
     $('resultSections').innerHTML = sectionRows(d);
     $('resultSkills').innerHTML = skillRows(d);
+    $('resultStudy').innerHTML = studyHtml(d);
+    paintResultPractice(d);
     show('viewResult');
   }
   function sectionRows(d) {
@@ -1117,6 +1588,31 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       var its = items.filter(function (it) { return it.sec === si; });
       return row(t('question', { n: si + 1 }) + ': ' + sec.title, its.reduce(function (s, it) { return s + d.per[it.id]; }, 0), secTotal(si));
     }).join('');
+  }
+  // what to study: the learner's weakest topics, each with the questions they missed most
+  function studyHtml(d) {
+    var by = {};
+    items.forEach(function (it) {
+      var k = it.topic || 'other', o = by[k] = by[k] || { k: k, got: 0, max: 0, its: [] };
+      o.got += d.per[it.id] || 0; o.max += it.max; o.its.push(it);
+    });
+    var list = Object.keys(by).map(function (k) { var o = by[k]; o.pct = pctOf(o.got, o.max); return o; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = list.filter(function (o) { return o.pct < 70; }).slice(0, 3), none = !need.length;
+    if (none) need = list.slice(0, 1);
+    var lost = function (it) { return it.max - (d.per[it.id] || 0); };
+    var h = '<p class="tt-note">' + esc(t(none ? 'studyNone' : 'studyNote')) + '</p>';
+    need.forEach(function (o) {
+      var missed = o.its.filter(function (it) { return lost(it) > 0; })
+        .sort(function (a, b) { return lost(b) / b.max - lost(a) / a.max || (a.num < b.num ? -1 : 1); }).slice(0, 3);
+      h += '<div class="tt-study"><div class="tt-study-head"><b>' + esc(topicName(o.k, quiz)) + '</b><span>' + esc(t('studyPct', { p: o.pct })) + '</span></div>' + lessonsHtml(o.k, quiz.grade);
+      if (missed.length) h += '<ul class="tt-study-list">' + missed.map(function (it) {
+        var txt = String(it.q.q || '').replace(/\s+/g, ' ').trim();
+        return '<li><b>' + esc(it.num) + '</b> ' + esc(txt.length > 140 ? txt.slice(0, 139) + '…' : txt) +
+          (it.q.explain ? '<small>' + esc(t('ptRevise')) + ' ' + esc(it.q.explain) + '</small>' : '') + '</li>';
+      }).join('') + '</ul>';
+      h += '</div>';
+    });
+    return h;
   }
   function skillRows(d) {
     return ['knowledge', 'application'].map(function (k) {
@@ -1128,7 +1624,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   // ── Review ───────────────────────────────────────────────────────────
   function renderReview() {
+    setDrillChrome(false);
     var body = $('reviewBody'); body.innerHTML = '';
+    // a teacher reading a learner's attempt: no retry, and back to the class list
+    var tv = !!att.teacherView;
+    $('btnRevRetry').classList.toggle('hidden', tv);
+    $('btnRevResult').querySelector('span').textContent = tv ? t('backClass') : t('backResult');
+    $('reviewTitle').textContent = tv ? (att.name || '') + ' · ' + fullTitle() : t('reviewTitle');
     $('reviewSub').textContent = t('reviewSub');
     [].forEach.call($('reviewFilter').children, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === reviewFilter)); });
     var shown = buildReview(body, reviewFilter);
@@ -1189,6 +1691,13 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (q.type === 'fill') return '<pre class="tt-fill">' + fillParts(q).map(function (txt, i, all) {
       return esc(txt) + (i < all.length - 1 ? '<span class="fb ok">' + esc([].concat(q.blanks[i]).join(' / ')) + '</span>' : '');
     }).join('') + '</pre>';
+    if (q.type === 'word') return '<p class="tt-prose"><span class="fb ok">' + esc([].concat(q.answer).join(' / ')) + '</span></p>';
+    if (q.type === 'num') return '<p class="tt-prose"><span class="fb ok">' + esc(numShow(q)) + '</span>' + (q.tol != null ? ' (± ' + esc(String(q.tol)) + ')' : '') + '</p>';
+    if (q.type === 'blank') return '<p class="tt-prose">' + q.text.split('[[]]').map(function (txt, i, all) {
+      return esc(txt) + (i < all.length - 1 ? '<span class="fb ok">' + esc([].concat(q.blanks[i]).join(' / ')) + '</span>' : '');
+    }).join('') + '</p>';
+    if (q.type === 'label') return '<table class="r-table"><tbody>' + q.labels.map(function (lb) { return '<tr><td><b>' + esc(lb[0]) + '</b></td><td>' + esc(lb.slice(1).join(' / ')) + '</td></tr>'; }).join('') + '</tbody></table>';
+    if (q.type === 'written') return '<ul class="r-points">' + (q.points || []).map(function (p, i) { return '<li><span>✓</span><span>' + esc(pointText(q, p, i)) + '</span></li>'; }).join('') + '</ul>' + memoFig(q);
     return '';
   }
   // ── Download the paper: one HTML file with the questions and no answers, to
@@ -1226,15 +1735,23 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       h += '<ol class="p-order">' + q.steps.slice().reverse().map(function (st) { return '<li><span class="p-blank">&nbsp;&nbsp;&nbsp;&nbsp;</span> ' + esc(st) + '</li>'; }).join('') + '</ol>';
     } else if (q.type === 'fill') {
       h += '<pre class="p-code">' + fillParts(q).map(esc).join(' ______ ') + '</pre>';
+    } else if (q.type === 'word' || q.type === 'num') {
+      h += '<p class="p-tf"><span class="p-blank" style="min-width:200px">&nbsp;</span>' + (q.unit ? ' ' + esc(q.unit) : '') + '</p>';
+    } else if (q.type === 'blank') {
+      h += '<p class="p-tf">' + q.text.split('[[]]').map(esc).join(' <span class="p-blank" style="min-width:110px">&nbsp;</span> ') + '</p>';
+    } else if (q.type === 'label') {
+      h += (q.svg ? '<div style="margin:8px 0 0 54px;max-width:520px">' + q.svg + '</div>' : '') + '<ol class="p-order">' + q.labels.map(function (lb) { return '<li><b>' + esc(lb[0]) + '</b> <span class="p-blank" style="min-width:200px">&nbsp;</span></li>'; }).join('') + '</ol>';
+    } else if (q.type === 'written') {
+      for (var ln = 0; ln < Math.max(3, it.max * 2); ln++) h += '<p class="p-tf"><span class="p-blank" style="display:block;min-width:100%">&nbsp;</span></p>';
     }
     return h + '</div>';
   }
   function paperHtml() {
     var lastScen = null, body = '';
     quiz.sections.forEach(function (sec, si) {
-      body += '<section class="p-sec"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '<span>' + esc(marksText(secTotal(si))) + '</span></h2>' + (sec.intro ? '<p class="p-intro">' + esc(sec.intro) + '</p>' : '');
+      body += '<section class="p-sec"><h2>' + esc(t('question', { n: si + 1 }) + ': ' + sec.title) + '<span>' + esc(marksText(secTotal(si))) + '</span></h2>' + (sec.intro ? '<p class="p-intro">' + esc(sec.intro) + '</p>' : '') + (sec.svg ? '<div>' + sec.svg + '</div>' : '');
       items.filter(function (it) { return it.sec === si; }).forEach(function (it) {
-        if (it.scen && it.scen !== lastScen) body += '<div class="p-scen"><div class="p-scen-label">' + esc(t('scenario') + ' ' + it.scenNum) + '</div><p>' + esc(it.scen.scenario) + '</p>' + (it.scen.code ? '<pre class="p-code">' + esc(it.scen.code) + '</pre>' : '') + '</div>';
+        if (it.scen && it.scen !== lastScen) body += '<div class="p-scen"><div class="p-scen-label">' + esc(scenLabel(it)) + '</div><p>' + esc(it.scen.scenario) + '</p>' + (it.scen.svg ? '<div>' + it.scen.svg + '</div>' : '') + (it.scen.code ? '<pre class="p-code">' + esc(it.scen.code) + '</pre>' : '') + '</div>';
         lastScen = it.scen || null;
         body += paperBody(it);
       });
@@ -1274,7 +1791,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     el.className = 'tt-q' + (it.scen ? ' tt-sub-q' : '');
     var cls = got === it.max ? 'full' : got > 0 ? 'part' : 'none';
     el.innerHTML = '<div class="tt-q-head"><span class="tt-num">' + esc(it.num) + '</span><span class="tt-text">' + esc(q.q) + '</span><span class="tt-got ' + cls + '">' + esc(t('got', { s: got, t: it.max })) + '</span></div><div class="tt-body"></div>';
-    var body = el.querySelector('.tt-body'), h = code(q.code);
+    var body = el.querySelector('.tt-body'), h = figure(q) + code(q.code);
     if (q.type === 'mcq' || q.type === 'tf') {
       choices(it).forEach(function (ch) {
         var o = ch[0], val = ch[1], isRight = val === q.answer, picked = a === val;
@@ -1282,6 +1799,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var note = isRight ? t('correct') : picked ? t('yours') : '';
         if (isRight && picked) note = t('yours') + ' ✓';
         h += '<div class="r-opt ' + c + '"><span class="tt-letter">' + ch[2] + '</span><span>' + esc(o) + '</span>' + (note ? '<em>' + esc(note) + '</em>' : '') + '</div>';
+        if (picked && !isRight && q.whyWrong && q.whyWrong[val]) h += '<p class="tt-why-wrong">' + esc(q.whyWrong[val]) + '</p>';
       });
       if (a == null) h += '<p class="tt-hint">' + esc(t('notAnswered')) + '</p>';
     } else if (q.type === 'match') {
@@ -1323,6 +1841,32 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       h += '<div class="tt-h3">' + esc(t('rightPairs')) + '</div><div class="r-pairs-wrap">' + q.pairs.map(function (p, i) {
         return '<div class="r-pair" style="--pc:' + PAIR_COLOURS[i % PAIR_COLOURS.length] + '"><div>' + esc(p[0]) + '</div><span aria-hidden="true">↔</span><div>' + esc(p[1]) + '</div></div>';
       }).join('') + '</div>';
+    }
+    if (q.type === 'word' || q.type === 'num') {
+      var ok1 = got === it.max, yv = (a || '').trim(), right1 = q.type === 'num' ? numShow(q) : wordShow(q.answer);
+      h += '<p class="tt-prose">' + (ok1 ? '<span class="fb ok">' + esc(yv) + '</span>' : '<span class="fb no"><s>' + esc(yv || t('empty')) + '</s><span class="fb-right">' + esc(right1) + '</span></span>') + '</p>';
+      if (q.type === 'word' && [].concat(q.answer).length > 1) h += '<p class="tt-hint">' + esc(t('acceptAlso') + ' ' + [].concat(q.answer).slice(1).join(', ')) + '</p>';
+    } else if (q.type === 'blank') {
+      var bp = q.text.split('[[]]'), ba = a || [];
+      h += '<p class="tt-prose">' + bp.map(function (txt, i) {
+        if (i === bp.length - 1) return esc(txt);
+        var v = (ba[i] || '').trim(), ok = wordOk(q.blanks[i], v), right = wordShow(q.blanks[i]);
+        return esc(txt) + (ok ? '<span class="fb ok">' + esc(v) + '</span>' : '<span class="fb no"><s>' + esc(v || t('empty')) + '</s><span class="fb-right">' + esc(right) + '</span></span>');
+      }).join('') + '</p>';
+    } else if (q.type === 'label') {
+      var la = a || [];
+      h += '<table class="r-table"><thead><tr><th></th><th></th><th>' + esc(t('yours')) + '</th><th>' + esc(t('correct')) + '</th></tr></thead><tbody>' + q.labels.map(function (lb, i) {
+        var v = (la[i] || '').trim(), ok = wordOk(lb.slice(1), v);
+        return '<tr><td class="r-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '✓' : '✗') + '</td><td><b>' + esc(lb[0]) + '</b></td><td>' + (ok ? esc(v) : '<span class="r-was">' + esc(v || t('empty')) + '</span>') + '</td><td>' + esc(lb[1]) + '</td></tr>';
+      }).join('') + '</tbody></table>';
+    } else if (q.type === 'written') {
+      h += '<div class="tt-h3" style="margin-top:0">' + esc(t('yourAnswerH')) + '</div><div class="r-written">' + esc(a || t('notAnswered')) + '</div>' + aiFbHtml(it) + pointsHtml(it, false) +
+        '<p class="tt-hint">' + esc(t('selfMarked')) + '</p>';
+    }
+    if (q.working && q.working.length) h += '<div class="tt-working"><b>' + esc(t('working')) + '</b><ol>' + q.working.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>';
+    if (quiz && quiz.confidence && !att.drill && att.conf && att.conf[it.id]) {
+      var cl = CONF.filter(function (x) { return x[0] === att.conf[it.id]; })[0];
+      h += '<p class="tt-hint">' + esc(t('confYou')) + ' ' + esc(t(cl[1])) + '</p>';
     }
     if (q.explain) h += '<div class="tt-explain"><b>' + esc(t('why')) + '</b> ' + esc(q.explain) + '</div>';
     body.innerHTML = h;
@@ -1379,7 +1923,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
 
   // ── Teacher view: results sessions and what the class got wrong ──────
-  var sessions = [], curSession = null, curResults = [], showAllMissed = false, markSort = { k: 'name', d: 1 };
+  var myId = null, owners = {}, sessions = [], curSession = null, curResults = [], curVs = null, showAllMissed = false, markSort = { k: 'name', d: 1 };
   function isTeacher() { return !window.TT_PUBLIC && window.MagicLabAuth && MagicLabAuth.isTeacher && MagicLabAuth.isTeacher(); }
   function syncTeacherEntry() { $('teacherEntry').classList.toggle('hidden', !isTeacher()); }
   function sets() {
@@ -1406,10 +1950,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     db().then(function (c) {
       return Promise.all([
         c.from('tome_sessions').select('*').order('created_at', { ascending: false }),
-        c.from('tome_results').select('session_id')
+        c.from('tome_results').select('session_id'),
+        c.rpc('tome_session_owners'),
+        c.auth.getUser()
       ]);
     }).then(function (r) {
       sessions = (r[0].data || []);
+      owners = {}; (r[2].data || []).forEach(function (o) { owners[o.r_session] = o.r_name; });
+      myId = r[3] && r[3].data && r[3].data.user ? r[3].data.user.id : null;
       var counts = {}; (r[1].data || []).forEach(function (x) { counts[x.session_id] = (counts[x.session_id] || 0) + 1; });
       if (!sessions.length) { box.innerHTML = '<p class="tt-empty-sm">' + esc(t('trNone')) + '</p>'; return; }
       box.innerHTML = '';
@@ -1417,20 +1965,54 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
         var d = document.createElement('div'); d.className = 'tr-session' + (se.is_open ? '' : ' tr-closed');
         d.innerHTML = '<div><strong>' + esc(se.title) + '</strong><small>' + esc(setTitle(se.quiz_set)) + ' · ' +
           esc(new Date(se.created_at).toLocaleDateString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })) + ' · ' +
-          esc(t('trResults', { n: counts[se.id] || 0 })) + ' · ' + esc(se.is_open ? t('trOpen') : t('trClosed')) + '</small></div>' +
-          '<div class="tr-actions"><span class="tr-code">' + esc(se.join_code) + '</span>' +
+          esc(t('trResults', { n: counts[se.id] || 0 })) + ' · ' + esc(se.is_open ? t('trOpen') : t('trClosed')) + (isShared(se) ? ' · ' + esc(t('shBy', { n: owners[se.id] || '' })) : '') + '</small></div>' +
+          '<div class="tr-actions">' + (isShared(se) ? '' : '<span class="tr-code">' + esc(se.join_code) + '</span>') +
           '<button class="ml-btn ml-btn--primary" data-a="view">' + esc(t('trView')) + '</button>' +
-          '<button class="ml-btn ml-btn--ghost" data-a="qr" aria-label="' + esc(t('trShowQr')) + '"><i data-lucide="qr-code"></i></button>' +
-          '<button class="ml-btn ml-btn--ghost" data-a="del" aria-label="' + esc(t('trDelete')) + '"><i data-lucide="trash-2"></i></button></div>';
+          (isShared(se)
+            ? '<button class="ml-btn ml-btn--ghost" data-a="leave" aria-label="' + esc(t('shLeave')) + '" title="' + esc(t('shLeave')) + '"><i data-lucide="x"></i></button>'
+            : '<button class="ml-btn ml-btn--ghost" data-a="qr" aria-label="' + esc(t('trShowQr')) + '"><i data-lucide="qr-code"></i></button>' +
+              '<button class="ml-btn ml-btn--ghost" data-a="del" aria-label="' + esc(t('trDelete')) + '"><i data-lucide="trash-2"></i></button>') + '</div>';
         d.querySelector('[data-a="view"]').addEventListener('click', function () { openSession(se); });
-        d.querySelector('[data-a="qr"]').addEventListener('click', function () { showSessionQr(se); });
-        d.querySelector('[data-a="del"]').addEventListener('click', function () {
-          if (!confirm(t('trSureDelete'))) return;
-          db().then(function (c) { return c.from('tome_sessions').delete().eq('id', se.id); }).then(loadSessions);
+        if (isShared(se)) d.querySelector('[data-a="leave"]').addEventListener('click', function () {
+          if (!confirm(t('shSureLeave'))) return;
+          db().then(function (c) { return c.from('tome_session_shares').delete().eq('session_id', se.id).eq('teacher_id', myId); }).then(loadSessions);
+        });
+        else {
+          d.querySelector('[data-a="qr"]').addEventListener('click', function () { showSessionQr(se); });
+          d.querySelector('[data-a="del"]').addEventListener('click', function () {
+            if (!confirm(t('trSureDelete'))) return;
+            db().then(function (c) { return c.from('tome_sessions').delete().eq('id', se.id); }).then(loadSessions);
+          });
+        }
+        box.appendChild(d);
+      });
+      icons();
+    });
+  }
+  // a session another teacher started and shared with me
+  function isShared(se) { return !!myId && se.teacher_id !== myId; }
+  function loadShares() {
+    var box = $('shrList'); box.innerHTML = '';
+    db().then(function (c) { return c.rpc('tome_session_shares_of', { p_session: curSession.id }); }).then(function (r) {
+      var rows = r.data || [];
+      if (!rows.length) { box.innerHTML = '<p class="tt-empty-sm">' + esc(t('shNone')) + '</p>'; return; }
+      rows.forEach(function (x) {
+        var d = document.createElement('div'); d.className = 'shr-row';
+        d.innerHTML = '<div>' + esc(x.r_name) + '<small>' + esc(x.r_email) + '</small></div><button class="ml-btn ml-btn--ghost" aria-label="' + esc(t('shRemove', { n: x.r_name })) + '"><i data-lucide="x"></i></button>';
+        d.querySelector('button').addEventListener('click', function () {
+          db().then(function (c) { return c.from('tome_session_shares').delete().eq('session_id', curSession.id).eq('teacher_id', x.r_teacher); }).then(loadShares);
         });
         box.appendChild(d);
       });
       icons();
+    });
+  }
+  function addShare() {
+    var st = $('shrStatus'), em = $('shrEmail').value.trim(); if (!em) return;
+    st.textContent = ''; st.className = 'tt-status';
+    db().then(function (c) { return c.rpc('share_tome_session', { p_session: curSession.id, p_email: em }); }).then(function (r) {
+      if (r.error) { st.textContent = r.error.message; st.className = 'tt-status bad'; return; }
+      $('shrEmail').value = ''; st.textContent = t('shDone', { n: (r.data && r.data[0] && r.data[0].r_name) || em }); loadShares();
     });
   }
   function createSession() {
@@ -1451,6 +2033,9 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     $('tsTitle').textContent = se.title;
     $('tsSub').textContent = setTitle(se.quiz_set);
     paintOpenBtn();
+    var sh = isShared(se);
+    if (sh) $('tsSub').textContent += ' · ' + t('shBy', { n: owners[se.id] || '' });
+    ['btnTsOpen', 'btnTsShare', 'btnTsQr'].forEach(function (id) { $(id).classList.toggle('hidden', sh); });
     show('viewSession');
     loadSessionResults();
   }
@@ -1476,7 +2061,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     Promise.all([
       db().then(function (c) { return c.from('tome_results').select('*').eq('session_id', curSession.id).order('created_at'); }),
       loadSet(curSession.quiz_set)
-    ]).then(function (r) { curResults = r[0].data || []; renderSession(r[1]); });
+    ]).then(function (r) { curResults = r[0].data || []; curVs = r[1]; renderSession(r[1]); });
   }
   function pctOf(a, b) { return b ? Math.round(a / b * 100) : 0; }
   function answerText(it, a) {
@@ -1501,12 +2086,68 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       else if (q.type === 'fill' && a) {
         q.blanks.forEach(function (b, i) { var v = (a[i] || '').trim(); if (!blankOk(b, v)) { var k = (i + 1) + ': ' + (v || '—') + ' (≠ ' + blankShow(b) + ')'; c[k] = (c[k] || 0) + 1; } });
       }
+      else if ((q.type === 'word' || q.type === 'num') && a) {
+        if (!(q.type === 'num' ? numOk(q, a) : wordOk(q.answer, a))) { var kw = String(a).trim(); c[kw] = (c[kw] || 0) + 1; }
+      }
+      else if ((q.type === 'blank' || q.type === 'label') && a) {
+        (q.type === 'blank' ? q.blanks : q.labels.map(function (lb) { return lb.slice(1); })).forEach(function (b, i) {
+          var v = (a[i] || '').trim(); if (!wordOk(b, v)) { var kb = (q.type === 'label' ? q.labels[i][0] : i + 1) + ': ' + (v || '—') + ' (≠ ' + wordShow(b) + ')'; c[kb] = (c[kb] || 0) + 1; }
+        });
+      }
       else if (q.type === 'pairs' && a) {
         Object.keys(a).forEach(function (x) { x = +x; var y = a[x]; if (x % 2 === 0 && Math.floor(x / 2) !== Math.floor(y / 2)) { var k = cardText(q, x) + ' ↔ ' + cardText(q, y); c[k] = (c[k] || 0) + 1; } });
       }
     });
     var best = null; Object.keys(c).forEach(function (k) { if (!best || c[k] > c[best]) best = k; });
     return best ? { text: best, n: c[best] } : null;
+  }
+  // per question, per topic, per skill and per section, across every result
+  function tally(vs) {
+    var Q = {}, topic = {}, skill = {}, section = {};
+    curResults.forEach(function (r) {
+      var v = vs[r.quiz_id]; if (!v) return;
+      v.items.forEach(function (it) {
+        var got = +((r.per || {})[it.id] || 0), key = r.quiz_id + '|' + it.id;
+        var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
+        q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
+        [[topic, it.topic || 'other'], [skill, it.skill], [section, (v.quiz.sections[it.sec] || {}).title || String(it.sec + 1)]].forEach(function (g) {
+          var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
+        });
+      });
+    });
+    return { Q: Q, topic: topic, skill: skill, section: section };
+  }
+  // A one-page reference of what most of the class found hard: the weakest topics
+  // (under 70%, and at least the weakest three), each with its most-missed
+  // questions and what to revise. Printed through the same sheet as the answer key.
+  function printTopics() {
+    var vs = curVs; if (!vs || !curResults.length || !Object.keys(vs).length) return;
+    var tl = tally(vs), anyQuiz = vs[Object.keys(vs)[0]].quiz;
+    var tot = curResults.reduce(function (a, r) { return a + r.score; }, 0), max = curResults.reduce(function (a, r) { return a + r.total; }, 0);
+    var list = Object.keys(tl.topic).map(function (k) { return { k: k, pct: pctOf(tl.topic[k].got, tl.topic[k].max) }; }).sort(function (a, b) { return a.pct - b.pct; });
+    var need = list.filter(function (x) { return x.pct < 70; });
+    if (need.length < 3) need = list.slice(0, Math.min(3, list.length));
+    need = need.slice(0, 8);
+    var missed = Object.keys(tl.Q).map(function (k) { return tl.Q[k]; }).filter(function (q) { return q.got < q.max; });
+    var short = function (x, n) { x = String(x || '').replace(/\s+/g, ' ').trim(); return x.length > n ? x.slice(0, n - 1) + '…' : x; };
+    var h = '<div class="p-head"><h1>' + esc(t('ptTitle')) + ' · ' + esc(curSession.title) + '</h1><p>' + esc(setTitle(curSession.quiz_set)) + ' · ' +
+      esc(t('ptSub', { n: curResults.length, a: pctOf(tot, max) })) + ' · ' + esc(t('ptPrinted', { d: new Date().toLocaleDateString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'long', year: 'numeric' }) })) + '</p></div>';
+    need.forEach(function (x) {
+      var o = tl.topic[x.k], qs = missed.filter(function (q) { return (q.it.topic || 'other') === x.k; })
+        .sort(function (a, b) { return (b.max - b.got) / b.max - (a.max - a.got) / a.max || b.n - a.n; })
+        .filter(function (q) { return pctOf(q.max - q.got, q.max) >= 25; }).slice(0, 4);
+      h += '<div class="pt-topic"><h2>' + esc(topicName(x.k, anyQuiz)) + ' · ' + x.pct + '%</h2><div class="tt-rows">' + row(x.pct + '% ' + t('ptMarks'), o.got, o.max) + '</div>';
+      if (!qs.length) h += '<p class="pt-none">' + esc(t('ptNone')) + '</p>';
+      else h += '<ul class="pt-list">' + qs.map(function (q) {
+        return '<li><b>' + esc(q.it.num) + '</b> ' + esc(short(q.it.q.q, 150)) + ' <i>(' + esc(t('ptLost', { p: pctOf(q.max - q.got, q.max) })) + ')</i>' +
+          (q.it.q.explain ? '<small>' + esc(t('ptRevise')) + ' ' + esc(short(q.it.q.explain, 200)) + '</small>' : '') + '</li>';
+      }).join('') + '</ul>';
+      h += '</div>';
+    });
+    h += '<p class="pt-foot">' + esc(t('ptFoot')) + '</p>';
+    $('ttPrint').innerHTML = h;
+    var old = document.title; document.title = t('ptTitle') + ' - ' + curSession.title;
+    setTimeout(function () { window.print(); document.title = old; }, 50);
   }
   function renderSession(vs) {
     var R = curResults, body = $('tsBody');
@@ -1516,18 +2157,8 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     if (!R.length) { body.innerHTML = '<p class="tt-empty-sm">' + esc(t('tsNoResults')) + '</p>'; return; }
 
     // per question, per topic, per skill and per section, across every result
-    var Q = {}, topic = {}, skill = {}, section = {};
-    R.forEach(function (r) {
-      var v = vs[r.quiz_id]; if (!v) return;
-      v.items.forEach(function (it) {
-        var got = +(r.per[it.id] || 0), key = r.quiz_id + '|' + it.id;
-        var q = Q[key] = Q[key] || { it: it, v: v, got: 0, max: 0, n: 0, lost: 0, answers: [] };
-        q.got += got; q.max += it.max; q.n++; if (got < it.max) q.lost++; q.answers.push((r.answers || {})[it.id]);
-        [[topic, it.topic || 'other'], [skill, it.skill], [section, it.sec]].forEach(function (g) {
-          var o = g[0][g[1]] = g[0][g[1]] || { got: 0, max: 0 }; o.got += got; o.max += it.max;
-        });
-      });
-    });
+    var tl = tally(vs), Q = tl.Q, topic = tl.topic, skill = tl.skill, section = tl.section;
+    $('btnTsTopics').disabled = !R.length;
     var h = '', anyQuiz = vs[Object.keys(vs)[0]].quiz;
     // weakest topics
     h += '<h3 class="tt-h3">' + esc(t('tsTopics')) + '</h3><div class="tt-rows">' + Object.keys(topic).sort(function (a, b) { return topic[a].got / topic[a].max - topic[b].got / topic[b].max; })
@@ -1540,7 +2171,7 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     h += list.map(function (q) {
       var it = q.it, cw = commonWrong(it, q.answers), lostPct = pctOf(q.max - q.got, q.max);
       var vname = Object.keys(vs).length > 1 ? t('version', { v: q.v.version }) + ' · ' : '';
-      return '<div class="tm-item"><div class="tm-top"><div class="tm-pct">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
+      return '<div class="tm-item"><div class="tm-top"><div class="tm-pct ' + (lostPct >= 70 ? 'hot' : lostPct >= 45 ? 'warm' : lostPct >= 20 ? 'mild' : 'cool') + '">' + lostPct + '%<small>' + esc(t('tsLost')) + '</small></div><div>' +
         '<div class="tm-meta">' + esc(vname + it.num + ' · ' + topicName(it.topic, q.v.quiz) + ' · ' + t('tsLostOf', { l: q.lost, n: q.n })) + '</div>' +
         (it.scen ? '<div class="tm-meta">' + esc(it.scen.scenario).slice(0, 160) + (it.scen.scenario.length > 160 ? '…' : '') + '</div>' : '') +
         '<div class="tm-q">' + esc(it.q.q) + '</div>' +
@@ -1553,15 +2184,16 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     h += '<h3 class="tt-h3">' + esc(t('tsSkills')) + '</h3><div class="tt-rows">' + ['knowledge', 'application'].filter(function (k) { return skill[k]; })
       .map(function (k) { return row(t(k) + ' · ' + pctOf(skill[k].got, skill[k].max) + '%', skill[k].got, skill[k].max); }).join('') + '</div>';
     var anyQuiz = vs[Object.keys(vs)[0]].quiz;
-    h += '<h3 class="tt-h3">' + esc(t('tsSections')) + '</h3><div class="tt-rows">' + Object.keys(section).sort().map(function (k) {
-      return row(t('question', { n: +k + 1 }) + ': ' + anyQuiz.sections[k].title + ' · ' + pctOf(section[k].got, section[k].max) + '%', section[k].got, section[k].max);
+    // (by title, in the order first met, so tests with different sections still add up)
+    h += '<h3 class="tt-h3">' + esc(t('tsSections')) + '</h3><div class="tt-rows">' + Object.keys(section).map(function (k) {
+      return row(k + ' · ' + pctOf(section[k].got, section[k].max) + '%', section[k].got, section[k].max);
     }).join('') + '</div>';
     // mark list
     h += '<h3 class="tt-h3">' + esc(t('tsMarks')) + '</h3><div class="tr-wrap"><table class="tr-table"><thead><tr>' +
       [['name', 'tsName'], ['version', 'tsVersion'], ['score', 'tsMark'], ['pct', 'tsPct'], ['level', 'tsLevel'], ['at', 'tsWhen']].map(function (c) {
         return '<th data-k="' + c[0] + '">' + esc(t(c[1])) + (markSort.k === c[0] ? (markSort.d > 0 ? ' ▲' : ' ▼') : '') + '</th>';
-      }).join('') + '</tr></thead><tbody>' + markRows().map(function (m) {
-        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.version) + '</td><td>' + m.score + '/' + m.total + '</td><td>' + m.pct + '%</td><td>' + m.level + '</td><td>' + esc(m.when) + '</td></tr>';
+      }).join('') + '<th></th></tr></thead><tbody>' + markRows().map(function (m) {
+        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.version) + '</td><td>' + m.score + '/' + m.total + '</td><td>' + m.pct + '%</td><td>' + m.level + '</td><td>' + esc(m.when) + '</td><td><button class="ml-btn ml-btn--ghost tr-view" data-i="' + m.idx + '">' + esc(t('tsView')) + '</button></td></tr>';
       }).join('') + '</tbody></table></div>';
     body.innerHTML = h;
     if ($('btnMissedAll')) $('btnMissedAll').addEventListener('click', function () { showAllMissed = true; renderSession(vs); });
@@ -1569,10 +2201,32 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
       th.addEventListener('click', function () { var k = th.getAttribute('data-k'); markSort = { k: k, d: markSort.k === k ? -markSort.d : 1 }; renderSession(vs); });
     });
   }
+  // A teacher reads one learner's submitted answers in the same review the learner had.
+  // Answers are stored against the original option and item positions, so the default
+  // order marks them correctly even though the learner saw a shuffled one.
+  function viewLearner(r) {
+    var m = manifest.filter(function (x) { return x.id === r.quiz_id; })[0];
+    if (!m) return;
+    fetch(BASE + m.file, { cache: 'no-cache' }).then(function (res) { return res.json(); }).then(function (qz) {
+      rawQuiz = qz; rawQuiz.id = m.id; meta = m; relocalise();
+      var mixes = {};
+      function ident(n) { var a = []; for (var i = 0; i < n; i++) a.push(i); return a; }
+      items.forEach(function (it) {
+        var q = it.q;
+        if (q.type === 'mcq') mixes[it.id] = ident(q.options.length);
+        if (q.type === 'match') mixes[it.id] = ident(q.pairs.length + (q.extra || []).length);
+        if (q.type === 'order') mixes[it.id] = ident(q.steps.length);
+        if (q.type === 'pairs') mixes[it.id] = ident(q.pairs.length * 2);
+      });
+      att = { answers: r.answers || {}, mixes: mixes, name: r.learner_name, teacherView: true,
+        done: { at: Date.parse(r.created_at) || Date.now(), score: r.score, total: r.total, per: r.per || {} } };
+      reviewFilter = 'all'; renderReview();
+    });
+  }
   function markRows() {
-    var rows = curResults.map(function (r) {
+    var rows = curResults.map(function (r, i) {
       var p = pctOf(r.score, r.total);
-      return { name: r.learner_name, version: r.version || '', score: r.score, total: r.total, pct: p, level: levelOf(p), at: r.created_at,
+      return { idx: i, name: r.learner_name, version: r.version || '', score: r.score, total: r.total, pct: p, level: levelOf(p), at: r.created_at,
         when: new Date(r.created_at).toLocaleString(lang === 'af' ? 'af-ZA' : 'en-ZA', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) };
     });
     var k = markSort.k, d = markSort.d;
@@ -1628,8 +2282,437 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
     icons();
   }
 
+  // ── Practice: confidence ticks, revisits, drills, progress, plan, lessons ──
+  // Everything here is kept in this browser, like the attempts. Practice never
+  // changes a mark and is never sent to a teacher.
+  var DAY = 86400000, REV_FIRST = 2;
+  var REV_KEY = 'ml-tome-revisit-v1', HIST_KEY = 'ml-tome-history-v1', PLAN_KEY = 'ml-tome-plan-v1';
+  // days to wait after each correct revisit; three correct ones and the question is learnt
+  var REV_DAYS = [5, 12, 30];
+  var CONF = [['sure', 'confSure'], ['unsure', 'confUnsure'], ['guess', 'confGuess']];
+  var drillMode = false, drillEntries = [], mainAtt = null, mainItems = null;
+
+  function readJ(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
+  function writeJ(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function locale() { return lang === 'af' ? 'af-ZA' : 'en-ZA'; }
+  function fmtDay(ms) { return new Date(ms).toLocaleDateString(locale(), { day: 'numeric', month: 'long' }); }
+  function startOfToday() { var d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
+  function titleIn(pair) { return pair ? pair[lang === 'af' ? 1 : 0] || pair[0] : ''; }
+
+  // ── Confidence ticks: only on papers that set "confidence": true ──────
+  function confRow(it) {
+    if (!quiz || !quiz.confidence || att.drill) return '';
+    var c = (att.conf || {})[it.id];
+    return '<div class="tt-conf" role="group" aria-label="' + esc(t('confAsk')) + '"><span>' + esc(t('confAsk')) + '</span>' +
+      CONF.map(function (x) { return '<button type="button" class="tt-chip" data-conf="' + x[0] + '" data-id="' + esc(it.id) + '" aria-pressed="' + (c === x[0]) + '">' + esc(t(x[1])) + '</button>'; }).join('') + '</div>';
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-conf]'); if (!b || !att || att.drill) return;
+    var id = b.getAttribute('data-id'), v = b.getAttribute('data-conf');
+    att.conf = att.conf || {};
+    if (att.conf[id] === v) delete att.conf[id]; else att.conf[id] = v;
+    save();
+    [].forEach.call(b.parentNode.querySelectorAll('[data-conf]'), function (x) { x.setAttribute('aria-pressed', String(att.conf[id] === x.getAttribute('data-conf'))); });
+  });
+  // how the learner's ticks lined up with their marks
+  function confHtml(d) {
+    if (!quiz || !quiz.confidence) return '';
+    var c = att.conf || {}, g = { sureRight: [], sureWrong: [], unsureRight: [], unsureWrong: [] }, rated = 0;
+    items.forEach(function (it) {
+      var k = c[it.id]; if (!k) return; rated++;
+      g[(k === 'sure' ? 'sure' : 'unsure') + (d.per[it.id] === it.max ? 'Right' : 'Wrong')].push(it.num);
+    });
+    if (!rated) return '<div class="tt-study"><p class="tt-hint" style="margin:0">' + esc(t('confNone')) + '</p></div>';
+    var rows = [['sureWrong', 'confSureWrong'], ['unsureRight', 'confUnsureRight'], ['unsureWrong', 'confUnsureWrong'], ['sureRight', 'confSureRight']];
+    return '<div class="tt-study"><div class="tt-study-head"><b>' + esc(t('confTitle')) + '</b><span>' + rated + ' / ' + items.length + '</span></div><ul class="tt-study-list">' +
+      rows.filter(function (r) { return g[r[0]].length; }).map(function (r) { return '<li><b>' + esc(t(r[1])) + ':</b> ' + esc(g[r[0]].join(', ')) + '</li>'; }).join('') + '</ul></div>';
+  }
+
+  // ── Topic names and lessons ──────────────────────────────────────────
+  function nameIn(L, k) {
+    var src = (L === 'af' ? rawQuiz.topicsAf : rawQuiz.topics) || {};
+    return src[k] || (rawQuiz.topics && rawQuiz.topics[k]) || T[L]['topic_' + (k || 'other')] || k;
+  }
+  function namesFor(k) { return [nameIn('en', k), nameIn('af', k)]; }
+  // lessons on the site for each topic; Science Sage is by grade and strand
+  function ss(g, path, n, a) { return { n: n, a: a, u: 'science-sage/gr' + g + '/' + path + '.html', af: true }; }
+  var LESSONS = {
+    html: [{ n: 'Computer Codex: HTML and web design', a: 'Computer Codex: HTML en webontwerp', u: 'computer-codex.html' }],
+    excel: [{ n: 'Computer Codex: Excel formulas and functions', a: 'Computer Codex: Excel-formules en -funksies', u: 'computer-codex.html' }],
+    java: [{ n: 'Java Genie: What is Java?', a: 'Java Genie: Wat is Java?', u: 'java-genie.html' }],
+    tinkercad: [{ n: 'Tech Tower: Ohm’s law and resistors', a: 'Tech Tower: Ohm se wet en weerstande', u: 'tech-tower/gr9/electrical/ohms-law-and-resistors.html', af: true }]
+  };
+  var NS_LESSONS = {
+    8: {
+      life: [ss(8, 'life/ecosystems', 'Ecosystems & food webs', 'Ekosisteme & voedselwebbe'), ss(8, 'life/photosynthesis', 'Photosynthesis & respiration', 'Fotosintese & sellulêre respirasie')],
+      matter: [ss(8, 'matter/atoms', 'The atom & atomic models', 'Atome & atoommodelle'), ss(8, 'matter/periodic-table', 'The periodic table', 'Die periodieke tabel')],
+      energy: [ss(8, 'energy/electricity', 'Electric circuits', 'Elektriese stroombane'), ss(8, 'energy/static-electricity', 'Static electricity', 'Statiese elektrisiteit')],
+      earth: [ss(8, 'earth/solar-system', 'The solar system', 'Die sonnestelsel'), ss(8, 'earth/telescopes', 'Telescopes & constellations', 'Teleskope & sterrebeelde')]
+    },
+    9: {
+      life: [ss(9, 'life/cells', 'Cell structure & function', 'Die sel'), ss(9, 'life/genetics', 'Genetics & heredity', 'Genetika & oorerwing')],
+      matter: [ss(9, 'matter/atoms-electrons', 'Atoms & electron arrangement', 'Atome en elektronrangskikking'), ss(9, 'matter/chemical-bonding', 'Chemical bonding', 'Chemiese binding')],
+      energy: [ss(9, 'energy/electric-circuits', 'Electric cells, resistance & circuits', 'Elektriese selle, weerstand & stroombane'), ss(9, 'energy/waves', 'Waves & EM spectrum', 'Golwe en die elektromagnetiese spektrum')],
+      earth: [ss(9, 'earth/climate-change', 'Climate change & global warming', 'Klimaatsverandering & globale verwarming'), ss(9, 'earth/earth-as-a-system', 'The Earth as a system', 'Die aarde as ’n sisteem')]
+    }
+  };
+  function lessonsFor(k, g) { return (NS_LESSONS[g] && NS_LESSONS[g][k]) || LESSONS[k] || []; }
+  function lessonsHtml(k, g) {
+    var list = lessonsFor(k, g); if (!list.length) return '';
+    return '<p class="tt-lessons"><span>' + esc(t('lessonsLabel')) + ':</span> ' + list.map(function (l) {
+      var href = lang === 'af' && l.af ? l.u.replace(/\.html$/, '.af.html') : l.u;
+      return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(lang === 'af' ? l.a : l.n) + '</a>';
+    }).join(' · ') + '</p>';
+  }
+
+  // ── Revisits: missed questions come back, kept with the question itself ──
+  function snapshot(ri) {
+    return { key: rawQuiz.id + '|' + ri.id, testId: rawQuiz.id, grade: rawQuiz.grade, num: ri.num, topic: ri.topic || 'other',
+      tn: namesFor(ri.topic || 'other'), skill: ri.skill, max: ri.max, q: ri.q,
+      scen: ri.scen ? { scenario: ri.scen.scenario, scenarioAf: ri.scen.scenarioAf, code: ri.scen.code, svg: ri.scen.svg, label: ri.scen.label } : null, scenNum: ri.scenNum || null };
+  }
+  function addRevisits(per) {
+    var rev = readJ(REV_KEY, {}), now = Date.now();
+    buildItems(rawQuiz).forEach(function (ri) {
+      if (per[ri.id] >= ri.max || ri.q.type === 'written') return;
+      rev[rawQuiz.id + '|' + ri.id] = Object.assign(snapshot(ri), { step: 0, due: now + REV_FIRST * DAY, up: now });
+    });
+    writeJ(REV_KEY, rev); syncSoon();
+  }
+  function revEntries() {
+    var rev = readJ(REV_KEY, {});
+    return Object.keys(rev).map(function (k) { return rev[k]; }).filter(function (e) { return !e.done; }).sort(function (a, b) { return a.due - b.due; });
+  }
+  function missedEntries() {
+    var per = att.done.per;
+    return buildItems(rawQuiz).filter(function (ri) { return per[ri.id] < ri.max; }).map(snapshot);
+  }
+  function missedItems(d) { return items.filter(function (it) { return d.per[it.id] < it.max; }); }
+  function revisitNote(d) {
+    var n = missedItems(d).length; if (!n) return '';
+    return '<p class="tt-note">' + esc(t('resultRevisit', { n: n, d: fmtDay(Date.now() + REV_FIRST * DAY) })) + '</p>';
+  }
+
+  // ── History: one record per submitted test, for progress over time ──
+  function recordHistory(d) {
+    var recs = readJ(HIST_KEY, []), by = {}, names = {};
+    items.forEach(function (it) { var k = it.topic || 'other', o = by[k] = by[k] || [0, 0]; o[0] += d.per[it.id] || 0; o[1] += it.max; });
+    Object.keys(by).forEach(function (k) { names[k] = namesFor(k); });
+    recs.push({ cid: 'h' + d.at + '-' + rawQuiz.id, synced: false, at: d.at, id: rawQuiz.id, g: rawQuiz.grade, v: meta && meta.version || '', t: [rawQuiz.title, rawQuiz.titleAf || rawQuiz.title], s: d.score, n: d.total, topics: by, names: names });
+    writeJ(HIST_KEY, recs.slice(-300)); syncSoon();
+  }
+  // attempts from before this update have a mark but no topics: show them as marks
+  function backfillHistory() {
+    var recs = [];
+    manifest.forEach(function (m) {
+      var s = store[m.id]; if (!s || !s.done) return;
+      recs.push({ at: s.done.at, id: m.id, g: m.grade, v: m.version || '', t: [m.title, m.titleAf || m.title], s: s.done.score, n: s.done.total, topics: null, names: null });
+    });
+    writeJ(HIST_KEY, recs); return recs;
+  }
+
+  // ── Drills: practise a set of saved questions, never counted in a mark ──
+  function mixesOf(list) { return mixesFor(list); }
+  function entryItem(e, i) {
+    return { id: 'd' + i, ek: e.key, num: e.num, q: loc(e.q), sec: 0, max: e.max, skill: e.skill, topic: e.topic, tn: e.tn,
+      scen: e.scen ? loc(e.scen) : null, first: true, scenNum: e.scenNum || null };
+  }
+  function startDrill(entries, title) {
+    if (!entries.length) return;
+    if (!drillMode) { mainAtt = att; mainItems = items; }
+    drillMode = true; drillEntries = entries;
+    items = entries.map(entryItem);
+    att = { started: Date.now(), mixes: mixesOf(items), answers: {}, done: null, drill: true, conf: {} };
+    $('testTitle').textContent = title;
+    $('btnSubmit').querySelector('span').textContent = t('drillSubmit');
+    $('barClock').classList.add('hidden');
+    renderDrillBody();
+    show('viewTest'); updateBar();
+  }
+  function exitDrill() {
+    drillMode = false; drillEntries = [];
+    items = mainItems || []; att = mainAtt; mainItems = null; mainAtt = null;
+    $('btnSubmit').querySelector('span').textContent = t('submitTest');
+  }
+  function renderDrillBody() {
+    var body = $('testBody'); body.innerHTML = '';
+    var wrap = document.createElement('section'); wrap.className = 'tt-section';
+    wrap.innerHTML = '<div class="tt-section-head"><h2>' + esc(t('drillTitle')) + '</h2><span>' + esc(marksText(total())) + '</span></div><p class="tt-section-intro">' + esc(t('drillIntro')) + '</p>';
+    var lastScen = null;
+    items.forEach(function (it) {
+      if (it.scen && it.scenNum !== lastScen) { var sc = document.createElement('div'); sc.className = 'tt-scenario'; sc.innerHTML = scenarioHtml(it); wrap.appendChild(sc); }
+      lastScen = it.scen ? it.scenNum : null;
+      wrap.appendChild(questionEl(it));
+    });
+    body.appendChild(wrap);
+  }
+  function submitDrill() {
+    var per = {}, score = 0, rev = readJ(REV_KEY, {}), now = Date.now();
+    items.forEach(function (it) {
+      var m = mark(it, att.answers[it.id]); per[it.id] = m; score += m;
+      var e = rev[it.ek]; if (!e || e.done) return;
+      if (m >= it.max) { e.step = (e.step || 0) + 1; if (e.step > REV_DAYS.length) rev[it.ek] = { key: it.ek, done: true, up: now }; else e.due = now + REV_DAYS[e.step - 1] * DAY; }
+      else { e.step = 0; e.due = now + DAY; }
+      if (rev[it.ek] && !rev[it.ek].done) rev[it.ek].up = now;
+    });
+    writeJ(REV_KEY, rev); syncSoon();
+    att.done = { at: now, score: score, total: total(), per: per, drill: true };
+    renderDrillReview(score);
+  }
+  function renderDrillReview(score) {
+    var body = $('reviewBody'); body.innerHTML = '';
+    var d = att.done, lastScen = null;
+    items.forEach(function (it) {
+      if (it.scen && it.scenNum !== lastScen) { var sc = document.createElement('div'); sc.className = 'tt-scenario'; sc.innerHTML = scenarioHtml(it); body.appendChild(sc); }
+      lastScen = it.scen ? it.scenNum : null;
+      body.appendChild(reviewEl(it, d.per[it.id]));
+    });
+    $('reviewTitle').textContent = t('drillDone');
+    $('reviewSub').textContent = t('drillSaved');
+    $('reviewCount').textContent = score + ' / ' + total();
+    $('reviewFilter').classList.add('hidden');
+    $('btnRevPrint').classList.add('hidden');
+    $('btnRevRetry').classList.add('hidden');
+    $('btnRevResult').querySelector('span').textContent = t('drillBack');
+    show('viewReview');
+  }
+  function setDrillChrome(on) {
+    $('reviewFilter').classList.toggle('hidden', on);
+    $('btnRevPrint').classList.toggle('hidden', on);
+    $('btnRevRetry').classList.toggle('hidden', on);
+  }
+
+  // ── Progress: marks over time, and each topic's trend ─────────────────
+  function chartSvg(pts) {
+    var W = 600, H = 180, P = 26, n = pts.length;
+    var x = function (i) { return n < 2 ? W / 2 : P + i * (W - 2 * P) / (n - 1); };
+    var y = function (p) { return H - P - p / 100 * (H - 2 * P); };
+    var grid = [0, 50, 100].map(function (g) {
+      return '<line x1="' + P + '" x2="' + (W - P) + '" y1="' + y(g) + '" y2="' + y(g) + '" class="tt-grid"/><text x="0" y="' + (y(g) + 4) + '" class="tt-axis">' + g + '%</text>';
+    }).join('');
+    var line = n > 1 ? '<polyline class="tt-line" fill="none" points="' + pts.map(function (p, i) { return x(i) + ',' + y(p); }).join(' ') + '"/>' : '';
+    var dots = pts.map(function (p, i) { return '<circle class="tt-dot" cx="' + x(i) + '" cy="' + y(p) + '" r="4"><title>' + p + '%</title></circle>'; }).join('');
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(t('prOverall')) + '" class="tt-chart-svg">' + grid + line + dots + '</svg>';
+  }
+  function renderProgress() {
+    var recs = readJ(HIST_KEY, []);
+    if (!recs.length) recs = backfillHistory();
+    recs = recs.slice().sort(function (a, b) { return a.at - b.at; });
+    var box = $('progressBody');
+    if (!recs.length) { box.innerHTML = loginNote(true) + '<p class="tt-empty">' + esc(t('prNone')) + '</p>'; show('viewProgress'); return; }
+    var topics = {};
+    recs.forEach(function (r) {
+      if (!r.topics) return;
+      Object.keys(r.topics).forEach(function (k) {
+        var v = r.topics[k]; if (!v[1]) return;
+        var o = topics[k] = topics[k] || { k: k, series: [], name: [k, k], g: r.g };
+        o.series.push(pctOf(v[0], v[1])); o.name = (r.names && r.names[k]) || o.name; o.g = r.g;
+      });
+    });
+    var rows = Object.keys(topics).map(function (k) { return topics[k]; })
+      .sort(function (a, b) { return a.series[a.series.length - 1] - b.series[b.series.length - 1]; });
+    var h = '<h3 class="tt-h3">' + esc(t('prOverall')) + '</h3><div class="tt-chart">' + chartSvg(recs.map(function (r) { return pctOf(r.s, r.n); })) + '</div>';
+    h += '<h3 class="tt-h3">' + esc(t('prTopics')) + '</h3><p class="tt-hint" style="margin:0 0 10px">' + esc(t('prOlder')) + '</p>';
+    h += rows.map(function (o) {
+      var f = o.series[0], l = o.series[o.series.length - 1], ch = l - f;
+      return '<div class="tt-study"><div class="tt-study-head"><b>' + esc(titleIn(o.name)) + '</b><span>' + esc(t('prTries', { n: o.series.length })) + '</span></div>' +
+        '<p class="tt-prog">' + esc(t('prFirst')) + ' ' + f + '% · ' + esc(t('prLatest')) + ' ' + l + '% · ' + esc(t('prChange')) + ' ' + (ch > 0 ? '+' : '') + ch + '%</p>' +
+        lessonsHtml(o.k, o.g) + '</div>';
+    }).join('');
+    h += '<h3 class="tt-h3">' + esc(t('prAttempts')) + '</h3><ul class="tt-study-list">' + recs.slice().reverse().slice(0, 12).map(function (r) {
+      return '<li><b>' + esc(titleIn(r.t)) + '</b> · ' + esc(new Date(r.at).toLocaleDateString(locale(), { day: 'numeric', month: 'short' })) + ' · ' + r.s + '/' + r.n + ' (' + pctOf(r.s, r.n) + '%)</li>';
+    }).join('') + '</ul>';
+    box.innerHTML = loginNote(true) + h;
+    show('viewProgress');
+  }
+
+  // ── Revision plan: built from the weakest topics, kept across tests ──
+  function planState() {
+    var p = readJ(PLAN_KEY, {}); p.done = p.done || {};
+    Object.keys(p.done).forEach(function (id) { if (p.done[id] === true) p.done[id] = { on: true, up: 0 }; });
+    return p;
+  }
+  function planOn(p, id) { return !!(p.done[id] && p.done[id].on); }
+  function planTopics() {
+    var recs = readJ(HIST_KEY, []).filter(function (r) { return r.topics; }).sort(function (a, b) { return a.at - b.at; }), latest = {};
+    recs.forEach(function (r) {
+      Object.keys(r.topics).forEach(function (k) {
+        var v = r.topics[k]; if (!v[1]) return;
+        latest[k] = { k: k, pct: pctOf(v[0], v[1]), name: (r.names && r.names[k]) || [k, k], g: r.g, testId: r.id, testName: r.t };
+      });
+    });
+    return Object.keys(latest).map(function (k) { return latest[k]; }).sort(function (a, b) { return a.pct - b.pct; }).slice(0, 3);
+  }
+  function planDays(exam) {
+    if (!exam) return 7;
+    var d = Math.round((new Date(exam + 'T00:00').getTime() - startOfToday()) / DAY);
+    return Math.max(1, Math.min(60, d));
+  }
+  // each topic gets a block of days: read at the start, practise in the middle, retry at the end
+  function planTasks(topics, days) {
+    var out = [], day0 = startOfToday(), n = topics.length;
+    topics.forEach(function (o, j) {
+      var start = Math.floor(j * days / n), end = Math.max(start, Math.floor((j + 1) * days / n) - 1);
+      [['read', start], ['drill', Math.floor((start + end) / 2)], ['retry', end]].forEach(function (x) {
+        out.push({ id: o.k + '|' + x[0], kind: x[0], topic: o, day: day0 + x[1] * DAY });
+      });
+    });
+    return out;
+  }
+  function renderPlan() {
+    var p = planState(), exam = p.exam || '', topics = planTopics(), box = $('planBody');
+    var h = '<div class="tt-plan-top"><label class="tt-name"><span>' + esc(t('planExam')) + '</span><input id="planExam" type="date" value="' + esc(exam) + '"></label></div>';
+    if (!topics.length) { box.innerHTML = h + '<p class="tt-empty">' + esc(t('planNoTopics')) + '</p>'; show('viewPlan'); return; }
+    var days = planDays(exam), tasks = planTasks(topics, days), doneN = tasks.filter(function (x) { return planOn(p, x.id); }).length;
+    var today = startOfToday();
+    h += '<p class="tt-note">' + esc(t('planSpan', { a: fmtDay(today), b: fmtDay(today + (days - 1) * DAY) })) + ' · ' + esc(t('planProgress', { n: doneN, t: tasks.length })) + '</p>';
+    topics.forEach(function (o) {
+      var mine = tasks.filter(function (x) { return x.topic === o; }), due = revEntries().filter(function (e) { return e.topic === o.k; }).length;
+      h += '<div class="tt-study"><div class="tt-study-head"><b>' + esc(titleIn(o.name)) + '</b><span>' + esc(t('planTopicPct', { p: o.pct })) + '</span></div>' + lessonsHtml(o.k, o.g) +
+        '<ul class="tt-plan-list">' + mine.map(function (x) {
+          var label = x.kind === 'read' ? t('planTaskRead') : x.kind === 'drill' ? t('planTaskDrill') : t('planTaskRetry', { t: titleIn(o.testName) });
+          var action = '';
+          if (x.kind === 'drill') action = due ? ' <button type="button" class="ml-btn ml-btn--ghost tt-plan-go" data-go="drill" data-k="' + esc(o.k) + '">' + esc(t('planStart')) + '</button>' : ' <small class="tt-hint">' + esc(t('planNoDrill')) + '</small>';
+          if (x.kind === 'retry') action = ' <button type="button" class="ml-btn ml-btn--ghost tt-plan-go" data-go="retry" data-id="' + esc(o.testId) + '">' + esc(t('planOpen')) + '</button>';
+          return '<li><label><input type="checkbox" data-task="' + esc(x.id) + '"' + (planOn(p, x.id) ? ' checked' : '') + '> <span class="tt-plan-date">' + esc(fmtDay(x.day)) + '</span> ' + esc(label) + '</label>' + action + '</li>';
+        }).join('') + '</ul></div>';
+    });
+    box.innerHTML = h;
+    show('viewPlan');
+  }
+
+  // ── The tools on the list page: due revisits, progress and plan ───────
+  function renderTools() {
+    var box = $('toolsBox'); if (!box) return;
+    if (window.TT_PUBLIC || !openNow()) { box.innerHTML = ''; return; }
+    var all = revEntries(), now = Date.now(), due = all.filter(function (e) { return e.due <= now; }), later = all.filter(function (e) { return e.due > now; });
+    var h = '<div class="tt-tools">';
+    if (all.length) {
+      h += '<div class="tt-revisit"><div><b>' + esc(t('revTitle')) + '</b><span>' + esc(due.length ? t('revDue', { n: due.length }) : t('revNext', { d: fmtDay(later[0].due), n: all.length })) + '</span></div>' +
+        (due.length ? '<button type="button" class="ml-btn ml-btn--primary" data-tool="due"><i data-lucide="target"></i><span>' + esc(t('revBtn')) + '</span></button>' : '') + '</div>';
+    } else {
+      h += '<p class="tt-hint" style="margin:0">' + esc(t('revNone')) + '</p>';
+    }
+    h += '<div class="tt-actions tt-tools-row"><button type="button" class="ml-btn ml-btn--ghost" data-tool="progress"><i data-lucide="trending-up"></i><span>' + esc(t('prBtn')) + '</span></button>' +
+      '<button type="button" class="ml-btn ml-btn--ghost" data-tool="plan"><i data-lucide="calendar"></i><span>' + esc(t('planBtn')) + '</span></button>' +
+      '<button type="button" class="ml-btn ml-btn--ghost" data-tool="build"><i data-lucide="list-plus"></i><span>' + esc(t('buildBtn')) + '</span></button></div></div>';
+    box.innerHTML = h;
+    icons();
+  }
+
+  // ── Results: confidence summary and the missed-question button ─────────
+  function paintResultPractice(d) {
+    $('resultConf').innerHTML = confHtml(d) + revisitNote(d) + loginNote(false);
+    $('btnDrillMiss').classList.toggle('hidden', !missedItems(d).length);
+  }
+
+  // ── Across devices: a logged-in learner's history, revisits and plan ──
+  // The browser keeps working on its own copy; sync pulls what other devices
+  // saved, merges it in (newest change wins), then sends back what is new.
+  var syncTimer = null, syncing = false, syncAgain = false;
+  function acctUid() { var s = window.MagicLabAuth && MagicLabAuth.getSession && MagicLabAuth.getSession(); return s && s.user ? s.user.id : null; }
+  function syncSoon() { if (!acctUid()) return; clearTimeout(syncTimer); syncTimer = setTimeout(sync, 1200); }
+  function ensureCids() {
+    var hist = readJ(HIST_KEY, []), changed = false;
+    hist.forEach(function (r) { if (!r.cid) { r.cid = 'h' + r.at + '-' + r.id; r.synced = false; changed = true; } });
+    if (changed) writeJ(HIST_KEY, hist);
+    return hist;
+  }
+  // newest change wins, per key; revisits and plan items carry an "up" time
+  function mergeUp(key, server) {
+    var local = readJ(key, {});
+    Object.keys(server || {}).forEach(function (k) {
+      var s = server[k], l = local[k];
+      if (!l || (s.up || 0) > (l.up || 0)) local[k] = s;
+    });
+    writeJ(key, local);
+  }
+  function mergePlan(server) {
+    var p = planState();
+    if (server && (server.up || 0) > (p.up || 0)) { p.exam = server.exam || ''; p.up = server.up; }
+    Object.keys((server && server.done) || {}).forEach(function (id) {
+      var s = server.done[id], l = p.done[id];
+      if (!l || (s.up || 0) > (l.up || 0)) p.done[id] = s;
+    });
+    writeJ(PLAN_KEY, p);
+  }
+  function sync() {
+    var uid = acctUid(); if (!uid) return Promise.resolve();
+    if (syncing) { syncAgain = true; return Promise.resolve(); }
+    syncing = true;
+    return db().then(function (c) {
+      return Promise.all([
+        c.from('tome_attempts').select('*').eq('user_id', uid),
+        c.from('tome_learner_state').select('*').eq('user_id', uid).maybeSingle()
+      ]).then(function (res) {
+        if (res[0].error) throw res[0].error;
+        if (res[1].error) throw res[1].error;
+        var hist = ensureCids(), have = {};
+        hist.forEach(function (r) { have[r.cid] = r; });
+        (res[0].data || []).forEach(function (row) {
+          if (have[row.client_id]) { have[row.client_id].synced = true; return; }
+          var r = { cid: row.client_id, at: Date.parse(row.taken_at), id: row.test_id, g: row.grade, v: row.version || '',
+            t: row.title, s: row.score, n: row.total, topics: row.topics, names: row.names, synced: true };
+          hist.push(r); have[r.cid] = r;
+        });
+        hist.sort(function (a, b) { return a.at - b.at; });
+        writeJ(HIST_KEY, hist);
+        var st = res[1].data || {};
+        mergeUp(REV_KEY, st.revisit);
+        mergePlan(st.plan);
+        var unsynced = hist.filter(function (r) { return !r.synced; });
+        var rows = unsynced.map(function (r) {
+          return { user_id: uid, client_id: r.cid, test_id: r.id, version: r.v || null, grade: r.g || null,
+            taken_at: new Date(r.at).toISOString(), score: r.s, total: r.n, title: r.t, topics: r.topics || null, names: r.names || null };
+        });
+        var sent = rows.length ? c.from('tome_attempts').upsert(rows, { onConflict: 'user_id,client_id' }) : Promise.resolve({});
+        return sent.then(function (r2) {
+          if (r2.error) throw r2.error;
+          unsynced.forEach(function (r) { r.synced = true; });
+          writeJ(HIST_KEY, hist);
+          return c.from('tome_learner_state').upsert({ user_id: uid, revisit: readJ(REV_KEY, {}), plan: readJ(PLAN_KEY, {}), updated_at: new Date().toISOString() });
+        });
+      }).then(function (r3) { if (r3 && r3.error) throw r3.error; });
+    }).catch(function () { /* offline or not yet set up: this device keeps its copy */ })
+      .then(function () {
+        syncing = false;
+        if (syncAgain) { syncAgain = false; syncSoon(); }
+        refreshOpenViews();
+      });
+  }
+  function refreshOpenViews() {
+    if (!$('viewList').classList.contains('hidden')) renderTools();
+    else if (!$('viewProgress').classList.contains('hidden')) renderProgress();
+    else if (!$('viewPlan').classList.contains('hidden')) renderPlan();
+    else if (!$('viewResult').classList.contains('hidden') && att && att.done) paintResultPractice(att.done);
+  }
+
+  // A learner who is not logged in is told that progress stays on this device
+  function loginNote(withAsk) {
+    if (acctUid()) return '';
+    return '<div class="tt-info">' + (withAsk ? '<p><b>' + esc(t('prLoginAsk')) + '</b> ' + esc(t('prLoginKeep')) + '</p>' : '<p>' + esc(t('prLoginKeep')) + '</p>') +
+      '<p>' + esc(t('prLoginOther')) + '</p><button type="button" class="ml-btn ml-btn--primary" data-login="1"><span>' + esc(t('prLoginBtn')) + '</span></button></div>';
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-login]'); if (!b) return;
+    if (window.MagicLabModal && MagicLabModal.open) MagicLabModal.open(); else location.href = 'index.html';
+  });
+
+  // a paper built on the question-bank page: saved in this browser, marked like any test
+  var CUSTOM_PREFIX = 'ml-tome-custom-v1:';
+  function loadCustom(key) {
+    var q = readJ(CUSTOM_PREFIX + key, null);
+    if (!q) return false;
+    rawQuiz = q; rawQuiz.id = q.id;
+    meta = { id: q.id, title: q.title, titleAf: q.titleAf, subject: q.subject, subjectAf: q.subjectAf, grade: q.grade, file: '', custom: true };
+    relocalise(); renderIntro();
+    return true;
+  }
+
   // ── Wiring ───────────────────────────────────────────────────────────
   $('btnStart').addEventListener('click', function () { startTest(false); });
+  $('btnSelfDone').addEventListener('click', finishSubmit);
+  $('btnAi').addEventListener('click', runAi);
   $('btnLastReview').addEventListener('click', function () { att = store[quiz.id]; reviewFilter = 'all'; renderReview(); });
   $('btnToList').addEventListener('click', renderList);
   $('btnShare').addEventListener('click', openShare);
@@ -1642,6 +2725,10 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnTsRefresh').addEventListener('click', loadSessionResults);
   $('btnTsQr').addEventListener('click', function () { showSessionQr(curSession); });
   $('btnTsCsv').addEventListener('click', downloadCsv);
+  $('btnTsShare').addEventListener('click', function () { $('shrStatus').textContent = ''; $('shrEmail').value = ''; $('shrEmail').placeholder = t('shEmail'); $('shrDlg').showModal(); loadShares(); });
+  $('btnShrAdd').addEventListener('click', addShare);
+  $('shrEmail').addEventListener('keydown', function (e) { if (e.key === 'Enter') addShare(); });
+  $('btnShrClose').addEventListener('click', function () { $('shrDlg').close(); });
   $('btnTsOpen').addEventListener('click', function () {
     var to = !curSession.is_open;
     db().then(function (c) { return c.from('tome_sessions').update({ is_open: to }).eq('id', curSession.id); }).then(function (r) {
@@ -1662,14 +2749,42 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   $('btnConfirm').addEventListener('click', function () { $('confirmDlg').close(); submit(); });
   $('btnCancel').addEventListener('click', function () { $('confirmDlg').close(); });
   $('btnReview').addEventListener('click', function () { reviewFilter = 'all'; renderReview(); });
-  $('btnRevResult').addEventListener('click', renderResult);
+  $('btnRevResult').addEventListener('click', function () { if (drillMode) { exitDrill(); renderList(); return; } if (att.teacherView) openSession(curSession); else renderResult(); });
+  $('tsBody').addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.tr-view'); if (b) viewLearner(curResults[+b.getAttribute('data-i')]); });
   $('btnRetry').addEventListener('click', function () { startTest(true); });
   $('btnPrint').addEventListener('click', printReport);
   $('btnRevPrint').addEventListener('click', printReport);
   $('btnKey').addEventListener('click', printKey);
+  $('btnTsTopics').addEventListener('click', printTopics);
   $('btnDownload').addEventListener('click', downloadPaper);
   $('btnNextVersion').addEventListener('click', function () { openQuiz(this.dataset.id); });
   $('btnRevRetry').addEventListener('click', function () { startTest(true); });
+  document.addEventListener('magiclab:auth:ready', syncSoon);
+  $('btnDrillMiss').addEventListener('click', function () { startDrill(missedEntries(), t('drillTitle')); });
+  $('btnPrBack').addEventListener('click', renderList);
+  $('btnPlBack').addEventListener('click', renderList);
+  $('toolsBox').addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-tool]'); if (!b) return;
+    var k = b.getAttribute('data-tool');
+    if (k === 'due') startDrill(revEntries().filter(function (x) { return x.due <= Date.now(); }).slice(0, 15), t('drillTitle'));
+    else if (k === 'progress') renderProgress();
+    else if (k === 'build') location.href = 'question-bank.html';
+    else renderPlan();
+  });
+  $('planBody').addEventListener('change', function (e) {
+    var p = planState();
+    if (e.target.id === 'planExam') { p.exam = e.target.value; p.up = Date.now(); writeJ(PLAN_KEY, p); syncSoon(); renderPlan(); return; }
+    if (e.target.matches && e.target.matches('input[data-task]')) {
+      var id = e.target.getAttribute('data-task');
+      p.done[id] = { on: e.target.checked, up: Date.now() };
+      writeJ(PLAN_KEY, p); syncSoon(); renderPlan();
+    }
+  });
+  $('planBody').addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-go]'); if (!b) return;
+    if (b.getAttribute('data-go') === 'drill') startDrill(revEntries().filter(function (x) { return x.topic === b.getAttribute('data-k'); }), t('drillTitle'));
+    else openQuiz(b.getAttribute('data-id'));
+  });
   [].forEach.call($('reviewFilter').children, function (b) {
     b.addEventListener('click', function () { reviewFilter = b.getAttribute('data-f'); renderReview(); });
   });
@@ -1680,12 +2795,15 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
   }
   if (window.MLLang) MLLang.mount('mlLangToggle', { onChange: function (next) {
     lang = next; applyLang();
-    if (rawQuiz) relocalise();
+    if (drillMode) items = drillEntries.map(entryItem);
+    else if (rawQuiz) relocalise();
     if (!$('viewList').classList.contains('hidden')) renderList();
     else if (!$('viewIntro').classList.contains('hidden')) renderIntro();
-    else if (!$('viewTest').classList.contains('hidden')) { var y = scrollY; startTest(false); scrollTo(0, y); }
+    else if (!$('viewTest').classList.contains('hidden')) { var y = scrollY; if (drillMode) renderDrillBody(); else startTest(false); scrollTo(0, y); }
     else if (!$('viewResult').classList.contains('hidden')) renderResult();
-    else if (!$('viewReview').classList.contains('hidden')) renderReview();
+    else if (!$('viewReview').classList.contains('hidden')) { if (drillMode) renderDrillReview(att.done.score); else renderReview(); }
+    else if (!$('viewProgress').classList.contains('hidden')) renderProgress();
+    else if (!$('viewPlan').classList.contains('hidden')) renderPlan();
     else if (!$('viewTeacher').classList.contains('hidden')) renderTeacher();
     else if (!$('viewSession').classList.contains('hidden')) loadSessionResults();
   } });
@@ -1703,11 +2821,14 @@ dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
 
   fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (m) {
     manifest = m.quizzes || [];
+    syncSoon();
     syncTeacherEntry();
     var want = new URLSearchParams(location.search).get('quiz');
     // ?view=results opens a teacher's Class results (from the teacher dashboard)
     var wantResults = new URLSearchParams(location.search).get('view') === 'results';
-    if (want) openQuiz(want);
+    var custom = new URLSearchParams(location.search).get('custom');
+    if (custom && loadCustom(custom)) { /* built on the question-bank page */ }
+    else if (want) openQuiz(want);
     else if (wantResults && window.MagicLabAuth) { if (isTeacher()) renderTeacher(); else renderList(); }
     else if (wantResults) { renderList(); document.addEventListener('magiclab:auth:ready', function () { if (isTeacher()) renderTeacher(); }, { once: true }); }
     else renderList();

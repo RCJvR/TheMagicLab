@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/human-body.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -171,7 +172,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -268,7 +269,7 @@
   <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click a gland on the body diagram (or the list) to see its hormone and effect.</p>
   <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Predict first:</strong> Which gland releases insulin when blood glucose rises? <strong style="color:#fde68a">Then test it:</strong> Click the glands to find it.</div>
   <div class="explore-layout">
-    <div class="flower-canvas-wrap"><canvas id="bodyCanvas" height="420" role="img" aria-label="Gland Explorer: interactive simulation"></canvas></div>
+    <div class="flower-canvas-wrap"><div id="endoFigure"></div></div>
     <div>
       <div class="parts-list" id="partsList"></div>
       <div class="part-info" id="partInfo"></div>
@@ -292,11 +293,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
     <div class="wb-intro">Answer in your exercise book.</div>
-    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Define the term "hormone".</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Compare the nervous and endocrine systems in terms of signal type, speed of response, and duration of effect.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain why the pituitary gland is called the "master gland".</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the role of adrenaline in the "fight-or-flight" response.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name the gland that secretes insulin and glucagon, and state the general role of these two hormones.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Define the term "hormone".</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">A chemical messenger secreted by an endocrine (ductless) gland directly into the blood ✓, which carries it to a target organ where it has a specific effect ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Compare the nervous and endocrine systems in terms of signal type, speed of response, and duration of effect.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Signal: nervous — electrical impulses along neurons; endocrine — chemical hormones in the blood ✓. Speed: nervous — very fast; endocrine — slower ✓. Duration: nervous — short-lived; endocrine — longer-lasting ✓. Target: nervous — specific muscles/glands; endocrine — can affect many organs ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain why the pituitary gland is called the "master gland".</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">It secretes hormones that control other endocrine glands ✓ — e.g. TSH stimulates the thyroid, ACTH the adrenal cortex, FSH and LH the ovaries and testes ✓ — so it regulates the activity of much of the endocrine system ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the role of adrenaline in the "fight-or-flight" response.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Adrenaline is secreted by the adrenal medulla in response to danger or stress ✓. It increases heart rate and breathing rate, and dilates blood vessels to muscles ✓, and stimulates the liver to convert glycogen to glucose, so more glucose and oxygen reach the muscles for action ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name the gland that secretes insulin and glucagon, and state the general role of these two hormones.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">The pancreas (islets of Langerhans) ✓. Insulin lowers blood glucose and glucagon raises it ✓; together they keep the blood glucose concentration constant ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">Blood glucose concentration was measured every hour after a carbohydrate-rich meal, for a healthy person and for a person with untreated diabetes:<br><br>
     <table class="compare-table" style="margin:10px 0"><thead><tr><th>Time after meal (hours)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody>
     <tr><td>Healthy person — glucose (mmol/L)</td><td>5.0</td><td>7.8</td><td>6.5</td><td>5.2</td><td>5.0</td></tr>
@@ -304,7 +305,8 @@
     </tbody></table>
     (a) Calculate the rate of change of blood glucose concentration for the healthy person between hour 1 and hour 2 (in mmol/L per hour).<br>
     (b) Compare the overall pattern of the diabetic person's glucose data to the healthy person's over the 4 hours.<br>
-    (c) Using the data and your knowledge of negative feedback, explain why the healthy person's blood glucose returns to close to 5.0 mmol/L by hour 4, while the untreated diabetic's glucose remains high throughout.</div></div>
+    (c) Using the data and your knowledge of negative feedback, explain why the healthy person's blood glucose returns to close to 5.0 mmol/L by hour 4, while the untreated diabetic's glucose remains high throughout.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) (6,5 − 7,8)/(2 − 1) = −1,3 mmol/L per hour ✓✓<br>(b) The diabetic starts slightly higher (5,5 vs 5,0), rises higher (peak 10,8 vs 7,8) ✓, peaks later (hour 2 vs hour 1) and stays high (9,0 at hour 4 vs 5,0) ✓.<br>(c) In the healthy person the pancreas detects the rise and secretes insulin; the liver converts excess glucose to glycogen and cells absorb glucose, so the level falls back to normal — negative feedback ✓✓. The untreated diabetic produces too little insulin (or cells do not respond), so the feedback loop fails and glucose stays high ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Exam-style question · (13 marks)</div><div class="wb-qtext">In some inland areas, people whose diet lacks iodine develop a goitre, a swelling of the neck.<br>(a) Name the gland that swells and the hormone it secretes. (2)<br>(b) State TWO functions of this hormone. (2)<br>(c) Iodine is needed to make the hormone. Explain why a lack of iodine causes the gland to enlarge, referring to TSH. (4)<br>(d) Explain how adding iodine to table salt helps prevent goitre. (1)<br>(e) Describe TWO effects of adrenaline on the body during the fight-or-flight response. (2)<br>(f) Give ONE reason why the endocrine response is slower than the nervous response. (2)</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) Thyroid gland ✓; thyroxine ✓<br>(b) Controls the basal metabolic rate ✓; promotes growth and development (of the nervous system) ✓<br>(c) Without iodine, little thyroxine is made ✓; the low level is detected and the pituitary keeps secreting TSH ✓; TSH continually stimulates the thyroid ✓, so the gland grows larger (goitre) ✓.<br>(d) It ensures that people get enough iodine to make normal amounts of thyroxine ✓.<br>(e) Any two: increases heart rate; increases breathing rate; dilates blood vessels to muscles; converts glycogen to glucose; dilates pupils ✓✓<br>(f) Hormones are carried by the blood ✓, which travels more slowly than electrical impulses along neurons ✓.</div></details></div>
   </div>
 </div>
 
@@ -325,6 +327,8 @@ function switchTab(id,btn){
    GLAND EXPLORER
 ═══════════════════════════════════════════════ */
 const PARTS = [
+  {id:'hypothalamus', name:'Hypothalamus', color:'#5eead4',
+   desc:'Part of the brain just above the pituitary. It links the nervous and endocrine systems: it makes ADH and releasing hormones that control the pituitary.'},
   {id:'pituitary', name:'Pituitary gland', color:'#f472b6',
    desc:'The "master gland", at the base of the brain. Releases growth hormone, and hormones that control the thyroid, adrenal glands, and gonads.'},
   {id:'thyroid', name:'Thyroid gland', color:'#fbbf24',
@@ -337,6 +341,7 @@ const PARTS = [
    desc:'Testes secrete testosterone; ovaries secrete oestrogen and progesterone. These control secondary sexual characteristics and reproductive cycles.'},
 ];
 let activePart = null;
+const SEX_LABELS = ['Female', 'Male'];
 
 function buildPartsList(){
   document.getElementById('partsList').innerHTML = PARTS.map(p=>`
@@ -354,66 +359,37 @@ function selectPart(id){
     <div class="part-desc">${activePart.desc}</div>`;
 }
 
-const canvas = document.getElementById('bodyCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 420;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawBody();
-}
-
-const REGIONS = {};
-function computeRegions(){
-  const cx = W/2, topY = 50;
-  REGIONS.pituitary = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY,13,11,0,0,Math.PI*2); }};
-  REGIONS.thyroid    = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY+68,16,12,0,0,Math.PI*2); }};
-  REGIONS.adrenal    = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-26,topY+168,12,10,0,0,Math.PI*2); ctx.ellipse(cx+26,topY+168,12,10,0,0,Math.PI*2); }};
-  REGIONS.pancreas   = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+6,topY+190,24,9,0.25,0,Math.PI*2); }};
-  REGIONS.gonads     = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,topY+260,15,11,0,0,Math.PI*2); }};
-}
-
-function drawBody(){
-  ctx.clearRect(0,0,W,H);
-  computeRegions();
-  const cx = W/2, topY = 50;
-  // simple body silhouette
-  ctx.strokeStyle='rgba(210,218,245,0.28)'; ctx.lineWidth=2.5;
-  ctx.beginPath();
-  ctx.ellipse(cx,topY,20,24,0,0,Math.PI*2); // head
-  ctx.moveTo(cx,topY+24); ctx.lineTo(cx,topY+300); // spine
-  ctx.moveTo(cx-46,topY+70); ctx.lineTo(cx+46,topY+70); // shoulders
-  ctx.moveTo(cx-46,topY+70); ctx.lineTo(cx-52,topY+180); // left arm
-  ctx.moveTo(cx+46,topY+70); ctx.lineTo(cx+52,topY+180); // right arm
-  ctx.moveTo(cx-40,topY+70); ctx.quadraticCurveTo(cx-55,topY+180,cx-40,topY+300); // torso outline L
-  ctx.moveTo(cx+40,topY+70); ctx.quadraticCurveTo(cx+55,topY+180,cx+40,topY+300); // torso outline R
-  ctx.moveTo(cx-40,topY+300); ctx.lineTo(cx-30,topY+380); // left leg
-  ctx.moveTo(cx+40,topY+300); ctx.lineTo(cx+30,topY+380); // right leg
-  ctx.stroke();
-
-  PARTS.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '77');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
+/* Body figure: assets/explore/human-body.js (glands in their true positions) */
+let endoFig = null, endoSex = 'f';
+const GLAND_IDS = { hypothalamus: ['hypothalamus'], pituitary: ['pituitary'], thyroid: ['thyroid'], adrenal: ['adrenals'], pancreas: ['islets'] };
+function glandIds(id) { return id === 'gonads' ? (endoSex === 'f' ? ['ovaries'] : ['testes']) : (GLAND_IDS[id] || []); }
+function mountEndo() {
+  const host = document.getElementById('endoFigure');
+  endoFig = MLBody.mount(host, {
+    regions: false, glands: true, sex: endoSex, legend: ['endo', 'dig', 'exc', 'nerv'],
+    onPick: function (organ) {
+      for (const k in GLAND_IDS) if (GLAND_IDS[k].indexOf(organ) >= 0) return selectPart(k);
+      if (organ === 'ovaries' || organ === 'testes' || organ === 'scrotum' || organ === 'uterus') selectPart('gonads');
+    }
   });
-
-  requestAnimationFrame(drawBody);
+  const bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;gap:6px;margin:10px 0 0';
+  [['f', SEX_LABELS[0]], ['m', SEX_LABELS[1]]].forEach(function (o) {
+    const b = document.createElement('button');
+    b.className = 'part-btn' + (o[0] === endoSex ? ' active' : '');
+    b.textContent = o[1]; b.dataset.sex = o[0];
+    b.onclick = function () { endoSex = o[0]; mountEndo(); if (activePart) selectPart(activePart.id); };
+    bar.appendChild(b);
+  });
+  host.appendChild(bar);
 }
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = e.clientX-rect.left, my = e.clientY-rect.top;
-  for (const p of PARTS){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
-  }
-});
+const _selectPart = selectPart;
+selectPart = function (id) {
+  _selectPart(id);
+  document.querySelectorAll('#endoFigure .part-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.sex === endoSex); });
+  if (window.MLBody) { if (!endoFig) mountEndo(); endoFig.focus(glandIds(id)); }
+};
+function resizeCanvas() {}
 
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();

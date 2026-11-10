@@ -97,6 +97,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Use first principles to find f′(x) if f(x) = 2x² − 3x</div><div class="example-step"><span class="step-num">1</span><span>f(x + h) = 2(x + h)² − 3(x + h) = 2x² + 4xh + 2h² − 3x − 3h.</span></div><div class="example-step"><span class="step-num">2</span><span>f(x + h) − f(x) = 4xh + 2h² − 3h.</span></div><div class="example-step"><span class="step-num">3</span><span>Divide by h: 4x + 2h − 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f′(x) = lim (h → 0) (4x + 2h − 3) = 4x − 3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Keep writing “lim h → 0” on every line until you actually let h = 0 — marks are lost for dropping it early.</span></div>
         `
       },
       questions: [
@@ -205,6 +206,7 @@ MathMagician.registerChapter(6, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: An open box is made from a 30 cm × 30 cm sheet by cutting equal squares of side x from each corner. Find the maximum volume</div><div class="example-step"><span class="step-num">1</span><span>V(x) = x(30 − 2x)², with 0 &lt; x &lt; 15.</span></div><div class="example-step"><span class="step-num">2</span><span>V′(x) = (30 − 2x)² − 4x(30 − 2x) = (30 − 2x)(30 − 6x).</span></div><div class="example-step"><span class="step-num">3</span><span>V′(x) = 0 → x = 5 (x = 15 gives no box).</span></div><div class="example-step"><span class="step-num">4</span><span>V(5) = 5 × 20² = 2 000 cm³. V″(5) &lt; 0 (or test values on either side), so this is a maximum.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> State the restrictions on x and show that your answer is a maximum, not just a turning point.</span></div>
         `
       },
       questions: [
@@ -470,6 +472,14 @@ MathMagician.registerChapter(6, {
         { label: "a", text: "Using the table, identify the x-values of the stationary (turning) points of f(x).", marks: 2 },
         { label: "b", text: "State the interval(s) where f(x) is increasing, based on the sign of f'(x) in the table.", marks: 3 },
         { label: "c", text: "Given that f'(x) = 3x² − 6x − 9, confirm your answer to (a) algebraically by solving f'(x) = 0.", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Exam-style question</strong> — f(x) = x³ − 3x² − 9x + 5", parts: [
+        { label: "a", text: "Find f′(x).", marks: 1 },
+        { label: "b", text: "Find the coordinates of the turning points of f and classify them.", marks: 5 },
+        { label: "c", text: "Find the coordinates of the point of inflection.", marks: 2 },
+        { label: "d", text: "Determine the equation of the tangent to f at x = 0.", marks: 2 },
+        { label: "e", text: "For which values of k will f(x) = k have three distinct real roots?", marks: 2 },
+        { label: "f", text: "For which values of x is f decreasing and concave down?", marks: 2 }
       ]}
     ],
     answers: {
@@ -481,7 +491,8 @@ MathMagician.registerChapter(6, {
         a: "f'(x) = 0 at x = −1 and x = 3 (the table shows f'(x) crossing zero at these x-values)",
         b: "f'(x) &gt; 0 for x &lt; −1 and for x &gt; 3, so f(x) is increasing on x &lt; −1 and x &gt; 3",
         c: "3x²−6x−9=0 → x²−2x−3=0 → (x−3)(x+1)=0 → x=3 or x=−1, confirming (a)"
-      }
+      },
+      6: { a: "f′(x) = 3x² − 6x − 9", b: "3(x − 3)(x + 1) = 0 → x = 3 or x = −1. f(−1) = 10: local maximum (−1; 10). f(3) = −22: local minimum (3; −22)", c: "f″(x) = 6x − 6 = 0 → x = 1; f(1) = −6, so (1; −6)", d: "m = f′(0) = −9; point (0; 5): y = −9x + 5", e: "−22 &lt; k &lt; 10 (between the minimum and maximum values)", f: "Decreasing for −1 &lt; x &lt; 3 and concave down for x &lt; 1, so −1 &lt; x &lt; 1" }
     }
   }
 });

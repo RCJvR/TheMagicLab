@@ -474,6 +474,7 @@ const urlsToCache = [
   '/arena.html',
   '/memory-mirror.html',
   '/timer-talisman.html',
+  '/exam-enchanter.html',
   '/timer.html',
   '/timer-talisman-display.html',
   '/assets/timer-talisman-themes.js',

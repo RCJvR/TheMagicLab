@@ -80,6 +80,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Compound interest always beats simple interest (for the same P, i, n > 1). The longer the period, the bigger the gap — this is the power of exponential growth.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R12 000 is invested at 8% p.a. for 5 years</div><div class="example-step"><span class="step-num">1</span><span>Simple interest: A = P(1 + in) = 12 000(1 + 0,08 × 5) = R16 800.</span></div><div class="example-step"><span class="step-num">2</span><span>Compound interest: A = P(1 + i)ⁿ = 12 000(1,08)⁵ = R17 631,94.</span></div><div class="example-step"><span class="step-num">3</span><span>Difference: R831,94 more with compound interest, because interest earns interest.</span></div><div class="example-step"><span class="step-num">4</span><span>Interest earned with compound interest: 17 631,94 − 12 000 = R5 631,94.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Write the rate as a decimal (8% = 0,08) and use n in years when the rate is per year.</span></div>
         `
       },
       questions: [
@@ -267,6 +268,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>HP interest is calculated on the <strong>full original loan</strong> — not on the reducing balance. This makes HP significantly more expensive than a reducing-balance loan at the same rate.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Hire purchase and exchange rates</div><div class="example-step"><span class="step-num">1</span><span>A TV costs R9 000 cash. Deposit 10% = R900; balance R8 100.</span></div><div class="example-step"><span class="step-num">2</span><span>Simple interest at 15% p.a. over 2 years: 8 100 × 0,15 × 2 = R2 430; amount owed R10 530.</span></div><div class="example-step"><span class="step-num">3</span><span>Monthly instalment = 10 530 ÷ 24 = R438,75; total cost = 900 + 10 530 = R11 430.</span></div><div class="example-step"><span class="step-num">4</span><span>Exchange: at $1 = R18,40, $250 costs 250 × 18,40 = R4 600.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Hire-purchase interest is charged on the balance after the deposit, not on the full cash price.</span></div>
         `
       },
       questions: [
@@ -397,6 +399,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>"How much did it cost n years ago" always means dividing by (1+i)ⁿ, not multiplying — you're undoing n years of growth.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Inflation and population growth</div><div class="example-step"><span class="step-num">1</span><span>An item costs R50 today. With inflation of 6% p.a.: price in 6 years = 50(1,06)⁶ = R70,93.</span></div><div class="example-step"><span class="step-num">2</span><span>A town of 2 million grows at 1,5% p.a.: after 10 years 2(1,015)¹⁰ = 2,32 million.</span></div><div class="example-step"><span class="step-num">3</span><span>Both use the compound growth formula A = P(1 + i)ⁿ.</span></div><div class="example-step"><span class="step-num">4</span><span>Increase in population: 2,32 − 2 = 0,32 million (about 320 000 people).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Inflation and population growth compound — do not use the simple interest formula.</span></div>
         `
       },
       questions: [
@@ -554,6 +557,7 @@ MathMagician.registerChapter(9, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Solving for n by trial and error is a legitimate Grade 10 method — logarithms are only formally introduced in Grade 12. Just test whole-number values of n systematically.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R5 000 grows to R6 500 in 4 years. Find the rate</div><div class="example-step"><span class="step-num">1</span><span>Simple interest: interest = R1 500 = 5 000 × i × 4 → i = 0,075 = 7,5% p.a.</span></div><div class="example-step"><span class="step-num">2</span><span>Compound interest: 6 500 = 5 000(1 + i)⁴ → (1 + i)⁴ = 1,3.</span></div><div class="example-step"><span class="step-num">3</span><span>1 + i = 1,3^(1/4) = 1,0678 → i = 6,78% p.a.</span></div><div class="example-step"><span class="step-num">4</span><span>The compound rate is lower because interest also earns interest.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> To undo a power of 4, take the 4th root (raise to ¼) — do not divide by 4.</span></div>
         `
       },
       questions: [
@@ -647,7 +651,8 @@ MathMagician.registerChapter(9, {
           { label: "b", text: "Use the rate found in (a) to calculate the amount after 6 years (not shown in the table).", marks: 2 },
           { label: "c", text: "In which year (n) does the investment first exceed R11 000?", marks: 2 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Give money answers to the nearest cent.", parts: [{ label: "a", text: "R12 000 is invested at 8% p.a. simple interest for 5 years. Calculate the final amount.", marks: 2 }, { label: "b", text: "Calculate the final amount if the R12 000 is invested at 8% p.a. compounded annually for 5 years.", marks: 2 }, { label: "c", text: "How much more interest does the compound-interest investment earn?", marks: 1 }, { label: "d", text: "A TV costs R9 600 on hire purchase. A 10% deposit is paid and the balance is paid off over 3 years at 15% p.a. simple interest. Calculate the monthly instalment.", marks: 4 }, { label: "e", text: "A loaf of bread costs R18 today. Calculate its price in 4 years if inflation is 6% p.a.", marks: 2 }, { label: "f", text: "How many years will it take an investment to double at 12% p.a. simple interest?", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -673,7 +678,8 @@ MathMagician.registerChapter(9, {
         a: "8640,00/8000,00 = 1,08 and 9331,20/8640,00 = 1,08 — a constant ratio confirms compound growth; rate i = 8%",
         b: "A = 8000(1,08)⁶ = R12 694,99",
         c: "Year 4 gives R10 883,91 (below R11 000) and year 5 gives R11 754,62 (above R11 000), so the investment first exceeds R11 000 in year 5"
-      }
+      },
+      6: { a: "A = 12 000(1 + 0,08 × 5) = R16 800,00", b: "A = 12 000(1,08)⁵ = R17 631,94", c: "17 631,94 − 16 800 = R831,94", d: "Deposit R960; balance R8 640; A = 8 640(1 + 0,15 × 3) = R12 528; instalment = 12 528 ÷ 36 = R348,00", e: "A = 18(1,06)⁴ = R22,72", f: "2P = P(1 + 0,12n) → 0,12n = 1 → n = 8,33 years" }
     }
   }
 });

@@ -266,6 +266,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>If the differences between consecutive terms are <em>not</em> all equal, the sequence is not linear — check for a quadratic or geometric pattern instead.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Matchsticks: 1 square uses 4 matches, 2 squares in a row use 7, 3 squares use 10</div><div class="example-step"><span class="step-num">1</span><span>Constant difference 3, so Tₙ = 3n + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>50 squares: T₅₀ = 3(50) + 1 = 151 matches.</span></div><div class="example-step"><span class="step-num">3</span><span>With 200 matches: 3n + 1 ≤ 200 → n ≤ 66,3.</span></div><div class="example-step"><span class="step-num">4</span><span>So 66 squares can be made (using 199 matches).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The answer to “how many squares” must be a whole number — round down, not up.</span></div>
         `
       },
       questions: [
@@ -480,7 +481,8 @@ MathMagician.registerChapter(3, {
           { label: "b", text: "Find the formula for the number of sticks for n pentagons.", marks: 3 },
           { label: "c", text: "How many sticks are needed for 15 pentagons?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — A linear pattern is 7; 11; 15; 19; … A second pattern is made of matchsticks: 1 square uses 4 matches, 2 squares in a row use 7 matches and 3 squares use 10 matches.", parts: [{ label: "a", text: "Determine the general term Tₙ of 7; 11; 15; 19; …", marks: 2 }, { label: "b", text: "Calculate T₅₀.", marks: 2 }, { label: "c", text: "Which term of the pattern is equal to 143?", marks: 2 }, { label: "d", text: "Write down a formula for the number of matches needed for n squares.", marks: 2 }, { label: "e", text: "How many squares can be made in a row with 301 matches?", marks: 2 }, { label: "f", text: "Show that 500 cannot be a term of 7; 11; 15; 19; …", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -498,7 +500,8 @@ MathMagician.registerChapter(3, {
         a: "5, 9, 13, 17",
         b: "Tₙ = 4n + 1",
         c: "T₁₅ = 61 sticks"
-      }
+      },
+      4: { a: "d = 4: Tₙ = 4n + 3", b: "T₅₀ = 4(50) + 3 = 203", c: "4n + 3 = 143 → 4n = 140 → n = 35: the 35th term", d: "Matches = 3n + 1", e: "3n + 1 = 301 → n = 100 squares", f: "4n + 3 = 500 → n = 124,25; n must be a natural number, so 500 is not a term" }
     }
   }
 });

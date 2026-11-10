@@ -116,6 +116,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>'n Buitehoek is 'n kortpad — dit is direk gelyk aan die som van die twee ver binnehoeke, sonder dat jy eers al drie binnehoeke hoef te vind.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In △ABC is AB = AC en AD halveer ∠BAC, met D op BC. Bewys dat BD = DC</div><div class="example-step"><span class="step-num">1</span><span>In △ABD en △ACD: AB = AC (gegee).</span></div><div class="example-step"><span class="step-num">2</span><span>∠BAD = ∠CAD (AD halveer ∠A).</span></div><div class="example-step"><span class="step-num">3</span><span>AD = AD (gemeen).</span></div><div class="example-step"><span class="step-num">4</span><span>△ABD ≡ △ACD (SHS), dus BD = DC (≡ △e).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> HHH is nie ’n kongruensievoorwaarde nie — gelyke hoeke wys net dat die driehoeke dieselfde vorm het, nie dieselfde grootte nie.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>In gelykvormige driehoeke skaleer sye met faktor k, maar oppervlaktes skaleer met k². As sye verdubbel, verviervoudig die oppervlakte.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: D en E is die middelpunte van AB en AC in △ABC, en BC = 14 cm</div><div class="example-step"><span class="step-num">1</span><span>Middelpuntstelling: DE ∥ BC en DE = ½BC = 7 cm.</span></div><div class="example-step"><span class="step-num">2</span><span>As F die middelpunt van BC is, het driehoek DEF sye gelyk aan die helfte van die sye van △ABC.</span></div><div class="example-step"><span class="step-num">3</span><span>Dus is die omtrek van △DEF die helfte van die omtrek van △ABC.</span></div><div class="example-step"><span class="step-num">4</span><span>Omgekeerde: ’n lyn deur die middelpunt van een sy, parallel aan ’n tweede sy, halveer die derde sy.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die middelpuntstelling vereis dat albei punte middelpunte is; gee “middelpuntstelling” as die rede vir beide DE ∥ BC en DE = ½BC.</span></div>
         `
       },
       questions: [
@@ -576,7 +578,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Los op vir x.", marks: 2 },
           { label: "c", text: "Vind BC.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — In △ABC is D die middelpunt van AB en E die middelpunt van AC. BC = 14 cm en ∠ABC = 62°. Afsonderlik is PQRS ’n parallelogram met ∠P = 3x + 10° en ∠Q = 2x − 5°.<div style=\"display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:center\"><div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":190,\"pts\":{\"B\":[0,0],\"C\":[7,0],\"A\":[2.5,5],\"D\":[1.25,2.5],\"E\":[4.75,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"fl\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\",\"ln\",null,\"14 cm\"],[\"C\",\"A\"],[\"D\",\"E\",\"ac\"]],\"tick\":[[\"A\",\"D\",1],[\"D\",\"B\",1],[\"A\",\"E\",2],[\"E\",\"C\",2]],\"ang\":[[\"C\",\"B\",\"A\",\"62°\",\"gn\",18]],\"lab\":{\"D\":\"w\",\"E\":\"e\"},\"dots\":[\"D\",\"E\"]}'></div><div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"P\":[0,0],\"Q\":[7,0],\"R\":[8.5,3],\"S\":[1.5,3]},\"poly\":[[\"P\",\"Q\",\"R\",\"S\",\"fl\"]],\"seg\":[[\"P\",\"Q\"],[\"Q\",\"R\"],[\"R\",\"S\"],[\"S\",\"P\"]],\"par\":[[\"P\",\"Q\",1],[\"S\",\"R\",1],[\"P\",\"S\",2],[\"Q\",\"R\",2]],\"ang\":[[\"Q\",\"P\",\"S\",\"\",\"gn\",18],[\"R\",\"Q\",\"P\",\"\",\"or\",16]],\"txt\":[[1.0,0.35,\"3x + 10°\",\"gn\",\"start\"],[6.3,0.35,\"2x − 5°\",\"or\",\"end\"]]}'></div></div>", parts: [{ label: "a", text: "Stel die middelpuntstelling.", marks: 2 }, { label: "b", text: "Bereken die lengte van DE.", marks: 1 }, { label: "c", text: "Bereken ∠ADE. Gee ’n rede.", marks: 2 }, { label: "d", text: "Bereken x, en dus die groottes van ∠P en ∠R.", marks: 4 }, { label: "e", text: "Noem TWEE eienskappe van ’n ruit wat nie vir elke parallelogram waar is nie.", marks: 2 }, { label: "f", text: "Noem die vierhoek wat (i) presies een paar teenoorstaande sye parallel het, (ii) twee pare aangrensende sye gelyk het.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -593,7 +596,8 @@ MathMagician.registerChapter(7, {
         a: "MN = ½BC → 3x−2 = ½(4x+6)",
         b: "3x−2=2x+3 → x=5",
         c: "BC = 26"
-      }
+      },
+      4: { a: "Die lyn wat die middelpunte van twee sye van ’n driehoek verbind, is parallel aan die derde sy en gelyk aan die helfte daarvan", b: "DE = ½BC = 7 cm", c: "∠ADE = 62° (ooreenkomstige hoeke, DE ∥ BC)", d: "Ko-binnehoeke van ’n parallelogram: 3x + 10 + 2x − 5 = 180 → 5x = 175 → x = 35; ∠P = 115° en ∠R = ∠P = 115° (teenoorstaande hoeke van ’n parallelogram)", e: "Enige twee: al vier sye is gelyk; die hoeklyne halveer mekaar loodreg; die hoeklyne halveer die hoeke", f: "(i) trapesium (ii) vlieër" }
     }
   }
 });

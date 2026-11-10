@@ -97,6 +97,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Spaar R1 500 aan die einde van elke maand vir 10 jaar teen 8% p.j. maandeliks saamgestel</div><div class="example-step"><span class="step-num">1</span><span>i = 0,08/12; n = 10 × 12 = 120.</span></div><div class="example-step"><span class="step-num">2</span><span>F = 1 500[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) = R274 419.</span></div><div class="example-step"><span class="step-num">3</span><span>Totaal gedeponeer: 120 × 1 500 = R180 000, dus rente verdien = R94 419.</span></div><div class="example-step"><span class="step-num">4</span><span>Om eerder R300 000 te bereik, los op 300 000 = x[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) → x = R1 640 per maand.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik i en n per betalingsperiode: maandelikse paaiemente vereis die maandelikse koers en die aantal maande.</span></div>
         `
       },
       questions: [
@@ -183,6 +184,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Lening van R250 000 teen 12% p.j. maandeliks saamgestel word oor 5 jaar terugbetaal</div><div class="example-step"><span class="step-num">1</span><span>i = 0,12/12 = 0,01; n = 60.</span></div><div class="example-step"><span class="step-num">2</span><span>250 000 = x[1 − 1,01⁻⁶⁰]/0,01 → x = R5 561,11 per maand.</span></div><div class="example-step"><span class="step-num">3</span><span>Balans ná 2 jaar (24 paaiemente gemaak, 36 oor): HW van die oorblywende paaiemente = 5 561,11[1 − 1,01⁻³⁶]/0,01 = R167 431.</span></div><div class="example-step"><span class="step-num">4</span><span>Totale rente = 60 × 5 561,11 − 250 000 = R83 667.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Vir die uitstaande balans, gebruik die aantal paaiemente wat <strong>nog gemaak moet word</strong> (36), nie die oorspronklike 60 nie.</span></div>
         `
       },
       questions: [
@@ -393,6 +395,47 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Gebruik die effektiewe jaarlikse koers-formule om die effektiewe jaarlikse koers vir Bank A (10.4% p.j. kwartaalliks saamgestel) te bereken, tot 2 desimale plekke (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Vergelyking van belegging- & leningsopsies" },
         { type: "input", text: "Sipho leen R800 000 teen 11% p.j. maandeliks saamgestel. Die vereiste paaiement oor 20 jaar is sowat R8 258, maar hy betaal eerder R10 000 aan die einde van elke maand. Hoeveel betalings maak hy (die laaste een kan kleiner wees)?", answer: "145", topic: "Vergelyking van belegging- & leningsopsies" }
       ]
+    },
+    {
+      id: 304,
+      chapter: 3,
+      name: "Annuïteite betaalbaar aan die begin en uitgestelde lenings",
+      fullName: "Betalings aan die begin van elke tydperk (annuïteite betaalbaar aan die begin) en lenings met ’n terugbetalingsverlof",
+      lesson: {
+        heading: "Annuïteite betaalbaar aan die begin en uitgestelde lenings",
+        sub: "Hoofstuk 3 · Onderwerp 5",
+        body: `
+          <p>Tot dusver is betalings aan die <strong>einde</strong> van elke tydperk gemaak. Twee algemene variasies verander die berekening: betalings aan die <strong>begin</strong> van elke tydperk (’n annuïteit betaalbaar aan die begin), en lenings met ’n <strong>uitstel</strong>, waar daar eers geen terugbetalings is nie.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Annuïteit betaalbaar aan die begin</div>
+            <p>
+              Elke betaling verdien een ekstra tydperk rente, dus is die toekomstige waarde van ’n annuïteit betaalbaar aan die begin die gewone toekomstige waarde maal <span class="math">(1 + i)</span>:<br>
+              <span class="math">F(begin) = x[(1 + i)^n − 1]/i × (1 + i)</span>
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Uitgestelde lening</div>
+            <p>
+              Terwyl terugbetalings uitgestel word, word rente by die onbetaalde saldo gevoeg: na k tydperke is die saldo <span class="math">P(1 + i)^k</span>. Die paaiemente word dan uit hierdie saldo bereken, as ’n gewone annuïteit oor die terugbetalingstydperk:<br>
+              <span class="math">P(1 + i)^k = x[1 − (1 + i)^−n]/i</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: uitgestelde lening</div>
+            <div class="example-step"><span class="step-num">1</span><span>R100 000 teen 1% per maand, met geen betalings vir 2 maande nie: saldo = 100 000(1,01)² = R102 010.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Terugbetaal oor 12 maande vanaf die einde van maand 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per maand.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: R100 000 word teen 9% p.j. maandeliks saamgestel geleen. Die eerste van 48 maandelikse paaiemente word 6 maande nadat die lening toegestaan is, gemaak</div><div class="example-step"><span class="step-num">1</span><span>i = 0,09/12 = 0,0075.</span></div><div class="example-step"><span class="step-num">2</span><span>Die eerste paaiement is aan die einde van maand 6, dus begin die annuïteit een periode vroeër — aan die einde van maand 5. Laat die lening vir 5 maande groei: 100 000 × 1,0075⁵ = R103 806,72.</span></div><div class="example-step"><span class="step-num">3</span><span>103 806,72 = x[1 − 1,0075⁻⁴⁸]/0,0075 → x = R2 583,24.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontrole: sonder die uitstel sou die paaiement R2 488,50 wees — uitstel kos ekstra rente.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Laat die skuld vir een maand <strong>minder</strong> as die vertraging groei (5, nie 6 nie), omdat die huidige-waarde-formule reeds aanneem dat die eerste paaiement een periode ná sy beginpunt kom.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "R500 word aan die BEGIN van elke maand vir 2 jaar betaal teen 12% p.j., maandeliks saamgestel. Die toekomstige waarde is die naaste aan:", options: ["R13 487", "R13 622", "R13 350", "R14 200"], answer: 1, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Watter tydsberekening gee, al die ander dinge gelyk, die groter toekomstige waarde?", options: ["Betalings aan die begin van elke tydperk", "Betalings aan die einde van elke tydperk", "Hulle is dieselfde", "Dit hang slegs af van die aantal betalings"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "input", text: "’n Lening van R100 000 teen 1% per maand het geen betalings vir 2 maande nie. Wat is die saldo aan die einde van maand 2 (tot die naaste rand)?", answer: "102010", altAnswers: ["102 010", "R102010", "R102 010"], topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Dieselfde lening word terugbetaal deur 12 gelyke betalings aan die einde van maande 3 tot 14. Die maandelikse paaiement is die naaste aan:", options: ["R9 063", "R8 500", "R10 000", "R9 500"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "mc", text: "Waarom groei die saldo gedurende ’n uitstelperiode?", options: ["Rente word gehef op die onbetaalde saldo", "Die lening word gekanselleer", "Betalings verminder die lening", "Inflasie verminder die skuld"], answer: 0, topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" },
+        { type: "input", text: "Skryf die saldo na k maande sonder betalings op ’n lening van P teen i per maand, in terme van P, i en k.", answer: "P(1+i)^k", altAnswers: ["P(1 + i)^k", "P(1+i)**k"], topic: "Annuïteite betaalbaar aan die begin en uitgestelde lenings" }
+      ]
     }
   ],
   workbook: {
@@ -418,13 +461,20 @@ MathMagician.registerChapter(3, {
         { label: "b", text: "Skryf die waarde van die aanvanklike belegging (by jaar 0) neer.", marks: 1 },
         { label: "c", text: "Skryf dus die algemene formule vir die waarde na n jaar, in die vorm A = P(1+i)ⁿ.", marks: 2 },
         { label: "d", text: "Gebruik jou formule om die waarde aan die einde van jaar 8 te voorspel (naaste rand).", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — Thandi neem ’n huislening van R1 200 000 teen 11,25% p.j. maandeliks saamgestel, terugbetaalbaar oor 20 jaar met maandelikse paaiemente wat een maand nadat die lening toegestaan is, begin.", parts: [
+        { label: "a", text: "Bereken haar maandelikse paaiement.", marks: 4 },
+        { label: "b", text: "Bereken die totale rente wat sy oor die 20 jaar sal betaal.", marks: 3 },
+        { label: "c", text: "Bereken die uitstaande balans onmiddellik ná die 120ste paaiement.", marks: 4 },
+        { label: "d", text: "As sy eerder R14 000 per maand betaal, hoeveel paaiemente sal sy maak?", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
       2: { a: "Lening=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/maand", c: "Saldo=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Totaal betaal=13596×300=R4 078 800; Rente=4078800−1440000≈R2 638 800" },
       3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x teen 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; bespaar R68158−R64804=R3 354" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
+      4: { a: "i = 10800/10000 − 1 = 0.08, bevestig met 11664/10800 − 1 = 0.08 → i = 8% p.j.", b: "P = R10 000 (die waarde by n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" },
+      5: { a: "i = 0,1125/12 = 0,009375; n = 240. 1 200 000 = x[1 − 1,009375⁻²⁴⁰]/0,009375 → x = R12 591,08", b: "Totaal betaal = 240 × 12 591,08 = R3 021 859; rente = 3 021 859 − 1 200 000 = R1 821 859", c: "Huidige waarde van die oorblywende 120 paaiemente: 12 591,08[1 − 1,009375⁻¹²⁰]/0,009375 = R904 736 (aanvaar die toekomstige-waarde-metode)", d: "1 200 000 = 14 000[1 − 1,009375⁻ⁿ]/0,009375 → 1,009375⁻ⁿ = 0,19643 → n = 174,4, dus 175 paaiemente (174 volle paaiemente en ’n kleiner laaste paaiement)" }
     }
   }
 });

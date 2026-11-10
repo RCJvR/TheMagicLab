@@ -101,6 +101,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir hoogte-/depressieprobleme word die hoek altyd vanaf die <strong>horisontaal</strong> gemeet. Die aanliggende sy is die horisontale afstand en die oorstaande is die vertikale hoogte.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Leer van 6 m maak ’n hoek van 70° met die grond; ’n gebou van 30 m is 40 m ver</div><div class="example-step"><span class="step-num">1</span><span>Hoogte bereik: 6 sin 70° = 5,64 m.</span></div><div class="example-step"><span class="step-num">2</span><span>Afstand van die voet van die muur: 6 cos 70° = 2,05 m.</span></div><div class="example-step"><span class="step-num">3</span><span>Hoogtehoek na die bopunt van die gebou: tan θ = 30/40 → θ = 36,9°.</span></div><div class="example-step"><span class="step-num">4</span><span>Teken ’n skets en merk die regte hoek voordat jy die verhouding kies.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Hoogte- en dieptehoeke word vanaf die <strong>horisontaal</strong> gemeet, nie vanaf die vertikaal nie.</span></div>
         `
       },
       questions: [
@@ -224,6 +225,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die formule h = d·tanA·tanB/(tanA − tanB) kom van die opstel van albei tan-vergelykings en die algebraïese eliminasie van d — 'n belangrike eksamentegniek.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vanaf A is die hoogtehoek na die bopunt van ’n toring 30°. Nadat 50 m na die toring gestap is tot by B, is die hoek 45°</div><div class="example-step"><span class="step-num">1</span><span>Laat die hoogte h wees. Vanaf B: afstand na die voet = h/tan 45° = h.</span></div><div class="example-step"><span class="step-num">2</span><span>Vanaf A: afstand = h/tan 30° = 1,732h.</span></div><div class="example-step"><span class="step-num">3</span><span>AB = 1,732h − h = 50 → 0,732h = 50.</span></div><div class="example-step"><span class="step-num">4</span><span>h = 68,3 m.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik die sy wat die twee driehoeke deel (die hoogte h) om hulle te verbind.</span></div>
         `
       },
       questions: [
@@ -547,7 +549,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Bereken die afstand van die basis van die krans na boot B.", marks: 3 },
           { label: "c", text: "Bereken die afstand tussen die twee bote.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Van die bopunt van ’n gebou 40 m hoog is die dieptehoek van ’n motor op die gelyk grond 28°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":360,\"h\":200,\"pad\":40,\"pts\":{\"F\":[0,0],\"T\":[0,40],\"H\":[75.22905861385328,40],\"C\":[75.22905861385328,0],\"D\":[40,0]},\"seg\":[[\"F\",\"C\"],[\"F\",\"T\",\"ln\",null,\"40 m\"],[\"T\",\"H\",\"mu dash\"],[\"T\",\"C\",\"ac\"],[\"T\",\"D\",\"or\"]],\"ra\":[[\"T\",\"F\",\"C\"]],\"ang\":[[\"H\",\"T\",\"C\",\"28°\",\"ac\",95],[\"H\",\"T\",\"D\",\"45°\",\"or\",40]],\"dots\":[\"C\",\"D\"],\"nolab\":[\"H\"],\"lab\":{\"F\":\"sw\",\"T\":\"nw\",\"C\":\"s\",\"D\":\"s\"}}'></div>", parts: [{ label: "a", text: "Bereken die horisontale afstand van die voet van die gebou na die motor.", marks: 3 }, { label: "b", text: "Die motor ry reguit na die gebou totdat die dieptehoek 45° is. Hoe ver het die motor gery?", marks: 3 }, { label: "c", text: "’n Skip vaar 12 km op ’n peiling van 060°. Hoe ver noord en hoe ver oos van sy beginpunt is dit?", marks: 4 }, { label: "d", text: "Verduidelik die verskil tussen ’n hoogtehoek en ’n dieptehoek.", marks: 2 }, { label: "e", text: "’n Oprit van 3 m lank styg 0,5 m. Bereken die hoek wat die oprit met die horisontaal maak.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -562,7 +565,8 @@ MathMagician.registerChapter(11, {
         a: "tan42° = 60/dA → dA = 60/tan42° ≈ 66.64 m",
         b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.84 m",
         c: "AB = 112.84 − 66.64 ≈ 46.20 m"
-      }
+      },
+      4: { a: "tan 28° = 40/d → d = 40/tan 28° = 75,23 m", b: "By 45°: d = 40/tan 45° = 40 m; afstand gery = 75,23 − 40 = 35,23 m", c: "Noord: 12 cos 60° = 6 km; oos: 12 sin 60° = 10,39 km", d: "Albei word vanaf die horisontaal gemeet: ’n hoogtehoek word opwaarts gemeet na ’n voorwerp bo die waarnemer, ’n dieptehoek afwaarts na ’n voorwerp onder", e: "sin θ = 0,5/3 → θ = 9,6°" }
     }
   }
 });

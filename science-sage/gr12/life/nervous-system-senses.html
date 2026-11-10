@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/senses.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -174,7 +175,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -289,7 +290,7 @@
         <button class="organ-btn active" id="btnEye" onclick="setOrgan('eye')">👁 Eye</button>
         <button class="organ-btn" id="btnEar" onclick="setOrgan('ear')">👂 Ear</button>
       </div>
-      <canvas id="senseCanvas" height="360" role="img" aria-label="Eye &amp; Ear Explorer: interactive simulation"></canvas>
+      <div id="senseFigure"></div>
     </div>
     <div>
       <div class="parts-list" id="partsList"></div>
@@ -314,11 +315,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
     <div class="wb-intro">Answer in your exercise book.</div>
-    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the THREE main parts of a neuron and state the function of each.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Distinguish between the central nervous system and the peripheral nervous system.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe the pathway of a reflex arc, from stimulus to response, and explain why reflexes are so fast.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the pathway light follows through the eye, from entering the cornea to reaching the brain.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name the three regions of the ear, and give ONE structure and its function found in each region.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the THREE main parts of a neuron and state the function of each.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Dendrites — receive impulses and carry them towards the cell body ✓; cell body — contains the nucleus and controls the cell’s activities ✓; axon — carries impulses away from the cell body ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Distinguish between the central nervous system and the peripheral nervous system.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">The CNS is the brain and spinal cord, which process information ✓; the PNS is all the nerves outside the CNS (cranial and spinal nerves) that connect it to receptors and effectors ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe the pathway of a reflex arc, from stimulus to response, and explain why reflexes are so fast.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Stimulus → receptor → sensory neuron → interneuron in the spinal cord → motor neuron → effector (muscle) → response ✓✓. Reflexes are fast because the impulse passes through the spinal cord without first going to the brain ✓, and few synapses are involved ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the pathway light follows through the eye, from entering the cornea to reaching the brain.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Cornea → aqueous humour → pupil → lens → vitreous humour → retina (photoreceptors) ✓✓; impulses travel along the optic nerve to the occipital lobe of the cerebrum ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name the three regions of the ear, and give ONE structure and its function found in each region.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Outer ear: pinna (collects sound) or auditory canal ✓. Middle ear: ossicles (amplify vibrations) or Eustachian tube (equalises pressure) ✓. Inner ear: cochlea (organ of Corti changes vibrations into impulses) or semicircular canals (balance) ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A learner investigates reaction time using a falling-ruler test (a shorter distance caught = a faster reaction time, converted to milliseconds). Results for 5 trials, before and after drinking a caffeinated energy drink:<br><br>
     <table class="compare-table" style="margin:10px 0"><thead><tr><th>Trial</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead><tbody>
     <tr><td>Reaction time before caffeine (ms)</td><td>180</td><td>165</td><td>210</td><td>175</td><td>170</td></tr>
@@ -326,7 +327,8 @@
     </tbody></table>
     (a) Calculate the mean reaction time before caffeine, and the mean reaction time after caffeine.<br>
     (b) Based on these means, what effect does this data suggest caffeine has on reaction time? Explain your answer in terms of the nervous system.<br>
-    (c) Suggest ONE variable that should be kept constant between the two sets of trials to ensure the comparison is a fair test, and explain why controlling it matters.</div></div>
+    (c) Suggest ONE variable that should be kept constant between the two sets of trials to ensure the comparison is a fair test, and explain why controlling it matters.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) Before: (180 + 165 + 210 + 175 + 170)/5 = 180 ms ✓; after: (150 + 145 + 160 + 140 + 155)/5 = 150 ms ✓<br>(b) Caffeine shortens reaction time (by about 30 ms) ✓. Caffeine is a stimulant that increases the speed of impulse transmission / alertness in the nervous system ✓.<br>(c) e.g. the same person, the same hand, the same ruler and drop method, or the same amount of practice ✓, so that only the caffeine could cause the difference ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Exam-style question · (12 marks)</div><div class="wb-qtext">A doctor taps a patient’s knee just below the kneecap, and the lower leg jerks forward.<br>(a) Describe the pathway of the impulse in this reflex, from stimulus to response. (5)<br>(b) Explain why this response happens without conscious thought. (1)<br>(c) Describe how the eye accommodates to see a nearby object clearly. (4)<br>(d) A learner cannot see distant objects clearly. Name the defect and the type of lens used to correct it. (2)</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) Stretch receptors in the muscle detect the tap (stimulus) ✓; a sensory neuron carries the impulse to the spinal cord ✓; it passes (via a synapse) to a motor neuron ✓; the motor neuron carries the impulse to the thigh muscle (effector) ✓; the muscle contracts and the leg jerks (response) ✓.<br>(b) The impulse is processed in the spinal cord and does not need to go to the brain first ✓.<br>(c) The ciliary muscles contract ✓; the suspensory ligaments slacken ✓; the lens becomes more convex (rounder) ✓; light is refracted more strongly and focused on the retina ✓.<br>(d) Short-sightedness (myopia) ✓; a concave (diverging) lens ✓.</div></details></div>
   </div>
 </div>
 
@@ -351,14 +353,29 @@ const EYE_PARTS = [
   {id:'pupil', name:'Pupil', color:'#1e293b', desc:'The opening that lets light into the eye. Its size is adjusted by the iris to control how much light enters.'},
   {id:'lens', name:'Lens', color:'#c4b5fd', desc:'Fine-tunes focus by bending light further so that it falls precisely on the retina.'},
   {id:'retina', name:'Retina', color:'#f472b6', desc:'The light-sensitive layer at the back of the eye. Receptor cells (rods and cones) here convert light into nerve impulses.'},
-  {id:'opticnerve', name:'Optic nerve', color:'#fbbf24', desc:'Carries nerve impulses from the retina to the brain, where they are interpreted as vision.'},
+  {id:'opticnerve', name:'Optic nerve', color:'#fbbf24', desc:'Carries nerve impulses from the retina to the brain, where they are interpreted as vision.'},
+  {id:'iris', name:'Iris', color:'#60a5fa', desc:'The coloured ring of muscle in front of the lens. It changes the size of the pupil: smaller in bright light, larger in dim light.'},
+  {id:'ciliary', name:'Ciliary body', color:'#c084fc', desc:'A ring of muscle round the lens. It contracts or relaxes to change the tension on the suspensory ligaments, which changes the shape of the lens (accommodation).'},
+  {id:'suspensory', name:'Suspensory ligaments', color:'#e9d5ff', desc:'Fibres that hold the lens in place and connect it to the ciliary body. When they are pulled tight the lens becomes flatter (for distant objects).'},
+  {id:'aqueous', name:'Aqueous humour', color:'#7dd3fc', desc:'Watery fluid in front of the lens. It keeps the front of the eye in shape and nourishes the cornea and lens.'},
+  {id:'vitreous', name:'Vitreous humour', color:'#93c5fd', desc:'Clear jelly that fills the space behind the lens. It keeps the eyeball round and refracts light a little.'},
+  {id:'sclera', name:'Sclera', color:'#e2e8f0', desc:'The tough white outer layer that protects the eye and keeps its shape. At the front it becomes the transparent cornea.'},
+  {id:'choroid', name:'Choroid', color:'#a16207', desc:'The dark layer between the sclera and retina. Its blood vessels supply the retina, and its dark pigment absorbs light so that it is not reflected inside the eye.'},
+  {id:'fovea', name:'Fovea (yellow spot)', color:'#fde047', desc:'The part of the retina with only cones, packed closely together. It gives the sharpest colour vision; light from what you look at is focused here.'},
+  {id:'blindspot', name:'Blind spot', color:'#f8fafc', desc:'The place where the optic nerve leaves the eye. It has no rods or cones, so an image falling here is not seen.'},
 ];
 const EAR_PARTS = [
   {id:'pinna', name:'Pinna (outer ear)', color:'#93c5fd', desc:'Collects sound waves from the environment and funnels them down the ear canal toward the eardrum.'},
   {id:'eardrum', name:'Eardrum', color:'#c4b5fd', desc:'A thin membrane that vibrates in response to sound waves, marking the boundary between the outer and middle ear.'},
   {id:'ossicles', name:'Ossicles (middle ear bones)', color:'#fbbf24', desc:'Three tiny bones that amplify vibrations from the eardrum and transmit them to the inner ear.'},
   {id:'cochlea', name:'Cochlea', color:'#f472b6', desc:'A fluid-filled, spiral structure in the inner ear that converts vibrations into nerve impulses for hearing.'},
-  {id:'semicircular', name:'Semi-circular canals', color:'#4ade80', desc:'Detect changes in head position and movement, providing the sense of balance.'},
+  {id:'semicircular', name:'Semi-circular canals', color:'#4ade80', desc:'Detect changes in head position and movement, providing the sense of balance.'},
+  {id:'canal', name:'Auditory canal', color:'#fda4af', desc:'The tube from the pinna to the eardrum. It carries sound waves inwards; wax and hairs in it trap dust.'},
+  {id:'oval', name:'Oval window', color:'#fb923c', desc:'A membrane between the middle and inner ear. The stirrup pushes on it, setting up pressure waves in the fluid of the cochlea.'},
+  {id:'round', name:'Round window', color:'#fb923c', desc:'A membrane below the oval window. It bulges outwards to release the pressure of the waves in the cochlear fluid.'},
+  {id:'eustachian', name:'Eustachian tube', color:'#94a3b8', desc:'Connects the middle ear to the throat (pharynx), so that the air pressure is equal on both sides of the eardrum.'},
+  {id:'vestibule', name:'Utriculus and sacculus', color:'#86efac', desc:'Sacs in the vestibule of the inner ear with receptors (maculae) that detect the position of the head in relation to gravity.'},
+  {id:'auditorynerve', name:'Auditory nerve', color:'#fde047', desc:'Carries impulses from the cochlea (hearing) and the semicircular canals, utriculus and sacculus (balance) to the brain.'},
 ];
 let currentOrgan = 'eye';
 let activePart = null;
@@ -391,62 +408,19 @@ function selectPart(id){
   drawSense();
 }
 
-const canvas = document.getElementById('senseCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 360;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawSense();
-}
-
-const REGIONS = {};
-function computeRegionsEye(){
-  const cx = W/2, cy = H/2;
-  REGIONS.cornea = {shape:()=>{ ctx.beginPath(); ctx.arc(cx-70,cy,70,-0.7,0.7); ctx.closePath(); }};
-  REGIONS.pupil = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-38,cy,10,22,0,0,Math.PI*2); }};
-  REGIONS.lens = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-20,cy,10,28,0,0,Math.PI*2); }};
-  REGIONS.retina = {shape:()=>{ ctx.beginPath(); ctx.arc(cx+65,cy,72,Math.PI-0.55,Math.PI+0.55); ctx.closePath(); }};
-  REGIONS.opticnerve = {shape:()=>{ ctx.beginPath(); ctx.rect(cx+70,cy-10,50,20); }};
-}
-function computeRegionsEar(){
-  const cx = W*0.35, cy = H/2;
-  REGIONS.pinna = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-40,cy,34,58,0,0,Math.PI*2); }};
-  REGIONS.eardrum = {shape:()=>{ ctx.beginPath(); ctx.rect(cx+18,cy-30,8,60); }};
-  REGIONS.ossicles = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+50,cy-14,18,10,0,0,Math.PI*2); }};
-  REGIONS.cochlea = {shape:()=>{ ctx.beginPath(); ctx.arc(cx+110,cy+18,26,0,Math.PI*2); }};
-  REGIONS.semicircular = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+95,cy-40,30,18,0.5,0,Math.PI*2); }};
-}
-
-function drawSense(){
-  ctx.clearRect(0,0,W,H);
-  const parts = currentParts();
-  if (currentOrgan==='eye') computeRegionsEye(); else computeRegionsEar();
-
-  parts.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '55');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
-  });
-
-  requestAnimationFrame(drawSense);
-}
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX-rect.left)*(W/rect.width), my = (e.clientY-rect.top)*(H/rect.height);
-  for (const p of currentParts()){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
+/* Diagram: assets/explore/senses.js (labelled sections of the eye and ear) */
+let senseFig = null, senseFigOrgan = null;
+function drawSense() {
+  if (!window.MLSense) return;
+  if (!senseFig || senseFigOrgan !== currentOrgan) {
+    senseFigOrgan = currentOrgan;
+    senseFig = MLSense.mount(document.getElementById('senseFigure'), {
+      organ: currentOrgan, onPick: function (id) { if (currentParts().some(p => p.id === id)) selectPart(id); }
+    });
   }
-});
-
+  senseFig.focus(activePart ? activePart.id : null);
+}
+function resizeCanvas() { drawSense(); }
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();

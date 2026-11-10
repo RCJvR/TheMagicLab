@@ -131,6 +131,7 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Draw the 30-60-90 (sides: 1, √3, 2) and 45-45-90 (sides: 1, 1, √2) triangles from memory — all special angle values come from these two triangles.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Evaluate without a calculator</div><div class="example-step"><span class="step-num">1</span><span>(sin 30° + cos 60°) ÷ tan 45° = (½ + ½) ÷ 1 = 1.</span></div><div class="example-step"><span class="step-num">2</span><span>tan² 60° = (√3)² = 3.</span></div><div class="example-step"><span class="step-num">3</span><span>2 sin 45° cos 45° = 2 × (√2/2) × (√2/2) = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>So tan² 60° − 2 sin 45° cos 45° = 3 − 1 = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> sin 2A is not 2 sin A, and tan² 60° means (tan 60°)².</span></div>
         `
       },
       questions: [
@@ -280,6 +281,7 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span><strong>CAST</strong> — reading anti-clockwise from Q4: Cos, All, Sin, Tan tells you which ratio is positive in each quadrant. The reference angle is always the acute angle from the x-axis.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: 5 sin θ + 3 = 0 with θ ∈ [180°; 270°]. Find cos θ and tan θ; then solve 2 cos x = 1,3 for x ∈ [0°; 90°]</div><div class="example-step"><span class="step-num">1</span><span>sin θ = −3/5 = y/r, so y = −3 and r = 5; θ is in the third quadrant, so x is negative.</span></div><div class="example-step"><span class="step-num">2</span><span>x² = 25 − 9 = 16 → x = −4.</span></div><div class="example-step"><span class="step-num">3</span><span>cos θ = −4/5; tan θ = (−3)/(−4) = 3/4.</span></div><div class="example-step"><span class="step-num">4</span><span>cos x = 0,65 → x = 49,5°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use the quadrant to choose the sign of x or y after Pythagoras — the square root alone gives only the positive value.</span></div>
         `
       },
       questions: [
@@ -581,7 +583,8 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Using the reading at 10 m, calculate the height of the building. Is it consistent with your answer to (a)?", marks: 3 },
           { label: "c", text: "Using the height found above, predict the angle of elevation that would be measured from a point 15 m from the building (2 d.p.).", marks: 3 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Answer (a) and (b) without a calculator.", parts: [{ label: "a", text: "Evaluate (sin 30° + cos 60°)/tan 45°.", marks: 3 }, { label: "b", text: "If 5 sin θ − 3 = 0 and θ is acute, use a sketch to determine cos θ and tan θ.", marks: 4 }, { label: "c", text: "Solve for x (0° ≤ x ≤ 90°), correct to one decimal place: 2 cos x = 1,4", marks: 2 }, { label: "d", text: "Solve for x (0° &lt; x &lt; 80°), correct to one decimal place: tan(x + 10°) = 1,5", marks: 2 }, { label: "e", text: "A 6 m ladder leans against a wall and makes an angle of 65° with the ground. Calculate how high up the wall the ladder reaches.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -608,7 +611,8 @@ MathMagician.registerChapter(5, {
         a: "tan45° = h/30 → h = 30×tan45° = 30 m",
         b: "tan71,6° = h/10 → h = 10×tan71,6° ≈ 30 m — yes, consistent with (a)",
         c: "tanθ = 30/15 = 2 → θ = tan⁻¹(2) ≈ 63,43°"
-      }
+      },
+      6: { a: "(½ + ½)/1 = 1", b: "sin θ = 3/5: opposite 3, hypotenuse 5, so adjacent = √(25 − 9) = 4; cos θ = 4/5; tan θ = 3/4", c: "cos x = 0,7 → x = 45,6°", d: "x + 10° = 56,3° → x = 46,3°", e: "sin 65° = h/6 → h = 6 sin 65° = 5,44 m" }
     }
   }
 });

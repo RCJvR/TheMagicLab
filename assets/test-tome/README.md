@@ -26,6 +26,24 @@ Every question can carry `"skill": "knowledge"` (the default) or
 | `pairs` | `q`, `pairs` [[term, partner], ..] (cards, find the pairs) | 1 per pair |
 | `fill` | `q`, `fill` (code with `[[]]` for each blank), `blanks` [answer, or [accepted, …]] | 1 per blank; exact match, spaces ignored, case counts |
 | `scenario` | `scenario` (text), `questions` [any of the types above] | the sum of its parts |
+| `word` | `q`, `answer` (a word/term, or [accepted, …]); one typing box | `marks`, default 1 |
+| `blank` | `q` (instruction), `text` (a sentence with `[[]]` per missing word), `blanks` [answer, or [accepted, …]] | 1 per blank |
+| `num` | `q`, `answer` (a number), optional `unit` (shown after the box) and `tol` (allowed error; default 1% of the answer) | `marks`, default 1 |
+| `label` | `q`, `svg` (the diagram), `labels` [[tag, accepted, …], ..] | 1 per label |
+| `written` | `q`, `points` [memo points]; the learner types a full answer and, after handing in, ticks the memo points they earned | 1 per point (or `marks`) |
+
+`word`, `blank` and `label` answers ignore capitals, accents, extra spaces, hyphens and a
+leading article (the, a, an, die, 'n), but the spelling must be right; list every
+acceptable form (plurals, synonyms, British/American spelling). Symbols are read as words
+(θ = theta, π = pi, Ω = ohm, σ = sigma, × = x, Δ = delta), and ½, x² and θ₂ count as plain digits. `num` accepts a
+decimal comma or point and a unit typed after the number. Give each of these an
+Afrikaans twin: `answerAf`, `textAf`, `blanksAf`, `labelsAf`, `pointsAf`, `unitAf`.
+`written` questions are never queued as revisits, and a paper with written questions
+shows a "Mark your written answers" step before the result.
+
+Natural Sciences blueprint (rev 2): 10 multiple choice, 6 one-word terms, 3 missing-word
+sentences (6 blanks), up to 5 true/false, matching, steps in order, one calculation
+(`num`) plus one written explanation, then scenarios. Minutes = about one per mark.
 
 Scenario sub-questions count as application unless they say otherwise.
 A test file's `"rev"` number goes up when its questions change; an attempt saved
@@ -64,6 +82,25 @@ twin; the Natural Sciences papers use life, matter, energy and earth (the four
 CAPS strands). Without `"topics"`, the built-in Coding & Robotics names apply
 (html, excel, ct, java, freecad, tinkercad). Results reach a teacher through a
 class code; see supabase-test-tome-results.sql.
+
+## Practice (learner side)
+
+Everything here is kept in the learner's browser and never changes a mark or
+goes to a teacher.
+
+- `"confidence": true` on a paper adds "How sure are you?" ticks under each
+  question. Off unless a paper sets it. The result shows sure-but-wrong
+  questions first.
+- A question can carry `"working": [steps]` and `"workingAf": [steps]`. The
+  review shows them under the answer as Working. Calculation questions
+  (`"calc": true`) should have them.
+- `"whyWrong": {"1": "…"}` and `"whyWrongAf"` (keyed by option index) say why a wrong
+  option is tempting. The review shows the reason under an option the learner picked.
+- Missed questions come back as revisits (2, then 5, 12 and 30 days after each
+  correct practice). Practice runs from the saved copy of each question, so it
+  works across tests.
+- Topic lessons are listed by topic in `LESSONS` and `NS_LESSONS` in
+  test-tome.html. Add a lesson there, with its Afrikaans title.
 
 ## Drafts and the answer key
 

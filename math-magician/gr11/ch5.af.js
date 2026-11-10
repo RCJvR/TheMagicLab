@@ -517,6 +517,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Eienskappe van y = 3 sin 2x, y = −2 cos x + 1 en y = tan(x + 45°)</div><div class="example-step"><span class="step-num">1</span><span>y = 3 sin 2x: amplitude 3, periode 360° ÷ 2 = 180°.</span></div><div class="example-step"><span class="step-num">2</span><span>y = −2 cos x + 1: in die x-as gereflekteer en 1 op geskuif; waardeversameling [−1; 3].</span></div><div class="example-step"><span class="step-num">3</span><span>y = tan(x + 45°): 45° links geskuif; asimptote waar x + 45° = 90° + k·180°, d.w.s. x = 45° + k·180°.</span></div><div class="example-step"><span class="step-num">4</span><span>Op [−180°; 180°] is daardie asimptote x = −135° en x = 45°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die periode van sin kx en cos kx is 360°/k; vir tan kx is dit 180°/k.</span></div>
         `
       },
       questions: [
@@ -739,6 +740,28 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "Die grafiek van f(x) = 2/(x − 1) + 3 word getoon.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":220,\"view\":[-3,-1,5,7],\"axes\":{\"ticks\":1},\"asym\":[[\"x\",1],[\"y\",3]],\"fn\":[{\"f\":\"2/(x-1)+3\",\"breaks\":[1],\"lab\":[3.6,4.5,\"f\"]}]}'></div>Die lyn y = −x + k is 'n simmetrie-as van f. Bepaal k.", answer: "4", topic: "Skets van funksies: afsnitte, domein en waardeversameling" },
         { type: "mc", text: "f(x) = −2(x − 1)² + 8. Vir watter waardes van k het die vergelyking f(x) = k twee verskillende reële wortels?", options: ["k < 8","k > 8","k = 8","k ≤ 8"], answer: 0, topic: "Skets van funksies: afsnitte, domein en waardeversameling" }
       ]
+    },
+    {
+      id: 503,
+      chapter: 5,
+      name: "Hiperbool: simmetrie-asse",
+      fullName: "Bepaal die simmetrie-asse van ’n hiperbool en gebruik simmetrie om punte en onbekendes te vind",
+      lesson: {
+        heading: "Hiperbool: simmetrie-asse",
+        sub: "Hoofstuk 5 · Onderwerp 4",
+        body: `
+          <p>Die hiperbool <span class="math">y = a/(x + p) + q</span> het twee simmetrielyne. Albei gaan deur die punt waar die asimptote kruis, <strong>(−p; q)</strong>, een met gradiënt 1 en een met gradiënt −1.</p><div class="def-box"><div class="def-box-title">📖 Die simmetrie-asse</div><p>Asimptote: x = −p en y = q.<br>Simmetrie-asse: <span class="math">y = (x + p) + q</span> en <span class="math">y = −(x + p) + q</span>.<br>Wanneer a &gt; 0 lê die takke in die eerste en derde ‘kwadrante’ wat deur die asimptote gevorm word, en y = x + p + q gaan deur albei takke; wanneer a &lt; 0 is dit y = −x − p + q wat albei takke sny.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld: y = 2/(x − 1) + 3</div><div class="example-step"><span class="step-num">1</span><span>Asimptote x = 1 en y = 3, dus gaan die asse deur (1; 3).</span></div><div class="example-step"><span class="step-num">2</span><span>Gradiënt 1: y − 3 = 1(x − 1) ⟹ y = x + 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Gradiënt −1: y − 3 = −1(x − 1) ⟹ y = −x + 4.</span></div><div class="example-step"><span class="step-num">4</span><span>Simmetriekontrole: (2; 5) is op die grafiek. Die refleksie daarvan in y = −x + 4 is (4 − 5; 4 − 2) = (−1; 2), en 2/(−1 − 1) + 3 = 2 ✓.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld: bepaal p uit ’n simmetrie-as</div><div class="example-step"><span class="step-num">1</span><span>y = x + 5 is ’n simmetrie-as van y = 3/(x + p) + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>Die punt (−p; 1) lê op die as: 1 = −p + 5, dus p = 4.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Refleksiereëls vir die punt (a; b): in y = x + c gaan dit na (b − c; a + c); in y = −x + c gaan dit na (c − b; c − a).</span></div>
+        `
+      },
+      questions: [
+        {"type": "mc", "text": "Die simmetrie-asse van y = a/(x + p) + q gaan deur:", "options": ["(−p; q)", "(p; q)", "(q; −p)", "die oorsprong"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = 2/(x − 1) + 3. Die simmetrie-as met gradiënt 1 is y = x + c. Bepaal c.", "answer": "2", "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = −4/(x + 2) − 1. Die simmetrie-as met gradiënt −1 is y = −x + c. Bepaal c.", "answer": "-3", "altAnswers": ["−3"], "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "y = x + 5 is ’n simmetrie-as van y = 3/(x + p) + 1. Bepaal p.", "answer": "4", "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "mc", "text": "Die simmetrie-asse van y = 1/x is:", "options": ["y = x en y = −x", "x = 0 en y = 0", "y = x + 1 en y = −x + 1", "y = 1"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "mc", "text": "(2; 5) lê op ’n hiperbool met simmetrie-as y = x + 1. Watter punt moet ook op die hiperbool lê?", "options": ["(4; 3)", "(5; 2)", "(−2; −5)", "(3; 4)"], "answer": 0, "topic": "Hiperbool: simmetrie-asse"},
+        {"type": "input", "text": "Skryf die vergelyking van die vertikale asimptoot van y = 5/(x − 6) + 2 in die vorm x = k. Gee k.", "answer": "6", "topic": "Hiperbool: simmetrie-asse"}
+      ]
     }
   ],
   workbook: {
@@ -779,7 +802,8 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Gebruik die asimptote van (a) en die gegewe y = 1, en die punt (3; 7) uit die tabel, om die waarde van a in y = a/(x−p) + q te vind.", marks: 3 },
           { label: "c", text: "Gebruik jou vergelyking om die y-waarde by x = 8 te voorspel (nie in die tabel getoon nie).", marks: 2 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — Gegee f(x) = 2/(x − 1) + 3, h(x) = 2 cos(x − 30°) vir 0° ≤ x ≤ 360°, en k(x) = 2ˣ⁺¹ − 4.", parts: [{ label: "a", text: "Skryf die vergelykings van die asimptote van f neer.", marks: 2 }, { label: "b", text: "Bepaal die koördinate van die afsnitte van f met die asse.", marks: 3 }, { label: "c", text: "Skryf die definisieversameling en terrein van f neer.", marks: 2 }, { label: "d", text: "Bepaal die vergelykings van die twee simmetrie-asse van f.", marks: 2 }, { label: "e", text: "Skryf die amplitude en periode van h neer, en die maksimum waarde van h met die waarde van x waar dit voorkom.", marks: 4 }, { label: "f", text: "Skryf die vergelyking van die asimptoot van k neer en bepaal sy x-afsnit.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -801,7 +825,8 @@ MathMagician.registerChapter(5, {
         a: "x = 2 (die funksie is daar onbepaald — vertikale asimptoot)",
         b: "7 = a/(3−2) + 1 → 7 = a + 1 → a = 6",
         c: "y = 6/(8−2) + 1 = 6/6 + 1 = 2"
-      }
+      },
+      5: { a: "x = 1 en y = 3", b: "y-afsnit: 2/(−1) + 3 = 1 → (0; 1); x-afsnit: 2/(x − 1) = −3 → x − 1 = −⅔ → (⅓; 0)", c: "Definisieversameling: x ∈ ℝ, x ≠ 1; terrein: y ∈ ℝ, y ≠ 3", d: "Albei gaan deur (1; 3): y = x + 2 en y = −x + 4", e: "Amplitude 2; periode 360°; maksimum waarde 2 by x = 30°", f: "Asimptoot y = −4; 2ˣ⁺¹ = 4 = 2² → x = 1: (1; 0)" }
     }
   }
 });

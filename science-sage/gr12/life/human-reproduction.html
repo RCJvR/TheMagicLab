@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/repro.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -174,7 +175,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -268,7 +269,7 @@
         <button class="sex-btn active" id="btnMale" onclick="setSex('male')">Male</button>
         <button class="sex-btn" id="btnFemale" onclick="setSex('female')">Female</button>
       </div>
-      <canvas id="reproCanvas" height="360" role="img" aria-label="Reproductive System Explorer: interactive simulation"></canvas>
+      <div id="reproFigure"></div>
     </div>
     <div>
       <div class="parts-list" id="partsList"></div>
@@ -293,11 +294,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
     <div class="wb-intro">Answer in your exercise book.</div>
-    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the primary reproductive organ in the male and in the female, and state what each produces.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Where does fertilisation normally occur in the human female reproductive system?</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Name the FOUR hormones involved in controlling the menstrual cycle, and state ONE role of each.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain what happens to the uterine lining if fertilisation does NOT occur, and why this happens.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Describe the role of the placenta during pregnancy.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the primary reproductive organ in the male and in the female, and state what each produces.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Male: testes ✓, which produce sperm and testosterone. Female: ovaries ✓, which produce ova (eggs) and oestrogen and progesterone ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Where does fertilisation normally occur in the human female reproductive system?</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">In the Fallopian tube (oviduct) ✓✓, usually in its upper third.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Name the FOUR hormones involved in controlling the menstrual cycle, and state ONE role of each.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">FSH — stimulates the development of a follicle in the ovary ✓; LH — causes ovulation and the formation of the corpus luteum ✓; oestrogen — causes the endometrium to thicken (and inhibits FSH) ✓; progesterone — maintains the thickened endometrium for implantation ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain what happens to the uterine lining if fertilisation does NOT occur, and why this happens.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">The corpus luteum degenerates ✓, so progesterone (and oestrogen) levels fall ✓. Without progesterone the endometrium cannot be maintained, so it breaks down and is shed with blood — menstruation ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Describe the role of the placenta during pregnancy.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">Exchange of substances between mother and foetus without their blood mixing: oxygen and nutrients pass to the foetus ✓; carbon dioxide and wastes pass to the mother ✓. It also secretes hormones (progesterone) that maintain the pregnancy, and passes antibodies to the foetus ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">Relative hormone levels were measured on four days of a woman's 28-day menstrual cycle:<br><br>
     <table class="compare-table" style="margin:10px 0"><thead><tr><th>Day of cycle</th><th>1</th><th>7</th><th>14</th><th>21</th></tr></thead><tbody>
     <tr><td>Oestrogen (relative units)</td><td>20</td><td>60</td><td>180</td><td>90</td></tr>
@@ -306,7 +307,8 @@
     </tbody></table>
     (a) Using the data, identify the day on which ovulation most likely occurs. Explain your reasoning, and calculate by what factor LH increases from day 7 to day 14.<br>
     (b) Describe the change in progesterone levels between day 14 and day 21, and name the structure responsible for producing this progesterone.<br>
-    (c) If fertilisation does NOT occur, predict what will happen to progesterone levels after day 21, and explain the effect this has on the uterine lining.</div></div>
+    (c) If fertilisation does NOT occur, predict what will happen to progesterone levels after day 21, and explain the effect this has on the uterine lining.</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) Day 14 ✓ — LH peaks (150), and the LH surge triggers ovulation ✓; factor = 150/12 = 12,5 ✓.<br>(b) Progesterone increases from 10 to 80 units ✓; produced by the corpus luteum ✓.<br>(c) The corpus luteum degenerates, so progesterone falls; the endometrium is no longer maintained, breaks down and menstruation begins ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Exam-style question · (12 marks)</div><div class="wb-qtext">The combined contraceptive pill contains synthetic oestrogen and progesterone, taken daily.<br>(a) Name the hormone whose surge causes ovulation. (1)<br>(b) State TWO functions of progesterone in the menstrual cycle. (2)<br>(c) Explain how high levels of oestrogen and progesterone from the pill prevent ovulation. (4)<br>(d) Describe the events from ovulation to implantation if fertilisation takes place. (5)</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) LH (luteinising hormone) ✓<br>(b) Maintains/thickens the endometrium ✓; inhibits FSH (and LH) secretion ✓ (also: prepares the uterus for implantation)<br>(c) High levels of these hormones are detected by the hypothalamus/pituitary ✓ and inhibit the secretion of FSH ✓ and LH ✓ (negative feedback); without FSH no follicle develops and without the LH surge no ovum is released ✓.<br>(d) The ovum is released into the Fallopian tube ✓; a sperm fertilises it in the Fallopian tube, forming a zygote ✓; the zygote divides by mitosis as it moves to the uterus ✓, forming a ball of cells (blastocyst) ✓ that implants in the thickened endometrium ✓.</div></details></div>
   </div>
 </div>
 
@@ -331,6 +333,9 @@ const MALE_PARTS = [
   {id:'epididymis', name:'Epididymis', color:'#93c5fd', desc:'A coiled tube where sperm mature and are stored after being produced in the testis.'},
   {id:'vasdeferens', name:'Vas deferens', color:'#fbbf24', desc:'A muscular tube that carries mature sperm from the epididymis toward the urethra during ejaculation.'},
   {id:'prostate', name:'Prostate gland', color:'#c084fc', desc:'Adds fluid to semen that nourishes and helps transport sperm.'},
+  {id:'seminalvesicle', name:'Seminal vesicles', color:'#a78bfa', desc:'Glands behind the bladder that add a sugary (fructose-rich) fluid to semen, giving sperm energy to swim.'},
+  {id:'cowper', name:'Cowper’s glands', color:'#e879f9', desc:'Small glands below the prostate that release a clear alkaline mucus before ejaculation, neutralising acid in the urethra and lubricating it.'},
+  {id:'urethra', name:'Urethra', color:'#fbbf24', desc:'The tube through the prostate and penis that carries semen (and, at other times, urine) out of the body.'},
   {id:'penis', name:'Penis', color:'#f472b6', desc:'The organ through which semen is deposited into the vagina during sexual intercourse, enabling internal fertilisation.'},
 ];
 const FEMALE_PARTS = [
@@ -371,62 +376,21 @@ function selectPart(id){
   drawSystem();
 }
 
-const canvas = document.getElementById('reproCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 360;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawSystem();
-}
-
-const REGIONS = {};
-function computeRegionsMale(){
-  const cx = W/2, cy = H*0.5;
-  REGIONS.prostate = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,cy-40,20,16,0,0,Math.PI*2); }};
-  REGIONS.vasdeferens = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-40,cy-10); ctx.lineTo(cx-14,cy-34); ctx.lineTo(cx+2,cy-30); ctx.lineTo(cx-26,cy-4); ctx.closePath(); }};
-  REGIONS.testis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy+10,20,26,0,0,Math.PI*2); }};
-  REGIONS.epididymis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy-16,10,16,0.3,0,Math.PI*2); }};
-  REGIONS.penis = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-10,cy+40,20,90); }};
-}
-function computeRegionsFemale(){
-  const cx = W/2, cy = H*0.42;
-  REGIONS.ovary = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-70,cy,18,14,0,0,Math.PI*2); }};
-  REGIONS.oviduct = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-58,cy); ctx.quadraticCurveTo(cx-30,cy-30,cx-8,cy-6); ctx.lineTo(cx-14,cy+2); ctx.quadraticCurveTo(cx-34,cy-20,cx-54,cy+8); ctx.closePath(); }};
-  REGIONS.uterus = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-30,cy-4); ctx.quadraticCurveTo(cx,cy-40,cx+30,cy-4); ctx.lineTo(cx+16,cy+56); ctx.lineTo(cx-16,cy+56); ctx.closePath(); }};
-  REGIONS.cervix = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-11,cy+56,22,20); }};
-  REGIONS.vagina = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-14,cy+76); ctx.lineTo(cx+14,cy+76); ctx.lineTo(cx+20,cy+140); ctx.lineTo(cx-20,cy+140); ctx.closePath(); }};
-}
-
-function drawSystem(){
-  ctx.clearRect(0,0,W,H);
-  const parts = currentParts();
-  if (currentSex==='male') computeRegionsMale(); else computeRegionsFemale();
-
-  parts.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '55');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
-  });
-
-  requestAnimationFrame(drawSystem);
-}
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX-rect.left)*(W/rect.width), my = (e.clientY-rect.top)*(H/rect.height);
-  for (const p of currentParts()){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
+/* Diagram: assets/explore/repro.js (textbook side view of the male system, front view of the female system) */
+let reproFig = null, reproFigSex = null;
+function drawSystem() {
+  if (!window.MLRepro) return;
+  const sex = currentSex === 'male' ? 'm' : 'f';
+  if (!reproFig || reproFigSex !== sex) {
+    reproFigSex = sex;
+    reproFig = MLRepro.mount(document.getElementById('reproFigure'), {
+      sex: sex,
+      onPick: function (id) { if (currentParts().some(p => p.id === id)) selectPart(id); }
+    });
   }
-});
-
+  reproFig.focus(activePart ? [activePart.id] : []);
+}
+function resizeCanvas() {}
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();

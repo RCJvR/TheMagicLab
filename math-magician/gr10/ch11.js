@@ -101,6 +101,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For elevation/depression problems, the angle is always measured from the <strong>horizontal</strong>. The adjacent side is the horizontal distance and the opposite is the vertical height.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A 6 m ladder makes an angle of 70° with the ground; a 30 m building is 40 m away</div><div class="example-step"><span class="step-num">1</span><span>Height reached: 6 sin 70° = 5,64 m.</span></div><div class="example-step"><span class="step-num">2</span><span>Distance of the foot from the wall: 6 cos 70° = 2,05 m.</span></div><div class="example-step"><span class="step-num">3</span><span>Angle of elevation to the top of the building: tan θ = 30/40 → θ = 36,9°.</span></div><div class="example-step"><span class="step-num">4</span><span>Draw a sketch and mark the right angle before choosing the ratio.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Angles of elevation and depression are measured from the <strong>horizontal</strong>, not from the vertical.</span></div>
         `
       },
       questions: [
@@ -224,6 +225,7 @@ MathMagician.registerChapter(11, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The formula h = d·tanA·tanB/(tanA − tanB) comes from setting up both tan equations and eliminating d algebraically — a key exam technique.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: From A the angle of elevation to the top of a tower is 30°. After walking 50 m towards it to B, the angle is 45°</div><div class="example-step"><span class="step-num">1</span><span>Let the height be h. From B: distance to the foot = h/tan 45° = h.</span></div><div class="example-step"><span class="step-num">2</span><span>From A: distance = h/tan 30° = 1,732h.</span></div><div class="example-step"><span class="step-num">3</span><span>AB = 1,732h − h = 50 → 0,732h = 50.</span></div><div class="example-step"><span class="step-num">4</span><span>h = 68,3 m.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use the side the two triangles share (the height h) to link them.</span></div>
         `
       },
       questions: [
@@ -547,7 +549,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Find the distance from the base of the cliff to boat B.", marks: 3 },
           { label: "c", text: "Find the distance between the two boats.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — From the top of a building 40 m high, the angle of depression of a car on the level ground is 28°.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":360,\"h\":200,\"pad\":40,\"pts\":{\"F\":[0,0],\"T\":[0,40],\"H\":[75.22905861385328,40],\"C\":[75.22905861385328,0],\"D\":[40,0]},\"seg\":[[\"F\",\"C\"],[\"F\",\"T\",\"ln\",null,\"40 m\"],[\"T\",\"H\",\"mu dash\"],[\"T\",\"C\",\"ac\"],[\"T\",\"D\",\"or\"]],\"ra\":[[\"T\",\"F\",\"C\"]],\"ang\":[[\"H\",\"T\",\"C\",\"28°\",\"ac\",95],[\"H\",\"T\",\"D\",\"45°\",\"or\",40]],\"dots\":[\"C\",\"D\"],\"nolab\":[\"H\"],\"lab\":{\"F\":\"sw\",\"T\":\"nw\",\"C\":\"s\",\"D\":\"s\"}}'></div>", parts: [{ label: "a", text: "Calculate the horizontal distance from the foot of the building to the car.", marks: 3 }, { label: "b", text: "The car drives straight towards the building until the angle of depression is 45°. How far did the car travel?", marks: 3 }, { label: "c", text: "A ship sails 12 km on a bearing of 060°. How far north and how far east of its starting point is it?", marks: 4 }, { label: "d", text: "Explain the difference between an angle of elevation and an angle of depression.", marks: 2 }, { label: "e", text: "A ramp 3 m long rises 0,5 m. Calculate the angle the ramp makes with the horizontal.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -562,7 +565,8 @@ MathMagician.registerChapter(11, {
         a: "tan42° = 60/dA → dA = 60/tan42° ≈ 66.64 m",
         b: "tan28° = 60/dB → dB = 60/tan28° ≈ 112.84 m",
         c: "AB = 112.84 − 66.64 ≈ 46.20 m"
-      }
+      },
+      4: { a: "tan 28° = 40/d → d = 40/tan 28° = 75,23 m", b: "At 45°: d = 40/tan 45° = 40 m; distance travelled = 75,23 − 40 = 35,23 m", c: "North: 12 cos 60° = 6 km; east: 12 sin 60° = 10,39 km", d: "Both are measured from the horizontal: an angle of elevation is measured upwards to an object above the observer, an angle of depression downwards to an object below", e: "sin θ = 0,5/3 → θ = 9,6°" }
     }
   }
 });

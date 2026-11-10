@@ -85,6 +85,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal cos 75° sonder ’n sakrekenaar, en bewys sin(A + B) − sin(A − B) = 2 cos A sin B</div><div class="example-step"><span class="step-num">1</span><span>cos 75° = cos(45° + 30°) = cos 45° cos 30° − sin 45° sin 30°.</span></div><div class="example-step"><span class="step-num">2</span><span>= (√2/2)(√3/2) − (√2/2)(½) = (√6 − √2)/4.</span></div><div class="example-step"><span class="step-num">3</span><span>LK = (sin A cos B + cos A sin B) − (sin A cos B − cos A sin B).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2 cos A sin B = RK.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> cos(A + B) is <strong>nie</strong> cos A + cos B nie. Gebruik altyd die uitbreidingsformule.</span></div>
         `
       },
       questions: [
@@ -184,6 +185,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op sin 2x = cos x vir x ∈ [0°; 360°]</div><div class="example-step"><span class="step-num">1</span><span>Gebruik die dubbelhoekformule: 2 sin x cos x = cos x.</span></div><div class="example-step"><span class="step-num">2</span><span>Bring alles na een kant en faktoriseer: cos x(2 sin x − 1) = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>cos x = 0 → x = 90° of 270°.</span></div><div class="example-step"><span class="step-num">4</span><span>sin x = ½ → x = 30° of 150°.</span></div><div class="example-step"><span class="step-num">5</span><span>Oplossings: x = 30°, 90°, 150°, 270°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moet nooit albei kante deur cos x deel nie — jy verloor die oplossings waar cos x = 0. Faktoriseer eerder.</span></div>
         `
       },
       questions: [
@@ -400,6 +402,81 @@ MathMagician.registerChapter(4, {
         { type: "input", text: "Vereenvoudig (1 − cos2A)/sin2A na 'n enkele trig-verhouding.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Bewys van trigonometriese identiteite" },
         { type: "input", text: "θ is skerp en sin 2θ = 0,6. Bepaal sin θ + cos θ, korrek tot 2 desimale plekke, sonder om θ te bereken.", answer: "1.26", altAnswers: ["1,26"], topic: "Bewys van trigonometriese identiteite" }
       ]
+    },
+    {
+      id: 404,
+      chapter: 4,
+      name: "Reduksieformules",
+      fullName: "Reduksieformules: skryf enige hoek as ’n skerp hoek",
+      lesson: {
+        heading: "Reduksieformules",
+        sub: "Hoofstuk 4 · Onderwerp 5",
+        body: `
+          <p>’n <strong>Reduksieformule</strong> skryf die trigonometriese verhouding van ’n groot of negatiewe hoek as die verhouding van ’n skerp hoek. Gebruik die <strong>ASTK-reël</strong> vir die teken: in kwadrant 1 is alle verhoudings positief; in kwadrant 2 is slegs sin positief; in kwadrant 3 is slegs tan positief; in kwadrant 4 is slegs cos positief.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Kernresultate</div>
+            <p>
+              <span class="math">sin(90° − x) = cos x</span> &nbsp; <span class="math">cos(90° − x) = sin x</span><br>
+              <span class="math">sin(90° + x) = cos x</span> &nbsp; <span class="math">cos(90° + x) = −sin x</span><br>
+              <span class="math">sin(180° − x) = sin x</span> &nbsp; <span class="math">cos(180° − x) = −cos x</span><br>
+              <span class="math">sin(180° + x) = −sin x</span> &nbsp; <span class="math">cos(180° + x) = −cos x</span><br>
+              <span class="math">sin(360° − x) = −sin x</span> &nbsp; <span class="math">cos(360° − x) = cos x</span><br>
+              <span class="math">sin(−x) = −sin x</span> &nbsp; <span class="math">cos(−x) = cos x</span><br>
+              <span class="math">tan(180° − x) = −tan x</span> &nbsp; <span class="math">tan(180° + x) = tan x</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld: vereenvoudig</div>
+            <div class="example-step"><span class="step-num">1</span><span>sin(540° + x) = sin(180° + x) = −sin x (540° = 360° + 180°)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>cos(90° + x) = −sin x en sin(−x) = −sin x</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>sin(540° + x)·cos(90° + x) ÷ sin(−x) = (−sin x)(−sin x) ÷ (−sin x) = −sin x</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig sonder ’n sakrekenaar: [sin(180° − x) · cos(−x)] / [cos(90° + x) · sin(90° − x)]</div><div class="example-step"><span class="step-num">1</span><span>sin(180° − x) = sin x (kwadrant 2, sin positief).</span></div><div class="example-step"><span class="step-num">2</span><span>cos(−x) = cos x.</span></div><div class="example-step"><span class="step-num">3</span><span>cos(90° + x) = −sin x en sin(90° − x) = cos x.</span></div><div class="example-step"><span class="step-num">4</span><span>Uitdrukking = (sin x · cos x)/(−sin x · cos x) = −1.</span></div><div class="example-step"><span class="step-num">5</span><span>Net so: sin 150° · tan 225° / cos 300° = (½ × 1)/(½) = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Besluit die teken uit die kwadrant van die <strong>oorspronklike</strong> hoek (CAST), en verander die verhouding net vir 90° ± x en 270° ± x.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "sin(90° − x) is gelyk aan:", options: ["sin x", "cos x", "−cos x", "−sin x"], answer: 1, topic: "Reduksieformules" },
+        { type: "mc", text: "cos(90° + x) is gelyk aan:", options: ["cos x", "−cos x", "sin x", "−sin x"], answer: 3, topic: "Reduksieformules" },
+        { type: "input", text: "Vind sonder ’n sakrekenaar sin 150° as ’n breuk.", answer: "1/2", altAnswers: ["0,5", "0.5"], topic: "Reduksieformules" },
+        { type: "mc", text: "sin(540° + x) vereenvoudig tot:", options: ["sin x", "−sin x", "cos x", "−cos x"], answer: 1, topic: "Reduksieformules" },
+        { type: "input", text: "Vereenvoudig sin(540° + x)·cos(90° + x) ÷ sin(−x) tot ’n enkele trigonometriese verhouding.", answer: "-sinx", altAnswers: ["-sin x", "−sin x", "−sinx"], topic: "Reduksieformules" },
+        { type: "mc", text: "tan(180° − x) is gelyk aan:", options: ["tan x", "−tan x", "cot x", "−cot x"], answer: 1, topic: "Reduksieformules" },
+        { type: "input", text: "Vind sonder ’n sakrekenaar cos 120° as ’n breuk.", answer: "-1/2", altAnswers: ["−1/2", "-0,5", "−0,5"], topic: "Reduksieformules" }
+      ]
+    },
+    {
+      id: 405,
+      chapter: 4,
+      name: "Verskuifde trigonometriese grafieke",
+      fullName: "Verskuiwings, amplitude en periode van trigonometriese grafieke",
+      lesson: {
+        heading: "Verskuifde trigonometriese grafieke",
+        sub: "Hoofstuk 4 · Onderwerp 6",
+        body: `
+          <p>’n Verskuiwing van ’n trig-grafiek verander die fase, nie die vorm nie. ’n Horisontale verskuiwing voeg ’n hoek binne die hakies by; ’n vertikale verskuiwing voeg ’n konstante buite die hakies by.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Die grafiek lees</div>
+            <p>
+              <span class="math">y = a·f(bx + c) + q</span>: amplitude <span class="math">|a|</span>, periode <span class="math">360° ÷ |b|</span> (vir sin en cos), en die grafiek skuif <strong>links met c ÷ b</strong> en op met q.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld</div>
+            <div class="example-step"><span class="step-num">1</span><span>cos 2x, 45° na links verskuif: cos[2(x + 45°)] = cos(2x + 90°) = −sin 2x.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>y = 2 sin x − 1 het amplitude 2 en waardeversameling −3 ≤ y ≤ 1.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Sketsvraag: f(x) = 2cos(x − 30°) − 1 vir x ∈ [−180°; 180°]</div><div class="example-step"><span class="step-num">1</span><span>Lees die eienskappe af: amplitude 2, periode 360°, verskuiwing 30° na regs, dan 1 eenheid af.</span></div><div class="example-step"><span class="step-num">2</span><span>Waardeversameling: van −2 − 1 = −3 tot 2 − 1 = 1, dus y ∈ [−3; 1].</span></div><div class="example-step"><span class="step-num">3</span><span>Maksimum waar x − 30° = 0°: (30°; 1). Minimum waar x − 30° = −180°: (−150°; −3).</span></div><div class="example-step"><span class="step-num">4</span><span>x-afsnitte: cos(x − 30°) = ½ → x − 30° = ±60° → x = 90° of x = −30°.</span></div><div class="example-step"><span class="step-num">5</span><span>y-afsnit: f(0) = 2cos(−30°) − 1 = √3 − 1 ≈ 0,73.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> (x − 30°) skuif die grafiek 30° na <strong>regs</strong>, nie links nie. Kontroleer deur die x-waarde van ’n draaipunt te vervang.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Die periode van y = sin 2x + 3 is:", options: ["360°", "180°", "90°", "720°"], answer: 1, topic: "Verskuifde trigonometriese grafieke" },
+        { type: "mc", text: "cos(2x + 90°) is gelyk aan:", options: ["cos 2x", "−sin 2x", "sin 2x", "−cos 2x"], answer: 1, topic: "Verskuifde trigonometriese grafieke" },
+        { type: "input", text: "Die grafiek van sin x word 90° na links verskuif. Gee die nuwe vergelyking in die eenvoudigste vorm.", answer: "cosx", altAnswers: ["cos x", "cos(x)"], topic: "Verskuifde trigonometriese grafieke" },
+        { type: "mc", text: "Die waardeversameling van y = 2 sin x − 1 is:", options: ["[−1; 1]", "[−3; 1]", "[−2; 0]", "[−1; 2]"], answer: 1, topic: "Verskuifde trigonometriese grafieke" },
+        { type: "input", text: "Die grafiek van cos x word 90° na regs verskuif. Gee die nuwe vergelyking in die eenvoudigste vorm.", answer: "sinx", altAnswers: ["sin x", "sin(x)"], topic: "Verskuifde trigonometriese grafieke" },
+        { type: "mc", text: "Die amplitude van y = −3 cos x + 1 is:", options: ["1", "−3", "3", "−1"], answer: 2, topic: "Verskuifde trigonometriese grafieke" },
+        { type: "input", text: "Vereenvoudig cos(x − 90°) + sin(x + 90°).", answer: "sinx+cosx", altAnswers: ["sin x + cos x", "cosx+sinx", "cos x + sin x"], topic: "Verskuifde trigonometriese grafieke" }
+      ]
     }
   ],
   workbook: {
@@ -416,12 +493,18 @@ MathMagician.registerChapter(4, {
       { number: 3, text: "Los op vir x ∈ [0°; 360°]:", parts: [
         { label: "a", text: "cos(2x) = cos x", marks: 5 },
         { label: "b", text: "sin(x + 30°) = cos x", marks: 5 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Beantwoord die trigonometrievrae hieronder sonder ’n sakrekenaar waar moontlik.", parts: [
+        { label: "a", text: "Bewys dat sin 2x/(1 + cos 2x) = tan x.", marks: 4 },
+        { label: "b", text: "Bepaal die algemene oplossing van cos 2x = sin x.", marks: 6 },
+        { label: "c", text: "PQ is ’n vertikale toring met voetpunt Q. A en B is op gelyke grond met Q, AB = 80 m, ∠QAB = 50° en ∠QBA = 60°. Die hoogtehoek van P vanaf A is 30°. Bereken AQ en die hoogte PQ.", marks: 5 }
       ]}
     ],
     answers: {
       1: { a: "sin105°=sin60°cos45°+cos60°sin45°=(√3/2)(√2/2)+(½)(√2/2)=√6/4+√2/4=(√6+√2)/4", b: "cos60°=cos²30°−sin²30°=¾−¼=½; =1−2sin²30°=1−½=½; =2cos²30°−1=3/2−1=½ ✓" },
       2: { a: "LK=(cosxcos45°−sinxsin45°)+(cosxcos45°+sinxsin45°)=2cosxcos45°=2cosx(√2/2)=√2cosx=RK", b: "LK=(sinAcosB+cosAsinB)/(sinAcosB−cosAsinB); deel teller en noemer deur cosAcosB → (tanA+tanB)/(tanA−tanB)=RK" },
-      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½of1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" }
+      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½of1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" },
+      4: { a: "LK = 2 sin x cos x/(1 + 2cos²x − 1) = 2 sin x cos x/(2cos²x) = sin x/cos x = tan x = RK", b: "1 − 2sin²x = sin x → 2sin²x + sin x − 1 = 0 → (2 sin x − 1)(sin x + 1) = 0. sin x = ½: x = 30° + k·360° of x = 150° + k·360°; sin x = −1: x = 270° + k·360°, k ∈ ℤ", c: "∠AQB = 180° − 50° − 60° = 70°. Sinusreël: AQ = 80 sin 60°/sin 70° = 73,7 m. PQ = AQ tan 30° = 42,6 m" }
     }
   }
 });

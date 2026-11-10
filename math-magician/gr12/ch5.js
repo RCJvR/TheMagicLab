@@ -85,6 +85,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = x³ + px² + qx − 6 has a factor (x − 1) and leaves a remainder of −12 when divided by (x + 2). Find p and q</div><div class="example-step"><span class="step-num">1</span><span>f(1) = 0: 1 + p + q − 6 = 0 → p + q = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>f(−2) = −12: −8 + 4p − 2q − 6 = −12 → 2p − q = 1.</span></div><div class="example-step"><span class="step-num">3</span><span>Add the equations: 3p = 6 → p = 2, so q = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: f(x) = x³ + 2x² + 3x − 6 and f(1) = 1 + 2 + 3 − 6 = 0 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Dividing by (x + 2) means substituting x = −2, not x = 2.</span></div>
         `
       },
       questions: [
@@ -192,6 +193,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Sketch f(x) = −x³ + 3x² + 9x − 27</div><div class="example-step"><span class="step-num">1</span><span>Factorise: f(x) = −(x³ − 3x² − 9x + 27) = −(x − 3)²(x + 3). x-intercepts: x = −3 and x = 3 (repeated: the graph touches).</span></div><div class="example-step"><span class="step-num">2</span><span>y-intercept: −27.</span></div><div class="example-step"><span class="step-num">3</span><span>f′(x) = −3x² + 6x + 9 = −3(x − 3)(x + 1) → turning points at x = 3: (3; 0) maximum, and x = −1: (−1; −32) minimum.</span></div><div class="example-step"><span class="step-num">4</span><span>a &lt; 0: the graph rises on the left and falls on the right.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A repeated root means the graph <strong>touches</strong> the x-axis there and that point is a turning point.</span></div>
         `
       },
       questions: [
@@ -393,6 +395,29 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "The cubic f has x-intercepts at −1, 2 and 3, and its y-intercept is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Find f(1).", answer: "8", topic: "Sketching cubic graphs from key features" },
         { type: "input", text: "The graph of f(x) = x³ − 3x² − 9x + k touches the x-axis at its local minimum. Find k.", answer: "27", topic: "Sketching cubic graphs from key features" }
       ]
+    },
+    {
+      id: 504,
+      chapter: 5,
+      name: "Cubic–line intersections & inequalities",
+      fullName: "Where a cubic meets a line, tangents from repeated roots, and solving inequalities such as x·f′(x) < 0 from a graph",
+      lesson: {
+        heading: "Cubic–line intersections & inequalities",
+        sub: "Chapter 5 · Topic 5",
+        body: `
+          <p>Paper 1 calculus questions often give a cubic f and a line g, then ask where they meet, when one is above the other, and for which x an expression such as <span class="math">x·f′(x)</span> is negative. These are reading-the-sign questions.</p><div class="def-box"><div class="def-box-title">📖 Where a cubic meets a line</div><p>Set f(x) = g(x), move everything to one side and solve the cubic, using the factor theorem. A <strong>repeated root</strong> means the line is a <strong>tangent</strong> at that point.</p></div><div class="example-box"><div class="example-box-title">✏️ Example 1: f(x) = x³ − 4x² + x + 6 and g(x) = x + 6</div><div class="example-step"><span class="step-num">1</span><span>x³ − 4x² + x + 6 = x + 6 ⟹ x³ − 4x² = 0 ⟹ x²(x − 4) = 0</span></div><div class="example-step"><span class="step-num">2</span><span>x = 0 (repeated root: g touches f at (0; 6)) or x = 4, giving (4; 10).</span></div><div class="example-step"><span class="step-num">3</span><span>Check: f′(x) = 3x² − 8x + 1, so f′(0) = 1 = gradient of g. g is the tangent at x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x) ≥ g(x) ⟺ x²(x − 4) ≥ 0 ⟺ x = 0 or x ≥ 4.</span></div></div><div class="def-box"><div class="def-box-title">📖 Reading signs from the graph</div><p>f(x) &gt; 0: graph above the x-axis. &nbsp; f′(x) &gt; 0: graph increasing. &nbsp; f′(x) &lt; 0: graph decreasing. &nbsp; f′′(x) &gt; 0: concave up (right of the point of inflection when a &gt; 0).<br>For a <strong>product</strong> such as x·f′(x) &lt; 0, the two factors must have <strong>opposite signs</strong>; for a product &gt; 0 they must have the <strong>same sign</strong>. Draw two sign lines and compare.</p></div><div class="example-box"><div class="example-box-title">✏️ Example 2: f(x) = x³ − 3x² − 9x + 27 = (x − 3)²(x + 3)</div><div class="example-step"><span class="step-num">1</span><span>f′(x) = 3x² − 6x − 9 = 3(x − 3)(x + 1): turning points at x = −1 (maximum, f(−1) = 32) and x = 3 (minimum, f(3) = 0).</span></div><div class="example-step"><span class="step-num">2</span><span>f(x) &lt; 0 for x &lt; −3. &nbsp; f′(x) &lt; 0 (decreasing) for −1 &lt; x &lt; 3.</span></div><div class="example-step"><span class="step-num">3</span><span>x·f′(x) &gt; 0: both positive for x &gt; 3; both negative for −1 &lt; x &lt; 0. Answer: −1 &lt; x &lt; 0 or x &gt; 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x)·f′(x) ≤ 0: x ≤ −3 or −1 ≤ x ≤ 3.</span></div><div class="example-step"><span class="step-num">5</span><span>f′′(x) = 6x − 6: concave up for x &gt; 1; point of inflection at x = 1.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Include the endpoints only when the inequality has ≤ or ≥, and remember that a repeated root (a touching point) makes the expression zero there without changing sign.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "f(x) = x³ − 4x² + x + 6 and g(x) = x + 6. Find the x-coordinate of the point where g CUTS (not touches) f.", "answer": "4", "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "When f(x) − g(x) has a repeated root at x = a, the line g is:", "options": ["a tangent to f at x = a", "parallel to f", "perpendicular to f at x = a", "an asymptote"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "For f(x) = (x − 3)²(x + 3), for which x is f decreasing?", "options": ["−1 < x < 3", "x < −1", "x > 3", "−3 < x < 3"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "For f(x) = (x − 3)²(x + 3), solve x·f′(x) > 0.", "options": ["−1 < x < 0 or x > 3", "0 < x < 3", "x < −1 or 0 < x < 3", "x > 0"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "input", "text": "f(x) = x³ − 3x² − 9x + 27. Find the x-coordinate of the point of inflection.", "answer": "1", "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "f(x) = x³ − 4x² + x + 6, g(x) = x + 6. For which x is f(x) ≥ g(x)?", "options": ["x = 0 or x ≥ 4", "0 ≤ x ≤ 4", "x ≥ 4", "x ≤ 0"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "mc", "text": "A cubic with a > 0 has turning points at x = −2 and x = 1. Where is f′(x) < 0?", "options": ["−2 < x < 1", "x < −2 or x > 1", "x > 1", "x < −2"], "answer": 0, "topic": "Cubic–line intersections & inequalities"},
+        {"type": "input", "text": "The line y = 2x + k is a tangent to f(x) = x³ − x at the point where x = 1. Find k.", "answer": "-2", "altAnswers": ["−2"], "topic": "Cubic–line intersections & inequalities"}
+      ]
     }
   ],
   workbook: {
@@ -418,13 +443,22 @@ MathMagician.registerChapter(5, {
         { label: "b", text: "Write down the y-intercept.", marks: 1 },
         { label: "c", text: "Hence write p(x) in fully factorised form.", marks: 2 },
         { label: "d", text: "Describe the end behaviour of the graph, referring to the table values at x = −2 and x = 4.", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — f(x) = 2x³ − 3x² − 11x + 6", parts: [
+        { label: "a", text: "Show that (x − 3) is a factor of f(x).", marks: 2 },
+        { label: "b", text: "Hence factorise f(x) fully.", marks: 3 },
+        { label: "c", text: "Write down the x-intercepts of the graph of f.", marks: 1 },
+        { label: "d", text: "Solve f(x) ≥ 0.", marks: 3 },
+        { label: "e", text: "Calculate the remainder when f(x) is divided by (x + 1).", marks: 2 },
+        { label: "f", text: "Draw a neat sketch of f, showing the intercepts with the axes.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "p(2)=16+4−26+6=0 ✓", b: "p(x)=(x−2)(2x²+5x−3)=(x−2)(2x−1)(x+3)", c: "x=2, x=½, x=−3" },
       2: { a: "Test x=2: 8−4−16+12=0 ✓; divide: (x−2)(x²+x−6)=(x−2)(x+3)(x−2)=(x−2)²(x+3); x=2(double),x=−3", b: "(0,12)", c: "a=1>0: falls left, rises right", d: "Touches x-axis at 2, cuts at −3, y-int at 12" },
       3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" },
-      4: { a: "x = −1, 1, 3 (the values of x where p(x) = 0 in the table)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leading coefficient a = 1 > 0, so the graph falls to the left and rises to the right — confirmed by the table: p(−2) = −15 (very negative as x decreases) and p(4) = 15 (positive and increasing as x increases)." }
+      4: { a: "x = −1, 1, 3 (the values of x where p(x) = 0 in the table)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leading coefficient a = 1 > 0, so the graph falls to the left and rises to the right — confirmed by the table: p(−2) = −15 (very negative as x decreases) and p(4) = 15 (positive and increasing as x increases)." },
+      5: { a: "f(3) = 54 − 27 − 33 + 6 = 0, so (x − 3) is a factor", b: "f(x) = (x − 3)(2x² + 3x − 2) = (x − 3)(2x − 1)(x + 2)", c: "x = 3, x = ½, x = −2", d: "a &gt; 0: −2 ≤ x ≤ ½ or x ≥ 3", e: "f(−1) = −2 − 3 + 11 + 6 = 12", f: "Cubic rising to the right, cutting the x-axis at −2, ½ and 3 and the y-axis at 6" }
     }
   }
 });

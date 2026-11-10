@@ -85,6 +85,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Onafhanklike gebeurtenisse en trek sonder terugplasing</div><div class="example-step"><span class="step-num">1</span><span>P(A) = 0,5, P(B) = 0,4 en P(A en B) = 0,2. Aangesien 0,5 × 0,4 = 0,2, is A en B onafhanklik.</span></div><div class="example-step"><span class="step-num">2</span><span>’n Sak het 5 rooi en 3 blou balle. Twee word sonder terugplasing getrek.</span></div><div class="example-step"><span class="step-num">3</span><span>P(albei rooi) = 5/8 × 4/7 = 20/56 = 5/14.</span></div><div class="example-step"><span class="step-num">4</span><span>P(een van elke kleur) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Sonder terugplasing verander die tweede waarskynlikheid: die teller en die totaal daal albei met een.</span></div>
         `
       },
       questions: [
@@ -226,6 +227,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In ’n klas van 40 speel 25 sokker, 18 netbal en 7 albei</div><div class="example-step"><span class="step-num">1</span><span>Teken ’n Venn-diagram: albei = 7; net sokker = 25 − 7 = 18; net netbal = 18 − 7 = 11.</span></div><div class="example-step"><span class="step-num">2</span><span>Geeneen = 40 − (18 + 7 + 11) = 4.</span></div><div class="example-step"><span class="step-num">3</span><span>P(net sokker) = 18/40 = 0,45.</span></div><div class="example-step"><span class="step-num">4</span><span>P(sokker of netbal) = 36/40 = 0,9 — of gebruik P(S) + P(N) − P(S en N) = 25/40 + 18/40 − 7/40.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Vul eers die snyding in, sodat leerders in albei groepe nie twee keer getel word nie.</span></div>
         `
       },
       questions: [
@@ -548,7 +550,8 @@ MathMagician.registerChapter(10, {
           { label: "b", text: "Bereken die algehele waarskynlikheid dat 'n lukraak gekose bout defek is.", marks: 3 },
           { label: "c", text: "Gegewe dat 'n bout defek bevind word, bereken die waarskynlikheid dat dit van Masjien B afkomstig is (tot 3 desimale plekke).", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Gebeurtenisse A en B het P(A) = 0,4 en P(B) = 0,5.", parts: [{ label: "a", text: "As A en B onafhanklik is, bereken P(A en B) en P(A of B).", marks: 3 }, { label: "b", text: "As A en B eerder onderling uitsluitend was, bereken P(A of B).", marks: 1 }, { label: "c", text: "’n Sak bevat 5 rooi en 3 blou krale. Twee krale word een ná die ander sonder terugplasing uitgehaal. Gebruik ’n boomdiagram om P(albei rooi) en P(een van elke kleur) te bereken.", marks: 5 }, { label: "d", text: "Hoeveel 4-syferkodes kan uit die syfers 0 tot 9 gemaak word as (i) syfers herhaal mag word, (ii) geen syfer herhaal mag word nie?", marks: 3 }, { label: "e", text: "Op hoeveel verskillende maniere kan die letters van die woord MATHS gerangskik word?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -567,7 +570,8 @@ MathMagician.registerChapter(10, {
         a: "P(A)=0,6 vertak na defek(0,05)/nie(0,95); P(B)=0,4 vertak na defek(0,08)/nie(0,92). P(A∩defek)=0,6×0,05=0,03",
         b: "P(defek)=0,6×0,05+0,4×0,08=0,03+0,032=0,062",
         c: "P(B|defek)=P(B∩defek)/P(defek)=0,032/0,062≈0,516"
-      }
+      },
+      4: { a: "P(A en B) = 0,4 × 0,5 = 0,2; P(A of B) = 0,4 + 0,5 − 0,2 = 0,7", b: "0,4 + 0,5 = 0,9", c: "P(RR) = 5/8 × 4/7 = 20/56 = 5/14; P(een van elk) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28", d: "(i) 10⁴ = 10 000 (ii) 10 × 9 × 8 × 7 = 5 040", e: "5! = 120" }
     }
   }
 });

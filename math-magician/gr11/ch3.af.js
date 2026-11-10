@@ -241,6 +241,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>n moet 'n <strong>positiewe heelgetal</strong> wees. As die kwadratiese vergelyking n = 8 en n = −10 gee, verwerp −10 outomaties. As geeneen van die wortels 'n positiewe heelgetal is nie, is die teikenwaarde nie in die ry nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die kwadratiese ry 3; 8; 15; 24; …</div><div class="example-step"><span class="step-num">1</span><span>Eerste verskille: 5; 7; 9. Tweede verskil: 2, dus 2a = 2 → a = 1.</span></div><div class="example-step"><span class="step-num">2</span><span>3a + b = 5 → b = 2; a + b + c = 3 → c = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>Tₙ = n² + 2n.</span></div><div class="example-step"><span class="step-num">4</span><span>Watter term is gelyk aan 168? n² + 2n − 168 = 0 → (n + 14)(n − 12) = 0 → n = 12 (n moet positief wees).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die tweede verskil is gelyk aan 2a, nie a nie.</span></div>
         `
       },
       questions: [
@@ -444,7 +445,8 @@ MathMagician.registerChapter(3, {
           { label: "b", text: "Hoeveel handdrukke vind plaas by 'n partytjie van 12 mense?", marks: 2 },
           { label: "c", text: "Hoeveel mense word benodig vir presies 45 handdrukke?", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Beskou die ry 3; 8; 15; 24; …", parts: [{ label: "a", text: "Toon dat die ry kwadraties is.", marks: 2 }, { label: "b", text: "Bepaal die algemene term Tₙ.", marks: 4 }, { label: "c", text: "Bereken T₂₀.", marks: 1 }, { label: "d", text: "Watter term van die ry is gelyk aan 255?", marks: 3 }, { label: "e", text: "Tussen watter twee opeenvolgende terme is die eerste verskil gelyk aan 41?", marks: 2 }, { label: "f", text: "Is 99 ’n term van die ry? Toon jou bewerking.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -462,7 +464,8 @@ MathMagician.registerChapter(3, {
         a: "H(1)=0,H(2)=1,H(3)=3,H(4)=6,H(5)=10; 1ste verskille:1,2,3,4; 2de verskille:1,1,1 → konstant ✓ kwadraties",
         b: "H(12)=66",
         c: "n(n−1)/2=45→n²−n−90=0→(n−10)(n+9)=0→n=10"
-      }
+      },
+      4: { a: "Eerste verskille 5; 7; 9; tweede verskil konstant op 2, dus is die ry kwadraties", b: "2a = 2 → a = 1; 3a + b = 5 → b = 2; a + b + c = 3 → c = 0; Tₙ = n² + 2n", c: "T₂₀ = 400 + 40 = 440", d: "n² + 2n − 255 = 0 → (n + 17)(n − 15) = 0 → n = 15: die 15de term", e: "Eerste verskil tussen Tₙ en Tₙ₊₁ = 2n + 3 = 41 → n = 19: tussen T₁₉ en T₂₀", f: "n² + 2n − 99 = 0 → (n + 11)(n − 9) = 0 → n = 9, ’n natuurlike getal, dus ja: T₉ = 99" }
     }
   }
 });

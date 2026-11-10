@@ -194,6 +194,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: A(−2; 3) en B(4; −5)</div><div class="example-step"><span class="step-num">1</span><span>AB = √((4 + 2)² + (−5 − 3)²) = √(36 + 64) = 10 eenhede.</span></div><div class="example-step"><span class="step-num">2</span><span>Middelpunt M = ((−2 + 4)/2; (3 − 5)/2) = (1; −1).</span></div><div class="example-step"><span class="step-num">3</span><span>Terugwerkend: as M(1; −1) die middelpunt is en A(−2; 3) een eindpunt, dan is B = (2 × 1 − (−2); 2 × (−1) − 3) = (4; −5) ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>’n Sirkel met middellyn AB sou radius 5 en middelpunt (1; −1) hê.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kwadreer die verskille voordat jy optel: (−5 − 3)² = 64, nie −64 nie.</span></div>
         `
       },
       questions: [
@@ -467,6 +468,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Toon dat P(−1; 3), Q(2; −3) en R(5; −9) kollineêr is</div><div class="example-step"><span class="step-num">1</span><span>m(PQ) = (−3 − 3)/(2 + 1) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>m(QR) = (−9 + 3)/(5 − 2) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">3</span><span>Die gradiënte is gelyk en Q is ’n gemeenskaplike punt, dus lê P, Q en R op een reguit lyn.</span></div><div class="example-step"><span class="step-num">4</span><span>Vergelyking: y − 3 = −2(x + 1) → y = −2x + 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Trek in dieselfde volgorde in die teller en noemer af: (y₂ − y₁)/(x₂ − x₁).</span></div>
         `
       },
       questions: [
@@ -622,6 +624,7 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer 'n vraag "ewewydig aan" of "loodreg op" 'n gegewe lyn noem, gee dit jou dadelik die gradiënt — jy het nie 'n tweede punt nodig nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die lyne deur (2; −1) wat parallel en loodreg op y = 3x − 4 is</div><div class="example-step"><span class="step-num">1</span><span>Parallel: m = 3. y + 1 = 3(x − 2) → y = 3x − 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Loodreg: m = −1/3. y + 1 = −⅓(x − 2) → y = −⅓x − ⅓.</span></div><div class="example-step"><span class="step-num">3</span><span>Kontroleer die punt in die tweede lyn: −⅓(2) − ⅓ = −1 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>Die twee lyne kruis by (2; −1) teen regte hoeke.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Parallelle lyne het gelyke gradiënte; loodregte lyne het gradiënte waarvan die produk −1 is.</span></div>
         `
       },
       questions: [
@@ -855,7 +858,8 @@ MathMagician.registerChapter(8, {
           { label: "b", text: "Wys dat AB = DC in lengte.", marks: 3 },
           { label: "c", text: "Watter tipe vierhoek is ABCD? Gee 'n rede.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — A(−2; 3), B(4; 7) en C(6; 1) is punte op die Cartesiese vlak.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":260,\"view\":[-4.6,-1,8,8.5],\"axes\":true,\"pts\":{\"A\":[-2,3],\"B\":[4,7],\"C\":[6,1]},\"dots\":true,\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"A\",\"C\",\"mu dash\"]],\"names\":{\"A\":\"A(−2; 3)\",\"B\":\"B(4; 7)\",\"C\":\"C(6; 1)\"},\"lab\":{\"A\":\"nw\",\"B\":\"n\",\"C\":\"e\"}}'></div>", parts: [{ label: "a", text: "Bereken die lengte van AB in eenvoudigste wortelvorm.", marks: 2 }, { label: "b", text: "Bepaal die koördinate van M, die middelpunt van AC.", marks: 2 }, { label: "c", text: "Bereken die gradiënt van BC.", marks: 2 }, { label: "d", text: "Bepaal die vergelyking van die lyn deur A parallel aan BC.", marks: 3 }, { label: "e", text: "Bepaal die koördinate van D sodat ABCD ’n parallelogram is.", marks: 3 }, { label: "f", text: "Toon dat D op die lyn in (d) lê.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -874,7 +878,8 @@ MathMagician.registerChapter(8, {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
         b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
         c: "Parallelogram — een paar opponerende sye (AB, DC) is beide ewewydig en gelyk, wat voldoende is om 'n parallelogram te bewys. Dit is trouens 'n vierkant: AD = BC = √20 (al vier sye gelyk) en AB is loodreg op BC (AB·BC = 0), so al die hoeke is 90°."
-      }
+      },
+      4: { a: "AB = √[(4 + 2)² + (7 − 3)²] = √52 = 2√13", b: "M = ((−2 + 6)/2; (3 + 1)/2) = (2; 2)", c: "m = (1 − 7)/(6 − 4) = −3", d: "y = −3x + c; 3 = −3(−2) + c → c = −3; y = −3x − 3", e: "Die hoeklyne halveer mekaar, dus is M ook die middelpunt van BD: (4 + x)/2 = 2 en (7 + y)/2 = 2 → D(0; −3)", f: "y = −3(0) − 3 = −3, dus lê D(0; −3) op die lyn (AD ∥ BC, soos verwag vir ’n parallelogram)" }
     }
   }
 });

@@ -85,6 +85,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = x³ + px² + qx − 6 het ’n faktor (x − 1) en laat ’n res van −12 wanneer dit deur (x + 2) gedeel word. Bepaal p en q</div><div class="example-step"><span class="step-num">1</span><span>f(1) = 0: 1 + p + q − 6 = 0 → p + q = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>f(−2) = −12: −8 + 4p − 2q − 6 = −12 → 2p − q = 1.</span></div><div class="example-step"><span class="step-num">3</span><span>Tel die vergelykings op: 3p = 6 → p = 2, dus q = 3.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer: f(x) = x³ + 2x² + 3x − 6 en f(1) = 1 + 2 + 3 − 6 = 0 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Om deur (x + 2) te deel, beteken om x = −2 te vervang, nie x = 2 nie.</span></div>
         `
       },
       questions: [
@@ -192,6 +193,7 @@ MathMagician.registerChapter(5, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Skets f(x) = −x³ + 3x² + 9x − 27</div><div class="example-step"><span class="step-num">1</span><span>Faktoriseer: f(x) = −(x³ − 3x² − 9x + 27) = −(x − 3)²(x + 3). x-afsnitte: x = −3 en x = 3 (herhaal: die grafiek raak).</span></div><div class="example-step"><span class="step-num">2</span><span>y-afsnit: −27.</span></div><div class="example-step"><span class="step-num">3</span><span>f′(x) = −3x² + 6x + 9 = −3(x − 3)(x + 1) → draaipunte by x = 3: (3; 0) maksimum, en x = −1: (−1; −32) minimum.</span></div><div class="example-step"><span class="step-num">4</span><span>a &lt; 0: die grafiek styg links en daal regs.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Herhaalde wortel beteken die grafiek <strong>raak</strong> die x-as daar en daardie punt is ’n draaipunt.</span></div>
         `
       },
       questions: [
@@ -393,6 +395,29 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "Die kubiese funksie f het x-afsnitte by −1, 2 en 3, en sy y-afsnit is 12.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"free\":true,\"w\":280,\"h\":230,\"view\":[-2,-16,4,16],\"pad\":26,\"axes\":{\"tx\":1,\"ty\":4},\"pts\":{\"P\":[-1,0],\"Q\":[2,0],\"R\":[3,0],\"S\":[0,12]},\"nolab\":[\"P\",\"Q\",\"R\",\"S\"],\"dots\":true,\"fn\":[{\"f\":\"2*(x+1)*(x-2)*(x-3)\",\"lab\":[3.75,8,\"f\"]}]}'></div>Bepaal f(1).", answer: "8", topic: "Skets van kubieke grafieke uit sleutelkenmerke" },
         { type: "input", text: "Die grafiek van f(x) = x³ − 3x² − 9x + k raak die x-as by sy lokale minimum. Vind k.", answer: "27", topic: "Skets van kubieke grafieke uit sleutelkenmerke" }
       ]
+    },
+    {
+      id: 504,
+      chapter: 5,
+      name: "Snyding van kubiese grafiek en lyn & ongelykhede",
+      fullName: "Waar ’n kubiese grafiek ’n lyn ontmoet, raaklyne uit herhaalde wortels, en ongelykhede soos x·f′(x) < 0 vanaf ’n grafiek oplos",
+      lesson: {
+        heading: "Snyding van kubiese grafiek en lyn & ongelykhede",
+        sub: "Hoofstuk 5 · Onderwerp 5",
+        body: `
+          <p>Vraestel 1 se calculusvrae gee dikwels ’n kubiese f en ’n lyn g, en vra dan waar hulle ontmoet, wanneer een bo die ander is, en vir watter x ’n uitdrukking soos <span class="math">x·f′(x)</span> negatief is. Dit is vrae waar jy die teken lees.</p><div class="def-box"><div class="def-box-title">📖 Waar ’n kubiese grafiek ’n lyn ontmoet</div><p>Stel f(x) = g(x), skuif alles na een kant en los die kubiese vergelyking op met die faktorstelling. ’n <strong>Herhaalde wortel</strong> beteken die lyn is ’n <strong>raaklyn</strong> by daardie punt.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 1: f(x) = x³ − 4x² + x + 6 en g(x) = x + 6</div><div class="example-step"><span class="step-num">1</span><span>x³ − 4x² + x + 6 = x + 6 ⟹ x³ − 4x² = 0 ⟹ x²(x − 4) = 0</span></div><div class="example-step"><span class="step-num">2</span><span>x = 0 (herhaalde wortel: g raak f by (0; 6)) of x = 4, wat (4; 10) gee.</span></div><div class="example-step"><span class="step-num">3</span><span>Kontrole: f′(x) = 3x² − 8x + 1, dus f′(0) = 1 = gradiënt van g. g is die raaklyn by x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x) ≥ g(x) ⟺ x²(x − 4) ≥ 0 ⟺ x = 0 of x ≥ 4.</span></div></div><div class="def-box"><div class="def-box-title">📖 Tekens van die grafiek aflees</div><p>f(x) &gt; 0: grafiek bo die x-as. &nbsp; f′(x) &gt; 0: grafiek stygend. &nbsp; f′(x) &lt; 0: grafiek dalend. &nbsp; f′′(x) &gt; 0: konkaaf op (regs van die buigpunt wanneer a &gt; 0).<br>Vir ’n <strong>produk</strong> soos x·f′(x) &lt; 0 moet die twee faktore <strong>teenoorgestelde tekens</strong> hê; vir ’n produk &gt; 0 moet hulle <strong>dieselfde teken</strong> hê. Teken twee tekenlyne en vergelyk.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 2: f(x) = x³ − 3x² − 9x + 27 = (x − 3)²(x + 3)</div><div class="example-step"><span class="step-num">1</span><span>f′(x) = 3x² − 6x − 9 = 3(x − 3)(x + 1): draaipunte by x = −1 (maksimum, f(−1) = 32) en x = 3 (minimum, f(3) = 0).</span></div><div class="example-step"><span class="step-num">2</span><span>f(x) &lt; 0 vir x &lt; −3. &nbsp; f′(x) &lt; 0 (dalend) vir −1 &lt; x &lt; 3.</span></div><div class="example-step"><span class="step-num">3</span><span>x·f′(x) &gt; 0: albei positief vir x &gt; 3; albei negatief vir −1 &lt; x &lt; 0. Antwoord: −1 &lt; x &lt; 0 of x &gt; 3.</span></div><div class="example-step"><span class="step-num">4</span><span>f(x)·f′(x) ≤ 0: x ≤ −3 of −1 ≤ x ≤ 3.</span></div><div class="example-step"><span class="step-num">5</span><span>f′′(x) = 6x − 6: konkaaf op vir x &gt; 1; buigpunt by x = 1.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Sluit die eindpunte net in wanneer die ongelykheid ≤ of ≥ het, en onthou dat ’n herhaalde wortel (’n raakpunt) die uitdrukking daar nul maak sonder om die teken te verander.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "f(x) = x³ − 4x² + x + 6 en g(x) = x + 6. Bepaal die x-koördinaat van die punt waar g vir f SNY (nie raak nie).", "answer": "4", "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "mc", "text": "Wanneer f(x) − g(x) ’n herhaalde wortel by x = a het, is die lyn g:", "options": ["’n raaklyn aan f by x = a", "parallel aan f", "loodreg op f by x = a", "’n asimptoot"], "answer": 0, "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "mc", "text": "Vir f(x) = (x − 3)²(x + 3), vir watter x is f dalend?", "options": ["−1 < x < 3", "x < −1", "x > 3", "−3 < x < 3"], "answer": 0, "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "mc", "text": "Vir f(x) = (x − 3)²(x + 3), los op x·f′(x) > 0.", "options": ["−1 < x < 0 of x > 3", "0 < x < 3", "x < −1 of 0 < x < 3", "x > 0"], "answer": 0, "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "input", "text": "f(x) = x³ − 3x² − 9x + 27. Bepaal die x-koördinaat van die buigpunt.", "answer": "1", "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "mc", "text": "f(x) = x³ − 4x² + x + 6, g(x) = x + 6. Vir watter x is f(x) ≥ g(x)?", "options": ["x = 0 of x ≥ 4", "0 ≤ x ≤ 4", "x ≥ 4", "x ≤ 0"], "answer": 0, "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "mc", "text": "’n Kubiese funksie met a > 0 het draaipunte by x = −2 en x = 1. Waar is f′(x) < 0?", "options": ["−2 < x < 1", "x < −2 of x > 1", "x > 1", "x < −2"], "answer": 0, "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"},
+        {"type": "input", "text": "Die lyn y = 2x + k is ’n raaklyn aan f(x) = x³ − x by die punt waar x = 1. Bepaal k.", "answer": "-2", "altAnswers": ["−2"], "topic": "Snyding van kubiese grafiek en lyn & ongelykhede"}
+      ]
     }
   ],
   workbook: {
@@ -418,13 +443,22 @@ MathMagician.registerChapter(5, {
         { label: "b", text: "Skryf die y-afsnit neer.", marks: 1 },
         { label: "c", text: "Skryf dus p(x) in volledig gefaktoriseerde vorm.", marks: 2 },
         { label: "d", text: "Beskryf die eindgedrag van die grafiek, met verwysing na die tabelwaardes by x = −2 en x = 4.", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — f(x) = 2x³ − 3x² − 11x + 6", parts: [
+        { label: "a", text: "Toon dat (x − 3) ’n faktor van f(x) is.", marks: 2 },
+        { label: "b", text: "Faktoriseer dus f(x) volledig.", marks: 3 },
+        { label: "c", text: "Skryf die x-afsnitte van die grafiek van f neer.", marks: 1 },
+        { label: "d", text: "Los op f(x) ≥ 0.", marks: 3 },
+        { label: "e", text: "Bereken die res wanneer f(x) deur (x + 1) gedeel word.", marks: 2 },
+        { label: "f", text: "Teken ’n netjiese skets van f en toon die afsnitte met die asse.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "p(2)=16+4−26+6=0 ✓", b: "p(x)=(x−2)(2x²+5x−3)=(x−2)(2x−1)(x+3)", c: "x=2, x=½, x=−3" },
       2: { a: "Toets x=2: 8−4−16+12=0 ✓; deel: (x−2)(x²+x−6)=(x−2)(x+3)(x−2)=(x−2)²(x+3); x=2(dubbel),x=−3", b: "(0,12)", c: "a=1>0: val links, styg regs", d: "Raak die x-as by 2, sny by −3, y-afsnit by 12" },
       3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" },
-      4: { a: "x = −1, 1, 3 (die waardes van x waar p(x) = 0 in die tabel)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leidende koëffisiënt a = 1 > 0, dus val die grafiek na links en styg na regs — bevestig deur die tabel: p(−2) = −15 (baie negatief soos x verminder) en p(4) = 15 (positief en toenemend soos x vermeerder)." }
+      4: { a: "x = −1, 1, 3 (die waardes van x waar p(x) = 0 in die tabel)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leidende koëffisiënt a = 1 > 0, dus val die grafiek na links en styg na regs — bevestig deur die tabel: p(−2) = −15 (baie negatief soos x verminder) en p(4) = 15 (positief en toenemend soos x vermeerder)." },
+      5: { a: "f(3) = 54 − 27 − 33 + 6 = 0, dus is (x − 3) ’n faktor", b: "f(x) = (x − 3)(2x² + 3x − 2) = (x − 3)(2x − 1)(x + 2)", c: "x = 3, x = ½, x = −2", d: "a &gt; 0: −2 ≤ x ≤ ½ of x ≥ 3", e: "f(−1) = −2 − 3 + 11 + 6 = 12", f: "Kubiese grafiek wat regs styg, die x-as by −2, ½ en 3 sny en die y-as by 6" }
     }
   }
 });

@@ -119,6 +119,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Bereken vir 'n keël altyd eers die <strong>skuinshoogte</strong> l = √(r² + h²) — die SA-formule gebruik l, nie die vertikale hoogte h nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Buite-oppervlakte van ’n boks van 4 × 3 × 2 cm en ’n silinder met r = 2 cm, h = 5 cm</div><div class="example-step"><span class="step-num">1</span><span>Boks: BO = 2(lb + lh + bh) = 2(12 + 8 + 6) = 52 cm².</span></div><div class="example-step"><span class="step-num">2</span><span>Silinder: twee sirkels 2πr² = 8π; geboë kant 2πrh = 20π.</span></div><div class="example-step"><span class="step-num">3</span><span>Totaal = 28π ≈ 88,0 cm².</span></div><div class="example-step"><span class="step-num">4</span><span>Oppervlakte-antwoorde is in vierkante eenhede (cm²).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Buite-oppervlakte is in vierkante eenhede en volume in kubieke eenhede — sluit die korrekte eenheid in.</span></div>
         `
       },
       questions: [
@@ -270,6 +271,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Skaalfaktor k beïnvloed: lengte → ×k, oppervlakte/SA → ×k², volume → ×k³. Om al die afmetings te verdubbel, vermeerder die volume met 8, nie 2 nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Reghoekige prisma meet 5 × 4 × 3 cm</div><div class="example-step"><span class="step-num">1</span><span>V = 5 × 4 × 3 = 60 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>Al drie afmetings verdubbel: V × 2³ = 480 cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>Net die hoogte verdubbel: V × 2 = 120 cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>Al die afmetings verdubbel vermenigvuldig die buite-oppervlakte met 2² = 4.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Om die afmetings te verdubbel, verdubbel nie die volume nie — dit vermenigvuldig dit met 8.</span></div>
         `
       },
       questions: [
@@ -560,6 +562,7 @@ MathMagician.registerChapter(13, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Moenie die piramide se loodregte hoogte (gebruik in die volumeformule) met die skuinshoogte van 'n driehoekige vlak (gebruik in die oppervlakformule) verwar nie — dit is verskillende lengtes wat met verskillende reghoekige driehoeke gevind word.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Vierkantige piramide het basis 6 cm en loodregte hoogte 4 cm</div><div class="example-step"><span class="step-num">1</span><span>Skuinshoogte van ’n vlak: √(4² + 3²) = 5 cm (3 is die helfte van die basis).</span></div><div class="example-step"><span class="step-num">2</span><span>BO = basis + 4 driehoeke = 36 + 4 × ½ × 6 × 5 = 36 + 60 = 96 cm².</span></div><div class="example-step"><span class="step-num">3</span><span>V = ⅓ × basisoppervlakte × hoogte = ⅓ × 36 × 4 = 48 cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>’n Prisma met dieselfde basis en hoogte sou drie keer hierdie volume hê.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik die skuinshoogte vir die oppervlakte van die vlakke en die loodregte hoogte vir die volume.</span></div>
         `
       },
       questions: [
@@ -640,7 +643,8 @@ MathMagician.registerChapter(13, {
           { label: "a", text: "Bereken die totale volume van die model.", marks: 4 },
           { label: "b", text: "Die werklike gebou is 50 keer groter in elke afmeting. Wat is sy werklike volume?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ’n Geslote silinder het ’n radius van 7 cm en ’n hoogte van 20 cm. Gee antwoorde korrek tot twee desimale plekke.<div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"cylinder\",\"w\":250,\"h\":190,\"labels\":{\"r\":\"7 cm\",\"h\":\"20 cm\"}}'></div>", parts: [{ label: "a", text: "Bereken die volume van die silinder.", marks: 2 }, { label: "b", text: "Bereken die totale buite-oppervlakte van die silinder.", marks: 3 }, { label: "c", text: "’n Keël het dieselfde basis en hoogte as die silinder. Bereken sy volume, en noem hoe dit met die volume van die silinder vergelyk.", marks: 2 }, { label: "d", text: "Bereken die skuinshoogte van die keël en sy geboë buite-oppervlakte.", marks: 3 }, { label: "e", text: "As die radius en hoogte van die silinder albei verdriedubbel word, met watter faktor verander sy volume?", marks: 2 }, { label: "f", text: "Bereken die volume van ’n sfeer met ’n radius van 6 cm.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -655,7 +659,8 @@ MathMagician.registerChapter(13, {
       3: {
         a: "Prisma: 6×4×3=72; Piramide: ⅓×24×2=16; Totaal=88 cm³",
         b: "Skaalfaktor=50; Volume skaleer met 50³=125000; Werklik=88×125000=11 000 000 cm³=11 m³"
-      }
+      },
+      4: { a: "V = πr²h = π(7)²(20) = 3 078,76 cm³", b: "BO = 2πr² + 2πrh = 98π + 280π = 378π = 1 187,52 cm²", c: "V = ⅓πr²h = 1 026,25 cm³, een derde van die silinder se volume", d: "s = √(7² + 20²) = √449 = 21,19 cm; geboë oppervlakte = πrs = π(7)(21,19) = 465,98 cm²", e: "3³ = 27 keer groter", f: "V = (4/3)π(6)³ = 288π = 904,78 cm³" }
     }
   }
 });

@@ -21,7 +21,9 @@
    new tab, or copy the link to the projector laptop, and get the same
    timer. A running timer's state (start time, pauses, laps) is kept in
    localStorage under a key made from the link, so a refresh does not lose
-   it.
+   it. Once it is under way the link itself carries it too ("go=", see
+   writeGo), so the same address opened on another laptop (the first one
+   died) carries on where it was, and leaving a running timer asks first.
 
    The colours are the user's own, so this page does not load theme.js.
    Times are always worked out from the clock (Date.now), never by counting
@@ -82,13 +84,18 @@ body.hide-cursor { cursor: none; }
 .head .title { font-weight: 800; font-size: calc(5.4vmin * var(--tsize)); line-height: 1.1; letter-spacing: -0.02em; }
 .head .meta { font-size: calc(2.9vmin * var(--tsize)); opacity: 0.75; margin-top: 0.8vmin; }
 .phase { font-size: calc(3.4vmin * var(--tsize)); font-weight: 700; color: var(--accent); }
-.faces { display: flex; align-items: center; justify-content: center; gap: 6vw; flex-wrap: wrap; min-height: 0; }
+.faces { display: flex; align-items: center; align-content: center; justify-content: center; gap: 6vw; row-gap: 3vmin; flex-wrap: wrap; min-height: 0; }
 .digital {
   font-size: calc(19vmin * var(--dsize)); font-weight: var(--dweight); line-height: 1;
   font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap;
 }
 .both .digital { font-size: calc(14vmin * var(--dsize)); }
 .analogue { width: calc(48vmin * var(--dsize)); height: calc(48vmin * var(--dsize)); max-width: 88vw; max-height: 60vh; }
+/* the clock and, for several papers, the date under it */
+.aw { display: flex; flex-direction: column; align-items: center; gap: 1.4vmin; min-width: 0; }
+.aw.off { display: none; }
+.adate { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.8; white-space: nowrap; }
+.adate:empty { display: none; }
 .both .analogue { width: calc(50vmin * var(--dsize)); height: calc(50vmin * var(--dsize)); max-height: 66vh; }
 /* with a clock beside the digits, the status lines sit above and below the
    digits in this column, so the clock can use their height as well */
@@ -128,25 +135,83 @@ body.hide-cursor { cursor: none; }
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin; }
 /* Several subjects in one venue (exam.count): one column each, with its own
    time left and finish time, in place of the single time */
-.multi { display: none; justify-content: center; align-items: stretch; min-width: 0; }
-.is-multi .multi { display: flex; }
-.multi .col { flex: 1 1 0; min-width: 0; padding: 0 2vw; display: flex; flex-direction: column; align-items: center; gap: 1vmin; }
+/* the columns share their rows (subgrid), so a long name in one column keeps
+   every column's paper, phase, time and end time level with the others; the
+   names line up at the top, and a shorter one leaves space under it */
+.multi { display: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-rows: repeat(5, auto); min-width: 0; }
+.is-multi .multi { display: grid; }
+.multi .col { grid-row: span 5; display: grid; grid-template-rows: subgrid; justify-items: center; align-items: start; row-gap: 1vmin; min-width: 0; padding: 0 2vw; }
+/* while the shared reading time (or the start) shows above, the columns have
+   no time of their own: just the name, paper and their writing time and finish */
+.multi.notime { grid-template-rows: repeat(3, auto); }
+.multi.notime .col { grid-row: span 3; }
+.multi.notime .cphase, .multi.notime .ctime { display: none; }
 .multi .col + .col { border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
-.multi .cname { font-weight: 800; font-size: var(--cname, calc(4.4vmin * var(--tsize))); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; }
-.multi .cpaper { font-size: calc(2.6vmin * var(--tsize)); opacity: 0.75; }
-.multi .cphase { font-size: calc(2.9vmin * var(--tsize)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
+.multi .cname { font-weight: 800; font-size: calc(4.4vmin * var(--tsize) * var(--ck, 1)); line-height: 1.1; letter-spacing: -0.02em; max-width: 100%; align-self: start; }
+.multi .cpaper { font-size: calc(2.6vmin * var(--tsize) * var(--ck, 1)); opacity: 0.75; }
+.multi .cphase { font-size: calc(2.9vmin * var(--tsize) * var(--ck, 1)); font-weight: 700; color: var(--accent); min-height: 1.3em; }
 .multi .ctime { font-size: var(--ctime, 12vmin); font-weight: var(--dweight); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
-.multi .ctime:empty { display: none; }
 .multi .ctime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
-.multi .csub { font-size: calc(2.4vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 1.3em; }
-.multi .cpaper:empty { display: none; }
+/* one fact a line ("Reading ends 15:47", "Ends 18:17"), never broken mid-fact */
+.multi .csub { font-size: calc(2.4vmin * var(--tsize) * var(--ck, 1)); opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 2.6em; line-height: 1.3; }
+.multi .csub span { display: block; white-space: nowrap; }
+.multi .cpaper span { display: inline-block; white-space: nowrap; }
+.multi .cname { text-wrap: balance; }
+/* beside the columns the Detailed panel holds only the clock time, the start
+   and the note (each column shows its own finish), so it can be narrower */
+/* (its size does not follow the text-size setting all the way up: the papers' columns are what the room reads) */
+.is-multi.lay-detailed .facts { width: clamp(170px, calc(14vw * min(var(--tsize), 1.2)), 22vw); font-size: calc(2.6vmin * min(var(--tsize), 1.2)); }
+/* ...with "Time now" and "Started" one under the other */
+.is-multi .facts dl { grid-template-columns: minmax(0, 1fr); gap: 2.4vmin; }
+/* in the short top row during writing it lies on its side instead:
+   Time now | Started | the note */
+.lay-detailed .facts.row { display: flex; align-items: center; gap: 3vw; width: auto; max-width: 64vw; }
+.facts.row dl { grid-template-columns: repeat(2, auto); gap: 0 3vw; flex: 0 0 auto; }
+/* the other arrangements of several papers (look.arr; sized in fitArranged) */
+.faces.arr-left { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; justify-items: center; align-content: center; }
+.faces.arr-left #aw { grid-column: 1; grid-row: 1 / span 3; }
+.faces.arr-left #dcol { grid-column: 2; grid-row: 1; }
+.faces.arr-left #multi { grid-column: 2; grid-row: 2; }
+.faces.arr-left #facts { grid-column: 2; grid-row: 3; }
+.faces.arr-bottom #dcol { order: 0; }
+.faces.arr-bottom #multi { order: 1; }
+.faces.arr-bottom #aw { order: 2; }
+.faces.arr-bottom #facts { order: 3; }
+.facts:empty { display: none !important; }
+.no-note .info { display: none; }
+.pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.pgrid button { font: inherit; font-size: 14px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer; border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.pgrid button[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.pgrid svg { width: 64px; height: 40px; }
+.facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
-.multi .done .ctime { animation: blink 1s steps(2, start) infinite; font-size: var(--cdone, var(--ctime, 12vmin)); }
+/* the departure board (four or more papers): rows that share their columns
+   (subgrid), so every end time and time left lines up; sized with --bk */
+.is-multi .multi.board { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-auto-flow: row; text-align: left;
+  font-size: calc(3vmin * var(--tsize) * var(--bk, 1)); column-gap: 1.6em; }
+.board .brow { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 0.32em 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, transparent); }
+.board .brow:last-child { border-bottom: 0; }
+.board .bname { min-width: 0; line-height: 1.12; }
+.board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.board .bname span { display: block; font-size: 0.62em; opacity: 0.75; margin-top: 0.15em; }
+.board .bend { font-size: 0.8em; opacity: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
+.board .btime { font-size: 1.9em; font-weight: var(--dweight); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; letter-spacing: -0.02em; }
+.board .btime .dc { display: inline-block; width: var(--dw, 0.62em); text-align: center; }
+.board .btime.wait { font-size: 1.1em; font-weight: 700; opacity: 0.7; }
+.board .warn .btime { color: var(--warn); }
+.board .flash .btime { animation: blink 1s steps(2, start) infinite; }
+.board .done:not(.flash) { opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) { .board .flash .btime { animation: none; } }
+.multi .done .ctime { font-size: var(--cdone, var(--ctime, 12vmin)); }
+/* a paper whose time is up flashes "Pens down" for a few seconds only, then
+   stays still, so it does not distract the papers still writing */
+.multi .flash .ctime { animation: blink 1s steps(2, start) infinite; }
 .lay-minimal .multi .cpaper, .lay-minimal .multi .csub, .lay-simple .multi .cpaper, .lay-simple .multi .csub { display: none; }
 .warn .digital, .warn .phase { color: var(--warn); }
 .done .digital { animation: blink 1s steps(2, start) infinite; }
 @keyframes blink { 50% { opacity: 0.3; } }
-@media (prefers-reduced-motion: reduce) { .done .digital { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .done .digital, .multi .flash .ctime { animation: none; } }
 
 .bar {
   position: fixed; left: 50%; bottom: 2.4vmin; transform: translateX(-50%);
@@ -155,9 +220,12 @@ body.hide-cursor { cursor: none; }
   background: color-mix(in srgb, var(--fg) 9%, var(--bg));
   border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
   font-family: 'Cabinet Grotesk', system-ui, sans-serif;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, translate 0.3s;
 }
-.bar.idle { opacity: 0; pointer-events: none; }
+/* the bar slides away after a few still seconds and comes back with any
+   mouse movement, tap or key, so it never sits over the times */
+.bar.idle { opacity: 0; pointer-events: none; translate: 0 calc(100% + 3vmin); }
+@media (prefers-reduced-motion: reduce) { .bar { transition: opacity 0.3s; } .bar.idle { translate: none; } }
 .bar button {
   font: inherit; font-size: 24px; font-weight: 700; color: var(--fg); background: transparent;
   border: 1px solid color-mix(in srgb, var(--fg) 26%, transparent); border-radius: 999px;
@@ -240,6 +308,34 @@ body.hide-cursor { cursor: none; }
 .panel input:disabled { opacity: 0.4; }
 .pnote { font-size: 14px; line-height: 1.5; opacity: 0.8; margin: 16px 0 0; }
 .ttp-what { font-size: 14px; line-height: 1.45; opacity: 0.85; white-space: pre-line; }
+.pp-head { display: flex; justify-content: space-between; font-size: 13px; opacity: 0.7; }
+.pp-row { display: flex; flex-direction: column; gap: 4px; padding: 8px 0; border-bottom: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
+.pp-sub { display: flex; gap: 6px; }
+.panel .pp-sub input[data-f="paper"] { flex: 1 1 auto; min-width: 0; width: auto; }
+.panel .pp-sub input[data-f="mins"] { width: 84px; flex: 0 0 84px; }
+.panel .pp-sub .pclose { flex: 0 0 auto; }
+.panel .pp-row input[type="text"], .panel #pPaperFind, .panel #pInfo, .panel #pPaperPick { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 9px 10px; }
+.panel .pp-row input[data-f="subject"] { font-weight: 700; }
+.panel #pPaperPick { padding: 4px; font-size: 15px; }
+.panel #pInfo { resize: vertical; line-height: 1.4; }
+.recmenu { position: fixed; z-index: 26; transform: translateX(-50%); box-sizing: border-box; width: min(340px, calc(100vw - 24px));
+  padding: 8px; border-radius: 18px; display: flex; flex-direction: column; gap: 2px;
+  background: color-mix(in srgb, var(--fg) 9%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3); font-family: 'Cabinet Grotesk', system-ui, sans-serif; color: var(--fg); }
+.recmenu-h { font-size: 14px; font-weight: 700; opacity: 0.75; padding: 6px 12px 4px; }
+.recmenu button { font: inherit; font-size: 18px; color: var(--fg); background: transparent; border: 0; border-radius: 12px; cursor: pointer;
+  text-align: left; padding: 10px 12px 10px 38px; position: relative; display: flex; flex-direction: column; gap: 2px; }
+.recmenu button:hover, .recmenu button:focus-visible { background: color-mix(in srgb, var(--fg) 10%, transparent); outline: none; }
+.recmenu button[aria-checked="true"] { font-weight: 800; }
+.recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
+.recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
+.toast { position: fixed; top: 2.4vmin; left: 50%; transform: translateX(-50%); z-index: 30; max-width: calc(100vw - 32px); box-sizing: border-box;
+  padding: 12px 20px; border-radius: 999px; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700;
+  background: var(--fg); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.toast.on { opacity: 1; }
+.panel #pStartT { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; font-variant-numeric: tabular-nums; }
+.panel #pStartT[aria-invalid="true"] { border-color: var(--warn); }
 .panel input[type="number"] { font: inherit; color: var(--fg); background: var(--bg); box-sizing: border-box; width: 100%; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 8px; padding: 10px; }
 .panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
@@ -250,7 +346,7 @@ body.hide-cursor { cursor: none; }
     <div class="head" id="head"></div>
     <div class="phase" id="phase"></div>
     <div class="faces" id="faces">
-      <svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg>
+      <div class="aw" id="aw"><svg class="analogue" id="analogue" viewBox="0 0 200 200" role="img" aria-hidden="true"></svg><div class="adate" id="adate"></div></div>
       <div class="dcol" id="dcol"><div class="digital" id="digital"></div></div>
       <div class="multi" id="multi"></div>
       <aside class="facts" id="facts"></aside>
@@ -273,50 +369,64 @@ body.hide-cursor { cursor: none; }
       reading: 'Reading time', writing: 'Writing time', finished: 'Time is up. Pens down.',
       ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
-      plan: 'Reading {r} · Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
+      plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
       lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
       h: 'h', min: 'min',
       fNow: 'Time now', fStarted: 'Started', fStarts: 'Starts', fLength: 'Length', fEnds: 'Ends', fReading: 'Reading time',
       fReadEnds: 'Reading ends', fWriting: 'Writing time', fFinish: 'Finish', fRound: 'Round', fNext: 'Next', fLaps: 'Laps', fDay: 'Day', fDate: 'Date',
-      pStart: 'Start time', pStartNow: 'Start now (late start)', pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
+      pStart: 'Start time', pStartNow: 'Start now (early/late start)', pLen: 'Length (minutes)', pFocus: 'Focus (min)', pShort: 'Short break (min)', pLong: 'Long break (min)', pEvery: 'Long break after (rounds)', pType: 'Timer type', m_pomodoro: 'Pomodoro', m_countdown: 'Countdown', m_clock: 'Clock', m_stopwatch: 'Timer', m_exam: 'Exam timer',
+      ttAuto: 'Load the next session for this venue by itself', ttAutoDone: 'Next session loaded: {s}',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
+      recTitle: 'Instructions recording', recOwn: 'My own recording: {n}', recAuto: 'chosen for these papers',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
       pFill: 'Screen fill', fl_off: 'Off', fl_across: 'Across', fl_up: 'Upwards',
       pLayout: 'Layout', y_minimal: 'Minimal', y_simple: 'Simple', y_standard: 'Standard', y_detailed: 'Detailed',
+      pArr: 'Arrangement (several papers)', ar_top: 'Papers first', ar_left: 'Clock left', ar_only: 'Papers only', ar_bottom: 'Info at the bottom',
+      pPapers: 'Papers in this venue', ppSubject: 'Subject', ppPaper: 'Grade · paper', ppMins: 'Writing (min)', ppDel: 'Remove this paper',
+      ppAdd: 'Type in a paper', ppFind: 'Find a paper in the exam timetable', ppPick: 'Add from the timetable', ppHint: 'Four or more papers show as a list beside the clock, the next to finish at the top.',
+      ppFull: 'A venue can have up to {n} papers.', pInfo: 'Note on the screen',
+      pShow: 'Show on the screen', s_clock: 'Clock face', s_date: 'Date', s_fnow: '"Time now" and "Started" (Detailed)', s_note: 'Note',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
       pStyle: 'Display', d_digital: 'Digital', d_analogue: 'Analogue', d_both: 'Both', pFont: 'Font', pMore: 'More fonts',
       pFit: 'Fill the screen', pSize: 'Timer size', pTsize: 'Text size',
-      k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
+      k_afAuto: 'Afrikaans papers: show the screen in Afrikaans', k_secs: 'Show seconds', k_h24: '24-hour clock', k_nums: 'Numbers on the dial', k_now: 'Small clock in the corner',
       pSound: 'Chime sound', pPlay: 'Play', pVol: 'Volume', pRep: "Rings when time's up", pLang: 'Language', pNote: "Changes are kept in this tab's address, so a bookmark or a copied link keeps them. A running timer carries on."
     },
     af: {
       reading: 'Leestyd', writing: 'Skryftyd', finished: 'Tyd is om. Penne neer.',
       ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
-      plan: 'Leestyd {r} · Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
+      plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
       lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Stel terug', skip: 'Slaan oor',
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
       h: 'uur', min: 'min',
       fNow: 'Tyd nou', fStarted: 'Begin', fStarts: 'Begin om', fLength: 'Lengte', fEnds: 'Eindig', fReading: 'Leestyd',
       fReadEnds: 'Leestyd eindig', fWriting: 'Skryftyd', fFinish: 'Einde', fRound: 'Rondte', fNext: 'Volgende', fLaps: 'Tussentye', fDay: 'Dag', fDate: 'Datum',
-      pStart: 'Begintyd', pStartNow: 'Begin nou (laat begin)', pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
+      pStart: 'Begintyd', pStartNow: 'Begin nou (vroeë/laat begin)', pLen: 'Lengte (minute)', pFocus: 'Fokus (min)', pShort: 'Kort pouse (min)', pLong: 'Lang pouse (min)', pEvery: 'Lang pouse ná (rondtes)', pType: 'Soort tydhouer', m_pomodoro: 'Pomodoro', m_countdown: 'Aftelling', m_clock: 'Horlosie', m_stopwatch: 'Stophorlosie', m_exam: 'Eksamen',
+      ttAuto: 'Laai die volgende sessie vir hierdie lokaal vanself', ttAutoDone: 'Volgende sessie gelaai: {s}',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
+      recTitle: 'Instruksie-opname', recOwn: 'My eie opname: {n}', recAuto: 'gekies vir hierdie vraestelle',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
       pFill: 'Skermvulling', fl_off: 'Af', fl_across: 'Dwars', fl_up: 'Opwaarts',
       pLayout: 'Uitleg', y_minimal: 'Minimaal', y_simple: 'Eenvoudig', y_standard: 'Standaard', y_detailed: 'Uitgebreid',
+      pArr: 'Rangskikking (meer as een vraestel)', ar_top: 'Vraestelle eerste', ar_left: 'Klok links', ar_only: 'Net vraestelle', ar_bottom: 'Inligting onder',
+      pPapers: 'Vraestelle in hierdie lokaal', ppSubject: 'Vak', ppPaper: 'Graad · vraestel', ppMins: 'Skryftyd (min)', ppDel: 'Verwyder hierdie vraestel',
+      ppAdd: 'Tik ’n vraestel in', ppFind: 'Soek ’n vraestel in die eksamenrooster', ppPick: 'Voeg by uit die rooster', ppHint: 'Vier of meer vraestelle wys as ’n lys langs die horlosie, die eerste een wat klaarmaak bo-aan.',
+      ppFull: '’n Lokaal kan tot {n} vraestelle hê.', pInfo: 'Nota op die skerm',
+      pShow: 'Wys op die skerm', s_clock: 'Wyserplaat', s_date: 'Datum', s_fnow: '"Tyd nou" en "Begin" (Uitgebreid)', s_note: 'Nota',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
       pStyle: 'Vertoning', d_digital: 'Digitaal', d_analogue: 'Analoog', d_both: 'Albei', pFont: 'Lettertipe', pMore: 'Meer lettertipes',
       pFit: 'Vul die skerm', pSize: 'Tydhouergrootte', pTsize: 'Teksgrootte',
-      k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
+      k_afAuto: 'Afrikaanse vraestelle: wys die skerm in Afrikaans', k_secs: 'Wys sekondes', k_h24: '24-uur-horlosie', k_nums: 'Getalle op die wyserplaat', k_now: 'Klein horlosie in die hoek',
       pSound: 'Klokklank', pPlay: 'Speel', pVol: 'Volume', pRep: 'Herhalings as die tyd om is', pLang: 'Taal', pNote: "Veranderinge word in hierdie oortjie se adres gehou, so 'n boekmerk of gekopieerde skakel hou dit. 'n Lopende tydhouer gaan aan."
     }
   };
@@ -324,14 +434,34 @@ body.hide-cursor { cursor: none; }
   var cfg, st, key, view = {}, lastPhase = null, wakeLock = null, idleTimer = null, panelOpen = false, themeList = [];
 
   function $(id) { return document.getElementById(id); }
-  function t(k, v) { var s = (S[cfg.lang] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
+  // The language the screen shows: the chosen one, or Afrikaans for an exam
+  // whose papers are all Afrikaans (look.afAuto)
+  function lang() {
+    if (cfg.lang === 'af' || cfg.mode !== 'exam' || cfg.look.afAuto === false) return cfg.lang;
+    return TTTimetable.allAf(subjects().map(function (s) { return s.name; })) ? 'af' : cfg.lang;
+  }
+  // On an Afrikaans screen, a paper's English timetable words show in
+  // Afrikaans: subject names the timetable knows ("Afrikaans HL" becomes
+  // "Afrikaans HT") and "Grade 11 · Paper 1" ("Graad 11 · Vraestel 1").
+  // Other typed text, like the note, shows as typed.
+  var afNames = null;
+  function trName(n) {
+    if (!n || !TT || lang() !== 'af') return n;
+    if (!afNames) { afNames = {}; for (var c in TT.names) afNames[TT.names[c][0].toLowerCase()] = TT.names[c][1]; }
+    return n.split(' / ').map(function (p) { return afNames[p.trim().toLowerCase()] || p; }).join(' / ');
+  }
+  function trPaper(p) {
+    if (!p || lang() !== 'af') return p;
+    return p.replace(/\bGrade\b/g, 'Graad').replace(/\bPaper\b/g, 'Vraestel').replace(/\bPractical\b/g, 'Prakties');
+  }
+  function t(k, v) { var s = (S[lang()] || S.en)[k] || S.en[k]; if (v) for (var n in v) s = s.replace('{' + n + '}', v[n]); return s; }
   function merge(a, b) {
     var o = {};
     for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
     return o;
   }
   function hash(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
-  function locale() { return cfg.lang === 'af' ? 'af-ZA' : 'en-ZA'; }
+  function locale() { return lang() === 'af' ? 'af-ZA' : 'en-ZA'; }
 
   // ── State: accumulated running time plus the moment it last resumed ──
   function freshState() { return { acc: 0, since: null, started: false, phase: 0, laps: [], adj: 0 }; }
@@ -340,8 +470,39 @@ body.hide-cursor { cursor: none; }
     try { var s = JSON.parse(localStorage.getItem(key) || 'null'); if (s) return s; } catch (e) {}
     return freshState();
   }
-  function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} }
-  function elapsed() { return st.acc + (st.since ? Date.now() - st.since : 0) - st.adj; }
+  function save() { if (preview) return; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) {} writeGo(); }
+  // The running state in the link: "go=<start>.<t0>.<settings>" while it runs, where
+  // <start> is when it would have started had it never paused or been moved
+  // by ±1 min, or "go=p<elapsed>.<t0>.<settings>" while paused (milliseconds, base 36;
+  // the elapsed time is below 0 when +1 min was pressed early on).
+  // Older pages ignore the key.
+  function goOf(h) { var m = /(?:^|&)go=([^&]*)/.exec(h); return m ? m[1] : ''; }
+  function writeGo() {
+    if (preview || !cfg || cfg.mode === 'clock') return;
+    var h = location.hash.slice(1).replace(/(^|&)go=[^&]*/g, '').replace(/^&/, ''), go = '';
+    var at = Date.now();
+    if (st.started) go = (running() ? (at - elapsed(at)).toString(36) : 'p' + elapsed().toString(36)) + '.' + (st.t0 || 0).toString(36) + '.' + key.split(':').pop();
+    var nh = go ? (h ? h + '&' : '') + 'go=' + go : h;
+    if (nh !== location.hash.slice(1)) history.replaceState(null, '', location.pathname + location.search + '#' + nh);
+  }
+  // no saved state on this device (another laptop, a private window): take it from the link
+  function readGo() {
+    var g = goOf(location.hash.slice(1)), m = /^(p?)(-?[0-9a-z]+)\.([0-9a-z]+)\.([0-9a-z]+)$/.exec(g);
+    // (only for these settings: a new start time or length is a new exam)
+    if (!m || m[4] !== key.split(':').pop()) return null;
+    var a = parseInt(m[2], 36), t0 = parseInt(m[3], 36), s = freshState();
+    s.started = true; s.t0 = t0 || null;
+    if (m[1]) s.acc = a; else s.since = a;
+    return s;
+  }
+  // a running timer asks before the page is refreshed or closed
+  window.addEventListener('beforeunload', function (e) {
+    if (preview || !cfg || cfg.mode === 'clock' || !running()) return;
+    e.preventDefault(); e.returnValue = '';
+  });
+  // (at: the moment to read it for; one moment per redraw, so a finish time
+  // worked out as now + time left cannot flicker between two minutes)
+  function elapsed(at) { return st.acc + (st.since ? (at || Date.now()) - st.since : 0) - st.adj; }
   function running() { return !!st.since; }
   function play() { if (!st.since) { st.since = Date.now(); if (!st.started) st.t0 = st.since; st.started = true; save(); keepAwake(); } }
   function pause() { if (st.since) { st.acc += Date.now() - st.since; st.since = null; save(); } }
@@ -402,7 +563,7 @@ body.hide-cursor { cursor: none; }
 
   // the subjects writing in this venue: the first one, plus up to two more
   function subjects() {
-    var x = cfg.exam, n = cfg.mode === 'exam' ? Math.max(1, Math.min(3, x.count | 0)) : 1, out = [];
+    var x = cfg.exam, n = cfg.mode === 'exam' ? Math.max(1, Math.min(TTTimetable.max, x.count | 0)) : 1, out = [];
     for (var i = 1; i <= n; i++) {
       var k = i === 1 ? '' : String(i);
       out.push({ name: x['subject' + k], paper: x['paper' + k], R: x.reading * 1000, W: x['writing' + k] * 1000 });
@@ -413,39 +574,51 @@ body.hide-cursor { cursor: none; }
   // pause and ±1 min, but each has its own writing time and finish, in a
   // column of its own. While a set start time is still ahead, the big time counts
   // down to it and the columns show when each subject will end.
+  var FLASH_MS = 10000;   // how long a paper's "Pens down" flashes
   function examMulti(m, now, sched) {
     var x = cfg.exam, subs = subjects();
     var longest = Math.max.apply(null, subs.map(function (s) { return s.R + s.W; }));
-    m.head = [x.date ? longDate(new Date(x.date + 'T12:00')) : ''];
+    m.head = [x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''];
     m.info = x.info; m.face = 'clock'; m.multi = []; m.prog = 0; m.progMark = null;
+    // four or more papers: a list beside the clock (a departure board) instead of columns
+    m.board = subs.length >= 4;
     m.facts = [['fNow', hm(new Date(now))]];
     var plan = function (s) { return t('plan', { r: span(s.R / 1000), w: span(s.W / 1000) }); };
     if (sched && !st.started) {
       if (now < sched) {
         m.phase = t('startsIn'); m.digital = dur(sched - now, 'down'); m.waiting = true;
         m.sub = t('startsAt', { t: hm(new Date(sched)) });
-        m.arcFrom = sched; m.arcTo = sched + longest;
+        m.arcFrom = sched; m.arcTo = sched + longest; m.arcPreview = true;
+        m.arcMark = subs[0].R ? sched + subs[0].R : null;
         m.facts.push(['fStarts', hm(new Date(sched))]);
         subs.forEach(function (s) {
-          m.multi.push({ name: s.name, paper: s.paper, phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }) });
-          m.facts.push([s.name || DASH, hm(new Date(sched + s.R + s.W)), true]);
+          m.multi.push({ name: trName(s.name), paper: trPaper(s.paper), phase: '', time: '', sub: plan(s) + ' · ' + t('ends', { t: hm(new Date(sched + s.R + s.W)) }),
+            wlen: span(s.W / 1000), endTxt: t('ends', { t: hm(new Date(sched + s.R + s.W)) }), at: sched + s.R + s.W });
         });
         return m;
       }
       st.started = true; st.acc = 0; st.since = sched; st.t0 = sched; save(); keepAwake();
     }
+    // the reading time is shared, so while it lasts (or before the start) it
+    // is shown once, above the columns, and each column shows only its own
+    // writing time and finish
+    var R0 = subs[0].R, wfor = function (s) { return t('writeFor', { w: span(s.W / 1000) }); };
     if (!st.started) {
       m.phase = '';
       m.facts.push(['fStarts', DASH]);
+      if (R0) { m.phase = t('ready'); m.digital = dur(R0, 'down'); m.waiting = true; m.sub = t('plan', { r: span(R0 / 1000), w: '' }).split(' · ')[0]; }
       subs.forEach(function (s) {
-        m.multi.push({ name: s.name, paper: s.paper, phase: t('ready'), time: dur(s.R || s.W, 'down'), sub: plan(s) });
-        m.facts.push([s.name || DASH, DASH, true]);
+        var c = R0 ? { name: trName(s.name), paper: trPaper(s.paper), phase: '', time: '', sub: wfor(s) }
+          : { name: trName(s.name), paper: trPaper(s.paper), phase: t('ready'), time: dur(s.W, 'down'), sub: plan(s) };
+        c.wlen = span(s.W / 1000); c.endTxt = ''; c.at = s.R + s.W;
+        m.multi.push(c);
       });
       return m;
     }
-    var el = elapsed(), go = running(), allDone = true, phases = [];
+    var el = elapsed(now), go = running(), allDone = true, phases = [];
     st.ends = st.ends || {};
     m.facts.push(['fStarted', st.t0 ? hm(new Date(st.t0)) : DASH]);
+    var reading = el < R0;
     subs.forEach(function (s, i) {
       var phase, left;
       if (el < s.R) { phase = 'reading'; left = s.R - el; }
@@ -455,12 +628,12 @@ body.hide-cursor { cursor: none; }
       var done = phase === 'finished', end = now + (s.R + s.W - el);
       if (done) { if (!st.ends[i] && go) { st.ends[i] = end; save(); } } else allDone = false;
       var bits = [];
-      if (go && phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
+      if (reading) bits.push(wfor(s));
       if (done) bits.push(t('endedAt', { t: hm(new Date(st.ends[i] || end)) }));
       else if (go) bits.push(t('ends', { t: hm(new Date(end)) }));
-      m.multi.push({ name: s.name, paper: s.paper, phase: done ? t('timeUp') : t(phase), time: done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
-        done: done, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000 });
-      m.facts.push([s.name || DASH, done ? hm(new Date(st.ends[i] || end)) : go ? hm(new Date(end)) : DASH, true]);
+      m.multi.push({ name: trName(s.name), paper: trPaper(s.paper), phase: reading ? '' : done ? t('timeUp') : t(phase), time: reading ? '' : done ? t('pensDown') : dur(left, 'down'), sub: bits.join(' · '),
+        done: done, flash: done && now - (st.ends[i] || end) < FLASH_MS, warn: phase === 'writing' && cfg.warn && left <= cfg.warn * 60000,
+        wlen: span(s.W / 1000), endTxt: done ? t('endedAt', { t: hm(new Date(st.ends[i] || end)) }) : go ? t('ends', { t: hm(new Date(end)) }) : '', at: st.ends[i] || end });
     });
     // the chime: once when reading ends, and the full ring only when the last
     // subject's time is up. A subject that ends while others are still
@@ -474,9 +647,17 @@ body.hide-cursor { cursor: none; }
     }
     lastPhase = key;
     m.phase = !go && !allDone ? t('paused') : '';
+    if (reading) {
+      m.waiting = true; m.digital = dur(R0 - el, 'down');
+      m.phase = go ? t('reading') : t('paused');
+      m.sub = go ? t('readingEnds', { t: hm(new Date(now + R0 - el)) }) : '';
+    }
     m.done = allDone;
     m.prog = Math.min(1, el / (longest || 1));
-    if (!allDone) { m.arcFrom = now; m.arcTo = now + longest - el; }
+    if (!allDone) {
+      m.arcFrom = now; m.arcTo = now + longest - el;
+      m.arcMark = el < subs[0].R ? now + subs[0].R - el : null; m.readFrom = now - el;
+    }
     return m;
   }
 
@@ -492,7 +673,7 @@ body.hide-cursor { cursor: none; }
       return m;
     }
     if (cfg.mode === 'stopwatch') {
-      var e = elapsed();
+      var e = elapsed(now);
       m.head = [cfg.title];
       m.digital = dur(e, 'up') + (cfg.look.secs && e < 3600000 ? '.' + Math.floor(e % 1000 / 100) : '');
       m.phase = !running() && st.started ? t('paused') : '';
@@ -501,7 +682,7 @@ body.hide-cursor { cursor: none; }
       return m;
     }
     if (cfg.mode === 'countdown') {
-      var total = cfg.cd.secs * 1000, r = total - elapsed();
+      var total = cfg.cd.secs * 1000, r = total - elapsed(now);
       m.head = [cfg.title];
       m.digital = dur(r, 'down');
       m.done = r <= 0; m.warn = !m.done && cfg.warn && r <= cfg.warn * 60000;
@@ -510,7 +691,7 @@ body.hide-cursor { cursor: none; }
       m.prog = st.started ? 1 - Math.max(0, r) / total : 0;
       m.face = total <= 3600000 ? 'wedge60' : 'wedge'; m.frac = Math.max(0, r) / (total <= 3600000 ? 3600000 : total);
       if (m.done && !st.fin) { st.fin = now + r; save(); }
-      m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed())],
+      m.facts = [['fNow', hm(new Date(now))], ['fLength', span(cfg.cd.secs)], ['fStarted', started(elapsed(now))],
         ['fEnds', m.done ? hm(new Date(st.fin)) : running() ? hm(new Date(now + r)) : DASH]];
       if (m.done && lastPhase === 'run') chime(cfg.chime.rep);
       lastPhase = m.done ? 'done' : 'run';
@@ -520,7 +701,7 @@ body.hide-cursor { cursor: none; }
       var p = cfg.pomo, every = Math.max(1, p.every | 0);
       var type = function (i) { return i % 2 === 0 ? 'focus' : ((i + 1) % (2 * every) === 0 ? 'long' : 'short'); };
       var len = function (i) { var k = type(i); return (k === 'focus' ? p.work : k === 'long' ? p.long : p.short) * 1000; };
-      var rem = len(st.phase) - elapsed();
+      var rem = len(st.phase) - elapsed(now);
       if (rem <= 0 && running()) {
         chime(1);
         st.phase++; st.acc = 0; st.adj = 0; st.since = p.auto ? Date.now() : null; save();
@@ -540,7 +721,7 @@ body.hide-cursor { cursor: none; }
     // exam
     var x = cfg.exam, R = x.reading * 1000, W = x.writing * 1000, sched = examStart();
     if (subjects().length > 1) return examMulti(m, now, sched);
-    m.head =[x.subject, [x.paper, x.date ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
+    m.head =[trName(x.subject), [trPaper(x.paper), x.date && cfg.showDate ? longDate(new Date(x.date + 'T12:00')) : ''].filter(Boolean).join(' · ')];
     m.info = x.info; m.face = 'clock';
     // the dashed line on the screen fill marks where reading ends; it only
     // means something while reading time runs, so it shows only then
@@ -554,7 +735,7 @@ body.hide-cursor { cursor: none; }
       if (now < sched) {
         m.phase = t('startsIn'); m.digital = dur(sched - now, 'down');
         m.sub = t('startsAt', { t: hm(new Date(sched)) }) + ' · ' + t('plan', { r: span(x.reading), w: span(x.writing) });
-        m.arcFrom = sched; m.arcTo = sched + R + W; m.arcMark = R ? sched + R : null;
+        m.arcFrom = sched; m.arcTo = sched + R + W; m.arcMark = R ? sched + R : null; m.arcPreview = true;
         examFacts(sched, sched + R, sched + R + W);
         return m;
       }
@@ -566,7 +747,7 @@ body.hide-cursor { cursor: none; }
       examFacts(null, null, null);
       return m;
     }
-    var el = elapsed(), phase, left;
+    var el = elapsed(now), phase, left;
     if (el < R) { phase = 'reading'; left = R - el; }
     else if (el < R + W) { phase = 'writing'; left = R + W - el; }
     else { phase = 'finished'; left = R + W - el; }
@@ -582,7 +763,7 @@ body.hide-cursor { cursor: none; }
     if (phase === 'reading') bits.push(t('readingEnds', { t: hm(new Date(now + left)) }));
     bits.push(m.done ? t('endedAt', { t: hm(new Date(end)) }) : t('ends', { t: hm(new Date(end)) }));
     m.sub = running() || m.done ? bits.join(' · ') : '';
-    if (!m.done) { m.arcFrom = now; m.arcTo = end; m.arcMark = phase === 'reading' ? now + left : null; }
+    if (!m.done) { m.arcFrom = now; m.arcTo = end; m.arcMark = phase === 'reading' ? now + left : null; m.readFrom = now - el; }
     // times already past are written down, so a pause does not move them
     if (phase !== 'reading' && R && !st.rEnd && running()) { st.rEnd = now - (el - R); save(); }
     if (m.done && !st.fin) { st.fin = end; save(); }
@@ -612,6 +793,8 @@ body.hide-cursor { cursor: none; }
     var svg = $('analogue'); svg.innerHTML = '';
     el('circle', { cx: 100, cy: 100, r: 96, fill: 'var(--face)', stroke: 'color-mix(in srgb, var(--fg) 30%, transparent)', 'stroke-width': 1.5 }, svg);
     view.wedge = el('path', { fill: 'var(--accent)', 'fill-opacity': 0.85 }, svg);
+    // exam: the reading time as a line on the minute track (see drawRing)
+    view.track = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.25 }, svg);
     view.arc = el('path', { fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6, 'stroke-linecap': 'round', 'stroke-opacity': 0.9 }, svg);
     view.mark = el('circle', { r: 4.5, fill: 'var(--fg)' }, svg);
     for (var i = 0; i < 60; i++) {
@@ -633,19 +816,29 @@ body.hide-cursor { cursor: none; }
     view.faceKind = kind;
   }
   function rot(e, deg, show) { e.setAttribute('transform', 'rotate(' + deg + ' 100 100)'); e.style.display = show === false ? 'none' : ''; }
+  // Exam reading time, read by the minute hand: while reading time runs, a
+  // faint track on the minute track from where reading started (08:40) to
+  // where it ends (08:50), coloured in from the minute hand to the end: full
+  // at the start, it empties with the minute hand as reading runs out. Nothing is
+  // drawn before the start or once writing begins. (Reading longer than an
+  // hour is capped at a full turn.)
+  var HOUR = 3600000;
+  function minDeg(ms) { var d = new Date(ms); return ((d.getMinutes() + d.getSeconds() / 60 + d.getMilliseconds() / 60000) % 60) * 6; }
+  function drawRing(m) {
+    var now = m.arcFrom, start = m.readFrom, to = m.arcMark;
+    if (!now || !to || !start || to <= now || m.arcPreview) return;
+    var cap = function (ms) { return Math.min(HOUR - 1000, ms) / HOUR * 360; };
+    view.track.setAttribute('d', arc(minDeg(start), cap(to - start), 93));
+    view.arc.setAttribute('d', arc(minDeg(now), cap(to - now), 93));
+  }
   function drawFace(m) {
     if (view.faceKind !== m.face) buildFace(m.face);
     var now = new Date();
-    view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); view.mark.style.display = 'none';
+    view.wedge.setAttribute('d', ''); view.arc.setAttribute('d', ''); if (view.track) view.track.setAttribute('d', ''); view.mark.style.display = 'none';
     if (m.face === 'clock') {
       var h = now.getHours() % 12, mi = now.getMinutes(), s = now.getSeconds() + now.getMilliseconds() / 1000;
       rot(view.hHour, (h + mi / 60) * 30); rot(view.hMin, (mi + s / 60) * 6); rot(view.hSec, Math.floor(s) * 6, cfg.look.secs);
-      // exam: the stretch of the clock face the exam still covers
-      if (m.arcFrom) {
-        var toDeg = function (ms) { var d = new Date(ms); return ((d.getHours() % 12) + d.getMinutes() / 60 + d.getSeconds() / 3600) * 30; };
-        view.arc.setAttribute('d', arc(toDeg(m.arcFrom), (m.arcTo - m.arcFrom) / 43200000 * 360, 93));
-        if (m.arcMark) { var pm = polar(toDeg(m.arcMark), 93); view.mark.setAttribute('cx', pm[0]); view.mark.setAttribute('cy', pm[1]); view.mark.style.display = ''; }
-      }
+      drawRing(m);
     } else if (m.face === 'wedge' || m.face === 'wedge60') {
       view.wedge.setAttribute('d', sector(Math.max(0, Math.min(1, m.frac)) * 360, 90));
       view.wedge.setAttribute('fill', m.warn ? 'var(--warn)' : 'var(--accent)');
@@ -658,10 +851,16 @@ body.hide-cursor { cursor: none; }
   }
 
   // ── Controls ──
+  // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
+  var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
+    megaphone: ['I', 'I'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
-    b.setAttribute('aria-label', label); b.title = label;
+    // its keyboard shortcut, if it has one, shows in the tooltip: "Display settings (S)"
+    var key = KEYS_OF[icon];
+    b.setAttribute('aria-label', label); b.title = label + (key ? ' (' + key[0] + ')' : '');
+    if (key) b.setAttribute('aria-keyshortcuts', key[1]);
     b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
     return b;
   }
@@ -676,14 +875,18 @@ body.hide-cursor { cursor: none; }
       bar.appendChild(btn('plus', t('plus'), function () { adjust(1); }));
     }
     if (md !== 'clock' && st.started) bar.appendChild(btn('rotate-ccw', t('reset'), reset));
-    if (hasAudio()) bar.appendChild(btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), toggleAudio));
+    if (hasAudio()) {
+      var ab = btn(audioPlaying() ? 'pause' : 'megaphone', t('instrBtn'), recButton);
+      ab.title = t('instrBtn') + ' (I)'; ab.setAttribute('aria-keyshortcuts', 'I'); ab.setAttribute('aria-haspopup', 'menu'); ab.dataset.role = 'rec';
+      bar.appendChild(ab);
+    }
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
   }
-  function barKey() { return [cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
+  function barKey() { return [lang(), cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
   function fullscreen() {
     if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
   }
@@ -691,7 +894,10 @@ body.hide-cursor { cursor: none; }
     var bar = $('bar'); bar.classList.remove('idle'); document.body.classList.remove('hide-cursor');
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      if (!panelOpen && (running() || cfg.mode === 'clock' || (cfg.mode === 'exam' && st.started))) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      // in every state, also before the start: not while the settings are
+      // open or the pointer or keyboard focus is on the bar itself
+      if (!panelOpen && !recOpen && !bar.matches(':hover, :focus-within')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      else wake();
     }, preview ? 2500 : 3000);
   }
 
@@ -706,18 +912,29 @@ body.hide-cursor { cursor: none; }
     var H = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
     [].forEach.call(stage.children, function (c) { if (c !== faces && c.offsetParent) H -= c.offsetHeight + gap; });
     H = Math.max(40, H);
+    var W0 = W;
     var showA = an.style.display !== 'none', showD = dg.style.display !== 'none';
     var mu = $('multi'), showM = !!mu.offsetParent && mu.children.length > 0;
     // the Detailed layout's side panel: beside the timer, or under it on a tall screen
     var facts = $('facts'), under = !!facts.offsetParent && stage.classList.contains('narrow');
     // several subjects before a set start: the countdown to the start on top, the columns under it
-    var stack = showM && showD;
+    // (and during writing too, with a clock or the Detailed panel: those take a
+    // short top row, so the columns get the full width and their times can be big)
+    // (the departure board always has the clock on the left, unless there is no clock)
+    var arr = showM ? (mu.classList.contains('board') ? 'left' : cfg.look.arr || 'top') : '';
+    faces.classList.toggle('arr-left', arr === 'left'); faces.classList.toggle('arr-bottom', arr === 'bottom');
+    if (arr === 'left' || arr === 'bottom') { fitArranged(arr, W, H); return; }
+    $('dcol').style.display = '';
+    var stack = showM && (showD || showA || !!facts.offsetParent);
+    // ...and then the Detailed panel sits up top beside the clock, and the columns get the full width
+    mu.style.order = stack ? '1' : '';
     faces.style.flexWrap = under || stack ? 'wrap' : 'nowrap';
-    var Hd = stack ? H * 0.5 : H;
+    var Hd = stack ? H * (showD ? 0.5 : 0.3) : H;
+    facts.classList.toggle('row', stack && !showD); facts.style.maxWidth = '';
     // big text on a small screen: the panel's text shrinks until it fits
     facts.style.fontSize = '';
     if (facts.offsetParent) {
-      var room = under ? H * 0.45 : H;
+      var room = under ? H * 0.45 : stack ? Hd : H;
       var shrink = Math.min(1, room / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
       if (shrink < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * shrink * 0.95 + 'px';
       if (under) H = Math.max(40, H - facts.offsetHeight - (parseFloat(getComputedStyle(faces).rowGap) || 0));
@@ -727,8 +944,11 @@ body.hide-cursor { cursor: none; }
     var side = showD || showM, fgap = showA && side ? Math.min(W * 0.04, 48) : 0, a = 0;
     faces.style.columnGap = Math.min(W * 0.04, 48) + 'px';
     // beside several subject columns the clock takes a smaller share of the width
-    var share = showM ? 0.3 : 0.48;
-    if (showA) { a = Math.min(side ? Math.min(Hd, W * share) : Math.min(Hd, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
+    // (and smaller again when the Detailed panel shares the row as well)
+    var share = showM ? (facts.offsetParent && !stack ? 0.24 : 0.3) : 0.48;
+    // (less the date under it, when it is there)
+    var Ha = Math.max(40, Hd - ($('adate').offsetHeight ? $('adate').offsetHeight + 12 : 0));
+    if (showA) { a = Math.min(side ? Math.min(Ha, W * share) : Math.min(Ha, W), own * (side ? 50 : 48)); an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none'; }
     if (showD) {
       // the digits share their column with the status lines beside a clock
       var col = $('dcol'), ch = 0, cgap = parseFloat(getComputedStyle(col).rowGap) || 0;
@@ -737,26 +957,47 @@ body.hide-cursor { cursor: none; }
       var w = dg.scrollWidth || 1, h = dg.offsetHeight || 1;
       dg.style.fontSize = Math.floor(Math.min((W - a - fgap) / w * 97, Math.max(20, Hd - ch) / h * 97, own * (showA ? 14 : 19))) + 'px';
       // above the columns while a set start is still ahead: the columns need their room too
-      if (stack) H = Math.max(40, H - Math.max(a, $('dcol').offsetHeight) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
+      // (the top row is as tall as the tallest of the clock, the digits and the Detailed panel)
+      if (stack) H = Math.max(40, H - Math.max(showA ? $('aw').offsetHeight : 0, $('dcol').offsetHeight, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
     }
-    if (showM) {
-      // a subject's name wraps between words but never inside one: on a narrow
-      // screen all the names shrink together until the longest word fits
-      // (the sizes go on #multi as --cname and --ctime, because the columns
-      // are redrawn as the seconds tick)
-      var names = [].slice.call(mu.querySelectorAll('.cname'));
-      mu.style.removeProperty('--cname');
-      mu.style.width = Math.max(80, stack ? W : W - a - fgap) + 'px';
-      var nk = Math.min.apply(null, names.map(function (e) { return e.scrollWidth > e.clientWidth ? e.clientWidth / e.scrollWidth : 1; }));
-      if (nk < 1) mu.style.setProperty('--cname', parseFloat(getComputedStyle(names[0]).fontSize) * nk * 0.97 + 'px');
+    if (stack && !showD) H = Math.max(40, H - Math.max(showA ? $('aw').offsetHeight : 0, facts.offsetParent ? facts.offsetHeight : 0) - (parseFloat(getComputedStyle(faces).rowGap) || 0));
+    if (showM) fillCols(Math.max(80, stack ? W0 : W - a - fgap), H, own, showA);
+    else mu.style.width = '';
+  }
+  // The columns of several papers, mw wide and at most H tall
+  function fillCols(mw, H, own, showA) {
+    var mu = $('multi');
+      // The columns' text (name, paper, phase, end times) grows to fill the
+      // room it has, on one scale (--ck): the largest that keeps every name's
+      // longest word on its line and a name to two lines, the end-time lines
+      // unbroken, each column's time (at twice the name's size while it is
+      // sized) inside its column, and the columns inside the height left.
+      // A name that cannot keep to two lines may take more. (The sizes go on
+      // #multi as --ck and --ctime, because the columns are redrawn as the
+      // seconds tick.)
+      var names = [].slice.call(mu.querySelectorAll('.cname')), subs = [].slice.call(mu.querySelectorAll('.csub span'));
+      var cols = [].slice.call(mu.children), notime = mu.classList.contains('notime');
+      mu.style.width = mw + 'px';
+      var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
+      var ctimes = notime ? [] : cols.map(function (c) { return c.querySelector('.ctime'); });
+      mu.style.removeProperty('--cdone');
+      var fits = function (k, lines) {
+        mu.style.setProperty('--ck', k.toFixed(3));
+        var nf = parseFloat(getComputedStyle(names[0]).fontSize);
+        if (ctimes.length) mu.style.setProperty('--ctime', nf * 2 + 'px');
+        return !names.some(function (e) { return e.scrollWidth > e.clientWidth + 1 || (lines && e.offsetHeight > nf * 1.1 * (lines + 0.5)); }) &&
+          !subs.some(function (e) { return e.scrollWidth > e.clientWidth + 1; }) &&
+          !ctimes.some(function (e) { return e.scrollWidth > cw + 1; }) && mu.offsetHeight <= H;
+      };
+      var kmax = 1.7, lines = fits(0.45, 2) ? 2 : 0, lo = 0.45, hi = kmax;
+      if (fits(hi, lines)) lo = hi;
+      else for (var it = 0; it < 8; it++) { var mid = (lo + hi) / 2; if (fits(mid, lines)) lo = mid; else hi = mid; }
+      fits(lo, lines);
       // every column's time gets one size: the largest that fits the widest
       // time in its column and the height the other lines leave
-      var cols = [].slice.call(mu.children), mw = Math.max(80, stack ? W : W - a - fgap);
       var times = cols.map(function (c) { return c.querySelector('.ctime'); }).filter(function (e) { return e.offsetParent; });
       if (times.length) {
         mu.style.setProperty('--ctime', '100px');
-        var cw = (mw / cols.length) - parseFloat(getComputedStyle(cols[0]).paddingLeft) * 2;
-        mu.style.removeProperty('--cdone');
         // "Pens down" is sized on its own, so it does not shrink the times still running
         var live = times.filter(function (e) { return !e.parentNode.classList.contains('done'); });
         var dn = times.filter(function (e) { return e.parentNode.classList.contains('done'); });
@@ -764,11 +1005,70 @@ body.hide-cursor { cursor: none; }
         var dw = dn.length ? Math.max.apply(null, dn.map(function (e) { return e.scrollWidth || 1; })) : 0;
         var th = Math.max.apply(null, times.map(function (e) { return e.offsetHeight || 1; }));
         var rest = Math.max.apply(null, cols.map(function (c) { return c.offsetHeight; })) - th;
-        var fs = Math.floor(Math.min(cw / tw * 96, Math.max(20, H - rest) / th * 96, own * (showA ? 11 : 15)));
+        var fs = Math.floor(Math.min(cw / tw * 96, Math.max(20, H - rest) / th * 96, own * (showA ? 16 : 20)));
         mu.style.setProperty('--ctime', Math.max(16, fs) + 'px');
         if (dw) mu.style.setProperty('--cdone', Math.max(16, Math.min(fs, Math.floor(cw / dw * 96))) + 'px');
       }
-    } else mu.style.width = '';
+  }
+  // The departure board, mw wide and at most H tall: one scale (--bk) for all
+  // its text, the largest at which every row fits
+  function fillBoard(mw, H) {
+    var mu = $('multi');
+    mu.style.width = mw + 'px';
+    var fits = function (k) { mu.style.setProperty('--bk', k.toFixed(3)); return mu.offsetHeight <= H && mu.scrollWidth <= mw + 1; };
+    var lo = 0.3, hi = 2.6;
+    if (fits(hi)) lo = hi;
+    else for (var it = 0; it < 9; it++) { var mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+    fits(lo);
+  }
+  // The other arrangements of several papers (look.arr). "left": a big clock
+  // down the left and, beside it, the shared time (while it shows), the papers
+  // and the Detailed panel on its side. "bottom": the shared time and the
+  // papers, then the clock and the panel in a strip along the bottom.
+  function fitArranged(arr, W, H) {
+    var an = $('analogue'), dg = $('digital'), dcol = $('dcol'), mu = $('multi'), facts = $('facts'), faces = $('faces');
+    var showA = an.style.display !== 'none', showD = dg.style.display !== 'none', showF = !!facts.offsetParent;
+    var vmin = Math.min(window.innerWidth, window.innerHeight) / 100, own = cfg.look.fit ? Infinity : vmin * Math.max(0.3, Math.min(3, cfg.look.size / 100));
+    var g = Math.min(W * 0.04, 48), rg = parseFloat(getComputedStyle(faces).rowGap) || 0;
+    mu.style.order = ''; faces.style.flexWrap = 'wrap'; faces.style.columnGap = g + 'px';
+    facts.classList.add('row'); facts.style.fontSize = ''; facts.style.maxWidth = '';
+    // the panel's text shrinks to its strip
+    var panel = function (w, h) {
+      if (!showF) return 0;
+      facts.style.maxWidth = w + 'px';
+      var k = Math.min(1, h / facts.offsetHeight, facts.clientWidth / facts.scrollWidth);
+      if (k < 1) facts.style.fontSize = parseFloat(getComputedStyle(facts).fontSize) * k * 0.95 + 'px';
+      return facts.offsetHeight;
+    };
+    // the shared reading (or start) time, as big as w by h allows
+    // (with no shared time, its column holds only "Paused" when paused, and
+    // is left out when empty)
+    dcol.style.display = showD || dcol.textContent.trim() ? '' : 'none';
+    var digits = function (w, h) {
+      if (!showD) return dcol.offsetParent ? dcol.offsetHeight : 0;
+      var ch = 0, cgap = parseFloat(getComputedStyle(dcol).rowGap) || 0;
+      [].forEach.call(dcol.children, function (c) { if (c !== dg && c.offsetParent) ch += c.offsetHeight + cgap; });
+      dg.style.fontSize = '100px';
+      var dw = dg.scrollWidth || 1, dh = dg.offsetHeight || 1;
+      dg.style.fontSize = Math.floor(Math.min(w / dw * 97, Math.max(20, h - ch) / dh * 97, own * 19)) + 'px';
+      return dcol.offsetHeight;
+    };
+    var a = 0;
+    if (arr === 'left') {
+      var dt = $('adate').offsetHeight ? $('adate').offsetHeight + 12 : 0;
+      if (showA) a = Math.min(H - dt, W * 0.36, own * 60);
+      an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
+      var cw = Math.max(80, W - (showA ? a + g : 0));
+      // (beside a departure board the shared reading time takes less height, so the rows stay readable)
+      var fh = panel(cw, H * 0.22), dh = digits(cw, H * (mu.classList.contains('board') ? 0.2 : 0.34));
+      (mu.classList.contains('board') ? fillBoard : fillCols)(cw, Math.max(40, H - (fh ? fh + rg : 0) - (dh ? dh + rg : 0)), own, showA);
+    } else {
+      if (showA) a = Math.min(H * 0.22, W * 0.2);
+      an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
+      var sh = Math.max(showA ? $('aw').offsetHeight : 0, panel(W - (showA ? a + g : 0), H * 0.22));
+      var dh2 = digits(W, H * 0.32);
+      fillCols(W, Math.max(40, H - (sh ? sh + rg : 0) - (dh2 ? dh2 + rg : 0)), own, showA);
+    }
   }
   window.addEventListener('resize', function () { fit(); });
   document.addEventListener('fullscreenchange', function () { setTimeout(fit, 60); });
@@ -797,14 +1097,22 @@ body.hide-cursor { cursor: none; }
     var head = (m.head || []).filter(Boolean);
     var headHtml = head.length ? '<div class="title">' + esc(head[0]) + '</div>' + (head[1] ? '<div class="meta">' + esc(head[1]) + '</div>' : '') : '';
     if (cfg.mode === 'exam' && (!cfg.exam.subject || m.multi) && head.length) headHtml = '<div class="meta">' + esc(head[0]) + '</div>';
+    // several papers with a clock: the date sits under the clock, not at the top
+    var dateUnder = !!m.multi && cfg.look.display !== 'digital' && cfg.look.arr !== 'only';
+    var adate = dateUnder && head.length ? head[0] : '';
+    if (dateUnder) headHtml = '';
+    setText('adate', adate);
     if (view.headHtml !== headHtml) { $('head').innerHTML = headHtml; view.headHtml = headHtml; relayout = true; }
     setText('phase', m.phase || '');
     setDigits(m.digital || '');
     setText('sub', m.sub || '');
     setText('info', m.info || '');
-    var factsHtml = cfg.look.layout === 'detailed'
-      ? '<dl>' + (m.facts || []).map(function (f) { return '<div class="fact"><dt>' + esc(f[2] ? f[0] : t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl>' +
-        '<div class="fnote">' + esc(m.info || '') + '</div>'
+    // (the switches under "Show on the screen" leave out "Time now"/"Started"
+    // and the note; "Papers only" leaves out the whole panel)
+    var LK = cfg.look, shown = (m.facts || []).filter(function (f) { return LK.fnow !== false || !/^f(Now|Started|Starts)$/.test(f[0]); });
+    var factsHtml = LK.layout === 'detailed' && !(m.multi && LK.arr === 'only')
+      ? (shown.length ? '<dl>' + shown.map(function (f) { return '<div class="fact"><dt>' + esc(f[2] ? f[0] : t(f[0])) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('') + '</dl>' : '') +
+        (LK.note !== false && m.info ? '<div class="fnote">' + esc(m.info) + '</div>' : '')
       : '';
     if (view.facts !== factsHtml) { $('facts').innerHTML = factsHtml; view.facts = factsHtml; relayout = true; }
     var laps = cfg.mode === 'stopwatch' ? st.laps.map(function (l, i) { return '<div>' + esc(t('lap')) + ' ' + (i + 1) + ' · ' + esc(dur(l - (st.laps[i - 1] || 0), 'up')) + '</div>'; }).reverse().join('') : '';
@@ -814,7 +1122,8 @@ body.hide-cursor { cursor: none; }
     stage.classList.toggle('warn', !!m.warn); stage.classList.toggle('done', !!m.done);
     drawFill(m);
     var d = cfg.look.display;
-    $('analogue').style.display = d === 'digital' ? 'none' : '';
+    $('analogue').style.display = d === 'digital' || (m.multi && cfg.look.arr === 'only') ? 'none' : '';
+    $('aw').classList.toggle('off', $('analogue').style.display === 'none');
     $('digital').style.display = (d === 'analogue' && cfg.mode !== 'exam') || (m.multi && !m.waiting) ? 'none' : '';
     // an exam always shows the time left in words or digits, even with an analogue face
     var both = d === 'both' || (d === 'analogue' && cfg.mode === 'exam');
@@ -832,27 +1141,70 @@ body.hide-cursor { cursor: none; }
 
   // ── Several subjects: one column each ──
   function digitsHtml(s) { return esc(s).replace(/[0-9]/g, '<span class="dc">$&</span>'); }
+  // The departure board: one row a paper, the next to finish at the top; a
+  // finished paper flashes "Pens down", then greys out and drops to the bottom.
+  // During reading (and before the start) the time column shows each paper's
+  // writing time.
+  function boardHtml(list) {
+    var rows = list.map(function (c, i) { return { c: c, i: i }; }).sort(function (a, b) {
+      var da = a.c.done && !a.c.flash, db = b.c.done && !b.c.flash;
+      return (da - db) || (a.c.at - b.c.at) || (a.i - b.i);
+    });
+    return rows.map(function (r) {
+      var c = r.c, wait = !c.time;
+      return '<div class="brow' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '">' +
+        '<div class="bname"><b>' + esc(c.name || DASH) + '</b>' + (c.paper ? '<span>' + esc(c.paper) + '</span>' : '') + '</div>' +
+        '<div class="bend">' + esc(c.endTxt || '') + '</div>' +
+        '<div class="btime' + (wait ? ' wait' : '') + '">' + (wait ? esc(c.wlen) : digitsHtml(c.time)) + '</div></div>';
+    }).join('');
+  }
   function drawMulti(m) {
     var on = !!m.multi;
     document.body.classList.toggle('is-multi', on);
-    var html = on ? m.multi.map(function (c) {
-      return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
-        '<div class="cpaper">' + esc(c.paper || '') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
-        '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' + esc(c.sub) + '</div></div>';
+    $('multi').classList.toggle('board', on && !!m.board);
+    var html = on && m.board ? boardHtml(m.multi) : on ? m.multi.map(function (c) {
+      return '<div class="col' + (c.warn ? ' warn' : '') + (c.done ? ' done' : '') + (c.flash ? ' flash' : '') + '"><div class="cname">' + esc(c.name || DASH) + '</div>' +
+        '<div class="cpaper">' + (c.paper || '').split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join(' · ') + '</div><div class="cphase">' + esc(c.phase) + '</div>' +
+        '<div class="ctime">' + digitsHtml(c.time) + '</div><div class="csub">' +
+        (c.sub ? c.sub.split(' · ').map(function (b) { return '<span>' + esc(b) + '</span>'; }).join('') : '') + '</div></div>';
     }).join('') : '';
     if (view.multi === html) return;
     // the layout is measured again only when more than the digits changed
     var shape = html.replace(/[0-9]/g, '0');
     if (view.multiShape !== shape) { relayout = true; view.multiShape = shape; }
     $('multi').innerHTML = html; view.multi = html;
+    $('multi').classList.toggle('notime', on && !m.board && m.multi.every(function (c) { return !c.time; }));
   }
 
   // ── The exam instructions recording (TTAudio: this browser's own file, or the built-in one) ──
   // One big button plays it before the exam starts; once the exam is under
   // way it is only offered in the toolbar, so it never covers the time.
-  var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false;
+  var audio = null, audioName = '', audioUrl = null, audioAsked = false, audioOwn = false, ownName = '', audioId = '';
+  // The recording for these papers when none is chosen: the CAT & IT practical
+  // one for a venue writing only CAT or IT Paper 1 (or a practical), the IEB
+  // ones for Grade 12 (all Grade 12 papers are IEB papers; they are typed in,
+  // as the Grade 12 timetable is not in ours) or when a paper says IEB,
+  // otherwise the Grade 8–12 examinations one.
+  function autoRec() {
+    var subs = subjects(), txt = subs.map(function (s) { return (s.name || '') + ' ' + (s.paper || ''); }).join(' | ');
+    var prac = subs.every(function (s) {
+      return /\b(CAT|RTT|IT|Information Technology|Inligtingstegnologie|Computer Applications)\b/i.test(s.name || '') && /(Paper 1|Vraestel 1|P1\b|Practical|Prakties)/i.test(s.paper || '');
+    });
+    var gr12 = subs.every(function (s) { return /\b(Grade|Graad|Gr)\.?\s*12\b/i.test((s.name || '') + ' ' + (s.paper || '')); });
+    var ieb = gr12 || /\bIEB\b/i.test(txt);
+    return prac ? (ieb ? 'iebprac' : 'prac') : ieb ? 'ieb' : 'exams';
+  }
+  function recChoice() { return cfg.exam.rec || autoRec(); }
+  // other papers (filled in, loaded by themselves, edited) can need another recording
+  function recCheck() { if (audio && !audioPlaying() && audioId !== 'own' && audioId !== recChoice()) loadAudio(); }
   function loadAudio(then) {
-    TTAudio.resolve(function (rec) {
+    TTAudio.get(function (mine) {
+      var own = mine && mine.blob ? mine : null, id = recChoice();
+      ownName = own ? (own.name || t('instr')) : '';
+      if (id === 'own' && !own) id = autoRec();
+      var b = TTAudio.list.filter(function (r) { return r.id === id; })[0] || TTAudio.list[0];
+      var rec = id === 'own' ? { blob: own.blob, name: ownName, own: true } : { url: b.url, name: b[lang()] || b.en, own: false };
+      audioId = id === 'own' ? 'own' : b.id;
       if (audio) { audio.pause(); audio = null; }
       if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = null; }
       if (rec) {
@@ -863,15 +1215,48 @@ body.hide-cursor { cursor: none; }
       }
       if (cfg) { relayout = true; render(true); }
       if (then) then();
+      if (recOpen) recMenu(true);
     });
   }
   window.addEventListener('storage', function (e) { if (e.key === TTAudio.key) loadAudio(); });
-  function hasAudio() { return !!audio && cfg.mode === 'exam' && cfg.exam.audio; }
+  function hasAudio() { return !!audio && cfg.mode === 'exam'; }
   function audioPlaying() { return !!audio && !audio.paused; }
   function toggleAudio() {
     if (!hasAudio()) return;
     if (audio.paused) { audio.play().catch(function () {}); } else audio.pause();
   }
+  // The megaphone opens a small menu of the recordings; picking one plays it
+  // (and the link remembers it). While one plays, the button pauses it.
+  var recOpen = false;
+  function recButton() { if (audioPlaying()) audio.pause(); else recMenu(!recOpen); }
+  function recMenu(open) {
+    var m = $('recMenu');
+    recOpen = !!open;
+    if (!recOpen) { if (m) m.remove(); return; }
+    if (!m) { m = document.createElement('div'); m.id = 'recMenu'; m.className = 'recmenu'; m.setAttribute('role', 'menu'); document.body.appendChild(m); }
+    var auto = !cfg.exam.rec ? autoRec() : '';
+    var item = function (id, label, sub) {
+      return '<button type="button" role="menuitemradio" aria-checked="' + (audioId === id) + '" data-rec="' + id + '"><span>' + esc(label) + '</span>' +
+        (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
+    };
+    m.innerHTML = '<div class="recmenu-h">' + esc(t('recTitle')) + '</div>' +
+      TTAudio.list.map(function (r) { return item(r.id, r[lang()] || r.en, r.id === auto ? t('recAuto') : ''); }).join('') +
+      (ownName ? item('own', t('recOwn', { n: ownName })) : '');
+    var b = $('bar').querySelector('[data-role="rec"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
+    m.style.left = Math.max(170, Math.min(innerWidth - 170, r.left + r.width / 2)) + 'px';
+    m.style.bottom = (innerHeight - r.top + 10) + 'px';
+    [].forEach.call(m.querySelectorAll('[data-rec]'), function (x) {
+      x.addEventListener('click', function (e) {
+        e.stopPropagation();
+        cfg.exam.rec = x.getAttribute('data-rec'); lookChanged(); recMenu(false);
+        loadAudio(function () { if (audio) audio.play().catch(function () {}); });
+      });
+    });
+    var first = m.querySelector('[aria-checked="true"]') || m.querySelector('button'); if (first) first.focus();
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (recOpen && !e.target.closest('#recMenu') && !e.target.closest('[data-role="rec"]')) recMenu(false);
+  }, true);
   function mmss(sec) { sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + pad(sec % 60); }
 
   // the teacher's picture for the screen fill (TTPicture, in this browser only)
@@ -914,15 +1299,16 @@ body.hide-cursor { cursor: none; }
     TTThemes.loadFont(L.font, function () { if (cfg.look.font === f.id) { measureDigits(); fit(); } });
     r.setProperty('--dsize', Math.max(0.3, Math.min(3, L.size / 100)));
     r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
-    document.documentElement.lang = cfg.lang;
+    document.documentElement.lang = lang();
     document.body.classList.toggle('preview', preview);
+    document.body.classList.toggle('no-note', L.note === false);
     document.body.className = document.body.className.replace(/\b(mode|lay)-\S+/g, '').trim() + ' mode-' + cfg.mode + ' lay-' + (L.layout || 'standard');
   }
 
   // ── Display settings panel: edits cfg.look in place and keeps the link in step ──
   function lookChanged() {
     var snap = cfg;
-    TTLink.encode(cfg).then(function (h) { if (snap === cfg) history.replaceState(null, '', location.pathname + location.search + '#' + h); });
+    TTLink.encode(cfg).then(function (h) { if (snap === cfg) { history.replaceState(null, '', location.pathname + location.search + '#' + h); writeGo(); } });
     applyLook(); view.faceKind = null; view.headHtml = null; render(true);
   }
   function opt(v, label, on) { return '<option value="' + v + '"' + (on ? ' selected' : '') + '>' + esc(label) + '</option>'; }
@@ -933,9 +1319,13 @@ body.hide-cursor { cursor: none; }
       '<div class="ph"><h2>' + esc(t('pTitle')) + '</h2><button type="button" class="pclose" id="pClose" aria-label="' + esc(t('pClose')) + '" title="' + esc(t('pClose')) + '"><i data-lucide="x"></i></button></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pType')) + '</span><div class="pseg" id="pMode">' +
         ['pomodoro', 'countdown', 'clock', 'stopwatch', 'exam'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (cfg.mode === v) + '">' + esc(t('m_' + v)) + '</button>'; }).join('') + '</div></div>' +
-      startHtml() +
-      lengthHtml() +
+      // an exam's most used controls first: fill in from the timetable, the note,
+      // then the start time and a late start
       ttPanelHtml() +
+      noteHtml() +
+      startHtml() +
+      papersHtml() +
+      lengthHtml() +
       '<label class="pf"><span>' + esc(t('pTheme')) + '</span><select id="pTheme"></select></label>' +
       '<div class="pf"><span class="plabel">' + esc(t('pColours')) + '</span><div class="pcols">' +
         TTThemes.colours.map(function (k) { return '<label>' + esc(t('c_' + k)) + '<input type="color" data-l="' + k + '" value="' + esc(L[k]) + '"></label>'; }).join('') + '</div></div>' +
@@ -943,6 +1333,7 @@ body.hide-cursor { cursor: none; }
         ['minimal', 'simple', 'standard', 'detailed'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.layout === v) + '">' + esc(t('y_' + v)) + '</button>'; }).join('') + '</div></div>' +
       '<div class="pf"><span class="plabel">' + esc(t('pStyle')) + '</span><div class="pseg" id="pStyle">' +
         ['digital', 'analogue', 'both'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + (L.display === v) + '">' + esc(t('d_' + v)) + '</button>'; }).join('') + '</div></div>' +
+      arrHtml() + showHtml() +
       (cfg.mode === 'clock' || cfg.mode === 'stopwatch' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pFill')) + '</span><div class="pseg" id="pFill">' +
         ['off', 'across', 'up'].map(function (v) { return '<button type="button" data-v="' + v + '" aria-pressed="' + ((L.fill || 'off') === v) + '">' + esc(t('fl_' + v)) + '</button>'; }).join('') + '</div></div>' +
         '<div class="pf" id="pPicRow"' + ((L.fill || 'off') === 'off' ? ' hidden' : '') + '><span class="plabel">' + esc(t('pPic')) + '</span>' +
@@ -950,7 +1341,7 @@ body.hide-cursor { cursor: none; }
         '<button type="button" class="pclose" id="pPicOff" style="flex:1;justify-content:center"' + (L.pic && picture ? '' : ' hidden') + '>' + esc(t('pPicOff')) + '</button></div>' +
         '<input type="file" accept="image/*" id="pPicFile" hidden></div>') +
       (cfg.mode !== 'exam' ? '' : '<div class="pf"><span class="plabel">' + esc(t('pAudio')) + (audio ? ' · ' + esc(audioName || t('instr')) + (audioOwn ? '' : ' (' + esc(t('builtin')) + ')') : '') + '</span>' +
-        '<label class="pchk"><input type="checkbox" id="pAudOn"' + (cfg.exam.audio ? ' checked' : '') + '>' + esc(t('pAudioOn')) + '</label>' +
+
         '<div class="prow"><button type="button" class="pclose" id="pAudPick" style="flex:1;justify-content:center">' + esc(t('pAudioOwn')) + '</button>' +
         '<button type="button" class="pclose" id="pAudOff" style="flex:1;justify-content:center"' + (audioOwn ? '' : ' hidden') + '>' + esc(t('pAudioBuiltin')) + '</button></div>' +
         '<input type="file" accept="audio/*,.m4a,.mp3,.wav,.ogg" id="pAudFile" hidden></div>') +
@@ -964,10 +1355,13 @@ body.hide-cursor { cursor: none; }
       '<label class="pf"><span>' + esc(t('pVol')) + ' · <output id="pVolOut">' + cfg.chime.vol + '%</output></span><input type="range" id="pVol" min="0" max="100" step="5" value="' + cfg.chime.vol + '"></label>' +
       '<label class="pf"><span>' + esc(t('pRep')) + '</span><select id="pRep">' + [1, 2, 3, 5].map(function (n) { return opt(n, n + '×', cfg.chime.rep === n); }).join('') + '</select></label>' +
       '<label class="pf"><span>' + esc(t('pLang')) + '</span><select id="pLang">' + opt('en', 'English', cfg.lang === 'en') + opt('af', 'Afrikaans', cfg.lang === 'af') + '</select></label>' +
+      (cfg.mode !== 'exam' ? '' : '<label class="pchk"><input type="checkbox" data-l="afAuto"' + (L.afAuto !== false ? ' checked' : '') + '>' + esc(t('k_afAuto')) + '</label>') +
       '<p class="pnote">' + esc(t('pNote')) + '</p>';
     ttPanelWire();
     lengthWire();
     startWire();
+    showWire();
+    papersWire();
     // a new type has its own saved progress, so the timer starts again with it
     [].forEach.call(p.querySelectorAll('#pMode button'), function (b) {
       b.addEventListener('click', function () {
@@ -976,9 +1370,9 @@ body.hide-cursor { cursor: none; }
         $('pMode').querySelector('[data-v="' + cfg.mode + '"]').focus();
       });
     });
-    themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
-    TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: cfg.lang, label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
-    TTSounds.fill($('pSound'), cfg.chime.id, cfg.lang);
+    themeList = TTThemes.fill($('pTheme'), L, lang()).shown;
+    TTThemes.fontPicker($('pFontPick'), { value: L.font, lang: lang(), label: t('pFont'), onPick: function (id) { L.font = id; lookChanged(); } });
+    TTSounds.fill($('pSound'), cfg.chime.id, lang());
     if (window.lucide) lucide.createIcons({ root: p });
 
     $('pClose').addEventListener('click', function () { togglePanel(false); });
@@ -1009,14 +1403,14 @@ body.hide-cursor { cursor: none; }
         var file = this.files && this.files[0]; if (!file) return;
         TTAudio.save(file, function (ok) {
           if (!ok) { alert(t('pAudioBad')); return; }
-          cfg.exam.audio = true; lookChanged();
+          cfg.exam.rec = 'own'; lookChanged();
           loadAudio(function () { buildPanel(); $('pAudPick').focus(); });
         });
       });
       $('pAudOff').addEventListener('click', function () {
-        TTAudio.clear(function () { loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
+        TTAudio.clear(function () { if (cfg.exam.rec === 'own') { cfg.exam.rec = ''; lookChanged(); } loadAudio(function () { buildPanel(); $('pAudPick').focus(); }); });
       });
-      $('pAudOn').addEventListener('change', function () { cfg.exam.audio = this.checked; if (!this.checked && audio) audio.pause(); lookChanged(); });
+
     }
     [['#pStyle', 'display'], ['#pLayout', 'layout'], ['#pFill', 'fill']].forEach(function (g) {
       [].forEach.call(p.querySelectorAll(g[0] + ' button'), function (b) {
@@ -1034,9 +1428,139 @@ body.hide-cursor { cursor: none; }
         L[k] = inp.type === 'checkbox' ? inp.checked : inp.type === 'range' ? +inp.value : inp.value;
         if (k === 'size' || k === 'fit') { $('pSizeOut').textContent = L.fit ? '—' : L.size + '%'; $('pSize').disabled = !!L.fit; }
         if (k === 'tsize') $('pTsizeOut').textContent = L.tsize + '%';
-        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, cfg.lang).shown;
+        if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, lang()).shown;
         lookChanged();
       });
+    });
+  }
+  // ── Several papers: the arrangement, with a small picture of each ──
+  var ARR_PIC = {
+    top: '<circle cx="14" cy="10" r="6"/><rect x="26" y="6" width="30" height="8" rx="2"/><rect x="4" y="20" width="26" height="16" rx="2"/><rect x="34" y="20" width="26" height="16" rx="2"/>',
+    left: '<circle cx="15" cy="20" r="11"/><rect x="31" y="5" width="13" height="30" rx="2"/><rect x="47" y="5" width="13" height="30" rx="2"/>',
+    only: '<rect x="4" y="5" width="26" height="30" rx="2"/><rect x="34" y="5" width="26" height="30" rx="2"/>',
+    bottom: '<rect x="4" y="4" width="26" height="18" rx="2"/><rect x="34" y="4" width="26" height="18" rx="2"/><circle cx="14" cy="30" r="6"/><rect x="26" y="26" width="30" height="8" rx="2"/>'
+  };
+  function arrHtml() {
+    if (cfg.mode !== 'exam' || (cfg.exam.count | 0) < 2) return '';
+    var cur = cfg.look.arr || 'top';
+    return '<div class="pf"><span class="plabel">' + esc(t('pArr')) + '</span><div class="pgrid" id="pArr">' +
+      ['top', 'left', 'only', 'bottom'].map(function (v) {
+        return '<button type="button" data-v="' + v + '" aria-pressed="' + (cur === v) + '"><svg viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' + ARR_PIC[v] + '</svg>' + esc(t('ar_' + v)) + '</button>';
+      }).join('') + '</div></div>';
+  }
+  // switches for the parts of an exam screen; the clock face is the same as Style: Digital
+  function showHtml() {
+    if (cfg.mode !== 'exam') return '';
+    var L = cfg.look, box = function (id, on, label, dl) { return '<label class="pchk"><input type="checkbox" ' + (dl ? 'data-l="' + dl + '"' : 'id="' + id + '"') + (on ? ' checked' : '') + '>' + esc(label) + '</label>'; };
+    return '<div class="pf"><span class="plabel">' + esc(t('pShow')) + '</span>' +
+      box('pShClock', L.display !== 'digital', t('s_clock')) + box('pShDate', cfg.showDate, t('s_date')) +
+      box('', L.fnow !== false, t('s_fnow'), 'fnow') + box('', L.note !== false, t('s_note'), 'note') + '</div>';
+  }
+  function showWire() {
+    var p = $('panel');
+    [].forEach.call(p.querySelectorAll('#pArr button'), function (b) {
+      b.addEventListener('click', function () {
+        cfg.look.arr = b.getAttribute('data-v');
+        [].forEach.call(p.querySelectorAll('#pArr button'), function (x) { x.setAttribute('aria-pressed', x === b); });
+        lookChanged();
+      });
+    });
+    if ($('pShClock')) $('pShClock').addEventListener('change', function () {
+      cfg.look.display = this.checked ? 'both' : 'digital'; lookChanged(); buildPanel(); focusControl('pShClock');
+    });
+    if ($('pShDate')) $('pShDate').addEventListener('change', function () { cfg.showDate = this.checked; lookChanged(); });
+  }
+  // ── The papers in the venue, typed in or picked from the exam timetable ──
+  // Each row edits subjectN / paperN / writingN in place, applied when the box
+  // is left, so typing is never interrupted. Removing a paper moves the ones
+  // after it up.
+  function pk(i) { return i === 1 ? '' : String(i); }
+  function papersHtml() {
+    if (cfg.mode !== 'exam') return '';
+    var x = cfg.exam, n = Math.max(1, Math.min(TTTimetable.max, x.count | 0)), rows = '';
+    for (var i = 1; i <= n; i++) {
+      var k = pk(i);
+      rows += '<div class="pp-row" data-i="' + i + '">' +
+        '<input type="text" maxlength="80" data-f="subject" aria-label="' + esc(t('ppSubject')) + ' ' + i + '" placeholder="' + esc(t('ppSubject')) + '" value="' + esc(x['subject' + k] || '') + '">' +
+        '<div class="pp-sub"><input type="text" maxlength="80" data-f="paper" aria-label="' + esc(t('ppPaper')) + ' ' + i + '" placeholder="' + esc(t('ppPaper')) + '" value="' + esc(x['paper' + k] || '') + '">' +
+        '<input type="number" min="1" max="600" data-f="mins" aria-label="' + esc(t('ppMins')) + ' ' + i + '" title="' + esc(t('ppMins')) + '" value="' + Math.round((x['writing' + k] || 0) / 60) + '">' +
+        (n > 1 ? '<button type="button" class="pclose" data-del="' + i + '" aria-label="' + esc(t('ppDel')) + '" title="' + esc(t('ppDel')) + '"><i data-lucide="x"></i></button>' : '') + '</div></div>';
+    }
+    var full = n >= TTTimetable.max;
+    return '<div class="pf ttp"><span class="plabel">' + esc(t('pPapers')) + ' · ' + n + '</span>' +
+      '<div class="pp-head"><span>' + esc(t('ppSubject')) + '</span><span>' + esc(t('ppMins')) + '</span></div>' + rows +
+      (full ? '<p class="pnote">' + esc(t('ppFull', { n: TTTimetable.max })) + '</p>' :
+        '<button type="button" class="pclose" id="pPaperAdd" style="justify-content:center">' + esc(t('ppAdd')) + '</button>' +
+        (TT ? '<input type="search" id="pPaperFind" placeholder="' + esc(t('ppFind')) + '" aria-label="' + esc(t('ppFind')) + '">' +
+          '<select id="pPaperPick" size="6" aria-label="' + esc(t('ppFind')) + '"></select>' +
+          '<button type="button" class="pclose" id="pPaperPickAdd" style="justify-content:center">' + esc(t('ppPick')) + '</button>' : '')) +
+      '<p class="pnote">' + esc(t('ppHint')) + '</p></div>';
+  }
+  function noteHtml() {
+    if (cfg.mode !== 'exam') return '';
+    return '<label class="pf"><span>' + esc(t('pInfo')) + '</span><textarea id="pInfo" rows="3" maxlength="600">' + esc(cfg.exam.info || '') + '</textarea></label>';
+  }
+  function papersChanged(rebuild, focusSel) {
+    rekey(); lookChanged(); recCheck();
+    if (rebuild) { buildPanel(); var f = focusSel && $('panel').querySelector(focusSel); if (f) f.focus(); }
+  }
+  function addPaper(name, paper, secs) {
+    var x = cfg.exam, n = Math.max(1, x.count | 0);
+    // the first, still empty row is filled rather than a new one added
+    if (n === 1 && !x.subject) n = 0;
+    if (n >= TTTimetable.max) return false;
+    var k = pk(n + 1);
+    x['subject' + k] = name; x['paper' + k] = paper; x['writing' + k] = secs || x.writing;
+    x.count = n + 1;
+    return n + 1;
+  }
+  function papersWire() {
+    var p = $('panel');
+    [].forEach.call(p.querySelectorAll('.pp-row input'), function (inp) {
+      inp.addEventListener('change', function () {
+        var k = pk(+inp.closest('.pp-row').getAttribute('data-i')), f = inp.getAttribute('data-f'), x = cfg.exam;
+        if (f === 'mins') { var m = Math.max(1, Math.min(600, Math.round(+inp.value) || 0)); inp.value = m; x['writing' + k] = m * 60; }
+        else x[f + k] = inp.value.trim();
+        papersChanged(false);
+      });
+    });
+    [].forEach.call(p.querySelectorAll('.pp-row [data-del]'), function (b) {
+      b.addEventListener('click', function () {
+        var x = cfg.exam, n = x.count | 0, i = +b.getAttribute('data-del');
+        for (var j = i; j < n; j++) ['subject', 'paper', 'writing'].forEach(function (f) { x[f + pk(j)] = x[f + pk(j + 1)]; });
+        x.count = Math.max(1, n - 1);
+        papersChanged(true, '#pPaperAdd');
+      });
+    });
+    if ($('pPaperAdd')) $('pPaperAdd').addEventListener('click', function () {
+      var i = addPaper('', '', 0); if (i) papersChanged(true, '.pp-row[data-i="' + i + '"] [data-f="subject"]');
+    });
+    var find = $('pPaperFind'), pick = $('pPaperPick');
+    if (find && pick && TT) {
+      var all = TTTimetable.papers(TT, lang());
+      var list = function () {
+        var q = find.value.trim().toLowerCase();
+        pick.innerHTML = '';
+        all.forEach(function (e, i) {
+          var label = e.name + ' · ' + e.paper + ' · ' + span(e.mins * 60);
+          if (!q || label.toLowerCase().indexOf(q) >= 0) pick.appendChild(new Option(label, i));
+        });
+      };
+      list();
+      find.addEventListener('input', list);
+      var add = function () {
+        var e = all[+pick.value]; if (!e) return;
+        var i = addPaper(e.name, e.paper, e.mins * 60);
+        if (i) papersChanged(true, '#pPaperFind');
+      };
+      $('pPaperPickAdd').addEventListener('click', add);
+      pick.addEventListener('dblclick', add);
+      pick.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); add(); } });
+    }
+    var note = $('pInfo'), timer = null;
+    if (note) note.addEventListener('input', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { cfg.exam.info = note.value; lookChanged(); }, 300);
     });
   }
   // ── The start time of an exam, and a late start ──
@@ -1044,12 +1568,29 @@ body.hide-cursor { cursor: none; }
   // time at this moment, so a late session still gets its full reading and writing.
   function startHtml() {
     if (cfg.mode !== 'exam') return '';
-    return '<div class="pf ttp"><label class="pf"><span>' + esc(t('pStart')) + '</span><input type="time" id="pStartT" value="' + esc(cfg.exam.start) + '"></label>' +
+    return '<div class="pf ttp"><label class="pf"><span>' + esc(t('pStart')) + '</span><input type="text" id="pStartT" inputmode="numeric" autocomplete="off" placeholder="08:20" value="' + esc(cfg.exam.start) + '"></label>' +
       '<button type="button" class="pclose" id="pStartNow" style="justify-content:center">' + esc(t('pStartNow')) + '</button></div>';
   }
   function startWire() {
     var tIn = $('pStartT');
-    if (tIn) tIn.addEventListener('change', function () { cfg.exam.start = tIn.value; lookChanged(); start(cfg); buildPanel(); });
+    // typed freely ("8:22", "822", "08.22") and applied on Enter or on leaving
+    // the box, so it never jumps out while the minutes are still being typed
+    var apply = function () {
+      var v = tIn.value.trim(), m = /^(\d{1,2})\s*[:.hH]?\s*(\d{2})$/.exec(v);
+      if (!v) { if (cfg.exam.start) { cfg.exam.start = ''; lookChanged(); start(cfg); buildPanel(); } return; }
+      if (!m || +m[1] > 23 || +m[2] > 59) { tIn.setAttribute('aria-invalid', 'true'); return; }
+      tIn.removeAttribute('aria-invalid');
+      var hm = ('0' + +m[1]).slice(-2) + ':' + m[2];
+      tIn.value = hm;
+      if (hm === cfg.exam.start) return;
+      cfg.exam.start = hm; lookChanged(); start(cfg); buildPanel(); focusControl('pStartT');
+    };
+    if (tIn) {
+      tIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); apply(); var b = $('pStartT'); if (b) b.select(); } });
+      tIn.addEventListener('blur', apply);
+      // a click selects the whole time, so the new one is simply typed over it
+      tIn.addEventListener('focus', function () { setTimeout(function () { tIn.select(); }, 0); });
+    }
     var now = $('pStartNow');
     if (now) now.addEventListener('click', function () {
       var d = new Date();
@@ -1097,19 +1638,24 @@ body.hide-cursor { cursor: none; }
   function ttOpts(list, label, cur) { return list.map(function (v) { return '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(label(v)) + '</option>'; }).join(''); }
   function ttLen(m) { var h = Math.floor(m / 60), mm = m % 60; return (h ? h + ' ' + t('h') : '') + (h && mm ? ' ' : '') + (mm ? mm + ' ' + t('min') : ''); }
   function ttListText(date, start, venue) {
-    return TTTimetable.columns(TT, date, start, venue, cfg.lang).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
+    return TTTimetable.columns(TT, date, start, venue, lang()).map(function (c) { return c.name + ' · ' + c.paper + ' · ' + ttLen(c.mins); }).join('\n');
   }
   function ttPanelHtml() {
     if (cfg.mode !== 'exam' || !TT) return '';
-    var days = TTTimetable.days(TT), date = days.indexOf(cfg.exam.date) >= 0 ? cfg.exam.date : (days.filter(function (d) { return d >= ttToday(); })[0] || days[days.length - 1]);
-    var starts = TTTimetable.sessions(TT, date), start = starts[0], venues = TTTimetable.venues(TT, date, start);
+    // it opens on the next session (today or later, not over yet), in this
+    // device's venue (the last one filled in here) when that venue has it
+    var myVenue = TTTimetable.venue(), nx = TTTimetable.next(TT, myVenue) || TTTimetable.next(TT, '');
+    var days = TTTimetable.days(TT), date = nx ? nx.date : (days.filter(function (d) { return d >= ttToday(); })[0] || days[days.length - 1]);
+    var starts = TTTimetable.sessions(TT, date), start = nx && starts.indexOf(nx.start) >= 0 ? nx.start : starts[0], venues = TTTimetable.venues(TT, date, start);
+    var venue = venues.indexOf(myVenue) >= 0 ? myVenue : venues[0];
     var same = function (v) { return v; };
     return '<div class="pf ttp"><span class="plabel">' + esc(t('ttTitle')) + '</span>' +
       '<select id="pTtDate">' + ttOpts(days, ttDayLabel, date) + '</select>' +
       '<select id="pTtSession">' + ttOpts(starts, same, start) + '</select>' +
-      '<select id="pTtVenue">' + ttOpts(venues, same, venues[0]) + '</select>' +
+      '<select id="pTtVenue">' + ttOpts(venues, same, venue) + '</select>' +
       '<div class="ttp-what" id="pTtWhat"></div>' +
-      '<button type="button" class="pclose" id="pTtFill" style="justify-content:center">' + esc(t('ttFill')) + '</button></div>';
+      '<button type="button" class="pclose" id="pTtFill" style="justify-content:center">' + esc(t('ttFill')) + '</button>' +
+      '<label class="pchk"><input type="checkbox" id="pTtAuto"' + (TTTimetable.auto() ? ' checked' : '') + '>' + esc(t('ttAuto')) + '</label></div>';
   }
   function ttPanelWire() {
     if (!$('pTtDate')) return;
@@ -1125,10 +1671,12 @@ body.hide-cursor { cursor: none; }
     });
     s.addEventListener('change', function () { v.innerHTML = ttOpts(TTTimetable.venues(TT, d.value, s.value), same); show(); });
     v.addEventListener('change', function () { show(); });
+    $('pTtAuto').addEventListener('change', function () { TTTimetable.setAuto(this.checked); if (this.checked) autoNext(); });
     $('pTtFill').addEventListener('click', function () {
-      var f = TTTimetable.fill(TT, d.value, s.value, v.value, cfg.lang);
+      var f = TTTimetable.fillAuto(TT, d.value, s.value, v.value, cfg.lang, cfg.look.afAuto);
       if (!f) return;
       if (f.more) alert(t('ttMany'));
+      TTTimetable.setVenue(v.value);   // this device's venue, for the next session
       Object.assign(cfg.exam, f.exam);
       lookChanged(); start(cfg);   // a new exam has its own saved progress, so start again
       show(t('ttDone'));
@@ -1157,38 +1705,89 @@ body.hide-cursor { cursor: none; }
     fit(); wake();
   }
 
+  // ── The next session, by itself ──
+  // With "Load the next session by itself" on and a venue filled in on this
+  // device, the timer fills in that venue's next session when the one on the
+  // screen is over (or is from an earlier day). Never during an exam, never
+  // back to an earlier session, and never over papers typed in by hand
+  // without a start time.
+  function examOver() {
+    var longest = Math.max.apply(null, subjects().map(function (s) { return s.R + s.W; }));
+    return st.started && elapsed() >= longest;
+  }
+  function autoNext() {
+    if (preview || !cfg || cfg.mode !== 'exam' || !TT || !TTTimetable.auto()) return;
+    var venue = TTTimetable.venue(), nx = venue && TTTimetable.next(TT, venue);
+    if (!nx) return;
+    var f = TTTimetable.fillAuto(TT, nx.date, nx.start, venue, cfg.lang, cfg.look.afAuto), x = cfg.exam;
+    if (!f || (x.date === f.exam.date && x.start === f.exam.start)) return;
+    var hand = x.subject && !(x.date && x.start);
+    var later = !x.date || !x.start || (f.exam.date + 'T' + f.exam.start) > (x.date + 'T' + x.start);
+    if (hand || !later || (st.started && !examOver())) return;
+    Object.assign(cfg.exam, f.exam); lookChanged(); start(cfg);
+    note(t('ttAutoDone', { s: ttDayLabel(nx.date) + ' · ' + nx.start + ' · ' + venue }));
+    if (panelOpen) buildPanel();
+  }
+  setInterval(autoNext, 20000);
+  // a short notice at the top of the screen
+  var noteTimer = null;
+  function note(text) {
+    var n = $('toast'); if (!n) { n = document.createElement('div'); n.id = 'toast'; n.className = 'toast'; n.setAttribute('role', 'status'); document.body.appendChild(n); }
+    n.textContent = text; n.classList.add('on');
+    clearTimeout(noteTimer); noteTimer = setTimeout(function () { n.classList.remove('on'); }, 10000);
+  }
+  function keyOf(c) { var x = c.exam; return 'ml-timer-talisman:' + hash(JSON.stringify([c.mode, c.cd, c.pomo, x.reading, x.writing, x.start, x.date, x.subject])); }
+  // Editing the papers (a name, a length) keeps a running exam running: its
+  // progress moves to the key the new settings give.
+  function rekey() { var k = keyOf(cfg); if (k !== key) { try { localStorage.removeItem(key); } catch (e) {} key = k; save(); } }
   var ticking = null;
   function init() {
     TTLink.decode(location.hash.slice(1)).then(start);
   }
   function start(c) {
     cfg = c;
-    TTTimetable.load(function (data) { TT = data; });
+    TTTimetable.load(function (data) { TT = data; autoNext(); });
     loadPicture();
-    if (!audioAsked) { audioAsked = true; loadAudio(); }
+    if (!audioAsked) { audioAsked = true; loadAudio(); } else recCheck();
     var x = cfg.exam;
-    key = 'ml-timer-talisman:' + hash(JSON.stringify([cfg.mode, cfg.cd, cfg.pomo, x.reading, x.writing, x.start, x.date, x.subject]));
+    key = keyOf(cfg);
     st = loadState(); lastPhase = null; view = {};
+    if (!st.started && !preview) { var g = readGo(); if (g) { st = g; save(); } }
     applyLook(); render(true); wake();
     if (running()) keepAwake();
     if (!ticking) ticking = setInterval(function () { render(false); }, 100);
   }
 
   window.addEventListener('hashchange', init);
-  ['mousemove', 'pointerdown', 'touchstart'].forEach(function (ev) { document.addEventListener(ev, function () { if (cfg) wake(); }, { passive: true }); });
+  ['mousemove', 'pointerdown', 'touchstart', 'keydown'].forEach(function (ev) { document.addEventListener(ev, function () { if (cfg) wake(); }, { passive: true }); });
   // a click anywhere lets the browser play the chime later
   document.addEventListener('pointerdown', function () { TTSounds.unlock(); }, { passive: true });
   document.addEventListener('keydown', function (e) {
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && recOpen) { recMenu(false); var rb = $('bar').querySelector('[data-role="rec"]'); if (rb) rb.focus(); return; }
     if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
+    if (recOpen && e.target.closest && e.target.closest('#recMenu')) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        var items = [].slice.call($('recMenu').querySelectorAll('button')), i = items.indexOf(document.activeElement);
+        items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+      }
+      return;
+    }
+    // S closes the panel from any of its controls except a box being typed in
+    var tg = e.target, typing = tg.isContentEditable || tg.tagName === 'TEXTAREA' || (tg.tagName === 'INPUT' && !/^(checkbox|radio|range|button|color)$/.test(tg.type));
+    if (panelOpen && !typing && e.key.toLowerCase() === 's' && tg.closest && tg.closest('#panel')) { e.preventDefault(); togglePanel(false); return; }
     if (e.target.closest && (e.target.closest('#panel') || (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')))) return;
     var k = e.key.toLowerCase();
     if (k === ' ') { e.preventDefault(); if (!(cfg.mode === 'exam' && examStart() && !st.started)) toggle(); }
     else if (k === 'r') reset();
     else if (k === 'f') fullscreen();
     else if (k === 'i') toggleAudio();
+    // (the key stops here: the panel puts the focus on its theme list, which
+    // would otherwise take the "s" and jump to the first theme starting with S)
+    else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
     else if (k === 'l' && cfg.mode === 'stopwatch' && running()) { st.laps.push(elapsed()); save(); render(true); }
     else if ((k === '+' || k === '=') && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(1);
     else if (k === '-' && st.started && (cfg.mode === 'countdown' || cfg.mode === 'exam')) adjust(-1);

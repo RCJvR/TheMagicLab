@@ -241,6 +241,7 @@ MathMagician.registerChapter(12, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Leer die <strong>vyf voorwaardes</strong> vir 'n parallelogram uit jou kop — in eksamenbewyse hoef jy net EEN daarvan te bewys, kies dus die een waartoe die gegewe inligting die mees direk lei.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bewys dat die teenoorstaande sye van parallelogram ABCD gelyk is</div><div class="example-step"><span class="step-num">1</span><span>Trek hoeklyn AC.</span></div><div class="example-step"><span class="step-num">2</span><span>In △ABC en △CDA: ∠BAC = ∠DCA (verw ∠e, AB ∥ DC) en ∠BCA = ∠DAC (verw ∠e, AD ∥ BC).</span></div><div class="example-step"><span class="step-num">3</span><span>AC = CA (gemeen), dus △ABC ≡ △CDA (HHS).</span></div><div class="example-step"><span class="step-num">4</span><span>Dus AB = CD en BC = DA (≡ △e).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moenie gebruik wat jy moet bewys nie: jy mag AB ∥ DC en AD ∥ BC (die definisie) gebruik, maar nie AB = DC nie.</span></div>
         `
       },
       questions: [
@@ -559,7 +560,8 @@ MathMagician.registerChapter(12, {
           { label: "c", text: "Toon PT ∥ SU.", marks: 2 },
           { label: "d", text: "Lei af dat PTUS 'n parallelogram is.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ABCD is ’n parallelogram met ∠A = 70°. E lê op AB en F lê op CD sodat AE = CF. Gee redes vir alle bewerings.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[7.5,3.5],\"D\":[1.5,3.5],\"E\":[2,0],\"F\":[5.5,3.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\",\"fl\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"D\",\"E\",\"ac\"],[\"B\",\"F\",\"ac\"]],\"tick\":[[\"A\",\"E\",1],[\"C\",\"F\",1]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1],[\"A\",\"D\",2],[\"B\",\"C\",2]],\"ang\":[[\"B\",\"A\",\"D\",\"70°\",\"gn\",18]],\"dots\":[\"E\",\"F\"],\"lab\":{\"E\":\"s\",\"F\":\"n\"}}'></div>", parts: [{ label: "a", text: "Bewys dat △ADE ≡ △CBF.", marks: 5 }, { label: "b", text: "Verduidelik vervolgens waarom DE = BF.", marks: 1 }, { label: "c", text: "Bewys dat DEBF ’n parallelogram is.", marks: 4 }, { label: "d", text: "Bereken ∠ABC.", marks: 2 }, { label: "e", text: "Skryf die omgekeerde neer van: “Die hoeklyne van ’n parallelogram halveer mekaar.”", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -577,7 +579,8 @@ MathMagician.registerChapter(12, {
         b: "PQ=SR (oorst. sye parallelogram) → PT = ½PQ = ½SR = SU",
         c: "PQ∥SR (oorst. sye parallelogram) → PT∥SU",
         d: "PT=SU en PT∥SU → PTUS is 'n parallelogram"
-      }
+      },
+      4: { a: "AD = CB (teenoorstaande sye van ’n parallelogram); ∠A = ∠C (teenoorstaande hoeke van ’n parallelogram); AE = CF (gegee); dus △ADE ≡ △CBF (SHS)", b: "Ooreenkomstige sye van kongruente driehoeke (≡ △e)", c: "EB = AB − AE en DF = CD − CF; AB = CD (teenoorstaande sye van ’n parallelogram) en AE = CF, dus EB = DF; EB ∥ DF (AB ∥ CD); een paar teenoorstaande sye gelyk en parallel, dus is DEBF ’n parallelogram", d: "∠ABC = 180° − 70° = 110° (ko-binnehoeke, AD ∥ BC)", e: "As die hoeklyne van ’n vierhoek mekaar halveer, dan is die vierhoek ’n parallelogram" }
     }
   }
 });

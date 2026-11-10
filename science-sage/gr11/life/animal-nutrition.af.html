@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/dentition.js"></script>
 <script>document.documentElement.style.visibility='hidden';</script>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
@@ -72,7 +73,7 @@
     .diet-tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
     .diet-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:10px 18px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms}
     .diet-btn.active{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.40);color:#86efac}
-    .diet-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:24px;max-width:820px;display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center}
+    .diet-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:24px;max-width:920px;display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:22px;align-items:center}
     .diet-canvas-wrap{background:#05070f;border-radius:14px;padding:10px}
     canvas{display:block;border-radius:8px;width:100%}
     .diet-name{font-weight:800;font-size:19px;color:#fff;margin-bottom:6px}
@@ -132,7 +133,22 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-gap-lesson">
+.def-box{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:16px 0}
+.def-box-title{font-weight:700;font-size:12px;color:#86efac;margin-bottom:8px}
+.def-box p{margin:0 0 6px;font-size:16px}
+.example-box{background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.22);border-radius:12px;padding:14px 18px;margin:16px 0}
+.example-box-title{font-weight:700;font-size:12px;color:#a5b4fc;margin-bottom:10px}
+.example-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;font-size:15.5px;color:rgba(210,218,245,.80);line-height:1.65}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;flex-shrink:0;background:rgba(99,102,241,.22);border:1px solid rgba(99,102,241,.40);font-size:11px;font-weight:700;color:#c7d2fe}
+.lesson-body .math{font-family:var(--fm);font-size:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:6px;padding:2px 8px;color:#f2f5f9}
+.lesson-body ul,.lesson-body ol{margin:0 0 14px 22px;color:rgba(210,218,245,.78);font-size:16.5px;line-height:1.7}
+.lesson-body li{margin-bottom:6px}
+.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}
+.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}
+.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}
+@media print{.wb-memo{display:none!important}}
+</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -180,6 +196,8 @@
     <h2>Gebit weerspieël dieet</h2>
     <p>'n Soogdier se tande is aangepas by sy dieet. Vergelyk herbivore, karnivore, en omnivore in die Verken-oortjie.</p>
     <div class="callout"><strong>Dieetverwante gesondheid:</strong> wanvoeding kan die gevolg wees van 'n onewewigtige dieet — te min (bv. marasmus, kwashiorkor) of 'n onewewig wat lei tot toestande soos vetsug, hartsiekte, of diabetes. Dieet verskil ook om kulturele, godsdienstige, en persoonlike redes (bv. halaal, koosjer, veganisties, vegetaries).</div>
+  
+    <section class="ml-deeper"><h2>Dieper delf</h2><h3>Waar elke voedingstof verteer word</h3><table class="compare-table"><thead><tr><th>Streek</th><th>Afskeiding / ensiem</th><th>Werking</th></tr></thead><tbody><tr><td>Mond</td><td>Speeksel — speekselamilase</td><td>Stysel → maltose</td></tr><tr><td>Maag</td><td>Maagsap — pepsien, HCl</td><td>Proteïene → peptiede; HCl maak bakterieë dood en gee die suur pH wat pepsien nodig het</td></tr><tr><td>Duodenum</td><td>Pankreassap — amilase, tripsien, lipase; gal van die lewer</td><td>Stysel → maltose; proteïene → peptiede; vette → vetsure + gliserol; gal emulgeer vette</td></tr><tr><td>Ileum</td><td>Dermsap — maltase, peptidases</td><td>Maltose → glukose; peptiede → aminosure</td></tr></tbody></table><p>Gal bevat geen ensieme nie: dit breek vet in klein druppeltjies op (emulgering), wat lipase ’n groter oppervlakte gee om op te werk. Voedsel word deur <strong>peristalse</strong> langs die spysverteringskanaal beweeg — golwe van sametrekking van die gladde spier in die kanaalwand.</p><h3>Absorpsie en assimilasie</h3><ul><li>Glukose en aminosure diffundeer (of word aktief vervoer) in die bloedkapillêre van die villi en beweeg in die hepatiese poortaar na die lewer.</li><li>Vetsure en gliserol gaan die melkvate (limf) binne en bereik later die bloed.</li><li>Die lewer berg glukose as glikogeen, deamineer oortollige aminosure (en maak ureum), en maak plasmaproteïene.</li></ul><h3>Gebalanseerde dieet en wanvoeding</h3><p>Kwashiorkor (proteïentekort: geswolle maag, dun ledemate), marasmus (tekort aan energie en proteïen), anemie (yster), vetsug (oormatige energie-inname) en tipe 2-diabetes hou verband met dieet. Anoreksie en bulimie is eetversteurings met ernstige gesondheidseffekte.</p><div class="callout"><strong>Eksamenwenk:</strong> Leer elke ensiem met sy substraat, produk en plek — tabelle soos die een hierbo is ’n gunsteling vraag van 5–6 punte.</div></section>
   </div>
 </div>
 
@@ -190,7 +208,7 @@
   <div class="ml-predict" style="margin:0 0 16px;padding:10px 14px;border-radius:10px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);font-size:13px;line-height:1.6;color:rgba(226,232,240,.88)"><strong style="color:#fde68a">Voorspel eers:</strong> Watter dier het breë, plat kiestande meer nodig: 'n herbivoor of 'n karnivoor? Hoekom? <strong style="color:#fde68a">Toets dit dan:</strong> Vergelyk die tande van elke dieettipe.</div>
   <div class="diet-tabs" id="dietTabs"></div>
   <div class="diet-card">
-    <div class="diet-canvas-wrap"><canvas id="dietCanvas" height="160" role="img" aria-label="Gebitvergelyking: interaktiewe simulasie"></canvas></div>
+    <div class="diet-canvas-wrap"><div id="dietFigure"></div></div>
     <div>
       <div class="diet-name" id="dName">Herbivoor</div>
       <div class="diet-example" id="dExample">VOORBEELD: BEES</div>
@@ -215,11 +233,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
     <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (5 punte)</div><div class="wb-qtext">Noem die vyf prosesse van dierevoeding, in die volgorde waarin voedsel daardeur beweeg.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Noem die drie tipes verteringsensieme en die voedselgroep wat elkeen afbreek.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik hoe villi in die dunderm aangepas is vir absorpsie.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die rol van die lewer in assimilasie.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Beskryf die verskille in gebit tussen herbivore, karnivore, en omnivore.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (5 punte)</div><div class="wb-qtext">Noem die vyf prosesse van dierevoeding, in die volgorde waarin voedsel daardeur beweeg.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Inname ✓ → vertering ✓ → absorpsie ✓ → assimilasie ✓ → egestie ✓</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Noem die drie tipes verteringsensieme en die voedselgroep wat elkeen afbreek.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Karbohidrases (bv. amilase) — koolhidrate/stysel ✓; proteases (bv. pepsien, tripsien) — proteïene ✓; lipases — vette/lipiede ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik hoe villi in die dunderm aangepas is vir absorpsie.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Villi en mikrovilli gee ’n baie groot oppervlakte ✓; hulle het dun (eensellaagdik) wande en ’n ryk netwerk van bloedkapillêre en ’n melkvat, dus diffundeer geabsorbeerde voedsel oor ’n kort afstand en word vinnig weggevoer ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die rol van die lewer in assimilasie.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Geabsorbeerde voedsel bereik die lewer deur die hepatiese poortaar ✓. Die lewer berg oortollige glukose as glikogeen ✓, skakel oortollige aminosure deur deaminering na ureum om, en gebruik aminosure om plasmaproteïene te maak ✓ (berg ook vitamiene en yster).</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Beskryf die verskille in gebit tussen herbivore, karnivore, en omnivore.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Herbivore: groot plat kiestande en voorkiestande om plantmateriaal te maal; geen of klein oogtande (’n diasteem) ✓. Karnivore: lang, skerp oogtande om vas te gryp en te skeur; karnassiale tande om vleis te sny ✓. Omnivore: ’n mengsel — snytande, klein oogtande en plat kiestande vir ’n gevarieerde dieet ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Die tabel toon die gemiddelde liggaamslengte en totale dermlengte (ingewande) vir drie soogdiere:<br><br>
     <table class="compare-table" style="max-width:480px">
       <thead><tr><th>Dier</th><th>Liggaamslengte (m)</th><th>Dermlengte (m)</th></tr></thead>
@@ -231,7 +249,8 @@
     </table><br>
     (a) Bereken die verhouding van dermlengte tot liggaamslengte (dermlengte &divide; liggaamslengte) vir elke dier. Wys jou berekeninge. (3 punte)<br>
     (b) Rangskik die drie diere van KORTSTE na LANGSTE relatiewe dermlengte. (1 punt)<br>
-    (c) Verduidelik, in terme van dieet en vertering, waarom hierdie rangskikking ooreenstem met elke dier se dieettipe. (2 punte)</div></div>
+    (c) Verduidelik, in terme van dieet en vertering, waarom hierdie rangskikking ooreenstem met elke dier se dieettipe. (2 punte)</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) Kat: 1,80 ÷ 0,60 = 3,0 ✓; mens: 8,50 ÷ 1,70 = 5,0 ✓; skaap: 30,0 ÷ 1,20 = 25,0 ✓<br>(b) Kat → mens → skaap ✓<br>(c) Plantmateriaal bevat sellulose, wat moeilik verteer en ’n lang spysverteringskanaal (en tyd vir mikrobes) nodig het om dit af te breek ✓; vleis verteer maklik, dus het karnivore ’n kort spysverteringskanaal nodig; omnivore is tussenin ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Eksamenstyl-vraag · (14 punte)</div><div class="wb-qtext">Beantwoord hierdie vrae oor menslike voeding.<br>(a) Lys die vyf stadiums van voedselverwerking in die regte volgorde. (3)<br>(b) Onderskei tussen meganiese en chemiese vertering. (2)<br>(c) Noem die ensiem wat die volgende verteer: (i) stysel in die mond, (ii) proteïen in die maag, (iii) lipiede in die dunderm. (3)<br>(d) Verduidelik TWEE maniere waarop die villi van die dunderm geskik is om verteerde voedsel te absorbeer. (4)<br>(e) Noem TWEE funksies van die lewer in die hantering van geabsorbeerde voedsel. (2)</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) Inname, vertering, absorpsie, assimilasie, egestie ✓✓✓ (al vyf in volgorde: 3; een fout: 2; twee foute: 1)<br>(b) Meganiese vertering breek voedsel fisies in kleiner stukke (kou, karring) sonder om die molekules te verander ✓; chemiese vertering gebruik ensieme om groot molekules in klein, oplosbare molekules af te breek ✓<br>(c) (i) speekselamilase ✓ (ii) pepsien ✓ (iii) lipase ✓<br>(d) Enige twee, elk met ’n verduideliking: daar is miljoene villi met mikrovilli ✓, wat ’n baie groot oppervlakte vir absorpsie gee ✓; die wand is net een sel dik ✓, dus is die diffusieafstand kort ✓; elke villus het ’n digte netwerk kapillêre en ’n melkvat ✓ wat geabsorbeerde voedsel wegvoer en die konsentrasiegradiënt steil hou ✓<br>(e) Enige twee: skakel oortollige glukose om na glikogeen vir berging ✓; breek oortollige aminosure af (deaminering), wat ureum vorm ✓; berg vitamiene en yster; maak gal, wat vette emulgeer ✓</div></details></div>
   </div>
 </div>
 
@@ -277,41 +296,9 @@ function selectDiet(id){
   drawTeeth();
 }
 
-const canvas = document.getElementById('dietCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 300; H = 160;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawTeeth();
-}
-function drawTeeth(){
-  if (!activeDiet) return;
-  ctx.clearRect(0,0,W,H);
-  const t = activeDiet.teeth;
-  const baseY = H*0.75, toothW = W/9;
-  const pattern = ['incisor','incisor','canine','molar','molar','molar','canine','incisor','incisor'];
-  pattern.forEach((type,i)=>{
-    const h = 20 + t[type]*40;
-    const x = i*toothW + toothW*0.15;
-    ctx.beginPath();
-    if (type==='canine'){
-      ctx.moveTo(x, baseY);
-      ctx.lineTo(x+toothW*0.35, baseY-h);
-      ctx.lineTo(x+toothW*0.7, baseY);
-      ctx.closePath();
-    } else {
-      ctx.roundRect ? ctx.roundRect(x, baseY-h, toothW*0.7, h, 4) : ctx.rect(x, baseY-h, toothW*0.7, h);
-    }
-    ctx.fillStyle = 'rgba(255,255,255,0.85)';
-    ctx.fill();
-    ctx.strokeStyle = activeDiet.color; ctx.lineWidth = 1.5; ctx.stroke();
-  });
-  // gum line
-  ctx.strokeStyle = 'rgba(244,114,182,0.4)'; ctx.lineWidth = 4;
-  ctx.beginPath(); ctx.moveTo(0,baseY); ctx.lineTo(W,baseY); ctx.stroke();
-}
+/* Diagram: assets/explore/dentition.js */
+function drawTeeth() { if (activeDiet && window.MLTeeth) MLTeeth.draw(document.getElementById('dietFigure'), activeDiet.id); }
+function resizeCanvas() { drawTeeth(); }
 window.addEventListener('resize', resizeCanvas);
 buildDietTabs();
 selectDiet('herbivore');

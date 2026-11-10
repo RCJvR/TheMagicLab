@@ -29,6 +29,9 @@
     document.body.appendChild(btn);
   }
 
+  // a note for anyone with an unread message about a teacher request
+  var vn = document.createElement('script'); vn.src = '/assets/verify-notify.js'; vn.defer = true; document.head.appendChild(vn);
+
   if (document.body) {
     init();
   } else {

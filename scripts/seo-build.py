@@ -69,6 +69,7 @@ PAGES = {
                           'Practise French listening, reading, writing and speaking with real corrections, and a conversation partner whenever you need one.'),
     'mosaic-mage.html': (None, 'Mosaic Mage: design colourful pixel mosaics and patterns in the browser.'),
     'timer-talisman.html': (None, None),
+    'exam-enchanter.html': (None, 'A free exam study planner: add your subjects, see your exams on the calendar, click to add study sessions and drag them to fit, then save the plan as a phone or computer wallpaper.'),
     'math-magician/calculator.html': ('Free online scientific calculator — Math Magician',
                                       'A free scientific calculator in the browser, laid out like the ones South African learners use in class and exams.'),
     'wro-mat-planner/index.html': (None, None),

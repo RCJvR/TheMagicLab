@@ -636,7 +636,8 @@ Total           30                    720</div>
           { label: "c", text: "Which class's marks are more consistent (a smaller spread in the middle 50%)? Justify your answer using the IQR values.", marks: 2 },
           { label: "d", text: "Class B's median sits exactly halfway between Q1 and Q3, and both whiskers are the same length. Describe the shape of Class B's distribution.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — The test marks (out of 100) of 11 learners are: 45; 52; 58; 60; 61; 65; 68; 70; 74; 82; 95.", parts: [{ label: "a", text: "Calculate the mean.", marks: 2 }, { label: "b", text: "Write down the median.", marks: 1 }, { label: "c", text: "Calculate the range.", marks: 1 }, { label: "d", text: "Write down the five-number summary.", marks: 4 }, { label: "e", text: "Calculate the interquartile range.", marks: 1 }, { label: "f", text: "Draw a box-and-whisker diagram of the data.", marks: 2 }, { label: "g", text: "Compare the mean and the median, and describe the skewness of the data.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -655,7 +656,8 @@ Total           30                    720</div>
         b: "Median−Q1=54−50=4, Q3−Median=70−54=16 (median much closer to Q1); left whisker=50−40=10, right whisker=95−70=25 (right whisker far longer) → Class A's marks are positively skewed (skewed right)",
         c: "Class A — its IQR (20) is smaller than Class B's (30), so the middle 50% of Class A's marks are less spread out",
         d: "Class B's distribution is roughly symmetric (median equidistant from Q1 and Q3, whiskers of equal length)"
-      }
+      },
+      4: { a: "730 ÷ 11 = 66,36", b: "65", c: "95 − 45 = 50", d: "Minimum 45; Q₁ = 58; median 65; Q₃ = 74; maximum 95", e: "74 − 58 = 16", f: "Whiskers from 45 to 95; box from 58 to 74 with the median line at 65", g: "Mean (66,36) &gt; median (65), so the data is slightly positively skewed (the high mark of 95 pulls the mean up)" }
     }
   }
 });

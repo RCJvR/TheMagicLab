@@ -97,6 +97,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Save R1 500 at the end of every month for 10 years at 8% p.a. compounded monthly</div><div class="example-step"><span class="step-num">1</span><span>i = 0,08/12; n = 10 × 12 = 120.</span></div><div class="example-step"><span class="step-num">2</span><span>F = 1 500[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) = R274 419.</span></div><div class="example-step"><span class="step-num">3</span><span>Total deposited: 120 × 1 500 = R180 000, so interest earned = R94 419.</span></div><div class="example-step"><span class="step-num">4</span><span>To reach R300 000 instead, solve 300 000 = x[(1 + 0,08/12)¹²⁰ − 1]/(0,08/12) → x = R1 640 per month.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Use i and n per payment period: monthly payments need the monthly rate and the number of months.</span></div>
         `
       },
       questions: [
@@ -183,6 +184,7 @@ MathMagician.registerChapter(3, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A loan of R250 000 at 12% p.a. compounded monthly is repaid over 5 years</div><div class="example-step"><span class="step-num">1</span><span>i = 0,12/12 = 0,01; n = 60.</span></div><div class="example-step"><span class="step-num">2</span><span>250 000 = x[1 − 1,01⁻⁶⁰]/0,01 → x = R5 561,11 per month.</span></div><div class="example-step"><span class="step-num">3</span><span>Balance after 2 years (24 payments made, 36 left): PV of the remaining payments = 5 561,11[1 − 1,01⁻³⁶]/0,01 = R167 431.</span></div><div class="example-step"><span class="step-num">4</span><span>Total interest = 60 × 5 561,11 − 250 000 = R83 667.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> For the outstanding balance, use the number of payments <strong>still to be made</strong> (36), not the original 60.</span></div>
         `
       },
       questions: [
@@ -392,6 +394,47 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "Using the effective annual rate formula, calculate the effective annual rate for Bank A (10.4% p.a. compounded quarterly), to 2 decimal places (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Comparing investment & loan options" },
         { type: "input", text: "Sipho borrows R800 000 at 11% p.a. compounded monthly. The required instalment over 20 years is about R8 258, but he pays R10 000 at the end of every month instead. How many payments does he make (the last one may be smaller)?", answer: "145", topic: "Comparing investment & loan options" }
       ]
+    },
+    {
+      id: 304,
+      chapter: 3,
+      name: "Annuities due and deferred loans",
+      fullName: "Payments at the start of each period (annuities due) and loans with a repayment holiday",
+      lesson: {
+        heading: "Annuities due and deferred loans",
+        sub: "Chapter 3 · Topic 5",
+        body: `
+          <p>So far payments were made at the <strong>end</strong> of each period. Two common variations change the calculation: payments made at the <strong>beginning</strong> of each period (an annuity due), and loans with a <strong>deferment</strong>, where no repayments are made at first.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Annuity due (payments at the beginning)</div>
+            <p>
+              Each payment earns one extra period of interest, so the future value of an annuity due is the ordinary future value multiplied by <span class="math">(1 + i)</span>:<br>
+              <span class="math">F(due) = x[(1 + i)^n − 1]/i × (1 + i)</span>
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Deferred loan</div>
+            <p>
+              While repayments are deferred, interest is added to the unpaid balance: after k periods the balance is <span class="math">P(1 + i)^k</span>. The instalments are then calculated from this balance, as an ordinary annuity over the repayment period:<br>
+              <span class="math">P(1 + i)^k = x[1 − (1 + i)^−n]/i</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: deferred loan</div>
+            <div class="example-step"><span class="step-num">1</span><span>R100 000 at 1% per month, with no payments for 2 months: balance = 100 000(1,01)² = R102 010.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Repay over 12 months from the end of month 3: x = 102 010 × 0,01 ÷ (1 − 1,01⁻¹²) ≈ R9 063 per month.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: R100 000 is borrowed at 9% p.a. compounded monthly. The first of 48 monthly payments is made 6 months after the loan is granted</div><div class="example-step"><span class="step-num">1</span><span>i = 0,09/12 = 0,0075.</span></div><div class="example-step"><span class="step-num">2</span><span>The first payment is at the end of month 6, so the annuity starts one period earlier — at the end of month 5. Grow the loan for 5 months: 100 000 × 1,0075⁵ = R103 806,72.</span></div><div class="example-step"><span class="step-num">3</span><span>103 806,72 = x[1 − 1,0075⁻⁴⁸]/0,0075 → x = R2 583,24.</span></div><div class="example-step"><span class="step-num">4</span><span>Check: without the deferral the payment would be R2 488,50 — deferring costs extra interest.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Grow the debt for one month <strong>fewer</strong> than the delay (5, not 6), because the present-value formula already assumes the first payment comes one period after its starting point.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "R500 is paid at the BEGINNING of each month for 2 years at 12% p.a. compounded monthly. The future value is closest to:", options: ["R13 487", "R13 622", "R13 350", "R14 200"], answer: 1, topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "Other things being equal, which timing gives the larger future value?", options: ["Payments at the beginning of each period", "Payments at the end of each period", "They are the same", "It depends only on the number of payments"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "input", text: "A loan of R100 000 at 1% per month has no payments for 2 months. What is the balance owed at the end of month 2 (to the nearest rand)?", answer: "102010", altAnswers: ["102 010", "R102010", "R102 010"], topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "The same loan is repaid by 12 equal payments at the end of months 3 to 14. The monthly instalment is closest to:", options: ["R9 063", "R8 500", "R10 000", "R9 500"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "mc", text: "Why does the balance grow during a deferment period?", options: ["Interest is charged on the unpaid balance", "The loan is cancelled", "Payments reduce the loan", "Inflation reduces the debt"], answer: 0, topic: "Annuities due and deferred loans" },
+        { type: "input", text: "Write the balance after k months of no payments on a loan of P at i per month, in terms of P, i and k.", answer: "P(1+i)^k", altAnswers: ["P(1 + i)^k", "P(1+i)**k"], topic: "Annuities due and deferred loans" }
+      ]
     }
   ],
   workbook: {
@@ -417,13 +460,20 @@ MathMagician.registerChapter(3, {
         { label: "b", text: "Write down the value of the initial investment (at year 0).", marks: 1 },
         { label: "c", text: "Hence write the general formula for the value after n years, in the form A = P(1+i)ⁿ.", marks: 2 },
         { label: "d", text: "Use your formula to predict the value at the end of year 8 (nearest rand).", marks: 2 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — Thandi takes out a home loan of R1 200 000 at 11,25% p.a. compounded monthly, repayable over 20 years by monthly payments starting one month after the loan is granted.", parts: [
+        { label: "a", text: "Calculate her monthly payment.", marks: 4 },
+        { label: "b", text: "Calculate the total interest she will pay over the 20 years.", marks: 3 },
+        { label: "c", text: "Calculate the outstanding balance immediately after the 120th payment.", marks: 4 },
+        { label: "d", text: "If she pays R14 000 per month instead, how many payments will she make?", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·175.003≈R140 002", b: "800×120=R96 000", c: "140002−96000=R44 002" },
       2: { a: "Loan=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 596/month", c: "Balance=13596·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 361 800", d: "Total paid=13596×300=R4 078 800; Interest=4078800−1440000≈R2 638 800" },
       3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.58687≈R68 158", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.77156≈R64 804; saves R68158−R64804=R3 354" },
-      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" }
+      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509" },
+      5: { a: "i = 0,1125/12 = 0,009375; n = 240. 1 200 000 = x[1 − 1,009375⁻²⁴⁰]/0,009375 → x = R12 591,08", b: "Total paid = 240 × 12 591,08 = R3 021 859; interest = 3 021 859 − 1 200 000 = R1 821 859", c: "Present value of the remaining 120 payments: 12 591,08[1 − 1,009375⁻¹²⁰]/0,009375 = R904 736 (accept the future-value method)", d: "1 200 000 = 14 000[1 − 1,009375⁻ⁿ]/0,009375 → 1,009375⁻ⁿ = 0,19643 → n = 174,4, so 175 payments (174 full payments and a smaller final payment)" }
     }
   }
 });

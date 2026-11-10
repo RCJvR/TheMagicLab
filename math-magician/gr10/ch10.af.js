@@ -636,7 +636,8 @@ Totaal           30                    720</div>
           { label: "c", text: "Watter klas se punte is meer konsekwent (kleiner spreiding in die middelste 50%)? Regverdig jou antwoord met die IKW-waardes.", marks: 2 },
           { label: "d", text: "Klas B se mediaan lê presies halfpad tussen Q1 en Q3, en albei snorre is dieselfde lengte. Beskryf die vorm van Klas B se verspreiding.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Die toetspunte (uit 100) van 11 leerders is: 45; 52; 58; 60; 61; 65; 68; 70; 74; 82; 95.", parts: [{ label: "a", text: "Bereken die gemiddelde.", marks: 2 }, { label: "b", text: "Skryf die mediaan neer.", marks: 1 }, { label: "c", text: "Bereken die omvang.", marks: 1 }, { label: "d", text: "Skryf die vyfgetalopsomming neer.", marks: 4 }, { label: "e", text: "Bereken die interkwartielomvang.", marks: 1 }, { label: "f", text: "Teken ’n mond-en-snordiagram van die data.", marks: 2 }, { label: "g", text: "Vergelyk die gemiddelde en die mediaan, en beskryf die skeefheid van die data.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -655,7 +656,8 @@ Totaal           30                    720</div>
         b: "Mediaan−Q1=54−50=4, Q3−Mediaan=70−54=16 (mediaan baie nader aan Q1); linker snor=50−40=10, regter snor=95−70=25 (regter snor baie langer) → Klas A se punte is positief skeef (regs skeef)",
         c: "Klas A — sy IKW (20) is kleiner as Klas B s'n (30), dus is die middelste 50% van Klas A se punte minder versprei",
         d: "Klas B se verspreiding is ongeveer simmetries (mediaan ewe ver van Q1 en Q3, snorre van gelyke lengte)"
-      }
+      },
+      4: { a: "730 ÷ 11 = 66,36", b: "65", c: "95 − 45 = 50", d: "Minimum 45; Q₁ = 58; mediaan 65; Q₃ = 74; maksimum 95", e: "74 − 58 = 16", f: "Snorre van 45 tot 95; mond van 58 tot 74 met die mediaanlyn by 65", g: "Gemiddelde (66,36) &gt; mediaan (65), dus is die data effens positief skeef (die hoë punt van 95 trek die gemiddelde op)" }
     }
   }
 });

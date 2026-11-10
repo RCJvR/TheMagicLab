@@ -83,6 +83,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer m < 0, gee tan⁻¹ 'n negatiewe hoek — tel 180° by om die korrekte hellingshoek in [0°; 180°) te kry. 'n Negatiewe gradiënt gee altyd 'n stomp hellingshoek.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Lyn deur A(−2; 1) en B(4; 5)</div><div class="example-step"><span class="step-num">1</span><span>m = (5 − 1)/(4 + 2) = 2/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Inklinasie: tan θ = 2/3 → θ = 33,7°.</span></div><div class="example-step"><span class="step-num">3</span><span>Vergelyking: y − 1 = 2/3(x + 2) → y = 2/3x + 7/3.</span></div><div class="example-step"><span class="step-num">4</span><span>Vir ’n lyn met gradiënt −1: tan θ = −1 → θ = 180° − 45° = 135°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Negatiewe gradiënt beteken ’n stomp inklinasie: tel 180° by die sakrekenaarantwoord.</span></div>
         `
       },
       questions: [
@@ -243,6 +244,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die hoogtelyn vanaf hoekpunt V na sy P₁P₂ het gradiënt −1/m(P₁P₂) en gaan deur V. Die middelloodlyn het dieselfde gradiënt, maar gaan deur die <em>middelpunt</em> van P₁P₂.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die lyn deur P(k; 3) en Q(2; −1) is loodreg op y = 2x + 5. Bepaal k</div><div class="example-step"><span class="step-num">1</span><span>Loodregte gradiënte vermenigvuldig tot −1, dus m(PQ) = −½.</span></div><div class="example-step"><span class="step-num">2</span><span>m(PQ) = (3 − (−1))/(k − 2) = 4/(k − 2).</span></div><div class="example-step"><span class="step-num">3</span><span>4/(k − 2) = −½ → k − 2 = −8.</span></div><div class="example-step"><span class="step-num">4</span><span>k = −6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Loodregte gradiënte is negatiewe omgekeerdes (2 → −½), nie net negatiewe (2 → −2) nie.</span></div>
         `
       },
       questions: [
@@ -447,7 +449,8 @@ MathMagician.registerChapter(4, {
           { label: "c", text: "Vind die vergelyking van die hoogtelyn vanaf B na AC.", marks: 4 },
           { label: "d", text: "Bereken die lengte van die mediaan AM (los jou antwoord in eenvoudigste wortelvorm).", marks: 3 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Eksamenstyl-vraag</strong> — A(−1; 2), B(3; 4) en C(5; 0) is die hoekpunte van △ABC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":220,\"view\":[-3.4,-1,6.8,5.5],\"axes\":true,\"pts\":{\"A\":[-1,2],\"B\":[3,4],\"C\":[5,0]},\"dots\":true,\"poly\":[[\"A\",\"B\",\"C\",\"fl\"]],\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"C\",\"A\",\"ac\"]],\"names\":{\"A\":\"A(−1; 2)\",\"B\":\"B(3; 4)\",\"C\":\"C(5; 0)\"},\"lab\":{\"A\":\"nw\",\"B\":\"n\",\"C\":\"se\"}}'></div>", parts: [{ label: "a", text: "Bereken die gradiënt van AB.", marks: 2 }, { label: "b", text: "Bereken die inklinasiehoek van AB.", marks: 2 }, { label: "c", text: "Toon dat AB ⊥ BC.", marks: 3 }, { label: "d", text: "Bepaal die vergelyking van die lyn deur C parallel aan AB.", marks: 3 }, { label: "e", text: "Bereken die oppervlakte van △ABC.", marks: 3 }, { label: "f", text: "Bereken ∠BAC. Gee ’n rede.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -462,7 +465,8 @@ MathMagician.registerChapter(4, {
         b: "m=(2−1)/(5−(−2))=1/7; y−1=(1/7)(x+2) → y=(1/7)x+9/7",
         c: "m_AC=(−1−1)/(6−(−2))=−1/4; m_alt=4; y−5=4(x−4) → y=4x−11",
         d: "AM = √[(5−(−2))² + (2−1)²] = √(49+1) = √50 = 5√2"
-      }
+      },
+      3: { a: "m = (4 − 2)/(3 + 1) = ½", b: "tan θ = ½ → θ = 26,57°", c: "m(BC) = (0 − 4)/(5 − 3) = −2; ½ × (−2) = −1, dus AB ⊥ BC", d: "y = ½x + c; 0 = ½(5) + c → c = −5/2; y = ½x − 5/2", e: "AB = √(16 + 4) = √20; BC = √(4 + 16) = √20; oppervlakte = ½ × AB × BC = ½ × 20 = 10 vierkante eenhede", f: "∠B = 90° en AB = BC, dus is △ABC ’n gelykbenige reghoekige driehoek: ∠BAC = 45°" }
     }
   }
 });

@@ -265,6 +265,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir a > 0: die parabool duik <em>onder</em> die x-as <em>tussen</em> die wortels. Dus ax²+bx+c &lt; 0 → tussen die wortels, en &gt; 0 → buite die wortels.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op x² − x − 12 ≤ 0, en los dan y = x + 1 en x² + y² = 13 gelyktydig op</div><div class="example-step"><span class="step-num">1</span><span>Faktoriseer: (x − 4)(x + 3) ≤ 0. Kritieke waardes −3 en 4; die parabool open opwaarts, dus is dit ≤ 0 tussen hulle: −3 ≤ x ≤ 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Vervang y = x + 1: x² + (x + 1)² = 13 → 2x² + 2x − 12 = 0 → x² + x − 6 = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>x = 2 of x = −3.</span></div><div class="example-step"><span class="step-num">4</span><span>Punte: (2; 3) en (−3; −2).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moenie by die kritieke waardes stop nie — gebruik ’n skets of tekentabel om te besluit of die antwoord tussen of buite hulle lê.</span></div>
         `
       },
       questions: [
@@ -395,6 +396,7 @@ MathMagician.registerChapter(2, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die kwadratiese formule en die diskriminant kom van dieselfde afleiding — Δ = b² − 4ac is net die deel onder die vierkantswortelteken.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op 3x² − 5x − 1 = 0 korrek tot twee desimale plekke, en beskryf die wortels</div><div class="example-step"><span class="step-num">1</span><span>a = 3, b = −5, c = −1.</span></div><div class="example-step"><span class="step-num">2</span><span>x = [5 ± √(25 + 12)]/6 = (5 ± √37)/6.</span></div><div class="example-step"><span class="step-num">3</span><span>x = (5 + 6,083)/6 = 1,85 of x = (5 − 6,083)/6 = −0,18.</span></div><div class="example-step"><span class="step-num">4</span><span>Δ = 37 &gt; 0 en nie ’n volkome vierkant nie: die wortels is reëel, ongelyk en irrasionaal.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> −b met b = −5 gee +5, en die 2a-noemer deel die <strong>hele</strong> teller.</span></div>
         `
       },
       questions: [
@@ -624,7 +626,8 @@ MathMagician.registerChapter(2, {
           { label: "a", text: "Skryf die kwadratiese vergelyking wat ontstaan.", marks: 2 },
           { label: "b", text: "Los op vir x en bepaal daarna y.", marks: 4 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Toon alle bewerkings.", parts: [{ label: "a", text: "Los op deur die vierkant te voltooi: x² − 6x + 2 = 0", marks: 4 }, { label: "b", text: "Los op met die kwadratiese formule, korrek tot twee desimale plekke: 2x² − 5x − 1 = 0", marks: 3 }, { label: "c", text: "Los op vir x: x² − x − 12 &lt; 0", marks: 3 }, { label: "d", text: "Bepaal die waardes van k waarvoor x² + kx + 9 = 0 gelyke wortels het.", marks: 2 }, { label: "e", text: "Los gelyktydig op: y = x + 1 en x² + y² = 13", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -647,7 +650,8 @@ MathMagician.registerChapter(2, {
       5: {
         a: "3−x=x²−5 → x²+x−8=0",
         b: "x=(−1±√33)/2; y=3−x=(7∓√33)/2, d.w.s. x≈2,37; y≈0,63 of x≈−3,37; y≈6,37"
-      }
+      },
+      6: { a: "x² − 6x + 9 = 7 → (x − 3)² = 7 → x = 3 ± √7", b: "x = [5 ± √(25 + 8)]/4 = (5 ± √33)/4 → x = 2,69 of x = −0,19", c: "(x − 4)(x + 3) &lt; 0 → −3 &lt; x &lt; 4", d: "Δ = k² − 36 = 0 → k = ±6", e: "x² + (x + 1)² = 13 → 2x² + 2x − 12 = 0 → x² + x − 6 = 0 → x = 2, y = 3 of x = −3, y = −2" }
     }
   }
 });

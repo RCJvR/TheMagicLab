@@ -116,6 +116,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>An exterior angle is a shortcut — it equals the sum of the two remote interior angles directly, without needing to find all three interior angles first.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In △ABC, AB = AC and AD bisects ∠BAC, with D on BC. Prove that BD = DC</div><div class="example-step"><span class="step-num">1</span><span>In △ABD and △ACD: AB = AC (given).</span></div><div class="example-step"><span class="step-num">2</span><span>∠BAD = ∠CAD (AD bisects ∠A).</span></div><div class="example-step"><span class="step-num">3</span><span>AD = AD (common).</span></div><div class="example-step"><span class="step-num">4</span><span>△ABD ≡ △ACD (SAS), so BD = DC (≡ △s).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> AAA is not a congruency condition — equal angles only show the triangles have the same shape, not the same size.</span></div>
         `
       },
       questions: [
@@ -282,6 +283,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>In similar triangles, sides scale by factor k but areas scale by k². If sides double, the area quadruples.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: D and E are the midpoints of AB and AC in △ABC, and BC = 14 cm</div><div class="example-step"><span class="step-num">1</span><span>Midpoint theorem: DE ∥ BC and DE = ½BC = 7 cm.</span></div><div class="example-step"><span class="step-num">2</span><span>If F is the midpoint of BC, the triangle DEF has sides equal to half the sides of △ABC.</span></div><div class="example-step"><span class="step-num">3</span><span>So the perimeter of △DEF is half the perimeter of △ABC.</span></div><div class="example-step"><span class="step-num">4</span><span>Converse: a line through the midpoint of one side, parallel to a second side, bisects the third side.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The midpoint theorem needs both points to be midpoints; state “midpoint theorem” as the reason for both DE ∥ BC and DE = ½BC.</span></div>
         `
       },
       questions: [
@@ -576,7 +578,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Solve for x.", marks: 2 },
           { label: "c", text: "Find BC.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — In △ABC, D is the midpoint of AB and E is the midpoint of AC. BC = 14 cm and ∠ABC = 62°. Separately, PQRS is a parallelogram with ∠P = 3x + 10° and ∠Q = 2x − 5°.<div style=\"display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:center\"><div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":240,\"h\":190,\"pts\":{\"B\":[0,0],\"C\":[7,0],\"A\":[2.5,5],\"D\":[1.25,2.5],\"E\":[4.75,2.5]},\"poly\":[[\"A\",\"B\",\"C\",\"fl\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\",\"ln\",null,\"14 cm\"],[\"C\",\"A\"],[\"D\",\"E\",\"ac\"]],\"tick\":[[\"A\",\"D\",1],[\"D\",\"B\",1],[\"A\",\"E\",2],[\"E\",\"C\",2]],\"ang\":[[\"C\",\"B\",\"A\",\"62°\",\"gn\",18]],\"lab\":{\"D\":\"w\",\"E\":\"e\"},\"dots\":[\"D\",\"E\"]}'></div><div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":150,\"pts\":{\"P\":[0,0],\"Q\":[7,0],\"R\":[8.5,3],\"S\":[1.5,3]},\"poly\":[[\"P\",\"Q\",\"R\",\"S\",\"fl\"]],\"seg\":[[\"P\",\"Q\"],[\"Q\",\"R\"],[\"R\",\"S\"],[\"S\",\"P\"]],\"par\":[[\"P\",\"Q\",1],[\"S\",\"R\",1],[\"P\",\"S\",2],[\"Q\",\"R\",2]],\"ang\":[[\"Q\",\"P\",\"S\",\"\",\"gn\",18],[\"R\",\"Q\",\"P\",\"\",\"or\",16]],\"txt\":[[1.0,0.35,\"3x + 10°\",\"gn\",\"start\"],[6.3,0.35,\"2x − 5°\",\"or\",\"end\"]]}'></div></div>", parts: [{ label: "a", text: "State the midpoint theorem.", marks: 2 }, { label: "b", text: "Calculate the length of DE.", marks: 1 }, { label: "c", text: "Calculate ∠ADE. Give a reason.", marks: 2 }, { label: "d", text: "Calculate x, and hence the sizes of ∠P and ∠R.", marks: 4 }, { label: "e", text: "State TWO properties of a rhombus that are not true of every parallelogram.", marks: 2 }, { label: "f", text: "Name the quadrilateral that has (i) exactly one pair of opposite sides parallel, (ii) two pairs of adjacent sides equal.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -593,7 +596,8 @@ MathMagician.registerChapter(7, {
         a: "MN = ½BC → 3x−2 = ½(4x+6)",
         b: "3x−2=2x+3 → x=5",
         c: "BC = 26"
-      }
+      },
+      4: { a: "The line joining the midpoints of two sides of a triangle is parallel to the third side and equal to half of it", b: "DE = ½BC = 7 cm", c: "∠ADE = 62° (corresponding angles, DE ∥ BC)", d: "Co-interior angles of a parallelogram: 3x + 10 + 2x − 5 = 180 → 5x = 175 → x = 35; ∠P = 115° and ∠R = ∠P = 115° (opposite angles of a parallelogram)", e: "Any two: all four sides are equal; the diagonals bisect each other at right angles; the diagonals bisect the angles", f: "(i) trapezium (ii) kite" }
     }
   }
 });

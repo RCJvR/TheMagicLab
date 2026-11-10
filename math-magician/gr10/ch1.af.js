@@ -96,6 +96,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>'n Wortelvorm in vereenvoudigde vorm het <strong>geen volkome vierkantfaktore</strong> onder die wortelteken nie. Kontroleer altyd: kan ek 4, 9, 16, 25, 36… uithaal?</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Klassifiseer en skat reële getalle</div><div class="example-step"><span class="step-num">1</span><span>√16 = 4 is rasionaal (’n heelgetal); √7 is irrasionaal (nie-eindigend, nie-repeterend).</span></div><div class="example-step"><span class="step-num">2</span><span>0,333… = 1/3 is rasionaal (repeterende desimaal); π is irrasionaal (22/7 is net ’n benadering).</span></div><div class="example-step"><span class="step-num">3</span><span>√50 lê tussen 7 en 8, omdat 7² = 49 en 8² = 64.</span></div><div class="example-step"><span class="step-num">4</span><span>Aangesien 50 baie naby aan 49 is, is √50 ≈ 7,1 (sakrekenaar: 7,07).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> π is nie gelyk aan 22/7 of 3,14 nie — dit is rasionale benaderings van ’n irrasionale getal.</span></div>
         `
       },
       questions: [
@@ -551,6 +552,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Die trinoomfaktor <span class="math">a² ∓ ab + b²</span> faktoriseer nooit verder oor die heelgetalle nie — moenie tyd mors om dit te probeer nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Faktoriseer 8x³ − 27 en 54a³ + 2</div><div class="example-step"><span class="step-num">1</span><span>8x³ − 27 = (2x)³ − 3³ = (2x − 3)(4x² + 6x + 9).</span></div><div class="example-step"><span class="step-num">2</span><span>54a³ + 2: haal eers die gemeenskaplike faktor uit: 2(27a³ + 1).</span></div><div class="example-step"><span class="step-num">3</span><span>27a³ + 1 = (3a)³ + 1³ = (3a + 1)(9a² − 3a + 1).</span></div><div class="example-step"><span class="step-num">4</span><span>Dus 54a³ + 2 = 2(3a + 1)(9a² − 3a + 1).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> In die drieterm is die middelste teken die teenoorgestelde van die teken in die tweeterm: a³ − b³ = (a − b)(a² <strong>+</strong> ab + b²).</span></div>
         `
       },
       questions: [
@@ -640,6 +642,7 @@ MathMagician.registerChapter(1, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Kontroleer voor kansellasie altyd dubbeld dat die trinoom wat oorbly (soos <span class="math">x² + 2x + 4</span>) regtig geen verdere gemeenskaplike faktore met die ander kant het nie — kubus-trinome faktoriseer nooit verder nie, maar verifieer altyd met die spesifieke getalle.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vereenvoudig (x³ − 8)/(x² − 4) × (x + 2)/(x² + 2x + 4)</div><div class="example-step"><span class="step-num">1</span><span>Faktoriseer elke deel: x³ − 8 = (x − 2)(x² + 2x + 4); x² − 4 = (x − 2)(x + 2).</span></div><div class="example-step"><span class="step-num">2</span><span>Uitdrukking = (x − 2)(x² + 2x + 4)/((x − 2)(x + 2)) × (x + 2)/(x² + 2x + 4).</span></div><div class="example-step"><span class="step-num">3</span><span>Kanselleer die gemeenskaplike faktore (x − 2), (x + 2) en (x² + 2x + 4).</span></div><div class="example-step"><span class="step-num">4</span><span>Antwoord: 1, vir x ≠ 2 en x ≠ −2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kanselleer net faktore, nooit terme nie: (x + 2)/(x + 5) kan nie vereenvoudig word deur die x’e deur te trek nie.</span></div>
         `
       },
       questions: [
@@ -737,7 +740,8 @@ MathMagician.registerChapter(1, {
           { label: "b", text: "(2x² + x − 3)/(2x + 3)", marks: 4 },
           { label: "c", text: "3/(x−1) + 2/(x+1)", marks: 4 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Toon alle bewerkings.", parts: [{ label: "a", text: "Brei uit en vereenvoudig (2x − 3)(x² + 4x − 1).", marks: 3 }, { label: "b", text: "Faktoriseer volledig: 3x³ − 24", marks: 3 }, { label: "c", text: "Faktoriseer volledig: x² − y² + 2y − 1", marks: 3 }, { label: "d", text: "Vereenvoudig (x² − 9)/(x² + x − 6) ÷ (x − 3)/(x − 2) en noem die beperkings op x.", marks: 3 }, { label: "e", text: "Tussen watter twee opeenvolgende heelgetalle lê √50? Toon hoe jy weet.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -767,7 +771,8 @@ MathMagician.registerChapter(1, {
         a: "x−2, x≠−2",
         b: "(x−1), x≠−3/2",
         c: "(5x+1)/((x−1)(x+1))"
-      }
+      },
+      6: { a: "2x³ + 8x² − 2x − 3x² − 12x + 3 = 2x³ + 5x² − 14x + 3", b: "3(x³ − 8) = 3(x − 2)(x² + 2x + 4)", c: "x² − (y² − 2y + 1) = x² − (y − 1)² = (x − y + 1)(x + y − 1)", d: "(x − 3)(x + 3)/[(x + 3)(x − 2)] × (x − 2)/(x − 3) = 1; x ≠ −3; 2; 3", e: "49 &lt; 50 &lt; 64, dus √49 &lt; √50 &lt; √64: tussen 7 en 8" }
     }
   }
 });

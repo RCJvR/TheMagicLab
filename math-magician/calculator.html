@@ -46,10 +46,10 @@
     .back:hover { color: var(--text); border-color: rgba(255,255,255,.25); }
 
     .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); justify-items: center; }
-    @media (min-width: 860px) { .wrap { grid-template-columns: 420px minmax(0, 1fr); align-items: start; justify-items: stretch; } }
+    @media (min-width: 860px) { .wrap { grid-template-columns: calc(420px * var(--cz, 1)) minmax(0, 1fr); align-items: start; justify-items: stretch; } }
 
     /* ── The calculator body ─────────────────────────────────────────────── */
-    .calc { width: 100%; max-width: 420px; background: linear-gradient(180deg, #20252d, var(--body)); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 14px 14px 18px; box-shadow: 0 30px 70px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); }
+    .calc { width: 100%; max-width: 420px; zoom: var(--cz, 1); background: linear-gradient(180deg, #20252d, var(--body)); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 14px 14px 18px; box-shadow: 0 30px 70px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); }
     .brand { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px 8px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
     .brand b { color: var(--text-2); letter-spacing: .08em; }
 
@@ -818,6 +818,19 @@
     });
 
     // ── Go ─────────────────────────────────────────────────────────────────
+    // ── Size to the window ──────────────────────────────────────────────
+    // The calculator scales with the window it is in: smaller in a narrow
+    // pop-up or on a phone, larger on a big screen, but never below 90% (the
+    // keys and digits stay readable) nor above 120% (the keys stay a sensible
+    // size). Height counts too, so a short pop-up does not run off the bottom.
+    function fitToWindow() {
+      // 690px is the calculator's height at full size; 110px is the header and the gap around it
+      const s = Math.min(innerWidth / 440, (innerHeight - 110) / 690);
+      document.documentElement.style.setProperty('--cz', Math.min(1.2, Math.max(0.9, s)).toFixed(3));
+    }
+    fitToWindow();
+    addEventListener('resize', fitToWindow);
+
     // ── Exam mode: calculator.html?exam=1 ───────────────────────────────────
     // A web page cannot stop a learner switching apps or devices. This mode
     // takes away the way out of the calculator, asks before the page is left,

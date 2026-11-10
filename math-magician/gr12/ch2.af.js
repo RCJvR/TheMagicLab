@@ -84,6 +84,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = 2x + 3 en g(x) = x², x ≤ 0</div><div class="example-step"><span class="step-num">1</span><span>f⁻¹: ruil x en y: x = 2y + 3 → y = (x − 3)/2.</span></div><div class="example-step"><span class="step-num">2</span><span>f en f⁻¹ ontmoet op y = x: 2x + 3 = x → x = −3, dus (−3; −3).</span></div><div class="example-step"><span class="step-num">3</span><span>g⁻¹: x = y², y ≤ 0 → y = −√x, x ≥ 0.</span></div><div class="example-step"><span class="step-num">4</span><span>As gevolg van die beperking x ≤ 0 is g een-tot-een en g⁻¹ ’n funksie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Wanneer jy die inverse van ’n parabool bepaal, gebruik die beperking om die korrekte teken van die vierkantswortel te kies.</span></div>
         `
       },
       questions: [
@@ -207,6 +208,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Los op log₂(x + 3) + log₂(x − 3) = 4</div><div class="example-step"><span class="step-num">1</span><span>Kombineer die logaritmes: log₂[(x + 3)(x − 3)] = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Skakel na eksponensiële vorm: x² − 9 = 2⁴ = 16.</span></div><div class="example-step"><span class="step-num">3</span><span>x² = 25 → x = 5 of x = −5.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer die definisieversameling: log₂(x − 3) vereis x &gt; 3, dus word x = −5 verwerp. Antwoord: x = 5.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Kontroleer altyd antwoorde in die oorspronklike vergelyking — die argument van elke logaritme moet positief wees.</span></div>
         `
       },
       questions: [
@@ -442,6 +444,47 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Die grafiek van y = log₃(x) word gespieël in die lyn y = x, en dan 2 eenhede af geskuif om h(x) te vorm. Skryf h(x) neer.", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Grafieke van eksponensiële & logaritmiese funksies" },
         { type: "input", text: "Bepaal sonder 'n sakrekenaar die waarde van log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Grafieke van eksponensiële & logaritmiese funksies" }
       ]
+    },
+    {
+      id: 204,
+      chapter: 2,
+      name: "Transformasie van eksponensiële en logaritmiese grafieke",
+      fullName: "Skuif van eksponensiële en logaritmiese grafieke: asimptote en afsnitte",
+      lesson: {
+        heading: "Transformasie van eksponensiële en logaritmiese grafieke",
+        sub: "Hoofstuk 2 · Onderwerp 5",
+        body: `
+          <p>’n Skuif verander die asimptoot en die afsnitte van ’n grafiek, maar nie die basisvorm nie. Leer om die skuif uit die vergelyking af te lees.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Eksponensiële grafieke</div>
+            <p>
+              <span class="math">y = b^x + q</span>: die grafiek skuif <strong>q op</strong>, dus word die horisontale asimptoot <span class="math">y = q</span>.<br>
+              <span class="math">y = b^(x + p)</span>: die grafiek skuif <strong>p links</strong>, die asimptoot bly <span class="math">y = 0</span> en die y-afsnit word <span class="math">b^p</span>.
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Logaritmiese grafieke</div>
+            <p>
+              <span class="math">y = log_b(x + p)</span>: die grafiek skuif <strong>p links</strong>, dus word die vertikale asimptoot <span class="math">x = −p</span>.<br>
+              <span class="math">y = log_b x + q</span>: die grafiek skuif <strong>q op</strong>, en die asimptoot <span class="math">x = 0</span> bly dieselfde.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Voorbeeld</div>
+            <div class="example-step"><span class="step-num">1</span><span>Vir y = 2^x − 5: die asimptoot is y = −5, dus is die waardeversameling y > −5.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Vir y = log₂(x − 4): die vertikale asimptoot is x = 4, omdat x − 4 = 0.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: f(x) = 3ˣ, g(x) = 3ˣ⁺² − 9 en h(x) = log₃(x − 1)</div><div class="example-step"><span class="step-num">1</span><span>g is f 2 links en 9 af geskuif, dus is sy asimptoot y = −9.</span></div><div class="example-step"><span class="step-num">2</span><span>y-afsnit van g: 3² − 9 = 0; x-afsnit: 3ˣ⁺² = 9 = 3² → x = 0. Die grafiek van g gaan deur die oorsprong.</span></div><div class="example-step"><span class="step-num">3</span><span>f⁻¹(x) = log₃x. h is f⁻¹ 1 eenheid na regs geskuif: definisieversameling x &gt; 1, vertikale asimptoot x = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>x-afsnit van h: log₃(x − 1) = 0 → x − 1 = 1 → x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Horisontale verskuiwing in die eksponent werk teenoorgesteld aan sy teken: 3ˣ⁺² skuif die grafiek 2 eenhede na <strong>links</strong>.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Die asimptoot van y = 2^x + 3 is:", options: ["y = 0", "y = 3", "x = 3", "y = −3"], answer: 1, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "Die vertikale asimptoot van y = log₂(x − 4) is:", options: ["x = 4", "x = −4", "y = 4", "x = 0"], answer: 0, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "input", text: "Die grafiek van y = 3^x word 2 eenhede na links geskuif. Wat is die y-afsnit?", answer: "9", topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "y = log₃ x, 2 eenhede opwaarts geskuif, is:", options: ["y = log₃(x + 2)", "y = log₃ x + 2", "y = log₃(x − 2)", "y = log₃ x − 2"], answer: 1, topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "input", text: "Vind die x-afsnit van y = log₂ x − 3.", answer: "8", topic: "Transformasie van eksponensiële en logaritmiese grafieke" },
+        { type: "mc", text: "Vir y = 2^x − 5 is die waardeversameling:", options: ["y > −5", "y > 5", "y < −5", "alle reële y"], answer: 0, topic: "Transformasie van eksponensiële en logaritmiese grafieke" }
+      ]
     }
   ],
   workbook: {
@@ -466,13 +509,21 @@ MathMagician.registerChapter(2, {
         { label: "b", text: "Skryf dus f⁻¹(x), die inverse van y = a·bˣ, in logaritmiese vorm neer.", marks: 3 },
         { label: "c", text: "Gebruik jou vergelyking om die waarde van y te voorspel wanneer x = 5.", marks: 2 },
         { label: "d", text: "Skryf die vergelyking van die horisontale asimptoot van die grafiek van y = a·bˣ neer.", marks: 1 }
+      ]},
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — f(x) = 2ˣ en h(x) = 2ˣ⁻¹ + 3.", parts: [
+        { label: "a", text: "Skryf die vergelyking van f⁻¹ in die vorm y = … neer.", marks: 2 },
+        { label: "b", text: "Skryf die vergelyking van die asimptoot van h neer en bereken sy y-afsnit.", marks: 3 },
+        { label: "c", text: "Los op h(x) = 11.", marks: 3 },
+        { label: "d", text: "Vir watter waardes van x is f⁻¹(x) &lt; 3?", marks: 2 },
+        { label: "e", text: "Bepaal die inverse van g(x) = 3x², x ≥ 0, en verduidelik waarom die beperking x ≥ 0 nodig is.", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "x=y²−4→y²=x+4→y=√(x+4); domein x≥−4", b: "Parabool en vierkantswortel-spieëling", c: "f⁻¹(5)=√9=3" },
       2: { a: "log₂(x(x−2))=3→x(x−2)=8→x²−2x−8=0→(x−4)(x+2)=0→x=4 (verwerp x=−2)", b: "(2x−1)log3=log7→x=(log7/log3+1)/2≈1.386", c: "x²−5x=6→x²−5x−6=0→x=6 of x=−1 (kontroleer beide: x=−1→log(6)✓; x=6→log(6)✓ altwee geldig)" },
       3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 jaar" },
-      4: { a: "a = 5 (die y-waarde by x = 0). Verhouding tussen opeenvolgende y-waardes: 10/5 = 20/10 = 40/20 = 2, dus b = 2. Dus y = 5·2ˣ.", b: "Ruil x en y om: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). Dus f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" }
+      4: { a: "a = 5 (die y-waarde by x = 0). Verhouding tussen opeenvolgende y-waardes: 10/5 = 20/10 = 40/20 = 2, dus b = 2. Dus y = 5·2ˣ.", b: "Ruil x en y om: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). Dus f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" },
+      5: { a: "y = log₂x", b: "y = 3; h(0) = 2⁻¹ + 3 = 3,5, dus (0; 3,5)", c: "2ˣ⁻¹ = 8 = 2³ → x − 1 = 3 → x = 4", d: "log₂x &lt; 3 → 0 &lt; x &lt; 8", e: "Ruil x en y om: x = 3y² → y = √(x/3), x ≥ 0. Sonder die beperking is y = 3x² veel-tot-een, dus sou die inverse nie ’n funksie wees nie (een x sou twee y-waardes gee)." }
     }
   }
 });

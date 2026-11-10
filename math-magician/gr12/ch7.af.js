@@ -89,6 +89,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die vergelyking van die sirkel met middellyn AB, waar A(−1; 4) en B(5; −4)</div><div class="example-step"><span class="step-num">1</span><span>Die middelpunt is die middelpunt van AB: ((−1 + 5)/2; (4 − 4)/2) = (2; 0).</span></div><div class="example-step"><span class="step-num">2</span><span>AB = √((5 + 1)² + (−4 − 4)²) = √100 = 10, dus r = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>Vergelyking: (x − 2)² + y² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer met ’n ander punt, bv. (5; 4): 9 + 16 = 25 ✓, dus is (5; 4) ook op die sirkel.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Let op die tekens: ’n middelpunt by (2; 0) gee (x − 2)², en ’n middelpunt by (−2; 0) sou (x + 2)² gee.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die vergelyking van die raaklyn aan x² + y² = 25 by P(3; 4)</div><div class="example-step"><span class="step-num">1</span><span>Die middelpunt is O(0; 0). Gradiënt van radius OP = 4/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Die raaklyn is loodreg op die radius: m = −3/4.</span></div><div class="example-step"><span class="step-num">3</span><span>y − 4 = −¾(x − 3) → y = −¾x + 25/4.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer: vervang P — 4 = −9/4 + 25/4 = 16/4 ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die raaklyngradiënt is die <strong>negatiewe omgekeerde</strong> van die radiusgradiënt, nie net die negatief daarvan nie.</span></div>
         `
       },
       questions: [
@@ -393,6 +395,30 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Bepaal die vergelykings van die raaklyne aan x² + y² = 25 wat parallel is aan die lyn 3x + 4y = 7, in die vorm 3x + 4y = k. Gee die positiewe waarde van k.", answer: "25", topic: "Raaklyne vanaf 'n buitepunt" },
         { type: "input", text: "'n Raaklyn word vanaf P(7 ; 1) aan die sirkel x² + y² − 2x + 4y − 4 = 0 getrek, en raak dit by T.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":240,\"view\":[-3,-5.5,9.5,3],\"axes\":{\"ticks\":2},\"pts\":{\"C\":[1,-2],\"P\":[7,1],\"T\":[1,1]},\"circ\":[[\"C\",3]],\"seg\":[[\"P\",\"T\",\"ac\"],[\"C\",\"T\",\"mu dash\"],[\"C\",\"P\",\"mu dash\"]],\"ra\":[[\"C\",\"T\",\"P\"]],\"dots\":true,\"lab\":{\"T\":\"n\",\"P\":\"n\",\"C\":\"s\"}}'></div>Bereken die lengte van PT.", answer: "6", topic: "Raaklyne vanaf 'n buitepunt" }
       ]
+    },
+    {
+      id: 704,
+      chapter: 7,
+      name: "Kortste afstande & getransleerde sirkels",
+      fullName: "Kortste en langste afstande van ’n sirkel na ’n as of punt, transleer van sirkels, en besluit of twee sirkels ontmoet",
+      lesson: {
+        heading: "Kortste afstande & getransleerde sirkels",
+        sub: "Hoofstuk 7 · Onderwerp 5",
+        body: `
+          <p>Vraestel 2 se analitiese meetkunde eindig dikwels met ’n vraag wat ’n prent in jou kop nodig het eerder as ’n nuwe formule: hoe ver is die sirkel van ’n as of ’n punt, waarheen beweeg dit ná ’n translasie, en raak twee sirkels?</p><div class="def-box"><div class="def-box-title">📖 Kernfeite</div><p>Sirkel met middelpunt (a; b) en radius r:<br>• Kortste afstand na die x-as = |b| − r (as |b| &gt; r). As |b| = r raak die sirkel die x-as; as |b| &lt; r sny dit die x-as.<br>• Kortste afstand na die y-as = |a| − r.<br>• Vir ’n punt P buite die sirkel op afstand d van die middelpunt: kortste afstand = d − r, langste afstand = d + r (albei gemeet langs die lyn deur die middelpunt).<br>• ’n Translasie skuif die middelpunt; die radius verander nie.<br>• Twee sirkels met middelpunte d uitmekaar: raak uitwendig as d = r₁ + r₂; sny in twee punte as |r₁ − r₂| &lt; d &lt; r₁ + r₂; ontmoet nie as d &gt; r₁ + r₂; raak inwendig as d = |r₁ − r₂|.</p></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 1: x² + y² − 4x + 6y − 12 = 0</div><div class="mf-fig" data-fig='{"t":"geo","w":240,"h":220,"view":[-4,-9,12,5],"pts":{"O":[0,0],"C":[2,-3],"P":[10,2],"Q":[6.24,-0.35]},"circ":[["C",5]],"dots":["C","P"],"seg":[["C","P","dash"],["Q","P","ac"]],"lab":{"C":"w","P":"e","Q":"n"},"nolab":["O"]}'></div><div class="example-step"><span class="step-num">1</span><span>Voltooi die vierkante: (x − 2)² + (y + 3)² = 25, dus is die middelpunt C(2; −3) en r = 5.</span></div><div class="example-step"><span class="step-num">2</span><span>P(10; 2): CP = √((10 − 2)² + (2 + 3)²) = √89 = 9,43. Kortste afstand van P na die sirkel = 9,43 − 5 = 4,43; langste = 14,43.</span></div><div class="example-step"><span class="step-num">3</span><span>Die sirkel word 4 eenhede links en 9 eenhede op getransleer: (x; y) → (x − 4; y + 9). Nuwe middelpunt (−2; 6), radius steeds 5: (x + 2)² + (y − 6)² = 25.</span></div><div class="example-step"><span class="step-num">4</span><span>Kortste afstand van die nuwe sirkel na die x-as = 6 − 5 = 1 eenheid; na die y-as = 2 − 5 &lt; 0, dus sny dit die y-as.</span></div></div><div class="example-box"><div class="example-box-title">✏️ Voorbeeld 2: ontmoet twee sirkels?</div><div class="example-step"><span class="step-num">1</span><span>Sirkel A: middelpunt (2; −3), r = 5. Sirkel B: (x − 8)² + (y + 3)² = 9, middelpunt (8; −3), r = 3.</span></div><div class="example-step"><span class="step-num">2</span><span>Afstand tussen middelpunte d = 6. r₁ + r₂ = 8 en r₁ − r₂ = 2. Aangesien 2 &lt; 6 &lt; 8, sny die sirkels mekaar in twee punte.</span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>Maak altyd ’n skets: merk die middelpunt, trek die radius na die as of punt, en die kortste afstand is wat langs daardie lyn oorbly.</span></div>
+        `
+      },
+      questions: [
+        {"type": "input", "text": "(x − 3)² + (y − 7)² = 16. Bepaal die kortste afstand van die sirkel na die x-as.", "answer": "3", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Vir (x − 3)² + (y − 7)² = 16, die sirkel en die y-as:", "options": ["sny in twee punte", "raak", "ontmoet nie", "kan nie bepaal word nie"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "x² + y² = 25 word 3 eenhede regs en 8 eenhede op getransleer. Die nuwe middelpunt is:", "options": ["(3; 8)", "(−3; 8)", "(8; 3)", "(3; −8)"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "Ná die translasie in die vorige vraag, bepaal die kortste afstand van die sirkel na die x-as.", "answer": "3", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "P(9; 12) en die sirkel x² + y² = 25. Bepaal die kortste afstand van P na die sirkel.", "answer": "10", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "P(9; 12) en die sirkel x² + y² = 25. Bepaal die langste afstand van P na ’n punt op die sirkel.", "answer": "20", "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Vir watter waardes van k raak (x − k)² + (y − 2)² = 9 die y-as?", "options": ["k = ±3", "k = ±2", "k = ±9", "k = 0"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "mc", "text": "Twee sirkels het radiusse 4 en 6, en hul middelpunte is 10 eenhede uitmekaar. Die sirkels:", "options": ["raak uitwendig", "sny in twee punte", "ontmoet nie", "raak inwendig"], "answer": 0, "topic": "Kortste afstande & getransleerde sirkels"},
+        {"type": "input", "text": "(x + 1)² + (y − 5)² = 4 word getransleer deur (x; y) → (x + 4; y − 2). Bepaal die kortste afstand van die nuwe sirkel na die x-as.", "answer": "1", "topic": "Kortste afstande & getransleerde sirkels"}
+      ]
     }
   ],
   workbook: {
@@ -412,12 +438,20 @@ MathMagician.registerChapter(7, {
         { label: "a", text: "Vervang die lyn in die sirkelvergelyking.", marks: 2 },
         { label: "b", text: "Gebruik Δ = 0 om k te bepaal.", marks: 3 },
         { label: "c", text: "Skryf albei raaklynvergelykings.", marks: 1 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ’n Sirkel het vergelyking x² + y² − 6x + 4y − 12 = 0. P(7; 1) en R(10; 6) is punte.", parts: [
+        { label: "a", text: "Bepaal die middelpunt en radius van die sirkel.", marks: 3 },
+        { label: "b", text: "Toon dat P op die sirkel lê.", marks: 1 },
+        { label: "c", text: "Bepaal die vergelyking van die raaklyn aan die sirkel by P.", marks: 4 },
+        { label: "d", text: "Bepaal die koördinate van die punt waar hierdie raaklyn die x-as sny.", marks: 2 },
+        { label: "e", text: "Bereken die lengte van ’n raaklyn vanaf R aan die sirkel getrek.", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "(x−4)²−16+(y+1)²−1+8=0→(x−4)²+(y+1)²=9", b: "Middelpunt (4,−1); r=3", c: "(6−4)²+(−1+1)²=4<9→binne" },
       2: { a: "r=√[(−1−3)²+(4−1)²]=√(16+9)=5", b: "(x−3)²+(y−1)²=25", c: "m_CA=(4−1)/(−1−3)=−3/4; m_raak=4/3; y−4=(4/3)(x+1)→y=(4/3)x+16/3" },
-      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 en y=2x−5" }
+      3: { a: "x²+(2x+k)²=5→5x²+4kx+k²−5=0", b: "Δ=16k²−20(k²−5)=0→−4k²+100=0→k²=25→k=±5", c: "y=2x+5 en y=2x−5" },
+      4: { a: "(x − 3)² + (y + 2)² = 25: middelpunt (3; −2), r = 5", b: "49 + 1 − 42 + 4 − 12 = 0 ✓", c: "m(radius) = (1 + 2)/(7 − 3) = ¾, dus m(raaklyn) = −4/3; y − 1 = −4/3(x − 7) → y = −4/3x + 31/3", d: "0 = −4/3x + 31/3 → x = 7,75: (7,75; 0)", e: "CR² = (10 − 3)² + (6 + 2)² = 113; raaklynlengte = √(113 − 25) = √88 = 9,38 eenhede" }
     }
   }
 });

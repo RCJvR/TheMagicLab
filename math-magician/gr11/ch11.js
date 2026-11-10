@@ -86,6 +86,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Ogives and standard deviation</div><div class="example-step"><span class="step-num">1</span><span>An ogive plots cumulative frequency against the <strong>upper limit</strong> of each class, starting at the lower limit of the first class with frequency 0.</span></div><div class="example-step"><span class="step-num">2</span><span>For 60 learners, read the median at a cumulative frequency of 30; Q₁ at 15 and Q₃ at 45.</span></div><div class="example-step"><span class="step-num">3</span><span>Standard deviation of 4; 8; 6; 5; 7: mean = 6; squared deviations 4; 4; 0; 1; 1 (sum 10).</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √(10 ÷ 5) = 1,41 (check with the calculator’s σx).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Do not plot an ogive at class midpoints — that is for a frequency polygon.</span></div>
         `
       },
       questions: [
@@ -230,6 +231,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Data: 3; 5; 6; 6; 7; 8; 9; 25</div><div class="example-step"><span class="step-num">1</span><span>Median = (6 + 7) ÷ 2 = 6,5. Q₁ = (5 + 6) ÷ 2 = 5,5; Q₃ = (8 + 9) ÷ 2 = 8,5.</span></div><div class="example-step"><span class="step-num">2</span><span>IQR = 3. Upper fence = 8,5 + 1,5 × 3 = 13, so 25 is an outlier.</span></div><div class="example-step"><span class="step-num">3</span><span>Mean = 69 ÷ 8 = 8,6 — larger than the median because the outlier pulls it up.</span></div><div class="example-step"><span class="step-num">4</span><span>The data is positively skewed; the median is the better measure of a typical value here.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The mean is strongly affected by outliers; the median and IQR are not.</span></div>
         `
       },
       questions: [
@@ -359,6 +361,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Class A: mean 62, σ = 5. Class B: mean 62, σ = 14</div><div class="example-step"><span class="step-num">1</span><span>Both classes have the same average performance.</span></div><div class="example-step"><span class="step-num">2</span><span>Class B’s marks are much more spread out; class A is more consistent.</span></div><div class="example-step"><span class="step-num">3</span><span>A mark of 72 is (72 − 62) ÷ 5 = 2 standard deviations above the mean in class A, but only (72 − 62) ÷ 14 = 0,71 in class B.</span></div><div class="example-step"><span class="step-num">4</span><span>So 72 is an outstanding mark in class A but an ordinary good mark in class B.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A larger standard deviation means more spread, not a better or worse average.</span></div>
         `
       },
       questions: [
@@ -482,6 +485,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the standard deviation: x = 1; 2; 3; 4 with frequencies 2; 5; 8; 5</div><div class="example-step"><span class="step-num">1</span><span>n = 20; Σfx = 2 + 10 + 24 + 20 = 56; mean = 2,8.</span></div><div class="example-step"><span class="step-num">2</span><span>Σf(x − x̄)² = 2(3,24) + 5(0,64) + 8(0,04) + 5(1,44) = 6,48 + 3,2 + 0,32 + 7,2 = 17,2.</span></div><div class="example-step"><span class="step-num">3</span><span>Variance = 17,2 ÷ 20 = 0,86.</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √0,86 = 0,93.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Divide by the total frequency (20), not by the number of rows in the table (4).</span></div>
         `
       },
       questions: [
@@ -567,7 +571,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Estimate Q1 and Q3 from the ogive (read off at cumulative frequency = 15 and 45), and hence the IQR.", marks: 4 },
           { label: "c", text: "Estimate the number of runners older than 50.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Data set: 3; 5; 6; 8; 9; 11. A second data set gives the times (in minutes) 30 learners took to finish a task: 0 ≤ t &lt; 10: 4; 10 ≤ t &lt; 20: 9; 20 ≤ t &lt; 30: 12; 30 ≤ t &lt; 40: 5.", parts: [{ label: "a", text: "Calculate the mean of 3; 5; 6; 8; 9; 11.", marks: 1 }, { label: "b", text: "Calculate the standard deviation of this data set. Show your working in a table.", marks: 4 }, { label: "c", text: "How many of the values lie within one standard deviation of the mean?", marks: 2 }, { label: "d", text: "Estimate the mean time from the grouped data.", marks: 3 }, { label: "e", text: "Write down the modal class and the class in which the median lies.", marks: 2 }, { label: "f", text: "If every value in the first data set is increased by 5, what happens to the mean and to the standard deviation?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -586,7 +591,8 @@ MathMagician.registerChapter(11, {
         a: "n=60, median position = 30th value. 30 lies between (30;14) and (40;32): fraction=(30−14)/(32−14)=16/18; median ≈ 30 + (16/18)×10 ≈ 38.9 years",
         b: "Q1 position=15th value, between (30;14) and (40;32): fraction=(15−14)/18=1/18; Q1 ≈ 30 + (1/18)×10 ≈ 30.6. Q3 position=45th value, between (40;32) and (50;48): fraction=(45−32)/16=13/16; Q3 ≈ 40 + (13/16)×10 ≈ 48.1. IQR ≈ 48.1 − 30.6 = 17.5",
         c: "Cumulative frequency at 50 is 48, so runners older than 50 = 60 − 48 = 12"
-      }
+      },
+      4: { a: "42 ÷ 6 = 7", b: "Deviations −4; −2; −1; 1; 2; 4; squares 16; 4; 1; 1; 4; 16 (sum 42); σ² = 42/6 = 7; σ = √7 = 2,65", c: "7 ± 2,65 gives 4,35 to 9,65: the values 5; 6; 8; 9, so 4 values", d: "Midpoints 5; 15; 25; 35: (4×5 + 9×15 + 12×25 + 5×35)/30 = 630/30 = 21 minutes", e: "Modal class 20 ≤ t &lt; 30; the median (15th–16th value) also lies in 20 ≤ t &lt; 30 (cumulative frequencies 4; 13; 25; 30)", f: "The mean increases by 5 (to 12); the standard deviation stays the same (2,65)" }
     }
   }
 });

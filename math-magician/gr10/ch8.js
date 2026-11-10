@@ -194,6 +194,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A(−2; 3) and B(4; −5)</div><div class="example-step"><span class="step-num">1</span><span>AB = √((4 + 2)² + (−5 − 3)²) = √(36 + 64) = 10 units.</span></div><div class="example-step"><span class="step-num">2</span><span>Midpoint M = ((−2 + 4)/2; (3 − 5)/2) = (1; −1).</span></div><div class="example-step"><span class="step-num">3</span><span>Working backwards: if M(1; −1) is the midpoint and A(−2; 3) one end, then B = (2 × 1 − (−2); 2 × (−1) − 3) = (4; −5) ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>A circle with diameter AB would have radius 5 and centre (1; −1).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Square the differences before adding: (−5 − 3)² = 64, not −64.</span></div>
         `
       },
       questions: [
@@ -467,6 +468,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Show that P(−1; 3), Q(2; −3) and R(5; −9) are collinear</div><div class="example-step"><span class="step-num">1</span><span>m(PQ) = (−3 − 3)/(2 + 1) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>m(QR) = (−9 + 3)/(5 − 2) = −6/3 = −2.</span></div><div class="example-step"><span class="step-num">3</span><span>The gradients are equal and Q is a common point, so P, Q and R lie on one straight line.</span></div><div class="example-step"><span class="step-num">4</span><span>Equation: y − 3 = −2(x + 1) → y = −2x + 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Subtract in the same order in the numerator and denominator: (y₂ − y₁)/(x₂ − x₁).</span></div>
         `
       },
       questions: [
@@ -622,6 +624,7 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Whenever a question mentions "parallel to" or "perpendicular to" a given line, that instantly gives you the gradient — you don't need a second point.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find the lines through (2; −1) that are parallel and perpendicular to y = 3x − 4</div><div class="example-step"><span class="step-num">1</span><span>Parallel: m = 3. y + 1 = 3(x − 2) → y = 3x − 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Perpendicular: m = −1/3. y + 1 = −⅓(x − 2) → y = −⅓x − ⅓.</span></div><div class="example-step"><span class="step-num">3</span><span>Check the point in the second line: −⅓(2) − ⅓ = −1 ✓.</span></div><div class="example-step"><span class="step-num">4</span><span>The two lines cross at (2; −1) at right angles.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Parallel lines have equal gradients; perpendicular lines have gradients whose product is −1.</span></div>
         `
       },
       questions: [
@@ -855,7 +858,8 @@ MathMagician.registerChapter(8, {
           { label: "b", text: "Show that AB = DC in length.", marks: 3 },
           { label: "c", text: "What type of quadrilateral is ABCD? Give a reason.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — A(−2; 3), B(4; 7) and C(6; 1) are points on the Cartesian plane.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":260,\"view\":[-4.6,-1,8,8.5],\"axes\":true,\"pts\":{\"A\":[-2,3],\"B\":[4,7],\"C\":[6,1]},\"dots\":true,\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"A\",\"C\",\"mu dash\"]],\"names\":{\"A\":\"A(−2; 3)\",\"B\":\"B(4; 7)\",\"C\":\"C(6; 1)\"},\"lab\":{\"A\":\"nw\",\"B\":\"n\",\"C\":\"e\"}}'></div>", parts: [{ label: "a", text: "Calculate the length of AB in simplest surd form.", marks: 2 }, { label: "b", text: "Determine the coordinates of M, the midpoint of AC.", marks: 2 }, { label: "c", text: "Calculate the gradient of BC.", marks: 2 }, { label: "d", text: "Determine the equation of the line through A parallel to BC.", marks: 3 }, { label: "e", text: "Determine the coordinates of D such that ABCD is a parallelogram.", marks: 3 }, { label: "f", text: "Show that D lies on the line in (d).", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -874,7 +878,8 @@ MathMagician.registerChapter(8, {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
         b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
         c: "Parallelogram — one pair of opposite sides (AB, DC) is both parallel and equal, which is sufficient to prove a parallelogram. It is in fact a square: AD = BC = √20 (all four sides equal) and AB is perpendicular to BC (AB·BC = 0), so all angles are 90°."
-      }
+      },
+      4: { a: "AB = √[(4 + 2)² + (7 − 3)²] = √52 = 2√13", b: "M = ((−2 + 6)/2; (3 + 1)/2) = (2; 2)", c: "m = (1 − 7)/(6 − 4) = −3", d: "y = −3x + c; 3 = −3(−2) + c → c = −3; y = −3x − 3", e: "The diagonals bisect each other, so M is also the midpoint of BD: (4 + x)/2 = 2 and (7 + y)/2 = 2 → D(0; −3)", f: "y = −3(0) − 3 = −3, so D(0; −3) lies on the line (AD ∥ BC, as expected for a parallelogram)" }
     }
   }
 });

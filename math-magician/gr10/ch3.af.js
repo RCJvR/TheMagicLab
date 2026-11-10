@@ -266,6 +266,7 @@ MathMagician.registerChapter(3, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>As die verskille tussen opeenvolgende terme <em>nie</em> almal gelyk is nie, is die ry nie lineêr nie — kyk eerder vir 'n kwadratiese of meetkundige patroon.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vuurhoutjies: 1 vierkant gebruik 4 vuurhoutjies, 2 vierkante in ’n ry gebruik 7, 3 vierkante gebruik 10</div><div class="example-step"><span class="step-num">1</span><span>Konstante verskil 3, dus Tₙ = 3n + 1.</span></div><div class="example-step"><span class="step-num">2</span><span>50 vierkante: T₅₀ = 3(50) + 1 = 151 vuurhoutjies.</span></div><div class="example-step"><span class="step-num">3</span><span>Met 200 vuurhoutjies: 3n + 1 ≤ 200 → n ≤ 66,3.</span></div><div class="example-step"><span class="step-num">4</span><span>Dus kan 66 vierkante gemaak word (met 199 vuurhoutjies).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die antwoord op “hoeveel vierkante” moet ’n heelgetal wees — rond af, nie op nie.</span></div>
         `
       },
       questions: [
@@ -480,7 +481,8 @@ MathMagician.registerChapter(3, {
           { label: "b", text: "Vind die formule vir die aantal vuurhoutjies vir n vyfhoeke.", marks: 3 },
           { label: "c", text: "Hoeveel vuurhoutjies word benodig vir 15 vyfhoeke?", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — ’n Lineêre patroon is 7; 11; 15; 19; … ’n Tweede patroon word met vuurhoutjies gemaak: 1 vierkant gebruik 4 vuurhoutjies, 2 vierkante in ’n ry gebruik 7 en 3 vierkante gebruik 10.", parts: [{ label: "a", text: "Bepaal die algemene term Tₙ van 7; 11; 15; 19; …", marks: 2 }, { label: "b", text: "Bereken T₅₀.", marks: 2 }, { label: "c", text: "Watter term van die patroon is gelyk aan 143?", marks: 2 }, { label: "d", text: "Skryf ’n formule neer vir die aantal vuurhoutjies wat vir n vierkante nodig is.", marks: 2 }, { label: "e", text: "Hoeveel vierkante kan met 301 vuurhoutjies in ’n ry gemaak word?", marks: 2 }, { label: "f", text: "Toon dat 500 nie ’n term van 7; 11; 15; 19; … kan wees nie.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -498,7 +500,8 @@ MathMagician.registerChapter(3, {
         a: "5, 9, 13, 17",
         b: "Tₙ = 4n + 1",
         c: "T₁₅ = 61 vuurhoutjies"
-      }
+      },
+      4: { a: "d = 4: Tₙ = 4n + 3", b: "T₅₀ = 4(50) + 3 = 203", c: "4n + 3 = 143 → 4n = 140 → n = 35: die 35ste term", d: "Vuurhoutjies = 3n + 1", e: "3n + 1 = 301 → n = 100 vierkante", f: "4n + 3 = 500 → n = 124,25; n moet ’n natuurlike getal wees, dus is 500 nie ’n term nie" }
     }
   }
 });

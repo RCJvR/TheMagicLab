@@ -114,6 +114,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Wanneer twee vaste stowwe 'n vlak deel, trek daardie sirkelvormige oppervlakte <strong>twee keer</strong> af (een keer van elke vaste stof se SA). Die gedeelde vlak is intern en nie deel van die buite-oppervlak nie.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Soliede liggaam is ’n silinder (r = 3 cm, h = 10 cm) met ’n halfsfeer bo-op. Bepaal sy totale buite-oppervlakte</div><div class="example-step"><span class="step-num">1</span><span>Basis (sirkel): πr² = 9π.</span></div><div class="example-step"><span class="step-num">2</span><span>Geboë kant van die silinder: 2πrh = 60π.</span></div><div class="example-step"><span class="step-num">3</span><span>Geboë oppervlak van die halfsfeer: ½ × 4πr² = 18π.</span></div><div class="example-step"><span class="step-num">4</span><span>Totaal = 9π + 60π + 18π = 87π ≈ 273,3 cm² (die verbinde sirkel is nie blootgestel nie, dus word dit uitgelaat).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Laat vlakke uit waar die dele verbind is — hulle is binne die liggaam.</span></div>
         `
       },
       questions: [
@@ -274,6 +275,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Keël het radius 4 cm en hoogte 9 cm</div><div class="example-step"><span class="step-num">1</span><span>V = ⅓πr²h = ⅓π(16)(9) = 48π ≈ 150,8 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>As elke afmeting met 3 vermenigvuldig word: V × 3³ = 27 × 48π = 1 296π cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>As net die radius verdubbel word: V × 2² = 4 × 48π = 192π cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>As net die hoogte verdubbel word: V × 2 = 96π cm³.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Volume skaal met k³ net wanneer <strong>alle</strong> afmetings met k vermenigvuldig word.</span></div>
         `
       },
       questions: [
@@ -624,7 +626,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "Die radius word met 50% vermeerder. Bepaal die nuwe volume (in terme van π).", marks: 3 },
           { label: "c", text: "Met watter faktor het die volume toegeneem?", marks: 2 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Eksamenstyl-vraag</strong> — ’n Graansilo is ’n silinder met ’n halfbol bo-op. Die radius is 3 m en die hoogte van die silindriese deel is 10 m. Gee antwoorde korrek tot twee desimale plekke.<div style=\"display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:center\"><div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"cylinder\",\"dome\":true,\"w\":200,\"h\":250,\"labels\":{\"r\":\"3 m\",\"h\":\"10 m\"}}'></div><div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"pyramid\",\"w\":200,\"h\":190,\"bw\":100,\"hh\":100,\"labels\":{\"l\":\"6 m\",\"h\":\"4 m\"}}'></div></div>", parts: [{ label: "a", text: "Bereken die volume van die silo.", marks: 4 }, { label: "b", text: "Bereken die buite-oppervlakte van die silo, sonder die basis.", marks: 4 }, { label: "c", text: "’n Skaalmodel word gemaak waarin elke lengte 1/50 van die werklike lengte is. Bereken die volume van die model in cm³.", marks: 3 }, { label: "d", text: "’n Regte piramide het ’n vierkantige basis met sye van 6 m en ’n loodregte hoogte van 4 m. Bereken die skuinshoogte van ’n vlak en die totale buite-oppervlakte.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -636,7 +639,8 @@ MathMagician.registerChapter(7, {
         a: "V = (4/3)π(216) = 288π cm³",
         b: "r=9; V=(4/3)π(729)=972π cm³",
         c: "972π/288π = 3.375 = (3/2)³ = k³ waar k=1.5 ✓"
-      }
+      },
+      3: { a: "Silinder: π(3)²(10) = 90π; halfbol: ⅔π(3)³ = 18π; totaal 108π = 339,29 m³", b: "Geboë silinder: 2π(3)(10) = 60π; halfbol: 2π(3)² = 18π; totaal 78π = 245,04 m²", c: "Volumefaktor (1/50)³ = 1/125 000; 339,29 ÷ 125 000 = 0,002714 m³ = 2 714 cm³ (tot die naaste cm³)", d: "Skuinshoogte = √(4² + 3²) = 5 m; totale buite-oppervlakte = 6² + 4 × ½ × 6 × 5 = 36 + 60 = 96 m²" }
     }
   }
 });

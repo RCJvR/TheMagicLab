@@ -105,6 +105,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Arithmetic and geometric sequences</div><div class="example-step"><span class="step-num">1</span><span>Which term of 3; 7; 11; … is 403? Tₙ = 3 + (n − 1)4 = 4n − 1 = 403 → n = 101.</span></div><div class="example-step"><span class="step-num">2</span><span>A geometric sequence has T₃ = 12 and T₆ = 96. Divide: ar⁵/ar² = r³ = 8 → r = 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Then a = 12/r² = 3, so T₁₀ = 3 × 2⁹ = 1 536.</span></div><div class="example-step"><span class="step-num">4</span><span>Sum of the first 10 terms: S₁₀ = 3(2¹⁰ − 1)/(2 − 1) = 3 069.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Dividing two terms of a geometric sequence eliminates a and gives r — a faster route than substituting.</span></div>
         `
       },
       questions: [
@@ -236,6 +237,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: For which values of x does Σ (2x − 1)ᵏ from k = 1 to ∞ converge? Find the sum when x = ¾</div><div class="example-step"><span class="step-num">1</span><span>This is a geometric series with r = 2x − 1.</span></div><div class="example-step"><span class="step-num">2</span><span>It converges when −1 &lt; r &lt; 1 (r ≠ 0): −1 &lt; 2x − 1 &lt; 1 → 0 &lt; x &lt; 1, x ≠ ½.</span></div><div class="example-step"><span class="step-num">3</span><span>x = ¾: r = ½ and the first term a = ½.</span></div><div class="example-step"><span class="step-num">4</span><span>S∞ = a/(1 − r) = ½ ÷ ½ = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> The first term is found by substituting the starting value of k (here k = 1), not k = 0.</span></div>
         `
       },
       questions: [
@@ -454,6 +456,13 @@ MathMagician.registerChapter(1, {
         { label: "a", text: "Using two consecutive balances from the table, determine the common ratio r.", marks: 2 },
         { label: "b", text: "Write down the general term Tₙ for this sequence in the form Tₙ = a·rⁿ.", marks: 2 },
         { label: "c", text: "Use your formula to predict the balance at the end of year 10 (to the nearest cent).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Exam-style question</strong> — The sum of the first n terms of a sequence is S<sub>n</sub> = 3n² + 2n. A separate geometric series is 24 + 12 + 6 + …", parts: [
+        { label: "a", text: "Write down T₁.", marks: 1 },
+        { label: "b", text: "Calculate T₂.", marks: 2 },
+        { label: "c", text: "Show that the sequence is arithmetic and find a formula for T<sub>n</sub>.", marks: 4 },
+        { label: "d", text: "Find the smallest number of terms of the geometric series whose sum exceeds 47,9.", marks: 4 },
+        { label: "e", text: "Evaluate Σ (6k − 1) from k = 1 to 20.", marks: 3 }
       ]}
     ],
     answers: {
@@ -465,7 +474,8 @@ MathMagician.registerChapter(1, {
         a: "r = 1102,50 ÷ 1050,00 = 1,05",
         b: "a = 1000 (the deposit before interest); Tₙ = 1000(1,05)ⁿ",
         c: "T₁₀ = 1000(1,05)¹⁰ ≈ R1 628,89"
-      }
+      },
+      6: { a: "T₁ = S₁ = 3 + 2 = 5", b: "S₂ = 12 + 4 = 16, so T₂ = S₂ − S₁ = 11", c: "T<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub> = 3n² + 2n − [3(n − 1)² + 2(n − 1)] = 6n − 1. T<sub>n</sub> − T<sub>n−1</sub> = 6, a constant, so the sequence is arithmetic with d = 6.", d: "a = 24, r = ½: S<sub>n</sub> = 48(1 − 0,5ⁿ) &gt; 47,9 → 0,5ⁿ &lt; 0,00208 → n &gt; 8,9, so n = 9 terms", e: "Arithmetic: a = 5, l = 119, n = 20: S = 20/2 × (5 + 119) = 1 240" }
     }
   }
 });

@@ -1,0 +1,125 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Results by Version — The Magic Lab</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<style>
+body { font-family: var(--font-display); background: var(--ink-900); color: var(--text); min-height: 100vh; margin: 0; -webkit-font-smoothing: antialiased; }
+.v-main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 96px; box-sizing: border-box; }
+.v-top { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
+.v-top a { color: var(--text-2); font-size: 14px; text-decoration: none; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 7px 12px; }
+.v-top a:hover { color: var(--paper); }
+h1 { font-weight: 900; font-size: clamp(26px, 5vw, 34px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 8px; }
+h2 { font-size: 18px; color: var(--paper); margin: 28px 0 10px; letter-spacing: -0.02em; }
+.v-sub { color: var(--text-2); line-height: 1.6; max-width: 720px; margin: 0 0 22px; }
+.v-pick { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+.v-pick label { color: var(--text-2); font-size: 14px; }
+select { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 8px 12px; max-width: 100%; }
+.v-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 14.5px; }
+th, td { padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+thead th { color: var(--paper); font-weight: 800; white-space: nowrap; }
+th.s { cursor: pointer; }
+th.s:hover { text-decoration: underline; }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+tbody th { font-weight: 600; color: var(--paper); }
+.p-hi { color: var(--good); } .p-mid { color: var(--warn); } .p-lo { color: var(--crit); }
+.v-bar { display: inline-block; height: 8px; border-radius: 4px; background: var(--text-3); vertical-align: middle; margin-right: 8px; min-width: 2px; }
+.v-note { color: var(--text-3); font-size: 13px; line-height: 1.5; margin-top: 14px; max-width: 720px; }
+#vMsg { color: var(--text-2); }
+</style>
+</head>
+<body>
+<main class="v-main" id="main">
+  <div class="v-top"><a href="test-tome.html?view=results">← Class results</a><a href="test-tome-versions.html">Compare the versions</a></div>
+  <h1>Learner results by version</h1>
+  <p class="v-sub">Every result from the sessions you started, and any shared with you, for one test, split by version. If one version has a clearly lower average, that paper may be harder.</p>
+  <div class="v-pick"><label for="vSet">Test</label><select id="vSet"></select><label for="vSess">Sessions</label><select id="vSess"></select></div>
+  <p id="vMsg">Loading…</p>
+  <div id="vBody"></div>
+</main>
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script>
+(function () {
+  'use strict';
+  var BASE = 'assets/test-tome/';
+  var sets = [], sessions = [], results = [], sort = { k: 'pct', d: 1 }, started = false;
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function pct(a, b) { return b ? Math.round(a / b * 100) : 0; }
+  function cls(p) { return p >= 70 ? 'p-hi' : p >= 50 ? 'p-mid' : 'p-lo'; }
+  function db() {
+    return new Promise(function (res) {
+      if (window.MagicLabAuth && MagicLabAuth._supabase) return res(MagicLabAuth._supabase());
+      document.addEventListener('magiclab:auth:ready', function () { res(MagicLabAuth._supabase()); }, { once: true });
+    });
+  }
+  function median(a) { var s = a.slice().sort(function (x, y) { return x - y; }), n = s.length; return n % 2 ? s[(n - 1) / 2] : Math.round((s[n / 2 - 1] + s[n / 2]) / 2); }
+
+  function draw() {
+    var set = $('vSet').value, sid = $('vSess').value;
+    var S = sets.filter(function (x) { return x.set === set; })[0];
+    var ids = {}; S.versions.forEach(function (v) { ids[v.id] = v.version; });
+    var sess = {}; sessions.forEach(function (s) { sess[s.id] = s; });
+    var R = results.filter(function (r) { return ids[r.quiz_id] && (!sid || r.session_id === sid); })
+      .map(function (r) { return { name: r.name || r.learner_name || '', v: ids[r.quiz_id], score: r.score, total: r.total, pct: pct(r.score, r.total), sess: (sess[r.session_id] || {}).title || '', at: r.created_at }; });
+    if (!R.length) { $('vBody').innerHTML = '<p class="v-sub">No results for this test yet.</p>'; return; }
+    var sum = '<h2>Summary</h2><div class="v-scroll"><table><thead><tr><th>Version</th><th>Learners</th><th>Average</th><th>Median</th><th>Lowest</th><th>Highest</th><th>Passed (50%+)</th></tr></thead><tbody>';
+    S.versions.forEach(function (v) {
+      var a = R.filter(function (r) { return r.v === v.version; }), p = a.map(function (r) { return r.pct; });
+      if (!a.length) { sum += '<tr><th scope="row">Version ' + esc(v.version) + '</th><td colspan="6" style="color:var(--text-3)">No results yet</td></tr>'; return; }
+      var avg = Math.round(p.reduce(function (s, x) { return s + x; }, 0) / p.length);
+      sum += '<tr><th scope="row">Version ' + esc(v.version) + '</th><td>' + a.length + '</td><td class="' + cls(avg) + '"><span class="v-bar" style="width:' + avg * 0.9 + 'px"></span>' + avg + '%</td><td>' + median(p) + '%</td><td>' + Math.min.apply(null, p) + '%</td><td>' + Math.max.apply(null, p) + '%</td><td>' + pct(p.filter(function (x) { return x >= 50; }).length, p.length) + '%</td></tr>';
+    });
+    sum += '</tbody></table></div>';
+    var cols = [['name', 'Learner'], ['v', 'Version'], ['score', 'Mark'], ['pct', '%'], ['sess', 'Session']];
+    R.sort(function (a, b) { var x = a[sort.k], y = b[sort.k]; return (typeof x === 'string' ? x.localeCompare(y) : x - y) * sort.d || b.pct - a.pct; });
+    var list = '<h2>All learners (' + R.length + ')</h2><div class="v-scroll"><table><thead><tr>' + cols.map(function (c) { return '<th class="s" data-k="' + c[0] + '" scope="col">' + c[1] + (sort.k === c[0] ? (sort.d > 0 ? ' ▲' : ' ▼') : '') + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      R.map(function (r) { return '<tr><td>' + esc(r.name) + '</td><td>' + esc(r.v) + '</td><td>' + r.score + ' / ' + r.total + '</td><td class="' + cls(r.pct) + '">' + r.pct + '%</td><td>' + esc(r.sess) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    $('vBody').innerHTML = sum + list + '<p class="v-note">Learners who sat the test more than once appear once for each attempt that was submitted to a class code.</p>';
+    [].forEach.call($('vBody').querySelectorAll('th.s'), function (th) {
+      th.addEventListener('click', function () { var k = th.dataset.k; sort = { k: k, d: sort.k === k ? -sort.d : (k === 'pct' || k === 'score' ? -1 : 1) }; draw(); });
+    });
+  }
+  function fill() {
+    $('vSet').innerHTML = sets.map(function (s) { return '<option value="' + esc(s.set) + '">' + esc(s.title) + '</option>'; }).join('');
+    $('vSess').innerHTML = '<option value="">All sessions</option>' + sessions.map(function (s) { return '<option value="' + esc(s.id) + '">' + esc(s.title) + '</option>'; }).join('');
+    $('vSet').addEventListener('change', draw); $('vSess').addEventListener('change', draw);
+    $('vMsg').textContent = ''; draw();
+  }
+  function start() {
+    if (started) return;
+    if (!(window.MagicLabAuth && MagicLabAuth.isTeacher)) return;
+    started = true;
+    if (!MagicLabAuth.isTeacher()) { $('vMsg').textContent = 'This page is for teachers.'; return; }
+    Promise.all([
+      fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }),
+      db().then(function (c) { return Promise.all([c.from('tome_sessions').select('id,title,quiz_set'), c.from('tome_results').select('*').order('created_at', { ascending: false })]); })
+    ]).then(function (r) {
+      var by = {}, order = [];
+      (r[0].quizzes || []).filter(function (x) { return x.set && x.version; }).forEach(function (x) {
+        if (!by[x.set]) { by[x.set] = { set: x.set, title: x.subject + ' · Grade ' + x.grade, versions: [] }; order.push(x.set); }
+        by[x.set].versions.push({ id: x.id, version: x.version });
+      });
+      sets = order.map(function (k) { return by[k]; });
+      sessions = r[1][0].data || []; results = r[1][1].data || [];
+      fill();
+    });
+  }
+  document.addEventListener('magiclab:auth:ready', start);
+  document.addEventListener('magiclab:auth:change', start);
+  setTimeout(start, 1500);
+})();
+</script>
+</body>
+</html>

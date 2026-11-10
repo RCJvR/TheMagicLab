@@ -85,6 +85,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Find cos 75° without a calculator, and prove sin(A + B) − sin(A − B) = 2 cos A sin B</div><div class="example-step"><span class="step-num">1</span><span>cos 75° = cos(45° + 30°) = cos 45° cos 30° − sin 45° sin 30°.</span></div><div class="example-step"><span class="step-num">2</span><span>= (√2/2)(√3/2) − (√2/2)(½) = (√6 − √2)/4.</span></div><div class="example-step"><span class="step-num">3</span><span>LHS = (sin A cos B + cos A sin B) − (sin A cos B − cos A sin B).</span></div><div class="example-step"><span class="step-num">4</span><span>= 2 cos A sin B = RHS.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> cos(A + B) is <strong>not</strong> cos A + cos B. Always use the expansion formula.</span></div>
         `
       },
       questions: [
@@ -184,6 +185,7 @@ MathMagician.registerChapter(4, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve sin 2x = cos x for x ∈ [0°; 360°]</div><div class="example-step"><span class="step-num">1</span><span>Use the double-angle formula: 2 sin x cos x = cos x.</span></div><div class="example-step"><span class="step-num">2</span><span>Bring everything to one side and factorise: cos x(2 sin x − 1) = 0.</span></div><div class="example-step"><span class="step-num">3</span><span>cos x = 0 → x = 90° or 270°.</span></div><div class="example-step"><span class="step-num">4</span><span>sin x = ½ → x = 30° or 150°.</span></div><div class="example-step"><span class="step-num">5</span><span>Solutions: x = 30°, 90°, 150°, 270°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Never divide both sides by cos x — you lose the solutions where cos x = 0. Factorise instead.</span></div>
         `
       },
       questions: [
@@ -400,6 +402,81 @@ MathMagician.registerChapter(4, {
         { type: "input", text: "Simplify (1 − cos2A)/sin2A to a single trig ratio.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Proving trigonometric identities" },
         { type: "input", text: "θ is acute and sin 2θ = 0.6. Find sin θ + cos θ, correct to 2 decimal places, without finding θ.", answer: "1.26", altAnswers: ["1,26"], topic: "Proving trigonometric identities" }
       ]
+    },
+    {
+      id: 404,
+      chapter: 4,
+      name: "Reduction formulae",
+      fullName: "Reduction formulae: writing any angle as an acute angle",
+      lesson: {
+        heading: "Reduction formulae",
+        sub: "Chapter 4 · Topic 5",
+        body: `
+          <p>A <strong>reduction formula</strong> rewrites the trig ratio of a large or negative angle as the ratio of an acute angle. Use the <strong>ASTC rule</strong> for the sign: in quadrant 1 all ratios are positive; in quadrant 2 only sin is positive; in quadrant 3 only tan is positive; in quadrant 4 only cos is positive.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Key results</div>
+            <p>
+              <span class="math">sin(90° − x) = cos x</span> &nbsp; <span class="math">cos(90° − x) = sin x</span><br>
+              <span class="math">sin(90° + x) = cos x</span> &nbsp; <span class="math">cos(90° + x) = −sin x</span><br>
+              <span class="math">sin(180° − x) = sin x</span> &nbsp; <span class="math">cos(180° − x) = −cos x</span><br>
+              <span class="math">sin(180° + x) = −sin x</span> &nbsp; <span class="math">cos(180° + x) = −cos x</span><br>
+              <span class="math">sin(360° − x) = −sin x</span> &nbsp; <span class="math">cos(360° − x) = cos x</span><br>
+              <span class="math">sin(−x) = −sin x</span> &nbsp; <span class="math">cos(−x) = cos x</span><br>
+              <span class="math">tan(180° − x) = −tan x</span> &nbsp; <span class="math">tan(180° + x) = tan x</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: simplify</div>
+            <div class="example-step"><span class="step-num">1</span><span>sin(540° + x) = sin(180° + x) = −sin x (540° = 360° + 180°)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>cos(90° + x) = −sin x and sin(−x) = −sin x</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>sin(540° + x)·cos(90° + x) ÷ sin(−x) = (−sin x)(−sin x) ÷ (−sin x) = −sin x</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Simplify without a calculator: [sin(180° − x) · cos(−x)] / [cos(90° + x) · sin(90° − x)]</div><div class="example-step"><span class="step-num">1</span><span>sin(180° − x) = sin x (quadrant 2, sin positive).</span></div><div class="example-step"><span class="step-num">2</span><span>cos(−x) = cos x.</span></div><div class="example-step"><span class="step-num">3</span><span>cos(90° + x) = −sin x and sin(90° − x) = cos x.</span></div><div class="example-step"><span class="step-num">4</span><span>Expression = (sin x · cos x)/(−sin x · cos x) = −1.</span></div><div class="example-step"><span class="step-num">5</span><span>Similarly: sin 150° · tan 225° / cos 300° = (½ × 1)/(½) = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Decide the sign from the quadrant of the <strong>original</strong> angle (CAST), then change the ratio only for 90° ± x and 270° ± x.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "sin(90° − x) equals:", options: ["sin x", "cos x", "−cos x", "−sin x"], answer: 1, topic: "Reduction formulae" },
+        { type: "mc", text: "cos(90° + x) equals:", options: ["cos x", "−cos x", "sin x", "−sin x"], answer: 3, topic: "Reduction formulae" },
+        { type: "input", text: "Without a calculator, find sin 150° as a fraction.", answer: "1/2", altAnswers: ["0,5", "0.5"], topic: "Reduction formulae" },
+        { type: "mc", text: "sin(540° + x) simplifies to:", options: ["sin x", "−sin x", "cos x", "−cos x"], answer: 1, topic: "Reduction formulae" },
+        { type: "input", text: "Simplify sin(540° + x)·cos(90° + x) ÷ sin(−x) to a single trig ratio.", answer: "-sinx", altAnswers: ["-sin x", "−sin x", "−sinx"], topic: "Reduction formulae" },
+        { type: "mc", text: "tan(180° − x) equals:", options: ["tan x", "−tan x", "cot x", "−cot x"], answer: 1, topic: "Reduction formulae" },
+        { type: "input", text: "Without a calculator, find cos 120° as a fraction.", answer: "-1/2", altAnswers: ["−1/2", "-0,5", "−0,5"], topic: "Reduction formulae" }
+      ]
+    },
+    {
+      id: 405,
+      chapter: 4,
+      name: "Shifted trigonometric graphs",
+      fullName: "Shifts, amplitude and period of trigonometric graphs",
+      lesson: {
+        heading: "Shifted trigonometric graphs",
+        sub: "Chapter 4 · Topic 6",
+        body: `
+          <p>Shifting a trig graph changes its phase, not its shape. A horizontal shift adds an angle inside the brackets; a vertical shift adds a constant outside them.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Reading a trig graph</div>
+            <p>
+              <span class="math">y = a·f(bx + c) + q</span>: amplitude <span class="math">|a|</span>, period <span class="math">360° ÷ |b|</span> (for sin and cos), and the graph shifts <strong>left by c ÷ b</strong> and up by q.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <div class="example-step"><span class="step-num">1</span><span>cos 2x shifted 45° to the left: cos[2(x + 45°)] = cos(2x + 90°) = −sin 2x.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>y = 2 sin x − 1 has amplitude 2 and range −3 ≤ y ≤ 1.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Sketch-type question: f(x) = 2cos(x − 30°) − 1 for x ∈ [−180°; 180°]</div><div class="example-step"><span class="step-num">1</span><span>Read off the features: amplitude 2, period 360°, shift 30° to the right, then 1 unit down.</span></div><div class="example-step"><span class="step-num">2</span><span>Range: from −2 − 1 = −3 to 2 − 1 = 1, so y ∈ [−3; 1].</span></div><div class="example-step"><span class="step-num">3</span><span>Maximum where x − 30° = 0°: (30°; 1). Minimum where x − 30° = −180°: (−150°; −3).</span></div><div class="example-step"><span class="step-num">4</span><span>x-intercepts: cos(x − 30°) = ½ → x − 30° = ±60° → x = 90° or x = −30°.</span></div><div class="example-step"><span class="step-num">5</span><span>y-intercept: f(0) = 2cos(−30°) − 1 = √3 − 1 ≈ 0,73.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> (x − 30°) shifts the graph 30° to the <strong>right</strong>, not the left. Check by substituting the x-value of a turning point.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "The period of y = sin 2x + 3 is:", options: ["360°", "180°", "90°", "720°"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "cos(2x + 90°) equals:", options: ["cos 2x", "−sin 2x", "sin 2x", "−cos 2x"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "The graph of sin x is shifted 90° to the left. Give the new equation in simplest form.", answer: "cosx", altAnswers: ["cos x", "cos(x)"], topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "The range of y = 2 sin x − 1 is:", options: ["[−1; 1]", "[−3; 1]", "[−2; 0]", "[−1; 2]"], answer: 1, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "The graph of cos x is shifted 90° to the right. Give the new equation in simplest form.", answer: "sinx", altAnswers: ["sin x", "sin(x)"], topic: "Shifted trigonometric graphs" },
+        { type: "mc", text: "The amplitude of y = −3 cos x + 1 is:", options: ["1", "−3", "3", "−1"], answer: 2, topic: "Shifted trigonometric graphs" },
+        { type: "input", text: "Simplify cos(x − 90°) + sin(x + 90°).", answer: "sinx+cosx", altAnswers: ["sin x + cos x", "cosx+sinx", "cos x + sin x"], topic: "Shifted trigonometric graphs" }
+      ]
     }
   ],
   workbook: {
@@ -416,12 +493,18 @@ MathMagician.registerChapter(4, {
       { number: 3, text: "Solve for x ∈ [0°; 360°]:", parts: [
         { label: "a", text: "cos(2x) = cos x", marks: 5 },
         { label: "b", text: "sin(x + 30°) = cos x", marks: 5 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — Answer the trigonometry questions below without a calculator where possible.", parts: [
+        { label: "a", text: "Prove that sin 2x/(1 + cos 2x) = tan x.", marks: 4 },
+        { label: "b", text: "Determine the general solution of cos 2x = sin x.", marks: 6 },
+        { label: "c", text: "PQ is a vertical tower with foot Q. A and B are on level ground with Q, AB = 80 m, ∠QAB = 50° and ∠QBA = 60°. The angle of elevation of P from A is 30°. Calculate AQ and the height PQ.", marks: 5 }
       ]}
     ],
     answers: {
       1: { a: "sin105°=sin60°cos45°+cos60°sin45°=(√3/2)(√2/2)+(½)(√2/2)=√6/4+√2/4=(√6+√2)/4", b: "cos60°=cos²30°−sin²30°=¾−¼=½; =1−2sin²30°=1−½=½; =2cos²30°−1=3/2−1=½ ✓" },
       2: { a: "LHS=(cosxcos45°−sinxsin45°)+(cosxcos45°+sinxsin45°)=2cosxcos45°=2cosx(√2/2)=√2cosx=RHS", b: "LHS=(sinAcosB+cosAsinB)/(sinAcosB−cosAsinB); divide numerator and denominator by cosAcosB → (tanA+tanB)/(tanA−tanB)=RHS" },
-      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½or1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" }
+      3: { a: "cos2x=cosx→2cos²x−1=cosx→2cos²x−cosx−1=0→(2cosx+1)(cosx−1)=0→cosx=−½or1→x=120°,240°,0°,360°", b: "sinxcos30°+cosxsin30°=cosx→(√3/2)sinx+(½)cosx=cosx→(√3/2)sinx=½cosx→tanx=1/√3→x=30°,210°" },
+      4: { a: "LHS = 2 sin x cos x/(1 + 2cos²x − 1) = 2 sin x cos x/(2cos²x) = sin x/cos x = tan x = RHS", b: "1 − 2sin²x = sin x → 2sin²x + sin x − 1 = 0 → (2 sin x − 1)(sin x + 1) = 0. sin x = ½: x = 30° + k·360° or x = 150° + k·360°; sin x = −1: x = 270° + k·360°, k ∈ ℤ", c: "∠AQB = 180° − 50° − 60° = 70°. Sine rule: AQ = 80 sin 60°/sin 70° = 73,7 m. PQ = AQ tan 30° = 42,6 m" }
     }
   }
 });

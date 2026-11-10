@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/repro.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -174,7 +175,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -268,7 +269,7 @@
         <button class="sex-btn active" id="btnMale" onclick="setSex('male')">Manlik</button>
         <button class="sex-btn" id="btnFemale" onclick="setSex('female')">Vroulik</button>
       </div>
-      <canvas id="reproCanvas" height="360" role="img" aria-label="Voortplantingstelsel-verkenner: interaktiewe simulasie"></canvas>
+      <div id="reproFigure"></div>
     </div>
     <div>
       <div class="parts-list" id="partsList"></div>
@@ -293,11 +294,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
     <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Noem die primêre voortplantingsorgaan in die man en in die vrou, en gee wat elkeen produseer.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Waar vind bevrugting normaalweg in die menslike vroulike voortplantingstelsel plaas?</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Noem die VIER hormone betrokke by die beheer van die menstruasiesiklus, en gee EEN rol van elkeen.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik wat met die uteruslyning gebeur as bevrugting NIE plaasvind nie, en waarom dit gebeur.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Beskryf die rol van die plasenta tydens swangerskap.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Noem die primêre voortplantingsorgaan in die man en in die vrou, en gee wat elkeen produseer.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Manlik: testes ✓, wat sperme en testosteroon produseer. Vroulik: ovaria ✓, wat ova (eiers) en estrogeen en progesteroon produseer ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Waar vind bevrugting normaalweg in die menslike vroulike voortplantingstelsel plaas?</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">In die Fallopiusbuis (eierleier) ✓✓, gewoonlik in die boonste derde.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Noem die VIER hormone betrokke by die beheer van die menstruasiesiklus, en gee EEN rol van elkeen.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">FSH — stimuleer die ontwikkeling van ’n follikel in die ovarium ✓; LH — veroorsaak ovulasie en die vorming van die corpus luteum ✓; estrogeen — veroorsaak dat die endometrium verdik (en inhibeer FSH) ✓; progesteroon — handhaaf die verdikte endometrium vir inplanting ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik wat met die uteruslyning gebeur as bevrugting NIE plaasvind nie, en waarom dit gebeur.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Die corpus luteum degenereer ✓, dus daal progesteroon- (en estrogeen-) vlakke ✓. Sonder progesteroon kan die endometrium nie gehandhaaf word nie, dus breek dit af en word saam met bloed afgewerp — menstruasie ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Beskryf die rol van die plasenta tydens swangerskap.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Uitruiling van stowwe tussen moeder en fetus sonder dat hul bloed meng: suurstof en voedingstowwe gaan na die fetus ✓; koolstofdioksied en afvalstowwe gaan na die moeder ✓. Dit skei ook hormone af (progesteroon) wat die swangerskap handhaaf, en dra teenliggaampies aan die fetus oor ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Relatiewe hormoonvlakke is op vier dae van 'n vrou se 28-dae menstruasiesiklus gemeet:<br><br>
     <table class="compare-table" style="margin:10px 0"><thead><tr><th>Dag van siklus</th><th>1</th><th>7</th><th>14</th><th>21</th></tr></thead><tbody>
     <tr><td>Oestrogeen (relatiewe eenhede)</td><td>20</td><td>60</td><td>180</td><td>90</td></tr>
@@ -306,7 +307,8 @@
     </tbody></table>
     (a) Identifiseer, met gebruik van die data, die dag waarop ovulasie waarskynlik plaasvind. Verduidelik jou redenasie, en bereken met watter faktor LH van dag 7 tot dag 14 toeneem.<br>
     (b) Beskryf die verandering in progesteroonvlakke tussen dag 14 en dag 21, en noem die struktuur wat vir die produksie van hierdie progesteroon verantwoordelik is.<br>
-    (c) As bevrugting NIE plaasvind nie, voorspel wat na dag 21 met progesteroonvlakke sal gebeur, en verduidelik die effek wat dit op die uteruslyning het.</div></div>
+    (c) As bevrugting NIE plaasvind nie, voorspel wat na dag 21 met progesteroonvlakke sal gebeur, en verduidelik die effek wat dit op die uteruslyning het.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) Dag 14 ✓ — LH bereik ’n piek (150), en die LH-styging veroorsaak ovulasie ✓; faktor = 150/12 = 12,5 ✓.<br>(b) Progesteroon neem toe van 10 tot 80 eenhede ✓; geproduseer deur die corpus luteum ✓.<br>(c) Die corpus luteum degenereer, dus daal progesteroon; die endometrium word nie meer gehandhaaf nie, breek af en menstruasie begin ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Eksamenstyl-vraag · (12 punte)</div><div class="wb-qtext">Die gekombineerde voorbehoedpil bevat sintetiese estrogeen en progesteroon, wat daagliks geneem word.<br>(a) Noem die hormoon wie se styging ovulasie veroorsaak. (1)<br>(b) Noem TWEE funksies van progesteroon in die menstruele siklus. (2)<br>(c) Verduidelik hoe hoë vlakke estrogeen en progesteroon van die pil ovulasie voorkom. (4)<br>(d) Beskryf die gebeure vanaf ovulasie tot inplanting as bevrugting plaasvind. (5)</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) LH (luteïniserende hormoon) ✓<br>(b) Handhaaf/verdik die endometrium ✓; inhibeer FSH- (en LH-) afskeiding ✓ (ook: berei die uterus voor vir inplanting)<br>(c) Hoë vlakke van hierdie hormone word deur die hipotalamus/pituïtêre klier bespeur ✓ en inhibeer die afskeiding van FSH ✓ en LH ✓ (negatiewe terugvoer); sonder FSH ontwikkel geen follikel nie en sonder die LH-styging word geen ovum vrygestel nie ✓.<br>(d) Die ovum word in die Fallopiusbuis vrygestel ✓; ’n sperm bevrug dit in die Fallopiusbuis en vorm ’n sigoot ✓; die sigoot deel deur mitose terwyl dit na die uterus beweeg ✓, en vorm ’n bal selle (blastosist) ✓ wat in die verdikte endometrium inplant ✓.</div></details></div>
   </div>
 </div>
 
@@ -331,6 +333,9 @@ const MALE_PARTS = [
   {id:'epididymis', name:"Epididimis", color:'#93c5fd', desc:"'n Opgerolde buis waar sperm ryp word en gestoor word nadat dit in die testis geproduseer is."},
   {id:'vasdeferens', name:"Vas deferens", color:'#fbbf24', desc:"'n Spierbuis wat ryp sperm tydens ejakulasie vanaf die epididimis na die uretra vervoer."},
   {id:'prostate', name:"Prostaatklier", color:'#c084fc', desc:"Voeg vloeistof by semen wat sperm voed en help vervoer."},
+  {id:'seminalvesicle', name:"Saadblasies", color:'#a78bfa', desc:"Kliere agter die blaas wat ’n suikerryke (fruktose) vloeistof by semen voeg, wat sperm energie gee om te swem."},
+  {id:'cowper', name:"Cowper se kliere", color:'#e879f9', desc:"Klein kliere onder die prostaat wat voor ejakulasie ’n helder alkaliese slym vrystel wat suur in die uretra neutraliseer en dit smeer."},
+  {id:'urethra', name:"Uretra", color:'#fbbf24', desc:"Die buis deur die prostaat en penis wat semen (en op ander tye urine) uit die liggaam dra."},
   {id:'penis', name:"Penis", color:'#f472b6', desc:"Die orgaan waardeur semen tydens geslagsgemeenskap in die vagina afgesit word, wat interne bevrugting moontlik maak."},
 ];
 const FEMALE_PARTS = [
@@ -371,62 +376,21 @@ function selectPart(id){
   drawSystem();
 }
 
-const canvas = document.getElementById('reproCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 360;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawSystem();
-}
-
-const REGIONS = {};
-function computeRegionsMale(){
-  const cx = W/2, cy = H*0.5;
-  REGIONS.prostate = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx,cy-40,20,16,0,0,Math.PI*2); }};
-  REGIONS.vasdeferens = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-40,cy-10); ctx.lineTo(cx-14,cy-34); ctx.lineTo(cx+2,cy-30); ctx.lineTo(cx-26,cy-4); ctx.closePath(); }};
-  REGIONS.testis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy+10,20,26,0,0,Math.PI*2); }};
-  REGIONS.epididymis = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-42,cy-16,10,16,0.3,0,Math.PI*2); }};
-  REGIONS.penis = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-10,cy+40,20,90); }};
-}
-function computeRegionsFemale(){
-  const cx = W/2, cy = H*0.42;
-  REGIONS.ovary = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-70,cy,18,14,0,0,Math.PI*2); }};
-  REGIONS.oviduct = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-58,cy); ctx.quadraticCurveTo(cx-30,cy-30,cx-8,cy-6); ctx.lineTo(cx-14,cy+2); ctx.quadraticCurveTo(cx-34,cy-20,cx-54,cy+8); ctx.closePath(); }};
-  REGIONS.uterus = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-30,cy-4); ctx.quadraticCurveTo(cx,cy-40,cx+30,cy-4); ctx.lineTo(cx+16,cy+56); ctx.lineTo(cx-16,cy+56); ctx.closePath(); }};
-  REGIONS.cervix = {shape:()=>{ ctx.beginPath(); ctx.rect(cx-11,cy+56,22,20); }};
-  REGIONS.vagina = {shape:()=>{ ctx.beginPath(); ctx.moveTo(cx-14,cy+76); ctx.lineTo(cx+14,cy+76); ctx.lineTo(cx+20,cy+140); ctx.lineTo(cx-20,cy+140); ctx.closePath(); }};
-}
-
-function drawSystem(){
-  ctx.clearRect(0,0,W,H);
-  const parts = currentParts();
-  if (currentSex==='male') computeRegionsMale(); else computeRegionsFemale();
-
-  parts.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '55');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
-  });
-
-  requestAnimationFrame(drawSystem);
-}
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX-rect.left)*(W/rect.width), my = (e.clientY-rect.top)*(H/rect.height);
-  for (const p of currentParts()){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
+/* Diagram: assets/explore/repro.js (textbook side view of the male system, front view of the female system) */
+let reproFig = null, reproFigSex = null;
+function drawSystem() {
+  if (!window.MLRepro) return;
+  const sex = currentSex === 'male' ? 'm' : 'f';
+  if (!reproFig || reproFigSex !== sex) {
+    reproFigSex = sex;
+    reproFig = MLRepro.mount(document.getElementById('reproFigure'), {
+      sex: sex,
+      onPick: function (id) { if (currentParts().some(p => p.id === id)) selectPart(id); }
+    });
   }
-});
-
+  reproFig.focus(activePart ? [activePart.id] : []);
+}
+function resizeCanvas() {}
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();

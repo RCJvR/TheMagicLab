@@ -96,6 +96,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always fill in the Venn diagram from the <strong>inside out</strong> — start with the intersection, then subtract to get each "only" region, then find "neither" last.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: 30 learners: 18 like maths, 12 like science and 5 like both</div><div class="example-step"><span class="step-num">1</span><span>Venn diagram: both = 5; maths only = 13; science only = 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Neither = 30 − (13 + 5 + 7) = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>P(maths or science) = 25/30 = 5/6.</span></div><div class="example-step"><span class="step-num">4</span><span>P(science only) = 7/30.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Start with the overlap; otherwise the 5 learners who like both are counted twice.</span></div>
         `
       },
       questions: [
@@ -288,6 +289,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For "at least one" problems, always use the complement: P(at least one) = 1 − P(none). It's much faster than adding all the individual cases.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: P(A) = 0,3 and P(B) = 0,45</div><div class="example-step"><span class="step-num">1</span><span>If A and B are mutually exclusive: P(A or B) = 0,3 + 0,45 = 0,75.</span></div><div class="example-step"><span class="step-num">2</span><span>Complement: P(not A) = 1 − 0,3 = 0,7.</span></div><div class="example-step"><span class="step-num">3</span><span>If instead P(A and B) = 0,1: P(A or B) = 0,3 + 0,45 − 0,1 = 0,65.</span></div><div class="example-step"><span class="step-num">4</span><span>Mutually exclusive events have P(A and B) = 0.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Only add probabilities directly when the events cannot happen together.</span></div>
         `
       },
       questions: [
@@ -406,6 +408,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Never say relative frequency "should" match theoretical probability exactly after a small number of trials — variation is expected and only reduces (on average) as trials increase.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A die is rolled 60 times and a six appears 14 times</div><div class="example-step"><span class="step-num">1</span><span>Relative frequency of a six = 14/60 = 0,23.</span></div><div class="example-step"><span class="step-num">2</span><span>Theoretical probability = 1/6 ≈ 0,17.</span></div><div class="example-step"><span class="step-num">3</span><span>Expected number of sixes in 60 rolls = 60 × 1/6 = 10.</span></div><div class="example-step"><span class="step-num">4</span><span>With many more rolls the relative frequency should get closer to 1/6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Relative frequency comes from an experiment and changes with every trial; theoretical probability does not.</span></div>
         `
       },
       questions: [
@@ -535,6 +538,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Two-way tables and Venn diagrams show exactly the same information in different layouts — if a question gives you one, you can always redraw it as the other, whichever helps you think more clearly.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A survey of 50 learners: boys — walk 12, taxi 18; girls — walk 15, taxi 5</div><div class="example-step"><span class="step-num">1</span><span>Totals: boys 30, girls 20; walk 27, taxi 23.</span></div><div class="example-step"><span class="step-num">2</span><span>P(girl) = 20/50 = 0,4; P(walk) = 27/50 = 0,54.</span></div><div class="example-step"><span class="step-num">3</span><span>P(girl and walks) = 15/50 = 0,3.</span></div><div class="example-step"><span class="step-num">4</span><span>P(girl) × P(walk) = 0,216 ≠ 0,3, so being a girl and walking are not independent.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Read the joint probability from the inside of the table; the totals give the single-event probabilities.</span></div>
         `
       },
       questions: [
@@ -632,7 +636,8 @@ MathMagician.registerChapter(14, {
           { label: "d", text: "Use the addition rule, with values read from the table, to find P(plays an instrument OR a sport).", marks: 3 },
           { label: "e", text: "Find P(plays neither).", marks: 1 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Exam-style question</strong> — In a survey of 80 learners, 45 play soccer (S), 30 play netball (N) and 10 play both.", parts: [{ label: "a", text: "Draw a Venn diagram to show this information.", marks: 4 }, { label: "b", text: "Calculate P(S or N).", marks: 2 }, { label: "c", text: "Calculate the probability that a learner plays neither sport.", marks: 1 }, { label: "d", text: "Are S and N mutually exclusive? Give a reason.", marks: 2 }, { label: "e", text: "Show that P(S or N) = P(S) + P(N) − P(S and N).", marks: 2 }, { label: "f", text: "A die is rolled 60 times and a 6 comes up 14 times. Compare the relative frequency with the theoretical probability, and say what you expect if the die is rolled many more times.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -658,7 +663,8 @@ MathMagician.registerChapter(14, {
         c: "P(Instrument ∩ Sport) = 18/120 = 3/20 = 0.15",
         d: "P(Instrument) = 30/120 = 0.25; P(Instrument ∪ Sport) = P(Instrument)+P(Sport)−P(Instrument∩Sport) = 0.25+0.6−0.15 = 0.7",
         e: "P(neither) = 36/120 = 0.3"
-      }
+      },
+      5: { a: "S only: 35; both: 10; N only: 20; neither: 15 (total 80)", b: "(35 + 10 + 20)/80 = 65/80 = 13/16", c: "15/80 = 3/16", d: "No: P(S and N) = 10/80 ≠ 0 (some learners play both)", e: "45/80 + 30/80 − 10/80 = 65/80 = P(S or N)", f: "Relative frequency 14/60 = 0,23; theoretical probability 1/6 = 0,17; with many more rolls the relative frequency should get closer to 1/6" }
     }
   }
 });

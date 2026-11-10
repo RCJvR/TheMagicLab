@@ -105,6 +105,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Rekenkundige en meetkundige rye</div><div class="example-step"><span class="step-num">1</span><span>Watter term van 3; 7; 11; … is 403? Tₙ = 3 + (n − 1)4 = 4n − 1 = 403 → n = 101.</span></div><div class="example-step"><span class="step-num">2</span><span>’n Meetkundige ry het T₃ = 12 en T₆ = 96. Deel: ar⁵/ar² = r³ = 8 → r = 2.</span></div><div class="example-step"><span class="step-num">3</span><span>Dan is a = 12/r² = 3, dus T₁₀ = 3 × 2⁹ = 1 536.</span></div><div class="example-step"><span class="step-num">4</span><span>Som van die eerste 10 terme: S₁₀ = 3(2¹⁰ − 1)/(2 − 1) = 3 069.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Om twee terme van ’n meetkundige ry te deel, elimineer a en gee r — ’n vinniger roete as vervanging.</span></div>
         `
       },
       questions: [
@@ -236,6 +237,7 @@ MathMagician.registerChapter(1, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vir watter waardes van x konvergeer Σ (2x − 1)ᵏ van k = 1 tot ∞? Bepaal die som wanneer x = ¾</div><div class="example-step"><span class="step-num">1</span><span>Dit is ’n meetkundige reeks met r = 2x − 1.</span></div><div class="example-step"><span class="step-num">2</span><span>Dit konvergeer wanneer −1 &lt; r &lt; 1 (r ≠ 0): −1 &lt; 2x − 1 &lt; 1 → 0 &lt; x &lt; 1, x ≠ ½.</span></div><div class="example-step"><span class="step-num">3</span><span>x = ¾: r = ½ en die eerste term a = ½.</span></div><div class="example-step"><span class="step-num">4</span><span>S∞ = a/(1 − r) = ½ ÷ ½ = 1.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die eerste term word gevind deur die beginwaarde van k (hier k = 1) te vervang, nie k = 0 nie.</span></div>
         `
       },
       questions: [
@@ -454,6 +456,13 @@ MathMagician.registerChapter(1, {
         { label: "a", text: "Gebruik twee opeenvolgende saldo's uit die tabel om die gemeenskaplike verhouding r te bepaal.", marks: 2 },
         { label: "b", text: "Skryf die algemene term Tₙ vir hierdie ry neer in die vorm Tₙ = a·rⁿ.", marks: 2 },
         { label: "c", text: "Gebruik jou formule om die saldo aan die einde van jaar 10 te voorspel (tot die naaste sent).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Die som van die eerste n terme van ’n ry is S<sub>n</sub> = 3n² + 2n. ’n Aparte meetkundige reeks is 24 + 12 + 6 + …", parts: [
+        { label: "a", text: "Skryf T₁ neer.", marks: 1 },
+        { label: "b", text: "Bereken T₂.", marks: 2 },
+        { label: "c", text: "Toon dat die ry rekenkundig is en bepaal ’n formule vir T<sub>n</sub>.", marks: 4 },
+        { label: "d", text: "Bepaal die kleinste aantal terme van die meetkundige reeks waarvan die som 47,9 oorskry.", marks: 4 },
+        { label: "e", text: "Bereken Σ (6k − 1) van k = 1 tot 20.", marks: 3 }
       ]}
     ],
     answers: {
@@ -465,7 +474,8 @@ MathMagician.registerChapter(1, {
         a: "r = 1102,50 ÷ 1050,00 = 1,05",
         b: "a = 1000 (die deposito voor rente); Tₙ = 1000(1,05)ⁿ",
         c: "T₁₀ = 1000(1,05)¹⁰ ≈ R1 628,89"
-      }
+      },
+      6: { a: "T₁ = S₁ = 3 + 2 = 5", b: "S₂ = 12 + 4 = 16, dus T₂ = S₂ − S₁ = 11", c: "T<sub>n</sub> = S<sub>n</sub> − S<sub>n−1</sub> = 3n² + 2n − [3(n − 1)² + 2(n − 1)] = 6n − 1. T<sub>n</sub> − T<sub>n−1</sub> = 6, ’n konstante, dus is die ry rekenkundig met d = 6.", d: "a = 24, r = ½: S<sub>n</sub> = 48(1 − 0,5ⁿ) &gt; 47,9 → 0,5ⁿ &lt; 0,00208 → n &gt; 8,9, dus n = 9 terme", e: "Rekenkundig: a = 5, l = 119, n = 20: S = 20/2 × (5 + 119) = 1 240" }
     }
   }
 });

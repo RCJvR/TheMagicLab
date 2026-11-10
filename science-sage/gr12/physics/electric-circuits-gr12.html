@@ -144,7 +144,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -254,14 +254,14 @@
 
     <h2>Worked Example 2 — Finding Internal Resistance from Data</h2>
     <div class="callout">
-      <strong>Problem:</strong> A battery drives a current of 3 A through an 8 Ω resistor, and the terminal PD is 24 V. Find ε and r.<br><br>
+      <strong>Problem:</strong> A voltmeter across a battery reads 25.5 V when no current flows. When the battery drives a current of 3 A through an 8 Ω resistor, the terminal PD is 24 V. Find ε and r.<br><br>
       V<sub>terminal</sub> = IR → 24 = 3×8 ✓ (consistent)<br>
-      ε = V<sub>terminal</sub> + Ir → we need r, but let's say the battery also shows 25.5 V on open circuit → ε = 25.5 V<br>
+      With no current there are no lost volts, so the open-circuit reading is the emf: ε = 25.5 V<br>
       r = (ε − V<sub>terminal</sub>)/I = (25.5 − 24)/3 = 1.5/3 = <strong>0.5 Ω</strong>
     </div>
 
     <div class="ieb-block">
-      <div class="ieb-block-title">IEB Extension — Multi-branch Kirchhoff Analysis</div>
+      <div class="ieb-block-title">Enrichment, beyond the 2025 DBE and IEB papers — Multi-branch Kirchhoff Analysis</div>
       <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">IEB circuits often have two or more loops and multiple unknown currents. Apply KVL to each independent loop:</p>
       <ul style="font-size:13.5px;color:rgba(210,218,245,.70);line-height:1.85;margin-left:18px;margin-bottom:10px">
         <li>Label a current direction for each branch (guess if unsure — a negative answer means the actual direction is opposite)</li>
@@ -431,7 +431,7 @@
     </div>
 
     <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
-      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">Enrichment questions (beyond the exam)</div>
       <div class="q-card">
         <div class="q-num">IEB Question 1</div>
         <div class="q-text">A circuit contains two batteries in series: ε₁ = 6 V (r₁ = 0.5 Ω) and ε₂ = 4 V (r₂ = 0.5 Ω) opposing each other, and an external resistor R = 4 Ω. Using KVL, the current in the circuit is:</div>
@@ -455,19 +455,20 @@
     <div class="wb-q">
       <div class="wb-qnum">Question 1 — Internal Resistance from Graph (6 marks)</div>
       <div class="wb-qtext">A student measures the terminal PD of a battery for different currents and plots a V vs I graph. The graph is a straight line with y-intercept at 8 V and x-intercept at 4 A. (a) What does the y-intercept represent? (b) What does the x-intercept represent physically? (c) Determine the EMF of the battery. (d) Calculate the internal resistance from the gradient of the graph. (e) Write the equation of the line in the form V = ε − Ir. (f) Calculate V<sub>terminal</sub> when I = 1.5 A.</div>
-    </div>
+    <details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) The emf — the terminal pd when no current flows.<br>(b) The short-circuit current: V = 0, so the whole emf is across the internal resistance.<br>(c) ε = 8 V<br>(d) Gradient = −8/4 = −2, so r = 2 Ω<br>(e) V = 8 − 2I<br>(f) V = 8 − 2(1,5) = 5 V</div></details></div>
     <div class="wb-q">
       <div class="wb-qnum">Question 2 — Series Circuit (7 marks)</div>
       <div class="wb-qtext">A battery (ε = 15 V, r = 0.8 Ω) is connected to two resistors in series: R₁ = 4 Ω and R₂ = 6.2 Ω. (a) Calculate the total resistance of the circuit. (b) Calculate the current drawn from the battery. (c) Calculate the terminal potential difference. (d) Calculate the potential difference across R₁ only. (e) Calculate the potential difference across R₂ only. (f) Verify your answers using KVL around the complete loop. (g) Calculate the power delivered to R₂.</div>
-    </div>
+    <details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) R<sub>total</sub> = 4 + 6,2 + 0,8 = 11 Ω<br>(b) I = ε/R<sub>total</sub> = 15/11 = 1,36 A<br>(c) V<sub>terminal</sub> = ε − Ir = 15 − 1,36(0,8) = 13,91 V<br>(d) V₁ = IR₁ = 1,36 × 4 = 5,45 V<br>(e) V₂ = 1,36 × 6,2 = 8,45 V<br>(f) 5,45 + 8,45 + 1,09 (lost volts) = 15 V = ε ✓<br>(g) P = I²R₂ = 1,36² × 6,2 = 11,5 W</div></details></div>
     <div class="wb-q">
       <div class="wb-qnum">Question 3 — Parallel Circuit with Internal Resistance (7 marks)</div>
       <div class="wb-qtext">A battery (ε = 12 V, r = 1 Ω) is connected to two resistors in parallel: R₁ = 6 Ω and R₂ = 12 Ω. (a) Calculate the equivalent external resistance. (b) Calculate the total current from the battery. (c) Calculate the terminal potential difference. (d) Calculate the current through R₁. (e) Calculate the current through R₂. (f) Verify using KCL. (g) Calculate the efficiency of the circuit (useful power / total power).</div>
-    </div>
+    <details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) 1/R<sub>p</sub> = 1/6 + 1/12 → R<sub>p</sub> = 4 Ω<br>(b) I = 12/(4 + 1) = 2,4 A<br>(c) V<sub>terminal</sub> = 12 − 2,4(1) = 9,6 V<br>(d) I₁ = 9,6/6 = 1,6 A<br>(e) I₂ = 9,6/12 = 0,8 A<br>(f) 1,6 + 0,8 = 2,4 A ✓<br>(g) Efficiency = VI/εI = 9,6/12 = 80%</div></details></div>
     <div class="wb-q">
       <div class="wb-qnum">Question 4 — Determining EMF and Internal Resistance Experimentally (5 marks)</div>
       <div class="wb-qtext">A learner connects a battery to a variable resistor and measures the following: when R = 10 Ω, I = 0.9 A and V<sub>terminal</sub> = 9 V. When R = 4 Ω, I = 1.8 A and V<sub>terminal</sub> = 7.2 V. (a) Using the equation ε = V + Ir, set up two simultaneous equations. (b) Solve for ε and r. (c) Calculate the short-circuit current (R = 0). (d) Explain why it is dangerous to short-circuit a battery with low internal resistance. (e) At what value of external resistance will exactly half the EMF appear across the terminals?</div>
-    </div>
+    <details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) ε = 9 + 0,9r and ε = 7,2 + 1,8r<br>(b) 9 + 0,9r = 7,2 + 1,8r → r = 2 Ω; ε = 9 + 1,8 = 10,8 V<br>(c) I = ε/r = 10,8/2 = 5,4 A<br>(d) With a very small internal resistance the current becomes very large, causing rapid heating that can damage the battery, melt wires or start a fire.<br>(e) When R = r = 2 Ω, the pd is shared equally, so V = ε/2.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Exam-style question · (14 marks)</div><div class="wb-qtext">A battery with an emf of 12 V and an internal resistance of 0,5 Ω is connected to resistor R₁ = 4 Ω in series with a parallel combination of R₂ = 6 Ω and R₃ = 3 Ω. Switch S is in series with R₃ only. A voltmeter is connected across the battery.<br>(a) With S open, calculate the current in the battery and the voltmeter reading. (5)<br>(b) S is now closed. Calculate the new current in the battery and the new voltmeter reading. (5)<br>(c) Explain why the voltmeter reading changes when S is closed. (2)<br>(d) Calculate the power dissipated in R₂ while S is closed. (2)</div><details class="wb-memo"><summary>Show memo</summary><div class="wb-memo-body">(a) R<sub>ext</sub> = 4 + 6 = 10 Ω ✓; I = ε/(R + r) = 12/10,5 ✓ = 1,14 A ✓; V = ε − Ir = 12 − 1,14(0,5) ✓ = 11,43 V ✓<br>(b) R<sub>p</sub> = (6 × 3)/(6 + 3) = 2 Ω ✓; R<sub>ext</sub> = 6 Ω ✓; I = 12/6,5 = 1,85 A ✓; V = 12 − 1,85(0,5) ✓ = 11,08 V ✓<br>(c) Closing S lowers the total resistance, so the current increases ✓; the lost volts (Ir) increase, so the terminal potential difference decreases ✓.<br>(d) V<sub>p</sub> = IR<sub>p</sub> = 1,85 × 2 = 3,69 V ✓; P = V²/R = 3,69²/6 = 2,27 W ✓</div></details></div>
   </div>
 </div>
 

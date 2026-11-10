@@ -345,3 +345,102 @@
   });
   window.DD_AF = T;
 })();
+
+// geometric-constructions-extra.data.js
+(function () {
+  const SHOW = " Toon al die konstruksies vir die raaklyne en raakboë.";
+  const T = {
+    "Divide a Line in a Given Ratio ({0} : {1})": "Verdeel 'n lyn in 'n gegewe verhouding ({0} : {1})",
+    "Divide a line into parts in a given ratio: step off {0} + {1} = {2} equal spaces on a line at an angle, join the last mark to the end, and draw a parallel through mark {3}.":
+      "Verdeel 'n lyn in dele volgens 'n gegewe verhouding: stap {0} + {1} = {2} gelyke spasies af op 'n lyn teen 'n hoek, verbind die laaste merk met die eindpunt, en trek 'n parallelle lyn deur merk {3}.",
+    "Line AB is {0} mm long. Divide it in the ratio {1} : {2} by construction. Show all construction and measure the two parts.":
+      "Lyn AB is {0} mm lank. Verdeel dit deur konstruksie in die verhouding {1} : {2}. Toon alle konstruksie en meet die twee dele.",
+    "Draw AB, {0} long.": "Trek AB, {0} lank.",
+    "The ratio {0} : {1} has {2} + {3} = {4} parts. From A draw a thin line AC at about {5}° to AB.": "Die verhouding {0} : {1} het {2} + {3} = {4} dele. Trek vanaf A 'n dun lyn AC teen ongeveer {5}° met AB.",
+    "Set the compass to any convenient radius ({0}) and step off FIVE equal spaces along AC from A: marks {1} to {2}.": "Stel die passer op enige gerieflike radius ({0}) en stap VYF gelyke spasies langs AC vanaf A af: merke {1} tot {2}.",
+    "Join mark {0} to B.": "Verbind merk {0} met B.",
+    "Slide a set square along a ruler to draw a line through mark {0} PARALLEL to {1}B. It cuts AB at P.": "Skuif 'n tekendriehoek langs 'n liniaal om 'n lyn deur merk {0} PARALLEL aan {1}B te trek. Dit sny AB by P.",
+    "AP : PB = {0} : {1}. Measure to check: AP = {2} and PB = {3}.": "AP : PB = {0} : {1}. Meet om te kontroleer: AP = {2} en PB = {3}.",
+
+    "Square Inscribed in a Circle": "Vierkant ingeskryf in 'n sirkel",
+    "Two diameters at right angles cut the circle at the four corners of a square: the second diameter is the perpendicular bisector of the first.":
+      "Twee middellyne haaks op mekaar sny die sirkel by die vier hoeke van 'n vierkant: die tweede middellyn is die middelloodlyn van die eerste.",
+    "Draw a circle of Ø{0}. Inscribe a square in it by construction. Show all construction.": "Trek 'n sirkel van Ø{0}. Skryf deur konstruksie 'n vierkant daarin in. Toon alle konstruksie.",
+    "Draw the circle, centre O, radius {0}.": "Trek die sirkel, middelpunt O, radius {0}.",
+    "Draw a horizontal diameter AB through O.": "Trek 'n horisontale middellyn AB deur O.",
+    "Bisect AB: with centres A and B and radius {0} (more than half of AB), draw arcs that cross above and below the circle at E and F.":
+      "Halveer AB: trek met middelpunte A en B en radius {0} (meer as die helfte van AB) boë wat bo en onder die sirkel by E en F kruis.",
+    "Join E and F: the second diameter, at {0}° to AB. It cuts the circle at C and D.": "Verbind E en F: die tweede middellyn, teen {0}° met AB. Dit sny die sirkel by C en D.",
+    "Join A, C, B and D with thick lines: the inscribed square. Each side is r√{0} ≈ {1},{2}.": "Verbind A, C, B en D met dik lyne: die ingeskrewe vierkant. Elke sy is r√{0} ≈ {1},{2}.",
+
+    "Regular Heptagon in a Circle (General Method)": "Reëlmatige sewehoek in 'n sirkel (algemene metode)",
+    "The general method for any regular polygon in a circle: divide the diameter into as many equal parts as the polygon has sides, and draw a line from an arc intersection through division {0}.":
+      "Die algemene metode vir enige reëlmatige veelhoek in 'n sirkel: verdeel die middellyn in soveel gelyke dele as wat die veelhoek sye het, en trek 'n lyn vanaf 'n boogsnypunt deur verdeling {0}.",
+    "Draw a circle of Ø{0} and inscribe a regular heptagon (seven sides) in it, using the general method. Show all construction.":
+      "Trek 'n sirkel van Ø{0} en skryf 'n reëlmatige sewehoek (sewe sye) daarin in met die algemene metode. Toon alle konstruksie.",
+    "Draw the circle, centre O, radius {0}, and a vertical diameter AB.": "Trek die sirkel, middelpunt O, radius {0}, en 'n vertikale middellyn AB.",
+    "A heptagon has {0} sides, so divide AB into {1} equal parts: step {2} equal spaces along a thin line from A, join the last mark to B, and draw parallels through the other marks.":
+      "'n Sewehoek het {0} sye, dus verdeel AB in {1} gelyke dele: stap {2} gelyke spasies af langs 'n dun lyn vanaf A, verbind die laaste merk met B, en trek parallelle lyne deur die ander merke.",
+    "With centres A and B and radius AB ({0}), draw arcs that cross at E, outside the circle.": "Trek met middelpunte A en B en radius AB ({0}) boë wat by E, buite die sirkel, kruis.",
+    "Draw a line from E through division {0} and on to the circle at C. AC is one side of the heptagon. (Always use division {1}, whatever the number of sides.)":
+      "Trek 'n lyn vanaf E deur verdeling {0} en verder tot by die sirkel by C. AC is een sy van die sewehoek. (Gebruik altyd verdeling {1}, ongeag die aantal sye.)",
+    "Set the compass to AC and step it round the circle from C to mark the other corners.": "Stel die passer op AC en stap dit vanaf C om die sirkel om die ander hoeke te merk.",
+    "Join the corners with thick lines. The general method is very close but not exact: if the last side differs slightly, share the error round the circle.":
+      "Verbind die hoeke met dik lyne. Die algemene metode is baie naby maar nie presies nie: as die laaste sy effens verskil, versprei die fout om die sirkel.",
+
+    "Tangent Arc in an Acute Angle": "Raakboog in 'n skerp hoek",
+    "Round off a {0}° corner with an R{1} arc: the centre lies {2} from both lines, found with two parallel lines, and the tangent points lie square to the lines from the centre.":
+      "Rond 'n hoek van {0}° af met 'n R{1}-boog: die middelpunt lê {2} van albei lyne af, gevind met twee parallelle lyne, en die raakpunte lê haaks op die lyne vanaf die middelpunt.",
+    "Two lines meet at {0}°. Round off the corner with an arc of radius {1} that touches both lines. Show all construction and the tangent points.":
+      "Twee lyne ontmoet teen {0}°. Rond die hoek af met 'n boog met radius {1} wat albei lyne raak. Toon alle konstruksie en die raakpunte.",
+    "Draw the two lines meeting at V at {0}°.": "Trek die twee lyne wat by V teen {0}° ontmoet.",
+    "With radius {0}, swing arcs from two points on each line, on the inside of the angle.": "Swaai met radius {0} boë vanaf twee punte op elke lyn, aan die binnekant van die hoek.",
+    "Draw a line touching each pair of arcs, parallel to its line. The two parallels cross at O, the centre of the arc.": "Trek 'n lyn wat elke paar boë raak, parallel aan sy lyn. Die twee parallelle lyne kruis by O, die middelpunt van die boog.",
+    "From O draw lines square to each line: the tangent points T{0} and T{1}.": "Trek vanaf O lyne haaks op elke lyn: die raakpunte T{0} en T{1}.",
+    "With centre O and radius {0}, draw the arc from T{1} to T{2}. Line in the straight lines from the tangent points outwards (thick).":
+      "Trek met middelpunt O en radius {0} die boog van T{1} tot T{2}. Trek die reguit lyne vanaf die raakpunte na buite uit (dik).",
+
+    "Tangent Arc Touching One Circle and Enclosing Another": "Raakboog wat een sirkel raak en 'n ander omsluit",
+    "An R{0} arc that touches circle A on the outside and wraps round circle B: from A the radius is R + r, from B it is R − r.":
+      "'n R{0}-boog wat sirkel A aan die buitekant raak en om sirkel B draai: vanaf A is die radius R + r, vanaf B is dit R − r.",
+    "Circle A is Ø{0} and circle B is Ø{1}; B is {2} to the right of A and {3} higher. Draw an R{4} arc that touches A on the outside and encloses B. Show all construction and the tangent points.":
+      "Sirkel A is Ø{0} en sirkel B is Ø{1}; B is {2} regs van A en {3} hoër. Trek 'n R{4}-boog wat A aan die buitekant raak en B omsluit. Toon alle konstruksie en die raakpunte.",
+    "Draw the two circles: A, radius {0}, and B, radius {1}, with their centre lines.": "Trek die twee sirkels: A, radius {0}, en B, radius {1}, met hulle middellyne.",
+    "The arc touches A on the OUTSIDE: from A draw an arc of radius {0} + {1} = {2}.": "Die boog raak A aan die BUITEKANT: trek vanaf A 'n boog met radius {0} + {1} = {2}.",
+    "The arc ENCLOSES B: from B draw an arc of radius {0} − {1} = {2}. The two arcs cross at O.": "Die boog OMSLUIT B: trek vanaf B 'n boog met radius {0} − {1} = {2}. Die twee boë kruis by O.",
+    "Join O to A: it cuts circle A at the tangent point TA. Draw a line from O through B, extended to circle B: the tangent point TB.":
+      "Verbind O met A: dit sny sirkel A by die raakpunt TA. Trek 'n lyn vanaf O deur B, verleng tot by sirkel B: die raakpunt TB.",
+    "With centre O and radius {0}, draw the arc from TA to TB (thick).": "Trek met middelpunt O en radius {0} die boog van TA tot TB (dik).",
+
+    "Ellipse: Trammel Method": "Ellips: ellipspassermetode (papierstrook)",
+    "A paper strip (trammel) marked with half the major and half the minor axis: keep one mark on each axis and the end of the strip traces the ellipse.":
+      "'n Papierstrook (ellipspasser) gemerk met die helfte van die hoofas en die helfte van die neweas: hou een merk op elke as en die punt van die strook trek die ellips.",
+    "Draw an ellipse with a major axis of {0} and a minor axis of {1} by the trammel method. Show at least twelve plotted points.":
+      "Trek 'n ellips met 'n hoofas van {0} en 'n neweas van {1} met die ellipspassermetode. Toon ten minste twaalf gestipte punte.",
+    "Draw the major axis AB ({0}) and the minor axis CD ({1}), crossing at right angles at their midpoints.": "Trek die hoofas AB ({0}) en die neweas CD ({1}), wat mekaar haaks by hulle middelpunte kruis.",
+    "Make the trammel: on the straight edge of a paper strip mark P near one end, then Q {0} from P (half the minor axis) and R {1} from P (half the major axis).":
+      "Maak die ellipspasser: merk op die reguit rand van 'n papierstrook P naby een ent, dan Q {0} van P af (die helfte van die neweas) en R {1} van P af (die helfte van die hoofas).",
+    "Lay the strip so that Q is on the major axis and R is on the minor axis. Mark the paper at P: a point on the ellipse.": "Lê die strook so dat Q op die hoofas en R op die neweas is. Merk die papier by P: 'n punt op die ellips.",
+    "Move the strip, keeping Q on the major axis and R on the minor axis, and mark P again: work round all four quadrants for twelve or more points.":
+      "Skuif die strook, hou Q op die hoofas en R op die neweas, en merk P weer: werk deur al vier kwadrante vir twaalf of meer punte.",
+    "Join the points with a smooth freehand curve (or a French curve), thick.": "Verbind die punte met 'n gladde vryhandkurwe (of 'n kurwelineaal), dik.",
+
+    "Copy a Figure: Gear Lever": "Kopieer 'n figuur: rathefboom",
+    "A two-boss lever with a large R{0} arc wrapped round both bosses on one side and an R{1} concave arc on the other.": "'n Hefboom met twee nawe, met 'n groot R{0}-boog om albei nawe aan een kant en 'n hol R{1}-boog aan die ander kant.",
+    "Copy the gear lever to scale {0}:{1}. Bosses A: R{2}, hole Ø{3}; B: R{4}, hole Ø{5}. B is {6} right and {7} up from A. An R{8} arc encloses both bosses on one side; an R{9} concave arc joins them on the other. Show all constructions for the tangents and tangent arcs.":
+      "Kopieer die rathefboom op skaal {0}:{1}. Nawe A: R{2}, gat Ø{3}; B: R{4}, gat Ø{5}. B is {6} regs en {7} op van A. 'n R{8}-boog omsluit albei nawe aan een kant; 'n hol R{9}-boog verbind hulle aan die ander kant." + SHOW,
+    "Copy a Figure: Swing Link": "Kopieer 'n figuur: swaaiskakel",
+    "A three-boss swing link: an R{0} concave arc, a straight tangent and a big R{1} arc enclosing the two lower bosses.": "'n Swaaiskakel met drie nawe: 'n hol R{0}-boog, 'n reguit raaklyn en 'n groot R{1}-boog wat die twee onderste nawe omsluit.",
+    "Copy the swing link to scale {0}:{1}. Bosses A: R{2}, hole Ø{3}; B: R{4}, hole Ø{5}; C: R{6}, hole Ø{7}. B is {8} right and {9} up from A; C is {10} right and {11} up from A. An R{12} concave arc joins A and B, a straight tangent joins B and C, and an R{13} arc encloses C and A. Show all constructions for the tangents and tangent arcs.":
+      "Kopieer die swaaiskakel op skaal {0}:{1}. Nawe A: R{2}, gat Ø{3}; B: R{4}, gat Ø{5}; C: R{6}, gat Ø{7}. B is {8} regs en {9} op van A; C is {10} regs en {11} op van A. 'n Hol R{12}-boog verbind A en B, 'n reguit raaklyn verbind B en C, en 'n R{13}-boog omsluit C en A." + SHOW,
+    "GIVEN: the gear lever (see the specification). Copy it to scale {0}:{1}, starting with centre A at S. Show ALL constructions. First draw the centre lines of every boss: A, B.":
+      "GEGEE: die rathefboom (sien die spesifikasie). Kopieer dit op skaal {0}:{1}, en begin met middelpunt A by S. Toon AL die konstruksies. Trek eers die middellyne van elke naaf: A, B.",
+    "GIVEN: the swing link (see the specification). Copy it to scale {0}:{1}, starting with centre A at S. Show ALL constructions. First draw the centre lines of every boss: A, B, C.":
+      "GEGEE: die swaaiskakel (sien die spesifikasie). Kopieer dit op skaal {0}:{1}, en begin met middelpunt A by S. Toon AL die konstruksies. Trek eers die middellyne van elke naaf: A, B, C.",
+    "R{0} ARC ROUND A AND B: from A draw an arc of radius {1} ({2} − {3}), and from B one of radius {4} ({5} − {6}). They cross at O{7}.":
+      "R{0}-BOOG OM A EN B: trek vanaf A 'n boog met radius {1} ({2} − {3}), en vanaf B een met radius {4} ({5} − {6}). Hulle kruis by O{7}.",
+    "Draw lines from O{0} through A and B, extended to the circles: the tangent points. With centre O{1}, draw the R{2} arc between them.":
+      "Trek lyne vanaf O{0} deur A en B, verleng tot by die sirkels: die raakpunte. Trek met middelpunt O{1} die R{2}-boog tussen hulle.",
+  };
+  Object.assign(window.DD_AF, T);
+})();

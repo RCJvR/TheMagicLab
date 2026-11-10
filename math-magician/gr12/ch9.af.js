@@ -98,6 +98,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Regressielyn vir ure geleer (x) en punt (y) is ŷ = 12,5 + 3,2x, uit data met x tussen 1 en 10</div><div class="example-step"><span class="step-num">1</span><span>Gradiënt 3,2: elke ekstra uur leer hou verband met ongeveer 3,2 punte meer.</span></div><div class="example-step"><span class="step-num">2</span><span>Afsnit 12,5: die voorspelde punt vir 0 uur — wees versigtig, want 0 is buite die data.</span></div><div class="example-step"><span class="step-num">3</span><span>Voorspel vir 6 uur: ŷ = 12,5 + 19,2 = 31,7 — interpolasie, betroubaar.</span></div><div class="example-step"><span class="step-num">4</span><span>Voorspel vir 30 uur: ŷ = 108,5 — ekstrapolasie, onbetroubaar (en onmoontlik bo 100).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Uitskieter kan die regressielyn sterk trek; identifiseer dit op die spreidiagram voordat jy voorspellings vertrou.</span></div>
         `
       },
       questions: [
@@ -193,6 +194,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Data: x = 1, 2, 3, 4, 5 en y = 2, 4, 5, 4, 5</div><div class="example-step"><span class="step-num">1</span><span>Gemiddeldes: x̄ = 3, ȳ = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Met die sakrekenaar (STAT, A + BX) of met die hand: b = 0,6 en a = 4 − 0,6 × 3 = 2,2, dus ŷ = 2,2 + 0,6x.</span></div><div class="example-step"><span class="step-num">3</span><span>r = 0,77: ’n redelik sterk positiewe korrelasie.</span></div><div class="example-step"><span class="step-num">4</span><span>Voorspelling vir x = 3,5 (interpolasie): ŷ = 2,2 + 2,1 = 4,3 — betroubaar omdat 3,5 binne die data lê.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> r meet net die sterkte van ’n <strong>lineêre</strong> verwantskap, en korrelasie bewys nie dat x vir y veroorsaak nie.</span></div>
         `
       },
       questions: [
@@ -282,6 +284,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Vyfgetalopsomming: minimum 10, Q₁ 15, mediaan 18, Q₃ 26, maksimum 40</div><div class="example-step"><span class="step-num">1</span><span>Mediaan − Q₁ = 3 en Q₃ − mediaan = 8: die boonste helfte is meer versprei.</span></div><div class="example-step"><span class="step-num">2</span><span>Die data is positief skeef (stert na regs), dus is die gemiddeld groter as die mediaan.</span></div><div class="example-step"><span class="step-num">3</span><span>IKV = 26 − 15 = 11. Boonste grens = 26 + 1,5 × 11 = 42,5.</span></div><div class="example-step"><span class="step-num">4</span><span>40 &lt; 42,5, dus is die maksimum nie ’n uitskieter nie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skeefheid word genoem na die kant van die lang stert: ’n lang stert na regs is <strong>positiewe</strong> skeefheid.</span></div>
         `
       },
       questions: [
@@ -318,12 +321,21 @@ MathMagician.registerChapter(9, {
         { label: "b", text: "Vergelyk die lengte van die boks aan elke kant van die mediaan (Q1 tot Mediaan teenoor Mediaan tot Q3).", marks: 2 },
         { label: "c", text: "Beskryf dus die skeefheid van die verdeling.", marks: 2 },
         { label: "d", text: "Ondersteun die gegewe gemiddelde van 50 jou antwoord in (c)? Verduidelik deur die gemiddelde en mediaan te vergelyk.", marks: 2 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Sewe leerders het die ure wat hulle geleer het (x) en hul toetspunt in % (y) aangeteken: (2; 45), (3; 50), (5; 58), (6; 63), (8; 70), (9; 72), (11; 82).", parts: [
+        { label: "a", text: "Bepaal die vergelyking van die kleinstekwadrate-regressielyn.", marks: 3 },
+        { label: "b", text: "Bereken die korrelasiekoëffisiënt r.", marks: 2 },
+        { label: "c", text: "Beskryf die verwantskap tussen ure geleer en punte.", marks: 1 },
+        { label: "d", text: "Voorspel die punt van ’n leerder wat vir 7 uur leer.", marks: 2 },
+        { label: "e", text: "Verduidelik waarom die lyn nie gebruik moet word om die punt vir 20 uur se leer te voorspel nie.", marks: 2 },
+        { label: "f", text: "Bereken die standaardafwyking van die punte.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "Punte korrek geteken", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Gebruik sakrekenaar: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (baie sterk positiewe lineêre korrelasie)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolasie (7 is binne bereik 2–8)" },
       2: { a: "Matige tot sterk positiewe lineêre assosiasie", b: "Ouderdom — ouer kinders het beide groter voete en hoër IK weens ontwikkeling", c: "Korrelasie impliseer nie kousaliteit nie — 'n derde veranderlike (ouderdom) dryf albei" },
-      3: { a: "Onderste snor = 45−32 = 13; Boonste snor = 65−62 = 3 — die onderste snor is baie langer", b: "Q1 tot Mediaan = 58−45 = 13; Mediaan tot Q3 = 62−58 = 4 — die onderste helfte van die boks is ook langer", c: "Beide die snor en boks is langer aan die onderste (linker-) kant, dus is die verdeling negatief skeef (links-skeef) — 'n stert van lae tellings", d: "Ja: gemiddelde (50) < mediaan (58), wat ooreenstem met die verwagte volgorde gemiddelde < mediaan vir 'n negatief skewe verdeling, wat die skeefheid bevestig" }
+      3: { a: "Onderste snor = 45−32 = 13; Boonste snor = 65−62 = 3 — die onderste snor is baie langer", b: "Q1 tot Mediaan = 58−45 = 13; Mediaan tot Q3 = 62−58 = 4 — die onderste helfte van die boks is ook langer", c: "Beide die snor en boks is langer aan die onderste (linker-) kant, dus is die verdeling negatief skeef (links-skeef) — 'n stert van lae tellings", d: "Ja: gemiddelde (50) < mediaan (58), wat ooreenstem met die verwagte volgorde gemiddelde < mediaan vir 'n negatief skewe verdeling, wat die skeefheid bevestig" },
+      4: { a: "ŷ = 37,86 + 3,98x (sakrekenaar)", b: "r = 0,997", c: "’n Baie sterk positiewe lineêre verwantskap", d: "ŷ = 37,86 + 3,98(7) = 65,7 ≈ 66%", e: "20 uur lê ver buite die data (ekstrapolasie); die lyn sou ongeveer 117% voorspel, wat onmoontlik is", f: "σ = 12,0 (gemiddeld 62,86)" }
     }
   }
 });

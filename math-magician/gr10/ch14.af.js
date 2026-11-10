@@ -96,6 +96,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vul altyd die Venn-diagram van binne na buite in — begin met die deursnee, trek dan af om elke "slegs"-streek te kry, en vind "geeneen" laaste.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: 30 leerders: 18 hou van wiskunde, 12 van wetenskap en 5 van albei</div><div class="example-step"><span class="step-num">1</span><span>Venn-diagram: albei = 5; net wiskunde = 13; net wetenskap = 7.</span></div><div class="example-step"><span class="step-num">2</span><span>Geeneen = 30 − (13 + 5 + 7) = 5.</span></div><div class="example-step"><span class="step-num">3</span><span>P(wiskunde of wetenskap) = 25/30 = 5/6.</span></div><div class="example-step"><span class="step-num">4</span><span>P(net wetenskap) = 7/30.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Begin by die oorvleueling; anders word die 5 leerders wat van albei hou twee keer getel.</span></div>
         `
       },
       questions: [
@@ -288,6 +289,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vir probleme oor "ten minste een", gebruik altyd die komplement: P(ten minste een) = 1 − P(geeneen). Dit is baie vinniger as om al die individuele gevalle op te tel.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: P(A) = 0,3 en P(B) = 0,45</div><div class="example-step"><span class="step-num">1</span><span>As A en B onderling uitsluitend is: P(A of B) = 0,3 + 0,45 = 0,75.</span></div><div class="example-step"><span class="step-num">2</span><span>Komplement: P(nie A) = 1 − 0,3 = 0,7.</span></div><div class="example-step"><span class="step-num">3</span><span>As eerder P(A en B) = 0,1: P(A of B) = 0,3 + 0,45 − 0,1 = 0,65.</span></div><div class="example-step"><span class="step-num">4</span><span>Onderling uitsluitende gebeurtenisse het P(A en B) = 0.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Tel waarskynlikhede net direk op wanneer die gebeurtenisse nie saam kan plaasvind nie.</span></div>
         `
       },
       questions: [
@@ -406,6 +408,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Sê nooit dat relatiewe frekwensie na 'n klein aantal pogings presies met teoretiese waarskynlikheid moet ooreenstem nie — variasie word verwag en verminder slegs (gemiddeld) soos pogings toeneem.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Dobbelsteen word 60 keer gegooi en ’n ses kom 14 keer voor</div><div class="example-step"><span class="step-num">1</span><span>Relatiewe frekwensie van ’n ses = 14/60 = 0,23.</span></div><div class="example-step"><span class="step-num">2</span><span>Teoretiese waarskynlikheid = 1/6 ≈ 0,17.</span></div><div class="example-step"><span class="step-num">3</span><span>Verwagte aantal sesse in 60 gooie = 60 × 1/6 = 10.</span></div><div class="example-step"><span class="step-num">4</span><span>Met baie meer gooie behoort die relatiewe frekwensie nader aan 1/6 te kom.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Relatiewe frekwensie kom uit ’n eksperiment en verander met elke proef; teoretiese waarskynlikheid nie.</span></div>
         `
       },
       questions: [
@@ -535,6 +538,7 @@ MathMagician.registerChapter(14, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Twee-rigting-tabelle en Venn-diagramme wys presies dieselfde inligting in verskillende uitlegte — as 'n vraag jou een gee, kan jy dit altyd as die ander herteken, watter een ook al jou help om helderder te dink.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Opname van 50 leerders: seuns — stap 12, taxi 18; meisies — stap 15, taxi 5</div><div class="example-step"><span class="step-num">1</span><span>Totale: seuns 30, meisies 20; stap 27, taxi 23.</span></div><div class="example-step"><span class="step-num">2</span><span>P(meisie) = 20/50 = 0,4; P(stap) = 27/50 = 0,54.</span></div><div class="example-step"><span class="step-num">3</span><span>P(meisie en stap) = 15/50 = 0,3.</span></div><div class="example-step"><span class="step-num">4</span><span>P(meisie) × P(stap) = 0,216 ≠ 0,3, dus is ’n meisie wees en stap nie onafhanklik nie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Lees die gesamentlike waarskynlikheid van binne die tabel af; die totale gee die enkelgebeurtenis-waarskynlikhede.</span></div>
         `
       },
       questions: [
@@ -632,7 +636,8 @@ MathMagician.registerChapter(14, {
           { label: "d", text: "Gebruik die optelreël, met waardes van die tabel afgelees, om P(speel 'n instrument OF 'n sport) te bepaal.", marks: 3 },
           { label: "e", text: "Bepaal P(speel geeneen nie).", marks: 1 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Eksamenstyl-vraag</strong> — In ’n opname onder 80 leerders speel 45 sokker (S), 30 netbal (N) en 10 albei.", parts: [{ label: "a", text: "Teken ’n Venn-diagram om hierdie inligting te toon.", marks: 4 }, { label: "b", text: "Bereken P(S of N).", marks: 2 }, { label: "c", text: "Bereken die waarskynlikheid dat ’n leerder geen van die twee sportsoorte speel nie.", marks: 1 }, { label: "d", text: "Is S en N onderling uitsluitend? Gee ’n rede.", marks: 2 }, { label: "e", text: "Toon dat P(S of N) = P(S) + P(N) − P(S en N).", marks: 2 }, { label: "f", text: "’n Dobbelsteen word 60 keer gegooi en ’n 6 kom 14 keer op. Vergelyk die relatiewe frekwensie met die teoretiese waarskynlikheid, en sê wat jy verwag as die dobbelsteen baie meer kere gegooi word.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -658,7 +663,8 @@ MathMagician.registerChapter(14, {
         c: "P(Instrument ∩ Sport) = 18/120 = 3/20 = 0.15",
         d: "P(Instrument) = 30/120 = 0.25; P(Instrument ∪ Sport) = P(Instrument)+P(Sport)−P(Instrument∩Sport) = 0.25+0.6−0.15 = 0.7",
         e: "P(geeneen) = 36/120 = 0.3"
-      }
+      },
+      5: { a: "Net S: 35; albei: 10; net N: 20; geeneen: 15 (totaal 80)", b: "(35 + 10 + 20)/80 = 65/80 = 13/16", c: "15/80 = 3/16", d: "Nee: P(S en N) = 10/80 ≠ 0 (sommige leerders speel albei)", e: "45/80 + 30/80 − 10/80 = 65/80 = P(S of N)", f: "Relatiewe frekwensie 14/60 = 0,23; teoretiese waarskynlikheid 1/6 = 0,17; met baie meer gooie behoort die relatiewe frekwensie nader aan 1/6 te kom" }
     }
   }
 });

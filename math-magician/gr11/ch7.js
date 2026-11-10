@@ -114,6 +114,7 @@ MathMagician.registerChapter(7, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>When two solids share a face, subtract that circular area <strong>twice</strong> (once from each solid's SA). The shared face is internal and not part of the external surface.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A solid is a cylinder (r = 3 cm, h = 10 cm) with a hemisphere on top. Find its total surface area</div><div class="example-step"><span class="step-num">1</span><span>Base (circle): πr² = 9π.</span></div><div class="example-step"><span class="step-num">2</span><span>Curved side of the cylinder: 2πrh = 60π.</span></div><div class="example-step"><span class="step-num">3</span><span>Curved surface of the hemisphere: ½ × 4πr² = 18π.</span></div><div class="example-step"><span class="step-num">4</span><span>Total = 9π + 60π + 18π = 87π ≈ 273,3 cm² (the joined circle is not exposed, so it is left out).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Leave out faces where the parts are joined — they are inside the solid.</span></div>
         `
       },
       questions: [
@@ -272,6 +273,7 @@ MathMagician.registerChapter(7, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A cone has radius 4 cm and height 9 cm</div><div class="example-step"><span class="step-num">1</span><span>V = ⅓πr²h = ⅓π(16)(9) = 48π ≈ 150,8 cm³.</span></div><div class="example-step"><span class="step-num">2</span><span>If every dimension is multiplied by 3: V × 3³ = 27 × 48π = 1 296π cm³.</span></div><div class="example-step"><span class="step-num">3</span><span>If only the radius is doubled: V × 2² = 4 × 48π = 192π cm³.</span></div><div class="example-step"><span class="step-num">4</span><span>If only the height is doubled: V × 2 = 96π cm³.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Volume scales by k³ only when <strong>all</strong> dimensions are multiplied by k.</span></div>
         `
       },
       questions: [
@@ -618,7 +620,8 @@ MathMagician.registerChapter(7, {
           { label: "b", text: "The radius is increased by 50%. Find the new volume (terms of π).", marks: 3 },
           { label: "c", text: "By what factor has the volume increased?", marks: 2 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Exam-style question</strong> — A grain silo is a cylinder with a hemisphere on top. The radius is 3 m and the height of the cylindrical part is 10 m. Give answers correct to two decimal places.<div style=\"display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:center\"><div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"cylinder\",\"dome\":true,\"w\":200,\"h\":250,\"labels\":{\"r\":\"3 m\",\"h\":\"10 m\"}}'></div><div class=\"mf-fig\" data-fig='{\"t\":\"solid\",\"kind\":\"pyramid\",\"w\":200,\"h\":190,\"bw\":100,\"hh\":100,\"labels\":{\"l\":\"6 m\",\"h\":\"4 m\"}}'></div></div>", parts: [{ label: "a", text: "Calculate the volume of the silo.", marks: 4 }, { label: "b", text: "Calculate the outside surface area of the silo, excluding the base.", marks: 4 }, { label: "c", text: "A scale model is made in which every length is 1/50 of the real length. Calculate the volume of the model in cm³.", marks: 3 }, { label: "d", text: "A right pyramid has a square base of side 6 m and a perpendicular height of 4 m. Calculate the slant height of a face and the total surface area.", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -630,7 +633,8 @@ MathMagician.registerChapter(7, {
         a: "V = (4/3)π(216) = 288π cm³",
         b: "r=9; V=(4/3)π(729)=972π cm³",
         c: "972π/288π = 3.375 = (3/2)³ = k³ where k=1.5 ✓"
-      }
+      },
+      3: { a: "Cylinder: π(3)²(10) = 90π; hemisphere: ⅔π(3)³ = 18π; total 108π = 339,29 m³", b: "Curved cylinder: 2π(3)(10) = 60π; hemisphere: 2π(3)² = 18π; total 78π = 245,04 m²", c: "Volume factor (1/50)³ = 1/125 000; 339,29 ÷ 125 000 = 0,002714 m³ = 2 714 cm³ (to the nearest cm³)", d: "Slant height = √(4² + 3²) = 5 m; total surface area = 6² + 4 × ½ × 6 × 5 = 36 + 60 = 96 m²" }
     }
   }
 });

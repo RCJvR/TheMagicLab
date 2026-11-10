@@ -97,6 +97,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In △ABC, DE ∥ BC with D on AB and E on AC. AD = x, DB = x + 2, AE = 4 and EC = 6</div><div class="example-step"><span class="step-num">1</span><span>Line ∥ one side of △: AD/DB = AE/EC → x/(x + 2) = 4/6.</span></div><div class="example-step"><span class="step-num">2</span><span>6x = 4x + 8 → x = 4. So AD = 4, DB = 6, AB = 10.</span></div><div class="example-step"><span class="step-num">3</span><span>△ADE ||| △ABC (∠∠∠), so DE/BC = AD/AB = 4/10 = 2/5.</span></div><div class="example-step"><span class="step-num">4</span><span>If BC = 15, then DE = 6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> AD/DB compares the two parts of a side (proportionality); DE/BC = AD/AB compares a part with the whole side (similar triangles). Do not mix them.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In right-angled △ABC (∠C = 90°), CD ⊥ AB with AD = 4 and DB = 9</div><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △CBD (∠∠∠), so AD/CD = CD/DB → CD² = AD · DB = 36 → CD = 6.</span></div><div class="example-step"><span class="step-num">2</span><span>△ACD ||| △ABC, so AC² = AD · AB = 4 × 13 = 52 → AC = 2√13.</span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, so BC² = DB · AB = 9 × 13 = 117 → BC = 3√13.</span></div><div class="example-step"><span class="step-num">4</span><span>Check with Pythagoras: 52 + 117 = 169 = 13² ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Write the similar triangles with the matching angles in the same order before you write the ratios.</span></div>
         `
       },
       questions: [
@@ -307,6 +309,27 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "A map has a scale of 1 : 50 000. A farm covers 12 cm² on the map. What is the real area of the farm in km²?", answer: "3", topic: "Similar polygons & scale factor problems" },
         { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":250,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[4.5,3],\"D\":[1.5,3],\"O\":[3,2]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"ac\"],[\"B\",\"D\",\"ac\"]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1]],\"lab\":{\"O\":\"s\"}}'></div>ABCD is a trapezium with AB ∥ DC. The diagonals meet at O. Prove that AO·OD = BO·OC.", answer: "proof", steps: [{"s":"∠OAB = ∠OCD","r":"alt"},{"s":"∠OBA = ∠ODC","r":"alt"},{"s":"∠AOB = ∠COD","r":"vertopp"},{"s":"△AOB ||| △COD","r":"equi","d":[0,1,2]},{"s":"AO/OC = BO/OD","r":"sim","d":[3]},{"s":"AO·OD = BO·OC","r":"above","d":[4]}], extra: ["AO = OC","AO/OC = AD/BC"], reasons: ["alt","corr","vertopp","equi","sim","prop","given","above"], topic: "Similar polygons & scale factor problems" }
       ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Examinable similarity proofs",
+      fullName: "Proving the proportionality theorem, the equiangular triangles theorem and Pythagoras",
+      lesson: {
+        heading: "Examinable similarity proofs",
+        sub: "Chapter 8 · Topic 4",
+        body: `
+          <p>Three Grade 12 theorems can be asked as proofs: the <strong>proportionality theorem</strong>, the <strong>equiangular triangles theorem</strong> and <strong>Pythagoras by similar triangles</strong>. Each is worth about 6 marks.</p><div class="example-box"><div class="example-box-title">✏️ Theorem 1: a line parallel to one side of a triangle divides the other two sides proportionally</div><div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"pts":{"A":[2,3],"B":[0,0],"C":[6,0],"D":[1.2,1.8],"E":[3.6,1.8]},"seg":[["A","B"],["B","C"],["C","A"],["D","E"],["B","E","dash"],["C","D","dash"]],"par":[["D","E",1],["B","C",1]],"lab":{"A":"n","B":"sw","C":"se","D":"w","E":"e"}}'></div><p><strong>Given:</strong> △ABC with D on AB and E on AC, DE ∥ BC.<br><strong>RTP:</strong> AD/DB = AE/EC<br><strong>Construction:</strong> Join BE and CD. Draw heights h from E to AB and k from D to AC.</p><div class="example-step"><span class="step-num">1</span><span>Area △ADE / area △BDE = (½·AD·h)/(½·DB·h) = AD/DB <em>[same height]</em></span></div><div class="example-step"><span class="step-num">2</span><span>Area △ADE / area △CED = (½·AE·k)/(½·EC·k) = AE/EC <em>[same height]</em></span></div><div class="example-step"><span class="step-num">3</span><span>Area △BDE = area △CED <em>[same base DE, between ∥ lines]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AD/DB = AE/EC <em>[above]</em></span></div></div><div class="example-box"><div class="example-box-title">✏️ Theorem 2: equiangular triangles are similar</div><div class="mf-fig" data-fig='{"t":"geo","w":300,"h":140,"pts":{"A":[0,2.4],"B":[-1.2,0],"C":[2.4,0],"G":[-0.8,0.8],"H":[1.6,0.8],"D":[5,1.6],"E":[4.2,0],"F":[6.6,0]},"seg":[["A","B"],["B","C"],["C","A"],["G","H","dash"],["D","E"],["E","F"],["F","D"]],"lab":{"A":"n","B":"sw","C":"se","G":"w","H":"e","D":"n","E":"sw","F":"se"}}'></div><p><strong>Given:</strong> △ABC and △DEF with ∠A = ∠D, ∠B = ∠E, ∠C = ∠F.<br><strong>RTP:</strong> DE/AB = DF/AC<br><strong>Construction:</strong> Mark G on AB and H on AC so that AG = DE and AH = DF. Join GH.</p><div class="example-step"><span class="step-num">1</span><span>△AGH ≡ △DEF <em>[SAS]</em></span></div><div class="example-step"><span class="step-num">2</span><span>∠AGH = ∠E = ∠B <em>[≡ △s; given]</em></span></div><div class="example-step"><span class="step-num">3</span><span>GH ∥ BC <em>[corr ∠s equal]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AG/AB = AH/AC <em>[line ∥ one side of △]</em></span></div><div class="example-step"><span class="step-num">5</span><span>DE/AB = DF/AC <em>[AG = DE, AH = DF]</em></span></div></div><div class="example-box"><div class="example-box-title">✏️ Theorem 3: Pythagoras, proved with similar triangles</div><div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"pts":{"A":[0,0],"B":[6,0],"C":[1.5,2.598],"D":[1.5,0]},"seg":[["A","B"],["B","C"],["C","A"],["C","D","ac"]],"ra":[["B","C","A"],["C","D","B"]],"lab":{"C":"n","D":"s"}}'></div><p><strong>Given:</strong> △ABC with ∠ACB = 90° and CD ⊥ AB.<br><strong>RTP:</strong> AB² = AC² + BC²</p><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △ABC (∠A common, ∠ADC = ∠ACB = 90°) <em>[∠∠∠]</em></span></div><div class="example-step"><span class="step-num">2</span><span>AC/AB = AD/AC, so AC² = AD·AB <em>[sides of ||| △s in prop]</em></span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, so BC² = DB·AB <em>[same reasons]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AC² + BC² = AB(AD + DB) = AB·AB = AB² <em>[above]</em></span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>In the area proof, the key step is that △BDE and △CED have the same base DE and lie between the same parallel lines, so their areas are equal.</span></div>
+        `
+      },
+      questions: [
+        {"type": "proof", "text": "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":150,\"pts\":{\"A\":[2,3],\"B\":[0,0],\"C\":[6,0],\"D\":[1.2,1.8],\"E\":[3.6,1.8]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"E\"],[\"B\",\"E\",\"dash\"],[\"C\",\"D\",\"dash\"]],\"par\":[[\"D\",\"E\",1],[\"B\",\"C\",1]],\"lab\":{\"A\":\"n\",\"B\":\"sw\",\"C\":\"se\",\"D\":\"w\",\"E\":\"e\"}}'></div>In △ABC, DE ∥ BC. BE and CD are joined. Prove that AD/DB = AE/EC.", "answer": "proof", "steps": [{"s": "area △ADE / area △BDE = AD/DB", "r": "sameh"}, {"s": "area △ADE / area △CED = AE/EC", "r": "sameh"}, {"s": "area △BDE = area △CED", "r": "samebase"}, {"s": "AD/DB = AE/EC", "r": "above", "d": [0, 1, 2]}], "extra": ["AD = DB", "area △ADE = area △BDE"], "reasons": ["sameh", "samebase", "prop", "sim", "given", "above"], "topic": "Examinable similarity proofs"},
+        {"type": "proof", "text": "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":140,\"pts\":{\"A\":[0,2.4],\"B\":[-1.2,0],\"C\":[2.4,0],\"G\":[-0.8,0.8],\"H\":[1.6,0.8],\"D\":[5,1.6],\"E\":[4.2,0],\"F\":[6.6,0]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"G\",\"H\",\"dash\"],[\"D\",\"E\"],[\"E\",\"F\"],[\"F\",\"D\"]],\"lab\":{\"A\":\"n\",\"B\":\"sw\",\"C\":\"se\",\"G\":\"w\",\"H\":\"e\",\"D\":\"n\",\"E\":\"sw\",\"F\":\"se\"}}'></div>In △ABC and △DEF, ∠A = ∠D, ∠B = ∠E and ∠C = ∠F. G and H lie on AB and AC with AG = DE and AH = DF. Prove that DE/AB = DF/AC.", "answer": "proof", "steps": [{"s": "△AGH ≡ △DEF", "r": "SAS"}, {"s": "∠AGH = ∠E", "r": "congr", "d": [0]}, {"s": "∠AGH = ∠B", "r": "above", "d": [1]}, {"s": "GH ∥ BC", "r": "corrconv", "d": [2]}, {"s": "AG/AB = AH/AC", "r": "prop", "d": [3]}, {"s": "DE/AB = DF/AC", "r": "above", "d": [4]}], "extra": ["GH = BC", "△AGH ≡ △ABC"], "reasons": ["SAS", "congr", "corrconv", "alt", "prop", "sim", "above"], "topic": "Examinable similarity proofs"},
+        {"type": "mc", "text": "The proof of the proportionality theorem uses:", "options": ["Areas of triangles with the same height", "Congruent triangles only", "The theorem of Pythagoras", "Circle theorems"], "answer": 0, "topic": "Examinable similarity proofs"},
+        {"type": "mc", "text": "Why is area △BDE = area △CED in the proportionality proof?", "options": ["Same base DE and between the same parallel lines", "They are congruent", "D and E are midpoints", "They are similar"], "answer": 0, "topic": "Examinable similarity proofs"},
+        {"type": "mc", "text": "In the equiangular-triangles proof, GH ∥ BC because:", "options": ["Corresponding angles are equal", "GH = BC", "G and H are midpoints", "Alternate angles are supplementary"], "answer": 0, "topic": "Examinable similarity proofs"},
+        {"type": "input", "text": "In △ABC, ∠ACB = 90° and CD ⊥ AB with AD = 2 and DB = 8. Find AC.", "answer": "2√5", "altAnswers": ["2sqrt5", "2sqrt(5)", "√20", "4.47", "4,47"], "topic": "Examinable similarity proofs"}
+      ]
     }
   ],
   workbook: {
@@ -325,12 +348,20 @@ MathMagician.registerChapter(8, {
         { label: "a", text: "Prove △ABD ||| △CAD.", marks: 4 },
         { label: "b", text: "Hence prove that AB² = BD · BC.", marks: 3 },
         { label: "c", text: "If BD = 4 and DC = 9, find AB and AC.", marks: 4 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — In △ABC, D lies on AB and E on AC with DE ∥ BC. AD = 6, DB = 4, AE = 9 and BC = 15. F lies on BC with DF ∥ AC.", parts: [
+        { label: "a", text: "Calculate EC, with a reason.", marks: 3 },
+        { label: "b", text: "Prove that △ADE ||| △ABC.", marks: 3 },
+        { label: "c", text: "Hence calculate DE.", marks: 2 },
+        { label: "d", text: "Calculate BF : FC, with a reason.", marks: 3 },
+        { label: "e", text: "Calculate BF.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Given: AD/DB=AE/EC; RTP: DE∥BC", b: "Draw DE'∥BC; by BPT: AD/DB=AE'/E'C; but AD/DB=AE/EC(given)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "In △ABD and △CBA: ∠B is common and ∠ADB=∠CAB=90°, so △ABD|||△CBA (AA) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD and △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(angles of△BAC sum: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(AA)", b: "In △ABD and △CBA: ∠B is common and ∠ADB=∠CAB=90°, so △ABD|||△CBA (AA) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" },
+      4: { a: "AD/DB = AE/EC (line ∥ one side of △) → 6/4 = 9/EC → EC = 6", b: "∠A is common; ∠ADE = ∠ABC (corr ∠s, DE ∥ BC); ∠AED = ∠ACB (corr ∠s); so △ADE ||| △ABC (∠∠∠)", c: "DE/BC = AD/AB → DE/15 = 6/10 → DE = 9", d: "BF/FC = BD/DA (line ∥ one side of △, DF ∥ AC) = 4/6 = 2 : 3", e: "BF = 2/5 × 15 = 6" }
     }
   }
 });

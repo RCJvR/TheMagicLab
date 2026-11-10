@@ -135,6 +135,7 @@ MathMagician.registerChapter(6, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Co-ratios (90° ± θ): sin↔cos swap. All other reductions (180° ± θ, 360° − θ, −θ): same ratio, sign determined by the quadrant of the original compound angle.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Prove (1 − cos²x)/(sin x cos x) = tan x and state where it is undefined</div><div class="example-step"><span class="step-num">1</span><span>LHS = sin²x/(sin x cos x) (since 1 − cos²x = sin²x).</span></div><div class="example-step"><span class="step-num">2</span><span>= sin x/cos x = tan x = RHS.</span></div><div class="example-step"><span class="step-num">3</span><span>Undefined where sin x cos x = 0: sin x = 0 or cos x = 0.</span></div><div class="example-step"><span class="step-num">4</span><span>For x ∈ [0°; 360°]: x = 0°, 90°, 180°, 270°, 360°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Work on one side only; do not move terms across the equals sign as if solving an equation.</span></div>
         `
       },
       questions: [
@@ -547,7 +548,8 @@ MathMagician.registerChapter(6, {
           { label: "b", text: "Use the sine rule to calculate the distance AT (to 2 decimal places).", marks: 4 },
           { label: "c", text: "Hence calculate the perpendicular distance from the tree to the baseline AB — the width of the river (to 2 decimal places).", marks: 3 }
         ]
-      }
+      },
+      { number: 5, text: "<strong>Exam-style question</strong> — Answer (a) to (c) without a calculator.", parts: [{ label: "a", text: "Simplify: sin(180° + x) · cos(90° − x) / tan(−x)", marks: 4 }, { label: "b", text: "Prove the identity: (1 − cos²x)/(sin x cos x) = tan x", marks: 3 }, { label: "c", text: "Determine the general solution of 2 sin x = −1.", marks: 3 }, { label: "d", text: "In △PQR, PQ = 8 cm, QR = 11 cm and ∠Q = 50°. Calculate the length of PR and the area of △PQR.", marks: 5 }] }
     ],
     answers: {
       1: {
@@ -568,7 +570,8 @@ MathMagician.registerChapter(6, {
         a: "T̂ = 180° − 52° − 61° = 67°",
         b: "AT/sinB = AB/sinT → AT = 120×sin61°/sin67° ≈ 120×0,8746/0,9205 ≈ 114,02 m",
         c: "width = AT×sin52° ≈ 114,02×0,7880 ≈ 89,85 m"
-      }
+      },
+      5: { a: "(−sin x)(sin x)/(−tan x) = sin²x · (cos x/sin x) = sin x cos x", b: "LHS = sin²x/(sin x cos x) = sin x/cos x = tan x = RHS", c: "sin x = −½, reference angle 30°: x = 210° + k·360° or x = 330° + k·360°, k ∈ ℤ", d: "PR² = 8² + 11² − 2(8)(11) cos 50° = 71,87 → PR = 8,48 cm; area = ½(8)(11) sin 50° = 33,71 cm²" }
     }
   }
 });

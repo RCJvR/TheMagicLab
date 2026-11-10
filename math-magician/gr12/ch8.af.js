@@ -97,6 +97,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In △ABC is DE ∥ BC met D op AB en E op AC. AD = x, DB = x + 2, AE = 4 en EC = 6</div><div class="example-step"><span class="step-num">1</span><span>Lyn ∥ een sy van △: AD/DB = AE/EC → x/(x + 2) = 4/6.</span></div><div class="example-step"><span class="step-num">2</span><span>6x = 4x + 8 → x = 4. Dus AD = 4, DB = 6, AB = 10.</span></div><div class="example-step"><span class="step-num">3</span><span>△ADE ||| △ABC (∠∠∠), dus DE/BC = AD/AB = 4/10 = 2/5.</span></div><div class="example-step"><span class="step-num">4</span><span>As BC = 15, dan is DE = 6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> AD/DB vergelyk die twee dele van ’n sy (eweredigheid); DE/BC = AD/AB vergelyk ’n deel met die hele sy (gelykvormige driehoeke). Moenie hulle meng nie.</span></div>
         `
       },
       questions: [
@@ -191,6 +192,7 @@ MathMagician.registerChapter(8, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: In reghoekige △ABC (∠C = 90°) is CD ⊥ AB met AD = 4 en DB = 9</div><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △CBD (∠∠∠), dus AD/CD = CD/DB → CD² = AD · DB = 36 → CD = 6.</span></div><div class="example-step"><span class="step-num">2</span><span>△ACD ||| △ABC, dus AC² = AD · AB = 4 × 13 = 52 → AC = 2√13.</span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, dus BC² = DB · AB = 9 × 13 = 117 → BC = 3√13.</span></div><div class="example-step"><span class="step-num">4</span><span>Kontroleer met Pythagoras: 52 + 117 = 169 = 13² ✓.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Skryf die gelykvormige driehoeke met die ooreenstemmende hoeke in dieselfde volgorde voordat jy die verhoudings skryf.</span></div>
         `
       },
       questions: [
@@ -307,6 +309,27 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "'n Kaart het 'n skaal van 1 : 50 000. 'n Plaas beslaan 12 cm² op die kaart. Wat is die werklike oppervlakte van die plaas in km²?", answer: "3", topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" },
         { type: "proof", text: "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":250,\"h\":150,\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[4.5,3],\"D\":[1.5,3],\"O\":[3,2]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"A\",\"C\",\"ac\"],[\"B\",\"D\",\"ac\"]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1]],\"lab\":{\"O\":\"s\"}}'></div>ABCD is 'n trapesium met AB ∥ DC. Die hoeklyne sny by O. Bewys dat AO·OD = BO·OC.", answer: "proof", steps: [{"s":"∠OAB = ∠OCD","r":"alt"},{"s":"∠OBA = ∠ODC","r":"alt"},{"s":"∠AOB = ∠COD","r":"vertopp"},{"s":"△AOB ||| △COD","r":"equi","d":[0,1,2]},{"s":"AO/OC = BO/OD","r":"sim","d":[3]},{"s":"AO·OD = BO·OC","r":"above","d":[4]}], extra: ["AO = OC","AO/OC = AD/BC"], reasons: ["alt","corr","vertopp","equi","sim","prop","given","above"], topic: "Gelykvormige veelhoeke & skaalfaktor-vraagstukke" }
       ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Eksamineerbare gelykvormigheidsbewyse",
+      fullName: "Bewys van die eweredigheidstelling, die gelykhoekige-driehoekestelling en Pythagoras",
+      lesson: {
+        heading: "Eksamineerbare gelykvormigheidsbewyse",
+        sub: "Hoofstuk 8 · Onderwerp 4",
+        body: `
+          <p>Drie Graad 12-stellings kan as bewyse gevra word: die <strong>eweredigheidstelling</strong>, die <strong>gelykhoekige-driehoekestelling</strong> en <strong>Pythagoras met gelykvormige driehoeke</strong>. Elkeen is ongeveer 6 punte werd.</p><div class="example-box"><div class="example-box-title">✏️ Stelling 1: ’n lyn parallel aan een sy van ’n driehoek verdeel die ander twee sye eweredig</div><div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"pts":{"A":[2,3],"B":[0,0],"C":[6,0],"D":[1.2,1.8],"E":[3.6,1.8]},"seg":[["A","B"],["B","C"],["C","A"],["D","E"],["B","E","dash"],["C","D","dash"]],"par":[["D","E",1],["B","C",1]],"lab":{"A":"n","B":"sw","C":"se","D":"w","E":"e"}}'></div><p><strong>Gegee:</strong> △ABC met D op AB en E op AC, DE ∥ BC.<br><strong>TB:</strong> AD/DB = AE/EC<br><strong>Konstruksie:</strong> Verbind BE en CD. Trek hoogtes h vanaf E op AB en k vanaf D op AC.</p><div class="example-step"><span class="step-num">1</span><span>Opp △ADE / opp △BDE = (½·AD·h)/(½·DB·h) = AD/DB <em>[dieselfde hoogte]</em></span></div><div class="example-step"><span class="step-num">2</span><span>Opp △ADE / opp △CED = (½·AE·k)/(½·EC·k) = AE/EC <em>[dieselfde hoogte]</em></span></div><div class="example-step"><span class="step-num">3</span><span>Opp △BDE = opp △CED <em>[dieselfde basis DE, tussen ∥ lyne]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AD/DB = AE/EC <em>[uit bostaande]</em></span></div></div><div class="example-box"><div class="example-box-title">✏️ Stelling 2: gelykhoekige driehoeke is gelykvormig</div><div class="mf-fig" data-fig='{"t":"geo","w":300,"h":140,"pts":{"A":[0,2.4],"B":[-1.2,0],"C":[2.4,0],"G":[-0.8,0.8],"H":[1.6,0.8],"D":[5,1.6],"E":[4.2,0],"F":[6.6,0]},"seg":[["A","B"],["B","C"],["C","A"],["G","H","dash"],["D","E"],["E","F"],["F","D"]],"lab":{"A":"n","B":"sw","C":"se","G":"w","H":"e","D":"n","E":"sw","F":"se"}}'></div><p><strong>Gegee:</strong> △ABC en △DEF met ∠A = ∠D, ∠B = ∠E, ∠C = ∠F.<br><strong>TB:</strong> DE/AB = DF/AC<br><strong>Konstruksie:</strong> Merk G op AB en H op AC sodat AG = DE en AH = DF. Verbind GH.</p><div class="example-step"><span class="step-num">1</span><span>△AGH ≡ △DEF <em>[SHS]</em></span></div><div class="example-step"><span class="step-num">2</span><span>∠AGH = ∠E = ∠B <em>[≡ △e; gegee]</em></span></div><div class="example-step"><span class="step-num">3</span><span>GH ∥ BC <em>[ooreenk ∠e gelyk]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AG/AB = AH/AC <em>[lyn ∥ een sy van △]</em></span></div><div class="example-step"><span class="step-num">5</span><span>DE/AB = DF/AC <em>[AG = DE, AH = DF]</em></span></div></div><div class="example-box"><div class="example-box-title">✏️ Stelling 3: Pythagoras, bewys met gelykvormige driehoeke</div><div class="mf-fig" data-fig='{"t":"geo","w":260,"h":150,"pts":{"A":[0,0],"B":[6,0],"C":[1.5,2.598],"D":[1.5,0]},"seg":[["A","B"],["B","C"],["C","A"],["C","D","ac"]],"ra":[["B","C","A"],["C","D","B"]],"lab":{"C":"n","D":"s"}}'></div><p><strong>Gegee:</strong> △ABC met ∠ACB = 90° en CD ⊥ AB.<br><strong>TB:</strong> AB² = AC² + BC²</p><div class="example-step"><span class="step-num">1</span><span>△ACD ||| △ABC (∠A gemeen, ∠ADC = ∠ACB = 90°) <em>[∠∠∠]</em></span></div><div class="example-step"><span class="step-num">2</span><span>AC/AB = AD/AC, dus AC² = AD·AB <em>[sye van ||| △e in verh]</em></span></div><div class="example-step"><span class="step-num">3</span><span>△CBD ||| △ABC, dus BC² = DB·AB <em>[dieselfde redes]</em></span></div><div class="example-step"><span class="step-num">4</span><span>AC² + BC² = AB(AD + DB) = AB·AB = AB² <em>[uit bostaande]</em></span></div></div><div class="tip-box"><span class="tip-icon">💡</span><span>In die oppervlakbewys is die sleutelstap dat △BDE en △CED dieselfde basis DE het en tussen dieselfde parallelle lyne lê, dus is hul oppervlaktes gelyk.</span></div>
+        `
+      },
+      questions: [
+        {"type": "proof", "text": "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":260,\"h\":150,\"pts\":{\"A\":[2,3],\"B\":[0,0],\"C\":[6,0],\"D\":[1.2,1.8],\"E\":[3.6,1.8]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"D\",\"E\"],[\"B\",\"E\",\"dash\"],[\"C\",\"D\",\"dash\"]],\"par\":[[\"D\",\"E\",1],[\"B\",\"C\",1]],\"lab\":{\"A\":\"n\",\"B\":\"sw\",\"C\":\"se\",\"D\":\"w\",\"E\":\"e\"}}'></div>In △ABC is DE ∥ BC. BE en CD is verbind. Bewys dat AD/DB = AE/EC.", "answer": "proof", "steps": [{"s": "opp △ADE / opp △BDE = AD/DB", "r": "sameh"}, {"s": "opp △ADE / opp △CED = AE/EC", "r": "sameh"}, {"s": "opp △BDE = opp △CED", "r": "samebase"}, {"s": "AD/DB = AE/EC", "r": "above", "d": [0, 1, 2]}], "extra": ["AD = DB", "opp △ADE = opp △BDE"], "reasons": ["sameh", "samebase", "prop", "sim", "given", "above"], "topic": "Eksamineerbare gelykvormigheidsbewyse"},
+        {"type": "proof", "text": "<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":300,\"h\":140,\"pts\":{\"A\":[0,2.4],\"B\":[-1.2,0],\"C\":[2.4,0],\"G\":[-0.8,0.8],\"H\":[1.6,0.8],\"D\":[5,1.6],\"E\":[4.2,0],\"F\":[6.6,0]},\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"A\"],[\"G\",\"H\",\"dash\"],[\"D\",\"E\"],[\"E\",\"F\"],[\"F\",\"D\"]],\"lab\":{\"A\":\"n\",\"B\":\"sw\",\"C\":\"se\",\"G\":\"w\",\"H\":\"e\",\"D\":\"n\",\"E\":\"sw\",\"F\":\"se\"}}'></div>In △ABC en △DEF is ∠A = ∠D, ∠B = ∠E en ∠C = ∠F. G en H lê op AB en AC met AG = DE en AH = DF. Bewys dat DE/AB = DF/AC.", "answer": "proof", "steps": [{"s": "△AGH ≡ △DEF", "r": "SAS"}, {"s": "∠AGH = ∠E", "r": "congr", "d": [0]}, {"s": "∠AGH = ∠B", "r": "above", "d": [1]}, {"s": "GH ∥ BC", "r": "corrconv", "d": [2]}, {"s": "AG/AB = AH/AC", "r": "prop", "d": [3]}, {"s": "DE/AB = DF/AC", "r": "above", "d": [4]}], "extra": ["GH = BC", "△AGH ≡ △ABC"], "reasons": ["SAS", "congr", "corrconv", "alt", "prop", "sim", "above"], "topic": "Eksamineerbare gelykvormigheidsbewyse"},
+        {"type": "mc", "text": "Die bewys van die eweredigheidstelling gebruik:", "options": ["Oppervlaktes van driehoeke met dieselfde hoogte", "Net kongruente driehoeke", "Die stelling van Pythagoras", "Sirkelstellings"], "answer": 0, "topic": "Eksamineerbare gelykvormigheidsbewyse"},
+        {"type": "mc", "text": "Waarom is opp △BDE = opp △CED in die eweredigheidsbewys?", "options": ["Dieselfde basis DE en tussen dieselfde parallelle lyne", "Hulle is kongruent", "D en E is middelpunte", "Hulle is gelykvormig"], "answer": 0, "topic": "Eksamineerbare gelykvormigheidsbewyse"},
+        {"type": "mc", "text": "In die gelykhoekige-driehoekebewys is GH ∥ BC omdat:", "options": ["Ooreenkomstige hoeke gelyk is", "GH = BC", "G en H middelpunte is", "Verwisselende hoeke supplementêr is"], "answer": 0, "topic": "Eksamineerbare gelykvormigheidsbewyse"},
+        {"type": "input", "text": "In △ABC is ∠ACB = 90° en CD ⊥ AB met AD = 2 en DB = 8. Bepaal AC.", "answer": "2√5", "altAnswers": ["2sqrt5", "2sqrt(5)", "√20", "4.47", "4,47"], "topic": "Eksamineerbare gelykvormigheidsbewyse"}
+      ]
     }
   ],
   workbook: {
@@ -325,12 +348,20 @@ MathMagician.registerChapter(8, {
         { label: "a", text: "Bewys △ABD ||| △CAD.", marks: 4 },
         { label: "b", text: "Bewys dus dat AB² = BD · BC.", marks: 3 },
         { label: "c", text: "As BD = 4 en DC = 9, bepaal AB en AC.", marks: 4 }
+      ]},
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — In △ABC lê D op AB en E op AC met DE ∥ BC. AD = 6, DB = 4, AE = 9 en BC = 15. F lê op BC met DF ∥ AC.", parts: [
+        { label: "a", text: "Bereken EC, met ’n rede.", marks: 3 },
+        { label: "b", text: "Bewys dat △ADE ||| △ABC.", marks: 3 },
+        { label: "c", text: "Bereken dus DE.", marks: 2 },
+        { label: "d", text: "Bereken BF : FC, met ’n rede.", marks: 3 },
+        { label: "e", text: "Bereken BF.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "(2x−3)/(x+1)=(3x−2)/(2x+2)", b: "(2x−3)(2x+2)=(3x−2)(x+1)→4x²−2x−6=3x²+x−2→x²−3x−4=0→(x−4)(x+1)=0→x=4", c: "AD=5, DB=5" },
       2: { a: "Gegee: AD/DB=AE/EC; TB: DE∥BC", b: "Teken DE'∥BC; volgens ET: AD/DB=AE'/E'C; maar AD/DB=AE/EC(gegewe)→AE'/E'C=AE/EC→E'=E→DE∥BC ✓" },
-      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "In △ABD en △CBA: ∠B is gemeen en ∠ADB=∠CAB=90°, dus △ABD|||△CBA (HH) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" }
+      3: { a: "In △ABD en △CAD: ∠ADB=∠ADC=90°; ∠ABD=∠CAD(hoeke van△BAC som: ∠B=90°−∠BAD=∠CAD); ∴△ABD|||△CAD(HH)", b: "In △ABD en △CBA: ∠B is gemeen en ∠ADB=∠CAB=90°, dus △ABD|||△CBA (HH) → AB/CB=BD/AB → AB²=BD·BC", c: "BC=13; AB²=4×13=52→AB=2√13; AC²=9×13=117→AC=3√13" },
+      4: { a: "AD/DB = AE/EC (lyn ∥ een sy van △) → 6/4 = 9/EC → EC = 6", b: "∠A is gemeen; ∠ADE = ∠ABC (ooreenk ∠e, DE ∥ BC); ∠AED = ∠ACB (ooreenk ∠e); dus △ADE ||| △ABC (∠∠∠)", c: "DE/BC = AD/AB → DE/15 = 6/10 → DE = 9", d: "BF/FC = BD/DA (lyn ∥ een sy van △, DF ∥ AC) = 4/6 = 2 : 3", e: "BF = 2/5 × 15 = 6" }
     }
   }
 });

@@ -98,6 +98,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: A regression line for hours studied (x) and mark (y) is ŷ = 12,5 + 3,2x, from data with x between 1 and 10</div><div class="example-step"><span class="step-num">1</span><span>Gradient 3,2: each extra hour of study is linked to about 3,2 more marks.</span></div><div class="example-step"><span class="step-num">2</span><span>Intercept 12,5: the predicted mark for 0 hours — be careful, since 0 is outside the data.</span></div><div class="example-step"><span class="step-num">3</span><span>Predict for 6 hours: ŷ = 12,5 + 19,2 = 31,7 — interpolation, reliable.</span></div><div class="example-step"><span class="step-num">4</span><span>Predict for 30 hours: ŷ = 108,5 — extrapolation, unreliable (and impossible above 100).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> An outlier can pull the regression line strongly; identify it on the scatter plot before trusting predictions.</span></div>
         `
       },
       questions: [
@@ -193,6 +194,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Data: x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 5</div><div class="example-step"><span class="step-num">1</span><span>Means: x̄ = 3, ȳ = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>With the calculator (STAT, A + BX) or by hand: b = 0,6 and a = 4 − 0,6 × 3 = 2,2, so ŷ = 2,2 + 0,6x.</span></div><div class="example-step"><span class="step-num">3</span><span>r = 0,77: a fairly strong positive correlation.</span></div><div class="example-step"><span class="step-num">4</span><span>Prediction for x = 3,5 (interpolation): ŷ = 2,2 + 2,1 = 4,3 — reliable because 3,5 lies inside the data.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> r measures the strength of a <strong>linear</strong> relationship only, and correlation does not prove that x causes y.</span></div>
         `
       },
       questions: [
@@ -282,6 +284,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Five-number summary: minimum 10, Q₁ 15, median 18, Q₃ 26, maximum 40</div><div class="example-step"><span class="step-num">1</span><span>Median − Q₁ = 3 and Q₃ − median = 8: the upper half is more spread out.</span></div><div class="example-step"><span class="step-num">2</span><span>The data is positively skewed (tail to the right), so the mean is greater than the median.</span></div><div class="example-step"><span class="step-num">3</span><span>IQR = 26 − 15 = 11. Upper fence = 26 + 1,5 × 11 = 42,5.</span></div><div class="example-step"><span class="step-num">4</span><span>40 &lt; 42,5, so the maximum is not an outlier.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Skewness is named after the side of the long tail: a long tail to the right is <strong>positive</strong> skew.</span></div>
         `
       },
       questions: [
@@ -318,12 +321,21 @@ MathMagician.registerChapter(9, {
         { label: "b", text: "Compare the length of the box on each side of the median (Q1 to Median vs Median to Q3).", marks: 2 },
         { label: "c", text: "Hence describe the skewness of the distribution.", marks: 2 },
         { label: "d", text: "Does the given mean of 50 support your answer in (c)? Explain by comparing the mean and median.", marks: 2 }
+      ]},
+      { number: 4, text: "<strong>Exam-style question</strong> — Seven learners recorded the hours they studied (x) and their test mark in % (y): (2; 45), (3; 50), (5; 58), (6; 63), (8; 70), (9; 72), (11; 82).", parts: [
+        { label: "a", text: "Determine the equation of the least-squares regression line.", marks: 3 },
+        { label: "b", text: "Calculate the correlation coefficient r.", marks: 2 },
+        { label: "c", text: "Describe the relationship between hours studied and marks.", marks: 1 },
+        { label: "d", text: "Predict the mark of a learner who studies for 7 hours.", marks: 2 },
+        { label: "e", text: "Explain why the line should not be used to predict the mark for 20 hours of study.", marks: 2 },
+        { label: "f", text: "Calculate the standard deviation of the marks.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "Points plotted correctly", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Use calculator: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (very strong positive linear correlation)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolation (7 is within range 2–8)" },
       2: { a: "Moderate to strong positive linear association", b: "Age — older children have both larger feet and higher IQ due to development", c: "Correlation does not imply causation — a third variable (age) drives both" },
-      3: { a: "Lower whisker = 45−32 = 13; Upper whisker = 65−62 = 3 — the lower whisker is much longer", b: "Q1 to Median = 58−45 = 13; Median to Q3 = 62−58 = 4 — the lower half of the box is also longer", c: "Both the whisker and box are longer on the lower (left) side, so the distribution is negatively skewed (skewed left) — a tail of low scores", d: "Yes: mean (50) < median (58), which matches the expected order mean < median for a negatively skewed distribution, confirming the skew" }
+      3: { a: "Lower whisker = 45−32 = 13; Upper whisker = 65−62 = 3 — the lower whisker is much longer", b: "Q1 to Median = 58−45 = 13; Median to Q3 = 62−58 = 4 — the lower half of the box is also longer", c: "Both the whisker and box are longer on the lower (left) side, so the distribution is negatively skewed (skewed left) — a tail of low scores", d: "Yes: mean (50) < median (58), which matches the expected order mean < median for a negatively skewed distribution, confirming the skew" },
+      4: { a: "ŷ = 37,86 + 3,98x (calculator)", b: "r = 0,997", c: "A very strong positive linear relationship", d: "ŷ = 37,86 + 3,98(7) = 65,7 ≈ 66%", e: "20 hours lies far outside the data (extrapolation); the line would predict about 117%, which is impossible", f: "σ = 12,0 (mean 62,86)" }
     }
   }
 });

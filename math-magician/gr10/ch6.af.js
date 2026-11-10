@@ -1002,7 +1002,8 @@ MathMagician.registerChapter(6, {
           { label: "c", text: "Gebruik die draaipunt en een ander punt uit die tabel om die vergelyking van f(x) te bepaal in die vorm y = a(x−p)² + q.", marks: 4 },
           { label: "d", text: "Gebruik die tabel om die gemiddelde gradiënt tussen x = −1 en x = 2 te bereken.", marks: 3 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Gegee f(x) = −x² + 4, g(x) = 2/x + 1 en h(x) = 2ˣ − 8.", parts: [{ label: "a", text: "Skryf die koördinate van die draaipunt van f en die terrein van f neer.", marks: 2 }, { label: "b", text: "Bepaal die x-afsnitte van f.", marks: 2 }, { label: "c", text: "Skryf die vergelykings van die asimptote van g neer.", marks: 2 }, { label: "d", text: "Bepaal die x-afsnit van g.", marks: 2 }, { label: "e", text: "Vir watter waardes van x is f(x) ≥ 0?", marks: 2 }, { label: "f", text: "Skryf die y-afsnit en die vergelyking van die asimptoot van h neer.", marks: 2 }, { label: "g", text: "Beskryf hoe die grafiek van f verander as sy vergelyking y = −x² + 1 word.", marks: 1 }, { label: "h", text: "Toon dat die grafieke van f en g by (−2; 0) sny.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -1031,7 +1032,8 @@ MathMagician.registerChapter(6, {
         b: "x = 1",
         c: "Gebruik draaipunt (1,−1) en punt (4,8): 8 = a(4−1)²−1 → 9=9a → a=1; y=(x−1)²−1",
         d: "Gemiddelde gradiënt = (f(2)−f(−1))/(2−(−1)) = (0−3)/3 = −1"
-      }
+      },
+      6: { a: "Draaipunt (0; 4); terrein y ≤ 4", b: "−x² + 4 = 0 → x² = 4 → x = −2 of x = 2", c: "x = 0 en y = 1", d: "2/x + 1 = 0 → 2/x = −1 → x = −2: (−2; 0)", e: "−2 ≤ x ≤ 2", f: "y-afsnit: 2⁰ − 8 = −7, dus (0; −7); asimptoot y = −8", g: "Dit skuif 3 eenhede af", h: "f(−2) = −4 + 4 = 0 en g(−2) = −1 + 1 = 0, dus gaan albei grafieke deur (−2; 0)" }
     }
   }
 });

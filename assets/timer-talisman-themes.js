@@ -35,12 +35,13 @@
     { g: 'school', id: 'curro-blue', en: 'Curro blue', af: 'Curro-blou', bg: '#003b6f', fg: '#ffffff', accent: '#eeae30', warnc: '#ff8f80', face: '#002b52' },
     { g: 'school', id: 'curro-gold', en: 'Curro gold', af: 'Curro-goud', bg: '#eeae30', fg: '#002b52', accent: '#003b6f', warnc: '#8a1409', face: '#f6d27e' }
   ];
+  // the school's own colours first (Curro blue, then gold): the ones most used
   var GROUPS = [
+    { id: 'school', en: 'Schools', af: 'Skole' },
     { id: 'everyday', en: 'Everyday', af: 'Alledaags' },
     { id: 'temp', en: 'Hot and cold', af: 'Warm en koud' },
     { id: 'season', en: 'Seasons', af: 'Seisoene' },
     { id: 'holiday', en: 'Holidays and special days', af: 'Vakansie- en spesiale dae' },
-    { id: 'school', en: 'Schools', af: 'Skole' },
     { id: 'mine', en: 'My themes', af: 'My temas' }
   ];
   var WORDS = {
@@ -328,11 +329,21 @@
             // up to two more subjects writing in the same venue: the same start
             // and reading time, but each with its own writing time and finish
             count: 1, subject2: '', paper2: '', writing2: 10800, subject3: '', paper3: '', writing3: 10800,
-            audio: false },   // play the instructions recording (TTAudio) before the start
+            audio: false,     // (older links: offer the instructions recording; now always offered)
+            rec: '' },        // which recording (TTAudio.list id, or 'own'); '' = chosen from the papers
     look: { display: 'digital', secs: true, h24: true, nums: true, now: true,
             bg: '#08090b', fg: '#f2f5f9', accent: '#ed5c86', warnc: '#f5b041', face: '#111418',
-            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false }
+            font: 'cabinet', size: 100, tsize: 100, fit: false, layout: 'standard', fill: 'off', pic: false,
+            // several papers in one venue: how the parts are arranged (top, left,
+            // only, bottom), and whether "Time now"/"Started" and the note show
+            arr: 'top', fnow: true, note: true,
+            // an exam whose papers are all Afrikaans shows its screen in Afrikaans
+            afAuto: true }
   };
+  // A catch-up session can have many papers in one venue (up to MAX_PAPERS):
+  // subject4…, paper4…, writing4… follow the same pattern as 2 and 3.
+  var MAX_PAPERS = 12;
+  for (var pn = 4; pn <= MAX_PAPERS; pn++) { BASE.exam['subject' + pn] = ''; BASE.exam['paper' + pn] = ''; BASE.exam['writing' + pn] = 10800; }
   function merge(a, b) {
     var o = {};
     for (var k in a) o[k] = (a[k] && typeof a[k] === 'object') ? merge(a[k], (b && b[k]) || {}) : (b && b[k] !== undefined ? b[k] : a[k]);
@@ -364,8 +375,10 @@
     ['look.display', 'v', 'view'], ['look.secs', 'ss', 'bool'], ['look.h24', 'h', 'bool'], ['look.nums', 'nu', 'bool'], ['look.now', 'nw', 'bool'],
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
-    ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool']
+    ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao']
   ];
+  for (var kn = 4; kn <= MAX_PAPERS; kn++) KEYS.push(['exam.subject' + kn, 's' + kn], ['exam.paper' + kn, 'p' + kn], ['exam.writing' + kn, 'w' + kn, 'dur']);
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
   var VIEWS = { digital: 'd', analogue: 'a', both: 'b' };
   var LAYOUTS = { minimal: 'm', simple: 's', standard: 'n', detailed: 'd' };
@@ -537,8 +550,18 @@
   // Saving or removing a file bumps AUDIO_KEY in localStorage, so an open
   // timer tab hears about it through the storage event.
   var AUDIO_KEY = 'tt-audio-changed';
-  // the Grade 8–11 exam regulations, read out before the start
-  var BUILTIN = { url: 'assets/timer-talisman/exam-regulations-gr8-11.m4a', name: 'Gr 8-11 Exam regulations' };
+  // The built-in recordings, one for each kind of sitting (the timer's
+  // instructions menu offers them all; exam.rec in the link says which one).
+  // The Grade 8–12 examinations one is the default.
+  var A = 'assets/timer-talisman/audio/';
+  var RECORDINGS = [
+    { id: 'exams', url: A + 'gr8-12-examinations.mp3', en: 'Gr 8–12 Examinations', af: 'Gr 8–12 Eksamens' },
+    { id: 'tests', url: A + 'gr8-12-tests.mp3', en: 'Gr 8–12 Tests', af: 'Gr 8–12 Toetse' },
+    { id: 'prac', url: A + 'gr10-12-cat-it-practical.mp3', en: 'Gr 10–12 CAT & IT practical exam', af: 'Gr 10–12 RTT & IT praktiese eksamen' },
+    { id: 'ieb', url: A + 'gr12-ieb-examination.mp3', en: 'Gr 12 IEB Examination', af: 'Gr 12 IEB-eksamen' },
+    { id: 'iebprac', url: A + 'gr12-ieb-cat-it-practical.mp3', en: 'Gr 12 IEB CAT & IT practical exam', af: 'Gr 12 IEB RTT & IT praktiese eksamen' }
+  ];
+  var BUILTIN = { url: RECORDINGS[0].url, name: RECORDINGS[0].en };
   function audioDb(fn, done) {
     var req;
     try { req = indexedDB.open('tt-audio', 1); } catch (e) { return done(null); }
@@ -573,7 +596,7 @@
   }
 
   window.TTPicture = { get: picGet, save: picSave, clear: picClear, key: PIC_KEY };
-  window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN };
+  window.TTAudio = { get: audioGet, resolve: audioResolve, save: audioSave, clear: audioClear, key: AUDIO_KEY, builtin: BUILTIN, list: RECORDINGS };
   window.TTLink = { BASE: BASE, encode: encode, decode: decode, merge: merge, page: page };
   window.TTSounds = { play: playSound, unlock: unlock, fill: fillSounds };
   // ── The exam timetable (assets/timer-talisman/timetable.json) ──
@@ -621,11 +644,58 @@
     var cols = ttColumns(d, date, start, venue, lang);
     if (!cols.length) return null;
     var R = d.reading || 600, p = start.split(':'), mins = +p[0] * 60 + +p[1] - Math.round(R / 60);
-    var exam = { date: date, reading: R, start: ('0' + Math.floor(mins / 60)).slice(-2) + ':' + ('0' + mins % 60).slice(-2), count: Math.min(3, cols.length) };
-    cols.slice(0, 3).forEach(function (c, i) { var k = i ? String(i + 1) : ''; exam['subject' + k] = c.name; exam['paper' + k] = c.paper; exam['writing' + k] = c.mins * 60; });
-    return { exam: exam, columns: cols, more: cols.length > 3 };
+    var exam = { date: date, reading: R, start: ('0' + Math.floor(mins / 60)).slice(-2) + ':' + ('0' + mins % 60).slice(-2), count: Math.min(MAX_PAPERS, cols.length) };
+    cols.slice(0, MAX_PAPERS).forEach(function (c, i) { var k = i ? String(i + 1) : ''; exam['subject' + k] = c.name; exam['paper' + k] = c.paper; exam['writing' + k] = c.mins * 60; });
+    return { exam: exam, columns: cols, more: cols.length > MAX_PAPERS };
   }
-  window.TTTimetable = { load: ttLoad, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill };
+  // every paper in the timetable, once each, for picking papers one by one
+  // (a catch-up session): name, "Grade 10 · Paper 1", minutes, and its date
+  function ttPapers(d, lang) {
+    var W = TT_WORDS[lang] || TT_WORDS.en, seen = {}, out = [];
+    var name = function (code) { return code.split('/').map(function (c) { var n = d.names[c]; return n ? n[lang === 'af' ? 1 : 0] : c; }).join(' / '); };
+    d.entries.forEach(function (e) {
+      var pp = e.paper === 'PRAC' ? W.prac : e.paper ? W.paper.replace('{n}', e.paper.replace(/^P/, '')) : '';
+      var item = { date: e.date, grade: e.grade, name: name(e.code), paper: W.grade.replace('{g}', e.grade) + (pp ? ' · ' + pp : ''), mins: e.mins };
+      var id = item.name + '|' + item.paper;
+      if (!seen[id]) { seen[id] = 1; out.push(item); }
+    });
+    return out.sort(function (a, b) { return a.grade - b.grade || a.name.localeCompare(b.name) || a.paper.localeCompare(b.paper); });
+  }
+  // This device's venue (the last one filled in here) and whether the timer
+  // loads that venue's next session by itself; kept per browser, not in the link.
+  var VENUE_KEY = 'ml-timer-talisman-venue', AUTO_KEY = 'ml-timer-talisman-autonext';
+  function ttVenueGet() { try { return localStorage.getItem(VENUE_KEY) || ''; } catch (e) { return ''; } }
+  function ttVenueSet(v) { try { localStorage.setItem(VENUE_KEY, v || ''); } catch (e) {} }
+  function ttAutoGet() { try { return localStorage.getItem(AUTO_KEY) !== '0'; } catch (e) { return true; } }
+  function ttAutoSet(on) { try { localStorage.setItem(AUTO_KEY, on ? '1' : '0'); } catch (e) {} }
+  // The next session (for a venue, if given): the earliest, today or later,
+  // whose longest paper has not finished yet. { date, start } (writing start).
+  function ttNext(d, venue, nowMs) {
+    var now = nowMs || Date.now(), t = new Date(now);
+    var today = t.getFullYear() + '-' + ('0' + (t.getMonth() + 1)).slice(-2) + '-' + ('0' + t.getDate()).slice(-2);
+    var by = {};
+    d.entries.forEach(function (e) {
+      if (e.date < today || (venue && e.venues.indexOf(venue) < 0)) return;
+      var k = e.date + ' ' + e.start, at = new Date(e.date + 'T' + e.start).getTime();
+      var end = at + e.mins * 60000;
+      if (!by[k] || end > by[k].end) by[k] = { date: e.date, start: e.start, at: at, end: end };
+    });
+    var best = null;
+    Object.keys(by).forEach(function (k) { var s = by[k]; if (s.end > now && (!best || s.at < best.at)) best = s; });
+    return best ? { date: best.date, start: best.start } : null;
+  }
+  // Afrikaans papers: every paper's name starts with "Afrikaans"
+  // ("Afrikaans FAL / African Language" counts: it is written in an Afrikaans venue)
+  function ttAllAf(names) { return names.length > 0 && names.every(function (n) { return /^\s*afrikaans\b/i.test(n || ''); }); }
+  // Fill in, with the names in Afrikaans when the venue writes only Afrikaans
+  // papers (and afAuto is not switched off)
+  function ttFillAuto(d, date, start, venue, lang, afAuto) {
+    var f = ttFill(d, date, start, venue, lang);
+    if (f && afAuto !== false && lang !== 'af' && ttAllAf(f.columns.map(function (c) { return c.name; }))) f = ttFill(d, date, start, venue, 'af');
+    return f;
+  }
+  window.TTTimetable = { load: ttLoad, fillAuto: ttFillAuto, allAf: ttAllAf, days: ttDays, sessions: ttSessions, venues: ttVenues, columns: ttColumns, fill: ttFill, papers: ttPapers, max: MAX_PAPERS,
+    next: ttNext, venue: ttVenueGet, setVenue: ttVenueSet, auto: ttAutoGet, setAuto: ttAutoSet };
 
   window.TTThemes = { list: LIST, colours: COLOURS, mine: mine, saveMine: saveMine, fill: fill, find: find, apply: apply,
                       font: font, fontCss: fontCss, loadFont: loadFont, fontPicker: fontPicker };

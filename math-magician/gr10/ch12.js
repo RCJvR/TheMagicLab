@@ -241,6 +241,7 @@ MathMagician.registerChapter(12, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Memorise the <strong>five conditions</strong> for a parallelogram — in exam proofs, you only need to prove ONE of them, so choose the one the given information leads to most directly.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Prove that the opposite sides of parallelogram ABCD are equal</div><div class="example-step"><span class="step-num">1</span><span>Draw diagonal AC.</span></div><div class="example-step"><span class="step-num">2</span><span>In △ABC and △CDA: ∠BAC = ∠DCA (alt ∠s, AB ∥ DC) and ∠BCA = ∠DAC (alt ∠s, AD ∥ BC).</span></div><div class="example-step"><span class="step-num">3</span><span>AC = CA (common), so △ABC ≡ △CDA (AAS).</span></div><div class="example-step"><span class="step-num">4</span><span>Therefore AB = CD and BC = DA (≡ △s).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Do not use what you must prove: you may use AB ∥ DC and AD ∥ BC (the definition), but not AB = DC.</span></div>
         `
       },
       questions: [
@@ -559,7 +560,8 @@ MathMagician.registerChapter(12, {
           { label: "c", text: "Show PT ∥ SU.", marks: 2 },
           { label: "d", text: "Conclude that PTUS is a parallelogram.", marks: 1 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — ABCD is a parallelogram with ∠A = 70°. E lies on AB and F lies on CD such that AE = CF. Give reasons for all statements.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":170,\"pts\":{\"A\":[0,0],\"B\":[6,0],\"C\":[7.5,3.5],\"D\":[1.5,3.5],\"E\":[2,0],\"F\":[5.5,3.5]},\"poly\":[[\"A\",\"B\",\"C\",\"D\",\"fl\"]],\"seg\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"A\"],[\"D\",\"E\",\"ac\"],[\"B\",\"F\",\"ac\"]],\"tick\":[[\"A\",\"E\",1],[\"C\",\"F\",1]],\"par\":[[\"A\",\"B\",1],[\"D\",\"C\",1],[\"A\",\"D\",2],[\"B\",\"C\",2]],\"ang\":[[\"B\",\"A\",\"D\",\"70°\",\"gn\",18]],\"dots\":[\"E\",\"F\"],\"lab\":{\"E\":\"s\",\"F\":\"n\"}}'></div>", parts: [{ label: "a", text: "Prove that △ADE ≡ △CBF.", marks: 5 }, { label: "b", text: "Hence explain why DE = BF.", marks: 1 }, { label: "c", text: "Prove that DEBF is a parallelogram.", marks: 4 }, { label: "d", text: "Calculate ∠ABC.", marks: 2 }, { label: "e", text: "Write down the converse of: “The diagonals of a parallelogram bisect each other.”", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -577,7 +579,8 @@ MathMagician.registerChapter(12, {
         b: "PQ=SR (opp sides parallelogram) → PT = ½PQ = ½SR = SU",
         c: "PQ∥SR (opp sides parallelogram) → PT∥SU",
         d: "PT=SU and PT∥SU → PTUS is a parallelogram"
-      }
+      },
+      4: { a: "AD = CB (opposite sides of a parallelogram); ∠A = ∠C (opposite angles of a parallelogram); AE = CF (given); so △ADE ≡ △CBF (SAS)", b: "Corresponding sides of congruent triangles (≡ △s)", c: "EB = AB − AE and DF = CD − CF; AB = CD (opposite sides of a parallelogram) and AE = CF, so EB = DF; EB ∥ DF (AB ∥ CD); one pair of opposite sides equal and parallel, so DEBF is a parallelogram", d: "∠ABC = 180° − 70° = 110° (co-interior angles, AD ∥ BC)", e: "If the diagonals of a quadrilateral bisect each other, then the quadrilateral is a parallelogram" }
     }
   }
 });

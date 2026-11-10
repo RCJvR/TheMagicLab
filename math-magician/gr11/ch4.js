@@ -83,6 +83,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>When m < 0, tan⁻¹ gives a negative angle — add 180° to get the correct inclination in [0°; 180°). A negative gradient always gives an obtuse inclination angle.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Line through A(−2; 1) and B(4; 5)</div><div class="example-step"><span class="step-num">1</span><span>m = (5 − 1)/(4 + 2) = 2/3.</span></div><div class="example-step"><span class="step-num">2</span><span>Inclination: tan θ = 2/3 → θ = 33,7°.</span></div><div class="example-step"><span class="step-num">3</span><span>Equation: y − 1 = 2/3(x + 2) → y = 2/3x + 7/3.</span></div><div class="example-step"><span class="step-num">4</span><span>For a line with gradient −1: tan θ = −1 → θ = 180° − 45° = 135°.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A negative gradient means an obtuse inclination: add 180° to the calculator answer.</span></div>
         `
       },
       questions: [
@@ -243,6 +244,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The altitude from vertex V to side P₁P₂ has gradient −1/m(P₁P₂) and passes through V. The perpendicular bisector has the same gradient but passes through the <em>midpoint</em> of P₁P₂.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: The line through P(k; 3) and Q(2; −1) is perpendicular to y = 2x + 5. Find k</div><div class="example-step"><span class="step-num">1</span><span>Perpendicular gradients multiply to −1, so m(PQ) = −½.</span></div><div class="example-step"><span class="step-num">2</span><span>m(PQ) = (3 − (−1))/(k − 2) = 4/(k − 2).</span></div><div class="example-step"><span class="step-num">3</span><span>4/(k − 2) = −½ → k − 2 = −8.</span></div><div class="example-step"><span class="step-num">4</span><span>k = −6.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Perpendicular gradients are negative reciprocals (2 → −½), not just negatives (2 → −2).</span></div>
         `
       },
       questions: [
@@ -447,7 +449,8 @@ MathMagician.registerChapter(4, {
           { label: "c", text: "Find the equation of the altitude from B to AC.", marks: 4 },
           { label: "d", text: "Calculate the length of the median AM (leave your answer in simplest surd form).", marks: 3 }
         ]
-      }
+      },
+      { number: 3, text: "<strong>Exam-style question</strong> — A(−1; 2), B(3; 4) and C(5; 0) are the vertices of △ABC.<div class=\"mf-fig\" data-fig='{\"t\":\"geo\",\"w\":280,\"h\":220,\"view\":[-3.4,-1,6.8,5.5],\"axes\":true,\"pts\":{\"A\":[-1,2],\"B\":[3,4],\"C\":[5,0]},\"dots\":true,\"poly\":[[\"A\",\"B\",\"C\",\"fl\"]],\"seg\":[[\"A\",\"B\",\"ac\"],[\"B\",\"C\",\"ac\"],[\"C\",\"A\",\"ac\"]],\"names\":{\"A\":\"A(−1; 2)\",\"B\":\"B(3; 4)\",\"C\":\"C(5; 0)\"},\"lab\":{\"A\":\"nw\",\"B\":\"n\",\"C\":\"se\"}}'></div>", parts: [{ label: "a", text: "Calculate the gradient of AB.", marks: 2 }, { label: "b", text: "Calculate the angle of inclination of AB.", marks: 2 }, { label: "c", text: "Show that AB ⊥ BC.", marks: 3 }, { label: "d", text: "Determine the equation of the line through C parallel to AB.", marks: 3 }, { label: "e", text: "Calculate the area of △ABC.", marks: 3 }, { label: "f", text: "Calculate ∠BAC. Give a reason.", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -462,7 +465,8 @@ MathMagician.registerChapter(4, {
         b: "m=(2−1)/(5−(−2))=1/7; y−1=(1/7)(x+2) → y=(1/7)x+9/7",
         c: "m_AC=(−1−1)/(6−(−2))=−1/4; m_alt=4; y−5=4(x−4) → y=4x−11",
         d: "AM = √[(5−(−2))² + (2−1)²] = √(49+1) = √50 = 5√2"
-      }
+      },
+      3: { a: "m = (4 − 2)/(3 + 1) = ½", b: "tan θ = ½ → θ = 26,57°", c: "m(BC) = (0 − 4)/(5 − 3) = −2; ½ × (−2) = −1, so AB ⊥ BC", d: "y = ½x + c; 0 = ½(5) + c → c = −5/2; y = ½x − 5/2", e: "AB = √(16 + 4) = √20; BC = √(4 + 16) = √20; area = ½ × AB × BC = ½ × 20 = 10 square units", f: "∠B = 90° and AB = BC, so △ABC is an isosceles right-angled triangle: ∠BAC = 45°" }
     }
   }
 });

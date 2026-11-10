@@ -3926,6 +3926,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/dna-code-of-life"
         },
         {
+          "value": "Protein synthesis and mutations",
+          "label": "Protein synthesis and mutations",
+          "ref": "ss:12:life/protein-synthesis"
+        },
+        {
           "value": "Genetic engineering & biotechnology",
           "label": "Genetic engineering & biotechnology",
           "ref": "ss:12:life/genetic-engineering"
@@ -3946,9 +3951,29 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/human-reproduction"
         },
         {
+          "value": "Gametogenesis, puberty and the menstrual cycle",
+          "label": "Gametogenesis, puberty and the menstrual cycle",
+          "ref": "ss:12:life/gametogenesis-puberty"
+        },
+        {
+          "value": "Contraception and sterilisation",
+          "label": "Contraception and sterilisation",
+          "ref": "ss:12:life/contraception"
+        },
+        {
           "value": "Nervous system & senses",
           "label": "Nervous system & senses",
           "ref": "ss:12:life/nervous-system-senses"
+        },
+        {
+          "value": "The brain, eye defects, the ear and nervous disorders",
+          "label": "The brain, eye defects, the ear and nervous disorders",
+          "ref": "ss:12:life/brain-eye-ear-disorders"
+        },
+        {
+          "value": "Neurons, impulses and synapses",
+          "label": "Neurons, impulses and synapses",
+          "ref": "ss:12:life/neurons-myelin"
         },
         {
           "value": "Human endocrine system",
@@ -3961,6 +3986,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/homeostasis"
         },
         {
+          "value": "Homeostasis: carbon dioxide, salts and thyroxine",
+          "label": "Homeostasis: carbon dioxide, salts and thyroxine",
+          "ref": "ss:12:life/homeostasis-co2-salts"
+        },
+        {
           "value": "Osmoregulation & excretion",
           "label": "Osmoregulation & excretion",
           "ref": "ss:12:life/osmoregulation-excretion"
@@ -3971,9 +4001,24 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/plant-responses"
         },
         {
+          "value": "Plant hormones, experiments and plant defences",
+          "label": "Plant hormones, experiments and plant defences",
+          "ref": "ss:12:life/plant-hormones-defence"
+        },
+        {
           "value": "Darwinism & natural selection",
           "label": "Darwinism & natural selection",
           "ref": "ss:12:life/darwinism-natural-selection"
+        },
+        {
+          "value": "Adaptation and starvation resistance",
+          "label": "Adaptation and starvation resistance",
+          "ref": "ss:12:life/adaptation-starvation"
+        },
+        {
+          "value": "Population genetics and Hardy-Weinberg",
+          "label": "Population genetics and Hardy-Weinberg",
+          "ref": "ss:12:life/population-genetics"
         },
         {
           "value": "Evolution — evidence & human evolution",
@@ -3981,9 +4026,59 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:life/evolution-human-evolution"
         },
         {
+          "value": "Hominid fossils and South African discoveries",
+          "label": "Hominid fossils and South African discoveries",
+          "ref": "ss:12:life/recent-hominids"
+        },
+        {
+          "value": "Evolutionary trees and cladograms",
+          "label": "Evolutionary trees and cladograms",
+          "ref": "ss:12:life/phylogenetics"
+        },
+        {
           "value": "Genetics & inheritance",
           "label": "Genetics & inheritance",
           "ref": "ss:12:life/genetics-inheritance"
+        },
+        {
+          "value": "Dihybrid crosses, pedigrees and blood groups",
+          "label": "Dihybrid crosses, pedigrees and blood groups",
+          "ref": "ss:12:life/dihybrid-pedigrees"
+        },
+        {
+          "value": "Prenatal diagnosis and trisomies",
+          "label": "Prenatal diagnosis and trisomies",
+          "ref": "ss:12:life/prenatal-diagnosis"
+        },
+        {
+          "value": "Estimating population size",
+          "label": "Estimating population size",
+          "ref": "ss:12:life/sampling-population-size"
+        },
+        {
+          "value": "Food webs, energy flow and niches",
+          "label": "Food webs, energy flow and niches",
+          "ref": "ss:12:life/food-webs-niches"
+        },
+        {
+          "value": "Human impact, succession and nature-based farming",
+          "label": "Human impact, succession and nature-based farming",
+          "ref": "ss:12:life/nature-based-farming"
+        },
+        {
+          "value": "Scientific investigations",
+          "label": "Scientific investigations",
+          "ref": "ss:12:life/scientific-investigations"
+        },
+        {
+          "value": "Graphs, tables and calculations",
+          "label": "Graphs, tables and calculations",
+          "ref": "ss:12:life/graphs-data-skills"
+        },
+        {
+          "value": "Essays and source-based questions",
+          "label": "Essays and source-based questions",
+          "ref": "ss:12:life/essay-source-based"
         }
       ]
     },
@@ -3996,6 +4091,21 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:physics/vertical-projectile"
         },
         {
+          "value": "Motion graphs for vertical motion and bounces",
+          "label": "Motion graphs for vertical motion and bounces",
+          "ref": "ss:12:physics/motion-graphs-bounces"
+        },
+        {
+          "value": "Momentum, impulse and Newton’s second law",
+          "label": "Momentum, impulse and Newton’s second law",
+          "ref": "ss:12:physics/momentum-newton2"
+        },
+        {
+          "value": "Newton’s law of universal gravitation",
+          "label": "Newton’s law of universal gravitation",
+          "ref": "ss:12:physics/gravitation"
+        },
+        {
           "value": "The Doppler effect",
           "label": "The Doppler effect",
           "ref": "ss:12:physics/doppler-effect"
@@ -4006,6 +4116,11 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:physics/electrodynamics"
         },
         {
+          "value": "Electrodynamics: direction rules",
+          "label": "Electrodynamics: direction rules",
+          "ref": "ss:12:physics/electrodynamics-direction-rules"
+        },
+        {
           "value": "Electric circuits — internal resistance",
           "label": "Electric circuits — internal resistance",
           "ref": "ss:12:physics/electric-circuits-gr12"
@@ -4014,6 +4129,11 @@ window.ML_LESSON_CATALOG = {
           "value": "Optical phenomena & photoelectric effect",
           "label": "Optical phenomena & photoelectric effect",
           "ref": "ss:12:physics/photoelectric-effect"
+        },
+        {
+          "value": "Physics definitions and laws",
+          "label": "Physics definitions and laws",
+          "ref": "ss:12:physics/physics-definitions"
         }
       ]
     },
@@ -4026,6 +4146,16 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:chemistry/organic-chemistry"
         },
         {
+          "value": "Physical properties of organic compounds",
+          "label": "Physical properties of organic compounds",
+          "ref": "ss:12:chemistry/vapour-pressure-investigations"
+        },
+        {
+          "value": "IUPAC naming and isomers",
+          "label": "IUPAC naming and isomers",
+          "ref": "ss:12:chemistry/iupac-naming"
+        },
+        {
           "value": "Organic reactions",
           "label": "Organic reactions",
           "ref": "ss:12:chemistry/organic-reactions"
@@ -4036,14 +4166,39 @@ window.ML_LESSON_CATALOG = {
           "ref": "ss:12:chemistry/electrochemistry"
         },
         {
+          "value": "Electrolysis in industry",
+          "label": "Electrolysis in industry",
+          "ref": "ss:12:chemistry/electrolysis-industry"
+        },
+        {
+          "value": "Electrolysis calculations (Faraday)",
+          "label": "Electrolysis calculations (Faraday)",
+          "ref": "ss:12:chemistry/faraday-calculations"
+        },
+        {
           "value": "Acids & bases — quantitative",
           "label": "Acids & bases — quantitative",
           "ref": "ss:12:chemistry/acids-bases-gr12"
         },
         {
+          "value": "Chemical equilibrium: Kc, ICE tables and graphs",
+          "label": "Chemical equilibrium: Kc, ICE tables and graphs",
+          "ref": "ss:12:chemistry/equilibrium-calculations"
+        },
+        {
           "value": "The chemical industry",
           "label": "The chemical industry",
           "ref": "ss:12:chemistry/chemical-industry"
+        },
+        {
+          "value": "The fertiliser industry",
+          "label": "The fertiliser industry",
+          "ref": "ss:12:chemistry/fertiliser-industry"
+        },
+        {
+          "value": "Chemistry definitions",
+          "label": "Chemistry definitions",
+          "ref": "ss:12:chemistry/chemistry-definitions"
         }
       ]
     }

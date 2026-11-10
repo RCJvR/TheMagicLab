@@ -85,6 +85,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Independent events and drawing without replacement</div><div class="example-step"><span class="step-num">1</span><span>P(A) = 0,5, P(B) = 0,4 and P(A and B) = 0,2. Since 0,5 × 0,4 = 0,2, A and B are independent.</span></div><div class="example-step"><span class="step-num">2</span><span>A bag has 5 red and 3 blue balls. Two are drawn without replacement.</span></div><div class="example-step"><span class="step-num">3</span><span>P(both red) = 5/8 × 4/7 = 20/56 = 5/14.</span></div><div class="example-step"><span class="step-num">4</span><span>P(one of each colour) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Without replacement the second probability changes: both the numerator and the total go down by one.</span></div>
         `
       },
       questions: [
@@ -226,6 +227,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: In a class of 40, 25 play soccer, 18 play netball and 7 play both</div><div class="example-step"><span class="step-num">1</span><span>Draw a Venn diagram: both = 7; soccer only = 25 − 7 = 18; netball only = 18 − 7 = 11.</span></div><div class="example-step"><span class="step-num">2</span><span>Neither = 40 − (18 + 7 + 11) = 4.</span></div><div class="example-step"><span class="step-num">3</span><span>P(soccer only) = 18/40 = 0,45.</span></div><div class="example-step"><span class="step-num">4</span><span>P(soccer or netball) = 36/40 = 0,9 — or use P(S) + P(N) − P(S and N) = 25/40 + 18/40 − 7/40.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Fill in the intersection first, so that learners in both groups are not counted twice.</span></div>
         `
       },
       questions: [
@@ -548,7 +550,8 @@ MathMagician.registerChapter(10, {
           { label: "b", text: "Find the overall probability that a randomly selected bolt is defective.", marks: 3 },
           { label: "c", text: "Given that a bolt is found to be defective, find the probability it came from Machine B (to 3 decimal places).", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Exam-style question</strong> — Events A and B have P(A) = 0,4 and P(B) = 0,5.", parts: [{ label: "a", text: "If A and B are independent, calculate P(A and B) and P(A or B).", marks: 3 }, { label: "b", text: "If A and B were mutually exclusive instead, calculate P(A or B).", marks: 1 }, { label: "c", text: "A bag holds 5 red and 3 blue beads. Two beads are taken out one after the other without replacement. Use a tree diagram to calculate P(both red) and P(one of each colour).", marks: 5 }, { label: "d", text: "How many 4-digit codes can be made from the digits 0 to 9 if (i) digits may be repeated, (ii) no digit may be repeated?", marks: 3 }, { label: "e", text: "In how many different ways can the letters of the word MATHS be arranged?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -567,7 +570,8 @@ MathMagician.registerChapter(10, {
         a: "P(A)=0,6 branching to defective(0,05)/not(0,95); P(B)=0,4 branching to defective(0,08)/not(0,92). P(A∩defective)=0,6×0,05=0,03",
         b: "P(defective)=0,6×0,05+0,4×0,08=0,03+0,032=0,062",
         c: "P(B|defective)=P(B∩defective)/P(defective)=0,032/0,062≈0,516"
-      }
+      },
+      4: { a: "P(A and B) = 0,4 × 0,5 = 0,2; P(A or B) = 0,4 + 0,5 − 0,2 = 0,7", b: "0,4 + 0,5 = 0,9", c: "P(RR) = 5/8 × 4/7 = 20/56 = 5/14; P(one of each) = 5/8 × 3/7 + 3/8 × 5/7 = 30/56 = 15/28", d: "(i) 10⁴ = 10 000 (ii) 10 × 9 × 8 × 7 = 5 040", e: "5! = 120" }
     }
   }
 });

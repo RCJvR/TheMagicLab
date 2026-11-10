@@ -1,0 +1,825 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<script>
+  window.TT_OPEN = [];
+  window.TT_PUBLIC = false;
+</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Build a practice paper — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<style>
+/* Text scale for the test: everything below is sized as N * var(--k), so the
+   test reads the same on a laptop and grows on big screens and projectors. */
+:root { --k: clamp(1px, calc(0.45px + 0.05vw), 1.3px); }
+/* ════════════════════════════════════════════════════════════════════════
+   Test Tome — exam-style practice tests that mark themselves.
+
+   Tests live in assets/test-tome/ (manifest.json + one file per test; the
+   README there describes the format). Question types: multiple choice,
+   true/false, match column A to B, put steps in order, find the matching
+   pairs, and scenarios that group any of these. Everything is marked the
+   moment the learner submits, so there are no written answers.
+
+   Answers and results stay in this browser (localStorage), so a refresh
+   does not lose a test in progress.
+
+   Like The Arena and Memory Mirror it is not a catalogue tool, so it stays
+   neutral and spends colour only where it means something: right, wrong,
+   and the colour that ties each correct pair together in the review.
+   ════════════════════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-display); background: var(--ink-900); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+.hidden { display: none !important; }
+.ml-nav-inner svg { flex-shrink: 0; }
+.tt-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-weight: 800; font-size: calc(18 * var(--k)); letter-spacing: -0.025em; }
+.tt-main { width: 100%; max-width: 1180px; margin: 0 auto; padding: var(--space-6, 32px) 16px 96px; flex: 1; box-sizing: border-box; }
+.tt-title { font-weight: 900; font-size: clamp(26px, 5vw, 34px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 8px; }
+.tt-sub { font-size: calc(15 * var(--k)); line-height: 1.6; color: var(--text-2); max-width: 760px; margin: 0 0 24px; }
+.tt-note { font-size: calc(13 * var(--k)); color: var(--text-3); line-height: 1.5; margin: 14px 0 0; }
+.tt-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+/* ── Test list ───────────────────────────────────────────────────────── */
+.tt-grade { font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-3); margin: 22px 0 8px; }
+.tt-list { display: grid; gap: 8px; }
+.tt-quiz {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; text-align: left;
+  font: inherit; color: var(--text); background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 14px 16px; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-standard);
+}
+.tt-quiz:hover { border-color: var(--line-hard); }
+.tt-quiz strong { display: block; font-size: calc(16 * var(--k)); }
+.tt-quiz small { display: block; font-size: calc(13 * var(--k)); color: var(--text-3); margin-top: 3px; }
+.tt-draft { font-style: normal; font-size: calc(12 * var(--k)); font-weight: 700; color: var(--text-2); border: 1px solid var(--line-hard); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+.tt-quiz .tt-last { font-size: calc(13 * var(--k)); color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* ── Intro ───────────────────────────────────────────────────────────── */
+.tt-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 20px; }
+.tt-fact { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; }
+.tt-fact b { display: block; font-size: calc(22 * var(--k)); font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; }
+.tt-fact span { font-size: calc(13 * var(--k)); color: var(--text-3); }
+.tt-outline { border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.tt-outline div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; font-size: calc(15 * var(--k)); }
+.tt-outline div + div { border-top: 1px solid var(--line-soft); }
+.tt-outline span:last-child { color: var(--text-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ── The test ────────────────────────────────────────────────────────── */
+.tt-bar {
+  position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 14px;
+  background: var(--ink-900); border-bottom: 1px solid var(--line); padding: 10px 16px;
+}
+.tt-bar-inner { width: 100%; max-width: 1180px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+.tt-bar .tt-count { font-size: calc(14 * var(--k)); color: var(--text-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-bar .tt-meter { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; min-width: 40px; }
+.tt-bar .tt-meter span { display: block; height: 100%; background: var(--paper); transition: width var(--dur-med) var(--ease-standard); }
+.tt-bar .tt-clock { font-size: calc(14 * var(--k)); color: var(--text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tt-bar .tt-clock.over { color: var(--warn); }
+
+.tt-section { margin: 30px 0 0; }
+.tt-section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line-hard); padding-bottom: 8px; margin-bottom: 4px; }
+.tt-section-head h2 { font-size: calc(20 * var(--k)); font-weight: 800; color: var(--paper); margin: 0; letter-spacing: -0.02em; }
+.tt-section-head span { font-size: calc(14 * var(--k)); color: var(--text-3); white-space: nowrap; }
+.tt-section-intro { font-size: calc(14 * var(--k)); color: var(--text-2); margin: 8px 0 0; }
+
+.tt-q { padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
+.tt-q-head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; margin-bottom: 12px; }
+.tt-num { font-weight: 800; color: var(--paper); font-variant-numeric: tabular-nums; min-width: 2.6em; }
+.tt-text { font-size: calc(16.5 * var(--k)); line-height: 1.5; color: var(--text); }
+.tt-marks { font-size: calc(14 * var(--k)); color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-body { padding-left: calc(2.6em + 12px); }
+@media (max-width: 560px) { .tt-body { padding-left: 0; } .tt-facts { grid-template-columns: 1fr 1fr; } }
+
+.tt-scenario { margin: 18px 0 0; padding: 16px 18px; background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.tt-scenario .tt-scen-label { font-size: calc(12.5 * var(--k)); font-weight: 700; color: var(--text-3); margin-bottom: 6px; }
+.tt-scenario p { margin: 0; font-size: calc(16 * var(--k)); line-height: 1.6; white-space: pre-line; }
+.tt-scenario + .tt-q { border-top: 0; }
+.tt-sub-q { padding-left: 18px; border-left: 2px solid var(--line); margin-left: 4px; }
+
+/* multiple choice and true/false */
+.tt-opts { display: grid; gap: 8px; }
+.tt-tf { grid-template-columns: repeat(2, minmax(0, 160px)); }
+.tt-opt {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer;
+  border: 1px solid var(--line-hard); border-radius: var(--radius-sm); font-size: calc(15.5 * var(--k)); line-height: 1.4;
+  transition: border-color var(--dur-fast) var(--ease-standard), background var(--dur-fast) var(--ease-standard);
+}
+.tt-opt:hover { border-color: var(--text-3); }
+.tt-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.tt-opt .tt-letter {
+  flex-shrink: 0; width: calc(26 * var(--k)); height: calc(26 * var(--k)); border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line-hard); font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2);
+}
+.tt-opt:has(input:checked) { border-color: var(--paper); background: var(--ink-850); }
+.tt-opt:has(input:checked) .tt-letter { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-opt:has(input:focus-visible) { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+/* match column A to B */
+.tt-match { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; }
+@media (max-width: 640px) { .tt-match { grid-template-columns: 1fr; } }
+.tt-col h3 { font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-3); margin: 0 0 8px; }
+.tt-arow { display: grid; grid-template-columns: 1fr 92px; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(15.5 * var(--k)); }
+.tt-arow select, .tt-sel {
+  font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard);
+  border-radius: var(--radius-xs, 6px); padding: 6px 8px; width: 100%;
+}
+.tt-brow { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(15.5 * var(--k)); line-height: 1.4; }
+.tt-brow b { flex-shrink: 0; width: 1.4em; color: var(--text-2); }
+
+/* put the steps in order */
+.tt-order { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.tt-step {
+  display: grid; grid-template-columns: auto auto 1fr auto; gap: 10px; align-items: center;
+  padding: 8px 10px; background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm);
+  font-size: calc(15.5 * var(--k)); line-height: 1.4; touch-action: none; user-select: none;
+}
+.tt-step.dragging { border-color: var(--paper); box-shadow: var(--elevation-md); position: relative; z-index: 2; }
+.tt-grip { cursor: grab; color: var(--text-3); display: grid; place-items: center; padding: 2px; }
+.tt-step .tt-pos { font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; min-width: 1.4em; }
+.tt-moves { display: flex; gap: 4px; }
+.tt-move { font: inherit; background: transparent; color: var(--text-2); border: 1px solid var(--line-hard); border-radius: 6px; width: 30px; height: 30px; display: grid; place-items: center; cursor: pointer; }
+.tt-move:disabled { opacity: 0.3; cursor: default; }
+.tt-move svg { width: 16px; height: 16px; }
+
+/* find the matching pairs */
+.tt-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.tt-card {
+  position: relative; font: inherit; text-align: left; font-size: calc(15 * var(--k)); line-height: 1.35; color: var(--text);
+  min-height: 72px; padding: 12px 14px; background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); cursor: pointer;
+}
+.tt-card:hover { border-color: var(--text-3); }
+.tt-card[aria-pressed="true"] { border-color: var(--paper); box-shadow: inset 0 0 0 1px var(--paper); }
+.tt-card.linked { border-style: solid; border-color: var(--text-2); }
+.tt-card .tt-tag {
+  position: absolute; top: -9px; right: 10px; min-width: 22px; height: 20px; padding: 0 6px; border-radius: 99px;
+  display: grid; place-items: center; font-size: calc(12 * var(--k)); font-weight: 800; background: var(--paper); color: var(--ink-900);
+}
+.tt-hint { font-size: calc(13 * var(--k)); color: var(--text-3); margin: 8px 0 0; }
+
+/* ── Results ─────────────────────────────────────────────────────────── */
+.tt-score { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin: 6px 0 18px; }
+.tt-score b { font-size: clamp(48px, 10vw, 72px); font-weight: 900; color: var(--paper); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; }
+.tt-score span { font-size: calc(18 * var(--k)); color: var(--text-2); }
+.tt-score .tt-pct { font-size: calc(28 * var(--k)); font-weight: 800; color: var(--paper); }
+.tt-rows { display: grid; gap: 10px; margin: 8px 0 0; }
+.tt-row { display: grid; grid-template-columns: minmax(0, 1fr) 140px 64px; gap: 12px; align-items: center; font-size: calc(15 * var(--k)); }
+.tt-row .tt-track { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.tt-row .tt-track span { display: block; height: 100%; background: var(--paper); }
+.tt-row > span:last-child { text-align: right; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.tt-h3 { font-size: calc(14 * var(--k)); font-weight: 700; color: var(--text-3); margin: 26px 0 10px; }
+@media (max-width: 520px) { .tt-row { grid-template-columns: minmax(0, 1fr) 80px 56px; } }
+
+/* ── Review ──────────────────────────────────────────────────────────── */
+.tt-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; }
+.tt-chip { font: inherit; font-size: calc(14 * var(--k)); font-weight: 600; padding: 7px 14px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); cursor: pointer; }
+.tt-chip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-got { font-weight: 800; font-size: calc(14 * var(--k)); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tt-got.full { color: var(--good); } .tt-got.part { color: var(--warn); } .tt-got.none { color: var(--crit); }
+.r-opt { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: calc(15 * var(--k)); line-height: 1.4; }
+.r-opt + .r-opt { margin-top: 6px; }
+.r-opt .tt-letter { flex-shrink: 0; width: calc(24 * var(--k)); height: calc(24 * var(--k)); border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-hard); font-size: calc(12.5 * var(--k)); font-weight: 700; color: var(--text-2); }
+.r-opt.right { border-color: var(--good); }
+.r-opt.right .tt-letter { background: var(--good); border-color: var(--good); color: var(--ink-900); }
+.r-opt.wrong { border-color: var(--crit); }
+.r-opt.wrong .tt-letter { background: var(--crit); border-color: var(--crit); color: var(--ink-900); }
+.r-opt em { margin-left: auto; font-style: normal; font-size: calc(12.5 * var(--k)); font-weight: 700; white-space: nowrap; padding-left: 8px; }
+.r-opt.right em { color: var(--good); } .r-opt.wrong em { color: var(--crit); }
+.r-table { width: 100%; border-collapse: collapse; font-size: calc(15 * var(--k)); }
+.r-table th { text-align: left; font-size: calc(12.5 * var(--k)); font-weight: 700; color: var(--text-3); padding: 0 8px 6px 0; }
+.r-table td { padding: 8px 8px 8px 0; border-top: 1px solid var(--line-soft); vertical-align: top; line-height: 1.4; }
+.r-mark { font-weight: 800; width: 1.4em; }
+.r-mark.ok { color: var(--good); } .r-mark.no { color: var(--crit); }
+.r-was { color: var(--crit); text-decoration: line-through; text-decoration-thickness: 1px; }
+.r-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; margin-top: 6px; }
+.r-pair > div { padding: 8px 12px; border-radius: var(--radius-sm); border: 2px solid var(--pc, var(--line-hard)); font-size: calc(14.5 * var(--k)); line-height: 1.35; }
+.r-pair > span { align-self: center; color: var(--text-3); }
+.r-pair.bad > div { border-style: dashed; border-color: var(--crit); }
+.r-pair .r-mark { align-self: center; }
+.r-pairs-wrap { display: grid; gap: 4px; }
+.tt-explain { margin-top: 12px; padding: 10px 14px; border-left: 3px solid var(--line-hard); background: var(--ink-850); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: calc(14.5 * var(--k)); line-height: 1.55; color: var(--text-2); }
+.tt-explain b { color: var(--text); }
+.tt-empty { padding: 26px 0; color: var(--text-3); }
+
+.tt-code { margin: 12px 0 0; padding: 12px 14px; background: var(--ink-900); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: calc(13.5 * var(--k)); line-height: 1.55; color: var(--text); overflow-x: auto; white-space: pre; }
+.tt-q .tt-code { margin: 0 0 12px; }
+.tt-calc { margin: 0 0 14px; }
+/* The result and review screens keep their buttons in view, like a frozen row at the bottom */
+.tt-dock { position: sticky; bottom: 0; z-index: 25; margin: 24px -16px -96px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--ink-900); border-top: 1px solid var(--line); box-shadow: 0 -10px 24px -18px rgba(0, 0, 0, .6); }
+.tt-study { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin: 0 0 12px; }
+.tt-study-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; color: var(--paper); font-size: calc(16 * var(--k)); }
+.tt-study-head span { color: var(--text-3); font-size: calc(14 * var(--k)); font-variant-numeric: tabular-nums; }
+.tt-study-list { margin: 10px 0 0; padding-left: 20px; line-height: 1.55; color: var(--text-2); font-size: calc(14.5 * var(--k)); }
+.tt-study-list li { margin-bottom: 9px; }
+.tt-conf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; font-size: calc(14 * var(--k)); color: var(--text-2); }
+.tt-conf > span { margin-right: 4px; }
+.tt-tools { border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); padding: 14px 16px; margin: 0 0 18px; }
+.tt-tools-row { margin-top: 12px; }
+.tt-revisit { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; }
+.tt-revisit > div { display: flex; flex-direction: column; gap: 2px; }
+.tt-revisit b { color: var(--paper); }
+.tt-revisit span { color: var(--text-2); font-size: calc(14 * var(--k)); }
+.tt-lessons { margin: 8px 0 0; font-size: calc(13.5 * var(--k)); color: var(--text-3); }
+.tt-lessons span { margin-right: 4px; }
+.tt-lessons a { color: var(--paper); }
+.tt-working { margin-top: 10px; border-left: 3px solid var(--line-hard); padding: 2px 0 2px 12px; font-size: calc(14.5 * var(--k)); color: var(--text-2); }
+.tt-why-wrong { margin: -2px 0 8px 40px; font-size: calc(14 * var(--k)); color: var(--text-2); }
+.tt-working b { display: block; color: var(--paper); margin-bottom: 4px; }
+.tt-working ol { margin: 0; padding-left: 20px; }
+.tt-working li { margin-bottom: 4px; }
+.tt-prog { margin: 6px 0 0; font-size: calc(14 * var(--k)); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.tt-chart { margin: 8px 0 18px; }
+.tt-chart-svg { width: 100%; max-width: 640px; height: auto; display: block; }
+.tt-grid { stroke: var(--line); stroke-width: 1; }
+.tt-axis { fill: var(--text-3); font-size: 11px; }
+.tt-line { stroke: var(--paper); stroke-width: 2; }
+.tt-dot { fill: var(--paper); }
+.tt-plan-top { margin: 6px 0 14px; }
+.tt-plan-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.tt-plan-list li { margin: 0 0 10px; color: var(--text-2); font-size: calc(14.5 * var(--k)); line-height: 1.5; }
+.tt-plan-list label { cursor: pointer; }
+.tt-plan-date { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.tt-figure { margin: 10px 0 12px; max-width: 360px; color: var(--text); }
+.tt-figure svg { width: 100%; height: auto; display: block; }
+.tt-info { margin: 12px 0 18px; padding: 14px 16px; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); background: var(--ink-850); color: var(--text-2); font-size: calc(14.5 * var(--k)); }
+.tt-info p { margin: 0 0 8px; }
+.tt-info b { color: var(--paper); }
+.tt-plan-go { margin-left: 8px; padding: 4px 10px; font-size: 13px; }
+.tt-study-list small { display: block; color: var(--text-3); font-size: calc(13.5 * var(--k)); }
+.tt-name { display: grid; gap: 6px; max-width: 360px; margin: 20px 0 0; }
+.tt-name span { font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2); }
+.tt-name input { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.tt-who { font-size: calc(15 * var(--k)); color: var(--text-2); margin: 0 0 2px; }
+.tt-who b { color: var(--paper); }
+dialog.tt-share { max-width: 560px; text-align: center; }
+.tt-qr { background: #fff; border-radius: var(--radius-sm); padding: 14px; width: min(340px, 70vw); margin: 16px auto 12px; }
+.tt-qr svg { display: block; width: 100%; height: auto; }
+.tt-link { font-family: var(--font-mono); font-size: calc(14 * var(--k)); color: var(--paper); word-break: break-all; margin: 0 0 4px; }
+.public .tt-members { display: none !important; }
+.tt-versions { margin: 0 0 20px; }
+.tt-versions > span { display: block; font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2); margin-bottom: 8px; }
+.tt-vchips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tt-vchip { font: inherit; font-size: calc(14 * var(--k)); font-weight: 700; padding: 8px 14px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); background: transparent; color: var(--text-2); cursor: pointer; text-align: left; }
+.tt-vchip small { display: block; font-size: calc(12 * var(--k)); font-weight: 500; color: var(--text-3); }
+.tt-vchip[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink-900); }
+.tt-vchip[aria-pressed="true"] small { color: var(--ink-800); }
+
+/* ── Class results: class code on the start screen, and the teacher view ── */
+.tt-code-row { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 14px; align-items: end; margin: 14px 0 0; }
+@media (max-width: 640px) { .tt-code-row { grid-template-columns: 1fr; } }
+.tt-code-row .tt-name { margin: 0; }
+.tt-code-row input#codeBox { text-transform: uppercase; letter-spacing: 0.12em; font-family: var(--font-mono); }
+.tt-status { font-size: calc(14 * var(--k)); line-height: 1.45; color: var(--text-2); margin: 8px 0 0; min-height: 1.4em; }
+.tt-status.ok { color: var(--good); } .tt-status.bad { color: var(--crit); }
+.tt-send { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 18px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); font-size: calc(14.5 * var(--k)); }
+.tt-send.ok { border-color: var(--good); } .tt-send.bad { border-color: var(--crit); }
+.tt-teacher-entry { margin: 0 0 18px; }
+.tr-new { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto; gap: 10px; align-items: end; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+@media (max-width: 640px) { .tr-new { grid-template-columns: 1fr; } }
+.tr-new label { display: grid; gap: 6px; min-width: 0; font-size: calc(13 * var(--k)); font-weight: 700; color: var(--text-2); }
+.tr-new select, .tr-new input { font: inherit; font-size: calc(15 * var(--k)); font-weight: 500; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 0 12px;
+  /* fill the column at one height: a select otherwise sizes to its longest option and spills out */
+  box-sizing: border-box; width: 100%; min-width: 0; height: 44px; text-overflow: ellipsis; }
+.tr-new .ml-btn { height: 44px; box-sizing: border-box; white-space: nowrap; }
+.tr-list { display: grid; gap: 8px; margin-top: 18px; }
+.tr-session { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); }
+.tr-session strong { display: block; font-size: calc(16 * var(--k)); color: var(--paper); }
+.tr-session small { display: block; font-size: calc(13 * var(--k)); color: var(--text-3); margin-top: 3px; }
+.tr-code { font-family: var(--font-mono); font-size: calc(18 * var(--k)); font-weight: 600; letter-spacing: 0.14em; color: var(--paper); }
+.tr-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tr-actions .ml-btn { padding: 7px 12px; font-size: calc(13.5 * var(--k)); }
+.tr-closed { opacity: 0.7; }
+.shr-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: calc(14.5 * var(--k)); }
+#shrEmail { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; }
+.shr-row small { color: var(--text-3); display: block; }
+.tm-item { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.tm-top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; }
+.tm-pct { font-size: calc(22 * var(--k)); font-weight: 800; color: var(--crit); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tm-pct.hot { color: var(--crit); }
+.tm-pct.warm { color: color-mix(in srgb, var(--crit) 50%, var(--warn)); }
+.tm-pct.mild { color: var(--warn); }
+.tm-pct.cool { color: var(--good); }
+.tm-pct small { display: block; font-size: calc(11.5 * var(--k)); font-weight: 600; color: var(--text-3); }
+.tm-meta { font-size: calc(12.5 * var(--k)); color: var(--text-3); margin-bottom: 4px; }
+.tm-q { font-size: calc(15.5 * var(--k)); line-height: 1.45; color: var(--text); }
+.tm-wrong { font-size: calc(14 * var(--k)); color: var(--text-2); margin-top: 6px; }
+.tm-wrong b { color: var(--crit); font-weight: 700; }
+.tm-item details { margin-top: 6px; font-size: calc(14 * var(--k)); color: var(--text-2); }
+.tm-item summary { cursor: pointer; color: var(--text-3); font-size: calc(13 * var(--k)); }
+.tr-table { width: 100%; border-collapse: collapse; font-size: calc(14.5 * var(--k)); }
+.tr-table th { text-align: left; font-size: calc(12.5 * var(--k)); font-weight: 700; color: var(--text-3); padding: 6px 8px; cursor: pointer; white-space: nowrap; border-bottom: 1px solid var(--line-hard); }
+.tr-table td { padding: 8px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+.tr-table td:first-child { color: var(--paper); }
+.tr-wrap { overflow-x: auto; }
+.tt-empty-sm { color: var(--text-3); font-size: calc(14 * var(--k)); padding: 8px 0; }
+
+/* code shows every character as typed: no ligatures turning <!-- or ++ into arrows */
+.tt-code, .tt-fill, .tt-blank { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+/* fill in the missing syntax: blanks inside a line of code */
+.tt-fill { margin: 0; padding: 12px 14px; background: var(--ink-900); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: calc(15 * var(--k)); line-height: 2.1; color: var(--text); white-space: pre-wrap; overflow-x: auto; }
+.tt-blank { font: inherit; font-weight: 600; color: var(--paper); background: var(--ink-850); border: 1px solid var(--line-hard); border-bottom: 2px solid var(--paper);
+  border-radius: 4px; padding: 1px 4px; margin: 0 2px; text-align: center; min-width: 2.2ch; }
+.tt-blank:focus { outline: 2px solid var(--paper); outline-offset: 1px; }
+.fb { display: inline-block; font-weight: 700; border-radius: 4px; padding: 0 4px; margin: 0 1px; }
+.fb.ok { color: var(--good); border: 1px solid var(--good); }
+.fb.no { color: var(--crit); border: 1px solid var(--crit); }
+.fb.no s { opacity: 0.85; margin-right: 4px; }
+.fb .fb-right { color: var(--good); }
+@media print { #ttPrint .tt-fill { border: 0.75pt solid #999; font-size: 10pt; } #ttPrint .fb.ok, #ttPrint .fb .fb-right { color: #1a7f37 !important; } #ttPrint .fb.no { color: #c62828 !important; } }
+
+/* The feedback report: built into #ttPrint and printed, so a learner can keep
+   it as a PDF ("Save as PDF" in the print window). Nothing is stored anywhere. */
+#ttPrint { display: none; }
+@media print {
+  @page { margin: 14mm; }
+  body > *:not(#ttPrint) { display: none !important; }
+  html, body { background: #fff !important; }
+  body { display: block; min-height: 0; }
+  #ttPrint { display: block; color: #000; font-family: var(--font-display); font-size: 11pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #ttPrint * { color: #000 !important; background: transparent !important; box-shadow: none !important; }
+  #ttPrint .p-head { border-bottom: 1.5pt solid #000; padding-bottom: 6pt; margin-bottom: 10pt; }
+  #ttPrint .p-head h1 { font-size: 17pt; margin: 0 0 2pt; }
+  #ttPrint .p-head p { margin: 0; font-size: 10.5pt; }
+  #ttPrint .p-score { font-size: 15pt; font-weight: 800; margin: 8pt 0 4pt; }
+  #ttPrint .tt-h3 { margin: 12pt 0 4pt; font-size: 11pt; }
+  #ttPrint .tt-row { grid-template-columns: minmax(0, 1fr) 120px 50px; font-size: 10.5pt; gap: 8px; }
+  #ttPrint .tt-track { border: 0.75pt solid #777; height: 7px; }
+  #ttPrint .tt-track span { background: #000 !important; }
+  #ttPrint .tt-section { margin-top: 14pt; }
+  #ttPrint .tt-section-head { border-bottom-color: #000; }
+  #ttPrint .tt-q { padding: 8pt 0; border-bottom: 0.5pt solid #bbb; break-inside: avoid; }
+  #ttPrint .pt-topic { margin: 0 0 11pt; break-inside: avoid; }
+  #ttPrint .pt-topic h2 { font-size: 12.5pt; margin: 0 0 3pt; }
+  #ttPrint .pt-list { margin: 4pt 0 0 15pt; padding: 0; }
+  #ttPrint .pt-list li { margin: 0 0 4pt; font-size: 10pt; line-height: 1.35; }
+  #ttPrint .pt-list small { display: block; font-size: 9.2pt; }
+  #ttPrint .pt-none { font-size: 10pt; margin: 3pt 0 0; }
+  #ttPrint .pt-foot { margin-top: 12pt; font-size: 9pt; border-top: 0.5pt solid #999; padding-top: 5pt; }
+  #ttPrint .tt-scenario { border: 0.75pt solid #999; break-inside: avoid; }
+  #ttPrint .tt-body { padding-left: 2.2em; }
+  #ttPrint .r-opt { padding: 4pt 8pt; font-size: 10.5pt; border-color: #ccc; }
+  #ttPrint .r-opt.right { border: 1.5pt solid #1a7f37; }
+  #ttPrint .r-opt.wrong { border: 1.5pt solid #c62828; }
+  #ttPrint .r-opt.right .tt-letter, #ttPrint .r-opt.right em, #ttPrint .r-mark.ok, #ttPrint .tt-got.full { color: #1a7f37 !important; }
+  #ttPrint .r-opt.wrong .tt-letter, #ttPrint .r-opt.wrong em, #ttPrint .r-mark.no, #ttPrint .r-was, #ttPrint .tt-got.none { color: #c62828 !important; }
+  #ttPrint .tt-got.part { color: #b26a00 !important; }
+  #ttPrint .r-pair.bad > div { border-color: #c62828; }
+  #ttPrint .tt-code { border: 0.75pt solid #999; white-space: pre-wrap; font-size: 9.5pt; }
+  #ttPrint .tt-explain { border-left: 2pt solid #999; font-size: 10pt; }
+  #ttPrint .tt-hint { font-size: 9.5pt; }
+}
+dialog.tt-dialog { position: fixed; inset: 0; margin: auto; height: fit-content; background: var(--ink-850); color: var(--text); border: 1px solid var(--line-hard); border-radius: var(--radius-md, 12px); padding: 22px; max-width: 420px; width: calc(100% - 32px); }
+dialog.tt-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+dialog.tt-dialog h2 { margin: 0 0 8px; font-size: calc(20 * var(--k)); color: var(--paper); }
+dialog.tt-dialog p { margin: 0; color: var(--text-2); line-height: 1.5; }
+</style>
+</head>
+<body>
+<style>
+.qb-field { display: flex; flex-direction: column; gap: 6px; margin: 0 0 16px; max-width: 520px; }
+.qb-field label span { font-size: calc(14 * var(--k)); color: var(--text-2); font-weight: 600; }
+.qb-field select, .qb-field input { font: inherit; font-size: calc(15 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 11px; }
+.qb-list { display: flex; flex-direction: column; gap: 8px; max-width: 620px; }
+.qb-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--ink-850); cursor: pointer; }
+.qb-row input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; }
+.qb-label { flex: 1; display: flex; flex-direction: column; gap: 2px; color: var(--paper); font-size: calc(15 * var(--k)); font-weight: 600; }
+.qb-label small { color: var(--text-3); font-weight: 400; font-size: calc(13 * var(--k)); }
+.qb-row select { font: inherit; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 6px 8px; }
+.qb-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.qb-filters .qb-field { margin: 0; }
+.qb-topic { border-bottom: 1px solid var(--line-hard); padding: 6px 0; }
+.qb-sub { margin: 6px 0 6px 28px; }
+.qb-slots { display: flex; flex-direction: column; }
+.qb-tools { display: flex; gap: 14px; margin: -4px 0 10px; }
+.qb-link { font: inherit; font-size: calc(14 * var(--k)); background: none; border: 0; padding: 0; color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.qb-link:hover { color: var(--paper); }
+.qb-row small.qb-kinds { display: block; }
+.qb-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.qb-chip { font: inherit; font-size: calc(14 * var(--k)); color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.qb-chip[aria-pressed="true"] { color: var(--paper); border-color: var(--paper); }
+.qb-types .qb-row { cursor: default; }
+.qb-types input[type=number] { width: 5.5em; font: inherit; color: var(--text); background: var(--ink-900); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 6px 8px; }
+.qb-types .qb-row.off { opacity: 0.55; }
+.qb-total { margin: 12px 0 16px; font-weight: 700; color: var(--paper); font-size: calc(15 * var(--k)); }
+</style>
+
+  <nav class="ml-nav" id="site-nav">
+    <div class="ml-shell ml-nav-inner">
+      <a class="tt-brand" href="test-tome.html">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M6 5.5h12.5a3 3 0 0 1 3 3V23H9a3 3 0 0 1-3-3V5.5Z" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M6 20a3 3 0 0 1 3-3h12.5" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.4"/>
+          <path d="m10.5 10.5 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Test Tome
+      </a>
+      <div class="ml-nav-right">
+        <span id="mlLangToggle"></span>
+        <a class="ml-pill tt-members" href="dashboard-student.html"><i data-lucide="arrow-left"></i><span data-t="back">Dashboard</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="tt-main" id="tt-main" tabindex="-1">
+    <section id="qbPage">
+      <h1 class="tt-title" data-t="pageTitle">Build a practice paper</h1>
+      <p class="tt-sub" data-t="sub">Choose the chapters you want to practise.</p>
+      <div class="qb-filters">
+        <div class="qb-field"><label for="qbGrade"><span data-t="grade">Grade</span></label><select id="qbGrade"></select></div>
+        <div class="qb-field"><label for="qbSubject"><span data-t="subject">Subject</span></label><select id="qbSubject"></select></div>
+      </div>
+      <h3 class="tt-h3" data-t="topics">Topics</h3>
+      <p class="tt-note" data-t="topicsNote">Tick the topics the paper should cover.</p>
+      <div class="qb-tools"><button type="button" class="qb-link" id="qbAll" data-t="all">Select all</button><button type="button" class="qb-link" id="qbNone" data-t="noneBtn">Clear</button></div>
+      <div id="qbChapters" class="qb-list"></div>
+
+      <h3 class="tt-h3" data-t="layout">Questions in the paper</h3>
+      <p class="tt-note" data-t="layoutNote">Start from a layout, then change how many questions of each kind you want. Set a kind to 0 to leave it out.</p>
+      <div class="qb-presets" role="group" aria-label="Layouts">
+        <button type="button" class="qb-chip" data-preset="exam" data-t="pExam">Exam-style</button>
+        <button type="button" class="qb-chip" data-preset="class" data-t="pClass">Class test</button>
+        <button type="button" class="qb-chip" data-preset="terms" data-t="pTerms">Terms and facts</button>
+        <button type="button" class="qb-chip" data-preset="mcq" data-t="pMcq">Multiple choice only</button>
+      </div>
+      <div id="qbTypes" class="qb-list qb-types"></div>
+      <p class="qb-total" id="qbTotal" aria-live="polite"></p>
+      <div class="qb-field"><label for="qbMinutes"><span data-t="minutes">Time (minutes)</span></label>
+        <input id="qbMinutes" type="number" min="5" max="180" value="20"></div>
+      <p class="tt-note" data-t="seenNote">Questions you have seen recently are only used when there are no others left.</p>
+      <p class="tt-status" id="qbMsg" aria-live="polite"></p>
+      <div class="tt-actions">
+        <button class="ml-btn ml-btn--primary" id="qbBuild"><i data-lucide="list-plus"></i><span data-t="build">Build my paper</span></button>
+        <button class="ml-btn ml-btn--ghost" id="qbFresh"><i data-lucide="rotate-ccw"></i><span data-t="fresh">Start fresh</span></button>
+        <button class="ml-btn ml-btn--ghost" id="qbBack"><i data-lucide="arrow-left"></i><span data-t="back">All tests</span></button>
+      </div>
+    </section>
+  </main>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script src="lang-toggle.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Build a practice paper from the question bank. Choose grade, subject and topics, then how many
+  // questions of each kind (multiple choice, one word, missing words, true/false, matching, steps in
+  // order, calculations, written answers). The paper is laid out in sections like a school test,
+  // saved in this browser and opened in Test Tome, so it is marked, reviewed and revised like any test.
+  //
+  // Bank items carry a "type" (default "mcq") with the same fields as a Test Tome question.
+  // Two kinds are also made from other items, so every topic offers them:
+  //  - calculations: a multiple-choice item whose answer is a single number (with or without a unit)
+  //    can be asked as a typed answer instead (unless it sets "noNum": true);
+  //  - matching: four or five one-word items become a column A / column B question.
+  var BASE = 'assets/question-bank/';
+  var SEEN_KEY = 'ml-bank-seen-v1', CUSTOM = 'ml-tome-custom-v1', LAYOUT_KEY = 'ml-bank-layout-v1';
+  var KINDS = ['mcq', 'word', 'blank', 'tf', 'match', 'order', 'num', 'written'];
+  var PRESETS = {
+    exam: { mcq: 10, word: 6, blank: 3, tf: 5, match: 1, order: 1, num: 3, written: 3 },
+    'class': { mcq: 5, word: 4, blank: 2, tf: 4, match: 1, order: 0, num: 2, written: 1 },
+    terms: { mcq: 0, word: 10, blank: 5, tf: 6, match: 2, order: 0, num: 0, written: 0 },
+    mcq: { mcq: 20, word: 0, blank: 0, tf: 0, match: 0, order: 0, num: 0, written: 0 }
+  };
+  var SECTION = {
+    mcq: ['Multiple choice', 'Meervoudige keuse', 'Choose the best answer.', 'Kies die beste antwoord.'],
+    word: ['Give ONE word or term', 'Gee EEN woord of term', 'Write ONE word or term for each description.', 'Skryf EEN woord of term vir elke beskrywing.'],
+    blank: ['Fill in the missing words', 'Vul die ontbrekende woorde in', 'Type the word that is missing in each space.', 'Tik die woord wat in elke spasie ontbreek.'],
+    tf: ['True or false', 'Waar of onwaar', 'Decide whether each statement is true or false.', 'Besluit of elke stelling waar of onwaar is.'],
+    match: ['Matching', 'Pas bymekaar', 'Match column A with column B.', 'Pas kolom A by kolom B.'],
+    order: ['Steps in order', 'Stappe in volgorde', 'Put the steps in the correct order.', 'Rangskik die stappe in die regte volgorde.'],
+    num: ['Calculations', 'Berekeninge', 'Work out each answer and type it in. A decimal comma or point is fine.', 'Bereken elke antwoord en tik dit in. ’n Desimale komma of punt is reg.'],
+    written: ['Short and longer answers', 'Kort en langer antwoorde', 'Write your answer in full sentences. After handing in, you mark it against the memo.', 'Skryf jou antwoord in volsinne. Nadat jy ingehandig het, merk jy dit self volgens die memo.']
+  };
+  var T = {
+    en: {
+      pageTitle: 'Build a practice paper',
+      sub: 'Choose the topics and the kinds of questions, and get a paper laid out in sections like a school test. Questions you have not seen recently come first, so each paper is different.',
+      grade: 'Grade', subject: 'Subject', gradeN: 'Grade {n}',
+      topics: 'Topics', topicsNote: 'Tick the topics the paper should cover.', all: 'Select all', noneBtn: 'Clear',
+      layout: 'Questions in the paper', layoutNote: 'Start from a layout, then change how many questions of each kind you want. Set a kind to 0 to leave it out.',
+      pExam: 'Exam-style', pClass: 'Class test', pTerms: 'Terms and facts', pMcq: 'Multiple choice only',
+      k_mcq: 'Multiple choice', k_word: 'One word or term', k_blank: 'Fill in the missing words', k_tf: 'True or false',
+      k_match: 'Matching (column A and B)', k_order: 'Steps in order', k_num: 'Calculations (typed answer)', k_written: 'Written answers (you mark them with the memo)',
+      avail: '{n} available', availNone: 'None in these topics yet', perQ: 'questions',
+      total: '{q} questions · {m} marks', totalNone: 'Choose at least one kind of question.',
+      kinds: '{n} questions · {k} kinds',
+      minutes: 'Time (minutes)', build: 'Build my paper',
+      none: 'Choose at least one topic and at least one question.', none2: 'No question banks yet.',
+      loading: 'Loading topics…', noMatch: 'No topics match these filters.',
+      paperName: 'Practice paper', seenNote: 'Questions you have seen recently are only used when there are no others left.',
+      fresh: 'Start fresh', freshDone: 'Your question history is cleared.', back: 'All tests',
+      matchQ: 'Match each description in column A with the correct term in column B.'
+    },
+    af: {
+      pageTitle: 'Bou ’n oefenvraestel',
+      sub: 'Kies die onderwerpe en die soorte vrae, en kry ’n vraestel in afdelings soos ’n skooltoets. Vrae wat jy nie onlangs gesien het nie, kom eerste, so elke vraestel is anders.',
+      grade: 'Graad', subject: 'Vak', gradeN: 'Graad {n}',
+      topics: 'Onderwerpe', topicsNote: 'Merk die onderwerpe wat die vraestel moet dek.', all: 'Kies almal', noneBtn: 'Maak skoon',
+      layout: 'Vrae in die vraestel', layoutNote: 'Begin by ’n uitleg en verander dan hoeveel vrae van elke soort jy wil hê. Stel ’n soort op 0 om dit uit te laat.',
+      pExam: 'Eksamenstyl', pClass: 'Klastoets', pTerms: 'Terme en feite', pMcq: 'Net meervoudige keuse',
+      k_mcq: 'Meervoudige keuse', k_word: 'Een woord of term', k_blank: 'Vul die ontbrekende woorde in', k_tf: 'Waar of onwaar',
+      k_match: 'Pas bymekaar (kolom A en B)', k_order: 'Stappe in volgorde', k_num: 'Berekeninge (getikte antwoord)', k_written: 'Geskrewe antwoorde (jy merk dit met die memo)',
+      avail: '{n} beskikbaar', availNone: 'Nog geen in hierdie onderwerpe nie', perQ: 'vrae',
+      total: '{q} vrae · {m} punte', totalNone: 'Kies ten minste een soort vraag.',
+      kinds: '{n} vrae · {k} soorte',
+      minutes: 'Tyd (minute)', build: 'Bou my vraestel',
+      none: 'Kies ten minste een onderwerp en ten minste een vraag.', none2: 'Nog geen vraagbanke nie.',
+      loading: 'Laai onderwerpe…', noMatch: 'Geen onderwerpe pas by hierdie filters nie.',
+      paperName: 'Oefenvraestel', seenNote: 'Vrae wat jy onlangs gesien het, word net gebruik as daar geen ander meer oor is nie.',
+      fresh: 'Begin vars', freshDone: 'Jou vraaggeskiedenis is uitgevee.', back: 'Alle toetse',
+      matchQ: 'Pas elke beskrywing in kolom A by die regte term in kolom B.'
+    }
+  };
+  var lang = (window.MLLang && MLLang.getLang()) || 'en';
+  var manifest = [], cache = {}, renderSeq = 0, counts = readJ(LAYOUT_KEY, null) || Object.assign({}, PRESETS.exam), minutesTouched = false;
+
+  function t2(k, vars) {
+    var s = (T[lang] && T[lang][k]) || T.en[k] || k;
+    if (vars) Object.keys(vars).forEach(function (v) { s = s.split('{' + v + '}').join(vars[v]); });
+    return s;
+  }
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function readJ(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } }
+  function writeJ(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+  function title(obj, key) { return lang === 'af' && obj[key + 'Af'] ? obj[key + 'Af'] : obj[key]; }
+  function uniq(list) { return list.filter(function (v, i, a) { return a.indexOf(v) === i; }); }
+  function byNum(a, b) { return a - b; }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  // ---- what an item can be asked as ----
+  var NUM_RX = /^\s*(?:[a-zA-Z]\s*=\s*)?([−-]?\d+(?:[.,]\d+)?)\s*([a-zA-ZΩ°\/%²³· ]{0,12}?)\s*$/;
+  var NOT_NUM = /which|following|statement|best describes|correct|true|false|watter|volgende|stelling|korrek/i;
+  function kindOf(it) { return it.type || 'mcq'; }
+  // a multiple-choice item whose right answer is one number, asked as a typed calculation
+  function asNum(it) {
+    if (kindOf(it) !== 'mcq' || it.noNum || NOT_NUM.test(it.q)) return null;
+    var m = NUM_RX.exec(it.options[it.answer]); if (!m) return null;
+    var mAf = it.optionsAf ? NUM_RX.exec(it.optionsAf[it.answer]) : null;
+    var q = { type: 'num', q: it.q.replace(/:\s*$/, '.'), qAf: (it.qAf || it.q).replace(/:\s*$/, '.'), answer: parseFloat(m[1].replace('−', '-').replace(',', '.')),
+      explain: it.explain, explainAf: it.explainAf, skill: it.skill || 'application' };
+    if (m[2].trim()) { q.unit = m[2].trim(); q.unitAf = mAf && mAf[2].trim() ? mAf[2].trim() : q.unit; }
+    if (it.svg) q.svg = it.svg;
+    return q;
+  }
+  function marksOf(q) {
+    if (q.marks) return q.marks;
+    if (q.type === 'blank' || q.type === 'fill') return q.blanks.length;
+    if (q.type === 'match' || q.type === 'pairs') return q.pairs.length;
+    if (q.type === 'order') return q.steps.length;
+    if (q.type === 'written') return (q.points || []).length || 1;
+    return 1;
+  }
+
+  // pools per kind for the ticked topics: [{bank, item, q}]
+  function pools() {
+    var P = {}; KINDS.forEach(function (k) { P[k] = []; });
+    chosenBanks().forEach(function (d) {
+      d.items.forEach(function (it) {
+        var k = kindOf(it);
+        if (P[k]) P[k].push({ bank: d, item: it });
+        if (k === 'mcq' && asNum(it)) P.num.push({ bank: d, item: it, derived: true });
+      });
+    });
+    return P;
+  }
+  function available(P) {
+    var a = {}; KINDS.forEach(function (k) { a[k] = P[k].length; });
+    a.match = P.match.length + Math.floor(P.word.length / 4);
+    return a;
+  }
+  function chosenBanks() {
+    return [].filter.call(document.querySelectorAll('[data-topic]'), function (cb) { return cb.checked; })
+      .map(function (cb) { return cache[cb.getAttribute('data-topic')]; }).filter(Boolean);
+  }
+
+  // ---- filters ----
+  function fillSelect(el, opts, prefer) {
+    var keep = prefer === undefined ? el.value : prefer;
+    el.innerHTML = opts.map(function (o) { return '<option value="' + esc(o.v) + '">' + esc(o.label) + '</option>'; }).join('');
+    el.value = opts.some(function (o) { return o.v === keep; }) ? keep : (opts[0] ? opts[0].v : '');
+  }
+  function subjectLabel(subject) {
+    var b = manifest.filter(function (x) { return x.subject === subject; })[0];
+    return b ? (lang === 'af' && b.subjectAf ? b.subjectAf : b.subject) : subject;
+  }
+  function refreshGrades() {
+    var grades = uniq(manifest.map(function (b) { return b.grade; })).sort(byNum);
+    fillSelect($('qbGrade'), grades.map(function (g) { return { v: String(g), label: t2('gradeN', { n: g }) }; }));
+    refreshSubjects();
+  }
+  function refreshSubjects() {
+    var g = +$('qbGrade').value;
+    var subs = uniq(manifest.filter(function (b) { return b.grade === g; }).map(function (b) { return b.subject; }));
+    fillSelect($('qbSubject'), subs.map(function (s) { return { v: s, label: subjectLabel(s) }; }));
+    refreshTopics();
+  }
+  function filtered() {
+    var g = +$('qbGrade').value, s = $('qbSubject').value;
+    return manifest.filter(function (b) { return b.grade === g && b.subject === s; })
+      .sort(function (a, b) { return (a.term || 0) - (b.term || 0) || a.topic.localeCompare(b.topic); });
+  }
+  function refreshTopics() {
+    var list = filtered(), seq = ++renderSeq, box = $('qbChapters');
+    if (!list.length) { box.innerHTML = '<p class="tt-note">' + esc(t2('noMatch')) + '</p>'; renderTypes(); return; }
+    box.innerHTML = '<p class="tt-note">' + esc(t2('loading')) + '</p>';
+    Promise.all(list.map(function (b) {
+      if (cache[b.file]) return cache[b.file];
+      return fetch(BASE + b.file, { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) { cache[b.file] = d; return d; });
+    })).then(function () {
+      if (seq === renderSeq) { renderTopics(list); renderTypes(); }
+    }).catch(function () { box.innerHTML = '<p class="tt-note">' + esc(t2('none2')) + '</p>'; });
+  }
+  function renderTopics(list) {
+    $('qbChapters').innerHTML = list.map(function (b) {
+      var d = cache[b.file], kinds = {};
+      d.items.forEach(function (it) { kinds[kindOf(it)] = 1; if (asNum(it)) kinds.num = 1; });
+      return '<label class="qb-row"><input type="checkbox" data-topic="' + esc(b.file) + '" checked> ' +
+        '<span class="qb-label">' + esc(title(b, 'topic')) + '<small class="qb-kinds">' +
+        esc(t2('kinds', { n: d.items.length, k: Object.keys(kinds).length })) + '</small></span></label>';
+    }).join('');
+  }
+
+  // ---- layout ----
+  function renderTypes() {
+    var A = available(pools());
+    $('qbTypes').innerHTML = KINDS.map(function (k) {
+      var n = A[k], v = Math.min(counts[k] || 0, n);
+      return '<div class="qb-row' + (n ? '' : ' off') + '"><span class="qb-label"><label for="qbK_' + k + '">' + esc(t2('k_' + k)) + '</label>' +
+        '<small>' + esc(n ? t2('avail', { n: n }) : t2('availNone')) + '</small></span>' +
+        '<input type="number" id="qbK_' + k + '" data-kind="' + k + '" min="0" max="' + n + '" value="' + v + '"' + (n ? '' : ' disabled') + '></div>';
+    }).join('');
+    document.querySelectorAll('[data-preset]').forEach(function (b) {
+      var p = PRESETS[b.getAttribute('data-preset')];
+      b.setAttribute('aria-pressed', KINDS.every(function (k) { return (p[k] || 0) === (counts[k] || 0); }) ? 'true' : 'false');
+    });
+    updateTotal();
+  }
+  function wanted() {
+    var w = {};
+    document.querySelectorAll('[data-kind]').forEach(function (inp) {
+      var max = +inp.max || 0; w[inp.getAttribute('data-kind')] = Math.max(0, Math.min(max, Math.floor(+inp.value || 0)));
+    });
+    return w;
+  }
+  // rough mark count for the summary (matching made from one-word items has 4 or 5 pairs)
+  function updateTotal() {
+    var w = wanted(), P = pools(), q = 0, m = 0;
+    KINDS.forEach(function (k) {
+      var n = w[k] || 0; if (!n) return; q += n;
+      var list = P[k].map(function (x) { return x.derived ? 1 : marksOf(x.item); });
+      if (k === 'match' && list.length < n) list = list.concat(new Array(n - list.length + 1).join('4').split('').map(Number));
+      var avg = list.length ? list.reduce(function (s, x) { return s + x; }, 0) / list.length : 1;
+      m += Math.round(avg * n);
+    });
+    $('qbTotal').textContent = q ? t2('total', { q: q, m: m }) : t2('totalNone');
+    if (!minutesTouched && m) $('qbMinutes').value = Math.max(5, Math.min(180, Math.round(m * 1.1 / 5) * 5 || 5));
+  }
+
+  // ---- building ----
+  // Round-robin over the ticked topics; inside a topic, least recently seen first.
+  function draw(list, n, seen, used) {
+    var byBank = {}, order = [];
+    shuffle(list).forEach(function (x) {
+      if (used[x.item.id]) return;
+      if (!byBank[x.bank.id]) { byBank[x.bank.id] = []; order.push(x.bank.id); }
+      byBank[x.bank.id].push(x);
+    });
+    order.forEach(function (id) { byBank[id].sort(function (a, b) { return (seen[a.item.id] || 0) - (seen[b.item.id] || 0); }); });
+    order = shuffle(order);
+    var out = [];
+    while (out.length < n) {
+      var any = false;
+      for (var i = 0; i < order.length && out.length < n; i++) {
+        var x = byBank[order[i]].shift();
+        if (x) { if (!used[x.item.id]) { out.push(x); used[x.item.id] = 1; } any = true; }
+      }
+      if (!any) break;
+    }
+    return out;
+  }
+  function toQuestion(x) {
+    var it = x.item, q;
+    if (x.derived) q = asNum(it);
+    else {
+      q = clone(it);
+      ['id', 'slot', 'variant', 'noNum'].forEach(function (k) { delete q[k]; });
+      q.type = kindOf(it);
+    }
+    q.topic = x.bank.id;
+    return q;
+  }
+  function cap(s) { s = String(s); return s.charAt(0).toUpperCase() + s.slice(1); }
+  // four or five one-word items as a column A / column B question
+  function matchFromWords(words) {
+    var q = { type: 'match', topic: words[0].bank.id, q: T.en.matchQ, qAf: T.af.matchQ, pairs: [], pairsAf: [] };
+    words.forEach(function (x) {
+      var it = x.item;
+      q.pairs.push([it.q.replace(/\s*\.$/, ''), cap([].concat(it.answer)[0])]);
+      q.pairsAf.push([(it.qAf || it.q).replace(/\s*\.$/, ''), cap([].concat(it.answerAf || it.answer)[0])]);
+    });
+    return q;
+  }
+
+  function build() {
+    var w = wanted(), P = pools(), seen = readJ(SEEN_KEY, {}), now = Date.now(), used = {}, sections = [], total = 0;
+    if (!chosenBanks().length) { $('qbMsg').textContent = t2('none'); return; }
+    // explicit pools first, so the derived kinds take what is left over
+    var picked = {};
+    ['mcq', 'word', 'blank', 'tf', 'order', 'written'].forEach(function (k) { picked[k] = draw(P[k], w[k] || 0, seen, used); });
+    picked.num = draw(P.num.filter(function (x) { return !x.derived; }), w.num || 0, seen, used);
+    if (picked.num.length < (w.num || 0)) picked.num = picked.num.concat(draw(P.num.filter(function (x) { return x.derived; }), w.num - picked.num.length, seen, used));
+    var matchQs = draw(P.match, w.match || 0, seen, used).map(toQuestion);
+    var spare = draw(P.word, 1e6, seen, used);
+    while (matchQs.length < (w.match || 0) && spare.length >= 4) {
+      var take = spare.length >= 5 && spare.length !== 8 ? 5 : 4;
+      matchQs.push(matchFromWords(spare.splice(0, take)));
+    }
+    spare.forEach(function (x) { delete used[x.item.id]; });
+
+    KINDS.forEach(function (k) {
+      var qs = k === 'match' ? matchQs : (picked[k] || []).map(toQuestion);
+      if (!qs.length) return;
+      var S = SECTION[k];
+      sections.push({ title: S[0], titleAf: S[1], intro: S[2], introAf: S[3], questions: qs });
+      total += qs.length;
+    });
+    if (!total) { $('qbMsg').textContent = t2('none'); return; }
+    Object.keys(used).forEach(function (id) { seen[id] = now; });
+
+    var banks = chosenBanks(), topics = {}, topicsAf = {};
+    banks.forEach(function (d) { topics[d.id] = d.topic; topicsAf[d.id] = d.topicAf; });
+    var first = banks[0];
+    var name = banks.length === 1
+      ? { en: first.topic + ' · ' + T.en.paperName, af: first.topicAf + ' · ' + T.af.paperName }
+      : { en: first.subject + ' · Grade ' + first.grade + ' · ' + T.en.paperName, af: first.subjectAf + ' · Graad ' + first.grade + ' · ' + T.af.paperName };
+    var key = Date.now().toString(36);
+    var quiz = { id: 'bank-' + key, rev: 1, title: name.en, titleAf: name.af,
+      subject: first.subject, subjectAf: first.subjectAf, grade: first.grade, minutes: +$('qbMinutes').value || null,
+      topics: topics, topicsAf: topicsAf, sections: sections };
+    writeJ(SEEN_KEY, seen);
+    writeJ(LAYOUT_KEY, w);
+    // keep the last few built papers; each is opened from its key
+    try { localStorage.setItem(CUSTOM + ':' + key, JSON.stringify(quiz)); } catch (e) {}
+    var keys = readJ(CUSTOM + '-keys', []); keys.push(key);
+    while (keys.length > 10) { try { localStorage.removeItem(CUSTOM + ':' + keys.shift()); } catch (e) {} }
+    writeJ(CUSTOM + '-keys', keys);
+    location.href = 'test-tome.html?custom=' + key;
+  }
+
+  function wire() {
+    $('qbGrade').addEventListener('change', refreshSubjects);
+    $('qbSubject').addEventListener('change', refreshTopics);
+    $('qbChapters').addEventListener('change', renderTypes);
+    $('qbAll').addEventListener('click', function () { document.querySelectorAll('[data-topic]').forEach(function (c) { c.checked = true; }); renderTypes(); });
+    $('qbNone').addEventListener('click', function () { document.querySelectorAll('[data-topic]').forEach(function (c) { c.checked = false; }); renderTypes(); });
+    $('qbTypes').addEventListener('input', function (e) {
+      if (!e.target.hasAttribute('data-kind')) return;
+      counts[e.target.getAttribute('data-kind')] = Math.max(0, +e.target.value || 0);
+      document.querySelectorAll('[data-preset]').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+      updateTotal();
+    });
+    document.querySelectorAll('[data-preset]').forEach(function (b) {
+      b.addEventListener('click', function () { counts = Object.assign({}, PRESETS[b.getAttribute('data-preset')]); renderTypes(); });
+    });
+    $('qbMinutes').addEventListener('input', function () { minutesTouched = true; });
+    $('qbBuild').addEventListener('click', build);
+    $('qbFresh').addEventListener('click', function () { writeJ(SEEN_KEY, {}); $('qbMsg').textContent = t2('freshDone'); });
+    $('qbBack').addEventListener('click', function () { location.href = 'test-tome.html'; });
+  }
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.textContent = t2(el.getAttribute('data-t')); });
+    if (manifest.length) refreshGrades();
+  }
+
+  if (window.MLLang) MLLang.mount('mlLangToggle', { onChange: function (next) { lang = next; applyLang(); } });
+  applyLang();
+  wire();
+  fetch(BASE + 'manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (m) {
+    manifest = m.banks || [];
+    if (!manifest.length) { $('qbMsg').textContent = t2('none2'); return; }
+    refreshGrades();
+  }).catch(function () { $('qbMsg').textContent = t2('none2'); });
+})();
+</script>
+<script src="/contact-button.js" defer></script>
+</body>
+</html>

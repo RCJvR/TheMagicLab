@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/focus-reading.css">
 <script defer src="/assets/focus-reading.js"></script>
 <script src="/assets/sim-fit.js"></script>
+<script src="/assets/explore/senses.js"></script>
 <script id="ml-sim-pause">
 (function(){
   var raf = window.requestAnimationFrame.bind(window), caf = window.cancelAnimationFrame.bind(window);
@@ -174,7 +175,7 @@
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 <style id="ml-touch">@media (pointer:coarse){#tab-explore button,#tab-simulate button,#panel-explore button,#tab-explore select,#tab-simulate select,#panel-explore select{min-height:40px}#tab-explore input[type=range],#tab-simulate input[type=range],#panel-explore input[type=range]{min-height:32px}}</style>
-</head>
+<style id="ml-wb-memo">.wb-memo{margin-top:12px;border-top:1px dashed rgba(255,255,255,.10);padding-top:10px}.wb-memo summary{cursor:pointer;font-size:13px;font-weight:700;color:#86efac;list-style:revert}.wb-memo-body{margin-top:8px;font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.85);background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:12px 16px}@media print{.wb-memo{display:none!important}}</style><style id="ml-exam-q">.wb-q.ml-exam-q{border-color:rgba(252,211,77,.35)}.ml-exam-q .wb-qnum{color:#fcd34d}</style></head>
 <body>
   <a class="ml-skip" href="#ml-main">Skip to content</a>
 <nav>
@@ -289,7 +290,7 @@
         <button class="organ-btn active" id="btnEye" onclick="setOrgan('eye')">👁 Oog</button>
         <button class="organ-btn" id="btnEar" onclick="setOrgan('ear')">👂 Oor</button>
       </div>
-      <canvas id="senseCanvas" height="360" role="img" aria-label="Oog- &amp; Oorverkenner: interaktiewe simulasie"></canvas>
+      <div id="senseFigure"></div>
     </div>
     <div>
       <div class="parts-list" id="partsList"></div>
@@ -314,11 +315,11 @@
   <div class="wb-wrap">
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
     <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Noem die DRIE hoofdele van 'n neuron en gee die funksie van elkeen.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Onderskei tussen die sentrale senuweestelsel en die perifere senuweestelsel.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Beskryf die pad van 'n refleksboog, van stimulus tot reaksie, en verduidelik waarom reflekse so vinnig is.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die pad wat lig deur die oog volg, vanaf toetrede by die kornea tot dit die brein bereik.</div></div>
-    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Noem die drie streke van die oor, en gee EEN struktuur en die funksie daarvan in elke streek.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Noem die DRIE hoofdele van 'n neuron en gee die funksie van elkeen.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Dendriete — ontvang impulse en dra hulle na die selliggaam ✓; selliggaam — bevat die kern en beheer die sel se aktiwiteite ✓; akson — dra impulse weg van die selliggaam ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (2 punte)</div><div class="wb-qtext">Onderskei tussen die sentrale senuweestelsel en die perifere senuweestelsel.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Die SSS is die brein en rugmurg, wat inligting verwerk ✓; die PSS is al die senuwees buite die SSS (kraniale en spinale senuwees) wat dit met reseptore en effektore verbind ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Beskryf die pad van 'n refleksboog, van stimulus tot reaksie, en verduidelik waarom reflekse so vinnig is.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Stimulus → reseptor → sensoriese neuron → interneuron in die rugmurg → motoriese neuron → effektor (spier) → reaksie ✓✓. Reflekse is vinnig omdat die impuls deur die rugmurg gaan sonder om eers na die brein te gaan ✓, en min sinapse betrokke is ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die pad wat lig deur die oog volg, vanaf toetrede by die kornea tot dit die brein bereik.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Kornea → waterige vog → pupil → lens → glasvog → retina (fotoreseptore) ✓✓; impulse beweeg langs die optiese senuwee na die oksipitale lob van die serebrum ✓.</div></details></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Noem die drie streke van die oor, en gee EEN struktuur en die funksie daarvan in elke streek.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">Buiteoor: oorskulp (vang klank op) of gehoorkanaal ✓. Middeloor: gehoorbeentjies (versterk vibrasies) of Eustachiusbuis (maak druk gelyk) ✓. Binneoor: koglea (orgaan van Corti verander vibrasies in impulse) of halfsirkelvormige kanale (ewewig) ✓.</div></details></div>
     <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">'n Leerder ondersoek reaksietyd met behulp van 'n vallende-liniaal-toets ('n korter afstand wat gevang word = 'n vinniger reaksietyd, omgeskakel na millisekondes). Resultate vir 5 proewe, voor en na die drink van 'n gekafeïneerde energiedrankie:<br><br>
     <table class="compare-table" style="margin:10px 0"><thead><tr><th>Proef</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead><tbody>
     <tr><td>Reaksietyd voor kafeïen (ms)</td><td>180</td><td>165</td><td>210</td><td>175</td><td>170</td></tr>
@@ -326,7 +327,8 @@
     </tbody></table>
     (a) Bereken die gemiddelde reaksietyd voor kafeïen, en die gemiddelde reaksietyd na kafeïen.<br>
     (b) Watter effek stel hierdie data, gebaseer op hierdie gemiddeldes, voor dat kafeïen op reaksietyd het? Verduidelik jou antwoord in terme van die senuweestelsel.<br>
-    (c) Stel EEN veranderlike voor wat konstant gehou moet word tussen die twee stelle proewe om te verseker dat die vergelyking 'n regverdige toets is, en verduidelik waarom die beheer daarvan saak maak.</div></div>
+    (c) Stel EEN veranderlike voor wat konstant gehou moet word tussen die twee stelle proewe om te verseker dat die vergelyking 'n regverdige toets is, en verduidelik waarom die beheer daarvan saak maak.</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) Voor: (180 + 165 + 210 + 175 + 170)/5 = 180 ms ✓; ná: (150 + 145 + 160 + 140 + 155)/5 = 150 ms ✓<br>(b) Kafeïen verkort reaksietyd (met ongeveer 30 ms) ✓. Kafeïen is ’n stimulant wat die spoed van impulsoordrag / wakkerheid in die senuweestelsel verhoog ✓.<br>(c) bv. dieselfde persoon, dieselfde hand, dieselfde liniaal en valmetode, of dieselfde hoeveelheid oefening ✓, sodat net die kafeïen die verskil kon veroorsaak ✓.</div></details></div>
+    <div class="wb-q ml-exam-q"><div class="wb-qnum">Eksamenstyl-vraag · (12 punte)</div><div class="wb-qtext">’n Dokter tik ’n pasiënt se knie net onder die knieskyf, en die onderbeen ruk vorentoe.<br>(a) Beskryf die pad van die impuls in hierdie refleks, vanaf stimulus tot reaksie. (5)<br>(b) Verduidelik waarom hierdie reaksie sonder bewuste denke gebeur. (1)<br>(c) Beskryf hoe die oog akkommodeer om ’n nabye voorwerp duidelik te sien. (4)<br>(d) ’n Leerder kan nie verafgeleë voorwerpe duidelik sien nie. Noem die gebrek en die soort lens wat gebruik word om dit reg te stel. (2)</div><details class="wb-memo"><summary>Wys memorandum</summary><div class="wb-memo-body">(a) Strekreseptore in die spier bespeur die tik (stimulus) ✓; ’n sensoriese neuron dra die impuls na die rugmurg ✓; dit gaan (via ’n sinaps) oor na ’n motoriese neuron ✓; die motoriese neuron dra die impuls na die dyspier (effektor) ✓; die spier trek saam en die been ruk (reaksie) ✓.<br>(b) Die impuls word in die rugmurg verwerk en hoef nie eers na die brein te gaan nie ✓.<br>(c) Die siliêre spiere trek saam ✓; die suspensoriese ligamente verslap ✓; die lens word meer konveks (ronder) ✓; lig word sterker gebreek en op die retina gefokus ✓.<br>(d) Bysiendheid (miopie) ✓; ’n konkawe (divergerende) lens ✓.</div></details></div>
   </div>
 </div>
 
@@ -351,14 +353,29 @@ const EYE_PARTS = [
   {id:'pupil', name:'Pupil', color:'#1e293b', desc:'Die opening wat lig die oog laat binnekom. Die grootte daarvan word deur die iris aangepas om te beheer hoeveel lig binnekom.'},
   {id:'lens', name:'Lens', color:'#c4b5fd', desc:'Verfyn die fokus deur lig verder te buig sodat dit presies op die retina val.'},
   {id:'retina', name:'Retina', color:'#f472b6', desc:'Die lig-sensitiewe laag agter in die oog. Reseptorselle (stafies en kegeltjies) hier skakel lig om in senu-impulse.'},
-  {id:'opticnerve', name:'Optiese senuwee', color:'#fbbf24', desc:'Dra senu-impulse vanaf die retina na die brein, waar dit as sig geïnterpreteer word.'},
+  {id:'opticnerve', name:'Optiese senuwee', color:'#fbbf24', desc:'Dra senu-impulse vanaf die retina na die brein, waar dit as sig geïnterpreteer word.'},
+  {id:'iris', name:'Iris', color:'#60a5fa', desc:'Die gekleurde spierring voor die lens. Dit verander die grootte van die pupil: kleiner in helder lig, groter in dowwe lig.'},
+  {id:'ciliary', name:'Siliêre liggaam', color:'#c084fc', desc:'’n Spierring om die lens. Dit trek saam of ontspan om die spanning op die ophangligamente te verander, wat die vorm van die lens verander (akkommodasie).'},
+  {id:'suspensory', name:'Ophangligamente', color:'#e9d5ff', desc:'Vesels wat die lens in plek hou en dit aan die siliêre liggaam verbind. Wanneer hulle styf getrek word, word die lens platter (vir voorwerpe ver weg).'},
+  {id:'aqueous', name:'Waterige vog', color:'#7dd3fc', desc:'Waterige vloeistof voor die lens. Dit hou die voorkant van die oog in vorm en voed die kornea en lens.'},
+  {id:'vitreous', name:'Glasvogtigheid', color:'#93c5fd', desc:'Helder jellie wat die ruimte agter die lens vul. Dit hou die oogbol rond en breek lig effens.'},
+  {id:'sclera', name:'Sklera', color:'#e2e8f0', desc:'Die taai wit buitenste laag wat die oog beskerm en sy vorm behou. Aan die voorkant word dit die deursigtige kornea.'},
+  {id:'choroid', name:'Vaatvlies (choroïed)', color:'#a16207', desc:'Die donker laag tussen die sklera en retina. Sy bloedvate voorsien die retina, en sy donker pigment absorbeer lig sodat dit nie binne die oog weerkaats nie.'},
+  {id:'fovea', name:'Fovea (geelvlek)', color:'#fde047', desc:'Die deel van die retina met net keëltjies wat dig opmekaar gepak is. Dit gee die skerpste kleursig; lig van wat jy na kyk, word hier gefokus.'},
+  {id:'blindspot', name:'Blindekol', color:'#f8fafc', desc:'Die plek waar die optiese senuwee die oog verlaat. Dit het geen staafies of keëltjies nie, dus word ’n beeld wat hier val nie gesien nie.'},
 ];
 const EAR_PARTS = [
   {id:'pinna', name:'Oorlap (buite-oor)', color:'#93c5fd', desc:'Versamel klankgolwe uit die omgewing en tregter dit af in die oorkanaal na die trommelvlies toe.'},
   {id:'eardrum', name:'Trommelvlies', color:'#c4b5fd', desc:"'n Dun membraan wat vibreer in reaksie op klankgolwe, en die grens tussen die buite- en middeloor merk."},
   {id:'ossicles', name:'Oossikels (middeloorbeentjies)', color:'#fbbf24', desc:'Drie klein beentjies wat vibrasies vanaf die trommelvlies versterk en dit oordra na die binne-oor.'},
   {id:'cochlea', name:'Koglea', color:'#f472b6', desc:"'n Vloeistof-gevulde, spiraalvormige struktuur in die binne-oor wat vibrasies omskep in senu-impulse vir gehoor."},
-  {id:'semicircular', name:'Halfsirkelvormige kanale', color:'#4ade80', desc:'Bespeur veranderinge in kopposisie en beweging, en verskaf die balanssin.'},
+  {id:'semicircular', name:'Halfsirkelvormige kanale', color:'#4ade80', desc:'Bespeur veranderinge in kopposisie en beweging, en verskaf die balanssin.'},
+  {id:'canal', name:'Gehoorgang', color:'#fda4af', desc:'Die buis vanaf die oorskulp na die trommelvlies. Dit dra klankgolwe na binne; oorwas en haartjies vang stof vas.'},
+  {id:'oval', name:'Ovaal venster', color:'#fb923c', desc:'’n Membraan tussen die middel- en binneoor. Die stiebeuel druk daarop en veroorsaak drukgolwe in die vloeistof van die koglea.'},
+  {id:'round', name:'Ronde venster', color:'#fb923c', desc:'’n Membraan onder die ovaal venster. Dit bult uitwaarts om die druk van die golwe in die kogleêre vloeistof te verlig.'},
+  {id:'eustachian', name:'Eustachiusbuis', color:'#94a3b8', desc:'Verbind die middeloor met die keel (farinks), sodat die lugdruk aan albei kante van die trommelvlies gelyk is.'},
+  {id:'vestibule', name:'Utrikulus en sakkulus', color:'#86efac', desc:'Sakkies in die voorhof van die binneoor met reseptore (makulae) wat die posisie van die kop ten opsigte van swaartekrag bespeur.'},
+  {id:'auditorynerve', name:'Gehoorsenuwee', color:'#fde047', desc:'Dra impulse vanaf die koglea (gehoor) en die halfsirkelvormige kanale, utrikulus en sakkulus (balans) na die brein.'},
 ];
 let currentOrgan = 'eye';
 let activePart = null;
@@ -391,62 +408,19 @@ function selectPart(id){
   drawSense();
 }
 
-const canvas = document.getElementById('senseCanvas');
-const ctx = canvas.getContext('2d');
-let W,H;
-function resizeCanvas(){
-  W = canvas.offsetWidth || 500; H = 360;
-  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawSense();
-}
-
-const REGIONS = {};
-function computeRegionsEye(){
-  const cx = W/2, cy = H/2;
-  REGIONS.cornea = {shape:()=>{ ctx.beginPath(); ctx.arc(cx-70,cy,70,-0.7,0.7); ctx.closePath(); }};
-  REGIONS.pupil = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-38,cy,10,22,0,0,Math.PI*2); }};
-  REGIONS.lens = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-20,cy,10,28,0,0,Math.PI*2); }};
-  REGIONS.retina = {shape:()=>{ ctx.beginPath(); ctx.arc(cx+65,cy,72,Math.PI-0.55,Math.PI+0.55); ctx.closePath(); }};
-  REGIONS.opticnerve = {shape:()=>{ ctx.beginPath(); ctx.rect(cx+70,cy-10,50,20); }};
-}
-function computeRegionsEar(){
-  const cx = W*0.35, cy = H/2;
-  REGIONS.pinna = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx-40,cy,34,58,0,0,Math.PI*2); }};
-  REGIONS.eardrum = {shape:()=>{ ctx.beginPath(); ctx.rect(cx+18,cy-30,8,60); }};
-  REGIONS.ossicles = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+50,cy-14,18,10,0,0,Math.PI*2); }};
-  REGIONS.cochlea = {shape:()=>{ ctx.beginPath(); ctx.arc(cx+110,cy+18,26,0,Math.PI*2); }};
-  REGIONS.semicircular = {shape:()=>{ ctx.beginPath(); ctx.ellipse(cx+95,cy-40,30,18,0.5,0,Math.PI*2); }};
-}
-
-function drawSense(){
-  ctx.clearRect(0,0,W,H);
-  const parts = currentParts();
-  if (currentOrgan==='eye') computeRegionsEye(); else computeRegionsEar();
-
-  parts.forEach(p=>{
-    const r = REGIONS[p.id];
-    if (!r) return;
-    r.shape();
-    const isActive = activePart && activePart.id===p.id;
-    ctx.fillStyle = p.color + (isActive ? 'ee' : '55');
-    ctx.fill();
-    if (isActive){ ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke(); }
-  });
-
-  requestAnimationFrame(drawSense);
-}
-canvas.addEventListener('click', e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mx = (e.clientX-rect.left)*(W/rect.width), my = (e.clientY-rect.top)*(H/rect.height);
-  for (const p of currentParts()){
-    const r = REGIONS[p.id];
-    if (!r) continue;
-    r.shape();
-    if (ctx.isPointInPath(mx,my)){ selectPart(p.id); return; }
+/* Diagram: assets/explore/senses.js (labelled sections of the eye and ear) */
+let senseFig = null, senseFigOrgan = null;
+function drawSense() {
+  if (!window.MLSense) return;
+  if (!senseFig || senseFigOrgan !== currentOrgan) {
+    senseFigOrgan = currentOrgan;
+    senseFig = MLSense.mount(document.getElementById('senseFigure'), {
+      organ: currentOrgan, onPick: function (id) { if (currentParts().some(p => p.id === id)) selectPart(id); }
+    });
   }
-});
-
+  senseFig.focus(activePart ? activePart.id : null);
+}
+function resizeCanvas() { drawSense(); }
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();

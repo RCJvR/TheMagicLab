@@ -112,6 +112,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: 7 verskillende boeke word op ’n rak gerangskik</div><div class="example-step"><span class="step-num">1</span><span>Alle rangskikkings: 7! = 5 040.</span></div><div class="example-step"><span class="step-num">2</span><span>Twee bepaalde boeke moet langs mekaar staan: hanteer hulle as een blok → 6 eenhede: 6! maniere, en die twee boeke ruil om: 2! → 6! × 2! = 1 440.</span></div><div class="example-step"><span class="step-num">3</span><span>Die twee boeke moet NIE langs mekaar staan nie: 5 040 − 1 440 = 3 600.</span></div><div class="example-step"><span class="step-num">4</span><span>Waarskynlikheid dat hulle langs mekaar staan as dit lukraak gerangskik word: 1 440/5 040 = 2/7.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Onthou om met die rangskikkings <strong>binne</strong> die blok (2!) te vermenigvuldig.</span></div>
         `
       },
       questions: [
@@ -217,6 +218,7 @@ MathMagician.registerChapter(10, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Die letters van NUMBER word lukraak gerangskik. Bepaal die waarskynlikheid dat die twee vokale langs mekaar staan</div><div class="example-step"><span class="step-num">1</span><span>Totale rangskikkings van 6 verskillende letters: 6! = 720.</span></div><div class="example-step"><span class="step-num">2</span><span>Hanteer U en E as een blok: 5 eenhede → 5! rangskikkings, en die vokale kan omruil: 2!.</span></div><div class="example-step"><span class="step-num">3</span><span>Gunstig: 5! × 2! = 240.</span></div><div class="example-step"><span class="step-num">4</span><span>P = 240/720 = 1/3.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Waarskynlikheid = gunstige rangskikkings ÷ totale rangskikkings — tel albei op dieselfde manier.</span></div>
         `
       },
       questions: [
@@ -464,6 +466,12 @@ MathMagician.registerChapter(10, {
         { label: "b", text: "Bepaal P(speel 'n instrument | speel 'n sport).", marks: 2 },
         { label: "c", text: "Bepaal P(speel 'n sport EN speel 'n instrument).", marks: 1 },
         { label: "d", text: "Is die gebeurtenisse 'speel 'n sport' en 'speel 'n instrument' onafhanklik? Motiveer deur P(sport)×P(instrument) te vergelyk met P(sport en instrument).", marks: 3 }
+      ]},
+      { number: 6, text: "<strong>Eksamenstyl-vraag</strong> — Beantwoord die tel- en waarskynlikheidsvrae hieronder.", parts: [
+        { label: "a", text: "Hoeveel verskillende rangskikkings van al die letters van die woord MATHEMATICS is moontlik?", marks: 3 },
+        { label: "b", text: "As een rangskikking lukraak gekies word, wat is die waarskynlikheid dat dit met M begin en eindig?", marks: 4 },
+        { label: "c", text: "A en B is onafhanklike gebeurtenisse met P(A) = 0,4 en P(B) = 0,3. Bereken P(A en B) en P(A of B).", marks: 3 },
+        { label: "d", text: "Hoeveel 4-syferkodes kan uit die syfers 0–9 gemaak word as syfers nie herhaal mag word nie en die kode nie met 0 mag begin nie?", marks: 3 }
       ]}
     ],
     answers: {
@@ -471,7 +479,8 @@ MathMagician.registerChapter(10, {
       2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "Die twee S'e aan die punte is identies, dus is daar 1 manier om hulle te plaas. Rangskik die ander 8 letters (S×1, T×3, A×1, I×2, C×1): 8!/(3!2!) = 3360" },
       3: { a: "₁₄C₅=2002", b: "₈C₃×₆C₂=56×15=840", c: "P(4V1M)+P(5V)=(₆C₄×₈C₁+₆C₅)/2002=(15×8+6)/2002=126/2002=9/143" },
       4: { a: "7!=5040", b: "Hanteer PR as 'n eenheid: 6! rangskikkings × 2(PR of RP)=1440", c: "Vokale:O,U=2; P(begin met vokaal)=2×6!/7!=2/7" },
-      5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport en instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport en instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. Dit is NIE gelyk aan P(sport en instrument) = 0.19 NIE, dus is die gebeurtenisse NIE onafhanklik NIE (hulle is afhanklik)." }
+      5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport en instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport en instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. Dit is NIE gelyk aan P(sport en instrument) = 0.19 NIE, dus is die gebeurtenisse NIE onafhanklik NIE (hulle is afhanklik)." },
+      6: { a: "11 letters met M, A en T elk twee keer: 11!/(2! 2! 2!) = 4 989 600", b: "Plaas M aan albei kante; rangskik die ander 9 letters (A en T twee keer): 9!/(2! 2!) = 90 720. P = 90 720/4 989 600 = 1/55 ≈ 0,018", c: "P(A en B) = 0,4 × 0,3 = 0,12; P(A of B) = 0,4 + 0,3 − 0,12 = 0,58", d: "9 × 9 × 8 × 7 = 4 536" }
     }
   }
 });

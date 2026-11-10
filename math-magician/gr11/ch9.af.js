@@ -79,6 +79,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: ’n Motor wat vir R250 000 gekoop is, depresieer teen 15% p.j.</div><div class="example-step"><span class="step-num">1</span><span>Verminderende saldo ná 5 jaar: A = 250 000(1 − 0,15)⁵ = R110 926.</span></div><div class="example-step"><span class="step-num">2</span><span>Reguitlyn ná 5 jaar: A = 250 000(1 − 0,15 × 5) = R62 500.</span></div><div class="example-step"><span class="step-num">3</span><span>Tyd vir die verminderende-saldo-waarde om te halveer: 0,85ⁿ = 0,5 → n = log 0,5 ÷ log 0,85 = 4,27 jaar.</span></div><div class="example-step"><span class="step-num">4</span><span>Die reguitlynwaarde bereik nul ná 1 ÷ 0,15 ≈ 6,7 jaar; verminderende saldo bereik nooit nul nie.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Gebruik A = P(1 − in) vir reguitlyn en A = P(1 − i)ⁿ vir verminderende saldo — lees die vraag noukeurig.</span></div>
         `
       },
       questions: [
@@ -228,6 +229,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Skakel tussen nominale en effektiewe koerse om</div><div class="example-step"><span class="step-num">1</span><span>12% p.j. maandeliks saamgestel: 1 + i_eff = (1 + 0,12/12)¹² = 1,1268 → i_eff = 12,68%.</span></div><div class="example-step"><span class="step-num">2</span><span>10% effektief na ’n nominale koers kwartaalliks saamgestel: (1 + i/4)⁴ = 1,10.</span></div><div class="example-step"><span class="step-num">3</span><span>1 + i/4 = 1,10^(1/4) = 1,02411 → i = 4 × 0,02411 = 9,65% p.j.</span></div><div class="example-step"><span class="step-num">4</span><span>Die effektiewe koers is altyd hoër as die nominale koers wanneer daar meer as een keer per jaar saamgestel word.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Deel die nominale koers deur die aantal periodes per jaar, en verhef tot daardie selfde getal.</span></div>
         `
       },
       questions: [
@@ -502,6 +504,7 @@ MathMagician.registerChapter(9, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal ’n tyd en ’n koers</div><div class="example-step"><span class="step-num">1</span><span>Hoe lank neem dit vir R5 000 om te verdubbel teen 8% p.j. kwartaalliks saamgestel? 10 000 = 5 000(1,02)ⁿ → 1,02ⁿ = 2.</span></div><div class="example-step"><span class="step-num">2</span><span>n = log 2 ÷ log 1,02 = 35,0 kwartale = 8,75 jaar.</span></div><div class="example-step"><span class="step-num">3</span><span>R8 000 groei tot R12 000 in 5 jaar, jaarliks saamgestel: (1 + i)⁵ = 1,5.</span></div><div class="example-step"><span class="step-num">4</span><span>1 + i = 1,5^(1/5) = 1,0845 → i = 8,45% p.j.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> n uit die log-berekening tel saamgestelde periodes — skakel kwartale of maande terug na jare om.</span></div>
         `
       },
       questions: [
@@ -583,7 +586,8 @@ MathMagician.registerChapter(9, {
           { label: "a", text: "Teken die tydlyn en bereken die waarde na 3 jaar.", marks: 3 },
           { label: "b", text: "Bereken die finale waarde na die volle 5 jaar.", marks: 3 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Gee geldbedrae tot die naaste sent.", parts: [{ label: "a", text: "’n Motor wat vir R250 000 gekoop is, verminder in waarde teen 15% p.j. op die verminderende saldo. Bereken sy waarde ná 4 jaar.", marks: 3 }, { label: "b", text: "Bereken die motor se waarde ná 4 jaar as dit teen 15% p.j. op ’n reguitlynbasis in waarde verminder.", marks: 2 }, { label: "c", text: "Bereken die effektiewe jaarlikse rentekoers van 9% p.j., maandeliks saamgestel.", marks: 3 }, { label: "d", text: "R20 000 word teen 8% p.j., kwartaalliks saamgestel, belê. Ná 3 jaar word ’n verdere R5 000 gedeponeer. Bereken die totale waarde van die belegging 5 jaar ná die eerste deposito.", marks: 4 }, { label: "e", text: "Hoeveel jaar sal dit neem vir R10 000 om teen 7% p.j., jaarliks saamgestel, tot R18 000 te groei?", marks: 3 }] }
     ],
     answers: {
       1: {
@@ -599,7 +603,8 @@ MathMagician.registerChapter(9, {
       3: {
         a: "A₃=30000(1.08)³≈30000×1.2597≈R37 791",
         b: "A₅=37791(1+0.10/2)⁴=37791(1.05)⁴≈37791×1.2155≈R45 936"
-      }
+      },
+      4: { a: "A = 250 000(1 − 0,15)⁴ = R130 501,56", b: "A = 250 000(1 − 0,15 × 4) = R100 000,00", c: "i_eff = (1 + 0,09/12)¹² − 1 = 0,0938 = 9,38%", d: "20 000(1,02)²⁰ + 5 000(1,02)⁸ = 29 718,95 + 5 858,30 = R35 577,25", e: "18 000 = 10 000(1,07)ⁿ → 1,07ⁿ = 1,8 → n = log 1,8 / log 1,07 = 8,69 jaar" }
     }
   }
 });

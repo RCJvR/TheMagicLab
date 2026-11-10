@@ -84,6 +84,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = 2x + 3 and g(x) = x², x ≤ 0</div><div class="example-step"><span class="step-num">1</span><span>f⁻¹: swap x and y: x = 2y + 3 → y = (x − 3)/2.</span></div><div class="example-step"><span class="step-num">2</span><span>f and f⁻¹ meet on y = x: 2x + 3 = x → x = −3, so (−3; −3).</span></div><div class="example-step"><span class="step-num">3</span><span>g⁻¹: x = y², y ≤ 0 → y = −√x, x ≥ 0.</span></div><div class="example-step"><span class="step-num">4</span><span>Because of the restriction x ≤ 0, g is one-to-one and g⁻¹ is a function.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> When finding the inverse of a parabola, use the restriction to choose the correct sign of the square root.</span></div>
         `
       },
       questions: [
@@ -207,6 +208,7 @@ MathMagician.registerChapter(2, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve log₂(x + 3) + log₂(x − 3) = 4</div><div class="example-step"><span class="step-num">1</span><span>Combine the logs: log₂[(x + 3)(x − 3)] = 4.</span></div><div class="example-step"><span class="step-num">2</span><span>Change to exponential form: x² − 9 = 2⁴ = 16.</span></div><div class="example-step"><span class="step-num">3</span><span>x² = 25 → x = 5 or x = −5.</span></div><div class="example-step"><span class="step-num">4</span><span>Check the domain: log₂(x − 3) needs x &gt; 3, so x = −5 is rejected. Answer: x = 5.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Always check answers in the original equation — the argument of every log must be positive.</span></div>
         `
       },
       questions: [
@@ -442,6 +444,47 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "The graph of y = log₃(x) is reflected in the line y = x, then shifted 2 units down to form h(x). Write down h(x).", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Graphing exponential & logarithmic functions" },
         { type: "input", text: "Without a calculator, find the value of log₂3 × log₃4 × log₄5 × … × log₁₅16.", answer: "4", topic: "Graphing exponential & logarithmic functions" }
       ]
+    },
+    {
+      id: 204,
+      chapter: 2,
+      name: "Transforming exponential and log graphs",
+      fullName: "Shifting exponential and logarithmic graphs: asymptotes and intercepts",
+      lesson: {
+        heading: "Transforming exponential and log graphs",
+        sub: "Chapter 2 · Topic 5",
+        body: `
+          <p>Shifting a graph changes its asymptote and its intercepts, but not its basic shape. Learn to read the shift from the equation.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Exponential graphs</div>
+            <p>
+              <span class="math">y = b^x + q</span>: the graph moves <strong>up q</strong>, so the horizontal asymptote becomes <span class="math">y = q</span>.<br>
+              <span class="math">y = b^(x + p)</span>: the graph moves <strong>left p</strong>, so the asymptote stays <span class="math">y = 0</span> and the y-intercept becomes <span class="math">b^p</span>.
+            </p>
+          </div>
+          <div class="def-box">
+            <div class="def-box-title">📖 Logarithmic graphs</div>
+            <p>
+              <span class="math">y = log_b(x + p)</span>: the graph moves <strong>left p</strong>, so the vertical asymptote becomes <span class="math">x = −p</span>.<br>
+              <span class="math">y = log_b x + q</span>: the graph moves <strong>up q</strong>, and the asymptote <span class="math">x = 0</span> stays the same.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <div class="example-step"><span class="step-num">1</span><span>For y = 2^x − 5: the asymptote is y = −5, so the range is y > −5.</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>For y = log₂(x − 4): the vertical asymptote is x = 4, because x − 4 = 0.</span></div>
+          </div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: f(x) = 3ˣ, g(x) = 3ˣ⁺² − 9 and h(x) = log₃(x − 1)</div><div class="example-step"><span class="step-num">1</span><span>g is f shifted 2 left and 9 down, so its asymptote is y = −9.</span></div><div class="example-step"><span class="step-num">2</span><span>y-intercept of g: 3² − 9 = 0; x-intercept: 3ˣ⁺² = 9 = 3² → x = 0. The graph of g passes through the origin.</span></div><div class="example-step"><span class="step-num">3</span><span>f⁻¹(x) = log₃x. h is f⁻¹ shifted 1 unit right: domain x &gt; 1, vertical asymptote x = 1.</span></div><div class="example-step"><span class="step-num">4</span><span>x-intercept of h: log₃(x − 1) = 0 → x − 1 = 1 → x = 2.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> A horizontal shift inside the exponent works the opposite way to its sign: 3ˣ⁺² moves the graph 2 units <strong>left</strong>.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "The asymptote of y = 2^x + 3 is:", options: ["y = 0", "y = 3", "x = 3", "y = −3"], answer: 1, topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "The vertical asymptote of y = log₂(x − 4) is:", options: ["x = 4", "x = −4", "y = 4", "x = 0"], answer: 0, topic: "Transforming exponential and log graphs" },
+        { type: "input", text: "The graph of y = 3^x is shifted 2 units to the left. What is its y-intercept?", answer: "9", topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "y = log₃ x shifted 2 units up is:", options: ["y = log₃(x + 2)", "y = log₃ x + 2", "y = log₃(x − 2)", "y = log₃ x − 2"], answer: 1, topic: "Transforming exponential and log graphs" },
+        { type: "input", text: "Find the x-intercept of y = log₂ x − 3.", answer: "8", topic: "Transforming exponential and log graphs" },
+        { type: "mc", text: "For y = 2^x − 5, the range is:", options: ["y > −5", "y > 5", "y < −5", "all real y"], answer: 0, topic: "Transforming exponential and log graphs" }
+      ]
     }
   ],
   workbook: {
@@ -466,13 +509,21 @@ MathMagician.registerChapter(2, {
         { label: "b", text: "Hence write down f⁻¹(x), the inverse of y = a·bˣ, in logarithmic form.", marks: 3 },
         { label: "c", text: "Use your equation to predict the value of y when x = 5.", marks: 2 },
         { label: "d", text: "Write down the equation of the horizontal asymptote of the graph of y = a·bˣ.", marks: 1 }
+      ]},
+      { number: 5, text: "<strong>Exam-style question</strong> — f(x) = 2ˣ and h(x) = 2ˣ⁻¹ + 3.", parts: [
+        { label: "a", text: "Write down the equation of f⁻¹ in the form y = …", marks: 2 },
+        { label: "b", text: "Write down the equation of the asymptote of h and calculate its y-intercept.", marks: 3 },
+        { label: "c", text: "Solve h(x) = 11.", marks: 3 },
+        { label: "d", text: "For which values of x is f⁻¹(x) &lt; 3?", marks: 2 },
+        { label: "e", text: "Find the inverse of g(x) = 3x², x ≥ 0, and explain why the restriction x ≥ 0 is needed.", marks: 4 }
       ]}
     ],
     answers: {
       1: { a: "x=y²−4→y²=x+4→y=√(x+4); domain x≥−4", b: "Parabola and square root reflection", c: "f⁻¹(5)=√9=3" },
       2: { a: "log₂(x(x−2))=3→x(x−2)=8→x²−2x−8=0→(x−4)(x+2)=0→x=4 (reject x=−2)", b: "(2x−1)log3=log7→x=(log7/log3+1)/2≈1.386", c: "x²−5x=6→x²−5x−6=0→x=6 or x=−1 (check both: x=−1→log(6)✓; x=6→log(6)✓ both valid)" },
       3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 years" },
-      4: { a: "a = 5 (the y-value at x = 0). Ratio between consecutive y-values: 10/5 = 20/10 = 40/20 = 2, so b = 2. Thus y = 5·2ˣ.", b: "Swap x and y: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). So f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" }
+      4: { a: "a = 5 (the y-value at x = 0). Ratio between consecutive y-values: 10/5 = 20/10 = 40/20 = 2, so b = 2. Thus y = 5·2ˣ.", b: "Swap x and y: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). So f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" },
+      5: { a: "y = log₂x", b: "y = 3; h(0) = 2⁻¹ + 3 = 3,5, so (0; 3,5)", c: "2ˣ⁻¹ = 8 = 2³ → x − 1 = 3 → x = 4", d: "log₂x &lt; 3 → 0 &lt; x &lt; 8", e: "Swap x and y: x = 3y² → y = √(x/3), x ≥ 0. Without the restriction, y = 3x² is many-to-one, so its inverse would not be a function (one x would give two y-values)." }
     }
   }
 });

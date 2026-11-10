@@ -139,6 +139,7 @@ MathMagician.registerChapter(4, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>For quadratics, always try factorisation first — it's faster. Only use the formula when you can't spot the factors easily.</span></div>
+          <div class="example-box"><div class="example-box-title">✏️ Exam-level worked example: Solve x(x − 3) = 10, x² = 3x, and make r the subject of A = πr²</div><div class="example-step"><span class="step-num">1</span><span>x² − 3x − 10 = 0 → (x − 5)(x + 2) = 0 → x = 5 or x = −2.</span></div><div class="example-step"><span class="step-num">2</span><span>x² = 3x → x² − 3x = 0 → x(x − 3) = 0 → x = 0 or x = 3.</span></div><div class="example-step"><span class="step-num">3</span><span>A = πr² → r² = A/π → r = √(A/π) (r &gt; 0 for a length).</span></div><div class="example-step"><span class="step-num">4</span><span>Check each solution in the original equation.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Common mistake:</strong> Never divide by x: in x² = 3x that loses the solution x = 0. Factorise instead.</span></div>
         `
       },
       questions: [
@@ -612,7 +613,8 @@ x ≤ −3         →  (−∞ ; −3]
           { label: "b", text: "Confirm algebraically that these x-values solve the simultaneous equations y = x + 1 and y = x² − 2x − 3.", marks: 4 },
           { label: "c", text: "Write down the corresponding intersection points as coordinate pairs.", marks: 2 }
         ]
-      }
+      },
+      { number: 6, text: "<strong>Exam-style question</strong> — Solve for x (and y). Show all working.", parts: [{ label: "a", text: "x² − 2x − 15 = 0", marks: 3 }, { label: "b", text: "(x + 1)/3 − (x − 2)/4 = 2", marks: 3 }, { label: "c", text: "−3 &lt; 2x + 1 ≤ 7. Represent your answer on a number line.", marks: 3 }, { label: "d", text: "Solve simultaneously: 2x + y = 7 and x − 3y = 7", marks: 4 }, { label: "e", text: "Make r the subject of the formula V = ⅓πr²h (r &gt; 0).", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -638,7 +640,8 @@ x ≤ −3         →  (−∞ ; −3]
         a: "x = −1 and x = 4 (the rows where f(x) and g(x) match)",
         b: "x+1=x²−2x−3 → x²−3x−4=0 → (x−4)(x+1)=0 → x=4 or x=−1",
         c: "(−1, 0) and (4, 5)"
-      }
+      },
+      6: { a: "(x − 5)(x + 3) = 0 → x = 5 or x = −3", b: "Multiply by 12: 4(x + 1) − 3(x − 2) = 24 → 4x + 4 − 3x + 6 = 24 → x = 14", c: "−4 &lt; 2x ≤ 6 → −2 &lt; x ≤ 3; open dot at −2, closed dot at 3, shaded between", d: "y = 7 − 2x; x − 3(7 − 2x) = 7 → 7x = 28 → x = 4; y = −1", e: "r² = 3V/(πh) → r = √(3V/(πh))" }
     }
   }
 });

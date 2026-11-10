@@ -86,6 +86,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Ogiewe en standaardafwyking</div><div class="example-step"><span class="step-num">1</span><span>’n Ogief stip kumulatiewe frekwensie teenoor die <strong>boonste grens</strong> van elke klas, en begin by die onderste grens van die eerste klas met frekwensie 0.</span></div><div class="example-step"><span class="step-num">2</span><span>Vir 60 leerders, lees die mediaan af by ’n kumulatiewe frekwensie van 30; Q₁ by 15 en Q₃ by 45.</span></div><div class="example-step"><span class="step-num">3</span><span>Standaardafwyking van 4; 8; 6; 5; 7: gemiddeld = 6; gekwadreerde afwykings 4; 4; 0; 1; 1 (som 10).</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √(10 ÷ 5) = 1,41 (kontroleer met die sakrekenaar se σx).</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Moenie ’n ogief by klasmiddelpunte stip nie — dit is vir ’n frekwensieveelhoek.</span></div>
         `
       },
       questions: [
@@ -230,6 +231,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Data: 3; 5; 6; 6; 7; 8; 9; 25</div><div class="example-step"><span class="step-num">1</span><span>Mediaan = (6 + 7) ÷ 2 = 6,5. Q₁ = (5 + 6) ÷ 2 = 5,5; Q₃ = (8 + 9) ÷ 2 = 8,5.</span></div><div class="example-step"><span class="step-num">2</span><span>IKV = 3. Boonste grens = 8,5 + 1,5 × 3 = 13, dus is 25 ’n uitskieter.</span></div><div class="example-step"><span class="step-num">3</span><span>Gemiddeld = 69 ÷ 8 = 8,6 — groter as die mediaan omdat die uitskieter dit optrek.</span></div><div class="example-step"><span class="step-num">4</span><span>Die data is positief skeef; die mediaan is hier die beter maatstaf van ’n tipiese waarde.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Die gemiddeld word sterk deur uitskieters beïnvloed; die mediaan en IKV nie.</span></div>
         `
       },
       questions: [
@@ -359,6 +361,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Klas A: gemiddeld 62, σ = 5. Klas B: gemiddeld 62, σ = 14</div><div class="example-step"><span class="step-num">1</span><span>Albei klasse het dieselfde gemiddelde prestasie.</span></div><div class="example-step"><span class="step-num">2</span><span>Klas B se punte is baie meer versprei; klas A is meer konsekwent.</span></div><div class="example-step"><span class="step-num">3</span><span>’n Punt van 72 is (72 − 62) ÷ 5 = 2 standaardafwykings bo die gemiddeld in klas A, maar net (72 − 62) ÷ 14 = 0,71 in klas B.</span></div><div class="example-step"><span class="step-num">4</span><span>Dus is 72 ’n uitstaande punt in klas A maar ’n gewone goeie punt in klas B.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> ’n Groter standaardafwyking beteken meer verspreiding, nie ’n beter of swakker gemiddeld nie.</span></div>
         `
       },
       questions: [
@@ -482,6 +485,7 @@ MathMagician.registerChapter(11, {
             })();
             </script>
           </div>
+          <div class="example-box"><div class="example-box-title">✏️ Uitgewerkte voorbeeld op eksamenvlak: Bepaal die standaardafwyking: x = 1; 2; 3; 4 met frekwensies 2; 5; 8; 5</div><div class="example-step"><span class="step-num">1</span><span>n = 20; Σfx = 2 + 10 + 24 + 20 = 56; gemiddeld = 2,8.</span></div><div class="example-step"><span class="step-num">2</span><span>Σf(x − x̄)² = 2(3,24) + 5(0,64) + 8(0,04) + 5(1,44) = 6,48 + 3,2 + 0,32 + 7,2 = 17,2.</span></div><div class="example-step"><span class="step-num">3</span><span>Variansie = 17,2 ÷ 20 = 0,86.</span></div><div class="example-step"><span class="step-num">4</span><span>σ = √0,86 = 0,93.</span></div></div><div class="tip-box"><span class="tip-icon">⚠️</span><span><strong>Algemene fout:</strong> Deel deur die totale frekwensie (20), nie deur die aantal rye in die tabel (4) nie.</span></div>
         `
       },
       questions: [
@@ -567,7 +571,8 @@ MathMagician.registerChapter(11, {
           { label: "b", text: "Skat Q1 en Q3 vanaf die ogief (lees af by opeengehoopte frekwensie = 15 en 45), en dus die IKW.", marks: 4 },
           { label: "c", text: "Skat die aantal hardlopers ouer as 50.", marks: 2 }
         ]
-      }
+      },
+      { number: 4, text: "<strong>Eksamenstyl-vraag</strong> — Datastel: 3; 5; 6; 8; 9; 11. ’n Tweede datastel gee die tye (in minute) wat 30 leerders geneem het om ’n taak te voltooi: 0 ≤ t &lt; 10: 4; 10 ≤ t &lt; 20: 9; 20 ≤ t &lt; 30: 12; 30 ≤ t &lt; 40: 5.", parts: [{ label: "a", text: "Bereken die gemiddelde van 3; 5; 6; 8; 9; 11.", marks: 1 }, { label: "b", text: "Bereken die standaardafwyking van hierdie datastel. Toon jou bewerking in ’n tabel.", marks: 4 }, { label: "c", text: "Hoeveel van die waardes lê binne een standaardafwyking van die gemiddelde?", marks: 2 }, { label: "d", text: "Skat die gemiddelde tyd uit die gegroepeerde data.", marks: 3 }, { label: "e", text: "Skryf die modale klas neer en die klas waarin die mediaan lê.", marks: 2 }, { label: "f", text: "As elke waarde in die eerste datastel met 5 vermeerder word, wat gebeur met die gemiddelde en met die standaardafwyking?", marks: 2 }] }
     ],
     answers: {
       1: {
@@ -586,7 +591,8 @@ MathMagician.registerChapter(11, {
         a: "n=60, mediaanposisie = 30ste waarde. 30 lê tussen (30;14) en (40;32): breukdeel=(30−14)/(32−14)=16/18; mediaan ≈ 30 + (16/18)×10 ≈ 38.9 jaar",
         b: "Q1-posisie=15de waarde, tussen (30;14) en (40;32): breukdeel=(15−14)/18=1/18; Q1 ≈ 30 + (1/18)×10 ≈ 30.6. Q3-posisie=45ste waarde, tussen (40;32) en (50;48): breukdeel=(45−32)/16=13/16; Q3 ≈ 40 + (13/16)×10 ≈ 48.1. IKW ≈ 48.1 − 30.6 = 17.5",
         c: "Opeengehoopte frekwensie by 50 is 48, dus hardlopers ouer as 50 = 60 − 48 = 12"
-      }
+      },
+      4: { a: "42 ÷ 6 = 7", b: "Afwykings −4; −2; −1; 1; 2; 4; kwadrate 16; 4; 1; 1; 4; 16 (som 42); σ² = 42/6 = 7; σ = √7 = 2,65", c: "7 ± 2,65 gee 4,35 tot 9,65: die waardes 5; 6; 8; 9, dus 4 waardes", d: "Middelpunte 5; 15; 25; 35: (4×5 + 9×15 + 12×25 + 5×35)/30 = 630/30 = 21 minute", e: "Modale klas 20 ≤ t &lt; 30; die mediaan (15de–16de waarde) lê ook in 20 ≤ t &lt; 30 (kumulatiewe frekwensies 4; 13; 25; 30)", f: "Die gemiddelde neem met 5 toe (tot 12); die standaardafwyking bly dieselfde (2,65)" }
     }
   }
 });
