@@ -223,7 +223,7 @@ body.hide-cursor { cursor: none; }
   transition: opacity 0.3s, translate 0.3s;
   z-index: 16;   /* above the answer-sheet page */
 }
-/* the bar slides away after a few still seconds and comes back with any
+/* the bar slides away after two still seconds and comes back with any
    mouse movement, tap or key, so it never sits over the times */
 .bar.idle { opacity: 0; pointer-events: none; translate: 0 calc(100% + 3vmin); }
 @media (prefers-reduced-motion: reduce) { .bar { transition: opacity 0.3s; } .bar.idle { translate: none; } }
@@ -934,10 +934,11 @@ body.sheet-side .sheet-in { width: 100%; }
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
       // in every state, also before the start: not while the settings are
-      // open or the pointer or keyboard focus is on the bar itself
-      if (!panelOpen && !recOpen && !bar.matches(':hover, :focus-within')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      // open, the pointer is over the bar, or a keyboard user is on it (a
+      // button merely left focused by a click does not keep it up)
+      if (!panelOpen && !recOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
       else wake();
-    }, preview ? 2500 : 3000);
+    }, 2000);
   }
 
   // ── Fill the screen: size the faces to the space the other lines leave ──
