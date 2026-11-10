@@ -193,7 +193,7 @@ body.hide-cursor { cursor: none; }
   border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, transparent); }
 .board .brow:last-child { border-bottom: 0; }
 .board .bname { min-width: 0; line-height: 1.12; }
-.board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.board .bname b { display: block; font-weight: 800; letter-spacing: -0.01em; }
 .board .bname span { display: block; font-size: 0.62em; opacity: 0.75; margin-top: 0.15em; }
 .board .bend { font-size: 0.8em; opacity: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; }
 .board .btime { font-size: 1.9em; font-weight: var(--dweight); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; text-align: right; letter-spacing: -0.02em; }
@@ -339,7 +339,14 @@ body.hide-cursor { cursor: none; }
 .sh-lines i { display: block; height: 4.2cqw; border-bottom: 0.12cqw solid #000; }
 .sh-lines i:last-child { border-bottom: 0; }
 /* Close sits in the top corner, clear of the toolbar */
-.sheet-x { position: fixed; top: 2.4vmin; left: 3vw; font: inherit; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--fg);
+/* beside the timer: the right-hand side, the timer fitted to the rest */
+body.sheet-side { --sheetw: min(50vw, calc((100vh - 10vmin) * 1.18)); }
+body.sheet-side .stage { margin-right: var(--sheetw); }
+body.sheet-side .facts, body.sheet-side .now { display: none !important; }
+body.sheet-side .sheet { inset: 0 0 0 auto; width: var(--sheetw); padding: 7vmin 2vw 4vmin; background: var(--bg);
+  border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); align-items: center; }
+body.sheet-side .sheet-in { width: 100%; }
+.sheet-x { position: absolute; top: 2vmin; left: 2vw; font: inherit; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--fg);
   background: transparent; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 999px; padding: 0.7em 1.4em; cursor: pointer; }
 .sheet-x:hover { border-color: var(--fg); }
 .recmenu { position: fixed; z-index: 26; transform: translateX(-50%); box-sizing: border-box; width: min(340px, calc(100vw - 24px));
@@ -1047,7 +1054,9 @@ body.hide-cursor { cursor: none; }
   function fillBoard(mw, H) {
     var mu = $('multi');
     mu.style.width = mw + 'px';
-    var fits = function (k) { mu.style.setProperty('--bk', k.toFixed(3)); return mu.offsetHeight <= H && mu.scrollWidth <= mw + 1; };
+    // (a name wraps between words, never inside one: the text shrinks until the longest word fits)
+    var names = [].slice.call(mu.querySelectorAll('.bname b'));
+    var fits = function (k) { mu.style.setProperty('--bk', k.toFixed(3)); return mu.offsetHeight <= H && mu.scrollWidth <= mw + 1 && !names.some(function (e) { return e.scrollWidth > e.clientWidth + 1; }); };
     var lo = 0.3, hi = 2.6;
     if (fits(hi)) lo = hi;
     else for (var it = 0; it < 9; it++) { var mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
@@ -1265,7 +1274,10 @@ body.hide-cursor { cursor: none; }
   function sheet(open) {
     var el = $('sheet');
     sheetOpen = !!open;
-    if (!sheetOpen) { if (el) el.remove(); wake(); return; }
+    // on a wide screen it takes the right-hand side (in place of the Detailed
+    // panel) and the timer moves over to fit the left; on a tall one it covers it
+    document.body.classList.toggle('sheet-side', sheetOpen && innerWidth > innerHeight * 1.2);
+    if (!sheetOpen) { if (el) el.remove(); fit(); wake(); return; }
     if (!el) { el = document.createElement('div'); el.id = 'sheet'; el.className = 'sheet'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); document.body.appendChild(el); }
     var x = cfg.exam, when = new Date((x.date || ttToday()) + 'T12:00').toLocaleDateString(locale(), { month: 'long', year: 'numeric' });
     var arrow = function (dir) {
@@ -1285,8 +1297,13 @@ body.hide-cursor { cursor: none; }
       '</div><button type="button" class="sheet-x" id="sheetX">' + esc(t('shClose')) + ' (Esc)</button></div>';
     $('sheetX').addEventListener('click', function (e) { e.stopPropagation(); sheet(false); });
     el.addEventListener('click', function (e) { if (e.target === el) sheet(false); });
-    wake();
+    fit(); wake();
   }
+  // a click anywhere outside the page (other than its own button) closes it
+  document.addEventListener('pointerdown', function (e) {
+    if (sheetOpen && !e.target.closest('#sheet') && !e.target.closest('.bar button[aria-keyshortcuts="A"]')) sheet(false);
+  }, true);
+  window.addEventListener('resize', function () { if (sheetOpen) sheet(true); });
   // The megaphone opens a small menu of the recordings; picking one plays it
   // (and the link remembers it). While one plays, the button pauses it.
   var recOpen = false;
