@@ -221,6 +221,7 @@ body.hide-cursor { cursor: none; }
   border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
   font-family: 'Cabinet Grotesk', system-ui, sans-serif;
   transition: opacity 0.3s, translate 0.3s;
+  z-index: 16;   /* above the answer-sheet page */
 }
 /* the bar slides away after a few still seconds and comes back with any
    mouse movement, tap or key, so it never sits over the times */
@@ -319,6 +320,28 @@ body.hide-cursor { cursor: none; }
 .panel .pp-row input[data-f="subject"] { font-weight: 700; }
 .panel #pPaperPick { padding: 4px; font-size: 15px; }
 .panel #pInfo { resize: vertical; line-height: 1.4; }
+.sheet { position: fixed; inset: 0; z-index: 15; display: flex; align-items: center; justify-content: center; padding: 3vmin 3vw 12vmin;
+  box-sizing: border-box; background: color-mix(in srgb, var(--bg) 94%, transparent); }
+/* as wide as the screen allows while the heading and the page still fit its height */
+.sheet-in { width: min(94vw, calc((100vh - 18vmin) * 1.32)); container-type: inline-size; display: flex; flex-direction: column; align-items: center; gap: 1.6cqw; }
+.sheet h2 { margin: 0; color: var(--fg); font-size: 3.6cqw; font-weight: 800; letter-spacing: -0.01em; text-align: center; }
+.sheet-page { width: 100%; background: #fff; color: #000; display: grid; grid-template-columns: 14% 1fr 16%; font-family: Arial, Helvetica, sans-serif;
+  border: 0.25cqw solid #000; box-sizing: border-box; }
+.sheet-page > div { border: 0.12cqw solid #000; padding: 1.2cqw 1.2cqw; box-sizing: border-box; min-width: 0; }
+.sh-head { display: flex; flex-direction: column; gap: 0.9cqw; }
+.sh-head b { font-size: 2.7cqw; line-height: 1.15; }
+.sh-r em, .sh-l em { font-size: 2.2cqw; line-height: 1.2; display: block; }
+.sh-marks { text-align: center; display: flex; align-items: center; justify-content: center; min-height: 9cqw; }
+.sh-marks em { font-size: 2.4cqw; }
+.sh-side { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 1.6cqw; }
+.sh-side svg { width: 70%; height: auto; }
+.sh-lines { padding: 0 !important; display: flex; flex-direction: column; }
+.sh-lines i { display: block; height: 4.2cqw; border-bottom: 0.12cqw solid #000; }
+.sh-lines i:last-child { border-bottom: 0; }
+/* Close sits in the top corner, clear of the toolbar */
+.sheet-x { position: fixed; top: 2.4vmin; left: 3vw; font: inherit; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 16px; font-weight: 700; color: var(--fg);
+  background: transparent; border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 999px; padding: 0.7em 1.4em; cursor: pointer; }
+.sheet-x:hover { border-color: var(--fg); }
 .recmenu { position: fixed; z-index: 26; transform: translateX(-50%); box-sizing: border-box; width: min(340px, calc(100vw - 24px));
   padding: 8px; border-radius: 18px; display: flex; flex-direction: column; gap: 2px;
   background: color-mix(in srgb, var(--fg) 9%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
@@ -380,6 +403,10 @@ body.hide-cursor { cursor: none; }
       ttAuto: 'Load the next session for this venue by itself', ttAutoDone: 'Next session loaded: {s}',
       ttTitle: 'Fill in from the timetable', ttDate: 'Date', ttSession: 'Writing starts', ttVenue: 'Venue', ttFill: 'Fill in', ttDone: 'Filled in:', ttMany: 'This venue has more than three writing times; only the first three fit.',
       instr: 'Exam instructions', instrBtn: 'Instructions', instrPlay: 'Play the instructions', instrPause: 'Pause the instructions',
+      shBtn: 'Answer sheet', shTitle: 'How to set out your answer sheet', shClose: 'Close',
+      shName: 'Learner’s name', shClass: 'Grade and guardian class e.g. Gr 8E4', shSubject: 'Name of subject + Paper 1 or 2', shTeacher: 'Teacher’s name',
+      shMargin: 'Draw a margin on the righthand side of EACH page', shMarks: 'Leave three lines open for recording of marks',
+      shPrinted: 'Printed margin', shNoWrite: 'Do not write in this space.',
       recTitle: 'Instructions recording', recOwn: 'My own recording: {n}', recAuto: 'chosen for these papers',
       pAudio: 'Instructions recording', pAudioOn: 'Play it before the exam', pAudioOwn: 'Choose another…', pAudioBuiltin: 'Use the built-in one', builtin: 'built in', pAudioBad: 'That file could not be used. Try an MP3 or M4A.',
       pPic: 'Picture', pPicPick: 'Choose…', pPicOff: 'Remove', pPicNone: 'No picture yet', pPicBad: 'That picture could not be used.',
@@ -412,6 +439,10 @@ body.hide-cursor { cursor: none; }
       ttAuto: 'Laai die volgende sessie vir hierdie lokaal vanself', ttAutoDone: 'Volgende sessie gelaai: {s}',
       ttTitle: 'Vul in uit die rooster', ttDate: 'Datum', ttSession: 'Skryf begin om', ttVenue: 'Lokaal', ttFill: 'Vul in', ttDone: 'Ingevul:', ttMany: 'Hierdie lokaal het meer as drie skryftye; net die eerste drie pas.',
       instr: 'Eksameninstruksies', instrBtn: 'Instruksies', instrPlay: 'Speel die instruksies', instrPause: 'Pouseer die instruksies',
+      shBtn: 'Antwoordblad', shTitle: 'Hoe om jou antwoordblad uit te lê', shClose: 'Maak toe',
+      shName: 'Leerder se naam', shClass: 'Graad en voogklas, bv. Gr 8E4', shSubject: 'Naam van vak + Vraestel 1 of 2', shTeacher: 'Onderwyser se naam',
+      shMargin: 'Trek ’n kantlyn aan die regterkant van ELKE bladsy', shMarks: 'Laat drie reëls oop vir die aanteken van punte',
+      shPrinted: 'Gedrukte kantlyn', shNoWrite: 'Moenie in hierdie spasie skryf nie.',
       recTitle: 'Instruksie-opname', recOwn: 'My eie opname: {n}', recAuto: 'gekies vir hierdie vraestelle',
       pAudio: 'Instruksie-opname', pAudioOn: 'Speel dit voor die eksamen', pAudioOwn: "Kies 'n ander…", pAudioBuiltin: 'Gebruik die ingeboude een', builtin: 'ingebou', pAudioBad: "Daardie lêer kon nie gebruik word nie. Probeer 'n MP3 of M4A.",
       pPic: 'Prent', pPicPick: 'Kies…', pPicOff: 'Verwyder', pPicNone: 'Nog geen prent nie', pPicBad: 'Daardie prent kon nie gebruik word nie.',
@@ -853,7 +884,7 @@ body.hide-cursor { cursor: none; }
   // ── Controls ──
   // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
   var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
-    megaphone: ['I', 'I'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
+    megaphone: ['I', 'I'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
@@ -880,6 +911,7 @@ body.hide-cursor { cursor: none; }
       ab.title = t('instrBtn') + ' (I)'; ab.setAttribute('aria-keyshortcuts', 'I'); ab.setAttribute('aria-haspopup', 'menu'); ab.dataset.role = 'rec';
       bar.appendChild(ab);
     }
+    if (md === 'exam') bar.appendChild(btn('file-text', t('shBtn'), function () { sheet(!sheetOpen); }));
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
@@ -1224,6 +1256,36 @@ body.hide-cursor { cursor: none; }
   function toggleAudio() {
     if (!hasAudio()) return;
     if (audio.paused) { audio.play().catch(function () {}); } else audio.pause();
+  }
+  // ── How to set out an answer sheet ──
+  // A page drawn over the timer for the learners to copy: the heading lines,
+  // three open lines for the marks, and the margins left and right. The date
+  // line is the exam's month and year. The timer keeps running behind it.
+  var sheetOpen = false;
+  function sheet(open) {
+    var el = $('sheet');
+    sheetOpen = !!open;
+    if (!sheetOpen) { if (el) el.remove(); wake(); return; }
+    if (!el) { el = document.createElement('div'); el.id = 'sheet'; el.className = 'sheet'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); document.body.appendChild(el); }
+    var x = cfg.exam, when = new Date((x.date || ttToday()) + 'T12:00').toLocaleDateString(locale(), { month: 'long', year: 'numeric' });
+    var arrow = function (dir) {
+      return '<svg viewBox="0 0 60 14" aria-hidden="true"><path d="' + (dir > 0 ? 'M2 7H50' : 'M58 7H10') + '" stroke="currentColor" stroke-width="3"/><path d="' +
+        (dir > 0 ? 'M58 7L46 1V13Z' : 'M2 7L14 1V13Z') + '" fill="currentColor"/></svg>';
+    };
+    var lines = ''; for (var i = 0; i < 8; i++) lines += '<i></i>';
+    el.setAttribute('aria-label', t('shTitle'));
+    el.innerHTML = '<div class="sheet-in"><h2>' + esc(t('shTitle')) + '</h2>' +
+      '<div class="sheet-page">' +
+        '<div class="sh-l"></div><div class="sh-m sh-head"><b>' + esc(t('shName')) + '</b><b>' + esc(t('shClass')) + '</b><b>' + esc(t('shSubject')) + '</b><b>' + esc(when) + '</b><b>' + esc(t('shTeacher')) + '</b></div>' +
+        '<div class="sh-r"><em>' + esc(t('shMargin')) + '</em></div>' +
+        '<div class="sh-l"></div><div class="sh-m sh-marks"><em>' + esc(t('shMarks')) + '</em></div><div class="sh-r"></div>' +
+        '<div class="sh-l sh-side">' + arrow(1) + '<em>' + esc(t('shPrinted')) + '</em><em>' + esc(t('shNoWrite')) + '</em></div>' +
+        '<div class="sh-m sh-lines">' + lines + '</div>' +
+        '<div class="sh-r sh-side">' + arrow(-1) + '<em>' + esc(t('shNoWrite')) + '</em></div>' +
+      '</div><button type="button" class="sheet-x" id="sheetX">' + esc(t('shClose')) + ' (Esc)</button></div>';
+    $('sheetX').addEventListener('click', function (e) { e.stopPropagation(); sheet(false); });
+    el.addEventListener('click', function (e) { if (e.target === el) sheet(false); });
+    wake();
   }
   // The megaphone opens a small menu of the recordings; picking one plays it
   // (and the link remembers it). While one plays, the button pauses it.
@@ -1766,6 +1828,7 @@ body.hide-cursor { cursor: none; }
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && sheetOpen) { sheet(false); return; }
     if (e.key === 'Escape' && recOpen) { recMenu(false); var rb = $('bar').querySelector('[data-role="rec"]'); if (rb) rb.focus(); return; }
     if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
     if (recOpen && e.target.closest && e.target.closest('#recMenu')) {
@@ -1785,6 +1848,7 @@ body.hide-cursor { cursor: none; }
     else if (k === 'r') reset();
     else if (k === 'f') fullscreen();
     else if (k === 'i') toggleAudio();
+    else if (k === 'a' && cfg.mode === 'exam') sheet(!sheetOpen);
     // (the key stops here: the panel puts the focus on its theme list, which
     // would otherwise take the "s" and jump to the first theme starting with S)
     else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
