@@ -102,8 +102,8 @@ body.hide-cursor { cursor: none; }
 .dcol { display: flex; flex-direction: column; align-items: center; gap: 1.6vmin; min-width: 0; }
 .sub { font-size: calc(2.7vmin * var(--tsize)); opacity: 0.8; font-variant-numeric: tabular-nums; }
 .info {
-  font-size: calc(2.7vmin * var(--tsize)); line-height: 1.45; white-space: pre-line;
-  max-width: min(80vw, 60em); opacity: 0.9;
+  font-size: calc(2.7vmin * var(--tsize) * var(--isize, 1)); line-height: 1.45; white-space: pre-line;
+  max-width: min(90vw, 60em); opacity: 0.9;
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); padding-top: 2vmin;
 }
 .laps { font-size: calc(2.4vmin * var(--tsize)); font-variant-numeric: tabular-nums; opacity: 0.85; columns: 2; column-gap: 4vw; max-height: 18vh; overflow: hidden; }
@@ -126,7 +126,8 @@ body.hide-cursor { cursor: none; }
 .facts .fact { display: flex; flex-direction: column; gap: 0.6vmin; min-width: 0; }
 .facts dt { opacity: 0.75; line-height: 1.2; }
 .facts dd { margin: 0; text-align: left; font-weight: 800; font-size: 1.6em; line-height: 1.1; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.facts .fnote { white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
+/* the note keeps its own size (look.isize, --isize) on top of the text size */
+.facts .fnote { font-size: calc(1em * var(--isize, 1)); white-space: pre-line; line-height: 1.45; opacity: 0.9; margin-top: 2.6vmin; padding-top: 2vmin;
   border-top: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); }
 .facts .fnote:empty { display: none; }
 /* a tall, narrow screen puts the side panel under the timer */
@@ -183,7 +184,7 @@ body.hide-cursor { cursor: none; }
 .pgrid button { font: inherit; font-size: 14px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer; border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .pgrid button[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
 .pgrid svg { width: 64px; height: 40px; }
-.facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: 26vw; }
+.facts.row .fnote { margin: 0; padding: 0 0 0 3vw; border-top: 0; border-left: 1px solid color-mix(in srgb, var(--fg) 22%, transparent); max-width: min(56vw, calc(26vw * var(--isize, 1))); }
 .multi .warn .cphase, .multi .warn .ctime { color: var(--warn); }
 /* the departure board (four or more papers): rows that share their columns
    (subgrid), so every end time and time left lines up; sized with --bk */
@@ -422,7 +423,7 @@ body.sheet-side .sheet-in { width: 100%; }
       pArr: 'Arrangement (several papers)', ar_top: 'Papers first', ar_left: 'Clock left', ar_only: 'Papers only', ar_bottom: 'Info at the bottom',
       pPapers: 'Papers in this venue', ppSubject: 'Subject', ppPaper: 'Grade · paper', ppMins: 'Writing (min)', ppDel: 'Remove this paper',
       ppAdd: 'Type in a paper', ppFind: 'Find a paper in the exam timetable', ppPick: 'Add from the timetable', ppHint: 'Four or more papers show as a list beside the clock, the next to finish at the top.',
-      ppFull: 'A venue can have up to {n} papers.', pInfo: 'Note on the screen',
+      ppFull: 'A venue can have up to {n} papers.', pInfo: 'Note on the screen', pIsize: 'Note size',
       pShow: 'Show on the screen', s_clock: 'Clock face', s_date: 'Date', s_fnow: '"Time now" and "Started" (Detailed)', s_note: 'Note',
       pTitle: 'Display settings', pClose: 'Close', pTheme: 'Colour theme', pColours: 'Colours',
       c_bg: 'Background', c_fg: 'Text', c_accent: 'Accent', c_warnc: 'Warning', c_face: 'Clock face',
@@ -458,7 +459,7 @@ body.sheet-side .sheet-in { width: 100%; }
       pArr: 'Rangskikking (meer as een vraestel)', ar_top: 'Vraestelle eerste', ar_left: 'Klok links', ar_only: 'Net vraestelle', ar_bottom: 'Inligting onder',
       pPapers: 'Vraestelle in hierdie lokaal', ppSubject: 'Vak', ppPaper: 'Graad · vraestel', ppMins: 'Skryftyd (min)', ppDel: 'Verwyder hierdie vraestel',
       ppAdd: 'Tik ’n vraestel in', ppFind: 'Soek ’n vraestel in die eksamenrooster', ppPick: 'Voeg by uit die rooster', ppHint: 'Vier of meer vraestelle wys as ’n lys langs die horlosie, die eerste een wat klaarmaak bo-aan.',
-      ppFull: '’n Lokaal kan tot {n} vraestelle hê.', pInfo: 'Nota op die skerm',
+      ppFull: '’n Lokaal kan tot {n} vraestelle hê.', pInfo: 'Nota op die skerm', pIsize: 'Notagrootte',
       pShow: 'Wys op die skerm', s_clock: 'Wyserplaat', s_date: 'Datum', s_fnow: '"Tyd nou" en "Begin" (Uitgebreid)', s_note: 'Nota',
       pTitle: 'Vertoninginstellings', pClose: 'Maak toe', pTheme: 'Kleurtema', pColours: 'Kleure',
       c_bg: 'Agtergrond', c_fg: 'Teks', c_accent: 'Aksent', c_warnc: 'Waarskuwing', c_face: 'Wyserplaat',
@@ -1102,7 +1103,8 @@ body.sheet-side .sheet-in { width: 100%; }
       an.style.width = an.style.height = a + 'px'; an.style.maxHeight = 'none';
       var cw = Math.max(80, W - (showA ? a + g : 0));
       // (beside a departure board the shared reading time takes less height, so the rows stay readable)
-      var fh = panel(cw, H * 0.22), dh = digits(cw, H * (mu.classList.contains('board') ? 0.2 : 0.34));
+      // (a larger note, look.isize, gets a taller strip rather than shrinking the rest)
+      var fh = panel(cw, H * Math.min(0.4, 0.22 * Math.max(1, (cfg.look.isize || 100) / 100))), dh = digits(cw, H * (mu.classList.contains('board') ? 0.2 : 0.34));
       (mu.classList.contains('board') ? fillBoard : fillCols)(cw, Math.max(40, H - (fh ? fh + rg : 0) - (dh ? dh + rg : 0)), own, showA);
     } else {
       if (showA) a = Math.min(H * 0.22, W * 0.2);
@@ -1379,6 +1381,7 @@ body.sheet-side .sheet-in { width: 100%; }
     TTThemes.loadFont(L.font, function () { if (cfg.look.font === f.id) { measureDigits(); fit(); } });
     r.setProperty('--dsize', Math.max(0.3, Math.min(3, L.size / 100)));
     r.setProperty('--tsize', Math.max(0.4, Math.min(2.5, L.tsize / 100)));
+    r.setProperty('--isize', Math.max(0.5, Math.min(3, (L.isize || 100) / 100)));
     document.documentElement.lang = lang();
     document.body.classList.toggle('preview', preview);
     document.body.classList.toggle('no-note', L.note === false);
@@ -1508,6 +1511,7 @@ body.sheet-side .sheet-in { width: 100%; }
         L[k] = inp.type === 'checkbox' ? inp.checked : inp.type === 'range' ? +inp.value : inp.value;
         if (k === 'size' || k === 'fit') { $('pSizeOut').textContent = L.fit ? '—' : L.size + '%'; $('pSize').disabled = !!L.fit; }
         if (k === 'tsize') $('pTsizeOut').textContent = L.tsize + '%';
+        if (k === 'isize') $('pIsizeOut').textContent = L.isize + '%';
         if (inp.type === 'color') themeList = TTThemes.fill($('pTheme'), L, lang()).shown;
         lookChanged();
       });
@@ -1578,7 +1582,9 @@ body.sheet-side .sheet-in { width: 100%; }
   }
   function noteHtml() {
     if (cfg.mode !== 'exam') return '';
-    return '<label class="pf"><span>' + esc(t('pInfo')) + '</span><textarea id="pInfo" rows="3" maxlength="600">' + esc(cfg.exam.info || '') + '</textarea></label>';
+    var z = cfg.look.isize || 100;
+    return '<label class="pf"><span>' + esc(t('pInfo')) + '</span><textarea id="pInfo" rows="3" maxlength="600">' + esc(cfg.exam.info || '') + '</textarea></label>' +
+      '<label class="pf"><span>' + esc(t('pIsize')) + ' · <output id="pIsizeOut">' + z + '%</output></span><input type="range" min="50" max="300" step="10" data-l="isize" value="' + z + '"></label>';
   }
   function papersChanged(rebuild, focusSel) {
     rekey(); lookChanged(); recCheck();

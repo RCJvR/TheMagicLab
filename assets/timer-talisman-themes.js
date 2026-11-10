@@ -338,7 +338,8 @@
             // only, bottom), and whether "Time now"/"Started" and the note show
             arr: 'top', fnow: true, note: true,
             // an exam whose papers are all Afrikaans shows its screen in Afrikaans
-            afAuto: true }
+            afAuto: true,
+            isize: 100 }      // the note's own size (%), on top of the text size
   };
   // A catch-up session can have many papers in one venue (up to MAX_PAPERS):
   // subject4…, paper4…, writing4… follow the same pattern as 2 and 3.
@@ -376,7 +377,7 @@
     ['look.bg', 'bg', 'hex'], ['look.fg', 'fg', 'hex'], ['look.accent', 'ac', 'hex'], ['look.warnc', 'wc', 'hex'], ['look.face', 'fc', 'hex'],
     ['look.font', 'f'], ['look.size', 'z', 'num'], ['look.tsize', 'tz', 'num'], ['look.fit', 'x', 'bool'],
     ['look.layout', 'y', 'layout'], ['look.fill', 'fl', 'fill'], ['look.pic', 'pi', 'bool'],
-    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao']
+    ['look.arr', 'ar'], ['look.fnow', 'fn', 'bool'], ['look.note', 'nt', 'bool'], ['look.afAuto', 'aa', 'bool'], ['exam.rec', 'ao'], ['look.isize', 'iz', 'num']
   ];
   for (var kn = 4; kn <= MAX_PAPERS; kn++) KEYS.push(['exam.subject' + kn, 's' + kn], ['exam.paper' + kn, 'p' + kn], ['exam.writing' + kn, 'w' + kn, 'dur']);
   var MODES = { pomodoro: 'p', countdown: 'c', clock: 'k', stopwatch: 's', exam: 'e' };
