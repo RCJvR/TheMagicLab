@@ -44,7 +44,7 @@ body.hide-cursor { cursor: none; }
 .stage {
   flex: 1; min-height: 0; box-sizing: border-box;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2.4vmin; padding: 5vmin 4vw 12vmin; text-align: center;
+  gap: 2.4vmin; padding: 5vmin 4vw calc(56px + 3vmin); text-align: center;   /* room at the bottom for the slim toolbar */
   position: relative;   /* above the screen fill */
 }
 /* Screen fill (look.fill): the background fills like a loading bar as the
@@ -216,7 +216,7 @@ body.hide-cursor { cursor: none; }
 
 .bar {
   position: fixed; left: 50%; bottom: 2.4vmin; transform: translateX(-50%);
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; padding: 14px;
+  display: flex; flex-wrap: nowrap; justify-content: center; gap: 6px; padding: 6px;
   border-radius: 999px; width: max-content; max-width: calc(100vw - 24px); box-sizing: border-box;
   background: color-mix(in srgb, var(--fg) 9%, var(--bg));
   border: 1px solid color-mix(in srgb, var(--fg) 14%, transparent);
@@ -228,16 +228,23 @@ body.hide-cursor { cursor: none; }
    mouse movement, tap or key, so it never sits over the times */
 .bar.idle { opacity: 0; pointer-events: none; translate: 0 calc(100% + 3vmin); }
 @media (prefers-reduced-motion: reduce) { .bar { transition: opacity 0.3s; } .bar.idle { translate: none; } }
+/* compact: one slim row, so it covers as little of the timer as it can */
 .bar button {
-  font: inherit; font-size: 24px; font-weight: 700; color: var(--fg); background: transparent;
+  font: inherit; font-size: 15px; font-weight: 700; color: var(--fg); background: transparent; white-space: nowrap;
   border: 1px solid color-mix(in srgb, var(--fg) 26%, transparent); border-radius: 999px;
-  padding: 18px 26px; display: inline-flex; align-items: center; gap: 12px; cursor: pointer;
+  padding: 8px 14px; display: inline-flex; align-items: center; gap: 7px; cursor: pointer; min-height: 40px; box-sizing: border-box;
 }
 .bar button:hover { border-color: var(--fg); }
 .bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .bar button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.bar button svg { width: 26px; height: 26px; }
-.bar button.icon-only { padding: 18px 20px; }
+.bar button svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.bar button.icon-only { padding: 8px 11px; }
+/* a narrower screen: every button but Start/Pause shows its icon only (its
+   name stays in the tooltip and for screen readers) */
+@media (max-width: 1000px) {
+  .bar button:not(.primary) span { display: none; }
+  .bar button:not(.primary) { padding: 8px 11px; }
+}
 
 /* Phones only, in portrait or landscape: one strip along the bottom instead of
    a block over the timer. The primary control keeps its label; the rest are
@@ -246,7 +253,7 @@ body.hide-cursor { cursor: none; }
 @media (max-width: 600px), (max-height: 500px) and (pointer: coarse) {
   .bar {
     left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom)); transform: none;
-    width: auto; max-width: none; justify-content: center;
+    width: auto; max-width: none; justify-content: center; flex-wrap: wrap;
     gap: 6px; padding: 6px; border-radius: 18px;
   }
   .bar button { font-size: 16px; line-height: 1; min-height: 44px; min-width: 44px; padding: 10px 16px; gap: 8px; }
