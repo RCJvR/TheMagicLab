@@ -353,6 +353,21 @@
     .assignment-group-dot.upcoming { background: var(--text-2); }
     .assignment-group-dot.done     { background: var(--good); }
 
+    /* My Assignments: filters, then class sections */
+    .assignment-tools { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-4); }
+    .assignment-tools label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
+    .assignment-tools select { font: inherit; font-size: 13.5px; font-weight: 600; color: var(--text); background: var(--ink-850); border: 1px solid var(--line-hard);
+      border-radius: var(--radius-xs); padding: 6px 10px; max-width: 220px; }
+    .assignment-class { margin: 0 0 var(--space-5); }
+    .assignment-class-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); flex-wrap: wrap;
+      font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--paper); margin: 0 0 var(--space-2);
+      padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+    .assignment-class-count { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; color: var(--text-3); }
+    .assignment-class-count .late { color: #f5a3a3; font-weight: 700; }
+    .assignment-empty { color: var(--text-3); font-size: 14px; padding: var(--space-3) 0; display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+    .assignment-reset { font: inherit; font-size: 13px; font-weight: 700; color: var(--text); background: none; border: 1px solid var(--line-hard); border-radius: 99px; padding: 5px 12px; cursor: pointer; }
+    @media (max-width: 560px) { .assignment-tools label { flex: 1 1 45%; } .assignment-tools select { max-width: none; width: 100%; } }
+
     /* ── Friends ────────────────────────────────────────────────────────── */
     .section-sub-label {
       margin: var(--space-4) 0 var(--space-2);
@@ -512,6 +527,7 @@
       <!-- Assignments (students only) -->
       <div id="assignments-panel" style="display:none;">
         <div class="section-hdr">My Assignments</div>
+        <div class="assignment-tools" id="assignments-tools" role="group" aria-label="Filter and sort assignments"></div>
         <div id="assignments-feed"></div>
       </div>
 
@@ -797,6 +813,19 @@
       _renderFeed(recentEvents);
     }
 
+    /* My Assignments: grouped by class, then by type (written tasks, then each tool's lessons).
+       Learners can filter by class, type and status and choose the order; the choice is remembered
+       on this device. */
+    const ASG_PREF = 'ml-asg-view';
+    const ASG_DEFAULT = { cls: '', type: '', show: 'todo', sort: 'due' };
+    let _asgAll = [];
+    function _asgPrefs() {
+      try { return Object.assign({}, ASG_DEFAULT, JSON.parse(localStorage.getItem(ASG_PREF) || '{}')); } catch (e) { return { ...ASG_DEFAULT }; }
+    }
+    function _asgSave(p) { try { localStorage.setItem(ASG_PREF, JSON.stringify(p)); } catch (e) { /* private mode */ } }
+    const _asgType = a => a.kind === 'written' ? 'written' : a.tool;
+    const _asgTypeLabel = t => t === 'written' ? 'Written tasks' : ((TOOL_META[t] && TOOL_META[t].name) || t) + ' lessons';
+
     function _renderAssignments(assignments, profile) {
       const panel = document.getElementById('assignments-panel');
       if (profile?.role !== 'student' || !assignments.length) {
@@ -804,32 +833,69 @@
         return;
       }
       panel.style.display = 'block';
+      _asgAll = assignments;
+      _renderAssignmentTools();
+      _renderAssignmentList();
 
       if (window.location.hash === '#assignments-panel') {
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
         panel.classList.add('jump-highlight');
         setTimeout(() => panel.classList.remove('jump-highlight'), 2500);
       }
-
-      const today = new Date().toISOString().slice(0, 10);
-      const groups = [
-        { label: 'Overdue',    dotClass: 'overdue',  items: assignments.filter(a => !a.done && a.due_date && a.due_date < today) },
-        { label: 'Due Today',  dotClass: 'today',    items: assignments.filter(a => !a.done && a.due_date === today) },
-        { label: 'Upcoming',   dotClass: 'upcoming', items: assignments.filter(a => !a.done && (!a.due_date || a.due_date > today)) },
-        { label: 'Completed',  dotClass: 'done',     items: assignments.filter(a => a.done) },
-      ];
-
-      const feed = document.getElementById('assignments-feed');
-      feed.innerHTML = groups.filter(g => g.items.length).map(g => `
-        <div class="assignment-group-label">
-          <span class="assignment-group-dot ${g.dotClass}"></span>${g.label}
-          <span class="assignment-group-count">(${g.items.length})</span>
-        </div>
-        ${g.items.map(_renderAssignmentItem).join('')}
-      `).join('');
     }
 
-    // Where an assigned lesson lives, from its fixed id (see lesson-catalog.js).
+    function _renderAssignmentTools() {
+      const p = _asgPrefs();
+      const classes = [...new Map(_asgAll.map(a => [a.class_id, a.className || 'Class'])).entries()].sort((x, y) => x[1].localeCompare(y[1]));
+      const types = [...new Set(_asgAll.map(_asgType))].sort((x, y) => (x === 'written' ? -1 : y === 'written' ? 1 : _asgTypeLabel(x).localeCompare(_asgTypeLabel(y))));
+      if (p.cls && !classes.some(c => c[0] === p.cls)) p.cls = '';
+      if (p.type && !types.includes(p.type)) p.type = '';
+      const todo = _asgAll.filter(a => !a.done).length, done = _asgAll.length - todo;
+      const opt = (v, label, cur) => `<option value="${_esc(v)}"${v === cur ? ' selected' : ''}>${_esc(label)}</option>`;
+      document.getElementById('assignments-tools').innerHTML = `
+        <label>Class <select data-asg="cls">${opt('', 'All classes', p.cls)}${classes.map(c => opt(c[0], c[1], p.cls)).join('')}</select></label>
+        <label>Type <select data-asg="type">${opt('', 'All types', p.type)}${types.map(t => opt(t, _asgTypeLabel(t), p.type)).join('')}</select></label>
+        <label>Show <select data-asg="show">${opt('todo', 'To do (' + todo + ')', p.show)}${opt('done', 'Done (' + done + ')', p.show)}${opt('all', 'Everything (' + _asgAll.length + ')', p.show)}</select></label>
+        <label>Sort <select data-asg="sort">${opt('due', 'Due date', p.sort)}${opt('new', 'Newest first', p.sort)}${opt('title', 'A to Z', p.sort)}</select></label>`;
+      document.querySelectorAll('#assignments-tools select').forEach(sel => sel.addEventListener('change', () => {
+        const q = _asgPrefs(); q[sel.dataset.asg] = sel.value; _asgSave(q); _renderAssignmentList();
+      }));
+    }
+
+    function _renderAssignmentList() {
+      const p = _asgPrefs(), today = new Date().toISOString().slice(0, 10);
+      const list = _asgAll.filter(a =>
+        (!p.cls || a.class_id === p.cls) && (!p.type || _asgType(a) === p.type) &&
+        (p.show === 'all' || (p.show === 'done' ? a.done : !a.done)));
+      const cmp = p.sort === 'title' ? (x, y) => String(x.title).localeCompare(String(y.title))
+        : p.sort === 'new' ? (x, y) => String(y.created_at || '').localeCompare(String(x.created_at || ''))
+        : (x, y) => (x.due_date || '9999').localeCompare(y.due_date || '9999') || String(x.title).localeCompare(String(y.title));
+      const feed = document.getElementById('assignments-feed');
+      if (!list.length) {
+        feed.innerHTML = `<div class="assignment-empty">${p.show === 'todo' ? 'Nothing left to do here. Well done!' : 'Nothing matches these choices.'}
+          ${p.cls || p.type || p.show !== 'all' ? '<button type="button" class="assignment-reset">Show everything</button>' : ''}</div>`;
+        const r = feed.querySelector('.assignment-reset');
+        if (r) r.onclick = () => { _asgSave({ ...ASG_DEFAULT, show: 'all' }); _renderAssignmentTools(); _renderAssignmentList(); };
+        return;
+      }
+      const byClass = new Map();
+      list.forEach(a => { const k = a.class_id; if (!byClass.has(k)) byClass.set(k, { name: a.className || 'Class', items: [] }); byClass.get(k).items.push(a); });
+      const classes = [...byClass.values()].sort((x, y) => x.name.localeCompare(y.name));
+      feed.innerHTML = classes.map(c => {
+        const types = new Map();
+        c.items.forEach(a => { const t = _asgType(a); if (!types.has(t)) types.set(t, []); types.get(t).push(a); });
+        const order = [...types.keys()].sort((x, y) => (x === 'written' ? -1 : y === 'written' ? 1 : _asgTypeLabel(x).localeCompare(_asgTypeLabel(y))));
+        const open = c.items.filter(a => !a.done).length, late = c.items.filter(a => !a.done && a.due_date && a.due_date < today).length;
+        return `<section class="assignment-class">
+          <h3 class="assignment-class-head"><span>${_esc(c.name)}</span>
+            <span class="assignment-class-count">${open ? open + ' to do' : 'all done'}${late ? ` · <span class="late">${late} overdue</span>` : ''}</span></h3>
+          ${order.map(t => `
+            <div class="assignment-group-label"><span class="assignment-group-dot ${t === 'written' ? 'today' : 'upcoming'}"></span>${_esc(_asgTypeLabel(t))}
+              <span class="assignment-group-count">(${types.get(t).length})</span></div>
+            ${types.get(t).sort(cmp).map(_renderAssignmentItem).join('')}`).join('')}
+        </section>`;
+      }).join('');
+    }
     function _lessonHref(ref) {
       const m = ref && ref.match(/^(mm|ss|tt|cc):(\d+):(.+)$/);
       if (!m) return null;
@@ -857,11 +923,9 @@
           <div class="assignment-item-main">
             <div class="assignment-item-title">${_esc(a.title)}</div>
             <div class="assignment-item-meta">
-              <span>${a.className}</span>
-              <span>· ${name}</span>
-              ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : ''}
+              ${a.topics.length ? `<span>${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : ''}
               ${a.due_date ? `<span class="assignment-item-due${a.overdue ? ' overdue' : ''}">Due ${new Date(a.due_date).toLocaleDateString('en-ZA', { day:'numeric', month:'short' })}</span>` : ''}
-              ${a.score != null ? `<span>· score ${a.score}%</span>` : ''}
+              ${a.score != null ? `<span>score ${a.score}%</span>` : ''}
             </div>
             ${lessons ? `<div class="assignment-lessons">${lessons}</div>` : ''}
           </div>

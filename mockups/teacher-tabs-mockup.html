@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Teacher dashboard tabs — mock-up</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/magic-lab.css">
+<script src="/assets/vendor/lucide-1.56.0.min.js"></script>
+<!-- Mock-up only (mockups/ is not published). Compares the teacher dashboard's tab bar today with
+     A: every button the same size, and B: the same buttons in four groups. Click to try them. -->
+<style>
+  :root { --teacher: #06b6d4; --teacher-soft: rgba(6,182,212,0.16); --teacher-line: rgba(6,182,212,0.34); --teacher-ink: #67e8f9; }
+  body { background: var(--ink-900); color: var(--text); font-family: var(--font-body); margin: 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 16px 80px; }
+  h1 { font-size: clamp(26px, 4vw, 34px); font-weight: 900; letter-spacing: -0.03em; color: var(--paper); margin: 0 0 8px; }
+  .lead { color: var(--text-2); max-width: 66ch; line-height: 1.6; margin: 0 0 18px; }
+  .size { display: inline-flex; border: 1px solid var(--line-hard); border-radius: 99px; padding: 3px; gap: 2px; margin-bottom: 28px; }
+  .size button { border: 0; background: none; color: var(--text-2); font: 700 13px/1 var(--font-body); padding: 8px 14px; border-radius: 99px; cursor: pointer; }
+  .size button[aria-pressed="true"] { background: var(--paper); color: var(--ink-900); }
+  section.opt { margin: 0 0 44px; }
+  .opt h2 { font-size: 19px; color: var(--paper); margin: 0 0 4px; letter-spacing: -0.02em; }
+  .opt .why { color: var(--text-3); font-size: 14px; margin: 0 0 14px; max-width: 70ch; line-height: 1.5; }
+  .frame { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--ink-850); margin-inline: auto; transition: max-width .2s; }
+  body.phone .frame { max-width: 390px; }
+  .frame-note { font: 600 11px/1 "JetBrains Mono", monospace; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+  i[data-lucide], svg.lucide { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Today: pill buttons sized by their label, wrapping in one strip */
+  .now { display: flex; flex-wrap: wrap; gap: 4px; background: rgba(0,0,0,0.30); border-radius: 10px; padding: 4px; width: fit-content; max-width: 100%; }
+  .now button { padding: 9px 18px; border-radius: 7px; border: 1px solid transparent; font: 700 14px/1 var(--font-body); color: var(--text-3); background: none; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .now button[aria-pressed="true"] { background: rgba(6,182,212,0.18); border-color: rgba(6,182,212,0.32); color: var(--teacher-ink); }
+
+  /* Shared equal-size button */
+  .tb { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 44px; padding: 0 12px; box-sizing: border-box; border-radius: 9px;
+        border: 1px solid var(--line); background: rgba(255,255,255,0.02); color: var(--text-2); font: 700 14px/1.2 var(--font-body); text-align: left; cursor: pointer; }
+  .tb:hover { border-color: var(--line-hard); color: var(--paper); }
+  .tb[aria-pressed="true"] { background: var(--teacher-soft); border-color: var(--teacher-line); color: var(--teacher-ink); }
+  .tb .new { margin-left: auto; font: 600 10px/1 "JetBrains Mono", monospace; color: var(--teacher-ink); border: 1px solid var(--teacher-line); border-radius: 99px; padding: 2px 6px; }
+  .tb:focus-visible, .now button:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+  /* A: one grid, every button the same width */
+  .grid-a { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 8px; }
+  body.phone .grid-a { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* B: four labelled groups, buttons the same size inside and across groups */
+  .grid-b { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .grp h3 { font: 600 11px/1 "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 8px; }
+  .grp .stack { display: grid; gap: 6px; }
+  @media (max-width: 900px) { .grid-b { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  body.phone .grid-b { grid-template-columns: 1fr; }
+  body.phone .grp .stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .shown { margin-top: 14px; color: var(--text-3); font-size: 13px; }
+  .shown b { color: var(--text); }
+  .compare { color: var(--text-2); font-size: 14px; line-height: 1.6; max-width: 72ch; }
+  .compare li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Teacher dashboard tabs</h1>
+  <p class="lead">Two ways to tidy the tab bar on the teacher dashboard, beside how it looks today. Both use the same 14 tools in the same order; only the layout changes. Click buttons to try them, and switch to Phone to see a narrow screen.</p>
+  <div class="size" role="group" aria-label="Preview width">
+    <button type="button" aria-pressed="true" data-size="laptop">Laptop</button>
+    <button type="button" aria-pressed="false" data-size="phone">Phone</button>
+  </div>
+
+  <section class="opt" aria-labelledby="h-now">
+    <h2 id="h-now">Today</h2>
+    <p class="why">Each button is as wide as its label, so the strip is ragged and wraps unevenly.</p>
+    <div class="frame"><div class="frame-note">Current</div><div class="now" id="now"></div></div>
+  </section>
+
+  <section class="opt" aria-labelledby="h-a">
+    <h2 id="h-a">A · Same size, one grid</h2>
+    <p class="why">Every button the same width and height, in tidy rows. Nothing else changes: same order, no new headings.</p>
+    <div class="frame"><div class="frame-note">Option A</div><div class="grid-a" id="a"></div><div class="shown" id="a-shown"></div></div>
+  </section>
+
+  <section class="opt" aria-labelledby="h-b">
+    <h2 id="h-b">B · Same size, in four groups</h2>
+    <p class="why">The same equal buttons under four short headings, so a teacher looks in one column instead of scanning fourteen.</p>
+    <div class="frame"><div class="frame-note">Option B</div><div class="grid-b" id="b"></div><div class="shown" id="b-shown"></div></div>
+  </section>
+
+  <section class="opt" aria-labelledby="h-cmp">
+    <h2 id="h-cmp">How they differ</h2>
+    <ul class="compare">
+      <li><b>A</b> is the smallest change and keeps everyone's habits; it takes three or four rows on a laptop.</li>
+      <li><b>B</b> takes a little more height but answers "where is it?" by kind of task. Groups can be renamed or reshuffled.</li>
+      <li>Both fix the ragged, uneven strip; on a phone both become two columns of large, easy-to-tap buttons instead of a sideways-scrolling strip.</li>
+    </ul>
+  </section>
+</div>
+<script>
+  const TABS = [
+    { k: 'classes', label: 'My Classes', icon: 'school', g: 0 },
+    { k: 'assignments', label: 'Assignments', icon: 'file-text', g: 0 },
+    { k: 'marking', label: 'Grading Grimoire', icon: 'check-check', g: 0, isNew: true },
+    { k: 'livegame', label: 'The Arena', icon: 'trophy', g: 1 },
+    { k: 'training', label: 'Teacher Training', icon: 'book-open', g: 3 },
+    { k: 'reports', label: 'Report Comments', icon: 'message-square', g: 3 },
+    { k: 'rubric', label: 'Rubric Builder', icon: 'table', g: 0 },
+    { k: 'paper', label: 'Paper Assembler', icon: 'file-text', g: 2 },
+    { k: 'classroom', label: 'Classroom Tools', icon: 'shuffle', g: 1 },
+    { k: 'log', label: 'Class Log', icon: 'clipboard-list', g: 1 },
+    { k: 'tracker', label: 'Assessment Tracker', icon: 'calendar-check', g: 0 },
+    { k: 'timetable', label: 'Timetable Planner', icon: 'layout-grid', g: 2 },
+    { k: 'planning', label: 'Lesson Planning', icon: 'calendar-range', g: 2 },
+    { k: 'help', label: 'Help Requests', icon: 'message-circle', g: 1 }
+  ];
+  const GROUPS = ['Classes & marking', 'In the classroom', 'Planning', 'Reports & training'];
+  let active = 'classes';
+  const btn = (t, cls) => `<button type="button" class="${cls}" data-k="${t.k}" aria-pressed="${t.k === active}"><i data-lucide="${t.icon}"></i><span>${t.label}</span>${t.isNew && cls === 'tb' ? '<span class="new">new</span>' : ''}</button>`;
+  function render() {
+    document.getElementById('now').innerHTML = TABS.map(t => btn(t, '')).join('');
+    document.getElementById('a').innerHTML = TABS.map(t => btn(t, 'tb')).join('');
+    document.getElementById('b').innerHTML = GROUPS.map((g, i) => `<div class="grp"><h3>${g}</h3><div class="stack">${TABS.filter(t => t.g === i).map(t => btn(t, 'tb')).join('')}</div></div>`).join('');
+    const label = TABS.find(t => t.k === active).label;
+    document.getElementById('a-shown').innerHTML = document.getElementById('b-shown').innerHTML = 'Showing: <b>' + label + '</b>';
+    lucide.createIcons();
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-k]'); if (b) { active = b.dataset.k; render(); }
+    const s = e.target.closest('[data-size]');
+    if (s) { document.body.classList.toggle('phone', s.dataset.size === 'phone'); document.querySelectorAll('[data-size]').forEach(x => x.setAttribute('aria-pressed', String(x === s))); }
+  });
+  render();
+</script>
+</body>
+</html>
