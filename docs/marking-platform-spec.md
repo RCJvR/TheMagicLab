@@ -1,6 +1,6 @@
 # Grading Grimoire: assignment submission and marking platform
 
-Design spec, draft for review. 2026-11-12.
+Design spec. Written 2026-11-12; **approved by the founder 2026-11-12** (decisions in §11).
 SQL drafts: [`marking-platform-schema.sql`](marking-platform-schema.sql) (not run on any database yet).
 
 > **Name.** "Grading Grimoire" follows the site's naming rule (a function word plus a magical
@@ -106,8 +106,9 @@ Risk, and the guard against it: ProseMirror breaks if two copies of `prosemirror
 `editor.schema` contains every node. **Fallback:** if the CDN graph proves fragile, build one
 file once with esbuild on a developer machine and commit it as `assets/vendor/tiptap.bundle.js`
 (still no bundler in the site's build; the file is a checked-in asset). This also suits the
-network-first service worker and schools with filtered internet. Decide during phase 1's first
-spike; the rest of the design is the same either way.
+network-first service worker and schools with filtered internet. A checked-in vendor file is
+approved (§11); the phase 0 spike picks whichever proves more reliable. The rest of the design
+is the same either way.
 
 ### 2.2 What the editor supports
 
@@ -378,8 +379,8 @@ margin, then the paper total on the cover.
 Marking and releasing are separate (Canvas calls this a muted assignment). A teacher marks the
 whole class, then releases marks and feedback to all, or to selected learners. Learners see
 nothing until `released_at` is set. After release the learner sees their work with the
-annotations, the rubric with the chosen levels highlighted, the total and the teacher's
-overall comment; annotation markers are keyboard-reachable for screen-reader users.
+annotations, **each question's total** (in the margin, as on paper) and the paper total, the
+rubric with the chosen levels highlighted, and the teacher's overall comment; annotation markers are keyboard-reachable for screen-reader users.
 
 ---
 
@@ -578,6 +579,37 @@ All for the signed-in teacher's own classes (RLS):
   does not have yet; it is noted as phase 3+, not designed here. (The deprecated Skills Seer
   `schools` tables are not reused.)
 
+### 6.7 Co-teachers (approved 2026-11-12)
+
+A class can have more than one teacher, for example two teachers sharing a Grade 10 class or a
+student teacher helping with marking.
+
+- `classes.teacher_id` stays the **owner**. A new `class_teachers` table lists up to five
+  **co-teachers** per class.
+- **Adding one:** the owner presses "Invite a co-teacher" and gets an 8-character code (valid 7
+  days, single use). The colleague types it into their own teacher dashboard. A code, not an
+  email lookup, so no teacher can find out whether an address has an account. Only teacher
+  accounts can accept.
+- **What a co-teacher can do:** everything in the class (see learners, set assignments, mark,
+  release, use the markbook) except delete or rename the class and manage the teacher list.
+  The owner can remove a co-teacher; a co-teacher can leave.
+- **How:** the live `is_class_teacher()` and `teacher_has_student()` check only
+  `classes.teacher_id` (read from the database on 2026-11-12). Both are widened to "owner or
+  co-teacher", so every policy built on them (assignments, results, drawing submissions,
+  planner summaries and all the new marking tables) covers co-teachers at once. A scan of the
+  live policies found four that test `classes.teacher_id` directly and must change too: the two
+  owner policies on `classes` (kept for the owner; a read policy is added for co-teachers),
+  "Teachers manage own assignments", `progress_events_teacher_read` and the class timetable
+  policy.
+- **Client code:** every place that lists "my classes" with `classes.eq('teacher_id', me)` must
+  also include classes from `class_teachers` (teacher dashboard, assignment creation, Arena,
+  Test Tome sharing). Ship this with the SQL, or co-teachers will not see their classes.
+- **Two teachers, one script:** annotations record their author, and `submission_marks` records
+  who saved last and when. The marking view shows "Being marked by Ms X" when another teacher
+  saved in the last 10 minutes, and refuses a save based on an older copy (it reloads instead).
+- **Moderation (phase 3)** builds on this: a moderator is a co-teacher with the moderator
+  layer turned on.
+
 ### 6.6 Export
 
 | Format | How | Notes |
@@ -604,10 +636,12 @@ CSV mark imports.
 
 ## 7. Security: RLS and functions
 
-Existing helpers reused, unchanged:
+Existing helpers reused, **widened for co-teachers** (§6.7; same names and signatures):
 
-- `public.is_class_teacher(class_id uuid)`: the caller teaches this class.
-- `public.teacher_has_student(student_id uuid)`: the caller teaches a class this learner is in.
+- `public.is_class_teacher(p_class_id uuid)`: the caller owns or co-teaches this class.
+- `public.teacher_has_student(p_student_id uuid)`: the caller owns or co-teaches a class this
+  learner is in.
+- New: `public.is_class_owner(p_class_id uuid)` for the few owner-only actions.
 
 New helpers (security definer, `search_path = public`, execute revoked from `anon`, as in
 `supabase-security-hardening.sql`):
@@ -655,7 +689,7 @@ rules on children's information (sections 34–35) apply alongside the general c
 - **Roles.** For school use, the **school** is the responsible party and The Magic Lab is its
   **operator** (sections 20–21). Schools using the platform need a short operator agreement
   (data processing terms): purpose (teaching and assessment only), security measures, breach
-  notification, return/deletion at the end. Teachers who sign up individually act for their
+  notification, return/deletion at the end. Draft: [`school-operator-agreement-draft.md`](school-operator-agreement-draft.md). Teachers who sign up individually act for their
   school; the onboarding text should say so. This is a business step to settle before schools
   use the platform for formal marks.
 - **Lawful basis for children's information.** Processing that the school does for its
@@ -664,10 +698,14 @@ rules on children's information (sections 34–35) apply alongside the general c
   Confirm the existing consent wording covers "work you write and upload, and your teacher's
   marks and comments on it", and update `privacy.html` (sections on what is collected, purpose,
   retention, operators) before launch.
-- **Cross-border transfer (section 72).** Learner work is stored in Supabase. Check which
-  region the project runs in; if it is outside South Africa, rely on Supabase's data processing
-  agreement (binding terms giving adequate protection) and name the transfer in the privacy
-  policy.
+- **Cross-border transfer (section 72).** The Supabase project runs in **eu-west-1 (Ireland)**
+  (checked 2026-11-12; `privacy.html` wrongly said Frankfurt and has been corrected). Users are
+  South African, but the data is stored in the EU, so section 72 applies. The basis: the
+  recipient is subject to the GDPR, a law giving adequate protection, plus Supabase's data
+  processing agreement. Supabase does not, as far as we know, offer a South African region; if
+  keeping data in South Africa becomes a requirement (for example a provincial department
+  contract), that means moving the database, a separate project. The privacy policy names the
+  transfer.
 - **Minimality.** Collect only the work, marks and comments. No ID numbers. `admission_no` is
   optional and only for export to the school's own system. EXIF (GPS, device) is stripped from
   images by re-encoding (§2.4). The editor's image dialog reminds learners not to upload photos
@@ -675,8 +713,8 @@ rules on children's information (sections 34–35) apply alongside the general c
 - **Security safeguards (section 19).** Private bucket, signed URLs that expire in an hour,
   RLS on every table, no anon access, immutable versions and an audit log of mark changes,
   RPCs for all learner writes.
-- **Retention.** Default: submissions, versions and images are deleted **18 months after the
-  end of the academic year** they belong to (covering moderation, appeals and the following
+- **Retention (approved 2026-11-12).** Default: submissions, versions and images are deleted
+  **18 months after the end of the academic year** they belong to (covering moderation, appeals and the following
   year's queries); marks in `mb_marks` are kept while the class exists. Schools may set a
   different period to match their records policy. A scheduled Edge Function does the deletion
   and logs counts (not content).
@@ -726,10 +764,12 @@ A one-time **"Move my class data to my account"** flow in the teacher dashboard,
 
 ### Phase 0 — Foundations (about 1 week)
 
+- Co-teachers first (§6.7): `class_teachers`, invite codes, widened `is_class_teacher()` /
+  `teacher_has_student()`, the four direct policies, and the "my classes" queries in the client.
 - Run the SQL for `class_roster`, rubrics and the markbook core; backfill roster rows from
   `class_members`.
 - Rubric Builder saves to and loads from Supabase (§4.6 step 1), with stable ids.
-- Spike: TipTap loading via import map vs. a vendored bundle; decide (§2.1).
+- Spike: TipTap loading via import map vs. the vendored bundle (both approved); pick (§2.1).
 
 ### Phase 1 — MVP: hand in, mark, return (about 3–4 weeks)
 
@@ -786,12 +826,16 @@ with ticks, comments and a rubric, releases it, and exports the marks.
 
 ---
 
-## 11. Open questions for review
+## 11. Decisions (founder, 2026-11-12)
 
-1. Name: "Grading Grimoire", or another?
-2. Phase 0: vendored TipTap bundle vs. CDN import map — any objection to a checked-in vendor file?
-3. Retention default (18 months after the year) — acceptable, or should schools choose at setup?
-4. Do co-teachers need to mark the same class soon? `classes` has one `teacher_id`; a
-   `class_teachers` table would change `is_class_teacher()` and is easier to add before launch.
-5. Which partner school can supply an SA-SAMS mark-sheet sample?
-6. Should learners see the question-by-question tick totals, or only the paper total?
+| # | Question | Decision |
+|---|---|---|
+| 1 | Approve the spec? | **Approved.** |
+| 2 | Name | **"Grading Grimoire"** for now. |
+| 3 | Co-teachers | **Yes**: designed in §6.7, built in phase 0 before the rest. |
+| 4 | Checked-in TipTap vendor file | **Yes, allowed** (§2.1). |
+| 5 | Data location | "South Africa only for now." The project actually runs in eu-west-1 (Ireland); see §8. **Open:** confirm whether this meant "our users are South African" (no change needed) or "the data must be stored in South Africa" (a database move; Supabase has no South African region that we know of). |
+| 6 | Retention | **18 months after the end of the academic year**, as the default (§8). |
+| 7 | POPIA paperwork | **Update.** `privacy.html` updated (learner work, teacher marks, Ireland hosting, retention); operator agreement drafted in `school-operator-agreement-draft.md`. Both need checking by someone qualified in POPIA. The privacy update goes live whenever this branch merges; the text is worded for the feature as designed. |
+| 8 | What learners see after release | **Each question's total and the paper total** (§3.7). |
+| 9 | SA-SAMS sample file | **Later.** The SA-SAMS export stays in phase 3 and unverified. |

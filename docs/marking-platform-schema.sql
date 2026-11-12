@@ -13,6 +13,7 @@
 -- execute revoked from public/anon.
 --
 -- Sections
+--   0. Co-teachers                      (phase 0, before anything else)
 --   1. Class roster                     (phase 0)
 --   2. Rubrics                          (phase 0)
 --   3. Assignments: new columns         (phase 1)
@@ -23,6 +24,135 @@
 --   8. Helper functions + RPCs          (phase 1)
 --   9. Storage bucket                   (phase 1)
 -- ============================================================
+
+
+-- ══════════════════════════════════════════════════════════════════════
+-- 0. CO-TEACHERS (decided 2026-11-12, spec §6.7)
+-- classes.teacher_id stays the class OWNER. class_teachers holds extra
+-- teachers, who can do everything in the class except delete it, rename it,
+-- or manage the teacher list. Because almost every teacher policy goes through
+-- is_class_teacher() / teacher_has_student(), widening those two functions
+-- gives co-teachers access everywhere at once. Live definitions read on
+-- 2026-11-12 (both: classes.teacher_id = auth.uid() only).
+-- ══════════════════════════════════════════════════════════════════════
+create table if not exists public.class_teachers (
+  class_id    uuid not null references public.classes(id) on delete cascade,
+  teacher_id  uuid not null references public.profiles(id) on delete cascade,
+  added_by    uuid references public.profiles(id) on delete set null,
+  added_at    timestamptz not null default now(),
+  primary key (class_id, teacher_id)
+);
+create index if not exists class_teachers_teacher_idx on public.class_teachers (teacher_id);
+
+-- Owner invites a colleague with a one-time code (like the class join code), so
+-- no teacher can look up whether an email address has an account.
+create table if not exists public.class_teacher_invites (
+  code        text primary key check (code ~ '^[A-HJ-NP-Z2-9]{8}$'),
+  class_id    uuid not null references public.classes(id) on delete cascade,
+  created_by  uuid not null references public.profiles(id) on delete cascade,
+  expires_at  timestamptz not null default now() + interval '7 days',
+  used_by     uuid references public.profiles(id) on delete set null,
+  used_at     timestamptz
+);
+
+alter table public.class_teachers enable row level security;
+alter table public.class_teacher_invites enable row level security;
+revoke all on public.class_teachers, public.class_teacher_invites from anon;
+revoke insert, update on public.class_teachers from authenticated;     -- only via accept_co_teacher_invite()
+grant select, delete on public.class_teachers to authenticated;
+grant select, delete on public.class_teacher_invites to authenticated;  -- created via create_co_teacher_invite()
+
+create or replace function public.is_class_owner(p_class_id uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from classes where id = p_class_id and teacher_id = (select auth.uid()));
+$$;
+
+-- Widened: owner OR co-teacher. Same signature and argument name as the live function.
+create or replace function public.is_class_teacher(p_class_id uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from classes where id = p_class_id and teacher_id = (select auth.uid()))
+      or exists (select 1 from class_teachers where class_id = p_class_id and teacher_id = (select auth.uid()));
+$$;
+
+create or replace function public.teacher_has_student(p_student_id uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from class_members cm join classes c on c.id = cm.class_id
+    where cm.student_id = p_student_id
+      and (c.teacher_id = (select auth.uid())
+           or exists (select 1 from class_teachers t where t.class_id = c.id and t.teacher_id = (select auth.uid()))));
+$$;
+revoke execute on function public.is_class_owner(uuid), public.is_class_teacher(uuid), public.teacher_has_student(uuid) from public, anon;
+grant execute on function public.is_class_owner(uuid), public.is_class_teacher(uuid), public.teacher_has_student(uuid) to authenticated;
+
+drop policy if exists class_teachers_read on public.class_teachers;
+create policy class_teachers_read on public.class_teachers for select to authenticated
+  using (public.is_class_teacher(class_id));
+drop policy if exists class_teachers_remove on public.class_teachers;
+create policy class_teachers_remove on public.class_teachers for delete to authenticated
+  using (public.is_class_owner(class_id) or teacher_id = (select auth.uid()));   -- owner removes, or a co-teacher leaves
+drop policy if exists class_teacher_invites_owner on public.class_teacher_invites;
+create policy class_teacher_invites_owner on public.class_teacher_invites for select to authenticated
+  using (public.is_class_owner(class_id));
+drop policy if exists class_teacher_invites_owner_delete on public.class_teacher_invites;
+create policy class_teacher_invites_owner_delete on public.class_teacher_invites for delete to authenticated
+  using (public.is_class_owner(class_id));
+
+create or replace function public.create_co_teacher_invite(p_class uuid)
+returns text language plpgsql security definer set search_path = public as $$
+declare
+  alphabet constant text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  c text;
+begin
+  if not is_class_owner(p_class) then raise exception 'Only the class owner can invite'; end if;
+  if (select count(*) from class_teachers where class_id = p_class) >= 5 then raise exception 'A class can have at most 5 co-teachers'; end if;
+  loop
+    c := (select string_agg(substr(alphabet, 1 + floor(random() * 32)::int, 1), '') from generate_series(1, 8));
+    exit when not exists (select 1 from class_teacher_invites where code = c);
+  end loop;
+  insert into class_teacher_invites (code, class_id, created_by) values (c, p_class, auth.uid());
+  return c;
+end $$;
+
+create or replace function public.accept_co_teacher_invite(p_code text)
+returns uuid language plpgsql security definer set search_path = public as $$
+declare inv class_teacher_invites;
+begin
+  if not exists (select 1 from profiles where id = auth.uid() and role = 'teacher') then
+    raise exception 'Only teacher accounts can co-teach';
+  end if;
+  select * into inv from class_teacher_invites
+   where code = upper(trim(p_code)) and used_by is null and expires_at > now() for update;
+  if inv.code is null then raise exception 'That code is not valid or has expired'; end if;
+  if exists (select 1 from classes where id = inv.class_id and teacher_id = auth.uid()) then
+    raise exception 'You already own this class';
+  end if;
+  insert into class_teachers (class_id, teacher_id, added_by) values (inv.class_id, auth.uid(), inv.created_by)
+  on conflict do nothing;
+  update class_teacher_invites set used_by = auth.uid(), used_at = now() where code = inv.code;
+  return inv.class_id;
+end $$;
+revoke execute on function public.create_co_teacher_invite(uuid), public.accept_co_teacher_invite(text) from public, anon;
+grant execute on function public.create_co_teacher_invite(uuid), public.accept_co_teacher_invite(text) to authenticated;
+
+-- Existing policies that test classes.teacher_id directly instead of the helpers
+-- (found by a pg_policy scan on 2026-11-12). Each must change too:
+--   classes "Teachers manage own classes" / classes_teacher_own  → keep for the owner (update, delete),
+--     and add a read policy for co-teachers:
+drop policy if exists classes_co_teacher_read on public.classes;
+create policy classes_co_teacher_read on public.classes for select to authenticated
+  using (exists (select 1 from public.class_teachers t where t.class_id = classes.id and t.teacher_id = (select auth.uid())));
+--   assignments "Teachers manage own assignments" (teacher_id = auth.uid()) → any teacher of the class:
+alter policy "Teachers manage own assignments" on public.assignments
+  using (public.is_class_teacher(class_id))
+  with check (public.is_class_teacher(class_id));
+--   (teacher_id keeps meaning "who created it"; the client sets it to the signed-in teacher on insert.)
+--   progress_events "progress_events_teacher_read" and class_timetables
+--   "Class teacher manages their class timetable" join classes.teacher_id directly: rewrite each
+--   to use public.teacher_has_student(user_id) / public.is_class_teacher(class_id). Their full
+--   current text must be read from pg_policy when this section is turned into a migration.
+-- Client code: every query of the form classes … .eq('teacher_id', me) (teacher dashboard class
+-- list, assignment creation, Arena, Test Tome sharing) must also list classes from class_teachers.
 
 
 -- ══════════════════════════════════════════════════════════════════════
@@ -741,6 +871,8 @@ create policy "Class teacher reads submission files" on storage.objects for sele
 -- REVIEW NOTES
 -- • Scores and the overall comment sit in submission_marks so learners only see them after
 --   release; the learner client must read submission_marks, never assume columns on submissions.
+-- • Two teachers marking one script: submission_marks.marked_by/marked_at let the client warn
+--   "Being marked by X" and refuse a save older than the stored marked_at (spec §6.7).
 -- • roster_on_member_join assumes profiles.display_name; check the column name in production.
 -- • Teacher-side 'marking' status: the client sets it when the teacher first opens a script.
 -- • Retention clean-up (18 months after year end) and orphan-image clean-up are scheduled
