@@ -421,7 +421,7 @@ dialog .a-hint { margin: 0 0 14px; }
     $('fSearch').addEventListener('input', render);
     $('addForm').addEventListener('submit', addLearner);
     $('addBox').addEventListener('toggle', function () { if ($('addBox').open) $('addName').focus(); });
-    $('printBtn').addEventListener('click', printDoc);
+    $('printBtn').addEventListener('click', savePdf);
     $('openLists').addEventListener('click', openLists);
     $('listGrade').addEventListener('change', showList);
     $('listNames').addEventListener('input', countList);
@@ -647,6 +647,75 @@ dialog .a-hint { margin: 0 0 14px; }
     var restore = function () { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
     window.addEventListener('afterprint', restore);
     window.print();
+  }
+
+  // ── Save as PDF: builds the PDF file directly (no print dialog, which can take a
+  //    minute on school computers). The library loads on first use only; if it
+  //    cannot load, the print dialog above is used instead.
+  var pdfLib = null;
+  function loadScript(src) {
+    return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  }
+  function loadPdfLib() {
+    if (!pdfLib) pdfLib = loadScript('/assets/vendor/jspdf-2.5.2.umd.min.js')
+      .then(function () { return loadScript('/assets/vendor/jspdf-autotable-3.8.4.min.js'); })
+      .catch(function (e) { pdfLib = null; throw e; });
+    return pdfLib;
+  }
+  // The PDF's built-in fonts cover Western European letters (ë, é, ô ...); swap the
+  // typographic punctuation they lack for plain equivalents.
+  function pdfText(s) {
+    return String(s == null ? '' : s).replace(/[‘’‛]/g, "'").replace(/[“”]/g, '"')
+      .replace(/[–—]/g, '-').replace(/…/g, '...').replace(/ /g, ' ').replace(/[^\x00-\xFF]/g, '?');
+  }
+  function savePdf() {
+    var rows = visible(), g = $('fGrade').value, q = $('fSearch').value.trim();
+    if (!rows.length) { toast('There is nothing to save for this selection'); return; }
+    var btn = $('printBtn'); btn.disabled = true; setStatus('Making PDF…');
+    loadPdfLib().then(function () {
+      var today = new Date();
+      var title = 'Accommodations register' + (g ? ' - ' + gradeLabel(g) : '');
+      var sub = (g ? '' : 'All grades  |  ') + rows.length + (rows.length === 1 ? ' learner' : ' learners') +
+        (q ? '  |  filtered by "' + q + '"' : '') + '  |  ' + today.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      var M = 12, y = 18;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(0); doc.text(pdfText(title), M, y);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(70); doc.text(pdfText(sub), M, y + 6);
+      y += 12;
+      var byGrade = {};
+      rows.forEach(function (l) { (byGrade[l.grade] = byGrade[l.grade] || []).push(l); });
+      Object.keys(byGrade).sort(function (a, b) { return gradeIdx(a) - gradeIdx(b); }).forEach(function (gr) {
+        if (!g) {
+          if (y > 180) { doc.addPage(); y = 16; }
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(0); doc.text(gradeLabel(gr), M, y + 4); y += 7;
+        }
+        doc.autoTable({
+          startY: y, margin: { left: M, right: M, top: 14, bottom: 14 }, rowPageBreak: 'avoid', showHead: 'everyPage',
+          head: [['#', 'Learner', 'Class', 'Accommodations', 'Comment']],
+          body: byGrade[gr].map(function (l, i) {
+            return [String(i + 1), pdfText(l.name) + (l.internal ? '\n(' + INTERNAL_TEXT + ')' : ''), pdfText(l.class_name || ''),
+              l.accommodations.length ? l.accommodations.map(function (a) { return '• ' + pdfText(a); }).join('\n') : '-',
+              pdfText(l.comment || '')];
+          }),
+          styles: { font: 'helvetica', fontSize: 9, cellPadding: 1.8, valign: 'top', textColor: 20, lineColor: [140, 140, 140], lineWidth: 0.2, overflow: 'linebreak' },
+          headStyles: { fillColor: [232, 232, 232], textColor: 0, fontStyle: 'bold' },
+          columnStyles: { 0: { cellWidth: 8, textColor: 90 }, 1: { cellWidth: 52, fontStyle: 'bold' }, 2: { cellWidth: 16 }, 3: { cellWidth: 72 } }
+        });
+        y = doc.lastAutoTable.finalY + 8;
+      });
+      var pages = doc.getNumberOfPages();
+      for (var p = 1; p <= pages; p++) {
+        doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(90);
+        doc.text('Confidential learner information. Keep secure and destroy when no longer needed.', M, 210 - 7);
+        doc.text('Page ' + p + ' of ' + pages, 297 - M, 210 - 7, { align: 'right' });
+      }
+      doc.save(title + ' ' + today.toISOString().slice(0, 10) + '.pdf');
+      setStatus('PDF saved');
+    }).catch(function (e) {
+      console.error(e); setStatus('');
+      toast('Opening the print dialog instead');
+      printDoc();
+    }).then(function () { btn.disabled = false; });
   }
 
   // ── Admin: people who sign in with Microsoft ────────────────
