@@ -6,8 +6,8 @@ import {
   sb, me, esc, el, fmtWhen, fmtNum, friendly, capsLevel, whenAuthReady, extensions, docText, countWords, imagePaths,
   prepareImage, BUCKET, loadAssignment, Overlay, questionMap, tickTotals, rubricScore, criterionLevels, criterionMax, questionBadges,
   pageQuestionOf, signedUrl
-} from './grimoire-core.js';
-import { renderPdf, photosToPdf, pageCount, markedPdf, download, MAX_PDF_BYTES, MAX_PAGES } from './grimoire-pdf.js';
+} from './grimoire-core.js?v=202611121502';
+import { renderPdf, photosToPdf, pageCount, markedPdf, download, MAX_PDF_BYTES, MAX_PAGES } from './grimoire-pdf.js?v=202611121502';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);

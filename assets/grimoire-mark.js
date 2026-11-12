@@ -7,8 +7,8 @@ import {
   sb, me, el, fmtWhen, fmtNum, friendly, capsLevel, whenAuthReady, extensions, loadAssignment, Overlay,
   questionMap, tickTotals, rubricScore, criterionLevels, criterionMax, levelRange, questionBadges,
   anchorFromPos, rangeAnchor, SHAPES, round1, pageQuestionOf, signedUrl
-} from './grimoire-core.js';
-import { renderPdf, markedPdf, download } from './grimoire-pdf.js';
+} from './grimoire-core.js?v=202611121502';
+import { renderPdf, markedPdf, download } from './grimoire-pdf.js?v=202611121502';
 
 const $ = id => document.getElementById(id);
 const AID = new URLSearchParams(location.search).get('a');

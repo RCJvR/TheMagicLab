@@ -2,7 +2,7 @@
    pdf.js (already vendored) draws pages; pdf-lib (vendored, MIT) joins phone photos into one
    PDF and writes the "marked PDF" download. Both load only when a page needs them.
    PDFs are drawn by pdf.js with scripting off; they are never opened in the browser's viewer. */
-import { prepareImage, fmtNum, capsLevel } from './grimoire-core.js';
+import { prepareImage, fmtNum, capsLevel } from './grimoire-core.js?v=202611121502';
 
 const PDFJS = '/assets/vendor/pdfjs-3.11.174/pdf.min.js';
 const PDFJS_WORKER = '/assets/vendor/pdfjs-3.11.174/pdf.worker.min.js';
