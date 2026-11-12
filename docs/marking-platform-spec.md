@@ -896,7 +896,9 @@ with a/e/x/m statuses, tasks with term and weight, term and year marks and CAPS 
 this browser's Assessment Tracker and from Test Tome sessions, CSV and Excel export (SheetJS,
 vendored); the comment bank with starter packs and the teacher's own stamps; fixed question headings
 (`questionTemplate`, locked in the learner's editor); private drafts and `comment_bank` in
-`supabase-grading-grimoire-phase2.sql`. Not done yet: importing the Rubric Builder's browser-only
+`supabase-grading-grimoire-phase2.sql` (live since 2026-11-12; rolled-back permission test 12/12: teachers
+cannot read draft text but still see status and handed-in versions, learners read their own draft through
+`get_my_draft()`, each comment bank is private, anon refused). Not done yet: importing the Rubric Builder's browser-only
 rubric marks, the practice band (Math Magician and lesson results), holistic / single-point /
 checklist rubrics and weighting in the Rubric Builder, maths and code blocks in the editor,
 per-learner extensions, and photos of paper work for name-only learners.
