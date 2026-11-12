@@ -335,7 +335,7 @@ so typing is never hijacked. Outside mark mode, Alt+key equivalents work.
 
 | Key (mark mode) | Outside mark mode | Action |
 |---|---|---|
-| T | Alt+1 | Tick at the caret or the last click; the next number typed (1–9, `.` for ½) sets its marks |
+| T | Alt+1 | Pick up the tick (it stays in hand, §3.4a); Enter places it at the caret; 1–9 or `.` set its marks |
 | X | Alt+2 | Cross |
 | C | Alt+3 | Comment (opens the box with the bank search focused) |
 | H | Alt+4 | Highlight the current text selection |
@@ -352,6 +352,47 @@ Keyboard placement: the read-only document still has a caret (ProseMirror select
 with the arrow keys; T/X/C place at the caret. So marking is fully possible without a mouse,
 and every annotation is a focusable element with an accessible name ("Tick, 2 marks, on
 'renewable energy'").
+
+### 3.4a The pen stays in your hand (mouse and pen controls, added 2026-11-12)
+
+On paper a marker picks up the red pen once and ticks all the way down the page. The marking
+view works the same way.
+
+**Persistent tool.** The chosen tool (tick, cross, comment, stamp, highlight) **stays active**
+until the teacher picks another one or presses Esc. It does not drop back to a pointer after each
+mark. Tick is the tool in hand when a script opens. The pointer shows the tool (a small tick or
+cross cursor), and the toolbar shows it as pressed, with its mark value ("✓ 1"). The choice is
+remembered between scripts and sessions (per teacher, in `localStorage`), so the next learner's
+script opens with the same pen.
+
+**Mouse, inside the learner's work:**
+
+| Action | Does |
+|---|---|
+| Left click | Places the tool in hand (default: a tick worth 1) |
+| Shift + left click | Places the **opposite** mark: a cross when holding a tick, a tick when holding a cross. Works on every laptop trackpad. |
+| Middle click (wheel press) | Places a cross. Optional extra for mice that have it; the page cancels the browser's autoscroll (and paste on Linux) only inside the work. Never the only way to cross. |
+| Right click | Opens a **quick menu** at the pointer: Tick, Tick ½, Tick 2, Cross, Comment, Stamps ▸, and Delete or Change marks when the pointer is on an existing mark. The browser's own menu stays available outside the work, and with Shift + right click. |
+| Click and drag over text | Selects text and offers Highlight or Comment (a short click places; a drag of more than 4 px selects) |
+| Click on an existing mark | Selects it instead of placing a new one; drag to move it; Delete removes it; 1–9 changes its marks |
+| Scroll wheel | Scrolls, as normal |
+
+**Mark value of the tool in hand.** Pressing 1–9 (or `.` for ½) with nothing selected sets
+the value of the tick in hand ("✓ 2"), so a run of two-mark ticks is one key then clicks. The
+value stays until changed.
+
+**Touch and stylus (tablets).** Tap places the tool in hand. Long press (500 ms) opens the
+quick menu. A stylus barrel button counts as right click. Two-finger tap = undo. Palm touches
+are ignored while a pen is in use (`pointerType === 'pen'`).
+
+**Safety nets.** Every placement can be undone (Ctrl+Z, or the Undo button that appears for 5 s
+after each mark). A mark placed within 300 ms and 6 px of the previous one is treated as a
+double click and ignored, so a nervous double click does not add two marks. Clicks on the
+toolbar, the rubric pane or the margin totals never place marks.
+
+**Keyboard and screen readers** are unchanged (§3.4): T, X, C and S choose the tool in hand,
+the arrow keys move the caret, and Enter places the tool at the caret. The quick menu opens
+with the context-menu key or Shift+F10 and is a real menu (`role="menu"`, arrow keys, Esc).
 
 ### 3.5 Marks that add themselves up
 
