@@ -88,6 +88,10 @@ dialog .a-hint { margin: 0 0 14px; }
 .a-admin { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-hard); }
 .a-admin h2 { margin-bottom: 6px; }
 .a-admin-row { display: grid; grid-template-columns: minmax(0, 1fr) 200px auto; gap: 12px; align-items: end; margin: 14px 0; }
+.a-admin-row.ppl { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 200px auto; }
+.a-admin h3 { font-size: 16px; color: var(--paper); margin: 28px 0 4px; letter-spacing: -0.01em; }
+.a-btn.ms { margin: 8px 0 18px; }
+.a-btn.ms svg { width: 18px; height: 18px; }
 .a-newlink { background: var(--ink-750); border: 1px solid var(--good); border-radius: var(--radius-sm); padding: 14px; margin: 12px 0; }
 .a-newlink code { display: block; font-family: var(--font-mono); font-size: 12.5px; word-break: break-all; color: var(--text); margin: 8px 0 10px; }
 .a-dev { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line-soft); font-size: 14.5px; }
@@ -149,7 +153,9 @@ dialog .a-hint { margin: 0 0 14px; }
   <!-- No access on this device -->
   <section id="gate" class="a-gate" hidden>
     <h1>Accommodations register</h1>
-    <p id="gateMsg">This page only opens on devices that have been given an access link. Ask the person who manages accommodations for a link, and open it once on this device.</p>
+    <p id="gateMsg">This page only opens for people who have been given access. Open the access link you were given on this device.</p>
+    <button class="a-btn primary ms" type="button" id="msSignIn" hidden><svg viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>Sign in with Microsoft</button>
+    <p class="a-hint" id="gateWho" hidden></p>
     <p class="a-hint">Site admin? Sign in to The Magic Lab on this browser, then reload this page.</p>
   </section>
 
@@ -187,7 +193,17 @@ dialog .a-hint { margin: 0 0 14px; }
 
     <section class="a-admin" id="admin" hidden>
       <h2>Who can open this page</h2>
-      <p class="a-hint">Make one link per teacher and send it to them privately. They open it once on their own device; after that the page opens there without signing in. Anyone with a link can open the page, so revoke a link if it is shared by mistake or a device is lost.</p>
+      <h3>People who sign in with Microsoft</h3>
+      <p class="a-hint">Add a teacher's school email address. They open this page on any device and choose Sign in with Microsoft — no link needed. Remove them here to stop their access.</p>
+      <form class="a-admin-row ppl" id="pplForm" autocomplete="off">
+        <div><label class="a-lbl" for="pplEmail">School email</label><input class="a-in" id="pplEmail" type="email" maxlength="200" placeholder="name.surname@school.co.za" required></div>
+        <div><label class="a-lbl" for="pplLabel">Name</label><input class="a-in" id="pplLabel" maxlength="80" placeholder="e.g. Mrs Smith"></div>
+        <div><label class="a-lbl" for="pplRole">Can</label><select class="a-in" id="pplRole"><option value="viewer">View and print</option><option value="editor">Edit (accommodations teacher)</option></select></div>
+        <button class="a-btn" type="submit">Add</button>
+      </form>
+      <div id="pplList"></div>
+      <h3>Device links</h3>
+      <p class="a-hint">For a teacher without a school Microsoft account. Make one link per teacher and send it to them privately. They open it once on their own device; after that the page opens there without signing in. Anyone with a link can open the page, so revoke a link if it is shared by mistake or a device is lost.</p>
       <form class="a-admin-row" id="devForm" autocomplete="off">
         <div><label class="a-lbl" for="devLabel">Teacher and device</label><input class="a-in" id="devLabel" maxlength="80" placeholder="e.g. Mrs Smith — laptop" required></div>
         <div><label class="a-lbl" for="devRole">Can</label><select class="a-in" id="devRole"><option value="viewer">View and print</option><option value="editor">Edit (accommodations teacher)</option></select></div>
@@ -302,23 +318,57 @@ dialog .a-hint { margin: 0 0 14px; }
   }
 
   // ── Start ───────────────────────────────────────────────────
+  var session = null;
+  function isMicrosoft(s) { var m = s && s.user && s.user.app_metadata; return !!m && (m.provider === 'azure' || (m.providers || []).indexOf('azure') > -1); }
+  function signInMs() {
+    db.auth.signInWithOAuth({ provider: 'azure', options: { scopes: 'openid profile email', redirectTo: location.origin + location.pathname } })
+      .then(function (r) { if (r.error) { console.error(r.error); toast('Microsoft sign-in is not available yet'); } });
+  }
+  function signOut() { db.auth.signOut().then(function () { location.reload(); }); }
+
+  // Microsoft sign-in is offered only once it is switched on in Supabase (Authentication > Providers > Azure)
+  function microsoftEnabled() {
+    try {
+      return fetch(SUPABASE_URL + '/auth/v1/settings', { headers: { apikey: SUPABASE_ANON } })
+        .then(function (r) { return r.json(); }).then(function (s) { return !!(s && s.external && s.external.azure); })
+        .catch(function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
+  }
+  var msOn = false;
+
   client().then(function (c) {
     db = c;
+    $('msSignIn').addEventListener('click', signInMs);
+    return microsoftEnabled();
+  }).then(function (on) {
+    msOn = on;
+    return db.auth.getSession();
+  }).then(function (r) {
+    session = r && r.data && r.data.session;
     return rpc('acc_whoami', { p_key: KEY });
   }).then(function (w) {
     role = w && w.role; label = (w && w.label) || '';
     $('loading').hidden = true;
     if (!role) {
-      if (KEY) $('gateMsg').textContent = 'The access link on this device is no longer valid (it may have been revoked). Ask the person who manages accommodations for a new link.';
+      if (msOn) { $('msSignIn').hidden = false; $('gateMsg').textContent = 'Sign in with your school Microsoft account, or open the access link you were given on this device.'; }
+      if (KEY) $('gateMsg').textContent = 'The access link on this device is no longer valid (it may have been revoked). Sign in with your school Microsoft account, or ask the person who manages accommodations for a new link.';
+      if (KEY && !msOn) $('gateMsg').textContent = 'The access link on this device is no longer valid (it may have been revoked). Ask the person who manages accommodations for a new link.';
+      if (isMicrosoft(session)) {
+        var gw = $('gateWho'); gw.hidden = false;
+        gw.append('You are signed in as ', el('b', { text: session.user.email || 'a Microsoft account' }), ', but this account has not been given access. Ask the person who manages accommodations to add it. ',
+          el('button', { class: 'a-link', type: 'button', text: 'Sign out', onclick: signOut }));
+        $('msSignIn').hidden = true;
+      }
       $('gate').hidden = false; return;
     }
     $('app').hidden = false;
     $('whoLine').innerHTML = '';
     $('whoLine').append('Opened as ', el('b', { text: label }), role === 'viewer' ? ' — view and print.' : ' — you can add and change accommodations.');
+    if (isMicrosoft(session) && role !== 'admin') $('whoLine').append(' ', el('button', { class: 'a-link', type: 'button', text: 'Sign out', onclick: signOut }));
     $('addForm').hidden = !canEdit();
     $('forget').hidden = !KEY;
     setupControls();
-    return load().then(function () { if (role === 'admin') { $('admin').hidden = false; loadDevices(); } });
+    return load().then(function () { if (role === 'admin') { $('admin').hidden = false; loadPeople(); loadDevices(); } });
   }).catch(function (e) {
     console.error(e);
     $('loading').textContent = 'The register could not be loaded. Check your internet connection and reload the page.';
@@ -361,6 +411,7 @@ dialog .a-hint { margin: 0 0 14px; }
     $('listNames').addEventListener('input', countList);
     $('listsForm').addEventListener('submit', saveList);
     $('devForm').addEventListener('submit', createDevice);
+    $('pplForm').addEventListener('submit', addPerson);
     $('forget').addEventListener('click', function () {
       if (!confirm('Remove access from this device? You will need the link again to open the register here.')) return;
       store(KEY_STORE, null); location.reload();
@@ -573,6 +624,33 @@ dialog .a-hint { margin: 0 0 14px; }
     var restore = function () { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
     window.addEventListener('afterprint', restore);
     window.print();
+  }
+
+  // ── Admin: people who sign in with Microsoft ────────────────
+  function loadPeople() {
+    rpc('acc_admin_people', {}).then(function (list) {
+      var host = $('pplList'); host.innerHTML = '';
+      if (!msOn) host.appendChild(el('p', { class: 'a-hint', style: 'color:var(--warn)', text: 'Microsoft sign-in is not switched on yet, so people on this list cannot sign in until it is. The steps are in accommodations-microsoft-setup.md.' }));
+      if (!list.length) { host.appendChild(el('p', { class: 'a-hint', text: 'Nobody added yet.' })); return; }
+      list.forEach(function (p) {
+        var seen = p.last_seen ? 'last opened ' + new Date(p.last_seen).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }) : 'not signed in yet';
+        host.appendChild(el('div', { class: 'a-dev' }, [
+          el('div', {}, [el('div', { text: p.label || p.email }), el('div', { class: 'a-hint', text: (p.label ? p.email + ' · ' : '') + seen })]),
+          el('span', { class: 'a-tag', text: p.role === 'editor' ? 'Edit' : 'View' }),
+          el('button', { class: 'a-btn danger', type: 'button', text: 'Remove', onclick: function () {
+            if (!confirm('Remove ' + (p.label || p.email) + '? They will no longer be able to open the register.')) return;
+            rpc('acc_admin_remove_person', { p_email: p.email }).then(function () { toast('Removed'); loadPeople(); });
+          } })
+        ]));
+      });
+    }).catch(function (e) { console.error(e); });
+  }
+  function addPerson(ev) {
+    ev.preventDefault();
+    var email = $('pplEmail').value.trim().toLowerCase(); if (!email) return;
+    rpc('acc_admin_set_person', { p_email: email, p_label: $('pplLabel').value.trim(), p_role: $('pplRole').value }).then(function () {
+      toast(email + ' added'); $('pplEmail').value = ''; $('pplLabel').value = ''; loadPeople();
+    }).catch(function (e) { console.error(e); toast('Could not add that address'); });
   }
 
   // ── Admin: device links ─────────────────────────────────────
