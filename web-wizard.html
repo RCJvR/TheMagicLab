@@ -1599,7 +1599,7 @@ function refreshPreview() {
       code = `${viewportTag}\n${code}`;
     }
   }
-  const blob = new Blob([code], {type: 'text/html'});
+  const blob = new Blob([code], {type: 'text/html;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   previewFrame.onload = () => URL.revokeObjectURL(url);
   previewFrame.src = url;
@@ -1715,7 +1715,7 @@ document.querySelectorAll('.exampleLoader').forEach(btn => {
 
 // ── Save / Load ───────────────────────────────────────────────────────────────
 saveBtn.addEventListener('click', () => {
-  const blob = new Blob([codeEditor.value], {type: 'text/html'});
+  const blob = new Blob([codeEditor.value], {type: 'text/html;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href = url; a.download = 'my-page.html'; a.click();
