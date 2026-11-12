@@ -368,6 +368,23 @@ body.sheet-side .sheet-in { width: 100%; }
 .recmenu button[aria-checked="true"] { font-weight: 800; }
 .recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
 .recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
+.statspop { width: min(360px, calc(100vw - 24px)); gap: 10px; padding: 12px; }
+.st-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 0 6px; }
+.st-grid div { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.st-grid span { font-size: 13px; font-weight: 700; opacity: 0.7; }
+.st-grid b { font-size: 20px; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.st-grid small { font-size: 13px; opacity: 0.75; font-variant-numeric: tabular-nums; min-height: 1em; }
+.st-bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 110px; padding: 0 6px; }
+.st-bar { display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: end; min-width: 0; }
+.st-bar b { font-size: 12px; font-weight: 700; opacity: 0.8; font-variant-numeric: tabular-nums; min-height: 1.2em; }
+.st-bar i { display: block; width: 70%; min-height: 2px; border-radius: 4px 4px 0 0; background: color-mix(in srgb, var(--fg) 35%, transparent); align-self: end; }
+.st-bar.today i { background: var(--accent); }
+.st-bar span { font-size: 11px; opacity: 0.7; margin-top: 4px; }
+.st-none { font-size: 15px; line-height: 1.45; opacity: 0.85; margin: 0; padding: 0 6px; }
+.st-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 6px 0; border-top: 1px solid color-mix(in srgb, var(--fg) 14%, transparent); }
+.st-foot small { font-size: 12px; opacity: 0.65; }
+.st-foot button { font: inherit; font-size: 13px; font-weight: 700; color: var(--fg); background: transparent; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--fg) 26%, transparent); border-radius: 999px; padding: 6px 12px; }
 .toast { position: fixed; top: 2.4vmin; left: 50%; transform: translateX(-50%); z-index: 30; max-width: calc(100vw - 32px); box-sizing: border-box;
   padding: 12px 20px; border-radius: 999px; font-family: 'Cabinet Grotesk', system-ui, sans-serif; font-size: 18px; font-weight: 700;
   background: var(--fg); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
@@ -408,6 +425,9 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
       plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
+      stBtn: 'My stats', stTitle: 'My focus sessions', stToday: 'Today', stWeek: 'Last 7 days', stStreak: 'Streak', stAll: 'All time',
+      stSessions: '{n} sessions', stSession1: '1 session', stDays: '{n} days in a row', stDay1: '1 day', stNone: 'No sessions yet. Finish a focus session and it is counted here.',
+      stHere: 'Kept in this browser only.', stClear: 'Clear my stats', stClearAsk: 'Clear all your focus-session stats in this browser?', stDone: 'Focus session done: {n} today',
       focus: 'Focus', short: 'Short break', long: 'Long break', round: 'Round {i} of {n}', next: 'Next: {p}',
       lap: 'Lap', start: 'Start', pause: 'Pause', resume: 'Resume', reset: 'Reset', skip: 'Skip',
       minus: '−1 min', plus: '+1 min', full: 'Full screen', sound: 'Sound', confirmReset: 'Reset this timer?',
@@ -444,6 +464,9 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
       plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
+      stBtn: 'My statistiek', stTitle: 'My fokussessies', stToday: 'Vandag', stWeek: 'Laaste 7 dae', stStreak: 'Reeks', stAll: 'Altesaam',
+      stSessions: '{n} sessies', stSession1: '1 sessie', stDays: '{n} dae aaneen', stDay1: '1 dag', stNone: 'Nog geen sessies nie. Voltooi ’n fokussessie en dit word hier getel.',
+      stHere: 'Net in hierdie blaaier gehou.', stClear: 'Vee my statistiek uit', stClearAsk: 'Vee al jou fokussessie-statistiek in hierdie blaaier uit?', stDone: 'Fokussessie klaar: {n} vandag',
       focus: 'Fokus', short: 'Kort pouse', long: 'Lang pouse', round: 'Rondte {i} van {n}', next: 'Volgende: {p}',
       lap: 'Tussentyd', start: 'Begin', pause: 'Pouseer', resume: 'Hervat', reset: 'Stel terug', skip: 'Slaan oor',
       minus: '−1 min', plus: '+1 min', full: 'Volskerm', sound: 'Klank', confirmReset: 'Stel hierdie tydhouer terug?',
@@ -750,6 +773,7 @@ body.sheet-side .sheet-in { width: 100%; }
       var rem = len(st.phase) - elapsed(now);
       if (rem <= 0 && running()) {
         chime(1);
+        if (type(st.phase) === 'focus') countFocus(p.work);
         st.phase++; st.acc = 0; st.adj = 0; st.since = p.auto ? Date.now() : null; save();
         rem = len(st.phase);
       }
@@ -899,7 +923,7 @@ body.sheet-side .sheet-in { width: 100%; }
   // ── Controls ──
   // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
   var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
-    megaphone: ['I', 'I'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
+    megaphone: ['I', 'I'], 'bar-chart-3': ['M', 'M'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
@@ -915,6 +939,7 @@ body.sheet-side .sheet-in { width: 100%; }
     var waiting = md === 'exam' && examStart() && !st.started;
     if (md !== 'clock' && !waiting) bar.appendChild(btn(running() ? 'pause' : 'play', running() ? t('pause') : (st.started ? t('resume') : t('start')), toggle, 'primary'));
     if (md === 'stopwatch') bar.appendChild(btn('flag', t('lap'), function () { if (running()) { st.laps.push(elapsed()); save(); render(true); } }));
+    if (md === 'pomodoro' && !preview) { var stb = btn('bar-chart-3', t('stBtn'), function () { statsPop(!statsOpen); }); stb.dataset.role = 'stats'; bar.appendChild(stb); }
     if (md === 'pomodoro') bar.appendChild(btn('skip-forward', t('skip'), function () { st.phase++; st.acc = 0; st.adj = 0; if (st.since) st.since = Date.now(); save(); render(true); }));
     if ((md === 'countdown' || md === 'exam') && st.started) {
       bar.appendChild(btn('minus', t('minus'), function () { adjust(-1); }));
@@ -944,7 +969,7 @@ body.sheet-side .sheet-in { width: 100%; }
       // in every state, also before the start: not while the settings are
       // open, the pointer is over the bar, or a keyboard user is on it (a
       // button merely left focused by a click does not keep it up)
-      if (!panelOpen && !recOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      if (!panelOpen && !recOpen && !statsOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
       else wake();
     }, 2000);
   }
@@ -1280,6 +1305,63 @@ body.sheet-side .sheet-in { width: 100%; }
   // A page drawn over the timer for the learners to copy: the heading lines,
   // three open lines for the marks, and the margins left and right. The date
   // line is the exam's month and year. The timer keeps running behind it.
+  // ── Pomodoro: my focus sessions ──
+  // Each focus session that runs to the end is counted, by day, in this
+  // browser only (no account needed): { 'YYYY-MM-DD': { n, min } }.
+  var STATS_KEY = 'ml-timer-talisman-pomo-stats', statsOpen = false;
+  function statsGet() { try { return JSON.parse(localStorage.getItem(STATS_KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function dayKey(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function countFocus(secs) {
+    if (preview) return;
+    var all = statsGet(), k = dayKey(new Date()), d = all[k] || { n: 0, min: 0 };
+    d.n++; d.min += Math.round(secs / 60); all[k] = d;
+    try { localStorage.setItem(STATS_KEY, JSON.stringify(all)); } catch (e) {}
+    note(t('stDone', { n: d.n }));
+    if (statsOpen) statsPop(true);
+  }
+  function statsPop(open) {
+    var el = $('statsPop');
+    statsOpen = !!open;
+    if (!statsOpen) { if (el) el.remove(); wake(); return; }
+    if (!el) { el = document.createElement('div'); el.id = 'statsPop'; el.className = 'recmenu statspop'; el.setAttribute('role', 'dialog'); document.body.appendChild(el); }
+    var all = statsGet(), now = new Date(), days = [], i;
+    for (i = 6; i >= 0; i--) { var d = new Date(now); d.setDate(now.getDate() - i); days.push({ d: d, v: all[dayKey(d)] || { n: 0, min: 0 } }); }
+    var today = days[6].v, week = days.reduce(function (a, x) { return { n: a.n + x.v.n, min: a.min + x.v.min }; }, { n: 0, min: 0 });
+    var total = Object.keys(all).reduce(function (a, k) { return { n: a.n + all[k].n, min: a.min + all[k].min }; }, { n: 0, min: 0 });
+    // the streak: days in a row with a session, up to today (or yesterday, if today has none yet)
+    var streak = 0, c = new Date(now);
+    if (!(all[dayKey(c)] || {}).n) c.setDate(c.getDate() - 1);
+    while ((all[dayKey(c)] || {}).n) { streak++; c.setDate(c.getDate() - 1); }
+    var ses = function (n) { return n === 1 ? t('stSession1') : t('stSessions', { n: n }); };
+    var mins = function (m) { return span(m * 60); };
+    var max = Math.max.apply(null, days.map(function (x) { return x.v.n; }).concat([1]));
+    var bars = days.map(function (x, j) {
+      var lbl = x.d.toLocaleDateString(locale(), { weekday: 'short' });
+      return '<div class="st-bar' + (j === 6 ? ' today' : '') + '" title="' + esc(lbl + ': ' + ses(x.v.n)) + '"><b>' + (x.v.n || '') + '</b><i style="height:' + Math.round(x.v.n / max * 100) + '%"></i><span>' + esc(lbl) + '</span></div>';
+    }).join('');
+    el.setAttribute('aria-label', t('stTitle'));
+    el.innerHTML = '<div class="recmenu-h">' + esc(t('stTitle')) + '</div>' +
+      (total.n ? '<div class="st-grid">' +
+        '<div><span>' + esc(t('stToday')) + '</span><b>' + esc(ses(today.n)) + '</b><small>' + (today.min ? esc(mins(today.min)) : '') + '</small></div>' +
+        '<div><span>' + esc(t('stStreak')) + '</span><b>' + esc(streak === 1 ? t('stDay1') : t('stDays', { n: streak })) + '</b></div>' +
+        '<div><span>' + esc(t('stWeek')) + '</span><b>' + esc(ses(week.n)) + '</b><small>' + (week.min ? esc(mins(week.min)) : '') + '</small></div>' +
+        '<div><span>' + esc(t('stAll')) + '</span><b>' + esc(ses(total.n)) + '</b><small>' + esc(mins(total.min)) + '</small></div></div>' +
+        '<div class="st-bars" aria-hidden="true">' + bars + '</div>'
+        : '<p class="st-none">' + esc(t('stNone')) + '</p>') +
+      '<div class="st-foot"><small>' + esc(t('stHere')) + '</small>' + (total.n ? '<button type="button" id="stClear">' + esc(t('stClear')) + '</button>' : '') + '</div>';
+    var b = $('bar').querySelector('[data-role="stats"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
+    el.style.left = Math.max(180, Math.min(innerWidth - 180, r.left + r.width / 2)) + 'px';
+    el.style.bottom = (innerHeight - r.top + 10) + 'px';
+    if ($('stClear')) $('stClear').addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!confirm(t('stClearAsk'))) return;
+      try { localStorage.removeItem(STATS_KEY); } catch (er) {}
+      statsPop(true);
+    });
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (statsOpen && !e.target.closest('#statsPop') && !e.target.closest('[data-role="stats"]')) statsPop(false);
+  }, true);
   var sheetOpen = false;
   function sheet(open) {
     var el = $('sheet');
@@ -1859,6 +1941,7 @@ body.sheet-side .sheet-in { width: 100%; }
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && statsOpen) { statsPop(false); return; }
     if (e.key === 'Escape' && sheetOpen) { sheet(false); return; }
     if (e.key === 'Escape' && recOpen) { recMenu(false); var rb = $('bar').querySelector('[data-role="rec"]'); if (rb) rb.focus(); return; }
     if (e.key === 'Escape' && panelOpen) { togglePanel(false); return; }
@@ -1880,6 +1963,7 @@ body.sheet-side .sheet-in { width: 100%; }
     else if (k === 'f') fullscreen();
     else if (k === 'i') toggleAudio();
     else if (k === 'a' && cfg.mode === 'exam') sheet(!sheetOpen);
+    else if (k === 'm' && cfg.mode === 'pomodoro' && !preview) statsPop(!statsOpen);
     // (the key stops here: the panel puts the focus on its theme list, which
     // would otherwise take the "s" and jump to the first theme starting with S)
     else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
