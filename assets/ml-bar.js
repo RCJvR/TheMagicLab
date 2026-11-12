@@ -55,7 +55,26 @@
     'html[data-theme="light"] .mlb-pop p{color:#4a525e}' +
     'html[data-theme="light"] .mlb-pop a,html[data-theme="light"] .mlb-pop li>button{background:rgba(0,0,0,.04);color:#16181d}' +
     'html[data-theme="light"] .mlb-pop a:hover,html[data-theme="light"] .mlb-pop li>button:hover{background:rgba(0,0,0,.08)}' +
-    '@media (max-width:640px){.mlb-sep{display:none}.mlb-home{width:30px;height:30px}.mlb-home img{width:22px;height:22px}.mlb-help{width:32px;height:32px}.mlb-end{gap:6px;margin-left:2px}}' +
+    // One button style for every tool's own header buttons (overrides each page's
+    // pill, chip or coloured button), and one for the account button.
+    '[data-mlb-ready] .mlb-act{align-items:center;gap:6px;min-height:34px;box-sizing:border-box;padding:0 13px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.16)!important;background:transparent!important;color:#e3e8ef!important;font:600 13px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
+    '[data-mlb-ready] .mlb-act:not(.hidden):not([hidden]){display:inline-flex}' +
+    '[data-mlb-ready] .mlb-act:hover{border-color:rgba(255,255,255,.34)!important;background:rgba(255,255,255,.05)!important}' +
+    '[data-mlb-ready] .mlb-act svg{width:14px!important;height:14px!important;flex-shrink:0;margin:0!important}' +
+    '[data-mlb-ready] .mlb-act:focus-visible{outline:2px solid #6ea8ff;outline-offset:2px}' +
+    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn){display:inline-flex;align-items:center;gap:6px;min-height:34px;box-sizing:border-box;padding:0 14px!important;border-radius:999px!important;border:1px solid #f2f5f9!important;background:#f2f5f9!important;color:#0b0d10!important;font:700 13px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
+    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn) svg{width:14px!important;height:14px!important;margin:0!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-act{border-color:rgba(0,0,0,.18)!important;color:#16181d!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-act:hover{border-color:rgba(0,0,0,.36)!important;background:rgba(0,0,0,.04)!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn){border-color:#16181d!important;background:#16181d!important;color:#fff!important}' +
+    // Phones: buttons with an icon show the icon only (the label stays as its
+    // accessible name and tooltip); labels such as a lesson's strand are hidden.
+    '@media (max-width:640px){.mlb-sep{display:none}.mlb-home{width:30px;height:30px}.mlb-home img{width:22px;height:22px}.mlb-help{width:32px;height:32px}.mlb-end{gap:6px;margin-left:2px}' +
+      '[data-mlb-ready] .mlb-act.mlb-ico{width:34px;padding:0!important;justify-content:center;font-size:0!important;gap:0}' +
+      '[data-mlb-ready] .mlb-act.mlb-ico svg{width:16px!important;height:16px!important}' +
+      '[data-mlb-ready] .mlb-act.mlb-ico span{display:none!important}' +
+      '[data-mlb-ready] .nav-strand,[data-mlb-ready] .nav-filename-ext,[data-mlb-ready] .app-sub{display:none!important}' +
+      '[data-mlb-ready] .mlb-start [data-ml-name],[data-mlb-ready] .mlb-start .app-title{font-size:17px!important}}' +
     '@media print{.mlb-home,.mlb-sep,.mlb-end .mlb-help{display:none!important}}';
 
   var ICON_HELP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>';
@@ -130,7 +149,11 @@
     var end = bar.querySelector('[data-ml-end]');
     if (!end) {
       end = el('div', { class: 'mlb-end' });
-      var host = auth ? auth.parentNode : (bar.querySelector('.ml-nav-right, .nav-right, .hdr-right') || bar);
+      // Join the bar's own right-hand group: where the account button is, a known
+      // right-hand container, or the bar's last container (lesson pages).
+      var last = bar.lastElementChild;
+      var lastBox = last && last !== start && /^(DIV|SPAN)$/.test(last.tagName) && last.children.length ? last : null;
+      var host = auth ? auth.parentNode : (bar.querySelector('.ml-nav-right, .nav-right, .hdr-right, .header-right') || lastBox || bar);
       host.appendChild(end);
     } else end.classList.add('mlb-end');
     var help = el('button', { type: 'button', class: 'mlb-help', title: t('help'), 'aria-label': t('help'), 'aria-haspopup': 'dialog', 'aria-expanded': 'false' }, ICON_HELP);
@@ -148,6 +171,20 @@
       var x = bar.querySelector('.ml-theme-toggle');
       if (x && x.parentNode !== end && !x.classList.contains('is-floating')) end.appendChild(x);
     }).observe(bar, { childList: true, subtree: true });
+
+    // 3b. The tool's own buttons take the shared button style; on phones the
+    // ones with an icon shrink to the icon, keeping the label as their name.
+    [].forEach.call(bar.querySelectorAll('a[href], button'), function (n) {
+      if (n.closest('.mlb-start') || n.closest('.mlb-end') || n.closest('#mlLangToggle') || n.closest('[role="group"]') ||
+          n.classList.contains('mlb-dup') || n.classList.contains('ml-theme-toggle') || n.hasAttribute('data-ml-auth') || n.classList.contains('ml-auth-btn')) return;
+      n.classList.add('mlb-act');
+      var text = (n.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text && n.querySelector('svg, i[data-lucide]')) {
+        n.classList.add('mlb-ico');
+        if (!n.getAttribute('aria-label')) n.setAttribute('aria-label', text);
+        if (!n.getAttribute('title')) n.setAttribute('title', text);
+      }
+    });
 
     // 4. Help.
     var pop = null;
@@ -186,7 +223,15 @@
       document.addEventListener('mousedown', outside, true); document.addEventListener('keydown', onKey, true);
       var first = pop.querySelector('a, button'); if (first) first.focus();
     }
-    help.addEventListener('click', function () { pop ? closePop() : openPop(); });
+    // With a welcome guide, Help opens it straight away; otherwise the short panel.
+    help.addEventListener('click', function () {
+      if (window.MagicLabWelcome && MagicLabWelcome.has && MagicLabWelcome.has(tool)) { closePop(); MagicLabWelcome.show(tool); return; }
+      pop ? closePop() : openPop();
+    });
+    // Every tool has a welcome guide in /tool-welcome.js; load it where the page does not.
+    if (!window.MagicLabWelcome && !document.querySelector('script[src$="tool-welcome.js"]')) {
+      var tw = document.createElement('script'); tw.src = '/tool-welcome.js'; tw.defer = true; document.head.appendChild(tw);
+    }
     window.addEventListener('resize', closePop);
   }
 

@@ -2404,6 +2404,7 @@ document.getElementById('btn-run').addEventListener('click', ()=>{
   running = !running;
   const btn = document.getElementById('btn-run');
   if (running){
+    window.MagicLabProgress?.track(window.ML_TOOLS?.MODEL_MAGE || 'model-mage', 'code_run', { topic: 'Circuit Simulator', metadata: { workshop: 'circuits' } });
     btn.innerHTML = '<i data-lucide="square"></i> Stop';
     btn.classList.remove('go'); btn.classList.add('stop');
     // start from a fresh state: new LEDs fitted, capacitors empty
@@ -3191,7 +3192,11 @@ document.getElementById('tutPrev').addEventListener('click', ()=>{
 document.getElementById('tutNext').addEventListener('click', ()=>{
   if (tutState.tutorial && tutState.step < tutState.tutorial.steps.length-1){ tutState.step++; renderTutorialModal(); }
 });
-document.getElementById('tutFinish').addEventListener('click', closeTutorials);
+document.getElementById('tutFinish').addEventListener('click', ()=>{
+  // A tutorial worked through to its last step counts as completed on the teacher dashboard.
+  if (tutState.tutorial) window.MagicLabProgress?.track(window.ML_TOOLS?.MODEL_MAGE || 'model-mage', 'lesson_complete', { topic: 'Circuits: ' + tutState.tutorial.title, metadata: { workshop: 'circuits', tutorial: tutState.tutorial.id } });
+  closeTutorials();
+});
 document.getElementById('tutSolution').addEventListener('click', ()=>{
   if (!tutState.tutorial) return;
   if (components.length && !confirm('Load the finished circuit for this tutorial? It will replace what\'s currently on the board.')) return;

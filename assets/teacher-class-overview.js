@@ -14,7 +14,7 @@
 (function () {
   const MASTERY = 70, MIN_FOR_STATUS = 3, IDLE_DAYS = 7, STRUGGLE_ACC = 50, STRUGGLE_WEAK = 3;
   const LESSON_TOOLS = { 'science-sage': ['Science Sage', 'SS_LESSON_INDEX'], 'tech-tower': ['Tech Tower', 'TT_LESSON_INDEX'], 'computer-codex': ['Computer Codex', 'CC_LESSON_INDEX'] };
-  const OTHER_TOOLS = { 'math-magician': 'Math Magician', 'java-genie': 'Java Genie', 'web-wizard': 'Web Wizard', 'code-conjurer': 'Code Conjurer', 'ai-oracle': 'AI Oracle', 'robot-realm': 'Robot Realm' };
+  const OTHER_TOOLS = { 'math-magician': 'Math Magician', 'java-genie': 'Java Genie', 'web-wizard': 'Web Wizard', 'code-conjurer': 'Code Conjurer', 'ai-oracle': 'AI Oracle', 'robot-realm': 'Robot Realm', 'model-mage': 'Model Mage', 'drawing-druid': 'Drawing Druid', 'spike-spellcaster': 'Spike Spellcaster' };
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const pct = (c, n) => n ? Math.round(c / n * 100) : null;
   const sum = arr => arr.reduce((a, b) => a + b, 0);
@@ -133,7 +133,7 @@
       <div class="mmr-head">
         <div>
           <div class="mmr-title">Class overview</div>
-          <div class="mmr-sub">Every tool together: Science Sage, Tech Tower, Computer Codex, Math Magician, Java Genie, Web Wizard, Code Conjurer, AI Oracle and Robot Realm. Time counts active use of lessons and Math Magician, and typing or running programs in Code Conjurer and Java Genie. The cards below give each tool in detail.</div>
+          <div class="mmr-sub">Every tool together: Science Sage, Tech Tower, Computer Codex, Math Magician, Java Genie, Web Wizard, Code Conjurer, AI Oracle, Robot Realm, Model Mage, Drawing Druid and Spike Spellcaster. Time counts active use of lessons and Math Magician, and typing or running programs in Code Conjurer and Java Genie. The cards below give each tool in detail.</div>
         </div>
       </div>
       ${!active.length ? `<div class="mmr-empty">No learner in this class has used a tool while signed in yet.</div>` : `

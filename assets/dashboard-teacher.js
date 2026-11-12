@@ -6025,6 +6025,9 @@ const TOOL_META = {
   'computer-codex':{ icon:'book-open', name:'Codex',total:160 },
   'ai-oracle':     { icon:'sparkles',  name:'AI Oracle', total:9 },
   'robot-realm':   { icon:'cpu',       name:'Robot Realm: challenges', total:4 },
+  'model-mage':    { icon:'box',       name:'Model Mage: 7 circuit tutorials and an exported 3D model', total:8 },
+  'drawing-druid': { icon:'compass',   name:'Drawing Druid: constructions', total:408 },
+  'spike-spellcaster': { icon:'bot',   name:'Spike Spellcaster: programs run', runs:true },
 };
 
 function icon(name, size) {
@@ -6083,6 +6086,10 @@ function _renderStudentTable(students, progress, classId) {
               </td>
               ${tools.map(toolId => {
                 const r    = prog[toolId];
+                if (TOOL_META[toolId].runs) {
+                  const n = r?.code_runs || 0;
+                  return `<td>${n ? `<span style="font-family:var(--mono);font-size:10px;color:var(--muted);">${n} run${n === 1 ? '' : 's'}</span>` : `<span style="color:var(--border2);font-size:12px;">—</span>`}</td>`;
+                }
                 const done = r?.topics_complete || 0;
                 const tot  = TOOL_META[toolId].total;
                 const pct  = Math.min(100, Math.round((done/tot)*100));
