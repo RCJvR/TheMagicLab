@@ -238,7 +238,9 @@ them but not delete or retype them (a ProseMirror filter rejects transactions th
 - "Download marked PDF" (teacher and learner) burns the ticks, crosses, comments, stamps and
   question totals into the PDF and adds a results page (mark, questions, rubric, comments).
 - Word files must be saved as PDF first; there is no server to convert .docx.
-- SQL: `supabase-grading-grimoire-pdf.sql`.
+- SQL: `supabase-grading-grimoire-pdf.sql`, live since 2026-11-12; a rolled-back permission test passed
+  16 of 16 checks (wrong folder, unfinished upload, too many pages, online-only task, double hand-in,
+  deletion after hand-in, outsider and other-teacher reads all refused).
 
 ## 3. The teacher marking view
 
