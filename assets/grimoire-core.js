@@ -57,14 +57,14 @@ export async function signedUrl(path) {
   return data.signedUrl;
 }
 /** Shrink to ≤1600px, re-encode as WebP (JPEG fallback). Re-encoding drops EXIF (GPS, device). */
-export async function prepareImage(file) {
+export async function prepareImage(file, opts = {}) {
   const bmp = await createImageBitmap(file).catch(() => null);
   if (!bmp) throw new Error('That image could not be read. Try a JPEG or PNG.');
   const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
   const w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   c.getContext('2d').drawImage(bmp, 0, 0, w, h);
-  let blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.82));
+  let blob = opts.type === 'image/jpeg' ? null : await new Promise(r => c.toBlob(r, 'image/webp', 0.82));
   let type = 'image/webp', ext = 'webp';
   if (!blob || blob.type !== 'image/webp') { blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.85)); type = 'image/jpeg'; ext = 'jpg'; }
   if (blob.size > 2 * 1024 * 1024) throw new Error('That image is still over 2 MB after shrinking it.');
@@ -220,6 +220,18 @@ export function questionMap(doc, questions) {
 }
 export function annotationBid(a) { return a.anchor.kind === 'range' ? a.anchor.from.bid : a.anchor.bid; }
 
+/** PDF hand-ins: a mark belongs to the last "Question n starts here" marker above it. */
+export function pageQuestionOf(anns) {
+  const starts = anns.filter(a => a.type === 'qstart' && a.anchor.kind === 'page' && a.question_id)
+    .sort((a, b) => a.anchor.page - b.anchor.page || a.anchor.fy - b.anchor.fy);
+  return a => {
+    if (a.anchor.kind !== 'page') return null;
+    let q = null;
+    for (const s of starts) { if (s.anchor.page < a.anchor.page || (s.anchor.page === a.anchor.page && s.anchor.fy <= a.anchor.fy + 0.002)) q = s.question_id; else break; }
+    return q;
+  };
+}
+
 /** Totals from ticks and marked comments. overrides: { qid: number }. */
 export function tickTotals(annotations, qmap, questions, overrides) {
   const perQ = {}; let unsorted = 0;
@@ -228,7 +240,7 @@ export function tickTotals(annotations, qmap, questions, overrides) {
     if (a.layer && a.layer !== 'marker') return;
     const m = Number(a.marks) || 0;
     if (!m || (a.type !== 'tick' && a.type !== 'comment' && a.type !== 'stamp')) return;
-    const qid = qmap.get(annotationBid(a));
+    const qid = typeof qmap === 'function' ? qmap(a) : qmap.get(annotationBid(a));
     if (qid && perQ[qid]) perQ[qid].got += m; else unsorted += m;
   });
   let total = unsorted;
@@ -289,16 +301,18 @@ export class Overlay {
   }
   set(anns, extra) { this.anns = anns; if (extra) this.extra = extra; this.render(); }
   render() {
-    const { state } = this.editor;
+    const state = this.editor ? this.editor.state : null;
     this.layer.textContent = '';
     // range highlights go through decorations
-    const ranges = [];
-    this.anns.filter(a => a.anchor.kind === 'range').forEach(a => {
-      const r = rangeToPositions(state, a.anchor); if (r) ranges.push({ ...r, id: a.id, active: this.selected === a.id });
-    });
-    this.editor.view.dispatch(this.editor.state.tr.setMeta(highlightKey, ranges).setMeta('addToHistory', false));
+    if (this.editor) {
+      const ranges = [];
+      this.anns.filter(a => a.anchor.kind === 'range').forEach(a => {
+        const r = rangeToPositions(state, a.anchor); if (r) ranges.push({ ...r, id: a.id, active: this.selected === a.id });
+      });
+      this.editor.view.dispatch(this.editor.state.tr.setMeta(highlightKey, ranges).setMeta('addToHistory', false));
+    }
     this.anns.forEach(a => {
-      const shape = a.type === 'tick' ? SHAPES.tick : a.type === 'cross' ? SHAPES.cross : a.type === 'stamp' ? '' : SHAPES.comment;
+      const shape = a.type === 'tick' ? SHAPES.tick : a.type === 'cross' ? SHAPES.cross : (a.type === 'stamp' || a.type === 'qstart') ? '' : SHAPES.comment;
       const quote = a.anchor.kind === 'range' ? (a.anchor.quote && a.anchor.quote.exact || '').slice(0, 60) : '';
       const b = el(this.opts.interactive ? 'button' : 'span', {
         class: 'gg-ann gg-ann--' + a.type + (a.anchor.lane === 'margin' ? ' is-margin' : '') + (this.selected === a.id ? ' is-selected' : ''),
@@ -307,6 +321,7 @@ export class Overlay {
       });
       b.innerHTML = shape;
       if (a.type === 'stamp') b.appendChild(el('span', { class: 'gg-stamp-text', text: a.stamp || 'Stamp' }));
+      if (a.type === 'qstart') b.appendChild(el('span', { class: 'gg-qstart-text', text: 'Q' + (a.body || '') + (this.opts.qLabel ? '  ' + this.opts.qLabel(a) : '') }));
       if (a.marks != null && Number(a.marks) !== 0 && a.type !== 'cross') b.appendChild(el('span', { class: 'gg-ann-marks', text: fmtNum(a.marks) }));
       if (a.type === 'comment' && a.body) b.appendChild(el('span', { class: 'gg-ann-note', text: a.body }));
       if (this.opts.interactive) {
@@ -320,7 +335,14 @@ export class Overlay {
   }
   /** Pixel position for an anchor, relative to the host. */
   coords(anchor) {
-    const view = this.editor.view, { state } = this.editor, hr = this.host.getBoundingClientRect();
+    const hr = this.host.getBoundingClientRect();
+    if (anchor.kind === 'page') {
+      const pg = this.host.querySelector('.gg-page[data-page="' + anchor.page + '"]'); if (!pg) return null;
+      const r = pg.getBoundingClientRect();
+      return { x: r.left - hr.left + r.width * anchor.fx, y: r.top - hr.top + r.height * anchor.fy, h: 0 };
+    }
+    if (!this.editor) return null;
+    const view = this.editor.view, { state } = this.editor;
     try {
       if (anchor.kind === 'box') {
         const hit = findBlock(state, anchor.bid); if (!hit) return null;
@@ -343,7 +365,7 @@ export class Overlay {
       node.hidden = false;
       // In-text marks sit just above the word they belong to, so the learner's words stay readable.
       let x = c.x, y = c.h ? c.y - 4 : c.y;
-      if (a.anchor.lane === 'margin' || a.anchor.kind === 'range' || a.type === 'comment') {
+      if (a.anchor.lane === 'margin' || a.anchor.kind === 'range' || (a.type === 'comment' && a.anchor.kind !== 'page')) {
         y = c.y + (c.h ? c.h / 2 : 0);
         const key = Math.round(y / 8); const n = used.get(key) || 0; used.set(key, n + 1);
         x = marginX - n * 26;

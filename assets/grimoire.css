@@ -180,3 +180,19 @@ span.gg-ann { cursor: default; }
 .gg-slash-item { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 6px; cursor: pointer; font: 600 14px/1.25 var(--font-body); color: var(--text); }
 .gg-slash-item .gg-hint { font-weight: 500; font-size: 12px; }
 .gg-slash-item.is-on, .gg-slash-item:hover { background: rgba(255,255,255,0.08); }
+
+/* PDF and photo hand-ins */
+.gg-pages { display: flex; flex-direction: column; gap: 14px; }
+.gg-page { position: relative; width: 100%; background: #fff; border-radius: 4px; box-shadow: 0 1px 0 var(--line); overflow: hidden; }
+.gg-page canvas { display: block; width: 100%; height: 100%; }
+.gg-paper.is-pdf { padding: 12px; background: var(--ink-850); }
+.gg-paper.is-pdf .gg-ann { --pen-marker: #c62828; }          /* paper is white whatever the theme */
+.gg-ann--comment.is-page .gg-ann-note, .gg-paper.is-pdf .gg-ann--comment .gg-ann-note { position: static; width: auto; height: auto; clip: auto; overflow: visible;
+  max-width: 220px; font: 600 12.5px/1.35 var(--font-body); color: var(--pen-marker); background: rgba(255,255,255,0.92); border: 1px solid var(--pen-marker);
+  border-radius: 6px; padding: 3px 6px; margin-left: 4px; white-space: normal; }
+.gg-ann--qstart { border-top: 2px dashed var(--pen-marker); padding-top: 2px; margin: -2px 0 0 0; min-width: 120px; }
+.gg-qstart-text { font: 800 12px/1 "JetBrains Mono", monospace; background: rgba(255,255,255,0.92); padding: 2px 5px; border-radius: 4px; }
+.gg-upload { border: 1px dashed var(--line-hard); border-radius: var(--gg-radius); padding: 20px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.gg-switch { display: inline-flex; border: 1px solid var(--line-hard); border-radius: 99px; padding: 3px; gap: 2px; margin: 0 0 12px; }
+.gg-switch button { border: 0; background: none; color: var(--text-2); font: 700 13px/1 var(--font-body); padding: 8px 14px; border-radius: 99px; cursor: pointer; }
+.gg-switch button[aria-pressed="true"] { background: var(--paper); color: var(--ink-900); }

@@ -6,8 +6,9 @@ import { Editor, Extension, Plugin } from './vendor/tiptap-3.32.1.bundle.js';
 import {
   sb, me, el, fmtWhen, fmtNum, friendly, capsLevel, whenAuthReady, extensions, loadAssignment, Overlay,
   questionMap, tickTotals, rubricScore, criterionLevels, criterionMax, levelRange, questionBadges,
-  anchorFromPos, rangeAnchor, SHAPES, round1
+  anchorFromPos, rangeAnchor, SHAPES, round1, pageQuestionOf, signedUrl
 } from './grimoire-core.js';
+import { renderPdf, markedPdf, download } from './grimoire-pdf.js';
 
 const $ = id => document.getElementById(id);
 const AID = new URLSearchParams(location.search).get('a');
@@ -17,7 +18,7 @@ const TOOL_KEY = 'gg-pen';
 let A, questions = [], rubric = null, roster = [], subs = [], marksBySub = {}, versionsBySub = {};
 let order = [], idx = 0;                       // order: roster rows shown, idx: current
 let cur = null;                                // { r, sub, versions, ver, anns, marks, scores, scoreRows }
-let editor = null, overlay = null, qmap = new Map();
+let editor = null, overlay = null, qmap = new Map(), pdfMode = false;
 let pen = loadPen(), selectedId = null;
 let undoStack = [], redoStack = [], lastPlace = { t: 0, x: 0, y: 0 }, saveTimer = null, saving = false;
 
@@ -137,16 +138,23 @@ async function loadVersion(r, s, versions, vid) {
           scores: Object.fromEntries((scores || []).map(x => [x.criterion_id, { level_id: x.level_id, mark: x.mark, id: x.id }])),
           loadedAt: marks ? marks.marked_at : null };
   $('mkEmpty').hidden = true; $('mkPaper').hidden = false;
-  mountEditor(ver.doc);
+  if (ver.file_path) await mountPdf(ver); else mountEditor(ver.doc);
   $('mkVersionWrap').hidden = versions.length < 2;
   $('mkVersion').replaceChildren(...versions.map(v => el('option', { value: v.id, text: 'Hand-in ' + v.attempt + ' · ' + fmtWhen(v.submitted_at) })));
   $('mkVersion').value = vid;
-  $('mkSubMeta').textContent = 'Handed in ' + fmtWhen(ver.submitted_at) + (ver.is_late ? ' (late)' : '') + ' · ' + ver.word_count + ' words' + (s.released_at ? ' · returned ' + fmtWhen(s.released_at) : '');
+  $('mkSubMeta').textContent = 'Handed in ' + fmtWhen(ver.submitted_at) + (ver.is_late ? ' (late)' : '') + ' · ' + (ver.file_path ? (ver.page_count || '?') + ' pages (PDF)' : ver.word_count + ' words') + (s.released_at ? ' · returned ' + fmtWhen(s.released_at) : '');
   banner();
   renderPane(); drawAnns();
 }
+function teardown() {
+  if (overlay) overlay.destroy();
+  if (editor) editor.destroy();
+  editor = null; overlay = null; pdfMode = false;
+  $('mkDoc').textContent = ''; $('mkDoc').className = 'gg-doc'; $('mkPaper').classList.remove('is-pdf');
+  $('mkPdfDl').hidden = true;
+}
 function showEmpty(msg) {
-  if (editor) { overlay && overlay.destroy(); editor.destroy(); editor = null; overlay = null; }
+  teardown();
   $('mkPaper').hidden = true; $('mkEmpty').hidden = false; $('mkEmpty').textContent = msg;
   $('mkVersionWrap').hidden = true; $('mkSubMeta').textContent = ''; $('mkBanner').textContent = '';
 }
@@ -162,7 +170,7 @@ function banner() {
 // The teacher gets a real caret (arrow keys, text selection for comments) but can never change the work.
 const NoEdits = Extension.create({ name: 'ggNoEdits', addProseMirrorPlugins() { return [new Plugin({ filterTransaction: tr => !tr.docChanged })]; } });
 function mountEditor(doc) {
-  if (editor) { overlay && overlay.destroy(); editor.destroy(); }
+  teardown();
   editor = new Editor({
     element: $('mkDoc'), editable: true, content: doc, extensions: [...extensions(), NoEdits],
     editorProps: {
@@ -171,8 +179,28 @@ function mountEditor(doc) {
       handleTextInput: () => true, handlePaste: () => true, handleDrop: () => true
     }
   });
-  overlay = new Overlay(editor, $('mkPaper'), { interactive: true, onSelect: (a) => select(a.id), onContext: (a, e) => annMenu(a, e) });
+  overlay = new Overlay(editor, $('mkPaper'), overlayOpts());
   qmap = questionMap(editor.state.doc, questions);
+  wirePaper();
+}
+function overlayOpts() {
+  return { interactive: true, onSelect: (a) => select(a.id), onContext: (a, e) => annMenu(a, e),
+    qLabel: a => { const r = totals().perQ[a.question_id]; return r ? fmtNum(r.override != null ? r.override : r.got) + '/' + fmtNum(r.max) : ''; } };
+}
+/** A PDF (or joined photos) hand-in: pages drawn by pdf.js, marks anchored to page fractions. */
+async function mountPdf(ver) {
+  teardown();
+  pdfMode = true;
+  $('mkPaper').classList.add('is-pdf'); $('mkDoc').className = 'gg-pages';
+  $('mkDoc').textContent = 'Loading the pages…';
+  try {
+    const url = await signedUrl(ver.file_path);
+    const bytes = new Uint8Array(await (await fetch(url)).arrayBuffer());
+    cur.pdfBytes = bytes;
+    await renderPdf($('mkDoc'), bytes.slice(0));
+  } catch (e) { $('mkDoc').textContent = 'The file could not be opened: ' + friendly(e); return; }
+  overlay = new Overlay(null, $('mkPaper'), overlayOpts());
+  $('mkPdfDl').hidden = false;
   wirePaper();
 }
 
@@ -181,11 +209,11 @@ function drawAnns() {
   if (!overlay) return;
   const t = totals();
   overlay.selected = selectedId;
-  overlay.set(cur.anns, questionBadges(editor, questions, t, qmap));
+  overlay.set(cur.anns, pdfMode ? [] : questionBadges(editor, questions, t, qmap));
   renderNotes(); renderTotals();
   [...overlay.layer.querySelectorAll('.gg-ann')].forEach(n => wireDrag(n));
 }
-function totals() { return tickTotals(cur.anns || [], qmap, questions, cur.overrides); }
+function totals() { return tickTotals(cur.anns || [], pdfMode ? pageQuestionOf(cur.anns || []) : qmap, questions, cur.overrides); }
 
 async function addAnn(a, record = true) {
   const row = { id: crypto.randomUUID(), version_id: cur.ver.id, layer: 'marker', marks: null, body: null, stamp: null, ...a };
@@ -226,6 +254,14 @@ function select(id) {
 
 /* Placement from a pointer position (spec §3.3): text point, margin point or box on an image. */
 function anchorAt(clientX, clientY, target) {
+  if (pdfMode) {
+    const pg = (target && target.closest && target.closest('.gg-page')) ||
+      [...document.querySelectorAll('#mkDoc .gg-page')].find(p => { const r = p.getBoundingClientRect(); return clientY >= r.top && clientY <= r.bottom; });
+    if (!pg) return null;
+    const r = pg.getBoundingClientRect();
+    return { kind: 'page', page: Number(pg.dataset.page), fx: round3((clientX - r.left) / r.width), fy: round3((clientY - r.top) / r.height) };
+  }
+  if (!editor) return null;
   const view = editor.view, { state } = editor;
   const img = target && target.closest && target.closest('img.gg-img');
   if (img) {
@@ -258,18 +294,18 @@ function wirePaper() {
   if (paper.dataset.wired) return; paper.dataset.wired = '1';
   paper.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });   // no autoscroll inside the work
   paper.addEventListener('pointerdown', e => {
-    if (!editor || e.target.closest('.gg-ann, .gg-menu, .gg-pop')) return;
+    if (!cur || !cur.ver || e.target.closest('.gg-ann, .gg-menu, .gg-pop')) return;
     down = { x: e.clientX, y: e.clientY, button: e.button, shift: e.shiftKey, type: e.pointerType, t: Date.now(), target: e.target };
     if (e.pointerType === 'touch') longPress = setTimeout(() => { if (down) { const d = down; down = null; quickMenu(d.x, d.y, anchorAt(d.x, d.y, d.target)); } }, 500);
   });
   paper.addEventListener('pointermove', e => { if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) clearTimeout(longPress); });
   paper.addEventListener('pointerup', e => {
     clearTimeout(longPress);
-    if (!down || !editor) return; const d = down; down = null;
+    if (!down || !cur || !cur.ver) return; const d = down; down = null;
     if (e.target.closest('.gg-ann, .gg-menu, .gg-pop')) return;
     const moved = Math.hypot(e.clientX - d.x, e.clientY - d.y) > 4;
-    const sel = editor.state.selection;
-    if (moved && !sel.empty) return selectionPop(e.clientX, e.clientY);      // drag over words
+    const sel = editor && editor.state.selection;
+    if (moved && sel && !sel.empty) return selectionPop(e.clientX, e.clientY);      // drag over words
     if (moved || d.button === 2) return;
     if (Date.now() - lastPlace.t < 300 && Math.hypot(e.clientX - lastPlace.x, e.clientY - lastPlace.y) < 6) return;   // nervous double click
     let tool = pen.tool;
@@ -280,7 +316,7 @@ function wirePaper() {
     placeTool(tool, anchorAt(e.clientX, e.clientY, d.target), { x: e.clientX, y: e.clientY });
   });
   paper.addEventListener('contextmenu', e => {
-    if (e.shiftKey || !editor || e.target.closest('.gg-ann')) return;   // Shift+right click = the browser's own menu
+    if (e.shiftKey || !cur || !cur.ver || e.target.closest('.gg-ann')) return;   // Shift+right click = the browser's own menu
     e.preventDefault(); down = null;
     quickMenu(e.clientX, e.clientY, anchorAt(e.clientX, e.clientY, e.target));
   });
@@ -340,6 +376,8 @@ function quickMenu(x, y, anchor) {
     { label: 'Comment…', key: 'C', run: () => placeTool('comment', anchor, at) },
     '-',
     ...STAMPS.map((s, i) => ({ label: 'Stamp: ' + s, key: String(i + 1), run: () => addAnn({ type: 'stamp', anchor, stamp: s }) })),
+    ...(pdfMode && questions.length ? ['-', ...questions.map(q => ({ label: 'Question ' + q.number + ' starts here',
+      run: () => addAnn({ type: 'qstart', anchor: { ...anchor, fx: 0.02 }, question_id: q.id, body: q.number }) }))] : []),
     '-',
     { label: 'Undo', key: 'Ctrl+Z', run: undo }
   ]);
@@ -426,7 +464,7 @@ function setValue(v) {
 
 /* ── Keyboard (spec §3.4) ──────────────────────────────────── */
 function typing(e) { const t = e.target; return t && (t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && t.type !== 'checkbox') || t.tagName === 'SELECT') && !t.closest('.ProseMirror'); }
-function caretAnchor() { if (!editor) return null; return anchorFromPos(editor.state, editor.state.selection.head, 'text'); }
+function caretAnchor() { if (!editor || pdfMode) return null; return anchorFromPos(editor.state, editor.state.selection.head, 'text'); }
 function caretXY() { try { const c = editor.view.coordsAtPos(editor.state.selection.head); return { x: c.left, y: c.bottom }; } catch (e) { return { x: innerWidth / 2, y: innerHeight / 2 }; } }
 function onKey(e, fromEditor) {
   if (!fromEditor && typing(e)) return false;
@@ -456,7 +494,7 @@ function onKey(e, fromEditor) {
   if (k === '.' || code === 'Period' || code === 'NumpadDecimal') { setValue(0.5); return true; }
   if ((k === 'Delete' || k === 'Backspace') && selectedId) { removeAnn(selectedId); return true; }
   if (k === '[' || k === ']') { stepAnn(k === ']' ? 1 : -1); return true; }
-  if (k === 'Enter' && fromEditor) {
+  if (k === 'Enter' && fromEditor && !pdfMode) {
     const a = caretAnchor(); const p = caretXY();
     if (pen.tool === 'select') return true;
     placeTool(pen.tool, a, p); return true;
@@ -567,7 +605,7 @@ function setScore(cid, level_id, mark) {
   renderTotals(); changedMarks();
 }
 function renderNotes() {
-  const list = $('mkNotes'), notes = (cur.anns || []).filter(a => a.body || a.type === 'highlight');
+  const list = $('mkNotes'), notes = (cur.anns || []).filter(a => (a.body || a.type === 'highlight') && a.type !== 'qstart');
   const unplaced = overlay ? overlay.unplaced() : [];
   $('mkNotesSec').hidden = !notes.length && !unplaced.length;
   list.textContent = '';
@@ -663,6 +701,18 @@ function exportCsv() {
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 
+async function downloadMarked() {
+  if (!cur || !cur.pdfBytes) return;
+  await flushSave();
+  const s = score(), def = rubric && rubric.definition;
+  const info = { title: A.title, learner: cur.r.display_name, score: s.got, max: Number(A.total_marks), comment: cur.comment,
+    perQ: questions.map(q => { const r = s.t.perQ[q.id]; return { number: q.number, got: r.override != null ? r.override : r.got, max: r.max }; }),
+    rubric: def ? def.criteria.map(c => { const sc = cur.scores[c.id] || {}; const l = criterionLevels(def, c).find(x => x.id === sc.level_id);
+      return { name: c.name, got: sc.mark ?? 0, max: criterionMax(def, c), level: l ? l.label : '' }; }) : [] };
+  const bytes = await markedPdf(cur.pdfBytes.slice(0), cur.anns, info);
+  download(bytes, (cur.r.display_name + ' - ' + A.title).replace(/[^\w\- ]+/g, '').slice(0, 80) + ' (marked).pdf');
+}
+
 /* ── Global wiring ─────────────────────────────────────────── */
 function wireGlobal() {
   $('mkLearner').addEventListener('change', () => open(Number($('mkLearner').value)));
@@ -676,6 +726,7 @@ function wireGlobal() {
   $('mkReopen').addEventListener('click', reopen);
   $('mkCsv').addEventListener('click', exportCsv);
   $('mkHelp').addEventListener('click', () => $('mkHelpDlg').showModal());
+  $('mkPdfDl').addEventListener('click', downloadMarked);
   document.addEventListener('keydown', e => {
     if (e.target.closest && e.target.closest('.ProseMirror')) return;      // the editor's own handler runs
     if (e.target.closest && e.target.closest('.gg-menu, dialog[open]')) return;

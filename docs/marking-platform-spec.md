@@ -223,6 +223,23 @@ them but not delete or retype them (a ProseMirror filter rejects transactions th
 
 ---
 
+### 2.6 PDF and photo hand-ins (built 2026-11-12)
+
+- Per task the teacher chooses how learners hand in (`assignments.submission_mode`): writing online,
+  uploading a file, or either.
+- Upload: a PDF (up to 15 MB and 60 pages), or phone photos joined in the browser into one A4 PDF
+  (pdf-lib, MIT, vendored; photos are re-encoded, so location data is dropped). The learner sees the
+  pages before handing in. `submit_upload()` freezes the file as an unchangeable version, exactly
+  like typed work.
+- Marking uses the same view and pen. Pages are drawn by pdf.js (vendored) with scripting off; marks
+  are anchored as `{ kind: 'page', page, fx, fy }` (fractions of the page), so they never move.
+- Questions: a PDF has no reliable structure, so the teacher right-clicks "Question 1.2 starts here"
+  (a `qstart` mark); ticks below it count to that question, and the marker shows its running total.
+- "Download marked PDF" (teacher and learner) burns the ticks, crosses, comments, stamps and
+  question totals into the PDF and adds a results page (mark, questions, rubric, comments).
+- Word files must be saved as PDF first; there is no server to convert .docx.
+- SQL: `supabase-grading-grimoire-pdf.sql`.
+
 ## 3. The teacher marking view
 
 ### 3.1 Layout

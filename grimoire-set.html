@@ -63,6 +63,9 @@
     </div>
 
     <h2 class="gg-h">Handing in</h2>
+    <div class="gg-field" style="max-width:360px"><label for="fMode">Learners hand in by</label>
+      <select id="fMode"><option value="online">Writing in The Magic Lab</option><option value="upload">Uploading a PDF or photos of their work</option><option value="either">Either</option></select>
+      <span class="gg-hint">Uploads are marked on the same screen, page by page.</span></div>
     <label class="gg-check"><input type="checkbox" id="fResubmit"> Learners may hand in again before marks are returned</label>
     <div class="gg-field" id="fAttemptsWrap" hidden style="margin-top:10px;max-width:220px"><label for="fAttempts">Hand-ins allowed</label><input class="gg-in" type="number" id="fAttempts" min="2" max="10" value="2"></div>
 
@@ -76,7 +79,7 @@
 import { sb, me, el, whenAuthReady, friendly, fmtNum } from './assets/grimoire-core.js';
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search), editId = params.get('a');
-let rubrics = [];
+let rubrics = [], modeColumn = false;
 
 function localInput(ts) { if (!ts) return ''; const d = new Date(ts); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16); }
 function addQ(q = {}) {
@@ -130,6 +133,7 @@ function syncScoring() {
     $('fTitle').value = a.title; $('fInstr').value = a.instructions || ''; $('fType').value = a.task_type || 'Assignment'; $('fTerm').value = a.term || '';
     $('fDue').value = localInput(a.due_at); $('fClose').value = localInput(a.close_at); $('fWords').value = a.word_limit || '';
     $('fScoring').value = a.scoring; $('fTotal').value = a.total_marks; if (a.rubric_version_id) $('fRubric').value = a.rubric_version_id;
+    modeColumn = 'submission_mode' in a; $('fMode').value = a.submission_mode || 'online';
     $('fResubmit').checked = a.allow_resubmit; $('fAttempts').value = Math.max(2, a.max_attempts); $('fAttemptsWrap').hidden = !a.allow_resubmit;
     const { data: qs } = await sb().from('assignment_questions').select('*').eq('assignment_id', editId).order('position');
     (qs || []).forEach(addQ);
@@ -160,10 +164,16 @@ $('setForm').addEventListener('submit', async e => {
     word_limit: $('fWords').value ? Number($('fWords').value) : null,
     allow_resubmit: $('fResubmit').checked, max_attempts: $('fResubmit').checked ? Math.min(10, Math.max(2, Number($('fAttempts').value) || 2)) : 1
   };
+  // Sent only when it is not the default, so the page also works before supabase-grading-grimoire-pdf.sql is run.
+  if ($('fMode').value !== 'online' || modeColumn) row.submission_mode = $('fMode').value;
   let id = editId, res;
   if (editId) res = await sb().from('assignments').update(row).eq('id', editId).select('id').single();
   else res = await sb().from('assignments').insert({ ...row, class_id: $('fClass').value, teacher_id: me() }).select('id').single();
-  if (res.error) { $('fSave').disabled = false; return err(friendly(res.error)); }
+  if (res.error) {
+    $('fSave').disabled = false;
+    if (/submission_mode/.test(res.error.message || '')) return err('Uploads are not switched on yet: run supabase-grading-grimoire-pdf.sql in Supabase first, or choose "Writing in The Magic Lab".');
+    return err(friendly(res.error));
+  }
   id = res.data.id;
   if (editId) await sb().from('assignment_questions').delete().eq('assignment_id', id);
   if (qs.length) {

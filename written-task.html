@@ -28,6 +28,25 @@
 
   <section id="wtFeedback" class="gg-feedback" hidden aria-labelledby="wtFbHead"></section>
 
+  <div class="gg-switch" id="wtModeSwitch" role="group" aria-label="How to hand in" hidden>
+    <button type="button" id="wtModeWrite" aria-pressed="true">Write here</button>
+    <button type="button" id="wtModeUpload" aria-pressed="false">Upload a file</button>
+  </div>
+  <section class="gg-upload" id="wtUpload" hidden aria-labelledby="wtUpHead">
+    <h2 class="gg-h" id="wtUpHead" style="margin:0">Hand in a file</h2>
+    <p class="gg-hint" style="margin:0;max-width:60ch">Upload a PDF, or take photos of your written work. Photos are joined into one PDF, one photo per page, in the order you add them. Up to 60 pages and 15 MB.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="gg-btn" type="button" id="wtPickPdf">Choose a PDF</button>
+      <button class="gg-btn" type="button" id="wtPickPhotos">Add photos</button>
+      <button class="gg-btn gg-btn--sm" type="button" id="wtUpClear" hidden>Start again</button>
+    </div>
+    <input type="file" id="wtPdfFile" accept="application/pdf,.pdf" hidden>
+    <input type="file" id="wtPhotoFiles" accept="image/*" multiple hidden>
+    <div class="gg-hint" id="wtUpStatus" aria-live="polite"></div>
+    <div class="gg-pages" id="wtUpPreview" style="width:100%"></div>
+    <button class="gg-btn gg-btn--primary" type="button" id="wtUpSubmit" hidden>Hand in this file</button>
+  </section>
+
   <div id="wtEditorWrap" hidden>
     <div class="gg-status" id="wtStatus" aria-live="polite"></div>
     <div class="gg-toolbar" id="wtToolbar" role="toolbar" aria-label="Formatting"></div>

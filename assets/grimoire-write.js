@@ -4,8 +4,10 @@
 import { Editor } from './vendor/tiptap-3.32.1.bundle.js';
 import {
   sb, me, esc, el, fmtWhen, fmtNum, friendly, capsLevel, whenAuthReady, extensions, docText, countWords, imagePaths,
-  prepareImage, BUCKET, loadAssignment, Overlay, questionMap, tickTotals, rubricScore, criterionLevels, criterionMax, questionBadges
+  prepareImage, BUCKET, loadAssignment, Overlay, questionMap, tickTotals, rubricScore, criterionLevels, criterionMax, questionBadges,
+  pageQuestionOf, signedUrl
 } from './grimoire-core.js';
+import { renderPdf, photosToPdf, pageCount, markedPdf, download, MAX_PDF_BYTES, MAX_PAGES } from './grimoire-pdf.js';
 
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -64,14 +66,29 @@ function showHeader() {
 /* ── Choose the view ───────────────────────────────────────── */
 async function render() {
   const editable = sub.status === 'draft' || sub.status === 'reopened';
+  const mode = A.submission_mode || 'online';       // 'online' | 'upload' | 'either'
+  if (editable) {
+    if (mode === 'upload') return openUpload();
+    $('wtEditorWrap').hidden = false;
+    if (mode === 'either') {
+      $('wtModeSwitch').hidden = false;
+      const pick = which => {
+        $('wtModeWrite').setAttribute('aria-pressed', String(which === 'write'));
+        $('wtModeUpload').setAttribute('aria-pressed', String(which === 'upload'));
+        $('wtEditorWrap').hidden = which !== 'write'; $('wtUpload').hidden = which !== 'upload';
+        if (which === 'upload') openUpload();
+      };
+      $('wtModeWrite').onclick = () => pick('write'); $('wtModeUpload').onclick = () => pick('upload');
+    }
+    return openEditor();
+  }
   $('wtEditorWrap').hidden = false;
-  if (editable) return openEditor();
   // handed in: show the latest handed-in version, read-only (with marking once released)
   const { data: vers } = await sb().from('submission_versions').select('*').eq('submission_id', sub.id).order('attempt', { ascending: false }).limit(1);
   const ver = vers && vers[0];
   if (!ver) return fail('Your hand-in could not be loaded.');
   if (sub.released_at) return showFeedback(ver);
-  showReadOnly(ver.doc);
+  if (ver.file_path) await showReadOnlyPdf(ver); else showReadOnly(ver.doc);
   say('Handed in ' + fmtWhen(ver.submitted_at) + (ver.is_late ? ' (late)' : '') + (sub.attempt > 1 ? ' · hand-in ' + sub.attempt : '') +
       (sub.status === 'marking' ? ' · your teacher is marking it' : ' · waiting for your teacher to mark it'));
   const canAgain = A.allow_resubmit && sub.attempt < A.max_attempts && !sub.released_at;
@@ -79,8 +96,85 @@ async function render() {
   $('wtAgain').onclick = async () => {
     const { error } = await sb().rpc('resubmit_submission', { p_submission: sub.id });
     if (error) return say(friendly(error), 'is-bad');
-    sub.status = 'draft'; editor && editor.destroy(); editor = null; $('wtAgain').hidden = true; openEditor();
+    sub.status = 'draft'; editor && editor.destroy(); editor = null; $('wtAgain').hidden = true;
+    $('wtDoc').textContent = ''; $('wtDoc').className = 'gg-doc'; $('wtPaper').classList.remove('is-pdf');
+    render();
   };
+}
+
+/* ── Hand in a file: a PDF, or phone photos joined into one PDF (spec: PDF hand-ins) ── */
+let pending = null, photos = [], uploadWired = false;
+function openUpload() {
+  $('wtUpload').hidden = false; $('wtMsg').hidden = true;
+  if (uploadWired) return; uploadWired = true;
+  const st = t => { $('wtUpStatus').textContent = t; };
+  $('wtPickPdf').onclick = () => $('wtPdfFile').click();
+  $('wtPickPhotos').onclick = () => $('wtPhotoFiles').click();
+  $('wtPdfFile').onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (f.size > MAX_PDF_BYTES) return st('That PDF is over 15 MB. Make it smaller (for example "Save as PDF" with smaller images) and try again.');
+    st('Opening ' + f.name + '…');
+    try {
+      const bytes = new Uint8Array(await f.arrayBuffer());
+      const n = await pageCount(bytes);
+      if (n > MAX_PAGES) return st('That PDF has ' + n + ' pages; the most is ' + MAX_PAGES + '.');
+      photos = []; await showPending({ bytes, pages: n, label: f.name });
+    } catch (err) { st('That file could not be opened as a PDF.'); }
+  };
+  $('wtPhotoFiles').onchange = async e => {
+    const add = [...e.target.files].filter(f => f.type.startsWith('image/')); e.target.value = '';
+    if (!add.length) return;
+    photos = photos.concat(add).slice(0, MAX_PAGES);
+    st('Joining ' + photos.length + ' photo' + (photos.length === 1 ? '' : 's') + ' into one PDF…');
+    try {
+      const bytes = await photosToPdf(photos, (i, n) => st('Joining photos… ' + i + ' of ' + n));
+      if (bytes.length > MAX_PDF_BYTES) return st('Together the photos are over 15 MB. Use fewer photos.');
+      await showPending({ bytes, pages: photos.length, label: photos.length + ' photo' + (photos.length === 1 ? '' : 's') });
+    } catch (err) { st(friendly(err)); }
+  };
+  $('wtUpClear').onclick = () => { pending = null; photos = []; $('wtUpPreview').textContent = ''; $('wtUpSubmit').hidden = true; $('wtUpClear').hidden = true; st(''); };
+  $('wtUpSubmit').onclick = handInFile;
+}
+async function showPending(p) {
+  pending = p;
+  $('wtUpStatus').textContent = p.label + ' · ' + p.pages + ' page' + (p.pages === 1 ? '' : 's') + '. Check the pages below, then hand in.' +
+    (photos.length ? ' Add more photos to put them after these.' : '');
+  await renderPdf($('wtUpPreview'), p.bytes.slice(0));
+  $('wtUpSubmit').hidden = false; $('wtUpClear').hidden = false;
+}
+async function handInFile() {
+  if (!pending) return;
+  const late = A.due_at && Date.now() > new Date(A.due_at).getTime();
+  const lines = [pending.pages + ' page' + (pending.pages === 1 ? '' : 's') + '.'];
+  if (late) lines.push('The due time has passed, so this will be marked as late.');
+  lines.push(A.allow_resubmit && A.max_attempts > 1 ? 'You can hand in again until your teacher returns the marks.' : 'After you hand in, you cannot change it unless your teacher reopens it.');
+  $('wtConfirmText').textContent = lines.join(' ');
+  const d = $('wtConfirm'); d.showModal();
+  $('wtConfirmNo').onclick = () => d.close();
+  $('wtConfirmYes').onclick = async () => {
+    $('wtConfirmYes').disabled = true;
+    $('wtUpStatus').textContent = 'Uploading…';
+    const path = me() + '/' + sub.id + '/' + crypto.randomUUID() + '.pdf';
+    const up = await sb().storage.from(BUCKET).upload(path, new Blob([pending.bytes], { type: 'application/pdf' }), { contentType: 'application/pdf', upsert: false });
+    if (up.error) { $('wtConfirmYes').disabled = false; d.close(); $('wtUpStatus').textContent = 'Upload failed: ' + friendly(up.error); return; }
+    const { error } = await sb().rpc('submit_upload', { p_submission: sub.id, p_file_path: path, p_page_count: pending.pages });
+    $('wtConfirmYes').disabled = false; d.close();
+    if (error) { $('wtUpStatus').textContent = friendly(error); return; }
+    pending = null; photos = [];
+    $('wtUpload').hidden = true; $('wtModeSwitch').hidden = true;
+    if (editor) { editor.destroy(); editor = null; }
+    const { data } = await sb().from('submissions').select('*').eq('id', sub.id).single();
+    sub = data; render();
+  };
+}
+/** A handed-in PDF, read-only. Returns its bytes (for the marked-PDF download). */
+async function showReadOnlyPdf(ver) {
+  $('wtToolbar').hidden = true; $('wtSubmit').hidden = true;
+  $('wtPaper').classList.add('is-readonly', 'is-pdf'); $('wtDoc').className = 'gg-pages'; $('wtDoc').textContent = 'Loading your pages…';
+  const bytes = new Uint8Array(await (await fetch(await signedUrl(ver.file_path))).arrayBuffer());
+  await renderPdf($('wtDoc'), bytes.slice(0));
+  $('wtCount').textContent = (ver.page_count || '') + ' pages';
+  return bytes;
 }
 
 function showReadOnly(doc) {
@@ -366,12 +460,21 @@ async function showFeedback(ver) {
     vid === ver.id ? Promise.resolve(ver) : versionById(vid)
   ]);
   const shownVer = shown || ver;
-  showReadOnly(shownVer.doc);
+  let totals, overlay, pdfBytes = null;
+  if (shownVer.file_path) {
+    pdfBytes = await showReadOnlyPdf(shownVer);
+    totals = tickTotals(anns || [], pageQuestionOf(anns || []), questions, marks && marks.question_overrides);
+    overlay = new Overlay(null, $('wtPaper'), { interactive: false,
+      qLabel: a => { const r = totals.perQ[a.question_id]; return r ? fmtNum(r.override != null ? r.override : r.got) + '/' + fmtNum(r.max) : ''; } });
+    overlay.set(anns || [], []);
+  } else {
+    showReadOnly(shownVer.doc);
+    const qmap = questionMap(editor.state.doc, questions);
+    totals = tickTotals(anns || [], qmap, questions, marks && marks.question_overrides);
+    overlay = new Overlay(editor, $('wtPaper'), { interactive: false });
+    overlay.set(anns || [], questionBadges(editor, questions, totals, qmap));
+  }
   say('Marked and returned' + (sub.released_at ? ' ' + fmtWhen(sub.released_at) : ''));
-  const qmap = questionMap(editor.state.doc, questions);
-  const totals = tickTotals(anns || [], qmap, questions, marks && marks.question_overrides);
-  const overlay = new Overlay(editor, $('wtPaper'), { interactive: false });
-  overlay.set(anns || [], questionBadges(editor, questions, totals, qmap));
 
   const fb = $('wtFeedback'); fb.hidden = false; fb.textContent = '';
   const score = marks && marks.score != null ? Number(marks.score) : null, max = Number((marks && marks.score_max) || A.total_marks);
@@ -386,11 +489,19 @@ async function showFeedback(ver) {
     fb.appendChild(t);
   }
   if (rubric && scores && scores.length) fb.appendChild(rubricSummary(rubric.definition, scores));
+  if (pdfBytes) fb.appendChild(el('button', { class: 'gg-btn gg-btn--sm', type: 'button', style: 'margin-top:14px', text: 'Download marked PDF', onclick: async () => {
+    const def = rubric && rubric.definition, by = Object.fromEntries((scores || []).map(x => [x.criterion_id, x]));
+    const bytes = await markedPdf(pdfBytes.slice(0), anns || [], { title: A.title, score, max, comment: marks && marks.overall_comment,
+      perQ: questions.map(q => { const r = totals.perQ[q.id]; return { number: q.number, got: r.override != null ? r.override : r.got, max: r.max }; }),
+      rubric: def ? def.criteria.filter(c => by[c.id]).map(c => ({ name: c.name, got: by[c.id].mark ?? 0, max: criterionMax(def, c),
+        level: (criterionLevels(def, c).find(l => l.id === by[c.id].level_id) || {}).label || '' })) : [] });
+    download(bytes, A.title.replace(/[^\w\- ]+/g, '').slice(0, 60) + ' (marked).pdf');
+  } }));
   if (marks && marks.overall_comment) {
     fb.appendChild(el('h3', { class: 'gg-h', style: 'font-size:15px', text: 'Comment from your teacher' }));
     fb.appendChild(el('p', { class: 'gg-brief', style: 'margin:0', text: marks.overall_comment }));
   }
-  const notes = (anns || []).filter(a => a.body);
+  const notes = (anns || []).filter(a => a.body && a.type !== 'qstart');
   if (notes.length) {
     fb.appendChild(el('h3', { class: 'gg-h', style: 'font-size:15px', text: 'Comments on your work' }));
     const ul = el('ul', { class: 'gg-list' });
