@@ -267,6 +267,28 @@
     }
     .back-btn:hover{color:var(--text);background:var(--surface);}
 
+    /* ── Co-teachers (assets/co-teachers.js) ── */
+    .ct-panel{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:12px 24px;border-bottom:1px solid var(--border);font-size:13px;}
+    .ct-panel[hidden],.ct-join[hidden]{display:none !important;}
+    .ct-head{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+    .ct-list{display:flex;flex-wrap:wrap;gap:6px 16px;list-style:none;margin:0;padding:0;}
+    .ct-person{display:flex;align-items:baseline;gap:6px;}
+    .ct-name{color:var(--text);font-weight:600;}
+    .ct-role{color:var(--muted);font-size:12px;}
+    .ct-actions{margin-left:auto;display:flex;gap:8px;}
+    .ct-link{background:none;border:0;padding:2px 0;color:var(--muted);font:inherit;font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+    .ct-link:hover{color:var(--text);}
+    .ct-out{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;}
+    .ct-out:empty{display:none;}
+    .ct-code{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:0.14em;color:var(--text);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-xs);padding:6px 12px;cursor:pointer;}
+    .ct-code[data-copied]::after{content:' ✓';color:var(--muted);}
+    .ct-hint{color:var(--muted);font-size:12px;line-height:1.5;max-width:60ch;}
+    .ct-err{color:var(--crit, #f87171);font-size:12px;}
+    .ct-join{flex-direction:column;gap:10px;cursor:default;}
+    .ct-join-open{background:none;border:0;font:inherit;color:inherit;cursor:pointer;padding:8px;}
+    .ct-join-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;}
+    .ct-input{width:9.5em;font-family:var(--mono);letter-spacing:0.12em;text-transform:uppercase;text-align:center;}
+
     .student-table{width:100%;border-collapse:collapse;}
     .student-table th{
       text-align:left;padding:10px 18px;
@@ -886,6 +908,7 @@
               <button class="back-btn" onclick="closeClassDetail()">← All classes</button>
             </div>
           </div>
+          <div id="class-teachers-panel" class="ct-panel" hidden></div>
           <div id="student-table-wrap">
             <div class="empty-state">
               <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="loader-2" style="width:40px;height:40px;"></i></span>
@@ -1076,8 +1099,12 @@
       <div class="aa-actions aa-file-actions">
         <button class="aa-btn" id="b-save-file" type="button">Save rubric to a file</button>
         <button class="aa-btn" id="b-open-file" type="button">Open a saved rubric</button>
+        <button class="aa-btn" id="b-save-account" type="button" hidden>Save to my account</button>
+        <button class="aa-btn" id="b-open-account" type="button" hidden>Open from my account</button>
+        <span class="aa-hint" id="b-account-status" aria-live="polite"></span>
         <input type="file" id="b-open-input" accept=".json,application/json" hidden>
       </div>
+      <div class="aa-actions aa-account-list" id="b-account-list" hidden></div>
       <div class="aa-hint">The rubric saves itself in this browser. A file lets you keep a copy, move to another device or carry on later.</div>
     </div>
     </div><!-- /rub-build -->
@@ -1854,6 +1881,7 @@
 <script src="games.js"></script>
 <script src="auth-modal.js"></script>
 
+<script src="assets/co-teachers.js"></script>
 <script src="assets/dashboard-teacher.js"></script>
 <script src="assets/teacher-shared.js"></script>
 <script src="assets/teacher-admin-tools.js"></script>

@@ -27,8 +27,8 @@
   async function fetchMyStudents() {
     const profile = window.MagicLabAuth.getProfile();
     const sb = supabase();
-    const { data: classes, error: classErr } = await sb.from('classes').select('id, name, grade, subject').eq('teacher_id', profile.id);
-    if (classErr || !classes?.length) return [];
+    const classes = await window.MagicLabAuth.getMyClasses();   // owned and co-taught
+    if (!classes.length) return [];
 
     const classIds = classes.map(c => c.id);
     const { data: members, error: memErr } = await sb.from('class_members').select('student_id, class_id').in('class_id', classIds);

@@ -110,6 +110,19 @@ network-first service worker and schools with filtered internet. A checked-in ve
 approved (§11); the phase 0 spike picks whichever proves more reliable. The rest of the design
 is the same either way.
 
+**Spike result (2026-11-12, `mockups/tiptap-spike.html`, TipTap 3.32.1, KaTeX 0.19.1).**
+Loading from esm.sh works: StarterKit, TableKit, Image, Mathematics and UniqueID all register on
+one schema, and each ProseMirror package resolved to a single version (model 1.25.13, state
+1.4.4, view 1.42.9), so there is no duplicate-copy problem. UniqueID puts an id on every block
+(after the first tick, so read ids from the first update, not straight after `new Editor`).
+`coordsAtPos` → `posAtCoords` returned the same offset (20 → 20), which the anchoring in §3.3
+relies on. A read-only editor renders the saved JSON with the same schema, but it needs **fresh
+extension instances** (sharing instances between two editors throws "different instances of a
+keyed plugin"). The cost: a cold load made **92 requests and took 3.3 s** on a fast connection
+(0.24 s once cached). **Decision: ship a vendored bundle** (`assets/vendor/tiptap-3.32.1.bundle.js`,
+built once with esbuild) for learners on mobile data; keep the esm.sh import map for development.
+The Mathematics extension is MIT in 3.32.1.
+
 ### 2.2 What the editor supports
 
 | Feature | MVP | How |
@@ -122,7 +135,7 @@ is the same either way.
 | Hyperlinks | ✓ | Link; protocols `https`, `http`, `mailto` only; `rel="noopener noreferrer nofollow"`, opens in a new tab |
 | Undo / redo, paste from Word or Google Docs | ✓ | StarterKit; paste is reduced to the schema, so foreign styling is dropped |
 | Word count | ✓ | CharacterCount; the teacher can set a limit |
-| Maths (inline and block) | Phase 2 | `@tiptap/extension-mathematics` (KaTeX). It was released as open source with TipTap 3; confirm the licence of the pinned version. Fallback: a ~60-line custom `math` node holding LaTeX, rendered with KaTeX (MIT). Learners type `$x^2$`; a small symbol palette helps those who do not know LaTeX. |
+| Maths (inline and block) | Phase 2 | `@tiptap/extension-mathematics` (KaTeX), MIT in 3.32.1 (checked). Fallback: a ~60-line custom `math` node holding LaTeX, rendered with KaTeX (MIT). Learners type `$x^2$`; a small symbol palette helps those who do not know LaTeX. |
 | Code blocks | Phase 2 | For CAT/IT tasks; CodeBlockLowlight with a small language set |
 | Drawing / diagram | Later | Out of scope; learners attach a photo instead |
 

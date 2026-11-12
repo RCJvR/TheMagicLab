@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TipTap spike</title>
+<!-- Grading Grimoire phase 0 spike (docs/marking-platform-spec.md §2.1).
+     Question: can TipTap 3 load as ES modules from a CDN on a static site, with one
+     shared copy of ProseMirror, and give us block ids + position lookups for anchors?
+     Not published (mockups/ is excluded in _config.yml). -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.css">
+<script type="importmap">
+{ "imports": {
+  "@tiptap/core":                  "https://esm.sh/@tiptap/core@3.32.1",
+  "@tiptap/starter-kit":           "https://esm.sh/@tiptap/starter-kit@3.32.1",
+  "@tiptap/extension-table":       "https://esm.sh/@tiptap/extension-table@3.32.1",
+  "@tiptap/extension-image":       "https://esm.sh/@tiptap/extension-image@3.32.1",
+  "@tiptap/extension-mathematics": "https://esm.sh/@tiptap/extension-mathematics@3.32.1",
+  "@tiptap/extension-unique-id":   "https://esm.sh/@tiptap/extension-unique-id@3.32.1"
+} }
+</script>
+<style>
+  body { font: 16px/1.6 system-ui, sans-serif; margin: 24px; background: #0e0f12; color: #e8e8ea; }
+  #editor { max-width: 72ch; border: 1px solid #333; border-radius: 8px; padding: 16px; min-height: 200px; }
+  #editor .ProseMirror { outline: none; }
+  #editor table { border-collapse: collapse; } #editor td, #editor th { border: 1px solid #555; padding: 4px 8px; }
+  pre#out { white-space: pre-wrap; background: #16171b; padding: 12px; border-radius: 8px; max-width: 72ch; }
+</style>
+</head>
+<body>
+<h1>TipTap spike</h1>
+<div id="editor"></div>
+<pre id="out">Loading…</pre>
+<script type="module">
+const out = document.getElementById('out');
+const log = (k, v) => { window.__spike = window.__spike || {}; window.__spike[k] = v; out.textContent = JSON.stringify(window.__spike, null, 2); };
+const t0 = performance.now();
+try {
+  const [{ Editor }, { default: StarterKit }, tableMod, { default: Image }, mathMod, uidMod] = await Promise.all([
+    import('@tiptap/core'), import('@tiptap/starter-kit'), import('@tiptap/extension-table'),
+    import('@tiptap/extension-image'), import('@tiptap/extension-mathematics'), import('@tiptap/extension-unique-id')
+  ]);
+  const { TableKit } = tableMod;
+  const Mathematics = mathMod.Mathematics || mathMod.default;
+  const UniqueID = uidMod.UniqueID || uidMod.default;
+  log('loadMs', Math.round(performance.now() - t0));
+
+  const makeExtensions = () => [
+      StarterKit.configure({ link: { protocols: ['http', 'https', 'mailto'], openOnClick: false } }),
+      TableKit.configure({ table: { resizable: false } }),
+      Image,
+      Mathematics,
+      UniqueID.configure({ types: ['heading', 'paragraph', 'table', 'tableCell', 'image', 'bulletList', 'orderedList'], attributeName: 'bid' })
+    ];
+  const editor = new Editor({
+    element: document.getElementById('editor'),
+    extensions: makeExtensions(),
+    content: '<h2>1.1 Define renewable energy</h2><p>Renewable energy is energy that comes from <strong>sources</strong> that are naturally replenished.</p>' +
+             '<table><tr><th>Source</th><th>Renewable?</th></tr><tr><td>Solar</td><td>Yes</td></tr></table><p>Inline maths test.</p>'
+  });
+
+  // 1. Every extension registered on ONE schema (a second ProseMirror copy breaks this)
+  const nodes = Object.keys(editor.schema.nodes);
+  log('schemaNodes', nodes);
+  log('hasTable+Image+Math', ['table', 'image'].every(n => nodes.includes(n)) && nodes.some(n => /math/i.test(n)));
+
+  // 2. Duplicate ProseMirror copies? Look at the module URLs actually fetched.
+  const urls = performance.getEntriesByType('resource').map(e => e.name).filter(u => u.includes('esm.sh'));
+  const pm = urls.filter(u => /prosemirror-(model|state|view)@/.test(u));
+  const byPkg = {};
+  pm.forEach(u => { const m = u.match(/prosemirror-(model|state|view)@([^/]+)/); if (m) (byPkg[m[1]] = byPkg[m[1]] || new Set()).add(m[2]); });
+  log('prosemirrorVersionsLoaded', Object.fromEntries(Object.entries(byPkg).map(([k, s]) => [k, [...s]])));
+  log('esmRequests', urls.length);
+
+  // 3. Block ids present on top-level blocks (UniqueID fills them in on the first tick)
+  await new Promise(r => setTimeout(r, 50));
+  const json = editor.getJSON();
+  log('blockIds', json.content.map(b => b.type + ':' + (b.attrs && b.attrs.bid ? 'yes' : 'NO')));
+
+  // 4. Maths via command
+  try { editor.chain().focus('end').insertInlineMath({ latex: 'x^2 + 1' }).run(); log('inlineMath', !!document.querySelector('#editor .katex, #editor [data-type*="math"]')); }
+  catch (e) { log('inlineMath', 'ERR ' + e.message); }
+
+  // 5. Anchor round trip: a point in paragraph 2 → (bid, offset) → coords again
+  const view = editor.view;
+  let para = null, paraPos = -1;
+  view.state.doc.forEach((node, offset) => { if (!para && node.type.name === 'paragraph') { para = node; paraPos = offset; } });
+  const target = paraPos + 1 + 20;                       // 20 characters into the paragraph
+  const c = view.coordsAtPos(target);
+  const hit = view.posAtCoords({ left: c.left + 1, top: (c.top + c.bottom) / 2 });
+  log('anchor', { bid: para.attrs.bid, offset: 20, roundTripOffset: hit ? hit.pos - paraPos - 1 : null });
+
+  // 6. Read-only render of the saved JSON with the same schema (teacher view)
+  const ro = new Editor({ element: document.createElement('div'), editable: false, content: editor.getJSON(),
+    extensions: makeExtensions() });
+  log('readOnlyRender', ro.getHTML().length > 50 && ro.getJSON().content.every(b => b.attrs && b.attrs.bid));
+  log('ok', true);
+} catch (e) {
+  log('error', String(e && e.stack || e));
+}
+</script>
+</body>
+</html>

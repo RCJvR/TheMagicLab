@@ -193,8 +193,8 @@
     if (sb && sess) {
       const uid = sess.user.id;
       if (S.teacher) {
-        const { data: cls } = await sb.from('classes').select('id,name').eq('teacher_id', uid).order('created_at');
-        S.classes = cls || [];
+        // owned and co-taught classes, oldest first as before
+        S.classes = (await A.getMyClasses()).map(c => ({ id: c.id, name: c.name })).reverse();
       } else {
         const { data: ev } = await sb.from('progress_events').select('topic').eq('user_id', uid).eq('tool', 'drawing-druid').eq('event_type', 'lesson_complete').not('topic', 'is', null);
         S.done = new Set((ev || []).map(r => r.topic));

@@ -319,16 +319,29 @@ async function createClass(name, grade = null, subject = null) {
 }
 
 /**
- * Get all classes owned by the current teacher.
+ * Get all classes the current teacher owns or co-teaches, newest first.
+ * Co-taught classes carry `co_teacher: true` (see supabase-co-teachers.sql).
+ * Before that SQL is run, the class_teachers query fails and only owned
+ * classes are returned, as before.
  */
 async function getMyClasses() {
   if (!_session) return [];
-  const { data } = await _supabase
+  const uid = _session.user.id;
+  const { data: own } = await _supabase
     .from('classes')
     .select('*')
-    .eq('teacher_id', _session.user.id)
+    .eq('teacher_id', uid)
     .order('created_at', { ascending: false });
-  return data ?? [];
+  let shared = [];
+  const { data: links, error: linkErr } = await _supabase
+    .from('class_teachers').select('class_id').eq('teacher_id', uid);
+  if (!linkErr && links?.length) {
+    const { data } = await _supabase.from('classes').select('*').in('id', links.map(l => l.class_id));
+    shared = (data ?? []).map(c => ({ ...c, co_teacher: true }));
+  }
+  const ownIds = new Set((own ?? []).map(c => c.id));
+  return [...(own ?? []), ...shared.filter(c => !ownIds.has(c.id))]
+    .sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
 }
 
 /**

@@ -291,6 +291,88 @@
     save(); renderRubric(); toast('Rubric opened');
   });
 
+  /* ── Rubric in the teacher's account (Grading Grimoire phase 0) ──
+     Saves the rubric as a new version in Supabase (save_rubric RPC in
+     supabase-grading-grimoire-phase0.sql). Each criterion keeps a stable id,
+     so a saved mark never depends on the criterion's position. The browser
+     copy stays as a working cache. Hidden until the SQL has been run. */
+  (function () {
+    const sb = () => window.MagicLabAuth && window.MagicLabAuth._supabase && window.MagicLabAuth._supabase();
+    const saveBtn = $('b-save-account'), openBtn = $('b-open-account'), list = $('b-account-list'), status = $('b-account-status');
+    if (!saveBtn || !openBtn) return;
+    const rid = () => 'c' + Math.random().toString(36).slice(2, 9);
+    const withIds = () => { rubric.rows.forEach(r => { if (!r.id) r.id = rid(); }); };
+
+    function toDefinition() {
+      withIds();
+      const n = rubric.levels;
+      const levels = Array.from({ length: n }, (_, i) => ({ id: 'l' + (n - i), label: 'Level ' + (n - i), points: n - i }));
+      const criteria = rubric.rows.filter(r => r.name.trim() || r.cells.some(Boolean)).map(r => ({
+        id: r.id, name: r.name.trim().slice(0, 300) || 'Criterion', max: n,
+        cells: Object.fromEntries(levels.map((l, i) => [l.id, String(r.cells[i] || '').slice(0, 1000)]))
+      }));
+      return { type: 'analytic_points', weighted: false, levels, criteria };
+    }
+    function fromDefinition(d) {
+      const levels = Array.isArray(d && d.levels) ? d.levels : [];
+      if (d.type !== 'analytic_points' || ![3, 4, 5].includes(levels.length)) return null;
+      return { levels: levels.length, rows: (d.criteria || []).slice(0, 50).map(c => ({
+        id: strOf(c.id, 24) || rid(), name: strOf(c.name, 300),
+        cells: levels.map(l => strOf(c.cells && c.cells[l.id], 1000)) })) };
+    }
+    const say = t => { status.textContent = t; };
+
+    saveBtn.addEventListener('click', async () => {
+      const def = toDefinition();
+      if (!def.criteria.length) return toast('Add at least one criterion first');
+      saveBtn.disabled = true; say('Saving…');
+      const { data, error } = await sb().rpc('save_rubric', {
+        p_rubric: rubric.accountId || null, p_title: (rubric.title || 'Rubric').trim() || 'Rubric',
+        p_type: def.type, p_definition: def, p_max_score: def.criteria.length * rubric.levels, p_import_ref: null });
+      saveBtn.disabled = false;
+      if (error) { say(''); return toast('Could not save: ' + error.message); }
+      rubric.accountId = data; save();
+      say('Saved to your account ' + new Date().toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }) + '.');
+    });
+
+    openBtn.addEventListener('click', async () => {
+      if (!list.hidden) { list.hidden = true; return; }
+      say('Loading…');
+      const { data, error } = await sb().from('rubrics').select('id, title, current_version, updated_at')
+        .eq('archived', false).order('updated_at', { ascending: false }).limit(50);
+      say('');
+      if (error) return toast('Could not load your rubrics: ' + error.message);
+      list.textContent = '';
+      if (!data.length) list.appendChild(el('div', { class: 'aa-hint', text: 'No rubrics saved to your account yet.' }));
+      data.forEach(r => list.appendChild(el('button', { class: 'aa-btn aa-btn--sm', type: 'button',
+        text: r.title + ' · ' + new Date(r.updated_at).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }),
+        onclick: async () => {
+          const { data: v, error: e } = await sb().from('rubric_versions').select('definition')
+            .eq('rubric_id', r.id).eq('version', r.current_version).single();
+          if (e) return toast('Could not open it: ' + e.message);
+          const local = fromDefinition(v.definition);
+          if (!local) return toast('This rubric type cannot be edited here yet');
+          if (rubric.rows.some(x => x.name || x.cells.some(Boolean)) && rubric.accountId !== r.id
+              && !confirm('Replace the rubric you are working on with "' + r.title + '"?')) return;
+          rubric = { title: r.title, levels: local.levels, rows: local.rows.length ? local.rows : [{ name: '', cells: [] }], accountId: r.id };
+          $('b-title').value = rubric.title; $('b-levels').value = String(rubric.levels);
+          save(); renderRubric(); list.hidden = true; toast('Rubric opened');
+        } })));
+      list.hidden = false;
+    });
+
+    // Show the buttons only when signed in and the rubric tables exist. Auth may
+    // finish after this script runs, so check again on the auth events.
+    function probe() {
+      const A = window.MagicLabAuth, db = sb();
+      if (!db || !A.isLoggedIn || !A.isLoggedIn() || !saveBtn.hidden) return;
+      db.from('rubrics').select('id').limit(1).then(r => { if (!r.error) { saveBtn.hidden = false; openBtn.hidden = false; } }, () => {});
+    }
+    document.addEventListener('magiclab:auth:ready', probe);
+    document.addEventListener('magiclab:auth:change', probe);
+    probe();
+  })();
+
 
   /* ═══════════════ RUBRIC MARKING MODE ═══════════════ */
   // Mark a class against the rubric above. Picks are stored per class and

@@ -5925,7 +5925,7 @@ function _renderClassGrid() {
         </div>
       </div>
       <div class="class-name">${cls.name}</div>
-      <div class="class-meta">${cls.grade ? `Grade ${cls.grade}` : ''}${cls.subject ? ` · ${cls.subject}` : ''} · Created ${_fmtDate(cls.created_at)}</div>
+      <div class="class-meta">${cls.grade ? `Grade ${cls.grade}` : ''}${cls.subject ? ` · ${cls.subject}` : ''} · ${cls.co_teacher ? 'Co-teaching' : `Created ${_fmtDate(cls.created_at)}`}</div>
       <div class="class-stats">
         <div><div class="class-stat-val" id="cls-count-${cls.id}">—</div><div class="class-stat-lbl">Learners</div></div>
         <div><div class="class-stat-val" id="cls-lessons-${cls.id}">—</div><div class="class-stat-lbl">Lessons done</div></div>
@@ -5946,6 +5946,8 @@ function _renderClassGrid() {
   btn.innerHTML = `<span style="font-size:22px;">+</span> Create new class`;
   btn.onclick = () => openCreateModal();
   grid.appendChild(btn);
+  // Join a colleague's class with their co-teacher code (assets/co-teachers.js)
+  if (window.MLCoTeachers) grid.appendChild(window.MLCoTeachers.joinTile(() => _loadClasses()));
   window.lucide?.createIcons();
 }
 
@@ -5996,6 +5998,7 @@ async function openClassDetail(cls) {
   inviteEl.innerHTML = `<i data-lucide="clipboard-copy" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px"></i>${cls.invite_code}`;
   inviteEl.onclick = () => copyInvite(cls.invite_code, inviteEl);
   window.lucide?.createIcons();
+  window.MLCoTeachers?.panel(cls, document.getElementById('class-teachers-panel'), () => { closeClassDetail(); _loadClasses(); });
 
   document.getElementById('student-table-wrap').innerHTML = `
     <div class="empty-state"><span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="loader-2" style="width:40px;height:40px;"></i></span><h3>Loading learners…</h3></div>`;

@@ -167,9 +167,10 @@
   }
 
   async function fetchMyClasses() {
-    const { data, error } = await supabase().from('classes').select('id, name, grade').eq('teacher_id', profile.id).order('name', { ascending: true });
-    if (error) { console.warn('[MagicLab] fetchMyClasses error:', error.message); return []; }
-    return data || [];
+    // owned and co-taught classes, by name
+    const data = await window.MagicLabAuth.getMyClasses();
+    return data.map(c => ({ id: c.id, name: c.name, grade: c.grade }))
+      .sort((a, b) => String(a.name).localeCompare(String(b.name)));
   }
 
   async function saveClassTimetable(classId, grid) {
