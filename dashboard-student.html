@@ -840,8 +840,11 @@
 
     function _renderAssignmentItem(a) {
       const meta = TOOL_META[a.tool];
-      const url  = meta?.url || `${a.tool}.html`;
-      const name = meta?.name || a.tool;
+      const url  = a.href || meta?.url || `${a.tool}.html`;
+      const name = a.kind === 'written' ? 'Written task' : (meta?.name || a.tool);
+      const statusText = a.kind === 'written'
+        ? (a.returned ? '✓ Marked' : a.done ? '✓ Handed in' : a.status ? 'Draft saved' : 'Not yet')
+        : (a.done ? '✓ Done' : 'Not yet');
       // Each lesson: a link straight to it, with the learner's recent score and ✓ once done.
       const tone = p => p == null ? '' : p >= 70 ? ' good' : p >= 50 ? ' warn' : ' crit';
       const lessons = (a.results || []).map(r => {
@@ -852,7 +855,7 @@
       return `
         <div class="assignment-item${a.done ? ' done' : ''}">
           <div class="assignment-item-main">
-            <div class="assignment-item-title">${a.title}</div>
+            <div class="assignment-item-title">${_esc(a.title)}</div>
             <div class="assignment-item-meta">
               <span>${a.className}</span>
               <span>· ${name}</span>
@@ -862,7 +865,7 @@
             </div>
             ${lessons ? `<div class="assignment-lessons">${lessons}</div>` : ''}
           </div>
-          <span class="assignment-item-status ${a.done ? 'done-status' : 'pending-status'}">${a.done ? '✓ Done' : 'Not yet'}</span>
+          <span class="assignment-item-status ${a.done ? 'done-status' : 'pending-status'}">${statusText}</span>
           <a href="${url}" class="assignment-item-link">Open →</a>
         </div>`;
     }

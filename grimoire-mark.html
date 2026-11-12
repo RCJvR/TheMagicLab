@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Marking — Grading Grimoire</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+</head>
+<body class="gg gg-tool-tick">
+<main class="gg-main" id="main">
+  <div class="gg-top" style="justify-content:space-between">
+    <a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a>
+    <span style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="gg-btn gg-btn--sm" id="mkEdit" href="#">Edit task</a>
+      <button class="gg-btn gg-btn--sm" type="button" id="mkCsv">Export CSV</button>
+      <button class="gg-btn gg-btn--sm" type="button" id="mkHelp" aria-haspopup="dialog">Shortcuts <kbd>?</kbd></button>
+      <button class="gg-btn gg-btn--sm gg-btn--primary" type="button" id="mkRelease">Return marks</button>
+    </span>
+  </div>
+  <h1 id="mkTitle">Marking</h1>
+  <div class="gg-meta" id="mkMeta"></div>
+  <p class="gg-msg" id="mkMsg">Loading…</p>
+
+  <div id="mkBody" hidden>
+    <div class="gg-learners" style="margin:18px 0 12px">
+      <button class="gg-btn gg-btn--sm" type="button" id="mkPrev" aria-label="Previous learner (K)">‹</button>
+      <label class="gg-lbl" for="mkLearner" style="position:absolute;left:-9999px">Learner</label>
+      <select id="mkLearner"></select>
+      <button class="gg-btn gg-btn--sm" type="button" id="mkNext" aria-label="Next learner (J)">›</button>
+      <label class="gg-lbl" for="mkFilter">Show</label>
+      <select id="mkFilter"><option value="all">Everyone</option><option value="in">Handed in</option><option value="todo">Not marked yet</option><option value="late">Late</option><option value="missing">Not handed in</option></select>
+      <span id="mkVersionWrap" hidden><label class="gg-lbl" for="mkVersion">Hand-in</label> <select id="mkVersion"></select></span>
+      <span class="gg-hint" id="mkSubMeta"></span>
+    </div>
+    <div class="gg-mark-grid">
+      <section aria-label="Learner's work">
+        <div id="mkBanner"></div>
+        <div class="gg-paper is-readonly" id="mkPaper"><div class="gg-doc" id="mkDoc"></div></div>
+        <p class="gg-msg" id="mkEmpty" hidden></p>
+        <p class="gg-hint" style="margin-top:10px">Left click places the pen in hand · Shift+click the opposite mark · middle click a cross · right click for more · drag over words to comment.</p>
+      </section>
+      <aside class="gg-pane" aria-label="Marking">
+        <div class="gg-pane-sec">
+          <h3 id="mkToolsHead">Pen in hand</h3>
+          <div class="gg-tools" role="toolbar" aria-labelledby="mkToolsHead" id="mkTools"></div>
+          <div class="gg-hint" style="margin-top:8px" id="mkToolHint"></div>
+        </div>
+        <div class="gg-pane-sec">
+          <h3>Marks</h3>
+          <div class="gg-totals" id="mkTotals"></div>
+          <div class="gg-hint" id="mkSaveState" aria-live="polite" style="margin-top:8px"></div>
+        </div>
+        <div class="gg-pane-sec" id="mkRubricSec" hidden>
+          <h3>Rubric</h3>
+          <div id="mkRubric"></div>
+        </div>
+        <div class="gg-pane-sec">
+          <h3><label for="mkComment">Overall comment</label></h3>
+          <textarea class="gg-in" id="mkComment" maxlength="4000" style="width:100%" placeholder="Shown to the learner when you return the marks."></textarea>
+        </div>
+        <div class="gg-pane-sec" id="mkNotesSec" hidden>
+          <h3>Comments on the work</h3>
+          <ul class="gg-list" id="mkNotes"></ul>
+        </div>
+        <div class="gg-pane-sec" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="gg-btn gg-btn--sm" type="button" id="mkReturnOne">Return this learner's marks</button>
+          <button class="gg-btn gg-btn--sm" type="button" id="mkReopen">Let them change it</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<dialog class="gg-dialog" id="mkHelpDlg" aria-labelledby="mkHelpHead">
+  <h2 class="gg-h" id="mkHelpHead" style="margin-top:0">Marking shortcuts</h2>
+  <div class="gg-totals" style="grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px">
+    <span class="v"><kbd>T</kbd> / <kbd>Alt</kbd>+<kbd>1</kbd></span><span class="k">Pick up the tick (it stays in hand)</span>
+    <span class="v"><kbd>X</kbd> / <kbd>Alt</kbd>+<kbd>2</kbd></span><span class="k">Pick up the cross</span>
+    <span class="v"><kbd>C</kbd> / <kbd>Alt</kbd>+<kbd>3</kbd></span><span class="k">Comment</span>
+    <span class="v"><kbd>H</kbd> / <kbd>Alt</kbd>+<kbd>4</kbd></span><span class="k">Highlight the selected words</span>
+    <span class="v"><kbd>S</kbd> / <kbd>Alt</kbd>+<kbd>5</kbd></span><span class="k">Stamp</span>
+    <span class="v"><kbd>1</kbd>–<kbd>9</kbd>, <kbd>.</kbd></span><span class="k">Marks for the tick in hand (or the selected mark); <kbd>.</kbd> = ½</span>
+    <span class="v"><kbd>Enter</kbd></span><span class="k">Place the pen at the cursor (move it with the arrow keys)</span>
+    <span class="v"><kbd>Del</kbd></span><span class="k">Remove the selected mark</span>
+    <span class="v"><kbd>[</kbd> <kbd>]</kbd></span><span class="k">Previous / next mark</span>
+    <span class="v"><kbd>J</kbd> <kbd>K</kbd></span><span class="k">Next / previous learner (also <kbd>Alt</kbd>+<kbd>↓</kbd>/<kbd>↑</kbd>)</span>
+    <span class="v"><kbd>R</kbd></span><span class="k">Go to the rubric</span>
+    <span class="v"><kbd>Ctrl</kbd>+<kbd>Z</kbd></span><span class="k">Undo (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redo)</span>
+    <span class="v"><kbd>Esc</kbd></span><span class="k">Put the pen down / close</span>
+    <span class="v">Right click</span><span class="k">Quick menu (<kbd>Shift</kbd>+<kbd>F10</kbd> from the keyboard)</span>
+  </div>
+  <div class="gg-pop-row" style="margin-top:16px"><button class="gg-btn" type="button" onclick="this.closest('dialog').close()">Close</button></div>
+</dialog>
+<dialog class="gg-dialog" id="mkReleaseDlg" aria-labelledby="mkReleaseHead">
+  <h2 class="gg-h" id="mkReleaseHead" style="margin-top:0">Return the marks?</h2>
+  <p id="mkReleaseText" style="line-height:1.6"></p>
+  <div class="gg-pop-row"><button class="gg-btn" type="button" id="mkReleaseNo">Not yet</button><button class="gg-btn gg-btn--primary" type="button" id="mkReleaseYes">Return marks</button></div>
+</dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/grimoire-mark.js"></script>
+</body>
+</html>

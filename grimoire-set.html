@@ -1,0 +1,177 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Set a written task — Grading Grimoire</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+<style>
+  .q-row { display: grid; grid-template-columns: 110px 1fr 90px auto; gap: 8px; align-items: center; margin-bottom: 6px; }
+  @media (max-width: 560px) { .q-row { grid-template-columns: 80px 1fr 70px auto; } }
+</style>
+</head>
+<body class="gg">
+<main class="gg-main gg-narrow" id="main">
+  <div class="gg-top"><a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a></div>
+  <h1 id="setHead">Set a written task</h1>
+  <p class="gg-hint" style="max-width:62ch;margin:0 0 22px">Learners write their answer in The Magic Lab, with headings, lists, tables and images. You mark it with ticks, crosses, comments and a rubric, then return the marks when you are ready.</p>
+  <p class="gg-msg" id="setMsg">Loading…</p>
+
+  <form id="setForm" hidden novalidate>
+    <div class="gg-row">
+      <div class="gg-field"><label for="fClass">Class</label><select id="fClass" required></select></div>
+      <div class="gg-field"><label for="fType">Type</label>
+        <select id="fType"><option>Assignment</option><option>Test</option><option>Project</option><option>Practical</option><option>Exam</option><option>Oral</option><option>Other</option></select></div>
+      <div class="gg-field"><label for="fTerm">Term</label><select id="fTerm"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    </div>
+    <div class="gg-field"><label for="fTitle">Title</label><input class="gg-in" id="fTitle" maxlength="120" required placeholder="e.g. Essay: the effects of load shedding"></div>
+    <div class="gg-field"><label for="fInstr">Instructions for learners</label><textarea class="gg-in" id="fInstr" maxlength="4000" placeholder="What to write, how long, what to include."></textarea></div>
+    <div class="gg-row">
+      <div class="gg-field"><label for="fDue">Due</label><input class="gg-in" type="datetime-local" id="fDue" required></div>
+      <div class="gg-field"><label for="fClose">No hand-ins after (optional)</label><input class="gg-in" type="datetime-local" id="fClose"></div>
+      <div class="gg-field"><label for="fWords">Word limit (optional)</label><input class="gg-in" type="number" id="fWords" min="1" max="20000" inputmode="numeric"></div>
+    </div>
+
+    <h2 class="gg-h">How it is marked</h2>
+    <div class="gg-row">
+      <div class="gg-field"><label for="fScoring">Marks come from</label>
+        <select id="fScoring">
+          <option value="ticks">Ticks (each tick is a mark)</option>
+          <option value="rubric">A rubric</option>
+          <option value="ticks_rubric">Ticks and a rubric</option>
+          <option value="direct">A mark I type in</option>
+        </select></div>
+      <div class="gg-field" id="fRubricWrap" hidden><label for="fRubric">Rubric</label><select id="fRubric"></select>
+        <span class="gg-hint">Rubrics saved to your account in the Rubric Builder.</span></div>
+      <div class="gg-field"><label for="fTotal">Total marks</label><input class="gg-in" type="number" id="fTotal" min="1" max="9999" step="0.5" required inputmode="decimal"></div>
+    </div>
+
+    <div id="fQuestionsWrap">
+      <div class="gg-lbl" style="margin-bottom:6px">Questions (optional)</div>
+      <p class="gg-hint" style="margin:0 0 8px">Ticks add up per question when learners start each answer with its number, like "1.1".</p>
+      <div id="fQuestions"></div>
+      <button class="gg-btn gg-btn--sm" type="button" id="fAddQ">+ Question</button>
+      <span class="gg-hint" id="fQSum" style="margin-left:10px"></span>
+    </div>
+
+    <h2 class="gg-h">Handing in</h2>
+    <label class="gg-check"><input type="checkbox" id="fResubmit"> Learners may hand in again before marks are returned</label>
+    <div class="gg-field" id="fAttemptsWrap" hidden style="margin-top:10px;max-width:220px"><label for="fAttempts">Hand-ins allowed</label><input class="gg-in" type="number" id="fAttempts" min="2" max="10" value="2"></div>
+
+    <p class="gg-err" id="setErr" role="alert"></p>
+    <div class="gg-top" style="margin-top:20px"><button class="gg-btn gg-btn--primary" type="submit" id="fSave">Set the task</button></div>
+  </form>
+</main>
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module">
+import { sb, me, el, whenAuthReady, friendly, fmtNum } from './assets/grimoire-core.js';
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search), editId = params.get('a');
+let rubrics = [];
+
+function localInput(ts) { if (!ts) return ''; const d = new Date(ts); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16); }
+function addQ(q = {}) {
+  const row = el('div', { class: 'q-row' }, [
+    el('input', { class: 'gg-in q-num', 'aria-label': 'Question number', placeholder: '1.1', maxlength: '12', value: q.number || '' }),
+    el('input', { class: 'gg-in q-label', 'aria-label': 'Question (optional)', placeholder: 'What it asks (optional)', maxlength: '200', value: q.label || '' }),
+    el('input', { class: 'gg-in q-max', type: 'number', 'aria-label': 'Marks', placeholder: 'Marks', min: '0', step: '0.5', value: q.max_marks ?? '' }),
+    el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Remove', onclick: () => { row.remove(); qSum(); } })
+  ]);
+  row.addEventListener('input', qSum);
+  $('fQuestions').appendChild(row);
+}
+function readQs() {
+  return [...document.querySelectorAll('.q-row')].map((r, i) => ({ number: r.querySelector('.q-num').value.trim(), label: r.querySelector('.q-label').value.trim() || null,
+    max_marks: Number(r.querySelector('.q-max').value), position: i })).filter(q => q.number);
+}
+function qSum() { const s = readQs().reduce((a, q) => a + (q.max_marks || 0), 0); $('fQSum').textContent = s ? 'Questions add up to ' + fmtNum(s) + ' marks' : ''; }
+function syncScoring() {
+  const s = $('fScoring').value;
+  $('fRubricWrap').hidden = !(s === 'rubric' || s === 'ticks_rubric');
+  $('fQuestionsWrap').hidden = s === 'rubric' || s === 'direct';
+}
+
+(async function init() {
+  await whenAuthReady();
+  const A = window.MagicLabAuth;
+  if (!A.isLoggedIn()) return;
+  if (!A.isTeacher()) { $('setMsg').textContent = 'Only teachers can set written tasks.'; return; }
+  const classes = await A.getMyClasses();
+  if (!classes.length) { $('setMsg').textContent = 'Create a class first, on the My Classes tab of your dashboard.'; return; }
+  classes.forEach(c => $('fClass').appendChild(el('option', { value: c.id, text: c.name + (c.co_teacher ? ' (co-teaching)' : '') })));
+  if (params.get('class')) $('fClass').value = params.get('class');
+  const { data: rs } = await sb().from('rubrics').select('id, title, current_version').eq('archived', false).gt('current_version', 0).order('updated_at', { ascending: false });
+  rubrics = rs || [];
+  if (rubrics.length) {
+    const { data: vs } = await sb().from('rubric_versions').select('id, rubric_id, version, max_score').in('rubric_id', rubrics.map(r => r.id));
+    rubrics.forEach(r => { r.v = (vs || []).find(v => v.rubric_id === r.id && v.version === r.current_version); });
+    rubrics.filter(r => r.v).forEach(r => $('fRubric').appendChild(el('option', { value: r.v.id, text: r.title + ' (' + fmtNum(r.v.max_score) + ' marks)' })));
+  } else $('fRubric').appendChild(el('option', { value: '', text: 'No rubrics in your account yet' }));
+  const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(23, 59, 0, 0); $('fDue').value = localInput(d);
+  $('fScoring').addEventListener('change', syncScoring);
+  $('fResubmit').addEventListener('change', () => { $('fAttemptsWrap').hidden = !$('fResubmit').checked; });
+  $('fAddQ').addEventListener('click', () => addQ());
+  $('fRubric').addEventListener('change', () => { const r = rubrics.find(x => x.v && x.v.id === $('fRubric').value); if (r && !$('fTotal').value) $('fTotal').value = r.v.max_score; });
+
+  if (editId) {
+    const { data: a } = await sb().from('assignments').select('*').eq('id', editId).single();
+    if (!a) { $('setMsg').textContent = 'That task could not be found.'; return; }
+    $('setHead').textContent = 'Edit the written task'; $('fSave').textContent = 'Save changes'; document.title = 'Edit task — Grading Grimoire';
+    $('fClass').value = a.class_id; $('fClass').disabled = true;
+    $('fTitle').value = a.title; $('fInstr').value = a.instructions || ''; $('fType').value = a.task_type || 'Assignment'; $('fTerm').value = a.term || '';
+    $('fDue').value = localInput(a.due_at); $('fClose').value = localInput(a.close_at); $('fWords').value = a.word_limit || '';
+    $('fScoring').value = a.scoring; $('fTotal').value = a.total_marks; if (a.rubric_version_id) $('fRubric').value = a.rubric_version_id;
+    $('fResubmit').checked = a.allow_resubmit; $('fAttempts').value = Math.max(2, a.max_attempts); $('fAttemptsWrap').hidden = !a.allow_resubmit;
+    const { data: qs } = await sb().from('assignment_questions').select('*').eq('assignment_id', editId).order('position');
+    (qs || []).forEach(addQ);
+  }
+  syncScoring(); qSum();
+  $('setMsg').hidden = true; $('setForm').hidden = false;
+})();
+
+$('setForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err = m => { $('setErr').textContent = m; };
+  const title = $('fTitle').value.trim(), scoring = $('fScoring').value, total = Number($('fTotal').value);
+  const due = $('fDue').value ? new Date($('fDue').value) : null, close = $('fClose').value ? new Date($('fClose').value) : null;
+  const rv = (scoring === 'rubric' || scoring === 'ticks_rubric') ? $('fRubric').value : null;
+  const qs = scoring === 'rubric' || scoring === 'direct' ? [] : readQs();
+  if (!title) return err('Give the task a title.');
+  if (!due) return err('Choose when it is due.');
+  if (close && close < due) return err('"No hand-ins after" must be after the due time.');
+  if (!(total > 0)) return err('Enter the total marks.');
+  if ((scoring === 'rubric' || scoring === 'ticks_rubric') && !rv) return err('Choose a rubric, or save one to your account in the Rubric Builder first.');
+  if (new Set(qs.map(q => q.number)).size !== qs.length) return err('Two questions have the same number.');
+  if (qs.some(q => !/^[0-9A-Za-z.()]{1,12}$/.test(q.number) || !(q.max_marks >= 0))) return err('Each question needs a number like 1.1 and its marks.');
+  err(''); $('fSave').disabled = true;
+  const row = {
+    title, instructions: $('fInstr').value.trim() || null, kind: 'written', tool: 'written-task',
+    due_at: due.toISOString(), due_date: $('fDue').value.slice(0, 10), close_at: close ? close.toISOString() : null,
+    scoring, total_marks: total, rubric_version_id: rv, task_type: $('fType').value, term: $('fTerm').value ? Number($('fTerm').value) : null,
+    word_limit: $('fWords').value ? Number($('fWords').value) : null,
+    allow_resubmit: $('fResubmit').checked, max_attempts: $('fResubmit').checked ? Math.min(10, Math.max(2, Number($('fAttempts').value) || 2)) : 1
+  };
+  let id = editId, res;
+  if (editId) res = await sb().from('assignments').update(row).eq('id', editId).select('id').single();
+  else res = await sb().from('assignments').insert({ ...row, class_id: $('fClass').value, teacher_id: me() }).select('id').single();
+  if (res.error) { $('fSave').disabled = false; return err(friendly(res.error)); }
+  id = res.data.id;
+  if (editId) await sb().from('assignment_questions').delete().eq('assignment_id', id);
+  if (qs.length) {
+    const { error } = await sb().from('assignment_questions').insert(qs.map(q => ({ ...q, assignment_id: id })));
+    if (error) { $('fSave').disabled = false; return err('The task was saved, but its questions were not: ' + friendly(error)); }
+  }
+  location.href = 'grimoire-mark.html?a=' + id;
+});
+</script>
+</body>
+</html>

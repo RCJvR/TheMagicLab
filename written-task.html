@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<script>document.documentElement.style.visibility='hidden';</script>
+<script>window.MLSkipPaywall = true;</script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Written task — The Magic Lab</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<link rel="stylesheet" href="assets/grimoire.css">
+</head>
+<body class="gg">
+<main class="gg-main gg-narrow" id="main">
+  <div class="gg-top"><a class="gg-back" href="dashboard-student.html#assignments-panel">← My assignments</a></div>
+  <header id="wtHead" hidden>
+    <h1 id="wtTitle"></h1>
+    <div class="gg-meta" id="wtMeta"></div>
+    <p class="gg-brief" id="wtBrief" hidden></p>
+    <div id="wtQuestions" class="gg-hint" style="margin-top:10px" hidden></div>
+  </header>
+  <p class="gg-msg" id="wtMsg">Loading…</p>
+
+  <section id="wtFeedback" class="gg-feedback" hidden aria-labelledby="wtFbHead"></section>
+
+  <div id="wtEditorWrap" hidden>
+    <div class="gg-status" id="wtStatus" aria-live="polite"></div>
+    <div class="gg-toolbar" id="wtToolbar" role="toolbar" aria-label="Formatting"></div>
+    <div class="gg-paper" id="wtPaper"><div class="gg-doc" id="wtDoc"></div></div>
+    <div class="gg-top" style="margin-top:16px;justify-content:space-between">
+      <span class="gg-hint" id="wtCount"></span>
+      <span style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="gg-btn" type="button" id="wtAgain" hidden>Hand in again</button>
+        <button class="gg-btn gg-btn--primary" type="button" id="wtSubmit" hidden>Hand in</button>
+      </span>
+    </div>
+    <input type="file" id="wtFile" accept="image/*" hidden>
+  </div>
+</main>
+
+<dialog class="gg-dialog" id="wtConfirm" aria-labelledby="wtConfirmHead">
+  <h2 class="gg-h" id="wtConfirmHead" style="margin-top:0">Hand in your work?</h2>
+  <p id="wtConfirmText" style="line-height:1.6"></p>
+  <div class="gg-pop-row"><button class="gg-btn" type="button" value="cancel" id="wtConfirmNo">Not yet</button><button class="gg-btn gg-btn--primary" type="button" id="wtConfirmYes">Hand in</button></div>
+</dialog>
+<dialog class="gg-dialog" id="wtConflict" aria-labelledby="wtConflictHead">
+  <h2 class="gg-h" id="wtConflictHead" style="margin-top:0">This work was changed somewhere else</h2>
+  <p style="line-height:1.6">You have this task open in another tab or on another device, and that copy saved first. Which version do you want to keep?</p>
+  <div class="gg-pop-row"><button class="gg-btn" type="button" id="wtConflictTheirs">Load the other one</button><button class="gg-btn gg-btn--primary" type="button" id="wtConflictMine">Keep this one</button></div>
+</dialog>
+
+<script src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script type="module" src="assets/grimoire-write.js"></script>
+</body>
+</html>

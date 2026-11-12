@@ -6179,21 +6179,23 @@ function _renderAssignmentsList(assignments, classId) {
           <div>
             <div class="assignment-title">${a.title}</div>
             <div class="assignment-meta">
-              <span>${_toolLabel(a.tool)}</span>
-              ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : '<span>· whole tool</span>'}
+              <span>${a.kind === 'written' ? 'Written task' : _toolLabel(a.tool)}</span>
+              ${a.kind === 'written' ? `<span>· ${a.total_marks} marks</span>` : a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : '<span>· whole tool</span>'}
               ${a.student_ids?.length ? `<span>· for ${a.totalCount} learner${a.totalCount === 1 ? '' : 's'}</span>` : ''}
               ${a.due_date ? `<span class="assignment-due${overdue ? ' overdue' : ''}">Due ${_fmtDate(a.due_date)}</span>` : ''}
             </div>
           </div>
           <div class="assignment-actions">
-            <button class="assign-detail-toggle" onclick="toggleAssignmentDetail('${a.id}')">Learners</button>
+            ${a.kind === 'written'
+              ? `<a class="assign-detail-toggle" href="grimoire-mark.html?a=${a.id}" style="text-decoration:none">Mark</a><a class="assign-detail-toggle" href="grimoire-set.html?a=${a.id}" style="text-decoration:none">Edit</a>`
+              : `<button class="assign-detail-toggle" onclick="toggleAssignmentDetail('${a.id}')">Learners</button>`}
             <button class="remove-btn" title="Delete assignment" onclick="confirmDeleteAssignment('${a.id}','${classId}','${a.title.replace(/'/g,"\\'")}')"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
           </div>
         </div>
         ${a.instructions ? `<div class="assignment-instructions">${a.instructions}</div>` : ''}
         <div class="assignment-progress-row">
           <div class="assignment-progress-bar"><div class="assignment-progress-fill" style="width:${pct}%"></div></div>
-          <div class="assignment-progress-label">${a.completedCount}/${a.totalCount} done${a.classScore != null ? ` · <span class="assign-score">class score ${a.classScore}%</span>` : ''}</div>
+          <div class="assignment-progress-label">${a.completedCount}/${a.totalCount} ${a.kind === 'written' ? 'handed in' : 'done'}${a.classScore != null ? ` · <span class="assign-score">class score ${a.classScore}%</span>` : ''}</div>
         </div>
         <div class="assignment-student-list" id="assign-students-${a.id}"></div>
       </div>`;

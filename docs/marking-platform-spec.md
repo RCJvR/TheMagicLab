@@ -852,6 +852,14 @@ with ticks, comments and a rubric, releases it, and exports the marks.
 - Out of the MVP: maths, comment bank, stamps, highlights, markbook grid, Excel export,
   moderation, Afrikaans.
 
+**Phase 1 status (2026-11-12).** Built. `supabase-grading-grimoire-phase1.sql` is live (36/36
+rolled-back permission checks). Pages: `grimoire-set.html` (teacher sets a task), `written-task.html`
++ `assets/grimoire-write.js` (learner writes, autosaves, hands in, sees feedback; "/" opens a
+command list as in Loop), `grimoire-mark.html` + `assets/grimoire-mark.js` (marking), shared
+`assets/grimoire-core.js` and `assets/grimoire.css`, and `assets/vendor/tiptap-3.32.1.bundle.js`
+(built from `scripts/tiptap-bundle/`). The dashboards list written tasks. Tested end to end against
+an in-memory stand-in database; not yet tried with real signed-in accounts.
+
 ### Phase 2 — The markbook (about 3 weeks)
 
 - Markbook grid, task/learner/subject views, year and term marks (`markbook-calc.js`).

@@ -187,6 +187,9 @@ async function getMyAssignments() {
     return {
       ...a, items, topics: items.map(i => i.topic),
       className: classNameById[a.class_id],
+      href: a.kind === 'written' ? 'written-task.html?a=' + a.id : null,
+      status: mine.status || null,
+      returned: !!mine.returned,
       done: mine.done,
       score: mine.score,
       results: mine.items,
@@ -216,9 +219,17 @@ const _pct = arr => Array.isArray(arr) && arr.length ? Math.round(arr.reduce((a,
  * Each source fails soft (empty), so completion still works without it.
  */
 async function _loadProgress(assignments, studentIds) {
-  const out = { events: [], mm: [], lessons: [] };
+  const out = { events: [], mm: [], lessons: [], subs: [] };
   if (!studentIds.length || !assignments.length) return out;
   const supabase = window.MagicLabAuth._supabase();
+  // Written tasks (Grading Grimoire): done = handed in. Learners only ever get their own rows back.
+  const written = assignments.filter(a => a.kind === 'written').map(a => a.id);
+  const subsJob = written.length
+    ? supabase.from('submissions').select('assignment_id, student_id, status, attempt, released_at').in('assignment_id', written).in('student_id', studentIds)
+        .then(r => { if (!r.error) out.subs = r.data || []; })
+    : null;
+  assignments = assignments.filter(a => a.kind !== 'written');
+  if (!assignments.length) { await subsJob; return out; }
   const tools  = [...new Set(assignments.map(a => a.tool))];
   const since  = assignments.map(a => a.created_at).sort()[0];
   const refs   = assignments.flatMap(a => _items(a).map(i => _parseRef(i.ref)).filter(Boolean));
@@ -235,6 +246,7 @@ async function _loadProgress(assignments, studentIds) {
   if (kinds.has('ss') || kinds.has('tt') || kinds.has('cc')) jobs.push(
     supabase.from('lesson_results').select('user_id, tool, grade, data').in('user_id', studentIds)
       .then(r => { if (!r.error) out.lessons = r.data || []; }));
+  if (subsJob) jobs.push(subsJob);
   await Promise.all(jobs);
   return out;
 }
@@ -253,6 +265,15 @@ async function _loadProgress(assignments, studentIds) {
  * lessons they have attempted.
  */
 function _computeCompletion(assignment, items, studentIds, data) {
+  if (assignment.kind === 'written') {
+    const perStudent = {};
+    studentIds.forEach(id => {
+      const s = (data.subs || []).find(x => x.assignment_id === assignment.id && x.student_id === id);
+      const done = !!s && ['submitted', 'marking', 'returned'].includes(s.status);
+      perStudent[id] = { done, started: !!s, items: [], score: null, status: s ? s.status : null, returned: !!(s && s.released_at) };
+    });
+    return { completedCount: Object.values(perStudent).filter(x => x.done).length, perStudent, classScore: null };
+  }
   const created = new Date(assignment.created_at).getTime();
   const events = data.events.filter(e => e.tool === assignment.tool && new Date(e.created_at).getTime() >= created);
   const perStudent = {};
