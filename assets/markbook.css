@@ -1,0 +1,62 @@
+/* Markbook tab (assets/markbook.js). Uses the teacher dashboard's own variables. */
+.mb-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 14px; margin: 0 0 10px; }
+.mb-field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.mb-field select { min-width: 180px; padding: 8px 10px; }
+.mb-check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text2); padding-bottom: 8px; }
+.mb-sub { display: flex; flex-wrap: wrap; gap: 6px 18px; min-height: 20px; font-size: 13px; margin: 4px 0 6px; }
+.mb-weights { color: var(--muted); }
+.mb-weights.is-ok { color: var(--good, #4acf7f); }
+.mb-weights.is-bad, .mb-status.is-bad, .mb-err { color: var(--crit, #ef5b5b); }
+.mb-status { color: var(--text2); }
+.mb-hint { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 12px; }
+.mb-hint b { color: var(--text2); font-family: var(--mono); }
+
+/* The grid scrolls sideways when a class has many tasks; the learner column stays put. */
+.mb-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-sm, 10px); background: var(--surface); }
+.mb-table { border-collapse: separate; border-spacing: 0; min-width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+.mb-table th, .mb-table td { border-bottom: 1px solid var(--border); padding: 0; text-align: center; white-space: nowrap; }
+.mb-table tbody tr:last-child th, .mb-table tbody tr:last-child td { border-bottom: 0; }
+.mb-name { position: sticky; left: 0; z-index: 1; text-align: left !important; padding: 8px 14px !important; background: var(--ink-850, #0c0e11);
+  font-weight: 700; color: var(--text); min-width: 180px; max-width: 260px; white-space: normal !important; border-right: 1px solid var(--border); }
+thead .mb-name { color: var(--muted); font-size: 12px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.mb-task { vertical-align: bottom; min-width: 112px; max-width: 160px; border-left: 1px solid var(--border); }
+.mb-task.is-uncounted .mb-task-title { color: var(--muted); }
+.mb-task-btn { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 8px 10px; cursor: pointer; text-align: left; white-space: normal; }
+.mb-task-btn:hover .mb-task-title, .mb-task-btn:focus-visible .mb-task-title { text-decoration: underline; }
+.mb-task-btn:focus-visible { outline: 2px solid var(--text); outline-offset: -2px; }
+.mb-task-title { font-weight: 700; color: var(--text); font-size: 13px; line-height: 1.25; }
+.mb-task-meta { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.mb-cell { border-left: 1px solid var(--border); }
+.mb-in { width: 100%; min-width: 72px; box-sizing: border-box; border: 0; background: transparent; color: var(--text); text-align: center;
+  font: inherit; font-variant-numeric: tabular-nums; padding: 9px 6px; }
+.mb-in:focus { outline: 2px solid rgba(6,182,212,0.6); outline-offset: -2px; background: rgba(6,182,212,0.08); }
+.mb-in.is-bad { outline: 2px solid var(--crit, #ef5b5b); outline-offset: -2px; }
+.mb-cell.is-status .mb-in, .mb-cell.is-status .mb-locked { color: var(--muted); font-family: var(--mono); }
+.mb-cell.is-over .mb-in, .mb-cell.is-over .mb-locked { color: var(--warn, #f5b23d); font-weight: 800; }
+.mb-locked { display: block; padding: 9px 6px; color: var(--text2); cursor: help; }
+.mb-calc { padding: 8px 12px !important; color: var(--text2); border-left: 1px solid var(--border); min-width: 64px; }
+.mb-year { color: var(--text); font-weight: 800; }
+.mb-avg th, .mb-avg td { background: rgba(255,255,255,0.025); color: var(--muted); font-size: 13px; }
+.mb-avg .mb-name { background: #101215; }
+.mb-tag { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--muted); border: 1px solid var(--border2, var(--border)); border-radius: 99px; padding: 1px 6px; white-space: nowrap; }
+
+/* Dialogs (centred: the site reset removes the browser's own dialog centring) */
+.mb-dialog { position: fixed; inset: 0; margin: auto; height: fit-content; width: min(520px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow: auto;
+  border: 1px solid var(--border); border-radius: 14px; background: var(--ink-850, #0c0e11); color: var(--text); padding: 22px; box-sizing: border-box; }
+.mb-dialog::backdrop { background: rgba(0,0,0,0.6); }
+.mb-dialog h2 { font-size: 19px; margin: 0 0 14px; color: var(--text); }
+.mb-f { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; font-weight: 700; color: var(--muted); margin: 0 0 12px; flex: 1; min-width: 120px; }
+.mb-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.mb-actions { display: flex; gap: 8px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+.mb-picks { display: flex; flex-direction: column; gap: 6px; max-height: 50vh; overflow-y: auto; }
+.mb-pick { text-align: left; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; cursor: pointer; }
+.mb-pick:hover, .mb-pick:focus-visible { border-color: var(--border2, var(--border)); background: rgba(255,255,255,0.05); }
+
+@media (max-width: 560px) {
+  .mb-field { flex: 1 1 45%; }
+  .mb-field select { min-width: 0; width: 100%; }
+  .mb-name { min-width: 130px; }
+}
+
+/* The dashboard's primary button is full width by default (forms); keep it compact here. */
+.mb-toolbar .btn-primary, .mb-actions .btn-primary { width: auto; flex: 0 0 auto; }

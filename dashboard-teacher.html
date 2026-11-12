@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="assets/magic-lab.css">
   <link rel="stylesheet" href="auth-modal.css">
   <link rel="stylesheet" href="assets/teacher-admin-tools.css">
+  <link rel="stylesheet" href="assets/markbook.css">
   <link rel="stylesheet" href="assets/teacher-math-results.css">
   <style>
     /* ══════════════════════════════════════════════════════════════════════
@@ -857,6 +858,7 @@
           <button class="tab-btn active" data-tab="classes" onclick="switchTab('classes', this)"><i data-lucide="school" aria-hidden="true"></i><span class="tab-label">My Classes</span></button>
           <button class="tab-btn" data-tab="assignments" onclick="switchTab('assignments', this)"><i data-lucide="file-text" aria-hidden="true"></i><span class="tab-label">Assignments</span></button>
           <button class="tab-btn" data-tab="marking" onclick="switchTab('marking', this)"><i data-lucide="check-check" aria-hidden="true"></i><span class="tab-label">Grading Grimoire</span></button>
+          <button class="tab-btn" data-tab="markbook" onclick="switchTab('markbook', this)"><i data-lucide="sheet" aria-hidden="true"></i><span class="tab-label">Markbook</span></button>
           <button class="tab-btn" data-tab="rubric" onclick="switchTab('rubric', this)"><i data-lucide="table" aria-hidden="true"></i><span class="tab-label">Rubric Builder</span></button>
           <button class="tab-btn" data-tab="tracker" onclick="switchTab('tracker', this)"><i data-lucide="calendar-check" aria-hidden="true"></i><span class="tab-label">Assessment Tracker</span></button>
         </div>
@@ -997,6 +999,52 @@
       </div>
       <div id="gg-tab-list"></div>
     </div><!-- /tab-marking -->
+
+
+    <!-- ═══ TAB: MARKBOOK (assets/markbook.js) ═══ -->
+    <div class="tab-panel" id="tab-markbook">
+      <div class="page-header">
+        <h1>Markbook</h1>
+        <p>Every mark for a class in one place: tasks you add, marks returned from Grading Grimoire, and imports from the Assessment Tracker and Test Tome. Term and year marks work themselves out from each task's weight.</p>
+      </div>
+      <div class="mb-toolbar">
+        <label class="mb-field">Class <select id="mb-class" class="form-input"></select></label>
+        <button type="button" class="btn-primary" id="mb-add-task" style="padding:9px 18px">+ Task</button>
+        <button type="button" class="back-btn" id="mb-add-learner">+ Learner by name</button>
+        <label class="mb-field">Import <select id="mb-import" class="form-input"><option value="">Choose…</option><option value="tracker">Assessment Tracker (this browser)</option><option value="tome">Test Tome session</option></select></label>
+        <label class="mb-field">Export <select id="mb-export" class="form-input"><option value="">Choose…</option><option value="xlsx">Excel (.xlsx)</option><option value="csv">CSV</option></select></label>
+        <label class="mb-check"><input type="checkbox" id="mb-missing"> Missing counts as 0</label>
+      </div>
+      <div class="mb-sub"><span id="mb-weights" class="mb-weights"></span><span id="mb-status" class="mb-status" role="status" aria-live="polite"></span></div>
+      <p class="mb-hint">Type a mark, or <b>a</b> absent, <b>e</b> excused, <b>x</b> exempt, <b>m</b> missing. Enter and the arrow keys move between cells. Click a task's name to edit it.</p>
+      <div id="mb-grid"></div>
+
+      <dialog class="mb-dialog" id="mb-task-dlg" aria-labelledby="mb-task-head">
+        <form id="mb-task-form" novalidate>
+          <h2 id="mb-task-head">New task</h2>
+          <label class="mb-f">Name<input id="mb-t-title" class="form-input" maxlength="120" required></label>
+          <div class="mb-row">
+            <label class="mb-f">Type<select id="mb-t-type" class="form-input"><option>Test</option><option>Exam</option><option>Practical</option><option>Project</option><option>Assignment</option><option>Oral</option><option>Practice</option><option>Other</option></select></label>
+            <label class="mb-f">Term<select id="mb-t-term" class="form-input"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+            <label class="mb-f">Date<input id="mb-t-date" class="form-input" type="date"></label>
+          </div>
+          <div class="mb-row">
+            <label class="mb-f">Out of<input id="mb-t-total" class="form-input" type="number" min="0.5" step="0.5" required></label>
+            <label class="mb-f">Weight (% of year)<input id="mb-t-weight" class="form-input" type="number" min="0" max="100" step="0.5"></label>
+          </div>
+          <label class="mb-check"><input type="checkbox" id="mb-t-counts" checked> Counts towards the year mark</label>
+          <p class="mb-hint" id="mb-t-src"></p>
+          <p class="mb-err" id="mb-t-err" role="alert"></p>
+          <div class="mb-actions"><button type="button" class="back-btn" id="mb-t-delete" hidden>Delete task</button><span style="flex:1"></span><button type="button" class="back-btn" id="mb-t-cancel">Cancel</button><button type="submit" class="btn-primary" style="padding:9px 18px">Save</button></div>
+        </form>
+      </dialog>
+      <dialog class="mb-dialog" id="mb-tome-dlg" aria-labelledby="mb-tome-head">
+        <h2 id="mb-tome-head">Import a Test Tome session</h2>
+        <p class="mb-hint">Each result goes to the learner with the same account, or else the same name. A learner's latest result is used.</p>
+        <div id="mb-tome-list" class="mb-picks"></div>
+        <div class="mb-actions"><span style="flex:1"></span><button type="button" class="back-btn" id="mb-tome-cancel">Cancel</button></div>
+      </dialog>
+    </div><!-- /tab-markbook -->
 
 
     <!-- ═══ TAB: THE ARENA ═══ -->
@@ -1930,6 +1978,8 @@
 
 <script src="assets/co-teachers.js"></script>
 <script src="assets/grimoire-tab.js"></script>
+<script src="assets/markbook-calc.js"></script>
+<script src="assets/markbook.js"></script>
 <script src="assets/dashboard-teacher.js"></script>
 <script src="assets/teacher-shared.js"></script>
 <script src="assets/teacher-admin-tools.js"></script>

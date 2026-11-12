@@ -890,6 +890,17 @@ an in-memory stand-in database; not yet tried with real signed-in accounts.
 - Maths in the editor; code blocks for CAT/IT.
 - Per-learner extensions; paper-work photo for name-only learners.
 
+**Phase 2 status (2026-11-12).** Built on the branch: the Markbook tab (class grid, typed marks
+with a/e/x/m statuses, tasks with term and weight, term and year marks and CAPS levels from
+`assets/markbook-calc.js`, class averages, "missing counts as 0", name-only learners), imports from
+this browser's Assessment Tracker and from Test Tome sessions, CSV and Excel export (SheetJS,
+vendored); the comment bank with starter packs and the teacher's own stamps; fixed question headings
+(`questionTemplate`, locked in the learner's editor); private drafts and `comment_bank` in
+`supabase-grading-grimoire-phase2.sql`. Not done yet: importing the Rubric Builder's browser-only
+rubric marks, the practice band (Math Magician and lesson results), holistic / single-point /
+checklist rubrics and weighting in the Rubric Builder, maths and code blocks in the editor,
+per-learner extensions, and photos of paper work for name-only learners.
+
 ### Phase 3 — Beyond the LMSs
 
 - Moderation layer (green pen, moderator role assigned per class, moderation sample picker,
