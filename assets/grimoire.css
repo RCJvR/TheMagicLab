@@ -157,7 +157,10 @@ span.gg-ann { cursor: default; }
   padding: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.45); display: flex; flex-direction: column; gap: 8px; }
 .gg-pop textarea { min-height: 70px; }
 .gg-pop-row { display: flex; gap: 8px; align-items: center; justify-content: flex-end; flex-wrap: wrap; }
-.gg-dialog { border: 1px solid var(--line-hard); border-radius: 12px; background: var(--ink-850); color: var(--text); padding: 20px; max-width: min(480px, calc(100vw - 32px)); }
+/* magic-lab.css resets every margin to 0, which removes the browser's own centring of <dialog>. */
+.gg-dialog { border: 1px solid var(--line-hard); border-radius: 12px; background: var(--ink-850); color: var(--text); padding: 20px;
+  width: min(480px, calc(100vw - 32px)); max-width: none; max-height: calc(100vh - 32px); overflow: auto;
+  position: fixed; inset: 0; margin: auto; height: fit-content; }
 .gg-dialog::backdrop { background: rgba(0,0,0,0.6); }
 .gg-feedback { border: 1px solid var(--line); border-radius: var(--gg-radius); padding: 16px; margin: 0 0 16px; background: var(--ink-850); }
 .gg-big { font: 900 30px/1 var(--font-display); color: var(--paper); letter-spacing: -0.02em; }

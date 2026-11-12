@@ -160,11 +160,8 @@ async function handInFile() {
     const { error } = await sb().rpc('submit_upload', { p_submission: sub.id, p_file_path: path, p_page_count: pending.pages });
     $('wtConfirmYes').disabled = false; d.close();
     if (error) { $('wtUpStatus').textContent = friendly(error); return; }
-    pending = null; photos = [];
-    $('wtUpload').hidden = true; $('wtModeSwitch').hidden = true;
-    if (editor) { editor.destroy(); editor = null; }
-    const { data } = await sb().from('submissions').select('*').eq('id', sub.id).single();
-    sub = data; render();
+    pending = null; photos = []; dirty = false;
+    backToAssignments();
   };
 }
 /** A handed-in PDF, read-only. Returns its bytes (for the marked-PDF download). */
@@ -422,6 +419,15 @@ function slashKey(e) {
   return false;
 }
 
+/** After a hand-in: confirm it, then return the learner to their assignment list. */
+function backToAssignments() {
+  const msg = 'Handed in. Taking you back to your assignments…';
+  $('wtMsg').hidden = false; $('wtMsg').className = 'gg-msg'; $('wtMsg').textContent = msg;
+  $('wtUpload').hidden = true; $('wtModeSwitch').hidden = true; $('wtEditorWrap').hidden = true;
+  $('wtMsg').scrollIntoView({ block: 'center' });
+  setTimeout(() => { location.href = 'dashboard-student.html#assignments-panel'; }, 1200);
+}
+
 /* ── Hand in ───────────────────────────────────────────────── */
 function confirmSubmit() {
   const json = editor.getJSON(), words = countWords(editor.getText()), imgs = imagePaths(json).length;
@@ -445,8 +451,8 @@ function confirmSubmit() {
     $('wtConfirmYes').disabled = false; d.close();
     if (error) return say(friendly(error), 'is-bad');
     try { localStorage.removeItem(localKey()); } catch (e) {}
-    const { data } = await sb().from('submissions').select('*').eq('id', sub.id).single();
-    sub = data; editor.destroy(); editor = null; render();
+    dirty = false;
+    backToAssignments();
   };
 }
 
