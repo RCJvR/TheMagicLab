@@ -2,7 +2,8 @@
 -- THE MAGIC LAB — Accommodations register (accommodations.html)
 -- Run once in the Supabase SQL editor. Safe to re-run.
 --
--- What it stores: per learner, the grade, the name, a list of
+-- What it stores: per learner, the grade, class, name, whether the
+-- accommodations were internally granted, a list of
 -- accommodations (extra time, reader, ...) and one general comment.
 -- Plus a class list per grade, so names can be picked instead of typed.
 --
@@ -45,6 +46,8 @@ create table if not exists public.acc_learners (
   id             uuid primary key default gen_random_uuid(),
   grade          text not null check (char_length(grade) between 1 and 4),
   name           text not null check (char_length(name) between 1 and 120),
+  class_name     text not null default '' check (char_length(class_name) <= 12),
+  internal       boolean not null default false,   -- "Internally granted"
   accommodations text[] not null default '{}',
   comment        text not null default '' check (char_length(comment) <= 2000),
   updated_at     timestamptz not null default now(),
@@ -109,7 +112,8 @@ begin
   perform public._acc_require(p_key, false);
   return json_build_object(
     'learners', coalesce((select json_agg(json_build_object(
-        'id', id, 'grade', grade, 'name', name, 'accommodations', accommodations,
+        'id', id, 'grade', grade, 'name', name, 'class_name', class_name, 'internal', internal,
+        'accommodations', accommodations,
         'comment', comment, 'updated_at', updated_at, 'updated_by', updated_by)
         order by grade, lower(name)) from public.acc_learners), '[]'::json),
     'class_lists', coalesce((select json_object_agg(grade, names) from public.acc_class_list), '{}'::json));
@@ -117,6 +121,7 @@ end $$;
 
 -- Add (p_id null) or update a learner. Returns the saved row.
 create or replace function public.acc_save_learner(p_key text, p_id uuid, p_grade text, p_name text,
+                                                   p_class text, p_internal boolean,
                                                    p_accommodations text[], p_comment text) returns json
 language plpgsql security definer set search_path = public as $$
 declare who text; rec public.acc_learners; clean text[];
@@ -124,16 +129,21 @@ begin
   who := public._acc_require(p_key, true);
   p_name := btrim(coalesce(p_name, ''));
   if p_name = '' then raise exception 'acc: name required'; end if;
-  select coalesce(array_agg(distinct left(btrim(a), 80)) filter (where btrim(a) <> ''), '{}')
-    into clean from unnest(coalesce(p_accommodations, '{}')) a;
+  -- trimmed, without blanks or repeats, in the order the teacher chose them
+  select coalesce(array_agg(x order by first), '{}') into clean from (
+    select left(btrim(a), 80) x, min(i) first
+      from unnest(coalesce(p_accommodations, '{}')) with ordinality as t(a, i)
+     where btrim(a) <> '' group by 1) s;
+  p_class := upper(left(btrim(coalesce(p_class, '')), 12));
   if cardinality(clean) > 30 then raise exception 'acc: too many accommodations'; end if;
   if p_id is null then
-    insert into public.acc_learners (grade, name, accommodations, comment, updated_by)
-    values (p_grade, left(p_name, 120), clean, left(coalesce(p_comment, ''), 2000), who)
+    insert into public.acc_learners (grade, name, class_name, internal, accommodations, comment, updated_by)
+    values (p_grade, left(p_name, 120), p_class, coalesce(p_internal, false), clean, left(coalesce(p_comment, ''), 2000), who)
     returning * into rec;
   else
     update public.acc_learners
-       set grade = p_grade, name = left(p_name, 120), accommodations = clean,
+       set grade = p_grade, name = left(p_name, 120), class_name = p_class, internal = coalesce(p_internal, false),
+           accommodations = clean,
            comment = left(coalesce(p_comment, ''), 2000), updated_at = now(), updated_by = who
      where id = p_id returning * into rec;
     if rec.id is null then raise exception 'acc: learner not found'; end if;
@@ -198,12 +208,12 @@ end $$;
 -- Grants: page calls work without a login (the key protects them).
 revoke execute on function public.acc_whoami(text)                                        from public;
 revoke execute on function public.acc_list(text)                                          from public;
-revoke execute on function public.acc_save_learner(text, uuid, text, text, text[], text)  from public;
+revoke execute on function public.acc_save_learner(text, uuid, text, text, text, boolean, text[], text) from public;
 revoke execute on function public.acc_delete_learner(text, uuid)                          from public;
 revoke execute on function public.acc_set_class_list(text, text, text[])                  from public;
 grant  execute on function public.acc_whoami(text)                                        to anon, authenticated;
 grant  execute on function public.acc_list(text)                                          to anon, authenticated;
-grant  execute on function public.acc_save_learner(text, uuid, text, text, text[], text)  to anon, authenticated;
+grant  execute on function public.acc_save_learner(text, uuid, text, text, text, boolean, text[], text) to anon, authenticated;
 grant  execute on function public.acc_delete_learner(text, uuid)                          to anon, authenticated;
 grant  execute on function public.acc_set_class_list(text, text, text[])                  to anon, authenticated;
 

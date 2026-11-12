@@ -40,7 +40,7 @@ textarea.a-in { resize: vertical; min-height: 84px; line-height: 1.45; }
 /* add learner */
 .a-add { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; margin-bottom: 28px; }
 .a-add h2 { margin-bottom: 14px; }
-.a-add-row { display: grid; grid-template-columns: 120px minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+.a-add-row { display: grid; grid-template-columns: 110px 100px minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
 .a-add-foot { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 12px; }
 .a-link { font: inherit; font-size: 13.5px; color: var(--text-2); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .a-link:hover { color: var(--paper); }
@@ -60,6 +60,11 @@ textarea.a-in { resize: vertical; min-height: 84px; line-height: 1.45; }
 .a-who { min-width: 0; }
 .a-name { font-size: 17px; font-weight: 800; color: var(--paper); line-height: 1.25; word-break: break-word; }
 .a-meta { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+.a-who-fields { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 8px; margin-top: 10px; }
+.a-who-fields .a-in { min-height: 36px; padding: 6px 9px; font-size: 14px; }
+#addClass, .a-who-fields input { text-transform: uppercase; }
+.a-who-fields label { font-size: 11.5px; color: var(--text-3); font-weight: 600; display: block; margin-bottom: 3px; }
+.a-tag.int { display: inline-block; margin-top: 8px; color: var(--warn); border-color: currentColor; }
 .a-who .a-btn { margin-top: 10px; min-height: 34px; padding: 5px 10px; font-size: 13px; }
 .a-col-h { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin: 0 0 8px; }
 .a-acc { display: flex; gap: 8px; margin-bottom: 8px; }
@@ -101,12 +106,13 @@ dialog .a-hint { margin: 0 0 14px; }
 @media (max-width: 860px) {
   .a-card { grid-template-columns: 1fr; gap: 12px; }
   .a-add-row { grid-template-columns: 1fr 1fr; }
+  .a-add-row .acc { grid-column: 1 / -1; }
   .a-add-row .name { grid-column: 1 / -1; order: -1; }
   .a-add-row .a-btn { grid-column: 1 / -1; justify-content: center; }
   .a-admin-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
-  .a-add-row { grid-template-columns: 1fr; }
+  .a-add-row { grid-template-columns: 1fr 1fr; }
   .a-bar .spacer { display: none; }
   .a-bar #printBtn { margin-left: auto; }
 }
@@ -127,6 +133,8 @@ dialog .a-hint { margin: 0 0 14px; }
   #printDoc tr { break-inside: avoid; }
   #printDoc td.n { width: 7mm; color: #555; }
   #printDoc td.nm { width: 55mm; font-weight: 700; }
+  #printDoc td.nm small { display: block; font-weight: 400; font-style: italic; color: #333; margin-top: 1mm; }
+  #printDoc td.cl { width: 16mm; white-space: nowrap; }
   #printDoc td.cm { width: 85mm; white-space: pre-wrap; }
   #printDoc ul { margin: 0; padding-left: 4mm; }
   #printDoc .p-foot { margin-top: 6mm; font-size: 8.5pt; color: #555; }
@@ -154,8 +162,9 @@ dialog .a-hint { margin: 0 0 14px; }
       <h2>Add a learner</h2>
       <div class="a-add-row">
         <div><label class="a-lbl" for="addGrade">Grade</label><select class="a-in" id="addGrade"></select></div>
+        <div><label class="a-lbl" for="addClass">Class</label><input class="a-in" id="addClass" maxlength="12" placeholder="e.g. 8A2" autocapitalize="characters"></div>
         <div class="name"><label class="a-lbl" for="addName">Learner name</label><input class="a-in" id="addName" list="nameList" placeholder="Type a name or pick from the class list" maxlength="120"><datalist id="nameList"></datalist></div>
-        <div><label class="a-lbl" for="addAcc">Accommodation</label><select class="a-in" id="addAcc"></select></div>
+        <div class="acc"><label class="a-lbl" for="addAcc">Accommodation</label><select class="a-in" id="addAcc"></select></div>
         <button class="a-btn primary" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add</button>
       </div>
       <div class="a-add-foot">
@@ -168,7 +177,7 @@ dialog .a-hint { margin: 0 0 14px; }
       <label class="sr" for="fGrade">Show grade</label>
       <select class="a-in" id="fGrade"></select>
       <label class="sr" for="fSearch">Find a learner</label>
-      <input class="a-in grow" id="fSearch" type="search" placeholder="Find a learner or accommodation">
+      <input class="a-in grow" id="fSearch" type="search" placeholder="Find a learner, class or accommodation">
       <span class="spacer"></span>
       <span class="a-status" id="status" aria-live="polite"></span>
       <button class="a-btn primary" type="button" id="printBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>Save as PDF</button>
@@ -213,25 +222,24 @@ dialog .a-hint { margin: 0 0 14px; }
 
   // ── Settings you may want to change ──────────────────────────
   var GRADES = ['R', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-  var ACCOMMODATIONS = [
-    'Extra time',
-    'Rest breaks',
-    'Reader',
+  var ACCOMMODATIONS = [               // as used on the Term 4 2026 exam accommodation list
+    'Additional time: 5 min p/h',
+    'Additional time: 10 min p/h',
+    'Additional time: 15 min p/h',
+    'Human reader',
+    'Electronic reader (CAT Lab)',
     'Scribe',
-    'Reader and scribe',
-    'Separate venue',
-    'Small-group venue',
-    'Enlarged print (A3)',
-    'Coloured paper or overlay',
-    'Use of a computer',
-    'Spelling not penalised',
+    'Spelling',
+    'Handwriting',
     'Prompter',
-    'Oral assessment',
-    'Seat near the front',
-    'Hearing support',
-    'Medication or food in the venue',
-    'Bathroom breaks allowed'
+    'Rest breaks: 5 min p/h',
+    'Separate venue',
+    'Smaller venue: CAT Lab',
+    'Computer',
+    'Noise-cancelling headphones',
+    'Papers in English and Afrikaans'
   ];
+  var INTERNAL_TEXT = 'Internally granted';
   var KEY_STORE = 'ml-acc-key';
 
   // ── Helpers ─────────────────────────────────────────────────
@@ -368,19 +376,23 @@ dialog .a-hint { margin: 0 0 14px; }
   function addLearner(ev) {
     ev.preventDefault();
     var grade = $('addGrade').value, name = $('addName').value.trim().replace(/\s+/g, ' '), acc = $('addAcc').value;
+    var cls = $('addClass').value.trim().toUpperCase();
     if (!name) { $('addName').focus(); toast('Type the learner’s name first'); return; }
     var existing = learners.filter(function (l) { return l.grade === grade && norm(l.name) === norm(name); })[0];
     var p;
     if (existing) {
-      if (acc && existing.accommodations.indexOf(acc) < 0) { existing.accommodations.push(acc); p = saveLearner(existing); }
+      var changed = false;
+      if (acc && existing.accommodations.indexOf(acc) < 0) { existing.accommodations.push(acc); changed = true; }
+      if (cls && existing.class_name !== cls) { existing.class_name = cls; changed = true; }
+      if (changed) p = saveLearner(existing);
       else p = Promise.resolve(existing);
       toast(acc ? 'Added to ' + existing.name : existing.name + ' is already on the register');
     } else {
-      p = track(rpc('acc_save_learner', { p_key: KEY, p_id: null, p_grade: grade, p_name: name, p_accommodations: acc ? [acc] : [], p_comment: '' }))
+      p = track(rpc('acc_save_learner', { p_key: KEY, p_id: null, p_grade: grade, p_name: name, p_class: cls, p_internal: false, p_accommodations: acc ? [acc] : [], p_comment: '' }))
         .then(function (row) { learners.push(row); toast(name + ' added'); return row; });
     }
     p.then(function (row) {
-      $('addName').value = ''; $('addAcc').value = '';
+      $('addName').value = ''; $('addAcc').value = '';   // the class stays: often the next learner is in the same class
       // show the learner: switch the view to their grade if another grade is showing
       if ($('fGrade').value && $('fGrade').value !== grade) { $('fGrade').value = grade; store('ml-acc-filter', grade); }
       $('fSearch').value = '';
@@ -392,7 +404,7 @@ dialog .a-hint { margin: 0 0 14px; }
   }
 
   function saveLearner(l) {
-    return track(rpc('acc_save_learner', { p_key: KEY, p_id: l.id, p_grade: l.grade, p_name: l.name, p_accommodations: l.accommodations, p_comment: l.comment || '' }))
+    return track(rpc('acc_save_learner', { p_key: KEY, p_id: l.id, p_grade: l.grade, p_name: l.name, p_class: l.class_name || '', p_internal: !!l.internal, p_accommodations: l.accommodations, p_comment: l.comment || '' }))
       .then(function (row) { l.updated_at = row.updated_at; l.updated_by = row.updated_by; return l; });
   }
 
@@ -402,7 +414,8 @@ dialog .a-hint { margin: 0 0 14px; }
     return learners.filter(function (l) {
       if (g && l.grade !== g) return false;
       if (!q) return true;
-      return norm(l.name).indexOf(q) > -1 || norm(l.comment).indexOf(q) > -1 ||
+      return norm(l.name).indexOf(q) > -1 || norm(l.comment).indexOf(q) > -1 || norm(l.class_name) === q ||
+        (l.internal && norm(INTERNAL_TEXT).indexOf(q) > -1) ||
         l.accommodations.some(function (a) { return norm(a).indexOf(q) > -1; });
     }).sort(function (a, b) { return gradeIdx(a.grade) - gradeIdx(b.grade) || a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }); });
   }
@@ -429,8 +442,20 @@ dialog .a-hint { margin: 0 0 14px; }
     var edit = canEdit(), id = l.id;
     var who = el('div', { class: 'a-who' }, [
       el('div', { class: 'a-name', text: l.name }),
-      el('div', { class: 'a-meta', text: gradeLabel(l.grade) + ' · ' + l.accommodations.length + (l.accommodations.length === 1 ? ' accommodation' : ' accommodations') })
+      el('div', { class: 'a-meta', text: (l.class_name ? l.class_name : gradeLabel(l.grade)) + ' · ' + l.accommodations.length + (l.accommodations.length === 1 ? ' accommodation' : ' accommodations') })
     ]);
+    if (edit) {
+      var clIn = el('input', { class: 'a-in', id: 'cl-' + id, maxlength: '12', placeholder: '8A2', autocapitalize: 'characters' });
+      clIn.value = l.class_name || '';
+      clIn.addEventListener('change', function () { l.class_name = clIn.value.trim().toUpperCase(); clIn.value = l.class_name; saveLearner(l).then(function () { rerenderCard(l); }).catch(function () {}); });
+      var gr = el('select', { class: 'a-in', id: 'gr-' + id }, [el('option', { value: '', text: '—' }), el('option', { value: 'int', text: INTERNAL_TEXT })]);
+      gr.value = l.internal ? 'int' : '';
+      gr.addEventListener('change', function () { l.internal = gr.value === 'int'; saveLearner(l).catch(function () {}); });
+      who.appendChild(el('div', { class: 'a-who-fields' }, [
+        el('div', {}, [el('label', { for: 'cl-' + id, text: 'Class' }), clIn]),
+        el('div', {}, [el('label', { for: 'gr-' + id, text: 'Granted' }), gr])
+      ]));
+    } else if (l.internal) who.appendChild(el('span', { class: 'a-tag int', text: INTERNAL_TEXT }));
     if (edit) who.appendChild(el('button', { class: 'a-btn quiet danger', type: 'button', onclick: function () { removeLearner(l); } }, [svg(ICON_TRASH), 'Remove learner']));
 
     var accCol = el('div', {}, [el('p', { class: 'a-col-h', id: 'ah-' + id, text: 'Accommodations' })]);
@@ -532,12 +557,13 @@ dialog .a-hint { margin: 0 0 14px; }
       byGrade[gr].forEach(function (l, i) {
         tb.appendChild(el('tr', {}, [
           el('td', { class: 'n', text: String(i + 1) }),
-          el('td', { class: 'nm', text: l.name }),
+          el('td', { class: 'nm' }, [l.name, l.internal ? el('small', { text: INTERNAL_TEXT }) : null]),
+          el('td', { class: 'cl', text: l.class_name || '' }),
           el('td', {}, [l.accommodations.length ? el('ul', {}, l.accommodations.map(function (a) { return el('li', { text: a }); })) : '—']),
           el('td', { class: 'cm', text: l.comment || '' })
         ]));
       });
-      doc.appendChild(el('table', {}, [el('thead', {}, [el('tr', {}, [el('th', { text: '#' }), el('th', { text: 'Learner' }), el('th', { text: 'Accommodations' }), el('th', { text: 'Comment' })])]), tb]));
+      doc.appendChild(el('table', {}, [el('thead', {}, [el('tr', {}, [el('th', { text: '#' }), el('th', { text: 'Learner' }), el('th', { text: 'Class' }), el('th', { text: 'Accommodations' }), el('th', { text: 'Comment' })])]), tb]));
     });
     doc.appendChild(el('p', { class: 'p-foot', text: 'Confidential learner information. Keep secure and destroy when no longer needed.' }));
     var oldTitle = document.title;
