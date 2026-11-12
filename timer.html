@@ -7,6 +7,9 @@
 <meta name="robots" content="noindex">
 <title>Timer Talisman</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo-prism.svg">
+<link rel="manifest" href="assets/timer-talisman/manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/timer-talisman/icon-192.png">
+<meta name="theme-color" content="#08090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Instrument+Serif&display=swap">
@@ -368,6 +371,12 @@ body.sheet-side .sheet-in { width: 100%; }
 .recmenu button[aria-checked="true"] { font-weight: 800; }
 .recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
 .recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
+.pinpop { width: min(380px, calc(100vw - 24px)); gap: 8px; padding: 12px; }
+.pin-p { font-size: 15px; line-height: 1.5; margin: 0; padding: 0 8px; }
+.pin-why { font-size: 13px; opacity: 0.7; }
+.pinpop kbd { font: inherit; font-size: 13px; font-weight: 700; padding: 1px 7px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); }
+.pinpop #pinInstall { font-weight: 800; padding-left: 12px; background: var(--fg); color: var(--bg); }
+.pinpop #pinInstall:hover { background: var(--fg); opacity: 0.9; }
 .statspop { width: min(360px, calc(100vw - 24px)); gap: 10px; padding: 12px; }
 .st-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; padding: 0 6px; }
 .st-grid div { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
@@ -425,6 +434,9 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
       plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
+      pinBtn: 'Install as an app or add to favourites', pinTitle: 'Keep the timer at hand', pinInstall: 'Install Timer Talisman as an app',
+      pinInstalled: 'Timer Talisman is running as an installed app.', pinNoPrompt: 'To install it as an app, open your browser’s menu (⋮ or …) and choose Install, or Apps → Install this site as an app.',
+      pinFav: 'Add this page to your favourites: press {k}.', pinBar: 'Show the favourites bar: press {k}.', pinWhy: 'Your browser lets only you add favourites, so it takes one key press.',
       stBtn: 'My stats', stTitle: 'My focus sessions', stToday: 'Today', stWeek: 'Last 7 days', stStreak: 'Streak', stAll: 'All time',
       stSessions: '{n} sessions', stSession1: '1 session', stDays: '{n} days in a row', stDay1: '1 day', stNone: 'No sessions yet. Finish a focus session and it is counted here.',
       stHere: 'Kept in this browser only.', stClear: 'Clear my stats', stClearAsk: 'Clear all your focus-session stats in this browser?', stDone: 'Focus session done: {n} today',
@@ -464,6 +476,9 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
       plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
+      pinBtn: 'Installeer as ’n toep of voeg by gunstelinge', pinTitle: 'Hou die tydhouer byderhand', pinInstall: 'Installeer Timer Talisman as ’n toep',
+      pinInstalled: 'Timer Talisman loop as ’n geïnstalleerde toep.', pinNoPrompt: 'Om dit as ’n toep te installeer, maak jou blaaier se kieslys oop (⋮ of …) en kies Installeer, of Toepe → Installeer hierdie werf as ’n toep.',
+      pinFav: 'Voeg hierdie bladsy by jou gunstelinge: druk {k}.', pinBar: 'Wys die gunstelingebalk: druk {k}.', pinWhy: 'Jou blaaier laat net jou toe om gunstelinge by te voeg, so dit kos een knoppie.',
       stBtn: 'My statistiek', stTitle: 'My fokussessies', stToday: 'Vandag', stWeek: 'Laaste 7 dae', stStreak: 'Reeks', stAll: 'Altesaam',
       stSessions: '{n} sessies', stSession1: '1 sessie', stDays: '{n} dae aaneen', stDay1: '1 dag', stNone: 'Nog geen sessies nie. Voltooi ’n fokussessie en dit word hier getel.',
       stHere: 'Net in hierdie blaaier gehou.', stClear: 'Vee my statistiek uit', stClearAsk: 'Vee al jou fokussessie-statistiek in hierdie blaaier uit?', stDone: 'Fokussessie klaar: {n} vandag',
@@ -923,7 +938,7 @@ body.sheet-side .sheet-in { width: 100%; }
   // ── Controls ──
   // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
   var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
-    megaphone: ['I', 'I'], 'bar-chart-3': ['M', 'M'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
+    megaphone: ['I', 'I'], 'bar-chart-3': ['M', 'M'], pin: ['P', 'P'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
@@ -955,6 +970,7 @@ body.sheet-side .sheet-in { width: 100%; }
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
+    if (!preview) { var pb = btn('pin', t('pinBtn'), function () { pinPop(!pinOpen); }, '', true); pb.dataset.role = 'pin'; bar.appendChild(pb); }
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
   }
@@ -969,7 +985,7 @@ body.sheet-side .sheet-in { width: 100%; }
       // in every state, also before the start: not while the settings are
       // open, the pointer is over the bar, or a keyboard user is on it (a
       // button merely left focused by a click does not keep it up)
-      if (!panelOpen && !recOpen && !statsOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      if (!panelOpen && !recOpen && !statsOpen && !pinOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
       else wake();
     }, 2000);
   }
@@ -1305,6 +1321,43 @@ body.sheet-side .sheet-in { width: 100%; }
   // A page drawn over the timer for the learners to copy: the heading lines,
   // three open lines for the marks, and the margins left and right. The date
   // line is the exam's month and year. The timer keeps running behind it.
+  // ── Keep the timer at hand: install it as an app, or add it to favourites ──
+  // Chrome and Edge offer an install prompt (beforeinstallprompt), kept for the
+  // pin button. Adding a favourite is the person's own key press: no page may
+  // add one itself, so the pin shows which keys to press.
+  var installPrompt = null, pinOpen = false;
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); installPrompt = e; if (pinOpen) pinPop(true); });
+  window.addEventListener('appinstalled', function () { installPrompt = null; if (pinOpen) pinPop(true); });
+  function standalone() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+  function pinPop(open) {
+    var el = $('pinPop');
+    pinOpen = !!open;
+    if (!pinOpen) { if (el) el.remove(); wake(); return; }
+    if (!el) { el = document.createElement('div'); el.id = 'pinPop'; el.className = 'recmenu pinpop'; el.setAttribute('role', 'dialog'); document.body.appendChild(el); }
+    var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent), mod = mac ? '⌘' : 'Ctrl';
+    el.setAttribute('aria-label', t('pinTitle'));
+    el.innerHTML = '<div class="recmenu-h">' + esc(t('pinTitle')) + '</div>' +
+      (standalone() ? '<p class="pin-p">' + esc(t('pinInstalled')) + '</p>'
+        : installPrompt ? '<button type="button" id="pinInstall"><span>' + esc(t('pinInstall')) + '</span></button>'
+        : '<p class="pin-p">' + esc(t('pinNoPrompt')) + '</p>') +
+      '<p class="pin-p">' + t('pinFav', { k: '<kbd>' + mod + '</kbd> + <kbd>D</kbd>' }) + '<br>' + t('pinBar', { k: '<kbd>' + mod + '</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>' }) + '</p>' +
+      '<p class="pin-p pin-why">' + esc(t('pinWhy')) + '</p>';
+    var b = $('bar').querySelector('[data-role="pin"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
+    el.style.left = Math.max(190, Math.min(innerWidth - 190, r.left + r.width / 2)) + 'px';
+    el.style.bottom = (innerHeight - r.top + 10) + 'px';
+    if ($('pinInstall')) $('pinInstall').addEventListener('click', function (e) {
+      e.stopPropagation();
+      var pr = installPrompt; if (!pr) return;
+      installPrompt = null; pr.prompt();
+      (pr.userChoice || Promise.resolve()).then(function () { pinPop(false); });
+    });
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (pinOpen && !e.target.closest('#pinPop') && !e.target.closest('[data-role="pin"]')) pinPop(false);
+  }, true);
+  // the installed app opens on the last timer used here (its start page has no settings)
+  var LAST_KEY = 'ml-timer-talisman-last';
+  if (!preview && 'serviceWorker' in navigator) navigator.serviceWorker.register('timer-sw.js', { scope: './timer' }).catch(function () {});
   // ── Pomodoro: my focus sessions ──
   // Each focus session that runs to the end is counted, by day, in this
   // browser only (no account needed): { 'YYYY-MM-DD': { n, min } }.
@@ -1480,7 +1533,7 @@ body.sheet-side .sheet-in { width: 100%; }
   // ── Display settings panel: edits cfg.look in place and keeps the link in step ──
   function lookChanged() {
     var snap = cfg;
-    TTLink.encode(cfg).then(function (h) { if (snap === cfg) { history.replaceState(null, '', location.pathname + location.search + '#' + h); writeGo(); } });
+    TTLink.encode(cfg).then(function (h) { if (snap === cfg) { history.replaceState(null, '', location.pathname + location.search + '#' + h); writeGo(); if (!preview) { try { localStorage.setItem(LAST_KEY, h); } catch (e) {} } } });
     applyLook(); view.faceKind = null; view.headHtml = null; render(true);
   }
   function opt(v, label, on) { return '<option value="' + v + '"' + (on ? ' selected' : '') + '>' + esc(label) + '</option>'; }
@@ -1917,6 +1970,12 @@ body.sheet-side .sheet-in { width: 100%; }
   function rekey() { var k = keyOf(cfg); if (k !== key) { try { localStorage.removeItem(key); } catch (e) {} key = k; save(); } }
   var ticking = null;
   function init() {
+    if (!preview) {
+      try {
+        if (location.hash.length > 1) localStorage.setItem(LAST_KEY, location.hash.slice(1));
+        else if (standalone() && localStorage.getItem(LAST_KEY)) history.replaceState(null, '', location.pathname + location.search + '#' + localStorage.getItem(LAST_KEY));
+      } catch (e) {}
+    }
     TTLink.decode(location.hash.slice(1)).then(start);
   }
   function start(c) {
@@ -1941,6 +2000,7 @@ body.sheet-side .sheet-in { width: 100%; }
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && pinOpen) { pinPop(false); return; }
     if (e.key === 'Escape' && statsOpen) { statsPop(false); return; }
     if (e.key === 'Escape' && sheetOpen) { sheet(false); return; }
     if (e.key === 'Escape' && recOpen) { recMenu(false); var rb = $('bar').querySelector('[data-role="rec"]'); if (rb) rb.focus(); return; }
@@ -1964,6 +2024,7 @@ body.sheet-side .sheet-in { width: 100%; }
     else if (k === 'i') toggleAudio();
     else if (k === 'a' && cfg.mode === 'exam') sheet(!sheetOpen);
     else if (k === 'm' && cfg.mode === 'pomodoro' && !preview) statsPop(!statsOpen);
+    else if (k === 'p' && !preview) pinPop(!pinOpen);
     // (the key stops here: the panel puts the focus on its theme list, which
     // would otherwise take the "s" and jump to the first theme starting with S)
     else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
