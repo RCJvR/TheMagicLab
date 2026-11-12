@@ -145,6 +145,7 @@ async function loadVersion(r, s, versions, vid) {
   $('mkSubMeta').textContent = 'Handed in ' + fmtWhen(ver.submitted_at) + (ver.is_late ? ' (late)' : '') + ' · ' + (ver.file_path ? (ver.page_count || '?') + ' pages (PDF)' : ver.word_count + ' words') + (s.released_at ? ' · returned ' + fmtWhen(s.released_at) : '');
   banner();
   renderPane(); drawAnns();
+  maxSnap = maxSnapshot();          // opening a script never announces anything
 }
 function teardown() {
   if (overlay) overlay.destroy();
@@ -615,7 +616,40 @@ function renderNotes() {
 
 /* ── Saving the marks (submission_marks + rubric_scores) ───── */
 function say(t, bad) { $('mkSaveState').textContent = t; $('mkSaveState').className = bad ? 'gg-hint gg-err' : 'gg-hint'; }
-function changedMarks() { if (!cur || !cur.ver) return; say('Saving…'); clearTimeout(saveTimer); saveTimer = setTimeout(saveMarks, 700); }
+/* ── "Maximum reached" notice: announced at the moment a question or the whole task
+   reaches its maximum (or goes over it), never when a script is opened. ── */
+let maxSnap = null, noticeTimer = null;
+function maxSnapshot() {
+  if (!cur || !cur.ver) return null;
+  const s = score();
+  return { q: Object.fromEntries(questions.map(q => { const r = s.t.perQ[q.id]; return [q.id, r ? (r.override != null ? r.override : r.got) : 0]; })), total: s.got };
+}
+function checkMaximum() {
+  const now = maxSnapshot(), prev = maxSnap; maxSnap = now;
+  if (!now || !prev) return;
+  const who = cur.r.display_name, T = Number(A.total_marks), msgs = [];
+  if (now.total != null && T > 0) {
+    if ((prev.total ?? 0) <= T && now.total > T) msgs.push({ warn: true, text: who + ' is over the total: ' + fmtNum(now.total) + ' / ' + fmtNum(T) + '. Check the marks.' });
+    else if ((prev.total ?? 0) < T && now.total === T) msgs.push({ text: who + ' has the maximum mark: ' + fmtNum(T) + ' / ' + fmtNum(T) + '.' });
+  }
+  if (!msgs.length) questions.forEach(q => {
+    const a = prev.q[q.id] || 0, b = now.q[q.id] || 0, m = Number(q.max_marks);
+    if (!(m > 0)) return;
+    if (a <= m && b > m) msgs.push({ warn: true, text: 'Question ' + q.number + ' is over its maximum: ' + fmtNum(b) + ' / ' + fmtNum(m) + '.' });
+    else if (a < m && b === m) msgs.push({ text: who + ' has full marks for question ' + q.number + ' (' + fmtNum(m) + ' / ' + fmtNum(m) + ').' });
+  });
+  if (msgs.length) notice(msgs);
+}
+function notice(msgs) {
+  let n = document.querySelector('.gg-notice');
+  if (!n) { n = el('div', { class: 'gg-notice', role: 'status', 'aria-live': 'polite' }); document.body.appendChild(n); }
+  n.className = 'gg-notice' + (msgs.some(m => m.warn) ? ' is-warn' : '');
+  n.replaceChildren(...msgs.map(m => el('div', { text: m.text })),
+    el('button', { type: 'button', 'aria-label': 'Close', text: '×', onclick: () => n.remove() }));
+  clearTimeout(noticeTimer); noticeTimer = setTimeout(() => n.remove(), msgs.some(m => m.warn) ? 7000 : 4500);
+}
+
+function changedMarks() { if (!cur || !cur.ver) return; checkMaximum(); say('Saving…'); clearTimeout(saveTimer); saveTimer = setTimeout(saveMarks, 700); }
 async function flushSave() { if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; await saveMarks(); } }
 async function saveMarks() {
   saveTimer = null;

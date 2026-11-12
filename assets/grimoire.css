@@ -199,3 +199,13 @@ span.gg-ann { cursor: default; }
 .gg-switch { display: inline-flex; border: 1px solid var(--line-hard); border-radius: 99px; padding: 3px; gap: 2px; margin: 0 0 12px; }
 .gg-switch button { border: 0; background: none; color: var(--text-2); font: 700 13px/1 var(--font-body); padding: 8px 14px; border-radius: 99px; cursor: pointer; }
 .gg-switch button[aria-pressed="true"] { background: var(--paper); color: var(--ink-900); }
+
+/* "Maximum reached" notice in the marking view */
+.gg-notice { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 70; width: max-content; max-width: min(560px, calc(100vw - 32px));
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 12px;
+  background: var(--paper); color: var(--ink-900); font: 700 15px/1.4 var(--font-body); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+.gg-notice > div { flex: 1; }
+.gg-notice.is-warn { background: #fff4e0; color: #5a3600; border: 2px solid var(--warn); }
+.gg-notice button { border: 0; background: none; font: 800 20px/1 var(--font-body); color: inherit; cursor: pointer; padding: 0 4px; }
+@media (prefers-reduced-motion: no-preference) { .gg-notice { animation: gg-notice-in 180ms ease-out; } }
+@keyframes gg-notice-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
