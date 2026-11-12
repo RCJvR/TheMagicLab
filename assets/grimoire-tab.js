@@ -67,6 +67,7 @@
           '</div><div class="assignment-actions">' +
             '<a class="assign-detail-toggle" style="text-decoration:none" href="grimoire-mark.html?a=' + encodeURIComponent(t.id) + '">Mark</a>' +
             '<a class="assign-detail-toggle" style="text-decoration:none" href="grimoire-set.html?a=' + encodeURIComponent(t.id) + '">Edit</a>' +
+            '<button type="button" class="assign-detail-toggle" data-copy-link="' + esc(t.id) + '">Copy link</button>' +
           '</div></div>' +
           '<div class="assignment-progress-row"><div class="assignment-progress-bar"><div class="assignment-progress-fill" style="width:' + pct + '%"></div></div>' +
             '<div class="assignment-progress-label">' + r.handed + '/' + r.learners + ' handed in · ' + r.marked + ' marked · ' + r.returned + ' returned' + (status ? ' · ' + status : '') + '</div></div>' +
@@ -75,6 +76,14 @@
     })().finally(() => { loading = null; });
     return loading;
   }
+
+  // "Copy link" on a card: the learner's page for that task.
+  document.addEventListener('click', async e => {
+    const b = e.target.closest && e.target.closest('[data-copy-link]'); if (!b) return;
+    const url = location.origin + '/written-task.html?a=' + encodeURIComponent(b.dataset.copyLink);
+    try { await navigator.clipboard.writeText(url); b.textContent = 'Copied'; } catch (err) { prompt('Copy this link for your learners:', url); }
+    setTimeout(() => { b.textContent = 'Copy link'; }, 2500);
+  });
 
   window.MLGrimoireTab = { load };
   // Opened straight away when the dashboard restores this tab from last time.

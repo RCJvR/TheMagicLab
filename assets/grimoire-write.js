@@ -254,7 +254,12 @@ async function saveNow() {
 
 async function conflict(mine) {
   const d = $('wtConflict');
-  const { data: fresh } = await sb().from('submissions').select('draft_doc, draft_version, status').eq('id', sub.id).single();
+  // Drafts are private to the learner: read through get_my_draft() (falls back to a plain read
+  // on databases where supabase-grading-grimoire-phase2.sql has not been run yet).
+  let fresh = null;
+  const r = await sb().rpc('get_my_draft', { p_submission: sub.id });
+  if (!r.error && r.data && r.data.length) fresh = r.data[0];
+  else { const q = await sb().from('submissions').select('draft_doc, draft_version, status').eq('id', sub.id).single(); fresh = q.data; }
   if (!fresh) return;
   d.showModal();
   $('wtConflictMine').onclick = () => { d.close(); serverVersion = fresh.draft_version; dirty = true; saveNow(); };

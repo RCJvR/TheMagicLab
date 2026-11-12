@@ -60,6 +60,7 @@
       <div id="fQuestions"></div>
       <button class="gg-btn gg-btn--sm" type="button" id="fAddQ">+ Question</button>
       <span class="gg-hint" id="fQSum" style="margin-left:10px"></span>
+      <label class="gg-check" style="margin-top:12px"><input type="checkbox" id="fFixed" checked> Start each learner's answer with these questions as fixed headings (they write under each one and cannot delete it)</label>
     </div>
 
     <h2 class="gg-h">Handing in</h2>
@@ -76,7 +77,7 @@
 <script src="auth.js"></script>
 <script defer src="require-auth.js"></script>
 <script type="module">
-import { sb, me, el, whenAuthReady, friendly, fmtNum } from './assets/grimoire-core.js';
+import { sb, me, el, whenAuthReady, friendly, fmtNum, questionTemplate } from './assets/grimoire-core.js';
 const $ = id => document.getElementById(id);
 const params = new URLSearchParams(location.search), editId = params.get('a');
 let rubrics = [], modeColumn = false;
@@ -133,6 +134,7 @@ function syncScoring() {
     $('fTitle').value = a.title; $('fInstr').value = a.instructions || ''; $('fType').value = a.task_type || 'Assignment'; $('fTerm').value = a.term || '';
     $('fDue').value = localInput(a.due_at); $('fClose').value = localInput(a.close_at); $('fWords').value = a.word_limit || '';
     $('fScoring').value = a.scoring; $('fTotal').value = a.total_marks; if (a.rubric_version_id) $('fRubric').value = a.rubric_version_id;
+    $('fFixed').checked = !!a.template;
     modeColumn = 'submission_mode' in a; $('fMode').value = a.submission_mode || 'online';
     $('fResubmit').checked = a.allow_resubmit; $('fAttempts').value = Math.max(2, a.max_attempts); $('fAttemptsWrap').hidden = !a.allow_resubmit;
     const { data: qs } = await sb().from('assignment_questions').select('*').eq('assignment_id', editId).order('position');
@@ -176,10 +178,16 @@ $('setForm').addEventListener('submit', async e => {
   }
   id = res.data.id;
   if (editId) await sb().from('assignment_questions').delete().eq('assignment_id', id);
+  let saved = [];
   if (qs.length) {
-    const { error } = await sb().from('assignment_questions').insert(qs.map(q => ({ ...q, assignment_id: id })));
+    const { data, error } = await sb().from('assignment_questions').insert(qs.map(q => ({ ...q, assignment_id: id }))).select('id, number, label, position');
     if (error) { $('fSave').disabled = false; return err('The task was saved, but its questions were not: ' + friendly(error)); }
+    saved = (data || []).sort((x, y) => x.position - y.position);
   }
+  // Fixed question headings for learners who start from now on (not for upload-only tasks).
+  const template = $('fFixed').checked && saved.length && $('fMode').value !== 'upload' ? questionTemplate(saved) : null;
+  const t = await sb().from('assignments').update({ template }).eq('id', id);
+  if (t.error) { $('fSave').disabled = false; return err('The task was saved, but the question headings were not: ' + friendly(t.error)); }
   location.href = 'grimoire-mark.html?a=' + id;
 });
 </script>

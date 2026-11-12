@@ -19,6 +19,7 @@
   <div class="gg-top" style="justify-content:space-between">
     <a class="gg-back" href="dashboard-teacher.html">← Teacher dashboard</a>
     <span style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="gg-btn gg-btn--sm" type="button" id="mkCopyLink">Copy link for learners</button>
       <a class="gg-btn gg-btn--sm" id="mkEdit" href="#">Edit task</a>
       <button class="gg-btn gg-btn--sm" type="button" id="mkCsv">Export CSV</button>
       <button class="gg-btn gg-btn--sm" type="button" id="mkHelp" aria-haspopup="dialog">Shortcuts <kbd>?</kbd></button>
@@ -52,6 +53,19 @@
           <h3 id="mkToolsHead">Pen in hand</h3>
           <div class="gg-tools" role="toolbar" aria-labelledby="mkToolsHead" id="mkTools"></div>
           <div class="gg-hint" style="margin-top:8px" id="mkToolHint"></div>
+        </div>
+        <div class="gg-pane-sec" id="mkBankSec" hidden>
+          <h3><label for="mkBankSearch">Comment bank</label></h3>
+          <input class="gg-in" id="mkBankSearch" type="search" placeholder="Search your comments" style="width:100%;margin-bottom:8px">
+          <ul class="gg-list gg-bank" id="mkBank"></ul>
+          <details class="gg-more">
+            <summary>Starter comments and stamps</summary>
+            <label class="gg-hint" for="mkPack" style="display:block;margin:10px 0 4px">Add a starter pack</label>
+            <select id="mkPack"><option value="">Choose a subject…</option><option>General</option><option>Science</option><option>Maths</option><option>Languages</option></select>
+            <div class="gg-hint" style="margin:12px 0 4px">My stamps (keys 1–9 after S)</div>
+            <ul class="gg-list gg-bank" id="mkStamps"></ul>
+            <div style="display:flex;gap:6px;margin-top:6px"><input class="gg-in" id="mkStampNew" maxlength="40" placeholder="New stamp" aria-label="New stamp" style="flex:1"><button class="gg-btn gg-btn--sm" type="button" id="mkStampAdd">Add</button></div>
+          </details>
         </div>
         <div class="gg-pane-sec">
           <h3>Marks</h3>
@@ -103,6 +117,7 @@
 <dialog class="gg-dialog" id="mkReleaseDlg" aria-labelledby="mkReleaseHead">
   <h2 class="gg-h" id="mkReleaseHead" style="margin-top:0">Return the marks?</h2>
   <p id="mkReleaseText" style="line-height:1.6"></p>
+  <p id="mkReleaseWarn" class="gg-err" style="line-height:1.6;font-weight:700" role="alert"></p>
   <div class="gg-pop-row"><button class="gg-btn" type="button" id="mkReleaseNo">Not yet</button><button class="gg-btn gg-btn--primary" type="button" id="mkReleaseYes">Return marks</button></div>
 </dialog>
 

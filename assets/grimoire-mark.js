@@ -12,7 +12,16 @@ import { renderPdf, markedPdf, download } from './grimoire-pdf.js';
 
 const $ = id => document.getElementById(id);
 const AID = new URLSearchParams(location.search).get('a');
-const STAMPS = ['Excellent', 'Good', 'See me', 'Incomplete', 'Check units', 'Show working'];
+const DEFAULT_STAMPS = ['Excellent', 'Good', 'See me', 'Incomplete', 'Check units', 'Show working'];
+let STAMPS = DEFAULT_STAMPS.slice();
+// The teacher's comment bank and stamp set (table comment_bank; hidden if it does not exist yet).
+let bank = [], bankReady = false;
+const PACKS = {
+  General: [['Well done', null], ['Good point, explain it further', null], ['Answer the question that was asked', null], ['Correct', 1], ['Spelling', null], ['Incomplete answer', null]],
+  Science: [['Units missing', null], ['Show the formula first', null], ['Substitute, then calculate', null], ['Significant figures', null], ['Correct formula', 1], ['Label the axes', null]],
+  Maths: [['Show your working', null], ['Method mark', 1], ['Answer mark', 1], ['Check the sign', null], ['Simplify fully', null], ['Copying error', null]],
+  Languages: [['Good vocabulary', null], ['Run-on sentence', null], ['Paragraph needed here', null], ['Tense', null], ['Quote to support this', null], ['Concord', null]]
+};
 const TOOL_KEY = 'gg-pen';
 
 let A, questions = [], rubric = null, roster = [], subs = [], marksBySub = {}, versionsBySub = {};
@@ -23,7 +32,7 @@ let pen = loadPen(), selectedId = null;
 let undoStack = [], redoStack = [], lastPlace = { t: 0, x: 0, y: 0 }, saveTimer = null, saving = false;
 
 function loadPen() {
-  try { const p = JSON.parse(localStorage.getItem(TOOL_KEY) || 'null'); if (p && ['tick', 'cross', 'comment', 'stamp', 'select'].includes(p.tool)) return { tool: p.tool, value: Number(p.value) || 1 }; } catch (e) {}
+  try { const p = JSON.parse(localStorage.getItem(TOOL_KEY) || 'null'); if (p && ['tick', 'cross', 'comment', 'stamp', 'select'].includes(p.tool)) return { tool: p.tool, value: Number(p.value) || 1, preset: null }; } catch (e) {}
   return { tool: 'tick', value: 1 };
 }
 function savePen() { try { localStorage.setItem(TOOL_KEY, JSON.stringify(pen)); } catch (e) {} }
@@ -42,6 +51,7 @@ const fail = m => { $('mkMsg').hidden = false; $('mkMsg').className = 'gg-msg gg
   $('mkEdit').href = 'grimoire-set.html?a=' + AID;
   document.title = 'Marking: ' + A.title + ' — Grading Grimoire';
   await loadClassData();
+  await loadBank();
   buildTools();
   wireGlobal();
   $('mkMsg').hidden = true; $('mkBody').hidden = false;
@@ -284,6 +294,7 @@ function placeTool(tool, anchor, at) {
   if (!anchor) return;
   if (tool === 'tick') return addAnn({ type: 'tick', anchor, marks: pen.value });
   if (tool === 'cross') return addAnn({ type: 'cross', anchor, marks: null });
+  if (tool === 'comment' && pen.preset) { bumpUse(pen.preset); return addAnn({ type: 'comment', anchor, body: pen.preset.body, marks: pen.preset.marks ?? null }); }
   if (tool === 'comment') return commentPop(at, body => body.text && addAnn({ type: 'comment', anchor, body: body.text, marks: body.marks }));
   if (tool === 'stamp') return stampMenu(at, s => addAnn({ type: 'stamp', anchor, stamp: s }));
 }
@@ -400,8 +411,38 @@ function commentPop(at, done, existing) {
   ta.value = existing ? existing.body || '' : '';
   const mk = el('input', { class: 'gg-in gg-q-in', type: 'number', step: '0.5', min: '-100', max: '100', 'aria-label': 'Marks for this comment (optional)', placeholder: 'marks' });
   if (existing && existing.marks != null) mk.value = existing.marks;
-  const ok = () => { const text = ta.value.trim(); closeFloats(); editor && editor.view.focus(); done({ text, marks: mk.value === '' ? null : Number(mk.value) }); };
-  const pop = el('div', { class: 'gg-pop', role: 'dialog', 'aria-label': 'Comment' }, [ta,
+  const sugg = el('ul', { class: 'gg-sugg', role: 'listbox', 'aria-label': 'From your comment bank', hidden: '' });
+  const keep = el('input', { type: 'checkbox' });
+  const ok = () => {
+    const text = ta.value.trim().replace(/^\//, '').trim(); closeFloats(); editor && editor.view.focus();
+    const marks = mk.value === '' ? null : Number(mk.value);
+    if (keep.checked && text) saveToBank(text, marks);
+    done({ text, marks });
+  };
+  let si = 0, shown = [];
+  const pick = c => { ta.value = c.body; if (c.marks != null) mk.value = c.marks; sugg.hidden = true; bumpUse(c); ta.focus(); };
+  const showSugg = () => {
+    const v = ta.value;
+    if (!bankReady || !v.startsWith('/')) { sugg.hidden = true; return; }
+    const q = v.slice(1).trim().toLowerCase();
+    shown = bank.filter(c => c.kind === 'comment' && (!q || c.body.toLowerCase().includes(q))).slice(0, 8);
+    sugg.textContent = ''; si = Math.min(si, Math.max(0, shown.length - 1));
+    shown.forEach((c, i) => {
+      const li = el('li', { role: 'option', 'aria-selected': String(i === si), class: i === si ? 'is-on' : '', text: c.body + (c.marks != null ? '  (' + fmtNum(c.marks) + ')' : '') });
+      li.addEventListener('mousedown', e => { e.preventDefault(); pick(c); });
+      sugg.appendChild(li);
+    });
+    sugg.hidden = !shown.length;
+  };
+  ta.placeholder = bankReady ? 'Comment for the learner. Type / to search your comment bank.' : 'Comment for the learner';
+  ta.addEventListener('input', () => { si = 0; showSugg(); });
+  ta.addEventListener('keydown', e => {
+    if (sugg.hidden) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); si = (si + (e.key === 'ArrowDown' ? 1 : -1) + shown.length) % shown.length; showSugg(); }
+    if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); pick(shown[si]); }
+  });
+  const pop = el('div', { class: 'gg-pop', role: 'dialog', 'aria-label': 'Comment' }, [ta, sugg,
+    bankReady ? el('label', { class: 'gg-check gg-hint' }, [keep, ' Save to my comment bank']) : null,
     el('div', { class: 'gg-pop-row' }, [el('label', { class: 'gg-hint', text: 'Marks ' }, [mk]),
       el('button', { class: 'gg-btn gg-btn--sm', type: 'button', text: 'Cancel', onclick: () => { closeFloats(); editor && editor.view.focus(); } }),
       el('button', { class: 'gg-btn gg-btn--sm gg-btn--primary', type: 'button', text: 'Save', onclick: ok })])]);
@@ -448,19 +489,78 @@ function buildTools() {
   });
   setTool(pen.tool);
 }
-function setTool(k) {
-  pen.tool = k; savePen();
+function setTool(k, preset) {
+  pen.tool = k; pen.preset = k === 'comment' ? (preset || null) : null; savePen();
   document.querySelectorAll('#mkTools .gg-tool').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
   document.body.className = document.body.className.replace(/\bgg-tool-\w+/g, '') + ' gg-tool-' + k;
   $('mkPenValue') && ($('mkPenValue').textContent = '· ' + fmtNum(pen.value));
   $('mkToolHint').textContent = k === 'tick' ? 'Each click is a tick worth ' + fmtNum(pen.value) + '. Press 1–9 (or . for ½) to change it.'
     : k === 'cross' ? 'Each click is a cross. Shift+click places a tick.'
-    : k === 'comment' ? 'Click where the comment belongs, or drag over words.'
+    : k === 'comment' ? (pen.preset ? 'Each click places "' + pen.preset.body + '"' + (pen.preset.marks != null ? ' (' + fmtNum(pen.preset.marks) + ')' : '') + '. Pick another comment, or press C for a new one.' : 'Click where the comment belongs, or drag over words.')
     : k === 'stamp' ? 'Click, then choose a stamp.' : 'Clicks select marks. Drag over words to comment.';
 }
 function setValue(v) {
   if (selectedId) { const a = cur.anns.find(x => x.id === selectedId); if (a && (a.type === 'tick' || a.type === 'comment')) return updateAnn(a.id, { marks: v }); }
   pen.value = v; setTool(pen.tool);
+}
+
+/* ── Comment bank and stamps (spec §3.6) ───────────────────── */
+async function loadBank() {
+  const { data, error } = await sb().from('comment_bank').select('*').order('uses', { ascending: false }).order('created_at');
+  bankReady = !error; bank = data || [];
+  const mine = bank.filter(c => c.kind === 'stamp').sort((a, b) => (a.position ?? 99) - (b.position ?? 99)).map(c => c.body);
+  if (mine.length) STAMPS = mine.slice(0, 9);
+  renderBank();
+}
+async function saveToBank(body, marks) {
+  if (!bankReady || bank.some(c => c.kind === 'comment' && c.body.toLowerCase() === body.toLowerCase())) return;
+  const { data, error } = await sb().from('comment_bank').insert({ owner_id: me(), kind: 'comment', body: body.slice(0, 1000), marks }).select('*').single();
+  if (!error) { bank.push(data); renderBank(); }
+}
+function bumpUse(c) {
+  if (!c || !c.id) return;
+  c.uses = (c.uses || 0) + 1;
+  sb().from('comment_bank').update({ uses: c.uses, updated_at: new Date().toISOString() }).eq('id', c.id).then(() => {});
+}
+function renderBank() {
+  const sec = $('mkBankSec'); if (!sec) return;
+  sec.hidden = !bankReady;
+  if (!bankReady) return;
+  const q = ($('mkBankSearch').value || '').trim().toLowerCase();
+  const list = $('mkBank'); list.textContent = '';
+  const items = bank.filter(c => c.kind === 'comment' && (!q || c.body.toLowerCase().includes(q)))
+    .sort((a, b) => (b.uses || 0) - (a.uses || 0)).slice(0, 40);
+  if (!items.length) list.appendChild(el('li', { class: 'gg-hint', text: bank.some(c => c.kind === 'comment') ? 'No comments match.' : 'No saved comments yet. Tick "Save to my comment bank" when you write one, or add a starter pack below.' }));
+  items.forEach(c => {
+    const on = pen.preset && pen.preset.id === c.id;
+    list.appendChild(el('li', { class: 'gg-bank-item' + (on ? ' is-on' : '') }, [
+      el('button', { type: 'button', class: 'gg-bank-use', 'aria-pressed': String(!!on), title: 'Pick up this comment: each click on the work places it',
+        text: c.body + (c.marks != null ? '  (' + fmtNum(c.marks) + ')' : ''), onclick: () => { setTool('comment', c); renderBank(); } }),
+      el('button', { type: 'button', class: 'gg-bank-del', 'aria-label': 'Delete "' + c.body + '" from the bank', text: '×', onclick: async () => {
+        await sb().from('comment_bank').delete().eq('id', c.id); bank = bank.filter(x => x.id !== c.id);
+        if (pen.preset && pen.preset.id === c.id) setTool('comment'); renderBank(); } })
+    ]));
+  });
+  const st = $('mkStamps'); st.textContent = '';
+  STAMPS.forEach((name, i) => st.appendChild(el('li', { class: 'gg-bank-item' }, [
+    el('span', { class: 'gg-bank-use', text: (i + 1) + '. ' + name }),
+    el('button', { type: 'button', class: 'gg-bank-del', 'aria-label': 'Remove stamp ' + name, text: '×', onclick: () => saveStamps(STAMPS.filter((_, j) => j !== i)) })
+  ])));
+  $('mkStampAdd').disabled = STAMPS.length >= 9;
+}
+async function saveStamps(list) {
+  STAMPS = list.slice(0, 9);
+  await sb().from('comment_bank').delete().eq('kind', 'stamp');
+  if (STAMPS.length) await sb().from('comment_bank').insert(STAMPS.map((body, i) => ({ owner_id: me(), kind: 'stamp', body, position: i + 1 })));
+  bank = bank.filter(c => c.kind !== 'stamp').concat(STAMPS.map((body, i) => ({ kind: 'stamp', body, position: i + 1 })));
+  renderBank();
+}
+async function addPack(name) {
+  const rows = (PACKS[name] || []).filter(([body]) => !bank.some(c => c.kind === 'comment' && c.body.toLowerCase() === body.toLowerCase()))
+    .map(([body, marks]) => ({ owner_id: me(), kind: 'comment', body, marks }));
+  if (!rows.length) return;
+  const { data, error } = await sb().from('comment_bank').insert(rows).select('*');
+  if (!error) { bank = bank.concat(data); renderBank(); }
 }
 
 /* ── Keyboard (spec §3.4) ──────────────────────────────────── */
@@ -700,6 +800,16 @@ async function releaseMarks(onlyThis) {
   $('mkReleaseText').textContent = onlyThis
     ? 'Return the marks and feedback to ' + cur.r.display_name + '? They will see their mark, your comments and the rubric.'
     : 'Return marks and feedback to ' + ready.length + ' learner' + (ready.length === 1 ? '' : 's') + '?' + (unmarked ? ' ' + unmarked + ' handed-in piece' + (unmarked === 1 ? ' is' : 's are') + ' not marked yet and will not be returned.' : '') + ' The marks also go into the markbook.';
+  // Anyone over the total? Name them, so the teacher can fix it before the marks reach the learner and the markbook.
+  const T = Number(A.total_marks);
+  const over = ready.filter(s => Number(marksBySub[s.id] && marksBySub[s.id].score) > T);
+  const warn = $('mkReleaseWarn'); warn.textContent = '';
+  if (over.length) {
+    const names = over.map(s => { const r = roster.find(x => x.student_id === s.student_id); return (r ? r.display_name : 'A learner') + ' (' + fmtNum(marksBySub[s.id].score) + ' / ' + fmtNum(T) + ')'; });
+    warn.textContent = (over.length === 1 ? names[0] + ' is' : names.join(', ') + ' are') + ' over the total of ' + fmtNum(T) +
+      '. Returning now gives ' + (over.length === 1 ? 'that learner' : 'them') + ' more than 100% and puts that mark in the markbook. Choose "Not yet" to fix the marks first.';
+  }
+  $('mkReleaseYes').textContent = over.length ? 'Return anyway' : 'Return marks';
   const d = $('mkReleaseDlg'); d.showModal();
   $('mkReleaseNo').onclick = () => d.close();
   $('mkReleaseYes').onclick = async () => {
@@ -761,6 +871,19 @@ function wireGlobal() {
   $('mkCsv').addEventListener('click', exportCsv);
   $('mkHelp').addEventListener('click', () => $('mkHelpDlg').showModal());
   $('mkPdfDl').addEventListener('click', downloadMarked);
+  $('mkBankSearch').addEventListener('input', renderBank);
+  $('mkPack').addEventListener('change', async e => { if (e.target.value) { await addPack(e.target.value); e.target.value = ''; } });
+  $('mkStampAdd').addEventListener('click', () => {
+    const v = $('mkStampNew').value.trim().slice(0, 40); if (!v || STAMPS.length >= 9) return;
+    $('mkStampNew').value = ''; saveStamps(STAMPS.concat(v));
+  });
+  $('mkStampNew').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('mkStampAdd').click(); } });
+  $('mkCopyLink').addEventListener('click', async () => {
+    const url = location.origin + '/written-task.html?a=' + encodeURIComponent(AID);
+    try { await navigator.clipboard.writeText(url); $('mkCopyLink').textContent = 'Link copied'; }
+    catch (e) { prompt('Copy this link for your learners:', url); }
+    setTimeout(() => { $('mkCopyLink').textContent = 'Copy link for learners'; }, 2500);
+  });
   document.addEventListener('keydown', e => {
     if (e.target.closest && e.target.closest('.ProseMirror')) return;      // the editor's own handler runs
     if (e.target.closest && e.target.closest('.gg-menu, dialog[open]')) return;

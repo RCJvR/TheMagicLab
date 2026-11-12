@@ -209,3 +209,21 @@ span.gg-ann { cursor: default; }
 .gg-notice button { border: 0; background: none; font: 800 20px/1 var(--font-body); color: inherit; cursor: pointer; padding: 0 4px; }
 @media (prefers-reduced-motion: no-preference) { .gg-notice { animation: gg-notice-in 180ms ease-out; } }
 @keyframes gg-notice-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* Comment bank (marking pane) */
+.gg-bank { max-height: 240px; overflow-y: auto; gap: 2px; }
+.gg-bank-item { display: flex; align-items: flex-start; gap: 6px; border-radius: 6px; }
+.gg-bank-item.is-on { background: var(--pen-marker-soft); }
+.gg-bank-use { all: unset; flex: 1; cursor: pointer; padding: 5px 6px; font-size: 13.5px; line-height: 1.35; color: var(--text); border-radius: 6px; }
+.gg-bank-use:hover, .gg-bank-use:focus-visible { background: rgba(255,255,255,0.06); outline: none; }
+span.gg-bank-use { cursor: default; }
+.gg-bank-del { border: 0; background: none; color: var(--text-3); font: 700 16px/1 var(--font-body); padding: 4px 6px; cursor: pointer; border-radius: 6px; }
+.gg-bank-del:hover { color: var(--crit); }
+.gg-more summary { cursor: pointer; font-size: 13px; color: var(--text-2); margin-top: 10px; }
+.gg-sugg { list-style: none; margin: 0; padding: 4px; border: 1px solid var(--line-hard); border-radius: 8px; max-height: 200px; overflow-y: auto; }
+.gg-sugg li { padding: 6px 8px; border-radius: 6px; font-size: 13.5px; cursor: pointer; }
+.gg-sugg li.is-on, .gg-sugg li:hover { background: rgba(255,255,255,0.08); }
+
+/* Question headings from the task: fixed in the learner's answer */
+.gg-doc h3[data-qid] { border-left: 3px solid var(--gg-accent); padding: 4px 0 4px 10px; background: rgba(79,140,255,0.06); border-radius: 0 6px 6px 0; }
+.gg-doc .ProseMirror[contenteditable="true"] h3[data-qid] { cursor: default; }

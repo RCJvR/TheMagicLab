@@ -113,6 +113,36 @@ const Highlights = Extension.create({
   }
 });
 
+/* Question headings (spec §2.2): a task's questions can start the learner's answer as headings
+   carrying the question id. In the learner's editor they are locked: any change that removes or
+   edits one is refused, so the learner writes under them but cannot delete or retype them. */
+const qidMap = doc => { const m = new Map(); doc.descendants(n => { if (n.type.name === 'heading' && n.attrs.qid) m.set(n.attrs.qid, n.textContent); }); return m; };
+const QuestionHeadings = Extension.create({
+  name: 'ggQuestionHeadings',
+  addOptions() { return { lock: false }; },
+  addGlobalAttributes() {
+    return [{ types: ['heading'], attributes: { qid: { default: null, keepOnSplit: false,
+      parseHTML: e => e.getAttribute('data-qid'), renderHTML: a => a.qid ? { 'data-qid': a.qid } : {} } } }];
+  },
+  addProseMirrorPlugins() {
+    if (!this.options.lock) return [];
+    return [new Plugin({ filterTransaction: (tr, state) => {
+      if (!tr.docChanged) return true;
+      const before = qidMap(state.doc); if (!before.size) return true;
+      const after = qidMap(tr.doc);
+      for (const [k, v] of before) if (after.get(k) !== v) return false;
+      return true;
+    } })];
+  }
+});
+/** The starting document for a task with questions: a locked heading per question, then space to answer. */
+export function questionTemplate(questions) {
+  return { type: 'doc', content: questions.flatMap(q => [
+    { type: 'heading', attrs: { level: 3, qid: q.id }, content: [{ type: 'text', text: (q.number + ' ' + (q.label || '')).trim() }] },
+    { type: 'paragraph' }
+  ]) };
+}
+
 const BLOCK_TYPES = ['heading', 'paragraph', 'blockquote', 'codeBlock', 'bulletList', 'orderedList', 'listItem',
   'table', 'tableRow', 'tableCell', 'tableHeader', 'image', 'horizontalRule', 'taskList', 'taskItem'];
 
@@ -130,6 +160,7 @@ export function extensions({ editable = false, placeholder = '', wordLimit = nul
     GImage.configure({ inline: false, allowBase64: false }),
     UniqueID.configure({ types: BLOCK_TYPES, attributeName: 'bid', generateID: () => Math.random().toString(36).slice(2, 10) }),
     CharacterCount.configure(wordLimit ? { wordCounter: t => countWords(t) } : {}),
+    QuestionHeadings.configure({ lock: editable }),
     Highlights
   ];
   if (editable && placeholder) list.push(Placeholder.configure({ placeholder }));
@@ -208,10 +239,12 @@ export function questionMap(doc, questions) {
   const nums = questions.map(q => ({ q, re: new RegExp('^\\s*(?:question\\s*|vraag\\s*|q\\.?\\s*)?' + q.number.replace(/[.()]/g, m => '\\' + m) + '(?![0-9.])', 'i') }))
     .sort((a, b) => b.q.number.length - a.q.number.length);   // "1.10" before "1.1"
   let current = null;
+  const ids = new Set(questions.map(q => q.id));
   doc.forEach(top => {
     const text = (top.textContent || '').slice(0, 40);
-    const hit = nums.find(n => n.re.test(text));
-    if (hit) current = hit.q.id;
+    const fixed = top.type.name === 'heading' && top.attrs.qid && ids.has(top.attrs.qid) ? top.attrs.qid : null;
+    const hit = fixed ? null : nums.find(n => n.re.test(text));
+    if (fixed) current = fixed; else if (hit) current = hit.q.id;
     const mark = n => { if (n.attrs && n.attrs.bid) map.set(n.attrs.bid, current); };
     mark(top);
     top.descendants(n => { mark(n); });
