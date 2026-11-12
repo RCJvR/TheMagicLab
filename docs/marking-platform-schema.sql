@@ -12,6 +12,13 @@
 -- access, security definer functions with search_path = public and
 -- execute revoked from public/anon.
 --
+-- LIVE SINCE 2026-11-12 (and the source of truth for these parts):
+--   /supabase-co-teachers.sql            replaces section 0
+--   /supabase-grading-grimoire-phase0.sql replaces sections 1, 2, 6 and the markbook half of 7.
+--   It differs from the copies below: the mb_marks / mb_tasks policies go through
+--   security definer lookups, because policies that read each other's tables loop
+--   ("infinite recursion detected in policy"). Phase 1 policies must avoid such cycles too.
+--
 -- Sections
 --   0. Co-teachers                      (phase 0, before anything else)
 --   1. Class roster                     (phase 0)

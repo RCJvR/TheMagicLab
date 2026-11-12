@@ -235,18 +235,33 @@ create policy mb_settings_teacher on public.mb_settings for all to authenticated
 drop policy if exists mb_tasks_teacher on public.mb_tasks;
 create policy mb_tasks_teacher on public.mb_tasks for all to authenticated
   using (public.is_class_teacher(class_id)) with check (public.is_class_teacher(class_id));
+-- mb_marks and mb_tasks policies must not read each other's tables directly
+-- (that loops: "infinite recursion detected in policy"), so two small
+-- security definer lookups do it. Found by the live permission test 2026-11-12.
+create or replace function public.mb_task_class(p_task uuid)
+returns uuid language sql stable security definer set search_path = public as $$
+  select class_id from mb_tasks where id = p_task;
+$$;
+create or replace function public.mb_task_released_to_me(p_task uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from mb_marks m join class_roster r on r.id = m.roster_id
+                 where m.task_id = p_task and m.released and r.student_id = (select auth.uid()));
+$$;
+revoke execute on function public.mb_task_class(uuid), public.mb_task_released_to_me(uuid) from public, anon, authenticated;
+grant execute on function public.mb_task_class(uuid), public.mb_task_released_to_me(uuid) to authenticated;
+
 drop policy if exists mb_marks_teacher on public.mb_marks;
 create policy mb_marks_teacher on public.mb_marks for all to authenticated
-  using (exists (select 1 from public.mb_tasks t where t.id = task_id and public.is_class_teacher(t.class_id)))
-  with check (exists (select 1 from public.mb_tasks t join public.class_roster r on r.id = roster_id
-                      where t.id = task_id and r.class_id = t.class_id and public.is_class_teacher(t.class_id)));
+  using (public.is_class_teacher(public.mb_task_class(task_id)))
+  with check (public.is_class_teacher(public.mb_task_class(task_id))
+              and exists (select 1 from public.class_roster r
+                          where r.id = roster_id and r.class_id = public.mb_task_class(task_id)));
 drop policy if exists mb_marks_learner_released on public.mb_marks;
 create policy mb_marks_learner_released on public.mb_marks for select to authenticated
   using (released and exists (select 1 from public.class_roster r where r.id = roster_id and r.student_id = (select auth.uid())));
 drop policy if exists mb_tasks_learner_released on public.mb_tasks;
 create policy mb_tasks_learner_released on public.mb_tasks for select to authenticated
-  using (exists (select 1 from public.mb_marks m join public.class_roster r on r.id = m.roster_id
-                 where m.task_id = mb_tasks.id and m.released and r.student_id = (select auth.uid())));
+  using (public.mb_task_released_to_me(id));
 
 
 -- ── 4. Audit log of mark changes (append-only, written by trigger) ──
@@ -295,3 +310,8 @@ revoke execute on function public.audit_mb_marks() from public, anon;
 drop trigger if exists trg_audit_mb_marks on public.mb_marks;
 create trigger trg_audit_mb_marks after insert or update on public.mb_marks
   for each row execute function public.audit_mb_marks();
+
+-- ── 5. Internal functions are not callable from the API ──
+-- (Supabase grants EXECUTE to authenticated by default; triggers do not need it.)
+revoke execute on function public.roster_free_name(uuid, text), public.roster_on_member_join(),
+  public.roster_on_member_leave(), public.audit_mb_marks() from authenticated;

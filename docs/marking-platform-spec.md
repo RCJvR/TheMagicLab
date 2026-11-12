@@ -784,6 +784,14 @@ A one-time **"Move my class data to my account"** flow in the teacher dashboard,
 - Rubric Builder saves to and loads from Supabase (§4.6 step 1), with stable ids.
 - Spike: TipTap loading via import map vs. the vendored bundle (both approved); pick (§2.1).
 
+**Phase 0 status (2026-11-12).** Done. `supabase-co-teachers.sql` and
+`supabase-grading-grimoire-phase0.sql` are live; the roster was backfilled (7 of 7 class
+members). A permission test on the live database, run as the class owner, a second teacher, a
+learner in the class, a learner outside it and a signed-out visitor (all inside a transaction
+that was rolled back), passed 38 of 38 checks after one fix: the first markbook policies read
+each other's tables and looped. Still to do from phase 0: the one-time import of browser data
+(§9) is phase 2; the vendored TipTap bundle is built at the start of phase 1.
+
 ### Phase 1 — MVP: hand in, mark, return (about 3–4 weeks)
 
 Goal: a teacher can set a written task, learners write and submit it, the teacher marks it
