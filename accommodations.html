@@ -1,0 +1,619 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script src="/assets/theme.js"></script>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<title>Accommodations register — The Magic Lab</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/magic-lab.css">
+<style>
+body { font-family: var(--font-display); background: var(--ink-900); color: var(--text); min-height: 100vh; margin: 0; -webkit-font-smoothing: antialiased; }
+.a-main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 96px; box-sizing: border-box; }
+h1 { font-weight: 900; font-size: clamp(26px, 5vw, 36px); letter-spacing: -0.035em; color: var(--paper); margin: 0 0 6px; }
+h2 { font-size: 19px; color: var(--paper); margin: 0; letter-spacing: -0.02em; }
+.a-sub { color: var(--text-2); line-height: 1.55; margin: 0 0 24px; font-size: 15px; }
+.a-sub b { color: var(--text); font-weight: 700; }
+.a-hint { color: var(--text-3); font-size: 13.5px; line-height: 1.5; }
+.mono { font-family: var(--font-mono); }
+
+/* controls */
+label.a-lbl { display: block; color: var(--text-2); font-size: 13px; font-weight: 600; margin: 0 0 6px; }
+.a-in { font: inherit; font-size: 15px; color: var(--text); background: var(--ink-750); border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 12px; box-sizing: border-box; width: 100%; min-height: 42px; }
+.a-in:focus { outline: 2px solid var(--t-turner); outline-offset: 1px; border-color: transparent; }
+textarea.a-in { resize: vertical; min-height: 84px; line-height: 1.45; }
+.a-btn { font: inherit; font-size: 14.5px; font-weight: 700; color: var(--text); background: transparent; border: 1px solid var(--line-hard); border-radius: var(--radius-sm); padding: 9px 14px; min-height: 42px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.a-btn:hover { background: var(--ink-800); color: var(--paper); }
+.a-btn:focus-visible { outline: 2px solid var(--t-turner); outline-offset: 2px; }
+.a-btn.primary { background: var(--paper); color: var(--ink-900); border-color: var(--paper); }
+.a-btn.primary:hover { opacity: .9; }
+.a-btn.icon { width: 42px; padding: 0; justify-content: center; flex: none; }
+.a-btn.quiet { border-color: transparent; color: var(--text-2); }
+.a-btn.danger:hover { color: var(--crit); border-color: var(--crit); background: transparent; }
+.a-btn svg { width: 18px; height: 18px; flex: none; }
+
+/* add learner */
+.a-add { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; margin-bottom: 28px; }
+.a-add h2 { margin-bottom: 14px; }
+.a-add-row { display: grid; grid-template-columns: 110px 100px minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+.a-add-foot { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 12px; }
+.a-link { font: inherit; font-size: 13.5px; color: var(--text-2); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.a-link:hover { color: var(--paper); }
+
+/* toolbar */
+.a-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+.a-bar .a-in { width: auto; }
+.a-bar .grow { flex: 1 1 200px; }
+.a-bar .spacer { flex: 1; }
+.a-status { font-size: 13px; color: var(--text-3); min-width: 70px; }
+.a-status.err { color: var(--crit); }
+
+/* learners */
+.a-grade { margin: 28px 0 10px; display: flex; align-items: baseline; gap: 10px; }
+.a-grade .count { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); }
+.a-card { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 1fr); gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+.a-who { min-width: 0; }
+.a-name { font-size: 17px; font-weight: 800; color: var(--paper); line-height: 1.25; word-break: break-word; }
+.a-meta { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+.a-who-fields { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 8px; margin-top: 10px; }
+.a-who-fields .a-in { min-height: 36px; padding: 6px 9px; font-size: 14px; }
+#addClass, .a-who-fields input { text-transform: uppercase; }
+.a-who-fields label { font-size: 11.5px; color: var(--text-3); font-weight: 600; display: block; margin-bottom: 3px; }
+.a-tag.int { display: inline-block; margin-top: 8px; color: var(--warn); border-color: currentColor; }
+.a-who .a-btn { margin-top: 10px; min-height: 34px; padding: 5px 10px; font-size: 13px; }
+.a-col-h { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin: 0 0 8px; }
+.a-acc { display: flex; gap: 8px; margin-bottom: 8px; }
+.a-acc select { flex: 1; min-width: 0; }
+.a-plus { margin-top: 2px; }
+.a-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.a-chips li { font-size: 14px; padding: 5px 10px; border: 1px solid var(--line-hard); border-radius: var(--radius-full); color: var(--text); }
+.a-none { color: var(--text-3); font-size: 14px; font-style: italic; }
+.a-comment-ro { white-space: pre-wrap; line-height: 1.5; font-size: 14.5px; color: var(--text); }
+.a-empty { color: var(--text-2); padding: 28px 0; border-top: 1px solid var(--line); }
+
+/* dialogs */
+dialog { background: var(--ink-850); color: var(--text); border: 1px solid var(--line-hard); border-radius: var(--radius-md); padding: 22px; width: min(560px, calc(100vw - 32px)); box-sizing: border-box; box-shadow: var(--elevation-lg); }
+dialog::backdrop { background: rgba(0,0,0,.6); }
+dialog h2 { margin-bottom: 6px; }
+dialog .a-hint { margin: 0 0 14px; }
+.a-dlg-foot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.a-field { margin-bottom: 12px; }
+
+/* admin */
+.a-admin { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line-hard); }
+.a-admin h2 { margin-bottom: 6px; }
+.a-admin-row { display: grid; grid-template-columns: minmax(0, 1fr) 200px auto; gap: 12px; align-items: end; margin: 14px 0; }
+.a-newlink { background: var(--ink-750); border: 1px solid var(--good); border-radius: var(--radius-sm); padding: 14px; margin: 12px 0; }
+.a-newlink code { display: block; font-family: var(--font-mono); font-size: 12.5px; word-break: break-all; color: var(--text); margin: 8px 0 10px; }
+.a-dev { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line-soft); font-size: 14.5px; }
+.a-dev.revoked { opacity: .5; }
+.a-tag { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: var(--radius-full); border: 1px solid var(--line-hard); color: var(--text-2); }
+
+/* gate */
+.a-gate { max-width: 560px; margin: 12vh auto 0; }
+.a-gate p { color: var(--text-2); line-height: 1.6; }
+
+.a-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--paper); color: var(--ink-900); font-weight: 700; font-size: 14px; padding: 10px 16px; border-radius: var(--radius-sm); box-shadow: var(--elevation-md); z-index: 50; opacity: 0; pointer-events: none; transition: opacity var(--dur-med) var(--ease-standard); }
+.a-toast.on { opacity: 1; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+[hidden] { display: none !important; }
+
+@media (max-width: 860px) {
+  .a-card { grid-template-columns: 1fr; gap: 12px; }
+  .a-add-row { grid-template-columns: 1fr 1fr; }
+  .a-add-row .acc { grid-column: 1 / -1; }
+  .a-add-row .name { grid-column: 1 / -1; order: -1; }
+  .a-add-row .a-btn { grid-column: 1 / -1; justify-content: center; }
+  .a-admin-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .a-add-row { grid-template-columns: 1fr 1fr; }
+  .a-bar .spacer { display: none; }
+  .a-bar #printBtn { margin-left: auto; }
+}
+
+/* ── The printed document ── */
+#printDoc { display: none; }
+@media print {
+  @page { size: A4 landscape; margin: 12mm; }
+  html, body { background: #fff !important; color: #000 !important; }
+  body > :not(#printDoc) { display: none !important; }
+  #printDoc { display: block; font-family: "Segoe UI", Arial, sans-serif; color: #000; }
+  #printDoc h1 { font-size: 20pt; color: #000; margin: 0 0 2mm; letter-spacing: 0; }
+  #printDoc .p-sub { font-size: 10pt; color: #333; margin: 0 0 5mm; }
+  #printDoc h2 { font-size: 13pt; color: #000; margin: 6mm 0 2mm; break-after: avoid; }
+  #printDoc table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  #printDoc th, #printDoc td { border: 0.6pt solid #888; padding: 2mm 2.5mm; text-align: left; vertical-align: top; }
+  #printDoc thead th { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-weight: 700; }
+  #printDoc tr { break-inside: avoid; }
+  #printDoc td.n { width: 7mm; color: #555; }
+  #printDoc td.nm { width: 55mm; font-weight: 700; }
+  #printDoc td.nm small { display: block; font-weight: 400; font-style: italic; color: #333; margin-top: 1mm; }
+  #printDoc td.cl { width: 16mm; white-space: nowrap; }
+  #printDoc td.cm { width: 85mm; white-space: pre-wrap; }
+  #printDoc ul { margin: 0; padding-left: 4mm; }
+  #printDoc .p-foot { margin-top: 6mm; font-size: 8.5pt; color: #555; }
+}
+</style>
+</head>
+<body>
+
+<main class="a-main" id="main">
+  <p id="loading" class="a-sub">Loading…</p>
+
+  <!-- No access on this device -->
+  <section id="gate" class="a-gate" hidden>
+    <h1>Accommodations register</h1>
+    <p id="gateMsg">This page only opens on devices that have been given an access link. Ask the person who manages accommodations for a link, and open it once on this device.</p>
+    <p class="a-hint">Site admin? Sign in to The Magic Lab on this browser, then reload this page.</p>
+  </section>
+
+  <!-- The register -->
+  <section id="app" hidden>
+    <h1>Accommodations register</h1>
+    <p class="a-sub" id="whoLine"></p>
+
+    <form class="a-add" id="addForm" hidden autocomplete="off">
+      <h2>Add a learner</h2>
+      <div class="a-add-row">
+        <div><label class="a-lbl" for="addGrade">Grade</label><select class="a-in" id="addGrade"></select></div>
+        <div><label class="a-lbl" for="addClass">Class</label><input class="a-in" id="addClass" maxlength="12" placeholder="e.g. 8A2" autocapitalize="characters"></div>
+        <div class="name"><label class="a-lbl" for="addName">Learner name</label><input class="a-in" id="addName" list="nameList" placeholder="Type a name or pick from the class list" maxlength="120"><datalist id="nameList"></datalist></div>
+        <div class="acc"><label class="a-lbl" for="addAcc">Accommodation</label><select class="a-in" id="addAcc"></select></div>
+        <button class="a-btn primary" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add</button>
+      </div>
+      <div class="a-add-foot">
+        <span class="a-hint" id="addHint">If the learner is already on the register for that grade, the accommodation is added to them.</span>
+        <button class="a-link" type="button" id="openLists">Class lists</button>
+      </div>
+    </form>
+
+    <div class="a-bar" role="search">
+      <label class="sr" for="fGrade">Show grade</label>
+      <select class="a-in" id="fGrade"></select>
+      <label class="sr" for="fSearch">Find a learner</label>
+      <input class="a-in grow" id="fSearch" type="search" placeholder="Find a learner, class or accommodation">
+      <span class="spacer"></span>
+      <span class="a-status" id="status" aria-live="polite"></span>
+      <button class="a-btn primary" type="button" id="printBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>Save as PDF</button>
+    </div>
+
+    <div id="list"></div>
+
+    <section class="a-admin" id="admin" hidden>
+      <h2>Who can open this page</h2>
+      <p class="a-hint">Make one link per teacher and send it to them privately. They open it once on their own device; after that the page opens there without signing in. Anyone with a link can open the page, so revoke a link if it is shared by mistake or a device is lost.</p>
+      <form class="a-admin-row" id="devForm" autocomplete="off">
+        <div><label class="a-lbl" for="devLabel">Teacher and device</label><input class="a-in" id="devLabel" maxlength="80" placeholder="e.g. Mrs Smith — laptop" required></div>
+        <div><label class="a-lbl" for="devRole">Can</label><select class="a-in" id="devRole"><option value="viewer">View and print</option><option value="editor">Edit (accommodations teacher)</option></select></div>
+        <button class="a-btn" type="submit">Create link</button>
+      </form>
+      <div id="newLink"></div>
+      <div id="devList"></div>
+    </section>
+
+    <p class="a-hint" style="margin-top:40px">Learner information is confidential. Keep printed copies and saved PDFs secure, and shred them when no longer needed. <button class="a-link" type="button" id="forget">Remove access from this device</button></p>
+  </section>
+</main>
+
+<dialog id="listsDlg" aria-labelledby="listsTitle">
+  <form method="dialog" id="listsForm">
+    <h2 id="listsTitle">Class lists</h2>
+    <p class="a-hint">Paste the names for a grade, one learner per line (straight from a spreadsheet is fine). These names are offered when you add a learner.</p>
+    <div class="a-field"><label class="a-lbl" for="listGrade">Grade</label><select class="a-in" id="listGrade"></select></div>
+    <div class="a-field"><label class="a-lbl" for="listNames">Names</label><textarea class="a-in" id="listNames" rows="10" placeholder="Smith, Anna&#10;Naidoo, Kiran&#10;…"></textarea></div>
+    <span class="a-hint" id="listCount"></span>
+    <div class="a-dlg-foot"><button class="a-btn quiet" value="cancel" formnovalidate>Cancel</button><button class="a-btn primary" value="save" id="listSave">Save list</button></div>
+  </form>
+</dialog>
+
+<div id="printDoc" aria-hidden="true"></div>
+<div class="a-toast" id="toast" role="status"></div>
+
+<script src="auth.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Settings you may want to change ──────────────────────────
+  var GRADES = ['R', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  var ACCOMMODATIONS = [               // as used on the Term 4 2026 exam accommodation list
+    'Additional time: 5 min p/h',
+    'Additional time: 10 min p/h',
+    'Additional time: 15 min p/h',
+    'Human reader',
+    'Electronic reader (CAT Lab)',
+    'Scribe',
+    'Spelling',
+    'Handwriting',
+    'Prompter',
+    'Rest breaks: 5 min p/h',
+    'Separate venue',
+    'Smaller venue: CAT Lab',
+    'Computer',
+    'Noise-cancelling headphones',
+    'Papers in English and Afrikaans'
+  ];
+  var INTERNAL_TEXT = 'Internally granted';
+  var KEY_STORE = 'ml-acc-key';
+
+  // ── Helpers ─────────────────────────────────────────────────
+  function $(id) { return document.getElementById(id); }
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      var v = attrs[k];
+      if (v == null || v === false) return;
+      if (k === 'text') n.textContent = v;
+      else if (k.slice(0, 2) === 'on') n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v === true ? '' : v);
+    });
+    (kids || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function svg(path) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('fill', 'none'); s.setAttribute('stroke', 'currentColor');
+    s.setAttribute('stroke-width', '2'); s.setAttribute('stroke-linecap', 'round'); s.setAttribute('stroke-linejoin', 'round'); s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = path; return s;
+  }
+  var ICON_TRASH = '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>';
+  var ICON_PLUS = '<path d="M12 5v14M5 12h14"/>';
+  function store(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function gradeLabel(g) { return g === 'R' ? 'Grade R' : 'Grade ' + g; }
+  function gradeIdx(g) { var i = GRADES.indexOf(g); return i < 0 ? 99 : i; }
+  function norm(s) { return String(s || '').trim().replace(/\s+/g, ' ').toLowerCase(); }
+  var toastT;
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('on'); }, 2600); }
+
+  // ── Access key: from the link (#k=...) into this browser ─────
+  var m = location.hash.match(/[#&]k=([A-Za-z0-9_-]{32,})/);
+  if (m) { store(KEY_STORE, m[1]); history.replaceState(null, '', location.pathname + location.search); }
+  var KEY = read(KEY_STORE);
+  // a link pasted into a tab that already shows this page changes only the #: reload to use it
+  window.addEventListener('hashchange', function () { if (/[#&]k=/.test(location.hash)) location.reload(); });
+
+  var db, role = null, label = '', learners = [], classLists = {};
+  var canEdit = function () { return role === 'editor' || role === 'admin'; };
+
+  function client() {
+    return new Promise(function (res) {
+      if (window.MagicLabAuth && MagicLabAuth._supabase) return res(MagicLabAuth._supabase());
+      document.addEventListener('magiclab:auth:ready', function () { res(MagicLabAuth._supabase()); }, { once: true });
+    });
+  }
+  function rpc(fn, args) {
+    return db.rpc(fn, args).then(function (r) { if (r.error) throw r.error; return r.data; });
+  }
+
+  // ── Save status ─────────────────────────────────────────────
+  var pending = 0;
+  function setStatus(s, err) { var n = $('status'); n.textContent = s; n.classList.toggle('err', !!err); }
+  function track(p) {
+    pending++; setStatus('Saving…');
+    return p.then(function (v) { pending--; if (!pending) setStatus('Saved'); return v; },
+      function (e) { pending--; setStatus('Not saved — check your connection', true); console.error(e); throw e; });
+  }
+
+  // ── Start ───────────────────────────────────────────────────
+  client().then(function (c) {
+    db = c;
+    return rpc('acc_whoami', { p_key: KEY });
+  }).then(function (w) {
+    role = w && w.role; label = (w && w.label) || '';
+    $('loading').hidden = true;
+    if (!role) {
+      if (KEY) $('gateMsg').textContent = 'The access link on this device is no longer valid (it may have been revoked). Ask the person who manages accommodations for a new link.';
+      $('gate').hidden = false; return;
+    }
+    $('app').hidden = false;
+    $('whoLine').innerHTML = '';
+    $('whoLine').append('Opened as ', el('b', { text: label }), role === 'viewer' ? ' — view and print.' : ' — you can add and change accommodations.');
+    $('addForm').hidden = !canEdit();
+    $('forget').hidden = !KEY;
+    setupControls();
+    return load().then(function () { if (role === 'admin') { $('admin').hidden = false; loadDevices(); } });
+  }).catch(function (e) {
+    console.error(e);
+    $('loading').textContent = 'The register could not be loaded. Check your internet connection and reload the page.';
+  });
+
+  function load() {
+    return rpc('acc_list', { p_key: KEY }).then(function (d) {
+      learners = d.learners || []; classLists = d.class_lists || {};
+      render(); refreshNames();
+    });
+  }
+
+  // ── Controls ────────────────────────────────────────────────
+  function fillGrades(sel, withAll) {
+    sel.innerHTML = '';
+    if (withAll) sel.appendChild(el('option', { value: '', text: 'All grades' }));
+    GRADES.forEach(function (g) { sel.appendChild(el('option', { value: g, text: gradeLabel(g) })); });
+  }
+  function fillAcc(sel, current, placeholder) {
+    sel.innerHTML = '';
+    sel.appendChild(el('option', { value: '', text: placeholder || 'Choose an accommodation…' }));
+    ACCOMMODATIONS.forEach(function (a) { sel.appendChild(el('option', { value: a, text: a })); });
+    if (current && ACCOMMODATIONS.indexOf(current) < 0) sel.appendChild(el('option', { value: current, text: current }));
+    sel.value = current || '';
+  }
+
+  function setupControls() {
+    fillGrades($('addGrade')); fillGrades($('fGrade'), true); fillGrades($('listGrade'));
+    fillAcc($('addAcc'), '', 'None yet');
+    var g = read('ml-acc-grade'); if (GRADES.indexOf(g) > -1) $('addGrade').value = g;
+    var f = read('ml-acc-filter'); if (f === '' || GRADES.indexOf(f) > -1) $('fGrade').value = f || '';
+
+    $('addGrade').addEventListener('change', function () { store('ml-acc-grade', this.value); refreshNames(); });
+    $('fGrade').addEventListener('change', function () { store('ml-acc-filter', this.value); render(); });
+    $('fSearch').addEventListener('input', render);
+    $('addForm').addEventListener('submit', addLearner);
+    $('printBtn').addEventListener('click', printDoc);
+    $('openLists').addEventListener('click', openLists);
+    $('listGrade').addEventListener('change', showList);
+    $('listNames').addEventListener('input', countList);
+    $('listsForm').addEventListener('submit', saveList);
+    $('devForm').addEventListener('submit', createDevice);
+    $('forget').addEventListener('click', function () {
+      if (!confirm('Remove access from this device? You will need the link again to open the register here.')) return;
+      store(KEY_STORE, null); location.reload();
+    });
+  }
+
+  function refreshNames() {
+    var dl = $('nameList'); dl.innerHTML = '';
+    (classLists[$('addGrade').value] || []).forEach(function (n) { dl.appendChild(el('option', { value: n })); });
+    var n = (classLists[$('addGrade').value] || []).length;
+    $('openLists').textContent = n ? 'Class list: ' + n + ' names — edit' : 'Add a class list for this grade';
+  }
+
+  // ── Add a learner ───────────────────────────────────────────
+  function addLearner(ev) {
+    ev.preventDefault();
+    var grade = $('addGrade').value, name = $('addName').value.trim().replace(/\s+/g, ' '), acc = $('addAcc').value;
+    var cls = $('addClass').value.trim().toUpperCase();
+    if (!name) { $('addName').focus(); toast('Type the learner’s name first'); return; }
+    var existing = learners.filter(function (l) { return l.grade === grade && norm(l.name) === norm(name); })[0];
+    var p;
+    if (existing) {
+      var changed = false;
+      if (acc && existing.accommodations.indexOf(acc) < 0) { existing.accommodations.push(acc); changed = true; }
+      if (cls && existing.class_name !== cls) { existing.class_name = cls; changed = true; }
+      if (changed) p = saveLearner(existing);
+      else p = Promise.resolve(existing);
+      toast(acc ? 'Added to ' + existing.name : existing.name + ' is already on the register');
+    } else {
+      p = track(rpc('acc_save_learner', { p_key: KEY, p_id: null, p_grade: grade, p_name: name, p_class: cls, p_internal: false, p_accommodations: acc ? [acc] : [], p_comment: '' }))
+        .then(function (row) { learners.push(row); toast(name + ' added'); return row; });
+    }
+    p.then(function (row) {
+      $('addName').value = ''; $('addAcc').value = '';   // the class stays: often the next learner is in the same class
+      // show the learner: switch the view to their grade if another grade is showing
+      if ($('fGrade').value && $('fGrade').value !== grade) { $('fGrade').value = grade; store('ml-acc-filter', grade); }
+      $('fSearch').value = '';
+      render();
+      var card = document.querySelector('[data-id="' + row.id + '"]');
+      if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      $('addName').focus();
+    }).catch(function () { toast('Not saved — check your connection'); });
+  }
+
+  function saveLearner(l) {
+    return track(rpc('acc_save_learner', { p_key: KEY, p_id: l.id, p_grade: l.grade, p_name: l.name, p_class: l.class_name || '', p_internal: !!l.internal, p_accommodations: l.accommodations, p_comment: l.comment || '' }))
+      .then(function (row) { l.updated_at = row.updated_at; l.updated_by = row.updated_by; return l; });
+  }
+
+  // ── The list ────────────────────────────────────────────────
+  function visible() {
+    var g = $('fGrade').value, q = norm($('fSearch').value);
+    return learners.filter(function (l) {
+      if (g && l.grade !== g) return false;
+      if (!q) return true;
+      return norm(l.name).indexOf(q) > -1 || norm(l.comment).indexOf(q) > -1 || norm(l.class_name) === q ||
+        (l.internal && norm(INTERNAL_TEXT).indexOf(q) > -1) ||
+        l.accommodations.some(function (a) { return norm(a).indexOf(q) > -1; });
+    }).sort(function (a, b) { return gradeIdx(a.grade) - gradeIdx(b.grade) || a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }); });
+  }
+
+  function render() {
+    var host = $('list'); host.innerHTML = '';
+    var rows = visible();
+    if (!rows.length) {
+      host.appendChild(el('p', { class: 'a-empty', text: learners.length ? 'No learners match.' : (canEdit() ? 'No learners yet. Add the first one above.' : 'No learners have been added yet.') }));
+      return;
+    }
+    var grade = null, count = {};
+    rows.forEach(function (l) { count[l.grade] = (count[l.grade] || 0) + 1; });
+    rows.forEach(function (l) {
+      if (l.grade !== grade) {
+        grade = l.grade;
+        host.appendChild(el('div', { class: 'a-grade' }, [el('h2', { text: gradeLabel(grade) }), el('span', { class: 'count', text: count[grade] + (count[grade] === 1 ? ' learner' : ' learners') })]));
+      }
+      host.appendChild(card(l));
+    });
+  }
+
+  function card(l) {
+    var edit = canEdit(), id = l.id;
+    var who = el('div', { class: 'a-who' }, [
+      el('div', { class: 'a-name', text: l.name }),
+      el('div', { class: 'a-meta', text: (l.class_name ? l.class_name : gradeLabel(l.grade)) + ' · ' + l.accommodations.length + (l.accommodations.length === 1 ? ' accommodation' : ' accommodations') })
+    ]);
+    if (edit) {
+      var clIn = el('input', { class: 'a-in', id: 'cl-' + id, maxlength: '12', placeholder: '8A2', autocapitalize: 'characters' });
+      clIn.value = l.class_name || '';
+      clIn.addEventListener('change', function () { l.class_name = clIn.value.trim().toUpperCase(); clIn.value = l.class_name; saveLearner(l).then(function () { rerenderCard(l); }).catch(function () {}); });
+      var gr = el('select', { class: 'a-in', id: 'gr-' + id }, [el('option', { value: '', text: '—' }), el('option', { value: 'int', text: INTERNAL_TEXT })]);
+      gr.value = l.internal ? 'int' : '';
+      gr.addEventListener('change', function () { l.internal = gr.value === 'int'; saveLearner(l).catch(function () {}); });
+      who.appendChild(el('div', { class: 'a-who-fields' }, [
+        el('div', {}, [el('label', { for: 'cl-' + id, text: 'Class' }), clIn]),
+        el('div', {}, [el('label', { for: 'gr-' + id, text: 'Granted' }), gr])
+      ]));
+    } else if (l.internal) who.appendChild(el('span', { class: 'a-tag int', text: INTERNAL_TEXT }));
+    if (edit) who.appendChild(el('button', { class: 'a-btn quiet danger', type: 'button', onclick: function () { removeLearner(l); } }, [svg(ICON_TRASH), 'Remove learner']));
+
+    var accCol = el('div', {}, [el('p', { class: 'a-col-h', id: 'ah-' + id, text: 'Accommodations' })]);
+    if (edit) {
+      l.accommodations.forEach(function (a, i) { accCol.appendChild(accRow(l, i)); });
+      accCol.appendChild(el('button', { class: 'a-btn a-plus', type: 'button', 'aria-label': 'Add an accommodation for ' + l.name, onclick: function (e) { addRow(l, e.currentTarget); } }, [svg(ICON_PLUS), 'Add accommodation']));
+    } else if (l.accommodations.length) {
+      accCol.appendChild(el('ul', { class: 'a-chips', 'aria-labelledby': 'ah-' + id }, l.accommodations.map(function (a) { return el('li', { text: a }); })));
+    } else accCol.appendChild(el('p', { class: 'a-none', text: 'None recorded' }));
+
+    var cmCol = el('div', {}, [el('label', { class: 'a-col-h', for: 'cm-' + id, text: 'Comment' })]);
+    if (edit) {
+      var ta = el('textarea', { class: 'a-in', id: 'cm-' + id, maxlength: '2000', placeholder: 'A general note teachers should see' });
+      ta.value = l.comment || '';
+      var t;
+      var flush = function () { clearTimeout(t); if ((l.comment || '') === ta.value) return; l.comment = ta.value; saveLearner(l).catch(function () {}); };
+      ta.addEventListener('input', function () { setStatus('Typing…'); clearTimeout(t); t = setTimeout(flush, 900); });
+      ta.addEventListener('blur', flush);
+      cmCol.appendChild(ta);
+    } else cmCol.appendChild(l.comment ? el('div', { class: 'a-comment-ro', id: 'cm-' + id, text: l.comment }) : el('p', { class: 'a-none', text: 'No comment' }));
+
+    return el('article', { class: 'a-card', 'data-id': id, 'aria-label': l.name }, [who, accCol, cmCol]);
+  }
+
+  function accRow(l, i) {
+    var sel = el('select', { class: 'a-in', 'aria-label': 'Accommodation ' + (i + 1) + ' for ' + l.name });
+    fillAcc(sel, l.accommodations[i]);
+    sel.addEventListener('change', function () {
+      var v = sel.value, cur = l.accommodations[i];
+      if (!v) return;
+      if (l.accommodations.indexOf(v) > -1 && v !== cur) { toast(l.name + ' already has ' + v); sel.value = cur || ''; return; }
+      if (i < l.accommodations.length) l.accommodations[i] = v; else l.accommodations.push(v);
+      saveLearner(l).then(function () { rerenderCard(l); }).catch(function () {});
+    });
+    var del = el('button', { class: 'a-btn icon danger', type: 'button', 'aria-label': 'Remove ' + (l.accommodations[i] || 'this accommodation') + ' for ' + l.name, title: 'Remove', onclick: function () {
+      if (i < l.accommodations.length) { l.accommodations.splice(i, 1); saveLearner(l).catch(function () {}); }
+      rerenderCard(l);
+    } }, [svg(ICON_TRASH)]);
+    return el('div', { class: 'a-acc' }, [sel, del]);
+  }
+
+  // "+": an empty row the teacher fills in; it is saved once a choice is made
+  function addRow(l, plusBtn) {
+    var row = accRow(l, l.accommodations.length);
+    plusBtn.parentNode.insertBefore(row, plusBtn);
+    plusBtn.hidden = true;
+    row.querySelector('select').focus();
+  }
+
+  function rerenderCard(l) {
+    var old = document.querySelector('[data-id="' + l.id + '"]');
+    if (!old) return render();
+    var focusSel = document.activeElement && old.contains(document.activeElement);
+    var fresh = card(l); old.replaceWith(fresh);
+    if (focusSel) { var b = fresh.querySelector('.a-plus'); if (b) b.focus(); }
+  }
+
+  function removeLearner(l) {
+    if (!confirm('Remove ' + l.name + ' (' + gradeLabel(l.grade) + ') and all their accommodations from the register?')) return;
+    track(rpc('acc_delete_learner', { p_key: KEY, p_id: l.id })).then(function () {
+      learners = learners.filter(function (x) { return x.id !== l.id; }); render(); toast(l.name + ' removed');
+    }).catch(function () { toast('Not removed — check your connection'); });
+  }
+
+  // ── Class lists ─────────────────────────────────────────────
+  function openLists() { $('listGrade').value = $('addGrade').value; showList(); $('listsDlg').showModal(); }
+  function showList() { $('listNames').value = (classLists[$('listGrade').value] || []).join('\n'); countList(); }
+  function parseNames() {
+    return $('listNames').value.split('\n').map(function (s) {
+      var c = s.split('\t').map(function (x) { return x.trim(); }).filter(Boolean);
+      return (c.length > 1 ? c[0] + ', ' + c[1] : (c[0] || '')).replace(/\s+/g, ' ').trim();
+    }).filter(Boolean);
+  }
+  function countList() { var n = parseNames().length; $('listCount').textContent = n ? n + (n === 1 ? ' name' : ' names') : ''; }
+  function saveList(ev) {
+    if (ev.submitter && ev.submitter.value !== 'save') return;
+    ev.preventDefault();
+    var g = $('listGrade').value, names = parseNames();
+    track(rpc('acc_set_class_list', { p_key: KEY, p_grade: g, p_names: names })).then(function () {
+      classLists[g] = names; refreshNames(); $('listsDlg').close(); toast(gradeLabel(g) + ' class list saved');
+    }).catch(function () { toast('Not saved — check your connection'); });
+  }
+
+  // ── The PDF / printed document ──────────────────────────────
+  function printDoc() {
+    var rows = visible(), g = $('fGrade').value, q = $('fSearch').value.trim();
+    if (!rows.length) { toast('There is nothing to print for this selection'); return; }
+    var today = new Date();
+    var dateText = today.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+    var title = 'Accommodations register' + (g ? ' — ' + gradeLabel(g) : '');
+    var doc = $('printDoc'); doc.innerHTML = '';
+    doc.appendChild(el('h1', { text: title }));
+    doc.appendChild(el('p', { class: 'p-sub', text: (g ? '' : 'All grades · ') + rows.length + (rows.length === 1 ? ' learner' : ' learners') + (q ? ' · filtered by “' + q + '”' : '') + ' · printed ' + dateText }));
+    var byGrade = {};
+    rows.forEach(function (l) { (byGrade[l.grade] = byGrade[l.grade] || []).push(l); });
+    Object.keys(byGrade).sort(function (a, b) { return gradeIdx(a) - gradeIdx(b); }).forEach(function (gr) {
+      if (!g) doc.appendChild(el('h2', { text: gradeLabel(gr) }));
+      var tb = el('tbody');
+      byGrade[gr].forEach(function (l, i) {
+        tb.appendChild(el('tr', {}, [
+          el('td', { class: 'n', text: String(i + 1) }),
+          el('td', { class: 'nm' }, [l.name, l.internal ? el('small', { text: INTERNAL_TEXT }) : null]),
+          el('td', { class: 'cl', text: l.class_name || '' }),
+          el('td', {}, [l.accommodations.length ? el('ul', {}, l.accommodations.map(function (a) { return el('li', { text: a }); })) : '—']),
+          el('td', { class: 'cm', text: l.comment || '' })
+        ]));
+      });
+      doc.appendChild(el('table', {}, [el('thead', {}, [el('tr', {}, [el('th', { text: '#' }), el('th', { text: 'Learner' }), el('th', { text: 'Class' }), el('th', { text: 'Accommodations' }), el('th', { text: 'Comment' })])]), tb]));
+    });
+    doc.appendChild(el('p', { class: 'p-foot', text: 'Confidential learner information. Keep secure and destroy when no longer needed.' }));
+    var oldTitle = document.title;
+    document.title = title + ' ' + today.toISOString().slice(0, 10);   // the suggested PDF file name
+    var restore = function () { document.title = oldTitle; window.removeEventListener('afterprint', restore); };
+    window.addEventListener('afterprint', restore);
+    window.print();
+  }
+
+  // ── Admin: device links ─────────────────────────────────────
+  function linkFor(key) { return location.origin + location.pathname + '#k=' + key; }
+  function loadDevices() {
+    rpc('acc_admin_devices', {}).then(function (list) {
+      var host = $('devList'); host.innerHTML = '';
+      if (!list.length) { host.appendChild(el('p', { class: 'a-hint', text: 'No links yet.' })); return; }
+      list.forEach(function (d) {
+        var seen = d.last_seen ? 'last opened ' + new Date(d.last_seen).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short' }) : 'not opened yet';
+        host.appendChild(el('div', { class: 'a-dev' + (d.revoked_at ? ' revoked' : '') }, [
+          el('div', {}, [el('div', { text: d.label }), el('div', { class: 'a-hint', text: d.revoked_at ? 'Revoked' : seen })]),
+          el('span', { class: 'a-tag', text: d.role === 'editor' ? 'Edit' : 'View' }),
+          d.revoked_at ? el('span') : el('button', { class: 'a-btn danger', type: 'button', text: 'Revoke', onclick: function () {
+            if (!confirm('Revoke the link for ' + d.label + '? It stops working straight away.')) return;
+            rpc('acc_admin_revoke_device', { p_id: d.id }).then(function () { toast('Link revoked'); loadDevices(); });
+          } })
+        ]));
+      });
+    }).catch(function (e) { console.error(e); });
+  }
+  function createDevice(ev) {
+    ev.preventDefault();
+    var lbl = $('devLabel').value.trim(); if (!lbl) return;
+    rpc('acc_admin_create_device', { p_label: lbl, p_role: $('devRole').value }).then(function (d) {
+      var url = linkFor(d.key);
+      var host = $('newLink'); host.innerHTML = '';
+      var copy = el('button', { class: 'a-btn', type: 'button', text: 'Copy link', onclick: function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { toast('Link copied'); }, function () { prompt('Copy this link:', url); });
+      } });
+      host.appendChild(el('div', { class: 'a-newlink' }, [
+        el('b', { text: 'Link for ' + lbl }),
+        el('code', { text: url }),
+        copy,
+        el('p', { class: 'a-hint', text: 'This link is shown only now. Send it to the teacher privately (not in a group chat). If it is lost, revoke it and make a new one.' })
+      ]));
+      $('devLabel').value = '';
+      loadDevices();
+    }).catch(function (e) { console.error(e); toast('Could not create the link'); });
+  }
+})();
+</script>
+</body>
+</html>
