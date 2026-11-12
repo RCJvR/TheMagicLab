@@ -193,6 +193,7 @@ dialog .a-hint { margin: 0 0 14px; }
 
     <section class="a-admin" id="admin" hidden>
       <h2>Who can open this page</h2>
+      <div id="msPeople" hidden>
       <h3>People who sign in with Microsoft</h3>
       <p class="a-hint">Add a teacher's school email address. They open this page on any device and choose Sign in with Microsoft — no link needed. Remove them here to stop their access.</p>
       <form class="a-admin-row ppl" id="pplForm" autocomplete="off">
@@ -202,8 +203,9 @@ dialog .a-hint { margin: 0 0 14px; }
         <button class="a-btn" type="submit">Add</button>
       </form>
       <div id="pplList"></div>
+      </div>
       <h3>Device links</h3>
-      <p class="a-hint">For a teacher without a school Microsoft account. Make one link per teacher and send it to them privately. They open it once on their own device; after that the page opens there without signing in. Anyone with a link can open the page, so revoke a link if it is shared by mistake or a device is lost.</p>
+      <p class="a-hint">Make one link per teacher and send it to them privately. They open it once on their own device; after that the page opens there without signing in. Anyone with a link can open the page, so revoke a link if it is shared by mistake or a device is lost.</p>
       <form class="a-admin-row" id="devForm" autocomplete="off">
         <div><label class="a-lbl" for="devLabel">Teacher and device</label><input class="a-in" id="devLabel" maxlength="80" placeholder="e.g. Mrs Smith — laptop" required></div>
         <div><label class="a-lbl" for="devRole">Can</label><select class="a-in" id="devRole"><option value="viewer">View and print</option><option value="editor">Edit (accommodations teacher)</option></select></div>
@@ -368,7 +370,7 @@ dialog .a-hint { margin: 0 0 14px; }
     $('addForm').hidden = !canEdit();
     $('forget').hidden = !KEY;
     setupControls();
-    return load().then(function () { if (role === 'admin') { $('admin').hidden = false; loadPeople(); loadDevices(); } });
+    return load().then(function () { if (role === 'admin') { $('admin').hidden = false; $('msPeople').hidden = !msOn; if (msOn) loadPeople(); loadDevices(); } });
   }).catch(function (e) {
     console.error(e);
     $('loading').textContent = 'The register could not be loaded. Check your internet connection and reload the page.';
