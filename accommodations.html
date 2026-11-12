@@ -276,6 +276,8 @@ dialog .a-hint { margin: 0 0 14px; }
   var m = location.hash.match(/[#&]k=([A-Za-z0-9_-]{32,})/);
   if (m) { store(KEY_STORE, m[1]); history.replaceState(null, '', location.pathname + location.search); }
   var KEY = read(KEY_STORE);
+  // a link pasted into a tab that already shows this page changes only the #: reload to use it
+  window.addEventListener('hashchange', function () { if (/[#&]k=/.test(location.hash)) location.reload(); });
 
   var db, role = null, label = '', learners = [], classLists = {};
   var canEdit = function () { return role === 'editor' || role === 'admin'; };
