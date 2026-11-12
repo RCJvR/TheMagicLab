@@ -38,8 +38,13 @@ textarea.a-in { resize: vertical; min-height: 84px; line-height: 1.45; }
 .a-btn svg { width: 18px; height: 18px; flex: none; }
 
 /* add learner */
-.a-add { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; margin-bottom: 28px; }
-.a-add h2 { margin-bottom: 14px; }
+.a-addbox { margin-bottom: 20px; }
+.a-addbox > summary { list-style: none; display: inline-flex; }
+.a-addbox > summary::-webkit-details-marker { display: none; }
+.a-addbox > summary svg { transition: transform var(--dur-fast) var(--ease-standard); }
+.a-addbox[open] > summary svg { transform: rotate(45deg); }
+.a-addbox[open] > summary { margin-bottom: 12px; }
+.a-add { background: var(--ink-850); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px; margin-bottom: 8px; }
 .a-add-row { display: grid; grid-template-columns: 110px 100px minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
 .a-add-foot { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 12px; }
 .a-link { font: inherit; font-size: 13.5px; color: var(--text-2); background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
@@ -164,8 +169,9 @@ dialog .a-hint { margin: 0 0 14px; }
     <h1>Accommodations register</h1>
     <p class="a-sub" id="whoLine"></p>
 
-    <form class="a-add" id="addForm" hidden autocomplete="off">
-      <h2>Add a learner</h2>
+    <details class="a-addbox" id="addBox" hidden>
+    <summary class="a-btn" id="addToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add a learner</summary>
+    <form class="a-add" id="addForm" autocomplete="off">
       <div class="a-add-row">
         <div><label class="a-lbl" for="addGrade">Grade</label><select class="a-in" id="addGrade"></select></div>
         <div><label class="a-lbl" for="addClass">Class</label><input class="a-in" id="addClass" maxlength="12" placeholder="e.g. 8A2" autocapitalize="characters"></div>
@@ -178,6 +184,7 @@ dialog .a-hint { margin: 0 0 14px; }
         <button class="a-link" type="button" id="openLists">Class lists</button>
       </div>
     </form>
+    </details>
 
     <div class="a-bar" role="search">
       <label class="sr" for="fGrade">Show grade</label>
@@ -257,6 +264,11 @@ dialog .a-hint { margin: 0 0 14px; }
     'Noise-cancelling headphones',
     'Papers in English and Afrikaans'
   ];
+  // Accommodations always appear in this one order (alphabetical, 5 < 10 < 15),
+  // in the dropdown, on every learner and in the PDF, so they are easy to scan.
+  function cmpAcc(a, b) { return a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' }); }
+  function sortAcc(list) { return list.sort(cmpAcc); }
+  sortAcc(ACCOMMODATIONS);
   var INTERNAL_TEXT = 'Internally granted';
   var KEY_STORE = 'ml-acc-key';
 
@@ -367,7 +379,7 @@ dialog .a-hint { margin: 0 0 14px; }
     $('whoLine').innerHTML = '';
     $('whoLine').append('Opened as ', el('b', { text: label }), role === 'viewer' ? ' — view and print.' : ' — you can add and change accommodations.');
     if (isMicrosoft(session) && role !== 'admin') $('whoLine').append(' ', el('button', { class: 'a-link', type: 'button', text: 'Sign out', onclick: signOut }));
-    $('addForm').hidden = !canEdit();
+    $('addBox').hidden = !canEdit();
     $('forget').hidden = !KEY;
     setupControls();
     return load().then(function () { if (role === 'admin') { $('admin').hidden = false; $('msPeople').hidden = !msOn; if (msOn) loadPeople(); loadDevices(); } });
@@ -379,6 +391,7 @@ dialog .a-hint { margin: 0 0 14px; }
   function load() {
     return rpc('acc_list', { p_key: KEY }).then(function (d) {
       learners = d.learners || []; classLists = d.class_lists || {};
+      learners.forEach(function (l) { sortAcc(l.accommodations); });
       render(); refreshNames();
     });
   }
@@ -407,6 +420,7 @@ dialog .a-hint { margin: 0 0 14px; }
     $('fGrade').addEventListener('change', function () { store('ml-acc-filter', this.value); render(); });
     $('fSearch').addEventListener('input', render);
     $('addForm').addEventListener('submit', addLearner);
+    $('addBox').addEventListener('toggle', function () { if ($('addBox').open) $('addName').focus(); });
     $('printBtn').addEventListener('click', printDoc);
     $('openLists').addEventListener('click', openLists);
     $('listGrade').addEventListener('change', showList);
@@ -437,7 +451,7 @@ dialog .a-hint { margin: 0 0 14px; }
     var p;
     if (existing) {
       var changed = false;
-      if (acc && existing.accommodations.indexOf(acc) < 0) { existing.accommodations.push(acc); changed = true; }
+      if (acc && existing.accommodations.indexOf(acc) < 0) { existing.accommodations.push(acc); sortAcc(existing.accommodations); changed = true; }
       if (cls && existing.class_name !== cls) { existing.class_name = cls; changed = true; }
       if (changed) p = saveLearner(existing);
       else p = Promise.resolve(existing);
@@ -472,7 +486,13 @@ dialog .a-hint { margin: 0 0 14px; }
       return norm(l.name).indexOf(q) > -1 || norm(l.comment).indexOf(q) > -1 || norm(l.class_name) === q ||
         (l.internal && norm(INTERNAL_TEXT).indexOf(q) > -1) ||
         l.accommodations.some(function (a) { return norm(a).indexOf(q) > -1; });
-    }).sort(function (a, b) { return gradeIdx(a.grade) - gradeIdx(b.grade) || a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }); });
+    }).sort(function (a, b) {
+      var ca = a.class_name || '', cb = b.class_name || '';
+      return gradeIdx(a.grade) - gradeIdx(b.grade) ||
+        (!ca - !cb) ||                                              // learners without a class last
+        ca.localeCompare(cb, 'en', { numeric: true, sensitivity: 'base' }) ||
+        a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+    });
   }
 
   function render() {
@@ -543,7 +563,8 @@ dialog .a-hint { margin: 0 0 14px; }
       if (!v) return;
       if (l.accommodations.indexOf(v) > -1 && v !== cur) { toast(l.name + ' already has ' + v); sel.value = cur || ''; return; }
       if (i < l.accommodations.length) l.accommodations[i] = v; else l.accommodations.push(v);
-      saveLearner(l).then(function () { rerenderCard(l); }).catch(function () {});
+      sortAcc(l.accommodations); rerenderCard(l);
+      saveLearner(l).catch(function () {});
     });
     var del = el('button', { class: 'a-btn icon danger', type: 'button', 'aria-label': 'Remove ' + (l.accommodations[i] || 'this accommodation') + ' for ' + l.name, title: 'Remove', onclick: function () {
       if (i < l.accommodations.length) { l.accommodations.splice(i, 1); saveLearner(l).catch(function () {}); }
