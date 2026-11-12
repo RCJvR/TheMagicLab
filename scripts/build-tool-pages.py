@@ -165,7 +165,7 @@ def page(t):
     tid = t['id']
     groups = ''.join(f'<div class="tl-group"><h3>{e(g)}</h3><ul>' + ''.join(f'<li>{e(i)}</li>' for i in items) + '</ul></div>' for g, items in t['topics'])
     feats = ''.join(f'<div class="tl-feat"><span class="tl-ficon"><i data-lucide="{ic}"></i></span><h3>{e(h)}</h3><p>{e(p)}</p></div>' for ic, h, p in t['features'])
-    faq = list(t['faq']) + [('How much does it cost?', f'{t["name"]} is one of thirteen tools on The Magic Lab. Start with a free account; full access to every tool is one plan, and schools can get a quote for all their learners and teachers.')]
+    faq = list(t['faq']) + [('How much does it cost?', f'{t["name"]} is one of fifteen tools on The Magic Lab. Start with a free account; full access to every tool is one plan, and schools can get a quote for all their learners and teachers.')]
     faqs = ''.join(f'<details class="tl-q"><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in faq)
     rel = ''
     for r in t['related']:
@@ -260,7 +260,7 @@ def page(t):
     <div class="ml-shell ml-footer-inner">
       <div>
         <div class="ml-footer-brand"><img src="/assets/logo-prism.svg" alt="">The Magic Lab</div>
-        <p class="ml-footer-line">{e(t['name'])} is one of thirteen browser-based STEM tools for South African schools.</p>
+        <p class="ml-footer-line">{e(t['name'])} is one of fifteen browser-based STEM tools for South African schools.</p>
       </div>
       <div class="ml-footer-links">
         <a href="/index.html">All tools</a><a href="/pitch.html">About</a><a href="/pricing.html">Pricing</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a>

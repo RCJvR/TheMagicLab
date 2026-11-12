@@ -58,9 +58,9 @@ CHECK = '--check' in sys.argv
 # Pages written by hand: title (None keeps the page's own), description.
 PAGES = {
     'index.html': ('The Magic Lab — Interactive CAPS STEM tools for South African schools',
-                   'Thirteen browser-based STEM tools for South African classrooms, aligned to CAPS and IEB: Physical and Natural Sciences, Mathematics, Technology, EGD, coding, robotics and design. Lessons, simulations and practice in English and Afrikaans.'),
+                   'Fifteen browser-based STEM tools for South African classrooms, aligned to CAPS and IEB: Physical and Natural Sciences, Mathematics, Technology, EGD, coding, robotics and design. Lessons, simulations and practice in English and Afrikaans.'),
     'pricing.html': ('Pricing — The Magic Lab',
-                     'One plan for all thirteen Magic Lab tools, for every grade they cover. Start with a free trial; schools can request a quote for every learner and teacher.'),
+                     'One plan for all fifteen Magic Lab tools, for every grade they cover. Start with a free trial; schools can request a quote for every learner and teacher.'),
     'pitch.html': ('About The Magic Lab — Reimagining STEM education in South Africa',
                    'Why The Magic Lab exists: interactive, curriculum-aligned STEM tools that run in any browser, built for South African learners and the teachers who teach them.'),
     'privacy.html': (None, 'How The Magic Lab collects, uses and protects personal information, in line with POPIA.'),

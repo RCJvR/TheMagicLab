@@ -537,10 +537,10 @@
 <div id="appShell">
 
   <!-- Header -->
-  <header id="appHeader">
+  <header id="appHeader" data-ml-bar="web-wizard">
     <div class="hdr-left">
-      <div class="app-icon"><i data-lucide="globe" style="width:17px;height:17px;"></i></div>
-      <h1 class="app-title">Web Wizard</h1>
+      <div class="app-icon" data-ml-brand><i data-lucide="globe" style="width:17px;height:17px;"></i></div>
+      <h1 class="app-title" data-ml-name>Web Wizard</h1>
     </div>
     <div class="hdr-center">
       <!-- Intentionally empty — keeps the 3-column header grid symmetric so
@@ -1599,7 +1599,7 @@ function refreshPreview() {
       code = `${viewportTag}\n${code}`;
     }
   }
-  const blob = new Blob([code], {type: 'text/html'});
+  const blob = new Blob([code], {type: 'text/html;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   previewFrame.onload = () => URL.revokeObjectURL(url);
   previewFrame.src = url;
@@ -1715,7 +1715,7 @@ document.querySelectorAll('.exampleLoader').forEach(btn => {
 
 // ── Save / Load ───────────────────────────────────────────────────────────────
 saveBtn.addEventListener('click', () => {
-  const blob = new Blob([codeEditor.value], {type: 'text/html'});
+  const blob = new Blob([codeEditor.value], {type: 'text/html;charset=utf-8'});
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href = url; a.download = 'my-page.html'; a.click();
@@ -1909,5 +1909,6 @@ lucide.createIcons();
 </script>
   <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
   <script src="/contact-button.js" defer></script>
+<script src="/assets/ml-bar.js" defer></script>
 </body>
 </html>

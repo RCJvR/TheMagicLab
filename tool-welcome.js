@@ -432,6 +432,7 @@
 
   // Public API — allow manually showing welcome (e.g. from a help button)
   window.MagicLabWelcome = {
+    has: (toolId) => !!TOOL_CONFIG[toolId],
     show: (toolId) => {
       const cfg = TOOL_CONFIG[toolId];
       if (cfg) _showWelcome(toolId, cfg);
