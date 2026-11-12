@@ -17941,7 +17941,7 @@ function ccSetupQuiz(les) {
         fb.appendChild(why);
       }
       fb.className = 'quiz-feedback ' + (ok ? 'correct' : 'wrong');
-      if (window.MLResults) MLResults.record(CC_TOOL, les.grade, les.key, qi, ok);
+      if (window.MLResults) MLResults.record(CC_TOOL, les.grade, les.key, qi, ok, { q: box.querySelector('.quiz-q')?.textContent, a: btn.textContent });
       if (window.MagicLabProgress) {
         MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, ok ? 'quiz_correct' : 'quiz_wrong', {
           topic: les.title, grade: les.grade, score: ok ? 1 : 0,
@@ -17989,6 +17989,11 @@ renderLesson();
 // They are kept in this browser and, for a signed-in learner, in their
 // account; "ml:results:sync" fires when the account copy arrives.
 if (window.MLResults) MLResults.use(CC_TOOL);
+// Time on each lesson, while this page is open and in use.
+if (window.MLResults && MLResults.trackTime) MLResults.trackTime(() => {
+  const l = LESSONS[currentLesson];
+  return l && l.key ? { tool: CC_TOOL, g: l.grade, lesson: l.key } : null;
+});
 document.addEventListener('ml:results:sync', e => {
   if (e.detail && e.detail.tool !== CC_TOOL) return;
   ccRefreshCompleted(); buildSidebar(); updateSidebarActive(); updateProgress();

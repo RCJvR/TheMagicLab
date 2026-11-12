@@ -11,14 +11,19 @@
 // a "last time" note above the quiz.
 //
 // Data per tool + grade, in localStorage "ml_results_<tool>_g<grade>":
-//   { l: { "strand/file": { r: [recent 0/1], q: { qIndex: 0|1 }, d: finished-ms, t: last-ms } }, u: last-ms, o: owner }
+//   { l: { "strand/file": { r: [recent 0/1], q: { qIndex: 0|1 }, w: { qIndex: [question, wrong answer chosen] },
+//                           s: active seconds, d: finished-ms, t: last-ms } }, u: last-ms, o: owner }
+// w keeps the wrong answer a learner chose (until they get that question right),
+// so teachers can see shared misconceptions; s counts time actively on the lesson
+// (page visible and the learner did something in the last minute).
 // For a signed-in learner it is also kept in the lesson_results table, so it
 // follows them to other devices; class teachers can read their learners' rows.
 // The English and Afrikaans copy of a lesson share one key.
 // ============================================================
 (function () {
   if (window.MLResults) return;
-  const MASTERY = 70, RECENT = 12, MIN_FOR_STATUS = 3, SYNC_DELAY = 2000;
+  const MASTERY = 70, RECENT = 12, MIN_FOR_STATUS = 3, SYNC_DELAY = 2000, TICK = 5;
+  const cut = (t, n) => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1) + '…' : t; };
   const cache = {}, dirty = new Set();
   let timer = null;
   const key = (tool, g) => `ml_results_${tool}_g${g}`;
@@ -117,16 +122,54 @@
     // Start following a tool: pulls its results now if signed in, and on sign-in.
     use(tool) { if (!tools.has(tool)) { tools.add(tool); if (account()) pull(tool); } },
 
-    record(tool, g, lesson, qIndex, ok) {
+    // detail (optional): { q: question text, a: the answer chosen }, kept only for a wrong answer.
+    record(tool, g, lesson, qIndex, ok, detail) {
       const acc = account();
       if (acc && load(tool, g).o && load(tool, g).o !== acc.uid) cache[id(tool, g)] = { l: {} };
       const d = load(tool, g), L = d.l[lesson] = d.l[lesson] || { r: [], q: {} };
+      if (!L.r) L.r = [];
+      if (!L.q) L.q = {};
       L.r.push(ok ? 1 : 0);
       if (L.r.length > RECENT) L.r.splice(0, L.r.length - RECENT);
       L.q[qIndex] = ok ? 1 : 0;
+      if (!ok && detail && detail.a) { L.w = L.w || {}; L.w[qIndex] = [cut(detail.q, 140), cut(detail.a, 90)]; }
+      else if (ok && L.w) { delete L.w[qIndex]; if (!Object.keys(L.w).length) delete L.w; }
       L.t = d.u = Date.now();
       if (acc) { d.o = acc.uid; dirty.add(id(tool, g)); schedule(); }
       save(tool, g);
+    },
+    // Active seconds on a lesson, added in small amounts by trackTime().
+    addTime(tool, g, lesson, sec) {
+      if (!(sec > 0)) return;
+      const acc = account();
+      if (acc && load(tool, g).o && load(tool, g).o !== acc.uid) cache[id(tool, g)] = { l: {} };
+      const d = load(tool, g), L = d.l[lesson] = d.l[lesson] || { r: [], q: {} };
+      L.s = Math.round((L.s || 0) + sec);
+      d.u = Date.now();
+      if (acc) { d.o = acc.uid; dirty.add(id(tool, g)); schedule(); }
+      save(tool, g);
+    },
+    // Count time while the page is visible and the learner did something in the
+    // last minute. where() returns { tool, g, lesson } for the lesson on screen, or null.
+    trackTime(where) {
+      let last = Date.now(), pending = 0, at = null;
+      const poke = () => { last = Date.now(); };
+      ['pointerdown', 'keydown', 'scroll', 'wheel', 'touchstart', 'input'].forEach(ev => document.addEventListener(ev, poke, { passive: true, capture: true }));
+      let moved = 0;
+      document.addEventListener('mousemove', () => { const n = Date.now(); if (n - moved > 5000) { moved = n; poke(); } }, { passive: true });
+      const commit = () => {
+        if (at && pending >= 1) this.addTime(at.tool, at.g, at.lesson, pending);
+        pending = 0;
+      };
+      setInterval(() => {
+        const w = where();
+        if (!w || (at && (w.tool !== at.tool || w.g !== at.g || w.lesson !== at.lesson))) commit();
+        at = w;
+        if (w && document.visibilityState === 'visible' && Date.now() - last < 60000) pending += TICK;
+        if (pending >= 30) commit();
+      }, TICK * 1000);
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') commit(); });
+      window.addEventListener('pagehide', commit);
     },
     finished(tool, g, lesson) {
       const d = load(tool, g), L = d.l[lesson];
@@ -140,7 +183,7 @@
     // { pct, n, wrong: [qIndex…], done, last } for one lesson, or null if never practised.
     lesson(tool, g, lesson) {
       const L = load(tool, g).l[lesson];
-      if (!L || !L.r.length) return null;
+      if (!L || !L.r || !L.r.length) return null;
       const wrong = Object.keys(L.q).filter(k => L.q[k] === 0).map(Number).sort((a, b) => a - b);
       return { pct: pct(L.r), n: L.r.length, wrong, done: !!L.d, last: L.t || null };
     },
@@ -177,7 +220,10 @@
       const ok = result(btn);
       if (ok === null || seen.has(qi)) return;
       seen.add(qi);
-      MLResults.record(TOOL, GRADE, LESSON, qi, ok);
+      const card = btn.closest('.q-card') || btn.closest('.mc-options').parentElement;
+      const qEl = card && card.querySelector('.q-text');
+      const opt = btn.cloneNode(true); opt.querySelectorAll('.opt-letter').forEach(n => n.remove());
+      MLResults.record(TOOL, GRADE, LESSON, qi, ok, { q: qEl ? qEl.textContent : '', a: opt.textContent });
     }, 0);
   });
 
@@ -211,7 +257,7 @@
       + '.ml-last-time.weak{border-color:rgba(245,178,61,.40);background:rgba(245,178,61,.09)}';
     document.head.appendChild(st);
   }
-  function init() { addStyle(); watchBanner(); note(); }
+  function init() { addStyle(); watchBanner(); note(); MLResults.trackTime(() => ({ tool: TOOL, g: GRADE, lesson: LESSON })); }
   document.addEventListener('ml:results:sync', note);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

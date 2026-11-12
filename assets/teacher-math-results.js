@@ -39,7 +39,8 @@
       .filter(x => x.n >= MIN_FOR_STATUS && x.p < MASTERY)
       .sort((a, b) => a.p - b.p);
     const done = new Set(state.events.filter(e => e.user_id === s.id && e.grade === g && e.metadata?.topicId != null).map(e => e.metadata.topicId));
-    return { s, row, levels, c, n, acc: pct(c, n), weak, done: done.size, updated: row?.updated_at || null };
+    const secs = sum(Object.values(d.s || {}).map(v => +v || 0));
+    return { s, row, levels, c, n, secs, acc: pct(c, n), weak, done: done.size, updated: row?.updated_at || null };
   }
 
   function gradesWithData() {
@@ -91,6 +92,7 @@
         <div class="mmr-stat"><div class="mmr-stat-v">${classN.toLocaleString()}</div><div class="mmr-stat-l">questions answered</div></div>
         <div class="mmr-stat"><div class="mmr-stat-v mmr-${tone(pct(classC, classN))}">${pct(classC, classN)}%</div><div class="mmr-stat-l">class accuracy</div></div>
         <div class="mmr-stat"><div class="mmr-stat-v">${idle.length}</div><div class="mmr-stat-l">not practised in ${IDLE_DAYS} days</div></div>
+        <div class="mmr-stat"><div class="mmr-stat-v">${(() => { const t = stats.filter(x => x.secs > 0); return t.length && window.MLTeacherDur ? MLTeacherDur(sum(t.map(x => x.secs)) / t.length) : '—'; })()}</div><div class="mmr-stat-l">average time per learner</div></div>
       </div>
       <div class="mmr-cols">
         <section class="mmr-block">
@@ -120,7 +122,7 @@
         <table class="student-table mmr-table">
           <thead><tr>
             <th>Learner <span class="mmr-th-note">weakest first</span></th>
-            <th>Topics done</th><th>Answered</th><th>Accuracy</th>
+            <th>Topics done</th><th>Answered</th><th>Accuracy</th><th>Time</th>
             <th>K · R · C · P</th><th>Weak topics</th><th>Last practised</th>
           </tr></thead>
           <tbody>${stats.map(x => {
@@ -132,6 +134,7 @@
               <td class="mmr-num">${x.done}<span class="mmr-of">/${total}</span></td>
               <td class="mmr-num">${x.n || '—'}</td>
               <td class="mmr-num">${x.acc == null ? '—' : `<span class="mmr-pill mmr-${tone(x.acc)}">${x.acc}%</span>`}</td>
+              <td class="mmr-num">${window.MLTeacherDur ? MLTeacherDur(x.secs) : '—'}</td>
               <td class="mmr-num mmr-lv">${LEVELS.map(([k, name]) => { const v = x.levels[k]; const p = v ? pct(v[0], v[1]) : null; return `<span class="mmr-${tone(p)}" title="${name}: ${v ? `${v[0]} of ${v[1]}` : 'none yet'}">${p == null ? '·' : p}</span>`; }).join('')}</td>
               <td>${x.weak.length ? `<span class="mmr-weak-list">${x.weak.slice(0, 3).map(w => `<span class="mmr-chip" title="${w.p}% over the last ${w.n} answers">${esc(topicName(g, w.tid).name)}</span>`).join('')}${x.weak.length > 3 ? `<span class="mmr-more">+${x.weak.length - 3}</span>` : ''}</span>` : (x.n ? '<span class="mmr-none">None</span>' : '—')}</td>
               <td class="mmr-when${stale ? ' stale' : ''}">${when || 'Never'}</td>

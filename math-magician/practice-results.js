@@ -49,10 +49,13 @@
   // Newer copy wins where both have a value; the other fills the gaps.
   function merge(a, b) {
     const [base, other] = (b.u || 0) > (a.u || 0) ? [b, a] : [a, b];
+    // Time per topic only grows, so the larger count from either copy is kept.
+    const s = Object.assign({}, a.s);
+    Object.entries(b.s || {}).forEach(([k, v]) => { s[k] = Math.max(s[k] || 0, v || 0); });
     return { t: Object.assign({}, other.t, base.t), q: Object.assign({}, other.q, base.q),
-             l: Object.assign({}, other.l, base.l), u: Math.max(a.u || 0, b.u || 0) };
+             l: Object.assign({}, other.l, base.l), s, u: Math.max(a.u || 0, b.u || 0) };
   }
-  const same = (a, b) => JSON.stringify([a.t, a.q, a.l]) === JSON.stringify([b.t, b.q, b.l]);
+  const same = (a, b) => JSON.stringify([a.t, a.q, a.l, a.s || {}]) === JSON.stringify([b.t, b.q, b.l, b.s || {}]);
 
   async function pull(g) {
     const acc = account();
@@ -103,6 +106,41 @@
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && dirty.size) { clearTimeout(timer); push(); } });
 
   const pct = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length * 100) : null;
+
+  // ── Time on each topic ──
+  // Counted while the page is visible and the learner did something in the
+  // last minute (reading, practising, using a tool), kept as data.s[topicId]
+  // in seconds. The topic is the one open on the grade page.
+  function addTime(g, tid, sec) {
+    if (!g || !(sec > 0)) return;
+    const acc = account();
+    if (acc && load(g).o && load(g).o !== acc.uid) cache[g] = { t: {}, q: {}, l: {} };
+    const d = load(g), k = String(tid);
+    d.s = d.s || {};
+    d.s[k] = Math.round((d.s[k] || 0) + sec);
+    d.u = Date.now();
+    if (acc) { d.o = acc.uid; dirty.add(g); schedule(); }
+    save(g);
+  }
+  if (pageGrade) {
+    const TICK = 5;
+    let last = Date.now(), pending = 0, atTopic = null, moved = 0;
+    const poke = () => { last = Date.now(); };
+    ['pointerdown', 'keydown', 'scroll', 'wheel', 'touchstart', 'input'].forEach(ev => document.addEventListener(ev, poke, { passive: true, capture: true }));
+    document.addEventListener('mousemove', () => { const n = Date.now(); if (n - moved > 5000) { moved = n; poke(); } }, { passive: true });
+    // currentTopicId is the grade page's own top-level variable.
+    const topicNow = () => { try { return typeof currentTopicId !== 'undefined' ? currentTopicId : 'all'; } catch (_) { return 'all'; } };
+    const commit = () => { if (atTopic != null && pending >= 1) addTime(pageGrade, atTopic, pending); pending = 0; };
+    setInterval(() => {
+      const t = topicNow();
+      if (atTopic != null && t !== atTopic) commit();
+      atTopic = t;
+      if (document.visibilityState === 'visible' && Date.now() - last < 60000) pending += TICK;
+      if (pending >= 30) commit();
+    }, TICK * 1000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') commit(); });
+    window.addEventListener('pagehide', () => { commit(); if (dirty.size) { clearTimeout(timer); push(); } });
+  }
 
   window.MMResults = {
     MASTERY,

@@ -6010,6 +6010,7 @@ async function openClassDetail(cls) {
   ]);
 
   _renderStudentTable(students, progress, cls.id);
+  window.TeacherClassOverview?.show(cls, students, progress);
   window.TeacherMathResults?.show(cls, students);
   window.TeacherScienceResults?.show(cls, students);
   window.TeacherTechResults?.show(cls, students);
@@ -6022,6 +6023,8 @@ const TOOL_META = {
   'code-conjurer': { icon:'wand-2',    name:'Code', total:18 },
   'math-magician': { icon:'calculator',name:'Math', total:19 },
   'computer-codex':{ icon:'book-open', name:'Codex',total:160 },
+  'ai-oracle':     { icon:'sparkles',  name:'AI Oracle', total:9 },
+  'robot-realm':   { icon:'cpu',       name:'Robot Realm: challenges', total:4 },
 };
 
 function icon(name, size) {
@@ -6508,6 +6511,7 @@ async function launchGame() {
 
 function closeClassDetail() {
   document.getElementById('class-detail-wrap').style.display = 'none';
+  window.TeacherClassOverview?.clear();
   window.TeacherMathResults?.clear();
   window.TeacherScienceResults?.clear();
   window.TeacherTechResults?.clear();

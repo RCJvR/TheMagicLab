@@ -36,3 +36,9 @@ create policy lesson_results_teacher_read on public.lesson_results
 alter table public.lesson_results drop constraint if exists lesson_results_tool_check;
 alter table public.lesson_results add constraint lesson_results_tool_check
   check (tool in ('science-sage', 'tech-tower', 'computer-codex'));
+
+-- 2026-11: Code Conjurer and Java Genie keep time spent coding here too
+-- (lesson key "coding", field s = seconds; see assets/tool-timer.js).
+alter table public.lesson_results drop constraint if exists lesson_results_tool_check;
+alter table public.lesson_results add constraint lesson_results_tool_check
+  check (tool in ('science-sage', 'tech-tower', 'computer-codex', 'code-conjurer', 'java-genie'));

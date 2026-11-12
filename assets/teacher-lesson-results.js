@@ -20,6 +20,14 @@
   const tone = p => p == null ? '' : p >= MASTERY ? 'good' : p >= 50 ? 'warn' : 'crit';
   const strandName = (s, g) => s === 'life' && g >= 10 ? 'Life Sciences' : STRANDS[s] || s;
   const stale = iso => !iso || (Date.now() - new Date(iso).getTime()) > IDLE_DAYS * 86400000;
+  // 0 s → '—', 125 s → '2 min', 4000 s → '1 h 7 min'
+  function dur(sec) {
+    if (!sec) return '—';
+    const m = Math.round(sec / 60);
+    if (m < 1) return '<1 min';
+    return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : '');
+  }
+  window.MLTeacherDur = dur;
   function ago(iso) {
     if (!iso) return null;
     const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
@@ -38,17 +46,18 @@
     function learnerStats(s, g) {
       const row = state.rows.find(r => r.user_id === s.id && r.grade === g);
       const lessons = row?.data?.l || {};
-      let c = 0, n = 0, answered = 0, finished = 0;
+      let c = 0, n = 0, answered = 0, finished = 0, secs = 0;
       const weak = [];
       Object.entries(lessons).forEach(([k, L]) => {
         const r = Array.isArray(L.r) ? L.r : [];
         c += sum(r); n += r.length; answered += Object.keys(L.q || {}).length;
         if (L.d) finished++;
+        secs += +L.s || 0;
         const p = pct(sum(r), r.length);
         if (r.length >= MIN_FOR_STATUS && p < MASTERY) weak.push({ k, p, n: r.length });
       });
       weak.sort((a, b) => a.p - b.p);
-      return { s, row, lessons, c, n, answered, finished, acc: pct(c, n), weak, updated: row?.updated_at || null };
+      return { s, row, lessons, c, n, answered, finished, secs, acc: pct(c, n), weak, updated: row?.updated_at || null };
     }
 
     function render() {
@@ -63,6 +72,20 @@
       };
       const stats = state.students.map(s => learnerStats(s, g));
       const active = stats.filter(x => x.n > 0);
+      const timed = stats.filter(x => x.secs > 0);
+
+      // Shared misconceptions: the same wrong answer to the same question, from two or more learners.
+      const mis = {};
+      stats.forEach(x => Object.entries(x.lessons).forEach(([k, L]) => Object.entries(L.w || {}).forEach(([qi, w]) => {
+        if (!Array.isArray(w) || !w[1]) return;
+        const id = k + '|' + qi, M = mis[id] = mis[id] || { k, qi: +qi, q: w[0], answers: {}, asked: 0 };
+        if (!M.q && w[0]) M.q = w[0];
+        M.answers[w[1]] = (M.answers[w[1]] || 0) + 1;
+      })));
+      stats.forEach(x => Object.entries(x.lessons).forEach(([k, L]) => Object.keys(L.q || {}).forEach(qi => { const M = mis[k + '|' + qi]; if (M) M.asked++; })));
+      const misconceptions = [];
+      Object.values(mis).forEach(M => Object.entries(M.answers).forEach(([a, n]) => { if (n >= 2) misconceptions.push({ k: M.k, q: M.q, a, n, of: Math.max(M.asked, n) }); }));
+      misconceptions.sort((a, b) => b.n - a.n || b.n / b.of - a.n / a.of);
 
       const strands = {}, lessons = {};
       active.forEach(x => Object.entries(x.lessons).forEach(([k, L]) => {
@@ -99,6 +122,7 @@
           <div class="mmr-stat"><div class="mmr-stat-v">${sum(active.map(x => x.answered)).toLocaleString()}</div><div class="mmr-stat-l">questions answered</div></div>
           <div class="mmr-stat"><div class="mmr-stat-v mmr-${tone(pct(classC, classN))}">${pct(classC, classN)}%</div><div class="mmr-stat-l">class accuracy</div></div>
           <div class="mmr-stat"><div class="mmr-stat-v">${idle.length}</div><div class="mmr-stat-l">not practised in ${IDLE_DAYS} days</div></div>
+          <div class="mmr-stat"><div class="mmr-stat-v">${timed.length ? dur(sum(timed.map(x => x.secs)) / timed.length) : '—'}</div><div class="mmr-stat-l">average time per learner</div></div>
         </div>
         <div class="mmr-cols">
           <section class="mmr-block">
@@ -123,12 +147,21 @@
                 ${t.weak ? `<button type="button" class="mmr-assign" data-k="${esc(t.k)}" title="Set this lesson as an assignment for the ${t.weak} weak learner${t.weak > 1 ? 's' : ''}">Assign</button>` : '<span></span>'}
               </li>`).join('')}</ol>` : `<p class="mmr-note">No lesson is below ${MASTERY}% for the class.</p>`}
           </section>
-        </div>`}
+        </div>
+        <section class="mmr-block mmr-mis">
+          <h3 class="mmr-h">Common misconceptions</h3>
+          ${misconceptions.length ? `<ol class="mmr-mis-list">${misconceptions.slice(0, 6).map(m => `
+            <li class="mmr-mis-item">
+              <span class="mmr-ch">${esc(lessonName(g, m.k))}</span>
+              ${m.q ? `<span class="mmr-mis-q">${esc(m.q)}</span>` : ''}
+              <span class="mmr-mis-a"><b>${m.n} of ${m.of}</b> chose <q>${esc(m.a)}</q></span>
+            </li>`).join('')}</ol>` : `<p class="mmr-note">No wrong answer is shared by two or more learners yet. Wrong answers are recorded from 12 November 2026.</p>`}
+        </section>`}
         <div class="mmr-table-wrap">
           <table class="student-table mmr-table">
             <thead><tr>
               <th>Learner <span class="mmr-th-note">weakest first</span></th>
-              <th>Lessons finished</th><th>Answered</th><th>Accuracy</th><th>Weak lessons</th><th>Last practised</th>
+              <th>Lessons finished</th><th>Answered</th><th>Accuracy</th><th>Time</th><th>Weak lessons</th><th>Last practised</th>
             </tr></thead>
             <tbody>${stats.map(x => {
               const name = x.s.display_name || x.s.email?.split('@')[0] || 'Learner';
@@ -137,6 +170,7 @@
                 <td class="mmr-num">${totalFor(x) == null ? '—' : `${x.finished}<span class="mmr-of">/${totalFor(x)}</span>`}</td>
                 <td class="mmr-num">${x.answered || '—'}</td>
                 <td class="mmr-num">${x.acc == null ? '—' : `<span class="mmr-pill mmr-${tone(x.acc)}">${x.acc}%</span>`}</td>
+                <td class="mmr-num">${dur(x.secs)}</td>
                 <td>${x.weak.length ? `<span class="mmr-weak-list">${x.weak.slice(0, 3).map(w => `<span class="mmr-chip" title="${w.p}% over the last ${w.n} answers">${esc(lessonName(g, w.k))}</span>`).join('')}${x.weak.length > 3 ? `<span class="mmr-more">+${x.weak.length - 3}</span>` : ''}</span>` : (x.n ? '<span class="mmr-none">None</span>' : '—')}</td>
                 <td class="mmr-when${stale(x.updated) ? ' stale' : ''}">${ago(x.updated) || 'Never'}</td>
               </tr>`; }).join('')}</tbody>
