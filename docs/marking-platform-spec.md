@@ -834,7 +834,7 @@ with ticks, comments and a rubric, releases it, and exports the marks.
 | 2 | Name | **"Grading Grimoire"** for now. |
 | 3 | Co-teachers | **Yes**: designed in §6.7, built in phase 0 before the rest. |
 | 4 | Checked-in TipTap vendor file | **Yes, allowed** (§2.1). |
-| 5 | Data location | "South Africa only for now." The project actually runs in eu-west-1 (Ireland); see §8. **Open:** confirm whether this meant "our users are South African" (no change needed) or "the data must be stored in South Africa" (a database move; Supabase has no South African region that we know of). |
+| 5 | Data location | **Users are South African; the data may stay in Ireland** (eu-west-1), under section 72 (§8). No database move. |
 | 6 | Retention | **18 months after the end of the academic year**, as the default (§8). |
 | 7 | POPIA paperwork | **Update.** `privacy.html` updated (learner work, teacher marks, Ireland hosting, retention); operator agreement drafted in `school-operator-agreement-draft.md`. Both need checking by someone qualified in POPIA. The privacy update goes live whenever this branch merges; the text is worded for the feature as designed. |
 | 8 | What learners see after release | **Each question's total and the paper total** (§3.7). |
