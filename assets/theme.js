@@ -259,7 +259,9 @@
   var done = new WeakSet(), lightEl = null;
   function sheetOwnerOk(sh) {
     var n = sh.ownerNode;
-    return !(n && (n.id === 'ml-theme-light' || n.id === 'ml-theme-early'));
+    // Stylesheets marked data-ml-no-theme (the shared header, the welcome guide)
+    // already carry their own light colours; remapping them would undo those.
+    return !(n && (n.id === 'ml-theme-light' || n.id === 'ml-theme-early' || (n.hasAttribute && n.hasAttribute('data-ml-no-theme'))));
   }
   function buildStyles() {
     var css = '';
@@ -433,4 +435,46 @@
   window.addEventListener('load', function () { if (theme !== 'dark') buildStyles(); });
 
   window.MagicLabTheme = { get: function () { return theme; }, set: setTheme };
+
+  // ── Larger text everywhere ─────────────────────────────────────
+  // Pages set their type in px, often 12–14px for body copy, which reads
+  // small on a laptop. Every font size from 8px to 22px in the site's own
+  // stylesheets is raised by at least 2px (about 15%), in one override sheet
+  // added after them; larger headings already read well and stay as they
+  // are. Opt out per page with <html data-ml-text-fixed>.
+  function bigger(px) { return Math.max(px + 2, Math.round(px * 1.15 * 2) / 2); }
+  function sizeRules(rules, out) {
+    for (var i = 0; i < rules.length; i++) {
+      var r = rules[i];
+      if (r.type === 1) {
+        var m = /^([\d.]+)px$/.exec((r.style.getPropertyValue('font-size') || '').trim());
+        if (m) {
+          var v = parseFloat(m[1]);
+          if (v >= 8 && v <= 22) out.push(r.selectorText + '{font-size:' + bigger(v) + 'px' + (r.style.getPropertyPriority('font-size') ? ' !important' : '') + '}');
+        }
+      } else if (r.type === 4 && r.cssRules) {
+        var inner = []; sizeRules(r.cssRules, inner);
+        if (inner.length) out.push('@media ' + r.media.mediaText + '{' + inner.join('') + '}');
+      }
+    }
+  }
+  var textDone = false;
+  function textScale() {
+    if (textDone || root.hasAttribute('data-ml-text-fixed')) return;
+    textDone = true;
+    var out = [];
+    for (var i = 0; i < document.styleSheets.length; i++) {
+      var sh = document.styleSheets[i], own = sh.ownerNode;
+      if (own && own.hasAttribute && (own.hasAttribute('data-ml-no-theme') || own.hasAttribute('data-ml-text'))) continue;
+      var rules; try { rules = sh.cssRules; } catch (e) { continue; }
+      if (rules) sizeRules(rules, out);
+    }
+    if (!out.length) return;
+    var st = document.createElement('style');
+    st.setAttribute('data-ml-text', ''); st.setAttribute('data-ml-no-theme', '');
+    st.textContent = out.join('\n');
+    document.head.appendChild(st);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', textScale);
+  else textScale();
 })();

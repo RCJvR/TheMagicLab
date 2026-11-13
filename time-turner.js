@@ -269,11 +269,13 @@
   function renderWeekGrid(elId, weekIndex, bySlot, ghostsBySlot) {
     const todayIdx = (new Date().getDay() + 6) % 7; // JS 0=Sun -> our 0=Mon
 
-    const gutter = `<div class="grid-gutter">${
+    // The hour labels start below a blank header the same height as the day
+    // headers, so 07:00 lines up with the 07:00 rule in every day column.
+    const gutter = `<div class="grid-gutter"><div class="grid-day-head grid-gutter-head" aria-hidden="true">&nbsp;<div class="grid-day-cycle">&nbsp;</div></div><div class="grid-gutter-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${
       Array.from({ length: 24 }, (_, h) =>
         `<div class="grid-gutter-label" style="top:${h * 60 * PX_PER_MIN}px;">${String(h).padStart(2, '0')}:00</div>`
       ).join('')
-    }</div>`;
+    }</div></div>`;
 
     const days = DAY_ABBR.map((name, weekday) => {
       const slot = weekIndex * 7 + weekday;
@@ -300,7 +302,7 @@
         return `<div class="grid-ghost" data-ghost="${esc(s.key)}" style="top:${top}px;height:${height}px;border-color:${cat.color};color:${cat.color};" title="${esc(tooltip)}">${showText ? `<span class="gg-title">${cat.emoji} ${esc(s.title)}</span>` : '<span></span>'}<span class="gg-dismiss" data-dismiss="${esc(s.key)}" title="Dismiss">×</span></div>`;
       }).join('');
       return `<div class="grid-day">
-        <div class="grid-day-head${weekday === todayIdx ? ' today' : ''}">${name}${cycleDay ? `<div class="grid-day-cycle">Day ${cycleDay}</div>` : ''}</div>
+        <div class="grid-day-head${weekday === todayIdx ? ' today' : ''}">${name}<div class="grid-day-cycle">${cycleDay ? `Day ${cycleDay}` : '&nbsp;'}</div></div>
         <div class="grid-day-col" style="height:${DAY_MIN * PX_PER_MIN}px;">${periodBands}${blocks}${ghosts}</div>
       </div>`;
     }).join('');

@@ -36,10 +36,14 @@
     '.mlb-sep{flex-shrink:0;margin:0 2px 0 0;color:rgba(227,232,239,.35);font-weight:400;font-size:18px;line-height:1;user-select:none}' +
     '.mlb-dup{display:none!important}' +
     '.mlb-end{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;margin-left:4px}' +
-    '.mlb-help{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:transparent;color:inherit;cursor:pointer;font:inherit}' +
-    '.mlb-help:hover{border-color:rgba(255,255,255,.32)}' +
+    '.mlb-help{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:transparent;color:inherit;cursor:pointer;font:inherit}' +
+    '.mlb-help:hover,.mlb-back:hover{border-color:rgba(255,255,255,.32)}' +
+    '.mlb-back{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:transparent;color:inherit;cursor:pointer;font:inherit}' +
+    '.mlb-back svg{display:block;width:17px;height:17px}' +
+    'html[data-theme="light"] .mlb-back{border-color:rgba(0,0,0,.18)}' +
+    'html[data-theme="light"] .mlb-back:hover{border-color:rgba(0,0,0,.36)}' +
     '.mlb-help svg{display:block;width:16px;height:16px}' +
-    '.mlb-home:focus-visible,.mlb-help:focus-visible,.mlb-pop a:focus-visible,.mlb-pop button:focus-visible{outline:2px solid #6ea8ff;outline-offset:2px}' +
+    '.mlb-home:focus-visible,.mlb-help:focus-visible,.mlb-back:focus-visible,.mlb-pop a:focus-visible,.mlb-pop button:focus-visible{outline:2px solid #6ea8ff;outline-offset:2px}' +
     '.mlb-pop{position:fixed;z-index:10000;width:min(320px,calc(100vw - 24px));box-sizing:border-box;padding:16px 16px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:#111418;color:#e3e8ef;box-shadow:0 14px 34px -14px rgba(0,0,0,.75);font:14px/1.5 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif;text-align:left}' +
     '.mlb-pop h2{margin:0 0 6px;font-size:15px;font-weight:800;letter-spacing:-.01em;color:#f2f5f9}' +
     '.mlb-pop p{margin:0 0 12px;color:#aab3bf}' +
@@ -57,19 +61,32 @@
     'html[data-theme="light"] .mlb-pop a:hover,html[data-theme="light"] .mlb-pop li>button:hover{background:rgba(0,0,0,.08)}' +
     // One button style for every tool's own header buttons (overrides each page's
     // pill, chip or coloured button), and one for the account button.
-    '[data-mlb-ready] .mlb-act{align-items:center;gap:6px;min-height:34px;box-sizing:border-box;padding:0 13px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.16)!important;background:transparent!important;color:#e3e8ef!important;font:600 13px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
+    '[data-mlb-ready] .mlb-act{align-items:center;gap:6px;min-height:36px;box-sizing:border-box;padding:0 14px!important;border-radius:999px!important;border:1px solid rgba(255,255,255,.16)!important;background:transparent!important;color:#e3e8ef!important;font:600 14.5px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
     '[data-mlb-ready] .mlb-act:not(.hidden):not([hidden]){display:inline-flex}' +
     '[data-mlb-ready] .mlb-act:hover{border-color:rgba(255,255,255,.34)!important;background:rgba(255,255,255,.05)!important}' +
     '[data-mlb-ready] .mlb-act svg{width:14px!important;height:14px!important;flex-shrink:0;margin:0!important}' +
     '[data-mlb-ready] .mlb-act:focus-visible{outline:2px solid #6ea8ff;outline-offset:2px}' +
-    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn){display:inline-flex;align-items:center;gap:6px;min-height:34px;box-sizing:border-box;padding:0 14px!important;border-radius:999px!important;border:1px solid #f2f5f9!important;background:#f2f5f9!important;color:#0b0d10!important;font:700 13px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
-    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn) svg{width:14px!important;height:14px!important;margin:0!important}' +
+    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn):not(.ml-user-chip-wrap){display:inline-flex;align-items:center;gap:6px;min-height:36px;box-sizing:border-box;padding:0 15px!important;border-radius:999px!important;border:1px solid #f2f5f9!important;background:#f2f5f9!important;color:#0b0d10!important;font:700 14.5px/1 "Cabinet Grotesk","Segoe UI",system-ui,sans-serif!important;text-decoration:none!important;box-shadow:none!important;white-space:nowrap;cursor:pointer}' +
+    '[data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn):not(.ml-user-chip-wrap) svg{width:14px!important;height:14px!important;margin:0!important}' +
     'html[data-theme="light"] [data-mlb-ready] .mlb-act{border-color:rgba(0,0,0,.18)!important;color:#16181d!important}' +
     'html[data-theme="light"] [data-mlb-ready] .mlb-act:hover{border-color:rgba(0,0,0,.36)!important;background:rgba(0,0,0,.04)!important}' +
-    'html[data-theme="light"] [data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn){border-color:#16181d!important;background:#16181d!important;color:#fff!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-end :is([data-ml-auth],.ml-auth-btn):not(.ml-user-chip-wrap){border-color:#16181d!important;background:#16181d!important;color:#fff!important}' +
+    // The signed-in account pill: the same outline as the other header buttons, with a solid initials disc.
+    '[data-mlb-ready] .mlb-end .ml-user-chip-wrap{background:none!important;border:0!important;padding:0!important;min-height:0}' +
+    '[data-mlb-ready] .mlb-end .ml-user-chip{min-height:36px;box-sizing:border-box;padding:3px 10px 3px 4px!important;gap:6px;border-radius:999px!important;border:1px solid rgba(255,255,255,.16)!important;background:transparent!important;color:#e3e8ef!important}' +
+    '[data-mlb-ready] .mlb-end .ml-user-chip:hover,[data-mlb-ready] .mlb-end .ml-user-chip[aria-expanded="true"]{border-color:rgba(255,255,255,.34)!important;background:rgba(255,255,255,.05)!important}' +
+    '[data-mlb-ready] .mlb-end .ml-user-avatar{width:28px;height:28px;border:0!important;background:#f2f5f9!important;color:#0b0d10!important;font-size:12px}' +
+    '[data-mlb-ready] .mlb-end .ml-user-chevron{color:currentColor!important;opacity:.7}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-end .ml-user-chip{border-color:rgba(0,0,0,.18)!important;color:#16181d!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-end .ml-user-chip:hover,html[data-theme="light"] [data-mlb-ready] .mlb-end .ml-user-chip[aria-expanded="true"]{border-color:rgba(0,0,0,.36)!important;background:rgba(0,0,0,.04)!important}' +
+    'html[data-theme="light"] [data-mlb-ready] .mlb-end .ml-user-avatar{background:#16181d!important;color:#fff!important}' +
+    'html[data-theme="light"] .ml-user-menu{background:#fff!important;border-color:rgba(0,0,0,.12)!important;box-shadow:0 18px 44px rgba(0,0,0,.18)!important}' +
+    'html[data-theme="light"] .ml-user-menu-item{color:#16181d!important}' +
+    'html[data-theme="light"] .ml-user-menu-item:hover{background:rgba(0,0,0,.06)!important}' +
+    'html[data-theme="light"] .ml-user-menu-sep{background:rgba(0,0,0,.1)!important}' +
     // Phones: buttons with an icon show the icon only (the label stays as its
     // accessible name and tooltip); labels such as a lesson's strand are hidden.
-    '@media (max-width:640px){.mlb-sep{display:none}.mlb-home{width:30px;height:30px}.mlb-home img{width:22px;height:22px}.mlb-help{width:32px;height:32px}.mlb-end{gap:6px;margin-left:2px}' +
+    '@media (max-width:640px){.mlb-sep{display:none}.mlb-home{width:30px;height:30px}.mlb-home img{width:22px;height:22px}.mlb-help,.mlb-back{width:34px;height:34px}.mlb-end{gap:6px;margin-left:2px}' +
       '[data-mlb-ready] .mlb-act.mlb-ico{width:34px;padding:0!important;justify-content:center;font-size:0!important;gap:0}' +
       '[data-mlb-ready] .mlb-act.mlb-ico svg{width:16px!important;height:16px!important}' +
       '[data-mlb-ready] .mlb-act.mlb-ico span{display:none!important}' +
@@ -77,11 +94,12 @@
       '[data-mlb-ready] .mlb-start [data-ml-name],[data-mlb-ready] .mlb-start .app-title{font-size:17px!important}}' +
     '@media print{.mlb-home,.mlb-sep,.mlb-end .mlb-help{display:none!important}}';
 
+  var ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>';
   var ICON_HELP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>';
 
   var T = {
-    en: { home: 'The Magic Lab: all tools', help: 'Help', guide: 'Show the welcome guide', ask: 'Ask a question', all: 'All tools', close: 'Close' },
-    af: { home: 'The Magic Lab: alle gereedskap', help: 'Hulp', guide: 'Wys die welkom-gids', ask: 'Vra ’n vraag', all: 'Alle gereedskap', close: 'Maak toe' }
+    en: { back: 'Back', home: 'The Magic Lab: all tools', help: 'Help', guide: 'Show the welcome guide', ask: 'Ask a question', all: 'All tools', close: 'Close' },
+    af: { back: 'Terug', home: 'The Magic Lab: alle gereedskap', help: 'Hulp', guide: 'Wys die welkom-gids', ask: 'Vra ’n vraag', all: 'Alle gereedskap', close: 'Maak toe' }
   };
   function lang() {
     try { if (window.MLLang && MLLang.getLang) return MLLang.getLang() === 'af' ? 'af' : 'en'; } catch (e) {}
@@ -133,6 +151,16 @@
     // One group, so bars that spread their children apart keep logo, slash and
     // name together, and grid bars keep the same number of columns.
     var start = el('span', { class: 'mlb-start' });
+    // Back: the previous page on this site if there is one, otherwise up a
+    // level (the tool's home, or the homepage from a tool's home).
+    var back = el('button', { type: 'button', class: 'mlb-back', title: t('back'), 'aria-label': t('back') }, ICON_BACK);
+    back.addEventListener('click', function () {
+      var ref = ''; try { ref = document.referrer ? new URL(document.referrer).origin : ''; } catch (e) {}
+      if (ref === location.origin && history.length > 1) { history.back(); return; }
+      var up = bar.getAttribute('data-ml-home') || '/index.html';
+      location.href = (new URL(up, location.href).pathname === location.pathname) ? '/index.html' : up;
+    });
+    start.appendChild(back);
     if (brand) { brand.parentNode.insertBefore(start, brand); start.appendChild(home); start.appendChild(sep); start.appendChild(brand); }
     else { start.appendChild(home); bar.insertBefore(start, bar.firstChild); }
     var toolHome = bar.getAttribute('data-ml-home') || location.pathname;
@@ -141,6 +169,10 @@
     // 2. Other buttons that only go home are now the logo's job.
     [].forEach.call(bar.querySelectorAll('a[href]'), function (a) {
       if (a !== home && a !== brand && isSiteHome(a.getAttribute('href'))) a.classList.add('mlb-dup');
+      // A page's own "Back" / "Home" link up to the tool's home is the Back button's job now.
+      else if (a !== home && a !== brand && /^(←\s*)?(back|terug|home|tuis|grades|grade)\b/i.test((a.textContent || '').replace(/\s+/g, ' ').trim())) {
+        try { if (new URL(a.getAttribute('href'), location.href).pathname === new URL(toolHome, location.href).pathname) a.classList.add('mlb-dup'); } catch (e) {}
+      }
     });
     [].forEach.call(bar.querySelectorAll('#showWelcomeBtn'), function (b) { b.classList.add('mlb-dup'); });
 

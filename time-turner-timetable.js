@@ -120,6 +120,8 @@
 
   // ── "Import my class's timetable" convenience ───────────────────
   async function fetchMyClassMemberships() {
+    // Signed out (or the profile has not loaded yet): there are no classes to look up.
+    if (!profile || !profile.id || !window.MagicLabAuth) return [];
     const { data: memberships, error: memErr } = await supabase().from('class_members').select('class_id').eq('student_id', profile.id);
     if (memErr || !memberships?.length) return [];
     const classIds = [...new Set(memberships.map(m => m.class_id))];

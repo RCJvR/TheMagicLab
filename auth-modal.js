@@ -553,7 +553,9 @@
   }
 
   function _wireAuthTrigger(el) {
-    el.addEventListener('click', () => openModal());
+    // Once signed in the same element becomes the account pill and its menu;
+    // a click there (its edge, a menu link) must not open sign-in.
+    el.addEventListener('click', () => { if (el.classList.contains('ml-user-chip-wrap')) return; openModal(); });
   }
 
   // ── 13. Public API ────────────────────────────────────────
