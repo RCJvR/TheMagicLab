@@ -378,9 +378,11 @@ textarea.c-in { resize: vertical; min-height: 70px; line-height: 1.45; }
         : u.type === 'online' ? 'Curro Online: ' + (u.printed || '?') + ' learners on the timetable'
         : 'Class ' + u.ref + ': ' + members.length + ' learners +1';
       var additional = [learnersLine];
-      if (sep.length) additional.push('Writing separately: ' + sep.map(function (l) { return l.name; }).join(', '));
       if (shared.extra) additional.push(shared.extra);
-      var accLines = stay.map(function (l) { return l.name + (l.class_name ? ' (' + l.class_name + ')' : '') + ': ' + l.accommodations.join(', '); });
+      function who(l) { return l.name + (l.class_name ? ' (' + l.class_name + ')' : ''); }
+      var accLines = stay.map(function (l) { return who(l) + ': ' + l.accommodations.join(', '); })
+        // learners writing elsewhere still appear on their class cover: name and venue only
+        .concat(sep.map(function (l) { return who(l) + ': ' + (l.accommodations.indexOf('Smaller venue: CAT Lab') > -1 ? 'Smaller venue: CAT Lab' : 'Separate venue'); }));
       covers.push({ id: 'c|' + key, kind: 'class', code: c.code, unit: u, key: key, acc: acc, sep: sep,
         title: (u.type === 'online' ? 'Curro Online' : u.ref) + (u.venue && u.venue !== u.ref ? ' · ' + u.venue : ''),
         f: { venue: u.venue || '', date: shared.date, subject: c.subject, grade: c.grade, time: shared.time, examiner: shared.examiner,
