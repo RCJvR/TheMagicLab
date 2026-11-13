@@ -19,6 +19,9 @@ h1 { font-weight: 900; font-size: clamp(26px, 5vw, 36px); letter-spacing: -0.035
 h2 { font-size: 19px; color: var(--paper); margin: 0; letter-spacing: -0.02em; }
 .a-sub { color: var(--text-2); line-height: 1.55; margin: 0 0 24px; font-size: 15px; }
 .a-sub b { color: var(--text); font-weight: 700; }
+.a-updated { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-2);
+  border: 1px solid var(--line-hard); border-radius: var(--radius-full); padding: 4px 11px; margin: -12px 0 22px; }
+.a-updated svg { width: 14px; height: 14px; }
 .a-hint { color: var(--text-3); font-size: 13.5px; line-height: 1.5; }
 .mono { font-family: var(--font-mono); }
 
@@ -168,6 +171,7 @@ dialog .a-hint { margin: 0 0 14px; }
   <section id="app" hidden>
     <h1>Accommodations register</h1>
     <p class="a-sub" id="whoLine"></p>
+    <p class="a-updated" id="updatedTag" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="updatedText"></span></p>
 
     <details class="a-addbox" id="addBox" hidden>
     <summary class="a-btn" id="addToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add a learner</summary>
@@ -310,6 +314,18 @@ dialog .a-hint { margin: 0 0 14px; }
   window.addEventListener('hashchange', function () { if (/[#&]k=/.test(location.hash)) location.reload(); });
 
   var db, role = null, label = '', learners = [], classLists = {};
+  var registerUpdated = null;                    // when the register last changed (any learner added, changed or removed)
+  function fmtUpdated(iso, long) {
+    var d = new Date(iso); if (isNaN(d)) return '';
+    return d.toLocaleDateString('en-ZA', { day: 'numeric', month: long ? 'long' : 'short', year: 'numeric' }) + ', ' +
+      d.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit', hour12: false });
+  }
+  function showUpdated() {
+    if (!registerUpdated) { $('updatedTag').hidden = true; return; }
+    $('updatedText').textContent = 'Updated ' + fmtUpdated(registerUpdated);
+    $('updatedTag').hidden = false;
+  }
+  function changedNow() { registerUpdated = new Date().toISOString(); showUpdated(); }
   var canEdit = function () { return role === 'editor' || role === 'admin'; };
 
   function client() {
@@ -391,6 +407,9 @@ dialog .a-hint { margin: 0 0 14px; }
   function load() {
     return rpc('acc_list', { p_key: KEY }).then(function (d) {
       learners = d.learners || []; classLists = d.class_lists || {};
+      // the database's own "last change" (also counts removals); older databases: newest learner edit
+      registerUpdated = d.updated_at || learners.reduce(function (m, l) { return l.updated_at > m ? l.updated_at : m; }, '') || null;
+      showUpdated();
       learners.forEach(function (l) { sortAcc(l.accommodations); });
       render(); refreshNames();
     });
@@ -458,7 +477,7 @@ dialog .a-hint { margin: 0 0 14px; }
       toast(acc ? 'Added to ' + existing.name : existing.name + ' is already on the register');
     } else {
       p = track(rpc('acc_save_learner', { p_key: KEY, p_id: null, p_grade: grade, p_name: name, p_class: cls, p_internal: false, p_accommodations: acc ? [acc] : [], p_comment: '' }))
-        .then(function (row) { learners.push(row); toast(name + ' added'); return row; });
+        .then(function (row) { learners.push(row); changedNow(); toast(name + ' added'); return row; });
     }
     p.then(function (row) {
       $('addName').value = ''; $('addAcc').value = '';   // the class stays: often the next learner is in the same class
@@ -474,7 +493,7 @@ dialog .a-hint { margin: 0 0 14px; }
 
   function saveLearner(l) {
     return track(rpc('acc_save_learner', { p_key: KEY, p_id: l.id, p_grade: l.grade, p_name: l.name, p_class: l.class_name || '', p_internal: !!l.internal, p_accommodations: l.accommodations, p_comment: l.comment || '' }))
-      .then(function (row) { l.updated_at = row.updated_at; l.updated_by = row.updated_by; return l; });
+      .then(function (row) { l.updated_at = row.updated_at; l.updated_by = row.updated_by; changedNow(); return l; });
   }
 
   // ── The list ────────────────────────────────────────────────
@@ -592,7 +611,7 @@ dialog .a-hint { margin: 0 0 14px; }
   function removeLearner(l) {
     if (!confirm('Remove ' + l.name + ' (' + gradeLabel(l.grade) + ') and all their accommodations from the register?')) return;
     track(rpc('acc_delete_learner', { p_key: KEY, p_id: l.id })).then(function () {
-      learners = learners.filter(function (x) { return x.id !== l.id; }); render(); toast(l.name + ' removed');
+      learners = learners.filter(function (x) { return x.id !== l.id; }); changedNow(); render(); toast(l.name + ' removed');
     }).catch(function () { toast('Not removed — check your connection'); });
   }
 
@@ -624,7 +643,7 @@ dialog .a-hint { margin: 0 0 14px; }
     var title = 'Accommodations register' + (g ? ' — ' + gradeLabel(g) : '');
     var doc = $('printDoc'); doc.innerHTML = '';
     doc.appendChild(el('h1', { text: title }));
-    doc.appendChild(el('p', { class: 'p-sub', text: (g ? '' : 'All grades · ') + rows.length + (rows.length === 1 ? ' learner' : ' learners') + (q ? ' · filtered by “' + q + '”' : '') + ' · printed ' + dateText }));
+    doc.appendChild(el('p', { class: 'p-sub', text: (g ? '' : 'All grades · ') + rows.length + (rows.length === 1 ? ' learner' : ' learners') + (q ? ' · filtered by “' + q + '”' : '') + (registerUpdated ? ' · register updated ' + fmtUpdated(registerUpdated, true) : '') + ' · printed ' + dateText }));
     var byGrade = {};
     rows.forEach(function (l) { (byGrade[l.grade] = byGrade[l.grade] || []).push(l); });
     Object.keys(byGrade).sort(function (a, b) { return gradeIdx(a) - gradeIdx(b); }).forEach(function (gr) {
@@ -676,7 +695,9 @@ dialog .a-hint { margin: 0 0 14px; }
       var today = new Date();
       var title = 'Accommodations register' + (g ? ' - ' + gradeLabel(g) : '');
       var sub = (g ? '' : 'All grades  |  ') + rows.length + (rows.length === 1 ? ' learner' : ' learners') +
-        (q ? '  |  filtered by "' + q + '"' : '') + '  |  ' + today.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+        (q ? '  |  filtered by "' + q + '"' : '') +
+        (registerUpdated ? '  |  Register updated ' + fmtUpdated(registerUpdated, true) : '') +
+        '  |  Saved ' + today.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
       var doc = new window.jspdf.jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       var M = 12, y = 18;
       doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(0); doc.text(pdfText(title), M, y);
