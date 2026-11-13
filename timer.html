@@ -371,6 +371,16 @@ body.sheet-side .sheet-in { width: 100%; }
 .recmenu button[aria-checked="true"] { font-weight: 800; }
 .recmenu button[aria-checked="true"]::before { content: ''; position: absolute; left: 14px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--accent); }
 .recmenu small { font-size: 13px; font-weight: 600; opacity: 0.7; }
+.music { width: min(400px, calc(100vw - 24px)); gap: 8px; padding: 12px; }
+.music.off { position: fixed; left: -10000px !important; top: 0; bottom: auto !important; visibility: hidden; }
+.mu-row { display: flex; gap: 6px; padding: 0 4px; }
+.mu-row input { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); border-radius: 10px; padding: 9px 10px; }
+.mu-row button { font: inherit; font-size: 14px; font-weight: 800; color: var(--bg); background: var(--fg); border: 0; border-radius: 10px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; }
+.mu-bad { font-size: 13px; line-height: 1.4; color: var(--warn); margin: 0; padding: 0 6px; }
+.mu-player iframe { display: block; width: 100%; border: 0; border-radius: 12px; background: #000; }
+.mu-player:empty { display: none; }
+.bar button.on { border-color: var(--accent); color: var(--accent); }
 .pinpop { width: min(380px, calc(100vw - 24px)); gap: 8px; padding: 12px; }
 .pin-p { font-size: 15px; line-height: 1.5; margin: 0; padding: 0 8px; }
 .pin-why { font-size: 13px; opacity: 0.7; }
@@ -434,6 +444,10 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Ready', startsIn: 'Starts in', startsAt: 'Starts at {t}', started: 'Started {t}',
       readingEnds: 'Reading ends {t}', ends: 'Ends {t}', endedAt: 'Ended {t}',
       plan: 'Reading {r} · Writing {w}', writeFor: 'Writing {w}', paused: 'Paused', timeUp: "Time's up", pensDown: 'Pens down', over: 'over',
+      muBtn: 'Music', muTitle: 'Music while you work', muPaste: 'Paste a song, album or playlist link from YouTube, YouTube Music, Spotify or Apple Music',
+      muPlay: 'Play', muStop: 'Stop and remove', muBad: 'That link isn’t one the player knows. Use a song, album or playlist link from YouTube, YouTube Music, Spotify or Apple Music.',
+      muHint: 'Sign in to your music service in this browser for full songs: Spotify and Apple Music play 30-second previews otherwise, and YouTube Premium removes the ads.',
+      muKeep: 'Closing this panel keeps the music playing.',
       pinBtn: 'Install as an app or add to favourites', pinTitle: 'Keep the timer at hand', pinInstall: 'Install Timer Talisman as an app',
       pinInstalled: 'Timer Talisman is running as an installed app.', pinNoPrompt: 'To install it as an app, open your browser’s menu (⋮ or …) and choose Install, or Apps → Install this site as an app.',
       pinFav: 'Add this page to your favourites: press {k}.', pinBar: 'Show the favourites bar: press {k}.', pinWhy: 'Your browser lets only you add favourites, so it takes one key press.',
@@ -476,6 +490,10 @@ body.sheet-side .sheet-in { width: 100%; }
       ready: 'Gereed', startsIn: 'Begin oor', startsAt: 'Begin om {t}', started: 'Begin {t}',
       readingEnds: 'Leestyd eindig om {t}', ends: 'Eindig om {t}', endedAt: 'Geëindig om {t}',
       plan: 'Leestyd {r} · Skryftyd {w}', writeFor: 'Skryftyd {w}', paused: 'Gepouseer', timeUp: 'Tyd is om', pensDown: 'Penne neer', over: 'oor',
+      muBtn: 'Musiek', muTitle: 'Musiek terwyl jy werk', muPaste: 'Plak ’n skakel na ’n liedjie, album of speellys van YouTube, YouTube Music, Spotify of Apple Music',
+      muPlay: 'Speel', muStop: 'Stop en verwyder', muBad: 'Die speler ken nie daardie skakel nie. Gebruik ’n skakel na ’n liedjie, album of speellys van YouTube, YouTube Music, Spotify of Apple Music.',
+      muHint: 'Teken in hierdie blaaier by jou musiekdiens aan vir volle liedjies: Spotify en Apple Music speel anders net 30 sekondes, en YouTube Premium haal die advertensies weg.',
+      muKeep: 'As jy hierdie paneel toemaak, speel die musiek aan.',
       pinBtn: 'Installeer as ’n toep of voeg by gunstelinge', pinTitle: 'Hou die tydhouer byderhand', pinInstall: 'Installeer Timer Talisman as ’n toep',
       pinInstalled: 'Timer Talisman loop as ’n geïnstalleerde toep.', pinNoPrompt: 'Om dit as ’n toep te installeer, maak jou blaaier se kieslys oop (⋮ of …) en kies Installeer, of Toepe → Installeer hierdie werf as ’n toep.',
       pinFav: 'Voeg hierdie bladsy by jou gunstelinge: druk {k}.', pinBar: 'Wys die gunstelingebalk: druk {k}.', pinWhy: 'Jou blaaier laat net jou toe om gunstelinge by te voeg, so dit kos een knoppie.',
@@ -938,7 +956,7 @@ body.sheet-side .sheet-in { width: 100%; }
   // ── Controls ──
   // shortcuts, by the button's icon: [shown, aria-keyshortcuts]
   var KEYS_OF = { play: ['Space', 'Space'], pause: ['Space', 'Space'], minus: ['−', '-'], plus: ['+', '+'], 'rotate-ccw': ['R', 'R'],
-    megaphone: ['I', 'I'], 'bar-chart-3': ['M', 'M'], pin: ['P', 'P'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
+    megaphone: ['I', 'I'], music: ['U', 'U'], 'bar-chart-3': ['M', 'M'], pin: ['P', 'P'], 'file-text': ['A', 'A'], 'settings-2': ['S', 'S'], maximize: ['F', 'F'], flag: ['L', 'L'] };
   function btn(icon, label, fn, cls, iconOnly) {
     var b = document.createElement('button'); b.type = 'button'; b.className = (cls || '') + (iconOnly ? ' icon-only' : '');
     b.innerHTML = '<i data-lucide="' + icon + '"></i>' + (iconOnly ? '' : '<span>' + esc(label) + '</span>');
@@ -970,11 +988,12 @@ body.sheet-side .sheet-in { width: 100%; }
     if (md !== 'clock' && md !== 'stopwatch') bar.appendChild(btn(cfg.sound ? 'volume-2' : 'volume-x', t('sound'), function () { cfg.sound = !cfg.sound; buildBar(); }, '', true));
     if (!preview) { var sb = btn('settings-2', t('pTitle'), function () { togglePanel(); }, '', true); sb.dataset.role = 'settings'; bar.appendChild(sb); }
     if (!preview) bar.appendChild(btn('maximize', t('full'), fullscreen, '', true));
+    if (!preview) { var mb = btn('music', t('muBtn'), function () { musicPanel(!musicOpen); }, musicSrc ? 'on' : '', true); mb.dataset.role = 'music'; bar.appendChild(mb); }
     if (!preview) { var pb = btn('pin', t('pinBtn'), function () { pinPop(!pinOpen); }, '', true); pb.dataset.role = 'pin'; bar.appendChild(pb); }
     if (window.lucide) lucide.createIcons({ root: bar });
     view.barKey = barKey();
   }
-  function barKey() { return [lang(), cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
+  function barKey() { return [!!musicSrc, lang(), cfg.mode, running(), st.started, cfg.sound, cfg.mode === 'exam' && examStart() && !st.started, hasAudio(), audioPlaying()].join(); }
   function fullscreen() {
     if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
   }
@@ -985,7 +1004,7 @@ body.sheet-side .sheet-in { width: 100%; }
       // in every state, also before the start: not while the settings are
       // open, the pointer is over the bar, or a keyboard user is on it (a
       // button merely left focused by a click does not keep it up)
-      if (!panelOpen && !recOpen && !statsOpen && !pinOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
+      if (!panelOpen && !recOpen && !statsOpen && !pinOpen && !musicOpen && !bar.matches(':hover, :has(:focus-visible)')) { bar.classList.add('idle'); document.body.classList.add('hide-cursor'); }
       else wake();
     }, 2000);
   }
@@ -1321,6 +1340,79 @@ body.sheet-side .sheet-in { width: 100%; }
   // A page drawn over the timer for the learners to copy: the heading lines,
   // three open lines for the marks, and the margins left and right. The date
   // line is the exam's month and year. The timer keeps running behind it.
+  // ── Music while you work ──
+  // A link from YouTube / YouTube Music, Spotify or Apple Music plays in that
+  // service's own embedded player, signed in as whoever uses this browser
+  // (so each teacher's own subscription applies). The panel only hides when
+  // closed, so the music keeps playing; the last link is kept in this browser.
+  var MUSIC_KEY = 'ml-timer-talisman-music', musicOpen = false, musicSrc = '', musicH = 0;
+  // the player's address for a pasted link, or null; only known services and ids
+  function musicEmbed(link) {
+    var u; try { u = new URL(String(link || '').trim()); } catch (e) { return null; }
+    if (u.protocol !== 'https:') return null;
+    var h = u.hostname.replace(/^(www|m)\./, ''), m;
+    if (h === 'youtu.be' || h === 'youtube.com' || h === 'music.youtube.com') {
+      var v = h === 'youtu.be' ? u.pathname.slice(1) : u.searchParams.get('v'), list = u.searchParams.get('list');
+      if (!v && (m = /^\/(?:shorts|embed|live)\/([\w-]{11})/.exec(u.pathname))) v = m[1];
+      if (v && !/^[\w-]{11}$/.test(v)) v = null;
+      if (list && !/^[\w-]+$/.test(list)) list = null;
+      if (!v && !list) return null;
+      return { src: 'https://www.youtube.com/embed/' + (v ? v + '?' + (list ? 'list=' + list + '&' : '') : 'videoseries?list=' + list + '&') + 'autoplay=1&rel=0', h: 203 };
+    }
+    if (h === 'open.spotify.com' && (m = /^\/(?:intl-[a-z-]+\/)?(track|album|playlist|episode|show|artist)\/([A-Za-z0-9]+)/.exec(u.pathname)))
+      return { src: 'https://open.spotify.com/embed/' + m[1] + '/' + m[2], h: m[1] === 'track' || m[1] === 'episode' ? 152 : 352 };
+    if (h === 'music.apple.com' && /^\/[a-z]{2}\/(album|playlist|song|station|music-video)\//.test(u.pathname))
+      return { src: 'https://embed.music.apple.com' + u.pathname + (u.searchParams.get('i') ? '?i=' + encodeURIComponent(u.searchParams.get('i')) : ''), h: u.searchParams.get('i') || /\/song\//.test(u.pathname) ? 175 : 450 };
+    return null;
+  }
+  function musicBox() {
+    var el = $('music');
+    if (el) return el;
+    el = document.createElement('div'); el.id = 'music'; el.className = 'recmenu music off'; el.setAttribute('role', 'dialog');
+    var last = ''; try { last = localStorage.getItem(MUSIC_KEY) || ''; } catch (e) {}
+    el.innerHTML = '<div class="recmenu-h" id="muTitle"></div>' +
+      '<form class="mu-row" id="muForm"><input type="url" id="muLink" autocomplete="off" spellcheck="false"><button type="submit" id="muGo"></button></form>' +
+      '<p class="mu-bad" id="muBad" hidden></p><div class="mu-player" id="muPlayer"></div>' +
+      '<div class="st-foot"><small id="muKeep"></small><button type="button" id="muStop" hidden></button></div><p class="pin-p pin-why" id="muHint"></p>';
+    document.body.appendChild(el);
+    $('muLink').value = last;
+    $('muForm').addEventListener('submit', function (e) { e.preventDefault(); musicPlay($('muLink').value); });
+    $('muStop').addEventListener('click', function () { musicPlay(''); });
+    return el;
+  }
+  function musicPlay(link) {
+    var box = musicBox(), em = link ? musicEmbed(link) : null, pl = $('muPlayer');
+    $('muBad').hidden = !link || !!em;
+    if (link && !em) { $('muBad').textContent = t('muBad'); return; }
+    try { if (link) localStorage.setItem(MUSIC_KEY, link.trim()); } catch (e) {}
+    musicSrc = em ? em.src : ''; musicH = em ? em.h : 0;
+    pl.innerHTML = em ? '<iframe src="' + esc(em.src) + '" height="' + em.h + '" allow="autoplay *; encrypted-media *; clipboard-write; fullscreen *; picture-in-picture" ' +
+      'referrerpolicy="strict-origin-when-cross-origin" title="' + esc(t('muTitle')) + '" loading="eager"></iframe>' : '';
+    $('muStop').hidden = !em;
+    if (!em) $('muLink').value = '';
+    buildBar(); musicPlace();
+  }
+  function musicPlace() {
+    var el = $('music'); if (!el || el.classList.contains('off')) return;
+    var b = $('bar').querySelector('[data-role="music"]'), r = b ? b.getBoundingClientRect() : { left: innerWidth / 2, width: 0, top: innerHeight - 80 };
+    el.style.left = Math.max(200, Math.min(innerWidth - 200, r.left + r.width / 2)) + 'px';
+    el.style.bottom = (innerHeight - r.top + 10) + 'px';
+  }
+  function musicPanel(open) {
+    var el = musicBox();
+    musicOpen = !!open;
+    // closing only hides it (off screen), so a playing player keeps playing
+    el.classList.toggle('off', !musicOpen);
+    if (!musicOpen) { wake(); return; }
+    $('muTitle').textContent = t('muTitle'); $('muLink').placeholder = t('muPaste'); $('muLink').setAttribute('aria-label', t('muPaste'));
+    $('muGo').textContent = t('muPlay'); $('muStop').textContent = t('muStop'); $('muKeep').textContent = t('muKeep'); $('muHint').textContent = t('muHint');
+    el.setAttribute('aria-label', t('muTitle'));
+    musicPlace();
+    if (!musicSrc) $('muLink').focus();
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (musicOpen && !e.target.closest('#music') && !e.target.closest('[data-role="music"]')) musicPanel(false);
+  }, true);
   // ── Keep the timer at hand: install it as an app, or add it to favourites ──
   // Chrome and Edge offer an install prompt (beforeinstallprompt), kept for the
   // pin button. Adding a favourite is the person's own key press: no page may
@@ -2000,6 +2092,7 @@ body.sheet-side .sheet-in { width: 100%; }
     if (!cfg || e.ctrlKey || e.metaKey || e.altKey) return;
     TTSounds.unlock();
     wake();
+    if (e.key === 'Escape' && musicOpen) { musicPanel(false); return; }
     if (e.key === 'Escape' && pinOpen) { pinPop(false); return; }
     if (e.key === 'Escape' && statsOpen) { statsPop(false); return; }
     if (e.key === 'Escape' && sheetOpen) { sheet(false); return; }
@@ -2025,6 +2118,7 @@ body.sheet-side .sheet-in { width: 100%; }
     else if (k === 'a' && cfg.mode === 'exam') sheet(!sheetOpen);
     else if (k === 'm' && cfg.mode === 'pomodoro' && !preview) statsPop(!statsOpen);
     else if (k === 'p' && !preview) pinPop(!pinOpen);
+    else if (k === 'u' && !preview) musicPanel(!musicOpen);
     // (the key stops here: the panel puts the focus on its theme list, which
     // would otherwise take the "s" and jump to the first theme starting with S)
     else if (k === 's' && !preview) { e.preventDefault(); togglePanel(); }
