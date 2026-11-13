@@ -188,6 +188,19 @@
                background:var(--surface);color:var(--text2);font-size:0.70rem;font-weight:600;
                cursor:pointer;font-family:inherit;}
     .cst-quick:hover{background:rgba(91,147,255,0.15);color:var(--blue);border-color:rgba(91,147,255,0.4);}
+    .cst-quick-row{flex-wrap:wrap;margin-bottom:6px;}
+    .cst-quick{flex:1 1 auto;padding:0 8px;white-space:nowrap;}
+    .cst-ico{display:inline-block;min-width:13px;margin-right:4px;font-weight:700;color:var(--green);}
+    .cst-help{font-size:0.72rem;color:var(--text2);line-height:1.45;margin-bottom:4px;}
+    .cst-status{font-size:0.70rem;margin:2px 0 4px;}
+    .cst-list{max-height:150px;overflow-y:auto;}
+    .cst-list-title{font-size:0.66rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text2);margin:6px 0 3px;}
+    .cst-item{display:flex;align-items:center;gap:4px;font-size:0.72rem;padding:2px 4px;border-radius:4px;}
+    .cst-item.hl{background:rgba(245,158,11,0.12);}
+    .cst-item-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .cst-ref{color:var(--text2);font-size:0.66rem;}
+    .cst-del{background:none;border:none;color:var(--text2);cursor:pointer;font-size:0.9rem;line-height:1;padding:0 4px;border-radius:3px;}
+    .cst-del:hover{color:var(--red);background:rgba(248,113,113,0.12);}
 
     #vp3d{flex:1;position:relative;background:#08090b;overflow:hidden;}
     .vp-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
@@ -374,10 +387,10 @@
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 11 C3 2,5 11,7 7 S11 1,13 4"/></svg>
     Spline
   </button>
-  <!-- Edit Points tool -->
-  <button class="tb-btn" id="tool-edit" title="Edit Points — drag vertices (E)">
+  <!-- Select & Move tool -->
+  <button class="tb-btn" id="tool-edit" title="Select &amp; Move — drag points, edges or shapes; select to add constraints (E or V)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
-    Edit
+    Select
   </button>
   <!-- Construction mode toggle -->
   <button class="tb-btn" id="btn-construct" title="Construction mode — entities are reference-only (X)">
@@ -491,33 +504,12 @@
       </div>
     </div>
 
-    <!-- Constraint panel — shown on label click -->
+    <!-- Constraint panel — lasting sketch constraints -->
     <div class="cst-panel" id="cst-panel">
-      <div class="panel-title">Constrain — <span id="cst-label">Segment</span></div>
-      <div class="cst-row" id="cst-len-row">
-        <span id="lbl-cst-len" class="cst-lbl">Length</span>
-        <input aria-labelledby="lbl-cst-len" type="number" class="cst-inp" id="cst-len" step="0.1" min="0.1">
-        <span class="cst-unit">mm</span>
-        <button class="cst-btn" id="btn-cst-len">Set</button>
-      </div>
-      <div class="cst-row" id="cst-ang-row">
-        <span id="lbl-cst-ang" class="cst-lbl">Angle</span>
-        <input aria-labelledby="lbl-cst-ang" type="number" class="cst-inp" id="cst-ang" step="1" min="-360" max="360">
-        <span class="cst-unit">°</span>
-        <button class="cst-btn" id="btn-cst-ang">Set</button>
-      </div>
-      <!-- Circle radius row (shown instead of angle when circle selected) -->
-      <div class="cst-row" id="cst-rad-row" style="display:none">
-        <span id="lbl-cst-rad" class="cst-lbl">Radius</span>
-        <input aria-labelledby="lbl-cst-rad" type="number" class="cst-inp" id="cst-rad" step="0.1" min="0.1">
-        <span class="cst-unit">mm</span>
-        <button class="cst-btn" id="btn-cst-rad">Set</button>
-      </div>
-      <div class="cst-quick-row" id="cst-quick-row">
-        <button class="cst-quick" id="btn-cst-h">Horizontal</button>
-        <button class="cst-quick" id="btn-cst-v">Vertical</button>
-        <button class="cst-quick" id="btn-cst-p">∥ Parallel prev</button>
-      </div>
+      <div class="panel-title">Constraints — <span id="cst-label">nothing selected</span></div>
+      <div id="cst-body"></div>
+      <div id="cst-status" class="cst-status" role="status" aria-live="polite"></div>
+      <div id="cst-list" class="cst-list"></div>
     </div>
 
     <div id="vp3d">
@@ -764,7 +756,7 @@ function activeSketch() { return featureTree.find(f => f.id === activeSketchId);
 function ents() { return activeSketch()?.entities ?? []; }
 
 // Selection (for constraint panel) — set by label clicks
-let selection = null;
+let selection = null;   // legacy, unused — see selItems
 
 // Drag state
 let dragState = null; // { entityIdx, ptIdx, isRect, isCircle, isArc(ptKey), isSpline } or null
@@ -1090,7 +1082,7 @@ function discardAutosaveAndStartFresh() {
   initFeatureTree();
   const fi = document.getElementById('filename-input');
   if (fi) fi.value = 'sketch';
-  selection = null;
+  selItems = [];
   renderFeatureTree(); scheduleRender(); scheduleExtrude();
   document.getElementById('mm-restore-toast')?.remove();
 }
@@ -1120,6 +1112,7 @@ function render() {
   drawGrid(cW,cH);
   drawFaceUnderlay();
   drawCommitted();
+  drawConstraintGlyphs();
   drawSelection();
   drawInProgress();
   drawSnapIndicator();
@@ -1278,37 +1271,41 @@ function drawEntity(e, preview, entityIdx) {
 }
 
 function drawSelection() {
-  if (!selection) return;
-  const ei = selection.entityIdx;
-  const e  = ents()[ei];
-  if (!e) return;
-
   ctx.save();
   ctx.strokeStyle = 'rgba(245,158,11,1)';
-  ctx.lineWidth = 2.5;
+  ctx.fillStyle = 'rgba(245,158,11,1)';
+  ctx.lineWidth = 3;
   ctx.shadowColor = 'rgba(245,158,11,0.5)';
   ctx.shadowBlur = 6;
-
-  if (selection.isCircle && e.type === 'circle') {
-    const [sx,sy]=wtoc(e.cx,e.cy);
-    ctx.beginPath(); ctx.arc(sx,sy,e.r*zoom,0,Math.PI*2); ctx.stroke();
-  } else if (e.type === 'polyline') {
-    const si = selection.segIdx;
-    const p1 = e.points[si];
-    const p2 = e.points[(si+1)%e.points.length];
-    const [s1x,s1y]=wtoc(p1[0],p1[1]);
-    const [s2x,s2y]=wtoc(p2[0],p2[1]);
-    ctx.beginPath(); ctx.moveTo(s1x,s1y); ctx.lineTo(s2x,s2y); ctx.stroke();
-    ctx.fillStyle='rgba(245,158,11,1)'; ctx.shadowBlur=0;
-    [[s1x,s1y],[s2x,s2y]].forEach(([x,y])=>{
-      ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
-    });
-  } else if (selection.isRect && e.type === 'rect') {
-    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
-    const si=selection.segIdx;
-    const [s1x,s1y]=wtoc(corners[si][0],corners[si][1]);
-    const [s2x,s2y]=wtoc(corners[(si+1)%4][0],corners[(si+1)%4][1]);
-    ctx.beginPath(); ctx.moveTo(s1x,s1y); ctx.lineTo(s2x,s2y); ctx.stroke();
+  const items = selItems.slice();
+  // hover preview in Select tool
+  if (tool === 'edit' && !dragState && hoverHit && !isSelected(hoverHit)) items.push({...hoverHit, hover:true});
+  for (const it of items) {
+    const e = entByUid(it.u); if (!e) continue;
+    ctx.globalAlpha = it.hover ? 0.45 : 1;
+    if (it.kind === 'seg') {
+      const [ka,kb] = segEndKeys(e, it.s);
+      const a = wtoc(...getPt(e,ka)), b = wtoc(...getPt(e,kb));
+      ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+    } else if (it.kind === 'pt') {
+      const p = getPt(e, it.k); if (!p) continue;
+      const [x,y] = wtoc(p[0],p[1]);
+      ctx.beginPath(); ctx.arc(x,y,5.5,0,Math.PI*2); ctx.fill();
+    } else if (it.kind === 'circle') {
+      const [x,y] = wtoc(e.cx,e.cy);
+      ctx.beginPath(); ctx.arc(x,y,e.r*zoom,0,Math.PI*2); ctx.stroke();
+    } else if (it.kind === 'arc') {
+      const g = arcGeom(e.p1,e.pmid,e.p2);
+      if (g) { const [x,y] = wtoc(g.cx,g.cy); ctx.beginPath(); ctx.arc(x,y,g.r*zoom,g.startAngle,g.endAngle,!g.ccw); ctx.stroke(); }
+    } else if (it.kind === 'spline') {
+      const pts = catmullRomExpand(e.points);
+      ctx.beginPath(); pts.forEach((p,i)=>{ const [x,y]=wtoc(p[0],p[1]); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke();
+    } else if (it.kind === 'body') {
+      ctx.lineWidth = 2; ctx.setLineDash([5,4]);
+      if (e.type === 'circle') { const [x,y] = wtoc(e.cx,e.cy); ctx.beginPath(); ctx.arc(x,y,e.r*zoom,0,Math.PI*2); ctx.stroke(); }
+      else { const vs = getEntityVertices(e).map(p=>wtoc(p[0],p[1])); ctx.beginPath(); vs.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.closePath(); ctx.stroke(); }
+      ctx.setLineDash([]); ctx.lineWidth = 3;
+    }
   }
   ctx.restore();
 }
@@ -1333,12 +1330,13 @@ function dimLabel(p1, p2, entityIdx, segIdx) {
   const lx=mx+nx, ly=my+ny;
   const wlen=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
   const isHovered = hoverLabelIdx >= 0 && labelHits.length === hoverLabelIdx;
+  const locked = entityIdx >= 0 && hasLengthConstraint(entityIdx, segIdx);
 
   ctx.save();
-  ctx.font='10px JetBrains Mono,monospace';
-  ctx.fillStyle = isHovered ? 'rgba(245,158,11,0.95)' : 'rgba(130,170,255,0.75)';
+  ctx.font = locked ? 'bold 10px JetBrains Mono,monospace' : '10px JetBrains Mono,monospace';
+  ctx.fillStyle = isHovered ? 'rgba(245,158,11,0.95)' : locked ? 'rgba(52,211,153,0.95)' : 'rgba(130,170,255,0.75)';
   ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(wlen.toFixed(wlen<10?2:1)+' mm', lx, ly);
+  ctx.fillText((locked?'🔒 ':'')+wlen.toFixed(wlen<10?2:1)+' mm', lx, ly);
   ctx.restore();
 
   labelHits.push({ lx, ly, entityIdx, segIdx, wlen, p1:[p1[0],p1[1]], p2:[p2[0],p2[1]] });
@@ -1587,8 +1585,42 @@ function drawSnapIndicator() {
 }
 
 // ════════════════════════════════════════════════════════════════════
-// DRAGGABLE POINTS HELPERS
+// SKETCH POINTS, HIT TESTING & SELECTION
 // ════════════════════════════════════════════════════════════════════
+//
+// Every entity gets a stable `uid` (kept in the sketch, so it survives undo,
+// autosave and file save). Constraints refer to entities by uid, never by
+// array index, so deleting one shape does not scramble the others.
+//   point ref   {u, k}   k = vertex index (polyline/spline/rect corner),
+//                        'c' (circle centre) or 'p1'|'pmid'|'p2' (arc)
+//   segment ref {u, s}   s = edge index (polyline edge s→s+1, rect edge)
+//   circle ref  {u}
+
+let selItems = [];        // [{kind:'pt'|'seg'|'circle'|'arc'|'spline'|'body', u, k?, s?}]
+let pendingDrag = null;   // mousedown in Select, waiting to see if it becomes a drag
+let hoverHit = null;      // what the Select tool would grab right now
+let lastSolveResidual = 0;
+
+function ensureUid(e) {
+  const sk = activeSketch();
+  if (!e.uid) {
+    if (sk) {
+      let maxN = sk.nextUid || 0;
+      for (const o of sk.entities) if (o.uid) maxN = Math.max(maxN, parseInt(o.uid.slice(1)) || 0);
+      sk.nextUid = maxN + 1;
+      e.uid = 'u' + sk.nextUid;
+    } else e.uid = 'u' + Math.random().toString(36).slice(2, 8);
+  }
+  return e.uid;
+}
+function ensureAllUids() { for (const e of ents()) ensureUid(e); }
+function entByUid(u) { return ents().find(e => e.uid === u); }
+function sketchConstraints() {
+  const sk = activeSketch();
+  if (!sk) return [];
+  if (!sk.constraints) sk.constraints = [];
+  return sk.constraints;
+}
 
 function getEntityVertices(e) {
   if (e.type === 'polyline') return e.points.map(p=>p);
@@ -1599,59 +1631,433 @@ function getEntityVertices(e) {
   return [];
 }
 
-function findNearVertex(sx, sy) {
-  const DRAG_R = 10;
-  for (let ei=ents().length-1; ei>=0; ei--) {
-    const e = ents()[ei];
-    if (e.type === 'polyline') {
-      for (let pi=0; pi<e.points.length; pi++) {
-        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
-        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi };
-      }
-    } else if (e.type === 'rect') {
-      const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
-      for (let pi=0; pi<4; pi++) {
-        const [px,py]=wtoc(corners[pi][0], corners[pi][1]);
-        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isRect:true };
-      }
-    } else if (e.type === 'circle') {
-      const [px,py]=wtoc(e.cx, e.cy);
-      if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isCircle:true };
-    } else if (e.type === 'arc') {
-      const arcKs = [['p1',e.p1],['pmid',e.pmid],['p2',e.p2]];
-      for (const [key,pt] of arcKs) {
-        const [px,py]=wtoc(pt[0],pt[1]);
-        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isArc:true, ptKey:key };
-      }
-    } else if (e.type === 'spline') {
-      for (let pi=0; pi<e.points.length; pi++) {
-        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
-        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isSpline:true };
+// [{k, x, y}] for every draggable point of an entity
+function entityPointList(e) {
+  if (e.type === 'polyline' || e.type === 'spline') return e.points.map((p,i)=>({k:i, x:p[0], y:p[1]}));
+  if (e.type === 'rect') return getEntityVertices(e).map((p,i)=>({k:i, x:p[0], y:p[1]}));
+  if (e.type === 'circle') return [{k:'c', x:e.cx, y:e.cy}];
+  if (e.type === 'arc') return ['p1','pmid','p2'].map(k=>({k, x:e[k][0], y:e[k][1]}));
+  return [];
+}
+function getPt(e, k) {
+  const p = entityPointList(e).find(q => q.k === k);
+  return p ? [p.x, p.y] : null;
+}
+function segCount(e) {
+  if (e.type === 'polyline') return e.closed ? e.points.length : e.points.length - 1;
+  if (e.type === 'rect') return 4;
+  return 0;
+}
+function segEndKeys(e, s) {
+  if (e.type === 'polyline') return [s, (s+1) % e.points.length];
+  if (e.type === 'rect') return [s, (s+1) % 4];
+  return null;
+}
+
+function pointInPoly(px, py, pts) {
+  let inside = false;
+  for (let i=0, j=pts.length-1; i<pts.length; j=i++) {
+    const [xi,yi]=pts[i], [xj,yj]=pts[j];
+    if (((yi>py)!==(yj>py)) && (px < (xj-xi)*(py-yi)/(yj-yi)+xi)) inside = !inside;
+  }
+  return inside;
+}
+
+// What is under the cursor? Points beat edges, edges beat shape interiors,
+// and shapes drawn later (on top) win.
+function hitTestSketch(sx, sy) {
+  const PT_R = 9, EDGE_R = 7;
+  const list = ents();
+  for (let ei=list.length-1; ei>=0; ei--) {
+    const e = list[ei]; ensureUid(e);
+    for (const p of entityPointList(e)) {
+      const [px,py] = wtoc(p.x, p.y);
+      if (Math.hypot(sx-px, sy-py) < PT_R) return {kind:'pt', u:e.uid, k:p.k};
+    }
+  }
+  const [wx, wy] = ctow(sx, sy);
+  for (let ei=list.length-1; ei>=0; ei--) {
+    const e = list[ei];
+    const n = segCount(e);
+    for (let s=0; s<n; s++) {
+      const [ka,kb] = segEndKeys(e, s);
+      const a = wtoc(...getPt(e,ka)), b = wtoc(...getPt(e,kb));
+      if (ptSegDist(sx,sy,a[0],a[1],b[0],b[1]) < EDGE_R) return {kind:'seg', u:e.uid, s};
+    }
+    if (e.type === 'circle') {
+      const [cx,cy] = wtoc(e.cx, e.cy);
+      if (Math.abs(Math.hypot(sx-cx, sy-cy) - e.r*zoom) < EDGE_R) return {kind:'circle', u:e.uid};
+    }
+    if (e.type === 'arc') {
+      const g = arcGeom(e.p1, e.pmid, e.p2);
+      if (g) {
+        const [cx,cy] = wtoc(g.cx, g.cy);
+        if (Math.abs(Math.hypot(sx-cx, sy-cy) - g.r*zoom) < EDGE_R) return {kind:'arc', u:e.uid};
       }
     }
+    if (e.type === 'spline' && e.points.length >= 2) {
+      const pts = catmullRomExpand(e.points);
+      for (let i=0; i<pts.length-1; i++) {
+        const a = wtoc(...pts[i]), b = wtoc(...pts[i+1]);
+        if (ptSegDist(sx,sy,a[0],a[1],b[0],b[1]) < EDGE_R) return {kind:'spline', u:e.uid};
+      }
+    }
+  }
+  for (let ei=list.length-1; ei>=0; ei--) {
+    const e = list[ei];
+    if (e.type === 'rect' && wx>=e.x && wx<=e.x+e.w && wy>=e.y && wy<=e.y+e.h) return {kind:'body', u:e.uid};
+    if (e.type === 'circle' && Math.hypot(wx-e.cx, wy-e.cy) < e.r) return {kind:'body', u:e.uid};
+    if (e.type === 'polyline' && e.closed && pointInPoly(wx, wy, e.points)) return {kind:'body', u:e.uid};
   }
   return null;
 }
 
-function applyDragMove(ds, wx, wy) {
-  const e = ents()[ds.entityIdx];
-  if (ds.isCircle && e.type==='circle') {
-    e.cx = wx; e.cy = wy;
-  } else if (ds.isRect && e.type==='rect') {
-    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
-    corners[ds.ptIdx] = [wx, wy];
-    const opp = corners[(ds.ptIdx+2)%4];
-    e.x = Math.min(wx, opp[0]);
-    e.y = Math.min(wy, opp[1]);
-    e.w = Math.abs(wx - opp[0]);
-    e.h = Math.abs(wy - opp[1]);
-  } else if (ds.isArc && e.type==='arc') {
-    e[ds.ptKey] = [wx, wy];
-  } else if (ds.isSpline && e.type==='spline') {
-    e.points[ds.ptIdx] = [wx, wy];
-  } else if (e.type==='polyline') {
-    e.points[ds.ptIdx] = [wx, wy];
+function sameItem(a, b) {
+  return a.kind===b.kind && a.u===b.u && a.k===b.k && a.s===b.s;
+}
+function isSelected(item) { return selItems.some(s => sameItem(s, item)); }
+function selectItem(item, additive) {
+  if (!item || item.kind === 'body') {
+    // Clicking inside a shape selects the whole shape's edges/circle
+    if (item && item.kind === 'body') {
+      const e = entByUid(item.u);
+      const add = e.type === 'circle' ? [{kind:'circle', u:e.uid}]
+        : Array.from({length: segCount(e)}, (_, s) => ({kind:'seg', u:e.uid, s}));
+      if (!additive) selItems = [];
+      for (const it of add) if (!isSelected(it)) selItems.push(it);
+    } else if (!additive) selItems = [];
+  } else if (additive) {
+    if (isSelected(item)) selItems = selItems.filter(s => !sameItem(s, item));
+    else selItems.push(item);
+  } else {
+    selItems = [item];
   }
+  updateConstraintPanel(); scheduleRender();
+}
+function clearSelection() { selItems = []; pendingDrag = null; updateConstraintPanel(); scheduleRender(); }
+
+// ════════════════════════════════════════════════════════════════════
+// CONSTRAINT SOLVER
+// ════════════════════════════════════════════════════════════════════
+//
+// A small iterative (Gauss-Seidel / position-based) solver. Each pass nudges
+// the points so every constraint is a bit closer to true; after a few hundred
+// passes everything that can be satisfied is. Points that are being dragged,
+// or that carry a Fix constraint, do not move.
+
+function wrapPi(a)     { while (a <= -Math.PI) a += 2*Math.PI; while (a > Math.PI) a -= 2*Math.PI; return a; }
+function wrapHalfPi(a) { while (a <= -Math.PI/2) a += Math.PI; while (a > Math.PI/2) a -= Math.PI; return a; }
+
+function buildSolverModel(pins) {
+  const P = {}, R = {};           // points and circle radii
+  const implicit = [];            // rect edges stay horizontal/vertical
+  for (const e of ents()) {
+    ensureUid(e);
+    for (const p of entityPointList(e)) P[e.uid+':'+p.k] = {x:p.x, y:p.y, f:false};
+    if (e.type === 'circle') R[e.uid] = {v:e.r, f:false};
+    if (e.type === 'rect') {
+      implicit.push({type:'horizontal', a:{u:e.uid, s:0}}, {type:'vertical', a:{u:e.uid, s:1}},
+                    {type:'horizontal', a:{u:e.uid, s:2}}, {type:'vertical', a:{u:e.uid, s:3}});
+    }
+  }
+  for (const c of sketchConstraints()) {
+    if (c.type === 'fix') {
+      const q = P[c.a.u+':'+c.a.k];
+      if (q) { q.x = c.value[0]; q.y = c.value[1]; q.f = true; }
+    }
+  }
+  if (pins) for (const [key, pos] of Object.entries(pins)) {
+    const q = P[key];
+    if (q && !q.f) { q.x = pos[0]; q.y = pos[1]; q.f = true; }
+  }
+  return {P, R, implicit};
+}
+
+function segPts(M, ref) {
+  const e = entByUid(ref.u);
+  if (!e) return null;
+  const ks = segEndKeys(e, ref.s);
+  if (!ks) return null;
+  const A = M.P[ref.u+':'+ks[0]], B = M.P[ref.u+':'+ks[1]];
+  return A && B ? [A, B] : null;
+}
+function ptRef(M, ref) { return M.P[ref.u+':'+ref.k] || null; }
+
+function share(A, B, dx, dy) {     // move A by +d·wa and B by −d·wb so they meet
+  const wa = A.f?0:1, wb = B.f?0:1, ws = wa+wb;
+  if (!ws) return;
+  A.x += dx*wa/ws; A.y += dy*wa/ws;
+  B.x -= dx*wb/ws; B.y -= dy*wb/ws;
+}
+function projDist(A, B, L) {
+  let dx = B.x-A.x, dy = B.y-A.y, d = Math.hypot(dx, dy);
+  if (d < 1e-9) { dx = 1e-3; dy = 0; d = 1e-3; }
+  const k = (d - L) / d;
+  share(A, B, dx*k, dy*k);
+  return Math.abs(d - L);
+}
+function rotSeg(A, B, delta) {
+  if (A.f && B.f) return false;
+  let px, py;
+  if (A.f) { px = A.x; py = A.y; } else if (B.f) { px = B.x; py = B.y; }
+  else { px = (A.x+B.x)/2; py = (A.y+B.y)/2; }
+  const c = Math.cos(delta), s = Math.sin(delta);
+  for (const Q of [A, B]) if (!Q.f) {
+    const dx = Q.x-px, dy = Q.y-py;
+    Q.x = px + dx*c - dy*s; Q.y = py + dx*s + dy*c;
+  }
+  return true;
+}
+function segAngle(A, B) { return Math.atan2(B.y-A.y, B.x-A.x); }
+function relRotate(s1, s2, err) {  // turn two segments toward each other by err
+  const f1 = !(s1[0].f && s1[1].f), f2 = !(s2[0].f && s2[1].f);
+  if (f1 && f2) { rotSeg(s1[0], s1[1], err/2); rotSeg(s2[0], s2[1], -err/2); }
+  else if (f1) rotSeg(s1[0], s1[1], err);
+  else if (f2) rotSeg(s2[0], s2[1], -err);
+}
+function pullPointToLine(Pt, A, B, foot) {
+  const dx = Pt.x-foot[0], dy = Pt.y-foot[1];
+  const wp = Pt.f?0:1, wl = (A.f||B.f)?0:1, ws = wp+wl;
+  if (!ws) return Math.hypot(dx, dy);
+  Pt.x -= dx*wp/ws; Pt.y -= dy*wp/ws;
+  if (wl) { A.x += dx*wl/ws; A.y += dy*wl/ws; B.x += dx*wl/ws; B.y += dy*wl/ws; }
+  return Math.hypot(dx, dy);
+}
+
+// One relaxation step for one constraint. Returns how far off it was.
+function relax(M, c) {
+  const deg = Math.PI/180;
+  switch (c.type) {
+    case 'coincident': {
+      const A = ptRef(M,c.a), B = ptRef(M,c.b); if (!A||!B) return 0;
+      const err = Math.hypot(B.x-A.x, B.y-A.y);
+      share(A, B, B.x-A.x, B.y-A.y); return err;
+    }
+    case 'horizontal': case 'vertical': {
+      let A, B;
+      if (c.b) { A = ptRef(M,c.a); B = ptRef(M,c.b); }
+      else { const s = segPts(M,c.a); if (!s) return 0; [A,B] = s; }
+      if (!A||!B) return 0;
+      if (c.type === 'horizontal') { const d = B.y-A.y; share(A, B, 0, d); return Math.abs(d); }
+      const d = B.x-A.x; share(A, B, d, 0); return Math.abs(d);
+    }
+    case 'length': {
+      const s = segPts(M,c.a); if (!s) return 0;
+      return projDist(s[0], s[1], c.value);
+    }
+    case 'distance': {
+      const A = ptRef(M,c.a), B = ptRef(M,c.b); if (!A||!B) return 0;
+      return projDist(A, B, c.value);
+    }
+    case 'angle': {
+      const s = segPts(M,c.a); if (!s) return 0;
+      const err = wrapPi(c.value*deg - segAngle(s[0], s[1]));
+      rotSeg(s[0], s[1], err); return Math.abs(err)*10;
+    }
+    case 'parallel': case 'perpendicular': {
+      const s1 = segPts(M,c.a), s2 = segPts(M,c.b); if (!s1||!s2) return 0;
+      const target = c.type === 'parallel' ? 0 : Math.PI/2;
+      const err = wrapHalfPi(segAngle(s2[0],s2[1]) - segAngle(s1[0],s1[1]) - target);
+      relRotate(s1, s2, err); return Math.abs(err)*10;
+    }
+    case 'equal': {
+      if (c.a.s === undefined) {        // two circles
+        const r1 = M.R[c.a.u], r2 = M.R[c.b.u]; if (!r1||!r2) return 0;
+        const err = Math.abs(r1.v-r2.v);
+        if (r1.f && !r2.f) r2.v = r1.v; else if (r2.f && !r1.f) r1.v = r2.v;
+        else if (!r1.f && !r2.f) r1.v = r2.v = (r1.v+r2.v)/2;
+        return err;
+      }
+      const s1 = segPts(M,c.a), s2 = segPts(M,c.b); if (!s1||!s2) return 0;
+      const L1 = Math.hypot(s1[1].x-s1[0].x, s1[1].y-s1[0].y);
+      const L2 = Math.hypot(s2[1].x-s2[0].x, s2[1].y-s2[0].y);
+      const lock1 = s1[0].f && s1[1].f, lock2 = s2[0].f && s2[1].f;
+      const L = lock1 ? L1 : lock2 ? L2 : (L1+L2)/2;
+      projDist(s1[0], s1[1], L); projDist(s2[0], s2[1], L);
+      return Math.abs(L1-L2);
+    }
+    case 'radius': {
+      const r = M.R[c.a.u]; if (!r) return 0;
+      const err = Math.abs(r.v - c.value);
+      r.v = c.value; r.f = true; return err;
+    }
+    case 'pointOnLine': {
+      const Pt = ptRef(M,c.a), s = segPts(M,c.b); if (!Pt||!s) return 0;
+      const [A,B] = s, dx = B.x-A.x, dy = B.y-A.y, L2 = dx*dx+dy*dy;
+      if (L2 < 1e-12) return 0;
+      const t = ((Pt.x-A.x)*dx + (Pt.y-A.y)*dy) / L2;
+      return pullPointToLine(Pt, A, B, [A.x+t*dx, A.y+t*dy]);
+    }
+    case 'midpoint': {
+      const Pt = ptRef(M,c.a), s = segPts(M,c.b); if (!Pt||!s) return 0;
+      const [A,B] = s;
+      return pullPointToLine(Pt, A, B, [(A.x+B.x)/2, (A.y+B.y)/2]);
+    }
+    case 'fix': {
+      const A = ptRef(M,c.a); if (!A) return 0;
+      return Math.hypot(A.x-c.value[0], A.y-c.value[1]);
+    }
+  }
+  return 0;
+}
+
+function writeBack(M) {
+  for (const e of ents()) {
+    const g = k => { const q = M.P[e.uid+':'+k]; return [q.x, q.y]; };
+    if (e.type === 'polyline' || e.type === 'spline') e.points = e.points.map((_, i) => g(i));
+    else if (e.type === 'circle') { [e.cx, e.cy] = g('c'); e.r = Math.max(0.1, M.R[e.uid].v); }
+    else if (e.type === 'arc') { e.p1 = g('p1'); e.pmid = g('pmid'); e.p2 = g('p2'); }
+    else if (e.type === 'rect') {
+      const cs = [0,1,2,3].map(g);
+      const xs = cs.map(c=>c[0]), ys = cs.map(c=>c[1]);
+      e.x = Math.min(...xs); e.y = Math.min(...ys);
+      e.w = Math.max(0.1, Math.max(...xs) - e.x); e.h = Math.max(0.1, Math.max(...ys) - e.y);
+    }
+  }
+}
+
+// Solve the active sketch. `pins` = {"uid:k": [x,y]} for points held by the
+// mouse; `radiusPins` = {uid: r} for a circle edge being dragged.
+function solveSketch(pins, radiusPins) {
+  if (!activeSketch()) return 0;
+  const cs = sketchConstraints().filter(c => constraintValid(c));
+  sketchConstraints().splice(0, Infinity, ...cs);   // drop constraints on deleted shapes
+  const M = buildSolverModel(pins);
+  if (radiusPins) for (const [u, r] of Object.entries(radiusPins)) if (M.R[u] && !cs.some(c=>c.type==='radius'&&c.a.u===u)) { M.R[u].v = r; M.R[u].f = true; }
+  const all = M.implicit.concat(cs);
+  if (!all.length && !pins && !radiusPins) { lastSolveResidual = 0; return 0; }
+  let worst = 0;
+  // While dragging, points that are not held prefer to stay where they are,
+  // so only what the constraints force actually moves (e.g. the far corner
+  // of a rectangle stays put when you drag one corner).
+  if (pins || radiusPins) {
+    const free = Object.values(M.P).filter(q => !q.f);
+    const home = free.map(q => [q.x, q.y]);
+    for (let it=0; it<250; it++) {
+      for (let i=0; i<free.length; i++) {
+        free[i].x += (home[i][0]-free[i].x)*0.15;
+        free[i].y += (home[i][1]-free[i].y)*0.15;
+      }
+      for (const c of all) relax(M, c);
+    }
+  }
+  for (let it=0; it<400; it++) {
+    worst = 0;
+    for (const c of all) worst = Math.max(worst, relax(M, c));
+    if (worst < 1e-6) break;
+  }
+  writeBack(M);
+  lastSolveResidual = worst;
+  return worst;
+}
+
+function constraintValid(c) {
+  const ok = r => {
+    if (!r) return true;
+    const e = entByUid(r.u); if (!e) return false;
+    if (r.s !== undefined) return r.s < segCount(e);
+    if (r.k !== undefined) return getPt(e, r.k) !== null;
+    return true;
+  };
+  return ok(c.a) && ok(c.b);
+}
+
+// ════════════════════════════════════════════════════════════════════
+// DRAGGING (Select tool)
+// ════════════════════════════════════════════════════════════════════
+
+// Points that sit exactly on top of each other move together, so a corner
+// shared by two lines stays joined even without a Coincident constraint.
+function coincidentKeys(x, y) {
+  const keys = [];
+  for (const e of ents()) for (const p of entityPointList(e))
+    if (Math.hypot(p.x-x, p.y-y) < 1e-3) keys.push(e.uid+':'+p.k);
+  return keys;
+}
+function keysForHit(hit) {
+  const e = entByUid(hit.u); if (!e) return [];
+  let pts = [];
+  if (hit.kind === 'pt') pts = [getPt(e, hit.k)];
+  else if (hit.kind === 'seg') pts = segEndKeys(e, hit.s).map(k => getPt(e, k));
+  else if (hit.kind === 'arc' || hit.kind === 'spline' || hit.kind === 'body') pts = entityPointList(e).map(p => [p.x, p.y]);
+  const set = new Set();
+  for (const p of pts) for (const k of coincidentKeys(p[0], p[1])) set.add(k);
+  // A whole shape moves as one; for a circle body that is just its centre.
+  if (hit.kind === 'body' || hit.kind === 'arc' || hit.kind === 'spline')
+    for (const p of entityPointList(e)) set.add(e.uid+':'+p.k);
+  return [...set];
+}
+function isFixedKey(key) {
+  return sketchConstraints().some(c => c.type==='fix' && c.a.u+':'+c.a.k === key);
+}
+
+function beginDrag(pd) {
+  const hit = pd.hit;
+  const e = entByUid(hit.u);
+  dragState = { hit, startW: pd.w0, orig: {}, keys: [], radius: null };
+  if (hit.kind === 'circle') {
+    dragState.radius = { u: e.uid, cx: e.cx, cy: e.cy };
+    return;
+  }
+  dragState.keys = keysForHit(hit).filter(k => !isFixedKey(k));
+  for (const k of dragState.keys) {
+    const [u, kk] = splitKey(k);
+    const pe = entByUid(u);
+    dragState.orig[k] = getPt(pe, kk);
+  }
+}
+function splitKey(key) {
+  const i = key.indexOf(':');
+  const u = key.slice(0, i), raw = key.slice(i+1);
+  return [u, /^\d+$/.test(raw) ? parseInt(raw) : raw];
+}
+
+function snapDelta(dx, dy) {
+  if (ctrlHeld || gridSnap <= 0) return [dx, dy];
+  return [Math.round(dx/gridSnap)*gridSnap, Math.round(dy/gridSnap)*gridSnap];
+}
+// Snap a dragged point to other points (not the ones moving), else the grid.
+function dragSnapPoint(wx, wy, exclude) {
+  if (ctrlHeld) return [wx, wy];
+  const [rx, ry] = wtoc(wx, wy);
+  let best = null, bestD = 14;
+  for (const e of ents()) for (const p of entityPointList(e)) {
+    if (exclude.has(e.uid+':'+p.k)) continue;
+    const [sx, sy] = wtoc(p.x, p.y);
+    const d = Math.hypot(sx-rx, sy-ry);
+    if (d < bestD) { bestD = d; best = [p.x, p.y]; }
+  }
+  if (best) return best;
+  if (gridSnap > 0) return [Math.round(wx/gridSnap)*gridSnap, Math.round(wy/gridSnap)*gridSnap];
+  return [wx, wy];
+}
+
+function updateDrag(wx, wy) {
+  const ds = dragState;
+  if (ds.radius) {
+    let r = Math.hypot(wx-ds.radius.cx, wy-ds.radius.cy);
+    if (!ctrlHeld && gridSnap > 0) r = Math.max(gridSnap/2, Math.round(r/(gridSnap/2))*(gridSnap/2));
+    solveSketch(null, { [ds.radius.u]: Math.max(0.5, r) });
+    return;
+  }
+  if (!ds.keys.length) return;
+  const pins = {};
+  if (ds.hit.kind === 'pt') {
+    const target = dragSnapPoint(wx, wy, new Set(ds.keys));
+    for (const k of ds.keys) pins[k] = target;
+  } else {
+    const [dx, dy] = snapDelta(wx - ds.startW[0], wy - ds.startW[1]);
+    for (const k of ds.keys) pins[k] = [ds.orig[k][0]+dx, ds.orig[k][1]+dy];
+  }
+  solveSketch(pins);
+}
+
+function endDrag() {
+  dragState = null;
+  solveSketch();           // settle with nothing held
+  scheduleExtrude();       // commits history + rebuilds the solid
+  updateConstraintPanel();
+  scheduleRender();
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -1669,124 +2075,297 @@ function ptSegDist(px,py,x1,y1,x2,y2) {
 // CONSTRAINT PANEL
 // ════════════════════════════════════════════════════════════════════
 
+const CST_INFO = {
+  coincident:   { icon:'●', name:'Coincident' },
+  horizontal:   { icon:'H', name:'Horizontal' },
+  vertical:     { icon:'V', name:'Vertical' },
+  length:       { icon:'↔', name:'Length' },
+  distance:     { icon:'↔', name:'Distance' },
+  angle:        { icon:'∠', name:'Angle' },
+  parallel:     { icon:'∥', name:'Parallel' },
+  perpendicular:{ icon:'⊥', name:'Perpendicular' },
+  equal:        { icon:'=', name:'Equal' },
+  radius:       { icon:'R', name:'Radius' },
+  pointOnLine:  { icon:'⋯', name:'Point on line' },
+  midpoint:     { icon:'M', name:'Midpoint' },
+  fix:          { icon:'⚓', name:'Fixed' },
+};
+
+function entLabel(u) {
+  const i = ents().findIndex(e => e.uid === u);
+  const e = ents()[i];
+  if (!e) return '?';
+  const names = { polyline: e.closed ? 'Shape' : 'Line', rect:'Rect', circle:'Circle', arc:'Arc', spline:'Spline' };
+  return `${names[e.type] || e.type} ${i+1}`;
+}
+function refLabel(r) {
+  if (!r) return '';
+  if (r.s !== undefined) return `${entLabel(r.u)} edge ${r.s+1}`;
+  if (r.k !== undefined) return `${entLabel(r.u)} ${r.k==='c' ? 'centre' : 'pt ' + (typeof r.k==='number' ? r.k+1 : r.k)}`;
+  return entLabel(r.u);
+}
+function constraintText(c) {
+  const info = CST_INFO[c.type] || {icon:'?', name:c.type};
+  let v = '';
+  if (c.type==='length'||c.type==='distance'||c.type==='radius') v = ` ${(+c.value).toFixed(c.value<10?2:1)} mm`;
+  if (c.type==='angle') v = ` ${(+c.value).toFixed(1)}°`;
+  return `<span class="cst-ico">${info.icon}</span>${info.name}${v} <span class="cst-ref">${refLabel(c.a)}${c.b?' · '+refLabel(c.b):''}</span>`;
+}
+
+function curSegLength(ref) {
+  const e = entByUid(ref.u); const [ka,kb] = segEndKeys(e, ref.s);
+  const a = getPt(e,ka), b = getPt(e,kb);
+  return Math.hypot(b[0]-a[0], b[1]-a[1]);
+}
+function curSegAngle(ref) {
+  const e = entByUid(ref.u); const [ka,kb] = segEndKeys(e, ref.s);
+  const a = getPt(e,ka), b = getPt(e,kb);
+  return Math.atan2(b[1]-a[1], b[0]-a[0]) * 180/Math.PI;
+}
+
+// Which constraint buttons make sense for what is selected?
+function availableConstraints() {
+  const pts = selItems.filter(s => s.kind==='pt');
+  const segs = selItems.filter(s => s.kind==='seg');
+  const circ = selItems.filter(s => s.kind==='circle');
+  const n = selItems.length;
+  const out = [];
+  const strip = it => it.kind==='pt' ? {u:it.u, k:it.k} : it.kind==='seg' ? {u:it.u, s:it.s} : {u:it.u};
+  if (n===1 && segs.length===1) {
+    out.push({type:'horizontal', a:strip(segs[0])}, {type:'vertical', a:strip(segs[0])});
+    out.push({type:'length', a:strip(segs[0]), value: curSegLength(segs[0]), input:'mm'});
+    out.push({type:'angle',  a:strip(segs[0]), value: curSegAngle(segs[0]), input:'°'});
+  }
+  if (n===2 && segs.length===2) {
+    out.push({type:'parallel', a:strip(segs[0]), b:strip(segs[1])},
+             {type:'perpendicular', a:strip(segs[0]), b:strip(segs[1])},
+             {type:'equal', a:strip(segs[0]), b:strip(segs[1])});
+  }
+  if (n===2 && pts.length===2) {
+    const A = getPt(entByUid(pts[0].u), pts[0].k), B = getPt(entByUid(pts[1].u), pts[1].k);
+    out.push({type:'coincident', a:strip(pts[0]), b:strip(pts[1])},
+             {type:'horizontal', a:strip(pts[0]), b:strip(pts[1]), label:'Horizontal (same height)'},
+             {type:'vertical',   a:strip(pts[0]), b:strip(pts[1]), label:'Vertical (in line)'},
+             {type:'distance',   a:strip(pts[0]), b:strip(pts[1]), value: Math.hypot(B[0]-A[0], B[1]-A[1]), input:'mm'});
+  }
+  if (n===1 && pts.length===1) {
+    const already = sketchConstraints().find(c => c.type==='fix' && c.a.u===pts[0].u && c.a.k===pts[0].k);
+    if (already) out.push({remove: already, label:'Unfix point'});
+    else out.push({type:'fix', a:strip(pts[0]), value: getPt(entByUid(pts[0].u), pts[0].k)});
+  }
+  if (n===2 && pts.length===1 && segs.length===1) {
+    out.push({type:'pointOnLine', a:strip(pts[0]), b:strip(segs[0])},
+             {type:'midpoint',    a:strip(pts[0]), b:strip(segs[0])});
+  }
+  if (n===1 && circ.length===1) {
+    out.push({type:'radius', a:strip(circ[0]), value: entByUid(circ[0].u).r, input:'mm'});
+  }
+  if (n===2 && circ.length===2) {
+    out.push({type:'equal', a:strip(circ[0]), b:strip(circ[1]), label:'Equal radius'},
+             {type:'coincident', a:{u:circ[0].u, k:'c'}, b:{u:circ[1].u, k:'c'}, label:'Concentric'});
+  }
+  return out;
+}
+
+function sameRef(a, b) {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  return a.u===b.u && a.k===b.k && a.s===b.s;
+}
+// Dimension-type constraints replace an older one on the same thing.
+function addConstraint(c) {
+  if (!activeSketch()) return;
+  const list = sketchConstraints();
+  const single = ['length','angle','radius','fix','distance'];
+  const idx = list.findIndex(o => o.type===c.type && sameRef(o.a,c.a) && sameRef(o.b,c.b));
+  if (idx >= 0) {
+    if (single.includes(c.type)) list.splice(idx, 1);
+    else { flashCstStatus('Already has that constraint', false); return; }
+  }
+  // H and V on the same segment cannot both hold
+  if (c.type==='horizontal' || c.type==='vertical') {
+    const other = c.type==='horizontal' ? 'vertical' : 'horizontal';
+    const j = list.findIndex(o => o.type===other && sameRef(o.a,c.a) && sameRef(o.b,c.b));
+    if (j >= 0) list.splice(j, 1);
+  }
+  const clean = { type:c.type, a:c.a };
+  if (c.b) clean.b = c.b;
+  if (c.value !== undefined) clean.value = Array.isArray(c.value) ? c.value.slice() : +c.value;
+  list.push(clean);
+  const res = solveSketch();
+  scheduleExtrude(); updateConstraintPanel(); scheduleRender();
+  if (res > 1e-3) flashCstStatus('These constraints fight each other — remove one (×) or press Ctrl+Z', true);
+  else flashCstStatus(`✓ ${CST_INFO[c.type].name} added`, false);
+}
+function removeConstraint(c) {
+  const list = sketchConstraints();
+  const i = list.indexOf(c);
+  if (i >= 0) list.splice(i, 1);
+  solveSketch();
+  scheduleExtrude(); updateConstraintPanel(); scheduleRender();
+}
+
+let _cstStatusTimer = null;
+function flashCstStatus(msg, bad) {
+  const el = document.getElementById('cst-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = bad ? 'var(--red)' : 'var(--green)';
+  clearTimeout(_cstStatusTimer);
+  if (!bad) _cstStatusTimer = setTimeout(() => { el.textContent = ''; }, 2500);
+}
+
+function escHtml(s) { return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+
 function updateConstraintPanel() {
-  const panel=document.getElementById('cst-panel');
-  if (!selection) { panel.style.display='none'; return; }
-  panel.style.display='block';
-  const e=ents()[selection.entityIdx];
-  if (!e) { panel.style.display='none'; return; }
-  const lenRow=document.getElementById('cst-len-row');
-  const angRow=document.getElementById('cst-ang-row');
-  const radRow=document.getElementById('cst-rad-row');
-  const quickRow=document.getElementById('cst-quick-row');
+  const panel = document.getElementById('cst-panel');
+  if (!panel) return;
+  const body = document.getElementById('cst-body');
+  const listEl = document.getElementById('cst-list');
+  const label = document.getElementById('cst-label');
+  if (!activeSketch()) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  selItems = selItems.filter(it => entByUid(it.u));
 
-  if (selection.isCircle && e.type==='circle') {
-    document.getElementById('cst-label').textContent='Circle';
-    lenRow.style.display='none';
-    angRow.style.display='none';
-    radRow.style.display='';
-    quickRow.style.display='none';
-    document.getElementById('cst-rad').value=e.r.toFixed(2);
-    return;
+  const kinds = { pt:'point', seg:'edge', circle:'circle', arc:'arc', spline:'spline' };
+  if (!selItems.length) label.textContent = 'nothing selected';
+  else {
+    const counts = {};
+    for (const s of selItems) counts[kinds[s.kind]] = (counts[kinds[s.kind]]||0) + 1;
+    label.textContent = Object.entries(counts).map(([k,v]) => `${v} ${k}${v>1?'s':''}`).join(' + ');
   }
 
-  lenRow.style.display=''; angRow.style.display=''; radRow.style.display='none';
-  quickRow.style.display='';
+  body.innerHTML = '';
+  const opts = availableConstraints();
+  if (!selItems.length) {
+    body.innerHTML = `<div class="cst-help">Pick the <b>Select</b> tool (E). Click a line, point or circle — <b>Shift</b>-click to add more — then choose a constraint. Drag points, edges or whole shapes to move them.</div>`;
+  } else if (!opts.length) {
+    body.innerHTML = `<div class="cst-help">No constraint for this combination. Try: 1 edge · 2 edges · 2 points · a point + an edge · 1 or 2 circles.</div>`;
+  }
+  const quick = document.createElement('div'); quick.className = 'cst-quick-row';
+  for (const o of opts) {
+    if (o.input) {
+      const row = document.createElement('div'); row.className = 'cst-row';
+      const id = 'cst-in-' + o.type;
+      row.innerHTML = `<span class="cst-lbl">${CST_INFO[o.type].name}</span>
+        <input type="number" class="cst-inp" id="${id}" step="${o.input==='°'?1:0.1}" value="${(+o.value).toFixed(o.input==='°'?1:2)}" aria-label="${CST_INFO[o.type].name}">
+        <span class="cst-unit">${o.input}</span><button class="cst-btn">Lock</button>`;
+      const inp = row.querySelector('input');
+      const go = () => {
+        const v = parseFloat(inp.value);
+        if (isNaN(v) || (o.input==='mm' && v <= 0)) return;
+        addConstraint({...o, value: v});
+      };
+      row.querySelector('button').addEventListener('click', go);
+      inp.addEventListener('keydown', e => { if (e.key==='Enter') go(); e.stopPropagation(); });
+      body.appendChild(row);
+    } else {
+      const b = document.createElement('button'); b.className = 'cst-quick';
+      if (o.remove) { b.textContent = o.label; b.addEventListener('click', () => removeConstraint(o.remove)); }
+      else {
+        b.innerHTML = `<span class="cst-ico">${CST_INFO[o.type].icon}</span>${escHtml(o.label || CST_INFO[o.type].name)}`;
+        b.addEventListener('click', () => addConstraint(o));
+      }
+      quick.appendChild(b);
+    }
+  }
+  if (quick.children.length) body.insertBefore(quick, body.firstChild);
 
-  if (e.type==='polyline') {
-    const si=selection.segIdx;
-    const p1=e.points[si], p2=e.points[(si+1)%e.points.length];
-    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
-    const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI;
-    document.getElementById('cst-label').textContent=`Seg ${si+1}→${(si+1)%e.points.length+1}`;
-    document.getElementById('cst-len').value=len.toFixed(2);
-    document.getElementById('cst-ang').value=ang.toFixed(1);
-    document.getElementById('btn-cst-p').style.display = si>0 ? '' : 'none';
-  } else if (selection.isRect && e.type==='rect') {
-    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
-    const si=selection.segIdx;
-    const p1=corners[si], p2=corners[(si+1)%4];
-    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
-    const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI;
-    document.getElementById('cst-label').textContent=si%2===0?'Width edge':'Height edge';
-    document.getElementById('cst-len').value=len.toFixed(2);
-    document.getElementById('cst-ang').value=ang.toFixed(1);
-    document.getElementById('btn-cst-p').style.display='none';
+  // Existing constraints in this sketch
+  const cs = sketchConstraints();
+  listEl.innerHTML = cs.length ? `<div class="cst-list-title">In this sketch (${cs.length})</div>` : '';
+  cs.forEach(c => {
+    const row = document.createElement('div'); row.className = 'cst-item';
+    const involved = selItems.length && selItems.some(s => s.u===c.a.u || (c.b && s.u===c.b.u));
+    if (involved) row.classList.add('hl');
+    row.innerHTML = `<span class="cst-item-txt">${constraintText(c)}</span><button class="cst-del" title="Remove constraint" aria-label="Remove constraint">×</button>`;
+    row.querySelector('.cst-del').addEventListener('click', () => removeConstraint(c));
+    if (c.type==='length'||c.type==='distance'||c.type==='radius'||c.type==='angle') {
+      row.querySelector('.cst-item-txt').title = 'Double-click to change the value';
+      row.addEventListener('dblclick', () => {
+        const nv = prompt(`New ${CST_INFO[c.type].name.toLowerCase()} value`, (+c.value).toFixed(2));
+        const v = parseFloat(nv);
+        if (!isNaN(v) && (c.type==='angle' || v > 0)) { c.value = v; solveSketch(); scheduleExtrude(); updateConstraintPanel(); scheduleRender(); }
+      });
+    }
+    listEl.appendChild(row);
+  });
+}
+
+// Typing a number on a dimension label locks it as a Length/Radius constraint.
+function setDimFromLabel(entityIdx, segIdx, newLen) {
+  const e = ents()[entityIdx];
+  if (!e || !(newLen > 0)) return;
+  ensureUid(e);
+  if (e.type === 'circle') addConstraint({type:'radius', a:{u:e.uid}, value:newLen});
+  else if (e.type === 'polyline' || e.type === 'rect') addConstraint({type:'length', a:{u:e.uid, s:segIdx}, value:newLen});
+}
+function hasLengthConstraint(entityIdx, segIdx) {
+  const e = ents()[entityIdx];
+  if (!e || !e.uid) return false;
+  if (e.type === 'circle') return sketchConstraints().some(c => c.type==='radius' && c.a.u===e.uid);
+  return sketchConstraints().some(c => c.type==='length' && c.a.u===e.uid && c.a.s===segIdx);
+}
+
+// ── Canvas drawing of constraint glyphs ──────────────────────────────
+function drawConstraintGlyphs() {
+  const cs = sketchConstraints();
+  if (!cs.length) return;
+  const perSeg = {};
+  const badge = (x, y, txt, color) => {
+    ctx.save();
+    ctx.font = 'bold 10px JetBrains Mono,monospace';
+    const w = Math.max(14, ctx.measureText(txt).width + 6);
+    ctx.fillStyle = 'rgba(12,16,28,0.92)';
+    ctx.strokeStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x-w/2, y-7, w, 14, 3) : ctx.rect(x-w/2, y-7, w, 14);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(txt, x, y+0.5);
+    ctx.restore();
+  };
+  const segAnchor = (ref) => {
+    const e = entByUid(ref.u); if (!e) return null;
+    const ks = segEndKeys(e, ref.s); if (!ks) return null;
+    const a = wtoc(...getPt(e, ks[0])), b = wtoc(...getPt(e, ks[1]));
+    const key = ref.u + ':' + ref.s;
+    const n = perSeg[key] = (perSeg[key] || 0) + 1;
+    const dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx, dy) || 1;
+    const mx = (a[0]+b[0])/2, my = (a[1]+b[1])/2;
+    // opposite side from the length label, spread along the edge
+    return [mx + dy/L*13 + dx/L*(n-1)*18, my - dx/L*13 + dy/L*(n-1)*18];
+  };
+  const ptAnchor = (ref, n=0) => {
+    const e = entByUid(ref.u); if (!e) return null;
+    const p = getPt(e, ref.k); if (!p) return null;
+    const [x, y] = wtoc(p[0], p[1]);
+    return [x + 11 + n*16, y - 11];
+  };
+  const bad = lastSolveResidual > 1e-3;
+  const col = bad ? 'rgba(248,113,113,1)' : 'rgba(52,211,153,1)';
+  const perPt = {};
+  for (const c of cs) {
+    const info = CST_INFO[c.type]; if (!info) continue;
+    if (c.type === 'length' || c.type === 'radius') continue;   // shown on the dimension label
+    if (c.a && c.a.s !== undefined) {
+      const p = segAnchor(c.a); if (p) badge(p[0], p[1], c.type==='angle' ? `∠${Math.round(c.value)}°` : info.icon, col);
+      if (c.b && c.b.s !== undefined) { const q = segAnchor(c.b); if (q) badge(q[0], q[1], info.icon, col); }
+    } else if (c.a && c.a.k !== undefined) {
+      if (c.type === 'coincident') {
+        const e = entByUid(c.a.u), p = e && getPt(e, c.a.k);
+        if (p) { const [x,y] = wtoc(p[0],p[1]); ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.stroke(); ctx.restore(); }
+        continue;
+      }
+      const k = c.a.u+':'+c.a.k; const n = perPt[k] = (perPt[k]||0) + 1;
+      const p = ptAnchor(c.a, n-1);
+      let txt = info.icon;
+      if (c.type === 'distance') txt = `↔${(+c.value).toFixed(c.value<10?1:0)}`;
+      if (p) badge(p[0], p[1], txt, col);
+    } else if (c.type === 'equal') {   // circles
+      for (const r of [c.a, c.b]) { const e = entByUid(r.u); if (e) { const [x,y] = wtoc(e.cx, e.cy + e.r); badge(x, y+10, '=', col); } }
+    }
   }
 }
-
-function applyLengthConstraint() {
-  if (!selection) return;
-  const newLen=parseFloat(document.getElementById('cst-len').value);
-  if (!newLen||newLen<=0) return;
-  const e=ents()[selection.entityIdx];
-  if (e.type==='polyline') {
-    const si=selection.segIdx;
-    const p1=e.points[si];
-    const ni=(si+1)%e.points.length;
-    const p2=e.points[ni];
-    const dx=p2[0]-p1[0], dy=p2[1]-p1[1];
-    const cur=Math.hypot(dx,dy);
-    if (cur<1e-10) return;
-    const s=newLen/cur;
-    e.points[ni]=[p1[0]+dx*s, p1[1]+dy*s];
-  } else if (selection.isRect && e.type==='rect') {
-    const si=selection.segIdx;
-    if (si===0||si===2) e.w=newLen; else e.h=newLen;
-  }
-  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
-}
-
-function applyAngleConstraint(forceDeg) {
-  if (!selection) return;
-  const deg = forceDeg !== undefined ? forceDeg : parseFloat(document.getElementById('cst-ang').value);
-  if (isNaN(deg)) return;
-  const rad=deg*Math.PI/180;
-  const e=ents()[selection.entityIdx];
-  if (e.type==='polyline') {
-    const si=selection.segIdx;
-    const p1=e.points[si];
-    const ni=(si+1)%e.points.length;
-    const p2=e.points[ni];
-    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
-    e.points[ni]=[p1[0]+len*Math.cos(rad), p1[1]+len*Math.sin(rad)];
-  }
-  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
-}
-
-function applyRadiusConstraint() {
-  if (!selection||!selection.isCircle) return;
-  const r=parseFloat(document.getElementById('cst-rad').value);
-  if (!r||r<=0) return;
-  ents()[selection.entityIdx].r=r;
-  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
-}
-
-function applyParallelToPrev() {
-  if (!selection) return;
-  const e=ents()[selection.entityIdx];
-  if (e.type!=='polyline') return;
-  const si=selection.segIdx;
-  if (si<=0) return;
-  const prev1=e.points[si-1], prev2=e.points[si];
-  const prevAngle=Math.atan2(prev2[1]-prev1[1], prev2[0]-prev1[0]);
-  const p1=e.points[si];
-  const ni=(si+1)%e.points.length;
-  const p2=e.points[ni];
-  const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
-  e.points[ni]=[p1[0]+len*Math.cos(prevAngle), p1[1]+len*Math.sin(prevAngle)];
-  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
-}
-
-document.getElementById('btn-cst-len').addEventListener('click', applyLengthConstraint);
-document.getElementById('btn-cst-ang').addEventListener('click', ()=>applyAngleConstraint());
-document.getElementById('btn-cst-rad').addEventListener('click', applyRadiusConstraint);
-document.getElementById('btn-cst-h').addEventListener('click', ()=>applyAngleConstraint(0));
-document.getElementById('btn-cst-v').addEventListener('click', ()=>applyAngleConstraint(90));
-document.getElementById('btn-cst-p').addEventListener('click', applyParallelToPrev);
-document.getElementById('cst-len').addEventListener('keydown', e=>{ if(e.key==='Enter') applyLengthConstraint(); });
-document.getElementById('cst-ang').addEventListener('keydown', e=>{ if(e.key==='Enter') applyAngleConstraint(); });
-document.getElementById('cst-rad').addEventListener('keydown', e=>{ if(e.key==='Enter') applyRadiusConstraint(); });
 
 // ════════════════════════════════════════════════════════════════════
 // CLOSE DETECTION
@@ -2022,7 +2601,7 @@ function restoreState(json) {
   featureTree   = data.tree;
   activeSketchId = data.active;
   nextFeatId    = data.next || nextFeatId;
-  selection = null;
+  selItems = []; dragState = null; pendingDrag = null;
   linePoints=[]; rectStart=null; circleCenter=null; arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
   if (typeof updateConstraintPanel === 'function') updateConstraintPanel();
@@ -2202,6 +2781,8 @@ function setTool(t) {
   linePoints=[]; rectStart=null; circleCenter=null;
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
+  if (t !== 'edit') { selItems = []; hoverHit = null; updateConstraintPanel(); }
+  pendingDrag = null;
   tool=t;
   document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
   const btn=document.getElementById('tool-'+t);
@@ -2234,7 +2815,7 @@ function updateHint() {
     arc:      '<b>Arc tool (A)</b><br>Click 1: start · Click 2: through-point · Click 3: end<br>Three-point arc',
     polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
     spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
-    edit:     '<b>Edit Points (E)</b><br>Hover a vertex → drag to reposition<br>Click label to constrain · Esc: back to Line',
+    edit:     '<b>Select &amp; Move (E / V)</b><br>Drag a point, edge or whole shape to move it<br>Click to select · <b>Shift</b>-click to add · then pick a constraint on the right<br><b>Ctrl</b>: no snap · <b>Del</b>: delete selected shapes',
   };
   document.getElementById('hint-box').innerHTML = hints[tool]||'';
 }
@@ -2254,7 +2835,7 @@ function undoLast() {
     updateUndoButton();
     return;
   }
-  if (ents().length>0) { ents().pop(); selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree(); }
+  if (ents().length>0) { ents().pop(); selItems=[]; updateConstraintPanel(); scheduleRender(); renderFeatureTree(); }
 }
 window.undoLast = undoLast;
 
@@ -2264,7 +2845,8 @@ function clearAll() {
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
   hasAutoSwitchedTo3d = false;
-  selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree();
+  if(activeSketch()) activeSketch().constraints = [];
+  selItems=[]; updateConstraintPanel(); scheduleRender(); renderFeatureTree();
 }
 window.clearAll = clearAll;
 
@@ -2383,13 +2965,17 @@ sk.addEventListener('mousemove', e => {
   const [wx,wy]=ctow(x,y);
   const [sx,sy]=snapPt(wx,wy);
 
-  // Drag move
+  // Select tool: start a drag once the mouse has moved a few pixels
+  if (pendingDrag && !dragState && pendingDrag.hit && Math.hypot(x-pendingDrag.sx, y-pendingDrag.sy) > 3) {
+    beginDrag(pendingDrag);
+    dragStarted = true;
+  }
   if (dragState) {
-    applyDragMove(dragState, sx, sy);
-    mouse={x:sx,y:sy};
+    updateDrag(wx, wy);
+    mouse={x:wx,y:wy};
     scheduleRender();
-    document.getElementById('st-x').textContent=sx.toFixed(1);
-    document.getElementById('st-y').textContent=sy.toFixed(1);
+    document.getElementById('st-x').textContent=wx.toFixed(1);
+    document.getElementById('st-y').textContent=wy.toFixed(1);
     sk.style.cursor='grabbing';
     return;
   }
@@ -2414,8 +3000,8 @@ sk.addEventListener('mousemove', e => {
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
   } else if (tool === 'edit') {
-    const nearV = findNearVertex(x, y);
-    sk.style.cursor = nearV ? 'grab' : 'default';
+    hoverHit = isPanning ? null : hitTestSketch(x, y);
+    sk.style.cursor = hoverHit ? (hoverHit.kind==='body' ? 'move' : 'grab') : 'default';
   } else {
     sk.style.cursor = 'crosshair';
   }
@@ -2434,16 +3020,14 @@ sk.addEventListener('mousedown', e => {
 
   const {x,y}=evXY(e);
 
-  // Drag only active in Edit tool
-  const nearV = tool === 'edit' ? findNearVertex(x, y) : null;
-  if (nearV) {
-    dragState = nearV;
-    dragStarted = true;
-    sk.style.cursor = 'grabbing';
+  dragStarted = false;
+  // Select tool: remember what was pressed; it becomes a drag if the mouse moves
+  if (tool === 'edit' && hitLabel(x, y) < 0) {
+    const hit = hitTestSketch(x, y);
+    pendingDrag = { hit, sx:x, sy:y, w0: ctow(x, y), shift: e.shiftKey };
     e.preventDefault();
     return;
   }
-  dragStarted = false;
 
   // rect and circle use two-click (set anchor on click, not mousedown)
 });
@@ -2454,9 +3038,16 @@ sk.addEventListener('mouseup', e => {
 
   // End drag
   if (dragState) {
-    dragState = null;
-    sk.style.cursor = 'crosshair';
-    scheduleExtrude();
+    endDrag();
+    pendingDrag = null;
+    sk.style.cursor = 'grab';
+    return;
+  }
+  // A press-and-release without moving = select
+  if (pendingDrag) {
+    selectItem(pendingDrag.hit, pendingDrag.shift);
+    pendingDrag = null;
+    dragStarted = true;   // the click event that follows has been handled
     return;
   }
 
@@ -2478,25 +3069,18 @@ sk.addEventListener('click', e => {
     if (hit.entityIdx >= 0) {
       const ent = ents()[hit.entityIdx];
       if (ent) {
-        if (ent.type === 'circle') {
-          selection = { entityIdx: hit.entityIdx, isCircle: true };
-        } else if (ent.type === 'rect') {
-          selection = { entityIdx: hit.entityIdx, isRect: true, segIdx: hit.segIdx };
-        } else {
-          selection = { entityIdx: hit.entityIdx, segIdx: hit.segIdx };
-        }
+        ensureUid(ent);
+        selItems = ent.type === 'circle' ? [{kind:'circle', u:ent.uid}] : [{kind:'seg', u:ent.uid, s:hit.segIdx}];
         updateConstraintPanel();
         scheduleRender();
       }
     }
     showLenPopup(hit.lx, hit.ly, hit.wlen, (newLen) => {
-      if (hit.entityIdx >= 0) {
-        applyLenToEntity(hit.entityIdx, hit.segIdx, newLen);
-        updateConstraintPanel();
-      }
+      if (hit.entityIdx >= 0) setDimFromLabel(hit.entityIdx, hit.segIdx, newLen);
     });
     return;
   }
+  if (tool === 'edit') return;   // Select tool handles its clicks on mouseup
 
   // ── Rect: two-click ──────────────────────────────────────────────
   if (tool==='rect') {
@@ -2592,7 +3176,7 @@ sk.addEventListener('click', e => {
       const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
       if (!constructionMode) {
         showLenPopup(sx2, sy2, wlen, (newLen) => {
-          applyLenToEntity(ei, 0, newLen);
+          setDimFromLabel(ei, 0, newLen);
         });
       }
     }
@@ -2684,6 +3268,7 @@ window.addEventListener('keydown', e => {
       return;
     }
     if (e.key==='Escape') {
+      if (selItems.length) clearSelection();
       hideLenPopup();
       linePoints=[]; rectStart=null; circleCenter=null;
       arcPts=[]; polyCenter=null; splinePts=[];
@@ -2696,9 +3281,16 @@ window.addEventListener('keydown', e => {
     if (e.key==='a'||e.key==='A') setTool('arc');
     if (e.key==='g'||e.key==='G') setTool('polygon');
     if (e.key==='s'||e.key==='S') setTool('spline');
-    if (e.key==='e'||e.key==='E') setTool('edit');
+    if (e.key==='e'||e.key==='E'||e.key==='v'||e.key==='V') setTool('edit');
     if (e.key==='x'||e.key==='X') toggleConstructionMode();
-    if (e.key==='Delete') { if (ents().length>0){ ents().pop(); scheduleRender(); } }
+    if (e.key==='Delete' || e.key==='Backspace') {
+      if (selItems.length) {
+        const gone = new Set(selItems.map(s => s.u));
+        activeSketch().entities = ents().filter(en => !gone.has(en.uid));
+        selItems = []; solveSketch(); scheduleExtrude(); updateConstraintPanel(); renderFeatureTree(); scheduleRender();
+      } else if (e.key==='Delete' && ents().length>0) { ents().pop(); solveSketch(); scheduleExtrude(); updateConstraintPanel(); scheduleRender(); }
+      e.preventDefault();
+    }
 
     // Arrow key pan (2D canvas)
     const PAN=30;
@@ -3213,6 +3805,10 @@ function migrateV1(legacyEntities) {
 
 function renderFeatureTree() {
   scheduleAutosave();
+  if (typeof updateConstraintPanel === 'function') {
+    if (selItems.length && !selItems.every(it => entByUid(it.u))) selItems = [];
+    updateConstraintPanel();
+  }
   const list = document.getElementById('feat-list');
   if (!list) return;
   list.innerHTML = '';
